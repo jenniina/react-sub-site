@@ -1,0 +1,605 @@
+.hero {
+  padding-top: 10vh;
+  min-height: clamp(300px, 60vh, 800px);
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative;
+  gap: 0;
+}
+
+.hero h1 {
+  margin-top: 20%;
+  margin-bottom: 0;
+}
+.hero.Welcome.touch {
+  padding-top: 0;
+  min-height: clamp(300px, 80vh, 1000px);
+}
+.hero.Welcome.touch h1 {
+  margin-top: 0;
+}
+.hero.Welcome.touch p {
+  margin-bottom: 50%;
+}
+.hero h1,
+.hero p {
+  z-index: 3;
+  overflow: visible;
+}
+
+.hero h1 {
+  -webkit-text-stroke: 1px var(--color-primary-1);
+  text-stroke: 1px var(--color-primary-1);
+  text-shadow: 1px 1px 1px var(--color-primary-1),
+    0 0 0.1em var(--color-primary-1);
+}
+.hero p {
+  text-shadow: 1px 1px 1px var(--color-primary-1),
+    0 0 1em var(--color-primary-1), 0 0 0.3em var(--color-primary-1);
+  font-size: 1.1em;
+}
+.herocontent {
+  z-index: 2;
+}
+.herocontent .bubbles,
+.herocontent .eyes {
+  transition-property: top, right, bottom, left, transform;
+  transition-timing-function: ease-in-out;
+  transition-duration: 500ms;
+}
+
+.herocontent .eyes {
+  -webkit-animation: jiggle 250ms ease-in-out infinite;
+  animation: jiggle 250ms ease-in-out infinite;
+  animation-play-state: paused;
+}
+.light .herocontent .bubbles {
+  box-shadow: inset 0 0 calc(var(--s2) * 2 * 1px) calc(var(--s2) / -3 * 1px)
+      currentColor,
+    inset calc(var(--s2) * -1px) calc(var(--s2) * -1px)
+      calc(var(--s2) * 2 * 1px) calc(var(--s2) * -1.5 * 1px) lime,
+    inset calc(var(--s2) * 4 * 1px) calc(var(--s2) * 4 * 1px)
+      calc(var(--s2) * 3 * 1px) calc(var(--s2) * -6 * 1px) hotpink,
+    0 0 10px -5px white, 0 0 5px -1px currentColor;
+}
+.herocontent .bubbles {
+  -webkit-animation: updown 3000ms ease-in-out infinite;
+  animation: updown 3000ms ease-in-out infinite;
+  animation-play-state: paused;
+  box-shadow: inset 0 calc(var(--s2) * -6 * 1px) calc(var(--s2) * 6 * 1px)
+      calc(var(--s2) * -8 * 1px) currentColor,
+    inset calc(var(--s2) * -3 * 1px) calc(var(--s2) * -3 * 1px)
+      calc(var(--s2) * 2 * 1px) calc(var(--s2) * -4 * 1px) green,
+    inset 0 0 calc(var(--s2) * 2 * 1px) calc(var(--s2) / -2 * 1px) currentColor,
+    inset calc(var(--s2) * 4 * 1px) calc(var(--s2) * 4 * 1px)
+      calc(var(--s2) * 3 * 1px) calc(var(--s2) * -6 * 1px) hotpink,
+    0 0 10px -5px white, 0 0 12px -3px currentColor, 0 0 30px -10px currentColor;
+}
+
+.herocontent .geometric div {
+  --time: 1000ms;
+  -webkit-animation: geometric-hover 2000ms ease-in-out infinite;
+  animation: geometric-hover 2000ms ease-in-out infinite;
+  animation-play-state: paused;
+  box-shadow: 0 0 4px 0 currentColor, 0 0 10px 0 currentColor,
+    0 0 40px 4px currentColor;
+  background-color: hsla(0, 0%, 100%, 0.7);
+  pointer-events: none; /*Otherwise exitItem targets the wrong item*/
+}
+.herocontent .geometric span {
+  background-color: currentColor;
+}
+.herocontent .geometric:hover,
+.herocontent .geometric:focus {
+  cursor: pointer;
+}
+.herocontent .geometric:hover div,
+.herocontent .geometric:focus div,
+.herocontent .geometric.active div,
+.herocontent .bubbles:hover,
+.herocontent .bubbles:focus,
+.herocontent .item.active,
+.herocontent .eyes:hover,
+.herocontent .eyes:focus {
+  animation-play-state: running;
+}
+.light .herocontent .geometric div {
+  box-shadow: 0 0 4px 0 currentColor, 0 0 10px 2px white, 0 0 30px 2px white;
+  background-color: currentColor;
+}
+.light .herocontent .geometric span {
+  background-color: var(--color);
+}
+.herocontent .bubbles:active,
+.herocontent .geometric:active,
+.herocontent .eyes:active {
+  cursor: -webkit-grabbing;
+  cursor: grabbing;
+}
+.herocontent .bubbles span,
+.herocontent .eyes span {
+  pointer-events: none;
+  position: relative;
+  display: block;
+  top: 0;
+  left: 0;
+  height: 40%;
+  width: 40%;
+}
+.herocontent .eyes .inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-80deg);
+  pointer-events: none;
+  box-shadow: inset calc(var(--s2) * 8 * 1px) calc(var(--s2) / 4 * -1px)
+      calc(var(--s2) * 4 * 1px) calc(var(--s2) * 8 * -1px) hotpink,
+    inset calc(var(--s2) * 8 * -1px) calc(var(--s2) / 4 * 1px)
+      calc(var(--s2) * 4 * 1px) calc(var(--s2) * 9 * -1px) lime,
+    0 0 4px 0 currentColor, 0 0 9px -5px white, 0 0 40px -10px currentColor,
+    inset calc(var(--s2) * 1px) 0 calc(var(--s2) * 3 * 1px) 0 currentColor,
+    inset calc(var(--s2) * -1px) 0 calc(var(--s2) * 3 * 1px) 0 white,
+    0 0 10px -5px white;
+}
+.light .herocontent .eyes .inner {
+  box-shadow: inset calc(var(--s2) * 8 * 1px) calc(var(--s2) / 4 * -1px)
+      calc(var(--s2) * 4 * 1px) calc(var(--s2) * 7 * -1px) hotpink,
+    inset calc(var(--s2) * 8 * -1px) calc(var(--s2) / 4 * 1px)
+      calc(var(--s2) * 4 * 1px) calc(var(--s2) * 9 * -1px) lime,
+    0 0 10px 0 white, 0 0 20px -10px white,
+    inset calc(var(--s2) * 1px) 0 calc(var(--s2) * 3 * 1px) 0 currentColor,
+    inset calc(var(--s2) * -1px) 0 calc(var(--s2) * 3 * 1px) -1px white,
+    0 0 10px -5px white;
+}
+.herocontent .eyes .inner::before {
+  content: "";
+  position: absolute;
+  width: 60%;
+  height: 60%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: currentColor;
+  border-radius: 50%;
+  z-index: -1;
+  opacity: 0.4;
+  box-shadow: 0 0 calc(var(--s) / 8) 1px currentColor;
+}
+.herocontent .eyes .inner::after {
+  content: "";
+  position: absolute;
+  width: 5%;
+  height: 5%;
+  top: 50%;
+  left: 70%;
+  background-color: white;
+  border-radius: 50%;
+  z-index: -1;
+  opacity: 0.3;
+  box-shadow: 0 0 calc(var(--s) / 4) white;
+  transition-property: left;
+  transition-timing-function: ease-in-out;
+}
+.herocontent .eyes:hover .inner::after,
+.herocontent .eyes:focus .inner::after {
+  left: 50%;
+}
+.herocontent .eyes span {
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.herocontent .bubbles span::before,
+.herocontent .bubbles span::after,
+.herocontent .eyes span::before {
+  content: "";
+  position: absolute;
+  background-color: white;
+  opacity: 0.2;
+  border-radius: 80% 50%;
+  box-shadow: 0 0 4px 0 white, 0 0 6px -2px white;
+}
+
+.light .herocontent .bubbles span::before,
+.light .herocontent .bubbles span::after,
+.light .herocontent .eyes span::before {
+  background-color: white;
+  opacity: 0.8;
+}
+.herocontent .bubbles span::before {
+  bottom: 35%;
+  right: 20%;
+  width: clamp(5px, 20%, 30px);
+  height: clamp(5px, 20%, 30px);
+}
+.herocontent .bubbles span::after {
+  bottom: 15%;
+  right: 45%;
+  width: clamp(2px, 10%, 10px);
+  height: clamp(2px, 10%, 10px);
+  border-radius: 50%;
+}
+.herocontent .eyes span::before,
+.herocontent .eyes span::after {
+  transition-property: transform, border-radius;
+}
+.herocontent .eyes .inner::after,
+.herocontent .eyes span::before,
+.herocontent .eyes span::after {
+  /* eye-open */
+  transition-timing-function: ease-in-out;
+  transition-duration: 900ms;
+  transition-delay: 800ms;
+}
+.herocontent .eyes span::before {
+  --color: white;
+  background-color: var(--color);
+  top: 40%;
+  left: 15%;
+  width: clamp(5px, 20%, 30px);
+  height: clamp(5px, 20%, 30px);
+  border-radius: 50% 90%;
+  opacity: 0.6;
+  transform: rotate(30deg);
+  box-shadow: 0 0 calc(var(--s) / 10) 2px var(--color);
+}
+.light .herocontent .eyes span::before {
+  opacity: 0.7;
+}
+.herocontent .eyes span::after {
+  --color: black;
+  content: "";
+  position: absolute;
+  background-color: transparent;
+  top: 22%;
+  left: -10%;
+  width: 60%;
+  height: 60%;
+  transform: rotate(120deg);
+  border-radius: 50%;
+  z-index: -1;
+  opacity: 0.2;
+  border-radius: 80% 50%;
+  box-shadow: 0 0 6px 0 var(--color), 0 0 6px -3px var(--color),
+    inset 6px 8px 8px -5px black, -3px -4px 4px -2px black,
+    -2px -3px 10px 2px white;
+}
+.light .herocontent .eyes span::after {
+  opacity: 0.16;
+}
+.herocontent .eyes:hover .inner::after,
+.herocontent .eyes:focus .inner::after,
+.herocontent .eyes:hover span::before,
+.herocontent .eyes:focus span::before,
+.herocontent .eyes:hover span::after,
+.herocontent .eyes:focus span::after {
+  transition-duration: 150ms;
+  transition-delay: 0ms;
+}
+.herocontent .eyes:hover span::before,
+.herocontent .eyes:focus span::before {
+  transform: translate(-90%, -10%) scale(0.001, 1);
+}
+.herocontent .eyes:hover span::after,
+.herocontent .eyes:focus span::after {
+  transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
+}
+.herocontent .geometric span {
+  pointer-events: none;
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  -webkit-animation: scale var(--time) linear infinite,
+    hide-opacity var(--time) cubic-bezier(0.28, 0.37, 0.88, 0.5) infinite;
+  animation: scale var(--time) linear infinite,
+    hide-opacity var(--time) cubic-bezier(0.28, 0.37, 0.88, 0.5) infinite;
+  animation-delay: calc(calc(var(--number) + 1) * calc(var(--time) / -3.9));
+  animation-play-state: paused;
+}
+.herocontent .geometric:hover span,
+.herocontent .geometric:focus span {
+  animation-play-state: running;
+}
+.geometric.exitItem {
+  -webkit-animation: geometric-hide 400ms ease-in forwards;
+  animation: geometric-hide 400ms ease-in forwards;
+  animation-play-state: running;
+  pointer-events: none;
+}
+
+.bubbles.exitItem,
+.eyes.exitItem {
+  -webkit-animation: hide-grow 100ms ease-in forwards;
+  animation: hide-grow 100ms ease-in forwards;
+  pointer-events: none;
+}
+
+@keyframes hide-grow {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+@keyframes hide-shrink {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+@keyframes hide-opacity {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes jiggle {
+  0%,
+  100% {
+    transform: translate(0);
+  }
+  50% {
+    transform: translate(1px);
+  }
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(45deg);
+  }
+  100% {
+    transform: rotate(calc(360deg + 45deg));
+  }
+}
+@keyframes scale {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes geometric-hide {
+  0% {
+    transform: scale(1);
+  }
+  20% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+  40% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+@keyframes geometric-hover {
+  0%,
+  100% {
+    transform: rotate(45deg) scale(1);
+  }
+  50% {
+    transform: rotate(45deg) scale(1.2);
+  }
+}
+@keyframes updown {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+@keyframes entertop {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+@keyframes enterright {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-5px);
+  }
+}
+@keyframes enterbottom {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+@keyframes enterleft {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+}
+.herocontent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: calc(100vw + 1px - var(--scrollbar_width));
+  margin-left: calc(50% - 50vw + calc(var(--scrollbar_width) / 2));
+}
+.herocontent.portfolio,
+.herocontent.blobapp,
+.herocontent.draganddrop {
+  -webkit-filter: url(#svgfilter);
+  filter: url(#svgfilter);
+  opacity: 0.8;
+}
+.herocontent {
+  cursor: pointer;
+}
+.herocontent.portfolio {
+  cursor: -webkit-grab;
+  cursor: -moz-grab;
+  cursor: grab;
+}
+.herocontent .portfolio:hover,
+.herocontent .portfolio:focus {
+  outline: white solid 4px;
+  outline-offset: -3px;
+}
+.herocontent .portfolio:active,
+.herocontent .portfolio:focus,
+.herocontent .portfolio.drag {
+  cursor: -webkit-grabbing;
+  cursor: -moz-grabbing;
+  cursor: grabbing;
+}
+
+.bottom {
+  position: relative;
+  width: 100%;
+  height: 4em;
+  max-width: 1200px;
+  margin: 0 auto;
+  pointer-events: none;
+}
+.bottom button {
+  pointer-events: auto;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: none;
+  border: none;
+  outline: 0;
+  line-height: 2;
+  padding: 0;
+  text-shadow: 1px 1px 1px var(--color-primary-2),
+    0 0 1em var(--color-primary-2), 0 0 0.3em var(--color-primary-2);
+}
+.bottom button:hover,
+.bottom button:focus {
+  outline: 0;
+}
+.bottom button span {
+  display: block;
+  height: 100%;
+  width: 100%;
+  padding: 0.5em 1.5em;
+}
+.bottom button::before,
+.bottom button::after,
+.bottom button span::before,
+.bottom button span::after {
+  --time: 500ms;
+  content: "";
+  position: absolute;
+  background-color: currentColor;
+  transition-property: transform;
+  transition-timing-function: ease-in-out;
+  transition-duration: var(--time);
+}
+.bottom button::before,
+.bottom button::after {
+  height: 0.14em;
+  left: 0.5em;
+  right: 0.5em;
+  transform: scaleX(0);
+}
+.bottom button::before {
+  top: 0;
+  transform-origin: left;
+}
+.bottom button::after {
+  bottom: 0;
+  transform-origin: right;
+}
+.bottom button span::before,
+.bottom button span::after {
+  width: 0.14em;
+  height: 100%;
+  transform: scaleY(0);
+  top: 0;
+  bottom: 0;
+}
+.bottom button span::before {
+  transform-origin: bottom;
+  left: 0.5em;
+}
+.bottom button span::after {
+  transform-origin: top;
+  right: 0.5em;
+}
+.bottom button:hover::before,
+.bottom button:focus::before {
+}
+.bottom button:hover span::before,
+.bottom button:focus span::before {
+}
+.bottom button:hover::after,
+.bottom button:focus::after {
+}
+.bottom button:hover span::after,
+.bottom button:focus span::after {
+}
+.bottom button:hover::before,
+.bottom button:focus::before,
+.bottom button:hover::after,
+.bottom button:focus::after {
+  transform: scaleX(100%);
+}
+.bottom button:hover span::before,
+.bottom button:focus span::before,
+.bottom button:hover span::after,
+.bottom button:focus span::after {
+  transform: scaleY(100%);
+}
+@media (min-width: 300px) {
+  .bottom button {
+    right: -1em;
+  }
+}
+.bottom button:hover,
+.bottom button:focus,
+.bottom button:focus-visible {
+  color: var(--color-primary-15);
+}
+
+.herocontent > .bubbles:focus-visible {
+  outline: none;
+  filter: brightness(180%) contrast(120%);
+}
+.herocontent > .eyes:focus-visible {
+  outline: none;
+  filter: brightness(130%) contrast(150%);
+}
+.herocontent > .geometric:focus-visible {
+  outline: none;
+  filter: brightness(130%) contrast(150%);
+}

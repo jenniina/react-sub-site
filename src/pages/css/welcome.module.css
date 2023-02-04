@@ -1,0 +1,61 @@
+.list {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 3em;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  max-width: 400px;
+  margin: 0 auto;
+}
+.list li {
+  flex: 1 0 30%;
+}
+.list a {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.list svg {
+  font-size: clamp(3em, 5vw, 4em);
+  transform-origin: bottom;
+}
+.list a:hover,
+.list a:focus {
+  transform: translateY(0.3em);
+  text-decoration: none;
+}
+.list a:hover svg,
+.list a:focus svg {
+  /* font-size: clamp(2em, 4vw, 3em); */
+  transform: scale(0.8);
+}
+.list span {
+  display: block;
+  min-width: max-content;
+  font-size: clamp(0.9em, 1vw, 2em);
+  transition-property: font-size, color;
+  transition-timing-function: ease-in-out;
+  transition-duration: 500ms;
+  transform-origin: bottom;
+}
+.list svg,
+.list span {
+  transition-property: font-size, transform, fill;
+  transition-timing-function: ease-in-out;
+  transition-duration: 500ms;
+}
+.list a:hover span,
+.list a:focus span {
+  /* font-size: clamp(1.2em, 2vw, 3em); */
+  transform: scale(1.2);
+}
+@media (min-width: 300px) {
+  .list {
+    flex-flow: row nowrap;
+    gap: 2%;
+  }
+}

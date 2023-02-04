@@ -1,0 +1,16 @@
+{
+    "skipLinks": [
+        {
+            "label": "Skip to main navigation",
+            "href": "#site-navigation"
+        },
+        {
+            "label": "Skip to main content",
+            "href": "#main-content"
+        },
+        {
+            "label": "Skip to footer",
+            "href": "#main-footer"
+        }
+    ]
+}

@@ -1,0 +1,184 @@
+.grid {
+  --radius: 5px;
+  --height: 3rem;
+
+  margin: 0 0 3rem;
+  padding: 0;
+  box-sizing: border-box;
+  font-weight: normal;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  gap: 1em 1%;
+  width: 100%;
+  word-break: break-all;
+}
+
+.container-main {
+  min-height: 85vh;
+}
+
+.cards-container {
+  padding: 0;
+  border: 2px solid var(--color-gray-dark);
+  border-radius: var(--radius);
+  transition: all 0.3s linear;
+  background-color: var(--color-gray-darkest);
+}
+.light.cards-container {
+  background-color: var(--color-gray-general);
+}
+.cards-container {
+  overflow-y: scroll;
+  min-height: 150px;
+  max-height: 300px;
+}
+.cards-container > ul {
+  margin: 0;
+  padding: 0;
+  min-height: calc(100% - var(--height) * 1.4);
+}
+.cards-container > ul > li {
+  padding: 1rem 5% 0 5%;
+}
+.cards-container > ul > li:focus-visible {
+  outline: none;
+}
+.cards-container > ul > li:focus > div {
+  outline: var(--color-primary-20) solid 2px;
+  outline-offset: 2px;
+}
+.cards-container > ul > li:last-of-type {
+  padding-bottom: 1rem;
+}
+.cards-container li:last-of-type:has(ul[aria-expanded="true"]) {
+  padding-bottom: 8rem;
+}
+.cards-container > label {
+  height: var(--height);
+  margin: 0;
+  display: block;
+  border-radius: var(--radius) var(--radius) 0 0;
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding: 1rem 0;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+.light.cards-container > label {
+  background-color: var(--color-gray-lightest);
+  color: #000;
+}
+
+.area-dragging > ul {
+  background: #3333338c;
+  border: 2px dashed #ffffff8c;
+}
+.light.area-dragging > ul {
+  background: #9999998c;
+  border: 2px dashed #ffffff8c;
+}
+
+/* SINGLE CARD */
+.card {
+  position: relative;
+  border-radius: var(--radius);
+  padding: 1em;
+  cursor: pointer;
+  -webkit-animation: fadeIn 0.3s ease-in-out;
+  animation: fadeIn 0.3s ease-in-out;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid white; /*color in CardSingle.tsx*/
+}
+.card:hover {
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+.card:active {
+  cursor: -webkit-grabbing;
+  cursor: grabbing;
+}
+.card .text {
+  font-weight: bold;
+  font-size: 0.85em;
+  margin: 0;
+  flex: 1 1 0;
+}
+.card button {
+  flex: 0 1 0;
+  background: none;
+  border: 0;
+  outline: 0;
+  padding: 0;
+  margin: 0;
+  color: currentColor;
+}
+.card button:hover,
+.card button:focus {
+  color: currentColor;
+}
+.card button:focus-visible {
+  outline: solid 2px currentColor;
+  outline-offset: 2px;
+  box-shadow: 0 0 0.6em 0.2em currentColor;
+}
+.card .blur {
+  display: none;
+}
+.card .blur.open {
+  display: block;
+  position: absolute;
+  height: auto;
+  width: auto;
+  right: 0;
+  top: calc(100% + 3.5em);
+  padding: 0.5em 0;
+  z-index: 999;
+  transform: translateY(-50%);
+  background-color: var(--color-primary-1);
+  cursor: auto;
+}
+.card ul {
+  margin: 0;
+  padding: 0;
+}
+.card ul li {
+  padding: 0 1em;
+  line-height: 2;
+}
+.card ul li a {
+  cursor: pointer;
+}
+.good .good a.good,
+.neutral .neutral a.neutral,
+.bad .bad a.bad {
+  cursor: auto;
+  pointer-events: none;
+  color: var(--color-primary-20);
+}
+@media screen and (min-width: 700px) {
+  .grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .cards-container {
+    overflow-y: auto;
+    max-height: 900px;
+  }
+  .card .text {
+    font-size: 1em;
+  }
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

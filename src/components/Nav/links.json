@@ -1,0 +1,20 @@
+{
+    "links": [
+        {
+            "label": "Welcome",
+            "href": "/react/"
+        },
+        {
+            "label": "About",
+            "href": "/react/about"
+        },
+        {
+            "label": "Portfolio",
+            "href": "/react/portfolio"
+        },
+        {
+            "label": "Contact",
+            "href": "/react/contact"
+        }
+    ]
+}

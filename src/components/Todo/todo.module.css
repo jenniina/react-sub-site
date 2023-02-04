@@ -1,0 +1,86 @@
+.form > * {
+  --width: 1em;
+  display: flex;
+  max-width: 100%;
+  padding: 0;
+  gap: 2%;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-radius: var(--radius-medium);
+  border: 0;
+}
+.form > * > * {
+  flex: 1 1 80%;
+}
+.form .list-wrap {
+  margin-bottom: 1rem;
+}
+.todo-input-area {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 0.5rem;
+}
+
+.todo-input-area button {
+  flex: 1 1 100%;
+  word-break: break-word;
+  padding: 0.6em 5%;
+}
+.todo-ul {
+  color: var(--color-primary-20);
+  list-style: none;
+  padding: 0;
+}
+.todo-ul li {
+  margin-bottom: calc(var(--width) / 2);
+  position: relative;
+  border-bottom: solid 1px var(--color-primary-10);
+  padding-bottom: calc(var(--width) / 2);
+}
+.todo-ul li button {
+  height: 1em;
+  margin: 0;
+  margin-right: var(--width);
+  padding: 0 0.2em;
+  line-height: 1;
+}
+.todo-ul li button:hover::after {
+  content: "Delete task";
+  position: absolute;
+  width: max-content;
+  padding: 0 0.3em;
+  border-radius: var(--radius-small);
+  left: calc(var(--width) * 1.5);
+  background-color: var(--color-primary-20);
+}
+.left-to-do {
+  font-size: 0.9em;
+}
+.todo-ul input[type="text" i] {
+  width: 100%;
+}
+.todo-ul li input[type="checkbox" i] {
+  margin-right: var(--width);
+  width: 1em;
+  height: 1em;
+  cursor: pointer;
+  border-radius: var(--radius-small);
+}
+.todo-ul li label {
+  margin-left: calc(var(--width) / 2);
+  display: inline;
+}
+.todo-ul li label:has(input:checked) {
+  color: var(--color-gray-general);
+  text-decoration: line-through 1px;
+}
+@media (min-width: 300px) {
+  .todo-input-area button {
+    padding: 0.6em 1.2em;
+    flex: 1 1 40%;
+  }
+  .left-to-do {
+    font-size: 0.8em;
+  }
+} /*END media*/

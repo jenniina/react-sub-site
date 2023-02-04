@@ -1,0 +1,62 @@
+.to-top-btn {
+  position: fixed;
+  bottom: -1em;
+  right: 1em;
+  z-index: 20;
+  border-radius: 50%;
+  outline-offset: -3px;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+  opacity: 0;
+  animation: bob 2s ease-in-out infinite;
+  animation-play-state: paused;
+  transition-property: transform, opacity, bottom, background-position, color,
+    outline, border;
+  transition-timing-function: cubic-bezier(0.15, 0, 0.85, 1);
+  transition-duration: 500ms;
+}
+.to-top-btn.show {
+  opacity: 1;
+  bottom: 4em;
+}
+.to-top-btn.show.alt {
+  bottom: clamp(4em, 25vw, 10em);
+}
+@media (min-width: 220px) {
+  .to-top-btn.show {
+    bottom: 3em;
+  }
+  .to-top-btn.show.alt {
+    bottom: clamp(6em, 25vw, 10em);
+  }
+} /*END media*/
+@media (min-width: 300px) {
+  .to-top-btn.show {
+    bottom: 1.5em;
+  }
+} /*END media*/
+@media (min-width: 600px) {
+  .to-top-btn.show.alt {
+    bottom: 1.5em;
+  }
+} /*END media*/
+.icon {
+  border-radius: 50%;
+  height: 2em;
+  width: 2em;
+  padding: 0.2em;
+}
+.to-top-btn:hover {
+  outline-offset: -3px;
+  animation-play-state: running;
+}
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-0.5em);
+  }
+}
