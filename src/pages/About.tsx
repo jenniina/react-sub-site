@@ -100,20 +100,12 @@ export default function About({ heading, text, type }: { heading: string; text: 
             ? styles.light : ''}`} >
             <Hero heading={heading} text={text} />
             <div>
-                {/* <section className={`card`}>
-                    <div>
-                        <div className={`flex ${styles.linklist}`}>
-                            <a href="#hero"><big>Hero Section</big></a>
-                            <a href="#react"><big>React Apps</big></a>
-                            <a href="#other"><big>Other Features</big></a>
-                            <a href="#color"><big>Site Colors</big></a>
-                        </div>
-                    </div>
-                </section> */}
                 <section className={`card ${styles.section}`} >
                     <div>
                         <div className="wide">
                             <p>This is a sub-site of <a href="https://jenniina.fi">jenniina.fi</a> made with and focusing on ReactJS. Other porfolio items may be found at the <a href="https://jenniina.fi/#portfolio">portfolio section</a> of the main site. </p>
+                            <p><a href="https://github.com/jenniina/react-sub-site">Github Repository</a></p>
+
                             <h2 id='site-features'>Features of this site</h2>
 
                             <h3 id='settings' className="left">Site settings</h3>
