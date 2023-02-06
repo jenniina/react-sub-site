@@ -3,7 +3,7 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import './css/App.css'
 import Nav from './components/Nav/Nav'
 import Welcome from './pages/Welcome'
-import Home2 from './pages/Home copy'
+import Test from './pages/testpage'
 import About from './pages/About'
 import Portfolio from './pages/Portfolio'
 import Contact from './pages/Contact'
@@ -19,13 +19,6 @@ import { useScrollbarWidth } from './hooks/useScrollbarWidth'
 import { RefObject } from './interfaces'
 import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
 import { isTouchDevice } from './hooks/useDraggable'
-
-// const Home = lazy(() => import('./pages/Home'))
-// const About = lazy(() => import('./pages/About'))
-// const Portfolio = lazy(() => import('./pages/Portfolio'))
-// const Contact = lazy(() => import('./pages/Contact'))
-
-// const Blob = lazy(() => import('./pages/Blob'))
 
 const App: FC = () => {
 
@@ -69,19 +62,9 @@ const App: FC = () => {
     if (location.pathname !== displayLocation.pathname) setTransistionPage("fadeOut");
   }, [location]);
 
-  // useEffect(() => {
-  //   console.log(styleMenu)
-  // }, [styleMenu])
-
-  // useEffect(() => {
-  //   console.log(lightTheme ? "Light" : "Dark")
-  // }, [lightTheme])
-
-
   return (
     <div className={`App ${lightTheme ? 'light' : ''} ${touchDevice ? 'touch' : ''}  ${menuStyleAltTransform ? `transformations` : ''}`} >
       <div className="App-inner-wrap" style={styleInnerWrap}>
-        {/* <Suspense fallback={<h1 style={{ position: 'absolute' }}>Loading</h1>}> */}
         <Nav setStyleMenu={setStyleMenu} ref={menuStyle} />
 
         <main id={`main-content`}
@@ -100,7 +83,7 @@ const App: FC = () => {
             <Route path='*' element={<Welcome heading='Welcome' text='to the React sub-page of Jenniina.fi' type='page' />} />
             <Route path='/react/about' element={<About heading='About' text='This Site' type='page' />} />
 
-            <Route path='/react/home2' element={<Home2 heading='Home' text='' type='page' />} />
+            <Route path='/react/test' element={<Test heading='Test Page' text='' type='page' />} />
 
             <Route path='/react/portfolio' element={<NavPortfolio />} >
               <Route index element={<Portfolio heading='Portfolio' type='page' text='ReactJS' />} />
@@ -122,7 +105,7 @@ const App: FC = () => {
 
         <Footer styleMenu={styleMenu} />
         <ScrollToTop styleMenu={styleMenu} />
-        {/* </Suspense> */}
+
       </div>
     </div>
   )
