@@ -1,15 +1,10 @@
 import { useTheme } from '../hooks/useTheme'
 import { Link } from 'react-router-dom'
-
 import styles from './css/welcome.module.css'
-
 import Hero from '../components/Hero/Hero'
-
 import { BiChat } from 'react-icons/bi'
 import { BsPerson } from 'react-icons/bs'
 import { IoMdImages } from 'react-icons/io'
-import { IoSettingsSharp } from 'react-icons/io5'
-
 
 export default function Home({ heading, text, type }: { heading: string; text: string; type: string }) {
 

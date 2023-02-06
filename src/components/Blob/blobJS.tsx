@@ -141,22 +141,6 @@ export default function BlobJS() {
 
     function resetBlobsFunction(e: React.MouseEvent | React.TouchEvent | React.PointerEvent) {
         e.preventDefault()
-
-        // setDragItemList([{
-        //     id: `blob0-${uuidv4()}`,
-        //     number: 1,
-        //     i: 1,
-        //     x: (window.innerWidth > window.innerHeight)
-        //         ? `${(window.innerWidth / 100) * getRandomMinMax(0, 70)}px`
-        //         : `${(window.innerWidth / 100) * getRandomMinMax(0, 50)}px`,
-        //     y: `${(window.innerHeight / 100) * getRandomMinMax(0, 70)}px`,
-        //     z: "1",
-        //     display: "block",
-        //     ariaGrabbed: false,
-        //     draggable: true,
-        //     tabIndex: 0,
-        //     background: `linear-gradient(${angle}, ${color1},${color2})`,
-        // }],);
         setDragItemList([]);
         window.localStorage.removeItem(localStorageDraggables)
         //dragUl0.current.removeChild(dragUl0.current.children[0])
@@ -189,67 +173,6 @@ export default function BlobJS() {
         }
 
     }, [dragItemList])
-
-    // useEffect(() => {
-    //     for (let i: number = 0; i < amountOfBlobs; i++) {
-    //         //const item = dragItemList.find(item => { return item.id == `blob${i + 1}-${d}` })
-    //         const dragzonesList = document.querySelectorAll<HTMLElement>(".dragzone");
-    //     const dragzones = Array.from(dragzonesList as NodeListOf<HTMLElement>)
-
-    //     dragzones.forEach(draggable => getPosition(draggable))
-
-    //     }
-    // }, [dragItemList])
-
-    // const makeAnew = (amount: number) => {
-    //     if (dragItemList.length === 0) {
-    //         console.log("makeAnew(" + amount + ")")
-    //         for (let i: number = 0; i < amount; i++) {
-
-    //             let number = Math.round(getRandomMinMax(0.1, 4))
-    //             switch (number) {
-    //                 case 1:
-    //                     color1 = "lemonchiffon";
-    //                     color2 = "greenyellow";
-    //                     break;
-    //                 case 2:
-    //                     color1 = "cyan";
-    //                     color2 = "greenyellow";
-    //                     break;
-    //                 case 3:
-    //                     color1 = "cyan";
-    //                     color2 = "pink";
-    //                     break;
-    //                 case 4:
-    //                     color1 = "pink";
-    //                     color2 = "lemonchiffon";
-    //                     break;
-    //             }
-
-    //             setDragItemList(current =>
-    //                 [...current, {
-    //                     id: `blob${i + 1}-${d}`,
-    //                     number: i + 1,
-    //                     i: i + 1,
-    //                     x: (window.innerWidth > window.innerHeight)
-    //                         ? `${(window.innerWidth / 100) * getRandomMinMax(0, 70)}px`
-    //                         : `${(window.innerWidth / 100) * getRandomMinMax(0, 50)}px`,
-    //                     y: `${(window.innerHeight / 100) * getRandomMinMax(0, 70)}px`,
-    //                     z: "1",
-    //                     display: "block",
-    //                     ariaGrabbed: false,
-    //                     draggable: true,
-    //                     tabIndex: 0,
-    //                     background: `linear-gradient(${angle}, ${color1},${color2})`,
-    //                 }]
-    //             )
-
-    //         }
-
-    //     }
-    // }
-
-
 
     const makeAnew = (amount: number) => {
         if (dragItemList.length === 0) {
@@ -312,13 +235,9 @@ export default function BlobJS() {
         return Math.random() * (max - min) + min;
     }
 
-
     const amountOfBlobs = 8 // Initial amount of blobs
 
     let blobCount = draggables[d].length > amountOfBlobs ? draggables[d].length : amountOfBlobs
-
-    // const cooldown = () => { hasBeenMade = true }
-    // setTimeout(cooldown, 100);
 
     const DragComponent = ({ items }: { items: Draggable[] }) => {
         return (
@@ -357,7 +276,6 @@ export default function BlobJS() {
                         saveDraggables()
 
                         return (
-                            // <BlobSingle key={item.id} item={item} style={blobStyle} setup={setup} saveDraggables={saveDraggables} d={d} selectBlob={selectBlob} />
 
                             <li key={uuidv4()}
                                 className="dragzone"
@@ -382,25 +300,7 @@ export default function BlobJS() {
                                     stopMoving(e)
                                     if (selectedvalue0.current) selectedvalue0.current.textContent = `Selected blob: none`
                                 }}
-                                // onPointerDown={e => {
-                                //     if (selectedvalue0.current) selectedvalue0.current.textContent = `Selected blob: ${(e.target as HTMLElement)?.querySelector("span")?.textContent}`
-                                //     start(e)
-                                // }}
-                                // onPointerMove={e => {
-                                //     movement(e)
-                                // }}
-                                // onPointerUp={e => {
-                                //     stopMovementCheck(e)
-                                //     if (selectedvalue0.current) selectedvalue0.current.textContent = `Selected blob: none`
-                                // }}
-                                // onPointerLeave={e => {
-                                //     stopMoving(e)
-                                //     if (selectedvalue0.current) selectedvalue0.current.textContent = `Selected blob: none`
-                                // }}
-                                // onPointerCancel={e => {
-                                //     stopMoving(e)
-                                //     if (selectedvalue0.current) selectedvalue0.current.textContent = `Selected blob: none`
-                                // }}
+
                                 onTouchStart={e => {
                                     start(e)
                                     if (selectedvalue0.current) selectedvalue0.current.textContent = `Selected blob: ${(e.target as HTMLElement)?.querySelector("span")?.textContent}`
@@ -484,13 +384,6 @@ export default function BlobJS() {
         draggables[d][blobDraggables.number - 1] = blobDraggables
         saveDraggables()
     }
-
-    // const [scroll, setScroll] = useState<boolean>(true)
-
-    // function disableScroll() {
-    //     scroll ? document.body.style.overflow = "hidden" : document.body.style.overflow = "auto"
-    //     setScroll(scroll => !scroll)
-    // }
 
     let scroll = true
 
@@ -653,23 +546,6 @@ export default function BlobJS() {
             element.style.top = dragWrap.current.offsetHeight / 100 * y_pos + 'px';
         }
     }
-
-    // //Detect possible touch device
-    // const isTouchDevice = () => {
-    //     let deviceType = "";
-    //     try {
-    //         //Try to create TouchEvent (fails for desktops and throws error)
-    //         document.createEvent("TouchEvent");
-    //         deviceType = "touch";
-    //         return true;
-    //     } catch (e) {
-    //         deviceType = "mouse";
-    //         return false;
-    //     }
-    // }
-    // useEffect(() => {
-    //     isTouchDevice();
-    // }, [])
 
     //Detect touch device
     const isTouchDevice = () => {

@@ -75,8 +75,6 @@ function FormMulti() {
 
     useEffect(() => {
         if (popup.current == null || nextButton.current == null) return
-        // const { bottom } = nextButton.current.getBoundingClientRect()
-        // popup.current.style.top = `${bottom + 25}px`
         popup.current.style.top = `-2em`
         return () => {
         }

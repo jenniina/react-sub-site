@@ -1,8 +1,7 @@
-import { useState, useRef, useEffect } from 'react'
-import { Data, Status, RefObject } from "../interfaces"
+import { useState } from 'react'
+import { Data, Status } from "../interfaces"
 import CardSingle from "./CardSingle"
 import { useTheme } from '../../../hooks/useTheme'
-import { MdDragHandle } from 'react-icons/md'
 import styles from '../dragAndDrop.module.css'
 
 interface Props {
@@ -14,8 +13,6 @@ interface Props {
     handleUpdate: (id: number, status: Status, target?: number) => void
     handleDragging: (dragging: boolean) => void
 }
-
-
 
 export const CardsContainer = ({ status, isDragging, handleDragging, handleUpdate, itemsGood = [], itemsNeutral = [], itemsBad = [] }: Props) => {
 

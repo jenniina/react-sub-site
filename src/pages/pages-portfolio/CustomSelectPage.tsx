@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
 import Hero from '../../components/Hero/Hero'
 import { Select, SelectOption } from '../../components/Select/Select'
 import FormWrapper from '../../components/FormWrapper/FormWrapper'

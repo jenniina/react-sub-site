@@ -6,27 +6,9 @@ import Hero from '../components/Hero/Hero'
 import { Link } from 'react-router-dom'
 import emailjs from 'emailjs-com';
 import { SERVICE_ID, TEMPLATE_ID, PUBLIC_KEY } from '../components/FormMulti/keys'
-
 import { AiOutlineForm } from 'react-icons/ai'
 import { BiSelectMultiple } from 'react-icons/bi'
 import { RiTodoLine, RiDragDropLine, RiDragMove2Fill } from 'react-icons/ri'
-
-
-
-const options = [
-    { label: "First", value: 1 },
-    { label: "Second", value: 2 },
-    { label: "Third", value: 3 },
-    { label: "Fourth", value: 4 },
-    { label: "Fifth", value: 5 },
-]
-const options2 = [
-    { label: "Please choose an option", value: "No Selection" },
-    { label: "Second", value: 2 },
-    { label: "Third", value: 3 },
-    { label: "Fourth", value: 4 },
-    { label: "Fifth", value: 5 },
-]
 
 export default function Portfolio({ heading, text, type }: { heading: string; text: string; type: string }) {
 
@@ -34,7 +16,6 @@ export default function Portfolio({ heading, text, type }: { heading: string; te
 
     function useEmail(e: React.FormEvent<HTMLFormElement>, ref: HTMLFormElement | null) {
         e.preventDefault();
-
 
 
         if (ref)
@@ -47,31 +28,7 @@ export default function Portfolio({ heading, text, type }: { heading: string; te
         ref?.current.reset()
     };
 
-
     const lightTheme = useTheme()
-
-
-    //const [count, setCount] = useState(0) //runs every render
-    const [count, setCount] = useState(() => {
-        return 0
-    }) // function version runs only once
-
-    function decrementCount() {
-        setCount(prevCount => prevCount - 1)
-        setCount(prevCount => prevCount - 1) //may be run again, this decreases by 2
-    }
-    function incrementCount() {
-        setCount(prevCount => prevCount + 1)
-    }
-
-    //example use: 
-    //<button onClick={decrementCount}> - </button>
-    //<span>{count}</span> //increases or decreases this
-    //<button onClick={incrementCount}> + </button>
-
-
-
-
 
     return (
 
@@ -129,56 +86,6 @@ export default function Portfolio({ heading, text, type }: { heading: string; te
                         </ul>
                     </div>
                 </section>
-
-
-                {/* <section className={`card ${selectStyles.selectscard}`}>
-                <div>
-                    <div className={selectStyles['selects-container']}>
-                        <h2>Custom Select</h2>
-                        <form ref={form} onSubmit={e => useEmail(e, form.current)}>
-                            <FormWrapper title='Some title' description='Some description' className='flex'>
-                                <Select
-                                    id='multiple'
-                                    className={`full ${selectStyles.prev}`}
-                                    instructions='Select one or more options'
-                                    multiple
-                                    options={options}
-                                    value={value1}
-                                    onChange={o => setValue1(o)}
-                                />
-                                <Select
-                                    id='single'
-                                    className={`half`}
-                                    instructions='Select an option'
-                                    options={options2}
-                                    value={value2}
-                                    onChange={o => setValue2(o)} />
-                                <button type="submit">Send</button>
-                            </FormWrapper>
-                        </form>
-                    </div>
-                </div>
-            </section>
-            <section className='card'><div>
-                <h2>Contact Form</h2>
-                <FormMulti />
-            </div></section>
-            <section className="card">
-                <div>
-                    <h2>Drag and Drop</h2>
-                    <DragAndDrop />
-                </div></section>
-            <section className="fullwidth">
-                <div>
-                    <h2>Draggable Blobs</h2>
-                    <BlobJS />
-                </div></section>
-            <section className="card">
-                <div>
-                    <h2>Task List</h2>
-                    <TodoApp />
-                </div>
-            </section> */}
 
             </div>
         </div>

@@ -1,8 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { useTheme } from '../hooks/useTheme'
-
 import styles from './css/welcome.module.css'
-import useWindowSize from '../hooks/useWindowSize'
 import useArray from '../hooks/useArray'
 import useEventListener from '../hooks/useEventListener'
 import useIsOnScreen from '../hooks/useIsOnScreen'

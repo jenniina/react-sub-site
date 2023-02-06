@@ -2,7 +2,7 @@ import { useState } from "react"
 
 export default function useArray<T extends {}>(defaultValue: T[]) {
 
-    //Typechecking works for arrays with content of the same type
+    //NOTE: Typechecking only works for arrays with content of the same type
 
     const [array, setArray] = useState(defaultValue)
 

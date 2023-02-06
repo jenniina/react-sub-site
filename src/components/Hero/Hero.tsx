@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, FC, useEffect, useState, useRef } from 'react'
+import React, { useMemo, useCallback, FC, useState, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import styles from './hero.module.css'
 import useWindowSize from '../../hooks/useWindowSize'
@@ -474,72 +474,6 @@ export default function Hero({ heading, text }: { heading: string; text: string 
                                     }}
                                 ><div style={styleInner} className={`inner ${styles.inner}`}><span className='else-eye'><label className='screen-reader-text'>eye {index + 1}</label></span></div></li>
                             )
-                            // const style: React.CSSProperties = {
-                            //     position: 'absolute',
-                            //     top: touchDevice ?
-                            //         `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.3}))` :
-                            //         `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.9}))`,
-                            //     right: `calc(2% + ${item.i / 1.2} * 1vw * ${item.e})`,
-                            //     backgroundColor: `transparent`,
-                            //     color: `${item.color}`,
-                            //     ['--i' as string]: `${item.i}`,
-                            //     ['--e' as string]: `${item.e}`,
-                            //     ['--s' as string]: windowWidth < windowHeight
-                            //         ? `${item.size}vh`
-                            //         : `${item.size}vw`,
-                            //     width: windowWidth < windowHeight
-                            //         ? `${item.size}vh`
-                            //         : `${item.size}vw`,
-                            //     height: windowWidth < windowHeight
-                            //         ? `${item.size}vh`
-                            //         : `${item.size}vw`,
-                            //     ['--s2' as string]: item.size,
-                            //     maxHeight: '200px',
-                            //     maxWidth: '200px',
-                            //     minHeight: '40px',
-                            //     minWidth: '40px',
-                            //     borderRadius: '65% 65% 70% 60% / 60% 70% 60% 65%',
-                            //     opacity: `0.${item.size > 8
-                            //         ? 99
-                            //         : Math.ceil(item.size + 1)}`,
-                            // };
-
-                            // return (
-                            //     //CONTACT
-                            //     <li key={`${item.color}${index}`} className={`${styles.item} ${styles.bubbles} ${windowHeight < windowWidth ? styles.wide : styles.tall}`} style={style}
-                            //         id={`bubble${index + 1}`}
-                            //         role={'option'}
-                            //         tabIndex={0}
-                            //         onFocus={e => {
-                            //             ulRef.current?.setAttribute("aria-activedescendant", `${e.target.id}`)
-                            //         }}
-                            //         onBlurCapture={e => {
-                            //             ulRef.current?.setAttribute("aria-activedescendant", '')
-                            //         }}
-                            //         onPointerEnter={e => {
-                            //             movingItem(e)
-                            //         }}
-                            //         onMouseDown={e => {
-                            //             removeItem(e.target as HTMLElement)
-                            //         }}
-                            //         onPointerDown={e => {
-                            //             removeItem(e.target as HTMLElement)
-                            //         }}
-                            //         onTouchStart={e => {
-                            //             removeItem(e.target as HTMLElement)
-                            //         }}
-                            //         onKeyDown={e => {
-                            //             switch (e.key) {
-                            //                 case 'Enter':
-                            //                 case 'Space':
-                            //                     removeItem(e.target as HTMLElement)
-                            //                     break;
-                            //                 case 'Escape':
-                            //                     if (resetButton.current) resetButton.current.focus()
-                            //             }
-                            //         }}
-                            //     ><span><label className='screen-reader-text'>bubble {index + 1}</label></span></li>
-                            // )
                         } else if (
                             location == LOCATION.PORTFOLIO ||
                             location == LOCATION.BLOBAPP ||
@@ -601,22 +535,6 @@ export default function Hero({ heading, text }: { heading: string; text: string 
                                         Draggable.stopMoving(e);
                                         (e.target as HTMLLIElement).classList.remove(styles.drag)
                                     }}
-                                    //Messed with mobile dragging:
-                                    // onPointerDown={e => {
-                                    //     Draggable.start(e)
-                                    // }}
-                                    // onPointerMove={e => {
-                                    //     Draggable.movement(e)
-                                    // }}
-                                    // onPointerUp={e => {
-                                    //     Draggable.stopMovementCheck(e)
-                                    // }}
-                                    // onPointerLeave={e => {
-                                    //     Draggable.stopMoving(e)
-                                    // }}
-                                    // onPointerCancel={e => {
-                                    //     Draggable.stopMoving(e)
-                                    // }}
                                     onTouchStart={e => {
                                         Draggable.start(e)
                                     }}

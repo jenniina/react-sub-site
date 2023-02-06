@@ -1,7 +1,6 @@
 import { KeyboardEvent, MouseEvent, useState, useRef } from 'react'
 import { Data, Status } from "../interfaces"
 import styles from '../dragAndDrop.module.css'
-import { HiLibrary } from 'react-icons/hi';
 import { MdOutlineDragIndicator } from 'react-icons/md'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
 
@@ -50,14 +49,8 @@ function CardSingle({ status, id, index, data, handleDragging, handleUpdate, get
     }
 
     const handleDragStart = (e: React.DragEvent<HTMLLIElement>, position: number) => {
-        //dragItem.current = position
         e.dataTransfer.setData('text', `${data?.id}`)
     }
-
-    // const handleDragEnd = (e: React.DragEvent<HTMLLIElement>) => {
-    //     e.preventDefault()
-    //     handleDragging(false)
-    // }
 
 
     function containerUpdate(e: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>) {

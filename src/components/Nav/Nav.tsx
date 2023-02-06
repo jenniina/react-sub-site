@@ -1,19 +1,13 @@
 import { FC, useState, useEffect, forwardRef, Ref, useImperativeHandle } from 'react'
-import { AiOutlineDash } from 'react-icons/ai'
-import { BiChat, BiImages, BiImage } from 'react-icons/bi'
-import { BsSegmentedNav, BsChatSquareDots, BsPerson, BsFillMenuButtonFill } from 'react-icons/bs'
+import { BiChat } from 'react-icons/bi'
+import { BsPerson } from 'react-icons/bs'
 import { CgSearch, CgMenuRound } from 'react-icons/cg'
-import { FaRegImages } from 'react-icons/fa'
-import { FiMenu } from 'react-icons/fi'
-import { GrContact } from 'react-icons/gr'
-import { HiOutlineSearchCircle, HiOutlineDotsHorizontal } from 'react-icons/hi'
-import { ImSearch } from 'react-icons/im'
+import { HiOutlineDotsHorizontal } from 'react-icons/hi'
 import { IoMdImages } from 'react-icons/io'
-import { IoSearchCircleOutline, IoSettingsSharp, IoPerson, IoImagesOutline } from 'react-icons/io5'
-import { MdImportContacts, MdPortrait, MdOutlinePerson, MdShortText } from 'react-icons/md'
-import { RiSearchLine, RiMenu4Fill, RiHomeSmileLine } from 'react-icons/ri'
+import { IoSettingsSharp } from 'react-icons/io5'
+import { RiHomeSmileLine } from 'react-icons/ri'
 import { TbLayoutNavbar } from 'react-icons/tb'
-import { TfiLayoutMenu, TfiLayoutMenuFull, TfiLineDashed } from 'react-icons/tfi'
+import { TfiLineDashed } from 'react-icons/tfi'
 
 import styles from './nav.module.css'
 import { links } from './links.json'
@@ -27,7 +21,6 @@ import { useOutsideClick } from '../../hooks/useOutsideClick'
 import logo from '../../assets/JLA_Jenniina-light-3-480x198.png'
 import logoDark from '../../assets/JLA_Jenniina-3-480x198.png'
 import useTimeout from '../../hooks/useTimeout'
-
 
 type Link = {
     label: string,
@@ -96,22 +89,6 @@ const Nav = ({ setStyleMenu }: any, ref: Ref<{ getStyle: () => boolean }>) => {
     const lightTheme = useTheme()
     const toggleTheme = useThemeUpdate()
 
-    // const [click, setClick] = useState(false)
-    // const handleClick = () => setClick(!click)
-
-    // const [transparency, setTransparency] = useState(false)
-    // const changeTransparency = () => {
-    //     if (window.scrolled >= 100) {
-    //         setTransparency(true)
-    //     } else {
-    //         setTransparency(false)
-    //     }
-    // }
-    // const scroll = window.scrolled
-    // useEffect(() => {
-    //     window.addEventListener('scroll', changeTransparency)
-    // }, [scroll])
-
     const clickOutsideRef = useOutsideClick({
         onOutsideClick: closingAllMenus
     })
@@ -124,9 +101,6 @@ const Nav = ({ setStyleMenu }: any, ref: Ref<{ getStyle: () => boolean }>) => {
     const [isToolbarOpen, setIsToolbarOpen] = useState(false)
     const [isToolbarHidden, setIsToolbarHidden] = useState(true)
 
-    const mainMenuHideDelayTESTINGHOOK = () => {
-        useTimeout(() => setIsMainMenuHidden(true), 1000)
-    }
     //with the clear and reset options destructured for use: 
     const { clear, reset } = useTimeout(() => setIsMainMenuHidden(true), 1000) //clear and reset could be called with something like an onClick={clear}
 
@@ -186,10 +160,6 @@ const Nav = ({ setStyleMenu }: any, ref: Ref<{ getStyle: () => boolean }>) => {
             toolbarHideDelay()
         }
     }
-
-    // type menuStyle = { original?: 'menuoriginal', menualt?: 'menualt' }
-    // const menuStyleOriginal: menuStyle = {original: 'menuoriginal'}
-    // const menuStyleAlternate: menuStyle = {menualt: 'menualt'}
 
     const [menuStyleAlt, setMenuStyleAlt] = useState(true)
     const [menuStyleTransform, setMenuStyleTransform] = useState(true)
@@ -261,9 +231,6 @@ const Nav = ({ setStyleMenu }: any, ref: Ref<{ getStyle: () => boolean }>) => {
         window.scrollY > 100 ? setScrolled(true) : setScrolled(false)
     }
 
-
-
-
     return (
 
         <header ref={clickOutsideRef}
@@ -297,7 +264,6 @@ const Nav = ({ setStyleMenu }: any, ref: Ref<{ getStyle: () => boolean }>) => {
                     aria-expanded={isMainMenuOpen}
                     onClick={toggleMainMenu}
                     className={`${windowHeight < windowWidth && windowWidth < breakpoint ? `${styles.togglemenuexception} ${styles.togglemenu}` : styles.togglemenu}`}>
-                    {/* <RiMenu4Fill style={windowWidth < breakpointSmall ? { fontSize: '0.9em' } : { fontSize: '1em' }} aria-hidden={true} /> */}
                     <svg
                         stroke="currentColor"
                         strokeWidth="12"
@@ -410,7 +376,7 @@ const Nav = ({ setStyleMenu }: any, ref: Ref<{ getStyle: () => boolean }>) => {
                                 : <>
                                     <HiOutlineDotsHorizontal className={styles.dots} aria-hidden={true} fontSize='1.8em' />
                                     <TfiLineDashed className={styles.dashes} aria-hidden={true} fontSize='1.8em' />
-                                </> //MdShortText AiOutlineDash
+                                </>
                             }
                         </button>
                     </div>

@@ -1,5 +1,5 @@
 
-////// Remember to place this in component: 
+////// Remember to import and place this in component: 
 
 //     isTouchDevice();
 
@@ -52,8 +52,6 @@ export function movement(e: TouchEvent | MouseEvent | PointerEvent | React.Touch
         (e.target as HTMLElement).style.left = (e.target as HTMLElement).offsetLeft - (initialX - newX) + "px";
         initialX = newX;
         initialY = newY;
-
-        // getPosition(e.target as HTMLElement)
     }
 }
 
@@ -65,7 +63,6 @@ export const stopMovementCheck = (e: TouchEvent | MouseEvent | PointerEvent | Re
     moveElement = false;
     (e.target as HTMLElement).classList.remove("drag");
     (e.target as HTMLElement).setAttribute("aria-grabbed", "false");
-    //getPosition(e.target as HTMLElement);
     (e.target as HTMLElement).blur()
 }
 
@@ -76,7 +73,6 @@ export const stopMoving = (e: MouseEvent | React.MouseEvent | PointerEvent | Rea
     moveElement = false;
     (e.target as HTMLElement).classList.remove("drag");
     (e.target as HTMLElement).setAttribute("aria-grabbed", "false");
-    //getPosition(e.target as HTMLElement);
     (e.target as HTMLElement).blur()
 }
 
@@ -84,22 +80,15 @@ export const stopMoving = (e: MouseEvent | React.MouseEvent | PointerEvent | Rea
 export function blurred(draggable: HTMLElement) {
     draggable.classList.remove("drag");
     draggable.setAttribute("aria-grabbed", "false")
-    //dragWrap.current?.setAttribute("aria-activedescendant", "")
-    //getPosition(draggable)
 }
 
 //on focused blob
 export function focused(draggable: HTMLElement) {
     draggable.classList.add("drag");
     draggable.setAttribute("aria-grabbed", "true");
-    //dragUl0.current?.setAttribute("aria-activedescendant", `${draggable.id}`)
-    // draggable.addEventListener('keydown', keyDown);
     return () => {
-        // draggable.removeEventListener('keydown', keyDown);
         draggable.classList.remove("drag");
         draggable.setAttribute("aria-grabbed", "false")
-        //dragWrap.current?.setAttribute("aria-activedescendant", "")
-        // getPosition(draggable)
     }
 }
 
@@ -111,7 +100,6 @@ export function wheel(draggable: HTMLElement) {
     }
 }
 export function zoom(e: WheelEvent) {
-    //e.preventDefault();
     let value = (e.target as HTMLElement).style.getPropertyValue("--i");
     let scale = parseFloat(value)
 
@@ -202,64 +190,3 @@ export function keyDown(e: KeyboardEvent | React.KeyboardEvent<HTMLLIElement>, t
             e.stopPropagation()
     }
 }
-
-
-
-
-// useEffect(() => {
-//     // // Getting the width of the browser on load
-//     widthResize()
-
-//     window.addEventListener('resize', widthResize)
-
-//     return () => {
-//         window.removeEventListener('resize', widthResize)
-//     }
-// }, [])
-
-// export const widthResize = () => {
-//     //place these items every time the window is resized
-//     if (makeLarger0.current && dragWrap.current) place(makeLarger0.current, 100 - ((makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) * 100), 0)
-
-//     if (colorBlockYellowLime0.current && dragWrap.current) place(colorBlockYellowLime0.current, 100 - ((colorBlockYellowLime0.current.offsetWidth / dragWrap.current?.offsetWidth) * 100), 18)
-//     if (colorBlockCyanYellow0.current && dragWrap.current) place(colorBlockCyanYellow0.current, 100 - ((colorBlockCyanYellow0.current.offsetWidth / dragWrap.current?.offsetWidth) * 100), 38)
-//     if (colorBlockCyanPink0.current && dragWrap.current) place(colorBlockCyanPink0.current, 100 - ((colorBlockCyanPink0.current.offsetWidth / dragWrap.current?.offsetWidth) * 100), 58)
-//     if (colorBlockPinkYellow0.current && dragWrap.current) place(colorBlockPinkYellow0.current, 100 - ((colorBlockPinkYellow0.current.offsetWidth / dragWrap.current?.offsetWidth) * 100), 78)
-
-//     if (makeSmaller0.current && dragWrap.current) place(makeSmaller0.current, 100 - ((makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) * 100), 95)
-// }
-// export function place(element: HTMLElement, x_pos: number, y_pos: number) {
-//     if (element && dragWrap.current) {
-//         element.style.left = dragWrap.current.offsetWidth / 100 * x_pos + 'px';
-//         element.style.top = dragWrap.current.offsetHeight / 100 * y_pos + 'px';
-//     }
-// }
-
-
-// export const getPosition = (draggable: HTMLElement) => {
-//     const blobID = draggable.id
-//     const blobNumber = draggable.id.replace(/^\D+/g, '')//replace non-numbers with empty
-//     const blobI = window.getComputedStyle(draggable).getPropertyValue("--i");
-//     const blobX = window.getComputedStyle(draggable).getPropertyValue("left");
-//     const blobY = window.getComputedStyle(draggable).getPropertyValue("top");
-//     const blobZ = window.getComputedStyle(draggable).getPropertyValue("z-index");
-//     const blobColor1 = window.getComputedStyle(draggable).getPropertyValue("background");
-//     const blobDisplay = window.getComputedStyle(draggable).getPropertyValue("display");
-
-//     const blobDraggables: Draggable = {
-//         id: blobID,
-//         number: parseInt(blobNumber),
-//         i: parseFloat(blobI),
-//         x: blobX,
-//         y: blobY,
-//         z: blobZ,
-//         display: blobDisplay,
-//         ariaGrabbed: false,
-//         draggable: true,
-//         tabIndex: 0,
-//         background: blobColor1
-//     }
-
-//     draggables[d][blobDraggables.number - 1] = blobDraggables
-//     saveDraggables()
-// }

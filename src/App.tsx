@@ -1,4 +1,4 @@
-import { useState, FC, useRef, useEffect, lazy, Suspense } from 'react'
+import { useState, FC, useRef, useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import './css/App.css'
 import Nav from './components/Nav/Nav'
@@ -97,7 +97,6 @@ const App: FC = () => {
 
 
             <Route path='/react/contact' element={<Contact heading='Contact' text="Let's collaborate" type='page' />} />
-            {/* <Route path="*" element={<NotFound heading='404' />}/> */}
 
           </Routes>
 

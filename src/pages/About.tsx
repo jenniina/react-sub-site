@@ -1,28 +1,10 @@
 import { useMemo, FC } from 'react'
 import { useTheme } from '../hooks/useTheme'
 import { Link } from 'react-router-dom'
-
 import styles from './css/about.module.css'
-import TodoApp from '../components/Todo/TodoApp'
 import useWindowSize from '../hooks/useWindowSize'
-
 import Hero from '../components/Hero/Hero'
-// import { ImImages } from 'react-icons/im'
-import { IoLogoHtml5, IoLogoCss3, IoMdImages } from 'react-icons/io'
-import { IoLogoReact, IoImages, IoImagesSharp } from 'react-icons/io5'
-// import { MdDesignServices, MdOutlineDesignServices, MdImportantDevices, MdOutlineImportantDevices, MdOutlineMotionPhotosOn } from 'react-icons/md'
-import { MdOutlineMotionPhotosOn } from 'react-icons/md'
-// import { RiCodeSSlashFill } from 'react-icons/ri'
-import { SiJavascript, SiTypescript, SiPhp, SiVisualstudio } from 'react-icons/si'
 import { IoSettingsSharp } from 'react-icons/io5'
-import { TbCode } from 'react-icons/tb'
-
-import illustrator from './../assets/logos/illustrator.png'
-import photoshop from './../assets/logos/photoshop.png'
-import indesign from './../assets/logos/indesign.png'
-import aftereffects from './../assets/logos/aftereffects.png'
-import animate from './../assets/logos/animate.png'
-import acrobat from './../assets/logos/acrobat.png'
 
 type colorProps = {
     i: number,
@@ -33,17 +15,6 @@ type colorProps = {
 export default function About({ heading, text, type }: { heading: string; text: string; type: string }) {
 
     const lightTheme = useTheme()
-
-    const { windowHeight, windowWidth } = useWindowSize();
-
-    const iconSize = windowWidth < 600 ? '44px' : '55px';
-
-    const toggleClass = (element: HTMLElement) => {
-        element.classList.add(styles.jelly)
-        setTimeout(() => {
-            element.classList.remove(styles.jelly)
-        }, 700)
-    }
 
     const colorsArray: colorProps[] = []
 
@@ -120,7 +91,6 @@ export default function About({ heading, text, type }: { heading: string; text: 
                                         <li>Two at small screen size and two at large screen size</li>
                                     </ul>
                                 </li>
-
 
                             </ul>
 
