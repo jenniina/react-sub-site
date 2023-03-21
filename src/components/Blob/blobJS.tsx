@@ -43,6 +43,10 @@ export default function BlobJS() {
     const colorBlockCyanPink0 = useRef() as RefObject<HTMLDivElement>
     const colorBlockPinkYellow0 = useRef() as RefObject<HTMLDivElement>
 
+    const colorBlockRed = useRef() as RefObject<HTMLDivElement>
+    const colorBlockPurple = useRef() as RefObject<HTMLDivElement>
+    const colorBlockBlue = useRef() as RefObject<HTMLDivElement>
+
     const makeLarger0 = useRef() as RefObject<HTMLDivElement>
     const makeSmaller0 = useRef() as RefObject<HTMLDivElement>
     const makeMore0 = useRef() as RefObject<HTMLDivElement>
@@ -185,7 +189,7 @@ export default function BlobJS() {
 
             for (let i: number = 0; i < amount; i++) {
                 const colorswitch = () => {
-                    let number: number = Math.round(getRandomMinMax(0.1, 4))
+                    let number: number = Math.round(getRandomMinMax(0.1, 7))
                     switch (number) {
                         case 1:
                             color1 = "lemonchiffon";
@@ -202,6 +206,18 @@ export default function BlobJS() {
                         case 4:
                             color1 = "lemonchiffon";
                             color2 = "pink";
+                            break;
+                        case 5:
+                            color1 = "red";
+                            color2 = "tomato";
+                            break;
+                        case 6:
+                            color1 = "magenta";
+                            color2 = "violet";
+                            break;
+                        case 7:
+                            color1 = "deepskyblue";
+                            color2 = "dodgerblue";
                             break;
                     }
                     return ([color1, color2])
@@ -533,6 +549,10 @@ export default function BlobJS() {
         //place these items every time the window is resized
         if (makeLarger0.current && dragWrap.current) place(makeLarger0.current, 100 - ((makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) * 100), 0)
 
+        if (colorBlockRed.current && dragWrap.current) place(colorBlockRed.current, 0, 28)
+        if (colorBlockPurple.current && dragWrap.current) place(colorBlockPurple.current, 0, 48)
+        if (colorBlockBlue.current && dragWrap.current) place(colorBlockBlue.current, 0, 68)
+
         if (colorBlockYellowLime0.current && dragWrap.current) place(colorBlockYellowLime0.current, 100 - ((colorBlockYellowLime0.current.offsetWidth / dragWrap.current?.offsetWidth) * 100), 18)
         if (colorBlockCyanYellow0.current && dragWrap.current) place(colorBlockCyanYellow0.current, 100 - ((colorBlockCyanYellow0.current.offsetWidth / dragWrap.current?.offsetWidth) * 100), 38)
         if (colorBlockCyanPink0.current && dragWrap.current) place(colorBlockCyanPink0.current, 100 - ((colorBlockCyanPink0.current.offsetWidth / dragWrap.current?.offsetWidth) * 100), 58)
@@ -601,6 +621,27 @@ export default function BlobJS() {
         let value = (e.target as HTMLElement).style.getPropertyValue("--i");
         let scale = parseFloat(value)
 
+        if (colorBlockRed.current && elementsOverlap((e.target as HTMLElement), colorBlockRed.current)) {
+            color1 = "red";
+            color2 = "tomato";
+            (e.target as HTMLElement).style.background = `linear-gradient(${angle}, ${color1},${color2})`;
+            (e.target as HTMLElement).removeAttribute('class');
+            (e.target as HTMLElement).classList.add("dragzone", "color-red");
+        }
+        if (colorBlockPurple.current && elementsOverlap((e.target as HTMLElement), colorBlockPurple.current)) {
+            color1 = "magenta";
+            color2 = "violet";
+            (e.target as HTMLElement).style.background = `linear-gradient(${angle}, ${color1},${color2})`;
+            (e.target as HTMLElement).removeAttribute('class');
+            (e.target as HTMLElement).classList.add("dragzone", "color-red");
+        }
+        if (colorBlockBlue.current && elementsOverlap((e.target as HTMLElement), colorBlockBlue.current)) {
+            color1 = "deepskyblue";
+            color2 = "dodgerblue";
+            (e.target as HTMLElement).style.background = `linear-gradient(${angle}, ${color1},${color2})`;
+            (e.target as HTMLElement).removeAttribute('class');
+            (e.target as HTMLElement).classList.add("dragzone", "color-blue");
+        }
         if (colorBlockYellowLime0.current && elementsOverlap((e.target as HTMLElement), colorBlockYellowLime0.current)) {
             color1 = "lemonchiffon";
             color2 = "greenyellow";
@@ -1006,6 +1047,21 @@ export default function BlobJS() {
                         <DragComponent items={dragItemList} />
 
                     </div>
+                    <div
+                        ref={colorBlockRed}
+                        className="colorblock color-red"
+                        id={`color-red${d}`}
+                    ></div>
+                    <div
+                        ref={colorBlockPurple}
+                        className="colorblock color-purple"
+                        id={`color-purple${d}`}
+                    ></div>
+                    <div
+                        ref={colorBlockBlue}
+                        className="colorblock color-blue"
+                        id={`color-blue${d}`}
+                    ></div>
                     <div
                         ref={colorBlockYellowLime0}
                         className="colorblock color-yellowlime"

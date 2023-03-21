@@ -481,6 +481,15 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   height: 1.6rem;
   width: 1.6rem;
   max-width: 2.5rem;
+}
+
+.colorblock.color-red,
+.colorblock.color-purple,
+.colorblock.color-blue {
+  border-radius: 5rem 6.7rem 6.7rem 5rem / 0.7rem 8.7rem 8.7rem 0.7rem;
+}
+.make-more,
+.delete-blob {
   color: black;
   background-color: white;
 }
@@ -557,14 +566,21 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   border-right-color: var(--tooltip-color);
 }
 .colorblock {
-  --width-middle: 1.7rem;
-  --width-widest: 2rem;
+  --width-middle: 1.5rem;
+  --width-widest: 1.8rem;
   position: absolute;
-  width: 1.4rem;
+  width: 1.2rem;
   height: 2rem;
   border-radius: 2.7rem 4rem 4rem 2.7rem / 3.7rem 0.7rem 0.7rem 3.7rem;
 }
-
+@media (max-width: 600px) {
+  .colorblock {
+    --width-middle: 1rem;
+    --width-widest: 1.2rem;
+    position: absolute;
+    width: 0.8rem;
+  }
+} /*END media*/
 .colorblock:hover::after {
   content: "Release a blob near me to change color! Keyboard use: press Enter with blob in focus";
   position: absolute;
@@ -599,8 +615,7 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
 }
 .colorblock.color-yellowlime,
 .colorblock.color-pinkyellow,
-.colorblock.color-black,
-.colorblock.color-red {
+.colorblock.color-black {
   border-radius: 6.7rem 5rem 5rem 6.7rem / 8.7rem 0.7rem 0.7rem 8.7rem;
 }
 .colorblock.color-yellowlime {
@@ -632,15 +647,14 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
 }
 
 .colorblock.color-blue {
-  background-color: blue;
-  width: var(--width-widest);
+  background: linear-gradient(45deg, deepskyblue, dodgerblue);
 }
 .colorblock.color-purple {
-  background-color: hsl(300, 100%, 50%);
+  background: linear-gradient(45deg, magenta, violet);
   width: var(--width-middle);
 }
 .colorblock.color-red {
-  background-color: red;
+  background: linear-gradient(45deg, red, tomato);
 }
 .exitblob {
   flex-basis: 100%;
