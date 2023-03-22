@@ -25,7 +25,6 @@
 }
 .hero h1,
 .hero p {
-  z-index: 3;
   overflow: visible;
 }
 
