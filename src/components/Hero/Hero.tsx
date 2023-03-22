@@ -241,7 +241,7 @@ export default function Hero({ heading, text }: { heading: string; text: string 
                                 minHeight: `20px`,
                                 borderRadius: '3px',
                                 opacity: `${item.size > 6
-                                    ? `1`
+                                    ? `0.7`
                                     : `0.${Math.ceil(item.size + 3)}`
                                     }`
                                 ,
