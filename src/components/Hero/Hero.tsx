@@ -387,7 +387,7 @@ export default function Hero({ heading, text }: { heading: string; text: string 
                             const style: React.CSSProperties = {
                                 position: 'absolute',
                                 top: `calc(3vh + 1.1vh * ${item.size - 2} * ${item.e / 2})`,
-                                right: `calc(2% + ${item.e / 1.5} * 1vw * ${item.e})`,
+                                right: `calc(2% + ${item.e / 1.5} * 1.3vw * ${item.e})`,
                                 backgroundColor: `transparent`,
                                 color: `${item.color}`,
                                 ['--i' as string]: `${item.i}`,
@@ -573,7 +573,7 @@ export default function Hero({ heading, text }: { heading: string; text: string 
                             const style: React.CSSProperties = {
                                 position: 'absolute',
                                 top: `calc(3vh + 1.1vh * ${item.size - 2} * ${item.e / 2})`,
-                                right: `calc(2% + ${item.e / 1.5} * 1vw * ${item.e})`,
+                                right: `calc(2% + ${item.e / 1.5} * 1.3vw * ${item.e})`,
                                 backgroundColor: `transparent`,
                                 color: `${item.color}`,
                                 ['--i' as string]: `${item.i}`,
