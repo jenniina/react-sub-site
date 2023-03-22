@@ -18,14 +18,16 @@
   align-items: center;
   justify-content: center;
 }
-
+.transformations .list a {
+  transition-duration: 500ms;
+}
 .list svg {
   font-size: clamp(3em, 5vw, 4em);
   transform-origin: bottom;
 }
 .list a:hover,
 .list a:focus {
-  transform: translateY(0.3em);
+  transform: translateY(-0.8em);
   text-decoration: none;
 }
 .list a:hover svg,
