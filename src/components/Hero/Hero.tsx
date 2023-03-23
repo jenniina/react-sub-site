@@ -679,12 +679,12 @@ export default function Hero({ heading, text }: { heading: string; text: string 
     }, [values])
 
 
-
+    const locale = heading.replaceAll(' ', '').toLowerCase()
     return (
         <div className={`
         ${lightTheme ? styles.light : ''} 
         ${touchDevice ? styles.touch : ''} 
-        hero ${styles.hero} ${styles[heading]}`}>
+        hero ${styles.hero} ${styles[locale]}`}>
             <h1><span data-text={heading}>{heading}</span></h1>
             <p>{text}</p>
             <label id='description' className='screen-reader-text'>Hero section with interactive elements</label>
