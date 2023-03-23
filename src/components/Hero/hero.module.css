@@ -27,6 +27,10 @@
 .hero p {
   overflow: visible;
 }
+.hero.Welcome h1,
+.hero.Welcome p {
+  z-index: 3;
+}
 
 .hero h1 {
   -webkit-text-stroke: 1px var(--color-primary-1);
