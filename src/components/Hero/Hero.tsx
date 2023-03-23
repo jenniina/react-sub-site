@@ -268,6 +268,9 @@ export default function Hero({ heading, text }: { heading: string; text: string 
                                     onBlurCapture={e => {
                                         ulRef.current?.setAttribute("aria-activedescendant", '')
                                     }}
+                                    onPointerEnter={e => {
+                                        movingItem(e)
+                                    }}
                                     onMouseDown={e => {
                                         removeItem(e.target as HTMLElement)
                                     }}

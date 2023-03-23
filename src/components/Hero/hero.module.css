@@ -47,7 +47,8 @@
   z-index: 2;
 }
 .herocontent .bubbles,
-.herocontent .eyes {
+.herocontent .eyes,
+.herocontent .geometric {
   transition-property: top, right, bottom, left, transform;
   transition-timing-function: ease-in-out;
   transition-duration: 500ms;
