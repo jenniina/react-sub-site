@@ -168,7 +168,7 @@ export default function Hero({ heading, text }: { heading: string; text: string 
             }
             const item: itemProps = {
                 i: i,
-                e: useRandomMinMax(1, 9),
+                e: useRandomMinMax(5, 9),
                 size: Math.round(useRandomMinMax(5, 12)),
                 color: colorSwitch
             }
@@ -189,7 +189,7 @@ export default function Hero({ heading, text }: { heading: string; text: string 
         for (let i: number = 1; i <= 4; i++) {
             const span: itemProps = {
                 i: i,
-                e: useRandomMinMax(1, 9),
+                e: useRandomMinMax(5, 9),
                 size: i,
                 color: 'hsla(0, 0%, 100%, 0.8)',
             }
@@ -213,7 +213,7 @@ export default function Hero({ heading, text }: { heading: string; text: string 
                     {array.map((item, index: number) => {
 
                         if (location == LOCATION.HOME) {
-                            const dividedBy = 1.5;
+                            const dividedBy = 2.2;
 
                             const style: React.CSSProperties = {
                                 position: 'absolute',
@@ -241,7 +241,7 @@ export default function Hero({ heading, text }: { heading: string; text: string 
                                 minHeight: `20px`,
                                 borderRadius: '3px',
                                 opacity: `${item.size > 6
-                                    ? `0.7`
+                                    ? `0.5`
                                     : `0.${Math.ceil(item.size + 3)}`
                                     }`
                                 ,
