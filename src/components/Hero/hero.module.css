@@ -493,12 +493,7 @@
   pointer-events: none;
   padding-top: clamp(1px, 20vh, 200px);
 }
-.welcome .bottom::after,
-.about .bottom::after,
-.contact .bottom::after,
-.portfolio .bottom::after,
-.blobapp .bottom::after,
-.draganddrop .bottom::after {
+.bottom::after {
   position: absolute;
   bottom: 4em;
   right: 0;
@@ -508,18 +503,11 @@
   transition-duration: 500ms;
   transition-delay: 0s;
 }
-.welcome .bottom:hover::after,
-.about .bottom:hover::after,
-.contact .bottom:hover::after,
-.portfolio .bottom:hover::after,
-.blobapp .bottom:hover::after,
-.draganddrop .bottom:hover::after {
+.bottom:hover::after {
   opacity: 1;
   transition-delay: 500ms;
 }
-.welcome .bottom::after,
-.about .bottom::after,
-.contact .bottom::after {
+.bottom::after {
   content: "Try tapping the shapes";
 }
 .portfolio .bottom::after,
