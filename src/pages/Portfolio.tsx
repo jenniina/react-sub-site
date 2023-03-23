@@ -39,7 +39,7 @@ export default function Portfolio({ heading, text, type }: { heading: string; te
                 <section className={`card`}>
                     <div>
                         <div className={styles.notes}>
-                            <p>This site focuses on React applications. Non-React porfolio items may be found at the <a href="https://jenniina.fi/#portfolio">portfolio section</a> of the main site </p>
+                            <p className={styles.introparagraph}>This site focuses on React applications. Non-React porfolio items may be found at the <a href="https://jenniina.fi/#portfolio">portfolio section</a> of the main site </p>
                             <h2>React Apps</h2>
 
                             <p>React-specific apps made with Vite and Typescript. Each app is designed to be both pointer- and keyboard-accessible. </p>

@@ -72,3 +72,7 @@
     margin: 0 auto;
   }
 } /*END media*/
+
+.notes .introparagraph {
+  margin-bottom: 4em;
+}
