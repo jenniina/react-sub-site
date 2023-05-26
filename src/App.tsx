@@ -90,42 +90,42 @@ const App: FC = () => {
               }
             />
             <Route
-              path='/react/about'
+              path='/about'
               element={<About heading='About' text='This Site' type='page' />}
             />
 
             <Route
-              path='/react/test'
+              path='/test'
               element={<Test heading='Test Page' text='' type='page' />}
             />
 
-            <Route path='/react/portfolio' element={<NavPortfolio />}>
+            <Route path='/portfolio' element={<NavPortfolio />}>
               <Route
                 index
                 element={<Portfolio heading='Portfolio' type='page' text='ReactJS' />}
               />
               <Route
-                path='/react/portfolio/blob'
+                path='/portfolio/blob'
                 element={<BlobPage heading='Blob App' text='' type='page subpage' />}
               />
               <Route
-                path='/react/portfolio/draganddrop'
+                path='/portfolio/draganddrop'
                 element={
                   <DragAndDropPage heading='Drag and Drop' text='' type='page subpage' />
                 }
               />
               <Route
-                path='/react/portfolio/todo'
+                path='/portfolio/todo'
                 element={<TodoPage heading='Todo App' text='' type='page subpage' />}
               />
               <Route
-                path='/react/portfolio/select'
+                path='/portfolio/select'
                 element={
                   <CustomSelectPage heading='Custom Select' text='' type='page subpage' />
                 }
               />
               <Route
-                path='/react/portfolio/form'
+                path='/portfolio/form'
                 element={
                   <FormPage heading='Multistep Form' text='' type='page subpage' />
                 }
@@ -133,7 +133,7 @@ const App: FC = () => {
             </Route>
 
             <Route
-              path='/react/contact'
+              path='/contact'
               element={<Contact heading='Contact' text="Let's collaborate" type='page' />}
             />
           </Routes>

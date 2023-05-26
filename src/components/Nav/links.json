@@ -2,19 +2,19 @@
     "links": [
         {
             "label": "Welcome",
-            "href": "/react/"
+            "href": "/"
         },
         {
             "label": "About",
-            "href": "/react/about"
+            "href": "/about"
         },
         {
             "label": "Portfolio",
-            "href": "/react/portfolio"
+            "href": "/portfolio"
         },
         {
             "label": "Contact",
-            "href": "/react/contact"
+            "href": "/contact"
         }
     ]
 }

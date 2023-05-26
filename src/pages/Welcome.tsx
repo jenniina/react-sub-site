@@ -6,27 +6,43 @@ import { BiChat } from 'react-icons/bi'
 import { BsPerson } from 'react-icons/bs'
 import { IoMdImages } from 'react-icons/io'
 
-export default function Home({ heading, text, type }: { heading: string; text: string; type: string }) {
+export default function Home({
+  heading,
+  text,
+  type,
+}: {
+  heading: string
+  text: string
+  type: string
+}) {
+  const lightTheme = useTheme()
 
-    const lightTheme = useTheme()
-
-    return (
-        <div className={`${heading} ${type} ${lightTheme
-            ? styles.light : ''}`} >
-            <Hero heading={heading} text={text} />
-            <div className='inner-wrap'>
-
-                <section className={`card`}>
-                    <div>
-                        <ul className={styles.list}>
-                            <li><Link to='/react/about'><BsPerson /> <span>About</span></Link></li>
-                            <li><Link to='/react/portfolio'><IoMdImages /> <span>Portfolio</span></Link></li>
-                            <li><Link to='/react/contact'><BiChat /> <span>Contact</span></Link></li>
-                        </ul>
-                    </div>
-                </section>
-
-            </div>
-        </div>
-    )
+  return (
+    <div className={`${heading} ${type} ${lightTheme ? styles.light : ''}`}>
+      <Hero heading={heading} text={text} />
+      <div className='inner-wrap'>
+        <section className={`card`}>
+          <div>
+            <ul className={styles.list}>
+              <li>
+                <Link to='/about'>
+                  <BsPerson /> <span>About</span>
+                </Link>
+              </li>
+              <li>
+                <Link to='/portfolio'>
+                  <IoMdImages /> <span>Portfolio</span>
+                </Link>
+              </li>
+              <li>
+                <Link to='/contact'>
+                  <BiChat /> <span>Contact</span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+  )
 }
