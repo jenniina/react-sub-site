@@ -21,15 +21,13 @@ import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
 import { isTouchDevice } from './hooks/useDraggable'
 
 const App: FC = () => {
-
-  const touchDevice = isTouchDevice();
+  const touchDevice = isTouchDevice()
 
   const scrollbarWidth = useScrollbarWidth()
 
   const styleInnerWrap: React.CSSProperties = {
-    ['--scrollbar_width' as string]: `${scrollbarWidth}px`
-  };
-
+    ['--scrollbar_width' as string]: `${scrollbarWidth}px`,
+  }
 
   //To get menualt type from Nav and set Footer padding accordingly:
   const [styleMenu, setStyleMenu] = useState<boolean>()
@@ -39,7 +37,6 @@ const App: FC = () => {
 
   const lightTheme = useTheme()
 
-
   //So transformations don't take place when changing menu style or toggling light/dark mode:
   useEffect(() => {
     setMenuStyleAltTransform(false)
@@ -48,63 +45,102 @@ const App: FC = () => {
     }, 300)
   }, [lightTheme, menuStyle.current])
 
-  const location = useLocation();
+  const location = useLocation()
 
-  const [displayLocation, setDisplayLocation] = useState(location);
+  const [displayLocation, setDisplayLocation] = useState(location)
 
-  const [transitionPage, setTransistionPage] = useState("fadeIn");
+  const [transitionPage, setTransistionPage] = useState('fadeIn')
 
   useEffect(() => {
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
-    });
-    if (location.pathname !== displayLocation.pathname) setTransistionPage("fadeOut");
-  }, [location]);
+    })
+    if (location.pathname !== displayLocation.pathname) setTransistionPage('fadeOut')
+  }, [location])
 
   return (
-    <div className={`App ${lightTheme ? 'light' : ''} ${touchDevice ? 'touch' : ''}  ${menuStyleAltTransform ? `transformations` : ''}`} >
-      <div className="App-inner-wrap" style={styleInnerWrap}>
+    <div
+      className={`App ${lightTheme ? 'light' : ''} ${touchDevice ? 'touch' : ''}  ${
+        menuStyleAltTransform ? `transformations` : ''
+      }`}
+    >
+      <div className='App-inner-wrap' style={styleInnerWrap}>
         <Nav setStyleMenu={setStyleMenu} ref={menuStyle} />
 
-        <main id={`main-content`}
-
+        <main
+          id={`main-content`}
           className={`${transitionPage} main-content`}
           onAnimationEnd={() => {
-            if (transitionPage === "fadeOut") {
-              setTransistionPage("fadeIn");
-              setDisplayLocation(location);
+            if (transitionPage === 'fadeOut') {
+              setTransistionPage('fadeIn')
+              setDisplayLocation(location)
             }
           }}
         >
-
           <Routes location={displayLocation}>
+            <Route
+              path='*'
+              element={
+                <Welcome
+                  heading='Welcome'
+                  text='to the React sub-page of Jenniina.fi'
+                  type='page'
+                />
+              }
+            />
+            <Route
+              path='/about'
+              element={<About heading='About' text='This Site' type='page' />}
+            />
 
-            <Route path='*' element={<Welcome heading='Welcome' text='to the React sub-page of Jenniina.fi' type='page' />} />
-            <Route path='/react/about' element={<About heading='About' text='This Site' type='page' />} />
+            <Route
+              path='/test'
+              element={<Test heading='Test Page' text='' type='page' />}
+            />
 
-            <Route path='/react/test' element={<Test heading='Test Page' text='' type='page' />} />
-
-            <Route path='/react/portfolio' element={<NavPortfolio />} >
-              <Route index element={<Portfolio heading='Portfolio' type='page' text='ReactJS' />} />
-              <Route path='/react/portfolio/blob' element={<BlobPage heading='Blob App' text='' type='page subpage' />} />
-              <Route path='/react/portfolio/draganddrop' element={<DragAndDropPage heading='Drag and Drop' text='' type='page subpage' />} />
-              <Route path='/react/portfolio/todo' element={<TodoPage heading='Todo App' text='' type='page subpage' />} />
-              <Route path='/react/portfolio/select' element={<CustomSelectPage heading='Custom Select' text='' type='page subpage' />} />
-              <Route path='/react/portfolio/form' element={<FormPage heading='Multistep Form' text='' type='page subpage' />} />
-
+            <Route path='/portfolio' element={<NavPortfolio />}>
+              <Route
+                index
+                element={<Portfolio heading='Portfolio' type='page' text='ReactJS' />}
+              />
+              <Route
+                path='/portfolio/blob'
+                element={<BlobPage heading='Blob App' text='' type='page subpage' />}
+              />
+              <Route
+                path='/portfolio/draganddrop'
+                element={
+                  <DragAndDropPage heading='Drag and Drop' text='' type='page subpage' />
+                }
+              />
+              <Route
+                path='/portfolio/todo'
+                element={<TodoPage heading='Todo App' text='' type='page subpage' />}
+              />
+              <Route
+                path='/portfolio/select'
+                element={
+                  <CustomSelectPage heading='Custom Select' text='' type='page subpage' />
+                }
+              />
+              <Route
+                path='/portfolio/form'
+                element={
+                  <FormPage heading='Multistep Form' text='' type='page subpage' />
+                }
+              />
             </Route>
 
-
-            <Route path='/react/contact' element={<Contact heading='Contact' text="Let's collaborate" type='page' />} />
-
+            <Route
+              path='/contact'
+              element={<Contact heading='Contact' text="Let's collaborate" type='page' />}
+            />
           </Routes>
-
         </main>
 
         <Footer styleMenu={styleMenu} />
         <ScrollToTop styleMenu={styleMenu} />
-
       </div>
     </div>
   )
