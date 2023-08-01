@@ -1,11 +1,9 @@
-import React, { useState, useRef } from 'react'
+import { useRef } from 'react'
 import { useTheme } from '../hooks/useTheme'
 import { RefObject } from '../interfaces'
 import styles from './css/portfolio.module.css'
 import Hero from '../components/Hero/Hero'
 import { Link } from 'react-router-dom'
-import emailjs from 'emailjs-com'
-import { SERVICE_ID, TEMPLATE_ID, PUBLIC_KEY } from '../components/FormMulti/keys'
 import { AiOutlineForm } from 'react-icons/ai'
 import { BiSelectMultiple } from 'react-icons/bi'
 import { RiTodoLine, RiDragDropLine, RiDragMove2Fill } from 'react-icons/ri'
@@ -20,21 +18,6 @@ export default function Portfolio({
   type: string
 }) {
   const form = useRef() as RefObject<HTMLFormElement>
-
-  function useEmail(e: React.FormEvent<HTMLFormElement>, ref: HTMLFormElement | null) {
-    e.preventDefault()
-
-    if (ref)
-      emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, ref, PUBLIC_KEY).then(
-        (result) => {
-          console.log(result.text)
-        },
-        (error) => {
-          console.log(error.text)
-        }
-      )
-    ref?.current.reset()
-  }
 
   const lightTheme = useTheme()
 
