@@ -1,6 +1,7 @@
 import { useState, FC, useRef, useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import './css/App.css'
+import './css/form.css'
 import Nav from './components/Nav/Nav'
 import Welcome from './pages/Welcome'
 import Test from './pages/testpage'
@@ -19,6 +20,7 @@ import { useScrollbarWidth } from './hooks/useScrollbarWidth'
 import { RefObject } from './interfaces'
 import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
 import { isTouchDevice } from './hooks/useDraggable'
+import JokesPage from './pages/pages-portfolio/JokesPage'
 
 const App: FC = () => {
   const touchDevice = isTouchDevice()
@@ -70,7 +72,7 @@ const App: FC = () => {
 
         <main
           id={`main-content`}
-          className={`${transitionPage} main-content`}
+          className={`${transitionPage} main-content z`}
           onAnimationEnd={() => {
             if (transitionPage === 'fadeOut') {
               setTransistionPage('fadeIn')
@@ -80,7 +82,7 @@ const App: FC = () => {
         >
           <Routes location={displayLocation}>
             <Route
-              path='*'
+              path='/'
               element={
                 <Welcome
                   heading='Welcome'
@@ -128,6 +130,16 @@ const App: FC = () => {
                 path='/portfolio/form'
                 element={
                   <FormPage heading='Multistep Form' text='' type='page subpage' />
+                }
+              />
+              <Route
+                path='/portfolio/jokes/*'
+                element={
+                  <JokesPage
+                    heading="The Comedian's Companion"
+                    text=''
+                    type='page subpage'
+                  />
                 }
               />
             </Route>
