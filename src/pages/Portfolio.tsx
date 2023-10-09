@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom'
 import { AiOutlineForm } from 'react-icons/ai'
 import { BiSelectMultiple } from 'react-icons/bi'
 import { RiTodoLine, RiDragDropLine, RiDragMove2Fill } from 'react-icons/ri'
+import { GiCardJoker, GiAbstract019 } from 'react-icons/gi'
+import { TbApi } from 'react-icons/tb'
 
 export default function Portfolio({
   heading,
@@ -92,6 +94,13 @@ export default function Portfolio({
                   <span>Multistep Form</span>
                 </Link>
                 <p>Three-step fully functional contact form</p>
+              </li>
+              <li>
+                <Link to='/portfolio/jokes'>
+                  <GiAbstract019 />
+                  <span>Jokes App</span>
+                </Link>
+                <p>The Comedian's Companion</p>
               </li>
             </ul>
           </div>
