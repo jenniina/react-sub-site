@@ -82,7 +82,7 @@ const App: FC = () => {
         >
           <Routes location={displayLocation}>
             <Route
-              path='/'
+              path='*'
               element={
                 <Welcome
                   heading='Welcome'
