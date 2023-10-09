@@ -79,7 +79,12 @@ export default function About({
   }
 
   return (
-    <div className={`${heading} ${type} ${lightTheme ? styles.light : ''}`}>
+    <div
+      className={`${heading
+        .replace(/\s+/g, '-')
+        .toLowerCase()
+        .replace(/[^a-zA-Z]/g, '')} ${type} ${lightTheme ? styles.light : ''}`}
+    >
       <Hero heading={heading} text={text} />
       <div>
         <section className={`card ${styles.section}`}>
@@ -106,7 +111,7 @@ export default function About({
                 <IoSettingsSharp
                   style={{ display: 'inline-block', marginBottom: '-0.15em' }}
                 />{' '}
-                <span className='screen-reader-text'>Settings</span> icon
+                <span className='scr'>Settings</span> icon
               </big>
               <ul className='ul'>
                 <li>Light/Dark mode button</li>

@@ -58,27 +58,14 @@
 }
 .App-inner-wrap::before {
   position: absolute;
-  content: "";
+  content: '';
   height: 60vh;
   width: 100%;
-  background-image: linear-gradient(
-    to bottom,
-    var(--color-primary-3),
-    transparent
-  );
+  background-image: linear-gradient(to bottom, var(--color-primary-3), transparent);
 }
 .light .App-inner-wrap::before {
   height: 70vh;
-  background-image: linear-gradient(
-    to bottom,
-    var(--color-primary-2),
-    transparent
-  );
-}
-.App > * {
-  scroll-margin-top: 2rem;
-  scroll-margin-bottom: 2rem;
-  box-sizing: border-box;
+  background-image: linear-gradient(to bottom, var(--color-primary-2), transparent);
 }
 /*current page: */
 nav ul li a.active,
@@ -171,7 +158,7 @@ main {
   border-radius: var(--radius-large);
 }
 .nav-sub ul a::after {
-  content: "";
+  content: '';
   position: absolute;
   z-index: -1;
   top: 0;
@@ -300,7 +287,7 @@ button.horizonal-scroll.disable {
 .page > .inner-wrap {
   display: flex;
   flex-flow: row wrap;
-  gap: calc(var(--margin) * 2) 2%;
+  gap: calc(var(--margin) * 3) 2%;
   justify-content: center;
   margin: 0 auto;
 }
@@ -327,9 +314,7 @@ main.main-content .fullwidth1 {
 }
 .card,
 .card > div {
-  max-width: calc(
-    100vw - calc(var(--page-padding) * 2) - var(--scrollbar_width)
-  );
+  max-width: calc(100vw - calc(var(--page-padding) * 2) - var(--scrollbar_width));
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
@@ -343,7 +328,7 @@ main.main-content .fullwidth1 {
 
 .card > div::before,
 .card > div::after {
-  content: "";
+  content: '';
   position: absolute;
 }
 .card > div::before {
@@ -394,6 +379,9 @@ main.main-content .fullwidth1 {
   );
   filter: blur(0.5rem);
 }
+body .z {
+  z-index: 2;
+}
 /********************************************************************/
 @media (min-width: 300px) {
   .card {
@@ -412,6 +400,13 @@ main.main-content .fullwidth1 {
 }
 .flex > * {
   flex: 1 1 auto;
+}
+.column {
+  flex-flow: column nowrap;
+}
+.center {
+  justify-content: center;
+  align-items: center;
 }
 
 .drag,
@@ -481,6 +476,18 @@ main.main-content .fullwidth1 {
     order: 1;
   }
 }
+.accordionButton.close,
+.accordionButton.close:hover,
+.accordionButton.close:focus {
+  background: none;
+  color: inherit;
+  border: none;
+  outline: none;
+}
+.accordionButton.close:focus-visible {
+  outline: 1px solid var(--color-primary-13);
+  outline-offset: -2px;
+}
 .required {
   color: red;
   font-size: 1.5em;
@@ -516,11 +523,11 @@ main.main-content .fullwidth1 {
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translate(0, -20px);
+    /* transform: translate(0, -20px); /* messes up position:fixed for child elements */
   }
   to {
     opacity: 1;
-    transform: translate(0px, 0px);
+    /* transform: translate(0px, 0px); /* messes up position:fixed for child elements */
   }
 }
 

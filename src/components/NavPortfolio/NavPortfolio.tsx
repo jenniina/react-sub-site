@@ -42,7 +42,7 @@ function NavPortfolio() {
         >
           {' '}
           <BiChevronsUp />
-          <span className='screen-reader-text'>scroll left</span>
+          <span className='scr'>scroll left</span>
         </button>
 
         <ul ref={scrollHorizontal}>
@@ -88,8 +88,11 @@ function NavPortfolio() {
           <li>
             <NavLink to='/portfolio/select'>Custom Select</NavLink>
           </li>
-          <li ref={lastportfolioitem} id='lastportfolioitem'>
+          <li>
             <NavLink to='/portfolio/form'>Multistep Form</NavLink>
+          </li>
+          <li ref={lastportfolioitem} id='lastportfolioitem'>
+            <NavLink to='/portfolio/jokes'>Jokes App</NavLink>
           </li>
         </ul>
 
@@ -100,7 +103,7 @@ function NavPortfolio() {
         >
           {' '}
           <BiChevronsUp />
-          <span className='screen-reader-text'>scroll right</span>
+          <span className='scr'>scroll right</span>
         </button>
       </nav>
       <Outlet />

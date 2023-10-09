@@ -33,12 +33,11 @@
 .hero h1 {
   -webkit-text-stroke: 1px var(--color-primary-1);
   text-stroke: 1px var(--color-primary-1);
-  text-shadow: 1px 1px 1px var(--color-primary-1),
-    0 0 0.1em var(--color-primary-1);
+  text-shadow: 1px 1px 1px var(--color-primary-1), 0 0 0.1em var(--color-primary-1);
 }
 .hero p {
-  text-shadow: 1px 1px 1px var(--color-primary-1),
-    0 0 1em var(--color-primary-1), 0 0 0.3em var(--color-primary-1);
+  text-shadow: 1px 1px 1px var(--color-primary-1), 0 0 1em var(--color-primary-1),
+    0 0 0.3em var(--color-primary-1);
   font-size: 1.1em;
 }
 .herocontent {
@@ -58,12 +57,11 @@
   animation-play-state: paused;
 }
 .light .herocontent .bubbles {
-  box-shadow: inset 0 0 calc(var(--s2) * 2 * 1px) calc(var(--s2) / -3 * 1px)
-      currentColor,
-    inset calc(var(--s2) * -1px) calc(var(--s2) * -1px)
-      calc(var(--s2) * 2 * 1px) calc(var(--s2) * -1.5 * 1px) lime,
-    inset calc(var(--s2) * 4 * 1px) calc(var(--s2) * 4 * 1px)
-      calc(var(--s2) * 3 * 1px) calc(var(--s2) * -6 * 1px) hotpink,
+  box-shadow: inset 0 0 calc(var(--s2) * 2 * 1px) calc(var(--s2) / -3 * 1px) currentColor,
+    inset calc(var(--s2) * -1px) calc(var(--s2) * -1px) calc(var(--s2) * 2 * 1px)
+      calc(var(--s2) * -1.5 * 1px) lime,
+    inset calc(var(--s2) * 4 * 1px) calc(var(--s2) * 4 * 1px) calc(var(--s2) * 3 * 1px)
+      calc(var(--s2) * -6 * 1px) hotpink,
     0 0 10px -5px white, 0 0 5px -1px currentColor;
 }
 .herocontent .bubbles {
@@ -72,11 +70,11 @@
   animation-play-state: paused;
   box-shadow: inset 0 calc(var(--s2) * -6 * 1px) calc(var(--s2) * 6 * 1px)
       calc(var(--s2) * -8 * 1px) currentColor,
-    inset calc(var(--s2) * -3 * 1px) calc(var(--s2) * -3 * 1px)
-      calc(var(--s2) * 2 * 1px) calc(var(--s2) * -4 * 1px) green,
+    inset calc(var(--s2) * -3 * 1px) calc(var(--s2) * -3 * 1px) calc(var(--s2) * 2 * 1px)
+      calc(var(--s2) * -4 * 1px) green,
     inset 0 0 calc(var(--s2) * 2 * 1px) calc(var(--s2) / -2 * 1px) currentColor,
-    inset calc(var(--s2) * 4 * 1px) calc(var(--s2) * 4 * 1px)
-      calc(var(--s2) * 3 * 1px) calc(var(--s2) * -6 * 1px) hotpink,
+    inset calc(var(--s2) * 4 * 1px) calc(var(--s2) * 4 * 1px) calc(var(--s2) * 3 * 1px)
+      calc(var(--s2) * -6 * 1px) hotpink,
     0 0 10px -5px white, 0 0 12px -3px currentColor, 0 0 30px -10px currentColor;
 }
 
@@ -85,8 +83,7 @@
   -webkit-animation: geometric-hover 2000ms ease-in-out infinite;
   animation: geometric-hover 2000ms ease-in-out infinite;
   animation-play-state: paused;
-  box-shadow: 0 0 4px 0 currentColor, 0 0 10px 0 currentColor,
-    0 0 40px 4px currentColor;
+  box-shadow: 0 0 4px 0 currentColor, 0 0 10px 0 currentColor, 0 0 40px 4px currentColor;
   background-color: hsla(0, 0%, 100%, 0.7);
   pointer-events: none; /*Otherwise exitItem targets the wrong item*/
 }
@@ -140,25 +137,24 @@
   pointer-events: none;
   box-shadow: inset calc(var(--s2) * 8 * 1px) calc(var(--s2) / 4 * -1px)
       calc(var(--s2) * 4 * 1px) calc(var(--s2) * 8 * -1px) hotpink,
-    inset calc(var(--s2) * 8 * -1px) calc(var(--s2) / 4 * 1px)
-      calc(var(--s2) * 4 * 1px) calc(var(--s2) * 9 * -1px) lime,
+    inset calc(var(--s2) * 8 * -1px) calc(var(--s2) / 4 * 1px) calc(var(--s2) * 4 * 1px)
+      calc(var(--s2) * 9 * -1px) lime,
     0 0 4px 0 currentColor, 0 0 9px -5px white, 0 0 40px -10px currentColor,
     inset calc(var(--s2) * 1px) 0 calc(var(--s2) * 3 * 1px) 0 currentColor,
-    inset calc(var(--s2) * -1px) 0 calc(var(--s2) * 3 * 1px) 0 white,
-    0 0 10px -5px white;
+    inset calc(var(--s2) * -1px) 0 calc(var(--s2) * 3 * 1px) 0 white, 0 0 10px -5px white;
 }
 .light .herocontent .eyes .inner {
   box-shadow: inset calc(var(--s2) * 8 * 1px) calc(var(--s2) / 4 * -1px)
       calc(var(--s2) * 4 * 1px) calc(var(--s2) * 7 * -1px) hotpink,
-    inset calc(var(--s2) * 8 * -1px) calc(var(--s2) / 4 * 1px)
-      calc(var(--s2) * 4 * 1px) calc(var(--s2) * 9 * -1px) lime,
+    inset calc(var(--s2) * 8 * -1px) calc(var(--s2) / 4 * 1px) calc(var(--s2) * 4 * 1px)
+      calc(var(--s2) * 9 * -1px) lime,
     0 0 10px 0 white, 0 0 20px -10px white,
     inset calc(var(--s2) * 1px) 0 calc(var(--s2) * 3 * 1px) 0 currentColor,
     inset calc(var(--s2) * -1px) 0 calc(var(--s2) * 3 * 1px) -1px white,
     0 0 10px -5px white;
 }
 .herocontent .eyes .inner::before {
-  content: "";
+  content: '';
   position: absolute;
   width: 60%;
   height: 60%;
@@ -172,7 +168,7 @@
   box-shadow: 0 0 calc(var(--s) / 8) 1px currentColor;
 }
 .herocontent .eyes .inner::after {
-  content: "";
+  content: '';
   position: absolute;
   width: 5%;
   height: 5%;
@@ -201,7 +197,7 @@
 .herocontent .bubbles span::before,
 .herocontent .bubbles span::after,
 .herocontent .eyes span::before {
-  content: "";
+  content: '';
   position: absolute;
   background-color: white;
   opacity: 0.2;
@@ -257,7 +253,7 @@
 }
 .herocontent .eyes span::after {
   --color: black;
-  content: "";
+  content: '';
   position: absolute;
   background-color: transparent;
   top: 22%;
@@ -270,8 +266,7 @@
   opacity: 0.2;
   border-radius: 80% 50%;
   box-shadow: 0 0 6px 0 var(--color), 0 0 6px -3px var(--color),
-    inset 6px 8px 8px -5px black, -3px -4px 4px -2px black,
-    -2px -3px 10px 2px white;
+    inset 6px 8px 8px -5px black, -3px -4px 4px -2px black, -2px -3px 10px 2px white;
 }
 .light .herocontent .eyes span::after {
   opacity: 0.16;
@@ -508,12 +503,12 @@
   transition-delay: 500ms;
 }
 .bottom::after {
-  content: "Try tapping the shapes";
+  content: attr(data-instructions);
 }
 .portfolio .bottom::after,
 .blobapp .bottom::after,
 .draganddrop .bottom::after {
-  content: "Try dragging the blobs";
+  content: 'Try dragging the blobs';
 }
 .bottom button {
   pointer-events: auto;
@@ -525,8 +520,8 @@
   outline: 0;
   line-height: 2;
   padding: 0;
-  text-shadow: 1px 1px 1px var(--color-primary-2),
-    0 0 1em var(--color-primary-2), 0 0 0.3em var(--color-primary-2);
+  text-shadow: 1px 1px 1px var(--color-primary-2), 0 0 1em var(--color-primary-2),
+    0 0 0.3em var(--color-primary-2);
 }
 .bottom button:hover,
 .bottom button:focus {
@@ -543,7 +538,7 @@
 .bottom button span::before,
 .bottom button span::after {
   --time: 500ms;
-  content: "";
+  content: '';
   position: absolute;
   background-color: currentColor;
   transition-property: transform;

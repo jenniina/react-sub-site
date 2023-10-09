@@ -46,7 +46,7 @@
   transform: translateX(-60%) scale(1);
 }
 .main-header::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -84,7 +84,7 @@
   padding: 0;
 }
 .logo-container a::after {
-  content: "« exit to main site";
+  content: '« exit to main site';
   position: absolute;
   bottom: -1em;
   left: 1em;
@@ -128,7 +128,7 @@ button.togglemenu .menupath {
   transition-timing-function: ease-in-out;
   transition-duration: 600ms;
 }
-button.togglemenu[aria-expanded="true"] .menupath {
+button.togglemenu[aria-expanded='true'] .menupath {
   stroke-dasharray: 0 115 58 0 58 142 0 222 116 1000;
   stroke-dashoffset: 116;
 }
@@ -204,7 +204,7 @@ button.togglemenu[aria-expanded="true"] .menupath {
   position: relative;
   width: 6em;
   height: 2em;
-  background-image: url("../../assets/JLA_Jenniina-light-3-480x198.png");
+  background-image: url('../../assets/JLA_Jenniina-light-3-480x198.png');
   background-size: contain;
   background-repeat: no-repeat;
   padding-bottom: 0.5em;
@@ -225,11 +225,11 @@ button.togglemenu[aria-expanded="true"] .menupath {
   outline-offset: -4px;
 }
 .light .logo-container a {
-  background-image: url("../../assets/JLA_Jenniina-3-480x198.png");
+  background-image: url('../../assets/JLA_Jenniina-3-480x198.png');
 }
 .logo-container a:hover::before,
 .logo-container a:focus::before {
-  content: "";
+  content: '';
   position: absolute;
   top: -2em;
   right: 2em;
@@ -294,7 +294,7 @@ a.link:visited:not(.active) > *,
 .link::before,
 .link::before,
 .main-header button::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   bottom: 0;
@@ -337,10 +337,10 @@ a.link:visited:not(.active):focus > *,
 .link.active:hover {
   text-decoration: none;
 }
-.Welcome,
-.About,
-.Portfolio,
-.Contact {
+.welcome,
+.about,
+.portfolio,
+.contact {
   box-sizing: border-box;
 }
 .main-header button {
@@ -779,12 +779,12 @@ button.dlt-btn:focus {
   outline: none;
   transition-duration: 0.4s;
   transition-timing-function: ease-in-out;
-  transition-property: transform, box-shadow, background-color, margin, border,
-    outline, right;
+  transition-property: transform, box-shadow, background-color, margin, border, outline,
+    right;
 }
 .dlt-btn .dlt-btn-inner-left::before {
   /*Sun in light mode*/
-  content: "";
+  content: '';
   display: block;
   position: absolute;
   z-index: 1;
@@ -820,7 +820,7 @@ button.dlt-btn:focus {
   transform: translateX(-0.7em) rotate(-45deg);
 }
 .dlt-btn .dlt-btn-inner-left::after {
-  content: "";
+  content: '';
   display: inline-block;
   width: 2.5em;
   height: 1.5em;

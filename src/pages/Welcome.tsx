@@ -18,7 +18,12 @@ export default function Home({
   const lightTheme = useTheme()
 
   return (
-    <div className={`${heading} ${type} ${lightTheme ? styles.light : ''}`}>
+    <div
+      className={`${heading
+        .replace(/\s+/g, '-')
+        .toLowerCase()
+        .replace(/[^a-zA-Z]/g, '')} ${type} ${lightTheme ? styles.light : ''}`}
+    >
       <Hero heading={heading} text={text} />
       <div className='inner-wrap'>
         <section className={`card`}>

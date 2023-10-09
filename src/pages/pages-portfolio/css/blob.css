@@ -24,7 +24,7 @@ svg.filter {
 }
 
 #drag-container0 .dragzone::after {
-  content: "";
+  content: '';
   position: absolute;
   background-color: inherit;
   top: -30px;
@@ -48,11 +48,9 @@ svg.filter {
 }
 #drag-container0 .colorblock {
   -webkit-box-shadow: -4px 4px 20px 0 hsla(0, 0%, 0%, 0.2),
-    -2px 2px 10px -6px hsla(0, 0%, 0%, 0.8),
-    -2px 2px 4px -4px hsla(0, 0%, 0%, 0.8);
+    -2px 2px 10px -6px hsla(0, 0%, 0%, 0.8), -2px 2px 4px -4px hsla(0, 0%, 0%, 0.8);
   box-shadow: -4px 4px 20px 0 hsla(0, 0%, 0%, 0.2),
-    -2px 2px 10px -6px hsla(0, 0%, 0%, 0.8),
-    -2px 2px 4px -4px hsla(0, 0%, 0%, 0.8);
+    -2px 2px 10px -6px hsla(0, 0%, 0%, 0.8), -2px 2px 4px -4px hsla(0, 0%, 0%, 0.8);
 }
 #drag-container0 .make-larger,
 #drag-container0 .make-smaller,
@@ -113,7 +111,7 @@ svg.filter {
 }
 
 @media (min-width: 800px) {
-  .Portfolio.page #drag-container0 {
+  .portfolio.page #drag-container0 {
     width: calc(96vw - var(--scrollbar_width));
     max-width: calc(96vw - var(--scrollbar_width));
     /* margin-left: calc(50% - 50vw + var(--scrollbar_width) / 2 + 2vw); */
@@ -130,7 +128,7 @@ svg.filter {
   padding: 0 0 0.5em;
 }
 .drag-slider-wrap label::after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: -1em;
   right: 50%;
@@ -427,12 +425,12 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   box-shadow: -0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.4);
 }
 .make-larger:hover::after {
-  content: "Enlarge a blob by dragging it over me! Keyboard use: press 2 with blob in focus";
+  content: 'Enlarge a blob by dragging it over me! Keyboard use: press 2 with blob in focus';
   top: 0.5em;
   right: calc(100% + 2em);
 }
 .make-larger:hover::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 70%;
   -webkit-transform: translateY(-30%) rotate(-20deg);
@@ -441,8 +439,7 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   left: calc(-1 * var(--tooltip-offset) * 1.5);
   border: 1em solid transparent;
   border-width: 0.43em 1.3em;
-  border-width: calc(var(--tooltip-offset) / 3)
-    calc(var(--tooltip-offset) * 1.5);
+  border-width: calc(var(--tooltip-offset) / 3) calc(var(--tooltip-offset) * 1.5);
   border-left-color: var(--tooltip-color);
 }
 .make-smaller {
@@ -458,12 +455,12 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   box-shadow: -0.2rem -0.2rem 0.5rem rgba(0, 0, 0, 0.4);
 }
 .make-smaller:hover::after {
-  content: "Make a blob smaller by releasing it near me! Keyboard use: press 1 with blob in focus";
+  content: 'Make a blob smaller by releasing it near me! Keyboard use: press 1 with blob in focus';
   top: -1.5rem;
   right: calc(100% + 2em);
 }
 .make-smaller:hover::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 20%;
   -webkit-transform: translateY(-80%) rotate(20deg);
@@ -471,8 +468,7 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   transform: translateY(-80%) rotate(20deg);
   left: calc(-1 * var(--tooltip-offset) * 1.5);
   border: 1em solid transparent;
-  border-width: calc(var(--tooltip-offset) / 3)
-    calc(var(--tooltip-offset) * 1.5);
+  border-width: calc(var(--tooltip-offset) / 3) calc(var(--tooltip-offset) * 1.5);
   border-left-color: var(--tooltip-color);
 }
 .make-more,
@@ -519,12 +515,12 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   box-shadow: 0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.4);
 }
 .make-more:hover::after {
-  content: "Release a blob here to duplicate it!  Keyboard use: press 3 with blob in focus";
+  content: 'Release a blob here to duplicate it!  Keyboard use: press 3 with blob in focus';
   top: 0.5em;
   left: calc(100% + 2em);
 }
 .make-more:hover::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 50%;
   -webkit-transform: translateY(-30%) rotate(20deg);
@@ -533,8 +529,7 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   left: calc(-1 * var(--tooltip-offset) / 3);
   border: 1em solid transparent;
   border-width: 0.43em 1.3em;
-  border-width: calc(var(--tooltip-offset) / 3)
-    calc(var(--tooltip-offset) * 1.5);
+  border-width: calc(var(--tooltip-offset) / 3) calc(var(--tooltip-offset) * 1.5);
   border-right-color: var(--tooltip-color);
 }
 .delete-blob {
@@ -548,12 +543,12 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   box-shadow: 0.2rem -0.2rem 0.5rem rgba(0, 0, 0, 0.4);
 }
 .delete-blob:hover::after {
-  content: "Remove a blob by bringing it to me! Keyboard use: press Delete with blob in focus";
+  content: 'Remove a blob by bringing it to me! Keyboard use: press Delete with blob in focus';
   bottom: 0.5em;
   left: calc(100% + 2em);
 }
 .delete-blob:hover::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 50%;
   -webkit-transform: translateY(-80%) rotate(-20deg);
@@ -561,8 +556,7 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   transform: translateY(-80%) rotate(-20deg);
   left: calc(-1 * var(--tooltip-offset) / 3);
   border: 1rem solid transparent;
-  border-width: calc(var(--tooltip-offset) / 3)
-    calc(var(--tooltip-offset) * 1.5);
+  border-width: calc(var(--tooltip-offset) / 3) calc(var(--tooltip-offset) * 1.5);
   border-right-color: var(--tooltip-color);
 }
 .colorblock {
@@ -582,7 +576,7 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   }
 } /*END media*/
 .colorblock:hover::after {
-  content: "Release a blob near me to change color! Keyboard use: press Enter with blob in focus";
+  content: 'Release a blob near me to change color! Keyboard use: press Enter with blob in focus';
   position: absolute;
   top: -0.5em;
   left: calc(var(--tooltip-width) * -1 - var(--tooltip-offset));
@@ -602,7 +596,7 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   border-bottom: gray 1px solid;
 }
 .colorblock:hover::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 50%;
   -webkit-transform: translateY(-50%);
