@@ -132,6 +132,7 @@ export default function JokesPage({
           reset={titleReset}
           instructions={titleTryTappingTheShapes}
         />
+
         <div className='inner-wrap'>
           <section className='joke-container card introduction'>
             <div>
