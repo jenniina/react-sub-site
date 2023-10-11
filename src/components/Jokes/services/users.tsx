@@ -1,26 +1,35 @@
-import axios from 'axios'
+import axios, { Axios, AxiosResponse } from 'axios'
 import { IUser as user } from '../interfaces'
 
 const VITE_BASE_URI = import.meta.env.VITE_BASE_URI
 const baseUrl = VITE_BASE_URI ? `${VITE_BASE_URI}/api/users` : '/api/users'
 
+const token = localStorage.getItem('token')
+
+// Include the token in the request headers
+const config = {
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+}
+
 const getAll = async () => {
-  const response = await axios.get(baseUrl)
+  const response = await axios.get(baseUrl, config)
   return response.data
 }
 
 const createNewUser = async (newUser: user) => {
   const response = await axios.post(baseUrl + '/register', newUser)
-  return response.data
+  return response
 }
 
 const deleteUser = async (id: user['_id']) => {
-  const response = await axios.delete(`${baseUrl}/${id}`)
-  return response.data
+  const response = await axios.delete(`${baseUrl}/${id}`, config)
+  return response.data as AxiosResponse<{ user: user; message: string }>
 }
 
 const updateUser = async (user: user) => {
-  const response = await axios.put(`${baseUrl}/${user._id}`, user)
+  const response = await axios.put(`${baseUrl}/${user._id}`, user, config)
   return response.data
 }
 
@@ -29,15 +38,10 @@ const searchUsername = async (username: string) => {
   return response.data
 }
 
-const searchId = async (id: string) => {
+const searchId = async (id: string | undefined) => {
   const response = await axios.get(`${baseUrl}/${id}`)
-  return response.data
+  return response.data as user
 }
-
-// const updateUserJokes = async (user: user) => {
-//   const response = await axios.put(`${baseUrl}/${user._id}/update-jokes`, user)
-//   return response.data
-// }
 
 export default {
   getAll,

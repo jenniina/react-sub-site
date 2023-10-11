@@ -1,14 +1,18 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { IUser } from '../interfaces'
 import userService from '../services/users'
+import AppThunk from '../store'
+import { AxiosResponse } from 'axios'
 
 const usersSlice = createSlice({
   name: 'users',
   initialState: [] as IUser[],
   reducers: {
-    register(state: IUser[], action) {
-      const updatedUser = action.payload
-      return state.map((user) => (user._id !== updatedUser._id ? user : updatedUser))
+    register(state, action) {
+      //state.push(action.payload);
+      return [...state, action.payload]
+      //   const updatedUser = action.payload
+      //   return state.map((user) => (user._id !== updatedUser._id ? user : updatedUser))
     },
     setUsers(_state, action) {
       return action.payload
@@ -39,18 +43,42 @@ export const initializeUsers = () => {
     dispatch({ type: 'users/setUsers', payload: users })
   }
 }
-
+interface IContent {
+  user: IUser
+  message: string
+}
 export const createUser = (newUser: IUser) => {
-  return async (dispatch: (arg0: { payload: any; type: 'users/register' }) => void) => {
-    const user = await userService.createNewUser(newUser)
-    dispatch({ type: 'users/register', payload: user })
+  return async (
+    dispatch: (arg0: { payload: IUser; type: 'users/register' }) => IContent
+  ) => {
+    const response = (await userService.createNewUser(newUser)) as AxiosResponse<IContent>
+    dispatch(register(response.data))
+    return response.data
   }
 }
 
+// export const createUser = (newUser: IUser) => {
+//   return async (dispatch: (arg0: { type: string; payload: any }) => IContent) => {
+//     const response = (await userService.createNewUser(newUser)) as AxiosResponse<IContent>
+//     // Dispatch an action to update the state with the response data
+//     return dispatch(createUserSuccess(response))
+//   }
+// }
+
+// // Action creator for updating the state after a successful create user request
+// const createUserSuccess = (payload: AxiosResponse<IContent, any>) => {
+//   return {
+//     type: 'users/register',
+//     payload: payload,
+//   }
+// }
+
 export const removeUser = (id: IUser['_id']) => {
-  return async (dispatch: (arg0: { payload: IUser; type: 'users/remove' }) => void) => {
+  return async (
+    dispatch: (arg0: { payload: IUser['_id']; type: 'users/remove' }) => void
+  ) => {
     const deletedUser = await userService.deleteUser(id)
-    dispatch({ type: 'users/remove', payload: deletedUser })
+    dispatch(remove(deletedUser))
   }
 }
 
@@ -61,20 +89,21 @@ export const updateUser = (user: IUser) => {
   }
 }
 
-export const findUserbyUsername = (username: string) => {
-  return async (
-    dispatch: (arg0: { payload: any; type: 'users/searchUsername' }) => IUser
-  ) => {
-    const user = await userService.searchUsername(username)
-    dispatch({ type: 'users/searchUsername', payload: user })
-    return user.user
-  }
-}
+// export const findUserbyUsername = (username: string | undefined) => {
+//   return async (
+//     dispatch: (arg0: { payload: any; type: 'users/searchUsername' }) => IUser
+//   ) => {
+//     const user = await userService.searchUsername(username)
+//     dispatch({ type: 'users/searchUsername', payload: user })
+//     return user.user
+//   }
+// }
 
 export const findUserById = (id: string) => {
   return async (dispatch: (arg0: { payload: any; type: 'users/searchId' }) => IUser) => {
     const user = await userService.searchId(id)
-    return dispatch({ type: 'users/searchId', payload: user._id })
+    dispatch({ type: 'users/searchId', payload: user._id })
+    return user
   }
 }
 

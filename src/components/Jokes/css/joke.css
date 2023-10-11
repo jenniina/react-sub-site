@@ -1,3 +1,15 @@
+.joke-container > div {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--gap) * 3);
+  margin: 0 auto;
+  max-width: calc(100vw - calc(var(--page-padding) * 4) - var(--scrollbar_width));
+}
+.joke-container .open.accordion-container {
+  flex: 1 0 100%;
+}
 .joke-container.introduction > div,
 .joke-container .features-container {
   display: flex;
@@ -25,6 +37,7 @@
 }
 .joke-container .select-container.language.main {
   margin-bottom: 2em;
+  align-items: center;
 }
 .joke-container legend {
   text-align: center;
@@ -163,6 +176,13 @@ button.close,
   border-color: transparent;
   color: inherit;
 }
+.logout-wrap {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--gap) * 2);
+}
 button.close {
   display: flex;
   flex-flow: row nowrap;
@@ -201,18 +221,25 @@ button.danger:hover {
   gap: calc(var(--gap) * 2);
   justify-content: center;
 }
-.register-login-wrap > .open,
-.register-login-wrap > .logged {
-  flex: 1 0 100%;
-}
 
-.login-wrap p {
-  width: 100%;
+.accordion-container form.login,
+.accordion-container form.register {
+  margin: 0 auto;
+  max-width: 20em;
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: column nowrap;
   gap: calc(var(--gap) * 2);
   align-items: center;
-  justify-content: space-between;
+}
+
+.joke-container .login-container.closed {
+  order: 2;
+}
+.joke-container .register-container.closed {
+  order: 1;
+}
+.joke-container .login-container.open {
+  order: 1;
 }
 .joke-container {
   --border-radius: 1.5em;
@@ -239,7 +266,7 @@ form.joke > *:not(.toggle) {
   padding-left: 0.6em; /* For when the multiple select is empty, with 'Select an option' */
 }
 
-.joke-container .select-container.category:not(.submit) {
+.joke-container .select-container.category {
   max-width: 100%;
   display: flex;
   flex-flow: column nowrap;
@@ -364,6 +391,8 @@ article {
   align-items: center;
   gap: var(--gap);
   font-size: 120%;
+  max-width: max-content;
+  margin: 0 auto;
 }
 
 article.joke {
@@ -502,7 +531,17 @@ main .notification p {
   align-items: center;
   gap: calc(var(--gap) / 2);
 }
-.joke-container .select-container > .instructions {
+.joke-container .toggle-container,
+form.joke .select-container.language,
+form.joke .select-container.category {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--gap) / 2);
+}
+.joke-container .select-container > .instructions,
+.joke-container .toggle-container .label {
   text-align: center;
   font-size: 0.8em;
 }
@@ -547,8 +586,8 @@ main .notification p {
   .toggle-wrap .select-container.sortby {
     flex-flow: row wrap;
   }
-  .joke-container .select-container.language:not(.submit),
-  .joke-container .select-container.language:not(.submit) .container {
+  .joke-container .select-container.language,
+  .joke-container .select-container.language .container {
     flex: 0 1 max-content;
     max-width: max-content;
     width: max-content;
@@ -603,8 +642,8 @@ main .notification p {
     width: max-content;
     margin: 0;
   }
-  .joke-container .select-container > .instructions {
-    margin-bottom: 0.5em;
+  .joke-container .toggle-container .label {
+    margin-bottom: 0.4em;
   }
   .joke-container .multiple.container,
   .joke-container button {
@@ -641,8 +680,7 @@ main .notification p {
   .joke-container .full {
     flex: 1 0 100%;
   }
-  .joke-container .language:not(.submit),
-  .joke-container .toggle-wrap {
+  .joke-container .language .joke-container .toggle-wrap {
     flex: 0 0 calc(50% - var(--gap) * 2);
   }
   .joke-container .toggle-wrap {
@@ -654,5 +692,15 @@ main .notification p {
   }
   .joke-container .select-container + .accordion-container.closed {
     margin: 0;
+  }
+}
+@media (min-width: 1200px) {
+  .joke-container .toggle-container,
+  form.joke .select-container.language,
+  form.joke .select-container.category {
+    flex-flow: row nowrap;
+  }
+  .joke-container .toggle-container .label {
+    margin-bottom: 0;
   }
 }
