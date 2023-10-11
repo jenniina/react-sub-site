@@ -453,6 +453,22 @@ export enum ECategoryTitle {
   pt = 'Categoria',
   cs = 'Kategorie',
 }
+export enum ESelectACategory {
+  en = 'Select a category',
+  es = 'Seleccione una categoría',
+  fr = 'Sélectionnez une catégorie',
+  de = 'Wählen Sie eine Kategorie',
+  pt = 'Selecione uma categoria',
+  cs = 'Vyberte kategorii',
+}
+export enum ESelectALanguage {
+  en = 'Select a language',
+  es = 'Seleccione un idioma',
+  fr = 'Sélectionnez une langue',
+  de = 'Wählen Sie eine Sprache',
+  pt = 'Selecione um idioma',
+  cs = 'Vyberte jazyk',
+}
 export enum ESafeTitle {
   en = 'Safe',
   es = 'Seguro',
@@ -524,6 +540,15 @@ export enum EClickToReveal {
   de = 'Klicken Sie zum Enthüllen',
   pt = 'Clique para revelar',
   cs = 'Kliknutím zobrazíte',
+}
+
+export enum EClickHereToSeeFeatures {
+  en = 'Click here to see the features',
+  cs = 'Klikněte zde pro zobrazení funkcí',
+  de = 'Klicken Sie hier, um die Funktionen anzuzeigen',
+  es = 'Haga clic aquí para ver las funciones',
+  fr = 'Cliquez ici pour voir les fonctionnalités',
+  pt = 'Clique aqui para ver os recursos',
 }
 
 export enum ELogin {
@@ -630,7 +655,14 @@ export enum ESafemodeTitle {
   pt = 'Modo seguro',
   cs = 'Bezpečný režim',
 }
-
+export enum ESearchByKeyword {
+  en = 'Search by keyword',
+  es = 'Buscar por palabra clave',
+  fr = 'Recherche par mot-clé',
+  de = 'Suche nach Schlüsselwort',
+  pt = 'Pesquisar por palavra-chave',
+  cs = 'Hledat podle klíčového slova',
+}
 export enum EOnOff {
   en = 'On/Off',
   es = 'Encendido/Apagado',
@@ -673,6 +705,54 @@ export enum ELoginOrRegisterToSave {
   pt = 'Por favor, faça login ou registre-se para salvar a piada',
   cs = 'Přihlaste se nebo se zaregistrujte, abyste uložili vtip',
 }
+export enum ERegister {
+  en = 'Register',
+  es = 'Registrarse',
+  fr = "S'inscrire",
+  de = 'Registrieren',
+  pt = 'Registo',
+  cs = 'Registrovat',
+}
+export enum ERegistration {
+  en = 'Registration',
+  es = 'Registro',
+  fr = 'Inscription',
+  de = 'Registrierung',
+  pt = 'Registro',
+  cs = 'Registrace',
+}
+export enum EEmail {
+  en = 'Email',
+  es = 'Correo electrónico',
+  fr = 'Email',
+  de = 'Email',
+  pt = 'O email',
+  cs = 'E-mailem',
+}
+export enum ENickname {
+  en = 'Nickname',
+  es = 'Apodo',
+  fr = 'Surnom',
+  de = 'Spitzname',
+  pt = 'Apelido',
+  cs = 'Přezdívka',
+}
+export enum EPassword {
+  en = 'Password',
+  es = 'Contraseña',
+  fr = 'Mot de passe',
+  de = 'Passwort',
+  pt = 'Senha',
+  cs = 'Heslo',
+}
+export enum EConfirmPassword {
+  en = 'Confirm Password',
+  es = 'Confirmar contraseña',
+  fr = 'Confirmez le mot de passe',
+  de = 'Passwort bestätigen',
+  pt = 'Confirme a Senha',
+  cs = 'Potvrďte heslo',
+}
 export enum ERegistrationSuccesful {
   en = 'Registration successful',
   es = 'Registro exitoso',
@@ -680,6 +760,14 @@ export enum ERegistrationSuccesful {
   de = 'Registrierung erfolgreich',
   pt = 'Registro bem sucedido',
   cs = 'Registrace úspěšná',
+}
+export enum EAny {
+  en = 'Any',
+  es = 'Cualquiera',
+  fr = "N'importe quel",
+  de = 'Jede',
+  pt = 'Qualquer',
+  cs = 'Jakýkoliv',
 }
 export enum EError {
   en = 'Error',

@@ -19,7 +19,7 @@ const getAll = async () => {
   return response.data
 }
 
-const getJokesByUserId = async (userId: string) => {
+const getJokesByUserId = async (userId: string | undefined) => {
   const request = axios.get(`${baseUrl}/user/${userId}`)
   return request.then((response) => response.data)
 }

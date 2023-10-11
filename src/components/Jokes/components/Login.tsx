@@ -6,19 +6,37 @@ import { useAppDispatch } from '../hooks/useAppDispatch'
 import { notify } from '../reducers/notificationReducer'
 import { initializeUser, login, logout } from '../reducers/authReducer'
 import { useSelector } from 'react-redux'
-import { ELogin, ELogout, ELoggedInAs } from '../interfaces'
+import {
+  ELogin,
+  ELogout,
+  ELoggedInAs,
+  EClose,
+  ELanguages,
+  EEmail,
+  EPassword,
+} from '../interfaces'
 
 interface LoginProps {
   titleLogin: ELogin
   titleLogout: ELogout
   titleLoggedInAs: ELoggedInAs
+  language: ELanguages
 }
 
-const FormLogin = ({ titleLogin, titleLogout, titleLoggedInAs }: LoginProps) => {
+const FormLogin = ({
+  titleLogin,
+  titleLogout,
+  titleLoggedInAs,
+  language,
+}: LoginProps) => {
   const dispatch = useAppDispatch()
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+
+  const titleEmail = EEmail[language]
+  const titlePassword = EPassword[language]
+
   const formLoginRef = useRef(null)
 
   const user = useSelector((state: ReducerProps) => {
@@ -35,33 +53,39 @@ const FormLogin = ({ titleLogin, titleLogout, titleLoggedInAs }: LoginProps) => 
 
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault()
-    dispatch(notify(`Logging in...`, false, 8))
+    dispatch(notify(`Logging in...`, false, 4))
 
     await dispatch(login(username, password))
       .then(() => {
         setUsername('')
         setPassword('')
       })
-      .catch((e) =>
-        dispatch(notify(`Error: ${(e as AxiosError<any>).response?.data.error}`, true, 8))
-      )
+      .catch((e) => {
+        console.log(e)
+        dispatch(notify(`Error: ${e.response.data.message}`, true, 8))
+      })
   }
 
   return (
-    <div className='login-wrap'>
+    <>
       {user ? (
-        <p>
+        <div className='logout-wrap'>
           <span>
             {titleLoggedInAs} {user?.name ? user?.name : user.username}{' '}
           </span>
           <button onClick={handleLogout} id='logout' className='logout danger'>
             {titleLogout} &times;
           </button>
-        </p>
+        </div>
       ) : (
         <>
-          <Accordion className='' text={titleLogin} ref={formLoginRef}>
-            <h2>Log in</h2>
+          <Accordion
+            className='login'
+            text={`» ${titleLogin} «`}
+            ref={formLoginRef}
+            close={EClose[language as ELanguages]}
+          >
+            <h2>{titleLogin}</h2>
 
             <form onSubmit={handleLogin} className='login'>
               <div className='input-wrap'>
@@ -73,7 +97,7 @@ const FormLogin = ({ titleLogin, titleLogout, titleLoggedInAs }: LoginProps) => 
                     required
                     onChange={({ target }) => setUsername(target.value)}
                   />
-                  <span>username: </span>
+                  <span>{titleEmail}: </span>
                 </label>
               </div>
               <div className='input-wrap'>
@@ -85,7 +109,7 @@ const FormLogin = ({ titleLogin, titleLogout, titleLoggedInAs }: LoginProps) => 
                     value={password}
                     onChange={({ target }) => setPassword(target.value)}
                   />
-                  <span>password: </span>
+                  <span>{titlePassword}: </span>
                 </label>
               </div>
               <button type='submit' id='login' className='login'>
@@ -95,7 +119,7 @@ const FormLogin = ({ titleLogin, titleLogout, titleLoggedInAs }: LoginProps) => 
           </Accordion>
         </>
       )}
-    </div>
+    </>
   )
 }
 
