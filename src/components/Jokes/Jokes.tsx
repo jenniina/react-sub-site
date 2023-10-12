@@ -428,9 +428,8 @@ function Jokes({
     }
     dispatch(createUser({ name, username, password, language, verified: true }))
       .then((r) => {
-        console.log(r)
+        //console.log(r)
         const userId = r.user._id
-        console.log('User ID:', userId)
         //dispatch(notify(`${titleRegistrationSuccesful}`, false, 8))
         dispatch(notify(r.message, false, 8))
         dispatch(findUserById(userId || '')).then((searchForUser) => {
@@ -556,7 +555,7 @@ function Jokes({
         //console.log(data)
         setLoading(false)
         if (data.error) {
-          console.log(data)
+          //console.log(data)
           setJoke('')
           setDelivery('')
           dispatch(notify(`${titleError}! ${titleNoJokeFound}`, true, 8))
