@@ -5,6 +5,7 @@ import Accordion from '../../Accordion/Accordion'
 import { useAppDispatch } from '../hooks/useAppDispatch'
 import { notify } from '../reducers/notificationReducer'
 import { initializeUser, login, logout } from '../reducers/authReducer'
+import PasswordReset from './PasswordReset'
 import { useSelector } from 'react-redux'
 import {
   ELogin,
@@ -58,6 +59,13 @@ const FormLogin = ({
     await dispatch(login(username, password, language))
       .then(() => {
         dispatch(notify(`Logging in...`, false, 2))
+        setUsername('')
+        setPassword('')
+        //scroll to anchor "userjokes"
+        const anchor = document.querySelector('#userjokes')
+        if (anchor) {
+          anchor.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
       })
       .catch((e) => {
         console.log(e)
@@ -118,6 +126,9 @@ const FormLogin = ({
                 {titleLogin}
               </button>
             </form>
+            <div className='flex'>
+              <PasswordReset language={language} />
+            </div>
           </Accordion>
         </>
       )}

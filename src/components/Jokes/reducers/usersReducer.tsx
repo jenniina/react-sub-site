@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { IUser } from '../interfaces'
+import { ELanguages, IUser } from '../interfaces'
 import userService from '../services/users'
 import AppThunk from '../store'
 import { AxiosResponse } from 'axios'
@@ -38,6 +38,12 @@ const usersSlice = createSlice({
       const id = action.payload._id
       const updatedUser = action.payload
       return state.map((user) => (user?._id !== id ? user : updatedUser))
+    },
+    forgotPassword(state, action) {
+      return action.payload
+      // const id = action.payload._id
+      // const updatedUser = action.payload
+      // return state.map((user) => (user?._id !== id ? user : updatedUser))
     },
   },
 })
@@ -116,9 +122,25 @@ export const updateUserToken = (user: Pick<IUser, 'username' | 'language'>) => {
   return async (
     dispatch: (arg0: { payload: any; type: 'users/updateToken' }) => void
   ) => {
-    const updatedUser: IContent = await userService.updateToken(user)
-    dispatch(updateToken(updatedUser))
-    //dispatch({ type: 'users/updateToken', payload: updatedUser })
+    const updated: IContent = await userService.updateToken(user)
+    dispatch(updateToken(updated))
+    //dispatch({ type: 'users/updateToken', payload: updated })
+  }
+}
+
+export const forgot = (username: string | undefined) => {
+  return async (
+    dispatch: (arg0: { payload: any; type: 'users/forgotPassword' }) => void
+  ) => {
+    if (username) {
+      const updated: IContent = await userService.forgot(username)
+      console.log('updated', updated)
+      dispatch(forgotPassword(updated))
+      //dispatch({ type: 'users/updateToken', payload: updated })
+      return updated
+    } else {
+      throw Error('Username is undefined')
+    }
   }
 }
 
@@ -130,5 +152,6 @@ export const {
   searchUsername,
   searchId,
   updateToken,
+  forgotPassword,
 } = usersSlice.actions
 export default usersSlice.reducer

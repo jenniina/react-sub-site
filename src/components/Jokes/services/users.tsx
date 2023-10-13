@@ -1,5 +1,6 @@
 import axios, { Axios, AxiosResponse } from 'axios'
-import { IUser as user } from '../interfaces'
+import { ELanguages, IUser as user } from '../interfaces'
+import CircularJSON from 'circular-json'
 
 const VITE_BASE_URI = import.meta.env.VITE_BASE_URI
 const baseUrl = VITE_BASE_URI ? `${VITE_BASE_URI}/api/users` : '/api/users'
@@ -48,6 +49,12 @@ const searchId = async (id: string | undefined) => {
   return response.data as user
 }
 
+const forgot = async (username: string | undefined) => {
+  const response = await axios.post(`${baseUrl}/forgot`, { username: username })
+  console.log('response.data: ', response.data)
+  return response.data
+}
+
 export default {
   getAll,
   createNewUser,
@@ -56,4 +63,5 @@ export default {
   searchUsername,
   searchId,
   updateToken,
+  forgot,
 }
