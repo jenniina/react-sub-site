@@ -53,16 +53,18 @@ const FormLogin = ({
 
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault()
-    dispatch(notify(`Logging in...`, false, 4))
+    //dispatch(notify(`Logging in...`, false, 4))
 
-    await dispatch(login(username, password))
+    await dispatch(login(username, password, language))
       .then(() => {
-        setUsername('')
-        setPassword('')
+        dispatch(notify(`Logging in...`, false, 2))
       })
       .catch((e) => {
         console.log(e)
-        dispatch(notify(`Error: ${e.response.data.message}`, true, 8))
+        if (e.code === 'ERR_NETWORK') {
+          dispatch(notify(`Error: ${e.message}`, true, 8))
+        } else if (e.code === 'ERR_BAD_REQUEST')
+          dispatch(notify(`Error: ${e.response.data.message}`, true, 8))
       })
   }
 

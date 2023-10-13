@@ -34,6 +34,11 @@ const usersSlice = createSlice({
       const id = action.payload
       return state.filter((user) => user?._id === id) as IUser[]
     },
+    updateToken(state, action) {
+      const id = action.payload._id
+      const updatedUser = action.payload
+      return state.map((user) => (user?._id !== id ? user : updatedUser))
+    },
   },
 })
 
@@ -85,7 +90,7 @@ export const removeUser = (id: IUser['_id']) => {
 export const updateUser = (user: IUser) => {
   return async (dispatch: (arg0: { payload: IUser; type: 'users/update' }) => void) => {
     const updatedUser = await userService.updateUser(user)
-    dispatch({ type: 'users/update', payload: updatedUser })
+    dispatch(update(updatedUser))
   }
 }
 
@@ -107,6 +112,23 @@ export const findUserById = (id: string) => {
   }
 }
 
-export const { register, setUsers, remove, update, searchUsername, searchId } =
-  usersSlice.actions
+export const updateUserToken = (user: Pick<IUser, 'username' | 'language'>) => {
+  return async (
+    dispatch: (arg0: { payload: any; type: 'users/updateToken' }) => void
+  ) => {
+    const updatedUser: IContent = await userService.updateToken(user)
+    dispatch(updateToken(updatedUser))
+    //dispatch({ type: 'users/updateToken', payload: updatedUser })
+  }
+}
+
+export const {
+  register,
+  setUsers,
+  remove,
+  update,
+  searchUsername,
+  searchId,
+  updateToken,
+} = usersSlice.actions
 export default usersSlice.reducer

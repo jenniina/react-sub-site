@@ -33,6 +33,11 @@ const updateUser = async (user: user) => {
   return response.data
 }
 
+const updateToken = async (user: Pick<user, 'username' | 'language'>) => {
+  const response = await axios.put(`${baseUrl}/request-new-token`, user)
+  return response.data
+}
+
 const searchUsername = async (username: string) => {
   const response = await axios.get(`${baseUrl}/username/${username}`)
   return response.data
@@ -50,4 +55,5 @@ export default {
   updateUser,
   searchUsername,
   searchId,
+  updateToken,
 }

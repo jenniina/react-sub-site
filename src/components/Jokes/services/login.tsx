@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 
 const VITE_BASE_URI = import.meta.env.VITE_BASE_URI
 const baseUrl = VITE_BASE_URI ? `${VITE_BASE_URI}/api/login` : '/api/login'
@@ -6,17 +6,23 @@ const baseUrl = VITE_BASE_URI ? `${VITE_BASE_URI}/api/login` : '/api/login'
 type credentials = {
   username: string
   password: string
+  language: string
+}
+let token: string | null = null
+let config: AxiosRequestConfig<any> | undefined
+
+const setToken = (newToken: string | null) => {
+  token = `Bearer ${newToken}`
+  config = {
+    headers: { Authorization: token },
+  }
 }
 
 const login = async (credentials: credentials) => {
-  const response = await axios.post(baseUrl, credentials)
+  const response = await axios.post(baseUrl, credentials, config)
   const { token } = response.data
-
-  // Store the token securely (e.g., in cookies or local storage)
-  // Ensure you handle this securely based on your application's requirements
   localStorage.setItem('token', token)
-
   return response.data
 }
 
-export default { login }
+export default { login, setToken }
