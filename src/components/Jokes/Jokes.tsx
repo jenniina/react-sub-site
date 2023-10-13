@@ -65,6 +65,7 @@ import {
   updateUser,
   findUserById,
   initializeUsers,
+  updateUserToken,
 } from './reducers/usersReducer'
 import {
   createJoke,
@@ -221,6 +222,8 @@ function Jokes({
   const titleKeyword = EKeyword[language]
   const titleJokeCategoryAny = jokeCategoryAny[language]
   const titleClickHereToSeeFeatures = EClickHereToSeeFeatures[language]
+  const [showToken, setShowToken] = useState(false)
+
   const dispatch = useAppDispatch()
 
   useEffect(() => {

@@ -1,5 +1,6 @@
 import axios, { Axios, AxiosResponse } from 'axios'
-import { IUser as user } from '../interfaces'
+import { ELanguages, IUser as user } from '../interfaces'
+import CircularJSON from 'circular-json'
 
 const VITE_BASE_URI = import.meta.env.VITE_BASE_URI
 const baseUrl = VITE_BASE_URI ? `${VITE_BASE_URI}/api/users` : '/api/users'
@@ -33,6 +34,11 @@ const updateUser = async (user: user) => {
   return response.data
 }
 
+const updateToken = async (user: Pick<user, 'username' | 'language'>) => {
+  const response = await axios.put(`${baseUrl}/request-new-token`, user)
+  return response.data
+}
+
 const searchUsername = async (username: string) => {
   const response = await axios.get(`${baseUrl}/username/${username}`)
   return response.data
@@ -43,6 +49,12 @@ const searchId = async (id: string | undefined) => {
   return response.data as user
 }
 
+const forgot = async (username: string | undefined) => {
+  const response = await axios.post(`${baseUrl}/forgot`, { username: username })
+  console.log('response.data: ', response.data)
+  return response.data
+}
+
 export default {
   getAll,
   createNewUser,
@@ -50,4 +62,6 @@ export default {
   updateUser,
   searchUsername,
   searchId,
+  updateToken,
+  forgot,
 }

@@ -241,6 +241,15 @@ button.danger:hover {
 .joke-container .login-container.open {
   order: 1;
 }
+.joke-container .password-reset-container {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: calc(var(--gap) * 2);
+  align-items: center;
+  justify-content: center;
+  margin-top: 2em;
+  font-size: 0.8em;
+}
 .joke-container {
   --border-radius: 1.5em;
 }

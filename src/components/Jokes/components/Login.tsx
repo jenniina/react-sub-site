@@ -5,6 +5,7 @@ import Accordion from '../../Accordion/Accordion'
 import { useAppDispatch } from '../hooks/useAppDispatch'
 import { notify } from '../reducers/notificationReducer'
 import { initializeUser, login, logout } from '../reducers/authReducer'
+import PasswordReset from './PasswordReset'
 import { useSelector } from 'react-redux'
 import {
   ELogin,
@@ -53,16 +54,25 @@ const FormLogin = ({
 
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault()
-    dispatch(notify(`Logging in...`, false, 4))
+    //dispatch(notify(`Logging in...`, false, 4))
 
-    await dispatch(login(username, password))
+    await dispatch(login(username, password, language))
       .then(() => {
+        dispatch(notify(`Logging in...`, false, 2))
         setUsername('')
         setPassword('')
+        //scroll to anchor "userjokes"
+        const anchor = document.querySelector('#userjokes')
+        if (anchor) {
+          anchor.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
       })
       .catch((e) => {
         console.log(e)
-        dispatch(notify(`Error: ${e.response.data.message}`, true, 8))
+        if (e.code === 'ERR_NETWORK') {
+          dispatch(notify(`Error: ${e.message}`, true, 8))
+        } else if (e.code === 'ERR_BAD_REQUEST')
+          dispatch(notify(`Error: ${e.response.data.message}`, true, 8))
       })
   }
 
@@ -116,6 +126,9 @@ const FormLogin = ({
                 {titleLogin}
               </button>
             </form>
+            <div className='flex'>
+              <PasswordReset language={language} />
+            </div>
           </Accordion>
         </>
       )}

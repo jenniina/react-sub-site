@@ -721,6 +721,22 @@ export enum ERegistration {
   pt = 'Registro',
   cs = 'Registrace',
 }
+export enum EForgotPassword {
+  en = 'Forgot Password?',
+  es = '¿Olvidaste tu contraseña?',
+  fr = 'Mot de passe oublié?',
+  de = 'Passwort vergessen?',
+  pt = 'Esqueceu a senha?',
+  cs = 'Zapomněli jste heslo?',
+}
+export enum ESendResetLink {
+  en = 'Send Reset Link',
+  es = 'Enviar enlace de restablecimiento',
+  fr = 'Envoyer le lien de réinitialisation',
+  de = 'Link zum Zurücksetzen senden',
+  pt = 'Enviar link de redefinição',
+  cs = 'Odeslat odkaz na obnovení',
+}
 export enum EEmail {
   en = 'Email',
   es = 'Correo electrónico',
