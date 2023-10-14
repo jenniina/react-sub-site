@@ -53,6 +53,7 @@ import {
   ESafemodeTitle,
   LanguageOfLanguage,
   ESelectALanguage,
+  EAJokeGeneratorForTheComicallyInclied,
 } from './interfaces'
 import { useSelector } from 'react-redux'
 import Login from './components/Login'
@@ -222,6 +223,8 @@ function Jokes({
   const titleKeyword = EKeyword[language]
   const titleJokeCategoryAny = jokeCategoryAny[language]
   const titleClickHereToSeeFeatures = EClickHereToSeeFeatures[language]
+  const titleAJokeGeneratorForTheComicallyInclied =
+    EAJokeGeneratorForTheComicallyInclied[language]
   const [showToken, setShowToken] = useState(false)
 
   const dispatch = useAppDispatch()
@@ -427,9 +430,9 @@ function Jokes({
     e.preventDefault()
     if (password !== confirmPassword) {
       dispatch(notify(`${titlePasswordsDoNotMatch}`, true, 8))
-      //return
+      return false
     }
-    dispatch(createUser({ name, username, password, language, verified: true }))
+    dispatch(createUser({ name, username, password, language }))
       .then((r) => {
         //console.log(r)
         const userId = r.user._id
@@ -472,7 +475,7 @@ function Jokes({
       })
       .catch((e) => {
         console.log(e)
-        dispatch(notify(`Error: ${e.response.data.message}`, true, 8))
+        dispatch(notify(`${EError[language]}: ${e.response.data.message}`, true, 8))
       })
   }
 
@@ -699,6 +702,7 @@ function Jokes({
 
           <div className='jokes-wrap'>
             <h2>{title}</h2>
+            <p className='center mb3'>{titleAJokeGeneratorForTheComicallyInclied}</p>
 
             <FormJoke
               handleFormSubmit={handleFormSubmit}

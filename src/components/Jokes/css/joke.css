@@ -170,7 +170,7 @@ section.joke-container > div::after {
 }
 button.delete,
 button.close,
-.login-wrap button.logout {
+button.logout {
   min-width: 5em;
   background: none;
   border-color: transparent;
@@ -192,7 +192,9 @@ button.close {
   font-size: 0.8em;
 }
 button.close:hover,
-button.close:focus {
+button.close:focus,
+button.logout:hover,
+button.logout:focus {
   color: inherit;
 }
 button.close .times {
@@ -249,6 +251,9 @@ button.danger:hover {
   justify-content: center;
   margin-top: 2em;
   font-size: 0.8em;
+}
+.joke-container .password-reset-container .input-wrap {
+  font-size: 1.2em;
 }
 .joke-container {
   --border-radius: 1.5em;

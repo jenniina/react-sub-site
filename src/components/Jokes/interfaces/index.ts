@@ -406,13 +406,29 @@ export enum ETitle {
   cs = 'Společník komika',
 }
 export enum ESubmit {
-  en = 'Generate a Joke',
-  cs = 'Vygenerovat vtip',
-  de = 'Einen Witz generieren',
-  es = 'Generar un chiste',
-  fr = 'Générer une blague',
-  pt = 'Gerar uma piada',
+  en = 'Find a joke',
+  es = 'Encuentra una broma',
+  fr = 'Trouver une blague',
+  de = 'Finde einen Witz',
+  pt = 'Encontre uma piada',
+  cs = 'Najít vtip',
 }
+export enum EAJokeGeneratorForTheComicallyInclied {
+  en = 'A Joke Generator for the Comically Inclined',
+  es = 'Un generador de chistes para los cómicamente inclinados',
+  fr = 'Un générateur de blagues pour les comiquement enclins',
+  de = 'Ein Witzgenerator für die komisch geneigten',
+  pt = 'Um gerador de piadas para os comicamente inclinados',
+  cs = 'Generátor vtipů pro komicky nakloněné',
+}
+// export enum ESubmit {
+//   en = 'Generate a Joke',
+//   cs = 'Vygenerovat vtip',
+//   de = 'Einen Witz generieren',
+//   es = 'Generar un chiste',
+//   fr = 'Générer une blague',
+//   pt = 'Gerar uma piada',
+// }
 export enum ESend {
   en = 'Send',
   es = 'Enviar',
@@ -792,6 +808,30 @@ export enum EError {
   de = 'Error',
   pt = 'Erro',
   cs = 'Chyba',
+}
+export enum ELoggingIn {
+  en = 'Logging in...',
+  es = 'Iniciando sesión...',
+  fr = 'Connexion en cours...',
+  de = 'Anmeldung...',
+  pt = 'Entrando...',
+  cs = 'Přihlašování...',
+}
+export enum ESendingEmail {
+  en = 'Sending email...',
+  es = 'Enviando correo electrónico...',
+  fr = "Envoi d'email...",
+  de = 'E-Mail senden...',
+  pt = 'Enviando email...',
+  cs = 'Odesílání e-mailu...',
+}
+export enum EEmailSent {
+  en = 'Email sent',
+  es = 'Correo electrónico enviado',
+  fr = 'Email envoyé',
+  de = 'E-Mail gesendet',
+  pt = 'Email enviado',
+  cs = 'E-mail odeslán',
 }
 export enum ENoJokeFound {
   en = 'No joke found',

@@ -38,34 +38,34 @@ export default function JokesPage({
   const titleTryTappingTheShapes = ETryTappingTheShapes[language]
   const titleReset = EReset[language]
 
-  const options = (enumObj: typeof ELanguages) => {
-    return Object.keys(enumObj).map((key) => ({
-      value: enumObj[key as keyof typeof enumObj],
-      label: key,
-    })) as SelectOption[]
-  }
+  // const options = (enumObj: typeof ELanguages) => {
+  //   return Object.keys(enumObj).map((key) => ({
+  //     value: enumObj[key as keyof typeof enumObj],
+  //     label: key,
+  //   })) as SelectOption[]
+  // }
 
-  function getKeyByValue(
-    enumObj:
-      | typeof ECategory_en
-      | typeof ECategory_cs
-      | typeof ECategory_de
-      | typeof ECategory_es
-      | typeof ECategory_fr
-      | typeof ECategory_pt
-      | typeof EJokeType
-      | typeof ESafemode
-      | typeof ELanguages,
-    value: ECategory | EJokeType | ESafemode | ELanguages
-  ) {
-    for (const key in enumObj) {
-      if (enumObj[key as keyof typeof enumObj] === value) {
-        return key as SelectOption['label']
-      }
-    }
-    // Handle the case where the value is not found in the enum
-    return undefined
-  }
+  // function getKeyByValue(
+  //   enumObj:
+  //     | typeof ECategory_en
+  //     | typeof ECategory_cs
+  //     | typeof ECategory_de
+  //     | typeof ECategory_es
+  //     | typeof ECategory_fr
+  //     | typeof ECategory_pt
+  //     | typeof EJokeType
+  //     | typeof ESafemode
+  //     | typeof ELanguages,
+  //   value: ECategory | EJokeType | ESafemode | ELanguages
+  // ) {
+  //   for (const key in enumObj) {
+  //     if (enumObj[key as keyof typeof enumObj] === value) {
+  //       return key as SelectOption['label']
+  //     }
+  //   }
+  //   // Handle the case where the value is not found in the enum
+  //   return undefined
+  // }
 
   useEffect(() => {
     const languageFromStorage = localStorage.getItem('language')
