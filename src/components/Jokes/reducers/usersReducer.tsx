@@ -128,12 +128,12 @@ export const updateUserToken = (user: Pick<IUser, 'username' | 'language'>) => {
   }
 }
 
-export const forgot = (username: string | undefined) => {
+export const forgot = (username: string | undefined, language: string | ELanguages) => {
   return async (
     dispatch: (arg0: { payload: any; type: 'users/forgotPassword' }) => void
   ) => {
     if (username) {
-      const updated: IContent = await userService.forgot(username)
+      const updated: IContent = await userService.forgot(username, language)
       console.log('updated', updated)
       dispatch(forgotPassword(updated))
       //dispatch({ type: 'users/updateToken', payload: updated })

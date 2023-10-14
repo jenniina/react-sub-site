@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, FormEvent } from 'react'
 import { AxiosError } from 'axios'
-import { ReducerProps } from '../interfaces'
+import { EError, ELoggingIn, ReducerProps } from '../interfaces'
 import Accordion from '../../Accordion/Accordion'
 import { useAppDispatch } from '../hooks/useAppDispatch'
 import { notify } from '../reducers/notificationReducer'
@@ -54,11 +54,10 @@ const FormLogin = ({
 
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault()
-    //dispatch(notify(`Logging in...`, false, 4))
 
     await dispatch(login(username, password, language))
       .then(() => {
-        dispatch(notify(`Logging in...`, false, 2))
+        dispatch(notify(`${ELoggingIn[language]}`, false, 2))
         setUsername('')
         setPassword('')
         //scroll to anchor "userjokes"
@@ -70,9 +69,9 @@ const FormLogin = ({
       .catch((e) => {
         console.log(e)
         if (e.code === 'ERR_NETWORK') {
-          dispatch(notify(`Error: ${e.message}`, true, 8))
+          dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
         } else if (e.code === 'ERR_BAD_REQUEST')
-          dispatch(notify(`Error: ${e.response.data.message}`, true, 8))
+          dispatch(notify(`${EError[language]}: ${e.response.data.message}`, true, 8))
       })
   }
 

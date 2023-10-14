@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, FormEvent } from 'react'
 import { AxiosError } from 'axios'
-import { IUser, ReducerProps } from '../interfaces'
+import { EEmailSent, EError, ESendingEmail, IUser, ReducerProps } from '../interfaces'
 import Accordion from '../../Accordion/Accordion'
 import { useAppDispatch } from '../hooks/useAppDispatch'
 import { notify } from '../reducers/notificationReducer'
@@ -35,9 +35,12 @@ const PasswordReset = ({ language }: LoginProps) => {
     event.preventDefault()
 
     if (username)
-      await dispatch(forgot(username))
-        .then(() => {
-          dispatch(notify(`Sending email...`, false, 2))
+      await dispatch(forgot(username, language))
+        .then((r) => {
+          dispatch(notify(`${ESendingEmail[language]}`, false, 2))
+          setTimeout(() => {
+            dispatch(notify(r.message || EEmailSent[language], false, 3))
+          }, 2200)
           setUsername('')
           //scroll to anchor "userjokes"
           const anchor = document.querySelector('#userjokes')
@@ -48,11 +51,11 @@ const PasswordReset = ({ language }: LoginProps) => {
         .catch((e) => {
           console.log(e)
           if (e.code === 'ERR_NETWORK') {
-            dispatch(notify(`Error: ${e.message}`, true, 8))
+            dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
           } else if (e.code === 'ERR_BAD_REQUEST')
-            dispatch(notify(`Error: ${e.response.data.message}`, true, 8))
+            dispatch(notify(`${EError[language]}: ${e.response.data.message}`, true, 8))
           else {
-            dispatch(notify(`Error: ${e.message}`, true, 8))
+            dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
           }
         })
   }

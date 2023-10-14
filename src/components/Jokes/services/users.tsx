@@ -49,8 +49,8 @@ const searchId = async (id: string | undefined) => {
   return response.data as user
 }
 
-const forgot = async (username: string | undefined) => {
-  const response = await axios.post(`${baseUrl}/forgot`, { username: username })
+const forgot = async (username: string | undefined, language: string | ELanguages) => {
+  const response = await axios.post(`${baseUrl}/forgot`, { username, language })
   console.log('response.data: ', response.data)
   return response.data
 }
