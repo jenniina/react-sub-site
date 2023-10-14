@@ -77,6 +77,9 @@ function NavPortfolio() {
                 : ''
             }
           >
+            <NavLink to='/portfolio/jokes'>Jokes App</NavLink>
+          </li>
+          <li>
             <NavLink to='/portfolio/blob'>Blob</NavLink>
           </li>
           <li>
@@ -88,11 +91,8 @@ function NavPortfolio() {
           <li>
             <NavLink to='/portfolio/select'>Custom Select</NavLink>
           </li>
-          <li>
-            <NavLink to='/portfolio/form'>Multistep Form</NavLink>
-          </li>
           <li ref={lastportfolioitem} id='lastportfolioitem'>
-            <NavLink to='/portfolio/jokes'>Jokes App</NavLink>
+            <NavLink to='/portfolio/form'>Multistep Form</NavLink>
           </li>
         </ul>
 

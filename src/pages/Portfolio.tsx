@@ -58,6 +58,13 @@ export default function Portfolio({
             </div>
             <ul className={`${styles.list}`}>
               <li>
+                <Link to='/portfolio/jokes'>
+                  <GiAbstract019 />
+                  <span>Jokes App</span>
+                </Link>
+                <p>The Comedian's Companion</p>
+              </li>
+              <li>
                 <Link to='/portfolio/blob'>
                   <RiDragMove2Fill />
                   <span>Draggable Blobs</span>
@@ -94,13 +101,6 @@ export default function Portfolio({
                   <span>Multistep Form</span>
                 </Link>
                 <p>Three-step fully functional contact form</p>
-              </li>
-              <li>
-                <Link to='/portfolio/jokes'>
-                  <GiAbstract019 />
-                  <span>Jokes App</span>
-                </Link>
-                <p>The Comedian's Companion</p>
               </li>
             </ul>
           </div>
