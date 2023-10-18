@@ -24,6 +24,7 @@ const usersSlice = createSlice({
     update(state, action) {
       const id = action.payload._id
       const updatedUser = action.payload
+      console.log('state ', state)
       return state.map((user) => (user?._id !== id ? user : updatedUser))
     },
     searchUsername(state, action) {
@@ -31,7 +32,7 @@ const usersSlice = createSlice({
       return state.filter((user) => user?.username === username) as IUser[]
     },
     searchId(state, action) {
-      const id = action.payload
+      const id = action.payload._id
       return state.filter((user) => user?._id === id) as IUser[]
     },
     updateToken(state, action) {
@@ -55,6 +56,7 @@ export const initializeUsers = () => {
   }
 }
 interface IContent {
+  success: boolean
   user: IUser
   message: string
 }
@@ -93,10 +95,14 @@ export const removeUser = (id: IUser['_id']) => {
   }
 }
 
-export const updateUser = (user: IUser) => {
-  return async (dispatch: (arg0: { payload: IUser; type: 'users/update' }) => void) => {
-    const updatedUser = await userService.updateUser(user)
-    dispatch(update(updatedUser))
+export const updateUser = (
+  user: Pick<IUser, '_id' | 'language' | 'name' | 'password'>
+) => {
+  return async (dispatch: (arg0: { payload: IUser; type: 'users/update' }) => IUser) => {
+    const content: IContent = await userService.updateUser(user)
+    console.log('content', content)
+    dispatch(update(content.user))
+    return content
   }
 }
 
@@ -113,7 +119,7 @@ export const updateUser = (user: IUser) => {
 export const findUserById = (id: string) => {
   return async (dispatch: (arg0: { payload: any; type: 'users/searchId' }) => IUser) => {
     const user = await userService.searchId(id)
-    dispatch({ type: 'users/searchId', payload: user._id })
+    dispatch({ type: 'users/searchId', payload: user })
     return user
   }
 }

@@ -22,6 +22,7 @@ interface LoginProps {
   titleLogout: ELogout
   titleLoggedInAs: ELoggedInAs
   language: ELanguages
+  setLoggedIn: (loggedIn: boolean) => void
 }
 
 const FormLogin = ({
@@ -29,6 +30,7 @@ const FormLogin = ({
   titleLogout,
   titleLoggedInAs,
   language,
+  setLoggedIn,
 }: LoginProps) => {
   const dispatch = useAppDispatch()
 
@@ -50,6 +52,7 @@ const FormLogin = ({
 
   const handleLogout = () => {
     dispatch(logout())
+    setLoggedIn(false)
   }
 
   const handleLogin = async (event: FormEvent) => {
@@ -60,6 +63,7 @@ const FormLogin = ({
         dispatch(notify(`${ELoggingIn[language]}`, false, 2))
         setUsername('')
         setPassword('')
+        setLoggedIn(true)
         //scroll to anchor "userjokes"
         const anchor = document.querySelector('#userjokes')
         if (anchor) {
