@@ -525,6 +525,14 @@ export enum EDelete {
   pt = 'Excluir',
   cs = 'Odstranit',
 }
+export enum EEdit {
+  en = 'Edit',
+  es = 'Editar',
+  fr = 'Modifier',
+  de = 'Bearbeiten',
+  pt = 'Editar',
+  cs = 'Upravit',
+}
 export enum EClose {
   en = 'Close',
   es = 'Cerrar',
@@ -532,6 +540,14 @@ export enum EClose {
   de = 'Schließen',
   pt = 'Fechar',
   cs = 'Zavřít',
+}
+export enum ECurrentPassword {
+  en = 'Current Password',
+  es = 'Contraseña actual',
+  fr = 'Mot de passe actuel',
+  de = 'Aktuelles Passwort',
+  pt = 'Senha atual',
+  cs = 'Aktuální heslo',
 }
 export enum ELoggedInAs {
   en = 'Logged in as',

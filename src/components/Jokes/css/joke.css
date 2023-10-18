@@ -43,6 +43,9 @@
   text-align: center;
   font-size: 1.3em;
 }
+form.edit-user {
+  margin: 0 auto;
+}
 form.form-submit-new {
   display: flex;
   flex-flow: column wrap;
@@ -170,7 +173,8 @@ section.joke-container > div::after {
 }
 button.delete,
 button.close,
-button.logout {
+button.logout,
+.edit-user-container button.accordion-btn.open {
   min-width: 5em;
   background: none;
   border-color: transparent;
@@ -182,6 +186,9 @@ button.logout {
   justify-content: center;
   align-items: center;
   gap: calc(var(--gap) * 2);
+}
+button.logout {
+  font-size: 0.8em;
 }
 button.close {
   display: flex;
@@ -225,7 +232,8 @@ button.danger:hover {
 }
 
 .accordion-container form.login,
-.accordion-container form.register {
+.accordion-container form.register,
+.accordion-container form.edit-user {
   margin: 0 auto;
   max-width: 20em;
   display: flex;

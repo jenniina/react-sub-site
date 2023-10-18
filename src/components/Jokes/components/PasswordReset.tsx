@@ -33,20 +33,13 @@ const PasswordReset = ({ language }: LoginProps) => {
 
   const handleForgot = async (event: FormEvent) => {
     event.preventDefault()
+    dispatch(notify(`${ESendingEmail[language]}`, false, 2))
 
-    if (username)
+    if (username) {
       await dispatch(forgot(username, language))
         .then((r) => {
-          dispatch(notify(`${ESendingEmail[language]}`, false, 2))
-          setTimeout(() => {
-            dispatch(notify(r.message || EEmailSent[language], false, 3))
-          }, 2200)
+          dispatch(notify(r.message || EEmailSent[language], false, 3))
           setUsername('')
-          //scroll to anchor "userjokes"
-          const anchor = document.querySelector('#userjokes')
-          if (anchor) {
-            anchor.scrollIntoView({ behavior: 'smooth', block: 'start' })
-          }
         })
         .catch((e) => {
           console.log(e)
@@ -58,6 +51,11 @@ const PasswordReset = ({ language }: LoginProps) => {
             dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
           }
         })
+    } else {
+      dispatch(
+        notify(`${EError[language]}: ${EEmail[language]} ${EPassword[language]}`, true, 8)
+      )
+    }
   }
 
   return (

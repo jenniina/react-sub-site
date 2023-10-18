@@ -80,6 +80,7 @@ import UserJokes from './components/UserJokes'
 //import JokeSubmit from './components/JokeSubmit'
 import Accordion from '../Accordion/Accordion'
 import { AxiosResponse } from 'axios'
+import UserEdit from './components/UserEdit'
 
 export const jokeCategoryByLanguage: IJokeCategoryByLanguage = {
   en: {
@@ -192,7 +193,7 @@ function Jokes({
   >(categoryLanguagesConst.en)
   const [jokeCategory, setJokeCategory] = useLocalStorage<ECategory>(
     'jokeCategory',
-    jokeCategoryByLanguage[language].Programming
+    jokeCategoryByLanguage[language].Misc
   )
   const [jokeType, setEJokeType] = useState<EJokeType>(EJokeType.twopart)
   const [isCheckedEJokeType, setIsCheckedEJokeType] = useState<boolean>(true)
@@ -205,6 +206,7 @@ function Jokes({
   const [submitted, setSubmitted] = useState(false)
   const [reveal, setReveal] = useState(true)
   const [jokeId, setJokeId] = useState<IJoke['jokeId']>(0)
+  const [loggedIn, setLoggedIn] = useState(false)
   const [loginOpen, setLoginOpen] = useState(false)
   const [registerOpen, setRegisterOpen] = useState(false)
   const [username, setUsername] = useState<string>('')
@@ -244,7 +246,7 @@ function Jokes({
 
   useEffect(() => {
     dispatch(initializeUser())
-  }, [])
+  }, [loggedIn])
 
   // const users = useSelector((state: ReducerProps) => {
   //   return state.users.users
@@ -310,6 +312,8 @@ function Jokes({
       }
     }, 600)
   }
+
+  console.log(jokeCategory)
 
   const handleJokeSave = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
@@ -437,7 +441,7 @@ function Jokes({
         //console.log(r)
         const userId = r.user._id
         //dispatch(notify(`${titleRegistrationSuccesful}`, false, 8))
-        dispatch(notify(r.message, false, 8))
+        dispatch(notify(r.message, false, 12))
         dispatch(findUserById(userId || '')).then((searchForUser) => {
           if (!searchForUser) {
             dispatch(notify(`${titleError}!`, true, 8))
@@ -558,8 +562,9 @@ function Jokes({
     )
       .then((res) => res.json())
       .then((data) => {
-        //console.log(data)
+        console.log(data)
         setLoading(false)
+        setJokeCategory(data.category)
         if (data.error) {
           //console.log(data)
           setJoke('')
@@ -743,6 +748,7 @@ function Jokes({
               titleLogout={titleLogout}
               titleLoggedInAs={titleLoggedInAs}
               language={language}
+              setLoggedIn={setLoggedIn}
             />
             <Register
               handleRegister={handleRegister}
@@ -761,6 +767,14 @@ function Jokes({
               // registerOpen={registerOpen}
             />
           </div>
+          <UserEdit
+            user={user}
+            language={language}
+            setLanguage={setLanguage}
+            categoryLanguages={categoryLanguages}
+            options={options}
+            getKeyByValue={getKeyByValue}
+          />
           {user && jokes && jokes.length > 0 ? (
             <UserJokes
               titleSaved={titleSaved}

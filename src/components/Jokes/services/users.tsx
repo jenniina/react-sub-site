@@ -29,8 +29,9 @@ const deleteUser = async (id: user['_id']) => {
   return response.data as AxiosResponse<{ user: user; message: string }>
 }
 
-const updateUser = async (user: user) => {
-  const response = await axios.put(`${baseUrl}/${user._id}`, user, config)
+const updateUser = async (user: Pick<user, '_id' | 'language' | 'name' | 'password'>) => {
+  const response = await axios.put(`${baseUrl}/${user._id}`, user)
+  console.log('response.data: ', response.data)
   return response.data
 }
 
