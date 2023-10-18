@@ -313,8 +313,6 @@ function Jokes({
     }, 600)
   }
 
-  console.log(jokeCategory)
-
   const handleJokeSave = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
     if (!user) {
@@ -562,7 +560,6 @@ function Jokes({
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
         setLoading(false)
         setJokeCategory(data.category)
         if (data.error) {

@@ -31,7 +31,6 @@ const deleteUser = async (id: user['_id']) => {
 
 const updateUser = async (user: Pick<user, '_id' | 'language' | 'name' | 'password'>) => {
   const response = await axios.put(`${baseUrl}/${user._id}`, user)
-  console.log('response.data: ', response.data)
   return response.data
 }
 
@@ -52,7 +51,6 @@ const searchId = async (id: string | undefined) => {
 
 const forgot = async (username: string | undefined, language: string | ELanguages) => {
   const response = await axios.post(`${baseUrl}/forgot`, { username, language })
-  console.log('response.data: ', response.data)
   return response.data
 }
 
