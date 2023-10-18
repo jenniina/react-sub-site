@@ -1,6 +1,19 @@
 import { useEffect, useRef, useState, FormEvent } from 'react'
 import { AxiosError } from 'axios'
-import { EError, ELoggingIn, ReducerProps } from '../interfaces'
+import {
+  ECategoryTitle,
+  ECategory_cs,
+  ECategory_de,
+  ECategory_en,
+  ECategory_es,
+  ECategory_fr,
+  ECategory_pt,
+  EError,
+  ELanguageTitle,
+  ELanguagesLong,
+  ELoggingIn,
+  ReducerProps,
+} from '../interfaces'
 import Accordion from '../../Accordion/Accordion'
 import { useAppDispatch } from '../hooks/useAppDispatch'
 import { notify } from '../reducers/notificationReducer'
@@ -16,6 +29,8 @@ import {
   EEmail,
   EPassword,
 } from '../interfaces'
+import UserEdit from './UserEdit'
+import { SelectOption } from '../../Select/Select'
 
 interface LoginProps {
   titleLogin: ELogin
@@ -23,6 +38,19 @@ interface LoginProps {
   titleLoggedInAs: ELoggedInAs
   language: ELanguages
   setLoggedIn: (loggedIn: boolean) => void
+  setLanguage: (language: ELanguages) => void
+  categoryLanguages:
+    | typeof ECategory_en
+    | typeof ECategory_cs
+    | typeof ECategory_de
+    | typeof ECategory_es
+    | typeof ECategory_fr
+    | typeof ECategory_pt
+  options: (enumObj: typeof ELanguages) => SelectOption[]
+  getKeyByValue: (
+    enumObj: typeof ELanguages,
+    value: ELanguages
+  ) => undefined | SelectOption['label']
 }
 
 const FormLogin = ({
@@ -31,6 +59,10 @@ const FormLogin = ({
   titleLoggedInAs,
   language,
   setLoggedIn,
+  setLanguage,
+  categoryLanguages,
+  getKeyByValue,
+  options,
 }: LoginProps) => {
   const dispatch = useAppDispatch()
 
@@ -86,6 +118,14 @@ const FormLogin = ({
           <span>
             {titleLoggedInAs} {user?.name ? user?.name : user.username}{' '}
           </span>
+          <UserEdit
+            user={user}
+            language={language}
+            setLanguage={setLanguage}
+            categoryLanguages={categoryLanguages}
+            options={options}
+            getKeyByValue={getKeyByValue}
+          />
           <button onClick={handleLogout} id='logout' className='logout danger'>
             {titleLogout} &times;
           </button>

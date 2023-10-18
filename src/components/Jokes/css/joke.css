@@ -180,15 +180,20 @@ button.logout,
   border-color: transparent;
   color: inherit;
 }
+
 .logout-wrap {
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: row wrap;
   justify-content: center;
   align-items: center;
   gap: calc(var(--gap) * 2);
 }
+.edit-user-container.open {
+  order: 3;
+}
 button.logout {
   font-size: 0.8em;
+  padding: 0.6rem 1.2rem;
 }
 button.close {
   display: flex;
