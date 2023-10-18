@@ -109,13 +109,10 @@ const UserEdit = ({ user, language, setLanguage, options, getKeyByValue }: Props
         language,
       }
 
-      console.log('newUser', editedUser)
-
       if (user) {
         dispatch(updateUser(editedUser))
           .then((res) => {
             if (res) {
-              console.log(res)
               dispatch(notify(`${res.message || 'updated!'}`, false, 5))
               dispatch(initializeUser())
               setPasswordOld('')

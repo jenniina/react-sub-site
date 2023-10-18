@@ -849,6 +849,14 @@ export enum EEmailSent {
   pt = 'Email enviado',
   cs = 'E-mail odeslán',
 }
+export enum EPleaseGiveValidEmail {
+  en = 'Please give valid email',
+  es = 'Por favor, dé un correo electrónico válido',
+  fr = 'Veuillez donner un email valide',
+  de = 'Bitte geben Sie eine gültige E-Mail-Adresse ein',
+  pt = 'Por favor, dê um email válido',
+  cs = 'Zadejte platný e-mail',
+}
 export enum ENoJokeFound {
   en = 'No joke found',
   es = 'No se encontró broma',

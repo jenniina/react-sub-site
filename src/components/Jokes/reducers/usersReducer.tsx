@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { ELanguages, IUser } from '../interfaces'
+import { ELanguages, IUser, EPleaseGiveValidEmail } from '../interfaces'
 import userService from '../services/users'
 import AppThunk from '../store'
 import { AxiosResponse } from 'axios'
@@ -24,7 +24,6 @@ const usersSlice = createSlice({
     update(state, action) {
       const id = action.payload._id
       const updatedUser = action.payload
-      console.log('state ', state)
       return state.map((user) => (user?._id !== id ? user : updatedUser))
     },
     searchUsername(state, action) {
@@ -100,7 +99,6 @@ export const updateUser = (
 ) => {
   return async (dispatch: (arg0: { payload: IUser; type: 'users/update' }) => IUser) => {
     const content: IContent = await userService.updateUser(user)
-    console.log('content', content)
     dispatch(update(content.user))
     return content
   }
@@ -140,12 +138,16 @@ export const forgot = (username: string | undefined, language: string | ELanguag
   ) => {
     if (username) {
       const updated: IContent = await userService.forgot(username, language)
-      console.log('updated', updated)
       dispatch(forgotPassword(updated))
       //dispatch({ type: 'users/updateToken', payload: updated })
       return updated
     } else {
-      throw Error('Username is undefined')
+      return {
+        success: false,
+        message: `${
+          EPleaseGiveValidEmail[(language as keyof typeof EPleaseGiveValidEmail) || 'en']
+        }`,
+      }
     }
   }
 }
