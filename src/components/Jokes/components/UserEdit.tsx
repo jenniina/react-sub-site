@@ -118,8 +118,6 @@ const UserEdit = ({ user, language, setLanguage, options, getKeyByValue }: Props
               console.log(res)
               dispatch(notify(`${res.message || 'updated!'}`, false, 5))
               dispatch(initializeUser())
-              setUsername('')
-              setName('')
               setPasswordOld('')
               setPassword('')
               setConfirmPassword('')
