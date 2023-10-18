@@ -745,7 +745,11 @@ function Jokes({
               titleLogout={titleLogout}
               titleLoggedInAs={titleLoggedInAs}
               language={language}
+              setLanguage={setLanguage}
               setLoggedIn={setLoggedIn}
+              categoryLanguages={categoryLanguages}
+              getKeyByValue={getKeyByValue}
+              options={options}
             />
             <Register
               handleRegister={handleRegister}
@@ -764,14 +768,6 @@ function Jokes({
               // registerOpen={registerOpen}
             />
           </div>
-          <UserEdit
-            user={user}
-            language={language}
-            setLanguage={setLanguage}
-            categoryLanguages={categoryLanguages}
-            options={options}
-            getKeyByValue={getKeyByValue}
-          />
           {user && jokes && jokes.length > 0 ? (
             <UserJokes
               titleSaved={titleSaved}
