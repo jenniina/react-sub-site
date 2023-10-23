@@ -19,6 +19,7 @@ import {
   ELanguageOfLanguage,
   TLanguageOfLanguage,
   ESafemodeTitle,
+  ENoJokesYet,
 } from '../interfaces'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
 import { Select, SelectOption } from '../../Select/Select'
@@ -103,6 +104,7 @@ const UserJokes = ({
   const [userJokes, setUserJokes] = useState<IJokeVisible[]>(withVisibility)
   const [sortBy, setSortBy] = useState<ESortBy>(ESortBy.category)
   const [titleSortBy, setTitleSortBy] = useState<ESortByTitle>(ESortByTitle.en)
+  const titleNoJokesYet = ENoJokesYet[language]
 
   const [toggle, setToggle] = useState(false)
 
@@ -259,7 +261,7 @@ const UserJokes = ({
             </li>
           ))
         ) : (
-          <li>Loading...</li>
+          <li>{`${titleNoJokesYet}!`}</li>
         )}
       </ul>
     </div>
