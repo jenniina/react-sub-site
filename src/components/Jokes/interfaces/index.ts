@@ -865,6 +865,14 @@ export enum ENoJokeFound {
   pt = 'Nenhuma piada encontrada',
   cs = 'Nenalezen žádný vtip',
 }
+export enum ENoJokesYet {
+  en = 'No jokes yet',
+  es = 'Aún no hay bromas',
+  fr = 'Pas encore de blagues',
+  de = 'Noch keine Witze',
+  pt = 'Ainda não há piadas',
+  cs = 'Zatím žádné vtipy',
+}
 export enum EPasswordsDoNotMatch {
   en = 'Passwords do not match',
   es = 'Las contraseñas no coinciden',
