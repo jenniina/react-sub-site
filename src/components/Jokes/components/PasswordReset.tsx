@@ -39,17 +39,17 @@ const PasswordReset = ({ language }: LoginProps) => {
       await dispatch(forgot(username, language))
         .then((r) => {
           dispatch(notify(r.message || EEmailSent[language], false, 3))
-          setUsername('')
         })
         .catch((e) => {
-          console.log(e)
-          if (e.code === 'ERR_NETWORK') {
-            dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
-          } else if (e.code === 'ERR_BAD_REQUEST')
-            dispatch(notify(`${EError[language]}: ${e.response.data.message}`, true, 8))
-          else {
-            dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
-          }
+          dispatch(notify(EEmailSent[language], false, 3))
+          // console.log(e)
+          // if (e.code === 'ERR_NETWORK') {
+          //   dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
+          // } else if (e.code === 'ERR_BAD_REQUEST')
+          //   dispatch(notify(`${EError[language]}: ${e.response.data.message}`, true, 8))
+          // else {
+          //   dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
+          // }
         })
     } else {
       dispatch(
