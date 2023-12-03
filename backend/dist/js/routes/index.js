@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const users_1 = require("../controllers/users");
 const jokes_1 = require("../controllers/jokes");
+const quiz_1 = require("../controllers/quiz");
 const router = (0, express_1.Router)();
 router.get('/api/users', users_1.getUsers);
 router.get('/api/users/:id', users_1.getUser);
@@ -47,6 +48,10 @@ router.put('/api/jokes/:id', jokes_1.updateJoke);
 router.get('/api/jokes', jokes_1.getJokes);
 router.get('/api/jokes/user/:id/', jokes_1.getJokesByUserId);
 router.delete('/api/jokes/:id/delete-user/:userId', jokes_1.deleteUserFromJoke);
+router.get('/api/quiz', quiz_1.getQuizzes);
+router.post('/api/quiz', quiz_1.addQuiz);
+router.put('/api/quiz', quiz_1.addQuiz);
+router.get('/api/quiz/:id/:type', quiz_1.getUserQuiz);
 router.get('/api/', (req, res) => {
     res.send('Nothing to see here');
 });

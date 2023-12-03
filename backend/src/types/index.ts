@@ -85,3 +85,32 @@ export interface IToken {
   token: string
   createdAt: Date
 }
+
+export enum EQuizType {
+  easy = 'easy',
+  medium = 'medium',
+  hard = 'hard',
+}
+
+export interface IQuiz extends Document {
+  highscore: number
+  type: EQuizType
+  user: IUser['_id']
+  createdAt?: string
+  updatedAt?: string
+}
+export interface IQuestion extends Document {
+  questionId: number
+  question: string
+  options: string[]
+  correctAnswer: boolean
+  incorrectAnswers: boolean[]
+  createdAt?: string
+  updatedAt?: string
+}
+export interface IQuizQuestion extends Document {
+  quiz: IQuiz['_id']
+  question: IQuestion['_id']
+  createdAt?: string
+  updatedAt?: string
+}
