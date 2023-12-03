@@ -614,7 +614,6 @@ function Jokes({
     <>
       <section className={`joke-container card ${language}`}>
         <div>
-          <Notification language={language} />
           <div className='jokes-wrap'>
             <h2>{title}</h2>
 
@@ -708,6 +707,8 @@ function Jokes({
           )}
         </div>
       </section>
+
+      <Notification language={language} />
     </>
   )
 }
