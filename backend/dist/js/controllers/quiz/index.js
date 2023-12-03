@@ -43,7 +43,7 @@ const addQuiz = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         console.log('existingQuiz: ', existingQuiz);
         if (!existingQuiz) {
             const quiz = new quiz_1.Quiz({
-                highscore: body.highscore,
+                highscores: body.highscores,
                 type: body.type,
                 user: body.user,
             });
@@ -55,7 +55,7 @@ const addQuiz = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             res.status(400).json({ message: 'type and user fields are required' });
         }
         else {
-            existingQuiz.highscore = body.highscore;
+            existingQuiz.highscores = body.highscores;
             existingQuiz.type = body.type;
             existingQuiz.user = body.user;
             try {

@@ -3,9 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Quiz = void 0;
 const mongoose_1 = require("mongoose");
 const quizSchema = new mongoose_1.Schema({
-    highscore: {
-        type: Number,
-        default: 0,
+    highscores: {
+        easy: { type: Number, default: 0 },
+        medium: { type: Number, default: 0 },
+        hard: { type: Number, default: 0 },
     },
     type: {
         type: String,

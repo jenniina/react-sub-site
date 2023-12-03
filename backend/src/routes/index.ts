@@ -99,7 +99,7 @@ router.get('/api/jokes', getJokes)
 router.get('/api/jokes/user/:id/', getJokesByUserId)
 router.delete('/api/jokes/:id/delete-user/:userId', deleteUserFromJoke)
 
-router.get('/api/quiz', getQuizzes)
+//router.get('/api/quiz', getQuizzes)
 router.post('/api/quiz', addQuiz)
 router.put('/api/quiz', addQuiz)
 router.get('/api/quiz/:id/:type', getUserQuiz)

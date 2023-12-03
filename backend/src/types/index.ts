@@ -93,7 +93,11 @@ export enum EQuizType {
 }
 
 export interface IQuiz extends Document {
-  highscore: number
+  highscores: {
+    easy: number
+    medium: number
+    hard: number
+  }
   type: EQuizType
   user: IUser['_id']
   createdAt?: string

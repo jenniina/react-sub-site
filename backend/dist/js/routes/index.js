@@ -48,7 +48,7 @@ router.put('/api/jokes/:id', jokes_1.updateJoke);
 router.get('/api/jokes', jokes_1.getJokes);
 router.get('/api/jokes/user/:id/', jokes_1.getJokesByUserId);
 router.delete('/api/jokes/:id/delete-user/:userId', jokes_1.deleteUserFromJoke);
-router.get('/api/quiz', quiz_1.getQuizzes);
+//router.get('/api/quiz', getQuizzes)
 router.post('/api/quiz', quiz_1.addQuiz);
 router.put('/api/quiz', quiz_1.addQuiz);
 router.get('/api/quiz/:id/:type', quiz_1.getUserQuiz);
