@@ -537,19 +537,19 @@ function Jokes({
   // Fetch joke from API
   const fetchApi = () => {
     const category = jokeCategory?.length === 0 ? 'Any' : jokeCategory
-    console.log(
-      `https://v2.jokeapi.dev/joke/${category}?${queryKey}${queryValue}lang=${language}&format=json${safemode}&type=${jokeType}`
-    )
+    // console.log(
+    //   `https://v2.jokeapi.dev/joke/${category}?${queryKey}${queryValue}lang=${language}&format=json${safemode}&type=${jokeType}`
+    // )
     setLoading(true)
     fetch(
       `https://v2.jokeapi.dev/joke/${category}?${queryKey}${queryValue}lang=${language}&format=json${safemode}&type=${jokeType}`
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
+        //console.log(data)
         setLoading(false)
         if (data.error) {
-          console.log(data)
+          //console.log(data)
           setJoke('')
           setDelivery('')
           dispatch(notify(`${titleError}! ${titleNoJokeFound}: ${data.message}`, true, 8))
