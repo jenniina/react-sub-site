@@ -36,12 +36,9 @@ const QuizFinished = () => {
     return state.auth?.user
   })
 
-  console.log(highscores)
-
   useEffect(() => {
     if (user?._id) {
       dispatch(getUserQuiz(user._id, mode)).then((r) => {
-        console.log('rrr: ', r)
         if (r === null) {
           const quizScore: IQuizHighscore = {
             highscores: {
@@ -53,9 +50,7 @@ const QuizFinished = () => {
           }
           dispatch(notify(`New highscore!`, false, 3))
 
-          dispatch(addQuiz(quizScore)).then((r) => {
-            console.log('r2: ', r)
-          })
+          dispatch(addQuiz(quizScore)).then((r) => {})
         } else if (r !== null && r.highscores[mode] < points) {
           const quizScore: IQuizHighscore = {
             highscores: {
@@ -68,7 +63,7 @@ const QuizFinished = () => {
           dispatch(notify(`New highscore!`, false, 3))
 
           dispatch(addQuiz(quizScore)).then((r) => {
-            console.log('r3: ', r)
+            //console.log('r3: ', r)
           })
         }
       })

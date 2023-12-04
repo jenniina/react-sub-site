@@ -559,7 +559,8 @@ function Jokes({
       `https://v2.jokeapi.dev/joke/${category}?${queryKey}${queryValue}lang=${language}&format=json${safemode}&type=${jokeType}`
     )
       .then((res) => res.json())
-      .then((data) => {
+      .then((data) => { 
+        //console.log(data) 
         setLoading(false)
         setJokeCategory(data.category)
         if (data.error) {

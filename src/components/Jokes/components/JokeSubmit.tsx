@@ -171,9 +171,9 @@ const JokeSubmit = ({
     })
       .then((res: Response) => res.json())
       .then((data) => {
-        console.log(data)
+        //console.log(data)
       })
-    console.log(jokeObject)
+    //console.log(jokeObject)
     //e.currentTarget.reset()
   }
 

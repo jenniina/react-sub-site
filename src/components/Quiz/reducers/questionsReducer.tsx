@@ -66,7 +66,6 @@ const questionsSlice = createSlice({
       state.answer = null
     },
     gameFinished: (state) => {
-      console.log(returnMode())
       state.highscores[returnMode() as keyof typeof state.highscores] =
         state.points >
         state.highscores[returnMode() as unknown as keyof typeof state.highscores]
