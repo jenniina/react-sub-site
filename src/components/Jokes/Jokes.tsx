@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import FormJoke from './components/FormJoke'
 import Register from './components/Register'
-import { SelectOption } from '../Select/Select'
+import { Select, SelectOption } from '../Select/Select'
 import './css/joke.css'
 import {
   IJoke,
@@ -30,11 +30,8 @@ import {
   ESingle,
   ETwoPart,
   ELoggedInAs,
-  ESearch,
   EClickToReveal,
-  CategoryLanguages,
   ECategory,
-  ESelectAnOption,
   IJokeCategoryByLanguage,
   ELoginOrRegisterToSave,
   ELanguageTitle,
@@ -44,6 +41,19 @@ import {
   ENoJokeFound,
   EError,
   EPasswordsDoNotMatch,
+  EAppTranslatedTo,
+  EClickHereToSeeFeatures,
+  EFeatures,
+  EFetchesJokesFrom,
+  EFilterJokesBy,
+  EJokeTypeTitle,
+  EKeyword,
+  EOnOff,
+  ERegisterAndLoginToUse,
+  ESafemodeTitle,
+  LanguageOfLanguage,
+  ESelectALanguage,
+  EAJokeGeneratorForTheComicallyInclied,
 } from './interfaces'
 import { useSelector } from 'react-redux'
 import Login from './components/Login'
@@ -55,8 +65,8 @@ import {
   createUser,
   updateUser,
   findUserById,
-  findUserbyUsername,
   initializeUsers,
+  updateUserToken,
 } from './reducers/usersReducer'
 import {
   createJoke,
@@ -65,13 +75,15 @@ import {
   initializeJokes,
   updateJoke,
 } from './reducers/jokeReducer'
-import { initializeUser } from './reducers/authReducer'
+import { initializeUser, login } from './reducers/authReducer'
 import UserJokes from './components/UserJokes'
-import JokeSubmit from './components/JokeSubmit'
+//import JokeSubmit from './components/JokeSubmit'
+import Accordion from '../Accordion/Accordion'
+import { AxiosResponse } from 'axios'
+import UserEdit from './components/UserEdit'
 
 export const jokeCategoryByLanguage: IJokeCategoryByLanguage = {
   en: {
-    //Any: ECategory_en.Any,
     Programming: ECategory_en.Programming,
     Misc: ECategory_en.Misc,
     Dark: ECategory_en.Dark,
@@ -80,7 +92,6 @@ export const jokeCategoryByLanguage: IJokeCategoryByLanguage = {
     Christmas: ECategory_en.Christmas,
   },
   es: {
-    //Any: ECategory_es.Any,
     Programming: ECategory_es.Programming,
     Misc: ECategory_es.Misc,
     Dark: ECategory_es.Dark,
@@ -89,7 +100,6 @@ export const jokeCategoryByLanguage: IJokeCategoryByLanguage = {
     Christmas: ECategory_es.Christmas,
   },
   fr: {
-    //Any: ECategory_fr.Any,
     Programming: ECategory_fr.Programming,
     Misc: ECategory_fr.Misc,
     Dark: ECategory_fr.Dark,
@@ -98,7 +108,6 @@ export const jokeCategoryByLanguage: IJokeCategoryByLanguage = {
     Christmas: ECategory_fr.Christmas,
   },
   de: {
-    //Any: ECategory_de.Any,
     Programming: ECategory_de.Programming,
     Misc: ECategory_de.Misc,
     Dark: ECategory_de.Dark,
@@ -107,7 +116,6 @@ export const jokeCategoryByLanguage: IJokeCategoryByLanguage = {
     Christmas: ECategory_de.Christmas,
   },
   pt: {
-    //Any: ECategory_pt.Any,
     Programming: ECategory_pt.Programming,
     Misc: ECategory_pt.Misc,
     Dark: ECategory_pt.Dark,
@@ -116,7 +124,6 @@ export const jokeCategoryByLanguage: IJokeCategoryByLanguage = {
     Christmas: ECategory_pt.Christmas,
   },
   cs: {
-    //Any: ECategory_cs.Any,
     Programming: ECategory_cs.Programming,
     Misc: ECategory_cs.Misc,
     Dark: ECategory_cs.Dark,
@@ -162,7 +169,6 @@ function Jokes({
   const titleLogin = ELogin[language]
   const titleLogout = ELogout[language]
   const titleLoggedInAs = ELoggedInAs[language]
-  const titleSearch = ESearch[language]
   const titleClickToReveal = EClickToReveal[language]
   const titleLoginOrRegisterToSave = ELoginOrRegisterToSave[language]
   const titleJokeAlreadySaved = EJokeAlreadySaved[language]
@@ -171,11 +177,10 @@ function Jokes({
   const titleError = EError[language]
   const titleNoJokeFound = ENoJokeFound[language]
   const deleteJoke = EDelete[language]
-  const submit = ESubmit[language]
-  const selectAnOption = ESelectAnOption[language]
   const languageNameFromLanguage = getKeyofEnum(ELanguages, language)
   const translateWordLanguage = ELanguageTitle[language]
   const titleLanguage = languageNameFromLanguage
+  const titleLanguageSelect = ESelectALanguage[language]
   const [joke, setJoke] = useState<string>('')
   const [delivery, setDelivery] = useState<string>('')
   const [categoryLanguages, setCategoryLanguages] = useState<
@@ -188,7 +193,7 @@ function Jokes({
   >(categoryLanguagesConst.en)
   const [jokeCategory, setJokeCategory] = useLocalStorage<ECategory>(
     'jokeCategory',
-    jokeCategoryByLanguage[language].Programming
+    jokeCategoryByLanguage[language].Misc
   )
   const [jokeType, setEJokeType] = useState<EJokeType>(EJokeType.twopart)
   const [isCheckedEJokeType, setIsCheckedEJokeType] = useState<boolean>(true)
@@ -201,6 +206,7 @@ function Jokes({
   const [submitted, setSubmitted] = useState(false)
   const [reveal, setReveal] = useState(true)
   const [jokeId, setJokeId] = useState<IJoke['jokeId']>(0)
+  const [loggedIn, setLoggedIn] = useState(false)
   const [loginOpen, setLoginOpen] = useState(false)
   const [registerOpen, setRegisterOpen] = useState(false)
   const [username, setUsername] = useState<string>('')
@@ -209,6 +215,19 @@ function Jokes({
   const [name, setName] = useState<string>('')
   const [visibleJoke, setVisibleJoke] = useState(false)
   const [saveJoke, setSaveJoke] = useLocalStorage<IJoke | null>('savedJoke', null)
+  const titleFeatures = EFeatures[language]
+  const titleFetchesJokesFrom = EFetchesJokesFrom[language]
+  const titleAppTranslatedTo = EAppTranslatedTo[language]
+  const titleFilterJokesBy = EFilterJokesBy[language]
+  const titleJokeType = EJokeTypeTitle[language]
+  const titleSafemode = ESafemodeTitle[language]
+  const titleOnOff = EOnOff[language]
+  const titleKeyword = EKeyword[language]
+  const titleJokeCategoryAny = jokeCategoryAny[language]
+  const titleClickHereToSeeFeatures = EClickHereToSeeFeatures[language]
+  const titleAJokeGeneratorForTheComicallyInclied =
+    EAJokeGeneratorForTheComicallyInclied[language]
+  const [showToken, setShowToken] = useState(false)
 
   const dispatch = useAppDispatch()
 
@@ -227,7 +246,7 @@ function Jokes({
 
   useEffect(() => {
     dispatch(initializeUser())
-  }, [])
+  }, [loggedIn])
 
   // const users = useSelector((state: ReducerProps) => {
   //   return state.users.users
@@ -281,16 +300,16 @@ function Jokes({
     }, 400)
     setReveal(true)
     setTimeout(() => {
-      // if (jokeCategory?.length === 0) {
-      //   dispatch(notify(`${titlePleaseSelectACategory}`, true, 8))
-      //   return
-      // } else {
       fetchApi()
       setSubmitted(true)
       setTimeout(() => {
         setSubmitted(false)
       }, 5500)
-      //}
+      // Scroll to the anchor with id "generated-joke"
+      const generatedJokeAnchor = document.querySelector('#generate-joke')
+      if (generatedJokeAnchor) {
+        generatedJokeAnchor.scrollIntoView({ behavior: 'smooth' })
+      }
     }, 600)
   }
 
@@ -385,10 +404,8 @@ function Jokes({
             category: jokeCategory,
             language: language,
             safe: safemode === ESafemode.Safe ? true : false,
-            user: [user._id],
+            user: user ? [user._id] : [],
           })
-        } else {
-          return
         }
       }
       dispatch(notify(`${titleSaved}`, false, 8))
@@ -411,52 +428,56 @@ function Jokes({
       } else return
     }
 
-  const handleRegister = (e: React.FormEvent<HTMLFormElement>): void => {
+  const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (password !== confirmPassword) {
       dispatch(notify(`${titlePasswordsDoNotMatch}`, true, 8))
-      return
+      return false
     }
-    dispatch(createUser({ name, username, password, language, verified: true }))
-      .then(async () => {
-        dispatch(notify(`${titleRegistrationSuccesful}`, false, 8))
-        const searchForUser = await dispatch(findUserbyUsername(username))
-        if (!searchForUser) {
-          console.log('User not found')
-          return
-        } else if (saveJoke) {
-          dispatch(createJoke({ ...saveJoke, user: [searchForUser._id] }))
-        } else {
-          if (!delivery || delivery === '')
-            dispatch(
-              createJoke({
-                jokeId: jokeId,
-                joke: joke,
-                type: EJokeType.single,
-                category: jokeCategory,
-                language: language,
-                safe: safemode === ESafemode.Safe ? true : false,
-                user: [searchForUser._id],
-              })
-            )
-          else
-            dispatch(
-              createJoke({
-                jokeId: jokeId,
-                setup: joke,
-                delivery: delivery,
-                type: EJokeType.twopart,
-                category: jokeCategory,
-                language: language,
-                safe: safemode === ESafemode.Safe ? true : false,
-                user: [searchForUser._id],
-              })
-            )
-        }
+    dispatch(createUser({ name, username, password, language }))
+      .then((r) => {
+        //console.log(r)
+        const userId = r.user._id
+        //dispatch(notify(`${titleRegistrationSuccesful}`, false, 8))
+        dispatch(notify(r.message, false, 12))
+        dispatch(findUserById(userId || '')).then((searchForUser) => {
+          if (!searchForUser) {
+            dispatch(notify(`${titleError}!`, true, 8))
+            return
+          } else if (saveJoke) {
+            dispatch(createJoke({ ...saveJoke, user: [searchForUser._id] }))
+          } else {
+            if (!delivery || delivery === '')
+              dispatch(
+                createJoke({
+                  jokeId: jokeId,
+                  joke: joke,
+                  type: EJokeType.single,
+                  category: jokeCategory,
+                  language: language,
+                  safe: safemode === ESafemode.Safe ? true : false,
+                  user: [searchForUser._id],
+                })
+              )
+            else
+              dispatch(
+                createJoke({
+                  jokeId: jokeId,
+                  setup: joke,
+                  delivery: delivery,
+                  type: EJokeType.twopart,
+                  category: jokeCategory,
+                  language: language,
+                  safe: safemode === ESafemode.Safe ? true : false,
+                  user: [searchForUser._id],
+                })
+              )
+          }
+        })
       })
-      .catch((err) => {
-        console.log(err)
-        dispatch(notify(`Error: ${err.message}`, true, 8))
+      .catch((e) => {
+        console.log(e)
+        dispatch(notify(`${EError[language]}: ${e.response.data.message}`, true, 8))
       })
   }
 
@@ -520,13 +541,6 @@ function Jokes({
     return undefined
   }
 
-  function getKey<T extends Record<string, string | number>>(
-    obj: T,
-    value: string | number
-  ) {
-    return Object.keys(obj).find((key) => obj[key] === value) as keyof T
-  }
-
   function getKeyofEnum<T extends Record<string, string | number>>(
     obj: T,
     value: string | number
@@ -537,22 +551,22 @@ function Jokes({
   // Fetch joke from API
   const fetchApi = () => {
     const category = jokeCategory?.length === 0 ? 'Any' : jokeCategory
-    console.log(
-      `https://v2.jokeapi.dev/joke/${category}?${queryKey}${queryValue}lang=${language}&format=json${safemode}&type=${jokeType}`
-    )
+    // console.log(
+    //   `https://v2.jokeapi.dev/joke/${category}?${queryKey}${queryValue}lang=${language}&format=json${safemode}&type=${jokeType}`
+    // )
     setLoading(true)
     fetch(
       `https://v2.jokeapi.dev/joke/${category}?${queryKey}${queryValue}lang=${language}&format=json${safemode}&type=${jokeType}`
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
         setLoading(false)
+        setJokeCategory(data.category)
         if (data.error) {
-          console.log(data)
+          //console.log(data)
           setJoke('')
           setDelivery('')
-          dispatch(notify(`${titleError}! ${titleNoJokeFound}: ${data.message}`, true, 8))
+          dispatch(notify(`${titleError}! ${titleNoJokeFound}`, true, 8))
           setLoading(false)
           setQueryValue('')
           setQuery('')
@@ -573,8 +587,8 @@ function Jokes({
           setJokeId(data.id)
         }
       })
-      .catch((err) => {
-        dispatch(notify(`${titleError}! ${err.message}`, true, 8))
+      .catch((e) => {
+        dispatch(notify(`${titleError}! ${e.response.data.message}`, true, 8))
       })
   }
 
@@ -585,25 +599,32 @@ function Jokes({
   }, [queryValue])
 
   useEffect(() => {
-    const loginWrapOpen = document.querySelector('.login-wrap .open') as HTMLButtonElement
+    //Close the login or the register form when the other one is opened
+    const loginWrapOpen = document.querySelector(
+      '.login-container.closed button.open'
+    ) as HTMLButtonElement
     const loginWrapClose = document.querySelector(
-      '.login-wrap .close'
+      '.login-container.open button.close'
     ) as HTMLButtonElement
     const registerWrapOpen = document.querySelector(
-      '.register-wrap .open'
+      '.register-container.closed button.open'
     ) as HTMLButtonElement
     const registerWrapClose = document.querySelector(
-      '.register-wrap .close'
+      '.register-container.open button.close'
     ) as HTMLButtonElement
 
     loginWrapOpen?.addEventListener('click', () => {
+      registerOpen === true ? registerWrapClose?.click() : null
       setLoginOpen(true)
+      setRegisterOpen(false)
+    })
+    registerWrapOpen?.addEventListener('click', () => {
+      loginOpen === true ? loginWrapClose?.click() : null
+      setRegisterOpen(true)
+      setLoginOpen(false)
     })
     loginWrapClose?.addEventListener('click', () => {
       setLoginOpen(false)
-    })
-    registerWrapOpen?.addEventListener('click', () => {
-      setRegisterOpen(true)
     })
     registerWrapClose?.addEventListener('click', () => {
       setRegisterOpen(false)
@@ -616,6 +637,7 @@ function Jokes({
         <div>
           <div className='jokes-wrap'>
             <h2>{title}</h2>
+            <p className='center mb3'>{titleAJokeGeneratorForTheComicallyInclied}</p>
 
             <FormJoke
               handleFormSubmit={handleFormSubmit}
@@ -623,7 +645,6 @@ function Jokes({
               setQueryValue={setQueryValue}
               setLanguage={setLanguage}
               language={language}
-              submit={submit}
               joke={joke}
               delivery={delivery}
               options={options}
@@ -642,46 +663,43 @@ function Jokes({
               titleUnsafe={titleUnsafe}
               titleSingle={titleSingle}
               titleTwoPart={titleTwoPart}
-              titleSearch={titleSearch}
               titleClickToReveal={titleClickToReveal}
               optionsCategory={optionsCategory}
-              selectAnOption={selectAnOption}
               categoryLanguages={categoryLanguages}
               jokeCategoryByLanguage={jokeCategoryByLanguage}
               visibleJoke={visibleJoke}
               setVisibleJoke={setVisibleJoke}
             />
           </div>
-        </div>
-      </section>
 
-      <section className={`joke-container card ${language}`}>
-        <div>
           <div className={`register-login-wrap`}>
-            <div className={`${loginOpen ? 'open' : ''} ${user ? 'logged' : ''}`}>
-              <Login
-                titleLogin={titleLogin}
-                titleLogout={titleLogout}
-                titleLoggedInAs={titleLoggedInAs}
-              />
-            </div>
-            <div className={`${registerOpen ? 'open' : ''}`}>
-              <Register
-                handleRegister={handleRegister}
-                options={options}
-                language={language}
-                getKeyByValue={getKeyByValue}
-                setLanguage={setLanguage}
-                username={username}
-                setUsername={setUsername}
-                password={password}
-                setPassword={setPassword}
-                confirmPassword={confirmPassword}
-                setConfirmPassword={setConfirmPassword}
-                name={name}
-                setName={setName}
-              />
-            </div>
+            <Login
+              titleLogin={titleLogin}
+              titleLogout={titleLogout}
+              titleLoggedInAs={titleLoggedInAs}
+              language={language}
+              setLanguage={setLanguage}
+              setLoggedIn={setLoggedIn}
+              categoryLanguages={categoryLanguages}
+              getKeyByValue={getKeyByValue}
+              options={options}
+            />
+            <Register
+              handleRegister={handleRegister}
+              options={options}
+              language={language}
+              getKeyByValue={getKeyByValue}
+              setLanguage={setLanguage}
+              username={username}
+              setUsername={setUsername}
+              password={password}
+              setPassword={setPassword}
+              confirmPassword={confirmPassword}
+              setConfirmPassword={setConfirmPassword}
+              name={name}
+              setName={setName}
+              // registerOpen={registerOpen}
+            />
           </div>
           {user && jokes && jokes.length > 0 ? (
             <UserJokes

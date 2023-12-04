@@ -1,14 +1,18 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { IUser } from '../interfaces'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { ELanguages, IUser, EPleaseGiveValidEmail } from '../interfaces'
 import userService from '../services/users'
+import AppThunk from '../store'
+import { AxiosResponse } from 'axios'
 
 const usersSlice = createSlice({
   name: 'users',
   initialState: [] as IUser[],
   reducers: {
-    register(state: IUser[], action) {
-      const updatedUser = action.payload
-      return state.map((user) => (user._id !== updatedUser._id ? user : updatedUser))
+    register(state, action) {
+      //state.push(action.payload);
+      return [...state, action.payload]
+      //   const updatedUser = action.payload
+      //   return state.map((user) => (user._id !== updatedUser._id ? user : updatedUser))
     },
     setUsers(_state, action) {
       return action.payload
@@ -27,8 +31,19 @@ const usersSlice = createSlice({
       return state.filter((user) => user?.username === username) as IUser[]
     },
     searchId(state, action) {
-      const id = action.payload
+      const id = action.payload._id
       return state.filter((user) => user?._id === id) as IUser[]
+    },
+    updateToken(state, action) {
+      const id = action.payload._id
+      const updatedUser = action.payload
+      return state.map((user) => (user?._id !== id ? user : updatedUser))
+    },
+    forgotPassword(state, action) {
+      return action.payload
+      // const id = action.payload._id
+      // const updatedUser = action.payload
+      // return state.map((user) => (user?._id !== id ? user : updatedUser))
     },
   },
 })
@@ -39,45 +54,112 @@ export const initializeUsers = () => {
     dispatch({ type: 'users/setUsers', payload: users })
   }
 }
-
+interface IContent {
+  success: boolean
+  user: IUser
+  message: string
+}
 export const createUser = (newUser: IUser) => {
-  return async (dispatch: (arg0: { payload: any; type: 'users/register' }) => void) => {
-    const user = await userService.createNewUser(newUser)
-    dispatch({ type: 'users/register', payload: user })
+  return async (
+    dispatch: (arg0: { payload: IUser; type: 'users/register' }) => IContent
+  ) => {
+    const response = (await userService.createNewUser(newUser)) as AxiosResponse<IContent>
+    dispatch(register(response.data))
+    return response.data
   }
 }
+
+// export const createUser = (newUser: IUser) => {
+//   return async (dispatch: (arg0: { type: string; payload: any }) => IContent) => {
+//     const response = (await userService.createNewUser(newUser)) as AxiosResponse<IContent>
+//     // Dispatch an action to update the state with the response data
+//     return dispatch(createUserSuccess(response))
+//   }
+// }
+
+// // Action creator for updating the state after a successful create user request
+// const createUserSuccess = (payload: AxiosResponse<IContent, any>) => {
+//   return {
+//     type: 'users/register',
+//     payload: payload,
+//   }
+// }
 
 export const removeUser = (id: IUser['_id']) => {
-  return async (dispatch: (arg0: { payload: IUser; type: 'users/remove' }) => void) => {
-    const deletedUser = await userService.deleteUser(id)
-    dispatch({ type: 'users/remove', payload: deletedUser })
-  }
-}
-
-export const updateUser = (user: IUser) => {
-  return async (dispatch: (arg0: { payload: IUser; type: 'users/update' }) => void) => {
-    const updatedUser = await userService.updateUser(user)
-    dispatch({ type: 'users/update', payload: updatedUser })
-  }
-}
-
-export const findUserbyUsername = (username: string) => {
   return async (
-    dispatch: (arg0: { payload: any; type: 'users/searchUsername' }) => IUser
+    dispatch: (arg0: { payload: IUser['_id']; type: 'users/remove' }) => void
   ) => {
-    const user = await userService.searchUsername(username)
-    dispatch({ type: 'users/searchUsername', payload: user })
-    return user.user
+    const deletedUser = await userService.deleteUser(id)
+    dispatch(remove(deletedUser))
   }
 }
+
+export const updateUser = (
+  user: Pick<IUser, '_id' | 'language' | 'name' | 'password'>
+) => {
+  return async (dispatch: (arg0: { payload: IUser; type: 'users/update' }) => IUser) => {
+    const content: IContent = await userService.updateUser(user)
+    dispatch(update(content.user))
+    return content
+  }
+}
+
+// export const findUserbyUsername = (username: string | undefined) => {
+//   return async (
+//     dispatch: (arg0: { payload: any; type: 'users/searchUsername' }) => IUser
+//   ) => {
+//     const user = await userService.searchUsername(username)
+//     dispatch({ type: 'users/searchUsername', payload: user })
+//     return user.user
+//   }
+// }
 
 export const findUserById = (id: string) => {
   return async (dispatch: (arg0: { payload: any; type: 'users/searchId' }) => IUser) => {
     const user = await userService.searchId(id)
-    return dispatch({ type: 'users/searchId', payload: user._id })
+    dispatch({ type: 'users/searchId', payload: user })
+    return user
   }
 }
 
-export const { register, setUsers, remove, update, searchUsername, searchId } =
-  usersSlice.actions
+export const updateUserToken = (user: Pick<IUser, 'username' | 'language'>) => {
+  return async (
+    dispatch: (arg0: { payload: any; type: 'users/updateToken' }) => void
+  ) => {
+    const updated: IContent = await userService.updateToken(user)
+    dispatch(updateToken(updated))
+    //dispatch({ type: 'users/updateToken', payload: updated })
+  }
+}
+
+export const forgot = (username: string | undefined, language: string | ELanguages) => {
+  return async (
+    dispatch: (arg0: { payload: any; type: 'users/forgotPassword' }) => void
+  ) => {
+    if (username) {
+      const updated: IContent = await userService.forgot(username, language)
+      dispatch(forgotPassword(updated))
+      //dispatch({ type: 'users/updateToken', payload: updated })
+      return updated
+    } else {
+      return {
+        success: false,
+        message: `${
+          EPleaseGiveValidEmail[(language as keyof typeof EPleaseGiveValidEmail) || 'en']
+        }`,
+      }
+    }
+  }
+}
+
+export const {
+  register,
+  setUsers,
+  remove,
+  update,
+  searchUsername,
+  searchId,
+  updateToken,
+  forgotPassword,
+} = usersSlice.actions
 export default usersSlice.reducer
