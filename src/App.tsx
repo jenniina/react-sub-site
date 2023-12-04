@@ -21,6 +21,10 @@ import { RefObject } from './interfaces'
 import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
 import { isTouchDevice } from './hooks/useDraggable'
 import JokesPage from './pages/pages-portfolio/JokesPage'
+import QuizPage from './pages/pages-portfolio/QuizPage'
+import QuizStart from './components/Quiz/QuizStart'
+import QuizQuestion from './components/Quiz/QuizQuestion'
+import QuizFinished from './components/Quiz/QuizFinished'
 
 const App: FC = () => {
   const touchDevice = isTouchDevice()
@@ -142,6 +146,14 @@ const App: FC = () => {
                   />
                 }
               />
+              <Route path='/portfolio/quiz/' element={<QuizPage />}>
+                <Route
+                  index
+                  element={<QuizStart heading='Quiz App' text='' type='page subpage' />}
+                />
+                <Route path='/portfolio/quiz/:difficulty' element={<QuizQuestion />} />
+                <Route path='/portfolio/quiz/results' element={<QuizFinished />} />
+              </Route>
             </Route>
 
             <Route
