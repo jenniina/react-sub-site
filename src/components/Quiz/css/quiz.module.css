@@ -1,0 +1,72 @@
+.top {
+  margin-top: 6em;
+}
+.quiz {
+  margin: 0 auto;
+  max-width: 600px;
+  padding: 0 1em;
+}
+.quiz > p {
+  text-align: center;
+}
+.quiz footer {
+  text-align: center;
+  padding: 1em;
+}
+.wrap {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.options {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 1em;
+}
+.difficulty,
+.reset {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  gap: 1em;
+}
+@media (min-width: 700px) {
+  .difficulty,
+  .reset {
+    flex-flow: row nowrap;
+  }
+}
+button.mode {
+  outline: currentColor solid 2px;
+}
+button.mode.easy {
+  outline-color: green;
+  outline-width: 3px;
+}
+button.mode.hard {
+  outline-color: red;
+  outline-style: double;
+  outline-width: 4px;
+  outline-offset: -4px;
+}
+button.next {
+  margin-top: 1em;
+}
+button.answer {
+  outline: currentColor solid 3px;
+}
+button.correct {
+  outline-color: lime;
+}
+button.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+button.disabled.correct {
+  opacity: 1;
+}
+.question {
+  font-size: var(--title-M);
+  font-family: var(--text-family);
+  letter-spacing: 0.01em;
+  text-align: left;
+}

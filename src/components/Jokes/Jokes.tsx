@@ -635,73 +635,6 @@ function Jokes({
     <>
       <section className={`joke-container card ${language}`}>
         <div>
-          <div className='flex center gap column'>
-            <Select
-              id='main-language'
-              className='language main'
-              instructions={`${titleLanguageSelect}:`}
-              options={options(ELanguages)}
-              value={
-                language
-                  ? ({
-                      value: language,
-                      label: getKeyByValue(ELanguages, language),
-                    } as SelectOption)
-                  : undefined
-              }
-              onChange={(o) => {
-                setLanguage(o?.value as ELanguages)
-              }}
-            />
-
-            <Accordion text={`» ${titleClickHereToSeeFeatures} «`} className='features'>
-              <div className='medium'>
-                <h2>{titleFeatures}</h2>
-                <ul className='ul'>
-                  <li>
-                    {titleFetchesJokesFrom}{' '}
-                    <a href='https://sv443.net/jokeapi/v2/'>JokeAPI</a>
-                  </li>
-                  <li>{ERegisterAndLoginToUse[language]}</li>
-                  <li>
-                    {titleAppTranslatedTo}
-                    <ul>
-                      {Object.values(LanguageOfLanguage[language]).map((l: string) => {
-                        return <li key={l}>{l}</li>
-                      })}
-                    </ul>
-                  </li>
-                  <li>
-                    {titleFilterJokesBy}:
-                    <ul>
-                      <li>{titleLanguage}</li>
-                      <li>
-                        {titleJokeType}
-                        <ul>
-                          <li>{titleTwoPart}</li>
-                          <li>{titleSingle}</li>
-                        </ul>
-                      </li>
-                      <li>
-                        {titleSafemode} {titleOnOff}
-                      </li>
-                      <li>{titleKeyword}</li>
-                      <li>
-                        {titleCategory}
-                        <ul>
-                          <li>{titleJokeCategoryAny}</li>
-                          {Object.values(jokeCategoryByLanguage[language]).map((c) => {
-                            return <li key={c}>{c}</li>
-                          })}
-                        </ul>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </div>
-            </Accordion>
-          </div>
-
           <div className='jokes-wrap'>
             <h2>{title}</h2>
             <p className='center mb3'>{titleAJokeGeneratorForTheComicallyInclied}</p>
@@ -792,6 +725,7 @@ function Jokes({
           )}
         </div>
       </section>
+
       <Notification language={language} />
     </>
   )

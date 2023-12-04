@@ -77,7 +77,10 @@ function NavPortfolio() {
                 : ''
             }
           >
-            <NavLink to='/portfolio/jokes'>Jokes App</NavLink>
+            <NavLink to='/portfolio/quiz'>Quiz</NavLink>
+          </li>
+          <li>
+            <NavLink to='/portfolio/jokes'>Jokes</NavLink>
           </li>
           <li>
             <NavLink to='/portfolio/blob'>Blob</NavLink>
