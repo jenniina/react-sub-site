@@ -407,6 +407,16 @@ body .z {
 .center {
   justify-content: center;
   align-items: center;
+  text-align: center;
+}
+.mb1 {
+  margin-bottom: 1em;
+}
+.mb2 {
+  margin-bottom: 2em;
+}
+.mb3 {
+  margin-bottom: 3em;
 }
 
 .drag,
