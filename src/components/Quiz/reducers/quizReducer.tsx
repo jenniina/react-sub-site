@@ -53,9 +53,9 @@ export const addQuiz = (quiz: IQuizHighscore) => {
   }
 }
 
-export const getUserQuiz = (id: string, type: string) => {
+export const getUserQuiz = (id: string) => {
   return async () => {
-    const quiz = await quizService.getUserQuiz(id, type)
+    const quiz = await quizService.getUserQuiz(id)
     return quiz
   }
 }

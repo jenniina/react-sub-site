@@ -75,7 +75,6 @@ export interface IQuizHighscore {
     medium: number
     hard: number
   }
-  type: EQuizType
   user: IUser['_id']
 }
 export interface IQuestion {
