@@ -38,7 +38,7 @@ const QuizFinished = () => {
 
   useEffect(() => {
     if (user?._id) {
-      dispatch(getUserQuiz(user._id, mode)).then((r) => {
+      dispatch(getUserQuiz(user._id)).then((r) => {
         if (r === null) {
           const quizScore: IQuizHighscore = {
             highscores: {
@@ -46,7 +46,6 @@ const QuizFinished = () => {
               [mode]: points,
             },
             user: user._id,
-            type: mode,
           }
           dispatch(notify(`New highscore!`, false, 3))
 
@@ -58,7 +57,6 @@ const QuizFinished = () => {
               [mode]: points,
             },
             user: user._id,
-            type: mode,
           }
           dispatch(notify(`New highscore!`, false, 3))
 

@@ -8,8 +8,8 @@ const getQuizzes = async () => {
   const response = await axios.get(baseUrl)
   return response.data
 }
-const getUserQuiz = async (id: string, type: string) => {
-  const response = await axios.get(`${baseUrl}/${id}/${type}`)
+const getUserQuiz = async (id: string) => {
+  const response = await axios.get(`${baseUrl}/${id}`)
   return response.data
 }
 
