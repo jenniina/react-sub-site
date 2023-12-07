@@ -1,21 +1,39 @@
 import { useEffect, useRef, useState, FormEvent } from 'react'
 import { AxiosError } from 'axios'
-import { ReducerProps } from '../interfaces'
+import { ReducerProps, IHighscore } from '../interfaces'
 import Accordion from '../../Accordion/Accordion'
 import { useAppDispatch } from '../hooks/useAppDispatch'
 import { notify } from '../reducers/notificationReducer'
+import { getUserQuiz } from '../reducers/quizReducer'
 import { initializeUser, login, logout } from '../reducers/authReducer'
 import { useSelector } from 'react-redux'
+import Scores from './Scores'
 
-const FormLogin = () => {
+const FormLogin = ({ easy, medium, hard }: IHighscore) => {
   const dispatch = useAppDispatch()
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const formLoginRef = useRef(null)
 
+  const [highscoresLocal, setHighscores] = useState<IHighscore>({
+    easy: easy ?? { score: 0, time: 0 },
+    medium: medium ?? { score: 0, time: 0 },
+    hard: hard ?? { score: 0, time: 0 },
+  })
+
   const user = useSelector((state: ReducerProps) => {
     return state.auth?.user
+  })
+
+  useEffect(() => {
+    if (user?._id) {
+      dispatch(getUserQuiz(user._id)).then((r) => {
+        if (r !== null) {
+          setHighscores(r.highscores)
+        }
+      })
+    }
   })
 
   useEffect(() => {
@@ -43,12 +61,19 @@ const FormLogin = () => {
   return (
     <div className='login-wrap'>
       {user ? (
-        <p>
-          <span>Logged in as {user?.name ? user?.name : user.username} </span>
-          <button onClick={handleLogout} id='logout' className='logout danger'>
-            Log out &times;
-          </button>
-        </p>
+        <>
+          <p>
+            <span>Logged in as {user?.name ? user?.name : user.username} </span>
+            <button onClick={handleLogout} id='logout' className='logout danger'>
+              Log out &times;
+            </button>
+          </p>
+          <Scores
+            easy={highscoresLocal.easy}
+            medium={highscoresLocal.medium}
+            hard={highscoresLocal.hard}
+          />
+        </>
       ) : (
         <>
           <Accordion className='' text='Log in' ref={formLoginRef}>

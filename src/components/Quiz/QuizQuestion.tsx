@@ -1,8 +1,7 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from './hooks/useAppDispatch'
-import { resetTimer } from './reducers/timerReducer'
 import { getQuestions, newAnswer } from './reducers/questionsReducer'
 import { ReducerProps } from './interfaces'
 import Progress from './components/Progress'
@@ -19,10 +18,10 @@ const QuizQuestion = () => {
   const { currentQuestion, answer, index, status } = useSelector(
     (state: ReducerProps) => state.questions
   )
+
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(resetTimer())
     dispatch(getQuestions(mode))
   }, [])
 
@@ -41,6 +40,8 @@ const QuizQuestion = () => {
           )}
           {status === 'ready' && (
             <>
+              <h1 className='scr'>Quiz App</h1>
+              <h2>Quiz in progress</h2>
               <Progress />
               <div className={styles.wrap}>
                 <div className={`${styles.diff}`}>Difficulty: {difficulty}</div>

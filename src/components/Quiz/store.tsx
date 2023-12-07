@@ -4,7 +4,6 @@ import userReducer from './reducers/usersReducer'
 import authReducer from './reducers/authReducer'
 import notificationReducer from './reducers/notificationReducer'
 import questionsReducer from './reducers/questionsReducer'
-import timerReducer from './reducers/timerReducer'
 import difficultyReducer from './reducers/difficultyReducer'
 
 const store = configureStore({
@@ -15,7 +14,6 @@ const store = configureStore({
     quiz: quizReducer,
     difficulty: difficultyReducer,
     questions: questionsReducer,
-    timer: timerReducer,
   },
 })
 

@@ -20,10 +20,12 @@ const initialState: ReducerProps['questions'] = {
   currentQuestion: {},
   answer: null,
   points: 0,
+  secondsRemaining: 210,
+  finalTime: 0,
   highscores: {
-    easy: 0,
-    medium: 0,
-    hard: 0,
+    easy: { score: 0, time: 0 },
+    medium: { score: 0, time: 0 },
+    hard: { score: 0, time: 0 },
   },
 }
 
@@ -48,6 +50,15 @@ const questionsSlice = createSlice({
     addQuiz: (state, { payload }) => {
       return payload
     },
+    resetTimer: (state) => {
+      state.secondsRemaining = 210
+    },
+    lessSeconds: (state) => {
+      state.secondsRemaining -= 1
+    },
+    finalSeconds: (state) => {
+      state.finalTime = 210 - state.secondsRemaining
+    },
     newAnswer: (state, { payload }) => {
       state.answer = payload
       state.points =
@@ -66,11 +77,18 @@ const questionsSlice = createSlice({
       state.answer = null
     },
     gameFinished: (state) => {
-      state.highscores[returnMode() as keyof typeof state.highscores] =
+      state.highscores[returnMode() as keyof typeof state.highscores].score =
         state.points >
-        state.highscores[returnMode() as unknown as keyof typeof state.highscores]
+        state.highscores[returnMode() as unknown as keyof typeof state.highscores].score
           ? state.points
           : state.highscores[returnMode() as unknown as keyof typeof state.highscores]
+              .score
+      state.highscores[returnMode() as keyof typeof state.highscores].time =
+        state.finalTime <
+        state.highscores[returnMode() as unknown as keyof typeof state.highscores].time
+          ? state.finalTime
+          : state.highscores[returnMode() as unknown as keyof typeof state.highscores]
+              .time
     },
   },
   extraReducers: (builder) => {
@@ -99,5 +117,12 @@ const questionsSlice = createSlice({
   },
 })
 
-export const { newAnswer, nextQuestion, gameFinished } = questionsSlice.actions
+export const {
+  newAnswer,
+  nextQuestion,
+  gameFinished,
+  finalSeconds,
+  lessSeconds,
+  resetTimer,
+} = questionsSlice.actions
 export default questionsSlice.reducer

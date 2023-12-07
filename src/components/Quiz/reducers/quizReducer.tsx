@@ -5,9 +5,9 @@ import { IQuizHighscore } from '../interfaces'
 const initialState = {
   options: {
     loading: false,
-    question_category: '',
-    question_difficulty: '',
-    question_type: '',
+    category: '',
+    difficulty: '',
+    type: '',
     amount_of_questions: 50,
   },
   questions: [],
@@ -23,13 +23,13 @@ const quizSlice = createSlice({
       state.options.loading = action.payload
     },
     changeDifficulty(state, action) {
-      state.options.question_difficulty = action.payload
+      state.options.difficulty = action.payload
     },
     changeCategory(state, action) {
-      state.options.question_category = action.payload
+      state.options.category = action.payload
     },
     changeType(state, action) {
-      state.options.question_type = action.payload
+      state.options.type = action.payload
     },
     changeAmount(state, action) {
       state.options.amount_of_questions = action.payload

@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../hooks/useAppDispatch'
-import { nextQuestion, gameFinished } from '../reducers/questionsReducer'
+import { nextQuestion, gameFinished, finalSeconds } from '../reducers/questionsReducer'
 import { ReducerProps } from '../interfaces'
 import styles from '../css/quiz.module.css'
 
@@ -12,6 +12,7 @@ const Next = () => {
   const navigate = useNavigate()
 
   const handleFinish = () => {
+    dispatch(finalSeconds())
     dispatch(gameFinished())
     navigate('/portfolio/quiz/results')
   }

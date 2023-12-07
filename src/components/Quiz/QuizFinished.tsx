@@ -1,7 +1,7 @@
 import { useEffect, useState, FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { IQuizHighscore, ReducerProps } from './interfaces'
+import { IQuizHighscore, IHighscore, ReducerProps } from './interfaces'
 import { useAppDispatch } from './hooks/useAppDispatch'
 import { addQuiz, getUserQuiz } from './reducers/quizReducer'
 import { initializeUser } from './reducers/authReducer'
@@ -13,7 +13,9 @@ import Notification from './components/Notification'
 import styles from '../../components/Quiz/css/quiz.module.css'
 
 const QuizFinished = () => {
-  const { points, highscores } = useSelector((state: ReducerProps) => state.questions)
+  const { points, highscores, finalTime } = useSelector(
+    (state: ReducerProps) => state.questions
+  )
   const { mode } = useSelector((state: ReducerProps) => state.difficulty)
 
   const percentage = Math.ceil((points * 100) / 300)
@@ -43,7 +45,7 @@ const QuizFinished = () => {
           const quizScore: IQuizHighscore = {
             highscores: {
               ...highscores,
-              [mode]: points,
+              [mode]: { score: points, time: finalTime },
             },
             user: user._id,
           }
@@ -54,7 +56,7 @@ const QuizFinished = () => {
           const quizScore: IQuizHighscore = {
             highscores: {
               ...r.highscores,
-              [mode]: points,
+              [mode]: { score: points, time: finalTime },
             },
             user: user._id,
           }
@@ -139,13 +141,16 @@ const QuizFinished = () => {
       <section className={`card ${styles.top}`}>
         <div>
           <div className={`${styles.quiz}`}>
+            <h1 className='scr'>Quiz Finished</h1>
+            <h2>{congrats}</h2>
             <p className='result'>
-              {congrats} You scored <strong>{points}</strong> out of 300 ({percentage}%)
+              You scored <strong>{points}</strong> out of 300 ({percentage}%)
             </p>
-            <p className='highscore'>(Highscore: {highscores[mode]} points)</p>
+            <p>Difficulty: {mode}</p>
+            <p className='highscore'>(Highscore: {highscores[mode].score} points)</p>
             <div className={`${styles.reset}`}>
               <button className='btn' onClick={() => navigate(`/portfolio/quiz`)}>
-                Main Menu
+                Quiz Menu
               </button>
               <button className='btn' onClick={() => navigate(`/portfolio/quiz/${mode}`)}>
                 Reset
@@ -153,9 +158,13 @@ const QuizFinished = () => {
             </div>
           </div>
         </div>
-        <div className={`register-login-wrap`}>
+        <div className={`register-login-wrap ${styles['register-login-wrap']}`}>
           <div className={`${loginOpen ? 'open' : ''} ${user ? 'logged' : ''}`}>
-            <FormLogin />
+            <FormLogin
+              easy={highscores.easy}
+              medium={highscores.medium}
+              hard={highscores.hard}
+            />
           </div>
           <div className={`${registerOpen ? 'open' : ''}`}>
             <Register

@@ -9,10 +9,10 @@ const Progress = () => {
     <header className={`${styles.progress}`}>
       <progress max='15' value={index + Number(answer !== null)} />
       <p>
-        Question <b>{index + 1}</b> / 15
+        Question&nbsp;&nbsp;<b>{index + 1}</b> / 15
       </p>
       <p>
-        <b>{points}</b> / 300
+        <b>Score: {points}</b> / 300
       </p>
     </header>
   )
