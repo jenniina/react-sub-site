@@ -30,11 +30,7 @@ export interface ReducerProps {
     }
     answer: string | null
     points: number
-    highscores: {
-      easy: number
-      medium: number
-      hard: number
-    }
+    highscores: IHighscore
   }
   users: {
     users: IUser[]
@@ -70,12 +66,13 @@ export enum EQuizType {
   hard = 'hard',
 }
 export interface IQuizHighscore {
-  highscores: {
-    easy: number
-    medium: number
-    hard: number
-  }
+  highscores: IHighscore
   user: IUser['_id']
+}
+export interface IHighscore {
+  easy: number
+  medium: number
+  hard: number
 }
 export interface IQuestion {
   id: string

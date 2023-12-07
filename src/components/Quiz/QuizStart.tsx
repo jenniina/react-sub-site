@@ -6,7 +6,7 @@ import Hero from '../Hero/Hero'
 import styles from '../../components/Quiz/css/quiz.module.css'
 import { useEffect, useState } from 'react'
 import { useAppDispatch } from './hooks/useAppDispatch'
-import { ReducerProps } from './interfaces'
+import { IHighscore, ReducerProps } from './interfaces'
 import { initializeUser } from './reducers/authReducer'
 import { notify } from './reducers/notificationReducer'
 import { createUser, findUserbyUsername } from './reducers/usersReducer'
@@ -14,6 +14,7 @@ import FormLogin from './components/Login'
 import Register from './components/Register'
 import Notification from './components/Notification'
 import { FaStar } from 'react-icons/fa'
+import { getUserQuiz } from './reducers/quizReducer'
 
 const QuizStart = ({
   heading,
@@ -32,6 +33,11 @@ const QuizStart = ({
   const [confirmPassword, setConfirmPassword] = useState<string>('')
   const [name, setName] = useState<string>('')
   const [language, setLanguage] = useState<string>('en')
+  const [highscoresLocal, setHighscores] = useState<IHighscore>({
+    easy: 0,
+    medium: 0,
+    hard: 0,
+  })
 
   const dispatch = useAppDispatch()
 
@@ -42,6 +48,16 @@ const QuizStart = ({
   const user = useSelector((state: ReducerProps) => {
     return state.auth?.user
   })
+
+  useEffect(() => {
+    if (user?._id) {
+      dispatch(getUserQuiz(user._id)).then((r) => {
+        if (r !== null) {
+          setHighscores(r.highscores)
+        }
+      })
+    }
+  }, [user])
 
   const handleRegister = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
@@ -135,9 +151,13 @@ const QuizStart = ({
               </button>
             </div>
           </div>
-          <div className={`register-login-wrap`}>
+          <div className={`register-login-wrap ${styles['register-login-wrap']}`}>
             <div className={`${loginOpen ? 'open' : ''} ${user ? 'logged' : ''}`}>
-              <FormLogin />
+              <FormLogin
+                easy={highscoresLocal.easy}
+                medium={highscoresLocal.medium}
+                hard={highscoresLocal.hard}
+              />
             </div>
             <div className={`${registerOpen ? 'open' : ''}`}>
               <Register

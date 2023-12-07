@@ -9,6 +9,10 @@
 .quiz > p {
   text-align: center;
 }
+.quiz progress {
+  width: 100%;
+  margin: 0.5em 0 0.1em;
+}
 .quiz footer {
   text-align: center;
   padding: 1em;
@@ -69,4 +73,38 @@ button.disabled.correct {
   font-family: var(--text-family);
   letter-spacing: 0.01em;
   text-align: left;
+}
+table.highscores {
+  margin: 0 auto;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 1px solid black;
+}
+table.highscores caption {
+  font-size: var(--title-M);
+  font-family: var(--title-family);
+  letter-spacing: 0.01em;
+  text-align: center;
+  padding: 0.5em 0 1em;
+  min-width: max-content;
+}
+table.highscores th {
+  font-size: var(--title-S);
+  font-family: var(--title-family);
+  letter-spacing: 0.01em;
+  text-align: left;
+  padding: 0.5em;
+  min-width: max-content;
+  border-bottom: 1px solid currentColor;
+}
+table.highscores th,
+table.highscores td {
+  padding: 0.2em 0.5em;
+  text-align: left;
+}
+table.highscores tr:first-child td {
+  padding-top: 0.8em;
+}
+.register-login-wrap {
+  margin-top: 0.6em;
 }

@@ -41,6 +41,8 @@ const QuizQuestion = () => {
           )}
           {status === 'ready' && (
             <>
+              <h1 className='scr'>Quiz App</h1>
+              <h2>Quiz in progress</h2>
               <Progress />
               <div className={styles.wrap}>
                 <div className={`${styles.diff}`}>Difficulty: {difficulty}</div>

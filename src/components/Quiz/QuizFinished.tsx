@@ -1,7 +1,7 @@
 import { useEffect, useState, FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { IQuizHighscore, ReducerProps } from './interfaces'
+import { IQuizHighscore, IHighscore, ReducerProps } from './interfaces'
 import { useAppDispatch } from './hooks/useAppDispatch'
 import { addQuiz, getUserQuiz } from './reducers/quizReducer'
 import { initializeUser } from './reducers/authReducer'
@@ -139,13 +139,16 @@ const QuizFinished = () => {
       <section className={`card ${styles.top}`}>
         <div>
           <div className={`${styles.quiz}`}>
+            <h1 className='scr'>Quiz Finished</h1>
+            <h2>{congrats}</h2>
             <p className='result'>
-              {congrats} You scored <strong>{points}</strong> out of 300 ({percentage}%)
+              You scored <strong>{points}</strong> out of 300 ({percentage}%)
             </p>
+            <p>Difficulty: {mode}</p>
             <p className='highscore'>(Highscore: {highscores[mode]} points)</p>
             <div className={`${styles.reset}`}>
               <button className='btn' onClick={() => navigate(`/portfolio/quiz`)}>
-                Main Menu
+                Quiz Menu
               </button>
               <button className='btn' onClick={() => navigate(`/portfolio/quiz/${mode}`)}>
                 Reset
@@ -153,9 +156,13 @@ const QuizFinished = () => {
             </div>
           </div>
         </div>
-        <div className={`register-login-wrap`}>
+        <div className={`register-login-wrap ${styles['register-login-wrap']}`}>
           <div className={`${loginOpen ? 'open' : ''} ${user ? 'logged' : ''}`}>
-            <FormLogin />
+            <FormLogin
+              easy={highscores.easy}
+              medium={highscores.medium}
+              hard={highscores.hard}
+            />
           </div>
           <div className={`${registerOpen ? 'open' : ''}`}>
             <Register
