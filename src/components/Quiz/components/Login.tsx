@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState, FormEvent } from 'react'
 import { AxiosError } from 'axios'
-import { IQuizHighscore, EQuizType, ReducerProps, IHighscore } from '../interfaces'
+import { ReducerProps, IHighscore } from '../interfaces'
 import Accordion from '../../Accordion/Accordion'
 import { useAppDispatch } from '../hooks/useAppDispatch'
 import { notify } from '../reducers/notificationReducer'
 import { getUserQuiz } from '../reducers/quizReducer'
 import { initializeUser, login, logout } from '../reducers/authReducer'
 import { useSelector } from 'react-redux'
-import styles from '../css/quiz.module.css'
+import Scores from './Scores'
 
 const FormLogin = ({ easy, medium, hard }: IHighscore) => {
   const dispatch = useAppDispatch()
@@ -17,9 +17,9 @@ const FormLogin = ({ easy, medium, hard }: IHighscore) => {
   const formLoginRef = useRef(null)
 
   const [highscoresLocal, setHighscores] = useState<IHighscore>({
-    easy: 0,
-    medium: 0,
-    hard: 0,
+    easy: easy ?? { score: 0, time: 0 },
+    medium: medium ?? { score: 0, time: 0 },
+    hard: hard ?? { score: 0, time: 0 },
   })
 
   const user = useSelector((state: ReducerProps) => {
@@ -34,7 +34,7 @@ const FormLogin = ({ easy, medium, hard }: IHighscore) => {
         }
       })
     }
-  }, [user, easy, medium, hard])
+  })
 
   useEffect(() => {
     dispatch(initializeUser())
@@ -68,33 +68,11 @@ const FormLogin = ({ easy, medium, hard }: IHighscore) => {
               Log out &times;
             </button>
           </p>
-          <table className={styles.highscores}>
-            <caption>Your&nbsp;highscores</caption>
-            <thead>
-              <tr>
-                <th>Difficulty</th>
-                <th>Score</th>
-                <th>Time</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Easy</td>
-                <td>{highscoresLocal ? highscoresLocal.easy : 0}</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>Medium</td>
-                <td>{highscoresLocal ? highscoresLocal.medium : 0}</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>Hard</td>
-                <td>{highscoresLocal ? highscoresLocal.hard : 0}</td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
+          <Scores
+            easy={highscoresLocal.easy}
+            medium={highscoresLocal.medium}
+            hard={highscoresLocal.hard}
+          />
         </>
       ) : (
         <>

@@ -13,6 +13,7 @@ export interface ReducerProps {
   }
   timer: {
     secondsRemaining: number
+    finalTime: number
   }
   questions: {
     questionsRedux: IQuestion[]
@@ -31,6 +32,8 @@ export interface ReducerProps {
     answer: string | null
     points: number
     highscores: IHighscore
+    secondsRemaining: number
+    finalTime: number
   }
   users: {
     users: IUser[]
@@ -70,9 +73,9 @@ export interface IQuizHighscore {
   user: IUser['_id']
 }
 export interface IHighscore {
-  easy: number
-  medium: number
-  hard: number
+  easy: { score: number; time: number }
+  medium: { score: number; time: number }
+  hard: { score: number; time: number }
 }
 export interface IQuestion {
   id: string

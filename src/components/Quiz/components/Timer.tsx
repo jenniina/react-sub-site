@@ -2,13 +2,12 @@ import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../hooks/useAppDispatch'
 import { useNavigate } from 'react-router-dom'
-import { resetTimer, lessSeconds } from '../reducers/timerReducer'
-import { gameFinished } from '../reducers/questionsReducer'
+import { gameFinished, resetTimer, lessSeconds } from '../reducers/questionsReducer'
 import { ReducerProps } from '../interfaces'
 import styles from '../css/quiz.module.css'
 
 const Timer = () => {
-  const { secondsRemaining } = useSelector((state: ReducerProps) => state.timer)
+  const { secondsRemaining } = useSelector((state: ReducerProps) => state.questions)
   const sec = secondsRemaining % 60
   const mins = Math.floor(secondsRemaining / 60)
 

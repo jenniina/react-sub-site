@@ -13,7 +13,9 @@ import Notification from './components/Notification'
 import styles from '../../components/Quiz/css/quiz.module.css'
 
 const QuizFinished = () => {
-  const { points, highscores } = useSelector((state: ReducerProps) => state.questions)
+  const { points, highscores, finalTime } = useSelector(
+    (state: ReducerProps) => state.questions
+  )
   const { mode } = useSelector((state: ReducerProps) => state.difficulty)
 
   const percentage = Math.ceil((points * 100) / 300)
@@ -43,7 +45,7 @@ const QuizFinished = () => {
           const quizScore: IQuizHighscore = {
             highscores: {
               ...highscores,
-              [mode]: points,
+              [mode]: { score: points, time: finalTime },
             },
             user: user._id,
           }
@@ -54,7 +56,7 @@ const QuizFinished = () => {
           const quizScore: IQuizHighscore = {
             highscores: {
               ...r.highscores,
-              [mode]: points,
+              [mode]: { score: points, time: finalTime },
             },
             user: user._id,
           }
@@ -145,7 +147,7 @@ const QuizFinished = () => {
               You scored <strong>{points}</strong> out of 300 ({percentage}%)
             </p>
             <p>Difficulty: {mode}</p>
-            <p className='highscore'>(Highscore: {highscores[mode]} points)</p>
+            <p className='highscore'>(Highscore: {highscores[mode].score} points)</p>
             <div className={`${styles.reset}`}>
               <button className='btn' onClick={() => navigate(`/portfolio/quiz`)}>
                 Quiz Menu
