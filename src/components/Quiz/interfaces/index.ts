@@ -11,10 +11,6 @@ export interface ReducerProps {
     quiz: IQuiz
     quizzes: IQuiz[]
   }
-  timer: {
-    secondsRemaining: number
-    finalTime: number
-  }
   questions: {
     questionsRedux: IQuestion[]
     status: string
@@ -33,7 +29,7 @@ export interface ReducerProps {
     points: number
     highscores: IHighscore
     secondsRemaining: number
-    finalTime: number
+    finalSeconds: number
   }
   users: {
     users: IUser[]

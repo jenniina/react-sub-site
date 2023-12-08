@@ -13,7 +13,7 @@ import Notification from './components/Notification'
 import styles from '../../components/Quiz/css/quiz.module.css'
 
 const QuizFinished = () => {
-  const { points, highscores, finalTime } = useSelector(
+  const { points, highscores, finalSeconds } = useSelector(
     (state: ReducerProps) => state.questions
   )
   const { mode } = useSelector((state: ReducerProps) => state.difficulty)
@@ -45,7 +45,7 @@ const QuizFinished = () => {
           const quizScore: IQuizHighscore = {
             highscores: {
               ...highscores,
-              [mode]: { score: points, time: finalTime },
+              [mode]: { score: points, time: finalSeconds },
             },
             user: user._id,
           }
@@ -54,13 +54,16 @@ const QuizFinished = () => {
           dispatch(addQuiz(quizScore)).then((r) => {})
         } else if (
           (r !== null && r.highscores[mode].score < points) ||
-          r.highscores[mode].time > finalTime
+          r.highscores[mode].time > finalSeconds
         ) {
-          if (r.highscores[mode].score < points && r.highscores[mode].time > finalTime) {
+          if (
+            r.highscores[mode].score < points &&
+            r.highscores[mode].time > finalSeconds
+          ) {
             const quizScore: IQuizHighscore = {
               highscores: {
                 ...r.highscores,
-                [mode]: { score: points, time: finalTime },
+                [mode]: { score: points, time: finalSeconds },
               },
               user: user._id,
             }
