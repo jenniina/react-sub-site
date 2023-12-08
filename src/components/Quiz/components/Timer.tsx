@@ -2,7 +2,12 @@ import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../hooks/useAppDispatch'
 import { useNavigate } from 'react-router-dom'
-import { gameFinished, resetTimer, lessSeconds } from '../reducers/questionsReducer'
+import {
+  gameFinished,
+  resetTimer,
+  lessSeconds,
+  finalSeconds,
+} from '../reducers/questionsReducer'
 import { ReducerProps } from '../interfaces'
 import styles from '../css/quiz.module.css'
 
@@ -16,6 +21,7 @@ const Timer = () => {
 
   useEffect(() => {
     if (secondsRemaining === 0) {
+      dispatch(finalSeconds())
       dispatch(gameFinished())
       dispatch(resetTimer())
       navigate('/portfolio/quiz/results')

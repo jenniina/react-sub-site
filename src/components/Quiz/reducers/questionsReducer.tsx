@@ -21,7 +21,7 @@ const initialState: ReducerProps['questions'] = {
   answer: null,
   points: 0,
   secondsRemaining: 210,
-  finalTime: 0,
+  finalSeconds: 0,
   highscores: {
     easy: { score: 0, time: 210 },
     medium: { score: 0, time: 210 },
@@ -57,7 +57,7 @@ const questionsSlice = createSlice({
       state.secondsRemaining -= 1
     },
     finalSeconds: (state) => {
-      state.finalTime = 210 - state.secondsRemaining
+      state.finalSeconds = 210 - state.secondsRemaining
     },
     newAnswer: (state, { payload }) => {
       state.answer = payload
@@ -84,9 +84,9 @@ const questionsSlice = createSlice({
           : state.highscores[returnMode() as unknown as keyof typeof state.highscores]
               .score
       state.highscores[returnMode() as keyof typeof state.highscores].time =
-        state.finalTime <
+        state.finalSeconds <
         state.highscores[returnMode() as unknown as keyof typeof state.highscores].time
-          ? state.finalTime
+          ? state.finalSeconds
           : state.highscores[returnMode() as unknown as keyof typeof state.highscores]
               .time
     },
