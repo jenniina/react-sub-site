@@ -80,17 +80,6 @@ const QuizFinished = () => {
             dispatch(notify(`New highscore!`, false, 3))
 
             dispatch(addQuiz(quizScore))
-          } else if (r.highscores[mode].time > finalTime) {
-            const quizScore: IQuizHighscore = {
-              highscores: {
-                ...r.highscores,
-                [mode]: { score: r.highscores[mode].score, time: finalTime },
-              },
-              user: user._id,
-            }
-            dispatch(notify(`New highscore!`, false, 3))
-
-            dispatch(addQuiz(quizScore))
           }
         }
       })
