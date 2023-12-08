@@ -52,23 +52,50 @@ const QuizFinished = () => {
           dispatch(notify(`New highscore!`, false, 3))
 
           dispatch(addQuiz(quizScore)).then((r) => {})
-        } else if (r !== null && r.highscores[mode] < points) {
-          const quizScore: IQuizHighscore = {
-            highscores: {
-              ...r.highscores,
-              [mode]: { score: points, time: finalTime },
-            },
-            user: user._id,
-          }
-          dispatch(notify(`New highscore!`, false, 3))
+        } else if (
+          (r !== null && r.highscores[mode].score < points) ||
+          r.highscores[mode].time > finalTime
+        ) {
+          if (r.highscores[mode].score < points && r.highscores[mode].time > finalTime) {
+            const quizScore: IQuizHighscore = {
+              highscores: {
+                ...r.highscores,
+                [mode]: { score: points, time: finalTime },
+              },
+              user: user._id,
+            }
+            dispatch(notify(`New highscore!`, false, 3))
 
-          dispatch(addQuiz(quizScore)).then((r) => {
-            //console.log('r3: ', r)
-          })
+            dispatch(addQuiz(quizScore)).then((r) => {
+              //console.log('r3: ', r)
+            })
+          } else if (r.highscores[mode].score < points) {
+            const quizScore: IQuizHighscore = {
+              highscores: {
+                ...r.highscores,
+                [mode]: { score: points, time: r.highscores[mode].time },
+              },
+              user: user._id,
+            }
+            dispatch(notify(`New highscore!`, false, 3))
+
+            dispatch(addQuiz(quizScore))
+          } else if (r.highscores[mode].time > finalTime) {
+            const quizScore: IQuizHighscore = {
+              highscores: {
+                ...r.highscores,
+                [mode]: { score: r.highscores[mode].score, time: finalTime },
+              },
+              user: user._id,
+            }
+            dispatch(notify(`New highscore!`, false, 3))
+
+            dispatch(addQuiz(quizScore))
+          }
         }
       })
     }
-  }, [points, highscores])
+  }, [user])
 
   const handleRegister = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
@@ -153,7 +180,7 @@ const QuizFinished = () => {
                 Quiz Menu
               </button>
               <button className='btn' onClick={() => navigate(`/portfolio/quiz/${mode}`)}>
-                Reset
+                Try again
               </button>
             </div>
           </div>

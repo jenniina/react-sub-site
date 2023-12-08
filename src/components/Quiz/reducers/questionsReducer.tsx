@@ -23,9 +23,9 @@ const initialState: ReducerProps['questions'] = {
   secondsRemaining: 210,
   finalTime: 0,
   highscores: {
-    easy: { score: 0, time: 0 },
-    medium: { score: 0, time: 0 },
-    hard: { score: 0, time: 0 },
+    easy: { score: 0, time: 210 },
+    medium: { score: 0, time: 210 },
+    hard: { score: 0, time: 210 },
   },
 }
 

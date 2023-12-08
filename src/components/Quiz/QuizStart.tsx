@@ -34,9 +34,9 @@ const QuizStart = ({
   const [name, setName] = useState<string>('')
   const [language, setLanguage] = useState<string>('en')
   const [highscoresLocal, setHighscores] = useState<IHighscore>({
-    easy: { score: 0, time: 0 },
-    medium: { score: 0, time: 0 },
-    hard: { score: 0, time: 0 },
+    easy: { score: 0, time: 210 },
+    medium: { score: 0, time: 210 },
+    hard: { score: 0, time: 210 },
   })
 
   const dispatch = useAppDispatch()

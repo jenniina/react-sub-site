@@ -108,3 +108,7 @@ table.highscores tr:first-child td {
 .register-login-wrap {
   margin-top: 0.6em;
 }
+.showHighscores {
+  display: block;
+  margin: 0 auto;
+}

@@ -8,6 +8,7 @@ import { getUserQuiz } from '../reducers/quizReducer'
 import { initializeUser, login, logout } from '../reducers/authReducer'
 import { useSelector } from 'react-redux'
 import Scores from './Scores'
+import styles from '../css/quiz.module.css'
 
 const FormLogin = ({ easy, medium, hard }: IHighscore) => {
   const dispatch = useAppDispatch()
@@ -17,10 +18,12 @@ const FormLogin = ({ easy, medium, hard }: IHighscore) => {
   const formLoginRef = useRef(null)
 
   const [highscoresLocal, setHighscores] = useState<IHighscore>({
-    easy: easy ?? { score: 0, time: 0 },
-    medium: medium ?? { score: 0, time: 0 },
-    hard: hard ?? { score: 0, time: 0 },
+    easy: easy ?? { score: 0, time: 210 },
+    medium: medium ?? { score: 0, time: 210 },
+    hard: hard ?? { score: 0, time: 210 },
   })
+
+  const [showHighscores, setShowHighscores] = useState<boolean>(false)
 
   const user = useSelector((state: ReducerProps) => {
     return state.auth?.user
@@ -68,11 +71,17 @@ const FormLogin = ({ easy, medium, hard }: IHighscore) => {
               Log out &times;
             </button>
           </p>
-          <Scores
-            easy={highscoresLocal.easy}
-            medium={highscoresLocal.medium}
-            hard={highscoresLocal.hard}
-          />
+          <button
+            onClick={() => setShowHighscores(!showHighscores)}
+            className={styles.showHighscores}
+          >{`${showHighscores ? 'hide' : 'show'} highscores`}</button>
+          {showHighscores && (
+            <Scores
+              easy={highscoresLocal.easy}
+              medium={highscoresLocal.medium}
+              hard={highscoresLocal.hard}
+            />
+          )}
         </>
       ) : (
         <>
