@@ -121,7 +121,11 @@ table.highscores td:nth-of-type(2) {
   text-align: right;
 }
 .register-login-wrap {
-  margin-top: 0.6em;
+  margin-top: 2em;
+}
+.register-login-wrap h2 {
+  margin-bottom: 1.5em;
+  font-size: var(--title-L);
 }
 .showHighscores {
   display: block;
