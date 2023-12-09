@@ -6,16 +6,18 @@ const Scores = ({ easy, medium, hard }: IHighscore) => {
     <table className={styles.highscores}>
       <caption>Your&nbsp;highscores</caption>
       <thead>
-        <tr>
+        <tr className={styles.th}>
           <th>Difficulty</th>
           <th>Score</th>
-          <th>Time</th>
+          <th>%</th>
+          <th>Speed</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Easy</td>
-          <td>{easy ? easy.score : 0}</td>
+          <th>Easy</th>
+          <td>{easy ? easy.score : 0}/300</td>
+          <td>{+((easy.score * 100) / 300).toFixed(1)}%</td>
           <td>
             {easy.score === 0 || easy.time === 0 ? (
               'N/A'
@@ -29,8 +31,9 @@ const Scores = ({ easy, medium, hard }: IHighscore) => {
           </td>
         </tr>
         <tr>
-          <td>Medium</td>
-          <td>{medium ? medium.score : 0}</td>
+          <th>Medium</th>
+          <td>{medium ? medium.score : 0}/300</td>
+          <td>{+((medium.score * 100) / 300).toFixed(1)}%</td>
           <td>
             {medium.score === 0 || medium.time === 0 ? (
               'N/A'
@@ -44,8 +47,9 @@ const Scores = ({ easy, medium, hard }: IHighscore) => {
           </td>
         </tr>
         <tr>
-          <td>Hard</td>
-          <td>{hard ? hard.score : 0}</td>
+          <th>Hard</th>
+          <td>{hard ? hard.score : 0}/300</td>
+          <td>{+((hard.score * 100) / 300).toFixed(1)}%</td>
           <td>
             {hard.score === 0 || hard.time === 0 ? (
               'N/A'
