@@ -18,7 +18,7 @@ const QuizFinished = () => {
   )
   const { mode } = useSelector((state: ReducerProps) => state.difficulty)
 
-  const percentage = Math.ceil((points * 100) / 300)
+  const percentage = +((points * 100) / 300).toFixed(1)
   const navigate = useNavigate()
 
   const [loginOpen, setLoginOpen] = useState(false)
@@ -27,6 +27,9 @@ const QuizFinished = () => {
   const [password, setPassword] = useState<string>('')
   const [confirmPassword, setConfirmPassword] = useState<string>('')
   const [name, setName] = useState<string>('')
+
+  const sec = finalSeconds % 60
+  const mins = Math.floor(finalSeconds / 60)
 
   const dispatch = useAppDispatch()
 
@@ -54,11 +57,11 @@ const QuizFinished = () => {
           dispatch(addQuiz(quizScore)).then((r) => {
             //console.log('r1: ', r)
             dispatch(deleteDuplicates(user._id)).then((r) => {
-              //console.log('r4: ', r)
+              //console.log('r5: ', r)
             })
           })
         } else if (
-          (r !== null && r.highscores[mode].score < points) ||
+          (r !== null && r.highscores[mode].score <= points) ||
           r.highscores[mode].time > finalSeconds
         ) {
           if (
@@ -89,6 +92,22 @@ const QuizFinished = () => {
 
             dispatch(addQuiz(quizScore)).then((r) => {
               //console.log('r3: ', r)
+            })
+          } else if (
+            r.highscores[mode].score === points &&
+            r.highscores[mode].time > finalSeconds
+          ) {
+            const quizScore: IQuizHighscore = {
+              highscores: {
+                ...r.highscores,
+                [mode]: { score: points, time: finalSeconds },
+              },
+              user: user._id,
+            }
+            dispatch(notify(`Faster than before!`, false, 3))
+
+            dispatch(addQuiz(quizScore)).then((r) => {
+              //console.log('r4: ', r)
             })
           }
         }
@@ -173,6 +192,11 @@ const QuizFinished = () => {
               You scored <strong>{points}</strong> out of 300 ({percentage}%)
             </p>
             <p>Difficulty: {mode}</p>
+            <p>
+              Speed: {mins < 10 && '0'}
+              {mins}:{sec < 10 && '0'}
+              {sec}
+            </p>
             <p className='highscore'>(Highscore: {highscores[mode].score} points)</p>
             <div className={`${styles.reset}`}>
               <button className='btn' onClick={() => navigate(`/portfolio/quiz`)}>
