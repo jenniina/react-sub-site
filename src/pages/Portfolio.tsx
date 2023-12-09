@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom'
 import { AiOutlineForm } from 'react-icons/ai'
 import { BiSelectMultiple } from 'react-icons/bi'
 import { RiTodoLine, RiDragDropLine, RiDragMove2Fill } from 'react-icons/ri'
+import { GiAbstract019 } from 'react-icons/gi'
+import { MdOutlineQuiz } from 'react-icons/md'
 
 export default function Portfolio({
   heading,
@@ -55,6 +57,26 @@ export default function Portfolio({
               </ul>
             </div>
             <ul className={`${styles.list}`}>
+              <li>
+                <Link to='/portfolio/quiz'>
+                  <MdOutlineQuiz />
+                  <span>Quiz App</span>
+                </Link>
+                <p>
+                  A quiz app with three difficulty levels, a timer, and a highscore list.
+                  The app uses the Open Trivia Database API to fetch questions.
+                </p>
+              </li>
+              <li>
+                <Link to='/portfolio/jokes'>
+                  <GiAbstract019 />
+                  <span>The Comedian's Companion</span>
+                </Link>
+                <p>
+                  A joke app with customizable options that uses the JokeAPI to fetch
+                  jokes.
+                </p>
+              </li>
               <li>
                 <Link to='/portfolio/blob'>
                   <RiDragMove2Fill />
