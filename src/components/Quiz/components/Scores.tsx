@@ -8,7 +8,7 @@ const Scores = ({ easy, medium, hard }: IHighscore) => {
       <thead>
         <tr className={styles.th}>
           <th>Difficulty</th>
-          <th>Score</th>
+          <th className={styles.score}>Score</th>
           <th className={styles.percentage}>%</th>
           <th>Speed</th>
         </tr>
