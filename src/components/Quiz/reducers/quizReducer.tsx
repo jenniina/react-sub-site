@@ -60,6 +60,12 @@ export const getUserQuiz = (id: string) => {
   }
 }
 
+export const deleteDuplicates = (user: IQuizHighscore['user']) => {
+  return async () => {
+    return await quizService.deleteDuplicates(user)
+  }
+}
+
 export const {
   changeLoading,
   changeCategory,

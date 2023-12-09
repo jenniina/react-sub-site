@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { IQuizHighscore, IHighscore, ReducerProps } from './interfaces'
 import { useAppDispatch } from './hooks/useAppDispatch'
-import { addQuiz, getUserQuiz } from './reducers/quizReducer'
+import { addQuiz, getUserQuiz, deleteDuplicates } from './reducers/quizReducer'
 import { initializeUser } from './reducers/authReducer'
 import { createUser, findUserbyUsername } from './reducers/usersReducer'
 import { notify } from './reducers/notificationReducer'
@@ -51,7 +51,12 @@ const QuizFinished = () => {
           }
           dispatch(notify(`New highscore!`, false, 3))
 
-          dispatch(addQuiz(quizScore)).then((r) => {})
+          dispatch(addQuiz(quizScore)).then((r) => {
+            //console.log('r1: ', r)
+            dispatch(deleteDuplicates(user._id)).then((r) => {
+              //console.log('r4: ', r)
+            })
+          })
         } else if (
           (r !== null && r.highscores[mode].score < points) ||
           r.highscores[mode].time > finalSeconds
@@ -70,7 +75,7 @@ const QuizFinished = () => {
             dispatch(notify(`New highscore!`, false, 3))
 
             dispatch(addQuiz(quizScore)).then((r) => {
-              //console.log('r3: ', r)
+              //console.log('r2: ', r)
             })
           } else if (r.highscores[mode].score < points) {
             const quizScore: IQuizHighscore = {
@@ -82,12 +87,14 @@ const QuizFinished = () => {
             }
             dispatch(notify(`New highscore!`, false, 3))
 
-            dispatch(addQuiz(quizScore))
+            dispatch(addQuiz(quizScore)).then((r) => {
+              //console.log('r3: ', r)
+            })
           }
         }
       })
     }
-  }, [user])
+  }, [])
 
   const handleRegister = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
@@ -100,7 +107,7 @@ const QuizFinished = () => {
         dispatch(notify(`Registration successful`, false, 8))
         const searchForUser = await dispatch(findUserbyUsername(username))
         if (!searchForUser) {
-          console.log('User not found')
+          //console.log('User not found')
           return
         }
       })
