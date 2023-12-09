@@ -18,9 +18,14 @@ const addQuiz = async (newQuiz: IQuizHighscore) => {
   return response.data
 }
 
+const deleteDuplicates = async (user: IQuizHighscore['user']) => {
+  const response = await axios.delete(`${baseUrl}/remove/${user}`)
+  return response.data
+}
+
 // const deleteQuiz = async (id: string) => {
 //   const response = await axios.delete(`${baseUrl}/${id}`)
 //   return response.data
 // }
 
-export default { getQuizzes, getUserQuiz, addQuiz }
+export default { getQuizzes, getUserQuiz, addQuiz, deleteDuplicates }
