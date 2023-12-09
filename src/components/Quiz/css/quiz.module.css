@@ -88,6 +88,7 @@ table.highscores caption {
   padding: 1em 0 0.5em;
   min-width: max-content;
 }
+
 table.highscores .th th {
   font-size: var(--title-S);
   font-family: var(--title-family);
@@ -101,6 +102,9 @@ table.highscores th,
 table.highscores td {
   padding: 0.2em 0.5em;
   text-align: left;
+}
+table.highscores th.percentage {
+  text-align: right;
 }
 table.highscores tbody tr:first-child th,
 table.highscores tbody tr:first-child td {
