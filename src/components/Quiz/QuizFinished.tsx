@@ -181,21 +181,35 @@ const QuizFinished = () => {
     })
   }, [])
 
+  const goToMainPage = () => {
+    navigate('/portfolio/quiz')
+  }
+
   return (
     <>
       <section className={`card ${styles.top}`}>
         <div>
           <div className={`${styles.quiz}`}>
-            <h1 className='scr'>Quiz Finished</h1>
+            <h1 className={styles.h1}>
+              <a href='#' onClick={goToMainPage}>
+                Quiz App
+              </a>
+            </h1>
             <h2>{congrats}</h2>
             <p className='result'>
               You scored <strong>{points}</strong> out of 300 ({percentage}%)
             </p>
             <p>Difficulty: {mode}</p>
             <p>
-              Speed: {mins < 10 && '0'}
-              {mins}:{sec < 10 && '0'}
-              {sec}
+              {finalSeconds === 0 ? (
+                <>Speed: N/A</>
+              ) : (
+                <>
+                  Speed: {mins < 10 && '0'}
+                  {mins}:{sec < 10 && '0'}
+                  {sec}
+                </>
+              )}
             </p>
             <p className='highscore'>(Highscore: {highscores[mode].score} points)</p>
             <div className={`${styles.reset}`}>
@@ -207,27 +221,28 @@ const QuizFinished = () => {
               </button>
             </div>
           </div>
-        </div>
-        <div className={`register-login-wrap ${styles['register-login-wrap']}`}>
-          <div className={`${loginOpen ? 'open' : ''} ${user ? 'logged' : ''}`}>
-            <FormLogin
-              easy={highscores.easy}
-              medium={highscores.medium}
-              hard={highscores.hard}
-            />
-          </div>
-          <div className={`${registerOpen ? 'open' : ''}`}>
-            <Register
-              handleRegister={handleRegister}
-              username={username}
-              setUsername={setUsername}
-              password={password}
-              setPassword={setPassword}
-              confirmPassword={confirmPassword}
-              setConfirmPassword={setConfirmPassword}
-              name={name}
-              setName={setName}
-            />
+
+          <div className={`register-login-wrap ${styles['register-login-wrap']}`}>
+            <div className={`${loginOpen ? 'open' : ''} ${user ? 'logged' : ''}`}>
+              <FormLogin
+                easy={highscores.easy}
+                medium={highscores.medium}
+                hard={highscores.hard}
+              />
+            </div>
+            <div className={`${registerOpen ? 'open' : ''}`}>
+              <Register
+                handleRegister={handleRegister}
+                username={username}
+                setUsername={setUsername}
+                password={password}
+                setPassword={setPassword}
+                confirmPassword={confirmPassword}
+                setConfirmPassword={setConfirmPassword}
+                name={name}
+                setName={setName}
+              />
+            </div>
           </div>
         </div>
       </section>

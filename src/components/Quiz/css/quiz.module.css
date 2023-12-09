@@ -1,6 +1,9 @@
 .top {
   margin-top: 6em;
 }
+h1.h1 {
+  font-size: var(--title-XS);
+}
 .quiz {
   margin: 0 auto;
   max-width: 600px;

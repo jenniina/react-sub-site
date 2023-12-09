@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from './hooks/useAppDispatch'
 import { getQuestions, newAnswer } from './reducers/questionsReducer'
@@ -29,6 +29,12 @@ const QuizQuestion = () => {
   const options = currentQuestion?.options
   const answered = answer !== null
 
+  const navigate = useNavigate()
+
+  const goToMainPage = () => {
+    navigate('/portfolio/quiz')
+  }
+
   return (
     <section className={`card ${styles.top}`}>
       <div>
@@ -40,7 +46,11 @@ const QuizQuestion = () => {
           )}
           {status === 'ready' && (
             <>
-              <h1 className='scr'>Quiz App</h1>
+              <h1 className={styles.h1}>
+                <a href='#' onClick={goToMainPage}>
+                  Quiz App
+                </a>
+              </h1>
               <h2>Quiz in progress</h2>
               <Progress />
               <div className={styles.wrap}>
