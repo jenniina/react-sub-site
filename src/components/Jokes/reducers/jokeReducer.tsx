@@ -7,13 +7,13 @@ const jokeSlice = createSlice({
   initialState: [] as joke[],
   reducers: {
     create(state, action) {
-      return action.payload
+      //return action.payload
       //return [...state, action.payload]
       // state.push(action.payload)
-      // const updatedJoke = action.payload
-      // return state.map((joke) =>
-      //   joke.jokeId !== updatedJoke.jokeId ? joke : updatedJoke
-      // )
+      const updatedJoke = action.payload
+      return state.map((joke) =>
+        joke.jokeId !== updatedJoke.jokeId ? joke : updatedJoke
+      )
     },
     setJokes(_state, action) {
       return action.payload
@@ -44,7 +44,7 @@ export const initializeJokes = () => {
   }
 }
 
-export const getJokesByUserId = (userId: string) => {
+export const getJokesByUserId = (userId: string | undefined) => {
   return async (dispatch: (arg0: { payload: any; type: 'joke/setJokes' }) => void) => {
     const jokes = await jokeService.getJokesByUserId(userId)
     dispatch(setJokes(jokes))

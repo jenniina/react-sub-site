@@ -406,13 +406,29 @@ export enum ETitle {
   cs = 'Společník komika',
 }
 export enum ESubmit {
-  en = 'Generate a Joke',
-  cs = 'Vygenerovat vtip',
-  de = 'Einen Witz generieren',
-  es = 'Generar un chiste',
-  fr = 'Générer une blague',
-  pt = 'Gerar uma piada',
+  en = 'Find a joke',
+  es = 'Encuentra una broma',
+  fr = 'Trouver une blague',
+  de = 'Finde einen Witz',
+  pt = 'Encontre uma piada',
+  cs = 'Najít vtip',
 }
+export enum EAJokeGeneratorForTheComicallyInclied {
+  en = 'A Joke Generator for the Comically Inclined',
+  es = 'Un generador de chistes para los cómicamente inclinados',
+  fr = 'Un générateur de blagues pour les comiquement enclins',
+  de = 'Ein Witzgenerator für die komisch geneigten',
+  pt = 'Um gerador de piadas para os comicamente inclinados',
+  cs = 'Generátor vtipů pro komicky nakloněné',
+}
+// export enum ESubmit {
+//   en = 'Generate a Joke',
+//   cs = 'Vygenerovat vtip',
+//   de = 'Einen Witz generieren',
+//   es = 'Generar un chiste',
+//   fr = 'Générer une blague',
+//   pt = 'Gerar uma piada',
+// }
 export enum ESend {
   en = 'Send',
   es = 'Enviar',
@@ -452,6 +468,22 @@ export enum ECategoryTitle {
   de = 'Kategorie',
   pt = 'Categoria',
   cs = 'Kategorie',
+}
+export enum ESelectACategory {
+  en = 'Select a category',
+  es = 'Seleccione una categoría',
+  fr = 'Sélectionnez une catégorie',
+  de = 'Wählen Sie eine Kategorie',
+  pt = 'Selecione uma categoria',
+  cs = 'Vyberte kategorii',
+}
+export enum ESelectALanguage {
+  en = 'Select a language',
+  es = 'Seleccione un idioma',
+  fr = 'Sélectionnez une langue',
+  de = 'Wählen Sie eine Sprache',
+  pt = 'Selecione um idioma',
+  cs = 'Vyberte jazyk',
 }
 export enum ESafeTitle {
   en = 'Safe',
@@ -493,6 +525,14 @@ export enum EDelete {
   pt = 'Excluir',
   cs = 'Odstranit',
 }
+export enum EEdit {
+  en = 'Edit',
+  es = 'Editar',
+  fr = 'Modifier',
+  de = 'Bearbeiten',
+  pt = 'Editar',
+  cs = 'Upravit',
+}
 export enum EClose {
   en = 'Close',
   es = 'Cerrar',
@@ -500,6 +540,14 @@ export enum EClose {
   de = 'Schließen',
   pt = 'Fechar',
   cs = 'Zavřít',
+}
+export enum ECurrentPassword {
+  en = 'Current Password',
+  es = 'Contraseña actual',
+  fr = 'Mot de passe actuel',
+  de = 'Aktuelles Passwort',
+  pt = 'Senha atual',
+  cs = 'Aktuální heslo',
 }
 export enum ELoggedInAs {
   en = 'Logged in as',
@@ -524,6 +572,15 @@ export enum EClickToReveal {
   de = 'Klicken Sie zum Enthüllen',
   pt = 'Clique para revelar',
   cs = 'Kliknutím zobrazíte',
+}
+
+export enum EClickHereToSeeFeatures {
+  en = 'Click here to see the features',
+  cs = 'Klikněte zde pro zobrazení funkcí',
+  de = 'Klicken Sie hier, um die Funktionen anzuzeigen',
+  es = 'Haga clic aquí para ver las funciones',
+  fr = 'Cliquez ici pour voir les fonctionnalités',
+  pt = 'Clique aqui para ver os recursos',
 }
 
 export enum ELogin {
@@ -630,7 +687,14 @@ export enum ESafemodeTitle {
   pt = 'Modo seguro',
   cs = 'Bezpečný režim',
 }
-
+export enum ESearchByKeyword {
+  en = 'Search by keyword',
+  es = 'Buscar por palabra clave',
+  fr = 'Recherche par mot-clé',
+  de = 'Suche nach Schlüsselwort',
+  pt = 'Pesquisar por palavra-chave',
+  cs = 'Hledat podle klíčového slova',
+}
 export enum EOnOff {
   en = 'On/Off',
   es = 'Encendido/Apagado',
@@ -673,6 +737,70 @@ export enum ELoginOrRegisterToSave {
   pt = 'Por favor, faça login ou registre-se para salvar a piada',
   cs = 'Přihlaste se nebo se zaregistrujte, abyste uložili vtip',
 }
+export enum ERegister {
+  en = 'Register',
+  es = 'Registrarse',
+  fr = "S'inscrire",
+  de = 'Registrieren',
+  pt = 'Registo',
+  cs = 'Registrovat',
+}
+export enum ERegistration {
+  en = 'Registration',
+  es = 'Registro',
+  fr = 'Inscription',
+  de = 'Registrierung',
+  pt = 'Registro',
+  cs = 'Registrace',
+}
+export enum EForgotPassword {
+  en = 'Forgot Password?',
+  es = '¿Olvidaste tu contraseña?',
+  fr = 'Mot de passe oublié?',
+  de = 'Passwort vergessen?',
+  pt = 'Esqueceu a senha?',
+  cs = 'Zapomněli jste heslo?',
+}
+export enum ESendResetLink {
+  en = 'Send Reset Link',
+  es = 'Enviar enlace de restablecimiento',
+  fr = 'Envoyer le lien de réinitialisation',
+  de = 'Link zum Zurücksetzen senden',
+  pt = 'Enviar link de redefinição',
+  cs = 'Odeslat odkaz na obnovení',
+}
+export enum EEmail {
+  en = 'Email',
+  es = 'Correo electrónico',
+  fr = 'Email',
+  de = 'Email',
+  pt = 'O email',
+  cs = 'E-mailem',
+}
+export enum ENickname {
+  en = 'Nickname',
+  es = 'Apodo',
+  fr = 'Surnom',
+  de = 'Spitzname',
+  pt = 'Apelido',
+  cs = 'Přezdívka',
+}
+export enum EPassword {
+  en = 'Password',
+  es = 'Contraseña',
+  fr = 'Mot de passe',
+  de = 'Passwort',
+  pt = 'Senha',
+  cs = 'Heslo',
+}
+export enum EConfirmPassword {
+  en = 'Confirm Password',
+  es = 'Confirmar contraseña',
+  fr = 'Confirmez le mot de passe',
+  de = 'Passwort bestätigen',
+  pt = 'Confirme a Senha',
+  cs = 'Potvrďte heslo',
+}
 export enum ERegistrationSuccesful {
   en = 'Registration successful',
   es = 'Registro exitoso',
@@ -680,6 +808,14 @@ export enum ERegistrationSuccesful {
   de = 'Registrierung erfolgreich',
   pt = 'Registro bem sucedido',
   cs = 'Registrace úspěšná',
+}
+export enum EAny {
+  en = 'Any',
+  es = 'Cualquiera',
+  fr = "N'importe quel",
+  de = 'Jede',
+  pt = 'Qualquer',
+  cs = 'Jakýkoliv',
 }
 export enum EError {
   en = 'Error',
@@ -689,6 +825,38 @@ export enum EError {
   pt = 'Erro',
   cs = 'Chyba',
 }
+export enum ELoggingIn {
+  en = 'Logging in...',
+  es = 'Iniciando sesión...',
+  fr = 'Connexion en cours...',
+  de = 'Anmeldung...',
+  pt = 'Entrando...',
+  cs = 'Přihlašování...',
+}
+export enum ESendingEmail {
+  en = 'Sending email...',
+  es = 'Enviando correo electrónico...',
+  fr = "Envoi d'email...",
+  de = 'E-Mail senden...',
+  pt = 'Enviando email...',
+  cs = 'Odesílání e-mailu...',
+}
+export enum EEmailSent {
+  en = 'Email sent',
+  es = 'Correo electrónico enviado',
+  fr = 'Email envoyé',
+  de = 'E-Mail gesendet',
+  pt = 'Email enviado',
+  cs = 'E-mail odeslán',
+}
+export enum EPleaseGiveValidEmail {
+  en = 'Please give valid email',
+  es = 'Por favor, dé un correo electrónico válido',
+  fr = 'Veuillez donner un email valide',
+  de = 'Bitte geben Sie eine gültige E-Mail-Adresse ein',
+  pt = 'Por favor, dê um email válido',
+  cs = 'Zadejte platný e-mail',
+}
 export enum ENoJokeFound {
   en = 'No joke found',
   es = 'No se encontró broma',
@@ -696,6 +864,14 @@ export enum ENoJokeFound {
   de = 'Kein Witz gefunden',
   pt = 'Nenhuma piada encontrada',
   cs = 'Nenalezen žádný vtip',
+}
+export enum ENoJokesYet {
+  en = 'No jokes yet',
+  es = 'Aún no hay bromas',
+  fr = 'Pas encore de blagues',
+  de = 'Noch keine Witze',
+  pt = 'Ainda não há piadas',
+  cs = 'Zatím žádné vtipy',
 }
 export enum EPasswordsDoNotMatch {
   en = 'Passwords do not match',

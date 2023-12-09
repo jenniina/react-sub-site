@@ -6,9 +6,9 @@ import Hero from '../components/Hero/Hero'
 import { Link } from 'react-router-dom'
 import { AiOutlineForm } from 'react-icons/ai'
 import { BiSelectMultiple } from 'react-icons/bi'
-import { RiTodoLine, RiDragDropLine, RiDragMove2Fill } from 'react-icons/ri'
+import { RiTodoLine, RiDragDropLine, RiDragMove2Fill } from 'react-icons/ri' 
 import { GiAbstract019 } from 'react-icons/gi'
-import { MdOutlineQuiz } from 'react-icons/md'
+import { MdOutlineQuiz } from 'react-icons/md' 
 
 export default function Portfolio({
   heading,
@@ -57,7 +57,7 @@ export default function Portfolio({
               </ul>
             </div>
             <ul className={`${styles.list}`}>
-              <li>
+              <li> 
                 <Link to='/portfolio/quiz'>
                   <MdOutlineQuiz />
                   <span>Quiz App</span>
@@ -75,7 +75,7 @@ export default function Portfolio({
                 <p>
                   A joke app with customizable options that uses the JokeAPI to fetch
                   jokes.
-                </p>
+                </p> 
               </li>
               <li>
                 <Link to='/portfolio/blob'>
