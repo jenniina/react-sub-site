@@ -85,8 +85,8 @@ const FormLogin = ({ easy, medium, hard }: IHighscore) => {
         </>
       ) : (
         <>
-          <Accordion className='' text='Log in' ref={formLoginRef}>
-            <h2>Log in</h2>
+          <Accordion className='' text='Log in to save score' ref={formLoginRef}>
+            <h2>Log in to save score</h2>
 
             <form onSubmit={handleLogin} className='login'>
               <div className='input-wrap'>

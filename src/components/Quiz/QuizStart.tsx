@@ -1,6 +1,7 @@
 import './css/quiz.module.css'
 import { useNavigate } from 'react-router-dom'
 import { selectMode } from './reducers/difficultyReducer'
+import { addQuiz } from './reducers/quizReducer'
 import { useSelector } from 'react-redux'
 import Hero from '../Hero/Hero'
 import styles from '../../components/Quiz/css/quiz.module.css'
@@ -33,11 +34,10 @@ const QuizStart = ({
   const [confirmPassword, setConfirmPassword] = useState<string>('')
   const [name, setName] = useState<string>('')
   const [language, setLanguage] = useState<string>('en')
-  const [highscoresLocal, setHighscores] = useState<IHighscore>({
-    easy: { score: 0, time: 210 },
-    medium: { score: 0, time: 210 },
-    hard: { score: 0, time: 210 },
-  })
+  const { points, highscores, finalSeconds } = useSelector(
+    (state: ReducerProps) => state.questions
+  )
+  const [highscoresLocal, setHighscores] = useState<IHighscore>(highscores)
 
   const dispatch = useAppDispatch()
 
@@ -50,10 +50,15 @@ const QuizStart = ({
   })
 
   useEffect(() => {
-    if (user?._id) {
+    if (user?._id && points !== 0 && finalSeconds !== 0) {
       dispatch(getUserQuiz(user._id)).then((r) => {
         if (r !== null) {
           setHighscores(r.highscores)
+        } else if (r === null && localStorage.getItem('quiz-highscores')) {
+          const highscoresLocal = JSON.parse(
+            localStorage.getItem('quiz-highscores') as string
+          )
+          dispatch(addQuiz({ highscores: highscoresLocal, user: user._id }))
         }
       })
     }

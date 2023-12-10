@@ -1,6 +1,9 @@
 .top {
   margin-top: 6em;
 }
+h1.h1 {
+  font-size: var(--title-XS);
+}
 .quiz {
   margin: 0 auto;
   max-width: 600px;
@@ -78,7 +81,7 @@ table.highscores {
   margin: 0 auto;
   border-collapse: collapse;
   border-spacing: 0;
-  border: 1px solid black;
+  border: none;
 }
 table.highscores caption {
   font-size: var(--title-XL);
@@ -88,6 +91,7 @@ table.highscores caption {
   padding: 1em 0 0.5em;
   min-width: max-content;
 }
+
 table.highscores .th th {
   font-size: var(--title-S);
   font-family: var(--title-family);
@@ -102,6 +106,12 @@ table.highscores td {
   padding: 0.2em 0.5em;
   text-align: left;
 }
+table.highscores th.score {
+  text-align: right;
+}
+table.highscores th.percentage {
+  text-align: center;
+}
 table.highscores tbody tr:first-child th,
 table.highscores tbody tr:first-child td {
   padding-top: 0.6em;
@@ -111,7 +121,11 @@ table.highscores td:nth-of-type(2) {
   text-align: right;
 }
 .register-login-wrap {
-  margin-top: 0.6em;
+  margin-top: 2em;
+}
+.register-login-wrap h2 {
+  margin-bottom: 1.5em;
+  font-size: var(--title-L);
 }
 .showHighscores {
   display: block;
