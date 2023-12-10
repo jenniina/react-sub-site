@@ -37,12 +37,23 @@ const QuizFinished = () => {
     dispatch(initializeUser())
   }, [])
 
+  useEffect(() => {
+    if (finalSeconds === 0) {
+      navigate('/portfolio/quiz')
+    }
+  }, [])
+
   const user = useSelector((state: ReducerProps) => {
     return state.auth?.user
   })
 
   useEffect(() => {
-    if (user?._id) {
+    if ((!user && points !== 0 && finalSeconds !== 0) || finalSeconds === undefined)
+      localStorage.setItem('quiz-highscores', JSON.stringify(highscores))
+    if (
+      (user?._id && points !== 0 && finalSeconds !== 0) ||
+      (user?._id && finalSeconds !== undefined)
+    ) {
       dispatch(getUserQuiz(user._id)).then((r) => {
         if (r === null) {
           const quizScore: IQuizHighscore = {
@@ -187,66 +198,73 @@ const QuizFinished = () => {
 
   return (
     <>
-      <section className={`card ${styles.top}`}>
-        <div>
-          <div className={`${styles.quiz}`}>
-            <h1 className={styles.h1}>
-              <a href='#' onClick={goToMainPage}>
-                Quiz App
-              </a>
-            </h1>
-            <h2>{congrats}</h2>
-            <p className='result'>
-              You scored <strong>{points}</strong> out of 300 ({percentage}%)
-            </p>
-            <p>Difficulty: {mode}</p>
-            <p>
-              {finalSeconds === 0 ? (
-                <>Speed: N/A</>
-              ) : (
-                <>
-                  Speed: {mins < 10 && '0'}
-                  {mins}:{sec < 10 && '0'}
-                  {sec}
-                </>
-              )}
-            </p>
-            <p className='highscore'>(Highscore: {highscores[mode].score} points)</p>
-            <div className={`${styles.reset}`}>
-              <button className='btn' onClick={() => navigate(`/portfolio/quiz`)}>
-                Quiz Menu
-              </button>
-              <button className='btn' onClick={() => navigate(`/portfolio/quiz/${mode}`)}>
-                Try again
-              </button>
-            </div>
-          </div>
+      {finalSeconds !== 0 && (
+        <>
+          <section className={`card ${styles.top}`}>
+            <div>
+              <div className={`${styles.quiz}`}>
+                <h1 className={styles.h1}>
+                  <a href='#' onClick={goToMainPage}>
+                    Quiz App
+                  </a>
+                </h1>
+                <h2>{congrats}</h2>
+                <p className='result'>
+                  You scored <strong>{points}</strong> out of 300 ({percentage}%)
+                </p>
+                <p>Difficulty: {mode}</p>
+                <p>
+                  {finalSeconds === 0 ? (
+                    <>Speed: N/A</>
+                  ) : (
+                    <>
+                      Speed: {mins < 10 && '0'}
+                      {mins}:{sec < 10 && '0'}
+                      {sec}
+                    </>
+                  )}
+                </p>
+                <p className='highscore'>(Highscore: {highscores[mode].score} points)</p>
+                <div className={`${styles.reset}`}>
+                  <button className='btn' onClick={() => navigate(`/portfolio/quiz`)}>
+                    Quiz Menu
+                  </button>
+                  <button
+                    className='btn'
+                    onClick={() => navigate(`/portfolio/quiz/${mode}`)}
+                  >
+                    Try again
+                  </button>
+                </div>
+              </div>
 
-          <div className={`register-login-wrap ${styles['register-login-wrap']}`}>
-            <div className={`${loginOpen ? 'open' : ''} ${user ? 'logged' : ''}`}>
-              <FormLogin
-                easy={highscores.easy}
-                medium={highscores.medium}
-                hard={highscores.hard}
-              />
+              <div className={`register-login-wrap ${styles['register-login-wrap']}`}>
+                <div className={`${loginOpen ? 'open' : ''} ${user ? 'logged' : ''}`}>
+                  <FormLogin
+                    easy={highscores.easy}
+                    medium={highscores.medium}
+                    hard={highscores.hard}
+                  />
+                </div>
+                <div className={`${registerOpen ? 'open' : ''}`}>
+                  <Register
+                    handleRegister={handleRegister}
+                    username={username}
+                    setUsername={setUsername}
+                    password={password}
+                    setPassword={setPassword}
+                    confirmPassword={confirmPassword}
+                    setConfirmPassword={setConfirmPassword}
+                    name={name}
+                    setName={setName}
+                  />
+                </div>
+              </div>
             </div>
-            <div className={`${registerOpen ? 'open' : ''}`}>
-              <Register
-                handleRegister={handleRegister}
-                username={username}
-                setUsername={setUsername}
-                password={password}
-                setPassword={setPassword}
-                confirmPassword={confirmPassword}
-                setConfirmPassword={setConfirmPassword}
-                name={name}
-                setName={setName}
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-      <Notification />
+          </section>
+          <Notification />
+        </>
+      )}
     </>
   )
 }
