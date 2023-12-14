@@ -1,8 +1,9 @@
-import React, { useRef, useEffect, useState } from 'react'
-import { v4 as uuidv4 } from 'uuid'
-import { BackgroundColor } from './blobInterfaces'
-import { Draggable } from './blobInterfaces'
-import { RefObject } from './blobInterfaces'
+import React, { useRef, useEffect, useState, useContext } from 'react'
+import { isEqual } from 'lodash'
+import { Draggable, BackgroundColor, ReducerProps, RefObject } from './interfaces'
+import { useSelector } from 'react-redux'
+import DragComponent from './components/DragComponent'
+import { BlobContext, Props } from './components/BlobProvider'
 
 let angle = '90deg'
 let color1 = 'cyan'
@@ -12,17 +13,13 @@ const defaultLightness = '30'
 const defaultSaturation = '80'
 const defaultHue = '214'
 
-let initialX = 0
-let initialY = 0
-
-let zIndex = 1
-let zIndex0 = -1
-let moveElement = false
-let reset = true
-let hasBeenMadeFromStorage: Boolean
-const d = 0
+//let hasBeenMadeFromStorage: Boolean
 
 export default function BlobJS() {
+  const { state, dispatch } = useContext(BlobContext) as Props
+
+  const d = 0
+
   const dragWrapOuter = useRef() as RefObject<HTMLDivElement>
   const dragWrap = useRef() as RefObject<HTMLDivElement>
   const dragUl0 = useRef() as RefObject<HTMLUListElement>
@@ -54,25 +51,33 @@ export default function BlobJS() {
   const sliderHueInput = useRef() as RefObject<HTMLInputElement>
 
   const backgroundColor: BackgroundColor[][] = []
-  const draggables: Draggable[][] = []
-
-  const [dragItemList, setDragItemList] = useState<Draggable[]>([])
 
   const localStorageBackground = `BackgroundColor${[d]}`
   const localStorageDraggables = `Draggables${[d]}`
 
   backgroundColor[d] = loadBackground()
-  draggables[d] = loadDraggables()
 
+  const draggables = (state.draggables as Draggable[][]) ?? []
+
+  if (draggables[d] === undefined) {
+    draggables[d] = []
+  }
+
+  function loadDraggables(): Draggable[] {
+    const draggablesJSON = localStorage.getItem(localStorageDraggables)
+    console.log('draggablesJSON', draggablesJSON)
+    if (
+      draggablesJSON == null ||
+      draggablesJSON == undefined ||
+      draggablesJSON === 'undefined'
+    )
+      return []
+    else return JSON.parse(draggablesJSON)
+  }
   function loadBackground(): BackgroundColor[] {
     const backgroundColorJSON = localStorage.getItem(localStorageBackground)
     if (backgroundColorJSON == null) return []
-    return JSON.parse(backgroundColorJSON)
-  }
-  function loadDraggables(): Draggable[] {
-    const draggablesJSON = localStorage.getItem(localStorageDraggables)
-    if (draggablesJSON == null) return []
-    return JSON.parse(draggablesJSON)
+    else return JSON.parse(backgroundColorJSON)
   }
 
   function saveBackground() {
@@ -82,35 +87,84 @@ export default function BlobJS() {
     localStorage.setItem(localStorageDraggables, JSON.stringify(draggables[d]))
   }
 
-  function makeFromStorage() {
-    if (backgroundColor[d].length > 1) {
+  const [previousLoadedDraggables, setPreviousLoadedDraggables] = useState<
+    Draggable[] | null
+  >(null)
+
+  console.log('draggables', draggables)
+  console.log('previousLoadedDraggables', previousLoadedDraggables)
+
+  const [hasBeenMade, setHasBeenMade] = useState<Boolean>(false)
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setHasBeenMade(false)
+  //   }, 1000)
+  // }, [hasBeenMade])
+
+  useEffect(() => {
+    const loadedDraggables = loadDraggables()
+    if (
+      !hasBeenMade &&
+      !isEqual(loadedDraggables, previousLoadedDraggables) &&
+      loadedDraggables?.length > 0
+    ) {
+      console.log('loadedDraggables', loadedDraggables)
+      makeFromStorage(loadedDraggables)
+      // dispatch({
+      //   type: 'setDraggablesAtD',
+      //   payload: { d, draggables: loadedDraggables },
+      // })
+      setHasBeenMade(true)
+      setPreviousLoadedDraggables(loadedDraggables)
+      console.log('madeFromStorage')
+    } else if (loadedDraggables?.length === 0 && !hasBeenMade) {
+      makeAnew(amountOfBlobs)
+      console.log('madeAnew')
+      setHasBeenMade(true)
+    }
+  }, [])
+
+  // dispatch({
+  //   type: 'setDraggablesAtD',
+  //   payload: { d, draggables: loadedDraggables },
+  // })
+
+  useEffect(() => {
+    if (draggables[d] !== undefined) {
+      saveDraggables()
+    }
+  }, [draggables[d]])
+
+  function makeFromStorage(blobs: Draggable[]) {
+    console.log('hasBeenMadeFromStorage', hasBeenMade)
+    if (backgroundColor[d]?.length > 1) {
       dragWrapOuter.current?.style.setProperty('--lightness', `${backgroundColor[d][0]}`)
       dragWrapOuter.current?.style.setProperty('--saturation', `${backgroundColor[d][1]}`)
       dragWrapOuter.current?.style.setProperty('--hue', `${backgroundColor[d][2]}`)
     }
-    if (!hasBeenMadeFromStorage && draggables[d].length > 1) {
-      for (let i: number = 0; i < draggables[d].length; i++) {
-        if (draggables[d][i] !== null || draggables[d][i] !== undefined) {
-          setDragItemList((current) => [
-            ...current,
-            {
-              id: `${draggables[d][i].id}`,
-              number: draggables[d][i].number,
-              i: draggables[d][i].i,
-              x: `${draggables[d][i].x}`,
-              y: `${draggables[d][i].y}`,
-              z: `${draggables[d][i].z}`,
-              display: `${draggables[d][i].display}`,
-              ariaGrabbed: false,
-              draggable: true,
-              tabIndex: 0,
-              background: `${draggables[d][i].background}`,
-            },
-          ])
+    //if (!hasBeenMadeFromStorage && draggables[d] && draggables[d].length > 1) {
+    if (!hasBeenMade && blobs && blobs?.length > 1) {
+      for (let i: number = 0; i < blobs?.length; i++) {
+        if (blobs[i] !== null && blobs[i] !== undefined) {
+          const newDraggable = {
+            id: `${blobs[i].id}`,
+            number: blobs[i].number,
+            i: blobs[i].i,
+            x: `${blobs[i].x}`,
+            y: `${blobs[i].y}`,
+            z: `${blobs[i].z}`,
+            display: `${blobs[i].display}`,
+            ariaGrabbed: false,
+            draggable: true,
+            tabIndex: 0,
+            background: `${blobs[i].background}`,
+          }
+          dispatch({ type: 'addDraggable', payload: { d, draggable: newDraggable } })
         }
       }
     }
-    hasBeenMadeFromStorage = true
+    setHasBeenMade(true)
   }
 
   let paused: boolean
@@ -134,223 +188,85 @@ export default function BlobJS() {
     return () => {}
   }
 
+  const amountOfBlobs = 8 // Initial amount of blobs
+
   function resetBlobsFunction(
     e: React.MouseEvent | React.TouchEvent | React.PointerEvent
   ) {
     e.preventDefault()
-    setDragItemList([])
     window.localStorage.removeItem(localStorageDraggables)
-    //dragUl0.current.removeChild(dragUl0.current.children[0])
+    dispatch({ type: 'setDraggablesAtD', payload: { d, draggables: [] } })
+
+    makeAnew(amountOfBlobs)
   }
-
-  useEffect(() => {
-    draggables[d] = loadDraggables()
-    draggables[d].length > 1 && dragItemList.length == 0
-      ? makeFromStorage()
-      : makeAnew(amountOfBlobs)
-  }, [])
-
-  const dragzonesList = document.querySelectorAll<HTMLElement>('.dragzone')
-  const dragzones = Array.from(dragzonesList as NodeListOf<HTMLElement>)
-
-  useEffect(() => {
-    const dragzonesList = document.querySelectorAll<HTMLElement>('.dragzone')
-    const dragzones = Array.from(dragzonesList as NodeListOf<HTMLElement>)
-
-    dragzones.forEach((draggable) => getPosition(draggable))
-  }, [dragzonesList])
-
-  useEffect(() => {
-    if (draggables[d].length === 0 && dragItemList.length === 0) {
-      makeAnew(amountOfBlobs)
-    }
-  }, [dragItemList])
 
   const makeAnew = (amount: number) => {
-    if (dragItemList.length === 0) {
-      const dragzonesList = document.querySelectorAll<HTMLElement>('.dragzone')
-      const dragzones = Array.from(dragzonesList as NodeListOf<HTMLElement>)
-
-      dragzones.forEach((draggable) => draggable.remove())
-      window.localStorage.removeItem(localStorageDraggables)
-      setDragItemList([])
-
-      for (let i: number = 0; i < amount; i++) {
-        const colorswitch = () => {
-          let number: number = Math.round(getRandomMinMax(0.1, 7))
-          switch (number) {
-            case 1:
-              color1 = 'lemonchiffon'
-              color2 = 'greenyellow'
-              break
-            case 2:
-              color1 = 'cyan'
-              color2 = 'greenyellow'
-              break
-            case 3:
-              color1 = 'cyan'
-              color2 = 'pink'
-              break
-            case 4:
-              color1 = 'lemonchiffon'
-              color2 = 'pink'
-              break
-            case 5:
-              color1 = 'red'
-              color2 = 'tomato'
-              break
-            case 6:
-              color1 = 'magenta'
-              color2 = 'violet'
-              break
-            case 7:
-              color1 = 'deepskyblue'
-              color2 = 'dodgerblue'
-              break
-          }
-          return [color1, color2]
+    for (let i: number = 0; i < amount; i++) {
+      const colorswitch = () => {
+        let number: number = Math.round(getRandomMinMax(0.1, 7))
+        switch (number) {
+          case 1:
+            color1 = 'lemonchiffon'
+            color2 = 'greenyellow'
+            break
+          case 2:
+            color1 = 'cyan'
+            color2 = 'greenyellow'
+            break
+          case 3:
+            color1 = 'cyan'
+            color2 = 'pink'
+            break
+          case 4:
+            color1 = 'lemonchiffon'
+            color2 = 'pink'
+            break
+          case 5:
+            color1 = 'red'
+            color2 = 'tomato'
+            break
+          case 6:
+            color1 = 'magenta'
+            color2 = 'violet'
+            break
+          case 7:
+            color1 = 'deepskyblue'
+            color2 = 'dodgerblue'
+            break
         }
-
-        const colorFirst: string = colorswitch()[0]
-        const colorSecond: string = colorswitch()[1]
-
-        setDragItemList((current) => [
-          ...current,
-          {
-            id: `blob${i + 1}-${d}`,
-            number: i + 1,
-            i: i + 1,
-            x:
-              window.innerWidth > window.innerHeight
-                ? `${(window.innerWidth / 100) * getRandomMinMax(0, 70)}px`
-                : `${(window.innerWidth / 100) * getRandomMinMax(0, 50)}px`,
-            y: `${(window.innerHeight / 100) * getRandomMinMax(0, 70)}px`,
-            z: '1',
-            display: 'block',
-            ariaGrabbed: false,
-            draggable: true,
-            tabIndex: 0,
-            background: `linear-gradient(${angle}, ${colorFirst},${colorSecond})`,
-          },
-        ])
+        return [color1, color2]
       }
+
+      const colorFirst: string = colorswitch()[0]
+      const colorSecond: string = colorswitch()[1]
+
+      const newDraggable = {
+        id: `blob${i + 1}-${d}`,
+        number: i + 1,
+        i: i + 1,
+        x:
+          window.innerWidth > window.innerHeight
+            ? `${(window.innerWidth / 100) * getRandomMinMax(0, 70)}px`
+            : `${(window.innerWidth / 100) * getRandomMinMax(0, 50)}px`,
+        y: `${(window.innerHeight / 100) * getRandomMinMax(0, 70)}px`,
+        z: '1',
+        display: 'block',
+        ariaGrabbed: false,
+        draggable: true,
+        tabIndex: 0,
+        background: `linear-gradient(${angle}, ${colorFirst},${colorSecond})`,
+      }
+      dispatch({ type: 'addDraggable', payload: { d, draggable: newDraggable } })
     }
+    saveDraggables()
   }
+
   function getRandomMinMax(min: number, max: number) {
     return Math.random() * (max - min) + min
   }
 
-  const amountOfBlobs = 8 // Initial amount of blobs
-
-  let blobCount =
-    draggables[d].length > amountOfBlobs ? draggables[d].length : amountOfBlobs
-
-  const DragComponent = ({ items }: { items: Draggable[] }) => {
-    return (
-      <ul
-        ref={dragUl0}
-        role='listbox'
-        id={`listbox${d}`}
-        aria-labelledby={`blobdescription${d}`}
-        aria-activedescendant=''
-      >
-        {items.map((item: Draggable) => {
-          const blobStyle: React.CSSProperties = {
-            background: `${item.background}`,
-            display: `${item.display}`,
-            left: `${item.x}`,
-            top: `${item.y}`,
-            zIndex: `${item.z}`,
-            ['--i' as string]: `${item.i}`,
-          }
-
-          const blobDraggable: Draggable = {
-            id: item.id,
-            number: item.number,
-            i: item.i,
-            x: item.x,
-            y: item.y,
-            z: item.z,
-            display: item.display,
-            ariaGrabbed: false,
-            draggable: true,
-            tabIndex: 0,
-            background: item.background,
-          }
-          draggables[d][item.number - 1] = blobDraggable
-          saveDraggables()
-
-          return (
-            <li
-              key={uuidv4()}
-              className='dragzone'
-              id={item.id}
-              aria-grabbed={false}
-              role={'option'}
-              tabIndex={item.tabIndex}
-              draggable={item.draggable}
-              style={blobStyle}
-              onMouseDown={(e) => {
-                if (selectedvalue0.current)
-                  selectedvalue0.current.textContent = `Selected blob: ${
-                    (e.target as HTMLElement)?.querySelector('span')?.textContent
-                  }`
-                start(e)
-              }}
-              onMouseMove={(e) => {
-                movement(e)
-              }}
-              onMouseUp={(e) => {
-                stopMovementCheck(e)
-                if (selectedvalue0.current)
-                  selectedvalue0.current.textContent = `Selected blob: none`
-              }}
-              onMouseLeave={(e) => {
-                stopMoving(e)
-                if (selectedvalue0.current)
-                  selectedvalue0.current.textContent = `Selected blob: none`
-              }}
-              onTouchStart={(e) => {
-                start(e)
-                if (selectedvalue0.current)
-                  selectedvalue0.current.textContent = `Selected blob: ${
-                    (e.target as HTMLElement)?.querySelector('span')?.textContent
-                  }`
-              }}
-              onTouchMove={(e) => {
-                movement(e)
-              }}
-              onTouchEnd={(e) => {
-                stopMovementCheck(e)
-                if (selectedvalue0.current)
-                  selectedvalue0.current.textContent = `Selected blob: none`
-              }}
-              onWheel={(e) => {
-                wheel(e.target as HTMLLIElement)
-              }}
-              onFocus={(e) => {
-                focused(e.target)
-                if (selectedvalue0.current)
-                  selectedvalue0.current.textContent = `Selected blob: ${
-                    (e.target as HTMLElement)?.querySelector('span')?.textContent
-                  }`
-              }}
-              onBlurCapture={(e) => {
-                blurred(e.target)
-                if (selectedvalue0.current)
-                  selectedvalue0.current.textContent = `Selected blob: none`
-              }}
-            >
-              <span className='scr'>Blob {item.number}</span>
-            </li>
-          )
-        })}
-      </ul>
-    )
-  }
-
   //save blob stats to localhost array
-  const getPosition = (draggable: HTMLElement) => {
+  const getPosition = (draggable: HTMLLIElement) => {
     const blobID = draggable.id
     const blobNumber = draggable.id.replace(/^\D+/g, '') //replace non-numbers with empty
     const blobI = window.getComputedStyle(draggable).getPropertyValue('--i')
@@ -374,34 +290,15 @@ export default function BlobJS() {
       background: blobColor1,
     }
 
-    draggables[d][blobDraggables.number - 1] = blobDraggables
+    dispatch({
+      type: 'updateDraggable',
+      payload: { d, i: blobDraggables.number - 1, draggable: blobDraggables },
+    })
+
     saveDraggables()
   }
 
-  //reset most stats when removing a blob
-  const getPositionReset = (draggable: HTMLElement) => {
-    const blobID = draggable.id
-    const blobNumber = draggable.id.replace(/^\D+/g, '') //replace non-numbers with empty
-
-    const blobDraggables: Draggable = {
-      id: blobID,
-      number: parseInt(blobNumber),
-      i: 1,
-      x: '0',
-      y: '0',
-      z: '0',
-      display: 'none',
-      ariaGrabbed: false,
-      draggable: false,
-      tabIndex: 0,
-      background: 'none',
-    }
-
-    draggables[d][blobDraggables.number - 1] = blobDraggables
-    saveDraggables()
-  }
-
-  let scroll = true
+  const [scroll, setScroll] = useState<Boolean>(true)
 
   function disableScroll() {
     if (scroll) {
@@ -413,8 +310,25 @@ export default function BlobJS() {
         disableScrollButton.current.textContent = 'Disable Scroll'
       document.body.style.overflow = 'auto'
     }
-    scroll ? (scroll = false) : (scroll = true)
+    setScroll(!scroll)
   }
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && !scroll) {
+        setScroll(true)
+        if (disableScrollButton.current)
+          disableScrollButton.current.textContent = 'Disable Scroll'
+        document.body.style.overflow = 'auto'
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [])
 
   //SLIDERS
 
@@ -622,541 +536,6 @@ export default function BlobJS() {
     }
   }
 
-  //Detect touch device
-  const isTouchDevice = () => {
-    try {
-      //Try to create TouchEvent (fails for desktops and throws error)
-      document.createEvent('TouchEvent')
-      return true
-    } catch (e) {
-      return false
-    }
-  }
-  useEffect(() => {
-    isTouchDevice()
-  }, [])
-
-  function start(
-    e:
-      | TouchEvent
-      | MouseEvent
-      | PointerEvent
-      | React.TouchEvent
-      | React.MouseEvent
-      | React.PointerEvent
-  ) {
-    e.stopPropagation()
-    e.preventDefault()
-
-    initialX = !isTouchDevice()
-      ? (e as PointerEvent).clientX
-      : (e as TouchEvent).touches[0].clientX
-    initialY = !isTouchDevice()
-      ? (e as PointerEvent).clientY
-      : (e as TouchEvent).touches[0].clientY
-
-    moveElement = true
-    ;(e.target as HTMLElement).classList.add('drag')
-    ;(e.target as HTMLElement).style.setProperty('z-index', `${zIndex}`)
-    ;(e.target as HTMLElement).setAttribute('aria-grabbed', 'true')
-    //increase z-index
-    zIndex += 1
-    ;(e.target as HTMLElement).focus()
-  }
-
-  //Handle mousemove and touchmove
-  function movement(
-    e:
-      | TouchEvent
-      | MouseEvent
-      | PointerEvent
-      | React.TouchEvent
-      | React.MouseEvent
-      | React.PointerEvent
-  ) {
-    e.stopPropagation()
-
-    if (moveElement) {
-      //e.preventDefault();
-      let newX = !isTouchDevice()
-        ? (e as PointerEvent).clientX
-        : (e as TouchEvent).touches[0].clientX
-      let newY = !isTouchDevice()
-        ? (e as PointerEvent).clientY
-        : (e as TouchEvent).touches[0].clientY
-      ;(e.target as HTMLElement).style.top =
-        (e.target as HTMLElement).offsetTop - (initialY - newY) + 'px'
-      ;(e.target as HTMLElement).style.left =
-        (e.target as HTMLElement).offsetLeft - (initialX - newX) + 'px'
-      initialX = newX
-      initialY = newY
-
-      getPosition(e.target as HTMLElement)
-    }
-  }
-
-  //Handle mouse up and touch end, check for element overlap
-  const stopMovementCheck = (
-    e:
-      | TouchEvent
-      | MouseEvent
-      | PointerEvent
-      | React.TouchEvent
-      | React.MouseEvent
-      | React.PointerEvent
-  ) => {
-    e.stopPropagation()
-    let value = (e.target as HTMLElement).style.getPropertyValue('--i')
-    let scale = parseFloat(value)
-
-    if (
-      colorBlockRed.current &&
-      elementsOverlap(e.target as HTMLElement, colorBlockRed.current)
-    ) {
-      color1 = 'red'
-      color2 = 'tomato'
-      ;(
-        e.target as HTMLElement
-      ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-      ;(e.target as HTMLElement).removeAttribute('class')
-      ;(e.target as HTMLElement).classList.add('dragzone', 'color-red')
-    }
-    if (
-      colorBlockPurple.current &&
-      elementsOverlap(e.target as HTMLElement, colorBlockPurple.current)
-    ) {
-      color1 = 'magenta'
-      color2 = 'violet'
-      ;(
-        e.target as HTMLElement
-      ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-      ;(e.target as HTMLElement).removeAttribute('class')
-      ;(e.target as HTMLElement).classList.add('dragzone', 'color-red')
-    }
-    if (
-      colorBlockBlue.current &&
-      elementsOverlap(e.target as HTMLElement, colorBlockBlue.current)
-    ) {
-      color1 = 'deepskyblue'
-      color2 = 'dodgerblue'
-      ;(
-        e.target as HTMLElement
-      ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-      ;(e.target as HTMLElement).removeAttribute('class')
-      ;(e.target as HTMLElement).classList.add('dragzone', 'color-blue')
-    }
-    if (
-      colorBlockYellowLime0.current &&
-      elementsOverlap(e.target as HTMLElement, colorBlockYellowLime0.current)
-    ) {
-      color1 = 'lemonchiffon'
-      color2 = 'greenyellow'
-      ;(
-        e.target as HTMLElement
-      ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-      ;(e.target as HTMLElement).removeAttribute('class')
-      ;(e.target as HTMLElement).classList.add('dragzone', 'color-yellowlime')
-    }
-    if (
-      colorBlockCyanYellow0.current &&
-      elementsOverlap(e.target as HTMLElement, colorBlockCyanYellow0.current)
-    ) {
-      color1 = 'cyan'
-      color2 = 'greenyellow'
-      ;(
-        e.target as HTMLElement
-      ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-      ;(e.target as HTMLElement).removeAttribute('class')
-      ;(e.target as HTMLElement).classList.add('dragzone', 'color-cyanyellow')
-    }
-    if (
-      colorBlockCyanPink0.current &&
-      elementsOverlap(e.target as HTMLElement, colorBlockCyanPink0.current)
-    ) {
-      color1 = 'cyan'
-      color2 = 'pink'
-      ;(
-        e.target as HTMLElement
-      ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-      ;(e.target as HTMLElement).removeAttribute('class')
-      ;(e.target as HTMLElement).classList.add('dragzone', 'color-cyanpink')
-    }
-    if (
-      colorBlockPinkYellow0.current &&
-      elementsOverlap(e.target as HTMLElement, colorBlockPinkYellow0.current)
-    ) {
-      color1 = 'lemonchiffon'
-      color2 = 'pink'
-      ;(
-        e.target as HTMLElement
-      ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-      ;(e.target as HTMLElement).removeAttribute('class')
-      ;(e.target as HTMLElement).classList.add('dragzone', 'color-pinkyellow')
-    }
-    if (
-      makeLarger0.current &&
-      elementsOverlap(e.target as HTMLElement, makeLarger0.current)
-    ) {
-      scale += 1
-      scale = Math.min(Math.max(2, scale), 10)
-      ;(e.target as HTMLElement).style.setProperty('--i', `${scale}`)
-    }
-    if (
-      makeSmaller0.current &&
-      elementsOverlap(e.target as HTMLElement, makeSmaller0.current)
-    ) {
-      scale -= 1
-      scale = Math.min(Math.max(2, scale), 10)
-      ;(e.target as HTMLElement).style.setProperty('--i', `${scale}`)
-    }
-    if (
-      makeMore0.current &&
-      elementsOverlap(e.target as HTMLElement, makeMore0.current)
-    ) {
-      makeBlob(e.target as HTMLElement)
-    }
-    if (
-      deleteBlob0.current &&
-      elementsOverlap(e.target as HTMLElement, deleteBlob0.current)
-    ) {
-      hideBlob(e.target as HTMLElement)
-    }
-    moveElement = false
-    ;(e.target as HTMLElement).classList.remove('drag')
-    ;(e.target as HTMLElement).setAttribute('aria-grabbed', 'false')
-    getPosition(e.target as HTMLElement)
-    ;(e.target as HTMLElement).blur()
-  }
-  //Check to see if elements overlap
-  function elementsOverlap(element1: HTMLElement, element2: HTMLElement) {
-    const domRect1 = element1.getBoundingClientRect()
-    const domRect2 = element2.getBoundingClientRect()
-
-    return !(
-      domRect1.top + 5 > domRect2.bottom - 5 ||
-      domRect1.right < domRect2.left ||
-      domRect1.bottom - 5 < domRect2.top + 5 ||
-      domRect1.left > domRect2.right
-    )
-  }
-
-  //Handle mouse leave
-  const stopMoving = (
-    e: MouseEvent | React.MouseEvent | PointerEvent | React.PointerEvent
-  ) => {
-    e.stopPropagation()
-    moveElement = false
-    ;(e.target as HTMLElement).classList.remove('drag')
-    ;(e.target as HTMLElement).setAttribute('aria-grabbed', 'false')
-    getPosition(e.target as HTMLElement)
-    ;(e.target as HTMLElement).blur()
-  }
-
-  //on blob blur
-  function blurred(draggable: HTMLLIElement) {
-    draggable.classList.remove('drag')
-    draggable.setAttribute('aria-grabbed', 'false')
-    dragWrap.current?.setAttribute('aria-activedescendant', '')
-    getPosition(draggable)
-  }
-
-  //on focused blob
-  function focused(draggable: HTMLLIElement) {
-    draggable.classList.add('drag')
-    draggable.setAttribute('aria-grabbed', 'true')
-    dragUl0.current?.setAttribute('aria-activedescendant', `${draggable.id}`)
-    draggable.addEventListener('keydown', keyDown)
-    return () => {
-      draggable.removeEventListener('keydown', keyDown)
-      draggable.classList.remove('drag')
-      draggable.setAttribute('aria-grabbed', 'false')
-      dragWrap.current?.setAttribute('aria-activedescendant', '')
-      getPosition(draggable)
-    }
-  }
-
-  //Mousewheel use
-  function wheel(draggable: HTMLLIElement) {
-    draggable.addEventListener('wheel', zoom, { passive: false })
-    return () => {
-      draggable.removeEventListener('wheel', zoom)
-    }
-  }
-  function zoom(e: WheelEvent) {
-    //e.preventDefault();
-    let value = (e.target as HTMLElement).style.getPropertyValue('--i')
-    let scale = parseFloat(value)
-
-    scale += e.deltaY * -0.005
-    // Restrict scale
-    scale = Math.min(Math.max(2, scale), 10)
-    // Apply
-    ;(e.target as HTMLElement).style.setProperty('--i', `${scale}`)
-    //increase z-index
-    zIndex += 1
-  }
-
-  // Keyboard use
-  function keyDown(e: KeyboardEvent) {
-    const movePx = 8
-
-    let value = (e.target as HTMLElement).style.getPropertyValue('--i')
-    let scale = parseFloat(value)
-
-    let attrLeft = window
-      .getComputedStyle(e.target as HTMLElement)
-      .getPropertyValue('left')
-    let attrTop = window.getComputedStyle(e.target as HTMLElement).getPropertyValue('top')
-
-    switch (e.key) {
-      case 'ArrowLeft':
-        e.preventDefault()
-        ;(e.target as HTMLElement).style.left =
-          parseFloat(attrLeft) - Number(movePx) + 'px'
-        attrLeft = window
-          .getComputedStyle(e.target as HTMLElement)
-          .getPropertyValue('left')
-        break
-      case 'ArrowRight':
-        e.preventDefault()
-        ;(e.target as HTMLElement).style.left =
-          parseFloat(attrLeft) + Number(movePx) + 'px'
-        attrLeft = window
-          .getComputedStyle(e.target as HTMLElement)
-          .getPropertyValue('left')
-        break
-      case 'ArrowUp':
-        e.preventDefault()
-        ;(e.target as HTMLElement).style.top = parseFloat(attrTop) - Number(movePx) + 'px'
-        attrTop = window.getComputedStyle(e.target as HTMLElement).getPropertyValue('top')
-        break
-      case 'ArrowDown':
-        e.preventDefault()
-        ;(e.target as HTMLElement).style.top = parseFloat(attrTop) + Number(movePx) + 'px'
-        attrTop = window.getComputedStyle(e.target as HTMLElement).getPropertyValue('top')
-        break
-      case 'Escape':
-        e.stopImmediatePropagation()
-        e.preventDefault()
-        if (exitApp.current) {
-          exitApp.current.setAttribute('tabindex', '0')
-          exitApp.current.addEventListener('blur', exitAppBlur)
-        }
-        ;(e.target as HTMLElement).blur()
-        dragWrap.current?.blur()
-        //Go to exit notice in order to remove focus from the app
-        if (exitApp.current) exitApp.current.textContent = 'Thank you for playing!'
-        exitApp.current?.focus()
-        break
-      case 'Enter': //Cycle through colors
-        e.stopImmediatePropagation()
-        if ((e.target as HTMLElement).closest('.drag-container0')) {
-          if (color1 == 'lemonchiffon' && color2 == 'pink') {
-            color1 = 'lemonchiffon'
-            color2 = 'greenyellow'
-            ;(
-              e.target as HTMLElement
-            ).style.backgroundImage = `linear-gradient(${angle}, ${color1},${color2})`
-            ;(e.target as HTMLElement).removeAttribute('class')
-            ;(e.target as HTMLElement).classList.add('dragzone', 'color-yellowlime')
-          } else if (color1 == 'lemonchiffon' && color2 == 'greenyellow') {
-            color1 = 'cyan'
-            color2 = 'greenyellow'
-            ;(
-              e.target as HTMLElement
-            ).style.backgroundImage = `linear-gradient(${angle}, ${color1},${color2})`
-            ;(e.target as HTMLElement).removeAttribute('class')
-            ;(e.target as HTMLElement).classList.add('dragzone', 'color-cyanyellow')
-          } else if (color1 == 'cyan' && color2 == 'greenyellow') {
-            color1 = 'cyan'
-            color2 = 'pink'
-            ;(
-              e.target as HTMLElement
-            ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-            ;(e.target as HTMLElement).removeAttribute('class')
-            ;(e.target as HTMLElement).classList.add('dragzone', 'color-cyanpink')
-          } else if (color1 == 'cyan' && color2 == 'pink') {
-            color1 = 'lemonchiffon'
-            color2 = 'pink'
-            ;(
-              e.target as HTMLElement
-            ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-            ;(e.target as HTMLElement).removeAttribute('class')
-            ;(e.target as HTMLElement).classList.add('dragzone', 'color-pinkyellow')
-          } else {
-            color1 = 'lemonchiffon'
-            color2 = 'greenyellow'
-            ;(
-              e.target as HTMLElement
-            ).style.backgroundImage = `linear-gradient(${angle}, ${color1},${color2})`
-            ;(e.target as HTMLElement).removeAttribute('class')
-            ;(e.target as HTMLElement).classList.add('dragzone', 'color-yellowlime')
-          }
-        }
-        e.preventDefault()
-        break
-      case '0': //Move blob to the bottom of the z-index pile
-        e.stopImmediatePropagation()
-        e.preventDefault()
-        if (reset) {
-          reset = false
-          ;(e.target as HTMLElement).style.setProperty('z-index', `${zIndex0}`)
-          //Reset z-index
-          zIndex0 -= 1
-          const cooldown = () => {
-            reset = true
-          }
-          setTimeout(cooldown, 100)
-        }
-        break
-      case '1': //make blob smaller
-        e.stopImmediatePropagation()
-        e.preventDefault()
-        if (reset) {
-          reset = false
-          scale -= 1
-          scale = Math.min(Math.max(2, scale), 10)
-          ;(e.target as HTMLElement).style.setProperty('--i', `${scale}`)
-
-          const cooldown = () => {
-            reset = true
-          }
-          setTimeout(cooldown, 100)
-        }
-        break
-      case '2': //make blob larger
-        e.stopImmediatePropagation()
-        e.preventDefault()
-        if (reset) {
-          reset = false
-          scale += 1
-          scale = Math.min(Math.max(2, scale), 10)
-          ;(e.target as HTMLElement).style.setProperty('--i', `${scale}`)
-
-          const cooldown = () => {
-            reset = true
-          }
-          setTimeout(cooldown, 100)
-        }
-        break
-      case '3': //make a new clone
-      case '+':
-        e.stopImmediatePropagation()
-        e.preventDefault()
-        makeBlob(e.target as HTMLElement)
-        break
-      case 'Delete': //remove blob
-      case '-':
-        e.stopImmediatePropagation()
-        e.preventDefault()
-        hideBlob(e.target as HTMLElement)
-        break
-    }
-  }
-
-  //Remove exit notice's tabindex and text as unnecessary after leaving it
-  function exitAppBlur() {
-    if (exitApp.current) {
-      exitApp.current?.removeAttribute('tabindex')
-      exitApp.current?.removeEventListener('blur', exitAppBlur)
-      exitApp.current.textContent = ''
-    }
-  }
-
-  //Clone blob
-  function makeBlob(target: HTMLElement) {
-    if (reset) {
-      blobCount++
-      reset = false
-
-      const clone = target.cloneNode(false)
-
-      ;(clone as HTMLElement).removeAttribute('id')
-      ;(clone as HTMLElement).setAttribute('id', `blob${blobCount}-${d}`)
-      ;(clone as HTMLElement).setAttribute('role', 'option')
-      let cloneSpan = document.createElement('span')
-      cloneSpan.innerText = `blob ${blobCount}`
-      clone.appendChild(cloneSpan)
-      //increase z-index
-      zIndex += 1
-      ;(clone as HTMLElement).style.setProperty('z-index', `${zIndex}`)
-
-      dragUl0.current?.append(clone)
-      ;(clone as HTMLElement).onmousedown = (e) => {
-        start(e)
-        if (selectedvalue0.current)
-          selectedvalue0.current.textContent = `Selected blob: ${
-            (e.target as HTMLElement)?.querySelector('span')?.textContent
-          }`
-      }
-      ;(clone as HTMLElement).onmousemove = (e) => {
-        movement(e)
-      }
-      ;(clone as HTMLElement).onmouseup = (e) => {
-        stopMovementCheck(e)
-        if (selectedvalue0.current)
-          selectedvalue0.current.textContent = `Selected blob: none`
-      }
-      ;(clone as HTMLElement).onmouseleave = (e) => {
-        stopMoving(e)
-        if (selectedvalue0.current)
-          selectedvalue0.current.textContent = `Selected blob: none`
-      }
-      ;(clone as HTMLElement).ontouchstart = (e) => {
-        start(e)
-        if (selectedvalue0.current)
-          selectedvalue0.current.textContent = `Selected blob: ${
-            (e.target as HTMLElement)?.querySelector('span')?.textContent
-          }`
-      }
-      ;(clone as HTMLElement).ontouchmove = (e) => {
-        movement(e)
-      }
-      ;(clone as HTMLElement).ontouchend = (e) => {
-        stopMovementCheck(e)
-        if (selectedvalue0.current)
-          selectedvalue0.current.textContent = `Selected blob: none`
-      }
-      ;(clone as HTMLElement).onwheel = (e) => {
-        wheel(e.target as HTMLLIElement)
-      }
-      ;(clone as HTMLElement).onfocus = (e) => {
-        focused(e.target as HTMLLIElement)
-        if (selectedvalue0.current)
-          selectedvalue0.current.textContent = `Selected blob: ${
-            (e.target as HTMLElement)?.querySelector('span')?.textContent
-          }`
-      }
-      ;(clone as HTMLElement).onblur = (e) => {
-        blurred(e.target as HTMLLIElement)
-        if (selectedvalue0.current)
-          selectedvalue0.current.textContent = `Selected blob: none`
-      }
-
-      getPosition(clone as HTMLLIElement)
-
-      const cooldown = () => {
-        reset = true
-      }
-      setTimeout(cooldown, 100)
-      ;(clone as HTMLElement).focus()
-    }
-  }
-
-  //Remove blob
-  function hideBlob(target: HTMLElement) {
-    if (reset) {
-      reset = false
-      ;(target as HTMLElement).style.display = 'none'
-      setDragItemList((current) => current.filter((item) => item.id !== target.id))
-      getPositionReset(target as HTMLElement)
-      const cooldown = () => {
-        reset = true
-      }
-      setTimeout(cooldown, 100)
-    }
-  }
-
   return (
     <>
       <section id={`drag-container${d}`} className={`drag-container drag-container${d}`}>
@@ -1211,7 +590,38 @@ export default function BlobJS() {
           }}
         >
           <div ref={dragWrap} className='drag-wrap'>
-            <DragComponent items={dragItemList} />
+            <DragComponent
+              dispatch={dispatch}
+              d={d}
+              items={draggables[d]}
+              amountOfBlobs={amountOfBlobs}
+              dragUl0={dragUl0}
+              saveDraggables={saveDraggables}
+              getPosition={getPosition}
+              colorBlockRed={colorBlockRed}
+              colorBlockPurple={colorBlockPurple}
+              colorBlockBlue={colorBlockBlue}
+              colorBlockYellowLime0={colorBlockYellowLime0}
+              colorBlockCyanYellow0={colorBlockCyanYellow0}
+              colorBlockCyanPink0={colorBlockCyanPink0}
+              colorBlockPinkYellow0={colorBlockPinkYellow0}
+              makeLarger0={makeLarger0}
+              makeSmaller0={makeSmaller0}
+              makeMore0={makeMore0}
+              deleteBlob0={deleteBlob0}
+              dragWrap={dragWrap}
+              exitApp={exitApp}
+              selectedvalue0={selectedvalue0}
+              draggables={draggables}
+              dragWrapOuter={dragWrapOuter}
+              stopBlobs={stopBlobs}
+              disableScrollButton={disableScrollButton}
+              resetBlobs={resetBlobs}
+              sliderLightnessInput={sliderLightnessInput}
+              sliderSaturationInput={sliderSaturationInput}
+              sliderHueInput={sliderHueInput}
+              getRandomMinMax={getRandomMinMax}
+            />
           </div>
           <div
             ref={colorBlockRed}
@@ -1298,7 +708,7 @@ export default function BlobJS() {
           </button>
         </div>
         <div className='drag-slider-wrap'>
-          <label htmlFor='drag-slider-saturation0' id={`saturationdescription${d}`}>
+          <label htmlFor={`drag-slider-saturation${d}`} id={`saturationdescription${d}`}>
             Adjust background saturation
           </label>
           <input

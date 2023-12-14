@@ -4,7 +4,7 @@ import { selectMode } from './reducers/difficultyReducer'
 import { addQuiz } from './reducers/quizReducer'
 import { useSelector } from 'react-redux'
 import Hero from '../Hero/Hero'
-import styles from '../../components/Quiz/css/quiz.module.css'
+import styles from './css/quiz.module.css'
 import { useEffect, useState } from 'react'
 import { useAppDispatch } from './hooks/useAppDispatch'
 import { IHighscore, ReducerProps } from './interfaces'
@@ -16,6 +16,7 @@ import Register from './components/Register'
 import Notification from './components/Notification'
 import { FaStar } from 'react-icons/fa'
 import { getUserQuiz } from './reducers/quizReducer'
+import Accordion from '../Accordion/Accordion'
 
 const QuizStart = ({
   heading,
@@ -126,6 +127,21 @@ const QuizStart = ({
       />
       <section className={`card`}>
         <div>
+          <div className={`medium ${styles.features}`}>
+            <h2>Features</h2>
+            <ul className='ul'>
+              <li>
+                Quiz questions (15) are fetched from{' '}
+                <a href='https://the-trivia-api.com'>the Trivia Api</a>
+              </li>
+              <li>User can choose the difficulty level (easy, medium, hard)</li>
+              <li>
+                User can register and login to save highscores to a MongoDB database
+                (password is hashed)
+              </li>
+            </ul>
+          </div>
+
           <div className={`start-screen ${styles.quiz}`}>
             <h2>Test your general knowledge with these 15 questions</h2>
             <p>Choose difficulty:</p>

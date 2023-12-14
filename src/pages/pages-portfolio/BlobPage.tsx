@@ -61,9 +61,7 @@ export default function BlobPage({
                 <h3>Instructions</h3>
                 <h4>Pointer Use</h4>
                 <ul className='ul'>
-                  <li>
-                    Change blob color by dragging to a color node on the right hand side
-                  </li>
+                  <li>Change blob color by dragging to a color node on the sides</li>
                   <li>
                     Change blob size by dragging it to one of the corners on the right
                     hand side

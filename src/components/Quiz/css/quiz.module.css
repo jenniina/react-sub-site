@@ -4,6 +4,11 @@
 h1.h1 {
   font-size: var(--title-XS);
 }
+@media (min-width: 600px) {
+  .features {
+    padding: 0.5em 2em;
+  }
+}
 .quiz {
   margin: 0 auto;
   max-width: 600px;
