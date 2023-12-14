@@ -1,4 +1,4 @@
-import { useState, FC, useRef, useEffect } from 'react'
+import { useState, FC, useRef, useEffect, createContext, useReducer } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import './css/App.css'
 import './css/form.css'
@@ -25,6 +25,9 @@ import QuizPage from './pages/pages-portfolio/QuizPage'
 import QuizStart from './components/Quiz/QuizStart'
 import QuizQuestion from './components/Quiz/QuizQuestion'
 import QuizFinished from './components/Quiz/QuizFinished'
+//import { Provider } from 'react-redux'
+import blobReducer from './components/Blob/reducers/blobReducer'
+import { BlobProvider } from './components/Blob/components/BlobProvider'
 
 const App: FC = () => {
   const touchDevice = isTouchDevice()
@@ -66,107 +69,119 @@ const App: FC = () => {
   }, [location])
 
   return (
-    <div
-      className={`App ${lightTheme ? 'light' : ''} ${touchDevice ? 'touch' : ''}  ${
-        menuStyleAltTransform ? `transformations` : ''
-      }`}
-    >
-      <div className='App-inner-wrap' style={styleInnerWrap}>
-        <Nav setStyleMenu={setStyleMenu} ref={menuStyle} />
+    <BlobProvider>
+      <div
+        className={`App ${lightTheme ? 'light' : ''} ${touchDevice ? 'touch' : ''}  ${
+          menuStyleAltTransform ? `transformations` : ''
+        }`}
+      >
+        <div className='App-inner-wrap' style={styleInnerWrap}>
+          <Nav setStyleMenu={setStyleMenu} ref={menuStyle} />
 
-        <main
-          id={`main-content`}
-          className={`${transitionPage} main-content z`}
-          onAnimationEnd={() => {
-            if (transitionPage === 'fadeOut') {
-              setTransistionPage('fadeIn')
-              setDisplayLocation(location)
-            }
-          }}
-        >
-          <Routes location={displayLocation}>
-            <Route
-              path='*'
-              element={
-                <Welcome
-                  heading='Welcome'
-                  text='to the React sub-page of Jenniina.fi'
-                  type='page'
-                />
+          <main
+            id={`main-content`}
+            className={`${transitionPage} main-content z`}
+            onAnimationEnd={() => {
+              if (transitionPage === 'fadeOut') {
+                setTransistionPage('fadeIn')
+                setDisplayLocation(location)
               }
-            />
-            <Route
-              path='/about'
-              element={<About heading='About' text='This Site' type='page' />}
-            />
-
-            <Route
-              path='/test'
-              element={<Test heading='Test Page' text='' type='page' />}
-            />
-
-            <Route path='/portfolio' element={<NavPortfolio />}>
+            }}
+          >
+            <Routes location={displayLocation}>
               <Route
-                index
-                element={<Portfolio heading='Portfolio' type='page' text='ReactJS' />}
-              />
-              <Route
-                path='/portfolio/blob'
-                element={<BlobPage heading='Blob App' text='' type='page subpage' />}
-              />
-              <Route
-                path='/portfolio/draganddrop'
+                path='*'
                 element={
-                  <DragAndDropPage heading='Drag and Drop' text='' type='page subpage' />
-                }
-              />
-              <Route
-                path='/portfolio/todo'
-                element={<TodoPage heading='Todo App' text='' type='page subpage' />}
-              />
-              <Route
-                path='/portfolio/select'
-                element={
-                  <CustomSelectPage heading='Custom Select' text='' type='page subpage' />
-                }
-              />
-              <Route
-                path='/portfolio/form'
-                element={
-                  <FormPage heading='Multistep Form' text='' type='page subpage' />
-                }
-              />
-              <Route
-                path='/portfolio/jokes/*'
-                element={
-                  <JokesPage
-                    heading="The Comedian's Companion"
-                    text=''
-                    type='page subpage'
+                  <Welcome
+                    heading='Welcome'
+                    text='to the React sub-page of Jenniina.fi'
+                    type='page'
                   />
                 }
               />
-              <Route path='/portfolio/quiz/' element={<QuizPage />}>
+              <Route
+                path='/about'
+                element={<About heading='About' text='This Site' type='page' />}
+              />
+
+              <Route
+                path='/test'
+                element={<Test heading='Test Page' text='' type='page' />}
+              />
+
+              <Route path='/portfolio' element={<NavPortfolio />}>
                 <Route
                   index
-                  element={<QuizStart heading='Quiz App' text='' type='page subpage' />}
+                  element={<Portfolio heading='Portfolio' type='page' text='ReactJS' />}
                 />
-                <Route path='/portfolio/quiz/:difficulty' element={<QuizQuestion />} />
-                <Route path='/portfolio/quiz/results' element={<QuizFinished />} />
+                <Route
+                  path='/portfolio/blob'
+                  element={<BlobPage heading='Blob App' text='' type='page subpage' />}
+                />
+                <Route
+                  path='/portfolio/draganddrop'
+                  element={
+                    <DragAndDropPage
+                      heading='Drag and Drop'
+                      text=''
+                      type='page subpage'
+                    />
+                  }
+                />
+                <Route
+                  path='/portfolio/todo'
+                  element={<TodoPage heading='Todo App' text='' type='page subpage' />}
+                />
+                <Route
+                  path='/portfolio/select'
+                  element={
+                    <CustomSelectPage
+                      heading='Custom Select'
+                      text=''
+                      type='page subpage'
+                    />
+                  }
+                />
+                <Route
+                  path='/portfolio/form'
+                  element={
+                    <FormPage heading='Multistep Form' text='' type='page subpage' />
+                  }
+                />
+                <Route
+                  path='/portfolio/jokes/*'
+                  element={
+                    <JokesPage
+                      heading="The Comedian's Companion"
+                      text=''
+                      type='page subpage'
+                    />
+                  }
+                />
+                <Route path='/portfolio/quiz/' element={<QuizPage />}>
+                  <Route
+                    index
+                    element={<QuizStart heading='Quiz App' text='' type='page subpage' />}
+                  />
+                  <Route path='/portfolio/quiz/:difficulty' element={<QuizQuestion />} />
+                  <Route path='/portfolio/quiz/results' element={<QuizFinished />} />
+                </Route>
               </Route>
-            </Route>
 
-            <Route
-              path='/contact'
-              element={<Contact heading='Contact' text="Let's collaborate" type='page' />}
-            />
-          </Routes>
-        </main>
+              <Route
+                path='/contact'
+                element={
+                  <Contact heading='Contact' text="Let's collaborate" type='page' />
+                }
+              />
+            </Routes>
+          </main>
 
-        <Footer styleMenu={styleMenu} />
-        <ScrollToTop styleMenu={styleMenu} />
+          <Footer styleMenu={styleMenu} />
+          <ScrollToTop styleMenu={styleMenu} />
+        </div>
       </div>
-    </div>
+    </BlobProvider>
   )
 }
 
