@@ -24,7 +24,9 @@ export default function Contact({
       <div className='inner-wrap'>
         <section className='card' style={{ position: 'relative', zIndex: '2' }}>
           <div>
-            <FormMulti />
+            Temporarily disabled due to EmailJS issues. Please contact me through the main
+            page at <a href='https://jenniina.fi/#contact'>jenniina.fi</a>
+            {/* <FormMulti /> */}
           </div>
         </section>
       </div>
