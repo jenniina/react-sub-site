@@ -6,7 +6,7 @@ import {
   Dispatch,
   SetStateAction,
 } from 'react'
-import { Draggable, focusedBlob } from '../interfaces'
+import { Draggable, focusedBlob, ColorPair } from '../interfaces'
 import Blob from './Blob'
 
 let zIndex = 1
@@ -55,6 +55,9 @@ interface DragComponentProps {
   getRandomMinMax: (min: number, max: number) => number
   focusedBlob: focusedBlob | null
   setFocusedBlob: Dispatch<SetStateAction<focusedBlob | null>>
+  colorIndex: number
+  setColorIndex: Dispatch<SetStateAction<number>>
+  colorPairs: ColorPair[]
 }
 
 const DragComponent = (props: DragComponentProps) => {
@@ -179,7 +182,7 @@ const DragComponent = (props: DragComponentProps) => {
         e.target as HTMLElement
       ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
       ;(e.target as HTMLElement).removeAttribute('class')
-      ;(e.target as HTMLElement).classList.add('dragzone', 'color-red')
+      ;(e.target as HTMLElement).classList.add('dragzone', 'color-violet')
     }
     if (
       props.colorBlockBlue.current &&
@@ -400,49 +403,109 @@ const DragComponent = (props: DragComponentProps) => {
       case 'Enter': //Cycle through colors
         //e.stopImmediatePropagation()
         if ((e.target as HTMLElement).closest(`.drag-container${props.d}`)) {
-          if (color1 == 'lemonchiffon' && color2 == 'pink') {
-            color1 = 'lemonchiffon'
-            color2 = 'greenyellow'
+          props.setColorIndex((prevColorIndex) => {
+            const nextColorIndex = (prevColorIndex + 1) % props.colorPairs.length
+            const { color1, color2, class: colorClass } = props.colorPairs[nextColorIndex]
+
             ;(
               e.target as HTMLElement
             ).style.backgroundImage = `linear-gradient(${angle}, ${color1},${color2})`
             ;(e.target as HTMLElement).removeAttribute('class')
-            ;(e.target as HTMLElement).classList.add('dragzone', 'color-yellowlime')
-          } else if (color1 == 'lemonchiffon' && color2 == 'greenyellow') {
-            color1 = 'cyan'
-            color2 = 'greenyellow'
-            ;(
-              e.target as HTMLElement
-            ).style.backgroundImage = `linear-gradient(${angle}, ${color1},${color2})`
-            ;(e.target as HTMLElement).removeAttribute('class')
-            ;(e.target as HTMLElement).classList.add('dragzone', 'color-cyanyellow')
-          } else if (color1 == 'cyan' && color2 == 'greenyellow') {
-            color1 = 'cyan'
-            color2 = 'pink'
-            ;(
-              e.target as HTMLElement
-            ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-            ;(e.target as HTMLElement).removeAttribute('class')
-            ;(e.target as HTMLElement).classList.add('dragzone', 'color-cyanpink')
-          } else if (color1 == 'cyan' && color2 == 'pink') {
-            color1 = 'lemonchiffon'
-            color2 = 'pink'
-            ;(
-              e.target as HTMLElement
-            ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-            ;(e.target as HTMLElement).removeAttribute('class')
-            ;(e.target as HTMLElement).classList.add('dragzone', 'color-pinkyellow')
-          } else {
-            color1 = 'lemonchiffon'
-            color2 = 'greenyellow'
-            ;(
-              e.target as HTMLElement
-            ).style.backgroundImage = `linear-gradient(${angle}, ${color1},${color2})`
-            ;(e.target as HTMLElement).removeAttribute('class')
-            ;(e.target as HTMLElement).classList.add('dragzone', 'color-yellowlime')
-          }
+            ;(e.target as HTMLElement).classList.add('dragzone', colorClass)
+
+            return nextColorIndex // Return the new color index
+          })
         }
-        e.preventDefault()
+        //   // Old way of doing it:
+        //   // Calculate the next color index first
+        //   const nextColorIndex = (props.colorIndex + 1) % props.colorPairs.length
+        //   const { color1, color2, class: colorClass } = props.colorPairs[nextColorIndex]
+
+        //   ;(
+        //     e.target as HTMLElement
+        //   ).style.backgroundImage = `linear-gradient(${angle}, ${color1},${color2})`
+        //   ;(e.target as HTMLElement).removeAttribute('class')
+        //   ;(e.target as HTMLElement).classList.add('dragzone', colorClass)
+
+        //   // Then update the state
+        //   props.setColorIndex(nextColorIndex)
+        //}
+        // if ((e.target as HTMLElement).closest(`.drag-container${props.d}`)) {
+        //   if (color1 == 'lemonchiffon' && color2 == 'pink') {
+        //     color1 = 'lemonchiffon'
+        //     color2 = 'greenyellow'
+        //     ;(
+        //       e.target as HTMLElement
+        //     ).style.backgroundImage = `linear-gradient(${angle}, ${color1},${color2})`
+        //     ;(e.target as HTMLElement).removeAttribute('class')
+        //     ;(e.target as HTMLElement).classList.add('dragzone', 'color-yellowlime')
+        //   } else if (color1 == 'lemonchiffon' && color2 == 'greenyellow') {
+        //     color1 = 'cyan'
+        //     color2 = 'greenyellow'
+        //     ;(
+        //       e.target as HTMLElement
+        //     ).style.backgroundImage = `linear-gradient(${angle}, ${color1},${color2})`
+        //     ;(e.target as HTMLElement).removeAttribute('class')
+        //     ;(e.target as HTMLElement).classList.add('dragzone', 'color-cyanyellow')
+        //   } else if (color1 == 'cyan' && color2 == 'greenyellow') {
+        //     color1 = 'cyan'
+        //     color2 = 'pink'
+        //     ;(
+        //       e.target as HTMLElement
+        //     ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
+        //     ;(e.target as HTMLElement).removeAttribute('class')
+        //     ;(e.target as HTMLElement).classList.add('dragzone', 'color-cyanpink')
+        //   } else if (color1 == 'cyan' && color2 == 'pink') {
+        //     color1 = 'darkorange'
+        //     color2 = 'orange'
+        //     ;(
+        //       e.target as HTMLElement
+        //     ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
+        //     ;(e.target as HTMLElement).removeAttribute('class')
+        //     ;(e.target as HTMLElement).classList.add('dragzone', 'color-orange')
+        //   } else if (color1 == 'darkorange' && color2 == 'orange') {
+        //     color1 = 'red'
+        //     color2 = 'tomato'
+        //     ;(
+        //       e.target as HTMLElement
+        //     ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
+        //     ;(e.target as HTMLElement).removeAttribute('class')
+        //     ;(e.target as HTMLElement).classList.add('dragzone', 'color-red')
+        //   } else if (color1 == 'red' && color2 == 'tomato') {
+        //     color1 = 'magenta'
+        //     color2 = 'violet'
+        //     ;(
+        //       e.target as HTMLElement
+        //     ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
+        //     ;(e.target as HTMLElement).removeAttribute('class')
+        //     ;(e.target as HTMLElement).classList.add('dragzone', 'color-purple')
+        //   } else if (color1 == 'magenta' && color2 == 'violet') {
+        //     color1 = 'deepskyblue'
+        //     color2 = 'dodgerblue'
+        //     ;(
+        //       e.target as HTMLElement
+        //     ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
+        //     ;(e.target as HTMLElement).removeAttribute('class')
+        //     ;(e.target as HTMLElement).classList.add('dragzone', 'color-blue')
+        //   } else if (color1 == 'deepskyblue' && color2 == 'dodgerblue') {
+        //     color1 = 'lemonchiffon'
+        //     color2 = 'pink'
+        //     ;(
+        //       e.target as HTMLElement
+        //     ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
+        //     ;(e.target as HTMLElement).removeAttribute('class')
+        //     ;(e.target as HTMLElement).classList.add('dragzone', 'color-pinkyellow')
+        //   } else {
+        //     color1 = 'lemonchiffon'
+        //     color2 = 'greenyellow'
+        //     ;(
+        //       e.target as HTMLElement
+        //     ).style.backgroundImage = `linear-gradient(${angle}, ${color1},${color2})`
+        //     ;(e.target as HTMLElement).removeAttribute('class')
+        //     ;(e.target as HTMLElement).classList.add('dragzone', 'color-yellowlime')
+        //   }
+        // }
+        //e.preventDefault()
         break
       case '0': //Move blob to the bottom of the z-index pile
         //e.stopImmediatePropagation()

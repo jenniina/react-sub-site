@@ -33,3 +33,8 @@ export interface focusedBlob {
   width: number
   height: number
 }
+export interface ColorPair {
+  color1: string
+  color2: string
+  class: string
+}
