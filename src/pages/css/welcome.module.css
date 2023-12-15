@@ -2,7 +2,7 @@
   display: flex;
   flex-flow: column nowrap;
   gap: 3em;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   margin: 0;
   padding: 0;
@@ -16,7 +16,7 @@
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
 }
 .transformations .list a {
   transition-duration: 500ms;
@@ -27,7 +27,7 @@
 }
 .list a:hover,
 .list a:focus {
-  transform: translateY(-0.8em);
+  transform: translateY(-0.1em);
   text-decoration: none;
 }
 .list a:hover svg,
@@ -58,6 +58,22 @@
 @media (min-width: 300px) {
   .list {
     flex-flow: row nowrap;
-    gap: 2%;
+    gap: 4%;
   }
+}
+.subheading {
+  font-size: clamp(1.5em, 3vw, 2em);
+  font-weight: 400;
+  text-align: center;
+  margin: 0 auto 1.5em;
+  color: var(--color-primary-14);
+}
+
+.list p {
+  color: var(--color-primary-14);
+  font-size: 0.9em;
+  text-align: center;
+}
+.newest {
+  padding-top: 8em;
 }
