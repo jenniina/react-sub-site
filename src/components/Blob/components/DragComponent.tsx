@@ -41,6 +41,7 @@ interface DragComponentProps {
   colorBlockCyanYellow0: RefObject<HTMLDivElement>
   colorBlockCyanPink0: RefObject<HTMLDivElement>
   colorBlockPinkYellow0: RefObject<HTMLDivElement>
+  colorBlockOrange: RefObject<HTMLDivElement>
   colorBlockRed: RefObject<HTMLDivElement>
   colorBlockPurple: RefObject<HTMLDivElement>
   colorBlockBlue: RefObject<HTMLDivElement>
@@ -144,6 +145,18 @@ const DragComponent = (props: DragComponentProps) => {
     let value = (e.target as HTMLElement).style.getPropertyValue('--i')
     let scale = parseFloat(value)
 
+    if (
+      props.colorBlockOrange.current &&
+      elementsOverlap(e.target as HTMLElement, props.colorBlockOrange.current)
+    ) {
+      color1 = 'darkorange'
+      color2 = 'orange'
+      ;(
+        e.target as HTMLElement
+      ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
+      ;(e.target as HTMLElement).removeAttribute('class')
+      ;(e.target as HTMLElement).classList.add('dragzone', 'color-orange')
+    }
     if (
       props.colorBlockRed.current &&
       elementsOverlap(e.target as HTMLElement, props.colorBlockRed.current)

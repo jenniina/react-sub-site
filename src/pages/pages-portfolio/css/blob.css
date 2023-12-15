@@ -447,12 +447,12 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
 }
 .make-larger {
   font-size: 1.1rem;
-  line-height: 1.6;
-  padding-right: 0.2em;
-  width: 1.4em;
-  height: 1.6em;
-  top: 0;
-  border-radius: 0 0 0 var(--corner2);
+  line-height: 1.5;
+  padding-left: 0.05em;
+  width: 1.5em;
+  height: 1.5em;
+  top: 0.2rem;
+  border-radius: var(--corner2);
   -webkit-box-shadow: -0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.4);
   box-shadow: -0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.4);
 }
@@ -475,14 +475,13 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   border-left-color: var(--tooltip-color);
 }
 .make-smaller {
-  --bottom: -2rem;
+  --bottom: -2.2rem;
   font-size: 0.9rem;
-  padding-right: 0.2em;
+  padding-left: 0.1em;
   width: 1.8em;
   top: 0;
-  bottom: var(--bottom);
   line-height: 1.9;
-  border-radius: var(--corner2) 0 0 0;
+  border-radius: var(--corner2);
   -webkit-box-shadow: -0.2rem -0.2rem 0.5rem rgba(0, 0, 0, 0.4);
   box-shadow: -0.2rem -0.2rem 0.5rem rgba(0, 0, 0, 0.4);
 }
@@ -510,7 +509,7 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   width: 1.6rem;
   max-width: 2.5rem;
 }
-
+.colorblock.color-orange,
 .colorblock.color-red,
 .colorblock.color-purple,
 .colorblock.color-blue {
@@ -537,12 +536,13 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   box-shadow: 0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
 }
 .make-more {
-  top: 0;
+  top: 0.2rem;
+  left: 17%;
   font-size: 1.3rem;
   height: 1.7rem;
-  line-height: 1.3;
+  line-height: 1.2;
   padding-left: 0.4rem;
-  border-radius: 0 0 var(--corner) 0;
+  border-radius: var(--corner);
   -webkit-box-shadow: 0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.4);
   box-shadow: 0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.4);
 }
@@ -565,14 +565,21 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   border-right-color: var(--tooltip-color);
 }
 .delete-blob {
-  height: 2.3rem;
-  top: 95%;
-  font-size: 2rem;
-  line-height: 0.7;
-  padding-left: 0.5rem;
-  border-radius: 0 var(--corner) 0 0;
+  height: 1.7rem;
+  top: calc(100% - 2rem);
+  left: 17%;
+  font-size: 1.4rem;
+  line-height: 1.15;
+  padding-left: 0.4rem;
+  border-radius: var(--corner);
+  outline: dashed 0.1rem red;
+  outline-offset: 0.1rem;
   -webkit-box-shadow: 0.2rem -0.2rem 0.5rem rgba(0, 0, 0, 0.4);
   box-shadow: 0.2rem -0.2rem 0.5rem rgba(0, 0, 0, 0.4);
+}
+.delete-blob:hover {
+  outline-offset: 0.2rem;
+  outline-width: 0.2rem;
 }
 .delete-blob:hover::after {
   content: 'Remove a blob by bringing it to me! Keyboard use: press Delete with blob in focus';
@@ -681,6 +688,9 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
 }
 .colorblock.color-red {
   background: linear-gradient(45deg, red, tomato);
+}
+.colorblock.color-orange {
+  background: linear-gradient(45deg, darkorange, orange);
 }
 .exitblob {
   flex-basis: 100%;
