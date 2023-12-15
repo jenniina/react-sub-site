@@ -12,8 +12,6 @@ const defaultLightness = '30'
 const defaultSaturation = '80'
 const defaultHue = '214'
 
-//let hasBeenMadeFromStorage: Boolean
-
 export default function BlobJS() {
   const { state, dispatch } = useContext(BlobContext) as Props
 
@@ -64,6 +62,7 @@ export default function BlobJS() {
 
   const [focusedBlob, setFocusedBlob] = useState<focusedBlob | null>(null)
   const [usingKeyboard, setUsingKeyboard] = useState(false)
+  const [markerEnabled, setMarkerEnabled] = useState(true)
 
   //Check for keyboard use for the focusedBlob marker
   useEffect(() => {
@@ -81,7 +80,6 @@ export default function BlobJS() {
 
   function loadDraggables(): Draggable[] {
     const draggablesJSON = localStorage.getItem(localStorageDraggables)
-    console.log('draggablesJSON', draggablesJSON)
     if (
       draggablesJSON == null ||
       draggablesJSON == undefined ||
@@ -107,16 +105,7 @@ export default function BlobJS() {
     Draggable[] | null
   >(null)
 
-  console.log('draggables', draggables)
-  console.log('previousLoadedDraggables', previousLoadedDraggables)
-
   const [hasBeenMade, setHasBeenMade] = useState<Boolean>(false)
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setHasBeenMade(false)
-  //   }, 1000)
-  // }, [hasBeenMade])
 
   useEffect(() => {
     const loadedDraggables = loadDraggables()
@@ -125,7 +114,6 @@ export default function BlobJS() {
       !isEqual(loadedDraggables, previousLoadedDraggables) &&
       loadedDraggables?.length > 0
     ) {
-      console.log('loadedDraggables', loadedDraggables)
       makeFromStorage(loadedDraggables)
       // dispatch({
       //   type: 'setDraggablesAtD',
@@ -133,18 +121,11 @@ export default function BlobJS() {
       // })
       setHasBeenMade(true)
       setPreviousLoadedDraggables(loadedDraggables)
-      console.log('madeFromStorage')
     } else if (loadedDraggables?.length === 0 && !hasBeenMade) {
       makeAnew(amountOfBlobs)
-      console.log('madeAnew')
       setHasBeenMade(true)
     }
   }, [])
-
-  // dispatch({
-  //   type: 'setDraggablesAtD',
-  //   payload: { d, draggables: loadedDraggables },
-  // })
 
   useEffect(() => {
     if (draggables[d] !== undefined) {
@@ -153,13 +134,11 @@ export default function BlobJS() {
   }, [draggables[d]])
 
   function makeFromStorage(blobs: Draggable[]) {
-    console.log('hasBeenMadeFromStorage', hasBeenMade)
     if (backgroundColor[d]?.length > 1) {
       dragWrapOuter.current?.style.setProperty('--lightness', `${backgroundColor[d][0]}`)
       dragWrapOuter.current?.style.setProperty('--saturation', `${backgroundColor[d][1]}`)
       dragWrapOuter.current?.style.setProperty('--hue', `${backgroundColor[d][2]}`)
     }
-    //if (!hasBeenMadeFromStorage && draggables[d] && draggables[d].length > 1) {
     if (!hasBeenMade && blobs && blobs?.length > 1) {
       for (let i: number = 0; i < blobs?.length; i++) {
         if (blobs[i] !== null && blobs[i] !== undefined) {
@@ -595,6 +574,12 @@ export default function BlobJS() {
           >
             Disable Scroll
           </button>
+          <button
+            className='toggle-marker'
+            onClick={() => setMarkerEnabled(!markerEnabled)}
+          >
+            {markerEnabled ? 'Marker on' : 'Marker off'}
+          </button>
         </div>
         <div
           ref={dragWrapOuter}
@@ -605,7 +590,7 @@ export default function BlobJS() {
             ...dragWrapOuterHue,
           }}
         >
-          {usingKeyboard && focusedBlob && (
+          {markerEnabled && usingKeyboard && focusedBlob && (
             <div
               style={{
                 position: 'absolute',

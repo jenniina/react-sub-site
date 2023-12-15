@@ -399,7 +399,9 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
 }
 
 .make-larger:hover::after,
-.make-smaller:hover::after {
+.make-smaller:hover::after,
+.drag-container button.toggle-marker:hover::after,
+.drag-container button.toggle-marker:focus::after {
   position: absolute;
   font-size: 0.8rem;
   font-weight: normal;
@@ -412,6 +414,36 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   border-bottom: gray 1px solid;
   -webkit-box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
   box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
+}
+.drag-container button.toggle-marker:hover::after,
+.drag-container button.toggle-marker:focus::after {
+  color: black;
+  background-color: white;
+}
+.drag-container button.toggle-marker {
+  position: relative;
+}
+.drag-container button.toggle-marker:hover::after,
+.drag-container button.toggle-marker:focus::after {
+  content: 'Toggle marker visibility when using a keyboard';
+  top: 0.5em;
+  right: calc(100% + 2em);
+  background-color: white;
+  color: black;
+}
+.drag-container button.toggle-marker:hover::before,
+.drag-container button.toggle-marker:focus::before {
+  content: '';
+  position: absolute;
+  top: 35%;
+  -webkit-transform: translateY(-30%) rotate(-20deg);
+  -ms-transform: translateY(-30%) rotate(-20deg);
+  transform: translateY(-30%) rotate(-20deg);
+  left: calc(-1 * var(--tooltip-offset) * 1.5);
+  border: 1em solid transparent;
+  border-width: 0.43em 1.3em;
+  border-width: calc(var(--tooltip-offset) / 3) calc(var(--tooltip-offset) * 1.5);
+  border-left-color: white;
 }
 .make-larger {
   font-size: 1.1rem;
