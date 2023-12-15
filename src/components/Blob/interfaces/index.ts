@@ -26,3 +26,10 @@ export interface ReducerProps {
     hasBeenMadeFromStorage: boolean
   }
 }
+
+export interface focusedBlob {
+  top: number
+  left: number
+  width: number
+  height: number
+}

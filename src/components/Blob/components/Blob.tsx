@@ -1,5 +1,12 @@
-import { RefObject, MouseEvent, TouchEvent, CSSProperties } from 'react'
-import { Draggable } from '../interfaces'
+import {
+  RefObject,
+  MouseEvent,
+  TouchEvent,
+  CSSProperties,
+  SetStateAction,
+  Dispatch,
+} from 'react'
+import { Draggable, focusedBlob } from '../interfaces'
 
 interface BlobProps {
   item: Draggable
@@ -38,6 +45,8 @@ interface BlobProps {
   focused: (e: HTMLLIElement) => void
   blurred: (e: HTMLLIElement) => void
   selectedvalue0: RefObject<HTMLSpanElement>
+  focusedBlob: focusedBlob | null
+  setFocusedBlob: Dispatch<SetStateAction<focusedBlob | null>>
 }
 
 const Blob = ({
@@ -51,6 +60,8 @@ const Blob = ({
   focused,
   blurred,
   selectedvalue0,
+  focusedBlob,
+  setFocusedBlob,
 }: BlobProps) => {
   const blobStyle: CSSProperties = {
     background: `${item.background}`,
@@ -111,6 +122,20 @@ const Blob = ({
       }}
       onFocus={(e) => {
         focused(e.target as HTMLLIElement)
+        const blob = e.target as HTMLLIElement
+        const blobRect = blob.getBoundingClientRect()
+        const parentRect = (blob.parentNode as HTMLDivElement)?.getBoundingClientRect()
+
+        const blobStyle = window.getComputedStyle(blob)
+        const marginTop = parseFloat(blobStyle.marginTop)
+        const marginLeft = parseFloat(blobStyle.marginLeft)
+
+        setFocusedBlob({
+          top: blobRect.top - parentRect.top - marginTop,
+          left: blobRect.left - parentRect.left - marginLeft,
+          width: blobRect.width,
+          height: blobRect.height,
+        })
         if (selectedvalue0.current)
           selectedvalue0.current.textContent = `Selected blob: ${
             (e.target as HTMLElement)?.querySelector('span')?.textContent

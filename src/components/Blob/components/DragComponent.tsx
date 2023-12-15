@@ -1,5 +1,12 @@
-import { RefObject, useContext, useEffect, useState } from 'react'
-import { Draggable } from '../interfaces'
+import {
+  RefObject,
+  useContext,
+  useEffect,
+  useState,
+  Dispatch,
+  SetStateAction,
+} from 'react'
+import { Draggable, focusedBlob } from '../interfaces'
 import Blob from './Blob'
 
 let zIndex = 1
@@ -45,6 +52,8 @@ interface DragComponentProps {
   sliderSaturationInput: RefObject<HTMLInputElement>
   sliderHueInput: RefObject<HTMLInputElement>
   getRandomMinMax: (min: number, max: number) => number
+  focusedBlob: focusedBlob | null
+  setFocusedBlob: Dispatch<SetStateAction<focusedBlob | null>>
 }
 
 const DragComponent = (props: DragComponentProps) => {
@@ -588,6 +597,8 @@ const DragComponent = (props: DragComponentProps) => {
               focused={focused}
               blurred={blurred}
               selectedvalue0={props.selectedvalue0}
+              focusedBlob={props.focusedBlob}
+              setFocusedBlob={props.setFocusedBlob}
             />
           )
         }
