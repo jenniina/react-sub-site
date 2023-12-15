@@ -1,3 +1,10 @@
+.subheading {
+  font-size: clamp(1.5em, 3vw, 2em);
+  font-weight: 400;
+  text-align: center;
+  margin: 0 auto 1.5em;
+  color: var(--color-primary-14);
+}
 .list {
   display: flex;
   flex-flow: column nowrap;
@@ -54,6 +61,11 @@
 .list a:focus span {
   /* font-size: clamp(1.2em, 2vw, 3em); */
   transform: scale(1.2);
+}
+.list p {
+  color: var(--color-primary-14);
+  font-size: 0.9em;
+  text-align: center;
 }
 @media (min-width: 300px) {
   .list {

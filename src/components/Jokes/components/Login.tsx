@@ -1,24 +1,77 @@
 import { useEffect, useRef, useState, FormEvent } from 'react'
 import { AxiosError } from 'axios'
-import { ReducerProps } from '../interfaces'
+import {
+  ECategoryTitle,
+  ECategory_cs,
+  ECategory_de,
+  ECategory_en,
+  ECategory_es,
+  ECategory_fr,
+  ECategory_pt,
+  EError,
+  ELanguageTitle,
+  ELanguagesLong,
+  ELoggingIn,
+  ReducerProps,
+} from '../interfaces'
 import Accordion from '../../Accordion/Accordion'
 import { useAppDispatch } from '../hooks/useAppDispatch'
 import { notify } from '../reducers/notificationReducer'
 import { initializeUser, login, logout } from '../reducers/authReducer'
+import PasswordReset from './PasswordReset'
 import { useSelector } from 'react-redux'
-import { ELogin, ELogout, ELoggedInAs } from '../interfaces'
+import {
+  ELogin,
+  ELogout,
+  ELoggedInAs,
+  EClose,
+  ELanguages,
+  EEmail,
+  EPassword,
+} from '../interfaces'
+import UserEdit from './UserEdit'
+import { SelectOption } from '../../Select/Select'
 
 interface LoginProps {
   titleLogin: ELogin
   titleLogout: ELogout
   titleLoggedInAs: ELoggedInAs
+  language: ELanguages
+  setLoggedIn: (loggedIn: boolean) => void
+  setLanguage: (language: ELanguages) => void
+  categoryLanguages:
+    | typeof ECategory_en
+    | typeof ECategory_cs
+    | typeof ECategory_de
+    | typeof ECategory_es
+    | typeof ECategory_fr
+    | typeof ECategory_pt
+  options: (enumObj: typeof ELanguages) => SelectOption[]
+  getKeyByValue: (
+    enumObj: typeof ELanguages,
+    value: ELanguages
+  ) => undefined | SelectOption['label']
 }
 
-const FormLogin = ({ titleLogin, titleLogout, titleLoggedInAs }: LoginProps) => {
+const FormLogin = ({
+  titleLogin,
+  titleLogout,
+  titleLoggedInAs,
+  language,
+  setLoggedIn,
+  setLanguage,
+  categoryLanguages,
+  getKeyByValue,
+  options,
+}: LoginProps) => {
   const dispatch = useAppDispatch()
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+
+  const titleEmail = EEmail[language]
+  const titlePassword = EPassword[language]
+
   const formLoginRef = useRef(null)
 
   const user = useSelector((state: ReducerProps) => {
@@ -31,37 +84,61 @@ const FormLogin = ({ titleLogin, titleLogout, titleLoggedInAs }: LoginProps) => 
 
   const handleLogout = () => {
     dispatch(logout())
+    setLoggedIn(false)
   }
 
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault()
-    dispatch(notify(`Logging in...`, false, 8))
 
-    await dispatch(login(username, password))
+    await dispatch(login(username, password, language))
       .then(() => {
+        dispatch(notify(`${ELoggingIn[language]}`, false, 2))
         setUsername('')
         setPassword('')
+        setLoggedIn(true)
+        //scroll to anchor "userjokes"
+        const anchor = document.querySelector('#userjokes')
+        if (anchor) {
+          anchor.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
       })
-      .catch((e) =>
-        dispatch(notify(`Error: ${(e as AxiosError<any>).response?.data.error}`, true, 8))
-      )
+      .catch((e) => {
+        console.log(e)
+        if (e.code === 'ERR_NETWORK') {
+          dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
+        } else if (e.code === 'ERR_BAD_REQUEST')
+          dispatch(notify(`${EError[language]}: ${e.response.data.message}`, true, 8))
+      })
   }
 
   return (
-    <div className='login-wrap'>
+    <>
       {user ? (
-        <p>
+        <div className='logout-wrap'>
           <span>
             {titleLoggedInAs} {user?.name ? user?.name : user.username}{' '}
           </span>
+          <UserEdit
+            user={user}
+            language={language}
+            setLanguage={setLanguage}
+            categoryLanguages={categoryLanguages}
+            options={options}
+            getKeyByValue={getKeyByValue}
+          />
           <button onClick={handleLogout} id='logout' className='logout danger'>
             {titleLogout} &times;
           </button>
-        </p>
+        </div>
       ) : (
         <>
-          <Accordion className='' text={titleLogin} ref={formLoginRef}>
-            <h2>Log in</h2>
+          <Accordion
+            className='login'
+            text={`» ${titleLogin} «`}
+            ref={formLoginRef}
+            close={EClose[language as ELanguages]}
+          >
+            <h2>{titleLogin}</h2>
 
             <form onSubmit={handleLogin} className='login'>
               <div className='input-wrap'>
@@ -73,7 +150,7 @@ const FormLogin = ({ titleLogin, titleLogout, titleLoggedInAs }: LoginProps) => 
                     required
                     onChange={({ target }) => setUsername(target.value)}
                   />
-                  <span>username: </span>
+                  <span>{titleEmail}: </span>
                 </label>
               </div>
               <div className='input-wrap'>
@@ -85,17 +162,20 @@ const FormLogin = ({ titleLogin, titleLogout, titleLoggedInAs }: LoginProps) => 
                     value={password}
                     onChange={({ target }) => setPassword(target.value)}
                   />
-                  <span>password: </span>
+                  <span>{titlePassword}: </span>
                 </label>
               </div>
               <button type='submit' id='login' className='login'>
                 {titleLogin}
               </button>
             </form>
+            <div className='flex'>
+              <PasswordReset language={language} />
+            </div>
           </Accordion>
         </>
       )}
-    </div>
+    </>
   )
 }
 
