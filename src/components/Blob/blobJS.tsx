@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState, useContext } from 'react'
 import { isEqual } from 'lodash'
-import { Draggable, BackgroundColor, ReducerProps, RefObject } from './interfaces'
-import { useSelector } from 'react-redux'
+import { Draggable, BackgroundColor, RefObject, focusedBlob } from './interfaces'
 import DragComponent from './components/DragComponent'
 import { BlobContext, Props } from './components/BlobProvider'
 
@@ -62,6 +61,23 @@ export default function BlobJS() {
   if (draggables[d] === undefined) {
     draggables[d] = []
   }
+
+  const [focusedBlob, setFocusedBlob] = useState<focusedBlob | null>(null)
+  const [usingKeyboard, setUsingKeyboard] = useState(false)
+
+  //Check for keyboard use for the focusedBlob marker
+  useEffect(() => {
+    const keydownListener = () => setUsingKeyboard(true)
+    const mousedownListener = () => setUsingKeyboard(false)
+
+    window.addEventListener('keydown', keydownListener)
+    window.addEventListener('mousedown', mousedownListener)
+
+    return () => {
+      window.removeEventListener('keydown', keydownListener)
+      window.removeEventListener('mousedown', mousedownListener)
+    }
+  }, [])
 
   function loadDraggables(): Draggable[] {
     const draggablesJSON = localStorage.getItem(localStorageDraggables)
@@ -589,6 +605,21 @@ export default function BlobJS() {
             ...dragWrapOuterHue,
           }}
         >
+          {usingKeyboard && focusedBlob && (
+            <div
+              style={{
+                position: 'absolute',
+                top: `${focusedBlob.top + 17}px`,
+                left: `${focusedBlob.left}px`,
+                width: `${focusedBlob.width}px`,
+                height: `${focusedBlob.height}px`,
+                outline: '3px dashed blue',
+                outlineOffset: '5px',
+                borderRadius: '50%',
+                zIndex: 1000,
+              }}
+            />
+          )}
           <div ref={dragWrap} className='drag-wrap'>
             <DragComponent
               dispatch={dispatch}
@@ -621,6 +652,8 @@ export default function BlobJS() {
               sliderSaturationInput={sliderSaturationInput}
               sliderHueInput={sliderHueInput}
               getRandomMinMax={getRandomMinMax}
+              focusedBlob={focusedBlob}
+              setFocusedBlob={setFocusedBlob}
             />
           </div>
           <div
