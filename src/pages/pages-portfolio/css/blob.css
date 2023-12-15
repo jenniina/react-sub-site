@@ -43,8 +43,8 @@ svg.filter {
   min-width: 88px;
   max-height: 300px;
   max-width: 300px;
-  height: calc(var(--i) * 3vh);
-  width: calc(var(--i) * 3vh);
+  height: calc(var(--i) * 2.8vh);
+  width: calc(var(--i) * 2.8vh);
 }
 #drag-container0 .colorblock {
   -webkit-box-shadow: -4px 4px 20px 0 hsla(0, 0%, 0%, 0.2),
@@ -308,7 +308,7 @@ svg.filter {
 }
 
 .drag-wrap {
-  height: 85vh;
+  height: 80vh;
   min-height: 400px;
   width: 100%;
   min-width: 100%;
