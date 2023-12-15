@@ -1,6 +1,12 @@
 import React, { useRef, useEffect, useState, useContext } from 'react'
 import { isEqual } from 'lodash'
-import { Draggable, BackgroundColor, RefObject, focusedBlob } from './interfaces'
+import {
+  Draggable,
+  BackgroundColor,
+  RefObject,
+  focusedBlob,
+  ColorPair,
+} from './interfaces'
 import DragComponent from './components/DragComponent'
 import { BlobContext, Props } from './components/BlobProvider'
 
@@ -34,6 +40,7 @@ export default function BlobJS() {
   const colorBlockCyanPink0 = useRef() as RefObject<HTMLDivElement>
   const colorBlockPinkYellow0 = useRef() as RefObject<HTMLDivElement>
 
+  const colorBlockOrange = useRef() as RefObject<HTMLDivElement>
   const colorBlockRed = useRef() as RefObject<HTMLDivElement>
   const colorBlockPurple = useRef() as RefObject<HTMLDivElement>
   const colorBlockBlue = useRef() as RefObject<HTMLDivElement>
@@ -59,6 +66,19 @@ export default function BlobJS() {
   if (draggables[d] === undefined) {
     draggables[d] = []
   }
+
+  const colorPairs: ColorPair[] = [
+    { color1: 'lemonchiffon', color2: 'pink', class: 'color-pinkyellow' },
+    { color1: 'lemonchiffon', color2: 'greenyellow', class: 'color-yellowlime' },
+    { color1: 'cyan', color2: 'greenyellow', class: 'color-cyanyellow' },
+    { color1: 'cyan', color2: 'pink', class: 'color-cyanpink' },
+    { color1: 'darkorange', color2: 'orange', class: 'color-orange' },
+    { color1: 'red', color2: 'tomato', class: 'color-red' },
+    { color1: 'magenta', color2: 'violet', class: 'color-purple' },
+    { color1: 'deepskyblue', color2: 'dodgerblue', class: 'color-blue' },
+  ]
+
+  const [colorIndex, setColorIndex] = useState(0)
 
   const [focusedBlob, setFocusedBlob] = useState<focusedBlob | null>(null)
   const [usingKeyboard, setUsingKeyboard] = useState(false)
@@ -162,7 +182,7 @@ export default function BlobJS() {
     setHasBeenMade(true)
   }
 
-  let paused: boolean
+  const [paused, setPaused] = useState(false)
 
   function stopSway(
     e:
@@ -173,15 +193,36 @@ export default function BlobJS() {
 
     if (!paused && dragUl0.current) {
       dragUl0.current.classList.add('paused')
-      paused = true
-      if (stopBlobs.current) stopBlobs.current.textContent = 'Start Movement'
+      setPaused(true)
+      if (stopBlobs.current) stopBlobs.current.textContent = 'Start Blob Sway'
     } else if (paused && dragUl0.current) {
       dragUl0.current.classList.remove('paused')
-      paused = false
-      if (stopBlobs.current) stopBlobs.current.textContent = 'Stop Movement'
+      setPaused(false)
+      if (stopBlobs.current) stopBlobs.current.textContent = 'Stop Blob Sway'
     }
-    return () => {}
   }
+
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setPrefersReducedMotion(mediaQuery.matches)
+
+    const listener = () => setPrefersReducedMotion(mediaQuery.matches)
+    mediaQuery.addEventListener('change', listener)
+
+    return () => {
+      mediaQuery.removeEventListener('change', listener)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (prefersReducedMotion && dragUl0.current) {
+      dragUl0.current.classList.add('paused')
+      setPaused(true)
+      if (stopBlobs.current) stopBlobs.current.textContent = 'Start Blob Sway'
+    }
+  }, [prefersReducedMotion])
 
   const amountOfBlobs = 8 // Initial amount of blobs
 
@@ -198,7 +239,7 @@ export default function BlobJS() {
   const makeAnew = (amount: number) => {
     for (let i: number = 0; i < amount; i++) {
       const colorswitch = () => {
-        let number: number = Math.round(getRandomMinMax(0.1, 7))
+        let number: number = Math.ceil(getRandomMinMax(0.1, 8))
         switch (number) {
           case 1:
             color1 = 'lemonchiffon'
@@ -228,6 +269,13 @@ export default function BlobJS() {
             color1 = 'deepskyblue'
             color2 = 'dodgerblue'
             break
+          case 8:
+            color1 = 'darkorage'
+            color2 = 'orange'
+            break
+          default:
+            color1 = 'cyan'
+            color2 = 'greenyellow'
         }
         return [color1, color2]
       }
@@ -317,13 +365,11 @@ export default function BlobJS() {
         document.body.style.overflow = 'auto'
       }
     }
-
     document.addEventListener('keydown', handleKeyDown)
-
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [])
+  }, [scroll])
 
   //SLIDERS
 
@@ -476,14 +522,16 @@ export default function BlobJS() {
     if (makeLarger0.current && dragWrap.current)
       place(
         makeLarger0.current,
-        100 - (makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
-        0
+        83 - (makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
+        0.5
       )
 
-    if (colorBlockRed.current && dragWrap.current) place(colorBlockRed.current, 0, 28)
+    if (colorBlockOrange.current && dragWrap.current)
+      place(colorBlockOrange.current, 0, 18)
+    if (colorBlockRed.current && dragWrap.current) place(colorBlockRed.current, 0, 38)
     if (colorBlockPurple.current && dragWrap.current)
-      place(colorBlockPurple.current, 0, 48)
-    if (colorBlockBlue.current && dragWrap.current) place(colorBlockBlue.current, 0, 68)
+      place(colorBlockPurple.current, 0, 58)
+    if (colorBlockBlue.current && dragWrap.current) place(colorBlockBlue.current, 0, 78)
 
     if (colorBlockYellowLime0.current && dragWrap.current)
       place(
@@ -520,9 +568,10 @@ export default function BlobJS() {
     if (makeSmaller0.current && dragWrap.current)
       place(
         makeSmaller0.current,
-        100 - (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
+        83 - (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
         95
       )
+    if (deleteBlob0.current && dragWrap.current) place(deleteBlob0.current, 17, 95)
   }
   function place(element: HTMLElement, x_pos: number, y_pos: number) {
     if (element && dragWrap.current) {
@@ -551,7 +600,7 @@ export default function BlobJS() {
               stopSway(e)
             }}
           >
-            Stop Movement
+            Stop Blob Sway
           </button>
           <button
             ref={resetBlobs}
@@ -614,6 +663,7 @@ export default function BlobJS() {
               dragUl0={dragUl0}
               saveDraggables={saveDraggables}
               getPosition={getPosition}
+              colorBlockOrange={colorBlockOrange}
               colorBlockRed={colorBlockRed}
               colorBlockPurple={colorBlockPurple}
               colorBlockBlue={colorBlockBlue}
@@ -639,8 +689,16 @@ export default function BlobJS() {
               getRandomMinMax={getRandomMinMax}
               focusedBlob={focusedBlob}
               setFocusedBlob={setFocusedBlob}
+              colorIndex={colorIndex}
+              setColorIndex={setColorIndex}
+              colorPairs={colorPairs}
             />
           </div>
+          <div
+            ref={colorBlockOrange}
+            className='colorblock color-orange'
+            id={`color-orange${d}`}
+          ></div>
           <div
             ref={colorBlockRed}
             className='colorblock color-red'
@@ -686,7 +744,7 @@ export default function BlobJS() {
             +
           </div>
           <div ref={deleteBlob0} className='delete-blob' id={`delete-blob${d}`}>
-            -
+            &times;
           </div>
         </div>
         <div className='drag-slider-wrap'>
