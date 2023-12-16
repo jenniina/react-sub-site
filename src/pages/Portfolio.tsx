@@ -53,7 +53,7 @@ export default function Portfolio({
                 <li>react-dom</li>
                 <li>react-router-dom</li>
                 <li>uuid</li>
-                <li>emailjs-com</li>
+                <li>axios</li>
               </ul>
             </div>
             <ul className={`${styles.list}`}>

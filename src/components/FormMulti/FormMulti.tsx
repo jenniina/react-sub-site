@@ -3,11 +3,10 @@ import { MessageForm } from './components/MessageForm'
 import { ExtrasForm } from './components/ExtrasForm'
 import { useMultistepForm } from './hooks/useMultistepForm'
 import { InitialForm } from './components/InitialForm'
-import emailjs from 'emailjs-com'
 import { RefObject } from '../../interfaces'
 import { FormData, INITIAL_DATA } from './interfaces'
-import { SERVICE_ID, TEMPLATE_ID_CONTACT, PUBLIC_KEY } from './keys'
 import styles from './form.module.css'
+import { sendEmail } from './services/email'
 
 function FormMulti() {
   const form = useRef() as RefObject<HTMLFormElement>
@@ -26,26 +25,25 @@ function FormMulti() {
       <ExtrasForm {...data} updateFields={updateFields} key={`ExtrasForm`} />,
     ])
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
+
     if (!isLastStep) return next()
 
     if (form.current) {
-      emailjs.sendForm(SERVICE_ID, TEMPLATE_ID_CONTACT, form.current, PUBLIC_KEY).then(
-        (result) => {
-          form.current?.reset()
+      try {
+        await sendEmail(data).then(() => {
           goTo(0)
           setData(INITIAL_DATA)
           setShowMessage(true)
           setTimeout(() => {
             setShowMessage(false)
-          }, 30000)
-        },
-        (error) => {
-          console.log(error.text)
-          alert('There was an error sending the message!')
-        }
-      )
+          }, 100000)
+        })
+      } catch (error) {
+        console.log('error', error)
+        alert('There was an error sending the message!')
+      }
     }
   }
 
@@ -152,7 +150,7 @@ function FormMulti() {
               aria-live='polite'
               style={{
                 position: 'absolute',
-                top: '-1.3em',
+                top: '-1.4em',
                 fontWeight: 'bold',
                 color: 'inherit',
                 letterSpacing: '0.04em',

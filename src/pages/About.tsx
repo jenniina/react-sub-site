@@ -223,7 +223,7 @@ export default function About({
                   </big>
                   <ul>
                     <li>Three step fully functional contact form</li>
-                    <li>Uses emailjs-com to send the message</li>
+                    <li>Uses a node backend to send the message</li>
                   </ul>
                 </li>
               </ul>

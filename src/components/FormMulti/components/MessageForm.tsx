@@ -25,7 +25,7 @@ const options: SelectOption[] = [
 type MessageData = {
   email: string
   message: string
-  select: SelectOption
+  select: string
 }
 
 type MessageFormProps = MessageData & {
@@ -37,14 +37,6 @@ export function MessageForm({ email, message, select, updateFields }: MessageFor
     'selectsingle',
     options[0]
   )
-  //const [selectsingle, setSelect] = useState<SelectOption | undefined>(options[0])
-  // useEffect(() => {
-  //     console.log(selectsingle)
-
-  //     return () => {
-
-  //     }
-  // }, [selectsingle])
 
   return (
     <FormWrapper
@@ -85,15 +77,9 @@ export function MessageForm({ email, message, select, updateFields }: MessageFor
           onChange={(e) => {
             setSelect(e)
             updateFields({
-              select: e,
+              select: e?.label,
             })
           }}
-        />
-        <input
-          type='hidden'
-          className='form-control'
-          name={`message-subject`}
-          value={selectsingle?.label}
         />
       </div>
       <div className={styles.subfield}>

@@ -12,6 +12,7 @@ type ExtrasData = {
   light: string
   gdpr: string
   selectmulti: string
+  clarification: string
 }
 
 type ExtrasFormProps = ExtrasData & {
@@ -34,6 +35,7 @@ export function ExtrasForm({
   light,
   gdpr,
   selectmulti,
+  clarification,
   updateFields,
 }: ExtrasFormProps) {
   const [values, setValues] = useLocalStorage<SelectOption[]>('multivalues', [])
@@ -150,7 +152,7 @@ export function ExtrasForm({
             />
           </span>
 
-          <input
+          {/* <input
             multiple
             type='hidden'
             className='form-control'
@@ -169,10 +171,17 @@ export function ExtrasForm({
                   .join(', '),
               })
             }}
-          />
+          /> */}
           <label className={`full`}>
             <span>Clarification</span>
-            <input className={`bg`} type='text' name='moreinfo' />
+            <input
+              className={`bg`}
+              type='text'
+              name='clarification'
+              onChange={(e) => {
+                updateFields({ clarification: e.target.value })
+              }}
+            />
           </label>
         </div>
         <div>

@@ -25,7 +25,6 @@ export default function FormPage({
               <h2>Features</h2>
               <ul className='ul'>
                 <li>Multistep</li>
-                <li>The only external library is emailJS, for sending the message</li>
                 <li>Back and Next buttons</li>
                 <li>
                   Slightly customized radio and checkbox inputs (size increase, outline
