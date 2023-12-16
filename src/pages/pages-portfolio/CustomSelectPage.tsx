@@ -4,12 +4,7 @@ import { Select, SelectOption } from '../../components/Select/Select'
 import FormWrapper from '../../components/FormWrapper/FormWrapper'
 import selectStyles from '../../components/Select/select.module.css'
 import { RefObject } from '../../interfaces'
-import emailjs from 'emailjs-com'
-import {
-  SERVICE_ID,
-  TEMPLATE_ID_SELECT,
-  PUBLIC_KEY,
-} from '../../components/FormMulti/keys'
+import { sendEmail, SelectData } from './services/email'
 
 //Keep options outside the export function!
 const options1: SelectOption[] = [
@@ -49,28 +44,35 @@ export default function CustomSelectPage({
   const [value2, setValue2] = useState<SelectOption | undefined>(options2[0])
   const [input, setInput] = useState<string>('')
 
+  const [data, setData] = useState({})
+  const [sending, setSending] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
   const [showMessage, setShowMessage] = useState(false)
 
   const form = useRef() as RefObject<HTMLFormElement>
-
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-
+    setSending(true)
     if (form.current) {
-      emailjs.sendForm(SERVICE_ID, TEMPLATE_ID_SELECT, form.current, PUBLIC_KEY).then(
-        (result) => {
-          //console.log(result.text)
-          form.current?.reset()
+      try {
+        await sendEmail(data as SelectData).then(() => {
+          setValue1([])
+          setValue2(options2[0])
+          setInput('')
+
+          setSending(false)
           setShowMessage(true)
           setTimeout(() => {
             setShowMessage(false)
-          }, 30000)
-        },
-        (error) => {
-          console.log(error.text)
-          alert('There was an error sending the message!')
-        }
-      )
+          }, 100000)
+        })
+      } catch (error) {
+        setSending(false)
+        setError((error as Error).message)
+        console.log('error', error)
+        alert('There was an error sending the message!')
+      }
     }
   }
 
@@ -129,6 +131,14 @@ export default function CustomSelectPage({
                       value={value1}
                       onChange={(o) => {
                         setValue1(o)
+                        setData((prevData) => ({
+                          ...prevData,
+                          issues: o
+                            ?.map((element) => {
+                              return element?.value
+                            })
+                            .join(', '),
+                        }))
                       }}
                     />
                     <h4 className='left small margin0 regular'>
@@ -141,7 +151,13 @@ export default function CustomSelectPage({
                       hide
                       options={options2}
                       value={value2}
-                      onChange={(o) => setValue2(o)}
+                      onChange={(o) => {
+                        setValue2(o)
+                        setData((prevData) => ({
+                          ...prevData,
+                          favoriteHero: o?.label,
+                        }))
+                      }}
                     />
                     <h4 className='left small margin0 regular'>
                       Clarification or Feedback
@@ -152,7 +168,13 @@ export default function CustomSelectPage({
                           type='text'
                           name='clarification'
                           value={input}
-                          onChange={(e) => setInput(e.target.value)}
+                          onChange={(e) => {
+                            setInput(e.target.value)
+                            setData((prevData) => ({
+                              ...prevData,
+                              clarification: e.target.value,
+                            }))
+                          }}
                           className='bg'
                         />
                         <span className='scr'>Clarification or Feedback </span>
