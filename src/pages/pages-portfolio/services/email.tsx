@@ -4,6 +4,7 @@ export type SelectData = {
   issues: string
   favoriteHero: string
   clarification: string
+  email: string
 }
 
 const VITE_BASE_URI = import.meta.env.VITE_BASE_URI
