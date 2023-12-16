@@ -177,7 +177,23 @@ export default function CustomSelectPage({
                           }}
                           className='bg'
                         />
-                        <span className='scr'>Clarification or Feedback </span>
+                        <span className='scr'>Clarification or Feedback (optional)</span>
+                      </label>
+                      <label>
+                        <input
+                          type='email'
+                          name='clarification'
+                          value={input}
+                          onChange={(e) => {
+                            setInput(e.target.value)
+                            setData((prevData) => ({
+                              ...prevData,
+                              email: e.target.value,
+                            }))
+                          }}
+                          className='bg'
+                        />
+                        <span className='scr'>Email (optional) </span>
                       </label>
                     </div>
                     <div>
@@ -190,7 +206,7 @@ export default function CustomSelectPage({
                       </label>
                     </div>
                     <button type='submit' className={`${selectStyles.half} `}>
-                      Send
+                      {sending ? 'Sending...' : 'Send'}
                     </button>
                     {showMessage && (
                       <div
