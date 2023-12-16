@@ -71,56 +71,29 @@ const QuizFinished = () => {
               //console.log('r5: ', r)
             })
           })
-        } else if (
-          (r !== null && r.highscores[mode].score <= points) ||
-          r.highscores[mode].time > finalSeconds
-        ) {
-          if (
-            r.highscores[mode].score < points &&
-            r.highscores[mode].time > finalSeconds
-          ) {
-            const quizScore: IQuizHighscore = {
-              highscores: {
-                ...r.highscores,
-                [mode]: { score: points, time: finalSeconds },
-              },
-              user: user._id,
-            }
-            dispatch(notify(`New highscore!`, false, 3))
+        } else if (r !== null && r.highscores[mode].score <= points) {
+          const quizScore: IQuizHighscore = {
+            highscores: {
+              ...r.highscores,
+              [mode]: { score: points, time: r.highscores[mode].time },
+            },
+            user: user._id,
+          }
 
-            dispatch(addQuiz(quizScore)).then((r) => {
-              //console.log('r2: ', r)
-            })
-          } else if (r.highscores[mode].score < points) {
-            const quizScore: IQuizHighscore = {
-              highscores: {
-                ...r.highscores,
-                [mode]: { score: points, time: r.highscores[mode].time },
-              },
-              user: user._id,
-            }
+          if (r.highscores[mode].score < points) {
             dispatch(notify(`New highscore!`, false, 3))
-
-            dispatch(addQuiz(quizScore)).then((r) => {
-              //console.log('r3: ', r)
-            })
+            quizScore.highscores[mode].time = finalSeconds // Update time if new score is higher
           } else if (
             r.highscores[mode].score === points &&
             r.highscores[mode].time > finalSeconds
           ) {
-            const quizScore: IQuizHighscore = {
-              highscores: {
-                ...r.highscores,
-                [mode]: { score: points, time: finalSeconds },
-              },
-              user: user._id,
-            }
             dispatch(notify(`Faster than before!`, false, 3))
-
-            dispatch(addQuiz(quizScore)).then((r) => {
-              //console.log('r4: ', r)
-            })
+            quizScore.highscores[mode].time = finalSeconds // Update time if score is equal and time is faster
           }
+
+          dispatch(addQuiz(quizScore)).then((r) => {
+            //console.log('r2: ', r)
+          })
         }
       })
     }
