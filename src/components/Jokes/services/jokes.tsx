@@ -4,22 +4,12 @@ import { IJoke } from '../interfaces'
 const VITE_BASE_URI = import.meta.env.VITE_BASE_URI
 const baseUrl = VITE_BASE_URI ? `${VITE_BASE_URI}/api/jokes` : '/api/jokes'
 
-let token: string | null = null
-let config: AxiosRequestConfig<any> | undefined
-
-const setToken = (newToken: string | null) => {
-  token = `Bearer ${newToken}`
-  config = {
-    headers: { Authorization: token },
-  }
-}
-
 const getAll = async () => {
   const response = await axios.get(baseUrl)
   return response.data
 }
 
-const getJokesByUserId = async (userId: string) => {
+const getJokesByUserId = async (userId: string | undefined) => {
   const request = axios.get(`${baseUrl}/user/${userId}`)
   return request.then((response) => response.data)
 }
@@ -40,7 +30,7 @@ const update = async (newObject: IJoke) => {
 }
 
 const remove = async (id: string | undefined) => {
-  const response = await axios.delete(`${baseUrl}/${id}`, config)
+  const response = await axios.delete(`${baseUrl}/${id}`)
   return response.data
 }
 
@@ -64,7 +54,6 @@ export default {
   getJokesByUserId,
   create,
   update,
-  setToken,
   remove,
   search,
   deleteUser,

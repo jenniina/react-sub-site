@@ -26,6 +26,10 @@ import {
   ELanguageTitle,
   ESafemodeTitle,
   EJokeTypeTitle,
+  ESelectACategory,
+  ESelectALanguage,
+  ESearchByKeyword,
+  EAny,
 } from '../interfaces'
 
 interface Props {
@@ -55,17 +59,14 @@ interface Props {
   jokeCategoryByLanguage: IJokeCategoryByLanguage
   titleSafe: ESafeTitle
   titleUnsafe: EUnsafeTitle
-  titleSearch: ESearch
   titleClickToReveal: EClickToReveal
   query: string
-  submit: ESubmit
   language: ELanguages
   joke: string
   delivery?: string
   submitted: boolean
   reveal: boolean
   setReveal: (reveal: boolean) => void
-  selectAnOption: ESelectAnOption
   isCheckedSafemode: boolean
   isCheckedEJokeType: boolean
   visibleJoke: boolean
@@ -94,12 +95,10 @@ const Form = ({
   setQuery,
   titleSafe,
   titleUnsafe,
-  titleSearch,
   titleClickToReveal,
   joke,
   language,
   query,
-  submit,
   delivery,
   options,
   submitted,
@@ -115,24 +114,24 @@ const Form = ({
   optionsCategory,
   categoryLanguages,
   jokeCategoryByLanguage,
-  selectAnOption,
   visibleJoke,
   setVisibleJoke,
 }: Props) => {
-  const [languageTitle, setLanguageTitle] = useState<ELanguageTitle>(
-    ELanguageTitle[language]
-  )
-  const [categoryTitle, setCategoryTitle] = useState<ECategoryTitle>(
-    ECategoryTitle[language]
-  )
+  const titleLanguageSelect = ESelectALanguage[language]
+  const titleCategorySelect = ESelectACategory[language]
+  const titleSearchByKeyword = ESearchByKeyword[language]
+  const submit = ESubmit[language]
+  const titleAny = EAny[language]
   const [values, setValues] = useState<SelectOption[]>([
     {
       label: jokeCategoryByLanguage[language].Misc,
       value: ECategory_en.Misc,
     },
   ])
+
   useEffect(() => {
     setTimeout(() => {
+      // Set z-index of select containers so that they do not open behind the next select container
       const selectContainers = document.querySelectorAll(
         '.select-container'
       ) as NodeListOf<HTMLDivElement>
@@ -145,17 +144,15 @@ const Form = ({
     }, 500)
   }, [])
 
-  useEffect(() => {
-    setLanguageTitle(ELanguageTitle[language])
-    setCategoryTitle(ECategoryTitle[language])
-    setValues([
-      {
-        label: jokeCategoryByLanguage[language].Misc,
-        value: ECategory_en.Misc,
-      },
-    ])
-    setJokeCategory(ECategory_en.Misc)
-  }, [language])
+  // useEffect(() => {
+  // setValues([
+  //   {
+  //     label: jokeCategoryByLanguage[language].Misc,
+  //     value: ECategory_en.Misc,
+  //   },
+  // ])
+  //setJokeCategory(ECategory_en.Misc)
+  // }, [language])
 
   return (
     <>
@@ -169,26 +166,11 @@ const Form = ({
         }}
         className='joke'
       >
-        {/* <Select
-          id='safemode'
-          className='safemode third'
-          instructions='Safe mode'
-          hide
-          options={options(ESafemode)}
-          value={
-            safemode === ESafemode.Safe
-              ? { value: ESafemode.Safe, label: 'Safe mode' }
-              : { value: ESafemode.Unsafe, label: 'Unsafe mode' }
-          }
-          onChange={(o) => {
-            setSafemode(o?.value as ESafemode)
-          }}
-        /> */}
         <div className='controls-wrap'>
           <Select
             id='language'
             className='language'
-            instructions={`${languageTitle}:`}
+            instructions={`${titleLanguageSelect}:`}
             options={options(ELanguages)}
             value={
               language
@@ -210,8 +192,7 @@ const Form = ({
               name='safemode'
               id='safemode'
               className={`${language} safemode`}
-              label={ESafemodeTitle[language]}
-              hideLabel
+              label={`${ESafemodeTitle[language]}: `}
               on={titleSafe}
               off={titleUnsafe}
               handleToggleChange={handleToggleChangeSafemode}
@@ -222,8 +203,7 @@ const Form = ({
               name='joketype'
               id='joketype'
               className={`${language} joketype`}
-              label={EJokeTypeTitle[language]}
-              hideLabel
+              label={`${EJokeTypeTitle[language]}: `}
               on={titleTwoPart}
               off={titleSingle}
               handleToggleChange={handleToggleChangeEJokeType}
@@ -259,8 +239,8 @@ const Form = ({
             multiple
             id='jokeCategory'
             className='category'
-            instructions={`${categoryTitle}:`}
-            selectAnOption={selectAnOption}
+            instructions={`${titleCategorySelect}:`}
+            selectAnOption={titleAny}
             value={values}
             options={optionsCategory(categoryLanguages as any)}
             onChange={(o: SelectOption[]) => {
@@ -305,11 +285,13 @@ const Form = ({
                   )
                 }}
               />
-              <span>{titleSearch}</span>
+              <span>{titleSearchByKeyword}</span>
             </label>
           </div>
 
-          <button type='submit'>{submit}</button>
+          <button id='generate-joke' type='submit'>
+            {submit}
+          </button>
         </div>
       </form>
       <div className={`downwards-arrow ${submitted ? 'play' : ''}`}>&#10225;</div>
