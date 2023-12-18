@@ -28,6 +28,7 @@
   padding: 0.6em 5%;
 }
 .todo-ul {
+  --width: 1em;
   color: var(--color-primary-20);
   list-style: none;
   padding: 0;
@@ -37,6 +38,10 @@
   position: relative;
   border-bottom: solid 1px var(--color-primary-10);
   padding-bottom: calc(var(--width) / 2);
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: flex-start;
 }
 .todo-ul li button {
   height: 1em;
@@ -46,7 +51,7 @@
   line-height: 1;
 }
 .todo-ul li button:hover::after {
-  content: "Delete task";
+  content: 'Delete task';
   position: absolute;
   width: max-content;
   padding: 0 0.3em;
@@ -57,10 +62,10 @@
 .left-to-do {
   font-size: 0.9em;
 }
-.todo-ul input[type="text" i] {
+.todo-ul input[type='text' i] {
   width: 100%;
 }
-.todo-ul li input[type="checkbox" i] {
+.todo-ul li input[type='checkbox' i] {
   margin-right: var(--width);
   width: 1em;
   height: 1em;
@@ -69,7 +74,8 @@
 }
 .todo-ul li label {
   margin-left: calc(var(--width) / 2);
-  display: inline;
+  display: flex;
+  align-items: center;
 }
 .todo-ul li label:has(input:checked) {
   color: var(--color-gray-general);

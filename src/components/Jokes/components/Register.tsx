@@ -1,9 +1,10 @@
 import { FormEvent, useEffect, useRef } from 'react'
 import Accordion from '../../Accordion/Accordion'
 import { useSelector } from 'react-redux'
-import { ELanguages, IUser, ReducerProps } from '../interfaces'
-import { useAppDispatch } from '../hooks/useAppDispatch'
-import { initializeUser } from '../reducers/authReducer'
+import { ELanguages } from '../interfaces'
+import { ReducerProps } from '../../../interfaces'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
+import { initializeUser } from '../../../reducers/authReducer'
 import { Select, SelectOption } from '../../Select/Select'
 
 interface Props {

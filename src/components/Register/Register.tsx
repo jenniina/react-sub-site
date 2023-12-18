@@ -1,9 +1,9 @@
 import { FormEvent, useEffect, useRef } from 'react'
-import Accordion from '../../Accordion/Accordion'
+import Accordion from '../Accordion/Accordion'
 import { useSelector } from 'react-redux'
-import { ReducerProps } from '../interfaces'
-import { useAppDispatch } from '../hooks/useAppDispatch'
-import { initializeUser } from '../reducers/authReducer'
+import { ReducerProps } from '../../interfaces'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { initializeUser } from '../../reducers/authReducer'
 
 interface Props {
   handleRegister: (e: FormEvent<HTMLFormElement>) => void

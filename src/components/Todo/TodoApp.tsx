@@ -1,95 +1,143 @@
 import { useState, useRef, useEffect, FC, ChangeEvent } from 'react'
-import TodoList from './TodoList'
+import TodoList from './components/TodoList'
 import { v4 as uuidv4 } from 'uuid'
-import { ITask } from './Interfaces'
-import style from './todo.module.css'
+import { ITask } from './interfaces'
+import style from './css/todo.module.css'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import {
+  fetchTodos,
+  addTodo,
+  addTodoAsync,
+  deleteTodo,
+  deleteTodoAsync,
+  editTodo,
+  editTodoAsync,
+  clearCompletedTodos,
+  deleteTodoFromState,
+  clearCompletedTodosAsync,
+  syncTodos,
+} from './reducers/todoReducer'
+import { notify } from '../../reducers/notificationReducer'
+import Notification from '../Notification/Notification'
+import { useSelector } from 'react-redux'
+import { initializeUser } from '../../reducers/authReducer'
+import { ReducerProps } from '../../interfaces'
+import { RootState } from '../../store'
 
 export default function TodoApp({}: {}) {
-  const localStorageKey = 'React-Todos'
-
-  const [todos, setTodos] = useState<ITask[]>([])
-  //const [state, setState] = useLocalStorage(localStorageKey)
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    const storedTodos = window.localStorage.getItem(localStorageKey)
-    if (storedTodos && storedTodos.length > 2) setTodos(JSON.parse(storedTodos))
+    dispatch(initializeUser())
   }, [])
 
-  useEffect(() => {
-    window.localStorage.setItem(localStorageKey, JSON.stringify(todos))
-  }, [todos])
+  const user = useSelector((state: ReducerProps) => {
+    return state.auth?.user
+  })
 
-  function toggleTodo(id: string) {
-    const newTodos = [...todos]
-    const todo = newTodos.find((todo) => todo.id === id)
-    if (todo) todo.complete = !todo.complete
-    setTodos(newTodos)
+  const todos = useSelector((state: RootState) => state.todos.todos)
+  const status = useSelector((state: RootState) => state.todos.status)
+  const error = useSelector((state: RootState) => state.todos.error)
+
+  const hasCompletedTasks = todos?.some((todo) => todo.complete)
+
+  useEffect(() => {
+    if (status === 'failed') {
+      dispatch(notify(`There was an error: ${error}`, true, 8))
+    }
+  }, [status, error, dispatch])
+
+  console.log('todos: ', todos)
+
+  useEffect(() => {
+    if (user?._id) {
+      dispatch(syncTodos(user._id))
+    }
+  }, [user?._id, dispatch])
+
+  function toggleTodo(key: string) {
+    const todo = todos.find((todo) => todo.key === key)
+    if (todo) {
+      const updatedTodo = { ...todo, complete: !todo.complete }
+      if (user) {
+        dispatch(editTodoAsync(user._id, key, updatedTodo))
+      } else {
+        dispatch(editTodo(updatedTodo))
+      }
+    }
   }
 
   const todoNameRef = useRef<HTMLInputElement>(null)
 
-  function handleAddTodo(e: { preventDefault: () => void }) {
+  const handleAddTodo = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const name = todoNameRef.current?.value ?? ''
     if (name === '') return
-    setTodos((prevTodos) => {
-      return [...prevTodos, { id: uuidv4(), name: name, complete: false }]
-    })
+    const key = uuidv4()
+    const newTodo = { key, name: name, complete: false }
+    if (user) {
+      dispatch(addTodoAsync(user._id, newTodo))
+    } else {
+      dispatch(addTodo(newTodo))
+    }
     if (todoNameRef.current) todoNameRef.current.value = ''
   }
 
-  function handleClearTodos(e: { preventDefault: () => void }) {
+  async function handleClearTodos(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault()
-    const newTodos = todos.filter((todo) => !todo.complete)
-    setTodos(newTodos)
-  }
-  function deleteTodo(id: string) {
-    const newTodos = todos.filter((todo) => todo.id !== id)
-    setTodos(newTodos)
+    if (user) {
+      await dispatch(clearCompletedTodosAsync(user._id))
+    } else {
+      dispatch(clearCompletedTodos())
+    }
   }
 
-  //Make sure that pressing enter in the input field submits the form
-  useEffect(() => {
-    const keyDownHandler = (e: { key: string; preventDefault: () => void }) => {
-      if (e.key === 'Enter') {
-        e.preventDefault()
-        handleAddTodo(e)
-      }
+  function deleteTodo(key: string) {
+    if (user?._id) {
+      dispatch(deleteTodoAsync(user._id, key))
+    } else {
+      dispatch(deleteTodoFromState(key))
     }
-    document.addEventListener('keydown', keyDownHandler)
-
-    return () => {
-      document.removeEventListener('keydown', keyDownHandler)
-    }
-  }, [])
+  }
 
   return (
-    <form onSubmit={handleAddTodo} className={style['form']}>
-      <fieldset>
-        <legend className='scr'>Add tasks to the task list</legend>
-        <div className={style['todo-input-area']}>
-          <label htmlFor={style['taskinput']}>Add tasks</label>
-          <input
-            ref={todoNameRef}
-            id={style['taskinput']}
-            className='bg'
-            name='task'
-            required
-            type='text'
-            placeholder='Task...'
-          />
-          <button id={style['submit-todo']} type='submit' onClick={handleAddTodo}>
-            Add Task
-          </button>
-          <button onClick={handleClearTodos}>Clear Completed Tasks</button>
-        </div>
-        <div className={style['list-wrap']}>
-          <p className={style['left-to-do']}>
-            {todos.filter((todo) => !todo.complete).length} left to do
-          </p>
-          <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />
-        </div>
-      </fieldset>
-    </form>
+    <>
+      <form onSubmit={handleAddTodo} className={style['form']}>
+        <fieldset>
+          <legend className='scr'>Add tasks to the task list</legend>
+          <div className={style['todo-input-area']}>
+            <label htmlFor={style['taskinput']}>Add tasks</label>
+            <input
+              ref={todoNameRef}
+              id={style['taskinput']}
+              className='bg'
+              name='name'
+              required
+              type='text'
+              placeholder='Task...'
+            />
+            <button id={style['submit-todo']} type='submit'>
+              Add Task
+            </button>
+            <button
+              disabled={!hasCompletedTasks}
+              onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
+                handleClearTodos(e)
+              }
+            >
+              Clear Completed Tasks
+            </button>
+          </div>
+        </fieldset>
+      </form>
+      <div className={style['list-wrap']}>
+        <p className={style['left-to-do']}>
+          {todos?.filter((todo) => !todo?.complete).length} left to do
+        </p>
+        <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />
+        {status === 'loading' && <p>Loading...</p>}
+      </div>
+      <Notification />
+    </>
   )
 }

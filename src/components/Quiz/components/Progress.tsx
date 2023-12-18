@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-import { ReducerProps } from '../interfaces'
+import { ReducerProps } from '../../../interfaces'
 import styles from '../css/quiz.module.css'
 
 const Progress = () => {

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import {
   EJokeType,
   ESavedJoke,
-  IUser,
   IJoke,
   EDelete,
   ECategoryTitle,
@@ -20,6 +19,7 @@ import {
   TLanguageOfLanguage,
   ESafemodeTitle,
 } from '../interfaces'
+import { IUser } from '../../../interfaces'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
 import { Select, SelectOption } from '../../Select/Select'
 

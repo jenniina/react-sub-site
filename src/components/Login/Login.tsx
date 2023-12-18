@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState, FormEvent } from 'react'
 import { AxiosError } from 'axios'
-import { ReducerProps } from '../interfaces'
-import Accordion from '../../Accordion/Accordion'
-import { useAppDispatch } from '../hooks/useAppDispatch'
-import { notify } from '../reducers/notificationReducer'
-import { initializeUser, login, logout } from '../reducers/authReducer'
+import { ReducerProps } from '../../interfaces'
+import Accordion from '../Accordion/Accordion'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { notify } from '../../reducers/notificationReducer'
+import { initializeUser, login, logout } from '../../reducers/authReducer'
 import { useSelector } from 'react-redux'
-import { ELogin, ELogout, ELoggedInAs } from '../interfaces'
+import { ELogin, ELogout, ELoggedInAs } from '../Jokes/interfaces'
 
 interface LoginProps {
   titleLogin: ELogin

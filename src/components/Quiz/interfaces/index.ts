@@ -1,57 +1,59 @@
-export interface ReducerProps {
-  notification: {
-    isError: boolean
-    message: string
-    seconds: number
-  }
-  difficulty: {
-    mode: EQuizType
-  }
-  quiz: {
-    quiz: IQuiz
-    quizzes: IQuiz[]
-  }
-  questions: {
-    questionsRedux: IQuestion[]
-    status: string
-    index: number
-    currentQuestion: {
-      id?: string
-      question?: string
-      options?: any[]
-      correctAnswer?: boolean
-      temp?: {
-        correctAnswer: boolean
-        incorrectAnswers: boolean[]
-      }
-    }
-    answer: string | null
-    points: number
-    highscores: IHighscore
-    secondsRemaining: number
-    finalSeconds: number
-  }
-  users: {
-    users: IUser[]
-  }
-  auth: {
-    user: IUser
-    isAuthenticated: boolean
-    isLoading: boolean
-    token: string
-  }
-}
+import { IUser } from '../../../interfaces'
 
-export interface IUser {
-  _id?: string
-  username: string
-  name?: string
-  password: string
-  language: string
-  verified?: boolean
-  createdAt?: string
-  updatedAt?: string
-}
+// export interface ReducerProps {
+//   notification: {
+//     isError: boolean
+//     message: string
+//     seconds: number
+//   }
+//   difficulty: {
+//     mode: EQuizType
+//   }
+//   quiz: {
+//     quiz: IQuiz
+//     quizzes: IQuiz[]
+//   }
+//   questions: {
+//     questionsRedux: IQuestion[]
+//     status: string
+//     index: number
+//     currentQuestion: {
+//       id?: string
+//       question?: string
+//       options?: any[]
+//       correctAnswer?: boolean
+//       temp?: {
+//         correctAnswer: boolean
+//         incorrectAnswers: boolean[]
+//       }
+//     }
+//     answer: string | null
+//     points: number
+//     highscores: IHighscore
+//     secondsRemaining: number
+//     finalSeconds: number
+//   }
+//   users: {
+//     users: IUser[]
+//   }
+//   auth: {
+//     user: IUser
+//     isAuthenticated: boolean
+//     isLoading: boolean
+//     token: string
+//   }
+// }
+
+// export interface IUser {
+//   _id?: string
+//   username: string
+//   name?: string
+//   password: string
+//   language: string
+//   verified?: boolean
+//   createdAt?: string
+//   updatedAt?: string
+// }
 
 export interface IQuiz {
   id: string

@@ -1,3 +1,5 @@
+import { IUser } from '../../../interfaces'
+
 export type EGeneric<T> = {
   [key in keyof T]: T[key]
 }
@@ -784,16 +786,16 @@ export interface IJokeTwoPart extends IJokeCommonFields {
 
 export type IJoke = IJokeSingle | IJokeTwoPart
 
-export interface IUser {
-  _id?: string
-  username: string
-  name?: string
-  password: string
-  language: ELanguages
-  verified?: boolean
-  createdAt?: string
-  updatedAt?: string
-}
+// export interface IUser {
+//   _id?: string
+//   username: string
+//   name?: string
+//   password: string
+//   language: ELanguages
+//   verified?: boolean
+//   createdAt?: string
+//   updatedAt?: string
+// }
 
 export interface IJokeType {
   _id?: string
@@ -802,21 +804,21 @@ export interface IJokeType {
   updatedAt?: string
 }
 
-export interface ReducerProps {
-  notification: {
-    isError: boolean
-    message: string
-    seconds: number
-  }
-  jokes: IJoke[]
-  users: { users: IUser[] }
-  auth: {
-    user: IUser
-    isAuthenticated: boolean
-    isLoading: boolean
-    token: string
-  }
-}
+// export interface ReducerProps {
+//   notification: {
+//     isError: boolean
+//     message: string
+//     seconds: number
+//   }
+//   jokes: IJoke[]
+//   users: { users: IUser[] }
+//   auth: {
+//     user: IUser
+//     isAuthenticated: boolean
+//     isLoading: boolean
+//     token: string
+//   }
+// }
 
 export interface IJokeSubmissionSingleJSON {
   formatVersion: number

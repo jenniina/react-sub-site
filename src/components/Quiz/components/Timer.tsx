@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { useAppDispatch } from '../hooks/useAppDispatch'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { useNavigate } from 'react-router-dom'
 import {
   gameFinished,
@@ -8,7 +8,7 @@ import {
   lessSeconds,
   finalSeconds,
 } from '../reducers/questionsReducer'
-import { ReducerProps } from '../interfaces'
+import { ReducerProps } from '../../../interfaces'
 import styles from '../css/quiz.module.css'
 
 const Timer = () => {

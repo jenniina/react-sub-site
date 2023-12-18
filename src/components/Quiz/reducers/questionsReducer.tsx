@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { returnMode } from './difficultyReducer'
 import { useSelector } from 'react-redux'
-import { IQuestion, ReducerProps, IQuizHighscore } from '../interfaces'
+import { IQuestion, IQuizHighscore } from '../interfaces'
+import { ReducerProps } from '../../../interfaces'
 import quizService from '../services/quiz'
 
 function shuffleArray(array: any[]) {

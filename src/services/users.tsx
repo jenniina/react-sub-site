@@ -1,8 +1,18 @@
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 import { IUser as user } from '../interfaces'
 
 const VITE_BASE_URI = import.meta.env.VITE_BASE_URI
 const baseUrl = VITE_BASE_URI ? `${VITE_BASE_URI}/api/users` : '/api/users'
+
+let token: string | null = null
+let config: AxiosRequestConfig<any> | undefined
+
+const setToken = (newToken: string | null) => {
+  token = `Bearer ${newToken}`
+  config = {
+    headers: { Authorization: token },
+  }
+}
 
 const getAll = async () => {
   const response = await axios.get(baseUrl)
@@ -46,4 +56,5 @@ export default {
   updateUser,
   searchUsername,
   searchId,
+  setToken,
 }

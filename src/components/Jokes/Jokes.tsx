@@ -13,8 +13,6 @@ import {
   ECategory_es,
   ECategory_fr,
   ECategory_pt,
-  IUser,
-  ReducerProps,
   ESavedJoke,
   ETitle,
   ESubmit,
@@ -45,11 +43,12 @@ import {
   EError,
   EPasswordsDoNotMatch,
 } from './interfaces'
+import { ReducerProps } from '../../interfaces'
 import { useSelector } from 'react-redux'
-import Login from './components/Login'
+import Login from '../Login/Login'
 import useLocalStorage from '../../hooks/useStorage'
-import { useAppDispatch } from './hooks/useAppDispatch'
-import { notify } from './reducers/notificationReducer'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { notify } from '../../reducers/notificationReducer'
 import Notification from './components/Notification'
 import {
   createUser,
@@ -57,7 +56,7 @@ import {
   findUserById,
   findUserbyUsername,
   initializeUsers,
-} from './reducers/usersReducer'
+} from '../../reducers/usersReducer'
 import {
   createJoke,
   deleteUserFromJoke,
@@ -65,7 +64,7 @@ import {
   initializeJokes,
   updateJoke,
 } from './reducers/jokeReducer'
-import { initializeUser } from './reducers/authReducer'
+import { initializeUser } from '../../reducers/authReducer'
 import UserJokes from './components/UserJokes'
 import JokeSubmit from './components/JokeSubmit'
 
@@ -454,7 +453,7 @@ function Jokes({
             )
         }
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         console.log(err)
         dispatch(notify(`Error: ${err.message}`, true, 8))
       })

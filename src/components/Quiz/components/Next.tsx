@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { useAppDispatch } from '../hooks/useAppDispatch'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { nextQuestion, gameFinished, finalSeconds } from '../reducers/questionsReducer'
-import { ReducerProps } from '../interfaces'
+import { ReducerProps } from '../../../interfaces'
 import styles from '../css/quiz.module.css'
 
 const Next = () => {

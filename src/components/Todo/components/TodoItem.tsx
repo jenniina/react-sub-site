@@ -1,4 +1,4 @@
-import { ITask } from './Interfaces'
+import { ITask } from '../interfaces'
 
 export default function Todo({
   todo,
@@ -10,10 +10,10 @@ export default function Todo({
   deleteTodo: (arg0: string) => void
 }) {
   function handleTodoClick() {
-    toggleTodo(todo.id)
+    toggleTodo(todo?.key)
   }
   function handleDelete() {
-    deleteTodo(todo.id)
+    deleteTodo(todo?.key)
   }
   return (
     <li>
@@ -22,8 +22,8 @@ export default function Todo({
         <span className='scr'>Delete Task</span>
       </button>
       <label>
-        <input type='checkbox' checked={todo.complete} onChange={handleTodoClick} />
-        {todo.name}
+        <input type='checkbox' checked={todo?.complete} onChange={handleTodoClick} />
+        <span>{todo?.name}</span>
       </label>
     </li>
   )
