@@ -38,7 +38,7 @@ const FormLogin = ({ easy, medium, hard }: IHighscore) => {
         }
       })
     }
-  })
+  }, [user?._id])
 
   useEffect(() => {
     dispatch(initializeUser())
@@ -61,7 +61,6 @@ const FormLogin = ({ easy, medium, hard }: IHighscore) => {
         dispatch(notify(`Error: ${(e as AxiosError<any>).response?.data.error}`, true, 8))
       )
   }
-  console.log(user)
   return (
     <div className='login-wrap'>
       {user ? (

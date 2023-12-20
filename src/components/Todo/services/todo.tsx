@@ -16,7 +16,6 @@ const updateAllTodos = async (user: IUser['_id'], todos: ITask[]) => {
 
 const addTodo = async (user: IUser['_id'], task: ITask) => {
   const response = await axios.post(`${baseUrl}/${user}`, task)
-  console.log('response: ', response.data)
   return response.data
 }
 
