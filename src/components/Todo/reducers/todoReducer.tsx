@@ -67,7 +67,6 @@ export const fetchTodos = (user: IUser['_id']) => {
       // Filter out null values from mergedTodos
       mergedTodos = mergedTodos.filter((todo) => todo !== null)
       const result = await todoService.updateAllTodos(user, mergedTodos)
-      console.log('result', result)
       dispatch(getTodosSuccess(result))
       return result
     } catch (error) {
@@ -95,7 +94,6 @@ export const deleteTodoAsync = (user: IUser['_id'], key: ITask['key']) => {
   return async (dispatch: (arg0: { payload: any; type: 'todos/deleteTodo' }) => void) => {
     const deleted = await todoService.deleteTodo(user, key)
     dispatch(deleteTodo(key))
-    console.log(deleted)
     return deleted
   }
 }

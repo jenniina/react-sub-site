@@ -47,8 +47,6 @@ export default function TodoApp({}: {}) {
     }
   }, [status, error, dispatch])
 
-  console.log('todos: ', todos)
-
   useEffect(() => {
     if (user?._id) {
       dispatch(syncTodos(user._id))
