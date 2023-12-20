@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import userService from '../services/users'
 import loginService from '../services/login'
 
 const authSlice = createSlice({
@@ -23,21 +22,23 @@ export const initializeUser = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedJokeAppUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      userService.setToken(user.token)
+      loginService.setToken(user.token)
       dispatch(setUser(user))
     }
   }
 }
 
-export const login = (username: string, password: string) => {
+export const login = (username: string, password: string, language: string) => {
   return async (dispatch: (arg0: { payload: any; type: 'auth/loginUser' }) => void) => {
     const user = await loginService.login({
       username,
       password,
+      language,
     })
     window.localStorage.setItem('loggedJokeAppUser', JSON.stringify(user))
-    userService.setToken(user.token)
-    dispatch(loginUser(user))
+    loginService.setToken(user.token)
+    const response = dispatch(loginUser(user))
+    return response
   }
 }
 

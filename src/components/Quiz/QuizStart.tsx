@@ -11,7 +11,7 @@ import { IHighscore } from './interfaces'
 import { ReducerProps } from '../../interfaces'
 import { initializeUser } from '../../reducers/authReducer'
 import { notify } from '../../reducers/notificationReducer'
-import { createUser, findUserbyUsername } from '../../reducers/usersReducer'
+import { createUser } from '../../reducers/usersReducer'
 import FormLogin from './components/Login'
 import Register from '../Register/Register'
 import Notification from '../Notification/Notification'
@@ -75,11 +75,6 @@ const QuizStart = ({
     dispatch(createUser({ name, username, password, language, verified: true }))
       .then(async () => {
         dispatch(notify(`Registration successful`, false, 8))
-        const searchForUser = await dispatch(findUserbyUsername(username))
-        if (!searchForUser) {
-          console.log('User not found')
-          return
-        }
       })
       .catch((err) => {
         console.log(err)

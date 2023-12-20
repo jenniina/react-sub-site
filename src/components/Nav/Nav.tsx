@@ -8,7 +8,6 @@ import { IoSettingsSharp } from 'react-icons/io5'
 import { RiHomeSmileLine } from 'react-icons/ri'
 import { TbLayoutNavbar } from 'react-icons/tb'
 import { TfiLineDashed } from 'react-icons/tfi'
-
 import styles from './nav.module.css'
 import { links } from './links.json'
 import { skipLinks } from './linksskip.json'
@@ -16,18 +15,30 @@ import { Link, NavLink } from 'react-router-dom'
 import { useTheme, useThemeUpdate } from '../../hooks/useTheme'
 import useScrollDirection from '../../hooks/useScrollDirection'
 import useWindowSize from '../../hooks/useWindowSize'
-import { breakpoint, breakpointSmall } from '../../interfaces'
+import { ReducerProps, breakpoint, breakpointSmall } from '../../interfaces'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
 import logo from '../../assets/JLA_Jenniina-light-3-480x198.png'
 import logoDark from '../../assets/JLA_Jenniina-3-480x198.png'
 import useTimeout from '../../hooks/useTimeout'
+import { useSelector } from 'react-redux'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { logout } from '../../reducers/authReducer'
+import { ELanguages, ELogout } from '../Jokes/interfaces'
 
 type Link = {
   label: string
   href: string
 }
 
-const Nav = ({ setStyleMenu }: any, ref: Ref<{ getStyle: () => boolean }>) => {
+interface NavProps {
+  setStyleMenu: (style: boolean) => void
+  language: ELanguages
+}
+
+const Nav = (
+  { setStyleMenu, language }: NavProps,
+  ref: Ref<{ getStyle: () => boolean }>
+) => {
   const { windowHeight, windowWidth } = useWindowSize()
 
   const icons = (label: string) => {
@@ -235,6 +246,18 @@ const Nav = ({ setStyleMenu }: any, ref: Ref<{ getStyle: () => boolean }>) => {
     window.scrollY > 100 ? setScrolled(true) : setScrolled(false)
   }
 
+  const user = useSelector((state: ReducerProps) => {
+    return state.auth?.user
+  })
+
+  const dispatch = useAppDispatch()
+
+  const handleLogout = () => {
+    dispatch(logout())
+  }
+
+  const titleLogout = ELogout[language]
+
   return (
     <header
       ref={clickOutsideRef}
@@ -413,6 +436,46 @@ const Nav = ({ setStyleMenu }: any, ref: Ref<{ getStyle: () => boolean }>) => {
                 </>
               )}
             </button>
+          </div>
+          <div className={styles.loginregister}>
+            {!user ? (
+              <>
+                <NavLink
+                  to='/login'
+                  className={({ isActive }) =>
+                    isActive ? `active ${styles.active} ${styles.link}` : `${styles.link}`
+                  }
+                >
+                  <span>Log in</span>
+                </NavLink>
+                <NavLink
+                  to='/register'
+                  className={({ isActive }) =>
+                    isActive ? `active ${styles.active} ${styles.link}` : `${styles.link}`
+                  }
+                >
+                  <span>Register</span>
+                </NavLink>
+              </>
+            ) : (
+              <>
+                <NavLink
+                  to='/edit'
+                  className={({ isActive }) =>
+                    isActive ? `active ${styles.active} ${styles.link}` : `${styles.link}`
+                  }
+                >
+                  <span>Edit</span>
+                </NavLink>
+                <button
+                  onClick={handleLogout}
+                  id='logoutnav'
+                  className={`logout danger ${styles.atnav}`}
+                >
+                  {titleLogout} &times;
+                </button>
+              </>
+            )}
           </div>
         </nav>
       </div>

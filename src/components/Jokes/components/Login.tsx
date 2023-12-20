@@ -8,17 +8,18 @@ import {
   ECategory_es,
   ECategory_fr,
   ECategory_pt,
+  EEdit,
   EError,
   ELanguageTitle,
   ELanguagesLong,
   ELoggingIn,
   ReducerProps,
-} from '../Jokes/interfaces'
-import Accordion from '../Accordion/Accordion'
-import { useAppDispatch } from '../../hooks/useAppDispatch'
-import { notify } from '../../reducers/notificationReducer'
-import { initializeUser, login, logout } from '../../reducers/authReducer'
-import PasswordReset from '../PasswordReset/PasswordReset'
+} from '../interfaces'
+import Accordion from '../../Accordion/Accordion'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
+import { notify } from '../../../reducers/notificationReducer'
+import { initializeUser, login, logout } from '../../../reducers/authReducer'
+import PasswordReset from '../../PasswordReset/PasswordReset'
 import { useSelector } from 'react-redux'
 import {
   ELogin,
@@ -28,15 +29,29 @@ import {
   ELanguages,
   EEmail,
   EPassword,
-} from '../Jokes/interfaces'
-import UserEdit from '../UserEdit/UserEdit'
-import { SelectOption } from '../Select/Select'
+} from '../interfaces'
+import UserEdit from '../../UserEdit/UserEdit'
+import { SelectOption } from '../../Select/Select'
 
 interface LoginProps {
   titleLogin: ELogin
   titleLogout: ELogout
   titleLoggedInAs: ELoggedInAs
   language: ELanguages
+  setLoggedIn: (loggedIn: boolean) => void
+  setLanguage: (language: ELanguages) => void
+  categoryLanguages:
+    | typeof ECategory_en
+    | typeof ECategory_cs
+    | typeof ECategory_de
+    | typeof ECategory_es
+    | typeof ECategory_fr
+    | typeof ECategory_pt
+  options: (enumObj: typeof ELanguages) => SelectOption[]
+  getKeyByValue: (
+    enumObj: typeof ELanguages,
+    value: ELanguages
+  ) => undefined | SelectOption['label']
 }
 
 const FormLogin = ({
@@ -44,6 +59,11 @@ const FormLogin = ({
   titleLogout,
   titleLoggedInAs,
   language,
+  setLoggedIn,
+  setLanguage,
+  categoryLanguages,
+  getKeyByValue,
+  options,
 }: LoginProps) => {
   const dispatch = useAppDispatch()
 
@@ -52,6 +72,9 @@ const FormLogin = ({
 
   const titleEmail = EEmail[language]
   const titlePassword = EPassword[language]
+
+  const formRegisterRef = useRef<HTMLDivElement>(null)
+  const titleEdit = EEdit[language]
 
   const formLoginRef = useRef(null)
 
@@ -65,6 +88,7 @@ const FormLogin = ({
 
   const handleLogout = () => {
     dispatch(logout())
+    setLoggedIn(false)
   }
 
   const handleLogin = async (event: FormEvent) => {
@@ -75,6 +99,7 @@ const FormLogin = ({
         dispatch(notify(`${ELoggingIn[language]}`, false, 2))
         setUsername('')
         setPassword('')
+        setLoggedIn(true)
         //scroll to anchor "userjokes"
         const anchor = document.querySelector('#userjokes')
         if (anchor) {
@@ -97,7 +122,21 @@ const FormLogin = ({
           <span>
             {titleLoggedInAs} {user?.name ? user?.name : user.username}{' '}
           </span>
-
+          <Accordion
+            className='edit-user'
+            text={`» ${titleEdit} «`}
+            ref={formRegisterRef}
+            close={EClose[language as ELanguages]}
+          >
+            <UserEdit
+              user={user}
+              language={language}
+              setLanguage={setLanguage}
+              categoryLanguages={categoryLanguages}
+              options={options}
+              getKeyByValue={getKeyByValue}
+            />
+          </Accordion>
           <button onClick={handleLogout} id='logout' className='logout danger'>
             {titleLogout} &times;
           </button>
@@ -108,7 +147,7 @@ const FormLogin = ({
             className='login'
             text={`» ${titleLogin} «`}
             ref={formLoginRef}
-            close={EClose[(language as ELanguages) || 'en']}
+            close={EClose[language as ELanguages]}
           >
             <h2>{titleLogin}</h2>
 

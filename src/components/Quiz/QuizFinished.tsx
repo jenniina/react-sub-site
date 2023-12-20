@@ -6,7 +6,7 @@ import { ReducerProps } from '../../interfaces'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { addQuiz, getUserQuiz, deleteDuplicates } from './reducers/quizReducer'
 import { initializeUser } from '../../reducers/authReducer'
-import { createUser, findUserbyUsername } from '../../reducers/usersReducer'
+import { createUser } from '../../reducers/usersReducer'
 import { notify } from '../../reducers/notificationReducer'
 import FormLogin from './components/Login'
 import Register from '../Register/Register'
@@ -109,11 +109,6 @@ const QuizFinished = () => {
     dispatch(createUser({ name, username, password, language: 'en' }))
       .then(async () => {
         dispatch(notify(`Registration successful`, false, 8))
-        const searchForUser = await dispatch(findUserbyUsername(username))
-        if (!searchForUser) {
-          //console.log('User not found')
-          return
-        }
       })
       .catch((err) => {
         console.log(err)

@@ -1,0 +1,10 @@
+form.edit-user {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  gap: 1rem;
+}

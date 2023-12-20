@@ -41,15 +41,15 @@ export default function JokesPage({
   heading,
   text,
   type,
+  language,
+  setLanguage,
 }: {
   heading: string
   text: string
   type: string
+  language: ELanguages
+  setLanguage: (language: ELanguages) => void
 }) {
-  const [language, setLanguage] = useLocalStorage<ELanguages>(
-    'language',
-    ELanguages.English
-  )
   const title = ETitle[language]
   const titleLanguage = ELanguageTitle[language]
   const titleFeatures = EFeatures[language]

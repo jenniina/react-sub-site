@@ -52,7 +52,7 @@ const FormLogin = ({ easy, medium, hard }: IHighscore) => {
     event.preventDefault()
     dispatch(notify(`Logging in...`, false, 8))
 
-    await dispatch(login(username, password))
+    await dispatch(login(username, password, 'en'))
       .then(() => {
         setUsername('')
         setPassword('')
@@ -61,7 +61,7 @@ const FormLogin = ({ easy, medium, hard }: IHighscore) => {
         dispatch(notify(`Error: ${(e as AxiosError<any>).response?.data.error}`, true, 8))
       )
   }
-
+  console.log(user)
   return (
     <div className='login-wrap'>
       {user ? (

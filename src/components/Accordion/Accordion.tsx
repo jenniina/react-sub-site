@@ -21,6 +21,7 @@ interface accordionProps {
     | ReactPortal
     | null
     | undefined
+  close?: string
 }
 
 const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefined) => {
@@ -28,6 +29,10 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
 
   const toggleVisibility = () => {
     setVisible(!visible)
+    const anchor = document.querySelector(`#${props.className}-container`)
+    if (anchor) {
+      anchor.scrollIntoView({ behavior: 'smooth' })
+    }
   }
 
   useImperativeHandle(ref, () => {
@@ -57,11 +62,13 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
         style={visible ? { display: 'block' } : { display: 'none' }}
       >
         <button type='button' className='accordion-btn close' onClick={toggleVisibility}>
-          close
+          {props.close ?? 'close'}
         </button>
+
         {props.children}
+
         <button type='button' className='accordion-btn close' onClick={toggleVisibility}>
-          close
+          {props.close ?? 'close'}
         </button>
       </div>
     </div>

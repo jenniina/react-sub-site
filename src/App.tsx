@@ -1,6 +1,6 @@
 import { useState, FC, useRef, useEffect, createContext, useReducer } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
-import { Provider } from 'react-redux'
+import { useSelector } from 'react-redux'
 import './css/App.css'
 import './css/form.css'
 import Nav from './components/Nav/Nav'
@@ -18,18 +18,22 @@ import FormPage from './pages/pages-portfolio/FormPage'
 import { Footer } from './components/Footer/Footer'
 import { useTheme } from './hooks/useTheme'
 import { useScrollbarWidth } from './hooks/useScrollbarWidth'
-import { RefObject } from './interfaces'
+import { ReducerProps, RefObject } from './interfaces'
 import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
 import { isTouchDevice } from './hooks/useDraggable'
+import UserEditPage from './pages/UserEditPage'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
 import JokesPage from './pages/pages-portfolio/JokesPage'
 import QuizPage from './pages/pages-portfolio/QuizPage'
 import QuizStart from './components/Quiz/QuizStart'
 import QuizQuestion from './components/Quiz/QuizQuestion'
 import QuizFinished from './components/Quiz/QuizFinished'
-//import { Provider } from 'react-redux'
-import blobReducer from './components/Blob/reducers/blobReducer'
 import { BlobProvider } from './components/Blob/components/BlobProvider'
-import store from './store'
+import useLocalStorage from './hooks/useStorage'
+import { ELanguages } from './components/Jokes/interfaces'
+import { useAppDispatch } from './hooks/useAppDispatch'
+import { initializeUser } from './reducers/authReducer'
 
 const App: FC = () => {
   const touchDevice = isTouchDevice()
@@ -62,6 +66,11 @@ const App: FC = () => {
 
   const [transitionPage, setTransistionPage] = useState('fadeIn')
 
+  const [language, setLanguage] = useLocalStorage<ELanguages>(
+    'language',
+    ELanguages.English
+  )
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -70,127 +79,172 @@ const App: FC = () => {
     if (location.pathname !== displayLocation.pathname) setTransistionPage('fadeOut')
   }, [location])
 
-  return (
-    <Provider store={store}>
-      <BlobProvider>
-        <div
-          className={`App ${lightTheme ? 'light' : ''} ${touchDevice ? 'touch' : ''}  ${
-            menuStyleAltTransform ? `transformations` : ''
-          }`}
-        >
-          <div className='App-inner-wrap' style={styleInnerWrap}>
-            <Nav setStyleMenu={setStyleMenu} ref={menuStyle} />
+  const dispatch = useAppDispatch()
 
-            <main
-              id={`main-content`}
-              className={`${transitionPage} main-content z`}
-              onAnimationEnd={() => {
-                if (transitionPage === 'fadeOut') {
-                  setTransistionPage('fadeIn')
-                  setDisplayLocation(location)
+  useEffect(() => {
+    dispatch(initializeUser())
+  }, [])
+
+  const user = useSelector((state: ReducerProps) => {
+    return state.auth?.user
+  })
+
+  return (
+    <BlobProvider>
+      <div
+        className={`App ${lightTheme ? 'light' : ''} ${touchDevice ? 'touch' : ''}  ${
+          menuStyleAltTransform ? `transformations` : ''
+        }`}
+      >
+        <div className='App-inner-wrap' style={styleInnerWrap}>
+          <Nav setStyleMenu={setStyleMenu} ref={menuStyle} language={language} />
+
+          <main
+            id={`main-content`}
+            className={`${transitionPage} main-content z`}
+            onAnimationEnd={() => {
+              if (transitionPage === 'fadeOut') {
+                setTransistionPage('fadeIn')
+                setDisplayLocation(location)
+              }
+            }}
+          >
+            <Routes location={displayLocation}>
+              <Route
+                path='*'
+                element={
+                  <Welcome
+                    heading='Welcome'
+                    text='to the React sub-page of Jenniina.fi'
+                    type='page'
+                  />
                 }
-              }}
-            >
-              <Routes location={displayLocation}>
+              />
+              <Route
+                path='/about'
+                element={<About heading='About' text='This Site' type='page' />}
+              />
+
+              <Route
+                path='/test'
+                element={<Test heading='Test Page' text='' type='page' />}
+              />
+
+              <Route
+                path='/login'
+                element={
+                  <LoginPage
+                    heading='Log in'
+                    text=''
+                    type='page'
+                    language={language}
+                    setLanguage={setLanguage}
+                    user={user}
+                  />
+                }
+              />
+
+              <Route
+                path='/register'
+                element={
+                  <RegisterPage
+                    heading='Register'
+                    text=''
+                    type='page'
+                    language={language}
+                    user={user}
+                  />
+                }
+              />
+
+              <Route
+                path='/edit'
+                element={
+                  <UserEditPage
+                    heading='User Edit'
+                    text=''
+                    type='page'
+                    language={language}
+                    setLanguage={setLanguage}
+                  />
+                }
+              />
+
+              <Route path='/portfolio' element={<NavPortfolio />}>
                 <Route
-                  path='*'
+                  index
+                  element={<Portfolio heading='Portfolio' type='page' text='ReactJS' />}
+                />
+                <Route
+                  path='/portfolio/blob'
+                  element={<BlobPage heading='Blob App' text='' type='page subpage' />}
+                />
+                <Route
+                  path='/portfolio/draganddrop'
                   element={
-                    <Welcome
-                      heading='Welcome'
-                      text='to the React sub-page of Jenniina.fi'
-                      type='page'
+                    <DragAndDropPage
+                      heading='Drag and Drop'
+                      text=''
+                      type='page subpage'
                     />
                   }
                 />
                 <Route
-                  path='/about'
-                  element={<About heading='About' text='This Site' type='page' />}
+                  path='/portfolio/todo'
+                  element={<TodoPage heading='Todo App' text='' type='page subpage' />}
                 />
-
                 <Route
-                  path='/test'
-                  element={<Test heading='Test Page' text='' type='page' />}
+                  path='/portfolio/select'
+                  element={
+                    <CustomSelectPage
+                      heading='Custom Select'
+                      text=''
+                      type='page subpage'
+                    />
+                  }
                 />
-
-                <Route path='/portfolio' element={<NavPortfolio />}>
+                <Route
+                  path='/portfolio/form'
+                  element={
+                    <FormPage heading='Multistep Form' text='' type='page subpage' />
+                  }
+                />
+                <Route
+                  path='/portfolio/jokes/*'
+                  element={
+                    <JokesPage
+                      heading="The Comedian's Companion"
+                      text=''
+                      type='page subpage'
+                      language={language}
+                      setLanguage={setLanguage}
+                    />
+                  }
+                />
+                <Route path='/portfolio/quiz/' element={<QuizPage />}>
                   <Route
                     index
-                    element={<Portfolio heading='Portfolio' type='page' text='ReactJS' />}
+                    element={<QuizStart heading='Quiz App' text='' type='page subpage' />}
                   />
-                  <Route
-                    path='/portfolio/blob'
-                    element={<BlobPage heading='Blob App' text='' type='page subpage' />}
-                  />
-                  <Route
-                    path='/portfolio/draganddrop'
-                    element={
-                      <DragAndDropPage
-                        heading='Drag and Drop'
-                        text=''
-                        type='page subpage'
-                      />
-                    }
-                  />
-                  <Route
-                    path='/portfolio/todo'
-                    element={<TodoPage heading='Todo App' text='' type='page subpage' />}
-                  />
-                  <Route
-                    path='/portfolio/select'
-                    element={
-                      <CustomSelectPage
-                        heading='Custom Select'
-                        text=''
-                        type='page subpage'
-                      />
-                    }
-                  />
-                  <Route
-                    path='/portfolio/form'
-                    element={
-                      <FormPage heading='Multistep Form' text='' type='page subpage' />
-                    }
-                  />
-                  <Route
-                    path='/portfolio/jokes/*'
-                    element={
-                      <JokesPage
-                        heading="The Comedian's Companion"
-                        text=''
-                        type='page subpage'
-                      />
-                    }
-                  />
-                  <Route path='/portfolio/quiz/' element={<QuizPage />}>
-                    <Route
-                      index
-                      element={
-                        <QuizStart heading='Quiz App' text='' type='page subpage' />
-                      }
-                    />
-                    <Route
-                      path='/portfolio/quiz/:difficulty'
-                      element={<QuizQuestion />}
-                    />
-                    <Route path='/portfolio/quiz/results' element={<QuizFinished />} />
-                  </Route>
+                  <Route path='/portfolio/quiz/:difficulty' element={<QuizQuestion />} />
+                  <Route path='/portfolio/quiz/results' element={<QuizFinished />} />
                 </Route>
+              </Route>
 
-                <Route
-                  path='/contact'
-                  element={
-                    <Contact heading='Contact' text="Let's collaborate" type='page' />
-                  }
-                />
-              </Routes>
-            </main>
+              <Route
+                path='/contact'
+                element={
+                  <Contact heading='Contact' text="Let's collaborate" type='page' />
+                }
+              />
+            </Routes>
+          </main>
 
-            <Footer styleMenu={styleMenu} />
-            <ScrollToTop styleMenu={styleMenu} />
-          </div>
+          <Footer styleMenu={styleMenu} />
+          <ScrollToTop styleMenu={styleMenu} />
         </div>
-      </BlobProvider>
-    </Provider>
+      </div>
+    </BlobProvider>
   )
 }
 

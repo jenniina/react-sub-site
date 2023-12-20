@@ -555,3 +555,64 @@ body .focus-within:focus-within {
   height: auto;
   line-height: normal;
 }
+button.delete,
+button.close,
+.login-wrap button.logout,
+.logout-wrap button.logout {
+  min-width: 5em;
+  background: none;
+  border-color: transparent;
+  color: inherit;
+}
+button.close {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--gap) / 2);
+  font-size: 0.8em;
+}
+button.close:hover,
+button.close:focus {
+  color: inherit;
+}
+button.close .times {
+  font-size: 1.3em;
+}
+button.delete {
+  padding: 0.5em 1.2em 0.8em;
+}
+button.delete::after {
+  content: ' \00D7'; /* × */
+  font-size: 1.2em;
+  position: relative;
+  bottom: -0.1em;
+}
+button.delete:hover {
+  color: red;
+}
+button.danger:hover {
+  outline-color: red;
+  border-color: red;
+}
+
+.register-login-wrap {
+  display: flex;
+  flex-flow: row wrap;
+  gap: calc(var(--gap) * 2);
+  justify-content: center;
+}
+.register-login-wrap > .open,
+.register-login-wrap > .logged {
+  flex: 1 0 100%;
+}
+
+.login-wrap p,
+.logout-wrap {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  gap: calc(var(--gap) * 2);
+  align-items: center;
+  justify-content: space-between;
+}

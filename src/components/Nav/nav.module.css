@@ -386,6 +386,27 @@ a.link:visited:not(.active):focus > *,
   display: none;
 }
 
+.toolbar .loginregister {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5em;
+  font-size: 0.9em;
+  width: 100%;
+}
+.toolbar .loginregister a.link {
+  width: max-content;
+  padding-top: 2em;
+}
+.toolbar .loginregister button.logout {
+  font-size: 0.8em;
+  margin-top: 2em;
+}
+.toolbar .atnav {
+  max-width: max-content;
+  padding: 2em 0 0.5em;
+}
 .skip-links {
   z-index: 999;
   position: absolute; /*so it shows up over other elements*/

@@ -14,6 +14,7 @@ export interface IUser {
   username: string
   name?: string
   password: string
+  passwordOld?: string
   language: ELanguages | string
   verified?: boolean
   createdAt?: string

@@ -30,7 +30,7 @@ export default function TodoPage({
                   Remove task either individually or clear all completed tasks at once
                 </li>
                 <li>Shows how many tasks are left to do</li>
-                <li>Stores tasks in localStorage</li>
+                <li>Stores tasks in MongoDB if the user is logged in</li>
               </ul>
               <h3>Keyboard Use</h3>
               <ul className='ul'>
