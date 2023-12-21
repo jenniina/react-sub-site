@@ -46,6 +46,7 @@ export default function CustomSelectPage({
   const [value1, setValue1] = useState<SelectOption[]>([])
   const [value2, setValue2] = useState<SelectOption | undefined>(options2[0])
   const [input, setInput] = useState<string>('')
+  const [email, setEmail] = useState<string>('')
 
   const [data, setData] = useState({})
   const [sending, setSending] = useState(false)
@@ -189,9 +190,9 @@ export default function CustomSelectPage({
                         <input
                           type='email'
                           name='email'
-                          value={input}
+                          value={email}
                           onChange={(e) => {
-                            setInput(e.target.value)
+                            setEmail(e.target.value)
                             setData((prevData) => ({
                               ...prevData,
                               email: e.target.value,
