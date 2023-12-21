@@ -198,7 +198,23 @@ button.togglemenu[aria-expanded='true'] .menupath {
   padding-left: 0;
   padding-right: 0;
 }
-
+.toolbar .loginregisterwrap {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  align-items: center;
+  gap: 0.5em;
+  width: 100%;
+  gap: 1em;
+}
+.toolbar .loginregisterwrap.closed {
+  flex-flow: row wrap;
+  justify-content: space-between;
+  gap: 0;
+}
+.toolbar .loginregisterwrap button {
+  padding: 0.6em 0;
+}
 .logo-container a {
   display: inline-block;
   position: relative;

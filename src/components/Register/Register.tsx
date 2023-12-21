@@ -15,6 +15,7 @@ interface Props {
   name: string
   setName: (name: string) => void
   setConfirmPassword: (confirmPassword: string) => void
+  setIsFormOpen?: (isFormOpen: boolean) => void
 }
 const Register = ({
   handleRegister,
@@ -26,6 +27,7 @@ const Register = ({
   setConfirmPassword,
   name,
   setName,
+  setIsFormOpen,
 }: Props) => {
   const dispatch = useAppDispatch()
 
@@ -43,7 +45,12 @@ const Register = ({
     <div className='register-wrap'>
       {!user ? (
         <>
-          <Accordion className='' text='register' ref={formRegisterRef}>
+          <Accordion
+            className=''
+            text='Register'
+            ref={formRegisterRef}
+            setIsFormOpen={setIsFormOpen}
+          >
             <h2>Register</h2>
             <form onSubmit={handleRegister} className='register'>
               <div className='input-wrap'>
