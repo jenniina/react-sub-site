@@ -33,10 +33,7 @@ type MessageFormProps = MessageData & {
 }
 
 export function MessageForm({ email, message, select, updateFields }: MessageFormProps) {
-  const [selectsingle, setSelect] = useLocalStorage<SelectOption | undefined>(
-    'selectsingle',
-    options[0]
-  )
+  const [selectsingle, setSelect] = useState<SelectOption | undefined>(options[0])
 
   return (
     <FormWrapper
@@ -77,7 +74,7 @@ export function MessageForm({ email, message, select, updateFields }: MessageFor
           onChange={(e) => {
             setSelect(e)
             updateFields({
-              select: e?.label,
+              select: e?.label ?? selectsingle?.label,
             })
           }}
         />
