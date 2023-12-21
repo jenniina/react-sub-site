@@ -78,6 +78,7 @@ const FormLogin = ({
         dispatch(notify(`${ELoggingIn[language]}`, false, 2))
         setUsername('')
         setPassword('')
+        setIsFormOpen && setIsFormOpen(false)
       })
       .catch((e) => {
         console.log(e)

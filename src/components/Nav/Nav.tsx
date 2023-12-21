@@ -28,6 +28,7 @@ import FormLogin from '../Login/Login'
 import Register from '../Register/Register'
 import { notify } from '../../reducers/notificationReducer'
 import { createUser } from '../../reducers/usersReducer'
+import Notification from '../Notification/Notification'
 
 type Link = {
   label: string
@@ -299,67 +300,68 @@ const Nav = (
   }
 
   return (
-    <header
-      ref={clickOutsideRef}
-      className={`
+    <>
+      <header
+        ref={clickOutsideRef}
+        className={`
                 ${styles['main-header']}
                 ${scrollDirection === 'down' && scrolled ? styles.hide : styles.show} 
                 ${lightTheme ? styles.light : ''} 
                 ${menuStyleAlt ? `${styles.menualt} ` : `${styles.menumain} `} 
                 ${menuStyleTransform ? `${styles.transformations}` : ''} 
                 `}
-    >
-      <nav className={styles['skip-links']}>
-        <SkipLink skipLinks={skipLinks} />
-      </nav>
-      <div className={styles['header-inner-wrap']}>
-        <div
-          className={`${
-            lightTheme
-              ? `${styles['logo-container']} ${styles.light}`
-              : styles['logo-container']
-          } 
+      >
+        <nav className={styles['skip-links']}>
+          <SkipLink skipLinks={skipLinks} />
+        </nav>
+        <div className={styles['header-inner-wrap']}>
+          <div
+            className={`${
+              lightTheme
+                ? `${styles['logo-container']} ${styles.light}`
+                : styles['logo-container']
+            } 
                         ${windowWidth < breakpointSmall ? 'scr' : ''}`}
-        >
-          <a href='https://jenniina.fi/'>
-            <span className='scr'>Jenniina</span>
-          </a>
-        </div>
-        <button
-          aria-haspopup='true'
-          aria-expanded={isMainMenuOpen}
-          onClick={toggleMainMenu}
-          className={`${
-            windowHeight < windowWidth && windowWidth < breakpoint
-              ? `${styles.togglemenuexception} ${styles.togglemenu}`
-              : styles.togglemenu
-          }`}
-        >
-          <svg
-            stroke='currentColor'
-            strokeWidth='12'
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            fill='none'
-            viewBox='0 0 100 100'
-            aria-hidden='true'
-            height='1em'
-            width='1em'
-            xmlns='http://www.w3.org/2000/svg'
-            style={{ fontSize: '1em' }}
           >
-            <g>
-              <path
-                className={styles.menupath}
-                d='m 90 90 l -80 -80 l 60 0 a 1 1 0 1 1 0 40 l -40 0 a 1 1 0 0 0 0 40 l 60 0 l 0 -80 l -80 80'
-              ></path>
-            </g>
-          </svg>
-          <span className={windowWidth < breakpoint ? 'scr' : ''}>Menu</span>
-        </button>
-        <nav
-          id={'site-navigation'}
-          className={`site-navigation 
+            <a href='https://jenniina.fi/'>
+              <span className='scr'>Jenniina</span>
+            </a>
+          </div>
+          <button
+            aria-haspopup='true'
+            aria-expanded={isMainMenuOpen}
+            onClick={toggleMainMenu}
+            className={`${
+              windowHeight < windowWidth && windowWidth < breakpoint
+                ? `${styles.togglemenuexception} ${styles.togglemenu}`
+                : styles.togglemenu
+            }`}
+          >
+            <svg
+              stroke='currentColor'
+              strokeWidth='12'
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              fill='none'
+              viewBox='0 0 100 100'
+              aria-hidden='true'
+              height='1em'
+              width='1em'
+              xmlns='http://www.w3.org/2000/svg'
+              style={{ fontSize: '1em' }}
+            >
+              <g>
+                <path
+                  className={styles.menupath}
+                  d='m 90 90 l -80 -80 l 60 0 a 1 1 0 1 1 0 40 l -40 0 a 1 1 0 0 0 0 40 l 60 0 l 0 -80 l -80 80'
+                ></path>
+              </g>
+            </svg>
+            <span className={windowWidth < breakpoint ? 'scr' : ''}>Menu</span>
+          </button>
+          <nav
+            id={'site-navigation'}
+            className={`site-navigation 
                         ${styles['menu-container']} 
                             ${
                               isMainMenuOpen
@@ -393,119 +395,123 @@ const Nav = (
                                         : ''
                                     }
                                     `}
-          aria-expanded={isMainMenuOpen}
-        >
-          <LinkComponent links={links} />
-        </nav>
-        <button className={styles.search} role='search' aria-label='search'>
-          <CgSearch
-            style={
-              windowWidth < breakpointSmall ? { fontSize: '1em' } : { fontSize: '1.4em' }
-            }
-            aria-hidden={true}
-          />
-          <span className={windowWidth < breakpoint ? 'scr' : ''}>Search</span>
-        </button>
-        <button className={styles.settings} onClick={toggleToolbar}>
-          <IoSettingsSharp
-            style={
-              windowWidth < breakpointSmall
-                ? { fontSize: '0.9em' }
-                : { fontSize: '1.1em' }
-            }
-            aria-hidden={true}
-          />
-          <span id='settings' className={windowWidth < breakpoint ? 'scr' : ''}>
-            Settings
-          </span>
-        </button>
-        <nav
-          id='settings-toolbar'
-          className={`${styles.toolbar} 
+            aria-expanded={isMainMenuOpen}
+          >
+            <LinkComponent links={links} />
+          </nav>
+          <button className={styles.search} role='search' aria-label='search'>
+            <CgSearch
+              style={
+                windowWidth < breakpointSmall
+                  ? { fontSize: '1em' }
+                  : { fontSize: '1.4em' }
+              }
+              aria-hidden={true}
+            />
+            <span className={windowWidth < breakpoint ? 'scr' : ''}>Search</span>
+          </button>
+          <button className={styles.settings} onClick={toggleToolbar}>
+            <IoSettingsSharp
+              style={
+                windowWidth < breakpointSmall
+                  ? { fontSize: '0.9em' }
+                  : { fontSize: '1.1em' }
+              }
+              aria-hidden={true}
+            />
+            <span id='settings' className={windowWidth < breakpoint ? 'scr' : ''}>
+              Settings
+            </span>
+          </button>
+          <nav
+            id='settings-toolbar'
+            className={`${styles.toolbar} 
                            ${
                              isToolbarOpen
                                ? `${styles['show']}`
                                : `${isToolbarHidden ? styles.hidden : ''}`
                            }
                             `}
-          aria-labelledby='settings'
-          aria-expanded={isToolbarOpen}
-        >
-          <div className={styles.toolwrap}>
-            <label htmlFor='dlt-btn'>{lightTheme ? 'Dark Mode' : 'Light Mode'}</label>
-            <button
-              id='dlt-btn'
-              className={
-                lightTheme
-                  ? `${styles['dlt-btn']}`
-                  : `${styles['active']} ${styles['dlt-btn']}`
-              }
-              onClick={toggleTheme}
-            >
-              <div className={`${styles['dlt-inner-wrapper']}`}>
-                <div className={`${styles['dlt-btn-inner-left']}`}>
-                  <div className={`${styles['dlt-innermost']}`}>
-                    <span className='scr'>{lightTheme ? 'Dark Mode' : 'Light Mode'}</span>
+            aria-labelledby='settings'
+            aria-expanded={isToolbarOpen}
+          >
+            <div className={styles.toolwrap}>
+              <label htmlFor='dlt-btn'>{lightTheme ? 'Dark Mode' : 'Light Mode'}</label>
+              <button
+                id='dlt-btn'
+                className={
+                  lightTheme
+                    ? `${styles['dlt-btn']}`
+                    : `${styles['active']} ${styles['dlt-btn']}`
+                }
+                onClick={toggleTheme}
+              >
+                <div className={`${styles['dlt-inner-wrapper']}`}>
+                  <div className={`${styles['dlt-btn-inner-left']}`}>
+                    <div className={`${styles['dlt-innermost']}`}>
+                      <span className='scr'>
+                        {lightTheme ? 'Dark Mode' : 'Light Mode'}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </button>
-          </div>
+              </button>
+            </div>
 
-          <div className={styles.toolwrap}>
-            <label htmlFor='navbar-style'>Navbar style</label>
-            <button
-              id='navbar-style'
-              onClick={menuStyleAltToggle}
-              className={styles.navstyle}
-            >
-              {windowWidth < breakpoint ? (
-                <TbLayoutNavbar aria-hidden={true} fontSize='1.5em' />
-              ) : (
+            <div className={styles.toolwrap}>
+              <label htmlFor='navbar-style'>Navbar style</label>
+              <button
+                id='navbar-style'
+                onClick={menuStyleAltToggle}
+                className={styles.navstyle}
+              >
+                {windowWidth < breakpoint ? (
+                  <TbLayoutNavbar aria-hidden={true} fontSize='1.5em' />
+                ) : (
+                  <>
+                    <HiOutlineDotsHorizontal
+                      className={styles.dots}
+                      aria-hidden={true}
+                      fontSize='1.8em'
+                    />
+                    <TfiLineDashed
+                      className={styles.dashes}
+                      aria-hidden={true}
+                      fontSize='1.8em'
+                    />
+                  </>
+                )}
+              </button>
+            </div>
+            <div className={styles.loginregister}>
+              {!user ? (
                 <>
-                  <HiOutlineDotsHorizontal
-                    className={styles.dots}
-                    aria-hidden={true}
-                    fontSize='1.8em'
-                  />
-                  <TfiLineDashed
-                    className={styles.dashes}
-                    aria-hidden={true}
-                    fontSize='1.8em'
-                  />
-                </>
-              )}
-            </button>
-          </div>
-          <div className={styles.loginregister}>
-            {!user ? (
-              <>
-                <div
-                  className={`${styles.loginregisterwrap} ${
-                    !isRegisterFormOpen && !isLoginFormOpen ? styles.closed : ''
-                  }`}
-                >
-                  <FormLogin
-                    setIsFormOpen={setIsLoginFormOpen}
-                    language={language}
-                    titleLoggedInAs={titleLoggedInAs}
-                    titleLogin={titleLogin}
-                    titleLogout={titleLogout}
-                  />
-                  <Register
-                    setIsFormOpen={setIsRegisterFormOpen}
-                    handleRegister={handleRegister}
-                    username={username}
-                    setUsername={setUsername}
-                    password={password}
-                    setPassword={setPassword}
-                    confirmPassword={confirmPassword}
-                    setConfirmPassword={setConfirmPassword}
-                    name={name}
-                    setName={setName}
-                  />
-                </div>
-                {/* <NavLink
+                  <div
+                    className={`${styles.loginregisterwrap} ${
+                      !isRegisterFormOpen && !isLoginFormOpen ? styles.closed : ''
+                    }`}
+                  >
+                    <FormLogin
+                      setIsFormOpen={setIsLoginFormOpen}
+                      language={language}
+                      titleLoggedInAs={titleLoggedInAs}
+                      titleLogin={titleLogin}
+                      titleLogout={titleLogout}
+                    />
+                    <Register
+                      setIsFormOpen={setIsRegisterFormOpen}
+                      handleRegister={handleRegister}
+                      username={username}
+                      setUsername={setUsername}
+                      password={password}
+                      setPassword={setPassword}
+                      confirmPassword={confirmPassword}
+                      setConfirmPassword={setConfirmPassword}
+                      name={name}
+                      setName={setName}
+                    />
+                  </div>
+                  {/* <NavLink
                   to='/login'
                   className={({ isActive }) =>
                     isActive ? `active ${styles.active} ${styles.link}` : `${styles.link}`
@@ -521,30 +527,34 @@ const Nav = (
                 >
                   <span>Register</span>
                 </NavLink> */}
-              </>
-            ) : (
-              <>
-                <NavLink
-                  to='/edit'
-                  className={({ isActive }) =>
-                    isActive ? `active ${styles.active} ${styles.link}` : `${styles.link}`
-                  }
-                >
-                  <span>Edit</span>
-                </NavLink>
-                <button
-                  onClick={handleLogout}
-                  id='logoutnav'
-                  className={`logout danger ${styles.atnav}`}
-                >
-                  {titleLogout} &times;
-                </button>
-              </>
-            )}
-          </div>
-        </nav>
-      </div>
-    </header>
+                </>
+              ) : (
+                <>
+                  <NavLink
+                    to='/edit'
+                    className={({ isActive }) =>
+                      isActive
+                        ? `active ${styles.active} ${styles.link}`
+                        : `${styles.link}`
+                    }
+                  >
+                    <span>Edit</span>
+                  </NavLink>
+                  <button
+                    onClick={handleLogout}
+                    id='logoutnav'
+                    className={`logout danger ${styles.atnav}`}
+                  >
+                    {titleLogout} &times;
+                  </button>
+                </>
+              )}
+            </div>
+          </nav>
+        </div>
+      </header>
+      <Notification />
+    </>
   )
 }
 
