@@ -42,6 +42,21 @@ const updateUser = async (
   return response.data
 }
 
+// router.put('/api/users/username', updateUsername)
+
+const updateUsername = async (
+  user: Pick<user, '_id' | 'language' | 'username' | 'passwordOld'>
+) => {
+  const newUserSettings = {
+    _id: user._id,
+    username: user.username,
+    language: user.language,
+    passwordOld: user.passwordOld,
+  }
+  const response = await axios.put(`${baseUrl}`, newUserSettings)
+  console.log(response.data)
+  return response.data
+}
 const updatePassword = async (
   user: Pick<user, '_id' | 'language' | 'password' | 'passwordOld'>
 ) => {
@@ -80,6 +95,7 @@ export default {
   createNewUser,
   deleteUser,
   updateUser,
+  updateUsername,
   updatePassword,
   searchUsername,
   searchId,

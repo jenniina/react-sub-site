@@ -30,7 +30,7 @@ import {
   EEmail,
   EPassword,
 } from '../interfaces'
-import UserEdit from '../../UserEdit/UserEdit'
+import UserEdit from '../../UserEdit/NicknameEdit'
 import { SelectOption } from '../../Select/Select'
 
 interface LoginProps {
@@ -122,21 +122,7 @@ const FormLogin = ({
           <span>
             {titleLoggedInAs} {user?.name ? user?.name : user.username}{' '}
           </span>
-          <Accordion
-            className='edit-user'
-            text={`» ${titleEdit} «`}
-            ref={formRegisterRef}
-            close={EClose[language as ELanguages]}
-          >
-            <UserEdit
-              user={user}
-              language={language}
-              setLanguage={setLanguage}
-              categoryLanguages={categoryLanguages}
-              options={options}
-              getKeyByValue={getKeyByValue}
-            />
-          </Accordion>
+          <a href='/edit'>{`${titleEdit}`}</a>
           <button onClick={handleLogout} id='logout' className='logout danger'>
             {titleLogout} &times;
           </button>

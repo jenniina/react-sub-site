@@ -39,14 +39,15 @@ import {
   EPassword,
   EEdit,
   ECurrentPassword,
+  EUsername,
+  EUsernameIsTheSame,
 } from '../Jokes/interfaces'
 import { useState } from 'react'
 import { IUser } from '../../interfaces'
-import { Select, SelectOption } from '../Select/Select'
 import { initializeUser } from '../../reducers/authReducer'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
-import { updateUser } from '../../reducers/usersReducer'
+import { updateUsername } from '../../reducers/usersReducer'
 import { AxiosError } from 'axios'
 import Notification from '../Notification/Notification'
 import styles from './css/edit.module.css'
@@ -54,28 +55,14 @@ import styles from './css/edit.module.css'
 interface Props {
   language: ELanguages
   user: IUser
-  setLanguage: (language: ELanguages) => void
-  categoryLanguages:
-    | typeof ECategory_en
-    | typeof ECategory_cs
-    | typeof ECategory_de
-    | typeof ECategory_es
-    | typeof ECategory_fr
-    | typeof ECategory_pt
-  options: (enumObj: typeof ELanguages) => SelectOption[]
-  getKeyByValue: (
-    enumObj: typeof ELanguages,
-    value: ELanguages
-  ) => undefined | SelectOption['label']
 }
-const UserEdit = ({ user, language, setLanguage, options, getKeyByValue }: Props) => {
+const UsernameEdit = ({ user, language }: Props) => {
   const dispatch = useAppDispatch()
 
-  const [username, setUsername] = useState<IUser['username']>(user?.username)
-  const [name, setName] = useState<IUser['name'] | ''>(user?.name || '')
+  const [username, setUsername] = useState<IUser['username']>(user?.username ?? '')
   const [passwordOld, setPasswordOld] = useState<IUser['password'] | ''>('')
 
-  const titleNickname = ENickname[language]
+  const titleEmail = EEmail[language]
   const titleEdit = EEdit[language]
   const titleCurrentPassword = ECurrentPassword[language]
 
@@ -85,22 +72,25 @@ const UserEdit = ({ user, language, setLanguage, options, getKeyByValue }: Props
       const _id = user._id
       const editedUser = {
         _id,
-        name,
+        username,
         passwordOld,
         language,
       }
 
       if (user) {
-        dispatch(updateUser(editedUser))
+        if (username === user.username) {
+          dispatch(notify(`${EUsernameIsTheSame[language]}`, true, 5))
+          return
+        }
+        dispatch(updateUsername(editedUser))
           .then((res) => {
             if (res) {
               if (res.success === false) {
-                dispatch(notify(`${res.message || 'Error updating!'}`, true, 5))
+                dispatch(notify(`${res.message ?? 'Error updating!'}`, true, 5))
               } else {
-                dispatch(notify(`${res.message || 'updated!'}`, false, 5))
+                dispatch(notify(`${res.message ?? 'updated!'}`, false, 5))
                 dispatch(initializeUser())
                 setPasswordOld('')
-                window.localStorage.setItem('loggedJokeAppUser', JSON.stringify(user))
               }
             }
           })
@@ -126,10 +116,15 @@ const UserEdit = ({ user, language, setLanguage, options, getKeyByValue }: Props
     <>
       {user ? (
         <>
-          <h2>{titleEdit}</h2>
+          <h2>
+            {titleEdit} {titleEmail.toLowerCase()}
+          </h2>
+          <p className={styles.p}>
+            <strong>{user?.username}</strong>
+          </p>
 
           <form onSubmit={handleUserSubmit} className={styles['edit-user']}>
-            {/* <div className='input-wrap'>
+            <div className='input-wrap'>
               <label>
                 <input
                   required
@@ -141,51 +136,22 @@ const UserEdit = ({ user, language, setLanguage, options, getKeyByValue }: Props
                 />
                 <span>{titleEmail}</span>
               </label>
-            </div> */}
-            <div className='input-wrap'>
-              <label>
-                <input
-                  required
-                  type='text'
-                  name='name'
-                  id='name'
-                  value={name}
-                  onChange={({ target }) => setName(target.value)}
-                />
-                <span>{titleNickname}</span>
-              </label>
             </div>
+
             <div className='input-wrap'>
               <label>
                 <input
                   required
                   type='password'
                   name='old-password'
-                  id='old-password-user'
+                  id='old-password-username'
                   value={passwordOld}
                   onChange={({ target }) => setPasswordOld(target.value)}
                 />
                 <span>{titleCurrentPassword}</span>
               </label>
             </div>
-            <Select
-              id='language-register'
-              className='language'
-              instructions='Language'
-              hide
-              options={options(ELanguages)}
-              value={
-                language
-                  ? ({
-                      value: language,
-                      label: getKeyByValue(ELanguages, language),
-                    } as SelectOption)
-                  : undefined
-              }
-              onChange={(o) => {
-                setLanguage(o?.value as ELanguages)
-              }}
-            />
+
             <button type='submit'>{titleEdit}</button>
           </form>
 
@@ -198,4 +164,4 @@ const UserEdit = ({ user, language, setLanguage, options, getKeyByValue }: Props
   )
 }
 
-export default UserEdit
+export default UsernameEdit

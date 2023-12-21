@@ -17,13 +17,16 @@ import {
 } from '../components/Jokes/interfaces'
 import { IUser } from '../interfaces'
 import styles from './css/useredit.module.css'
-import UserEdit from '../components/UserEdit/UserEdit'
+import UserEdit from '../components/UserEdit/NicknameEdit'
 import { SelectOption } from '../components/Select/Select'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../hooks/useAppDispatch'
 import { ReducerProps } from '../interfaces'
 import { initializeUser } from '../reducers/authReducer'
 import PasswordEdit from '../components/UserEdit/PasswordEdit'
+import UsernameEdit from '../components/UserEdit/UsernameEdit'
+import LanguageEdit from '../components/UserEdit/LanguageEdit'
+import NicknameEdit from '../components/UserEdit/NicknameEdit'
 
 interface Props {
   language: ELanguages
@@ -105,15 +108,25 @@ const UserEditPage = ({ language, setLanguage, heading, text, type }: Props) => 
         <div className='inner-wrap'>
           <section className={`card`}>
             <div>
-              <UserEdit
-                user={user}
-                language={language}
-                setLanguage={setLanguage}
-                categoryLanguages={categoryLanguages}
-                options={options}
-                getKeyByValue={getKeyByValue}
-              />
-              <PasswordEdit user={user} language={language} />
+              <div className={styles.editform}>
+                <NicknameEdit user={user} language={language} />
+              </div>
+              <div className={styles.editform}>
+                <UsernameEdit user={user} language={language} />
+              </div>
+              <div className={styles.editform}>
+                <LanguageEdit
+                  user={user}
+                  language={language}
+                  setLanguage={setLanguage}
+                  categoryLanguages={categoryLanguages}
+                  options={options}
+                  getKeyByValue={getKeyByValue}
+                />
+              </div>
+              <div className={styles.editform}>
+                <PasswordEdit user={user} language={language} />
+              </div>
             </div>
           </section>
         </div>
