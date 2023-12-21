@@ -17,7 +17,7 @@ import {
 import Accordion from '../Accordion/Accordion'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
-import { initializeUser, login, logout } from '../../reducers/authReducer'
+import { initializeUser, login, logout, refreshUser } from '../../reducers/authReducer'
 import PasswordReset from '../PasswordReset/PasswordReset'
 import { useSelector } from 'react-redux'
 import {

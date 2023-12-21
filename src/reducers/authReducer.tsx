@@ -37,6 +37,7 @@ export const login = (username: string, password: string, language: string) => {
       language,
     })
     window.localStorage.setItem('loggedJokeAppUser', JSON.stringify(user))
+    console.log('user', user)
     loginService.setToken(user.token)
     const response = dispatch(loginUser(user))
     return response
@@ -52,8 +53,16 @@ export const logout = () => {
 
 export const refreshUser = (user: IUser) => {
   return async (dispatch: (arg0: { payload: any; type: 'auth/setUser' }) => void) => {
-    window.localStorage.setItem('loggedJokeAppUser', JSON.stringify(user))
-    dispatch(setUser(user))
+    const loggedUserJSON = window.localStorage.getItem('loggedJokeAppUser')
+    if (loggedUserJSON) {
+      const data = JSON.parse(loggedUserJSON)
+      const token = data.token
+      if (token) {
+        loginService.setToken(token) // Set the token in the loginService
+      }
+      window.localStorage.setItem('loggedJokeAppUser', JSON.stringify({ user, token }))
+      dispatch(setUser(user))
+    }
   }
 }
 
