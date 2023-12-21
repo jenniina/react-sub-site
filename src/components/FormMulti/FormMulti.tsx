@@ -7,11 +7,16 @@ import { RefObject } from '../../interfaces'
 import { FormData, INITIAL_DATA } from './interfaces'
 import styles from './form.module.css'
 import { sendEmail } from './services/email'
+import Notification from '../Notification/Notification'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { notify } from '../../reducers/notificationReducer'
 
 function FormMulti() {
   const form = useRef() as RefObject<HTMLFormElement>
 
   const [data, setData] = useState(INITIAL_DATA)
+
+  const dispatch = useAppDispatch()
 
   function updateFields(fields: Partial<FormData>) {
     setData((prev) => {
@@ -39,6 +44,7 @@ function FormMulti() {
           setTimeout(() => {
             setShowMessage(false)
           }, 100000)
+          dispatch(notify('Thank you for your message!', false, 8))
         })
       } catch (error) {
         console.log('error', error)
@@ -161,6 +167,7 @@ function FormMulti() {
           )}
         </div>
       </form>
+      <Notification />
     </div>
   )
 }

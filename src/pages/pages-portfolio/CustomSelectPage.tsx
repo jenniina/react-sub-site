@@ -5,6 +5,9 @@ import FormWrapper from '../../components/FormWrapper/FormWrapper'
 import selectStyles from '../../components/Select/select.module.css'
 import { RefObject } from '../../interfaces'
 import { sendEmail, SelectData } from './services/email'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { notify } from '../../reducers/notificationReducer'
+import Notification from '../../components/Notification/Notification'
 
 //Keep options outside the export function!
 const options1: SelectOption[] = [
@@ -50,6 +53,8 @@ export default function CustomSelectPage({
 
   const [showMessage, setShowMessage] = useState(false)
 
+  const dispatch = useAppDispatch()
+
   const form = useRef() as RefObject<HTMLFormElement>
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -66,12 +71,13 @@ export default function CustomSelectPage({
           setTimeout(() => {
             setShowMessage(false)
           }, 100000)
+          dispatch(notify('Thank you for your message!', false, 8))
         })
       } catch (error) {
         setSending(false)
         setError((error as Error).message)
         console.log('error', error)
-        alert('There was an error sending the message!')
+        dispatch(notify('There was an error sending the message!', true, 8))
       }
     }
   }
@@ -182,7 +188,7 @@ export default function CustomSelectPage({
                       <label>
                         <input
                           type='email'
-                          name='clarification'
+                          name='email'
                           value={input}
                           onChange={(e) => {
                             setInput(e.target.value)
@@ -245,6 +251,7 @@ export default function CustomSelectPage({
           </div>
         </section>
       </div>
+      <Notification />
     </div>
   )
 }
