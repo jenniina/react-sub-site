@@ -379,42 +379,6 @@ button.delivery.reveal p {
   color: var(--color-primary-19);
 }
 
-main .notification {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 999;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  pointer-events: none;
-}
-main .notification p {
-  margin: 0;
-  max-width: 40em;
-  background-color: var(--color-primary-2);
-  color: var(--color-primary-19);
-  border-radius: var(--border-radius);
-  padding: 1em;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-items: center;
-  gap: var(--gap);
-}
-main .notification.error p {
-  color: red;
-  background-color: black;
-  border: 0.3em solid red;
-}
-main .notification p {
-  pointer-events: all;
-}
-
 .downwards-arrow {
   position: relative;
   width: 100%;
