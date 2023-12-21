@@ -80,7 +80,7 @@ import UserJokes from './components/UserJokes'
 //import JokeSubmit from './components/JokeSubmit'
 import Accordion from '../Accordion/Accordion'
 import { AxiosResponse } from 'axios'
-import UserEdit from '../UserEdit/UserEdit'
+import UserEdit from '../UserEdit/NicknameEdit'
 
 export const jokeCategoryByLanguage: IJokeCategoryByLanguage = {
   en: {

@@ -52,8 +52,11 @@ export default function Portfolio({
                 <li>react-icons</li>
                 <li>react-dom</li>
                 <li>react-router-dom</li>
-                <li>uuid</li>
+                <li>react-redux</li>
+                <li>@reduxjs/toolkit</li>
                 <li>axios</li>
+                <li>uuid</li>
+                <li>lodash</li>
               </ul>
             </div>
             <ul className={`${styles.list}`}>

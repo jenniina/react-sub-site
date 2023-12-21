@@ -10,6 +10,7 @@ import { initializeUser, login, logout } from '../../../reducers/authReducer'
 import { useSelector } from 'react-redux'
 import Scores from './Scores'
 import styles from '../css/quiz.module.css'
+import { EEdit, EError, ELanguages, ELoggedInAs, ELogout } from '../../Jokes/interfaces'
 
 const FormLogin = ({ easy, medium, hard }: IHighscore) => {
   const dispatch = useAppDispatch()
@@ -57,18 +58,26 @@ const FormLogin = ({ easy, medium, hard }: IHighscore) => {
         setUsername('')
         setPassword('')
       })
-      .catch((e) =>
-        dispatch(notify(`Error: ${(e as AxiosError<any>).response?.data.error}`, true, 8))
-      )
+      .catch((e) => {
+        if (e.code === 'ERR_BAD_REQUEST')
+          dispatch(notify(`${EError['en']}: ${e.response.data.message}`, true, 8))
+        else if (e.code === 'ERR_NETWORK') {
+          dispatch(notify(`${EError['en']}: ${e.message}`, true, 8))
+        }
+      })
   }
   return (
     <div className='login-wrap'>
       {user ? (
         <>
           <p>
-            <span>Logged in as {user?.name ? user?.name : user.username} </span>
+            <span>
+              {ELoggedInAs[(user?.language as ELanguages) ?? 'en']}{' '}
+              {user?.name ? user?.name : user.username}{' '}
+            </span>
+            <a href='/edit'>{`${EEdit[user?.language as ELanguages]}`}</a>
             <button onClick={handleLogout} id='logout' className='logout danger'>
-              Log out &times;
+              {ELogout[(user?.language as ELanguages) ?? 'en']} &times;
             </button>
           </p>
           <button

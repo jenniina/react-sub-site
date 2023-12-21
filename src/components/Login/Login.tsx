@@ -29,8 +29,9 @@ import {
   EEmail,
   EPassword,
 } from '../Jokes/interfaces'
-import UserEdit from '../UserEdit/UserEdit'
+import UserEdit from '../UserEdit/NicknameEdit'
 import { SelectOption } from '../Select/Select'
+import Notification from '../Notification/Notification'
 
 interface LoginProps {
   titleLogin: ELogin
@@ -75,18 +76,14 @@ const FormLogin = ({
         dispatch(notify(`${ELoggingIn[language]}`, false, 2))
         setUsername('')
         setPassword('')
-        //scroll to anchor "userjokes"
-        const anchor = document.querySelector('#userjokes')
-        if (anchor) {
-          anchor.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        }
       })
       .catch((e) => {
         console.log(e)
-        if (e.code === 'ERR_NETWORK') {
-          dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
-        } else if (e.code === 'ERR_BAD_REQUEST')
+        if (e.code === 'ERR_BAD_REQUEST')
           dispatch(notify(`${EError[language]}: ${e.response.data.message}`, true, 8))
+        else if (e.code === 'ERR_NETWORK') {
+          dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
+        }
       })
   }
 
@@ -97,7 +94,7 @@ const FormLogin = ({
           <span>
             {titleLoggedInAs} {user?.name ? user?.name : user.username}{' '}
           </span>
-
+          <a href='/edit'>Edit</a>
           <button onClick={handleLogout} id='logout' className='logout danger'>
             {titleLogout} &times;
           </button>
@@ -145,6 +142,7 @@ const FormLogin = ({
               <PasswordReset language={language} />
             </div>
           </Accordion>
+          <Notification />
         </>
       )}
     </>

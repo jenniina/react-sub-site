@@ -1042,3 +1042,27 @@ export enum EReset {
   pt = 'Redefinir',
   cs = 'Resetovat',
 }
+export enum EUsername {
+  en = 'Username',
+  es = 'Nombre de usuario',
+  fr = "Nom d'utilisateur",
+  de = 'Nutzername',
+  pt = 'Nome do usuário',
+  cs = 'Uživatelské jméno',
+}
+export enum EUsernameIsTheSame {
+  en = 'Username is the same as before',
+  es = 'El nombre de usuario es el mismo que antes',
+  fr = "Le nom d'utilisateur est le même qu'avant",
+  de = 'Der Benutzername ist der gleiche wie zuvor',
+  pt = 'O nome de usuário é o mesmo de antes',
+  cs = 'Uživatelské jméno je stejné jako dříve',
+}
+export enum ECurrentNickname {
+  en = 'Current Nickname',
+  es = 'Apodo actual',
+  fr = 'Surnom actuel',
+  de = 'Aktueller Spitzname',
+  pt = 'Apelido atual',
+  cs = 'Aktuální přezdívka',
+}

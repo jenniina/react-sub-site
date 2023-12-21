@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import loginService from '../services/login'
+import { IUser } from '../interfaces'
 
 const authSlice = createSlice({
   name: 'auth',
@@ -48,5 +49,13 @@ export const logout = () => {
     dispatch(logoutUser(null))
   }
 }
+
+export const refreshUser = (user: IUser) => {
+  return async (dispatch: (arg0: { payload: any; type: 'auth/setUser' }) => void) => {
+    window.localStorage.setItem('loggedJokeAppUser', JSON.stringify(user))
+    dispatch(setUser(user))
+  }
+}
+
 export const { setUser, loginUser, logoutUser } = authSlice.actions
 export default authSlice.reducer

@@ -105,6 +105,15 @@ export const updateUser = (
   }
 }
 
+export const updateUsername = (
+  user: Pick<IUser, '_id' | 'language' | 'username' | 'passwordOld'>
+) => {
+  return async () => {
+    const content: IContent = await userService.updateUsername(user)
+    return content
+  }
+}
+
 export const updatePassword = (
   user: Pick<IUser, '_id' | 'language' | 'password' | 'passwordOld'>
 ) => {
