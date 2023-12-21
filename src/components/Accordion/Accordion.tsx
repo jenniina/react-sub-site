@@ -22,6 +22,7 @@ interface accordionProps {
     | null
     | undefined
   close?: string
+  setIsFormOpen?: (isFormOpen: boolean) => void
 }
 
 const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefined) => {
@@ -29,6 +30,9 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
 
   const toggleVisibility = () => {
     setVisible(!visible)
+    if (props.setIsFormOpen) {
+      props.setIsFormOpen(!visible)
+    }
     const anchor = document.querySelector(`#${props.className}-container`)
     if (anchor) {
       anchor.scrollIntoView({ behavior: 'smooth' })

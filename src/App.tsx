@@ -22,8 +22,6 @@ import { ReducerProps, RefObject } from './interfaces'
 import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
 import { isTouchDevice } from './hooks/useDraggable'
 import UserEditPage from './pages/UserEditPage'
-import LoginPage from './pages/LoginPage'
-import RegisterPage from './pages/RegisterPage'
 import JokesPage from './pages/pages-portfolio/JokesPage'
 import QuizPage from './pages/pages-portfolio/QuizPage'
 import QuizStart from './components/Quiz/QuizStart'
@@ -128,33 +126,6 @@ const App: FC = () => {
               <Route
                 path='/test'
                 element={<Test heading='Test Page' text='' type='page' />}
-              />
-
-              <Route
-                path='/login'
-                element={
-                  <LoginPage
-                    heading='Log in'
-                    text=''
-                    type='page'
-                    language={language}
-                    setLanguage={setLanguage}
-                    user={user}
-                  />
-                }
-              />
-
-              <Route
-                path='/register'
-                element={
-                  <RegisterPage
-                    heading='Register'
-                    text=''
-                    type='page'
-                    language={language}
-                    user={user}
-                  />
-                }
               />
 
               <Route

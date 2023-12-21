@@ -23,7 +23,11 @@ import useTimeout from '../../hooks/useTimeout'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { logout } from '../../reducers/authReducer'
-import { ELanguages, ELogout } from '../Jokes/interfaces'
+import { ELanguages, ELoggedInAs, ELogin, ELogout } from '../Jokes/interfaces'
+import FormLogin from '../Login/Login'
+import Register from '../Register/Register'
+import { notify } from '../../reducers/notificationReducer'
+import { createUser } from '../../reducers/usersReducer'
 
 type Link = {
   label: string
@@ -257,6 +261,42 @@ const Nav = (
   }
 
   const titleLogout = ELogout[language]
+  const titleLogin = ELogin[language]
+  const titleLoggedInAs = ELoggedInAs[language]
+
+  const [isLoginFormOpen, setIsLoginFormOpen] = useState(false)
+  const [isRegisterFormOpen, setIsRegisterFormOpen] = useState(false)
+
+  const [username, setUsername] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [confirmPassword, setConfirmPassword] = useState<string>('')
+  const [name, setName] = useState<string>('')
+
+  const handleRegister = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault()
+    if (password !== confirmPassword) {
+      dispatch(notify(`Passwords do not match!`, true, 8))
+      return
+    }
+    dispatch(createUser({ name, username, password, language, verified: false }))
+      .then(async () => {
+        dispatch(
+          notify(
+            `Registration successful. Check your email for the verification link`,
+            false,
+            8
+          )
+        )
+      })
+      .catch((err) => {
+        console.log(err)
+        if (err.code === 'ERR_BAD_REQUEST') {
+          dispatch(notify(`Error: ${err.response?.data?.message}`, true, 8))
+          return
+        }
+        dispatch(notify(`Error: ${err.message}`, true, 8))
+      })
+  }
 
   return (
     <header
@@ -440,7 +480,32 @@ const Nav = (
           <div className={styles.loginregister}>
             {!user ? (
               <>
-                <NavLink
+                <div
+                  className={`${styles.loginregisterwrap} ${
+                    !isRegisterFormOpen && !isLoginFormOpen ? styles.closed : ''
+                  }`}
+                >
+                  <FormLogin
+                    setIsFormOpen={setIsLoginFormOpen}
+                    language={language}
+                    titleLoggedInAs={titleLoggedInAs}
+                    titleLogin={titleLogin}
+                    titleLogout={titleLogout}
+                  />
+                  <Register
+                    setIsFormOpen={setIsRegisterFormOpen}
+                    handleRegister={handleRegister}
+                    username={username}
+                    setUsername={setUsername}
+                    password={password}
+                    setPassword={setPassword}
+                    confirmPassword={confirmPassword}
+                    setConfirmPassword={setConfirmPassword}
+                    name={name}
+                    setName={setName}
+                  />
+                </div>
+                {/* <NavLink
                   to='/login'
                   className={({ isActive }) =>
                     isActive ? `active ${styles.active} ${styles.link}` : `${styles.link}`
@@ -455,7 +520,7 @@ const Nav = (
                   }
                 >
                   <span>Register</span>
-                </NavLink>
+                </NavLink> */}
               </>
             ) : (
               <>

@@ -616,3 +616,6 @@ button.danger:hover {
   align-items: center;
   justify-content: space-between;
 }
+form.login {
+  margin-bottom: 1rem;
+}
