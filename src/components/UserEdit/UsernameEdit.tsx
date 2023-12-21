@@ -89,7 +89,6 @@ const UsernameEdit = ({ user, language }: Props) => {
                 dispatch(notify(`${res.message ?? 'Error updating!'}`, true, 5))
               } else {
                 dispatch(notify(`${res.message ?? 'updated!'}`, false, 5))
-                dispatch(initializeUser())
                 setPasswordOld('')
               }
             }

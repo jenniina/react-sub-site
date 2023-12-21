@@ -42,7 +42,7 @@ import {
   EError,
   ECurrentNickname,
 } from '../Jokes/interfaces'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { IUser } from '../../interfaces'
 import { Select, SelectOption } from '../Select/Select'
 import { initializeUser, refreshUser } from '../../reducers/authReducer'
@@ -92,11 +92,10 @@ const NicknameEdit = ({ user, language }: Props) => {
                 )
               } else {
                 dispatch(notify(`${res.message ?? 'updated!'}`, false, 5))
-                dispatch(refreshUser(user)).then(() => {
+                dispatch(refreshUser(res.user)).then(() => {
                   dispatch(initializeUser())
                 })
                 setPasswordOld('')
-                window.localStorage.setItem('loggedJokeAppUser', JSON.stringify(user))
               }
             }
           })
