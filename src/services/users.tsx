@@ -54,7 +54,6 @@ const updateUsername = async (
     passwordOld: user.passwordOld,
   }
   const response = await axios.put(`${baseUrl}`, newUserSettings)
-  console.log(response.data)
   return response.data
 }
 const updatePassword = async (
