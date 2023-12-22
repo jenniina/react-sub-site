@@ -36,6 +36,7 @@ import {
 } from './components/Jokes/interfaces'
 import { useAppDispatch } from './hooks/useAppDispatch'
 import { initializeUser } from './reducers/authReducer'
+import { ETodoApp } from './components/Todo/interfaces'
 
 const App: FC = () => {
   const touchDevice = isTouchDevice()
@@ -166,7 +167,14 @@ const App: FC = () => {
                 />
                 <Route
                   path='/portfolio/todo'
-                  element={<TodoPage heading='Todo App' text='' type='page subpage' />}
+                  element={
+                    <TodoPage
+                      heading={ETodoApp[language]}
+                      text=''
+                      type='page subpage'
+                      language={language}
+                    />
+                  }
                 />
                 <Route
                   path='/portfolio/select'

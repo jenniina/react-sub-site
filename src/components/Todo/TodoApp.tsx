@@ -1,7 +1,15 @@
 import { useState, useRef, useEffect, FC, ChangeEvent } from 'react'
 import TodoList from './components/TodoList'
 import { v4 as uuidv4 } from 'uuid'
-import { ITask } from './interfaces'
+import {
+  EAddTask,
+  EAddTaskToTheTaskList,
+  EClearCompleted,
+  ELeftToDo,
+  ELoading,
+  ETask,
+  ITask,
+} from './interfaces'
 import style from './css/todo.module.css'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import {
@@ -23,8 +31,12 @@ import { useSelector } from 'react-redux'
 import { initializeUser } from '../../reducers/authReducer'
 import { ReducerProps } from '../../interfaces'
 import { RootState } from '../../store'
+import { ELanguages } from '../Jokes/interfaces'
 
-export default function TodoApp({}: {}) {
+interface Props {
+  language: ELanguages
+}
+export default function TodoApp({ language }: Props) {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -102,19 +114,19 @@ export default function TodoApp({}: {}) {
     <>
       <form onSubmit={handleAddTodo} className={style['form']}>
         <fieldset>
-          <legend className='scr'>Add tasks to the task list</legend>
+          <legend className='scr'>{EAddTaskToTheTaskList[language]}</legend>
           <div className={style['todo-input-area']}>
-            <label htmlFor={style['taskinput']}>Add tasks</label>
+            <label htmlFor={style['taskinput']}>{EAddTask[language]}</label>
             <textarea
               ref={todoNameRef}
               id={style['taskinput']}
               className='bg'
               name='name'
               required
-              placeholder='Task...'
+              placeholder={`${ETask[language]}...`}
             />
             <button id={style['submit-todo']} type='submit'>
-              Add Task
+              {EAddTask[language]}
             </button>
             <button
               disabled={!hasCompletedTasks}
@@ -122,17 +134,17 @@ export default function TodoApp({}: {}) {
                 handleClearTodos(e)
               }
             >
-              Clear Completed Tasks
+              {EClearCompleted[language]}
             </button>
           </div>
         </fieldset>
       </form>
       <div className={style['list-wrap']}>
         <p className={style['left-to-do']}>
-          {todos?.filter((todo) => !todo?.complete).length} left to do
+          {todos?.filter((todo) => !todo?.complete).length} {ELeftToDo[language]}
         </p>
         <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />
-        {status === 'loading' && <p>Loading...</p>}
+        {status === 'loading' && <p>{ELoading[language]}...</p>}
       </div>
       <Notification />
     </>
