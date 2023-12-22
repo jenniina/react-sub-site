@@ -32,6 +32,7 @@ import {
   ECategoryTitle,
   ETryTappingTheShapes,
   EReset,
+  EClickHereToSeeFeatures,
 } from '../../components/Jokes/interfaces'
 import { useEffect } from 'react'
 import useLocalStorage from '../../hooks/useStorage'
@@ -53,6 +54,7 @@ export default function JokesPage({
   const title = ETitle[language]
   const titleLanguage = ELanguageTitle[language]
   const titleFeatures = EFeatures[language]
+  const titleClickHereToSeeFeatures = EClickHereToSeeFeatures[language]
   const titleFetchesJokesFrom = EFetchesJokesFrom[language]
   const titleAppTranslatedTo = EAppTranslatedTo[language]
   const titleFilterJokesBy = EFilterJokesBy[language]
@@ -132,25 +134,26 @@ export default function JokesPage({
       <div className='inner-wrap'>
         <section className='joke-container card introduction'>
           <div>
-            <Select
-              id='main-language'
-              className='language main'
-              instructions={`${titleLanguage}:`}
-              options={options(ELanguages)}
-              value={
-                language
-                  ? ({
-                      value: language,
-                      label: getKeyByValue(ELanguages, language),
-                    } as SelectOption)
-                  : undefined
-              }
-              onChange={(o) => {
-                setLanguage(o?.value as ELanguages)
-              }}
-            />
-
-            <Accordion text={titleFeatures} className='features'>
+            <div>
+              <Select
+                id='main-language'
+                className='language main'
+                instructions={`${titleLanguage}:`}
+                options={options(ELanguages)}
+                value={
+                  language
+                    ? ({
+                        value: language,
+                        label: getKeyByValue(ELanguages, language),
+                      } as SelectOption)
+                    : undefined
+                }
+                onChange={(o) => {
+                  setLanguage(o?.value as ELanguages)
+                }}
+              />
+            </div>
+            <Accordion text={titleClickHereToSeeFeatures} className='features'>
               <div className='medium'>
                 <h2>{titleFeatures}</h2>
                 <ul className='ul'>
