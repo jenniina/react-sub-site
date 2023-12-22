@@ -226,6 +226,7 @@ const QuizFinished = () => {
                     setConfirmPassword={setConfirmPassword}
                     name={name}
                     setName={setName}
+                    text='quizfin'
                   />
                 </div>
               </div>

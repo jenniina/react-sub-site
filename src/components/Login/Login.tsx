@@ -39,6 +39,7 @@ interface LoginProps {
   titleLoggedInAs: ELoggedInAs
   language: ELanguages
   setIsFormOpen?: (isFormOpen: boolean) => void
+  text?: string
 }
 
 const FormLogin = ({
@@ -47,6 +48,7 @@ const FormLogin = ({
   titleLoggedInAs,
   language,
   setIsFormOpen,
+  text,
 }: LoginProps) => {
   const dispatch = useAppDispatch()
 
@@ -98,7 +100,11 @@ const FormLogin = ({
             {titleLoggedInAs} {user?.name ? user?.name : user.username}{' '}
           </span>
           <a href='/edit'>Edit</a>
-          <button onClick={handleLogout} id='logout' className='logout danger'>
+          <button
+            onClick={handleLogout}
+            id={`logout-${text}`}
+            className={`logout danger ${text}`}
+          >
             {titleLogout} &times;
           </button>
         </div>
@@ -138,12 +144,12 @@ const FormLogin = ({
                   <span>{titlePassword}: </span>
                 </label>
               </div>
-              <button type='submit' id='login' className='login'>
+              <button type='submit' id={`login-${text}`} className={`login ${text}`}>
                 {titleLogin}
               </button>
             </form>
             <div className='flex'>
-              <PasswordReset language={language} />
+              <PasswordReset language={language} text='login' />
             </div>
           </Accordion>
           <Notification />

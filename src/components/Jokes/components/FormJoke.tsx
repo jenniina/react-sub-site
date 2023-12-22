@@ -169,7 +169,7 @@ const Form = ({
         <div className='controls-wrap'>
           <Select
             id='language'
-            className='language'
+            className='language full'
             instructions={`${titleLanguageSelect}:`}
             options={options(ELanguages)}
             value={
