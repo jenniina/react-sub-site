@@ -408,7 +408,12 @@ body .z {
   justify-content: center;
   align-items: center;
 }
-
+.textcenter {
+  text-align: center;
+}
+.mb3 {
+  margin-bottom: 3rem;
+}
 .drag,
 .drag:focus-visible {
   outline: white 6px solid;

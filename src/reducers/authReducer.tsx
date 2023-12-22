@@ -37,7 +37,6 @@ export const login = (username: string, password: string, language: string) => {
       language,
     })
     window.localStorage.setItem('loggedJokeAppUser', JSON.stringify(user))
-    console.log('user', user)
     loginService.setToken(user.token)
     const response = dispatch(loginUser(user))
     return response

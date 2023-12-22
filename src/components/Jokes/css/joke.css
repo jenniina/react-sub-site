@@ -1,7 +1,7 @@
 .joke-container.introduction > div,
 .joke-container .features-container {
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
   gap: calc(var(--gap) * 2);
