@@ -65,7 +65,7 @@ export default function TodoApp({}: {}) {
     }
   }
 
-  const todoNameRef = useRef<HTMLInputElement>(null)
+  const todoNameRef = useRef<HTMLTextAreaElement>(null)
 
   const handleAddTodo = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -105,13 +105,12 @@ export default function TodoApp({}: {}) {
           <legend className='scr'>Add tasks to the task list</legend>
           <div className={style['todo-input-area']}>
             <label htmlFor={style['taskinput']}>Add tasks</label>
-            <input
+            <textarea
               ref={todoNameRef}
               id={style['taskinput']}
               className='bg'
               name='name'
               required
-              type='text'
               placeholder='Task...'
             />
             <button id={style['submit-todo']} type='submit'>
