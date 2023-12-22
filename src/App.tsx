@@ -29,7 +29,11 @@ import QuizQuestion from './components/Quiz/QuizQuestion'
 import QuizFinished from './components/Quiz/QuizFinished'
 import { BlobProvider } from './components/Blob/components/BlobProvider'
 import useLocalStorage from './hooks/useStorage'
-import { ELanguages } from './components/Jokes/interfaces'
+import {
+  EAJokeGeneratorForTheComicallyInclined,
+  ELanguages,
+  ETitle,
+} from './components/Jokes/interfaces'
 import { useAppDispatch } from './hooks/useAppDispatch'
 import { initializeUser } from './reducers/authReducer'
 
@@ -184,8 +188,8 @@ const App: FC = () => {
                   path='/portfolio/jokes/*'
                   element={
                     <JokesPage
-                      heading="The Comedian's Companion"
-                      text=''
+                      heading={ETitle[language]}
+                      text={EAJokeGeneratorForTheComicallyInclined[language]}
                       type='page subpage'
                       language={language}
                       setLanguage={setLanguage}
@@ -195,7 +199,13 @@ const App: FC = () => {
                 <Route path='/portfolio/quiz/' element={<QuizPage />}>
                   <Route
                     index
-                    element={<QuizStart heading='Quiz App' text='' type='page subpage' />}
+                    element={
+                      <QuizStart
+                        heading='Quiz App'
+                        text='Test your knowledge'
+                        type='page subpage'
+                      />
+                    }
                   />
                   <Route path='/portfolio/quiz/:difficulty' element={<QuizQuestion />} />
                   <Route path='/portfolio/quiz/results' element={<QuizFinished />} />

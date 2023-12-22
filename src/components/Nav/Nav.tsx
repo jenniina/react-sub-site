@@ -497,6 +497,7 @@ const Nav = (
                       titleLoggedInAs={titleLoggedInAs}
                       titleLogin={titleLogin}
                       titleLogout={titleLogout}
+                      text='nav'
                     />
                     <Register
                       setIsFormOpen={setIsRegisterFormOpen}
@@ -509,6 +510,7 @@ const Nav = (
                       setConfirmPassword={setConfirmPassword}
                       name={name}
                       setName={setName}
+                      text='nav'
                     />
                   </div>
                   {/* <NavLink

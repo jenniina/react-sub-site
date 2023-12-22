@@ -236,7 +236,11 @@ form.joke > *:not(.toggle) {
   flex-flow: column wrap;
   justify-content: center;
   align-items: center;
-  gap: calc(var(--gap) * 2);
+  gap: calc(var(--gap) * 3);
+}
+.toggle-wrap .toggle-container {
+  flex-flow: column nowrap;
+  gap: calc(var(--gap) / 2);
 }
 
 .toggle-wrap .select-container.sortby {
@@ -453,6 +457,10 @@ button.delivery.reveal p {
   .toggle-wrap .select-container.sortby {
     flex-flow: row wrap;
   }
+  .toggle-wrap .toggle-container {
+    flex-flow: row nowrap;
+    gap: calc(var(--gap) / 2);
+  }
   .joke-container .select-container.language:not(.submit),
   .joke-container .select-container.language:not(.submit) .container {
     flex: 0 1 max-content;
@@ -460,6 +468,12 @@ button.delivery.reveal p {
     width: max-content;
     margin: 0;
     gap: calc(var(--gap) / 2);
+  }
+  .joke-container .select-container.language:not(.submit).full {
+    flex: 1 0 100%;
+    max-width: 100%;
+    width: 100%;
+    justify-content: center;
   }
   /* .joke-container .select-container.language.submit {
     flex: 0 0 auto;
@@ -524,15 +538,11 @@ button.delivery.reveal p {
 @media (min-width: 700px) {
   .controls-wrap,
   .toggle-wrap {
-    gap: calc(var(--gap) * 1.5);
+    gap: calc(var(--gap) * 3);
   }
   .cs .controls-wrap,
   .cs .toggle-wrap {
     gap: calc(var(--gap) * 1.2);
-  }
-  .controls-wrap {
-    flex-flow: row nowrap;
-    align-items: center;
   }
 }
 @media (min-width: 800px) {

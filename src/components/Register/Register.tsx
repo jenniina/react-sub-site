@@ -16,6 +16,7 @@ interface Props {
   setName: (name: string) => void
   setConfirmPassword: (confirmPassword: string) => void
   setIsFormOpen?: (isFormOpen: boolean) => void
+  text?: string
 }
 const Register = ({
   handleRegister,
@@ -28,6 +29,7 @@ const Register = ({
   name,
   setName,
   setIsFormOpen,
+  text,
 }: Props) => {
   const dispatch = useAppDispatch()
 
@@ -52,14 +54,14 @@ const Register = ({
             setIsFormOpen={setIsFormOpen}
           >
             <h2>Register</h2>
-            <form onSubmit={handleRegister} className='register'>
+            <form onSubmit={handleRegister} className={`register ${text}`}>
               <div className='input-wrap'>
                 <label>
                   <input
                     required
                     type='text'
                     name='username'
-                    id='username'
+                    id={`username-${text}`}
                     value={username}
                     onChange={({ target }) => setUsername(target.value)}
                   />
@@ -72,7 +74,7 @@ const Register = ({
                     required
                     type='text'
                     name='name'
-                    id='name'
+                    id={`name-${text}`}
                     value={name}
                     onChange={({ target }) => setName(target.value)}
                   />
@@ -85,7 +87,7 @@ const Register = ({
                     required
                     type='password'
                     name='password'
-                    id='password'
+                    id={`password-${text}`}
                     value={password}
                     onChange={({ target }) => setPassword(target.value)}
                   />
@@ -98,7 +100,7 @@ const Register = ({
                     required
                     type='password'
                     name='confirmPassword'
-                    id='confirmPassword'
+                    id={`confirmPassword-${text}`}
                     value={confirmPassword}
                     onChange={({ target }) => setConfirmPassword(target.value)}
                   />

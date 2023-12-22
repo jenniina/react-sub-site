@@ -187,6 +187,7 @@ const QuizStart = ({
                 setConfirmPassword={setConfirmPassword}
                 name={name}
                 setName={setName}
+                text='quizstart'
               />
             </div>
           </div>

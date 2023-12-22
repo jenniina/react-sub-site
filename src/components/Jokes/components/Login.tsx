@@ -167,7 +167,7 @@ const FormLogin = ({
               </button>
             </form>
             <div className='flex'>
-              <PasswordReset language={language} />
+              <PasswordReset language={language} text='jokes' />
             </div>
           </Accordion>
         </>

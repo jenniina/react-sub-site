@@ -413,7 +413,7 @@ export enum ESubmit {
   pt = 'Encontre uma piada',
   cs = 'Najít vtip',
 }
-export enum EAJokeGeneratorForTheComicallyInclied {
+export enum EAJokeGeneratorForTheComicallyInclined {
   en = 'A Joke Generator for the Comically Inclined',
   es = 'Un generador de chistes para los cómicamente inclinados',
   fr = 'Un générateur de blagues pour les comiquement enclins',

@@ -53,7 +53,7 @@ import {
   ESafemodeTitle,
   LanguageOfLanguage,
   ESelectALanguage,
-  EAJokeGeneratorForTheComicallyInclied,
+  EAJokeGeneratorForTheComicallyInclined,
 } from './interfaces'
 import { useSelector } from 'react-redux'
 import Login from './components/Login'
@@ -173,14 +173,12 @@ function Jokes({
   const titleLoginOrRegisterToSave = ELoginOrRegisterToSave[language]
   const titleJokeAlreadySaved = EJokeAlreadySaved[language]
   const titlePasswordsDoNotMatch = EPasswordsDoNotMatch[language]
-  const titleRegistrationSuccesful = ERegistrationSuccesful[language]
   const titleError = EError[language]
   const titleNoJokeFound = ENoJokeFound[language]
   const deleteJoke = EDelete[language]
   const languageNameFromLanguage = getKeyofEnum(ELanguages, language)
   const translateWordLanguage = ELanguageTitle[language]
   const titleLanguage = languageNameFromLanguage
-  const titleLanguageSelect = ESelectALanguage[language]
   const [joke, setJoke] = useState<string>('')
   const [delivery, setDelivery] = useState<string>('')
   const [categoryLanguages, setCategoryLanguages] = useState<
@@ -215,19 +213,8 @@ function Jokes({
   const [name, setName] = useState<string>('')
   const [visibleJoke, setVisibleJoke] = useState(false)
   const [saveJoke, setSaveJoke] = useLocalStorage<IJoke | null>('savedJoke', null)
-  const titleFeatures = EFeatures[language]
-  const titleFetchesJokesFrom = EFetchesJokesFrom[language]
-  const titleAppTranslatedTo = EAppTranslatedTo[language]
-  const titleFilterJokesBy = EFilterJokesBy[language]
-  const titleJokeType = EJokeTypeTitle[language]
-  const titleSafemode = ESafemodeTitle[language]
-  const titleOnOff = EOnOff[language]
-  const titleKeyword = EKeyword[language]
-  const titleJokeCategoryAny = jokeCategoryAny[language]
-  const titleClickHereToSeeFeatures = EClickHereToSeeFeatures[language]
-  const titleAJokeGeneratorForTheComicallyInclied =
-    EAJokeGeneratorForTheComicallyInclied[language]
-  const [showToken, setShowToken] = useState(false)
+  const titleAJokeGeneratorForTheComicallyInclined =
+    EAJokeGeneratorForTheComicallyInclined[language]
 
   const dispatch = useAppDispatch()
 
@@ -247,15 +234,6 @@ function Jokes({
   useEffect(() => {
     dispatch(initializeUser())
   }, [loggedIn])
-
-  // const users = useSelector((state: ReducerProps) => {
-  //   return state.users.users
-  // })
-  // const currentUser = users?.find((u: IUser) => u.username === user?.username)
-
-  //const userJokes = user ? findUserJokes(user?._id as string) : []
-
-  //console.log(userJokes)
 
   // Set the document language and title
   useEffect(() => {
@@ -638,7 +616,7 @@ function Jokes({
           <div className='jokes-wrap'>
             <h2>{title}</h2>
             <p className='center textcenter mb3'>
-              {titleAJokeGeneratorForTheComicallyInclied}
+              {titleAJokeGeneratorForTheComicallyInclined}
             </p>
 
             <FormJoke

@@ -19,9 +19,10 @@ import {
 
 interface Props {
   language: ELanguages
+  text?: string
 }
 
-const PasswordReset = ({ language }: Props) => {
+const PasswordReset = ({ language, text }: Props) => {
   const dispatch = useAppDispatch()
 
   const [username, setUsername] = useState<string | undefined>('')
@@ -82,7 +83,7 @@ const PasswordReset = ({ language }: Props) => {
               <span>{titleEmail}: </span>
             </label>
           </div>
-          <button type='submit' id='forgot' className='forgot-btn'>
+          <button type='submit' id={`forgot-${text}`} className='forgot-btn'>
             {titleSendResetLink}
           </button>
         </form>
