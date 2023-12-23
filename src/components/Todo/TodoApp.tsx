@@ -31,7 +31,7 @@ import { useSelector } from 'react-redux'
 import { initializeUser } from '../../reducers/authReducer'
 import { ReducerProps } from '../../interfaces'
 import { RootState } from '../../store'
-import { ELanguages } from '../Jokes/interfaces'
+import { ELanguages } from '../../interfaces'
 
 interface Props {
   language: ELanguages

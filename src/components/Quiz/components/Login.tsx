@@ -10,7 +10,7 @@ import { initializeUser, login, logout } from '../../../reducers/authReducer'
 import { useSelector } from 'react-redux'
 import Scores from './Scores'
 import styles from '../css/quiz.module.css'
-import { EEdit, EError, ELanguages, ELoggedInAs, ELogout } from '../../Jokes/interfaces'
+import { ELogout, EError, EEdit, ELanguages, ELoggedInAs } from '../../../interfaces'
 
 const FormLogin = ({ easy, medium, hard }: IHighscore) => {
   const dispatch = useAppDispatch()

@@ -1,5 +1,5 @@
 import Hero from '../../components/Hero/Hero'
-import { ELanguages } from '../../components/Jokes/interfaces'
+import { ELanguages } from '../../interfaces'
 import TodoApp from '../../components/Todo/TodoApp'
 import '../../css/App.css'
 

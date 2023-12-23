@@ -18,7 +18,7 @@ import FormPage from './pages/pages-portfolio/FormPage'
 import { Footer } from './components/Footer/Footer'
 import { useTheme } from './hooks/useTheme'
 import { useScrollbarWidth } from './hooks/useScrollbarWidth'
-import { ReducerProps, RefObject } from './interfaces'
+import { ReducerProps, RefObject, ELanguages } from './interfaces'
 import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
 import { isTouchDevice } from './hooks/useDraggable'
 import UserEditPage from './pages/UserEditPage'
@@ -31,8 +31,7 @@ import { BlobProvider } from './components/Blob/components/BlobProvider'
 import useLocalStorage from './hooks/useStorage'
 import {
   EAJokeGeneratorForTheComicallyInclined,
-  ELanguages,
-  ETitle,
+  ETheComediansCompanion,
 } from './components/Jokes/interfaces'
 import { useAppDispatch } from './hooks/useAppDispatch'
 import { initializeUser } from './reducers/authReducer'
@@ -196,7 +195,7 @@ const App: FC = () => {
                   path='/portfolio/jokes/*'
                   element={
                     <JokesPage
-                      heading={ETitle[language]}
+                      heading={ETheComediansCompanion[language]}
                       text={EAJokeGeneratorForTheComicallyInclined[language]}
                       type='page subpage'
                       language={language}

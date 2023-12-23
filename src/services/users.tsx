@@ -1,6 +1,5 @@
 import axios, { Axios, AxiosResponse } from 'axios'
-import { IUser as user } from '../interfaces'
-import { ELanguages } from '../components/Jokes/interfaces'
+import { IUser as user, ELanguages } from '../interfaces'
 
 const VITE_BASE_URI = import.meta.env.VITE_BASE_URI
 const baseUrl = VITE_BASE_URI ? `${VITE_BASE_URI}/api/users` : '/api/users'

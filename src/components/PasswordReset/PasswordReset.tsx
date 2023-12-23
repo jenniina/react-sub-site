@@ -1,21 +1,19 @@
-import { useEffect, useRef, useState, FormEvent } from 'react'
-import { AxiosError } from 'axios'
-import { IUser, ReducerProps } from '../../interfaces'
-import { EEmailSent, EError, ESendingEmail } from '../Jokes/interfaces'
+import { useRef, useState, FormEvent } from 'react'
 import Accordion from '../Accordion/Accordion'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
-import { initializeUser, login, logout } from '../../reducers/authReducer'
 import { forgot } from '../../reducers/usersReducer'
-import { useSelector } from 'react-redux'
 import {
   EClose,
   ELanguages,
   EEmail,
-  EPassword,
   EForgotPassword,
+  EPassword,
   ESendResetLink,
-} from '../Jokes/interfaces'
+  EEmailSent,
+  EError,
+  ESendingEmail,
+} from '../../interfaces'
 
 interface Props {
   language: ELanguages

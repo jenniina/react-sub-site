@@ -1,7 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { ELanguages, EPleaseGiveValidEmail } from '../components/Jokes/interfaces'
 import userService from '../services/users'
-import { IUser } from '../interfaces'
+import { EPleaseGiveValidEmail, IUser, ELanguages } from '../interfaces'
 import AppThunk from '../store'
 import { AxiosResponse } from 'axios'
 

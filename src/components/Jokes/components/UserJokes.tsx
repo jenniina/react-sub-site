@@ -9,17 +9,19 @@ import {
   EUnsafeTitle,
   ESingle,
   ETwoPart,
-  ELanguages,
   EClickToReveal,
   ESortByTitle,
   SortBy,
+  ESafemodeTitle,
+} from '../interfaces'
+import {
+  IUser,
+  ELanguages,
   LanguageOfLanguage,
   ELanguagesLong,
   ELanguageOfLanguage,
   TLanguageOfLanguage,
-  ESafemodeTitle,
-} from '../interfaces'
-import { IUser } from '../../../interfaces'
+} from '../../../interfaces'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
 import { Select, SelectOption } from '../../Select/Select'
 

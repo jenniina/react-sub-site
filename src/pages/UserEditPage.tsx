@@ -12,10 +12,9 @@ import {
   ECategory_fr,
   ECategory_pt,
   EJokeType,
-  ELanguages,
   ESafemode,
 } from '../components/Jokes/interfaces'
-import { IUser } from '../interfaces'
+import { ELanguages } from '../interfaces'
 import styles from './css/useredit.module.css'
 import UserEdit from '../components/UserEdit/NicknameEdit'
 import { SelectOption } from '../components/Select/Select'

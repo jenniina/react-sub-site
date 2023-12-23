@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useRef } from 'react'
 import Accordion from '../../Accordion/Accordion'
 import { useSelector } from 'react-redux'
-import { ELanguages } from '../interfaces'
+import { ELanguages } from '../../../interfaces'
 import { ReducerProps } from '../../../interfaces'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { initializeUser } from '../../../reducers/authReducer'

@@ -8,12 +8,6 @@ import {
   ECategory_es,
   ECategory_fr,
   ECategory_pt,
-  EEdit,
-  EError,
-  ELanguageTitle,
-  ELanguagesLong,
-  ELoggingIn,
-  ReducerProps,
 } from '../interfaces'
 import Accordion from '../../Accordion/Accordion'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
@@ -22,14 +16,20 @@ import { initializeUser, login, logout } from '../../../reducers/authReducer'
 import PasswordReset from '../../PasswordReset/PasswordReset'
 import { useSelector } from 'react-redux'
 import {
-  ELogin,
-  ELogout,
   ELoggedInAs,
   EClose,
   ELanguages,
+  ELogin,
+  ELogout,
   EEmail,
   EPassword,
-} from '../interfaces'
+  ELoggingIn,
+  EError,
+  EEdit,
+  ELanguageTitle,
+  ELanguagesLong,
+  ReducerProps,
+} from '../../../interfaces'
 import UserEdit from '../../UserEdit/NicknameEdit'
 import { SelectOption } from '../../Select/Select'
 
