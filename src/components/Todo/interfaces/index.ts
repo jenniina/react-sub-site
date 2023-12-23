@@ -72,3 +72,12 @@ export enum ETodoApp {
   pt = 'Aplicativo de Tarefas',
   cs = 'Úkolová Aplikace',
 }
+// Get organized, one task at a time!
+export enum EGetOrganizedOneTaskAtATime {
+  en = 'Get organized, one task at a time!',
+  es = '¡Organízate, una tarea a la vez!',
+  fr = 'Organisez-vous, une tâche à la fois!',
+  de = 'Organisieren Sie sich, eine Aufgabe nach der anderen!',
+  pt = 'Organize-se, uma tarefa de cada vez!',
+  cs = 'Zorganizujte se, jedna úloha za druhou!',
+}

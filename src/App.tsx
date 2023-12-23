@@ -36,7 +36,7 @@ import {
 } from './components/Jokes/interfaces'
 import { useAppDispatch } from './hooks/useAppDispatch'
 import { initializeUser } from './reducers/authReducer'
-import { ETodoApp } from './components/Todo/interfaces'
+import { EGetOrganizedOneTaskAtATime, ETodoApp } from './components/Todo/interfaces'
 
 const App: FC = () => {
   const touchDevice = isTouchDevice()
@@ -170,7 +170,7 @@ const App: FC = () => {
                   element={
                     <TodoPage
                       heading={ETodoApp[language]}
-                      text=''
+                      text={EGetOrganizedOneTaskAtATime[language]}
                       type='page subpage'
                       language={language}
                     />
