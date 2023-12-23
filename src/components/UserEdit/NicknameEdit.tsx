@@ -1,23 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import {
   EError,
   IUser,
-  EConfirmPassword,
-  EEmail,
   ENickname,
-  EPassword,
   EEdit,
-  ELanguageTitle,
-  EClose,
-  ESelectAnOption,
   ELanguages,
-  ELanguagesLong,
-  ESubmit,
-  ESend,
   ECurrentPassword,
   ECurrentNickname,
 } from '../../interfaces'
-import { Select, SelectOption } from '../Select/Select'
 import { initializeUser, refreshUser } from '../../reducers/authReducer'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'

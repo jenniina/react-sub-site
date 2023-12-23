@@ -13,8 +13,6 @@
             getKeyByValue={getKeyByValue}
           /> */
 }
-
-import { useSelector } from 'react-redux'
 import {
   ECategory_cs,
   ECategory_de,
@@ -31,30 +29,21 @@ import {
   ESubmitAJoke,
   ECategoryTitle,
   ECategory_en,
-  EFlags,
-  TFlagsLanguages,
   FlagsLanguage,
-  IFlagsLanguages,
   EAddWarningTitle,
-  ESafeTitle,
-  ESafemode,
-  ESafemodeTitle,
   EJokeTypeTitle,
   ESubmitAJokeTo,
   IJokeSubmissionSingleJSON,
   IJokeSubmissionTwoPartJSON,
 } from '../interfaces'
 import {
-  EClose,
   ESelectAnOption,
-  ESubmit,
   ESend,
   ELanguages,
   ELanguageTitle,
   ELanguagesLong,
 } from '../../../interfaces'
 import { useEffect, useState } from 'react'
-
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
 import Accordion from '../../Accordion/Accordion'
 import { Select, SelectOption } from '../../Select/Select'

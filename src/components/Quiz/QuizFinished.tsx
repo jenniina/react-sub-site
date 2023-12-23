@@ -1,7 +1,7 @@
 import { useEffect, useState, FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { IQuizHighscore, IHighscore } from './interfaces'
+import { IQuizHighscore } from './interfaces'
 import { ReducerProps } from '../../interfaces'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { addQuiz, getUserQuiz, deleteDuplicates } from './reducers/quizReducer'

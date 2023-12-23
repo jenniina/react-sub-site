@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import Hero from '../components/Hero/Hero'
 import { useTheme } from '../hooks/useTheme'
@@ -16,7 +15,6 @@ import {
 } from '../components/Jokes/interfaces'
 import { ELanguages } from '../interfaces'
 import styles from './css/useredit.module.css'
-import UserEdit from '../components/UserEdit/NicknameEdit'
 import { SelectOption } from '../components/Select/Select'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../hooks/useAppDispatch'

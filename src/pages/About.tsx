@@ -2,7 +2,6 @@ import { useMemo, FC } from 'react'
 import { useTheme } from '../hooks/useTheme'
 import { Link } from 'react-router-dom'
 import styles from './css/about.module.css'
-import useWindowSize from '../hooks/useWindowSize'
 import Hero from '../components/Hero/Hero'
 import { IoSettingsSharp } from 'react-icons/io5'
 
@@ -172,6 +171,30 @@ export default function About({
               </big>
 
               <ul className='ul'>
+                <li>
+                  <big>
+                    <Link to='/portfolio/quiz'>Quiz App</Link>
+                  </big>
+                  <ul>
+                    <li>Fetches questions from an API</li>
+                    <li>User can choose the difficulty level (easy, medium, hard)</li>
+                    <li>Uses Mongo-DB to store the information, when logged in</li>
+                  </ul>
+                </li>
+                <li>
+                  <big>
+                    <Link to='/portfolio/jokes'>Joke App</Link>
+                  </big>
+                  <ul>
+                    <li>Fetches jokes from an API</li>
+                    <li>Customizable options</li>
+                    <li>User can save favorite jokes, when logged in</li>
+                    <li>
+                      Saves latest joke in localStorage and uses Mongo-DB to store the
+                      jokes, when logged in.
+                    </li>
+                  </ul>
+                </li>
                 <li>
                   <big>
                     <Link to='/portfolio/blob'>Blob App</Link>

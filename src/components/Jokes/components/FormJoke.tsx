@@ -13,7 +13,6 @@ import {
   EJokeType,
   ESafemode,
   EFindAJoke,
-  ECategoryTitle,
   ESafeTitle,
   EUnsafeTitle,
   ESingle,
@@ -27,7 +26,7 @@ import {
   ESearchByKeyword,
   EAny,
 } from '../interfaces'
-import { ESearch, ELanguages, ESelectAnOption, ELanguageTitle } from '../../../interfaces'
+import { ELanguages } from '../../../interfaces'
 
 interface Props {
   handleFormSubmit: (e: React.FormEvent<HTMLFormElement>) => void

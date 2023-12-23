@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState, FormEvent } from 'react'
-import { AxiosError } from 'axios'
 import {
-  ECategoryTitle,
   ECategory_cs,
   ECategory_de,
   ECategory_en,
@@ -26,11 +24,8 @@ import {
   ELoggingIn,
   EError,
   EEdit,
-  ELanguageTitle,
-  ELanguagesLong,
   ReducerProps,
 } from '../../../interfaces'
-import UserEdit from '../../UserEdit/NicknameEdit'
 import { SelectOption } from '../../Select/Select'
 
 interface LoginProps {

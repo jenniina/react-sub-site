@@ -4,43 +4,16 @@ import {
   ECategory_es,
   ECategory_fr,
   ECategory_pt,
-  EJoke,
-  EJokeType,
-  ESingle,
-  ETwoPart,
-  IJokeCategoryByLanguage,
-  EJokeSetup,
-  EJokeDelivery,
-  ESubmitAJoke,
-  ECategoryTitle,
   ECategory_en,
-  EFlags,
-  TFlagsLanguages,
-  FlagsLanguage,
-  IFlagsLanguages,
-  EAddWarningTitle,
-  ESafeTitle,
-  ESafemode,
-  ESafemodeTitle,
-  EJokeTypeTitle,
-  ESubmitAJokeTo,
-  IJokeSubmissionSingleJSON,
-  IJokeSubmissionTwoPartJSON,
 } from '../Jokes/interfaces'
-import { EConfirmPassword, EEmail, ENickname, EPassword, EError } from '../../interfaces'
-import { useState, useEffect } from 'react'
+import { ENickname, EError } from '../../interfaces'
+import { useState } from 'react'
 import {
   IUser,
   EEdit,
-  ELanguagesLong,
-  ESubmit,
-  ESend,
   ELanguageTitle,
-  EClose,
-  ESelectAnOption,
   ELanguages,
   ECurrentPassword,
-  ECurrentNickname,
 } from '../../interfaces'
 import { Select, SelectOption } from '../Select/Select'
 import { initializeUser, refreshUser } from '../../reducers/authReducer'

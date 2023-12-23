@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import FormJoke from './components/FormJoke'
 import Register from './components/Register'
-import { Select, SelectOption } from '../Select/Select'
+import { SelectOption } from '../Select/Select'
 import './css/joke.css'
 import {
   IJoke,
@@ -30,32 +30,17 @@ import {
   SortBy,
   EJokeAlreadySaved,
   ENoJokeFound,
-  EClickHereToSeeFeatures,
-  EFetchesJokesFrom,
-  EFilterJokesBy,
-  EJokeTypeTitle,
-  EKeyword,
-  ERegisterAndLoginToUse,
-  ESafemodeTitle,
-  ESelectALanguage,
   EAJokeGeneratorForTheComicallyInclined,
 } from './interfaces'
 import {
-  EOnOff,
   ELogin,
   ELogout,
-  ERegistrationSuccesful,
   EError,
   EPasswordsDoNotMatch,
-  LanguageOfLanguage,
-  EFeatures,
   ELanguageTitle,
   ELoggedInAs,
-  ESubmit,
-  IUser,
   ELanguages,
   ReducerProps,
-  EAppTranslatedTo,
 } from '../../interfaces'
 import { useSelector } from 'react-redux'
 import Login from './components/Login'
@@ -63,26 +48,15 @@ import useLocalStorage from '../../hooks/useStorage'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import Notification from './components/Notification'
-import {
-  createUser,
-  updateUser,
-  findUserById,
-  initializeUsers,
-  updateUserToken,
-} from '../../reducers/usersReducer'
+import { createUser, findUserById } from '../../reducers/usersReducer'
 import {
   createJoke,
   deleteUserFromJoke,
-  findJoke,
   initializeJokes,
   updateJoke,
 } from './reducers/jokeReducer'
 import { initializeUser, login } from '../../reducers/authReducer'
 import UserJokes from './components/UserJokes'
-//import JokeSubmit from './components/JokeSubmit'
-import Accordion from '../Accordion/Accordion'
-import { AxiosResponse } from 'axios'
-import UserEdit from '../UserEdit/NicknameEdit'
 
 export const jokeCategoryByLanguage: IJokeCategoryByLanguage = {
   en: {

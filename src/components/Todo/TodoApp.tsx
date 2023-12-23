@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, FC, ChangeEvent } from 'react'
+import { useRef, useEffect } from 'react'
 import TodoList from './components/TodoList'
 import { v4 as uuidv4 } from 'uuid'
 import {
@@ -8,15 +8,12 @@ import {
   ELeftToDo,
   ELoading,
   ETask,
-  ITask,
 } from './interfaces'
 import style from './css/todo.module.css'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import {
-  fetchTodos,
   addTodo,
   addTodoAsync,
-  deleteTodo,
   deleteTodoAsync,
   editTodo,
   editTodoAsync,

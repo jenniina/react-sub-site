@@ -1,54 +1,15 @@
-import {
-  ECategory_cs,
-  ECategory_de,
-  ECategory_es,
-  ECategory_fr,
-  ECategory_pt,
-  EJoke,
-  EJokeType,
-  ESingle,
-  ETwoPart,
-  IJokeCategoryByLanguage,
-  EJokeSetup,
-  EJokeDelivery,
-  ESubmitAJoke,
-  ECategoryTitle,
-  ECategory_en,
-  EFlags,
-  TFlagsLanguages,
-  FlagsLanguage,
-  IFlagsLanguages,
-  EAddWarningTitle,
-  ESafeTitle,
-  ESafemode,
-  ESafemodeTitle,
-  EJokeTypeTitle,
-  ESubmitAJokeTo,
-  IJokeSubmissionSingleJSON,
-  IJokeSubmissionTwoPartJSON,
-} from '../Jokes/interfaces'
 import { useState } from 'react'
 import {
-  ELanguageTitle,
-  ESelectAnOption,
-  EClose,
   ELanguages,
-  ELanguagesLong,
-  ESubmit,
-  ESend,
   EEdit,
   ECurrentPassword,
   IUser,
   EConfirmPassword,
-  EEmail,
-  ENickname,
   EPassword,
 } from '../../interfaces'
-import { Select, SelectOption } from '../Select/Select'
-import { initializeUser, refreshUser } from '../../reducers/authReducer'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
-import { updatePassword, updateUser } from '../../reducers/usersReducer'
+import { updatePassword } from '../../reducers/usersReducer'
 import { AxiosError } from 'axios'
 import Notification from '../Notification/Notification'
 import styles from './css/edit.module.css'

@@ -1,5 +1,3 @@
-import { useState } from 'react'
-import { IJoke } from '../interfaces'
 import { ESave, ELanguages } from '../../../interfaces'
 
 interface Props {

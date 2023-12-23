@@ -7,8 +7,6 @@ import {
   ECategoryTitle,
   ESafeTitle,
   EUnsafeTitle,
-  ESingle,
-  ETwoPart,
   EClickToReveal,
   ESortByTitle,
   SortBy,
@@ -19,7 +17,6 @@ import {
   ELanguages,
   LanguageOfLanguage,
   ELanguagesLong,
-  ELanguageOfLanguage,
   TLanguageOfLanguage,
 } from '../../../interfaces'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'

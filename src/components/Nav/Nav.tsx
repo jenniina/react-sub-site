@@ -1,7 +1,7 @@
 import { FC, useState, useEffect, forwardRef, Ref, useImperativeHandle } from 'react'
 import { BiChat } from 'react-icons/bi'
 import { BsPerson } from 'react-icons/bs'
-import { CgSearch, CgMenuRound } from 'react-icons/cg'
+import { CgSearch } from 'react-icons/cg'
 import { HiOutlineDotsHorizontal } from 'react-icons/hi'
 import { IoMdImages } from 'react-icons/io'
 import { IoSettingsSharp } from 'react-icons/io5'

@@ -1,11 +1,4 @@
-import {
-  RefObject,
-  useContext,
-  useEffect,
-  useState,
-  Dispatch,
-  SetStateAction,
-} from 'react'
+import { RefObject, useEffect, useState, Dispatch, SetStateAction } from 'react'
 import { Draggable, focusedBlob, ColorPair } from '../interfaces'
 import Blob from './Blob'
 

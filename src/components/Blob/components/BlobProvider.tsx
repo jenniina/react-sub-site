@@ -1,4 +1,4 @@
-import { useReducer, FC, ReactNode, createContext, Dispatch, Reducer } from 'react'
+import { useReducer, FC, ReactNode, createContext, Dispatch } from 'react'
 import blobReducer from '../reducers/blobReducer'
 import { Draggable } from '../interfaces'
 
