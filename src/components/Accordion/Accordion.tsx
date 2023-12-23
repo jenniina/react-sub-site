@@ -7,6 +7,7 @@ import {
   ReactElement,
   ReactFragment,
   ReactPortal,
+  useEffect,
 } from 'react'
 
 interface accordionProps {
@@ -22,11 +23,21 @@ interface accordionProps {
     | null
     | undefined
   close?: string
+  isOpen?: boolean
   setIsFormOpen?: (isFormOpen: boolean) => void
 }
 
 const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefined) => {
   const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    if (props.isOpen !== undefined) {
+      setVisible(props.isOpen)
+      if (props.setIsFormOpen) {
+        props.setIsFormOpen(props.isOpen)
+      }
+    }
+  }, [props.isOpen])
 
   const toggleVisibility = () => {
     setVisible(!visible)

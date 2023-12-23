@@ -39,6 +39,7 @@ interface LoginProps {
   titleLoggedInAs: ELoggedInAs
   language: ELanguages
   setIsFormOpen?: (isFormOpen: boolean) => void
+  isOpen?: boolean
   text?: string
 }
 
@@ -48,6 +49,7 @@ const FormLogin = ({
   titleLoggedInAs,
   language,
   setIsFormOpen,
+  isOpen,
   text,
 }: LoginProps) => {
   const dispatch = useAppDispatch()
@@ -116,6 +118,7 @@ const FormLogin = ({
             ref={formLoginRef}
             close={EClose[(language as ELanguages) || 'en']}
             setIsFormOpen={setIsFormOpen}
+            isOpen={isOpen}
           >
             <h2>{titleLogin}</h2>
 
