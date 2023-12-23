@@ -2,7 +2,6 @@ import { useMemo, FC } from 'react'
 import { useTheme } from '../hooks/useTheme'
 import { Link } from 'react-router-dom'
 import styles from './css/about.module.css'
-import useWindowSize from '../hooks/useWindowSize'
 import Hero from '../components/Hero/Hero'
 import { IoSettingsSharp } from 'react-icons/io5'
 

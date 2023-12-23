@@ -1,26 +1,14 @@
 import { useEffect, useRef, useState, FormEvent } from 'react'
-import { AxiosError } from 'axios'
-import {
-  ECategoryTitle,
-  ECategory_cs,
-  ECategory_de,
-  ECategory_en,
-  ECategory_es,
-  ECategory_fr,
-  ECategory_pt,
-} from '../Jokes/interfaces'
 import Accordion from '../Accordion/Accordion'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
-import { initializeUser, login, logout, refreshUser } from '../../reducers/authReducer'
+import { initializeUser, login, logout } from '../../reducers/authReducer'
 import PasswordReset from '../PasswordReset/PasswordReset'
 import { useSelector } from 'react-redux'
 import {
   ELoggedInAs,
   EClose,
   ELanguages,
-  ELanguageTitle,
-  ELanguagesLong,
   ReducerProps,
   ELogin,
   ELogout,
@@ -29,8 +17,6 @@ import {
   EError,
   ELoggingIn,
 } from '../../interfaces'
-import UserEdit from '../UserEdit/NicknameEdit'
-import { SelectOption } from '../Select/Select'
 import Notification from '../Notification/Notification'
 
 interface LoginProps {

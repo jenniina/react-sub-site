@@ -17,7 +17,6 @@ import Register from '../Register/Register'
 import Notification from '../Notification/Notification'
 import { FaStar } from 'react-icons/fa'
 import { getUserQuiz } from './reducers/quizReducer'
-import Accordion from '../Accordion/Accordion'
 
 const QuizStart = ({
   heading,

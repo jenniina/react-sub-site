@@ -1,16 +1,12 @@
 import { useState } from 'react'
 import {
   IUser,
-  EConfirmPassword,
   EEmail,
-  ENickname,
-  EPassword,
   ELanguages,
   EEdit,
   ECurrentPassword,
   EUsernameIsTheSame,
 } from '../../interfaces'
-import { initializeUser } from '../../reducers/authReducer'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import { updateUsername } from '../../reducers/usersReducer'
