@@ -1,4 +1,5 @@
 import Hero from '../../components/Hero/Hero'
+import { ELanguages } from '../../interfaces'
 import TodoApp from '../../components/Todo/TodoApp'
 import '../../css/App.css'
 
@@ -6,10 +7,12 @@ export default function TodoPage({
   heading,
   text,
   type,
+  language,
 }: {
   heading: string
   text: string
   type: string
+  language: ELanguages
 }) {
   return (
     <div
@@ -51,7 +54,7 @@ export default function TodoPage({
           <div>
             <div className='medium'>
               <h2>Todo App</h2>
-              <TodoApp />
+              <TodoApp language={language} />
             </div>
           </div>
         </section>

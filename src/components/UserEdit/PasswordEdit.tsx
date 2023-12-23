@@ -6,21 +6,14 @@ import {
   ECategory_pt,
   EJoke,
   EJokeType,
-  ESelectAnOption,
   ESingle,
   ETwoPart,
   IJokeCategoryByLanguage,
-  EClose,
-  ELanguages,
   EJokeSetup,
   EJokeDelivery,
   ESubmitAJoke,
-  ELanguageTitle,
   ECategoryTitle,
   ECategory_en,
-  ELanguagesLong,
-  ESubmit,
-  ESend,
   EFlags,
   TFlagsLanguages,
   FlagsLanguage,
@@ -33,15 +26,24 @@ import {
   ESubmitAJokeTo,
   IJokeSubmissionSingleJSON,
   IJokeSubmissionTwoPartJSON,
+} from '../Jokes/interfaces'
+import { useState } from 'react'
+import {
+  ELanguageTitle,
+  ESelectAnOption,
+  EClose,
+  ELanguages,
+  ELanguagesLong,
+  ESubmit,
+  ESend,
+  EEdit,
+  ECurrentPassword,
+  IUser,
   EConfirmPassword,
   EEmail,
   ENickname,
   EPassword,
-  EEdit,
-  ECurrentPassword,
-} from '../Jokes/interfaces'
-import { useState } from 'react'
-import { IUser } from '../../interfaces'
+} from '../../interfaces'
 import { Select, SelectOption } from '../Select/Select'
 import { initializeUser, refreshUser } from '../../reducers/authReducer'
 import { useAppDispatch } from '../../hooks/useAppDispatch'

@@ -13,29 +13,30 @@ import {
   ECategory_fr,
   ECategory_pt,
   EJokeType,
-  ELanguageTitle,
-  ELanguages,
   ERegisterAndLoginToUse,
   ESafemode,
-  ETitle,
-  EFeatures,
+  ETheComediansCompanion,
   EFetchesJokesFrom,
-  EAppTranslatedTo,
-  LanguageOfLanguage,
   EFilterJokesBy,
   EJokeTypeTitle,
   ETwoPart,
   ESingle,
   ESafemodeTitle,
-  EOnOff,
   EKeyword,
   ECategoryTitle,
-  ETryTappingTheShapes,
-  EReset,
   EClickHereToSeeFeatures,
 } from '../../components/Jokes/interfaces'
+import {
+  EOnOff,
+  EFeatures,
+  ELanguageTitle,
+  ELanguages,
+  EAppTranslatedTo,
+  LanguageOfLanguage,
+  ETryTappingTheShapes,
+  EReset,
+} from '../../interfaces'
 import { useEffect } from 'react'
-import useLocalStorage from '../../hooks/useStorage'
 import { Select, SelectOption } from '../../components/Select/Select'
 
 export default function JokesPage({
@@ -51,7 +52,7 @@ export default function JokesPage({
   language: ELanguages
   setLanguage: (language: ELanguages) => void
 }) {
-  const title = ETitle[language]
+  const title = ETheComediansCompanion[language]
   const titleLanguage = ELanguageTitle[language]
   const titleFeatures = EFeatures[language]
   const titleClickHereToSeeFeatures = EClickHereToSeeFeatures[language]

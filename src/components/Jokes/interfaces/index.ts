@@ -1,6 +1,5 @@
-export type EGeneric<T> = {
-  [key in keyof T]: T[key]
-}
+import { ELanguages, ELanguageTitle } from '../../../interfaces'
+import { IUser } from '../../../interfaces'
 
 export enum EFlags_en {
   nsfw = 'NSFW',
@@ -126,14 +125,7 @@ export const FlagsLanguage: IFlagsLanguages = {
     explicit: EFlags_cs.explicit,
   },
 }
-export enum EWarningTitle {
-  en = 'Warning',
-  es = 'Advertencia',
-  fr = 'Attention',
-  de = 'Warnung',
-  pt = 'Aviso',
-  cs = 'Varování',
-}
+
 export enum EAddWarningTitle {
   en = 'Add Warning',
   es = 'Agregar advertencia',
@@ -214,190 +206,8 @@ export interface IJokeCategoryByLanguage {
   pt: typeof ECategory_pt
   cs: typeof ECategory_cs
 }
-export enum ELanguages {
-  English = 'en',
-  Español = 'es',
-  Français = 'fr',
-  Deutch = 'de',
-  Português = 'pt',
-  Čeština = 'cs',
-}
-export enum ELanguagesLong {
-  en = 'English',
-  es = 'Español',
-  fr = 'Français',
-  de = 'Deutch',
-  pt = 'Português',
-  cs = 'Čeština',
-}
-export const LanguageOfLanguage: TLanguageOfLanguage = {
-  en: {
-    English: 'English',
-    Español: 'Spanish',
-    Français: 'French',
-    Deutch: 'German',
-    Português: 'Portuguese',
-    Čeština: 'Czech',
-  },
-  es: {
-    English: 'Inglés',
-    Español: 'Español',
-    Français: 'Francés',
-    Deutch: 'Alemán',
-    Português: 'Portugués',
-    Čeština: 'Checo',
-  },
-  fr: {
-    English: 'Anglais',
-    Español: 'Espagnol',
-    Français: 'Français',
-    Deutch: 'Allemand',
-    Português: 'Portugais',
-    Čeština: 'Tchèque',
-  },
-  de: {
-    English: 'Englisch',
-    Español: 'Spanisch',
-    Français: 'Französisch',
-    Deutch: 'Deutsch',
-    Português: 'Portugiesisch',
-    Čeština: 'Tschechisch',
-  },
-  pt: {
-    English: 'Inglês',
-    Español: 'Espanhol',
-    Français: 'Francês',
-    Deutch: 'Alemão',
-    Português: 'Português',
-    Čeština: 'Tcheco',
-  },
-  cs: {
-    English: 'Angličtina',
-    Español: 'Španělština',
-    Français: 'Francouzština',
-    Deutch: 'Němčina',
-    Português: 'Portugalština',
-    Čeština: 'Čeština',
-  },
-}
 
-export type TLanguageOfLanguage = {
-  en: {
-    English: 'English'
-    Español: 'Spanish'
-    Français: 'French'
-    Deutch: 'German'
-    Português: 'Portuguese'
-    Čeština: 'Czech'
-  }
-  es: {
-    English: 'Inglés'
-    Español: 'Español'
-    Français: 'Francés'
-    Deutch: 'Alemán'
-    Português: 'Portugués'
-    Čeština: 'Checo'
-  }
-  fr: {
-    English: 'Anglais'
-    Español: 'Espagnol'
-    Français: 'Français'
-    Deutch: 'Allemand'
-    Português: 'Portugais'
-    Čeština: 'Tchèque'
-  }
-  de: {
-    English: 'Englisch'
-    Español: 'Spanisch'
-    Français: 'Französisch'
-    Deutch: 'Deutsch'
-    Português: 'Portugiesisch'
-    Čeština: 'Tschechisch'
-  }
-  pt: {
-    English: 'Inglês'
-    Español: 'Espanhol'
-    Français: 'Francês'
-    Deutch: 'Alemão'
-    Português: 'Português'
-    Čeština: 'Tcheco'
-  }
-  cs: {
-    English: 'Angličtina'
-    Español: 'Španělština'
-    Français: 'Francouzština'
-    Deutch: 'Němčina'
-    Português: 'Portugalština'
-    Čeština: 'Čeština'
-  }
-}
-
-export enum ELanguageOfLanguage_en {
-  English = 'English',
-  Español = 'Spanish',
-  Français = 'French',
-  Deutch = 'German',
-  Português = 'Portuguese',
-  Čeština = 'Czech',
-}
-export enum ELanguageOfLanguage_es {
-  English = 'Inglés',
-  Español = 'Español',
-  Français = 'Francés',
-  Deutch = 'Alemán',
-  Português = 'Portugués',
-  Čeština = 'Checo',
-}
-export enum ELanguageOfLanguage_fr {
-  English = 'Anglais',
-  Español = 'Espagnol',
-  Français = 'Français',
-  Deutch = 'Allemand',
-  Português = 'Portugais',
-  Čeština = 'Tchèque',
-}
-export enum ELanguageOfLanguage_de {
-  English = 'Englisch',
-  Español = 'Spanisch',
-  Français = 'Französisch',
-  Deutch = 'Deutsch',
-  Português = 'Portugiesisch',
-  Čeština = 'Tschechisch',
-}
-export enum ELanguageOfLanguage_pt {
-  English = 'Inglês',
-  Español = 'Espanhol',
-  Français = 'Francês',
-  Deutch = 'Alemão',
-  Português = 'Português',
-  Čeština = 'Tcheco',
-}
-export enum ELanguageOfLanguage_cs {
-  English = 'Angličtina',
-  Español = 'Španělština',
-  Français = 'Francouzština',
-  Deutch = 'Němčina',
-  Português = 'Portugalština',
-  Čeština = 'Čeština',
-}
-export type ELanguageOfLanguage = {
-  en: ELanguageOfLanguage_en
-  es: ELanguageOfLanguage_es
-  fr: ELanguageOfLanguage_fr
-  de: ELanguageOfLanguage_de
-  pt: ELanguageOfLanguage_pt
-  cs: ELanguageOfLanguage_cs
-}
-
-export enum ELanguageTitle {
-  en = 'Language',
-  es = 'Idioma',
-  fr = 'Langue',
-  de = 'Sprache',
-  pt = 'Língua',
-  cs = 'Jazyk',
-}
-export enum ETitle {
+export enum ETheComediansCompanion {
   en = "The Comedian's Companion",
   es = 'El Compañero del Comediante',
   fr = 'Le Compagnon du Comédien',
@@ -405,7 +215,7 @@ export enum ETitle {
   pt = 'O Companheiro do Comediante',
   cs = 'Společník komika',
 }
-export enum ESubmit {
+export enum EFindAJoke {
   en = 'Find a joke',
   es = 'Encuentra una broma',
   fr = 'Trouver une blague',
@@ -429,22 +239,7 @@ export enum EAJokeGeneratorForTheComicallyInclined {
 //   fr = 'Générer une blague',
 //   pt = 'Gerar uma piada',
 // }
-export enum ESend {
-  en = 'Send',
-  es = 'Enviar',
-  fr = 'Envoyer',
-  de = 'Senden',
-  pt = 'Enviar',
-  cs = 'Poslat',
-}
-export enum ESave {
-  en = 'Save',
-  es = 'Guardar',
-  fr = 'Sauvegarder',
-  de = 'Speichern',
-  pt = 'Salvar',
-  cs = 'Uložit',
-}
+
 export enum ESavedJoke {
   en = 'Saved joke',
   es = 'Chiste guardado',
@@ -525,46 +320,7 @@ export enum EDelete {
   pt = 'Excluir',
   cs = 'Odstranit',
 }
-export enum EEdit {
-  en = 'Edit',
-  es = 'Editar',
-  fr = 'Modifier',
-  de = 'Bearbeiten',
-  pt = 'Editar',
-  cs = 'Upravit',
-}
-export enum EClose {
-  en = 'Close',
-  es = 'Cerrar',
-  fr = 'Fermer',
-  de = 'Schließen',
-  pt = 'Fechar',
-  cs = 'Zavřít',
-}
-export enum ECurrentPassword {
-  en = 'Current Password',
-  es = 'Contraseña actual',
-  fr = 'Mot de passe actuel',
-  de = 'Aktuelles Passwort',
-  pt = 'Senha atual',
-  cs = 'Aktuální heslo',
-}
-export enum ELoggedInAs {
-  en = 'Logged in as',
-  es = 'Conectado como',
-  fr = 'Connecté en tant que',
-  de = 'Angemeldet als',
-  pt = 'Conectado como',
-  cs = 'Přihlášen jako',
-}
-export enum ESearch {
-  en = 'Search',
-  es = 'Buscar',
-  fr = 'Chercher',
-  de = 'Suche',
-  pt = 'Pesquisar',
-  cs = 'Vyhledávání',
-}
+
 export enum EClickToReveal {
   en = 'Click to reveal',
   es = 'Clic para revelar',
@@ -583,30 +339,6 @@ export enum EClickHereToSeeFeatures {
   pt = 'Clique aqui para ver os recursos',
 }
 
-export enum ELogin {
-  en = 'Log In',
-  es = 'Iniciar sesión',
-  fr = "S'identifier",
-  de = 'Einloggen',
-  pt = 'Entrar',
-  cs = 'Přihlásit se',
-}
-export enum ELogout {
-  en = 'Log Out',
-  es = 'Cerrar sesión',
-  fr = 'Se déconnecter',
-  de = 'Ausloggen',
-  pt = 'Sair',
-  cs = 'Odhlásit se',
-}
-export enum ESelectAnOption {
-  en = 'Select an option',
-  es = 'Seleccione una opción',
-  fr = 'Sélectionnez une option',
-  de = 'Wählen Sie eine Option',
-  pt = 'Selecione uma opção',
-  cs = 'Vyberte možnost',
-}
 export enum ESortByTitle {
   en = 'Sort by',
   es = 'Ordenar por',
@@ -695,14 +427,6 @@ export enum ESearchByKeyword {
   pt = 'Pesquisar por palavra-chave',
   cs = 'Hledat podle klíčového slova',
 }
-export enum EOnOff {
-  en = 'On/Off',
-  es = 'Encendido/Apagado',
-  fr = 'Activé/Désactivé',
-  de = 'Ein/Aus',
-  pt = 'Ligado/Desligado',
-  cs = 'Zapnuto/Vypnuto',
-}
 
 export enum EKeyword {
   en = 'Keyword',
@@ -737,78 +461,7 @@ export enum ELoginOrRegisterToSave {
   pt = 'Por favor, faça login ou registre-se para salvar a piada',
   cs = 'Přihlaste se nebo se zaregistrujte, abyste uložili vtip',
 }
-export enum ERegister {
-  en = 'Register',
-  es = 'Registrarse',
-  fr = "S'inscrire",
-  de = 'Registrieren',
-  pt = 'Registo',
-  cs = 'Registrovat',
-}
-export enum ERegistration {
-  en = 'Registration',
-  es = 'Registro',
-  fr = 'Inscription',
-  de = 'Registrierung',
-  pt = 'Registro',
-  cs = 'Registrace',
-}
-export enum EForgotPassword {
-  en = 'Forgot Password?',
-  es = '¿Olvidaste tu contraseña?',
-  fr = 'Mot de passe oublié?',
-  de = 'Passwort vergessen?',
-  pt = 'Esqueceu a senha?',
-  cs = 'Zapomněli jste heslo?',
-}
-export enum ESendResetLink {
-  en = 'Send Reset Link',
-  es = 'Enviar enlace de restablecimiento',
-  fr = 'Envoyer le lien de réinitialisation',
-  de = 'Link zum Zurücksetzen senden',
-  pt = 'Enviar link de redefinição',
-  cs = 'Odeslat odkaz na obnovení',
-}
-export enum EEmail {
-  en = 'Email',
-  es = 'Correo electrónico',
-  fr = 'Email',
-  de = 'Email',
-  pt = 'O email',
-  cs = 'E-mailem',
-}
-export enum ENickname {
-  en = 'Nickname',
-  es = 'Apodo',
-  fr = 'Surnom',
-  de = 'Spitzname',
-  pt = 'Apelido',
-  cs = 'Přezdívka',
-}
-export enum EPassword {
-  en = 'Password',
-  es = 'Contraseña',
-  fr = 'Mot de passe',
-  de = 'Passwort',
-  pt = 'Senha',
-  cs = 'Heslo',
-}
-export enum EConfirmPassword {
-  en = 'Confirm Password',
-  es = 'Confirmar contraseña',
-  fr = 'Confirmez le mot de passe',
-  de = 'Passwort bestätigen',
-  pt = 'Confirme a Senha',
-  cs = 'Potvrďte heslo',
-}
-export enum ERegistrationSuccesful {
-  en = 'Registration successful',
-  es = 'Registro exitoso',
-  fr = 'Inscription réussie',
-  de = 'Registrierung erfolgreich',
-  pt = 'Registro bem sucedido',
-  cs = 'Registrace úspěšná',
-}
+
 export enum EAny {
   en = 'Any',
   es = 'Cualquiera',
@@ -817,46 +470,7 @@ export enum EAny {
   pt = 'Qualquer',
   cs = 'Jakýkoliv',
 }
-export enum EError {
-  en = 'Error',
-  es = 'Error',
-  fr = 'Erreur',
-  de = 'Error',
-  pt = 'Erro',
-  cs = 'Chyba',
-}
-export enum ELoggingIn {
-  en = 'Logging in...',
-  es = 'Iniciando sesión...',
-  fr = 'Connexion en cours...',
-  de = 'Anmeldung...',
-  pt = 'Entrando...',
-  cs = 'Přihlašování...',
-}
-export enum ESendingEmail {
-  en = 'Sending email...',
-  es = 'Enviando correo electrónico...',
-  fr = "Envoi d'email...",
-  de = 'E-Mail senden...',
-  pt = 'Enviando email...',
-  cs = 'Odesílání e-mailu...',
-}
-export enum EEmailSent {
-  en = 'Email sent',
-  es = 'Correo electrónico enviado',
-  fr = 'Email envoyé',
-  de = 'E-Mail gesendet',
-  pt = 'Email enviado',
-  cs = 'E-mail odeslán',
-}
-export enum EPleaseGiveValidEmail {
-  en = 'Please give valid email',
-  es = 'Por favor, dé un correo electrónico válido',
-  fr = 'Veuillez donner un email valide',
-  de = 'Bitte geben Sie eine gültige E-Mail-Adresse ein',
-  pt = 'Por favor, dê um email válido',
-  cs = 'Zadejte platný e-mail',
-}
+
 export enum ENoJokeFound {
   en = 'No joke found',
   es = 'No se encontró broma',
@@ -873,14 +487,7 @@ export enum ENoJokesYet {
   pt = 'Ainda não há piadas',
   cs = 'Zatím žádné vtipy',
 }
-export enum EPasswordsDoNotMatch {
-  en = 'Passwords do not match',
-  es = 'Las contraseñas no coinciden',
-  fr = 'Les mots de passe ne correspondent pas',
-  de = 'Passwörter stimmen nicht überein',
-  pt = 'As senhas não coincidem',
-  cs = 'Hesla se neshodují',
-}
+
 export enum EJokeTypeTitle {
   en = 'Joke Type',
   es = 'Tipo de broma',
@@ -899,15 +506,6 @@ export enum ERegisterAndLoginToUse {
   cs = 'Zaregistrujte se a přihlaste se, abyste si mohli uložit své oblíbené vtipy do databáze Mongo-DB',
 }
 
-export enum EFeatures {
-  en = 'Features',
-  es = 'Caracteristicas',
-  fr = 'Traits',
-  de = 'Eigenschaften',
-  pt = 'Características',
-  cs = 'Vlastnosti',
-}
-
 export enum EFetchesJokesFrom {
   en = 'Fetches jokes from',
   es = 'Busca chistes de',
@@ -915,15 +513,6 @@ export enum EFetchesJokesFrom {
   de = 'Holt sich Witze von',
   pt = 'Busca piadas de',
   cs = 'Načte vtipy z',
-}
-
-export enum EAppTranslatedTo {
-  en = 'App translated to',
-  es = 'Aplicación traducida a',
-  fr = 'Application traduite en',
-  de = 'App übersetzt nach',
-  pt = 'Aplicativo traduzido para',
-  cs = 'Aplikace přeložena do',
 }
 
 export enum EFilterJokesBy {
@@ -960,16 +549,16 @@ export interface IJokeTwoPart extends IJokeCommonFields {
 
 export type IJoke = IJokeSingle | IJokeTwoPart
 
-export interface IUser {
-  _id?: string
-  username: string
-  name?: string
-  password: string
-  language: ELanguages
-  verified?: boolean
-  createdAt?: string
-  updatedAt?: string
-}
+// export interface IUser {
+//   _id?: string
+//   username: string
+//   name?: string
+//   password: string
+//   language: ELanguages
+//   verified?: boolean
+//   createdAt?: string
+//   updatedAt?: string
+// }
 
 export interface IJokeType {
   _id?: string
@@ -978,21 +567,21 @@ export interface IJokeType {
   updatedAt?: string
 }
 
-export interface ReducerProps {
-  notification: {
-    isError: boolean
-    message: string
-    seconds: number
-  }
-  jokes: IJoke[]
-  users: { users: IUser[] }
-  auth: {
-    user: IUser
-    isAuthenticated: boolean
-    isLoading: boolean
-    token: string
-  }
-}
+// export interface ReducerProps {
+//   notification: {
+//     isError: boolean
+//     message: string
+//     seconds: number
+//   }
+//   jokes: IJoke[]
+//   users: { users: IUser[] }
+//   auth: {
+//     user: IUser
+//     isAuthenticated: boolean
+//     isLoading: boolean
+//     token: string
+//   }
+// }
 
 export interface IJokeSubmissionSingleJSON {
   formatVersion: number
@@ -1025,44 +614,4 @@ export interface IJokeSubmissionTwoPartJSON {
     explicit: boolean
   }
   lang: ELanguages
-}
-export enum ETryTappingTheShapes {
-  en = 'Try tapping the shapes',
-  es = 'Intenta tocar las formas',
-  fr = 'Essayez de toucher les formes',
-  de = 'Versuchen Sie, die Formen zu berühren',
-  pt = 'Tente tocar as formas',
-  cs = 'Zkuste klepnout na tvary',
-}
-export enum EReset {
-  en = 'Reset',
-  es = 'Reiniciar',
-  fr = 'Réinitialiser',
-  de = 'Zurücksetzen',
-  pt = 'Redefinir',
-  cs = 'Resetovat',
-}
-export enum EUsername {
-  en = 'Username',
-  es = 'Nombre de usuario',
-  fr = "Nom d'utilisateur",
-  de = 'Nutzername',
-  pt = 'Nome do usuário',
-  cs = 'Uživatelské jméno',
-}
-export enum EUsernameIsTheSame {
-  en = 'Username is the same as before',
-  es = 'El nombre de usuario es el mismo que antes',
-  fr = "Le nom d'utilisateur est le même qu'avant",
-  de = 'Der Benutzername ist der gleiche wie zuvor',
-  pt = 'O nome de usuário é o mesmo de antes',
-  cs = 'Uživatelské jméno je stejné jako dříve',
-}
-export enum ECurrentNickname {
-  en = 'Current Nickname',
-  es = 'Apodo actual',
-  fr = 'Surnom actuel',
-  de = 'Aktueller Spitzname',
-  pt = 'Apelido atual',
-  cs = 'Aktuální přezdívka',
 }

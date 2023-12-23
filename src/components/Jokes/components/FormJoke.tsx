@@ -4,7 +4,6 @@ import { SelectOption } from '../../Select/Select'
 import { useEffect, useState } from 'react'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
 import {
-  ELanguages,
   ECategory_en,
   ECategory_cs,
   ECategory_de,
@@ -13,17 +12,14 @@ import {
   ECategory_pt,
   EJokeType,
   ESafemode,
-  ESubmit,
+  EFindAJoke,
   ECategoryTitle,
   ESafeTitle,
   EUnsafeTitle,
   ESingle,
   ETwoPart,
-  ESearch,
   EClickToReveal,
-  ESelectAnOption,
   IJokeCategoryByLanguage,
-  ELanguageTitle,
   ESafemodeTitle,
   EJokeTypeTitle,
   ESelectACategory,
@@ -31,6 +27,7 @@ import {
   ESearchByKeyword,
   EAny,
 } from '../interfaces'
+import { ESearch, ELanguages, ESelectAnOption, ELanguageTitle } from '../../../interfaces'
 
 interface Props {
   handleFormSubmit: (e: React.FormEvent<HTMLFormElement>) => void
@@ -120,7 +117,7 @@ const Form = ({
   const titleLanguageSelect = ESelectALanguage[language]
   const titleCategorySelect = ESelectACategory[language]
   const titleSearchByKeyword = ESearchByKeyword[language]
-  const submit = ESubmit[language]
+  const submit = EFindAJoke[language]
   const titleAny = EAny[language]
   const [values, setValues] = useState<SelectOption[]>([
     {

@@ -23,7 +23,7 @@ import useTimeout from '../../hooks/useTimeout'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { logout } from '../../reducers/authReducer'
-import { ELanguages, ELoggedInAs, ELogin, ELogout } from '../Jokes/interfaces'
+import { ELogin, ELogout, ELanguages, ELoggedInAs } from '../../interfaces'
 import FormLogin from '../Login/Login'
 import Register from '../Register/Register'
 import { notify } from '../../reducers/notificationReducer'
@@ -268,6 +268,15 @@ const Nav = (
   const [isLoginFormOpen, setIsLoginFormOpen] = useState(false)
   const [isRegisterFormOpen, setIsRegisterFormOpen] = useState(false)
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('login')) {
+      setIsToolbarOpen(true)
+      setIsToolbarHidden(false)
+      setIsLoginFormOpen(true)
+    }
+  }, [])
+
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [confirmPassword, setConfirmPassword] = useState<string>('')
@@ -493,6 +502,7 @@ const Nav = (
                   >
                     <FormLogin
                       setIsFormOpen={setIsLoginFormOpen}
+                      isOpen={isLoginFormOpen}
                       language={language}
                       titleLoggedInAs={titleLoggedInAs}
                       titleLogin={titleLogin}

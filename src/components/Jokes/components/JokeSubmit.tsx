@@ -23,21 +23,14 @@ import {
   ECategory_pt,
   EJoke,
   EJokeType,
-  ESelectAnOption,
   ESingle,
   ETwoPart,
   IJokeCategoryByLanguage,
-  EClose,
-  ELanguages,
   EJokeSetup,
   EJokeDelivery,
   ESubmitAJoke,
-  ELanguageTitle,
   ECategoryTitle,
   ECategory_en,
-  ELanguagesLong,
-  ESubmit,
-  ESend,
   EFlags,
   TFlagsLanguages,
   FlagsLanguage,
@@ -51,6 +44,15 @@ import {
   IJokeSubmissionSingleJSON,
   IJokeSubmissionTwoPartJSON,
 } from '../interfaces'
+import {
+  EClose,
+  ESelectAnOption,
+  ESubmit,
+  ESend,
+  ELanguages,
+  ELanguageTitle,
+  ELanguagesLong,
+} from '../../../interfaces'
 import { useEffect, useState } from 'react'
 
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'

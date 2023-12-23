@@ -8,11 +8,6 @@ import {
   ECategory_es,
   ECategory_fr,
   ECategory_pt,
-  EError,
-  ELanguageTitle,
-  ELanguagesLong,
-  ELoggingIn,
-  ReducerProps,
 } from '../Jokes/interfaces'
 import Accordion from '../Accordion/Accordion'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
@@ -21,14 +16,19 @@ import { initializeUser, login, logout, refreshUser } from '../../reducers/authR
 import PasswordReset from '../PasswordReset/PasswordReset'
 import { useSelector } from 'react-redux'
 import {
-  ELogin,
-  ELogout,
   ELoggedInAs,
   EClose,
   ELanguages,
+  ELanguageTitle,
+  ELanguagesLong,
+  ReducerProps,
+  ELogin,
+  ELogout,
   EEmail,
   EPassword,
-} from '../Jokes/interfaces'
+  EError,
+  ELoggingIn,
+} from '../../interfaces'
 import UserEdit from '../UserEdit/NicknameEdit'
 import { SelectOption } from '../Select/Select'
 import Notification from '../Notification/Notification'
@@ -39,6 +39,7 @@ interface LoginProps {
   titleLoggedInAs: ELoggedInAs
   language: ELanguages
   setIsFormOpen?: (isFormOpen: boolean) => void
+  isOpen?: boolean
   text?: string
 }
 
@@ -48,6 +49,7 @@ const FormLogin = ({
   titleLoggedInAs,
   language,
   setIsFormOpen,
+  isOpen,
   text,
 }: LoginProps) => {
   const dispatch = useAppDispatch()
@@ -116,6 +118,7 @@ const FormLogin = ({
             ref={formLoginRef}
             close={EClose[(language as ELanguages) || 'en']}
             setIsFormOpen={setIsFormOpen}
+            isOpen={isOpen}
           >
             <h2>{titleLogin}</h2>
 

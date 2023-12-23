@@ -236,7 +236,7 @@ form.joke > *:not(.toggle) {
   flex-flow: column wrap;
   justify-content: center;
   align-items: center;
-  gap: calc(var(--gap) * 3);
+  gap: calc(var(--gap) * 2);
 }
 .toggle-wrap .toggle-container {
   flex-flow: column nowrap;

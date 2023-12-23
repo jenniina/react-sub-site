@@ -6,18 +6,14 @@ import './css/joke.css'
 import {
   IJoke,
   EJokeType,
-  ELanguages,
   ECategory_en,
   ECategory_cs,
   ECategory_de,
   ECategory_es,
   ECategory_fr,
   ECategory_pt,
-  IUser,
-  ReducerProps,
   ESavedJoke,
-  ETitle,
-  ESubmit,
+  ETheComediansCompanion,
   ESafemode,
   EQueryKey,
   EDelete,
@@ -25,36 +21,42 @@ import {
   ESafeTitle,
   EUnsafeTitle,
   EJoke,
-  ELogin,
-  ELogout,
   ESingle,
   ETwoPart,
-  ELoggedInAs,
   EClickToReveal,
   ECategory,
   IJokeCategoryByLanguage,
   ELoginOrRegisterToSave,
-  ELanguageTitle,
   SortBy,
   EJokeAlreadySaved,
-  ERegistrationSuccesful,
   ENoJokeFound,
-  EError,
-  EPasswordsDoNotMatch,
-  EAppTranslatedTo,
   EClickHereToSeeFeatures,
-  EFeatures,
   EFetchesJokesFrom,
   EFilterJokesBy,
   EJokeTypeTitle,
   EKeyword,
-  EOnOff,
   ERegisterAndLoginToUse,
   ESafemodeTitle,
-  LanguageOfLanguage,
   ESelectALanguage,
   EAJokeGeneratorForTheComicallyInclined,
 } from './interfaces'
+import {
+  EOnOff,
+  ELogin,
+  ELogout,
+  ERegistrationSuccesful,
+  EError,
+  EPasswordsDoNotMatch,
+  LanguageOfLanguage,
+  EFeatures,
+  ELanguageTitle,
+  ELoggedInAs,
+  ESubmit,
+  IUser,
+  ELanguages,
+  ReducerProps,
+  EAppTranslatedTo,
+} from '../../interfaces'
 import { useSelector } from 'react-redux'
 import Login from './components/Login'
 import useLocalStorage from '../../hooks/useStorage'
@@ -158,7 +160,7 @@ function Jokes({
     cs: ECategory_cs,
   }
 
-  const title = ETitle[language]
+  const title = ETheComediansCompanion[language]
   const titleSaved = ESavedJoke[language]
   const titleCategory = ECategoryTitle[language]
   const titleSafe = ESafeTitle[language]

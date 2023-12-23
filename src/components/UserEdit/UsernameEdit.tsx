@@ -1,49 +1,15 @@
+import { useState } from 'react'
 import {
-  ECategory_cs,
-  ECategory_de,
-  ECategory_es,
-  ECategory_fr,
-  ECategory_pt,
-  EJoke,
-  EJokeType,
-  ESelectAnOption,
-  ESingle,
-  ETwoPart,
-  IJokeCategoryByLanguage,
-  EClose,
-  ELanguages,
-  EJokeSetup,
-  EJokeDelivery,
-  ESubmitAJoke,
-  ELanguageTitle,
-  ECategoryTitle,
-  ECategory_en,
-  ELanguagesLong,
-  ESubmit,
-  ESend,
-  EFlags,
-  TFlagsLanguages,
-  FlagsLanguage,
-  IFlagsLanguages,
-  EAddWarningTitle,
-  ESafeTitle,
-  ESafemode,
-  ESafemodeTitle,
-  EJokeTypeTitle,
-  ESubmitAJokeTo,
-  IJokeSubmissionSingleJSON,
-  IJokeSubmissionTwoPartJSON,
+  IUser,
   EConfirmPassword,
   EEmail,
   ENickname,
   EPassword,
+  ELanguages,
   EEdit,
   ECurrentPassword,
-  EUsername,
   EUsernameIsTheSame,
-} from '../Jokes/interfaces'
-import { useState } from 'react'
-import { IUser } from '../../interfaces'
+} from '../../interfaces'
 import { initializeUser } from '../../reducers/authReducer'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
