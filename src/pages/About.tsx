@@ -183,7 +183,7 @@ export default function About({
                 </li>
                 <li>
                   <big>
-                    <Link to='/portfolio/jokes'>Joke App</Link>
+                    <Link to='/portfolio/jokes'>Jokes App</Link>
                   </big>
                   <ul>
                     <li>Fetches jokes from an API</li>
@@ -197,7 +197,7 @@ export default function About({
                 </li>
                 <li>
                   <big>
-                    <Link to='/portfolio/blob'>Blob App</Link>
+                    <Link to='/portfolio/blob'>Blob Art App</Link>
                   </big>
                   <ul>
                     <li>Draggable elements</li>
@@ -209,7 +209,7 @@ export default function About({
                 </li>
                 <li>
                   <big>
-                    <Link to='/portfolio/draganddrop'>Drag and Drop App</Link>
+                    <Link to='/portfolio/draganddrop'>Drag and Drop</Link>
                   </big>
                   <ul>
                     <li>Draggable list elements</li>
@@ -231,7 +231,7 @@ export default function About({
                 </li>
                 <li>
                   <big>
-                    <Link to='/portfolio/select'>Custom Select App </Link>
+                    <Link to='/portfolio/select'>Custom Select</Link>
                   </big>
                   <ul>
                     <li>Single select</li>
