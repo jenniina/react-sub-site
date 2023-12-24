@@ -29,6 +29,15 @@ import Register from '../Register/Register'
 import { notify } from '../../reducers/notificationReducer'
 import { createUser } from '../../reducers/usersReducer'
 import Notification from '../Notification/Notification'
+import { Select, SelectOption } from '../Select/Select'
+import {
+  ECategory_en,
+  ECategory_cs,
+  ECategory_de,
+  ECategory_es,
+  ECategory_fr,
+  ECategory_pt,
+} from '../Jokes/interfaces'
 
 type Link = {
   label: string
@@ -38,10 +47,16 @@ type Link = {
 interface NavProps {
   setStyleMenu: (style: boolean) => void
   language: ELanguages
+  options: (enumObj: typeof ELanguages) => SelectOption[]
+  getKeyByValue: (
+    enumObj: typeof ELanguages,
+    value: ELanguages
+  ) => undefined | SelectOption['label']
+  setLanguage: (language: ELanguages) => void
 }
 
 const Nav = (
-  { setStyleMenu, language }: NavProps,
+  { setStyleMenu, language, options, getKeyByValue, setLanguage }: NavProps,
   ref: Ref<{ getStyle: () => boolean }>
 ) => {
   const { windowHeight, windowWidth } = useWindowSize()
@@ -444,6 +459,24 @@ const Nav = (
             aria-labelledby='settings'
             aria-expanded={isToolbarOpen}
           >
+            <Select
+              id='language-register'
+              className={`language ${styles.language}`}
+              instructions='Language'
+              hide
+              options={options(ELanguages)}
+              value={
+                language
+                  ? ({
+                      value: language,
+                      label: getKeyByValue(ELanguages, language),
+                    } as SelectOption)
+                  : undefined
+              }
+              onChange={(o) => {
+                setLanguage(o?.value as ELanguages)
+              }}
+            />
             <div className={styles.toolwrap}>
               <label htmlFor='dlt-btn'>{lightTheme ? 'Dark Mode' : 'Light Mode'}</label>
               <button
@@ -492,6 +525,7 @@ const Nav = (
                 )}
               </button>
             </div>
+
             <div className={styles.loginregister}>
               {!user ? (
                 <>

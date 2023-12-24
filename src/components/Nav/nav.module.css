@@ -190,7 +190,7 @@ button.togglemenu[aria-expanded='true'] .menupath {
 }
 .toolbar .toolwrap label {
   flex: 3 0 0;
-  min-width: 7em;
+  min-width: 8em;
   cursor: pointer;
 }
 .toolbar .toolwrap button {
@@ -205,15 +205,14 @@ button.togglemenu[aria-expanded='true'] .menupath {
   align-items: center;
   gap: 0.5em;
   width: 100%;
-  gap: 1em;
 }
 .toolbar .loginregisterwrap.closed {
   flex-flow: row wrap;
   justify-content: space-between;
-  gap: 0;
+  gap: 0.8em;
 }
 .toolbar .loginregisterwrap button {
-  padding: 0.6em 0;
+  padding: 0.8em 0;
 }
 .logo-container a {
   display: inline-block;
@@ -303,7 +302,8 @@ a.link,
 a.link > *,
 a.link:visited:not(.active),
 a.link:visited:not(.active) > *,
-.main-header button {
+.main-header button,
+.toolbar label {
   color: var(--color-primary-20);
   /* fill: var(--color-primary-20); */
 }
@@ -371,6 +371,18 @@ a.link:visited:not(.active):focus > *,
   justify-content: center;
   padding: 0.3em 0.5em 0.3em;
   margin: 0;
+}
+.language {
+  --border-radius: 0.3em;
+  font-size: 0.85em;
+}
+.language > div {
+  width: 100%;
+  min-width: 12em;
+}
+.language button {
+  align-self: flex-start;
+  width: max-content;
 }
 .toolbar button.navstyle {
   padding: 0.1em 0.5em 0.1em;

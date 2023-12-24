@@ -541,3 +541,155 @@ export enum EWarning {
   pt = 'Aviso',
   cs = 'Varování',
 }
+export enum EExitToMainSite {
+  en = 'Exit to Main Site',
+  es = 'Salir al sitio principal',
+  fr = 'Quitter le site principal',
+  de = 'Zum Hauptstandort wechseln',
+  pt = 'Sair para o site principal',
+  cs = 'Ukončit na hlavní stránku',
+}
+export enum EApp {
+  en = 'App',
+  es = 'Aplicación',
+  fr = 'Application',
+  de = 'Anwendung',
+  pt = 'Aplicativo',
+  cs = 'Aplikace',
+}
+export enum EWelcome {
+  en = 'Welcome',
+  es = 'Bienvenido',
+  fr = 'Bienvenue',
+  de = 'Herzlich willkommen',
+  pt = 'Bem-vinda',
+  cs = 'Vítejte',
+}
+export enum EToTheReactSiteOfJenniinaFi {
+  en = 'to the React site of jenniina.fi',
+  es = 'al sitio React de jenniina.fi',
+  fr = 'sur le site React de jenniina.fi',
+  de = 'auf der React-Website von jenniina.fi',
+  pt = 'ao site React da jenniina.fi',
+  cs = 'na React webu jenniina.fi',
+}
+export enum EUserEdit {
+  en = 'User Edit',
+  es = 'Editar Usuario',
+  fr = "Modifier l'utilisateur",
+  de = 'Benutzer bearbeiten',
+  pt = 'Editar Usuário',
+  cs = 'Upravit Uživatele',
+}
+export enum EAbout {
+  en = 'About',
+  es = 'Acerca de',
+  fr = 'À propos de',
+  de = 'Über',
+  pt = 'Sobre',
+  cs = 'O',
+}
+export enum EThisSite {
+  en = 'this site',
+  es = 'este sitio',
+  fr = 'ce site',
+  de = 'diese Seite',
+  pt = 'este site',
+  cs = 'tento web',
+}
+export enum EContact {
+  en = 'Contact',
+  es = 'Contacto',
+  fr = 'Contact',
+  de = 'Kontakt',
+  pt = 'Contato',
+  cs = 'Kontakt',
+}
+export enum ELetsCollaborate {
+  en = "Let's collaborate",
+  es = 'Colaboremos',
+  fr = 'Collaborons',
+  de = 'Lass uns zusammenarbeiten',
+  pt = 'Vamos colaborar',
+  cs = 'Spolupracujme',
+}
+export enum ESettings {
+  en = 'Settings',
+  es = 'Configuraciones',
+  fr = 'Paramètres',
+  de = 'Einstellungen',
+  pt = 'Configurações',
+  cs = 'Nastavení',
+}
+export enum EPortfolio {
+  en = 'Portfolio',
+  es = 'Portafolio',
+  fr = 'Portfolio',
+  de = 'Portfolio',
+  pt = 'Portfólio',
+  cs = 'Portfolio',
+}
+export enum EQuiz {
+  en = 'Quiz',
+  es = 'Cuestionario',
+  fr = 'Quiz',
+  de = 'Quiz',
+  pt = 'Questionário',
+  cs = 'Kvíz',
+}
+export enum ETestYourKnowledge {
+  en = 'Test your knowledge',
+  es = 'Prueba tu conocimiento',
+  fr = 'Testez vos connaissances',
+  de = 'Testen Sie Ihr Wissen',
+  pt = 'Teste seu conhecimento',
+  cs = 'Otestujte své znalosti',
+}
+export enum EJokes {
+  en = 'Jokes',
+  es = 'Chistes',
+  fr = 'Blagues',
+  de = 'Witze',
+  pt = 'Piadas',
+  cs = 'Vtipy',
+}
+export enum EToDo {
+  en = 'ToDo',
+  es = 'Quehacer',
+  fr = 'Faire',
+  de = 'Zu tun',
+  pt = 'Fazer',
+  cs = 'Dělat',
+}
+export enum EBlob {
+  en = 'Blob',
+  es = 'Bolita',
+  fr = 'Boule',
+  de = 'Kugel',
+  pt = 'Bola',
+  cs = 'Koule',
+}
+export enum EDragAndDrop {
+  en = 'Drag and Drop',
+  es = 'Arrastrar y Soltar',
+  fr = 'Glisser Déposer',
+  de = 'Ziehen und Ablegen',
+  pt = 'Arrastar e Soltar',
+  cs = 'Táhnout a Pustit',
+}
+export enum ECustomSelect {
+  en = 'Custom Select',
+  es = 'Selección Personalizada',
+  fr = 'Sélection Personnalisée',
+  de = 'Benutzerdefinierte Auswahl',
+  pt = 'Seleção Personalizada',
+  cs = 'Vlastní Výběr',
+}
+export enum EMultistepForm {
+  en = 'Multistep Form',
+  es = 'Formulario Multietapa',
+  fr = 'Formulaire Multistep',
+  de = 'Mehrstufiges Formular',
+  pt = 'Formulário Multistep',
+  cs = 'Vícekrokový Formulář',
+}
