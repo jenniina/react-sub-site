@@ -711,6 +711,15 @@ export enum ELogInAndRegisterButtons {
   pt = 'Botões de login e registro',
   cs = 'Tlačítka Přihlásit a Registrovat',
 }
+export enum EReplacedByUserEditAndLogoutButtonsWhenLoggedIn {
+  en = 'Replaced by User Edit and Logout buttons when logged in',
+  es = 'Reemplazado por los botones de edición de usuario y cierre de sesión cuando se inicia la sesión',
+  fr = "Remplacé par les boutons d'édition utilisateur et de déconnexion lors de la connexion",
+  de = 'Wird durch die Schaltflächen Benutzer bearbeiten und Abmelden ersetzt, wenn Sie angemeldet sind',
+  pt = 'Substituído pelos botões de edição de usuário e logout quando conectado',
+  cs = 'Při přihlášení nahrazeno tlačítky Upravit uživatele a Odhlásit',
+}
+
 export enum EButtonToToggleBetweenNavigationStyles {
   en = 'Button to toggle between navigation styles',
   es = 'Botón para alternar entre estilos de navegación',
