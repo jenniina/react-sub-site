@@ -55,7 +55,7 @@ export default function Home({
         .toLowerCase()
         .replace(/[^a-zA-Z]/g, '')} ${type} ${lightTheme ? styles.light : ''}`}
     >
-      <Hero heading={heading} text={text} />
+      <Hero address='testpage' heading={heading} text={text} />
       <div className='inner-wrap'>
         <section className='card'>
           <div>

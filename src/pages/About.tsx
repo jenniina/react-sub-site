@@ -4,6 +4,83 @@ import { Link } from 'react-router-dom'
 import styles from './css/about.module.css'
 import Hero from '../components/Hero/Hero'
 import { IoSettingsSharp } from 'react-icons/io5'
+import {
+  EAboutThisSite,
+  EAlienEyes,
+  EBubbles,
+  EButtonToToggleBetweenNavigationStyles,
+  EContact,
+  ECustomSelect,
+  EDragAndDrop,
+  EDraggable,
+  EDraggableBlobs,
+  EElementsRotateToFaceCursor,
+  EFeaturesOfThisSite,
+  EFourStylesAltogether,
+  EGeometricShapes,
+  EGithubRepository,
+  EHeroSection,
+  EHoverFocusAnimation,
+  EIcon,
+  EInteractiveElements,
+  EKeyboardFocusMoveItemsWithArrowKeys,
+  ELanguageSelect,
+  ELanguages,
+  ELightDarkModeButton,
+  ELogInAndRegisterButtons,
+  EMainSite,
+  EMovementAccordingToPointerEnterDirection,
+  EMultistepForm,
+  EPointerEnterDirectionAwareMovement,
+  EPortfolio,
+  EQuizApp,
+  ERemoveWithClickOrEnterWhenFocused,
+  ESeeSettingsAtMenuBar,
+  ESeeTheTopOfTheCurrentPage,
+  ESettings,
+  ESiteSettings,
+  ETwoStylesAtSmallScreenSizeAndTwoAtLargeScreenSize,
+  EWelcome,
+} from '../interfaces'
+import {
+  EAddMoreBlobs,
+  EAddTasksToList,
+  EAnimatedClipPathsAndTextRotationOnHoverWithDynamicDelay,
+  EBackToTopButtonAtTheLowerRightCornerAndAtTheFooter,
+  EBlobArtApp,
+  ECanBeMovedToTwoOtherContainers,
+  ECustomizableOptions,
+  EDraggableListElements,
+  EExitLinksAtTheTopAndBottomOfThePages,
+  EFetchesQuestionsFromAnAPI,
+  EGoToItemByTypingTheFirstFewLettersOfTheItem,
+  EInThePortfolioSection,
+  EKeyboardAccessibleDropDownList,
+  EMultipleSelect,
+  ENavigateWithArrowKeys,
+  EOtherFeatures,
+  EPageTransitionAnimation,
+  EPressEscapeToSkipToResetButton,
+  EReactApps,
+  ERemoveBlobs,
+  ERemoveTasksOneByOneOrEveryFinishedTaskAtOnce,
+  EResetButtonOnTheLowerRightCornerResetsTheInteractiveElements,
+  ESavesLatestJokeInLocalStorageAndUsesMongoDBToStore,
+  ESeeNumberOfUnfinishedTasks,
+  ESingleSelect,
+  ESiteColors,
+  ESortableWithinTheirContainer,
+  ETheSiteColorsLightnessesSwitchInLightMode,
+  EThreeStepFullyFunctionalContactForm,
+  EUsesANodeBackendToSendTheMessage,
+  EUsesLocalStorageToStoreTheInformation,
+  EUsesMongoDBToStoreTheInformationWhenLoggedIn,
+  EWaveAnimationAtTheMainHeading,
+} from '../interfaces/about'
+import { EUserCanChooseTheDifficultyLevel } from '../interfaces/quiz'
+import { EChangeableColor, EChangeableSize } from '../interfaces/blobs'
+import { ETodoApp } from '../components/Todo/interfaces'
+import { ETheComediansCompanion } from '../components/Jokes/interfaces'
 
 type colorProps = {
   i: number
@@ -15,10 +92,12 @@ export default function About({
   heading,
   text,
   type,
+  language,
 }: {
   heading: string
   text: string
   type: string
+  language: ELanguages
 }) {
   const lightTheme = useTheme()
 
@@ -78,186 +157,186 @@ export default function About({
   }
 
   return (
-    <div
-      className={`${heading
-        .replace(/\s+/g, '-')
-        .toLowerCase()
-        .replace(/[^a-zA-Z]/g, '')} ${type} ${lightTheme ? styles.light : ''}`}
-    >
-      <Hero heading={heading} text={text} />
+    <div className={`about ${type} ${lightTheme ? styles.light : ''}`}>
+      <Hero address='about' heading={heading} text={text} />
       <div>
         <section className={`card ${styles.section}`}>
           <div>
             <div className='wide'>
+              <p>{EAboutThisSite[language]}</p>
               <p>
-                This is a sub-site of <a href='https://jenniina.fi'>jenniina.fi</a> made
-                with and focusing on ReactJS. Other porfolio items may be found at the{' '}
-                <a href='https://jenniina.fi/#portfolio'>portfolio section</a> of the main
-                site.{' '}
+                <a href='https://jenniina.fi#portfolio'>{EMainSite[language]}</a>
               </p>
               <p>
-                <a href='https://github.com/jenniina/react-sub-site'>Github Repository</a>
+                <a href='https://github.com/jenniina/react-sub-site'>
+                  {EGithubRepository[language]}
+                </a>
               </p>
 
-              <h2 id='site-features'>Features of this site</h2>
+              <h2 id='site-features'>{EFeaturesOfThisSite[language]}</h2>
 
               <h3 id='settings' className='left'>
-                Site settings
+                {ESiteSettings[language]}
               </h3>
               <big>
-                {' '}
-                See menu bar{' '}
+                {ESeeSettingsAtMenuBar[language]}{' '}
                 <IoSettingsSharp
                   style={{ display: 'inline-block', marginBottom: '-0.15em' }}
                 />{' '}
-                <span className='scr'>Settings</span> icon
+                <span className='scr'>{ESettings[language]}</span> {EIcon[language]}
               </big>
               <ul className='ul'>
-                <li>Light/Dark mode button</li>
+                <li>{ELanguageSelect[language]}</li>
+                <li>{ELightDarkModeButton[language]}</li>
                 <li>
-                  Navigation style toggle button
+                  {EButtonToToggleBetweenNavigationStyles[language]}
                   <ul>
-                    <li>Four styles</li>
-                    <li>Two at small screen size and two at large screen size</li>
+                    <li>{EFourStylesAltogether[language]}</li>
+                    <li>
+                      {ETwoStylesAtSmallScreenSizeAndTwoAtLargeScreenSize[language]}
+                    </li>
                   </ul>
                 </li>
+                <li>{ELogInAndRegisterButtons[language]}</li>
               </ul>
 
               <h3 id='hero' className='left'>
-                Hero section
+                {EHeroSection[language]}
               </h3>
-              <big>Interactive elements </big>
+              <big>{EInteractiveElements[language]}</big>
               <ul className='ul'>
-                <li>Bubbles (top of the current page)</li>
+                <li>
+                  {EBubbles[language]} ({ESeeTheTopOfTheCurrentPage[language]})
+                </li>
                 <ul>
-                  <li>Hover/focus animation</li>
-                  <li>Remove with click or Enter when focused</li>
-                  <li>Pointer-enter direction aware movement</li>
+                  <li>{EHoverFocusAnimation[language]}</li>
+                  <li>{EPointerEnterDirectionAwareMovement[language]}</li>
                 </ul>
 
                 <li>
-                  Draggable blobs (<Link to='/portfolio'>Portfolio page</Link> and some
-                  sub-pages)
+                  {EDraggableBlobs[language]}{' '}
+                  <Link to='/portfolio'>({EPortfolio[language]})</Link>
                   <ul>
-                    <li>Draggable</li>
-                    <li>Keyboard focus: move blobs with arrow keys</li>
+                    <li>{EDraggable[language]}</li>
+                    <li>{EKeyboardFocusMoveItemsWithArrowKeys[language]}</li>
                   </ul>
                 </li>
                 <li>
-                  Geometric shapes (<Link to='/'>Welcome page</Link>)
-                  <ul>
-                    <li>Hover/focus animation</li>
-                    <li>Remove with click or Enter when focused</li>
-                  </ul>
+                  {EGeometricShapes[language]} <Link to='/'>({EWelcome[language]})</Link>
+                  <ul></ul>
                 </li>
                 <li>
-                  Alien eyes (<Link to='/contact'>Contact Page</Link>)
+                  {EAlienEyes[language]} <Link to='/contact'>({EContact[language]})</Link>
                   <ul>
-                    <li>Rotate to face cursor</li>
-                    <li>Hover/focus animation</li>
-                    <li>Remove with click or Enter when focused</li>
-                    <li>Pointer-enter direction aware movement</li>
+                    <li>{EElementsRotateToFaceCursor[language]}</li>
                   </ul>
                 </li>
-                <li>Reset button on the lower right corner</li>
-                <li>Press Escape to skip to reset button</li>
+                <li>{EHoverFocusAnimation[language]}</li>
+                <li>{EMovementAccordingToPointerEnterDirection[language]}</li>
+                <li>{ERemoveWithClickOrEnterWhenFocused[language]}</li>
+                <li>
+                  {
+                    EResetButtonOnTheLowerRightCornerResetsTheInteractiveElements[
+                      language
+                    ]
+                  }
+                </li>
+                <li>{EPressEscapeToSkipToResetButton[language]}</li>
               </ul>
 
               <h3 id='react' className='left'>
-                React Apps
+                {EReactApps[language]}
               </h3>
               <big>
-                In the <Link to='/portfolio'>Portfolio section</Link>
+                <Link to='/portfolio'>{EInThePortfolioSection[language]}</Link>
               </big>
 
               <ul className='ul'>
                 <li>
                   <big>
-                    <Link to='/portfolio/quiz'>Quiz App</Link>
+                    <Link to='/portfolio/quiz'>{EQuizApp[language]}</Link>
                   </big>
                   <ul>
-                    <li>Fetches questions from an API</li>
-                    <li>User can choose the difficulty level (easy, medium, hard)</li>
-                    <li>Uses Mongo-DB to store the information, when logged in</li>
+                    <li>{EFetchesQuestionsFromAnAPI[language]}</li>
+                    <li>{EUserCanChooseTheDifficultyLevel[language]}</li>
+                    <li>{EUsesMongoDBToStoreTheInformationWhenLoggedIn[language]}</li>
                   </ul>
                 </li>
                 <li>
                   <big>
-                    <Link to='/portfolio/jokes'>Joke App</Link>
+                    <Link to='/portfolio/jokes'>{ETheComediansCompanion[language]}</Link>
                   </big>
                   <ul>
-                    <li>Fetches jokes from an API</li>
-                    <li>Customizable options</li>
-                    <li>User can save favorite jokes, when logged in</li>
+                    <li>{EFetchesQuestionsFromAnAPI[language]}</li>
+                    <li>{ECustomizableOptions[language]}</li>
                     <li>
-                      Saves latest joke in localStorage and uses Mongo-DB to store the
-                      jokes, when logged in.
+                      {ESavesLatestJokeInLocalStorageAndUsesMongoDBToStore[language]}
                     </li>
                   </ul>
                 </li>
                 <li>
                   <big>
-                    <Link to='/portfolio/blob'>Blob App</Link>
+                    <Link to='/portfolio/blob'>{EBlobArtApp[language]}</Link>
                   </big>
                   <ul>
-                    <li>Draggable elements</li>
-                    <li>Color-changing </li>
-                    <li>Size-changing</li>
-                    <li>Adding more</li>
-                    <li>Removal </li>
+                    <li>{EDraggableBlobs[language]}</li>
+                    <li>{EChangeableColor[language]}</li>
+                    <li>{EChangeableSize[language]}</li>
+                    <li>{EAddMoreBlobs[language]}</li>
+                    <li>{ERemoveBlobs[language]}</li>
                   </ul>
                 </li>
                 <li>
                   <big>
-                    <Link to='/portfolio/draganddrop'>Drag and Drop App</Link>
+                    <Link to='/portfolio/draganddrop'>{EDragAndDrop[language]}</Link>
                   </big>
                   <ul>
-                    <li>Draggable list elements</li>
-                    <li>Sortable within their container</li>
-                    <li>Can be moved to two other containers</li>
-                    <li>Keyboard accessible drop-down list</li>
+                    <li>{EDraggableListElements[language]}</li>
+                    <li>{ESortableWithinTheirContainer[language]}</li>
+                    <li>{ECanBeMovedToTwoOtherContainers[language]}</li>
+                    <li>{EKeyboardAccessibleDropDownList[language]}</li>
                   </ul>
                 </li>
                 <li>
                   <big>
-                    <Link to='/portfolio/todo'>Todo App</Link>
+                    <Link to='/portfolio/todo'>{ETodoApp[language]}</Link>
                   </big>
                   <ul>
-                    <li>Add tasks to list</li>
-                    <li>Remove tasks one by one or every finished task at once</li>
-                    <li>See number of unfinished tasks</li>
-                    <li>Uses localStorage to store the information</li>
+                    <li>{EAddTasksToList[language]}</li>
+                    <li>{ERemoveTasksOneByOneOrEveryFinishedTaskAtOnce[language]}</li>
+                    <li>{ESeeNumberOfUnfinishedTasks[language]}</li>
+                    <li>{EUsesLocalStorageToStoreTheInformation[language]}</li>
                   </ul>
                 </li>
                 <li>
                   <big>
-                    <Link to='/portfolio/select'>Custom Select App </Link>
+                    <Link to='/portfolio/select'>{ECustomSelect[language]}</Link>
                   </big>
                   <ul>
-                    <li>Single select</li>
-                    <li>Multiple select</li>
-                    <li>Navigate with arrow keys</li>
-                    <li>Go to item by typing the first few letters of the item</li>
+                    <li>{ESingleSelect[language]}</li>
+                    <li>{EMultipleSelect[language]}</li>
+                    <li>{ENavigateWithArrowKeys[language]}</li>
+                    <li>{EGoToItemByTypingTheFirstFewLettersOfTheItem[language]}</li>
                   </ul>
                 </li>
                 <li>
                   <big>
-                    <Link to='/portfolio/form'>Multistep Form</Link>
+                    <Link to='/portfolio/form'>{EMultistepForm[language]}</Link>
                   </big>
                   <ul>
-                    <li>Three step fully functional contact form</li>
-                    <li>Uses a node backend to send the message</li>
+                    <li>{EThreeStepFullyFunctionalContactForm[language]}</li>
+                    <li>{EUsesANodeBackendToSendTheMessage[language]}</li>
                   </ul>
                 </li>
               </ul>
               <h3 id='other' className='left'>
-                Other features
+                {EOtherFeatures[language]}
               </h3>
               <ul className='ul'>
-                <li>Page transition animation</li>
-                <li>Main title wave animation</li>
-                <li>Back to top link at the lower right corner and at the footer</li>
-                <li>Exit links at the top and bottom of the pages</li>
+                <li>{EPageTransitionAnimation[language]}</li>
+                <li>{EWaveAnimationAtTheMainHeading[language]}</li>
+                <li>{EBackToTopButtonAtTheLowerRightCornerAndAtTheFooter[language]}</li>
+                <li>{EExitLinksAtTheTopAndBottomOfThePages[language]}</li>
               </ul>
             </div>
           </div>
@@ -268,14 +347,12 @@ export default function About({
             <div>
               <div className='wide'>
                 <h3 id='color' className='left' style={{ marginTop: 0 }}>
-                  Site Colors
+                  {ESiteColors[language]}
                 </h3>
+                <p>{ETheSiteColorsLightnessesSwitchInLightMode[language]}</p>
                 <p>
-                  The site colors' lightnesses switch in light mode, wherein
-                  var(--color-primary-1) becomes the lightest color instead of the
-                  darkest.{' '}
+                  {EAnimatedClipPathsAndTextRotationOnHoverWithDynamicDelay[language]}
                 </p>
-                <p>Animated clip-paths and text rotation on hover, with dynamic delay.</p>
               </div>
             </div>
           </div>

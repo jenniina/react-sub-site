@@ -31,9 +31,30 @@ interface Props {
   heading: string
   text: string
   type: string
+  categoryLanguages:
+    | typeof ECategory_en
+    | typeof ECategory_cs
+    | typeof ECategory_de
+    | typeof ECategory_es
+    | typeof ECategory_fr
+    | typeof ECategory_pt
+  options: (enumObj: typeof ELanguages) => SelectOption[]
+  getKeyByValue: (
+    enumObj: typeof ELanguages,
+    value: ELanguages
+  ) => undefined | SelectOption['label']
 }
 
-const UserEditPage = ({ language, setLanguage, heading, text, type }: Props) => {
+const UserEditPage = ({
+  language,
+  setLanguage,
+  heading,
+  text,
+  type,
+  categoryLanguages,
+  options,
+  getKeyByValue,
+}: Props) => {
   const lightTheme = useTheme()
   const dispatch = useAppDispatch()
 
@@ -45,63 +66,10 @@ const UserEditPage = ({ language, setLanguage, heading, text, type }: Props) => 
     return state.auth?.user
   })
 
-  function getKeyByValue(
-    enumObj:
-      | typeof ECategory_en
-      | typeof ECategory_cs
-      | typeof ECategory_de
-      | typeof ECategory_es
-      | typeof ECategory_fr
-      | typeof ECategory_pt
-      | typeof EJokeType
-      | typeof ESafemode
-      | typeof ELanguages,
-    value: ECategory | EJokeType | ESafemode | ELanguages
-  ) {
-    for (const key in enumObj) {
-      if (enumObj[key as keyof typeof enumObj] === value) {
-        return key as SelectOption['label']
-      }
-    }
-    // Handle the case where the value is not found in the enum
-    return undefined
-  }
-
-  const categoryLanguagesConst = {
-    en: ECategory_en,
-    es: ECategory_es,
-    fr: ECategory_fr,
-    de: ECategory_de,
-    pt: ECategory_pt,
-    cs: ECategory_cs,
-  }
-
-  const categoryLanguages = categoryLanguagesConst[language] as
-    | typeof ECategory_en
-    | typeof ECategory_cs
-    | typeof ECategory_de
-    | typeof ECategory_es
-    | typeof ECategory_fr
-    | typeof ECategory_pt
-
-  const options = (
-    enumObj: typeof ECategory_en | typeof EJokeType | typeof ESafemode | typeof ELanguages
-  ) => {
-    return Object.keys(enumObj).map((key) => ({
-      value: enumObj[key as keyof typeof enumObj],
-      label: key,
-    })) as SelectOption[]
-  }
-
   return (
     <>
-      <div
-        className={`${heading
-          ?.replace(/\s+/g, '-')
-          .toLowerCase()
-          .replace(/[^a-zA-Z]/g, '')} ${type} ${lightTheme ? styles.light : ''}`}
-      >
-        <Hero heading={heading} text={text} />
+      <div className={`edit ${type} ${lightTheme ? styles.light : ''}`}>
+        <Hero address='edit' heading={heading} text={text} />
         <div className='inner-wrap'>
           <section className={`card`}>
             <div>

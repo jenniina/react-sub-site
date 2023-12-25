@@ -1,9 +1,7 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import { returnMode } from './difficultyReducer'
-import { useSelector } from 'react-redux'
-import { IQuestion, IQuizHighscore } from '../interfaces'
+import { IQuestion } from '../interfaces'
 import { ReducerProps } from '../../../interfaces'
-import quizService from '../services/quiz'
 
 function shuffleArray(array: any[]) {
   const newArray = [...array]
@@ -60,10 +58,13 @@ const questionsSlice = createSlice({
     finalSeconds: (state) => {
       state.finalSeconds = 210 - state.secondsRemaining
     },
-    newAnswer: (state, { payload }) => {
+    newAnswer: (state, { payload }: PayloadAction<string>) => {
       state.answer = payload
-      state.points =
-        payload === state.currentQuestion.correctAnswer ? state.points + 20 : state.points
+      if (typeof state.currentQuestion.correctAnswer === 'string')
+        state.points =
+          payload === state.currentQuestion.correctAnswer
+            ? state.points + 20
+            : state.points
     },
     nextQuestion: (state) => {
       let temp: IQuestion = state.questionsRedux[state.index + 1]

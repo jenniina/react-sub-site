@@ -18,7 +18,27 @@ import FormPage from './pages/pages-portfolio/FormPage'
 import { Footer } from './components/Footer/Footer'
 import { useTheme } from './hooks/useTheme'
 import { useScrollbarWidth } from './hooks/useScrollbarWidth'
-import { ReducerProps, RefObject, ELanguages } from './interfaces'
+import {
+  ReducerProps,
+  RefObject,
+  ELanguages,
+  EWelcome,
+  EToTheReactSiteOfJenniinaFi,
+  EAbout,
+  EThisSite,
+  EUserEdit,
+  EPortfolio,
+  EBlob,
+  EApp,
+  EDragAndDrop,
+  ECustomSelect,
+  EMultistepForm,
+  EQuiz,
+  ETestYourKnowledge,
+  EContact,
+  ELetsCollaborate,
+  EQuizApp,
+} from './interfaces'
 import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
 import { isTouchDevice } from './hooks/useDraggable'
 import UserEditPage from './pages/UserEditPage'
@@ -31,11 +51,22 @@ import { BlobProvider } from './components/Blob/components/BlobProvider'
 import useLocalStorage from './hooks/useStorage'
 import {
   EAJokeGeneratorForTheComicallyInclined,
+  ECategory,
+  ECategory_cs,
+  ECategory_de,
+  ECategory_en,
+  ECategory_es,
+  ECategory_fr,
+  ECategory_pt,
+  EJokeType,
+  ESafemode,
   ETheComediansCompanion,
 } from './components/Jokes/interfaces'
 import { useAppDispatch } from './hooks/useAppDispatch'
 import { initializeUser } from './reducers/authReducer'
 import { EGetOrganizedOneTaskAtATime, ETodoApp } from './components/Todo/interfaces'
+import { SelectOption } from './components/Select/Select'
+import Notification from './components/Notification/Notification'
 
 const App: FC = () => {
   const touchDevice = isTouchDevice()
@@ -91,6 +122,54 @@ const App: FC = () => {
     return state.auth?.user
   })
 
+  function getKeyByValue(
+    enumObj:
+      | typeof ECategory_en
+      | typeof ECategory_cs
+      | typeof ECategory_de
+      | typeof ECategory_es
+      | typeof ECategory_fr
+      | typeof ECategory_pt
+      | typeof EJokeType
+      | typeof ESafemode
+      | typeof ELanguages,
+    value: ECategory | EJokeType | ESafemode | ELanguages
+  ) {
+    for (const key in enumObj) {
+      if (enumObj[key as keyof typeof enumObj] === value) {
+        return key as SelectOption['label']
+      }
+    }
+    // Handle the case where the value is not found in the enum
+    return undefined
+  }
+
+  const categoryLanguagesConst = {
+    en: ECategory_en,
+    es: ECategory_es,
+    fr: ECategory_fr,
+    de: ECategory_de,
+    pt: ECategory_pt,
+    cs: ECategory_cs,
+  }
+
+  const categoryLanguages = categoryLanguagesConst[language] as
+    | typeof ECategory_en
+    | typeof ECategory_cs
+    | typeof ECategory_de
+    | typeof ECategory_es
+    | typeof ECategory_fr
+    | typeof ECategory_pt
+
+  const options = (
+    enumObj: typeof ECategory_en | typeof EJokeType | typeof ESafemode | typeof ELanguages
+  ) => {
+    return Object.keys(enumObj).map((key) => ({
+      value: enumObj[key as keyof typeof enumObj],
+      label: key,
+    })) as SelectOption[]
+  }
+
   return (
     <BlobProvider>
       <div
@@ -99,7 +178,14 @@ const App: FC = () => {
         }`}
       >
         <div className='App-inner-wrap' style={styleInnerWrap}>
-          <Nav setStyleMenu={setStyleMenu} ref={menuStyle} language={language} />
+          <Nav
+            setStyleMenu={setStyleMenu}
+            ref={menuStyle}
+            language={language}
+            setLanguage={setLanguage}
+            options={options}
+            getKeyByValue={getKeyByValue}
+          />
 
           <main
             id={`main-content`}
@@ -116,15 +202,23 @@ const App: FC = () => {
                 path='*'
                 element={
                   <Welcome
-                    heading='Welcome'
-                    text='to the React sub-page of Jenniina.fi'
+                    language={language}
+                    heading={EWelcome[language]}
+                    text={EToTheReactSiteOfJenniinaFi[language]}
                     type='page'
                   />
                 }
               />
               <Route
                 path='/about'
-                element={<About heading='About' text='This Site' type='page' />}
+                element={
+                  <About
+                    language={language}
+                    heading={EAbout[language]}
+                    text={EThisSite[language]}
+                    type='page'
+                  />
+                }
               />
 
               <Route
@@ -136,29 +230,47 @@ const App: FC = () => {
                 path='/edit'
                 element={
                   <UserEditPage
-                    heading='User Edit'
+                    heading={EUserEdit[language]}
                     text=''
                     type='page'
                     language={language}
                     setLanguage={setLanguage}
+                    categoryLanguages={categoryLanguages}
+                    options={options}
+                    getKeyByValue={getKeyByValue}
                   />
                 }
               />
 
-              <Route path='/portfolio' element={<NavPortfolio />}>
+              <Route path='/portfolio' element={<NavPortfolio language={language} />}>
                 <Route
                   index
-                  element={<Portfolio heading='Portfolio' type='page' text='ReactJS' />}
+                  element={
+                    <Portfolio
+                      heading={EPortfolio[language]}
+                      type='page'
+                      text='ReactJS'
+                      language={language}
+                    />
+                  }
                 />
                 <Route
                   path='/portfolio/blob'
-                  element={<BlobPage heading='Blob App' text='' type='page subpage' />}
+                  element={
+                    <BlobPage
+                      language={language}
+                      heading={`${EBlob[language]} ${EApp[language]}`}
+                      text=''
+                      type='page subpage'
+                    />
+                  }
                 />
                 <Route
                   path='/portfolio/draganddrop'
                   element={
                     <DragAndDropPage
-                      heading='Drag and Drop'
+                      language={language}
+                      heading={EDragAndDrop[language]}
                       text=''
                       type='page subpage'
                     />
@@ -179,7 +291,8 @@ const App: FC = () => {
                   path='/portfolio/select'
                   element={
                     <CustomSelectPage
-                      heading='Custom Select'
+                      language={language}
+                      heading={ECustomSelect[language]}
                       text=''
                       type='page subpage'
                     />
@@ -188,7 +301,12 @@ const App: FC = () => {
                 <Route
                   path='/portfolio/form'
                   element={
-                    <FormPage heading='Multistep Form' text='' type='page subpage' />
+                    <FormPage
+                      language={language}
+                      heading={EMultistepForm[language]}
+                      text=''
+                      type='page subpage'
+                    />
                   }
                 />
                 <Route
@@ -208,28 +326,41 @@ const App: FC = () => {
                     index
                     element={
                       <QuizStart
-                        heading='Quiz App'
-                        text='Test your knowledge'
+                        heading={EQuizApp[language]}
+                        text={ETestYourKnowledge[language]}
                         type='page subpage'
+                        language={language}
                       />
                     }
                   />
-                  <Route path='/portfolio/quiz/:difficulty' element={<QuizQuestion />} />
-                  <Route path='/portfolio/quiz/results' element={<QuizFinished />} />
+                  <Route
+                    path='/portfolio/quiz/:difficulty'
+                    element={<QuizQuestion language={language} />}
+                  />
+                  <Route
+                    path='/portfolio/quiz/results'
+                    element={<QuizFinished language={language} />}
+                  />
                 </Route>
               </Route>
 
               <Route
                 path='/contact'
                 element={
-                  <Contact heading='Contact' text="Let's collaborate" type='page' />
+                  <Contact
+                    language={language}
+                    heading={EContact[language]}
+                    text={ELetsCollaborate[language]}
+                    type='page'
+                  />
                 }
               />
             </Routes>
           </main>
 
-          <Footer styleMenu={styleMenu} />
-          <ScrollToTop styleMenu={styleMenu} />
+          <Footer language={language} styleMenu={styleMenu} />
+          <ScrollToTop language={language} styleMenu={styleMenu} />
+          <Notification />
         </div>
       </div>
     </BlobProvider>

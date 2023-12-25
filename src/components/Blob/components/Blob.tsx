@@ -7,8 +7,11 @@ import {
   Dispatch,
 } from 'react'
 import { Draggable, focusedBlob } from '../interfaces'
+import { EBlob, ELanguages } from '../../../interfaces'
+import { ESelectedBlob, ESelectedBlobNone } from '../../../interfaces/blobs'
 
 interface BlobProps {
+  language: ELanguages
   item: Draggable
   index: number
   start: (
@@ -50,6 +53,7 @@ interface BlobProps {
 }
 
 const Blob = ({
+  language,
   item,
   index,
   start,
@@ -84,7 +88,7 @@ const Blob = ({
       style={blobStyle}
       onMouseDown={(e) => {
         if (selectedvalue0.current)
-          selectedvalue0.current.textContent = `Selected blob: ${
+          selectedvalue0.current.textContent = `${ESelectedBlob[language]}: ${
             (e.target as HTMLElement)?.querySelector('span')?.textContent
           }`
         start(e)
@@ -95,17 +99,17 @@ const Blob = ({
       onMouseUp={(e) => {
         stopMovementCheck(e)
         if (selectedvalue0.current)
-          selectedvalue0.current.textContent = `Selected blob: none`
+          selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
       }}
       onMouseLeave={(e) => {
         stopMoving(e)
         if (selectedvalue0.current)
-          selectedvalue0.current.textContent = `Selected blob: none`
+          selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
       }}
       onTouchStart={(e) => {
         start(e)
         if (selectedvalue0.current)
-          selectedvalue0.current.textContent = `Selected blob: ${
+          selectedvalue0.current.textContent = `${ESelectedBlob[language]}: ${
             (e.target as HTMLElement)?.querySelector('span')?.textContent
           }`
       }}
@@ -115,7 +119,7 @@ const Blob = ({
       onTouchEnd={(e) => {
         stopMovementCheck(e)
         if (selectedvalue0.current)
-          selectedvalue0.current.textContent = `Selected blob: none`
+          selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
       }}
       onWheel={(e) => {
         wheel(e.target as HTMLLIElement)
@@ -137,17 +141,19 @@ const Blob = ({
           height: blobRect.height,
         })
         if (selectedvalue0.current)
-          selectedvalue0.current.textContent = `Selected blob: ${
+          selectedvalue0.current.textContent = `${ESelectedBlob[language]}: ${
             (e.target as HTMLElement)?.querySelector('span')?.textContent
           }`
       }}
       onBlurCapture={(e) => {
         blurred(e.target as HTMLLIElement)
         if (selectedvalue0.current)
-          selectedvalue0.current.textContent = `Selected blob: none`
+          selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
       }}
     >
-      <span className='scr'>Blob {item.number}</span>
+      <span className='scr'>
+        {EBlob[language]} {item.number}
+      </span>
     </li>
   )
 }

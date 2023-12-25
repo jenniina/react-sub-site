@@ -164,6 +164,7 @@ const Form = ({
       >
         <div className='controls-wrap'>
           <Select
+            language={language}
             id='language'
             className='language full'
             instructions={`${titleLanguageSelect}:`}
@@ -209,6 +210,7 @@ const Form = ({
         </div>
 
         {/* <Select
+        language={language}
           id='jokeType'
           className='jokeType third'
           instructions='Type of joke'
@@ -232,6 +234,7 @@ const Form = ({
 
         {categoryLanguages ? (
           <Select
+            language={language}
             multiple
             id='jokeCategory'
             className='category'
@@ -249,6 +252,7 @@ const Form = ({
         )}
 
         {/* <Select
+        language={language}
           multiple
           id='jokeCategory'
           className='jokeCategory full'

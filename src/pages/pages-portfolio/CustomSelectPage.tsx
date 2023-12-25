@@ -3,46 +3,102 @@ import Hero from '../../components/Hero/Hero'
 import { Select, SelectOption } from '../../components/Select/Select'
 import FormWrapper from '../../components/FormWrapper/FormWrapper'
 import selectStyles from '../../components/Select/select.module.css'
-import { RefObject } from '../../interfaces'
+import {
+  EAccessibility,
+  EAnimation,
+  EAppearance,
+  EBlobApp,
+  EBlobs,
+  EBubbles,
+  EButtons,
+  EClarificationOrFeedback,
+  EClarifiedBelow,
+  ECustomSelect,
+  EDarkMode,
+  EDiamondShapes,
+  EDragAndDrop,
+  EEmail,
+  EEyes,
+  EFeatures,
+  EItIsAlrightToSendTheEnteredInformationToJenniina,
+  EKeyboardUse,
+  ELanguages,
+  ELightMode,
+  EMultiStepContactForm,
+  ENavigation,
+  ENoIssues,
+  ENone,
+  EOptional,
+  EOther,
+  EPleaseOfferSomeFeedback,
+  EPleaseSelectAnOption,
+  ESend,
+  ESendingEmail,
+  ESurvey,
+  EText,
+  EThankYouForYourMessage,
+  EYouMaySelectMultipleOptions,
+  RefObject,
+} from '../../interfaces'
 import { sendEmail, SelectData } from './services/email'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import Notification from '../../components/Notification/Notification'
-
-//Keep options outside the export function!
-const options1: SelectOption[] = [
-  { label: 'Accessibility', value: 'Accessibility' },
-  { label: 'Appearance', value: 'Appearance' },
-  { label: 'Text content', value: 'Text' },
-  { label: 'Animation', value: 'Animation' },
-  { label: 'Light mode', value: 'Light mode' },
-  { label: 'Navigation', value: 'Navigation' },
-  { label: 'Buttons', value: 'Buttons' },
-  { label: 'Blob App', value: 'Blob App' },
-  { label: 'Drag and Drop App', value: 'Drag and Drop' },
-  { label: 'Todo App', value: 'Todo App' },
-  { label: 'Custom Select', value: 'Custom Select' },
-  { label: 'Multistep Contact Form', value: 'Contact Form' },
-  { label: 'Other, clarified below', value: 'Other' },
-  { label: 'No issues', value: 'None' },
-]
-const options2: SelectOption[] = [
-  { label: 'Please select an option', value: 'None' },
-  { label: 'Blobs', value: 'Blobs' },
-  { label: 'Bubbles', value: 'Bubbles' },
-  { label: 'Alien eyes', value: 'Alien eyes' },
-  { label: 'Diamond shapes', value: 'Diamond shapes' },
-]
+import {
+  EAlternativelyMoveToAnItemOnTheListByWritingTheFirstFewLetters,
+  EDidYouFindAnyIssuesOnThisSite,
+  EKeyboardUseMoveToOptionWithArrowKeysAndSelectByPressingEnterOrSpace,
+  ELabelCanBeHiddenFromViewButIsStillAccessible,
+  EMoveToItemWithKeyboardKeys,
+  EPressEscapeToCloseDropdownWithoutSelectingAnOption,
+  EPressTabToMoveToTheSelectedButtonsOrToTheClearButton,
+  ESelectOptionWithEnterOrSpace,
+  ESingleSelectOrMultipleSelect,
+  ETabToSelectEnterOrSpaceToOpen,
+  EUseUpAndDownArrowKeysToMoveToAnOption,
+  EWhichIntroSectionElementWasYourFavourite,
+} from '../../interfaces/select'
+import { ETodoApp } from '../../components/Todo/interfaces'
 
 export default function CustomSelectPage({
   heading,
   text,
   type,
+  language,
 }: {
   heading: string
   text: string
   type: string
+  language: ELanguages
 }) {
+  const options1: SelectOption[] = [
+    { label: EAccessibility[language], value: EAccessibility[language] },
+    { label: EAppearance[language], value: EAppearance[language] },
+    { label: EText[language], value: EText[language] },
+    { label: EAnimation[language], value: EAnimation[language] },
+    { label: ELightMode[language], value: ELightMode[language] },
+    { label: EDarkMode[language], value: EDarkMode[language] },
+    { label: ENavigation[language], value: ENavigation[language] },
+    { label: EButtons[language], value: EButtons[language] },
+    { label: EBlobApp[language], value: EBlobApp[language] },
+    { label: EDragAndDrop[language], value: EDragAndDrop[language] },
+    { label: ETodoApp[language], value: ETodoApp[language] },
+    { label: ECustomSelect[language], value: ECustomSelect[language] },
+    { label: EMultiStepContactForm[language], value: EMultiStepContactForm[language] },
+    {
+      label: `${EOther[language]}, ${EClarifiedBelow[language]}`,
+      value: `${EOther[language]}, ${EClarifiedBelow[language]}`,
+    },
+    { label: ENoIssues[language], value: ENoIssues[language] },
+  ]
+  const options2: SelectOption[] = [
+    { label: EPleaseSelectAnOption[language], value: ENone[language] },
+    { label: EBlobs[language], value: EBlobs[language] },
+    { label: EBubbles[language], value: EBubbles[language] },
+    { label: EEyes[language], value: EEyes[language] },
+    { label: EDiamondShapes[language], value: EDiamondShapes[language] },
+  ]
+
   const [value1, setValue1] = useState<SelectOption[]>([])
   const [value2, setValue2] = useState<SelectOption | undefined>(options2[0])
   const [input, setInput] = useState<string>('')
@@ -84,56 +140,50 @@ export default function CustomSelectPage({
   }
 
   return (
-    <div
-      className={`${heading
-        .replace(/\s+/g, '-')
-        .toLowerCase()
-        .replace(/[^a-zA-Z]/g, '')} ${type}`}
-    >
-      <Hero heading={heading} text={text} />
+    <div className={`select ${type}`}>
+      <Hero address='select' heading={heading} text={text} />
       <div className='inner-wrap'>
         <section className='card'>
           <div>
             <div className='medium'>
-              <h2>Features</h2>
+              <h2>{EFeatures[language]}</h2>
               <ul className='ul'>
-                <li>Single select or multiple select</li>
-                <li>
-                  Move to item with keyboard keys (up or down, or by writing the first few
-                  letters of the option: reset time of 0.6 seconds)
-                </li>
-                <li>
-                  label can be hidden from view, but is still accessible to screen readers
-                </li>
+                <li>{ESingleSelectOrMultipleSelect[language]}</li>
+                <li>{EMoveToItemWithKeyboardKeys[language]}</li>
+                <li>{ELabelCanBeHiddenFromViewButIsStillAccessible[language]}</li>
               </ul>
-              <h3>Keyboard Use</h3>
+              <h3>{EKeyboardUse[language]}</h3>
               <ul className='ul'>
-                <li>Tab to Select, Enter or Space to open</li>
-                <li>Use up and down arrow keys to move to an option</li>
+                <li>{ETabToSelectEnterOrSpaceToOpen[language]}</li>
+                <li>{EUseUpAndDownArrowKeysToMoveToAnOption[language]}</li>
                 <li>
-                  Alternatively move to an item on the list by writing the first few
-                  letters{' '}
+                  {
+                    EAlternativelyMoveToAnItemOnTheListByWritingTheFirstFewLetters[
+                      language
+                    ]
+                  }
                 </li>
-                <li>Select option with Enter or Space</li>
-                <li>Press Tab to move to the selected buttons or to the clear button</li>
-                <li>Press Escape to close dropdown without selecting</li>
+                <li>{ESelectOptionWithEnterOrSpace[language]}</li>
+                <li>{EPressTabToMoveToTheSelectedButtonsOrToTheClearButton[language]}</li>
+                <li>{EPressEscapeToCloseDropdownWithoutSelectingAnOption[language]}</li>
               </ul>
               <div className={selectStyles['selects-container']}>
-                <h3>Custom Select</h3>
+                <h3>{ECustomSelect[language]}</h3>
                 <form ref={form} onSubmit={handleSubmit}>
                   <FormWrapper
                     className='flex'
-                    title='Survey'
-                    description='Please offer some feedback'
+                    title={ESurvey[language]}
+                    description={EPleaseOfferSomeFeedback[language]}
                   >
                     <h4 className='left small margin0 regular'>
-                      Did you find any issues on this site?
+                      {EDidYouFindAnyIssuesOnThisSite[language]}
                     </h4>
                     <Select
+                      language={language}
                       multiple
                       id='multipleselectdropdown'
                       className={selectStyles.prev2}
-                      instructions='Please select one or more options'
+                      instructions={EYouMaySelectMultipleOptions[language]}
                       options={options1}
                       value={value1}
                       onChange={(o) => {
@@ -149,12 +199,13 @@ export default function CustomSelectPage({
                       }}
                     />
                     <h4 className='left small margin0 regular'>
-                      Which Hero Section element was your favourite?
+                      {EWhichIntroSectionElementWasYourFavourite[language]}
                     </h4>
                     <Select
+                      language={language}
                       id='single'
                       className={`full ${selectStyles.prev}`}
-                      instructions='Keyboard use: move to option with arrow keys and select by pressing Enter or Space'
+                      instructions={`${EKeyboardUseMoveToOptionWithArrowKeysAndSelectByPressingEnterOrSpace[language]}`}
                       hide
                       options={options2}
                       value={value2}
@@ -167,7 +218,7 @@ export default function CustomSelectPage({
                       }}
                     />
                     <h4 className='left small margin0 regular'>
-                      Clarification or Feedback
+                      {EClarificationOrFeedback[language]}
                     </h4>
                     <div className='full'>
                       <label>
@@ -184,8 +235,16 @@ export default function CustomSelectPage({
                           }}
                           className='bg'
                         />
-                        <span className='scr'>Clarification or Feedback (optional)</span>
+                        <span className='scr'>
+                          {EClarificationOrFeedback[language]} (
+                          {EOptional[language].toLowerCase()})
+                        </span>
                       </label>
+                    </div>
+                    <h4 className='left small margin0 regular'>
+                      {EEmail[language]} ({EOptional[language].toLowerCase()})
+                    </h4>
+                    <div className='full'>
                       <label>
                         <input
                           type='email'
@@ -200,7 +259,9 @@ export default function CustomSelectPage({
                           }}
                           className='bg'
                         />
-                        <span className='scr'>Email (optional) </span>
+                        <span className='scr'>
+                          {EEmail[language]} ({EOptional[language].toLowerCase()}){' '}
+                        </span>
                       </label>
                     </div>
                     <div>
@@ -209,11 +270,11 @@ export default function CustomSelectPage({
                         <span className='required' aria-hidden='true'>
                           *
                         </span>{' '}
-                        It is alright to send the entered information to Jenniina{' '}
+                        {EItIsAlrightToSendTheEnteredInformationToJenniina[language]}{' '}
                       </label>
                     </div>
                     <button type='submit' className={`${selectStyles.half} `}>
-                      {sending ? 'Sending...' : 'Send'}
+                      {sending ? ESendingEmail[language] : ESend[language]}
                     </button>
                     {showMessage && (
                       <div
@@ -224,7 +285,7 @@ export default function CustomSelectPage({
                           letterSpacing: '0.04em',
                         }}
                       >
-                        Thank you for your message!
+                        {EThankYouForYourMessage[language]}
                       </div>
                     )}
                   </FormWrapper>
@@ -246,7 +307,7 @@ export default function CustomSelectPage({
                 overflow: 'hidden',
               }}
               title='Custom Select Multi and Single'
-              allow='accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking'
+              allow='accelerometer;camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb;xr-spatial-tracking' // ambient-light-sensor; vr;
               sandbox='allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts'
             ></iframe>
           </div>

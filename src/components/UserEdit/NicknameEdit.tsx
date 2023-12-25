@@ -7,6 +7,8 @@ import {
   ELanguages,
   ECurrentPassword,
   ECurrentNickname,
+  EUserUpdated,
+  EUserNotUpdated,
 } from '../../interfaces'
 import { initializeUser, refreshUser } from '../../reducers/authReducer'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
@@ -46,15 +48,9 @@ const NicknameEdit = ({ user, language }: Props) => {
           .then((res) => {
             if (res) {
               if (res.success === false) {
-                dispatch(
-                  notify(
-                    `${EError[language]}: ${res.message ?? 'Error updating!'}`,
-                    true,
-                    5
-                  )
-                )
+                dispatch(notify(`${EError[language]}: ${res.message}`, true, 5))
               } else {
-                dispatch(notify(`${res.message ?? 'updated!'}`, false, 5))
+                dispatch(notify(`${res.message ?? EUserUpdated[language]}`, false, 5))
                 dispatch(refreshUser(res.user)).then(() => {
                   dispatch(initializeUser())
                 })
@@ -70,7 +66,7 @@ const NicknameEdit = ({ user, language }: Props) => {
               )
             } else {
               setTimeout(() => {
-                dispatch(notify(`User not updated`, true, 5))
+                dispatch(notify(EUserNotUpdated[language], true, 5))
               }, 2000)
             }
           })

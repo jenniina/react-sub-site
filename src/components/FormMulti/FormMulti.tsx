@@ -3,15 +3,23 @@ import { MessageForm } from './components/MessageForm'
 import { ExtrasForm } from './components/ExtrasForm'
 import { useMultistepForm } from './hooks/useMultistepForm'
 import { InitialForm } from './components/InitialForm'
-import { RefObject } from '../../interfaces'
+import { ELanguages, ESend, EThankYouForYourMessage, RefObject } from '../../interfaces'
 import { FormData, INITIAL_DATA } from './interfaces'
 import styles from './form.module.css'
 import { sendEmail } from './services/email'
 import Notification from '../Notification/Notification'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
+import {
+  EBack,
+  EContactForm,
+  ENext,
+  EPart,
+  EPleaseFillInTheFields,
+  EThereWasAnErrorSendingTheMessage,
+} from '../../interfaces/form'
 
-function FormMulti() {
+function FormMulti({ language }: { language: ELanguages }) {
   const form = useRef() as RefObject<HTMLFormElement>
 
   const [data, setData] = useState(INITIAL_DATA)
@@ -25,9 +33,24 @@ function FormMulti() {
   }
   const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next, goTo } =
     useMultistepForm([
-      <InitialForm {...data} updateFields={updateFields} key={`InitialForm`} />,
-      <MessageForm {...data} updateFields={updateFields} key={`MessageForm`} />,
-      <ExtrasForm {...data} updateFields={updateFields} key={`ExtrasForm`} />,
+      <InitialForm
+        {...data}
+        updateFields={updateFields}
+        key={`InitialForm`}
+        language={language}
+      />,
+      <MessageForm
+        {...data}
+        updateFields={updateFields}
+        key={`MessageForm`}
+        language={language}
+      />,
+      <ExtrasForm
+        {...data}
+        updateFields={updateFields}
+        key={`ExtrasForm`}
+        language={language}
+      />,
     ])
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -44,11 +67,11 @@ function FormMulti() {
           setTimeout(() => {
             setShowMessage(false)
           }, 100000)
-          dispatch(notify('Thank you for your message!', false, 8))
+          dispatch(notify(EThankYouForYourMessage[language], false, 8))
         })
       } catch (error) {
         console.log('error', error)
-        alert('There was an error sending the message!')
+        alert(EThereWasAnErrorSendingTheMessage[language])
       }
     }
   }
@@ -97,7 +120,7 @@ function FormMulti() {
     <div className={styles.wrapper}>
       <form ref={form} onSubmit={handleSubmit} aria-labelledby='steps'>
         <label id='steps' className={styles.steps}>
-          Contact&nbsp;Form Part&nbsp;
+          {EContactForm[language]} {EPart[language]}&nbsp;
           <span>
             {currentStepIndex + 1}&nbsp;/&nbsp;{steps.length}
           </span>
@@ -105,8 +128,18 @@ function FormMulti() {
         <div className={styles.hiddenform}>
           {isLastStep ? (
             <>
-              <InitialForm {...data} updateFields={updateFields} key={`InitialForm2`} />
-              <MessageForm {...data} updateFields={updateFields} key={`MessageForm2`} />
+              <InitialForm
+                {...data}
+                updateFields={updateFields}
+                language={language}
+                key={`InitialForm2`}
+              />
+              <MessageForm
+                {...data}
+                updateFields={updateFields}
+                language={language}
+                key={`MessageForm2`}
+              />
             </>
           ) : (
             ''
@@ -118,7 +151,7 @@ function FormMulti() {
         <div className={styles.btns} style={{ position: 'relative' }}>
           {!isFirstStep && (
             <button type='button' onClick={back}>
-              <span aria-hidden='true'>«</span> Back
+              <span aria-hidden='true'>«</span> {EBack[language]}
             </button>
           )}
           {!isLastStep && (
@@ -128,12 +161,12 @@ function FormMulti() {
               className={isLastStep ? styles.submit : styles.next}
               onClick={handleNext}
             >
-              Next <span aria-hidden='true'>»</span>
+              {ENext[language]} <span aria-hidden='true'>»</span>
             </button>
           )}
           {isLastStep && (
             <button className={isLastStep ? styles.submit : styles.next} type='submit'>
-              Finish <span aria-hidden='true'>»</span>
+              {ESend[language]} <span aria-hidden='true'>»</span>
             </button>
           )}
           {showError && (
@@ -147,7 +180,7 @@ function FormMulti() {
                 letterSpacing: '0.04em',
               }}
             >
-              Please fill in the fields
+              {EPleaseFillInTheFields[language]}
             </div>
           )}
           {showMessage && (
@@ -162,7 +195,7 @@ function FormMulti() {
                 letterSpacing: '0.04em',
               }}
             >
-              Thank you for your message!
+              {EThankYouForYourMessage[language]}
             </div>
           )}
         </div>

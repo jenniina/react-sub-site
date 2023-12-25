@@ -8,7 +8,15 @@ import styles from './css/quiz.module.css'
 import { useEffect, useState } from 'react'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { IHighscore } from './interfaces'
-import { ReducerProps } from '../../interfaces'
+import {
+  EError,
+  ELanguages,
+  ENote,
+  EPasswordsDoNotMatch,
+  ERegistrationSuccesful,
+  ETryTappingTheShapes,
+  ReducerProps,
+} from '../../interfaces'
 import { initializeUser } from '../../reducers/authReducer'
 import { notify } from '../../reducers/notificationReducer'
 import { createUser } from '../../reducers/usersReducer'
@@ -17,15 +25,28 @@ import Register from '../Register/Register'
 import Notification from '../Notification/Notification'
 import { FaStar } from 'react-icons/fa'
 import { getUserQuiz } from './reducers/quizReducer'
+import {
+  EChooseDifficulty,
+  EEasy,
+  EHard,
+  EMedium,
+  EQuestionsAreInEnglish,
+  EQuizQuestions15AreFetchedFrom,
+  ETestYourGeneralKnowledgeWithThese15Questions,
+  EUserCanChooseTheDifficultyLevel,
+  EUserCanRegisterAndLoginToSaveHighscores,
+} from '../../interfaces/quiz'
 
 const QuizStart = ({
   heading,
   text,
   type,
+  language,
 }: {
   heading: string
   text: string
   type: string
+  language: ELanguages
 }) => {
   const navigate = useNavigate()
   const [loginOpen, setLoginOpen] = useState(false)
@@ -34,7 +55,6 @@ const QuizStart = ({
   const [password, setPassword] = useState<string>('')
   const [confirmPassword, setConfirmPassword] = useState<string>('')
   const [name, setName] = useState<string>('')
-  const [language, setLanguage] = useState<string>('en')
   const { points, highscores, finalSeconds } = useSelector(
     (state: ReducerProps) => state.questions
   )
@@ -68,16 +88,16 @@ const QuizStart = ({
   const handleRegister = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
     if (password !== confirmPassword) {
-      dispatch(notify(`Passwords do not match!`, true, 8))
+      dispatch(notify(EPasswordsDoNotMatch[language], true, 8))
       return
     }
     dispatch(createUser({ name, username, password, language, verified: true }))
       .then(async () => {
-        dispatch(notify(`Registration successful`, false, 8))
+        dispatch(notify(ERegistrationSuccesful[language], false, 8))
       })
       .catch((err) => {
         console.log(err)
-        dispatch(notify(`Error: ${err.message}`, true, 8))
+        dispatch(notify(`${EError[language]}: ${err.message}`, true, 8))
       })
   }
 
@@ -115,10 +135,11 @@ const QuizStart = ({
   return (
     <>
       <Hero
+        address='portfolio'
         heading={heading}
         text={text}
         reset='Reset'
-        instructions='Try tapping the shapes'
+        instructions={ETryTappingTheShapes[language]}
       />
       <section className={`card`}>
         <div>
@@ -126,34 +147,34 @@ const QuizStart = ({
             <h2>Features</h2>
             <ul className='ul'>
               <li>
-                Quiz questions (15) are fetched from{' '}
-                <a href='https://the-trivia-api.com'>the Trivia Api</a>
+                {EQuizQuestions15AreFetchedFrom[language]}{' '}
+                <a href='https://the-trivia-api.com'>"the Trivia Api"</a>
               </li>
-              <li>User can choose the difficulty level (easy, medium, hard)</li>
               <li>
-                User can register and login to save highscores to a MongoDB database
-                (password is hashed)
+                {ENote[language]} {EQuestionsAreInEnglish[language]}
               </li>
+              <li>{EUserCanChooseTheDifficultyLevel[language]}</li>
+              <li>{EUserCanRegisterAndLoginToSaveHighscores[language]}</li>
             </ul>
           </div>
 
           <div className={`start-screen ${styles.quiz}`}>
-            <h2>Test your general knowledge with these 15 questions</h2>
-            <p>Choose difficulty:</p>
+            <h2>{ETestYourGeneralKnowledgeWithThese15Questions[language]}</h2>
+            <p>{EChooseDifficulty[language]}:</p>
             <div className={`${styles.difficulty}`}>
               <button
                 className={`${styles.mode} ${styles.easy}`}
                 value='easy'
                 onClick={(e) => handleClick(e)}
               >
-                Easy <FaStar />
+                {EEasy[language]} <FaStar />
               </button>
               <button
                 className={`${styles.mode} ${styles.medium}`}
                 value='medium'
                 onClick={(e) => handleClick(e)}
               >
-                Medium <FaStar />
+                {EMedium[language]} <FaStar />
                 <FaStar />
               </button>
               <button
@@ -161,7 +182,7 @@ const QuizStart = ({
                 value='hard'
                 onClick={(e) => handleClick(e)}
               >
-                Hard <FaStar />
+                {EHard[language]} <FaStar />
                 <FaStar />
                 <FaStar />
               </button>
@@ -170,6 +191,7 @@ const QuizStart = ({
           <div className={`register-login-wrap ${styles['register-login-wrap']}`}>
             <div className={`${loginOpen ? 'open' : ''} ${user ? 'logged' : ''}`}>
               <FormLogin
+                language={language}
                 easy={highscoresLocal.easy}
                 medium={highscoresLocal.medium}
                 hard={highscoresLocal.hard}
@@ -177,6 +199,7 @@ const QuizStart = ({
             </div>
             <div className={`${registerOpen ? 'open' : ''}`}>
               <Register
+                language={language}
                 handleRegister={handleRegister}
                 username={username}
                 setUsername={setUsername}

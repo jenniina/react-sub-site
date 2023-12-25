@@ -1,10 +1,12 @@
+import { ELanguages } from '../../../interfaces'
+import { ELoadingQuestions } from '../../../interfaces/quiz'
 import styles from '../css/quiz.module.css'
 
-const Loader = () => {
+const Loader = ({ language }: { language: ELanguages }) => {
   return (
     <div className={`${styles['loader-wrap']}`}>
       <div className={`${styles.loader}`}></div>
-      <h3>Loading questions...</h3>
+      <h3>{ELoadingQuestions[language]}</h3>
     </div>
   )
 }

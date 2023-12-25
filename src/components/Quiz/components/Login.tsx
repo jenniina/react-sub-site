@@ -1,7 +1,13 @@
 import { useEffect, useRef, useState, FormEvent } from 'react'
 import { AxiosError } from 'axios'
 import { IHighscore } from '../interfaces'
-import { ReducerProps } from '../../../interfaces'
+import {
+  ELoggingIn,
+  ELogin,
+  EPassword,
+  EUsername,
+  ReducerProps,
+} from '../../../interfaces'
 import Accordion from '../../Accordion/Accordion'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { notify } from '../../../reducers/notificationReducer'
@@ -11,8 +17,15 @@ import { useSelector } from 'react-redux'
 import Scores from './Scores'
 import styles from '../css/quiz.module.css'
 import { ELogout, EError, EEdit, ELanguages, ELoggedInAs } from '../../../interfaces'
+import { ELogInToSaveScore } from '../../../interfaces/quiz'
 
-const FormLogin = ({ easy, medium, hard }: IHighscore) => {
+interface Props {
+  easy: IHighscore['easy']
+  medium: IHighscore['medium']
+  hard: IHighscore['hard']
+  language: ELanguages
+}
+const FormLogin = ({ easy, medium, hard, language }: Props) => {
   const dispatch = useAppDispatch()
 
   const [username, setUsername] = useState('')
@@ -51,7 +64,7 @@ const FormLogin = ({ easy, medium, hard }: IHighscore) => {
 
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault()
-    dispatch(notify(`Logging in...`, false, 8))
+    dispatch(notify(ELoggingIn[language], false, 8))
 
     await dispatch(login(username, password, 'en'))
       .then(() => {
@@ -86,6 +99,7 @@ const FormLogin = ({ easy, medium, hard }: IHighscore) => {
           >{`${showHighscores ? 'hide' : 'show'} highscores`}</button>
           {showHighscores && (
             <Scores
+              language={language}
               easy={highscoresLocal.easy}
               medium={highscoresLocal.medium}
               hard={highscoresLocal.hard}
@@ -94,8 +108,13 @@ const FormLogin = ({ easy, medium, hard }: IHighscore) => {
         </>
       ) : (
         <>
-          <Accordion className='' text='Log in to save score' ref={formLoginRef}>
-            <h2>Log in to save score</h2>
+          <Accordion
+            language={language}
+            className=''
+            text={ELogInToSaveScore[language]}
+            ref={formLoginRef}
+          >
+            <h2>{ELogInToSaveScore[language]}</h2>
 
             <form onSubmit={handleLogin} className='login'>
               <div className='input-wrap'>
@@ -107,7 +126,7 @@ const FormLogin = ({ easy, medium, hard }: IHighscore) => {
                     required
                     onChange={({ target }) => setUsername(target.value)}
                   />
-                  <span>username: </span>
+                  <span>{EUsername[language]}: </span>
                 </label>
               </div>
               <div className='input-wrap'>
@@ -119,11 +138,11 @@ const FormLogin = ({ easy, medium, hard }: IHighscore) => {
                     value={password}
                     onChange={({ target }) => setPassword(target.value)}
                   />
-                  <span>password: </span>
+                  <span>{EPassword[language]}: </span>
                 </label>
               </div>
               <button type='submit' id='login' className='login'>
-                Log in
+                {ELogin[language]}
               </button>
             </form>
           </Accordion>

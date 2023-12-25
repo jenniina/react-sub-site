@@ -126,6 +126,7 @@ export default function JokesPage({
         .replace(/[^a-zA-Z]/g, '')} ${type} ${language}`}
     >
       <Hero
+        address='jokes'
         heading={title}
         text={text}
         reset={titleReset}
@@ -137,6 +138,7 @@ export default function JokesPage({
           <div>
             <div>
               <Select
+                language={language}
                 id='main-language'
                 className='language main'
                 instructions={`${titleLanguage}:`}
@@ -154,7 +156,11 @@ export default function JokesPage({
                 }}
               />
             </div>
-            <Accordion text={titleClickHereToSeeFeatures} className='features'>
+            <Accordion
+              language={language}
+              text={titleClickHereToSeeFeatures}
+              className='features'
+            >
               <div className='medium'>
                 <h2>{titleFeatures}</h2>
                 <ul className='ul'>

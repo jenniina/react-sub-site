@@ -2,7 +2,14 @@ import { useEffect, useState, FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { IQuizHighscore } from './interfaces'
-import { ReducerProps } from '../../interfaces'
+import {
+  EError,
+  ELanguages,
+  EPasswordsDoNotMatch,
+  EQuizApp,
+  ERegistrationSuccesful,
+  ReducerProps,
+} from '../../interfaces'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { addQuiz, getUserQuiz, deleteDuplicates } from './reducers/quizReducer'
 import { initializeUser } from '../../reducers/authReducer'
@@ -12,8 +19,32 @@ import FormLogin from './components/Login'
 import Register from '../Register/Register'
 import Notification from '../Notification/Notification'
 import styles from '../../components/Quiz/css/quiz.module.css'
+import {
+  EBackToMenu,
+  EBadLuck,
+  EDifficulty,
+  EEasy,
+  EExcellent,
+  EFasterThanBefore,
+  EGoodJob,
+  EHard,
+  EHighscore,
+  EMedium,
+  ENA,
+  ENewHighscore,
+  EOutOf300Points,
+  EPerfect,
+  EPoints,
+  ESpeed,
+  ETryAgain,
+  EYouScored,
+} from '../../interfaces/quiz'
 
-const QuizFinished = () => {
+interface Props {
+  language: ELanguages
+}
+
+const QuizFinished = ({ language }: Props) => {
   const { points, highscores, finalSeconds } = useSelector(
     (state: ReducerProps) => state.questions
   )
@@ -64,7 +95,7 @@ const QuizFinished = () => {
             },
             user: user._id,
           }
-          dispatch(notify(`New highscore!`, false, 3))
+          dispatch(notify(ENewHighscore[language], false, 3))
 
           dispatch(addQuiz(quizScore)).then((r) => {
             //console.log('r1: ', r)
@@ -82,13 +113,13 @@ const QuizFinished = () => {
           }
 
           if (r.highscores[mode].score < points) {
-            dispatch(notify(`New highscore!`, false, 3))
+            dispatch(notify(ENewHighscore[language], false, 3))
             quizScore.highscores[mode].time = finalSeconds // Update time if new score is higher
           } else if (
             r.highscores[mode].score === points &&
             r.highscores[mode].time > finalSeconds
           ) {
-            dispatch(notify(`Faster than before!`, false, 3))
+            dispatch(notify(EFasterThanBefore[language], false, 3))
             quizScore.highscores[mode].time = finalSeconds // Update time if score is equal and time is faster
           }
 
@@ -103,16 +134,16 @@ const QuizFinished = () => {
   const handleRegister = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
     if (password !== confirmPassword) {
-      dispatch(notify(`Passwords do not match!`, true, 8))
+      dispatch(notify(EPasswordsDoNotMatch[language], true, 8))
       return
     }
     dispatch(createUser({ name, username, password, language: 'en' }))
       .then(async () => {
-        dispatch(notify(`Registration successful`, false, 8))
+        dispatch(notify(ERegistrationSuccesful[language], false, 8))
       })
       .catch((err) => {
         console.log(err)
-        dispatch(notify(`Error: ${err.message}`, true, 8))
+        dispatch(notify(`${EError[language]}: ${err.message}`, true, 8))
       })
   }
 
@@ -120,16 +151,16 @@ const QuizFinished = () => {
 
   switch (true) {
     case percentage === 100:
-      congrats = 'Perfect!'
+      congrats = EPerfect[language]
       break
     case percentage >= 80 && percentage < 100:
-      congrats = 'Excellent!'
+      congrats = EExcellent[language]
       break
     case percentage >= 50 && percentage < 80:
-      congrats = 'Good job!'
+      congrats = EGoodJob[language]
       break
     case percentage >= 0 && percentage < 50:
-      congrats = 'Bad luck!'
+      congrats = EBadLuck[language]
       break
     default:
       congrats = ''
@@ -174,35 +205,54 @@ const QuizFinished = () => {
               <div className={`${styles.quiz}`}>
                 <h1 className={styles.h1}>
                   <a href='#' onClick={goToMainPage}>
-                    Quiz App
+                    {EQuizApp[language]}
                   </a>
                 </h1>
                 <h2>{congrats}</h2>
                 <p className='result'>
-                  You scored <strong>{points}</strong> out of 300 ({percentage}%)
+                  {EYouScored[language]} <strong>{points}</strong>{' '}
+                  {EOutOf300Points[language]} ({percentage}%)
                 </p>
-                <p>Difficulty: {mode}</p>
+                <p>
+                  {EDifficulty[language]}:{' '}
+                  {(() => {
+                    switch (mode) {
+                      case 'easy':
+                        return EEasy[language]
+                      case 'medium':
+                        return EMedium[language]
+                      case 'hard':
+                        return EHard[language]
+                      default:
+                        return mode
+                    }
+                  })()}
+                </p>
                 <p>
                   {finalSeconds === 0 ? (
-                    <>Speed: N/A</>
+                    <>
+                      {ESpeed[language]}: {ENA[language]}
+                    </>
                   ) : (
                     <>
-                      Speed: {mins < 10 && '0'}
+                      {ESpeed[language]}: {mins < 10 && '0'}
                       {mins}:{sec < 10 && '0'}
                       {sec}
                     </>
                   )}
                 </p>
-                <p className='highscore'>(Highscore: {highscores[mode].score} points)</p>
+                <p className='highscore'>
+                  ({EHighscore[language]}: {highscores[mode].score} {EPoints[language]})
+                </p>
                 <div className={`${styles.reset}`}>
                   <button className='btn' onClick={() => navigate(`/portfolio/quiz`)}>
-                    Quiz Menu
+                    {EBackToMenu[language]}
                   </button>
                   <button
                     className='btn'
                     onClick={() => navigate(`/portfolio/quiz/${mode}`)}
                   >
-                    Try again
+                    {ETryAgain[language]}
                   </button>
                 </div>
               </div>
@@ -210,6 +260,7 @@ const QuizFinished = () => {
               <div className={`register-login-wrap ${styles['register-login-wrap']}`}>
                 <div className={`${loginOpen ? 'open' : ''} ${user ? 'logged' : ''}`}>
                   <FormLogin
+                    language={language}
                     easy={highscores.easy}
                     medium={highscores.medium}
                     hard={highscores.hard}
@@ -217,6 +268,7 @@ const QuizFinished = () => {
                 </div>
                 <div className={`${registerOpen ? 'open' : ''}`}>
                   <Register
+                    language={language}
                     handleRegister={handleRegister}
                     username={username}
                     setUsername={setUsername}

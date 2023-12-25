@@ -61,6 +61,7 @@ const PasswordReset = ({ language, text }: Props) => {
   return (
     <>
       <Accordion
+        language={language}
         className='password-reset'
         text={`${titleForgotPassword}`}
         ref={formForgotRef}

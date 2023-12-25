@@ -56,7 +56,12 @@ const Register = ({
     <div className='register-wrap'>
       {!user ? (
         <>
-          <Accordion className='' text='register' ref={formRegisterRef}>
+          <Accordion
+            language={language}
+            className=''
+            text='register'
+            ref={formRegisterRef}
+          >
             <h2>Register</h2>
             <form onSubmit={handleRegister} className='register'>
               <div className='input-wrap'>
@@ -112,6 +117,7 @@ const Register = ({
                 </label>
               </div>
               <Select
+                language={language}
                 id='language-register'
                 className='language'
                 instructions='Language'

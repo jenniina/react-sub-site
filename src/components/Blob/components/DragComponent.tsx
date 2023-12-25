@@ -1,6 +1,8 @@
 import { RefObject, useEffect, useState, Dispatch, SetStateAction } from 'react'
 import { Draggable, focusedBlob, ColorPair } from '../interfaces'
 import Blob from './Blob'
+import { ELanguages } from '../../../interfaces'
+import { ESelectedBlobNone } from '../../../interfaces/blobs'
 
 let zIndex = 1
 let zIndex0 = -1
@@ -15,6 +17,7 @@ let color1 = 'cyan'
 let color2 = 'greenyellow'
 
 interface DragComponentProps {
+  language: ELanguages
   dispatch: React.Dispatch<any>
   d: number
   items: Draggable[]
@@ -623,7 +626,7 @@ const DragComponent = (props: DragComponentProps) => {
       const id = target.id
       setDeleteId(id)
       if (props.selectedvalue0.current)
-        props.selectedvalue0.current.textContent = `Selected blob: none`
+        props.selectedvalue0.current.textContent = `${ESelectedBlobNone[props.language]}`
       const cooldown = () => {
         reset = true
       }
@@ -656,6 +659,7 @@ const DragComponent = (props: DragComponentProps) => {
           return (
             <Blob
               key={index}
+              language={props.language}
               item={item}
               index={index}
               start={start}

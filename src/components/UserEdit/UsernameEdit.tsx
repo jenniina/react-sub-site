@@ -6,6 +6,9 @@ import {
   EEdit,
   ECurrentPassword,
   EUsernameIsTheSame,
+  EUserNotUpdated,
+  EError,
+  EUserUpdated,
 } from '../../interfaces'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
@@ -48,9 +51,9 @@ const UsernameEdit = ({ user, language }: Props) => {
           .then((res) => {
             if (res) {
               if (res.success === false) {
-                dispatch(notify(`${res.message ?? 'Error updating!'}`, true, 5))
+                dispatch(notify(`${res.message ?? EError[language]}`, true, 5))
               } else {
-                dispatch(notify(`${res.message ?? 'updated!'}`, false, 5))
+                dispatch(notify(`${res.message ?? EUserUpdated[language]}`, false, 5))
                 setPasswordOld('')
               }
             }
@@ -61,7 +64,7 @@ const UsernameEdit = ({ user, language }: Props) => {
               dispatch(notify(`${error.response.data.message}`, true, 5))
             } else {
               setTimeout(() => {
-                dispatch(notify(`User not updated`, true, 5))
+                dispatch(notify(EUserNotUpdated[language], true, 5))
               }, 2000)
             }
           })
