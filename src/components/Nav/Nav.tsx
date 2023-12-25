@@ -9,13 +9,35 @@ import { RiHomeSmileLine } from 'react-icons/ri'
 import { TbLayoutNavbar } from 'react-icons/tb'
 import { TfiLineDashed } from 'react-icons/tfi'
 import styles from './nav.module.css'
-import { links } from './links.json'
-import { skipLinks } from './linksskip.json'
+//import { links } from './links.json'
+//import { skipLinks } from './linksskip.json'
 import { Link, NavLink } from 'react-router-dom'
 import { useTheme, useThemeUpdate } from '../../hooks/useTheme'
 import useScrollDirection from '../../hooks/useScrollDirection'
 import useWindowSize from '../../hooks/useWindowSize'
-import { ReducerProps, breakpoint, breakpointSmall } from '../../interfaces'
+import {
+  EAbout,
+  EContact,
+  EDarkMode,
+  EExitToMainSite,
+  ELanguageTitle,
+  ELightMode,
+  EMenu,
+  ENavStyle,
+  EPasswordsDoNotMatch,
+  EPleaseCheckYourEmailForYourVerificationLink,
+  EPortfolio,
+  ERegistrationSuccesful,
+  ESearch,
+  ESettings,
+  ESkipToFooter,
+  ESkipToMainContent,
+  ESkipToMainNavigation,
+  EWelcome,
+  ReducerProps,
+  breakpoint,
+  breakpointSmall,
+} from '../../interfaces'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
 import logo from '../../assets/JLA_Jenniina-light-3-480x198.png'
 import logoDark from '../../assets/JLA_Jenniina-3-480x198.png'
@@ -30,14 +52,6 @@ import { notify } from '../../reducers/notificationReducer'
 import { createUser } from '../../reducers/usersReducer'
 import Notification from '../Notification/Notification'
 import { Select, SelectOption } from '../Select/Select'
-import {
-  ECategory_en,
-  ECategory_cs,
-  ECategory_de,
-  ECategory_es,
-  ECategory_fr,
-  ECategory_pt,
-} from '../Jokes/interfaces'
 
 type Link = {
   label: string
@@ -61,18 +75,52 @@ const Nav = (
 ) => {
   const { windowHeight, windowWidth } = useWindowSize()
 
+  const links = [
+    {
+      label: EWelcome[language],
+      href: '/',
+    },
+    {
+      label: EAbout[language],
+      href: '/about',
+    },
+    {
+      label: EPortfolio[language],
+      href: '/portfolio',
+    },
+    {
+      label: EContact[language],
+      href: '/contact',
+    },
+  ]
+
+  const skipLinks = [
+    {
+      label: ESkipToMainNavigation[language],
+      href: '#site-navigation',
+    },
+    {
+      label: ESkipToMainContent[language],
+      href: '#main-content',
+    },
+    {
+      label: ESkipToFooter[language],
+      href: '#main-footer',
+    },
+  ]
+
   const icons = (label: string) => {
-    if (label === 'Welcome')
+    if (label === EWelcome[language])
       return (
         <RiHomeSmileLine className={windowWidth < breakpoint ? styles.smallnav : ''} />
       )
-    else if (label === 'About')
+    else if (label === EAbout[language])
       return <BsPerson className={windowWidth < breakpoint ? styles.smallnav : ''} />
     //MdOutlinePerson
-    else if (label === 'Portfolio')
+    else if (label === EPortfolio[language])
       return <IoMdImages className={windowWidth < breakpoint ? styles.smallnav : ''} />
     //BiImage IoImagesOutline BiImages FaRegImages  MdImportContacts
-    else if (label === 'Contact')
+    else if (label === EContact[language])
       return <BiChat className={windowWidth < breakpoint ? styles.smallnav : ''} />
   }
 
@@ -300,14 +348,14 @@ const Nav = (
   const handleRegister = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
     if (password !== confirmPassword) {
-      dispatch(notify(`Passwords do not match!`, true, 8))
+      dispatch(notify(`${EPasswordsDoNotMatch}`, true, 8))
       return
     }
     dispatch(createUser({ name, username, password, language, verified: false }))
       .then(async () => {
         dispatch(
           notify(
-            `Registration successful. Check your email for the verification link`,
+            `${ERegistrationSuccesful[language]} - ${EPleaseCheckYourEmailForYourVerificationLink[language]} `,
             false,
             8
           )
@@ -348,7 +396,7 @@ const Nav = (
                         ${windowWidth < breakpointSmall ? 'scr' : ''}`}
           >
             <a href='https://jenniina.fi/'>
-              <span className='scr'>Jenniina</span>
+              <span>« {EExitToMainSite[language]}</span>
             </a>
           </div>
           <button
@@ -381,7 +429,9 @@ const Nav = (
                 ></path>
               </g>
             </svg>
-            <span className={windowWidth < breakpoint ? 'scr' : ''}>Menu</span>
+            <span className={windowWidth < breakpoint ? 'scr' : ''}>
+              {EMenu[language]}
+            </span>
           </button>
           <nav
             id={'site-navigation'}
@@ -432,7 +482,9 @@ const Nav = (
               }
               aria-hidden={true}
             />
-            <span className={windowWidth < breakpoint ? 'scr' : ''}>Search</span>
+            <span className={windowWidth < breakpoint ? 'scr' : ''}>
+              {ESearch[language]}
+            </span>
           </button>
           <button className={styles.settings} onClick={toggleToolbar}>
             <IoSettingsSharp
@@ -444,7 +496,7 @@ const Nav = (
               aria-hidden={true}
             />
             <span id='settings' className={windowWidth < breakpoint ? 'scr' : ''}>
-              Settings
+              {ESettings[language]}
             </span>
           </button>
           <nav
@@ -460,9 +512,10 @@ const Nav = (
             aria-expanded={isToolbarOpen}
           >
             <Select
+              language={language}
               id='language-register'
               className={`language ${styles.language}`}
-              instructions='Language'
+              instructions={ELanguageTitle[language]}
               hide
               options={options(ELanguages)}
               value={
@@ -478,7 +531,9 @@ const Nav = (
               }}
             />
             <div className={styles.toolwrap}>
-              <label htmlFor='dlt-btn'>{lightTheme ? 'Dark Mode' : 'Light Mode'}</label>
+              <label htmlFor='dlt-btn'>
+                {lightTheme ? EDarkMode[language] : ELightMode[language]}
+              </label>
               <button
                 id='dlt-btn'
                 className={
@@ -492,7 +547,7 @@ const Nav = (
                   <div className={`${styles['dlt-btn-inner-left']}`}>
                     <div className={`${styles['dlt-innermost']}`}>
                       <span className='scr'>
-                        {lightTheme ? 'Dark Mode' : 'Light Mode'}
+                        {lightTheme ? EDarkMode[language] : ELightMode[language]}
                       </span>
                     </div>
                   </div>
@@ -501,7 +556,7 @@ const Nav = (
             </div>
 
             <div className={styles.toolwrap}>
-              <label htmlFor='navbar-style'>Navbar style</label>
+              <label htmlFor='navbar-style'>{ENavStyle[language]}</label>
               <button
                 id='navbar-style'
                 onClick={menuStyleAltToggle}
@@ -544,6 +599,7 @@ const Nav = (
                       text='nav'
                     />
                     <Register
+                      language={language}
                       setIsFormOpen={setIsRegisterFormOpen}
                       handleRegister={handleRegister}
                       username={username}

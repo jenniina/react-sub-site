@@ -6,6 +6,11 @@ import {
   IUser,
   EConfirmPassword,
   EPassword,
+  EPasswordMustBeAtLeastTenCharacters,
+  EPasswordsDoNotMatch,
+  EError,
+  EUserUpdated,
+  EUserNotUpdated,
 } from '../../interfaces'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
@@ -34,10 +39,10 @@ const PasswordEdit = ({ user, language }: Props) => {
     e.preventDefault()
     try {
       if (password !== confirmPassword) {
-        dispatch(notify(`Passwords don't match`, true, 5))
+        dispatch(notify(EPasswordsDoNotMatch[language], true, 5))
         return
       } else if (password.length < 10) {
-        dispatch(notify(`Password must be at least 10 characters`, true, 5))
+        dispatch(notify(EPasswordMustBeAtLeastTenCharacters[language], true, 5))
         return
       }
       const _id = user._id
@@ -53,9 +58,9 @@ const PasswordEdit = ({ user, language }: Props) => {
           .then((res) => {
             if (res) {
               if (res.success === false) {
-                dispatch(notify(`${res.message || 'Error updating!'}`, true, 5))
+                dispatch(notify(`${res.message || EError[language]}`, true, 5))
               } else {
-                dispatch(notify(`${res.message || 'updated!'}`, false, 5))
+                dispatch(notify(`${res.message || EUserUpdated[language]}`, false, 5))
                 setPasswordOld('')
                 setPassword('')
                 setConfirmPassword('')
@@ -68,7 +73,7 @@ const PasswordEdit = ({ user, language }: Props) => {
               dispatch(notify(`${error.response.data.message}`, true, 5))
             } else {
               setTimeout(() => {
-                dispatch(notify(`User not updated`, true, 5))
+                dispatch(notify(EUserNotUpdated[language], true, 5))
               }, 2000)
             }
           })

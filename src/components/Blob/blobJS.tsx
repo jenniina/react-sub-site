@@ -9,6 +9,24 @@ import {
 } from './interfaces'
 import DragComponent from './components/DragComponent'
 import { BlobContext, Props } from './components/BlobProvider'
+import { ELanguages } from '../../interfaces'
+import {
+  EAdjustBackgroundHue,
+  EAdjustBackgroundLightness,
+  EAdjustBackgroundSaturation,
+  EDisableScroll,
+  EEnableScroll,
+  EMarkerOff,
+  EMarkerOn,
+  EResetBlobs,
+  EResetHue,
+  EResetLightness,
+  EResetSaturation,
+  ESelectedBlobNone,
+  EStartSway,
+  EStopSway,
+  ETryDraggingTheBlobs,
+} from '../../interfaces/blobs'
 
 let angle = '90deg'
 let color1 = 'cyan'
@@ -18,7 +36,7 @@ const defaultLightness = '30'
 const defaultSaturation = '80'
 const defaultHue = '214'
 
-export default function BlobJS() {
+export default function BlobJS({ language }: { language: ELanguages }) {
   const { state, dispatch } = useContext(BlobContext) as Props
 
   const d = 0
@@ -194,11 +212,11 @@ export default function BlobJS() {
     if (!paused && dragUl0.current) {
       dragUl0.current.classList.add('paused')
       setPaused(true)
-      if (stopBlobs.current) stopBlobs.current.textContent = 'Start Blob Sway'
+      if (stopBlobs.current) stopBlobs.current.textContent = EStartSway[language]
     } else if (paused && dragUl0.current) {
       dragUl0.current.classList.remove('paused')
       setPaused(false)
-      if (stopBlobs.current) stopBlobs.current.textContent = 'Stop Blob Sway'
+      if (stopBlobs.current) stopBlobs.current.textContent = EStopSway[language]
     }
   }
 
@@ -220,7 +238,7 @@ export default function BlobJS() {
     if (prefersReducedMotion && dragUl0.current) {
       dragUl0.current.classList.add('paused')
       setPaused(true)
-      if (stopBlobs.current) stopBlobs.current.textContent = 'Start Blob Sway'
+      if (stopBlobs.current) stopBlobs.current.textContent = EStartSway[language]
     }
   }, [prefersReducedMotion])
 
@@ -346,11 +364,11 @@ export default function BlobJS() {
   function disableScroll() {
     if (scroll) {
       if (disableScrollButton.current)
-        disableScrollButton.current.textContent = 'Enable Scroll'
+        disableScrollButton.current.textContent = EEnableScroll[language]
       document.body.style.overflow = 'hidden'
     } else {
       if (disableScrollButton.current)
-        disableScrollButton.current.textContent = 'Disable Scroll'
+        disableScrollButton.current.textContent = EDisableScroll[language]
       document.body.style.overflow = 'auto'
     }
     setScroll(!scroll)
@@ -361,7 +379,7 @@ export default function BlobJS() {
       if (event.key === 'Escape' && !scroll) {
         setScroll(true)
         if (disableScrollButton.current)
-          disableScrollButton.current.textContent = 'Disable Scroll'
+          disableScrollButton.current.textContent = EDisableScroll[language]
         document.body.style.overflow = 'auto'
       }
     }
@@ -585,10 +603,10 @@ export default function BlobJS() {
       <section id={`drag-container${d}`} className={`drag-container drag-container${d}`}>
         <div className={'label-container'}>
           <span id={`blobdescription${d}`} className={'scr'}>
-            Try dragging the blobs
+            {ETryDraggingTheBlobs[language]}
           </span>
           <div ref={selectedvalue0} id={`selectedvalue${d}`} className='selectedvalue'>
-            Selected blob: none
+            {ESelectedBlobNone[language]}
           </div>
         </div>
         <div className={'button-container'}>
@@ -600,7 +618,7 @@ export default function BlobJS() {
               stopSway(e)
             }}
           >
-            Stop Blob Sway
+            {EStopSway[language]}
           </button>
           <button
             ref={resetBlobs}
@@ -610,7 +628,7 @@ export default function BlobJS() {
               resetBlobsFunction(e)
             }}
           >
-            Reset Blobs
+            {EResetBlobs[language]}
           </button>
           <button
             ref={disableScrollButton}
@@ -621,13 +639,13 @@ export default function BlobJS() {
               widthResize()
             }}
           >
-            Disable Scroll
+            {EDisableScroll[language]}
           </button>
           <button
             className='toggle-marker'
             onClick={() => setMarkerEnabled(!markerEnabled)}
           >
-            {markerEnabled ? 'Marker on' : 'Marker off'}
+            {markerEnabled ? EMarkerOn[language] : EMarkerOff[language]}
           </button>
         </div>
         <div
@@ -656,6 +674,7 @@ export default function BlobJS() {
           )}
           <div ref={dragWrap} className='drag-wrap'>
             <DragComponent
+              language={language}
               dispatch={dispatch}
               d={d}
               items={draggables[d]}
@@ -749,7 +768,7 @@ export default function BlobJS() {
         </div>
         <div className='drag-slider-wrap'>
           <label htmlFor={`drag-slider-lightness${d}`} id={`lightnessdescription${d}`}>
-            Adjust background lightness
+            {EAdjustBackgroundLightness[language]}
           </label>
           <input
             ref={sliderLightnessInput}
@@ -780,12 +799,12 @@ export default function BlobJS() {
               sliderLightnessReset()
             }}
           >
-            Reset Lightness
+            {EResetLightness[language]}
           </button>
         </div>
         <div className='drag-slider-wrap'>
           <label htmlFor={`drag-slider-saturation${d}`} id={`saturationdescription${d}`}>
-            Adjust background saturation
+            {EAdjustBackgroundSaturation[language]}
           </label>
           <input
             ref={sliderSaturationInput}
@@ -815,12 +834,12 @@ export default function BlobJS() {
               sliderSaturationReset()
             }}
           >
-            Reset Saturation
+            {EResetSaturation[language]}
           </button>
         </div>
         <div className='drag-slider-wrap'>
           <label htmlFor={`drag-slider-hue${d}`} id={`huedescription${d}`}>
-            Adjust background hue
+            {EAdjustBackgroundHue[language]}
           </label>
           <input
             ref={sliderHueInput}
@@ -850,7 +869,7 @@ export default function BlobJS() {
               sliderHueReset()
             }}
           >
-            Reset Hue
+            {EResetHue[language]}
           </button>
         </div>
         <div ref={exitApp} id={`exitblob${d}`} className='exitblob' role='dialog'></div>

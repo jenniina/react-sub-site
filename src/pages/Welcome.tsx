@@ -8,43 +8,53 @@ import { IoMdImages } from 'react-icons/io'
 import { GiAbstract019 } from 'react-icons/gi'
 import { MdOutlineQuiz } from 'react-icons/md'
 import { RiDragMove2Fill } from 'react-icons/ri'
+import {
+  EAbout,
+  EBlobAppSlogan,
+  EBlobs,
+  EContact,
+  EJokes,
+  ELanguages,
+  EPortfolio,
+  EQuiz,
+  ETestYourKnowledge,
+} from '../interfaces'
+import LanguageEdit from '../components/UserEdit/LanguageEdit'
+import { ETheComediansCompanion } from '../components/Jokes/interfaces'
 
 export default function Home({
   heading,
   text,
   type,
+  language,
 }: {
   heading: string
   text: string
   type: string
+  language: ELanguages
 }) {
   const lightTheme = useTheme()
 
   return (
-    <div
-      className={`${heading
-        .replace(/\s+/g, '-')
-        .toLowerCase()
-        .replace(/[^a-zA-Z]/g, '')} ${type} ${lightTheme ? styles.light : ''}`}
-    >
-      <Hero heading={heading} text={text} />
+    <div className={`welcome ${type} ${lightTheme ? styles.light : ''}`}>
+      <Hero address='welcome' heading={heading} text={text} />
       <div className='inner-wrap'>
         <section className={`card`}>
           <div>
             <ul className={styles.list}>
               <li>
                 <Link to='/about'>
-                  <BsPerson /> <span>About</span>
+                  <BsPerson /> <span>{EAbout[language]}</span>
                 </Link>
               </li>
               <li>
                 <Link to='/portfolio'>
-                  <IoMdImages /> <span>Portfolio</span>
+                  <IoMdImages /> <span>{EPortfolio[language]}</span>
                 </Link>
               </li>
               <li>
                 <Link to='/contact'>
-                  <BiChat /> <span>Contact</span>
+                  <BiChat /> <span>{EContact[language]}</span>
                 </Link>
               </li>
             </ul>
@@ -54,23 +64,23 @@ export default function Home({
                 <li>
                   <Link to='/portfolio/quiz'>
                     <MdOutlineQuiz />
-                    <span>Quiz</span>
+                    <span>{EQuiz[language]}</span>
                   </Link>
-                  <p>Test your knowledge</p>
+                  <p>{ETestYourKnowledge[language]}</p>
                 </li>
                 <li>
                   <Link to='/portfolio/jokes'>
                     <GiAbstract019 />
-                    <span>Jokes</span>
+                    <span>{EJokes[language]}</span>
                   </Link>
-                  <p>The Comedian's Companion</p>
+                  <p>{ETheComediansCompanion[language]}</p>
                 </li>
                 <li>
                   <Link to='/portfolio/blob'>
                     <RiDragMove2Fill />
-                    <span>Blobs</span>
+                    <span>{EBlobs[language]}</span>
                   </Link>
-                  <p>Make blob art your thing</p>
+                  <p>{EBlobAppSlogan[language]}</p>
                 </li>
               </ul>
             </div>

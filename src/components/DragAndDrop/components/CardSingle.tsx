@@ -3,8 +3,11 @@ import { Data, Status } from '../interfaces'
 import styles from '../dragAndDrop.module.css'
 import { MdOutlineDragIndicator } from 'react-icons/md'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
+import { EChooseDestination } from '../../../interfaces/draganddrop'
+import { ELanguages } from '../../../interfaces'
 
 interface Props {
+  language: ELanguages
   status: Status
   id: number
   data: Data
@@ -16,6 +19,7 @@ interface Props {
 const types = { good: 'good', neutral: 'neutral', bad: 'bad' }
 
 function CardSingle({
+  language,
   status,
   id,
   index,
@@ -120,7 +124,7 @@ function CardSingle({
         <button aria-haspopup='true' onClick={toggleOpen}>
           <MdOutlineDragIndicator aria-hidden='true' />
           <span className='scr' id={`instructions${id}`}>
-            choose destination
+            {EChooseDestination[language]}
           </span>
         </button>
         <nav className={isOpen ? `${styles.open} ${styles.blur}` : `${styles.blur}`}>

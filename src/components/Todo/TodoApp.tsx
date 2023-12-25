@@ -140,7 +140,12 @@ export default function TodoApp({ language }: Props) {
         <p className={style['left-to-do']}>
           {todos?.filter((todo) => !todo?.complete).length} {ELeftToDo[language]}
         </p>
-        <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />
+        <TodoList
+          todos={todos}
+          toggleTodo={toggleTodo}
+          deleteTodo={deleteTodo}
+          language={language}
+        />
         {status === 'loading' && <p>{ELoading[language]}...</p>}
       </div>
       <Notification />

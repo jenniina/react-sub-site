@@ -68,13 +68,8 @@ const UserEditPage = ({
 
   return (
     <>
-      <div
-        className={`${heading
-          ?.replace(/\s+/g, '-')
-          .toLowerCase()
-          .replace(/[^a-zA-Z]/g, '')} ${type} ${lightTheme ? styles.light : ''}`}
-      >
-        <Hero heading={heading} text={text} />
+      <div className={`edit ${type} ${lightTheme ? styles.light : ''}`}>
+        <Hero address='edit' heading={heading} text={text} />
         <div className='inner-wrap'>
           <section className={`card`}>
             <div>

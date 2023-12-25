@@ -1,11 +1,19 @@
 import { FormEvent, useEffect, useRef } from 'react'
 import Accordion from '../Accordion/Accordion'
 import { useSelector } from 'react-redux'
-import { ReducerProps } from '../../interfaces'
+import {
+  EConfirmPassword,
+  EEmail,
+  ELanguages,
+  ENickname,
+  ERegister,
+  ReducerProps,
+} from '../../interfaces'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { initializeUser } from '../../reducers/authReducer'
 
 interface Props {
+  language: ELanguages
   handleRegister: (e: FormEvent<HTMLFormElement>) => void
   username: string
   setUsername: (username: string) => void
@@ -19,6 +27,7 @@ interface Props {
   text?: string
 }
 const Register = ({
+  language,
   handleRegister,
   username,
   setUsername,
@@ -48,12 +57,13 @@ const Register = ({
       {!user ? (
         <>
           <Accordion
+            language={language}
             className=''
-            text='Register'
+            text={ERegister[language]}
             ref={formRegisterRef}
             setIsFormOpen={setIsFormOpen}
           >
-            <h2>Register</h2>
+            <h2>{ERegister[language]}</h2>
             <form onSubmit={handleRegister} className={`register ${text}`}>
               <div className='input-wrap'>
                 <label>
@@ -65,7 +75,7 @@ const Register = ({
                     value={username}
                     onChange={({ target }) => setUsername(target.value)}
                   />
-                  <span>Email</span>
+                  <span>{EEmail[language]}</span>
                 </label>
               </div>
               <div className='input-wrap'>
@@ -78,7 +88,7 @@ const Register = ({
                     value={name}
                     onChange={({ target }) => setName(target.value)}
                   />
-                  <span>Nickname</span>
+                  <span>{ENickname[language]}</span>
                 </label>
               </div>
               <div className='input-wrap'>
@@ -104,10 +114,10 @@ const Register = ({
                     value={confirmPassword}
                     onChange={({ target }) => setConfirmPassword(target.value)}
                   />
-                  <span>Confirm Password</span>
+                  <span>{EConfirmPassword[language]}</span>
                 </label>
               </div>
-              <button type='submit'>Register</button>
+              <button type='submit'>{ERegister[language]}</button>
             </form>
           </Accordion>
         </>

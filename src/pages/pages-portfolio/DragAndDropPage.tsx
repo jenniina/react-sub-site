@@ -1,80 +1,92 @@
 import { DragAndDrop } from '../../components/DragAndDrop/components'
 import Hero from '../../components/Hero/Hero'
 import { MdOutlineDragIndicator } from 'react-icons/md'
+import {
+  EDragAndDrop,
+  EFeatures,
+  EInstructions,
+  EKeyboardUse,
+  ELanguages,
+} from '../../interfaces'
+import {
+  EAndPressEnterKeyToOpenMenu,
+  ECanRearrangeWithinTheirContainer,
+  EDraggableWithAnyPointer,
+  EHoldPointerButtonDownToDragAnItemFrom,
+  EKeyboardUseWithADropdownList,
+  EMoveItemsWithinTheirContainerWithTheUpOrDownArrowKeys,
+  EOnTouchDevicesHoldTouchForAMomentToActivateDrag,
+  EPointerAndTouchUse,
+  ESortTheColorsToADifferentContainerOr,
+  EStateSavedInLocalStorage,
+  EToMoveItemsToAnotherContainer,
+  EUseTabKeyToNavigateToDragButton,
+  EWithTheMenuOpenUseTabKeyToNavigateAnd,
+  EYouMayAlsoUseTheItemMenuToChooseADestination,
+} from '../../interfaces/draganddrop'
 
 export default function DragAndDropPage({
   heading,
   text,
   type,
+  language,
 }: {
   heading: string
   text: string
   type: string
+  language: ELanguages
 }) {
   return (
-    <div
-      className={`${heading
-        .replace(/\s+/g, '-')
-        .toLowerCase()
-        .replace(/[^a-zA-Z]/g, '')} ${type}`}
-    >
-      <Hero heading={heading} text={text} />
+    <div className={`draganddrop ${type}`}>
+      <Hero address='draganddrop' heading={heading} text={text} />
       <div className='inner-wrap'>
         <section className='card'>
           <div>
             <div className='medium'>
-              <h2>Features</h2>
+              <h2>{EFeatures[language]}</h2>
               <ul className='ul'>
-                <li>draggable with any pointer</li>
-                <li>keyboard use with dropdown list</li>
-                <li>can be rearranged within their container</li>
-                <li>state saved in localStorage</li>
+                <li>{EDraggableWithAnyPointer[language]}</li>
+                <li>{EKeyboardUseWithADropdownList[language]}</li>
+                <li>{ECanRearrangeWithinTheirContainer[language]}</li>
+                <li>{EStateSavedInLocalStorage[language]}</li>
               </ul>
-              <h3>Instructions</h3>
-              <h4>Pointer and Touch Use</h4>
+              <h3>{EInstructions[language]}</h3>
+              <h4>{EPointerAndTouchUse[language]}</h4>
               <ul className='ul'>
+                <li>{EHoldPointerButtonDownToDragAnItemFrom[language]}</li>
+                <li>{EOnTouchDevicesHoldTouchForAMomentToActivateDrag[language]}</li>
                 <li>
-                  hold pointer button down to drag an item from one container to another,
-                  or rearrange within a container
-                </li>
-                <li>on touch devices, hold touch for a moment to activate drag</li>
-                <li>
-                  you may also use the item menu{' '}
+                  {EYouMayAlsoUseTheItemMenuToChooseADestination[language]}:{' '}
                   <MdOutlineDragIndicator
                     aria-hidden='true'
                     style={{ display: 'inline-block', marginBottom: '-0.15em' }}
                   />{' '}
-                  to choose a destination
                 </li>
               </ul>
-              <h4>Keyboard Use</h4>
+              <h4>{EKeyboardUse[language]}</h4>
               <ul className='ul'>
-                <li>Move items within their container with the Up or Down arrow keys</li>
                 <li>
-                  To move items to another container:
+                  {EMoveItemsWithinTheirContainerWithTheUpOrDownArrowKeys[language]}
+                </li>
+                <li>
+                  {EToMoveItemsToAnotherContainer[language]}
                   <ul>
                     <li>
-                      use TAB-key to navigate to drag button{' '}
+                      {EUseTabKeyToNavigateToDragButton[language]}{' '}
                       <MdOutlineDragIndicator
                         aria-hidden='true'
                         style={{ display: 'inline-block', marginBottom: '-0.15em' }}
                       />{' '}
-                      and press Enter key to open menu
+                      {EAndPressEnterKeyToOpenMenu[language]}
                     </li>
-                    <li>
-                      With the menu open, use TAB-key to navigate and choose new
-                      destination with Enter or Space key
-                    </li>
+                    <li>{EWithTheMenuOpenUseTabKeyToNavigateAnd[language]}</li>
                   </ul>
                 </li>
               </ul>
             </div>
-            <h2>Drag and Drop</h2>
-            <p>
-              Sort the colors to a different container or organize them within their
-              container
-            </p>
-            <DragAndDrop />
+            <h2>{EDragAndDrop[language]}</h2>
+            <p>{ESortTheColorsToADifferentContainerOr[language]}</p>
+            <DragAndDrop language={language} />
           </div>
         </section>
       </div>

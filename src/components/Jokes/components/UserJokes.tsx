@@ -141,6 +141,7 @@ const UserJokes = ({
       <h3>{titleSaved}</h3>
       <div className='toggle-wrap'>
         <Select
+          language={language}
           id='sortby'
           className='sortby'
           instructions={`${titleSortBy}:`}

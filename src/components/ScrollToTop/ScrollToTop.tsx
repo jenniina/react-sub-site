@@ -1,8 +1,12 @@
 import React, { useState, useEffect, FC } from 'react'
 import { FaAngleUp } from 'react-icons/fa'
 import styles from './scrolltotop.module.css'
+import { ELanguages, EScrollToTheTop } from '../../interfaces'
 
-export const ScrollToTop: FC<{ styleMenu: boolean | undefined }> = ({ styleMenu }) => {
+export const ScrollToTop: FC<{
+  styleMenu: boolean | undefined
+  language: ELanguages
+}> = ({ styleMenu, language }) => {
   const [showTopBtn, setShowTopBtn] = useState(false)
   useEffect(() => {
     window.addEventListener('scroll', scrollY)
@@ -31,7 +35,7 @@ export const ScrollToTop: FC<{ styleMenu: boolean | undefined }> = ({ styleMenu 
       onClick={goToTop}
     >
       <FaAngleUp className={styles['icon']} />
-      <span className='scr'>Scroll to top</span>
+      <span className='scr'>{EScrollToTheTop[language]}</span>
     </button>
   )
 }

@@ -9,6 +9,7 @@ import {
   ReactPortal,
   useEffect,
 } from 'react'
+import { EClose, ELanguages } from '../../interfaces'
 
 interface accordionProps {
   text: string
@@ -25,6 +26,7 @@ interface accordionProps {
   close?: string
   isOpen?: boolean
   setIsFormOpen?: (isFormOpen: boolean) => void
+  language: ELanguages
 }
 
 const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefined) => {
@@ -83,7 +85,7 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
         {props.children}
 
         <button type='button' className='accordion-btn close' onClick={toggleVisibility}>
-          {props.close ?? 'close'}
+          {props.close ?? EClose[props.language]}
         </button>
       </div>
     </div>

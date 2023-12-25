@@ -1,6 +1,19 @@
 import Hero from '../../components/Hero/Hero'
-import { ELanguages } from '../../interfaces'
+import {
+  EFeatures,
+  EKeyboardAccessible,
+  EKeyboardUse,
+  ELanguages,
+} from '../../interfaces'
 import TodoApp from '../../components/Todo/TodoApp'
+import { ETodoApp } from '../../components/Todo/interfaces'
+import {
+  EAddTasksByTabbingToTheInputFieldAnd,
+  ERemoveATaskByTabbingToTheRemoveButtonAnd,
+  ERemoveTaskEitherIndividuallyOrClearAllCompletedTasksAtOnce,
+  EShowsHowManyTasksAreLeftToDo,
+  EStoresTasksInMongoDBIfTheUserIsLoggedIn,
+} from '../../interfaces/todo'
 
 export default function TodoPage({
   heading,
@@ -14,37 +27,25 @@ export default function TodoPage({
   language: ELanguages
 }) {
   return (
-    <div
-      className={`${heading
-        .replace(/\s+/g, '-')
-        .toLowerCase()
-        .replace(/[^a-zA-Z]/g, '')} ${type}`}
-    >
-      <Hero heading={heading} text={text} />
+    <div className={`todo ${type}`}>
+      <Hero address='todo' heading={heading} text={text} />
       <div className='inner-wrap'>
         <section className='card'>
           <div>
             <div className='medium'>
-              <h2>Features</h2>
+              <h2>{EFeatures[language]}</h2>
               <ul className='ul'>
-                <li>Keyboard accessible</li>
+                <li>{EKeyboardAccessible[language]}</li>
                 <li>
-                  Remove task either individually or clear all completed tasks at once
+                  {ERemoveTaskEitherIndividuallyOrClearAllCompletedTasksAtOnce[language]}
                 </li>
-                <li>Shows how many tasks are left to do</li>
-                <li>Stores tasks in MongoDB if the user is logged in</li>
+                <li>{EShowsHowManyTasksAreLeftToDo[language]}</li>
+                <li>{EStoresTasksInMongoDBIfTheUserIsLoggedIn[language]}</li>
               </ul>
-              <h3>Keyboard Use</h3>
+              <h3>{EKeyboardUse[language]}</h3>
               <ul className='ul'>
-                <li>
-                  Add tasks by tabbing to the input field and pressing either Enter or by
-                  tabbing to the Add Task button and pressing Space
-                </li>
-                <li>
-                  Remove a task by tabbing to the remove-button and pressing Space, or
-                  remove all completed tasks by pressing Space on the Clear Completed
-                  Tasks button
-                </li>
+                <li>{EAddTasksByTabbingToTheInputFieldAnd[language]}</li>
+                <li>{ERemoveATaskByTabbingToTheRemoveButtonAnd[language]}</li>
               </ul>
             </div>
           </div>
@@ -52,7 +53,7 @@ export default function TodoPage({
         <section className='card'>
           <div>
             <div className='medium'>
-              <h2>Todo App</h2>
+              <h2>{ETodoApp[language]}</h2>
               <TodoApp language={language} />
             </div>
           </div>

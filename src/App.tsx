@@ -37,6 +37,7 @@ import {
   ETestYourKnowledge,
   EContact,
   ELetsCollaborate,
+  EQuizApp,
 } from './interfaces'
 import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
 import { isTouchDevice } from './hooks/useDraggable'
@@ -65,6 +66,7 @@ import { useAppDispatch } from './hooks/useAppDispatch'
 import { initializeUser } from './reducers/authReducer'
 import { EGetOrganizedOneTaskAtATime, ETodoApp } from './components/Todo/interfaces'
 import { SelectOption } from './components/Select/Select'
+import Notification from './components/Notification/Notification'
 
 const App: FC = () => {
   const touchDevice = isTouchDevice()
@@ -200,6 +202,7 @@ const App: FC = () => {
                 path='*'
                 element={
                   <Welcome
+                    language={language}
                     heading={EWelcome[language]}
                     text={EToTheReactSiteOfJenniinaFi[language]}
                     type='page'
@@ -210,6 +213,7 @@ const App: FC = () => {
                 path='/about'
                 element={
                   <About
+                    language={language}
                     heading={EAbout[language]}
                     text={EThisSite[language]}
                     type='page'
@@ -238,7 +242,7 @@ const App: FC = () => {
                 }
               />
 
-              <Route path='/portfolio' element={<NavPortfolio />}>
+              <Route path='/portfolio' element={<NavPortfolio language={language} />}>
                 <Route
                   index
                   element={
@@ -246,6 +250,7 @@ const App: FC = () => {
                       heading={EPortfolio[language]}
                       type='page'
                       text='ReactJS'
+                      language={language}
                     />
                   }
                 />
@@ -253,6 +258,7 @@ const App: FC = () => {
                   path='/portfolio/blob'
                   element={
                     <BlobPage
+                      language={language}
                       heading={`${EBlob[language]} ${EApp[language]}`}
                       text=''
                       type='page subpage'
@@ -263,6 +269,7 @@ const App: FC = () => {
                   path='/portfolio/draganddrop'
                   element={
                     <DragAndDropPage
+                      language={language}
                       heading={EDragAndDrop[language]}
                       text=''
                       type='page subpage'
@@ -284,6 +291,7 @@ const App: FC = () => {
                   path='/portfolio/select'
                   element={
                     <CustomSelectPage
+                      language={language}
                       heading={ECustomSelect[language]}
                       text=''
                       type='page subpage'
@@ -294,6 +302,7 @@ const App: FC = () => {
                   path='/portfolio/form'
                   element={
                     <FormPage
+                      language={language}
                       heading={EMultistepForm[language]}
                       text=''
                       type='page subpage'
@@ -317,14 +326,21 @@ const App: FC = () => {
                     index
                     element={
                       <QuizStart
-                        heading={`${EQuiz[language]} ${EApp[language]}`}
+                        heading={EQuizApp[language]}
                         text={ETestYourKnowledge[language]}
                         type='page subpage'
+                        language={language}
                       />
                     }
                   />
-                  <Route path='/portfolio/quiz/:difficulty' element={<QuizQuestion />} />
-                  <Route path='/portfolio/quiz/results' element={<QuizFinished />} />
+                  <Route
+                    path='/portfolio/quiz/:difficulty'
+                    element={<QuizQuestion language={language} />}
+                  />
+                  <Route
+                    path='/portfolio/quiz/results'
+                    element={<QuizFinished language={language} />}
+                  />
                 </Route>
               </Route>
 
@@ -332,6 +348,7 @@ const App: FC = () => {
                 path='/contact'
                 element={
                   <Contact
+                    language={language}
                     heading={EContact[language]}
                     text={ELetsCollaborate[language]}
                     type='page'
@@ -341,8 +358,9 @@ const App: FC = () => {
             </Routes>
           </main>
 
-          <Footer styleMenu={styleMenu} />
-          <ScrollToTop styleMenu={styleMenu} />
+          <Footer language={language} styleMenu={styleMenu} />
+          <ScrollToTop language={language} styleMenu={styleMenu} />
+          <Notification />
         </div>
       </div>
     </BlobProvider>

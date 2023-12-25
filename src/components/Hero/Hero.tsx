@@ -17,38 +17,53 @@ type itemProps = {
   color: string
 }
 
-//Change these too, if the headings change, or add more as needed:
+//Change these too, if the addresses change, or add more as needed:
 const LOCATION = {
-  HOME: 'Welcome',
-  ABOUT: 'About',
-  PORTFOLIO: 'Portfolio',
-  CONTACT: 'Contact',
-  FORM: 'Multistep Form',
-  BLOBAPP: 'Blob App',
-  DND: 'Drag and Drop',
+  HOME: '',
+  ABOUT: 'about',
+  PORTFOLIO: 'portfolio',
+  CONTACT: 'contact',
+  FORM: 'form',
+  BLOBAPP: 'blob',
+  DND: 'draganddrop',
+  JOKES: 'jokes',
+  SELECT: 'select',
 }
+//In the case of the blob feature, remember to add to the list in hero.module.css for the svg filter:
+//.herocontent.portfolio,
+//.herocontent.blob,
+//.herocontent.draganddrop {
+//  -webkit-filter: url(#svgfilter);
+//  filter: url(#svgfilter);
+//  opacity: 0.8;
+//}
 
 export default function Hero({
   heading,
+  address,
   text,
   reset = 'Reset',
   instructions = 'Try tapping the shapes',
 }: {
   heading: string
+  address: string
   text: string
   reset?: string
   instructions?: string
 }) {
   const location = useLocation()
 
-  //Unused, left for reference
-  const addDirectionClass = (e: React.PointerEvent<HTMLElement>) => {
-    const target = e.target as HTMLElement
-    target.classList.add(styles[useEnterDirection(e)])
-    setTimeout(() => {
-      target.classList.remove(styles[useEnterDirection(e)])
-    }, 1000)
-  }
+  //remove the last trailing / then get the last part of the pathname:
+  const page = location.pathname?.replace(/\/$/, '').split('/').pop() ?? ''
+
+  // //Unused, left for reference
+  // const addDirectionClass = (e: React.PointerEvent<HTMLElement>) => {
+  //   const target = e.target as HTMLElement
+  //   target.classList.add(styles[useEnterDirection(e)])
+  //   setTimeout(() => {
+  //     target.classList.remove(styles[useEnterDirection(e)])
+  //   }, 1000)
+  // }
 
   //Move ABOUT- and ELSE-items up, down, left or right, depending on the direction they're approached from:
   const movingItem = (e: React.PointerEvent<HTMLElement>) => {
@@ -206,8 +221,6 @@ export default function Hero({
 
   const ItemComponent: FC<{ array: itemProps[]; location: string }> = useCallback(
     ({ array, location }) => {
-      //classname for various pages's hero section ul are with no spaces and lowercase, such as "todoapp" instead of "Todo App":
-      const locale = location.replaceAll(' ', '').toLowerCase()
       {
         return (
           <ul
@@ -216,10 +229,10 @@ export default function Hero({
             role='listbox'
             aria-labelledby={`description`}
             aria-activedescendant=''
-            className={`${styles[locale]} ${styles.herocontent}`}
+            className={`${styles[location]} ${styles.herocontent}`}
           >
             {array.map((item, index: number) => {
-              if (location == LOCATION.HOME) {
+              if (location == LOCATION.HOME || location == LOCATION.SELECT) {
                 const dividedBy = 2.2
 
                 const style: React.CSSProperties = {
@@ -257,7 +270,7 @@ export default function Hero({
                   <li
                     key={`${item.color}${index}`}
                     id={`shape${index + 1}`}
-                    className={`${styles.item} ${styles[locale]} ${styles.geometric} 
+                    className={`${styles.item} ${styles[location]} ${styles.geometric} 
                                 ${
                                   windowHeight < windowWidth ? styles.wide : styles.tall
                                 }`}
@@ -317,7 +330,7 @@ export default function Hero({
                     </div>
                   </li>
                 )
-              } else if (location == LOCATION.ABOUT) {
+              } else if (location == LOCATION.ABOUT || location == LOCATION.JOKES) {
                 const style: React.CSSProperties = {
                   position: 'absolute',
                   top: `calc(3vh + calc(1vh * ${item.e} * ${item.e / 2}))`,
@@ -442,7 +455,7 @@ export default function Hero({
                   <li
                     key={`${item.color}${index}`}
                     id={`eye${index + 1}`}
-                    className={`${styles.item} ${styles.eyes} ${styles[locale]} 
+                    className={`${styles.item} ${styles.eyes} ${styles[location]} 
                                 ${
                                   windowHeight < windowWidth ? styles.wide : styles.tall
                                 }`}
@@ -529,7 +542,7 @@ export default function Hero({
                   <li
                     key={`${item.color}${index}`}
                     id={`blob${index + 1}`}
-                    className={`${styles.item} ${styles[locale]} ${styles.portfolio} 
+                    className={`${styles.item} ${styles[location]} ${styles.portfolio} 
                                 ${
                                   windowHeight < windowWidth ? styles.wide : styles.tall
                                 }`}
@@ -634,7 +647,7 @@ export default function Hero({
                   <li
                     key={`${item.color}${index}`}
                     id={`eye${index + 1}`}
-                    className={`${styles.item} ${styles.eyes} ${styles[locale]} 
+                    className={`${styles.item} ${styles.eyes} ${styles[location]} 
                                 ${
                                   windowHeight < windowWidth ? styles.wide : styles.tall
                                 }`}
@@ -706,13 +719,12 @@ export default function Hero({
     [values]
   )
 
-  const locale = heading.replaceAll(' ', '').toLowerCase()
   return (
     <div
       className={`
         ${lightTheme ? styles.light : ''} 
         ${touchDevice ? styles.touch : ''} 
-        hero ${styles.hero} ${styles[locale]}`}
+        hero ${styles.hero} ${styles[address]}`}
     >
       <h1>
         <span data-text={heading}>{heading}</span>
@@ -721,7 +733,7 @@ export default function Hero({
       <span id='description' className='scr'>
         Hero section with interactive elements
       </span>
-      <ItemComponent array={setupItems} location={heading} />
+      <ItemComponent array={setupItems} location={page} />
       <div className={styles.bottom} data-instructions={instructions}>
         <button ref={resetButton} type='button' onClick={handleReset}>
           <span>{reset}</span>

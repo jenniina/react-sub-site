@@ -83,8 +83,7 @@
   margin: 0;
   padding: 0;
 }
-.logo-container a::after {
-  content: '« exit to main site';
+.logo-container a span {
   position: absolute;
   bottom: -1em;
   left: 1em;
@@ -94,17 +93,17 @@
   color: var(--color-primary-20);
   transform: translateY(-1em);
 }
-.transformations .logo-container a::after {
+.transformations .logo-container a span {
   transition-property: transform, opacity;
   transition-timing-function: ease-in-out;
   transition-duration: 300ms;
 }
-.logo-container a:hover::after {
+.logo-container a:hover span {
   transform: translateY(0);
   opacity: 1;
 }
-.logo-container a:focus::after,
-.logo-container a:focus-visible::after {
+.logo-container a:focus span,
+.logo-container a:focus-visible span {
   transform: translateY(0.4em);
   opacity: 1;
 }

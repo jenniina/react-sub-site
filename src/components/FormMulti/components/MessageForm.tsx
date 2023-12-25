@@ -3,25 +3,17 @@ import { FormWrapper } from './FormWrapper'
 import styles from '../form.module.css'
 import { Select, SelectOption } from '../../Select/Select'
 import useLocalStorage from '../../../hooks/useStorage'
+import { ELanguages, ENone, EOther, EPleaseSelectAnOption } from '../../../interfaces'
+import {
+  ELetMeKnowWhatOnYourMind,
+  EMessage,
+  EMessageSubject,
+  EPersonal,
+  EPleaseSendMeAFewWords,
+  EWork,
+  EYourEmail,
+} from '../../../interfaces/form'
 
-const options: SelectOption[] = [
-  {
-    label: 'Please choose a subject',
-    value: 'No Subject',
-  },
-  {
-    label: 'Work',
-    value: 'Work',
-  },
-  {
-    label: 'Personal',
-    value: 'Personal',
-  },
-  {
-    label: 'Other',
-    value: 'Other',
-  },
-]
 type MessageData = {
   email: string
   message: string
@@ -30,16 +22,39 @@ type MessageData = {
 
 type MessageFormProps = MessageData & {
   updateFields: (fields: Partial<MessageData>) => void
+  language: ELanguages
 }
 
-export function MessageForm({ email, message, select, updateFields }: MessageFormProps) {
+export function MessageForm({
+  email,
+  message,
+  select,
+  updateFields,
+  language,
+}: MessageFormProps) {
+  const options: SelectOption[] = [
+    {
+      label: EPleaseSelectAnOption[language],
+      value: ENone[language],
+    },
+    {
+      label: EWork[language],
+      value: EWork[language],
+    },
+    {
+      label: EPersonal[language],
+      value: EPersonal[language],
+    },
+    {
+      label: EOther[language],
+      value: EOther[language],
+    },
+  ]
+
   const [selectsingle, setSelect] = useState<SelectOption | undefined>(options[0])
 
   return (
-    <FormWrapper
-      title='Message'
-      description="Please send me a few words, and I'll respond as soon as I can."
-    >
+    <FormWrapper title='Message' description={EPleaseSendMeAFewWords[language]}>
       <div className={styles.subfield} style={{ paddingTop: '4em' }}>
         <div className='input-wrap'>
           <label>
@@ -53,7 +68,7 @@ export function MessageForm({ email, message, select, updateFields }: MessageFor
               onChange={(e) => updateFields({ email: e.target.value })}
             />
             <span>
-              Your Email{' '}
+              {EYourEmail[language]}{' '}
               <i className='required' aria-hidden='true'>
                 *
               </i>
@@ -63,11 +78,12 @@ export function MessageForm({ email, message, select, updateFields }: MessageFor
       </div>
 
       <div className={styles.subfield}>
-        <label>Message Subject</label>
+        <label>{EMessageSubject[language]}</label>
         <Select
+          language={language}
           id='single'
           className={`${styles.dropdownsingle} full`}
-          instructions='Please choose an option'
+          instructions={EPleaseSelectAnOption[language]}
           hide
           options={options}
           value={selectsingle}
@@ -81,7 +97,7 @@ export function MessageForm({ email, message, select, updateFields }: MessageFor
       </div>
       <div className={styles.subfield}>
         <label htmlFor='form-message'>
-          Message{' '}
+          {EMessage[language]}{' '}
           <i className='required' aria-hidden='true'>
             *
           </i>
@@ -92,7 +108,7 @@ export function MessageForm({ email, message, select, updateFields }: MessageFor
           name='message'
           value={message}
           rows={3}
-          placeholder='Let me know what on your mind'
+          placeholder={ELetMeKnowWhatOnYourMind[language]}
           onChange={(e) => updateFields({ message: e.target.value })}
         />
       </div>

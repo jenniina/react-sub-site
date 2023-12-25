@@ -1,3 +1,10 @@
+import { ELanguages } from '../../../interfaces'
+import {
+  EBasicDetails,
+  EFirstName,
+  ELastName,
+  EThisContactFormIsSplitIntoThreeSteps,
+} from '../../../interfaces/form'
 import { FormWrapper } from './FormWrapper'
 
 type UserData = {
@@ -7,13 +14,19 @@ type UserData = {
 
 type UserFormProps = UserData & {
   updateFields: (fields: Partial<UserData>) => void
+  language: ELanguages
 }
 
-export function InitialForm({ firstName, lastName, updateFields }: UserFormProps) {
+export function InitialForm({
+  firstName,
+  lastName,
+  updateFields,
+  language,
+}: UserFormProps) {
   return (
     <FormWrapper
-      title='Basic Details'
-      description="This contact form is split into three steps for demonstration purposes. Don't worry, it's not too long."
+      title={EBasicDetails[language]}
+      description={EThisContactFormIsSplitIntoThreeSteps[language]}
     >
       <div className='input-wrap'>
         <label>
@@ -26,7 +39,7 @@ export function InitialForm({ firstName, lastName, updateFields }: UserFormProps
             onChange={(e) => updateFields({ firstName: e.target.value })}
           />
           <span>
-            First Name{' '}
+            {EFirstName[language]}{' '}
             <i className='required' aria-hidden='true'>
               *
             </i>
@@ -44,7 +57,7 @@ export function InitialForm({ firstName, lastName, updateFields }: UserFormProps
             onChange={(e) => updateFields({ lastName: e.target.value })}
           />
           <span>
-            Last Name{' '}
+            {ELastName[language]}{' '}
             <i className='required' aria-hidden='true'>
               *
             </i>

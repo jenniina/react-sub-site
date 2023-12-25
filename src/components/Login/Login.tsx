@@ -99,6 +99,7 @@ const FormLogin = ({
       ) : (
         <>
           <Accordion
+            language={language}
             className='login'
             text={titleLogin}
             ref={formLoginRef}

@@ -1,26 +1,43 @@
 import { IHighscore } from '../interfaces'
 import styles from '../css/quiz.module.css'
+import { ELanguages } from '../../../interfaces'
+import {
+  EDifficulty,
+  EEasy,
+  EHard,
+  EMedium,
+  ENA,
+  EScore,
+  ESpeed,
+  EYourHighscores,
+} from '../../../interfaces/quiz'
 
-const Scores = ({ easy, medium, hard }: IHighscore) => {
+interface Props {
+  easy: IHighscore['easy']
+  medium: IHighscore['medium']
+  hard: IHighscore['hard']
+  language: ELanguages
+}
+const Scores = ({ easy, medium, hard, language }: Props) => {
   return (
     <table className={styles.highscores}>
-      <caption>Your&nbsp;highscores</caption>
+      <caption>{EYourHighscores[language]}</caption>
       <thead>
         <tr className={styles.th}>
-          <th>Difficulty</th>
-          <th className={styles.score}>Score</th>
+          <th>{EDifficulty[language]}</th>
+          <th className={styles.score}>{EScore[language]}</th>
           <th className={styles.percentage}>%</th>
-          <th>Speed</th>
+          <th>{ESpeed[language]}</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <th>Easy</th>
+          <th>{EEasy[language]}</th>
           <td>{easy ? easy.score : 0}/300</td>
           <td>{+((easy.score * 100) / 300).toFixed(1)}%</td>
           <td>
             {easy.score === 0 || easy.time === 0 ? (
-              'N/A'
+              ENA[language]
             ) : (
               <>
                 {Math.floor(easy.time / 60) < 10 && '0'}
@@ -31,12 +48,12 @@ const Scores = ({ easy, medium, hard }: IHighscore) => {
           </td>
         </tr>
         <tr>
-          <th>Medium</th>
+          <th>{EMedium[language]}</th>
           <td>{medium ? medium.score : 0}/300</td>
           <td>{+((medium.score * 100) / 300).toFixed(1)}%</td>
           <td>
             {medium.score === 0 || medium.time === 0 ? (
-              'N/A'
+              ENA[language]
             ) : (
               <>
                 {Math.floor(medium.time / 60) < 10 && '0'}
@@ -47,12 +64,12 @@ const Scores = ({ easy, medium, hard }: IHighscore) => {
           </td>
         </tr>
         <tr>
-          <th>Hard</th>
+          <th>{EHard[language]}</th>
           <td>{hard ? hard.score : 0}/300</td>
           <td>{+((hard.score * 100) / 300).toFixed(1)}%</td>
           <td>
             {hard.score === 0 || hard.time === 0 ? (
-              'N/A'
+              ENA[language]
             ) : (
               <>
                 {Math.floor(hard.time / 60) < 10 && '0'}

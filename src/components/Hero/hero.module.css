@@ -452,7 +452,7 @@
   margin-left: calc(50% - 50vw + calc(var(--scrollbar_width) / 2));
 }
 .herocontent.portfolio,
-.herocontent.blobapp,
+.herocontent.blob,
 .herocontent.draganddrop {
   -webkit-filter: url(#svgfilter);
   filter: url(#svgfilter);
@@ -506,7 +506,7 @@
   content: attr(data-instructions);
 }
 .portfolio .bottom::after,
-.blobapp .bottom::after,
+.blob .bottom::after,
 .draganddrop .bottom::after {
   content: 'Try dragging the blobs';
 }

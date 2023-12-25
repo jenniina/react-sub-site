@@ -184,7 +184,7 @@ const JokeSubmit = ({
   //?dry-run
 
   return (
-    <Accordion text={titleSubmitAJoke} className='submit'>
+    <Accordion language={language} text={titleSubmitAJoke} className='submit'>
       <h3>{titleSubmitAJoke}</h3>
       <p>
         {titleSubmitAJokeTo} <a href='https://sv443.net/jokeapi/v2/'>JokeAPI</a>
@@ -231,6 +231,7 @@ const JokeSubmit = ({
 
         {categoryLanguages ? (
           <Select
+            language={language}
             id='submit-category-select'
             className='submit'
             instructions={`${titleCategory}:`}
@@ -245,6 +246,7 @@ const JokeSubmit = ({
           ''
         )}
         <Select
+          language={language}
           id='submit-language'
           className='submit'
           instructions={`${titleLanguage}:`}

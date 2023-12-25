@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import styles from './select.module.css'
+import { ELanguages, EPleaseSelectAnOption } from '../../interfaces'
 // import { v4 as uuidv4 } from 'uuid'
 
 export type SelectOption = {
@@ -26,6 +27,7 @@ type SelectProps = {
   className: string
   options: SelectOption[]
   selectAnOption?: string
+  language?: ELanguages
 } & (SingleSelectProps | MultipleSelectProps)
 
 let debounceTimeout: ReturnType<typeof setTimeout>
@@ -40,7 +42,8 @@ export function Select({
   value,
   onChange,
   options,
-  selectAnOption = 'Select an option',
+  language = ELanguages.English,
+  selectAnOption = EPleaseSelectAnOption[language] ?? 'Select an option',
 }: SelectProps) {
   const [isOpen, setIsOpen] = useState(false)
 

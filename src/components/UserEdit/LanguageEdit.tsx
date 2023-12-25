@@ -6,7 +6,7 @@ import {
   ECategory_pt,
   ECategory_en,
 } from '../Jokes/interfaces'
-import { ENickname, EError } from '../../interfaces'
+import { ENickname, EError, EUserUpdated, EUserNotUpdated } from '../../interfaces'
 import { useState } from 'react'
 import {
   IUser,
@@ -66,15 +66,9 @@ const LanguageEdit = ({ user, language, setLanguage, options, getKeyByValue }: P
           .then((res) => {
             if (res) {
               if (res.success === false) {
-                dispatch(
-                  notify(
-                    `${EError[language]}: ${res.message ?? 'Error updating!'}`,
-                    true,
-                    5
-                  )
-                )
+                dispatch(notify(`${EError[language]}: ${res.message}`, true, 5))
               } else {
-                dispatch(notify(`${res.message ?? 'updated!'}`, false, 5))
+                dispatch(notify(`${res.message ?? EUserUpdated[language]}`, false, 5))
                 dispatch(refreshUser(res.user)).then(() => {
                   dispatch(initializeUser())
                 })
@@ -90,7 +84,7 @@ const LanguageEdit = ({ user, language, setLanguage, options, getKeyByValue }: P
               )
             } else {
               setTimeout(() => {
-                dispatch(notify(`User not updated`, true, 5))
+                dispatch(notify(EUserNotUpdated[language], true, 5))
               }, 2000)
             }
           })
@@ -112,6 +106,7 @@ const LanguageEdit = ({ user, language, setLanguage, options, getKeyByValue }: P
 
           <form onSubmit={handleUserSubmit} className={styles['edit-user']}>
             <Select
+              language={language}
               id='language-register'
               className={`language ${styles.language}`}
               instructions='Language'

@@ -1,88 +1,127 @@
 import BlobJS from '../../components/Blob/blobJS'
 import Hero from '../../components/Hero/Hero'
+import {
+  EBlobs,
+  EDraggable,
+  EFeatures,
+  EInstructions,
+  EKeyboardUse,
+  ELanguages,
+} from '../../interfaces'
+import {
+  EBlurIntoOneAnother,
+  EButtonsTo,
+  EChangeBlobColorByDraggingToAColorNodeOnTheSides,
+  EChangeBlobSizeByDraggingItToEitherTheLOrSLetterOnTheRightHandSide,
+  EChangeBlobSizeByScrollingWithTheMouseWheel,
+  EChangeableColor,
+  EChangeableSize,
+  ECloneABlobByDraggingItToTheTopLeftPlusSign,
+  ECloneABlobByPressing3Or,
+  ECloneable,
+  EHue,
+  ELightness,
+  EMakeBlobLargerByPressing2,
+  EMakeBlobSmallerByPressing1,
+  EPointerUse,
+  EPressEnterToCycleThroughTheDifferentColors,
+  ERemovable,
+  ERemoveABlobByDraggingItToTheBottomLeftXSign,
+  ERemoveABlobByPressingDeleteOr,
+  EResetTheBlobArrayToANewConfiguration,
+  ESaturation,
+  ESlidersToControlBackground,
+  EStopScrollingBehaviorToUseTheMouseWheelFreely,
+  ETabToABlobAndWithItInFocus,
+  EToggleTheSubtleMovementOfTheBlobs,
+  EWhichBlobIsCurrentlyActiveCanBeSeenAtTheTopLeftOfTheContainer,
+} from '../../interfaces/blobs'
 import './css/blob.css'
 
 export default function BlobPage({
   heading,
   text,
   type,
+  language,
 }: {
   heading: string
   text: string
   type: string
+  language: ELanguages
 }) {
   return (
-    <div
-      className={`${heading
-        .replace(/\s+/g, '-')
-        .toLowerCase()
-        .replace(/[^a-zA-Z]/g, '')} ${type}`}
-    >
-      <Hero heading={heading} text={text} />
+    <div className={`blob ${type}`}>
+      <Hero address='blob' heading={heading} text={text} />
       <div className='inner-wrap'>
         <section>
           <div className='card'>
             <div>
               <div className='medium'>
-                <h2>Features</h2>
+                <h2>{EFeatures[language]}</h2>
                 <ul className='ul'>
                   <li>
-                    Blobs:
+                    {EBlobs[language]}:
                     <ul>
-                      <li>Draggable</li>
-                      <li>Blur into one another</li>
-                      <li>Changeable color </li>
-                      <li>Changeable size </li>
-                      <li>Cloneable</li>
-                      <li>Removable</li>
+                      <li>{EDraggable[language]}</li>
+                      <li>{EBlurIntoOneAnother[language]}</li>
+                      <li>{EChangeableColor[language]}</li>
+                      <li>{EChangeableSize[language]}</li>
+                      <li>{ECloneable[language]}</li>
+                      <li>{ERemovable[language]}</li>
                     </ul>
                   </li>
 
                   <li>
-                    Sliders to control background
+                    {ESlidersToControlBackground[language]}:
                     <ul>
-                      <li>Lightness</li>
-                      <li>Saturation</li>
-                      <li>Hue</li>
+                      <li>{ELightness[language]}</li>
+                      <li>{ESaturation[language]}</li>
+                      <li>{EHue[language]}</li>
                     </ul>
                   </li>
 
                   <li>
-                    Buttons to
+                    {EButtonsTo[language]}:
                     <ul>
-                      <li>Toggle the subtle movement of the blobs</li>
-                      <li>Reset the blob array to a new configuration</li>
-                      <li>Stop scrolling behavior to use the mouse wheel freely</li>
+                      <li>{EToggleTheSubtleMovementOfTheBlobs[language]}</li>
+                      <li>{EResetTheBlobArrayToANewConfiguration[language]}</li>
+                      <li>{EStopScrollingBehaviorToUseTheMouseWheelFreely[language]}</li>
                     </ul>
                   </li>
 
-                  <li>Top left shows which blob is currently active</li>
+                  <li>
+                    {
+                      EWhichBlobIsCurrentlyActiveCanBeSeenAtTheTopLeftOfTheContainer[
+                        language
+                      ]
+                    }
+                  </li>
                 </ul>
-                <h3>Instructions</h3>
-                <h4>Pointer Use</h4>
+                <h3>{EInstructions[language]}</h3>
+                <h4>{EPointerUse[language]}</h4>
                 <ul className='ul'>
-                  <li>Change blob color by dragging to a color node on the sides</li>
+                  <li>{EChangeBlobColorByDraggingToAColorNodeOnTheSides[language]}</li>
                   <li>
-                    Change blob size by dragging it to one of the corners on the right
-                    hand side
+                    {
+                      EChangeBlobSizeByDraggingItToEitherTheLOrSLetterOnTheRightHandSide[
+                        language
+                      ]
+                    }
                   </li>
-                  <li>
-                    Change blob size by scrolling with the mouse wheel (note: you may want
-                    to disable scrolling first with the button on the top right)
-                  </li>
-                  <li>Clone a blob by dragging it to the top left corner</li>
-                  <li>Remove a blob by dragging it to the bottom left corner</li>
+                  <li>{EChangeBlobSizeByScrollingWithTheMouseWheel[language]}</li>
+                  <li>{ECloneABlobByDraggingItToTheTopLeftPlusSign[language]}</li>
+                  <li>{ERemoveABlobByDraggingItToTheBottomLeftXSign[language]}</li>
                 </ul>
-                <h4>Keyboard Use</h4>
+                <h4>{EKeyboardUse[language]}</h4>
                 <ul className='ul'>
                   <li>
-                    Tab to a blob, and with it in focus:
+                    {ETabToABlobAndWithItInFocus[language]}
                     <ul>
-                      <li>Press Enter to cycle through the different colors</li>
-                      <li>Make blob smaller by pressing '1'</li>
-                      <li>Make blob larger by pressing '2'</li>
-                      <li>Clone a blob by pressing '3' or '+'</li>
-                      <li>Remove a blob by pressing 'Delete' or '-'</li>
+                      <li>{EPressEnterToCycleThroughTheDifferentColors[language]}</li>
+                      <li>{EMakeBlobSmallerByPressing1[language]}</li>
+                      <li>{EMakeBlobLargerByPressing2[language]}</li>
+                      <li>{ECloneABlobByPressing3Or[language]}</li>
+                      <li>{ERemoveABlobByPressingDeleteOr[language]}</li>
                     </ul>
                   </li>
                 </ul>
@@ -90,7 +129,7 @@ export default function BlobPage({
             </div>
           </div>
         </section>
-        <BlobJS />
+        <BlobJS language={language} />
       </div>
     </div>
   )

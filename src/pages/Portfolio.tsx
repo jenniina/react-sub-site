@@ -1,6 +1,25 @@
 import { useRef } from 'react'
 import { useTheme } from '../hooks/useTheme'
-import { RefObject } from '../interfaces'
+import {
+  EBlobAppIntro,
+  ECustomSelect,
+  ECustomSelectIntro,
+  EDependencies,
+  EDragAndDrop,
+  EDragAndDropAppIntro,
+  EDraggableBlobs,
+  EJokesAppIntro,
+  ELanguages,
+  EMainSite,
+  EMultistepForm,
+  EMultistepFormIntro,
+  EQuizApp,
+  EQuizAppIntro,
+  EReactSpecificAppsMadeWithViteAndTypescript,
+  EThisSiteFocusesOnReactApplications,
+  ETodoAppIntro,
+  RefObject,
+} from '../interfaces'
 import styles from './css/portfolio.module.css'
 import Hero from '../components/Hero/Hero'
 import { Link } from 'react-router-dom'
@@ -9,45 +28,39 @@ import { BiSelectMultiple } from 'react-icons/bi'
 import { RiTodoLine, RiDragDropLine, RiDragMove2Fill } from 'react-icons/ri'
 import { GiAbstract019 } from 'react-icons/gi'
 import { MdOutlineQuiz } from 'react-icons/md'
+import { ETheComediansCompanion } from '../components/Jokes/interfaces'
+import { ETodoApp } from '../components/Todo/interfaces'
 
 export default function Portfolio({
   heading,
   text,
   type,
+  language,
 }: {
   heading: string
   text: string
   type: string
+  language: ELanguages
 }) {
   const form = useRef() as RefObject<HTMLFormElement>
 
   const lightTheme = useTheme()
 
   return (
-    <div
-      className={`${heading
-        .replace(/\s+/g, '-')
-        .toLowerCase()
-        .replace(/[^a-zA-Z]/g, '')} ${type} ${lightTheme ? styles.light : ''}`}
-    >
-      <Hero heading={heading} text={text} />
+    <div className={`portfolio ${type} ${lightTheme ? styles.light : ''}`}>
+      <Hero address='portfolio' heading={heading} text={text} />
       <div className='inner-wrap'>
         <section className={`card`}>
           <div>
             <div className={styles.notes}>
               <p className={styles.introparagraph}>
-                This site focuses on React applications. Non-React porfolio items may be
-                found at the{' '}
-                <a href='https://jenniina.fi/#portfolio'>portfolio section</a> of the main
-                site{' '}
+                {EThisSiteFocusesOnReactApplications[language]} <br /> <br />
+                <a href='https://jenniina.fi/#portfolio'>{EMainSite[language]}</a>
               </p>
               <h2>React Apps</h2>
 
-              <p>
-                React-specific apps made with Vite and Typescript. Each app is designed to
-                be both pointer- and keyboard-accessible.{' '}
-              </p>
-              <label htmlFor='list-libraries'>Dependencies:</label>
+              <p>{EReactSpecificAppsMadeWithViteAndTypescript[language]}</p>
+              <label htmlFor='list-libraries'>{EDependencies[language]}:</label>
               <ul id='list-libraries'>
                 <li>react-icons</li>
                 <li>react-dom</li>
@@ -63,60 +76,51 @@ export default function Portfolio({
               <li>
                 <Link to='/portfolio/quiz'>
                   <MdOutlineQuiz />
-                  <span>Quiz App</span>
+                  <span>{EQuizApp[language]}</span>
                 </Link>
-                <p>
-                  A quiz app with three difficulty levels, a timer, and a highscore list.
-                  The app uses the Open Trivia Database API to fetch questions.
-                </p>
+                <p>{EQuizAppIntro[language]}</p>
               </li>
               <li>
                 <Link to='/portfolio/jokes'>
                   <GiAbstract019 />
-                  <span>The Comedian's Companion</span>
+                  <span>{ETheComediansCompanion[language]}on</span>
                 </Link>
-                <p>
-                  A joke app with customizable options that uses the JokeAPI to fetch
-                  jokes.
-                </p>
+                <p>{EJokesAppIntro[language]}</p>
               </li>
               <li>
                 <Link to='/portfolio/blob'>
                   <RiDragMove2Fill />
-                  <span>Draggable Blobs</span>
+                  <span>{EDraggableBlobs[language]}</span>
                 </Link>
-                <p>
-                  My custom draggables app heavily modified to work in the React
-                  environment
-                </p>
+                <p>{EBlobAppIntro[language]}</p>
               </li>
               <li>
                 <Link to='/portfolio/draganddrop'>
                   <RiDragDropLine />
-                  <span>Drag and Drop</span>
+                  <span>{EDragAndDrop[language]}</span>
                 </Link>
-                <p>A custom drag-and-drop</p>
+                <p>{EDragAndDropAppIntro[language]}</p>
               </li>
               <li>
                 <Link to='/portfolio/todo'>
                   <RiTodoLine />
-                  <span>Todo App</span>
+                  <span>{ETodoApp[language]}</span>
                 </Link>
-                <p>A todo-app using localStorage</p>
+                <p>{ETodoAppIntro[language]}</p>
               </li>
               <li>
                 <Link to='/portfolio/select'>
                   <BiSelectMultiple />
-                  <span>Custom Select</span>
+                  <span>{ECustomSelect[language]}</span>
                 </Link>
-                <p>Single- and multiple-select alternatives</p>
+                <p>{ECustomSelectIntro[language]}</p>
               </li>
               <li className={styles.multistep}>
                 <Link to='/portfolio/form'>
                   <AiOutlineForm />
-                  <span>Multistep Form</span>
+                  <span>{EMultistepForm[language]}</span>
                 </Link>
-                <p>Three-step fully functional contact form</p>
+                <p>{EMultistepFormIntro[language]}</p>
               </li>
             </ul>
           </div>

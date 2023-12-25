@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { getQuestions, newAnswer } from './reducers/questionsReducer'
-import { ReducerProps } from '../../interfaces'
+import { ELanguages, EQuizApp, ReducerProps } from '../../interfaces'
 import Progress from './components/Progress'
 import Timer from './components/Timer'
 import Loader from './components/Loader'
@@ -11,8 +11,13 @@ import Next from './components/Next'
 import Notification from '../Notification/Notification'
 import Message from './components/Message'
 import styles from '../../components/Quiz/css/quiz.module.css'
+import {
+  EDifficulty,
+  EErrorFetchingQuestions,
+  EQuizInProgress,
+} from '../../interfaces/quiz'
 
-const QuizQuestion = () => {
+const QuizQuestion = ({ language }: { language: ELanguages }) => {
   const { difficulty } = useParams()
   const { mode } = useSelector((state: ReducerProps) => state.difficulty)
   const { currentQuestion, answer, index, status } = useSelector(
@@ -40,21 +45,23 @@ const QuizQuestion = () => {
       <div>
         <Notification />
         <div className={`${styles.quiz} `}>
-          {status === 'loading' && <Loader />}
+          {status === 'loading' && <Loader language={language} />}
           {status === 'error' && (
-            <Message type='error' message='Error fetching questions' />
+            <Message type='error' message={EErrorFetchingQuestions[language]} />
           )}
           {status === 'ready' && (
             <>
               <h1 className={styles.h1}>
                 <a href='#' onClick={goToMainPage}>
-                  Quiz App
+                  {EQuizApp[language]}
                 </a>
               </h1>
-              <h2>Quiz in progress</h2>
-              <Progress />
+              <h2>{EQuizInProgress[language]}</h2>
+              <Progress language={language} />
               <div className={styles.wrap}>
-                <div className={`${styles.diff}`}>Difficulty: {difficulty}</div>
+                <div className={`${styles.diff}`}>
+                  {EDifficulty[language]}: {difficulty}
+                </div>
                 <h2 className={`${styles.question}`}>{question}</h2>
                 <div className={`${styles.options}`}>
                   {options?.map((option) => {
@@ -82,7 +89,7 @@ const QuizQuestion = () => {
               </div>
               <footer>
                 <Timer />
-                {answer && <Next />}
+                {answer && <Next language={language} />}
               </footer>
             </>
           )}
