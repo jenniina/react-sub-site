@@ -60,6 +60,7 @@ import {
   ENavigateWithArrowKeys,
   EOtherFeatures,
   EPageTransitionAnimation,
+  EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo,
   EPressEscapeToSkipToResetButton,
   EReactApps,
   ERemoveBlobs,
@@ -71,6 +72,7 @@ import {
   ESiteColors,
   ESortableWithinTheirContainer,
   ETheSiteColorsLightnessesSwitchInLightMode,
+  ETheTranslationsAreDoneWithTheHelpOfGithubCopilotSo,
   EThreeStepFullyFunctionalContactForm,
   EUsesANodeBackendToSendTheMessage,
   EUsesLocalStorageToStoreTheInformation,
@@ -186,7 +188,21 @@ export default function About({
                 <span className='scr'>{ESettings[language]}</span> {EIcon[language]}
               </big>
               <ul className='ul'>
-                <li>{ELanguageSelect[language]}</li>
+                <li>
+                  {ELanguageSelect[language]}
+                  <ul>
+                    <li>
+                      {ETheTranslationsAreDoneWithTheHelpOfGithubCopilotSo[language]}
+                    </li>
+                    <li>
+                      {
+                        EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo[
+                          language
+                        ]
+                      }
+                    </li>
+                  </ul>
+                </li>
                 <li>{ELightDarkModeButton[language]}</li>
                 <li>
                   {EButtonToToggleBetweenNavigationStyles[language]}
