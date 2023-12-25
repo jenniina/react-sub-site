@@ -859,7 +859,7 @@ export enum EJokes {
   cs = 'Vtipy',
 }
 export enum EToDo {
-  en = 'ToDo',
+  en = 'Todo',
   es = 'Quehacer',
   fr = 'Faire',
   de = 'Zu tun',
