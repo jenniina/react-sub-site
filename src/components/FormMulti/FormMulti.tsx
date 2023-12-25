@@ -18,6 +18,7 @@ import {
   EPleaseFillInTheFields,
   EThereWasAnErrorSendingTheMessage,
 } from '../../interfaces/form'
+import { EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo } from '../../interfaces/about'
 
 function FormMulti({ language }: { language: ELanguages }) {
   const form = useRef() as RefObject<HTMLFormElement>
@@ -118,6 +119,9 @@ function FormMulti({ language }: { language: ELanguages }) {
 
   return (
     <div className={styles.wrapper}>
+      <p>
+        {EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo[language]}
+      </p>
       <form ref={form} onSubmit={handleSubmit} aria-labelledby='steps'>
         <label id='steps' className={styles.steps}>
           {EContactForm[language]} {EPart[language]}&nbsp;

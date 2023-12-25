@@ -302,3 +302,21 @@ export enum EAnimatedClipPathsAndTextRotationOnHoverWithDynamicDelay {
   pt = 'Clip-paths animados e rotação de texto ao pairar, com atraso dinâmico',
   cs = 'Animované klipy a rotace textu při najetí myší s dynamickým zpožděním',
 }
+// Please note that the author (Jenniina Laine) speaks only English and Finnish, so please use one of these languages when contacting.
+export enum EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo {
+  en = 'Please note that the author (Jenniina Laine) speaks only English and Finnish, so please use one of these languages when contacting.',
+  es = 'Tenga en cuenta que la autora (Jenniina Laine) habla solo inglés y finlandés, así que utilice uno de estos idiomas al contactar.',
+  fr = 'Veuillez noter que l auteur (Jenniina Laine) ne parle qu anglais et finnois, veuillez donc utiliser l une de ces langues lors de la prise de contact.',
+  de = 'Bitte beachten Sie, dass die Autorin (Jenniina Laine) nur Englisch und Finnisch spricht. Bitte verwenden Sie daher eine dieser Sprachen, wenn Sie Kontakt aufnehmen.',
+  pt = 'Observe que o autor (Jenniina Laine) fala apenas inglês e finlandês, portanto, use um desses idiomas ao entrar em contato.',
+  cs = 'Všimněte si, že autor (Jenniina Laine) mluví pouze anglicky a finsky, takže při kontaktování použijte jeden z těchto jazyků.',
+}
+// The translations are done with the help of Github Copilot, so they may not be perfect.
+export enum ETheTranslationsAreDoneWithTheHelpOfGithubCopilotSo {
+  en = 'The translations are done with the help of Github Copilot, so they may not be perfect.',
+  es = 'Las traducciones se realizan con la ayuda de Github Copilot, por lo que pueden no ser perfectas.',
+  fr = 'Les traductions sont faites avec l aide de Github Copilot, elles peuvent donc ne pas être parfaites.',
+  de = 'Die Übersetzungen werden mit Hilfe von Github Copilot durchgeführt, daher sind sie möglicherweise nicht perfekt.',
+  pt = 'As traduções são feitas com a ajuda do Github Copilot, portanto, podem não ser perfeitas.',
+  cs = 'Překlady jsou prováděny s pomocí Github Copilot, takže nemusí být perfektní.',
+}
