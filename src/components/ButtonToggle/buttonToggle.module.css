@@ -172,8 +172,8 @@
     45deg,
     var(--color-primary-2) 0%,
     var(--color-primary-7) 20%,
-    var(--color-primary-14) 45%,
-    var(--color-primary-17) 1000%
+    var(--color-primary-13) 45%,
+    var(--color-primary-19) 100%
   );
   background-size: auto 180px;
   background-position: left 0%;
