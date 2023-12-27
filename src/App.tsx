@@ -144,7 +144,7 @@ const App: FC = () => {
     return undefined
   }
 
-  const categoryLanguagesConst = {
+  const categoryByLanguagesConst = {
     en: ECategory_en,
     es: ECategory_es,
     fr: ECategory_fr,
@@ -153,7 +153,7 @@ const App: FC = () => {
     cs: ECategory_cs,
   }
 
-  const categoryLanguages = categoryLanguagesConst[language] as
+  const categoryByLanguages = categoryByLanguagesConst[language] as
     | typeof ECategory_en
     | typeof ECategory_cs
     | typeof ECategory_de
@@ -235,7 +235,7 @@ const App: FC = () => {
                     type='page'
                     language={language}
                     setLanguage={setLanguage}
-                    categoryLanguages={categoryLanguages}
+                    categoryByLanguages={categoryByLanguages}
                     options={options}
                     getKeyByValue={getKeyByValue}
                   />

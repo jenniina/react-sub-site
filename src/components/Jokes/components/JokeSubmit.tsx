@@ -7,7 +7,7 @@
             titleTwoPart={titleTwoPart}
             titleSingle={titleSingle}
             optionsCategory={optionsCategory}
-            categoryLanguages={categoryLanguages}
+            categoryByLanguages={categoryByLanguages}
             jokeCategoryByLanguage={jokeCategoryByLanguage}
             options={options}
             getKeyByValue={getKeyByValue}
@@ -61,7 +61,7 @@ interface Props {
       | typeof ECategory_pt
       | typeof ECategory_de
   ) => SelectOption[]
-  categoryLanguages:
+  categoryByLanguages:
     | typeof ECategory_en
     | typeof ECategory_cs
     | typeof ECategory_de
@@ -80,7 +80,7 @@ const JokeSubmit = ({
   titleTwoPart,
   titleSingle,
   optionsCategory,
-  categoryLanguages,
+  categoryByLanguages,
   jokeCategoryByLanguage,
   options,
   getKeyByValue,
@@ -229,7 +229,7 @@ const JokeSubmit = ({
           </>
         )}
 
-        {categoryLanguages ? (
+        {categoryByLanguages ? (
           <Select
             language={language}
             id='submit-category-select'
@@ -237,7 +237,7 @@ const JokeSubmit = ({
             instructions={`${titleCategory}:`}
             selectAnOption={selectAnOption}
             value={jokeCategory}
-            options={optionsCategory(categoryLanguages as any)}
+            options={optionsCategory(categoryByLanguages as any)}
             onChange={(o: SelectOption | undefined) => {
               setJokeCategory(o)
             }}

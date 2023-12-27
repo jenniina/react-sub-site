@@ -35,6 +35,7 @@ import {
   EPortfolio,
   EQuizApp,
   ERemoveWithClickOrEnterWhenFocused,
+  EReplacedByUserEditAndLogoutButtonsWhenLoggedIn,
   ESeeSettingsAtMenuBar,
   ESeeTheTopOfTheCurrentPage,
   ESettings,
@@ -213,7 +214,10 @@ export default function About({
                     </li>
                   </ul>
                 </li>
-                <li>{ELogInAndRegisterButtons[language]}</li>
+                <li>
+                  {ELogInAndRegisterButtons[language]}.{' '}
+                  {EReplacedByUserEditAndLogoutButtonsWhenLoggedIn[language]}
+                </li>
               </ul>
 
               <h3 id='hero' className='left'>

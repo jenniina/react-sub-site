@@ -289,25 +289,37 @@ export function Select({
             >
               <input
                 multiple={multiple ? true : false}
-                id={`${id}-${option.label
-                  .replace(/\s+/g, '-')
-                  .toLowerCase()
-                  .replace(/[^a-zA-Z]/g, '')}`}
+                id={`${id}-${
+                  typeof option.label === 'string'
+                    ? option?.label
+                        ?.replace(/\s+/g, '-')
+                        .toLowerCase()
+                        .replace(/[^a-zA-Z]/g, '')
+                    : ''
+                }`}
                 type='checkbox'
                 className={`${styles.scr} scr`}
                 value={option?.label}
-                name={`${id}-${option.label
-                  .replace(/\s+/g, '-')
-                  .toLowerCase()
-                  .replace(/[^a-zA-Z]/g, '')}-${index}`}
+                name={`${id}-${
+                  typeof option.label === 'string'
+                    ? option.label
+                        .replace(/\s+/g, '-')
+                        .toLowerCase()
+                        .replace(/[^a-zA-Z]/g, '')
+                    : ''
+                }-${index}`}
                 checked={isOptionSelected(option) ? true : false}
                 readOnly
               />
               <label
-                htmlFor={`${id}-${option.label
-                  .replace(/\s+/g, '-')
-                  .toLowerCase()
-                  .replace(/[^a-zA-Z]/g, '')}`}
+                htmlFor={`${id}-${
+                  typeof option.label === 'string'
+                    ? option.label
+                        .replace(/\s+/g, '-')
+                        .toLowerCase()
+                        .replace(/[^a-zA-Z]/g, '')
+                    : ''
+                }`}
               >
                 {option?.label}
               </label>

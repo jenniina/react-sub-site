@@ -189,6 +189,21 @@ form.joke > *:not(.toggle) {
   align-items: center;
   gap: calc(var(--gap) / 2);
 }
+.joke-container .select-container.category:not(.submit).extras {
+  flex: 0 0 max-content;
+  max-width: max-content;
+  width: max-content;
+}
+.joke-container .select-container.category:not(.submit).extras.narrow {
+  max-width: 10em;
+}
+.joke-container .select-container.category:not(.submit).dimmed {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.joke-container .select-container.category:not(.submit).hidden {
+  display: none;
+}
 
 .select-container .container,
 .joke-container .input-wrap::before,
@@ -483,7 +498,7 @@ button.delivery.reveal p {
   } */
 
   .joke-container .select-container .value {
-    flex-basis: max-content;
+    flex-basis: calc(100% - var(--gap) * 4);
   }
 }
 @media (min-width: 600px) {
@@ -498,7 +513,7 @@ button.delivery.reveal p {
   }
   .joke-container .select-container.category,
   .joke-container .select-container.language {
-    flex-flow: row nowrap;
+    flex-flow: row wrap;
   }
   .joke-container .select-container.language {
     align-items: flex-end;

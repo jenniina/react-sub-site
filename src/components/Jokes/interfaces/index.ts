@@ -143,6 +143,8 @@ export enum ECategory_en {
   Pun = 'Pun',
   Spooky = 'Spooky',
   Christmas = 'Christmas',
+  ChuckNorris = 'Chuck Norris',
+  DadJoke = 'Dad Joke',
 }
 export enum ECategory_es {
   // Any = 'Cualquiera',
@@ -152,6 +154,16 @@ export enum ECategory_es {
   Pun = 'Juego de palabras',
   Spooky = 'Espeluznante',
   Christmas = 'Navidad',
+  ChuckNorris = 'Chuck Norris (en inglés)',
+  DadJoke = 'Dad Joke (en inglés)',
+}
+export enum EInEnglish {
+  en = 'in English',
+  es = 'en inglés',
+  fr = 'en anglais',
+  de = 'auf Englisch',
+  pt = 'em inglês',
+  cs = 'anglicky',
 }
 export enum ECategory_fr {
   // Any = "N'importe quel",
@@ -161,6 +173,8 @@ export enum ECategory_fr {
   Pun = 'Jeu de mots',
   Spooky = 'Effrayant',
   Christmas = 'Noël',
+  ChuckNorris = 'Chuck Norris (en anglais)',
+  DadJoke = 'Dad Joke (en anglais)',
 }
 export enum ECategory_de {
   // Any = 'Jede',
@@ -170,6 +184,8 @@ export enum ECategory_de {
   Pun = 'Wortspiel',
   Spooky = 'Unheimlich',
   Christmas = 'Weihnachten',
+  ChuckNorris = 'Chuck Norris (auf Englisch)',
+  DadJoke = 'Dad Joke (auf Englisch)',
 }
 export enum ECategory_pt {
   // Any = 'Qualquer',
@@ -179,6 +195,8 @@ export enum ECategory_pt {
   Pun = 'Jogo de palavras',
   Spooky = 'Assustador',
   Christmas = 'Natal',
+  ChuckNorris = 'Chuck Norris (em inglês)',
+  DadJoke = 'Dad Joke (em inglês)',
 }
 export enum ECategory_cs {
   // Any = 'Jakýkoliv',
@@ -188,8 +206,10 @@ export enum ECategory_cs {
   Pun = 'Hra slov',
   Spooky = 'Strašidelný',
   Christmas = 'Vánoce',
+  ChuckNorris = 'Chuck Norris (anglicky)',
+  DadJoke = 'Dad Joke (anglicky)',
 }
-export type CategoryLanguages = {
+export type CategoryByLanguages = {
   en: ECategory_en
   es: ECategory_es
   fr: ECategory_fr
@@ -197,7 +217,7 @@ export type CategoryLanguages = {
   pt: ECategory_pt
   cs: ECategory_cs
 }
-export type ECategory = CategoryLanguages[keyof CategoryLanguages]
+export type ECategory = CategoryByLanguages[keyof CategoryByLanguages]
 export interface IJokeCategoryByLanguage {
   en: typeof ECategory_en
   es: typeof ECategory_es
@@ -271,6 +291,14 @@ export enum ESelectACategory {
   de = 'Wählen Sie eine Kategorie',
   pt = 'Selecione uma categoria',
   cs = 'Vyberte kategorii',
+}
+export enum ESelectExtraCategories {
+  en = 'Extra Categories',
+  es = 'Categorías Extra',
+  fr = 'Catégories supplémentaires',
+  de = 'Zusätzliche Kategorien',
+  pt = 'Categorias extras',
+  cs = 'Další kategorie',
 }
 export enum ESelectALanguage {
   en = 'Select a language',
@@ -479,6 +507,15 @@ export enum ENoJokeFound {
   pt = 'Nenhuma piada encontrada',
   cs = 'Nenalezen žádný vtip',
 }
+export enum ENoJokeFoundWithThisSearchTerm {
+  en = 'No joke found with this search term',
+  es = 'No se encontró broma con este término de búsqueda',
+  fr = 'Pas de blague trouvée avec ce terme de recherche',
+  de = 'Kein Witz mit diesem Suchbegriff gefunden',
+  pt = 'Nenhuma piada encontrada com este termo de pesquisa',
+  cs = 'Nenalezen žádný vtip s tímto vyhledávacím výrazem',
+}
+
 export enum ENoJokesYet {
   en = 'No jokes yet',
   es = 'Aún no hay bromas',
@@ -526,7 +563,7 @@ export enum EFilterJokesBy {
 
 export interface IJokeCommonFields {
   _id?: string
-  jokeId: number
+  jokeId: number | string
   type: EJokeType
   category: ECategory
   language: ELanguages
@@ -614,4 +651,17 @@ export interface IJokeSubmissionTwoPartJSON {
     explicit: boolean
   }
   lang: ELanguages
+}
+export enum EDadJoke {
+  en = 'Dad joke',
+  es = 'Chiste de papá',
+  fr = 'Blague de papa',
+  de = 'Papa-Witz',
+  pt = 'Piada de pai',
+  cs = 'Otcovský vtip',
+}
+export enum EExtraCategories {
+  none = 'None',
+  ChuckNorris = 'Chuck Norris',
+  DadJokes = 'Dad Jokes',
 }

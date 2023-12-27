@@ -28,7 +28,7 @@ interface Props {
   language: ELanguages
   user: IUser
   setLanguage: (language: ELanguages) => void
-  categoryLanguages:
+  categoryByLanguages:
     | typeof ECategory_en
     | typeof ECategory_cs
     | typeof ECategory_de
