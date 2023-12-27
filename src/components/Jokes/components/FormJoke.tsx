@@ -25,11 +25,14 @@ import {
   ESelectALanguage,
   ESearchByKeyword,
   EAny,
+  ESelectExtraCategories,
+  ECategory,
 } from '../interfaces'
 import { ELanguages } from '../../../interfaces'
 
 interface Props {
   handleFormSubmit: (e: React.FormEvent<HTMLFormElement>) => void
+  jokeCategory: ECategory
   setJokeCategory: (jokeCategory: ECategory_en) => void
   setQueryValue: (queryValue: string) => void
   setLanguage: (language: ELanguages) => void
@@ -45,7 +48,7 @@ interface Props {
       | typeof ECategory_de
   ) => SelectOption[]
   setQuery: (query: string) => void
-  categoryLanguages:
+  categoryByLanguages:
     | typeof ECategory_en
     | typeof ECategory_cs
     | typeof ECategory_de
@@ -53,6 +56,8 @@ interface Props {
     | typeof ECategory_fr
     | typeof ECategory_pt
   jokeCategoryByLanguage: IJokeCategoryByLanguage
+  categoryValues: SelectOption[]
+  setCategoryValues: (categoryValues: SelectOption[]) => void
   titleSafe: ESafeTitle
   titleUnsafe: EUnsafeTitle
   titleClickToReveal: EClickToReveal
@@ -64,7 +69,7 @@ interface Props {
   reveal: boolean
   setReveal: (reveal: boolean) => void
   isCheckedSafemode: boolean
-  isCheckedEJokeType: boolean
+  isCheckedJokeType: boolean
   visibleJoke: boolean
   setVisibleJoke: (visibleJoke: boolean) => void
   handleToggleChangeSafemode: () => void
@@ -81,9 +86,15 @@ interface Props {
       | typeof ELanguages,
     value: ECategory_en | EJokeType | ESafemode | ELanguages
   ) => undefined | SelectOption['label']
+  norrisCategories: SelectOption[]
+  selectedNorrisCategory: SelectOption | undefined
+  setSelectedNorrisCategory: (selectedNorrisCategory: SelectOption | undefined) => void
 }
 const Form = ({
   handleFormSubmit,
+  jokeCategory,
+  categoryValues,
+  setCategoryValues,
   setJokeCategory,
   setQueryValue,
   getKeyByValue,
@@ -99,7 +110,7 @@ const Form = ({
   options,
   submitted,
   isCheckedSafemode,
-  isCheckedEJokeType,
+  isCheckedJokeType,
   handleToggleChangeSafemode,
   handleToggleChangeEJokeType,
   reveal,
@@ -108,22 +119,40 @@ const Form = ({
   titleSingle,
   titleTwoPart,
   optionsCategory,
-  categoryLanguages,
+  categoryByLanguages,
   jokeCategoryByLanguage,
   visibleJoke,
   setVisibleJoke,
+  norrisCategories,
+  selectedNorrisCategory,
+  setSelectedNorrisCategory,
 }: Props) => {
   const titleLanguageSelect = ESelectALanguage[language]
   const titleCategorySelect = ESelectACategory[language]
+  const titleCategoryExtras = ESelectExtraCategories[language]
   const titleSearchByKeyword = ESearchByKeyword[language]
   const submit = EFindAJoke[language]
   const titleAny = EAny[language]
-  const [values, setValues] = useState<SelectOption[]>([
-    {
-      label: jokeCategoryByLanguage[language].Misc,
-      value: ECategory_en.Misc,
-    },
-  ])
+
+  useEffect(() => {
+    const filteredList = categoryValues?.filter(
+      (category) => category.value !== 'ChuckNorris' && category.value !== 'DadJoke'
+    )
+    isCheckedJokeType
+      ? setCategoryValues(filteredList)
+      : setCategoryValues(categoryValues)
+  }, [isCheckedJokeType])
+
+  // const extrasOptions: SelectOption[] = [
+  //   {
+  //     label: EExtraCategories.ChuckNorris,
+  //     value: EExtraCategories.ChuckNorris,
+  //   },
+  //   {
+  //     label: EExtraCategories.DadJokes,
+  //     value: EExtraCategories.DadJokes,
+  //   },
+  // ]
 
   useEffect(() => {
     setTimeout(() => {
@@ -141,7 +170,7 @@ const Form = ({
   }, [])
 
   // useEffect(() => {
-  // setValues([
+  // setCategoryValues([
   //   {
   //     label: jokeCategoryByLanguage[language].Misc,
   //     value: ECategory_en.Misc,
@@ -149,6 +178,8 @@ const Form = ({
   // ])
   //setJokeCategory(ECategory_en.Misc)
   // }, [language])
+
+  const hasNorris = categoryValues?.find((v) => v.value === 'ChuckNorris') ? true : false
 
   return (
     <>
@@ -196,7 +227,7 @@ const Form = ({
             />
 
             <ButtonToggle
-              isChecked={isCheckedEJokeType}
+              isChecked={isCheckedJokeType}
               name='joketype'
               id='joketype'
               className={`${language} joketype`}
@@ -208,7 +239,6 @@ const Form = ({
             />
           </div>
         </div>
-
         {/* <Select
         language={language}
           id='jokeType'
@@ -231,19 +261,18 @@ const Form = ({
             setEJokeType(o?.value as EJokeType)
           }}
         /> */}
-
-        {categoryLanguages ? (
+        {categoryByLanguages ? (
           <Select
             language={language}
             multiple
             id='jokeCategory'
-            className='category'
+            className={`category`}
             instructions={`${titleCategorySelect}:`}
             selectAnOption={titleAny}
-            value={values}
-            options={optionsCategory(categoryLanguages as any)}
+            value={categoryValues}
+            options={optionsCategory(categoryByLanguages as any)}
             onChange={(o: SelectOption[]) => {
-              setValues(o)
+              setCategoryValues(o)
               setJokeCategory(o?.map((s) => s.value).join(',') as ECategory_en)
             }}
           />
@@ -251,27 +280,55 @@ const Form = ({
           ''
         )}
 
-        {/* <Select
-        language={language}
-          multiple
-          id='jokeCategory'
-          className='jokeCategory full'
-          instructions='Subject'
-          hide
-          options={options(ECategory_en)}
-          value={jokeCategory.split(',').map((s) => {
-            return {
-              value: s,
-              label: s,
-            } as SelectOption
-          })}
+        <Select
+          language={language}
+          id='jokeCategoryNorrisCategories'
+          className={`category extras ${hasNorris ? '' : 'hidden'}`}
+          instructions={`Chuck Norris Category:`}
+          selectAnOption={titleAny}
+          value={selectedNorrisCategory}
+          options={norrisCategories}
           onChange={(o) => {
-            setJokeCategory(o?.map((s) => s.value).join(',') as ECategory_en)
+            setSelectedNorrisCategory(o as SelectOption)
           }}
-        /> */}
+        />
+        {/* <div className='flex center max-content gap'>
+          <Select
+            language={language}
+            id='jokeCategorySpecial'
+            className={`category extras ${
+              language === ELanguages.English ? '' : 'hidden'
+            }`}
+            instructions={`${titleCategoryExtras}:`}
+            selectAnOption={titleAny}
+            value={selectedExtra}
+            options={extrasOptions}
+            onChange={(o) => {
+              setSelectedExtra(o as SelectOption)
+            }}
+          />
+
+          <Select
+            language={language}
+            id='jokeCategoryNorrisCategories'
+            className={`category extras ${
+              language === ELanguages.English &&
+              selectedExtra['label'] === EExtraCategories.ChuckNorris
+                ? ''
+                : 'hidden'
+            }`}
+            instructions={`${titleCategorySelect}:`}
+            selectAnOption={titleAny}
+            value={selectedNorrisCategory}
+            options={norrisCategories}
+            onChange={(o) => {
+              setSelectedNorrisCategory(o as SelectOption)
+            }}
+          />
+        </div> */}
 
         <div className='flex column center'>
-          <div className='input-wrap not-required'>
+          <div className='input-wrap '>
             <label>
               <input
                 type='text'

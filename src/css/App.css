@@ -593,3 +593,6 @@ main .notification.error p {
 main .notification p {
   pointer-events: all;
 }
+.max-content {
+  max-width: max-content;
+}

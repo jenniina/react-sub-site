@@ -31,7 +31,7 @@ interface Props {
   heading: string
   text: string
   type: string
-  categoryLanguages:
+  categoryByLanguages:
     | typeof ECategory_en
     | typeof ECategory_cs
     | typeof ECategory_de
@@ -51,7 +51,7 @@ const UserEditPage = ({
   heading,
   text,
   type,
-  categoryLanguages,
+  categoryByLanguages,
   options,
   getKeyByValue,
 }: Props) => {
@@ -84,7 +84,7 @@ const UserEditPage = ({
                   user={user}
                   language={language}
                   setLanguage={setLanguage}
-                  categoryLanguages={categoryLanguages}
+                  categoryByLanguages={categoryByLanguages}
                   options={options}
                   getKeyByValue={getKeyByValue}
                 />
