@@ -315,8 +315,11 @@ main.main-content .fullwidth1 {
 }
 .card,
 .card > div {
-  max-width: calc(100vw - calc(var(--page-padding) * 2) - var(--scrollbar_width));
-  max-width: 1200px;
+  max-width: clamp(
+    150px,
+    calc(100vw - calc(var(--page-padding) * 2) - var(--scrollbar_width)),
+    1200px
+  );
   margin-left: auto;
   margin-right: auto;
 }
