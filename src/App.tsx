@@ -56,7 +56,6 @@ import {
   ECategory_de,
   ECategory_en,
   ECategory_es,
-  ECategory_fi,
   ECategory_fr,
   ECategory_pt,
   EJokeType,
@@ -101,19 +100,10 @@ const App: FC = () => {
 
   const [transitionPage, setTransistionPage] = useState('fadeIn')
 
-  const [lang, setLanguage] = useState<ELanguages>(ELanguages.English)
-  const language = getEnumValueOrDefault(ELanguages, lang, ELanguages.English)
-
-  function getEnumValueOrDefault<T extends Record<string, unknown>>(
-    enumObj: T,
-    value: T[keyof T],
-    defaultValue: T[keyof T]
-  ): T[keyof T] {
-    const foundKey = Object.keys(enumObj).find((key) => enumObj[key] === value)
-    return (
-      foundKey !== undefined ? enumObj[foundKey as keyof T] : defaultValue
-    ) as T[keyof T]
-  }
+  const [language, setLanguage] = useLocalStorage<ELanguages>(
+    'JokeAppLanguage',
+    ELanguages.English
+  )
 
   useEffect(() => {
     window.scrollTo({
@@ -162,7 +152,6 @@ const App: FC = () => {
     de: ECategory_de,
     pt: ECategory_pt,
     cs: ECategory_cs,
-    fi: ECategory_fi,
   }
 
   const categoryByLanguages = categoryByLanguagesConst[language] as
@@ -172,7 +161,6 @@ const App: FC = () => {
     | typeof ECategory_es
     | typeof ECategory_fr
     | typeof ECategory_pt
-    | typeof ECategory_fi
 
   const options = (
     enumObj: typeof ECategory_en | typeof EJokeType | typeof ESafemode | typeof ELanguages
