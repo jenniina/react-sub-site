@@ -259,6 +259,14 @@ export enum EAJokeGeneratorForTheComicallyInclined {
 //   fr = 'Générer une blague',
 //   pt = 'Gerar uma piada',
 // }
+export enum ESaveJoke {
+  en = 'Save Joke',
+  es = 'Guardar chiste',
+  fr = 'Enregistrer la blague',
+  de = 'Witz speichern',
+  pt = 'Salvar piada',
+  cs = 'Uložit vtip',
+}
 
 export enum ESavedJoke {
   en = 'Saved joke',
@@ -268,6 +276,16 @@ export enum ESavedJoke {
   pt = 'Piada salva',
   cs = 'Uložený vtip',
 }
+//Your Saved Jokes
+export enum EYourSavedJokes {
+  en = 'Your Saved Jokes',
+  es = 'Tus chistes guardados',
+  fr = 'Vos blagues enregistrées',
+  de = 'Ihre gespeicherten Witze',
+  pt = 'Suas piadas salvas',
+  cs = 'Vaše uložené vtipy',
+}
+
 export enum EJokeAlreadySaved {
   en = 'Joke already saved',
   es = 'Chiste ya guardado',
@@ -664,4 +682,31 @@ export enum EExtraCategories {
   none = 'None',
   ChuckNorris = 'Chuck Norris',
   DadJokes = 'Dad Jokes',
+}
+// "Dark" jokes are visible only when Safe Mode is off
+
+export enum EDarkJokesAreVisibleOnlyWhenSafeModeIsOff {
+  en = '"Dark" jokes are visible only when Safe Mode is off',
+  es = 'Las "bromas oscuras" son visibles solo cuando el Modo seguro está desactivado',
+  fr = 'Les "blagues sombres" ne sont visibles que lorsque le mode sécurisé est désactivé',
+  de = 'Die "dunklen" Witze sind nur sichtbar, wenn der sichere Modus deaktiviert ist',
+  pt = 'As "piadas escuras" são visíveis apenas quando o Modo de segurança está desativado',
+  cs = '"Temné" vtipy jsou viditelné pouze tehdy, když je bezpečný režim vypnutý',
+}
+export enum EChuckNorrisAndDadJokesExclusivelyFeatureSinglePartJokesAnd {
+  en = '"Chuck Norris" and "Dad Jokes" exclusively feature single-part jokes, and are only available in English.',
+  es = '"Chuck Norris" y "Dad Jokes" presentan exclusivamente bromas de una sola parte y solo están disponibles en inglés.',
+  fr = '"Chuck Norris" et "Dad Jokes" présentent exclusivement des blagues à une seule partie et ne sont disponibles qu\'en anglais.',
+  de = '"Chuck Norris" und "Dad Jokes" enthalten ausschließlich Einzelteile und sind nur auf Englisch verfügbar.',
+  pt = '"Chuck Norris" e "Dad Jokes" apresentam exclusivamente piadas de uma parte e estão disponíveis apenas em inglês.',
+  cs = '"Chuck Norris" a "Dad Jokes" obsahují výhradně jednodílné vtipy a jsou k dispozici pouze v angličtině.',
+}
+// Note!
+export enum ENote {
+  en = 'Note!',
+  es = 'Nota!',
+  fr = 'Remarque!',
+  de = 'Hinweis!',
+  pt = 'Nota!',
+  cs = 'Poznámka!',
 }

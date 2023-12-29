@@ -134,7 +134,11 @@ const FormLogin = ({
                   <span>{titlePassword}: </span>
                 </label>
               </div>
-              <button type='submit' id={`login-${text}`} className={`login ${text}`}>
+              <button
+                type='submit'
+                id={`login-${text}`}
+                className={`login ${text} restore`}
+              >
                 {titleLogin}
               </button>
             </form>
@@ -142,7 +146,6 @@ const FormLogin = ({
               <PasswordReset language={language} text='login' />
             </div>
           </Accordion>
-          <Notification />
         </>
       )}
     </>

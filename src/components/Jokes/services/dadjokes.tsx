@@ -54,10 +54,9 @@ const getRandomDadJoke = async () => {
 // }
 
 const searchDadJokes = async (searchTerm: string) => {
-  const response = await axios.get(`${DADJOKE_URI}/search?term=${searchTerm}&limit=1`, {
+  const response = await axios.get(`${DADJOKE_URI}/search?term=${searchTerm}&limit=10`, {
     headers: { Accept: 'application/json' },
   })
-  console.log('response.data', response.data)
   if (!response.data || response.data.results.length === 0) {
     return
   }

@@ -1,8 +1,12 @@
 import { useSelector } from 'react-redux'
-import { ReducerProps } from '../../interfaces'
+import { EClose, ELanguages, ReducerProps } from '../../interfaces'
 import { useEffect, useState } from 'react'
 
-const Notification = () => {
+interface Props {
+  language: ELanguages
+  className?: string
+}
+const Notification = ({ language = ELanguages.English, className }: Props) => {
   const notification = useSelector((state: ReducerProps) => state.notification)
   const [closed, setClosed] = useState(false)
 
@@ -28,7 +32,7 @@ const Notification = () => {
             setClosed(true)
           }}
         >
-          <span>Close</span>
+          <span>{EClose[language]}</span>
           <span aria-hidden='true' className='times'>
             &times;
           </span>

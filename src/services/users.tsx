@@ -1,20 +1,17 @@
-import axios, { Axios, AxiosResponse } from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { IUser as user, ELanguages } from '../interfaces'
 
 const VITE_BASE_URI = import.meta.env.VITE_BASE_URI
 const baseUrl = VITE_BASE_URI ? `${VITE_BASE_URI}/api/users` : '/api/users'
 
-const token = localStorage.getItem('token')
-
-// Include the token in the request headers
-const config = {
+const getConfig = () => ({
   headers: {
-    Authorization: `Bearer ${token}`,
+    Authorization: `Bearer ${localStorage.getItem('JokeApptoken')}`,
   },
-}
+})
 
 const getAll = async () => {
-  const response = await axios.get(baseUrl, config)
+  const response = await axios.get(baseUrl, getConfig())
   return response.data
 }
 
@@ -24,8 +21,8 @@ const createNewUser = async (newUser: user) => {
 }
 
 const deleteUser = async (id: user['_id']) => {
-  const response = await axios.delete(`${baseUrl}/${id}`, config)
-  return response.data as AxiosResponse<{ user: user; message: string }>
+  const response = await axios.delete(`${baseUrl}/${id}`, getConfig())
+  return response.data as AxiosResponse<{ success: boolean; message: string }>
 }
 
 const updateUser = async (

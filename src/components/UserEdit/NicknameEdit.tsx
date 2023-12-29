@@ -119,7 +119,7 @@ const NicknameEdit = ({ user, language }: Props) => {
             <button type='submit'>{titleEdit}</button>
           </form>
 
-          <Notification />
+          <Notification language={language} />
         </>
       ) : (
         <></>

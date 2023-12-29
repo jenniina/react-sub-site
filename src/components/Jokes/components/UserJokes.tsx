@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import {
   EJokeType,
   ESavedJoke,
+  EYourSavedJokes,
   IJoke,
   EDelete,
   ECategoryTitle,
@@ -11,6 +12,9 @@ import {
   ESortByTitle,
   SortBy,
   ESafemodeTitle,
+  ECategory,
+  ESelectACategory,
+  ESearchByKeyword,
 } from '../interfaces'
 import {
   IUser,
@@ -18,6 +22,7 @@ import {
   LanguageOfLanguage,
   ELanguagesLong,
   TLanguageOfLanguage,
+  ESearch,
 } from '../../../interfaces'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
 import { Select, SelectOption } from '../../Select/Select'
@@ -102,8 +107,17 @@ const UserJokes = ({
   const [userJokes, setUserJokes] = useState<IJokeVisible[]>(withVisibility)
   const [sortBy, setSortBy] = useState<ESortBy>(ESortBy.category)
   const [titleSortBy, setTitleSortBy] = useState<ESortByTitle>(ESortByTitle.en)
-
   const [toggle, setToggle] = useState(false)
+  const [searchTerm, setSearchTerm] = useState<string>('')
+  const [selectedCategory, setSelectedCategory] = useState<ECategory | ''>('')
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value)
+  }
+
+  const handleSelectChange = (o: SelectOption) => {
+    setSelectedCategory(o.value as ECategory)
+  }
 
   const handleVisibility = (jokeId: IJoke['jokeId']) => {
     setToggle(!toggle)
@@ -133,12 +147,26 @@ const UserJokes = ({
       : ''
   }, [jokes, isCheckedSafemode, sortBy])
 
+  const filteredJokes = userJokes?.filter((joke) => {
+    if (selectedCategory !== '') {
+      return joke.category === selectedCategory
+    }
+    if (searchTerm !== '') {
+      return (
+        joke.joke?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        joke.setup?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        joke.delivery?.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    }
+    return true
+  })
+
   useEffect(() => {
     setTitleSortBy(ESortByTitle[language])
   }, [language])
   return (
     <div className='saved'>
-      <h3>{titleSaved}</h3>
+      <h3>{EYourSavedJokes[language]}</h3>
       <div className='toggle-wrap'>
         <Select
           language={language}
@@ -166,6 +194,40 @@ const UserJokes = ({
             setSortBy(o?.value as ESortBy)
           }}
         />
+        <Select
+          language={language}
+          id='single-category-select'
+          className='single-category-select'
+          instructions={`${titleCategory}:`}
+          options={[
+            { label: ESelectACategory[language], value: '' },
+            ...Array.from(
+              new Set(
+                userJokes
+                  .filter((joke) => joke.user.includes(userId))
+                  .map((joke) => joke.category)
+              )
+            ).map((category) => {
+              return {
+                label: category,
+                value: category,
+              }
+            }),
+          ]}
+          value={
+            selectedCategory
+              ? ({
+                  label: selectedCategory,
+                  value: selectedCategory,
+                } as SelectOption)
+              : { label: ESelectACategory[language], value: '' }
+          }
+          onChange={(o) => {
+            setSelectedCategory(o?.value as ECategory)
+            handleSelectChange(o as SelectOption)
+          }}
+        />
+
         <ButtonToggle
           isChecked={isCheckedSafemode}
           name='safemode'
@@ -178,9 +240,21 @@ const UserJokes = ({
           handleToggleChange={handleToggleChangeSafemode}
         />
       </div>
+      <div className='search-jokes input-wrap'>
+        <label htmlFor='search-jokes' className='visually-hidden'>
+          <input
+            type='text'
+            id='search-jokes'
+            value={searchTerm}
+            onChange={handleSearchChange}
+            placeholder={ESearch[language]}
+          />
+          <span>{ESearchByKeyword[language]}</span>
+        </label>
+      </div>
       <ul className='userjokeslist'>
-        {userJokes && userJokes.length > 0 ? (
-          userJokes?.map((joke) => (
+        {filteredJokes && filteredJokes?.length > 0 ? (
+          filteredJokes?.map((joke) => (
             <li key={joke.jokeId}>
               <div className='primary-wrap'>
                 {joke.type === EJokeType.single ? (
@@ -259,7 +333,7 @@ const UserJokes = ({
             </li>
           ))
         ) : (
-          <li>Loading...</li>
+          <li>No jokes found</li>
         )}
       </ul>
     </div>

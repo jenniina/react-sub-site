@@ -466,7 +466,8 @@ h6 {
   font-size: clamp(var(--title-XS), 1vw, var(--title-S));
 }
 
-button {
+button,
+button.restore {
   border-radius: var(--radius-small);
   /* min-width: max-content; */
   /* inline-size: min-content; */
@@ -496,7 +497,8 @@ button {
   background-size: auto 120px;
   background-position: top;
 }
-.transformations button {
+.transformations button,
+.transformations button.restore {
   transition-property: border-color, color, background-position, outline;
   transition-duration: 0.4s;
   transition-timing-function: ease-in-out;
@@ -505,7 +507,10 @@ button {
 
 button:hover,
 button:focus,
-button:focus-visible {
+button:focus-visible,
+button.restore:hover,
+button.restore:focus,
+button.restore:focus-visible {
   color: var(--color-primary-1);
   border-color: var(--color-primary-16);
   background-position: bottom;
@@ -516,10 +521,18 @@ button:focus-visible {
 button:focus-visible,
 input[type='submit']:hover,
 input[type='submit']:focus,
-input[type='submit']:focus-visible input[type='button']:hover,
+input[type='submit']:focus-visible,
+input[type='button']:hover,
 input[type='button']:focus,
 input[type='button']:focus-visible,
-body .focus-within:focus-within {
+body .focus-within:focus-within,
+button.restore:focus-visible,
+input[type='submit'].restore:hover,
+input[type='submit'].restore:focus,
+input[type='submit'].restore:focus-visible,
+input[type='button'].restore:hover,
+input[type='button'].restore:focus,
+input[type='button'].restore:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: -2px;
   outline-offset: -3px;
@@ -528,7 +541,8 @@ body .focus-within:focus-within {
   outline-offset: 3px;
 }
 @media (min-width: 300px) {
-  button {
+  button,
+  button.restore {
     padding: 0.6em 1.2em;
   }
 } /*END media*/

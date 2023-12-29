@@ -21,7 +21,7 @@ const setToken = (newToken: string | null) => {
 const login = async (credentials: credentials) => {
   const response = await axios.post(baseUrl, credentials, config)
   const { token } = response.data
-  localStorage.setItem('token', token)
+  localStorage.setItem('JokeApptoken', token)
   return response.data
 }
 

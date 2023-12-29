@@ -82,7 +82,7 @@ const PasswordReset = ({ language, text }: Props) => {
               <span>{titleEmail}: </span>
             </label>
           </div>
-          <button type='submit' id={`forgot-${text}`} className='forgot-btn'>
+          <button type='submit' id={`forgot-${text}`} className='forgot-btn restore'>
             {titleSendResetLink}
           </button>
         </form>

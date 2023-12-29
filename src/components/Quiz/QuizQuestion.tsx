@@ -43,7 +43,7 @@ const QuizQuestion = ({ language }: { language: ELanguages }) => {
   return (
     <section className={`card ${styles.top}`}>
       <div>
-        <Notification />
+        <Notification language={language} />
         <div className={`${styles.quiz} `}>
           {status === 'loading' && <Loader language={language} />}
           {status === 'error' && (

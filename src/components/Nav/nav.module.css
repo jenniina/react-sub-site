@@ -75,6 +75,10 @@
   height: var(--height);
   width: 100%;
 }
+.main-header h2 {
+  font-size: clamp(var(--title-S), 3vw, var(--title-M));
+  padding: 1.6em 0 1em;
+}
 .logo-container {
   flex: 3 1 0;
   background: transparent;
@@ -161,13 +165,16 @@ button.togglemenu[aria-expanded='true'] .menupath {
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  justify-content: center;
   gap: 0.5em;
   opacity: 0;
   background-color: var(--color-primary-2);
   border: 1px solid var(--color-primary-1);
   border-top: 0;
   transform: translateX(110%);
+  overflow-y: auto;
+  max-height: calc(98vh - var(--scrollbar_width) - var(--height));
+  min-height: 13em;
+  max-width: 16em;
 }
 .light .toolbar {
   background-color: var(--color-primary-1);
@@ -193,6 +200,13 @@ button.togglemenu[aria-expanded='true'] .menupath {
   cursor: pointer;
 }
 .toolbar .toolwrap button {
+  background: linear-gradient(
+    90deg,
+    var(--color-primary-2) 0%,
+    var(--color-primary-1) 100%
+  );
+}
+.toolbar .toolwrap button.toolbar-btn {
   flex: 1 1 0;
   padding-left: 0;
   padding-right: 0;
@@ -211,7 +225,7 @@ button.togglemenu[aria-expanded='true'] .menupath {
   gap: 0.8em;
 }
 .toolbar .loginregisterwrap button {
-  padding: 1.4em 0 0.5em;
+  margin: 1em auto 0;
 }
 .logo-container a {
   display: inline-block;
@@ -365,7 +379,7 @@ a.link:visited:not(.active):focus > *,
   background-image: none;
   justify-content: center;
 }
-.toolbar button {
+.toolbar button.toolbar-btn {
   align-self: stretch;
   justify-content: center;
   padding: 0.3em 0.5em 0.3em;
@@ -374,9 +388,12 @@ a.link:visited:not(.active):focus > *,
 .language {
   --border-radius: 0.3em;
   font-size: 0.85em;
+  width: 100%;
+  max-width: 100%;
 }
 .language > div {
   width: 100%;
+  max-width: 100%;
   min-width: 12em;
 }
 .language button {

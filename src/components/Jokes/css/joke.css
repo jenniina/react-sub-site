@@ -55,7 +55,9 @@ form.form-submit-new {
 .joke-container h3 {
   margin-bottom: 1em;
 }
-
+form.joke-form-save {
+  margin-bottom: 3em;
+}
 form.joke-form-save,
 form.joke-form-save article,
 form.joke-form-save p,
@@ -73,9 +75,25 @@ form.joke-form-save p.fadeIn,
 form.joke-form-save button.fadeIn {
   transform: scaleY(1);
 }
+form.joke-form-save article {
+  border: 0.1em solid var(--color-primary-10);
+  border-top-color: var(--color-primary-13);
+  border-radius: var(--border-radius);
+  padding: 1.6em 1.4em 0.9em;
+  margin-bottom: 1em;
+}
+.light form.joke-form-save article {
+  border-color: var(--color-primary-8);
+  border-top-color: var(--color-primary-6);
+}
 form.joke-form-save article p {
-  width: 100%;
+  max-width: clamp(10em, 90%, 40em);
   text-align: left;
+}
+form.joke-form-save article p.no-delivery {
+  transform: scaleY(1) translateY(1.2em);
+  max-width: clamp(10em, 50%, 40em);
+  margin: 0 auto;
 }
 form.joke-form-save button.delivery {
   transform: scaleY(0);
@@ -94,7 +112,16 @@ form.joke-form-save button.delivery.no-delivery {
 button.delivery p {
   width: 100%;
 }
-
+form.joke-form-save button.submit {
+  max-width: max-content;
+}
+.search-jokes {
+  max-width: max-content;
+  margin: 3em auto 2em;
+}
+.search-jokes input[type='text' i] {
+  padding-left: 1.2em;
+}
 ul.userjokeslist {
   display: flex;
   flex-flow: column nowrap;
@@ -258,10 +285,12 @@ form.joke > *:not(.toggle) {
   gap: calc(var(--gap) / 2);
 }
 
-.toggle-wrap .select-container.sortby {
-  flex: 0 0 max-content;
-  max-width: max-content;
-  width: max-content;
+.toggle-wrap .select-container.sortby,
+.toggle-wrap .select-container.single-category-select {
+  --width: 100%;
+  flex: 1 0 var(--width);
+  max-width: var(--width);
+  width: var(--width);
   margin: 0;
   display: flex;
   flex-flow: column wrap;
@@ -269,18 +298,22 @@ form.joke > *:not(.toggle) {
   align-items: center;
   gap: calc(var(--gap) / 2);
 }
-.toggle-wrap .select-container.sortby > * {
-  flex: 0 0 max-content;
-  max-width: max-content;
-  width: max-content;
+
+.toggle-wrap .select-container.sortby > *,
+.toggle-wrap .select-container.single-category-select > * {
+  flex: 0 0 var(--width);
+  max-width: var(--width);
+  width: var(--width);
   margin: 0;
 }
-.toggle-wrap .select-container.sortby .container {
-  max-width: max-content;
-  width: max-content;
+.toggle-wrap .select-container.sortby .container,
+.toggle-wrap .select-container.single-category-select .container {
+  max-width: var(--width);
+  width: var(--width);
   font-size: 0.8em;
 }
-.toggle-wrap .select-container.sortby .value {
+.toggle-wrap .select-container.sortby .value,
+.toggle-wrap .select-container.single-category-select .value {
   flex-basis: max-content;
 }
 .toggle {
@@ -386,9 +419,9 @@ button.delivery span {
 button.delivery.reveal span {
   opacity: 0;
 }
-button.delivery p {
+.joke-container button.delivery p {
   opacity: 0;
-  text-align: left;
+  text-align: center;
   transition: opacity 0.2s ease-in-out;
   transition-delay: 0.3s;
   margin: 0;
@@ -469,8 +502,29 @@ button.delivery.reveal p {
     flex: 0 0 calc(50% - var(--gap) / 2);
   }
   .toggle-wrap,
-  .toggle-wrap .select-container.sortby {
+  .toggle-wrap .select-container.sortby,
+  .toggle-wrap .select-container.single-category-select {
     flex-flow: row wrap;
+  }
+  .toggle-wrap .select-container.sortby,
+  .toggle-wrap .select-container.single-category-select {
+    --width: 15em;
+    flex: 0 0 max-content;
+    max-width: max-content;
+    width: max-content;
+  }
+  .toggle-wrap .select-container.sortby > *,
+  .toggle-wrap .select-container.single-category-select > * {
+    flex: 0 0 var(--width);
+    max-width: var(--width);
+    width: var(--width);
+    margin: 0;
+  }
+  .toggle-wrap .select-container.sortby .container,
+  .toggle-wrap .select-container.single-category-select .container {
+    max-width: var(--width);
+    width: var(--width);
+    font-size: 0.8em;
   }
   .toggle-wrap .toggle-container {
     flex-flow: row nowrap;

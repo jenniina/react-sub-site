@@ -1373,3 +1373,29 @@ export enum EPasswordMustBeAtLeastTenCharacters {
   pt = 'A senha deve ter pelo menos 10 caracteres',
   cs = 'Heslo musí mít nejméně 10 znaků',
 }
+// Are you sure you want to delete ___?
+export enum EAreYouSureYouWantToDelete {
+  en = 'Are you sure you want to delete',
+  es = '¿Estás seguro de que quieres borrar',
+  fr = 'Êtes-vous sûr de vouloir supprimer',
+  de = 'Möchten Sie wirklich löschen',
+  pt = 'Tem certeza de que deseja excluir',
+  cs = 'Opravdu chcete smazat',
+}
+export enum EYouWillLoseAllTheDataAssociatedWithIt {
+  en = 'You will lose all the data associated with the account. This action cannot be undone!',
+  es = 'Perderá todos los datos asociados con la cuenta. ¡Esta acción no se puede deshacer!',
+  fr = 'Vous perdrez toutes les données associées au compte. Cette action ne peut pas être annulée!',
+  de = 'Sie verlieren alle mit dem Konto verbundenen Daten. Diese Aktion kann nicht rückgängig gemacht werden!',
+  pt = 'Você perderá todos os dados associados à conta. Esta ação não pode ser desfeita!',
+  cs = 'Ztratíte všechna data spojená s účtem. Tuto akci nelze vrátit!',
+}
+//Delete account
+export enum EDeleteAccount {
+  en = 'Delete account',
+  es = 'Borrar cuenta',
+  fr = 'Supprimer le compte',
+  de = 'Konto löschen',
+  pt = 'Excluir conta',
+  cs = 'Smazat účet',
+}
