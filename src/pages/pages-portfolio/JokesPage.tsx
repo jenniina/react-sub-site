@@ -25,6 +25,9 @@ import {
   EKeyword,
   ECategoryTitle,
   EClickHereToSeeFeatures,
+  EDarkJokesAreVisibleOnlyWhenSafeModeIsOff,
+  EChuckNorrisAndDadJokesExclusivelyFeatureSinglePartJokesAnd,
+  ENote,
 } from '../../components/Jokes/interfaces'
 import {
   EOnOff,
@@ -202,7 +205,20 @@ export default function JokesPage({
                         </ul>
                       </li>
                     </ul>
-                  </li>{' '}
+                  </li>
+                  <li>
+                    {ENote[language]}
+                    <ul>
+                      <li>
+                        {
+                          EChuckNorrisAndDadJokesExclusivelyFeatureSinglePartJokesAnd[
+                            language
+                          ]
+                        }{' '}
+                      </li>
+                      <li>{EDarkJokesAreVisibleOnlyWhenSafeModeIsOff[language]}</li>
+                    </ul>
+                  </li>
                 </ul>
               </div>
             </Accordion>

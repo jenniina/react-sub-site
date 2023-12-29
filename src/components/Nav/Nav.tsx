@@ -360,6 +360,10 @@ const Nav = (
             8
           )
         )
+        setUsername('')
+        setPassword('')
+        setConfirmPassword('')
+        setName('')
       })
       .catch((err) => {
         console.log(err)
@@ -513,7 +517,7 @@ const Nav = (
           >
             <Select
               language={language}
-              id='language-register'
+              id='language-navbar'
               className={`language ${styles.language}`}
               instructions={ELanguageTitle[language]}
               hide
@@ -539,7 +543,7 @@ const Nav = (
                 className={
                   lightTheme
                     ? `${styles['dlt-btn']}`
-                    : `${styles['active']} ${styles['dlt-btn']}`
+                    : `${styles['active']} ${styles['dlt-btn']} ${styles['toolbar-btn']}`
                 }
                 onClick={toggleTheme}
               >
@@ -560,7 +564,7 @@ const Nav = (
               <button
                 id='navbar-style'
                 onClick={menuStyleAltToggle}
-                className={styles.navstyle}
+                className={`${styles.navstyle} ${styles['toolbar-btn']}`}
               >
                 {windowWidth < breakpoint ? (
                   <TbLayoutNavbar aria-hidden={true} fontSize='1.5em' />
@@ -655,7 +659,7 @@ const Nav = (
           </nav>
         </div>
       </header>
-      <Notification />
+      <Notification language={language} />
     </>
   )
 }

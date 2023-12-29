@@ -1,8 +1,10 @@
 import { ESave, ELanguages } from '../../../interfaces'
+import { ECategory, ESaveJoke } from '../interfaces'
 
 interface Props {
   joke: string
   delivery?: string
+  currentCategory: ECategory
   reveal: boolean
   visibleJoke: boolean
   titleClickToReveal: string
@@ -13,6 +15,7 @@ interface Props {
 const Joke = ({
   joke,
   delivery,
+  currentCategory,
   reveal,
   setReveal,
   handleJokeSave,
@@ -28,7 +31,12 @@ const Joke = ({
       className={`joke-form-save ${visibleJoke ? 'fadeIn' : ''}`}
     >
       <article aria-live='polite' className={`joke ${visibleJoke ? 'fadeIn' : ''}`}>
-        <p className={`${visibleJoke ? 'fadeIn' : ''}`}>{joke}</p>
+        <p className={`${visibleJoke ? 'fadeIn' : ''} ${!delivery ? 'no-delivery' : ''}`}>
+          <small>Category: {currentCategory}</small>
+        </p>
+        <p className={`${visibleJoke ? 'fadeIn' : ''} ${!delivery ? 'no-delivery' : ''}`}>
+          {joke}
+        </p>
 
         <button
           type='button'
@@ -50,15 +58,16 @@ const Joke = ({
             )}
           </>
         </button>
-
-        {joke || delivery ? (
-          <button type='submit' className={`small ${visibleJoke ? 'fadeIn' : ''}`}>
-            {titleSave}
-          </button>
-        ) : (
-          ''
-        )}
       </article>
+      {joke || delivery ? (
+        <div className='flex center'>
+          <button type='submit' className={`submit ${visibleJoke ? 'fadeIn' : ''}`}>
+            {ESaveJoke[language]}
+          </button>
+        </div>
+      ) : (
+        ''
+      )}
     </form>
   )
 }

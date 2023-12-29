@@ -360,7 +360,7 @@ const App: FC = () => {
 
           <Footer language={language} styleMenu={styleMenu} />
           <ScrollToTop language={language} styleMenu={styleMenu} />
-          <Notification />
+          <Notification language={language} />
         </div>
       </div>
     </BlobProvider>

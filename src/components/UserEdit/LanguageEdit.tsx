@@ -140,7 +140,7 @@ const LanguageEdit = ({ user, language, setLanguage, options, getKeyByValue }: P
             <button type='submit'>{titleEdit}</button>
           </form>
 
-          <Notification />
+          <Notification language={language} />
         </>
       ) : (
         <></>

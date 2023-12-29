@@ -188,12 +188,7 @@ function Jokes({
   const [currentCategory, setCurrentCategory] = useState<ECategory>(
     jokeCategoryByLanguage[language].Misc
   )
-  const [categoryValues, setCategoryValues] = useState<SelectOption[]>([
-    {
-      label: jokeCategoryByLanguage[language].Misc,
-      value: ECategory_en.Misc,
-    },
-  ])
+  const [categoryValues, setCategoryValues] = useState<SelectOption[]>([])
   const [norrisCategories, setNorrisCategories] = useState<SelectOption[]>([
     { value: 'any', label: 'Any' },
   ])
@@ -891,6 +886,7 @@ function Jokes({
               handleFormSubmit={handleFormSubmit}
               jokeCategory={jokeCategory}
               setJokeCategory={setJokeCategory}
+              currentCategory={currentCategory}
               categoryValues={categoryValues}
               setCategoryValues={setCategoryValues}
               setQueryValue={setQueryValue}

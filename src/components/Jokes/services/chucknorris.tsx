@@ -34,12 +34,10 @@ const getRandomJokeFromNorrisCategory = async (category: string) => {
 
 const searchNorrisJoke = async (query: string) => {
   const response = await axios.get(`${NORRIS_URI}/search?query=${query}`)
-  console.log('response.data from Norris query', response.data)
   if (!response.data.result || response.data.result.length === 0) {
     return
   }
   const randomIndex = Math.floor(Math.random() * response.data.result.length)
-  console.log('randomIndex', randomIndex, response.data.result[randomIndex])
   return response.data.result[randomIndex]
 }
 

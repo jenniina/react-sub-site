@@ -2,7 +2,7 @@
   width: 100%;
 }
 
-.App {
+.App .App-inner-wrap {
   width: 100%;
   color: var(--color-primary-18);
 }
@@ -53,7 +53,7 @@
 
   color-scheme: light;
 }
-.App > .App-inner-wrap {
+.App .App-inner-wrap > .App-inner-wrap {
   margin: 0 auto;
 }
 .App-inner-wrap::before {
@@ -561,7 +561,7 @@ body .z {
     opacity: 0;
   }
 }
-main .notification {
+#root .App .App-inner-wrap .notification {
   position: fixed;
   top: 0;
   left: 0;
@@ -575,7 +575,7 @@ main .notification {
   text-align: center;
   pointer-events: none;
 }
-main .notification p {
+#root .App .App-inner-wrap .notification p {
   margin: 0;
   max-width: 40em;
   background-color: var(--color-primary-2);
@@ -588,12 +588,12 @@ main .notification p {
   align-items: center;
   gap: var(--gap);
 }
-main .notification.error p {
+#root .App .App-inner-wrap .notification.error p {
   color: red;
   background-color: black;
   border: 0.3em solid red;
 }
-main .notification p {
+#root .App .App-inner-wrap .notification p {
   pointer-events: all;
 }
 .max-content {

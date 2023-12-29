@@ -4,3 +4,21 @@
 .editform h2 {
   margin-bottom: 1.5em;
 }
+button.delete-account {
+  border-color: red;
+  outline-color: red;
+  outline-style: dashed;
+  background: linear-gradient(
+    5deg,
+    crimson 0%,
+    var(--color-primary-7) 70%,
+    var(--color-primary-2) 100%
+  );
+  background-size: auto 120px;
+  background-position: top;
+}
+button.delete-account:hover,
+button.delete-account:focus {
+  color: var(--color-primary-20);
+  outline-offset: 0.3rem;
+}

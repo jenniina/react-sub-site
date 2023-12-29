@@ -204,7 +204,7 @@ function FormMulti({ language }: { language: ELanguages }) {
           )}
         </div>
       </form>
-      <Notification />
+      <Notification language={language} />
     </div>
   )
 }

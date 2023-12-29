@@ -6,11 +6,13 @@ import {
   EEmail,
   ELanguages,
   ENickname,
+  EPassword,
   ERegister,
   ReducerProps,
 } from '../../interfaces'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { initializeUser } from '../../reducers/authReducer'
+import Notification from '../Notification/Notification'
 
 interface Props {
   language: ELanguages
@@ -101,7 +103,7 @@ const Register = ({
                     value={password}
                     onChange={({ target }) => setPassword(target.value)}
                   />
-                  <span>Password</span>
+                  <span>{EPassword[language]}</span>
                 </label>
               </div>
               <div className='input-wrap'>
@@ -117,12 +119,14 @@ const Register = ({
                   <span>{EConfirmPassword[language]}</span>
                 </label>
               </div>
-              <button type='submit'>{ERegister[language]}</button>
+              <button type='submit' className='restore'>
+                {ERegister[language]}
+              </button>
             </form>
           </Accordion>
         </>
       ) : (
-        <div></div>
+        <></>
       )}
     </div>
   )
