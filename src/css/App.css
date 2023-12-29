@@ -562,6 +562,7 @@ body .z {
   }
 }
 #root .App .App-inner-wrap .notification {
+  --border-radius: 0.6em;
   position: fixed;
   top: 0;
   left: 0;
@@ -581,6 +582,7 @@ body .z {
   background-color: var(--color-primary-2);
   color: var(--color-primary-19);
   border-radius: var(--border-radius);
+  border: 0.3em solid var(--color-primary-17);
   padding: 1em;
   display: flex;
   flex-flow: row wrap;
