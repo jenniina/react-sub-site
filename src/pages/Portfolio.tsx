@@ -83,7 +83,7 @@ export default function Portfolio({
               <li>
                 <Link to='/portfolio/jokes'>
                   <GiAbstract019 />
-                  <span>{ETheComediansCompanion[language]}on</span>
+                  <span>{ETheComediansCompanion[language]}</span>
                 </Link>
                 <p>{EJokesAppIntro[language]}</p>
               </li>
