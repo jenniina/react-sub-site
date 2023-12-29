@@ -3,24 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import Hero from '../components/Hero/Hero'
 import { useTheme } from '../hooks/useTheme'
 import Notification from '../components/Notification/Notification'
-import {
-  ECategory,
-  ECategory_cs,
-  ECategory_de,
-  ECategory_en,
-  ECategory_es,
-  ECategory_fr,
-  ECategory_pt,
-  EJokeType,
-  ESafemode,
-} from '../components/Jokes/interfaces'
+import { ELanguages } from '../interfaces'
 import {
   EAreYouSureYouWantToDelete,
-  EDelete,
-  EDeleteAccount,
-  ELanguages,
   EYouWillLoseAllTheDataAssociatedWithIt,
-} from '../interfaces'
+  EDeleteAccount,
+} from '../components/UserEdit/interfaces'
 import styles from './css/useredit.module.css'
 import { SelectOption } from '../components/Select/Select'
 import { useSelector } from 'react-redux'
@@ -39,13 +27,6 @@ interface Props {
   heading: string
   text: string
   type: string
-  categoryByLanguages:
-    | typeof ECategory_en
-    | typeof ECategory_cs
-    | typeof ECategory_de
-    | typeof ECategory_es
-    | typeof ECategory_fr
-    | typeof ECategory_pt
   options: (enumObj: typeof ELanguages) => SelectOption[]
   getKeyByValue: (
     enumObj: typeof ELanguages,
@@ -59,7 +40,6 @@ const UserEditPage = ({
   heading,
   text,
   type,
-  categoryByLanguages,
   options,
   getKeyByValue,
 }: Props) => {
@@ -115,7 +95,6 @@ const UserEditPage = ({
                   user={user}
                   language={language}
                   setLanguage={setLanguage}
-                  categoryByLanguages={categoryByLanguages}
                   options={options}
                   getKeyByValue={getKeyByValue}
                 />

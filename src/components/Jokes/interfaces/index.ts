@@ -209,6 +209,19 @@ export enum ECategory_cs {
   ChuckNorris = 'Chuck Norris (anglicky)',
   DadJoke = 'Dad Joke (anglicky)',
 }
+//translated to Finnish´:
+export enum ECategory_fi {
+  // Any = 'Mikä tahansa',
+  Misc = 'Sekalaista',
+  Programming = 'Ohjelmointi',
+  Dark = 'Synkkä',
+  Pun = 'Sanaleikki',
+  Spooky = 'Kummitus',
+  Christmas = 'Joulu',
+  ChuckNorris = 'Chuck Norris (englanniksi)',
+  DadJoke = 'Dad Joke (englanniksi)',
+}
+
 export type CategoryByLanguages = {
   en: ECategory_en
   es: ECategory_es

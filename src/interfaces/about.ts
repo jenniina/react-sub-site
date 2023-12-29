@@ -320,3 +320,29 @@ export enum ETheTranslationsAreDoneWithTheHelpOfGithubCopilotSo {
   pt = 'As traduções são feitas com a ajuda do Github Copilot, portanto, podem não ser perfeitas.',
   cs = 'Překlady jsou prováděny s pomocí Github Copilot, takže nemusí být perfektní.',
 }
+//React Github Repository
+export enum EReactGithubRepository {
+  en = 'React Github Repository',
+  es = 'Repositorio de Github React',
+  fr = 'Dépôt Github React',
+  de = 'React Github Repository',
+  pt = 'Repositório Github React',
+  cs = 'React Github Repository',
+}
+//Node Github Repository
+export enum ENodeGithubRepository {
+  en = 'Node Github Repository',
+  es = 'Repositorio Github Node',
+  fr = 'Dépôt Github Node',
+  de = 'Node Github Repository',
+  pt = 'Repositório Github Node',
+  cs = 'Node Github Repository',
+}
+export enum ETheSiteIsTranslatedToSixLanguagesWhichWere {
+  en = "The site is translated to six languages, which were chosen based on JokeAPI's supported languages, from which the translation idea came from.",
+  es = 'El sitio está traducido a seis idiomas, que fueron elegidos en función de los idiomas admitidos por JokeAPI, de donde provino la idea de la traducción.',
+  fr = 'Le site est traduit en six langues, qui ont été choisies en fonction des langues prises en charge par JokeAPI, d où est venue l idée de la traduction.',
+  de = 'Die Website ist in sechs Sprachen übersetzt, die auf den unterstützten Sprachen von JokeAPI basieren, von denen die Übersetzungsidee stammt.',
+  pt = 'O site é traduzido para seis idiomas, que foram escolhidos com base nos idiomas suportados pelo JokeAPI, de onde veio a ideia de tradução.',
+  cs = 'Stránka je přeložena do šesti jazyků, které byly vybrány na základě podporovaných jazyků JokeAPI, ze kterých pochází myšlenka překladu.',
+}

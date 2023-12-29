@@ -16,6 +16,7 @@ import { updateUsername } from '../../reducers/usersReducer'
 import { AxiosError } from 'axios'
 import Notification from '../Notification/Notification'
 import styles from './css/edit.module.css'
+import { EEditEmail } from './interfaces'
 
 interface Props {
   language: ELanguages
@@ -80,9 +81,7 @@ const UsernameEdit = ({ user, language }: Props) => {
     <>
       {user ? (
         <>
-          <h2>
-            {titleEdit} {titleEmail.toLowerCase()}
-          </h2>
+          <h2>{EEditEmail[language]}</h2>
           <p className={styles.p}>
             <strong>{user?.username}</strong>
           </p>

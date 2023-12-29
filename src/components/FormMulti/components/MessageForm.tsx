@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { FormWrapper } from './FormWrapper'
 import styles from '../form.module.css'
 import { Select, SelectOption } from '../../Select/Select'
-import useLocalStorage from '../../../hooks/useStorage'
 import { ELanguages, ENone, EOther, EPleaseSelectAnOption } from '../../../interfaces'
 import {
   ELetMeKnowWhatOnYourMind,
