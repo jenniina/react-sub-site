@@ -75,7 +75,7 @@ export default function Home({
             </p>
 
             <h2>UseMediaQuery hook test</h2>
-            <p>Screen size is larger than 1000px: {mediaIsLarge.toString()}</p>
+            <p>Screen size is larger than 1000px: {mediaIsLarge?.toString()}</p>
 
             <h2>UseSize hook test</h2>
             <label htmlFor='textarea'>Textarea size: {JSON.stringify(size)}</label>
@@ -120,7 +120,7 @@ export default function Home({
               </label>
             </div>
             <p>current key: {input} </p>
-            <p>previous key: {prevInput.current}</p>
+            <p>previous key: {prevInput?.current}</p>
           </div>
         </section>
         <section>
@@ -130,7 +130,7 @@ export default function Home({
               <div
                 style={{ width: 'max-content', margin: '0.4em auto', fontSize: '2em' }}
               >
-                [ {value.toString()} ]
+                [ {value?.toString()} ]
               </div>
               <button onClick={() => toggleValue(!value)}>Toggle</button>
               <button onClick={() => toggleValue(true)}>Make True</button>
