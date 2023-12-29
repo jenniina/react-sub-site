@@ -27,6 +27,7 @@ import {
   EAny,
   ESelectExtraCategories,
   ECategory,
+  ECategory_fi,
 } from '../interfaces'
 import { ELanguages } from '../../../interfaces'
 
@@ -56,6 +57,7 @@ interface Props {
     | typeof ECategory_es
     | typeof ECategory_fr
     | typeof ECategory_pt
+    | typeof ECategory_fi
   jokeCategoryByLanguage: IJokeCategoryByLanguage
   categoryValues: SelectOption[]
   setCategoryValues: (categoryValues: SelectOption[]) => void

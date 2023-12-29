@@ -5,6 +5,7 @@ export enum EMultiStep {
   de = 'Mehrstufig',
   pt = 'Multi-Etapa',
   cs = 'Vícekrokový',
+  fi = 'Monivaiheinen',
 }
 export enum EBackAndNextButtons {
   en = 'Back and Next buttons',
@@ -13,6 +14,7 @@ export enum EBackAndNextButtons {
   de = 'Zurück- und Weiter-Schaltflächen',
   pt = 'Botões Voltar e Avançar',
   cs = 'Tlačítka Zpět a Další',
+  fi = 'Takaisin- ja Seuraava-painikkeet',
 }
 //Slightly customized radio and checkbox inputs (size increase, added outline)
 export enum ECustomRadioAndCheckboxInputs {
@@ -22,6 +24,7 @@ export enum ECustomRadioAndCheckboxInputs {
   de = 'Leicht angepasste Radio- und Kontrollkästcheneingaben (Größenänderung, hinzugefügter Umriss)',
   pt = 'Entradas de rádio e caixa de seleção ligeiramente personalizadas (aumento de tamanho, contorno adicionado)',
   cs = 'Mírně upravené vstupy rádia a zaškrtávací políčko (zvětšení velikosti, přidán obrys)',
+  fi = 'Hieman kustomoitudut radio- ja valintalaatikot (koon suurennus, lisätty reunus)',
 }
 //Prompt to fill in the missing required fields, before moving to the next step
 export enum EPromptToFillInRequiredFields {
@@ -31,6 +34,7 @@ export enum EPromptToFillInRequiredFields {
   de = 'Aufforderung zum Ausfüllen der fehlenden Pflichtfelder, bevor Sie zum nächsten Schritt übergehen',
   pt = 'Solicitar que preencha os campos obrigatórios em falta, antes de passar para a próxima etapa',
   cs = 'Vyzvat k vyplnění chybějících povinných polí před přechodem na další krok',
+  fi = 'Kehote täydentää puuttuvat kentät, ennen seuraavaan askeleeseen siirtymistä',
 }
 export enum EFormFields {
   en = 'Form fields',
@@ -39,6 +43,7 @@ export enum EFormFields {
   de = 'Formularfelder',
   pt = 'Campos de formulário',
   cs = 'Formulářová pole',
+  fi = 'Lomakkeen kentät',
 }
 export enum EFirstName {
   en = 'First Name',
@@ -47,6 +52,7 @@ export enum EFirstName {
   de = 'Vorname',
   pt = 'Primeiro Nome',
   cs = 'Křestní jméno',
+  fi = 'Etunimi',
 }
 export enum ELastName {
   en = 'Last Name',
@@ -55,6 +61,7 @@ export enum ELastName {
   de = 'Nachname',
   pt = 'Último Nome',
   cs = 'Příjmení',
+  fi = 'Sukunimi',
 }
 export enum EMessageSubject {
   en = 'Message Subject',
@@ -63,6 +70,7 @@ export enum EMessageSubject {
   de = 'Nachrichtenbetreff',
   pt = 'Assunto da mensagem',
   cs = 'Předmět zprávy',
+  fi = 'Viestin aihe',
 }
 export enum EMessage {
   en = 'Message',
@@ -71,6 +79,7 @@ export enum EMessage {
   de = 'Nachricht',
   pt = 'Mensagem',
   cs = 'Zpráva',
+  fi = 'Viesti',
 }
 //Any encouraging words?
 export enum EAnyEncouragingWords {
@@ -80,6 +89,7 @@ export enum EAnyEncouragingWords {
   de = 'Irgendwelche ermutigenden Worte?',
   pt = 'Alguma palavra de incentivo?',
   cs = 'Nějaká povzbuzující slova?',
+  fi = 'Rohkaisevia sanoja?',
 }
 export enum EOrConstructiveFeedback {
   en = 'Or constructive feedback?',
@@ -88,6 +98,7 @@ export enum EOrConstructiveFeedback {
   de = 'Oder konstruktives Feedback?',
   pt = 'Ou feedback construtivo?',
   cs = 'Nebo konstruktivní zpětná vazba?',
+  fi = 'Tai rakentavaa palautetta?',
 }
 export enum EAColorYouLike {
   en = 'A color you like?',
@@ -96,6 +107,7 @@ export enum EAColorYouLike {
   de = 'Eine Farbe, die Sie mögen?',
   pt = 'Uma cor que você gosta?',
   cs = 'Barva, kterou máte rádi?',
+  fi = 'Väri, josta pidät?',
 }
 export enum EWhichModeDoYouPreferLightDark {
   en = 'Which mode do you prefer? (Light/Dark)',
@@ -104,6 +116,7 @@ export enum EWhichModeDoYouPreferLightDark {
   de = 'Welchen Modus bevorzugen Sie? (Hell/Dunkel)',
   pt = 'Qual modo você prefere? (Claro/Escuro)',
   cs = 'Který režim preferujete? (Světlo/Tma)',
+  fi = 'Mitä ulkoasua suosit? (Vaalea/Tumma)',
 }
 export enum EWhichModeDoYouPrefer {
   en = 'Which mode do you prefer?',
@@ -112,6 +125,7 @@ export enum EWhichModeDoYouPrefer {
   de = 'Welchen Modus bevorzugen Sie?',
   pt = 'Qual modo você prefere?',
   cs = 'Který režim preferujete?',
+  fi = 'Mitä ulkoasua suosit?',
 }
 export enum EDoYouLikeMyCustomSelects {
   en = 'Do you like my custom selects?',
@@ -120,6 +134,7 @@ export enum EDoYouLikeMyCustomSelects {
   de = 'Gefallen Ihnen meine benutzerdefinierten Auswahlen?',
   pt = 'Você gosta dos meus selects personalizados?',
   cs = 'Líbí se vám mé vlastní výběry?',
+  fi = 'Pidätkö kustomoiduista valintakentistäni?',
 }
 //GDPR consent
 export enum EGDPRConsent {
@@ -129,6 +144,7 @@ export enum EGDPRConsent {
   de = 'GDPR-Einwilligung',
   pt = 'Consentimento GDPR',
   cs = 'Souhlas GDPR',
+  fi = 'GDPR-suostumus',
 }
 export enum EContactForm {
   en = 'Contact Form',
@@ -137,6 +153,7 @@ export enum EContactForm {
   de = 'Kontaktformular',
   pt = 'Formulário de Contato',
   cs = 'Kontaktní Formulář',
+  fi = 'Yhteydenottolomake',
 }
 //'There was an error sending the message!'
 export enum EThereWasAnErrorSendingTheMessage {
@@ -146,6 +163,7 @@ export enum EThereWasAnErrorSendingTheMessage {
   de = 'Beim Senden der Nachricht ist ein Fehler aufgetreten!',
   pt = 'Houve um erro ao enviar a mensagem!',
   cs = 'Při odesílání zprávy došlo k chybě!',
+  fi = 'Viestin lähettämisessä tapahtui virhe!',
 }
 export enum EPart {
   en = 'Part',
@@ -154,6 +172,7 @@ export enum EPart {
   de = 'Teil',
   pt = 'Parte',
   cs = 'Část',
+  fi = 'Osa',
 }
 export enum ENext {
   en = 'Next',
@@ -162,6 +181,7 @@ export enum ENext {
   de = 'Weiter',
   pt = 'Próximo',
   cs = 'Další',
+  fi = 'Seuraava',
 }
 //Please fill in the form fields
 export enum EPleaseFillInTheFields {
@@ -171,6 +191,7 @@ export enum EPleaseFillInTheFields {
   de = 'Bitte füllen Sie die Formularfelder aus',
   pt = 'Por favor, preencha os campos do formulário',
   cs = 'Vyplňte prosím pole formuláře',
+  fi = 'Täytä lomakkeen kentät',
 }
 //"Please send me a few words, and I'll respond as soon as I can."
 export enum EPleaseSendMeAFewWords {
@@ -180,6 +201,7 @@ export enum EPleaseSendMeAFewWords {
   de = 'Bitte senden Sie mir ein paar Worte, und ich werde so schnell wie möglich antworten.',
   pt = 'Por favor, envie-me algumas palavras e eu responderei assim que puder.',
   cs = 'Prosím, pošlete mi pár slov a já vám odpovím, jakmile budu moci.',
+  fi = 'Lähetä minulle viesti, niin vastaan mahdollisimman pian.',
 }
 export enum EYourEmail {
   en = 'Your Email',
@@ -188,6 +210,7 @@ export enum EYourEmail {
   de = 'Deine E-Mail',
   pt = 'Seu Email',
   cs = 'Váš Email',
+  fi = 'Sähköpostisi',
 }
 //'Let me know what on your mind'
 export enum ELetMeKnowWhatOnYourMind {
@@ -197,6 +220,7 @@ export enum ELetMeKnowWhatOnYourMind {
   de = 'Lass mich wissen, was dir durch den Kopf geht',
   pt = 'Deixe-me saber o que está em sua mente',
   cs = 'Dejte mi vědět, co vám leží na srdci',
+  fi = 'Kerro minulle, mitä mielessäsi on',
 }
 export enum EBasicDetails {
   en = 'Basic Details',
@@ -205,6 +229,7 @@ export enum EBasicDetails {
   de = 'Grundlegende Details',
   pt = 'Detalhes Básicos',
   cs = 'Základní Detaily',
+  fi = 'Perustiedot',
 }
 //"This contact form is split into three steps for demonstration purposes. Don't worry, it's not too long."
 export enum EThisContactFormIsSplitIntoThreeSteps {
@@ -214,6 +239,7 @@ export enum EThisContactFormIsSplitIntoThreeSteps {
   de = 'Dieses Kontaktformular ist zu Demonstrationszwecken in drei Schritte unterteilt. Keine Sorge, es ist nicht zu lang.',
   pt = 'Este formulário de contato é dividido em três etapas para fins de demonstração. Não se preocupe, não é muito longo.',
   cs = 'Tento kontaktní formulář je pro demonstrační účely rozdělen do tří kroků. Nebojte se, není to příliš dlouhé.',
+  fi = 'Tämä yhteydenottolomake on jaettu kolmeen vaiheeseen esittelytarkoituksia varten. Älä huoli, se ei ole liian pitkä.',
 }
 //Appearance needs work
 export enum EAppearanceNeedsWork {
@@ -223,6 +249,7 @@ export enum EAppearanceNeedsWork {
   de = 'Das Aussehen muss verbessert werden',
   pt = 'A aparência precisa de trabalho',
   cs = 'Vzhled potřebuje práci',
+  fi = 'Ulkoasu kaipaa työstämistä',
 }
 export enum EAccessibilityIssue {
   en = 'Accessibility issue',
@@ -231,6 +258,7 @@ export enum EAccessibilityIssue {
   de = 'Barrierefreiheitsproblem',
   pt = 'Problema de acessibilidade',
   cs = 'Problém s přístupností',
+  fi = 'Esteettömyysongelma',
 }
 export enum ENotReally {
   en = 'Not really',
@@ -239,6 +267,7 @@ export enum ENotReally {
   de = 'Nicht wirklich',
   pt = 'Não realmente',
   cs = 'Ne opravdu',
+  fi = 'Ei oikeastaan',
 }
 export enum EWork {
   en = 'Work',
@@ -247,6 +276,7 @@ export enum EWork {
   de = 'Arbeit',
   pt = 'Trabalho',
   cs = 'Práce',
+  fi = 'Työ',
 }
 export enum EPersonal {
   en = 'Personal',
@@ -255,6 +285,7 @@ export enum EPersonal {
   de = 'Persönlich',
   pt = 'Pessoal',
   cs = 'Osobní',
+  fi = 'Henkilökohtainen',
 }
 //'Additional information'
 export enum EAdditionalInformation {
@@ -264,6 +295,7 @@ export enum EAdditionalInformation {
   de = 'Zusätzliche Informationen',
   pt = 'Informação adicional',
   cs = 'Další informace',
+  fi = 'Lisätietoja',
 }
 //"Don't worry, none of these are required, but definitely appreciated. Thank you for taking the time to send me a message!"
 export enum ENoneOfTheseAreRequired {
@@ -273,6 +305,7 @@ export enum ENoneOfTheseAreRequired {
   de = 'Keine Sorge, keiner dieser Punkte ist erforderlich, wird aber auf jeden Fall geschätzt. Vielen Dank, dass Sie sich die Zeit genommen haben, mir eine Nachricht zu senden!',
   pt = 'Não se preocupe, nenhum desses é obrigatório, mas definitivamente apreciado. Obrigado por tirar um tempo para me enviar uma mensagem!',
   cs = 'Nemusíte se bát, žádný z nich není povinný, ale určitě je oceněn. Děkuji, že jste si vzali čas a poslali mi zprávu!',
+  fi = 'Älä huoli, mitään näistä ei vaadita, mutta ehdottomasti arvostetaan. Kiitos, että käytit aikaasi lähettääksesi minulle viestin!',
 }
 //Color picker
 export enum EColorPicker {
@@ -282,6 +315,7 @@ export enum EColorPicker {
   de = 'Farbauswahl',
   pt = 'Seletor de cores',
   cs = 'Výběr barev',
+  fi = 'Värivalitsin',
 }
 export enum EClarification {
   en = 'Clarification',
@@ -290,6 +324,7 @@ export enum EClarification {
   de = 'Klarstellung',
   pt = 'Clarificação',
   cs = 'Objasnění',
+  fi = 'Selvennys',
 }
 export enum EBack {
   en = 'Back',
@@ -298,4 +333,5 @@ export enum EBack {
   de = 'Zurück',
   pt = 'Voltar',
   cs = 'Zpět',
+  fi = 'Takaisin',
 }

@@ -56,6 +56,7 @@ import {
   ECategory_de,
   ECategory_en,
   ECategory_es,
+  ECategory_fi,
   ECategory_fr,
   ECategory_pt,
   EJokeType,
@@ -67,6 +68,7 @@ import { initializeUser } from './reducers/authReducer'
 import { EGetOrganizedOneTaskAtATime, ETodoApp } from './components/Todo/interfaces'
 import { SelectOption } from './components/Select/Select'
 import Notification from './components/Notification/Notification'
+import { EEditUserSettings } from './components/UserEdit/interfaces'
 
 const App: FC = () => {
   const touchDevice = isTouchDevice()
@@ -100,7 +102,7 @@ const App: FC = () => {
   const [transitionPage, setTransistionPage] = useState('fadeIn')
 
   const [language, setLanguage] = useLocalStorage<ELanguages>(
-    'language',
+    'JokeAppLanguage',
     ELanguages.English
   )
 
@@ -151,6 +153,7 @@ const App: FC = () => {
     de: ECategory_de,
     pt: ECategory_pt,
     cs: ECategory_cs,
+    fi: ECategory_fi,
   }
 
   const categoryByLanguages = categoryByLanguagesConst[language] as
@@ -160,6 +163,7 @@ const App: FC = () => {
     | typeof ECategory_es
     | typeof ECategory_fr
     | typeof ECategory_pt
+    | typeof ECategory_fi
 
   const options = (
     enumObj: typeof ECategory_en | typeof EJokeType | typeof ESafemode | typeof ELanguages
@@ -231,11 +235,10 @@ const App: FC = () => {
                 element={
                   <UserEditPage
                     heading={EUserEdit[language]}
-                    text=''
+                    text={EEditUserSettings[language]}
                     type='page'
                     language={language}
                     setLanguage={setLanguage}
-                    categoryByLanguages={categoryByLanguages}
                     options={options}
                     getKeyByValue={getKeyByValue}
                   />

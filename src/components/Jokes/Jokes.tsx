@@ -33,6 +33,7 @@ import {
   EAJokeGeneratorForTheComicallyInclined,
   EExtraCategories,
   ENoJokeFoundWithThisSearchTerm,
+  ECategory_fi,
 } from './interfaces'
 import {
   ELogin,
@@ -124,6 +125,16 @@ export const jokeCategoryByLanguage: IJokeCategoryByLanguage = {
     ChuckNorris: ECategory_cs.ChuckNorris,
     DadJoke: ECategory_cs.DadJoke,
   },
+  fi: {
+    Programming: ECategory_fi.Programming,
+    Misc: ECategory_fi.Misc,
+    Dark: ECategory_fi.Dark,
+    Pun: ECategory_fi.Pun,
+    Spooky: ECategory_fi.Spooky,
+    Christmas: ECategory_fi.Christmas,
+    ChuckNorris: ECategory_fi.ChuckNorris,
+    DadJoke: ECategory_fi.DadJoke,
+  },
 }
 
 export const jokeCategoryAny = {
@@ -133,6 +144,7 @@ export const jokeCategoryAny = {
   de: 'Irgendein',
   pt: 'Qualquer',
   cs: 'Jakýkoliv',
+  fi: 'Mikä tahansa',
 }
 
 function Jokes({
@@ -149,6 +161,7 @@ function Jokes({
     de: ECategory_de,
     pt: ECategory_pt,
     cs: ECategory_cs,
+    fi: ECategory_fi,
   }
 
   const title = ETheComediansCompanion[language]
@@ -181,6 +194,7 @@ function Jokes({
     | typeof ECategory_es
     | typeof ECategory_fr
     | typeof ECategory_pt
+    | typeof ECategory_fi
   >(categoryByLanguagesConst.en)
   const [jokeCategory, setJokeCategory] = useState<ECategory>(
     jokeCategoryByLanguage[language].Misc

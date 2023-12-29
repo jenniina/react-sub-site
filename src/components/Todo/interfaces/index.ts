@@ -22,6 +22,7 @@ export enum EClearCompleted {
   de = 'Abgeschlossene Aufgaben Löschen',
   pt = 'Limpar Tarefas Completas',
   cs = 'Vymazat Dokončené Úkoly',
+  fi = 'Tyhjennä valmiit tehtävät',
 }
 export enum EAddTask {
   en = 'Add Task',
@@ -30,6 +31,7 @@ export enum EAddTask {
   de = 'Aufgabe hinzufügen',
   pt = 'Adicionar Tarefa',
   cs = 'Přidat Úkol',
+  fi = 'Lisää tehtävä',
 }
 export enum ETask {
   en = 'Task',
@@ -38,6 +40,7 @@ export enum ETask {
   de = 'Aufgabe',
   pt = 'Tarefa',
   cs = 'Úkol',
+  fi = 'Tehtävä',
 }
 export enum ELoading {
   en = 'Loading',
@@ -46,6 +49,7 @@ export enum ELoading {
   de = 'Wird geladen',
   pt = 'Carregando',
   cs = 'Načítání',
+  fi = 'Ladataan',
 }
 export enum ELeftToDo {
   en = 'left to do',
@@ -54,6 +58,7 @@ export enum ELeftToDo {
   de = 'übrig',
   pt = 'restantes',
   cs = 'zbývá',
+  fi = 'jäljellä',
 }
 
 export enum EAddTaskToTheTaskList {
@@ -63,6 +68,7 @@ export enum EAddTaskToTheTaskList {
   de = 'Aufgabe zur Aufgabenliste hinzufügen',
   pt = 'Adicionar tarefa à lista de tarefas',
   cs = 'Přidat úkol do seznamu úkolů',
+  fi = 'Lisää tehtävä tehtäväluetteloon',
 }
 export enum ETodoApp {
   en = 'Todo App',
@@ -71,6 +77,7 @@ export enum ETodoApp {
   de = 'Aufgaben App',
   pt = 'Aplicativo de Tarefas',
   cs = 'Úkolová Aplikace',
+  fi = 'Tehtäväsovellus',
 }
 // Get organized, one task at a time!
 export enum EGetOrganizedOneTaskAtATime {
@@ -80,4 +87,5 @@ export enum EGetOrganizedOneTaskAtATime {
   de = 'Organisieren Sie sich, eine Aufgabe nach der anderen!',
   pt = 'Organize-se, uma tarefa de cada vez!',
   cs = 'Zorganizujte se, jedna úloha za druhou!',
+  fi = 'Järjestäydy, yksi tehtävä kerrallaan!',
 }

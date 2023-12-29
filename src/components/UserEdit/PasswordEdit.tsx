@@ -18,6 +18,7 @@ import { updatePassword } from '../../reducers/usersReducer'
 import { AxiosError } from 'axios'
 import Notification from '../Notification/Notification'
 import styles from './css/edit.module.css'
+import { EEditPassword } from './interfaces'
 
 interface Props {
   language: ELanguages
@@ -89,9 +90,7 @@ const PasswordEdit = ({ user, language }: Props) => {
     <>
       {user ? (
         <>
-          <h2>
-            {titleEdit} {EPassword[language].toLowerCase()}
-          </h2>
+          <h2>{EEditPassword[language]}</h2>
 
           <form onSubmit={handleUserSubmit} className={styles['edit-user']}>
             <div className='input-wrap'>

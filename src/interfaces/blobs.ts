@@ -5,6 +5,7 @@ export enum ENeutral {
   de = 'Neutral',
   pt = 'Neutro',
   cs = 'Neutrální',
+  fi = 'Neutraali',
 }
 // Blobs:
 //     Draggable
@@ -20,6 +21,7 @@ export enum EBlurIntoOneAnother {
   de = 'Verschwimmen ineinander',
   pt = 'Desfoque um no outro',
   cs = 'Rozmazat jeden do druhého',
+  fi = 'Sulautuvat toisiinsa',
 }
 export enum EChangeableColor {
   en = 'Changeable color',
@@ -28,6 +30,7 @@ export enum EChangeableColor {
   de = 'Veränderbare Farbe',
   pt = 'Cor mutável',
   cs = 'Měnitelná barva',
+  fi = 'Väri muutettavissa',
 }
 export enum EChangeableSize {
   en = 'Changeable size',
@@ -36,6 +39,7 @@ export enum EChangeableSize {
   de = 'Veränderbare Größe',
   pt = 'Tamanho mutável',
   cs = 'Měnitelná velikost',
+  fi = 'Koko muutettavissa',
 }
 export enum ECloneable {
   en = 'Cloneable',
@@ -44,6 +48,7 @@ export enum ECloneable {
   de = 'Klonierbar',
   pt = 'Clonável',
   cs = 'Klonovatelný',
+  fi = 'Kloonattavissa',
 }
 export enum ERemovable {
   en = 'Removable',
@@ -52,6 +57,7 @@ export enum ERemovable {
   de = 'Entfernbar',
   pt = 'Removível',
   cs = 'Odstranitelný',
+  fi = 'Poistettavissa',
 }
 //Sliders to control background
 export enum ESlidersToControlBackground {
@@ -61,6 +67,7 @@ export enum ESlidersToControlBackground {
   de = 'Schieberegler zur Hintergrundsteuerung',
   pt = 'Controles deslizantes para controlar o plano de fundo',
   cs = 'Posuvníky pro ovládání pozadí',
+  fi = 'Liukusäätimet taustan hallintaan',
 }
 export enum ELightness {
   en = 'Lightness',
@@ -69,6 +76,7 @@ export enum ELightness {
   de = 'Helligkeit',
   pt = 'Claridade',
   cs = 'Světlost',
+  fi = 'Vaaleus',
 }
 export enum ESaturation {
   en = 'Saturation',
@@ -77,6 +85,7 @@ export enum ESaturation {
   de = 'Sättigung',
   pt = 'Saturação',
   cs = 'Sytost',
+  fi = 'Kylläisyys',
 }
 export enum EHue {
   en = 'Hue',
@@ -85,6 +94,7 @@ export enum EHue {
   de = 'Farbton',
   pt = 'Matiz',
   cs = 'Odstín',
+  fi = 'Sävy',
 }
 // Buttons to
 //     Toggle the subtle movement of the blobs
@@ -97,6 +107,7 @@ export enum EButtonsTo {
   de = 'Schaltflächen zum',
   pt = 'Botões para',
   cs = 'Tlačítka pro',
+  fi = 'Painikkeet',
 }
 export enum EToggleTheSubtleMovementOfTheBlobs {
   en = 'Toggle the subtle movement of the blobs',
@@ -105,6 +116,7 @@ export enum EToggleTheSubtleMovementOfTheBlobs {
   de = 'Aktivieren Sie die subtile Bewegung der Blobs',
   pt = 'Alternar o movimento sutil dos blobs',
   cs = 'Přepněte jemný pohyb blobů',
+  fi = 'Möhkäleiden hienovaraisen liikkeen päälle-/poiskytkeminen',
 }
 export enum EResetTheBlobArrayToANewConfiguration {
   en = 'Reset the blob array to a new configuration',
@@ -113,6 +125,7 @@ export enum EResetTheBlobArrayToANewConfiguration {
   de = 'Setzen Sie das Blob-Array auf eine neue Konfiguration zurück',
   pt = 'Redefinir a matriz de blobs para uma nova configuração',
   cs = 'Resetujte pole blobů na novou konfiguraci',
+  fi = 'Nollaa möhkäleiden taulukko uuteen kokoonpanoon',
 }
 export enum EStopScrollingBehaviorToUseTheMouseWheelFreely {
   en = 'Stop scrolling behavior to use the mouse wheel freely',
@@ -121,6 +134,7 @@ export enum EStopScrollingBehaviorToUseTheMouseWheelFreely {
   de = 'Stoppen Sie das Bildlaufverhalten, um das Mausrad frei zu verwenden',
   pt = 'Pare o comportamento de rolagem para usar a roda do mouse livremente',
   cs = 'Zastavte chování posouvání, abyste mohli myší volně používat kolečko',
+  fi = 'Lopeta vierityskäyttäytyminen, jotta voit käyttää hiiren pyörää vapaasti',
 }
 // Which blob is currently active can be seen at the top left of the container
 export enum EWhichBlobIsCurrentlyActiveCanBeSeenAtTheTopLeftOfTheContainer {
@@ -130,6 +144,7 @@ export enum EWhichBlobIsCurrentlyActiveCanBeSeenAtTheTopLeftOfTheContainer {
   de = 'Welcher Blob gerade aktiv ist, kann oben links im Container gesehen werden',
   pt = 'Qual blob está atualmente ativo pode ser visto no canto superior esquerdo do contêiner',
   cs = 'Který blob je aktuálně aktivní, lze vidět v levém horním rohu kontejneru',
+  fi = 'Mikä möhkäleistä on sillä hetkellä aktiivinen, voidaan nähdä säiliön vasemmassa yläkulmassa',
 }
 export enum EPointerUse {
   en = 'Pointer use',
@@ -138,6 +153,7 @@ export enum EPointerUse {
   de = 'Zeiger verwenden',
   pt = 'Uso do ponteiro',
   cs = 'Užití ukazatele',
+  fi = 'Osoitinkäyttö',
 }
 //Change blob color by dragging to a color node on the sides
 export enum EChangeBlobColorByDraggingToAColorNodeOnTheSides {
@@ -147,6 +163,7 @@ export enum EChangeBlobColorByDraggingToAColorNodeOnTheSides {
   de = 'Ändern Sie die Blob-Farbe, indem Sie sie an einen Farbknoten an den Seiten ziehen',
   pt = 'Mude a cor do blob arrastando para um nó de cor nas laterais',
   cs = 'Změňte barvu blobu přetažením na barevný uzel na stranách',
+  fi = 'Vaihda möhkäleen väri vetämällä se värin solmuun sivuilla',
 }
 //Change blob size by dragging it to either the L or S letter on the right hand side
 export enum EChangeBlobSizeByDraggingItToEitherTheLOrSLetterOnTheRightHandSide {
@@ -156,6 +173,7 @@ export enum EChangeBlobSizeByDraggingItToEitherTheLOrSLetterOnTheRightHandSide {
   de = 'Ändern Sie die Blob-Größe, indem Sie sie an den Buchstaben L oder S auf der rechten Seite ziehen',
   pt = 'Mude o tamanho do blob arrastando-o para a letra L ou S no lado direito',
   cs = 'Velikost blobu změníte přetažením na písmeno L nebo S na pravé straně',
+  fi = 'Vaihda möhkäleen kokoa vetämällä se joko L- tai S-kirjaimeen, oikealla puolella',
 }
 // Change blob size by scrolling with the mouse wheel (note: you may want to disable scrolling first with the button on the top right)
 export enum EChangeBlobSizeByScrollingWithTheMouseWheel {
@@ -165,6 +183,7 @@ export enum EChangeBlobSizeByScrollingWithTheMouseWheel {
   de = 'Ändern Sie die Blob-Größe, indem Sie mit dem Mausrad scrollen (Hinweis: Sie möchten möglicherweise zuerst das Scrollen mit der Schaltfläche oben rechts deaktivieren)',
   pt = 'Mude o tamanho do blob rolando com a roda do mouse (observação: você pode querer desativar a rolagem primeiro com o botão no canto superior direito)',
   cs = 'Velikost blobu změníte posouváním kolečka myši (poznámka: posouvání můžete nejprve zakázat tlačítkem v pravém horním rohu)',
+  fi = 'Vaihda möhkäleen kokoa vierittämällä hiiren pyörällä (huomaa: haluat ehkä ensin poistaa sivun vierittämisen käytöstä painikkeella oikeassa yläkulmassa)',
 }
 //Clone a blob by dragging it to the top left plus sign
 export enum ECloneABlobByDraggingItToTheTopLeftPlusSign {
@@ -174,6 +193,7 @@ export enum ECloneABlobByDraggingItToTheTopLeftPlusSign {
   de = 'Klonen Sie einen Blob, indem Sie ihn zum Pluszeichen oben links ziehen',
   pt = 'Clone um blob arrastando-o para o sinal de mais superior esquerdo',
   cs = 'Klonujte blob přetažením do levého horního plusu',
+  fi = 'Kloonaa möhkäle vetämällä se vasemman yläkulman plussaan',
 }
 //Remove a blob by dragging it to the bottom left x sign
 export enum ERemoveABlobByDraggingItToTheBottomLeftXSign {
@@ -183,6 +203,7 @@ export enum ERemoveABlobByDraggingItToTheBottomLeftXSign {
   de = 'Entfernen Sie einen Blob, indem Sie ihn zum unteren linken x-Zeichen ziehen',
   pt = 'Remova um blob arrastando-o para o sinal x inferior esquerdo',
   cs = 'Odstraňte blob přetažením do levého dolního x',
+  fi = 'Poista möhkäle vetämällä se vasemman alakulman x-merkkiin',
 }
 // Tab to a blob, and with it in focus:
 //     Press Enter to cycle through the different colors
@@ -197,6 +218,7 @@ export enum ETabToABlobAndWithItInFocus {
   de = 'Tab zu einem Blob und mit Fokus darauf:',
   pt = 'Tab para um blob e com foco nele:',
   cs = 'Přejděte na blob a zaměřte se na něj:',
+  fi = 'Siirry näppäimistön tab-painikkeen avulla möhkäleeseen:',
 }
 export enum EPressEnterToCycleThroughTheDifferentColors {
   en = 'Press Enter to cycle through the different colors',
@@ -205,6 +227,7 @@ export enum EPressEnterToCycleThroughTheDifferentColors {
   de = 'Drücken Sie die Eingabetaste, um die verschiedenen Farben durchzugehen',
   pt = 'Pressione Enter para percorrer as diferentes cores',
   cs = 'Stisknutím klávesy Enter projdete různé barvy',
+  fi = 'Paina Enter-näppäintä vaihtaaksesi eri väreihin',
 }
 export enum EMakeBlobSmallerByPressing1 {
   en = 'Make blob smaller by pressing 1',
@@ -213,6 +236,7 @@ export enum EMakeBlobSmallerByPressing1 {
   de = 'Machen Sie den Blob kleiner, indem Sie 1 drücken',
   pt = 'Faça o blob menor pressionando 1',
   cs = 'Blob zmenšete stisknutím 1',
+  fi = 'Pienennä möhkälettä painamalla 1',
 }
 export enum EMakeBlobLargerByPressing2 {
   en = 'Make blob larger by pressing 2',
@@ -221,6 +245,7 @@ export enum EMakeBlobLargerByPressing2 {
   de = 'Machen Sie den Blob größer, indem Sie 2 drücken',
   pt = 'Faça o blob maior pressionando 2',
   cs = 'Blob zvětšete stisknutím 2',
+  fi = 'Suurenna möhkälettä painamalla 2',
 }
 export enum ECloneABlobByPressing3Or {
   en = 'Clone a blob by pressing 3 or +',
@@ -229,6 +254,7 @@ export enum ECloneABlobByPressing3Or {
   de = 'Klonen Sie einen Blob, indem Sie 3 oder + drücken',
   pt = 'Clone um blob pressionando 3 ou +',
   cs = 'Klonujte blob stisknutím 3 nebo +',
+  fi = 'Kloonaa möhkäle painamalla 3 tai +',
 }
 export enum ERemoveABlobByPressingDeleteOr {
   en = 'Remove a blob by pressing Delete or -',
@@ -237,6 +263,7 @@ export enum ERemoveABlobByPressingDeleteOr {
   de = 'Entfernen Sie einen Blob, indem Sie Löschen oder - drücken',
   pt = 'Remova um blob pressionando Excluir ou -',
   cs = 'Odstraňte blob stisknutím klávesy Delete nebo -',
+  fi = 'Poista möhkäle painamalla Delete tai -',
 }
 export enum EStopSway {
   en = 'Stop Movement',
@@ -245,6 +272,7 @@ export enum EStopSway {
   de = 'Bewegung stoppen',
   pt = 'Parar o movimento',
   cs = 'Zastavit pohyb',
+  fi = 'Pysäytä liike',
 }
 export enum EStartSway {
   en = 'Start Sway',
@@ -253,6 +281,7 @@ export enum EStartSway {
   de = 'Bewegung starten',
   pt = 'Comece o movimento',
   cs = 'Začněte pohyb',
+  fi = 'Aloita liike',
 }
 export enum EEnableScroll {
   en = 'Enable Scroll',
@@ -261,6 +290,7 @@ export enum EEnableScroll {
   de = 'Scrollen aktivieren',
   pt = 'Ativar rolagem',
   cs = 'Povolit posouvání',
+  fi = 'Ota vieritys käyttöön',
 }
 export enum EDisableScroll {
   en = 'Disable Scroll',
@@ -269,6 +299,7 @@ export enum EDisableScroll {
   de = 'Scrollen deaktivieren',
   pt = 'Desativar rolagem',
   cs = 'Zakázat posouvání',
+  fi = 'Poista vieritys käytöstä',
 }
 export enum EMarkerOn {
   en = 'Marker on',
@@ -277,6 +308,7 @@ export enum EMarkerOn {
   de = 'Marker an',
   pt = 'Marcador ligado',
   cs = 'Značka zapnuta',
+  fi = 'Merkkaus päällä',
 }
 export enum EMarkerOff {
   en = 'Marker off',
@@ -285,6 +317,7 @@ export enum EMarkerOff {
   de = 'Marker aus',
   pt = 'Marcador desligado',
   cs = 'Značka vypnuta',
+  fi = 'Merkkaus pois päältä',
 }
 //Try dragging the blobs
 export enum ETryDraggingTheBlobs {
@@ -294,6 +327,7 @@ export enum ETryDraggingTheBlobs {
   de = 'Versuchen Sie, die Blobs zu ziehen',
   pt = 'Tente arrastar os blobs',
   cs = 'Zkuste přetáhnout bloby',
+  fi = 'Yritä raahata möhkäleitä',
 }
 // Selected blob: none
 export enum ESelectedBlobNone {
@@ -303,6 +337,7 @@ export enum ESelectedBlobNone {
   de = 'Ausgewählter Blob: keiner',
   pt = 'Blob selecionado: nenhum',
   cs = 'Vybraný blob: žádný',
+  fi = 'Valittu möhkäle: ei valittua',
 }
 export enum ESelectedBlob {
   en = 'Selected blob',
@@ -311,6 +346,7 @@ export enum ESelectedBlob {
   de = 'Ausgewählter Blob',
   pt = 'Blob selecionado',
   cs = 'Vybraný blob',
+  fi = 'Valittu möhkäle',
 }
 //Reset Blobs
 export enum EResetBlobs {
@@ -320,6 +356,7 @@ export enum EResetBlobs {
   de = 'Blobs zurücksetzen',
   pt = 'Redefinir Blobs',
   cs = 'Resetovat Blobs',
+  fi = 'Nollaa möhkäleet',
 }
 //Adjust background lightness
 export enum EAdjustBackgroundLightness {
@@ -329,6 +366,7 @@ export enum EAdjustBackgroundLightness {
   de = 'Hintergrundhelligkeit anpassen',
   pt = 'Ajustar a claridade do plano de fundo',
   cs = 'Nastavte jas pozadí',
+  fi = 'Säädä taustan vaaleutta',
 }
 export enum EAdjustBackgroundSaturation {
   en = 'Adjust background saturation',
@@ -337,6 +375,7 @@ export enum EAdjustBackgroundSaturation {
   de = 'Hintergrundfarbsättigung anpassen',
   pt = 'Ajustar a saturação do plano de fundo',
   cs = 'Nastavte sytost pozadí',
+  fi = 'Säädä taustan kylläisyyttä',
 }
 export enum EAdjustBackgroundHue {
   en = 'Adjust background hue',
@@ -345,6 +384,7 @@ export enum EAdjustBackgroundHue {
   de = 'Hintergrundfarbton anpassen',
   pt = 'Ajustar o tom de fundo',
   cs = 'Nastavte odstín pozadí',
+  fi = 'Säädä taustan sävyä',
 }
 //Reset Lightness
 export enum EResetLightness {
@@ -354,6 +394,7 @@ export enum EResetLightness {
   de = 'Helligkeit zurücksetzen',
   pt = 'Redefinir Claridade',
   cs = 'Resetovat Světlost',
+  fi = 'Nollaa vaaleus',
 }
 //Reset Saturation
 export enum EResetSaturation {
@@ -363,6 +404,7 @@ export enum EResetSaturation {
   de = 'Sättigung zurücksetzen',
   pt = 'Redefinir Saturação',
   cs = 'Resetovat Sytost',
+  fi = 'Nollaa kylläisyys',
 }
 //Reset Hue
 export enum EResetHue {
@@ -372,5 +414,6 @@ export enum EResetHue {
   de = 'Farbton zurücksetzen',
   pt = 'Redefinir Matiz',
   cs = 'Resetovat Odstín',
+  fi = 'Nollaa sävy',
 }
 //Stop scrolling behavior

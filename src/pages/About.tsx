@@ -59,11 +59,13 @@ import {
   EKeyboardAccessibleDropDownList,
   EMultipleSelect,
   ENavigateWithArrowKeys,
+  ENodeGithubRepository,
   EOtherFeatures,
   EPageTransitionAnimation,
   EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo,
   EPressEscapeToSkipToResetButton,
   EReactApps,
+  EReactGithubRepository,
   ERemoveBlobs,
   ERemoveTasksOneByOneOrEveryFinishedTaskAtOnce,
   EResetButtonOnTheLowerRightCornerResetsTheInteractiveElements,
@@ -73,6 +75,7 @@ import {
   ESiteColors,
   ESortableWithinTheirContainer,
   ETheSiteColorsLightnessesSwitchInLightMode,
+  ETheSiteIsTranslatedToSixLanguagesWhichWere,
   ETheTranslationsAreDoneWithTheHelpOfGithubCopilotSo,
   EThreeStepFullyFunctionalContactForm,
   EUsesANodeBackendToSendTheMessage,
@@ -172,9 +175,15 @@ export default function About({
               </p>
               <p>
                 <a href='https://github.com/jenniina/react-sub-site'>
-                  {EGithubRepository[language]}
+                  {EReactGithubRepository[language]}
                 </a>
               </p>
+              <p>
+                <a href='https://github.com/jenniina/joke-backend'>
+                  {ENodeGithubRepository[language]}
+                </a>
+              </p>
+              <p>{ETheSiteIsTranslatedToSixLanguagesWhichWere[language]}</p>
 
               <h2 id='site-features'>{EFeaturesOfThisSite[language]}</h2>
 

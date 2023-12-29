@@ -4,6 +4,7 @@ import {
   ECategory_de,
   ECategory_en,
   ECategory_es,
+  ECategory_fi,
   ECategory_fr,
   ECategory_pt,
 } from '../interfaces'
@@ -42,6 +43,7 @@ interface LoginProps {
     | typeof ECategory_es
     | typeof ECategory_fr
     | typeof ECategory_pt
+    | typeof ECategory_fi
   options: (enumObj: typeof ELanguages) => SelectOption[]
   getKeyByValue: (
     enumObj: typeof ELanguages,

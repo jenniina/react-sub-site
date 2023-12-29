@@ -1,20 +1,7 @@
-import {
-  ECategory_cs,
-  ECategory_de,
-  ECategory_es,
-  ECategory_fr,
-  ECategory_pt,
-  ECategory_en,
-} from '../Jokes/interfaces'
 import { ENickname, EError, EUserUpdated, EUserNotUpdated } from '../../interfaces'
+import { EEditLanguagePreference } from './interfaces'
 import { useState } from 'react'
-import {
-  IUser,
-  EEdit,
-  ELanguageTitle,
-  ELanguages,
-  ECurrentPassword,
-} from '../../interfaces'
+import { IUser, EEdit, ELanguages, ECurrentPassword } from '../../interfaces'
 import { Select, SelectOption } from '../Select/Select'
 import { initializeUser, refreshUser } from '../../reducers/authReducer'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
@@ -28,13 +15,6 @@ interface Props {
   language: ELanguages
   user: IUser
   setLanguage: (language: ELanguages) => void
-  categoryByLanguages:
-    | typeof ECategory_en
-    | typeof ECategory_cs
-    | typeof ECategory_de
-    | typeof ECategory_es
-    | typeof ECategory_fr
-    | typeof ECategory_pt
   options: (enumObj: typeof ELanguages) => SelectOption[]
   getKeyByValue: (
     enumObj: typeof ELanguages,
@@ -49,6 +29,7 @@ const LanguageEdit = ({ user, language, setLanguage, options, getKeyByValue }: P
   const titleNickname = ENickname[language]
   const titleEdit = EEdit[language]
   const titleCurrentPassword = ECurrentPassword[language]
+  const [lang, setLang] = useState<ELanguages>((user?.language as ELanguages) ?? language)
 
   const handleUserSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -58,7 +39,7 @@ const LanguageEdit = ({ user, language, setLanguage, options, getKeyByValue }: P
         _id,
         name: user.name,
         passwordOld,
-        language,
+        language: lang,
       }
 
       if (user) {
@@ -68,9 +49,10 @@ const LanguageEdit = ({ user, language, setLanguage, options, getKeyByValue }: P
               if (res.success === false) {
                 dispatch(notify(`${EError[language]}: ${res.message}`, true, 5))
               } else {
-                dispatch(notify(`${res.message ?? EUserUpdated[language]}`, false, 5))
+                dispatch(notify(`${res.message ?? EUserUpdated[lang]}`, false, 5))
                 dispatch(refreshUser(res.user)).then(() => {
                   dispatch(initializeUser())
+                  setLanguage(lang)
                 })
                 setPasswordOld('')
               }
@@ -100,9 +82,7 @@ const LanguageEdit = ({ user, language, setLanguage, options, getKeyByValue }: P
     <>
       {user ? (
         <>
-          <h2>
-            {titleEdit} {ELanguageTitle[language].toLowerCase()}
-          </h2>
+          <h2>{EEditLanguagePreference[language]}</h2>
 
           <form onSubmit={handleUserSubmit} className={styles['edit-user']}>
             <Select
@@ -113,15 +93,15 @@ const LanguageEdit = ({ user, language, setLanguage, options, getKeyByValue }: P
               hide
               options={options(ELanguages)}
               value={
-                language
+                lang
                   ? ({
-                      value: language,
-                      label: getKeyByValue(ELanguages, language),
+                      value: lang,
+                      label: getKeyByValue(ELanguages, lang),
                     } as SelectOption)
                   : undefined
               }
               onChange={(o) => {
-                setLanguage(o?.value as ELanguages)
+                setLang(o?.value as ELanguages)
               }}
             />
             <div className='input-wrap'>

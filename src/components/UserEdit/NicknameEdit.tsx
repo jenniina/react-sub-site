@@ -17,6 +17,7 @@ import { updateUser } from '../../reducers/usersReducer'
 import { AxiosError } from 'axios'
 import Notification from '../Notification/Notification'
 import styles from './css/edit.module.css'
+import { EEditPreferredNickname } from './interfaces'
 
 interface Props {
   language: ELanguages
@@ -82,9 +83,7 @@ const NicknameEdit = ({ user, language }: Props) => {
     <>
       {user ? (
         <>
-          <h2>
-            {titleEdit} {titleNickname.toLowerCase()}
-          </h2>
+          <h2>{EEditPreferredNickname[language]}</h2>
           <p className={styles.p}>
             {ECurrentNickname[language]}: <strong>{user?.name}</strong>
           </p>
