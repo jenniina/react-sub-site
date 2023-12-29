@@ -173,7 +173,7 @@ button.togglemenu[aria-expanded='true'] .menupath {
   transform: translateX(110%);
   overflow-y: auto;
   max-height: calc(98vh - var(--scrollbar_width) - var(--height));
-  min-height: 13em;
+  min-height: 15em;
   max-width: 16em;
 }
 .light .toolbar {
