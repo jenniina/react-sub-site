@@ -5,6 +5,7 @@ export enum EResetButtonOnTheLowerRightCornerResetsTheInteractiveElements {
   de = 'Die Schaltfläche Zurücksetzen in der unteren rechten Ecke setzt die interaktiven Elemente zurück',
   pt = 'O botão de redefinição no canto inferior direito redefine os elementos interativos',
   cs = 'Tlačítko Reset v pravém dolním rohu vynuluje interaktivní prvky',
+  fi = 'Nollaa-painike oikeassa alakulmassa nollaa interaktiiviset elementit',
 }
 //Press Escape to skip to reset button
 export enum EPressEscapeToSkipToResetButton {
@@ -14,6 +15,7 @@ export enum EPressEscapeToSkipToResetButton {
   de = 'Drücken Sie Escape, um zur Schaltfläche Zurücksetzen zu springen',
   pt = 'Pressione Escape para pular para o botão de redefinição',
   cs = 'Stisknutím klávesy Escape přejdete na tlačítko Reset',
+  fi = 'Paina Escape ohittaaksesi nollauspainikkeen',
 }
 export enum EReactApps {
   en = 'React Apps',
@@ -22,6 +24,7 @@ export enum EReactApps {
   de = 'React Apps',
   pt = 'Aplicativos React',
   cs = 'React Apps',
+  fi = 'React-sovellukset',
 }
 // In the Portfolio section
 export enum EInThePortfolioSection {
@@ -31,6 +34,7 @@ export enum EInThePortfolioSection {
   de = 'Im Portfolio-Bereich',
   pt = 'Na seção de portfólio',
   cs = 'V sekci Portfolio',
+  fi = 'Portfoliossa',
 }
 //Fetches questions from an API
 export enum EFetchesQuestionsFromAnAPI {
@@ -40,6 +44,7 @@ export enum EFetchesQuestionsFromAnAPI {
   de = 'Ruft Fragen von einer API ab',
   pt = 'Busca perguntas de uma API',
   cs = 'Načte otázky z API',
+  fi = 'Hakee kysymyksiä API:sta',
 }
 //Uses Mongo-DB to store the information, when logged in
 export enum EUsesMongoDBToStoreTheInformationWhenLoggedIn {
@@ -49,6 +54,7 @@ export enum EUsesMongoDBToStoreTheInformationWhenLoggedIn {
   de = 'Verwendet Mongo-DB, um die Informationen zu speichern, wenn Sie angemeldet sind',
   pt = 'Usa o Mongo-DB para armazenar as informações, quando conectado',
   cs = 'Při přihlášení používá Mongo-DB k uložení informací',
+  fi = 'Käyttää Mongo-DB:tä tallentaakseen tiedot sisäänkirjautuessaan',
 }
 //Fetches jokes from an API
 export enum EFetchesJokesFromAnAPI {
@@ -58,6 +64,7 @@ export enum EFetchesJokesFromAnAPI {
   de = 'Ruft Witze von einer API ab',
   pt = 'Busca piadas de uma API',
   cs = 'Načte vtipy z API',
+  fi = 'Hakee vitsejä API:sta',
 }
 //Customizable options
 export enum ECustomizableOptions {
@@ -67,6 +74,7 @@ export enum ECustomizableOptions {
   de = 'Anpassbare Optionen',
   pt = 'Opções personalizáveis',
   cs = 'Přizpůsobitelné možnosti',
+  fi = 'Mukautettavat vaihtoehdot',
 }
 //Saves latest joke in localStorage and uses Mongo-DB to store the favorite jokes, when logged in.
 export enum ESavesLatestJokeInLocalStorageAndUsesMongoDBToStore {
@@ -76,6 +84,7 @@ export enum ESavesLatestJokeInLocalStorageAndUsesMongoDBToStore {
   de = 'Speichert den neuesten Witz in localStorage und verwendet Mongo-DB, um die Lieblingswitze zu speichern, wenn Sie angemeldet sind.',
   pt = 'Salva a última piada no localStorage e usa o Mongo-DB para armazenar as piadas favoritas, quando conectado.',
   cs = 'Ukládá nejnovější vtip v localStorage a při přihlášení používá Mongo-DB k uložení oblíbených vtipů.',
+  fi = 'Tallentaa uusimman vitsin localStorageen ja käyttää Mongo-DB:tä tallentaakseen suosikkivitsit sisäänkirjautuessaan.',
 }
 //Blob Art App
 export enum EBlobArtApp {
@@ -85,6 +94,7 @@ export enum EBlobArtApp {
   de = 'Blob Art App',
   pt = 'Aplicativo de arte Blob',
   cs = 'Blob Art App',
+  fi = 'Blob Art -sovellus',
 }
 //Add more blobs
 export enum EAddMoreBlobs {
@@ -94,6 +104,7 @@ export enum EAddMoreBlobs {
   de = 'Füge mehr Blobs hinzu',
   pt = 'Adicione mais blobs',
   cs = 'Přidejte více blobů',
+  fi = 'Lisää enemmän möhkäleitä',
 }
 //Remove blobs
 export enum ERemoveBlobs {
@@ -103,6 +114,7 @@ export enum ERemoveBlobs {
   de = 'Blobs entfernen',
   pt = 'Remover blobs',
   cs = 'Odstraňte bloby',
+  fi = 'Poista möhkäleet',
 }
 // Draggable list elements
 export enum EDraggableListElements {
@@ -112,6 +124,7 @@ export enum EDraggableListElements {
   de = 'Ziehbare Listenelemente',
   pt = 'Elementos da lista arrastáveis',
   cs = 'Přesouvatelné prvky seznamu',
+  fi = 'Raahattavat luetteloelementit',
 }
 //Sortable within their container
 export enum ESortableWithinTheirContainer {
@@ -121,6 +134,7 @@ export enum ESortableWithinTheirContainer {
   de = 'Sortierbar innerhalb ihres Containers',
   pt = 'Classificável dentro de seu contêiner',
   cs = 'Tříditelné ve svém kontejneru',
+  fi = 'Lajiteltavissa omassa säiliössään',
 }
 //Can be moved to two other containers
 export enum ECanBeMovedToTwoOtherContainers {
@@ -130,6 +144,7 @@ export enum ECanBeMovedToTwoOtherContainers {
   de = 'Kann in zwei andere Container verschoben werden',
   pt = 'Pode ser movido para outros dois contêineres',
   cs = 'Lze přesunout do dvou dalších kontejnerů',
+  fi = 'Voidaan siirtää kahteen muuhun säiliöön',
 }
 //Keyboard accessible drop-down list
 export enum EKeyboardAccessibleDropDownList {
@@ -139,6 +154,7 @@ export enum EKeyboardAccessibleDropDownList {
   de = 'Tastaturzugängliche Dropdown-Liste',
   pt = 'Lista suspensa acessível por teclado',
   cs = 'Rozbalovací seznam přístupný klávesnicí',
+  fi = 'Näppäimistösaavutettava avattava luettelo',
 }
 // Uses localStorage to store the information
 export enum EUsesLocalStorageToStoreTheInformation {
@@ -148,6 +164,7 @@ export enum EUsesLocalStorageToStoreTheInformation {
   de = 'Verwendet localStorage, um die Informationen zu speichern',
   pt = 'Usa o localStorage para armazenar as informações',
   cs = 'Používá localStorage k uložení informací',
+  fi = 'Käyttää localStoragea tallentaakseen tiedot',
 }
 //See number of unfinished tasks
 export enum ESeeNumberOfUnfinishedTasks {
@@ -157,6 +174,7 @@ export enum ESeeNumberOfUnfinishedTasks {
   de = 'Anzahl der unvollendeten Aufgaben anzeigen',
   pt = 'Veja o número de tarefas inacabadas',
   cs = 'Zobrazit počet nedokončených úkolů',
+  fi = 'Katso keskeneräisten tehtävien määrä',
 }
 //Remove tasks one by one or every finished task at once
 export enum ERemoveTasksOneByOneOrEveryFinishedTaskAtOnce {
@@ -166,6 +184,7 @@ export enum ERemoveTasksOneByOneOrEveryFinishedTaskAtOnce {
   de = 'Entfernen Sie Aufgaben einzeln oder alle auf einmal',
   pt = 'Remova as tarefas uma por uma ou todas as tarefas concluídas de uma só vez',
   cs = 'Odstraňte úkoly jeden po druhém nebo všechny dokončené úkoly najednou',
+  fi = 'Poista tehtävät yksi kerrallaan tai kaikki valmiit tehtävät kerralla',
 }
 //Add tasks to list
 export enum EAddTasksToList {
@@ -175,6 +194,7 @@ export enum EAddTasksToList {
   de = 'Aufgaben zur Liste hinzufügen',
   pt = 'Adicionar tarefas à lista',
   cs = 'Přidat úkoly do seznamu',
+  fi = 'Lisää tehtävät luetteloon',
 }
 //Single select
 export enum ESingleSelect {
@@ -184,6 +204,7 @@ export enum ESingleSelect {
   de = 'Einzelne Auswahl',
   pt = 'Seleção única',
   cs = 'Jediný výběr',
+  fi = 'Yksittäinen valinta',
 }
 //Multiple select
 export enum EMultipleSelect {
@@ -193,6 +214,7 @@ export enum EMultipleSelect {
   de = 'Mehrfachauswahl',
   pt = 'Seleção múltipla',
   cs = 'Více výběrů',
+  fi = 'Monivalinta',
 }
 //Navigate with arrow keys
 export enum ENavigateWithArrowKeys {
@@ -202,6 +224,7 @@ export enum ENavigateWithArrowKeys {
   de = 'Navigieren Sie mit den Pfeiltasten',
   pt = 'Navegue com as teclas de seta',
   cs = 'Navigujte pomocí šipek',
+  fi = 'Navigoi nuolinäppäimillä',
 }
 //Go to item by typing the first few letters of the item
 export enum EGoToItemByTypingTheFirstFewLettersOfTheItem {
@@ -211,6 +234,7 @@ export enum EGoToItemByTypingTheFirstFewLettersOfTheItem {
   de = 'Gehen Sie zu einem Element, indem Sie die ersten Buchstaben des Elements eingeben',
   pt = 'Vá para o item digitando as primeiras letras do item',
   cs = 'Přejděte na položku zadáním prvních písmen položky',
+  fi = 'Siirry kohteeseen kirjoittamalla kohteen ensimmäiset kirjaimet',
 }
 //Three step fully functional contact form
 export enum EThreeStepFullyFunctionalContactForm {
@@ -220,15 +244,17 @@ export enum EThreeStepFullyFunctionalContactForm {
   de = 'Dreistufiges voll funktionsfähiges Kontaktformular',
   pt = 'Formulário de contato totalmente funcional em três etapas',
   cs = 'Třístupňový plně funkční kontaktní formulář',
+  fi = 'Kolmivaiheinen yhteydenottolomake',
 }
 //Uses a node backend to send the message
 export enum EUsesANodeBackendToSendTheMessage {
   en = 'Uses a node backend to send the message',
-  es = 'Utiliza un backend de nodo para enviar el mensaje',
-  fr = 'Utilise un backend de nœud pour envoyer le message',
+  es = 'Utiliza un backend de node para enviar el mensaje',
+  fr = 'Utilise un backend de Node pour envoyer le message',
   de = 'Verwendet ein Node-Backend, um die Nachricht zu senden',
-  pt = 'Usa um backend de nó para enviar a mensagem',
+  pt = 'Usa um backend de Node para enviar a mensagem',
   cs = 'Používá node backend k odeslání zprávy',
+  fi = 'Käyttää Node-taustaa viestin lähettämiseen',
 }
 //Other features
 export enum EOtherFeatures {
@@ -238,6 +264,7 @@ export enum EOtherFeatures {
   de = 'Andere Eigenschaften',
   pt = 'Outras características',
   cs = 'Další funkce',
+  fi = 'Muut ominaisuudet',
 }
 //Page transition animation
 export enum EPageTransitionAnimation {
@@ -247,6 +274,7 @@ export enum EPageTransitionAnimation {
   de = 'Seitenübergangsanimation',
   pt = 'Animação de transição de página',
   cs = 'Animace přechodu stránky',
+  fi = 'Sivun siirtymäanimaatio',
 }
 // Wave animation at the main heading
 export enum EWaveAnimationAtTheMainHeading {
@@ -256,6 +284,7 @@ export enum EWaveAnimationAtTheMainHeading {
   de = 'Wellenanimation in der Hauptüberschrift',
   pt = 'Animação de onda no título principal',
   cs = 'Vlnová animace v hlavním nadpisu',
+  fi = 'Aaltoanimaatio pääotsikossa',
 }
 //Back to top button at the lower right corner and at the footer
 export enum EBackToTopButtonAtTheLowerRightCornerAndAtTheFooter {
@@ -265,6 +294,7 @@ export enum EBackToTopButtonAtTheLowerRightCornerAndAtTheFooter {
   de = 'Zurück zum oberen Button in der unteren rechten Ecke und in der Fußzeile',
   pt = 'Botão de volta ao topo no canto inferior direito e no rodapé',
   cs = 'Tlačítko Zpět na horním pravém rohu a v zápatí',
+  fi = 'Takaisin ylös -painike oikeassa alakulmassa ja alatunnisteessa',
 }
 //Exit links at the top and bottom of the pages to go back to the main jenniina.fi site
 export enum EExitLinksAtTheTopAndBottomOfThePages {
@@ -274,6 +304,7 @@ export enum EExitLinksAtTheTopAndBottomOfThePages {
   de = 'Exit-Links oben und unten auf den Seiten, um zur Hauptseite jenniina.fi zurückzukehren',
   pt = 'Links de saída na parte superior e inferior das páginas para voltar ao site principal jenniina.fi',
   cs = 'Odkazy na výstupu na horní a dolní části stránek, abyste se vrátili na hlavní stránku jenniina.fi',
+  fi = 'Poistumislinkit sivujen ylä- ja alareunassa palataksesi pääsivulle jenniina.fi',
 }
 //Site Colors
 export enum ESiteColors {
@@ -283,6 +314,7 @@ export enum ESiteColors {
   de = 'Website-Farben',
   pt = 'Cores do site',
   cs = 'Barvy webu',
+  fi = 'Sivuston värit',
 }
 // The site colors' lightnesses switch in light mode, wherein var(--color-primary-1) becomes the lightest color instead of the darkest.
 export enum ETheSiteColorsLightnessesSwitchInLightMode {
@@ -292,6 +324,7 @@ export enum ETheSiteColorsLightnessesSwitchInLightMode {
   de = 'Die Helligkeiten der Website-Farben wechseln im hellen Modus, wobei var(--color-primary-1) anstelle der dunkelsten Farbe zur hellsten Farbe wird.',
   pt = 'As luminosidades das cores do site mudam no modo claro, em que var(--color-primary-1) se torna a cor mais clara em vez da mais escura.',
   cs = 'Světelnost barvy webu se přepne do světlého režimu, kde var (-- color-primary-1) se stane nejsvětlejší barvou místo nejtmavší.',
+  fi = 'Sivuston värit vaihtuvat valomoodissa, jossa var(--color-primary-1) muuttuu vaaleimmaksi väriksi tummimman sijaan.',
 }
 // Animated clip-paths and text rotation on hover, with dynamic delay
 export enum EAnimatedClipPathsAndTextRotationOnHoverWithDynamicDelay {
@@ -301,6 +334,7 @@ export enum EAnimatedClipPathsAndTextRotationOnHoverWithDynamicDelay {
   de = 'Animierte Clip-Pfade und Textrotation bei Hover mit dynamischer Verzögerung',
   pt = 'Clip-paths animados e rotação de texto ao pairar, com atraso dinâmico',
   cs = 'Animované klipy a rotace textu při najetí myší s dynamickým zpožděním',
+  fi = 'Animoituja leikepolkuja ja tekstin pyörimistä leijumalla, dynaamisella viiveellä',
 }
 // Please note that the author (Jenniina Laine) speaks only English and Finnish, so please use one of these languages when contacting.
 export enum EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo {
@@ -310,6 +344,7 @@ export enum EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo {
   de = 'Bitte beachten Sie, dass die Autorin (Jenniina Laine) nur Englisch und Finnisch spricht. Bitte verwenden Sie daher eine dieser Sprachen, wenn Sie Kontakt aufnehmen.',
   pt = 'Observe que o autor (Jenniina Laine) fala apenas inglês e finlandês, portanto, use um desses idiomas ao entrar em contato.',
   cs = 'Všimněte si, že autor (Jenniina Laine) mluví pouze anglicky a finsky, takže při kontaktování použijte jeden z těchto jazyků.',
+  fi = 'Huomaa, että kirjoittaja (Jenniina Laine) puhuu vain englantia ja suomea, joten pyydän käyttämään yhteydenottoon jotakin näistä kielistä.',
 }
 // The translations are done with the help of Github Copilot, so they may not be perfect.
 export enum ETheTranslationsAreDoneWithTheHelpOfGithubCopilotSo {
@@ -319,6 +354,7 @@ export enum ETheTranslationsAreDoneWithTheHelpOfGithubCopilotSo {
   de = 'Die Übersetzungen werden mit Hilfe von Github Copilot durchgeführt, daher sind sie möglicherweise nicht perfekt.',
   pt = 'As traduções são feitas com a ajuda do Github Copilot, portanto, podem não ser perfeitas.',
   cs = 'Překlady jsou prováděny s pomocí Github Copilot, takže nemusí být perfektní.',
+  fi = 'Käännökset on tehty Github Copilotin avulla, joten ne eivät ehkä ole täydellisiä.',
 }
 //React Github Repository
 export enum EReactGithubRepository {
@@ -328,6 +364,7 @@ export enum EReactGithubRepository {
   de = 'React Github Repository',
   pt = 'Repositório Github React',
   cs = 'React Github Repository',
+  fi = 'React Github -repositorio',
 }
 //Node Github Repository
 export enum ENodeGithubRepository {
@@ -337,12 +374,14 @@ export enum ENodeGithubRepository {
   de = 'Node Github Repository',
   pt = 'Repositório Github Node',
   cs = 'Node Github Repository',
+  fi = 'Node Github -repositorio',
 }
 export enum ETheSiteIsTranslatedToSixLanguagesWhichWere {
-  en = "The site is translated to six languages, which were chosen based on JokeAPI's supported languages, from which the translation idea came from.",
-  es = 'El sitio está traducido a seis idiomas, que fueron elegidos en función de los idiomas admitidos por JokeAPI, de donde provino la idea de la traducción.',
-  fr = 'Le site est traduit en six langues, qui ont été choisies en fonction des langues prises en charge par JokeAPI, d où est venue l idée de la traduction.',
-  de = 'Die Website ist in sechs Sprachen übersetzt, die auf den unterstützten Sprachen von JokeAPI basieren, von denen die Übersetzungsidee stammt.',
-  pt = 'O site é traduzido para seis idiomas, que foram escolhidos com base nos idiomas suportados pelo JokeAPI, de onde veio a ideia de tradução.',
-  cs = 'Stránka je přeložena do šesti jazyků, které byly vybrány na základě podporovaných jazyků JokeAPI, ze kterých pochází myšlenka překladu.',
+  en = "The site is translated to six languages, which were chosen based on JokeAPI's supported languages, from which the translation idea came from. Additionally, in Finnish",
+  es = 'El sitio está traducido a seis idiomas, que fueron elegidos en función de los idiomas admitidos por JokeAPI, de donde provino la idea de la traducción. Además, en finlandés',
+  fr = 'Le site est traduit en six langues, qui ont été choisies en fonction des langues prises en charge par JokeAPI, d où est venue l idée de la traduction. De plus, en finnois',
+  de = 'Die Website ist in sechs Sprachen übersetzt, die auf den unterstützten Sprachen von JokeAPI basieren, von denen die Übersetzungsidee stammt. Zusätzlich auf Finnisch',
+  pt = 'O site é traduzido para seis idiomas, que foram escolhidos com base nos idiomas suportados pelo JokeAPI, de onde veio a ideia de tradução. Além disso, em finlandês',
+  cs = 'Stránka je přeložena do šesti jazyků, které byly vybrány na základě podporovaných jazyků JokeAPI, ze kterých pochází myšlenka překladu. Kromě toho ve finštině',
+  fi = 'Sivusto on käännetty kuuteen kieleen, jotka valittiin JokeAPI:n tuettujen kielten perusteella, josta käännösidea tuli. Lisäksi suomeksi',
 }

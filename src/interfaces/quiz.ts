@@ -5,8 +5,8 @@ export enum EInstructions {
   de = 'Anleitung',
   pt = 'Instruções',
   cs = 'Instrukce',
+  fi = 'Ohjeet',
 }
-//Quiz questions (15) are fetched from
 export enum EQuizQuestions15AreFetchedFrom {
   en = 'Quiz questions (15) are fetched from',
   es = 'Las preguntas del cuestionario (15) se obtienen de',
@@ -14,8 +14,8 @@ export enum EQuizQuestions15AreFetchedFrom {
   de = 'Quizfragen (15) werden von',
   pt = 'As perguntas do quiz (15) são buscadas em',
   cs = 'Otázky kvízu (15) jsou načteny z',
+  fi = 'Kyselykysymykset (15) haetaan',
 }
-//Questions are in English
 export enum EQuestionsAreInEnglish {
   en = 'Questions are in English',
   es = 'Las preguntas están en inglés',
@@ -23,6 +23,7 @@ export enum EQuestionsAreInEnglish {
   de = 'Fragen sind auf Englisch',
   pt = 'As perguntas estão em inglês',
   cs = 'Otázky jsou v angličtině',
+  fi = 'Kysymykset ovat englanniksi',
 }
 // User can choose the difficulty level (easy, medium, hard)
 export enum EUserCanChooseTheDifficultyLevel {
@@ -32,6 +33,7 @@ export enum EUserCanChooseTheDifficultyLevel {
   de = 'Der Benutzer kann den Schwierigkeitsgrad (einfach, mittel, schwer) wählen',
   pt = 'O usuário pode escolher o nível de dificuldade (fácil, médio, difícil)',
   cs = 'Uživatel si může vybrat obtížnost (snadná, střední, těžká)',
+  fi = 'Käyttäjä voi valita vaikeustason (helppo, keskitaso, vaikea)',
 }
 //User can register and login to save highscores to a MongoDB database (password is hashed)
 export enum EUserCanRegisterAndLoginToSaveHighscores {
@@ -41,6 +43,7 @@ export enum EUserCanRegisterAndLoginToSaveHighscores {
   de = 'Der Benutzer kann sich registrieren und anmelden, um Highscores in einer MongoDB-Datenbank zu speichern (das Passwort ist gehasht)',
   pt = 'O usuário pode se registrar e fazer login para salvar as pontuações mais altas em um banco de dados MongoDB (a senha é criptografada)',
   cs = 'Uživatel se může zaregistrovat a přihlásit se, aby uložil nejlepší skóre do databáze MongoDB (heslo je zahashováno)',
+  fi = 'Käyttäjä voi rekisteröityä ja kirjautua sisään tallentaakseen huipputulokset MongoDB-tietokantaan (salasana on salattu)',
 }
 //Test your general knowledge with these 15 questions (in English)
 export enum ETestYourGeneralKnowledgeWithThese15Questions {
@@ -50,6 +53,7 @@ export enum ETestYourGeneralKnowledgeWithThese15Questions {
   de = 'Testen Sie Ihr Allgemeinwissen mit diesen 15 Fragen (auf Englisch)',
   pt = 'Teste seus conhecimentos gerais com estas 15 perguntas (em inglês)',
   cs = 'Otestujte své všeobecné znalosti pomocí těchto 15 otázek (v angličtině)',
+  fi = 'Testaa yleistä tietämystäsi näillä 15 kysymyksellä (englanniksi)',
 }
 //Choose difficulty
 export enum EChooseDifficulty {
@@ -59,6 +63,7 @@ export enum EChooseDifficulty {
   de = 'Schwierigkeitsgrad wählen',
   pt = 'Escolha a dificuldade',
   cs = 'Vyberte obtížnost',
+  fi = 'Valitse vaikeustaso',
 }
 export enum EEasy {
   en = 'Easy',
@@ -67,6 +72,7 @@ export enum EEasy {
   de = 'Leicht',
   pt = 'Fácil',
   cs = 'Snadné',
+  fi = 'Helppo',
 }
 export enum EMedium {
   en = 'Medium',
@@ -75,6 +81,7 @@ export enum EMedium {
   de = 'Mittel',
   pt = 'Médio',
   cs = 'Střední',
+  fi = 'Keskitaso',
 }
 export enum EHard {
   en = 'Hard',
@@ -83,6 +90,7 @@ export enum EHard {
   de = 'Schwer',
   pt = 'Difícil',
   cs = 'Těžký',
+  fi = 'Vaikea',
 }
 //Log in to save score
 export enum ELogInToSaveScore {
@@ -92,6 +100,7 @@ export enum ELogInToSaveScore {
   de = 'Melden Sie sich an, um den Score zu speichern',
   pt = 'Faça login para salvar a pontuação',
   cs = 'Přihlaste se, abyste uložili skóre',
+  fi = 'Kirjaudu sisään tallentaaksesi tulokset',
 }
 export enum ENewHighscore {
   en = 'New Highscore!',
@@ -100,6 +109,7 @@ export enum ENewHighscore {
   de = 'Neuer Highscore!',
   pt = 'Novo recorde!',
   cs = 'Nové nejlepší skóre!',
+  fi = 'Uusi huipputulos!',
 }
 export enum EPerfect {
   en = 'Perfect!',
@@ -108,6 +118,7 @@ export enum EPerfect {
   de = 'Perfekt!',
   pt = 'Perfeito!',
   cs = 'Dokonalý!',
+  fi = 'Täydellinen!',
 }
 export enum EExcellent {
   en = 'Excellent!',
@@ -116,6 +127,7 @@ export enum EExcellent {
   de = 'Ausgezeichnet!',
   pt = 'Excelente!',
   cs = 'Vynikající!',
+  fi = 'Erinomainen!',
 }
 export enum EGoodJob {
   en = 'Good job!',
@@ -124,6 +136,7 @@ export enum EGoodJob {
   de = 'Gute Arbeit!',
   pt = 'Bom trabalho!',
   cs = 'Dobrá práce!',
+  fi = 'Hyvin tehty!',
 }
 export enum EBadLuck {
   en = 'Bad luck!',
@@ -132,6 +145,7 @@ export enum EBadLuck {
   de = 'Pech!',
   pt = 'Má sorte!',
   cs = 'Smůla!',
+  fi = 'Huono onni!',
 }
 // Faster than before!
 export enum EFasterThanBefore {
@@ -141,6 +155,7 @@ export enum EFasterThanBefore {
   de = 'Schneller als zuvor!',
   pt = 'Mais rápido que antes!',
   cs = 'Rychleji než dříve!',
+  fi = 'Nopeampi kuin aiemmin!',
 }
 //You scored _ out of 300 points
 export enum EYouScored {
@@ -150,6 +165,7 @@ export enum EYouScored {
   de = 'Sie haben',
   pt = 'Você marcou',
   cs = 'Dosáhli jste',
+  fi = 'Sait',
 }
 export enum EOutOf300Points {
   en = 'out of 300 points',
@@ -158,6 +174,7 @@ export enum EOutOf300Points {
   de = 'von 300 Punkten',
   pt = 'de 300 pontos',
   cs = 'z 300 bodů',
+  fi = '300 pisteestä',
 }
 export enum EDifficulty {
   en = 'Difficulty',
@@ -166,6 +183,7 @@ export enum EDifficulty {
   de = 'Schwierigkeit',
   pt = 'Dificuldade',
   cs = 'Obtížnost',
+  fi = 'Vaikeustaso',
 }
 export enum ESpeed {
   en = 'Speed',
@@ -174,6 +192,7 @@ export enum ESpeed {
   de = 'Geschwindigkeit',
   pt = 'Velocidade',
   cs = 'Rychlost',
+  fi = 'Nopeus',
 }
 export enum ENA {
   en = 'N/A',
@@ -182,6 +201,7 @@ export enum ENA {
   de = 'N/A',
   pt = 'N/D',
   cs = 'N/A',
+  fi = 'N/A',
 }
 export enum EHighscore {
   en = 'Highscore',
@@ -190,6 +210,7 @@ export enum EHighscore {
   de = 'Highscore',
   pt = 'Pontuação mais alta',
   cs = 'Nejlepší skóre',
+  fi = 'Huipputulos',
 }
 // points
 export enum EPoints {
@@ -199,6 +220,7 @@ export enum EPoints {
   de = 'Punkte',
   pt = 'pontos',
   cs = 'bodů',
+  fi = 'pistettä',
 }
 //Quiz Menu
 export enum EBackToMenu {
@@ -208,6 +230,7 @@ export enum EBackToMenu {
   de = 'Zurück zum Menü',
   pt = 'Voltar ao Menu',
   cs = 'Zpět do Menu',
+  fi = 'Takaisin valikkoon',
 }
 //Try again
 export enum ETryAgain {
@@ -217,6 +240,7 @@ export enum ETryAgain {
   de = 'Versuchen Sie es erneut',
   pt = 'Tente novamente',
   cs = 'Zkus to znovu',
+  fi = 'Yritä uudelleen',
 }
 //'Error fetching questions'
 export enum EErrorFetchingQuestions {
@@ -226,6 +250,7 @@ export enum EErrorFetchingQuestions {
   de = 'Fehler beim Abrufen von Fragen',
   pt = 'Erro ao buscar perguntas',
   cs = 'Chyba při načítání otázek',
+  fi = 'Tapahtui virhe kysymysten noutamisessa',
 }
 //Quiz in progress
 export enum EQuizInProgress {
@@ -235,6 +260,7 @@ export enum EQuizInProgress {
   de = 'Quiz in Bearbeitung',
   pt = 'Questionário em andamento',
   cs = 'Kvíz v průběhu',
+  fi = 'Kisa käynnissä',
 }
 export enum EFinish {
   en = 'Finish',
@@ -243,6 +269,7 @@ export enum EFinish {
   de = 'Beenden',
   pt = 'Terminar',
   cs = 'Dokončit',
+  fi = 'Valmis',
 }
 export enum EYourHighscores {
   en = 'Your Highscores',
@@ -251,6 +278,7 @@ export enum EYourHighscores {
   de = 'Deine Highscores',
   pt = 'Suas pontuações mais altas',
   cs = 'Vaše nejlepší skóre',
+  fi = 'Parhaat tuloksesi',
 }
 export enum EScore {
   en = 'Score',
@@ -259,6 +287,7 @@ export enum EScore {
   de = 'Punktzahl',
   pt = 'Pontuação',
   cs = 'Skóre',
+  fi = 'Tulos',
 }
 export enum EQuestion {
   en = 'Question',
@@ -267,6 +296,7 @@ export enum EQuestion {
   de = 'Frage',
   pt = 'Pergunta',
   cs = 'Otázka',
+  fi = 'Kysymys',
 }
 //Loading questions...
 export enum ELoadingQuestions {
@@ -276,4 +306,5 @@ export enum ELoadingQuestions {
   de = 'Fragen werden geladen...',
   pt = 'Carregando perguntas...',
   cs = 'Načítání otázek...',
+  fi = 'Ladataan kysymyksiä...',
 }

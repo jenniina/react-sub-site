@@ -54,7 +54,14 @@ export enum EFlags_cs {
   sexist = 'sexistický',
   explicit = 'explicitní',
 }
-
+export enum EFlags_fi {
+  nsfw = 'NSFW',
+  religious = 'uskonnollinen',
+  political = 'poliittinen',
+  racist = 'rasistinen',
+  sexist = 'seksistinen',
+  explicit = 'tuhma',
+}
 export type TFlagsLanguages = {
   en: EFlags_en
   es: EFlags_es
@@ -62,6 +69,7 @@ export type TFlagsLanguages = {
   de: EFlags_de
   pt: EFlags_pt
   cs: EFlags_cs
+  fi: EFlags_fi
 }
 
 export interface IFlagsLanguages {
@@ -71,6 +79,7 @@ export interface IFlagsLanguages {
   de: typeof EFlags_de
   pt: typeof EFlags_pt
   cs: typeof EFlags_cs
+  fi: typeof EFlags_fi
 }
 
 export type EFlags = TFlagsLanguages[keyof TFlagsLanguages]
@@ -124,6 +133,14 @@ export const FlagsLanguage: IFlagsLanguages = {
     sexist: EFlags_cs.sexist,
     explicit: EFlags_cs.explicit,
   },
+  fi: {
+    nsfw: EFlags_fi.nsfw,
+    religious: EFlags_fi.religious,
+    political: EFlags_fi.political,
+    racist: EFlags_fi.racist,
+    sexist: EFlags_fi.sexist,
+    explicit: EFlags_fi.explicit,
+  },
 }
 
 export enum EAddWarningTitle {
@@ -133,6 +150,7 @@ export enum EAddWarningTitle {
   de = 'Warnung hinzufügen',
   pt = 'Adicionar aviso',
   cs = 'Přidat varování',
+  fi = 'Lisää varoitus',
 }
 
 export enum ECategory_en {
@@ -229,6 +247,7 @@ export type CategoryByLanguages = {
   de: ECategory_de
   pt: ECategory_pt
   cs: ECategory_cs
+  fi: ECategory_fi
 }
 export type ECategory = CategoryByLanguages[keyof CategoryByLanguages]
 export interface IJokeCategoryByLanguage {
@@ -238,6 +257,7 @@ export interface IJokeCategoryByLanguage {
   de: typeof ECategory_de
   pt: typeof ECategory_pt
   cs: typeof ECategory_cs
+  fi: typeof ECategory_fi
 }
 
 export enum ETheComediansCompanion {
@@ -247,6 +267,7 @@ export enum ETheComediansCompanion {
   de = 'Der Begleiter des Komikers',
   pt = 'O Companheiro do Comediante',
   cs = 'Společník komika',
+  fi = 'Koomikon Kumppani',
 }
 export enum EFindAJoke {
   en = 'Find a joke',
@@ -255,6 +276,7 @@ export enum EFindAJoke {
   de = 'Finde einen Witz',
   pt = 'Encontre uma piada',
   cs = 'Najít vtip',
+  fi = 'Etsi vitsi',
 }
 export enum EAJokeGeneratorForTheComicallyInclined {
   en = 'A Joke Generator for the Comically Inclined',
@@ -263,15 +285,8 @@ export enum EAJokeGeneratorForTheComicallyInclined {
   de = 'Ein Witzgenerator für die komisch geneigten',
   pt = 'Um gerador de piadas para os comicamente inclinados',
   cs = 'Generátor vtipů pro komicky nakloněné',
+  fi = 'Vitsigeneraattori huumoriin taipuvaisille',
 }
-// export enum ESubmit {
-//   en = 'Generate a Joke',
-//   cs = 'Vygenerovat vtip',
-//   de = 'Einen Witz generieren',
-//   es = 'Generar un chiste',
-//   fr = 'Générer une blague',
-//   pt = 'Gerar uma piada',
-// }
 export enum ESaveJoke {
   en = 'Save Joke',
   es = 'Guardar chiste',
@@ -279,6 +294,7 @@ export enum ESaveJoke {
   de = 'Witz speichern',
   pt = 'Salvar piada',
   cs = 'Uložit vtip',
+  fi = 'Tallenna vitsi',
 }
 
 export enum ESavedJoke {
@@ -288,6 +304,7 @@ export enum ESavedJoke {
   de = 'Gespeicherter Witz',
   pt = 'Piada salva',
   cs = 'Uložený vtip',
+  fi = 'Tallennettu vitsi',
 }
 //Your Saved Jokes
 export enum EYourSavedJokes {
@@ -297,6 +314,7 @@ export enum EYourSavedJokes {
   de = 'Ihre gespeicherten Witze',
   pt = 'Suas piadas salvas',
   cs = 'Vaše uložené vtipy',
+  fi = 'Tallennetut vitsit',
 }
 
 export enum EJokeAlreadySaved {
@@ -306,6 +324,7 @@ export enum EJokeAlreadySaved {
   de = 'Witz bereits gespeichert',
   pt = 'Piada já salva',
   cs = 'Vtip již uložen',
+  fi = 'Vitsi on jo tallennettu',
 }
 export enum ECategoryTitle {
   en = 'Category',
@@ -314,6 +333,7 @@ export enum ECategoryTitle {
   de = 'Kategorie',
   pt = 'Categoria',
   cs = 'Kategorie',
+  fi = 'Kategoria',
 }
 export enum ESelectACategory {
   en = 'Select a category',
@@ -322,6 +342,7 @@ export enum ESelectACategory {
   de = 'Wählen Sie eine Kategorie',
   pt = 'Selecione uma categoria',
   cs = 'Vyberte kategorii',
+  fi = 'Valitse kategoria',
 }
 export enum ESelectExtraCategories {
   en = 'Extra Categories',
@@ -330,6 +351,7 @@ export enum ESelectExtraCategories {
   de = 'Zusätzliche Kategorien',
   pt = 'Categorias extras',
   cs = 'Další kategorie',
+  fi = 'Lisäkategoriat',
 }
 export enum ESelectALanguage {
   en = 'Select a language',
@@ -338,6 +360,7 @@ export enum ESelectALanguage {
   de = 'Wählen Sie eine Sprache',
   pt = 'Selecione um idioma',
   cs = 'Vyberte jazyk',
+  fi = 'Valitse kieli',
 }
 export enum ESafeTitle {
   en = 'Safe',
@@ -346,6 +369,7 @@ export enum ESafeTitle {
   de = 'Sicher',
   pt = 'Seguro',
   cs = 'Bezpečné',
+  fi = 'Turvallinen',
 }
 export enum EUnsafeTitle {
   en = 'Unsafe',
@@ -354,6 +378,7 @@ export enum EUnsafeTitle {
   de = 'Unsicher',
   pt = 'Inseguro',
   cs = 'Nebezpečné',
+  fi = 'Turvaton',
 }
 export enum EJoke {
   en = 'Joke',
@@ -362,6 +387,7 @@ export enum EJoke {
   de = 'Witz',
   pt = 'Piada',
   cs = 'Vtip',
+  fi = 'Vitsi',
 }
 export enum EJokes {
   en = 'Jokes',
@@ -370,6 +396,7 @@ export enum EJokes {
   de = 'Witze',
   pt = 'Piadas',
   cs = 'Vtipy',
+  fi = 'Vitsit',
 }
 export enum EDelete {
   en = 'Delete',
@@ -378,6 +405,7 @@ export enum EDelete {
   de = 'Löschen',
   pt = 'Excluir',
   cs = 'Odstranit',
+  fi = 'Poista',
 }
 
 export enum EClickToReveal {
@@ -387,6 +415,7 @@ export enum EClickToReveal {
   de = 'Klicken Sie zum Enthüllen',
   pt = 'Clique para revelar',
   cs = 'Kliknutím zobrazíte',
+  fi = 'Napsauta paljastaaksesi',
 }
 
 export enum EClickHereToSeeFeatures {
@@ -396,6 +425,7 @@ export enum EClickHereToSeeFeatures {
   es = 'Haga clic aquí para ver las funciones',
   fr = 'Cliquez ici pour voir les fonctionnalités',
   pt = 'Clique aqui para ver os recursos',
+  fi = 'Napsauta tätä nähdäksesi eri ominaisuudet',
 }
 
 export enum ESortByTitle {
@@ -405,11 +435,12 @@ export enum ESortByTitle {
   de = 'Sortieren nach',
   pt = 'Ordenar por',
   cs = 'Seřadit podle',
+  fi = 'Lajittele',
 }
 export const SortBy = {
   language: ELanguageTitle,
   category: ECategoryTitle,
-  jokeId: { en: 'ID', es: 'ID', fr: 'ID', de: 'ID', pt: 'ID', cs: 'ID' },
+  jokeId: { en: 'ID', es: 'ID', fr: 'ID', de: 'ID', pt: 'ID', cs: 'ID', fi: 'ID' },
 }
 export enum ESubmitAJoke {
   en = 'Submit a Joke',
@@ -418,6 +449,7 @@ export enum ESubmitAJoke {
   de = 'Einen Witz einreichen',
   pt = 'Enviar uma piada',
   cs = 'Odeslat vtip',
+  fi = 'Tallenna vitsi',
 }
 
 export enum ESubmitAJokeTo {
@@ -427,6 +459,7 @@ export enum ESubmitAJokeTo {
   de = 'Einen Witz senden an ',
   pt = 'Enviar uma piada para ',
   cs = 'Odeslat vtip do ',
+  fi = 'Lähetä vitsi kohteeseen ',
 }
 
 export enum EJokeSetup {
@@ -436,14 +469,16 @@ export enum EJokeSetup {
   de = 'Einrichtung',
   pt = 'Configuração',
   cs = 'Nastavení',
+  fi = 'Asetus',
 }
 export enum EJokeDelivery {
-  en = 'Delivery',
-  es = 'Entrega',
-  fr = 'Livraison',
-  de = 'Lieferung',
-  pt = 'Entrega',
-  cs = 'Dodání',
+  en = 'Punchline',
+  es = 'Remate',
+  fr = 'Pointe',
+  de = 'Pointe',
+  pt = 'Punchline',
+  cs = 'Pointe',
+  fi = 'Punchline',
 }
 
 export enum ESingle {
@@ -453,6 +488,7 @@ export enum ESingle {
   de = 'Single',
   pt = 'Solteiro',
   cs = 'Single',
+  fi = 'Yksiosainen',
 }
 export enum ETwoPart {
   en = 'Two-Part',
@@ -461,6 +497,7 @@ export enum ETwoPart {
   de = 'Zweiteilig',
   pt = 'Duas partes',
   cs = 'Dvoudílný',
+  fi = 'Kaksiosainen',
 }
 export enum EJokeType {
   single = 'single',
@@ -477,6 +514,7 @@ export enum ESafemodeTitle {
   de = 'Sicherer Modus',
   pt = 'Modo seguro',
   cs = 'Bezpečný režim',
+  fi = 'Turvallinen',
 }
 export enum ESearchByKeyword {
   en = 'Search by keyword',
@@ -485,6 +523,7 @@ export enum ESearchByKeyword {
   de = 'Suche nach Schlüsselwort',
   pt = 'Pesquisar por palavra-chave',
   cs = 'Hledat podle klíčového slova',
+  fi = 'Hae avainsanalla',
 }
 
 export enum EKeyword {
@@ -494,6 +533,7 @@ export enum EKeyword {
   de = 'Stichwort',
   pt = 'Palavra-chave',
   cs = 'Klíčové slovo',
+  fi = 'Avainsana',
 }
 
 export enum EContains {
@@ -519,6 +559,7 @@ export enum ELoginOrRegisterToSave {
   de = 'Bitte melden Sie sich an oder registrieren Sie sich, um den Witz zu speichern',
   pt = 'Por favor, faça login ou registre-se para salvar a piada',
   cs = 'Přihlaste se nebo se zaregistrujte, abyste uložili vtip',
+  fi = 'Kirjaudu sisään tai rekisteröidy tallentaaksesi vitsin',
 }
 
 export enum EAny {
@@ -528,6 +569,7 @@ export enum EAny {
   de = 'Jede',
   pt = 'Qualquer',
   cs = 'Jakýkoliv',
+  fi = 'Mikä tahansa',
 }
 
 export enum ENoJokeFound {
@@ -537,6 +579,7 @@ export enum ENoJokeFound {
   de = 'Kein Witz gefunden',
   pt = 'Nenhuma piada encontrada',
   cs = 'Nenalezen žádný vtip',
+  fi = 'Vitsiä ei löytynyt',
 }
 export enum ENoJokeFoundWithThisSearchTerm {
   en = 'No joke found with this search term',
@@ -545,6 +588,7 @@ export enum ENoJokeFoundWithThisSearchTerm {
   de = 'Kein Witz mit diesem Suchbegriff gefunden',
   pt = 'Nenhuma piada encontrada com este termo de pesquisa',
   cs = 'Nenalezen žádný vtip s tímto vyhledávacím výrazem',
+  fi = 'Vitsiä ei löytynyt tällä hakusanalla',
 }
 
 export enum ENoJokesYet {
@@ -554,6 +598,7 @@ export enum ENoJokesYet {
   de = 'Noch keine Witze',
   pt = 'Ainda não há piadas',
   cs = 'Zatím žádné vtipy',
+  fi = 'Ei vielä vitsejä',
 }
 
 export enum EJokeTypeTitle {
@@ -563,6 +608,7 @@ export enum EJokeTypeTitle {
   de = 'Witzart',
   pt = 'Tipo de piada',
   cs = 'Typ vtipu',
+  fi = 'Vitsityyppi',
 }
 
 export enum ERegisterAndLoginToUse {
@@ -572,6 +618,7 @@ export enum ERegisterAndLoginToUse {
   de = 'Registrieren Sie sich und melden Sie sich an, um Ihre Lieblingswitze in einer Mongo-DB-Datenbank zu speichern',
   pt = 'Registre-se e faça login para salvar suas piadas favoritas em um banco de dados Mongo-DB',
   cs = 'Zaregistrujte se a přihlaste se, abyste si mohli uložit své oblíbené vtipy do databáze Mongo-DB',
+  fi = 'Rekisteröidy ja kirjaudu sisään tallentaaksesi suosikkivitsisi Mongo-DB-tietokantaan',
 }
 
 export enum EFetchesJokesFrom {
@@ -581,6 +628,7 @@ export enum EFetchesJokesFrom {
   de = 'Holt sich Witze von',
   pt = 'Busca piadas de',
   cs = 'Načte vtipy z',
+  fi = 'Noutaa vitsejä sijainnista',
 }
 
 export enum EFilterJokesBy {
@@ -590,6 +638,7 @@ export enum EFilterJokesBy {
   de = 'Filtern Sie Witze nach',
   pt = 'Filtrar piadas por',
   cs = 'Filtrovat vtipy podle',
+  fi = 'Suodata vitsejä:',
 }
 
 export interface IJokeCommonFields {
@@ -690,6 +739,7 @@ export enum EDadJoke {
   de = 'Papa-Witz',
   pt = 'Piada de pai',
   cs = 'Otcovský vtip',
+  fi = 'Iskävitsi',
 }
 export enum EExtraCategories {
   none = 'None',
@@ -705,6 +755,7 @@ export enum EDarkJokesAreVisibleOnlyWhenSafeModeIsOff {
   de = 'Die "dunklen" Witze sind nur sichtbar, wenn der sichere Modus deaktiviert ist',
   pt = 'As "piadas escuras" são visíveis apenas quando o Modo de segurança está desativado',
   cs = '"Temné" vtipy jsou viditelné pouze tehdy, když je bezpečný režim vypnutý',
+  fi = 'Synkät (Dark) vitsit näkyvät vain, kun turvallinen tila on pois päältä',
 }
 export enum EChuckNorrisAndDadJokesExclusivelyFeatureSinglePartJokesAnd {
   en = '"Chuck Norris" and "Dad Jokes" exclusively feature single-part jokes, and are only available in English.',
@@ -713,6 +764,7 @@ export enum EChuckNorrisAndDadJokesExclusivelyFeatureSinglePartJokesAnd {
   de = '"Chuck Norris" und "Dad Jokes" enthalten ausschließlich Einzelteile und sind nur auf Englisch verfügbar.',
   pt = '"Chuck Norris" e "Dad Jokes" apresentam exclusivamente piadas de uma parte e estão disponíveis apenas em inglês.',
   cs = '"Chuck Norris" a "Dad Jokes" obsahují výhradně jednodílné vtipy a jsou k dispozici pouze v angličtině.',
+  fi = '"Chuck Norris" ja "Dad Jokes" sisältävät yksinomaan yksiosaisia vitsejä ja ovat saatavilla vain englanniksi.',
 }
 // Note!
 export enum ENote {
@@ -722,4 +774,5 @@ export enum ENote {
   de = 'Hinweis!',
   pt = 'Nota!',
   cs = 'Poznámka!',
+  fi = 'Huom!',
 }

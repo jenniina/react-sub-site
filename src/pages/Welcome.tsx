@@ -19,8 +19,8 @@ import {
   EQuiz,
   ETestYourKnowledge,
 } from '../interfaces'
-import LanguageEdit from '../components/UserEdit/LanguageEdit'
 import { ETheComediansCompanion } from '../components/Jokes/interfaces'
+import { EEdited, ENewest } from '../interfaces/welcome'
 
 export default function Home({
   heading,
@@ -59,7 +59,9 @@ export default function Home({
               </li>
             </ul>
             <div className={`${styles.newest}`}>
-              <h2 className={`${styles.subheading}`}>Newest / Edits</h2>
+              <h2 className={`${styles.subheading}`}>
+                {ENewest[language]} / {EEdited[language]}
+              </h2>
               <ul className={`${styles.list}`}>
                 <li>
                   <Link to='/portfolio/quiz'>
