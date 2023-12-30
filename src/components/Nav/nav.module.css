@@ -225,7 +225,7 @@ button.togglemenu[aria-expanded='true'] .menupath {
   gap: 0.8em;
 }
 .toolbar .loginregisterwrap button {
-  margin: 1em auto 0;
+  margin: var(--marg) auto 0;
 }
 .logo-container a {
   display: inline-block;
@@ -431,6 +431,7 @@ a.link:visited:not(.active):focus > *,
 }
 
 .toolbar .loginregister {
+  --marg: 2rem;
   display: flex;
   flex-flow: row wrap;
   align-items: center;
@@ -441,16 +442,15 @@ a.link:visited:not(.active):focus > *,
 }
 .toolbar .loginregister a.link {
   width: max-content;
-  padding-top: 2em;
+  margin-top: var(--marg);
 }
 .toolbar .loginregister button.logout {
-  font-size: 0.8em;
-  margin-top: 2em;
-}
-.toolbar .atnav {
+  font-size: 0.9em;
+  margin-top: var(--marg);
   max-width: max-content;
-  padding: 2em 0 0.5em;
+  padding: 0.5em 0;
 }
+
 .skip-links {
   z-index: 999;
   position: absolute; /*so it shows up over other elements*/

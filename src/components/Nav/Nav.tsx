@@ -649,7 +649,7 @@ const Nav = (
                   <button
                     onClick={handleLogout}
                     id='logoutnav'
-                    className={`logout danger ${styles.atnav}`}
+                    className={`logout danger ${styles.logout}`}
                   >
                     {titleLogout} &times;
                   </button>
