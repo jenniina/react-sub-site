@@ -227,7 +227,8 @@ button.togglemenu[aria-expanded='true'] .menupath {
   justify-content: space-between;
   gap: 0.8em;
 }
-.fi .toolbar .loginregisterwrap.closed {
+.fi .toolbar .loginregisterwrap.closed,
+.es .toolbar .loginregisterwrap.closed {
   gap: 1.5em;
 }
 .toolbar .loginregisterwrap button {
