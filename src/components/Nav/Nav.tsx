@@ -143,11 +143,14 @@ const Nav = (
               <NavLink
                 to={link.href}
                 className={({ isActive }) =>
-                  isActive ? `active ${styles.active} ${styles.link}` : `${styles.link}`
+                  isActive
+                    ? `active ${styles.active} ${styles.link} tooltipwrap`
+                    : `${styles.link} tooltipwrap`
                 }
               >
                 {icons(link.label)}
                 <span>{link.label}</span>
+                <b className='tooltip' data-tooltip={link.label}></b>
               </NavLink>
             </li>
           )

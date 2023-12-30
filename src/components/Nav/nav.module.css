@@ -174,7 +174,8 @@ button.togglemenu[aria-expanded='true'] .menupath {
   overflow-y: auto;
   max-height: calc(98vh - var(--scrollbar_width) - var(--height));
   min-height: 15em;
-  max-width: 16em;
+  width: 100%;
+  max-width: 100%;
 }
 .light .toolbar {
   background-color: var(--color-primary-1);
@@ -192,7 +193,7 @@ button.togglemenu[aria-expanded='true'] .menupath {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 }
 .toolbar .toolwrap label {
   flex: 3 0 0;
@@ -210,7 +211,7 @@ button.togglemenu[aria-expanded='true'] .menupath {
   );
 } */
 .toolbar .toolwrap button.toolbar-btn {
-  flex: 1 1 0;
+  flex: 1 0 100%;
   padding-left: 0;
   padding-right: 0;
 }
@@ -387,7 +388,6 @@ a.link:visited:not(.active):focus > *,
   justify-content: center;
 }
 .toolbar button.toolbar-btn {
-  align-self: stretch;
   justify-content: center;
   padding: 0.3em 0.5em 0.3em;
   margin: 0;
@@ -1017,6 +1017,15 @@ button.dlt-btn:focus {
   transform: rotate(0deg);
 }
 
+@media (min-width: 300px) {
+  .toolbar {
+    max-width: 17em;
+  }
+  .toolbar .toolwrap button.toolbar-btn {
+    flex: 1 1 0;
+  }
+} /*END media*/
+
 @media (min-width: 600px) {
   .menualt .menu-container:not(.altnav) ul li a,
   .menualt button.search,
@@ -1117,7 +1126,7 @@ button.dlt-btn:focus {
   .menualt .menu-container:not(.altnav) ul li a,
   .menualt button.search,
   .menualt button.settings {
-    padding: 0.9em 1.5rem 0.12em;
+    padding: 0.9em 1rem 0.12em;
   }
   .menualt .menu-container:not(.altnav) ul li a svg,
   .menualt button.search svg,
@@ -1162,7 +1171,7 @@ button.dlt-btn:focus {
 .main-header button.search {
   display: none;
 }
-@media (max-width: 250px) {
+@media (max-width: 300px) {
   .menualt .menu-container ul a span {
     clip: rect(1px, 1px, 1px, 1px);
     -webkit-clip-path: inset(50%);

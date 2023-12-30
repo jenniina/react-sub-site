@@ -2,12 +2,16 @@
   display: flex;
   flex-flow: column nowrap;
   gap: 3em;
-  align-items: flex-start;
-  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
   margin: 0;
   padding: 0;
+  width: max-content;
   max-width: 400px;
   margin: 0 auto;
+}
+.list.extras {
+  max-width: max-content;
 }
 .list li {
   flex: 1 0 30%;
@@ -59,6 +63,10 @@
   .list {
     flex-flow: row nowrap;
     gap: 4%;
+    align-items: flex-start;
+  }
+  .list.extras {
+    flex-flow: row wrap;
   }
 }
 .subheading {

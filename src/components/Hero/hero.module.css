@@ -29,6 +29,7 @@
 .hero.welcome h1,
 .hero.welcome p {
   z-index: 3;
+  text-align: center;
 }
 .hero h1 {
   -webkit-text-stroke: 1px var(--color-primary-1);

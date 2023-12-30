@@ -752,7 +752,7 @@ export enum EContact {
   de = 'Kontakt',
   pt = 'Contato',
   cs = 'Kontakt',
-  fi = 'Yhteydenotto',
+  fi = 'Yhteys',
 }
 export enum ELetsCollaborate {
   en = "Let's collaborate",
@@ -924,7 +924,7 @@ export enum EPointerEnterDirectionAwareMovement {
   de = 'Pointer-enter Richtungsbewegung',
   pt = 'Movimento consciente da direção de entrada do ponteiro',
   cs = 'Pohyb vědomý směru vstupu ukazatele',
-  fi = 'Osoittimen suunnan aistiva vastakkainen liike',
+  fi = 'Osoittimen lähestymissuunnan mukainen liike',
 }
 export enum EKeyboardFocusMoveItemsWithArrowKeys {
   en = 'Keyboard focus: move items with arrow keys',

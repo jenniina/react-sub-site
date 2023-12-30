@@ -16,7 +16,11 @@ import { updateUsername } from '../../reducers/usersReducer'
 import { AxiosError } from 'axios'
 import Notification from '../Notification/Notification'
 import styles from './css/edit.module.css'
-import { EEditEmail } from './interfaces'
+import {
+  ECurrentEmail,
+  EEditEmail,
+  ESendsAnEmailToTheNewAddressForVerification,
+} from './interfaces'
 
 interface Props {
   language: ELanguages
@@ -83,7 +87,10 @@ const UsernameEdit = ({ user, language }: Props) => {
         <>
           <h2>{EEditEmail[language]}</h2>
           <p className={styles.p}>
-            <strong>{user?.username}</strong>
+            {ESendsAnEmailToTheNewAddressForVerification[language]}
+          </p>
+          <p className={styles.p}>
+            {ECurrentEmail[language]}: <strong>{user?.username}</strong>
           </p>
 
           <form onSubmit={handleUserSubmit} className={styles['edit-user']}>

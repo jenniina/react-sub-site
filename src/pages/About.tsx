@@ -195,7 +195,8 @@ export default function About({
                 <IoSettingsSharp
                   style={{ display: 'inline-block', marginBottom: '-0.15em' }}
                 />{' '}
-                <span className='scr'>{ESettings[language]}</span> {EIcon[language]}
+                <span className='scr'>{ESettings[language]}</span> -
+                {EIcon[language].toLowerCase()}
               </big>
               <ul className='ul'>
                 <li>

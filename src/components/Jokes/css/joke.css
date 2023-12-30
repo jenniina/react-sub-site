@@ -332,7 +332,8 @@ form.joke > *:not(.toggle) {
 .toggle-wrap .safemode.en {
   --width: calc(var(--height) * 3);
 }
-.toggle-wrap .safemode.cs {
+.toggle-wrap .safemode.cs,
+.toggle-wrap .safemode.fi {
   --width: calc(var(--height) * 4);
 }
 
@@ -347,7 +348,8 @@ form.joke > *:not(.toggle) {
   --width: calc(var(--height) * 3.7);
 }
 .toggle-wrap .joketype.fr,
-.toggle-wrap .joketype.pt {
+.toggle-wrap .joketype.pt,
+.toggle-wrap .joketype.fi {
   --width: calc(var(--height) * 4.1);
 }
 

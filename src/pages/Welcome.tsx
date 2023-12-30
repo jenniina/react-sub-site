@@ -62,7 +62,7 @@ export default function Home({
               <h2 className={`${styles.subheading}`}>
                 {ENewest[language]} / {EEdited[language]}
               </h2>
-              <ul className={`${styles.list}`}>
+              <ul className={`${styles.list} ${styles.extras}`}>
                 <li>
                   <Link to='/portfolio/quiz'>
                     <MdOutlineQuiz />

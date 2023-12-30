@@ -6,7 +6,7 @@ import useRandomMinMax from '../../hooks/useRandomMinMax'
 import * as Draggable from '../../hooks/useDraggable'
 import { useTheme } from '../../hooks/useTheme'
 import useEnterDirection from '../../hooks/useEnterDirection'
-import { ELanguages, ETryTappingTheShapes, RefObject } from '../../interfaces'
+import { ELanguages, EReset, ETryTappingTheShapes, RefObject } from '../../interfaces'
 import useEventListener from '../../hooks/useEventListener'
 import useSessionStorage from '../../hooks/useStorage'
 
@@ -42,7 +42,7 @@ export default function Hero({
   heading,
   address,
   text,
-  reset = 'Reset',
+  reset,
   instructions,
   language,
 }: {
@@ -741,7 +741,7 @@ export default function Hero({
         data-instructions={instructions ? instructions : ETryTappingTheShapes[language]}
       >
         <button ref={resetButton} type='button' onClick={handleReset}>
-          <span>{reset}</span>
+          <span>{reset ? reset : EReset[language]}</span>
         </button>
       </div>
     </div>

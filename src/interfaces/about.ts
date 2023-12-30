@@ -311,7 +311,7 @@ export enum EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo {
   de = 'Bitte beachten Sie, dass die Autorin (Jenniina Laine) nur Englisch und Finnisch spricht. Bitte verwenden Sie daher eine dieser Sprachen, wenn Sie Kontakt aufnehmen.',
   pt = 'Observe que o autor (Jenniina Laine) fala apenas inglês e finlandês, portanto, use um desses idiomas ao entrar em contato.',
   cs = 'Všimněte si, že autor (Jenniina Laine) mluví pouze anglicky a finsky, takže při kontaktování použijte jeden z těchto jazyků.',
-  fi = 'Huomaa, että kirjoittaja (Jenniina Laine) puhuu vain englantia ja suomea, joten pyydän käyttämään yhteydenottoon jotakin näistä kielistä.',
+  fi = 'Huomaa, että sivuston luoja (Jenniina Laine) puhuu vain englantia ja suomea, joten pyydän käyttämään yhteydenottoon jompaakumpaa kieltä.',
 }
 export enum ETheTranslationsAreDoneWithTheHelpOfGithubCopilotSo {
   en = 'The translations are done with the help of Github Copilot (except for English and Finnish), so they may not be perfect',
