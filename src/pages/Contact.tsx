@@ -18,7 +18,7 @@ export default function Contact({
 
   return (
     <div className={`contact ${type}`}>
-      <Hero address='contact' heading={heading} text={text} />
+      <Hero language={language} address='contact' heading={heading} text={text} />
       <div className='inner-wrap'>
         <section className='card' style={{ position: 'relative', zIndex: '2' }}>
           <div>

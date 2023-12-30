@@ -135,6 +135,7 @@ const QuizStart = ({
   return (
     <>
       <Hero
+        language={language}
         address='portfolio'
         heading={heading}
         text={text}

@@ -505,11 +505,11 @@
 .bottom::after {
   content: attr(data-instructions);
 }
-.portfolio .bottom::after,
+/* .portfolio .bottom::after,
 .blob .bottom::after,
 .draganddrop .bottom::after {
   content: 'Try dragging the blobs';
-}
+} */
 .bottom button {
   pointer-events: auto;
   position: absolute;

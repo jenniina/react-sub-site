@@ -164,7 +164,7 @@ export default function About({
 
   return (
     <div className={`about ${type} ${lightTheme ? styles.light : ''}`}>
-      <Hero address='about' heading={heading} text={text} />
+      <Hero language={language} address='about' heading={heading} text={text} />
       <div>
         <section className={`card ${styles.section}`}>
           <div>

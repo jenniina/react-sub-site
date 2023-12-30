@@ -38,6 +38,8 @@ import {
   EContact,
   ELetsCollaborate,
   EQuizApp,
+  EBlobs,
+  EBlobAppSlogan,
 } from './interfaces'
 import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
 import { isTouchDevice } from './hooks/useDraggable'
@@ -262,8 +264,8 @@ const App: FC = () => {
                   element={
                     <BlobPage
                       language={language}
-                      heading={`${EBlob[language]} ${EApp[language]}`}
-                      text=''
+                      heading={EBlobs[language]}
+                      text={EBlobAppSlogan[language]}
                       type='page subpage'
                     />
                   }

@@ -554,7 +554,7 @@ export enum ETryTappingTheShapes {
   de = 'Versuchen Sie, die Formen zu berühren',
   pt = 'Tente tocar as formas',
   cs = 'Zkuste klepnout na tvary',
-  fi = 'Kokeile klikata muotoja',
+  fi = 'Kokeile klikata elementtejä',
 }
 export enum EReset {
   en = 'Reset',
@@ -736,7 +736,6 @@ export enum EGithubRepository {
   cs = 'Github Repository',
   fi = 'Github repositorio',
 }
-//Features of this site
 export enum EFeaturesOfThisSite {
   en = 'Features of this site',
   es = 'Características de este sitio',
@@ -855,7 +854,6 @@ export enum EButtonToToggleBetweenNavigationStyles {
   cs = 'Tlačítko pro přepínání mezi styly navigace',
   fi = 'Painike vaihtaa navigointityylejä',
 }
-//Two styles at small screen size and two at large screen size
 export enum ETwoStylesAtSmallScreenSizeAndTwoAtLargeScreenSize {
   en = 'Two styles at small screen size and two at large screen size',
   es = 'Dos estilos en tamaño de pantalla pequeña y dos en tamaño de pantalla grande',
@@ -928,7 +926,6 @@ export enum EPointerEnterDirectionAwareMovement {
   cs = 'Pohyb vědomý směru vstupu ukazatele',
   fi = 'Osoittimen suunnan aistiva vastakkainen liike',
 }
-//Keyboard focus: move items with arrow keys
 export enum EKeyboardFocusMoveItemsWithArrowKeys {
   en = 'Keyboard focus: move items with arrow keys',
   es = 'Enfoque del teclado: mueva los elementos con las teclas de flecha',
@@ -936,9 +933,8 @@ export enum EKeyboardFocusMoveItemsWithArrowKeys {
   de = 'Tastaturfokus: Bewegen Sie Elemente mit den Pfeiltasten',
   pt = 'Foco do teclado: mova itens com as teclas de seta',
   cs = 'Klávesnice: přesuňte položky pomocí šipek',
-  fi = 'Näppäimistökäyttö: siirrä TAB-painikkeella kohteeseen siirryttyä nuolinäppäimillä kohdetta',
+  fi = 'Näppäimistökäyttö: siirrä tab-painikkeella kohteeseen siirryttyä nuolinäppäimillä kohdetta',
 }
-//Geometric shapes
 export enum EGeometricShapes {
   en = 'Geometric shapes',
   es = 'Formas geométricas',
@@ -1047,7 +1043,6 @@ export enum EBlobApp {
   cs = 'Aplikace Blob',
   fi = 'Blob/möhkäle-sovellus',
 }
-//Make blob art your thing
 export enum EBlobAppSlogan {
   en = 'Make blob art your thing',
   es = 'Haz que el arte de las bolitas sea lo tuyo',
@@ -1091,7 +1086,7 @@ export enum ECustomSelect {
   de = 'Benutzerdefinierte Auswahl',
   pt = 'Seleção Personalizada',
   cs = 'Vlastní Výběr',
-  fi = 'Kustomoitu valinta',
+  fi = 'Räätälöitävä select',
 }
 export enum EMultistepForm {
   en = 'Multistep Form',
@@ -1263,7 +1258,7 @@ export enum EDragAndDropAppIntro {
   de = 'Eine benutzerdefinierte Drag & Drop-App.',
   pt = 'Um aplicativo de arrastar e soltar personalizado.',
   cs = 'Vlastní aplikace přetahování a přetažení.',
-  fi = 'Kustomoitu raahattavat-sovellus (Drag and Drop).',
+  fi = 'Räätälöity raahattavat-sovellus (Drag and Drop).',
 }
 export enum ETodoAppIntro {
   en = 'A todo-app using localStorage and Mongo-DB when the user is logged in.',
@@ -1281,7 +1276,7 @@ export enum ECustomSelectIntro {
   de = 'Ein benutzerdefiniertes Auswahlelement, das als Einzel- oder Mehrfachauswahlalternative verwendet werden kann.',
   pt = 'Um componente de seleção personalizado que pode ser usado como uma alternativa de seleção única ou múltipla.',
   cs = 'Vlastní výběrový prvek, který lze použít jako jednotlivý nebo vícevýběrový prvek.',
-  fi = 'Kustomoitu valintakomponentti, jota voidaan käyttää yksittäisenä tai monivalintavaihtoehtona.',
+  fi = 'Räätälöitävä select-komponentin vaihtoehto: yksittäis- tai monivalinta.',
 }
 export enum EMultistepFormIntro {
   en = 'A three-step fully functional contact form.',
@@ -1310,7 +1305,6 @@ export enum EKeyboardAccessible {
   cs = 'Přístupné klávesnicí',
   fi = 'Näppäimistösaavutettava',
 }
-//Clarification or feedback
 export enum EClarificationOrFeedback {
   en = 'Clarification or feedback',
   es = 'Aclaración o comentarios',
@@ -1329,7 +1323,6 @@ export enum EOptional {
   cs = 'Volitelný',
   fi = 'Valinnainen',
 }
-//It is alright to send the entered information to Jenniina
 export enum EItIsAlrightToSendTheEnteredInformationToJenniina {
   en = 'It is alright to send the entered information to Jenniina',
   es = 'Está bien enviar la información ingresada a Jenniina',
@@ -1456,7 +1449,6 @@ export enum ENoIssues {
   cs = 'Žádné problémy',
   fi = 'Ei ongelmia',
 }
-//Please select an option
 export enum EPleaseSelectAnOption {
   en = 'Please select an option',
   es = 'Por favor seleccione una opción',
@@ -1475,7 +1467,6 @@ export enum ENone {
   cs = 'Žádný',
   fi = 'Ei mitään',
 }
-// "Alien eyes"
 export enum EAlienEyes {
   en = 'Alien eyes',
   es = 'Ojos de alienígena',
@@ -1512,7 +1503,6 @@ export enum EYouMaySelectMultipleOptions {
   cs = 'Můžete vybrat více možností',
   fi = 'Voit valita useita vaihtoehtoja',
 }
-//'Please offer some feedback'
 export enum EPleaseOfferSomeFeedback {
   en = 'Please offer some feedback',
   es = 'Por favor ofrezca algunos comentarios',
@@ -1540,7 +1530,6 @@ export enum EInstructions {
   cs = 'Instrukce',
   fi = 'Ohjeet',
 }
-//Note!
 export enum ENote {
   en = 'Note!',
   es = '¡Nota!',
@@ -1550,7 +1539,6 @@ export enum ENote {
   cs = 'Poznámka!',
   fi = 'Huom!',
 }
-// 'User not updated'
 export enum EUserNotUpdated {
   en = 'User not updated',
   es = 'Usuario no actualizado',
@@ -1569,7 +1557,6 @@ export enum EUserUpdated {
   cs = 'Uživatel aktualizován',
   fi = 'Käyttäjätiedot päivitetty',
 }
-//`Password must be at least 10 characters`
 export enum EPasswordMustBeAtLeastTenCharacters {
   en = 'Password must be at least 10 characters',
   es = 'La contraseña debe tener al menos 10 caracteres',

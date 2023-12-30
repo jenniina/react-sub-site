@@ -24,6 +24,7 @@ import {
   EWithTheMenuOpenUseTabKeyToNavigateAnd,
   EYouMayAlsoUseTheItemMenuToChooseADestination,
 } from '../../interfaces/draganddrop'
+import { ETryDraggingTheBlobs } from '../../interfaces/blobs'
 
 export default function DragAndDropPage({
   heading,
@@ -38,7 +39,13 @@ export default function DragAndDropPage({
 }) {
   return (
     <div className={`draganddrop ${type}`}>
-      <Hero address='draganddrop' heading={heading} text={text} />
+      <Hero
+        language={language}
+        address='draganddrop'
+        heading={heading}
+        text={text}
+        instructions={ETryDraggingTheBlobs[language]}
+      />
       <div className='inner-wrap'>
         <section className='card'>
           <div>

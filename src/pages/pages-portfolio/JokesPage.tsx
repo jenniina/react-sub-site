@@ -129,6 +129,7 @@ export default function JokesPage({
         .replace(/[^a-zA-Z]/g, '')} ${type} ${language}`}
     >
       <Hero
+        language={language}
         address='jokes'
         heading={title}
         text={text}

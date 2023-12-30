@@ -37,7 +37,7 @@ export default function Home({
 
   return (
     <div className={`welcome ${type} ${lightTheme ? styles.light : ''}`}>
-      <Hero address='welcome' heading={heading} text={text} />
+      <Hero language={language} address='welcome' heading={heading} text={text} />
       <div className='inner-wrap'>
         <section className={`card`}>
           <div>
