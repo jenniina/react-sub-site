@@ -181,7 +181,7 @@ const App: FC = () => {
       <div
         className={`App ${lightTheme ? 'light' : ''} ${touchDevice ? 'touch' : ''}  ${
           menuStyleAltTransform ? `transformations` : ''
-        }`}
+        } ${language}`}
       >
         <div className='App-inner-wrap' style={styleInnerWrap}>
           <Nav

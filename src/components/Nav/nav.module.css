@@ -200,12 +200,15 @@ button.togglemenu[aria-expanded='true'] .menupath {
   cursor: pointer;
 }
 .toolbar .toolwrap button {
+  max-width: 3rem;
+}
+/* .toolbar .toolwrap button {
   background: linear-gradient(
     90deg,
     var(--color-primary-2) 0%,
     var(--color-primary-1) 100%
   );
-}
+} */
 .toolbar .toolwrap button.toolbar-btn {
   flex: 1 1 0;
   padding-left: 0;
@@ -223,6 +226,9 @@ button.togglemenu[aria-expanded='true'] .menupath {
   flex-flow: row wrap;
   justify-content: space-between;
   gap: 0.8em;
+}
+.fi .toolbar .loginregisterwrap.closed {
+  gap: 1.5em;
 }
 .toolbar .loginregisterwrap button {
   margin: var(--marg) auto 0;
@@ -450,7 +456,11 @@ a.link:visited:not(.active):focus > *,
   max-width: max-content;
   padding: 0.5em 0;
 }
-
+.toolbar .loginregister button.logout:hover,
+.toolbar .loginregister button.logout:focus {
+  outline: dashed 2px red;
+  outline-offset: 6px;
+}
 .skip-links {
   z-index: 999;
   position: absolute; /*so it shows up over other elements*/

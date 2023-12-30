@@ -385,6 +385,7 @@ const Nav = (
                 ${lightTheme ? styles.light : ''} 
                 ${menuStyleAlt ? `${styles.menualt} ` : `${styles.menumain} `} 
                 ${menuStyleTransform ? `${styles.transformations}` : ''} 
+                ${styles[`${language}`]}
                 `}
       >
         <nav className={styles['skip-links']}>
