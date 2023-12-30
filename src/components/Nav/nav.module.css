@@ -174,7 +174,8 @@ button.togglemenu[aria-expanded='true'] .menupath {
   overflow-y: auto;
   max-height: calc(98vh - var(--scrollbar_width) - var(--height));
   min-height: 15em;
-  max-width: 16em;
+  width: 100%;
+  max-width: 100%;
 }
 .light .toolbar {
   background-color: var(--color-primary-1);
@@ -192,7 +193,7 @@ button.togglemenu[aria-expanded='true'] .menupath {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 }
 .toolbar .toolwrap label {
   flex: 3 0 0;
@@ -200,14 +201,17 @@ button.togglemenu[aria-expanded='true'] .menupath {
   cursor: pointer;
 }
 .toolbar .toolwrap button {
+  max-width: 3rem;
+}
+/* .toolbar .toolwrap button {
   background: linear-gradient(
     90deg,
     var(--color-primary-2) 0%,
     var(--color-primary-1) 100%
   );
-}
+} */
 .toolbar .toolwrap button.toolbar-btn {
-  flex: 1 1 0;
+  flex: 1 0 100%;
   padding-left: 0;
   padding-right: 0;
 }
@@ -224,8 +228,12 @@ button.togglemenu[aria-expanded='true'] .menupath {
   justify-content: space-between;
   gap: 0.8em;
 }
+.fi .toolbar .loginregisterwrap.closed,
+.es .toolbar .loginregisterwrap.closed {
+  gap: 1.5em;
+}
 .toolbar .loginregisterwrap button {
-  margin: 1em auto 0;
+  margin: var(--marg) auto 0;
 }
 .logo-container a {
   display: inline-block;
@@ -380,7 +388,6 @@ a.link:visited:not(.active):focus > *,
   justify-content: center;
 }
 .toolbar button.toolbar-btn {
-  align-self: stretch;
   justify-content: center;
   padding: 0.3em 0.5em 0.3em;
   margin: 0;
@@ -431,6 +438,7 @@ a.link:visited:not(.active):focus > *,
 }
 
 .toolbar .loginregister {
+  --marg: 2rem;
   display: flex;
   flex-flow: row wrap;
   align-items: center;
@@ -441,15 +449,18 @@ a.link:visited:not(.active):focus > *,
 }
 .toolbar .loginregister a.link {
   width: max-content;
-  padding-top: 2em;
+  margin-top: var(--marg);
 }
 .toolbar .loginregister button.logout {
-  font-size: 0.8em;
-  margin-top: 2em;
-}
-.toolbar .atnav {
+  font-size: 0.9em;
+  margin-top: var(--marg);
   max-width: max-content;
-  padding: 2em 0 0.5em;
+  padding: 0.5em 0;
+}
+.toolbar .loginregister button.logout:hover,
+.toolbar .loginregister button.logout:focus {
+  outline: dashed 2px red;
+  outline-offset: 6px;
 }
 .skip-links {
   z-index: 999;
@@ -1006,6 +1017,15 @@ button.dlt-btn:focus {
   transform: rotate(0deg);
 }
 
+@media (min-width: 300px) {
+  .toolbar {
+    max-width: 17em;
+  }
+  .toolbar .toolwrap button.toolbar-btn {
+    flex: 1 1 0;
+  }
+} /*END media*/
+
 @media (min-width: 600px) {
   .menualt .menu-container:not(.altnav) ul li a,
   .menualt button.search,
@@ -1106,7 +1126,7 @@ button.dlt-btn:focus {
   .menualt .menu-container:not(.altnav) ul li a,
   .menualt button.search,
   .menualt button.settings {
-    padding: 0.9em 1.5rem 0.12em;
+    padding: 0.9em 1rem 0.12em;
   }
   .menualt .menu-container:not(.altnav) ul li a svg,
   .menualt button.search svg,
@@ -1151,7 +1171,7 @@ button.dlt-btn:focus {
 .main-header button.search {
   display: none;
 }
-@media (max-width: 250px) {
+@media (max-width: 300px) {
   .menualt .menu-container ul a span {
     clip: rect(1px, 1px, 1px, 1px);
     -webkit-clip-path: inset(50%);

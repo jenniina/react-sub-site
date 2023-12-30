@@ -7,7 +7,6 @@ export enum EDraggableWithAnyPointer {
   cs = 'Přetahovatelné s libovolným ukazatelem',
   fi = 'Raahattavissa minkä tahansa osoittimen kanssa',
 }
-//keyboard use: dropdown list
 export enum EKeyboardUseWithADropdownList {
   en = 'Keyboard use: dropdown list',
   es = 'Uso del teclado: lista desplegable',
@@ -17,7 +16,6 @@ export enum EKeyboardUseWithADropdownList {
   cs = 'Použití klávesnice: rozbalovací seznam',
   fi = 'Näppäimistön käyttö: avattava lista',
 }
-//Can be rearranged within their container
 export enum ECanRearrangeWithinTheirContainer {
   en = 'Can be rearranged within their container',
   es = 'Se pueden reorganizar dentro de su contenedor',
@@ -27,7 +25,6 @@ export enum ECanRearrangeWithinTheirContainer {
   cs = 'Lze přeuspořádat ve svém kontejneru',
   fi = 'Voidaan järjestellä uudelleen säiliössään',
 }
-//State saved in localStorage
 export enum EStateSavedInLocalStorage {
   en = 'State saved in localStorage',
   es = 'Estado guardado en localStorage',
@@ -37,7 +34,6 @@ export enum EStateSavedInLocalStorage {
   cs = 'Stav uložený v localStorage',
   fi = 'Tila tallennetaan localStorageen',
 }
-//Pointer and Touch Use
 export enum EPointerAndTouchUse {
   en = 'Pointer and Touch Use',
   es = 'Uso de puntero y toque',
@@ -47,7 +43,6 @@ export enum EPointerAndTouchUse {
   cs = 'Užití ukazatele a dotyku',
   fi = 'Osoitin- ja kosketuskäyttö',
 }
-//Hold pointer button down to drag an item from one container to another, or rearrange within a container
 export enum EHoldPointerButtonDownToDragAnItemFrom {
   en = 'Hold pointer button down to drag an item from one container to another, or rearrange within a container',
   es = 'Mantenga presionado el botón del puntero para arrastrar un elemento de un contenedor a otro, o reorganizar dentro de un contenedor',
@@ -57,7 +52,6 @@ export enum EHoldPointerButtonDownToDragAnItemFrom {
   cs = 'Podržte tlačítko ukazatele stisknuté, abyste přetáhli položku z jednoho kontejneru do druhého nebo přeuspořádali v kontejneru',
   fi = 'Pidä osoitin painettuna vetääksesi kohteen yhdestä säiliöstä toiseen tai järjestelläksesi säiliön sisäisesti',
 }
-//On touch devices, hold touch for a moment to activate drag
 export enum EOnTouchDevicesHoldTouchForAMomentToActivateDrag {
   en = 'On touch devices, hold touch for a moment to activate drag',
   es = 'En dispositivos táctiles, mantenga el toque durante un momento para activar el arrastre',
@@ -67,7 +61,6 @@ export enum EOnTouchDevicesHoldTouchForAMomentToActivateDrag {
   cs = 'Na dotykových zařízeních podržte dotyk na okamžik, abyste aktivaci přetáhli',
   fi = 'Kosketuslaitteissa pidä kosketusta hetken aikaa aktivoidaksesi raahaamisen',
 }
-//You may also use the item menu to choose a destination
 export enum EYouMayAlsoUseTheItemMenuToChooseADestination {
   en = 'You may also use the item menu to choose a destination',
   es = 'También puede usar el menú del elemento para elegir un destino',
@@ -77,7 +70,6 @@ export enum EYouMayAlsoUseTheItemMenuToChooseADestination {
   cs = 'Můžete také použít nabídku položek k výběru cíle',
   fi = 'Voit myös käyttää kohteen valikkoa valitaksesi määränpään',
 }
-//Move items within their container with the Up or Down arrow keys
 export enum EMoveItemsWithinTheirContainerWithTheUpOrDownArrowKeys {
   en = 'Move items within their container with the Up or Down arrow keys',
   es = 'Mueva los elementos dentro de su contenedor con las teclas de flecha hacia arriba o hacia abajo',
@@ -87,7 +79,6 @@ export enum EMoveItemsWithinTheirContainerWithTheUpOrDownArrowKeys {
   cs = 'Přesuňte položky ve svém kontejneru pomocí šipek nahoru nebo dolů',
   fi = 'Siirrä kohteita säiliössään ylös- tai alasnuolinäppäimillä',
 }
-// To move items to another container:
 export enum EToMoveItemsToAnotherContainer {
   en = 'To move items to another container:',
   es = 'Para mover elementos a otro contenedor:',
@@ -97,7 +88,6 @@ export enum EToMoveItemsToAnotherContainer {
   cs = 'Chcete-li přesunout položky do jiného kontejneru:',
   fi = 'Siirrä kohteita toiseen säiliöön:',
 }
-// use TAB-key to navigate to drag button
 export enum EUseTabKeyToNavigateToDragButton {
   en = 'use TAB-key to navigate to drag button',
   es = 'use la tecla TAB para navegar hasta el botón de arrastre',
@@ -105,9 +95,8 @@ export enum EUseTabKeyToNavigateToDragButton {
   de = 'Verwenden Sie die TAB-Taste, um zur Schaltfläche Ziehen zu navigieren',
   pt = 'use a tecla TAB para navegar até o botão de arrastar',
   cs = 'použijte klávesu TAB pro navigaci na tlačítko přetáhnutí',
-  fi = 'käytä TAB-näppäintä siirtyäksesi raahaamispainikkeeseen',
+  fi = 'käytä tab-näppäintä siirtyäksesi raahaamispainikkeeseen',
 }
-// and press Enter key to open menu
 export enum EAndPressEnterKeyToOpenMenu {
   en = 'and press Enter key to open menu',
   es = 'y presione la tecla Intro para abrir el menú',
@@ -117,7 +106,6 @@ export enum EAndPressEnterKeyToOpenMenu {
   cs = 'a stiskněte klávesu Enter pro otevření nabídky',
   fi = 'ja paina Enter-näppäintä avataksesi valikon',
 }
-// With the menu open, use TAB-key to navigate and choose the new destination with Enter or Space key
 export enum EWithTheMenuOpenUseTabKeyToNavigateAnd {
   en = 'With the menu open, use TAB-key to navigate and choose the new destination with Enter or Space key',
   es = 'Con el menú abierto, use la tecla TAB para navegar y elija el nuevo destino con la tecla Intro o Espacio',
@@ -125,9 +113,8 @@ export enum EWithTheMenuOpenUseTabKeyToNavigateAnd {
   de = 'Mit dem geöffneten Menü verwenden Sie die TAB-Taste, um zu navigieren, und wählen Sie das neue Ziel mit der Eingabetaste oder der Leertaste',
   pt = 'Com o menu aberto, use a tecla TAB para navegar e escolha o novo destino com a tecla Enter ou Espaço',
   cs = 'S otevřenou nabídkou použijte klávesu TAB pro navigaci a vyberte nový cíl klávesou Enter nebo mezerník',
-  fi = 'Valikon ollessa auki käytä TAB-näppäintä navigoidaksesi ja valitse uusi kohde Enter- tai välilyöntinäppäimellä',
+  fi = 'Valikon ollessa auki käytä tab-näppäintä navigoidaksesi ja valitse uusi kohde Enter- tai välilyöntinäppäimellä',
 }
-// Sort the colors to a different container or organize them within their container
 export enum ESortTheColorsToADifferentContainerOr {
   en = 'Sort the colors to a different container or organize them within their container',
   es = 'Organice los colores en un contenedor diferente u organícelos dentro de su contenedor',

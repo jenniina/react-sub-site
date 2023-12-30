@@ -164,7 +164,7 @@ export default function About({
 
   return (
     <div className={`about ${type} ${lightTheme ? styles.light : ''}`}>
-      <Hero address='about' heading={heading} text={text} />
+      <Hero language={language} address='about' heading={heading} text={text} />
       <div>
         <section className={`card ${styles.section}`}>
           <div>
@@ -195,7 +195,8 @@ export default function About({
                 <IoSettingsSharp
                   style={{ display: 'inline-block', marginBottom: '-0.15em' }}
                 />{' '}
-                <span className='scr'>{ESettings[language]}</span> {EIcon[language]}
+                <span className='scr'>{ESettings[language]}</span> -
+                {EIcon[language].toLowerCase()}
               </big>
               <ul className='ul'>
                 <li>

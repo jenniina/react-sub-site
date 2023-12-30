@@ -6,7 +6,7 @@ import useRandomMinMax from '../../hooks/useRandomMinMax'
 import * as Draggable from '../../hooks/useDraggable'
 import { useTheme } from '../../hooks/useTheme'
 import useEnterDirection from '../../hooks/useEnterDirection'
-import { RefObject } from '../../interfaces'
+import { ELanguages, EReset, ETryTappingTheShapes, RefObject } from '../../interfaces'
 import useEventListener from '../../hooks/useEventListener'
 import useSessionStorage from '../../hooks/useStorage'
 
@@ -42,14 +42,16 @@ export default function Hero({
   heading,
   address,
   text,
-  reset = 'Reset',
-  instructions = 'Try tapping the shapes',
+  reset,
+  instructions,
+  language,
 }: {
   heading: string
   address: string
   text: string
   reset?: string
   instructions?: string
+  language: ELanguages
 }) {
   const location = useLocation()
 
@@ -734,9 +736,12 @@ export default function Hero({
         Hero section with interactive elements
       </span>
       <ItemComponent array={setupItems} location={page} />
-      <div className={styles.bottom} data-instructions={instructions}>
+      <div
+        className={styles.bottom}
+        data-instructions={instructions ? instructions : ETryTappingTheShapes[language]}
+      >
         <button ref={resetButton} type='button' onClick={handleReset}>
-          <span>{reset}</span>
+          <span>{reset ? reset : EReset[language]}</span>
         </button>
       </div>
     </div>

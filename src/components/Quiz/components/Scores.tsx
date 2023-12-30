@@ -11,6 +11,9 @@ import {
   ESpeed,
   EYourHighscores,
 } from '../../../interfaces/quiz'
+import useWindowSize from '../../../hooks/useWindowSize'
+import { breakpointSmall } from '../../../interfaces'
+import { useEffect, useState } from 'react'
 
 interface Props {
   easy: IHighscore['easy']
@@ -19,6 +22,14 @@ interface Props {
   language: ELanguages
 }
 const Scores = ({ easy, medium, hard, language }: Props) => {
+  const { windowWidth } = useWindowSize()
+  const [show, setShow] = useState(true)
+
+  useEffect(() => {
+    if (windowWidth < breakpointSmall) setShow(false)
+    else setShow(true)
+  }, [windowWidth])
+
   return (
     <table className={styles.highscores}>
       <caption>{EYourHighscores[language]}</caption>
@@ -26,15 +37,14 @@ const Scores = ({ easy, medium, hard, language }: Props) => {
         <tr className={styles.th}>
           <th>{EDifficulty[language]}</th>
           <th className={styles.score}>{EScore[language]}</th>
-          <th className={styles.percentage}>%</th>
-          <th>{ESpeed[language]}</th>
+          {show && <th className={styles.percentage}>%</th>} <th>{ESpeed[language]}</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <th>{EEasy[language]}</th>
           <td>{easy ? easy.score : 0}/300</td>
-          <td>{+((easy.score * 100) / 300).toFixed(1)}%</td>
+          {show && <td>{+((easy.score * 100) / 300).toFixed(1)}%</td>}
           <td>
             {easy.score === 0 || easy.time === 0 ? (
               ENA[language]
@@ -50,7 +60,7 @@ const Scores = ({ easy, medium, hard, language }: Props) => {
         <tr>
           <th>{EMedium[language]}</th>
           <td>{medium ? medium.score : 0}/300</td>
-          <td>{+((medium.score * 100) / 300).toFixed(1)}%</td>
+          {show && <td>{+((medium.score * 100) / 300).toFixed(1)}%</td>}
           <td>
             {medium.score === 0 || medium.time === 0 ? (
               ENA[language]
@@ -66,7 +76,7 @@ const Scores = ({ easy, medium, hard, language }: Props) => {
         <tr>
           <th>{EHard[language]}</th>
           <td>{hard ? hard.score : 0}/300</td>
-          <td>{+((hard.score * 100) / 300).toFixed(1)}%</td>
+          {show && <td>{+((hard.score * 100) / 300).toFixed(1)}%</td>}
           <td>
             {hard.score === 0 || hard.time === 0 ? (
               ENA[language]

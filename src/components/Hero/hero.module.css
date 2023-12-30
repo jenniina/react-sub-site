@@ -29,6 +29,7 @@
 .hero.welcome h1,
 .hero.welcome p {
   z-index: 3;
+  text-align: center;
 }
 .hero h1 {
   -webkit-text-stroke: 1px var(--color-primary-1);
@@ -505,11 +506,11 @@
 .bottom::after {
   content: attr(data-instructions);
 }
-.portfolio .bottom::after,
+/* .portfolio .bottom::after,
 .blob .bottom::after,
 .draganddrop .bottom::after {
   content: 'Try dragging the blobs';
-}
+} */
 .bottom button {
   pointer-events: auto;
   position: absolute;

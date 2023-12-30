@@ -38,6 +38,8 @@ import {
   EContact,
   ELetsCollaborate,
   EQuizApp,
+  EBlobs,
+  EBlobAppSlogan,
 } from './interfaces'
 import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
 import { isTouchDevice } from './hooks/useDraggable'
@@ -62,6 +64,7 @@ import {
   EJokeType,
   ESafemode,
   ETheComediansCompanion,
+  TCategoryByLanguages,
 } from './components/Jokes/interfaces'
 import { useAppDispatch } from './hooks/useAppDispatch'
 import { initializeUser } from './reducers/authReducer'
@@ -126,12 +129,7 @@ const App: FC = () => {
 
   function getKeyByValue(
     enumObj:
-      | typeof ECategory_en
-      | typeof ECategory_cs
-      | typeof ECategory_de
-      | typeof ECategory_es
-      | typeof ECategory_fr
-      | typeof ECategory_pt
+      | TCategoryByLanguages
       | typeof EJokeType
       | typeof ESafemode
       | typeof ELanguages,
@@ -156,15 +154,6 @@ const App: FC = () => {
     fi: ECategory_fi,
   }
 
-  const categoryByLanguages = categoryByLanguagesConst[language] as
-    | typeof ECategory_en
-    | typeof ECategory_cs
-    | typeof ECategory_de
-    | typeof ECategory_es
-    | typeof ECategory_fr
-    | typeof ECategory_pt
-    | typeof ECategory_fi
-
   const options = (
     enumObj: typeof ECategory_en | typeof EJokeType | typeof ESafemode | typeof ELanguages
   ) => {
@@ -179,7 +168,7 @@ const App: FC = () => {
       <div
         className={`App ${lightTheme ? 'light' : ''} ${touchDevice ? 'touch' : ''}  ${
           menuStyleAltTransform ? `transformations` : ''
-        }`}
+        } ${language}`}
       >
         <div className='App-inner-wrap' style={styleInnerWrap}>
           <Nav
@@ -262,8 +251,8 @@ const App: FC = () => {
                   element={
                     <BlobPage
                       language={language}
-                      heading={`${EBlob[language]} ${EApp[language]}`}
-                      text=''
+                      heading={EBlobs[language]}
+                      text={EBlobAppSlogan[language]}
                       type='page subpage'
                     />
                   }

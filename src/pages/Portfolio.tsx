@@ -30,6 +30,7 @@ import { GiAbstract019 } from 'react-icons/gi'
 import { MdOutlineQuiz } from 'react-icons/md'
 import { ETheComediansCompanion } from '../components/Jokes/interfaces'
 import { ETodoApp } from '../components/Todo/interfaces'
+import { ETryDraggingTheBlobs } from '../interfaces/blobs'
 
 export default function Portfolio({
   heading,
@@ -48,7 +49,13 @@ export default function Portfolio({
 
   return (
     <div className={`portfolio ${type} ${lightTheme ? styles.light : ''}`}>
-      <Hero address='portfolio' heading={heading} text={text} />
+      <Hero
+        language={language}
+        address='portfolio'
+        heading={heading}
+        text={text}
+        instructions={ETryDraggingTheBlobs[language]}
+      />
       <div className='inner-wrap'>
         <section className={`card`}>
           <div>

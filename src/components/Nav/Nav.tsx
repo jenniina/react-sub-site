@@ -143,11 +143,14 @@ const Nav = (
               <NavLink
                 to={link.href}
                 className={({ isActive }) =>
-                  isActive ? `active ${styles.active} ${styles.link}` : `${styles.link}`
+                  isActive
+                    ? `active ${styles.active} ${styles.link} tooltipwrap`
+                    : `${styles.link} tooltipwrap`
                 }
               >
                 {icons(link.label)}
                 <span>{link.label}</span>
+                <b className='tooltip' data-tooltip={link.label}></b>
               </NavLink>
             </li>
           )
@@ -385,6 +388,7 @@ const Nav = (
                 ${lightTheme ? styles.light : ''} 
                 ${menuStyleAlt ? `${styles.menualt} ` : `${styles.menumain} `} 
                 ${menuStyleTransform ? `${styles.transformations}` : ''} 
+                ${styles[`${language}`]}
                 `}
       >
         <nav className={styles['skip-links']}>
@@ -649,7 +653,7 @@ const Nav = (
                   <button
                     onClick={handleLogout}
                     id='logoutnav'
-                    className={`logout danger ${styles.atnav}`}
+                    className={`logout danger ${styles.logout}`}
                   >
                     {titleLogout} &times;
                   </button>

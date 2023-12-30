@@ -14,7 +14,7 @@ export enum EEditPreferredNickname {
   de = 'Bevorzugten Spitznamen bearbeiten',
   pt = 'Editar apelido preferido',
   cs = 'Upravit preferovanou přezdívku',
-  fi = 'Muokkaa lempinimeä',
+  fi = 'Muokkaa nimimerkkiä',
 }
 export enum EEditPassword {
   en = 'Edit password',
@@ -33,6 +33,24 @@ export enum EEditEmail {
   pt = 'Editar email',
   cs = 'Upravit e-mail',
   fi = 'Muokkaa sähköpostia',
+}
+export enum ESendsAnEmailToTheNewAddressForVerification {
+  en = 'Sends an email to the new address for verification',
+  es = 'Envía un correo electrónico a la nueva dirección para su verificación',
+  fr = 'Envoie un e-mail à la nouvelle adresse pour vérification',
+  de = 'Sendet eine E-Mail an die neue Adresse zur Überprüfung',
+  pt = 'Envia um e-mail para o novo endereço para verificação',
+  cs = 'Odešle e-mail na novou adresu k ověření',
+  fi = 'Lähettää varmennuslinkin uuteen sähköpostiin',
+}
+export enum ECurrentEmail {
+  en = 'Current email',
+  es = 'Correo electrónico actual',
+  fr = 'Email actuel',
+  de = 'Aktuelle E-Mail',
+  pt = 'Email atual',
+  cs = 'Aktuální e-mail',
+  fi = 'Nykyinen sähköposti',
 }
 export enum EEditUserSettings {
   en = 'Here you can edit your user settings and delete your account',

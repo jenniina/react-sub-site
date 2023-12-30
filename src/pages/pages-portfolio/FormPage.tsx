@@ -33,7 +33,7 @@ export default function FormPage({
 }) {
   return (
     <div className={`form ${type}`}>
-      <Hero address='form' heading={heading} text={text} />
+      <Hero language={language} address='form' heading={heading} text={text} />
       <div className='inner-wrap'>
         <section className='card'>
           <div>

@@ -34,6 +34,7 @@ import {
   EStopScrollingBehaviorToUseTheMouseWheelFreely,
   ETabToABlobAndWithItInFocus,
   EToggleTheSubtleMovementOfTheBlobs,
+  ETryDraggingTheBlobs,
   EWhichBlobIsCurrentlyActiveCanBeSeenAtTheTopLeftOfTheContainer,
 } from '../../interfaces/blobs'
 import './css/blob.css'
@@ -51,7 +52,13 @@ export default function BlobPage({
 }) {
   return (
     <div className={`blob ${type}`}>
-      <Hero address='blob' heading={heading} text={text} />
+      <Hero
+        language={language}
+        address='blob'
+        heading={heading}
+        text={text}
+        instructions={ETryDraggingTheBlobs[language]}
+      />
       <div className='inner-wrap'>
         <section>
           <div className='card'>

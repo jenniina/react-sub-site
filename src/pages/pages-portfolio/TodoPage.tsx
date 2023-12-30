@@ -28,7 +28,7 @@ export default function TodoPage({
 }) {
   return (
     <div className={`todo ${type}`}>
-      <Hero address='todo' heading={heading} text={text} />
+      <Hero language={language} address='todo' heading={heading} text={text} />
       <div className='inner-wrap'>
         <section className='card'>
           <div>

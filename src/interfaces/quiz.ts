@@ -25,7 +25,6 @@ export enum EQuestionsAreInEnglish {
   cs = 'Otázky jsou v angličtině',
   fi = 'Kysymykset ovat englanniksi',
 }
-// User can choose the difficulty level (easy, medium, hard)
 export enum EUserCanChooseTheDifficultyLevel {
   en = 'User can choose the difficulty level (easy, medium, hard)',
   es = 'El usuario puede elegir el nivel de dificultad (fácil, medio, difícil)',
@@ -35,7 +34,6 @@ export enum EUserCanChooseTheDifficultyLevel {
   cs = 'Uživatel si může vybrat obtížnost (snadná, střední, těžká)',
   fi = 'Käyttäjä voi valita vaikeustason (helppo, keskitaso, vaikea)',
 }
-//User can register and login to save highscores to a MongoDB database (password is hashed)
 export enum EUserCanRegisterAndLoginToSaveHighscores {
   en = 'User can register and login to save highscores to a MongoDB database (password is hashed)',
   es = 'El usuario puede registrarse e iniciar sesión para guardar las puntuaciones más altas en una base de datos MongoDB (la contraseña está encriptada)',
@@ -45,7 +43,6 @@ export enum EUserCanRegisterAndLoginToSaveHighscores {
   cs = 'Uživatel se může zaregistrovat a přihlásit se, aby uložil nejlepší skóre do databáze MongoDB (heslo je zahashováno)',
   fi = 'Käyttäjä voi rekisteröityä ja kirjautua sisään tallentaakseen huipputulokset MongoDB-tietokantaan (salasana on salattu)',
 }
-//Test your general knowledge with these 15 questions (in English)
 export enum ETestYourGeneralKnowledgeWithThese15Questions {
   en = 'Test your general knowledge with these 15 questions (in English)',
   es = 'Pon a prueba tus conocimientos generales con estas 15 preguntas (en inglés)',
@@ -55,7 +52,6 @@ export enum ETestYourGeneralKnowledgeWithThese15Questions {
   cs = 'Otestujte své všeobecné znalosti pomocí těchto 15 otázek (v angličtině)',
   fi = 'Testaa yleistä tietämystäsi näillä 15 kysymyksellä (englanniksi)',
 }
-//Choose difficulty
 export enum EChooseDifficulty {
   en = 'Choose difficulty',
   es = 'Elige la dificultad',
@@ -92,7 +88,6 @@ export enum EHard {
   cs = 'Těžký',
   fi = 'Vaikea',
 }
-//Log in to save score
 export enum ELogInToSaveScore {
   en = 'Log in to save score',
   es = 'Inicia sesión para guardar la puntuación',
@@ -147,7 +142,6 @@ export enum EBadLuck {
   cs = 'Smůla!',
   fi = 'Huono onni!',
 }
-// Faster than before!
 export enum EFasterThanBefore {
   en = 'Faster than before!',
   es = '¡Más rápido que antes!',
@@ -157,7 +151,6 @@ export enum EFasterThanBefore {
   cs = 'Rychleji než dříve!',
   fi = 'Nopeampi kuin aiemmin!',
 }
-//You scored _ out of 300 points
 export enum EYouScored {
   en = 'You scored',
   es = 'Obtuviste',
@@ -212,7 +205,6 @@ export enum EHighscore {
   cs = 'Nejlepší skóre',
   fi = 'Huipputulos',
 }
-// points
 export enum EPoints {
   en = 'points',
   es = 'puntos',
@@ -222,7 +214,6 @@ export enum EPoints {
   cs = 'bodů',
   fi = 'pistettä',
 }
-//Quiz Menu
 export enum EBackToMenu {
   en = 'Back to Menu',
   es = 'Volver al Menú',
@@ -232,7 +223,6 @@ export enum EBackToMenu {
   cs = 'Zpět do Menu',
   fi = 'Takaisin valikkoon',
 }
-//Try again
 export enum ETryAgain {
   en = 'Try again',
   es = 'Inténtalo de nuevo',
@@ -242,7 +232,6 @@ export enum ETryAgain {
   cs = 'Zkus to znovu',
   fi = 'Yritä uudelleen',
 }
-//'Error fetching questions'
 export enum EErrorFetchingQuestions {
   en = 'Error fetching questions',
   es = 'Error al obtener preguntas',
@@ -252,7 +241,6 @@ export enum EErrorFetchingQuestions {
   cs = 'Chyba při načítání otázek',
   fi = 'Tapahtui virhe kysymysten noutamisessa',
 }
-//Quiz in progress
 export enum EQuizInProgress {
   en = 'Quiz in progress',
   es = 'Cuestionario en progreso',
@@ -298,7 +286,6 @@ export enum EQuestion {
   cs = 'Otázka',
   fi = 'Kysymys',
 }
-//Loading questions...
 export enum ELoadingQuestions {
   en = 'Loading questions...',
   es = 'Cargando preguntas...',

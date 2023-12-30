@@ -41,7 +41,7 @@ h1.h1 {
   justify-content: center;
   gap: 1em;
 }
-@media (min-width: 700px) {
+@media (min-width: 750px) {
   .difficulty,
   .reset {
     flex-flow: row nowrap;
@@ -87,6 +87,7 @@ table.highscores {
   border-collapse: collapse;
   border-spacing: 0;
   border: none;
+  max-width: 100vw;
 }
 table.highscores caption {
   font-size: var(--title-XL);
@@ -94,7 +95,6 @@ table.highscores caption {
   letter-spacing: 0.01em;
   text-align: center;
   padding: 1em 0 0.5em;
-  min-width: max-content;
 }
 
 table.highscores .th th {
@@ -108,8 +108,15 @@ table.highscores .th th {
 }
 table.highscores th,
 table.highscores td {
-  padding: 0.2em 0.5em;
+  padding: 0.6em 0;
   text-align: left;
+}
+@media (min-width: 300px) {
+  table.highscores th,
+  table.highscores td {
+    padding: 0.2em 0.5em;
+    text-align: left;
+  }
 }
 table.highscores th.score {
   text-align: right;

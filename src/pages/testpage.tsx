@@ -6,7 +6,7 @@ import useEventListener from '../hooks/useEventListener'
 import useIsOnScreen from '../hooks/useIsOnScreen'
 import useMediaQuery from '../hooks/useMediaQuery'
 import useSize from '../hooks/useSize'
-import { RefObject } from '../interfaces'
+import { ELanguages, RefObject } from '../interfaces'
 import useToggle from '../hooks/useToggle'
 
 import Hero from '../components/Hero/Hero'
@@ -55,7 +55,12 @@ export default function Home({
         .toLowerCase()
         .replace(/[^a-zA-Z]/g, '')} ${type} ${lightTheme ? styles.light : ''}`}
     >
-      <Hero address='testpage' heading={heading} text={text} />
+      <Hero
+        language={ELanguages.English}
+        address='testpage'
+        heading={heading}
+        text={text}
+      />
       <div className='inner-wrap'>
         <section className='card'>
           <div>

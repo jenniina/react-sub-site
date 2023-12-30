@@ -16,7 +16,6 @@ export enum EBackAndNextButtons {
   cs = 'Tlačítka Zpět a Další',
   fi = 'Takaisin- ja Seuraava-painikkeet',
 }
-//Slightly customized radio and checkbox inputs (size increase, added outline)
 export enum ECustomRadioAndCheckboxInputs {
   en = 'Slightly customized radio and checkbox inputs (size increase, added outline)',
   es = 'Entradas de radio y casilla de verificación ligeramente personalizadas (aumento de tamaño, contorno agregado)',
@@ -24,9 +23,8 @@ export enum ECustomRadioAndCheckboxInputs {
   de = 'Leicht angepasste Radio- und Kontrollkästcheneingaben (Größenänderung, hinzugefügter Umriss)',
   pt = 'Entradas de rádio e caixa de seleção ligeiramente personalizadas (aumento de tamanho, contorno adicionado)',
   cs = 'Mírně upravené vstupy rádia a zaškrtávací políčko (zvětšení velikosti, přidán obrys)',
-  fi = 'Hieman kustomoitudut radio- ja valintalaatikot (koon suurennus, lisätty reunus)',
+  fi = 'Hieman räätälöidyt radio- ja valintalaatikot (koon suurennus, lisätty reunus)',
 }
-//Prompt to fill in the missing required fields, before moving to the next step
 export enum EPromptToFillInRequiredFields {
   en = 'Prompt to fill in the missing required fields, before moving to the next step',
   es = 'Solicitar que complete los campos obligatorios que faltan antes de pasar al siguiente paso',
@@ -81,7 +79,6 @@ export enum EMessage {
   cs = 'Zpráva',
   fi = 'Viesti',
 }
-//Any encouraging words?
 export enum EAnyEncouragingWords {
   en = 'Any encouraging words?',
   es = '¿Alguna palabra de aliento?',
@@ -134,9 +131,8 @@ export enum EDoYouLikeMyCustomSelects {
   de = 'Gefallen Ihnen meine benutzerdefinierten Auswahlen?',
   pt = 'Você gosta dos meus selects personalizados?',
   cs = 'Líbí se vám mé vlastní výběry?',
-  fi = 'Pidätkö kustomoiduista valintakentistäni?',
+  fi = 'Pidätkö räätälöidyistä valintakentistäni?',
 }
-//GDPR consent
 export enum EGDPRConsent {
   en = 'GDPR consent',
   es = 'Consentimiento GDPR',
@@ -155,7 +151,6 @@ export enum EContactForm {
   cs = 'Kontaktní Formulář',
   fi = 'Yhteydenottolomake',
 }
-//'There was an error sending the message!'
 export enum EThereWasAnErrorSendingTheMessage {
   en = 'There was an error sending the message!',
   es = '¡Hubo un error al enviar el mensaje!',
@@ -183,7 +178,6 @@ export enum ENext {
   cs = 'Další',
   fi = 'Seuraava',
 }
-//Please fill in the form fields
 export enum EPleaseFillInTheFields {
   en = 'Please fill in the form fields',
   es = 'Por favor complete los campos del formulario',
@@ -193,7 +187,6 @@ export enum EPleaseFillInTheFields {
   cs = 'Vyplňte prosím pole formuláře',
   fi = 'Täytä lomakkeen kentät',
 }
-//"Please send me a few words, and I'll respond as soon as I can."
 export enum EPleaseSendMeAFewWords {
   en = "Please send me a few words, and I'll respond as soon as I can.",
   es = 'Por favor envíeme unas palabras y le responderé lo antes posible.',
@@ -212,7 +205,6 @@ export enum EYourEmail {
   cs = 'Váš Email',
   fi = 'Sähköpostisi',
 }
-//'Let me know what on your mind'
 export enum ELetMeKnowWhatOnYourMind {
   en = 'Let me know what on your mind',
   es = 'Hágame saber lo que tiene en mente',
@@ -231,7 +223,6 @@ export enum EBasicDetails {
   cs = 'Základní Detaily',
   fi = 'Perustiedot',
 }
-//"This contact form is split into three steps for demonstration purposes. Don't worry, it's not too long."
 export enum EThisContactFormIsSplitIntoThreeSteps {
   en = "This contact form is split into three steps for demonstration purposes. Don't worry, it's not too long.",
   es = 'Este formulario de contacto se divide en tres pasos con fines de demostración. No te preocupes, no es demasiado largo.',
@@ -241,7 +232,6 @@ export enum EThisContactFormIsSplitIntoThreeSteps {
   cs = 'Tento kontaktní formulář je pro demonstrační účely rozdělen do tří kroků. Nebojte se, není to příliš dlouhé.',
   fi = 'Tämä yhteydenottolomake on jaettu kolmeen vaiheeseen esittelytarkoituksia varten. Älä huoli, se ei ole liian pitkä.',
 }
-//Appearance needs work
 export enum EAppearanceNeedsWork {
   en = 'Appearance needs work',
   es = 'La apariencia necesita trabajo',
@@ -287,7 +277,6 @@ export enum EPersonal {
   cs = 'Osobní',
   fi = 'Henkilökohtainen',
 }
-//'Additional information'
 export enum EAdditionalInformation {
   en = 'Additional information',
   es = 'Información adicional',
@@ -297,7 +286,6 @@ export enum EAdditionalInformation {
   cs = 'Další informace',
   fi = 'Lisätietoja',
 }
-//"Don't worry, none of these are required, but definitely appreciated. Thank you for taking the time to send me a message!"
 export enum ENoneOfTheseAreRequired {
   en = "Don't worry, none of these are required, but definitely appreciated. Thank you for taking the time to send me a message!",
   es = 'No se preocupe, ninguno de estos es obligatorio, pero definitivamente se agradece. ¡Gracias por tomarse el tiempo para enviarme un mensaje!',
@@ -307,7 +295,6 @@ export enum ENoneOfTheseAreRequired {
   cs = 'Nemusíte se bát, žádný z nich není povinný, ale určitě je oceněn. Děkuji, že jste si vzali čas a poslali mi zprávu!',
   fi = 'Älä huoli, mitään näistä ei vaadita, mutta ehdottomasti arvostetaan. Kiitos, että käytit aikaasi lähettääksesi minulle viestin!',
 }
-//Color picker
 export enum EColorPicker {
   en = 'Color picker',
   es = 'Selector de color',

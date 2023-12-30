@@ -601,3 +601,81 @@ body .z {
 .max-content {
   max-width: max-content;
 }
+@media (max-width: 300px) {
+  #root .App:not(.noTooltip) .tooltipwrap {
+    --tooltip-offset: 1.5rem;
+    --tooltip-bgcolor: lightgray;
+    --tooltip-color: black;
+    position: relative;
+  }
+  #root .App:not(.noTooltip) .tooltipwrap .tooltip {
+    position: absolute;
+    top: -2.5em;
+    right: 0;
+    width: max-content;
+    height: 3rem;
+    background-color: var(--tooltip-bgcolor);
+    color: var(--tooltip-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: help;
+  }
+  #root .App:not(.noTooltip) .tooltipwrap:hover .tooltip::after,
+  #root .App:not(.noTooltip) .tooltipwrap:focus .tooltip::after {
+    position: absolute;
+    top: 0;
+    right: -50%;
+    height: max-content;
+    width: max-content;
+    content: attr(data-tooltip);
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: normal;
+    text-align: left;
+    line-height: 1;
+    background-color: var(--tooltip-bgcolor);
+    color: var(--tooltip-color);
+    padding: 0.4em 0.4em 0.4em;
+    border-radius: 5px;
+    border-bottom: gray 1px solid;
+    -webkit-box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
+    box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
+  }
+  #root .App:not(.noTooltip) .site-navigation li:first-child .tooltipwrap:hover .tooltip,
+  #root .App:not(.noTooltip) .site-navigation li:first-child .tooltipwrap:focus .tooltip {
+    right: unset;
+    left: 0;
+  }
+  #root
+    .App:not(.noTooltip)
+    .site-navigation
+    li:first-child
+    .tooltipwrap:hover
+    .tooltip::after,
+  #root
+    .App:not(.noTooltip)
+    .site-navigation
+    li:first-child
+    .tooltipwrap:focus
+    .tooltip::after {
+    right: unset;
+    left: 0;
+  }
+  #root
+    .App:not(.noTooltip)
+    .site-navigation
+    li:last-child
+    .tooltipwrap:focus
+    .tooltip::after,
+  #root
+    .App:not(.noTooltip)
+    .site-navigation
+    li:last-child
+    .tooltipwrap:hover
+    .tooltip::after {
+    right: 0;
+  }
+}

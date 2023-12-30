@@ -37,7 +37,7 @@ export default function Home({
 
   return (
     <div className={`welcome ${type} ${lightTheme ? styles.light : ''}`}>
-      <Hero address='welcome' heading={heading} text={text} />
+      <Hero language={language} address='welcome' heading={heading} text={text} />
       <div className='inner-wrap'>
         <section className={`card`}>
           <div>
@@ -62,7 +62,7 @@ export default function Home({
               <h2 className={`${styles.subheading}`}>
                 {ENewest[language]} / {EEdited[language]}
               </h2>
-              <ul className={`${styles.list}`}>
+              <ul className={`${styles.list} ${styles.extras}`}>
                 <li>
                   <Link to='/portfolio/quiz'>
                     <MdOutlineQuiz />

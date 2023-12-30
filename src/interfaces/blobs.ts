@@ -7,13 +7,6 @@ export enum ENeutral {
   cs = 'Neutrální',
   fi = 'Neutraali',
 }
-// Blobs:
-//     Draggable
-//     Blur into one another
-//     Changeable color
-//     Changeable size
-//     Cloneable
-//     Removable
 export enum EBlurIntoOneAnother {
   en = 'Blur into one another',
   es = 'Desenfoque entre sí',
@@ -59,7 +52,6 @@ export enum ERemovable {
   cs = 'Odstranitelný',
   fi = 'Poistettavissa',
 }
-//Sliders to control background
 export enum ESlidersToControlBackground {
   en = 'Sliders to control background',
   es = 'Controles deslizantes para controlar el fondo',
@@ -96,10 +88,6 @@ export enum EHue {
   cs = 'Odstín',
   fi = 'Sävy',
 }
-// Buttons to
-//     Toggle the subtle movement of the blobs
-//     Reset the blob array to a new configuration
-//     Stop scrolling behavior to use the mouse wheel freely
 export enum EButtonsTo {
   en = 'Buttons to',
   es = 'Botones para',
@@ -125,7 +113,7 @@ export enum EResetTheBlobArrayToANewConfiguration {
   de = 'Setzen Sie das Blob-Array auf eine neue Konfiguration zurück',
   pt = 'Redefinir a matriz de blobs para uma nova configuração',
   cs = 'Resetujte pole blobů na novou konfiguraci',
-  fi = 'Nollaa möhkäleiden taulukko uuteen kokoonpanoon',
+  fi = 'Nollaa möhkälemäärä uuteen kokoonpanoon',
 }
 export enum EStopScrollingBehaviorToUseTheMouseWheelFreely {
   en = 'Stop scrolling behavior to use the mouse wheel freely',
@@ -136,7 +124,6 @@ export enum EStopScrollingBehaviorToUseTheMouseWheelFreely {
   cs = 'Zastavte chování posouvání, abyste mohli myší volně používat kolečko',
   fi = 'Lopeta vierityskäyttäytyminen, jotta voit käyttää hiiren pyörää vapaasti',
 }
-// Which blob is currently active can be seen at the top left of the container
 export enum EWhichBlobIsCurrentlyActiveCanBeSeenAtTheTopLeftOfTheContainer {
   en = 'Which blob is currently active can be seen at the top left of the container',
   es = 'Qué blob está activo actualmente se puede ver en la parte superior izquierda del contenedor',
@@ -144,7 +131,7 @@ export enum EWhichBlobIsCurrentlyActiveCanBeSeenAtTheTopLeftOfTheContainer {
   de = 'Welcher Blob gerade aktiv ist, kann oben links im Container gesehen werden',
   pt = 'Qual blob está atualmente ativo pode ser visto no canto superior esquerdo do contêiner',
   cs = 'Který blob je aktuálně aktivní, lze vidět v levém horním rohu kontejneru',
-  fi = 'Mikä möhkäleistä on sillä hetkellä aktiivinen, voidaan nähdä säiliön vasemmassa yläkulmassa',
+  fi = 'Ylävasemmalta voidaan nähdä mikä möhkäleistä on sillä hetkellä aktiivinen',
 }
 export enum EPointerUse {
   en = 'Pointer use',
@@ -155,7 +142,6 @@ export enum EPointerUse {
   cs = 'Užití ukazatele',
   fi = 'Osoitinkäyttö',
 }
-//Change blob color by dragging to a color node on the sides
 export enum EChangeBlobColorByDraggingToAColorNodeOnTheSides {
   en = 'Change blob color by dragging to a color node on the sides',
   es = 'Cambiar el color del blob arrastrando a un nodo de color en los lados',
@@ -163,9 +149,8 @@ export enum EChangeBlobColorByDraggingToAColorNodeOnTheSides {
   de = 'Ändern Sie die Blob-Farbe, indem Sie sie an einen Farbknoten an den Seiten ziehen',
   pt = 'Mude a cor do blob arrastando para um nó de cor nas laterais',
   cs = 'Změňte barvu blobu přetažením na barevný uzel na stranách',
-  fi = 'Vaihda möhkäleen väri vetämällä se värin solmuun sivuilla',
+  fi = 'Vaihda möhkäleen väri vetämällä se värielementteihin jommallakummalla sivulla',
 }
-//Change blob size by dragging it to either the L or S letter on the right hand side
 export enum EChangeBlobSizeByDraggingItToEitherTheLOrSLetterOnTheRightHandSide {
   en = 'Change blob size by dragging it to either the L or S letter on the right hand side',
   es = 'Cambiar el tamaño del blob arrastrándolo a la letra L o S en el lado derecho',
@@ -173,9 +158,8 @@ export enum EChangeBlobSizeByDraggingItToEitherTheLOrSLetterOnTheRightHandSide {
   de = 'Ändern Sie die Blob-Größe, indem Sie sie an den Buchstaben L oder S auf der rechten Seite ziehen',
   pt = 'Mude o tamanho do blob arrastando-o para a letra L ou S no lado direito',
   cs = 'Velikost blobu změníte přetažením na písmeno L nebo S na pravé straně',
-  fi = 'Vaihda möhkäleen kokoa vetämällä se joko L- tai S-kirjaimeen, oikealla puolella',
+  fi = 'Vaihda möhkäleen kokoa vetämällä se joko L- tai S-kirjaimen luo, oikealla puolella',
 }
-// Change blob size by scrolling with the mouse wheel (note: you may want to disable scrolling first with the button on the top right)
 export enum EChangeBlobSizeByScrollingWithTheMouseWheel {
   en = 'Change blob size by scrolling with the mouse wheel (note: you may want to disable scrolling first with the button on the top right)',
   es = 'Cambie el tamaño del blob desplazándose con la rueda del mouse (nota: es posible que desee deshabilitar el desplazamiento primero con el botón en la parte superior derecha)',
@@ -183,9 +167,8 @@ export enum EChangeBlobSizeByScrollingWithTheMouseWheel {
   de = 'Ändern Sie die Blob-Größe, indem Sie mit dem Mausrad scrollen (Hinweis: Sie möchten möglicherweise zuerst das Scrollen mit der Schaltfläche oben rechts deaktivieren)',
   pt = 'Mude o tamanho do blob rolando com a roda do mouse (observação: você pode querer desativar a rolagem primeiro com o botão no canto superior direito)',
   cs = 'Velikost blobu změníte posouváním kolečka myši (poznámka: posouvání můžete nejprve zakázat tlačítkem v pravém horním rohu)',
-  fi = 'Vaihda möhkäleen kokoa vierittämällä hiiren pyörällä (huomaa: haluat ehkä ensin poistaa sivun vierittämisen käytöstä painikkeella oikeassa yläkulmassa)',
+  fi = 'Vaihda möhkäleen kokoa vierittämällä hiiren pyörällä (huomaa: haluat ehkä ensin poistaa sivun vierittämisen käytöstä yläoikealla olevalla painikkeella)',
 }
-//Clone a blob by dragging it to the top left plus sign
 export enum ECloneABlobByDraggingItToTheTopLeftPlusSign {
   en = 'Clone a blob by dragging it to the top left plus sign',
   es = 'Clone un blob arrastrándolo al signo más superior izquierdo',
@@ -193,9 +176,8 @@ export enum ECloneABlobByDraggingItToTheTopLeftPlusSign {
   de = 'Klonen Sie einen Blob, indem Sie ihn zum Pluszeichen oben links ziehen',
   pt = 'Clone um blob arrastando-o para o sinal de mais superior esquerdo',
   cs = 'Klonujte blob přetažením do levého horního plusu',
-  fi = 'Kloonaa möhkäle vetämällä se vasemman yläkulman plussaan',
+  fi = 'Kloonaa möhkäle vetämällä se vasemman yläkulman plussan luo',
 }
-//Remove a blob by dragging it to the bottom left x sign
 export enum ERemoveABlobByDraggingItToTheBottomLeftXSign {
   en = 'Remove a blob by dragging it to the bottom left x sign',
   es = 'Elimine un blob arrastrándolo al signo x inferior izquierdo',
@@ -203,14 +185,8 @@ export enum ERemoveABlobByDraggingItToTheBottomLeftXSign {
   de = 'Entfernen Sie einen Blob, indem Sie ihn zum unteren linken x-Zeichen ziehen',
   pt = 'Remova um blob arrastando-o para o sinal x inferior esquerdo',
   cs = 'Odstraňte blob přetažením do levého dolního x',
-  fi = 'Poista möhkäle vetämällä se vasemman alakulman x-merkkiin',
+  fi = 'Poista möhkäle vetämällä se vasemman alakulman x-merkin luo',
 }
-// Tab to a blob, and with it in focus:
-//     Press Enter to cycle through the different colors
-//     Make blob smaller by pressing '1'
-//     Make blob larger by pressing '2'
-//     Clone a blob by pressing '3' or '+'
-//     Remove a blob by pressing 'Delete' or '-'
 export enum ETabToABlobAndWithItInFocus {
   en = 'Tab to a blob, and with it in focus:',
   es = 'Tab a un blob, y con él enfocado:',
@@ -254,7 +230,7 @@ export enum ECloneABlobByPressing3Or {
   de = 'Klonen Sie einen Blob, indem Sie 3 oder + drücken',
   pt = 'Clone um blob pressionando 3 ou +',
   cs = 'Klonujte blob stisknutím 3 nebo +',
-  fi = 'Kloonaa möhkäle painamalla 3 tai +',
+  fi = 'Tee möhkäleestä kopio painamalla 3 tai +',
 }
 export enum ERemoveABlobByPressingDeleteOr {
   en = 'Remove a blob by pressing Delete or -',
@@ -319,7 +295,6 @@ export enum EMarkerOff {
   cs = 'Značka vypnuta',
   fi = 'Merkkaus pois päältä',
 }
-//Try dragging the blobs
 export enum ETryDraggingTheBlobs {
   en = 'Try dragging the blobs',
   es = 'Intente arrastrar los blobs',
@@ -327,9 +302,8 @@ export enum ETryDraggingTheBlobs {
   de = 'Versuchen Sie, die Blobs zu ziehen',
   pt = 'Tente arrastar os blobs',
   cs = 'Zkuste přetáhnout bloby',
-  fi = 'Yritä raahata möhkäleitä',
+  fi = 'Kokeile möhkäleen raahaamista',
 }
-// Selected blob: none
 export enum ESelectedBlobNone {
   en = 'Selected blob: none',
   es = 'Blob seleccionado: ninguno',
@@ -348,7 +322,6 @@ export enum ESelectedBlob {
   cs = 'Vybraný blob',
   fi = 'Valittu möhkäle',
 }
-//Reset Blobs
 export enum EResetBlobs {
   en = 'Reset Blobs',
   es = 'Restablecer Blobs',
@@ -358,7 +331,6 @@ export enum EResetBlobs {
   cs = 'Resetovat Blobs',
   fi = 'Nollaa möhkäleet',
 }
-//Adjust background lightness
 export enum EAdjustBackgroundLightness {
   en = 'Adjust background lightness',
   es = 'Ajustar la claridad del fondo',
@@ -386,7 +358,6 @@ export enum EAdjustBackgroundHue {
   cs = 'Nastavte odstín pozadí',
   fi = 'Säädä taustan sävyä',
 }
-//Reset Lightness
 export enum EResetLightness {
   en = 'Reset Lightness',
   es = 'Restablecer Claridad',
@@ -396,7 +367,6 @@ export enum EResetLightness {
   cs = 'Resetovat Světlost',
   fi = 'Nollaa vaaleus',
 }
-//Reset Saturation
 export enum EResetSaturation {
   en = 'Reset Saturation',
   es = 'Restablecer Saturación',
@@ -406,7 +376,6 @@ export enum EResetSaturation {
   cs = 'Resetovat Sytost',
   fi = 'Nollaa kylläisyys',
 }
-//Reset Hue
 export enum EResetHue {
   en = 'Reset Hue',
   es = 'Restablecer Matiz',
@@ -416,4 +385,3 @@ export enum EResetHue {
   cs = 'Resetovat Odstín',
   fi = 'Nollaa sävy',
 }
-//Stop scrolling behavior
