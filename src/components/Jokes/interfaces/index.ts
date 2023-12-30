@@ -294,7 +294,7 @@ export enum EAJokeGeneratorForTheComicallyInclined {
   de = 'Ein Witzgenerator für die komisch geneigten',
   pt = 'Um gerador de piadas para os comicamente inclinados',
   cs = 'Generátor vtipů pro komicky nakloněné',
-  fi = 'Vitsigeneraattori huumoriin taipuvaisille',
+  fi = 'Vitsigeneraattori vitsiniekoille',
 }
 export enum ESaveJoke {
   en = 'Save Joke',

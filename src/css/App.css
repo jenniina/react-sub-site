@@ -184,9 +184,6 @@ main {
 .light .nav-sub ul a:focus {
   color: var(--color-primary-9);
 }
-button.horizonal-scroll {
-  display: none;
-}
 
 /*********************************************************
 @media (min-width: 600px), (max-height: 700px) {*/
@@ -223,21 +220,21 @@ button.horizonal-scroll {
 }
 
 .nav-sub ul {
-  padding-left: 2em;
-  padding-right: 2em;
+  padding-left: 3em;
+  padding-right: 3em;
 }
 .nav-sub ul::-webkit-scrollbar {
   height: 0;
 }
 button.horizonal-scroll {
   position: absolute;
-  top: 0.05em;
+  top: 0.03em;
   display: flex;
   justify-content: center;
   align-items: center;
   background: var(--color-primary-2);
   color: var(--color-gray-lighter);
-  padding: 0;
+  padding: 0.1em;
   margin: 0;
   border: 0;
   font-size: 2em;
@@ -246,26 +243,23 @@ button.horizonal-scroll {
 }
 button.goleft {
   left: -0.1em;
+  padding-right: 0.3em;
   border-radius: 0 var(--radius-large) var(--radius-large) 0;
   box-shadow: 0.1em 0 0.2em -0.15em var(--color-primary-9),
     0 0 0.6em 0.6em var(--color-primary-2);
 }
 button.goright {
   right: -0.1em;
+  padding-left: 0.3em;
   border-radius: var(--radius-large) 0 0 var(--radius-large);
   box-shadow: -0.1em 0 0.2em -0.15em var(--color-primary-9),
     0 0 0.6em 0.6em var(--color-primary-2);
 }
-button.horizonal-scroll svg {
-  padding: 0.1em;
-}
 button.goleft svg {
   transform: rotate(-90deg);
-  padding: 0.1em;
 }
 button.goright svg {
   transform: rotate(90deg);
-  padding: 0.1em;
 }
 button.horizonal-scroll:hover,
 button.horizonal-scroll:focus,
@@ -276,7 +270,7 @@ button.horizonal-scroll:focus-visible {
   color: var(--color-gray-dark);
 }
 button.horizonal-scroll.disable {
-  opacity: 0.1;
+  opacity: 0.2;
 }
 /*} *************************************************** END media */
 

@@ -14,6 +14,7 @@ import {
   EDragAndDrop,
   EDraggable,
   EDraggableBlobs,
+  EElements,
   EElementsRotateToFaceCursor,
   EFeaturesOfThisSite,
   EFourStylesAltogether,
@@ -31,6 +32,7 @@ import {
   EMainSite,
   EMovementAccordingToPointerEnterDirection,
   EMultistepForm,
+  EPleaseReportAnyIssuesWithTheSiteToJenniina,
   EPointerEnterDirectionAwareMovement,
   EPortfolio,
   EQuizApp,
@@ -40,6 +42,7 @@ import {
   ESeeTheTopOfTheCurrentPage,
   ESettings,
   ESiteSettings,
+  ESurvey,
   ETwoStylesAtSmallScreenSizeAndTwoAtLargeScreenSize,
   EWelcome,
 } from '../interfaces'
@@ -184,6 +187,12 @@ export default function About({
                 </a>
               </p>
               <p>{ETheSiteIsTranslatedToSixLanguagesWhichWere[language]}</p>
+              <p>
+                {EPleaseReportAnyIssuesWithTheSiteToJenniina[language]}:{' '}
+                <a href='/portfolio/select?survey=true'>
+                  {ESurvey[language].toLowerCase()}
+                </a>{' '}
+              </p>
 
               <h2 id='site-features'>{EFeaturesOfThisSite[language]}</h2>
 
@@ -235,32 +244,6 @@ export default function About({
               </h3>
               <big>{EInteractiveElements[language]}</big>
               <ul className='ul'>
-                <li>
-                  {EBubbles[language]} ({ESeeTheTopOfTheCurrentPage[language]})
-                </li>
-                <ul>
-                  <li>{EHoverFocusAnimation[language]}</li>
-                  <li>{EPointerEnterDirectionAwareMovement[language]}</li>
-                </ul>
-
-                <li>
-                  {EDraggableBlobs[language]}{' '}
-                  <Link to='/portfolio'>({EPortfolio[language]})</Link>
-                  <ul>
-                    <li>{EDraggable[language]}</li>
-                    <li>{EKeyboardFocusMoveItemsWithArrowKeys[language]}</li>
-                  </ul>
-                </li>
-                <li>
-                  {EGeometricShapes[language]} <Link to='/'>({EWelcome[language]})</Link>
-                  <ul></ul>
-                </li>
-                <li>
-                  {EAlienEyes[language]} <Link to='/contact'>({EContact[language]})</Link>
-                  <ul>
-                    <li>{EElementsRotateToFaceCursor[language]}</li>
-                  </ul>
-                </li>
                 <li>{EHoverFocusAnimation[language]}</li>
                 <li>{EMovementAccordingToPointerEnterDirection[language]}</li>
                 <li>{ERemoveWithClickOrEnterWhenFocused[language]}</li>
@@ -272,6 +255,35 @@ export default function About({
                   }
                 </li>
                 <li>{EPressEscapeToSkipToResetButton[language]}</li>
+                <li>
+                  {EElements[language]}
+                  <ul>
+                    <li>
+                      {EBubbles[language]} ({ESeeTheTopOfTheCurrentPage[language]})
+                    </li>
+
+                    <li>
+                      {EDraggableBlobs[language]}{' '}
+                      <Link to='/portfolio'>({EPortfolio[language]})</Link>
+                      <ul>
+                        <li>{EDraggable[language]}</li>
+                        <li>{EKeyboardFocusMoveItemsWithArrowKeys[language]}</li>
+                      </ul>
+                    </li>
+                    <li>
+                      {EGeometricShapes[language]}{' '}
+                      <Link to='/'>({EWelcome[language]})</Link>
+                      <ul></ul>
+                    </li>
+                    <li>
+                      {EAlienEyes[language]}{' '}
+                      <Link to='/contact'>({EContact[language]})</Link>
+                      <ul>
+                        <li>{EElementsRotateToFaceCursor[language]}</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
               </ul>
 
               <h3 id='react' className='left'>

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Hero from '../../components/Hero/Hero'
 import { Select, SelectOption } from '../../components/Select/Select'
 import FormWrapper from '../../components/FormWrapper/FormWrapper'
@@ -139,6 +139,24 @@ export default function CustomSelectPage({
     }
   }
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    console.log(params.get('survey'))
+    setTimeout(() => {
+      if (params.get('survey')) {
+        //scroll to #survey
+        const survey = document.getElementById('survey')
+        if (survey) {
+          survey.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+            inline: 'nearest',
+          })
+        }
+      }
+    }, 1000)
+  }, [])
+
   return (
     <div className={`select ${type}`}>
       <Hero language={language} address='select' heading={heading} text={text} />
@@ -169,7 +187,7 @@ export default function CustomSelectPage({
               </ul>
               <div className={selectStyles['selects-container']}>
                 <h3>{ECustomSelect[language]}</h3>
-                <form ref={form} onSubmit={handleSubmit}>
+                <form ref={form} onSubmit={handleSubmit} id='survey'>
                   <FormWrapper
                     className='flex'
                     title={ESurvey[language]}

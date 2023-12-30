@@ -944,6 +944,15 @@ export enum EGeometricShapes {
   cs = 'Geometrické tvary',
   fi = 'Geometriset muodot',
 }
+export enum EElements {
+  en = 'Elements',
+  es = 'Elementos',
+  fr = 'Éléments',
+  de = 'Elemente',
+  pt = 'Elementos',
+  cs = 'Prvky',
+  fi = 'Elementit',
+}
 export enum EElementsRotateToFaceCursor {
   en = 'Elements rotate to face cursor',
   es = 'Los elementos giran para enfrentar el cursor',
@@ -1213,7 +1222,7 @@ export enum EReactSpecificAppsMadeWithViteAndTypescript {
   de = 'React-spezifische Apps mit Vite und Typescript. Jede App ist so konzipiert, dass sie sowohl mit dem Zeiger als auch mit der Tastatur zugänglich ist.',
   pt = 'Aplicativos específicos do React feitos com Vite e Typescript. Cada aplicativo é projetado para ser acessível tanto com o ponteiro quanto com o teclado.',
   cs = 'Aplikace specifické pro React vyrobené s Vite a Typescript. Každá aplikace je navržena tak, aby byla přístupná jak ukazovátkem, tak klávesnicí.',
-  fi = 'React-sovellukset, jotka on tehty Vite- ja Typescript-ohjelmilla. Jokainen sovellus on suunniteltu sekä osoittimella että näppäimistöllä käytettäväksi.',
+  fi = 'React-sovelluksia (Vite ja Typescript). Jokainen sovellus on suunniteltu sekä osoittimella että näppäimistöllä käytettäväksi.',
 }
 export enum EDependencies {
   en = 'Dependencies',
@@ -1225,13 +1234,13 @@ export enum EDependencies {
   fi = 'Riippuvuudet',
 }
 export enum EQuizAppIntro {
-  en = 'A quiz app with three difficulty levels, a timer, and a highscore list. The app uses the Open Trivia Database API to fetch questions.',
+  en = 'A quiz app with three difficulty levels, a timer, and a highscore list. The app uses the The Trivia API to fetch questions.',
   es = 'Una aplicación de cuestionario con tres niveles de dificultad, un temporizador y una lista de puntuaciones altas. La aplicación utiliza la API de la base de datos de preguntas abiertas para recuperar preguntas.',
   fr = "Une application de quiz avec trois niveaux de difficulté, une minuterie et une liste de scores élevés. L'application utilise l'API de la base de données de quiz ouverte pour récupérer des questions.",
-  de = 'Eine Quiz-App mit drei Schwierigkeitsgraden, einem Timer und einer Highscore-Liste. Die App verwendet die Open Trivia Database API, um Fragen abzurufen.',
+  de = 'Eine Quiz-App mit drei Schwierigkeitsgraden, einem Timer und einer Highscore-Liste. Die App verwendet die Trivia API, um Fragen abzurufen.',
   pt = 'Um aplicativo de questionário com três níveis de dificuldade, um temporizador e uma lista de pontuações altas. O aplicativo usa a API do banco de dados de perguntas abertas para buscar perguntas.',
-  cs = 'Aplikace kvízu se třemi obtížnostmi, časovačem a seznamem nejlepších výsledků. Aplikace používá API databáze otázek Open Trivia k získání otázek.',
-  fi = 'Tietovisailu, jossa on kolme vaikeustasoa, ajastin ja kunkin vaikeustason piste-ennätysten lista. Sovellus käyttää Open Trivia Database API:a kysymysten hakemiseen.',
+  cs = 'Aplikace kvízu se třemi obtížnostmi, časovačem a seznamem nejlepších výsledků. Aplikace používá API databáze otázek Trivia k získání otázek.',
+  fi = 'Tietovisailu, jossa on kolme vaikeustasoa, ajastin ja kunkin vaikeustason piste-ennätysten lista. Sovellus käyttää The Trivia API:a kysymysten hakemiseen.',
 }
 export enum EJokesAppIntro {
   en = 'A joke app with customizable options that uses the JokeAPI to fetch jokes.',
@@ -1520,6 +1529,16 @@ export enum ESurvey {
   pt = 'Pesquisa',
   cs = 'Průzkum',
   fi = 'Kysely',
+}
+// Please report any issues with the site to Jenniina
+export enum EPleaseReportAnyIssuesWithTheSiteToJenniina {
+  en = 'Please report any issues with the site to Jenniina',
+  es = 'Informe cualquier problema con el sitio a Jenniina',
+  fr = 'Veuillez signaler tout problème avec le site à Jenniina',
+  de = 'Bitte melden Sie Probleme mit der Website an Jenniina',
+  pt = 'Informe quaisquer problemas com o site para Jenniina',
+  cs = 'Prosím, nahlaste Jenniině jakékoliv problémy se stránkou',
+  fi = 'Pyydän ilmoittamaan sivuston ongelmista',
 }
 export enum EInstructions {
   en = 'Instructions',
