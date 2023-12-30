@@ -34,6 +34,7 @@ import {
   EExtraCategories,
   ENoJokeFoundWithThisSearchTerm,
   ECategory_fi,
+  TCategoryByLanguages,
 } from './interfaces'
 import {
   ELogin,
@@ -187,15 +188,9 @@ function Jokes({
   const titleLanguage = languageNameFromLanguage
   const [joke, setJoke] = useState<string>('')
   const [delivery, setDelivery] = useState<string>('')
-  const [categoryByLanguages, setCategoryByLanguages] = useState<
-    | typeof ECategory_en
-    | typeof ECategory_cs
-    | typeof ECategory_de
-    | typeof ECategory_es
-    | typeof ECategory_fr
-    | typeof ECategory_pt
-    | typeof ECategory_fi
-  >(categoryByLanguagesConst.en)
+  const [categoryByLanguages, setCategoryByLanguages] = useState<TCategoryByLanguages>(
+    categoryByLanguagesConst.en
+  )
   const [jokeCategory, setJokeCategory] = useState<ECategory>(
     jokeCategoryByLanguage[language].Misc
   )
@@ -243,13 +238,7 @@ function Jokes({
     let categories = jokeCategoryByLanguage[language]
 
     const categoryKeys = Object.keys(categories)
-    let cats:
-      | typeof ECategory_en
-      | typeof ECategory_es
-      | typeof ECategory_fr
-      | typeof ECategory_de
-      | typeof ECategory_pt
-      | typeof ECategory_cs = categoryKeys.reduce((obj, key) => {
+    let cats: TCategoryByLanguages = categoryKeys.reduce((obj, key) => {
       if (isCheckedJokeType && (key === 'ChuckNorris' || key === 'DadJoke')) {
         return obj
       }
@@ -260,13 +249,7 @@ function Jokes({
         ...obj,
         [key as keyof typeof categories]: categories[key as keyof typeof categories],
       }
-    }, {}) as
-      | typeof ECategory_en
-      | typeof ECategory_es
-      | typeof ECategory_fr
-      | typeof ECategory_de
-      | typeof ECategory_pt
-      | typeof ECategory_cs
+    }, {}) as TCategoryByLanguages
     return cats
   }
 
@@ -575,15 +558,7 @@ function Jokes({
     })) as SelectOption[]
   }
 
-  const optionsCategory = (
-    enumObj:
-      | typeof ECategory_en
-      | typeof ECategory_cs
-      | typeof ECategory_de
-      | typeof ECategory_es
-      | typeof ECategory_fr
-      | typeof ECategory_pt
-  ) => {
+  const optionsCategory = (enumObj: TCategoryByLanguages) => {
     return Object.entries(enumObj).map(([key, value]) => ({
       value: key,
       label: value,
@@ -599,12 +574,7 @@ function Jokes({
 
   function getKeyByValue(
     enumObj:
-      | typeof ECategory_en
-      | typeof ECategory_cs
-      | typeof ECategory_de
-      | typeof ECategory_es
-      | typeof ECategory_fr
-      | typeof ECategory_pt
+      | TCategoryByLanguages
       | typeof EJokeType
       | typeof ESafemode
       | typeof ELanguages

@@ -64,6 +64,7 @@ import {
   EJokeType,
   ESafemode,
   ETheComediansCompanion,
+  TCategoryByLanguages,
 } from './components/Jokes/interfaces'
 import { useAppDispatch } from './hooks/useAppDispatch'
 import { initializeUser } from './reducers/authReducer'
@@ -128,12 +129,7 @@ const App: FC = () => {
 
   function getKeyByValue(
     enumObj:
-      | typeof ECategory_en
-      | typeof ECategory_cs
-      | typeof ECategory_de
-      | typeof ECategory_es
-      | typeof ECategory_fr
-      | typeof ECategory_pt
+      | TCategoryByLanguages
       | typeof EJokeType
       | typeof ESafemode
       | typeof ELanguages,
@@ -157,15 +153,6 @@ const App: FC = () => {
     cs: ECategory_cs,
     fi: ECategory_fi,
   }
-
-  const categoryByLanguages = categoryByLanguagesConst[language] as
-    | typeof ECategory_en
-    | typeof ECategory_cs
-    | typeof ECategory_de
-    | typeof ECategory_es
-    | typeof ECategory_fr
-    | typeof ECategory_pt
-    | typeof ECategory_fi
 
   const options = (
     enumObj: typeof ECategory_en | typeof EJokeType | typeof ESafemode | typeof ELanguages

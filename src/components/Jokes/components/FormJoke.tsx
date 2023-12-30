@@ -28,6 +28,7 @@ import {
   ESelectExtraCategories,
   ECategory,
   ECategory_fi,
+  TCategoryByLanguages,
 } from '../interfaces'
 import { ELanguages } from '../../../interfaces'
 
@@ -40,24 +41,9 @@ interface Props {
   setLanguage: (language: ELanguages) => void
   titleSingle: ESingle
   titleTwoPart: ETwoPart
-  optionsCategory: (
-    enumObj:
-      | typeof ECategory_en
-      | typeof ECategory_es
-      | typeof ECategory_cs
-      | typeof ECategory_fr
-      | typeof ECategory_pt
-      | typeof ECategory_de
-  ) => SelectOption[]
+  optionsCategory: (enumObj: TCategoryByLanguages) => SelectOption[]
   setQuery: (query: string) => void
-  categoryByLanguages:
-    | typeof ECategory_en
-    | typeof ECategory_cs
-    | typeof ECategory_de
-    | typeof ECategory_es
-    | typeof ECategory_fr
-    | typeof ECategory_pt
-    | typeof ECategory_fi
+  categoryByLanguages: TCategoryByLanguages
   jokeCategoryByLanguage: IJokeCategoryByLanguage
   categoryValues: SelectOption[]
   setCategoryValues: (categoryValues: SelectOption[]) => void

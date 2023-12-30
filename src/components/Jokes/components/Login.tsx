@@ -7,6 +7,7 @@ import {
   ECategory_fi,
   ECategory_fr,
   ECategory_pt,
+  TCategoryByLanguages,
 } from '../interfaces'
 import Accordion from '../../Accordion/Accordion'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
@@ -36,14 +37,7 @@ interface LoginProps {
   language: ELanguages
   setLoggedIn: (loggedIn: boolean) => void
   setLanguage: (language: ELanguages) => void
-  categoryByLanguages:
-    | typeof ECategory_en
-    | typeof ECategory_cs
-    | typeof ECategory_de
-    | typeof ECategory_es
-    | typeof ECategory_fr
-    | typeof ECategory_pt
-    | typeof ECategory_fi
+  categoryByLanguages: TCategoryByLanguages
   options: (enumObj: typeof ELanguages) => SelectOption[]
   getKeyByValue: (
     enumObj: typeof ELanguages,

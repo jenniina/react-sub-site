@@ -35,6 +35,7 @@ import {
   ESubmitAJokeTo,
   IJokeSubmissionSingleJSON,
   IJokeSubmissionTwoPartJSON,
+  TCategoryByLanguages,
 } from '../interfaces'
 import {
   ESelectAnOption,
@@ -52,22 +53,8 @@ interface Props {
   language: ELanguages
   titleTwoPart: ETwoPart
   titleSingle: ESingle
-  optionsCategory: (
-    enumObj:
-      | typeof ECategory_en
-      | typeof ECategory_es
-      | typeof ECategory_cs
-      | typeof ECategory_fr
-      | typeof ECategory_pt
-      | typeof ECategory_de
-  ) => SelectOption[]
-  categoryByLanguages:
-    | typeof ECategory_en
-    | typeof ECategory_cs
-    | typeof ECategory_de
-    | typeof ECategory_es
-    | typeof ECategory_fr
-    | typeof ECategory_pt
+  optionsCategory: (enumObj: TCategoryByLanguages) => SelectOption[]
+  categoryByLanguages: TCategoryByLanguages
   jokeCategoryByLanguage: IJokeCategoryByLanguage
   options: (enumObj: typeof ELanguages) => SelectOption[]
   getKeyByValue: (

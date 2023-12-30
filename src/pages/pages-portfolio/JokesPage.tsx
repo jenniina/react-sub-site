@@ -28,6 +28,7 @@ import {
   EDarkJokesAreVisibleOnlyWhenSafeModeIsOff,
   EChuckNorrisAndDadJokesExclusivelyFeatureSinglePartJokesAnd,
   ENote,
+  TCategoryByLanguages,
 } from '../../components/Jokes/interfaces'
 import {
   EOnOff,
@@ -82,12 +83,7 @@ export default function JokesPage({
 
   function getKeyByValue(
     enumObj:
-      | typeof ECategory_en
-      | typeof ECategory_cs
-      | typeof ECategory_de
-      | typeof ECategory_es
-      | typeof ECategory_fr
-      | typeof ECategory_pt
+      | TCategoryByLanguages
       | typeof EJokeType
       | typeof ESafemode
       | typeof ELanguages,

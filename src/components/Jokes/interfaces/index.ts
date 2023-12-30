@@ -260,6 +260,15 @@ export interface IJokeCategoryByLanguage {
   fi: typeof ECategory_fi
 }
 
+export type TCategoryByLanguages =
+  | typeof ECategory_en
+  | typeof ECategory_cs
+  | typeof ECategory_de
+  | typeof ECategory_es
+  | typeof ECategory_fr
+  | typeof ECategory_pt
+  | typeof ECategory_fi
+
 export enum ETheComediansCompanion {
   en = "The Comedian's Companion",
   es = 'El Compañero del Comediante',
