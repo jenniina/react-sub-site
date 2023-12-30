@@ -137,7 +137,7 @@ export enum ENickname {
   de = 'Spitzname',
   pt = 'Apelido',
   cs = 'Přezdívka',
-  fi = 'Lempinimi',
+  fi = 'Nimimerkki',
 }
 export enum EPassword {
   en = 'Password',
@@ -590,7 +590,7 @@ export enum ECurrentNickname {
   de = 'Aktueller Spitzname',
   pt = 'Apelido atual',
   cs = 'Aktuální přezdívka',
-  fi = 'Nykyinen lempinimi',
+  fi = 'Nykyinen nimimerkki',
 }
 export enum ESelectAnOption {
   en = 'Select an option',

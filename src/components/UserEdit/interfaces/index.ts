@@ -14,7 +14,7 @@ export enum EEditPreferredNickname {
   de = 'Bevorzugten Spitznamen bearbeiten',
   pt = 'Editar apelido preferido',
   cs = 'Upravit preferovanou přezdívku',
-  fi = 'Muokkaa lempinimeä',
+  fi = 'Muokkaa nimimerkkiä',
 }
 export enum EEditPassword {
   en = 'Edit password',
