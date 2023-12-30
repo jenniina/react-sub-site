@@ -271,6 +271,7 @@ button.horizonal-scroll:focus-visible {
 }
 button.horizonal-scroll.disable {
   opacity: 0.2;
+  pointer-events: none;
 }
 /*} *************************************************** END media */
 
