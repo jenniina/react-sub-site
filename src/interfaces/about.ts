@@ -314,13 +314,13 @@ export enum EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo {
   fi = 'Huomaa, että kirjoittaja (Jenniina Laine) puhuu vain englantia ja suomea, joten pyydän käyttämään yhteydenottoon jotakin näistä kielistä.',
 }
 export enum ETheTranslationsAreDoneWithTheHelpOfGithubCopilotSo {
-  en = 'The translations are done with the help of Github Copilot, so they may not be perfect.',
-  es = 'Las traducciones se realizan con la ayuda de Github Copilot, por lo que pueden no ser perfectas.',
-  fr = 'Les traductions sont faites avec l aide de Github Copilot, elles peuvent donc ne pas être parfaites.',
-  de = 'Die Übersetzungen werden mit Hilfe von Github Copilot durchgeführt, daher sind sie möglicherweise nicht perfekt.',
-  pt = 'As traduções são feitas com a ajuda do Github Copilot, portanto, podem não ser perfeitas.',
-  cs = 'Překlady jsou prováděny s pomocí Github Copilot, takže nemusí být perfektní.',
-  fi = 'Käännökset on tehty Github Copilotin avulla, joten ne eivät ehkä ole täydellisiä.',
+  en = 'The translations are done with the help of Github Copilot (except for English and Finnish), so they may not be perfect',
+  es = 'Las traducciones se realizan con la ayuda de Github Copilot (excepto inglés y finlandés), por lo que pueden no ser perfectas',
+  fr = 'Les traductions sont faites avec l aide de Github Copilot (sauf pour l anglais et le finnois), elles peuvent donc ne pas être parfaites',
+  de = 'Die Übersetzungen werden mit Hilfe von Github Copilot durchgeführt (mit Ausnahme von Englisch und Finnisch), daher sind sie möglicherweise nicht perfekt',
+  pt = 'As traduções são feitas com a ajuda do Github Copilot (exceto inglês e finlandês), portanto, podem não ser perfeitas',
+  cs = 'Překlady jsou prováděny s pomocí Github Copilot (kromě angličtiny a finštiny), takže nemusí být perfektní',
+  fi = 'Käännökset on tehty Github Copilotin avulla (englantia ja suomea lukuunottamatta), joten ne eivät välttämättä ole täydellisiä',
 }
 export enum EReactGithubRepository {
   en = 'React Github Repository',
