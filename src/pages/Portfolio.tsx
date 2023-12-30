@@ -13,9 +13,11 @@ import {
   EMainSite,
   EMultistepForm,
   EMultistepFormIntro,
+  EPleaseReportAnyIssuesWithTheSiteToJenniina,
   EQuizApp,
   EQuizAppIntro,
   EReactSpecificAppsMadeWithViteAndTypescript,
+  ESurvey,
   EThisSiteFocusesOnReactApplications,
   ETodoAppIntro,
   RefObject,
@@ -63,6 +65,12 @@ export default function Portfolio({
               <p className={styles.introparagraph}>
                 {EThisSiteFocusesOnReactApplications[language]} <br /> <br />
                 <a href='https://jenniina.fi/#portfolio'>{EMainSite[language]}</a>
+                <br />
+                <br />
+                {EPleaseReportAnyIssuesWithTheSiteToJenniina[language]}:{' '}
+                <a href='/portfolio/select?survey=true'>
+                  {ESurvey[language].toLowerCase()}
+                </a>{' '}
               </p>
               <h2>React Apps</h2>
 

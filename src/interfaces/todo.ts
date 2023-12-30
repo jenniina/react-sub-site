@@ -32,7 +32,7 @@ export enum EAddTasksByTabbingToTheInputFieldAnd {
   de = 'Fügen Sie Aufgaben hinzu, indem Sie auf das Eingabefeld klicken und die Eingabetaste drücken oder auf die Schaltfläche Aufgabe hinzufügen klicken und die Leertaste drücken',
   pt = 'Adicione tarefas clicando no campo de entrada e pressionando Enter ou clicando no botão Adicionar tarefa e pressionando Espaço',
   cs = 'Přidejte úkoly klepnutím na vstupní pole a stisknutím klávesy Enter nebo klepnutím na tlačítko Přidat úkol a stisknutím mezerníku',
-  fi = 'Lisää tehtäviä napsauttamalla syöttökenttää ja painamalla Enter tai napsauttamalla Lisää tehtävä -painiketta ja painamalla välilyöntiä',
+  fi = 'Lisää tehtäviä siirtymällä syöttökenttään, kirjoittamalla ja painamalla Enter tai tai kirjoitettuasi siirtymällä Lisää tehtävä -painikkeeseen ja painamalla välilyöntiä',
 }
 export enum ERemoveATaskByTabbingToTheRemoveButtonAnd {
   en = 'Remove a task by tabbing to the remove-button and pressing Space, or remove all completed tasks by pressing Space on the Clear Completed Tasks button',

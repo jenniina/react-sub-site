@@ -14,7 +14,7 @@ export enum EPressEscapeToSkipToResetButton {
   de = 'Drücken Sie Escape, um zur Schaltfläche Zurücksetzen zu springen',
   pt = 'Pressione Escape para pular para o botão de redefinição',
   cs = 'Stisknutím klávesy Escape přejdete na tlačítko Reset',
-  fi = 'Paina Escape ohittaaksesi nollauspainikkeen',
+  fi = 'Paina Escape hypätäksesi nollauspainikkeeseen',
 }
 export enum EReactApps {
   en = 'React Apps',
@@ -341,11 +341,11 @@ export enum ENodeGithubRepository {
   fi = 'Node Github -repositorio',
 }
 export enum ETheSiteIsTranslatedToSixLanguagesWhichWere {
-  en = "The site is translated to six languages, which were chosen based on JokeAPI's supported languages, from which the translation idea came from. Additionally, in Finnish",
-  es = 'El sitio está traducido a seis idiomas, que fueron elegidos en función de los idiomas admitidos por JokeAPI, de donde provino la idea de la traducción. Además, en finlandés',
-  fr = 'Le site est traduit en six langues, qui ont été choisies en fonction des langues prises en charge par JokeAPI, d où est venue l idée de la traduction. De plus, en finnois',
-  de = 'Die Website ist in sechs Sprachen übersetzt, die auf den unterstützten Sprachen von JokeAPI basieren, von denen die Übersetzungsidee stammt. Zusätzlich auf Finnisch',
+  en = "The site is translated to six languages, which were chosen based on JokeAPI's supported languages, from which the translation idea came from. Additionally, in Finnish.",
+  es = 'El sitio está traducido a seis idiomas, que fueron elegidos en función de los idiomas admitidos por JokeAPI, de donde provino la idea de la traducción. Además, en finlandés.',
+  fr = 'Le site est traduit en six langues, qui ont été choisies en fonction des langues prises en charge par JokeAPI, d où est venue l idée de la traduction. De plus, en finnois.',
+  de = 'Die Website ist in sechs Sprachen übersetzt, die auf den unterstützten Sprachen von JokeAPI basieren, von denen die Übersetzungsidee stammt. Zusätzlich auf Finnisch.',
   pt = 'O site é traduzido para seis idiomas, que foram escolhidos com base nos idiomas suportados pelo JokeAPI, de onde veio a ideia de tradução. Além disso, em finlandês',
-  cs = 'Stránka je přeložena do šesti jazyků, které byly vybrány na základě podporovaných jazyků JokeAPI, ze kterých pochází myšlenka překladu. Kromě toho ve finštině',
-  fi = 'Sivusto on käännetty kuuteen kieleen, jotka valittiin JokeAPI:n tuettujen kielten perusteella, josta käännösidea tuli. Lisäksi suomeksi',
+  cs = 'Stránka je přeložena do šesti jazyků, které byly vybrány na základě podporovaných jazyků JokeAPI, ze kterých pochází myšlenka překladu. Kromě toho ve finštině.',
+  fi = 'Sivusto on käännetty kuuteen kieleen, jotka valittiin JokeAPI:n tuettujen kielten perusteella, josta käännösidea tuli. Lisäksi suomeksi.',
 }

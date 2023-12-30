@@ -122,7 +122,7 @@ export enum EStopScrollingBehaviorToUseTheMouseWheelFreely {
   de = 'Stoppen Sie das Bildlaufverhalten, um das Mausrad frei zu verwenden',
   pt = 'Pare o comportamento de rolagem para usar a roda do mouse livremente',
   cs = 'Zastavte chování posouvání, abyste mohli myší volně používat kolečko',
-  fi = 'Lopeta vierityskäyttäytyminen, jotta voit käyttää hiiren pyörää vapaasti',
+  fi = 'Lopeta sivun vieritys, jotta voit käyttää hiiren pyörää vapaasti',
 }
 export enum EWhichBlobIsCurrentlyActiveCanBeSeenAtTheTopLeftOfTheContainer {
   en = 'Which blob is currently active can be seen at the top left of the container',
