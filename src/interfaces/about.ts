@@ -293,7 +293,7 @@ export enum ETheSiteColorsLightnessesSwitchInLightMode {
   de = 'Die Helligkeiten der Website-Farben wechseln im hellen Modus, wobei var(--color-primary-1) anstelle der dunkelsten Farbe zur hellsten Farbe wird.',
   pt = 'As luminosidades das cores do site mudam no modo claro, em que var(--color-primary-1) se torna a cor mais clara em vez da mais escura.',
   cs = 'Světelnost barvy webu se přepne do světlého režimu, kde var (-- color-primary-1) se stane nejsvětlejší barvou místo nejtmavší.',
-  fi = 'Sivuston värit vaihtuvat valomoodissa, jossa var(--color-primary-1) muuttuu vaaleimmaksi väriksi tummimman sijaan.',
+  fi = 'Sivuston värit vaihtuvat vaaleassa moodissa, jossa var(--color-primary-1) muuttuu vaaleimmaksi väriksi tummimman sijaan.',
 }
 export enum EAnimatedClipPathsAndTextRotationOnHoverWithDynamicDelay {
   en = 'Animated clip-paths and text rotation on hover, with dynamic delay',
