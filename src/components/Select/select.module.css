@@ -142,7 +142,7 @@ button.clear-btn:hover {
 }
 
 .option {
-  padding: calc(var(--padding) / 2);
+  padding: calc(var(--padding) * 1.5) calc(var(--padding) / 4);
   cursor: pointer;
 }
 .options .option input[type='checkbox'],

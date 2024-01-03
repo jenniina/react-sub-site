@@ -106,3 +106,12 @@ export enum EKeyboardUseMoveToOptionWithArrowKeysAndSelectByPressingEnterOrSpace
   cs = 'Použití klávesnice: přejděte na možnost pomocí šipek a vyberte stisknutím klávesy Enter nebo mezerníku',
   fi = 'Näppäimistökäyttö: siirry vaihtoehtoon nuolinäppäimillä ja valitse painamalla Enter tai Space',
 }
+export enum ETranslations {
+  en = 'Translations',
+  es = 'Traducciones',
+  fr = 'Traductions',
+  de = 'Übersetzungen',
+  pt = 'Traduções',
+  cs = 'Překlady',
+  fi = 'Käännökset',
+}

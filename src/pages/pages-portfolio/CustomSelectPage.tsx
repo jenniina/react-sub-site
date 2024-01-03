@@ -12,7 +12,6 @@ import {
   EBubbles,
   EButtons,
   EClarificationOrFeedback,
-  EClarifiedBelow,
   ECustomSelect,
   EDarkMode,
   EDiamondShapes,
@@ -27,7 +26,6 @@ import {
   EMultiStepContactForm,
   ENavigation,
   ENoIssues,
-  ENone,
   EOptional,
   EOther,
   EPleaseOfferSomeFeedback,
@@ -40,6 +38,7 @@ import {
   EYouMaySelectMultipleOptions,
   RefObject,
 } from '../../interfaces'
+import { ETranslations } from '../../interfaces/select'
 import { sendEmail, SelectData } from './services/email'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
@@ -59,6 +58,7 @@ import {
   EWhichIntroSectionElementWasYourFavourite,
 } from '../../interfaces/select'
 import { ETodoApp } from '../../components/Todo/interfaces'
+import { EThereWasAnErrorSendingTheMessage } from '../../interfaces/form'
 
 export default function CustomSelectPage({
   heading,
@@ -71,33 +71,42 @@ export default function CustomSelectPage({
   type: string
   language: ELanguages
 }) {
-  const options1: SelectOption[] = [
-    { label: EAccessibility[language], value: EAccessibility[language] },
-    { label: EAppearance[language], value: EAppearance[language] },
-    { label: EText[language], value: EText[language] },
-    { label: EAnimation[language], value: EAnimation[language] },
-    { label: ELightMode[language], value: ELightMode[language] },
-    { label: EDarkMode[language], value: EDarkMode[language] },
-    { label: ENavigation[language], value: ENavigation[language] },
-    { label: EButtons[language], value: EButtons[language] },
-    { label: EBlobApp[language], value: EBlobApp[language] },
-    { label: EDragAndDrop[language], value: EDragAndDrop[language] },
-    { label: ETodoApp[language], value: ETodoApp[language] },
-    { label: ECustomSelect[language], value: ECustomSelect[language] },
-    { label: EMultiStepContactForm[language], value: EMultiStepContactForm[language] },
-    {
-      label: `${EOther[language]}, ${EClarifiedBelow[language]}`,
-      value: `${EOther[language]}, ${EClarifiedBelow[language]}`,
-    },
-    { label: ENoIssues[language], value: ENoIssues[language] },
-  ]
-  const options2: SelectOption[] = [
-    { label: EPleaseSelectAnOption[language], value: ENone[language] },
-    { label: EBlobs[language], value: EBlobs[language] },
-    { label: EBubbles[language], value: EBubbles[language] },
-    { label: EEyes[language], value: EEyes[language] },
-    { label: EDiamondShapes[language], value: EDiamondShapes[language] },
-  ]
+  function createSelectOptions(
+    enums: Array<Record<ELanguages, string>>,
+    language: ELanguages
+  ): SelectOption[] {
+    return enums.map((enumObj) => {
+      const label = enumObj[language]
+      return { label, value: label }
+    })
+  }
+
+  const options1 = createSelectOptions(
+    [
+      EAccessibility,
+      EAppearance,
+      EText,
+      EAnimation,
+      ELightMode,
+      EDarkMode,
+      ENavigation,
+      EButtons,
+      EBlobApp,
+      EDragAndDrop,
+      ETodoApp,
+      ECustomSelect,
+      EMultiStepContactForm,
+      ETranslations,
+      EOther,
+      ENoIssues,
+    ],
+    language
+  )
+
+  const options2 = createSelectOptions(
+    [EPleaseSelectAnOption, EBlobs, EBubbles, EEyes, EDiamondShapes],
+    language
+  )
 
   const [value1, setValue1] = useState<SelectOption[]>([])
   const [value2, setValue2] = useState<SelectOption | undefined>(options2[0])
@@ -128,23 +137,22 @@ export default function CustomSelectPage({
           setTimeout(() => {
             setShowMessage(false)
           }, 100000)
-          dispatch(notify('Thank you for your message!', false, 8))
+          dispatch(notify(EThankYouForYourMessage[language], false, 8))
         })
       } catch (error) {
         setSending(false)
         setError((error as Error).message)
         console.log('error', error)
-        dispatch(notify('There was an error sending the message!', true, 8))
+        dispatch(notify(EThereWasAnErrorSendingTheMessage[language], true, 8))
       }
     }
   }
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
-    console.log(params.get('survey'))
+
     setTimeout(() => {
       if (params.get('survey')) {
-        //scroll to #survey
         const survey = document.getElementById('survey')
         if (survey) {
           survey.scrollIntoView({

@@ -60,7 +60,7 @@ export enum EFlags_fi {
   political = 'poliittinen',
   racist = 'rasistinen',
   sexist = 'seksistinen',
-  explicit = 'tuhma',
+  explicit = 'sopimaton',
 }
 export type TFlagsLanguages = {
   en: EFlags_en
@@ -153,6 +153,15 @@ export enum EAddWarningTitle {
   fi = 'Lisää varoitus',
 }
 
+export enum EInEnglish {
+  en = 'in English',
+  es = 'en inglés',
+  fr = 'en anglais',
+  de = 'auf Englisch',
+  pt = 'em inglês',
+  cs = 'anglicky',
+}
+
 export enum ECategory_en {
   // Any = 'Any',
   Misc = 'Misc',
@@ -172,16 +181,8 @@ export enum ECategory_es {
   Pun = 'Juego de palabras',
   Spooky = 'Espeluznante',
   Christmas = 'Navidad',
-  ChuckNorris = 'Chuck Norris (en inglés)',
-  DadJoke = 'Dad Joke (en inglés)',
-}
-export enum EInEnglish {
-  en = 'in English',
-  es = 'en inglés',
-  fr = 'en anglais',
-  de = 'auf Englisch',
-  pt = 'em inglês',
-  cs = 'anglicky',
+  ChuckNorris = 'Chuck Norris',
+  DadJoke = 'Chiste de papá',
 }
 export enum ECategory_fr {
   // Any = "N'importe quel",
@@ -191,8 +192,8 @@ export enum ECategory_fr {
   Pun = 'Jeu de mots',
   Spooky = 'Effrayant',
   Christmas = 'Noël',
-  ChuckNorris = 'Chuck Norris (en anglais)',
-  DadJoke = 'Dad Joke (en anglais)',
+  ChuckNorris = 'Chuck Norris',
+  DadJoke = 'Blague de papa',
 }
 export enum ECategory_de {
   // Any = 'Jede',
@@ -202,8 +203,8 @@ export enum ECategory_de {
   Pun = 'Wortspiel',
   Spooky = 'Unheimlich',
   Christmas = 'Weihnachten',
-  ChuckNorris = 'Chuck Norris (auf Englisch)',
-  DadJoke = 'Dad Joke (auf Englisch)',
+  ChuckNorris = 'Chuck Norris',
+  DadJoke = 'Papa-Witz',
 }
 export enum ECategory_pt {
   // Any = 'Qualquer',
@@ -213,8 +214,8 @@ export enum ECategory_pt {
   Pun = 'Jogo de palavras',
   Spooky = 'Assustador',
   Christmas = 'Natal',
-  ChuckNorris = 'Chuck Norris (em inglês)',
-  DadJoke = 'Dad Joke (em inglês)',
+  ChuckNorris = 'Chuck Norris',
+  DadJoke = 'Piada de pai',
 }
 export enum ECategory_cs {
   // Any = 'Jakýkoliv',
@@ -224,8 +225,8 @@ export enum ECategory_cs {
   Pun = 'Hra slov',
   Spooky = 'Strašidelný',
   Christmas = 'Vánoce',
-  ChuckNorris = 'Chuck Norris (anglicky)',
-  DadJoke = 'Dad Joke (anglicky)',
+  ChuckNorris = 'Chuck Norris',
+  DadJoke = 'Otcovský vtip',
 }
 //translated to Finnish´:
 export enum ECategory_fi {
@@ -236,8 +237,8 @@ export enum ECategory_fi {
   Pun = 'Sanaleikki',
   Spooky = 'Kummitus',
   Christmas = 'Joulu',
-  ChuckNorris = 'Chuck Norris (englanniksi)',
-  DadJoke = 'Dad Joke (englanniksi)',
+  ChuckNorris = 'Chuck Norris',
+  DadJoke = 'Iskävitsi',
 }
 
 export type CategoryByLanguages = {
@@ -323,7 +324,7 @@ export enum EYourSavedJokes {
   de = 'Ihre gespeicherten Witze',
   pt = 'Suas piadas salvas',
   cs = 'Vaše uložené vtipy',
-  fi = 'Tallennetut vitsit',
+  fi = 'Tallentamasi vitsit',
 }
 
 export enum EJokeAlreadySaved {
@@ -446,11 +447,6 @@ export enum ESortByTitle {
   cs = 'Seřadit podle',
   fi = 'Lajittele',
 }
-export const SortBy = {
-  language: ELanguageTitle,
-  category: ECategoryTitle,
-  jokeId: { en: 'ID', es: 'ID', fr: 'ID', de: 'ID', pt: 'ID', cs: 'ID', fi: 'ID' },
-}
 export enum ESubmitAJoke {
   en = 'Submit a Joke',
   es = 'Enviar una broma',
@@ -458,7 +454,7 @@ export enum ESubmitAJoke {
   de = 'Einen Witz einreichen',
   pt = 'Enviar uma piada',
   cs = 'Odeslat vtip',
-  fi = 'Tallenna vitsi',
+  fi = 'Kirjoita oma vitsi',
 }
 
 export enum ESubmitAJokeTo {
@@ -478,7 +474,7 @@ export enum EJokeSetup {
   de = 'Einrichtung',
   pt = 'Configuração',
   cs = 'Nastavení',
-  fi = 'Asetus',
+  fi = 'Pohjustus',
 }
 export enum EJokeDelivery {
   en = 'Punchline',
@@ -487,7 +483,7 @@ export enum EJokeDelivery {
   de = 'Pointe',
   pt = 'Punchline',
   cs = 'Pointe',
-  fi = 'Punchline',
+  fi = 'Huipennus',
 }
 
 export enum ESingle {
@@ -652,12 +648,25 @@ export enum EFilterJokesBy {
 
 export interface IJokeCommonFields {
   _id?: string
-  jokeId: number | string
+  jokeId: string
   type: EJokeType
   category: ECategory
+  subCategories: string[] | undefined
   language: ELanguages
   safe: boolean
   user: IUser['_id'][]
+  flags: {
+    nsfw: boolean
+    religious: boolean
+    political: boolean
+    racist: boolean
+    sexist: boolean
+    explicit: boolean
+  }
+  private?: boolean // only for submitted jokes
+  verified?: boolean
+  anonymous?: boolean
+  author?: IUser['_id']
   createdAt?: string
   updatedAt?: string
 }
@@ -784,4 +793,276 @@ export enum ENote {
   pt = 'Nota!',
   cs = 'Poznámka!',
   fi = 'Huom!',
+}
+export enum EPublic {
+  en = 'Public',
+  es = 'Público',
+  fr = 'Public',
+  de = 'Öffentlichkeit',
+  pt = 'Público',
+  cs = 'Veřejnost',
+  fi = 'Julkinen',
+}
+export enum EPrivate {
+  en = 'Private',
+  es = 'Privado',
+  fr = 'Privé',
+  de = 'Privat',
+  pt = 'Privado',
+  cs = 'Soukromý',
+  fi = 'Yksityinen',
+}
+export enum EMaybeTryAnotherLanguage {
+  en = 'Maybe try another language?',
+  es = '¿Quizás probar otro idioma?',
+  fr = 'Peut-être essayer une autre langue?',
+  de = 'Vielleicht eine andere Sprache ausprobieren?',
+  pt = 'Talvez tente outro idioma?',
+  cs = 'Možná zkusit jiný jazyk?',
+  fi = 'Kokeile ehkä toisella kielellä?',
+}
+
+export enum EErrorDeletingJoke {
+  en = 'There was an error deleting the joke',
+  es = 'Se produjo un error al eliminar la broma',
+  fr = "Une erreur s'est produite lors de la suppression de la blague",
+  de = 'Beim Löschen des Witzes ist ein Fehler aufgetreten',
+  pt = 'Ocorreu um erro ao excluir a piada',
+  cs = 'Při mazání vtipu došlo k chybě',
+  fi = 'Vitsin poistamisessa tapahtui virhe',
+}
+export enum ESort {
+  en = 'Sort',
+  es = 'Ordenar',
+  fr = 'Trier',
+  de = 'Sortieren',
+  pt = 'Ordenar',
+  cs = 'Seřadit',
+  fi = 'Lajittele',
+}
+
+export enum EIfTheJokeIsNotPrivateVerificationIsNeeded {
+  en = 'If the joke is not private, verification is needed from the administrator',
+  es = 'Si la broma no es privada, se necesita verificación del administrador',
+  fr = "Si la blague n'est pas privée, une vérification est nécessaire de la part de l'administrateur",
+  de = 'Wenn der Witz nicht privat ist, ist eine Überprüfung durch den Administrator erforderlich',
+  pt = 'Se a piada não for particular, é necessária verificação do administrador',
+  cs = 'Pokud vtip není soukromý, je potřeba ověření od správce',
+  fi = 'Jos vitsi ei ole yksityinen, tarvitaan hallinnon vahvistus',
+}
+export enum EJokeIsSetToPrivateAndWillOnlyBeSeenByYouAndTheAdministrator {
+  en = 'Joke is set to private and will only be seen by you and the administrator',
+  es = 'La broma está configurada como privada y solo será visible para usted y el administrador',
+  fr = "La blague est définie sur privée et ne sera visible que par vous et l'administrateur",
+  de = 'Der Witz ist auf privat eingestellt und wird nur von Ihnen und dem Administrator gesehen',
+  pt = 'A piada é definida como privada e só será vista por você e pelo administrador',
+  cs = 'Vtip je nastaven na soukromý a uvidíte ho pouze vy a správce',
+  fi = 'Vitsi on asetettu yksityiseksi ja sitä näkevät vain sinä ja hallinto',
+}
+export enum EJokeIsSetToPublicAndWillNeedVerificationFromAnAdministrator {
+  en = 'Joke is set to public and will need verification from an administrator',
+  es = 'La broma está configurada como pública y necesitará verificación de un administrador',
+  fr = "La blague est définie sur publique et aura besoin d'une vérification de la part d'un administrateur",
+  de = 'Der Witz ist auf öffentlich eingestellt und muss von einem Administrator überprüft werden',
+  pt = 'A piada é definida como pública e precisará de verificação de um administrador',
+  cs = 'Vtip je nastaven na veřejný a bude potřebovat ověření od správce',
+  fi = 'Vitsi on asetettu julkiseksi ja se vaatii vahvistuksen hallinnolta',
+}
+// Joke language
+export enum EJokeLanguage {
+  en = 'Joke language',
+  es = 'Idioma de la broma',
+  fr = 'Langue de la blague',
+  de = 'Witzsprache',
+  pt = 'Idioma da piada',
+  cs = 'Jazyk vtipu',
+  fi = 'Vitsin kieli',
+}
+export enum ELocalJokes {
+  en = 'Local jokes',
+  es = 'Chistes locales',
+  fr = 'Blagues locales',
+  de = 'Lokale Witze',
+  pt = 'Piadas locais',
+  cs = 'Místní vtipy',
+  fi = 'Paikalliset vitsit',
+}
+export enum EYourJokes {
+  en = 'Your jokes',
+  es = 'Tus chistes',
+  fr = 'Vos blagues',
+  de = 'Deine Witze',
+  pt = 'Suas piadas',
+  cs = 'Vaše vtipy',
+  fi = 'Tallentamasi vitsit',
+}
+export enum EUserSubmittedJokes {
+  en = 'User submitted jokes',
+  es = 'Chistes enviados por el usuario',
+  fr = 'Blagues soumises par les utilisateurs',
+  de = 'Vom Benutzer eingereichte Witze',
+  pt = 'Piadas enviadas pelo usuário',
+  cs = 'Vtipy zaslané uživatelem',
+  fi = 'Käyttäjien lähettämät vitsit',
+}
+export enum EAnonymous {
+  en = 'Anonymous',
+  es = 'Anónimo',
+  fr = 'Anonyme',
+  de = 'Anonym',
+  pt = 'Anônimo',
+  cs = 'Anonymní',
+  fi = 'Anonyymi',
+}
+export enum EPublish {
+  en = 'Publish',
+  es = 'Publicar',
+  fr = 'Publier',
+  de = 'Veröffentlichen',
+  pt = 'Publicar',
+  cs = 'Publikovat',
+  fi = 'Julkaise',
+}
+export enum EPrivacy {
+  en = 'Privacy',
+  es = 'Privacidad',
+  fr = 'Intimité',
+  de = 'Privatsphäre',
+  pt = 'Privacidade',
+  cs = 'Soukromí',
+  fi = 'Yksityisyys',
+}
+
+export enum EPublishWithNickname {
+  en = 'Publish with nickname',
+  es = 'Publicar con apodo',
+  fr = 'Publier avec un pseudonyme',
+  de = 'Mit Spitznamen veröffentlichen',
+  pt = 'Publicar com apelido',
+  cs = 'Publikovat s přezdívkou',
+  fi = 'Julkaise nimimerkillä',
+}
+export enum EPublishAnonymously {
+  en = 'Publish anonymously',
+  es = 'Publicar anónimamente',
+  fr = 'Publier anonymement',
+  de = 'Anonym veröffentlichen',
+  pt = 'Publicar anonimamente',
+  cs = 'Publikovat anonymně',
+  fi = 'Julkaise nimettömänä',
+}
+export enum EAuthor {
+  en = 'Author',
+  es = 'Autor',
+  fr = 'Auteur',
+  de = 'Autor',
+  pt = 'Autor',
+  cs = 'Autor',
+  fi = 'Tekijä',
+}
+
+export const SortBy = {
+  language: ELanguageTitle,
+  category: ECategoryTitle,
+  author: EAuthor,
+}
+export enum ERandomJoke {
+  en = 'Random joke',
+  es = 'Broma aleatoria',
+  fr = 'Blague aléatoire',
+  de = 'Zufälliger Witz',
+  pt = 'Piada aleatória',
+  cs = 'Náhodný vtip',
+  fi = 'Satunnainen vitsi',
+}
+export enum ERandom {
+  en = 'Random',
+  es = 'Aleatorio',
+  fr = 'Aléatoire',
+  de = 'Zufällig',
+  pt = 'Aleatório',
+  cs = 'Náhodný',
+  fi = 'Satunnainen',
+}
+export enum EAllJokes {
+  en = 'All jokes',
+  es = 'Todos los chistes',
+  fr = 'Toutes les blagues',
+  de = 'Alle Witze',
+  pt = 'Todas as piadas',
+  cs = 'Všechny vtipy',
+  fi = 'Kaikki vitsit',
+}
+export enum EAll {
+  en = 'All',
+  es = 'Todos',
+  fr = 'Tout',
+  de = 'Alle',
+  pt = 'Todos',
+  cs = 'Všechny',
+  fi = 'Kaikki',
+}
+export enum EClickHereToWriteYourOwnJoke {
+  en = 'Click here to write your own joke',
+  es = 'Haga clic aquí para escribir su propia broma',
+  fr = 'Cliquez ici pour écrire votre propre blague',
+  de = 'Klicken Sie hier, um Ihren eigenen Witz zu schreiben',
+  pt = 'Clique aqui para escrever sua própria piada',
+  cs = 'Kliknutím sem napíšete vlastní vtip',
+  fi = 'Napsauta tätä kirjoittaaksesi oman vitsisi',
+}
+export enum EThereAreNoJokesInFinnish {
+  en = 'There are no jokes in Finnish',
+  es = 'No hay bromas en finlandés',
+  fr = "Il n'y a pas de blagues en finnois",
+  de = 'Es gibt keine Witze auf Finnisch',
+  pt = 'Não há piadas em finlandês',
+  cs = 'Nejsou žádné vtipy ve finštině',
+  fi = 'Suomeksi ei ole vitsejä',
+}
+export enum ESeeLocalJokes {
+  en = 'See local jokes',
+  es = 'Ver chistes locales',
+  fr = 'Voir les blagues locales',
+  de = 'Lokale Witze anzeigen',
+  pt = 'Ver piadas locais',
+  cs = 'Zobrazit místní vtipy',
+  fi = 'Katso paikalliset vitsit',
+}
+export enum ESeeLocalJokesBelow {
+  en = 'See local jokes below',
+  es = 'Ver chistes locales a continuación',
+  fr = 'Voir les blagues locales ci-dessous',
+  de = 'Lokale Witze siehe unten',
+  pt = 'Veja piadas locais abaixo',
+  cs = 'Zobrazit místní vtipy níže',
+  fi = 'Katso paikalliset vitsit alempana',
+}
+export enum ETryAnotherSearchTerm {
+  en = 'Try another search term',
+  es = 'Prueba otro término de búsqueda',
+  fr = 'Essayez un autre terme de recherche',
+  de = 'Versuchen Sie es mit einem anderen Suchbegriff',
+  pt = 'Tente outro termo de pesquisa',
+  cs = 'Zkuste jiný vyhledávací výraz',
+  fi = 'Kokeile toisella hakuehdolla',
+}
+//Ilmoita virheestä ylläpidolle
+export enum EReportErrorToAdmin {
+  en = 'Report error to admin',
+  es = 'Informar error al administrador',
+  fr = "Signaler une erreur à l'administrateur",
+  de = 'Fehler an Admin melden',
+  pt = 'Relatar erro ao administrador',
+  cs = 'Nahlásit chybu správci',
+  fi = 'Ilmoita virheestä ylläpidolle',
+}
+export enum EPerPage {
+  en = 'per page',
+  es = 'por página',
+  fr = 'par page',
+  de = 'pro Seite',
+  pt = 'por página',
+  cs = 'na stránku',
+  fi = 'per sivu',
 }

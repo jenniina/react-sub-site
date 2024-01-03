@@ -131,8 +131,9 @@ const FormLogin = ({
 
             <form onSubmit={handleLogin} className='login'>
               <div className='input-wrap'>
-                <label>
+                <label htmlFor='login-username'>
                   <input
+                    id='login-username'
                     name='username'
                     type='text'
                     value={username}
@@ -143,8 +144,9 @@ const FormLogin = ({
                 </label>
               </div>
               <div className='input-wrap'>
-                <label>
+                <label htmlFor='login-password'>
                   <input
+                    id='login-password'
                     name='password'
                     type='password'
                     required

@@ -271,6 +271,7 @@ button.horizonal-scroll:focus-visible {
 }
 button.horizonal-scroll.disable {
   opacity: 0.2;
+  pointer-events: none;
 }
 /*} *************************************************** END media */
 
@@ -672,4 +673,7 @@ body .z {
     .tooltip::after {
     right: 0;
   }
+}
+.input-wrap input[type='text' i] {
+  padding-left: 1.2em;
 }

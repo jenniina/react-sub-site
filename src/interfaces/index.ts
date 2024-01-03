@@ -55,9 +55,8 @@ export interface ReducerProps {
     secondsRemaining: number
     finalSeconds: number
   }
-  users: {
-    users: IUser[]
-  }
+  users: IUser[]
+
   auth: {
     user: IUser
     isAuthenticated: boolean
