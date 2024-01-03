@@ -674,3 +674,6 @@ body .z {
     right: 0;
   }
 }
+.input-wrap input[type='text' i] {
+  padding-left: 1.2em;
+}

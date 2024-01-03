@@ -8,6 +8,86 @@
   margin: 0 auto;
   max-width: calc(100vw - calc(var(--page-padding) * 4) - var(--scrollbar_width));
 }
+.joke-container.card > div {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--gap) * 4);
+  margin: 0 auto;
+}
+.joke-container .saved {
+  width: 100%;
+}
+.joke-container .saved .local-saved-wrap {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 0;
+  margin: 0 auto;
+}
+.joke-container .saved .local-saved-wrap button {
+  background-image: none;
+  background-color: var(--color-primary-2);
+  color: var(--color-primary-20);
+  border-width: 2px;
+  border-bottom: none;
+  border-color: var(--color-primary-8);
+  border-radius: calc(var(--border-radius) * 0.8) calc(var(--border-radius) * 0.8) 0 0;
+  outline: none;
+  padding: 0.8em 5% 0.5em;
+}
+.joke-container .saved .local-saved-wrap button.active {
+  background-color: var(--color-primary-1);
+  transform: translateY(2.2px);
+  padding-top: 0.9em;
+  padding-bottom: 0.6em;
+}
+.joke-container .saved .local-saved-wrap button:last-child {
+  transform: translateX(-2.2px);
+}
+.joke-container .saved .local-saved-wrap button:last-child.active {
+  transform: translateY(2.2px) translateX(-3px);
+}
+.joke-container .saved .local-saved-wrap button:hover,
+.joke-container .local-saved-wrap button:focus {
+  color: var(--color-primary-20);
+  border-color: var(--color-primary-13);
+  outline: none;
+}
+.joke-container .saved .saved-inner,
+.joke-container .submit-inner {
+  border: 2px solid var(--color-primary-8);
+  border-radius: 0;
+  overflow: hidden;
+}
+.joke-container .saved .saved-inner > div,
+.joke-container .submit-inner {
+  padding: 0 5% 1rem;
+}
+.joke-container .saved .saved-inner > .filler {
+  background-color: transparent;
+  background-image: linear-gradient(0deg, transparent, var(--color-primary-1));
+  height: 5rem;
+  width: 100%;
+}
+.joke-container .saved .saved-inner h3 {
+  margin-top: 0.5em;
+}
+.joke-container .submit-inner {
+  border-radius: var(--border-radius);
+}
+button#submit-new-joke {
+  flex: 1 0 100%;
+  align-self: stretch;
+  max-width: 100%;
+}
+@media (min-width: 430px) {
+  .joke-container .saved .saved-inner {
+    border-radius: calc(var(--border-radius) * 0.8);
+  }
+}
 .joke-container .accordion-container.submit-container {
   display: flex;
   flex-flow: column nowrap;
@@ -15,6 +95,14 @@
   max-width: calc(100vw - calc(var(--page-padding) * 4) - var(--scrollbar_width));
   justify-content: center;
   align-items: center;
+}
+.joke-container .accordion-container.submit-container.closed {
+  width: 100%;
+}
+.joke-container .accordion-container.submit-container.closed > button.accordion-btn.open {
+  min-width: 100%;
+  width: 100%;
+  max-width: 100%;
 }
 .joke-container .accordion-container.submit-container > div {
   flex: 1 0 100%;
@@ -37,6 +125,59 @@ form.form-submit-new {
   max-width: calc(100vw - calc(var(--page-padding) * 4) - var(--scrollbar_width));
   justify-content: center;
   align-items: center;
+}
+form.form-submit-new .toggle-wrap {
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--gap) * 2) calc(var(--gap));
+}
+form.form-submit-new .textarea-wrap {
+  width: 100%;
+  max-width: 20rem;
+}
+form.form-submit-new .textarea-wrap span {
+  display: inline-block;
+  padding-left: calc(var(--border-radius) / 3);
+  padding-bottom: calc(var(--border-radius) / 3);
+}
+form.form-submit-new textarea {
+  max-width: 20rem;
+  min-width: 100%;
+  min-height: 5.4em;
+  resize: vertical;
+  border-radius: calc(var(--border-radius) / 2);
+  padding: calc(var(--border-radius) / 4) calc(var(--border-radius) / 2);
+}
+.joke-edit-container.open {
+  display: flex;
+  flex: 1 0 50%;
+  flex-flow: column wrap;
+  gap: calc(var(--gap) * 3) var(--gap);
+  max-width: calc(100vw - calc(var(--page-padding) * 4) - var(--scrollbar_width));
+  justify-content: center;
+  align-items: center;
+}
+form.joke-edit {
+  display: flex;
+  flex-flow: column wrap;
+  gap: calc(var(--gap) * 2) var(--gap);
+  max-width: calc(100vw - calc(var(--page-padding) * 4) - var(--scrollbar_width));
+  justify-content: center;
+  align-items: center;
+  outline: 3px solid var(--color-primary-8);
+  border-radius: var(--border-radius);
+  padding: 2em 1em 1em;
+}
+form.joke-edit > div {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--gap)) calc(var(--gap) / 3);
+}
+form.joke-edit > button {
+  align-self: stretch;
 }
 .gap,
 .flex.column.center {
@@ -116,11 +257,7 @@ form.joke-form-save button.submit {
   max-width: max-content;
 }
 .search-jokes {
-  max-width: max-content;
   margin: 3em auto 2em;
-}
-.search-jokes input[type='text' i] {
-  padding-left: 1.2em;
 }
 ul.userjokeslist {
   display: flex;
@@ -205,7 +342,11 @@ form.joke > *:not(.toggle) {
   border-color: var(--color-primary-5);
 }
 .joke-container .select-container .multiple .value span {
-  padding-left: 0.6em; /* For when the multiple select is empty, with 'Select an option' */
+  padding-left: 1.4em; /* For when the multiple select is empty, with 'Select an option' */
+}
+.joke-container .select-container .multiple button.option-btn span {
+  padding-left: 0.4em;
+  padding-right: 0.2em;
 }
 
 .joke-container .select-container.category:not(.submit) {
@@ -219,8 +360,8 @@ form.joke > *:not(.toggle) {
 .joke-container .select-container.category:not(.submit).extras {
   flex: 0 0 max-content;
   max-width: max-content;
-  width: max-content;
 }
+.joke-container .select-container.category:not(.submit).narrow,
 .joke-container .select-container.category:not(.submit).extras.narrow {
   max-width: 10em;
 }
@@ -248,10 +389,10 @@ form.joke > *:not(.toggle) {
 .joke-container .input-wrap label span {
   padding-left: 0.6em;
 }
+
 .joke-container button,
 .joke-container ul.options {
   border-radius: var(--border-radius);
-  overflow: hidden;
 }
 .joke-container ul.options {
   max-height: 20em;
@@ -267,10 +408,10 @@ form.joke > *:not(.toggle) {
   padding-bottom: 0.5em;
 }
 .joke-container .option-btn {
-  padding: 0 0.5em 0 0.8em;
+  padding: 0.2em 0.5em 0.2em 0.8em;
 }
-.joke-container .multiple.container {
-  padding-left: 0.4em;
+.joke-container .multiple.container .value > span {
+  padding: 0.5em 0.4em 0.5em 0.6em;
 }
 .controls-wrap,
 .toggle-wrap {
@@ -322,37 +463,85 @@ form.joke > *:not(.toggle) {
 .toggle-wrap .toggle {
   --height: 2.1em;
 }
+.toggle-wrap .safemode.fr,
+.toggle-wrap .safemode.en,
+.toggle-wrap .public.en,
+.toggle-wrap .public.fr {
+  --width: calc(var(--height) * 3);
+}
 .toggle-wrap .safemode {
   --width: calc(var(--height) * 3.2);
 }
-.toggle-wrap .safemode.es {
+.toggle-wrap .safemode.es,
+.toggle-wrap .joketype.en {
   --width: calc(var(--height) * 3.3);
 }
-.toggle-wrap .safemode.fr,
-.toggle-wrap .safemode.en {
-  --width: calc(var(--height) * 3);
+.toggle-wrap .joketype.cs,
+.toggle-wrap .joketype.de,
+.toggle-wrap .public.cs,
+.submit.private {
+  --width: calc(var(--height) * 3.5);
+}
+.toggle-wrap .joketype.es,
+.toggle-wrap .public.fi,
+.submit.anonymous {
+  --width: calc(var(--height) * 3.7);
 }
 .toggle-wrap .safemode.cs,
 .toggle-wrap .safemode.fi {
   --width: calc(var(--height) * 4);
 }
 
-.toggle-wrap .joketype.en {
-  --width: calc(var(--height) * 3.3);
-}
-.toggle-wrap .joketype.cs,
-.toggle-wrap .joketype.de {
-  --width: calc(var(--height) * 3.5);
-}
-.toggle-wrap .joketype.es {
-  --width: calc(var(--height) * 3.7);
-}
 .toggle-wrap .joketype.fr,
 .toggle-wrap .joketype.pt,
-.toggle-wrap .joketype.fi {
+.toggle-wrap .joketype.fi,
+.toggle-wrap .public.de {
   --width: calc(var(--height) * 4.1);
 }
-
+.userjokes.localjokes {
+  --width: calc(var(--height) * 4.7);
+}
+.userjokes.localjokes.fi {
+  --width: calc(var(--height) * 5.3);
+}
+.pagination {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--gap));
+  margin: 2rem 0;
+}
+.pagination > div {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--gap) / 1.4);
+}
+.pagination button {
+  padding: 0.9rem 1.3rem;
+  border-radius: 4rem;
+  font-size: 0.8rem;
+}
+.pagination button.active {
+  background-color: transparent;
+  background-image: none;
+  color: var(--color-primary-20);
+  pointer-events: none;
+}
+.pagination input[type='number' i] {
+  max-width: 3rem;
+  border-radius: 0.4rem;
+  padding-left: 0.9rem;
+}
+.icontext {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--gap) / 2);
+}
 article {
   display: flex;
   flex-flow: column nowrap;
@@ -508,12 +697,14 @@ button.delivery.reveal p {
   .toggle-wrap .select-container.single-category-select {
     flex-flow: row wrap;
   }
+  .saved .toggle-wrap {
+    flex-flow: column nowrap;
+  }
   .toggle-wrap .select-container.sortby,
   .toggle-wrap .select-container.single-category-select {
     --width: 15em;
     flex: 0 0 max-content;
     max-width: max-content;
-    width: max-content;
   }
   .toggle-wrap .select-container.sortby > *,
   .toggle-wrap .select-container.single-category-select > * {
@@ -534,9 +725,9 @@ button.delivery.reveal p {
   }
   .joke-container .select-container.language:not(.submit),
   .joke-container .select-container.language:not(.submit) .container {
-    flex: 0 1 max-content;
-    max-width: max-content;
-    width: max-content;
+    flex: 0 1 10rem;
+    max-width: 20rem;
+    width: 10rem;
     margin: 0;
     gap: calc(var(--gap) / 2);
   }
@@ -558,14 +749,37 @@ button.delivery.reveal p {
   }
 }
 @media (min-width: 600px) {
-  .joke-container .checkbox-wrap {
-    max-width: 25em;
-    justify-content: space-between;
+  .joke-container .saved .input-wrap {
+    max-width: 16rem;
+  }
+  .joke-container .select-container.extras:not(.submit) {
+    flex-flow: row nowrap;
+  }
+  .toggle-wrap .select-container.extras:not(.submit) {
+    --width: 9em;
+    flex: 0 0 max-content;
+    max-width: max-content;
+  }
+  .toggle-wrap .select-container.extras:not(.submit) > div {
+    flex: 1 0 var(--width);
+    max-width: var(--width);
+    width: var(--width);
+    margin: 0;
+  }
+  .toggle-wrap .select-container.extras:not(.submit) .container {
+    max-width: var(--width);
+    width: var(--width);
     font-size: 0.8em;
-    gap: var(--gap) calc(var(--gap) / 2);
+  }
+  .joke-container .checkbox-wrap {
+    max-width: 100%;
+    justify-content: space-around;
+    font-size: 0.8em;
+    gap: var(--gap) 0;
   }
   .checkbox-wrap > * {
     flex: 0 0 calc(33% - var(--gap));
+    word-break: break-all;
   }
   .joke-container .select-container.category,
   .joke-container .select-container.language {
@@ -578,20 +792,18 @@ button.delivery.reveal p {
     flex-flow: row nowrap;
   }
   .joke-container .select-container.submit .container {
-    flex-basis: calc(80% - var(--gap));
-    width: calc(80% - var(--gap));
-    max-width: 20em;
+    flex-basis: calc(55% - var(--gap));
+    width: calc(60% - var(--gap));
+    max-width: 10rem;
   }
-  .joke-container .select-container.submit .instructions {
-    flex-basis: calc(20% - var(--gap));
-    width: calc(20% - var(--gap));
-    max-width: 5em;
+  .joke-container .select-container.submit > .instructions {
+    flex-basis: calc(45% - var(--gap));
+    width: calc(40% - var(--gap));
     text-align: right;
   }
   .joke-container .select-container > .instructions {
     flex: 0 0 max-content;
     max-width: max-content;
-    width: max-content;
     margin: 0;
   }
   .joke-container .select-container > .instructions {
@@ -599,11 +811,15 @@ button.delivery.reveal p {
   }
   .joke-container .multiple.container,
   .joke-container button {
-    max-width: 26em;
+    max-width: 20rem;
   }
   .joke-container .input-wrap {
-    max-width: 20em;
+    margin-top: 3rem;
+    max-width: 20rem;
     width: 100%;
+  }
+  .joke-container .input-wrap.search-jokes {
+    margin-top: 4rem;
   }
 }
 @media (min-width: 700px) {

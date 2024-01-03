@@ -1,7 +1,14 @@
 import { FormEvent, useEffect, useRef } from 'react'
 import Accordion from '../../Accordion/Accordion'
 import { useSelector } from 'react-redux'
-import { ELanguages } from '../../../interfaces'
+import {
+  EConfirmPassword,
+  EEmail,
+  ELanguages,
+  ENickname,
+  EPassword,
+  ERegister,
+} from '../../../interfaces'
 import { ReducerProps } from '../../../interfaces'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { initializeUser } from '../../../reducers/authReducer'
@@ -62,58 +69,58 @@ const Register = ({
             text='register'
             ref={formRegisterRef}
           >
-            <h2>Register</h2>
+            <h2>{ERegister[language]}</h2>
             <form onSubmit={handleRegister} className='register'>
               <div className='input-wrap'>
-                <label>
+                <label htmlFor='register-username'>
                   <input
                     required
                     type='text'
                     name='username'
-                    id='username'
+                    id='register-username'
                     value={username}
                     onChange={({ target }) => setUsername(target.value)}
                   />
-                  <span>Email</span>
+                  <span>{EEmail[language]}</span>
                 </label>
               </div>
               <div className='input-wrap'>
-                <label>
+                <label htmlFor='register-name'>
                   <input
                     required
                     type='text'
                     name='name'
-                    id='name'
+                    id='register-name'
                     value={name}
                     onChange={({ target }) => setName(target.value)}
                   />
-                  <span>Nickname</span>
+                  <span>{ENickname[language]}</span>
                 </label>
               </div>
               <div className='input-wrap'>
-                <label>
+                <label htmlFor='register-password'>
                   <input
                     required
                     type='password'
                     name='password'
-                    id='password'
+                    id='register-password'
                     value={password}
                     onChange={({ target }) => setPassword(target.value)}
                   />
-                  <span>Password</span>
+                  <span>{EPassword[language]}</span>
                 </label>
               </div>
               <div className='input-wrap'>
-                <label>
+                <label htmlFor='register-confirmPassword'>
                   <input
                     required
                     type='password'
                     name='confirmPassword'
-                    id='confirmPassword'
+                    id='register-confirmPassword'
                     value={confirmPassword}
                     onChange={({ target }) => setConfirmPassword(target.value)}
                   />
-                  <span>Confirm Password</span>
+                  <span>{EConfirmPassword[language]}</span>
                 </label>
               </div>
               <Select
@@ -135,7 +142,7 @@ const Register = ({
                   setLanguage(o?.value as ELanguages)
                 }}
               />
-              <button type='submit'>Register</button>
+              <button type='submit'>{ERegister[language]}</button>
             </form>
           </Accordion>
         </>

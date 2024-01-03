@@ -29,6 +29,7 @@ import {
   ECategory,
   ECategory_fi,
   TCategoryByLanguages,
+  IJoke,
 } from '../interfaces'
 import { ELanguages } from '../../../interfaces'
 
@@ -54,6 +55,7 @@ interface Props {
   language: ELanguages
   joke: string
   delivery?: string
+  author: string
   submitted: boolean
   reveal: boolean
   setReveal: (reveal: boolean) => void
@@ -78,6 +80,11 @@ interface Props {
   norrisCategories: SelectOption[]
   selectedNorrisCategory: SelectOption | undefined
   setSelectedNorrisCategory: (selectedNorrisCategory: SelectOption | undefined) => void
+  hasNorris: boolean
+  getCategoryInLanguage: (
+    category: ECategory_en,
+    language: ELanguages
+  ) => string | undefined
 }
 const Form = ({
   handleFormSubmit,
@@ -97,6 +104,7 @@ const Form = ({
   language,
   query,
   delivery,
+  author,
   options,
   submitted,
   isCheckedSafemode,
@@ -116,6 +124,8 @@ const Form = ({
   norrisCategories,
   selectedNorrisCategory,
   setSelectedNorrisCategory,
+  hasNorris,
+  getCategoryInLanguage,
 }: Props) => {
   const titleLanguageSelect = ESelectALanguage[language]
   const titleCategorySelect = ESelectACategory[language]
@@ -124,14 +134,14 @@ const Form = ({
   const submit = EFindAJoke[language]
   const titleAny = EAny[language]
 
-  useEffect(() => {
-    const filteredList = categoryValues?.filter(
-      (category) => category.value !== 'ChuckNorris' && category.value !== 'DadJoke'
-    )
-    isCheckedJokeType
-      ? setCategoryValues(filteredList)
-      : setCategoryValues(categoryValues)
-  }, [isCheckedJokeType])
+  // useEffect(() => {
+  //   const filteredList = categoryValues?.filter(
+  //     (category) => category.value !== 'ChuckNorris' && category.value !== 'DadJoke'
+  //   )
+  //   isCheckedJokeType
+  //     ? setCategoryValues(filteredList)
+  //     : setCategoryValues(categoryValues)
+  // }, [isCheckedJokeType])
 
   // const extrasOptions: SelectOption[] = [
   //   {
@@ -169,7 +179,7 @@ const Form = ({
   //setJokeCategory(ECategory_en.Misc)
   // }, [language])
 
-  const hasNorris = categoryValues?.find((v) => v.value === 'ChuckNorris') ? true : false
+  // const hasNorris = categoryValues?.find((v) => v.value === 'ChuckNorris') ? true : false
 
   return (
     <>
@@ -319,7 +329,7 @@ const Form = ({
 
         <div className='flex column center'>
           <div className='input-wrap '>
-            <label>
+            <label htmlFor='queryValue'>
               <input
                 type='text'
                 id='queryValue'
@@ -345,6 +355,7 @@ const Form = ({
       <Joke
         joke={joke}
         delivery={delivery}
+        author={author}
         reveal={reveal}
         currentCategory={currentCategory}
         setReveal={setReveal}
@@ -352,6 +363,7 @@ const Form = ({
         titleClickToReveal={titleClickToReveal}
         language={language}
         visibleJoke={visibleJoke}
+        getCategoryInLanguage={getCategoryInLanguage}
       />
     </>
   )

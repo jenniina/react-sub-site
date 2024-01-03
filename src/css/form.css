@@ -169,6 +169,7 @@ input:-webkit-autofill:focus {
   transition-property: transform;
   transition-timing-function: ease-in-out;
   transition-duration: 300ms;
+  font-size: 0.9rem;
 }
 .input-wrap input:focus-visible {
   outline: none;

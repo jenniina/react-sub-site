@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { IJoke as joke } from '../interfaces'
 import jokeService from '../services/jokes'
 
@@ -33,6 +33,17 @@ const jokeSlice = createSlice({
     },
     deleteUser(state, action) {
       return action.payload
+    },
+    save(state, action: PayloadAction<joke>) {
+      const newJoke = action.payload
+      const existingJoke = state.find((joke) => joke.jokeId === newJoke.jokeId)
+      if (existingJoke) {
+        // If the joke already exists in the state, update it
+        return state.map((joke) => (joke.jokeId !== newJoke.jokeId ? joke : newJoke))
+      } else {
+        // If the joke does not exist in the state, add it
+        state.push(newJoke)
+      }
     },
   },
 })
@@ -82,7 +93,7 @@ export const findJoke = (
 export const updateJoke = (joke: joke) => {
   return async (dispatch: (arg0: { payload: any; type: 'joke/editJoke' }) => void) => {
     const updatedJoke = await jokeService.update(joke)
-    dispatch({ type: 'joke/editJoke', payload: updatedJoke })
+    return dispatch({ type: 'joke/editJoke', payload: updatedJoke })
   }
 }
 
@@ -93,5 +104,5 @@ export const deleteUserFromJoke = (id: string, userId: string) => {
   }
 }
 
-export const { create, setJokes, remove, editJoke, deleteUser } = jokeSlice.actions
+export const { create, setJokes, remove, editJoke, deleteUser, save } = jokeSlice.actions
 export default jokeSlice.reducer

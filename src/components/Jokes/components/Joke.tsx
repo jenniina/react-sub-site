@@ -1,9 +1,16 @@
 import { ESave, ELanguages } from '../../../interfaces'
-import { ECategory, ESaveJoke } from '../interfaces'
+import {
+  EAuthor,
+  ECategory,
+  ECategoryTitle,
+  ECategory_en,
+  ESaveJoke,
+} from '../interfaces'
 
 interface Props {
   joke: string
   delivery?: string
+  author: string
   currentCategory: ECategory
   reveal: boolean
   visibleJoke: boolean
@@ -11,10 +18,15 @@ interface Props {
   setReveal: (reveal: boolean) => void
   handleJokeSave: (e: React.FormEvent<HTMLFormElement>) => void
   language: ELanguages
+  getCategoryInLanguage: (
+    category: ECategory_en,
+    language: ELanguages
+  ) => string | undefined
 }
 const Joke = ({
   joke,
   delivery,
+  author,
   currentCategory,
   reveal,
   setReveal,
@@ -22,17 +34,21 @@ const Joke = ({
   titleClickToReveal,
   language,
   visibleJoke,
+  getCategoryInLanguage,
 }: Props) => {
   const titleSave = ESave[language]
 
   return (
     <form
       onSubmit={handleJokeSave}
-      className={`joke-form-save ${visibleJoke ? 'fadeIn' : ''}`}
+      className={`joke-form-save ${joke && visibleJoke ? 'fadeIn' : ''}`}
     >
       <article aria-live='polite' className={`joke ${visibleJoke ? 'fadeIn' : ''}`}>
         <p className={`${visibleJoke ? 'fadeIn' : ''} ${!delivery ? 'no-delivery' : ''}`}>
-          <small>Category: {currentCategory}</small>
+          <small>
+            {ECategoryTitle[language]}:{' '}
+            {getCategoryInLanguage(currentCategory as ECategory_en, language)}
+          </small>
         </p>
         <p className={`${visibleJoke ? 'fadeIn' : ''} ${!delivery ? 'no-delivery' : ''}`}>
           {joke}
@@ -58,6 +74,15 @@ const Joke = ({
             )}
           </>
         </button>
+        {author ? (
+          <p className={`author ${visibleJoke ? 'fadeIn' : ''}`}>
+            <small>
+              {EAuthor[language]}: {author}
+            </small>
+          </p>
+        ) : (
+          ''
+        )}
       </article>
       {joke || delivery ? (
         <div className='flex center'>
