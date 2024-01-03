@@ -583,7 +583,7 @@ const UserJokes = ({
                                   }))
                                 }}
                               />
-                              <label htmlFor='edit-private'>Private:</label>
+                              {/* <label htmlFor='edit-private'>Private:</label>
                               <input
                                 type='checkbox'
                                 name='private'
@@ -596,7 +596,7 @@ const UserJokes = ({
                                     author: author._id,
                                   }))
                                 }}
-                              />
+                              /> */}
                             </div>
                             <button type='submit' className='save'>
                               {ESaveJoke[language]}
