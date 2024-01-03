@@ -258,17 +258,22 @@ const UserJokes = ({
         ('delivery' in joke
           ? joke.delivery?.toLowerCase().includes(searchTerm.toLowerCase())
           : false) ||
-        joke.author?.toLowerCase().includes(searchTerm.toLowerCase())
+        joke.author?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        joke.category?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        joke.subCategories?.includes(searchTerm?.toLowerCase())
+
+      const categoryMatches = selectedCategory ? joke.category === selectedCategory : true
+
+      const norrisCategoryMatches =
+        selectedNorrisCategory?.value !== ''
+          ? joke.subCategories?.includes(selectedNorrisCategory?.value as string)
+          : true
 
       if (localJokes && joke.private === false && joke.verified === true) {
-        return searchTermMatches
-      } else if (joke.user.includes(userId) && joke.verified === true) {
-        return searchTermMatches
+        return categoryMatches && searchTermMatches
+      } else if (!localJokes && joke.user.includes(userId)) {
+        return categoryMatches && searchTermMatches
       } else {
-        // If localJokes is false, filter by category or search term
-        if (joke.user.includes(userId) && joke.category === selectedCategory) {
-          return searchTermMatches
-        }
         return false
       }
     })
@@ -398,7 +403,7 @@ const UserJokes = ({
                 { label: ESelectACategory[language], value: '' },
                 ...Array.from(
                   new Set(
-                    filteredJokes //?.filter((joke) => joke.user.includes(userId))
+                    jokes //?.filter((joke) => joke.user.includes(userId))
                       ?.map((joke) => joke.category)
                   )
                 ).map((category) => {
