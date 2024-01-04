@@ -570,7 +570,8 @@ const UserJokes = ({
                       ) : (
                         ''
                       )}
-                      {hasNorris &&
+                      {joke.subCategories &&
+                      joke.subCategories?.length > 0 &&
                       joke.subCategories?.find((category) => category !== 'any') ? (
                         <span>
                           {joke.subCategories
