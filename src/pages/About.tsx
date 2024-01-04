@@ -182,7 +182,7 @@ export default function About({
                 </a>
               </p>
               <p>
-                <a href='https://github.com/jenniina/joke-backend'>
+                <a href='https://github.com/jenniina/react-sub-site-backend'>
                   {ENodeGithubRepository[language]}
                 </a>
               </p>
