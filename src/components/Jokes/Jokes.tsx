@@ -368,7 +368,6 @@ function Jokes({
         }
       } else return
     }
-  console.log(jokes)
 
   const handleUpdate =
     (id: IJoke['_id'], joke: IJoke) =>
@@ -580,7 +579,6 @@ function Jokes({
           j.category === saveJoke?.category
       )
       if (findJoke) {
-        console.log('findJoke.user', findJoke.user, 'user._id', user._id)
         if (findJoke.user.includes(user._id?.toString())) {
           dispatch(notify(`${titleJokeAlreadySaved}`, false, 8))
           return
@@ -700,7 +698,6 @@ function Jokes({
   const users = useSelector((state: ReducerProps) => {
     return state.users
   })
-  console.log(saveJoke)
   // Fetch joke from API or database
   const fetchApi = async () => {
     setLoading(true)
@@ -928,9 +925,9 @@ function Jokes({
       //         ?.split(',')
       //         .filter((category) => category !== 'ChuckNorris' && category !== 'DadJoke')
       //         .join(',')
-      console.log(
-        `https://v2.jokeapi.dev/joke/${category}?${queryKey}${queryValue}lang=${language}&format=json${safemode}&type=${jokeType}`
-      )
+      // console.log(
+      //   `https://v2.jokeapi.dev/joke/${category}?${queryKey}${queryValue}lang=${language}&format=json${safemode}&type=${jokeType}`
+      // )
 
       fetch(
         `https://v2.jokeapi.dev/joke/${category}?${queryKey}${queryValue}lang=${language}&format=json${safemode}&type=${jokeType}`
