@@ -43,6 +43,7 @@
   transform: translateY(2.2px);
   padding-top: 0.9em;
   padding-bottom: 0.6em;
+  pointer-events: none;
 }
 .joke-container .saved .local-saved-wrap button:last-child {
   transform: translateX(-2.2px);
@@ -52,8 +53,8 @@
 }
 .joke-container .saved .local-saved-wrap button:hover,
 .joke-container .local-saved-wrap button:focus {
-  color: var(--color-primary-20);
-  border-color: var(--color-primary-13);
+  color: var(--color-primary-16);
+  border-top-color: var(--color-primary-15);
   outline: none;
 }
 .joke-container .saved .saved-inner,
@@ -307,6 +308,9 @@ section.joke-container > div::after {
 .userjokeslist li .primary-wrap {
   display: flex;
   flex-flow: column nowrap;
+}
+.userjokeslist li .primary-wrap button.delivery p {
+  text-align: left;
 }
 .userjokeslist li .secondary-wrap {
   display: flex;
@@ -756,7 +760,7 @@ button.delivery.reveal p {
     flex-flow: row nowrap;
   }
   .toggle-wrap .select-container.extras:not(.submit) {
-    --width: 9em;
+    --width: 10em;
     flex: 0 0 max-content;
     max-width: max-content;
   }
