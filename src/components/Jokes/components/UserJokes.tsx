@@ -625,12 +625,8 @@ const UserJokes = ({
                                 id='edit-anonymous'
                                 defaultChecked={joke.anonymous}
                                 onChange={() => {
-                                  const {
-                                    _id,
-                                    visible,
-                                    translatedLanguage,
-                                    ...restOfJoke
-                                  } = joke
+                                  const { visible, translatedLanguage, ...restOfJoke } =
+                                    joke
                                   setNewJoke(() => ({
                                     ...restOfJoke,
                                     anonymous: !joke.anonymous,
@@ -644,12 +640,8 @@ const UserJokes = ({
                                 id='edit-private'
                                 defaultChecked={joke.private}
                                 onChange={() => {
-                                  const {
-                                    _id,
-                                    visible,
-                                    translatedLanguage,
-                                    ...restOfJoke
-                                  } = joke
+                                  const { visible, translatedLanguage, ...restOfJoke } =
+                                    joke
                                   setNewJoke(() => ({
                                     ...restOfJoke,
                                     private: !joke.private,
