@@ -42,6 +42,11 @@ import {
   ESaveJoke,
   IJokeSingle,
   IJokeTwoPart,
+  CategoryByLanguagesConst,
+  CategoryByLanguages,
+  EOrderBy,
+  EPendingVerification,
+  ESelectCategory,
 } from '../interfaces'
 import {
   IUser,
@@ -87,8 +92,6 @@ import Accordion from '../../Accordion/Accordion'
 //   }
 // }
 
-type IJokeVisible = IJoke & { visible: boolean }
-
 interface Props {
   titleSaved: ESavedJoke
   jokes: IJoke[]
@@ -123,7 +126,7 @@ interface Props {
 enum ESortBy {
   category = 'category',
   language = 'language',
-  author = 'author',
+  name = 'name',
 }
 
 const UserJokes = ({
@@ -147,29 +150,51 @@ const UserJokes = ({
   norrisCategories,
   getCategoryInLanguage,
 }: Props) => {
+  const users = useSelector((state: any) => state.users)
+
+  type IJokeVisible = IJoke & {
+    visible: boolean
+    translatedLanguage: string
+    name: string
+  }
+
   //add visible to jokes
   const withVisibility: IJokeVisible[] =
     Array.isArray(jokes) && jokes?.length > 0
       ? jokes?.map((joke) => {
-          return { ...joke, visible: false }
+          const author = users.find((user: IUser) => user._id == joke.author)
+          const jokeLanguage = LanguageOfLanguage[
+            language as keyof typeof ELanguagesLong
+          ][
+            getKeyofEnum(
+              ELanguages,
+              joke.language as ELanguages
+            ) as keyof TLanguageOfLanguage[ELanguages]
+          ] as TLanguageOfLanguage[keyof typeof ELanguagesLong][keyof TLanguageOfLanguage[ELanguages]]
+          return {
+            ...joke,
+            visible: false,
+            translatedLanguage: jokeLanguage ?? '',
+            name: joke.anonymous ? '_Anonymous' : author?.name ?? '',
+          }
         })
       : []
   const [userJokes, setUserJokes] = useState<IJokeVisible[]>(withVisibility)
   const [visibleJokes, setVisibleJokes] = useState<Record<IJoke['jokeId'], boolean>>({})
   const [localJokes, setLocalJokes] = useState<boolean>(false)
-  const [filteredJokes, setFilteredJokes] = useState<IJokeVisible[]>([])
+  const [filteredJokes, setFilteredJokes] = useState<IJokeVisible[]>(withVisibility)
   const [isRandom, setIsRandom] = useState<boolean>(false)
   const [randomTrigger, setRandomTrigger] = useState<number>(0)
   const [sortBy, setSortBy] = useState<ESortBy>(ESortBy.category)
   const [searchTerm, setSearchTerm] = useState<string>('')
-  const [selectedCategory, setSelectedCategory] = useState<ECategory | ''>('')
+  const [selectedCategory, setSelectedCategory] = useState<
+    ECategory_en | 'ChuckNorris' | ''
+  >('')
   const [hasNorris, setHasNorris] = useState(false)
   const [selectedNorrisCategory, setSelectedNorrisCategory] = useState<
     SelectOption | undefined
   >(norrisCategories[0])
   const [newJoke, setNewJoke] = useState<IJoke>()
-
-  const users = useSelector((state: any) => state.users)
 
   const dispatch = useAppDispatch()
 
@@ -178,7 +203,8 @@ const UserJokes = ({
   }, [])
 
   useEffect(() => {
-    const norrisExists = selectedCategory === ECategory_en.ChuckNorris
+    const norrisExists =
+      selectedCategory === ECategory_en.ChuckNorris || selectedCategory === 'ChuckNorris'
     setHasNorris(norrisExists)
   }, [selectedCategory])
 
@@ -188,7 +214,7 @@ const UserJokes = ({
   }
 
   const handleSelectChange = (o: SelectOption) => {
-    setSelectedCategory(o.value as ECategory)
+    setSelectedCategory(o.value as ECategory_en)
   }
 
   useEffect(() => {
@@ -207,28 +233,19 @@ const UserJokes = ({
   }, [])
 
   useEffect(() => {
-    const jokesWithAuthorNames = withVisibility?.map((joke) => {
-      const author = users.find((user: IUser) => user._id == joke.author)
-      return { ...joke, author: author?.name }
-    })
-
     const sortedJokes =
-      !isCheckedSafemode && jokesWithAuthorNames !== undefined
-        ? jokesWithAuthorNames
+      !isCheckedSafemode && withVisibility !== undefined
+        ? withVisibility
             .filter((joke) => joke.safe === false)
             .sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1))
-        : isCheckedSafemode && jokesWithAuthorNames !== undefined
-        ? jokesWithAuthorNames
+        : isCheckedSafemode && withVisibility !== undefined
+        ? withVisibility
             .filter((joke) => joke.safe)
             .sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1))
         : ''
 
-    setUserJokes(sortedJokes as IJokeVisible[])
+    setUserJokes(sortedJokes as unknown as IJokeVisible[])
   }, [jokes, isCheckedSafemode, sortBy])
-
-  const handleToggleChangeLocalJokes = () => {
-    setLocalJokes(!localJokes)
-  }
 
   useEffect(() => {
     if (!userId) {
@@ -258,21 +275,22 @@ const UserJokes = ({
         ('delivery' in joke
           ? joke.delivery?.toLowerCase().includes(searchTerm.toLowerCase())
           : false) ||
-        joke.author?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        joke.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         joke.category?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        joke.subCategories?.includes(searchTerm?.toLowerCase())
+        joke.subCategories?.includes(searchTerm?.toLowerCase()) ||
+        joke.translatedLanguage?.toLowerCase().includes(searchTerm.toLowerCase())
 
       const categoryMatches = selectedCategory ? joke.category === selectedCategory : true
 
       const norrisCategoryMatches =
-        selectedNorrisCategory?.value !== ''
+        selectedNorrisCategory?.value !== '' && selectedNorrisCategory?.value !== 'any'
           ? joke.subCategories?.includes(selectedNorrisCategory?.value as string)
           : true
 
       if (localJokes && joke.private === false && joke.verified === true) {
-        return categoryMatches && searchTermMatches
+        return categoryMatches && norrisCategoryMatches && searchTermMatches
       } else if (!localJokes && joke.user.includes(userId)) {
-        return categoryMatches && searchTermMatches
+        return categoryMatches && norrisCategoryMatches && searchTermMatches
       } else {
         return false
       }
@@ -285,7 +303,15 @@ const UserJokes = ({
     } else {
       setFilteredJokes(newFilteredJokes)
     }
-  }, [localJokes, userJokes, selectedCategory, searchTerm, isRandom, randomTrigger])
+  }, [
+    localJokes,
+    userJokes,
+    selectedCategory,
+    selectedNorrisCategory,
+    searchTerm,
+    isRandom,
+    randomTrigger,
+  ])
 
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [itemsPerPage, setItemsPerPage] = useState<number>(10)
@@ -301,6 +327,16 @@ const UserJokes = ({
   const pageNumbers: number[] = []
   for (let i = 1; i <= Math.ceil(filteredJokes.length / itemsPerPage); i++) {
     pageNumbers.push(i)
+  }
+
+  const handleCategoryChange = (category: string) => {
+    let modifiedCategory: ECategory_en | '' = category as ECategory_en | ''
+    if (category === 'Chuck Norris') {
+      modifiedCategory = 'ChuckNorris' as ECategory_en
+    } else if (category === 'Dad Joke') {
+      modifiedCategory = 'DadJoke' as ECategory_en
+    }
+    setSelectedCategory(modifiedCategory)
   }
 
   const pagination = () => (
@@ -372,7 +408,7 @@ const UserJokes = ({
               language={language}
               id='sortby'
               className='sortby'
-              instructions={`${ESortByTitle[language]}:`}
+              instructions={`${EOrderBy[language]}:`}
               options={optionsSortBy(SortBy)}
               value={
                 {
@@ -398,32 +434,43 @@ const UserJokes = ({
               language={language}
               id='single-category-select'
               className='single-category-select'
-              instructions={`${titleCategory}:`}
+              instructions={`${ESelectCategory[language]}:`}
               options={[
+                // { label: ESelectACategory[language], value: '' },
+                // ...Array.from(
+                //   new Set(
+                //     jokes //?.filter((joke) => joke.user.includes(userId))
+                //       ?.map((joke) => joke.category)
+                //   )
+                // ).map((category) => {
+                //   return {
+                //     label: category,
+                //     value: category,
+                //   }
+                // }),
                 { label: ESelectACategory[language], value: '' },
-                ...Array.from(
-                  new Set(
-                    jokes //?.filter((joke) => joke.user.includes(userId))
-                      ?.map((joke) => joke.category)
-                  )
-                ).map((category) => {
+                ...(Object.values(ECategory_en).map((category) => {
                   return {
-                    label: category,
+                    label: getCategoryInLanguage(category, language),
                     value: category,
                   }
-                }),
+                }) as SelectOption[]),
               ]}
               value={
                 selectedCategory
                   ? ({
-                      label: selectedCategory,
+                      label: getCategoryInLanguage(
+                        selectedCategory as ECategory_en,
+                        language
+                      ),
                       value: selectedCategory,
                     } as SelectOption)
                   : { label: ESelectACategory[language], value: '' }
               }
               onChange={(o) => {
-                setSelectedCategory(o?.value as ECategory)
+                setSelectedCategory(o?.value as ECategory_en)
                 handleSelectChange(o as SelectOption)
+                handleCategoryChange(o?.value as string)
               }}
             />
 
@@ -472,15 +519,14 @@ const UserJokes = ({
           <ul className='userjokeslist'>
             {currentItems && currentItems?.length > 0 ? (
               currentItems?.map((joke) => {
-                const author = users.find((user: IUser) => user.name == joke.author)
                 return (
-                  <li key={joke.jokeId}>
+                  <li key={joke._id}>
                     <div className='primary-wrap'>
                       {joke.type === EJokeType.single ? (
-                        <p className='flex center textcenter'>{joke.joke}</p>
+                        <p className=''>{joke.joke}</p>
                       ) : (
                         <div>
-                          <p className='flex center textcenter'>{joke.setup}</p>
+                          <p className=''>{joke.setup}</p>
                           <p>
                             {joke.delivery ? (
                               <button
@@ -524,17 +570,18 @@ const UserJokes = ({
                       ) : (
                         ''
                       )}
+                      {hasNorris &&
+                      joke.subCategories?.find((category) => category !== 'any') ? (
+                        <span>
+                          {joke.subCategories
+                            ?.filter((category) => category !== 'any')
+                            .join(', ')}
+                        </span>
+                      ) : (
+                        ''
+                      )}
                       <span>
-                        {translateWordLanguage}:{' '}
-                        {
-                          /* LanguageOfLanguage['en']['English'] */
-                          LanguageOfLanguage[language as keyof typeof ELanguagesLong][
-                            getKeyofEnum(
-                              ELanguages,
-                              joke.language as ELanguages
-                            ) as keyof TLanguageOfLanguage[ELanguages]
-                          ] as TLanguageOfLanguage[keyof typeof ELanguagesLong][keyof TLanguageOfLanguage[ELanguages]]
-                        }
+                        {translateWordLanguage}: {joke.translatedLanguage}
                         {/* {
                     // LanguageOfLanguage['en']['English'] 
                     LanguageOfLanguage[language as keyof typeof ELanguagesLong][
@@ -544,25 +591,22 @@ const UserJokes = ({
                       ) as keyof (typeof LanguageOfLanguage)[typeof language]
                     ]
                   } */}
-                        {/* {
-                    getKeyofEnum(
-                      ELanguages,
-                      joke.language as ELanguages
-                    ) as keyof typeof ELanguages
-                  } */}
                       </span>
                       {joke.anonymous ? (
                         <span>{EAnonymous[language]} </span>
                       ) : joke.anonymous === false ? (
                         <span>
-                          {EAuthor[language]}: {joke.author}
+                          {EAuthor[language]}: {joke.name}
                         </span>
                       ) : (
                         ''
                       )}
                       {/* <span>ID: {joke.jokeId}</span> */}
+                      {joke.private === false && joke.verified === false && (
+                        <span>{EPendingVerification[language]}</span>
+                      )}
 
-                      {userId && joke.user.includes(userId) && author?._id === userId && (
+                      {userId && joke.user.includes(userId) && joke.author === userId && (
                         <Accordion
                           language={language}
                           className='joke-edit'
@@ -581,27 +625,37 @@ const UserJokes = ({
                                 id='edit-anonymous'
                                 defaultChecked={joke.anonymous}
                                 onChange={() => {
+                                  const {
+                                    _id,
+                                    visible,
+                                    translatedLanguage,
+                                    ...restOfJoke
+                                  } = joke
                                   setNewJoke(() => ({
-                                    ...joke,
+                                    ...restOfJoke,
                                     anonymous: !joke.anonymous,
-                                    author: author._id,
                                   }))
                                 }}
                               />
-                              {/* <label htmlFor='edit-private'>Private:</label>
+                              <label htmlFor='edit-private'>Private:</label>
                               <input
                                 type='checkbox'
                                 name='private'
                                 id='edit-private'
                                 defaultChecked={joke.private}
                                 onChange={() => {
+                                  const {
+                                    _id,
+                                    visible,
+                                    translatedLanguage,
+                                    ...restOfJoke
+                                  } = joke
                                   setNewJoke(() => ({
-                                    ...joke,
+                                    ...restOfJoke,
                                     private: !joke.private,
-                                    author: author._id,
                                   }))
                                 }}
-                              /> */}
+                              />
                             </div>
                             <button type='submit' className='save'>
                               {ESaveJoke[language]}

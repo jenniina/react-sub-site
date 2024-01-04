@@ -43,6 +43,8 @@ import {
   ETryAnotherSearchTerm,
   IJokeSingle,
   IJokeTwoPart,
+  EAreYouSureYouWantToMakeThisJokePublic,
+  EAreYouSureYouWantToMakeThisJokePrivate,
 } from './interfaces'
 import {
   ELogin,
@@ -66,6 +68,7 @@ import {
   createJoke,
   deleteUserFromJoke,
   initializeJokes,
+  removeDuplicateJoke,
   save,
   updateJoke,
 } from './reducers/jokeReducer'
@@ -365,6 +368,7 @@ function Jokes({
         }
       } else return
     }
+  console.log(jokes)
 
   const handleUpdate =
     (id: IJoke['_id'], joke: IJoke) =>
@@ -375,16 +379,58 @@ function Jokes({
         dispatch(notify(`${titleError}!`, true, 8))
         return
       }
-      dispatch(updateJoke(joke))
-        .then(() => {
-          dispatch(initializeJokes())
-        })
-        .catch((e) => {
-          console.log(e)
-          if (e.code === 'ERR_BAD_RESPONSE')
-            dispatch(notify(`${EError[language]}: ${e.response.data.message}`, true, 8))
-          else dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
-        })
+      const update = () => {
+        if (jokeObject.private === true && joke.private === false) {
+          dispatch(updateJoke({ ...joke, private: true, verified: false }))
+            .then(() => {
+              dispatch(initializeJokes())
+            })
+            .then(() => {
+              dispatch(updateJoke({ ...joke, verified: false })).catch((e) => {
+                console.log(e)
+                if (e.code === 'ERR_BAD_RESPONSE')
+                  dispatch(
+                    notify(`${EError[language]}: ${e.response.data.message}`, true, 8)
+                  )
+                else dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
+              })
+            })
+            .then(() => {
+              dispatch(initializeJokes())
+              dispatch(notify(`${titleSaved}`, false, 8))
+            })
+            .catch((e) => {
+              console.log(e)
+              if (e.code === 'ERR_BAD_RESPONSE')
+                dispatch(
+                  notify(`${EError[language]}: ${e.response.data.message}`, true, 8)
+                )
+              else dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
+            })
+        } else
+          dispatch(updateJoke(joke))
+            .then(() => {
+              dispatch(initializeJokes())
+              dispatch(notify(`${titleSaved}`, false, 8))
+            })
+            .catch((e) => {
+              console.log(e)
+              if (e.code === 'ERR_BAD_RESPONSE')
+                dispatch(
+                  notify(`${EError[language]}: ${e.response.data.message}`, true, 8)
+                )
+              else dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
+            })
+      }
+      if (jokeObject.private === true && joke.private === false) {
+        if (window.confirm(EAreYouSureYouWantToMakeThisJokePublic[language])) {
+          update()
+        }
+      } else if (jokeObject.private === false && joke.private === true) {
+        if (window.confirm(EAreYouSureYouWantToMakeThisJokePrivate[language])) {
+          update()
+        }
+      } else update()
     }
 
   const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
@@ -534,7 +580,8 @@ function Jokes({
           j.category === saveJoke?.category
       )
       if (findJoke) {
-        if (findJoke.user.includes(user._id)) {
+        console.log('findJoke.user', findJoke.user, 'user._id', user._id)
+        if (findJoke.user.includes(user._id?.toString())) {
           dispatch(notify(`${titleJokeAlreadySaved}`, false, 8))
           return
         }
@@ -622,7 +669,7 @@ function Jokes({
         false
           ? !Object.values(jokeData.categories).some((value) => value)
           : true,
-      user: user ? [user._id] : [],
+      user: jokeData.user,
       flags: {
         nsfw: jokeData.categories?.nsfw ?? false,
         religious: jokeData.categories?.religion ?? false,
@@ -653,7 +700,7 @@ function Jokes({
   const users = useSelector((state: ReducerProps) => {
     return state.users
   })
-
+  console.log(saveJoke)
   // Fetch joke from API or database
   const fetchApi = async () => {
     setLoading(true)
@@ -692,6 +739,7 @@ function Jokes({
           setJokeId(random.jokeId)
           setJokeLanguage(ELanguages.Suomi)
           setCurrentCategory(random.category)
+          setSaveJoke(random)
           return
         }
       } else {
@@ -761,6 +809,7 @@ function Jokes({
             sexist: false,
             nsfw: norrisJoke?.categories?.includes('explicit') ?? false,
           })
+
           setCurrentCategory(ECategory_en.ChuckNorris)
           setSubCategoryResults(norrisJoke?.categories ?? [])
         } else if (random === 1 && isChuckNorris) {
@@ -768,6 +817,7 @@ function Jokes({
           const norrisJoke = await norrisService.getRandomJokeFromNorrisCategory(
             (randomCategory?.value as string) ?? ''
           )
+
           await setJokeData(
             norrisJoke,
             ECategory_en.ChuckNorris,

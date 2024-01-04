@@ -235,12 +235,20 @@ export enum ECategory_fi {
   Programming = 'Ohjelmointi',
   Dark = 'Synkkä',
   Pun = 'Sanaleikki',
-  Spooky = 'Kummitus',
+  Spooky = 'Halloween',
   Christmas = 'Joulu',
   ChuckNorris = 'Chuck Norris',
   DadJoke = 'Iskävitsi',
 }
-
+export const CategoryByLanguagesConst = {
+  en: ECategory_en,
+  es: ECategory_es,
+  fr: ECategory_fr,
+  de: ECategory_de,
+  pt: ECategory_pt,
+  cs: ECategory_cs,
+  fi: ECategory_fi,
+}
 export type CategoryByLanguages = {
   en: ECategory_en
   es: ECategory_es
@@ -250,6 +258,7 @@ export type CategoryByLanguages = {
   cs: ECategory_cs
   fi: ECategory_fi
 }
+
 export type ECategory = CategoryByLanguages[keyof CategoryByLanguages]
 export interface IJokeCategoryByLanguage {
   en: typeof ECategory_en
@@ -314,7 +323,7 @@ export enum ESavedJoke {
   de = 'Gespeicherter Witz',
   pt = 'Piada salva',
   cs = 'Uložený vtip',
-  fi = 'Tallennettu vitsi',
+  fi = 'Vitsi tallennettu',
 }
 //Your Saved Jokes
 export enum EYourSavedJokes {
@@ -447,6 +456,16 @@ export enum ESortByTitle {
   cs = 'Seřadit podle',
   fi = 'Lajittele',
 }
+export enum EOrderBy {
+  en = 'Order by',
+  es = 'Ordenar por',
+  fr = 'Trier par',
+  de = 'Sortieren nach',
+  pt = 'Ordenar por',
+  cs = 'Seřadit podle',
+  fi = 'Järjestä',
+}
+
 export enum ESubmitAJoke {
   en = 'Submit a Joke',
   es = 'Enviar una broma',
@@ -964,7 +983,7 @@ export enum EAuthor {
 export const SortBy = {
   language: ELanguageTitle,
   category: ECategoryTitle,
-  author: EAuthor,
+  name: EAuthor,
 }
 export enum ERandomJoke {
   en = 'Random joke',
@@ -1047,7 +1066,6 @@ export enum ETryAnotherSearchTerm {
   cs = 'Zkuste jiný vyhledávací výraz',
   fi = 'Kokeile toisella hakuehdolla',
 }
-//Ilmoita virheestä ylläpidolle
 export enum EReportErrorToAdmin {
   en = 'Report error to admin',
   es = 'Informar error al administrador',
@@ -1065,4 +1083,49 @@ export enum EPerPage {
   pt = 'por página',
   cs = 'na stránku',
   fi = 'per sivu',
+}
+export enum EAreYouSureYouWantToMakeThisJokePublic {
+  en = 'Are you sure you want to make this joke public? It will need verification from an administrator',
+  es = '¿Estás seguro de que quieres hacer esta broma pública? Necesitará verificación de un administrador',
+  fr = "Êtes-vous sûr de vouloir rendre cette blague publique? Il aura besoin d'une vérification de la part d'un administrateur",
+  de = 'Möchten Sie diesen Witz wirklich öffentlich machen? Es wird eine Überprüfung durch einen Administrator benötigt',
+  pt = 'Tem certeza de que deseja tornar esta piada pública? Ele precisará de verificação de um administrador',
+  cs = 'Jste si jisti, že chcete tento vtip zveřejnit? Bude potřebovat ověření od správce',
+  fi = 'Oletko varma, että haluat tehdä tämän vitsin julkiseksi? Se vaatii vahvistuksen hallinnolta',
+}
+export enum EPending {
+  en = 'Pending',
+  es = 'Pendiente',
+  fr = 'En attente',
+  de = 'Steht aus',
+  pt = 'Pendente',
+  cs = 'Čekající',
+  fi = 'Odottaa',
+}
+export enum EPendingVerification {
+  en = 'Pending verification',
+  es = 'Verificación pendiente',
+  fr = 'Vérification en attente',
+  de = 'Ausstehende Überprüfung',
+  pt = 'Verificação pendente',
+  cs = 'Čekající ověření',
+  fi = 'Odottaa vahvistusta',
+}
+export enum EAreYouSureYouWantToMakeThisJokePrivate {
+  en = 'Are you sure you want to make this joke private? Republishing will require verification from an administrator',
+  es = '¿Estás seguro de que quieres hacer esta broma privada? Volver a publicar requerirá verificación de un administrador',
+  fr = "Êtes-vous sûr de vouloir rendre cette blague privée? La republication nécessitera une vérification de la part d'un administrateur",
+  de = 'Möchten Sie diesen Witz wirklich privat machen? Eine erneute Veröffentlichung erfordert eine Überprüfung durch einen Administrator',
+  pt = 'Tem certeza de que deseja tornar esta piada privada? Republicar exigirá verificação de um administrador',
+  cs = 'Jste si jisti, že chcete tento vtip udělat soukromým? Opětovné zveřejnění bude vyžadovat ověření od správce',
+  fi = 'Oletko varma, että haluat tehdä tämän vitsin yksityiseksi? Uudelleenjulkaisu vaatii vahvistuksen hallinnolta',
+}
+export enum ESelectCategory {
+  en = 'Select category',
+  es = 'Seleccionar categoría',
+  fr = 'Sélectionnez une catégorie',
+  de = 'Kategorie auswählen',
+  pt = 'Selecione a categoria',
+  cs = 'Vyberte kategorii',
+  fi = 'Valitse kategoria',
 }

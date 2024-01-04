@@ -156,7 +156,7 @@ const JokeSubmit = ({
         verified: !isCheckedPrivate ? false : true,
         anonymous: isCheckedAnonymous,
         author: userId,
-        safe: !(jokeCategory?.value === ECategory_en.Dark) || !isAnyFlagChecked,
+        safe: !(jokeCategory?.value === ECategory_en.Dark || isAnyFlagChecked),
         flags: {
           nsfw: e.currentTarget.nsfw.checked,
           religious: e.currentTarget.religious.checked,
