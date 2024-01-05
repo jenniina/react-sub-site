@@ -40,16 +40,16 @@
 }
 .joke-container .saved .local-saved-wrap button.active {
   background-color: var(--color-primary-1);
-  transform: translateY(2.2px);
+  transform: translateY(2.5px);
   padding-top: 0.9em;
   padding-bottom: 0.6em;
   pointer-events: none;
 }
 .joke-container .saved .local-saved-wrap button:last-child {
-  transform: translateX(-2.2px);
+  transform: translateX(-2.5px);
 }
 .joke-container .saved .local-saved-wrap button:last-child.active {
-  transform: translateY(2.2px) translateX(-3px);
+  transform: translateY(2.5px) translateX(-3px);
 }
 .joke-container .saved .local-saved-wrap button:hover,
 .joke-container .local-saved-wrap button:focus {
@@ -152,16 +152,19 @@ form.form-submit-new textarea {
 }
 .joke-edit-container.open {
   display: flex;
-  flex: 1 0 50%;
+  flex: 1 1 100%;
   flex-flow: column wrap;
   gap: calc(var(--gap) * 3) var(--gap);
   max-width: calc(100vw - calc(var(--page-padding) * 4) - var(--scrollbar_width));
   justify-content: center;
   align-items: center;
 }
+.joke-container div.joke-edit > button:first-of-type.accordion-btn.close {
+  display: none;
+}
 form.joke-edit {
   display: flex;
-  flex-flow: column wrap;
+  flex-flow: row wrap;
   gap: calc(var(--gap) * 2) var(--gap);
   max-width: calc(100vw - calc(var(--page-padding) * 4) - var(--scrollbar_width));
   justify-content: center;
@@ -177,6 +180,44 @@ form.joke-edit > div {
   align-items: center;
   gap: calc(var(--gap)) calc(var(--gap) / 3);
 }
+form.joke-edit > div:first-child {
+  flex: 0 1 100%;
+}
+form.joke-edit > div:first-child.edit-wrap {
+  flex: 1 0 100%;
+  width: 100%;
+  min-width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--gap));
+}
+form.joke-edit > div:first-child.edit-wrap .input-wrap {
+  min-width: 100%;
+  margin-top: 1em;
+}
+form.joke-edit > div:first-child.edit-wrap .input-wrap::before {
+  height: 2.8em;
+}
+form.joke-edit input {
+  line-height: 2;
+}
+.accordion-inner.joke-edit {
+  min-width: 100%;
+}
+@media (min-width: 600px) {
+  form.joke-edit > div:first-child {
+    flex: 1 1 50%;
+  }
+  form.joke-edit > div:first-child.edit-wrap {
+    flex: 1 0 100%;
+    width: 100%;
+    min-width: 100%;
+    flex-flow: row wrap;
+  }
+}
+
 form.joke-edit > button {
   align-self: stretch;
 }
@@ -315,7 +356,7 @@ section.joke-container > div::after {
 .userjokeslist li .secondary-wrap {
   display: flex;
   flex-flow: row wrap;
-  gap: var(--gap);
+  gap: calc(var(--gap) / 2) var(--gap);
   align-items: center;
   font-size: 0.8em;
 }
@@ -376,7 +417,13 @@ form.joke > *:not(.toggle) {
 .joke-container .select-container.category:not(.submit).hidden {
   display: none;
 }
-
+/* .joke-container .select-container.joke-languages:not(.submit) {
+  flex: 0 1 10rem;
+  max-width: 20rem;
+  width: 10rem;
+  margin: 0;
+  gap: calc(var(--gap) / 2);
+} */
 .select-container .container,
 .joke-container .input-wrap::before,
 .joke-container .input-wrap.not-required:has(input:valid)::before,
@@ -429,9 +476,12 @@ form.joke > *:not(.toggle) {
   flex-flow: column nowrap;
   gap: calc(var(--gap) / 2);
 }
-
+.toggle-wrap .toggle-container.safemode > span {
+  font-size: 0.8em;
+}
 .toggle-wrap .select-container.sortby,
-.toggle-wrap .select-container.single-category-select {
+.toggle-wrap .select-container.single-category-select,
+.toggle-wrap .select-container.language-filter {
   --width: 100%;
   flex: 1 0 var(--width);
   max-width: var(--width);
@@ -445,20 +495,23 @@ form.joke > *:not(.toggle) {
 }
 
 .toggle-wrap .select-container.sortby > *,
-.toggle-wrap .select-container.single-category-select > * {
+.toggle-wrap .select-container.single-category-select > *,
+.toggle-wrap .select-container.language-filter > * {
   flex: 0 0 var(--width);
   max-width: var(--width);
   width: var(--width);
   margin: 0;
 }
 .toggle-wrap .select-container.sortby .container,
-.toggle-wrap .select-container.single-category-select .container {
+.toggle-wrap .select-container.single-category-select .container,
+.toggle-wrap .select-container.language-filter .container {
   max-width: var(--width);
   width: var(--width);
   font-size: 0.8em;
 }
 .toggle-wrap .select-container.sortby .value,
-.toggle-wrap .select-container.single-category-select .value {
+.toggle-wrap .select-container.single-category-select .value,
+.toggle-wrap .select-container.language-filter .value {
   flex-basis: max-content;
 }
 .toggle {
@@ -698,27 +751,31 @@ button.delivery.reveal p {
   }
   .toggle-wrap,
   .toggle-wrap .select-container.sortby,
-  .toggle-wrap .select-container.single-category-select {
+  .toggle-wrap .select-container.single-category-select,
+  .toggle-wrap .select-container.language-filter {
     flex-flow: row wrap;
   }
   .saved .toggle-wrap {
     flex-flow: column nowrap;
   }
   .toggle-wrap .select-container.sortby,
-  .toggle-wrap .select-container.single-category-select {
+  .toggle-wrap .select-container.single-category-select,
+  .toggle-wrap .select-container.language-filter {
     --width: 15em;
     flex: 0 0 max-content;
     max-width: max-content;
   }
   .toggle-wrap .select-container.sortby > *,
-  .toggle-wrap .select-container.single-category-select > * {
+  .toggle-wrap .select-container.single-category-select > *,
+  .toggle-wrap .select-container.language-filter > * {
     flex: 0 0 var(--width);
     max-width: var(--width);
     width: var(--width);
     margin: 0;
   }
   .toggle-wrap .select-container.sortby .container,
-  .toggle-wrap .select-container.single-category-select .container {
+  .toggle-wrap .select-container.single-category-select .container,
+  .toggle-wrap .select-container.language-filter .container {
     max-width: var(--width);
     width: var(--width);
     font-size: 0.8em;
@@ -825,6 +882,11 @@ button.delivery.reveal p {
   .joke-container .input-wrap.search-jokes {
     margin-top: 4rem;
   }
+  .toggle-wrap .select-container.sortby,
+  .toggle-wrap .select-container.single-category-select,
+  .toggle-wrap .select-container.language-filter {
+    flex-flow: row nowrap;
+  }
 }
 @media (min-width: 700px) {
   .controls-wrap,
@@ -861,5 +923,13 @@ button.delivery.reveal p {
   }
   .joke-container .select-container + .accordion-container.closed {
     margin: 0;
+  }
+}
+@media (min-width: 1200px) {
+  .saved .toggle-wrap {
+    flex-flow: row wrap;
+  }
+  .saved .toggle-wrap > * {
+    flex: 0 0 auto;
   }
 }
