@@ -385,18 +385,19 @@ function Jokes({
               dispatch(initializeJokes())
             })
             .then(() => {
-              dispatch(updateJoke({ ...joke, verified: false })).catch((e) => {
-                console.log(e)
-                if (e.code === 'ERR_BAD_RESPONSE')
-                  dispatch(
-                    notify(`${EError[language]}: ${e.response.data.message}`, true, 8)
-                  )
-                else dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
-              })
-            })
-            .then(() => {
-              dispatch(initializeJokes())
-              dispatch(notify(`${titleSaved}`, false, 8))
+              dispatch(updateJoke({ ...joke, verified: false }))
+                .then((r) => {
+                  dispatch(initializeJokes())
+                  dispatch(notify(`${titleSaved}. ${r.message ?? ''}`, false, 8))
+                })
+                .catch((e) => {
+                  console.log(e)
+                  if (e.code === 'ERR_BAD_RESPONSE')
+                    dispatch(
+                      notify(`${EError[language]}: ${e.response.data.message}`, true, 8)
+                    )
+                  else dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
+                })
             })
             .catch((e) => {
               console.log(e)
