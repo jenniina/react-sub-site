@@ -139,9 +139,6 @@ const JokeSubmit = ({
     //const language = e.currentTarget.language.value
     //const jokeType = e.currentTarget.joketype.value
     let jokeObject
-    const joke = e.currentTarget.joke.value
-    const setup = e.currentTarget.setup.value
-    const delivery = e.currentTarget.delivery.value
 
     jokeObject = {
       jokeId: uuidv4(),
@@ -169,12 +166,15 @@ const JokeSubmit = ({
     }
 
     if (jokeType === EJokeType.single) {
+      const joke = e.currentTarget.joke.value
       jokeObject = {
         ...jokeObject,
         joke,
         type: EJokeType.single,
       } as IJoke
     } else {
+      const setup = e.currentTarget.setup.value
+      const delivery = e.currentTarget.delivery.value
       jokeObject = {
         ...jokeObject,
         setup,
