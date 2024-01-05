@@ -47,6 +47,7 @@ import {
   EOrderBy,
   EPendingVerification,
   ESelectCategory,
+  EJokeSetup,
 } from '../interfaces'
 import {
   IUser,
@@ -618,6 +619,76 @@ const UserJokes = ({
                             onSubmit={handleUpdate(joke?._id, newJoke ?? joke)}
                             className='joke-edit'
                           >
+                            <div>
+                              {joke.private === true &&
+                                joke.type === EJokeType.twopart && (
+                                  <>
+                                    <label htmlFor='edit-setup'>
+                                      {EJokeSetup[language]}
+                                    </label>
+                                    <input
+                                      type='text'
+                                      name='edit-setup'
+                                      id='setup'
+                                      defaultValue={joke.setup}
+                                      onChange={(e) => {
+                                        const {
+                                          visible,
+                                          translatedLanguage,
+                                          ...restOfJoke
+                                        } = joke
+                                        setNewJoke(() => ({
+                                          ...restOfJoke,
+                                          setup: e.target.value,
+                                        }))
+                                      }}
+                                    />
+                                    <label htmlFor='edit-delivery'></label>
+                                    <input
+                                      type='text'
+                                      name='delivery'
+                                      id='edit-delivery'
+                                      defaultValue={joke.delivery}
+                                      onChange={(e) => {
+                                        const {
+                                          visible,
+                                          translatedLanguage,
+                                          ...restOfJoke
+                                        } = joke
+                                        setNewJoke(() => ({
+                                          ...restOfJoke,
+                                          delivery: e.target.value,
+                                        }))
+                                      }}
+                                    />
+                                  </>
+                                )}
+                              {joke.private === true &&
+                                joke.type === EJokeType.single && (
+                                  <>
+                                    <label htmlFor='edit-joke'>
+                                      {EJokeSetup[language]}
+                                    </label>
+                                    <input
+                                      type='text'
+                                      name='joke'
+                                      id='edit-joke'
+                                      defaultValue={joke.joke}
+                                      onChange={(e) => {
+                                        const {
+                                          visible,
+                                          translatedLanguage,
+                                          ...restOfJoke
+                                        } = joke
+                                        setNewJoke(() => ({
+                                          ...restOfJoke,
+                                          joke: e.target.value,
+                                        }))
+                                      }}
+                                    />
+                                  </>
+                                )}
+                            </div>
                             <div>
                               <label htmlFor='edit-anonymous'>Anonymous:</label>
                               <input
