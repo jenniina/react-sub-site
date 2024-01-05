@@ -1,6 +1,15 @@
 import { ELanguages, ELanguageTitle } from '../../../interfaces'
 import { IUser } from '../../../interfaces'
 
+export enum EFilterFurther {
+  en = 'Filter further',
+  es = 'Filtrar más',
+  fr = 'Filtrer davantage',
+  de = 'Weiter filtern',
+  pt = 'Filtrar mais',
+  cs = 'Filtrovat dále',
+  fi = 'Suodata lisää',
+}
 export enum EFlags_en {
   nsfw = 'NSFW',
   religious = 'religious',
@@ -1128,4 +1137,23 @@ export enum ESelectCategory {
   pt = 'Selecione a categoria',
   cs = 'Vyberte kategorii',
   fi = 'Valitse kategoria',
+}
+export enum EOnlyPrivateJokesCanBeEdited {
+  en = 'The text of jokes can be edited only when private',
+  es = 'El texto de las bromas solo se puede editar cuando es privado',
+  fr = "Le texte des blagues ne peut être modifié que lorsqu'il est privé",
+  de = 'Der Text von Witzen kann nur bearbeitet werden, wenn er privat ist',
+  pt = 'O texto das piadas só pode ser editado quando privado',
+  cs = 'Text vtipů lze upravovat pouze v případě soukromého',
+  fi = 'Vitsien tekstiä voi muokata vain silloin, kun se on yksityinen',
+}
+// Republishing will require verification from an administrator
+export enum ERepublishingWillRequireVerificationFromAnAdministrator {
+  en = 'Republishing will require verification from an administrator',
+  es = 'Volver a publicar requerirá verificación de un administrador',
+  fr = "La republication nécessitera une vérification de la part d'un administrateur",
+  de = 'Eine erneute Veröffentlichung erfordert eine Überprüfung durch einen Administrator',
+  pt = 'Republicar exigirá verificação de um administrador',
+  cs = 'Opětovné zveřejnění bude vyžadovat ověření od správce',
+  fi = 'Uudelleenjulkaisu vaatii vahvistuksen hallinnolta',
 }

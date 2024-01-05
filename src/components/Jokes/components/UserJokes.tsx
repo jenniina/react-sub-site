@@ -48,6 +48,14 @@ import {
   EPendingVerification,
   ESelectCategory,
   EJokeSetup,
+  EOnlyPrivateJokesCanBeEdited,
+  ERepublishingWillRequireVerificationFromAnAdministrator,
+  ENote,
+  EJokeDelivery,
+  EJoke,
+  EFilterFurther,
+  EPrivate,
+  EPublic,
 } from '../interfaces'
 import {
   IUser,
@@ -58,6 +66,11 @@ import {
   ESearch,
   EEdit,
   EClose,
+  ELanguageTitle,
+  ESelectLanguage,
+  EFilterByLanguage,
+  EFilterByCategory,
+  EFilter,
 } from '../../../interfaces'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
 import { Select, SelectOption } from '../../Select/Select'
@@ -191,6 +204,7 @@ const UserJokes = ({
   const [selectedCategory, setSelectedCategory] = useState<
     ECategory_en | 'ChuckNorris' | ''
   >('')
+  const [selectedLanguage, setSelectedLanguage] = useState<ELanguages | ''>('')
   const [hasNorris, setHasNorris] = useState(false)
   const [selectedNorrisCategory, setSelectedNorrisCategory] = useState<
     SelectOption | undefined
@@ -283,15 +297,22 @@ const UserJokes = ({
 
       const categoryMatches = selectedCategory ? joke.category === selectedCategory : true
 
+      const languageMatches =
+        selectedLanguage !== '' ? joke.language === selectedLanguage : true
+
       const norrisCategoryMatches =
         selectedNorrisCategory?.value !== '' && selectedNorrisCategory?.value !== 'any'
           ? joke.subCategories?.includes(selectedNorrisCategory?.value as string)
           : true
 
       if (localJokes && joke.private === false && joke.verified === true) {
-        return categoryMatches && norrisCategoryMatches && searchTermMatches
+        return (
+          languageMatches && categoryMatches && norrisCategoryMatches && searchTermMatches
+        )
       } else if (!localJokes && joke.user.includes(userId)) {
-        return categoryMatches && norrisCategoryMatches && searchTermMatches
+        return (
+          languageMatches && categoryMatches && norrisCategoryMatches && searchTermMatches
+        )
       } else {
         return false
       }
@@ -308,6 +329,7 @@ const UserJokes = ({
     localJokes,
     userJokes,
     selectedCategory,
+    selectedLanguage,
     selectedNorrisCategory,
     searchTerm,
     isRandom,
@@ -399,7 +421,7 @@ const UserJokes = ({
               name='safemode'
               id='safemode2'
               className={`${language} safemode userjokes`}
-              label={ESort[language]}
+              label={`${EFilter[language]}: `}
               hideLabel={false}
               on={titleSafe}
               off={titleUnsafe}
@@ -431,11 +453,54 @@ const UserJokes = ({
                 setSortBy(o?.value as ESortBy)
               }}
             />
+            {/* Select for languages in the userJokes */}
+            <Select
+              language={language}
+              id='joke-languages'
+              className='language-filter'
+              instructions={`${EFilterByLanguage[language]}:`}
+              options={[
+                { label: EAll[language], value: '' },
+                ...Array.from(new Set(userJokes?.map((joke) => joke.language))).map(
+                  (language) => {
+                    return {
+                      label:
+                        LanguageOfLanguage[language as keyof typeof ELanguagesLong][
+                          getKeyofEnum(
+                            ELanguages,
+                            language as ELanguages
+                          ) as keyof TLanguageOfLanguage[ELanguages]
+                        ],
+                      value: language,
+                    }
+                  }
+                ),
+              ]}
+              value={
+                selectedLanguage
+                  ? ({
+                      label:
+                        LanguageOfLanguage[
+                          selectedLanguage as keyof typeof ELanguagesLong
+                        ][
+                          getKeyofEnum(
+                            ELanguages,
+                            selectedLanguage as ELanguages
+                          ) as keyof TLanguageOfLanguage[ELanguages]
+                        ],
+                      value: selectedLanguage,
+                    } as SelectOption)
+                  : { label: EAll[language], value: '' }
+              }
+              onChange={(o: SelectOption | undefined) => {
+                setSelectedLanguage(o?.value as ELanguages)
+              }}
+            />
             <Select
               language={language}
               id='single-category-select'
               className='single-category-select'
-              instructions={`${ESelectCategory[language]}:`}
+              instructions={`${EFilterByCategory[language]}:`}
               options={[
                 // { label: ESelectACategory[language], value: '' },
                 // ...Array.from(
@@ -479,7 +544,7 @@ const UserJokes = ({
               language={language}
               id='userNorrisCategories'
               className={`category extras ${hasNorris ? '' : 'hidden'}`}
-              instructions={`Chuck Norris Category:`}
+              instructions={`${EFilterFurther[language]}:`}
               selectAnOption={EAny[language]}
               value={selectedNorrisCategory}
               options={norrisCategories}
@@ -603,9 +668,31 @@ const UserJokes = ({
                       ) : (
                         ''
                       )}
+                      {joke.private ? (
+                        <span>{EPrivate[language]}</span>
+                      ) : joke.private === false ? (
+                        <span>{EPublic[language]}</span>
+                      ) : (
+                        ''
+                      )}
                       {/* <span>ID: {joke.jokeId}</span> */}
                       {joke.private === false && joke.verified === false && (
                         <span>{EPendingVerification[language]}</span>
+                      )}
+
+                      {userId && joke.user.includes(userId) && (
+                        <form
+                          onSubmit={
+                            joke.type === EJokeType.single
+                              ? handleDelete(joke?._id, joke?.joke as string)
+                              : handleDelete(joke?._id, joke?.setup as string)
+                          }
+                          className='button-wrap'
+                        >
+                          <button type='submit' className='delete danger'>
+                            {deleteJoke}
+                          </button>
+                        </form>
                       )}
 
                       {userId && joke.user.includes(userId) && joke.author === userId && (
@@ -619,57 +706,63 @@ const UserJokes = ({
                             onSubmit={handleUpdate(joke?._id, newJoke ?? joke)}
                             className='joke-edit'
                           >
-                            <div>
+                            <div className='edit-wrap'>
                               {joke.private === true &&
-                                joke.type === EJokeType.twopart && (
-                                  <>
+                              joke.type === EJokeType.twopart ? (
+                                <>
+                                  <div className='input-wrap'>
                                     <label htmlFor='edit-setup'>
-                                      {EJokeSetup[language]}
+                                      <input
+                                        required
+                                        type='text'
+                                        name='edit-setup'
+                                        id='setup'
+                                        defaultValue={joke.setup}
+                                        onChange={(e) => {
+                                          const {
+                                            visible,
+                                            translatedLanguage,
+                                            ...restOfJoke
+                                          } = joke
+                                          setNewJoke(() => ({
+                                            ...restOfJoke,
+                                            setup: e.target.value,
+                                          }))
+                                        }}
+                                      />
+                                      <span>{EJokeSetup[language]}</span>
                                     </label>
-                                    <input
-                                      type='text'
-                                      name='edit-setup'
-                                      id='setup'
-                                      defaultValue={joke.setup}
-                                      onChange={(e) => {
-                                        const {
-                                          visible,
-                                          translatedLanguage,
-                                          ...restOfJoke
-                                        } = joke
-                                        setNewJoke(() => ({
-                                          ...restOfJoke,
-                                          setup: e.target.value,
-                                        }))
-                                      }}
-                                    />
-                                    <label htmlFor='edit-delivery'></label>
-                                    <input
-                                      type='text'
-                                      name='delivery'
-                                      id='edit-delivery'
-                                      defaultValue={joke.delivery}
-                                      onChange={(e) => {
-                                        const {
-                                          visible,
-                                          translatedLanguage,
-                                          ...restOfJoke
-                                        } = joke
-                                        setNewJoke(() => ({
-                                          ...restOfJoke,
-                                          delivery: e.target.value,
-                                        }))
-                                      }}
-                                    />
-                                  </>
-                                )}
-                              {joke.private === true &&
-                                joke.type === EJokeType.single && (
-                                  <>
-                                    <label htmlFor='edit-joke'>
-                                      {EJokeSetup[language]}
+                                  </div>
+                                  <div className='input-wrap'>
+                                    <label htmlFor='edit-delivery'>
+                                      <input
+                                        required
+                                        type='text'
+                                        name='delivery'
+                                        id='edit-delivery'
+                                        defaultValue={joke.delivery}
+                                        onChange={(e) => {
+                                          const {
+                                            visible,
+                                            translatedLanguage,
+                                            ...restOfJoke
+                                          } = joke
+                                          setNewJoke(() => ({
+                                            ...restOfJoke,
+                                            delivery: e.target.value,
+                                          }))
+                                        }}
+                                      />
+                                      <span>{EJokeDelivery[language]}</span>{' '}
                                     </label>
+                                  </div>
+                                </>
+                              ) : joke.private === true &&
+                                joke.type === EJokeType.single ? (
+                                <div className='input-wrap'>
+                                  <label htmlFor='edit-joke'>
                                     <input
+                                      required
                                       type='text'
                                       name='joke'
                                       id='edit-joke'
@@ -686,8 +779,20 @@ const UserJokes = ({
                                         }))
                                       }}
                                     />
-                                  </>
-                                )}
+                                    <span>{EJoke[language]}</span>
+                                  </label>
+                                </div>
+                              ) : (
+                                <div>
+                                  {EOnlyPrivateJokesCanBeEdited[language]}.{' '}
+                                  {ENote[language]}{' '}
+                                  {
+                                    ERepublishingWillRequireVerificationFromAnAdministrator[
+                                      language
+                                    ]
+                                  }
+                                </div>
+                              )}
                             </div>
                             <div>
                               <label htmlFor='edit-anonymous'>Anonymous:</label>
@@ -726,21 +831,6 @@ const UserJokes = ({
                             </button>
                           </form>
                         </Accordion>
-                      )}
-
-                      {userId && joke.user.includes(userId) && (
-                        <form
-                          onSubmit={
-                            joke.type === EJokeType.single
-                              ? handleDelete(joke?._id, joke?.joke as string)
-                              : handleDelete(joke?._id, joke?.setup as string)
-                          }
-                          className='button-wrap'
-                        >
-                          <button type='submit' className='delete danger'>
-                            {deleteJoke}
-                          </button>
-                        </form>
                       )}
                     </div>
                   </li>

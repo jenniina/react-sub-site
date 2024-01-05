@@ -483,6 +483,42 @@ export enum ELanguageTitle {
   cs = 'Jazyk',
   fi = 'Kieli',
 }
+export enum ESelectLanguage {
+  en = 'Select Language',
+  es = 'Seleccionar idioma',
+  fr = 'Sélectionnez la langue',
+  de = 'Sprache auswählen',
+  pt = 'Selecione o idioma',
+  cs = 'Vyberte jazyk',
+  fi = 'Valitse kieli',
+}
+export enum EFilter {
+  en = 'Filter',
+  es = 'Filtrar',
+  fr = 'Filtre',
+  de = 'Filter',
+  pt = 'Filtro',
+  cs = 'Filtr',
+  fi = 'Suodatin',
+}
+export enum EFilterByLanguage {
+  en = 'Filter by language',
+  es = 'Filtrar por idioma',
+  fr = 'Filtrer par langue',
+  de = 'Nach Sprache filtern',
+  pt = 'Filtrar por idioma',
+  cs = 'Filtrovat podle jazyka',
+  fi = 'Suodata kielen mukaan',
+}
+export enum EFilterByCategory {
+  en = 'Filter by category',
+  es = 'Filtrar por categoría',
+  fr = 'Filtrer par catégorie',
+  de = 'Nach Kategorie filtern',
+  pt = 'Filtrar por categoria',
+  cs = 'Filtrovat podle kategorie',
+  fi = 'Suodata kategorian mukaan',
+}
 export enum ESend {
   en = 'Send',
   es = 'Enviar',
