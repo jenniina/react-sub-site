@@ -380,12 +380,12 @@ function Jokes({
       }
       const update = () => {
         if (jokeObject.private === true && joke.private === false) {
-          dispatch(updateJoke({ ...joke, private: true, verified: false }))
+          dispatch(updateJoke({ ...joke, private: true, verified: false, _id: id }))
             .then(() => {
               dispatch(initializeJokes())
             })
             .then(() => {
-              dispatch(updateJoke({ ...joke, verified: false }))
+              dispatch(updateJoke({ ...joke, verified: false, _id: id }))
                 .then((r) => {
                   dispatch(initializeJokes())
                   dispatch(notify(`${titleSaved}. ${r.message ?? ''}`, false, 8))
