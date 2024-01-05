@@ -138,119 +138,78 @@ const JokeSubmit = ({
     //const jokeCategory = e.currentTarget.jokeCategory.value
     //const language = e.currentTarget.language.value
     //const jokeType = e.currentTarget.joketype.value
-    let jokeObject: IJoke
+    let jokeObject
+    const joke = e.currentTarget.joke.value
+    const setup = e.currentTarget.setup.value
+    const delivery = e.currentTarget.delivery.value
+
+    jokeObject = {
+      jokeId: uuidv4(),
+      category: (jokeCategory?.value as ECategory_en) ?? ECategory_en.Misc,
+      subCategories:
+        (jokeCategory?.label as ECategory) === ECategory_en.ChuckNorris
+          ? [selectedNorrisCategory?.value as string]
+          : [],
+      language: languageSubmit,
+      type: EJokeType.single,
+      user: [userId],
+      private: isCheckedPrivate,
+      verified: !isCheckedPrivate ? false : true,
+      anonymous: isCheckedAnonymous,
+      author: userId,
+      safe: jokeCategory?.value === ECategory_en.Dark || isAnyFlagChecked ? false : true,
+      flags: {
+        nsfw: e.currentTarget.nsfw.checked,
+        religious: e.currentTarget.religious.checked,
+        political: e.currentTarget.political.checked,
+        racist: e.currentTarget.racist.checked,
+        sexist: e.currentTarget.sexist.checked,
+        explicit: e.currentTarget.explicit.checked,
+      },
+    }
+
     if (jokeType === EJokeType.single) {
-      const joke = e.currentTarget.joke.value
       jokeObject = {
-        jokeId: uuidv4(),
+        ...jokeObject,
         joke,
-        category: (jokeCategory?.value as ECategory_en) ?? ECategory_en.Misc,
-        subCategories:
-          (jokeCategory?.label as ECategory) === ECategory_en.ChuckNorris
-            ? [selectedNorrisCategory?.value as string]
-            : [],
-        language: languageSubmit,
         type: EJokeType.single,
-        user: [userId],
-        private: isCheckedPrivate,
-        verified: !isCheckedPrivate ? false : true,
-        anonymous: isCheckedAnonymous,
-        author: userId,
-        safe: !(jokeCategory?.value === ECategory_en.Dark || isAnyFlagChecked),
-        flags: {
-          nsfw: e.currentTarget.nsfw.checked,
-          religious: e.currentTarget.religious.checked,
-          political: e.currentTarget.political.checked,
-          racist: e.currentTarget.racist.checked,
-          sexist: e.currentTarget.sexist.checked,
-          explicit: e.currentTarget.explicit.checked,
-        },
-      }
-      dispatch(createJoke(jokeObject))
-        .then(() => {
-          dispatch(initializeUser()).then(() => {
-            dispatch(initializeJokes())
-          })
-          dispatch(notify(`${ESavedJoke[language]}`, false, 8))
-        })
-        .catch((e) => {
-          console.log(e)
-          if (e.code === 'ERR_BAD_RESPONSE') {
-            dispatch(
-              notify(
-                `${EError[language]}: ${e.response.data.message}. ${EReportErrorToAdmin[language]}`,
-                true,
-                8
-              )
-            )
-          } else {
-            dispatch(
-              notify(
-                `${EError[language]}: ${e.message}. ${EReportErrorToAdmin[language]}`,
-                true,
-                8
-              )
-            )
-          }
-        })
+      } as IJoke
     } else {
-      const setup = e.currentTarget.setup.value
-      const delivery = e.currentTarget.delivery.value
       jokeObject = {
-        jokeId: uuidv4(),
+        ...jokeObject,
         setup,
         delivery,
-        language: languageSubmit,
-        category: (jokeCategory?.value as ECategory_en) ?? ECategory_en.Misc,
-        subCategories:
-          (jokeCategory?.label as ECategory) === ECategory_en.ChuckNorris
-            ? [selectedNorrisCategory?.value as string]
-            : [],
         type: EJokeType.twopart,
-        user: [userId],
-        private: isCheckedPrivate,
-        verified: !isCheckedPrivate ? false : true,
-        anonymous: isCheckedAnonymous,
-        author: userId,
-        safe: !(jokeCategory?.value === ECategory_en.Dark) || !isAnyFlagChecked,
-        flags: {
-          nsfw: e.currentTarget.nsfw.checked,
-          religious: e.currentTarget.religious.checked,
-          political: e.currentTarget.political.checked,
-          racist: e.currentTarget.racist.checked,
-          sexist: e.currentTarget.sexist.checked,
-          explicit: e.currentTarget.explicit.checked,
-        },
-      }
-
-      dispatch(createJoke(jokeObject))
-        .then(() => {
-          dispatch(initializeUser()).then(() => {
-            dispatch(initializeJokes())
-          })
-          dispatch(notify(`${ESavedJoke[language]}`, false, 8))
-        })
-        .catch((e) => {
-          console.log(e)
-          if (e.code === 'ERR_BAD_RESPONSE') {
-            dispatch(
-              notify(
-                `${EError[language]}: ${e.response.data.message}. ${EReportErrorToAdmin[language]}`,
-                true,
-                8
-              )
-            )
-          } else {
-            dispatch(
-              notify(
-                `${EError[language]}: ${e.message}. ${EReportErrorToAdmin[language]}`,
-                true,
-                8
-              )
-            )
-          }
-        })
+      } as IJoke
     }
+
+    dispatch(createJoke(jokeObject))
+      .then(() => {
+        dispatch(initializeUser()).then(() => {
+          dispatch(initializeJokes())
+        })
+        dispatch(notify(`${ESavedJoke[language]}`, false, 8))
+      })
+      .catch((e) => {
+        console.log(e)
+        if (e.code === 'ERR_BAD_RESPONSE') {
+          dispatch(
+            notify(
+              `${EError[language]}: ${e.response.data.message}. ${EReportErrorToAdmin[language]}`,
+              true,
+              8
+            )
+          )
+        } else {
+          dispatch(
+            notify(
+              `${EError[language]}: ${e.message}. ${EReportErrorToAdmin[language]}`,
+              true,
+              8
+            )
+          )
+        }
+      })
   }
 
   useEffect(() => {
