@@ -590,7 +590,7 @@ const UserJokes = ({
                   }}
                 />
               </div>
-              <div className={hasNorris ? '' : 'full'}>
+              <div className={hasNorris ? 'search-jokes-wrap' : 'full search-jokes-wrap'}>
                 <div className='search-jokes input-wrap'>
                   <label htmlFor='search-jokes' className='visually-hidden'>
                     <input
