@@ -766,6 +766,10 @@ button.delivery.reveal p {
     flex: 0 0 max-content;
     max-width: max-content;
   }
+  .es .single-category-select .container {
+    flex-flow: row nowrap;
+    max-width: var(--width);
+  }
   .toggle-wrap .select-container.sortby > *,
   .toggle-wrap .select-container.single-category-select > *,
   .toggle-wrap .select-container.language-filter > * {
