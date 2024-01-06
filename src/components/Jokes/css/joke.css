@@ -976,10 +976,16 @@ button.delivery.reveal p {
     min-width: calc(100% - var(--gap));
     margin-bottom: 1em;
   }
+  .toggle-wrap > div:last-child {
+    margin-top: calc(var(--gap) * 1.2);
+  }
   .search-jokes-wrap {
-    margin-top: var(--gap);
+    /* margin-top: calc(var(--gap) * 1); */
   }
   .saved .toggle-wrap .toggle-inner-wrap .full .search-jokes.input-wrap > label {
     margin-right: 0;
+  }
+  .es .saved .toggle-wrap .select-container.single-category-select {
+    --width: 17em;
   }
 }
