@@ -172,27 +172,28 @@ const UserJokes = ({
     name: string
   }
 
-  //add visible to jokes
-  const withVisibility: IJokeVisible[] =
-    Array.isArray(jokes) && jokes?.length > 0
-      ? jokes?.map((joke) => {
-          const author = users.find((user: IUser) => user._id == joke.author)
-          const jokeLanguage = LanguageOfLanguage[
-            language as keyof typeof ELanguagesLong
-          ][
-            getKeyofEnum(
-              ELanguages,
-              joke.language as ELanguages
-            ) as keyof TLanguageOfLanguage[ELanguages]
-          ] as TLanguageOfLanguage[keyof typeof ELanguagesLong][keyof TLanguageOfLanguage[ELanguages]]
-          return {
-            ...joke,
-            visible: false,
-            translatedLanguage: jokeLanguage ?? '',
-            name: joke.anonymous ? '_Anonymous' : author?.name ?? '',
-          }
-        })
-      : []
+  // //add visible to jokes
+  // const withVisibility: IJokeVisible[] =
+  //   Array.isArray(jokes) && jokes?.length > 0
+  //     ? jokes?.map((joke) => {
+  //         const author = users.find((user: IUser) => user._id == joke.author)
+  //         const jokeLanguage = LanguageOfLanguage[
+  //           language as keyof typeof ELanguagesLong
+  //         ][
+  //           getKeyofEnum(
+  //             ELanguages,
+  //             joke.language as ELanguages
+  //           ) as keyof TLanguageOfLanguage[ELanguages]
+  //         ] as TLanguageOfLanguage[keyof typeof ELanguagesLong][keyof TLanguageOfLanguage[ELanguages]]
+  //         return {
+  //           ...joke,
+  //           visible: false,
+  //           translatedLanguage: jokeLanguage ?? '',
+  //           name: joke.anonymous ? '_Anonymous' : author?.name ?? '',
+  //         }
+  //       })
+  //     : []
+  const [withVisibility, setWithVisibility] = useState<IJokeVisible[]>([])
   const [userJokes, setUserJokes] = useState<IJokeVisible[]>(withVisibility)
   const [visibleJokes, setVisibleJokes] = useState<Record<IJoke['jokeId'], boolean>>({})
   const [localJokes, setLocalJokes] = useState<boolean>(false)
@@ -212,6 +213,29 @@ const UserJokes = ({
   const [newJoke, setNewJoke] = useState<IJoke>()
 
   const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    if (Array.isArray(jokes) && jokes.length > 0) {
+      const updatedJokes = jokes?.map((joke) => {
+        const author = users?.find((user: IUser) => user._id == joke.author)
+        const jokeLanguage = LanguageOfLanguage[language as keyof typeof ELanguagesLong][
+          getKeyofEnum(
+            ELanguages,
+            language as ELanguages
+          ) as keyof TLanguageOfLanguage[ELanguages]
+        ] as TLanguageOfLanguage[keyof typeof ELanguagesLong][keyof TLanguageOfLanguage[ELanguages]]
+
+        return {
+          ...joke,
+          visible: false,
+          translatedLanguage: jokeLanguage ?? '',
+          name: joke.anonymous ? '_Anonymous' : author?.name ?? '',
+        }
+      })
+
+      setWithVisibility(updatedJokes)
+    }
+  }, [jokes, users, language])
 
   useEffect(() => {
     dispatch(initializeUsers())
@@ -416,154 +440,171 @@ const UserJokes = ({
             <p className='mb3 flex center textcenter'> {EUserSubmittedJokes[language]}</p>
           )}
           <div className='toggle-wrap'>
-            <ButtonToggle
-              isChecked={isCheckedSafemode}
-              name='safemode'
-              id='safemode2'
-              className={`${language} safemode userjokes`}
-              label={`${EFilter[language]}: `}
-              hideLabel={false}
-              on={titleSafe}
-              off={titleUnsafe}
-              handleToggleChange={handleToggleChangeSafemode}
-            />
-            <Select
-              language={language}
-              id='sortby'
-              className='sortby'
-              instructions={`${EOrderBy[language]}:`}
-              options={optionsSortBy(SortBy)}
-              value={
-                {
-                  label:
-                    SortBy[sortBy][
-                      ELanguages[
-                        getKeyofEnum(ELanguages, language) as keyof typeof ELanguages
-                      ]
-                    ],
-                  value:
-                    SortBy[sortBy][
-                      ELanguages[
-                        getKeyofEnum(ELanguages, language) as keyof typeof ELanguages
-                      ]
-                    ],
-                } as SelectOption
-              }
-              onChange={(o: SelectOption | undefined) => {
-                setSortBy(o?.value as ESortBy)
-              }}
-            />
-            {/* Select for languages in the userJokes */}
-            <Select
-              language={language}
-              id='joke-languages'
-              className='language-filter'
-              instructions={`${EFilterByLanguage[language]}:`}
-              options={[
-                { label: EAll[language], value: '' },
-                ...Array.from(new Set(userJokes?.map((joke) => joke.language))).map(
-                  (language) => {
-                    return {
+            <div className='toggle-inner-wrap'>
+              <div className='safemode-wrap'>
+                <ButtonToggle
+                  isChecked={isCheckedSafemode}
+                  name='safemode'
+                  id='safemode2'
+                  className={`${language} safemode userjokes`}
+                  label={`${EFilter[language]}: `}
+                  hideLabel={false}
+                  on={titleSafe}
+                  off={titleUnsafe}
+                  handleToggleChange={handleToggleChangeSafemode}
+                />
+              </div>
+              <div className='sortby-wrap'>
+                <Select
+                  language={language}
+                  id='sortby'
+                  className='sortby'
+                  instructions={`${EOrderBy[language]}:`}
+                  options={optionsSortBy(SortBy)}
+                  value={
+                    {
                       label:
-                        LanguageOfLanguage[language as keyof typeof ELanguagesLong][
-                          getKeyofEnum(
-                            ELanguages,
-                            language as ELanguages
-                          ) as keyof TLanguageOfLanguage[ELanguages]
+                        SortBy[sortBy][
+                          ELanguages[
+                            getKeyofEnum(ELanguages, language) as keyof typeof ELanguages
+                          ]
                         ],
-                      value: language,
-                    }
-                  }
-                ),
-              ]}
-              value={
-                selectedLanguage
-                  ? ({
-                      label:
-                        LanguageOfLanguage[
-                          selectedLanguage as keyof typeof ELanguagesLong
-                        ][
-                          getKeyofEnum(
-                            ELanguages,
-                            selectedLanguage as ELanguages
-                          ) as keyof TLanguageOfLanguage[ELanguages]
+                      value:
+                        SortBy[sortBy][
+                          ELanguages[
+                            getKeyofEnum(ELanguages, language) as keyof typeof ELanguages
+                          ]
                         ],
-                      value: selectedLanguage,
-                    } as SelectOption)
-                  : { label: EAll[language], value: '' }
-              }
-              onChange={(o: SelectOption | undefined) => {
-                setSelectedLanguage(o?.value as ELanguages)
-              }}
-            />
-            <Select
-              language={language}
-              id='single-category-select'
-              className='single-category-select'
-              instructions={`${EFilterByCategory[language]}:`}
-              options={[
-                // { label: ESelectACategory[language], value: '' },
-                // ...Array.from(
-                //   new Set(
-                //     jokes //?.filter((joke) => joke.user.includes(userId))
-                //       ?.map((joke) => joke.category)
-                //   )
-                // ).map((category) => {
-                //   return {
-                //     label: category,
-                //     value: category,
-                //   }
-                // }),
-                { label: ESelectACategory[language], value: '' },
-                ...(Object.values(ECategory_en).map((category) => {
-                  return {
-                    label: getCategoryInLanguage(category, language),
-                    value: category,
+                    } as SelectOption
                   }
-                }) as SelectOption[]),
-              ]}
-              value={
-                selectedCategory
-                  ? ({
-                      label: getCategoryInLanguage(
-                        selectedCategory as ECategory_en,
-                        language
-                      ),
-                      value: selectedCategory,
-                    } as SelectOption)
-                  : { label: ESelectACategory[language], value: '' }
-              }
-              onChange={(o) => {
-                setSelectedCategory(o?.value as ECategory_en)
-                handleSelectChange(o as SelectOption)
-                handleCategoryChange(o?.value as string)
-              }}
-            />
-
-            <Select
-              language={language}
-              id='userNorrisCategories'
-              className={`category extras ${hasNorris ? '' : 'hidden'}`}
-              instructions={`${EFilterFurther[language]}:`}
-              selectAnOption={EAny[language]}
-              value={selectedNorrisCategory}
-              options={norrisCategories}
-              onChange={(o) => {
-                setSelectedNorrisCategory(o as SelectOption)
-              }}
-            />
-          </div>
-          <div className='search-jokes input-wrap'>
-            <label htmlFor='search-jokes' className='visually-hidden'>
-              <input
-                type='text'
-                id='search-jokes'
-                value={searchTerm}
-                onChange={handleSearchChange}
-                placeholder={ESearch[language]}
-              />
-              <span>{ESearchByKeyword[language]}</span>
-            </label>
+                  onChange={(o: SelectOption | undefined) => {
+                    setSortBy(o?.value as ESortBy)
+                  }}
+                />
+              </div>
+            </div>
+            <div className='toggle-inner-wrap'>
+              <div>
+                {/* Select for languages in the userJokes */}
+                <Select
+                  language={language}
+                  id='joke-languages'
+                  className='language-filter'
+                  instructions={`${EFilterByLanguage[language]}:`}
+                  options={[
+                    { label: EAll[language], value: '' },
+                    ...Array.from(new Set(userJokes?.map((joke) => joke.language))).map(
+                      (language) => {
+                        return {
+                          label:
+                            LanguageOfLanguage[language as keyof typeof ELanguagesLong][
+                              getKeyofEnum(
+                                ELanguages,
+                                language as ELanguages
+                              ) as keyof TLanguageOfLanguage[ELanguages]
+                            ],
+                          value: language,
+                        }
+                      }
+                    ),
+                  ]}
+                  value={
+                    selectedLanguage
+                      ? ({
+                          label:
+                            LanguageOfLanguage[
+                              selectedLanguage as keyof typeof ELanguagesLong
+                            ][
+                              getKeyofEnum(
+                                ELanguages,
+                                selectedLanguage as ELanguages
+                              ) as keyof TLanguageOfLanguage[ELanguages]
+                            ],
+                          value: selectedLanguage,
+                        } as SelectOption)
+                      : { label: EAll[language], value: '' }
+                  }
+                  onChange={(o: SelectOption | undefined) => {
+                    setSelectedLanguage(o?.value as ELanguages)
+                  }}
+                />
+              </div>
+              <div>
+                <Select
+                  language={language}
+                  id='single-category-select'
+                  className='single-category-select'
+                  instructions={`${EFilterByCategory[language]}:`}
+                  options={[
+                    // { label: ESelectACategory[language], value: '' },
+                    // ...Array.from(
+                    //   new Set(
+                    //     jokes //?.filter((joke) => joke.user.includes(userId))
+                    //       ?.map((joke) => joke.category)
+                    //   )
+                    // ).map((category) => {
+                    //   return {
+                    //     label: category,
+                    //     value: category,
+                    //   }
+                    // }),
+                    { label: ESelectACategory[language], value: '' },
+                    ...(Object.values(ECategory_en).map((category) => {
+                      return {
+                        label: getCategoryInLanguage(category, language),
+                        value: category,
+                      }
+                    }) as SelectOption[]),
+                  ]}
+                  value={
+                    selectedCategory
+                      ? ({
+                          label: getCategoryInLanguage(
+                            selectedCategory as ECategory_en,
+                            language
+                          ),
+                          value: selectedCategory,
+                        } as SelectOption)
+                      : { label: ESelectACategory[language], value: '' }
+                  }
+                  onChange={(o) => {
+                    setSelectedCategory(o?.value as ECategory_en)
+                    handleSelectChange(o as SelectOption)
+                    handleCategoryChange(o?.value as string)
+                  }}
+                />
+              </div>
+            </div>
+            <div className='toggle-inner-wrap'>
+              <div>
+                <Select
+                  language={language}
+                  id='userNorrisCategories'
+                  className={`category extras ${hasNorris ? '' : 'hidden'}`}
+                  instructions={`${EFilterFurther[language]}:`}
+                  selectAnOption={EAny[language]}
+                  value={selectedNorrisCategory}
+                  options={norrisCategories}
+                  onChange={(o) => {
+                    setSelectedNorrisCategory(o as SelectOption)
+                  }}
+                />
+              </div>
+              <div className={hasNorris ? '' : 'full'}>
+                <div className='search-jokes input-wrap'>
+                  <label htmlFor='search-jokes' className='visually-hidden'>
+                    <input
+                      type='text'
+                      id='search-jokes'
+                      value={searchTerm}
+                      onChange={handleSearchChange}
+                      placeholder={ESearch[language]}
+                    />
+                    <span>{ESearchByKeyword[language]}</span>
+                  </label>
+                </div>
+              </div>
+            </div>
           </div>
           <div className='flex center gap'>
             <button

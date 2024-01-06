@@ -803,16 +803,7 @@ export enum EDarkJokesAreVisibleOnlyWhenSafeModeIsOff {
   cs = '"Temné" vtipy jsou viditelné pouze tehdy, když je bezpečný režim vypnutý',
   fi = 'Synkät (Dark) vitsit näkyvät vain, kun turvallinen tila on pois päältä',
 }
-export enum EChuckNorrisAndDadJokesExclusivelyFeatureSinglePartJokesAnd {
-  en = '"Chuck Norris" and "Dad Jokes" exclusively feature single-part jokes, and are only available in English.',
-  es = '"Chuck Norris" y "Dad Jokes" presentan exclusivamente bromas de una sola parte y solo están disponibles en inglés.',
-  fr = '"Chuck Norris" et "Dad Jokes" présentent exclusivement des blagues à une seule partie et ne sont disponibles qu\'en anglais.',
-  de = '"Chuck Norris" und "Dad Jokes" enthalten ausschließlich Einzelteile und sind nur auf Englisch verfügbar.',
-  pt = '"Chuck Norris" e "Dad Jokes" apresentam exclusivamente piadas de uma parte e estão disponíveis apenas em inglês.',
-  cs = '"Chuck Norris" a "Dad Jokes" obsahují výhradně jednodílné vtipy a jsou k dispozici pouze v angličtině.',
-  fi = '"Chuck Norris" ja "Dad Jokes" sisältävät yksinomaan yksiosaisia vitsejä ja ovat saatavilla vain englanniksi.',
-}
-// Note!
+
 export enum ENote {
   en = 'Note!',
   es = 'Nota!',

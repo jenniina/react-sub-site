@@ -465,7 +465,8 @@ form.joke > *:not(.toggle) {
   padding: 0.5em 0.4em 0.5em 0.6em;
 }
 .controls-wrap,
-.toggle-wrap {
+.toggle-wrap,
+.toggle-wrap > div {
   display: flex;
   flex-flow: column wrap;
   justify-content: center;
@@ -761,7 +762,7 @@ button.delivery.reveal p {
   .toggle-wrap .select-container.sortby,
   .toggle-wrap .select-container.single-category-select,
   .toggle-wrap .select-container.language-filter {
-    --width: 15em;
+    --width: 14em;
     flex: 0 0 max-content;
     max-width: max-content;
   }
@@ -807,6 +808,12 @@ button.delivery.reveal p {
 
   .joke-container .select-container .value {
     flex-basis: calc(100% - var(--gap) * 4);
+  }
+  .joke-container .input-wrap.search-jokes {
+    margin: 2em 0 -1em;
+  }
+  .joke-container .saved .toggle-wrap {
+    margin-bottom: 3em;
   }
 }
 @media (min-width: 600px) {
@@ -875,12 +882,9 @@ button.delivery.reveal p {
     max-width: 20rem;
   }
   .joke-container .input-wrap {
-    margin-top: 3rem;
+    margin-top: 2rem;
     max-width: 20rem;
     width: 100%;
-  }
-  .joke-container .input-wrap.search-jokes {
-    margin-top: 4rem;
   }
   .toggle-wrap .select-container.sortby,
   .toggle-wrap .select-container.single-category-select,
@@ -891,11 +895,7 @@ button.delivery.reveal p {
 @media (min-width: 700px) {
   .controls-wrap,
   .toggle-wrap {
-    gap: calc(var(--gap) * 3);
-  }
-  .cs .controls-wrap,
-  .cs .toggle-wrap {
-    gap: calc(var(--gap) * 1.2);
+    gap: calc(var(--gap) * 3) calc(var(--gap) * 2);
   }
 }
 @media (min-width: 800px) {
@@ -924,12 +924,54 @@ button.delivery.reveal p {
   .joke-container .select-container + .accordion-container.closed {
     margin: 0;
   }
-}
-@media (min-width: 1200px) {
-  .saved .toggle-wrap {
-    flex-flow: row wrap;
+  .joke-container .input-wrap.search-jokes {
+    margin: 1em 0 -1em;
   }
-  .saved .toggle-wrap > * {
-    flex: 0 0 auto;
+}
+
+@media (min-width: 1200px) {
+  .saved .toggle-wrap .toggle-inner-wrap {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    min-width: 100%;
+    flex: 1 0 100%;
+  }
+  .saved .toggle-wrap .toggle-inner-wrap > div {
+    width: 50%;
+  }
+  .saved .toggle-wrap .toggle-inner-wrap > div > div {
+    max-width: max-content;
+    margin: 0;
+  }
+  .saved .toggle-wrap .toggle-inner-wrap > div:first-child {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    margin-right: calc(var(--gap));
+  }
+  .saved .toggle-wrap .toggle-inner-wrap > div:first-child.safemode-wrap {
+    margin-right: calc(var(--gap) * 1.2);
+  }
+  .saved .toggle-wrap .toggle-inner-wrap > div:last-child {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    margin-left: calc(var(--gap));
+  }
+  .saved .toggle-wrap .toggle-inner-wrap div:last-child.full {
+    flex: 1 0 100%;
+    width: 100%;
+    min-width: 100%;
+    margin: 0;
+  }
+  .saved .toggle-wrap .toggle-inner-wrap .full .search-jokes.input-wrap {
+    min-width: calc(100% - var(--gap));
+    margin-bottom: 1em;
+  }
+  .saved .toggle-wrap .toggle-inner-wrap .full .search-jokes.input-wrap > label {
+    margin-right: 0;
   }
 }

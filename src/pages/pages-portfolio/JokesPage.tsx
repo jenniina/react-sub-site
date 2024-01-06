@@ -26,7 +26,6 @@ import {
   ECategoryTitle,
   EClickHereToSeeFeatures,
   EDarkJokesAreVisibleOnlyWhenSafeModeIsOff,
-  EChuckNorrisAndDadJokesExclusivelyFeatureSinglePartJokesAnd,
   ENote,
   TCategoryByLanguages,
 } from '../../components/Jokes/interfaces'
@@ -206,13 +205,6 @@ export default function JokesPage({
                   <li>
                     {ENote[language]}
                     <ul>
-                      <li>
-                        {
-                          EChuckNorrisAndDadJokesExclusivelyFeatureSinglePartJokesAnd[
-                            language
-                          ]
-                        }{' '}
-                      </li>
                       <li>{EDarkJokesAreVisibleOnlyWhenSafeModeIsOff[language]}</li>
                     </ul>
                   </li>

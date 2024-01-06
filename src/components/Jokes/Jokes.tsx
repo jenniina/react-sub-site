@@ -911,6 +911,52 @@ function Jokes({
         setJokeId(dadJoke.id)
         await setJokeData(dadJoke, ECategory_en.DadJoke, undefined)
       }
+    }
+    const publicJokesInCurrentLanguage = jokes.filter((joke) =>
+      joke.private === false &&
+      joke.language === language &&
+      joke.safe === isCheckedSafemode &&
+      joke.type === jokeType &&
+      currentCategory !== undefined &&
+      currentCategory !== null
+        ? joke.category === currentCategory
+        : true
+    )
+
+    if (
+      publicJokesInCurrentLanguage.length > 0 &&
+      jokeType === EJokeType.single &&
+      Math.random() < 0.2
+    ) {
+      const randomIndex = Math.floor(Math.random() * publicJokesInCurrentLanguage.length)
+      const random = publicJokesInCurrentLanguage[randomIndex]
+      if (random.type === EJokeType.single) {
+        setLoading(false)
+        setJoke(random.joke)
+        setDelivery('')
+        setJokeId(random.jokeId)
+        setJokeLanguage(random.language)
+        setCurrentCategory(random.category)
+        setSaveJoke(random)
+        return
+      }
+    } else if (
+      publicJokesInCurrentLanguage.length > 0 &&
+      jokeType === EJokeType.twopart &&
+      Math.random() < 0.2
+    ) {
+      const randomIndex = Math.floor(Math.random() * publicJokesInCurrentLanguage.length)
+      const random = publicJokesInCurrentLanguage[randomIndex]
+      if (random.type === EJokeType.twopart) {
+        setLoading(false)
+        setJoke(random.setup)
+        setDelivery(random.delivery)
+        setJokeId(random.jokeId)
+        setJokeLanguage(random.language)
+        setCurrentCategory(random.category)
+        setSaveJoke(random)
+        return
+      }
     } else {
       const categories = categoryValues.map((category) => category.value)
       const filteredCategories = categories.filter(
