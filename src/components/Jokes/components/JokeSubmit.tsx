@@ -55,7 +55,7 @@ import {
   ENickname,
   EError,
 } from '../../../interfaces'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
 import Accordion from '../../Accordion/Accordion'
 import { Select, SelectOption } from '../../Select/Select'
@@ -96,8 +96,11 @@ const JokeSubmit = ({
     ELanguages[ELanguagesLong[language]]
   )
   const [jokeType, setJokeType] = useState<EJokeType>(EJokeType.single)
-  const [setup, setSetup] = useState<EJokeSetup>(EJokeSetup.en)
-  const [delivery, setDelivery] = useState<EJokeDelivery>(EJokeDelivery.en)
+  const [setupTitle, setSetupTitle] = useState<EJokeSetup>(EJokeSetup.en)
+  const [deliveryTitle, setDeliveryTitle] = useState<EJokeDelivery>(EJokeDelivery.en)
+  const [joke, setJoke] = useState<string>('')
+  const [setup, setSetup] = useState<string>('')
+  const [delivery, setDelivery] = useState<string>('')
   const [isCheckedJokeType, setIsCheckedJokeType] = useState(true)
   const [isCheckedPrivate, setIsCheckedPublic] = useState(true)
   const [private_, setPrivate] = useState<EPublic | EPrivate>(EPrivate[language])
@@ -166,15 +169,12 @@ const JokeSubmit = ({
     }
 
     if (jokeType === EJokeType.single) {
-      const joke = e.currentTarget.joke.value
       jokeObject = {
         ...jokeObject,
         joke,
         type: EJokeType.single,
       } as IJoke
     } else {
-      const setup = e.currentTarget.setup.value
-      const delivery = e.currentTarget.delivery.value
       jokeObject = {
         ...jokeObject,
         setup,
@@ -184,11 +184,14 @@ const JokeSubmit = ({
     }
 
     dispatch(createJoke(jokeObject))
-      .then(() => {
+      .then((r) => {
         dispatch(initializeUser()).then(() => {
           dispatch(initializeJokes())
+          setJoke('')
+          setSetup('')
+          setDelivery('')
         })
-        dispatch(notify(`${ESavedJoke[language]}`, false, 8))
+        dispatch(notify(`${ESavedJoke[language]}. ${r.message ?? ''}`, false, 8))
       })
       .catch((e) => {
         console.log(e)
@@ -239,8 +242,8 @@ const JokeSubmit = ({
   }
 
   useEffect(() => {
-    setSetup(EJokeSetup[language])
-    setDelivery(EJokeDelivery[language])
+    setSetupTitle(EJokeSetup[language])
+    setDeliveryTitle(EJokeDelivery[language])
   }, [language])
 
   useEffect(() => {
@@ -313,14 +316,31 @@ const JokeSubmit = ({
           {jokeType === EJokeType.single ? (
             <label htmlFor='submit-joke-single-input' className='textarea-wrap'>
               <span>{EJoke[language]}</span>
-              <textarea name='joke' id='submit-joke-single-input' required />
+              <textarea
+                name='joke'
+                id='submit-joke-single-input'
+                required
+                value={joke}
+                onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
+                  setJoke(e.target.value)
+                }}
+              />
             </label>
           ) : (
             <>
               <div className='input-wrap'>
                 <label htmlFor='submit-setup-input'>
-                  <input type='text' id='submit-setup-input' name='setup' required />
-                  <span>{setup}</span>
+                  <input
+                    type='text'
+                    id='submit-setup-input'
+                    name='setup'
+                    required
+                    value={setup}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      setSetup(e.target.value)
+                    }}
+                  />
+                  <span>{setupTitle}</span>
                 </label>
               </div>
               <div className='input-wrap'>
@@ -329,9 +349,13 @@ const JokeSubmit = ({
                     type='text'
                     id='submit-delivery-input'
                     name='delivery'
+                    value={delivery}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      setDelivery(e.target.value)
+                    }}
                     required
                   />
-                  <span>{delivery}</span>
+                  <span>{deliveryTitle}</span>
                 </label>
               </div>
             </>

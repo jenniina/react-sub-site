@@ -699,6 +699,7 @@ function Jokes({
   const users = useSelector((state: ReducerProps) => {
     return state.users
   })
+
   // Fetch joke from API or database
   const fetchApi = async () => {
     setLoading(true)
@@ -707,7 +708,7 @@ function Jokes({
     const handleJokes = (jokeType: EJokeType, jokes: IJoke[] | undefined) => {
       const filteredJokes = jokes?.filter(
         (joke) =>
-          joke.language === ELanguages.Suomi &&
+          joke.language === language &&
           joke.private === false &&
           joke.safe === isCheckedSafemode &&
           joke.type === jokeType
@@ -735,7 +736,7 @@ function Jokes({
             setAuthor(author?.name ?? '')
           }
           setJokeId(random.jokeId)
-          setJokeLanguage(ELanguages.Suomi)
+          setJokeLanguage(language)
           setCurrentCategory(random.category)
           setSaveJoke(random)
           return
@@ -756,23 +757,19 @@ function Jokes({
       }
     }
 
-    if (language === ELanguages.Suomi) {
-      const jokeType = isCheckedJokeType ? EJokeType.twopart : EJokeType.single
-      const filteredJokes = jokes?.filter(
-        (joke) =>
-          joke.language === ELanguages.Suomi &&
-          (categories.length === 0 || categories.includes(joke.category)) &&
-          joke.private === false &&
-          joke.safe === isCheckedSafemode &&
-          joke.type === jokeType
-      )
-      handleJokes(jokeType, filteredJokes)
-      return
-    }
+    const jokeType = isCheckedJokeType ? EJokeType.twopart : EJokeType.single
+    const filteredJokes = jokes?.filter(
+      (joke) =>
+        joke.language === language &&
+        (categories.length === 0 || categories.includes(joke.category)) &&
+        joke.private === false &&
+        joke.safe === isCheckedSafemode &&
+        joke.type === jokeType
+    )
 
-    const amountOfCategories =
-      categoryValues.length < 1 ? 9 : categoryValues.length + 0.999
-    const random1 = Math.floor(getRandomMinMax(1, amountOfCategories))
+    // const amountOfCategories =
+    //   categoryValues.length < 1 ? 9 : categoryValues.length + 0.999
+    // const random1 = Math.floor(getRandomMinMax(1, amountOfCategories))
     const isChuckNorris =
       categoryValues.some((category) => category.value === 'ChuckNorris') ||
       categoryValues.length === 0
@@ -782,7 +779,22 @@ function Jokes({
     const isQueryNotEmpty = queryValue.trim() !== ''
     setJokeLanguage(language)
 
-    if ((random1 === 1 || random1 === 2) && (isChuckNorris || isDadJoke)) {
+    if (filteredJokes && filteredJokes.length > 0) {
+      handleJokes(jokeType, filteredJokes)
+      return
+    }
+
+    if (isChuckNorris || isDadJoke) {
+      if (language !== ELanguages.English) {
+        setLoading(false)
+        setJoke('')
+        setDelivery('')
+
+        dispatch(
+          notify(`${ENoJokeFound[language]}. ${ETryAnotherSearchTerm[language]}`, true, 8)
+        )
+        return
+      }
       if (isChuckNorris && isDadJoke) {
         const random = Math.floor(getRandomMinMax(1, 2.999))
         if (random === 1 && isChuckNorris && isQueryNotEmpty) {
@@ -911,53 +923,57 @@ function Jokes({
         setJokeId(dadJoke.id)
         await setJokeData(dadJoke, ECategory_en.DadJoke, undefined)
       }
-    }
-    const publicJokesInCurrentLanguage = jokes.filter((joke) =>
-      joke.private === false &&
-      joke.language === language &&
-      joke.safe === isCheckedSafemode &&
-      joke.type === jokeType &&
-      currentCategory !== undefined &&
-      currentCategory !== null
-        ? joke.category === currentCategory
-        : true
-    )
-
-    if (
-      publicJokesInCurrentLanguage.length > 0 &&
-      jokeType === EJokeType.single &&
-      Math.random() < 0.2
-    ) {
-      const randomIndex = Math.floor(Math.random() * publicJokesInCurrentLanguage.length)
-      const random = publicJokesInCurrentLanguage[randomIndex]
-      if (random.type === EJokeType.single) {
-        setLoading(false)
-        setJoke(random.joke)
-        setDelivery('')
-        setJokeId(random.jokeId)
-        setJokeLanguage(random.language)
-        setCurrentCategory(random.category)
-        setSaveJoke(random)
-        return
-      }
-    } else if (
-      publicJokesInCurrentLanguage.length > 0 &&
-      jokeType === EJokeType.twopart &&
-      Math.random() < 0.2
-    ) {
-      const randomIndex = Math.floor(Math.random() * publicJokesInCurrentLanguage.length)
-      const random = publicJokesInCurrentLanguage[randomIndex]
-      if (random.type === EJokeType.twopart) {
-        setLoading(false)
-        setJoke(random.setup)
-        setDelivery(random.delivery)
-        setJokeId(random.jokeId)
-        setJokeLanguage(random.language)
-        setCurrentCategory(random.category)
-        setSaveJoke(random)
-        return
-      }
     } else {
+      // const publicJokesInCurrentLanguage = jokes.filter((joke) =>
+      //   joke.private === false &&
+      //   joke.language === language &&
+      //   joke.safe === isCheckedSafemode &&
+      //   joke.type === jokeType &&
+      //   currentCategory !== undefined &&
+      //   currentCategory !== null
+      //     ? joke.category === currentCategory
+      //     : true
+      // )
+
+      // if (
+      //   publicJokesInCurrentLanguage.length > 0 &&
+      //   jokeType === EJokeType.single &&
+      //   Math.random() < 0.3
+      // ) {
+      //   const randomIndex = Math.floor(
+      //     Math.random() * publicJokesInCurrentLanguage.length
+      //   )
+      //   const random = publicJokesInCurrentLanguage[randomIndex]
+      //   if (random.type === EJokeType.single) {
+      //     setLoading(false)
+      //     setJoke(random.joke)
+      //     setDelivery('')
+      //     setJokeId(random.jokeId)
+      //     setJokeLanguage(random.language)
+      //     setCurrentCategory(random.category)
+      //     setSaveJoke(random)
+      //     return
+      //   }
+      // } else if (
+      //   publicJokesInCurrentLanguage.length > 0 &&
+      //   jokeType === EJokeType.twopart &&
+      //   Math.random() < 0.3
+      // ) {
+      //   const randomIndex = Math.floor(
+      //     Math.random() * publicJokesInCurrentLanguage.length
+      //   )
+      //   const random = publicJokesInCurrentLanguage[randomIndex]
+      //   if (random.type === EJokeType.twopart) {
+      //     setLoading(false)
+      //     setJoke(random.setup)
+      //     setDelivery(random.delivery)
+      //     setJokeId(random.jokeId)
+      //     setJokeLanguage(random.language)
+      //     setCurrentCategory(random.category)
+      //     setSaveJoke(random)
+      //     return
+      //   }
+      // }  else {
       const categories = categoryValues.map((category) => category.value)
       const filteredCategories = categories.filter(
         (category) => category !== 'ChuckNorris' && category !== 'DadJoke'
