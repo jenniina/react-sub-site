@@ -78,6 +78,7 @@ import { useSelector } from 'react-redux'
 import { initializeUsers } from '../../../reducers/usersReducer'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import Accordion from '../../Accordion/Accordion'
+import { initializeJokes } from '../reducers/jokeReducer'
 
 // export interface IJokeVisible {
 //   _id?: IJoke['_id']
@@ -108,7 +109,6 @@ import Accordion from '../../Accordion/Accordion'
 
 interface Props {
   titleSaved: ESavedJoke
-  jokes: IJoke[]
   userId: IUser['_id']
   handleDelete: (
     jokeId: IJoke['_id'],
@@ -145,7 +145,6 @@ enum ESortBy {
 
 const UserJokes = ({
   titleSaved,
-  jokes,
   userId,
   handleDelete,
   handleUpdate,
@@ -165,6 +164,7 @@ const UserJokes = ({
   getCategoryInLanguage,
 }: Props) => {
   const users = useSelector((state: any) => state.users)
+  const jokes = useSelector((state: any) => state.jokes)
 
   type IJokeVisible = IJoke & {
     visible: boolean
@@ -172,32 +172,31 @@ const UserJokes = ({
     name: string
   }
 
-  // //add visible to jokes
-  // const withVisibility: IJokeVisible[] =
-  //   Array.isArray(jokes) && jokes?.length > 0
-  //     ? jokes?.map((joke) => {
-  //         const author = users.find((user: IUser) => user._id == joke.author)
-  //         const jokeLanguage = LanguageOfLanguage[
-  //           language as keyof typeof ELanguagesLong
-  //         ][
-  //           getKeyofEnum(
-  //             ELanguages,
-  //             joke.language as ELanguages
-  //           ) as keyof TLanguageOfLanguage[ELanguages]
-  //         ] as TLanguageOfLanguage[keyof typeof ELanguagesLong][keyof TLanguageOfLanguage[ELanguages]]
-  //         return {
-  //           ...joke,
-  //           visible: false,
-  //           translatedLanguage: jokeLanguage ?? '',
-  //           name: joke.anonymous ? '_Anonymous' : author?.name ?? '',
-  //         }
-  //       })
-  //     : []
-  const [withVisibility, setWithVisibility] = useState<IJokeVisible[]>([])
-  const [userJokes, setUserJokes] = useState<IJokeVisible[]>(withVisibility)
+  //add visible to jokes
+  const jokesVisible: IJokeVisible[] =
+    Array.isArray(jokes) && jokes?.length > 0
+      ? jokes?.map((joke) => {
+          const author = users.find((user: IUser) => user._id == joke.author)
+          const jokeLanguage = LanguageOfLanguage[
+            language as keyof typeof ELanguagesLong
+          ][
+            getKeyofEnum(
+              ELanguages,
+              language as ELanguages
+            ) as keyof TLanguageOfLanguage[ELanguages]
+          ] as TLanguageOfLanguage[keyof typeof ELanguagesLong][keyof TLanguageOfLanguage[ELanguages]]
+          return {
+            ...joke,
+            visible: false,
+            translatedLanguage: jokeLanguage ?? '',
+            name: joke.anonymous ? '_Anonymous' : author?.name ?? '',
+          }
+        })
+      : []
+  const [userJokes, setUserJokes] = useState<IJokeVisible[]>(jokesVisible)
   const [visibleJokes, setVisibleJokes] = useState<Record<IJoke['jokeId'], boolean>>({})
   const [localJokes, setLocalJokes] = useState<boolean>(false)
-  const [filteredJokes, setFilteredJokes] = useState<IJokeVisible[]>(withVisibility)
+  const [filteredJokes, setFilteredJokes] = useState<IJokeVisible[]>(userJokes)
   const [isRandom, setIsRandom] = useState<boolean>(false)
   const [randomTrigger, setRandomTrigger] = useState<number>(0)
   const [sortBy, setSortBy] = useState<ESortBy>(ESortBy.category)
@@ -233,12 +232,13 @@ const UserJokes = ({
         }
       })
 
-      setWithVisibility(updatedJokes)
+      setUserJokes(updatedJokes)
     }
   }, [jokes, users, language])
 
   useEffect(() => {
     dispatch(initializeUsers())
+    dispatch(initializeJokes())
   }, [])
 
   useEffect(() => {
@@ -273,12 +273,12 @@ const UserJokes = ({
 
   useEffect(() => {
     const sortedJokes =
-      !isCheckedSafemode && withVisibility !== undefined
-        ? withVisibility
+      !isCheckedSafemode && userJokes !== undefined
+        ? userJokes
             .filter((joke) => joke.safe === false)
             .sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1))
-        : isCheckedSafemode && withVisibility !== undefined
-        ? withVisibility
+        : isCheckedSafemode && userJokes !== undefined
+        ? userJokes
             .filter((joke) => joke.safe)
             .sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1))
         : ''

@@ -1306,8 +1306,7 @@ function Jokes({
 
           <UserJokes
             titleSaved={titleSaved}
-            jokes={jokes ?? []}
-            userId={user?._id ?? undefined}
+            userId={user?._id}
             handleDelete={handleDelete}
             deleteJoke={deleteJoke}
             titleCategory={titleCategory}
