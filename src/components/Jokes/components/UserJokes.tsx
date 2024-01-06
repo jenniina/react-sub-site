@@ -172,28 +172,28 @@ const UserJokes = ({
     name: string
   }
 
-  //add visible to jokes
-  const jokesVisible: IJokeVisible[] =
-    Array.isArray(jokes) && jokes?.length > 0
-      ? jokes?.map((joke) => {
-          const author = users.find((user: IUser) => user._id == joke.author)
-          const jokeLanguage = LanguageOfLanguage[
-            joke.language as keyof typeof ELanguagesLong
-          ][
-            getKeyofEnum(
-              ELanguages,
-              language as ELanguages
-            ) as keyof TLanguageOfLanguage[ELanguages]
-          ] as TLanguageOfLanguage[keyof typeof ELanguagesLong][keyof TLanguageOfLanguage[ELanguages]]
-          return {
-            ...joke,
-            visible: false,
-            translatedLanguage: jokeLanguage ?? '',
-            name: joke.anonymous ? '_Anonymous' : author?.name ?? '',
-          }
-        })
-      : []
-  const [userJokes, setUserJokes] = useState<IJokeVisible[]>(jokesVisible)
+  // //add visible to jokes
+  // const jokesVisible: IJokeVisible[] =
+  //   Array.isArray(jokes) && jokes?.length > 0
+  //     ? jokes?.map((joke) => {
+  //         const author = users.find((user: IUser) => user._id == joke.author)
+  //         const jokeLanguage = LanguageOfLanguage[
+  //           joke.language as keyof typeof ELanguagesLong
+  //         ][
+  //           getKeyofEnum(
+  //             ELanguages,
+  //             language as ELanguages
+  //           ) as keyof TLanguageOfLanguage[ELanguages]
+  //         ] as TLanguageOfLanguage[keyof typeof ELanguagesLong][keyof TLanguageOfLanguage[ELanguages]]
+  //         return {
+  //           ...joke,
+  //           visible: false,
+  //           translatedLanguage: jokeLanguage ?? '',
+  //           name: joke.anonymous ? '_Anonymous' : author?.name ?? '',
+  //         }
+  //       })
+  //     : []
+  const [userJokes, setUserJokes] = useState<IJokeVisible[]>([])
   const [visibleJokes, setVisibleJokes] = useState<Record<IJoke['jokeId'], boolean>>({})
   const [localJokes, setLocalJokes] = useState<boolean>(false)
   const [filteredJokes, setFilteredJokes] = useState<IJokeVisible[]>(userJokes)
@@ -215,7 +215,7 @@ const UserJokes = ({
 
   useEffect(() => {
     if (Array.isArray(jokes) && jokes.length > 0) {
-      const updatedJokes = jokes?.map((joke) => {
+      let updatedJokes = jokes?.map((joke) => {
         const author = users?.find((user: IUser) => user._id == joke.author)
         const jokeLanguage = LanguageOfLanguage[language as keyof typeof ELanguagesLong][
           getKeyofEnum(
@@ -231,14 +231,24 @@ const UserJokes = ({
           name: joke.anonymous ? '_Anonymous' : author?.name ?? '',
         }
       })
+      updatedJokes = !isCheckedSafemode
+        ? updatedJokes
+            .filter((joke) => joke.safe === false)
+            .sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1))
+        : isCheckedSafemode
+        ? updatedJokes
+            .filter((joke) => joke.safe)
+            .sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1))
+        : []
 
       setUserJokes(updatedJokes)
     }
   }, [jokes, users, language])
 
   useEffect(() => {
-    dispatch(initializeUsers())
-    dispatch(initializeJokes())
+    dispatch(initializeUsers()).then(() => {
+      dispatch(initializeJokes())
+    })
   }, [])
 
   useEffect(() => {
@@ -270,21 +280,6 @@ const UserJokes = ({
       })
     }, 500)
   }, [])
-
-  useEffect(() => {
-    const sortedJokes =
-      !isCheckedSafemode && userJokes !== undefined
-        ? userJokes
-            .filter((joke) => joke.safe === false)
-            .sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1))
-        : isCheckedSafemode && userJokes !== undefined
-        ? userJokes
-            .filter((joke) => joke.safe)
-            .sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1))
-        : ''
-
-    setUserJokes(sortedJokes as unknown as IJokeVisible[])
-  }, [jokes, isCheckedSafemode, sortBy])
 
   useEffect(() => {
     if (!userId) {
