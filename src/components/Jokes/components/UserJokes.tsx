@@ -178,7 +178,7 @@ const UserJokes = ({
       ? jokes?.map((joke) => {
           const author = users.find((user: IUser) => user._id == joke.author)
           const jokeLanguage = LanguageOfLanguage[
-            language as keyof typeof ELanguagesLong
+            joke.language as keyof typeof ELanguagesLong
           ][
             getKeyofEnum(
               ELanguages,
@@ -220,7 +220,7 @@ const UserJokes = ({
         const jokeLanguage = LanguageOfLanguage[language as keyof typeof ELanguagesLong][
           getKeyofEnum(
             ELanguages,
-            language as ELanguages
+            joke.language as ELanguages
           ) as keyof TLanguageOfLanguage[ELanguages]
         ] as TLanguageOfLanguage[keyof typeof ELanguagesLong][keyof TLanguageOfLanguage[ELanguages]]
 
