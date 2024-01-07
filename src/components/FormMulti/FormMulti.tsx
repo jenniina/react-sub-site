@@ -3,7 +3,13 @@ import { MessageForm } from './components/MessageForm'
 import { ExtrasForm } from './components/ExtrasForm'
 import { useMultistepForm } from './hooks/useMultistepForm'
 import { InitialForm } from './components/InitialForm'
-import { ELanguages, ESend, EThankYouForYourMessage, RefObject } from '../../interfaces'
+import {
+  ELanguages,
+  ESend,
+  ESendingEmail,
+  EThankYouForYourMessage,
+  RefObject,
+} from '../../interfaces'
 import { FormData, INITIAL_DATA } from './interfaces'
 import styles from './form.module.css'
 import { sendEmail } from './services/email'
@@ -24,6 +30,7 @@ function FormMulti({ language }: { language: ELanguages }) {
   const form = useRef() as RefObject<HTMLFormElement>
 
   const [data, setData] = useState(INITIAL_DATA)
+  const [sending, setSending] = useState(false)
 
   const dispatch = useAppDispatch()
 
@@ -61,7 +68,9 @@ function FormMulti({ language }: { language: ELanguages }) {
 
     if (form.current) {
       try {
+        setSending(false)
         await sendEmail(data).then(() => {
+          setSending(true)
           goTo(0)
           setData(INITIAL_DATA)
           setShowMessage(true)
@@ -165,12 +174,14 @@ function FormMulti({ language }: { language: ELanguages }) {
               className={isLastStep ? styles.submit : styles.next}
               onClick={handleNext}
             >
-              {ENext[language]} <span aria-hidden='true'>»</span>
+              {sending ? ESendingEmail[language] : ENext[language]}{' '}
+              <span aria-hidden='true'>»</span>
             </button>
           )}
           {isLastStep && (
             <button className={isLastStep ? styles.submit : styles.next} type='submit'>
-              {ESend[language]} <span aria-hidden='true'>»</span>
+              {sending ? ESendingEmail[language] : ESend[language]}{' '}
+              <span aria-hidden='true'>»</span>
             </button>
           )}
           {showError && (
