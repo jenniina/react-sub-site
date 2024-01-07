@@ -980,11 +980,41 @@ export enum EAuthor {
   fi = 'Tekijä',
 }
 
-export const SortBy = {
+export enum EAge {
+  en = 'Age',
+  es = 'Edad',
+  fr = 'Âge',
+  de = 'Alter',
+  pt = 'Idade',
+  cs = 'Věk',
+  fi = 'Ikä',
+}
+export enum EPopular {
+  en = 'Popular',
+  es = 'Popular',
+  fr = 'Populaire',
+  de = 'Beliebt',
+  pt = 'Popular',
+  cs = 'Populární',
+  fi = 'Suosittu',
+}
+export enum EPopularity {
+  en = 'Popularity',
+  es = 'Popularidad',
+  fr = 'Popularité',
+  de = 'Beliebtheit',
+  pt = 'Popularidade',
+  cs = 'Oblíbenost',
+  fi = 'Suosio',
+}
+export const ESortBy = {
+  popularity: EPopularity,
   language: ELanguageTitle,
   category: ECategoryTitle,
   name: EAuthor,
+  age: EAge,
 }
+
 export enum ERandomJoke {
   en = 'Random joke',
   es = 'Broma aleatoria',

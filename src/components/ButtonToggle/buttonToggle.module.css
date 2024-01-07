@@ -1,11 +1,11 @@
 .toggle-container {
+  --width: calc(var(--height) * 3.4);
   display: flex;
   gap: 0.5em;
   align-items: center;
   justify-content: center;
 }
 .toggle {
-  --width: calc(var(--height) * 3.4);
   --height: calc(2.5em * var(--responsive_scale));
 
   position: relative;
@@ -228,7 +228,6 @@
 }
 @media (min-width: 600px) {
   .toggle {
-    --width: calc(var(--height) * 3.1);
     --height: calc(2em * var(--responsive_scale));
   }
 }

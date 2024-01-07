@@ -131,17 +131,21 @@ export default function CustomSelectPage({
           setValue1([])
           setValue2(options2[0])
           setInput('')
-
           setSending(false)
           setShowMessage(true)
           setTimeout(() => {
             setShowMessage(false)
-          }, 2000)
+          }, 100000)
           dispatch(notify(EThankYouForYourMessage[language], false, 8))
         })
       } catch (error) {
         setSending(false)
         setError((error as Error).message)
+        setShowMessage(true)
+        setTimeout(() => {
+          setShowMessage(false)
+          setError(null)
+        }, 10000)
         console.log('error', error)
         dispatch(notify(EThereWasAnErrorSendingTheMessage[language], true, 8))
       }
@@ -311,7 +315,7 @@ export default function CustomSelectPage({
                           letterSpacing: '0.04em',
                         }}
                       >
-                        {EThankYouForYourMessage[language]}
+                        {error ? error : EThankYouForYourMessage[language]}
                       </div>
                     )}
                   </FormWrapper>

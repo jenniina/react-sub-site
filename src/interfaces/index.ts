@@ -1629,3 +1629,48 @@ export enum EPleaseUseGoodTasteWhenChoosingYourNickname {
   cs = 'Použijte prosím dobrý vkus při výběru přezdívky',
   fi = 'Pyydän noudattamaan hyvää makua nimimerkin valitsemisessa',
 }
+export enum EOldestFirst {
+  en = 'Oldest first',
+  es = 'El más antiguo primero',
+  fr = "Le plus ancien d'abord",
+  de = 'Älteste zuerst',
+  pt = 'Mais antigo primeiro',
+  cs = 'Nejstarší první',
+  fi = 'Vanhin ensin',
+}
+export enum ENewestFirst {
+  en = 'Newest first',
+  es = 'El más nuevo primero',
+  fr = "Le plus récent d'abord",
+  de = 'Neueste zuerst',
+  pt = 'Mais novo primeiro',
+  cs = 'Nejnovější první',
+  fi = 'Uusin ensin',
+}
+export enum ENewest {
+  en = 'Newest',
+  es = 'El más nuevo',
+  fr = 'Le plus récent',
+  de = 'Neueste',
+  pt = 'Mais novo',
+  cs = 'Nejnovější',
+  fi = 'Uusin',
+}
+export enum EOldest {
+  en = 'Oldest',
+  es = 'El más antiguo',
+  fr = 'Le plus ancien',
+  de = 'Älteste',
+  pt = 'Mais antigo',
+  cs = 'Nejstarší',
+  fi = 'Vanhin',
+}
+export enum ELikedBy {
+  en = 'Liked by',
+  es = 'Le gustó a',
+  fr = 'Aimé par',
+  de = 'Gefällt von',
+  pt = 'Gostado por',
+  cs = 'Líbí se',
+  fi = 'Tykännyt',
+}
