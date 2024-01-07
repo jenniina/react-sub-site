@@ -388,6 +388,7 @@ function Jokes({
                 .then((r) => {
                   dispatch(initializeJokes())
                   dispatch(notify(`${titleSaved}. ${r.message ?? ''}`, false, 8))
+                  setIsEditOpen(false)
                 })
                 .catch((e) => {
                   console.log(e)
@@ -411,6 +412,7 @@ function Jokes({
             .then(() => {
               dispatch(initializeJokes())
               dispatch(notify(`${titleSaved}`, false, 8))
+              setIsEditOpen(false)
             })
             .catch((e) => {
               console.log(e)
@@ -1205,6 +1207,8 @@ function Jokes({
     navigate('/portfolio/jokes?login=login')
   }
 
+  const [isEditOpen, setIsEditOpen] = useState(false)
+
   return (
     <>
       <section className={`joke-container card ${language}`}>
@@ -1261,10 +1265,16 @@ function Jokes({
 
       <section className={`joke-container card ${language}`}>
         <div>
-          <div className={`register-login-wrap`}>
-            <button onClick={navigateToLogin}>{ELogin[language]}</button>
-            <button onClick={navigateToRegister}>{ERegister[language]}</button>
-          </div>
+          {!user ? (
+            <div className={`register-login-wrap`}>
+              <button onClick={navigateToLogin}>{ELogin[language]}</button>
+              <button onClick={navigateToRegister}>{ERegister[language]}</button>
+            </div>
+          ) : (
+            <p>
+              {ELoggedInAs[language]} {user?.name}
+            </p>
+          )}
           {user && (
             <JokeSubmit
               userId={user?._id}
@@ -1300,10 +1310,13 @@ function Jokes({
             translateWordLanguage={translateWordLanguage}
             titleLanguage={titleLanguage}
             getKeyofEnum={getKeyofEnum}
+            options={options}
             optionsSortBy={optionsSortBy}
             norrisCategories={norrisCategories}
             getCategoryInLanguage={getCategoryInLanguage}
             handleUpdate={handleUpdate}
+            isEditOpen={isEditOpen}
+            setIsEditOpen={setIsEditOpen}
           />
         </div>
       </section>

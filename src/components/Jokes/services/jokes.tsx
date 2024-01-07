@@ -25,10 +25,7 @@ const create = async (newObject: IJoke) => {
 }
 
 const update = async (newObject: IJoke) => {
-  const request = axios.put(
-    `${baseUrl}/${newObject.jokeId}/${newObject.language}`,
-    newObject
-  )
+  const request = axios.put(`${baseUrl}/${newObject._id}`, newObject)
   return request.then((response) => response.data)
 }
 

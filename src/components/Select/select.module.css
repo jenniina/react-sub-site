@@ -123,8 +123,10 @@ button.clear-btn:hover {
 .options {
   position: absolute;
   display: none;
-  max-height: 15em;
+  max-height: 25em;
+  height: max-content;
   overflow-y: auto;
+  overflow-x: hidden;
   list-style: none;
   border: var(--border) solid var(--color-fg);
   border-radius: var(--radius);

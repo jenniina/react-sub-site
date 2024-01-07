@@ -57,6 +57,9 @@ import {
   EFilterFurther,
   EPrivate,
   EPublic,
+  TCategoryByLanguages,
+  ESafemode,
+  EExtraCategories,
 } from '../interfaces'
 import {
   IUser,
@@ -133,11 +136,14 @@ interface Props {
   handleToggleChangeSafemode: () => void
   optionsSortBy: (enumObj: typeof SortBy) => SelectOption[]
   getKeyofEnum: (enumObj: typeof ELanguages, value: ELanguages) => string
+  options: (enumObj: typeof ELanguages) => SelectOption[]
   norrisCategories: SelectOption[]
   getCategoryInLanguage: (
     category: ECategory_en,
     language: ELanguages
   ) => string | undefined
+  isEditOpen: boolean
+  setIsEditOpen: (isEditOpen: boolean) => void
 }
 
 enum ESortBy {
@@ -164,8 +170,11 @@ const UserJokes = ({
   titleLanguage,
   optionsSortBy,
   getKeyofEnum,
+  options,
   norrisCategories,
   getCategoryInLanguage,
+  isEditOpen,
+  setIsEditOpen,
 }: Props) => {
   const users = useSelector((state: any) => state.users)
   const jokes = useSelector((state: any) => state.jokes)
@@ -213,7 +222,9 @@ const UserJokes = ({
   const [selectedNorrisCategory, setSelectedNorrisCategory] = useState<
     SelectOption | undefined
   >(norrisCategories[0])
-  const [newJoke, setNewJoke] = useState<IJoke>()
+  const [newJoke, setNewJoke] = useState<IJoke | undefined>(undefined)
+  const [jokeLanguage, setJokeLanguage] = useState<ELanguages>(ELanguages.English)
+  const [jokeCategory, setJokeCategory] = useState<ECategory_en>(ECategory_en.Misc)
 
   const dispatch = useAppDispatch()
 
@@ -645,6 +656,7 @@ const UserJokes = ({
           <ul className='userjokeslist'>
             {currentItems && currentItems?.length > 0 ? (
               currentItems?.map((joke) => {
+                const { visible, translatedLanguage, ...restOfJoke } = joke
                 return (
                   <li key={joke._id}>
                     <div className='primary-wrap'>
@@ -761,6 +773,13 @@ const UserJokes = ({
                           className='joke-edit'
                           text={EEdit[language]}
                           close={EClose[language]}
+                          onClick={() => {
+                            setJokeLanguage(joke.language)
+                            setJokeCategory(joke.category as ECategory_en)
+                            setNewJoke(restOfJoke as IJoke)
+                          }}
+                          isOpen={isEditOpen}
+                          setIsFormOpen={setIsEditOpen}
                         >
                           <form
                             onSubmit={handleUpdate(joke?._id, newJoke ?? joke)}
@@ -779,15 +798,13 @@ const UserJokes = ({
                                         id='setup'
                                         defaultValue={joke.setup}
                                         onChange={(e) => {
-                                          const {
-                                            visible,
-                                            translatedLanguage,
-                                            ...restOfJoke
-                                          } = joke
-                                          setNewJoke(() => ({
-                                            ...restOfJoke,
-                                            setup: e.target.value,
-                                          }))
+                                          setNewJoke(
+                                            (prev) =>
+                                              ({
+                                                ...prev,
+                                                setup: e.target.value,
+                                              } as IJoke)
+                                          )
                                         }}
                                       />
                                       <span>{EJokeSetup[language]}</span>
@@ -802,15 +819,13 @@ const UserJokes = ({
                                         id='edit-delivery'
                                         defaultValue={joke.delivery}
                                         onChange={(e) => {
-                                          const {
-                                            visible,
-                                            translatedLanguage,
-                                            ...restOfJoke
-                                          } = joke
-                                          setNewJoke(() => ({
-                                            ...restOfJoke,
-                                            delivery: e.target.value,
-                                          }))
+                                          setNewJoke(
+                                            (prev) =>
+                                              ({
+                                                ...prev,
+                                                delivery: e.target.value,
+                                              } as IJoke)
+                                          )
                                         }}
                                       />
                                       <span>{EJokeDelivery[language]}</span>{' '}
@@ -828,15 +843,13 @@ const UserJokes = ({
                                       id='edit-joke'
                                       defaultValue={joke.joke}
                                       onChange={(e) => {
-                                        const {
-                                          visible,
-                                          translatedLanguage,
-                                          ...restOfJoke
-                                        } = joke
-                                        setNewJoke(() => ({
-                                          ...restOfJoke,
-                                          joke: e.target.value,
-                                        }))
+                                        setNewJoke(
+                                          (prev) =>
+                                            ({
+                                              ...prev,
+                                              joke: e.target.value,
+                                            } as IJoke)
+                                        )
                                       }}
                                     />
                                     <span>{EJoke[language]}</span>
@@ -854,6 +867,79 @@ const UserJokes = ({
                                 </div>
                               )}
                             </div>
+                            {joke.private === true && (
+                              <>
+                                <Select
+                                  language={language}
+                                  id='edit-language'
+                                  className='edit-language'
+                                  instructions={`${ELanguageTitle[language]}:`}
+                                  hide
+                                  options={options(ELanguages)}
+                                  value={
+                                    {
+                                      label:
+                                        LanguageOfLanguage[
+                                          jokeLanguage as keyof typeof ELanguagesLong
+                                        ][
+                                          getKeyofEnum(
+                                            ELanguages,
+                                            jokeLanguage as ELanguages
+                                          ) as keyof TLanguageOfLanguage[ELanguages]
+                                        ],
+                                      value: jokeLanguage,
+                                    } as SelectOption
+                                  }
+                                  onChange={(o: SelectOption | undefined) => {
+                                    setJokeLanguage(o?.value as ELanguages)
+                                    setNewJoke(
+                                      (prev) =>
+                                        ({
+                                          ...prev,
+                                          language: o?.value as ELanguages,
+                                        } as IJoke)
+                                    )
+                                  }}
+                                />
+                                <Select
+                                  language={language}
+                                  id='edit-category'
+                                  className='edit-category'
+                                  instructions={`${ESelectCategory[language]}:`}
+                                  hide
+                                  options={[
+                                    { label: EAny[language], value: '' },
+                                    ...(Object.values(ECategory_en).map((category) => {
+                                      return {
+                                        label: getCategoryInLanguage(
+                                          category as ECategory_en,
+                                          language
+                                        ),
+                                        value: category,
+                                      }
+                                    }) as SelectOption[]),
+                                  ]}
+                                  value={
+                                    {
+                                      label: getCategoryInLanguage(
+                                        jokeCategory as ECategory_en,
+                                        language
+                                      ),
+                                      value: jokeCategory,
+                                    } as SelectOption
+                                  }
+                                  onChange={(o: SelectOption | undefined) => {
+                                    const { visible, translatedLanguage, ...restOfJoke } =
+                                      joke
+                                    setJokeCategory(o?.value as ECategory_en)
+                                    setNewJoke(() => ({
+                                      ...restOfJoke,
+                                      category: o?.value as ECategory_en,
+                                    }))
+                                  }}
+                                />
+                              </>
+                            )}
                             <div>
                               <label htmlFor='edit-anonymous'>Anonymous:</label>
                               <input
