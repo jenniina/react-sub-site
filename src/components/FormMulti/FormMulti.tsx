@@ -68,9 +68,9 @@ function FormMulti({ language }: { language: ELanguages }) {
 
     if (form.current) {
       try {
-        setSending(false)
+        setSending(true)
         await sendEmail(data).then(() => {
-          setSending(true)
+          setSending(false)
           goTo(0)
           setData(INITIAL_DATA)
           setShowMessage(true)
