@@ -136,7 +136,7 @@ export default function CustomSelectPage({
           setShowMessage(true)
           setTimeout(() => {
             setShowMessage(false)
-          }, 100000)
+          }, 2000)
           dispatch(notify(EThankYouForYourMessage[language], false, 8))
         })
       } catch (error) {
