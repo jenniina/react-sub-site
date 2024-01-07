@@ -29,7 +29,7 @@
 }
 .joke-container .saved .local-saved-wrap button {
   background-image: none;
-  background-color: var(--color-primary-2);
+  background-color: var(--color-primary-3);
   color: var(--color-primary-20);
   border-width: 2px;
   border-bottom: none;
@@ -39,7 +39,7 @@
   padding: 0.8em 5% 0.5em;
 }
 .joke-container .saved .local-saved-wrap button.active {
-  background-color: var(--color-primary-1);
+  background-color: var(--color-primary-2);
   transform: translateY(2.5px);
   padding-top: 0.9em;
   padding-bottom: 0.6em;
@@ -69,7 +69,7 @@
 }
 .joke-container .saved .saved-inner > .filler {
   background-color: transparent;
-  background-image: linear-gradient(0deg, transparent, var(--color-primary-1));
+  background-image: linear-gradient(0deg, transparent, var(--color-primary-2));
   height: 5rem;
   width: 100%;
 }

@@ -728,9 +728,9 @@ const UserJokes = ({
                       ) : (
                         ''
                       )}
-                      {joke.private ? (
+                      {userId && joke.private ? (
                         <span>{EPrivate[language]}</span>
-                      ) : joke.private === false ? (
+                      ) : userId && joke.private === false ? (
                         <span>{EPublic[language]}</span>
                       ) : (
                         ''
