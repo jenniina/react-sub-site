@@ -35,8 +35,7 @@ import { ELanguages } from '../../../interfaces'
 
 interface Props {
   handleFormSubmit: (e: React.FormEvent<HTMLFormElement>) => void
-  currentCategory: ECategory
-  jokeCategory: ECategory
+  jokeCategory: ECategory | null
   setJokeCategory: (jokeCategory: ECategory_en) => void
   setQueryValue: (queryValue: string) => void
   setLanguage: (language: ELanguages) => void
@@ -89,7 +88,6 @@ interface Props {
 const Form = ({
   handleFormSubmit,
   jokeCategory,
-  currentCategory,
   categoryValues,
   setCategoryValues,
   setJokeCategory,
@@ -357,7 +355,7 @@ const Form = ({
         delivery={delivery}
         author={author}
         reveal={reveal}
-        currentCategory={currentCategory}
+        jokeCategory={jokeCategory}
         setReveal={setReveal}
         handleJokeSave={handleJokeSave}
         titleClickToReveal={titleClickToReveal}

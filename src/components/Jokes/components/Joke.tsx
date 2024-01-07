@@ -11,7 +11,7 @@ interface Props {
   joke: string
   delivery?: string
   author: string
-  currentCategory: ECategory
+  jokeCategory: ECategory | null
   reveal: boolean
   visibleJoke: boolean
   titleClickToReveal: string
@@ -27,7 +27,7 @@ const Joke = ({
   joke,
   delivery,
   author,
-  currentCategory,
+  jokeCategory,
   reveal,
   setReveal,
   handleJokeSave,
@@ -47,7 +47,7 @@ const Joke = ({
         <p className={`${visibleJoke ? 'fadeIn' : ''} ${!delivery ? 'no-delivery' : ''}`}>
           <small>
             {ECategoryTitle[language]}:{' '}
-            {getCategoryInLanguage(currentCategory as ECategory_en, language)}
+            {getCategoryInLanguage(jokeCategory as ECategory_en, language)}
           </small>
         </p>
         <p className={`${visibleJoke ? 'fadeIn' : ''} ${!delivery ? 'no-delivery' : ''}`}>
