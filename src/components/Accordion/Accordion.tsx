@@ -27,19 +27,31 @@ interface accordionProps {
   isOpen?: boolean
   setIsFormOpen?: (isFormOpen: boolean) => void
   language: ELanguages
+  onClick?: () => void
 }
 
 const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefined) => {
   const [visible, setVisible] = useState(false)
 
+  // useEffect(() => {
+  //   if (props.isOpen !== undefined) {
+  //     setVisible(props.isOpen)
+  //     if (props.setIsFormOpen) {
+  //       props.setIsFormOpen(props.isOpen)
+  //     }
+  //   }
+  // }, [props.isOpen])
+
   useEffect(() => {
-    if (props.isOpen !== undefined) {
-      setVisible(props.isOpen)
-      if (props.setIsFormOpen) {
-        props.setIsFormOpen(props.isOpen)
-      }
+    setVisible(props.isOpen || false)
+    if (props.setIsFormOpen) {
+      props.setIsFormOpen(props.isOpen || false)
     }
   }, [props.isOpen])
+
+  useEffect(() => {
+    if (visible) props.onClick && props.onClick()
+  }, [visible])
 
   const toggleVisibility = () => {
     setVisible(!visible)

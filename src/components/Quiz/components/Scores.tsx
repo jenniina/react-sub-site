@@ -37,7 +37,8 @@ const Scores = ({ easy, medium, hard, language }: Props) => {
         <tr className={styles.th}>
           <th>{EDifficulty[language]}</th>
           <th className={styles.score}>{EScore[language]}</th>
-          {show && <th className={styles.percentage}>%</th>} <th>{ESpeed[language]}</th>
+          {show && <th className={styles.percentage}>%</th>}
+          <th>{ESpeed[language]}</th>
         </tr>
       </thead>
       <tbody>
