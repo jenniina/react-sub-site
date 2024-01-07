@@ -7,6 +7,7 @@ import {
   ELanguages,
   ENickname,
   EPassword,
+  EPleaseUseGoodTasteWhenChoosingYourNickname,
   ERegister,
   ReducerProps,
 } from '../../interfaces'
@@ -27,6 +28,7 @@ interface Props {
   setConfirmPassword: (confirmPassword: string) => void
   setIsFormOpen?: (isFormOpen: boolean) => void
   text?: string
+  isOpen?: boolean
 }
 const Register = ({
   language,
@@ -40,6 +42,7 @@ const Register = ({
   name,
   setName,
   setIsFormOpen,
+  isOpen,
   text,
 }: Props) => {
   const dispatch = useAppDispatch()
@@ -64,22 +67,11 @@ const Register = ({
             text={ERegister[language]}
             ref={formRegisterRef}
             setIsFormOpen={setIsFormOpen}
+            isOpen={isOpen}
           >
             <h2>{ERegister[language]}</h2>
             <form onSubmit={handleRegister} className={`register ${text}`}>
-              <div className='input-wrap'>
-                <label>
-                  <input
-                    required
-                    type='text'
-                    name='username'
-                    id={`username-${text}`}
-                    value={username}
-                    onChange={({ target }) => setUsername(target.value)}
-                  />
-                  <span>{EEmail[language]}</span>
-                </label>
-              </div>
+              <p>{EPleaseUseGoodTasteWhenChoosingYourNickname[language]}</p>
               <div className='input-wrap'>
                 <label>
                   <input
@@ -91,6 +83,19 @@ const Register = ({
                     onChange={({ target }) => setName(target.value)}
                   />
                   <span>{ENickname[language]}</span>
+                </label>
+              </div>
+              <div className='input-wrap'>
+                <label>
+                  <input
+                    required
+                    type='text'
+                    name='username'
+                    id={`username-${text}`}
+                    value={username}
+                    onChange={({ target }) => setUsername(target.value)}
+                  />
+                  <span>{EEmail[language]}</span>
                 </label>
               </div>
               <div className='input-wrap'>

@@ -1620,3 +1620,12 @@ export enum EPasswordMustBeAtLeastTenCharacters {
   cs = 'Heslo musí mít nejméně 10 znaků',
   fi = 'Salasanan on oltava vähintään 10 merkkiä pitkä',
 }
+export enum EPleaseUseGoodTasteWhenChoosingYourNickname {
+  en = 'Please use good taste when choosing your nickname',
+  es = 'Por favor, use buen gusto al elegir su apodo',
+  fr = 'Veuillez utiliser bon goût lors du choix de votre surnom',
+  de = 'Bitte verwenden Sie guten Geschmack bei der Auswahl Ihres Spitznamens',
+  pt = 'Por favor, use bom gosto ao escolher seu apelido',
+  cs = 'Použijte prosím dobrý vkus při výběru přezdívky',
+  fi = 'Pyydän noudattamaan hyvää makua nimimerkin valitsemisessa',
+}

@@ -9,6 +9,7 @@ import {
   ECurrentNickname,
   EUserUpdated,
   EUserNotUpdated,
+  EPleaseUseGoodTasteWhenChoosingYourNickname,
 } from '../../interfaces'
 import { initializeUser, refreshUser } from '../../reducers/authReducer'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
@@ -86,6 +87,9 @@ const NicknameEdit = ({ user, language }: Props) => {
           <h2>{EEditPreferredNickname[language]}</h2>
           <p className={styles.p}>
             {ECurrentNickname[language]}: <strong>{user?.name}</strong>
+          </p>
+          <p className={`${styles.p} ${styles[`p-last`]}`}>
+            {EPleaseUseGoodTasteWhenChoosingYourNickname[language]}
           </p>
 
           <form onSubmit={handleUserSubmit} className={styles['edit-user']}>

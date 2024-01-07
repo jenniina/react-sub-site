@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { omit, set } from 'lodash'
 import { FaRandom, FaList } from 'react-icons/fa'
+import { MdOutlineSettingsBackupRestore } from 'react-icons/md'
 import {
   EJokeType,
   ESavedJoke,
@@ -231,7 +232,7 @@ const UserJokes = ({
           ...joke,
           visible: false,
           translatedLanguage: jokeLanguage ?? '',
-          name: joke.anonymous ? '_Anonymous' : author?.name ?? '',
+          name: joke.anonymous ? 'Ö_Anonymous' : author?.name ?? '',
         }
       })
       updatedJokes = !isCheckedSafemode
@@ -456,7 +457,9 @@ const UserJokes = ({
                   isChecked={isCheckedSafemode}
                   name='safemode'
                   id='safemode2'
-                  className={`${language} safemode userjokes`}
+                  className={`${language} ${
+                    !isCheckedSafemode ? 'unsafe' : ''
+                  } userjokes safemode`}
                   label={`${EFilter[language]}: `}
                   hideLabel={false}
                   on={titleSafe}
@@ -617,9 +620,9 @@ const UserJokes = ({
             </div>
           </div>
 
-          <div className='flex center gap mb3'>
-            <button className='danger' onClick={() => resetFilters()}>
-              {EReset[language]}
+          <div className='reset-btn-wrap mb3'>
+            <button className='reset-btn delete danger' onClick={() => resetFilters()}>
+              <MdOutlineSettingsBackupRestore /> <span>{EReset[language]}</span>
             </button>
           </div>
           <div className='flex center gap'>

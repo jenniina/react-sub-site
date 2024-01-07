@@ -11,7 +11,7 @@ import { TfiLineDashed } from 'react-icons/tfi'
 import styles from './nav.module.css'
 //import { links } from './links.json'
 //import { skipLinks } from './linksskip.json'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useTheme, useThemeUpdate } from '../../hooks/useTheme'
 import useScrollDirection from '../../hooks/useScrollDirection'
 import useWindowSize from '../../hooks/useWindowSize'
@@ -334,14 +334,23 @@ const Nav = (
   const [isLoginFormOpen, setIsLoginFormOpen] = useState(false)
   const [isRegisterFormOpen, setIsRegisterFormOpen] = useState(false)
 
+  const location = useLocation()
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     if (params.get('login')) {
       setIsToolbarOpen(true)
       setIsToolbarHidden(false)
       setIsLoginFormOpen(true)
+      setIsRegisterFormOpen(false)
     }
-  }, [])
+    if (params.get('register')) {
+      setIsToolbarOpen(true)
+      setIsToolbarHidden(false)
+      setIsRegisterFormOpen(true)
+      setIsLoginFormOpen(false)
+    }
+  }, [location])
 
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -609,6 +618,7 @@ const Nav = (
                     <Register
                       language={language}
                       setIsFormOpen={setIsRegisterFormOpen}
+                      isOpen={isRegisterFormOpen}
                       handleRegister={handleRegister}
                       username={username}
                       setUsername={setUsername}

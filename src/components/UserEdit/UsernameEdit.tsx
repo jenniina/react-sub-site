@@ -89,7 +89,7 @@ const UsernameEdit = ({ user, language }: Props) => {
           <p className={styles.p}>
             {ESendsAnEmailToTheNewAddressForVerification[language]}
           </p>
-          <p className={styles.p}>
+          <p className={`${styles.p} ${styles[`p-last`]}`}>
             {ECurrentEmail[language]}: <strong>{user?.username}</strong>
           </p>
 

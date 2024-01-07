@@ -478,7 +478,7 @@ form.joke > *:not(.toggle) {
   flex-flow: column nowrap;
   gap: calc(var(--gap) / 2);
 }
-.toggle-wrap .toggle-container.safemode > span {
+.toggle-wrap .toggle-container.safemode-container > span {
   font-size: 0.8em;
 }
 .toggle-wrap .select-container.sortby,
@@ -522,16 +522,16 @@ form.joke > *:not(.toggle) {
 .toggle-wrap .toggle {
   --height: 2.1em;
 }
-.toggle-wrap .safemode.fr,
-.toggle-wrap .safemode.en,
+.toggle-wrap .safemode-container.fr,
+.toggle-wrap .safemode-container.en,
 .toggle-wrap .public.en,
 .toggle-wrap .public.fr {
   --width: calc(var(--height) * 3);
 }
-.toggle-wrap .safemode {
+.toggle-wrap .safemode-container {
   --width: calc(var(--height) * 3.2);
 }
-.toggle-wrap .safemode.es,
+.toggle-wrap .safemode-container.es,
 .toggle-wrap .joketype.en {
   --width: calc(var(--height) * 3.3);
 }
@@ -546,8 +546,8 @@ form.joke > *:not(.toggle) {
 .submit.anonymous {
   --width: calc(var(--height) * 3.7);
 }
-.toggle-wrap .safemode.cs,
-.toggle-wrap .safemode.fi {
+.toggle-wrap .safemode-container.cs,
+.toggle-wrap .safemode-container.fi {
   --width: calc(var(--height) * 4);
 }
 
@@ -724,6 +724,25 @@ button.delivery.reveal p {
   gap: var(--gap);
 }
 
+.reset-btn-wrap {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+  align-items: center;
+}
+.joke-container .reset-btn {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--gap) / 2);
+}
+.joke-container .toggle-container.safemode-container.unsafe .slider::before {
+  outline: 3px dotted red;
+}
+.joke-container .toggle-container.safemode-container.unsafe .slider::before {
+  outline-offset: -3px;
+}
 @-webkit-keyframes fadeInDown {
   0% {
     opacity: 0;
@@ -818,7 +837,7 @@ button.delivery.reveal p {
     margin: 2em 0 -1em;
   }
   .joke-container .saved .toggle-wrap {
-    margin-bottom: 3em;
+    margin-bottom: 2rem;
   }
 }
 @media (min-width: 600px) {
@@ -976,7 +995,7 @@ button.delivery.reveal p {
     min-width: calc(100% - var(--gap));
     margin-bottom: 1em;
   }
-  .toggle-wrap > div:last-child {
+  .saved .toggle-wrap > div:last-child {
     margin-top: calc(var(--gap) * 1.2);
   }
   .search-jokes-wrap {
