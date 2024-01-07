@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { omit } from 'lodash'
+import { omit, set } from 'lodash'
 import { FaRandom, FaList } from 'react-icons/fa'
 import {
   EJokeType,
@@ -71,6 +71,7 @@ import {
   EFilterByLanguage,
   EFilterByCategory,
   EFilter,
+  EReset,
 } from '../../../interfaces'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
 import { Select, SelectOption } from '../../Select/Select'
@@ -127,6 +128,7 @@ interface Props {
   titleClickToReveal: EClickToReveal
   language: ELanguages
   isCheckedSafemode: boolean
+  setIsCheckedSafemode: (isCheckedSafemode: boolean) => void
   handleToggleChangeSafemode: () => void
   optionsSortBy: (enumObj: typeof SortBy) => SelectOption[]
   getKeyofEnum: (enumObj: typeof ELanguages, value: ELanguages) => string
@@ -155,6 +157,7 @@ const UserJokes = ({
   titleClickToReveal,
   language,
   isCheckedSafemode,
+  setIsCheckedSafemode,
   handleToggleChangeSafemode,
   translateWordLanguage,
   titleLanguage,
@@ -243,7 +246,7 @@ const UserJokes = ({
 
       setUserJokes(updatedJokes)
     }
-  }, [jokes, users, language])
+  }, [jokes, users, language, isCheckedSafemode, sortBy])
 
   useEffect(() => {
     dispatch(initializeUsers()).then(() => {
@@ -260,6 +263,18 @@ const UserJokes = ({
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentPage(1)
     setSearchTerm(event.target.value)
+  }
+
+  const resetFilters = () => {
+    setSelectedCategory('')
+    setSelectedLanguage('')
+    setSelectedNorrisCategory(norrisCategories[0])
+    setSearchTerm('')
+    setIsRandom(false)
+    setRandomTrigger((prev) => prev + 1)
+    setSortBy(ESortBy.category)
+    setCurrentPage(1)
+    setIsCheckedSafemode(true)
   }
 
   const handleSelectChange = (o: SelectOption) => {
@@ -600,6 +615,12 @@ const UserJokes = ({
                 </div>
               </div>
             </div>
+          </div>
+
+          <div className='flex center gap mb3'>
+            <button className='danger' onClick={() => resetFilters()}>
+              {EReset[language]}
+            </button>
           </div>
           <div className='flex center gap'>
             <button

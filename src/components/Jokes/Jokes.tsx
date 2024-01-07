@@ -319,10 +319,10 @@ function Jokes({
   }, [loading])
 
   const handleToggleChangeSafemode = () => {
-    setIsCheckedSafemode(!isCheckedSafemode) // Toggle the state when the button is clicked
+    setIsCheckedSafemode(!isCheckedSafemode)
   }
   const handleToggleChangeEJokeType = () => {
-    setIsCheckedJokeType(!isCheckedJokeType) // Toggle the state when the button is clicked
+    setIsCheckedJokeType(!isCheckedJokeType)
   }
   useEffect(() => {
     isCheckedSafemode ? setSafemode(ESafemode.Safe) : setSafemode(ESafemode.Unsafe)
@@ -1330,6 +1330,7 @@ function Jokes({
             titleUnsafe={titleUnsafe}
             language={language}
             isCheckedSafemode={isCheckedSafemode}
+            setIsCheckedSafemode={setIsCheckedSafemode}
             handleToggleChangeSafemode={handleToggleChangeSafemode}
             titleClickToReveal={titleClickToReveal}
             translateWordLanguage={translateWordLanguage}
