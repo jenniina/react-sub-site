@@ -122,8 +122,9 @@ textarea,
   background-color: var(--color-primary-1);
   background: linear-gradient(
     5deg,
-    var(--color-primary-5) 0%,
-    var(--color-primary-1) 100%
+    var(--color-primary-7) 0%,
+    var(--color-primary-4) 0%,
+    var(--color-primary-2) 100%
   );
   pointer-events: none;
   border-radius: var(--radius-small);
@@ -271,4 +272,7 @@ input[type='radio' i]:checked::before {
   border: 1px solid var(--color-primary-20);
 }
 input[type='checkbox' i]:checked::before {
+}
+.input-wrap input[type='text' i] {
+  padding-left: 1.2em;
 }

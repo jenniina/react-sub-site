@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import FormJoke from './components/FormJoke'
-import Register from './components/Register'
 import { SelectOption } from '../Select/Select'
 import './css/joke.css'
 import {
@@ -56,9 +55,9 @@ import {
   ELanguages,
   ReducerProps,
   IUser,
+  ERegister,
 } from '../../interfaces'
 import { useSelector } from 'react-redux'
-import Login from './components/Login'
 import useLocalStorage from '../../hooks/useStorage'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
@@ -79,6 +78,7 @@ import dadjokeService from './services/dadjokes'
 import { AxiosError } from 'axios'
 import JokeSubmit from './components/JokeSubmit'
 import { set } from 'lodash'
+import { useNavigate } from 'react-router-dom'
 
 export const jokeCategoryByLanguage: IJokeCategoryByLanguage = {
   en: {
@@ -1219,6 +1219,16 @@ function Jokes({
     ]
   }
 
+  const navigate = useNavigate()
+
+  const navigateToRegister = () => {
+    navigate('/portfolio/jokes?register=register')
+  }
+
+  const navigateToLogin = () => {
+    navigate('/portfolio/jokes?login=login')
+  }
+
   return (
     <>
       <section className={`joke-container card ${language}`}>
@@ -1273,33 +1283,8 @@ function Jokes({
           </div>
 
           <div className={`register-login-wrap`}>
-            <Login
-              titleLogin={titleLogin}
-              titleLogout={titleLogout}
-              titleLoggedInAs={titleLoggedInAs}
-              language={language}
-              setLanguage={setLanguage}
-              setLoggedIn={setLoggedIn}
-              categoryByLanguages={categoryByLanguages}
-              getKeyByValue={getKeyByValue}
-              options={options}
-            />
-            <Register
-              handleRegister={handleRegister}
-              options={options}
-              language={language}
-              getKeyByValue={getKeyByValue}
-              setLanguage={setLanguage}
-              username={username}
-              setUsername={setUsername}
-              password={password}
-              setPassword={setPassword}
-              confirmPassword={confirmPassword}
-              setConfirmPassword={setConfirmPassword}
-              name={name}
-              setName={setName}
-              // registerOpen={registerOpen}
-            />
+            <button onClick={navigateToLogin}>{ELogin[language]}</button>
+            <button onClick={navigateToRegister}>{ERegister[language]}</button>
           </div>
         </div>
       </section>

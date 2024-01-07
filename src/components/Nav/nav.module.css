@@ -78,6 +78,7 @@
 .main-header h2 {
   font-size: clamp(var(--title-S), 3vw, var(--title-M));
   padding: 1.6em 0 1em;
+  margin: 0;
 }
 .logo-container {
   flex: 3 1 0;
@@ -188,6 +189,9 @@ button.togglemenu[aria-expanded='true'] .menupath {
 }
 .toolbar.hidden {
   visibility: hidden;
+}
+.toolbar ul {
+  max-height: 20em;
 }
 .toolbar .toolwrap {
   width: 100%;
@@ -463,6 +467,7 @@ a.link:visited:not(.active):focus > *,
   outline: dashed 2px red;
   outline-offset: 6px;
 }
+
 .skip-links {
   z-index: 999;
   position: absolute; /*so it shows up over other elements*/

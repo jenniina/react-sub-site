@@ -19,3 +19,6 @@ form.edit-user .language > div {
   width: max-content;
   margin: 0 auto 2em;
 }
+.p-last {
+  margin-bottom: 3em;
+}
