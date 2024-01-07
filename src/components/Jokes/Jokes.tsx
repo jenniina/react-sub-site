@@ -26,7 +26,7 @@ import {
   ECategory,
   IJokeCategoryByLanguage,
   ELoginOrRegisterToSave,
-  SortBy,
+  ESortBy,
   EJokeAlreadySaved,
   ENoJokeFound,
   EAJokeGeneratorForTheComicallyInclined,
@@ -532,7 +532,7 @@ function Jokes({
     })) as SelectOption[]
   }
 
-  const optionsSortBy = (enumObj: typeof SortBy) => {
+  const optionsSortBy = (enumObj: typeof ESortBy) => {
     return Object.entries(enumObj).map(([key, value]) => ({
       value: key,
       label: value[language],

@@ -519,7 +519,7 @@ form.joke > *:not(.toggle) {
 .toggle {
   font-size: 0.8em;
 }
-.toggle-wrap .toggle {
+.toggle-container {
   --height: 2.1em;
 }
 .toggle-wrap .safemode-container.fr,
@@ -742,6 +742,20 @@ button.delivery.reveal p {
 }
 .joke-container .toggle-container.safemode-container.unsafe .slider::before {
   outline-offset: -3px;
+}
+.saved .safemode-wrap {
+  gap: calc(var(--gap));
+}
+.saved .age-container .toggle {
+  --width: calc(var(--height) * 3.2);
+}
+.saved .pt.age-container .toggle,
+.saved .cs.age-container .toggle {
+  --width: calc(var(--height) * 3.9);
+}
+.saved .es.age-container .toggle,
+.saved .fr.age-container .toggle {
+  --width: calc(var(--height) * 4.5);
 }
 @-webkit-keyframes fadeInDown {
   0% {

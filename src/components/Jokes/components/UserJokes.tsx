@@ -13,7 +13,7 @@ import {
   EUnsafeTitle,
   EClickToReveal,
   ESortByTitle,
-  SortBy,
+  ESortBy,
   ESafemodeTitle,
   ECategory,
   ESelectACategory,
@@ -27,6 +27,7 @@ import {
   EUserSubmittedJokes,
   EAnonymous,
   EAuthor,
+  EAge,
   EAll,
   ERandom,
   ERandomJoke,
@@ -76,6 +77,11 @@ import {
   EFilterByCategory,
   EFilter,
   EReset,
+  EOldestFirst,
+  ENewestFirst,
+  ENewest,
+  EOldest,
+  ELikedBy,
 } from '../../../interfaces'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
 import { Select, SelectOption } from '../../Select/Select'
@@ -134,7 +140,7 @@ interface Props {
   isCheckedSafemode: boolean
   setIsCheckedSafemode: (isCheckedSafemode: boolean) => void
   handleToggleChangeSafemode: () => void
-  optionsSortBy: (enumObj: typeof SortBy) => SelectOption[]
+  optionsSortBy: (enumObj: typeof ESortBy) => SelectOption[]
   getKeyofEnum: (enumObj: typeof ELanguages, value: ELanguages) => string
   options: (enumObj: typeof ELanguages) => SelectOption[]
   norrisCategories: SelectOption[]
@@ -146,10 +152,17 @@ interface Props {
   setIsEditOpen: (isEditOpen: boolean) => void
 }
 
-enum ESortBy {
+enum ESortBy_en {
+  popularity = 'popularity',
   category = 'category',
   language = 'language',
   name = 'name',
+  age = 'age',
+}
+
+export enum EOrderByAge {
+  newest = 'newest',
+  oldest = 'oldest',
 }
 
 const UserJokes = ({
@@ -212,7 +225,7 @@ const UserJokes = ({
   const [filteredJokes, setFilteredJokes] = useState<IJokeVisible[]>(userJokes)
   const [isRandom, setIsRandom] = useState<boolean>(false)
   const [randomTrigger, setRandomTrigger] = useState<number>(0)
-  const [sortBy, setSortBy] = useState<ESortBy>(ESortBy.category)
+  const [sortBy, setSortBy] = useState<ESortBy_en>(ESortBy_en.popularity)
   const [searchTerm, setSearchTerm] = useState<string>('')
   const [selectedCategory, setSelectedCategory] = useState<
     ECategory_en | 'ChuckNorris' | ''
@@ -225,6 +238,10 @@ const UserJokes = ({
   const [newJoke, setNewJoke] = useState<IJoke | undefined>(undefined)
   const [jokeLanguage, setJokeLanguage] = useState<ELanguages>(ELanguages.English)
   const [jokeCategory, setJokeCategory] = useState<ECategory_en>(ECategory_en.Misc)
+  const [sortByAge, setSortByAge] = useState<EOrderByAge.newest | EOrderByAge.oldest>(
+    EOrderByAge.newest
+  )
+  const [isCheckedNewest, setIsCheckedNewest] = useState<boolean>(true)
 
   const dispatch = useAppDispatch()
 
@@ -249,16 +266,28 @@ const UserJokes = ({
       updatedJokes = !isCheckedSafemode
         ? updatedJokes
             .filter((joke) => joke.safe === false)
-            .sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1))
+            .sort((a, b) => {
+              return b.user.length - a.user.length
+            }) //.sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1))
         : isCheckedSafemode
         ? updatedJokes
             .filter((joke) => joke.safe)
-            .sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1))
+            .sort((a, b) => {
+              return b.user.length - a.user.length
+            }) //.sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1))
         : []
 
       setUserJokes(updatedJokes)
     }
   }, [jokes, users, language, isCheckedSafemode, sortBy])
+
+  useEffect(() => {
+    setSortByAge(isCheckedNewest ? EOrderByAge.newest : EOrderByAge.oldest)
+  }, [isCheckedNewest])
+
+  const handleToggleChangeNewest = () => {
+    setIsCheckedNewest((prev) => !prev)
+  }
 
   useEffect(() => {
     dispatch(initializeUsers()).then(() => {
@@ -284,7 +313,7 @@ const UserJokes = ({
     setSearchTerm('')
     setIsRandom(false)
     setRandomTrigger((prev) => prev + 1)
-    setSortBy(ESortBy.category)
+    setSortBy(ESortBy_en.category)
     setCurrentPage(1)
     setIsCheckedSafemode(true)
   }
@@ -325,7 +354,7 @@ const UserJokes = ({
 
   useEffect(() => {
     setCurrentPage(1)
-    const newFilteredJokes = userJokes?.filter((joke) => {
+    let newFilteredJokes = userJokes?.filter((joke) => {
       const searchTermMatches =
         ('joke' in joke
           ? joke.joke.toLowerCase().includes(searchTerm.toLowerCase())
@@ -363,6 +392,35 @@ const UserJokes = ({
         return false
       }
     })
+    if (sortBy === ESortBy_en.age) {
+      newFilteredJokes = newFilteredJokes?.sort((a, b) => {
+        const timeA = a.updatedAt ? new Date(a.updatedAt).getTime() : 0
+        const timeB = b.updatedAt ? new Date(b.updatedAt).getTime() : 0
+        return sortByAge === EOrderByAge.newest ? timeB - timeA : timeA - timeB
+      })
+    }
+
+    if (sortBy === ESortBy_en.popularity) {
+      newFilteredJokes = newFilteredJokes?.sort((a, b) => {
+        return b.user.length - a.user.length
+      })
+    }
+
+    if (sortBy === ESortBy_en.category) {
+      newFilteredJokes = newFilteredJokes?.sort((a, b) => {
+        return a.category > b.category ? 1 : -1
+      })
+    }
+    if (sortBy === ESortBy_en.language) {
+      newFilteredJokes = newFilteredJokes?.sort((a, b) => {
+        return a.translatedLanguage > b.translatedLanguage ? 1 : -1
+      })
+    }
+    if (sortBy === ESortBy_en.name) {
+      newFilteredJokes = newFilteredJokes?.sort((a, b) => {
+        return a.name > b.name ? 1 : -1
+      })
+    }
 
     if (isRandom && newFilteredJokes.length > 0) {
       const randomJoke =
@@ -380,6 +438,8 @@ const UserJokes = ({
     searchTerm,
     isRandom,
     randomTrigger,
+    sortByAge,
+    sortBy,
   ])
 
   const [currentPage, setCurrentPage] = useState<number>(1)
@@ -477,6 +537,22 @@ const UserJokes = ({
                   off={titleUnsafe}
                   handleToggleChange={handleToggleChangeSafemode}
                 />
+                {sortBy === ESortBy_en.age && (
+                  <ButtonToggle
+                    isChecked={isCheckedNewest}
+                    name='age'
+                    id='age'
+                    className={`${language} age`}
+                    label={`${EAge[language]}: `}
+                    hideLabel={false}
+                    on={ENewest[language]}
+                    off={EOldest[language]}
+                    handleToggleChange={() => {
+                      handleToggleChangeNewest()
+                    }}
+                    equal={true}
+                  />
+                )}
               </div>
               <div className='sortby-wrap'>
                 <Select
@@ -484,17 +560,17 @@ const UserJokes = ({
                   id='sortby'
                   className='sortby'
                   instructions={`${EOrderBy[language]}:`}
-                  options={optionsSortBy(SortBy)}
+                  options={optionsSortBy(ESortBy)}
                   value={
                     {
                       label:
-                        SortBy[sortBy][
+                        ESortBy[sortBy][
                           ELanguages[
                             getKeyofEnum(ELanguages, language) as keyof typeof ELanguages
                           ]
                         ],
                       value:
-                        SortBy[sortBy][
+                        ESortBy[sortBy][
                           ELanguages[
                             getKeyofEnum(ELanguages, language) as keyof typeof ELanguages
                           ]
@@ -502,7 +578,7 @@ const UserJokes = ({
                     } as SelectOption
                   }
                   onChange={(o: SelectOption | undefined) => {
-                    setSortBy(o?.value as ESortBy)
+                    setSortBy(o?.value as ESortBy_en)
                   }}
                 />
               </div>
@@ -740,9 +816,9 @@ const UserJokes = ({
                       ) : (
                         ''
                       )}
-                      {userId && joke.private ? (
+                      {!localJokes && userId && joke.private ? (
                         <span>{EPrivate[language]}</span>
-                      ) : userId && joke.private === false ? (
+                      ) : !localJokes && userId && joke.private === false ? (
                         <span>{EPublic[language]}</span>
                       ) : (
                         ''
@@ -751,6 +827,10 @@ const UserJokes = ({
                       {joke.private === false && joke.verified === false && (
                         <span>{EPendingVerification[language]}</span>
                       )}
+
+                      <span>
+                        {ELikedBy[language]} {joke.user.length}
+                      </span>
 
                       {userId && joke.user.includes(userId) && (
                         <form
