@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react'
 import { omit, set } from 'lodash'
 import { FaRandom, FaList } from 'react-icons/fa'
+import {
+  BiChevronsLeft,
+  BiChevronsRight,
+  BiChevronLeft,
+  BiChevronRight,
+} from 'react-icons/bi'
 import { MdOutlineSettingsBackupRestore } from 'react-icons/md'
 import {
   EJokeType,
@@ -448,22 +454,6 @@ const UserJokes = ({
     sortBy,
   ])
 
-  const [currentPage, setCurrentPage] = useState<number>(1)
-  const [itemsPerPage, setItemsPerPage] = useState<number>(10)
-
-  const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber)
-  }
-
-  const indexOfLastItem = currentPage * itemsPerPage
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentItems = filteredJokes.slice(indexOfFirstItem, indexOfLastItem)
-
-  const pageNumbers: number[] = []
-  for (let i = 1; i <= Math.ceil(filteredJokes.length / itemsPerPage); i++) {
-    pageNumbers.push(i)
-  }
-
   const handleCategoryChange = (category: string) => {
     let modifiedCategory: ECategory_en | '' = category as ECategory_en | ''
     if (category === 'Chuck Norris') {
@@ -492,11 +482,61 @@ const UserJokes = ({
     }
   }
 
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [itemsPerPage, setItemsPerPage] = useState<number>(10)
+  const [leftPage, setLeftPage] = useState<number>(1)
+  const [rightPage, setRightPage] = useState<number>(3)
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber)
+    if (pageNumber < leftPage) {
+      setLeftPage(pageNumber)
+      setRightPage(pageNumber + 2)
+    }
+    if (pageNumber > rightPage) {
+      setRightPage(pageNumber)
+      setLeftPage(pageNumber - 2)
+    }
+  }
+
+  // const handlePageChange = (pageNumber: number) => {
+  //   setCurrentPage(pageNumber)
+  // }
+
+  const indexOfLastItem = currentPage * itemsPerPage
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage
+  const currentItems = filteredJokes.slice(indexOfFirstItem, indexOfLastItem)
+
+  const pageNumbers: number[] = []
+  for (let i = 1; i <= Math.ceil(filteredJokes.length / itemsPerPage); i++) {
+    pageNumbers.push(i)
+  }
+
+  const visiblePageNumbers = pageNumbers.slice(leftPage - 1, rightPage)
+
   const pagination = () => (
     <div className='pagination'>
       <div>
-        {pageNumbers.length > 1 &&
-          pageNumbers.map((number) => (
+        <div className='chevrons-wrap back'>
+          <button
+            className={`inner-nav-btn first ${currentPage === 1 ? 'disabled' : ''}`}
+            disabled={currentPage === 1}
+            onClick={() => handlePageChange(1)}
+          >
+            <BiChevronsLeft />
+          </button>
+          <button
+            className={`inner-nav-btn back ${leftPage === 1 ? 'disabled' : ''} ${
+              pageNumbers.length <= 3 ? 'hidden' : ''
+            }`}
+            disabled={leftPage === 1}
+            onClick={() => handlePageChange(leftPage - 1)}
+          >
+            <BiChevronLeft />
+          </button>
+        </div>
+        <div>
+          {visiblePageNumbers.map((number) => (
             <button
               key={number}
               className={number === currentPage ? 'active' : ''}
@@ -505,6 +545,27 @@ const UserJokes = ({
               {number}
             </button>
           ))}
+        </div>
+        <div className='chevrons-wrap forward'>
+          <button
+            className={`inner-nav-btn forward ${
+              rightPage === pageNumbers.length ? 'disabled' : ''
+            } ${pageNumbers.length <= 3 ? 'hidden' : ''}`}
+            disabled={rightPage > pageNumbers.length - 1}
+            onClick={() => handlePageChange(rightPage + 1)}
+          >
+            <BiChevronRight />
+          </button>
+          <button
+            className={`inner-nav-btn last ${
+              currentPage === pageNumbers.length ? 'disabled' : ''
+            }`}
+            disabled={currentPage === pageNumbers.length}
+            onClick={() => handlePageChange(pageNumbers.length)}
+          >
+            <BiChevronsRight />
+          </button>
+        </div>
       </div>
       <div>
         <input

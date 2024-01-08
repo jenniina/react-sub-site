@@ -573,15 +573,32 @@ form.joke > *:not(.toggle) {
 }
 .pagination > div {
   display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--gap) / 1.4);
+}
+.pagination > div > div {
+  display: flex;
   flex-flow: row wrap;
   justify-content: center;
   align-items: center;
   gap: calc(var(--gap) / 1.4);
 }
+@media (min-width: 700px) {
+  .pagination > div {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    gap: calc(var(--gap) / 1.4);
+  }
+}
 .pagination button {
   padding: 0.9rem 1.3rem;
   border-radius: 4rem;
   font-size: 0.8rem;
+  border-width: 3px;
 }
 .pagination button.active {
   background-color: transparent;
@@ -593,6 +610,13 @@ form.joke > *:not(.toggle) {
   max-width: 3rem;
   border-radius: 0.4rem;
   padding-left: 0.9rem;
+}
+.pagination .chevrons-wrap {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--gap) / 1.4);
 }
 .icontext {
   display: flex;
@@ -780,6 +804,23 @@ button.delivery.reveal p {
 }
 .joke-container .saved button.save {
   margin-left: auto;
+}
+.joke-container .inner-nav-btn {
+  padding: 0.2rem;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+.joke-container .inner-nav-btn svg {
+  font-size: 2em;
+}
+.joke-container .inner-nav-btn.hidden {
+  display: none;
+}
+.joke-container .inner-nav-btn.disabled {
+  opacity: 0.4;
+  pointer-events: none;
 }
 @-webkit-keyframes fadeInDown {
   0% {
