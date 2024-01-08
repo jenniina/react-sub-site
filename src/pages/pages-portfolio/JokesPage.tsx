@@ -1,4 +1,5 @@
 import Hero from '../../components/Hero/Hero'
+import { BiChevronsDown } from 'react-icons/bi'
 import Jokes, {
   jokeCategoryByLanguage,
   jokeCategoryAny,
@@ -28,6 +29,7 @@ import {
   EDarkJokesAreVisibleOnlyWhenSafeModeIsOff,
   ENote,
   TCategoryByLanguages,
+  ESkipToSavedJokes,
 } from '../../components/Jokes/interfaces'
 import {
   EOnOff,
@@ -116,6 +118,13 @@ export default function JokesPage({
     }
   }, [language])
 
+  const handleSkipToJokes = () => {
+    const anchor = document.querySelector('#saved')
+    if (anchor) {
+      anchor.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   return (
     <div
       className={`${heading
@@ -155,6 +164,11 @@ export default function JokesPage({
                 }}
               />
             </div>
+            <button className='wide' onClick={handleSkipToJokes}>
+              <BiChevronsDown />
+              <span>{ESkipToSavedJokes[language]}</span>
+              <BiChevronsDown />
+            </button>
             <Accordion
               language={language}
               text={titleClickHereToSeeFeatures}

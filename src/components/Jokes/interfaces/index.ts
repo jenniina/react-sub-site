@@ -1178,3 +1178,13 @@ export enum ERepublishingWillRequireVerificationFromAnAdministrator {
   cs = 'Opětovné zveřejnění bude vyžadovat ověření od správce',
   fi = 'Uudelleenjulkaisu vaatii vahvistuksen hallinnolta',
 }
+
+export enum ESkipToSavedJokes {
+  en = 'Skip to saved jokes',
+  es = 'Saltar a las bromas guardadas',
+  fr = 'Passer aux blagues enregistrées',
+  de = 'Zu gespeicherten Witzen springen',
+  pt = 'Pular para piadas salvas',
+  cs = 'Přejít na uložené vtipy',
+  fi = 'Hyppää tallennettuihin vitseihin',
+}
