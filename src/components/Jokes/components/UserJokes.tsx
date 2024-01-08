@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react'
 import { omit, set } from 'lodash'
 import { FaRandom, FaList } from 'react-icons/fa'
+import {
+  BiChevronsLeft,
+  BiChevronsRight,
+  BiChevronLeft,
+  BiChevronRight,
+} from 'react-icons/bi'
 import { MdOutlineSettingsBackupRestore } from 'react-icons/md'
 import {
   EJokeType,
@@ -448,22 +454,6 @@ const UserJokes = ({
     sortBy,
   ])
 
-  const [currentPage, setCurrentPage] = useState<number>(1)
-  const [itemsPerPage, setItemsPerPage] = useState<number>(10)
-
-  const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber)
-  }
-
-  const indexOfLastItem = currentPage * itemsPerPage
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentItems = filteredJokes.slice(indexOfFirstItem, indexOfLastItem)
-
-  const pageNumbers: number[] = []
-  for (let i = 1; i <= Math.ceil(filteredJokes.length / itemsPerPage); i++) {
-    pageNumbers.push(i)
-  }
-
   const handleCategoryChange = (category: string) => {
     let modifiedCategory: ECategory_en | '' = category as ECategory_en | ''
     if (category === 'Chuck Norris') {
@@ -492,19 +482,104 @@ const UserJokes = ({
     }
   }
 
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [itemsPerPage, setItemsPerPage] = useState<number>(10)
+  const [leftPage, setLeftPage] = useState<number>(1)
+  const [rightPage, setRightPage] = useState<number>(3)
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber)
+    if (pageNumber <= 2) {
+      setLeftPage(1)
+      setRightPage(3)
+    } else if (pageNumber >= pageNumbers.length - 1) {
+      setLeftPage(pageNumbers.length - 2)
+      setRightPage(pageNumbers.length)
+    } else {
+      setLeftPage(pageNumber - 1)
+      setRightPage(pageNumber + 1)
+    }
+  }
+
+  useEffect(() => {
+    if (!currentPage) {
+      setCurrentPage(1)
+    }
+  }, [currentPage])
+
+  const indexOfLastItem = currentPage * itemsPerPage
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage
+  const currentItems = filteredJokes.slice(indexOfFirstItem, indexOfLastItem)
+
+  const pageNumbers: number[] = []
+  for (let i = 1; i <= Math.ceil(filteredJokes.length / itemsPerPage); i++) {
+    pageNumbers.push(i)
+  }
+
+  const visiblePageNumbers = pageNumbers.slice(leftPage - 1, rightPage)
+
   const pagination = () => (
     <div className='pagination'>
       <div>
-        {pageNumbers.length > 1 &&
-          pageNumbers.map((number) => (
+        <div className='chevrons-wrap back'>
+          <button
+            className={`inner-nav-btn first ${currentPage === 1 ? 'disabled' : ''} ${
+              pageNumbers.length <= 3 ? 'hidden' : ''
+            }`}
+            disabled={currentPage === 1}
+            onClick={() => handlePageChange(1)}
+          >
+            <BiChevronsLeft />
+          </button>
+          <button
+            className={`inner-nav-btn back ${currentPage === 1 ? 'disabled' : ''} ${
+              pageNumbers.length <= 3 ? 'hidden' : ''
+            }`}
+            disabled={currentPage === 1}
+            onClick={() => handlePageChange(currentPage - 1)}
+          >
+            <BiChevronLeft />
+          </button>
+        </div>
+        <div className={`numbers${pageNumbers.length === 1 ? ' hidden' : ''}`}>
+          {visiblePageNumbers.map((number) => (
             <button
               key={number}
-              className={number === currentPage ? 'active' : ''}
+              className={`${
+                number > 9
+                  ? 'over9'
+                  : number > 99
+                  ? 'over99'
+                  : number > 999
+                  ? 'over999'
+                  : ''
+              } ${number === currentPage ? 'active' : ''}`}
               onClick={() => handlePageChange(number)}
             >
               {number}
             </button>
           ))}
+        </div>
+        <div className='chevrons-wrap forward'>
+          <button
+            className={`inner-nav-btn forward ${
+              currentPage === pageNumbers.length ? 'disabled' : ''
+            } ${pageNumbers.length <= 3 ? 'hidden' : ''}`}
+            disabled={currentPage === pageNumbers.length}
+            onClick={() => handlePageChange(currentPage + 1)}
+          >
+            <BiChevronRight />
+          </button>
+          <button
+            className={`inner-nav-btn last ${
+              currentPage === pageNumbers.length ? 'disabled' : ''
+            } ${pageNumbers.length <= 3 ? 'hidden' : ''}`}
+            disabled={currentPage === pageNumbers.length}
+            onClick={() => handlePageChange(pageNumbers.length)}
+          >
+            <BiChevronsRight />
+          </button>
+        </div>
       </div>
       <div>
         <input
