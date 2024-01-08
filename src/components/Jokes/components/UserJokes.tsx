@@ -316,7 +316,7 @@ const UserJokes = ({
     setSearchTerm('')
     setIsRandom(false)
     setRandomTrigger((prev) => prev + 1)
-    setSortBy(ESortBy_en.category)
+    setSortBy(ESortBy_en.popularity)
     setCurrentPage(1)
     setIsCheckedSafemode(true)
   }
