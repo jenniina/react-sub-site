@@ -22,6 +22,7 @@ interface Props {
     category: ECategory_en,
     language: ELanguages
   ) => string | undefined
+  subCategoryResults: string[]
 }
 const Joke = ({
   joke,
@@ -35,6 +36,7 @@ const Joke = ({
   language,
   visibleJoke,
   getCategoryInLanguage,
+  subCategoryResults,
 }: Props) => {
   const titleSave = ESave[language]
 
@@ -78,6 +80,16 @@ const Joke = ({
           <p className={`author ${visibleJoke ? 'fadeIn' : ''}`}>
             <small>
               {EAuthor[language]}: {author}
+            </small>
+          </p>
+        ) : (
+          ''
+        )}
+        {subCategoryResults.length > 0 ? (
+          <p className={`sub-categories ${visibleJoke ? 'fadeIn' : ''}`}>
+            <small>
+              {ECategoryTitle[language]}:{' '}
+              {subCategoryResults.map((category) => category).join(', ')}
             </small>
           </p>
         ) : (

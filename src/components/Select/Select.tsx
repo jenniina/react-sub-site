@@ -269,7 +269,7 @@ export function Select({
           aria-labelledby={`${id}-instructions`}
           className={`${styles.options} options ${isOpen ? `${styles.show} show` : ''}`}
         >
-          {options.map((option, index) => (
+          {options?.map((option, index) => (
             <li
               role='option'
               aria-selected={isOptionSelected(option) ? 'true' : 'false'}

@@ -156,7 +156,6 @@ input:-webkit-autofill:focus {
   position: relative;
   min-width: 100%;
   line-height: 2;
-  margin-right: 1em;
   max-height: 2em;
 }
 .input-wrap label span,

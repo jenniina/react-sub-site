@@ -1188,3 +1188,165 @@ export enum ESkipToSavedJokes {
   cs = 'Přejít na uložené vtipy',
   fi = 'Hyppää tallennettuihin vitseihin',
 }
+export enum ESaving {
+  en = 'Saving...',
+  es = 'Guardando...',
+  fr = 'Sauvegarde...',
+  de = 'Speichern...',
+  pt = 'Salvando...',
+  cs = 'Ukládání...',
+  fi = 'Tallennetaan...',
+}
+export interface ILang {
+  en: string
+  es: string
+  fr: string
+  de: string
+  pt: string
+  cs: string
+  fi: string
+}
+export interface INorrisCatTran {
+  any: ILang
+  animal: ILang
+  career: ILang
+  celebrity: ILang
+  dev: ILang
+  fashion: ILang
+  food: ILang
+  history: ILang
+  money: ILang
+  movie: ILang
+  music: ILang
+  science: ILang
+  sport: ILang
+  travel: ILang
+}
+export const norrisCategoryTranslations: INorrisCatTran = {
+  any: {
+    en: 'Any',
+    es: 'Cualquiera',
+    fr: "N'importe quel",
+    de: 'Jede',
+    pt: 'Qualquer',
+    cs: 'Jakýkoliv',
+    fi: 'Mikä tahansa',
+  },
+  animal: {
+    en: 'Animal',
+    es: 'Animal',
+    fr: 'Animal',
+    de: 'Tier',
+    pt: 'Animal',
+    cs: 'Zvíře',
+    fi: 'Eläin',
+  },
+  career: {
+    en: 'Career',
+    es: 'Carrera',
+    fr: 'Carrière',
+    de: 'Karriere',
+    pt: 'Carreira',
+    cs: 'Kariéra',
+    fi: 'Ura',
+  },
+  celebrity: {
+    en: 'Celebrity',
+    es: 'Celebridad',
+    fr: 'Célébrité',
+    de: 'Berühmtheit',
+    pt: 'Celebridade',
+    cs: 'Celebrity',
+    fi: 'Julkkis',
+  },
+  dev: {
+    en: 'Dev',
+    es: 'Dev',
+    fr: 'Dev',
+    de: 'Dev',
+    pt: 'Dev',
+    cs: 'Dev',
+    fi: 'Dev',
+  },
+  fashion: {
+    en: 'Fashion',
+    es: 'Moda',
+    fr: 'Mode',
+    de: 'Mode',
+    pt: 'Moda',
+    cs: 'Móda',
+    fi: 'Muoti',
+  },
+  food: {
+    en: 'Food',
+    es: 'Comida',
+    fr: 'Nourriture',
+    de: 'Essen',
+    pt: 'Comida',
+    cs: 'Jídlo',
+    fi: 'Ruoka',
+  },
+  history: {
+    en: 'History',
+    es: 'Historia',
+    fr: 'Histoire',
+    de: 'Geschichte',
+    pt: 'História',
+    cs: 'Historie',
+    fi: 'Historia',
+  },
+  money: {
+    en: 'Money',
+    es: 'Dinero',
+    fr: 'Argent',
+    de: 'Geld',
+    pt: 'Dinheiro',
+    cs: 'Peníze',
+    fi: 'Raha',
+  },
+  movie: {
+    en: 'Movie',
+    es: 'Película',
+    fr: 'Film',
+    de: 'Film',
+    pt: 'Filme',
+    cs: 'Film',
+    fi: 'Elokuva',
+  },
+  music: {
+    en: 'Music',
+    es: 'Música',
+    fr: 'Musique',
+    de: 'Musik',
+    pt: 'Música',
+    cs: 'Hudba',
+    fi: 'Musiikki',
+  },
+  science: {
+    en: 'Science',
+    es: 'Ciencia',
+    fr: 'Science',
+    de: 'Wissenschaft',
+    pt: 'Ciência',
+    cs: 'Věda',
+    fi: 'Tiede',
+  },
+  sport: {
+    en: 'Sport',
+    es: 'Deporte',
+    fr: 'Sport',
+    de: 'Sport',
+    pt: 'Esporte',
+    cs: 'Sport',
+    fi: 'Urheilu',
+  },
+  travel: {
+    en: 'Travel',
+    es: 'Viaje',
+    fr: 'Voyage',
+    de: 'Reise',
+    pt: 'Viagem',
+    cs: 'Cestování',
+    fi: 'Matkustaminen',
+  },
+}

@@ -407,10 +407,6 @@ form.joke > *:not(.toggle) {
   flex: 0 0 max-content;
   max-width: max-content;
 }
-.joke-container .select-container.category:not(.submit).narrow,
-.joke-container .select-container.category:not(.submit).extras.narrow {
-  max-width: 10em;
-}
 .joke-container .select-container.category:not(.submit).dimmed {
   opacity: 0.5;
   pointer-events: none;
@@ -952,7 +948,7 @@ button.delivery.reveal p {
     flex-flow: row nowrap;
   }
   .toggle-wrap .select-container.extras:not(.submit) {
-    --width: 10em;
+    --width: 12em;
     flex: 0 0 max-content;
     max-width: max-content;
   }
@@ -1001,9 +997,6 @@ button.delivery.reveal p {
     flex: 0 0 max-content;
     max-width: max-content;
     margin: 0;
-  }
-  .joke-container .select-container > .instructions {
-    margin-bottom: 0.5em;
   }
   .joke-container .multiple.container,
   .joke-container button {

@@ -44,6 +44,9 @@ import {
   IJokeTwoPart,
   EAreYouSureYouWantToMakeThisJokePublic,
   EAreYouSureYouWantToMakeThisJokePrivate,
+  EAnonymous,
+  norrisCategoryTranslations as norrisCats,
+  EAny,
 } from './interfaces'
 import {
   ELogin,
@@ -684,6 +687,7 @@ function Jokes({
       },
     })
     setJokeCategory(category)
+    setSubCategoryResults(subCategories ?? [])
 
     setFlags({
       explicit: jokeData?.categories?.includes('explicit') ?? false,
@@ -728,7 +732,6 @@ function Jokes({
     translatedLanguage: string
     name: string
   }
-
   const [userJokes, setUserJokes] = useState<IJokeExtra[]>([])
 
   useEffect(() => {
@@ -745,7 +748,7 @@ function Jokes({
         return {
           ...joke,
           translatedLanguage: jokeLanguage ?? '',
-          name: joke.anonymous ? 'Anonymous' : author?.name ?? '',
+          name: joke.anonymous ? EAnonymous[language] : author?.name ?? '',
         }
       })
       updatedJokes = !isCheckedSafemode
@@ -784,11 +787,12 @@ function Jokes({
           setDelivery('delivery' in random ? (random as IJokeTwoPart)?.delivery : '')
           if (
             (random.private === false || random.private === undefined) &&
-            random.anonymous === false &&
-            random.author
+            random.anonymous === false
           ) {
             const author = users.find((user: IUser) => user._id == random.author)
             setAuthor(author?.name ?? '')
+          } else {
+            setAuthor('')
           }
           setJokeId(random.jokeId)
           setJokeLanguage(language)
@@ -914,10 +918,66 @@ function Jokes({
       if (language !== ELanguages.English) {
         handleJokes(newFilteredJokes)
         return
-      }
-      if (isChuckNorris && isDadJoke) {
-        const random = Math.floor(getRandomMinMax(1, 2.999))
-        if (random === 1 && isChuckNorris && isQueryNotEmpty) {
+      } else {
+        if (isChuckNorris && isDadJoke) {
+          const random = Math.floor(getRandomMinMax(1, 2.999))
+          if (random === 1 && isChuckNorris && isQueryNotEmpty) {
+            const norrisJoke = await norrisService.searchNorrisJoke(queryValue)
+            if (!norrisJoke) {
+              noJoke()
+              return
+            }
+            await setJokeData(
+              norrisJoke,
+              ECategory_en.ChuckNorris,
+              norrisJoke?.categories ?? []
+            )
+            setFlags({
+              explicit: norrisJoke?.categories?.includes('explicit') ?? false,
+              religious: norrisJoke?.categories?.includes('religious') ?? false,
+              political: false,
+              racist: false,
+              sexist: false,
+              nsfw: norrisJoke?.categories?.includes('explicit') ?? false,
+            })
+          } else if (random === 1 && isChuckNorris) {
+            const randomCategory = getRandomNorrisCategory()
+            const norrisJoke = await norrisService.getRandomJokeFromNorrisCategory(
+              (randomCategory?.value as string) ?? ''
+            )
+            if (!norrisJoke) {
+              noJoke()
+              return
+            }
+            await setJokeData(
+              norrisJoke,
+              ECategory_en.ChuckNorris,
+              norrisJoke?.categories ?? []
+            )
+            setFlags({
+              explicit: norrisJoke?.categories?.includes('explicit') ?? false,
+              religious: norrisJoke?.categories?.includes('religious') ?? false,
+              political: false,
+              racist: false,
+              sexist: false,
+              nsfw: norrisJoke?.categories?.includes('explicit') ?? false,
+            })
+          } else if (random > 1 && isDadJoke && isQueryNotEmpty) {
+            const dadJoke = await dadjokeService.searchDadJokes(queryValue)
+            if (!dadJoke) {
+              noJoke()
+              return
+            }
+            await setJokeData(dadJoke, ECategory_en.DadJoke, undefined)
+          } else {
+            const dadJoke = await dadjokeService.getRandomDadJoke()
+            if (!dadJoke) {
+              noJoke()
+              return
+            }
+            await setJokeData(dadJoke, ECategory_en.DadJoke, undefined)
+          }
+        } else if (isChuckNorris && isQueryNotEmpty) {
           const norrisJoke = await norrisService.searchNorrisJoke(queryValue)
           if (!norrisJoke) {
             noJoke()
@@ -928,19 +988,13 @@ function Jokes({
             ECategory_en.ChuckNorris,
             norrisJoke?.categories ?? []
           )
-          setFlags({
-            explicit: norrisJoke?.categories?.includes('explicit') ?? false,
-            religious: norrisJoke?.categories?.includes('religious') ?? false,
-            political: false,
-            racist: false,
-            sexist: false,
-            nsfw: norrisJoke?.categories?.includes('explicit') ?? false,
-          })
-          setSubCategoryResults(norrisJoke?.categories ?? [])
-        } else if (random === 1 && isChuckNorris) {
-          const randomCategory = getRandomNorrisCategory()
+        } else if (
+          isChuckNorris &&
+          selectedNorrisCategory?.value &&
+          selectedNorrisCategory?.value !== 'any'
+        ) {
           const norrisJoke = await norrisService.getRandomJokeFromNorrisCategory(
-            (randomCategory?.value as string) ?? ''
+            (selectedNorrisCategory?.value as string) ?? ''
           )
           if (!norrisJoke) {
             noJoke()
@@ -951,16 +1005,21 @@ function Jokes({
             ECategory_en.ChuckNorris,
             norrisJoke?.categories ?? []
           )
-          setFlags({
-            explicit: norrisJoke?.categories?.includes('explicit') ?? false,
-            religious: norrisJoke?.categories?.includes('religious') ?? false,
-            political: false,
-            racist: false,
-            sexist: false,
-            nsfw: norrisJoke?.categories?.includes('explicit') ?? false,
-          })
-          setSubCategoryResults(norrisJoke?.categories ?? [])
-        } else if (random > 1 && isDadJoke && isQueryNotEmpty) {
+        } else if (isChuckNorris) {
+          const randomCategory = getRandomNorrisCategory()
+          const norrisJoke = await norrisService.getRandomJokeFromNorrisCategory(
+            randomCategory.value as string
+          )
+          if (!norrisJoke) {
+            noJoke()
+            return
+          }
+          await setJokeData(
+            norrisJoke,
+            ECategory_en.ChuckNorris,
+            norrisJoke?.categories ?? []
+          )
+        } else if (isDadJoke && isQueryNotEmpty) {
           const dadJoke = await dadjokeService.searchDadJokes(queryValue)
           if (!dadJoke) {
             noJoke()
@@ -975,65 +1034,6 @@ function Jokes({
           }
           await setJokeData(dadJoke, ECategory_en.DadJoke, undefined)
         }
-      } else if (isChuckNorris && isQueryNotEmpty) {
-        const norrisJoke = await norrisService.searchNorrisJoke(queryValue)
-        if (!norrisJoke) {
-          noJoke()
-          return
-        }
-        await setJokeData(
-          norrisJoke,
-          ECategory_en.ChuckNorris,
-          norrisJoke?.categories ?? []
-        )
-        setSubCategoryResults(norrisJoke?.categories ?? [])
-      } else if (
-        isChuckNorris &&
-        selectedNorrisCategory?.value &&
-        selectedNorrisCategory?.value !== 'any'
-      ) {
-        const norrisJoke = await norrisService.getRandomJokeFromNorrisCategory(
-          (selectedNorrisCategory?.value as string) ?? ''
-        )
-        if (!norrisJoke) {
-          noJoke()
-          return
-        }
-        await setJokeData(
-          norrisJoke,
-          ECategory_en.ChuckNorris,
-          norrisJoke?.categories ?? []
-        )
-        setSubCategoryResults(norrisJoke?.categories ?? [])
-      } else if (isChuckNorris) {
-        const randomCategory = getRandomNorrisCategory()
-        const norrisJoke = await norrisService.getRandomJokeFromNorrisCategory(
-          randomCategory.value as string
-        )
-        if (!norrisJoke) {
-          noJoke()
-          return
-        }
-        await setJokeData(
-          norrisJoke,
-          ECategory_en.ChuckNorris,
-          norrisJoke?.categories ?? []
-        )
-        setSubCategoryResults(norrisJoke?.categories ?? [])
-      } else if (isDadJoke && isQueryNotEmpty) {
-        const dadJoke = await dadjokeService.searchDadJokes(queryValue)
-        if (!dadJoke) {
-          noJoke()
-          return
-        }
-        await setJokeData(dadJoke, ECategory_en.DadJoke, undefined)
-      } else {
-        const dadJoke = await dadjokeService.getRandomDadJoke()
-        if (!dadJoke) {
-          noJoke()
-          return
-        }
-        await setJokeData(dadJoke, ECategory_en.DadJoke, undefined)
       }
     } else if (isEmpty && !isCheckedJokeType && !isQueryNotEmpty) {
       const random = Math.floor(getRandomMinMax(1, 10.999))
@@ -1051,7 +1051,6 @@ function Jokes({
           ECategory_en.ChuckNorris,
           norrisJoke?.categories ?? []
         )
-        setSubCategoryResults(norrisJoke?.categories ?? [])
       } else if (random === 2) {
         const dadJoke = await dadjokeService.getRandomDadJoke()
         if (!dadJoke) {
@@ -1261,12 +1260,20 @@ function Jokes({
     })
   }, [])
 
-  const optionsNorris = (enumObj: typeof EExtraCategories, any: boolean) => {
-    const options = Object.entries(enumObj).map(([key, value]) => ({
+  const optionsNorris = (enumObj: Record<string, string>, any: boolean) => {
+    const options = Object.entries(enumObj)?.map(([key, value]) => ({
       value: value,
-      label: value.charAt(0).toUpperCase() + value.slice(1),
+      label:
+        norrisCats[value as keyof typeof norrisCats] &&
+        norrisCats[value as keyof typeof norrisCats][language]
+          ? norrisCats[value as keyof typeof norrisCats][language]
+          : value.charAt(0).toUpperCase() + value.slice(1),
     })) as SelectOption[]
-    if (any) options.unshift({ value: 'any', label: 'Any' })
+    if (any)
+      options.unshift({
+        value: 'any',
+        label: norrisCats['any'][language] || EAny[language],
+      })
     return options
   }
 
@@ -1356,6 +1363,7 @@ function Jokes({
               setSelectedNorrisCategory={setSelectedNorrisCategory}
               hasNorris={hasNorris}
               getCategoryInLanguage={getCategoryInLanguage}
+              subCategoryResults={subCategoryResults}
             />
           </div>
         </div>

@@ -69,6 +69,7 @@ import {
   EExtraCategories,
   EJokeAlreadySaved,
   ENoJokeFound,
+  norrisCategoryTranslations as norrisCat,
 } from '../interfaces'
 import {
   IUser,
@@ -318,7 +319,7 @@ const UserJokes = ({
   const resetFilters = () => {
     setSelectedCategory('')
     setSelectedLanguage('')
-    setSelectedNorrisCategory(norrisCategories[0])
+    setSelectedNorrisCategory(norrisOptions[0])
     setSearchTerm('')
     setIsRandom(false)
     setRandomTrigger((prev) => prev + 1)
@@ -509,14 +510,54 @@ const UserJokes = ({
 
   const indexOfLastItem = currentPage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentItems = filteredJokes.slice(indexOfFirstItem, indexOfLastItem)
+  const currentItems = filteredJokes?.slice(indexOfFirstItem, indexOfLastItem)
 
   const pageNumbers: number[] = []
-  for (let i = 1; i <= Math.ceil(filteredJokes.length / itemsPerPage); i++) {
-    pageNumbers.push(i)
+  for (let i = 1; i <= Math.ceil(filteredJokes?.length / itemsPerPage); i++) {
+    pageNumbers?.push(i)
   }
 
-  const visiblePageNumbers = pageNumbers.slice(leftPage - 1, rightPage)
+  const visiblePageNumbers = pageNumbers?.slice(leftPage - 1, rightPage)
+
+  useEffect(() => {
+    if (currentPage > pageNumbers.length) {
+      setCurrentPage(1)
+    }
+  }, [pageNumbers])
+
+  let norrisOptions = Array.from(
+    new Set(
+      userJokes
+        ?.filter(
+          (joke) =>
+            (joke.private === false && joke.verified === true) ||
+            joke.private === undefined
+        )
+        ?.flatMap((joke) => joke.subCategories)
+    )
+  ).map((subCategory) => {
+    const translatedLabel = (subCategory as keyof typeof norrisCat)
+      ? norrisCat[subCategory as keyof typeof norrisCat][language] || subCategory
+      : ''
+    const firstLetter = translatedLabel?.charAt(0).toUpperCase() ?? subCategory ?? ''
+    const restOfLabel = translatedLabel?.slice(1) ?? subCategory ?? ''
+    return {
+      label: firstLetter + restOfLabel,
+      value: subCategory,
+    }
+  }) as SelectOption[]
+
+  norrisOptions = norrisOptions.filter((option) => option.value !== 'any')
+  norrisOptions.unshift({
+    label:
+      norrisCat['any'][language].charAt(0).toUpperCase() +
+      norrisCat['any'][language].slice(1),
+    value: 'any',
+  })
+
+  useEffect(() => {
+    setSelectedNorrisCategory(norrisOptions[0])
+  }, [language])
 
   const pagination = () => (
     <div className='pagination'>
@@ -524,7 +565,7 @@ const UserJokes = ({
         <div className='chevrons-wrap back'>
           <button
             className={`inner-nav-btn first ${currentPage === 1 ? 'disabled' : ''} ${
-              pageNumbers.length <= 3 ? 'hidden' : ''
+              pageNumbers?.length <= 3 ? 'hidden' : ''
             }`}
             disabled={currentPage === 1}
             onClick={() => handlePageChange(1)}
@@ -533,7 +574,7 @@ const UserJokes = ({
           </button>
           <button
             className={`inner-nav-btn back ${currentPage === 1 ? 'disabled' : ''} ${
-              pageNumbers.length <= 3 ? 'hidden' : ''
+              pageNumbers?.length <= 3 ? 'hidden' : ''
             }`}
             disabled={currentPage === 1}
             onClick={() => handlePageChange(currentPage - 1)}
@@ -541,8 +582,8 @@ const UserJokes = ({
             <BiChevronLeft />
           </button>
         </div>
-        <div className={`numbers${pageNumbers.length === 1 ? ' hidden' : ''}`}>
-          {visiblePageNumbers.map((number) => (
+        <div className={`numbers${pageNumbers?.length === 1 ? ' hidden' : ''}`}>
+          {visiblePageNumbers?.map((number) => (
             <button
               key={number}
               className={`${
@@ -563,19 +604,19 @@ const UserJokes = ({
         <div className='chevrons-wrap forward'>
           <button
             className={`inner-nav-btn forward ${
-              currentPage === pageNumbers.length ? 'disabled' : ''
-            } ${pageNumbers.length <= 3 ? 'hidden' : ''}`}
-            disabled={currentPage === pageNumbers.length}
+              currentPage === pageNumbers?.length ? 'disabled' : ''
+            } ${pageNumbers?.length <= 3 ? 'hidden' : ''}`}
+            disabled={currentPage === pageNumbers?.length}
             onClick={() => handlePageChange(currentPage + 1)}
           >
             <BiChevronRight />
           </button>
           <button
             className={`inner-nav-btn last ${
-              currentPage === pageNumbers.length ? 'disabled' : ''
-            } ${pageNumbers.length <= 3 ? 'hidden' : ''}`}
-            disabled={currentPage === pageNumbers.length}
-            onClick={() => handlePageChange(pageNumbers.length)}
+              currentPage === pageNumbers?.length ? 'disabled' : ''
+            } ${pageNumbers?.length <= 3 ? 'hidden' : ''}`}
+            disabled={currentPage === pageNumbers?.length}
+            onClick={() => handlePageChange(pageNumbers?.length)}
           >
             <BiChevronsRight />
           </button>
@@ -592,11 +633,17 @@ const UserJokes = ({
             setItemsPerPage(e.target.valueAsNumber > 0 ? e.target.valueAsNumber : 1)
           }
         />{' '}
-        <span>{EPerPage[language]}</span>
+        <span>{EPerPage[language]}</span>{' '}
       </div>
+      {pageNumbers?.length > 1 && (
+        <div>
+          <span>
+            {currentPage} / {pageNumbers?.length}
+          </span>
+        </div>
+      )}
     </div>
   )
-
   return (
     <div className='saved' id='saved'>
       {userId && (
@@ -783,9 +830,9 @@ const UserJokes = ({
                   id='userNorrisCategories'
                   className={`category extras ${hasNorris ? '' : 'hidden'}`}
                   instructions={`${EFilterFurther[language]}:`}
-                  selectAnOption={EAny[language]}
+                  selectAnOption={norrisOptions[0].label}
                   value={selectedNorrisCategory}
-                  options={norrisCategories}
+                  options={norrisOptions}
                   onChange={(o) => {
                     setSelectedNorrisCategory(o as SelectOption)
                   }}
@@ -874,30 +921,29 @@ const UserJokes = ({
                     <div className='secondary-wrap'>
                       <span>
                         {titleCategory}:{' '}
-                        {getCategoryInLanguage(joke.category as ECategory_en, language)}
+                        {getCategoryInLanguage(joke.category as ECategory_en, language)}{' '}
+                        {joke.subCategories &&
+                        joke.subCategories?.length > 0 &&
+                        joke.subCategories?.find((category) => category !== 'any') ? (
+                          <>
+                            (
+                            {joke.subCategories
+                              ?.filter((category) => category !== 'any')
+                              ?.map((category) => {
+                                return (
+                                  norrisCat[category as keyof typeof norrisCat][
+                                    language
+                                  ].toLowerCase() ?? category
+                                )
+                              })
+                              .join(', ')}
+                            )
+                          </>
+                        ) : (
+                          ''
+                        )}
                       </span>
-                      {joke.category === ECategory_en.ChuckNorris ? (
-                        <span>
-                          {joke.subCategories
-                            ? `(${joke.subCategories
-                                .map((category) => category)
-                                .join(', ')})`
-                            : ''}
-                        </span>
-                      ) : (
-                        ''
-                      )}
-                      {joke.subCategories &&
-                      joke.subCategories?.length > 0 &&
-                      joke.subCategories?.find((category) => category !== 'any') ? (
-                        <span>
-                          {joke.subCategories
-                            ?.filter((category) => category !== 'any')
-                            .join(', ')}
-                        </span>
-                      ) : (
-                        ''
-                      )}
+
                       <span>
                         {translateWordLanguage}: {joke.translatedLanguage}
                         {/* {
@@ -914,7 +960,7 @@ const UserJokes = ({
                         <span>{EAnonymous[language]} </span>
                       ) : joke.anonymous === false ? (
                         <span>
-                          {EAuthor[language]}: {joke.name}
+                          {EAuthor[language]}: {joke.name ?? ''}
                         </span>
                       ) : (
                         ''

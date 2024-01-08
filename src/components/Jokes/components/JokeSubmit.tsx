@@ -43,6 +43,7 @@ import {
   EPrivacy,
   EClickHereToWriteYourOwnJoke,
   EReportErrorToAdmin,
+  ESaving,
 } from '../interfaces'
 import {
   ESelectAnOption,
@@ -120,6 +121,7 @@ const JokeSubmit = ({
     SelectOption | undefined
   >(norrisCategories[0])
   const [hasNorris, setHasNorris] = useState(false)
+  const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     const norrisExists = selectedCategory === ECategory_en.ChuckNorris
@@ -129,7 +131,7 @@ const JokeSubmit = ({
 
   const handleNewJokeSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
+    setSaving(true)
     const isAnyFlagChecked =
       e.currentTarget.nsfw.checked ||
       e.currentTarget.religious.checked ||
@@ -190,11 +192,13 @@ const JokeSubmit = ({
           setJoke('')
           setSetup('')
           setDelivery('')
+          setSaving(false)
         })
         dispatch(notify(`${ESavedJoke[language]}. ${r.message ?? ''}`, false, 8))
       })
       .catch((e) => {
         console.log(e)
+        setSaving(false)
         if (e.code === 'ERR_BAD_RESPONSE') {
           dispatch(
             notify(
@@ -204,6 +208,7 @@ const JokeSubmit = ({
             )
           )
         } else {
+          setSaving(false)
           dispatch(
             notify(
               `${EError[language]}: ${e.message}. ${EReportErrorToAdmin[language]}`,
@@ -471,7 +476,11 @@ const JokeSubmit = ({
               : EPublishWithNickname[language]}
           </p>
           <button type='submit' className='small' id='submit-new-joke'>
-            {isCheckedPrivate ? EPublish[language] : ESend[language]}
+            {saving
+              ? ESaving[language]
+              : isCheckedPrivate
+              ? EPublish[language]
+              : ESend[language]}
           </button>
         </form>
       </div>
