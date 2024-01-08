@@ -757,6 +757,27 @@ button.delivery.reveal p {
 .saved .fr.age-container .toggle {
   --width: calc(var(--height) * 4.5);
 }
+.submit-container .accordion-btn.open {
+  padding: 2em 0.5em;
+  border-radius: calc(var(--border-radius) * 2);
+  background-size: auto 400px;
+}
+.joke-container .wide {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--gap) / 2);
+  max-width: 100%;
+}
+.joke-container .wide span {
+}
+.joke-container .wide svg {
+  font-size: 1.5em;
+}
+.joke-container .accordion-container .accordion-btn.open {
+  max-width: 100%;
+}
 @-webkit-keyframes fadeInDown {
   0% {
     opacity: 0;

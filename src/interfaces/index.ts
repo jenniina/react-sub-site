@@ -499,7 +499,7 @@ export enum EFilter {
   de = 'Filter',
   pt = 'Filtro',
   cs = 'Filtr',
-  fi = 'Suodatin',
+  fi = 'Suodata',
 }
 export enum EFilterByLanguage {
   en = 'Filter by language',

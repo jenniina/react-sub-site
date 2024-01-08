@@ -260,7 +260,7 @@ const UserJokes = ({
           ...joke,
           visible: false,
           translatedLanguage: jokeLanguage ?? '',
-          name: joke.anonymous ? 'Ö_Anonymous' : author?.name ?? '',
+          name: joke.anonymous ? 'ÖÖÖ_Anonymous' : author?.name ?? '',
         }
       })
       updatedJokes = !isCheckedSafemode
@@ -380,7 +380,10 @@ const UserJokes = ({
           ? joke.subCategories?.includes(selectedNorrisCategory?.value as string)
           : true
 
-      if (localJokes && joke.private === false && joke.verified === true) {
+      if (
+        (localJokes && joke.private === false && joke.verified === true) ||
+        (localJokes && joke.private === undefined)
+      ) {
         return (
           languageMatches && categoryMatches && norrisCategoryMatches && searchTermMatches
         )
@@ -486,6 +489,8 @@ const UserJokes = ({
         <input
           className='items-per-page'
           type='number'
+          min='1'
+          max='100'
           defaultValue={itemsPerPage}
           onChange={(e) =>
             setItemsPerPage(e.target.valueAsNumber > 0 ? e.target.valueAsNumber : 1)
@@ -497,7 +502,7 @@ const UserJokes = ({
   )
 
   return (
-    <div className='saved'>
+    <div className='saved' id='saved'>
       {userId && (
         <div className='local-saved-wrap'>
           <button
@@ -728,7 +733,9 @@ const UserJokes = ({
               <FaList /> {EAllJokes[language]}
             </button>
           </div>
+
           {!isRandom && pagination()}
+
           <ul className='userjokeslist'>
             {currentItems && currentItems?.length > 0 ? (
               currentItems?.map((joke) => {
