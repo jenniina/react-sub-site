@@ -61,6 +61,8 @@ import {
   TCategoryByLanguages,
   ESafemode,
   EExtraCategories,
+  EJokeAlreadySaved,
+  ENoJokeFound,
 } from '../interfaces'
 import {
   IUser,
@@ -89,7 +91,8 @@ import { useSelector } from 'react-redux'
 import { initializeUsers } from '../../../reducers/usersReducer'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import Accordion from '../../Accordion/Accordion'
-import { initializeJokes } from '../reducers/jokeReducer'
+import { createJoke, initializeJokes, updateJoke } from '../reducers/jokeReducer'
+import { notify } from '../../../reducers/notificationReducer'
 
 // export interface IJokeVisible {
 //   _id?: IJoke['_id']
@@ -469,6 +472,24 @@ const UserJokes = ({
       modifiedCategory = 'DadJoke' as ECategory_en
     }
     setSelectedCategory(modifiedCategory)
+  }
+
+  const handleJokeSave = (_id: IJoke['_id']) => {
+    const findJoke = jokes?.find((j: IJoke) => j._id === _id)
+    if (!findJoke) {
+      dispatch(notify(`${ENoJokeFound[language]}`, true, 8))
+      return
+    }
+    if (findJoke) {
+      if (findJoke.user.includes(userId?.toString())) {
+        dispatch(notify(`${EJokeAlreadySaved[language]}`, false, 8))
+        return
+      }
+      dispatch(updateJoke({ ...findJoke, user: [...findJoke.user, userId] })).then(() => {
+        dispatch(initializeJokes())
+        dispatch(notify(`${ESavedJoke[language]}`, false, 8))
+      })
+    }
   }
 
   const pagination = () => (
@@ -852,6 +873,12 @@ const UserJokes = ({
                             {deleteJoke}
                           </button>
                         </form>
+                      )}
+
+                      {!joke.user.includes(userId) && (
+                        <button onClick={() => handleJokeSave(joke._id)} className='save'>
+                          {ESaveJoke[language]}
+                        </button>
                       )}
 
                       {userId && joke.user.includes(userId) && joke.author === userId && (

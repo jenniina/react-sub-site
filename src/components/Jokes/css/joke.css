@@ -778,6 +778,9 @@ button.delivery.reveal p {
 .joke-container .accordion-container .accordion-btn.open {
   max-width: 100%;
 }
+.joke-container .saved button.save {
+  margin-left: auto;
+}
 @-webkit-keyframes fadeInDown {
   0% {
     opacity: 0;
