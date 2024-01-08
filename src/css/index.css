@@ -491,8 +491,8 @@ button.restore {
   outline-offset: -2px;
   background: linear-gradient(
     5deg,
-    var(--color-primary-15) 0%,
-    var(--color-primary-12) 30%,
+    var(--color-primary-17) 0%,
+    var(--color-primary-13) 30%,
     var(--color-primary-7) 60%,
     var(--color-primary-2) 100%
   );
