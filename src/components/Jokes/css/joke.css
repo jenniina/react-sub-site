@@ -599,7 +599,7 @@ form.joke > *:not(.toggle) {
   display: none;
 }
 .pagination button {
-  padding: 0.7rem 1rem 0.6rem;
+  padding: 0.7rem 1.1rem 0.6rem;
   border-radius: 5rem;
   font-size: 1.3rem;
   border-width: 3px;
@@ -823,21 +823,21 @@ button.delivery.reveal p {
   --width: calc(var(--height) * 4.5);
 }
 .submit-container .accordion-btn.open {
-  padding: 2em 0.5em;
+  padding: 1.5em 0.3em;
   border-radius: calc(var(--border-radius) * 2);
   background-size: auto 400px;
+  font-size: 1.4em;
 }
-.joke-container .wide {
+.joke-container button.wide {
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
   gap: calc(var(--gap) / 2);
   max-width: 100%;
+  background-size: auto 300px;
 }
-.joke-container .wide span {
-}
-.joke-container .wide svg {
+.joke-container button.wide svg {
   font-size: 1.5em;
 }
 .joke-container .accordion-container .accordion-btn.open {
