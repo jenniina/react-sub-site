@@ -564,11 +564,12 @@ form.joke > *:not(.toggle) {
   --width: calc(var(--height) * 5.3);
 }
 .pagination {
+  --pagination-gap: calc(var(--gap) * 0.8);
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
-  gap: calc(var(--gap));
+  gap: var(--pagination-gap);
   margin: 2rem 0;
 }
 .pagination > div {
@@ -576,14 +577,14 @@ form.joke > *:not(.toggle) {
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
-  gap: calc(var(--gap) / 1.4);
+  gap: var(--pagination-gap);
 }
 .pagination > div > div {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
   align-items: center;
-  gap: calc(var(--gap) / 1.4);
+  gap: var(--pagination-gap);
 }
 @media (min-width: 700px) {
   .pagination > div {
@@ -591,14 +592,26 @@ form.joke > *:not(.toggle) {
     flex-flow: row wrap;
     justify-content: center;
     align-items: center;
-    gap: calc(var(--gap) / 1.4);
+    gap: var(--pagination-gap);
   }
 }
+.pagination .numbers.hidden {
+  display: none;
+}
 .pagination button {
-  padding: 0.9rem 1.3rem;
-  border-radius: 4rem;
-  font-size: 0.8rem;
+  padding: 0.7rem 1rem 0.6rem;
+  border-radius: 5rem;
+  font-size: 1.3rem;
   border-width: 3px;
+}
+.pagination button.over9 {
+  padding: 0.7rem 0.7rem 0.6rem;
+}
+.pagination button.over99 {
+  padding: 0.7rem 0.4rem 0.6rem;
+}
+.pagination button.over999 {
+  padding: 0.7rem 0.1rem 0.6rem;
 }
 .pagination button.active {
   background-color: transparent;
@@ -616,8 +629,36 @@ form.joke > *:not(.toggle) {
   flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
-  gap: calc(var(--gap) / 1.4);
+  gap: var(--pagination-gap);
 }
+.joke-container .inner-nav-btn {
+  padding: 0.2rem;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+.joke-container .pagination .inner-nav-btn svg {
+  font-size: 2rem;
+}
+.joke-container .pagination .inner-nav-btn.first {
+  padding: 0.2rem 0.3rem 0.2rem 0.1rem;
+}
+.joke-container .pagination .inner-nav-btn.last {
+  padding: 0.2rem 0.1rem 0.2rem 0.3rem;
+}
+.joke-container .pagination .inner-nav-btn.first svg,
+.joke-container .pagination .inner-nav-btn.last svg {
+  font-size: 1.6rem;
+}
+.joke-container .pagination .inner-nav-btn.hidden {
+  display: none;
+}
+.joke-container .pagination .inner-nav-btn.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
 .icontext {
   display: flex;
   flex-flow: row nowrap;
@@ -805,23 +846,7 @@ button.delivery.reveal p {
 .joke-container .saved button.save {
   margin-left: auto;
 }
-.joke-container .inner-nav-btn {
-  padding: 0.2rem;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: center;
-  align-items: center;
-}
-.joke-container .inner-nav-btn svg {
-  font-size: 2em;
-}
-.joke-container .inner-nav-btn.hidden {
-  display: none;
-}
-.joke-container .inner-nav-btn.disabled {
-  opacity: 0.4;
-  pointer-events: none;
-}
+
 @-webkit-keyframes fadeInDown {
   0% {
     opacity: 0;

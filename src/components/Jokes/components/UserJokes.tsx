@@ -489,19 +489,23 @@ const UserJokes = ({
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber)
-    if (pageNumber < leftPage) {
-      setLeftPage(pageNumber)
-      setRightPage(pageNumber + 2)
-    }
-    if (pageNumber > rightPage) {
-      setRightPage(pageNumber)
-      setLeftPage(pageNumber - 2)
+    if (pageNumber <= 2) {
+      setLeftPage(1)
+      setRightPage(3)
+    } else if (pageNumber >= pageNumbers.length - 1) {
+      setLeftPage(pageNumbers.length - 2)
+      setRightPage(pageNumbers.length)
+    } else {
+      setLeftPage(pageNumber - 1)
+      setRightPage(pageNumber + 1)
     }
   }
 
-  // const handlePageChange = (pageNumber: number) => {
-  //   setCurrentPage(pageNumber)
-  // }
+  useEffect(() => {
+    if (!currentPage) {
+      setCurrentPage(1)
+    }
+  }, [currentPage])
 
   const indexOfLastItem = currentPage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
@@ -519,27 +523,37 @@ const UserJokes = ({
       <div>
         <div className='chevrons-wrap back'>
           <button
-            className={`inner-nav-btn first ${currentPage === 1 ? 'disabled' : ''}`}
+            className={`inner-nav-btn first ${currentPage === 1 ? 'disabled' : ''} ${
+              pageNumbers.length <= 3 ? 'hidden' : ''
+            }`}
             disabled={currentPage === 1}
             onClick={() => handlePageChange(1)}
           >
             <BiChevronsLeft />
           </button>
           <button
-            className={`inner-nav-btn back ${leftPage === 1 ? 'disabled' : ''} ${
+            className={`inner-nav-btn back ${currentPage === 1 ? 'disabled' : ''} ${
               pageNumbers.length <= 3 ? 'hidden' : ''
             }`}
-            disabled={leftPage === 1}
-            onClick={() => handlePageChange(leftPage - 1)}
+            disabled={currentPage === 1}
+            onClick={() => handlePageChange(currentPage - 1)}
           >
             <BiChevronLeft />
           </button>
         </div>
-        <div>
+        <div className={`numbers${pageNumbers.length === 1 ? ' hidden' : ''}`}>
           {visiblePageNumbers.map((number) => (
             <button
               key={number}
-              className={number === currentPage ? 'active' : ''}
+              className={`${
+                number > 9
+                  ? 'over9'
+                  : number > 99
+                  ? 'over99'
+                  : number > 999
+                  ? 'over999'
+                  : ''
+              } ${number === currentPage ? 'active' : ''}`}
               onClick={() => handlePageChange(number)}
             >
               {number}
@@ -549,17 +563,17 @@ const UserJokes = ({
         <div className='chevrons-wrap forward'>
           <button
             className={`inner-nav-btn forward ${
-              rightPage === pageNumbers.length ? 'disabled' : ''
+              currentPage === pageNumbers.length ? 'disabled' : ''
             } ${pageNumbers.length <= 3 ? 'hidden' : ''}`}
-            disabled={rightPage > pageNumbers.length - 1}
-            onClick={() => handlePageChange(rightPage + 1)}
+            disabled={currentPage === pageNumbers.length}
+            onClick={() => handlePageChange(currentPage + 1)}
           >
             <BiChevronRight />
           </button>
           <button
             className={`inner-nav-btn last ${
               currentPage === pageNumbers.length ? 'disabled' : ''
-            }`}
+            } ${pageNumbers.length <= 3 ? 'hidden' : ''}`}
             disabled={currentPage === pageNumbers.length}
             onClick={() => handlePageChange(pageNumbers.length)}
           >
