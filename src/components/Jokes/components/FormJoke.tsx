@@ -84,6 +84,7 @@ interface Props {
     category: ECategory_en,
     language: ELanguages
   ) => string | undefined
+  subCategoryResults: string[]
 }
 const Form = ({
   handleFormSubmit,
@@ -124,6 +125,7 @@ const Form = ({
   setSelectedNorrisCategory,
   hasNorris,
   getCategoryInLanguage,
+  subCategoryResults,
 }: Props) => {
   const titleLanguageSelect = ESelectALanguage[language]
   const titleCategorySelect = ESelectACategory[language]
@@ -362,6 +364,7 @@ const Form = ({
         language={language}
         visibleJoke={visibleJoke}
         getCategoryInLanguage={getCategoryInLanguage}
+        subCategoryResults={subCategoryResults}
       />
     </>
   )
