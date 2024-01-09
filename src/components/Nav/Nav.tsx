@@ -150,7 +150,7 @@ const Nav = (
               >
                 {icons(link.label)}
                 <span>{link.label}</span>
-                <b className='tooltip' data-tooltip={link.label}></b>
+                <b className='tooltip' aria-hidden={true} data-tooltip={link.label}></b>
               </NavLink>
             </li>
           )

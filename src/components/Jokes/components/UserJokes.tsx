@@ -483,6 +483,40 @@ const UserJokes = ({
     }
   }
 
+  let norrisOptions = Array.from(
+    new Set(
+      userJokes
+        ?.filter(
+          (joke) =>
+            (joke.private === false && joke.verified === true) ||
+            joke.private === undefined
+        )
+        ?.flatMap((joke) => joke.subCategories)
+    )
+  ).map((subCategory) => {
+    const translatedLabel = (subCategory as keyof typeof norrisCat)
+      ? norrisCat[subCategory as keyof typeof norrisCat][language] || subCategory
+      : ''
+    const firstLetter = translatedLabel?.charAt(0).toUpperCase() ?? subCategory ?? ''
+    const restOfLabel = translatedLabel?.slice(1) ?? subCategory ?? ''
+    return {
+      label: firstLetter + restOfLabel,
+      value: subCategory,
+    }
+  }) as SelectOption[]
+
+  norrisOptions = norrisOptions.filter((option) => option.value !== 'any')
+  norrisOptions.unshift({
+    label:
+      norrisCat['any'][language].charAt(0).toUpperCase() +
+      norrisCat['any'][language].slice(1),
+    value: 'any',
+  })
+
+  useEffect(() => {
+    setSelectedNorrisCategory(norrisOptions[0])
+  }, [language])
+
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [itemsPerPage, setItemsPerPage] = useState<number>(10)
   const [leftPage, setLeftPage] = useState<number>(1)
@@ -525,42 +559,15 @@ const UserJokes = ({
     }
   }, [pageNumbers])
 
-  let norrisOptions = Array.from(
-    new Set(
-      userJokes
-        ?.filter(
-          (joke) =>
-            (joke.private === false && joke.verified === true) ||
-            joke.private === undefined
-        )
-        ?.flatMap((joke) => joke.subCategories)
-    )
-  ).map((subCategory) => {
-    const translatedLabel = (subCategory as keyof typeof norrisCat)
-      ? norrisCat[subCategory as keyof typeof norrisCat][language] || subCategory
-      : ''
-    const firstLetter = translatedLabel?.charAt(0).toUpperCase() ?? subCategory ?? ''
-    const restOfLabel = translatedLabel?.slice(1) ?? subCategory ?? ''
-    return {
-      label: firstLetter + restOfLabel,
-      value: subCategory,
-    }
-  }) as SelectOption[]
-
-  norrisOptions = norrisOptions.filter((option) => option.value !== 'any')
-  norrisOptions.unshift({
-    label:
-      norrisCat['any'][language].charAt(0).toUpperCase() +
-      norrisCat['any'][language].slice(1),
-    value: 'any',
-  })
-
-  useEffect(() => {
-    setSelectedNorrisCategory(norrisOptions[0])
-  }, [language])
-
   const pagination = () => (
     <div className='pagination'>
+      {pageNumbers?.length > 1 && (
+        <div>
+          <span>
+            {currentPage} / {pageNumbers?.length}
+          </span>
+        </div>
+      )}
       <div>
         <div className='chevrons-wrap back'>
           <button
@@ -612,13 +619,19 @@ const UserJokes = ({
             <BiChevronRight />
           </button>
           <button
-            className={`inner-nav-btn last ${
+            className={`inner-nav-btn last tooltipwrap ${
               currentPage === pageNumbers?.length ? 'disabled' : ''
             } ${pageNumbers?.length <= 3 ? 'hidden' : ''}`}
             disabled={currentPage === pageNumbers?.length}
             onClick={() => handlePageChange(pageNumbers?.length)}
           >
             <BiChevronsRight />
+            <span
+              className='tooltip right below'
+              data-tooltip={`Last page: ${pageNumbers?.length}`}
+            >
+              <b className='scr'>Last page: {pageNumbers?.length}</b>
+            </span>
           </button>
         </div>
       </div>
@@ -635,13 +648,6 @@ const UserJokes = ({
         />{' '}
         <span>{EPerPage[language]}</span>{' '}
       </div>
-      {pageNumbers?.length > 1 && (
-        <div>
-          <span>
-            {currentPage} / {pageNumbers?.length}
-          </span>
-        </div>
-      )}
     </div>
   )
   return (
@@ -1223,7 +1229,24 @@ const UserJokes = ({
           </ul>
           {!isRandom && pagination()}
         </div>
+        <div className='filler below'></div>
       </div>
+      {userId && (
+        <div className='local-saved-wrap below'>
+          <button
+            className={`btn${localJokes ? ' active' : ''}`}
+            onClick={() => setLocalJokes(true)}
+          >
+            {!localJokes ? ESeeLocalJokes[language] : ELocalJokes[language]}
+          </button>
+          <button
+            className={`btn${!localJokes ? ' active' : ''}`}
+            onClick={() => setLocalJokes(false)}
+          >
+            {EYourSavedJokes[language]}
+          </button>
+        </div>
+      )}
     </div>
   )
 }
