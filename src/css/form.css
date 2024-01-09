@@ -104,6 +104,9 @@ textarea,
   border-bottom: solid 0.1em var(--color-primary-6);
 }
 
+nav .input-wrap {
+  margin-top: 2em;
+}
 .input-wrap {
   position: relative;
   flex: 1 1 46%;
