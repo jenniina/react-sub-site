@@ -91,7 +91,7 @@ const QuizStart = ({
       dispatch(notify(EPasswordsDoNotMatch[language], true, 8))
       return
     }
-    dispatch(createUser({ name, username, password, language, verified: true }))
+    dispatch(createUser({ name, username, password, language, verified: false }))
       .then(async () => {
         dispatch(notify(ERegistrationSuccesful[language], false, 8))
       })
