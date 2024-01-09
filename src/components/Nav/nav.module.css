@@ -239,9 +239,7 @@ button.togglemenu[aria-expanded='true'] .menupath {
 .toolbar .loginregisterwrap button {
   margin: var(--marg) auto 0;
 }
-.toolbar .input-wrap {
-  margin-top: 4em;
-}
+
 .logo-container a {
   display: inline-block;
   position: relative;
