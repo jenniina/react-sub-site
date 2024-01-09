@@ -1369,15 +1369,15 @@ function Jokes({
         </div>
       </section>
 
-      <section>
-        <div className={`joke-container ${language}`}>
+      <section className={`joke-container ${language}`}>
+        <div>
           {!user ? (
             <div className={`register-login-wrap`}>
               <button onClick={navigateToLogin}>{ELogin[language]}</button>
               <button onClick={navigateToRegister}>{ERegister[language]}</button>
             </div>
           ) : (
-            <p>
+            <p className='textcenter'>
               {ELoggedInAs[language]} {user?.name}
             </p>
           )}

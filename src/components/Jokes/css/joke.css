@@ -350,6 +350,18 @@ ul.userjokeslist {
 .userjokeslist li {
   position: relative;
 }
+section.joke-container {
+  max-width: clamp(
+    150px,
+    calc(100vw - calc(var(--page-padding) * 2) - var(--scrollbar_width)),
+    1200px
+  );
+  margin-left: auto;
+  margin-right: auto;
+}
+section.joke-container > div {
+  padding: 2em 8% 2em;
+}
 section.joke-container > div::after {
   content: '';
   position: absolute;
