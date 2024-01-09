@@ -1369,8 +1369,8 @@ function Jokes({
         </div>
       </section>
 
-      <section className={`joke-container card ${language}`}>
-        <div>
+      <section>
+        <div className={`joke-container ${language}`}>
           {!user ? (
             <div className={`register-login-wrap`}>
               <button onClick={navigateToLogin}>{ELogin[language]}</button>

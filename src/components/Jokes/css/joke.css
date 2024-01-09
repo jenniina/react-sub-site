@@ -84,13 +84,21 @@
   transform: translateY(-2.5px) translateX(-3px);
 }
 .joke-container .saved .saved-inner,
-.joke-container .submit-inner {
+.joke-container .submit-inner,
+.joke-container .jokes-wrap {
   border: 2px solid var(--color-primary-8);
   border-radius: 0;
   overflow: hidden;
 }
+.joke-container .jokes-wrap {
+  border-top-color: var(--color-primary-12);
+}
+.light .joke-container .jokes-wrap {
+  border-top-color: var(--color-primary-6);
+}
 .joke-container .saved .saved-inner > div,
-.joke-container .submit-inner {
+.joke-container .submit-inner,
+.joke-container .jokes-wrap {
   padding: 0 5% 1rem;
 }
 .joke-container .saved .saved-inner > .filler {
@@ -105,7 +113,8 @@
 .joke-container .saved .saved-inner h3 {
   margin-top: 0.5em;
 }
-.joke-container .submit-inner {
+.joke-container .submit-inner,
+.joke-container .jokes-wrap {
   border-radius: var(--border-radius);
 }
 button#submit-new-joke {
@@ -1178,9 +1187,6 @@ button.delivery.reveal p {
   }
   .saved .toggle-wrap > div:last-child {
     margin-top: calc(var(--gap) * 1.2);
-  }
-  .search-jokes-wrap {
-    /* margin-top: calc(var(--gap) * 1); */
   }
   .saved .toggle-wrap .toggle-inner-wrap .full .search-jokes.input-wrap > label {
     margin-right: 0;
