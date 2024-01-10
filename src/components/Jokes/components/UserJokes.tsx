@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react'
 import { omit, set } from 'lodash'
 import { FaRandom, FaList } from 'react-icons/fa'
 import {
+  MdOutlineFilter3,
+  MdOutlineFilter4,
   MdOutlineFilter5,
   MdOutlineFilter6,
   MdOutlineFilter7,
   MdOutlineFilter8,
   MdOutlineFilter9,
-  MdFilter9Plus,
   MdOutlineFilter9Plus,
 } from 'react-icons/md'
 import {
@@ -264,7 +265,7 @@ const UserJokes = ({
     EOrderByAge.newest
   )
   const [isCheckedNewest, setIsCheckedNewest] = useState<boolean>(true)
-  const [latestNumber, setLatestNumber] = useState<number>(5)
+  const [latestNumber, setLatestNumber] = useState<number>(3)
   const [latest, setLatest] = useState<boolean>(false)
 
   const dispatch = useAppDispatch()
@@ -907,6 +908,8 @@ const UserJokes = ({
             >
               {!latest ? (
                 <>
+                  {latestNumber === 3 && <MdOutlineFilter3 />}
+                  {latestNumber === 4 && <MdOutlineFilter4 />}
                   {latestNumber === 5 && <MdOutlineFilter5 />}
                   {latestNumber === 6 && <MdOutlineFilter6 />}
                   {latestNumber === 7 && <MdOutlineFilter7 />}
@@ -925,7 +928,7 @@ const UserJokes = ({
               <>
                 <input
                   type='number'
-                  min={5}
+                  min={3}
                   max={100}
                   id='number-of-latest'
                   defaultValue={5}
