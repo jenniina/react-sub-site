@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react'
 import { omit, set } from 'lodash'
 import { FaRandom, FaList } from 'react-icons/fa'
 import {
+  MdOutlineFilter3,
+  MdOutlineFilter4,
   MdOutlineFilter5,
   MdOutlineFilter6,
   MdOutlineFilter7,
   MdOutlineFilter8,
   MdOutlineFilter9,
-  MdFilter9Plus,
   MdOutlineFilter9Plus,
 } from 'react-icons/md'
 import {
@@ -82,6 +83,9 @@ import {
   ELatest,
   EHowMany,
   EGetLatest,
+  EFailedToCopyJokeToClipboard,
+  EJokeCopiedToClipboard,
+  ECopy,
 } from '../interfaces'
 import {
   IUser,
@@ -264,7 +268,7 @@ const UserJokes = ({
     EOrderByAge.newest
   )
   const [isCheckedNewest, setIsCheckedNewest] = useState<boolean>(true)
-  const [latestNumber, setLatestNumber] = useState<number>(5)
+  const [latestNumber, setLatestNumber] = useState<number>(3)
   const [latest, setLatest] = useState<boolean>(false)
 
   const dispatch = useAppDispatch()
@@ -574,6 +578,17 @@ const UserJokes = ({
       setCurrentPage(1)
     }
   }, [pageNumbers])
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text).then(
+      function () {
+        dispatch(notify(`${EJokeCopiedToClipboard[language]}`, false, 3))
+      },
+      function () {
+        dispatch(notify(`${EFailedToCopyJokeToClipboard[language]}`, true, 3))
+      }
+    )
+  }
 
   const pagination = () => (
     <div className='pagination'>
@@ -898,15 +913,19 @@ const UserJokes = ({
               className='icontext'
               onClick={() => {
                 setIsRandom(false)
-                setSortBy(ESortBy_en.age)
-                setSortByAge(EOrderByAge.newest)
-                setTimeout(() => {
-                  setLatest((prev) => !prev)
-                }, 200)
+                if (!latest) {
+                  setSortBy(ESortBy_en.age)
+                  setSortByAge(EOrderByAge.newest)
+                  setTimeout(() => {
+                    setLatest(true)
+                  }, 200)
+                } else setLatest(false)
               }}
             >
-              {!latest ? (
+              {!latest && !isRandom ? (
                 <>
+                  {latestNumber === 3 && <MdOutlineFilter3 />}
+                  {latestNumber === 4 && <MdOutlineFilter4 />}
                   {latestNumber === 5 && <MdOutlineFilter5 />}
                   {latestNumber === 6 && <MdOutlineFilter6 />}
                   {latestNumber === 7 && <MdOutlineFilter7 />}
@@ -921,14 +940,14 @@ const UserJokes = ({
                 </>
               )}
             </button>
-            {!latest && (
+            {!latest && !isRandom && (
               <>
                 <input
                   type='number'
-                  min={5}
+                  min={3}
                   max={100}
                   id='number-of-latest'
-                  defaultValue={5}
+                  defaultValue={latestNumber}
                   className='narrow'
                   onChange={(e) => {
                     setLatestNumber(e.target.valueAsNumber)
@@ -1066,6 +1085,17 @@ const UserJokes = ({
                         </button>
                       )}
 
+                      <button
+                        onClick={() =>
+                          copyToClipboard(
+                            joke.type === EJokeType.single
+                              ? joke.joke
+                              : joke.setup + ' \n' + joke.delivery
+                          )
+                        }
+                      >
+                        {ECopy[language]}
+                      </button>
                       {userId && joke.user.includes(userId) && joke.author === userId && (
                         <Accordion
                           language={language}

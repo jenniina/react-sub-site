@@ -1387,3 +1387,30 @@ export enum EHowMany {
   cs = 'Kolik',
   fi = 'Kuinka monta',
 }
+export enum ECopy {
+  en = 'Copy',
+  es = 'Copiar',
+  fr = 'Copie',
+  de = 'Kopieren',
+  pt = 'Cópia',
+  cs = 'Kopie',
+  fi = 'Kopioi',
+}
+export enum EJokeCopiedToClipboard {
+  en = 'Joke copied to clipboard',
+  es = 'Broma copiada al portapapeles',
+  fr = 'Blague copiée dans le presse-papiers',
+  de = 'Witz in die Zwischenablage kopiert',
+  pt = 'Piada copiada para a área de transferência',
+  cs = 'Vtip zkopírován do schránky',
+  fi = 'Vitsi kopioitu leikepöydälle',
+}
+export enum EFailedToCopyJokeToClipboard {
+  en = 'Failed to copy joke to clipboard',
+  es = 'Error al copiar la broma al portapapeles',
+  fr = 'Impossible de copier la blague dans le presse-papiers',
+  de = 'Fehler beim Kopieren des Witzes in die Zwischenablage',
+  pt = 'Falha ao copiar piada para a área de transferência',
+  cs = 'Chyba při kopírování vtipu do schránky',
+  fi = 'Vitsin kopioiminen leikepöydälle epäonnistui',
+}
