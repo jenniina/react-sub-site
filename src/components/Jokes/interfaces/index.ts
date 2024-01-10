@@ -1350,3 +1350,40 @@ export const norrisCategoryTranslations: INorrisCatTran = {
     fi: 'Matkustaminen',
   },
 }
+
+export enum ESkipToJokeSearch {
+  en = 'Skip to joke search',
+  es = 'Saltar a la búsqueda de bromas',
+  fr = 'Passer à la recherche de blagues',
+  de = 'Zur Witzsuche springen',
+  pt = 'Pular para a pesquisa de piadas',
+  cs = 'Přejít na vyhledávání vtipů',
+  fi = 'Hyppää vitsihakuun',
+}
+export enum ELatest {
+  en = 'Latest',
+  es = 'Últimos',
+  fr = 'Derniers',
+  de = 'Letzte',
+  pt = 'Últimos',
+  cs = 'Posledních',
+  fi = 'Viimeisimmät',
+}
+export enum EGetLatest {
+  en = 'Get latest',
+  es = 'Obtener los últimos',
+  fr = 'Obtenez les derniers',
+  de = 'Holen Sie sich die neuesten',
+  pt = 'Obtenha os últimos',
+  cs = 'Získejte posledních',
+  fi = 'Hae viimeisimmät',
+}
+export enum EHowMany {
+  en = 'How many',
+  es = 'Cuántos',
+  fr = 'Combien',
+  de = 'Wie viele',
+  pt = 'Quantos',
+  cs = 'Kolik',
+  fi = 'Kuinka monta',
+}

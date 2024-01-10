@@ -194,15 +194,10 @@ function Jokes({
   const titleJoke = EJoke[language]
   const titleSingle = ESingle[language]
   const titleTwoPart = ETwoPart[language]
-  const titleLogin = ELogin[language]
-  const titleLogout = ELogout[language]
-  const titleLoggedInAs = ELoggedInAs[language]
   const titleClickToReveal = EClickToReveal[language]
   const titleLoginOrRegisterToSave = ELoginOrRegisterToSave[language]
   const titleJokeAlreadySaved = EJokeAlreadySaved[language]
-  const titlePasswordsDoNotMatch = EPasswordsDoNotMatch[language]
   const titleError = EError[language]
-  const titleNoJokeFound = ENoJokeFound[language]
   const deleteJoke = EDelete[language]
   const languageNameFromLanguage = getKeyofEnum(ELanguages, language)
   const translateWordLanguage = ELanguageTitle[language]
@@ -232,23 +227,19 @@ function Jokes({
   const [queryKey, setQueryKey] = useState<EQueryKey>(EQueryKey.None)
   const [queryValue, setQueryValue] = useState<string>('')
   const [query, setQuery] = useState<string>('')
-  const [loading, setLoading] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
-  const [reveal, setReveal] = useState(true)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [submitted, setSubmitted] = useState<boolean>(false)
+  const [reveal, setReveal] = useState<boolean>(true)
   const [jokeId, setJokeId] = useState<IJoke['jokeId']>('')
-  const [loggedIn, setLoggedIn] = useState(false)
-  const [loginOpen, setLoginOpen] = useState(false)
-  const [registerOpen, setRegisterOpen] = useState(false)
-  const [username, setUsername] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
-  const [confirmPassword, setConfirmPassword] = useState<string>('')
-  const [name, setName] = useState<string>('')
-  const [visibleJoke, setVisibleJoke] = useState(false)
+  const [loggedIn, setLoggedIn] = useState<boolean>(false)
+  const [loginOpen, setLoginOpen] = useState<boolean>(false)
+  const [registerOpen, setRegisterOpen] = useState<boolean>(false)
+  const [visibleJoke, setVisibleJoke] = useState<boolean>(false)
   const [saveJoke, setSaveJoke] = useLocalStorage<IJoke | null>('savedJoke', null)
   const titleAJokeGeneratorForTheComicallyInclined =
     EAJokeGeneratorForTheComicallyInclined[language]
-  const [hasNorris, setHasNorris] = useState(false)
-  const [isEditOpen, setIsEditOpen] = useState(false)
+  const [hasNorris, setHasNorris] = useState<boolean>(false)
+  const [isEditOpen, setIsEditOpen] = useState<boolean>(false)
 
   useEffect(() => {
     const norrisExists = categoryValues?.find((v) => v.value === 'ChuckNorris')
@@ -440,88 +431,6 @@ function Jokes({
         }
       } else update()
     }
-
-  const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    if (password !== confirmPassword) {
-      dispatch(notify(`${titlePasswordsDoNotMatch}`, true, 8))
-      return false
-    }
-    dispatch(createUser({ name, username, password, language }))
-      .then((r) => {
-        //console.log(r)
-        const userId = r.user._id
-        //dispatch(notify(`${titleRegistrationSuccesful}`, false, 8))
-        dispatch(notify(r.message, false, 12))
-        dispatch(findUserById(userId || '')).then((searchForUser) => {
-          if (!searchForUser) {
-            dispatch(notify(`${titleError}!`, true, 8))
-            return
-          } else if (saveJoke) {
-            dispatch(createJoke({ ...saveJoke, user: [searchForUser._id] }))
-          } else {
-            if (!delivery || delivery === '')
-              dispatch(
-                createJoke({
-                  jokeId: jokeId.toString(),
-                  joke: joke,
-                  type: EJokeType.single,
-                  category: jokeCategory ?? ECategory_en.Misc,
-                  subCategories:
-                    subCategoryResults.length > 0 ? subCategoryResults : undefined,
-                  language: language,
-                  safe: !Object.values(flags).some((value) => value),
-                  user: [searchForUser._id],
-
-                  flags: {
-                    nsfw: flags.nsfw,
-                    religious: flags.religious,
-                    political: flags.political,
-                    racist: flags.racist,
-                    sexist: flags.sexist,
-                    explicit: flags.explicit,
-                  },
-                })
-              )
-            else
-              dispatch(
-                createJoke({
-                  jokeId: jokeId.toString(),
-                  setup: joke,
-                  delivery: delivery,
-                  type: EJokeType.twopart,
-                  category: jokeCategory ?? ECategory_en.Misc,
-                  subCategories:
-                    subCategoryResults.length > 0 ? subCategoryResults : undefined,
-                  language: language,
-                  safe: !Object.values(flags).some((value) => value),
-                  user: [searchForUser._id],
-
-                  flags: {
-                    nsfw: flags.nsfw,
-                    religious: flags.religious,
-                    political: flags.political,
-                    racist: flags.racist,
-                    sexist: flags.sexist,
-                    explicit: flags.explicit,
-                  },
-                })
-              )
-          }
-        })
-      })
-      .catch((e) => {
-        console.log(e)
-        dispatch(notify(`${EError[language]}: ${e.response.data.message}`, true, 8))
-      })
-  }
-
-  // dispatch(
-  //   updateUser({
-  //     ...user,
-  //     jokes: [...user.jokes, jokeId],
-  //   })
-  // )
 
   const options = (
     enumObj: typeof ECategory_en | typeof EJokeType | typeof ESafemode | typeof ELanguages
@@ -1316,7 +1225,7 @@ function Jokes({
 
   return (
     <>
-      <section className={`joke-container card ${language}`}>
+      <section className={`joke-container card ${language}`} id='jokeform'>
         <div>
           <div className='jokes-wrap'>
             <h2>{title}</h2>

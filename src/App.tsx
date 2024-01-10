@@ -163,6 +163,20 @@ const App: FC = () => {
     })) as SelectOption[]
   }
 
+  // Scroll to item if 'to' param is in url
+  // ?to=form
+  // scrolls to #form
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const toParam = urlParams.get('to')
+    if (toParam) {
+      const toAnchor = document.querySelector(`#${toParam}`)
+      if (toAnchor) {
+        toAnchor.scrollIntoView({ behavior: 'smooth' })
+      }
+    }
+  }, [])
+
   return (
     <BlobProvider>
       <div

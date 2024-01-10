@@ -30,6 +30,7 @@ import {
   ENote,
   TCategoryByLanguages,
   ESkipToSavedJokes,
+  ESkipToJokeSearch,
 } from '../../components/Jokes/interfaces'
 import {
   EOnOff,
@@ -41,7 +42,7 @@ import {
   ETryTappingTheShapes,
   EReset,
 } from '../../interfaces'
-import { useEffect } from 'react'
+import { SyntheticEvent, useEffect } from 'react'
 import { Select, SelectOption } from '../../components/Select/Select'
 
 export default function JokesPage({
@@ -118,7 +119,8 @@ export default function JokesPage({
     }
   }, [language])
 
-  const handleSkipToJokes = () => {
+  const handleSkipToJokes = (e: SyntheticEvent) => {
+    e.preventDefault()
     const anchor = document.querySelector('#saved')
     if (anchor) {
       anchor.scrollIntoView({ behavior: 'smooth' })
@@ -144,6 +146,20 @@ export default function JokesPage({
       <div className='inner-wrap'>
         <section className='joke-container card introduction'>
           <div>
+            <div className='flex center gap'>
+              <a href='#jokeform' className='svg-wrap newline'>
+                <span>{ESkipToJokeSearch[language]}</span>
+                <BiChevronsDown className='down' />
+              </a>
+              <a
+                href='#'
+                className='svg-wrap newline'
+                onClick={(e) => handleSkipToJokes(e)}
+              >
+                <span>{ESkipToSavedJokes[language]}</span>
+                <BiChevronsDown className='down' />
+              </a>
+            </div>
             <div>
               <Select
                 language={language}
@@ -164,11 +180,6 @@ export default function JokesPage({
                 }}
               />
             </div>
-            <button className='wide' onClick={handleSkipToJokes}>
-              <BiChevronsDown />
-              <span>{ESkipToSavedJokes[language]}</span>
-              <BiChevronsDown />
-            </button>
             <Accordion
               language={language}
               text={titleClickHereToSeeFeatures}
