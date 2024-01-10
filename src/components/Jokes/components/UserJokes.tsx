@@ -107,6 +107,8 @@ import {
   ENewest,
   EOldest,
   ELikedBy,
+  ELastPage,
+  EFirstPage,
 } from '../../../interfaces'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
 import { Select, SelectOption } from '../../Select/Select'
@@ -608,7 +610,7 @@ const UserJokes = ({
             disabled={currentPage === 1}
             onClick={() => handlePageChange(1)}
           >
-            <BiChevronsLeft />
+            <BiChevronsLeft /> <span className='scr'>{EFirstPage[language]}</span>
           </button>
           <button
             className={`inner-nav-btn back ${currentPage === 1 ? 'disabled' : ''} ${
@@ -659,9 +661,11 @@ const UserJokes = ({
             <BiChevronsRight />
             <span
               className='tooltip right below'
-              data-tooltip={`Last page: ${pageNumbers?.length}`}
+              data-tooltip={`${ELastPage[language]}: ${pageNumbers?.length}`}
             >
-              <b className='scr'>Last page: {pageNumbers?.length}</b>
+              <b className='scr'>
+                {ELastPage[language]}: {pageNumbers?.length}
+              </b>
             </span>
           </button>
         </div>

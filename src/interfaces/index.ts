@@ -1674,3 +1674,21 @@ export enum ELikedBy {
   cs = 'Líbí se',
   fi = 'Tykännyt',
 }
+export enum ELastPage {
+  en = 'Last page',
+  es = 'Última página',
+  fr = 'Dernière page',
+  de = 'Letzte Seite',
+  pt = 'Última página',
+  cs = 'Poslední stránka',
+  fi = 'Viimeinen sivu',
+}
+export enum EFirstPage {
+  en = 'First page',
+  es = 'Primera página',
+  fr = 'Première page',
+  de = 'Erste Seite',
+  pt = 'Primeira página',
+  cs = 'První stránka',
+  fi = 'Ensimmäinen sivu',
+}
