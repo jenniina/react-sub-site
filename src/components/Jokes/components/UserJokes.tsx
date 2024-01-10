@@ -226,7 +226,12 @@ const UserJokes = ({
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    if (Array.isArray(jokes) && jokes.length > 0) {
+    if (
+      Array.isArray(jokes) &&
+      jokes.length > 0 &&
+      Array.isArray(users) &&
+      users?.length > 0
+    ) {
       let updatedJokes = jokes?.map((joke) => {
         const author = users?.find((user: IUser) => user._id == joke.author)
         const jokeLanguage = LanguageOfLanguage[language as keyof typeof ELanguagesLong][
