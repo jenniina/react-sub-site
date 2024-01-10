@@ -83,6 +83,9 @@ import {
   ELatest,
   EHowMany,
   EGetLatest,
+  EFailedToCopyJokeToClipboard,
+  EJokeCopiedToClipboard,
+  ECopy,
 } from '../interfaces'
 import {
   IUser,
@@ -576,6 +579,17 @@ const UserJokes = ({
     }
   }, [pageNumbers])
 
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text).then(
+      function () {
+        dispatch(notify(`${EJokeCopiedToClipboard[language]}`, false, 3))
+      },
+      function () {
+        dispatch(notify(`${EFailedToCopyJokeToClipboard[language]}`, true, 3))
+      }
+    )
+  }
+
   const pagination = () => (
     <div className='pagination'>
       {pageNumbers?.length > 1 && (
@@ -899,14 +913,16 @@ const UserJokes = ({
               className='icontext'
               onClick={() => {
                 setIsRandom(false)
-                setSortBy(ESortBy_en.age)
-                setSortByAge(EOrderByAge.newest)
-                setTimeout(() => {
-                  setLatest((prev) => !prev)
-                }, 200)
+                if (!latest) {
+                  setSortBy(ESortBy_en.age)
+                  setSortByAge(EOrderByAge.newest)
+                  setTimeout(() => {
+                    setLatest(true)
+                  }, 200)
+                } else setLatest(false)
               }}
             >
-              {!latest ? (
+              {!latest && !isRandom ? (
                 <>
                   {latestNumber === 3 && <MdOutlineFilter3 />}
                   {latestNumber === 4 && <MdOutlineFilter4 />}
@@ -924,14 +940,14 @@ const UserJokes = ({
                 </>
               )}
             </button>
-            {!latest && (
+            {!latest && !isRandom && (
               <>
                 <input
                   type='number'
                   min={3}
                   max={100}
                   id='number-of-latest'
-                  defaultValue={5}
+                  defaultValue={latestNumber}
                   className='narrow'
                   onChange={(e) => {
                     setLatestNumber(e.target.valueAsNumber)
@@ -1069,6 +1085,17 @@ const UserJokes = ({
                         </button>
                       )}
 
+                      <button
+                        onClick={() =>
+                          copyToClipboard(
+                            joke.type === EJokeType.single
+                              ? joke.joke
+                              : joke.setup + ' \n' + joke.delivery
+                          )
+                        }
+                      >
+                        {ECopy[language]}
+                      </button>
                       {userId && joke.user.includes(userId) && joke.author === userId && (
                         <Accordion
                           language={language}
