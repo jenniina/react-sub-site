@@ -146,11 +146,10 @@ const App: FC = () => {
   }, [])
 
   //change language with ?lang=fi etc:
-
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
     const langParam = urlParams.get('lang')
-    if (langParam) {
+    if (langParam && Object.values(ELanguages).includes(langParam as any)) {
       setLanguage(langParam as ELanguages)
     }
   }, [])
