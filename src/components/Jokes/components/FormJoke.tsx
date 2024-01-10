@@ -129,30 +129,9 @@ const Form = ({
 }: Props) => {
   const titleLanguageSelect = ESelectALanguage[language]
   const titleCategorySelect = ESelectACategory[language]
-  const titleCategoryExtras = ESelectExtraCategories[language]
   const titleSearchByKeyword = ESearchByKeyword[language]
   const submit = EFindAJoke[language]
   const titleAny = EAny[language]
-
-  // useEffect(() => {
-  //   const filteredList = categoryValues?.filter(
-  //     (category) => category.value !== 'ChuckNorris' && category.value !== 'DadJoke'
-  //   )
-  //   isCheckedJokeType
-  //     ? setCategoryValues(filteredList)
-  //     : setCategoryValues(categoryValues)
-  // }, [isCheckedJokeType])
-
-  // const extrasOptions: SelectOption[] = [
-  //   {
-  //     label: EExtraCategories.ChuckNorris,
-  //     value: EExtraCategories.ChuckNorris,
-  //   },
-  //   {
-  //     label: EExtraCategories.DadJokes,
-  //     value: EExtraCategories.DadJokes,
-  //   },
-  // ]
 
   useEffect(() => {
     setTimeout(() => {
@@ -168,18 +147,6 @@ const Form = ({
       })
     }, 500)
   }, [])
-
-  // useEffect(() => {
-  // setCategoryValues([
-  //   {
-  //     label: jokeCategoryByLanguage[language].Misc,
-  //     value: ECategory_en.Misc,
-  //   },
-  // ])
-  //setJokeCategory(ECategory_en.Misc)
-  // }, [language])
-
-  // const hasNorris = categoryValues?.find((v) => v.value === 'ChuckNorris') ? true : false
 
   return (
     <>
@@ -239,28 +206,7 @@ const Form = ({
             />
           </div>
         </div>
-        {/* <Select
-        language={language}
-          id='jokeType'
-          className='jokeType third'
-          instructions='Type of joke'
-          hide
-          options={options(EJokeType)}
-          value={
-            jokeType === EJokeType.Single
-              ? ({
-                  value: jokeType,
-                  label: 'Single',
-                } as SelectOption)
-              : ({
-                  value: jokeType,
-                  label: 'Two-part',
-                } as SelectOption)
-          }
-          onChange={(o) => {
-            setEJokeType(o?.value as EJokeType)
-          }}
-        /> */}
+
         {categoryByLanguages ? (
           <Select
             language={language}
@@ -292,40 +238,6 @@ const Form = ({
             setSelectedNorrisCategory(o as SelectOption)
           }}
         />
-        {/* <div className='flex center max-content gap'>
-          <Select
-            language={language}
-            id='jokeCategorySpecial'
-            className={`category extras ${
-              language === ELanguages.English ? '' : 'hidden'
-            }`}
-            instructions={`${titleCategoryExtras}:`}
-            selectAnOption={titleAny}
-            value={selectedExtra}
-            options={extrasOptions}
-            onChange={(o) => {
-              setSelectedExtra(o as SelectOption)
-            }}
-          />
-
-          <Select
-            language={language}
-            id='jokeCategoryNorrisCategories'
-            className={`category extras ${
-              language === ELanguages.English &&
-              selectedExtra['label'] === EExtraCategories.ChuckNorris
-                ? ''
-                : 'hidden'
-            }`}
-            instructions={`${titleCategorySelect}:`}
-            selectAnOption={titleAny}
-            value={selectedNorrisCategory}
-            options={norrisCategories}
-            onChange={(o) => {
-              setSelectedNorrisCategory(o as SelectOption)
-            }}
-          />
-        </div> */}
 
         <div className='flex column center'>
           <div className='input-wrap '>
@@ -351,7 +263,9 @@ const Form = ({
           </button>
         </div>
       </form>
+
       <div className={`downwards-arrow ${submitted ? 'play' : ''}`}>&#10225;</div>
+
       <Joke
         joke={joke}
         delivery={delivery}

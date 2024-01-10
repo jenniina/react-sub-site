@@ -119,33 +119,6 @@ import Accordion from '../../Accordion/Accordion'
 import { createJoke, initializeJokes, updateJoke } from '../reducers/jokeReducer'
 import { notify } from '../../../reducers/notificationReducer'
 
-// export interface IJokeVisible {
-//   _id?: IJoke['_id']
-//   jokeId: IJoke['jokeId']
-//   type: EJokeType
-//   setup?: string
-//   delivery?: string
-//   joke?: string
-//   category: string
-//   subCategories?: string[]
-//   language: string
-//   safe: boolean
-//   user: IUser['_id'][]
-//   private?: boolean
-//   verified?: boolean
-//   anonymous?: boolean
-//   author?: IUser['_id']
-//   visible: boolean
-//   flags?: {
-//     nsfw: boolean
-//     religious: boolean
-//     political: boolean
-//     racist: boolean
-//     sexist: boolean
-//     explicit: boolean
-//   }
-// }
-
 interface Props {
   userId: IUser['_id']
   handleDelete: (
@@ -224,27 +197,6 @@ const UserJokes = ({
     name: string
   }
 
-  // //add visible to jokes
-  // const jokesVisible: IJokeVisible[] =
-  //   Array.isArray(jokes) && jokes?.length > 0
-  //     ? jokes?.map((joke) => {
-  //         const author = users.find((user: IUser) => user._id == joke.author)
-  //         const jokeLanguage = LanguageOfLanguage[
-  //           joke.language as keyof typeof ELanguagesLong
-  //         ][
-  //           getKeyofEnum(
-  //             ELanguages,
-  //             language as ELanguages
-  //           ) as keyof TLanguageOfLanguage[ELanguages]
-  //         ] as TLanguageOfLanguage[keyof typeof ELanguagesLong][keyof TLanguageOfLanguage[ELanguages]]
-  //         return {
-  //           ...joke,
-  //           visible: false,
-  //           translatedLanguage: jokeLanguage ?? '',
-  //           name: joke.anonymous ? '_Anonymous' : author?.name ?? '',
-  //         }
-  //       })
-  //     : []
   const [userJokes, setUserJokes] = useState<IJokeVisible[]>([])
   const [visibleJokes, setVisibleJokes] = useState<Record<IJoke['jokeId'], boolean>>({})
   const [localJokes, setLocalJokes] = useState<boolean>(false)
@@ -296,13 +248,13 @@ const UserJokes = ({
             .filter((joke) => joke.safe === false)
             .sort((a, b) => {
               return b.user.length - a.user.length
-            }) //.sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1))
+            })
         : isCheckedSafemode
         ? updatedJokes
             .filter((joke) => joke.safe)
             .sort((a, b) => {
               return b.user.length - a.user.length
-            }) //.sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1))
+            })
         : []
       setUserJokes(updatedJokes)
     }
@@ -772,7 +724,6 @@ const UserJokes = ({
             </div>
             <div className='toggle-inner-wrap'>
               <div>
-                {/* Select for languages in the userJokes */}
                 <Select
                   language={language}
                   id='joke-languages'
@@ -823,18 +774,6 @@ const UserJokes = ({
                   className='single-category-select'
                   instructions={`${EFilterByCategory[language]}:`}
                   options={[
-                    // { label: ESelectACategory[language], value: '' },
-                    // ...Array.from(
-                    //   new Set(
-                    //     jokes //?.filter((joke) => joke.user.includes(userId))
-                    //       ?.map((joke) => joke.category)
-                    //   )
-                    // ).map((category) => {
-                    //   return {
-                    //     label: category,
-                    //     value: category,
-                    //   }
-                    // }),
                     { label: ESelectACategory[language], value: '' },
                     ...(Object.values(ECategory_en).map((category) => {
                       return {
@@ -1033,15 +972,6 @@ const UserJokes = ({
 
                         <span>
                           {translateWordLanguage}: {joke.translatedLanguage}
-                          {/* {
-                    // LanguageOfLanguage['en']['English'] 
-                    LanguageOfLanguage[language as keyof typeof ELanguagesLong][
-                      getKeyofEnum(
-                        ELanguages,
-                        joke.language as ELanguages
-                      ) as keyof (typeof LanguageOfLanguage)[typeof language]
-                    ]
-                  } */}
                         </span>
                         {joke.anonymous ? (
                           <span>{EAnonymous[language]} </span>
@@ -1059,7 +989,6 @@ const UserJokes = ({
                         ) : (
                           ''
                         )}
-                        {/* <span>ID: {joke.jokeId}</span> */}
                         {joke.private === false && joke.verified === false && (
                           <span>{EPendingVerification[language]}</span>
                         )}

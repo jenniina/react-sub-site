@@ -1,6 +1,5 @@
-import { useState, FC, useRef, useEffect, createContext, useReducer } from 'react'
+import { useState, FC, useRef, useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import './css/App.css'
 import './css/form.css'
 import Nav from './components/Nav/Nav'
@@ -19,7 +18,6 @@ import { Footer } from './components/Footer/Footer'
 import { useTheme } from './hooks/useTheme'
 import { useScrollbarWidth } from './hooks/useScrollbarWidth'
 import {
-  ReducerProps,
   RefObject,
   ELanguages,
   EWelcome,
@@ -28,12 +26,9 @@ import {
   EThisSite,
   EUserEdit,
   EPortfolio,
-  EBlob,
-  EApp,
   EDragAndDrop,
   ECustomSelect,
   EMultistepForm,
-  EQuiz,
   ETestYourKnowledge,
   EContact,
   ELetsCollaborate,
@@ -54,24 +49,17 @@ import useLocalStorage from './hooks/useStorage'
 import {
   EAJokeGeneratorForTheComicallyInclined,
   ECategory,
-  ECategory_cs,
-  ECategory_de,
   ECategory_en,
-  ECategory_es,
-  ECategory_fi,
-  ECategory_fr,
-  ECategory_pt,
   EJokeType,
   ESafemode,
   ETheComediansCompanion,
   TCategoryByLanguages,
 } from './components/Jokes/interfaces'
-import { useAppDispatch } from './hooks/useAppDispatch'
-import { initializeUser } from './reducers/authReducer'
 import { EGetOrganizedOneTaskAtATime, ETodoApp } from './components/Todo/interfaces'
 import { SelectOption } from './components/Select/Select'
 import Notification from './components/Notification/Notification'
 import { EEditUserSettings } from './components/UserEdit/interfaces'
+import { EReactApps } from './interfaces/about'
 
 const App: FC = () => {
   const touchDevice = isTouchDevice()
@@ -117,16 +105,6 @@ const App: FC = () => {
     if (location.pathname !== displayLocation.pathname) setTransistionPage('fadeOut')
   }, [location])
 
-  const dispatch = useAppDispatch()
-
-  useEffect(() => {
-    dispatch(initializeUser())
-  }, [])
-
-  const user = useSelector((state: ReducerProps) => {
-    return state.auth?.user
-  })
-
   function getKeyByValue(
     enumObj:
       | TCategoryByLanguages
@@ -142,16 +120,6 @@ const App: FC = () => {
     }
     // Handle the case where the value is not found in the enum
     return undefined
-  }
-
-  const categoryByLanguagesConst = {
-    en: ECategory_en,
-    es: ECategory_es,
-    fr: ECategory_fr,
-    de: ECategory_de,
-    pt: ECategory_pt,
-    cs: ECategory_cs,
-    fi: ECategory_fi,
   }
 
   const options = (
@@ -176,6 +144,21 @@ const App: FC = () => {
       }
     }
   }, [])
+
+  // Set the document language and title
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.type = 'text/javascript'
+    script.innerHTML = `document.documentElement.lang = '${language}';`
+    document.head.appendChild(script)
+    const h1Element = document.querySelector('h1')
+    const h1Text = h1Element ? h1Element.textContent : ''
+    document.title = `${EReactApps[language]} (Jenniina.fi) ${h1Text}`
+
+    return () => {
+      document.head.removeChild(script)
+    }
+  }, [language])
 
   return (
     <BlobProvider>
