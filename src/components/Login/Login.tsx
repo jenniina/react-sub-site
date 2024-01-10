@@ -16,6 +16,7 @@ import {
   EPassword,
   EError,
   ELoggingIn,
+  EEdit,
 } from '../../interfaces'
 import Notification from '../Notification/Notification'
 
@@ -87,7 +88,7 @@ const FormLogin = ({
           <span>
             {titleLoggedInAs} {user?.name ? user?.name : user.username}{' '}
           </span>
-          <a href='/edit'>Edit</a>
+          <a href='/edit'>{EEdit[language]}</a>
           <button
             onClick={handleLogout}
             id={`logout-${text}`}

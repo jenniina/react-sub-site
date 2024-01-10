@@ -666,7 +666,7 @@ function Jokes({
     const categories = categoryValues.map((category) => category.value)
 
     const handleJokes = (jokes: IJoke[] | undefined) => {
-      if (jokes && jokes.length > 0) {
+      if (jokes && jokes.length > 0 && Array.isArray(users) && users?.length > 0) {
         const random = jokes[Math.floor(Math.random() * jokes.length)]
         if (random) {
           setLoading(false)

@@ -95,7 +95,7 @@ export enum EAddMoreBlobs {
   de = 'Füge mehr Blobs hinzu',
   pt = 'Adicione mais blobs',
   cs = 'Přidejte více blobů',
-  fi = 'Lisää enemmän möhkäleitä',
+  fi = 'Lisää enemmän mollukoita',
 }
 export enum ERemoveBlobs {
   en = 'Remove blobs',
@@ -104,7 +104,7 @@ export enum ERemoveBlobs {
   de = 'Blobs entfernen',
   pt = 'Remover blobs',
   cs = 'Odstraňte bloby',
-  fi = 'Poista möhkäleitä',
+  fi = 'Mollukoiden poisto',
 }
 export enum EDraggableListElements {
   en = 'Draggable list elements',
@@ -341,11 +341,11 @@ export enum ENodeGithubRepository {
   fi = 'Node Github -repositorio',
 }
 export enum ETheSiteIsTranslatedToSixLanguagesWhichWere {
-  en = "The site is translated to six languages, which were chosen based on JokeAPI's supported languages, from which the translation idea came from. Additionally, in Finnish.",
-  es = 'El sitio está traducido a seis idiomas, que fueron elegidos en función de los idiomas admitidos por JokeAPI, de donde provino la idea de la traducción. Además, en finlandés.',
-  fr = 'Le site est traduit en six langues, qui ont été choisies en fonction des langues prises en charge par JokeAPI, d où est venue l idée de la traduction. De plus, en finnois.',
-  de = 'Die Website ist in sechs Sprachen übersetzt, die auf den unterstützten Sprachen von JokeAPI basieren, von denen die Übersetzungsidee stammt. Zusätzlich auf Finnisch.',
-  pt = 'O site é traduzido para seis idiomas, que foram escolhidos com base nos idiomas suportados pelo JokeAPI, de onde veio a ideia de tradução. Além disso, em finlandês',
-  cs = 'Stránka je přeložena do šesti jazyků, které byly vybrány na základě podporovaných jazyků JokeAPI, ze kterých pochází myšlenka překladu. Kromě toho ve finštině.',
-  fi = 'Sivusto on käännetty kuuteen kieleen, jotka valittiin JokeAPI:n tuettujen kielten perusteella, josta käännösidea tuli. Lisäksi suomeksi.',
+  en = 'The site is translated to seven languages, six of which were chosen based on the supported languages of JokeAPI, from which the translation idea came from, and the seventh one being Finnish.',
+  es = 'El sitio está traducido a siete idiomas, seis de los cuales fueron elegidos en función de los idiomas admitidos de JokeAPI, de donde provino la idea de la traducción, y el séptimo es finlandés.',
+  fr = 'Le site est traduit en sept langues, dont six ont été choisies en fonction des langues prises en charge par JokeAPI, d où est venue l idée de la traduction, et la septième étant le finnois.',
+  de = 'Die Website ist in sieben Sprachen übersetzt, von denen sechs auf der Grundlage der unterstützten Sprachen von JokeAPI ausgewählt wurden, von denen die Übersetzungsidee stammt, und die siebte Sprache ist Finnisch.',
+  pt = 'O site é traduzido para sete idiomas, seis dos quais foram escolhidos com base nos idiomas suportados pelo JokeAPI, de onde veio a ideia de tradução, e o sétimo sendo o finlandês.',
+  cs = 'Stránka je přeložena do sedmi jazyků, z nichž šest bylo vybráno na základě podporovaných jazyků JokeAPI, ze kterého pochází myšlenka překladu, a sedmý je finština.',
+  fi = 'Sivusto on käännetty seitsemälle kielelle, joista kuusi valittiin JokeAPI:n tuettujen kielten perusteella, mistä käännösidea tuli. Seitsemäs kieli on suomi.',
 }
