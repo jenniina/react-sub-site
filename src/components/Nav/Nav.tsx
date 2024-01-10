@@ -204,7 +204,6 @@ const Nav = (
   }
 
   function toggleMainMenu() {
-    //setIsMainMenuOpen(prev => !prev)
     if (isMainMenuOpen && windowWidth < breakpoint) {
       setIsMainMenuOpen(false)
       mainMenuHideDelay()
@@ -218,7 +217,6 @@ const Nav = (
     }
   }
   function toggleToolbar() {
-    //setIsToolbarOpen(prev => !prev)
     if (isToolbarOpen) {
       setIsToolbarOpen(false)
       toolbarHideDelay()
@@ -232,7 +230,6 @@ const Nav = (
     }
   }
 
-  //runs when clicked outside the header, see useOutsideClick
   function closingAllMenus() {
     isMainMenuOpen ? setIsMainMenuHidden(false) : mainMenuHideDelay()
     if (isMainMenuOpen && windowWidth < breakpoint) {
@@ -255,7 +252,6 @@ const Nav = (
 
       mainMenuHideDelay()
       setTimeout(() => {
-        //setIsMainMenuHidden(true)
         setMenuStyleAlt(false)
       }, 300)
     } else if (!isMainMenuOpen && windowWidth < breakpoint) {

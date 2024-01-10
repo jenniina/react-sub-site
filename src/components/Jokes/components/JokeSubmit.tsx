@@ -1,9 +1,4 @@
 import {
-  ECategory_cs,
-  ECategory_de,
-  ECategory_es,
-  ECategory_fr,
-  ECategory_pt,
   EJoke,
   EJokeType,
   ESingle,
@@ -18,21 +13,14 @@ import {
   EAddWarningTitle,
   EJokeTypeTitle,
   ESubmitAJokeTo,
-  IJokeSubmissionSingleJSON,
-  IJokeSubmissionTwoPartJSON,
   TCategoryByLanguages,
   EPublic,
   EPrivate,
   ESavedJoke,
   IJoke,
   ECategory,
-  ESafemode,
-  ESafemodeTitle,
-  ESafeTitle,
-  EUnsafeTitle,
   EAny,
   EIfTheJokeIsNotPrivateVerificationIsNeeded,
-  ENote,
   EJokeIsSetToPrivateAndWillOnlyBeSeenByYouAndTheAdministrator,
   EJokeIsSetToPublicAndWillNeedVerificationFromAnAdministrator,
   EJokeLanguage,
@@ -49,14 +37,12 @@ import {
   ESelectAnOption,
   ESend,
   ELanguages,
-  ELanguageTitle,
   ELanguagesLong,
   IUser,
-  ELanguageSelect,
   ENickname,
   EError,
 } from '../../../interfaces'
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
 import Accordion from '../../Accordion/Accordion'
 import { Select, SelectOption } from '../../Select/Select'
@@ -104,8 +90,6 @@ const JokeSubmit = ({
   const [delivery, setDelivery] = useState<string>('')
   const [isCheckedJokeType, setIsCheckedJokeType] = useState(true)
   const [isCheckedPrivate, setIsCheckedPublic] = useState(true)
-  const [private_, setPrivate] = useState<EPublic | EPrivate>(EPrivate[language])
-  const [anonymous, setAnonymous] = useState<EAnonymous | ENickname>(ENickname[language])
   const [isCheckedAnonymous, setIsCheckedAnonymous] = useState(false)
   const [jokeCategory, setJokeCategory] = useState<SelectOption | undefined>({
     label: jokeCategoryByLanguage[language].Misc,
@@ -113,7 +97,6 @@ const JokeSubmit = ({
   } as SelectOption)
   const titleSubmitAJoke = ESubmitAJoke[language]
   const titleCategory = ECategoryTitle[language]
-  const titleLanguage = ELanguageTitle[language]
   const titleSubmitAJokeTo = ESubmitAJokeTo[language]
   const selectAnOption = ESelectAnOption[language]
   const [selectedCategory, setSelectedCategory] = useState<ECategory | ''>('')
@@ -140,9 +123,6 @@ const JokeSubmit = ({
       e.currentTarget.sexist.checked ||
       e.currentTarget.explicit.checked
 
-    //const jokeCategory = e.currentTarget.jokeCategory.value
-    //const language = e.currentTarget.language.value
-    //const jokeType = e.currentTarget.joketype.value
     let jokeObject
 
     jokeObject = {
@@ -223,16 +203,6 @@ const JokeSubmit = ({
   useEffect(() => {
     isCheckedJokeType ? setJokeType(EJokeType.twopart) : setJokeType(EJokeType.single)
   }, [isCheckedJokeType])
-
-  useEffect(() => {
-    isCheckedPrivate ? setPrivate(EPrivate[language]) : setPrivate(EPublic[language])
-  }, [isCheckedPrivate])
-
-  useEffect(() => {
-    isCheckedAnonymous
-      ? setAnonymous(EAnonymous[language])
-      : setAnonymous(ENickname[language])
-  }, [isCheckedAnonymous])
 
   const handleToggleChangeJokeType = () => {
     setIsCheckedJokeType(!isCheckedJokeType)

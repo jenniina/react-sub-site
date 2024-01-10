@@ -7,12 +7,6 @@ import Jokes, {
 import Accordion from '../../components/Accordion/Accordion'
 import {
   ECategory,
-  ECategory_cs,
-  ECategory_de,
-  ECategory_en,
-  ECategory_es,
-  ECategory_fr,
-  ECategory_pt,
   EJokeType,
   ERegisterAndLoginToUse,
   ESafemode,

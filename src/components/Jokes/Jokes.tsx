@@ -28,7 +28,6 @@ import {
   ELoginOrRegisterToSave,
   ESortBy,
   EJokeAlreadySaved,
-  ENoJokeFound,
   EAJokeGeneratorForTheComicallyInclined,
   EExtraCategories,
   ENoJokeFoundWithThisSearchTerm,
@@ -36,11 +35,7 @@ import {
   TCategoryByLanguages,
   EMaybeTryAnotherLanguage,
   EErrorDeletingJoke,
-  EThereAreNoJokesInFinnish,
-  ESeeLocalJokes,
-  ESeeLocalJokesBelow,
   ETryAnotherSearchTerm,
-  IJokeSingle,
   IJokeTwoPart,
   EAreYouSureYouWantToMakeThisJokePublic,
   EAreYouSureYouWantToMakeThisJokePrivate,
@@ -50,9 +45,7 @@ import {
 } from './interfaces'
 import {
   ELogin,
-  ELogout,
   EError,
-  EPasswordsDoNotMatch,
   ELanguageTitle,
   ELoggedInAs,
   ELanguages,
@@ -68,22 +61,17 @@ import useLocalStorage from '../../hooks/useStorage'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import Notification from './components/Notification'
-import { createUser, findUserById } from '../../reducers/usersReducer'
 import {
   createJoke,
   deleteUserFromJoke,
   initializeJokes,
-  removeDuplicateJoke,
-  save,
   updateJoke,
 } from './reducers/jokeReducer'
-import { initializeUser, login } from '../../reducers/authReducer'
+import { initializeUser } from '../../reducers/authReducer'
 import UserJokes from './components/UserJokes'
 import norrisService from './services/chucknorris'
 import dadjokeService from './services/dadjokes'
-import { AxiosError } from 'axios'
 import JokeSubmit from './components/JokeSubmit'
-import { set, sortBy } from 'lodash'
 import { useNavigate } from 'react-router-dom'
 
 export const jokeCategoryByLanguage: IJokeCategoryByLanguage = {
@@ -280,11 +268,6 @@ function Jokes({
 
   // Set the document language and title
   useEffect(() => {
-    const script = document.createElement('script')
-    script.type = 'text/javascript'
-    script.innerHTML = `document.documentElement.lang = '${language}';`
-    document.head.appendChild(script)
-    document.title = title
     if (language) {
       setCategoryByLanguages(categoryByLanguagesConst[language])
       setCategoryValues(
@@ -296,9 +279,6 @@ function Jokes({
             ],
         }))
       )
-    }
-    return () => {
-      document.head.removeChild(script)
     }
   }, [language])
 
