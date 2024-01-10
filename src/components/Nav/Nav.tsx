@@ -52,6 +52,7 @@ import { notify } from '../../reducers/notificationReducer'
 import { createUser } from '../../reducers/usersReducer'
 import Notification from '../Notification/Notification'
 import { Select, SelectOption } from '../Select/Select'
+import PasswordReset from '../PasswordReset/PasswordReset'
 
 type Link = {
   label: string
@@ -666,6 +667,11 @@ const Nav = (
                 </>
               )}
             </div>
+            {!user && (
+              <div className='password-reset-wrap'>
+                <PasswordReset language={language} text='login' />
+              </div>
+            )}
           </nav>
         </div>
       </header>
