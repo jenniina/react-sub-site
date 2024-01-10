@@ -408,16 +408,49 @@ section.joke-container > div::after {
 .userjokeslist li .primary-wrap button.delivery p {
   text-align: left;
 }
+
 .userjokeslist li .secondary-wrap {
   display: flex;
   flex-flow: row wrap;
-  gap: calc(var(--gap) / 2) var(--gap);
+  justify-content: flex-start;
+  align-items: center;
+  gap: calc(var(--gap) * 0.8) calc(var(--gap) * 0.6);
+  margin-top: 0.5em;
+}
+.userjokeslist li .secondary-wrap > div {
+  display: flex;
+  flex-flow: row wrap;
+  gap: calc(var(--gap) * 0.8) calc(var(--gap) * 0.6);
   align-items: center;
   font-size: 0.8em;
 }
-.userjokeslist li .button-wrap {
-  flex: 1 0 auto;
-  text-align: right;
+.userjokeslist li .secondary-wrap button,
+.userjokeslist li .secondary-wrap .delete.danger {
+  padding: 0.6em 1.2em;
+  outline: 1px solid currentColor;
+  outline-offset: -3px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--gap) / 3);
+}
+.userjokeslist li .secondary-wrap .delete.danger {
+  padding: 0.5em 1.2em;
+}
+.userjokeslist li .secondary-wrap .delete.danger::after {
+  bottom: 0;
+}
+@media (min-width: 1400px) {
+  .userjokeslist li .secondary-wrap {
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .userjokeslist li .secondary-wrap > div:last-child {
+    flex: 1 0 auto;
+    flex-flow: row nowrap;
+  }
 }
 
 .joke-container {

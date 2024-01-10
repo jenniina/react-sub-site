@@ -176,6 +176,13 @@ function Jokes({
   language: ELanguages
   setLanguage: (language: ELanguages) => void
 }) {
+  const jokes = useSelector((state: ReducerProps) => {
+    return state.jokes
+  })
+  const user = useSelector((state: ReducerProps) => {
+    return state.auth?.user
+  })
+
   const categoryByLanguagesConst = {
     en: ECategory_en,
     es: ECategory_es,
@@ -199,9 +206,7 @@ function Jokes({
   const titleJokeAlreadySaved = EJokeAlreadySaved[language]
   const titleError = EError[language]
   const deleteJoke = EDelete[language]
-  const languageNameFromLanguage = getKeyofEnum(ELanguages, language)
   const translateWordLanguage = ELanguageTitle[language]
-  const titleLanguage = languageNameFromLanguage
   const [joke, setJoke] = useState<string>('')
   const [delivery, setDelivery] = useState<string>('')
   const [author, setAuthor] = useState<string>('')
@@ -231,7 +236,6 @@ function Jokes({
   const [submitted, setSubmitted] = useState<boolean>(false)
   const [reveal, setReveal] = useState<boolean>(true)
   const [jokeId, setJokeId] = useState<IJoke['jokeId']>('')
-  const [loggedIn, setLoggedIn] = useState<boolean>(false)
   const [loginOpen, setLoginOpen] = useState<boolean>(false)
   const [registerOpen, setRegisterOpen] = useState<boolean>(false)
   const [visibleJoke, setVisibleJoke] = useState<boolean>(false)
@@ -240,17 +244,7 @@ function Jokes({
     EAJokeGeneratorForTheComicallyInclined[language]
   const [hasNorris, setHasNorris] = useState<boolean>(false)
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false)
-
-  useEffect(() => {
-    const norrisExists = categoryValues?.find((v) => v.value === 'ChuckNorris')
-      ? true
-      : false
-    if (queryValue === '') {
-      setHasNorris(norrisExists)
-    } else {
-      setHasNorris(false)
-    }
-  }, [queryValue, categoryValues, hasNorris])
+  const [editId, setEditId] = useState<IJoke['_id'] | null>(null)
 
   const [flags, setFlags] = useState({
     nsfw: false,
@@ -264,24 +258,25 @@ function Jokes({
   const dispatch = useAppDispatch()
 
   useEffect(() => {
+    const norrisExists = categoryValues?.find((v) => v.value === 'ChuckNorris')
+      ? true
+      : false
+    if (queryValue === '') {
+      setHasNorris(norrisExists)
+    } else {
+      setHasNorris(false)
+    }
+  }, [queryValue, categoryValues, hasNorris])
+
+  useEffect(() => {
     setTimeout(() => {
       dispatch(initializeJokes())
     }, 1000)
   }, [saveJoke])
 
-  const jokes = useSelector((state: ReducerProps) => {
-    return state.jokes
-  })
-
-  //const latestJoke = jokes[jokes.length - 1]
-
-  const user = useSelector((state: ReducerProps) => {
-    return state.auth?.user
-  })
-
   useEffect(() => {
     dispatch(initializeUser())
-  }, [loggedIn])
+  }, [])
 
   // Set the document language and title
   useEffect(() => {
@@ -386,6 +381,7 @@ function Jokes({
                 .then((r) => {
                   dispatch(initializeJokes())
                   dispatch(notify(`${titleSaved}. ${r.message ?? ''}`, false, 8))
+                  setEditId(null)
                   setIsEditOpen(false)
                 })
                 .catch((e) => {
@@ -410,6 +406,7 @@ function Jokes({
             .then(() => {
               dispatch(initializeJokes())
               dispatch(notify(`${titleSaved}`, false, 8))
+              setEditId(null)
               setIsEditOpen(false)
             })
             .catch((e) => {
@@ -1310,7 +1307,6 @@ function Jokes({
       <section className={`joke-container card ${language}`}>
         <div>
           <UserJokes
-            titleSaved={titleSaved}
             userId={user?._id}
             handleDelete={handleDelete}
             deleteJoke={deleteJoke}
@@ -1323,15 +1319,15 @@ function Jokes({
             handleToggleChangeSafemode={handleToggleChangeSafemode}
             titleClickToReveal={titleClickToReveal}
             translateWordLanguage={translateWordLanguage}
-            titleLanguage={titleLanguage}
             getKeyofEnum={getKeyofEnum}
             options={options}
             optionsSortBy={optionsSortBy}
             norrisCategories={norrisCategories}
             getCategoryInLanguage={getCategoryInLanguage}
             handleUpdate={handleUpdate}
-            isEditOpen={isEditOpen}
             setIsEditOpen={setIsEditOpen}
+            editId={editId}
+            setEditId={setEditId}
           />
         </div>
       </section>
