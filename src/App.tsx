@@ -145,6 +145,16 @@ const App: FC = () => {
     }
   }, [])
 
+  //change language with ?lang=fi etc:
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const langParam = urlParams.get('lang')
+    if (langParam) {
+      setLanguage(langParam as ELanguages)
+    }
+  }, [])
+
   // Set the document language and title
   useEffect(() => {
     const script = document.createElement('script')
