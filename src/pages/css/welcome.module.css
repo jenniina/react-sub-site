@@ -11,7 +11,7 @@
   margin: 0 auto;
 }
 .list.extras {
-  max-width: max-content;
+  max-width: clamp(100px, 99vw, max-content);
 }
 .list li {
   flex: 1 0 30%;
@@ -59,7 +59,7 @@
   /* font-size: clamp(1.2em, 2vw, 3em); */
   transform: scale(1.2);
 }
-@media (min-width: 300px) {
+@media (min-width: 600px) {
   .list {
     flex-flow: row nowrap;
     gap: 1em;
