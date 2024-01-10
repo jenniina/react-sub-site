@@ -636,3 +636,11 @@ button.danger:hover {
 form.login {
   margin-bottom: 1rem;
 }
+code {
+  display: inline-block;
+  font-family: monospace;
+  background-color: var(--color-primary-5);
+  color: var(--color-primary-20);
+  padding: 0.05em 0.4em;
+  border-radius: var(--radius-small);
+}

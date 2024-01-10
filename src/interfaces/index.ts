@@ -850,7 +850,7 @@ export enum ELightDarkModeButton {
   de = 'Light/Dark mode button',
   pt = 'Botão Light/Dark mode',
   cs = 'Tlačítko Light/Dark mode',
-  fi = 'Vaalea-/Tummatilan painike',
+  fi = 'Painike: vaaleatila/tummatila',
 }
 export enum EFourStylesAltogether {
   en = 'Four styles altogether',
@@ -877,7 +877,7 @@ export enum EReplacedByUserEditAndLogoutButtonsWhenLoggedIn {
   de = 'Wird durch die Schaltflächen Benutzer bearbeiten und Abmelden ersetzt, wenn Sie angemeldet sind',
   pt = 'Substituído pelos botões de edição de usuário e logout quando conectado',
   cs = 'Při přihlášení nahrazeno tlačítky Upravit uživatele a Odhlásit',
-  fi = 'Korvataan käyttäjän muokkaus- ja kirjautumispainikkeilla, kun olet kirjautunut sisään',
+  fi = 'Ne korvataan käyttäjän muokkaus- ja kirjautumispainikkeilla, kun käyttäjä on kirjautunut sisään',
 }
 
 export enum EButtonToToggleBetweenNavigationStyles {
@@ -968,7 +968,7 @@ export enum EKeyboardFocusMoveItemsWithArrowKeys {
   de = 'Tastaturfokus: Bewegen Sie Elemente mit den Pfeiltasten',
   pt = 'Foco do teclado: mova itens com as teclas de seta',
   cs = 'Klávesnice: přesuňte položky pomocí šipek',
-  fi = 'Näppäimistökäyttö: siirrä tab-painikkeella kohteeseen siirryttyä nuolinäppäimillä kohdetta',
+  fi = 'Näppäimistökäyttö: siirrä nuolinäppäimillä kohdetta tab-painikkeella kohteeseen siirryttyä',
 }
 export enum EGeometricShapes {
   en = 'Geometric shapes',
@@ -1004,7 +1004,7 @@ export enum EMovementAccordingToPointerEnterDirection {
   de = 'Bewegung entsprechend der Eingaberichtung des Zeigers',
   pt = 'Movimento de acordo com a direção de entrada do ponteiro',
   cs = 'Pohyb podle směru vstupu ukazatele',
-  fi = 'Liike osoittimen lähestymissuunnan mukaan',
+  fi = 'Elementti liikkuu osoittimen lähestymissuunnan mukaan',
 }
 export enum EPortfolio {
   en = 'Portfolio',
@@ -1130,7 +1130,7 @@ export enum ECustomSelect {
   de = 'Benutzerdefinierte Auswahl',
   pt = 'Seleção Personalizada',
   cs = 'Vlastní Výběr',
-  fi = 'Räätälöitävä select',
+  fi = 'Räätälöitävä valinta (<select>)',
 }
 export enum EMultistepForm {
   en = 'Multistep Form',
