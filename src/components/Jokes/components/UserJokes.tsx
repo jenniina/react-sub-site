@@ -2,6 +2,15 @@ import { useEffect, useState } from 'react'
 import { omit, set } from 'lodash'
 import { FaRandom, FaList } from 'react-icons/fa'
 import {
+  MdOutlineFilter5,
+  MdOutlineFilter6,
+  MdOutlineFilter7,
+  MdOutlineFilter8,
+  MdOutlineFilter9,
+  MdFilter9Plus,
+  MdOutlineFilter9Plus,
+} from 'react-icons/md'
+import {
   BiChevronsLeft,
   BiChevronsRight,
   BiChevronLeft,
@@ -70,6 +79,9 @@ import {
   EJokeAlreadySaved,
   ENoJokeFound,
   norrisCategoryTranslations as norrisCat,
+  ELatest,
+  EHowMany,
+  EGetLatest,
 } from '../interfaces'
 import {
   IUser,
@@ -252,6 +264,8 @@ const UserJokes = ({
     EOrderByAge.newest
   )
   const [isCheckedNewest, setIsCheckedNewest] = useState<boolean>(true)
+  const [latestNumber, setLatestNumber] = useState<number>(5)
+  const [latest, setLatest] = useState<boolean>(false)
 
   const dispatch = useAppDispatch()
 
@@ -286,10 +300,9 @@ const UserJokes = ({
               return b.user.length - a.user.length
             }) //.sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1))
         : []
-
       setUserJokes(updatedJokes)
     }
-  }, [jokes, users, language, isCheckedSafemode, sortBy])
+  }, [jokes, users, language, isCheckedSafemode, sortBy, sortByAge, isCheckedNewest])
 
   useEffect(() => {
     setSortByAge(isCheckedNewest ? EOrderByAge.newest : EOrderByAge.oldest)
@@ -434,13 +447,14 @@ const UserJokes = ({
         return a.name > b.name ? 1 : -1
       })
     }
+    const latestJokes = newFilteredJokes.slice(-1 * latestNumber)
 
     if (isRandom && newFilteredJokes.length > 0) {
       const randomJoke =
         newFilteredJokes[Math.floor(Math.random() * newFilteredJokes.length)]
       setFilteredJokes([randomJoke])
     } else {
-      setFilteredJokes(newFilteredJokes)
+      latest ? setFilteredJokes(latestJokes) : setFilteredJokes(newFilteredJokes)
     }
   }, [
     localJokes,
@@ -453,6 +467,8 @@ const UserJokes = ({
     randomTrigger,
     sortByAge,
     sortBy,
+    latest,
+    latestNumber,
   ])
 
   const handleCategoryChange = (category: string) => {
@@ -637,7 +653,7 @@ const UserJokes = ({
       </div>
       <div>
         <input
-          className='items-per-page'
+          className='items-per-page narrow'
           type='number'
           min='1'
           max='100'
@@ -866,7 +882,7 @@ const UserJokes = ({
               <MdOutlineSettingsBackupRestore /> <span>{EReset[language]}</span>
             </button>
           </div>
-          <div className='flex center gap'>
+          <div className='flex center gap-half'>
             <button
               className='icontext'
               onClick={() => {
@@ -878,9 +894,51 @@ const UserJokes = ({
               <FaRandom />
               {ERandom[language]}
             </button>{' '}
-            <button className='icontext' onClick={() => setIsRandom(false)}>
-              <FaList /> {EAllJokes[language]}
+            <button
+              className='icontext'
+              onClick={() => {
+                setIsRandom(false)
+                setSortBy(ESortBy_en.age)
+                setSortByAge(EOrderByAge.newest)
+                setTimeout(() => {
+                  setLatest((prev) => !prev)
+                }, 200)
+              }}
+            >
+              {!latest ? (
+                <>
+                  {latestNumber === 5 && <MdOutlineFilter5 />}
+                  {latestNumber === 6 && <MdOutlineFilter6 />}
+                  {latestNumber === 7 && <MdOutlineFilter7 />}
+                  {latestNumber === 8 && <MdOutlineFilter8 />}
+                  {latestNumber === 9 && <MdOutlineFilter9 />}{' '}
+                  {latestNumber > 9 && <MdOutlineFilter9Plus />} {EGetLatest[language]}{' '}
+                  <span className='scr'>{latestNumber}</span>
+                </>
+              ) : (
+                <>
+                  <FaList /> {EAllJokes[language]}
+                </>
+              )}
             </button>
+            {!latest && (
+              <>
+                <input
+                  type='number'
+                  min={5}
+                  max={100}
+                  id='number-of-latest'
+                  defaultValue={5}
+                  className='narrow'
+                  onChange={(e) => {
+                    setLatestNumber(e.target.valueAsNumber)
+                  }}
+                />
+                <label htmlFor='number-of-latest' className='scr'>
+                  <span>{EHowMany[language]}</span>
+                </label>
+              </>
+            )}
           </div>
 
           {!isRandom && pagination()}
