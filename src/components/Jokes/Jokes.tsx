@@ -318,7 +318,7 @@ function Jokes({
         setSubmitted(false)
       }, 5500)
       // Scroll to the anchor with id "generated-joke"
-      const generatedJokeAnchor = document.querySelector('#generate-joke')
+      const generatedJokeAnchor = document.querySelector('#queryValue')
       if (generatedJokeAnchor) {
         generatedJokeAnchor.scrollIntoView({ behavior: 'smooth' })
       }
