@@ -30,6 +30,7 @@ import {
   ECategory_fi,
   TCategoryByLanguages,
   IJoke,
+  EChuckNorrisCategory,
 } from '../interfaces'
 import { ELanguages } from '../../../interfaces'
 
@@ -230,7 +231,7 @@ const Form = ({
           language={language}
           id='jokeCategoryNorrisCategories'
           className={`category extras ${hasNorris ? '' : 'hidden'}`}
-          instructions={`Chuck Norris Category:`}
+          instructions={`${EChuckNorrisCategory[language]}:`}
           selectAnOption={titleAny}
           value={selectedNorrisCategory}
           options={norrisCategories}
@@ -240,7 +241,7 @@ const Form = ({
         />
 
         <div className='flex column center'>
-          <div className='input-wrap '>
+          <div className='input-wrap'>
             <label htmlFor='queryValue'>
               <input
                 type='text'

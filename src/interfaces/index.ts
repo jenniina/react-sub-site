@@ -1067,7 +1067,7 @@ export enum EBlob {
   de = 'Kugel',
   pt = 'Bola',
   cs = 'Koule',
-  fi = 'Blob/möhkäle',
+  fi = 'Blob/mollukka',
 }
 export enum EBlobs {
   en = 'Blobs',
@@ -1076,7 +1076,7 @@ export enum EBlobs {
   de = 'Kugeln',
   pt = 'Bolas',
   cs = 'Koule',
-  fi = 'Blobs/möhkäleet',
+  fi = 'Blobs/mollukat',
 }
 export enum EBlobApp {
   en = 'Blob App',
@@ -1085,7 +1085,7 @@ export enum EBlobApp {
   de = 'Kugel-App',
   pt = 'Aplicativo de bola',
   cs = 'Aplikace Blob',
-  fi = 'Blob/möhkäle-sovellus',
+  fi = 'Blob-/mollukkasovellus',
 }
 export enum EBlobAppSlogan {
   en = 'Make blob art your thing',
@@ -1094,7 +1094,7 @@ export enum EBlobAppSlogan {
   de = 'Machen Sie Blob Art zu Ihrem Ding',
   pt = 'Faça da arte de blob sua coisa',
   cs = 'Udělejte z blob art svou věc',
-  fi = 'Tee möhkäletaiteesta juttusi',
+  fi = 'Tee mollukkataiteesta juttusi',
 }
 export enum EDraggable {
   en = 'Draggable',
@@ -1112,7 +1112,7 @@ export enum EDraggableBlobs {
   de = 'Verschiebbare Kugeln',
   pt = 'Bolas arrastáveis',
   cs = 'Přetahovatelné koule',
-  fi = 'Raahattavat möhkäleet',
+  fi = 'Raahattavat mollukat',
 }
 export enum EDragAndDrop {
   en = 'Drag and Drop',
@@ -1293,7 +1293,7 @@ export enum EBlobAppIntro {
   de = 'Eine benutzerdefinierte Drag & Drop-App mit Blob, die verschoben werden können',
   pt = 'Um aplicativo de arrastar e soltar personalizado com blobs que podem ser arrastados',
   cs = 'Vlastní aplikace přetahovatelných prvků s bloby, které lze přetahovat',
-  fi = 'Raahattavat-sovellus, joka sisältää raahattavia toisiinsa sulautuvia möhkäleitä',
+  fi = 'Raahattavat-sovellus, joka sisältää raahattavia toisiinsa sulautuvia mollukoita',
 }
 export enum EDragAndDropAppIntro {
   en = 'A custom drag-and-drop app.',

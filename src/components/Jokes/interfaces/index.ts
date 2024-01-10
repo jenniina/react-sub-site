@@ -363,6 +363,17 @@ export enum ECategoryTitle {
   cs = 'Kategorie',
   fi = 'Kategoria',
 }
+
+export enum EChuckNorrisCategory {
+  en = 'Chuck Norris Category',
+  es = 'Categoría Chuck Norris',
+  fr = 'Catégorie Chuck Norris',
+  de = 'Chuck Norris Kategorie',
+  pt = 'Categoria Chuck Norris',
+  cs = 'Kategorie Chuck Norris',
+  fi = 'Chuck Norris -kategoria',
+}
+
 export enum ESelectACategory {
   en = 'Select a category',
   es = 'Seleccione una categoría',
