@@ -20,6 +20,7 @@ import {
   EClose,
   EContact,
   EDarkMode,
+  EEdit,
   EExitToMainSite,
   EForgotPassword,
   ELanguageTitle,
@@ -680,7 +681,7 @@ const Nav = (
                         : `${styles.link}`
                     }
                   >
-                    <span>Edit</span>
+                    <span>{EEdit[language]}</span>
                   </NavLink>
                   <button
                     onClick={handleLogout}
