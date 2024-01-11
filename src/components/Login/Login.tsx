@@ -43,6 +43,7 @@ const FormLogin = ({
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [loggingIn, setLoggingIn] = useState(false)
 
   const titleEmail = EEmail[language]
   const titlePassword = EPassword[language]
@@ -63,10 +64,11 @@ const FormLogin = ({
 
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault()
-
+    dispatch(notify(`${ELoggingIn[language]}`, false, 3))
+    setLoggingIn(true)
     await dispatch(login(username, password, language))
       .then(() => {
-        dispatch(notify(`${ELoggingIn[language]}`, false, 2))
+        setLoggingIn(false)
         setUsername('')
         setPassword('')
         setIsFormOpen && setIsFormOpen(false)
@@ -140,7 +142,7 @@ const FormLogin = ({
                 id={`login-${text}`}
                 className={`login ${text} restore`}
               >
-                {titleLogin}
+                {loggingIn ? ELoggingIn[language] : titleLogin}
               </button>
             </form>
           </Accordion>

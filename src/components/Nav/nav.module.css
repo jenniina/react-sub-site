@@ -173,8 +173,8 @@ button.togglemenu[aria-expanded='true'] .menupath {
   border-top: 0;
   transform: translateX(110%);
   overflow-y: auto;
-  max-height: calc(98vh - var(--scrollbar_width) - var(--height));
-  min-height: 15em;
+  min-height: calc(100vh - var(--height) - 2px);
+  max-height: calc(100vh - var(--height) - 2px);
   width: 100%;
   max-width: 100%;
 }

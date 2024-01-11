@@ -685,3 +685,24 @@ body .z {
   font-size: 0.8em;
   opacity: 0.8;
 }
+
+nav .accordion-inner > button:first-of-type.close {
+  display: none;
+}
+nav .open.password-reset-container {
+  width: 100%;
+}
+nav form.forgot {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1em;
+}
+nav form.forgot .input-wrap {
+  width: 100%;
+}
+nav .open.password-reset-container button.forgot-btn {
+  width: 100%;
+  border-radius: var(--radius-small);
+}
