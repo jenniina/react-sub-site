@@ -933,7 +933,7 @@ export enum EUserSubmittedJokes {
   de = 'Vom Benutzer eingereichte Witze',
   pt = 'Piadas enviadas pelo usuário',
   cs = 'Vtipy zaslané uživatelem',
-  fi = 'Käyttäjien lähettämät vitsit',
+  fi = 'Käyttäjien vitsit',
 }
 export enum EAnonymous {
   en = 'Anonymous',
@@ -1197,7 +1197,7 @@ export enum ESkipToSavedJokes {
   de = 'Zu gespeicherten Witzen springen',
   pt = 'Pular para piadas salvas',
   cs = 'Přejít na uložené vtipy',
-  fi = 'Hyppää tallennettuihin vitseihin',
+  fi = 'Siirry tallennettuihin vitseihin',
 }
 export enum ESaving {
   en = 'Saving...',
@@ -1369,7 +1369,7 @@ export enum ESkipToJokeSearch {
   de = 'Zur Witzsuche springen',
   pt = 'Pular para a pesquisa de piadas',
   cs = 'Přejít na vyhledávání vtipů',
-  fi = 'Hyppää vitsihakuun',
+  fi = 'Siirry vitsihakuun',
 }
 export enum ELatest {
   en = 'Latest',

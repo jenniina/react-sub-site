@@ -21,32 +21,18 @@ import {
 import Notification from '../Notification/Notification'
 
 interface LoginProps {
-  titleLogin: ELogin
-  titleLogout: ELogout
-  titleLoggedInAs: ELoggedInAs
   language: ELanguages
   setIsFormOpen?: (isFormOpen: boolean) => void
   isOpen?: boolean
   text?: string
 }
 
-const FormLogin = ({
-  titleLogin,
-  titleLogout,
-  titleLoggedInAs,
-  language,
-  setIsFormOpen,
-  isOpen,
-  text,
-}: LoginProps) => {
+const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
   const dispatch = useAppDispatch()
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [loggingIn, setLoggingIn] = useState(false)
-
-  const titleEmail = EEmail[language]
-  const titlePassword = EPassword[language]
 
   const formLoginRef = useRef(null)
 
@@ -74,6 +60,7 @@ const FormLogin = ({
         setIsFormOpen && setIsFormOpen(false)
       })
       .catch((e) => {
+        setLoggingIn(false)
         console.log(e)
         if (e.code === 'ERR_BAD_REQUEST')
           dispatch(notify(`${EError[language]}: ${e.response.data.message}`, true, 8))
@@ -88,7 +75,7 @@ const FormLogin = ({
       {user ? (
         <div className='logout-wrap'>
           <span>
-            {titleLoggedInAs} {user?.name ? user?.name : user.username}{' '}
+            {ELoggedInAs[language]} {user?.name ? user?.name : user.username}{' '}
           </span>
           <a href='/edit'>{EEdit[language]}</a>
           <button
@@ -96,7 +83,7 @@ const FormLogin = ({
             id={`logout-${text}`}
             className={`logout danger ${text}`}
           >
-            {titleLogout} &times;
+            {ELogout[language]} &times;
           </button>
         </div>
       ) : (
@@ -104,13 +91,13 @@ const FormLogin = ({
           <Accordion
             language={language}
             className='login'
-            text={titleLogin}
+            text={ELogin[language]}
             ref={formLoginRef}
             close={EClose[(language as ELanguages) || 'en']}
             setIsFormOpen={setIsFormOpen}
             isOpen={isOpen}
           >
-            <h2>{titleLogin}</h2>
+            <h2>{ELogin[language]}</h2>
 
             <form onSubmit={handleLogin} className='login'>
               <div className='input-wrap'>
@@ -122,7 +109,7 @@ const FormLogin = ({
                     required
                     onChange={({ target }) => setUsername(target.value)}
                   />
-                  <span>{titleEmail}: </span>
+                  <span>{EEmail[language]}: </span>
                 </label>
               </div>
               <div className='input-wrap'>
@@ -134,7 +121,7 @@ const FormLogin = ({
                     value={password}
                     onChange={({ target }) => setPassword(target.value)}
                   />
-                  <span>{titlePassword}: </span>
+                  <span>{EPassword[language]}: </span>
                 </label>
               </div>
               <button
@@ -142,7 +129,7 @@ const FormLogin = ({
                 id={`login-${text}`}
                 className={`login ${text} restore`}
               >
-                {loggingIn ? ELoggingIn[language] : titleLogin}
+                {loggingIn ? ELoggingIn[language] : ELogin[language]}
               </button>
             </form>
           </Accordion>

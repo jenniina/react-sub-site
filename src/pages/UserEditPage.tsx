@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { TiDeleteOutline } from 'react-icons/ti'
 import { useNavigate } from 'react-router-dom'
 import Hero from '../components/Hero/Hero'
 import { useTheme } from '../hooks/useTheme'
@@ -108,7 +109,7 @@ const UserEditPage = ({
                     type='submit'
                     className={`submit danger ${styles['delete-account']} ${styles.submit}`}
                   >
-                    {EDeleteAccount[language]}
+                    <TiDeleteOutline /> {EDeleteAccount[language]}
                   </button>
                 </form>
               ) : (

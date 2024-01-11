@@ -8,6 +8,7 @@ button.delete-account {
   border-color: red;
   outline-color: red;
   outline-style: dashed;
+  outline-width: 3px;
   background: linear-gradient(
     5deg,
     crimson 0%,
@@ -16,9 +17,18 @@ button.delete-account {
   );
   background-size: auto 120px;
   background-position: top;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 button.delete-account:hover,
 button.delete-account:focus {
   color: var(--color-primary-20);
+  outline-style: dashed;
+  outline-width: 3px;
   outline-offset: 0.3rem;
+}
+button.delete-account svg {
+  font-size: 1.5rem;
 }
