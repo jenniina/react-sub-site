@@ -18,10 +18,10 @@ const getNorrisCategories = async () => {
   return response.data
 }
 
-// const getRandomNorrisJoke = async () => {
-//   const response = await axios.get(`${NORRIS_URI}/random`)
-//   return response.data
-// }
+const getFullyRandomNorrisJoke = async () => {
+  const response = await axios.get(`${NORRIS_URI}/random`)
+  return response.data
+}
 
 const getRandomJokeFromNorrisCategory = async (category: string) => {
   const response = await axios.get(`${NORRIS_URI}/random?category=${category}`)
@@ -43,7 +43,7 @@ const searchNorrisJoke = async (query: string) => {
 
 export default {
   getNorrisCategories,
-  //getRandomNorrisJoke,
+  getFullyRandomNorrisJoke,
   getRandomJokeFromNorrisCategory,
   searchNorrisJoke,
 }
