@@ -312,7 +312,7 @@ export enum EAnimatedClipPathsAndTextRotationOnHoverWithDynamicDelay {
   de = 'Animierte Clip-Pfade und Textrotation beim Überfahren mit dynamischer Verzögerung',
   pt = 'Caminhos de clipe animados e rotação de texto ao pairar com atraso dinâmico',
   cs = 'Animované výřezy a rotace textu při najetí myší s dynamickým zpožděním',
-  fi = 'Alla olevat värikentillä on animoidut leikepolut ja tekstin kiertäminen, jotka aktivoituvat hiiren ollessa elementin päällä, dynaamisella viiveellä',
+  fi = 'Alla olevilla värikentillä on animoidut leikepolut ja tekstin kallistaminen, jotka aktivoituvat hiiren ollessa elementin päällä, dynaamisella viiveellä',
 }
 export enum EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo {
   en = 'Please note that the author (Jenniina Laine) speaks only English and Finnish, so please use one of these languages when contacting.',
