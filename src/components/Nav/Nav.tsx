@@ -17,9 +17,11 @@ import useScrollDirection from '../../hooks/useScrollDirection'
 import useWindowSize from '../../hooks/useWindowSize'
 import {
   EAbout,
+  EClose,
   EContact,
   EDarkMode,
   EExitToMainSite,
+  EForgotPassword,
   ELanguageTitle,
   ELightMode,
   EMenu,
@@ -53,6 +55,7 @@ import { createUser } from '../../reducers/usersReducer'
 import Notification from '../Notification/Notification'
 import { Select, SelectOption } from '../Select/Select'
 import PasswordReset from '../PasswordReset/PasswordReset'
+import Accordion from '../Accordion/Accordion'
 
 type Link = {
   label: string
@@ -74,6 +77,10 @@ const Nav = (
   { setStyleMenu, language, options, getKeyByValue, setLanguage }: NavProps,
   ref: Ref<{ getStyle: () => boolean }>
 ) => {
+  const user = useSelector((state: ReducerProps) => {
+    return state.auth?.user
+  })
+
   const { windowHeight, windowWidth } = useWindowSize()
 
   const links = [
@@ -314,10 +321,6 @@ const Nav = (
     window.scrollY > 100 ? setScrolled(true) : setScrolled(false)
   }
 
-  const user = useSelector((state: ReducerProps) => {
-    return state.auth?.user
-  })
-
   const dispatch = useAppDispatch()
 
   const handleLogout = () => {
@@ -330,6 +333,28 @@ const Nav = (
 
   const [isLoginFormOpen, setIsLoginFormOpen] = useState(false)
   const [isRegisterFormOpen, setIsRegisterFormOpen] = useState(false)
+  const [isResetFormOpen, setIsResetFormOpen] = useState(false)
+
+  useEffect(() => {
+    if (isResetFormOpen) {
+      setIsLoginFormOpen(false)
+      setIsRegisterFormOpen(false)
+    }
+  }, [isResetFormOpen])
+
+  useEffect(() => {
+    if (isLoginFormOpen) {
+      setIsRegisterFormOpen(false)
+      setIsResetFormOpen(false)
+    }
+  }, [isLoginFormOpen])
+
+  useEffect(() => {
+    if (isRegisterFormOpen) {
+      setIsLoginFormOpen(false)
+      setIsResetFormOpen(false)
+    }
+  }, [isRegisterFormOpen])
 
   const location = useLocation()
 
@@ -669,7 +694,15 @@ const Nav = (
             </div>
             {!user && (
               <div className='password-reset-wrap'>
-                <PasswordReset language={language} text='login' />
+                <Accordion
+                  language={language}
+                  className='password-reset'
+                  text={`${EForgotPassword[language]}`}
+                  isOpen={isResetFormOpen}
+                  setIsFormOpen={setIsResetFormOpen}
+                >
+                  <PasswordReset language={language} text='login' />
+                </Accordion>
               </div>
             )}
           </nav>

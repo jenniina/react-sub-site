@@ -29,8 +29,6 @@ const PasswordReset = ({ language, text }: Props) => {
   const titleForgotPassword = EForgotPassword[language]
   const titleSendResetLink = ESendResetLink[language]
 
-  const formForgotRef = useRef(null)
-
   const handleForgot = async (event: FormEvent) => {
     event.preventDefault()
     dispatch(notify(`${ESendingEmail[language]}`, false, 2))
@@ -60,33 +58,25 @@ const PasswordReset = ({ language, text }: Props) => {
 
   return (
     <>
-      <Accordion
-        language={language}
-        className='password-reset'
-        text={`${titleForgotPassword}`}
-        ref={formForgotRef}
-        close={EClose[language as ELanguages]}
-      >
-        <h2>{titleForgotPassword}</h2>
+      <h2>{titleForgotPassword}</h2>
 
-        <form onSubmit={handleForgot} className='forgot'>
-          <div className='input-wrap'>
-            <label>
-              <input
-                name='username'
-                type='text'
-                value={username}
-                required
-                onChange={({ target }) => setUsername(target.value)}
-              />
-              <span>{titleEmail}: </span>
-            </label>
-          </div>
-          <button type='submit' id={`forgot-${text}`} className='forgot-btn restore'>
-            {titleSendResetLink}
-          </button>
-        </form>
-      </Accordion>
+      <form onSubmit={handleForgot} className='forgot'>
+        <div className='input-wrap'>
+          <label>
+            <input
+              name='username'
+              type='text'
+              value={username}
+              required
+              onChange={({ target }) => setUsername(target.value)}
+            />
+            <span>{titleEmail}: </span>
+          </label>
+        </div>
+        <button type='submit' id={`forgot-${text}`} className='forgot-btn restore'>
+          {titleSendResetLink}
+        </button>
+      </form>
     </>
   )
 }
