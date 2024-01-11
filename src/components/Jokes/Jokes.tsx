@@ -235,7 +235,7 @@ function Jokes({
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false)
   const [editId, setEditId] = useState<IJoke['_id'] | null>(null)
   const [lastJokes, setLastJokes] = useState<{ jokeId: string; language: string }[]>([])
-  const [lastJokesLength, setLastJokesLength] = useState<number>(5)
+  const [lastJokesLength, setLastJokesLength] = useState<number>(10)
 
   const [flags, setFlags] = useState({
     nsfw: false,
@@ -575,11 +575,10 @@ function Jokes({
       language: ELanguages.English,
 
       safe:
-        (jokeData?.categories?.includes('explicit') ||
-          jokeData?.categories?.includes('political') ||
-          jokeData?.categories?.includes('religion')) ??
-        false
-          ? !Object.values(jokeData.categories).some((value) => value)
+        jokeData?.categories?.includes('explicit') ||
+        jokeData?.categories?.includes('political') ||
+        jokeData?.categories?.includes('religion')
+          ? false
           : true,
       user: jokeData.user,
       flags: {
@@ -826,146 +825,203 @@ function Jokes({
 
     const queryValueWithoutAnd = queryValue.replace(/&$/, '')
 
+    // if (isChuckNorris || isDadJoke) {
+    //   if (language !== ELanguages.English) {
+    //     handleJokes(newFilteredJokes)
+    //     return
+    //   } else {
+    //     if (isChuckNorris && isDadJoke) {
+    //       const random = Math.floor(getRandomMinMax(1, 2.999))
+    //       if (random === 1 && isChuckNorris && isQueryNotEmpty) {
+    //         const norrisJoke = await norrisService.searchNorrisJoke(queryValueWithoutAnd)
+    //         if (!norrisJoke) {
+    //           noJoke()
+    //           return
+    //         }
+    //         await setJokeData(
+    //           norrisJoke,
+    //           ECategory_en.ChuckNorris,
+    //           norrisJoke?.categories ?? [],
+    //           false
+    //         )
+    //         setFlags({
+    //           explicit: norrisJoke?.categories?.includes('explicit') ?? false,
+    //           religious: norrisJoke?.categories?.includes('religious') ?? false,
+    //           political: false,
+    //           racist: false,
+    //           sexist: false,
+    //           nsfw: norrisJoke?.categories?.includes('explicit') ?? false,
+    //         })
+    //       } else if (random === 1 && isChuckNorris) {
+    //         const randomCategory = getRandomNorrisCategory()
+    //         const norrisJoke = await norrisService.getRandomJokeFromNorrisCategory(
+    //           (randomCategory?.value as string) ?? ''
+    //         )
+    //         if (!norrisJoke) {
+    //           noJoke()
+    //           return
+    //         }
+    //         await setJokeData(
+    //           norrisJoke,
+    //           ECategory_en.ChuckNorris,
+    //           norrisJoke?.categories ?? [],
+    //           true
+    //         )
+    //         setFlags({
+    //           explicit: norrisJoke?.categories?.includes('explicit') ?? false,
+    //           religious: norrisJoke?.categories?.includes('religious') ?? false,
+    //           political: false,
+    //           racist: false,
+    //           sexist: false,
+    //           nsfw: norrisJoke?.categories?.includes('explicit') ?? false,
+    //         })
+    //       } else if (random > 1 && isDadJoke && isQueryNotEmpty) {
+    //         const dadJoke = await dadjokeService.searchDadJokes(queryValueWithoutAnd)
+    //         if (!dadJoke) {
+    //           noJoke()
+    //           return
+    //         }
+    //         await setJokeData(dadJoke, ECategory_en.DadJoke, undefined, false)
+    //       } else {
+    //         const dadJoke = await dadjokeService.getRandomDadJoke()
+    //         if (!dadJoke) {
+    //           noJoke()
+    //           return
+    //         }
+    //         await setJokeData(dadJoke, ECategory_en.DadJoke, undefined, true)
+    //       }
+    //     } else if (isChuckNorris && isQueryNotEmpty) {
+    //       const norrisJoke = await norrisService.searchNorrisJoke(queryValueWithoutAnd)
+    //       if (!norrisJoke) {
+    //         noJoke()
+    //         return
+    //       }
+    //       await setJokeData(
+    //         norrisJoke,
+    //         ECategory_en.ChuckNorris,
+    //         norrisJoke?.categories ?? [],
+    //         false
+    //       )
+    //     } else if (
+    //       isChuckNorris &&
+    //       selectedNorrisCategory?.value &&
+    //       selectedNorrisCategory?.value !== 'any'
+    //     ) {
+    //       const norrisJoke = await norrisService.getRandomJokeFromNorrisCategory(
+    //         (selectedNorrisCategory?.value as string) ?? ''
+    //       )
+    //       if (!norrisJoke) {
+    //         noJoke()
+    //         return
+    //       }
+    //       await setJokeData(
+    //         norrisJoke,
+    //         ECategory_en.ChuckNorris,
+    //         norrisJoke?.categories ?? [],
+    //         true
+    //       )
+    //     } else if (isChuckNorris && !isCheckedSafemode) {
+    //       const norrisJoke = await norrisService.getFullyRandomNorrisJoke()
+    //       if (!norrisJoke) {
+    //         noJoke()
+    //         return
+    //       }
+    //       await setJokeData(
+    //         norrisJoke,
+    //         ECategory_en.ChuckNorris,
+    //         norrisJoke?.categories ?? [],
+    //         true
+    //       )
+    //     } else if (isChuckNorris) {
+    //       const randomCategory = getRandomNorrisCategory()
+    //       const norrisJoke = await norrisService.getRandomJokeFromNorrisCategory(
+    //         randomCategory.value as string
+    //       )
+    //       if (!norrisJoke) {
+    //         noJoke()
+    //         return
+    //       }
+    //       await setJokeData(
+    //         norrisJoke,
+    //         ECategory_en.ChuckNorris,
+    //         norrisJoke?.categories ?? [],
+    //         true
+    //       )
+    //     } else if (isDadJoke && isQueryNotEmpty) {
+    //       const dadJoke = await dadjokeService.searchDadJokes(queryValueWithoutAnd)
+    //       if (!dadJoke) {
+    //         noJoke()
+    //         return
+    //       }
+    //       await setJokeData(dadJoke, ECategory_en.DadJoke, undefined, false)
+    //     } else {
+    //       const dadJoke = await dadjokeService.getRandomDadJoke()
+    //       if (!dadJoke) {
+    //         noJoke()
+    //         return
+    //       }
+    //       await setJokeData(dadJoke, ECategory_en.DadJoke, undefined, true)
+    //     }
+    //   }
+    // }
     if (isChuckNorris || isDadJoke) {
       if (language !== ELanguages.English) {
         handleJokes(newFilteredJokes)
         return
-      } else {
-        if (isChuckNorris && isDadJoke) {
-          const random = Math.floor(getRandomMinMax(1, 2.999))
-          if (random === 1 && isChuckNorris && isQueryNotEmpty) {
-            const norrisJoke = await norrisService.searchNorrisJoke(queryValueWithoutAnd)
-            if (!norrisJoke) {
-              noJoke()
-              return
-            }
-            await setJokeData(
-              norrisJoke,
-              ECategory_en.ChuckNorris,
-              norrisJoke?.categories ?? [],
-              false
-            )
-            setFlags({
-              explicit: norrisJoke?.categories?.includes('explicit') ?? false,
-              religious: norrisJoke?.categories?.includes('religious') ?? false,
-              political: false,
-              racist: false,
-              sexist: false,
-              nsfw: norrisJoke?.categories?.includes('explicit') ?? false,
-            })
-          } else if (random === 1 && isChuckNorris) {
-            const randomCategory = getRandomNorrisCategory()
-            const norrisJoke = await norrisService.getRandomJokeFromNorrisCategory(
-              (randomCategory?.value as string) ?? ''
-            )
-            if (!norrisJoke) {
-              noJoke()
-              return
-            }
-            await setJokeData(
-              norrisJoke,
-              ECategory_en.ChuckNorris,
-              norrisJoke?.categories ?? [],
-              true
-            )
-            setFlags({
-              explicit: norrisJoke?.categories?.includes('explicit') ?? false,
-              religious: norrisJoke?.categories?.includes('religious') ?? false,
-              political: false,
-              racist: false,
-              sexist: false,
-              nsfw: norrisJoke?.categories?.includes('explicit') ?? false,
-            })
-          } else if (random > 1 && isDadJoke && isQueryNotEmpty) {
-            const dadJoke = await dadjokeService.searchDadJokes(queryValueWithoutAnd)
-            if (!dadJoke) {
-              noJoke()
-              return
-            }
-            await setJokeData(dadJoke, ECategory_en.DadJoke, undefined, false)
-          } else {
-            const dadJoke = await dadjokeService.getRandomDadJoke()
-            if (!dadJoke) {
-              noJoke()
-              return
-            }
-            await setJokeData(dadJoke, ECategory_en.DadJoke, undefined, true)
-          }
-        } else if (isChuckNorris && isQueryNotEmpty) {
-          const norrisJoke = await norrisService.searchNorrisJoke(queryValueWithoutAnd)
-          if (!norrisJoke) {
-            noJoke()
-            return
-          }
-          await setJokeData(
-            norrisJoke,
+      } else if (isChuckNorris && isDadJoke) {
+        const random = Math.floor(getRandomMinMax(1, 2.999))
+        if (random === 1 && isChuckNorris) {
+          const query = isQueryNotEmpty ? queryValueWithoutAnd : null
+          const joke = await fetchAndSetJoke(
+            norrisService,
+            query,
             ECategory_en.ChuckNorris,
-            norrisJoke?.categories ?? [],
-            false
+            !isQueryNotEmpty
           )
-        } else if (
-          isChuckNorris &&
-          selectedNorrisCategory?.value &&
-          selectedNorrisCategory?.value !== 'any'
-        ) {
-          const norrisJoke = await norrisService.getRandomJokeFromNorrisCategory(
-            (selectedNorrisCategory?.value as string) ?? ''
-          )
-          if (!norrisJoke) {
+          if (!joke) {
             noJoke()
             return
           }
-          await setJokeData(
-            norrisJoke,
-            ECategory_en.ChuckNorris,
-            norrisJoke?.categories ?? [],
-            true
+        } else if (random > 1 && isDadJoke) {
+          const query = isQueryNotEmpty ? queryValueWithoutAnd : null
+          const joke = await fetchAndSetJoke(
+            dadjokeService,
+            query,
+            ECategory_en.DadJoke,
+            !isQueryNotEmpty
           )
-        } else if (isChuckNorris && !isCheckedSafemode) {
-          const norrisJoke = await norrisService.getFullyRandomNorrisJoke()
-          if (!norrisJoke) {
+          if (!joke) {
             noJoke()
             return
           }
-          await setJokeData(
-            norrisJoke,
-            ECategory_en.ChuckNorris,
-            norrisJoke?.categories ?? [],
-            true
-          )
-        } else if (isChuckNorris) {
-          const randomCategory = getRandomNorrisCategory()
-          const norrisJoke = await norrisService.getRandomJokeFromNorrisCategory(
-            randomCategory.value as string
-          )
-          if (!norrisJoke) {
-            noJoke()
-            return
-          }
-          await setJokeData(
-            norrisJoke,
-            ECategory_en.ChuckNorris,
-            norrisJoke?.categories ?? [],
-            true
-          )
-        } else if (isDadJoke && isQueryNotEmpty) {
-          const dadJoke = await dadjokeService.searchDadJokes(queryValueWithoutAnd)
-          if (!dadJoke) {
-            noJoke()
-            return
-          }
-          await setJokeData(dadJoke, ECategory_en.DadJoke, undefined, false)
-        } else {
-          const dadJoke = await dadjokeService.getRandomDadJoke()
-          if (!dadJoke) {
-            noJoke()
-            return
-          }
-          await setJokeData(dadJoke, ECategory_en.DadJoke, undefined, true)
+        }
+      } else if (isChuckNorris) {
+        const query = isQueryNotEmpty ? queryValueWithoutAnd : null
+        const joke = await fetchAndSetJoke(
+          norrisService,
+          query,
+          ECategory_en.ChuckNorris,
+          !isQueryNotEmpty
+        )
+        if (!joke) {
+          noJoke()
+          return
+        }
+      } else if (isDadJoke) {
+        const query = isQueryNotEmpty ? queryValueWithoutAnd : null
+        const joke = await fetchAndSetJoke(
+          dadjokeService,
+          query,
+          ECategory_en.DadJoke,
+          !isQueryNotEmpty
+        )
+        if (!joke) {
+          noJoke()
+          return
         }
       }
     } else if (isEmpty && !isCheckedJokeType) {
-      const rand = Math.floor(getRandomMinMax(1, 2.999))
+      const rand = Math.floor(getRandomMinMax(1, 10.999))
       const query = isQueryNotEmpty ? queryValueWithoutAnd : null
       if (rand === 1) {
         if (
@@ -989,11 +1045,14 @@ function Jokes({
             !isQueryNotEmpty
           )
         }
+      } else if (rand > 2) {
+        fetchFromJokeAPI()
       }
     } else {
       fetchFromJokeAPI()
     }
   }
+
   interface IDadService {
     getRandomDadJoke(): Promise<IJoke | undefined>
     searchDadJokes(query: string): Promise<IJoke | undefined>
@@ -1015,10 +1074,6 @@ function Jokes({
     let joke
 
     try {
-      if (!query && Math.random() < 0.5) {
-        fetchFromJokeAPI()
-        return false
-      }
       if (category === ECategory_en.ChuckNorris && service === norrisService) {
         if (!isCheckedSafemode) {
           joke = await service.getFullyRandomNorrisJoke()
