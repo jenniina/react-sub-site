@@ -143,9 +143,6 @@ const FormLogin = ({
                 {titleLogin}
               </button>
             </form>
-            <div className='flex'>
-              <PasswordReset language={language} text='login' />
-            </div>
           </Accordion>
         </>
       )}

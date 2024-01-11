@@ -77,7 +77,8 @@ import {
   ESingleSelect,
   ESiteColors,
   ESortableWithinTheirContainer,
-  ETheSiteColorsLightnessesSwitchInLightMode,
+  ETheSiteColorsLightnessesSwitchInLightMode1,
+  ETheSiteColorsLightnessesSwitchInLightMode2,
   ETheSiteIsTranslatedToSixLanguagesWhichWere,
   ETheTranslationsAreDoneWithTheHelpOfGithubCopilotSo,
   EThreeStepFullyFunctionalContactForm,
@@ -227,7 +228,6 @@ export default function About({
                 <li>
                   {EButtonToToggleBetweenNavigationStyles[language]}
                   <ul>
-                    <li>{EFourStylesAltogether[language]}</li>
                     <li>
                       {ETwoStylesAtSmallScreenSizeAndTwoAtLargeScreenSize[language]}
                     </li>
@@ -266,7 +266,6 @@ export default function About({
                       {EDraggableBlobs[language]}{' '}
                       <Link to='/portfolio'>({EPortfolio[language]})</Link>
                       <ul>
-                        <li>{EDraggable[language]}</li>
                         <li>{EKeyboardFocusMoveItemsWithArrowKeys[language]}</li>
                       </ul>
                     </li>
@@ -391,7 +390,11 @@ export default function About({
                 <h3 id='color' className='left' style={{ marginTop: 0 }}>
                   {ESiteColors[language]}
                 </h3>
-                <p>{ETheSiteColorsLightnessesSwitchInLightMode[language]}</p>
+                <p>
+                  {ETheSiteColorsLightnessesSwitchInLightMode1[language]}{' '}
+                  <code>var(--color-primary-1)</code>{' '}
+                  {ETheSiteColorsLightnessesSwitchInLightMode2[language]}
+                </p>
                 <p>
                   {EAnimatedClipPathsAndTextRotationOnHoverWithDynamicDelay[language]}
                 </p>

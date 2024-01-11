@@ -674,3 +674,14 @@ body .z {
     right: 0;
   }
 }
+.password-reset-wrap {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+.password-reset-container .accordion-btn.open {
+  font-size: 0.8em;
+  opacity: 0.8;
+}

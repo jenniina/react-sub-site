@@ -5,7 +5,7 @@ export enum EResetButtonOnTheLowerRightCornerResetsTheInteractiveElements {
   de = 'Die Schaltfläche Zurücksetzen in der unteren rechten Ecke setzt die interaktiven Elemente zurück',
   pt = 'O botão de redefinição no canto inferior direito redefine os elementos interativos',
   cs = 'Tlačítko Reset v pravém dolním rohu vynuluje interaktivní prvky',
-  fi = 'Nollaa-painike oikeassa alakulmassa nollaa interaktiiviset elementit',
+  fi = '"Nollaa"-painike oikeassa alakulmassa nollaa interaktiiviset elementit',
 }
 export enum EPressEscapeToSkipToResetButton {
   en = 'Press Escape to skip to reset button',
@@ -70,14 +70,15 @@ export enum ECustomizableOptions {
   cs = 'Přizpůsobitelné možnosti',
   fi = 'Mukautettavat vaihtoehdot',
 }
+
 export enum ESavesLatestJokeInLocalStorageAndUsesMongoDBToStore {
-  en = 'Saves latest joke in localStorage and uses Mongo-DB to store the favorite jokes, when logged in.',
-  es = 'Guarda el último chiste en localStorage y usa Mongo-DB para almacenar los chistes favoritos cuando está conectado.',
-  fr = 'Enregistre la dernière blague dans localStorage et utilise Mongo-DB pour stocker les blagues préférées, lorsqu il est connecté.',
-  de = 'Speichert den neuesten Witz in localStorage und verwendet Mongo-DB, um die Lieblingswitze zu speichern, wenn Sie angemeldet sind.',
-  pt = 'Salva a última piada no localStorage e usa o Mongo-DB para armazenar as piadas favoritas, quando conectado.',
-  cs = 'Ukládá nejnovější vtip v localStorage a při přihlášení používá Mongo-DB k uložení oblíbených vtipů.',
-  fi = 'Tallentaa uusimman vitsin localStorageen ja käyttää Mongo-DB:tä tallentaakseen suosikkivitsit sisäänkirjautuessaan.',
+  en = 'Saves latest joke in localStorage and uses Mongo-DB to store the latest favorite joke, when logged in.',
+  es = 'Guarda el último chiste en localStorage y usa Mongo-DB para almacenar el último chiste favorito, cuando está conectado.',
+  fr = 'Enregistre la dernière blague dans localStorage et utilise Mongo-DB pour stocker la dernière blague préférée, lorsqu il est connecté.',
+  de = 'Speichert den neuesten Witz in localStorage und verwendet Mongo-DB, um den neuesten Lieblingswitz zu speichern, wenn Sie angemeldet sind.',
+  pt = 'Salva a última piada no localStorage e usa o Mongo-DB para armazenar a última piada favorita, quando conectado.',
+  cs = 'Ukládá nejnovější vtip do localStorage a při přihlášení používá Mongo-DB k uložení nejnovějšího oblíbeného vtipu.',
+  fi = 'Tallentaa uusimman vitsin localStorageen ja käyttää Mongo-DB:tä tallentaakseen viimeisimmän vitsin sisäänkirjautuessa.',
 }
 export enum EBlobArtApp {
   en = 'Blob Art App',
@@ -286,23 +287,32 @@ export enum ESiteColors {
   cs = 'Barvy webu',
   fi = 'Sivuston värit',
 }
-export enum ETheSiteColorsLightnessesSwitchInLightMode {
-  en = 'The site colors lightnesses switch in light mode, wherein var(--color-primary-1) becomes the lightest color instead of the darkest.',
-  es = 'Los colores del sitio cambian de luminosidad en el modo claro, donde var(--color-primary-1) se convierte en el color más claro en lugar del más oscuro.',
-  fr = 'Les luminosités des couleurs du site passent en mode clair, où var(--color-primary-1) devient la couleur la plus claire au lieu de la plus sombre.',
-  de = 'Die Helligkeiten der Website-Farben wechseln im hellen Modus, wobei var(--color-primary-1) anstelle der dunkelsten Farbe zur hellsten Farbe wird.',
-  pt = 'As luminosidades das cores do site mudam no modo claro, em que var(--color-primary-1) se torna a cor mais clara em vez da mais escura.',
-  cs = 'Světelnost barvy webu se přepne do světlého režimu, kde var (-- color-primary-1) se stane nejsvětlejší barvou místo nejtmavší.',
-  fi = 'Sivuston värit vaihtuvat vaaleassa moodissa, jossa var(--color-primary-1) muuttuu vaaleimmaksi väriksi tummimman sijaan.',
+export enum ETheSiteColorsLightnessesSwitchInLightMode1 {
+  en = 'The site colors lightnesses switch in light mode, wherein',
+  es = 'Los colores del sitio cambian de luminosidad en el modo claro, donde',
+  fr = 'Les luminosités des couleurs du site passent en mode clair, où',
+  de = 'Die Helligkeiten der Website-Farben wechseln im hellen Modus, wobei',
+  pt = 'As luminosidades das cores do site mudam no modo claro, em que',
+  cs = 'Světelnost barvy webu se přepne do světlého režimu, kde',
+  fi = 'Sivuston värit vaihtuvat vaaleassa tilassa, jossa',
+}
+export enum ETheSiteColorsLightnessesSwitchInLightMode2 {
+  en = 'becomes the lightest color instead of the darkest.',
+  es = 'se convierte en el color más claro en lugar del más oscuro.',
+  fr = 'devient la couleur la plus claire au lieu de la plus sombre.',
+  de = 'anstelle der dunkelsten Farbe zur hellsten Farbe wird.',
+  pt = 'se torna a cor mais clara em vez da mais escura.',
+  cs = 'se stane nejsvětlejší barvou místo nejtmavší.',
+  fi = 'muuttuu vaaleimmaksi väriksi tummimman sijaan.',
 }
 export enum EAnimatedClipPathsAndTextRotationOnHoverWithDynamicDelay {
-  en = 'Animated clip-paths and text rotation on hover, with dynamic delay',
-  es = 'Recortes animados de caminos y rotación de texto al pasar el mouse, con retraso dinámico',
-  fr = 'Clip-paths animés et rotation de texte au survol, avec délai dynamique',
-  de = 'Animierte Clip-Pfade und Textrotation bei Hover mit dynamischer Verzögerung',
-  pt = 'Clip-paths animados e rotação de texto ao pairar, com atraso dinâmico',
-  cs = 'Animované klipy a rotace textu při najetí myší s dynamickým zpožděním',
-  fi = 'Animoituja leikepolkuja ja tekstin pyörimistä leijumalla, dynaamisella viiveellä',
+  en = 'Animated clip-paths and text rotation on hover with dynamic delay',
+  es = 'Recortes de clip animados y rotación de texto al pasar el mouse con retraso dinámico',
+  fr = 'Découpages animés et rotation du texte au survol avec délai dynamique',
+  de = 'Animierte Clip-Pfade und Textrotation beim Überfahren mit dynamischer Verzögerung',
+  pt = 'Caminhos de clipe animados e rotação de texto ao pairar com atraso dinâmico',
+  cs = 'Animované výřezy a rotace textu při najetí myší s dynamickým zpožděním',
+  fi = 'Alla olevat värikentillä on animoidut leikepolut ja tekstin kiertäminen, jotka aktivoituvat hiiren ollessa elementin päällä, dynaamisella viiveellä',
 }
 export enum EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo {
   en = 'Please note that the author (Jenniina Laine) speaks only English and Finnish, so please use one of these languages when contacting.',
@@ -311,7 +321,7 @@ export enum EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo {
   de = 'Bitte beachten Sie, dass die Autorin (Jenniina Laine) nur Englisch und Finnisch spricht. Bitte verwenden Sie daher eine dieser Sprachen, wenn Sie Kontakt aufnehmen.',
   pt = 'Observe que o autor (Jenniina Laine) fala apenas inglês e finlandês, portanto, use um desses idiomas ao entrar em contato.',
   cs = 'Všimněte si, že autor (Jenniina Laine) mluví pouze anglicky a finsky, takže při kontaktování použijte jeden z těchto jazyků.',
-  fi = 'Huomaa, että sivuston luoja (Jenniina Laine) puhuu vain englantia ja suomea, joten pyydän käyttämään yhteydenottoon jompaakumpaa kieltä.',
+  fi = 'Pyydän käyttämään yhteydenottoon joko englantia tai suomea.',
 }
 export enum ETheTranslationsAreDoneWithTheHelpOfGithubCopilotSo {
   en = 'The translations are done with the help of Github Copilot (except for English and Finnish), so they may not be perfect',
