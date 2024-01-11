@@ -795,6 +795,7 @@ button.delivery {
   background-position: left 0% bottom 100%;
   pointer-events: all;
 }
+
 button.delivery:hover,
 button.delivery:focus {
   background-position: left 0% bottom 80%;
@@ -821,6 +822,9 @@ button.delivery span {
   left: 0;
   opacity: 1;
   transition: opacity 0.2s ease-in-out;
+}
+button.delivery > span > svg {
+  transform: translateY(0.16em);
 }
 button.delivery.reveal span {
   opacity: 0;

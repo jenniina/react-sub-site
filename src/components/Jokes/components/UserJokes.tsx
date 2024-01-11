@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { omit, set } from 'lodash'
+import { IoCopyOutline } from 'react-icons/io5'
 import { FaRandom, FaList } from 'react-icons/fa'
+import { MdSave } from 'react-icons/md'
 import {
   MdOutlineFilter3,
   MdOutlineFilter4,
@@ -935,7 +936,8 @@ const UserJokes = ({
                                     ? { 'aria-hidden': true }
                                     : { 'aria-hidden': false })}
                                 >
-                                  {titleClickToReveal}
+                                  <BiChevronsRight /> {titleClickToReveal}{' '}
+                                  <BiChevronsLeft />
                                 </span>
                                 <p aria-live='assertive'>
                                   {visibleJokes[joke.jokeId] ? joke.delivery : ''}
@@ -1022,7 +1024,7 @@ const UserJokes = ({
                             onClick={() => handleJokeSave(joke._id)}
                             className='save'
                           >
-                            {ESaveJoke[language]}
+                            <MdSave /> {ESaveJoke[language]}
                           </button>
                         )}
 
@@ -1035,7 +1037,7 @@ const UserJokes = ({
                             )
                           }
                         >
-                          {ECopy[language]}
+                          <IoCopyOutline /> {ECopy[language]}
                         </button>
                         {userId &&
                           joke.user.includes(userId) &&

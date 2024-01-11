@@ -633,9 +633,6 @@ const Nav = (
                       setIsFormOpen={setIsLoginFormOpen}
                       isOpen={isLoginFormOpen}
                       language={language}
-                      titleLoggedInAs={titleLoggedInAs}
-                      titleLogin={titleLogin}
-                      titleLogout={titleLogout}
                       text='nav'
                     />
                     <Register
@@ -654,22 +651,6 @@ const Nav = (
                       text='nav'
                     />
                   </div>
-                  {/* <NavLink
-                  to='/login'
-                  className={({ isActive }) =>
-                    isActive ? `active ${styles.active} ${styles.link}` : `${styles.link}`
-                  }
-                >
-                  <span>Log in</span>
-                </NavLink>
-                <NavLink
-                  to='/register'
-                  className={({ isActive }) =>
-                    isActive ? `active ${styles.active} ${styles.link}` : `${styles.link}`
-                  }
-                >
-                  <span>Register</span>
-                </NavLink> */}
                 </>
               ) : (
                 <>
