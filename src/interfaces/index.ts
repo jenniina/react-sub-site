@@ -24,6 +24,7 @@ export interface IUser {
 export interface IBlacklistedJoke {
   jokeId: IJoke['jokeId']
   language: ELanguages
+  _id?: string
 }
 
 export interface ReducerProps {

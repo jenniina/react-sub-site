@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import userService from '../services/users'
-import { EPleaseGiveValidEmail, IUser, ELanguages } from '../interfaces'
+import { EPleaseGiveValidEmail, IUser, ELanguages, IBlacklistedJoke } from '../interfaces'
 import AppThunk from '../store'
 import { AxiosResponse } from 'axios'
 import { IJoke } from '../components/Jokes/interfaces'
@@ -113,6 +113,22 @@ export const addToBlacklistedJokes = (
     const content: IContent = await userService.addToBlacklistedJokes(
       userId,
       jokeId,
+      language
+    )
+    dispatch(update(content.user))
+    return content
+  }
+}
+
+export const removeJokeFromBlacklisted = (
+  userId: IUser['_id'] | undefined,
+  joke_id: IBlacklistedJoke['_id'] | undefined,
+  language: ELanguages
+) => {
+  return async (dispatch: (arg0: { payload: IUser; type: 'users/update' }) => IUser) => {
+    const content: IContent = await userService.removeJokeFromBlacklisted(
+      userId,
+      joke_id,
       language
     )
     dispatch(update(content.user))
