@@ -1482,15 +1482,6 @@ function Jokes({
         dispatch(removeJokeFromBlacklisted(user?._id, bjoke_id, joke?.language))
           .then((data) => {
             dispatch(initializeUsers())
-            setSaveJoke(joke)
-            if (window.confirm(`${EWouldYouLikeToSaveTheJoke[language]}`)) {
-              handleJokeSave(e)
-              dispatch(initializeUsers())
-              dispatch(notify(`${EJokeRestored[language]}`, false, 3))
-            } else {
-              dispatch(notify(`${EJokeRestored[language]}`, false, 3))
-              return
-            }
           })
           .catch((error) => {
             console.log(error)
