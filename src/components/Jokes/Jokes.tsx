@@ -45,6 +45,9 @@ import {
   EAreYouSureYouWantToHideThisJoke,
   EJokeHidden,
   EThisJokeIsAlreadyBlacklisted,
+  EJokeRestored,
+  EAreYouSureYouWantToRestoreThisJoke,
+  EWouldYouLikeToSaveTheJoke,
 } from './interfaces'
 import {
   ELogin,
@@ -78,7 +81,12 @@ import dadjokeService from './services/dadjokes'
 import JokeSubmit from './components/JokeSubmit'
 import { useNavigate } from 'react-router-dom'
 import { set } from 'lodash'
-import { addToBlacklistedJokes, initializeUsers } from '../../reducers/usersReducer'
+import {
+  addToBlacklistedJokes,
+  removeJokeFromBlacklisted,
+  initializeUsers,
+} from '../../reducers/usersReducer'
+import useTimeout from '../../hooks/useTimeout'
 
 export const jokeCategoryByLanguage: IJokeCategoryByLanguage = {
   en: {
@@ -173,9 +181,15 @@ function Jokes({
   const jokes = useSelector((state: ReducerProps) => {
     return state.jokes
   })
-  const user = useSelector((state: ReducerProps) => {
-    return state.auth?.user
+  const users = useSelector((state: ReducerProps) => {
+    return state.users
   })
+  const localUser = useSelector((state: ReducerProps) => {
+    return state.auth
+  })
+  const user = localUser
+    ? users?.find((user: IUser) => user._id === localUser.user._id)
+    : undefined
 
   const categoryByLanguagesConst = {
     en: ECategory_en,
@@ -265,7 +279,7 @@ function Jokes({
 
   useEffect(() => {
     dispatch(initializeUsers())
-  }, [user])
+  }, [])
 
   useEffect(() => {
     setTimeout(() => {
@@ -335,7 +349,7 @@ function Jokes({
       if (window.confirm(`${deleteJoke} ${titleJoke.toLowerCase()} "${joke}"?`)) {
         try {
           // Make an API request to delete the user's ID from the joke's user array
-          dispatch(deleteUserFromJoke(id as string, user._id as string)).then(() => {
+          dispatch(deleteUserFromJoke(id as string, user?._id as string)).then(() => {
             dispatch(initializeJokes())
           })
         } catch (error) {
@@ -614,10 +628,6 @@ function Jokes({
     setJoke(jokeData.joke || jokeData.value)
   }
 
-  const users = useSelector((state: ReducerProps) => {
-    return state.users
-  })
-
   const getRandomNorrisCategory = () => {
     const filteredCategories =
       safemode === ESafemode.Unsafe
@@ -721,7 +731,7 @@ function Jokes({
             (random.private === false || random.private === undefined) &&
             random.anonymous === false
           ) {
-            const author = users.find((user: IUser) => user._id == random.author)
+            const author = users?.find((user: IUser) => user._id == random.author)
             setAuthor(author?.name ?? '')
           } else {
             setAuthor('')
@@ -1438,7 +1448,7 @@ function Jokes({
       )
       if (isAlreadyBlacklisted) {
         dispatch(notify(EThisJokeIsAlreadyBlacklisted[language], true, 3))
-        dispatch(initializeUser())
+        dispatch(initializeUsers())
         setJoke('')
         setDelivery('')
         setAuthor('')
@@ -1446,7 +1456,7 @@ function Jokes({
         return
       }
       if (
-        Array.isArray(user) &&
+        Array.isArray(users) &&
         user?.blacklistedJokes &&
         user?.blacklistedJokes?.length > 0
       ) {
@@ -1454,7 +1464,7 @@ function Jokes({
           .then(() => dispatch(notify(`${EJokeHidden[language]}`, false, 3)))
           .catch((error) => {
             console.log(error)
-            dispatch(initializeUser())
+            dispatch(initializeUsers())
             dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
             setJoke('')
             setDelivery('')
@@ -1466,11 +1476,41 @@ function Jokes({
         dispatch(addToBlacklistedJokes(user?._id, jokeId, language))
           .then(() => {
             dispatch(notify(`${EJokeHidden[language]}`, false, 3))
-            dispatch(initializeUser())
+            dispatch(initializeUsers())
             setJoke('')
             setDelivery('')
             setAuthor('')
             setJokeId('')
+          })
+          .catch((error) => {
+            console.log(error)
+            dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
+          })
+      } else {
+        dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
+      }
+    }
+  }
+  const handleRemoveJokeFromBlacklisted = (
+    e: React.FormEvent<HTMLFormElement>,
+    joke: IJoke,
+    bjoke_id: IBlacklistedJoke['_id']
+  ) => {
+    e.preventDefault()
+    if (window.confirm(`${EAreYouSureYouWantToRestoreThisJoke[language]}`)) {
+      if (user) {
+        dispatch(removeJokeFromBlacklisted(user?._id, bjoke_id, joke?.language))
+          .then((data) => {
+            dispatch(initializeUsers())
+            setSaveJoke(joke)
+            if (window.confirm(`${EWouldYouLikeToSaveTheJoke[language]}`)) {
+              handleJokeSave(e)
+              dispatch(initializeUsers())
+              dispatch(notify(`${EJokeRestored[language]}`, false, 3))
+            } else {
+              dispatch(notify(`${EJokeRestored[language]}`, false, 3))
+              return
+            }
           })
           .catch((error) => {
             console.log(error)
@@ -1571,7 +1611,7 @@ function Jokes({
       <section className={`joke-container card ${language}`}>
         <div>
           <UserJokes
-            userId={user?._id}
+            user={user}
             handleDelete={handleDelete}
             deleteJoke={deleteJoke}
             titleCategory={titleCategory}
@@ -1592,6 +1632,7 @@ function Jokes({
             setIsEditOpen={setIsEditOpen}
             editId={editId}
             setEditId={setEditId}
+            handleRemoveJokeFromBlacklisted={handleRemoveJokeFromBlacklisted}
           />
         </div>
       </section>

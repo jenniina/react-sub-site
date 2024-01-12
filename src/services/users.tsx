@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-import { IUser as user, ELanguages } from '../interfaces'
+import { IUser as user, ELanguages, IBlacklistedJoke } from '../interfaces'
 
 const VITE_BASE_URI = import.meta.env.VITE_BASE_URI
 const baseUrl = VITE_BASE_URI ? `${VITE_BASE_URI}/api/users` : '/api/users'
@@ -43,6 +43,19 @@ const addToBlacklistedJokes = async (
   language: string
 ) => {
   const response = await axios.put(`${baseUrl}/${id}/${jokeId}/${language}`)
+  return response.data
+}
+
+// router.delete('/api/users/:id/:jokeId/:language', removeJokeFromBlacklisted)
+const removeJokeFromBlacklisted = async (
+  id: user['_id'] | undefined,
+  joke_id: IBlacklistedJoke['_id'] | undefined,
+  language: ELanguages
+) => {
+  const response = await axios.delete(
+    `${baseUrl}/${id}/${joke_id}/${language}`,
+    getConfig()
+  )
   return response.data
 }
 
@@ -103,4 +116,5 @@ export default {
   updateToken,
   forgot,
   addToBlacklistedJokes,
+  removeJokeFromBlacklisted,
 }

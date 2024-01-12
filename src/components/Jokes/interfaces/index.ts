@@ -1489,3 +1489,57 @@ export enum EHide {
   cs = 'Skrýt',
   fi = 'Piilota',
 }
+export enum ERestore {
+  en = 'Restore',
+  es = 'Restaurar',
+  fr = 'Restaurer',
+  de = 'Wiederherstellen',
+  pt = 'Restaurar',
+  cs = 'Obnovit',
+  fi = 'Palauta',
+}
+export enum EJokeRestored {
+  en = 'Joke restored',
+  es = 'Broma restaurada',
+  fr = 'Blague restaurée',
+  de = 'Witz wiederhergestellt',
+  pt = 'Piada restaurada',
+  cs = 'Vtip obnoven',
+  fi = 'Vitsi palautettu',
+}
+export enum EAreYouSureYouWantToRestoreThisJoke {
+  en = 'Are you sure you want to restore this joke?',
+  es = '¿Estás seguro de que quieres restaurar esta broma?',
+  fr = 'Êtes-vous sûr de vouloir restaurer cette blague?',
+  de = 'Möchten Sie diesen Witz wirklich wiederherstellen?',
+  pt = 'Tem certeza de que deseja restaurar esta piada?',
+  cs = 'Jste si jisti, že chcete tento vtip obnovit?',
+  fi = 'Oletko varma, että haluat palauttaa tämän vitsin?',
+}
+export enum EWouldYouLikeToSaveTheJoke {
+  en = 'Would you like to save the joke?',
+  es = '¿Te gustaría guardar la broma?',
+  fr = 'Souhaitez-vous enregistrer la blague?',
+  de = 'Möchten Sie den Witz speichern?',
+  pt = 'Você gostaria de salvar a piada?',
+  cs = 'Chcete uložit vtip?',
+  fi = 'Haluatko tallentaa vitsin?',
+}
+export enum EBlockedJokes {
+  en = 'Blocked jokes',
+  es = 'Bromas bloqueadas',
+  fr = 'Blagues bloquées',
+  de = 'Blockierte Witze',
+  pt = 'Piadas bloqueadas',
+  cs = 'Blokovat vtipy',
+  fi = 'Estetyt vitsit',
+}
+export enum EHideBlockedJokes {
+  en = 'Hide blocked jokes',
+  es = 'Ocultar bromas bloqueadas',
+  fr = 'Masquer les blagues bloquées',
+  de = 'Blockierte Witze ausblenden',
+  pt = 'Ocultar piadas bloqueadas',
+  cs = 'Skrýt blokované vtipy',
+  fi = 'Piilota estetyt vitsit',
+}

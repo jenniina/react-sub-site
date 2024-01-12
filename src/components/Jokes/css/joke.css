@@ -856,7 +856,70 @@ form.joke-form-save .save-delete-wrap > button.submit {
   width: 50%;
   max-width: 50%;
 }
-
+ul.blockedJokes {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: calc(var(--gap));
+  padding: 0;
+  margin: 2rem 0 0 0;
+}
+ul.blockedJokes > li {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: calc(var(--gap) / 2);
+}
+ul.blockedJokes > li > form {
+  flex: 1 0 8em;
+  min-width: 8em;
+}
+.blocked-controls-wrap {
+  --smaller: 12rem;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: calc(var(--gap) / 2);
+}
+.button-wrap {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--gap));
+}
+.joke-container .saved .input-wrap.search-blacklist {
+  flex: 0 1 calc(100% - var(--smaller));
+  max-width: 100%;
+  width: calc(100% - var(--smaller));
+  min-width: calc(100% - var(--smaller));
+  max-height: max-content;
+  margin: 3rem 0 0 0;
+}
+.joke-container .saved .input-wrap.search-blacklist > * {
+  max-height: 2rem;
+  margin: 0;
+}
+button.all-or-latest-btn {
+  flex: 0 1 max-content;
+}
+button.all-or-latest-btn ~ input {
+  flex: 0 1 max-content;
+  margin: 0;
+}
+button.random-btn {
+  flex: 0 1 max-content;
+}
+button.blocked-btn {
+  flex: 0 1 max-content;
+}
+button.blocked-btn.active {
+  flex: 1 0 100%;
+  max-width: 100%;
+}
 .downwards-arrow {
   position: relative;
   width: 100%;

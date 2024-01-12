@@ -89,6 +89,9 @@ import {
   ECopy,
   EShowHiddenJokes,
   EHideJokes,
+  EBlockedJokes,
+  EHideBlockedJokes,
+  ERestore,
 } from '../interfaces'
 import {
   IUser,
@@ -113,6 +116,7 @@ import {
   ELastPage,
   EFirstPage,
   IBlacklistedJoke,
+  EError,
 } from '../../../interfaces'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
 import { Select, SelectOption } from '../../Select/Select'
@@ -125,7 +129,7 @@ import { notify } from '../../../reducers/notificationReducer'
 import { initializeUser } from '../../../reducers/authReducer'
 
 interface Props {
-  userId: IUser['_id']
+  user: IUser | undefined
   handleDelete: (
     jokeId: IJoke['_id'],
     joke: string
@@ -155,6 +159,11 @@ interface Props {
   setIsEditOpen: (isEditOpen: boolean) => void
   editId: IJoke['_id'] | null
   setEditId: (editId: IJoke['_id']) => void
+  handleRemoveJokeFromBlacklisted: (
+    e: React.FormEvent<HTMLFormElement>,
+    joke: IJoke,
+    bjoke_id: IBlacklistedJoke['_id']
+  ) => void
 }
 
 enum ESortBy_en {
@@ -171,7 +180,7 @@ export enum EOrderByAge {
 }
 
 const UserJokes = ({
-  userId,
+  user,
   handleDelete,
   handleUpdate,
   deleteJoke,
@@ -192,9 +201,10 @@ const UserJokes = ({
   setIsEditOpen,
   editId,
   setEditId,
+  handleRemoveJokeFromBlacklisted,
 }: Props) => {
   const users = useSelector((state: any) => state.users)
-  const user = useSelector((state: any) => state.auth?.user)
+  const userId = user?._id
   const jokes = useSelector((state: any) => state.jokes)
 
   type IJokeVisible = IJoke & {
@@ -207,6 +217,8 @@ const UserJokes = ({
   const [visibleJokes, setVisibleJokes] = useState<Record<IJoke['jokeId'], boolean>>({})
   const [localJokes, setLocalJokes] = useState<boolean>(false)
   const [filteredJokes, setFilteredJokes] = useState<IJokeVisible[]>(userJokes)
+  const [showBlacklistedJokes, setShowBlacklistedJokes] = useState<boolean>(false)
+  const [fetchedJokes, setFetchedJokes] = useState<IJoke[]>([])
   const [isRandom, setIsRandom] = useState<boolean>(false)
   const [randomTrigger, setRandomTrigger] = useState<number>(0)
   const [sortBy, setSortBy] = useState<ESortBy_en>(ESortBy_en.popularity)
@@ -251,20 +263,20 @@ const UserJokes = ({
           ...joke,
           visible: false,
           translatedLanguage: jokeLanguage ?? '',
-          name: joke.anonymous ? 'ÖÖÖ_Anonymous' : author?.name ?? '',
+          name: joke.anonymous ? 'ÖÖÖ_Anonymous' : author ?? '',
         }
       })
       updatedJokes = !isCheckedSafemode
         ? updatedJokes
             .filter((joke) => joke.safe === false)
             .sort((a, b) => {
-              return b.user.length - a.user.length
+              return b.user?.length - a.user?.length
             })
         : isCheckedSafemode
         ? updatedJokes
             .filter((joke) => joke.safe)
             .sort((a, b) => {
-              return b.user.length - a.user.length
+              return b.user?.length - a.user?.length
             })
         : []
       setUserJokes(updatedJokes)
@@ -280,9 +292,8 @@ const UserJokes = ({
   }
 
   useEffect(() => {
-    dispatch(initializeUser()).then(() => {
-      dispatch(initializeJokes())
-    })
+    dispatch(initializeUser())
+    dispatch(initializeJokes())
   }, [])
 
   useEffect(() => {
@@ -377,7 +388,7 @@ const UserJokes = ({
         return (
           languageMatches && categoryMatches && norrisCategoryMatches && searchTermMatches
         )
-      } else if (!localJokes && joke.user.includes(userId)) {
+      } else if (!localJokes && joke.user?.includes(userId)) {
         return (
           languageMatches && categoryMatches && norrisCategoryMatches && searchTermMatches
         )
@@ -407,7 +418,7 @@ const UserJokes = ({
 
     if (sortBy === ESortBy_en.popularity) {
       newFilteredJokes = newFilteredJokes?.sort((a, b) => {
-        return b.user.length - a.user.length
+        return b.user?.length - a.user?.length
       })
     }
 
@@ -467,7 +478,7 @@ const UserJokes = ({
       return
     }
     if (findJoke) {
-      if (findJoke.user.includes(userId?.toString())) {
+      if (findJoke.user?.includes(userId?.toString())) {
         dispatch(notify(`${EJokeAlreadySaved[language]}`, false, 8))
         return
       }
@@ -512,7 +523,89 @@ const UserJokes = ({
     setSelectedNorrisCategory(norrisOptions[0])
   }, [language])
 
-  const [showBlacklistedJokes, setShowBlacklistedJokes] = useState<boolean>(false)
+  useEffect(() => {
+    const fetchJokes = async () => {
+      if (Array.isArray(jokes) && jokes.length > 0 && user && user?.blacklistedJokes) {
+        const fetchedJokes = await Promise.all(
+          user?.blacklistedJokes?.map(async (blacklistedJoke: IBlacklistedJoke) => {
+            const joke = jokes?.find(
+              (joke: IJoke) =>
+                joke.jokeId === blacklistedJoke.jokeId &&
+                joke.language === blacklistedJoke.language
+            )
+            return (
+              joke ||
+              (await findBlackListedJokeFromAPI(
+                blacklistedJoke.jokeId,
+                blacklistedJoke.language
+              ))
+            )
+          }) || []
+        )
+        setFetchedJokes(fetchedJokes)
+      }
+    }
+
+    fetchJokes()
+  }, [user?.blacklistedJokes, jokes])
+
+  // filter fetchedJokes joke, setup and delivery according to searchTerm
+
+  const filteredFetchedJokes = fetchedJokes?.filter((joke) => {
+    const searchTermMatches =
+      ('joke' in joke
+        ? joke.joke.toLowerCase().includes(searchTerm.toLowerCase())
+        : false) ||
+      ('setup' in joke
+        ? joke.setup?.toLowerCase().includes(searchTerm.toLowerCase())
+        : false) ||
+      ('delivery' in joke
+        ? joke.delivery?.toLowerCase().includes(searchTerm.toLowerCase())
+        : false) ||
+      joke.category?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      joke.subCategories?.includes(searchTerm?.toLowerCase())
+
+    return searchTermMatches
+  })
+
+  //  https://v2.jokeapi.dev/joke/Any?idRange=3&lang={language}&format=json
+
+  const findBlackListedJokeFromAPI = async (id: string, language: ELanguages) => {
+    try {
+      const response = await fetch(
+        `https://v2.jokeapi.dev/joke/Any?idRange=${id}&lang=${language}&format=json`
+      )
+      const data = await response.json()
+
+      if (data.error) {
+        //Try DadJoke or ChuckNorris
+      } else {
+        if (data.type === 'twopart') {
+          return {
+            jokeId: data.id,
+            setup: data.setup,
+            delivery: data.delivery,
+            category: data.category,
+            language: data.lang,
+            safe: data.safe,
+            type: EJokeType.twopart,
+          } as IJoke
+        } else {
+          return {
+            jokeId: data.id,
+            joke: data.joke,
+            category: data.category,
+            language: data.lang,
+            safe: data.safe,
+            type: EJokeType.single,
+          } as IJoke
+        }
+      }
+    } catch (error) {
+      console.error(error)
+      return null
+    }
+  }
 
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [itemsPerPage, setItemsPerPage] = useState<number>(10)
@@ -666,13 +759,19 @@ const UserJokes = ({
         <div className='local-saved-wrap'>
           <button
             className={`btn${localJokes ? ' active' : ''}`}
-            onClick={() => setLocalJokes(true)}
+            onClick={() => {
+              setLocalJokes(true)
+              setShowBlacklistedJokes(false)
+            }}
           >
             {!localJokes ? ESeeLocalJokes[language] : ELocalJokes[language]}
           </button>
           <button
             className={`btn${!localJokes ? ' active' : ''}`}
-            onClick={() => setLocalJokes(false)}
+            onClick={() => {
+              setLocalJokes(false)
+              setShowBlacklistedJokes(false)
+            }}
           >
             {EYourSavedJokes[language]}
           </button>
@@ -681,256 +780,353 @@ const UserJokes = ({
       <div className='saved-inner'>
         <div className='filler'></div>
         <div>
-          <h3>{localJokes ? ELocalJokes[language] : EYourSavedJokes[language]}</h3>
-          {localJokes && (
-            <p className='mb3 flex center textcenter'> {EUserSubmittedJokes[language]}</p>
-          )}
-          <div className='toggle-wrap'>
-            <div className='toggle-inner-wrap'>
-              <div className='safemode-wrap'>
-                <ButtonToggle
-                  isChecked={isCheckedSafemode}
-                  name='safemode'
-                  id='safemode2'
-                  className={`${language} ${
-                    !isCheckedSafemode ? 'unsafe' : ''
-                  } userjokes safemode`}
-                  label={`${EFilter[language]}: `}
-                  hideLabel={false}
-                  on={titleSafe}
-                  off={titleUnsafe}
-                  handleToggleChange={handleToggleChangeSafemode}
-                />
-                {sortBy === ESortBy_en.age && (
-                  <ButtonToggle
-                    isChecked={isCheckedNewest}
-                    name='age'
-                    id='age'
-                    className={`${language} age`}
-                    label={`${EAge[language]}: `}
-                    hideLabel={false}
-                    on={ENewest[language]}
-                    off={EOldest[language]}
-                    handleToggleChange={() => {
-                      handleToggleChangeNewest()
-                    }}
-                    equal={true}
-                  />
-                )}
-              </div>
-              <div className='sortby-wrap'>
-                <Select
-                  language={language}
-                  id='sortby'
-                  className='sortby'
-                  instructions={`${EOrderBy[language]}:`}
-                  options={optionsSortBy(ESortBy)}
-                  value={
-                    {
-                      label:
-                        ESortBy[sortBy][
-                          ELanguages[
-                            getKeyofEnum(ELanguages, language) as keyof typeof ELanguages
-                          ]
-                        ],
-                      value:
-                        ESortBy[sortBy][
-                          ELanguages[
-                            getKeyofEnum(ELanguages, language) as keyof typeof ELanguages
-                          ]
-                        ],
-                    } as SelectOption
-                  }
-                  onChange={(o: SelectOption | undefined) => {
-                    setSortBy(o?.value as ESortBy_en)
-                  }}
-                />
-              </div>
-            </div>
-            <div className='toggle-inner-wrap'>
-              <div>
-                <Select
-                  language={language}
-                  id='joke-languages'
-                  className='language-filter'
-                  instructions={`${EFilterByLanguage[language]}:`}
-                  options={[
-                    { label: EAll[language], value: '' },
-                    ...Array.from(new Set(userJokes?.map((joke) => joke.language))).map(
-                      (language) => {
-                        return {
-                          label:
-                            LanguageOfLanguage[language as keyof typeof ELanguagesLong][
-                              getKeyofEnum(
-                                ELanguages,
-                                language as ELanguages
-                              ) as keyof TLanguageOfLanguage[ELanguages]
-                            ],
-                          value: language,
-                        }
-                      }
-                    ),
-                  ]}
-                  value={
-                    selectedLanguage
-                      ? ({
-                          label:
-                            LanguageOfLanguage[
-                              selectedLanguage as keyof typeof ELanguagesLong
-                            ][
-                              getKeyofEnum(
-                                ELanguages,
-                                selectedLanguage as ELanguages
-                              ) as keyof TLanguageOfLanguage[ELanguages]
-                            ],
-                          value: selectedLanguage,
-                        } as SelectOption)
-                      : { label: EAll[language], value: '' }
-                  }
-                  onChange={(o: SelectOption | undefined) => {
-                    setSelectedLanguage(o?.value as ELanguages)
-                  }}
-                />
-              </div>
-              <div>
-                <Select
-                  language={language}
-                  id='single-category-select'
-                  className='single-category-select'
-                  instructions={`${EFilterByCategory[language]}:`}
-                  options={[
-                    { label: ESelectACategory[language], value: '' },
-                    ...(Object.values(ECategory_en).map((category) => {
-                      return {
-                        label: getCategoryInLanguage(category, language),
-                        value: category,
-                      }
-                    }) as SelectOption[]),
-                  ]}
-                  value={
-                    selectedCategory
-                      ? ({
-                          label: getCategoryInLanguage(
-                            selectedCategory as ECategory_en,
-                            language
-                          ),
-                          value: selectedCategory,
-                        } as SelectOption)
-                      : { label: ESelectACategory[language], value: '' }
-                  }
-                  onChange={(o) => {
-                    setSelectedCategory(o?.value as ECategory_en)
-                    handleSelectChange(o as SelectOption)
-                    handleCategoryChange(o?.value as string)
-                  }}
-                />
-              </div>
-            </div>
-            <div className='toggle-inner-wrap'>
-              <div>
-                <Select
-                  language={language}
-                  id='userNorrisCategories'
-                  className={`category extras ${hasNorris ? '' : 'hidden'}`}
-                  instructions={`${EFilterFurther[language]}:`}
-                  selectAnOption={norrisOptions[0].label}
-                  value={selectedNorrisCategory}
-                  options={norrisOptions}
-                  onChange={(o) => {
-                    setSelectedNorrisCategory(o as SelectOption)
-                  }}
-                />
-              </div>
-              <div className={hasNorris ? 'search-jokes-wrap' : 'full search-jokes-wrap'}>
-                <div className='search-jokes input-wrap'>
-                  <label htmlFor='search-jokes' className='visually-hidden'>
-                    <input
-                      type='text'
-                      id='search-jokes'
-                      value={searchTerm}
-                      onChange={handleSearchChange}
-                      placeholder={ESearch[language]}
+          {!showBlacklistedJokes && (
+            <>
+              <h3>{localJokes ? ELocalJokes[language] : EYourSavedJokes[language]}</h3>
+              {localJokes && (
+                <p className='mb3 flex center textcenter'>
+                  {' '}
+                  {EUserSubmittedJokes[language]}
+                </p>
+              )}
+
+              <div className='toggle-wrap'>
+                <div className='toggle-inner-wrap'>
+                  <div className='safemode-wrap'>
+                    <ButtonToggle
+                      isChecked={isCheckedSafemode}
+                      name='safemode'
+                      id='safemode2'
+                      className={`${language} ${
+                        !isCheckedSafemode ? 'unsafe' : ''
+                      } userjokes safemode`}
+                      label={`${EFilter[language]}: `}
+                      hideLabel={false}
+                      on={titleSafe}
+                      off={titleUnsafe}
+                      handleToggleChange={handleToggleChangeSafemode}
                     />
-                    <span>{ESearchByKeyword[language]}</span>
-                  </label>
+                    {sortBy === ESortBy_en.age && (
+                      <ButtonToggle
+                        isChecked={isCheckedNewest}
+                        name='age'
+                        id='age'
+                        className={`${language} age`}
+                        label={`${EAge[language]}: `}
+                        hideLabel={false}
+                        on={ENewest[language]}
+                        off={EOldest[language]}
+                        handleToggleChange={() => {
+                          handleToggleChangeNewest()
+                        }}
+                        equal={true}
+                      />
+                    )}
+                  </div>
+                  <div className='sortby-wrap'>
+                    <Select
+                      language={language}
+                      id='sortby'
+                      className='sortby'
+                      instructions={`${EOrderBy[language]}:`}
+                      options={optionsSortBy(ESortBy)}
+                      value={
+                        {
+                          label:
+                            ESortBy[sortBy][
+                              ELanguages[
+                                getKeyofEnum(
+                                  ELanguages,
+                                  language
+                                ) as keyof typeof ELanguages
+                              ]
+                            ],
+                          value:
+                            ESortBy[sortBy][
+                              ELanguages[
+                                getKeyofEnum(
+                                  ELanguages,
+                                  language
+                                ) as keyof typeof ELanguages
+                              ]
+                            ],
+                        } as SelectOption
+                      }
+                      onChange={(o: SelectOption | undefined) => {
+                        setSortBy(o?.value as ESortBy_en)
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className='toggle-inner-wrap'>
+                  <div>
+                    <Select
+                      language={language}
+                      id='joke-languages'
+                      className='language-filter'
+                      instructions={`${EFilterByLanguage[language]}:`}
+                      options={[
+                        { label: EAll[language], value: '' },
+                        ...Array.from(
+                          new Set(userJokes?.map((joke) => joke.language))
+                        ).map((language) => {
+                          return {
+                            label:
+                              LanguageOfLanguage[language as keyof typeof ELanguagesLong][
+                                getKeyofEnum(
+                                  ELanguages,
+                                  language as ELanguages
+                                ) as keyof TLanguageOfLanguage[ELanguages]
+                              ],
+                            value: language,
+                          }
+                        }),
+                      ]}
+                      value={
+                        selectedLanguage
+                          ? ({
+                              label:
+                                LanguageOfLanguage[
+                                  selectedLanguage as keyof typeof ELanguagesLong
+                                ][
+                                  getKeyofEnum(
+                                    ELanguages,
+                                    selectedLanguage as ELanguages
+                                  ) as keyof TLanguageOfLanguage[ELanguages]
+                                ],
+                              value: selectedLanguage,
+                            } as SelectOption)
+                          : { label: EAll[language], value: '' }
+                      }
+                      onChange={(o: SelectOption | undefined) => {
+                        setSelectedLanguage(o?.value as ELanguages)
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <Select
+                      language={language}
+                      id='single-category-select'
+                      className='single-category-select'
+                      instructions={`${EFilterByCategory[language]}:`}
+                      options={[
+                        { label: ESelectACategory[language], value: '' },
+                        ...(Object.values(ECategory_en).map((category) => {
+                          return {
+                            label: getCategoryInLanguage(category, language),
+                            value: category,
+                          }
+                        }) as SelectOption[]),
+                      ]}
+                      value={
+                        selectedCategory
+                          ? ({
+                              label: getCategoryInLanguage(
+                                selectedCategory as ECategory_en,
+                                language
+                              ),
+                              value: selectedCategory,
+                            } as SelectOption)
+                          : { label: ESelectACategory[language], value: '' }
+                      }
+                      onChange={(o) => {
+                        setSelectedCategory(o?.value as ECategory_en)
+                        handleSelectChange(o as SelectOption)
+                        handleCategoryChange(o?.value as string)
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className='toggle-inner-wrap'>
+                  <div>
+                    <Select
+                      language={language}
+                      id='userNorrisCategories'
+                      className={`category extras ${hasNorris ? '' : 'hidden'}`}
+                      instructions={`${EFilterFurther[language]}:`}
+                      selectAnOption={norrisOptions[0].label}
+                      value={selectedNorrisCategory}
+                      options={norrisOptions}
+                      onChange={(o) => {
+                        setSelectedNorrisCategory(o as SelectOption)
+                      }}
+                    />
+                  </div>
+                  <div
+                    className={hasNorris ? 'search-jokes-wrap' : 'full search-jokes-wrap'}
+                  >
+                    <div className='search-jokes input-wrap'>
+                      <label htmlFor='search-jokes'>
+                        <input
+                          type='text'
+                          id='search-jokes'
+                          value={searchTerm}
+                          onChange={handleSearchChange}
+                          placeholder={ESearch[language]}
+                        />
+                        <span>{ESearchByKeyword[language]}</span>
+                      </label>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <div className='reset-btn-wrap mb3'>
-            <button className='reset-btn delete danger' onClick={() => resetFilters()}>
-              <MdOutlineSettingsBackupRestore /> <span>{EReset[language]}</span>
-            </button>
-          </div>
-          <div className='flex center gap-half'>
-            <button
-              className='icontext'
-              onClick={() => {
-                setCurrentPage(1)
-                setIsRandom(true)
-                setRandomTrigger((prev) => prev + 1)
-                setLatest(false)
-              }}
-            >
-              <FaRandom />
-              {ERandom[language]}
-            </button>{' '}
-            <button
-              className='icontext'
-              onClick={() => {
-                setIsRandom(false)
-                if (!latest) {
-                  setSortBy(ESortBy_en.age)
-                  setSortByAge(EOrderByAge.newest)
-                  setTimeout(() => {
-                    setLatest(true)
-                  }, 200)
-                } else setLatest(false)
-              }}
-            >
-              {!latest && !isRandom ? (
-                <>
-                  {latestNumber === 3 && <MdOutlineFilter3 />}
-                  {latestNumber === 4 && <MdOutlineFilter4 />}
-                  {latestNumber === 5 && <MdOutlineFilter5 />}
-                  {latestNumber === 6 && <MdOutlineFilter6 />}
-                  {latestNumber === 7 && <MdOutlineFilter7 />}
-                  {latestNumber === 8 && <MdOutlineFilter8 />}
-                  {latestNumber === 9 && <MdOutlineFilter9 />}{' '}
-                  {latestNumber > 9 && <MdOutlineFilter9Plus />} {EGetLatest[language]}{' '}
-                  <span className='scr'>{latestNumber}</span>
-                </>
-              ) : (
-                <>
-                  <FaList /> {EAllJokes[language]}
-                </>
-              )}
-            </button>
-            {!latest && !isRandom && (
+              <div className='reset-btn-wrap mb3'>
+                <button
+                  className='reset-btn delete danger'
+                  onClick={() => resetFilters()}
+                >
+                  <MdOutlineSettingsBackupRestore /> <span>{EReset[language]}</span>
+                </button>
+              </div>
+            </>
+          )}
+          <div className='button-wrap'>
+            {!showBlacklistedJokes && (
               <>
-                <input
-                  type='number'
-                  min={3}
-                  max={100}
-                  id='number-of-latest'
-                  defaultValue={latestNumber}
-                  className='narrow'
-                  onChange={(e) => {
-                    setLatestNumber(e.target.valueAsNumber)
+                <button
+                  className='icontext random-btn'
+                  onClick={() => {
+                    setCurrentPage(1)
+                    setShowBlacklistedJokes(false)
+                    setIsRandom(true)
+                    setRandomTrigger((prev) => prev + 1)
+                    setLatest(false)
                   }}
-                />
-                <label htmlFor='number-of-latest' className='scr'>
-                  <span>{EHowMany[language]}</span>
-                </label>
+                >
+                  <FaRandom />
+                  {ERandom[language]}
+                </button>{' '}
+                <div className='flex center'>
+                  <button
+                    className='icontext all-or-latest-btn'
+                    onClick={() => {
+                      setIsRandom(false)
+                      setShowBlacklistedJokes(false)
+                      if (!latest) {
+                        setSortBy(ESortBy_en.age)
+                        setSortByAge(EOrderByAge.newest)
+                        setTimeout(() => {
+                          setLatest(true)
+                        }, 200)
+                      } else setLatest(false)
+                    }}
+                  >
+                    {!latest && !isRandom ? (
+                      <>
+                        {latestNumber === 3 && <MdOutlineFilter3 />}
+                        {latestNumber === 4 && <MdOutlineFilter4 />}
+                        {latestNumber === 5 && <MdOutlineFilter5 />}
+                        {latestNumber === 6 && <MdOutlineFilter6 />}
+                        {latestNumber === 7 && <MdOutlineFilter7 />}
+                        {latestNumber === 8 && <MdOutlineFilter8 />}
+                        {latestNumber === 9 && <MdOutlineFilter9 />}{' '}
+                        {latestNumber > 9 && <MdOutlineFilter9Plus />}{' '}
+                        {EGetLatest[language]} <span className='scr'>{latestNumber}</span>
+                      </>
+                    ) : (
+                      <>
+                        <FaList /> {EAllJokes[language]}
+                      </>
+                    )}
+                  </button>
+                  {!latest && !isRandom && (
+                    <>
+                      <input
+                        type='number'
+                        min={3}
+                        max={100}
+                        id='number-of-latest'
+                        defaultValue={latestNumber}
+                        className='narrow'
+                        onChange={(e) => {
+                          setLatestNumber(e.target.valueAsNumber)
+                        }}
+                      />
+                      <label htmlFor='number-of-latest' className='scr'>
+                        <span>{EHowMany[language]}</span>
+                      </label>
+                    </>
+                  )}
+                </div>
               </>
             )}
+            <button
+              className={`blocked-btn ${showBlacklistedJokes ? 'active' : ''}`}
+              onClick={() => setShowBlacklistedJokes((prev) => !prev)}
+            >
+              {showBlacklistedJokes
+                ? EHideBlockedJokes[language]
+                : EBlockedJokes[language]}
+            </button>
           </div>
 
-          {!isRandom && pagination()}
+          {!isRandom && !showBlacklistedJokes && pagination()}
 
-          <ul className='userjokeslist'>
-            {currentItems && currentItems?.length > 0 ? (
+          {showBlacklistedJokes && filteredFetchedJokes?.length > 0 ? (
+            <div className='blocked-controls-wrap'>
+              <ButtonToggle
+                isChecked={isCheckedSafemode}
+                name='safemode'
+                id='safemode3'
+                className={`${language} ${!isCheckedSafemode ? 'unsafe' : ''} safemode`}
+                label={`${EFilter[language]}: `}
+                hideLabel={false}
+                on={titleSafe}
+                off={titleUnsafe}
+                handleToggleChange={handleToggleChangeSafemode}
+              />
+              <div className='input-wrap search-blacklist'>
+                <label htmlFor='searchBlacklistedJokes'>
+                  <input
+                    id='searchBlacklistedJokes'
+                    type='text'
+                    onChange={handleSearchChange}
+                  />
+                  <span>{ESearchByKeyword[language]}</span>
+                </label>
+              </div>
+            </div>
+          ) : showBlacklistedJokes ? (
+            <p className='textcenter'>{ENoJokesYet[language]}</p>
+          ) : (
+            ''
+          )}
+
+          <ul className={`userjokeslist ${showBlacklistedJokes ? 'blockedJokes' : ''}`}>
+            {showBlacklistedJokes ? (
+              filteredFetchedJokes
+                ?.filter((joke) => joke.safe === isCheckedSafemode)
+                ?.map((joke, index) => (
+                  <li key={user?.blacklistedJokes?.[index]?.jokeId ?? index}>
+                    <form
+                      onSubmit={(e) =>
+                        handleRemoveJokeFromBlacklisted(
+                          e,
+                          joke,
+                          user?.blacklistedJokes?.[index]?._id
+                        )
+                      }
+                    >
+                      <button className='' type='submit'>
+                        {ERestore[language]}
+                      </button>
+                    </form>
+                    {joke ? (
+                      joke.type === EJokeType.single ? (
+                        <p>{joke.joke}</p>
+                      ) : (
+                        <div>
+                          <p>{joke.setup}</p>
+                          <p>{joke.delivery}</p>
+                        </div>
+                      )
+                    ) : (
+                      ``
+                    )}
+                  </li>
+                ))
+            ) : currentItems && currentItems?.length > 0 ? (
               currentItems?.map((joke) => {
                 const { visible, translatedLanguage, ...restOfJoke } = joke
                 return (
@@ -1020,11 +1216,11 @@ const UserJokes = ({
                         )}
 
                         <span>
-                          {ELikedBy[language]} {joke.user.length}
+                          {ELikedBy[language]} {joke.user?.length}
                         </span>
                       </div>
                       <div>
-                        {userId && joke.user.includes(userId) && (
+                        {userId && joke.user?.includes(userId) && (
                           <form
                             onSubmit={
                               joke.type === EJokeType.single
@@ -1038,7 +1234,7 @@ const UserJokes = ({
                             </button>
                           </form>
                         )}
-                        {!joke.user.includes(userId) && (
+                        {!joke.user?.includes(userId) && (
                           <button
                             onClick={() => handleJokeSave(joke._id)}
                             className='save'
@@ -1059,7 +1255,7 @@ const UserJokes = ({
                           <IoCopyOutline /> {ECopy[language]}
                         </button>
                         {userId &&
-                          joke.user.includes(userId) &&
+                          joke.user?.includes(userId) &&
                           joke.author === userId && (
                             <Accordion
                               language={language}
@@ -1292,7 +1488,7 @@ const UserJokes = ({
               <li>{ENoJokesYet[language]}</li>
             )}
           </ul>
-          {!isRandom && pagination()}
+          {!isRandom && !showBlacklistedJokes && pagination()}
         </div>
         <div className='filler below'></div>
       </div>
@@ -1300,13 +1496,19 @@ const UserJokes = ({
         <div className='local-saved-wrap below'>
           <button
             className={`btn${localJokes ? ' active' : ''}`}
-            onClick={() => setLocalJokes(true)}
+            onClick={() => {
+              setLocalJokes(true)
+              setShowBlacklistedJokes(false)
+            }}
           >
             {!localJokes ? ESeeLocalJokes[language] : ELocalJokes[language]}
           </button>
           <button
             className={`btn${!localJokes ? ' active' : ''}`}
-            onClick={() => setLocalJokes(false)}
+            onClick={() => {
+              setLocalJokes(false)
+              setShowBlacklistedJokes(false)
+            }}
           >
             {EYourSavedJokes[language]}
           </button>
