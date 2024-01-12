@@ -799,7 +799,7 @@ function Jokes({
       newFilteredJokes = filteredJokes?.filter((joke) => {
         const searchTermMatches =
           ('joke' in joke
-            ? joke.joke.toLowerCase().includes(queryValueWithoutAnd.toLowerCase())
+            ? joke.joke?.toLowerCase().includes(queryValueWithoutAnd.toLowerCase())
             : false) ||
           ('setup' in joke
             ? joke.setup?.toLowerCase().includes(queryValueWithoutAnd.toLowerCase())
@@ -1440,7 +1440,7 @@ function Jokes({
     navigate('/portfolio/jokes?login=login')
   }
 
-  const handleBlacklistUpdate = (jokeId: IJoke['jokeId']) => {
+  const handleBlacklistUpdate = (jokeId: IJoke['jokeId'], value: string | undefined) => {
     if (window.confirm(`${EAreYouSureYouWantToHideThisJoke[language]}`)) {
       const isAlreadyBlacklisted = user?.blacklistedJokes?.some(
         (blacklistedJoke) =>
@@ -1455,7 +1455,7 @@ function Jokes({
         setJokeId('')
         return
       } else if (Array.isArray(users) && user) {
-        dispatch(addToBlacklistedJokes(user?._id, jokeId, language))
+        dispatch(addToBlacklistedJokes(user?._id, jokeId, language, value))
           .then(() => dispatch(notify(`${EJokeHidden[language]}`, false, 3)))
           .catch((error) => {
             console.log(error)
@@ -1471,6 +1471,7 @@ function Jokes({
       }
     }
   }
+
   const handleRemoveJokeFromBlacklisted = (
     e: React.FormEvent<HTMLFormElement>,
     joke: IJoke,
@@ -1494,11 +1495,8 @@ function Jokes({
     }
     if (window.confirm(`${EWouldYouLikeToSaveTheJoke[language]}`)) {
       handleJokeSave(e)
-      dispatch(initializeUsers())
-      dispatch(notify(`${EJokeRestored[language]}`, false, 3))
-    } else {
-      dispatch(notify(`${EJokeRestored[language]}`, false, 3))
-      return
+      dispatch(initializeJokes())
+      dispatch(notify(`${ESavedJoke[language]}`, false, 3))
     }
   }
 

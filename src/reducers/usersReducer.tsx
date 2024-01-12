@@ -107,13 +107,15 @@ export const updateUser = (
 export const addToBlacklistedJokes = (
   userId: IUser['_id'],
   jokeId: IJoke['jokeId'],
-  language: ELanguages
+  language: ELanguages,
+  value: string | undefined
 ) => {
   return async (dispatch: (arg0: { payload: IUser; type: 'users/update' }) => IUser) => {
     const content: IContent = await userService.addToBlacklistedJokes(
       userId,
       jokeId,
-      language
+      language,
+      value
     )
     dispatch(update(content.user))
     return content
