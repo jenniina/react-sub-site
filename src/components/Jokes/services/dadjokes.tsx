@@ -63,5 +63,13 @@ const searchDadJokes = async (searchTerm: string) => {
   const randomIndex = Math.floor(Math.random() * response.data.results.length)
   return response.data.results[randomIndex]
 }
+//https://icanhazdadjoke.com/j/5YQwUqCJyEd
 
-export default { getRandomDadJoke, searchDadJokes }
+const getDadJokeById = async (id: string) => {
+  const response = await axios.get(`${DADJOKE_URI}/j/${id}`, {
+    headers: { Accept: 'application/json' },
+  })
+  return response.data
+}
+
+export default { getRandomDadJoke, searchDadJokes, getDadJokeById }

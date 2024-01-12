@@ -127,6 +127,8 @@ import Accordion from '../../Accordion/Accordion'
 import { createJoke, initializeJokes, updateJoke } from '../reducers/jokeReducer'
 import { notify } from '../../../reducers/notificationReducer'
 import { initializeUser } from '../../../reducers/authReducer'
+import norrisService from '../services/chucknorris'
+import dadjokeService from '../services/dadjokes'
 
 interface Props {
   user: IUser | undefined
@@ -358,7 +360,7 @@ const UserJokes = ({
     let newFilteredJokes = userJokes?.filter((joke) => {
       const searchTermMatches =
         ('joke' in joke
-          ? joke.joke.toLowerCase().includes(searchTerm.toLowerCase())
+          ? joke.joke?.toLowerCase().includes(searchTerm.toLowerCase())
           : false) ||
         ('setup' in joke
           ? joke.setup?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -528,6 +530,7 @@ const UserJokes = ({
       if (Array.isArray(jokes) && jokes.length > 0 && user && user?.blacklistedJokes) {
         const fetchedJokes = await Promise.all(
           user?.blacklistedJokes?.map(async (blacklistedJoke: IBlacklistedJoke) => {
+            let query = blacklistedJoke.value
             const joke = jokes?.find(
               (joke: IJoke) =>
                 joke.jokeId === blacklistedJoke.jokeId &&
@@ -537,11 +540,13 @@ const UserJokes = ({
               joke ||
               (await findBlackListedJokeFromAPI(
                 blacklistedJoke.jokeId,
-                blacklistedJoke.language
+                blacklistedJoke.language,
+                query ?? undefined
               ))
             )
           }) || []
         )
+
         setFetchedJokes(fetchedJokes)
       }
     }
@@ -554,7 +559,7 @@ const UserJokes = ({
   const filteredFetchedJokes = fetchedJokes?.filter((joke) => {
     const searchTermMatches =
       ('joke' in joke
-        ? joke.joke.toLowerCase().includes(searchTerm.toLowerCase())
+        ? joke.joke?.toLowerCase().includes(searchTerm.toLowerCase())
         : false) ||
       ('setup' in joke
         ? joke.setup?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -570,35 +575,63 @@ const UserJokes = ({
 
   //  https://v2.jokeapi.dev/joke/Any?idRange=3&lang={language}&format=json
 
-  const findBlackListedJokeFromAPI = async (id: string, language: ELanguages) => {
+  const findBlackListedJokeFromAPI = async (
+    id: string,
+    language: ELanguages,
+    query: string | undefined
+  ) => {
     try {
-      const response = await fetch(
-        `https://v2.jokeapi.dev/joke/Any?idRange=${id}&lang=${language}&format=json`
-      )
-      const data = await response.json()
-
-      if (data.error) {
-        //Try DadJoke or ChuckNorris
-      } else {
-        if (data.type === 'twopart') {
+      if (query) {
+        let joke: any
+        try {
+          joke = await norrisService.searchNorrisJoke(query)
+        } catch (error) {
+          console.error(error)
+          return null
+        } finally {
           return {
-            jokeId: data.id,
-            setup: data.setup,
-            delivery: data.delivery,
-            category: data.category,
-            language: data.lang,
-            safe: data.safe,
-            type: EJokeType.twopart,
-          } as IJoke
-        } else {
-          return {
-            jokeId: data.id,
-            joke: data.joke,
-            category: data.category,
-            language: data.lang,
-            safe: data.safe,
+            jokeId: joke.id,
+            joke: joke.value,
+            category: ECategory_en.ChuckNorris,
+            language: ELanguages.English,
             type: EJokeType.single,
-          } as IJoke
+          }
+        }
+      } else {
+        const response = await fetch(
+          `https://v2.jokeapi.dev/joke/Any?idRange=${id}&lang=${language}&format=json`
+        )
+        const data = await response.json()
+
+        if (data.error) {
+          const result = await dadjokeService.getDadJokeById(id)
+
+          return {
+            jokeId: result.id,
+            joke: result.joke,
+            category: ECategory_en.DadJoke,
+            language: ELanguages.English,
+            type: EJokeType.single,
+          }
+        } else {
+          if (data.type === 'twopart') {
+            return {
+              jokeId: data.id,
+              setup: data.setup,
+              delivery: data.delivery,
+              category: data.category,
+              language: data.lang,
+              type: EJokeType.twopart,
+            }
+          } else {
+            return {
+              jokeId: data.id,
+              joke: data.joke,
+              category: data.category,
+              language: data.lang,
+              type: EJokeType.single,
+            }
+          }
         }
       }
     } catch (error) {
@@ -1065,17 +1098,6 @@ const UserJokes = ({
 
           {showBlacklistedJokes && filteredFetchedJokes?.length > 0 ? (
             <div className='blocked-controls-wrap'>
-              <ButtonToggle
-                isChecked={isCheckedSafemode}
-                name='safemode'
-                id='safemode3'
-                className={`${language} ${!isCheckedSafemode ? 'unsafe' : ''} safemode`}
-                label={`${EFilter[language]}: `}
-                hideLabel={false}
-                on={titleSafe}
-                off={titleUnsafe}
-                handleToggleChange={handleToggleChangeSafemode}
-              />
               <div className='input-wrap search-blacklist'>
                 <label htmlFor='searchBlacklistedJokes'>
                   <input
@@ -1095,37 +1117,35 @@ const UserJokes = ({
 
           <ul className={`userjokeslist ${showBlacklistedJokes ? 'blockedJokes' : ''}`}>
             {showBlacklistedJokes ? (
-              filteredFetchedJokes
-                ?.filter((joke) => joke.safe === isCheckedSafemode)
-                ?.map((joke, index) => (
-                  <li key={user?.blacklistedJokes?.[index]?.jokeId ?? index}>
-                    <form
-                      onSubmit={(e) =>
-                        handleRemoveJokeFromBlacklisted(
-                          e,
-                          joke,
-                          user?.blacklistedJokes?.[index]?._id
-                        )
-                      }
-                    >
-                      <button className='' type='submit'>
-                        {ERestore[language]}
-                      </button>
-                    </form>
-                    {joke ? (
-                      joke.type === EJokeType.single ? (
-                        <p>{joke.joke}</p>
-                      ) : (
-                        <div>
-                          <p>{joke.setup}</p>
-                          <p>{joke.delivery}</p>
-                        </div>
+              filteredFetchedJokes?.map((joke, index) => (
+                <li key={user?.blacklistedJokes?.[index]?.jokeId ?? index}>
+                  <form
+                    onSubmit={(e) =>
+                      handleRemoveJokeFromBlacklisted(
+                        e,
+                        joke,
+                        user?.blacklistedJokes?.[index]?._id
                       )
+                    }
+                  >
+                    <button className='' type='submit'>
+                      {ERestore[language]}
+                    </button>
+                  </form>
+                  {joke ? (
+                    joke.type === EJokeType.single ? (
+                      <p>{joke.joke}</p>
                     ) : (
-                      ``
-                    )}
-                  </li>
-                ))
+                      <div>
+                        <p>{joke.setup}</p>
+                        <p>{joke.delivery}</p>
+                      </div>
+                    )
+                  ) : (
+                    ``
+                  )}
+                </li>
+              ))
             ) : currentItems && currentItems?.length > 0 ? (
               currentItems?.map((joke) => {
                 const { visible, translatedLanguage, ...restOfJoke } = joke

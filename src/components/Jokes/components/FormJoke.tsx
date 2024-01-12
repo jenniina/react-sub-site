@@ -87,7 +87,7 @@ interface Props {
     language: ELanguages
   ) => string | undefined
   subCategoryResults: string[]
-  handleBlacklistUpdate: (jokeId: IJoke['jokeId']) => void
+  handleBlacklistUpdate: (jokeId: IJoke['jokeId'], value: string | undefined) => void
 }
 const Form = ({
   handleFormSubmit,

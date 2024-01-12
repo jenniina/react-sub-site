@@ -877,7 +877,6 @@ ul.blockedJokes > li > form {
   min-width: 8em;
 }
 .blocked-controls-wrap {
-  --smaller: 12rem;
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
@@ -892,10 +891,10 @@ ul.blockedJokes > li > form {
   gap: calc(var(--gap));
 }
 .joke-container .saved .input-wrap.search-blacklist {
-  flex: 0 1 calc(100% - var(--smaller));
+  flex: 0 1 100%;
   max-width: 100%;
-  width: calc(100% - var(--smaller));
-  min-width: calc(100% - var(--smaller));
+  width: 100%;
+  min-width: 100%;
   max-height: max-content;
   margin: 3rem 0 0 0;
 }

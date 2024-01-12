@@ -38,7 +38,7 @@ interface Props {
   ) => string | undefined
   subCategoryResults: string[]
   jokeId: IJoke['jokeId']
-  handleBlacklistUpdate: (jokeId: IJoke['jokeId']) => void
+  handleBlacklistUpdate: (jokeId: IJoke['jokeId'], value: string | undefined) => void
 }
 const Joke = ({
   joke,
@@ -120,7 +120,15 @@ const Joke = ({
           <button
             type='button'
             className={`delete danger narrow ${visibleJoke ? 'fadeIn' : ''}`}
-            onClick={() => handleBlacklistUpdate(jokeId as IJoke['jokeId'])}
+            onClick={() =>
+              handleBlacklistUpdate(
+                jokeId as IJoke['jokeId'],
+                jokeCategory === ECategory_en.ChuckNorris &&
+                  language === ELanguages.English
+                  ? (joke as string)
+                  : undefined
+              )
+            }
           >
             {EHide[language]}
           </button>
