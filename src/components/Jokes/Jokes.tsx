@@ -1495,10 +1495,7 @@ function Jokes({
     if (window.confirm(`${EWouldYouLikeToSaveTheJoke[language]}`)) {
       handleJokeSave(e)
       dispatch(initializeUsers())
-      dispatch(notify(`${EJokeRestored[language]}`, false, 3))
-    } else {
-      dispatch(notify(`${EJokeRestored[language]}`, false, 3))
-      return
+      dispatch(notify(`${ESavedJoke[language]}`, false, 3))
     }
   }
 
