@@ -37,8 +37,14 @@ const updateUser = async (
   const response = await axios.put(`${baseUrl}/${user._id}`, newUserSettings)
   return response.data
 }
-
-// router.put('/api/users/username', updateUsername)
+const addToBlacklistedJokes = async (
+  id: user['_id'],
+  jokeId: string,
+  language: string
+) => {
+  const response = await axios.put(`${baseUrl}/${id}/${jokeId}/${language}`)
+  return response.data
+}
 
 const updateUsername = async (
   user: Pick<user, '_id' | 'language' | 'username' | 'passwordOld'>
@@ -96,4 +102,5 @@ export default {
   searchId,
   updateToken,
   forgot,
+  addToBlacklistedJokes,
 }

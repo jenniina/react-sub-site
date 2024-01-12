@@ -55,6 +55,7 @@ interface Props {
   language: ELanguages
   joke: string
   delivery?: string
+  jokeId: IJoke['jokeId']
   author: string
   submitted: boolean
   reveal: boolean
@@ -86,6 +87,7 @@ interface Props {
     language: ELanguages
   ) => string | undefined
   subCategoryResults: string[]
+  handleBlacklistUpdate: (jokeId: IJoke['jokeId']) => void
 }
 const Form = ({
   handleFormSubmit,
@@ -104,6 +106,7 @@ const Form = ({
   language,
   query,
   delivery,
+  jokeId,
   author,
   options,
   submitted,
@@ -127,6 +130,7 @@ const Form = ({
   hasNorris,
   getCategoryInLanguage,
   subCategoryResults,
+  handleBlacklistUpdate,
 }: Props) => {
   const titleLanguageSelect = ESelectALanguage[language]
   const titleCategorySelect = ESelectACategory[language]
@@ -271,6 +275,7 @@ const Form = ({
         joke={joke}
         delivery={delivery}
         author={author}
+        jokeId={jokeId}
         reveal={reveal}
         jokeCategory={jokeCategory}
         setReveal={setReveal}
@@ -280,6 +285,7 @@ const Form = ({
         visibleJoke={visibleJoke}
         getCategoryInLanguage={getCategoryInLanguage}
         subCategoryResults={subCategoryResults}
+        handleBlacklistUpdate={handleBlacklistUpdate}
       />
     </>
   )

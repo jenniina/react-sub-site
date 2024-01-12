@@ -3,6 +3,7 @@ import userService from '../services/users'
 import { EPleaseGiveValidEmail, IUser, ELanguages } from '../interfaces'
 import AppThunk from '../store'
 import { AxiosResponse } from 'axios'
+import { IJoke } from '../components/Jokes/interfaces'
 
 const usersSlice = createSlice({
   name: 'users',
@@ -95,10 +96,25 @@ export const removeUser = (id: IUser['_id']) => {
 }
 
 export const updateUser = (
-  user: Pick<IUser, '_id' | 'language' | 'name' | 'passwordOld'>
+  user: Pick<IUser, '_id' | 'language' | 'name' | 'passwordOld' | 'verified'>
 ) => {
   return async (dispatch: (arg0: { payload: IUser; type: 'users/update' }) => IUser) => {
     const content: IContent = await userService.updateUser(user)
+    dispatch(update(content.user))
+    return content
+  }
+}
+export const addToBlacklistedJokes = (
+  userId: IUser['_id'],
+  jokeId: IJoke['jokeId'],
+  language: ELanguages
+) => {
+  return async (dispatch: (arg0: { payload: IUser; type: 'users/update' }) => IUser) => {
+    const content: IContent = await userService.addToBlacklistedJokes(
+      userId,
+      jokeId,
+      language
+    )
     dispatch(update(content.user))
     return content
   }
