@@ -42,6 +42,9 @@ import {
   EAnonymous,
   norrisCategoryTranslations as norrisCats,
   EAny,
+  EAreYouSureYouWantToHideThisJoke,
+  EJokeHidden,
+  EThisJokeIsAlreadyBlacklisted,
 } from './interfaces'
 import {
   ELogin,
@@ -55,6 +58,7 @@ import {
   LanguageOfLanguage,
   ELanguagesLong,
   TLanguageOfLanguage,
+  IBlacklistedJoke,
 } from '../../interfaces'
 import { useSelector } from 'react-redux'
 import useLocalStorage from '../../hooks/useStorage'
@@ -74,6 +78,7 @@ import dadjokeService from './services/dadjokes'
 import JokeSubmit from './components/JokeSubmit'
 import { useNavigate } from 'react-router-dom'
 import { set } from 'lodash'
+import { addToBlacklistedJokes, initializeUsers } from '../../reducers/usersReducer'
 
 export const jokeCategoryByLanguage: IJokeCategoryByLanguage = {
   en: {
@@ -221,7 +226,6 @@ function Jokes({
   const [queryKey, setQueryKey] = useState<EQueryKey>(EQueryKey.None)
   const [queryValue, setQueryValue] = useState<string>('')
   const [query, setQuery] = useState<string>('')
-  const [loading, setLoading] = useState<boolean>(false)
   const [submitted, setSubmitted] = useState<boolean>(false)
   const [reveal, setReveal] = useState<boolean>(true)
   const [jokeId, setJokeId] = useState<IJoke['jokeId']>('')
@@ -235,7 +239,7 @@ function Jokes({
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false)
   const [editId, setEditId] = useState<IJoke['_id'] | null>(null)
   const [lastJokes, setLastJokes] = useState<{ jokeId: string; language: string }[]>([])
-  const [lastJokesLength, setLastJokesLength] = useState<number>(10)
+  const [lastJokesLength, setLastJokesLength] = useState<number>(6)
 
   const [flags, setFlags] = useState({
     nsfw: false,
@@ -258,6 +262,10 @@ function Jokes({
       setHasNorris(false)
     }
   }, [queryValue, categoryValues, hasNorris])
+
+  useEffect(() => {
+    dispatch(initializeUsers())
+  }, [user])
 
   useEffect(() => {
     setTimeout(() => {
@@ -284,14 +292,6 @@ function Jokes({
       )
     }
   }, [language])
-
-  // Set loading state
-  useEffect(() => {
-    if (loading) {
-      setJoke('Loading...')
-      setDelivery(' ')
-    }
-  }, [loading])
 
   const handleToggleChangeSafemode = () => {
     setIsCheckedSafemode(!isCheckedSafemode)
@@ -549,6 +549,11 @@ function Jokes({
     subCategories: string[] | undefined,
     repeat: boolean
   ) => {
+    if (isJokeBlacklisted(jokeData.id)) {
+      console.log('blocked from setJokeData')
+      fetchApi()
+      return
+    }
     if (
       repeat &&
       lastJokes.some(
@@ -564,7 +569,9 @@ function Jokes({
       setLastJokes((prevJokes) => prevJokes.slice(1))
     }
 
-    setLoading(false)
+    setJokeCategory(category)
+    setSubCategoryResults(subCategories ?? [])
+
     setSaveJoke({
       jokeId: jokeData.id.toString(),
       joke: jokeData.joke || jokeData.value,
@@ -590,24 +597,21 @@ function Jokes({
         explicit: jokeData.categories?.explicit ?? false,
       },
     })
-    setJokeCategory(category)
-    setSubCategoryResults(subCategories ?? [])
 
     setFlags({
       explicit: jokeData?.categories?.includes('explicit') ?? false,
       religious: jokeData?.categories?.includes('religious') ?? false,
-      political: false,
+      political: jokeData?.categories?.includes('political') ?? false,
       racist: false,
       sexist: false,
       nsfw: jokeData?.categories?.includes('explicit') ?? false,
     })
-    setJokeCategory(category)
+
     setJoke(jokeData.joke || jokeData.value)
     setDelivery('')
     setJokeId(jokeData.id)
     setJokeLanguage(ELanguages.English)
     setJoke(jokeData.joke || jokeData.value)
-    setDelivery('')
   }
 
   const users = useSelector((state: ReducerProps) => {
@@ -679,15 +683,34 @@ function Jokes({
   }, [jokes, users, language, isCheckedSafemode])
 
   // Fetch joke from API or database
-  const fetchApi = async () => {
-    setLoading(true)
+  const fetchApi = async (retryCount = 0) => {
     const categories = categoryValues.map((category) => category.value)
+
+    if (retryCount > 5) {
+      return
+    }
 
     const handleJokes = (jokes: IJoke[] | undefined) => {
       if (jokes && jokes.length > 0 && Array.isArray(users) && users?.length > 0) {
         const random = jokes[Math.floor(Math.random() * jokes.length)]
+        if (
+          lastJokes.some(
+            (joke) => joke.jokeId === random.jokeId && joke.language === language
+          )
+        ) {
+          // If it is found in the lastJokes, fetch again
+          fetchApi()
+          return
+        }
+        setLastJokes((prevJokes) => [...prevJokes, { jokeId: random.jokeId, language }])
+
+        if (lastJokes.length > lastJokesLength) {
+          setLastJokes((prevJokes) => prevJokes.slice(1))
+        }
         if (random) {
-          setLoading(false)
+          setJokeId(random.jokeId)
+          setJokeLanguage(language)
+          setJokeCategory(random.category)
           if ('joke' in random) {
             setJoke(random.joke)
           } else if ('setup' in random) {
@@ -703,9 +726,7 @@ function Jokes({
           } else {
             setAuthor('')
           }
-          setJokeId(random.jokeId)
-          setJokeLanguage(language)
-          setJokeCategory(random.category)
+
           setSaveJoke(random)
           return
         } else {
@@ -716,7 +737,7 @@ function Jokes({
               8
             )
           )
-          setLoading(false)
+
           setJoke('')
           setDelivery('')
           setAuthor('')
@@ -730,7 +751,7 @@ function Jokes({
             8
           )
         )
-        setLoading(false)
+
         setJoke('')
         setDelivery('')
         setAuthor('')
@@ -743,7 +764,8 @@ function Jokes({
       (joke) =>
         joke.language === language &&
         (categories.length === 0 || categories.includes(joke.category)) &&
-        (joke.private === false || joke.private === undefined) &&
+        ((joke.private === false && joke.verified === true) ||
+          joke.private === undefined) &&
         joke.safe === isCheckedSafemode &&
         joke.type === jokeType
     )
@@ -793,11 +815,10 @@ function Jokes({
             : true
 
         if (
-          (joke.safe === isCheckedSafemode &&
-            joke.type === jokeType &&
-            joke.private === false &&
-            joke.verified === true) ||
-          joke.private === undefined
+          joke.safe === isCheckedSafemode &&
+          joke.type === jokeType &&
+          ((joke.private === false && joke.verified === true) ||
+            joke.private === undefined)
         ) {
           return (
             languageMatches &&
@@ -810,6 +831,17 @@ function Jokes({
         }
       })
     }
+
+    newFilteredJokes = newFilteredJokes?.filter((joke) => {
+      // Check if the joke is blacklisted
+      const isBlacklisted = user?.blacklistedJokes?.some(
+        (blacklistedJoke: IBlacklistedJoke) =>
+          blacklistedJoke.jokeId === joke.jokeId &&
+          blacklistedJoke.language === joke.language
+      )
+      // Return true if the joke is not blacklisted
+      return !isBlacklisted
+    })
 
     if (
       newFilteredJokes &&
@@ -978,6 +1010,7 @@ function Jokes({
             ECategory_en.ChuckNorris,
             !isQueryNotEmpty
           )
+
           if (!joke) {
             noJoke()
             return
@@ -1071,11 +1104,14 @@ function Jokes({
     category: ECategory_en.DadJoke | ECategory_en.ChuckNorris,
     isRandom: boolean
   ) {
-    let joke
+    let joke: any
 
     try {
       if (category === ECategory_en.ChuckNorris && service === norrisService) {
-        if (!isCheckedSafemode) {
+        if (
+          !isCheckedSafemode &&
+          (!selectedNorrisCategory?.value || selectedNorrisCategory?.value === 'any')
+        ) {
           joke = await service.getFullyRandomNorrisJoke()
         } else if (
           selectedNorrisCategory?.value &&
@@ -1101,13 +1137,17 @@ function Jokes({
       if (!joke) {
         fetchFromJokeAPI()
       } else {
+        if (isJokeBlacklisted(joke.id)) {
+          console.log('blocked from fetchAndSetJoke')
+          fetchApi()
+          return
+        }
         await setJokeData(joke, category, joke?.subCategories ?? [], isRandom)
       }
     } catch (error) {
       console.error(error)
       fetchFromJokeAPI()
     } finally {
-      setLoading(false)
     }
 
     return !!joke
@@ -1117,7 +1157,7 @@ function Jokes({
     dispatch(
       notify(`${titleError}! ${ENoJokeFoundWithThisSearchTerm[language]}`, true, 8)
     )
-    setLoading(false)
+
     setJoke('')
     setDelivery('')
   }
@@ -1128,7 +1168,7 @@ function Jokes({
     }
   }, [categoryValues])
 
-  const fetchFromJokeAPI = () => {
+  const fetchFromJokeAPI = (retryCount = 0) => {
     const categories = categoryValues.map((category) => category.value)
     const filteredCategories = categories.filter(
       (category) => category !== 'ChuckNorris' && category !== 'DadJoke'
@@ -1143,16 +1183,21 @@ function Jokes({
     )
       .then((res) => res.json())
       .then((data) => {
-        if (
-          queryKey === EQueryKey.None &&
-          lastJokes.some(
-            (joke) => joke.jokeId === data.jokeId && joke.language === language
-          )
-        ) {
-          // If it is found in the lastJokes, fetch again
-          fetchFromJokeAPI()
+        if (retryCount > 5) {
           return
         }
+        if (
+          isJokeBlacklisted(data.id) ||
+          (queryKey === EQueryKey.None &&
+            lastJokes.some(
+              (joke) => joke.jokeId === data.jokeId && joke.language === language
+            ))
+        ) {
+          console.log('blocked from fetchFromJokeAPI')
+          fetchFromJokeAPI(retryCount + 1)
+          return
+        }
+
         setLastJokes((prevJokes) => [...prevJokes, { jokeId: data.id, language }])
         if (lastJokes.length > lastJokesLength) {
           setLastJokes((prevJokes) => prevJokes.slice(1))
@@ -1166,7 +1211,7 @@ function Jokes({
           sexist: data.flags?.sexist ?? false,
           explicit: data.flags?.explicit ?? false,
         })
-        setLoading(false)
+
         setJokeCategory(data.category)
         if (data.error) {
           if (category === 'Any') {
@@ -1179,7 +1224,7 @@ function Jokes({
             )
             setJoke('')
             setDelivery('')
-            setLoading(false)
+
             setJokeId('')
             return
           } else {
@@ -1193,7 +1238,7 @@ function Jokes({
                 8
               )
             )
-            setLoading(false)
+
             setJokeId('')
             return
           }
@@ -1222,10 +1267,10 @@ function Jokes({
               explicit: flags.explicit,
             },
           })
+          setJokeCategory(data.category)
           setJoke(data.setup)
           setDelivery(data.delivery)
           setJokeId(data.id)
-          setJokeCategory(data.category)
         } else {
           setSaveJoke({
             jokeId: data.id.toString(),
@@ -1249,16 +1294,25 @@ function Jokes({
               explicit: flags.explicit,
             },
           })
+          setJokeCategory(data.category)
           setJoke(data.joke)
           setDelivery('')
           setJokeId(data.id)
-          setJokeCategory(data.category)
         }
       })
       .catch((e) => {
         console.log(e)
         dispatch(notify(`${titleError}! ${e.response.data.message}`, true, 8))
       })
+  }
+
+  function isJokeBlacklisted(jokeId: string): boolean {
+    return (
+      user?.blacklistedJokes?.some(
+        (blacklistedJoke) =>
+          blacklistedJoke.jokeId === jokeId && blacklistedJoke.language === language
+      ) ?? false
+    )
   }
 
   const fetchNorrisCategories = async () => {
@@ -1376,6 +1430,58 @@ function Jokes({
     navigate('/portfolio/jokes?login=login')
   }
 
+  const handleBlacklistUpdate = (jokeId: IJoke['jokeId']) => {
+    if (window.confirm(`${EAreYouSureYouWantToHideThisJoke[language]}`)) {
+      const isAlreadyBlacklisted = user?.blacklistedJokes?.some(
+        (blacklistedJoke) =>
+          blacklistedJoke.jokeId === jokeId && blacklistedJoke.language === language
+      )
+      if (isAlreadyBlacklisted) {
+        dispatch(notify(EThisJokeIsAlreadyBlacklisted[language], true, 3))
+        dispatch(initializeUser())
+        setJoke('')
+        setDelivery('')
+        setAuthor('')
+        setJokeId('')
+        return
+      }
+      if (
+        Array.isArray(user) &&
+        user?.blacklistedJokes &&
+        user?.blacklistedJokes?.length > 0
+      ) {
+        dispatch(addToBlacklistedJokes(user?._id, jokeId, language))
+          .then(() => dispatch(notify(`${EJokeHidden[language]}`, false, 3)))
+          .catch((error) => {
+            console.log(error)
+            dispatch(initializeUser())
+            dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
+            setJoke('')
+            setDelivery('')
+            setAuthor('')
+            setJokeId('')
+          })
+      }
+      if (user) {
+        dispatch(addToBlacklistedJokes(user?._id, jokeId, language))
+          .then(() => {
+            dispatch(notify(`${EJokeHidden[language]}`, false, 3))
+            dispatch(initializeUser())
+            setJoke('')
+            setDelivery('')
+            setAuthor('')
+            setJokeId('')
+          })
+          .catch((error) => {
+            console.log(error)
+            dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
+          })
+      } else {
+        dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
+      }
+    }
+  }
+
   return (
     <>
       <section className={`joke-container card ${language}`} id='jokeform'>
@@ -1397,6 +1503,7 @@ function Jokes({
               language={language}
               joke={joke}
               delivery={delivery}
+              jokeId={jokeId}
               author={author}
               options={options}
               getKeyByValue={getKeyByValue}
@@ -1426,6 +1533,7 @@ function Jokes({
               hasNorris={hasNorris}
               getCategoryInLanguage={getCategoryInLanguage}
               subCategoryResults={subCategoryResults}
+              handleBlacklistUpdate={handleBlacklistUpdate}
             />
           </div>
         </div>

@@ -1425,3 +1425,67 @@ export enum EFailedToCopyJokeToClipboard {
   cs = 'Chyba při kopírování vtipu do schránky',
   fi = 'Vitsin kopioiminen leikepöydälle epäonnistui',
 }
+export enum EDeletedJoke {
+  en = 'Deleted joke',
+  es = 'Broma eliminada',
+  fr = 'Blague supprimée',
+  de = 'Gelöschter Witz',
+  pt = 'Piada excluída',
+  cs = 'Smazaný vtip',
+  fi = 'Vitsi poistettu',
+}
+export enum EJokeHidden {
+  en = 'Joke hidden',
+  es = 'Broma oculta',
+  fr = 'Blague cachée',
+  de = 'Witz versteckt',
+  pt = 'Piada escondida',
+  cs = 'Vtip skrytý',
+  fi = 'Vitsi piilotettu',
+}
+// Are you sure you want to hide this joke?
+export enum EAreYouSureYouWantToHideThisJoke {
+  en = 'Are you sure you want to hide this joke?',
+  es = '¿Estás seguro de que quieres ocultar esta broma?',
+  fr = 'Êtes-vous sûr de vouloir cacher cette blague?',
+  de = 'Möchten Sie diesen Witz wirklich verstecken?',
+  pt = 'Tem certeza de que deseja ocultar esta piada?',
+  cs = 'Jste si jisti, že chcete tento vtip skrýt?',
+  fi = 'Oletko varma, että haluat piilottaa tämän vitsin?',
+}
+export enum EThisJokeIsAlreadyBlacklisted {
+  en = 'This joke is already blacklisted.',
+  es = 'Esta broma ya está en la lista negra.',
+  fr = 'Cette blague est déjà sur liste noire.',
+  de = 'Dieser Witz ist bereits auf der schwarzen Liste.',
+  pt = 'Esta piada já está na lista negra.',
+  cs = 'Tento vtip je již na černé listině.',
+  fi = 'Tämä vitsi on jo piilotettu.',
+}
+export enum EShowHiddenJokes {
+  en = 'Show hidden jokes',
+  es = 'Mostrar bromas ocultas',
+  fr = 'Afficher les blagues cachées',
+  de = 'Versteckte Witze anzeigen',
+  pt = 'Mostrar piadas ocultas',
+  cs = 'Zobrazit skryté vtipy',
+  fi = 'Näytä piilotetut vitsit',
+}
+export enum EHideJokes {
+  en = 'Hide jokes',
+  es = 'Ocultar bromas',
+  fr = 'Masquer les blagues',
+  de = 'Witze verstecken',
+  pt = 'Ocultar piadas',
+  cs = 'Skrýt vtipy',
+  fi = 'Piilota vitsit',
+}
+export enum EHide {
+  en = 'Hide',
+  es = 'Ocultar',
+  fr = 'Masquer',
+  de = 'Verstecken',
+  pt = 'Ocultar',
+  cs = 'Skrýt',
+  fi = 'Piilota',
+}

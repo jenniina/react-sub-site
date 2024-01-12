@@ -1,11 +1,25 @@
-import { ESave, ELanguages } from '../../../interfaces'
+import { useSelector } from 'react-redux'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
+import { ESave, ELanguages, ReducerProps, EUserNotUpdated } from '../../../interfaces'
 import {
+  EAreYouSureYouWantToHideThisJoke,
   EAuthor,
   ECategory,
   ECategoryTitle,
   ECategory_en,
+  EDelete,
+  EDeletedJoke,
+  EErrorDeletingJoke,
+  EHide,
+  EJokeHidden,
   ESaveJoke,
+  ESavedJoke,
+  IJoke,
 } from '../interfaces'
+import { addToBlacklistedJokes, updateUser } from '../../../reducers/usersReducer'
+import { notify } from '../../../reducers/notificationReducer'
+import { useEffect } from 'react'
+import { initializeUser } from '../../../reducers/authReducer'
 
 interface Props {
   joke: string
@@ -23,6 +37,8 @@ interface Props {
     language: ELanguages
   ) => string | undefined
   subCategoryResults: string[]
+  jokeId: IJoke['jokeId']
+  handleBlacklistUpdate: (jokeId: IJoke['jokeId']) => void
 }
 const Joke = ({
   joke,
@@ -37,9 +53,9 @@ const Joke = ({
   visibleJoke,
   getCategoryInLanguage,
   subCategoryResults,
+  jokeId,
+  handleBlacklistUpdate,
 }: Props) => {
-  const titleSave = ESave[language]
-
   return (
     <form
       onSubmit={handleJokeSave}
@@ -97,9 +113,16 @@ const Joke = ({
         )}
       </article>
       {joke || delivery ? (
-        <div className='flex center'>
+        <div className='save-delete-wrap'>
           <button type='submit' className={`submit ${visibleJoke ? 'fadeIn' : ''}`}>
             {ESaveJoke[language]}
+          </button>
+          <button
+            type='button'
+            className={`delete danger narrow ${visibleJoke ? 'fadeIn' : ''}`}
+            onClick={() => handleBlacklistUpdate(jokeId as IJoke['jokeId'])}
+          >
+            {EHide[language]}
           </button>
         </div>
       ) : (

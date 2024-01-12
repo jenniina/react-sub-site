@@ -19,6 +19,11 @@ export interface IUser {
   verified?: boolean
   createdAt?: string
   updatedAt?: string
+  blacklistedJokes?: IBlacklistedJoke[]
+}
+export interface IBlacklistedJoke {
+  jokeId: IJoke['jokeId']
+  language: ELanguages
 }
 
 export interface ReducerProps {

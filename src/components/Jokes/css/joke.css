@@ -841,6 +841,22 @@ button.delivery.reveal p {
   color: var(--color-primary-19);
 }
 
+.save-delete-wrap {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: center;
+  gap: calc(var(--gap) / 2);
+}
+.save-delete-wrap > button {
+  max-width: max-content;
+  margin: 0;
+}
+form.joke-form-save .save-delete-wrap > button.submit {
+  width: 50%;
+  max-width: 50%;
+}
+
 .downwards-arrow {
   position: relative;
   width: 100%;

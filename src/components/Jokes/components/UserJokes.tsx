@@ -87,6 +87,8 @@ import {
   EFailedToCopyJokeToClipboard,
   EJokeCopiedToClipboard,
   ECopy,
+  EShowHiddenJokes,
+  EHideJokes,
 } from '../interfaces'
 import {
   IUser,
@@ -110,6 +112,7 @@ import {
   ELikedBy,
   ELastPage,
   EFirstPage,
+  IBlacklistedJoke,
 } from '../../../interfaces'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
 import { Select, SelectOption } from '../../Select/Select'
@@ -119,6 +122,7 @@ import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import Accordion from '../../Accordion/Accordion'
 import { createJoke, initializeJokes, updateJoke } from '../reducers/jokeReducer'
 import { notify } from '../../../reducers/notificationReducer'
+import { initializeUser } from '../../../reducers/authReducer'
 
 interface Props {
   userId: IUser['_id']
@@ -190,6 +194,7 @@ const UserJokes = ({
   setEditId,
 }: Props) => {
   const users = useSelector((state: any) => state.users)
+  const user = useSelector((state: any) => state.auth?.user)
   const jokes = useSelector((state: any) => state.jokes)
 
   type IJokeVisible = IJoke & {
@@ -234,7 +239,7 @@ const UserJokes = ({
       users?.length > 0
     ) {
       let updatedJokes = jokes?.map((joke) => {
-        const author = users?.find((user: IUser) => user._id == joke.author)
+        const author = user?.name
         const jokeLanguage = LanguageOfLanguage[language as keyof typeof ELanguagesLong][
           getKeyofEnum(
             ELanguages,
@@ -275,7 +280,7 @@ const UserJokes = ({
   }
 
   useEffect(() => {
-    dispatch(initializeUsers()).then(() => {
+    dispatch(initializeUser()).then(() => {
       dispatch(initializeJokes())
     })
   }, [])
@@ -380,6 +385,18 @@ const UserJokes = ({
         return false
       }
     })
+
+    newFilteredJokes = newFilteredJokes?.filter((joke) => {
+      // Check if the joke is blacklisted
+      const isBlacklisted = user?.blacklistedJokes?.some(
+        (blacklistedJoke: IBlacklistedJoke) =>
+          blacklistedJoke.jokeId === joke.jokeId &&
+          blacklistedJoke.language === joke.language
+      )
+      // Return true if the joke is not blacklisted
+      return !isBlacklisted
+    })
+
     if (sortBy === ESortBy_en.age) {
       newFilteredJokes = newFilteredJokes?.sort((a, b) => {
         const timeA = a.updatedAt ? new Date(a.updatedAt).getTime() : 0
@@ -494,6 +511,8 @@ const UserJokes = ({
   useEffect(() => {
     setSelectedNorrisCategory(norrisOptions[0])
   }, [language])
+
+  const [showBlacklistedJokes, setShowBlacklistedJokes] = useState<boolean>(false)
 
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [itemsPerPage, setItemsPerPage] = useState<number>(10)
