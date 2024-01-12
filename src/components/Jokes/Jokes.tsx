@@ -1454,12 +1454,7 @@ function Jokes({
         setAuthor('')
         setJokeId('')
         return
-      }
-      if (
-        Array.isArray(users) &&
-        user?.blacklistedJokes &&
-        user?.blacklistedJokes?.length > 0
-      ) {
+      } else if (Array.isArray(users) && user) {
         dispatch(addToBlacklistedJokes(user?._id, jokeId, language))
           .then(() => dispatch(notify(`${EJokeHidden[language]}`, false, 3)))
           .catch((error) => {
@@ -1470,21 +1465,6 @@ function Jokes({
             setDelivery('')
             setAuthor('')
             setJokeId('')
-          })
-      }
-      if (user) {
-        dispatch(addToBlacklistedJokes(user?._id, jokeId, language))
-          .then(() => {
-            dispatch(notify(`${EJokeHidden[language]}`, false, 3))
-            dispatch(initializeUsers())
-            setJoke('')
-            setDelivery('')
-            setAuthor('')
-            setJokeId('')
-          })
-          .catch((error) => {
-            console.log(error)
-            dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
           })
       } else {
         dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
