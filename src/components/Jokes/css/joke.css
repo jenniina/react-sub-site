@@ -750,6 +750,9 @@ form.joke > *:not(.toggle) {
   align-items: center;
   gap: calc(var(--gap) / 2);
 }
+.icontext.active {
+  border-color: currentColor;
+}
 
 input[type='number' i].narrow {
   max-width: 3rem;
@@ -866,15 +869,43 @@ ul.blockedJokes {
   margin: 2rem 0 0 0;
 }
 ul.blockedJokes > li {
+  --smaller: 7em;
   display: flex;
-  flex-flow: row nowrap;
-  justify-content: flex-start;
+  flex-flow: column nowrap;
+  justify-content: center;
   align-items: center;
   gap: calc(var(--gap) / 2);
+  outline: 2px solid var(--color-primary-8);
+  border-radius: var(--border-radius);
+  padding: 0.5em 1em;
+  min-width: 100%;
 }
-ul.blockedJokes > li > form {
-  flex: 1 0 8em;
-  min-width: 8em;
+.fr ul.blockedJokes > li {
+  --smaller: 9em;
+}
+ul.blockedJokes > li > div:first-child {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--gap) / 2);
+  width: 100%;
+  order: 1;
+}
+@media (min-width: 1000px) {
+  ul.blockedJokes > li {
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  ul.blockedJokes > li > div:first-child {
+    flex: 0 1 calc(var(--smaller) * 2 + var(--gap));
+    order: 0;
+  }
+  ul.blockedJokes > li form {
+    flex: 0 1 var(--smaller);
+    min-width: var(--smaller);
+  }
 }
 .blocked-controls-wrap {
   display: flex;

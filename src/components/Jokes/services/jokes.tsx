@@ -10,8 +10,8 @@ const getAll = async () => {
 }
 
 const getJokesByUserId = async (userId: string | undefined) => {
-  const request = axios.get(`${baseUrl}/user/${userId}`)
-  return request.then((response) => response.data)
+  const request = await axios.get(`${baseUrl}/user/${userId}`)
+  return request.data
 }
 
 const create = async (newObject: IJoke) => {

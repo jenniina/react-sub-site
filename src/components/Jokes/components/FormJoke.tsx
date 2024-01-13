@@ -26,7 +26,7 @@ import {
   ESearchByKeyword,
   EAny,
   ESelectExtraCategories,
-  ECategory,
+  ECategories,
   ECategory_fi,
   TCategoryByLanguages,
   IJoke,
@@ -36,8 +36,8 @@ import { ELanguages } from '../../../interfaces'
 
 interface Props {
   handleFormSubmit: (e: React.FormEvent<HTMLFormElement>) => void
-  jokeCategory: ECategory | null
-  setJokeCategory: (jokeCategory: ECategory_en) => void
+  jokeCategory: ECategories | null
+  setJokeCategory: (jokeCategory: ECategories) => void
   setQueryValue: (queryValue: string) => void
   setLanguage: (language: ELanguages) => void
   titleSingle: ESingle
@@ -68,26 +68,26 @@ interface Props {
   handleToggleChangeEJokeType: () => void
   handleJokeSave: (e: React.FormEvent<HTMLFormElement>) => void
   options: (
-    enumObj: typeof ECategory_en | typeof EJokeType | typeof ESafemode | typeof ELanguages
+    enumObj: typeof ECategories | typeof EJokeType | typeof ESafemode | typeof ELanguages
   ) => SelectOption[]
   getKeyByValue: (
-    enumObj:
-      | typeof ECategory_en
-      | typeof EJokeType
-      | typeof ESafemode
-      | typeof ELanguages,
-    value: ECategory_en | EJokeType | ESafemode | ELanguages
+    enumObj: typeof ECategories | typeof EJokeType | typeof ESafemode | typeof ELanguages,
+    value: ECategories | EJokeType | ESafemode | ELanguages
   ) => undefined | SelectOption['label']
   norrisCategories: SelectOption[]
   selectedNorrisCategory: SelectOption | undefined
   setSelectedNorrisCategory: (selectedNorrisCategory: SelectOption | undefined) => void
   hasNorris: boolean
   getCategoryInLanguage: (
-    category: ECategory_en,
+    category: ECategories | null,
     language: ELanguages
   ) => string | undefined
   subCategoryResults: string[]
-  handleBlacklistUpdate: (jokeId: IJoke['jokeId'], value: string | undefined) => void
+  handleBlacklistUpdate: (
+    jokeId: IJoke['jokeId'],
+    language: ELanguages,
+    value: string | undefined
+  ) => void
 }
 const Form = ({
   handleFormSubmit,
@@ -182,7 +182,7 @@ const Form = ({
             }
             onChange={(o) => {
               setLanguage(o?.value as ELanguages)
-              setJokeCategory(ECategory_en.Misc)
+              setJokeCategory(ECategories.Misc)
             }}
           />
 
@@ -224,7 +224,7 @@ const Form = ({
             options={optionsCategory(categoryByLanguages as any)}
             onChange={(o: SelectOption[]) => {
               setCategoryValues(o)
-              setJokeCategory(o?.map((s) => s.value).join(',') as ECategory_en)
+              setJokeCategory(o?.map((s) => s.value).join(',') as ECategories)
             }}
           />
         ) : (

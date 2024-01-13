@@ -4,7 +4,7 @@ import { ESave, ELanguages, ReducerProps, EUserNotUpdated } from '../../../inter
 import {
   EAreYouSureYouWantToHideThisJoke,
   EAuthor,
-  ECategory,
+  ECategories,
   ECategoryTitle,
   ECategory_en,
   EDelete,
@@ -25,7 +25,7 @@ interface Props {
   joke: string
   delivery?: string
   author: string
-  jokeCategory: ECategory | null
+  jokeCategory: ECategories | null
   reveal: boolean
   visibleJoke: boolean
   titleClickToReveal: string
@@ -33,12 +33,16 @@ interface Props {
   handleJokeSave: (e: React.FormEvent<HTMLFormElement>) => void
   language: ELanguages
   getCategoryInLanguage: (
-    category: ECategory_en,
+    category: ECategories | null,
     language: ELanguages
   ) => string | undefined
   subCategoryResults: string[]
   jokeId: IJoke['jokeId']
-  handleBlacklistUpdate: (jokeId: IJoke['jokeId'], value: string | undefined) => void
+  handleBlacklistUpdate: (
+    jokeId: IJoke['jokeId'],
+    language: ELanguages,
+    value: string | undefined
+  ) => void
 }
 const Joke = ({
   joke,
@@ -64,8 +68,7 @@ const Joke = ({
       <article aria-live='polite' className={`joke ${visibleJoke ? 'fadeIn' : ''}`}>
         <p className={`${visibleJoke ? 'fadeIn' : ''} ${!delivery ? 'no-delivery' : ''}`}>
           <small>
-            {ECategoryTitle[language]}:{' '}
-            {getCategoryInLanguage(jokeCategory as ECategory_en, language)}
+            {ECategoryTitle[language]}: {getCategoryInLanguage(jokeCategory, language)}
           </small>
         </p>
         <p className={`${visibleJoke ? 'fadeIn' : ''} ${!delivery ? 'no-delivery' : ''}`}>
@@ -123,7 +126,8 @@ const Joke = ({
             onClick={() =>
               handleBlacklistUpdate(
                 jokeId as IJoke['jokeId'],
-                jokeCategory === ECategory_en.ChuckNorris &&
+                language,
+                jokeCategory === ECategories.ChuckNorris &&
                   language === ELanguages.English
                   ? (joke as string)
                   : undefined

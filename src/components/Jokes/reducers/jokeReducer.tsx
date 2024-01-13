@@ -39,7 +39,6 @@ const jokeSlice = createSlice({
         (joke) => joke.jokeId === newJoke.jokeId && joke.language === newJoke.language
       )
       if (existingJoke) {
-        console.log(existingJoke)
         return state.map((joke) =>
           joke.jokeId !== newJoke.jokeId && joke.language === newJoke.language
             ? joke
@@ -60,11 +59,11 @@ export const initializeJokes = () => {
   }
 }
 
-export const getJokesByUserId = (userId: string) => {
+export const getJokesByUserId = (userId: string | undefined) => {
   return async (dispatch: (arg0: { payload: any; type: 'joke/setJokes' }) => void) => {
     const jokes = await jokeService.getJokesByUserId(userId)
     dispatch(setJokes(jokes))
-    return jokes.jokes
+    return jokes
   }
 }
 

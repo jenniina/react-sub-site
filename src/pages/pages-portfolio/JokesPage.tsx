@@ -6,7 +6,7 @@ import Jokes, {
 } from '../../components/Jokes/Jokes'
 import Accordion from '../../components/Accordion/Accordion'
 import {
-  ECategory,
+  ECategories,
   EJokeType,
   ERegisterAndLoginToUse,
   ESafemode,
@@ -83,7 +83,7 @@ export default function JokesPage({
       | typeof EJokeType
       | typeof ESafemode
       | typeof ELanguages,
-    value: ECategory | EJokeType | ESafemode | ELanguages
+    value: ECategories | EJokeType | ESafemode | ELanguages
   ) {
     for (const key in enumObj) {
       if (enumObj[key as keyof typeof enumObj] === value) {
