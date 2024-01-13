@@ -49,6 +49,16 @@ const usersSlice = createSlice({
   },
 })
 
+export const findUserById = (id: string) => {
+  return async (dispatch: (arg0: { payload: any; type: 'users/searchId' }) => IUser) => {
+    const user = await userService.searchId(id)
+    dispatch({ type: 'users/searchId', payload: user })
+    const token = window.localStorage.getItem('JokeApptoken')
+    window.localStorage.setItem('loggedJokeAppUser', JSON.stringify({ user, token }))
+    return user
+  }
+}
+
 export const initializeUsers = () => {
   return async (dispatch: (arg0: { payload: any; type: 'users/setUsers' }) => void) => {
     const users = await userService.getAll()
@@ -166,14 +176,6 @@ export const updatePassword = (
 //     return user.user
 //   }
 // }
-
-export const findUserById = (id: string) => {
-  return async (dispatch: (arg0: { payload: any; type: 'users/searchId' }) => IUser) => {
-    const user = await userService.searchId(id)
-    dispatch({ type: 'users/searchId', payload: user })
-    return user
-  }
-}
 
 export const updateUserToken = (user: Pick<IUser, 'username' | 'language'>) => {
   return async (

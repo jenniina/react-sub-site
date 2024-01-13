@@ -23,11 +23,11 @@ interface accordionProps {
     | ReactPortal
     | null
     | undefined
-  close?: string
   isOpen?: boolean
   setIsFormOpen?: (isFormOpen: boolean) => void
   language: ELanguages
   onClick?: () => void
+  id?: string
 }
 
 const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefined) => {
@@ -72,7 +72,7 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
 
   return (
     <div
-      id={`${props.className}-container`}
+      id={`${props.id ?? props.className}-container`}
       className={`${visible ? 'open' : 'closed'} ${
         props.className
       }-container accordion-container`}
@@ -83,7 +83,7 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
         onClick={toggleVisibility}
         style={visible ? { display: 'none' } : { display: 'inline-block' }}
       >
-        {props.text}
+        <span>&#xFE3D;</span>&nbsp;{props.text}&nbsp;<span>&#xFE3D;</span>
       </button>
 
       <div
@@ -91,13 +91,13 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
         style={visible ? { display: 'block' } : { display: 'none' }}
       >
         <button type='button' className='accordion-btn close' onClick={toggleVisibility}>
-          {props.close ?? EClose[props.language]}
+          {EClose[props.language]}
         </button>
 
         {props.children}
 
         <button type='button' className='accordion-btn close' onClick={toggleVisibility}>
-          {props.close ?? EClose[props.language]}
+          {EClose[props.language]}
         </button>
       </div>
     </div>

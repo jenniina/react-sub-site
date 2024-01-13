@@ -1,15 +1,9 @@
 import Joke from './Joke'
 import { Select } from '../../Select/Select'
 import { SelectOption } from '../../Select/Select'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
 import {
-  ECategory_en,
-  ECategory_cs,
-  ECategory_de,
-  ECategory_es,
-  ECategory_fr,
-  ECategory_pt,
   EJokeType,
   ESafemode,
   EFindAJoke,
@@ -25,9 +19,7 @@ import {
   ESelectALanguage,
   ESearchByKeyword,
   EAny,
-  ESelectExtraCategories,
   ECategories,
-  ECategory_fi,
   TCategoryByLanguages,
   IJoke,
   EChuckNorrisCategory,
@@ -45,7 +37,6 @@ interface Props {
   optionsCategory: (enumObj: TCategoryByLanguages) => SelectOption[]
   setQuery: (query: string) => void
   categoryByLanguages: TCategoryByLanguages
-  jokeCategoryByLanguage: IJokeCategoryByLanguage
   categoryValues: SelectOption[]
   setCategoryValues: (categoryValues: SelectOption[]) => void
   titleSafe: ESafeTitle
@@ -121,7 +112,6 @@ const Form = ({
   titleTwoPart,
   optionsCategory,
   categoryByLanguages,
-  jokeCategoryByLanguage,
   visibleJoke,
   setVisibleJoke,
   norrisCategories,

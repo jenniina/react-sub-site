@@ -51,6 +51,7 @@ import { notify } from '../../../reducers/notificationReducer'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { v4 as uuidv4 } from 'uuid'
 import { initializeUser } from '../../../reducers/authReducer'
+import { findUserById } from '../../../reducers/usersReducer'
 
 interface Props {
   userId: IUser['_id']
@@ -167,13 +168,15 @@ const JokeSubmit = ({
 
     dispatch(createJoke(jokeObject))
       .then((r) => {
-        dispatch(initializeUser()).then(() => {
-          dispatch(initializeJokes())
-          setJoke('')
-          setSetup('')
-          setDelivery('')
-          setSaving(false)
-        })
+        dispatch(findUserById(userId as string))
+          .then(() => dispatch(initializeUser()))
+          .then(() => {
+            dispatch(initializeJokes())
+            setJoke('')
+            setSetup('')
+            setDelivery('')
+            setSaving(false)
+          })
         dispatch(notify(`${ESavedJoke[language]}. ${r.message ?? ''}`, false, 8))
       })
       .catch((e) => {

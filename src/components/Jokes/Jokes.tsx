@@ -87,8 +87,8 @@ import {
   addToBlacklistedJokes,
   removeJokeFromBlacklisted,
   initializeUsers,
+  findUserById,
 } from '../../reducers/usersReducer'
-import useTimeout from '../../hooks/useTimeout'
 
 export const jokeCategoryByLanguage: IJokeCategoryByLanguage = {
   en: {
@@ -186,12 +186,12 @@ function Jokes({
   const users = useSelector((state: ReducerProps) => {
     return state.users
   })
-  const localUser = useSelector((state: ReducerProps) => {
-    return state.auth
+  const user = useSelector((state: ReducerProps) => {
+    return state.auth?.user
   })
-  const user = localUser
-    ? users?.find((user: IUser) => user._id === localUser.user._id)
-    : undefined
+  // const user = localUser
+  //   ? users?.find((user: IUser) => user._id === localUser.user._id)
+  //   : undefined
 
   const categoryByLanguagesConst = {
     en: ECategory_en,
@@ -282,14 +282,14 @@ function Jokes({
   }, [])
 
   useEffect(() => {
-    setTimeout(() => {
-      dispatch(initializeJokes())
-    }, 1000)
-  }, [saveJoke])
-
-  useEffect(() => {
     dispatch(initializeUser())
   }, [])
+
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(initializeJokes())
+    }, 600)
+  }, [saveJoke])
 
   // Set the document language and title
   useEffect(() => {
@@ -1318,7 +1318,7 @@ function Jokes({
       )
       if (isAlreadyBlacklisted) {
         dispatch(notify(EThisJokeIsAlreadyBlacklisted[language], true, 3))
-        dispatch(initializeUsers())
+        dispatch(findUserById(user?._id as string)).then(() => dispatch(initializeUser()))
         setJoke('')
         setDelivery('')
         setAuthor('')
@@ -1340,11 +1340,15 @@ function Jokes({
             dispatch(addToBlacklistedJokes(user?._id, jokeId, language, value))
               .then(() => {
                 dispatch(notify(`${EJokeHidden[language]}`, false, 3))
-                dispatch(initializeJokes()).then(() => dispatch(initializeUsers()))
+                dispatch(initializeJokes())
+                  .then(() => dispatch(findUserById(user?._id as string)))
+                  .then(() => dispatch(initializeUser()))
               })
               .catch((error) => {
                 console.log(error)
-                dispatch(initializeJokes()).then(() => dispatch(initializeUsers()))
+                dispatch(initializeJokes())
+                  .then(() => dispatch(findUserById(user?._id as string)))
+                  .then(() => dispatch(initializeUser()))
                 dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
                 setJoke('')
                 setDelivery('')
@@ -1368,7 +1372,9 @@ function Jokes({
       if (user) {
         dispatch(removeJokeFromBlacklisted(user?._id, bjoke_id, joke?.language))
           .then((data) => {
-            dispatch(initializeUsers())
+            dispatch(findUserById(user?._id as string)).then(() =>
+              dispatch(initializeUser())
+            )
           })
           .catch((error) => {
             console.log(error)
@@ -1391,7 +1397,9 @@ function Jokes({
       if (user) {
         dispatch(removeJokeFromBlacklisted(user?._id, bjoke_id, joke?.language))
           .then(() => {
-            dispatch(initializeJokes()).then(() => dispatch(initializeUsers()))
+            dispatch(initializeJokes())
+              .then(() => dispatch(findUserById(user?._id as string)))
+              .then(() => dispatch(initializeUser()))
             handleJokeSave(e)
           })
           .catch((error) => {
@@ -1446,7 +1454,6 @@ function Jokes({
               titleClickToReveal={titleClickToReveal}
               optionsCategory={optionsCategory}
               categoryByLanguages={categoryByLanguages}
-              jokeCategoryByLanguage={jokeCategoryByLanguage}
               visibleJoke={visibleJoke}
               setVisibleJoke={setVisibleJoke}
               norrisCategories={norrisCategories}
