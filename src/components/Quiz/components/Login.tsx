@@ -110,7 +110,7 @@ const FormLogin = ({ easy, medium, hard, language }: Props) => {
         <>
           <Accordion
             language={language}
-            className=''
+            className='login-to-save'
             text={ELogInToSaveScore[language]}
             ref={formLoginRef}
           >

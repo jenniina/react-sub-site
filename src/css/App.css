@@ -480,6 +480,10 @@ body .z {
     order: 1;
   }
 }
+.accordion-container .accordion-btn.open span {
+  display: inline-block;
+  transform: translateY(0.4em) rotate(180deg);
+}
 .accordionButton.close,
 .accordionButton.close:hover,
 .accordionButton.close:focus {

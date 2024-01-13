@@ -62,13 +62,13 @@ const QuizStart = ({
 
   const dispatch = useAppDispatch()
 
-  useEffect(() => {
-    dispatch(initializeUser())
-  }, [])
-
   const user = useSelector((state: ReducerProps) => {
     return state.auth?.user
   })
+
+  useEffect(() => {
+    dispatch(initializeUser())
+  }, [])
 
   useEffect(() => {
     if (user?._id && points !== 0 && finalSeconds !== 0) {

@@ -743,7 +743,8 @@ form.joke > *:not(.toggle) {
   background-image: none;
 }
 
-.icontext {
+.icontext,
+.blocked-btn {
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;

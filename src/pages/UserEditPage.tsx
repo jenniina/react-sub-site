@@ -48,13 +48,13 @@ const UserEditPage = ({
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  useEffect(() => {
-    dispatch(initializeUser())
-  }, [])
-
   const user = useSelector((state: ReducerProps) => {
     return state.auth?.user
   })
+
+  useEffect(() => {
+    dispatch(initializeUser())
+  }, [])
 
   useEffect(() => {
     const timer = setTimeout(() => {

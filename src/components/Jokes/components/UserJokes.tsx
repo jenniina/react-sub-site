@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { IoCopyOutline } from 'react-icons/io5'
 import { FaRandom, FaList } from 'react-icons/fa'
+import { ImBlocked } from 'react-icons/im'
 import { MdSave } from 'react-icons/md'
 import {
   MdOutlineFilter3,
@@ -29,14 +30,10 @@ import {
   ESafeTitle,
   EUnsafeTitle,
   EClickToReveal,
-  ESortByTitle,
   ESortBy,
-  ESafemodeTitle,
   ESelectACategory,
   ESearchByKeyword,
   EAny,
-  ESort,
-  EYourJokes,
   ELocalJokes,
   ENoJokesYet,
   EUserSubmittedJokes,
@@ -45,22 +42,10 @@ import {
   EAge,
   EAll,
   ERandom,
-  ERandomJoke,
   EAllJokes,
   EPerPage,
-  ECategory_cs,
-  ECategory_de,
-  ECategory_es,
-  ECategory_fi,
-  ECategory_fr,
-  ECategory_pt,
-  IJokeCategoryByLanguage,
   ESeeLocalJokes,
   ESaveJoke,
-  IJokeSingle,
-  IJokeTwoPart,
-  CategoryByLanguagesConst,
-  CategoryByLanguages,
   EOrderBy,
   EPendingVerification,
   ESelectCategory,
@@ -73,24 +58,17 @@ import {
   EFilterFurther,
   EPrivate,
   EPublic,
-  TCategoryByLanguages,
-  ESafemode,
-  EExtraCategories,
   EJokeAlreadySaved,
   ENoJokeFound,
   norrisCategoryTranslations as norrisCat,
   ELatest,
   EHowMany,
-  EGetLatest,
   EFailedToCopyJokeToClipboard,
   EJokeCopiedToClipboard,
   ECopy,
-  EShowHiddenJokes,
-  EHideJokes,
   EBlockedJokes,
   EHideBlockedJokes,
   ERestore,
-  EHide,
   ECategories,
   EBlock,
 } from '../interfaces'
@@ -102,31 +80,25 @@ import {
   TLanguageOfLanguage,
   ESearch,
   EEdit,
-  EClose,
   ELanguageTitle,
-  ESelectLanguage,
   EFilterByLanguage,
   EFilterByCategory,
   EFilter,
   EReset,
-  EOldestFirst,
-  ENewestFirst,
   ENewest,
   EOldest,
   ELikedBy,
   ELastPage,
   EFirstPage,
   IBlacklistedJoke,
-  EError,
   ESave,
 } from '../../../interfaces'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
 import { Select, SelectOption } from '../../Select/Select'
 import { useSelector } from 'react-redux'
-import { initializeUsers } from '../../../reducers/usersReducer'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import Accordion from '../../Accordion/Accordion'
-import { createJoke, initializeJokes, updateJoke } from '../reducers/jokeReducer'
+import { initializeJokes, updateJoke } from '../reducers/jokeReducer'
 import { notify } from '../../../reducers/notificationReducer'
 import { initializeUser } from '../../../reducers/authReducer'
 import norrisService from '../services/chucknorris'
@@ -690,6 +662,12 @@ const UserJokes = ({
     }
   }
 
+  useEffect(() => {
+    if (!userId) {
+      setShowBlacklistedJokes(false)
+    }
+  }, [userId])
+
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [itemsPerPage, setItemsPerPage] = useState<number>(10)
   const [leftPage, setLeftPage] = useState<number>(1)
@@ -1077,8 +1055,7 @@ const UserJokes = ({
                     setLatest(false)
                   }}
                 >
-                  <FaRandom />
-                  {ERandom[language]}
+                  {ERandom[language]} <FaRandom />
                 </button>{' '}
                 <button
                   className={`icontext all-or-latest-btn ${
@@ -1090,7 +1067,7 @@ const UserJokes = ({
                     setLatest(false)
                   }}
                 >
-                  <FaList /> {EAllJokes[language]}
+                  {EAllJokes[language]} <FaList />
                 </button>
                 <div className='flex center'>
                   <button
@@ -1105,15 +1082,16 @@ const UserJokes = ({
                       }, 200)
                     }}
                   >
+                    {ELatest[language]}
+                    <span className='scr'>{latestNumber}</span>{' '}
                     {latestNumber === 3 && <MdOutlineFilter3 />}
                     {latestNumber === 4 && <MdOutlineFilter4 />}
                     {latestNumber === 5 && <MdOutlineFilter5 />}
                     {latestNumber === 6 && <MdOutlineFilter6 />}
                     {latestNumber === 7 && <MdOutlineFilter7 />}
                     {latestNumber === 8 && <MdOutlineFilter8 />}
-                    {latestNumber === 9 && <MdOutlineFilter9 />}{' '}
-                    {latestNumber > 9 && <MdOutlineFilter9Plus />} {ELatest[language]}{' '}
-                    <span className='scr'>{latestNumber}</span>
+                    {latestNumber === 9 && <MdOutlineFilter9 />}
+                    {latestNumber > 9 && <MdOutlineFilter9Plus />}
                   </button>
                   <div>
                     <input
@@ -1134,19 +1112,27 @@ const UserJokes = ({
                 </div>
               </>
             )}
-            <button
-              className={`blocked-btn ${showBlacklistedJokes ? 'active' : ''}`}
-              onClick={() => setShowBlacklistedJokes((prev) => !prev)}
-            >
-              {showBlacklistedJokes
-                ? EHideBlockedJokes[language]
-                : EBlockedJokes[language]}
-            </button>
+            {user && (
+              <button
+                className={`blocked-btn danger ${showBlacklistedJokes ? 'active' : ''}`}
+                onClick={() => setShowBlacklistedJokes((prev) => !prev)}
+              >
+                {showBlacklistedJokes ? (
+                  <>
+                    {EHideBlockedJokes[language]} <ImBlocked />
+                  </>
+                ) : (
+                  <>
+                    {EBlockedJokes[language]} <ImBlocked />
+                  </>
+                )}
+              </button>
+            )}
           </div>
 
           {!isRandom && !showBlacklistedJokes && pagination()}
 
-          {showBlacklistedJokes && filteredFetchedJokes?.length > 0 ? (
+          {user && showBlacklistedJokes && filteredFetchedJokes?.length > 0 ? (
             <div className='blocked-controls-wrap'>
               <div className='input-wrap search-blacklist'>
                 <label htmlFor='searchBlacklistedJokes'>
@@ -1166,7 +1152,7 @@ const UserJokes = ({
           )}
 
           <ul className={`userjokeslist ${showBlacklistedJokes ? 'blockedJokes' : ''}`}>
-            {showBlacklistedJokes ? (
+            {user && showBlacklistedJokes ? (
               filteredFetchedJokes?.map((joke, index) => (
                 <li key={user?.blacklistedJokes?.[index]?.jokeId ?? index}>
                   <div>
@@ -1342,7 +1328,7 @@ const UserJokes = ({
                             onClick={() => handleJokeSave(joke._id)}
                             className='save'
                           >
-                            <MdSave /> {ESaveJoke[language]}
+                            {ESaveJoke[language]} <MdSave />
                           </button>
                         )}
 
@@ -1355,16 +1341,16 @@ const UserJokes = ({
                             )
                           }
                         >
-                          <IoCopyOutline /> {ECopy[language]}
+                          {ECopy[language]} <IoCopyOutline />
                         </button>
                         {userId &&
                           joke.user?.includes(userId) &&
                           joke.author === userId && (
                             <Accordion
                               language={language}
-                              className='joke-edit'
+                              id={`joke-edit-${joke.jokeId}`}
+                              className={`joke-edit`}
                               text={EEdit[language]}
-                              close={EClose[language]}
                               onClick={() => {
                                 setJokeLanguage(joke.language)
                                 setJokeCategory(joke.category as ECategories)

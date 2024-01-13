@@ -6,7 +6,7 @@ import { Select, SelectOption } from '../Select/Select'
 import { initializeUser, refreshUser } from '../../reducers/authReducer'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
-import { updateUser } from '../../reducers/usersReducer'
+import { findUserById, updateUser } from '../../reducers/usersReducer'
 import { AxiosError } from 'axios'
 import Notification from '../Notification/Notification'
 import styles from './css/edit.module.css'
@@ -51,7 +51,9 @@ const LanguageEdit = ({ user, language, setLanguage, options, getKeyByValue }: P
               } else {
                 dispatch(notify(`${res.message ?? EUserUpdated[lang]}`, false, 5))
                 dispatch(refreshUser(res.user)).then(() => {
-                  dispatch(initializeUser())
+                  dispatch(findUserById(user?._id as string)).then(() =>
+                    dispatch(initializeUser())
+                  )
                   setLanguage(lang)
                 })
                 setPasswordOld('')

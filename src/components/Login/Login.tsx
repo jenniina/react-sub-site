@@ -93,7 +93,6 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
             className='login'
             text={ELogin[language]}
             ref={formLoginRef}
-            close={EClose[(language as ELanguages) || 'en']}
             setIsFormOpen={setIsFormOpen}
             isOpen={isOpen}
           >

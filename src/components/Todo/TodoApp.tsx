@@ -36,13 +36,13 @@ interface Props {
 export default function TodoApp({ language }: Props) {
   const dispatch = useAppDispatch()
 
-  useEffect(() => {
-    dispatch(initializeUser())
-  }, [])
-
   const user = useSelector((state: ReducerProps) => {
     return state.auth?.user
   })
+
+  useEffect(() => {
+    dispatch(initializeUser())
+  }, [])
 
   const todos = useSelector((state: RootState) => state.todos.todos)
   const status = useSelector((state: RootState) => state.todos.status)

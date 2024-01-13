@@ -65,6 +65,10 @@ const QuizFinished = ({ language }: Props) => {
 
   const dispatch = useAppDispatch()
 
+  const user = useSelector((state: ReducerProps) => {
+    return state.auth?.user
+  })
+
   useEffect(() => {
     dispatch(initializeUser())
   }, [])
@@ -74,10 +78,6 @@ const QuizFinished = ({ language }: Props) => {
       navigate('/portfolio/quiz')
     }
   }, [])
-
-  const user = useSelector((state: ReducerProps) => {
-    return state.auth?.user
-  })
 
   useEffect(() => {
     if ((!user && points !== 0 && finalSeconds !== 0) || finalSeconds === undefined)
