@@ -48,7 +48,7 @@ import { BlobProvider } from './components/Blob/components/BlobProvider'
 import useLocalStorage from './hooks/useStorage'
 import {
   EAJokeGeneratorForTheComicallyInclined,
-  ECategory,
+  ECategories,
   ECategory_en,
   EJokeType,
   ESafemode,
@@ -111,7 +111,7 @@ const App: FC = () => {
       | typeof EJokeType
       | typeof ESafemode
       | typeof ELanguages,
-    value: ECategory | EJokeType | ESafemode | ELanguages
+    value: ECategories | EJokeType | ESafemode | ELanguages
   ) {
     for (const key in enumObj) {
       if (enumObj[key as keyof typeof enumObj] === value) {

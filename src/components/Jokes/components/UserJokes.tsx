@@ -32,10 +32,8 @@ import {
   ESortByTitle,
   ESortBy,
   ESafemodeTitle,
-  ECategory,
   ESelectACategory,
   ESearchByKeyword,
-  ECategory_en,
   EAny,
   ESort,
   EYourJokes,
@@ -92,6 +90,9 @@ import {
   EBlockedJokes,
   EHideBlockedJokes,
   ERestore,
+  EHide,
+  ECategories,
+  EBlock,
 } from '../interfaces'
 import {
   IUser,
@@ -117,6 +118,7 @@ import {
   EFirstPage,
   IBlacklistedJoke,
   EError,
+  ESave,
 } from '../../../interfaces'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
 import { Select, SelectOption } from '../../Select/Select'
@@ -155,7 +157,7 @@ interface Props {
   options: (enumObj: typeof ELanguages) => SelectOption[]
   norrisCategories: SelectOption[]
   getCategoryInLanguage: (
-    category: ECategory_en,
+    category: ECategories | null,
     language: ELanguages
   ) => string | undefined
   setIsEditOpen: (isEditOpen: boolean) => void
@@ -165,6 +167,16 @@ interface Props {
     e: React.FormEvent<HTMLFormElement>,
     joke: IJoke,
     bjoke_id: IBlacklistedJoke['_id']
+  ) => void
+  handleRemoveFromBlacklistedAndSaveJoke: (
+    e: React.FormEvent<HTMLFormElement>,
+    joke: IJoke,
+    bjoke_id: IBlacklistedJoke['_id']
+  ) => void
+  handleBlacklistUpdate: (
+    jokeId: IJoke['jokeId'],
+    language: ELanguages,
+    value: string | undefined
   ) => void
 }
 
@@ -204,6 +216,8 @@ const UserJokes = ({
   editId,
   setEditId,
   handleRemoveJokeFromBlacklisted,
+  handleRemoveFromBlacklistedAndSaveJoke,
+  handleBlacklistUpdate,
 }: Props) => {
   const users = useSelector((state: any) => state.users)
   const userId = user?._id
@@ -226,7 +240,7 @@ const UserJokes = ({
   const [sortBy, setSortBy] = useState<ESortBy_en>(ESortBy_en.popularity)
   const [searchTerm, setSearchTerm] = useState<string>('')
   const [selectedCategory, setSelectedCategory] = useState<
-    ECategory_en | 'ChuckNorris' | ''
+    ECategories | 'ChuckNorris' | ''
   >('')
   const [selectedLanguage, setSelectedLanguage] = useState<ELanguages | ''>('')
   const [hasNorris, setHasNorris] = useState(false)
@@ -235,7 +249,7 @@ const UserJokes = ({
   >(norrisCategories[0])
   const [newJoke, setNewJoke] = useState<IJoke | undefined>(undefined)
   const [jokeLanguage, setJokeLanguage] = useState<ELanguages>(ELanguages.English)
-  const [jokeCategory, setJokeCategory] = useState<ECategory_en>(ECategory_en.Misc)
+  const [jokeCategory, setJokeCategory] = useState<ECategories>(ECategories.Misc)
   const [sortByAge, setSortByAge] = useState<EOrderByAge.newest | EOrderByAge.oldest>(
     EOrderByAge.newest
   )
@@ -299,8 +313,7 @@ const UserJokes = ({
   }, [])
 
   useEffect(() => {
-    const norrisExists =
-      selectedCategory === ECategory_en.ChuckNorris || selectedCategory === 'ChuckNorris'
+    const norrisExists = selectedCategory === ECategories.ChuckNorris
     setHasNorris(norrisExists)
   }, [selectedCategory])
 
@@ -322,7 +335,7 @@ const UserJokes = ({
   }
 
   const handleSelectChange = (o: SelectOption) => {
-    setSelectedCategory(o.value as ECategory_en)
+    setSelectedCategory(o.value as ECategories)
   }
 
   useEffect(() => {
@@ -358,44 +371,54 @@ const UserJokes = ({
   useEffect(() => {
     setCurrentPage(1)
     let newFilteredJokes = userJokes?.filter((joke) => {
-      const searchTermMatches =
-        ('joke' in joke
-          ? joke.joke?.toLowerCase().includes(searchTerm.toLowerCase())
-          : false) ||
-        ('setup' in joke
-          ? joke.setup?.toLowerCase().includes(searchTerm.toLowerCase())
-          : false) ||
-        ('delivery' in joke
-          ? joke.delivery?.toLowerCase().includes(searchTerm.toLowerCase())
-          : false) ||
-        joke.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        joke.category?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        joke.subCategories?.includes(searchTerm?.toLowerCase()) ||
-        joke.translatedLanguage?.toLowerCase().includes(searchTerm.toLowerCase())
+      if (joke) {
+        const searchTermMatches =
+          ('joke' in joke
+            ? joke.joke?.toLowerCase().includes(searchTerm.toLowerCase())
+            : false) ||
+          ('setup' in joke
+            ? joke.setup?.toLowerCase().includes(searchTerm.toLowerCase())
+            : false) ||
+          ('delivery' in joke
+            ? joke.delivery?.toLowerCase().includes(searchTerm.toLowerCase())
+            : false) ||
+          joke.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          joke.category?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          joke.subCategories?.includes(searchTerm?.toLowerCase()) ||
+          joke.translatedLanguage?.toLowerCase().includes(searchTerm.toLowerCase())
 
-      const categoryMatches = selectedCategory ? joke.category === selectedCategory : true
-
-      const languageMatches =
-        selectedLanguage !== '' ? joke.language === selectedLanguage : true
-
-      const norrisCategoryMatches =
-        selectedNorrisCategory?.value !== '' && selectedNorrisCategory?.value !== 'any'
-          ? joke.subCategories?.includes(selectedNorrisCategory?.value as string)
+        const categoryMatches = selectedCategory
+          ? joke.category === selectedCategory
           : true
 
-      if (
-        (localJokes && joke.private === false && joke.verified === true) ||
-        (localJokes && joke.private === undefined)
-      ) {
-        return (
-          languageMatches && categoryMatches && norrisCategoryMatches && searchTermMatches
-        )
-      } else if (!localJokes && joke.user?.includes(userId)) {
-        return (
-          languageMatches && categoryMatches && norrisCategoryMatches && searchTermMatches
-        )
-      } else {
-        return false
+        const languageMatches =
+          selectedLanguage !== '' ? joke.language === selectedLanguage : true
+
+        const norrisCategoryMatches =
+          selectedNorrisCategory?.value !== '' && selectedNorrisCategory?.value !== 'any'
+            ? joke.subCategories?.includes(selectedNorrisCategory?.value as string)
+            : true
+
+        if (
+          (localJokes && joke.private === false && joke.verified === true) ||
+          (localJokes && joke.private === undefined)
+        ) {
+          return (
+            languageMatches &&
+            categoryMatches &&
+            norrisCategoryMatches &&
+            searchTermMatches
+          )
+        } else if (!localJokes && joke.user?.includes(userId)) {
+          return (
+            languageMatches &&
+            categoryMatches &&
+            norrisCategoryMatches &&
+            searchTermMatches
+          )
+        } else {
+          return false
+        }
       }
     })
 
@@ -464,11 +487,11 @@ const UserJokes = ({
   ])
 
   const handleCategoryChange = (category: string) => {
-    let modifiedCategory: ECategory_en | '' = category as ECategory_en | ''
+    let modifiedCategory: ECategories | '' = category as ECategories | ''
     if (category === 'Chuck Norris') {
-      modifiedCategory = 'ChuckNorris' as ECategory_en
+      modifiedCategory = 'ChuckNorris' as ECategories
     } else if (category === 'Dad Joke') {
-      modifiedCategory = 'DadJoke' as ECategory_en
+      modifiedCategory = 'DadJoke' as ECategories
     }
     setSelectedCategory(modifiedCategory)
   }
@@ -533,11 +556,11 @@ const UserJokes = ({
             let query = blacklistedJoke.value
             const joke = jokes?.find(
               (joke: IJoke) =>
-                joke.jokeId === blacklistedJoke.jokeId &&
+                joke.jokeId.toString() === blacklistedJoke.jokeId.toString() &&
                 joke.language === blacklistedJoke.language
             )
             return (
-              joke ||
+              joke ??
               (await findBlackListedJokeFromAPI(
                 blacklistedJoke.jokeId,
                 blacklistedJoke.language,
@@ -546,7 +569,6 @@ const UserJokes = ({
             )
           }) || []
         )
-
         setFetchedJokes(fetchedJokes)
       }
     }
@@ -557,20 +579,22 @@ const UserJokes = ({
   // filter fetchedJokes joke, setup and delivery according to searchTerm
 
   const filteredFetchedJokes = fetchedJokes?.filter((joke) => {
-    const searchTermMatches =
-      ('joke' in joke
-        ? joke.joke?.toLowerCase().includes(searchTerm.toLowerCase())
-        : false) ||
-      ('setup' in joke
-        ? joke.setup?.toLowerCase().includes(searchTerm.toLowerCase())
-        : false) ||
-      ('delivery' in joke
-        ? joke.delivery?.toLowerCase().includes(searchTerm.toLowerCase())
-        : false) ||
-      joke.category?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      joke.subCategories?.includes(searchTerm?.toLowerCase())
+    if (joke) {
+      const searchTermMatches =
+        ('joke' in joke
+          ? joke.joke?.toLowerCase().includes(searchTerm.toLowerCase())
+          : false) ||
+        ('setup' in joke
+          ? joke.setup?.toLowerCase().includes(searchTerm.toLowerCase())
+          : false) ||
+        ('delivery' in joke
+          ? joke.delivery?.toLowerCase().includes(searchTerm.toLowerCase())
+          : false) ||
+        joke.category?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        joke.subCategories?.includes(searchTerm?.toLowerCase())
 
-    return searchTermMatches
+      return searchTermMatches
+    }
   })
 
   //  https://v2.jokeapi.dev/joke/Any?idRange=3&lang={language}&format=json
@@ -592,9 +616,15 @@ const UserJokes = ({
           return {
             jokeId: joke.id,
             joke: joke.value,
-            category: ECategory_en.ChuckNorris,
+            category: ECategories.ChuckNorris,
             language: ELanguages.English,
             type: EJokeType.single,
+            safe:
+              joke.categories?.includes('explicit') ||
+              joke.categories?.includes('political') ||
+              joke.categories?.includes('religion')
+                ? false
+                : true,
           }
         }
       } else {
@@ -605,13 +635,13 @@ const UserJokes = ({
 
         if (data.error) {
           const result = await dadjokeService.getDadJokeById(id)
-
           return {
             jokeId: result.id,
             joke: result.joke,
-            category: ECategory_en.DadJoke,
+            category: ECategories.DadJoke,
             language: ELanguages.English,
             type: EJokeType.single,
+            safe: true,
           }
         } else {
           if (data.type === 'twopart') {
@@ -622,6 +652,16 @@ const UserJokes = ({
               category: data.category,
               language: data.lang,
               type: EJokeType.twopart,
+              safe:
+                data.flags?.nsfw ||
+                data.flags?.religious ||
+                data.flags?.political ||
+                data.flags?.racist ||
+                data.flags?.sexist ||
+                data.flags?.explicit ||
+                !data.safe
+                  ? false
+                  : true,
             }
           } else {
             return {
@@ -630,6 +670,16 @@ const UserJokes = ({
               category: data.category,
               language: data.lang,
               type: EJokeType.single,
+              safe:
+                data.flags?.nsfw ||
+                data.flags?.religious ||
+                data.flags?.political ||
+                data.flags?.racist ||
+                data.flags?.sexist ||
+                data.flags?.explicit ||
+                !data.safe
+                  ? false
+                  : true,
             }
           }
         }
@@ -944,7 +994,7 @@ const UserJokes = ({
                       instructions={`${EFilterByCategory[language]}:`}
                       options={[
                         { label: ESelectACategory[language], value: '' },
-                        ...(Object.values(ECategory_en).map((category) => {
+                        ...(Object.values(ECategories).map((category) => {
                           return {
                             label: getCategoryInLanguage(category, language),
                             value: category,
@@ -955,7 +1005,7 @@ const UserJokes = ({
                         selectedCategory
                           ? ({
                               label: getCategoryInLanguage(
-                                selectedCategory as ECategory_en,
+                                selectedCategory as ECategories,
                                 language
                               ),
                               value: selectedCategory,
@@ -963,7 +1013,7 @@ const UserJokes = ({
                           : { label: ESelectACategory[language], value: '' }
                       }
                       onChange={(o) => {
-                        setSelectedCategory(o?.value as ECategory_en)
+                        setSelectedCategory(o?.value as ECategories)
                         handleSelectChange(o as SelectOption)
                         handleCategoryChange(o?.value as string)
                       }}
@@ -1018,7 +1068,7 @@ const UserJokes = ({
             {!showBlacklistedJokes && (
               <>
                 <button
-                  className='icontext random-btn'
+                  className={`icontext random-btn ${isRandom ? 'active' : ''}`}
                   onClick={() => {
                     setCurrentPage(1)
                     setShowBlacklistedJokes(false)
@@ -1030,57 +1080,57 @@ const UserJokes = ({
                   <FaRandom />
                   {ERandom[language]}
                 </button>{' '}
+                <button
+                  className={`icontext all-or-latest-btn ${
+                    !isRandom && !latest ? 'active' : ''
+                  }`}
+                  onClick={() => {
+                    setIsRandom(false)
+                    setShowBlacklistedJokes(false)
+                    setLatest(false)
+                  }}
+                >
+                  <FaList /> {EAllJokes[language]}
+                </button>
                 <div className='flex center'>
                   <button
-                    className='icontext all-or-latest-btn'
+                    className={`icontext all-or-latest-btn ${latest ? 'active' : ''}`}
                     onClick={() => {
                       setIsRandom(false)
                       setShowBlacklistedJokes(false)
-                      if (!latest) {
-                        setSortBy(ESortBy_en.age)
-                        setSortByAge(EOrderByAge.newest)
-                        setTimeout(() => {
-                          setLatest(true)
-                        }, 200)
-                      } else setLatest(false)
+                      setSortBy(ESortBy_en.age)
+                      setSortByAge(EOrderByAge.newest)
+                      setTimeout(() => {
+                        setLatest(true)
+                      }, 200)
                     }}
                   >
-                    {!latest && !isRandom ? (
-                      <>
-                        {latestNumber === 3 && <MdOutlineFilter3 />}
-                        {latestNumber === 4 && <MdOutlineFilter4 />}
-                        {latestNumber === 5 && <MdOutlineFilter5 />}
-                        {latestNumber === 6 && <MdOutlineFilter6 />}
-                        {latestNumber === 7 && <MdOutlineFilter7 />}
-                        {latestNumber === 8 && <MdOutlineFilter8 />}
-                        {latestNumber === 9 && <MdOutlineFilter9 />}{' '}
-                        {latestNumber > 9 && <MdOutlineFilter9Plus />}{' '}
-                        {EGetLatest[language]} <span className='scr'>{latestNumber}</span>
-                      </>
-                    ) : (
-                      <>
-                        <FaList /> {EAllJokes[language]}
-                      </>
-                    )}
+                    {latestNumber === 3 && <MdOutlineFilter3 />}
+                    {latestNumber === 4 && <MdOutlineFilter4 />}
+                    {latestNumber === 5 && <MdOutlineFilter5 />}
+                    {latestNumber === 6 && <MdOutlineFilter6 />}
+                    {latestNumber === 7 && <MdOutlineFilter7 />}
+                    {latestNumber === 8 && <MdOutlineFilter8 />}
+                    {latestNumber === 9 && <MdOutlineFilter9 />}{' '}
+                    {latestNumber > 9 && <MdOutlineFilter9Plus />} {ELatest[language]}{' '}
+                    <span className='scr'>{latestNumber}</span>
                   </button>
-                  {!latest && !isRandom && (
-                    <>
-                      <input
-                        type='number'
-                        min={3}
-                        max={100}
-                        id='number-of-latest'
-                        defaultValue={latestNumber}
-                        className='narrow'
-                        onChange={(e) => {
-                          setLatestNumber(e.target.valueAsNumber)
-                        }}
-                      />
-                      <label htmlFor='number-of-latest' className='scr'>
-                        <span>{EHowMany[language]}</span>
-                      </label>
-                    </>
-                  )}
+                  <div>
+                    <input
+                      type='number'
+                      min={3}
+                      max={100}
+                      id='number-of-latest'
+                      defaultValue={latestNumber}
+                      className='narrow'
+                      onChange={(e) => {
+                        setLatestNumber(e.target.valueAsNumber)
+                      }}
+                    />
+                    <label htmlFor='number-of-latest' className='scr'>
+                      <span>{EHowMany[language]}</span>
+                    </label>
+                  </div>
                 </div>
               </>
             )}
@@ -1119,19 +1169,34 @@ const UserJokes = ({
             {showBlacklistedJokes ? (
               filteredFetchedJokes?.map((joke, index) => (
                 <li key={user?.blacklistedJokes?.[index]?.jokeId ?? index}>
-                  <form
-                    onSubmit={(e) =>
-                      handleRemoveJokeFromBlacklisted(
-                        e,
-                        joke,
-                        user?.blacklistedJokes?.[index]?._id
-                      )
-                    }
-                  >
-                    <button className='' type='submit'>
-                      {ERestore[language]}
-                    </button>
-                  </form>
+                  <div>
+                    <form
+                      onSubmit={(e) =>
+                        handleRemoveJokeFromBlacklisted(
+                          e,
+                          joke,
+                          user?.blacklistedJokes?.[index]?._id
+                        )
+                      }
+                    >
+                      <button className='' type='submit'>
+                        {ERestore[language]}
+                      </button>
+                    </form>
+                    <form
+                      onSubmit={(e) =>
+                        handleRemoveFromBlacklistedAndSaveJoke(
+                          e,
+                          joke,
+                          user?.blacklistedJokes?.[index]?._id
+                        )
+                      }
+                    >
+                      <button className='' type='submit'>
+                        {ESave[language]}
+                      </button>
+                    </form>
+                  </div>
                   {joke ? (
                     joke.type === EJokeType.single ? (
                       <p>{joke.joke}</p>
@@ -1189,7 +1254,7 @@ const UserJokes = ({
                       <div>
                         <span>
                           {titleCategory}:{' '}
-                          {getCategoryInLanguage(joke.category as ECategory_en, language)}{' '}
+                          {getCategoryInLanguage(joke.category, language)}{' '}
                           {joke.subCategories &&
                           joke.subCategories?.length > 0 &&
                           joke.subCategories?.find((category) => category !== 'any') ? (
@@ -1254,6 +1319,24 @@ const UserJokes = ({
                             </button>
                           </form>
                         )}
+                        {joke.author !== userId && !joke.user?.includes(userId) && (
+                          <button
+                            onClick={() =>
+                              handleBlacklistUpdate(
+                                joke.jokeId,
+                                joke.language,
+                                joke.category === ECategories.ChuckNorris &&
+                                  joke.type === EJokeType.single
+                                  ? joke.joke
+                                  : undefined
+                              )
+                            }
+                            className='delete danger'
+                          >
+                            {EBlock[language]}
+                          </button>
+                        )}
+
                         {!joke.user?.includes(userId) && (
                           <button
                             onClick={() => handleJokeSave(joke._id)}
@@ -1284,7 +1367,7 @@ const UserJokes = ({
                               close={EClose[language]}
                               onClick={() => {
                                 setJokeLanguage(joke.language)
-                                setJokeCategory(joke.category as ECategory_en)
+                                setJokeCategory(joke.category as ECategories)
                                 setNewJoke(restOfJoke as IJoke)
                                 setEditId(joke.jokeId)
                               }}
@@ -1419,22 +1502,20 @@ const UserJokes = ({
                                       hide
                                       options={[
                                         { label: EAny[language], value: '' },
-                                        ...(Object.values(ECategory_en).map(
-                                          (category) => {
-                                            return {
-                                              label: getCategoryInLanguage(
-                                                category as ECategory_en,
-                                                language
-                                              ),
-                                              value: category,
-                                            }
+                                        ...(Object.values(ECategories).map((category) => {
+                                          return {
+                                            label: getCategoryInLanguage(
+                                              category as ECategories,
+                                              language
+                                            ),
+                                            value: category,
                                           }
-                                        ) as SelectOption[]),
+                                        }) as SelectOption[]),
                                       ]}
                                       value={
                                         {
                                           label: getCategoryInLanguage(
-                                            jokeCategory as ECategory_en,
+                                            jokeCategory as ECategories,
                                             language
                                           ),
                                           value: jokeCategory,
@@ -1446,10 +1527,10 @@ const UserJokes = ({
                                           translatedLanguage,
                                           ...restOfJoke
                                         } = joke
-                                        setJokeCategory(o?.value as ECategory_en)
+                                        setJokeCategory(o?.value as ECategories)
                                         setNewJoke(() => ({
                                           ...restOfJoke,
-                                          category: o?.value as ECategory_en,
+                                          category: o?.value as ECategories,
                                         }))
                                       }}
                                     />

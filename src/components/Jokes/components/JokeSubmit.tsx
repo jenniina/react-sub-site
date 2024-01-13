@@ -18,7 +18,7 @@ import {
   EPrivate,
   ESavedJoke,
   IJoke,
-  ECategory,
+  ECategories,
   EAny,
   EIfTheJokeIsNotPrivateVerificationIsNeeded,
   EJokeIsSetToPrivateAndWillOnlyBeSeenByYouAndTheAdministrator,
@@ -99,7 +99,7 @@ const JokeSubmit = ({
   const titleCategory = ECategoryTitle[language]
   const titleSubmitAJokeTo = ESubmitAJokeTo[language]
   const selectAnOption = ESelectAnOption[language]
-  const [selectedCategory, setSelectedCategory] = useState<ECategory | ''>('')
+  const [selectedCategory, setSelectedCategory] = useState<ECategories | ''>('')
   const [selectedNorrisCategory, setSelectedNorrisCategory] = useState<
     SelectOption | undefined
   >(norrisCategories[0])
@@ -107,7 +107,7 @@ const JokeSubmit = ({
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
-    const norrisExists = selectedCategory === ECategory_en.ChuckNorris
+    const norrisExists = selectedCategory === ECategories.ChuckNorris
     setHasNorris(norrisExists)
   }, [selectedCategory])
   const dispatch = useAppDispatch()
@@ -127,9 +127,9 @@ const JokeSubmit = ({
 
     jokeObject = {
       jokeId: uuidv4(),
-      category: (jokeCategory?.value as ECategory_en) ?? ECategory_en.Misc,
+      category: (jokeCategory?.value as ECategories) ?? ECategories.Misc,
       subCategories:
-        (jokeCategory?.label as ECategory) === ECategory_en.ChuckNorris
+        (jokeCategory?.label as ECategories) === ECategories.ChuckNorris
           ? [selectedNorrisCategory?.value as string]
           : [],
       language: languageSubmit,
@@ -348,7 +348,7 @@ const JokeSubmit = ({
                 options={optionsCategory(categoryByLanguages as any)}
                 onChange={(o: SelectOption | undefined) => {
                   setJokeCategory(o)
-                  setSelectedCategory(o?.label as ECategory)
+                  setSelectedCategory(o?.label as ECategories)
                 }}
               />
               <Select

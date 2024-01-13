@@ -268,7 +268,18 @@ export type CategoryByLanguages = {
   fi: ECategory_fi
 }
 
-export type ECategory = CategoryByLanguages[keyof CategoryByLanguages]
+//export type ECategory = CategoryByLanguages[keyof CategoryByLanguages]
+export enum ECategories {
+  Misc = 'Misc',
+  Programming = 'Programming',
+  Dark = 'Dark',
+  Pun = 'Pun',
+  Spooky = 'Spooky',
+  Christmas = 'Christmas',
+  ChuckNorris = 'ChuckNorris',
+  DadJoke = 'DadJoke',
+}
+
 export interface IJokeCategoryByLanguage {
   en: typeof ECategory_en
   es: typeof ECategory_es
@@ -689,7 +700,7 @@ export interface IJokeCommonFields {
   _id?: string
   jokeId: string
   type: EJokeType
-  category: ECategory
+  category: ECategories
   subCategories: string[] | undefined
   language: ELanguages
   safe: boolean
@@ -759,7 +770,7 @@ export interface IJokeType {
 
 export interface IJokeSubmissionSingleJSON {
   formatVersion: number
-  category: ECategory
+  category: ECategories
   type: EJokeType
   joke: string
   flags: {
@@ -775,7 +786,7 @@ export interface IJokeSubmissionSingleJSON {
 
 export interface IJokeSubmissionTwoPartJSON {
   formatVersion: number
-  category: ECategory
+  category: ECategories
   type: EJokeType
   setup: string
   delivery: string
@@ -1542,4 +1553,22 @@ export enum EHideBlockedJokes {
   pt = 'Ocultar piadas bloqueadas',
   cs = 'Skrýt blokované vtipy',
   fi = 'Piilota estetyt vitsit',
+}
+export enum ELatestJokes {
+  en = 'Latest jokes',
+  es = 'Últimas bromas',
+  fr = 'Dernières blagues',
+  de = 'Neueste Witze',
+  pt = 'Últimas piadas',
+  cs = 'Poslední vtipy',
+  fi = 'Viimeisimmät vitsit',
+}
+export enum EBlock {
+  en = 'Block',
+  es = 'Bloquear',
+  fr = 'Bloquer',
+  de = 'Block',
+  pt = 'Bloquear',
+  cs = 'Blok',
+  fi = 'Estä',
 }

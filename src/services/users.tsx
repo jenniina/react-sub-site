@@ -43,7 +43,10 @@ const addToBlacklistedJokes = async (
   language: string,
   value: string | undefined
 ) => {
-  const response = await axios.put(`${baseUrl}/${id}/${jokeId}/${language}`, value)
+  const valueObject = {
+    value,
+  }
+  const response = await axios.put(`${baseUrl}/${id}/${jokeId}/${language}`, valueObject)
   return response.data
 }
 
