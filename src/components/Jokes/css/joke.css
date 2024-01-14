@@ -1016,6 +1016,11 @@ button.blocked-btn.active {
   outline-offset: -3px;
 }
 .saved .safemode-wrap {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+
   gap: calc(var(--gap));
 }
 .saved .age-container .toggle {
