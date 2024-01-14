@@ -1376,7 +1376,6 @@ function Jokes({
     bjoke_id: IBlacklistedJoke['_id']
   ) => {
     e.preventDefault()
-    dispatch(saveMostRecentJoke(joke))
 
     if (window.confirm(`${EAreYouSureYouWantToRestoreThisJoke[language]}`)) {
       if (user) {
@@ -1395,24 +1394,6 @@ function Jokes({
         dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
       }
     }
-    setTimeout(() => {
-      dispatch(saveMostRecentJoke(joke))
-      if (window.confirm(`${EWouldYouLikeToSaveTheJoke[language]}`)) {
-        if (user) {
-          handleJokeSave(e)
-          dispatch(initializeJokes())
-            .then(() => dispatch(findUserById(user?._id as string)))
-            .then(() => dispatch(initializeUser()))
-            .then(() => dispatch(notify(`${ESavedJoke[language]}`, false, 8)))
-            .catch((error) => {
-              console.log(error)
-              dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
-            })
-        } else {
-          dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
-        }
-      }
-    }, 800)
   }
 
   return (
