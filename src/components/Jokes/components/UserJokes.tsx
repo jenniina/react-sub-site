@@ -335,8 +335,8 @@ const UserJokes = ({
     let newFilteredJokes = [...userJokes]
     if (sortBy === ESortBy_en.age) {
       newFilteredJokes = [...userJokes]?.sort((a, b) => {
-        const timeA = a.updatedAt ? new Date(a.updatedAt).getTime() : 0
-        const timeB = b.updatedAt ? new Date(b.updatedAt).getTime() : 0
+        const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0
+        const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0
         return sortByAge === EOrderByAge.newest ? timeB - timeA : timeA - timeB
       })
     }
