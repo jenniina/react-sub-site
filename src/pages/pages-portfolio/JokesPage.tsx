@@ -54,21 +54,6 @@ export default function JokesPage({
 }) {
   const title = ETheComediansCompanion[language]
   const titleLanguage = ELanguageTitle[language]
-  const titleFeatures = EFeatures[language]
-  const titleClickHereToSeeFeatures = EClickHereToSeeFeatures[language]
-  const titleFetchesJokesFrom = EFetchesJokesFrom[language]
-  const titleAppTranslatedTo = EAppTranslatedTo[language]
-  const titleFilterJokesBy = EFilterJokesBy[language]
-  const titleJokeType = EJokeTypeTitle[language]
-  const titleTwoPart = ETwoPart[language]
-  const titleSingle = ESingle[language]
-  const titleSafemode = ESafemodeTitle[language]
-  const titleOnOff = EOnOff[language]
-  const titleKeyword = EKeyword[language]
-  const titleCategory = ECategoryTitle[language]
-  const titleJokeCategoryAny = jokeCategoryAny[language]
-  const titleTryTappingTheShapes = ETryTappingTheShapes[language]
-  const titleReset = EReset[language]
 
   const options = (enumObj: typeof ELanguages) => {
     return Object.keys(enumObj).map((key) => ({
@@ -133,8 +118,8 @@ export default function JokesPage({
         address='jokes'
         heading={title}
         text={text}
-        reset={titleReset}
-        instructions={titleTryTappingTheShapes}
+        reset={EReset[language]}
+        instructions={ETryTappingTheShapes[language]}
       />
 
       <div className='inner-wrap'>
@@ -176,19 +161,19 @@ export default function JokesPage({
             </div>
             <Accordion
               language={language}
-              text={titleClickHereToSeeFeatures}
+              text={EClickHereToSeeFeatures[language]}
               className='features'
             >
               <div className='medium'>
-                <h2>{titleFeatures}</h2>
+                <h2>{EFeatures[language]}</h2>
                 <ul className='ul'>
                   <li>
-                    {titleFetchesJokesFrom}{' '}
+                    {EFetchesJokesFrom[language]}{' '}
                     <a href='https://sv443.net/jokeapi/v2/'>JokeAPI</a>
                   </li>
                   <li>{ERegisterAndLoginToUse[language]}</li>
                   <li>
-                    {titleAppTranslatedTo}
+                    {EAppTranslatedTo[language]}
                     <ul>
                       {Object.values(LanguageOfLanguage[language]).map((l: string) => {
                         return <li key={l}>{l}</li>
@@ -196,24 +181,24 @@ export default function JokesPage({
                     </ul>
                   </li>
                   <li>
-                    {titleFilterJokesBy}:
+                    {EFilterJokesBy[language]}:
                     <ul>
                       <li>{titleLanguage}</li>
                       <li>
-                        {titleJokeType}
+                        {EJokeTypeTitle[language]}
                         <ul>
-                          <li>{titleTwoPart}</li>
-                          <li>{titleSingle}</li>
+                          <li>{ETwoPart[language]}</li>
+                          <li>{ESingle[language]}</li>
                         </ul>
                       </li>
                       <li>
-                        {titleSafemode} {titleOnOff}
+                        {ESafemodeTitle[language]} {EOnOff[language]}
                       </li>
-                      <li>{titleKeyword}</li>
+                      <li>{EKeyword[language]}</li>
                       <li>
-                        {titleCategory}
+                        {ECategoryTitle[language]}
                         <ul>
-                          <li>{titleJokeCategoryAny}</li>
+                          <li>{jokeCategoryAny[language]}</li>
                           {Object.values(jokeCategoryByLanguage[language]).map((c) => {
                             return <li key={c}>{c}</li>
                           })}

@@ -9,7 +9,6 @@ interface Props {
 const Notification = ({ language }: Props) => {
   const notification = useSelector((state: ReducerProps) => state.notification)
   const [closed, setClosed] = useState(false)
-  const titleClose = EClose[language]
 
   useEffect(() => {
     setClosed(false)
@@ -33,7 +32,7 @@ const Notification = ({ language }: Props) => {
             setClosed(true)
           }}
         >
-          <span>{titleClose}</span>
+          <span>{EClose[language]}</span>
           <span aria-hidden='true' className='times'>
             &times;
           </span>

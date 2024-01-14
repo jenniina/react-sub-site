@@ -31,11 +31,6 @@ const PasswordEdit = ({ user, language }: Props) => {
   const [password, setPassword] = useState<IUser['password'] | ''>('')
   const [confirmPassword, setConfirmPassword] = useState<IUser['password'] | ''>('')
 
-  const titlePassword = EPassword[language]
-  const titleConfirmPassword = EConfirmPassword[language]
-  const titleEdit = EEdit[language]
-  const titleCurrentPassword = ECurrentPassword[language]
-
   const handleUserSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
@@ -103,7 +98,7 @@ const PasswordEdit = ({ user, language }: Props) => {
                   value={passwordOld}
                   onChange={({ target }) => setPasswordOld(target.value)}
                 />
-                <span>{titleCurrentPassword}</span>
+                <span>{ECurrentPassword[language]}</span>
               </label>
             </div>
             <div className='input-wrap'>
@@ -116,7 +111,7 @@ const PasswordEdit = ({ user, language }: Props) => {
                   value={password}
                   onChange={({ target }) => setPassword(target.value)}
                 />
-                <span>{titlePassword}</span>
+                <span>{EPassword[language]}</span>
               </label>
             </div>
             <div className='input-wrap'>
@@ -129,10 +124,10 @@ const PasswordEdit = ({ user, language }: Props) => {
                   value={confirmPassword}
                   onChange={({ target }) => setConfirmPassword(target.value)}
                 />
-                <span>{titleConfirmPassword}</span>
+                <span>{EConfirmPassword[language]}</span>
               </label>
             </div>
-            <button type='submit'>{titleEdit}</button>
+            <button type='submit'>{EEdit[language]}</button>
           </form>
 
           <Notification language={language} />

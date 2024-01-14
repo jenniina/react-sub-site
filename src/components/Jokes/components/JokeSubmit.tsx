@@ -56,8 +56,6 @@ import { findUserById } from '../../../reducers/usersReducer'
 interface Props {
   userId: IUser['_id']
   language: ELanguages
-  titleTwoPart: ETwoPart
-  titleSingle: ESingle
   optionsCategory: (enumObj: TCategoryByLanguages) => SelectOption[]
   categoryByLanguages: TCategoryByLanguages
   jokeCategoryByLanguage: IJokeCategoryByLanguage
@@ -71,8 +69,6 @@ interface Props {
 const JokeSubmit = ({
   userId,
   language,
-  titleTwoPart,
-  titleSingle,
   optionsCategory,
   categoryByLanguages,
   jokeCategoryByLanguage,
@@ -96,9 +92,6 @@ const JokeSubmit = ({
     label: jokeCategoryByLanguage[language].Misc,
     value: ECategory_en.Misc,
   } as SelectOption)
-  const titleSubmitAJoke = ESubmitAJoke[language]
-  const titleCategory = ECategoryTitle[language]
-  const titleSubmitAJokeTo = ESubmitAJokeTo[language]
   const selectAnOption = ESelectAnOption[language]
   const [selectedCategory, setSelectedCategory] = useState<ECategories | ''>('')
   const [selectedNorrisCategory, setSelectedNorrisCategory] = useState<
@@ -246,8 +239,8 @@ const JokeSubmit = ({
       className='submit'
     >
       <div className='submit-inner'>
-        <h3>{titleSubmitAJoke}</h3>
-        <p className='textcenter'>{titleSubmitAJokeTo} jenniina.fi</p>
+        <h3>{ESubmitAJoke[language]}</h3>
+        <p className='textcenter'>{ESubmitAJokeTo[language]} jenniina.fi</p>
         <p className='textcenter mb3'>
           {EIfTheJokeIsNotPrivateVerificationIsNeeded[language]}
         </p>
@@ -260,8 +253,8 @@ const JokeSubmit = ({
               hideLabel={false}
               label={`${EJokeTypeTitle[language]}: `}
               className={`${language} submit joketype`}
-              on={titleTwoPart}
-              off={titleSingle}
+              on={ETwoPart[language]}
+              off={ESingle[language]}
               handleToggleChange={handleToggleChangeJokeType}
               equal={true}
             />
@@ -345,7 +338,7 @@ const JokeSubmit = ({
                 language={language}
                 id='submit-category-select'
                 className='submit'
-                instructions={`${titleCategory}:`}
+                instructions={`${ECategoryTitle[language]}:`}
                 selectAnOption={selectAnOption}
                 value={jokeCategory}
                 options={optionsCategory(categoryByLanguages as any)}

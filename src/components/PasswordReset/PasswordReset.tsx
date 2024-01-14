@@ -25,10 +25,6 @@ const PasswordReset = ({ language, text }: Props) => {
 
   const [username, setUsername] = useState<string | undefined>('')
 
-  const titleEmail = EEmail[language]
-  const titleForgotPassword = EForgotPassword[language]
-  const titleSendResetLink = ESendResetLink[language]
-
   const handleForgot = async (event: FormEvent) => {
     event.preventDefault()
     dispatch(notify(`${ESendingEmail[language]}`, false, 2))
@@ -58,7 +54,7 @@ const PasswordReset = ({ language, text }: Props) => {
 
   return (
     <>
-      <h2>{titleForgotPassword}</h2>
+      <h2>{EForgotPassword[language]}</h2>
 
       <form onSubmit={handleForgot} className='forgot'>
         <div className='input-wrap'>
@@ -70,11 +66,11 @@ const PasswordReset = ({ language, text }: Props) => {
               required
               onChange={({ target }) => setUsername(target.value)}
             />
-            <span>{titleEmail}: </span>
+            <span>{EEmail[language]}: </span>
           </label>
         </div>
         <button type='submit' id={`forgot-${text}`} className='forgot-btn restore'>
-          {titleSendResetLink}
+          {ESendResetLink[language]}
         </button>
       </form>
     </>

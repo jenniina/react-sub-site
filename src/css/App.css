@@ -482,7 +482,7 @@ body .z {
 }
 .accordion-container .accordion-btn.open span {
   display: inline-block;
-  transform: translateY(0.4em) rotate(180deg);
+  transform: translateY(0.3em) rotate(180deg);
 }
 .accordionButton.close,
 .accordionButton.close:hover,
