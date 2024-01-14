@@ -29,15 +29,19 @@ export interface IBlacklistedJoke {
 }
 
 export interface ReducerProps {
+  jokes: {
+    jokes: IJoke[]
+    joke: IJoke | null
+  }
   notification: {
     isError: boolean
     message: string
     seconds: number
   }
-  jokes: IJoke[]
   difficulty: {
     mode: EQuizType
   }
+  cache: IJoke | null
   quiz: {
     quiz: IQuiz
     quizzes: IQuiz[]

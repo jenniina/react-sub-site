@@ -32,16 +32,11 @@ interface Props {
   setJokeCategory: (jokeCategory: ECategories) => void
   setQueryValue: (queryValue: string) => void
   setLanguage: (language: ELanguages) => void
-  titleSingle: ESingle
-  titleTwoPart: ETwoPart
   optionsCategory: (enumObj: TCategoryByLanguages) => SelectOption[]
   setQuery: (query: string) => void
   categoryByLanguages: TCategoryByLanguages
   categoryValues: SelectOption[]
   setCategoryValues: (categoryValues: SelectOption[]) => void
-  titleSafe: ESafeTitle
-  titleUnsafe: EUnsafeTitle
-  titleClickToReveal: EClickToReveal
   query: string
   language: ELanguages
   joke: string
@@ -90,9 +85,6 @@ const Form = ({
   getKeyByValue,
   setLanguage,
   setQuery,
-  titleSafe,
-  titleUnsafe,
-  titleClickToReveal,
   joke,
   language,
   query,
@@ -108,8 +100,6 @@ const Form = ({
   reveal,
   setReveal,
   handleJokeSave,
-  titleSingle,
-  titleTwoPart,
   optionsCategory,
   categoryByLanguages,
   visibleJoke,
@@ -122,12 +112,6 @@ const Form = ({
   subCategoryResults,
   handleBlacklistUpdate,
 }: Props) => {
-  const titleLanguageSelect = ESelectALanguage[language]
-  const titleCategorySelect = ESelectACategory[language]
-  const titleSearchByKeyword = ESearchByKeyword[language]
-  const submit = EFindAJoke[language]
-  const titleAny = EAny[language]
-
   useEffect(() => {
     setTimeout(() => {
       // Set z-index of select containers so that they do not open behind the next select container
@@ -160,7 +144,7 @@ const Form = ({
             language={language}
             id='language'
             className='language full'
-            instructions={`${titleLanguageSelect}:`}
+            instructions={`${ESelectALanguage[language]}:`}
             options={options(ELanguages)}
             value={
               language
@@ -183,8 +167,8 @@ const Form = ({
               id='safemode'
               className={`${language} ${!isCheckedSafemode ? 'unsafe' : ''} safemode`}
               label={`${ESafemodeTitle[language]}: `}
-              on={titleSafe}
-              off={titleUnsafe}
+              on={ESafeTitle[language]}
+              off={EUnsafeTitle[language]}
               handleToggleChange={handleToggleChangeSafemode}
             />
 
@@ -194,8 +178,8 @@ const Form = ({
               id='joketype'
               className={`${language} joketype`}
               label={`${EJokeTypeTitle[language]}: `}
-              on={titleTwoPart}
-              off={titleSingle}
+              on={ETwoPart[language]}
+              off={ESingle[language]}
               handleToggleChange={handleToggleChangeEJokeType}
               equal={true}
             />
@@ -208,8 +192,8 @@ const Form = ({
             multiple
             id='jokeCategory'
             className={`category`}
-            instructions={`${titleCategorySelect}:`}
-            selectAnOption={titleAny}
+            instructions={`${ESelectACategory[language]}:`}
+            selectAnOption={EAny[language]}
             value={categoryValues}
             options={optionsCategory(categoryByLanguages as any)}
             onChange={(o: SelectOption[]) => {
@@ -226,7 +210,7 @@ const Form = ({
           id='jokeCategoryNorrisCategories'
           className={`category extras ${hasNorris ? '' : 'hidden'}`}
           instructions={`${EChuckNorrisCategory[language]}:`}
-          selectAnOption={titleAny}
+          selectAnOption={EAny[language]}
           value={selectedNorrisCategory}
           options={norrisCategories}
           onChange={(o) => {
@@ -249,12 +233,12 @@ const Form = ({
                   )
                 }}
               />
-              <span>{titleSearchByKeyword}</span>
+              <span>{ESearchByKeyword[language]}</span>
             </label>
           </div>
 
           <button id='generate-joke' type='submit'>
-            {submit}
+            {EFindAJoke[language]}
           </button>
         </div>
       </form>
@@ -270,7 +254,6 @@ const Form = ({
         jokeCategory={jokeCategory}
         setReveal={setReveal}
         handleJokeSave={handleJokeSave}
-        titleClickToReveal={titleClickToReveal}
         language={language}
         visibleJoke={visibleJoke}
         getCategoryInLanguage={getCategoryInLanguage}

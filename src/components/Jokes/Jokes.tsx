@@ -74,6 +74,7 @@ import {
   getJokesByUserId,
   initializeJokes,
   removeJoke,
+  saveMostRecentJoke,
   updateJoke,
 } from './reducers/jokeReducer'
 import { initializeUser } from '../../reducers/authReducer'
@@ -89,6 +90,7 @@ import {
   initializeUsers,
   findUserById,
 } from '../../reducers/usersReducer'
+import { AxiosError } from 'axios'
 
 export const jokeCategoryByLanguage: IJokeCategoryByLanguage = {
   en: {
@@ -181,7 +183,10 @@ function Jokes({
   setLanguage: (language: ELanguages) => void
 }) {
   const jokes = useSelector((state: ReducerProps) => {
-    return state.jokes
+    return state.jokes?.jokes
+  })
+  const recentJoke = useSelector((state: ReducerProps) => {
+    return state.jokes?.joke
   })
   const users = useSelector((state: ReducerProps) => {
     return state.users
@@ -203,19 +208,6 @@ function Jokes({
     fi: ECategory_fi,
   }
 
-  const title = ETheComediansCompanion[language]
-  const titleSaved = ESavedJoke[language]
-  const titleCategory = ECategoryTitle[language]
-  const titleSafe = ESafeTitle[language]
-  const titleUnsafe = EUnsafeTitle[language]
-  const titleJoke = EJoke[language]
-  const titleSingle = ESingle[language]
-  const titleTwoPart = ETwoPart[language]
-  const titleClickToReveal = EClickToReveal[language]
-  const titleLoginOrRegisterToSave = ELoginOrRegisterToSave[language]
-  const titleJokeAlreadySaved = EJokeAlreadySaved[language]
-  const titleError = EError[language]
-  const deleteJoke = EDelete[language]
   const translateWordLanguage = ELanguageTitle[language]
   const [joke, setJoke] = useState<string>('')
   const [delivery, setDelivery] = useState<string>('')
@@ -246,9 +238,6 @@ function Jokes({
   const [loginOpen, setLoginOpen] = useState<boolean>(false)
   const [registerOpen, setRegisterOpen] = useState<boolean>(false)
   const [visibleJoke, setVisibleJoke] = useState<boolean>(false)
-  const [saveJoke, setSaveJoke] = useLocalStorage<IJoke | null>('savedJoke', null)
-  const titleAJokeGeneratorForTheComicallyInclined =
-    EAJokeGeneratorForTheComicallyInclined[language]
   const [hasNorris, setHasNorris] = useState<boolean>(false)
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false)
   const [editId, setEditId] = useState<IJoke['_id'] | null>(null)
@@ -286,12 +275,9 @@ function Jokes({
   }, [])
 
   useEffect(() => {
-    setTimeout(() => {
-      dispatch(initializeJokes())
-    }, 600)
-  }, [saveJoke])
+    dispatch(initializeJokes())
+  }, [])
 
-  // Set the document language and title
   useEffect(() => {
     if (language) {
       setCategoryByLanguages(categoryByLanguagesConst[language])
@@ -346,7 +332,9 @@ function Jokes({
     (id: IJoke['_id'], joke: string) =>
     async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
       e.preventDefault()
-      if (window.confirm(`${deleteJoke} ${titleJoke.toLowerCase()} "${joke}"?`)) {
+      if (
+        window.confirm(`${EDelete[language]} ${EJoke[language].toLowerCase()} "${joke}"?`)
+      ) {
         try {
           // Make an API request to delete the user's ID from the joke's user array
           dispatch(deleteUserFromJoke(id as string, user?._id as string)).then(() => {
@@ -364,56 +352,49 @@ function Jokes({
       e.preventDefault()
       const jokeObject = jokes.find((j) => j._id === id)
       if (!jokeObject) {
-        dispatch(notify(`${titleError}!`, true, 8))
+        dispatch(notify(`${EError[language]}!`, true, 8))
         return
+      }
+      const handleDispatch = async (joke: IJoke) => {
+        try {
+          await dispatch(updateJoke(joke))
+          await dispatch(initializeJokes())
+          const r = await dispatch(updateJoke({ ...joke, verified: false, _id: id }))
+          dispatch(notify(`${ESavedJoke[language]}. ${r.message ?? ''}`, false, 8))
+          setEditId(null)
+          setIsEditOpen(false)
+        } catch (e) {
+          console.log(e)
+          const errorMessage =
+            (e as AxiosError)?.code === 'ERR_BAD_RESPONSE'
+              ? ((e as AxiosError<AxiosError>)?.response?.data?.message as string)
+              : (e as Error)?.message ?? ''
+          dispatch(notify(`${EError[language]}: ${errorMessage}`, true, 8))
+        }
       }
       const update = () => {
         if (jokeObject.private === true && joke.private === false) {
-          dispatch(updateJoke({ ...joke, private: true, verified: false, _id: id }))
-            .then(() => {
-              dispatch(initializeJokes())
-            })
-            .then(() => {
-              dispatch(updateJoke({ ...joke, verified: false, _id: id }))
-                .then((r) => {
-                  dispatch(initializeJokes())
-                  dispatch(notify(`${titleSaved}. ${r.message ?? ''}`, false, 8))
-                  setEditId(null)
-                  setIsEditOpen(false)
-                })
-                .catch((e) => {
-                  console.log(e)
-                  if (e.code === 'ERR_BAD_RESPONSE')
-                    dispatch(
-                      notify(`${EError[language]}: ${e.response.data.message}`, true, 8)
-                    )
-                  else dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
-                })
-            })
-            .catch((e) => {
-              console.log(e)
-              if (e.code === 'ERR_BAD_RESPONSE')
-                dispatch(
-                  notify(`${EError[language]}: ${e.response.data.message}`, true, 8)
-                )
-              else dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
-            })
-        } else
-          dispatch(updateJoke(joke))
-            .then(() => {
-              dispatch(initializeJokes())
-              dispatch(notify(`${titleSaved}`, false, 8))
-              setEditId(null)
-              setIsEditOpen(false)
-            })
-            .catch((e) => {
-              console.log(e)
-              if (e.code === 'ERR_BAD_RESPONSE')
-                dispatch(
-                  notify(`${EError[language]}: ${e.response.data.message}`, true, 8)
-                )
-              else dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
-            })
+          if (
+            joke.category === ECategories.Dark ||
+            Object.values(joke.flags).some((value) => value)
+          ) {
+            handleDispatch({ ...joke, private: true, verified: false, safe: false })
+          } else {
+            handleDispatch({ ...joke, private: true, verified: false, _id: id })
+          }
+        } else if (
+          joke.category != ECategories.Dark &&
+          !Object.values(joke.flags).some((value) => value)
+        ) {
+          handleDispatch({ ...joke, safe: true, _id: id })
+        } else if (
+          joke.category === ECategories.Dark ||
+          Object.values(joke.flags).some((value) => value)
+        ) {
+          handleDispatch({ ...joke, safe: false, _id: id })
+        } else {
+          handleDispatch(joke)
+        }
       }
       if (jokeObject.private === true && joke.private === false) {
         if (window.confirm(EAreYouSureYouWantToMakeThisJokePublic[language])) {
@@ -482,34 +463,34 @@ function Jokes({
   const handleJokeSave = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
     if (!user) {
-      dispatch(notify(`${titleLoginOrRegisterToSave}`, false, 8))
+      dispatch(notify(`${ELoginOrRegisterToSave[language]}`, false, 8))
       return
     } else {
       const findJoke = jokes?.find(
         (j: IJoke) =>
-          j.jokeId.toString() === saveJoke?.jokeId.toString() &&
-          j.language === saveJoke?.language &&
-          j.category === saveJoke?.category
+          j.jokeId.toString() === recentJoke?.jokeId.toString() &&
+          j.language === recentJoke?.language &&
+          j.category === recentJoke?.category
       )
       if (findJoke) {
         if (findJoke.user.includes(user._id?.toString())) {
-          dispatch(notify(`${titleJokeAlreadySaved}`, false, 8))
+          dispatch(notify(`${EJokeAlreadySaved[language]}`, false, 8))
           return
         }
         dispatch(updateJoke({ ...findJoke, user: [...findJoke.user, user._id] }))
       } else {
-        if (joke && !delivery) {
+        if (recentJoke && recentJoke?.type === EJokeType.single) {
           dispatch(
             createJoke({
-              jokeId: saveJoke?.jokeId.toString() ?? jokeId.toString(),
+              jokeId: recentJoke?.jokeId.toString() ?? jokeId.toString(),
               joke: joke,
               type: EJokeType.single,
-              category: saveJoke?.category ?? jokeCategory ?? ECategories.Misc,
+              category: recentJoke?.category ?? jokeCategory ?? ECategories.Misc,
               subCategories:
-                saveJoke?.subCategories ?? subCategoryResults.length > 0
+                recentJoke?.subCategories ?? subCategoryResults?.length > 0
                   ? subCategoryResults
                   : undefined,
-              language: saveJoke?.language ?? jokeLanguage,
+              language: recentJoke?.language ?? jokeLanguage,
               safe: !Object.values(flags).some((value) => value),
               user: [user._id],
 
@@ -522,20 +503,26 @@ function Jokes({
                 explicit: flags.explicit,
               },
             })
-          ).then(() => {
-            dispatch(initializeJokes())
-          })
-        } else if (delivery) {
+          )
+            .then(() => {
+              dispatch(initializeJokes())
+            })
+            .catch((e) => {
+              dispatch(
+                notify(`${EError[language]}: ${(e as Error)?.message ?? ''}`, true, 8)
+              )
+            })
+        } else if (recentJoke && recentJoke?.type === EJokeType.twopart) {
           dispatch(
             createJoke({
-              jokeId: saveJoke?.jokeId.toString() ?? jokeId.toString(),
+              jokeId: recentJoke?.jokeId.toString() ?? jokeId.toString(),
               setup: joke,
               delivery: delivery,
               type: EJokeType.twopart,
-              category: saveJoke?.category ?? jokeCategory ?? ECategories.Misc,
+              category: recentJoke?.category ?? jokeCategory ?? ECategories.Misc,
               subCategories:
-                subCategoryResults.length > 0 ? subCategoryResults : undefined,
-              language: saveJoke?.language ?? jokeLanguage,
+                subCategoryResults?.length > 0 ? subCategoryResults : undefined,
+              language: recentJoke?.language ?? jokeLanguage,
               safe: !Object.values(flags).some((value) => value),
               user: [user._id],
 
@@ -548,12 +535,18 @@ function Jokes({
                 explicit: flags.explicit,
               },
             })
-          ).then(() => {
-            dispatch(initializeJokes())
-          })
+          )
+            .then(() => {
+              dispatch(initializeJokes())
+            })
+            .catch((e) => {
+              dispatch(
+                notify(`${EError[language]}: ${(e as Error)?.message ?? ''}`, true, 8)
+              )
+            })
         }
       }
-      dispatch(notify(`${titleSaved}`, false, 8))
+      dispatch(notify(`${ESavedJoke[language]}`, false, 8))
     }
   }
 
@@ -580,38 +573,40 @@ function Jokes({
       return
     }
     setLastJokes((prevJokes) => [...prevJokes, { jokeId: jokeData.id, language }])
-    if (lastJokes.length > lastJokesLength) {
+    if (lastJokes?.length > lastJokesLength) {
       setLastJokes((prevJokes) => prevJokes.slice(1))
     }
 
     setJokeCategory(category)
     setSubCategoryResults(subCategories ?? [])
 
-    setSaveJoke({
-      jokeId: jokeData.id.toString(),
-      joke: jokeData.joke || jokeData.value,
-      type: EJokeType.single,
-      category: category,
-      subCategories:
-        subCategories && subCategories?.length > 0 ? subCategories : undefined,
-      language: ELanguages.English,
+    dispatch(
+      saveMostRecentJoke({
+        jokeId: jokeData.id.toString(),
+        joke: jokeData.joke || jokeData.value,
+        type: EJokeType.single,
+        category: category,
+        subCategories:
+          subCategories && subCategories?.length > 0 ? subCategories : undefined,
+        language: ELanguages.English,
 
-      safe:
-        jokeData?.categories?.includes('explicit') ||
-        jokeData?.categories?.includes('political') ||
-        jokeData?.categories?.includes('religion')
-          ? false
-          : true,
-      user: jokeData.user,
-      flags: {
-        nsfw: jokeData.categories?.nsfw ?? false,
-        religious: jokeData.categories?.religion ?? false,
-        political: jokeData.categories?.political ?? false,
-        racist: jokeData.categories?.racist ?? false,
-        sexist: jokeData.categories?.sexist ?? false,
-        explicit: jokeData.categories?.explicit ?? false,
-      },
-    })
+        safe:
+          jokeData?.categories?.includes('explicit') ||
+          jokeData?.categories?.includes('political') ||
+          jokeData?.categories?.includes('religion')
+            ? false
+            : true,
+        user: jokeData.user,
+        flags: {
+          nsfw: jokeData.categories?.nsfw ?? false,
+          religious: jokeData.categories?.religion ?? false,
+          political: jokeData.categories?.political ?? false,
+          racist: jokeData.categories?.racist ?? false,
+          sexist: jokeData.categories?.sexist ?? false,
+          explicit: jokeData.categories?.explicit ?? false,
+        },
+      })
+    )
 
     setFlags({
       explicit: jokeData?.categories?.includes('explicit') ?? false,
@@ -640,7 +635,7 @@ function Jokes({
               category.value !== 'political'
           )
 
-    const randomIndex = Math.floor(Math.random() * filteredCategories.length)
+    const randomIndex = Math.floor(Math.random() * filteredCategories?.length)
     const selectedCategory = filteredCategories[randomIndex]
 
     return selectedCategory
@@ -655,7 +650,7 @@ function Jokes({
   useEffect(() => {
     if (
       Array.isArray(jokes) &&
-      jokes.length > 0 &&
+      jokes?.length > 0 &&
       Array.isArray(users) &&
       users?.length > 0
     ) {
@@ -678,13 +673,13 @@ function Jokes({
         ? updatedJokes
             .filter((joke) => joke.safe === false)
             .sort((a, b) => {
-              return b.user.length - a.user.length
+              return b.user?.length - a.user?.length
             }) //.sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1))
         : isCheckedSafemode
         ? updatedJokes
             .filter((joke) => joke.safe)
             .sort((a, b) => {
-              return b.user.length - a.user.length
+              return b.user?.length - a.user?.length
             }) //.sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1))
         : []
 
@@ -701,8 +696,8 @@ function Jokes({
     }
 
     const handleJokes = (jokes: IJoke[] | undefined) => {
-      if (jokes && jokes.length > 0 && Array.isArray(users) && users?.length > 0) {
-        const random = jokes[Math.floor(Math.random() * jokes.length)]
+      if (jokes && jokes?.length > 0 && Array.isArray(users) && users?.length > 0) {
+        const random = jokes[Math.floor(Math.random() * jokes?.length)]
         if (
           lastJokes.some(
             (joke) => joke.jokeId === random.jokeId && joke.language === language
@@ -714,7 +709,7 @@ function Jokes({
         }
         setLastJokes((prevJokes) => [...prevJokes, { jokeId: random.jokeId, language }])
 
-        if (lastJokes.length > lastJokesLength) {
+        if (lastJokes?.length > lastJokesLength) {
           setLastJokes((prevJokes) => prevJokes.slice(1))
         }
         if (random) {
@@ -737,12 +732,12 @@ function Jokes({
             setAuthor('')
           }
 
-          setSaveJoke(random)
+          dispatch(saveMostRecentJoke(random))
           return
         } else {
           dispatch(
             notify(
-              `${titleError}! ${ENoJokeFoundWithThisSearchTerm[language]}. ${ETryAnotherSearchTerm[language]}`,
+              `${EError[language]}! ${ENoJokeFoundWithThisSearchTerm[language]}. ${ETryAnotherSearchTerm[language]}`,
               true,
               8
             )
@@ -756,7 +751,7 @@ function Jokes({
       } else {
         dispatch(
           notify(
-            `${titleError}! ${ENoJokeFoundWithThisSearchTerm[language]}. ${ETryAnotherSearchTerm[language]}`,
+            `${EError[language]}! ${ENoJokeFoundWithThisSearchTerm[language]}. ${ETryAnotherSearchTerm[language]}`,
             true,
             8
           )
@@ -773,13 +768,13 @@ function Jokes({
     const filteredJokes = userJokes?.filter(
       (joke) =>
         joke.language === language &&
-        (categories.length === 0 || categories.includes(joke.category)) &&
+        (categories?.length === 0 || categories.includes(joke.category)) &&
         ((joke.private === false && joke.verified === true) ||
           joke.private === undefined) &&
         joke.safe === isCheckedSafemode &&
         joke.type === jokeType
     )
-    const isEmpty = categoryValues.length < 1
+    const isEmpty = categoryValues?.length < 1
     const isChuckNorris = categoryValues.some(
       (category) => category.value === 'ChuckNorris'
     )
@@ -813,7 +808,7 @@ function Jokes({
               .includes(queryValueWithoutAnd.toLowerCase())
 
           const categoryMatches =
-            categories.length > 0 ? categories.includes(joke.category) : true
+            categories?.length > 0 ? categories.includes(joke.category) : true
 
           const languageMatches = joke.language === language
 
@@ -856,14 +851,14 @@ function Jokes({
     // Because Finnish jokes are only in the database, we need to handle them differently
     if (
       newFilteredJokes &&
-      newFilteredJokes.length > 0 &&
+      newFilteredJokes?.length > 0 &&
       language === ELanguages.Suomi
     ) {
       handleJokes(newFilteredJokes)
       return
     }
     // Occasionally get a joke from the database instead of the APIs:
-    else if (newFilteredJokes && newFilteredJokes.length > 0 && Math.random() < 0.1) {
+    else if (newFilteredJokes && newFilteredJokes?.length > 0 && Math.random() < 0.1) {
       handleJokes(newFilteredJokes)
       return
     }
@@ -1031,7 +1026,7 @@ function Jokes({
 
   const noJoke = () => {
     dispatch(
-      notify(`${titleError}! ${ENoJokeFoundWithThisSearchTerm[language]}`, true, 8)
+      notify(`${EError[language]}! ${ENoJokeFoundWithThisSearchTerm[language]}`, true, 8)
     )
 
     setJoke('')
@@ -1039,7 +1034,7 @@ function Jokes({
   }
 
   useEffect(() => {
-    if (categoryValues.length < 1) {
+    if (categoryValues?.length < 1) {
       setJokeCategory(null)
     }
   }, [categoryValues])
@@ -1049,7 +1044,7 @@ function Jokes({
     const filteredCategories = categories.filter(
       (category) => category !== 'ChuckNorris' && category !== 'DadJoke'
     )
-    const category = filteredCategories.length > 0 ? filteredCategories.join(',') : 'Any'
+    const category = filteredCategories?.length > 0 ? filteredCategories.join(',') : 'Any'
     // console.log(
     //   `https://v2.jokeapi.dev/joke/${category}?${queryKey}${queryValue}lang=${language}&format=json${safemode}&type=${jokeType}`
     // )
@@ -1075,7 +1070,7 @@ function Jokes({
         }
 
         setLastJokes((prevJokes) => [...prevJokes, { jokeId: data.id, language }])
-        if (lastJokes.length > lastJokesLength) {
+        if (lastJokes?.length > lastJokesLength) {
           setLastJokes((prevJokes) => prevJokes.slice(1))
         }
 
@@ -1093,7 +1088,7 @@ function Jokes({
           if (category === 'Any') {
             dispatch(
               notify(
-                `${titleError}! ${ENoJokeFoundWithThisSearchTerm[language]}. ${EMaybeTryAnotherLanguage[language]}`,
+                `${EError[language]}! ${ENoJokeFoundWithThisSearchTerm[language]}. ${EMaybeTryAnotherLanguage[language]}`,
                 true,
                 10
               )
@@ -1109,7 +1104,7 @@ function Jokes({
             setDelivery('')
             dispatch(
               notify(
-                `${titleError}! ${ENoJokeFoundWithThisSearchTerm[language]}`,
+                `${EError[language]}! ${ENoJokeFoundWithThisSearchTerm[language]}`,
                 true,
                 8
               )
@@ -1120,56 +1115,62 @@ function Jokes({
           }
         }
         if (jokeType === EJokeType.twopart) {
-          setSaveJoke({
-            jokeId: data.id.toString(),
-            setup: data.setup,
-            delivery: data.delivery,
-            type: EJokeType.twopart,
-            category: data.category,
-            subCategories: subCategoryResults.length > 0 ? subCategoryResults : undefined,
-            language: language,
-            safe:
-              jokeCategory === ECategories.Dark ||
-              !Object.values(flags).some((value) => value)
-                ? false
-                : true,
-            user: user ? [user._id] : [],
-            flags: {
-              nsfw: flags.nsfw,
-              religious: flags.religious,
-              political: flags.political,
-              racist: flags.racist,
-              sexist: flags.sexist,
-              explicit: flags.explicit,
-            },
-          })
+          dispatch(
+            saveMostRecentJoke({
+              jokeId: data.id.toString(),
+              setup: data.setup,
+              delivery: data.delivery,
+              type: EJokeType.twopart,
+              category: data.category,
+              subCategories:
+                subCategoryResults?.length > 0 ? subCategoryResults : undefined,
+              language: language,
+              safe:
+                jokeCategory === ECategories.Dark ||
+                !Object.values(flags).some((value) => value)
+                  ? false
+                  : true,
+              user: user ? [user._id] : [],
+              flags: {
+                nsfw: flags.nsfw,
+                religious: flags.religious,
+                political: flags.political,
+                racist: flags.racist,
+                sexist: flags.sexist,
+                explicit: flags.explicit,
+              },
+            })
+          )
           setJokeCategory(data.category)
           setJoke(data.setup)
           setDelivery(data.delivery)
           setJokeId(data.id)
         } else {
-          setSaveJoke({
-            jokeId: data.id.toString(),
-            joke: data.joke,
-            type: EJokeType.single,
-            category: data.category,
-            subCategories: subCategoryResults.length > 0 ? subCategoryResults : undefined,
-            language: language,
-            safe:
-              jokeCategory === ECategories.Dark ||
-              !Object.values(flags).some((value) => value)
-                ? false
-                : true,
-            user: user ? [user._id] : [],
-            flags: {
-              nsfw: flags.nsfw,
-              religious: flags.religious,
-              political: flags.political,
-              racist: flags.racist,
-              sexist: flags.sexist,
-              explicit: flags.explicit,
-            },
-          })
+          dispatch(
+            saveMostRecentJoke({
+              jokeId: data.id.toString(),
+              joke: data.joke,
+              type: EJokeType.single,
+              category: data.category,
+              subCategories:
+                subCategoryResults?.length > 0 ? subCategoryResults : undefined,
+              language: language,
+              safe:
+                jokeCategory === ECategories.Dark ||
+                !Object.values(flags).some((value) => value)
+                  ? false
+                  : true,
+              user: user ? [user._id] : [],
+              flags: {
+                nsfw: flags.nsfw,
+                religious: flags.religious,
+                political: flags.political,
+                racist: flags.racist,
+                sexist: flags.sexist,
+                explicit: flags.explicit,
+              },
+            })
+          )
           setJokeCategory(data.category)
           setJoke(data.joke)
           setDelivery('')
@@ -1178,7 +1179,7 @@ function Jokes({
       })
       .catch((e) => {
         console.log(e)
-        dispatch(notify(`${titleError}! ${e.response.data.message}`, true, 8))
+        dispatch(notify(`${EError[language]}! ${e.response.data.message}`, true, 8))
       })
   }
 
@@ -1330,7 +1331,8 @@ function Jokes({
           .then((data) => {
             const joke = data?.find(
               (joke: IJoke) =>
-                joke.jokeId.toString() === jokeId.toString() && joke.language === language
+                joke.jokeId?.toString() === jokeId?.toString() &&
+                joke.language === language
             )
             if (joke) {
               dispatch(removeJoke(joke?._id)).then(() => dispatch(initializeJokes()))
@@ -1343,6 +1345,12 @@ function Jokes({
                 dispatch(initializeJokes())
                   .then(() => dispatch(findUserById(user?._id as string)))
                   .then(() => dispatch(initializeUser()))
+                  .then(() => {
+                    setJoke('')
+                    setDelivery('')
+                    setAuthor('')
+                    setJokeId('')
+                  })
               })
               .catch((error) => {
                 console.log(error)
@@ -1361,46 +1369,23 @@ function Jokes({
       }
     }
   }
-
+  console.log(recentJoke)
   const handleRemoveJokeFromBlacklisted = (
     e: React.FormEvent<HTMLFormElement>,
     joke: IJoke,
     bjoke_id: IBlacklistedJoke['_id']
   ) => {
     e.preventDefault()
+    dispatch(saveMostRecentJoke(joke))
+
     if (window.confirm(`${EAreYouSureYouWantToRestoreThisJoke[language]}`)) {
       if (user) {
         dispatch(removeJokeFromBlacklisted(user?._id, bjoke_id, joke?.language))
           .then((data) => {
-            dispatch(findUserById(user?._id as string)).then(() =>
-              dispatch(initializeUser())
-            )
-          })
-          .catch((error) => {
-            console.log(error)
-            dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
-          })
-      } else {
-        dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
-      }
-    }
-  }
-
-  const handleRemoveFromBlacklistedAndSaveJoke = (
-    e: React.FormEvent<HTMLFormElement>,
-    joke: IJoke,
-    bjoke_id: IBlacklistedJoke['_id']
-  ) => {
-    e.preventDefault()
-    setSaveJoke(joke)
-    if (window.confirm(`${EWouldYouLikeToSaveTheJoke[language]}`)) {
-      if (user) {
-        dispatch(removeJokeFromBlacklisted(user?._id, bjoke_id, joke?.language))
-          .then(() => {
             dispatch(initializeJokes())
               .then(() => dispatch(findUserById(user?._id as string)))
               .then(() => dispatch(initializeUser()))
-            handleJokeSave(e)
+              .then(() => dispatch(notify(`${EJokeRestored[language]}`, false, 3)))
           })
           .catch((error) => {
             console.log(error)
@@ -1410,6 +1395,24 @@ function Jokes({
         dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
       }
     }
+    setTimeout(() => {
+      dispatch(saveMostRecentJoke(joke))
+      if (window.confirm(`${EWouldYouLikeToSaveTheJoke[language]}`)) {
+        if (user) {
+          handleJokeSave(e)
+          dispatch(initializeJokes())
+            .then(() => dispatch(findUserById(user?._id as string)))
+            .then(() => dispatch(initializeUser()))
+            .then(() => dispatch(notify(`${ESavedJoke[language]}`, false, 8)))
+            .catch((error) => {
+              console.log(error)
+              dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
+            })
+        } else {
+          dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
+        }
+      }
+    }, 800)
   }
 
   return (
@@ -1417,9 +1420,9 @@ function Jokes({
       <section className={`joke-container card ${language}`} id='jokeform'>
         <div>
           <div className='jokes-wrap'>
-            <h2>{title}</h2>
+            <h2>{ETheComediansCompanion[language]}</h2>
             <p className='center textcenter mb3'>
-              {titleAJokeGeneratorForTheComicallyInclined}
+              {EAJokeGeneratorForTheComicallyInclined[language]}
             </p>
 
             <FormJoke
@@ -1447,11 +1450,6 @@ function Jokes({
               reveal={reveal}
               setReveal={setReveal}
               handleJokeSave={handleJokeSave}
-              titleSafe={titleSafe}
-              titleUnsafe={titleUnsafe}
-              titleSingle={titleSingle}
-              titleTwoPart={titleTwoPart}
-              titleClickToReveal={titleClickToReveal}
               optionsCategory={optionsCategory}
               categoryByLanguages={categoryByLanguages}
               visibleJoke={visibleJoke}
@@ -1487,8 +1485,6 @@ function Jokes({
               categoryByLanguages={categoryByLanguages}
               getKeyByValue={getKeyByValue}
               options={options}
-              titleTwoPart={titleTwoPart}
-              titleSingle={titleSingle}
               optionsCategory={optionsCategory}
               jokeCategoryByLanguage={jokeCategoryByLanguage}
               norrisCategories={norrisCategories}
@@ -1502,15 +1498,10 @@ function Jokes({
           <UserJokes
             user={user}
             handleDelete={handleDelete}
-            deleteJoke={deleteJoke}
-            titleCategory={titleCategory}
-            titleSafe={titleSafe}
-            titleUnsafe={titleUnsafe}
             language={language}
             isCheckedSafemode={isCheckedSafemode}
             setIsCheckedSafemode={setIsCheckedSafemode}
             handleToggleChangeSafemode={handleToggleChangeSafemode}
-            titleClickToReveal={titleClickToReveal}
             translateWordLanguage={translateWordLanguage}
             getKeyofEnum={getKeyofEnum}
             options={options}
@@ -1522,9 +1513,6 @@ function Jokes({
             editId={editId}
             setEditId={setEditId}
             handleRemoveJokeFromBlacklisted={handleRemoveJokeFromBlacklisted}
-            handleRemoveFromBlacklistedAndSaveJoke={
-              handleRemoveFromBlacklistedAndSaveJoke
-            }
             handleBlacklistUpdate={handleBlacklistUpdate}
           />
         </div>

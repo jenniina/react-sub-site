@@ -1572,3 +1572,21 @@ export enum EBlock {
   cs = 'Blok',
   fi = 'Estä',
 }
+export enum ERemove {
+  en = 'Remove',
+  es = 'Eliminar',
+  fr = 'Supprimer',
+  de = 'Entfernen',
+  pt = 'Remover',
+  cs = 'Odstranit',
+  fi = 'Poista',
+}
+export enum EBlocked {
+  en = 'Blocked',
+  es = 'Bloqueado',
+  fr = 'Bloqué',
+  de = 'Blockiert',
+  pt = 'Bloqueado',
+  cs = 'Blokovaný',
+  fi = 'Estetyt',
+}

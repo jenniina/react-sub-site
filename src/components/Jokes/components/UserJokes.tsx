@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { IoCopyOutline } from 'react-icons/io5'
 import { FaRandom, FaList } from 'react-icons/fa'
-import { ImBlocked } from 'react-icons/im'
+import { ImBlocked, ImEyeBlocked } from 'react-icons/im'
 import { MdSave } from 'react-icons/md'
 import {
   MdOutlineFilter3,
@@ -71,6 +71,10 @@ import {
   ERestore,
   ECategories,
   EBlock,
+  ERemove,
+  EBlocked,
+  FlagsLanguage,
+  EAddWarningTitle,
 } from '../interfaces'
 import {
   IUser,
@@ -98,11 +102,12 @@ import { Select, SelectOption } from '../../Select/Select'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import Accordion from '../../Accordion/Accordion'
-import { initializeJokes, updateJoke } from '../reducers/jokeReducer'
+import { initializeJokes, saveMostRecentJoke, updateJoke } from '../reducers/jokeReducer'
 import { notify } from '../../../reducers/notificationReducer'
 import { initializeUser } from '../../../reducers/authReducer'
 import norrisService from '../services/chucknorris'
 import dadjokeService from '../services/dadjokes'
+import { initializeUsers } from '../../../reducers/usersReducer'
 
 interface Props {
   user: IUser | undefined
@@ -115,11 +120,6 @@ interface Props {
     joke: IJoke
   ) => (e: React.FormEvent<HTMLFormElement>) => void | Promise<void>
   translateWordLanguage: string
-  deleteJoke: EDelete
-  titleCategory: ECategoryTitle
-  titleSafe: ESafeTitle
-  titleUnsafe: EUnsafeTitle
-  titleClickToReveal: EClickToReveal
   language: ELanguages
   isCheckedSafemode: boolean
   setIsCheckedSafemode: (isCheckedSafemode: boolean) => void
@@ -136,11 +136,6 @@ interface Props {
   editId: IJoke['_id'] | null
   setEditId: (editId: IJoke['_id']) => void
   handleRemoveJokeFromBlacklisted: (
-    e: React.FormEvent<HTMLFormElement>,
-    joke: IJoke,
-    bjoke_id: IBlacklistedJoke['_id']
-  ) => void
-  handleRemoveFromBlacklistedAndSaveJoke: (
     e: React.FormEvent<HTMLFormElement>,
     joke: IJoke,
     bjoke_id: IBlacklistedJoke['_id']
@@ -169,11 +164,6 @@ const UserJokes = ({
   user,
   handleDelete,
   handleUpdate,
-  deleteJoke,
-  titleCategory,
-  titleSafe,
-  titleUnsafe,
-  titleClickToReveal,
   language,
   isCheckedSafemode,
   setIsCheckedSafemode,
@@ -188,12 +178,11 @@ const UserJokes = ({
   editId,
   setEditId,
   handleRemoveJokeFromBlacklisted,
-  handleRemoveFromBlacklistedAndSaveJoke,
   handleBlacklistUpdate,
 }: Props) => {
   const users = useSelector((state: any) => state.users)
   const userId = user?._id
-  const jokes = useSelector((state: any) => state.jokes)
+  const jokes = useSelector((state: any) => state.jokes?.jokes)
 
   type IJokeVisible = IJoke & {
     visible: boolean
@@ -281,6 +270,7 @@ const UserJokes = ({
 
   useEffect(() => {
     dispatch(initializeUser())
+    dispatch(initializeUsers())
     dispatch(initializeJokes())
   }, [])
 
@@ -342,7 +332,15 @@ const UserJokes = ({
 
   useEffect(() => {
     setCurrentPage(1)
-    let newFilteredJokes = userJokes?.filter((joke) => {
+    let newFilteredJokes = [...userJokes]
+    if (sortBy === ESortBy_en.age) {
+      newFilteredJokes = [...userJokes]?.sort((a, b) => {
+        const timeA = a.updatedAt ? new Date(a.updatedAt).getTime() : 0
+        const timeB = b.updatedAt ? new Date(b.updatedAt).getTime() : 0
+        return sortByAge === EOrderByAge.newest ? timeB - timeA : timeA - timeB
+      })
+    }
+    newFilteredJokes = newFilteredJokes?.filter((joke) => {
       if (joke) {
         const searchTermMatches =
           ('joke' in joke
@@ -405,14 +403,6 @@ const UserJokes = ({
       return !isBlacklisted
     })
 
-    if (sortBy === ESortBy_en.age) {
-      newFilteredJokes = newFilteredJokes?.sort((a, b) => {
-        const timeA = a.updatedAt ? new Date(a.updatedAt).getTime() : 0
-        const timeB = b.updatedAt ? new Date(b.updatedAt).getTime() : 0
-        return sortByAge === EOrderByAge.newest ? timeB - timeA : timeA - timeB
-      })
-    }
-
     if (sortBy === ESortBy_en.popularity) {
       newFilteredJokes = newFilteredJokes?.sort((a, b) => {
         return b.user?.length - a.user?.length
@@ -434,7 +424,7 @@ const UserJokes = ({
         return a.name > b.name ? 1 : -1
       })
     }
-    const latestJokes = newFilteredJokes.slice(-1 * latestNumber)
+    const latestJokes = newFilteredJokes.slice(0, latestNumber)
 
     if (isRandom && newFilteredJokes.length > 0) {
       const randomJoke =
@@ -528,7 +518,7 @@ const UserJokes = ({
             let query = blacklistedJoke.value
             const joke = jokes?.find(
               (joke: IJoke) =>
-                joke.jokeId.toString() === blacklistedJoke.jokeId.toString() &&
+                joke.jokeId?.toString() === blacklistedJoke.jokeId?.toString() &&
                 joke.language === blacklistedJoke.language
             )
             return (
@@ -819,7 +809,7 @@ const UserJokes = ({
       {userId && (
         <div className='local-saved-wrap'>
           <button
-            className={`btn${localJokes ? ' active' : ''}`}
+            className={`btn${localJokes && !showBlacklistedJokes ? ' active' : ''}`}
             onClick={() => {
               setLocalJokes(true)
               setShowBlacklistedJokes(false)
@@ -828,7 +818,7 @@ const UserJokes = ({
             {!localJokes ? ESeeLocalJokes[language] : ELocalJokes[language]}
           </button>
           <button
-            className={`btn${!localJokes ? ' active' : ''}`}
+            className={`btn${!localJokes && !showBlacklistedJokes ? ' active' : ''}`}
             onClick={() => {
               setLocalJokes(false)
               setShowBlacklistedJokes(false)
@@ -863,8 +853,8 @@ const UserJokes = ({
                       } userjokes safemode`}
                       label={`${EFilter[language]}: `}
                       hideLabel={false}
-                      on={titleSafe}
-                      off={titleUnsafe}
+                      on={ESafeTitle[language]}
+                      off={EUnsafeTitle[language]}
                       handleToggleChange={handleToggleChangeSafemode}
                     />
                     {sortBy === ESortBy_en.age && (
@@ -1075,11 +1065,9 @@ const UserJokes = ({
                     onClick={() => {
                       setIsRandom(false)
                       setShowBlacklistedJokes(false)
-                      setSortBy(ESortBy_en.age)
                       setSortByAge(EOrderByAge.newest)
-                      setTimeout(() => {
-                        setLatest(true)
-                      }, 200)
+                      setSortBy(ESortBy_en.age)
+                      setLatest(true)
                     }}
                   >
                     {ELatest[language]}
@@ -1123,7 +1111,7 @@ const UserJokes = ({
                   </>
                 ) : (
                   <>
-                    {EBlockedJokes[language]} <ImBlocked />
+                    {EBlocked[language]} <ImEyeBlocked />
                   </>
                 )}
               </button>
@@ -1155,34 +1143,20 @@ const UserJokes = ({
             {user && showBlacklistedJokes ? (
               filteredFetchedJokes?.map((joke, index) => (
                 <li key={user?.blacklistedJokes?.[index]?.jokeId ?? index}>
-                  <div>
-                    <form
-                      onSubmit={(e) =>
-                        handleRemoveJokeFromBlacklisted(
-                          e,
-                          joke,
-                          user?.blacklistedJokes?.[index]?._id
-                        )
-                      }
-                    >
-                      <button className='' type='submit'>
-                        {ERestore[language]}
-                      </button>
-                    </form>
-                    <form
-                      onSubmit={(e) =>
-                        handleRemoveFromBlacklistedAndSaveJoke(
-                          e,
-                          joke,
-                          user?.blacklistedJokes?.[index]?._id
-                        )
-                      }
-                    >
-                      <button className='' type='submit'>
-                        {ESave[language]}
-                      </button>
-                    </form>
-                  </div>
+                  <form
+                    onSubmit={(e) => {
+                      dispatch(saveMostRecentJoke(joke))
+                      handleRemoveJokeFromBlacklisted(
+                        e,
+                        joke,
+                        user?.blacklistedJokes?.[index]?._id
+                      )
+                    }}
+                  >
+                    <button className='' type='submit'>
+                      {ERestore[language]}
+                    </button>
+                  </form>
                   {joke ? (
                     joke.type === EJokeType.single ? (
                       <p>{joke.joke}</p>
@@ -1222,7 +1196,7 @@ const UserJokes = ({
                                     ? { 'aria-hidden': true }
                                     : { 'aria-hidden': false })}
                                 >
-                                  <BiChevronsRight /> {titleClickToReveal}{' '}
+                                  <BiChevronsRight /> {EClickToReveal[language]}{' '}
                                   <BiChevronsLeft />
                                 </span>
                                 <p aria-live='assertive'>
@@ -1239,7 +1213,7 @@ const UserJokes = ({
                     <div className='secondary-wrap'>
                       <div>
                         <span>
-                          {titleCategory}:{' '}
+                          {ECategoryTitle[language]}:{' '}
                           {getCategoryInLanguage(joke.category, language)}{' '}
                           {joke.subCategories &&
                           joke.subCategories?.length > 0 &&
@@ -1262,7 +1236,6 @@ const UserJokes = ({
                             ''
                           )}
                         </span>
-
                         <span>
                           {translateWordLanguage}: {joke.translatedLanguage}
                         </span>
@@ -1286,10 +1259,13 @@ const UserJokes = ({
                           <span>{EPendingVerification[language]}</span>
                         )}
 
-                        <span>
-                          {ELikedBy[language]} {joke.user?.length}
-                        </span>
+                        {joke.user?.length > 1 && (
+                          <span>
+                            {ELikedBy[language]} {joke.user?.length}
+                          </span>
+                        )}
                       </div>
+
                       <div>
                         {userId && joke.user?.includes(userId) && (
                           <form
@@ -1301,7 +1277,9 @@ const UserJokes = ({
                             className='button-wrap'
                           >
                             <button type='submit' className='delete danger'>
-                              {deleteJoke}
+                              {joke.user?.length > 1
+                                ? ERemove[language]
+                                : EDelete[language]}
                             </button>
                           </form>
                         )}
@@ -1448,118 +1426,235 @@ const UserJokes = ({
                                 </div>
                                 {joke.private === true && (
                                   <>
-                                    <Select
-                                      language={language}
-                                      id='edit-language'
-                                      className='edit-language'
-                                      instructions={`${ELanguageTitle[language]}:`}
-                                      hide
-                                      options={options(ELanguages)}
-                                      value={
-                                        {
-                                          label:
-                                            LanguageOfLanguage[
-                                              jokeLanguage as keyof typeof ELanguagesLong
-                                            ][
-                                              getKeyofEnum(
-                                                ELanguages,
-                                                jokeLanguage as ELanguages
-                                              ) as keyof TLanguageOfLanguage[ELanguages]
-                                            ],
-                                          value: jokeLanguage,
-                                        } as SelectOption
-                                      }
-                                      onChange={(o: SelectOption | undefined) => {
-                                        setJokeLanguage(o?.value as ELanguages)
-                                        setNewJoke(
-                                          (prev) =>
-                                            ({
-                                              ...prev,
-                                              language: o?.value as ELanguages,
-                                            } as IJoke)
-                                        )
-                                      }}
-                                    />
-                                    <Select
-                                      language={language}
-                                      id='edit-category'
-                                      className='edit-category'
-                                      instructions={`${ESelectCategory[language]}:`}
-                                      hide
-                                      options={[
-                                        { label: EAny[language], value: '' },
-                                        ...(Object.values(ECategories).map((category) => {
-                                          return {
+                                    <div className='flex column center gap'>
+                                      <Select
+                                        language={language}
+                                        id='edit-language'
+                                        className='edit-language'
+                                        instructions={`${ELanguageTitle[language]}:`}
+                                        hide
+                                        options={options(ELanguages)}
+                                        value={
+                                          {
+                                            label:
+                                              LanguageOfLanguage[
+                                                jokeLanguage as keyof typeof ELanguagesLong
+                                              ][
+                                                getKeyofEnum(
+                                                  ELanguages,
+                                                  jokeLanguage as ELanguages
+                                                ) as keyof TLanguageOfLanguage[ELanguages]
+                                              ],
+                                            value: jokeLanguage,
+                                          } as SelectOption
+                                        }
+                                        onChange={(o: SelectOption | undefined) => {
+                                          setJokeLanguage(o?.value as ELanguages)
+                                          setNewJoke(
+                                            (prev) =>
+                                              ({
+                                                ...prev,
+                                                language: o?.value as ELanguages,
+                                              } as IJoke)
+                                          )
+                                        }}
+                                      />
+                                      <Select
+                                        language={language}
+                                        id='edit-category'
+                                        className='edit-category'
+                                        instructions={`${ESelectCategory[language]}:`}
+                                        hide
+                                        options={[
+                                          { label: EAny[language], value: '' },
+                                          ...(Object.values(ECategories).map(
+                                            (category) => {
+                                              return {
+                                                label: getCategoryInLanguage(
+                                                  category as ECategories,
+                                                  language
+                                                ),
+                                                value: category,
+                                              }
+                                            }
+                                          ) as SelectOption[]),
+                                        ]}
+                                        value={
+                                          {
                                             label: getCategoryInLanguage(
-                                              category as ECategories,
+                                              jokeCategory as ECategories,
                                               language
                                             ),
-                                            value: category,
-                                          }
-                                        }) as SelectOption[]),
-                                      ]}
-                                      value={
-                                        {
-                                          label: getCategoryInLanguage(
-                                            jokeCategory as ECategories,
-                                            language
-                                          ),
-                                          value: jokeCategory,
-                                        } as SelectOption
-                                      }
-                                      onChange={(o: SelectOption | undefined) => {
+                                            value: jokeCategory,
+                                          } as SelectOption
+                                        }
+                                        onChange={(o: SelectOption | undefined) => {
+                                          const {
+                                            visible,
+                                            translatedLanguage,
+                                            ...restOfJoke
+                                          } = joke
+                                          setJokeCategory(o?.value as ECategories)
+                                          setNewJoke(() => ({
+                                            ...restOfJoke,
+                                            category: o?.value as ECategories,
+                                          }))
+                                        }}
+                                      />
+                                    </div>
+
+                                    <fieldset>
+                                      <legend>{EAddWarningTitle[language]}</legend>
+
+                                      <div className='checkbox-wrap'>
+                                        <div>
+                                          <input
+                                            type='checkbox'
+                                            id='flag-nsfw'
+                                            name='nsfw'
+                                            value='nsfw'
+                                            onChange={() => {
+                                              setNewJoke(() => ({
+                                                ...restOfJoke,
+                                                nsfw: !joke.flags.nsfw,
+                                              }))
+                                            }}
+                                          />
+                                          <label htmlFor='flag-nsfw'>
+                                            {FlagsLanguage[language].nsfw}
+                                          </label>
+                                        </div>
+                                        <div>
+                                          <input
+                                            type='checkbox'
+                                            id='flag-religious'
+                                            name='religious'
+                                            value='religious'
+                                            onChange={() => {
+                                              setNewJoke(() => ({
+                                                ...restOfJoke,
+                                                religious: !joke.flags.religious,
+                                              }))
+                                            }}
+                                          />
+                                          <label htmlFor='flag-religious'>
+                                            {FlagsLanguage[language].religious}
+                                          </label>
+                                        </div>
+                                        <div>
+                                          <input
+                                            type='checkbox'
+                                            id='flag-political'
+                                            name='political'
+                                            value='political'
+                                            onChange={() => {
+                                              setNewJoke(() => ({
+                                                ...restOfJoke,
+                                                political: !joke.flags.political,
+                                              }))
+                                            }}
+                                          />
+                                          <label htmlFor='flag-political'>
+                                            {FlagsLanguage[language].political}
+                                          </label>
+                                        </div>
+                                        <div>
+                                          <input
+                                            type='checkbox'
+                                            id='flag-racist'
+                                            name='racist'
+                                            value='racist'
+                                            onChange={() => {
+                                              setNewJoke(() => ({
+                                                ...restOfJoke,
+                                                racist: !joke.flags.racist,
+                                              }))
+                                            }}
+                                          />
+                                          <label htmlFor='flag-racist'>
+                                            {FlagsLanguage[language].racist}
+                                          </label>
+                                        </div>
+                                        <div>
+                                          <input
+                                            type='checkbox'
+                                            id='flag-sexist'
+                                            name='sexist'
+                                            value='sexist'
+                                            onChange={() => {
+                                              setNewJoke(() => ({
+                                                ...restOfJoke,
+                                                sexist: !joke.flags.sexist,
+                                              }))
+                                            }}
+                                          />
+                                          <label htmlFor='flag-sexist'>
+                                            {FlagsLanguage[language].sexist}
+                                          </label>
+                                        </div>
+                                        <div>
+                                          <input
+                                            type='checkbox'
+                                            id='flag-explicit'
+                                            name='explicit'
+                                            value='explicit'
+                                            onChange={() => {
+                                              setNewJoke(() => ({
+                                                ...restOfJoke,
+                                                explicit: !joke.flags.explicit,
+                                              }))
+                                            }}
+                                          />
+                                          <label htmlFor='flag-explicit'>
+                                            {FlagsLanguage[language].explicit}
+                                          </label>
+                                        </div>
+                                      </div>
+                                    </fieldset>
+                                  </>
+                                )}
+                                <fieldset className='flex center gap margin0auto'>
+                                  <div>
+                                    <input
+                                      type='checkbox'
+                                      name='anonymous'
+                                      id='edit-anonymous'
+                                      defaultChecked={joke.anonymous}
+                                      onChange={() => {
                                         const {
                                           visible,
                                           translatedLanguage,
                                           ...restOfJoke
                                         } = joke
-                                        setJokeCategory(o?.value as ECategories)
                                         setNewJoke(() => ({
                                           ...restOfJoke,
-                                          category: o?.value as ECategories,
+                                          anonymous: !joke.anonymous,
                                         }))
                                       }}
                                     />
-                                  </>
-                                )}
-                                <div>
-                                  <label htmlFor='edit-anonymous'>Anonymous:</label>
-                                  <input
-                                    type='checkbox'
-                                    name='anonymous'
-                                    id='edit-anonymous'
-                                    defaultChecked={joke.anonymous}
-                                    onChange={() => {
-                                      const {
-                                        visible,
-                                        translatedLanguage,
-                                        ...restOfJoke
-                                      } = joke
-                                      setNewJoke(() => ({
-                                        ...restOfJoke,
-                                        anonymous: !joke.anonymous,
-                                      }))
-                                    }}
-                                  />
-                                  <label htmlFor='edit-private'>Private:</label>
-                                  <input
-                                    type='checkbox'
-                                    name='private'
-                                    id='edit-private'
-                                    defaultChecked={joke.private}
-                                    onChange={() => {
-                                      const {
-                                        visible,
-                                        translatedLanguage,
-                                        ...restOfJoke
-                                      } = joke
-                                      setNewJoke(() => ({
-                                        ...restOfJoke,
-                                        private: !joke.private,
-                                      }))
-                                    }}
-                                  />
-                                </div>
+                                    <label htmlFor='edit-anonymous'>Anonymous:</label>
+                                  </div>
+                                  <div>
+                                    <input
+                                      type='checkbox'
+                                      name='private'
+                                      id='edit-private'
+                                      defaultChecked={joke.private}
+                                      onChange={() => {
+                                        const {
+                                          visible,
+                                          translatedLanguage,
+                                          ...restOfJoke
+                                        } = joke
+                                        setNewJoke(() => ({
+                                          ...restOfJoke,
+                                          private: !joke.private,
+                                        }))
+                                      }}
+                                    />
+                                    <label htmlFor='edit-private'>Private:</label>
+                                  </div>
+                                </fieldset>
                                 <button type='submit' className='save'>
                                   {ESaveJoke[language]}
                                 </button>
@@ -1582,7 +1677,7 @@ const UserJokes = ({
       {userId && (
         <div className='local-saved-wrap below'>
           <button
-            className={`btn${localJokes ? ' active' : ''}`}
+            className={`btn${localJokes && !showBlacklistedJokes ? ' active' : ''}`}
             onClick={() => {
               setLocalJokes(true)
               setShowBlacklistedJokes(false)
@@ -1591,7 +1686,7 @@ const UserJokes = ({
             {!localJokes ? ESeeLocalJokes[language] : ELocalJokes[language]}
           </button>
           <button
-            className={`btn${!localJokes ? ' active' : ''}`}
+            className={`btn${!localJokes && !showBlacklistedJokes ? ' active' : ''}`}
             onClick={() => {
               setLocalJokes(false)
               setShowBlacklistedJokes(false)

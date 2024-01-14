@@ -259,7 +259,9 @@ form.joke-edit input {
 form.joke-edit > button {
   align-self: stretch;
 }
-
+.flex.column {
+  flex-flow: column nowrap;
+}
 .gap,
 .flex.column.center {
   gap: calc(var(--gap) * 2);
@@ -424,7 +426,7 @@ section.joke-container > div::after {
   align-items: center;
   font-size: 0.8em;
 }
-.userjokeslist li .secondary-wrap button,
+.userjokeslist li .secondary-wrap .button-wrap > button,
 .userjokeslist li .secondary-wrap .delete.danger {
   padding: 0.6em 1.2em;
   outline: 1px solid currentColor;
@@ -884,7 +886,7 @@ ul.blockedJokes > li {
 .fr ul.blockedJokes > li {
   --smaller: 9em;
 }
-ul.blockedJokes > li > div:first-child {
+ul.blockedJokes > li > form {
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
@@ -893,13 +895,13 @@ ul.blockedJokes > li > div:first-child {
   width: 100%;
   order: 1;
 }
-@media (min-width: 1000px) {
+@media (min-width: 800px) {
   ul.blockedJokes > li {
     flex-flow: row nowrap;
     justify-content: flex-start;
     align-items: center;
   }
-  ul.blockedJokes > li > div:first-child {
+  ul.blockedJokes > li > form {
     flex: 0 1 calc(var(--smaller) * 2 + var(--gap));
     order: 0;
   }

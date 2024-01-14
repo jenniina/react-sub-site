@@ -1,56 +1,61 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { IJoke as joke } from '../interfaces'
+import { IJoke } from '../interfaces'
 import jokeService from '../services/jokes'
 
 const jokeSlice = createSlice({
   name: 'joke',
-  initialState: [] as joke[],
+  initialState: { jokes: [] as IJoke[], joke: null as IJoke | null },
   reducers: {
     create(state, action) {
-      return [...state, action.payload]
-      // state.push(action.payload)
-      // const updatedJoke = action.payload
-      // return state.map((joke) =>
-      //   joke.jokeId !== updatedJoke.jokeId ? joke : updatedJoke
-      // )
+      const newJoke = action.payload
+      state.jokes?.push(newJoke)
     },
-    setJokes(_state, action) {
-      return action.payload
+    setJokes(state, action) {
+      state.jokes = action.payload
     },
     remove(state, action) {
       const id = action.payload
-      return state.filter((joke) => joke?.jokeId !== id)
+      state.jokes?.filter((joke) => joke?.jokeId !== id)
     },
     search(state, action) {
       const id = action.payload.jokeId
-      return state.filter((joke) => joke?.jokeId === id) as joke[]
+      state.jokes?.filter((joke) => joke?.jokeId === id) as IJoke[]
     },
     editJoke(state, action) {
       const id = action.payload._id
       const updatedJoke = action.payload
-      return state.map((joke) => (joke?._id !== id ? joke : updatedJoke))
+      state.jokes?.map((joke) => (joke?._id !== id ? joke : updatedJoke))
     },
     deleteUser(state, action) {
       return action.payload
     },
-    save(state, action: PayloadAction<joke>) {
+    save(state, action: PayloadAction<IJoke>) {
       const newJoke = action.payload
-      const existingJoke = state.find(
+      const existingJoke = state.jokes?.find(
         (joke) => joke.jokeId === newJoke.jokeId && joke.language === newJoke.language
       )
       if (existingJoke) {
-        return state.map((joke) =>
+        state.jokes?.map((joke) =>
           joke.jokeId !== newJoke.jokeId && joke.language === newJoke.language
             ? joke
             : newJoke
         )
       } else {
         // If the joke does not exist in the state, add it
-        state.push(newJoke)
+        state.jokes?.push(newJoke)
       }
+    },
+    setJoke(state, action: PayloadAction<IJoke | null>) {
+      state.joke = action.payload
     },
   },
 })
+
+export const saveMostRecentJoke = (joke: IJoke) => {
+  return async (dispatch: (arg0: { payload: any; type: 'joke/setJoke' }) => void) => {
+    dispatch(setJoke(joke))
+  }
+}
 
 export const initializeJokes = () => {
   return async (dispatch: (arg0: { payload: any; type: 'joke/setJokes' }) => void) => {
@@ -67,7 +72,7 @@ export const getJokesByUserId = (userId: string | undefined) => {
   }
 }
 
-export const createJoke = (joke: joke) => {
+export const createJoke = (joke: IJoke) => {
   return async (dispatch: (arg0: { payload: any; type: 'joke/create' }) => void) => {
     const newJoke = await jokeService.create(joke)
     dispatch(create(newJoke))
@@ -88,14 +93,14 @@ export const findJoke = (
   category: string,
   type: string
 ) => {
-  return async (dispatch: (arg0: { payload: any; type: 'joke/search' }) => joke) => {
+  return async (dispatch: (arg0: { payload: any; type: 'joke/search' }) => IJoke) => {
     const joke = await jokeService.search(jokeId, language, category, type)
     dispatch({ type: 'joke/search', payload: joke })
     return joke
   }
 }
 
-export const updateJoke = (joke: joke) => {
+export const updateJoke = (joke: IJoke) => {
   return async (dispatch: (arg0: { payload: any; type: 'joke/editJoke' }) => void) => {
     const updatedJoke = await jokeService.update(joke)
     dispatch({ type: 'joke/editJoke', payload: updatedJoke })
@@ -110,14 +115,15 @@ export const deleteUserFromJoke = (id: string, userId: string) => {
   }
 }
 
-export const removeDuplicateJoke = (jokes: joke[]) => {
+export const removeDuplicateJoke = (jokes: IJoke[]) => {
   return async (dispatch: (arg0: { payload: any; type: 'joke/setJokes' }) => void) => {
-    const uniqueJokes = jokes.filter(
+    const uniqueJokes = jokes?.filter(
       (joke, index, self) => index === self.findIndex((t) => t.jokeId === joke.jokeId)
     )
     dispatch(setJokes(uniqueJokes))
   }
 }
 
-export const { create, setJokes, remove, editJoke, deleteUser, save } = jokeSlice.actions
+export const { create, setJokes, setJoke, remove, editJoke, deleteUser, save } =
+  jokeSlice.actions
 export default jokeSlice.reducer

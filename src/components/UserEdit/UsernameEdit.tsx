@@ -32,10 +32,6 @@ const UsernameEdit = ({ user, language }: Props) => {
   const [username, setUsername] = useState<IUser['username']>(user?.username ?? '')
   const [passwordOld, setPasswordOld] = useState<IUser['password'] | ''>('')
 
-  const titleEmail = EEmail[language]
-  const titleEdit = EEdit[language]
-  const titleCurrentPassword = ECurrentPassword[language]
-
   const handleUserSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
@@ -104,7 +100,7 @@ const UsernameEdit = ({ user, language }: Props) => {
                   value={username}
                   onChange={({ target }) => setUsername(target.value)}
                 />
-                <span>{titleEmail}</span>
+                <span>{EEmail[language]}</span>
               </label>
             </div>
 
@@ -118,11 +114,11 @@ const UsernameEdit = ({ user, language }: Props) => {
                   value={passwordOld}
                   onChange={({ target }) => setPasswordOld(target.value)}
                 />
-                <span>{titleCurrentPassword}</span>
+                <span>{ECurrentPassword[language]}</span>
               </label>
             </div>
 
-            <button type='submit'>{titleEdit}</button>
+            <button type='submit'>{EEdit[language]}</button>
           </form>
 
           <Notification language={language} />

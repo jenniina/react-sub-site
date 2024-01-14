@@ -328,10 +328,6 @@ const Nav = (
     dispatch(logout())
   }
 
-  const titleLogout = ELogout[language]
-  const titleLogin = ELogin[language]
-  const titleLoggedInAs = ELoggedInAs[language]
-
   const [isLoginFormOpen, setIsLoginFormOpen] = useState(false)
   const [isRegisterFormOpen, setIsRegisterFormOpen] = useState(false)
   const [isResetFormOpen, setIsResetFormOpen] = useState(false)
@@ -669,7 +665,7 @@ const Nav = (
                     id='logoutnav'
                     className={`logout danger ${styles.logout}`}
                   >
-                    {titleLogout} &times;
+                    {ELogout[language]} &times;
                   </button>
                 </>
               )}

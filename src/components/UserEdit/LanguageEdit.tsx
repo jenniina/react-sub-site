@@ -26,9 +26,6 @@ const LanguageEdit = ({ user, language, setLanguage, options, getKeyByValue }: P
 
   const [passwordOld, setPasswordOld] = useState<IUser['password'] | ''>('')
 
-  const titleNickname = ENickname[language]
-  const titleEdit = EEdit[language]
-  const titleCurrentPassword = ECurrentPassword[language]
   const [lang, setLang] = useState<ELanguages>((user?.language as ELanguages) ?? language)
 
   const handleUserSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -116,10 +113,10 @@ const LanguageEdit = ({ user, language, setLanguage, options, getKeyByValue }: P
                   value={passwordOld}
                   onChange={({ target }) => setPasswordOld(target.value)}
                 />
-                <span>{titleCurrentPassword}</span>
+                <span>{ECurrentPassword[language]}</span>
               </label>
             </div>
-            <button type='submit'>{titleEdit}</button>
+            <button type='submit'>{EEdit[language]}</button>
           </form>
 
           <Notification language={language} />

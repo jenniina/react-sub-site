@@ -30,10 +30,6 @@ const NicknameEdit = ({ user, language }: Props) => {
   const [name, setName] = useState<IUser['name'] | ''>(user?.name || '')
   const [passwordOld, setPasswordOld] = useState<IUser['password'] | ''>('')
 
-  const titleNickname = ENickname[language]
-  const titleEdit = EEdit[language]
-  const titleCurrentPassword = ECurrentPassword[language]
-
   const handleUserSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
@@ -105,7 +101,7 @@ const NicknameEdit = ({ user, language }: Props) => {
                   value={name}
                   onChange={({ target }) => setName(target.value)}
                 />
-                <span>{titleNickname}</span>
+                <span>{ENickname[language]}</span>
               </label>
             </div>
             <div className='input-wrap'>
@@ -118,10 +114,10 @@ const NicknameEdit = ({ user, language }: Props) => {
                   value={passwordOld}
                   onChange={({ target }) => setPasswordOld(target.value)}
                 />
-                <span>{titleCurrentPassword}</span>
+                <span>{ECurrentPassword[language]}</span>
               </label>
             </div>
-            <button type='submit'>{titleEdit}</button>
+            <button type='submit'>{EEdit[language]}</button>
           </form>
 
           <Notification language={language} />

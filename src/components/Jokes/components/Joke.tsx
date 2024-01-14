@@ -7,6 +7,7 @@ import {
   ECategories,
   ECategoryTitle,
   ECategory_en,
+  EClickToReveal,
   EDelete,
   EDeletedJoke,
   EErrorDeletingJoke,
@@ -28,7 +29,6 @@ interface Props {
   jokeCategory: ECategories | null
   reveal: boolean
   visibleJoke: boolean
-  titleClickToReveal: string
   setReveal: (reveal: boolean) => void
   handleJokeSave: (e: React.FormEvent<HTMLFormElement>) => void
   language: ELanguages
@@ -52,7 +52,6 @@ const Joke = ({
   reveal,
   setReveal,
   handleJokeSave,
-  titleClickToReveal,
   language,
   visibleJoke,
   getCategoryInLanguage,
@@ -84,7 +83,7 @@ const Joke = ({
         >
           <>
             <span {...(!reveal ? { 'aria-hidden': true } : { 'aria-hidden': false })}>
-              {titleClickToReveal}
+              {EClickToReveal[language]}
             </span>
             {delivery ? (
               <p aria-live='assertive' className={`${visibleJoke ? 'fadeIn' : ''}`}>
