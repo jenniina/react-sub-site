@@ -313,7 +313,7 @@ const UserJokes = ({
         container.style.zIndex = `${zIndex}`
       })
     }, 500)
-  }, [])
+  }, [showBlacklistedJokes])
 
   useEffect(() => {
     if (!userId) {

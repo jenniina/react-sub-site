@@ -460,24 +460,38 @@ function Jokes({
     return Math.random() * (max - min) + min
   }
 
+  const [foundJoke, setFoundJoke] = useState<IJoke | undefined>(undefined)
+
+  useEffect(() => {
+    const findJoke = jokes?.find(
+      (j: IJoke) =>
+        j.jokeId.toString() === recentJoke?.jokeId.toString() &&
+        j.language === recentJoke?.language &&
+        j.category === recentJoke?.category
+    )
+    if (findJoke) {
+      setFoundJoke(findJoke)
+    }
+  }, [recentJoke, jokes])
+
   const handleJokeSave = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
     if (!user) {
       dispatch(notify(`${ELoginOrRegisterToSave[language]}`, false, 8))
       return
     } else {
-      const findJoke = jokes?.find(
-        (j: IJoke) =>
-          j.jokeId.toString() === recentJoke?.jokeId.toString() &&
-          j.language === recentJoke?.language &&
-          j.category === recentJoke?.category
-      )
-      if (findJoke) {
-        if (findJoke.user.includes(user._id?.toString())) {
+      if (foundJoke) {
+        if (foundJoke.user.includes(user?._id?.toString())) {
           dispatch(notify(`${EJokeAlreadySaved[language]}`, false, 8))
           return
         }
-        dispatch(updateJoke({ ...findJoke, user: [...findJoke.user, user._id] }))
+        dispatch(updateJoke({ ...foundJoke, user: [...foundJoke.user, user?._id] }))
+          .then(() => initializeJokes())
+          .catch((e) => {
+            dispatch(
+              notify(`${EError[language]}:: ${(e as Error)?.message ?? ''}`, true, 8)
+            )
+          })
       } else {
         if (recentJoke && recentJoke?.type === EJokeType.single) {
           dispatch(
@@ -495,12 +509,12 @@ function Jokes({
               user: [user._id],
 
               flags: {
-                nsfw: flags.nsfw,
-                religious: flags.religious,
-                political: flags.political,
-                racist: flags.racist,
-                sexist: flags.sexist,
-                explicit: flags.explicit,
+                nsfw: recentJoke?.flags.nsfw,
+                religious: recentJoke?.flags.religious,
+                political: recentJoke?.flags.political,
+                racist: recentJoke?.flags.racist,
+                sexist: recentJoke?.flags.sexist,
+                explicit: recentJoke?.flags.explicit,
               },
             })
           )
@@ -509,7 +523,7 @@ function Jokes({
             })
             .catch((e) => {
               dispatch(
-                notify(`${EError[language]}: ${(e as Error)?.message ?? ''}`, true, 8)
+                notify(`${EError[language]}*: ${(e as Error)?.message ?? ''}`, true, 8)
               )
             })
         } else if (recentJoke && recentJoke?.type === EJokeType.twopart) {
@@ -523,16 +537,16 @@ function Jokes({
               subCategories:
                 subCategoryResults?.length > 0 ? subCategoryResults : undefined,
               language: recentJoke?.language ?? jokeLanguage,
-              safe: !Object.values(flags).some((value) => value),
+              safe: !Object.values(recentJoke?.flags).some((value) => value),
               user: [user._id],
 
               flags: {
-                nsfw: flags.nsfw,
-                religious: flags.religious,
-                political: flags.political,
-                racist: flags.racist,
-                sexist: flags.sexist,
-                explicit: flags.explicit,
+                nsfw: recentJoke?.flags.nsfw,
+                religious: recentJoke?.flags.religious,
+                political: recentJoke?.flags.political,
+                racist: recentJoke?.flags.racist,
+                sexist: recentJoke?.flags.sexist,
+                explicit: recentJoke?.flags.explicit,
               },
             })
           )
@@ -1369,13 +1383,14 @@ function Jokes({
       }
     }
   }
-  console.log(recentJoke)
+
   const handleRemoveJokeFromBlacklisted = (
     e: React.FormEvent<HTMLFormElement>,
     joke: IJoke,
     bjoke_id: IBlacklistedJoke['_id']
   ) => {
     e.preventDefault()
+    dispatch(saveMostRecentJoke(joke))
 
     if (window.confirm(`${EAreYouSureYouWantToRestoreThisJoke[language]}`)) {
       if (user) {
@@ -1394,6 +1409,23 @@ function Jokes({
         dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
       }
     }
+    setTimeout(() => {
+      if (window.confirm(`${EWouldYouLikeToSaveTheJoke[language]}`)) {
+        if (user) {
+          handleJokeSave(e)
+          dispatch(initializeJokes())
+            .then(() => dispatch(findUserById(user?._id as string)))
+            .then(() => dispatch(initializeUser()))
+            .then(() => dispatch(notify(`${ESavedJoke[language]}`, false, 8)))
+            .catch((error) => {
+              console.log(error)
+              dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
+            })
+        } else {
+          dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
+        }
+      }
+    }, 600)
   }
 
   return (
