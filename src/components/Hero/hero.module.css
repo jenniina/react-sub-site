@@ -50,6 +50,7 @@
   transition-property: top, right, bottom, left, transform;
   transition-timing-function: ease-in-out;
   transition-duration: 500ms;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .herocontent .eyes {
