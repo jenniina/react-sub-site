@@ -1,192 +1,232 @@
-
-////// Remember to import and place this in component: 
+////// Remember to import and place this in component:
 
 //     isTouchDevice();
-
 
 let initialX = 0
 let initialY = 0
 
 let zIndex = 1
 let zIndex0 = -1
-let moveElement = false;
+let moveElement = false
 let reset = true
 
 //Detect touch device
 export const isTouchDevice = () => {
-    try {
-        //Try to create TouchEvent (fails for desktops and throws error)
-        document.createEvent("TouchEvent");
-        return true;
-    } catch (e) {
-        return false;
-    }
+  try {
+    //Try to create TouchEvent (fails for desktops and throws error)
+    document.createEvent('TouchEvent')
+    return true
+  } catch (e) {
+    return false
+  }
 }
 
+export function start(
+  e:
+    | TouchEvent
+    | MouseEvent
+    | PointerEvent
+    | React.TouchEvent
+    | React.MouseEvent
+    | React.PointerEvent
+) {
+  e.stopPropagation()
+  if (!isTouchDevice()) e.preventDefault()
 
-export function start(e: TouchEvent | MouseEvent | PointerEvent | React.TouchEvent | React.MouseEvent | React.PointerEvent) {
-    e.stopPropagation();
-    if (!isTouchDevice()) e.preventDefault();
+  initialX = !isTouchDevice()
+    ? (e as PointerEvent).clientX
+    : (e as TouchEvent).touches[0].clientX
+  initialY = !isTouchDevice()
+    ? (e as PointerEvent).clientY
+    : (e as TouchEvent).touches[0].clientY
 
-    initialX = !isTouchDevice() ? (e as PointerEvent).clientX : (e as TouchEvent).touches[0].clientX;
-    initialY = !isTouchDevice() ? (e as PointerEvent).clientY : (e as TouchEvent).touches[0].clientY;
-
-    moveElement = true;
-    (e.target as HTMLElement).classList.add("drag");
-    (e.target as HTMLElement).style.setProperty("z-index", `${zIndex}`);
-    (e.target as HTMLElement).setAttribute("aria-grabbed", "true");
-    //increase z-index
-    zIndex += 1;
-    (e.target as HTMLElement).focus()
+  moveElement = true
+  ;(e.target as HTMLElement).classList.add('drag')
+  ;(e.target as HTMLElement).style.setProperty('z-index', `${zIndex}`)
+  ;(e.target as HTMLElement).setAttribute('aria-grabbed', 'true')
+  //increase z-index
+  zIndex += 1
+  ;(e.target as HTMLElement).focus()
 }
 
 //Handle mousemove and touchmove
-export function movement(e: TouchEvent | MouseEvent | PointerEvent | React.TouchEvent | React.MouseEvent | React.PointerEvent) {
-    e.stopPropagation()
+export function movement(
+  e:
+    | TouchEvent
+    | MouseEvent
+    | PointerEvent
+    | React.TouchEvent
+    | React.MouseEvent
+    | React.PointerEvent
+) {
+  e.stopPropagation()
 
-    if (moveElement) {
-        //e.preventDefault();
-        let newX = !isTouchDevice() ? (e as PointerEvent).clientX : (e as TouchEvent).touches[0].clientX;
-        let newY = !isTouchDevice() ? (e as PointerEvent).clientY : (e as TouchEvent).touches[0].clientY;
-        (e.target as HTMLElement).style.top = (e.target as HTMLElement).offsetTop - (initialY - newY) + "px";
-        (e.target as HTMLElement).style.left = (e.target as HTMLElement).offsetLeft - (initialX - newX) + "px";
-        initialX = newX;
-        initialY = newY;
-    }
+  if (moveElement) {
+    //e.preventDefault();
+    let newX = !isTouchDevice()
+      ? (e as PointerEvent).clientX
+      : (e as TouchEvent).touches[0].clientX
+    let newY = !isTouchDevice()
+      ? (e as PointerEvent).clientY
+      : (e as TouchEvent).touches[0].clientY
+    ;(e.target as HTMLElement).style.top =
+      (e.target as HTMLElement).offsetTop - (initialY - newY) + 'px'
+    ;(e.target as HTMLElement).style.left =
+      (e.target as HTMLElement).offsetLeft - (initialX - newX) + 'px'
+    initialX = newX
+    initialY = newY
+  }
 }
 
 //Handle mouse up and touch end, check for element overlap
-export const stopMovementCheck = (e: TouchEvent | MouseEvent | PointerEvent | React.TouchEvent | React.MouseEvent | React.PointerEvent) => {
+export const stopMovementCheck = (
+  e:
+    | TouchEvent
+    | MouseEvent
+    | PointerEvent
+    | React.TouchEvent
+    | React.MouseEvent
+    | React.PointerEvent
+) => {
+  e.stopPropagation()
 
-    e.stopPropagation()
-
-    moveElement = false;
-    (e.target as HTMLElement).classList.remove("drag");
-    (e.target as HTMLElement).setAttribute("aria-grabbed", "false");
-    (e.target as HTMLElement).blur()
+  moveElement = false
+  ;(e.target as HTMLElement).classList.remove('drag')
+  ;(e.target as HTMLElement).setAttribute('aria-grabbed', 'false')
+  ;(e.target as HTMLElement).blur()
 }
 
 //Handle mouse leave
-export const stopMoving = (e: MouseEvent | React.MouseEvent | PointerEvent | React.PointerEvent) => {
-
-    e.stopPropagation()
-    moveElement = false;
-    (e.target as HTMLElement).classList.remove("drag");
-    (e.target as HTMLElement).setAttribute("aria-grabbed", "false");
-    (e.target as HTMLElement).blur()
+export const stopMoving = (
+  e: MouseEvent | React.MouseEvent | PointerEvent | React.PointerEvent
+) => {
+  e.stopPropagation()
+  moveElement = false
+  ;(e.target as HTMLElement).classList.remove('drag')
+  ;(e.target as HTMLElement).setAttribute('aria-grabbed', 'false')
+  ;(e.target as HTMLElement).blur()
 }
 
 //on blob blur
 export function blurred(draggable: HTMLElement) {
-    draggable.classList.remove("drag");
-    draggable.setAttribute("aria-grabbed", "false")
+  draggable.classList.remove('drag')
+  draggable.setAttribute('aria-grabbed', 'false')
 }
 
 //on focused blob
 export function focused(draggable: HTMLElement) {
-    draggable.classList.add("drag");
-    draggable.setAttribute("aria-grabbed", "true");
-    return () => {
-        draggable.classList.remove("drag");
-        draggable.setAttribute("aria-grabbed", "false")
-    }
+  draggable.classList.add('drag')
+  draggable.setAttribute('aria-grabbed', 'true')
+  return () => {
+    draggable.classList.remove('drag')
+    draggable.setAttribute('aria-grabbed', 'false')
+  }
 }
 
 //Mousewheel use
 export function wheel(draggable: HTMLElement) {
-    draggable.addEventListener('wheel', zoom, { passive: false });
-    return () => {
-        draggable.removeEventListener('wheel', zoom);
-    }
+  draggable.addEventListener('wheel', zoom, { passive: false })
+  return () => {
+    draggable.removeEventListener('wheel', zoom)
+  }
 }
 export function zoom(e: WheelEvent) {
-    let value = (e.target as HTMLElement).style.getPropertyValue("--i");
-    let scale = parseFloat(value)
+  let value = (e.target as HTMLElement).style.getPropertyValue('--i')
+  let scale = parseFloat(value)
 
-    scale += e.deltaY * -0.005;
-    // Restrict scale
-    scale = Math.min(Math.max(2, scale), 10);
-    // Apply
-    (e.target as HTMLElement).style.setProperty('--i', `${scale}`)
-    //increase z-index
-    zIndex += 1;
+  scale += e.deltaY * -0.005
+  // Restrict scale
+  scale = Math.min(Math.max(2, scale), 10)
+  // Apply
+  ;(e.target as HTMLElement).style.setProperty('--i', `${scale}`)
+  //increase z-index
+  zIndex += 1
 }
 
 // Keyboard use
-export function keyDown(e: KeyboardEvent | React.KeyboardEvent<HTMLLIElement>, target: HTMLElement) {
-    const movePx = 8;
+export function keyDown(
+  e: KeyboardEvent | React.KeyboardEvent<HTMLLIElement>,
+  target: HTMLElement
+) {
+  const movePx = 8
 
-    let value = (target).style.getPropertyValue("--i");
-    let scale = parseFloat(value)
+  let value = target.style.getPropertyValue('--i')
+  let scale = parseFloat(value)
 
-    let attrLeft = window.getComputedStyle(target).getPropertyValue("left");
-    let attrTop = window.getComputedStyle(target).getPropertyValue("top");
+  let attrLeft = window.getComputedStyle(target).getPropertyValue('left')
+  let attrTop = window.getComputedStyle(target).getPropertyValue('top')
 
-    switch (e.key) {
-        case 'ArrowLeft':
-            e.preventDefault();
-            (target).style.left = parseFloat(attrLeft) - Number(movePx) + "px";
-            attrLeft = window.getComputedStyle(target).getPropertyValue("left");
-            break;
-        case 'ArrowRight':
-            e.preventDefault();
-            (target).style.left = parseFloat(attrLeft) + Number(movePx) + "px";
-            attrLeft = window.getComputedStyle(target).getPropertyValue("left");
-            break;
-        case 'ArrowUp':
-            e.preventDefault();
-            (target).style.top = parseFloat(attrTop) - Number(movePx) + "px";
-            attrTop = window.getComputedStyle(target).getPropertyValue("top");
-            break;
-        case 'ArrowDown':
-            e.preventDefault();
-            (target).style.top = parseFloat(attrTop) + Number(movePx) + "px";
-            attrTop = window.getComputedStyle(target).getPropertyValue("top");
-            break;
-        case 'Escape':
-            e.stopPropagation()
-            e.preventDefault();
-            (target).blur()
-            break;
-        case '0': //Move blob to the bottom of the z-index pile
-            e.stopPropagation()
-            e.preventDefault();
-            if (reset) {
-                reset = false;
-                (target).style.setProperty("z-index", `${zIndex0}`)
-                //Reset z-index
-                zIndex0 -= 1;
-                const cooldown = () => { reset = true }
-                setTimeout(cooldown, 100);
-            }
-            break;
-        case '1': //make blob smaller
-            e.stopPropagation()
-            e.preventDefault();
-            if (reset) {
-                reset = false;
-                scale -= 1;
-                scale = Math.min(Math.max(2, scale), 10);
-                (target).style.setProperty('--i', `${scale}`)
+  switch (e.key) {
+    case 'ArrowLeft':
+      e.preventDefault()
+      target.style.left = parseFloat(attrLeft) - Number(movePx) + 'px'
+      attrLeft = window.getComputedStyle(target).getPropertyValue('left')
+      break
+    case 'ArrowRight':
+      e.preventDefault()
+      target.style.left = parseFloat(attrLeft) + Number(movePx) + 'px'
+      attrLeft = window.getComputedStyle(target).getPropertyValue('left')
+      break
+    case 'ArrowUp':
+      e.preventDefault()
+      target.style.top = parseFloat(attrTop) - Number(movePx) + 'px'
+      attrTop = window.getComputedStyle(target).getPropertyValue('top')
+      break
+    case 'ArrowDown':
+      e.preventDefault()
+      target.style.top = parseFloat(attrTop) + Number(movePx) + 'px'
+      attrTop = window.getComputedStyle(target).getPropertyValue('top')
+      break
+    case 'Escape':
+      e.stopPropagation()
+      e.preventDefault()
+      target.blur()
+      break
+    case '0': //Move blob to the bottom of the z-index pile
+      e.stopPropagation()
+      e.preventDefault()
+      if (reset) {
+        reset = false
+        target.style.setProperty('z-index', `${zIndex0}`)
+        //Reset z-index
+        zIndex0 -= 1
+        const cooldown = () => {
+          reset = true
+        }
+        setTimeout(cooldown, 100)
+      }
+      break
+    case '1': //make blob smaller
+      e.stopPropagation()
+      e.preventDefault()
+      if (reset) {
+        reset = false
+        scale -= 1
+        scale = Math.min(Math.max(2, scale), 10)
+        target.style.setProperty('--i', `${scale}`)
 
-                const cooldown = () => { reset = true }
-                setTimeout(cooldown, 100);
-            }
-            break;
-        case '2': //make blob larger
-            e.stopPropagation()
-            e.preventDefault();
-            if (reset) {
-                reset = false;
-                scale += 1;
-                scale = Math.min(Math.max(2, scale), 10);
-                (target).style.setProperty('--i', `${scale}`)
+        const cooldown = () => {
+          reset = true
+        }
+        setTimeout(cooldown, 100)
+      }
+      break
+    case '2': //make blob larger
+      e.stopPropagation()
+      e.preventDefault()
+      if (reset) {
+        reset = false
+        scale += 1
+        scale = Math.min(Math.max(2, scale), 10)
+        target.style.setProperty('--i', `${scale}`)
 
-                const cooldown = () => { reset = true }
-                setTimeout(cooldown, 100);
-            }
-            break
-        default:
-            e.stopPropagation()
-    }
+        const cooldown = () => {
+          reset = true
+        }
+        setTimeout(cooldown, 100)
+      }
+      break
+    default:
+      e.stopPropagation()
+  }
 }
