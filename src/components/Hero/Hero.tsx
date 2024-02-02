@@ -325,7 +325,7 @@ export default function Hero({
                         }
                         return (
                           <span key={`${item.i}-${index}`} style={style}>
-                            <label className='scr'>shape {index + 1}</label>
+                            <span className='scr'>shape {index + 1}</span>
                           </span>
                         )
                       })}
@@ -404,7 +404,7 @@ export default function Hero({
                     }}
                   >
                     <span>
-                      <label className='scr'>bubble {index + 1}</label>
+                      <span className='scr'>bubble {index + 1}</span>
                     </span>
                   </li>
                 )
@@ -600,7 +600,7 @@ export default function Hero({
                     }}
                   >
                     <span>
-                      <label className='scr'>blob {index + 1}</label>
+                      <span className='scr'>blob {index + 1}</span>
                     </span>
                   </li>
                 )
@@ -693,7 +693,7 @@ export default function Hero({
                   >
                     <div style={styleInner} className={`inner ${styles.inner}`}>
                       <span className='else-eye'>
-                        <label className='scr'>eye {index + 1}</label>
+                        <span className='scr'>eye {index + 1}</span>
                       </span>
                     </div>
                   </li>

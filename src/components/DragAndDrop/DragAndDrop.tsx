@@ -101,9 +101,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
       {typesItem.map((container) => (
         <CardsContainer
           language={language}
-          itemsGood={listItemsByStatus.good.items}
-          itemsNeutral={listItemsByStatus.neutral.items}
-          itemsBad={listItemsByStatus.bad.items}
+          itemsByStatus={listItemsByStatus[container].items}
           status={container}
           key={container}
           isDragging={isDragging}

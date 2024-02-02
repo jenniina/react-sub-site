@@ -64,6 +64,7 @@ const PasswordReset = ({ language, text }: Props) => {
               type='text'
               value={username}
               required
+              autoComplete='email'
               onChange={({ target }) => setUsername(target.value)}
             />
             <span>{EEmail[language]}: </span>
