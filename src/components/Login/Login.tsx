@@ -106,6 +106,7 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
                     type='text'
                     value={username}
                     required
+                    autoComplete='email'
                     onChange={({ target }) => setUsername(target.value)}
                   />
                   <span>{EEmail[language]}: </span>
@@ -118,6 +119,7 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
                     type='password'
                     required
                     value={password}
+                    autoComplete='on'
                     onChange={({ target }) => setPassword(target.value)}
                   />
                   <span>{EPassword[language]}: </span>

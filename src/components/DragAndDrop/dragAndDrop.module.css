@@ -52,10 +52,10 @@
 .cards-container > ul > li:last-of-type {
   padding-bottom: 1rem;
 }
-.cards-container li:last-of-type:has(ul[aria-expanded="true"]) {
+.cards-container li:last-of-type:has(ul[aria-expanded='true']) {
   padding-bottom: 8rem;
 }
-.cards-container > label {
+.cards-container > span {
   height: var(--height);
   margin: 0;
   display: block;
@@ -67,7 +67,7 @@
   font-weight: bold;
   text-transform: capitalize;
 }
-.light.cards-container > label {
+.light.cards-container > span {
   background-color: var(--color-gray-lightest);
   color: #000;
 }

@@ -8,9 +8,7 @@ import { EBad, EGood, ENeutral } from '../../../interfaces/draganddrop'
 
 interface Props {
   language: ELanguages
-  itemsGood: Data[]
-  itemsNeutral: Data[]
-  itemsBad: Data[]
+  itemsByStatus: Data[]
   status: Status
   isDragging: boolean
   handleUpdate: (id: number, status: Status, target?: number) => void
@@ -23,9 +21,7 @@ export const CardsContainer = ({
   isDragging,
   handleDragging,
   handleUpdate,
-  itemsGood = [],
-  itemsNeutral = [],
-  itemsBad = [],
+  itemsByStatus,
 }: Props) => {
   const lightTheme = useTheme()
 
@@ -48,75 +44,41 @@ export const CardsContainer = ({
         isDragging ? styles['area-dragging'] : ''
       } ${lightTheme ? styles['light'] : ''}`}
     >
-      <label htmlFor={status}>
-        <span>
-          {' '}
-          {(() => {
-            switch (status) {
-              case 'good':
-                return `${EGood[language]}?`
-              case 'bad':
-                return `${EBad[language]}?`
-              case 'neutral':
-                return `${ENeutral[language]}?`
-              default:
-                return status
-            }
-          })()}
-        </span>
-      </label>
+      <span id={`label-${status}`}>
+        {(() => {
+          switch (status) {
+            case 'good':
+              return `${EGood[language]}?`
+            case 'bad':
+              return `${EBad[language]}?`
+            case 'neutral':
+              return `${ENeutral[language]}?`
+            default:
+              return status
+          }
+        })()}
+      </span>
       <ul
+        aria-labelledby={`label-${status}`}
         id={status}
         className={styles[status]}
         role={'list'}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
       >
-        {status === 'good'
-          ? itemsGood.map((item, index) => (
-              <CardSingle
-                language={language}
-                id={item.id}
-                index={index}
-                data={item}
-                status={status}
-                key={`${status}item${item.id}-${Date.now()}`}
-                handleDragging={handleDragging}
-                handleUpdate={handleUpdate}
-                getTarget={getTarget}
-              />
-            ))
-          : ''}
-        {status === 'neutral'
-          ? itemsNeutral.map((item, index) => (
-              <CardSingle
-                language={language}
-                id={item.id}
-                index={index}
-                data={item}
-                status={status}
-                key={`${status}item${item.id}-${Date.now()}`}
-                handleDragging={handleDragging}
-                handleUpdate={handleUpdate}
-                getTarget={getTarget}
-              />
-            ))
-          : ''}
-        {status === 'bad'
-          ? itemsBad.map((item, index) => (
-              <CardSingle
-                language={language}
-                id={item.id}
-                index={index}
-                data={item}
-                status={status}
-                key={`${status}item${item.id}-${Date.now()}`}
-                handleDragging={handleDragging}
-                handleUpdate={handleUpdate}
-                getTarget={getTarget}
-              />
-            ))
-          : ''}
+        {itemsByStatus?.map((item, index) => (
+          <CardSingle
+            language={language}
+            id={item.id}
+            index={index}
+            data={item}
+            status={status}
+            key={`${status}item${item.id}-${Date.now()}`}
+            handleDragging={handleDragging}
+            handleUpdate={handleUpdate}
+            getTarget={getTarget}
+          />
+        ))}
       </ul>
     </div>
   )
