@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
-import { useDragAndDrop } from './hooks/useDragAndDrop'
+// import { useDragAndDrop } from './hooks/useDragAndDrop'
+import { useDragAndDrop } from '../../hooks/useDragAndDrop'
 import { Status, Data, Background } from './interfaces'
 import { CardsContainer } from './components/CardsContainer'
 import styles from './dragAndDrop.module.css'
@@ -90,18 +91,11 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
 
   const modifiedData = setTheData.sort((a, b) => (a.status > b.status ? 1 : -1))
 
-  const [data, setData] = useState<Data[]>(modifiedData)
-  const {
-    isDragging,
-    // listItemsBad,
-    // listItemsGood,
-    // listItemsNeutral,
-    listItemsByStatus,
-    handleDragging,
-    handleUpdate,
-  } = useDragAndDrop(data, statuses)
-  console.log(listItemsByStatus?.good)
-  console.log('listItemsByStatus', listItemsByStatus)
+  const { isDragging, listItemsByStatus, handleDragging, handleUpdate } = useDragAndDrop(
+    modifiedData,
+    statuses
+  )
+
   return (
     <div className={styles.grid}>
       {typesItem.map((container) => (
