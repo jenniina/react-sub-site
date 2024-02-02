@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
-import { useDragAndDrop } from './hooks/useDragAndDrop'
+// import { useDragAndDrop } from './hooks/useDragAndDrop'
+import { useDragAndDrop } from '../../hooks/useDragAndDrop'
 import { Status, Data, Background } from './interfaces'
 import { CardsContainer } from './components/CardsContainer'
 import styles from './dragAndDrop.module.css'
@@ -16,6 +17,8 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
   const amount = 9 //amount of cards, add more cases as needed in SetTheData
 
   const array: Data[] = []
+
+  const statuses: Status[] = ['good', 'neutral', 'bad']
 
   const setTheData = useMemo(() => {
     for (let i: number = 1; i <= amount; i++) {
@@ -64,13 +67,13 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
       const number = Math.round(useRandomMinMax(0.1, 3))
       switch (number) {
         case 1:
-          state = 'good'
+          state = statuses[0]
           break
         case 2:
-          state = 'neutral'
+          state = statuses[1]
           break
         case 3:
-          state = 'bad'
+          state = statuses[2]
           break
       }
 
@@ -88,25 +91,19 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
 
   const modifiedData = setTheData.sort((a, b) => (a.status > b.status ? 1 : -1))
 
-  const [data, setData] = useState<Data[]>(modifiedData)
-
-  const {
-    isDragging,
-    listItemsBad,
-    listItemsGood,
-    listItemsNeutral,
-    handleDragging,
-    handleUpdate,
-  } = useDragAndDrop(data)
+  const { isDragging, listItemsByStatus, handleDragging, handleUpdate } = useDragAndDrop(
+    modifiedData,
+    statuses
+  )
 
   return (
     <div className={styles.grid}>
       {typesItem.map((container) => (
         <CardsContainer
           language={language}
-          itemsGood={listItemsGood}
-          itemsNeutral={listItemsNeutral}
-          itemsBad={listItemsBad}
+          itemsGood={listItemsByStatus.good.items}
+          itemsNeutral={listItemsByStatus.neutral.items}
+          itemsBad={listItemsByStatus.bad.items}
           status={container}
           key={container}
           isDragging={isDragging}

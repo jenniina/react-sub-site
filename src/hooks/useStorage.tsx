@@ -1,11 +1,8 @@
 import { useCallback, useState, useEffect } from 'react'
 
-// type ReturnType<T> = [
-//     T | undefined,
-//     React.Dispatch<React.SetStateAction<T | undefined>>,
-//     () => void
-// ]
-type ReturnType<T> = [T, React.Dispatch<React.SetStateAction<T>>, () => void]
+// type ReturnType<T> = [T, React.Dispatch<React.SetStateAction<T>>, () => void]
+
+type ReturnType<T> = [T, (value: T | ((val: T) => T)) => void, () => void]
 
 export default function useLocalStorage<T>(key: string, defaultValue: T) {
   return useStorage(key, defaultValue, window.localStorage)
@@ -40,5 +37,13 @@ function useStorage<T>(
     return storageObject.removeItem(key)
   }, [])
 
-  return [value, setValue, remove]
+  const setValueWithFunction = (value: T | ((val: T) => T)) => {
+    if (typeof value === 'function') {
+      setValue((currentValue) => (value as (val: T) => T)(currentValue))
+    } else {
+      setValue(value)
+    }
+  }
+
+  return [value, setValueWithFunction, remove]
 }
