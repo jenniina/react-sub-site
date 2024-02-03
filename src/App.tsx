@@ -49,7 +49,6 @@ import useLocalStorage from './hooks/useStorage'
 import {
   EAJokeGeneratorForTheComicallyInclined,
   ECategories,
-  ECategory_en,
   EJokeType,
   ESafemode,
   ETheComediansCompanion,
@@ -123,7 +122,7 @@ const App: FC = () => {
   }
 
   const options = (
-    enumObj: typeof ECategory_en | typeof EJokeType | typeof ESafemode | typeof ELanguages
+    enumObj: typeof ECategories | typeof EJokeType | typeof ESafemode | typeof ELanguages
   ) => {
     return Object.keys(enumObj).map((key) => ({
       value: enumObj[key as keyof typeof enumObj],
@@ -202,9 +201,12 @@ const App: FC = () => {
                 element={
                   <Welcome
                     language={language}
+                    setLanguage={setLanguage}
                     heading={EWelcome[language]}
                     text={EToTheReactSiteOfJenniinaFi[language]}
                     type='page'
+                    options={options}
+                    getKeyByValue={getKeyByValue}
                   />
                 }
               />

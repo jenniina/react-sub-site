@@ -510,7 +510,7 @@ form.joke > *:not(.toggle) {
   margin: 0;
   gap: calc(var(--gap) / 2);
 } */
-.select-container .container,
+.joke-container .select-container .container,
 .joke-container .input-wrap::before,
 .joke-container .input-wrap.not-required:has(input:valid)::before,
 .joke-container .input-wrap.not-required input {

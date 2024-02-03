@@ -7,11 +7,15 @@
   margin: 0;
   padding: 0;
   width: max-content;
-  max-width: 400px;
-  margin: 0 auto;
+  max-width: 600px;
+  margin: 0 auto 2rem;
 }
 .list.extras {
-  max-width: clamp(100px, 99vw, max-content);
+  max-width: clamp(100px, 80vw, 700px);
+  gap: 3em 0.6em;
+}
+.list.extras li {
+  flex: 1 0 40%;
 }
 .list li {
   flex: 1 0 30%;
@@ -59,15 +63,13 @@
   /* font-size: clamp(1.2em, 2vw, 3em); */
   transform: scale(1.2);
 }
-@media (min-width: 600px) {
-  .list {
-    flex-flow: row nowrap;
-    gap: 1em;
-    align-items: flex-start;
-  }
-  .list.extras {
-    flex-flow: row wrap;
-  }
+.language {
+  font-size: 0.8em;
+  max-width: 11em;
+}
+.language > div > span {
+  --color-text: var(--color-primary-17);
+  color: var(--color-text);
 }
 .subheading {
   font-size: clamp(1.5em, 3vw, 2em);
@@ -84,4 +86,21 @@
 }
 .newest {
   padding-top: 8em;
+}
+
+@media (min-width: 600px) {
+  .list {
+    flex-flow: row nowrap;
+    gap: 1em;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  .list.extras {
+    flex-flow: row wrap;
+  }
+}
+@media (min-width: 800px) {
+  .list.extras li {
+    flex: 1 0 20%;
+  }
 }

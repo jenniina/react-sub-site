@@ -27,7 +27,7 @@
   --padding: 0.5em;
   --size: 1.5em;
   --border: 0.05em;
-  --radius: 0.2em;
+  --radius: 0.3em;
   --transition-type: ease-in-out;
   --transition-duration: 0.3s;
 
@@ -92,6 +92,7 @@
   display: flex;
   gap: var(--padding);
   flex-wrap: wrap;
+  padding-left: var(--padding);
 }
 
 button.clear-btn {
