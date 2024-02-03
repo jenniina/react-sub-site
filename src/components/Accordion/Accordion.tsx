@@ -28,6 +28,7 @@ interface accordionProps {
   language: ELanguages
   onClick?: () => void
   id?: string
+  hideBrackets?: boolean
 }
 
 const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefined) => {
@@ -83,7 +84,13 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
         onClick={toggleVisibility}
         style={visible ? { display: 'none' } : { display: 'inline-block' }}
       >
-        <span>&#xFE3D;</span>&nbsp;{props.text}&nbsp;<span>&#xFE3D;</span>
+        <span aria-hidden='true' className={props.hideBrackets ? 'hide' : ''}>
+          &#xFE3D;
+        </span>
+        &nbsp;{props.text}&nbsp;
+        <span aria-hidden='true' className={props.hideBrackets ? 'hide' : ''}>
+          &#xFE3D;
+        </span>
       </button>
 
       <div

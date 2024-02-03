@@ -11,7 +11,7 @@
   margin: 0 auto 2rem;
 }
 .list.extras {
-  max-width: clamp(100px, 80vw, 700px);
+  max-width: clamp(100px, 80vw, 800px);
   gap: 3em 0.6em;
 }
 .list.extras li {

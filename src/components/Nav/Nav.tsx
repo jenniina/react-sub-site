@@ -678,6 +678,7 @@ const Nav = (
                   text={`${EForgotPassword[language]}`}
                   isOpen={isResetFormOpen}
                   setIsFormOpen={setIsResetFormOpen}
+                  hideBrackets={true}
                 >
                   <PasswordReset language={language} text='login' />
                 </Accordion>

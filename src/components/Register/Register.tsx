@@ -68,6 +68,7 @@ const Register = ({
             ref={formRegisterRef}
             setIsFormOpen={setIsFormOpen}
             isOpen={isOpen}
+            hideBrackets={true}
           >
             <h2>{ERegister[language]}</h2>
             <form onSubmit={handleRegister} className={`register ${text}`}>
