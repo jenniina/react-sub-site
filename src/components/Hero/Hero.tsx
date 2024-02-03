@@ -412,8 +412,10 @@ export default function Hero({
                 // CONTACT
                 const style: React.CSSProperties = {
                   position: 'absolute',
-                  top: `calc(3vh + 1.1vh * ${item.size - 2} * ${item.e / 2})`,
-                  right: `calc(2% + ${item.e / 1.5} * 1.3vw * ${item.e})`,
+                  top: touchDevice
+                    ? `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.3}))`
+                    : `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.9}))`,
+                  right: `calc(1% + calc(${item.i} * 1vw * ${item.e}))`,
                   backgroundColor: `transparent`,
                   color: `${item.color}`,
                   ['--i' as string]: `${item.i}`,
@@ -608,8 +610,10 @@ export default function Hero({
                 //ELSE
                 const style: React.CSSProperties = {
                   position: 'absolute',
-                  top: `calc(3vh + 1.1vh * ${item.size - 2} * ${item.e / 2})`,
-                  right: `calc(2% + ${item.e / 1.5} * 1.3vw * ${item.e})`,
+                  top: touchDevice
+                    ? `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.3}))`
+                    : `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.9}))`,
+                  right: `calc(1% + calc(${item.i} * 1vw * ${item.e}))`,
                   backgroundColor: `transparent`,
                   color: `${item.color}`,
                   ['--i' as string]: `${item.i}`,
