@@ -484,6 +484,9 @@ body .z {
   display: inline-block;
   transform: translateY(0.3em) rotate(180deg);
 }
+.accordion-container .accordion-btn.open span.hide {
+  display: none;
+}
 .accordionButton.close,
 .accordionButton.close:hover,
 .accordionButton.close:focus {

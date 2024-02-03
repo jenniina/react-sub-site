@@ -95,6 +95,7 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
             ref={formLoginRef}
             setIsFormOpen={setIsFormOpen}
             isOpen={isOpen}
+            hideBrackets={true}
           >
             <h2>{ELogin[language]}</h2>
 
