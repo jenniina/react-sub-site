@@ -20,7 +20,7 @@
 .container {
   --color-text: var(--color-primary-20);
   --color-fg: var(--color-primary-13);
-  --color-bg-main: var(--color-primary-1);
+  --color-bg-main: var(--color-primary-2);
   --color-bg-selected: var(--color-primary-5);
   --color-highlighted: var(--color-primary-7);
   --color-warning: red;
