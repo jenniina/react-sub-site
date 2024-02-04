@@ -124,7 +124,6 @@ export default function TodoApp({ language }: Props) {
           await editTodoOrder(user._id, order).then(() => {
             dispatch(fetchTodos(user._id))
           })
-          dispatch(notify(`Todo order updated`, false, 3))
         } catch (e) {
           console.error(e)
           dispatch(notify(`${e}`, true, 8))

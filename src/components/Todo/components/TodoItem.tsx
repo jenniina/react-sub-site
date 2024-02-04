@@ -6,6 +6,7 @@ import { ITask } from '../interfaces'
 import styles from '../css/todo.module.css'
 import { set } from 'lodash'
 import { ITaskDraggable } from './TodoList'
+import { EAreYouSureYouWantToDelete } from '../../UserEdit/interfaces'
 
 export default function Todo({
   todo,
@@ -32,11 +33,13 @@ export default function Todo({
     toggleTodo(todo?.key)
   }
   function handleDelete() {
-    deleteTodo(todo?.key)
+    if (window.confirm(EAreYouSureYouWantToDelete[language] + ' "' + todo?.name + '"?')) {
+      setNewName('')
+      deleteTodo(todo?.key)
+    }
   }
   const handleModify = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const name = todo?.name
     modifyTodo(todo?.key, newName)
   }
 
@@ -45,7 +48,7 @@ export default function Todo({
       className={`${isDragging ? 'dragging' : ''}`}
       draggable
       onDragStart={(e) => {
-        e.dataTransfer.setData('application/my-app', todo?.id.toString() as string)
+        e.dataTransfer.setData('application/my-app', todo?.order?.toString() as string)
         handleDragging(true)
       }}
       onDragEnd={() => handleDragging(false)}
