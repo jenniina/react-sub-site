@@ -187,11 +187,13 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             x: `${blobs[i].x}`,
             y: `${blobs[i].y}`,
             z: `${blobs[i].z}`,
-            display: `${blobs[i].display}`,
+            display: `${blobs[i].display}` ?? 'block',
             ariaGrabbed: false,
             draggable: true,
             tabIndex: 0,
-            background: `${blobs[i].background}`,
+            background: `${
+              blobs[i].background ?? 'linear-gradient(90deg, cyan, greenyellow)'
+            }`,
           }
           dispatch({ type: 'addDraggable', payload: { d, draggable: newDraggable } })
         }
@@ -315,7 +317,9 @@ export default function BlobJS({ language }: { language: ELanguages }) {
         ariaGrabbed: false,
         draggable: true,
         tabIndex: 0,
-        background: `linear-gradient(${angle}, ${colorFirst},${colorSecond})`,
+        background: `linear-gradient(${angle ?? '90deg'}, ${colorFirst ?? 'cyan'},${
+          colorSecond ?? 'greenyellow'
+        })`,
       }
       dispatch({ type: 'addDraggable', payload: { d, draggable: newDraggable } })
     }
@@ -348,7 +352,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       ariaGrabbed: false,
       draggable: true,
       tabIndex: 0,
-      background: blobColor1,
+      background: blobColor1 ?? 'linear-gradient(90deg, cyan, greenyellow)',
     }
 
     dispatch({
