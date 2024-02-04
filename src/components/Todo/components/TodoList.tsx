@@ -76,6 +76,11 @@ export default function TodoList({
           e.currentTarget.querySelectorAll('.todo-ul > li')
         ).indexOf(closestItem.element as HTMLElement)
 
+        // If the draggedId and newTargetIndex are the same, do nothing
+        if (Number(draggedId) === newTargetIndex) {
+          return
+        }
+
         const order = handleUpdate(Number(draggedId), 'todos', newTargetIndex)
 
         const newOrder = order?.map((item, index) => ({
