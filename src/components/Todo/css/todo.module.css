@@ -146,7 +146,7 @@ form.modify {
 } /*END media*/
 @media (min-width: 600px) {
   .todo-ul li {
-    flex-flow: row nowrap;
+    flex-flow: row wrap;
   }
   .todo-ul li .btn-wrap {
     flex: 0 0 auto;
