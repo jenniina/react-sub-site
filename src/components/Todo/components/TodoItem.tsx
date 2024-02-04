@@ -68,8 +68,9 @@ export default function Todo({
           <form onSubmit={handleModify} className={styles.modify}>
             <div className='input-wrap'>
               <label>
-                <textarea
+                <input
                   required
+                  type='text'
                   name='name'
                   value={newName}
                   onChange={({ target }) => setNewName(target.value)}
