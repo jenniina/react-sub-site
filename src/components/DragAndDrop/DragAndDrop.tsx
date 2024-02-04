@@ -6,6 +6,7 @@ import { CardsContainer } from './components/CardsContainer'
 import styles from './dragAndDrop.module.css'
 import useRandomMinMax from '../../hooks/useRandomMinMax'
 import { ELanguages } from '../../interfaces'
+import useLocalStorage from '../../hooks/useStorage'
 
 const typesItem: Status[] = ['good', 'neutral', 'bad']
 const backgroundLightness: Background[] = ['light', 'dark']
@@ -20,7 +21,20 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
 
   const statuses: Status[] = ['good', 'neutral', 'bad']
 
+  const storedData = statuses
+    .map((status) => {
+      const item = window.localStorage.getItem(`DnD-${status}`)
+      return item ? JSON.parse(item) : []
+    })
+    .flat()
+
   const setTheData = useMemo(() => {
+    // If data is already in localStorage, use that
+    if (storedData.length > 0) {
+      return storedData
+    }
+
+    // Otherwise, generate the data
     for (let i: number = 1; i <= amount; i++) {
       switch (i) {
         case 1:
@@ -89,10 +103,11 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     return array
   }, [])
 
-  const modifiedData = setTheData.sort((a, b) => (a.status > b.status ? 1 : -1))
+  //const modifiedData = setTheData
+  //.sort((a, b) => (a.status > b.status ? 1 : -1))
 
   const { isDragging, listItemsByStatus, handleDragging, handleUpdate } = useDragAndDrop(
-    modifiedData,
+    setTheData,
     statuses
   )
 
@@ -101,7 +116,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
       {typesItem.map((container) => (
         <CardsContainer
           language={language}
-          itemsByStatus={listItemsByStatus[container].items}
+          itemsByStatus={listItemsByStatus[container]?.items}
           status={container}
           key={container}
           isDragging={isDragging}

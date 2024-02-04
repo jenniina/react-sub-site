@@ -60,7 +60,7 @@ const UsernameEdit = ({ user, language }: Props) => {
             }
           })
           .catch((error: AxiosError<{ message?: string }>) => {
-            console.log(error)
+            console.error(error)
             if (error.code === 'ERR_BAD_REQUEST' && error.response?.data?.message) {
               dispatch(notify(`${error.response.data.message}`, true, 5))
             } else {
@@ -73,7 +73,7 @@ const UsernameEdit = ({ user, language }: Props) => {
 
       //const language = e.currentTarget.language.value
     } catch (error) {
-      console.log('error', error)
+      console.error('error', error)
     }
   }
 

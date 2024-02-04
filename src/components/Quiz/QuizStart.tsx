@@ -96,7 +96,7 @@ const QuizStart = ({
         dispatch(notify(ERegistrationSuccesful[language], false, 8))
       })
       .catch((err) => {
-        console.log(err)
+        console.error(err)
         dispatch(notify(`${EError[language]}: ${err.message}`, true, 8))
       })
   }

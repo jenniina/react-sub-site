@@ -1,13 +1,15 @@
 {
-  "name": "jlai3",
-  "private": true,
-  "version": "0.0.0",
+  "name": "react-sub-site-jenniina-fi",
+  "description": "React sub site for jenniina.fi",
+  "version": "1.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
+  "author": "Jenniina Laine",
+  "license": "UNLICENSED",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
     "axios": "^1.5.1",

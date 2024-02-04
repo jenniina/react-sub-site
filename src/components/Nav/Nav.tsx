@@ -397,7 +397,7 @@ const Nav = (
         setName('')
       })
       .catch((err) => {
-        console.log(err)
+        console.error(err)
         if (err.code === 'ERR_BAD_REQUEST') {
           dispatch(notify(`Error: ${err.response?.data?.message}`, true, 8))
           return

@@ -61,7 +61,7 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
       })
       .catch((e) => {
         setLoggingIn(false)
-        console.log(e)
+        console.error(e)
         if (e.code === 'ERR_BAD_REQUEST')
           dispatch(notify(`${EError[language]}: ${e.response.data.message}`, true, 8))
         else if (e.code === 'ERR_NETWORK') {

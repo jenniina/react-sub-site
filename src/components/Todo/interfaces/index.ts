@@ -4,7 +4,10 @@ export interface ITask {
   key: string
   name: string
   complete: boolean
+  order?: number
   user?: IUser['_id'] | null
+  createdAt?: string
+  updatedAt?: string
 }
 export interface ITodos {
   user?: IUser['_id'] | null

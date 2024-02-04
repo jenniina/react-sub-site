@@ -80,7 +80,7 @@ function FormMulti({ language }: { language: ELanguages }) {
           dispatch(notify(EThankYouForYourMessage[language], false, 8))
         })
       } catch (error) {
-        console.log('error', error)
+        console.error('error', error)
         alert(EThereWasAnErrorSendingTheMessage[language])
       }
     }

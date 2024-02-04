@@ -364,7 +364,7 @@ function Jokes({
           setEditId(null)
           setIsEditOpen(false)
         } catch (e) {
-          console.log(e)
+          console.error(e)
           const errorMessage =
             (e as AxiosError)?.code === 'ERR_BAD_RESPONSE'
               ? ((e as AxiosError<AxiosError>)?.response?.data?.message as string)
@@ -572,7 +572,6 @@ function Jokes({
     repeat: boolean
   ) => {
     if (isJokeBlacklisted(jokeData.id)) {
-      console.log('blocked from setJokeData')
       fetchApi()
       return
     }
@@ -1020,7 +1019,6 @@ function Jokes({
         fetchFromJokeAPI()
       } else {
         if (isJokeBlacklisted(joke.id)) {
-          console.log('blocked from fetchAndSetJoke')
           fetchApi()
           return
         }
@@ -1078,7 +1076,6 @@ function Jokes({
               (joke) => joke.jokeId === data.jokeId && joke.language === language
             ))
         ) {
-          console.log('blocked from fetchFromJokeAPI')
           fetchFromJokeAPI(retryCount + 1)
           return
         }
@@ -1192,7 +1189,7 @@ function Jokes({
         }
       })
       .catch((e) => {
-        console.log(e)
+        console.error(e)
         dispatch(notify(`${EError[language]}! ${e.response.data.message}`, true, 8))
       })
   }
@@ -1367,7 +1364,7 @@ function Jokes({
                   })
               })
               .catch((error) => {
-                console.log(error)
+                console.error(error)
                 dispatch(initializeJokes())
                   .then(() => dispatch(findUserById(user?._id as string)))
                   .then(() => dispatch(initializeUser()))
@@ -1402,7 +1399,7 @@ function Jokes({
               .then(() => dispatch(notify(`${EJokeRestored[language]}`, false, 3)))
           })
           .catch((error) => {
-            console.log(error)
+            console.error(error)
             dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
           })
       } else {
@@ -1418,7 +1415,7 @@ function Jokes({
             .then(() => dispatch(initializeUser()))
             .then(() => dispatch(notify(`${ESavedJoke[language]}`, false, 8)))
             .catch((error) => {
-              console.log(error)
+              console.error(error)
               dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
             })
         } else {
