@@ -146,7 +146,7 @@ export default function CustomSelectPage({
           setShowMessage(false)
           setError(null)
         }, 10000)
-        console.log('error', error)
+        console.error('error', error)
         dispatch(notify(EThereWasAnErrorSendingTheMessage[language], true, 8))
       }
     }

@@ -52,3 +52,21 @@ export enum EDeleteTask {
   cs = 'Odstranit Úkol',
   fi = 'Poista Tehtävä',
 }
+export enum ETasksCanBeEdited {
+  en = 'Tasks can be edited',
+  es = 'Las tareas se pueden editar',
+  fr = 'Les tâches peuvent être modifiées',
+  de = 'Aufgaben können bearbeitet werden',
+  pt = 'As tarefas podem ser editadas',
+  cs = 'Úkoly lze upravit',
+  fi = 'Tehtäviä voi muokata',
+}
+export enum ETasksCanBeReorganizedByDraggingAndDropping {
+  en = 'Tasks can be reorganized by dragging and dropping',
+  es = 'Las tareas se pueden reorganizar arrastrando y soltando',
+  fr = 'Les tâches peuvent être réorganisées par glisser-déposer',
+  de = 'Aufgaben können durch Ziehen und Ablegen neu organisiert werden',
+  pt = 'As tarefas podem ser reorganizadas arrastando e soltando',
+  cs = 'Úkoly lze přeuspořádat přetažením a upuštěním',
+  fi = 'Tehtäviä voi järjestellä raahaamalla ja pudottamalla',
+}

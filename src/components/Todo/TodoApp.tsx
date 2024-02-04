@@ -1,5 +1,5 @@
-import { useRef, useEffect } from 'react'
-import TodoList from './components/TodoList'
+import { useRef, useEffect, useState } from 'react'
+import TodoList, { ITaskDraggable } from './components/TodoList'
 import { v4 as uuidv4 } from 'uuid'
 import {
   EAddTask,
@@ -8,6 +8,7 @@ import {
   ELeftToDo,
   ELoading,
   ETask,
+  ITask,
 } from './interfaces'
 import style from './css/todo.module.css'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
@@ -21,6 +22,8 @@ import {
   deleteTodoFromState,
   clearCompletedTodosAsync,
   syncTodos,
+  editTodoOrder,
+  fetchTodos,
 } from './reducers/todoReducer'
 import { notify } from '../../reducers/notificationReducer'
 import Notification from '../Notification/Notification'
@@ -50,27 +53,83 @@ export default function TodoApp({ language }: Props) {
 
   const hasCompletedTasks = todos?.some((todo) => todo.complete)
 
+  const [todosWithIdAndStatus, setTodosWithIdAndStatus] = useState<ITaskDraggable[]>([])
+
+  useEffect(() => {
+    const newTodosWithIdAndStatus = todos
+      ?.slice()
+      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+      .map((todo, index) => {
+        return { ...todo, id: index, status: 'todos' }
+      }) as ITaskDraggable[]
+
+    setTodosWithIdAndStatus(newTodosWithIdAndStatus)
+  }, [todos])
+
   useEffect(() => {
     if (status === 'failed') {
       dispatch(notify(`There was an error: ${error}`, true, 8))
     }
   }, [status, error, dispatch])
 
-  useEffect(() => {
-    if (user?._id) {
-      dispatch(syncTodos(user._id))
-    }
-  }, [user?._id, dispatch])
+  const [loggedIn, setLoggedIn] = useState(false)
 
-  function toggleTodo(key: string) {
+  useEffect(() => {
+    if (user?._id && !loggedIn) {
+      dispatch(syncTodos(user._id)).then(() => {
+        setLoggedIn(true)
+      })
+    }
+  }, [user?._id])
+
+  function toggleTodo(key: string | undefined) {
     const todo = todos.find((todo) => todo.key === key)
     if (todo) {
       const updatedTodo = { ...todo, complete: !todo.complete }
       if (user) {
-        dispatch(editTodoAsync(user._id, key, updatedTodo))
+        dispatch(editTodoAsync(user._id, key as ITask['key'], updatedTodo))
       } else {
         dispatch(editTodo(updatedTodo))
       }
+    }
+  }
+
+  const modifyTodo = async (key: string | undefined, name: string | undefined) => {
+    if (!key) {
+      dispatch(notify(`Error: no key`, true, 8))
+      return
+    }
+    const todo = todos.find((todo) => todo.key === key)
+    if (todo) {
+      const updatedTodo = { ...todo, name: name }
+      if (user) {
+        await dispatch(editTodoAsync(user._id, key, updatedTodo as ITask))
+          .then(() => {
+            dispatch(notify(`Todo updated`, false, 3))
+          })
+          .catch((e) => {
+            console.error(e)
+            dispatch(notify(`${e}`, true, 8))
+          })
+      } else {
+        dispatch(editTodo(updatedTodo as ITask))
+      }
+    }
+  }
+
+  const modifyTodoOrder = (order: { key: ITask['key']; order: ITask['order'] }[]) => {
+    if (user) {
+      dispatch(async (dispatch) => {
+        try {
+          await editTodoOrder(user._id, order).then(() => {
+            dispatch(fetchTodos(user._id))
+          })
+          dispatch(notify(`Todo order updated`, false, 3))
+        } catch (e) {
+          console.error(e)
+          dispatch(notify(`${e}`, true, 8))
+        }
+      })
     }
   }
 
@@ -99,7 +158,11 @@ export default function TodoApp({ language }: Props) {
     }
   }
 
-  function deleteTodo(key: string) {
+  function deleteTodo(key: string | undefined) {
+    if (!key) {
+      dispatch(notify(`Error: no key`, true, 8))
+      return
+    }
     if (user?._id) {
       dispatch(deleteTodoAsync(user._id, key))
     } else {
@@ -142,9 +205,13 @@ export default function TodoApp({ language }: Props) {
         </p>
         <TodoList
           todos={todos}
+          todosWithIdAndStatus={todosWithIdAndStatus}
+          setTodosWithIdAndStatus={setTodosWithIdAndStatus}
           toggleTodo={toggleTodo}
           deleteTodo={deleteTodo}
           language={language}
+          modifyTodo={modifyTodo}
+          modifyTodoOrder={modifyTodoOrder}
         />
         {status === 'loading' && <p>{ELoading[language]}...</p>}
       </div>

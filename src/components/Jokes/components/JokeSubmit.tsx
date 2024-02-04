@@ -173,7 +173,7 @@ const JokeSubmit = ({
         dispatch(notify(`${ESavedJoke[language]}. ${r.message ?? ''}`, false, 8))
       })
       .catch((e) => {
-        console.log(e)
+        console.error(e)
         setSaving(false)
         if (e.code === 'ERR_BAD_RESPONSE') {
           dispatch(

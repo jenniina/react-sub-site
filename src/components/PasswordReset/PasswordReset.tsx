@@ -36,7 +36,7 @@ const PasswordReset = ({ language, text }: Props) => {
         })
         .catch((e) => {
           dispatch(notify(EEmailSent[language], false, 3))
-          // console.log(e)
+          // console.error(e)
           // if (e.code === 'ERR_NETWORK') {
           //   dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
           // } else if (e.code === 'ERR_BAD_REQUEST')

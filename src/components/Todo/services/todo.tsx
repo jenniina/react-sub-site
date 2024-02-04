@@ -34,6 +34,25 @@ const clearCompletedTodos = async (user: IUser['_id']) => {
   return response.data
 }
 
+// an array of objects with keys: { key, order }
+// router.put('/api/todo/:user/order', editTodoOrder)
+
+const editTodoOrder = async (
+  user: IUser['_id'],
+  order: {
+    key: ITask['key']
+    order: ITask['order']
+  }[]
+) => {
+  const response = await axios.post(`${baseUrl}/${user}/order`, { todos: order })
+  return response.data
+}
+
+// const addOrderToAllTodos = async () => {
+//   const response = await axios.put(`${baseUrl}`)
+//   return response.data
+// }
+
 export default {
   getTodos,
   updateAllTodos,
@@ -41,4 +60,6 @@ export default {
   deleteTodo,
   editTodo,
   clearCompletedTodos,
+  editTodoOrder,
+  // addOrderToAllTodos,
 }

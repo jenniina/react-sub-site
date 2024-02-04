@@ -97,10 +97,6 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
         className={`accordion-inner ${props.className}`}
         style={visible ? { display: 'block' } : { display: 'none' }}
       >
-        <button type='button' className='accordion-btn close' onClick={toggleVisibility}>
-          {EClose[props.language]}
-        </button>
-
         {props.children}
 
         <button type='button' className='accordion-btn close' onClick={toggleVisibility}>

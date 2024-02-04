@@ -70,7 +70,7 @@ export const fetchTodos = (user: IUser['_id']) => {
       dispatch(getTodosSuccess(result))
       return result
     } catch (error) {
-      console.log(error)
+      console.error(error)
       dispatch(getTodosFailure((error as Error).message))
     }
   }
@@ -130,6 +130,7 @@ export const editTodoAsync = (user: IUser['_id'], key: ITask['key'], task: ITask
         name: newTodo.name,
         complete: newTodo.complete,
         user,
+        order: newTodo.order,
       })
     )
   }
@@ -158,11 +159,28 @@ export const syncTodos = (user: IUser['_id']) => {
       // Update the state with the updated todos
       dispatch(getTodosSuccess(updatedTodos))
     } catch (error) {
-      console.log(error)
+      console.error(error)
       dispatch(getTodosFailure((error as Error).message))
     }
   }
 }
+
+export const editTodoOrder = async (
+  user: IUser['_id'],
+  order: {
+    key: ITask['key']
+    order: ITask['order']
+  }[]
+) => {
+  const response = await todoService.editTodoOrder(user, order)
+  return response
+}
+
+// export const addOrderToAllTodos = async () => {
+//   const response = await todoService.addOrderToAllTodos()
+//   return response
+// }
+
 export const {
   getTodosStart,
   getTodosSuccess,

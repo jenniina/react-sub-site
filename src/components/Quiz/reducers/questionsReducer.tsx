@@ -37,7 +37,7 @@ export const getQuestions = createAsyncThunk(
       )
       return resp.json()
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 )
