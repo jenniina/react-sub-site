@@ -37,7 +37,7 @@ import {
   ETryDraggingTheBlobs,
   EWhichBlobIsCurrentlyActiveCanBeSeenAtTheTopLeftOfTheContainer,
 } from '../../interfaces/blobs'
-import './css/blob.css'
+import '../../components/Blob/css/blob.css'
 
 export default function BlobPage({
   heading,

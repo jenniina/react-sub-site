@@ -5,6 +5,9 @@ import {
   CSSProperties,
   SetStateAction,
   Dispatch,
+  TouchEvent as TouchEventReact,
+  MouseEvent as MouseEventReact,
+  PointerEvent as PointerEventReact,
 } from 'react'
 import { Draggable, focusedBlob } from '../interfaces'
 import { EBlob, ELanguages } from '../../../interfaces'
@@ -19,31 +22,29 @@ interface BlobProps {
       | TouchEvent
       | MouseEvent
       | PointerEvent
-      | React.TouchEvent
-      | React.MouseEvent
-      | React.PointerEvent
+      | TouchEventReact
+      | MouseEventReact
+      | PointerEventReact
   ) => void
   movement: (
     e:
       | TouchEvent
       | MouseEvent
       | PointerEvent
-      | React.TouchEvent
-      | React.MouseEvent
-      | React.PointerEvent
+      | TouchEventReact
+      | MouseEventReact
+      | PointerEventReact
   ) => void
   stopMovementCheck: (
     e:
       | TouchEvent
       | MouseEvent
       | PointerEvent
-      | React.TouchEvent
-      | React.MouseEvent
-      | React.PointerEvent
+      | TouchEventReact
+      | MouseEventReact
+      | PointerEventReact
   ) => void
-  stopMoving: (
-    e: MouseEvent | React.MouseEvent | PointerEvent | React.PointerEvent
-  ) => void
+  stopMoving: (e: MouseEvent | MouseEventReact | PointerEvent | PointerEventReact) => void
   wheel: (e: HTMLLIElement) => void
   focused: (e: HTMLLIElement) => void
   blurred: (e: HTMLLIElement) => void
@@ -68,8 +69,8 @@ const Blob = ({
   setFocusedBlob,
 }: BlobProps) => {
   const blobStyle: CSSProperties = {
-    background: `${item.background}`,
-    display: `${item.display}`,
+    background: `${item.background ?? 'linear-gradient(90deg, cyan, greenyellow)'}`,
+    display: `block`,
     left: `${item.x}`,
     top: `${item.y}`,
     zIndex: `${item.z}`,

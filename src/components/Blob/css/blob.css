@@ -39,12 +39,12 @@ svg.filter {
 #drag-container0 .dragzone {
   -webkit-filter: blur(35px);
   filter: blur(35px);
-  min-height: 88px;
-  min-width: 88px;
+  min-height: 82px;
+  min-width: 82px;
   max-height: 300px;
   max-width: 300px;
-  height: calc(var(--i) * 2.8vh);
-  width: calc(var(--i) * 2.8vh);
+  height: calc(var(--i) * 2.6vh);
+  width: calc(var(--i) * 2.6vh);
 }
 #drag-container0 .colorblock {
   -webkit-box-shadow: -4px 4px 20px 0 hsla(0, 0%, 0%, 0.2),
@@ -328,10 +328,10 @@ svg.filter {
 }
 
 .drag-container .dragzone {
-  height: calc(var(--i) * 1.8vh);
-  width: calc(var(--i) * 1.8vh);
-  min-height: 42px;
-  min-width: 42px;
+  height: calc(var(--i) * 1.6vh);
+  width: calc(var(--i) * 1.6vh);
+  min-height: 40px;
+  min-width: 40px;
   max-height: 220px;
   max-width: 220px;
   border-radius: 50% 51% 54% 46% / 43% 45% 55% 50%;
