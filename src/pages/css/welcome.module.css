@@ -10,13 +10,6 @@
   max-width: 600px;
   margin: 0 auto 2rem;
 }
-.list.extras {
-  max-width: clamp(100px, 80vw, 800px);
-  gap: 3em 0.6em;
-}
-.list.extras li {
-  flex: 1 0 40%;
-}
 .list li {
   flex: 1 0 30%;
 }
@@ -88,6 +81,56 @@
   padding-top: 8em;
 }
 
+.extras,
+.extras ul {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  gap: 1em 0.6em;
+  list-style: none;
+}
+.extras ul {
+  margin-left: 0;
+}
+.extras > li {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  border-bottom: 2px dotted var(--color-gray-dark);
+  width: 100%;
+  padding-bottom: 1em;
+}
+
+.extras > li > strong::before {
+  content: '[ ';
+}
+.extras > li > strong::after {
+  content: ' ]';
+}
+.extras li li,
+.extras li li a {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5em;
+}
+.extras span {
+  display: inline-block;
+}
+.extras a {
+  font-size: 1.1em;
+}
+.extras svg {
+  font-size: 1.8em;
+}
+
 @media (min-width: 600px) {
   .list {
     flex-flow: row nowrap;
@@ -95,12 +138,29 @@
     align-items: flex-start;
     justify-content: center;
   }
-  .list.extras {
-    flex-flow: row wrap;
+  .extras,
+  .extras ul {
+    align-items: flex-start;
+    justify-content: flex-start;
+    max-width: max-content;
+    margin: 0 auto;
+  }
+  .extras ul {
+    margin-left: 0;
+  }
+  .extras > li {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  .extras > li > strong {
+    --width: 5em;
+    margin-top: 0.4em;
+    min-width: var(--width);
+    max-width: var(--width);
+    flex: 0 0 var(--width);
   }
 }
 @media (min-width: 800px) {
-  .list.extras li {
-    flex: 1 0 20%;
-  }
 }

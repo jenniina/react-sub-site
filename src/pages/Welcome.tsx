@@ -10,27 +10,32 @@ import { MdOutlineQuiz } from 'react-icons/md'
 import { RiDragDropLine, RiDragMove2Fill } from 'react-icons/ri'
 import {
   EAbout,
-  EBlobAppSlogan,
   EBlobs,
   EContact,
-  EDragAndDrop,
-  EDragAndDropAppIntro,
-  EJokes,
   ELanguageTitle,
   ELanguages,
   EPortfolio,
   EQuiz,
+  EQuizAppIntro,
   ETestYourKnowledge,
 } from '../interfaces'
 import {
   ECategories,
-  ECategory_en,
   EJokeType,
   ESafemode,
   ETheComediansCompanion,
   TCategoryByLanguages,
 } from '../components/Jokes/interfaces'
-import { EEdited, ENewest } from '../interfaces/welcome'
+import {
+  EAddedNewFeatures,
+  EBugFixes,
+  EDecember,
+  EEdited,
+  EFebruary,
+  ENewest,
+  EOctober,
+  EOptimizing,
+} from '../interfaces/welcome'
 import { Select, SelectOption } from '../components/Select/Select'
 
 export default function Home({
@@ -107,34 +112,46 @@ export default function Home({
               <h2 className={`${styles.subheading}`}>
                 {ENewest[language]} / {EEdited[language]}
               </h2>
-              <ul className={`${styles.list} ${styles.extras}`}>
+              <ul className={`${styles.extras}`}>
                 <li>
-                  <Link to='/portfolio/draganddrop'>
-                    <RiDragDropLine />
-                    <span>{EDragAndDrop[language]}</span>
-                  </Link>
-                  <p>{EDragAndDropAppIntro[language]}</p>
+                  <strong>2024</strong>
+                  <ul>
+                    <li>
+                      {EFebruary[language]}
+                      <Link to='/portfolio/blob'>
+                        <RiDragMove2Fill />
+                        {EBlobs[language]}:
+                      </Link>{' '}
+                      <i>
+                        {EBugFixes[language]}. {EOptimizing[language]}
+                      </i>
+                    </li>
+                  </ul>
                 </li>
                 <li>
-                  <Link to='/portfolio/quiz'>
-                    <MdOutlineQuiz />
-                    <span>{EQuiz[language]}</span>
-                  </Link>
-                  <p>{ETestYourKnowledge[language]}</p>
-                </li>
-                <li>
-                  <Link to='/portfolio/jokes'>
-                    <GiAbstract019 />
-                    <span>{EJokes[language]}</span>
-                  </Link>
-                  <p>{ETheComediansCompanion[language]}</p>
-                </li>
-                <li>
-                  <Link to='/portfolio/blob'>
-                    <RiDragMove2Fill />
-                    <span>{EBlobs[language]}</span>
-                  </Link>
-                  <p>{EBlobAppSlogan[language]}</p>
+                  <strong>2023</strong>
+                  <ul>
+                    <li>
+                      {EDecember[language]}
+                      <Link to='/portfolio/jokes'>
+                        <GiAbstract019 />
+                        {ETheComediansCompanion[language]}:
+                      </Link>{' '}
+                      <i>
+                        {EAddedNewFeatures[language]}. {EOptimizing[language]}
+                      </i>
+                    </li>
+                    <li>
+                      {EOctober[language]}
+                      <Link to='/portfolio/quiz'>
+                        <MdOutlineQuiz />
+                        {EQuiz[language]}:
+                      </Link>{' '}
+                      <i>
+                        {ETestYourKnowledge[language]}; {EQuizAppIntro[language]}
+                      </i>
+                    </li>
+                  </ul>
                 </li>
               </ul>
             </div>
