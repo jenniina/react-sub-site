@@ -89,10 +89,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
   const draggables = (state.draggables as Draggable[][]) ?? []
 
-  if (draggables[d] === undefined) {
-    draggables[d] = []
-  }
-
   const colorPairs: ColorPair[] = [
     { color1: 'lemonchiffon', color2: 'pink' },
     { color1: 'lemonchiffon', color2: 'greenyellow' },
@@ -124,14 +120,14 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     }
   }, [])
 
-  function loadDraggables(): Draggable[] {
+  function loadDraggables(): Draggable[] | null {
     const draggablesJSON = localStorage.getItem(localStorageDraggables)
     if (
       draggablesJSON == null ||
       draggablesJSON == undefined ||
       draggablesJSON === 'undefined'
     )
-      return []
+      return null
     else return JSON.parse(draggablesJSON)
   }
   function loadBackground(): BackgroundColor[] {
@@ -151,21 +147,21 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
   useEffect(() => {
     const loadedDraggables = loadDraggables()
-    if (loadedDraggables?.length > 0) {
+    if (loadedDraggables && loadedDraggables?.length > 0) {
       makeFromStorage(loadedDraggables)
       // dispatch({
       //   type: 'setDraggablesAtD',
       //   payload: { d, draggables: loadedDraggables },
       // })
       setHasBeenMade(true)
-    } else if (loadedDraggables?.length === 0 && !hasBeenMade) {
+    } else if (loadedDraggables === null && !hasBeenMade) {
       makeAnew(amountOfBlobs)
       setHasBeenMade(true)
     }
   }, [])
 
   useEffect(() => {
-    if (draggables[d] !== undefined) {
+    if (draggables[d] !== undefined && draggables[d]?.length > 0) {
       saveDraggables()
     }
   }, [draggables[d]])
@@ -176,7 +172,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       dragWrapOuter.current?.style.setProperty('--saturation', `${backgroundColor[d][1]}`)
       dragWrapOuter.current?.style.setProperty('--hue', `${backgroundColor[d][2]}`)
     }
-    if (!hasBeenMade && blobs && blobs?.length > 1) {
+    if (!hasBeenMade && blobs && blobs?.length > 0) {
       for (let i: number = 0; i < blobs?.length; i++) {
         if (blobs[i] !== null && blobs[i] !== undefined) {
           const newDraggable = {
@@ -197,6 +193,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           dispatch({ type: 'addDraggable', payload: { d, draggable: newDraggable } })
         }
       }
+      saveDraggables()
     }
     setHasBeenMade(true)
   }
