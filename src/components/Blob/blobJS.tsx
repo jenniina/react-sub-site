@@ -1,5 +1,13 @@
-import React, { useRef, useEffect, useState, useContext } from 'react'
-import { isEqual } from 'lodash'
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  useContext,
+  CSSProperties,
+  PointerEvent as PointerEventReact,
+  MouseEvent as MouseEventReact,
+  TouchEvent as TouchEventReact,
+} from 'react'
 import {
   Draggable,
   BackgroundColor,
@@ -86,14 +94,14 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   }
 
   const colorPairs: ColorPair[] = [
-    { color1: 'lemonchiffon', color2: 'pink', class: 'color-pinkyellow' },
-    { color1: 'lemonchiffon', color2: 'greenyellow', class: 'color-yellowlime' },
-    { color1: 'cyan', color2: 'greenyellow', class: 'color-cyanyellow' },
-    { color1: 'cyan', color2: 'pink', class: 'color-cyanpink' },
-    { color1: 'darkorange', color2: 'orange', class: 'color-orange' },
-    { color1: 'red', color2: 'tomato', class: 'color-red' },
-    { color1: 'magenta', color2: 'violet', class: 'color-purple' },
-    { color1: 'deepskyblue', color2: 'dodgerblue', class: 'color-blue' },
+    { color1: 'lemonchiffon', color2: 'pink' },
+    { color1: 'lemonchiffon', color2: 'greenyellow' },
+    { color1: 'cyan', color2: 'greenyellow' },
+    { color1: 'cyan', color2: 'pink' },
+    { color1: 'darkorange', color2: 'orange' },
+    { color1: 'red', color2: 'tomato' },
+    { color1: 'magenta', color2: 'violet' },
+    { color1: 'deepskyblue', color2: 'dodgerblue' },
   ]
 
   const [colorIndex, setColorIndex] = useState(0)
@@ -139,26 +147,17 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     localStorage.setItem(localStorageDraggables, JSON.stringify(draggables[d]))
   }
 
-  const [previousLoadedDraggables, setPreviousLoadedDraggables] = useState<
-    Draggable[] | null
-  >(null)
-
   const [hasBeenMade, setHasBeenMade] = useState<Boolean>(false)
 
   useEffect(() => {
     const loadedDraggables = loadDraggables()
-    if (
-      !hasBeenMade &&
-      !isEqual(loadedDraggables, previousLoadedDraggables) &&
-      loadedDraggables?.length > 0
-    ) {
+    if (loadedDraggables?.length > 0) {
       makeFromStorage(loadedDraggables)
       // dispatch({
       //   type: 'setDraggablesAtD',
       //   payload: { d, draggables: loadedDraggables },
       // })
       setHasBeenMade(true)
-      setPreviousLoadedDraggables(loadedDraggables)
     } else if (loadedDraggables?.length === 0 && !hasBeenMade) {
       makeAnew(amountOfBlobs)
       setHasBeenMade(true)
@@ -206,8 +205,8 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
   function stopSway(
     e:
-      | React.MouseEvent<HTMLButtonElement, MouseEvent>
-      | React.PointerEvent<HTMLButtonElement>
+      | MouseEventReact<HTMLButtonElement, MouseEvent>
+      | PointerEventReact<HTMLButtonElement>
   ) {
     e.preventDefault()
 
@@ -246,9 +245,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
   const amountOfBlobs = 8 // Initial amount of blobs
 
-  function resetBlobsFunction(
-    e: React.MouseEvent | React.TouchEvent | React.PointerEvent
-  ) {
+  function resetBlobsFunction(e: MouseEventReact | TouchEventReact | PointerEventReact) {
     e.preventDefault()
     window.localStorage.removeItem(localStorageDraggables)
     dispatch({ type: 'setDraggablesAtD', payload: { d, draggables: [] } })
@@ -259,14 +256,14 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   const makeAnew = (amount: number) => {
     for (let i: number = 0; i < amount; i++) {
       const colorswitch = () => {
-        let number: number = Math.ceil(getRandomMinMax(0.1, 8))
+        let number: number = Math.ceil(getRandomMinMax(0.01, 8))
         switch (number) {
           case 1:
-            color1 = 'lemonchiffon'
+            color1 = 'cyan'
             color2 = 'greenyellow'
             break
           case 2:
-            color1 = 'cyan'
+            color1 = 'lemonchiffon'
             color2 = 'greenyellow'
             break
           case 3:
@@ -403,27 +400,25 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   let saturation = slider2Val
   let hue = slider3Val
 
-  const [dragWrapOuterLightness, setDragWrapOuterLightness] =
-    useState<React.CSSProperties>(
-      sliderLightnessInput.current
-        ? {
-            ['--lightness' as string]: `${sliderLightnessInput.current.value}`,
-          }
-        : {
-            ['--lightness' as string]: `${slider1Val}`,
-          }
-    )
-  const [dragWrapOuterSaturation, setDragWrapOuterSaturation] =
-    useState<React.CSSProperties>(
-      sliderSaturationInput.current
-        ? {
-            ['--saturation' as string]: `${sliderSaturationInput.current.value}`,
-          }
-        : {
-            ['--saturation' as string]: `${slider2Val}`,
-          }
-    )
-  const [dragWrapOuterHue, setDragWrapOuterHue] = useState<React.CSSProperties>(
+  const [dragWrapOuterLightness, setDragWrapOuterLightness] = useState<CSSProperties>(
+    sliderLightnessInput.current
+      ? {
+          ['--lightness' as string]: `${sliderLightnessInput.current.value}`,
+        }
+      : {
+          ['--lightness' as string]: `${slider1Val}`,
+        }
+  )
+  const [dragWrapOuterSaturation, setDragWrapOuterSaturation] = useState<CSSProperties>(
+    sliderSaturationInput.current
+      ? {
+          ['--saturation' as string]: `${sliderSaturationInput.current.value}`,
+        }
+      : {
+          ['--saturation' as string]: `${slider2Val}`,
+        }
+  )
+  const [dragWrapOuterHue, setDragWrapOuterHue] = useState<CSSProperties>(
     sliderHueInput.current
       ? {
           ['--hue' as string]: `${sliderHueInput.current.value}`,

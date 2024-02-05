@@ -1,4 +1,14 @@
-import { RefObject, useEffect, useState, Dispatch, SetStateAction } from 'react'
+import {
+  RefObject,
+  useEffect,
+  useState,
+  Dispatch,
+  SetStateAction,
+  TouchEvent as TouchEventReact,
+  MouseEvent as MouseEventReact,
+  PointerEvent as PointerEventReact,
+  Dispatch as DispatchReact,
+} from 'react'
 import { Draggable, focusedBlob, ColorPair } from '../interfaces'
 import Blob from './Blob'
 import { ELanguages } from '../../../interfaces'
@@ -18,7 +28,7 @@ let color2 = 'greenyellow'
 
 interface DragComponentProps {
   language: ELanguages
-  dispatch: React.Dispatch<any>
+  dispatch: DispatchReact<any>
   d: number
   items: Draggable[]
   draggables: Draggable[][]
@@ -76,9 +86,9 @@ const DragComponent = (props: DragComponentProps) => {
       | TouchEvent
       | MouseEvent
       | PointerEvent
-      | React.TouchEvent
-      | React.MouseEvent
-      | React.PointerEvent
+      | TouchEventReact
+      | MouseEventReact
+      | PointerEventReact
   ) {
     e.stopPropagation()
     e.preventDefault()
@@ -97,6 +107,10 @@ const DragComponent = (props: DragComponentProps) => {
     //increase z-index
     zIndex += 1
     ;(e.target as HTMLElement).focus()
+    ;(e.target as HTMLElement).addEventListener('keydown', keyDown)
+    return () => {
+      ;(e.target as HTMLElement).removeEventListener('keydown', keyDown)
+    }
   }
 
   //Handle mousemove and touchmove
@@ -105,9 +119,9 @@ const DragComponent = (props: DragComponentProps) => {
       | TouchEvent
       | MouseEvent
       | PointerEvent
-      | React.TouchEvent
-      | React.MouseEvent
-      | React.PointerEvent
+      | TouchEventReact
+      | MouseEventReact
+      | PointerEventReact
   ) {
     e.stopPropagation()
 
@@ -130,116 +144,47 @@ const DragComponent = (props: DragComponentProps) => {
     }
   }
 
+  // Should be in the same order as colorPairs:
+  const colorBlockProps = [
+    props.colorBlockPinkYellow0,
+    props.colorBlockYellowLime0,
+    props.colorBlockCyanYellow0,
+    props.colorBlockCyanPink0,
+    props.colorBlockOrange,
+    props.colorBlockRed,
+    props.colorBlockPurple,
+    props.colorBlockBlue,
+  ]
+
   //Handle mouse up and touch end, check for element overlap
   const stopMovementCheck = (
     e:
       | TouchEvent
       | MouseEvent
       | PointerEvent
-      | React.TouchEvent
-      | React.MouseEvent
-      | React.PointerEvent
+      | TouchEventReact
+      | MouseEventReact
+      | PointerEventReact
   ) => {
     e.stopPropagation()
+    ;(e.target as HTMLElement).removeEventListener('keydown', keyDown)
     let value = (e.target as HTMLElement).style.getPropertyValue('--i')
     let scale = parseFloat(value)
+    scale = isNaN(scale) ? 4 : scale
 
-    if (
-      props.colorBlockOrange.current &&
-      elementsOverlap(e.target as HTMLElement, props.colorBlockOrange.current)
-    ) {
-      color1 = 'darkorange'
-      color2 = 'orange'
-      ;(
-        e.target as HTMLElement
-      ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-      ;(e.target as HTMLElement).removeAttribute('class')
-      ;(e.target as HTMLElement).classList.add('dragzone', 'color-orange')
-    }
-    if (
-      props.colorBlockRed.current &&
-      elementsOverlap(e.target as HTMLElement, props.colorBlockRed.current)
-    ) {
-      color1 = 'red'
-      color2 = 'tomato'
-      ;(
-        e.target as HTMLElement
-      ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-      ;(e.target as HTMLElement).removeAttribute('class')
-      ;(e.target as HTMLElement).classList.add('dragzone', 'color-red')
-    }
-    if (
-      props.colorBlockPurple.current &&
-      elementsOverlap(e.target as HTMLElement, props.colorBlockPurple.current)
-    ) {
-      color1 = 'magenta'
-      color2 = 'violet'
-      ;(
-        e.target as HTMLElement
-      ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-      ;(e.target as HTMLElement).removeAttribute('class')
-      ;(e.target as HTMLElement).classList.add('dragzone', 'color-violet')
-    }
-    if (
-      props.colorBlockBlue.current &&
-      elementsOverlap(e.target as HTMLElement, props.colorBlockBlue.current)
-    ) {
-      color1 = 'deepskyblue'
-      color2 = 'dodgerblue'
-      ;(
-        e.target as HTMLElement
-      ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-      ;(e.target as HTMLElement).removeAttribute('class')
-      ;(e.target as HTMLElement).classList.add('dragzone', 'color-blue')
-    }
-    if (
-      props.colorBlockYellowLime0.current &&
-      elementsOverlap(e.target as HTMLElement, props.colorBlockYellowLime0.current)
-    ) {
-      color1 = 'lemonchiffon'
-      color2 = 'greenyellow'
-      ;(
-        e.target as HTMLElement
-      ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-      ;(e.target as HTMLElement).removeAttribute('class')
-      ;(e.target as HTMLElement).classList.add('dragzone', 'color-yellowlime')
-    }
-    if (
-      props.colorBlockCyanYellow0.current &&
-      elementsOverlap(e.target as HTMLElement, props.colorBlockCyanYellow0.current)
-    ) {
-      color1 = 'cyan'
-      color2 = 'greenyellow'
-      ;(
-        e.target as HTMLElement
-      ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-      ;(e.target as HTMLElement).removeAttribute('class')
-      ;(e.target as HTMLElement).classList.add('dragzone', 'color-cyanyellow')
-    }
-    if (
-      props.colorBlockCyanPink0.current &&
-      elementsOverlap(e.target as HTMLElement, props.colorBlockCyanPink0.current)
-    ) {
-      color1 = 'cyan'
-      color2 = 'pink'
-      ;(
-        e.target as HTMLElement
-      ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-      ;(e.target as HTMLElement).removeAttribute('class')
-      ;(e.target as HTMLElement).classList.add('dragzone', 'color-cyanpink')
-    }
-    if (
-      props.colorBlockPinkYellow0.current &&
-      elementsOverlap(e.target as HTMLElement, props.colorBlockPinkYellow0.current)
-    ) {
-      color1 = 'lemonchiffon'
-      color2 = 'pink'
-      ;(
-        e.target as HTMLElement
-      ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-      ;(e.target as HTMLElement).removeAttribute('class')
-      ;(e.target as HTMLElement).classList.add('dragzone', 'color-pinkyellow')
-    }
+    props.colorPairs.forEach((colorPair, index) => {
+      const colorBlock = colorBlockProps[index]
+
+      if (
+        colorBlock.current &&
+        elementsOverlap(e.target as HTMLElement, colorBlock.current)
+      ) {
+        const { color1, color2 } = colorPair
+        ;(
+          e.target as HTMLElement
+        ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
+      }
+    })
     if (
       props.makeLarger0.current &&
       elementsOverlap(e.target as HTMLElement, props.makeLarger0.current)
@@ -289,7 +234,7 @@ const DragComponent = (props: DragComponentProps) => {
 
   //Handle mouse leave
   const stopMoving = (
-    e: MouseEvent | React.MouseEvent | PointerEvent | React.PointerEvent
+    e: MouseEvent | MouseEventReact | PointerEvent | PointerEventReact
   ) => {
     e.stopPropagation()
     moveElement = false
@@ -333,12 +278,13 @@ const DragComponent = (props: DragComponentProps) => {
     //e.preventDefault();
     let value = (e.target as HTMLElement).style.getPropertyValue('--i')
     let scale = parseFloat(value)
+    scale = isNaN(scale) ? 4 : scale
 
     scale += e.deltaY * -0.005
     // Restrict scale
     scale = Math.min(Math.max(2, scale), 10)
     // Apply
-    ;(e.target as HTMLElement).style.setProperty('--i', `${scale}`)
+    ;(e.target as HTMLElement).style.setProperty('--i', `${scale ?? 2}`)
     //increase z-index
     zIndex += 1
   }
@@ -349,6 +295,7 @@ const DragComponent = (props: DragComponentProps) => {
 
     let value = (e.target as HTMLElement).style.getPropertyValue('--i')
     let scale = parseFloat(value)
+    scale = isNaN(scale) ? 4 : scale
 
     let attrLeft = window
       .getComputedStyle(e.target as HTMLElement)
@@ -401,107 +348,15 @@ const DragComponent = (props: DragComponentProps) => {
         if ((e.target as HTMLElement).closest(`.drag-container${props.d}`)) {
           props.setColorIndex((prevColorIndex) => {
             const nextColorIndex = (prevColorIndex + 1) % props.colorPairs.length
-            const { color1, color2, class: colorClass } = props.colorPairs[nextColorIndex]
+            const { color1, color2 } = props.colorPairs[nextColorIndex]
 
             ;(
               e.target as HTMLElement
             ).style.backgroundImage = `linear-gradient(${angle}, ${color1},${color2})`
-            ;(e.target as HTMLElement).removeAttribute('class')
-            ;(e.target as HTMLElement).classList.add('dragzone', colorClass)
 
             return nextColorIndex // Return the new color index
           })
         }
-        //   // Old way of doing it:
-        //   // Calculate the next color index first
-        //   const nextColorIndex = (props.colorIndex + 1) % props.colorPairs.length
-        //   const { color1, color2, class: colorClass } = props.colorPairs[nextColorIndex]
-
-        //   ;(
-        //     e.target as HTMLElement
-        //   ).style.backgroundImage = `linear-gradient(${angle}, ${color1},${color2})`
-        //   ;(e.target as HTMLElement).removeAttribute('class')
-        //   ;(e.target as HTMLElement).classList.add('dragzone', colorClass)
-
-        //   // Then update the state
-        //   props.setColorIndex(nextColorIndex)
-        //}
-        // if ((e.target as HTMLElement).closest(`.drag-container${props.d}`)) {
-        //   if (color1 == 'lemonchiffon' && color2 == 'pink') {
-        //     color1 = 'lemonchiffon'
-        //     color2 = 'greenyellow'
-        //     ;(
-        //       e.target as HTMLElement
-        //     ).style.backgroundImage = `linear-gradient(${angle}, ${color1},${color2})`
-        //     ;(e.target as HTMLElement).removeAttribute('class')
-        //     ;(e.target as HTMLElement).classList.add('dragzone', 'color-yellowlime')
-        //   } else if (color1 == 'lemonchiffon' && color2 == 'greenyellow') {
-        //     color1 = 'cyan'
-        //     color2 = 'greenyellow'
-        //     ;(
-        //       e.target as HTMLElement
-        //     ).style.backgroundImage = `linear-gradient(${angle}, ${color1},${color2})`
-        //     ;(e.target as HTMLElement).removeAttribute('class')
-        //     ;(e.target as HTMLElement).classList.add('dragzone', 'color-cyanyellow')
-        //   } else if (color1 == 'cyan' && color2 == 'greenyellow') {
-        //     color1 = 'cyan'
-        //     color2 = 'pink'
-        //     ;(
-        //       e.target as HTMLElement
-        //     ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-        //     ;(e.target as HTMLElement).removeAttribute('class')
-        //     ;(e.target as HTMLElement).classList.add('dragzone', 'color-cyanpink')
-        //   } else if (color1 == 'cyan' && color2 == 'pink') {
-        //     color1 = 'darkorange'
-        //     color2 = 'orange'
-        //     ;(
-        //       e.target as HTMLElement
-        //     ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-        //     ;(e.target as HTMLElement).removeAttribute('class')
-        //     ;(e.target as HTMLElement).classList.add('dragzone', 'color-orange')
-        //   } else if (color1 == 'darkorange' && color2 == 'orange') {
-        //     color1 = 'red'
-        //     color2 = 'tomato'
-        //     ;(
-        //       e.target as HTMLElement
-        //     ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-        //     ;(e.target as HTMLElement).removeAttribute('class')
-        //     ;(e.target as HTMLElement).classList.add('dragzone', 'color-red')
-        //   } else if (color1 == 'red' && color2 == 'tomato') {
-        //     color1 = 'magenta'
-        //     color2 = 'violet'
-        //     ;(
-        //       e.target as HTMLElement
-        //     ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-        //     ;(e.target as HTMLElement).removeAttribute('class')
-        //     ;(e.target as HTMLElement).classList.add('dragzone', 'color-purple')
-        //   } else if (color1 == 'magenta' && color2 == 'violet') {
-        //     color1 = 'deepskyblue'
-        //     color2 = 'dodgerblue'
-        //     ;(
-        //       e.target as HTMLElement
-        //     ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-        //     ;(e.target as HTMLElement).removeAttribute('class')
-        //     ;(e.target as HTMLElement).classList.add('dragzone', 'color-blue')
-        //   } else if (color1 == 'deepskyblue' && color2 == 'dodgerblue') {
-        //     color1 = 'lemonchiffon'
-        //     color2 = 'pink'
-        //     ;(
-        //       e.target as HTMLElement
-        //     ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-        //     ;(e.target as HTMLElement).removeAttribute('class')
-        //     ;(e.target as HTMLElement).classList.add('dragzone', 'color-pinkyellow')
-        //   } else {
-        //     color1 = 'lemonchiffon'
-        //     color2 = 'greenyellow'
-        //     ;(
-        //       e.target as HTMLElement
-        //     ).style.backgroundImage = `linear-gradient(${angle}, ${color1},${color2})`
-        //     ;(e.target as HTMLElement).removeAttribute('class')
-        //     ;(e.target as HTMLElement).classList.add('dragzone', 'color-yellowlime')
-        //   }
-        // }
-        //e.preventDefault()
         break
       case '0': //Move blob to the bottom of the z-index pile
         //e.stopImmediatePropagation()
@@ -524,7 +379,7 @@ const DragComponent = (props: DragComponentProps) => {
           reset = false
           scale -= 1
           scale = Math.min(Math.max(2, scale), 10)
-          ;(e.target as HTMLElement).style.setProperty('--i', `${scale}`)
+          ;(e.target as HTMLElement).style.setProperty('--i', `${scale ?? 2}`)
 
           const cooldown = () => {
             reset = true
@@ -539,7 +394,7 @@ const DragComponent = (props: DragComponentProps) => {
           reset = false
           scale += 1
           scale = Math.min(Math.max(2, scale), 10)
-          ;(e.target as HTMLElement).style.setProperty('--i', `${scale}`)
+          ;(e.target as HTMLElement).style.setProperty('--i', `${scale ?? 2}`)
 
           const cooldown = () => {
             reset = true
@@ -588,11 +443,17 @@ const DragComponent = (props: DragComponentProps) => {
 
       const newId = maxId + 1
 
+      let parsedValue = parseInt(
+        (target as HTMLElement).style.getPropertyValue('--i'),
+        10
+      )
+
       const newDraggable = {
         id: `blob${newId}-${props.d}`,
         number: newId,
         //get style property --i from target
-        i: parseInt((target as HTMLElement).style.getPropertyValue('--i') || '--i', 4),
+
+        i: isNaN(parsedValue) ? 4 : parsedValue,
         x: `${target.style.left}`,
         y: `${target.style.top}`,
         z: `${target.style.zIndex + 1}`,
@@ -600,7 +461,9 @@ const DragComponent = (props: DragComponentProps) => {
         ariaGrabbed: false,
         draggable: true,
         tabIndex: 0,
-        background: `${target.style.background}`,
+        background: `${
+          target.style.background ?? 'linear-gradient(90deg, cyan, greenyellow)'
+        }`,
       }
 
       props.dispatch({
@@ -637,6 +500,7 @@ const DragComponent = (props: DragComponentProps) => {
   useEffect(() => {
     if (deleteId) {
       props.dispatch({ type: 'removeDraggable', payload: { d: props.d, id: deleteId } })
+      props.saveDraggables()
     }
   }, [deleteId])
 

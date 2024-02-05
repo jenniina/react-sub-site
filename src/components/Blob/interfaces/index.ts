@@ -36,5 +36,4 @@ export interface focusedBlob {
 export interface ColorPair {
   color1: string
   color2: string
-  class: string
 }
