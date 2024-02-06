@@ -17,7 +17,7 @@ type itemProps = {
   color: string
 }
 
-//Change these too, if the addresses change, or add more as needed:
+//Change these, if the addresses change, or add more as needed:
 const LOCATION = {
   HOME: '',
   ABOUT: 'about',
@@ -30,14 +30,6 @@ const LOCATION = {
   SELECT: 'select',
   SALON: 'salon',
 }
-//In the case of the blob feature, remember to add to the list in hero.module.css for the svg filter:
-//.herocontent.portfolio,
-//.herocontent.blob,
-//.herocontent.draganddrop {
-//  -webkit-filter: url(#svgfilter);
-//  filter: url(#svgfilter);
-//  opacity: 0.8;
-//}
 
 export default function Hero({
   heading,
@@ -59,16 +51,7 @@ export default function Hero({
   //remove the last trailing / then get the last part of the pathname:
   const page = location.pathname?.replace(/\/$/, '').split('/').pop() ?? ''
 
-  // //Unused, left for reference
-  // const addDirectionClass = (e: React.PointerEvent<HTMLElement>) => {
-  //   const target = e.target as HTMLElement
-  //   target.classList.add(styles[useEnterDirection(e)])
-  //   setTimeout(() => {
-  //     target.classList.remove(styles[useEnterDirection(e)])
-  //   }, 1000)
-  // }
-
-  //Move ABOUT- and ELSE-items up, down, left or right, depending on the direction they're approached from:
+  //Move items up, down, left or right, depending on the direction they're approached from:
   const movingItem = (e: React.PointerEvent<HTMLElement>) => {
     const target = e.target as HTMLElement
     const targetRight = window.getComputedStyle(target).getPropertyValue('right')
@@ -153,9 +136,6 @@ export default function Hero({
     }, 1000)
   }
 
-  const itemArray: itemProps[] = []
-  const spanArray: itemProps[] = [] //Contact page
-
   const [values, setValues] = useSessionStorage<itemProps[]>('HeroArray', [
     { i: 1, e: 3.274, size: 10, color: 'var(--color-secondary-7)' },
     { i: 2, e: 5.044, size: 11, color: 'var(--color-primary-8)' },
@@ -169,17 +149,33 @@ export default function Hero({
     { i: 10, e: 4.121, size: 11, color: 'var(--color-primary-9)' },
   ])
 
-  const initialAmount = 10
-  const [amount, setAmount] = useState<number>(initialAmount)
+  const spans: itemProps[] = useMemo(() => {
+    let array: itemProps[] = []
+    for (let i: number = 1; i <= 4; i++) {
+      const span: itemProps = {
+        i: i,
+        e: useRandomMinMax(5, 9),
+        size: i,
+        color: 'hsla(0, 0%, 100%, 0.8)',
+      }
+      array.push(span)
+    }
+    return array
+  }, [values])
+
+  const spanArray: itemProps[] = spans //Contact page
+
+  const amount = 9
+  const [reinitialize, setReinitialize] = useState<boolean>(false)
 
   const handleReset = (e: { preventDefault: () => void }) => {
     e.preventDefault()
-    amount === initialAmount ? setAmount(initialAmount + 1) : setAmount(initialAmount)
+    setReinitialize(!reinitialize)
   }
 
   const setupItems: itemProps[] = useMemo(() => {
     for (let i: number = 0; i <= amount; i++) {
-      const number = Math.ceil(useRandomMinMax(0.1, 2))
+      const number = Math.ceil(useRandomMinMax(0.01, 2))
       let colorSwitch: string
       switch (number) {
         case 1:
@@ -192,12 +188,11 @@ export default function Hero({
           colorSwitch = `var(--color-primary-${Math.round(useRandomMinMax(9, 14))})`
       }
       const item: itemProps = {
-        i: i,
+        i: i + 1,
         e: useRandomMinMax(5, 9),
         size: Math.round(useRandomMinMax(5, 12)),
         color: colorSwitch,
       }
-      //itemArray.push(item)
       if (i == 0) {
         setValues([])
       } else {
@@ -207,20 +202,7 @@ export default function Hero({
       }
     }
     return values
-  }, [amount])
-
-  const spans: itemProps[] = useMemo(() => {
-    for (let i: number = 1; i <= 4; i++) {
-      const span: itemProps = {
-        i: i,
-        e: useRandomMinMax(5, 9),
-        size: i,
-        color: 'hsla(0, 0%, 100%, 0.8)',
-      }
-      spanArray.push(span)
-    }
-    return spanArray
-  }, [values])
+  }, [reinitialize])
 
   const ItemComponent: FC<{ array: itemProps[]; location: string }> = useCallback(
     ({ array, location }) => {
@@ -233,6 +215,18 @@ export default function Hero({
             aria-labelledby={`description`}
             aria-activedescendant=''
             className={`${styles[location]} ${styles.herocontent}`}
+            style={
+              //In the case of using the blob feature, add here:
+              location === LOCATION.PORTFOLIO ||
+              location === LOCATION.BLOBAPP ||
+              location === LOCATION.DND
+                ? {
+                    WebkitFilter: 'url(#svgfilter)',
+                    filter: 'url(#svgfilter)',
+                    opacity: 0.8,
+                  }
+                : { filter: 'none' }
+            }
           >
             {array.map((item, index: number) => {
               if (location == LOCATION.HOME || location == LOCATION.SELECT) {
@@ -514,13 +508,14 @@ export default function Hero({
                   </li>
                 )
               } else if (
+                //In the case of using the blob feature, also add to ul style
                 location == LOCATION.PORTFOLIO ||
                 location == LOCATION.BLOBAPP ||
                 location == LOCATION.DND
               ) {
                 const style: React.CSSProperties = {
                   position: 'absolute',
-                  top: `calc( ${item.i} * 1vh  * ${item.size / 2.4})`,
+                  top: `calc( ${item.e} * 1vh  * ${item.size / 2.4})`,
                   right: `calc(2% + ${item.i * item.e} * 1vw )`,
                   backgroundColor: `${item.color}`,
                   color: `${item.color}`, //for currentColor

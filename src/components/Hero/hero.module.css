@@ -453,13 +453,7 @@
   min-width: calc(100vw + 1px - var(--scrollbar_width));
   margin-left: calc(50% - 50vw + calc(var(--scrollbar_width) / 2));
 }
-.herocontent.portfolio,
-.herocontent.blob,
-.herocontent.draganddrop {
-  -webkit-filter: url(#svgfilter);
-  filter: url(#svgfilter);
-  opacity: 0.8;
-}
+
 .herocontent {
   cursor: pointer;
 }
