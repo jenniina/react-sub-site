@@ -76,8 +76,8 @@ export default function Portfolio({
               <h2>React Apps</h2>
 
               <p>{EReactSpecificAppsMadeWithViteAndTypescript[language]}</p>
-              <label htmlFor='list-libraries'>{EDependencies[language]}:</label>
-              <ul id='list-libraries'>
+              <p id='list-libraries-label'>{EDependencies[language]}:</p>
+              <ul id='list-libraries' aria-labelledby='list-libraries-label'>
                 <li>react-icons</li>
                 <li>react-dom</li>
                 <li>react-router-dom</li>

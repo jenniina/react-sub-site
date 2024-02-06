@@ -118,12 +118,14 @@ const FormLogin = ({ easy, medium, hard, language }: Props) => {
 
             <form onSubmit={handleLogin} className='login'>
               <div className='input-wrap'>
-                <label>
+                <label htmlFor='quiz-username'>
                   <input
+                    id='quiz-username'
                     name='username'
                     type='text'
                     value={username}
                     required
+                    autoComplete='email'
                     onChange={({ target }) => setUsername(target.value)}
                   />
                   <span>{EUsername[language]}: </span>
