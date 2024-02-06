@@ -130,6 +130,13 @@ export default function Home({
                       <strong>{EFebruary[language]}</strong>
                       <ul>
                         <li>
+                          <Link to='/portfolio/salon'>
+                            <GiComb />
+                            {EHairSalonWebsite[language]}:
+                          </Link>{' '}
+                          <i>Parturi Kampaamo Hannastiina</i>
+                        </li>
+                        <li>
                           <Link to='/portfolio/blob'>
                             <RiDragMove2Fill />
                             {EBlobs[language]}:
@@ -150,13 +157,6 @@ export default function Home({
                               language
                             ].toLowerCase()}
                           </i>
-                        </li>
-                        <li>
-                          <Link to='/portfolio/salon'>
-                            <GiComb />
-                            {EHairSalonWebsite[language]}:
-                          </Link>{' '}
-                          <i>Parturi Kampaamo Hannastiina</i>
                         </li>
                       </ul>
                     </li>
