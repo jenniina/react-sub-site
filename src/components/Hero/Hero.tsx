@@ -28,6 +28,7 @@ const LOCATION = {
   DND: 'draganddrop',
   JOKES: 'jokes',
   SELECT: 'select',
+  SALON: 'salon',
 }
 //In the case of the blob feature, remember to add to the list in hero.module.css for the svg filter:
 //.herocontent.portfolio,
@@ -332,11 +333,15 @@ export default function Hero({
                     </div>
                   </li>
                 )
-              } else if (location == LOCATION.ABOUT || location == LOCATION.JOKES) {
+              } else if (
+                location == LOCATION.ABOUT ||
+                location == LOCATION.JOKES ||
+                location == LOCATION.SALON
+              ) {
                 const style: React.CSSProperties = {
                   position: 'absolute',
                   top: `calc(3vh + calc(1vh * ${item.e} * ${item.e / 2}))`,
-                  right: `calc(2% + ${item.i / 1.2} * 1vw * ${item.e})`,
+                  right: `calc(2% + ${item.i / 1.1} * 1vw * ${item.e})`,
                   backgroundColor: `transparent`,
                   color: `${item.color}`,
                   ['--i' as string]: `${item.i}`,
@@ -634,6 +639,12 @@ export default function Hero({
                   maxHeight: '90px',
                   maxWidth: '90px',
                   borderRadius: '65% 65% 70% 60% / 60% 70% 60% 65%',
+                  opacity: `
+                                ${
+                                  lightTheme
+                                    ? `0.${item.size > 7 ? 8 : Math.ceil(item.size)}`
+                                    : `0.${item.size > 6 ? 7 : Math.ceil(item.size)}`
+                                }`,
                 }
                 const styleInner: React.CSSProperties = {
                   position: 'absolute',

@@ -5,6 +5,7 @@ import {
   EBlob,
   ECustomSelect,
   EDragAndDrop,
+  EHairSalon,
   EJokes,
   ELanguages,
   EMultistepForm,
@@ -90,6 +91,9 @@ function NavPortfolio({ language }: { language: ELanguages }) {
                 : ''
             }
           >
+            <NavLink to='/portfolio/salon'>{EHairSalon[language]}</NavLink>
+          </li>
+          <li>
             <NavLink to='/portfolio/quiz'>{EQuiz[language]}</NavLink>
           </li>
           <li>
