@@ -96,6 +96,7 @@ export default function Hero({
       deg = (rad * 180) / Math.PI
     return deg
   }
+
   useEventListener('mousemove', (e: PointerEvent) => {
     follow(e)
   })
@@ -166,6 +167,7 @@ export default function Hero({
   const spanArray: itemProps[] = spans //Contact page
 
   const amount = 9
+
   const [reinitialize, setReinitialize] = useState<boolean>(false)
 
   const handleReset = (e: { preventDefault: () => void }) => {
@@ -210,7 +212,7 @@ export default function Hero({
         return (
           <ul
             ref={ulRef}
-            id={`listbox`}
+            id='listbox'
             role='listbox'
             aria-labelledby={`description`}
             aria-activedescendant=''
@@ -351,12 +353,7 @@ export default function Hero({
                   minHeight: '40px',
                   minWidth: '40px',
                   borderRadius: '65% 65% 70% 60% / 60% 70% 60% 65%',
-                  opacity: `
-                                ${
-                                  lightTheme
-                                    ? `0.${item.size > 8 ? 99 : Math.ceil(item.size + 1)}`
-                                    : `0.${item.size > 9 ? 99 : Math.ceil(item.size)}`
-                                }`,
+                  opacity: `0.${item.size > 8 ? 8 : Math.ceil(item.size)}`,
                 }
 
                 return (
@@ -405,106 +402,6 @@ export default function Hero({
                     <span>
                       <span className='scr'>bubble {index + 1}</span>
                     </span>
-                  </li>
-                )
-              } else if (location === LOCATION.CONTACT || location === LOCATION.FORM) {
-                // CONTACT
-                const style: React.CSSProperties = {
-                  position: 'absolute',
-                  top: touchDevice
-                    ? `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.3}))`
-                    : `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.9}))`,
-                  right: `calc(1% + calc(${item.i} * 1vw * ${item.e}))`,
-                  backgroundColor: `transparent`,
-                  color: `${item.color}`,
-                  ['--i' as string]: `${item.i}`,
-                  ['--e' as string]: `${item.e}`,
-                  ['--s2' as string]: `${item.size}`,
-                  ['--s' as string]:
-                    windowWidth < windowHeight ? `${item.size}vh` : `${item.size}vw`,
-                  width:
-                    windowWidth < windowHeight
-                      ? `calc(${item.size - 1} * 0.8vh)`
-                      : `calc(${item.size - 1} * 0.8vw)`,
-                  height:
-                    windowWidth < windowHeight
-                      ? `calc(${item.size - 1} * 0.8vh)`
-                      : `calc(${item.size - 1} * 0.8vw)`,
-                  minHeight: '40px',
-                  minWidth: '40px',
-                  maxHeight: '80px',
-                  maxWidth: '80px',
-                  borderRadius: '50%',
-                }
-                const styleInner: React.CSSProperties = {
-                  position: 'absolute',
-                  top: `0`,
-                  right: `0`,
-                  backgroundColor: `transparent`,
-                  width: '100%',
-                  height: '100%',
-                  borderRadius: '50%',
-                  opacity: `
-                                ${
-                                  lightTheme
-                                    ? `0.${item.size > 8 ? 99 : Math.ceil(item.size + 1)}`
-                                    : `0.${item.size > 9 ? 99 : Math.ceil(item.size)}`
-                                }`,
-                }
-
-                return (
-                  //CONTACT
-
-                  <li
-                    key={`${item.color}${index}`}
-                    id={`eye${index + 1}`}
-                    className={`${styles.item} ${styles.eyes} ${styles[location]} 
-                                ${
-                                  windowHeight < windowWidth ? styles.wide : styles.tall
-                                }`}
-                    style={style}
-                    role={'option'}
-                    tabIndex={0}
-                    onFocus={(e) => {
-                      ulRef.current?.setAttribute(
-                        'aria-activedescendant',
-                        `${e.target.id}`
-                      )
-                    }}
-                    onBlurCapture={(e) => {
-                      ulRef.current?.setAttribute('aria-activedescendant', '')
-                    }}
-                    onPointerEnter={(e) => movingItem(e)}
-                    // onPointerEnter={e => addDirectionClass(e)}
-                    onPointerCancel={(e) => {
-                      removeItem(e.target as HTMLElement)
-                    }}
-                    onMouseDown={(e) => {
-                      removeItem(e.target as HTMLElement)
-                    }}
-                    onTouchStart={(e) => {
-                      removeItem(e.target as HTMLElement)
-                    }}
-                    onPointerDown={(e) => {
-                      removeItem(e.target as HTMLElement)
-                    }}
-                    onKeyDown={(e) => {
-                      switch (e.key) {
-                        case 'Enter':
-                        case 'Space':
-                          e.preventDefault()
-                          removeItem(e.target as HTMLElement)
-                          break
-                        case 'Escape':
-                          if (resetButton.current) resetButton.current.focus()
-                      }
-                    }}
-                  >
-                    <div style={styleInner} className={`inner ${styles.inner}`}>
-                      <span className='else-eye'>
-                        <span className='scr'>eye {index + 1}</span>
-                      </span>
-                    </div>
                   </li>
                 )
               } else if (
@@ -606,6 +503,102 @@ export default function Hero({
                     </span>
                   </li>
                 )
+              } else if (location === LOCATION.CONTACT || location === LOCATION.FORM) {
+                // CONTACT  // FORM
+                const style: React.CSSProperties = {
+                  position: 'absolute',
+                  top: touchDevice
+                    ? `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.3}))`
+                    : `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.9}))`,
+                  right: `calc(1% + calc(${item.i} * 1vw * ${item.e}))`,
+                  backgroundColor: `transparent`,
+                  color: `${item.color}`,
+                  ['--i' as string]: `${item.i}`,
+                  ['--e' as string]: `${item.e}`,
+                  ['--s2' as string]: `${item.size}`,
+                  ['--s' as string]:
+                    windowWidth < windowHeight ? `${item.size}vh` : `${item.size}vw`,
+                  width:
+                    windowWidth < windowHeight
+                      ? `calc(${item.size - 1} * 0.8vh)`
+                      : `calc(${item.size - 1} * 0.8vw)`,
+                  height:
+                    windowWidth < windowHeight
+                      ? `calc(${item.size - 1} * 0.8vh)`
+                      : `calc(${item.size - 1} * 0.8vw)`,
+                  minHeight: '40px',
+                  minWidth: '40px',
+                  maxHeight: '80px',
+                  maxWidth: '80px',
+                  borderRadius: '50%',
+                  opacity: `0.${item.size > 7 ? 8 : Math.ceil(item.size)}`,
+                }
+                const styleInner: React.CSSProperties = {
+                  position: 'absolute',
+                  top: `0`,
+                  right: `0`,
+                  backgroundColor: `transparent`,
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: '50%',
+                  opacity: `0.${item.size > 8 ? 8 : Math.ceil(item.size)}`,
+                }
+
+                return (
+                  //CONTACT // FORM
+
+                  <li
+                    key={`${item.color}${index}`}
+                    id={`eye${index + 1}`}
+                    className={`${styles.item} ${styles.eyes} ${styles[location]} 
+                                ${
+                                  windowHeight < windowWidth ? styles.wide : styles.tall
+                                }`}
+                    style={style}
+                    role={'option'}
+                    tabIndex={0}
+                    onFocus={(e) => {
+                      ulRef.current?.setAttribute(
+                        'aria-activedescendant',
+                        `${e.target.id}`
+                      )
+                    }}
+                    onBlurCapture={(e) => {
+                      ulRef.current?.setAttribute('aria-activedescendant', '')
+                    }}
+                    onPointerEnter={(e) => movingItem(e)}
+                    // onPointerEnter={e => addDirectionClass(e)}
+                    onPointerCancel={(e) => {
+                      removeItem(e.target as HTMLElement)
+                    }}
+                    onMouseDown={(e) => {
+                      removeItem(e.target as HTMLElement)
+                    }}
+                    onTouchStart={(e) => {
+                      removeItem(e.target as HTMLElement)
+                    }}
+                    onPointerDown={(e) => {
+                      removeItem(e.target as HTMLElement)
+                    }}
+                    onKeyDown={(e) => {
+                      switch (e.key) {
+                        case 'Enter':
+                        case 'Space':
+                          e.preventDefault()
+                          removeItem(e.target as HTMLElement)
+                          break
+                        case 'Escape':
+                          if (resetButton.current) resetButton.current.focus()
+                      }
+                    }}
+                  >
+                    <div style={styleInner} className={`inner ${styles.inner}`}>
+                      <span className='else-eye'>
+                        <span className='scr'>eye {index + 1}</span>
+                      </span>
+                    </div>
+                  </li>
+                )
               } else {
                 //ELSE
                 const style: React.CSSProperties = {
@@ -634,12 +627,7 @@ export default function Hero({
                   maxHeight: '90px',
                   maxWidth: '90px',
                   borderRadius: '65% 65% 70% 60% / 60% 70% 60% 65%',
-                  opacity: `
-                                ${
-                                  lightTheme
-                                    ? `0.${item.size > 7 ? 8 : Math.ceil(item.size)}`
-                                    : `0.${item.size > 6 ? 7 : Math.ceil(item.size)}`
-                                }`,
+                  opacity: `0.${item.size > 6 ? 7 : Math.ceil(item.size)}`,
                 }
                 const styleInner: React.CSSProperties = {
                   position: 'absolute',
