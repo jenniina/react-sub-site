@@ -35,6 +35,7 @@ import {
   EQuizApp,
   EBlobs,
   EBlobAppSlogan,
+  EHairSalonWebsite,
 } from './interfaces'
 import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
 import { isTouchDevice } from './hooks/useDraggable'
@@ -59,6 +60,7 @@ import { SelectOption } from './components/Select/Select'
 import Notification from './components/Notification/Notification'
 import { EEditUserSettings } from './components/UserEdit/interfaces'
 import { EReactApps } from './interfaces/about'
+import HairSalonPage from './pages/pages-portfolio/HairSalonPage'
 
 const App: FC = () => {
   const touchDevice = isTouchDevice()
@@ -342,6 +344,17 @@ const App: FC = () => {
                     element={<QuizFinished language={language} />}
                   />
                 </Route>
+                <Route
+                  path='/portfolio/salon'
+                  element={
+                    <HairSalonPage
+                      language={language}
+                      heading={EHairSalonWebsite[language]}
+                      text='Hannastiina'
+                      type='page subpage'
+                    />
+                  }
+                />
               </Route>
 
               <Route

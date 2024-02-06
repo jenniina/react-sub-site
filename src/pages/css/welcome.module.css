@@ -106,6 +106,9 @@
   width: 100%;
   padding-bottom: 1em;
 }
+.extras > li > strong {
+  margin-bottom: 0.8em;
+}
 
 .extras > li > strong::before {
   content: '[ ';
@@ -113,17 +116,21 @@
 .extras > li > strong::after {
   content: ' ]';
 }
-.extras li li,
-.extras li li a {
+.extras li li li {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0.5em;
+}
+.extras li li li a {
   display: flex;
   flex-flow: row wrap;
   align-items: center;
   justify-content: flex-start;
   gap: 0.5em;
 }
-.extras span {
-  display: inline-block;
-}
+
 .extras a {
   font-size: 1.1em;
 }
@@ -148,7 +155,8 @@
   .extras ul {
     margin-left: 0;
   }
-  .extras > li {
+  .extras > li,
+  .extras > li > ul > li {
     display: flex;
     flex-flow: row nowrap;
     align-items: flex-start;
@@ -156,6 +164,13 @@
   }
   .extras > li > strong {
     --width: 5em;
+    margin-top: 0.4em;
+    min-width: var(--width);
+    max-width: var(--width);
+    flex: 0 0 var(--width);
+  }
+  .extras > li > ul > li > strong {
+    --width: 6em;
     margin-top: 0.4em;
     min-width: var(--width);
     max-width: var(--width);

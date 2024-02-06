@@ -8,6 +8,7 @@ import {
   EDragAndDrop,
   EDragAndDropAppIntro,
   EDraggableBlobs,
+  EHairSalonWebsite,
   EJokesAppIntro,
   ELanguages,
   EMainSite,
@@ -28,7 +29,7 @@ import { Link } from 'react-router-dom'
 import { AiOutlineForm } from 'react-icons/ai'
 import { BiSelectMultiple } from 'react-icons/bi'
 import { RiTodoLine, RiDragDropLine, RiDragMove2Fill } from 'react-icons/ri'
-import { GiAbstract019 } from 'react-icons/gi'
+import { GiAbstract019, GiComb } from 'react-icons/gi'
 import { MdOutlineQuiz } from 'react-icons/md'
 import { ETheComediansCompanion } from '../components/Jokes/interfaces'
 import { ETodoApp } from '../components/Todo/interfaces'
@@ -88,6 +89,13 @@ export default function Portfolio({
               </ul>
             </div>
             <ul className={`${styles.list}`}>
+              <li>
+                <Link to='/portfolio/salon'>
+                  <GiComb />
+                  <span>{EHairSalonWebsite[language]}</span>
+                </Link>
+                <p>Parturi Kampaamo Hannastiina</p>
+              </li>
               <li>
                 <Link to='/portfolio/quiz'>
                   <MdOutlineQuiz />

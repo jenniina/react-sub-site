@@ -7,17 +7,22 @@ import { BsPerson } from 'react-icons/bs'
 import { IoMdImages } from 'react-icons/io'
 import { GiAbstract019 } from 'react-icons/gi'
 import { MdOutlineQuiz } from 'react-icons/md'
-import { RiDragDropLine, RiDragMove2Fill } from 'react-icons/ri'
+import { RiDragMove2Fill, RiTodoLine } from 'react-icons/ri'
+import { GiComb } from 'react-icons/gi'
+
 import {
   EAbout,
   EBlobs,
   EContact,
+  EEdit,
+  EHairSalonWebsite,
   ELanguageTitle,
   ELanguages,
   EPortfolio,
   EQuiz,
   EQuizAppIntro,
   ETestYourKnowledge,
+  EToDo,
 } from '../interfaces'
 import {
   ECategories,
@@ -37,6 +42,11 @@ import {
   EOptimizing,
 } from '../interfaces/welcome'
 import { Select, SelectOption } from '../components/Select/Select'
+import { ETodoApp } from '../components/Todo/interfaces'
+import {
+  ETasksCanBeEdited,
+  ETasksCanBeReorganizedByDraggingAndDropping,
+} from '../interfaces/todo'
 
 export default function Home({
   heading,
@@ -117,14 +127,38 @@ export default function Home({
                   <strong>2024</strong>
                   <ul>
                     <li>
-                      {EFebruary[language]}
-                      <Link to='/portfolio/blob'>
-                        <RiDragMove2Fill />
-                        {EBlobs[language]}:
-                      </Link>{' '}
-                      <i>
-                        {EBugFixes[language]}. {EOptimizing[language]}
-                      </i>
+                      <strong>{EFebruary[language]}</strong>
+                      <ul>
+                        <li>
+                          <Link to='/portfolio/blob'>
+                            <RiDragMove2Fill />
+                            {EBlobs[language]}:
+                          </Link>
+                          <i>
+                            {EBugFixes[language]}. {EOptimizing[language]}
+                          </i>
+                        </li>
+                        <li>
+                          <Link to='/portfolio/todo'>
+                            <RiTodoLine />
+                            {ETodoApp[language]}:
+                          </Link>{' '}
+                          <i>
+                            {EAddedNewFeatures[language]}:{' '}
+                            {ETasksCanBeEdited[language].toLowerCase()} &{' '}
+                            {ETasksCanBeReorganizedByDraggingAndDropping[
+                              language
+                            ].toLowerCase()}
+                          </i>
+                        </li>
+                        <li>
+                          <Link to='/portfolio/salon'>
+                            <GiComb />
+                            {EHairSalonWebsite[language]}:
+                          </Link>{' '}
+                          <i>Parturi Kampaamo Hannastiina</i>
+                        </li>
+                      </ul>
                     </li>
                   </ul>
                 </li>
@@ -132,24 +166,32 @@ export default function Home({
                   <strong>2023</strong>
                   <ul>
                     <li>
-                      {EDecember[language]}
-                      <Link to='/portfolio/jokes'>
-                        <GiAbstract019 />
-                        {ETheComediansCompanion[language]}:
-                      </Link>{' '}
-                      <i>
-                        {EAddedNewFeatures[language]}. {EOptimizing[language]}
-                      </i>
-                    </li>
+                      <strong>{EDecember[language]}</strong>
+                      <ul>
+                        <li>
+                          <Link to='/portfolio/jokes'>
+                            <GiAbstract019 />
+                            {ETheComediansCompanion[language]}:
+                          </Link>{' '}
+                          <i>
+                            {EAddedNewFeatures[language]}. {EOptimizing[language]}
+                          </i>
+                        </li>
+                      </ul>
+                    </li>{' '}
                     <li>
-                      {EOctober[language]}
-                      <Link to='/portfolio/quiz'>
-                        <MdOutlineQuiz />
-                        {EQuiz[language]}:
-                      </Link>{' '}
-                      <i>
-                        {ETestYourKnowledge[language]}; {EQuizAppIntro[language]}
-                      </i>
+                      <strong>{EOctober[language]}</strong>
+                      <ul>
+                        <li>
+                          <Link to='/portfolio/quiz'>
+                            <MdOutlineQuiz />
+                            {EQuiz[language]}:
+                          </Link>{' '}
+                          <i>
+                            {ETestYourKnowledge[language]}; {EQuizAppIntro[language]}
+                          </i>
+                        </li>
+                      </ul>
                     </li>
                   </ul>
                 </li>

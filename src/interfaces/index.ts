@@ -1703,3 +1703,21 @@ export enum EFirstPage {
   cs = 'První stránka',
   fi = 'Ensimmäinen sivu',
 }
+export enum EHairSalonWebsite {
+  en = 'Hair salon website',
+  es = 'Sitio web de salón de belleza',
+  fr = 'Site web de salon de coiffure',
+  de = 'Friseur-Website',
+  pt = 'Site de salão de beleza',
+  cs = 'Webové stránky kadeřnictví',
+  fi = 'Parturi-kampaamon verkkosivusto',
+}
+export enum EHairSalon {
+  en = 'Hair salon',
+  es = 'Salón de belleza',
+  fr = 'Salon de coiffure',
+  de = 'Friseur',
+  pt = 'Salão de beleza',
+  cs = 'Kadeřnictví',
+  fi = 'Parturi-kampaamo',
+}
