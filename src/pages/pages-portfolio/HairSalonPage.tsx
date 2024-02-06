@@ -20,14 +20,10 @@ export default function HairSalonPage({
           <div>
             <div className='medium'>
               <p>
-                <a href='https://hannastiina.jenniina.fi' target='_blank'>
-                  Parturi Kampaamo Hannastiina
-                </a>
+                <a href='https://hannastiina.jenniina.fi'>Parturi Kampaamo Hannastiina</a>
               </p>
               <p>
-                <a href='https://github.com/jenniina/hannastiina' target='_blank'>
-                  Github
-                </a>
+                <a href='https://github.com/jenniina/hannastiina'>Github</a>
               </p>
             </div>
           </div>
