@@ -132,12 +132,12 @@ function FormMulti({ language }: { language: ELanguages }) {
         {EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo[language]}
       </p>
       <form ref={form} onSubmit={handleSubmit} aria-labelledby='steps'>
-        <label id='steps' className={styles.steps}>
+        <span id='steps' className={styles.steps}>
           {EContactForm[language]} {EPart[language]}&nbsp;
           <span>
             {currentStepIndex + 1}&nbsp;/&nbsp;{steps.length}
           </span>
-        </label>
+        </span>
         <div className={styles.hiddenform}>
           {isLastStep ? (
             <>

@@ -53,7 +53,7 @@ const QuizQuestion = ({ language }: { language: ELanguages }) => {
             <>
               <h1 className={styles.h1}>
                 <a href='#' onClick={goToMainPage}>
-                  {EQuizApp[language]}
+                  &laquo;&nbsp;{EQuizApp[language]}
                 </a>
               </h1>
               <h2>{EQuizInProgress[language]}</h2>

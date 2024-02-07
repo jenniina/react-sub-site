@@ -711,7 +711,7 @@ const UserJokes = ({
     )
   }
 
-  const pagination = () => (
+  const pagination = (index: number) => (
     <div className='pagination'>
       {pageNumbers?.length > 1 && (
         <div>
@@ -791,7 +791,10 @@ const UserJokes = ({
       </div>
       <div>
         <input
+          aria-labelledby='items-per-page'
           className='items-per-page narrow'
+          name='items-per-page'
+          id={`items-per-page-input-${index}`}
           type='number'
           min='1'
           max='100'
@@ -800,7 +803,7 @@ const UserJokes = ({
             setItemsPerPage(e.target.valueAsNumber > 0 ? e.target.valueAsNumber : 1)
           }
         />{' '}
-        <span>{EPerPage[language]}</span>{' '}
+        <span id='items-per-page'>{EPerPage[language]}</span>{' '}
       </div>
     </div>
   )
@@ -1118,7 +1121,7 @@ const UserJokes = ({
             )}
           </div>
 
-          {!isRandom && !showBlacklistedJokes && pagination()}
+          {!isRandom && !showBlacklistedJokes && pagination(1)}
 
           {user && showBlacklistedJokes && filteredFetchedJokes?.length > 0 ? (
             <div className='blocked-controls-wrap'>
@@ -1670,7 +1673,7 @@ const UserJokes = ({
               <li>{ENoJokesYet[language]}</li>
             )}
           </ul>
-          {!isRandom && !showBlacklistedJokes && pagination()}
+          {!isRandom && !showBlacklistedJokes && pagination(2)}
         </div>
         <div className='filler below'></div>
       </div>

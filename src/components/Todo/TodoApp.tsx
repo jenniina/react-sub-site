@@ -175,13 +175,14 @@ export default function TodoApp({ language }: Props) {
         <fieldset>
           <legend className='scr'>{EAddTaskToTheTaskList[language]}</legend>
           <div className={style['todo-input-area']}>
-            <label htmlFor={style['taskinput']}>{EAddTask[language]}</label>
+            <label htmlFor='taskinput'>{EAddTask[language]}</label>
             <textarea
               ref={todoNameRef}
-              id={style['taskinput']}
-              className='bg'
+              id='taskinput'
+              className={`bg`}
               name='name'
               required
+              autoComplete='off'
               placeholder={`${ETask[language]}...`}
             />
             <button id={style['submit-todo']} type='submit'>

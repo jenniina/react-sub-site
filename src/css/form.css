@@ -279,3 +279,23 @@ input[type='checkbox' i]:checked::before {
   padding-left: 1.2em;
   padding-right: 1em;
 }
+.accordion-register,
+.accordion-login {
+  display: block;
+  margin: 0 auto;
+  width: max-content;
+  max-width: 400px;
+}
+.quiz-register-login-wrap .open .accordion-register,
+.quiz-register-login-wrap .open .accordion-login {
+  width: 400px;
+}
+.quiz-register-login-wrap form.register,
+.quiz-register-login-wrap form.login {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 2em;
+  width: 100%;
+  max-width: 100%;
+  padding: 0 1em;
+}

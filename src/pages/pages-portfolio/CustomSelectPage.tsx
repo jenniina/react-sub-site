@@ -251,8 +251,10 @@ export default function CustomSelectPage({
                       {EClarificationOrFeedback[language]}
                     </h4>
                     <div className='full'>
-                      <label>
+                      <label htmlFor='select-clarification'>
                         <input
+                          id='select-clarification'
+                          autoComplete='off'
                           type='text'
                           name='clarification'
                           value={input}
@@ -275,8 +277,10 @@ export default function CustomSelectPage({
                       {EEmail[language]} ({EOptional[language].toLowerCase()})
                     </h4>
                     <div className='full'>
-                      <label>
+                      <label htmlFor='select-email'>
                         <input
+                          id='select-email'
+                          autoComplete='email'
                           type='email'
                           name='email'
                           value={email}

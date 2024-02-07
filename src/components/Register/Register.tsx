@@ -63,7 +63,7 @@ const Register = ({
         <>
           <Accordion
             language={language}
-            className='register'
+            className={`accordion-register register`}
             text={ERegister[language]}
             ref={formRegisterRef}
             setIsFormOpen={setIsFormOpen}
