@@ -36,6 +36,7 @@ import {
   EUserCanChooseTheDifficultyLevel,
   EUserCanRegisterAndLoginToSaveHighscores,
 } from '../../interfaces/quiz'
+import LoginRegisterCombo from './components/LoginRegisterCombo'
 
 const QuizStart = ({
   heading,
@@ -189,31 +190,12 @@ const QuizStart = ({
               </button>
             </div>
           </div>
-          <div className={`register-login-wrap ${styles['register-login-wrap']}`}>
-            <div className={`${loginOpen ? 'open' : ''} ${user ? 'logged' : ''}`}>
-              <FormLogin
-                language={language}
-                easy={highscoresLocal.easy}
-                medium={highscoresLocal.medium}
-                hard={highscoresLocal.hard}
-              />
-            </div>
-            <div className={`${registerOpen ? 'open' : ''}`}>
-              <Register
-                language={language}
-                handleRegister={handleRegister}
-                username={username}
-                setUsername={setUsername}
-                password={password}
-                setPassword={setPassword}
-                confirmPassword={confirmPassword}
-                setConfirmPassword={setConfirmPassword}
-                name={name}
-                setName={setName}
-                text='quizstart'
-              />
-            </div>
-          </div>
+          <LoginRegisterCombo
+            language={language}
+            user={user}
+            highscoresLocal={highscoresLocal}
+            text='quizstart'
+          />
         </div>
       </section>
       <Notification language={language} />

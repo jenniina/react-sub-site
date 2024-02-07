@@ -39,6 +39,7 @@ import {
   ETryAgain,
   EYouScored,
 } from '../../interfaces/quiz'
+import LoginRegisterCombo from './components/LoginRegisterCombo'
 
 interface Props {
   language: ELanguages
@@ -205,7 +206,7 @@ const QuizFinished = ({ language }: Props) => {
               <div className={`${styles.quiz}`}>
                 <h1 className={styles.h1}>
                   <a href='#' onClick={goToMainPage}>
-                    {EQuizApp[language]}
+                    &laquo;&nbsp;{EQuizApp[language]}
                   </a>
                 </h1>
                 <h2>{congrats}</h2>
@@ -257,31 +258,12 @@ const QuizFinished = ({ language }: Props) => {
                 </div>
               </div>
 
-              <div className={`register-login-wrap ${styles['register-login-wrap']}`}>
-                <div className={`${loginOpen ? 'open' : ''} ${user ? 'logged' : ''}`}>
-                  <FormLogin
-                    language={language}
-                    easy={highscores.easy}
-                    medium={highscores.medium}
-                    hard={highscores.hard}
-                  />
-                </div>
-                <div className={`${registerOpen ? 'open' : ''}`}>
-                  <Register
-                    language={language}
-                    handleRegister={handleRegister}
-                    username={username}
-                    setUsername={setUsername}
-                    password={password}
-                    setPassword={setPassword}
-                    confirmPassword={confirmPassword}
-                    setConfirmPassword={setConfirmPassword}
-                    name={name}
-                    setName={setName}
-                    text='quizfin'
-                  />
-                </div>
-              </div>
+              <LoginRegisterCombo
+                language={language}
+                user={user}
+                highscoresLocal={highscores}
+                text='quizfinish'
+              />
             </div>
           </section>
           <Notification language={language} />

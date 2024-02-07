@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState, FormEvent } from 'react'
-import { AxiosError } from 'axios'
 import { IHighscore } from '../interfaces'
 import {
   ELoggingIn,
@@ -24,8 +23,9 @@ interface Props {
   medium: IHighscore['medium']
   hard: IHighscore['hard']
   language: ELanguages
+  setIsFormOpen?: (isFormOpen: boolean) => void
 }
-const FormLogin = ({ easy, medium, hard, language }: Props) => {
+const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
   const dispatch = useAppDispatch()
 
   const [username, setUsername] = useState('')
@@ -110,13 +110,15 @@ const FormLogin = ({ easy, medium, hard, language }: Props) => {
         <>
           <Accordion
             language={language}
-            className='login-to-save'
+            className={`accordion-login login-to-save`}
             text={ELogInToSaveScore[language]}
             ref={formLoginRef}
+            setIsFormOpen={setIsFormOpen}
+            hideBrackets={true}
           >
             <h2>{ELogInToSaveScore[language]}</h2>
 
-            <form onSubmit={handleLogin} className='login'>
+            <form onSubmit={handleLogin} className={`login ${styles.login}`}>
               <div className='input-wrap'>
                 <label htmlFor='quiz-username'>
                   <input
@@ -137,6 +139,7 @@ const FormLogin = ({ easy, medium, hard, language }: Props) => {
                     name='password'
                     type='password'
                     required
+                    autoComplete='current-password'
                     value={password}
                     onChange={({ target }) => setPassword(target.value)}
                   />
