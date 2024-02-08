@@ -700,13 +700,15 @@ export default function Hero({
 
                 // ELSE
 
+                const border = `calc(0.7vw * ${item.size})`
+
                 const style: React.CSSProperties = {
                   ['--rotate' as string]: `${item.rotation}deg`,
                   ['--color' as string]: `${item.color}`,
                   ['--color2' as string]: 'hsla(0, 0%, 100%, 0.8)',
                   ['--s' as string]: `${item.size}`,
-                  ['--border' as string]: `calc(0.7vw * ${item.size})`,
-                  borderWidth: `calc(0.7vw * ${item.size})`,
+                  ['--border' as string]: border,
+                  borderWidth: border,
                   position: 'absolute',
                   top: touchDevice
                     ? `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.3}))`
@@ -764,8 +766,8 @@ export default function Hero({
                     {spanArray.map((span, index) => {
                       const style: React.CSSProperties = {
                         position: 'absolute',
-                        top: `calc(-0.77vw * ${item.size})`,
-                        right: `calc(-0.7vw * ${item.size})`,
+                        top: `calc(${border} * -1.1)`,
+                        right: `calc(${border} * -1)`,
                         color: `${item.color}`,
                         ['--color' as string]: `${span.color}`,
                         ['--color2' as string]: `${item.color}`,
@@ -775,7 +777,7 @@ export default function Hero({
                         ['--number' as string]: `${index}`,
                         width: 0,
                         height: 0,
-                        borderWidth: `calc(0.7vw * ${item.size})`,
+                        borderWidth: border,
                       }
                       return (
                         <span key={`${item.i}-${index}`} style={style}>
