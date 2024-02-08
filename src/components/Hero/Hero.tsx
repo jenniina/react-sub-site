@@ -764,8 +764,8 @@ export default function Hero({
                     {spanArray.map((span, index) => {
                       const style: React.CSSProperties = {
                         position: 'absolute',
-                        top: `calc(-0.9vw * ${item.size})`,
-                        right: `calc(-0.8vw * ${item.size})`,
+                        top: `calc(-0.77vw * ${item.size})`,
+                        right: `calc(-0.7vw * ${item.size})`,
                         color: `${item.color}`,
                         ['--color' as string]: `${span.color}`,
                         ['--color2' as string]: `${item.color}`,
@@ -775,7 +775,7 @@ export default function Hero({
                         ['--number' as string]: `${index}`,
                         width: 0,
                         height: 0,
-                        borderWidth: `calc(0.8vw * ${item.size})`,
+                        borderWidth: `calc(0.7vw * ${item.size})`,
                       }
                       return (
                         <span key={`${item.i}-${index}`} style={style}>
