@@ -434,6 +434,20 @@
   pointer-events: none;
 }
 
+.herocontent .triangle.exitItem {
+  -webkit-animation: hide-triangle 300ms ease-in forwards;
+  -o-animation: hide-triangle 300ms ease-in forwards;
+  -ms-animation: hide-triangle 300ms ease-in forwards;
+  -moz-animation: hide-triangle 300ms ease-in forwards;
+  animation: hide-triangle 300ms ease-in forwards;
+  -webkit-animation-play-state: running;
+  -ms-animation-play-state: running;
+  -o-animation-play-state: running;
+  -moz-animation-play-state: running;
+  animation-play-state: running;
+  pointer-events: none;
+}
+
 .bubbles.exitItem,
 .eyes.exitItem {
   -webkit-animation: hide-grow 100ms ease-in forwards;
@@ -442,6 +456,20 @@
   -moz-animation: hide-grow 100ms ease-in forwards;
   animation: hide-grow 100ms ease-in forwards;
   pointer-events: none;
+}
+
+@keyframes hide-triangle {
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: rotate(var(--rotate)) scale(0);
+    -moz-transform: rotate(var(--rotate)) scale(0);
+    -ms-transform: rotate(var(--rotate)) scale(0);
+    -o-transform: rotate(var(--rotate)) scale(0);
+    transform: rotate(var(--rotate)) scale(0);
+  }
 }
 
 @keyframes hide-grow {
