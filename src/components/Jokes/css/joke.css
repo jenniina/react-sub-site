@@ -40,15 +40,27 @@
 }
 .joke-container .saved .local-saved-wrap button.active {
   background-color: var(--color-primary-2);
+  -webkit-transform: translateY(2.5px);
+  -ms-transform: translateY(2.5px);
+  -o-transform: translateY(2.5px);
+  -moz-transform: translateY(2.5px);
   transform: translateY(2.5px);
   padding-top: 0.9em;
   padding-bottom: 0.6em;
   pointer-events: none;
 }
 .joke-container .saved .local-saved-wrap button:last-child {
+  -webkit-transform: translateX(-2.5px);
+  -ms-transform: translateX(-2.5px);
+  -o-transform: translateX(-2.5px);
+  -moz-transform: translateX(-2.5px);
   transform: translateX(-2.5px);
 }
 .joke-container .saved .local-saved-wrap button:last-child.active {
+  -webkit-transform: translateY(2.5px) translateX(-3px);
+  -ms-transform: translateY(2.5px) translateX(-3px);
+  -o-transform: translateY(2.5px) translateX(-3px);
+  -moz-transform: translateY(2.5px) translateX(-3px);
   transform: translateY(2.5px) translateX(-3px);
 }
 .joke-container .saved .local-saved-wrap button:hover,
@@ -66,6 +78,10 @@
   border-radius: 0 0 calc(var(--border-radius) * 0.8) calc(var(--border-radius) * 0.8);
   border-bottom: 2px solid var(--color-primary-8);
   border-top: 0;
+  -webkit-transform: translateY(-1px);
+  -ms-transform: translateY(-1px);
+  -o-transform: translateY(-1px);
+  -moz-transform: translateY(-1px);
   transform: translateY(-1px);
   background-color: none;
   padding: 0.5em 5% 0.8em;
@@ -75,12 +91,20 @@
   border-bottom-color: var(--color-primary-15);
 }
 .joke-container .saved .local-saved-wrap.below button.active {
+  -webkit-transform: translateY(-2.5px);
+  -ms-transform: translateY(-2.5px);
+  -o-transform: translateY(-2.5px);
+  -moz-transform: translateY(-2.5px);
   transform: translateY(-2.5px);
   padding-bottom: 0.9em;
   padding-top: 0.6em;
   pointer-events: none;
 }
 .joke-container .saved .local-saved-wrap.below button:last-child.active {
+  -webkit-transform: translateY(-2.5px) translateX(-3px);
+  -ms-transform: translateY(-2.5px) translateX(-3px);
+  -o-transform: translateY(-2.5px) translateX(-3px);
+  -moz-transform: translateY(-2.5px) translateX(-3px);
   transform: translateY(-2.5px) translateX(-3px);
 }
 .joke-container .saved .saved-inner,
@@ -293,13 +317,25 @@ form.joke-form-save button {
     box-shadow;
   transition-duration: 0.4s;
   transition-timing-function: ease-in-out;
+  -webkit-transform: scaleY(0);
+  -ms-transform: scaleY(0);
+  -o-transform: scaleY(0);
+  -moz-transform: scaleY(0);
   transform: scaleY(0);
+  -webkit-transform-origin: top;
+  -ms-transform-origin: top;
+  -o-transform-origin: top;
+  -moz-transform-origin: top;
   transform-origin: top;
 }
 form.joke-form-save.fadeIn,
 form.joke-form-save article.fadeIn,
 form.joke-form-save p.fadeIn,
 form.joke-form-save button.fadeIn {
+  -webkit-transform: scaleY(1);
+  -ms-transform: scaleY(1);
+  -o-transform: scaleY(1);
+  -moz-transform: scaleY(1);
   transform: scaleY(1);
 }
 form.joke-form-save article {
@@ -318,22 +354,42 @@ form.joke-form-save article p {
   text-align: left;
 }
 form.joke-form-save article p.no-delivery {
+  -webkit-transform: scaleY(1) translateY(1.2em);
+  -ms-transform: scaleY(1) translateY(1.2em);
+  -o-transform: scaleY(1) translateY(1.2em);
+  -moz-transform: scaleY(1) translateY(1.2em);
   transform: scaleY(1) translateY(1.2em);
   max-width: clamp(10em, 50%, 40em);
   margin: 0 auto;
 }
 form.joke-form-save button.delivery {
+  -webkit-transform: scaleY(0);
+  -ms-transform: scaleY(0);
+  -o-transform: scaleY(0);
+  -moz-transform: scaleY(0);
   transform: scaleY(0);
   opacity: 0;
   transition-duration: 0.2s;
 }
 form.joke-form-save button.delivery.has-delivery {
+  -webkit-transform: scaleY(1);
+  -ms-transform: scaleY(1);
+  -o-transform: scaleY(1);
+  -moz-transform: scaleY(1);
   transform: scaleY(1);
   opacity: 1;
 }
 form.joke-form-save button.delivery.no-delivery {
   opacity: 0;
+  -webkit-transform: scaleY(0);
+  -ms-transform: scaleY(0);
+  -o-transform: scaleY(0);
+  -moz-transform: scaleY(0);
   transform: scaleY(0);
+  -webkit-transform-origin: bottom;
+  -ms-transform-origin: bottom;
+  -o-transform-origin: bottom;
+  -moz-transform-origin: bottom;
   transform-origin: bottom;
 }
 button.delivery p {
@@ -830,6 +886,10 @@ button.delivery span {
   transition: opacity 0.2s ease-in-out;
 }
 button.delivery > span > svg {
+  -webkit-transform: translateY(0.16em);
+  -ms-transform: translateY(0.16em);
+  -o-transform: translateY(0.16em);
+  -moz-transform: translateY(0.16em);
   transform: translateY(0.16em);
 }
 button.delivery.reveal span {
@@ -960,7 +1020,14 @@ button.blocked-btn.active {
   margin: 0 auto;
   overflow: hidden;
   -webkit-animation: fadeInDown 1s forwards;
+  -moz-animation: fadeInDown 1s forwards;
+  -o-animation: fadeInDown 1s forwards;
+  -ms-animation: fadeInDown 1s forwards;
   animation: fadeInDown 5s forwards;
+  -webkit-animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  -o-animation-play-state: paused;
+  -ms-animation-play-state: paused;
   animation-play-state: paused;
   opacity: 0;
   text-align: center;
@@ -969,6 +1036,10 @@ button.blocked-btn.active {
 }
 
 .downwards-arrow.play {
+  -webkit-animation-play-state: running;
+  -moz-animation-play-state: running;
+  -o-animation-play-state: running;
+  -ms-animation-play-state: running;
   animation-play-state: running;
 }
 .joke-container .select-container.submit {
@@ -1054,12 +1125,24 @@ button.blocked-btn.active {
 }
 .joke-container svg.down {
   font-size: 1.2em;
+  -webkit-transform: translateY(0.1em) scale(1);
+  -ms-transform: translateY(0.1em) scale(1);
+  -o-transform: translateY(0.1em) scale(1);
+  -moz-transform: translateY(0.1em) scale(1);
   transform: translateY(0.1em) scale(1);
+  -webkit-animation: bounce 0.5s ease-in-out infinite;
+  -ms-animation: bounce 0.5s ease-in-out infinite;
+  -o-animation: bounce 0.5s ease-in-out infinite;
+  -moz-animation: bounce 0.5s ease-in-out infinite;
   animation: bounce 0.5s ease-in-out infinite;
   animation-play-state: paused;
 }
 .joke-container .svg-wrap:hover svg.down,
 .joke-container .svg-wrap:focus svg.down {
+  -webkit-animation-play-state: running;
+  -ms-animation-play-state: running;
+  -o-animation-play-state: running;
+  -moz-animation-play-state: running;
   animation-play-state: running;
 }
 .joke-container .svg-wrap {
@@ -1076,12 +1159,24 @@ button.blocked-btn.active {
 
 @-webkit-keyframes bounce {
   0% {
+    -webkit-transform: translateY(0.1em) scale(1);
+    -ms-transform: translateY(0.1em) scale(1);
+    -o-transform: translateY(0.1em) scale(1);
+    -moz-transform: translateY(0.1em) scale(1);
     transform: translateY(0.1em) scale(1);
   }
   50% {
+    -webkit-transform: translateY(0.2em) scale(1.1);
+    -ms-transform: translateY(0.2em) scale(1.1);
+    -o-transform: translateY(0.2em) scale(1.1);
+    -moz-transform: translateY(0.2em) scale(1.1);
     transform: translateY(0.2em) scale(1.1);
   }
   100% {
+    -webkit-transform: translateY(0.1em) scale(1);
+    -ms-transform: translateY(0.1em) scale(1);
+    -o-transform: translateY(0.1em) scale(1);
+    -moz-transform: translateY(0.1em) scale(1);
     transform: translateY(0.1em) scale(1);
   }
 }
@@ -1150,21 +1245,33 @@ button.blocked-btn.active {
   0% {
     opacity: 0;
     -webkit-transform: translateY(-0.5em);
+    -ms-transform: translateY(-0.5em);
+    -o-transform: translateY(-0.5em);
+    -moz-transform: translateY(-0.5em);
     transform: translateY(-0.5em);
   }
   20% {
     opacity: 1;
     -webkit-transform: translateY(0.6em);
+    -ms-transform: translateY(0.6em);
+    -o-transform: translateY(0.6em);
+    -moz-transform: translateY(0.6em);
     transform: translateY(0.6em);
   }
   80% {
     opacity: 1;
     -webkit-transform: translateY(0.9em);
+    -ms-transform: translateY(0.9em);
+    -o-transform: translateY(0.9em);
+    -moz-transform: translateY(0.9em);
     transform: translateY(0.9em);
   }
   100% {
     opacity: 0;
     -webkit-transform: translateY(1.5em);
+    -ms-transform: translateY(1.5em);
+    -o-transform: translateY(1.5em);
+    -moz-transform: translateY(1.5em);
     transform: translateY(1.5em);
   }
 }

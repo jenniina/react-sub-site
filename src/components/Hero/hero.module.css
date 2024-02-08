@@ -46,16 +46,26 @@
 }
 .herocontent .bubbles,
 .herocontent .eyes,
-.herocontent .geometric {
+.herocontent .geometric,
+.herocontent .triangle {
   transition-property: top, right, bottom, left, transform;
   transition-timing-function: ease-in-out;
   transition-duration: 500ms;
   -webkit-tap-highlight-color: transparent;
 }
-
+.herocontent .triangle {
+  -moz-transform: rotate(180deg) scaleX(0.77);
+}
 .herocontent .eyes {
   -webkit-animation: jiggle 250ms ease-in-out infinite;
+  -o-animation: jiggle 250ms ease-in-out infinite;
+  -ms-animation: jiggle 250ms ease-in-out infinite;
+  -moz-animation: jiggle 250ms ease-in-out infinite;
   animation: jiggle 250ms ease-in-out infinite;
+  -webkit-animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  -o-animation-play-state: paused;
+  -ms-animation-play-state: paused;
   animation-play-state: paused;
 }
 .light .herocontent .bubbles {
@@ -68,7 +78,14 @@
 }
 .herocontent .bubbles {
   -webkit-animation: updown 3000ms ease-in-out infinite;
+  -o-animation: updown 3000ms ease-in-out infinite;
+  -ms-animation: updown 3000ms ease-in-out infinite;
+  -moz-animation: updown 3000ms ease-in-out infinite;
   animation: updown 3000ms ease-in-out infinite;
+  -webkit-animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  -o-animation-play-state: paused;
+  -ms-animation-play-state: paused;
   animation-play-state: paused;
   box-shadow: inset 0 calc(var(--s2) * -6 * 1px) calc(var(--s2) * 6 * 1px)
       calc(var(--s2) * -8 * 1px) currentColor,
@@ -83,7 +100,14 @@
 .herocontent .geometric div {
   --time: 1000ms;
   -webkit-animation: geometric-hover 2000ms ease-in-out infinite;
+  -o-animation: geometric-hover 2000ms ease-in-out infinite;
+  -ms-animation: geometric-hover 2000ms ease-in-out infinite;
+  -moz-animation: geometric-hover 2000ms ease-in-out infinite;
   animation: geometric-hover 2000ms ease-in-out infinite;
+  -webkit-animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  -o-animation-play-state: paused;
+  -ms-animation-play-state: paused;
   animation-play-state: paused;
   box-shadow: 0 0 4px 0 currentColor, 0 0 10px 0 currentColor, 0 0 40px 4px currentColor;
   background-color: hsla(0, 0%, 100%, 0.7);
@@ -104,6 +128,10 @@
 .herocontent .item.active,
 .herocontent .eyes:hover,
 .herocontent .eyes:focus {
+  -webkit-animation-play-state: running;
+  -ms-animation-play-state: running;
+  -o-animation-play-state: running;
+  -moz-animation-play-state: running;
   animation-play-state: running;
 }
 .light .herocontent .geometric div {
@@ -135,6 +163,10 @@
   left: 0;
   width: 100%;
   height: 100%;
+  -webkit-transform: rotate(-80deg);
+  -o-transform: rotate(-80deg);
+  -ms-transform: rotate(-80deg);
+  -moz-transform: rotate(-80deg);
   transform: rotate(-80deg);
   pointer-events: none;
   box-shadow: inset calc(var(--s2) * 8 * 1px) calc(var(--s2) / 4 * -1px)
@@ -162,6 +194,10 @@
   height: 60%;
   top: 50%;
   left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   background-color: currentColor;
   border-radius: 50%;
@@ -247,6 +283,10 @@
   height: clamp(5px, 20%, 30px);
   border-radius: 50% 90%;
   opacity: 0.6;
+  -webkit-transform: rotate(30deg);
+  -o-transform: rotate(30deg);
+  -ms-transform: rotate(30deg);
+  -moz-transform: rotate(30deg);
   transform: rotate(30deg);
   box-shadow: 0 0 calc(var(--s) / 10) 2px var(--color);
 }
@@ -262,6 +302,10 @@
   left: -10%;
   width: 60%;
   height: 60%;
+  -webkit-transform: rotate(120deg);
+  -o-transform: rotate(120deg);
+  -ms-transform: rotate(120deg);
+  -moz-transform: rotate(120deg);
   transform: rotate(120deg);
   border-radius: 50%;
   z-index: -1;
@@ -284,10 +328,18 @@
 }
 .herocontent .eyes:hover span::before,
 .herocontent .eyes:focus span::before {
+  -webkit-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
+  -o-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
+  -ms-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
+  -moz-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
   transform: translate(-90%, -10%) scale(0.001, 1);
 }
 .herocontent .eyes:hover span::after,
 .herocontent .eyes:focus span::after {
+  -webkit-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
+  -o-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
+  -ms-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
+  -moz-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
   transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
 }
 .herocontent .geometric span {
@@ -301,18 +353,65 @@
   opacity: 0;
   -webkit-animation: scale var(--time) linear infinite,
     hide-opacity var(--time) cubic-bezier(0.28, 0.37, 0.88, 0.5) infinite;
+  -o-animation: scale var(--time) linear infinite,
+    hide-opacity var(--time) cubic-bezier(0.28, 0.37, 0.88, 0.5) infinite;
+  -ms-animation: scale var(--time) linear infinite,
+    hide-opacity var(--time) cubic-bezier(0.28, 0.37, 0.88, 0.5) infinite;
+  -moz-animation: scale var(--time) linear infinite,
+    hide-opacity var(--time) cubic-bezier(0.28, 0.37, 0.88, 0.5) infinite;
   animation: scale var(--time) linear infinite,
     hide-opacity var(--time) cubic-bezier(0.28, 0.37, 0.88, 0.5) infinite;
   animation-delay: calc(calc(var(--number) + 1) * calc(var(--time) / -3.9));
+  -webkit-animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  -o-animation-play-state: paused;
+  -ms-animation-play-state: paused;
+  animation-play-state: paused;
+}
+.herocontent .triangle span {
+  pointer-events: none;
+  --time: 1000ms;
+  opacity: 0;
+  -webkit-animation: scale var(--time) linear infinite,
+    hide-opacity var(--time) linear infinite;
+  -o-animation: scale var(--time) linear infinite,
+    hide-opacity var(--time) linear infinite;
+  -ms-animation: scale var(--time) linear infinite,
+    hide-opacity var(--time) linear infinite;
+  -moz-animation: scale var(--time) linear infinite,
+    hide-opacity var(--time) linear infinite;
+  animation: scale var(--time) linear infinite, hide-opacity var(--time) linear infinite;
+  -webkit-animation-delay: calc(calc(var(--number) + 1) * calc(var(--time) / -3.9));
+  -o-animation-delay: calc(calc(var(--number) + 1) * calc(var(--time) / -3.9));
+  -ms-animation-delay: calc(calc(var(--number) + 1) * calc(var(--time) / -3.9));
+  -moz-animation-delay: calc(calc(var(--number) + 1) * calc(var(--time) / -3.9));
+  animation-delay: calc(calc(var(--number) + 1) * calc(var(--time) / -3.9));
+  -webkit-animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  -o-animation-play-state: paused;
+  -ms-animation-play-state: paused;
   animation-play-state: paused;
 }
 .herocontent .geometric:hover span,
-.herocontent .geometric:focus span {
+.herocontent .geometric:focus span,
+.herocontent .triangle:hover span,
+.herocontent .triangle:focus span {
+  -webkit-animation-play-state: running;
+  -ms-animation-play-state: running;
+  -o-animation-play-state: running;
+  -moz-animation-play-state: running;
   animation-play-state: running;
 }
 .geometric.exitItem {
   -webkit-animation: geometric-hide 400ms ease-in forwards;
+  -o-animation: geometric-hide 400ms ease-in forwards;
+  -ms-animation: geometric-hide 400ms ease-in forwards;
+  -moz-animation: geometric-hide 400ms ease-in forwards;
   animation: geometric-hide 400ms ease-in forwards;
+  -webkit-animation-play-state: running;
+  -ms-animation-play-state: running;
+  -o-animation-play-state: running;
+  -moz-animation-play-state: running;
   animation-play-state: running;
   pointer-events: none;
 }
@@ -320,6 +419,9 @@
 .bubbles.exitItem,
 .eyes.exitItem {
   -webkit-animation: hide-grow 100ms ease-in forwards;
+  -o-animation: hide-grow 100ms ease-in forwards;
+  -ms-animation: hide-grow 100ms ease-in forwards;
+  -moz-animation: hide-grow 100ms ease-in forwards;
   animation: hide-grow 100ms ease-in forwards;
   pointer-events: none;
 }
@@ -330,16 +432,28 @@
   }
   100% {
     opacity: 0;
+    -webkit-transform: scale(1.5);
+    -o-transform: scale(1.5);
+    -ms-transform: scale(1.5);
+    -moz-transform: scale(1.5);
     transform: scale(1.5);
   }
 }
 @keyframes hide-shrink {
   0% {
     opacity: 1;
+    -webkit-transform: scale(1);
+    -o-transform: scale(1);
+    -ms-transform: scale(1);
+    -moz-transform: scale(1);
     transform: scale(1);
   }
   100% {
     opacity: 0;
+    -webkit-transform: scale(0);
+    -o-transform: scale(0);
+    -ms-transform: scale(0);
+    -moz-transform: scale(0);
     transform: scale(0);
   }
 }
@@ -354,40 +468,80 @@
 @keyframes jiggle {
   0%,
   100% {
+    -webkit-transform: translate(0);
+    -o-transform: translate(0);
+    -ms-transform: translate(0);
+    -moz-transform: translate(0);
     transform: translate(0);
   }
   50% {
+    -webkit-transform: translate(1px);
+    -o-transform: translate(1px);
+    -ms-transform: translate(1px);
+    -moz-transform: translate(1px);
     transform: translate(1px);
   }
 }
 @keyframes rotate {
   0% {
+    -webkit-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
     transform: rotate(45deg);
   }
   100% {
+    -webkit-transform: rotate(calc(360deg + 45deg));
+    -o-transform: rotate(calc(360deg + 45deg));
+    -ms-transform: rotate(calc(360deg + 45deg));
+    -moz-transform: rotate(calc(360deg + 45deg));
     transform: rotate(calc(360deg + 45deg));
   }
 }
 @keyframes scale {
   0% {
+    -webkit-transform: scale(0);
+    -o-transform: scale(0);
+    -ms-transform: scale(0);
+    -moz-transform: scale(0);
     transform: scale(0);
   }
   100% {
+    -webkit-transform: scale(1);
+    -o-transform: scale(1);
+    -ms-transform: scale(1);
+    -moz-transform: scale(1);
     transform: scale(1);
   }
 }
 @keyframes geometric-hide {
   0% {
+    -webkit-transform: scale(1);
+    -o-transform: scale(1);
+    -ms-transform: scale(1);
+    -moz-transform: scale(1);
     transform: scale(1);
   }
   20% {
+    -webkit-transform: scale(0.9);
+    -o-transform: scale(0.9);
+    -ms-transform: scale(0.9);
+    -moz-transform: scale(0.9);
     transform: scale(0.9);
     opacity: 0.8;
   }
   40% {
+    -webkit-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    -moz-transform: scale(1.1);
     transform: scale(1.1);
   }
   100% {
+    -webkit-transform: scale(0);
+    -o-transform: scale(0);
+    -ms-transform: scale(0);
+    -moz-transform: scale(0);
     transform: scale(0);
     opacity: 0;
   }
@@ -395,54 +549,102 @@
 @keyframes geometric-hover {
   0%,
   100% {
+    -webkit-transform: rotate(45deg) scale(1);
+    -o-transform: rotate(45deg) scale(1);
+    -ms-transform: rotate(45deg) scale(1);
+    -moz-transform: rotate(45deg) scale(1);
     transform: rotate(45deg) scale(1);
   }
   50% {
+    -webkit-transform: rotate(45deg) scale(1.2);
+    -o-transform: rotate(45deg) scale(1.2);
+    -ms-transform: rotate(45deg) scale(1.2);
+    -moz-transform: rotate(45deg) scale(1.2);
     transform: rotate(45deg) scale(1.2);
   }
 }
 @keyframes updown {
   0%,
   100% {
+    -webkit-transform: translateY(0);
+    -o-transform: translateY(0);
+    -ms-transform: translateY(0);
+    -moz-transform: translateY(0);
     transform: translateY(0);
   }
   50% {
+    -webkit-transform: translateY(-20px);
+    -o-transform: translateY(-20px);
+    -ms-transform: translateY(-20px);
+    -moz-transform: translateY(-20px);
     transform: translateY(-20px);
   }
 }
 @keyframes entertop {
   0%,
   100% {
+    -webkit-transform: translateY(0);
+    -o-transform: translateY(0);
+    -ms-transform: translateY(0);
+    -moz-transform: translateY(0);
     transform: translateY(0);
   }
   50% {
+    -webkit-transform: translateY(5px);
+    -o-transform: translateY(5px);
+    -ms-transform: translateY(5px);
+    -moz-transform: translateY(5px);
     transform: translateY(5px);
   }
 }
 @keyframes enterright {
   0%,
   100% {
+    -webkit-transform: translateX(0);
+    -o-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -moz-transform: translateX(0);
     transform: translateX(0);
   }
   50% {
+    -webkit-transform: translateX(-5px);
+    -o-transform: translateX(-5px);
+    -ms-transform: translateX(-5px);
+    -moz-transform: translateX(-5px);
     transform: translateX(-5px);
   }
 }
 @keyframes enterbottom {
   0%,
   100% {
+    -webkit-transform: translateY(0);
+    -o-transform: translateY(0);
+    -ms-transform: translateY(0);
+    -moz-transform: translateY(0);
     transform: translateY(0);
   }
   50% {
+    -webkit-transform: translateY(-5px);
+    -o-transform: translateY(-5px);
+    -ms-transform: translateY(-5px);
+    -moz-transform: translateY(-5px);
     transform: translateY(-5px);
   }
 }
 @keyframes enterleft {
   0%,
   100% {
+    -webkit-transform: translateX(0);
+    -o-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -moz-transform: translateX(0);
     transform: translateX(0);
   }
   50% {
+    -webkit-transform: translateX(5px);
+    -o-transform: translateX(5px);
+    -ms-transform: translateX(5px);
+    -moz-transform: translateX(5px);
     transform: translateX(5px);
   }
 }
@@ -546,29 +748,53 @@
   height: 0.14em;
   left: 0.5em;
   right: 0.5em;
+  -webkit-transform: scaleX(0);
+  -o-transform: scaleX(0);
+  -ms-transform: scaleX(0);
+  -moz-transform: scaleX(0);
   transform: scaleX(0);
 }
 .bottom button::before {
   top: 0;
+  -webkit-transform-origin: left;
+  -o-transform-origin: left;
+  -ms-transform-origin: left;
+  -moz-transform-origin: left;
   transform-origin: left;
 }
 .bottom button::after {
   bottom: 0;
+  -webkit-transform-origin: right;
+  -o-transform-origin: right;
+  -ms-transform-origin: right;
+  -moz-transform-origin: right;
   transform-origin: right;
 }
 .bottom button span::before,
 .bottom button span::after {
   width: 0.14em;
   height: 100%;
+  -webkit-transform: scaleY(0);
+  -o-transform: scaleY(0);
+  -ms-transform: scaleY(0);
+  -moz-transform: scaleY(0);
   transform: scaleY(0);
   top: 0;
   bottom: 0;
 }
 .bottom button span::before {
+  -webkit-transform-origin: bottom;
+  -o-transform-origin: bottom;
+  -ms-transform-origin: bottom;
+  -moz-transform-origin: bottom;
   transform-origin: bottom;
   left: 0.5em;
 }
 .bottom button span::after {
+  -webkit-transform-origin: top;
+  -o-transform-origin: top;
+  -ms-transform-origin: top;
+  -moz-transform-origin: top;
   transform-origin: top;
   right: 0.5em;
 }
@@ -588,12 +814,20 @@
 .bottom button:focus::before,
 .bottom button:hover::after,
 .bottom button:focus::after {
+  -webkit-transform: scaleX(100%);
+  -o-transform: scaleX(100%);
+  -ms-transform: scaleX(100%);
+  -moz-transform: scaleX(100%);
   transform: scaleX(100%);
 }
 .bottom button:hover span::before,
 .bottom button:focus span::before,
 .bottom button:hover span::after,
 .bottom button:focus span::after {
+  -webkit-transform: scaleY(100%);
+  -o-transform: scaleY(100%);
+  -ms-transform: scaleY(100%);
+  -moz-transform: scaleY(100%);
   transform: scaleY(100%);
 }
 @media (min-width: 300px) {

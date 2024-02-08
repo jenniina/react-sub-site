@@ -107,6 +107,10 @@ main {
   position: absolute;
   top: 4em;
   right: 50%;
+  -webkit-transform: translateX(50%);
+  -ms-transform: translateX(50%);
+  -o-transform: translateX(50%);
+  -moz-transform: translateX(50%);
   transform: translateX(50%);
   display: flex;
   justify-content: flex-end;
@@ -190,12 +194,19 @@ main {
 .nav-sub {
   position: relative;
   right: 0;
+  -webkit-transform: translateX(0%);
+  -ms-transform: translateX(0%);
+  -o-transform: translateX(0%);
+  -moz-transform: translateX(0%);
   transform: translateX(0%);
   max-width: calc(var(--widest) - calc(var(--page-padding) * 2));
   z-index: 3;
 }
 .fadeOut .nav-sub {
   -webkit-animation: 0.5s fadeOutUp forwards;
+  -moz-animation: 0.5s fadeOutUp forwards;
+  -o-animation: 0.5s fadeOutUp forwards;
+  -ms-animation: 0.5s fadeOutUp forwards;
   animation: 0.5s fadeOutUp forwards;
 }
 .nav-sub.transformations ul {
@@ -256,9 +267,17 @@ button.goright {
     0 0 0.6em 0.6em var(--color-primary-2);
 }
 button.goleft svg {
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
   transform: rotate(-90deg);
 }
 button.goright svg {
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 button.horizonal-scroll:hover,
@@ -482,6 +501,10 @@ body .z {
 }
 .accordion-container .accordion-btn.open span {
   display: inline-block;
+  -webkit-transform: translateY(0.3em) rotate(180deg);
+  -ms-transform: translateY(0.3em) rotate(180deg);
+  -o-transform: translateY(0.3em) rotate(180deg);
+  -moz-transform: translateY(0.3em) rotate(180deg);
   transform: translateY(0.3em) rotate(180deg);
 }
 .accordion-container .accordion-btn.open span.hide {
@@ -519,11 +542,17 @@ body .z {
 
 .fadeIn {
   -webkit-animation: 0.5s fadeIn forwards;
+  -moz-animation: 0.5s fadeIn forwards;
+  -o-animation: 0.5s fadeIn forwards;
+  -ms-animation: 0.5s fadeIn forwards;
   animation: 0.5s fadeIn forwards;
 }
 
 .fadeOut {
   -webkit-animation: 0.5s fadeOut forwards;
+  -moz-animation: 0.5s fadeOut forwards;
+  -o-animation: 0.5s fadeOut forwards;
+  -ms-animation: 0.5s fadeOut forwards;
   animation: 0.5s fadeOut forwards;
 }
 
@@ -541,9 +570,17 @@ body .z {
 @keyframes fadeOut {
   from {
     opacity: 1;
+    -webkit-transform: translate(0px, 0px);
+    -ms-transform: translate(0px, 0px);
+    -o-transform: translate(0px, 0px);
+    -moz-transform: translate(0px, 0px);
     transform: translate(0px, 0px);
   }
   to {
+    -webkit-transform: translate(0, 20px);
+    -ms-transform: translate(0, 20px);
+    -o-transform: translate(0, 20px);
+    -moz-transform: translate(0, 20px);
     transform: translate(0, 20px);
     opacity: 0;
   }
@@ -552,9 +589,17 @@ body .z {
 @keyframes fadeOutUp {
   from {
     opacity: 1;
+    -webkit-transform: translate(0px, 0px);
+    -ms-transform: translate(0px, 0px);
+    -o-transform: translate(0px, 0px);
+    -moz-transform: translate(0px, 0px);
     transform: translate(0px, 0px);
   }
   to {
+    -webkit-transform: translate(0, -20px);
+    -ms-transform: translate(0, -20px);
+    -o-transform: translate(0, -20px);
+    -moz-transform: translate(0, -20px);
     transform: translate(0, -20px);
     opacity: 0;
   }

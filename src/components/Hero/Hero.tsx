@@ -15,6 +15,7 @@ type itemProps = {
   e: number
   size: number
   color: string
+  rotation?: number
 }
 
 //Change these, if the addresses change, or add more as needed:
@@ -29,6 +30,7 @@ const LOCATION = {
   JOKES: 'jokes',
   SELECT: 'select',
   SALON: 'salon',
+  TODO: 'todo',
 }
 
 export default function Hero({
@@ -150,7 +152,7 @@ export default function Hero({
     { i: 10, e: 4.121, size: 11, color: 'var(--color-primary-9)' },
   ])
 
-  const spans: itemProps[] = useMemo(() => {
+  const spanArray: itemProps[] = useMemo(() => {
     let array: itemProps[] = []
     for (let i: number = 1; i <= 4; i++) {
       const span: itemProps = {
@@ -163,8 +165,6 @@ export default function Hero({
     }
     return array
   }, [values])
-
-  const spanArray: itemProps[] = spans //Contact page
 
   const amount = 9
 
@@ -193,6 +193,7 @@ export default function Hero({
         i: i + 1,
         e: useRandomMinMax(5, 9),
         size: Math.round(useRandomMinMax(5, 12)),
+        rotation: useRandomMinMax(160, 200),
         color: colorSwitch,
       }
       if (i == 0) {
@@ -231,7 +232,7 @@ export default function Hero({
             }
           >
             {array.map((item, index: number) => {
-              if (location == LOCATION.HOME || location == LOCATION.SELECT) {
+              if (location == LOCATION.SELECT || location == LOCATION.TODO) {
                 const dividedBy = 2.2
 
                 const style: React.CSSProperties = {
@@ -264,7 +265,7 @@ export default function Hero({
                 }
 
                 return (
-                  // HOME WELCOME
+                  // SELECT // TODO
 
                   <li
                     key={`${item.color}${index}`}
@@ -336,7 +337,7 @@ export default function Hero({
               ) {
                 const style: React.CSSProperties = {
                   position: 'absolute',
-                  top: `calc(3vh + calc(1vh * ${item.e} * ${item.e / 2}))`,
+                  top: `calc(3vh + calc(1vh * ${item.e * 3} * ${item.size / 6}))`,
                   right: `calc(2% + ${item.i / 1.1} * 1vw * ${item.e})`,
                   backgroundColor: `transparent`,
                   color: `${item.color}`,
@@ -357,7 +358,7 @@ export default function Hero({
                 }
 
                 return (
-                  //ABOUT
+                  //ABOUT // JOKES // SALON
                   <li
                     key={`${item.color}${index}`}
                     className={`${styles.item} ${styles.about} ${styles.bubbles} ${
@@ -600,54 +601,127 @@ export default function Hero({
                   </li>
                 )
               } else {
-                //ELSE
+                // //ELSE
+                // const style: React.CSSProperties = {
+                //   position: 'absolute',
+                //   top: touchDevice
+                //     ? `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.3}))`
+                //     : `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.9}))`,
+                //   right: `calc(1% + calc(${item.i} * 1vw * ${item.e}))`,
+                //   backgroundColor: `transparent`,
+                //   color: `${item.color}`,
+                //   ['--i' as string]: `${item.i}`,
+                //   ['--e' as string]: `${item.e}`,
+                //   ['--s2' as string]: `${item.size}`,
+                //   ['--s' as string]:
+                //     windowWidth < windowHeight ? `${item.size}vh` : `${item.size}vw`,
+                //   width:
+                //     windowWidth < windowHeight
+                //       ? `calc(${item.size - 2} * 0.8vh)`
+                //       : `calc(${item.size - 2} * 0.8vw)`,
+                //   height:
+                //     windowWidth < windowHeight
+                //       ? `calc(${item.size - 2} * 0.8vh)`
+                //       : `calc(${item.size - 2} * 0.8vw)`,
+                //   minHeight: '40px',
+                //   minWidth: '40px',
+                //   maxHeight: '90px',
+                //   maxWidth: '90px',
+                //   borderRadius: '65% 65% 70% 60% / 60% 70% 60% 65%',
+                //   opacity: `0.${item.size > 6 ? 7 : Math.ceil(item.size)}`,
+                // }
+                // const styleInner: React.CSSProperties = {
+                //   position: 'absolute',
+                //   top: `0`,
+                //   right: `0`,
+                //   backgroundColor: `transparent`,
+                //   width: '100%',
+                //   height: '100%',
+                //   borderRadius: '65% 65% 70% 60% / 60% 70% 60% 65%',
+                //   opacity: `0.${item.size > 6 ? 99 : Math.ceil(item.size + 3)}
+                //                     }`,
+                // }
+
+                // return (
+                //   //ELSE
+
+                //   <li
+                //     key={`${item.color}${index}`}
+                //     id={`eye${index + 1}`}
+                //     className={`${styles.item} ${styles.eyes} ${styles[location]}
+                //                 ${
+                //                   windowHeight < windowWidth ? styles.wide : styles.tall
+                //                 }`}
+                //     style={style}
+                //     role={'option'}
+                //     tabIndex={0}
+                //     onFocus={(e) => {
+                //       ulRef.current?.setAttribute(
+                //         'aria-activedescendant',
+                //         `${e.target.id}`
+                //       )
+                //     }}
+                //     onBlurCapture={(e) => {
+                //       ulRef.current?.setAttribute('aria-activedescendant', '')
+                //     }}
+                //     onPointerEnter={(e) => movingItem(e)}
+                //     // onPointerEnter={e => addDirectionClass(e)}
+                //     onPointerCancel={(e) => {
+                //       removeItem(e.target as HTMLElement)
+                //     }}
+                //     onMouseDown={(e) => {
+                //       removeItem(e.target as HTMLElement)
+                //     }}
+                //     onTouchStart={(e) => {
+                //       removeItem(e.target as HTMLElement)
+                //     }}
+                //     onPointerDown={(e) => {
+                //       removeItem(e.target as HTMLElement)
+                //     }}
+                //     onKeyDown={(e) => {
+                //       switch (e.key) {
+                //         case 'Enter':
+                //         case 'Space':
+                //           e.preventDefault()
+                //           removeItem(e.target as HTMLElement)
+                //           break
+                //         case 'Escape':
+                //           if (resetButton.current) resetButton.current.focus()
+                //       }
+                //     }}
+                //   >
+                //     <div style={styleInner} className={`inner ${styles.inner}`}>
+                //       <span className='else-eye'>
+                //         <span className='scr'>eye {index + 1}</span>
+                //       </span>
+                //     </div>
+                //   </li>
+                // )
+
                 const style: React.CSSProperties = {
                   position: 'absolute',
                   top: touchDevice
                     ? `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.3}))`
                     : `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.9}))`,
                   right: `calc(1% + calc(${item.i} * 1vw * ${item.e}))`,
-                  backgroundColor: `transparent`,
-                  color: `${item.color}`,
-                  ['--i' as string]: `${item.i}`,
-                  ['--e' as string]: `${item.e}`,
-                  ['--s2' as string]: `${item.size}`,
-                  ['--s' as string]:
-                    windowWidth < windowHeight ? `${item.size}vh` : `${item.size}vw`,
-                  width:
-                    windowWidth < windowHeight
-                      ? `calc(${item.size - 2} * 0.8vh)`
-                      : `calc(${item.size - 2} * 0.8vw)`,
-                  height:
-                    windowWidth < windowHeight
-                      ? `calc(${item.size - 2} * 0.8vh)`
-                      : `calc(${item.size - 2} * 0.8vw)`,
-                  minHeight: '40px',
-                  minWidth: '40px',
-                  maxHeight: '90px',
-                  maxWidth: '90px',
-                  borderRadius: '65% 65% 70% 60% / 60% 70% 60% 65%',
-                  opacity: `0.${item.size > 6 ? 7 : Math.ceil(item.size)}`,
+                  width: 0,
+                  height: 0,
+                  border: `calc(0.7vw * ${item.size}) solid transparent`,
+                  borderBottomColor: `${item.color}`,
+                  opacity: `0.${item.size > 6 ? 6 : Math.ceil(item.size)}`,
+                  WebkitTransform: `rotate(${item.rotation}deg) scaleX(0.77)`,
+                  msTransform: `rotate(${item.rotation}deg) scaleX(0.77)`,
+                  OTransform: `rotate(${item.rotation}deg) scaleX(0.77)`,
+                  transform: `rotate(${item.rotation}deg) scaleX(0.77)`,
+                  boxShadow: `0 3vw 2.5vw -2.9vw ${item.color}`,
                 }
-                const styleInner: React.CSSProperties = {
-                  position: 'absolute',
-                  top: `0`,
-                  right: `0`,
-                  backgroundColor: `transparent`,
-                  width: '100%',
-                  height: '100%',
-                  borderRadius: '65% 65% 70% 60% / 60% 70% 60% 65%',
-                  opacity: `0.${item.size > 6 ? 99 : Math.ceil(item.size + 3)}
-                                    }`,
-                }
-
                 return (
-                  //ELSE
+                  // ELSE
 
                   <li
                     key={`${item.color}${index}`}
-                    id={`eye${index + 1}`}
-                    className={`${styles.item} ${styles.eyes} ${styles[location]} 
+                    id={`shape${index + 1}`}
+                    className={`${styles.item} ${styles[location]} ${styles.triangle} 
                                 ${
                                   windowHeight < windowWidth ? styles.wide : styles.tall
                                 }`}
@@ -663,11 +737,6 @@ export default function Hero({
                     onBlurCapture={(e) => {
                       ulRef.current?.setAttribute('aria-activedescendant', '')
                     }}
-                    onPointerEnter={(e) => movingItem(e)}
-                    // onPointerEnter={e => addDirectionClass(e)}
-                    onPointerCancel={(e) => {
-                      removeItem(e.target as HTMLElement)
-                    }}
                     onMouseDown={(e) => {
                       removeItem(e.target as HTMLElement)
                     }}
@@ -677,11 +746,13 @@ export default function Hero({
                     onPointerDown={(e) => {
                       removeItem(e.target as HTMLElement)
                     }}
+                    onPointerEnter={(e) => {
+                      movingItem(e)
+                    }}
                     onKeyDown={(e) => {
                       switch (e.key) {
                         case 'Enter':
                         case 'Space':
-                          e.preventDefault()
                           removeItem(e.target as HTMLElement)
                           break
                         case 'Escape':
@@ -689,11 +760,28 @@ export default function Hero({
                       }
                     }}
                   >
-                    <div style={styleInner} className={`inner ${styles.inner}`}>
-                      <span className='else-eye'>
-                        <span className='scr'>eye {index + 1}</span>
-                      </span>
-                    </div>
+                    {spanArray.map((span, index) => {
+                      const style: React.CSSProperties = {
+                        position: 'absolute',
+                        top: `calc(-0.9vw * ${item.size})`,
+                        right: `calc(-0.8vw * ${item.size})`,
+                        color: `${item.color}`,
+                        ['--color' as string]: `${span.color}`,
+                        ['--i' as string]: `${item.i}`,
+                        ['--e' as string]: `${item.e}`,
+                        ['--s' as string]: `${item.size}`,
+                        ['--number' as string]: `${index}`,
+                        width: 0,
+                        height: 0,
+                        border: `calc(0.8vw * ${item.size}) solid transparent`,
+                        borderBottomColor: `${span.color}`,
+                      }
+                      return (
+                        <span key={`${item.i}-${index}`} style={style}>
+                          <span className='scr'>shape {index + 1}</span>
+                        </span>
+                      )
+                    })}
                   </li>
                 )
               }

@@ -9,10 +9,18 @@
   margin: 0;
   line-height: 1;
   opacity: 0;
+  -webkit-animation: bob 2s ease-in-out infinite;
+  -moz-animation: bob 2s ease-in-out infinite;
+  -o-animation: bob 2s ease-in-out infinite;
+  -ms-animation: bob 2s ease-in-out infinite;
   animation: bob 2s ease-in-out infinite;
+  -webkit-animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  -o-animation-play-state: paused;
+  -ms-animation-play-state: paused;
   animation-play-state: paused;
-  transition-property: transform, opacity, bottom, background-position, color,
-    outline, border;
+  transition-property: transform, opacity, bottom, background-position, color, outline,
+    border;
   transition-timing-function: cubic-bezier(0.15, 0, 0.85, 1);
   transition-duration: 500ms;
 }
@@ -49,14 +57,26 @@
 }
 .to-top-btn:hover {
   outline-offset: -3px;
+  -webkit-animation-play-state: running;
+  -moz-animation-play-state: running;
+  -o-animation-play-state: running;
+  -ms-animation-play-state: running;
   animation-play-state: running;
 }
 @keyframes bob {
   0%,
   100% {
+    -webkit-transform: translateY(0px);
+    -ms-transform: translateY(0px);
+    -o-transform: translateY(0px);
+    -moz-transform: translateY(0px);
     transform: translateY(0px);
   }
   50% {
+    -webkit-transform: translateY(-0.5em);
+    -ms-transform: translateY(-0.5em);
+    -o-transform: translateY(-0.5em);
+    -moz-transform: translateY(-0.5em);
     transform: translateY(-0.5em);
   }
 }

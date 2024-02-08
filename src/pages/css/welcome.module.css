@@ -24,16 +24,28 @@
 }
 .list svg {
   font-size: clamp(3em, 5vw, 4em);
+  -webkit-transform-origin: bottom;
+  -ms-transform-origin: bottom;
+  -o-transform-origin: bottom;
+  -moz-transform-origin: bottom;
   transform-origin: bottom;
 }
 .list a:hover,
 .list a:focus {
+  -webkit-transform: translateY(-0.1em);
+  -ms-transform: translateY(-0.1em);
+  -o-transform: translateY(-0.1em);
+  -moz-transform: translateY(-0.1em);
   transform: translateY(-0.1em);
   text-decoration: none;
 }
 .list a:hover svg,
 .list a:focus svg {
   /* font-size: clamp(2em, 4vw, 3em); */
+  -webkit-transform: scale(0.8);
+  -ms-transform: scale(0.8);
+  -o-transform: scale(0.8);
+  -moz-transform: scale(0.8);
   transform: scale(0.8);
 }
 .list span {
@@ -43,6 +55,10 @@
   transition-property: font-size, color;
   transition-timing-function: ease-in-out;
   transition-duration: 500ms;
+  -webkit-transform-origin: bottom;
+  -ms-transform-origin: bottom;
+  -o-transform-origin: bottom;
+  -moz-transform-origin: bottom;
   transform-origin: bottom;
 }
 .list svg,
@@ -54,6 +70,10 @@
 .list a:hover span,
 .list a:focus span {
   /* font-size: clamp(1.2em, 2vw, 3em); */
+  -webkit-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+  -o-transform: scale(1.2);
+  -moz-transform: scale(1.2);
   transform: scale(1.2);
 }
 .language {

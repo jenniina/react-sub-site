@@ -132,6 +132,10 @@ svg.filter {
   position: absolute;
   bottom: -1em;
   right: 50%;
+  -webkit-transform: translateX(50%);
+  -ms-transform: translateX(50%);
+  -o-transform: translateX(50%);
+  -moz-transform: translateX(50%);
   transform: translateX(50%);
   border: 0.5em transparent solid;
   border-width: 0.6em 0.4em;
@@ -343,14 +347,28 @@ svg.filter {
   cursor: -webkit-grab;
   cursor: grab;
   -webkit-animation: sway 3s ease-in-out infinite;
+  -moz-animation: sway 3s ease-in-out infinite;
+  -o-animation: sway 3s ease-in-out infinite;
+  -ms-animation: sway 3s ease-in-out infinite;
   animation: sway 3s ease-in-out infinite;
   -webkit-animation-delay: calc(var(--i) * 0.25s);
+  -moz-animation-delay: calc(var(--i) * 0.25s);
+  -o-animation-delay: calc(var(--i) * 0.25s);
+  -ms-animation-delay: calc(var(--i) * 0.25s);
   animation-delay: calc(var(--i) * 0.25s);
+  -webkit-animation-play-state: running;
+  -moz-animation-play-state: running;
+  -o-animation-play-state: running;
+  -ms-animation-play-state: running;
   animation-play-state: running;
   border: 0;
   background-color: black;
 }
 .drag-container .paused .dragzone {
+  -webkit-animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  -o-animation-play-state: paused;
+  -ms-animation-play-state: paused;
   animation-play-state: paused;
 }
 .drag-container .dragzone:active {
@@ -438,6 +456,8 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   top: 35%;
   -webkit-transform: translateY(-30%) rotate(-20deg);
   -ms-transform: translateY(-30%) rotate(-20deg);
+  -o-transform: translateY(-30%) rotate(-20deg);
+  -moz-transform: translateY(-30%) rotate(-20deg);
   transform: translateY(-30%) rotate(-20deg);
   left: calc(-1 * var(--tooltip-offset) * 1.5);
   border: 1em solid transparent;
@@ -467,6 +487,8 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   top: 70%;
   -webkit-transform: translateY(-30%) rotate(-20deg);
   -ms-transform: translateY(-30%) rotate(-20deg);
+  -o-transform: translateY(-30%) rotate(-20deg);
+  -moz-transform: translateY(-30%) rotate(-20deg);
   transform: translateY(-30%) rotate(-20deg);
   left: calc(-1 * var(--tooltip-offset) * 1.5);
   border: 1em solid transparent;
@@ -496,6 +518,8 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   top: 20%;
   -webkit-transform: translateY(-80%) rotate(20deg);
   -ms-transform: translateY(-80%) rotate(20deg);
+  -o-transform: translateY(-80%) rotate(20deg);
+  -moz-transform: translateY(-80%) rotate(20deg);
   transform: translateY(-80%) rotate(20deg);
   left: calc(-1 * var(--tooltip-offset) * 1.5);
   border: 1em solid transparent;
@@ -557,6 +581,8 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   top: 50%;
   -webkit-transform: translateY(-30%) rotate(20deg);
   -ms-transform: translateY(-30%) rotate(20deg);
+  -o-transform: translateY(-30%) rotate(20deg);
+  -moz-transform: translateY(-30%) rotate(20deg);
   transform: translateY(-30%) rotate(20deg);
   left: calc(-1 * var(--tooltip-offset) / 3);
   border: 1em solid transparent;
@@ -592,6 +618,8 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   top: 50%;
   -webkit-transform: translateY(-80%) rotate(-20deg);
   -ms-transform: translateY(-80%) rotate(-20deg);
+  -o-transform: translateY(-80%) rotate(-20deg);
+  -moz-transform: translateY(-80%) rotate(-20deg);
   transform: translateY(-80%) rotate(-20deg);
   left: calc(-1 * var(--tooltip-offset) / 3);
   border: 1rem solid transparent;
@@ -622,6 +650,8 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   top: 50%;
   -webkit-transform: translatey(-50%);
   -ms-transform: translatey(-50%);
+  -o-transform: translatey(-50%);
+  -moz-transform: translatey(-50%);
   transform: translatey(-50%);
   width: var(--tooltip-width);
   line-height: 1;
@@ -640,6 +670,8 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   top: 50%;
   -webkit-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
   transform: translateY(-50%);
   left: calc(-1 * var(--tooltip-offset) * 1.2);
   border: 1rem solid transparent;
@@ -702,10 +734,16 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   0%,
   100% {
     -webkit-transform: translatey(0px);
+    -ms-transform: translatey(0px);
+    -o-transform: translatey(0px);
+    -moz-transform: translatey(0px);
     transform: translatey(0px);
   }
   50% {
     -webkit-transform: translatey(6px);
+    -ms-transform: translatey(6px);
+    -o-transform: translatey(6px);
+    -moz-transform: translatey(6px);
     transform: translatey(6px);
   }
 }
@@ -713,10 +751,16 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   0%,
   100% {
     -webkit-transform: translatey(0px);
+    -ms-transform: translatey(0px);
+    -o-transform: translatey(0px);
+    -moz-transform: translatey(0px);
     transform: translatey(0px);
   }
   50% {
     -webkit-transform: translatey(6px);
+    -ms-transform: translatey(6px);
+    -o-transform: translatey(6px);
+    -moz-transform: translatey(6px);
     transform: translatey(6px);
   }
 }
