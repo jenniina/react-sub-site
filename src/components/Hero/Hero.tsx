@@ -193,7 +193,7 @@ export default function Hero({
         i: i + 1,
         e: useRandomMinMax(5, 9),
         size: Math.round(useRandomMinMax(5, 12)),
-        rotation: useRandomMinMax(160, 200),
+        rotation: useRandomMinMax(165, 195),
         color: colorSwitch,
       }
       if (i == 0) {
@@ -714,7 +714,7 @@ export default function Hero({
                   right: `calc(1% + calc(${item.i} * 1vw * ${item.e}))`,
                   width: 0,
                   height: 0,
-                  opacity: `0.${item.size > 6 ? 6 : Math.ceil(item.size)}`,
+                  opacity: `0.${item.size > 5 ? 5 : Math.ceil(item.size)}`,
                 }
                 return (
                   // ELSE
