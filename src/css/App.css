@@ -487,18 +487,6 @@ body .z {
 .accordion-container .accordion-btn.open span.hide {
   display: none;
 }
-.accordionButton.close,
-.accordionButton.close:hover,
-.accordionButton.close:focus {
-  background: none;
-  color: inherit;
-  border: none;
-  outline: none;
-}
-.accordionButton.close:focus-visible {
-  outline: 1px solid var(--color-primary-13);
-  outline-offset: -2px;
-}
 .modify-todo-container {
   font-size: 0.8em;
   margin-left: auto;
@@ -701,9 +689,6 @@ body .z {
   opacity: 0.8;
 }
 
-nav .accordion-inner > button:first-of-type.close {
-  display: none;
-}
 nav .open.password-reset-container {
   width: 100%;
 }
