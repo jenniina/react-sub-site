@@ -364,7 +364,14 @@ h1 span:after {
   transition-timing-function: ease-in-out;
   transition-duration: 600ms;
   -webkit-animation: wave2 4s infinite ease-in-out;
+  -moz-animation: wave2 4s infinite ease-in-out;
+  -ms-animation: wave2 4s infinite ease-in-out;
+  -o-animation: wave2 4s infinite ease-in-out;
   animation: wave2 4s infinite ease-in-out;
+  -webkit-animation-play-state: paused;
+  -o-animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  -ms-animation-play-state: paused;
   animation-play-state: paused;
 }
 h1:hover span:before,
@@ -380,6 +387,10 @@ h1:hover span:after {
     100% 58%,
     100% 100%
   ); */
+  -webkit-animation-play-state: running;
+  -o-animation-play-state: running;
+  -moz-animation-play-state: running;
+  -ms-animation-play-state: running;
   animation-play-state: running;
 }
 .light h1 span {

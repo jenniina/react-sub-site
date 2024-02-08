@@ -96,6 +96,10 @@
   background-color: var(--color-primary-7);
 }
 .toggle input:checked + .slider::before {
+  -webkit-transform: translateX(calc(var(--width) - var(--height)));
+  -ms-transform: translateX(calc(var(--width) - var(--height)));
+  -o-transform: translateX(calc(var(--width) - var(--height)));
+  -moz-transform: translateX(calc(var(--width) - var(--height)));
   transform: translateX(calc(var(--width) - var(--height)));
 }
 .light.toggle input + .slider::before {
