@@ -104,7 +104,7 @@
     box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s)) calc(-0.1vw * var(--s))
       var(--color);
   }
-  20% {
+  10% {
     opacity: 0.5;
   }
   60% {
@@ -112,7 +112,7 @@
   }
   100% {
     opacity: 0;
-    box-shadow: 0 calc(1vw * var(--s)) calc(1vw * var(--s)) calc(-0.8vw * var(--s))
+    box-shadow: 0 calc(1.6vw * var(--s)) calc(1.2vw * var(--s)) calc(-0.9vw * var(--s))
       var(--color);
   }
 }
