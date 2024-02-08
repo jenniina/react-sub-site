@@ -586,15 +586,20 @@ button.close,
 }
 button.close {
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
-  gap: calc(var(--gap) / 2);
+  margin: 0 auto;
+  gap: 0;
   font-size: 0.8em;
+  border-radius: var(--radius-medium);
 }
 button.close:hover,
 button.close:focus {
   color: inherit;
+}
+button.close span {
+  display: block;
 }
 button.close .times {
   font-size: 1.3em;
