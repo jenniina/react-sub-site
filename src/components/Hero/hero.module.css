@@ -54,7 +54,19 @@
   -webkit-tap-highlight-color: transparent;
 }
 .herocontent .triangle {
-  -moz-transform: rotate(180deg) scaleX(0.77);
+  -webkit-transform: rotate(var(--rotate)) scaleX(0.77);
+  -moz-transform: rotate(var(--rotate)) scaleX(0.77);
+  -ms-transform: rotate(var(--rotate)) scaleX(0.77);
+  -o-transform: rotate(var(--rotate)) scaleX(0.77);
+  transform: rotate(var(--rotate)) scaleX(0.77);
+  box-shadow: 0 3vw 2.5vw -2.9vw var(--color);
+  border-style: solid;
+  border-color: transparent;
+  border-bottom-color: var(--color);
+}
+.light .herocontent .triangle {
+  border-bottom-color: var(--color2);
+  box-shadow: 0 4vw 2.5vw -2.9vw var(--color2);
 }
 .herocontent .eyes {
   -webkit-animation: jiggle 250ms ease-in-out infinite;
@@ -369,6 +381,9 @@
   animation-play-state: paused;
 }
 .herocontent .triangle span {
+  border-style: solid;
+  border-color: transparent;
+  border-bottom-color: var(--color);
   pointer-events: none;
   --time: 1000ms;
   opacity: 0;
@@ -391,6 +406,9 @@
   -o-animation-play-state: paused;
   -ms-animation-play-state: paused;
   animation-play-state: paused;
+}
+.light .herocontent .triangle span {
+  border-bottom-color: var(--color2);
 }
 .herocontent .geometric:hover span,
 .herocontent .geometric:focus span,

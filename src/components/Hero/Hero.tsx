@@ -698,7 +698,15 @@ export default function Hero({
                 //   </li>
                 // )
 
+                // ELSE
+
                 const style: React.CSSProperties = {
+                  ['--rotate' as string]: `${item.rotation}deg`,
+                  ['--color' as string]: `${item.color}`,
+                  ['--color2' as string]: 'hsla(0, 0%, 100%, 0.8)',
+                  ['--s' as string]: `${item.size}`,
+                  ['--border' as string]: `calc(0.7vw * ${item.size})`,
+                  borderWidth: `calc(0.7vw * ${item.size})`,
                   position: 'absolute',
                   top: touchDevice
                     ? `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.3}))`
@@ -706,14 +714,7 @@ export default function Hero({
                   right: `calc(1% + calc(${item.i} * 1vw * ${item.e}))`,
                   width: 0,
                   height: 0,
-                  border: `calc(0.7vw * ${item.size}) solid transparent`,
-                  borderBottomColor: `${item.color}`,
                   opacity: `0.${item.size > 6 ? 6 : Math.ceil(item.size)}`,
-                  WebkitTransform: `rotate(${item.rotation}deg) scaleX(0.77)`,
-                  msTransform: `rotate(${item.rotation}deg) scaleX(0.77)`,
-                  OTransform: `rotate(${item.rotation}deg) scaleX(0.77)`,
-                  transform: `rotate(${item.rotation}deg) scaleX(0.77)`,
-                  boxShadow: `0 3vw 2.5vw -2.9vw ${item.color}`,
                 }
                 return (
                   // ELSE
@@ -767,14 +768,14 @@ export default function Hero({
                         right: `calc(-0.8vw * ${item.size})`,
                         color: `${item.color}`,
                         ['--color' as string]: `${span.color}`,
+                        ['--color2' as string]: `${item.color}`,
                         ['--i' as string]: `${item.i}`,
                         ['--e' as string]: `${item.e}`,
                         ['--s' as string]: `${item.size}`,
                         ['--number' as string]: `${index}`,
                         width: 0,
                         height: 0,
-                        border: `calc(0.8vw * ${item.size}) solid transparent`,
-                        borderBottomColor: `${span.color}`,
+                        borderWidth: `calc(0.8vw * ${item.size})`,
                       }
                       return (
                         <span key={`${item.i}-${index}`} style={style}>
