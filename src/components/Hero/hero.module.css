@@ -59,10 +59,57 @@
   -ms-transform: rotate(var(--rotate)) scaleX(0.77);
   -o-transform: rotate(var(--rotate)) scaleX(0.77);
   transform: rotate(var(--rotate)) scaleX(0.77);
-  box-shadow: 0 3vw 2.5vw -2.9vw var(--color);
   border-style: solid;
   border-color: transparent;
   border-bottom-color: var(--color);
+}
+.herocontent .triangle::after,
+.herocontent .triangle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: calc(var(--border) * -1);
+  width: calc(var(--border) * 2);
+  height: calc(var(--border));
+  box-shadow: 0 3vw 2.5vw -2.9vw var(--color);
+  -webkit-animation: box-shadow 1000ms linear infinite;
+  -o-animation: box-shadow 1000ms linear infinite;
+  -ms-animation: box-shadow 1000ms linear infinite;
+  -moz-animation: box-shadow 1000ms linear infinite;
+  animation: box-shadow 1000ms linear infinite;
+  -webkit-animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  -o-animation-play-state: paused;
+  -ms-animation-play-state: paused;
+  animation-play-state: paused;
+}
+.herocontent .triangle::before {
+  -webkit-animation-delay: 500ms;
+  -o-animation-delay: 500ms;
+  -ms-animation-delay: 500ms;
+  -moz-animation-delay: 500ms;
+  animation-delay: 500ms;
+}
+.herocontent .triangle:hover::after,
+.herocontent .triangle:hover::before {
+  -webkit-animation-play-state: running;
+  -ms-animation-play-state: running;
+  -o-animation-play-state: running;
+  -moz-animation-play-state: running;
+  animation-play-state: running;
+}
+@keyframes box-shadow {
+  0% {
+    opacity: 0;
+    box-shadow: 0 1vw 2.5vw -2.9vw var(--color);
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    box-shadow: 0 10vw 5.5vw -2.9vw var(--color);
+  }
 }
 .light .herocontent .triangle {
   border-bottom-color: var(--color2);
