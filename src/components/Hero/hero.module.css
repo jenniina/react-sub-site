@@ -101,14 +101,19 @@
 @keyframes box-shadow {
   0% {
     opacity: 0;
-    box-shadow: 0 1vw 2.5vw -2.9vw var(--color);
+    box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s)) calc(-0.1vw * var(--s))
+      var(--color);
   }
-  10% {
-    opacity: 1;
+  20% {
+    opacity: 0.5;
+  }
+  60% {
+    opacity: 0.5;
   }
   100% {
     opacity: 0;
-    box-shadow: 0 10vw 5.5vw -2.9vw var(--color);
+    box-shadow: 0 calc(1vw * var(--s)) calc(1vw * var(--s)) calc(-0.8vw * var(--s))
+      var(--color);
   }
 }
 .light .herocontent .triangle {
