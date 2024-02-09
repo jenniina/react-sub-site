@@ -296,7 +296,6 @@ button.horizonal-scroll.disable {
 
 .page {
   padding: 0 var(--page-padding);
-  /* max-width: var(--wide); */
   margin: 0 auto;
 }
 .page > .inner-wrap {
@@ -354,12 +353,6 @@ main.main-content .fullwidth1 {
   right: 0;
   bottom: 0;
   left: 0;
-  /* background-color: var(--color-primary-2);
-  border: 2px solid var(--color-primary-2);
-  border-top: 1px solid var(--color-primary-11);
-  border-bottom: 2px solid var(--color-primary-1);
-  box-shadow: inset 0 0.2rem 2.5rem -2rem var(--color-primary-18),
-    0 0.5rem 2rem -1.5rem var(--color-primary-1); */
   opacity: 0.7;
   z-index: -1;
 }
@@ -554,17 +547,6 @@ body .z {
   -o-animation: 0.5s fadeOut forwards;
   -ms-animation: 0.5s fadeOut forwards;
   animation: 0.5s fadeOut forwards;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    /* transform: translate(0, -20px); /* messes up position:fixed for child elements */
-  }
-  to {
-    opacity: 1;
-    /* transform: translate(0px, 0px); /* messes up position:fixed for child elements */
-  }
 }
 
 @keyframes fadeOut {

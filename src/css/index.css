@@ -307,6 +307,9 @@ h1 {
 .hero h1,
 .hero p {
   -webkit-animation: fadeIn 1s forwards;
+  -moz-animation: fadeIn 1s forwards;
+  -ms-animation: fadeIn 1s forwards;
+  -o-animation: fadeIn 1s forwards;
   animation: fadeIn 1s forwards;
 }
 h1 {
@@ -347,6 +350,9 @@ h1 span:before {
   transition-timing-function: ease-in-out;
   transition-duration: 600ms;
   -webkit-animation: wave 4s infinite ease-in-out;
+  -moz-animation: wave 4s infinite ease-in-out;
+  -ms-animation: wave 4s infinite ease-in-out;
+  -o-animation: wave 4s infinite ease-in-out;
   animation: wave 4s infinite ease-in-out;
   animation-play-state: paused;
 }
