@@ -177,7 +177,7 @@ export default function Hero({
 
   const setupItems: itemProps[] = useMemo(() => {
     for (let i: number = 0; i <= amount; i++) {
-      const number = Math.ceil(useRandomMinMax(0.01, 2))
+      const number = Math.ceil(useRandomMinMax(0.2, 2))
       let colorSwitch: string
       switch (number) {
         case 1:
