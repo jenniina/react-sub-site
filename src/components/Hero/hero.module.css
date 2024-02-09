@@ -54,6 +54,7 @@
   -webkit-tap-highlight-color: transparent;
 }
 .herocontent .triangle {
+  --time: 800ms;
   -webkit-transform: rotate(var(--rotate)) scaleX(0.77);
   -moz-transform: rotate(var(--rotate)) scaleX(0.77);
   -ms-transform: rotate(var(--rotate)) scaleX(0.77);
@@ -78,11 +79,11 @@
   width: calc(var(--border) * 2);
   height: calc(var(--border));
   box-shadow: 0 3vw 2.5vw -2.9vw var(--color);
-  -webkit-animation: box-shadow 1000ms linear infinite;
-  -o-animation: box-shadow 1000ms linear infinite;
-  -ms-animation: box-shadow 1000ms linear infinite;
-  -moz-animation: box-shadow 1000ms linear infinite;
-  animation: box-shadow 1000ms linear infinite;
+  -webkit-animation: box-shadow var(--time) linear infinite;
+  -o-animation: box-shadow var(--time) linear infinite;
+  -ms-animation: box-shadow var(--time) linear infinite;
+  -moz-animation: box-shadow var(--time) linear infinite;
+  animation: box-shadow var(--time) linear infinite;
   -webkit-animation-play-state: paused;
   -moz-animation-play-state: paused;
   -o-animation-play-state: paused;
@@ -96,11 +97,11 @@
 .light .herocontent .triangle::after,
 .light .herocontent .triangle::before {
   box-shadow: 0 4vw 2.5vw -2.9vw var(--color2);
-  -webkit-animation: box-shadow-light 1000ms linear infinite;
-  -o-animation: box-shadow-light 1000ms linear infinite;
-  -ms-animation: box-shadow-light 1000ms linear infinite;
-  -moz-animation: box-shadow-light 1000ms linear infinite;
-  animation: box-shadow-light 1000ms linear infinite;
+  -webkit-animation: box-shadow-light var(--time) linear infinite;
+  -o-animation: box-shadow-light var(--time) linear infinite;
+  -ms-animation: box-shadow-light var(--time) linear infinite;
+  -moz-animation: box-shadow-light var(--time) linear infinite;
+  animation: box-shadow-light var(--time) linear infinite;
   -webkit-animation-play-state: paused;
   -moz-animation-play-state: paused;
   -o-animation-play-state: paused;
@@ -110,11 +111,11 @@
 
 .herocontent .triangle::before,
 .light .herocontent .triangle::before {
-  -webkit-animation-delay: 500ms;
-  -o-animation-delay: 500ms;
-  -ms-animation-delay: 500ms;
-  -moz-animation-delay: 500ms;
-  animation-delay: 500ms;
+  -webkit-animation-delay: calc(var(--time) / 2);
+  -o-animation-delay: calc(var(--time) / 2);
+  -ms-animation-delay: calc(var(--time) / 2);
+  -moz-animation-delay: calc(var(--time) / 2);
+  animation-delay: calc(var(--time) / 2);
 }
 .herocontent .triangle:hover::after,
 .herocontent .triangle:hover::before,
@@ -443,7 +444,6 @@
   border-color: transparent;
   border-bottom-color: var(--color);
   pointer-events: none;
-  --time: 1000ms;
   opacity: 0;
   -webkit-animation: scale var(--time) linear infinite,
     hide-opacity var(--time) linear infinite;
@@ -525,12 +525,12 @@
   10% {
     opacity: 0.5;
   }
-  60% {
+  80% {
     opacity: 0.5;
   }
   100% {
     opacity: 0;
-    box-shadow: 0 calc(1.6vw * var(--s)) calc(1.2vw * var(--s)) calc(-0.9vw * var(--s))
+    box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s)) calc(-0.9vw * var(--s))
       var(--color);
   }
 }
@@ -543,12 +543,12 @@
   10% {
     opacity: 0.9;
   }
-  60% {
+  80% {
     opacity: 0.9;
   }
   100% {
     opacity: 0;
-    box-shadow: 0 calc(1.6vw * var(--s)) calc(1.2vw * var(--s)) calc(-0.9vw * var(--s))
+    box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s)) calc(-0.9vw * var(--s))
       var(--color2);
   }
 }
