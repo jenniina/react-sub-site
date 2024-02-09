@@ -55,7 +55,7 @@
 }
 .herocontent .triangle {
   --time: 800ms;
-  clip-path: polygon(50% 44%, 100% 94%, 100% 100%, 0% 100%, 0% 94%);
+  clip-path: polygon(50% 44%, 100% 94%, 100% 160%, 0% 160%, 0% 94%);
   -webkit-transform: rotate(var(--rotate)) scaleX(0.77);
   -moz-transform: rotate(var(--rotate)) scaleX(0.77);
   -ms-transform: rotate(var(--rotate)) scaleX(0.77);
