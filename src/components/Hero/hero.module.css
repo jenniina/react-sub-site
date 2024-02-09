@@ -54,6 +54,8 @@
   -webkit-tap-highlight-color: transparent;
 }
 .herocontent .triangle {
+  --time: 800ms;
+  clip-path: polygon(50% 44%, 100% 94%, 100% 100%, 0% 100%, 0% 94%);
   -webkit-transform: rotate(var(--rotate)) scaleX(0.77);
   -moz-transform: rotate(var(--rotate)) scaleX(0.77);
   -ms-transform: rotate(var(--rotate)) scaleX(0.77);
@@ -78,11 +80,11 @@
   width: calc(var(--border) * 2);
   height: calc(var(--border));
   box-shadow: 0 3vw 2.5vw -2.9vw var(--color);
-  -webkit-animation: box-shadow 1000ms linear infinite;
-  -o-animation: box-shadow 1000ms linear infinite;
-  -ms-animation: box-shadow 1000ms linear infinite;
-  -moz-animation: box-shadow 1000ms linear infinite;
-  animation: box-shadow 1000ms linear infinite;
+  -webkit-animation: box-shadow var(--time) linear infinite;
+  -o-animation: box-shadow var(--time) linear infinite;
+  -ms-animation: box-shadow var(--time) linear infinite;
+  -moz-animation: box-shadow var(--time) linear infinite;
+  animation: box-shadow var(--time) linear infinite;
   -webkit-animation-play-state: paused;
   -moz-animation-play-state: paused;
   -o-animation-play-state: paused;
@@ -96,11 +98,11 @@
 .light .herocontent .triangle::after,
 .light .herocontent .triangle::before {
   box-shadow: 0 4vw 2.5vw -2.9vw var(--color2);
-  -webkit-animation: box-shadow-light 1000ms linear infinite;
-  -o-animation: box-shadow-light 1000ms linear infinite;
-  -ms-animation: box-shadow-light 1000ms linear infinite;
-  -moz-animation: box-shadow-light 1000ms linear infinite;
-  animation: box-shadow-light 1000ms linear infinite;
+  -webkit-animation: box-shadow-light var(--time) linear infinite;
+  -o-animation: box-shadow-light var(--time) linear infinite;
+  -ms-animation: box-shadow-light var(--time) linear infinite;
+  -moz-animation: box-shadow-light var(--time) linear infinite;
+  animation: box-shadow-light var(--time) linear infinite;
   -webkit-animation-play-state: paused;
   -moz-animation-play-state: paused;
   -o-animation-play-state: paused;
@@ -110,11 +112,11 @@
 
 .herocontent .triangle::before,
 .light .herocontent .triangle::before {
-  -webkit-animation-delay: 500ms;
-  -o-animation-delay: 500ms;
-  -ms-animation-delay: 500ms;
-  -moz-animation-delay: 500ms;
-  animation-delay: 500ms;
+  -webkit-animation-delay: calc(var(--time) / 2);
+  -o-animation-delay: calc(var(--time) / 2);
+  -ms-animation-delay: calc(var(--time) / 2);
+  -moz-animation-delay: calc(var(--time) / 2);
+  animation-delay: calc(var(--time) / 2);
 }
 .herocontent .triangle:hover::after,
 .herocontent .triangle:hover::before,
@@ -443,7 +445,6 @@
   border-color: transparent;
   border-bottom-color: var(--color);
   pointer-events: none;
-  --time: 1000ms;
   opacity: 0;
   -webkit-animation: scale var(--time) linear infinite,
     hide-opacity var(--time) linear infinite;
@@ -525,12 +526,12 @@
   10% {
     opacity: 0.5;
   }
-  60% {
+  80% {
     opacity: 0.5;
   }
   100% {
     opacity: 0;
-    box-shadow: 0 calc(1.6vw * var(--s)) calc(1.2vw * var(--s)) calc(-0.9vw * var(--s))
+    box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s)) calc(-0.9vw * var(--s))
       var(--color);
   }
 }
@@ -543,12 +544,12 @@
   10% {
     opacity: 0.9;
   }
-  60% {
+  80% {
     opacity: 0.9;
   }
   100% {
     opacity: 0;
-    box-shadow: 0 calc(1.6vw * var(--s)) calc(1.2vw * var(--s)) calc(-0.9vw * var(--s))
+    box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s)) calc(-0.9vw * var(--s))
       var(--color2);
   }
 }
@@ -827,9 +828,10 @@
   padding-top: clamp(1px, 20vh, 200px);
 }
 .bottom::after {
+  content: attr(data-instructions);
   position: absolute;
   bottom: 4em;
-  right: 0;
+  right: 1em;
   opacity: 0;
   transition-property: opacity;
   transition-timing-function: ease-in-out;
@@ -839,9 +841,6 @@
 .bottom:hover::after {
   opacity: 1;
   transition-delay: 500ms;
-}
-.bottom::after {
-  content: attr(data-instructions);
 }
 /* .portfolio .bottom::after,
 .blob .bottom::after,
@@ -939,18 +938,6 @@
   right: 0.5em;
 }
 .bottom button:hover::before,
-.bottom button:focus::before {
-}
-.bottom button:hover span::before,
-.bottom button:focus span::before {
-}
-.bottom button:hover::after,
-.bottom button:focus::after {
-}
-.bottom button:hover span::after,
-.bottom button:focus span::after {
-}
-.bottom button:hover::before,
 .bottom button:focus::before,
 .bottom button:hover::after,
 .bottom button:focus::after {
@@ -970,11 +957,7 @@
   -moz-transform: scaleY(100%);
   transform: scaleY(100%);
 }
-@media (min-width: 300px) {
-  .bottom button {
-    right: -1em;
-  }
-}
+
 .bottom button:hover,
 .bottom button:focus,
 .bottom button:focus-visible {
