@@ -62,6 +62,8 @@
   border-style: solid;
   border-color: transparent;
   border-bottom-color: var(--color);
+  box-shadow: 0 calc(0.3vw * var(--s)) calc(0.3vw * var(--s)) calc(-0.33vw * var(--s))
+    var(--color);
 }
 .herocontent .triangle:focus,
 .herocontent .triangle:focus-visible {
@@ -89,6 +91,7 @@
 }
 .light .herocontent .triangle {
   border-bottom-color: var(--color2);
+  box-shadow: 0 1vw 2.5vw -2.9vw var(--color2);
 }
 .light .herocontent .triangle::after,
 .light .herocontent .triangle::before {
