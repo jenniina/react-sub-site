@@ -827,9 +827,10 @@
   padding-top: clamp(1px, 20vh, 200px);
 }
 .bottom::after {
+  content: attr(data-instructions);
   position: absolute;
   bottom: 4em;
-  right: 0;
+  right: 1em;
   opacity: 0;
   transition-property: opacity;
   transition-timing-function: ease-in-out;
@@ -839,9 +840,6 @@
 .bottom:hover::after {
   opacity: 1;
   transition-delay: 500ms;
-}
-.bottom::after {
-  content: attr(data-instructions);
 }
 /* .portfolio .bottom::after,
 .blob .bottom::after,
@@ -939,18 +937,6 @@
   right: 0.5em;
 }
 .bottom button:hover::before,
-.bottom button:focus::before {
-}
-.bottom button:hover span::before,
-.bottom button:focus span::before {
-}
-.bottom button:hover::after,
-.bottom button:focus::after {
-}
-.bottom button:hover span::after,
-.bottom button:focus span::after {
-}
-.bottom button:hover::before,
 .bottom button:focus::before,
 .bottom button:hover::after,
 .bottom button:focus::after {
@@ -970,11 +956,7 @@
   -moz-transform: scaleY(100%);
   transform: scaleY(100%);
 }
-@media (min-width: 300px) {
-  .bottom button {
-    right: -1em;
-  }
-}
+
 .bottom button:hover,
 .bottom button:focus,
 .bottom button:focus-visible {
