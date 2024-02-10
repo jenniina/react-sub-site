@@ -159,7 +159,7 @@ export default function Hero({
         i: i,
         e: useRandomMinMax(5, 9),
         size: i,
-        color: 'hsla(0, 0%, 100%, 0.8)',
+        color: 'hsla(0, 0%, 100%, 0.7)',
       }
       array.push(span)
     }
@@ -191,7 +191,7 @@ export default function Hero({
       }
       const item: itemProps = {
         i: i + 1,
-        e: useRandomMinMax(5, 9),
+        e: useRandomMinMax(4, 9),
         size: Math.round(useRandomMinMax(5, 12)),
         rotation: useRandomMinMax(165, 195),
         color: colorSwitch,
@@ -700,12 +700,12 @@ export default function Hero({
 
                 // ELSE
 
-                const border = `calc(0.7vw * ${item.size})`
+                const border = `calc(0.6vw * ${item.size})`
 
                 const style: React.CSSProperties = {
                   ['--rotate' as string]: `${item.rotation}deg`,
                   ['--color' as string]: `${item.color}`,
-                  ['--color2' as string]: 'hsla(0, 0%, 100%, 0.8)',
+                  ['--color2' as string]: 'hsla(0, 0%, 100%, 0.7)',
                   ['--s' as string]: `${item.size}`,
                   ['--border' as string]: border,
                   borderWidth: border,
