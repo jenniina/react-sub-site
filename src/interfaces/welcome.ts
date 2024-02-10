@@ -151,3 +151,12 @@ export enum EOptimizing {
   cs = 'Optimalizace',
   fi = 'Optimointi',
 }
+export enum EAddedNewIntroElements {
+  en = 'Added new intro elements',
+  es = 'Añadidos nuevos elementos introductorios',
+  fr = 'Ajout de nouveaux éléments introductifs',
+  de = 'Neue Einführungselemente hinzugefügt',
+  pt = 'Adicionados novos elementos introdutórios',
+  cs = 'Přidány nové úvodní prvky',
+  fi = 'Lisätty uusia introlementtejä',
+}

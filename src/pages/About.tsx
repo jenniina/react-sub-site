@@ -24,6 +24,7 @@ import {
   EHoverFocusAnimation,
   EIcon,
   EInteractiveElements,
+  EInvertedTriangles,
   EKeyboardFocusMoveItemsWithArrowKeys,
   ELanguageSelect,
   ELanguages,
@@ -42,7 +43,10 @@ import {
   ESeeTheTopOfTheCurrentPage,
   ESettings,
   ESiteSettings,
+  ESquares,
+  ESquaresStandingOnTheirCorner,
   ESurvey,
+  ETriangles,
   ETwoStylesAtSmallScreenSizeAndTwoAtLargeScreenSize,
   EWelcome,
 } from '../interfaces'
@@ -270,9 +274,13 @@ export default function About({
                       </ul>
                     </li>
                     <li>
-                      {EGeometricShapes[language]}{' '}
-                      <Link to='/'>({EWelcome[language]})</Link>
+                      {ESquaresStandingOnTheirCorner[language]}{' '}
+                      <Link to='/portfolio/todo'>({ETodoApp[language]})</Link>
                       <ul></ul>
+                    </li>
+                    <li>
+                      {EInvertedTriangles[language]}{' '}
+                      <Link to='/portfolio/quiz'>({EQuizApp[language]})</Link>
                     </li>
                     <li>
                       {EAlienEyes[language]}{' '}
