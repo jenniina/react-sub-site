@@ -9,6 +9,7 @@ import { GiAbstract019 } from 'react-icons/gi'
 import { MdOutlineQuiz } from 'react-icons/md'
 import { RiDragMove2Fill, RiTodoLine } from 'react-icons/ri'
 import { GiComb } from 'react-icons/gi'
+import { TbTriangleInverted } from 'react-icons/tb'
 
 import {
   EAbout,
@@ -16,10 +17,12 @@ import {
   EContact,
   EEdit,
   EHairSalonWebsite,
+  EHeroSection,
   ELanguageTitle,
   ELanguages,
   EPortfolio,
   EQuiz,
+  EQuizApp,
   EQuizAppIntro,
   ETestYourKnowledge,
   EToDo,
@@ -33,6 +36,7 @@ import {
 } from '../components/Jokes/interfaces'
 import {
   EAddedNewFeatures,
+  EAddedNewIntroElements,
   EBugFixes,
   EDecember,
   EEdited,
@@ -129,6 +133,13 @@ export default function Home({
                     <li>
                       <strong>{EFebruary[language]}</strong>
                       <ul>
+                        <li>
+                          <Link to='/portfolio/quiz'>
+                            <TbTriangleInverted />
+                            {EHeroSection[language]}:
+                          </Link>{' '}
+                          <i>{EAddedNewIntroElements[language]}</i>
+                        </li>
                         <li>
                           <Link to='/portfolio/salon'>
                             <GiComb />

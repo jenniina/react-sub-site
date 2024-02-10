@@ -1721,3 +1721,39 @@ export enum EHairSalon {
   cs = 'Kadeřnictví',
   fi = 'Parturi-kampaamo',
 }
+export enum ETriangles {
+  en = 'Triangles',
+  es = 'Triángulos',
+  fr = 'Triangles',
+  de = 'Dreiecke',
+  pt = 'Triângulos',
+  cs = 'Trojúhelníky',
+  fi = 'Kolmiot',
+}
+export enum EInvertedTriangles {
+  en = 'Inverted triangles',
+  es = 'Triángulos invertidos',
+  fr = 'Triangles inversés',
+  de = 'Invertierte Dreiecke',
+  pt = 'Triângulos invertidos',
+  cs = 'Obrácené trojúhelníky',
+  fi = 'Käänteiset kolmiot',
+}
+export enum ESquares {
+  en = 'Squares',
+  es = 'Cuadrados',
+  fr = 'Carrés',
+  de = 'Quadrate',
+  pt = 'Quadrados',
+  cs = 'Čtverce',
+  fi = 'Neliöt',
+}
+export enum ESquaresStandingOnTheirCorner {
+  en = 'Squares standing on their corner',
+  es = 'Cuadrados de pie en su esquina',
+  fr = 'Carrés debout sur leur coin',
+  de = 'Quadrate stehen auf ihrer Ecke',
+  pt = 'Quadrados em pé no canto',
+  cs = 'Čtverce stojí na svém rohu',
+  fi = 'Neliöt seisovat kulmassaan',
+}
