@@ -276,7 +276,6 @@ export default function About({
                     <li>
                       {ESquaresStandingOnTheirCorner[language]}{' '}
                       <Link to='/portfolio/todo'>({ETodoApp[language]})</Link>
-                      <ul></ul>
                     </li>
                     <li>
                       {EInvertedTriangles[language]}{' '}
