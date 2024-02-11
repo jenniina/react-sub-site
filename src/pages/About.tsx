@@ -259,6 +259,7 @@ export default function About({
                   }
                 </li>
                 <li>{EPressEscapeToSkipToResetButton[language]}</li>
+                <li>{EKeyboardFocusMoveItemsWithArrowKeys[language]}</li>
                 <li>
                   {EElements[language]}
                   <ul>
@@ -269,14 +270,10 @@ export default function About({
                     <li>
                       {EDraggableBlobs[language]}{' '}
                       <Link to='/portfolio'>({EPortfolio[language]})</Link>
-                      <ul>
-                        <li>{EKeyboardFocusMoveItemsWithArrowKeys[language]}</li>
-                      </ul>
                     </li>
                     <li>
                       {ESquaresStandingOnTheirCorner[language]}{' '}
                       <Link to='/portfolio/todo'>({ETodoApp[language]})</Link>
-                      <ul></ul>
                     </li>
                     <li>
                       {EInvertedTriangles[language]}{' '}
