@@ -207,6 +207,49 @@ export default function Hero({
     return values
   }, [reinitialize])
 
+  const keyDown = (e: React.KeyboardEvent<HTMLLIElement>) => {
+    let attrRight = window
+      .getComputedStyle(e.target as HTMLElement)
+      .getPropertyValue('right')
+    let attrTop = window.getComputedStyle(e.target as HTMLElement).getPropertyValue('top')
+    let movePx = 10
+    switch (e.key) {
+      case 'ArrowLeft':
+        e.preventDefault()
+        ;(e.target as HTMLElement).style.right =
+          parseFloat(attrRight) + Number(movePx) + 'px'
+        attrRight = window
+          .getComputedStyle(e.target as HTMLElement)
+          .getPropertyValue('right')
+        break
+      case 'ArrowRight':
+        e.preventDefault()
+        ;(e.target as HTMLElement).style.right =
+          parseFloat(attrRight) - Number(movePx) + 'px'
+        attrRight = window
+          .getComputedStyle(e.target as HTMLElement)
+          .getPropertyValue('right')
+        break
+      case 'ArrowUp':
+        e.preventDefault()
+        ;(e.target as HTMLElement).style.top = parseFloat(attrTop) - Number(movePx) + 'px'
+        attrTop = window.getComputedStyle(e.target as HTMLElement).getPropertyValue('top')
+        break
+      case 'ArrowDown':
+        e.preventDefault()
+        ;(e.target as HTMLElement).style.top = parseFloat(attrTop) + Number(movePx) + 'px'
+        attrTop = window.getComputedStyle(e.target as HTMLElement).getPropertyValue('top')
+        break
+      case 'Enter':
+      case 'Space':
+        e.preventDefault()
+        removeItem(e.target as HTMLElement)
+        break
+      case 'Escape':
+        if (resetButton.current) resetButton.current.focus()
+    }
+  }
+
   const ItemComponent: FC<{ array: itemProps[]; location: string }> = useCallback(
     ({ array, location }) => {
       {
@@ -299,14 +342,7 @@ export default function Hero({
                       removeItem(e.target as HTMLElement)
                     }}
                     onKeyDown={(e) => {
-                      switch (e.key) {
-                        case 'Enter':
-                        case 'Space':
-                          removeItem(e.target as HTMLElement)
-                          break
-                        case 'Escape':
-                          if (resetButton.current) resetButton.current.focus()
-                      }
+                      keyDown(e)
                     }}
                   >
                     <div style={inner}>
@@ -390,14 +426,7 @@ export default function Hero({
                       removeItem(e.target as HTMLElement)
                     }}
                     onKeyDown={(e) => {
-                      switch (e.key) {
-                        case 'Enter':
-                        case 'Space':
-                          removeItem(e.target as HTMLElement)
-                          break
-                        case 'Escape':
-                          if (resetButton.current) resetButton.current.focus()
-                      }
+                      keyDown(e)
                     }}
                   >
                     <span>
@@ -491,12 +520,7 @@ export default function Hero({
                       ulRef.current?.setAttribute('aria-activedescendant', '')
                     }}
                     onKeyDown={(e) => {
-                      Draggable.keyDown(e, e.target as HTMLElement)
-
-                      switch (e.key) {
-                        case 'Escape':
-                          if (resetButton.current) resetButton.current.focus()
-                      }
+                      keyDown(e)
                     }}
                   >
                     <span>
@@ -582,15 +606,7 @@ export default function Hero({
                       removeItem(e.target as HTMLElement)
                     }}
                     onKeyDown={(e) => {
-                      switch (e.key) {
-                        case 'Enter':
-                        case 'Space':
-                          e.preventDefault()
-                          removeItem(e.target as HTMLElement)
-                          break
-                        case 'Escape':
-                          if (resetButton.current) resetButton.current.focus()
-                      }
+                      keyDown(e)
                     }}
                   >
                     <div style={styleInner} className={`inner ${styles.inner}`}>
@@ -753,14 +769,7 @@ export default function Hero({
                       movingItem(e)
                     }}
                     onKeyDown={(e) => {
-                      switch (e.key) {
-                        case 'Enter':
-                        case 'Space':
-                          removeItem(e.target as HTMLElement)
-                          break
-                        case 'Escape':
-                          if (resetButton.current) resetButton.current.focus()
-                      }
+                      keyDown(e)
                     }}
                   >
                     {spanArray.map((span, index) => {

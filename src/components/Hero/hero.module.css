@@ -120,8 +120,16 @@
 }
 .herocontent .triangle:hover::after,
 .herocontent .triangle:hover::before,
+.herocontent .triangle:focus::after,
+.herocontent .triangle:focus::before,
+.herocontent .triangle:focus-visible::before,
+.herocontent .triangle:focus-visible::after,
 .light .herocontent .triangle:hover::after,
-.light .herocontent .triangle:hover::before {
+.light .herocontent .triangle:hover::before,
+.light .herocontent .triangle:focus::after,
+.light .herocontent .triangle:focus::before,
+.light .herocontent .triangle:focus-visible::before,
+.light .herocontent .triangle:focus-visible::after {
   -webkit-animation-play-state: running;
   -ms-animation-play-state: running;
   -o-animation-play-state: running;
@@ -500,6 +508,19 @@
   -ms-animation: hide-triangle 300ms ease-in forwards;
   -moz-animation: hide-triangle 300ms ease-in forwards;
   animation: hide-triangle 300ms ease-in forwards;
+  -webkit-animation-play-state: running;
+  -ms-animation-play-state: running;
+  -o-animation-play-state: running;
+  -moz-animation-play-state: running;
+  animation-play-state: running;
+  pointer-events: none;
+}
+.herocontent .portfolio.exitItem {
+  -webkit-animation: hide-shrink 300ms ease-in forwards;
+  -o-animation: hide-shrink 300ms ease-in forwards;
+  -ms-animation: hide-shrink 300ms ease-in forwards;
+  -moz-animation: hide-shrink 300ms ease-in forwards;
+  animation: hide-shrink 300ms ease-in forwards;
   -webkit-animation-play-state: running;
   -ms-animation-play-state: running;
   -o-animation-play-state: running;
