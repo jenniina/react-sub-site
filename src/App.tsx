@@ -91,7 +91,7 @@ const App: FC = () => {
 
   const [displayLocation, setDisplayLocation] = useState(location)
 
-  const [transitionPage, setTransistionPage] = useState('fadeIn')
+  const [transitionPage, setTransitionPage] = useState('fadeIn')
 
   const [language, setLanguage] = useLocalStorage<ELanguages>(
     'JokeAppLanguage',
@@ -103,7 +103,7 @@ const App: FC = () => {
       top: 0,
       behavior: 'smooth',
     })
-    if (location.pathname !== displayLocation.pathname) setTransistionPage('fadeOut')
+    if (location.pathname !== displayLocation.pathname) setTransitionPage('fadeOut')
   }, [location])
 
   function getKeyByValue(
@@ -192,7 +192,7 @@ const App: FC = () => {
             className={`${transitionPage} main-content z`}
             onAnimationEnd={() => {
               if (transitionPage === 'fadeOut') {
-                setTransistionPage('fadeIn')
+                setTransitionPage('fadeIn')
                 setDisplayLocation(location)
               }
             }}
