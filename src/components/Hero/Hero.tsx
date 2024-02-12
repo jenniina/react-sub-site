@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, FC, useState, useRef } from 'react'
+import React, { useMemo, useCallback, FC, useState, useRef, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import styles from './hero.module.css'
 import useWindowSize from '../../hooks/useWindowSize'
@@ -51,12 +51,14 @@ export default function Hero({
   const location = useLocation()
 
   //remove the last trailing / then get the last part of the pathname:
-  const page = location.pathname?.replace(/\/$/, '').split('/').pop() ?? ''
+  const page = useMemo(() => {
+    return location.pathname?.replace(/\/$/, '').split('/').pop() ?? ''
+  }, [location])
 
-  //Move items up, down, left or right, depending on the direction they're approached from:
+  //Move items up, down, left or left, depending on the direction they're approached from:
   const movingItem = (e: React.PointerEvent<HTMLElement>) => {
     const target = e.target as HTMLElement
-    const targetRight = window.getComputedStyle(target).getPropertyValue('right')
+    const targetLeft = window.getComputedStyle(target).getPropertyValue('left')
     const targetTop = window.getComputedStyle(target).getPropertyValue('top')
     const from = useEnterDirection(e)
     switch (from) {
@@ -64,13 +66,13 @@ export default function Hero({
         target.style.top = `${parseFloat(targetTop) + 10}px`
         break
       case 'right':
-        target.style.right = `${parseFloat(targetRight) + 10}px`
+        target.style.left = `${parseFloat(targetLeft) - 10}px`
         break
       case 'bottom':
         target.style.top = `${parseFloat(targetTop) - 10}px`
         break
       case 'left':
-        target.style.right = `${parseFloat(targetRight) - 10}px`
+        target.style.left = `${parseFloat(targetLeft) + 10}px`
       default:
     }
   }
@@ -166,9 +168,24 @@ export default function Hero({
     return array
   }, [values])
 
-  const amount = 9
-
   const [reinitialize, setReinitialize] = useState<boolean>(false)
+
+  const [thresholdCrossed, setThresholdCrossed] = useState(false)
+
+  const amount = useMemo(() => {
+    if (windowWidth < 300) return 5
+    else return 9
+  }, [windowWidth])
+
+  useEffect(() => {
+    if (windowWidth < 300 && !thresholdCrossed) {
+      setReinitialize(!reinitialize)
+      setThresholdCrossed(true)
+    } else if (windowWidth >= 300 && thresholdCrossed) {
+      setReinitialize(!reinitialize)
+      setThresholdCrossed(false)
+    }
+  }, [windowWidth, amount])
 
   const handleReset = (e: { preventDefault: () => void }) => {
     e.preventDefault()
@@ -205,30 +222,30 @@ export default function Hero({
       }
     }
     return values
-  }, [reinitialize])
+  }, [amount, reinitialize])
 
   const keyDown = (e: React.KeyboardEvent<HTMLLIElement>) => {
-    let attrRight = window
+    let attrLeft = window
       .getComputedStyle(e.target as HTMLElement)
-      .getPropertyValue('right')
+      .getPropertyValue('left')
     let attrTop = window.getComputedStyle(e.target as HTMLElement).getPropertyValue('top')
     let movePx = 10
     switch (e.key) {
       case 'ArrowLeft':
         e.preventDefault()
-        ;(e.target as HTMLElement).style.right =
-          parseFloat(attrRight) + Number(movePx) + 'px'
-        attrRight = window
+        ;(e.target as HTMLElement).style.left =
+          parseFloat(attrLeft) - Number(movePx) + 'px'
+        attrLeft = window
           .getComputedStyle(e.target as HTMLElement)
-          .getPropertyValue('right')
+          .getPropertyValue('left')
         break
       case 'ArrowRight':
         e.preventDefault()
-        ;(e.target as HTMLElement).style.right =
-          parseFloat(attrRight) - Number(movePx) + 'px'
-        attrRight = window
+        ;(e.target as HTMLElement).style.left =
+          parseFloat(attrLeft) + Number(movePx) + 'px'
+        attrLeft = window
           .getComputedStyle(e.target as HTMLElement)
-          .getPropertyValue('right')
+          .getPropertyValue('left')
         break
       case 'ArrowUp':
         e.preventDefault()
@@ -260,9 +277,16 @@ export default function Hero({
             role='listbox'
             aria-labelledby={`description`}
             aria-activedescendant=''
-            className={`${styles[location]} ${styles.herocontent}`}
+            className={`${styles.herocontent} ${styles[location] ?? ''} ${
+              //In the case of using the blob feature for a page, add it here:
+              location === LOCATION.PORTFOLIO ||
+              location === LOCATION.BLOBAPP ||
+              location === LOCATION.DND
+                ? styles.blob
+                : ''
+            }`}
             style={
-              //In the case of using the blob feature, add here:
+              //In the case of using the blob feature for a page, add it here:
               location === LOCATION.PORTFOLIO ||
               location === LOCATION.BLOBAPP ||
               location === LOCATION.DND
@@ -283,7 +307,7 @@ export default function Hero({
                   top: touchDevice
                     ? `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.3}))`
                     : `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.9}))`,
-                  right: `calc(1% + calc(${item.i} * 1vw * ${item.e}))`,
+                  left: `calc(1% + calc(${item.i} * 1vw * ${item.e}))`,
                   width:
                     windowWidth < windowHeight
                       ? `${item.size / dividedBy}vh`
@@ -374,7 +398,7 @@ export default function Hero({
                 const style: React.CSSProperties = {
                   position: 'absolute',
                   top: `calc(3vh + calc(1vh * ${item.e * 3} * ${item.size / 6}))`,
-                  right: `calc(2% + ${item.i / 1.1} * 1vw * ${item.e})`,
+                  left: `calc(2% + ${item.i / 1.1} * 1vw * ${item.e})`,
                   backgroundColor: `transparent`,
                   color: `${item.color}`,
                   ['--i' as string]: `${item.i}`,
@@ -443,7 +467,7 @@ export default function Hero({
                 const style: React.CSSProperties = {
                   position: 'absolute',
                   top: `calc( ${item.e} * 1vh  * ${item.size / 2.4})`,
-                  right: `calc(2% + ${item.i * item.e} * 1vw )`,
+                  left: `calc(2% + ${item.i * item.e} * 1vw )`,
                   backgroundColor: `${item.color}`,
                   color: `${item.color}`, //for currentColor
                   ['--i' as string]: `${item.i}`,
@@ -535,7 +559,7 @@ export default function Hero({
                   top: touchDevice
                     ? `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.3}))`
                     : `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.9}))`,
-                  right: `calc(1% + calc(${item.i} * 1vw * ${item.e}))`,
+                  left: `calc(1% + calc(${item.i} * 1vw * ${item.e}))`,
                   backgroundColor: `transparent`,
                   color: `${item.color}`,
                   ['--i' as string]: `${item.i}`,
@@ -561,7 +585,7 @@ export default function Hero({
                 const styleInner: React.CSSProperties = {
                   position: 'absolute',
                   top: `0`,
-                  right: `0`,
+                  left: `0`,
                   backgroundColor: `transparent`,
                   width: '100%',
                   height: '100%',
@@ -623,7 +647,7 @@ export default function Hero({
                 //   top: touchDevice
                 //     ? `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.3}))`
                 //     : `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.9}))`,
-                //   right: `calc(1% + calc(${item.i} * 1vw * ${item.e}))`,
+                //   left: `calc(1% + calc(${item.i} * 1vw * ${item.e}))`,
                 //   backgroundColor: `transparent`,
                 //   color: `${item.color}`,
                 //   ['--i' as string]: `${item.i}`,
@@ -649,7 +673,7 @@ export default function Hero({
                 // const styleInner: React.CSSProperties = {
                 //   position: 'absolute',
                 //   top: `0`,
-                //   right: `0`,
+                //   left: `0`,
                 //   backgroundColor: `transparent`,
                 //   width: '100%',
                 //   height: '100%',
@@ -716,7 +740,7 @@ export default function Hero({
 
                 // ELSE
 
-                const border = `calc(0.6vw * ${item.size})`
+                const border = `clamp(40px, calc(0.6vw * ${item.size}), 200px)`
 
                 const style: React.CSSProperties = {
                   ['--rotate' as string]: `${item.rotation}deg`,
@@ -726,10 +750,8 @@ export default function Hero({
                   ['--border' as string]: border,
                   borderWidth: border,
                   position: 'absolute',
-                  top: touchDevice
-                    ? `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.3}))`
-                    : `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.9}))`,
-                  right: `calc(1% + calc(${item.i} * 1vw * ${item.e}))`,
+                  top: `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.3}))`,
+                  left: `calc(${item.i} * 1vw * ${item.e})`,
                   width: 0,
                   height: 0,
                   opacity: `0.${item.size > 5 ? 5 : Math.ceil(item.size)}`,
@@ -776,7 +798,7 @@ export default function Hero({
                       const style: React.CSSProperties = {
                         position: 'absolute',
                         top: `calc(${border} * -1.1)`,
-                        right: `calc(${border} * -1)`,
+                        left: `calc(${border} * -1)`,
                         color: `${item.color}`,
                         ['--color' as string]: `${span.color}`,
                         ['--color2' as string]: `${item.color}`,

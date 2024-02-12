@@ -37,12 +37,12 @@ function NavPortfolio({ language }: { language: ELanguages }) {
 
   function leftScroll() {
     if (scrollHorizontal.current && windowWidth > breakpointSmall)
-      scrollHorizontal.current.scrollLeft -= 150
+      scrollHorizontal.current.scrollLeft -= 100
     else if (scrollHorizontal.current) scrollHorizontal.current.scrollLeft -= 40
   }
   function rightScroll() {
     if (scrollHorizontal.current && windowWidth > breakpointSmall)
-      scrollHorizontal.current.scrollLeft += 150
+      scrollHorizontal.current.scrollLeft += 100
     else if (scrollHorizontal.current) scrollHorizontal.current.scrollLeft += 40
   }
 
