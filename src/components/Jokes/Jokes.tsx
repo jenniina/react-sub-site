@@ -64,7 +64,6 @@ import {
   IBlacklistedJoke,
 } from '../../interfaces'
 import { useSelector } from 'react-redux'
-import useLocalStorage from '../../hooks/useStorage'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import Notification from './components/Notification'

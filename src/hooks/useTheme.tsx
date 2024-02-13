@@ -17,8 +17,11 @@ export function ThemeProvider({ children }: React.ReactPortal) {
   //const [lightTheme, setLightTheme] = useState(false)
   const prefersLight = useMediaQuery('(prefers-color-scheme: light)')
 
+  const isLocalhost =
+    window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+
   const [lightTheme, setLightTheme] = useLocalStorage(
-    'useLightMode',
+    `${isLocalhost ? 'local-' : ''}useLightMode`,
     prefersLight ? true : false
   )
 

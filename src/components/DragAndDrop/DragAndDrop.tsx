@@ -6,7 +6,6 @@ import { CardsContainer } from './components/CardsContainer'
 import styles from './dragAndDrop.module.css'
 import useRandomMinMax from '../../hooks/useRandomMinMax'
 import { ELanguages } from '../../interfaces'
-import useLocalStorage from '../../hooks/useStorage'
 
 const typesItem: Status[] = ['good', 'neutral', 'bad']
 const backgroundLightness: Background[] = ['light', 'dark']
@@ -21,9 +20,14 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
 
   const statuses: Status[] = ['good', 'neutral', 'bad']
 
+  const isLocalhost =
+    window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+
   const storedData = statuses
     .map((status) => {
-      const item = window.localStorage.getItem(`DnD-${status}`)
+      const item = window.localStorage.getItem(
+        `${isLocalhost ? 'local-' : ''}DnD-${status}`
+      )
       return item ? JSON.parse(item) : []
     })
     .flat()
