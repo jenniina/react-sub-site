@@ -263,8 +263,8 @@ const App: FC = () => {
                   element={
                     <GraphQLPage
                       language={language}
-                      heading={EGraphQLSite[language]}
-                      text=''
+                      heading='GraphQL'
+                      text={EGraphQLSite[language]}
                       type='page subpage'
                     />
                   }

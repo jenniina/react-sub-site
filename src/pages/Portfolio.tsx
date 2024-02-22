@@ -94,7 +94,7 @@ export default function Portfolio({
               <li>
                 <Link to='/portfolio/graphql'>
                   <GrGraphQl />
-                  <span>{EGraphQLSite[language]}</span>
+                  <span>GraphQL</span>
                 </Link>
                 <p>{EGraphQLSite[language]}</p>
               </li>

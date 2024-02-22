@@ -173,7 +173,8 @@ button.togglemenu[aria-expanded='true'] .menupath {
 }
 .menualt .menu-container,
 .menu-container,
-.toolbar {
+.toolbar,
+.menualt button.settings {
   transition-property: transform, opacity;
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
@@ -351,6 +352,7 @@ a.link:visited:not(.active) > *,
   font-weight: 500;
   padding-top: 0.5em;
   padding-bottom: 0.5em;
+  text-decoration: none;
 }
 a.link,
 a.link > *,
@@ -784,7 +786,16 @@ a.link:visited:not(.active):focus > *,
     left: 0em;
     right: 0em;
   }
-
+  .menualt .menu-container ul li a:hover,
+  .menualt .menu-container ul li a:focus,
+  .menualt button.settings:hover,
+  .menualt button.settings:focus {
+    -webkit-transform: translate(8px, -3px) scale(1.1);
+    -ms-transform: translate(8px, -3px) scale(1.1);
+    -o-transform: translate(8px, -3px) scale(1.1);
+    -moz-transform: translate(8px, -3px) scale(1.1);
+    transform: translate(8px, -3px) scale(1.1);
+  }
   .menu-container ul li a svg,
   .main-header button.search svg,
   .main-header button.settings svg {

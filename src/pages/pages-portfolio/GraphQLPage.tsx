@@ -3,6 +3,7 @@ import Accordion from '../../components/Accordion/Accordion'
 import Hero from '../../components/Hero/Hero'
 import { EDependencies, EFeatures, ELanguages } from '../../interfaces'
 import { ESalonIntro1, ESalonIntro2, ESalonIntro3 } from '../../interfaces/salon'
+import { ESiteMayBeSlow } from '../../interfaces/welcome'
 
 export default function GraphQLPage({
   heading,
@@ -235,7 +236,9 @@ export default function GraphQLPage({
               >
                 <p>
                   <a href='https://jenniina-books-list-app.onrender.com/'>
-                    Book App &raquo;
+                    Book App{' '}
+                    <span style={{ fontSize: '75%' }}>({ESiteMayBeSlow[language]})</span>{' '}
+                    &raquo;
                   </a>
                 </p>
                 <p>
