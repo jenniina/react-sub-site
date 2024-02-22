@@ -92,7 +92,7 @@ function NavPortfolio({ language }: { language: ELanguages }) {
                 : ''
             }
           >
-            <NavLink to='/portfolio/graphql'>{EGraphQLSite[language]}</NavLink>
+            <NavLink to='/portfolio/graphql'>GraphQL</NavLink>
           </li>
           <li>
             <NavLink to='/portfolio/salon'>{EHairSalon[language]}</NavLink>

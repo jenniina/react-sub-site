@@ -169,3 +169,12 @@ export enum ENewPortfolioItem {
   cs = 'Nová položka portfolia',
   fi = 'Uusi portfolio-sivu',
 }
+export enum ESiteMayBeSlow {
+  en = 'Site may be slow',
+  es = 'El sitio puede ser lento',
+  fr = 'Le site peut être lent',
+  de = 'Website kann langsam sein',
+  pt = 'Site pode estar lento',
+  cs = 'Stránka může být pomalá',
+  fi = 'Sivusto saattaa olla hidas',
+}
