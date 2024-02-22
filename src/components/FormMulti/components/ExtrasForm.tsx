@@ -55,7 +55,12 @@ export function ExtrasForm({
   updateFields,
   language,
 }: ExtrasFormProps) {
-  const [values, setValues] = useLocalStorage<SelectOption[]>('multivalues', [])
+  const isLocalhost =
+    window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  const [values, setValues] = useLocalStorage<SelectOption[]>(
+    `${isLocalhost ? 'local-' : ''}multivalues`,
+    []
+  )
 
   const options: SelectOption[] = [
     { label: EYes[language], value: EYes[language] },

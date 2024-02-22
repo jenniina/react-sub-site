@@ -80,7 +80,7 @@ export default function JokesPage({
   }
 
   useEffect(() => {
-    const languageFromStorage = localStorage.getItem('language')
+    const languageFromStorage = localStorage.getItem('JokeAppLanguage')
     if (languageFromStorage) {
       setLanguage(JSON.parse(languageFromStorage))
     }

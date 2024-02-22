@@ -80,9 +80,15 @@ const QuizFinished = ({ language }: Props) => {
     }
   }, [])
 
+  const isLocalhost =
+    window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+
   useEffect(() => {
     if ((!user && points !== 0 && finalSeconds !== 0) || finalSeconds === undefined)
-      localStorage.setItem('quiz-highscores', JSON.stringify(highscores))
+      localStorage.setItem(
+        `${isLocalhost ? 'local-' : ''}quiz-highscores`,
+        JSON.stringify(highscores)
+      )
     if (
       (user?._id && points !== 0 && finalSeconds !== 0) ||
       (user?._id && finalSeconds !== undefined)

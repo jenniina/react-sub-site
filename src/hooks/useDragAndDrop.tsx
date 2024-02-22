@@ -25,7 +25,9 @@ export const useDragAndDrop = <T extends Item, S extends string>(
   const storageHooks = statuses.map((status) => {
     const items = updatedItems.filter((item) => item?.status === status)
 
-    return useLocalStorage(`DnD-${status}`, items)
+    const isLocalhost =
+      window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    return useLocalStorage(`${isLocalhost ? 'local-' : ''}DnD-${status}`, items)
   })
 
   const [listItemsByStatus, setListItemsByStatus] = useState(() =>

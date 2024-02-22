@@ -71,36 +71,28 @@ const QuizStart = ({
     dispatch(initializeUser())
   }, [])
 
+  const isLocalhost =
+    window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+
   useEffect(() => {
     if (user?._id && points !== 0 && finalSeconds !== 0) {
       dispatch(getUserQuiz(user._id)).then((r) => {
         if (r !== null) {
           setHighscores(r.highscores)
-        } else if (r === null && localStorage.getItem('quiz-highscores')) {
+        } else if (
+          r === null &&
+          localStorage.getItem(`${isLocalhost ? 'local-' : ''}quiz-highscores`)
+        ) {
           const highscoresLocal = JSON.parse(
-            localStorage.getItem('quiz-highscores') as string
+            localStorage.getItem(
+              `${isLocalhost ? 'local-' : ''}quiz-highscores`
+            ) as string
           )
           dispatch(addQuiz({ highscores: highscoresLocal, user: user._id }))
         }
       })
     }
   }, [user])
-
-  const handleRegister = (e: React.FormEvent<HTMLFormElement>): void => {
-    e.preventDefault()
-    if (password !== confirmPassword) {
-      dispatch(notify(EPasswordsDoNotMatch[language], true, 8))
-      return
-    }
-    dispatch(createUser({ name, username, password, language, verified: false }))
-      .then(async () => {
-        dispatch(notify(ERegistrationSuccesful[language], false, 8))
-      })
-      .catch((err) => {
-        console.error(err)
-        dispatch(notify(`${EError[language]}: ${err.message}`, true, 8))
-      })
-  }
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     dispatch(selectMode((e.target as HTMLButtonElement).value))

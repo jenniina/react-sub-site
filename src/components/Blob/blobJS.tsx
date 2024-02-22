@@ -82,8 +82,11 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
   const backgroundColor: BackgroundColor[][] = []
 
-  const localStorageBackground = `BackgroundColor${[d]}`
-  const localStorageDraggables = `Draggables${[d]}`
+  const isLocalhost =
+    window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+
+  const localStorageBackground = `${isLocalhost ? 'local-' : ''}BackgroundColor${[d]}`
+  const localStorageDraggables = `${isLocalhost ? 'local-' : ''}Draggables${[d]}`
 
   backgroundColor[d] = loadBackground()
 

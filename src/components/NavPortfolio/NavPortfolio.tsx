@@ -5,6 +5,7 @@ import {
   EBlob,
   ECustomSelect,
   EDragAndDrop,
+  EGraphQLSite,
   EHairSalon,
   EJokes,
   ELanguages,
@@ -91,6 +92,9 @@ function NavPortfolio({ language }: { language: ELanguages }) {
                 : ''
             }
           >
+            <NavLink to='/portfolio/graphql'>{EGraphQLSite[language]}</NavLink>
+          </li>
+          <li>
             <NavLink to='/portfolio/salon'>{EHairSalon[language]}</NavLink>
           </li>
           <li>

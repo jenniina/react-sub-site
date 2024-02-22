@@ -14,6 +14,7 @@ import TodoPage from './pages/pages-portfolio/TodoPage'
 import CustomSelectPage from './pages/pages-portfolio/CustomSelectPage'
 import NavPortfolio from './components/NavPortfolio/NavPortfolio'
 import FormPage from './pages/pages-portfolio/FormPage'
+import GraphQLPage from './pages/pages-portfolio/GraphQLPage'
 import { Footer } from './components/Footer/Footer'
 import { useTheme } from './hooks/useTheme'
 import { useScrollbarWidth } from './hooks/useScrollbarWidth'
@@ -36,6 +37,7 @@ import {
   EBlobs,
   EBlobAppSlogan,
   EHairSalonWebsite,
+  EGraphQLSite,
 } from './interfaces'
 import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
 import { isTouchDevice } from './hooks/useDraggable'
@@ -91,7 +93,7 @@ const App: FC = () => {
 
   const [displayLocation, setDisplayLocation] = useState(location)
 
-  const [transitionPage, setTransistionPage] = useState('fadeIn')
+  const [transitionPage, setTransitionPage] = useState('fadeIn')
 
   const [language, setLanguage] = useLocalStorage<ELanguages>(
     'JokeAppLanguage',
@@ -103,7 +105,7 @@ const App: FC = () => {
       top: 0,
       behavior: 'smooth',
     })
-    if (location.pathname !== displayLocation.pathname) setTransistionPage('fadeOut')
+    if (location.pathname !== displayLocation.pathname) setTransitionPage('fadeOut')
   }, [location])
 
   function getKeyByValue(
@@ -192,7 +194,7 @@ const App: FC = () => {
             className={`${transitionPage} main-content z`}
             onAnimationEnd={() => {
               if (transitionPage === 'fadeOut') {
-                setTransistionPage('fadeIn')
+                setTransitionPage('fadeIn')
                 setDisplayLocation(location)
               }
             }}
@@ -253,6 +255,17 @@ const App: FC = () => {
                       type='page'
                       text='ReactJS'
                       language={language}
+                    />
+                  }
+                />
+                <Route
+                  path='/portfolio/graphql'
+                  element={
+                    <GraphQLPage
+                      language={language}
+                      heading={EGraphQLSite[language]}
+                      text=''
+                      type='page subpage'
                     />
                   }
                 />

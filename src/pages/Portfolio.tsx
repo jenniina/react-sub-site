@@ -8,6 +8,7 @@ import {
   EDragAndDrop,
   EDragAndDropAppIntro,
   EDraggableBlobs,
+  EGraphQLSite,
   EHairSalonWebsite,
   EJokesAppIntro,
   ELanguages,
@@ -31,6 +32,7 @@ import { BiSelectMultiple } from 'react-icons/bi'
 import { RiTodoLine, RiDragDropLine, RiDragMove2Fill } from 'react-icons/ri'
 import { GiAbstract019, GiComb } from 'react-icons/gi'
 import { MdOutlineQuiz } from 'react-icons/md'
+import { GrGraphQl } from 'react-icons/gr'
 import { ETheComediansCompanion } from '../components/Jokes/interfaces'
 import { ETodoApp } from '../components/Todo/interfaces'
 import { ETryDraggingTheBlobs } from '../interfaces/blobs'
@@ -89,6 +91,13 @@ export default function Portfolio({
               </ul>
             </div>
             <ul className={`${styles.list}`}>
+              <li>
+                <Link to='/portfolio/graphql'>
+                  <GrGraphQl />
+                  <span>{EGraphQLSite[language]}</span>
+                </Link>
+                <p>{EGraphQLSite[language]}</p>
+              </li>
               <li>
                 <Link to='/portfolio/salon'>
                   <GiComb />
