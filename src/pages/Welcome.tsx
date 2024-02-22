@@ -16,6 +16,7 @@ import {
   EBlobs,
   EContact,
   EEdit,
+  EGraphQLSite,
   EHairSalonWebsite,
   EHeroSection,
   ELanguageTitle,
@@ -41,6 +42,7 @@ import {
   EDecember,
   EEdited,
   EFebruary,
+  ENewPortfolioItem,
   ENewest,
   EOctober,
   EOptimizing,
@@ -51,6 +53,7 @@ import {
   ETasksCanBeEdited,
   ETasksCanBeReorganizedByDraggingAndDropping,
 } from '../interfaces/todo'
+import { GrGraphQl } from 'react-icons/gr'
 
 export default function Home({
   heading,
@@ -133,6 +136,13 @@ export default function Home({
                     <li>
                       <strong>{EFebruary[language]}</strong>
                       <ul>
+                        <li>
+                          <Link to='/portfolio/graphql'>
+                            <GrGraphQl />
+                            <span>{EGraphQLSite[language]}</span>
+                          </Link>
+                          <i>{ENewPortfolioItem[language]}</i>
+                        </li>
                         <li>
                           <Link to='/portfolio/quiz'>
                             <TbTriangleInverted />

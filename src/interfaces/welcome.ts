@@ -160,3 +160,12 @@ export enum EAddedNewIntroElements {
   cs = 'Přidány nové úvodní prvky',
   fi = 'Lisätty uusia introlementtejä',
 }
+export enum ENewPortfolioItem {
+  en = 'New portfolio item',
+  es = 'Nuevo elemento de cartera',
+  fr = 'Nouvel élément de portefeuille',
+  de = 'Neues Portfolio-Element',
+  pt = 'Novo item de portfólio',
+  cs = 'Nová položka portfolia',
+  fi = 'Uusi portfolio-sivu',
+}

@@ -1757,3 +1757,12 @@ export enum ESquaresStandingOnTheirCorner {
   cs = 'Čtverce stojí na svém rohu',
   fi = 'Neliöt seisovat kulmassaan',
 }
+export enum EGraphQLSite {
+  en = 'GraphQL site',
+  es = 'Sitio de GraphQL',
+  fr = 'Site GraphQL',
+  de = 'GraphQL-Website',
+  pt = 'Site GraphQL',
+  cs = 'GraphQL web',
+  fi = 'GraphQL-sivusto',
+}
