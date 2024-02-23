@@ -64,6 +64,14 @@
   background-color: var(--color-primary-2);
   opacity: 0.9;
   border-bottom: solid 1px var(--color-primary-1);
+  -webkit-box-shadow: inset 0 -0.3rem 2.5rem -3rem var(--color-primary-19),
+    0 0.5rem 2rem -1.5rem black;
+  -o-box-shadow: inset 0 -0.3rem 2.5rem -3rem var(--color-primary-19),
+    0 0.5rem 2rem -1.5rem black;
+  -ms-box-shadow: inset 0 -0.3rem 2.5rem -3rem var(--color-primary-19),
+    0 0.5rem 2rem -1.5rem black;
+  -moz-box-shadow: inset 0 -0.3rem 2.5rem -3rem var(--color-primary-19),
+    0 0.5rem 2rem -1.5rem black;
   box-shadow: inset 0 -0.3rem 2.5rem -3rem var(--color-primary-19),
     0 0.5rem 2rem -1.5rem black;
 }
@@ -670,6 +678,9 @@ a.link:visited:not(.active):focus > *,
   /* .main-header:not(.menualt) .menu-container .Welcome .link span {
     clip: rect(1px, 1px, 1px, 1px);
     -webkit-clip-path: inset(50%);
+    -moz-clip-path: inset(50%);
+    -ms-clip-path: inset(50%);
+    -o-clip-path: inset(50%);
     clip-path: inset(50%);
     position: absolute;
     width: 1px;
@@ -883,7 +894,19 @@ a.link:visited:not(.active):focus > *,
     -o-transform-origin: top;
     -moz-transform-origin: top;
     transform-origin: top;
-    /* text-shadow: 1px 1px var(--color-primary-2),
+    /* -webkit-text-shadow: 1px 1px var(--color-primary-2),
+      -1px -1px var(--color-primary-2), 0 0 1em var(--color-primary-2),
+      0 0 0.3em var(--color-primary-2);
+    -moz-text-shadow: 1px 1px var(--color-primary-2),
+      -1px -1px var(--color-primary-2), 0 0 1em var(--color-primary-2),
+      0 0 0.3em var(--color-primary-2);
+    -o-text-shadow: 1px 1px var(--color-primary-2),
+      -1px -1px var(--color-primary-2), 0 0 1em var(--color-primary-2),
+      0 0 0.3em var(--color-primary-2);
+    -ms-text-shadow: 1px 1px var(--color-primary-2),
+      -1px -1px var(--color-primary-2), 0 0 1em var(--color-primary-2),
+      0 0 0.3em var(--color-primary-2);
+    text-shadow: 1px 1px var(--color-primary-2),
       -1px -1px var(--color-primary-2), 0 0 1em var(--color-primary-2),
       0 0 0.3em var(--color-primary-2); */
   }
@@ -951,6 +974,10 @@ button.dlt-btn {
   transition-timing-function: ease-in-out;
 }
 button.dlt-btn:focus {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
   box-shadow: none;
   outline: none;
 }
@@ -1020,11 +1047,19 @@ button.dlt-btn:focus {
 
 .dlt-btn.active .dlt-btn-inner-left::before /*Crescent Moon*/ {
   right: 1.0625em;
+  -webkit-box-shadow: 0.3125em 0.3125em 0 0 white;
+  -o-box-shadow: 0.3125em 0.3125em 0 0 white;
+  -ms-box-shadow: 0.3125em 0.3125em 0 0 white;
+  -moz-box-shadow: 0.3125em 0.3125em 0 0 white;
   box-shadow: 0.3125em 0.3125em 0 0 white;
   background: transparent;
   outline-color: transparent;
 }
 .dlt-btn.active:hover .dlt-btn-inner-left::before  /*Crescent Moon*/ {
+  -webkit-box-shadow: 0.8125em 0.8125em 0 0 var(--color-secondary-6);
+  -o-box-shadow: 0.8125em 0.8125em 0 0 var(--color-secondary-6);
+  -ms-box-shadow: 0.8125em 0.8125em 0 0 var(--color-secondary-6);
+  -moz-box-shadow: 0.8125em 0.8125em 0 0 var(--color-secondary-6);
   box-shadow: 0.8125em 0.8125em 0 0 var(--color-secondary-6);
   background-color: var(--color-primary-2);
   -webkit-transform: translateX(-0.7em) rotate(-45deg);
@@ -1373,6 +1408,9 @@ button.dlt-btn:focus {
   .menualt .menu-container ul a span {
     clip: rect(1px, 1px, 1px, 1px);
     -webkit-clip-path: inset(50%);
+    -moz-clip-path: inset(50%);
+    -ms-clip-path: inset(50%);
+    -o-clip-path: inset(50%);
     clip-path: inset(50%);
     position: absolute;
     width: 1px;

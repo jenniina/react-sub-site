@@ -33,10 +33,26 @@
 }
 .hero h1 {
   -webkit-text-stroke: 1px var(--color-primary-1);
+  -moz-text-stroke: 1px var(--color-primary-1);
+  -ms-text-stroke: 1px var(--color-primary-1);
+  -o-text-stroke: 1px var(--color-primary-1);
   text-stroke: 1px var(--color-primary-1);
+  -webkit-text-shadow: 1px 1px 1px var(--color-primary-1),
+    0 0 0.1em var(--color-primary-1);
+  -moz-text-shadow: 1px 1px 1px var(--color-primary-1), 0 0 0.1em var(--color-primary-1);
+  -ms-text-shadow: 1px 1px 1px var(--color-primary-1), 0 0 0.1em var(--color-primary-1);
+  -o-text-shadow: 1px 1px 1px var(--color-primary-1), 0 0 0.1em var(--color-primary-1);
   text-shadow: 1px 1px 1px var(--color-primary-1), 0 0 0.1em var(--color-primary-1);
 }
 .hero p {
+  -webkit-text-shadow: 1px 1px 1px var(--color-primary-1), 0 0 1em var(--color-primary-1),
+    0 0 0.3em var(--color-primary-1);
+  -moz-text-shadow: 1px 1px 1px var(--color-primary-1), 0 0 1em var(--color-primary-1),
+    0 0 0.3em var(--color-primary-1);
+  -ms-text-shadow: 1px 1px 1px var(--color-primary-1), 0 0 1em var(--color-primary-1),
+    0 0 0.3em var(--color-primary-1);
+  -o-text-shadow: 1px 1px 1px var(--color-primary-1), 0 0 1em var(--color-primary-1),
+    0 0 0.3em var(--color-primary-1);
   text-shadow: 1px 1px 1px var(--color-primary-1), 0 0 1em var(--color-primary-1),
     0 0 0.3em var(--color-primary-1);
   font-size: 1.1em;
@@ -59,6 +75,10 @@
 }
 .herocontent .triangle {
   --time: 800ms;
+  -webkit-clip-path: polygon(50% 45%, 105% 98%, 105% 160%, -5% 160%, -5% 98%);
+  -moz-clip-path: polygon(50% 45%, 105% 98%, 105% 160%, -5% 160%, -5% 98%);
+  -ms-clip-path: polygon(50% 45%, 105% 98%, 105% 160%, -5% 160%, -5% 98%);
+  -o-clip-path: polygon(50% 45%, 105% 98%, 105% 160%, -5% 160%, -5% 98%);
   clip-path: polygon(50% 45%, 105% 98%, 105% 160%, -5% 160%, -5% 98%);
   -webkit-transform: rotate(var(--rotate)) scaleX(0.77);
   -moz-transform: rotate(var(--rotate)) scaleX(0.77);
@@ -68,6 +88,14 @@
   border-style: solid;
   border-color: transparent;
   border-bottom-color: var(--color);
+  -webkit-box-shadow: 0 calc(0.3vw * var(--s)) calc(0.3vw * var(--s))
+    calc(-0.33vw * var(--s)) var(--color);
+  -moz-box-shadow: 0 calc(0.3vw * var(--s)) calc(0.3vw * var(--s))
+    calc(-0.33vw * var(--s)) var(--color);
+  -ms-box-shadow: 0 calc(0.3vw * var(--s)) calc(0.3vw * var(--s)) calc(-0.33vw * var(--s))
+    var(--color);
+  -o-box-shadow: 0 calc(0.3vw * var(--s)) calc(0.3vw * var(--s)) calc(-0.33vw * var(--s))
+    var(--color);
   box-shadow: 0 calc(0.3vw * var(--s)) calc(0.3vw * var(--s)) calc(-0.33vw * var(--s))
     var(--color);
 }
@@ -83,6 +111,10 @@
   left: calc(var(--border) * -1);
   width: calc(var(--border) * 2);
   height: calc(var(--border));
+  -webkit-box-shadow: 0 3vw 2.5vw -2.9vw var(--color);
+  -moz-box-shadow: 0 3vw 2.5vw -2.9vw var(--color);
+  -ms-box-shadow: 0 3vw 2.5vw -2.9vw var(--color);
+  -o-box-shadow: 0 3vw 2.5vw -2.9vw var(--color);
   box-shadow: 0 3vw 2.5vw -2.9vw var(--color);
   -webkit-animation: box-shadow var(--time) linear infinite;
   -o-animation: box-shadow var(--time) linear infinite;
@@ -97,10 +129,18 @@
 }
 .light .herocontent .triangle {
   border-bottom-color: var(--color2);
+  -webkit-box-shadow: 0 1vw 2.5vw -2.9vw var(--color2);
+  -moz-box-shadow: 0 1vw 2.5vw -2.9vw var(--color2);
+  -ms-box-shadow: 0 1vw 2.5vw -2.9vw var(--color2);
+  -o-box-shadow: 0 1vw 2.5vw -2.9vw var(--color2);
   box-shadow: 0 1vw 2.5vw -2.9vw var(--color2);
 }
 .light .herocontent .triangle::after,
 .light .herocontent .triangle::before {
+  -webkit-box-shadow: 0 4vw 2.5vw -2.9vw var(--color2);
+  -moz-box-shadow: 0 4vw 2.5vw -2.9vw var(--color2);
+  -ms-box-shadow: 0 4vw 2.5vw -2.9vw var(--color2);
+  -o-box-shadow: 0 4vw 2.5vw -2.9vw var(--color2);
   box-shadow: 0 4vw 2.5vw -2.9vw var(--color2);
   -webkit-animation: box-shadow-light var(--time) linear infinite;
   -o-animation: box-shadow-light var(--time) linear infinite;
@@ -154,6 +194,34 @@
   pointer-events: all;
 }
 .light .herocontent .bubbles {
+  -webkit-box-shadow: inset 0 0 calc(var(--s2) * 2 * 1px) calc(var(--s2) / -3 * 1px)
+      currentColor,
+    inset calc(var(--s2) * -1px) calc(var(--s2) * -1px) calc(var(--s2) * 2 * 1px)
+      calc(var(--s2) * -1.5 * 1px) lime,
+    inset calc(var(--s2) * 4 * 1px) calc(var(--s2) * 4 * 1px) calc(var(--s2) * 3 * 1px)
+      calc(var(--s2) * -6 * 1px) hotpink,
+    0 0 10px -5px white, 0 0 5px -1px currentColor;
+  -moz-box-shadow: inset 0 0 calc(var(--s2) * 2 * 1px) calc(var(--s2) / -3 * 1px)
+      currentColor,
+    inset calc(var(--s2) * -1px) calc(var(--s2) * -1px) calc(var(--s2) * 2 * 1px)
+      calc(var(--s2) * -1.5 * 1px) lime,
+    inset calc(var(--s2) * 4 * 1px) calc(var(--s2) * 4 * 1px) calc(var(--s2) * 3 * 1px)
+      calc(var(--s2) * -6 * 1px) hotpink,
+    0 0 10px -5px white, 0 0 5px -1px currentColor;
+  -ms-box-shadow: inset 0 0 calc(var(--s2) * 2 * 1px) calc(var(--s2) / -3 * 1px)
+      currentColor,
+    inset calc(var(--s2) * -1px) calc(var(--s2) * -1px) calc(var(--s2) * 2 * 1px)
+      calc(var(--s2) * -1.5 * 1px) lime,
+    inset calc(var(--s2) * 4 * 1px) calc(var(--s2) * 4 * 1px) calc(var(--s2) * 3 * 1px)
+      calc(var(--s2) * -6 * 1px) hotpink,
+    0 0 10px -5px white, 0 0 5px -1px currentColor;
+  -o-box-shadow: inset 0 0 calc(var(--s2) * 2 * 1px) calc(var(--s2) / -3 * 1px)
+      currentColor,
+    inset calc(var(--s2) * -1px) calc(var(--s2) * -1px) calc(var(--s2) * 2 * 1px)
+      calc(var(--s2) * -1.5 * 1px) lime,
+    inset calc(var(--s2) * 4 * 1px) calc(var(--s2) * 4 * 1px) calc(var(--s2) * 3 * 1px)
+      calc(var(--s2) * -6 * 1px) hotpink,
+    0 0 10px -5px white, 0 0 5px -1px currentColor;
   box-shadow: inset 0 0 calc(var(--s2) * 2 * 1px) calc(var(--s2) / -3 * 1px) currentColor,
     inset calc(var(--s2) * -1px) calc(var(--s2) * -1px) calc(var(--s2) * 2 * 1px)
       calc(var(--s2) * -1.5 * 1px) lime,
@@ -172,6 +240,38 @@
   -o-animation-play-state: paused;
   -ms-animation-play-state: paused;
   animation-play-state: paused;
+  -webkit-box-shadow: inset 0 calc(var(--s2) * -6 * 1px) calc(var(--s2) * 6 * 1px)
+      calc(var(--s2) * -8 * 1px) currentColor,
+    inset calc(var(--s2) * -3 * 1px) calc(var(--s2) * -3 * 1px) calc(var(--s2) * 2 * 1px)
+      calc(var(--s2) * -4 * 1px) green,
+    inset 0 0 calc(var(--s2) * 2 * 1px) calc(var(--s2) / -2 * 1px) currentColor,
+    inset calc(var(--s2) * 4 * 1px) calc(var(--s2) * 4 * 1px) calc(var(--s2) * 3 * 1px)
+      calc(var(--s2) * -6 * 1px) hotpink,
+    0 0 10px -5px white, 0 0 12px -3px currentColor, 0 0 30px -10px currentColor;
+  -o-box-shadow: inset 0 calc(var(--s2) * -6 * 1px) calc(var(--s2) * 6 * 1px)
+      calc(var(--s2) * -8 * 1px) currentColor,
+    inset calc(var(--s2) * -3 * 1px) calc(var(--s2) * -3 * 1px) calc(var(--s2) * 2 * 1px)
+      calc(var(--s2) * -4 * 1px) green,
+    inset 0 0 calc(var(--s2) * 2 * 1px) calc(var(--s2) / -2 * 1px) currentColor,
+    inset calc(var(--s2) * 4 * 1px) calc(var(--s2) * 4 * 1px) calc(var(--s2) * 3 * 1px)
+      calc(var(--s2) * -6 * 1px) hotpink,
+    0 0 10px -5px white, 0 0 12px -3px currentColor, 0 0 30px -10px currentColor;
+  -ms-box-shadow: inset 0 calc(var(--s2) * -6 * 1px) calc(var(--s2) * 6 * 1px)
+      calc(var(--s2) * -8 * 1px) currentColor,
+    inset calc(var(--s2) * -3 * 1px) calc(var(--s2) * -3 * 1px) calc(var(--s2) * 2 * 1px)
+      calc(var(--s2) * -4 * 1px) green,
+    inset 0 0 calc(var(--s2) * 2 * 1px) calc(var(--s2) / -2 * 1px) currentColor,
+    inset calc(var(--s2) * 4 * 1px) calc(var(--s2) * 4 * 1px) calc(var(--s2) * 3 * 1px)
+      calc(var(--s2) * -6 * 1px) hotpink,
+    0 0 10px -5px white, 0 0 12px -3px currentColor, 0 0 30px -10px currentColor;
+  -moz-box-shadow: inset 0 calc(var(--s2) * -6 * 1px) calc(var(--s2) * 6 * 1px)
+      calc(var(--s2) * -8 * 1px) currentColor,
+    inset calc(var(--s2) * -3 * 1px) calc(var(--s2) * -3 * 1px) calc(var(--s2) * 2 * 1px)
+      calc(var(--s2) * -4 * 1px) green,
+    inset 0 0 calc(var(--s2) * 2 * 1px) calc(var(--s2) / -2 * 1px) currentColor,
+    inset calc(var(--s2) * 4 * 1px) calc(var(--s2) * 4 * 1px) calc(var(--s2) * 3 * 1px)
+      calc(var(--s2) * -6 * 1px) hotpink,
+    0 0 10px -5px white, 0 0 12px -3px currentColor, 0 0 30px -10px currentColor;
   box-shadow: inset 0 calc(var(--s2) * -6 * 1px) calc(var(--s2) * 6 * 1px)
       calc(var(--s2) * -8 * 1px) currentColor,
     inset calc(var(--s2) * -3 * 1px) calc(var(--s2) * -3 * 1px) calc(var(--s2) * 2 * 1px)
@@ -194,6 +294,14 @@
   -o-animation-play-state: paused;
   -ms-animation-play-state: paused;
   animation-play-state: paused;
+  -webkit-box-shadow: 0 0 4px 0 currentColor, 0 0 10px 0 currentColor,
+    0 0 40px 4px currentColor;
+  -o-box-shadow: 0 0 4px 0 currentColor, 0 0 10px 0 currentColor,
+    0 0 40px 4px currentColor;
+  -ms-box-shadow: 0 0 4px 0 currentColor, 0 0 10px 0 currentColor,
+    0 0 40px 4px currentColor;
+  -moz-box-shadow: 0 0 4px 0 currentColor, 0 0 10px 0 currentColor,
+    0 0 40px 4px currentColor;
   box-shadow: 0 0 4px 0 currentColor, 0 0 10px 0 currentColor, 0 0 40px 4px currentColor;
   background-color: hsla(0, 0%, 100%, 0.7);
   pointer-events: none; /*Otherwise exitItem targets the wrong item*/
@@ -220,6 +328,10 @@
   animation-play-state: running;
 }
 .light .herocontent .geometric div {
+  -webkit-box-shadow: 0 0 4px 0 currentColor, 0 0 10px 2px white, 0 0 30px 2px white;
+  -ms-box-shadow: 0 0 4px 0 currentColor, 0 0 10px 2px white, 0 0 30px 2px white;
+  moz-box-shadow: 0 0 4px 0 currentColor, 0 0 10px 2px white, 0 0 30px 2px white;
+  -o-box-shadow: 0 0 4px 0 currentColor, 0 0 10px 2px white, 0 0 30px 2px white;
   box-shadow: 0 0 4px 0 currentColor, 0 0 10px 2px white, 0 0 30px 2px white;
   background-color: currentColor;
 }
@@ -254,6 +366,34 @@
   -moz-transform: rotate(-80deg);
   transform: rotate(-80deg);
   pointer-events: none;
+  -webkit-box-shadow: inset calc(var(--s2) * 8 * 1px) calc(var(--s2) / 4 * -1px)
+      calc(var(--s2) * 4 * 1px) calc(var(--s2) * 8 * -1px) hotpink,
+    inset calc(var(--s2) * 8 * -1px) calc(var(--s2) / 4 * 1px) calc(var(--s2) * 4 * 1px)
+      calc(var(--s2) * 9 * -1px) lime,
+    0 0 4px 0 currentColor, 0 0 9px -5px white, 0 0 40px -10px currentColor,
+    inset calc(var(--s2) * 1px) 0 calc(var(--s2) * 3 * 1px) 0 currentColor,
+    inset calc(var(--s2) * -1px) 0 calc(var(--s2) * 3 * 1px) 0 white, 0 0 10px -5px white;
+  -o-box-shadow: inset calc(var(--s2) * 8 * 1px) calc(var(--s2) / 4 * -1px)
+      calc(var(--s2) * 4 * 1px) calc(var(--s2) * 8 * -1px) hotpink,
+    inset calc(var(--s2) * 8 * -1px) calc(var(--s2) / 4 * 1px) calc(var(--s2) * 4 * 1px)
+      calc(var(--s2) * 9 * -1px) lime,
+    0 0 4px 0 currentColor, 0 0 9px -5px white, 0 0 40px -10px currentColor,
+    inset calc(var(--s2) * 1px) 0 calc(var(--s2) * 3 * 1px) 0 currentColor,
+    inset calc(var(--s2) * -1px) 0 calc(var(--s2) * 3 * 1px) 0 white, 0 0 10px -5px white;
+  -ms-box-shadow: inset calc(var(--s2) * 8 * 1px) calc(var(--s2) / 4 * -1px)
+      calc(var(--s2) * 4 * 1px) calc(var(--s2) * 8 * -1px) hotpink,
+    inset calc(var(--s2) * 8 * -1px) calc(var(--s2) / 4 * 1px) calc(var(--s2) * 4 * 1px)
+      calc(var(--s2) * 9 * -1px) lime,
+    0 0 4px 0 currentColor, 0 0 9px -5px white, 0 0 40px -10px currentColor,
+    inset calc(var(--s2) * 1px) 0 calc(var(--s2) * 3 * 1px) 0 currentColor,
+    inset calc(var(--s2) * -1px) 0 calc(var(--s2) * 3 * 1px) 0 white, 0 0 10px -5px white;
+  -moz-box-shadow: inset calc(var(--s2) * 8 * 1px) calc(var(--s2) / 4 * -1px)
+      calc(var(--s2) * 4 * 1px) calc(var(--s2) * 8 * -1px) hotpink,
+    inset calc(var(--s2) * 8 * -1px) calc(var(--s2) / 4 * 1px) calc(var(--s2) * 4 * 1px)
+      calc(var(--s2) * 9 * -1px) lime,
+    0 0 4px 0 currentColor, 0 0 9px -5px white, 0 0 40px -10px currentColor,
+    inset calc(var(--s2) * 1px) 0 calc(var(--s2) * 3 * 1px) 0 currentColor,
+    inset calc(var(--s2) * -1px) 0 calc(var(--s2) * 3 * 1px) 0 white, 0 0 10px -5px white;
   box-shadow: inset calc(var(--s2) * 8 * 1px) calc(var(--s2) / 4 * -1px)
       calc(var(--s2) * 4 * 1px) calc(var(--s2) * 8 * -1px) hotpink,
     inset calc(var(--s2) * 8 * -1px) calc(var(--s2) / 4 * 1px) calc(var(--s2) * 4 * 1px)
@@ -263,6 +403,38 @@
     inset calc(var(--s2) * -1px) 0 calc(var(--s2) * 3 * 1px) 0 white, 0 0 10px -5px white;
 }
 .light .herocontent .eyes .inner {
+  -webkit-box-shadow: inset calc(var(--s2) * 8 * 1px) calc(var(--s2) / 4 * -1px)
+      calc(var(--s2) * 4 * 1px) calc(var(--s2) * 7 * -1px) hotpink,
+    inset calc(var(--s2) * 8 * -1px) calc(var(--s2) / 4 * 1px) calc(var(--s2) * 4 * 1px)
+      calc(var(--s2) * 9 * -1px) lime,
+    0 0 10px 0 white, 0 0 20px -10px white,
+    inset calc(var(--s2) * 1px) 0 calc(var(--s2) * 3 * 1px) 0 currentColor,
+    inset calc(var(--s2) * -1px) 0 calc(var(--s2) * 3 * 1px) -1px white,
+    0 0 10px -5px white;
+  -ms-box-shadow: inset calc(var(--s2) * 8 * 1px) calc(var(--s2) / 4 * -1px)
+      calc(var(--s2) * 4 * 1px) calc(var(--s2) * 7 * -1px) hotpink,
+    inset calc(var(--s2) * 8 * -1px) calc(var(--s2) / 4 * 1px) calc(var(--s2) * 4 * 1px)
+      calc(var(--s2) * 9 * -1px) lime,
+    0 0 10px 0 white, 0 0 20px -10px white,
+    inset calc(var(--s2) * 1px) 0 calc(var(--s2) * 3 * 1px) 0 currentColor,
+    inset calc(var(--s2) * -1px) 0 calc(var(--s2) * 3 * 1px) -1px white,
+    0 0 10px -5px white;
+  -moz-box-shadow: inset calc(var(--s2) * 8 * 1px) calc(var(--s2) / 4 * -1px)
+      calc(var(--s2) * 4 * 1px) calc(var(--s2) * 7 * -1px) hotpink,
+    inset calc(var(--s2) * 8 * -1px) calc(var(--s2) / 4 * 1px) calc(var(--s2) * 4 * 1px)
+      calc(var(--s2) * 9 * -1px) lime,
+    0 0 10px 0 white, 0 0 20px -10px white,
+    inset calc(var(--s2) * 1px) 0 calc(var(--s2) * 3 * 1px) 0 currentColor,
+    inset calc(var(--s2) * -1px) 0 calc(var(--s2) * 3 * 1px) -1px white,
+    0 0 10px -5px white;
+  -o-box-shadow: inset calc(var(--s2) * 8 * 1px) calc(var(--s2) / 4 * -1px)
+      calc(var(--s2) * 4 * 1px) calc(var(--s2) * 7 * -1px) hotpink,
+    inset calc(var(--s2) * 8 * -1px) calc(var(--s2) / 4 * 1px) calc(var(--s2) * 4 * 1px)
+      calc(var(--s2) * 9 * -1px) lime,
+    0 0 10px 0 white, 0 0 20px -10px white,
+    inset calc(var(--s2) * 1px) 0 calc(var(--s2) * 3 * 1px) 0 currentColor,
+    inset calc(var(--s2) * -1px) 0 calc(var(--s2) * 3 * 1px) -1px white,
+    0 0 10px -5px white;
   box-shadow: inset calc(var(--s2) * 8 * 1px) calc(var(--s2) / 4 * -1px)
       calc(var(--s2) * 4 * 1px) calc(var(--s2) * 7 * -1px) hotpink,
     inset calc(var(--s2) * 8 * -1px) calc(var(--s2) / 4 * 1px) calc(var(--s2) * 4 * 1px)
@@ -288,6 +460,10 @@
   border-radius: 50%;
   z-index: -1;
   opacity: 0.4;
+  -webkit-box-shadow: 0 0 calc(var(--s) / 8) 1px currentColor;
+  -o-box-shadow: 0 0 calc(var(--s) / 8) 1px currentColor;
+  -ms-box-shadow: 0 0 calc(var(--s) / 8) 1px currentColor;
+  -moz-box-shadow: 0 0 calc(var(--s) / 8) 1px currentColor;
   box-shadow: 0 0 calc(var(--s) / 8) 1px currentColor;
 }
 .herocontent .eyes .inner::after {
@@ -301,6 +477,10 @@
   border-radius: 50%;
   z-index: -1;
   opacity: 0.3;
+  -webkit-box-shadow: 0 0 calc(var(--s) / 4) white;
+  -o-box-shadow: 0 0 calc(var(--s) / 4) white;
+  -ms-box-shadow: 0 0 calc(var(--s) / 4) white;
+  -moz-box-shadow: 0 0 calc(var(--s) / 4) white;
   box-shadow: 0 0 calc(var(--s) / 4) white;
   transition-property: left;
   transition-timing-function: ease-in-out;
@@ -325,6 +505,10 @@
   background-color: white;
   opacity: 0.2;
   border-radius: 80% 50%;
+  -webkit-box-shadow: 0 0 4px 0 white, 0 0 6px -2px white;
+  -ms-box-shadow: 0 0 4px 0 white, 0 0 6px -2px white;
+  -moz-box-shadow: 0 0 4px 0 white, 0 0 6px -2px white;
+  -o-box-shadow: 0 0 4px 0 white, 0 0 6px -2px white;
   box-shadow: 0 0 4px 0 white, 0 0 6px -2px white;
 }
 
@@ -373,6 +557,10 @@
   -ms-transform: rotate(30deg);
   -moz-transform: rotate(30deg);
   transform: rotate(30deg);
+  -webkit-box-shadow: 0 0 calc(var(--s) / 10) 2px var(--color);
+  -ms-box-shadow: 0 0 calc(var(--s) / 10) 2px var(--color);
+  -moz-box-shadow: 0 0 calc(var(--s) / 10) 2px var(--color);
+  -o-box-shadow: 0 0 calc(var(--s) / 10) 2px var(--color);
   box-shadow: 0 0 calc(var(--s) / 10) 2px var(--color);
 }
 .light .herocontent .eyes span::before {
@@ -396,6 +584,14 @@
   z-index: -1;
   opacity: 0.2;
   border-radius: 80% 50%;
+  -webkit-box-shadow: 0 0 6px 0 var(--color), 0 0 6px -3px var(--color),
+    inset 6px 8px 8px -5px black, -3px -4px 4px -2px black, -2px -3px 10px 2px white;
+  -o-box-shadow: 0 0 6px 0 var(--color), 0 0 6px -3px var(--color),
+    inset 6px 8px 8px -5px black, -3px -4px 4px -2px black, -2px -3px 10px 2px white;
+  -ms-box-shadow: 0 0 6px 0 var(--color), 0 0 6px -3px var(--color),
+    inset 6px 8px 8px -5px black, -3px -4px 4px -2px black, -2px -3px 10px 2px white;
+  -moz-box-shadow: 0 0 6px 0 var(--color), 0 0 6px -3px var(--color),
+    inset 6px 8px 8px -5px black, -3px -4px 4px -2px black, -2px -3px 10px 2px white;
   box-shadow: 0 0 6px 0 var(--color), 0 0 6px -3px var(--color),
     inset 6px 8px 8px -5px black, -3px -4px 4px -2px black, -2px -3px 10px 2px white;
 }
@@ -547,6 +743,14 @@
 @keyframes box-shadow {
   0% {
     opacity: 0;
+    -webkit-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
+      calc(-0.1vw * var(--s)) var(--color);
+    -o-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s)) calc(-0.1vw * var(--s))
+      var(--color);
+    -ms-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
+      calc(-0.1vw * var(--s)) var(--color);
+    -moz-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
+      calc(-0.1vw * var(--s)) var(--color);
     box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s)) calc(-0.1vw * var(--s))
       var(--color);
   }
@@ -558,6 +762,14 @@
   }
   100% {
     opacity: 0;
+    -webkit-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
+      calc(-0.9vw * var(--s)) var(--color);
+    -o-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s)) calc(-0.9vw * var(--s))
+      var(--color);
+    -ms-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
+      calc(-0.9vw * var(--s)) var(--color);
+    -moz-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
+      calc(-0.9vw * var(--s)) var(--color);
     box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s)) calc(-0.9vw * var(--s))
       var(--color);
   }
@@ -565,6 +777,14 @@
 @keyframes box-shadow-light {
   0% {
     opacity: 0;
+    -webkit-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
+      calc(-0.1vw * var(--s)) var(--color2);
+    -o-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s)) calc(-0.1vw * var(--s))
+      var(--color2);
+    -ms-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
+      calc(-0.1vw * var(--s)) var(--color2);
+    -moz-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
+      calc(-0.1vw * var(--s)) var(--color2);
     box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s)) calc(-0.1vw * var(--s))
       var(--color2);
   }
@@ -576,6 +796,14 @@
   }
   100% {
     opacity: 0;
+    -webkit-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
+      calc(-0.9vw * var(--s)) var(--color2);
+    -o-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s)) calc(-0.9vw * var(--s))
+      var(--color2);
+    -ms-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
+      calc(-0.9vw * var(--s)) var(--color2);
+    -moz-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
+      calc(-0.9vw * var(--s)) var(--color2);
     box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s)) calc(-0.9vw * var(--s))
       var(--color2);
   }
@@ -903,6 +1131,14 @@
   outline: 0;
   line-height: 2;
   padding: 0;
+  -webkit-text-shadow: 1px 1px 1px var(--color-primary-2), 0 0 1em var(--color-primary-2),
+    0 0 0.3em var(--color-primary-2);
+  -moz-text-shadow: 1px 1px 1px var(--color-primary-2), 0 0 1em var(--color-primary-2),
+    0 0 0.3em var(--color-primary-2);
+  -ms-text-shadow: 1px 1px 1px var(--color-primary-2), 0 0 1em var(--color-primary-2),
+    0 0 0.3em var(--color-primary-2);
+  -o-text-shadow: 1px 1px 1px var(--color-primary-2), 0 0 1em var(--color-primary-2),
+    0 0 0.3em var(--color-primary-2);
   text-shadow: 1px 1px 1px var(--color-primary-2), 0 0 1em var(--color-primary-2),
     0 0 0.3em var(--color-primary-2);
 }

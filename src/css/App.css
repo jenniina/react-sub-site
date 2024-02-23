@@ -171,10 +171,18 @@ main {
   left: 0;
   background-color: var(--color-primary-2);
   opacity: 0.9;
+  -webkit-box-shadow: 0 0.05em 0.9em -0.7em var(--color-primary-11);
+  -ms-box-shadow: 0 0.05em 0.9em -0.7em var(--color-primary-11);
+  -o-box-shadow: 0 0.05em 0.9em -0.7em var(--color-primary-11);
+  -moz-box-shadow: 0 0.05em 0.9em -0.7em var(--color-primary-11);
   box-shadow: 0 0.05em 0.9em -0.7em var(--color-primary-11);
 }
 .light .nav-sub ul a::after {
   background-color: var(--color-primary-1);
+  -webkit-box-shadow: 0 0.1em 0.9em -0.5em var(--color-primary-11);
+  -ms-box-shadow: 0 0.1em 0.9em -0.5em var(--color-primary-11);
+  -moz-box-shadow: 0 0.1em 0.9em -0.5em var(--color-primary-11);
+  -o-box-shadow: 0 0.1em 0.9em -0.5em var(--color-primary-11);
   box-shadow: 0 0.1em 0.9em -0.5em var(--color-primary-11);
 }
 .nav-sub ul a:hover,
@@ -256,6 +264,14 @@ button.goleft {
   left: -0.1em;
   padding-right: 0.3em;
   border-radius: 0 var(--radius-large) var(--radius-large) 0;
+  -webkit-box-shadow: 0.1em 0 0.2em -0.15em var(--color-primary-9),
+    0 0 0.6em 0.6em var(--color-primary-2);
+  -o-box-shadow: 0.1em 0 0.2em -0.15em var(--color-primary-9),
+    0 0 0.6em 0.6em var(--color-primary-2);
+  -moz-box-shadow: 0.1em 0 0.2em -0.15em var(--color-primary-9),
+    0 0 0.6em 0.6em var(--color-primary-2);
+  -ms-box-shadow: 0.1em 0 0.2em -0.15em var(--color-primary-9),
+    0 0 0.6em 0.6em var(--color-primary-2);
   box-shadow: 0.1em 0 0.2em -0.15em var(--color-primary-9),
     0 0 0.6em 0.6em var(--color-primary-2);
 }
@@ -263,6 +279,14 @@ button.goright {
   right: -0.1em;
   padding-left: 0.3em;
   border-radius: var(--radius-large) 0 0 var(--radius-large);
+  -webkit-box-shadow: -0.1em 0 0.2em -0.15em var(--color-primary-9),
+    0 0 0.6em 0.6em var(--color-primary-2);
+  -o-box-shadow: -0.1em 0 0.2em -0.15em var(--color-primary-9),
+    0 0 0.6em 0.6em var(--color-primary-2);
+  -ms-box-shadow: -0.1em 0 0.2em -0.15em var(--color-primary-9),
+    0 0 0.6em 0.6em var(--color-primary-2);
+  -moz-box-shadow: -0.1em 0 0.2em -0.15em var(--color-primary-9),
+    0 0 0.6em 0.6em var(--color-primary-2);
   box-shadow: -0.1em 0 0.2em -0.15em var(--color-primary-9),
     0 0 0.6em 0.6em var(--color-primary-2);
 }
@@ -667,6 +691,9 @@ body .z {
     border-radius: 5px;
     border-bottom: gray 1px solid;
     -webkit-box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
+    -o-box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
+    -ms-box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
     box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
   }
   #root .App:not(.noTooltip) .site-navigation li:first-child .tooltipwrap:hover .tooltip,

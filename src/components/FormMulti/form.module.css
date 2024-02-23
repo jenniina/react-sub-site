@@ -1,9 +1,7 @@
 .wrapper {
   position: relative;
   /* max-width: max-content; */
-  max-width: calc(
-    100vw - calc(var(--page-padding) * 2) - var(--scrollbar_width)
-  );
+  max-width: calc(100vw - calc(var(--page-padding) * 2) - var(--scrollbar_width));
   margin: 0 auto;
 }
 .steps {
@@ -15,6 +13,9 @@
 .hiddenform {
   clip: rect(1px, 1px, 1px, 1px);
   -webkit-clip-path: inset(50%);
+  -moz-clip-path: inset(50%);
+  -ms-clip-path: inset(50%);
+  -o-clip-path: inset(50%);
   clip-path: inset(50%);
   position: absolute;
   width: 1px;
@@ -42,6 +43,10 @@
   /* border-radius: var(--radius-small); */
   padding-left: 6%;
   padding-bottom: 0.4rem;
+  -webkit-box-shadow: -1.2em 0.8em 0.1em -1.1em var(--color-primary-8);
+  -moz-box-shadow: -1.2em 0.8em 0.1em -1.1em var(--color-primary-8);
+  -ms-box-shadow: -1.2em 0.8em 0.1em -1.1em var(--color-primary-8);
+  -o-box-shadow: -1.2em 0.8em 0.1em -1.1em var(--color-primary-8);
   box-shadow: -1.2em 0.8em 0.1em -1.1em var(--color-primary-8);
 }
 @media (min-width: 300px) {
@@ -59,12 +64,12 @@
   margin-right: 1em;
 }
 
-.wrapper input[type="radio"],
-.wrapper input[type="checkbox"] {
+.wrapper input[type='radio'],
+.wrapper input[type='checkbox'] {
   margin-left: 0.4em;
   margin-right: 0.8em;
 }
-.wrapper input[type="checkbox"] {
+.wrapper input[type='checkbox'] {
   margin-right: 1.3em;
 }
 

@@ -354,25 +354,10 @@ h1 span:before {
   right: 0;
   z-index: 2;
   color: var(--color-primary-12);
-  /* clip-path: polygon(
-    0% 100%,
-    0 51%,
-    16% 51%,
-    32% 55%,
-    49% 65%,
-    66% 70%,
-    83% 68%,
-    100% 62%,
-    100% 100%
-  ); */
   opacity: 0.9;
   transition-property: clip-path;
   transition-timing-function: ease-in-out;
   transition-duration: 600ms;
-  -webkit-animation: wave 4s infinite ease-in-out;
-  -moz-animation: wave 4s infinite ease-in-out;
-  -ms-animation: wave 4s infinite ease-in-out;
-  -o-animation: wave 4s infinite ease-in-out;
   animation: wave 4s infinite ease-in-out;
   animation-play-state: paused;
 }
@@ -431,6 +416,50 @@ h1:hover span:after {
 @keyframes wave {
   0%,
   100% {
+    -webkit-clip-path: polygon(
+      -10% 120%,
+      -10% 32%,
+      14% 36%,
+      28% 42%,
+      42% 52%,
+      61% 60%,
+      83% 58%,
+      110% 48%,
+      110% 120%
+    );
+    -moz-clip-path: polygon(
+      -10% 120%,
+      -10% 32%,
+      14% 36%,
+      28% 42%,
+      42% 52%,
+      61% 60%,
+      83% 58%,
+      110% 48%,
+      110% 120%
+    );
+    -ms-clip-path: polygon(
+      -10% 120%,
+      -10% 32%,
+      14% 36%,
+      28% 42%,
+      42% 52%,
+      61% 60%,
+      83% 58%,
+      110% 48%,
+      110% 120%
+    );
+    -o-clip-path: polygon(
+      -10% 120%,
+      -10% 32%,
+      14% 36%,
+      28% 42%,
+      42% 52%,
+      61% 60%,
+      83% 58%,
+      110% 48%,
+      110% 120%
+    );
     clip-path: polygon(
       -10% 120%,
       -10% 32%,
@@ -444,6 +473,50 @@ h1:hover span:after {
     );
   }
   40% {
+    -webkit-clip-path: polygon(
+      -10% 120%,
+      -10% 51%,
+      16% 53%,
+      33% 51%,
+      50% 46%,
+      67% 37%,
+      84% 33%,
+      110% 31%,
+      110% 120%
+    );
+    -moz-clip-path: polygon(
+      -10% 120%,
+      -10% 51%,
+      16% 53%,
+      33% 51%,
+      50% 46%,
+      67% 37%,
+      84% 33%,
+      110% 31%,
+      110% 120%
+    );
+    -ms-clip-path: polygon(
+      -10% 120%,
+      -10% 51%,
+      16% 53%,
+      33% 51%,
+      50% 46%,
+      67% 37%,
+      84% 33%,
+      110% 31%,
+      110% 120%
+    );
+    -o-clip-path: polygon(
+      -10% 120%,
+      -10% 51%,
+      16% 53%,
+      33% 51%,
+      50% 46%,
+      67% 37%,
+      84% 33%,
+      110% 31%,
+      110% 120%
+    );
     clip-path: polygon(
       -10% 120%,
       -10% 51%,
@@ -460,6 +533,50 @@ h1:hover span:after {
 @keyframes wave2 {
   0%,
   100% {
+    -webkit-clip-path: polygon(
+      -10% 120%,
+      -10% 56%,
+      14% 53%,
+      31% 55%,
+      48% 61%,
+      67% 64%,
+      85% 62%,
+      110% 55%,
+      110% 120%
+    );
+    -moz-clip-path: polygon(
+      -10% 120%,
+      -10% 56%,
+      14% 53%,
+      31% 55%,
+      48% 61%,
+      67% 64%,
+      85% 62%,
+      110% 55%,
+      110% 120%
+    );
+    -ms-clip-path: polygon(
+      -10% 120%,
+      -10% 56%,
+      14% 53%,
+      31% 55%,
+      48% 61%,
+      67% 64%,
+      85% 62%,
+      110% 55%,
+      110% 120%
+    );
+    -o-clip-path: polygon(
+      -10% 120%,
+      -10% 56%,
+      14% 53%,
+      31% 55%,
+      48% 61%,
+      67% 64%,
+      85% 62%,
+      110% 55%,
+      110% 120%
+    );
     clip-path: polygon(
       -10% 120%,
       -10% 56%,
@@ -473,6 +590,50 @@ h1:hover span:after {
     );
   }
   50% {
+    -webkit-clip-path: polygon(
+      -10% 120%,
+      -10% 62%,
+      16% 64%,
+      34% 61%,
+      53% 54%,
+      68% 50%,
+      84% 50%,
+      110% 53%,
+      110% 120%
+    );
+    -moz-clip-path: polygon(
+      -10% 120%,
+      -10% 62%,
+      16% 64%,
+      34% 61%,
+      53% 54%,
+      68% 50%,
+      84% 50%,
+      110% 53%,
+      110% 120%
+    );
+    -ms-clip-path: polygon(
+      -10% 120%,
+      -10% 62%,
+      16% 64%,
+      34% 61%,
+      53% 54%,
+      68% 50%,
+      84% 50%,
+      110% 53%,
+      110% 120%
+    );
+    -o-clip-path: polygon(
+      -10% 120%,
+      -10% 62%,
+      16% 64%,
+      34% 61%,
+      53% 54%,
+      68% 50%,
+      84% 50%,
+      110% 53%,
+      110% 120%
+    );
     clip-path: polygon(
       -10% 120%,
       -10% 62%,
@@ -593,6 +754,9 @@ body .focus-within:focus-within {
 .scr {
   clip: rect(1px, 1px, 1px, 1px);
   -webkit-clip-path: inset(50%);
+  -moz-clip-path: inset(50%);
+  -ms-clip-path: inset(50%);
+  -o-clip-path: inset(50%);
   clip-path: inset(50%);
   position: absolute;
   width: 1px;
@@ -607,6 +771,9 @@ body .focus-within:focus-within {
 .scr:focus {
   clip: auto;
   -webkit-clip-path: none;
+  -moz-clip-path: none;
+  -ms-clip-path: none;
+  -o-clip-path: none;
   clip-path: none;
   width: auto;
   height: auto;
