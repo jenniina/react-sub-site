@@ -12,6 +12,10 @@
   display: inline-block;
   width: var(--width);
   height: var(--height);
+  -webkit-box-shadow: 0px 0.1em 0.2em rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0.1em 0.2em rgba(0, 0, 0, 0.3);
+  -o-box-shadow: 0px 0.1em 0.2em rgba(0, 0, 0, 0.3);
+  -ms-box-shadow: 0px 0.1em 0.2em rgba(0, 0, 0, 0.3);
   box-shadow: 0px 0.1em 0.2em rgba(0, 0, 0, 0.3);
   border-radius: var(--height);
   cursor: pointer;
@@ -37,6 +41,10 @@
   background-color: #ddd;
   border-top: 0.1em solid var(--color-primary-9);
   border-bottom: 0.1em solid var(--color-primary-16);
+  -webkit-box-shadow: inset 0px 0.1em 0.6em rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: inset 0px 0.1em 0.6em rgba(0, 0, 0, 0.3);
+  -o-box-shadow: inset 0px 0.1em 0.6em rgba(0, 0, 0, 0.3);
+  -ms-box-shadow: inset 0px 0.1em 0.6em rgba(0, 0, 0, 0.3);
   box-shadow: inset 0px 0.1em 0.6em rgba(0, 0, 0, 0.3);
   transition-property: background-color, background-position, border-top-color,
     border-bottom-color;
@@ -61,6 +69,14 @@
   height: calc(var(--height) * 0.8);
   border-radius: calc(var(--height) / 2);
   background-color: var(--color-primary-17);
+  -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3),
+    inset 0px -0.1em 0.3em rgba(0, 0, 0, 0.7), inset 0px 1px 4px rgba(255, 255, 255, 1);
+  -moz-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3),
+    inset 0px -0.1em 0.3em rgba(0, 0, 0, 0.7), inset 0px 1px 4px rgba(255, 255, 255, 1);
+  -o-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3), inset 0px -0.1em 0.3em rgba(0, 0, 0, 0.7),
+    inset 0px 1px 4px rgba(255, 255, 255, 1);
+  -ms-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3),
+    inset 0px -0.1em 0.3em rgba(0, 0, 0, 0.7), inset 0px 1px 4px rgba(255, 255, 255, 1);
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3), inset 0px -0.1em 0.3em rgba(0, 0, 0, 0.7),
     inset 0px 1px 4px rgba(255, 255, 255, 1);
   z-index: 2;
@@ -75,6 +91,10 @@
   bottom: -0.3em;
   border-radius: calc(var(--height) / 1.6);
   background-color: var(--color-primary-2);
+  -webkit-box-shadow: -0.1em 0px 0.6em -0.2em hsla(var(--hue-primary), 100%, 35%, 0.9);
+  -moz-box-shadow: -0.1em 0px 0.6em -0.2em hsla(var(--hue-primary), 100%, 35%, 0.9);
+  -o-box-shadow: -0.1em 0px 0.6em -0.2em hsla(var(--hue-primary), 100%, 35%, 0.9);
+  -ms-box-shadow: -0.1em 0px 0.6em -0.2em hsla(var(--hue-primary), 100%, 35%, 0.9);
   box-shadow: -0.1em 0px 0.6em -0.2em hsla(var(--hue-primary), 100%, 35%, 0.9);
   z-index: -1;
 }
@@ -129,6 +149,10 @@
   right: 0.1em;
   color: black;
   opacity: 1;
+  -webkit-text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+  -moz-text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+  -o-text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+  -ms-text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
   text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
 }
 
@@ -138,6 +162,10 @@
   left: 0.1em;
   color: var(--color-primary-19);
   opacity: 0;
+  -webkit-text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  -moz-text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  -o-text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  -ms-text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 .toggle .labels::after,
@@ -149,6 +177,10 @@
 }
 .toggle:hover .labels::after,
 .toggle:hover .labels::before {
+  -webkit-text-shadow: 1px 1px 2px rgba(0, 0, 0, 0);
+  -moz-text-shadow: 1px 1px 2px rgba(0, 0, 0, 0);
+  -o-text-shadow: 1px 1px 2px rgba(0, 0, 0, 0);
+  -ms-text-shadow: 1px 1px 2px rgba(0, 0, 0, 0);
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0);
 }
 .toggle input:checked ~ .labels::after {

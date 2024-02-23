@@ -527,6 +527,10 @@ form.joke > *:not(.toggle) {
 }
 .joke-container .option-btn {
   border-color: var(--color-primary-8);
+  -webkit-box-shadow: 0 0.1em 0.1em 0 var(--color-primary-8);
+  -ms-box-shadow: 0 0.1em 0.1em 0 var(--color-primary-8);
+  -o-box-shadow: 0 0.1em 0.1em 0 var(--color-primary-8);
+  -moz-box-shadow: 0 0.1em 0.1em 0 var(--color-primary-8);
   box-shadow: 0 0.1em 0.1em 0 var(--color-primary-8);
 }
 .light .joke-container .option-btn {
@@ -1238,6 +1242,9 @@ button.blocked-btn.active {
   border-radius: 5px;
   border-bottom: gray 1px solid;
   -webkit-box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
+  -o-box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
+  -ms-box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
   box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
 }
 

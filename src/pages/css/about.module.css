@@ -43,6 +43,26 @@
   --time: 400;
   position: relative;
   border-radius: var(--radius-small);
+  -webkit-box-shadow: inset -0.8rem -0.8rem 2rem -2rem var(--color),
+    inset -2rem -2rem 1.5rem -1.2rem black,
+    inset -0.8rem -1.8rem 3rem -1.8rem var(--color),
+    inset -2rem -2rem 4rem -4rem var(--color), 0.5rem 1rem 2rem -1.9rem var(--color),
+    inset 2.5rem 2.5rem 1rem -2rem black, inset 2rem 2rem 2rem -3rem var(--color);
+  -o-box-shadow: inset -0.8rem -0.8rem 2rem -2rem var(--color),
+    inset -2rem -2rem 1.5rem -1.2rem black,
+    inset -0.8rem -1.8rem 3rem -1.8rem var(--color),
+    inset -2rem -2rem 4rem -4rem var(--color), 0.5rem 1rem 2rem -1.9rem var(--color),
+    inset 2.5rem 2.5rem 1rem -2rem black, inset 2rem 2rem 2rem -3rem var(--color);
+  -ms-box-shadow: inset -0.8rem -0.8rem 2rem -2rem var(--color),
+    inset -2rem -2rem 1.5rem -1.2rem black,
+    inset -0.8rem -1.8rem 3rem -1.8rem var(--color),
+    inset -2rem -2rem 4rem -4rem var(--color), 0.5rem 1rem 2rem -1.9rem var(--color),
+    inset 2.5rem 2.5rem 1rem -2rem black, inset 2rem 2rem 2rem -3rem var(--color);
+  -moz-box-shadow: inset -0.8rem -0.8rem 2rem -2rem var(--color),
+    inset -2rem -2rem 1.5rem -1.2rem black,
+    inset -0.8rem -1.8rem 3rem -1.8rem var(--color),
+    inset -2rem -2rem 4rem -4rem var(--color), 0.5rem 1rem 2rem -1.9rem var(--color),
+    inset 2.5rem 2.5rem 1rem -2rem black, inset 2rem 2rem 2rem -3rem var(--color);
   box-shadow: inset -0.8rem -0.8rem 2rem -2rem var(--color),
     inset -2rem -2rem 1.5rem -1.2rem black,
     inset -0.8rem -1.8rem 3rem -1.8rem var(--color),
@@ -50,6 +70,26 @@
     inset 2.5rem 2.5rem 1rem -2rem black, inset 2rem 2rem 2rem -3rem var(--color);
 }
 .light .tech {
+  -webkit-box-shadow: inset -0.8rem -0.8rem 2rem -2rem var(--color),
+    inset -2rem -2rem 1.5rem -1.2rem var(--color-primary-2),
+    inset -0.8rem -1.8rem 3rem -1.8rem var(--color),
+    inset -2rem -2rem 4rem -5rem var(--color), 0.5rem 1rem 2rem -1.5rem var(--color),
+    inset 3rem 3rem 2rem -3.9rem black, inset 2rem 2rem 2rem -3rem var(--color);
+  -moz-box-shadow: inset -0.8rem -0.8rem 2rem -2rem var(--color),
+    inset -2rem -2rem 1.5rem -1.2rem var(--color-primary-2),
+    inset -0.8rem -1.8rem 3rem -1.8rem var(--color),
+    inset -2rem -2rem 4rem -5rem var(--color), 0.5rem 1rem 2rem -1.5rem var(--color),
+    inset 3rem 3rem 2rem -3.9rem black, inset 2rem 2rem 2rem -3rem var(--color);
+  -ms-box-shadow: inset -0.8rem -0.8rem 2rem -2rem var(--color),
+    inset -2rem -2rem 1.5rem -1.2rem var(--color-primary-2),
+    inset -0.8rem -1.8rem 3rem -1.8rem var(--color),
+    inset -2rem -2rem 4rem -5rem var(--color), 0.5rem 1rem 2rem -1.5rem var(--color),
+    inset 3rem 3rem 2rem -3.9rem black, inset 2rem 2rem 2rem -3rem var(--color);
+  -o-box-shadow: inset -0.8rem -0.8rem 2rem -2rem var(--color),
+    inset -2rem -2rem 1.5rem -1.2rem var(--color-primary-2),
+    inset -0.8rem -1.8rem 3rem -1.8rem var(--color),
+    inset -2rem -2rem 4rem -5rem var(--color), 0.5rem 1rem 2rem -1.5rem var(--color),
+    inset 3rem 3rem 2rem -3.9rem black, inset 2rem 2rem 2rem -3rem var(--color);
   box-shadow: inset -0.8rem -0.8rem 2rem -2rem var(--color),
     inset -2rem -2rem 1.5rem -1.2rem var(--color-primary-2),
     inset -0.8rem -1.8rem 3rem -1.8rem var(--color),
@@ -620,6 +660,66 @@
   transition-duration: 500ms;
   transition-delay: calc(var(--i) * 20ms);
   word-break: keep-all;
+  -webkit-clip-path: polygon(
+    0% 100%,
+    0 0,
+    11% 0,
+    23% 2%,
+    32% 6%,
+    40% 12%,
+    50% 20%,
+    61% 26%,
+    72% 27%,
+    82% 24%,
+    91% 15%,
+    100% 0,
+    100% 100%
+  );
+  -ms-clip-path: polygon(
+    0% 100%,
+    0 0,
+    11% 0,
+    23% 2%,
+    32% 6%,
+    40% 12%,
+    50% 20%,
+    61% 26%,
+    72% 27%,
+    82% 24%,
+    91% 15%,
+    100% 0,
+    100% 100%
+  );
+  -o-clip-path: polygon(
+    0% 100%,
+    0 0,
+    11% 0,
+    23% 2%,
+    32% 6%,
+    40% 12%,
+    50% 20%,
+    61% 26%,
+    72% 27%,
+    82% 24%,
+    91% 15%,
+    100% 0,
+    100% 100%
+  );
+  -moz-clip-path: polygon(
+    0% 100%,
+    0 0,
+    11% 0,
+    23% 2%,
+    32% 6%,
+    40% 12%,
+    50% 20%,
+    61% 26%,
+    72% 27%,
+    82% 24%,
+    91% 15%,
+    100% 0,
+    100% 100%
+  );
   clip-path: polygon(
     0% 100%,
     0 0,
@@ -638,6 +738,66 @@
 }
 .shape:hover ~ .shape,
 .shape:hover {
+  -webkit-clip-path: polygon(
+    0% 100%,
+    0 0,
+    14% 2%,
+    24% 6%,
+    34% 16%,
+    43% 29%,
+    52% 40%,
+    61% 46%,
+    73% 46%,
+    82% 42%,
+    92% 32%,
+    100% 18%,
+    100% 100%
+  );
+  -ms-clip-path: polygon(
+    0% 100%,
+    0 0,
+    14% 2%,
+    24% 6%,
+    34% 16%,
+    43% 29%,
+    52% 40%,
+    61% 46%,
+    73% 46%,
+    82% 42%,
+    92% 32%,
+    100% 18%,
+    100% 100%
+  );
+  -o-clip-path: polygon(
+    0% 100%,
+    0 0,
+    14% 2%,
+    24% 6%,
+    34% 16%,
+    43% 29%,
+    52% 40%,
+    61% 46%,
+    73% 46%,
+    82% 42%,
+    92% 32%,
+    100% 18%,
+    100% 100%
+  );
+  -moz-clip-path: polygon(
+    0% 100%,
+    0 0,
+    14% 2%,
+    24% 6%,
+    34% 16%,
+    43% 29%,
+    52% 40%,
+    61% 46%,
+    73% 46%,
+    82% 42%,
+    92% 32%,
+    100% 18%,
+    100% 100%
+  );
   clip-path: polygon(
     0% 100%,
     0 0,
@@ -655,6 +815,106 @@
   );
 }
 .shape:last-child {
+  -webkit-clip-path: polygon(
+    0 0,
+    11% 0,
+    23% 2%,
+    32% 6%,
+    40% 12%,
+    50% 20%,
+    61% 26%,
+    72% 27%,
+    82% 24%,
+    91% 15%,
+    100% 0,
+
+    100% 57%,
+    92% 68%,
+    86% 75%,
+    81% 80%,
+    69% 83%,
+    55% 80%,
+    43% 72%,
+    31% 62%,
+    19% 57%,
+    8% 56%,
+    0% 55%
+  );
+  -ms-clip-path: polygon(
+    0 0,
+    11% 0,
+    23% 2%,
+    32% 6%,
+    40% 12%,
+    50% 20%,
+    61% 26%,
+    72% 27%,
+    82% 24%,
+    91% 15%,
+    100% 0,
+
+    100% 57%,
+    92% 68%,
+    86% 75%,
+    81% 80%,
+    69% 83%,
+    55% 80%,
+    43% 72%,
+    31% 62%,
+    19% 57%,
+    8% 56%,
+    0% 55%
+  );
+  -o-clip-path: polygon(
+    0 0,
+    11% 0,
+    23% 2%,
+    32% 6%,
+    40% 12%,
+    50% 20%,
+    61% 26%,
+    72% 27%,
+    82% 24%,
+    91% 15%,
+    100% 0,
+
+    100% 57%,
+    92% 68%,
+    86% 75%,
+    81% 80%,
+    69% 83%,
+    55% 80%,
+    43% 72%,
+    31% 62%,
+    19% 57%,
+    8% 56%,
+    0% 55%
+  );
+  -moz-clip-path: polygon(
+    0 0,
+    11% 0,
+    23% 2%,
+    32% 6%,
+    40% 12%,
+    50% 20%,
+    61% 26%,
+    72% 27%,
+    82% 24%,
+    91% 15%,
+    100% 0,
+
+    100% 57%,
+    92% 68%,
+    86% 75%,
+    81% 80%,
+    69% 83%,
+    55% 80%,
+    43% 72%,
+    31% 62%,
+    19% 57%,
+    8% 56%,
+    0% 55%
+  );
   clip-path: polygon(
     0 0,
     11% 0,
@@ -683,6 +943,106 @@
 }
 .shape:hover ~ .shape:last-child,
 .shape:last-child:hover {
+  -webkit-clip-path: polygon(
+    0 0,
+    14% 2%,
+    24% 6%,
+    34% 16%,
+    43% 29%,
+    52% 40%,
+    61% 46%,
+    73% 46%,
+    82% 42%,
+    92% 32%,
+    100% 18%,
+
+    100% 74%,
+    94% 84%,
+    88% 90%,
+    82% 96%,
+    69% 100%,
+    55% 95%,
+    43% 83%,
+    30% 69%,
+    18% 60%,
+    8% 57%,
+    0% 56%
+  );
+  -ms-clip-path: polygon(
+    0 0,
+    14% 2%,
+    24% 6%,
+    34% 16%,
+    43% 29%,
+    52% 40%,
+    61% 46%,
+    73% 46%,
+    82% 42%,
+    92% 32%,
+    100% 18%,
+
+    100% 74%,
+    94% 84%,
+    88% 90%,
+    82% 96%,
+    69% 100%,
+    55% 95%,
+    43% 83%,
+    30% 69%,
+    18% 60%,
+    8% 57%,
+    0% 56%
+  );
+  -o-clip-path: polygon(
+    0 0,
+    14% 2%,
+    24% 6%,
+    34% 16%,
+    43% 29%,
+    52% 40%,
+    61% 46%,
+    73% 46%,
+    82% 42%,
+    92% 32%,
+    100% 18%,
+
+    100% 74%,
+    94% 84%,
+    88% 90%,
+    82% 96%,
+    69% 100%,
+    55% 95%,
+    43% 83%,
+    30% 69%,
+    18% 60%,
+    8% 57%,
+    0% 56%
+  );
+  -moz-clip-path: polygon(
+    0 0,
+    14% 2%,
+    24% 6%,
+    34% 16%,
+    43% 29%,
+    52% 40%,
+    61% 46%,
+    73% 46%,
+    82% 42%,
+    92% 32%,
+    100% 18%,
+
+    100% 74%,
+    94% 84%,
+    88% 90%,
+    82% 96%,
+    69% 100%,
+    55% 95%,
+    43% 83%,
+    30% 69%,
+    18% 60%,
+    8% 57%,
+    0% 56%
+  );
   clip-path: polygon(
     0 0,
     14% 2%,
@@ -712,7 +1072,6 @@
 .shape span {
   display: inline-block;
   word-break: keep-all;
-
   transform-origin: left bottom;
   transition-property: transform;
   transition-timing-function: ease-in-out;

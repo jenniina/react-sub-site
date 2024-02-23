@@ -89,7 +89,7 @@ export default function Hero({
         const x = rect.left + rect.width / 2
         const y = rect.top + rect.height / 2
         const rotation = radianToAngle(e.clientX, e.clientY, x, y)
-        eye.style.transform = `rotate(${rotation}deg)`
+        eye.style.transform = `rotate(${rotation}deg);`
       })
     }
   }
