@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios'
 
 const VITE_BASE_URI = import.meta.env.VITE_BASE_URI
-const baseUrl = VITE_BASE_URI ? `${VITE_BASE_URI}/api/login` : '/api/login'
+const baseUrl = `${VITE_BASE_URI}/api/login`
 
 type credentials = {
   username: string
