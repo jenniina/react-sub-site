@@ -8,7 +8,7 @@ export type SelectData = {
 }
 
 const VITE_BASE_URI = import.meta.env.VITE_BASE_URI
-const baseUrl = VITE_BASE_URI ? `${VITE_BASE_URI}/api` : '/api'
+const baseUrl = `${VITE_BASE_URI}/api`
 
 export const sendEmail = async (data: SelectData) => {
   const response = await axios.post(`${baseUrl}/send-email-select`, data)

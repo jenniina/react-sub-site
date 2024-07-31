@@ -3,7 +3,7 @@ import { ITask } from '../interfaces'
 import { IUser } from '../../../interfaces'
 
 const VITE_BASE_URI = import.meta.env.VITE_BASE_URI
-const baseUrl = VITE_BASE_URI ? `${VITE_BASE_URI}/api/todo` : '/api/todo'
+const baseUrl = `${VITE_BASE_URI}/api/todo`
 
 const getTodos = async (user: IUser['_id']) => {
   const response = await axios.get(`${baseUrl}/${user}`)
