@@ -1,8 +1,7 @@
 import axios, { AxiosResponse } from 'axios'
 import { IUser as user, ELanguages, IBlacklistedJoke } from '../interfaces'
 
-const VITE_BASE_URI = import.meta.env.VITE_BASE_URI
-const baseUrl = `${VITE_BASE_URI}/api/users`
+const baseUrl = `https://jenniina.fi/bg/api/users`
 
 const getConfig = () => ({
   headers: {

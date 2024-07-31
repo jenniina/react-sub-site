@@ -1,8 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios'
 import { IJoke } from '../interfaces'
 
-const VITE_BASE_URI = import.meta.env.VITE_BASE_URI
-const baseUrl = `${VITE_BASE_URI}/api/jokes`
+const baseUrl = `https://jenniina.fi/bg/api/jokes`
 
 const getAll = async () => {
   const response = await axios.get(baseUrl)
