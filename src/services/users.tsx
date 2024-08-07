@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios'
 import { IUser as user, ELanguages, IBlacklistedJoke } from '../interfaces'
 
-const baseUrl = `https://jenniina.fi/bg/api/users`
+const baseUrl = `https://react-backend.azurewebsites.net/api/users`
 
 const getConfig = () => ({
   headers: {
