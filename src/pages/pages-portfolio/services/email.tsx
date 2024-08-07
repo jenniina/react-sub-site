@@ -7,7 +7,7 @@ export type SelectData = {
   email: string
 }
 
-const baseUrl = `https://jenniina.fi/bg/api`
+const baseUrl = `https://react-backend.azurewebsites.net/api`
 
 export const sendEmail = async (data: SelectData) => {
   const response = await axios.post(`${baseUrl}/send-email-select`, data)

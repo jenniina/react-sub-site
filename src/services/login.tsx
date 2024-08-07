@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios'
 
-const baseUrl = `https://jenniina.fi/bg/api/login`
+const baseUrl = `https://react-backend.azurewebsites.net/api/login`
 
 type credentials = {
   username: string

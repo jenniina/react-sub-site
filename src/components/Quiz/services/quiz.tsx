@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { IQuizHighscore } from '../interfaces'
 
-const baseUrl = `https://jenniina.fi/bg/api/quiz`
+const baseUrl = `https://react-backend.azurewebsites.net/api/quiz`
 
 const getQuizzes = async () => {
   const response = await axios.get(baseUrl)
