@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios'
 
-const baseUrl = `https://jenniina.fi/bg/api/login`
+const baseUrl = `https://bg.jenniina.fi/api/login`
 
 type credentials = {
   username: string
