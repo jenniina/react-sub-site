@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios'
 import { IJoke } from '../interfaces'
 
-const baseUrl = `https://jenniina.fi/bg/api/jokes`
+const baseUrl = `https://bg.jenniina.fi/api/jokes`
 
 const getAll = async () => {
   const response = await axios.get(baseUrl)
