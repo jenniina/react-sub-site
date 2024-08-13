@@ -178,3 +178,21 @@ export enum ESiteMayBeSlow {
   cs = 'Stránka může být pomalá',
   fi = 'Sivusto saattaa olla hidas',
 }
+export enum EMigratedSiteToAnotherAzureSubscription {
+  en = 'Migrated site to another Azure subscription',
+  es = 'Migrado sitio a otra suscripción de Azure',
+  fr = 'Site migré vers une autre abonnement Azure',
+  de = 'Website auf ein anderes Azure-Abonnement migriert',
+  pt = 'Site migrado para outra assinatura Azure',
+  cs = 'Stránka přesunuta na jiný Azure předplatné',
+  fi = 'Sivusto siirretty toiseen Azure-tilaukseen',
+}
+export enum ESiteMigration {
+  en = 'Site migration',
+  es = 'Migración del sitio',
+  fr = 'Migration du site',
+  de = 'Website-Migration',
+  pt = 'Migração do site',
+  cs = 'Migrace stránky',
+  fi = 'Sivuston siirto',
+}

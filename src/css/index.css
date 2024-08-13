@@ -193,7 +193,10 @@ body * {
 main a,
 main a:link,
 main a > *,
-main a:link > * {
+main a:link > *,
+main a.disabled:hover,
+main a.disabled:hover *,
+main a.disabled *:hover {
   font-weight: 500;
   color: var(--color-primary-13);
   text-decoration: inherit;
