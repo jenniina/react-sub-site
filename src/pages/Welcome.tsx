@@ -7,6 +7,7 @@ import { BsPerson } from 'react-icons/bs'
 import { IoMdImages } from 'react-icons/io'
 import { GiAbstract019 } from 'react-icons/gi'
 import { MdOutlineQuiz } from 'react-icons/md'
+import { FaCircle } from 'react-icons/fa'
 import { RiDragMove2Fill, RiTodoLine } from 'react-icons/ri'
 import { GiComb } from 'react-icons/gi'
 import { TbTriangleInverted } from 'react-icons/tb'
@@ -38,14 +39,17 @@ import {
 import {
   EAddedNewFeatures,
   EAddedNewIntroElements,
+  EAugust,
   EBugFixes,
   EDecember,
   EEdited,
   EFebruary,
+  EMigratedSiteToAnotherAzureSubscription,
   ENewPortfolioItem,
   ENewest,
   EOctober,
   EOptimizing,
+  ESiteMigration,
 } from '../interfaces/welcome'
 import { Select, SelectOption } from '../components/Select/Select'
 import { ETodoApp } from '../components/Todo/interfaces'
@@ -134,6 +138,18 @@ export default function Home({
                   <strong>2024</strong>
                   <ul>
                     <li>
+                      <strong>{EAugust[language]}</strong>
+                      <ul>
+                        <li>
+                          <a className='disabled'>
+                            <RiDragMove2Fill />
+                            <span>{ESiteMigration[language]} </span>
+                          </a>
+                          <i>{EMigratedSiteToAnotherAzureSubscription[language]}</i>
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
                       <strong>{EFebruary[language]}</strong>
                       <ul>
                         <li>
@@ -159,7 +175,7 @@ export default function Home({
                         </li>
                         <li>
                           <Link to='/portfolio/blob'>
-                            <RiDragMove2Fill />
+                            <FaCircle />
                             {EBlobs[language]}:
                           </Link>
                           <i>
