@@ -194,9 +194,9 @@ export default function About({
               <p>{ETheSiteIsTranslatedToSixLanguagesWhichWere[language]}</p>
               <p>
                 {EPleaseReportAnyIssuesWithTheSiteToJenniina[language]}:{' '}
-                <a href='/portfolio/select?survey=true'>
+                <Link to='/portfolio/select?survey=true'>
                   {ESurvey[language].toLowerCase()}
-                </a>{' '}
+                </Link>{' '}
               </p>
 
               <h2 id='site-features'>{EFeaturesOfThisSite[language]}</h2>

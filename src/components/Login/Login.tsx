@@ -19,6 +19,7 @@ import {
   EEdit,
 } from '../../interfaces'
 import Notification from '../Notification/Notification'
+import { Link } from 'react-router-dom'
 
 interface LoginProps {
   language: ELanguages
@@ -77,7 +78,7 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
           <span>
             {ELoggedInAs[language]} {user?.name ? user?.name : user.username}{' '}
           </span>
-          <a href='/edit'>{EEdit[language]}</a>
+          <Link to='/edit'>{EEdit[language]}</Link>
           <button
             onClick={handleLogout}
             id={`logout-${text}`}

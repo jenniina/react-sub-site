@@ -71,9 +71,9 @@ export default function Portfolio({
                 <br />
                 <br />
                 {EPleaseReportAnyIssuesWithTheSiteToJenniina[language]}:{' '}
-                <a href='/portfolio/select?survey=true'>
+                <Link to='/portfolio/select?survey=true'>
                   {ESurvey[language].toLowerCase()}
-                </a>{' '}
+                </Link>{' '}
               </p>
               <h2>React Apps</h2>
 
