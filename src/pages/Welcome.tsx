@@ -225,7 +225,8 @@ export default function Home({
                             {EQuiz[language]}:
                           </Link>{' '}
                           <i>
-                            {ETestYourKnowledge[language]}; {EQuizAppIntro[language]}
+                            {ENewPortfolioItem[language]}. {ETestYourKnowledge[language]};{' '}
+                            {EQuizAppIntro[language]}
                           </i>
                         </li>
                       </ul>
