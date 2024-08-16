@@ -7,10 +7,10 @@ import { BsPerson } from 'react-icons/bs'
 import { IoMdImages } from 'react-icons/io'
 import { GiAbstract019 } from 'react-icons/gi'
 import { MdOutlineQuiz } from 'react-icons/md'
-import { FaCircle } from 'react-icons/fa'
-import { RiDragMove2Fill, RiTodoLine } from 'react-icons/ri'
+import { RiTodoLine } from 'react-icons/ri'
 import { GiComb } from 'react-icons/gi'
-import { TbTriangleInverted } from 'react-icons/tb'
+import { TbTriangleInverted, TbBlob } from 'react-icons/tb'
+import { LuArrowRightToLine } from 'react-icons/lu'
 
 import {
   EAbout,
@@ -142,7 +142,7 @@ export default function Home({
                       <ul>
                         <li>
                           <a className='disabled'>
-                            <RiDragMove2Fill />
+                            <LuArrowRightToLine />
                             <span>{ESiteMigration[language]} </span>
                           </a>
                           <i>{EMigratedSiteToAnotherAzureSubscription[language]}</i>
@@ -175,7 +175,7 @@ export default function Home({
                         </li>
                         <li>
                           <Link to='/portfolio/blob'>
-                            <FaCircle />
+                            <TbBlob />
                             {EBlobs[language]}:
                           </Link>
                           <i>
