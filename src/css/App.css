@@ -467,6 +467,7 @@ body .z {
 .main-footer button {
   font-size: calc(0.9rem * var(--responsive_scale));
   line-height: 1.8;
+  text-decoration: none;
 }
 .main-footer a {
   text-align: center;
