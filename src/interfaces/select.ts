@@ -115,3 +115,12 @@ export enum ETranslations {
   cs = 'Překlady',
   fi = 'Käännökset',
 }
+export enum EPleaseSelectAnOption {
+  en = 'Please select an option',
+  es = 'Por favor seleccione una opción',
+  fr = 'Veuillez sélectionner une option',
+  de = 'Bitte wählen Sie eine Option',
+  pt = 'Por favor selecione uma opção',
+  cs = 'Vyberte prosím možnost',
+  fi = 'Pyydän valitsemaan jonkin vaihtoehdoista',
+}
