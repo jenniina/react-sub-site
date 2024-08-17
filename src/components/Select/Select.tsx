@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import styles from './select.module.css'
 import { ELanguages, EPleaseSelectAnOption } from '../../interfaces'
+import { useOutsideClick } from '../../hooks/useOutsideClick'
 // import { v4 as uuidv4 } from 'uuid'
 
 export type SelectOption = {
@@ -50,6 +51,11 @@ export function Select({
   const [highlightedIndex, setHighlightedIndex] = useState(0)
 
   const containerRef = useRef<HTMLDivElement>(null)
+
+  useOutsideClick({
+    ref: containerRef,
+    onOutsideClick: () => setIsOpen(false),
+  })
 
   const ariaLive = useRef<HTMLLabelElement>(null)
 
