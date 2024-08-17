@@ -126,7 +126,7 @@ export default function CustomSelectPage({
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
-    if (!value1 || !value2) {
+    if (value1.length < 1 || value2 == options2[0]) {
       dispatch(notify(EPleaseSelectAnOption[language], true, 5))
     } else {
       setSending(true)
