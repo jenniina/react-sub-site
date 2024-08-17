@@ -113,7 +113,13 @@ export default function CustomSelectPage({
   const [input, setInput] = useState<string>('')
   const [email, setEmail] = useState<string>('')
 
-  const [data, setData] = useState({ language: language })
+  const [data, setData] = useState<SelectData>({
+    language: language,
+    issues: '',
+    favoriteHero: '',
+    clarification: '',
+    email: '',
+  })
   const [sending, setSending] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -123,10 +129,12 @@ export default function CustomSelectPage({
 
   const form = useRef() as RefObject<HTMLFormElement>
 
+  console.log(value1, value2, data, options1, options2)
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
-    if (value1.length < 1 || value2 == options2[0]) {
+    if (data.issues == '' || data.favoriteHero == '') {
       dispatch(notify(EPleaseSelectAnOption[language], true, 5))
     } else {
       setSending(true)
@@ -226,6 +234,7 @@ export default function CustomSelectPage({
                       options={options1}
                       value={value1}
                       onChange={(o) => {
+                        console.log(o)
                         setValue1(o)
                         setData((prevData) => ({
                           ...prevData,

@@ -50,7 +50,7 @@ export function Select({
   const [highlightedIndex, setHighlightedIndex] = useState(0)
 
   const containerRef = useRef<HTMLDivElement>(null)
-  const ref = containerRef.current
+
   const ariaLive = useRef<HTMLLabelElement>(null)
 
   function clearOptions(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
@@ -178,7 +178,7 @@ export function Select({
         aria-expanded={isOpen}
         aria-activedescendant={`${id}-${highlightedIndex}`}
         ref={containerRef}
-        onBlur={() => setIsOpen(false)}
+        //onBlur={() => setIsOpen(false)}
         onClick={() => setIsOpen((prev) => !prev)}
         tabIndex={0}
         className={
