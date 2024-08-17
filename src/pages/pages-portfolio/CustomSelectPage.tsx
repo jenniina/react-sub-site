@@ -232,7 +232,6 @@ export default function CustomSelectPage({
                       options={options1}
                       value={value1}
                       onChange={(o) => {
-                        console.log(o)
                         setValue1(o)
                         setData((prevData) => ({
                           ...prevData,
