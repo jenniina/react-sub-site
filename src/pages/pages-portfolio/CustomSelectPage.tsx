@@ -113,7 +113,7 @@ export default function CustomSelectPage({
   const [input, setInput] = useState<string>('')
   const [email, setEmail] = useState<string>('')
 
-  const [data, setData] = useState({})
+  const [data, setData] = useState({ language: language })
   const [sending, setSending] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
