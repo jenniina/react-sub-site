@@ -17,6 +17,7 @@ import Scores from './Scores'
 import styles from '../css/quiz.module.css'
 import { ELogout, EError, EEdit, ELanguages, ELoggedInAs } from '../../../interfaces'
 import { ELogInToSaveScore } from '../../../interfaces/quiz'
+import { Link } from 'react-router-dom'
 
 interface Props {
   easy: IHighscore['easy']
@@ -88,7 +89,7 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
               {ELoggedInAs[(user?.language as ELanguages) ?? 'en']}{' '}
               {user?.name ? user?.name : user.username}{' '}
             </span>
-            <a href='/edit'>{`${EEdit[user?.language as ELanguages]}`}</a>
+            <Link to='/edit'>{`${EEdit[user?.language as ELanguages]}`}</Link>
             <button onClick={handleLogout} id='logout' className='logout danger'>
               {ELogout[(user?.language as ELanguages) ?? 'en']} &times;
             </button>

@@ -1,6 +1,8 @@
 import axios from 'axios'
+import { ELanguages } from '../../../interfaces'
 
 export type SelectData = {
+  language: ELanguages
   issues: string
   favoriteHero: string
   clarification: string
