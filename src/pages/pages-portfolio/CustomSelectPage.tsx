@@ -129,8 +129,6 @@ export default function CustomSelectPage({
 
   const form = useRef() as RefObject<HTMLFormElement>
 
-  console.log(value1, value2, data, options1, options2)
-
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
