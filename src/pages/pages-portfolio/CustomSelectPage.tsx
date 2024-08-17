@@ -122,36 +122,45 @@ export default function CustomSelectPage({
   const dispatch = useAppDispatch()
 
   const form = useRef() as RefObject<HTMLFormElement>
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    setSending(true)
-    if (form.current) {
-      try {
-        await sendEmail(data as SelectData).then(() => {
-          setValue1([])
-          setValue2(options2[0])
-          setInput('')
+
+    if (!value1 || !value2) {
+      dispatch(notify(EPleaseSelectAnOption[language], true, 5))
+    } else {
+      setSending(true)
+      if (form.current) {
+        try {
+          await sendEmail(data as SelectData).then(() => {
+            setValue1([])
+            setValue2(options2[0])
+            setInput('')
+            setSending(false)
+            setShowMessage(true)
+            setTimeout(() => {
+              setShowMessage(false)
+            }, 100000)
+            dispatch(notify(EThankYouForYourMessage[language], false, 8))
+          })
+        } catch (err) {
           setSending(false)
+          setError((err as Error).message)
           setShowMessage(true)
           setTimeout(() => {
             setShowMessage(false)
-          }, 100000)
-          dispatch(notify(EThankYouForYourMessage[language], false, 8))
-        })
-      } catch (error) {
-        setSending(false)
-        setError((error as Error).message)
-        setShowMessage(true)
-        setTimeout(() => {
-          setShowMessage(false)
-          setError(null)
-        }, 10000)
-        console.error('error', error)
-        dispatch(notify(EThereWasAnErrorSendingTheMessage[language], true, 8))
+            setError(null)
+          }, 10000)
+          console.error('error', error, err)
+          const message = error
+            ? `${EThereWasAnErrorSendingTheMessage[language]}: ${error}`
+            : EThereWasAnErrorSendingTheMessage[language]
+          dispatch(notify(message, true, 12))
+          setSending(false)
+        }
       }
     }
   }
-
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
 
