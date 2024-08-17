@@ -3,10 +3,10 @@ import { ELanguages } from '../../../interfaces'
 
 export type SelectData = {
   language: ELanguages
-  issues: string
-  favoriteHero: string
-  clarification: string
-  email: string
+  issues: string | undefined
+  favoriteHero: string | undefined
+  clarification: string | undefined
+  email: string | undefined
 }
 
 const baseUrl = `https://bg.jenniina.fi/api`
