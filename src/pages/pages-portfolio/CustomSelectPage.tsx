@@ -155,6 +155,7 @@ export default function CustomSelectPage({
             setTimeout(() => {
               setShowMessage(false)
             }, 100000)
+            setHasClickedSubmit(false)
             dispatch(notify(EThankYouForYourMessage[language], false, 8))
           })
         } catch (err) {
