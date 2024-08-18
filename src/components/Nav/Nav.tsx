@@ -1,4 +1,12 @@
-import { FC, useState, useEffect, forwardRef, Ref, useImperativeHandle } from 'react'
+import {
+  FC,
+  useState,
+  useEffect,
+  forwardRef,
+  Ref,
+  useImperativeHandle,
+  useRef,
+} from 'react'
 import { BiChat } from 'react-icons/bi'
 import { BsPerson } from 'react-icons/bs'
 import { CgSearch } from 'react-icons/cg'
@@ -185,8 +193,15 @@ const Nav = (
   const lightTheme = useTheme()
   const toggleTheme = useThemeUpdate()
 
-  const clickOutsideRef = useOutsideClick({
-    onOutsideClick: closingAllMenus,
+  // const clickOutsideRef = useOutsideClick({
+  //   onOutsideClick: closingAllMenus,
+  // })
+
+  const clickOutsideRef = useRef<HTMLDivElement>(null)
+
+  useOutsideClick({
+    ref: clickOutsideRef,
+    onOutsideClick: () => closingAllMenus,
   })
 
   const scrollDirection = useScrollDirection()

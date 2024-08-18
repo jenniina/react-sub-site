@@ -43,7 +43,14 @@ function CardSingle({
   function closing() {
     setIsOpen(false)
   }
-  const ref = useOutsideClick({ onOutsideClick: closing })
+  // const closingRef = useOutsideClick({ onOutsideClick: closing })
+
+  const closingRef = useRef<HTMLLIElement>(null)
+
+  useOutsideClick({
+    ref: closingRef,
+    onOutsideClick: () => closing,
+  })
 
   //https://www.aurigait.com/blog/drag-and-drop-in-react/
 
@@ -108,7 +115,7 @@ function CardSingle({
 
   return (
     <li
-      ref={ref}
+      ref={closingRef}
       draggable={'true'}
       onDragStart={(e) => handleDragStart(e, id)}
       onDragEnter={(e) => handleDragEnter(e, id)}
