@@ -38,7 +38,12 @@ import {
   EYouMaySelectMultipleOptions,
   RefObject,
 } from '../../interfaces'
-import { ETranslations } from '../../interfaces/select'
+import {
+  EClear,
+  ERemove,
+  EThisFieldIsRequired,
+  ETranslations,
+} from '../../interfaces/select'
 import { sendEmail, SelectData } from './services/email'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
@@ -121,6 +126,8 @@ export default function CustomSelectPage({
     email: '',
   })
   const [sending, setSending] = useState(false)
+  const [hasClickedSubmit, setHasClickedSubmit] = useState(false)
+
   const [error, setError] = useState<string | null>(null)
 
   const [showMessage, setShowMessage] = useState(false)
@@ -133,6 +140,7 @@ export default function CustomSelectPage({
     e.preventDefault()
 
     if (data.issues == '' || data.favoriteHero == '') {
+      setHasClickedSubmit(true)
       dispatch(notify(EPleaseSelectAnOption[language], true, 5))
     } else {
       setSending(true)
@@ -184,6 +192,8 @@ export default function CustomSelectPage({
     }, 1000)
   }, [])
 
+  console.log('hasClickedSubmit', hasClickedSubmit)
+
   return (
     <div className={`select ${type}`}>
       <Hero language={language} address='select' heading={heading} text={text} />
@@ -226,13 +236,17 @@ export default function CustomSelectPage({
                     <Select
                       language={language}
                       multiple
+                      required
+                      requiredMessage={EThisFieldIsRequired[language]}
+                      validated={hasClickedSubmit && value1.length == 0 ? false : true}
+                      remove={ERemove[language]}
+                      clear={EClear[language]}
                       id='multipleselectdropdown'
                       className={selectStyles.prev2}
                       instructions={EYouMaySelectMultipleOptions[language]}
                       options={options1}
                       value={value1}
                       onChange={(o) => {
-                        console.log(o)
                         setValue1(o)
                         setData((prevData) => ({
                           ...prevData,
@@ -249,6 +263,15 @@ export default function CustomSelectPage({
                     </h4>
                     <Select
                       language={language}
+                      required
+                      requiredMessage={EThisFieldIsRequired[language]}
+                      validated={
+                        hasClickedSubmit && value2?.label == options2[0].label
+                          ? false
+                          : true
+                      }
+                      remove={ERemove[language]}
+                      clear={EClear[language]}
                       id='single'
                       className={`full ${selectStyles.prev}`}
                       instructions={`${EKeyboardUseMoveToOptionWithArrowKeysAndSelectByPressingEnterOrSpace[language]}`}

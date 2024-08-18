@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import styles from './select.module.css'
 import { ELanguages, EPleaseSelectAnOption } from '../../interfaces'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
+import { EClear, ERemove, EThisFieldIsRequired } from '../../interfaces/select'
 // import { v4 as uuidv4 } from 'uuid'
 
 export type SelectOption = {
@@ -29,6 +30,11 @@ type SelectProps = {
   options: SelectOption[]
   selectAnOption?: string
   language?: ELanguages
+  required?: boolean
+  requiredMessage?: string
+  validated?: boolean
+  remove?: string
+  clear?: string
 } & (SingleSelectProps | MultipleSelectProps)
 
 let debounceTimeout: ReturnType<typeof setTimeout>
@@ -40,13 +46,20 @@ export function Select({
   id,
   className,
   multiple,
+  required,
+  validated,
   value,
   onChange,
   options,
   language = ELanguages.English,
+  requiredMessage = EThisFieldIsRequired[language] ?? 'This field is required',
+  remove = ERemove[language] ?? 'remove',
+  clear = EClear[language] ?? 'clear',
   selectAnOption = EPleaseSelectAnOption[language] ?? 'Select an option',
 }: SelectProps) {
   const [isOpen, setIsOpen] = useState(false)
+
+  const showValidationError = required && !validated
 
   const [highlightedIndex, setHighlightedIndex] = useState(0)
 
@@ -176,6 +189,7 @@ export function Select({
       >
         {instructions}
       </span>
+
       <div
         id={`${id}-container`}
         role='combobox'
@@ -189,8 +203,10 @@ export function Select({
         tabIndex={0}
         className={
           multiple
-            ? `${styles.multiple} ${styles.container} multiple container`
-            : `${styles.container} container`
+            ? `${styles.multiple} ${styles.container} multiple container ${
+                showValidationError ? styles.error : ''
+              }`
+            : `${styles.container} container ${showValidationError ? styles.error : ''}`
         }
       >
         <span className={styles.scr} aria-live='polite' ref={ariaLive}></span>
@@ -245,7 +261,7 @@ export function Select({
                 <span aria-hidden='true' className={`${styles['remove-btn']} remove-btn`}>
                   &times;
                 </span>
-                <span className={`${styles.scr} scr`}>remove</span>
+                <span className={`${styles.scr} scr`}>{remove}</span>
               </button>
             ))
           ) : !multiple ? (
@@ -262,7 +278,7 @@ export function Select({
           className={`${styles['clear-btn']} clear-btn`}
         >
           <span aria-hidden='true'>&times;</span>
-          <span className={`${styles.scr} scr`}>clear chosen options</span>
+          <span className={`${styles.scr} scr`}>{clear}</span>
         </button>
 
         <div className={`${styles.caret} caret`}></div>
@@ -333,6 +349,13 @@ export function Select({
           ))}
         </ul>
       </div>
+      {showValidationError && (
+        <span className={`${styles['required-message']} required-message`}>
+          &#11165;
+          {requiredMessage}
+          &#11165;
+        </span>
+      )}
     </div>
   )
 }
