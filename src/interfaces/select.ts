@@ -124,3 +124,30 @@ export enum EPleaseSelectAnOption {
   cs = 'Vyberte prosím možnost',
   fi = 'Pyydän valitsemaan jonkin vaihtoehdoista',
 }
+export enum EThisFieldIsRequired {
+  en = 'This field is required',
+  es = 'Este campo es obligatorio',
+  fr = 'Ce champ est obligatoire',
+  de = 'Dieses Feld ist erforderlich',
+  pt = 'Este campo é obrigatório',
+  cs = 'Toto pole je povinné',
+  fi = 'Tämä kenttä on pakollinen',
+}
+export enum ERemove {
+  en = 'Remove',
+  es = 'Eliminar',
+  fr = 'Supprimer',
+  de = 'Entfernen',
+  pt = 'Remover',
+  cs = 'Odstranit',
+  fi = 'Poista',
+}
+export enum EClear {
+  en = 'Clear',
+  es = 'Limpiar',
+  fr = 'Effacer',
+  de = 'Löschen',
+  pt = 'Limpar',
+  cs = 'Vymazat',
+  fi = 'Tyhjennä',
+}
