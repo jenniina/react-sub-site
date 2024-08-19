@@ -55,7 +55,7 @@ import { Select, SelectOption } from '../components/Select/Select'
 import { ETodoApp } from '../components/Todo/interfaces'
 import {
   ETasksCanBeEdited,
-  ETasksCanBeReorganizedByDraggingAndDropping,
+  ETasksCanBeReorganizedByDraggingAndDroppingWhenLoggedIn,
 } from '../interfaces/todo'
 import { GrGraphQl } from 'react-icons/gr'
 
@@ -190,7 +190,7 @@ export default function Home({
                           <i>
                             {EAddedNewFeatures[language]}:{' '}
                             {ETasksCanBeEdited[language].toLowerCase()} &{' '}
-                            {ETasksCanBeReorganizedByDraggingAndDropping[
+                            {ETasksCanBeReorganizedByDraggingAndDroppingWhenLoggedIn[
                               language
                             ].toLowerCase()}
                           </i>

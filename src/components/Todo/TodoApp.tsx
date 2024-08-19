@@ -51,8 +51,6 @@ export default function TodoApp({ language }: Props) {
   const status = useSelector((state: RootState) => state.todos.status)
   const error = useSelector((state: RootState) => state.todos.error)
 
-  console.log('todos:', todos)
-
   const localName = 'ReactTodos'
 
   const hasCompletedTasks = todos?.some((todo) => todo.complete)
