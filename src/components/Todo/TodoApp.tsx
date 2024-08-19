@@ -58,11 +58,52 @@ export default function TodoApp({ language }: Props) {
   useEffect(() => {
     if (todos.length === 0 && !user) {
       const storedTodos = JSON.parse(window.localStorage.getItem(localName) || '[]')
+      const existingTodoKeys = new Set(todos.map((todo) => todo.key))
       storedTodos.forEach((todo: any) => {
-        dispatch(addTodo(todo))
+        if (!existingTodoKeys.has(todo.key)) {
+          dispatch(addTodo(todo))
+        }
       })
     }
   }, [dispatch, todos, user])
+
+  const findDuplicates = (todos: ITask[]) => {
+    const seenKeys = new Set()
+    const duplicates: ITask[] = []
+    todos.forEach((todo) => {
+      if (seenKeys.has(todo.key)) {
+        duplicates.push(todo)
+      } else {
+        seenKeys.add(todo.key)
+      }
+    })
+    return duplicates
+  }
+
+  const deleteTodoHandler = (key: ITask['key']) => {
+    if (!key) {
+      dispatch(notify(`Error: no key`, true, 8))
+      return
+    }
+    if (user?._id) {
+      dispatch(deleteTodoAsync(user._id, key))
+    } else {
+      dispatch(deleteTodoFromState(key))
+      const updatedTodos = todos.filter((todo) => todo.key !== key)
+      window.localStorage.setItem(localName, JSON.stringify(updatedTodos))
+    }
+  }
+
+  useEffect(() => {
+    const duplicates = findDuplicates(todos)
+    const uniqueKeys = new Set()
+    duplicates.forEach((duplicate) => {
+      if (!uniqueKeys.has(duplicate.key)) {
+        deleteTodoHandler(duplicate.key)
+        uniqueKeys.add(duplicate.key)
+      }
+    })
+  }, [todos])
 
   const [todosWithIdAndStatus, setTodosWithIdAndStatus] = useState<ITaskDraggable[]>([])
 
