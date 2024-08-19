@@ -193,8 +193,6 @@ export default function CustomSelectPage({
     }, 1000)
   }, [])
 
-  console.log('hasClickedSubmit', hasClickedSubmit)
-
   return (
     <div className={`select ${type}`}>
       <Hero language={language} address='select' heading={heading} text={text} />

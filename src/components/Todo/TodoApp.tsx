@@ -190,7 +190,6 @@ export default function TodoApp({ language }: Props) {
         }
       })
     } else {
-      console.log('order', order)
       try {
         dispatch(changeTodoOrder(order))
       } catch (e) {
