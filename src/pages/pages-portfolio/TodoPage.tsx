@@ -14,7 +14,7 @@ import {
   EShowsHowManyTasksAreLeftToDo,
   EStoresTasksInMongoDBIfTheUserIsLoggedIn,
   ETasksCanBeEdited,
-  ETasksCanBeReorganizedByDraggingAndDroppingWhenLoggedIn,
+  ETasksCanBeReorganizedByDraggingAndDropping,
 } from '../../interfaces/todo'
 
 export default function TodoPage({
@@ -42,9 +42,7 @@ export default function TodoPage({
                   {ERemoveTaskEitherIndividuallyOrClearAllCompletedTasksAtOnce[language]}
                 </li>
                 <li>{ETasksCanBeEdited[language]}</li>
-                <li>
-                  {ETasksCanBeReorganizedByDraggingAndDroppingWhenLoggedIn[language]}
-                </li>
+                <li>{ETasksCanBeReorganizedByDraggingAndDropping[language]}</li>
                 <li>{EShowsHowManyTasksAreLeftToDo[language]}</li>
                 <li>{EStoresTasksInMongoDBIfTheUserIsLoggedIn[language]}</li>
               </ul>

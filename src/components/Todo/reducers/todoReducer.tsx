@@ -44,6 +44,15 @@ export const todosSlice = createSlice({
         state.todos[index] = action.payload
       }
     },
+    changeTodoOrder: (state, action: PayloadAction<{ key: string; order: number }[]>) => {
+      const updatedTodos = state.todos.map((todo) => {
+        const newOrder = action.payload.find((o) => o.key === todo.key)
+        return newOrder ? { ...todo, order: newOrder.order } : todo
+      })
+
+      updatedTodos.sort((a, b) => a.order - b.order)
+      state.todos = updatedTodos
+    },
   },
 })
 
@@ -84,6 +93,7 @@ export const addTodoAsync = (user: IUser['_id'], task: ITask) => {
         key: newTodo.key,
         name: newTodo.name,
         complete: newTodo.complete,
+        order: newTodo.order,
         user,
       })
     )
@@ -129,8 +139,8 @@ export const editTodoAsync = (user: IUser['_id'], key: ITask['key'], task: ITask
         key: newTodo.key,
         name: newTodo.name,
         complete: newTodo.complete,
-        user,
         order: newTodo.order,
+        user,
       })
     )
   }
@@ -189,6 +199,7 @@ export const {
   deleteTodo,
   clearCompletedTodos,
   editTodo,
+  changeTodoOrder,
 } = todosSlice.actions
 
 export default todosSlice.reducer

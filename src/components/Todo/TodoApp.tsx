@@ -24,6 +24,7 @@ import {
   syncTodos,
   editTodoOrder,
   fetchTodos,
+  changeTodoOrder,
 } from './reducers/todoReducer'
 import { notify } from '../../reducers/notificationReducer'
 import Notification from '../Notification/Notification'
@@ -183,6 +184,9 @@ export default function TodoApp({ language }: Props) {
           dispatch(notify(`${e}`, true, 8))
         }
       })
+    } else {
+      dispatch(changeTodoOrder(order))
+      window.localStorage.setItem(localName, JSON.stringify(todos))
     }
   }
 
@@ -193,7 +197,8 @@ export default function TodoApp({ language }: Props) {
     const name = todoNameRef.current?.value ?? ''
     if (name === '') return
     const key = uuidv4()
-    const newTodo = { key, name: name, complete: false }
+    const maxOrder = todos.reduce((max, todo) => (todo.order > max ? todo.order : max), 0)
+    const newTodo = { key, name: name, complete: false, order: maxOrder + 1 }
     if (user) {
       dispatch(addTodoAsync(user._id, newTodo))
     } else {

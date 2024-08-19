@@ -61,12 +61,12 @@ export enum ETasksCanBeEdited {
   cs = 'Úkoly lze upravit',
   fi = 'Tehtäviä voi muokata',
 }
-export enum ETasksCanBeReorganizedByDraggingAndDroppingWhenLoggedIn {
-  en = 'Tasks can be reorganized by dragging and dropping when logged in',
-  es = 'Las tareas se pueden reorganizar arrastrando y soltando cuando se ha iniciado sesión',
-  fr = 'Les tâches peuvent être réorganisées par glisser-déposer lorsque vous êtes connecté',
-  de = 'Aufgaben können durch Ziehen und Ablegen neu organisiert werden, wenn Sie angemeldet sind',
-  pt = 'As tarefas podem ser reorganizadas arrastando e soltando quando conectado',
-  cs = 'Úkoly lze při přihlášení přeuspořádat přetažením a upuštěním',
-  fi = 'Tehtäviä voi järjestellä uudelleen vetämällä ja pudottamalla kirjautuneena',
+export enum ETasksCanBeReorganizedByDraggingAndDropping {
+  en = 'Tasks can be reorganized by dragging and dropping',
+  es = 'Las tareas se pueden reorganizar arrastrando y soltando',
+  fr = 'Les tâches peuvent être réorganisées par glisser-déposer',
+  de = 'Aufgaben können durch Ziehen und Ablegen neu organisiert werden',
+  pt = 'As tarefas podem ser reorganizadas arrastando e soltando',
+  cs = 'Úkoly lze přeuspořádat přetažením a upuštěním',
+  fi = 'Tehtäviä voi järjestellä raahaamalla ja pudottamalla',
 }
