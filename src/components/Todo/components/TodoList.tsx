@@ -8,7 +8,7 @@ import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { syncTodos } from '../reducers/todoReducer'
 
 export interface ITaskDraggable extends ITask {
-  id: number
+  id: number | string
   status: string
 }
 
@@ -81,13 +81,16 @@ export default function TodoList({
 
         const order = handleUpdate(Number(draggedId), 'todos', newTargetIndex)
 
-        const newOrder = order?.map((item, index) => ({
-          key: item.key,
-          order: index,
-        }))
+        if (Array.isArray(order)) {
+          const newOrder = order?.map((item, index) => ({
+            key: item.key,
+            order: index,
+          }))
 
-        modifyTodoOrder(newOrder as { key: ITask['key']; order: ITask['order'] }[])
-
+          modifyTodoOrder(newOrder as { key: ITask['key']; order: ITask['order'] }[])
+        } else {
+          console.error('Order is not an array')
+        }
         handleDragging(false)
       }}
     >
