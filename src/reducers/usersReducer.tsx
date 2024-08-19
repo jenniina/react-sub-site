@@ -80,22 +80,6 @@ export const createUser = (newUser: IUser) => {
   }
 }
 
-// export const createUser = (newUser: IUser) => {
-//   return async (dispatch: (arg0: { type: string; payload: any }) => IContent) => {
-//     const response = (await userService.createNewUser(newUser)) as AxiosResponse<IContent>
-//     // Dispatch an action to update the state with the response data
-//     return dispatch(createUserSuccess(response))
-//   }
-// }
-
-// // Action creator for updating the state after a successful create user request
-// const createUserSuccess = (payload: AxiosResponse<IContent, any>) => {
-//   return {
-//     type: 'users/register',
-//     payload: payload,
-//   }
-// }
-
 export const removeUser = (id: IUser['_id']) => {
   return async (
     dispatch: (arg0: { payload: IUser['_id']; type: 'users/remove' }) => void
@@ -166,16 +150,6 @@ export const updatePassword = (
     return content
   }
 }
-
-// export const findUserbyUsername = (username: string | undefined) => {
-//   return async (
-//     dispatch: (arg0: { payload: any; type: 'users/searchUsername' }) => IUser
-//   ) => {
-//     const user = await userService.searchUsername(username)
-//     dispatch({ type: 'users/searchUsername', payload: user })
-//     return user.user
-//   }
-// }
 
 export const updateUserToken = (user: Pick<IUser, 'username' | 'language'>) => {
   return async (

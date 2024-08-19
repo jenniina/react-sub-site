@@ -75,6 +75,7 @@ import {
   EBlocked,
   FlagsLanguage,
   EAddWarningTitle,
+  ELoadingJokes,
 } from '../interfaces'
 import {
   IUser,
@@ -1670,7 +1671,7 @@ const UserJokes = ({
                 )
               })
             ) : (
-              <li>{ENoJokesYet[language]}</li>
+              <li>{ELoadingJokes[language]}</li>
             )}
           </ul>
           {!isRandom && !showBlacklistedJokes && pagination(2)}

@@ -1590,3 +1590,12 @@ export enum EBlocked {
   cs = 'Blokovaný',
   fi = 'Estetyt',
 }
+export enum ELoadingJokes {
+  en = 'Loading jokes...',
+  es = 'Cargando bromas...',
+  fr = 'Chargement des blagues...',
+  de = 'Witze werden geladen...',
+  pt = 'Carregando piadas...',
+  cs = 'Načítání vtipů...',
+  fi = 'Ladataan vitsejä...',
+}
