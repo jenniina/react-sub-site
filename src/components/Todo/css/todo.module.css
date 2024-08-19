@@ -62,11 +62,15 @@
   align-items: center;
   justify-content: center;
 } */
+
+.modify-todo {
+}
+
 .todo-ul li .btn-wrap {
   display: flex;
   flex-flow: row wrap;
   gap: 0.6em;
-  align-items: center;
+  align-items: flex-end;
   justify-content: flex-start;
   flex: 1 1 100%;
   min-width: 100%;
@@ -147,19 +151,19 @@ form.modify {
 @media (min-width: 600px) {
   .todo-ul li {
     flex-flow: row wrap;
+    justify-content: space-between;
   }
   .todo-ul li .btn-wrap {
     flex: 0 0 auto;
     max-width: max-content;
     min-width: max-content;
-    flex-flow: column nowrap;
   }
   .todo-ul li label {
     flex-flow: row wrap;
     align-items: flex-start;
-    max-width: clamp(100px, calc(100vw - 12rem), 490px);
+    max-width: calc(100% - 8em);
   }
   .todo-ul li label > span {
-    max-width: clamp(100px, calc(100vw - 15rem), 440px);
+    max-width: 90%;
   }
 } /*END media*/

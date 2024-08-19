@@ -60,7 +60,7 @@ export default function Todo({
       <div className={styles['btn-wrap']}>
         <Accordion
           language={language}
-          className={`modify-todo`}
+          className={`${styles['modify-todo']} modify-todo`}
           text={EEdit[language]}
           isOpen={false}
           hideBrackets={false}

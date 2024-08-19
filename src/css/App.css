@@ -533,8 +533,12 @@ body .z {
   margin-left: auto;
 }
 .modify-todo-container.open {
-  flex: 1 0 100%;
+  flex: 1 0 auto;
   font-size: 1em;
+}
+.modify-todo-container.open button.close {
+  height: auto;
+  max-height: initial;
 }
 .required {
   color: red;
