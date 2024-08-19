@@ -51,7 +51,20 @@ export default function TodoApp({ language }: Props) {
   const status = useSelector((state: RootState) => state.todos.status)
   const error = useSelector((state: RootState) => state.todos.error)
 
+  console.log('todos:', todos)
+
+  const localName = 'ReactTodos'
+
   const hasCompletedTasks = todos?.some((todo) => todo.complete)
+
+  useEffect(() => {
+    if (todos.length === 0 && !user) {
+      const storedTodos = JSON.parse(window.localStorage.getItem(localName) || '[]')
+      storedTodos.forEach((todo: any) => {
+        dispatch(addTodo(todo))
+      })
+    }
+  }, [dispatch, todos, user])
 
   const [todosWithIdAndStatus, setTodosWithIdAndStatus] = useState<ITaskDraggable[]>([])
 
@@ -113,6 +126,8 @@ export default function TodoApp({ language }: Props) {
           })
       } else {
         dispatch(editTodo(updatedTodo as ITask))
+        const updatedTodos = todos.map((todo) => (todo.key === key ? updatedTodo : todo))
+        window.localStorage.setItem(localName, JSON.stringify(updatedTodos))
       }
     }
   }
@@ -144,6 +159,7 @@ export default function TodoApp({ language }: Props) {
       dispatch(addTodoAsync(user._id, newTodo))
     } else {
       dispatch(addTodo(newTodo))
+      window.localStorage.setItem(localName, JSON.stringify([...todos, newTodo]))
     }
     if (todoNameRef.current) todoNameRef.current.value = ''
   }
@@ -154,6 +170,8 @@ export default function TodoApp({ language }: Props) {
       await dispatch(clearCompletedTodosAsync(user._id))
     } else {
       dispatch(clearCompletedTodos())
+      const updatedTodos = todos.filter((todo) => !todo.complete)
+      window.localStorage.setItem(localName, JSON.stringify(updatedTodos))
     }
   }
 
@@ -166,6 +184,8 @@ export default function TodoApp({ language }: Props) {
       dispatch(deleteTodoAsync(user._id, key))
     } else {
       dispatch(deleteTodoFromState(key))
+      const updatedTodos = todos.filter((todo) => todo.key !== key)
+      window.localStorage.setItem(localName, JSON.stringify(updatedTodos))
     }
   }
 
@@ -204,7 +224,6 @@ export default function TodoApp({ language }: Props) {
           {todos?.filter((todo) => !todo?.complete).length} {ELeftToDo[language]}
         </p>
         <TodoList
-          todos={todos}
           todosWithIdAndStatus={todosWithIdAndStatus}
           setTodosWithIdAndStatus={setTodosWithIdAndStatus}
           toggleTodo={toggleTodo}

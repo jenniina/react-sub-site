@@ -13,7 +13,6 @@ export interface ITaskDraggable extends ITask {
 }
 
 export default function TodoList({
-  todos,
   toggleTodo,
   deleteTodo,
   language,
@@ -22,7 +21,6 @@ export default function TodoList({
   todosWithIdAndStatus,
   setTodosWithIdAndStatus,
 }: {
-  todos: ITask[]
   toggleTodo: (key: string | undefined) => void
   deleteTodo: (key: string | undefined) => void
   language: ELanguages
