@@ -68,6 +68,11 @@ export default function TodoApp({ language }: Props) {
     }
   }, [dispatch, todos, user])
 
+  useEffect(() => {
+    // Save todos to local storage whenever they change
+    window.localStorage.setItem(localName, JSON.stringify(todos))
+  }, [todos])
+
   const findDuplicates = (todos: ITask[]) => {
     const seenKeys = new Set()
     const duplicates: ITask[] = []
@@ -112,8 +117,8 @@ export default function TodoApp({ language }: Props) {
     const newTodosWithIdAndStatus = todos
       ?.slice()
       .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-      .map((todo, index) => {
-        return { ...todo, id: index, status: 'todos' }
+      .map((todo) => {
+        return { ...todo, id: todo.order, status: 'todos' }
       }) as ITaskDraggable[]
 
     setTodosWithIdAndStatus(newTodosWithIdAndStatus)
@@ -185,8 +190,15 @@ export default function TodoApp({ language }: Props) {
         }
       })
     } else {
-      dispatch(changeTodoOrder(order))
-      window.localStorage.setItem(localName, JSON.stringify(todos))
+      console.log('order', order)
+      try {
+        dispatch(changeTodoOrder(order))
+      } catch (e) {
+        console.error(e)
+        dispatch(notify(`${e}`, true, 8))
+      } finally {
+        window.localStorage.setItem(localName, JSON.stringify(todos))
+      }
     }
   }
 
