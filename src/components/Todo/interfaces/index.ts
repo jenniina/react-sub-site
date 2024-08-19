@@ -4,7 +4,7 @@ export interface ITask {
   key: string
   name: string
   complete: boolean
-  order?: number
+  order: number
   user?: IUser['_id'] | null
   createdAt?: string
   updatedAt?: string
