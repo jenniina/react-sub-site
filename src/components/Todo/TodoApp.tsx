@@ -25,6 +25,7 @@ import {
   editTodoOrder,
   fetchTodos,
   changeTodoOrder,
+  setAllTodos,
 } from './reducers/todoReducer'
 import { notify } from '../../reducers/notificationReducer'
 import Notification from '../Notification/Notification'
@@ -239,7 +240,13 @@ export default function TodoApp({ language }: Props) {
       dispatch(deleteTodoAsync(user._id, key))
     } else {
       dispatch(deleteTodoFromState(key))
-      const updatedTodos = todos.filter((todo) => todo.key !== key)
+      let updatedTodos = todos.filter((todo) => todo.key !== key)
+      // Reassign order to ensure there are no gaps
+      updatedTodos = updatedTodos.map((todo, index) => ({
+        ...todo,
+        order: index + 1,
+      }))
+      dispatch(setAllTodos(updatedTodos))
       window.localStorage.setItem(localName, JSON.stringify(updatedTodos))
     }
   }

@@ -53,6 +53,9 @@ export const todosSlice = createSlice({
       updatedTodos.sort((a, b) => a.order - b.order)
       state.todos = updatedTodos
     },
+    setAllTodos: (state, action: PayloadAction<ITask[]>) => {
+      state.todos = action.payload
+    },
   },
 })
 
@@ -98,6 +101,17 @@ export const addTodoAsync = (user: IUser['_id'], task: ITask) => {
       })
     )
   }
+}
+
+export const editTodoOrder = async (
+  user: IUser['_id'],
+  order: {
+    key: ITask['key']
+    order: ITask['order']
+  }[]
+) => {
+  const response = await todoService.editTodoOrder(user, order)
+  return response
 }
 
 export const deleteTodoAsync = (user: IUser['_id'], key: ITask['key']) => {
@@ -175,22 +189,6 @@ export const syncTodos = (user: IUser['_id']) => {
   }
 }
 
-export const editTodoOrder = async (
-  user: IUser['_id'],
-  order: {
-    key: ITask['key']
-    order: ITask['order']
-  }[]
-) => {
-  const response = await todoService.editTodoOrder(user, order)
-  return response
-}
-
-// export const addOrderToAllTodos = async () => {
-//   const response = await todoService.addOrderToAllTodos()
-//   return response
-// }
-
 export const {
   getTodosStart,
   getTodosSuccess,
@@ -200,6 +198,7 @@ export const {
   clearCompletedTodos,
   editTodo,
   changeTodoOrder,
+  setAllTodos,
 } = todosSlice.actions
 
 export default todosSlice.reducer

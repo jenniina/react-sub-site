@@ -7,8 +7,7 @@ export interface IClosestItem {
 }
 
 interface Item {
-  id: number | string
-  key?: number | string
+  id: number
   status: string
 }
 
@@ -60,13 +59,8 @@ export const useDragAndDrop = <T extends Item, S extends string>(
 
   const handleUpdate = useCallback(
     (id: number, newStatus: S, target?: number) => {
-      const findItem = (status: S, id: number) =>
-        listItemsByStatus[status].items.find(
-          (item) => item?.id === id || item?.key === id
-        )
-
       const oldStatus = Object.keys(listItemsByStatus).find((status) =>
-        findItem(status as S, id)
+        listItemsByStatus[status as S].items.find((item) => item?.id === id)
       ) as S
 
       if (!oldStatus) return
