@@ -280,7 +280,7 @@ const DragComponent = (props: DragComponentProps) => {
     let scale = parseFloat(value)
     scale = isNaN(scale) ? 4 : scale
 
-    scale += e.deltaY * -0.005
+    scale += e.deltaY * -0.001
     // Restrict scale
     scale = Math.min(Math.max(2, scale), 10)
     // Apply
@@ -291,7 +291,7 @@ const DragComponent = (props: DragComponentProps) => {
 
   // Keyboard use
   function keyDown(e: KeyboardEvent) {
-    const movePx = 8
+    const movePx = 5
 
     let value = (e.target as HTMLElement).style.getPropertyValue('--i')
     let scale = parseFloat(value)
