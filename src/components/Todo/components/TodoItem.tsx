@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { EEdit, ELanguages } from '../../../interfaces'
 import { EDeleteTask } from '../../../interfaces/todo'
 import Accordion from '../../Accordion/Accordion'
@@ -27,7 +27,7 @@ export default function Todo({
   handleUpdate: (id: number, status: string, target?: number) => void
   handleDragging: (dragging: boolean) => void
 }) {
-  const [newName, setNewName] = useState(todo?.name)
+  const [newName, setNewName] = useState(todo?.name ?? '')
 
   function handleTodoClick() {
     toggleTodo(todo?.key)
@@ -42,6 +42,17 @@ export default function Todo({
     e.preventDefault()
     modifyTodo(todo?.key, newName)
   }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewName(e.target.value)
+  }
+
+  useEffect(() => {
+    // Ensure inputValue is always defined
+    if (todo?.name !== newName) {
+      setNewName(todo?.name || '')
+    }
+  }, [todo])
 
   return (
     <li
@@ -65,7 +76,7 @@ export default function Todo({
           isOpen={false}
           hideBrackets={false}
           onClick={() => {
-            setNewName(todo?.name)
+            setNewName(todo?.name ?? '')
           }}
         >
           <form onSubmit={handleModify} className={styles.modify}>
@@ -76,7 +87,7 @@ export default function Todo({
                   type='text'
                   name='name'
                   value={newName}
-                  onChange={({ target }) => setNewName(target.value)}
+                  onChange={handleChange}
                 />
                 <span className='scr'>
                   {EEdit[language]} {todo?.name}

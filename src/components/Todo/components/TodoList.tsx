@@ -8,7 +8,7 @@ import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { syncTodos } from '../reducers/todoReducer'
 
 export interface ITaskDraggable extends ITask {
-  id: number | string
+  id: number
   status: string
 }
 
