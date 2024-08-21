@@ -1,4 +1,4 @@
-import React, {
+import {
   useRef,
   useEffect,
   useState,
@@ -26,6 +26,10 @@ import {
   EEnableScroll,
   EMarkerOff,
   EMarkerOn,
+  EMoveDown,
+  EMoveLeft,
+  EMoveRight,
+  EMoveUp,
   EResetBlobs,
   EResetHue,
   EResetLightness,
@@ -35,6 +39,13 @@ import {
   EStopSway,
   ETryDraggingTheBlobs,
 } from '../../interfaces/blobs'
+import {
+  BiChevronsDown,
+  BiChevronsLeft,
+  BiChevronsRight,
+  BiChevronsUp,
+} from 'react-icons/bi'
+import '../../css/App.css'
 
 let angle = '90deg'
 let color1 = 'cyan'
@@ -199,6 +210,19 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       saveDraggables()
     }
     setHasBeenMade(true)
+  }
+
+  const handleMoveLeft = () => {
+    dispatch({ type: 'moveDraggablesLeft', payload: {} })
+  }
+  const handleMoveRight = () => {
+    dispatch({ type: 'moveDraggablesRight', payload: {} })
+  }
+  const handleMoveUp = () => {
+    dispatch({ type: 'moveDraggablesUp', payload: {} })
+  }
+  const handleMoveDown = () => {
+    dispatch({ type: 'moveDraggablesDown', payload: {} })
   }
 
   const [paused, setPaused] = useState(false)
@@ -711,6 +735,30 @@ export default function BlobJS({ language }: { language: ELanguages }) {
               setColorIndex={setColorIndex}
               colorPairs={colorPairs}
             />
+          </div>
+          {/* <button className={`moveleft tooltipwrap`} onClick={handleMoveLeft}>
+            <BiChevronsLeft />
+            <span className='tooltip right below' data-tooltip={EMoveLeft[language]}>
+              <b className='scr'>{EMoveLeft[language]}</b>
+            </span>
+          </button> */}
+          <div className='movers-wrap'>
+            <button className={`moveup mover`} onClick={handleMoveDown}>
+              <BiChevronsUp />
+              <span className='scr'>{EMoveUp[language]}</span>
+            </button>
+            <button className={`moveright mover`} onClick={handleMoveLeft}>
+              <BiChevronsRight />
+              <span className='scr'>{EMoveRight[language]}</span>
+            </button>
+            <button className={`moveup mover`} onClick={handleMoveRight}>
+              <BiChevronsLeft />
+              <span className='scr'>{EMoveLeft[language]}</span>
+            </button>
+            <button className={`movedown mover`} onClick={handleMoveUp}>
+              <BiChevronsDown />
+              <span className='scr'>{EMoveDown[language]}</span>
+            </button>
           </div>
           <div
             ref={colorBlockOrange}

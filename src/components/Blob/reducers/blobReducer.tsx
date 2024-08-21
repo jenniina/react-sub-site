@@ -55,6 +55,46 @@ function blobReducer(
         )
       )
       return { ...state, draggables: newDraggablesUpdate }
+    case 'moveDraggablesLeft':
+      return {
+        ...state,
+        draggables: state.draggables.map((subArray) =>
+          subArray.map((draggable) => ({
+            ...draggable,
+            x: `${parseInt(draggable.x) - 10}px`,
+          }))
+        ),
+      }
+    case 'moveDraggablesRight':
+      return {
+        ...state,
+        draggables: state.draggables.map((subArray) =>
+          subArray.map((draggable) => ({
+            ...draggable,
+            x: `${parseInt(draggable.x) + 10}px`,
+          }))
+        ),
+      }
+    case 'moveDraggablesUp':
+      return {
+        ...state,
+        draggables: state.draggables.map((subArray) =>
+          subArray.map((draggable) => ({
+            ...draggable,
+            y: `${parseInt(draggable.y) - 10}px`,
+          }))
+        ),
+      }
+    case 'moveDraggablesDown':
+      return {
+        ...state,
+        draggables: state.draggables.map((subArray) =>
+          subArray.map((draggable) => ({
+            ...draggable,
+            y: `${parseInt(draggable.y) + 10}px`,
+          }))
+        ),
+      }
     default:
       return state
   }

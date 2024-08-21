@@ -23,6 +23,7 @@ import {
   ELightness,
   EMakeBlobLargerByPressing2,
   EMakeBlobSmallerByPressing1,
+  EMoveViewInDifferentDirections,
   EPointerUse,
   EPressEnterToCycleThroughTheDifferentColors,
   ERemovable,
@@ -93,6 +94,7 @@ export default function BlobPage({
                       <li>{EToggleTheSubtleMovementOfTheBlobs[language]}</li>
                       <li>{EResetTheBlobArrayToANewConfiguration[language]}</li>
                       <li>{EStopScrollingBehaviorToUseTheMouseWheelFreely[language]}</li>
+                      <li>{EMoveViewInDifferentDirections[language]}</li>
                     </ul>
                   </li>
 
