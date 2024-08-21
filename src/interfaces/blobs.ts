@@ -385,3 +385,48 @@ export enum EResetHue {
   cs = 'Resetovat Odstín',
   fi = 'Nollaa sävy',
 }
+export enum EMoveLeft {
+  en = 'Move left',
+  es = 'Mover a la izquierda',
+  fr = 'Déplacer à gauche',
+  de = 'Nach links bewegen',
+  pt = 'Mover para a esquerda',
+  cs = 'Pohnout doleva',
+  fi = 'Siirry vasemmalle',
+}
+export enum EMoveRight {
+  en = 'Move right',
+  es = 'Mover a la derecha',
+  fr = 'Déplacer à droite',
+  de = 'Nach rechts bewegen',
+  pt = 'Mover para a direita',
+  cs = 'Pohnout doprava',
+  fi = 'Siirry oikealle',
+}
+export enum EMoveUp {
+  en = 'Move up',
+  es = 'Mover hacia arriba',
+  fr = 'Déplacer vers le haut',
+  de = 'Nach oben bewegen',
+  pt = 'Mover para cima',
+  cs = 'Pohnout nahoru',
+  fi = 'Siirry ylös',
+}
+export enum EMoveDown {
+  en = 'Move down',
+  es = 'Mover hacia abajo',
+  fr = 'Déplacer vers le bas',
+  de = 'Nach unten bewegen',
+  pt = 'Mover para baixo',
+  cs = 'Pohnout dolů',
+  fi = 'Siirry alas',
+}
+export enum EMoveViewInDifferentDirections {
+  en = 'Move view in different directions',
+  es = 'Mover vista en diferentes direcciones',
+  fr = 'Déplacer la vue dans différentes directions',
+  de = 'Blick in verschiedene Richtungen bewegen',
+  pt = 'Mover a visualização em diferentes direções',
+  cs = 'Pohyb pohledu v různých směrech',
+  fi = 'Siirrä näkymää eri suuntiin',
+}

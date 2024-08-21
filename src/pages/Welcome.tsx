@@ -58,6 +58,7 @@ import {
   ETasksCanBeReorganizedByDraggingAndDropping,
 } from '../interfaces/todo'
 import { GrGraphQl } from 'react-icons/gr'
+import { EButtonsTo, EMoveViewInDifferentDirections } from '../interfaces/blobs'
 
 export default function Home({
   heading,
@@ -140,6 +141,17 @@ export default function Home({
                     <li>
                       <strong>{EAugust[language]}</strong>
                       <ul>
+                        <li>
+                          <Link to='/portfolio/blob'>
+                            <TbBlob />
+                            {EBlobs[language]}:
+                          </Link>
+                          <i>
+                            {EAddedNewFeatures[language]}: {EButtonsTo[language]}:{' '}
+                            {EMoveViewInDifferentDirections[language]}.{' '}
+                            {EBugFixes[language]}.
+                          </i>
+                        </li>
                         <li>
                           <a className='disabled'>
                             <LuArrowRightToLine />
