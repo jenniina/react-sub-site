@@ -291,8 +291,8 @@ export default function Hero({
               location === LOCATION.BLOBAPP ||
               location === LOCATION.DND
                 ? {
-                    WebkitFilter: 'url(#svgfilter)',
-                    filter: 'url(#svgfilter)',
+                    WebkitFilter: 'url(#svgfilter2)',
+                    filter: 'url(#svgfilter2)',
                     opacity: 0.8,
                   }
                 : { filter: 'none' }
@@ -822,14 +822,14 @@ export default function Hero({
             })}
 
             <svg className='filter'>
-              <filter id='svgfilter'>
-                <feGaussianBlur in='SourceGraphic' stdDeviation='10' />
+              <filter id='svgfilter2'>
+                <feGaussianBlur in='SourceGraphic' stdDeviation='8' />
                 <feColorMatrix
                   values='
                                 1 0 0 0 0 
                                 0 1 0 0 0 
                                 0 0 1 0 0
-                                0 0 0 30 -11 
+                                0 0 0 33 -12 
                                 '
                 ></feColorMatrix>
               </filter>

@@ -1016,13 +1016,13 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
       <svg className='filter'>
         <filter id='svgfilter'>
-          <feGaussianBlur in='SourceGraphic' stdDeviation='10'></feGaussianBlur>
+          <feGaussianBlur in='SourceGraphic' stdDeviation='5'></feGaussianBlur>
           <feColorMatrix
             values='
 1 0 0 0 0 
 0 1 0 0 0 
 0 0 1 0 0
-0 0 0 30 -11 
+0 0 0 37 -14 
 '
           ></feColorMatrix>
         </filter>
