@@ -729,6 +729,7 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
     width: 0.8rem;
   }
 } /*END media*/
+/*
 .colorblock:hover::after {
   content: 'Release a blob near me to change color! Keyboard use: press Enter with blob in focus';
   position: absolute;
@@ -768,6 +769,7 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   border-width: calc(var(--tooltip-offset) / 3) var(--tooltip-offset);
   border-left-color: var(--tooltip-color);
 }
+  */
 .colorblock.color-yellowlime,
 .colorblock.color-pinkyellow,
 .colorblock.color-black {
