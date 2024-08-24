@@ -600,13 +600,14 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
 .colorblock {
   position: absolute;
   width: 1.5rem;
-  height: 2rem;
+  height: 1.8rem;
   border-radius: 6.7rem 5rem 5rem 6.7rem / 8.7rem 0.7rem 0.7rem 8.7rem;
 }
 @media (max-width: 600px) {
   .colorblock {
     position: absolute;
-    width: 1rem;
+    width: 0.9rem;
+    height: 1.9rem;
   }
 } /*END media*/
 

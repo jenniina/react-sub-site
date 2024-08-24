@@ -577,11 +577,11 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       )
 
     if (colorBlockOrange.current && dragWrap.current)
-      place(colorBlockOrange.current, 0, 18)
-    if (colorBlockRed.current && dragWrap.current) place(colorBlockRed.current, 0, 38)
+      place(colorBlockOrange.current, 0, 19)
+    if (colorBlockRed.current && dragWrap.current) place(colorBlockRed.current, 0, 39)
     if (colorBlockPurple.current && dragWrap.current)
-      place(colorBlockPurple.current, 0, 58)
-    if (colorBlockBlue.current && dragWrap.current) place(colorBlockBlue.current, 0, 78)
+      place(colorBlockPurple.current, 0, 59)
+    if (colorBlockBlue.current && dragWrap.current) place(colorBlockBlue.current, 0, 79)
 
     if (colorBlockYellowLime0.current && dragWrap.current)
       place(
@@ -589,7 +589,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
         100 -
           (colorBlockYellowLime0.current.offsetWidth / dragWrap.current?.offsetWidth) *
             100,
-        18
+        19
       )
     if (colorBlockCyanYellow0.current && dragWrap.current)
       place(
@@ -597,14 +597,14 @@ export default function BlobJS({ language }: { language: ELanguages }) {
         100 -
           (colorBlockCyanYellow0.current.offsetWidth / dragWrap.current?.offsetWidth) *
             100,
-        38
+        39
       )
     if (colorBlockCyanPink0.current && dragWrap.current)
       place(
         colorBlockCyanPink0.current,
         100 -
           (colorBlockCyanPink0.current.offsetWidth / dragWrap.current?.offsetWidth) * 100,
-        58
+        59
       )
     if (colorBlockPinkYellow0.current && dragWrap.current)
       place(
@@ -612,7 +612,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
         100 -
           (colorBlockPinkYellow0.current.offsetWidth / dragWrap.current?.offsetWidth) *
             100,
-        78
+        79
       )
 
     if (makeSmaller0.current && dragWrap.current)
