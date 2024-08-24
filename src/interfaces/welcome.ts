@@ -196,3 +196,12 @@ export enum ESiteMigration {
   cs = 'Migrace stránky',
   fi = 'Sivuston siirto',
 }
+export enum EImprovedAccessibility {
+  en = 'Improved accessibility',
+  es = 'Mejora de accesibilidad',
+  fr = 'Accessibilité améliorée',
+  de = 'Verbesserte Barrierefreiheit',
+  pt = 'Acessibilidade melhorada',
+  cs = 'Zlepšená dostupnost',
+  fi = 'Parannettu saavutettavuutta',
+}

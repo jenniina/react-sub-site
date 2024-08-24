@@ -1,7 +1,7 @@
 import React, { useState, useEffect, FC } from 'react'
-import { FaAngleUp } from 'react-icons/fa'
 import styles from './scrolltotop.module.css'
 import { ELanguages, EScrollToTheTop } from '../../interfaces'
+import { BiChevronsUp } from 'react-icons/bi'
 
 export const ScrollToTop: FC<{
   styleMenu: boolean | undefined
@@ -34,7 +34,7 @@ export const ScrollToTop: FC<{
       }`}
       onClick={goToTop}
     >
-      <FaAngleUp className={styles['icon']} />
+      <BiChevronsUp className={styles['icon']} />
       <span className='scr'>{EScrollToTheTop[language]}</span>
     </button>
   )

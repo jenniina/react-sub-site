@@ -540,6 +540,7 @@ body .z {
   height: auto;
   max-height: initial;
 }
+
 .required {
   color: red;
   font-size: 1.5em;
@@ -656,13 +657,13 @@ body .z {
   max-width: max-content;
 }
 @media (max-width: 300px) {
-  #root .App:not(.noTooltip) .tooltipwrap {
+  #root .App:not(.noTooltip) .site-navigation .tooltipwrap {
     --tooltip-offset: 1.5rem;
     --tooltip-bgcolor: lightgray;
     --tooltip-color: black;
     position: relative;
   }
-  #root .App:not(.noTooltip) .tooltipwrap .tooltip {
+  #root .App:not(.noTooltip) .site-navigation .tooltipwrap .tooltip {
     position: absolute;
     top: -2.5em;
     right: 0;
@@ -677,8 +678,8 @@ body .z {
     font-weight: bold;
     cursor: help;
   }
-  #root .App:not(.noTooltip) .tooltipwrap:hover .tooltip::after,
-  #root .App:not(.noTooltip) .tooltipwrap:focus .tooltip::after {
+  #root .App:not(.noTooltip) .site-navigation .tooltipwrap:hover .tooltip::after,
+  #root .App:not(.noTooltip) .site-navigation .tooltipwrap:focus .tooltip::after {
     position: absolute;
     top: 0;
     right: -50%;
@@ -764,4 +765,119 @@ nav form.forgot .input-wrap {
 nav .open.password-reset-container button.forgot-btn {
   width: 100%;
   border-radius: var(--radius-small);
+}
+.tooltip-wrap {
+  position: relative;
+  --tooltip-offset: 1.5rem;
+  --tooltip-max-width: clamp(3rem, calc(70vw), 13rem);
+  --tooltip-bgcolor: lightgray;
+  --tooltip-color: black;
+}
+#root .App .tooltip-wrap .tooltip {
+  /* --tooltip-width and --tooltip-height is set in App.tsx */
+  position: absolute;
+  visibility: hidden;
+  display: inline-block;
+  cursor: help;
+  z-index: 3;
+}
+#root .App .tooltip-wrap:focus .tooltip,
+#root .App .tooltip-wrap:hover .tooltip {
+  visibility: visible;
+}
+#root .App .tooltip-wrap .tooltip.above {
+  top: calc(calc(var(--tooltip-height) + var(--tooltip-offset)) * -1 + 0.2em);
+}
+#root .App .tooltip-wrap .tooltip.above.space {
+  top: calc(calc(var(--tooltip-height) + var(--tooltip-offset)) * -1 + 0.6em);
+}
+#root .App .tooltip-wrap .tooltip.below {
+  top: calc(100% + var(--tooltip-offset) * 0.5 + 0.2em);
+}
+#root .App .tooltip-wrap .tooltip.below.space {
+  top: calc(100% + var(--tooltip-offset) * 0.5 + 0.6em);
+}
+#root .App .tooltip-wrap .tooltip.right.above,
+#root .App .tooltip-wrap .tooltip.right.below {
+  left: 0;
+  right: unset;
+}
+#root .App .tooltip-wrap .tooltip.left.above,
+#root .App .tooltip-wrap .tooltip.left.below {
+  left: calc(var(--tooltip-width) * -1 + 100%);
+  right: unset;
+}
+
+#root .App .tooltip-wrap .tooltip::after,
+#root .App .tooltip-wrap .tooltip::after {
+  visibility: hidden;
+  position: absolute;
+  height: max-content;
+  width: max-content;
+  max-width: var(--tooltip-max-width);
+  content: attr(data-tooltip);
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: normal;
+  text-align: left;
+  line-height: 1;
+  background-color: var(--tooltip-bgcolor);
+  color: var(--tooltip-color);
+  padding: 0.4em 0.4em 0.4em;
+  border-radius: 5px;
+  border-bottom: gray 1px solid;
+  -webkit-box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
+  -o-box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
+  -ms-box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
+  box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
+}
+#root .App .tooltip-wrap .tooltip.above::after,
+#root .App .tooltip-wrap .tooltip.below::after {
+  top: 0;
+}
+#root .App .tooltip-wrap .tooltip.left::after {
+  right: 0;
+  left: unset;
+}
+#root .App .tooltip-wrap .tooltip.right::after {
+  left: 0;
+  right: unset;
+}
+#root .App .tooltip-wrap:hover .tooltip::after,
+#root .App .tooltip-wrap:focus .tooltip::after {
+  visibility: visible;
+}
+#root .App .tooltip-wrap:hover .tooltip::before,
+#root .App .tooltip-wrap:focus .tooltip::before {
+  content: '';
+  position: absolute;
+  border: 1em solid transparent;
+  border-width: calc(var(--tooltip-offset) * 0.5) calc(var(--tooltip-offset) * 0.2);
+  z-index: 1;
+}
+#root .App .tooltip-wrap:hover .tooltip.below::before,
+#root .App .tooltip-wrap:focus .tooltip.below::before {
+  top: calc(var(--tooltip-offset) * -0.9);
+  left: calc(var(--tooltip-width) * -0.9);
+  border-bottom-color: var(--tooltip-bgcolor);
+}
+#root .App .tooltip-wrap:hover .tooltip.above::before,
+#root .App .tooltip-wrap:focus .tooltip.above::before {
+  top: calc(var(--tooltip-height) - calc(var(--tooltip-offset) * 0.05));
+  border-top-color: var(--tooltip-bgcolor);
+}
+#root .App .tooltip-wrap:hover .tooltip.left.above::before,
+#root .App .tooltip-wrap:focus .tooltip.left.above::before,
+#root .App .tooltip-wrap:hover .tooltip.left.below::before,
+#root .App .tooltip-wrap:focus .tooltip.left.below::before {
+  left: unset;
+  right: calc(var(--tooltip-offset) * 0.3);
+}
+#root .App .tooltip-wrap:hover .tooltip.right.above::before,
+#root .App .tooltip-wrap:focus .tooltip.right.above::before,
+#root .App .tooltip-wrap:hover .tooltip.right.below::before,
+#root .App .tooltip-wrap:focus .tooltip.right.below::before {
+  right: unset;
+  left: calc(var(--tooltip-offset) * 0.3);
 }
