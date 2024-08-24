@@ -51,10 +51,10 @@ interface DragComponentProps {
   colorBlockRed: RefObject<HTMLDivElement>
   colorBlockPurple: RefObject<HTMLDivElement>
   colorBlockBlue: RefObject<HTMLDivElement>
-  makeLarger0: RefObject<HTMLDivElement>
-  makeSmaller0: RefObject<HTMLDivElement>
-  makeMore0: RefObject<HTMLDivElement>
-  deleteBlob0: RefObject<HTMLDivElement>
+  makeLarger0: RefObject<HTMLButtonElement>
+  makeSmaller0: RefObject<HTMLButtonElement>
+  makeMore0: RefObject<HTMLButtonElement>
+  deleteBlob0: RefObject<HTMLButtonElement>
   sliderLightnessInput: RefObject<HTMLInputElement>
   sliderSaturationInput: RefObject<HTMLInputElement>
   sliderHueInput: RefObject<HTMLInputElement>

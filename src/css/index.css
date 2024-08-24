@@ -747,6 +747,7 @@ input[type='button'].restore:focus-visible {
 body .focus-within:focus-within {
   outline-offset: 3px;
 }
+
 @media (min-width: 300px) {
   button,
   button.restore {
@@ -858,4 +859,16 @@ code {
   color: var(--color-primary-20);
   padding: 0.05em 0.4em;
   border-radius: var(--radius-small);
+}
+/*reset button styles to regular text:*/
+button.reset {
+  border: none;
+  display: inline-block;
+  padding: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  cursor: pointer;
+  color: inherit;
+  background: none;
 }

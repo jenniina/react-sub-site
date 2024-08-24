@@ -22,21 +22,28 @@ import {
   EAdjustBackgroundHue,
   EAdjustBackgroundLightness,
   EAdjustBackgroundSaturation,
+  EAlternatively,
+  ECloneInstructions,
   EDisableScroll,
   EEnableScroll,
+  EEnlargeInstructions,
   EMarkerOff,
   EMarkerOn,
-  EMoveDown,
-  EMoveLeft,
-  EMoveRight,
-  EMoveUp,
+  EMoveViewDown,
+  EMoveViewLeft,
+  EMoveViewRight,
+  EMoveViewUp,
+  ERemovalInstructions,
   EResetBlobs,
   EResetHue,
   EResetLightness,
   EResetSaturation,
+  EResizebyScrollInstructions,
   ESelectedBlobNone,
+  EShrinkInstructions,
   EStartSway,
   EStopSway,
+  EToggleMarkerVisibilityWhenUsingAKeyboard,
   ETryDraggingTheBlobs,
 } from '../../interfaces/blobs'
 import {
@@ -45,7 +52,8 @@ import {
   BiChevronsRight,
   BiChevronsUp,
 } from 'react-icons/bi'
-import '../../css/App.css'
+import { ImEnlarge2, ImShrink2 } from 'react-icons/im'
+import { FaPlus, FaTimes } from 'react-icons/fa'
 
 let angle = '90deg'
 let color1 = 'cyan'
@@ -82,10 +90,10 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   const colorBlockPurple = useRef() as RefObject<HTMLDivElement>
   const colorBlockBlue = useRef() as RefObject<HTMLDivElement>
 
-  const makeLarger0 = useRef() as RefObject<HTMLDivElement>
-  const makeSmaller0 = useRef() as RefObject<HTMLDivElement>
-  const makeMore0 = useRef() as RefObject<HTMLDivElement>
-  const deleteBlob0 = useRef() as RefObject<HTMLDivElement>
+  const makeLarger0 = useRef() as RefObject<HTMLButtonElement>
+  const makeSmaller0 = useRef() as RefObject<HTMLButtonElement>
+  const makeMore0 = useRef() as RefObject<HTMLButtonElement>
+  const deleteBlob0 = useRef() as RefObject<HTMLButtonElement>
 
   const sliderLightnessInput = useRef() as RefObject<HTMLInputElement>
   const sliderSaturationInput = useRef() as RefObject<HTMLInputElement>
@@ -563,7 +571,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     if (makeLarger0.current && dragWrap.current)
       place(
         makeLarger0.current,
-        83 - (makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
+        77 - (makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
         0.5
       )
 
@@ -609,10 +617,10 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     if (makeSmaller0.current && dragWrap.current)
       place(
         makeSmaller0.current,
-        83 - (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
-        95
+        77 - (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
+        93
       )
-    if (deleteBlob0.current && dragWrap.current) place(deleteBlob0.current, 17, 95)
+    if (deleteBlob0.current && dragWrap.current) place(deleteBlob0.current, 23, 93)
   }
   function place(element: HTMLElement, x_pos: number, y_pos: number) {
     if (element && dragWrap.current) {
@@ -665,9 +673,13 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             {EDisableScroll[language]}
           </button>
           <button
-            className='toggle-marker'
+            className='toggle-marker tooltip-wrap'
             onClick={() => setMarkerEnabled(!markerEnabled)}
           >
+            <span
+              className='tooltip left below space'
+              data-tooltip={`${EToggleMarkerVisibilityWhenUsingAKeyboard[language]}`}
+            ></span>
             {markerEnabled ? EMarkerOn[language] : EMarkerOff[language]}
           </button>
         </div>
@@ -680,6 +692,79 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             ...dragWrapOuterHue,
           }}
         >
+          <button
+            ref={makeSmaller0}
+            className='make-smaller tooltip-wrap reset'
+            id={`make-smaller${d}`}
+            role='tooltip'
+            aria-label={`${EShrinkInstructions[language]}. ${EAlternatively[language]}: ${EResizebyScrollInstructions[language]}`}
+          >
+            <ImShrink2 />
+            <span
+              className='tooltip left above'
+              data-tooltip={`${EShrinkInstructions[language]}. ${EAlternatively[language]}: ${EResizebyScrollInstructions[language]}`}
+            ></span>
+          </button>
+          <button
+            ref={makeLarger0}
+            className='make-larger tooltip-wrap reset'
+            id={`make-larger${d}`}
+            role='tooltip'
+            aria-label={`${EEnlargeInstructions[language]}. ${EAlternatively[language]}: ${EResizebyScrollInstructions[language]}`}
+          >
+            <ImEnlarge2 />
+            <span
+              className='tooltip left below'
+              data-tooltip={`${EEnlargeInstructions[language]}. ${EAlternatively[language]}: ${EResizebyScrollInstructions[language]}`}
+            ></span>
+          </button>
+
+          <button
+            ref={makeMore0}
+            className='make-more tooltip-wrap reset'
+            id={`make-more${d}`}
+            role='tooltip'
+            aria-label={ECloneInstructions[language]}
+          >
+            <FaPlus />
+            <span
+              className='tooltip right below'
+              data-tooltip={ECloneInstructions[language]}
+            ></span>
+          </button>
+          <button
+            ref={deleteBlob0}
+            className='delete-blob tooltip-wrap reset'
+            id={`delete-blob${d}`}
+            role='tooltip'
+            aria-label={ERemovalInstructions[language]}
+          >
+            <FaTimes />
+            <span
+              className='tooltip right above'
+              data-tooltip={ERemovalInstructions[language]}
+            ></span>
+          </button>
+          <div className='movers-wrap movers-wrap1'>
+            <button className={`moveleft mover`} onClick={handleMoveRight}>
+              <BiChevronsLeft />
+              <span className='scr'>{EMoveViewLeft[language]}</span>
+            </button>
+            <button className={`moveright mover`} onClick={handleMoveLeft}>
+              <BiChevronsRight />
+              <span className='scr'>{EMoveViewRight[language]}</span>
+            </button>
+          </div>
+          <div className='movers-wrap movers-wrap2'>
+            <button className={`moveup mover`} onClick={handleMoveDown}>
+              <BiChevronsUp />
+              <span className='scr'>{EMoveViewUp[language]}</span>
+            </button>
+            <button className={`movedown mover`} onClick={handleMoveUp}>
+              <BiChevronsDown />
+              <span className='scr'>{EMoveViewDown[language]}</span>
+            </button>
+          </div>
           {markerEnabled && usingKeyboard && focusedBlob && (
             <div
               style={{
@@ -695,6 +780,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
               }}
             />
           )}
+
           <div ref={dragWrap} className='drag-wrap'>
             <DragComponent
               language={language}
@@ -736,30 +822,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
               colorPairs={colorPairs}
             />
           </div>
-          {/* <button className={`moveleft tooltipwrap`} onClick={handleMoveLeft}>
-            <BiChevronsLeft />
-            <span className='tooltip right below' data-tooltip={EMoveLeft[language]}>
-              <b className='scr'>{EMoveLeft[language]}</b>
-            </span>
-          </button> */}
-          <div className='movers-wrap'>
-            <button className={`moveup mover`} onClick={handleMoveDown}>
-              <BiChevronsUp />
-              <span className='scr'>{EMoveUp[language]}</span>
-            </button>
-            <button className={`moveright mover`} onClick={handleMoveLeft}>
-              <BiChevronsRight />
-              <span className='scr'>{EMoveRight[language]}</span>
-            </button>
-            <button className={`moveup mover`} onClick={handleMoveRight}>
-              <BiChevronsLeft />
-              <span className='scr'>{EMoveLeft[language]}</span>
-            </button>
-            <button className={`movedown mover`} onClick={handleMoveUp}>
-              <BiChevronsDown />
-              <span className='scr'>{EMoveDown[language]}</span>
-            </button>
-          </div>
+
           <div
             ref={colorBlockOrange}
             className='colorblock color-orange'
@@ -800,18 +863,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             className='colorblock color-pinkyellow'
             id={`color-pinkyellow${d}`}
           ></div>
-          <div ref={makeLarger0} className='make-larger' id={`make-larger${d}`}>
-            L
-          </div>
-          <div ref={makeSmaller0} className='make-smaller' id={`make-smaller${d}`}>
-            S
-          </div>
-          <div ref={makeMore0} className='make-more' id={`make-more${d}`}>
-            +
-          </div>
-          <div ref={deleteBlob0} className='delete-blob' id={`delete-blob${d}`}>
-            &times;
-          </div>
         </div>
         <div className='drag-slider-wrap'>
           <label htmlFor={`drag-slider-lightness${d}`} id={`lightnessdescription${d}`}>

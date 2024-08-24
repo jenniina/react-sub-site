@@ -50,6 +50,7 @@ import {
   EOctober,
   EOptimizing,
   ESiteMigration,
+  EImprovedAccessibility,
 } from '../interfaces/welcome'
 import { Select, SelectOption } from '../components/Select/Select'
 import { ETodoApp } from '../components/Todo/interfaces'
@@ -141,6 +142,13 @@ export default function Home({
                     <li>
                       <strong>{EAugust[language]}</strong>
                       <ul>
+                        <li>
+                          <Link to='/portfolio/blob'>
+                            <TbBlob />
+                            {EBlobs[language]}:
+                          </Link>
+                          <i>{EImprovedAccessibility[language]}</i>
+                        </li>
                         <li>
                           <Link to='/portfolio/blob'>
                             <TbBlob />

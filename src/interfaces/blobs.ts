@@ -295,6 +295,15 @@ export enum EMarkerOff {
   cs = 'Značka vypnuta',
   fi = 'Merkkaus pois päältä',
 }
+export enum EToggleMarkerVisibilityWhenUsingAKeyboard {
+  en = 'Toggle marker visibility when using a keyboard',
+  es = 'Alternar la visibilidad del marcador al usar un teclado',
+  fr = 'Activer/désactiver la visibilité du marqueur lors de l utilisation d un clavier',
+  de = 'Umschalten der Markersichtbarkeit bei Verwendung einer Tastatur',
+  pt = 'Alternar a visibilidade do marcador ao usar um teclado',
+  cs = 'Přepnout viditelnost značky při použití klávesnice',
+  fi = 'Vaihda merkin näkyvyys, kun käytät näppäimistöä',
+}
 export enum ETryDraggingTheBlobs {
   en = 'Try dragging the blobs',
   es = 'Intente arrastrar los blobs',
@@ -421,6 +430,42 @@ export enum EMoveDown {
   cs = 'Pohnout dolů',
   fi = 'Siirry alas',
 }
+export enum EMoveViewUp {
+  en = 'Move view up',
+  es = 'Mover vista hacia arriba',
+  fr = 'Déplacer la vue vers le haut',
+  de = 'Blick nach oben bewegen',
+  pt = 'Mover a visualização para cima',
+  cs = 'Pohyb pohledu nahoru',
+  fi = 'Siirrä näkymää ylös',
+}
+export enum EMoveViewDown {
+  en = 'Move view down',
+  es = 'Mover vista hacia abajo',
+  fr = 'Déplacer la vue vers le bas',
+  de = 'Blick nach unten bewegen',
+  pt = 'Mover a visualização para baixo',
+  cs = 'Pohyb pohledu dolů',
+  fi = 'Siirrä näkymää alas',
+}
+export enum EMoveViewLeft {
+  en = 'Move view left',
+  es = 'Mover vista a la izquierda',
+  fr = 'Déplacer la vue à gauche',
+  de = 'Blick nach links bewegen',
+  pt = 'Mover a visualização para a esquerda',
+  cs = 'Pohyb pohledu doleva',
+  fi = 'Siirrä näkymää vasemmalle',
+}
+export enum EMoveViewRight {
+  en = 'Move view right',
+  es = 'Mover vista a la derecha',
+  fr = 'Déplacer la vue à droite',
+  de = 'Blick nach rechts bewegen',
+  pt = 'Mover a visualização para a direita',
+  cs = 'Pohyb pohledu doprava',
+  fi = 'Siirrä näkymää oikealle',
+}
 export enum EMoveViewInDifferentDirections {
   en = 'Move view in different directions',
   es = 'Mover vista en diferentes direcciones',
@@ -429,4 +474,59 @@ export enum EMoveViewInDifferentDirections {
   pt = 'Mover a visualização em diferentes direções',
   cs = 'Pohyb pohledu v různých směrech',
   fi = 'Siirrä näkymää eri suuntiin',
+}
+
+export enum EEnlargeInstructions {
+  en = 'Enlarge a blob by dragging it over me! Keyboard use: press 2 with blob in focus',
+  es = '¡Agrandar un blob arrastrándolo sobre mí! Uso del teclado: presione 2 con el blob enfocado',
+  fr = 'Agrandissez un blob en le faisant glisser sur moi! Utilisation du clavier: appuyez sur 2 avec le blob en focus',
+  de = 'Vergrößern Sie einen Blob, indem Sie ihn über mich ziehen! Tastaturverwendung: Drücken Sie 2 mit Blob im Fokus',
+  pt = 'Aumente um blob arrastando-o sobre mim! Uso do teclado: pressione 2 com o blob em foco',
+  cs = 'Zvětšete blob přetažením nad mě! Použití klávesnice: stiskněte 2 s fokusem na blob',
+  fi = 'Suurenna mollukka vetämällä se ylitseni! Näppäinkäyttö: paina 2 mollukkaa tarkastellessasi',
+}
+export enum EShrinkInstructions {
+  en = 'Make a blob smaller by releasing it near me! Keyboard use: press 1 with blob in focus',
+  es = '¡Haga que un blob sea más pequeño liberándolo cerca de mí! Uso del teclado: presione 1 con el blob enfocado',
+  fr = 'Rendez un blob plus petit en le relâchant près de moi! Utilisation du clavier: appuyez sur 1 avec le blob en focus',
+  de = 'Machen Sie einen Blob kleiner, indem Sie ihn in meiner Nähe loslassen! Tastaturverwendung: Drücken Sie 1 mit Blob im Fokus',
+  pt = 'Faça um blob menor liberando-o perto de mim! Uso do teclado: pressione 1 com o blob em foco',
+  cs = 'Zmenšete blob tím, že ho uvolníte poblíž mě! Použití klávesnice: stiskněte 1 s fokusem na blob',
+  fi = 'Pienennä mollukka vapauttamalla se lähelleni! Näppäinkäyttö: paina 1 mollukkaa tarkastellessasi',
+}
+export enum ERemovalInstructions {
+  en = 'Remove a blob by bringing it to me! Keyboard use: press Delete with blob in focus',
+  es = '¡Elimine un blob trayéndolo a mí! Uso del teclado: presione Eliminar con el blob enfocado',
+  fr = 'Supprimez un blob en le ramenant vers moi! Utilisation du clavier: appuyez sur Supprimer avec le blob en focus',
+  de = 'Entfernen Sie einen Blob, indem Sie ihn zu mir bringen! Tastaturverwendung: Drücken Sie Löschen mit Blob im Fokus',
+  pt = 'Remova um blob trazendo-o para mim! Uso do teclado: pressione Excluir com o blob em foco',
+  cs = 'Odstraňte blob tím, že ho přivedete ke mně! Použití klávesnice: stiskněte Delete s fokusem na blob',
+  fi = 'Poista mollukka tuomalla se minulle! Näppäinkäyttö: paina Delete mollukkaa tarkastellessasi',
+}
+export enum ECloneInstructions {
+  en = 'Release a blob here to duplicate it! Keyboard use: press 3 with blob in focus',
+  es = '¡Suelta un blob aquí para duplicarlo! Uso del teclado: presiona 3 con el blob enfocado',
+  fr = 'Relâchez un blob ici pour le dupliquer! Utilisation du clavier: appuyez sur 3 avec le blob en focus',
+  de = 'Lassen Sie einen Blob hier los, um ihn zu duplizieren! Tastaturverwendung: Drücken Sie 3 mit Blob im Fokus',
+  pt = 'Solte um blob aqui para duplicá-lo! Uso do teclado: pressione 3 com o blob em foco',
+  cs = 'Uvolněte blob zde, abyste ho duplikovali! Použití klávesnice: stiskněte 3 s fokusem na blob',
+  fi = 'Vapauta mollukka tänne kloonataksesi sen! Näppäinkäyttö: paina 3 mollukkaa tarkastellessasi',
+}
+export enum EAlternatively {
+  en = 'Alternatively',
+  es = 'Alternativamente',
+  fr = 'Alternativement',
+  de = 'Alternativ',
+  pt = 'Alternativamente',
+  cs = 'Alternativně',
+  fi = 'Vaihtoehtoisesti',
+}
+export enum EResizebyScrollInstructions {
+  en = 'Press Disable Scroll and use the mousewheel to resize',
+  es = 'Presione Deshabilitar desplazamiento y use la rueda del mouse para cambiar el tamaño',
+  fr = 'Appuyez sur Désactiver le défilement et utilisez la molette de la souris pour redimensionner',
+  de = 'Drücken Sie Scrollen deaktivieren und verwenden Sie das Mausrad zum Ändern der Größe',
+  pt = 'Pressione Desativar rolagem e use a roda do mouse para redimensionar',
+  cs = 'Stiskněte Zakázat posouvání a použijte kolečko myši k změně velikosti',
+  fi = 'Paina Poista vieritys käytöstä ja käytä hiiren pyörää muuttaaksesi kokoa',
 }
