@@ -33,6 +33,7 @@ import {
   EMoveViewLeft,
   EMoveViewRight,
   EMoveViewUp,
+  EReleaseToChangeColorInstructions,
   ERemovalInstructions,
   EResetBlobs,
   EResetHue,
@@ -825,44 +826,84 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
           <div
             ref={colorBlockOrange}
-            className='colorblock color-orange'
+            className='colorblock color-orange tooltip-wrap'
             id={`color-orange${d}`}
-          ></div>
+          >
+            <span
+              className='tooltip right above'
+              data-tooltip={EReleaseToChangeColorInstructions[language]}
+            ></span>
+          </div>
           <div
             ref={colorBlockRed}
-            className='colorblock color-red'
+            className='colorblock color-red tooltip-wrap'
             id={`color-red${d}`}
-          ></div>
+          >
+            <span
+              className='tooltip right above'
+              data-tooltip={EReleaseToChangeColorInstructions[language]}
+            ></span>
+          </div>
           <div
             ref={colorBlockPurple}
-            className='colorblock color-purple'
+            className='colorblock color-purple tooltip-wrap'
             id={`color-purple${d}`}
-          ></div>
+          >
+            <span
+              className='tooltip right above'
+              data-tooltip={EReleaseToChangeColorInstructions[language]}
+            ></span>
+          </div>
           <div
             ref={colorBlockBlue}
-            className='colorblock color-blue'
+            className='colorblock color-blue tooltip-wrap'
             id={`color-blue${d}`}
-          ></div>
+          >
+            <span
+              className='tooltip right above'
+              data-tooltip={EReleaseToChangeColorInstructions[language]}
+            ></span>
+          </div>
           <div
             ref={colorBlockYellowLime0}
-            className='colorblock color-yellowlime'
+            className='colorblock color-yellowlime tooltip-wrap'
             id={`color-yellowlime${d}`}
-          ></div>
+          >
+            <span
+              className='tooltip left above'
+              data-tooltip={EReleaseToChangeColorInstructions[language]}
+            ></span>
+          </div>
           <div
             ref={colorBlockCyanYellow0}
-            className='colorblock color-cyanyellow'
+            className='colorblock color-cyanyellow tooltip-wrap'
             id={`color-cyanyellow${d}`}
-          ></div>
+          >
+            <span
+              className='tooltip left above'
+              data-tooltip={EReleaseToChangeColorInstructions[language]}
+            ></span>
+          </div>
           <div
             ref={colorBlockCyanPink0}
-            className='colorblock color-cyanpink'
+            className='colorblock color-cyanpink tooltip-wrap'
             id={`color-cyanpink${d}`}
-          ></div>
+          >
+            <span
+              className='tooltip left above'
+              data-tooltip={EReleaseToChangeColorInstructions[language]}
+            ></span>
+          </div>
           <div
             ref={colorBlockPinkYellow0}
-            className='colorblock color-pinkyellow'
+            className='colorblock color-pinkyellow tooltip-wrap'
             id={`color-pinkyellow${d}`}
-          ></div>
+          >
+            <span
+              className='tooltip left above'
+              data-tooltip={EReleaseToChangeColorInstructions[language]}
+            ></span>
+          </div>
         </div>
         <div className='drag-slider-wrap'>
           <label htmlFor={`drag-slider-lightness${d}`} id={`lightnessdescription${d}`}>

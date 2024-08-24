@@ -530,3 +530,13 @@ export enum EResizebyScrollInstructions {
   cs = 'Stiskněte Zakázat posouvání a použijte kolečko myši k změně velikosti',
   fi = 'Paina Poista vieritys käytöstä ja käytä hiiren pyörää muuttaaksesi kokoa',
 }
+
+export enum EReleaseToChangeColorInstructions {
+  en = 'Release a blob near me to change color! Keyboard use: press Enter with blob in focus',
+  es = '¡Suelta un blob cerca de mí para cambiar el color! Uso del teclado: presiona Enter con el blob enfocado',
+  fr = 'Relâchez un blob près de moi pour changer de couleur! Utilisation du clavier: appuyez sur Entrée avec le blob en focus',
+  de = 'Lassen Sie einen Blob in meiner Nähe los, um die Farbe zu ändern! Tastaturverwendung: Drücken Sie Enter mit Blob im Fokus',
+  pt = 'Solte um blob perto de mim para mudar a cor! Uso do teclado: pressione Enter com o blob em foco',
+  cs = 'Uvolněte blob poblíž mě, abyste změnili barvu! Použití klávesnice: stiskněte Enter s fokusem na blob',
+  fi = 'Vapauta mollukka lähelleni vaihtaaksesi väriä! Näppäinkäyttö: paina Enter mollukkaa tarkastellessasi',
+}

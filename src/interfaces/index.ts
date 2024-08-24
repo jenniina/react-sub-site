@@ -1101,9 +1101,9 @@ export enum EBlobApp {
 export enum EBlobAppSlogan {
   en = 'Make blob art your thing',
   es = 'Haz que el arte de las bolitas sea lo tuyo',
-  fr = "Faites de l'art blob votre truc",
-  de = 'Machen Sie Blob Art zu Ihrem Ding',
-  pt = 'Faça da arte de blob sua coisa',
+  fr = "Faites de l'art des blobs votre truc",
+  de = 'Machen Sie Blob-Kunst zu Ihrem Ding',
+  pt = 'Faça da arte de blobs a sua coisa',
   cs = 'Udělejte z blob art svou věc',
   fi = 'Tee mollukkataiteesta juttusi',
 }
