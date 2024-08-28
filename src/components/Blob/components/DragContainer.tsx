@@ -34,6 +34,7 @@ interface DragComponentProps {
   disableScrollButton: RefObject<HTMLButtonElement>
   resetBlobs: RefObject<HTMLButtonElement>
   exitApp: RefObject<HTMLDivElement>
+  colorBlockProps: RefObject<HTMLDivElement>[]
   colorBlockYellowLime0: RefObject<HTMLDivElement>
   colorBlockCyanYellow0: RefObject<HTMLDivElement>
   colorBlockCyanPink0: RefObject<HTMLDivElement>
@@ -102,6 +103,7 @@ const DragContainer = (props: DragComponentProps) => {
           amountOfBlobs={props.amountOfBlobs}
           saveDraggables={props.saveDraggables}
           getPosition={props.getPosition}
+          colorBlockProps={props.colorBlockProps}
           colorBlockOrange={props.colorBlockOrange}
           colorBlockRed={props.colorBlockRed}
           colorBlockPurple={props.colorBlockPurple}

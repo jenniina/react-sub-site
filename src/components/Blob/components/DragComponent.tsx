@@ -71,6 +71,7 @@ interface DragComponentProps {
   colorIndex: number
   setColorIndex: Dispatch<SetStateAction<number>>
   colorPairs: ColorPair[]
+  colorBlockProps: RefObject<HTMLDivElement>[]
   scroll: boolean
   setScroll: Dispatch<SetStateAction<boolean>>
 }
@@ -78,18 +79,6 @@ interface DragComponentProps {
 let currentFocusedElement: HTMLElement | null = null
 
 const DragComponent = (props: DragComponentProps) => {
-  // Should be in the same order as colorPairs:
-  const colorBlockProps = [
-    props.colorBlockPinkYellow0,
-    props.colorBlockYellowLime0,
-    props.colorBlockCyanYellow0,
-    props.colorBlockCyanPink0,
-    props.colorBlockOrange,
-    props.colorBlockRed,
-    props.colorBlockPurple,
-    props.colorBlockBlue,
-  ]
-
   //Detect touch device
   const isTouchDevice = () => {
     try {
@@ -123,11 +112,12 @@ const DragComponent = (props: DragComponentProps) => {
       ? (e as PointerEvent).clientY
       : (e as TouchEvent).touches[0].clientY
     ;(target as HTMLElement).classList.add('drag')
-    //increase z-index to one higher than the highest z-index of the layer:
-    ;(target as HTMLElement).style.setProperty(
-      'z-index',
-      `${Math.max(1, props.highestZIndex[props.layer] + 1)}`
-    )
+    //increase z-index to one higher than the highest z-index of the layer if necessary:
+    const currentZIndex = parseInt(target.style.getPropertyValue('z-index'), 10)
+    const highestZIndexForLayer = props.highestZIndex[props.layer]
+    if (isNaN(currentZIndex) || currentZIndex < highestZIndexForLayer) {
+      target.style.setProperty('z-index', `${Math.max(1, highestZIndexForLayer + 1)}`)
+    }
     ;(target as HTMLElement).setAttribute('aria-grabbed', 'true')
     ;(target as HTMLElement).focus()
     moveElement = true
@@ -184,7 +174,7 @@ const DragComponent = (props: DragComponentProps) => {
     const hitbox = target.querySelector('div')
 
     props.colorPairs.forEach((colorPair, index) => {
-      const colorBlock = colorBlockProps[index]
+      const colorBlock = props.colorBlockProps[index]
 
       if (
         colorBlock.current &&
@@ -375,7 +365,6 @@ const DragComponent = (props: DragComponentProps) => {
         updatePosition(attrLeft, attrTop + movePx)
         break
       case 'Escape':
-        console.log('Escape')
         e.preventDefault()
         //e.stopImmediatePropagation()
 

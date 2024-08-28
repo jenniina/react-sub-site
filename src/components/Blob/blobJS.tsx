@@ -130,6 +130,37 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   const [hiddenLayers, setHiddenLayers] = useState<Set<number>>(new Set())
   const [highestZIndex, setHighestZIndex] = useState<Record<number, number>>({}) // {0: 144, 1: 146, 2: 24}
 
+  const [colorIndex, setColorIndex] = useState(0)
+
+  const [focusedBlob, setFocusedBlob] = useState<focusedBlob | null>(null)
+  const [usingKeyboard, setUsingKeyboard] = useState(false)
+  const [markerEnabled, setMarkerEnabled] = useState(true)
+  const [controlsVisible, setControlsVisible] = useState(true)
+  const markerDivRef = useRef<HTMLDivElement>(null)
+
+  // Should be in the same order as colorBlockProps
+  const colorPairs: ColorPair[] = [
+    { color1: 'lemonchiffon', color2: 'pink' }, //colorBlockPinkYellow0
+    { color1: 'lemonchiffon', color2: 'greenyellow' }, //colorBlockYellowLime0
+    { color1: 'cyan', color2: 'greenyellow' }, //colorBlockCyanYellow0
+    { color1: 'cyan', color2: 'pink' }, //colorBlockCyanPink0
+    { color1: 'darkorange', color2: 'orange' }, //colorBlockOrange
+    { color1: 'red', color2: 'tomato' }, //colorBlockRed
+    { color1: 'magenta', color2: 'violet' }, //colorBlockPurple
+    { color1: 'deepskyblue', color2: 'dodgerblue' }, //colorBlockBlue
+  ]
+  // Should be in the same order as colorPairs:
+  const colorBlockProps = [
+    colorBlockPinkYellow0,
+    colorBlockYellowLime0,
+    colorBlockCyanYellow0,
+    colorBlockCyanPink0,
+    colorBlockOrange,
+    colorBlockRed,
+    colorBlockPurple,
+    colorBlockBlue,
+  ]
+
   const changeBlobLayer = (draggable: Draggable, layer: number) => {
     dispatch({
       type: 'updateDraggable',
@@ -149,25 +180,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       return newHiddenLayers
     })
   }
-
-  const colorPairs: ColorPair[] = [
-    { color1: 'lemonchiffon', color2: 'pink' },
-    { color1: 'lemonchiffon', color2: 'greenyellow' },
-    { color1: 'cyan', color2: 'greenyellow' },
-    { color1: 'cyan', color2: 'pink' },
-    { color1: 'darkorange', color2: 'orange' },
-    { color1: 'red', color2: 'tomato' },
-    { color1: 'magenta', color2: 'violet' },
-    { color1: 'deepskyblue', color2: 'dodgerblue' },
-  ]
-
-  const [colorIndex, setColorIndex] = useState(0)
-
-  const [focusedBlob, setFocusedBlob] = useState<focusedBlob | null>(null)
-  const [usingKeyboard, setUsingKeyboard] = useState(false)
-  const [markerEnabled, setMarkerEnabled] = useState(true)
-  const [controlsVisible, setControlsVisible] = useState(true)
-  const markerDivRef = useRef<HTMLDivElement>(null)
 
   //Check for keyboard use for the focusedBlob marker
   useEffect(() => {
@@ -252,7 +264,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       saveDraggables()
       const highestZ = getHighestZIndex(draggables[d])
       setHighestZIndex(highestZ)
-      console.log('highestZIndex', highestZ)
     }
   }, [state.draggables])
 
@@ -1012,6 +1023,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
               amountOfBlobs={amountOfBlobs}
               saveDraggables={saveDraggables}
               getPosition={getPosition}
+              colorBlockProps={colorBlockProps}
               colorBlockOrange={colorBlockOrange}
               colorBlockRed={colorBlockRed}
               colorBlockPurple={colorBlockPurple}
