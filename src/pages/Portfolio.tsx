@@ -92,18 +92,11 @@ export default function Portfolio({
             </div>
             <ul className={`${styles.list}`}>
               <li>
-                <Link to='/portfolio/graphql'>
-                  <GrGraphQl />
-                  <span>GraphQL</span>
+                <Link to='/portfolio/blob'>
+                  <RiDragMove2Fill />
+                  <span>{EDraggableBlobs[language]}</span>
                 </Link>
-                <p>{EGraphQLSite[language]}</p>
-              </li>
-              <li>
-                <Link to='/portfolio/salon'>
-                  <GiComb />
-                  <span>{EHairSalonWebsite[language]}</span>
-                </Link>
-                <p>Parturi Kampaamo Hannastiina</p>
+                <p>{EBlobAppIntro[language]}</p>
               </li>
               <li>
                 <Link to='/portfolio/quiz'>
@@ -120,11 +113,18 @@ export default function Portfolio({
                 <p>{EJokesAppIntro[language]}</p>
               </li>
               <li>
-                <Link to='/portfolio/blob'>
-                  <RiDragMove2Fill />
-                  <span>{EDraggableBlobs[language]}</span>
+                <Link to='/portfolio/graphql'>
+                  <GrGraphQl />
+                  <span>GraphQL</span>
                 </Link>
-                <p>{EBlobAppIntro[language]}</p>
+                <p>{EGraphQLSite[language]}</p>
+              </li>
+              <li>
+                <Link to='/portfolio/salon'>
+                  <GiComb />
+                  <span>{EHairSalonWebsite[language]}</span>
+                </Link>
+                <p>Parturi Kampaamo Hannastiina</p>
               </li>
               <li>
                 <Link to='/portfolio/draganddrop'>

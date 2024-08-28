@@ -15,7 +15,6 @@ import {
   focusedBlob,
   ColorPair,
 } from './interfaces'
-import DragComponent from './components/DragComponent'
 import { BlobContext, Props } from './components/BlobProvider'
 import { ELanguages } from '../../interfaces'
 import {
@@ -23,10 +22,13 @@ import {
   EAdjustBackgroundLightness,
   EAdjustBackgroundSaturation,
   EAlternatively,
+  EChangeLayerByClickingMe,
+  EClickMeToMakeARandomBlob,
   ECloneInstructions,
   EDisableScroll,
   EEnableScroll,
   EEnlargeInstructions,
+  ELayer,
   EMarkerOff,
   EMarkerOn,
   EMoveViewDown,
@@ -44,8 +46,11 @@ import {
   EShrinkInstructions,
   EStartSway,
   EStopSway,
+  EToggleLayerByClickingMe,
   EToggleMarkerVisibilityWhenUsingAKeyboard,
   ETryDraggingTheBlobs,
+  EHideControls,
+  EShowControls,
 } from '../../interfaces/blobs'
 import {
   BiChevronsDown,
@@ -54,9 +59,12 @@ import {
   BiChevronsUp,
 } from 'react-icons/bi'
 import { ImEnlarge2, ImShrink2 } from 'react-icons/im'
-import { FaPlus, FaTimes } from 'react-icons/fa'
+import { FaPlus, FaRegClone, FaTimes } from 'react-icons/fa'
+import DragContainer from './components/DragContainer'
+import useWindowSize from '../../hooks/useWindowSize'
 
 let angle = '90deg'
+let color = 'cyan'
 let color1 = 'cyan'
 let color2 = 'greenyellow'
 
@@ -71,9 +79,8 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
   const dragWrapOuter = useRef() as RefObject<HTMLDivElement>
   const dragWrap = useRef() as RefObject<HTMLDivElement>
-  const dragUl0 = useRef() as RefObject<HTMLUListElement>
 
-  const selectedvalue0 = useRef() as RefObject<HTMLDivElement>
+  const selectedvalue0 = useRef() as RefObject<HTMLSpanElement>
 
   const stopBlobs = useRef() as RefObject<HTMLButtonElement>
   const disableScrollButton = useRef() as RefObject<HTMLButtonElement>
@@ -95,6 +102,9 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   const makeSmaller0 = useRef() as RefObject<HTMLButtonElement>
   const makeMore0 = useRef() as RefObject<HTMLButtonElement>
   const deleteBlob0 = useRef() as RefObject<HTMLButtonElement>
+  const makeRandom0 = useRef() as RefObject<HTMLButtonElement>
+
+  const layerButtons0 = useRef() as RefObject<HTMLDivElement>
 
   const sliderLightnessInput = useRef() as RefObject<HTMLInputElement>
   const sliderSaturationInput = useRef() as RefObject<HTMLInputElement>
@@ -110,7 +120,33 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
   backgroundColor[d] = loadBackground()
 
-  const draggables = (state.draggables as Draggable[][]) ?? []
+  const draggables = state.draggables as Draggable[][]
+
+  const { windowHeight, windowWidth } = useWindowSize()
+
+  const [layerAmount, setLayerAmount] = useState<number>(3)
+  const [activeLayer, setActiveLayer] = useState<number>(0)
+  const [hiddenLayers, setHiddenLayers] = useState<Set<number>>(new Set())
+
+  const changeBlobLayer = (draggable: Draggable, layer: number) => {
+    dispatch({
+      type: 'updateDraggable',
+      payload: { draggable: { ...draggable, layer: layer } },
+    })
+    saveDraggables()
+  }
+
+  const toggleLayerVisibility = (layer: number) => {
+    setHiddenLayers((prevHiddenLayers) => {
+      const newHiddenLayers = new Set(prevHiddenLayers)
+      if (newHiddenLayers.has(layer)) {
+        newHiddenLayers.delete(layer)
+      } else {
+        newHiddenLayers.add(layer)
+      }
+      return newHiddenLayers
+    })
+  }
 
   const colorPairs: ColorPair[] = [
     { color1: 'lemonchiffon', color2: 'pink' },
@@ -128,6 +164,8 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   const [focusedBlob, setFocusedBlob] = useState<focusedBlob | null>(null)
   const [usingKeyboard, setUsingKeyboard] = useState(false)
   const [markerEnabled, setMarkerEnabled] = useState(true)
+  const [controlsVisible, setControlsVisible] = useState(true)
+  const markerDivRef = useRef<HTMLDivElement>(null)
 
   //Check for keyboard use for the focusedBlob marker
   useEffect(() => {
@@ -153,6 +191,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       return null
     else return JSON.parse(draggablesJSON)
   }
+
   function loadBackground(): BackgroundColor[] {
     const backgroundColorJSON = localStorage.getItem(localStorageBackground)
     if (backgroundColorJSON == null) return []
@@ -166,28 +205,32 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     localStorage.setItem(localStorageDraggables, JSON.stringify(draggables[d]))
   }
 
-  const [hasBeenMade, setHasBeenMade] = useState<Boolean>(false)
+  const [hasBeenMade, setHasBeenMade] = useState<boolean>(false)
 
   useEffect(() => {
-    const loadedDraggables = loadDraggables()
-    if (loadedDraggables && loadedDraggables?.length > 0) {
-      makeFromStorage(loadedDraggables)
-      // dispatch({
-      //   type: 'setDraggablesAtD',
-      //   payload: { d, draggables: loadedDraggables },
-      // })
-      setHasBeenMade(true)
-    } else if (loadedDraggables === null && !hasBeenMade) {
-      makeAnew(amountOfBlobs)
-      setHasBeenMade(true)
-    }
+    const delay = setTimeout(() => {
+      const loadedDraggables = loadDraggables()
+      if (loadedDraggables && loadedDraggables?.length > 0) {
+        makeFromStorage(loadedDraggables)
+        // dispatch({
+        //   type: 'setDraggablesAtD',
+        //   payload: { d, draggables: loadedDraggables },
+        // })
+        setHasBeenMade(true)
+      } else if (loadedDraggables === null && !hasBeenMade) {
+        makeAnew(amountOfBlobs)
+        setHasBeenMade(true)
+      }
+    }, 100) // 100ms delay
+
+    return () => clearTimeout(delay)
   }, [])
 
   useEffect(() => {
-    if (draggables[d] !== undefined && draggables[d]?.length > 0) {
+    if (state.draggables !== undefined && draggables[d]?.length > 0) {
       saveDraggables()
     }
-  }, [draggables[d]])
+  }, [state.draggables])
 
   function makeFromStorage(blobs: Draggable[]) {
     if (backgroundColor[d]?.length > 1) {
@@ -196,9 +239,11 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       dragWrapOuter.current?.style.setProperty('--hue', `${backgroundColor[d][2]}`)
     }
     if (!hasBeenMade && blobs && blobs?.length > 0) {
+      //dispatch({ type: 'resetBlobs', payload: {} })
       for (let i: number = 0; i < blobs?.length; i++) {
         if (blobs[i] !== null && blobs[i] !== undefined) {
           const newDraggable = {
+            layer: blobs[i].layer,
             id: `${blobs[i].id}`,
             number: blobs[i].number,
             i: blobs[i].i,
@@ -243,16 +288,18 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   ) {
     e.preventDefault()
 
-    if (!paused && dragUl0.current) {
-      dragUl0.current.classList.add('paused')
+    if (!paused) {
       setPaused(true)
       if (stopBlobs.current) stopBlobs.current.textContent = EStartSway[language]
-    } else if (paused && dragUl0.current) {
-      dragUl0.current.classList.remove('paused')
+    } else if (paused) {
       setPaused(false)
       if (stopBlobs.current) stopBlobs.current.textContent = EStopSway[language]
     }
   }
+
+  useEffect(() => {
+    if (paused && stopBlobs.current) stopBlobs.current.textContent = EStopSway[language]
+  }, [paused])
 
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
 
@@ -268,25 +315,20 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     }
   }, [])
 
-  useEffect(() => {
-    if (prefersReducedMotion && dragUl0.current) {
-      dragUl0.current.classList.add('paused')
-      setPaused(true)
-      if (stopBlobs.current) stopBlobs.current.textContent = EStartSway[language]
-    }
-  }, [prefersReducedMotion])
-
-  const amountOfBlobs = 8 // Initial amount of blobs
+  const amountOfBlobs = windowWidth > 400 ? 10 : 6 // Initial amount of blobs
 
   function resetBlobsFunction(e: MouseEventReact | TouchEventReact | PointerEventReact) {
     e.preventDefault()
+    setActiveLayer(0)
     window.localStorage.removeItem(localStorageDraggables)
+    dispatch({ type: 'resetBlobs', payload: {} })
     dispatch({ type: 'setDraggablesAtD', payload: { d, draggables: [] } })
 
     makeAnew(amountOfBlobs)
   }
 
   const makeAnew = (amount: number) => {
+    dispatch({ type: 'resetBlobs', payload: {} })
     for (let i: number = 0; i < amount; i++) {
       const colorswitch = () => {
         let number: number = Math.ceil(getRandomMinMax(0.01, 8))
@@ -320,7 +362,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             color2 = 'dodgerblue'
             break
           case 8:
-            color1 = 'darkorage'
+            color1 = 'darkorange'
             color2 = 'orange'
             break
           default:
@@ -330,18 +372,18 @@ export default function BlobJS({ language }: { language: ELanguages }) {
         return [color1, color2]
       }
 
-      const colorFirst: string = colorswitch()[0]
-      const colorSecond: string = colorswitch()[1]
+      const [colorFirst, colorSecond] = colorswitch()
 
       const newDraggable = {
+        layer: activeLayer,
         id: `blob${i + 1}-${d}`,
         number: i + 1,
-        i: i + 1,
+        i: windowWidth > 400 ? getRandomMinMax(2, 9) : getRandomMinMax(2, 5),
         x:
-          window.innerWidth > window.innerHeight
-            ? `${(window.innerWidth / 100) * getRandomMinMax(0, 70)}px`
-            : `${(window.innerWidth / 100) * getRandomMinMax(0, 50)}px`,
-        y: `${(window.innerHeight / 100) * getRandomMinMax(0, 70)}px`,
+          windowWidth > windowHeight
+            ? `${(windowWidth / 100) * getRandomMinMax(2, 70)}px`
+            : `${(windowWidth / 100) * getRandomMinMax(2, 50)}px`,
+        y: `${(windowHeight / 100) * getRandomMinMax(2, 60)}px`,
         z: '1',
         display: 'block',
         ariaGrabbed: false,
@@ -360,8 +402,82 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     return Math.random() * (max - min) + min
   }
 
+  const addRandomDraggable = () => {
+    const colorswitch = () => {
+      let number: number = Math.ceil(getRandomMinMax(0.01, 13))
+
+      switch (number) {
+        case 1:
+          color = 'cyan'
+          break
+        case 2:
+          color = 'lemonchiffon'
+          break
+        case 3:
+          color = 'pink'
+          break
+        case 4:
+          color = 'lemonchiffon'
+          break
+        case 5:
+          color = 'red'
+          break
+        case 6:
+          color = 'magenta'
+          break
+        case 7:
+          color = 'deepskyblue'
+          break
+        case 8:
+          color = 'darkorange'
+          break
+        case 9:
+          color = 'tomato'
+          break
+        case 10:
+          color = 'violet'
+          break
+        case 11:
+          color = 'dodgerblue'
+          break
+        case 12:
+          color = 'greenyellow'
+          break
+        case 13:
+          color = 'orange'
+          break
+        default:
+          color = 'cyan'
+          break
+      }
+      return color
+    }
+
+    const colorFirst = colorswitch()
+    const colorSecond = colorswitch()
+
+    const newDraggable = {
+      layer: activeLayer,
+      id: `blob${state.highestBlobNumber + 1}-${d}`,
+      number: state.highestBlobNumber + 1,
+      i: Math.ceil(getRandomMinMax(1.5, 5)),
+      x: `${(windowWidth / 100) * getRandomMinMax(25, 55)}px`,
+      y: `${(windowHeight / 100) * getRandomMinMax(2, 15)}px`,
+      z: '1',
+      display: 'block',
+      ariaGrabbed: false,
+      draggable: true,
+      tabIndex: 0,
+      background: `linear-gradient(${angle ?? '90deg'}, ${colorFirst ?? 'cyan'},${
+        colorSecond ?? 'greenyellow'
+      })`,
+    }
+
+    dispatch({ type: 'addDraggable', payload: { d, draggable: newDraggable } })
+  }
+
   //save blob stats to localhost array
-  const getPosition = (draggable: HTMLLIElement) => {
+  const getPosition = (draggable: HTMLElement) => {
     const blobID = draggable.id
     const blobNumber = draggable.id.replace(/^\D+/g, '') //replace non-numbers with empty
     const blobI = window.getComputedStyle(draggable).getPropertyValue('--i')
@@ -370,8 +486,10 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     const blobZ = window.getComputedStyle(draggable).getPropertyValue('z-index')
     const blobColor1 = window.getComputedStyle(draggable).getPropertyValue('background')
     const blobDisplay = window.getComputedStyle(draggable).getPropertyValue('display')
+    const layer = window.getComputedStyle(draggable).getPropertyValue('--layer')
 
     const blobDraggables: Draggable = {
+      layer: layer ? parseInt(layer) : activeLayer,
       id: blobID,
       number: parseInt(blobNumber),
       i: parseFloat(blobI),
@@ -387,41 +505,22 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
     dispatch({
       type: 'updateDraggable',
-      payload: { d, i: blobDraggables.number - 1, draggable: blobDraggables },
+      payload: { draggable: blobDraggables, id: blobDraggables.id },
     })
-
+    setActiveLayer(parseInt(layer))
     saveDraggables()
   }
 
-  const [scroll, setScroll] = useState<Boolean>(true)
+  const [scroll, setScroll] = useState<boolean>(true)
 
   function disableScroll() {
     if (scroll) {
-      if (disableScrollButton.current)
-        disableScrollButton.current.textContent = EEnableScroll[language]
       document.body.style.overflow = 'hidden'
     } else {
-      if (disableScrollButton.current)
-        disableScrollButton.current.textContent = EDisableScroll[language]
       document.body.style.overflow = 'auto'
     }
     setScroll(!scroll)
   }
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && !scroll) {
-        setScroll(true)
-        if (disableScrollButton.current)
-          disableScrollButton.current.textContent = EDisableScroll[language]
-        document.body.style.overflow = 'auto'
-      }
-    }
-    document.addEventListener('keydown', handleKeyDown)
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [scroll])
 
   //SLIDERS
 
@@ -568,6 +667,13 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   }, [])
 
   const widthResize = () => {
+    //place layer-buttons to the middle in the bottom
+    if (layerButtons0.current && dragWrap.current) {
+      layerButtons0.current.style.left =
+        dragWrap.current.offsetWidth / 2 - layerButtons0.current.offsetWidth / 2 + 'px'
+      layerButtons0.current.style.top =
+        dragWrap.current.offsetHeight - layerButtons0.current.offsetHeight + 'px'
+    }
     //place these items every time the window is resized
     if (makeLarger0.current && dragWrap.current)
       place(
@@ -577,11 +683,11 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       )
 
     if (colorBlockOrange.current && dragWrap.current)
-      place(colorBlockOrange.current, 0, 18)
-    if (colorBlockRed.current && dragWrap.current) place(colorBlockRed.current, 0, 38)
+      place(colorBlockOrange.current, 0, 19)
+    if (colorBlockRed.current && dragWrap.current) place(colorBlockRed.current, 0, 39)
     if (colorBlockPurple.current && dragWrap.current)
-      place(colorBlockPurple.current, 0, 58)
-    if (colorBlockBlue.current && dragWrap.current) place(colorBlockBlue.current, 0, 78)
+      place(colorBlockPurple.current, 0, 59)
+    if (colorBlockBlue.current && dragWrap.current) place(colorBlockBlue.current, 0, 79)
 
     if (colorBlockYellowLime0.current && dragWrap.current)
       place(
@@ -589,7 +695,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
         100 -
           (colorBlockYellowLime0.current.offsetWidth / dragWrap.current?.offsetWidth) *
             100,
-        18
+        19
       )
     if (colorBlockCyanYellow0.current && dragWrap.current)
       place(
@@ -597,14 +703,14 @@ export default function BlobJS({ language }: { language: ELanguages }) {
         100 -
           (colorBlockCyanYellow0.current.offsetWidth / dragWrap.current?.offsetWidth) *
             100,
-        38
+        39
       )
     if (colorBlockCyanPink0.current && dragWrap.current)
       place(
         colorBlockCyanPink0.current,
         100 -
           (colorBlockCyanPink0.current.offsetWidth / dragWrap.current?.offsetWidth) * 100,
-        58
+        59
       )
     if (colorBlockPinkYellow0.current && dragWrap.current)
       place(
@@ -612,16 +718,27 @@ export default function BlobJS({ language }: { language: ELanguages }) {
         100 -
           (colorBlockPinkYellow0.current.offsetWidth / dragWrap.current?.offsetWidth) *
             100,
-        78
+        79
       )
 
-    if (makeSmaller0.current && dragWrap.current)
-      place(
-        makeSmaller0.current,
-        77 - (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
-        93
-      )
-    if (deleteBlob0.current && dragWrap.current) place(deleteBlob0.current, 23, 93)
+    windowWidth < 400 && makeSmaller0.current && dragWrap.current
+      ? place(
+          makeSmaller0.current,
+          90 - (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
+          93
+        )
+      : makeSmaller0.current && dragWrap.current
+      ? place(
+          makeSmaller0.current,
+          77 - (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
+          93
+        )
+      : null
+    windowWidth < 400 && deleteBlob0.current && dragWrap.current
+      ? place(deleteBlob0.current, 10, 93)
+      : deleteBlob0.current && dragWrap.current
+      ? place(deleteBlob0.current, 23, 93)
+      : null
   }
   function place(element: HTMLElement, x_pos: number, y_pos: number) {
     if (element && dragWrap.current) {
@@ -630,6 +747,17 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     }
   }
 
+  useEffect(() => {
+    if (focusedBlob) {
+      if (markerDivRef.current) {
+        markerDivRef.current.style.top = `${focusedBlob.top}px`
+        markerDivRef.current.style.left = `${focusedBlob.left}px`
+        markerDivRef.current.style.width = `${focusedBlob.width}px`
+        markerDivRef.current.style.height = `${focusedBlob.height}px`
+      }
+    }
+  }, [focusedBlob])
+
   return (
     <>
       <section id={`drag-container${d}`} className={`drag-container drag-container${d}`}>
@@ -637,9 +765,12 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           <span id={`blobdescription${d}`} className={'scr'}>
             {ETryDraggingTheBlobs[language]}
           </span>
-          <div ref={selectedvalue0} id={`selectedvalue${d}`} className='selectedvalue'>
+          <span>
+            [{ELayer[language]}: {activeLayer + 1}]{' '}
+          </span>
+          <span ref={selectedvalue0} id={`selectedvalue${d}`} className='selectedvalue'>
             {ESelectedBlobNone[language]}
-          </div>
+          </span>
         </div>
         <div className={'button-container'}>
           <button
@@ -671,7 +802,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
               widthResize()
             }}
           >
-            {EDisableScroll[language]}
+            {scroll ? EDisableScroll[language] : EEnableScroll[language]}
           </button>
           <button
             className='toggle-marker tooltip-wrap'
@@ -682,6 +813,12 @@ export default function BlobJS({ language }: { language: ELanguages }) {
               data-tooltip={`${EToggleMarkerVisibilityWhenUsingAKeyboard[language]}`}
             ></span>
             {markerEnabled ? EMarkerOn[language] : EMarkerOff[language]}
+          </button>
+          <button
+            className='toggle-controls tooltip-wrap'
+            onClick={() => setControlsVisible(!controlsVisible)}
+          >
+            {controlsVisible ? EHideControls[language] : EShowControls[language]}
           </button>
         </div>
         <div
@@ -695,7 +832,9 @@ export default function BlobJS({ language }: { language: ELanguages }) {
         >
           <button
             ref={makeSmaller0}
-            className='make-smaller tooltip-wrap reset'
+            className={`make-smaller tooltip-wrap reset ${
+              !controlsVisible ? 'hidden' : ''
+            }`}
             id={`make-smaller${d}`}
             role='tooltip'
             aria-label={`${EShrinkInstructions[language]}. ${EAlternatively[language]}: ${EResizebyScrollInstructions[language]}`}
@@ -708,7 +847,9 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           </button>
           <button
             ref={makeLarger0}
-            className='make-larger tooltip-wrap reset'
+            className={`make-larger tooltip-wrap reset ${
+              !controlsVisible ? 'hidden' : ''
+            }`}
             id={`make-larger${d}`}
             role='tooltip'
             aria-label={`${EEnlargeInstructions[language]}. ${EAlternatively[language]}: ${EResizebyScrollInstructions[language]}`}
@@ -722,20 +863,36 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
           <button
             ref={makeMore0}
-            className='make-more tooltip-wrap reset'
+            className={`make-more tooltip-wrap reset ${!controlsVisible ? 'hidden' : ''}`}
             id={`make-more${d}`}
             role='tooltip'
             aria-label={ECloneInstructions[language]}
           >
-            <FaPlus />
+            <FaRegClone />
             <span
               className='tooltip right below'
               data-tooltip={ECloneInstructions[language]}
             ></span>
           </button>
           <button
+            ref={makeRandom0}
+            className={`make-random tooltip-wrap  ${!controlsVisible ? 'hidden' : ''}`}
+            id={`make-random${d}`}
+            role='tooltip'
+            aria-label={EClickMeToMakeARandomBlob[language]}
+            onClick={() => addRandomDraggable()}
+          >
+            <FaPlus />
+            <span
+              className='tooltip left below'
+              data-tooltip={EClickMeToMakeARandomBlob[language]}
+            ></span>
+          </button>
+          <button
             ref={deleteBlob0}
-            className='delete-blob tooltip-wrap reset'
+            className={`delete-blob tooltip-wrap reset ${
+              !controlsVisible ? 'hidden' : ''
+            }`}
             id={`delete-blob${d}`}
             role='tooltip'
             aria-label={ERemovalInstructions[language]}
@@ -746,7 +903,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
               data-tooltip={ERemovalInstructions[language]}
             ></span>
           </button>
-          <div className='movers-wrap movers-wrap1'>
+          <div className={`movers-wrap movers-wrap1 ${!controlsVisible ? 'hidden' : ''}`}>
             <button className={`moveleft mover`} onClick={handleMoveRight}>
               <BiChevronsLeft />
               <span className='scr'>{EMoveViewLeft[language]}</span>
@@ -756,7 +913,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
               <span className='scr'>{EMoveViewRight[language]}</span>
             </button>
           </div>
-          <div className='movers-wrap movers-wrap2'>
+          <div className={`movers-wrap movers-wrap2 ${!controlsVisible ? 'hidden' : ''}`}>
             <button className={`moveup mover`} onClick={handleMoveDown}>
               <BiChevronsUp />
               <span className='scr'>{EMoveViewUp[language]}</span>
@@ -768,14 +925,16 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           </div>
           {markerEnabled && usingKeyboard && focusedBlob && (
             <div
+              ref={markerDivRef}
               style={{
                 position: 'absolute',
-                top: `${focusedBlob.top + 17}px`,
+                top: `${focusedBlob.top}px`,
                 left: `${focusedBlob.left}px`,
                 width: `${focusedBlob.width}px`,
                 height: `${focusedBlob.height}px`,
-                outline: '3px dashed blue',
-                outlineOffset: '5px',
+                outline: '3px dashed black',
+                outlineOffset: '2px',
+                border: '3px dashed white',
                 borderRadius: '50%',
                 zIndex: 1000,
               }}
@@ -783,13 +942,19 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           )}
 
           <div ref={dragWrap} className='drag-wrap'>
-            <DragComponent
+            <DragContainer
+              layerAmount={layerAmount}
+              layer={activeLayer}
+              hiddenLayers={hiddenLayers}
+              changeBlobLayer={changeBlobLayer}
+              paused={paused}
+              setPaused={setPaused}
+              prefersReducedMotion={prefersReducedMotion}
               language={language}
               dispatch={dispatch}
               d={d}
-              items={draggables[d]}
+              items={draggables[d] ?? []}
               amountOfBlobs={amountOfBlobs}
-              dragUl0={dragUl0}
               saveDraggables={saveDraggables}
               getPosition={getPosition}
               colorBlockOrange={colorBlockOrange}
@@ -821,12 +986,46 @@ export default function BlobJS({ language }: { language: ELanguages }) {
               colorIndex={colorIndex}
               setColorIndex={setColorIndex}
               colorPairs={colorPairs}
+              scroll={scroll}
+              setScroll={setScroll}
             />
           </div>
 
           <div
+            className={`layer-buttons ${!controlsVisible ? 'hidden' : ''}`}
+            ref={layerButtons0}
+          >
+            {Array.from({ length: layerAmount }, (_, i) => i).map((layer) => (
+              <button
+                key={layer}
+                onClick={() => {
+                  if (activeLayer === layer) {
+                    toggleLayerVisibility(layer)
+                  } else {
+                    setActiveLayer(layer)
+                  }
+                }}
+                className={`layer-button tooltip-wrap ${
+                  activeLayer === layer ? 'active' : ''
+                } ${hiddenLayers.has(layer) ? 'dim' : ''}`}
+              >
+                <span
+                  className='tooltip above right'
+                  data-tooltip={
+                    activeLayer === layer
+                      ? EToggleLayerByClickingMe[language]
+                      : EChangeLayerByClickingMe[language]
+                  }
+                ></span>
+                <span className='scr'>{ELayer[language]}</span> {layer + 1}
+              </button>
+            ))}
+          </div>
+          <div
             ref={colorBlockOrange}
-            className='colorblock color-orange tooltip-wrap'
+            className={`colorblock color-orange tooltip-wrap ${
+              !controlsVisible ? 'hidden' : ''
+            }`}
             id={`color-orange${d}`}
           >
             <span
@@ -836,7 +1035,9 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           </div>
           <div
             ref={colorBlockRed}
-            className='colorblock color-red tooltip-wrap'
+            className={`colorblock color-red tooltip-wrap ${
+              !controlsVisible ? 'hidden' : ''
+            }`}
             id={`color-red${d}`}
           >
             <span
@@ -846,7 +1047,9 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           </div>
           <div
             ref={colorBlockPurple}
-            className='colorblock color-purple tooltip-wrap'
+            className={`colorblock color-purple tooltip-wrap ${
+              !controlsVisible ? 'hidden' : ''
+            }`}
             id={`color-purple${d}`}
           >
             <span
@@ -856,7 +1059,9 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           </div>
           <div
             ref={colorBlockBlue}
-            className='colorblock color-blue tooltip-wrap'
+            className={`colorblock color-blue tooltip-wrap  ${
+              !controlsVisible ? 'hidden' : ''
+            }`}
             id={`color-blue${d}`}
           >
             <span
@@ -866,7 +1071,9 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           </div>
           <div
             ref={colorBlockYellowLime0}
-            className='colorblock color-yellowlime tooltip-wrap'
+            className={`colorblock color-yellowlime tooltip-wrap ${
+              !controlsVisible ? 'hidden' : ''
+            }`}
             id={`color-yellowlime${d}`}
           >
             <span
@@ -876,7 +1083,9 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           </div>
           <div
             ref={colorBlockCyanYellow0}
-            className='colorblock color-cyanyellow tooltip-wrap'
+            className={`colorblock color-cyanyellow tooltip-wrap ${
+              !controlsVisible ? 'hidden' : ''
+            }`}
             id={`color-cyanyellow${d}`}
           >
             <span
@@ -886,7 +1095,9 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           </div>
           <div
             ref={colorBlockCyanPink0}
-            className='colorblock color-cyanpink tooltip-wrap'
+            className={`colorblock color-cyanpink tooltip-wrap ${
+              !controlsVisible ? 'hidden' : ''
+            }`}
             id={`color-cyanpink${d}`}
           >
             <span
@@ -896,7 +1107,9 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           </div>
           <div
             ref={colorBlockPinkYellow0}
-            className='colorblock color-pinkyellow tooltip-wrap'
+            className={`colorblock color-pinkyellow tooltip-wrap ${
+              !controlsVisible ? 'hidden' : ''
+            }`}
             id={`color-pinkyellow${d}`}
           >
             <span

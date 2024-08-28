@@ -15,6 +15,8 @@ import { LuArrowRightToLine } from 'react-icons/lu'
 import {
   EAbout,
   EBlobs,
+  EButton,
+  EButtons,
   EContact,
   EEdit,
   EGraphQLSite,
@@ -59,7 +61,12 @@ import {
   ETasksCanBeReorganizedByDraggingAndDropping,
 } from '../interfaces/todo'
 import { GrGraphQl } from 'react-icons/gr'
-import { EButtonsTo, EMoveViewInDifferentDirections } from '../interfaces/blobs'
+import {
+  EButtonsTo,
+  ELayers,
+  EMoveViewInDifferentDirections,
+  EToggleControlVisibility,
+} from '../interfaces/blobs'
 
 export default function Home({
   heading,
@@ -147,6 +154,18 @@ export default function Home({
                             <TbBlob />
                             {EBlobs[language]}:
                           </Link>
+                          <i>
+                            {EAddedNewFeatures[language]}:{' '}
+                            {ELayers[language].toLowerCase()};{' '}
+                            {EButton[language].toLowerCase()}:{' '}
+                            {EToggleControlVisibility[language].toLowerCase()}
+                          </i>
+                        </li>
+                        <li>
+                          <Link to='/portfolio/blob'>
+                            <TbBlob />
+                            {EBlobs[language]}:
+                          </Link>
                           <i>{EImprovedAccessibility[language]}</i>
                         </li>
                         <li>
@@ -155,9 +174,9 @@ export default function Home({
                             {EBlobs[language]}:
                           </Link>
                           <i>
-                            {EAddedNewFeatures[language]}: {EButtonsTo[language]}:{' '}
-                            {EMoveViewInDifferentDirections[language]}.{' '}
-                            {EBugFixes[language]}.
+                            {EAddedNewFeatures[language]}:{' '}
+                            {EMoveViewInDifferentDirections[language].toLowerCase()} (
+                            {EButtons[language].toLowerCase()}). {EBugFixes[language]}.
                           </i>
                         </li>
                         <li>

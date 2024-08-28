@@ -1,6 +1,7 @@
 export type BackgroundColor = string
 
 export type Draggable = {
+  layer: number
   id: string
   number: number
   i: number
