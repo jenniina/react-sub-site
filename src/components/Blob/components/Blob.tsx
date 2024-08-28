@@ -14,6 +14,7 @@ import { EBlob, ELanguages } from '../../../interfaces'
 import { ESelectedBlob, ESelectedBlobNone } from '../../../interfaces/blobs'
 
 interface BlobProps {
+  layer: number
   language: ELanguages
   item: Draggable
   index: number
@@ -24,7 +25,8 @@ interface BlobProps {
       | PointerEvent
       | TouchEventReact
       | MouseEventReact
-      | PointerEventReact
+      | PointerEventReact,
+    target: HTMLElement
   ) => void
   movement: (
     e:
@@ -33,7 +35,8 @@ interface BlobProps {
       | PointerEvent
       | TouchEventReact
       | MouseEventReact
-      | PointerEventReact
+      | PointerEventReact,
+    target: HTMLElement
   ) => void
   stopMovementCheck: (
     e:
@@ -42,18 +45,23 @@ interface BlobProps {
       | PointerEvent
       | TouchEventReact
       | MouseEventReact
-      | PointerEventReact
+      | PointerEventReact,
+    target: HTMLElement
   ) => void
-  stopMoving: (e: MouseEvent | MouseEventReact | PointerEvent | PointerEventReact) => void
-  wheel: (e: HTMLLIElement) => void
-  focused: (e: HTMLLIElement) => void
-  blurred: (e: HTMLLIElement) => void
+  stopMoving: (
+    e: MouseEvent | MouseEventReact | PointerEvent | PointerEventReact,
+    target: HTMLElement
+  ) => void
+  wheel: (target: HTMLElement) => void
+  focused: (e: HTMLElement) => void
+  blurred: (e: HTMLElement) => void
   selectedvalue0: RefObject<HTMLSpanElement>
   focusedBlob: focusedBlob | null
   setFocusedBlob: Dispatch<SetStateAction<focusedBlob | null>>
 }
 
 const Blob = ({
+  layer,
   language,
   item,
   index,
@@ -75,59 +83,52 @@ const Blob = ({
     top: `${item.y}`,
     zIndex: `${item.z}`,
     ['--i' as string]: `${item.i}`,
+    ['--layer' as string]: `${layer}`,
   }
 
   return (
     <li
-      key={index}
-      className='dragzone'
-      id={item.id}
-      aria-grabbed={false}
-      role={'option'}
-      tabIndex={0}
-      draggable='true'
-      style={blobStyle}
-      onMouseDown={(e) => {
-        if (selectedvalue0.current)
-          selectedvalue0.current.textContent = `${ESelectedBlob[language]}: ${
-            (e.target as HTMLElement)?.querySelector('span')?.textContent
-          }`
-        start(e)
-      }}
-      onMouseMove={(e) => {
-        movement(e)
-      }}
-      onMouseUp={(e) => {
-        stopMovementCheck(e)
-        if (selectedvalue0.current)
-          selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
-      }}
-      onMouseLeave={(e) => {
-        stopMoving(e)
-        if (selectedvalue0.current)
-          selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
-      }}
-      onTouchStart={(e) => {
-        start(e)
-        if (selectedvalue0.current)
-          selectedvalue0.current.textContent = `${ESelectedBlob[language]}: ${
-            (e.target as HTMLElement)?.querySelector('span')?.textContent
-          }`
-      }}
-      onTouchMove={(e) => {
-        movement(e)
-      }}
-      onTouchEnd={(e) => {
-        stopMovementCheck(e)
-        if (selectedvalue0.current)
-          selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
-      }}
-      onWheel={(e) => {
-        wheel(e.target as HTMLLIElement)
-      }}
+      // onMouseDown={(e) => {
+      //   if (selectedvalue0.current)
+      //     selectedvalue0.current.textContent = `${ESelectedBlob[language]}: ${
+      //       (e.target as HTMLElement)?.querySelector('span')?.textContent
+      //     }`
+      //   start(e)
+      // }}
+      // onMouseMove={(e) => {
+      //   movement(e)
+      // }}
+      // onMouseUp={(e) => {
+      //   stopMovementCheck(e)
+      //   if (selectedvalue0.current)
+      //     selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
+      // }}
+      // onMouseLeave={(e) => {
+      //   stopMoving(e)
+      //   if (selectedvalue0.current)
+      //     selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
+      // }}
+      // onTouchStart={(e) => {
+      //   start(e)
+      //   if (selectedvalue0.current)
+      //     selectedvalue0.current.textContent = `${ESelectedBlob[language]}: ${
+      //       (e.target as HTMLElement)?.querySelector('span')?.textContent
+      //     }`
+      // }}
+      // onTouchMove={(e) => {
+      //   movement(e)
+      // }}
+      // onTouchEnd={(e) => {
+      //   stopMovementCheck(e)
+      //   if (selectedvalue0.current)
+      //     selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
+      // }}
+      // onWheel={(e) => {
+      //   wheel(e.target as HTMLElement)
+      // }}
       onFocus={(e) => {
-        focused(e.target as HTMLLIElement)
-        const blob = e.target as HTMLLIElement
+        focused(e.target as HTMLElement)
+        const blob = e.target as HTMLElement
         const blobRect = blob.getBoundingClientRect()
         const parentRect = (blob.parentNode as HTMLDivElement)?.getBoundingClientRect()
 
@@ -146,12 +147,120 @@ const Blob = ({
             (e.target as HTMLElement)?.querySelector('span')?.textContent
           }`
       }}
-      onBlurCapture={(e) => {
-        blurred(e.target as HTMLLIElement)
+      onBlur={(e) => {
+        blurred(e.target as HTMLElement)
         if (selectedvalue0.current)
           selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
       }}
+      key={index}
+      className='dragzone'
+      id={item.id}
+      aria-grabbed={false}
+      role={'option'}
+      tabIndex={0}
+      // draggable='true'
+      style={blobStyle}
     >
+      <div
+        className='draggable-overlay'
+        onMouseDown={(e) => {
+          e.stopPropagation()
+          const liElement = e.currentTarget.parentElement as HTMLElement
+          liElement.draggable = true
+          if (selectedvalue0.current)
+            selectedvalue0.current.textContent = `${ESelectedBlob[language]}: ${
+              (liElement as HTMLElement)?.querySelector('span')?.textContent
+            }`
+
+          start(e, liElement)
+        }}
+        onMouseMove={(e) => {
+          if (e.buttons === 1) {
+            const liElement = e.currentTarget.parentElement as HTMLElement
+            liElement.draggable = true
+            movement(e, liElement)
+
+            if (selectedvalue0.current)
+              selectedvalue0.current.textContent = `${ESelectedBlob[language]}: ${
+                (e.target as HTMLElement)?.querySelector('span')?.textContent
+              }`
+          }
+        }}
+        onMouseLeave={(e) => {
+          const liElement = e.currentTarget.parentElement as HTMLElement
+          liElement.draggable = false
+          stopMoving(e, liElement)
+          if (selectedvalue0.current)
+            selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
+        }}
+        onMouseUp={(e) => {
+          const liElement = e.currentTarget.parentElement as HTMLElement
+          liElement.draggable = false
+          stopMovementCheck(e, liElement)
+          if (selectedvalue0.current)
+            selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
+        }}
+        // onMouseLeave={(e) => {
+        //   const liElement = e.currentTarget.parentElement as HTMLElement
+        //   stopMoving(e, liElement)
+        //   if (selectedvalue0.current)
+        //     selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
+        // }}
+        onTouchStart={(e) => {
+          const liElement = e.currentTarget.parentElement as HTMLElement
+          liElement.draggable = true
+          start(e, liElement)
+          if (selectedvalue0.current)
+            selectedvalue0.current.textContent = `${ESelectedBlob[language]}: ${
+              (liElement as HTMLElement)?.querySelector('span')?.textContent
+            }`
+        }}
+        onTouchMove={(e) => {
+          const liElement = e.currentTarget.parentElement as HTMLElement
+          liElement.draggable = true
+          movement(e, liElement)
+        }}
+        onTouchEnd={(e) => {
+          const liElement = e.currentTarget.parentElement as HTMLElement
+          liElement.draggable = false
+          stopMovementCheck(e, liElement)
+          if (selectedvalue0.current)
+            selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
+        }}
+        onWheel={(e) => {
+          const liElement = e.currentTarget.parentElement as HTMLElement
+          wheel(liElement)
+        }}
+        // onFocus={(e) => {
+        //   const liElement = e.currentTarget.parentElement as HTMLElement
+        //   focused(liElement as HTMLElement)
+        //   const blob = liElement as HTMLElement
+        //   const blobRect = blob.getBoundingClientRect()
+        //   const parentRect = (blob.parentNode as HTMLDivElement)?.getBoundingClientRect()
+
+        //   const blobStyle = window.getComputedStyle(blob)
+        //   const marginTop = parseFloat(blobStyle.marginTop)
+        //   const marginLeft = parseFloat(blobStyle.marginLeft)
+
+        //   setFocusedBlob({
+        //     top: blobRect.top - parentRect.top - marginTop,
+        //     left: blobRect.left - parentRect.left - marginLeft,
+        //     width: blobRect.width,
+        //     height: blobRect.height,
+        //   })
+        //   if (selectedvalue0.current)
+        //     selectedvalue0.current.textContent = `${ESelectedBlob[language]}: ${
+        //       (liElement as HTMLElement)?.querySelector('span')?.textContent
+        //     }`
+        // }}
+        // onBlurCapture={(e) => {
+        //   const liElement = e.currentTarget.parentElement as HTMLElement
+        //   liElement.draggable = false
+        //   blurred(liElement as HTMLElement)
+        //   if (selectedvalue0.current)
+        //     selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
+        // }}
+      ></div>
       <span className='scr'>
         {EBlob[language]} {item.number}
       </span>
@@ -231,7 +340,7 @@ export default Blob
 //       props.selectedvalue0.current.textContent = `Selected blob: none`
 //   }}
 //   onWheel={(e) => {
-//     wheel(e.target as HTMLLIElement)
+//     wheel(e.target as HTMLElement)
 //   }}
 //   onFocus={(e) => {
 //     focused(e.target)

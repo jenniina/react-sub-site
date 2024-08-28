@@ -4,6 +4,7 @@ import { Draggable } from '../interfaces'
 
 interface State {
   draggables: Draggable[][] | []
+  highestBlobNumber: number
 }
 
 export interface Props {
@@ -13,6 +14,7 @@ export interface Props {
 
 const initialState: State = {
   draggables: [] as Draggable[][],
+  highestBlobNumber: 0,
 }
 
 export const BlobContext = createContext<Props | undefined>(undefined)

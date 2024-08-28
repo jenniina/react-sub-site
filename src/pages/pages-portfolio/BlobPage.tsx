@@ -7,6 +7,7 @@ import {
   EInstructions,
   EKeyboardUse,
   ELanguages,
+  ENew,
 } from '../../interfaces'
 import {
   EBlurIntoOneAnother,
@@ -14,15 +15,20 @@ import {
   EChangeBlobColorByDraggingToAColorNodeOnTheSides,
   EChangeBlobSizeByDraggingItToEitherTheLOrSLetterOnTheRightHandSide,
   EChangeBlobSizeByScrollingWithTheMouseWheel,
+  EChangeTheLayerOfTheFocusedBlobByPressingTheNumber,
   EChangeableColor,
   EChangeableSize,
   ECloneABlobByDraggingItToTheTopLeftPlusSign,
-  ECloneABlobByPressing3Or,
+  ECloneABlobByPressingCOr,
   ECloneable,
   EHue,
+  ELayer,
+  ELayerInstructions,
+  ELayers,
   ELightness,
-  EMakeBlobLargerByPressing2,
-  EMakeBlobSmallerByPressing1,
+  EMakeARandomBlobByClickingThePlusSign,
+  EMakeBlobLargerByPressingBL,
+  EMakeBlobSmallerByPressingS,
   EMoveViewInDifferentDirections,
   EPointerUse,
   EPressEnterToCycleThroughTheDifferentColors,
@@ -34,6 +40,7 @@ import {
   ESlidersToControlBackground,
   EStopScrollingBehaviorToUseTheMouseWheelFreely,
   ETabToABlobAndWithItInFocus,
+  EToggleControlVisibility,
   EToggleTheSubtleMovementOfTheBlobs,
   ETryDraggingTheBlobs,
   EWhichBlobIsCurrentlyActiveCanBeSeenAtTheTopLeftOfTheContainer,
@@ -80,6 +87,19 @@ export default function BlobPage({
                   </li>
 
                   <li>
+                    {ELayers[language]}:{' '}
+                    <strong>
+                      <i>({ENew[language]}!)</i>
+                    </strong>
+                    <ul>
+                      <li>{ELayerInstructions[language]}</li>
+                      <li>
+                        {EChangeTheLayerOfTheFocusedBlobByPressingTheNumber[language]}
+                      </li>
+                    </ul>
+                  </li>
+
+                  <li>
                     {ESlidersToControlBackground[language]}:
                     <ul>
                       <li>{ELightness[language]}</li>
@@ -95,6 +115,8 @@ export default function BlobPage({
                       <li>{EResetTheBlobArrayToANewConfiguration[language]}</li>
                       <li>{EStopScrollingBehaviorToUseTheMouseWheelFreely[language]}</li>
                       <li>{EMoveViewInDifferentDirections[language]}</li>
+                      <li>{EToggleControlVisibility[language]}</li>
+                      <li>{EMakeARandomBlobByClickingThePlusSign[language]}</li>
                     </ul>
                   </li>
 
@@ -127,10 +149,13 @@ export default function BlobPage({
                     {ETabToABlobAndWithItInFocus[language]}
                     <ul>
                       <li>{EPressEnterToCycleThroughTheDifferentColors[language]}</li>
-                      <li>{EMakeBlobSmallerByPressing1[language]}</li>
-                      <li>{EMakeBlobLargerByPressing2[language]}</li>
-                      <li>{ECloneABlobByPressing3Or[language]}</li>
+                      <li>{EMakeBlobSmallerByPressingS[language]}</li>
+                      <li>{EMakeBlobLargerByPressingBL[language]}</li>
+                      <li>{ECloneABlobByPressingCOr[language]}</li>
                       <li>{ERemoveABlobByPressingDeleteOr[language]}</li>
+                      <li>
+                        {EChangeTheLayerOfTheFocusedBlobByPressingTheNumber[language]}
+                      </li>
                     </ul>
                   </li>
                 </ul>

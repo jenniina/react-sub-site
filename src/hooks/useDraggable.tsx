@@ -182,7 +182,8 @@ export function keyDown(
       e.preventDefault()
       target.blur()
       break
-    case '0': //Move blob to the bottom of the z-index pile
+    case 'Z':
+    case 'z': //Move blob to the bottom of the z-index pile
       e.stopPropagation()
       e.preventDefault()
       if (reset) {
@@ -196,7 +197,8 @@ export function keyDown(
         setTimeout(cooldown, 100)
       }
       break
-    case '1': //make blob smaller
+    case 's':
+    case 'S': //make blob smaller
       e.stopPropagation()
       e.preventDefault()
       if (reset) {
@@ -211,7 +213,10 @@ export function keyDown(
         setTimeout(cooldown, 100)
       }
       break
-    case '2': //make blob larger
+    case 'B':
+    case 'b':
+    case 'L':
+    case 'l': //make blob larger
       e.stopPropagation()
       e.preventDefault()
       if (reset) {
