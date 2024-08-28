@@ -88,44 +88,6 @@ const Blob = ({
 
   return (
     <li
-      // onMouseDown={(e) => {
-      //   if (selectedvalue0.current)
-      //     selectedvalue0.current.textContent = `${ESelectedBlob[language]}: ${
-      //       (e.target as HTMLElement)?.querySelector('span')?.textContent
-      //     }`
-      //   start(e)
-      // }}
-      // onMouseMove={(e) => {
-      //   movement(e)
-      // }}
-      // onMouseUp={(e) => {
-      //   stopMovementCheck(e)
-      //   if (selectedvalue0.current)
-      //     selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
-      // }}
-      // onMouseLeave={(e) => {
-      //   stopMoving(e)
-      //   if (selectedvalue0.current)
-      //     selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
-      // }}
-      // onTouchStart={(e) => {
-      //   start(e)
-      //   if (selectedvalue0.current)
-      //     selectedvalue0.current.textContent = `${ESelectedBlob[language]}: ${
-      //       (e.target as HTMLElement)?.querySelector('span')?.textContent
-      //     }`
-      // }}
-      // onTouchMove={(e) => {
-      //   movement(e)
-      // }}
-      // onTouchEnd={(e) => {
-      //   stopMovementCheck(e)
-      //   if (selectedvalue0.current)
-      //     selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
-      // }}
-      // onWheel={(e) => {
-      //   wheel(e.target as HTMLElement)
-      // }}
       onFocus={(e) => {
         focused(e.target as HTMLElement)
         const blob = e.target as HTMLElement
@@ -158,7 +120,6 @@ const Blob = ({
       aria-grabbed={false}
       role={'option'}
       tabIndex={0}
-      // draggable='true'
       style={blobStyle}
     >
       <div
@@ -182,7 +143,7 @@ const Blob = ({
 
             if (selectedvalue0.current)
               selectedvalue0.current.textContent = `${ESelectedBlob[language]}: ${
-                (e.target as HTMLElement)?.querySelector('span')?.textContent
+                (liElement as HTMLElement)?.querySelector('span')?.textContent
               }`
           }
         }}
@@ -200,12 +161,6 @@ const Blob = ({
           if (selectedvalue0.current)
             selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
         }}
-        // onMouseLeave={(e) => {
-        //   const liElement = e.currentTarget.parentElement as HTMLElement
-        //   stopMoving(e, liElement)
-        //   if (selectedvalue0.current)
-        //     selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
-        // }}
         onTouchStart={(e) => {
           const liElement = e.currentTarget.parentElement as HTMLElement
           liElement.draggable = true
