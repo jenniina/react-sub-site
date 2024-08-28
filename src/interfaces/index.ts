@@ -1775,3 +1775,12 @@ export enum ENew {
   cs = 'Nový',
   fi = 'Uutta',
 }
+export enum EButton {
+  en = 'Button',
+  es = 'Botón',
+  fr = 'Bouton',
+  de = 'Schaltfläche',
+  pt = 'Botão',
+  cs = 'Tlačítko',
+  fi = 'Painike',
+}

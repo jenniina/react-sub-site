@@ -216,12 +216,14 @@ main a:visited:focus,
 main a:hover > *,
 main a:focus > *,
 main a:visited:hover > *,
-main a:visited:focus > * 
+main a:visited:focus > *,
+main a:visited:hover > svg,
+main a:visited:focus > svg
 /* ,
 a:visited:not(.active):hover *,
 a:visited:not(.active):focus * */ {
   color: var(--color-secondary-3);
-  /* fill: var(--color-secondary-3); */
+  stroke: var(--color-secondary-3);
   text-decoration: underline;
 }
 .light main a:hover,
@@ -231,26 +233,27 @@ a:visited:not(.active):focus * */ {
 .light main a:hover > *,
 .light main a:focus > *,
 .light main a:visited:hover > *,
-.light main a:visited:focus > *
+.light main a:visited:focus > *,
+.light main a:visited > svg
 /*,
  .light a:visited:not(.active):hover *,
 .light a:visited:not(.active):focus * */ {
   color: var(--color-secondary-8);
-  /* fill: var(--color-secondary-8); */
 }
 main a:visited,
-main a:visited > *
+main a:visited > *,
+main a:visited > svg
 /*,
  a:visited:not(.active) *  */ {
   color: var(--color-visited-for-dark);
-  /* fill: var(--color-visited-for-dark); */
+  stroke: var(--color-visited-for-dark);
 }
 .light main a:visited,
 .light main a:visited > *
 /*,
  .light a:visited:not(.active) *  */ {
   color: var(--color-visited-for-light);
-  /* fill: var(--color-visited-for-light); */
+  stroke: var(--color-visited-for-light);
 }
 /*Mark regular lists with the class 'ul' */
 .ul {
