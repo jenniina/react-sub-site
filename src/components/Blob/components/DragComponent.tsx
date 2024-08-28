@@ -14,8 +14,6 @@ import Blob from './Blob'
 import { ELanguages } from '../../../interfaces'
 import { ESelectedBlobNone } from '../../../interfaces/blobs'
 
-let zIndex = 1
-let zIndex0 = -1
 let moveElement = false
 let reset = true
 
@@ -34,6 +32,8 @@ interface DragComponentProps {
   paused: boolean
   setPaused: Dispatch<SetStateAction<boolean>>
   prefersReducedMotion: boolean
+  highestZIndex: Record<number, number>
+  setHighestZIndex: Dispatch<SetStateAction<Record<number, number>>>
   language: ELanguages
   dispatch: DispatchReact<any>
   d: number
@@ -104,13 +104,6 @@ const DragComponent = (props: DragComponentProps) => {
     isTouchDevice()
   }, [])
 
-  useEffect(() => {
-    if (props.prefersReducedMotion && props.dragUlRef.current) {
-      props.dragUlRef.current.classList.add('paused')
-      props.setPaused(true)
-    }
-  }, [props.prefersReducedMotion])
-
   function start(
     e:
       | TouchEvent
@@ -130,10 +123,12 @@ const DragComponent = (props: DragComponentProps) => {
       ? (e as PointerEvent).clientY
       : (e as TouchEvent).touches[0].clientY
     ;(target as HTMLElement).classList.add('drag')
-    ;(target as HTMLElement).style.setProperty('z-index', `${zIndex}`)
+    //increase z-index to one higher than the highest z-index of the layer:
+    ;(target as HTMLElement).style.setProperty(
+      'z-index',
+      `${Math.max(1, props.highestZIndex[props.layer] + 1)}`
+    )
     ;(target as HTMLElement).setAttribute('aria-grabbed', 'true')
-    //increase z-index
-    zIndex += 1
     ;(target as HTMLElement).focus()
     moveElement = true
     ;(target as HTMLElement).addEventListener('keydown', keyDown)
@@ -304,8 +299,6 @@ const DragComponent = (props: DragComponentProps) => {
     scale = Math.min(Math.max(2, scale), 10)
     // Apply
     ;(target as HTMLElement).style.setProperty('--i', `${scale ?? 2}`)
-    //increase z-index
-    zIndex += 1
   }
 
   // Keyboard use
@@ -382,6 +375,7 @@ const DragComponent = (props: DragComponentProps) => {
         updatePosition(attrLeft, attrTop + movePx)
         break
       case 'Escape':
+        console.log('Escape')
         e.preventDefault()
         //e.stopImmediatePropagation()
 
@@ -420,9 +414,23 @@ const DragComponent = (props: DragComponentProps) => {
         e.preventDefault()
         if (reset) {
           reset = false
-          ;(target as HTMLElement).style.setProperty('z-index', `${zIndex0}`)
-          //Reset z-index
-          zIndex0 -= 1
+          ;(target as HTMLElement).style.setProperty('z-index', `1`)
+          const cooldown = () => {
+            reset = true
+          }
+          setTimeout(cooldown, 100)
+        }
+        break
+      case 'T': //Move blob to the top of the z-index pile
+      case 't':
+        //e.stopImmediatePropagation()
+        e.preventDefault()
+        if (reset) {
+          reset = false
+          ;(target as HTMLElement).style.setProperty(
+            'z-index',
+            `${Math.max(1, props.highestZIndex[props.layer] + 1)}`
+          )
           const cooldown = () => {
             reset = true
           }
@@ -555,7 +563,7 @@ const DragComponent = (props: DragComponentProps) => {
         i: isNaN(parsedValue) ? 4 : parsedValue,
         x: `${target.style.left}`,
         y: `${target.style.top}`,
-        z: `${target.style.zIndex + 1}`,
+        z: `${Math.max(1, props.highestZIndex[props.layer] + 1)}`,
         display: 'block',
         ariaGrabbed: false,
         draggable: true,

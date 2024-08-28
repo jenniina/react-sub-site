@@ -51,6 +51,7 @@ import {
   ETryDraggingTheBlobs,
   EHideControls,
   EShowControls,
+  EPressHereOrEscapeToRestoreScrolling,
 } from '../../interfaces/blobs'
 import {
   BiChevronsDown,
@@ -127,6 +128,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   const [layerAmount, setLayerAmount] = useState<number>(3)
   const [activeLayer, setActiveLayer] = useState<number>(0)
   const [hiddenLayers, setHiddenLayers] = useState<Set<number>>(new Set())
+  const [highestZIndex, setHighestZIndex] = useState<Record<number, number>>({}) // {0: 144, 1: 146, 2: 24}
 
   const changeBlobLayer = (draggable: Draggable, layer: number) => {
     dispatch({
@@ -215,6 +217,17 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
   const [hasBeenMade, setHasBeenMade] = useState<boolean>(false)
 
+  function getHighestZIndex(draggables: Draggable[]): Record<number, number> {
+    return draggables.reduce((acc, draggable) => {
+      const zIndex = parseInt(draggable.z, 10)
+      const layer = draggable.layer
+      if (!acc[layer] || zIndex > acc[layer]) {
+        acc[layer] = zIndex
+      }
+      return acc
+    }, {} as Record<number, number>)
+  }
+
   useEffect(() => {
     const delay = setTimeout(() => {
       const loadedDraggables = loadDraggables()
@@ -237,6 +250,9 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   useEffect(() => {
     if (state.draggables !== undefined && draggables[d]?.length > 0) {
       saveDraggables()
+      const highestZ = getHighestZIndex(draggables[d])
+      setHighestZIndex(highestZ)
+      console.log('highestZIndex', highestZ)
     }
   }, [state.draggables])
 
@@ -296,20 +312,23 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   ) {
     e.preventDefault()
 
-    if (!paused) {
+    if (!paused && dragWrap.current) {
       setPaused(true)
-      if (stopBlobs.current) stopBlobs.current.textContent = EStartSway[language]
-    } else if (paused) {
+      dragWrap.current.classList.add('paused')
+    } else if (paused && dragWrap.current) {
       setPaused(false)
-      if (stopBlobs.current) stopBlobs.current.textContent = EStopSway[language]
+      dragWrap.current.classList.remove('paused')
     }
   }
 
-  useEffect(() => {
-    if (paused && stopBlobs.current) stopBlobs.current.textContent = EStopSway[language]
-  }, [paused])
-
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+
+  useEffect(() => {
+    if (prefersReducedMotion && dragWrap.current) {
+      dragWrap.current.classList.add('paused')
+      setPaused(true)
+    }
+  }, [prefersReducedMotion])
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -324,6 +343,24 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   }, [])
 
   const amountOfBlobs = windowWidth > 400 ? 10 : 6 // Initial amount of blobs
+
+  const escape = (e: KeyboardEvent) => {
+    switch (e.key) {
+      case 'Escape':
+        //e.preventDefault()
+        //e.stopImmediatePropagation()
+        setScroll(true)
+        document.body.style.overflow = 'auto'
+        break
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('keydown', escape)
+    return () => {
+      window.removeEventListener('keydown', escape)
+    }
+  }, [])
 
   function resetBlobsFunction(e: MouseEventReact | TouchEventReact | PointerEventReact) {
     e.preventDefault()
@@ -383,7 +420,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       const [colorFirst, colorSecond] = colorswitch()
 
       const newDraggable = {
-        layer: activeLayer,
+        layer: 0,
         id: `blob${i + 1}-${d}`,
         number: i + 1,
         i: windowWidth > 400 ? getRandomMinMax(2, 9) : getRandomMinMax(2, 5),
@@ -789,7 +826,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
               stopSway(e)
             }}
           >
-            {EStopSway[language]}
+            {paused ? EStartSway[language] : EStopSway[language]}
           </button>
           <button
             ref={resetBlobs}
@@ -804,12 +841,20 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           <button
             ref={disableScrollButton}
             id={`disable-scroll${d}`}
-            className='disable-scroll'
+            className='disable-scroll tooltip-wrap'
             onClick={() => {
               disableScroll()
               widthResize()
             }}
           >
+            <span
+              className='tooltip right below space'
+              data-tooltip={
+                scroll
+                  ? EDisableScroll[language]
+                  : EPressHereOrEscapeToRestoreScrolling[language]
+              }
+            ></span>
             {scroll ? EDisableScroll[language] : EEnableScroll[language]}
           </button>
           <button
@@ -823,7 +868,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             {markerEnabled ? EMarkerOn[language] : EMarkerOff[language]}
           </button>
           <button
-            className='toggle-controls tooltip-wrap'
+            className='toggle-controls'
             onClick={() => setControlsVisible(!controlsVisible)}
           >
             {controlsVisible ? EHideControls[language] : EShowControls[language]}
@@ -958,6 +1003,8 @@ export default function BlobJS({ language }: { language: ELanguages }) {
               paused={paused}
               setPaused={setPaused}
               prefersReducedMotion={prefersReducedMotion}
+              highestZIndex={highestZIndex}
+              setHighestZIndex={setHighestZIndex}
               language={language}
               dispatch={dispatch}
               d={d}

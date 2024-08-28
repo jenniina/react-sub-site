@@ -316,6 +316,24 @@ export enum ERemoveABlobByPressingDeleteOr {
   cs = 'Odstraňte blob stisknutím klávesy Delete nebo -',
   fi = 'Poista mollukka painamalla Delete tai -',
 }
+export enum EMoveBlobToBottomByPressingZOrToTopByPressingT {
+  en = 'Move blob to bottom by pressing Z or to top by pressing T',
+  es = 'Mueva el blob hacia abajo presionando Z o hacia arriba presionando T',
+  fr = 'Déplacez le blob vers le bas en appuyant sur Z ou vers le haut en appuyant sur T',
+  de = 'Verschieben Sie den Blob nach unten, indem Sie Z drücken, oder nach oben, indem Sie T drücken',
+  pt = 'Mova o blob para baixo pressionando Z ou para cima pressionando T',
+  cs = 'Přesuňte blob dolů stisknutím Z nebo nahoru stisknutím T',
+  fi = 'Siirrä mollukka alimmaiseksi painamalla Z tai päällimmäiseksi painamalla T',
+}
+export enum EPressHereOrEscapeToRestoreScrolling {
+  en = 'Press here or Escape to restore scrolling',
+  es = 'Presione aquí o Escape para restaurar el desplazamiento',
+  fr = 'Appuyez ici ou sur Échap pour restaurer le défilement',
+  de = 'Drücken Sie hier oder Escape, um das Scrollen wiederherzustellen',
+  pt = 'Pressione aqui ou Escape para restaurar a rolagem',
+  cs = 'Stiskněte sem nebo Escape pro obnovení posouvání',
+  fi = 'Paina tästä tai Esc palauttaaksesi sivun vierityksen',
+}
 export enum EStopSway {
   en = 'Stop Movement',
   es = 'Detener el movimiento',

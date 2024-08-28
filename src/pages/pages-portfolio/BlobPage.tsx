@@ -29,6 +29,7 @@ import {
   EMakeARandomBlobByClickingThePlusSign,
   EMakeBlobLargerByPressingBL,
   EMakeBlobSmallerByPressingS,
+  EMoveBlobToBottomByPressingZOrToTopByPressingT,
   EMoveViewInDifferentDirections,
   EPointerUse,
   EPressEnterToCycleThroughTheDifferentColors,
@@ -156,6 +157,7 @@ export default function BlobPage({
                       <li>
                         {EChangeTheLayerOfTheFocusedBlobByPressingTheNumber[language]}
                       </li>
+                      <li>{EMoveBlobToBottomByPressingZOrToTopByPressingT[language]}</li>
                     </ul>
                   </li>
                 </ul>
