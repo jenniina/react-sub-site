@@ -189,7 +189,15 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       draggablesJSON === 'undefined'
     )
       return null
-    else return JSON.parse(draggablesJSON)
+    //else return JSON.parse(draggablesJSON)
+    else {
+      const draggables: Draggable[] = JSON.parse(draggablesJSON)
+      // Ensure each draggable has a layer property
+      return draggables.map((draggable) => ({
+        ...draggable,
+        layer: draggable.layer ?? 0,
+      }))
+    }
   }
 
   function loadBackground(): BackgroundColor[] {
