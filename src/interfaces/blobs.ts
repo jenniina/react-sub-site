@@ -7,6 +7,53 @@ export enum ENeutral {
   cs = 'Neutrální',
   fi = 'Neutraali',
 }
+export enum ELayer {
+  en = 'Layer',
+  es = 'Capa',
+  fr = 'Couche',
+  de = 'Schicht',
+  pt = 'Camada',
+  cs = 'Vrstva',
+  fi = 'Kerros',
+}
+export enum ELayers {
+  en = 'Layers',
+  es = 'Capas',
+  fr = 'Couches',
+  de = 'Schichten',
+  pt = 'Camadas',
+  cs = 'Vrstvy',
+  fi = 'Kerrokset',
+}
+export enum EChangeLayerByClickingMe {
+  en = 'Change layer by clicking me',
+  es = 'Cambiar capa haciendo clic en mí',
+  fr = 'Changer de couche en cliquant sur moi',
+  de = 'Schicht ändern, indem Sie auf mich klicken',
+  pt = 'Mude de camada clicando em mim',
+  cs = 'Změňte vrstvu kliknutím na mě',
+  fi = 'Vaihda kerros napsauttamalla minua',
+}
+export enum EToggleLayerByClickingMe {
+  en = 'Toggle layer by clicking me',
+  es = 'Alternar capa haciendo clic en mí',
+  fr = 'Basculer la couche en cliquant sur moi',
+  de = 'Schicht umschalten, indem Sie auf mich klicken',
+  pt = 'Alternar camada clicando em mim',
+  cs = 'Přepnout vrstvu kliknutím na mě',
+  fi = 'Vaihda kerros napsauttamalla minua',
+}
+
+export enum EChangeTheLayerOfTheFocusedBlobByPressingTheNumber {
+  en = 'Change the layer of the focused blob by pressing the number corresponding to the layer',
+  es = 'Cambie la capa del blob enfocado presionando el número correspondiente a la capa',
+  fr = 'Changez la couche du blob en focus en appuyant sur le numéro correspondant à la couche',
+  de = 'Ändern Sie die Ebene des fokussierten Blobs, indem Sie die Zahl drücken, die der Ebene entspricht',
+  pt = 'Mude a camada do blob focado pressionando o número correspondente à camada',
+  cs = 'Změňte vrstvu zaměřeného blobu stisknutím čísla odpovídajícího vrstvě',
+  fi = 'Vaihda fokuksessa olevan mollukan tasoa painamalla tasoa vastaavaa numeroa näppäimistöllä',
+}
+
 export enum EBlurIntoOneAnother {
   en = 'Blur into one another',
   es = 'Desenfoque entre sí',
@@ -97,6 +144,25 @@ export enum EButtonsTo {
   cs = 'Tlačítka pro',
   fi = 'Painikkeet',
 }
+export enum EToggleControlVisibility {
+  en = 'Toggle control visibility',
+  es = 'Alternar visibilidad del control',
+  fr = 'Basculer la visibilité du contrôle',
+  de = 'Steuerungssichtbarkeit umschalten',
+  pt = 'Alternar visibilidade do controle',
+  cs = 'Přepnout viditelnost ovládání',
+  fi = 'Vaihda kontrollien näkyvyyttä',
+}
+export enum EMakeARandomBlobByClickingThePlusSign {
+  en = 'Make a random blob by clicking the plus sign',
+  es = 'Haga un blob aleatorio haciendo clic en el signo más',
+  fr = 'Faites un blob aléatoire en cliquant sur le signe plus',
+  de = 'Erstellen Sie einen zufälligen Blob, indem Sie auf das Pluszeichen klicken',
+  pt = 'Faça um blob aleatório clicando no sinal de mais',
+  cs = 'Vytvořte náhodný blob kliknutím na znaménko plus',
+  fi = 'Luo satunnainen mollukka napsauttamalla plussamerkkiä',
+}
+
 export enum EToggleTheSubtleMovementOfTheBlobs {
   en = 'Toggle the subtle movement of the blobs',
   es = 'Alternar el movimiento sutil de los blobs',
@@ -152,13 +218,13 @@ export enum EChangeBlobColorByDraggingToAColorNodeOnTheSides {
   fi = 'Vaihda mollukan väri vetämällä se värielementteihin jommallakummalla sivulla',
 }
 export enum EChangeBlobSizeByDraggingItToEitherTheLOrSLetterOnTheRightHandSide {
-  en = 'Change blob size by dragging it to either the L or S letter on the right hand side',
-  es = 'Cambiar el tamaño del blob arrastrándolo a la letra L o S en el lado derecho',
-  fr = 'Changez la taille du blob en le faisant glisser vers la lettre L ou S sur le côté droit',
-  de = 'Ändern Sie die Blob-Größe, indem Sie sie an den Buchstaben L oder S auf der rechten Seite ziehen',
-  pt = 'Mude o tamanho do blob arrastando-o para a letra L ou S no lado direito',
-  cs = 'Velikost blobu změníte přetažením na písmeno L nebo S na pravé straně',
-  fi = 'Vaihda mollukan kokoa vetämällä se joko L- tai S-kirjaimen luo, oikealla puolella',
+  en = 'Change blob size by dragging it to either the shrink or enlarge symbols on the right hand side',
+  es = 'Cambiar el tamaño del blob arrastrándolo a los símbolos de reducción o ampliación en el lado derecho',
+  fr = 'Changez la taille du blob en le faisant glisser vers les symboles de rétrécissement ou d agrandissement sur le côté droit',
+  de = 'Ändern Sie die Blob-Größe, indem Sie sie entweder zu den Verkleinerungs- oder Vergrößerungssymbolen auf der rechten Seite ziehen',
+  pt = 'Mude o tamanho do blob arrastando-o para os símbolos de redução ou ampliação no lado direito',
+  cs = 'Velikost blobu změníte přetažením na zmenšovací nebo zvětšovací symboly na pravé straně',
+  fi = 'Vaihda mollukan kokoa vetämällä se joko pienennys- tai suurennussymboleiden luo, oikealla puolella',
 }
 export enum EChangeBlobSizeByScrollingWithTheMouseWheel {
   en = 'Change blob size by scrolling with the mouse wheel (note: you may want to disable scrolling first with the button on the top right)',
@@ -170,13 +236,13 @@ export enum EChangeBlobSizeByScrollingWithTheMouseWheel {
   fi = 'Vaihda mollukan kokoa vierittämällä hiiren pyörällä (huomaa: haluat ehkä ensin poistaa sivun vierittämisen käytöstä yläoikealla olevalla painikkeella)',
 }
 export enum ECloneABlobByDraggingItToTheTopLeftPlusSign {
-  en = 'Clone a blob by dragging it to the top left plus sign',
-  es = 'Clone un blob arrastrándolo al signo más superior izquierdo',
-  fr = 'Clonez un blob en le faisant glisser vers le signe plus en haut à gauche',
-  de = 'Klonen Sie einen Blob, indem Sie ihn zum Pluszeichen oben links ziehen',
-  pt = 'Clone um blob arrastando-o para o sinal de mais superior esquerdo',
-  cs = 'Klonujte blob přetažením do levého horního plusu',
-  fi = 'Kloonaa mollukka vetämällä se vasemman yläkulman plussan luo',
+  en = 'Clone a blob by dragging it to the top left copy sign',
+  es = 'Clone un blob arrastrándolo al signo de copia en la esquina superior izquierda',
+  fr = 'Clonez un blob en le faisant glisser vers le signe de copie en haut à gauche',
+  de = 'Klonen Sie einen Blob, indem Sie ihn zum linken oberen Kopierschild ziehen',
+  pt = 'Clone um blob arrastando-o para o sinal de cópia no canto superior esquerdo',
+  cs = 'Klonujte blob přetažením na levý horní znaménko kopírování',
+  fi = 'Kloonaa mollukka vetämällä se vasemman yläkulman kopiosymbolin luo',
 }
 export enum ERemoveABlobByDraggingItToTheBottomLeftXSign {
   en = 'Remove a blob by dragging it to the bottom left x sign',
@@ -205,32 +271,41 @@ export enum EPressEnterToCycleThroughTheDifferentColors {
   cs = 'Stisknutím klávesy Enter projdete různé barvy',
   fi = 'Paina Enter-näppäintä vaihtaaksesi eri väreihin',
 }
-export enum EMakeBlobSmallerByPressing1 {
-  en = 'Make blob smaller by pressing 1',
-  es = 'Haga que el blob sea más pequeño presionando 1',
-  fr = 'Rendez le blob plus petit en appuyant sur 1',
-  de = 'Machen Sie den Blob kleiner, indem Sie 1 drücken',
-  pt = 'Faça o blob menor pressionando 1',
-  cs = 'Blob zmenšete stisknutím 1',
-  fi = 'Pienennä mollukkaa painamalla 1',
+export enum ELayerInstructions {
+  en = 'Blobs can be organized into three layers, found at the bottom of the container. Choose a layer by clicking the button, and toggle layer visibility by clicking the button of the active layer.',
+  es = 'Los blobs se pueden organizar en tres capas, que se encuentran en la parte inferior del contenedor. Elija una capa haciendo clic en el botón, y alterne la visibilidad de la capa haciendo clic en el botón de la capa activa.',
+  fr = 'Les blobs peuvent être organisés en trois couches, situées en bas du conteneur. Choisissez une couche en cliquant sur le bouton, et basculez la visibilité de la couche en cliquant sur le bouton de la couche active.',
+  de = 'Blobs können in drei Schichten organisiert werden, die sich unten im Container befinden. Wählen Sie eine Schicht, indem Sie auf die Schaltfläche klicken, und schalten Sie die Sichtbarkeit der Schicht um, indem Sie auf die Schaltfläche der aktiven Schicht klicken.',
+  pt = 'Os blobs podem ser organizados em três camadas, encontradas na parte inferior do contêiner. Escolha uma camada clicando no botão e alterne a visibilidade da camada clicando no botão da camada ativa.',
+  cs = 'Bloby lze organizovat do tří vrstev, které se nacházejí na dně kontejneru. Vyberte vrstvu kliknutím na tlačítko a přepněte viditelnost vrstvy kliknutím na tlačítko aktivní vrstvy.',
+  fi = 'Mollukat voidaan järjestää kolmeen kerrokseen, jotka löytyvät kontin pohjasta. Valitse kerros napsauttamalla painiketta ja vaihda kerroksen näkyvyys napsauttamalla aktiivisen kerroksen painiketta.',
 }
-export enum EMakeBlobLargerByPressing2 {
-  en = 'Make blob larger by pressing 2',
-  es = 'Haga que el blob sea más grande presionando 2',
-  fr = 'Rendez le blob plus grand en appuyant sur 2',
-  de = 'Machen Sie den Blob größer, indem Sie 2 drücken',
-  pt = 'Faça o blob maior pressionando 2',
-  cs = 'Blob zvětšete stisknutím 2',
-  fi = 'Suurenna mollukkaa painamalla 2',
+export enum EMakeBlobSmallerByPressingS {
+  en = 'Make blob smaller by pressing S',
+  es = 'Haga que el blob sea más pequeño presionando S',
+  fr = 'Rendez le blob plus petit en appuyant sur S',
+  de = 'Machen Sie den Blob kleiner, indem Sie S drücken',
+  pt = 'Faça o blob menor pressionando S',
+  cs = 'Blob zmenšte stisknutím S',
+  fi = 'Pienennä mollukkaa painamalla S',
 }
-export enum ECloneABlobByPressing3Or {
-  en = 'Clone a blob by pressing 3 or +',
-  es = 'Clone un blob presionando 3 o +',
-  fr = 'Clonez un blob en appuyant sur 3 ou +',
-  de = 'Klonen Sie einen Blob, indem Sie 3 oder + drücken',
-  pt = 'Clone um blob pressionando 3 ou +',
-  cs = 'Klonujte blob stisknutím 3 nebo +',
-  fi = 'Tee mollukasta kopio painamalla 3 tai +',
+export enum EMakeBlobLargerByPressingBL {
+  en = 'Make blob larger by pressing B or L',
+  es = 'Haga que el blob sea más grande presionando B o L',
+  fr = 'Rendez le blob plus grand en appuyant sur B ou L',
+  de = 'Machen Sie den Blob größer, indem Sie B oder L drücken',
+  pt = 'Faça o blob maior pressionando B ou L',
+  cs = 'Blob zvětšíte stisknutím B nebo L',
+  fi = 'Suurenna mollukkaa painamalla B tai L',
+}
+export enum ECloneABlobByPressingCOr {
+  en = 'Clone a blob by pressing C or +',
+  es = 'Clone un blob presionando C3 o +',
+  fr = 'Clonez un blob en appuyant sur C ou +',
+  de = 'Klonen Sie einen Blob, indem Sie C oder + drücken',
+  pt = 'Clone um blob pressionando C ou +',
+  cs = 'Klonujte blob stisknutím C nebo +',
+  fi = 'Tee mollukasta kopio painamalla C tai +',
 }
 export enum ERemoveABlobByPressingDeleteOr {
   en = 'Remove a blob by pressing Delete or -',
@@ -477,22 +552,22 @@ export enum EMoveViewInDifferentDirections {
 }
 
 export enum EEnlargeInstructions {
-  en = 'Enlarge a blob by dragging it over me! Keyboard use: press 2 with blob in focus',
-  es = '¡Agrandar un blob arrastrándolo sobre mí! Uso del teclado: presione 2 con el blob enfocado',
-  fr = 'Agrandissez un blob en le faisant glisser sur moi! Utilisation du clavier: appuyez sur 2 avec le blob en focus',
-  de = 'Vergrößern Sie einen Blob, indem Sie ihn über mich ziehen! Tastaturverwendung: Drücken Sie 2 mit Blob im Fokus',
-  pt = 'Aumente um blob arrastando-o sobre mim! Uso do teclado: pressione 2 com o blob em foco',
-  cs = 'Zvětšete blob přetažením nad mě! Použití klávesnice: stiskněte 2 s fokusem na blob',
-  fi = 'Suurenna mollukka vetämällä se ylitseni! Näppäinkäyttö: paina 2 mollukkaa tarkastellessasi',
+  en = 'Enlarge a blob by dragging it over me! Keyboard use: press B or L with blob in focus',
+  es = '¡Agrandar un blob arrastrándolo sobre mí! Uso del teclado: presione B o L con el blob enfocado',
+  fr = 'Agrandissez un blob en le faisant glisser sur moi! Utilisation du clavier: appuyez sur B ou L avec le blob en focus',
+  de = 'Vergrößern Sie einen Blob, indem Sie ihn über mich ziehen! Tastaturverwendung: Drücken Sie B oder L mit Blob im Fokus',
+  pt = 'Aumente um blob arrastando-o sobre mim! Uso do teclado: pressione B ou L com o blob em foco',
+  cs = 'Zvětšete blob tím, že ho přetáhnete přes mě! Použití klávesnice: stiskněte B nebo L s fokusem na blob',
+  fi = 'Suurenna mollukka vetämällä se päälleni! Näppäinkäyttö: paina B tai L mollukka fokuksessa',
 }
 export enum EShrinkInstructions {
-  en = 'Make a blob smaller by releasing it near me! Keyboard use: press 1 with blob in focus',
-  es = '¡Haga que un blob sea más pequeño liberándolo cerca de mí! Uso del teclado: presione 1 con el blob enfocado',
-  fr = 'Rendez un blob plus petit en le relâchant près de moi! Utilisation du clavier: appuyez sur 1 avec le blob en focus',
-  de = 'Machen Sie einen Blob kleiner, indem Sie ihn in meiner Nähe loslassen! Tastaturverwendung: Drücken Sie 1 mit Blob im Fokus',
-  pt = 'Faça um blob menor liberando-o perto de mim! Uso do teclado: pressione 1 com o blob em foco',
-  cs = 'Zmenšete blob tím, že ho uvolníte poblíž mě! Použití klávesnice: stiskněte 1 s fokusem na blob',
-  fi = 'Pienennä mollukka vapauttamalla se lähelleni! Näppäinkäyttö: paina 1 mollukkaa tarkastellessasi',
+  en = 'Make a blob smaller by releasing it near me! Keyboard use: press S with blob in focus',
+  es = '¡Haga que un blob sea más pequeño liberándolo cerca de mí! Uso del teclado: presione S con el blob enfocado',
+  fr = 'Rendez un blob plus petit en le relâchant près de moi! Utilisation du clavier: appuyez sur S avec le blob en focus',
+  de = 'Machen Sie einen Blob kleiner, indem Sie ihn in meiner Nähe loslassen! Tastaturverwendung: Drücken Sie S mit Blob im Fokus',
+  pt = 'Faça um blob menor liberando-o perto de mim! Uso do teclado: pressione S com o blob em foco',
+  cs = 'Zmenšete blob tím, že ho uvolníte poblíž mě! Použití klávesnice: stiskněte S s fokusem na blob',
+  fi = 'Pienennä mollukka vapauttamalla se lähelleni! Näppäinkäyttö: paina S mollukkaa tarkastellessasi',
 }
 export enum ERemovalInstructions {
   en = 'Remove a blob by bringing it to me! Keyboard use: press Delete with blob in focus',
@@ -511,6 +586,15 @@ export enum ECloneInstructions {
   pt = 'Solte um blob aqui para duplicá-lo! Uso do teclado: pressione 3 com o blob em foco',
   cs = 'Uvolněte blob zde, abyste ho duplikovali! Použití klávesnice: stiskněte 3 s fokusem na blob',
   fi = 'Vapauta mollukka tänne kloonataksesi sen! Näppäinkäyttö: paina 3 mollukkaa tarkastellessasi',
+}
+export enum EClickMeToMakeARandomBlob {
+  en = 'Click me to make a random blob',
+  es = 'Haz clic en mí para hacer un blob aleatorio',
+  fr = 'Cliquez sur moi pour créer un blob aléatoire',
+  de = 'Klicken Sie auf mich, um einen zufälligen Blob zu erstellen',
+  pt = 'Clique em mim para criar um blob aleatório',
+  cs = 'Klikněte na mě, abyste vytvořili náhodný blob',
+  fi = 'Klikkaa minua luodaksesi satunnaisen mollukan',
 }
 export enum EAlternatively {
   en = 'Alternatively',
@@ -539,4 +623,22 @@ export enum EReleaseToChangeColorInstructions {
   pt = 'Solte um blob perto de mim para mudar a cor! Uso do teclado: pressione Enter com o blob em foco',
   cs = 'Uvolněte blob poblíž mě, abyste změnili barvu! Použití klávesnice: stiskněte Enter s fokusem na blob',
   fi = 'Vapauta mollukka lähelleni vaihtaaksesi väriä! Näppäinkäyttö: paina Enter mollukkaa tarkastellessasi',
+}
+export enum EHideControls {
+  en = 'Hide controls',
+  es = 'Ocultar controles',
+  fr = 'Masquer les contrôles',
+  de = 'Steuerungen ausblenden',
+  pt = 'Ocultar controles',
+  cs = 'Skrýt ovládací prvky',
+  fi = 'Piilota painikkeet',
+}
+export enum EShowControls {
+  en = 'Show controls',
+  es = 'Mostrar controles',
+  fr = 'Afficher les contrôles',
+  de = 'Steuerungen anzeigen',
+  pt = 'Mostrar controles',
+  cs = 'Zobrazit ovládací prvky',
+  fi = 'Näytä painikkeet',
 }

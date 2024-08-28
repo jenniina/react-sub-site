@@ -1766,3 +1766,12 @@ export enum EGraphQLSite {
   cs = 'GraphQL web',
   fi = 'GraphQL-sivusto',
 }
+export enum ENew {
+  en = 'New',
+  es = 'Nuevo',
+  fr = 'Nouveau',
+  de = 'Neu',
+  pt = 'Novo',
+  cs = 'Nový',
+  fi = 'Uutta',
+}

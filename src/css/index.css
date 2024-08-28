@@ -701,7 +701,7 @@ button.restore {
     var(--color-primary-7) 60%,
     var(--color-primary-2) 100%
   );
-  background-size: auto 120px;
+  background-size: auto 150px;
   background-position: top;
 }
 .transformations button,

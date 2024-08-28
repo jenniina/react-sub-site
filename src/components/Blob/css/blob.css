@@ -2,13 +2,23 @@ svg.filter {
   height: 0;
   width: 0;
 }
-
 #drag-container0 .drag-wrap {
+  background-color: transparent;
+}
+#drag-container0 .drag-wrap .drag-container0-layer {
   -webkit-filter: url(#svgfilter);
   filter: url(#svgfilter);
   background-color: transparent;
   width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  pointer-events: none;
 }
+/* #drag-container0 .drag-wrap .drag-container0-layer > * {
+  pointer-events: auto;
+} */
 #drag-container0 {
   position: relative;
 }
@@ -66,6 +76,10 @@ svg.filter {
   cursor: help;
   z-index: 2;
 }
+#drag-container0 .make-random {
+  cursor: pointer;
+  z-index: 2;
+}
 #drag-container0 .make-larger {
   -webkit-box-shadow: inset 0.1rem -0.1rem 0.4rem -0.2rem rgba(0, 0, 0, 0.4),
     inset 0.1rem -0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
@@ -103,7 +117,8 @@ svg.filter {
   box-shadow: inset -0.1rem -0.1rem 0.4rem -0.2rem rgba(0, 0, 0, 0.4),
     inset -0.1rem -0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
 }
-#drag-container0 .delete-blob {
+#drag-container0 .delete-blob,
+#drag-container0 .layer-buttons button {
   -webkit-box-shadow: inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
     inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
   -o-box-shadow: inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
@@ -305,8 +320,14 @@ svg.filter {
   outline: 1px dashed red;
   outline-offset: 3px;
 }
-
-@media (min-width: 500px) {
+@media (min-width: 300px) {
+  .button-container {
+    flex: 1 0 45%;
+    flex-flow: row wrap;
+    justify-content: center;
+  }
+} /*END media*/
+@media (min-width: 600px) {
   .drag-container .label-container {
     flex: 5 1 30%;
   }
@@ -318,7 +339,9 @@ svg.filter {
     flex: 1 1 auto;
     flex-flow: row nowrap;
     margin-bottom: 0.5em;
+    justify-content: flex-start;
   }
+
   .drag-container button {
     margin: 0 0.5em 0.3em 0.3em;
     padding: 0.6em 0.8em;
@@ -357,7 +380,8 @@ svg.filter {
   box-shadow: 0 10px 30px 0 hsla(0, 0%, 0%, 0.8);
 }
 .drag-wrap-outer,
-.drag-wrap {
+.drag-wrap,
+.drag-wrap .drag-container0-layer {
   border-radius: var(--corner);
 }
 
@@ -368,18 +392,19 @@ svg.filter {
   min-width: 100%;
 }
 
-.drag-wrap {
-  height: 80vh;
+.drag-wrap,
+.drag-wrap .drag-container0-layer {
+  height: 77vh;
   min-height: 450px;
   width: 100%;
   min-width: 100%;
   overflow: hidden;
-  background-color: white;
+  background-color: transparent;
   overflow: hidden;
   margin: 0;
   padding: 0;
 }
-#drag-container1 .drag-wrap {
+#drag-container1 .drag-wrap .drag-container0-layer {
   -webkit-filter: contrast(50);
   -moz-filter: contrast(50);
   -o-filter: contrast(50);
@@ -399,13 +424,12 @@ svg.filter {
   max-height: 220px;
   max-width: 220px;
   border-radius: 50% 51% 54% 46% / 43% 45% 55% 50%;
+  pointer-events: none;
 }
 .drag-container .dragzone {
   position: absolute;
   padding: 0;
   margin: 0;
-  cursor: -webkit-grab;
-  cursor: grab;
   -webkit-animation: sway 3s ease-in-out infinite;
   -moz-animation: sway 3s ease-in-out infinite;
   -o-animation: sway 3s ease-in-out infinite;
@@ -431,7 +455,11 @@ svg.filter {
   -ms-animation-play-state: paused;
   animation-play-state: paused;
 }
-.drag-container .dragzone:active {
+.drag-container .dragzone .draggable-overlay {
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+.drag-container .dragzone:active .draggable-overlay {
   cursor: -webkit-grabbing;
   cursor: grabbing;
 }
@@ -467,6 +495,17 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   -ms-box-shadow: none;
   -o-box-shadow: none;
   box-shadow: none;
+}
+
+.draggable-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--i) * 18px);
+  height: calc(var(--i) * 18px);
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0);
+  pointer-events: auto;
 }
 
 #drag-container0 .make-larger,
@@ -536,11 +575,35 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   box-shadow: -0.2rem -0.2rem 0.5rem rgba(0, 0, 0, 0.4);
 }
 #drag-container0 .make-more,
-#drag-container0 .delete-blob {
+#drag-container0 .delete-blob,
+#drag-container0 .make-random {
   position: absolute;
   height: 1.6rem;
   width: 1.6rem;
   max-width: 2.5rem;
+}
+#drag-container0 .layer-buttons {
+  position: absolute;
+  display: flex;
+  max-width: max-content;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 0.4em;
+  gap: 0.1rem;
+}
+
+#drag-container0 .layer-buttons button {
+  margin: 0;
+  padding: 0.2em 0.5em 0.3em;
+}
+#drag-container0 .layer-buttons button.active {
+  outline: 3px solid black;
+  border: 3px solid white;
+  outline-offset: -6px;
+}
+#drag-container0 .layer-buttons button.dim {
+  opacity: 0.4;
 }
 .colorblock.color-orange,
 .colorblock.color-red,
@@ -554,7 +617,8 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   background-color: white;
 }
 #drag-container0 .make-more:hover::after,
-#drag-container0 .delete-blob:hover::after {
+#drag-container0 .delete-blob:hover::after,
+#drag-container0 .make-random:hover::after {
   position: absolute;
   font-size: 0.8rem;
   font-weight: normal;
@@ -571,7 +635,8 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   -moz-box-shadow: 0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
   box-shadow: 0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
 }
-#drag-container0 .make-more {
+#drag-container0 .make-more,
+#drag-container0 .make-random {
   top: 0.2rem;
   left: 23%;
   font-size: 0.9rem;
@@ -584,6 +649,9 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   -ms-box-shadow: 0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.4);
   -moz-box-shadow: 0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.4);
   box-shadow: 0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.4);
+}
+#drag-container0 .make-random {
+  left: calc(50% - 0.85rem);
 }
 #drag-container0 .delete-blob {
   height: 1.7rem;
@@ -608,6 +676,12 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
     position: absolute;
     width: 0.9rem;
     height: 1.9rem;
+  }
+} /*END media*/
+
+@media (max-width: 900px) {
+  #drag-container0 .button-container button {
+    font-size: 0.8rem;
   }
 } /*END media*/
 
@@ -776,4 +850,8 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   padding: 0.2rem 0.2rem 0.04rem;
   font-size: 1.2rem;
   margin: 0;
+}
+#drag-container0 .hidden,
+.drag-container0-layer.hidden {
+  display: none;
 }

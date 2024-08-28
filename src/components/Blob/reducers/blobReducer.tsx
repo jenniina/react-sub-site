@@ -1,7 +1,7 @@
 import { Draggable } from '../interfaces'
 
 function blobReducer(
-  state: { draggables: Draggable[][] },
+  state: { draggables: Draggable[][]; highestBlobNumber: 0 },
   action: {
     type: any
     payload: {
@@ -15,6 +15,7 @@ function blobReducer(
   if (!action) {
     return state
   }
+  const amount = 6
 
   switch (action.type) {
     case 'setDraggables':
@@ -39,7 +40,11 @@ function blobReducer(
           newDraggablesAdd[action.payload.d].push(action.payload.draggable)
         }
       }
-      return { ...state, draggables: newDraggablesAdd }
+      return {
+        ...state,
+        draggables: newDraggablesAdd,
+        highestBlobNumber: state.highestBlobNumber + 1,
+      }
     case 'removeDraggable':
       const newDraggables = [...state.draggables]
       newDraggables[action.payload.d] = newDraggables[action.payload.d]?.filter(
@@ -55,13 +60,15 @@ function blobReducer(
         )
       )
       return { ...state, draggables: newDraggablesUpdate }
+    case 'resetBlobs':
+      return { draggables: [], highestBlobNumber: 0 }
     case 'moveDraggablesLeft':
       return {
         ...state,
         draggables: state.draggables.map((subArray) =>
           subArray.map((draggable) => ({
             ...draggable,
-            x: `${parseInt(draggable.x) - 10}px`,
+            x: `${parseInt(draggable.x) - amount}px`,
           }))
         ),
       }
@@ -71,7 +78,7 @@ function blobReducer(
         draggables: state.draggables.map((subArray) =>
           subArray.map((draggable) => ({
             ...draggable,
-            x: `${parseInt(draggable.x) + 10}px`,
+            x: `${parseInt(draggable.x) + amount}px`,
           }))
         ),
       }
@@ -81,7 +88,7 @@ function blobReducer(
         draggables: state.draggables.map((subArray) =>
           subArray.map((draggable) => ({
             ...draggable,
-            y: `${parseInt(draggable.y) - 10}px`,
+            y: `${parseInt(draggable.y) - amount}px`,
           }))
         ),
       }
@@ -91,7 +98,7 @@ function blobReducer(
         draggables: state.draggables.map((subArray) =>
           subArray.map((draggable) => ({
             ...draggable,
-            y: `${parseInt(draggable.y) + 10}px`,
+            y: `${parseInt(draggable.y) + amount}px`,
           }))
         ),
       }

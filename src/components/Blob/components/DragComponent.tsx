@@ -27,6 +27,13 @@ let color1 = 'cyan'
 let color2 = 'greenyellow'
 
 interface DragComponentProps {
+  layer: number
+  isCurrentLayer: boolean
+  changeBlobLayer: (draggable: Draggable, layer: number) => void
+  className: string
+  paused: boolean
+  setPaused: Dispatch<SetStateAction<boolean>>
+  prefersReducedMotion: boolean
   language: ELanguages
   dispatch: DispatchReact<any>
   d: number
@@ -34,11 +41,11 @@ interface DragComponentProps {
   draggables: Draggable[][]
   amountOfBlobs: number
   saveDraggables: () => void
-  getPosition: (target: HTMLLIElement) => void
+  getPosition: (target: HTMLElement) => void
   dragWrap: RefObject<HTMLDivElement>
   dragWrapOuter: RefObject<HTMLDivElement>
-  dragUl0: RefObject<HTMLUListElement>
-  selectedvalue0: RefObject<HTMLDivElement>
+  dragUlRef: RefObject<HTMLUListElement>
+  selectedvalue0: RefObject<HTMLSpanElement>
   stopBlobs: RefObject<HTMLButtonElement>
   disableScrollButton: RefObject<HTMLButtonElement>
   resetBlobs: RefObject<HTMLButtonElement>
@@ -64,9 +71,25 @@ interface DragComponentProps {
   colorIndex: number
   setColorIndex: Dispatch<SetStateAction<number>>
   colorPairs: ColorPair[]
+  scroll: boolean
+  setScroll: Dispatch<SetStateAction<boolean>>
 }
 
+let currentFocusedElement: HTMLElement | null = null
+
 const DragComponent = (props: DragComponentProps) => {
+  // Should be in the same order as colorPairs:
+  const colorBlockProps = [
+    props.colorBlockPinkYellow0,
+    props.colorBlockYellowLime0,
+    props.colorBlockCyanYellow0,
+    props.colorBlockCyanPink0,
+    props.colorBlockOrange,
+    props.colorBlockRed,
+    props.colorBlockPurple,
+    props.colorBlockBlue,
+  ]
+
   //Detect touch device
   const isTouchDevice = () => {
     try {
@@ -81,6 +104,13 @@ const DragComponent = (props: DragComponentProps) => {
     isTouchDevice()
   }, [])
 
+  useEffect(() => {
+    if (props.prefersReducedMotion && props.dragUlRef.current) {
+      props.dragUlRef.current.classList.add('paused')
+      props.setPaused(true)
+    }
+  }, [props.prefersReducedMotion])
+
   function start(
     e:
       | TouchEvent
@@ -88,29 +118,26 @@ const DragComponent = (props: DragComponentProps) => {
       | PointerEvent
       | TouchEventReact
       | MouseEventReact
-      | PointerEventReact
+      | PointerEventReact,
+    target: HTMLElement
   ) {
     e.stopPropagation()
     e.preventDefault()
-
     initialX = !isTouchDevice()
       ? (e as PointerEvent).clientX
       : (e as TouchEvent).touches[0].clientX
     initialY = !isTouchDevice()
       ? (e as PointerEvent).clientY
       : (e as TouchEvent).touches[0].clientY
-
-    moveElement = true
-    ;(e.target as HTMLElement).classList.add('drag')
-    ;(e.target as HTMLElement).style.setProperty('z-index', `${zIndex}`)
-    ;(e.target as HTMLElement).setAttribute('aria-grabbed', 'true')
+    ;(target as HTMLElement).classList.add('drag')
+    ;(target as HTMLElement).style.setProperty('z-index', `${zIndex}`)
+    ;(target as HTMLElement).setAttribute('aria-grabbed', 'true')
     //increase z-index
     zIndex += 1
-    ;(e.target as HTMLElement).focus()
-    ;(e.target as HTMLElement).addEventListener('keydown', keyDown)
-    return () => {
-      ;(e.target as HTMLElement).removeEventListener('keydown', keyDown)
-    }
+    ;(target as HTMLElement).focus()
+    moveElement = true
+    ;(target as HTMLElement).addEventListener('keydown', keyDown)
+    props.getPosition(target as HTMLElement)
   }
 
   //Handle mousemove and touchmove
@@ -121,10 +148,10 @@ const DragComponent = (props: DragComponentProps) => {
       | PointerEvent
       | TouchEventReact
       | MouseEventReact
-      | PointerEventReact
+      | PointerEventReact,
+    target: HTMLElement
   ) {
     e.stopPropagation()
-
     if (moveElement) {
       //e.preventDefault();
       let newX = !isTouchDevice()
@@ -133,28 +160,14 @@ const DragComponent = (props: DragComponentProps) => {
       let newY = !isTouchDevice()
         ? (e as PointerEvent).clientY
         : (e as TouchEvent).touches[0].clientY
-      ;(e.target as HTMLElement).style.top =
-        (e.target as HTMLElement).offsetTop - (initialY - newY) + 'px'
-      ;(e.target as HTMLElement).style.left =
-        (e.target as HTMLElement).offsetLeft - (initialX - newX) + 'px'
+      ;(target as HTMLElement).style.top =
+        (target as HTMLElement).offsetTop - (initialY - newY) + 'px'
+      ;(target as HTMLElement).style.left =
+        (target as HTMLElement).offsetLeft - (initialX - newX) + 'px'
       initialX = newX
       initialY = newY
-
-      props.getPosition(e.target as HTMLLIElement)
     }
   }
-
-  // Should be in the same order as colorPairs:
-  const colorBlockProps = [
-    props.colorBlockPinkYellow0,
-    props.colorBlockYellowLime0,
-    props.colorBlockCyanYellow0,
-    props.colorBlockCyanPink0,
-    props.colorBlockOrange,
-    props.colorBlockRed,
-    props.colorBlockPurple,
-    props.colorBlockBlue,
-  ]
 
   //Handle mouse up and touch end, check for element overlap
   const stopMovementCheck = (
@@ -164,61 +177,65 @@ const DragComponent = (props: DragComponentProps) => {
       | PointerEvent
       | TouchEventReact
       | MouseEventReact
-      | PointerEventReact
+      | PointerEventReact,
+    target: HTMLElement
   ) => {
     e.stopPropagation()
-    ;(e.target as HTMLElement).removeEventListener('keydown', keyDown)
-    let value = (e.target as HTMLElement).style.getPropertyValue('--i')
+    //;(target as HTMLElement).removeEventListener('keydown', keyDown)
+    let value = (target as HTMLElement).style.getPropertyValue('--i')
     let scale = parseFloat(value)
     scale = isNaN(scale) ? 4 : scale
+
+    const hitbox = target.querySelector('div')
 
     props.colorPairs.forEach((colorPair, index) => {
       const colorBlock = colorBlockProps[index]
 
       if (
         colorBlock.current &&
-        elementsOverlap(e.target as HTMLElement, colorBlock.current)
+        elementsOverlap(hitbox as HTMLElement, colorBlock.current)
       ) {
         const { color1, color2 } = colorPair
         ;(
-          e.target as HTMLElement
+          target as HTMLElement
         ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
       }
     })
     if (
       props.makeLarger0.current &&
-      elementsOverlap(e.target as HTMLElement, props.makeLarger0.current)
+      elementsOverlap(hitbox as HTMLElement, props.makeLarger0.current)
     ) {
       scale += 1
       scale = Math.min(Math.max(2, scale), 10)
-      ;(e.target as HTMLElement).style.setProperty('--i', `${scale}`)
+      ;(target as HTMLElement).style.setProperty('--i', `${scale}`)
     }
     if (
       props.makeSmaller0.current &&
-      elementsOverlap(e.target as HTMLElement, props.makeSmaller0.current)
+      elementsOverlap(hitbox as HTMLElement, props.makeSmaller0.current)
     ) {
       scale -= 1
       scale = Math.min(Math.max(2, scale), 10)
-      ;(e.target as HTMLElement).style.setProperty('--i', `${scale}`)
+      ;(target as HTMLElement).style.setProperty('--i', `${scale}`)
     }
     if (
       props.makeMore0.current &&
-      elementsOverlap(e.target as HTMLElement, props.makeMore0.current)
+      elementsOverlap(hitbox as HTMLElement, props.makeMore0.current)
     ) {
-      makeBlob(e.target as HTMLElement)
+      makeBlob(target as HTMLElement)
     }
     if (
       props.deleteBlob0.current &&
-      elementsOverlap(e.target as HTMLElement, props.deleteBlob0.current)
+      elementsOverlap(hitbox as HTMLElement, props.deleteBlob0.current)
     ) {
-      removeBlob(e.target as HTMLElement)
+      removeBlob(target as HTMLElement)
     }
+    ;(target as HTMLElement).classList.remove('drag')
+    ;(target as HTMLElement).setAttribute('aria-grabbed', 'false')
+    props.getPosition(target as HTMLElement)
+    ;(target as HTMLElement).blur()
     moveElement = false
-    ;(e.target as HTMLElement).classList.remove('drag')
-    ;(e.target as HTMLElement).setAttribute('aria-grabbed', 'false')
-    props.getPosition(e.target as HTMLLIElement)
-    ;(e.target as HTMLElement).blur()
   }
+
   //Check to see if elements overlap
   function elementsOverlap(element1: HTMLElement, element2: HTMLElement) {
     const domRect1 = element1.getBoundingClientRect()
@@ -234,49 +251,51 @@ const DragComponent = (props: DragComponentProps) => {
 
   //Handle mouse leave
   const stopMoving = (
-    e: MouseEvent | MouseEventReact | PointerEvent | PointerEventReact
+    e: MouseEvent | MouseEventReact | PointerEvent | PointerEventReact,
+    target: HTMLElement
   ) => {
     e.stopPropagation()
     moveElement = false
-    ;(e.target as HTMLElement).classList.remove('drag')
-    ;(e.target as HTMLElement).setAttribute('aria-grabbed', 'false')
-    props.getPosition(e.target as HTMLLIElement)
-    ;(e.target as HTMLElement).blur()
+    ;(target as HTMLElement).classList.remove('drag')
+    ;(target as HTMLElement).setAttribute('aria-grabbed', 'false')
+    props.getPosition(target as HTMLElement)
+    ;(target as HTMLElement).blur()
   }
 
   //on blob blur
-  function blurred(draggable: HTMLLIElement) {
+  function blurred(draggable: HTMLElement) {
     draggable.classList.remove('drag')
     draggable.setAttribute('aria-grabbed', 'false')
     props.dragWrap.current?.setAttribute('aria-activedescendant', '')
+    draggable.removeEventListener('keydown', keyDown)
+    draggable.draggable = false
     props.getPosition(draggable)
+    moveElement = false
+    currentFocusedElement = null
   }
 
   //on focused blob
-  function focused(draggable: HTMLLIElement) {
+  function focused(draggable: HTMLElement) {
+    moveElement = false
+    props.getPosition(draggable)
     draggable.classList.add('drag')
     draggable.setAttribute('aria-grabbed', 'true')
-    props.dragUl0.current?.setAttribute('aria-activedescendant', `${draggable.id}`)
+    props.dragUlRef.current?.setAttribute('aria-activedescendant', `${draggable.id}`)
+    currentFocusedElement = draggable
     draggable.addEventListener('keydown', keyDown)
-    return () => {
-      draggable.removeEventListener('keydown', keyDown)
-      draggable.classList.remove('drag')
-      draggable.setAttribute('aria-grabbed', 'false')
-      props.dragWrap.current?.setAttribute('aria-activedescendant', '')
-      props.getPosition(draggable)
-    }
   }
 
   //Mousewheel use
-  function wheel(draggable: HTMLLIElement) {
-    draggable.addEventListener('wheel', zoom, { passive: false })
+  function wheel(draggable: HTMLElement) {
+    const zoomHandler = (e: WheelEvent) => zoom(e, draggable)
+    draggable.addEventListener('wheel', zoomHandler, { passive: false })
     return () => {
-      draggable.removeEventListener('wheel', zoom)
+      draggable.removeEventListener('wheel', zoomHandler)
     }
   }
-  function zoom(e: WheelEvent) {
+  function zoom(e: WheelEvent, target: HTMLElement) {
     //e.preventDefault();
-    let value = (e.target as HTMLElement).style.getPropertyValue('--i')
+    let value = (target as HTMLElement).style.getPropertyValue('--i')
     let scale = parseFloat(value)
     scale = isNaN(scale) ? 4 : scale
 
@@ -284,59 +303,96 @@ const DragComponent = (props: DragComponentProps) => {
     // Restrict scale
     scale = Math.min(Math.max(2, scale), 10)
     // Apply
-    ;(e.target as HTMLElement).style.setProperty('--i', `${scale ?? 2}`)
+    ;(target as HTMLElement).style.setProperty('--i', `${scale ?? 2}`)
     //increase z-index
     zIndex += 1
   }
 
   // Keyboard use
   function keyDown(e: KeyboardEvent) {
+    moveElement = false
     const movePx = 5
 
-    let value = (e.target as HTMLElement).style.getPropertyValue('--i')
+    const target = currentFocusedElement
+    if (!target) return
+
+    const setFocus = (target: HTMLElement) => {
+      const blobStyle = window.getComputedStyle(target)
+      const marginTop = parseFloat(blobStyle.marginTop)
+      const marginLeft = parseFloat(blobStyle.marginLeft)
+
+      const blobRect = target.getBoundingClientRect()
+      const parentRect = (target.parentNode as HTMLDivElement)?.getBoundingClientRect()
+      props.setFocusedBlob({
+        top: blobRect.top - parentRect.top - marginTop,
+        left: blobRect.left - parentRect.left - marginLeft,
+        width: blobRect.width,
+        height: blobRect.height,
+      })
+    }
+
+    let value = (target as HTMLElement).style.getPropertyValue('--i')
     let scale = parseFloat(value)
     scale = isNaN(scale) ? 4 : scale
 
-    let attrLeft = window
-      .getComputedStyle(e.target as HTMLElement)
-      .getPropertyValue('left')
-    let attrTop = window.getComputedStyle(e.target as HTMLElement).getPropertyValue('top')
+    // let attrLeft = window
+    //   .getComputedStyle(e.target as HTMLElement)
+    //   .getPropertyValue('left')
+    // let attrTop = window.getComputedStyle(e.target as HTMLElement).getPropertyValue('top')
+
+    let attrLeft = parseFloat(target.style.getPropertyValue('left')) || 0
+    let attrTop = parseFloat(target.style.getPropertyValue('top')) || 0
+
+    const draggable: Draggable = {
+      layer: props.layer,
+      id: target.id,
+      number: parseInt(target.id.replace('blob', '').split('-')[0], 10),
+      i: scale,
+      x: target.style.getPropertyValue('left').toString(),
+      y: target.style.getPropertyValue('top').toString(),
+      z: target.style.zIndex || '0',
+      display: 'block',
+      ariaGrabbed: false,
+      draggable: true,
+      tabIndex: 0,
+      background: target.style.background || 'linear-gradient(90deg, cyan, greenyellow)',
+    }
+
+    const updatePosition = (left: number, top: number) => {
+      target.style.left = `${left}px`
+      target.style.top = `${top}px`
+      setFocus(target)
+    }
 
     switch (e.key) {
       case 'ArrowLeft':
         e.preventDefault()
-        ;(e.target as HTMLElement).style.left =
-          parseFloat(attrLeft) - Number(movePx) + 'px'
-        attrLeft = window
-          .getComputedStyle(e.target as HTMLElement)
-          .getPropertyValue('left')
+        updatePosition(attrLeft - movePx, attrTop)
         break
       case 'ArrowRight':
         e.preventDefault()
-        ;(e.target as HTMLElement).style.left =
-          parseFloat(attrLeft) + Number(movePx) + 'px'
-        attrLeft = window
-          .getComputedStyle(e.target as HTMLElement)
-          .getPropertyValue('left')
+        updatePosition(attrLeft + movePx, attrTop)
         break
       case 'ArrowUp':
         e.preventDefault()
-        ;(e.target as HTMLElement).style.top = parseFloat(attrTop) - Number(movePx) + 'px'
-        attrTop = window.getComputedStyle(e.target as HTMLElement).getPropertyValue('top')
+        updatePosition(attrLeft, attrTop - movePx)
         break
       case 'ArrowDown':
         e.preventDefault()
-        ;(e.target as HTMLElement).style.top = parseFloat(attrTop) + Number(movePx) + 'px'
-        attrTop = window.getComputedStyle(e.target as HTMLElement).getPropertyValue('top')
+        updatePosition(attrLeft, attrTop + movePx)
         break
       case 'Escape':
-        e.stopImmediatePropagation()
-        //e.preventDefault()
+        e.preventDefault()
+        //e.stopImmediatePropagation()
+
+        props.setScroll(true)
+        document.body.style.overflow = 'auto'
+
         if (props.exitApp.current) {
           props.exitApp.current.setAttribute('tabindex', '0')
           props.exitApp.current.addEventListener('blur', exitAppBlur)
         }
-        ;(e.target as HTMLElement).blur()
+        ;(target as HTMLElement).blur()
         props.dragWrap.current?.blur()
         //Go to exit notice in order to remove focus from the app
         if (props.exitApp.current)
@@ -344,26 +400,27 @@ const DragComponent = (props: DragComponentProps) => {
         props.exitApp.current?.focus()
         break
       case 'Enter': //Cycle through colors
-        //e.stopImmediatePropagation()
-        if ((e.target as HTMLElement).closest(`.drag-container${props.d}`)) {
+        e.stopImmediatePropagation()
+        if ((target as HTMLElement).closest(`.drag-container${props.d}`)) {
           props.setColorIndex((prevColorIndex) => {
             const nextColorIndex = (prevColorIndex + 1) % props.colorPairs.length
             const { color1, color2 } = props.colorPairs[nextColorIndex]
 
             ;(
-              e.target as HTMLElement
+              target as HTMLElement
             ).style.backgroundImage = `linear-gradient(${angle}, ${color1},${color2})`
 
             return nextColorIndex // Return the new color index
           })
         }
         break
-      case '0': //Move blob to the bottom of the z-index pile
+      case 'Z': //Move blob to the bottom of the z-index pile
+      case 'z':
         //e.stopImmediatePropagation()
         e.preventDefault()
         if (reset) {
           reset = false
-          ;(e.target as HTMLElement).style.setProperty('z-index', `${zIndex0}`)
+          ;(target as HTMLElement).style.setProperty('z-index', `${zIndex0}`)
           //Reset z-index
           zIndex0 -= 1
           const cooldown = () => {
@@ -372,14 +429,15 @@ const DragComponent = (props: DragComponentProps) => {
           setTimeout(cooldown, 100)
         }
         break
-      case '1': //make blob smaller
+      case 'S':
+      case 's': //make blob smaller
         //e.stopImmediatePropagation()
         e.preventDefault()
         if (reset) {
           reset = false
-          scale -= 1
+          scale -= 0.5
           scale = Math.min(Math.max(2, scale), 10)
-          ;(e.target as HTMLElement).style.setProperty('--i', `${scale ?? 2}`)
+          ;(target as HTMLElement).style.setProperty('--i', `${scale ?? 2}`)
 
           const cooldown = () => {
             reset = true
@@ -387,14 +445,17 @@ const DragComponent = (props: DragComponentProps) => {
           setTimeout(cooldown, 100)
         }
         break
-      case '2': //make blob larger
+      case 'B': //make blob larger
+      case 'b':
+      case 'L':
+      case 'l':
         //e.stopImmediatePropagation()
         e.preventDefault()
         if (reset) {
           reset = false
-          scale += 1
+          scale += 0.5
           scale = Math.min(Math.max(2, scale), 10)
-          ;(e.target as HTMLElement).style.setProperty('--i', `${scale ?? 2}`)
+          ;(target as HTMLElement).style.setProperty('--i', `${scale ?? 2}`)
 
           const cooldown = () => {
             reset = true
@@ -402,17 +463,54 @@ const DragComponent = (props: DragComponentProps) => {
           setTimeout(cooldown, 100)
         }
         break
-      case '3': //make a new clone
+      case 'C': //make a new clone
+      case 'c':
       case '+':
         //e.stopImmediatePropagation()
         e.preventDefault()
-        makeBlob(e.target as HTMLElement)
+        makeBlob(target as HTMLElement)
         break
       case 'Delete': //remove blob
       case '-':
         //e.stopImmediatePropagation()
         e.preventDefault()
-        removeBlob(e.target as HTMLElement)
+        removeBlob(target as HTMLElement)
+        break
+      case '1':
+        e.preventDefault()
+        if (reset) {
+          reset = false
+          props.setFocusedBlob(null)
+          props.changeBlobLayer(draggable, 0)
+          const cooldown = () => {
+            reset = true
+          }
+          setTimeout(cooldown, 100)
+        }
+        break
+      case '2':
+        e.preventDefault()
+        if (reset) {
+          reset = false
+          props.setFocusedBlob(null)
+          props.changeBlobLayer(draggable, 1)
+          const cooldown = () => {
+            reset = true
+          }
+          setTimeout(cooldown, 100)
+        }
+        break
+      case '3':
+        e.preventDefault()
+        if (reset) {
+          reset = false
+          props.setFocusedBlob(null)
+          props.changeBlobLayer(draggable, 2)
+          const cooldown = () => {
+            reset = true
+          }
+          setTimeout(cooldown, 100)
+        }
         break
     }
   }
@@ -449,6 +547,7 @@ const DragComponent = (props: DragComponentProps) => {
       )
 
       const newDraggable = {
+        layer: props.layer,
         id: `blob${newId}-${props.d}`,
         number: newId,
         //get style property --i from target
@@ -512,9 +611,10 @@ const DragComponent = (props: DragComponentProps) => {
 
   return (
     <ul
-      ref={props.dragUl0}
+      ref={props.dragUlRef}
       role='listbox'
-      id={`listbox${props.d}`}
+      id={`listbox${props.d}-layer${props.layer}`}
+      className={`drag-container${props.d}-layer drag-container${props.d}-layer${props.layer} ${props.className}`}
       aria-labelledby={`blobdescription${props.d}`}
       aria-activedescendant=''
     >
@@ -522,6 +622,7 @@ const DragComponent = (props: DragComponentProps) => {
         if (item !== null && item !== undefined) {
           return (
             <Blob
+              layer={props.layer}
               key={index}
               language={props.language}
               item={item}
