@@ -17,6 +17,8 @@ interface DragComponentProps {
   paused: boolean
   setPaused: Dispatch<SetStateAction<boolean>>
   prefersReducedMotion: boolean
+  highestZIndex: Record<number, number>
+  setHighestZIndex: Dispatch<SetStateAction<Record<number, number>>>
   language: ELanguages
   dispatch: DispatchReact<any>
   d: number
@@ -92,6 +94,8 @@ const DragContainer = (props: DragComponentProps) => {
           paused={props.paused}
           setPaused={props.setPaused}
           prefersReducedMotion={props.prefersReducedMotion}
+          highestZIndex={props.highestZIndex}
+          setHighestZIndex={props.setHighestZIndex}
           language={props.language}
           dispatch={props.dispatch}
           d={props.d}
