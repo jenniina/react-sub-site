@@ -300,7 +300,7 @@ input[type='checkbox' i]:checked::before {
   display: block;
   margin: 0 auto;
   width: max-content;
-  max-width: 400px;
+  max-width: 240px;
 }
 .quiz-register-login-wrap .open .accordion-register,
 .quiz-register-login-wrap .open .accordion-login {

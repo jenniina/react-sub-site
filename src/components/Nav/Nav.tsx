@@ -201,7 +201,7 @@ const Nav = (
 
   useOutsideClick({
     ref: clickOutsideRef,
-    onOutsideClick: () => closingAllMenus,
+    onOutsideClick: closingAllMenus,
   })
 
   const scrollDirection = useScrollDirection()

@@ -443,6 +443,15 @@ body .z {
   justify-content: center;
   align-items: center;
 }
+#root .gap {
+  gap: 1em;
+}
+#root .gap-half {
+  gap: 0.5em;
+}
+#root .gap0 {
+  gap: 0;
+}
 .textcenter {
   text-align: center;
 }
@@ -880,4 +889,7 @@ nav .open.password-reset-container button.forgot-btn {
 #root .App .tooltip-wrap:focus .tooltip.right.below::before {
   right: unset;
   left: calc(var(--tooltip-offset) * 0.3);
+}
+big > i {
+  letter-spacing: 0.05em;
 }

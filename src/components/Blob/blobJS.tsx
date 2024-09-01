@@ -7,6 +7,7 @@ import {
   PointerEvent as PointerEventReact,
   MouseEvent as MouseEventReact,
   TouchEvent as TouchEventReact,
+  FormEvent,
 } from 'react'
 import {
   Draggable,
@@ -14,9 +15,22 @@ import {
   RefObject,
   focusedBlob,
   ColorPair,
+  SavedBlobs,
 } from './interfaces'
 import { BlobContext, Props } from './components/BlobProvider'
-import { ELanguages } from '../../interfaces'
+import {
+  EEdit,
+  EError,
+  ELanguages,
+  ELogin,
+  EOr,
+  EPasswordsDoNotMatch,
+  ERegister,
+  ERegistrationSuccesful,
+  ESave,
+  ESavingSuccessful,
+  ReducerProps,
+} from '../../interfaces'
 import {
   EAdjustBackgroundHue,
   EAdjustBackgroundLightness,
@@ -52,6 +66,22 @@ import {
   EHideControls,
   EShowControls,
   EPressHereOrEscapeToRestoreScrolling,
+  ELoginToSaveBlobs,
+  EInOrderToSaveTheBlobs,
+  ENameYourArtwork,
+  ERenameYourArtwork,
+  ERename,
+  ESavedArt,
+  EAreYouSureYouWantToDeleteThisVersion,
+  ENoteThatUnsavedChangesWillBeLost,
+  EDeletedArt,
+  EAVersionAlreadyExistsOverwrite,
+  ENameTooLong,
+  EAMaxOf30CharactersPlease,
+  ELoadingSavedArtwork,
+  ENoSavedArtworkYet,
+  EDisableScrollInOrderToUseTheMouseWheelToResizeABlob,
+  ESpecialCharactersNotAllowed,
 } from '../../interfaces/blobs'
 import {
   BiChevronsDown,
@@ -60,9 +90,18 @@ import {
   BiChevronsUp,
 } from 'react-icons/bi'
 import { ImEnlarge2, ImShrink2 } from 'react-icons/im'
-import { FaPlus, FaRegClone, FaTimes } from 'react-icons/fa'
+import { FaPlus, FaRegClone, FaSave, FaTimes } from 'react-icons/fa'
 import DragContainer from './components/DragContainer'
 import useWindowSize from '../../hooks/useWindowSize'
+import { IUser } from '../../interfaces'
+import { useSelector } from 'react-redux'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import Accordion from '../Accordion/Accordion'
+import { notify } from '../../reducers/notificationReducer'
+import { initializeUser } from '../../reducers/authReducer'
+import { initializeUsers } from '../../reducers/usersReducer'
+import { useNavigate } from 'react-router-dom'
+import blobService from './services/blob'
 
 let angle = '90deg'
 let color = 'cyan'
@@ -75,8 +114,10 @@ const defaultHue = '214'
 
 export default function BlobJS({ language }: { language: ELanguages }) {
   const { state, dispatch } = useContext(BlobContext) as Props
+  const dispatch2 = useAppDispatch()
+  const user = useSelector((state: ReducerProps) => state.auth?.user) as IUser
 
-  const d = 0
+  const d = 0 // for the time being, only one d is used
 
   const dragWrapOuter = useRef() as RefObject<HTMLDivElement>
   const dragWrap = useRef() as RefObject<HTMLDivElement>
@@ -106,6 +147,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   const makeRandom0 = useRef() as RefObject<HTMLButtonElement>
 
   const layerButtons0 = useRef() as RefObject<HTMLDivElement>
+  const markerDivRef = useRef<HTMLDivElement>(null)
 
   const sliderLightnessInput = useRef() as RefObject<HTMLInputElement>
   const sliderSaturationInput = useRef() as RefObject<HTMLInputElement>
@@ -129,14 +171,15 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   const [activeLayer, setActiveLayer] = useState<number>(0)
   const [hiddenLayers, setHiddenLayers] = useState<Set<number>>(new Set())
   const [highestZIndex, setHighestZIndex] = useState<Record<number, number>>({}) // {0: 144, 1: 146, 2: 24}
-
   const [colorIndex, setColorIndex] = useState(0)
-
   const [focusedBlob, setFocusedBlob] = useState<focusedBlob | null>(null)
   const [usingKeyboard, setUsingKeyboard] = useState(false)
   const [markerEnabled, setMarkerEnabled] = useState(true)
   const [controlsVisible, setControlsVisible] = useState(true)
-  const markerDivRef = useRef<HTMLDivElement>(null)
+  const [scroll, setScroll] = useState<boolean>(true)
+  const [hasBeenMade, setHasBeenMade] = useState<boolean>(false)
+  const [paused, setPaused] = useState(false)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
 
   // Should be in the same order as colorBlockProps
   const colorPairs: ColorPair[] = [
@@ -167,6 +210,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       payload: { draggable: { ...draggable, layer: layer } },
     })
     saveDraggables()
+    setActiveLayer(layer)
   }
 
   const toggleLayerVisibility = (layer: number) => {
@@ -184,14 +228,21 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   //Check for keyboard use for the focusedBlob marker
   useEffect(() => {
     const keydownListener = () => setUsingKeyboard(true)
-    const mousedownListener = () => setUsingKeyboard(false)
+    const mousedownListener = () => {
+      setUsingKeyboard(false)
+    }
+    const handleMouseUp = () => {
+      setFocusedBlob(null) // To prevent Marker from showing up after keyboard use and mouseup
+    }
 
     window.addEventListener('keydown', keydownListener)
     window.addEventListener('mousedown', mousedownListener)
+    window.addEventListener('mouseup', handleMouseUp)
 
     return () => {
       window.removeEventListener('keydown', keydownListener)
       window.removeEventListener('mousedown', mousedownListener)
+      window.removeEventListener('mouseup', handleMouseUp)
     }
   }, [])
 
@@ -226,8 +277,234 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   function saveDraggables() {
     localStorage.setItem(localStorageDraggables, JSON.stringify(draggables[d]))
   }
+  const [name, setName] = useState('Blob Art')
+  const [newName, setNewName] = useState(name)
+  const [editName, setEditName] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
+  const [hasSavedFiles, setHasSavedFiles] = useState(false)
 
-  const [hasBeenMade, setHasBeenMade] = useState<boolean>(false)
+  const [trackSaving, setTrackSaving] = useState(false)
+  const [savedDraggablesbyD, setSavedDraggablesByD] = useState<{
+    [key: number]: { [versionName: string]: SavedBlobs }
+  }>({})
+
+  // useEffect(() => {
+  //   console.log('savedDraggablesbyD:', JSON.stringify(savedDraggablesbyD, null, 2))
+  // }, [savedDraggablesbyD])
+
+  const getBlobsFromServer = async () => {
+    setIsLoading(true)
+    try {
+      if (user?._id) {
+        blobService
+          .getAllBlobsByUser(user?._id, d, language)
+          .then((response) => {
+            if (response) {
+              // Initialize an empty object for sortedDraggables
+              const sortedDraggables: {
+                [key: number]: { [versionName: string]: SavedBlobs }
+              } = {}
+
+              // Iterate through the response and sort draggables by d
+              response.forEach((item: SavedBlobs) => {
+                const { d, versionName } = item
+                if (!sortedDraggables[d]) {
+                  sortedDraggables[d] = {}
+                }
+                sortedDraggables[d][versionName] = item
+              })
+
+              // Update the state with the sorted draggables
+              setSavedDraggablesByD(sortedDraggables)
+              setHasSavedFiles(Object.keys(sortedDraggables).length > 0)
+            }
+          })
+          .catch((error) => {
+            dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
+          })
+      }
+    } catch (error) {
+      dispatch2(notify(EError[language], true, 8))
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const checkDuplicateVersionName = (versionName: string): boolean => {
+    for (const dKey in savedDraggablesbyD) {
+      if (savedDraggablesbyD[dKey][versionName]) {
+        return true
+      }
+    }
+    return false
+  }
+
+  const regex = /^[\w\s\u00C0-\u024F\u1E00-\u1EFF-_]*$/
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    if (regex.test(value)) {
+      setName(value)
+    } else {
+      dispatch2(notify(ESpecialCharactersNotAllowed[language], true, 8))
+    }
+  }
+
+  const handleNewNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    if (regex.test(value)) {
+      setNewName(value)
+    } else {
+      dispatch2(notify(ESpecialCharactersNotAllowed[language], true, 8))
+    }
+  }
+
+  const saveBlobsToServer = async (e: FormEvent) => {
+    e.preventDefault()
+    try {
+      if (name.trim() === '') {
+        dispatch2(notify(ENameYourArtwork[language], true, 8))
+        return
+      } else if (name.trim().length > 30) {
+        dispatch2(
+          notify(
+            `${ENameTooLong[language]}. ${EAMaxOf30CharactersPlease[language]}`,
+            true,
+            8
+          )
+        )
+        return
+      } else if (user?._id) {
+        const versionName = name.trim()
+        if (checkDuplicateVersionName(versionName)) {
+          if (!window.confirm(EAVersionAlreadyExistsOverwrite[language])) {
+            return
+          }
+        } else {
+          blobService
+            .saveBlobsByUser(
+              user?._id,
+              d,
+              draggables[d],
+              name,
+              backgroundColor[d],
+              language
+            )
+            .then(() => {
+              setTrackSaving(!trackSaving)
+              dispatch2(notify(ESavingSuccessful[language], false, 8))
+            })
+            .catch((error) => {
+              dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
+            })
+        }
+      } else {
+        dispatch2(notify(ELoginToSaveBlobs[language], true, 8))
+      }
+    } catch (error) {
+      dispatch2(notify(EError[language], true, 8))
+    }
+  }
+
+  const editBlobsByUser = async (versionName: string, newVersionName: string) => {
+    const newVersion = newVersionName.trim()
+    if (newVersionName.trim() === '') {
+      dispatch2(notify(ENameYourArtwork[language], true, 8))
+      return
+    } else if (newVersionName.trim().length > 30) {
+      dispatch2(
+        notify(
+          `${ENameTooLong[language]}. ${EAMaxOf30CharactersPlease[language]}`,
+          true,
+          8
+        )
+      )
+      return
+    } else {
+      try {
+        if (user?._id) {
+          blobService
+            .editBlobsByUser(
+              user?._id,
+              d,
+              draggables[d],
+              versionName,
+              backgroundColor[d],
+              language,
+              newVersion
+            )
+            .then(() => {
+              setTrackSaving(!trackSaving)
+              dispatch2(notify(ESavingSuccessful[language], false, 8))
+            })
+            .catch((error) => {
+              dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
+            })
+        } else {
+          dispatch2(notify(ELoginToSaveBlobs[language], true, 8))
+        }
+      } catch (error) {
+        dispatch2(notify(EError[language], true, 8))
+      }
+    }
+  }
+
+  const loadBlobsFromServer = (d: number, versionName: string) => {
+    const newVersion = versionName.trim()
+    if (user?._id) {
+      if (window.confirm(ENoteThatUnsavedChangesWillBeLost[language])) {
+        blobService
+          .getBlobsVersionByUser(user?._id, d, newVersion, language)
+          .then((response) => {
+            dispatch({
+              type: 'setDraggablesAtD',
+              payload: { d, draggables: response.draggables },
+            })
+            dispatch({
+              type: 'setBackgroundColor',
+              payload: { d, backgroundColor: response.backgroundColor },
+            })
+          })
+          .then(() => {
+            setName(newVersion)
+            scrollToArt()
+          })
+          .catch((error) => {
+            dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
+          })
+      }
+    }
+  }
+
+  const deleteBlobsVersionFromServer = (d: number, versionName: string) => {
+    if (user._id) {
+      if (window.confirm(EAreYouSureYouWantToDeleteThisVersion[language])) {
+        blobService
+          .deleteBlobsVersionByUser(user._id, d, versionName, language)
+          .then(() => {
+            dispatch2(notify(EDeletedArt[language], false, 8))
+            setTrackSaving(!trackSaving)
+          })
+          .catch((error) => {
+            dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
+          })
+      }
+    }
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await dispatch2(initializeUsers())
+      await dispatch2(initializeUser())
+    }
+    fetchData()
+  }, [dispatch2])
+
+  useEffect(() => {
+    if (user) {
+      getBlobsFromServer()
+    }
+  }, [user, trackSaving])
 
   function getHighestZIndex(draggables: Draggable[]): Record<number, number> {
     return draggables.reduce((acc, draggable) => {
@@ -314,8 +591,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     dispatch({ type: 'moveDraggablesDown', payload: {} })
   }
 
-  const [paused, setPaused] = useState(false)
-
   function stopSway(
     e:
       | MouseEventReact<HTMLButtonElement, MouseEvent>
@@ -331,8 +606,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       dragWrap.current.classList.remove('paused')
     }
   }
-
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
 
   useEffect(() => {
     if (prefersReducedMotion && dragWrap.current) {
@@ -375,7 +648,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
   function resetBlobsFunction(e: MouseEventReact | TouchEventReact | PointerEventReact) {
     e.preventDefault()
-    setActiveLayer(0)
     window.localStorage.removeItem(localStorageDraggables)
     dispatch({ type: 'resetBlobs', payload: {} })
     dispatch({ type: 'setDraggablesAtD', payload: { d, draggables: [] } })
@@ -431,10 +703,10 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       const [colorFirst, colorSecond] = colorswitch()
 
       const newDraggable = {
-        layer: 0,
+        layer: activeLayer,
         id: `blob${i + 1}-${d}`,
         number: i + 1,
-        i: windowWidth > 400 ? getRandomMinMax(2, 9) : getRandomMinMax(2, 5),
+        i: windowWidth > 400 ? getRandomMinMax(8, 20) : getRandomMinMax(8, 10),
         x:
           windowWidth > windowHeight
             ? `${(windowWidth / 100) * getRandomMinMax(2, 70)}px`
@@ -460,7 +732,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
   const addRandomDraggable = () => {
     const colorswitch = () => {
-      let number: number = Math.ceil(getRandomMinMax(0.01, 13))
+      let number: number = Math.ceil(getRandomMinMax(0.001, 17))
 
       switch (number) {
         case 1:
@@ -502,6 +774,18 @@ export default function BlobJS({ language }: { language: ELanguages }) {
         case 13:
           color = 'orange'
           break
+        case 14:
+          color = 'silver'
+          break
+        case 15:
+          color = 'darkgray'
+          break
+        case 16:
+          color = 'gray'
+          break
+        case 17:
+          color = 'hotpink'
+          break
         default:
           color = 'cyan'
           break
@@ -516,7 +800,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       layer: activeLayer,
       id: `blob${state.highestBlobNumber + 1}-${d}`,
       number: state.highestBlobNumber + 1,
-      i: Math.ceil(getRandomMinMax(1.5, 5)),
+      i: Math.ceil(getRandomMinMax(6.5, 10)),
       x: `${(windowWidth / 100) * getRandomMinMax(25, 55)}px`,
       y: `${(windowHeight / 100) * getRandomMinMax(2, 15)}px`,
       z: '1',
@@ -528,7 +812,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
         colorSecond ?? 'greenyellow'
       })`,
     }
-
     dispatch({ type: 'addDraggable', payload: { d, draggable: newDraggable } })
   }
 
@@ -563,11 +846,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       type: 'updateDraggable',
       payload: { draggable: blobDraggables, id: blobDraggables.id },
     })
-    setActiveLayer(parseInt(layer))
-    saveDraggables()
   }
-
-  const [scroll, setScroll] = useState<boolean>(true)
 
   function disableScroll() {
     if (scroll) {
@@ -715,12 +994,12 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     // // Getting the width of the browser on load
     widthResize()
 
-    window.addEventListener('resize', widthResize)
+    // window.addEventListener('resize', widthResize)
 
-    return () => {
-      window.removeEventListener('resize', widthResize)
-    }
-  }, [])
+    // return () => {
+    //   window.removeEventListener('resize', widthResize)
+    // }
+  }, [windowWidth])
 
   const widthResize = () => {
     //place layer-buttons to the middle in the bottom
@@ -777,10 +1056,10 @@ export default function BlobJS({ language }: { language: ELanguages }) {
         79
       )
 
-    windowWidth < 400 && makeSmaller0.current && dragWrap.current
+    windowWidth < 330 && makeSmaller0.current && dragWrap.current
       ? place(
           makeSmaller0.current,
-          90 - (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
+          95 - (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
           93
         )
       : makeSmaller0.current && dragWrap.current
@@ -790,8 +1069,8 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           93
         )
       : null
-    windowWidth < 400 && deleteBlob0.current && dragWrap.current
-      ? place(deleteBlob0.current, 10, 93)
+    windowWidth < 330 && deleteBlob0.current && dragWrap.current
+      ? place(deleteBlob0.current, 5, 93)
       : deleteBlob0.current && dragWrap.current
       ? place(deleteBlob0.current, 23, 93)
       : null
@@ -814,6 +1093,23 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     }
   }, [focusedBlob])
 
+  const navigate = useNavigate()
+
+  const navigateToRegister = () => {
+    navigate('/portfolio/blob?register=register')
+  }
+
+  const navigateToLogin = () => {
+    navigate('/portfolio/blob?login=login')
+  }
+
+  const scrollToArt = () => {
+    const scrollTarget = document.getElementById(`button-container${d}`)
+    if (scrollTarget) {
+      scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
   return (
     <>
       <section id={`drag-container${d}`} className={`drag-container drag-container${d}`}>
@@ -828,7 +1124,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             {ESelectedBlobNone[language]}
           </span>
         </div>
-        <div className={'button-container'}>
+        <div id={`button-container${d}`} className={'button-container'}>
           <button
             ref={stopBlobs}
             id={`stop-blobs${d}`}
@@ -862,7 +1158,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
               className='tooltip right below space'
               data-tooltip={
                 scroll
-                  ? EDisableScroll[language]
+                  ? EDisableScrollInOrderToUseTheMouseWheelToResizeABlob[language]
                   : EPressHereOrEscapeToRestoreScrolling[language]
               }
             ></span>
@@ -1011,6 +1307,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
               layer={activeLayer}
               hiddenLayers={hiddenLayers}
               changeBlobLayer={changeBlobLayer}
+              setActiveLayer={setActiveLayer}
               paused={paused}
               setPaused={setPaused}
               prefersReducedMotion={prefersReducedMotion}
@@ -1055,6 +1352,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
               colorPairs={colorPairs}
               scroll={scroll}
               setScroll={setScroll}
+              clickOutsideRef={dragWrap}
             />
           </div>
 
@@ -1292,6 +1590,114 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           </button>
         </div>
         <div ref={exitApp} id={`exitblob${d}`} className='exitblob' role='dialog'></div>
+        {user ? (
+          <div className='blob-handling'>
+            <div className='full wide flex column center gap'>
+              <form onSubmit={(e) => saveBlobsToServer(e)}>
+                <div className='input-wrap'>
+                  <label htmlFor='blobname'>
+                    <input
+                      id='blobname'
+                      type='text'
+                      value={name}
+                      onChange={handleNameChange}
+                      placeholder={ENameYourArtwork[language]}
+                      maxLength={30}
+                    />
+                    <span>{ENameYourArtwork[language]}:</span>
+                  </label>
+                </div>
+                <button type='submit'>{ESave[language]}</button>
+              </form>
+            </div>
+            <h2>{ESavedArt[language]}</h2>
+            {isLoading ? (
+              <p>{ELoadingSavedArtwork[language]}</p>
+            ) : !hasSavedFiles ? (
+              <p>{ENoSavedArtworkYet[language]}</p>
+            ) : (
+              Object.keys(savedDraggablesbyD).map((dKey) => (
+                <ul key={dKey} className='blob-versions-wrap'>
+                  {Object.keys(savedDraggablesbyD[Number(dKey)]).map((versionName) => (
+                    <li key={versionName} className='blob-version-item'>
+                      <span>{versionName}</span>
+                      <div className='button-wrap'>
+                        <button
+                          onClick={() => loadBlobsFromServer(Number(dKey), versionName)}
+                        >
+                          Load
+                        </button>
+                        <button
+                          onClick={() =>
+                            deleteBlobsVersionFromServer(Number(dKey), versionName)
+                          }
+                        >
+                          Delete
+                        </button>
+                        <Accordion
+                          language={language}
+                          id={`accordion-blobnewname-${versionName.replace(/\s/g, '-')}`}
+                          className='blobnewname'
+                          text={ERename[language]}
+                          hideBrackets={true}
+                          onClick={() => {
+                            setNewName(versionName)
+                            setEditName(versionName)
+                          }}
+                          isOpen={editName === versionName}
+                        >
+                          <div className='input-wrap'>
+                            <label
+                              htmlFor={`blobnewname-${versionName.replace(/\s/g, '-')}`}
+                            >
+                              <input
+                                id={`blobnewname-${versionName.replace(/\s/g, '-')}`}
+                                type='text'
+                                value={newName}
+                                onChange={handleNewNameChange}
+                                placeholder={ERenameYourArtwork[language]}
+                                maxLength={30}
+                              />
+                              <span>{ERename[language]}:</span>
+                            </label>
+                          </div>
+                          <button
+                            onClick={() => {
+                              if (versionName !== newName) {
+                                editBlobsByUser(versionName, newName)
+                              } else
+                                dispatch2(
+                                  notify(
+                                    `${EError[language]}: ${ERenameYourArtwork[language]}`,
+                                    true,
+                                    5
+                                  )
+                                )
+                            }}
+                          >
+                            {EEdit[language]}
+                          </button>
+                        </Accordion>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ))
+            )}
+          </div>
+        ) : (
+          <div className='wide flex column center gap'>
+            <div className='login-to-save wide flex column center gap-half'>
+              <FaSave />
+              {EInOrderToSaveTheBlobs[language]}
+            </div>
+            <div className={`blob-register-login-wrap`}>
+              <button onClick={navigateToLogin}>{ELogin[language]}</button>
+              <big>{EOr[language]}</big>
+              <button onClick={navigateToRegister}>{ERegister[language]}</button>
+            </div>
+          </div>
+        )}
       </section>
 
       <svg className='filter'>
@@ -1299,10 +1705,10 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           <feGaussianBlur in='SourceGraphic' stdDeviation='5'></feGaussianBlur>
           <feColorMatrix
             values='
-1 0 0 0 0 
-0 1 0 0 0 
+1 0 0 0 0
+0 1 0 0 0
 0 0 1 0 0
-0 0 0 37 -14 
+0 0 0 37 -14
 '
           ></feColorMatrix>
         </filter>

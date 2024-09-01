@@ -87,7 +87,7 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
         <span aria-hidden='true' className={props.hideBrackets ? 'hide' : ''}>
           &#xFE3D;
         </span>
-        &nbsp;{props.text}&nbsp;
+        <i>&nbsp;{props.text}&nbsp;</i>
         <span aria-hidden='true' className={props.hideBrackets ? 'hide' : ''}>
           &#xFE3D;
         </span>

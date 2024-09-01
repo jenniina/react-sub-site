@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { IQuizHighscore } from '../interfaces'
 
-const baseUrl = `https://bg.jenniina.fi/api/quiz`
+const url = import.meta.env.VITE_BASE_URI ?? 'https://bg.jenniina.fi'
+const baseUrl = `${url}/api/quiz`
 
 const getQuizzes = async () => {
   const response = await axios.get(baseUrl)

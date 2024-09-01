@@ -63,8 +63,13 @@ import {
 import { GrGraphQl } from 'react-icons/gr'
 import {
   EButtonsTo,
+  EEditArtwork,
   ELayers,
+  ELoginToSaveBlobsToServer,
+  EManyVersions,
   EMoveViewInDifferentDirections,
+  ENameYourArtwork,
+  ERenameYourArtwork,
   EToggleControlVisibility,
 } from '../interfaces/blobs'
 
@@ -95,6 +100,11 @@ export default function Home({
   ) => SelectOption[]
 }) {
   const lightTheme = useTheme()
+
+  const firstToLowerCase = (str: string) => {
+    if (!str) return str
+    return str.charAt(0).toLowerCase() + str.slice(1)
+  }
 
   return (
     <div className={`welcome ${type} ${lightTheme ? styles.light : ''}`}>
@@ -156,9 +166,23 @@ export default function Home({
                           </Link>
                           <i>
                             {EAddedNewFeatures[language]}:{' '}
-                            {ELayers[language].toLowerCase()};{' '}
-                            {EButton[language].toLowerCase()}:{' '}
-                            {EToggleControlVisibility[language].toLowerCase()}
+                            {firstToLowerCase(ELoginToSaveBlobsToServer[language])},{' '}
+                            {firstToLowerCase(EManyVersions[language])},{' '}
+                            {firstToLowerCase(ENameYourArtwork[language])},{' '}
+                            {firstToLowerCase(ERenameYourArtwork[language])},{' '}
+                            {firstToLowerCase(EEditArtwork[language])}
+                          </i>
+                        </li>
+                        <li>
+                          <Link to='/portfolio/blob'>
+                            <TbBlob />
+                            {EBlobs[language]}:
+                          </Link>
+                          <i>
+                            {EAddedNewFeatures[language]}:{' '}
+                            {firstToLowerCase(ELayers[language])};{' '}
+                            {firstToLowerCase(EButton[language])}:{' '}
+                            {firstToLowerCase(EToggleControlVisibility[language])}
                           </i>
                         </li>
                         <li>
@@ -175,8 +199,9 @@ export default function Home({
                           </Link>
                           <i>
                             {EAddedNewFeatures[language]}:{' '}
-                            {EMoveViewInDifferentDirections[language].toLowerCase()} (
-                            {EButtons[language].toLowerCase()}). {EBugFixes[language]}.
+                            {firstToLowerCase(EMoveViewInDifferentDirections[language])} (
+                            {firstToLowerCase(EButtons[language])}). {EBugFixes[language]}
+                            .
                           </i>
                         </li>
                         <li>
@@ -228,10 +253,10 @@ export default function Home({
                           </Link>{' '}
                           <i>
                             {EAddedNewFeatures[language]}:{' '}
-                            {ETasksCanBeEdited[language].toLowerCase()} &{' '}
-                            {ETasksCanBeReorganizedByDraggingAndDropping[
-                              language
-                            ].toLowerCase()}
+                            {firstToLowerCase(ETasksCanBeEdited[language])} &{' '}
+                            {firstToLowerCase(
+                              ETasksCanBeReorganizedByDraggingAndDropping[language]
+                            )}
                           </i>
                         </li>
                       </ul>
