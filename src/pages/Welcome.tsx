@@ -53,6 +53,8 @@ import {
   EOptimizing,
   ESiteMigration,
   EImprovedAccessibility,
+  ESeptember,
+  EJuly,
 } from '../interfaces/welcome'
 import { Select, SelectOption } from '../components/Select/Select'
 import { ETodoApp } from '../components/Todo/interfaces'
@@ -157,7 +159,7 @@ export default function Home({
                   <strong>2024</strong>
                   <ul>
                     <li>
-                      <strong>{EAugust[language]}</strong>
+                      <strong>{ESeptember[language]}</strong>
                       <ul>
                         <li>
                           <Link to='/portfolio/blob'>
@@ -173,6 +175,11 @@ export default function Home({
                             {firstToLowerCase(EEditArtwork[language])}
                           </i>
                         </li>
+                      </ul>
+                    </li>
+                    <li>
+                      <strong>{EAugust[language]}</strong>
+                      <ul>
                         <li>
                           <Link to='/portfolio/blob'>
                             <TbBlob />
@@ -204,6 +211,11 @@ export default function Home({
                             .
                           </i>
                         </li>
+                      </ul>
+                    </li>
+                    <li>
+                      <strong>{EJuly[language]}</strong>
+                      <ul>
                         <li>
                           <a className='disabled'>
                             <LuArrowRightToLine />
