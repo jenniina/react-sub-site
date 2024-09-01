@@ -36,8 +36,8 @@
 .main-header button:focus {
   outline: none;
 }
-.main-header button:hover span,
-.main-header button:focus span {
+.main-header nav:not(.toolbar) button:hover span,
+.main-header nav:not(.toolbar) button:focus span {
   opacity: 1;
   -webkit-transform: translateX(-50%) scale(1);
   -ms-transform: translateX(-50%) scale(1);
@@ -90,6 +90,7 @@
   margin: 0 auto;
   height: var(--height);
   width: 100%;
+  padding-right: 0.5rem;
 }
 .main-header h2 {
   font-size: clamp(var(--title-S), 3vw, var(--title-M));
