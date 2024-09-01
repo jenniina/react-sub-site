@@ -53,8 +53,8 @@ svg.filter {
   min-width: 78px;
   max-height: 300px;
   max-width: 300px;
-  height: calc(var(--i) * 20px);
-  width: calc(var(--i) * 20px);
+  height: calc(var(--i) * 10px);
+  width: calc(var(--i) * 10px);
 }
 #drag-container0 .colorblock {
   -webkit-box-shadow: -4px 4px 20px 0 hsla(0, 0%, 0%, 0.2),
@@ -149,28 +149,16 @@ svg.filter {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  gap: 1rem 2%;
-  margin-bottom: 1em;
+  gap: 0.5rem 2%;
 }
 #drag-container0 .drag-slider-wrap > label,
 #drag-container0 .drag-slider-wrap > input {
-  flex: 1 0 80%;
+  max-width: 68vw;
+  flex: 1 0 calc(90% - 4em);
   text-align: center;
   align-self: center;
 }
 
-@media (min-width: 800px) {
-  .portfolio.page #drag-container0 {
-    width: calc(96vw - var(--scrollbar_width));
-    max-width: calc(96vw - var(--scrollbar_width));
-    /* margin-left: calc(50% - 50vw + var(--scrollbar_width) / 2 + 2vw); */
-  }
-  #drag-container0 .drag-slider-wrap {
-    flex: 1 1 28%;
-    text-align: center;
-    align-self: flex-end;
-  }
-}
 .drag-slider-wrap label {
   position: relative;
   max-width: max-content;
@@ -190,6 +178,37 @@ svg.filter {
   border-width: 0.6em 0.4em;
   border-top-color: currentColor;
 }
+
+@media (min-width: 500px) {
+  #drag-container0 .drag-slider-wrap {
+    margin: 0;
+  }
+  #drag-container0 .drag-slider-wrap > label {
+    flex: 1 0 100%;
+    max-width: 100%;
+  }
+  #drag-container0 .drag-slider-wrap > input,
+  #drag-container0 .drag-slider-wrap > button {
+    flex: 1 1 calc(45% - 4em);
+  }
+}
+@media (min-width: 800px) {
+  .portfolio.page #drag-container0 {
+    width: calc(96vw - var(--scrollbar_width));
+    max-width: calc(96vw - var(--scrollbar_width));
+    /* margin-left: calc(50% - 50vw + var(--scrollbar_width) / 2 + 2vw); */
+  }
+  #drag-container0 .drag-slider-wrap {
+    flex: 1 1 28%;
+    text-align: center;
+    align-self: flex-end;
+    margin-bottom: 1em;
+  }
+  #drag-container0 .drag-slider-wrap > input,
+  #drag-container0 .drag-slider-wrap > button {
+    flex: 1 0 100%;
+  }
+} /* END MEDIA */
 
 .drag-slider {
   --size: 30px;
@@ -308,6 +327,7 @@ svg.filter {
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
+  align-items: flex-end;
   margin-bottom: 0.5em;
 }
 .drag-container button {
@@ -425,8 +445,8 @@ svg.filter {
 }
 
 .drag-container .dragzone {
-  height: calc(var(--i) * 20px);
-  width: calc(var(--i) * 20px);
+  height: calc(var(--i) * 10px);
+  width: calc(var(--i) * 10px);
   min-height: 40px;
   min-width: 40px;
   max-height: 220px;
@@ -509,8 +529,8 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: calc(var(--i) * 18px);
-  height: calc(var(--i) * 18px);
+  width: calc(var(--i) * 9px);
+  height: calc(var(--i) * 9px);
   transform: translate(-50%, -50%);
   background: rgba(0, 0, 0, 0);
   pointer-events: auto;
@@ -862,4 +882,118 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
 #drag-container0 .hidden,
 .drag-container0-layer.hidden {
   display: none;
+}
+
+.blob-register-login-wrap {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1rem;
+  margin: 0 auto;
+}
+.blob-register-login-wrap form {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1.6rem;
+}
+.blob-register-login-wrap h2 {
+  margin-top: 0.6em;
+}
+.blob-register-login-wrap p {
+  margin: 0 0 0.5rem 0.5rem;
+}
+.blob-register-login-wrap big {
+  align-self: center;
+}
+.login-to-save svg {
+  font-size: 3rem;
+}
+.blob-handling {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+
+  padding: 3em 0 2em;
+}
+.blob-handling,
+.blob-handling h2,
+.blob-handling p {
+  max-width: clamp(50px, 80vw, var(--wide));
+  margin: 0 auto;
+}
+.blob-handling h2 {
+  margin: 1em auto 0;
+}
+.blob-handling form {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1rem;
+  width: 100%;
+}
+.blob-handling .blob-versions-wrap {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 0;
+}
+.blob-handling ul.blob-versions-wrap > li {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem 0.8rem;
+}
+.blob-handling ul.blob-versions-wrap > li > span {
+  flex-grow: 1;
+  display: inline-block;
+}
+.blob-handling button {
+  font-size: 0.8em;
+  min-width: 8em;
+}
+.open.blobnewname-container .blobnewname.accordion-inner {
+  display: flex !important;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.8rem;
+  border: 1px solid var(--color-primary-3);
+  border-bottom-color: var(--color-primary-5);
+  border-bottom-width: 2px;
+  border-radius: var(--corner);
+  padding: 0.5em;
+}
+.blobnewname.accordion-btn.close {
+  margin-bottom: 2em;
+}
+.blobnewname .input-wrap {
+  min-width: 100%;
+}
+.blobnewname .input-wrap label span,
+.blobnewname .input-wrap.not-required input:valid ~ span {
+}
+.blob-version-item {
+  min-width: 100%;
+  border-bottom: solid 1px var(--color-primary-10);
+  padding-bottom: 1rem;
+}
+
+.closed .blobnewname.accordion-btn.open {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  flex-flow: row nowrap;
+}
+.blobnewname.accordion-btn.open > * {
+  word-break: keep-all;
+  font-style: normal;
 }

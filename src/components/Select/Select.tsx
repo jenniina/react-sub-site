@@ -63,11 +63,14 @@ export function Select({
 
   const [highlightedIndex, setHighlightedIndex] = useState(0)
 
+  const handleOutsideClick = (e: Event) => {
+    setIsOpen(false)
+  }
   const containerRef = useRef<HTMLDivElement>(null)
 
   useOutsideClick({
     ref: containerRef,
-    onOutsideClick: () => setIsOpen(false),
+    onOutsideClick: handleOutsideClick,
   })
 
   const ariaLive = useRef<HTMLLabelElement>(null)

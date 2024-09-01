@@ -320,6 +320,12 @@ h6 {
 .margin0auto {
   margin: 0 auto;
 }
+.margin-b1 {
+  margin-bottom: 1em;
+}
+.margin-b2 {
+  margin-bottom: 2em;
+}
 .regular {
   font-family: var(--text-family);
   letter-spacing: var(--letter-spacing);

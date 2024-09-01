@@ -66,20 +66,36 @@ export function useOutsideClick({
   )
 
   useEffect(() => {
-    eventsConfig.map((eventConfigItem) => {
-      const [eventName, listener] = eventConfigItem
-
+    eventsConfig.forEach(([eventName, listener]) => {
       document.addEventListener(eventName, listener)
     })
 
     return () => {
-      eventsConfig.map((eventConfigItem) => {
-        const [eventName, listener] = eventConfigItem
-
+      eventsConfig.forEach(([eventName, listener]) => {
         document.removeEventListener(eventName, listener)
       })
     }
   }, [eventsConfig])
+
+  // useEffect(() => {
+  //   console.log('Adding event listeners')
+
+  //   eventsConfig.map((eventConfigItem) => {
+  //     const [eventName, listener] = eventConfigItem
+
+  //     document.addEventListener(eventName, listener)
+  //   })
+
+  //   return () => {
+  //     console.log('Removing event listeners')
+
+  //     eventsConfig.map((eventConfigItem) => {
+  //       const [eventName, listener] = eventConfigItem
+
+  //       document.removeEventListener(eventName, listener)
+  //     })
+  //   }
+  // }, [eventsConfig])
 
   return ref
 }

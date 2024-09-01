@@ -110,6 +110,7 @@ const Blob = ({
           }`
       }}
       onBlur={(e) => {
+        setFocusedBlob(null)
         blurred(e.target as HTMLElement)
         if (selectedvalue0.current)
           selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`

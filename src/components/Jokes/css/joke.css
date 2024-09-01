@@ -286,11 +286,11 @@ form.joke-edit > button {
 .flex.column {
   flex-flow: column nowrap;
 }
-.gap,
-.flex.column.center {
+.joke-container .gap,
+.joke-container .flex.column.center {
   gap: calc(var(--gap) * 2);
 }
-.gap-half {
+.joke-container .gap-half {
   gap: calc(var(--gap) / 2);
 }
 

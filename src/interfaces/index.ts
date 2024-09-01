@@ -1784,3 +1784,21 @@ export enum EButton {
   cs = 'Tlačítko',
   fi = 'Painike',
 }
+export enum EOr {
+  en = 'or',
+  es = 'o',
+  fr = 'ou',
+  de = 'oder',
+  pt = 'ou',
+  cs = 'nebo',
+  fi = 'tai',
+}
+export enum ESavingSuccessful {
+  en = 'Saving successful',
+  es = 'Guardado exitoso',
+  fr = 'Enregistrement réussi',
+  de = 'Speichern erfolgreich',
+  pt = 'Salvamento bem-sucedido',
+  cs = 'Uložení úspěšné',
+  fi = 'Tallennus onnistui',
+}

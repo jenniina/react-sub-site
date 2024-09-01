@@ -1,3 +1,5 @@
+import { IUser } from '../../../interfaces'
+
 export type BackgroundColor = string
 
 export type Draggable = {
@@ -14,6 +16,14 @@ export type Draggable = {
   tabIndex: number
   background: string
   function?: Function
+}
+
+export interface SavedBlobs {
+  user: IUser['_id']
+  d: number
+  draggables: Draggable[]
+  backgroundColor: BackgroundColor[]
+  versionName: string
 }
 
 export interface RefObject<T> {

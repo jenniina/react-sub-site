@@ -370,6 +370,15 @@ export enum EDisableScroll {
   cs = 'Zakázat posouvání',
   fi = 'Poista vieritys käytöstä',
 }
+export enum EDisableScrollInOrderToUseTheMouseWheelToResizeABlob {
+  en = 'Disable scroll in order to use the mouse wheel to resize a blob',
+  es = 'Deshabilitar el desplazamiento para usar la rueda del mouse para cambiar el tamaño de un blob',
+  fr = 'Désactiver le défilement afin d utiliser la molette de la souris pour redimensionner un blob',
+  de = 'Deaktivieren Sie das Scrollen, um das Mausrad zum Ändern der Größe eines Blobs zu verwenden',
+  pt = 'Desative a rolagem para usar a roda do mouse para redimensionar um blob',
+  cs = 'Zakážete posouvání, abyste mohli použít kolečko myši k změně velikosti blobu',
+  fi = 'Poista vieritys käytöstä, jotta voit käyttää hiiren pyörää mollukan kokoa muuttaaksesi',
+}
 export enum EMarkerOn {
   en = 'Marker on',
   es = 'Marcador encendido',
@@ -659,4 +668,177 @@ export enum EShowControls {
   pt = 'Mostrar controles',
   cs = 'Zobrazit ovládací prvky',
   fi = 'Näytä painikkeet',
+}
+export enum ELoginToSaveBlobs {
+  en = 'Login to save blobs',
+  es = 'Inicie sesión para guardar blobs',
+  fr = 'Connectez-vous pour enregistrer les blobs',
+  de = 'Anmelden, um Blobs zu speichern',
+  pt = 'Faça login para salvar blobs',
+  cs = 'Přihlaste se pro uložení blobů',
+  fi = 'Kirjaudu sisään tallentaaksesi mollukat',
+}
+export enum ELoginToSaveBlobsToServer {
+  en = 'Login to save blobs to server',
+  es = 'Inicie sesión para guardar blobs en el servidor',
+  fr = 'Connectez-vous pour enregistrer les blobs sur le serveur',
+  de = 'Anmelden, um Blobs auf dem Server zu speichern',
+  pt = 'Faça login para salvar blobs no servidor',
+  cs = 'Přihlaste se pro uložení blobů na server',
+  fi = 'Kirjaudu sisään tallentaaksesi mollukat palvelimelle',
+}
+export enum ESaving {
+  en = 'Saving',
+  es = 'Guardando',
+  fr = 'Enregistrement',
+  de = 'Speichern',
+  pt = 'Salvando',
+  cs = 'Ukládání',
+  fi = 'Tallennus',
+}
+export enum EManyVersions {
+  en = 'Many versions',
+  es = 'Muchas versiones',
+  fr = 'Beaucoup de versions',
+  de = 'Viele Versionen',
+  pt = 'Muitas versões',
+  cs = 'Mnoho verzí',
+  fi = 'Monta versiota',
+}
+
+export enum EInOrderToSaveTheBlobs {
+  en = 'In order to save the blobs:',
+  es = 'Para guardar los blobs:',
+  fr = 'Afin d enregistrer les blobs:',
+  de = 'Um die Blobs zu speichern:',
+  pt = 'Para salvar os blobs:',
+  cs = 'Pro uložení blobů:',
+  fi = 'Tallentaaksesi mollukat:',
+}
+// Name your artwork
+export enum ENameYourArtwork {
+  en = 'Name your artwork',
+  es = 'Nombre de tu obra de arte',
+  fr = 'Nommez votre œuvre d art',
+  de = 'Benennen Sie Ihr Kunstwerk',
+  pt = 'Nomeie sua obra de arte',
+  cs = 'Pojmenujte své umění',
+  fi = 'Nimeä taideteoksesi',
+}
+export enum ERenameYourArtwork {
+  en = 'Rename your art',
+  es = 'Renombrar tu arte',
+  fr = 'Renommez votre art',
+  de = 'Benennen Sie Ihre Kunst',
+  pt = 'Renomeie sua arte',
+  cs = 'Přejmenujte své umění',
+  fi = 'Nimeä teoksesi',
+}
+export enum ERename {
+  en = 'Rename',
+  es = 'Renombrar',
+  fr = 'Renommer',
+  de = 'Umbenennen',
+  pt = 'Renomear',
+  cs = 'Přejmenovat',
+  fi = 'Nimeä',
+}
+export enum EEditArtwork {
+  en = 'Edit your artwork',
+  es = 'Editar tu obra de arte',
+  fr = 'Modifier votre œuvre d art',
+  de = 'Bearbeiten Sie Ihr Kunstwerk',
+  pt = 'Edite sua obra de arte',
+  cs = 'Upravte své umění',
+  fi = 'Muokkaa teostasi',
+}
+export enum ESavedArt {
+  en = 'Saved art',
+  es = 'Arte guardado',
+  fr = 'Art enregistré',
+  de = 'Gespeicherte Kunst',
+  pt = 'Arte salvo',
+  cs = 'Uložené umění',
+  fi = 'Tallennettu taide',
+}
+export enum ENoSavedArtworkYet {
+  en = 'No saved artwork yet',
+  es = 'Aún no hay arte guardado',
+  fr = 'Pas encore d œuvre d art enregistrée',
+  de = 'Noch keine gespeicherte Kunst',
+  pt = 'Ainda não há arte salva',
+  cs = 'Zatím nebylo uloženo žádné umění',
+  fi = 'Ei tallennettua taidetta vielä',
+}
+export enum ELoadingSavedArtwork {
+  en = 'Loading saved artwork...',
+  es = 'Cargando arte guardado...',
+  fr = 'Chargement de l œuvre d art enregistrée...',
+  de = 'Gespeicherte Kunst wird geladen...',
+  pt = 'Carregando arte salva...',
+  cs = 'Načítání uloženého umění...',
+  fi = 'Ladataan tallennettua taidetta...',
+}
+export enum EAreYouSureYouWantToDeleteThisVersion {
+  en = 'Are you sure you want to delete this version?',
+  es = '¿Estás seguro de que quieres eliminar esta versión?',
+  fr = 'Êtes-vous sûr de vouloir supprimer cette version?',
+  de = 'Möchten Sie diese Version wirklich löschen?',
+  pt = 'Tem certeza de que deseja excluir esta versão?',
+  cs = 'Opravdu chcete smazat tuto verzi?',
+  fi = 'Haluatko varmasti poistaa tämän version?',
+}
+export enum ENoteThatUnsavedChangesWillBeLost {
+  en = 'Note that unsaved changes will be lost. Are you sure you want to load?',
+  es = 'Tenga en cuenta que los cambios no guardados se perderán. ¿Estás seguro de que quieres cargar?',
+  fr = 'Notez que les modifications non enregistrées seront perdues. Êtes-vous sûr de vouloir charger?',
+  de = 'Beachten Sie, dass nicht gespeicherte Änderungen verloren gehen. Möchten Sie wirklich laden?',
+  pt = 'Observe que as alterações não salvas serão perdidas. Tem certeza de que deseja carregar?',
+  cs = 'Upozorňujeme, že neuložené změny budou ztraceny. Opravdu chcete načíst?',
+  fi = 'Huomaa, että tallentamattomat muutokset menetetään. Haluatko varmasti ladata?',
+}
+export enum EDeletedArt {
+  en = 'Deleted art',
+  es = 'Arte eliminado',
+  fr = 'Art supprimé',
+  de = 'Gelöschte Kunst',
+  pt = 'Arte excluída',
+  cs = 'Smazané umění',
+  fi = 'Teos poistettu',
+}
+export enum EAVersionAlreadyExistsOverwrite {
+  en = 'A version with this name already exists. Do you want to overwrite it?',
+  es = 'Ya existe una versión con este nombre. ¿Quieres sobrescribirla?',
+  fr = 'Une version portant ce nom existe déjà. Voulez-vous la remplacer?',
+  de = 'Eine Version mit diesem Namen existiert bereits. Möchten Sie sie überschreiben?',
+  pt = 'Já existe uma versão com este nome. Deseja substituí-la?',
+  cs = 'Verze s tímto názvem již existuje. Chcete ji přepsat?',
+  fi = 'Versio tällä nimellä on jo olemassa. Haluatko korvata sen?',
+}
+export enum ENameTooLong {
+  en = 'The name is too long',
+  es = 'El nombre es demasiado largo',
+  fr = 'Le nom est trop long',
+  de = 'Der Name ist zu lang',
+  pt = 'O nome é muito longo',
+  cs = 'Název je příliš dlouhý',
+  fi = 'Nimi on liian pitkä',
+}
+export enum EAMaxOf30CharactersPlease {
+  en = 'A maximum of 30 characters, please',
+  es = 'Un máximo de 30 caracteres, por favor',
+  fr = "Un maximum de 30 caractères, s'il vous plaît",
+  de = 'Maximal 30 Zeichen, bitte',
+  pt = 'No máximo 30 caracteres, por favor',
+  cs = 'Maximálně 30 znaků, prosím',
+  fi = 'Enintään 30 merkkiä, kiitos',
+}
+export enum ESpecialCharactersNotAllowed {
+  en = 'Special characters like ? are not allowed',
+  es = 'No se permiten caracteres especiales como ?',
+  fr = 'Les caractères spéciaux comme ? ne sont pas autorisés',
+  de = 'Sonderzeichen wie ? sind nicht erlaubt',
+  pt = 'Caracteres especiais como ? não são permitidos',
+  cs = 'Speciální znaky jako ? nejsou povoleny',
+  fi = 'Erityismerkit kuten ? eivät ole sallittuja',
 }

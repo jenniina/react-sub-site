@@ -49,7 +49,7 @@ function CardSingle({
 
   useOutsideClick({
     ref: closingRef,
-    onOutsideClick: () => closing,
+    onOutsideClick: closing,
   })
 
   //https://www.aurigait.com/blog/drag-and-drop-in-react/

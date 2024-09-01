@@ -4,6 +4,7 @@ import {
   SetStateAction,
   Dispatch as DispatchReact,
   useRef,
+  useState,
 } from 'react'
 import { Draggable, focusedBlob, ColorPair } from '../interfaces'
 import { ELanguages } from '../../../interfaces'
@@ -13,6 +14,7 @@ interface DragComponentProps {
   layer: number
   layerAmount: number
   hiddenLayers: Set<number>
+  setActiveLayer: Dispatch<SetStateAction<number>>
   changeBlobLayer: (draggable: Draggable, layer: number) => void
   paused: boolean
   setPaused: Dispatch<SetStateAction<boolean>>
@@ -58,6 +60,7 @@ interface DragComponentProps {
   colorPairs: ColorPair[]
   setScroll: Dispatch<SetStateAction<boolean>>
   scroll: boolean
+  clickOutsideRef: RefObject<HTMLDivElement>
 }
 
 const DragContainer = (props: DragComponentProps) => {
@@ -88,6 +91,7 @@ const DragContainer = (props: DragComponentProps) => {
           key={layer}
           layer={layer}
           isCurrentLayer={layer === props.layer}
+          setActiveLayer={props.setActiveLayer}
           changeBlobLayer={props.changeBlobLayer}
           items={groupedDraggables[layer] || []}
           dragUlRef={layerRefs[layer]}
@@ -135,6 +139,7 @@ const DragContainer = (props: DragComponentProps) => {
           colorPairs={props.colorPairs}
           scroll={props.scroll}
           setScroll={props.setScroll}
+          clickOutsideRef={props.clickOutsideRef}
         />
       ))}
     </>
