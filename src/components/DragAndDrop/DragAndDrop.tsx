@@ -32,6 +32,57 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     })
     .flat()
 
+  const colorNameToHex = (color: string) => {
+    const ctx = document.createElement('canvas').getContext('2d')
+    if (!ctx) {
+      throw new Error('Canvas context not available')
+    }
+    ctx.fillStyle = color
+    return ctx.fillStyle
+  }
+
+  const hexToHSL = (hex: string) => {
+    // Convert hex to RGB
+    let r = parseInt(hex.slice(1, 3), 16)
+    let g = parseInt(hex.slice(3, 5), 16)
+    let b = parseInt(hex.slice(5, 7), 16)
+
+    // Convert RGB to HSL
+    r /= 255
+    g /= 255
+    b /= 255
+    const max = Math.max(r, g, b)
+    const min = Math.min(r, g, b)
+    let h = 0,
+      s = 0,
+      l = (max + min) / 2
+
+    if (max !== min) {
+      const d = max - min
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+      switch (max) {
+        case r:
+          h = (g - b) / d + (g < b ? 6 : 0)
+          break
+        case g:
+          h = (b - r) / d + 2
+          break
+        case b:
+          h = (r - g) / d + 4
+          break
+      }
+      h /= 6
+    }
+
+    return { h, s, l }
+  }
+
+  const determineBackgroundLightness = (color: string) => {
+    const hexColor = color.startsWith('#') ? color : colorNameToHex(color)
+    const { l } = hexToHSL(hexColor)
+    return l > 0.5 ? 'light' : 'dark'
+  }
+
   const setTheData = useMemo(() => {
     // If data is already in localStorage, use that
     if (storedData.length > 0) {
@@ -43,44 +94,47 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
       switch (i) {
         case 1:
           color = 'orchid'
-          background = backgroundLightness[0]
+          //background = backgroundLightness[0]
           break
         case 2:
           color = 'lightgreen'
-          background = backgroundLightness[0]
+          //background = backgroundLightness[0]
           break
         case 3:
           color = 'lightsalmon'
-          background = backgroundLightness[0]
+          //background = backgroundLightness[0]
           break
         case 4:
           color = 'lightblue'
-          background = backgroundLightness[0]
+          //background = backgroundLightness[0]
           break
         case 5:
           color = 'pink'
-          background = backgroundLightness[0]
+          //background = backgroundLightness[0]
           break
         case 6:
           color = 'turquoise'
-          background = backgroundLightness[0]
+          //background = backgroundLightness[0]
           break
         case 7:
           color = 'blue'
-          background = backgroundLightness[1]
+          //background = backgroundLightness[1]
           break
         case 8:
           color = 'crimson'
-          background = backgroundLightness[1]
+          //background = backgroundLightness[1]
           break
         case 9:
           color = 'red'
-          background = backgroundLightness[0]
+          //background = backgroundLightness[0]
           break
         default:
           color = 'yellow'
-          background = backgroundLightness[0]
+        //background = backgroundLightness[0]
       }
+
+      background = determineBackgroundLightness(color)
+
       //randomize the item status
       const number = Math.round(useRandomMinMax(0.1, 3))
       switch (number) {
