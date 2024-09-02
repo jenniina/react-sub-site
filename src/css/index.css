@@ -146,7 +146,7 @@
     );
   }
 } /*END media*/
-@media (min-width: 600px) {
+@media (min-width: 700px) {
   :root {
     --responsive_scale: 1;
   }
@@ -277,7 +277,7 @@ main a:visited > svg
 .ul ul li:last-child {
   margin-bottom: 0;
 }
-@media (min-width: 300px) {
+@media (min-width: 400px) {
   .ul {
     padding-inline-start: 10px;
   }
@@ -285,7 +285,7 @@ main a:visited > svg
     padding-inline-start: 20px;
   }
 } /*END media*/
-@media (min-width: 600px) {
+@media (min-width: 700px) {
   .ul {
     padding-inline-start: 20px;
   }
@@ -757,7 +757,7 @@ body .focus-within:focus-within {
   outline-offset: 3px;
 }
 
-@media (min-width: 300px) {
+@media (min-width: 400px) {
   button,
   button.restore {
     padding: 0.6em 1.2em;

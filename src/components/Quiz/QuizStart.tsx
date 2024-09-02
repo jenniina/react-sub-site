@@ -190,7 +190,6 @@ const QuizStart = ({
           />
         </div>
       </section>
-      <Notification language={language} />
     </>
   )
 }

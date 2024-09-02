@@ -6,8 +6,8 @@ export interface RefObject<T> {
   readonly current: T | null
 }
 
-export const breakpoint = 600
-export const breakpointSmall = 300
+export const breakpoint = 700
+export const breakpointSmall = 400
 
 export interface IUser {
   _id?: string
@@ -1801,4 +1801,86 @@ export enum ESavingSuccessful {
   pt = 'Salvamento bem-sucedido',
   cs = 'Uložení úspěšné',
   fi = 'Tallennus onnistui',
+}
+//Need help?
+export enum ENeedHelp {
+  en = 'Need help?',
+  es = '¿Necesitas ayuda?',
+  fr = "Besoin d'aide?",
+  de = 'Brauchen Sie Hilfe?',
+  pt = 'Precisa de ajuda?',
+  cs = 'Potřebujete pomoc?',
+  fi = 'Tarvitsetko apua?',
+}
+export enum EForExample {
+  en = 'for example:',
+  es = 'por ejemplo:',
+  fr = 'par exemple:',
+  de = 'zum Beispiel:',
+  pt = 'por exemplo:',
+  cs = 'například:',
+  fi = 'esimerkiksi:',
+}
+export enum EAreYouSureYouWantToRemoveThis {
+  en = 'Are you sure you want to remove this?',
+  es = '¿Estás seguro de que quieres eliminar esto?',
+  fr = 'Êtes-vous sûr de vouloir supprimer ceci?',
+  de = 'Möchten Sie dies wirklich entfernen?',
+  pt = 'Tem certeza de que deseja remover isso?',
+  cs = 'Jste si jisti, že chcete toto odstranit?',
+  fi = 'Oletko varma, että haluat poistaa tämän?',
+}
+export enum EChangeCategoryTitle {
+  en = 'Change category title',
+  es = 'Cambiar título de categoría',
+  fr = 'Changer le titre de la catégorie',
+  de = 'Kategorie-Titel ändern',
+  pt = 'Alterar título da categoria',
+  cs = 'Změnit název kategorie',
+  fi = 'Vaihda kategorian otsikko',
+}
+export enum EChange {
+  en = 'Change',
+  es = 'Cambiar',
+  fr = 'Changer',
+  de = 'Ändern',
+  pt = 'Alterar',
+  cs = 'Změnit',
+  fi = 'Vaihda',
+}
+export enum ETheCategoryAlreadyExists {
+  en = 'The category already exists',
+  es = 'La categoría ya existe',
+  fr = 'La catégorie existe déjà',
+  de = 'Die Kategorie existiert bereits',
+  pt = 'A categoria já existe',
+  cs = 'Kategorie již existuje',
+  fi = 'Kategoria on jo olemassa',
+}
+export enum ESpecialCharactersNotAllowed {
+  en = 'Special characters like ? are not allowed',
+  es = 'No se permiten caracteres especiales como ?',
+  fr = 'Les caractères spéciaux comme ? ne sont pas autorisés',
+  de = 'Sonderzeichen wie ? sind nicht erlaubt',
+  pt = 'Caracteres especiais como ? não são permitidos',
+  cs = 'Speciální znaky jako ? nejsou povoleny',
+  fi = 'Erityismerkit kuten ? eivät ole sallittuja',
+}
+export enum ESpecialCharactersOrSpaceNotAllowed {
+  en = 'Special characters or space are not allowed',
+  es = 'No se permiten caracteres especiales o espacio',
+  fr = 'Les caractères spéciaux ou l espace ne sont pas autorisés',
+  de = 'Sonderzeichen oder Leerzeichen sind nicht erlaubt',
+  pt = 'Caracteres especiais ou espaço não são permitidos',
+  cs = 'Speciální znaky nebo mezera nejsou povoleny',
+  fi = 'Erityismerkit tai välilyönti eivät ole sallittuja',
+}
+export enum ECategoriesCanBeRenamed {
+  en = 'Categories can be renamed',
+  es = 'Las categorías se pueden renombrar',
+  fr = 'Les catégories peuvent être renommées',
+  de = 'Kategorien können umbenannt werden',
+  pt = 'As categorias podem ser renomeadas',
+  cs = 'Kategorie lze přejmenovat',
+  fi = 'Kategoriat voidaan nimetä uudelleen',
 }

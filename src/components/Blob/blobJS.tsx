@@ -29,6 +29,7 @@ import {
   ERegistrationSuccesful,
   ESave,
   ESavingSuccessful,
+  ESpecialCharactersNotAllowed,
   ReducerProps,
 } from '../../interfaces'
 import {
@@ -81,7 +82,6 @@ import {
   ELoadingSavedArtwork,
   ENoSavedArtworkYet,
   EDisableScrollInOrderToUseTheMouseWheelToResizeABlob,
-  ESpecialCharactersNotAllowed,
 } from '../../interfaces/blobs'
 import {
   BiChevronsDown,

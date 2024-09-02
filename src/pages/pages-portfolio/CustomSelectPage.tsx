@@ -385,7 +385,6 @@ export default function CustomSelectPage({
           </div>
         </section>
       </div>
-      <Notification language={language} />
     </div>
   )
 }

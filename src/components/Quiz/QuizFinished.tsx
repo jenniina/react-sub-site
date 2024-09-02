@@ -272,7 +272,6 @@ const QuizFinished = ({ language }: Props) => {
               />
             </div>
           </section>
-          <Notification language={language} />
         </>
       )}
     </>

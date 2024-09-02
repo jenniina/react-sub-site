@@ -160,3 +160,49 @@ export enum EChooseDestination {
   cs = 'Vyberte cíl',
   fi = 'Valitse määränpää',
 }
+export enum EInvalidColorName {
+  en = 'Invalid color name',
+  es = 'Nombre de color no válido',
+  fr = 'Nom de couleur non valide',
+  de = 'Ungültiger Farbname',
+  pt = 'Nome de cor inválido',
+  cs = 'Neplatný název barvy',
+  fi = 'Virheellinen värinimi',
+}
+export enum EColorNames {
+  en = 'List of color names',
+  es = 'Lista de nombres de colores',
+  fr = 'Liste des noms de couleurs',
+  de = 'Liste der Farbnamen',
+  pt = 'Lista de nomes de cores',
+  cs = 'Seznam názvů barev',
+  fi = 'Värinimien luettelo',
+}
+//Add a color
+export enum EAddAColor {
+  en = 'Add a color',
+  es = 'Agregar un color',
+  fr = 'Ajouter une couleur',
+  de = 'Eine Farbe hinzufügen',
+  pt = 'Adicionar uma cor',
+  cs = 'Přidat barvu',
+  fi = 'Lisää väri',
+}
+export enum ENewColorsCanBeAdded {
+  en = 'New colors can be added',
+  es = 'Se pueden agregar nuevos colores',
+  fr = 'De nouvelles couleurs peuvent être ajoutées',
+  de = 'Neue Farben können hinzugefügt werden',
+  pt = 'Novas cores podem ser adicionadas',
+  cs = 'Můžete přidat nové barvy',
+  fi = 'Uusia värejä voidaan lisätä',
+}
+export enum ENewColorsCanBeAddedAndRemoved {
+  en = 'New colors can be added and removed',
+  es = 'Se pueden agregar y quitar nuevos colores',
+  fr = 'De nouvelles couleurs peuvent être ajoutées et supprimées',
+  de = 'Neue Farben können hinzugefügt und entfernt werden',
+  pt = 'Novas cores podem ser adicionadas e removidas',
+  cs = 'Můžete přidávat a odebírat nové barvy',
+  fi = 'Uusia värejä voidaan lisätä ja poistaa',
+}

@@ -702,7 +702,6 @@ const Nav = (
           </nav>
         </div>
       </header>
-      <Notification language={language} />
     </>
   )
 }
