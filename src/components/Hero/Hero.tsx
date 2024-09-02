@@ -173,15 +173,15 @@ export default function Hero({
   const [thresholdCrossed, setThresholdCrossed] = useState(false)
 
   const amount = useMemo(() => {
-    if (windowWidth < 300) return 5
+    if (windowWidth < 400) return 6
     else return 9
   }, [windowWidth])
 
   useEffect(() => {
-    if (windowWidth < 300 && !thresholdCrossed) {
+    if (windowWidth < 400 && !thresholdCrossed) {
       setReinitialize(!reinitialize)
       setThresholdCrossed(true)
-    } else if (windowWidth >= 300 && thresholdCrossed) {
+    } else if (windowWidth >= 400 && thresholdCrossed) {
       setReinitialize(!reinitialize)
       setThresholdCrossed(false)
     }
@@ -209,7 +209,7 @@ export default function Hero({
       const item: itemProps = {
         i: i + 1,
         e: useRandomMinMax(4, 9),
-        size: Math.round(useRandomMinMax(5, 12)),
+        size: Math.round(useRandomMinMax(8, 14)),
         rotation: useRandomMinMax(165, 195),
         color: colorSwitch,
       }

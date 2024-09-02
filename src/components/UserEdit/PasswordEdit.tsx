@@ -129,8 +129,6 @@ const PasswordEdit = ({ user, language }: Props) => {
             </div>
             <button type='submit'>{EEdit[language]}</button>
           </form>
-
-          <Notification language={language} />
         </>
       ) : (
         <></>

@@ -120,8 +120,6 @@ const UsernameEdit = ({ user, language }: Props) => {
 
             <button type='submit'>{EEdit[language]}</button>
           </form>
-
-          <Notification language={language} />
         </>
       ) : (
         <></>

@@ -57,6 +57,13 @@ export const useDragAndDrop = <T extends Item, S extends string>(
     setListItemsByStatus(newListItemsByStatus)
   }, [updatedItems])
 
+  useEffect(() => {
+    statuses.forEach((status, index) => {
+      const [storedItems, setStoredItems] = storageHooks[index]
+      setStoredItems(listItemsByStatus[status].items)
+    })
+  }, [listItemsByStatus])
+
   const handleUpdate = useCallback(
     (id: number, newStatus: S, target?: number) => {
       const oldStatus = Object.keys(listItemsByStatus).find((status) =>
@@ -115,12 +122,55 @@ export const useDragAndDrop = <T extends Item, S extends string>(
     [listItemsByStatus, setListItemsByStatus]
   )
 
+  const handleRenameStatus = useCallback(
+    (oldStatus: S, newStatus: S) => {
+      if (oldStatus === newStatus) return
+
+      const oldStatusIndex = statuses.indexOf(oldStatus)
+
+      if (oldStatusIndex === -1) {
+        console.error(`Old status "${oldStatus}" not found in statuses array`)
+        return
+      }
+
+      // Get the old and new storage hooks
+      const [oldStoredItems, setOldStoredItems, removeOldStoredItems] =
+        storageHooks[oldStatusIndex]
+      const [, setNewStoredItems] = storageHooks[oldStatusIndex]
+
+      // Update items' status
+      const updatedItems = listItemsByStatus[oldStatus].items.map((item) => ({
+        ...item,
+        status: newStatus,
+      }))
+
+      // Update state
+      setListItemsByStatus((prev) => ({
+        ...prev,
+        [oldStatus]: {
+          ...prev[oldStatus],
+          items: [],
+        },
+        [newStatus]: {
+          ...prev[newStatus],
+          items: updatedItems,
+        },
+      }))
+
+      // Update local storage
+      setNewStoredItems(updatedItems)
+      removeOldStoredItems()
+    },
+    [listItemsByStatus, storageHooks, statuses]
+  )
+
   const handleDragging = (dragging: boolean) => setIsDragging(dragging)
 
   return {
     isDragging,
     listItemsByStatus,
     handleUpdate,
+    handleRenameStatus,
     handleDragging,
   }
 }

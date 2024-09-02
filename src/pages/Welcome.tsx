@@ -7,7 +7,7 @@ import { BsPerson } from 'react-icons/bs'
 import { IoMdImages } from 'react-icons/io'
 import { GiAbstract019 } from 'react-icons/gi'
 import { MdOutlineQuiz } from 'react-icons/md'
-import { RiTodoLine } from 'react-icons/ri'
+import { RiDragDropLine, RiTodoLine } from 'react-icons/ri'
 import { GiComb } from 'react-icons/gi'
 import { TbTriangleInverted, TbBlob } from 'react-icons/tb'
 import { LuArrowRightToLine } from 'react-icons/lu'
@@ -17,7 +17,9 @@ import {
   EBlobs,
   EButton,
   EButtons,
+  EChangeCategoryTitle,
   EContact,
+  EDragAndDrop,
   EEdit,
   EGraphQLSite,
   EHairSalonWebsite,
@@ -28,6 +30,7 @@ import {
   EQuiz,
   EQuizApp,
   EQuizAppIntro,
+  EReset,
   ETestYourKnowledge,
   EToDo,
 } from '../interfaces'
@@ -71,9 +74,11 @@ import {
   EManyVersions,
   EMoveViewInDifferentDirections,
   ENameYourArtwork,
+  ERemovable,
   ERenameYourArtwork,
   EToggleControlVisibility,
 } from '../interfaces/blobs'
+import { EAddAColor } from '../interfaces/draganddrop'
 
 export default function Home({
   heading,
@@ -161,6 +166,19 @@ export default function Home({
                     <li>
                       <strong>{ESeptember[language]}</strong>
                       <ul>
+                        <li>
+                          <Link to='/portfolio/draganddrop'>
+                            <RiDragDropLine />
+                            {EDragAndDrop[language]}:
+                          </Link>
+                          <i>
+                            {EAddedNewFeatures[language]}:{' '}
+                            {firstToLowerCase(EAddAColor[language])},{' '}
+                            {firstToLowerCase(EChangeCategoryTitle[language])},{' '}
+                            {firstToLowerCase(EReset[language])},{' '}
+                            {firstToLowerCase(ERemovable[language])}
+                          </i>
+                        </li>
                         <li>
                           <Link to='/portfolio/blob'>
                             <TbBlob />

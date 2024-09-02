@@ -833,12 +833,3 @@ export enum EAMaxOf30CharactersPlease {
   cs = 'Maximálně 30 znaků, prosím',
   fi = 'Enintään 30 merkkiä, kiitos',
 }
-export enum ESpecialCharactersNotAllowed {
-  en = 'Special characters like ? are not allowed',
-  es = 'No se permiten caracteres especiales como ?',
-  fr = 'Les caractères spéciaux comme ? ne sont pas autorisés',
-  de = 'Sonderzeichen wie ? sind nicht erlaubt',
-  pt = 'Caracteres especiais como ? não são permitidos',
-  cs = 'Speciální znaky jako ? nejsou povoleny',
-  fi = 'Erityismerkit kuten ? eivät ole sallittuja',
-}

@@ -665,7 +665,7 @@ body .z {
 .max-content {
   max-width: max-content;
 }
-@media (max-width: 300px) {
+@media (max-width: 399px) {
   #root .App:not(.noTooltip) .site-navigation .tooltipwrap {
     --tooltip-offset: 1.5rem;
     --tooltip-bgcolor: lightgray;
@@ -789,6 +789,7 @@ nav .open.password-reset-container button.forgot-btn {
   display: inline-block;
   cursor: help;
   z-index: 3;
+  min-width: 100px;
 }
 #root .App .tooltip-wrap:focus .tooltip,
 #root .App .tooltip-wrap:hover .tooltip {

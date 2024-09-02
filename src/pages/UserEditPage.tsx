@@ -119,7 +119,6 @@ const UserEditPage = ({
           </section>
         </div>
       </div>
-      <Notification language={language} />
     </>
   )
 }

@@ -1,34 +1,61 @@
 import { useState } from 'react'
 import { Data, Status } from '../interfaces'
 import CardSingle from './CardSingle'
-import { useTheme } from '../../../hooks/useTheme'
 import styles from '../dragAndDrop.module.css'
-import { ELanguages } from '../../../interfaces'
+import {
+  EChange,
+  EChangeCategoryTitle,
+  ELanguages,
+  ESpecialCharactersOrSpaceNotAllowed,
+  ESubmit,
+} from '../../../interfaces'
 import { EBad, EGood, ENeutral } from '../../../interfaces/draganddrop'
+import Accordion from '../../Accordion/Accordion'
+import { notify } from '../../../reducers/notificationReducer'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
 
 interface Props {
   language: ELanguages
   itemsByStatus: Data[]
   status: Status
+  statuses: Status[]
   isDragging: boolean
   handleUpdate: (id: number, status: Status, target?: number) => void
+  handleRemoveColor: (color: Data['content']) => void
   handleDragging: (dragging: boolean) => void
+  lightTheme: boolean
+  sanitize: (str: string) => string
+  updateStatus: (index: number, status: Status) => void
 }
 
 export const CardsContainer = ({
   language,
   status,
+  statuses,
   isDragging,
   handleDragging,
   handleUpdate,
+  handleRemoveColor,
   itemsByStatus,
+  lightTheme,
+  sanitize,
+  updateStatus,
 }: Props) => {
-  const lightTheme = useTheme()
+  const dispatch = useAppDispatch()
 
   const [theTarget, setTheTarget] = useState<number>(0)
+  const [isOpen, setIsOpen] = useState(false)
+  const [newStatus, setNewStatus] = useState<Status>('')
 
-  const getTarget = (status: Status, target: number) => {
-    setTheTarget(target)
+  const regex = /^[\w\u00C0-\u024F\u1E00-\u1EFF-_]*$/
+
+  const handleStatusNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    if (regex.test(value)) {
+      setNewStatus(value)
+    } else {
+      dispatch(notify(ESpecialCharactersOrSpaceNotAllowed[language], true, 6))
+    }
   }
 
   const handleDrop = (e: React.DragEvent<HTMLUListElement>) => {
@@ -44,24 +71,57 @@ export const CardsContainer = ({
         isDragging ? styles['area-dragging'] : ''
       } ${lightTheme ? styles['light'] : ''}`}
     >
-      <span id={`label-${status}`}>
+      <span id={`label-${sanitize(status)}`}>
         {(() => {
-          switch (status) {
+          const statusLowerCase = status.toLowerCase()
+          switch (statusLowerCase) {
             case 'good':
-              return `${EGood[language]}?`
+              return EGood[language]
             case 'bad':
-              return `${EBad[language]}?`
+              return EBad[language]
             case 'neutral':
-              return `${ENeutral[language]}?`
+              return ENeutral[language]
             default:
               return status
           }
         })()}
+        <Accordion
+          isOpen={isOpen}
+          setIsFormOpen={setIsOpen}
+          language={language}
+          text={`*`}
+          hideBrackets
+          className={`${styles['change-status']} change-status`}
+          tooltip={EChangeCategoryTitle[language]}
+          x='left'
+          y='below'
+        >
+          <form
+            onSubmit={(e) => {
+              e.preventDefault()
+              updateStatus(statuses.indexOf(status), newStatus)
+            }}
+          >
+            <div className='input-wrap'>
+              <label htmlFor={`${sanitize(status)}-status`}>
+                <input
+                  type='text'
+                  required
+                  id={`${sanitize(status)}-status`}
+                  value={newStatus}
+                  onChange={(e) => handleStatusNameChange(e)}
+                />
+                <span>{EChange[language]}</span>
+              </label>
+            </div>
+            <button type='submit'>{ESubmit[language]}</button>
+          </form>
+        </Accordion>
       </span>
       <ul
-        aria-labelledby={`label-${status}`}
-        id={status}
-        className={styles[status]}
+        aria-labelledby={`label-${sanitize(status)}`}
+        id={sanitize(status)}
+        className={sanitize(status)}
         role={'list'}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
@@ -73,10 +133,13 @@ export const CardsContainer = ({
             index={index}
             data={item}
             status={status}
-            key={`${status}item${item.id}-${Date.now()}`}
+            statuses={statuses}
+            key={`${sanitize(status)}-item-${item.id}-${index}`}
             handleDragging={handleDragging}
             handleUpdate={handleUpdate}
-            getTarget={getTarget}
+            handleRemoveColor={handleRemoveColor}
+            setTheTarget={setTheTarget}
+            sanitize={sanitize}
           />
         ))}
       </ul>

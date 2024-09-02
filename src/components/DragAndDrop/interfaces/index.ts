@@ -1,13 +1,13 @@
-export type Status = 'good' | 'bad' | 'neutral'
-export type Background = 'light' | 'dark'
+export type Status = string
+export type Lightness = 'light' | 'dark'
 export type Data = {
-    id: number,
-    content: string,
-    color: string;
-    status: Status,
-    background: Background
+  id: number
+  content: string
+  color: string
+  status: Status
+  lightness: Lightness
 }
 
 export interface RefObject<T> {
-    readonly current: T | null
+  readonly current: T | null
 }

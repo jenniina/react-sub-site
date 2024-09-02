@@ -296,7 +296,6 @@ export default function TodoApp({ language }: Props) {
         />
         {status === 'loading' && <p>{ELoading[language]}...</p>}
       </div>
-      <Notification language={language} />
     </>
   )
 }

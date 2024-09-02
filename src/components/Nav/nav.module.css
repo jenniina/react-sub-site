@@ -36,8 +36,9 @@
 .main-header button:focus {
   outline: none;
 }
-.main-header button:hover span,
-.main-header button:focus span {
+
+.main-header nav:not(.toolbar) button:hover span,
+.main-header nav:not(.toolbar) button:focus span {
   opacity: 1;
   -webkit-transform: translateX(-50%) scale(1);
   -ms-transform: translateX(-50%) scale(1);
@@ -90,6 +91,7 @@
   margin: 0 auto;
   height: var(--height);
   width: 100%;
+  padding-right: 0.5rem;
 }
 .main-header h2 {
   font-size: clamp(var(--title-S), 3vw, var(--title-M));
@@ -569,7 +571,7 @@ a.link:visited:not(.active):focus > *,
 /*
 /*
 /***************************** (max-width: 599px) *****************************/
-@media (max-width: 599px) {
+@media (max-width: 699px) {
   /*if you change the pixel amount, also change below min-width 
   and const breakpoint in Nav.tsx
   and in menualt */
@@ -663,7 +665,7 @@ a.link:visited:not(.active):focus > *,
   }
 } /*END media*/
 
-@media (max-width: 300px) {
+@media (max-width: 400px) {
   .main-header button.search svg,
   .main-header button.settings svg,
   .main-header button.menutoggle svg {
@@ -720,7 +722,7 @@ a.link:visited:not(.active):focus > *,
 /*
 /***************************** (min-width: 600px) *****************************/
 
-@media (min-width: 600px) {
+@media (min-width: 700px) {
   /*if you change the pixel amount, also change above max-width 
   and const breakpoint in Nav.tsx
   and in menualt */
@@ -778,11 +780,13 @@ a.link:visited:not(.active):focus > *,
   .main-header button.settings,
   .main-header button.togglemenu {
     padding: 0.3em 0.8vw 0.12em;
+    font-size: 0.8em;
     word-break: keep-all;
     display: flex;
     flex-flow: row nowrap;
     align-items: flex-end;
     flex: 0 0 0;
+    min-width: max-content;
   }
 
   .menu-container ul a svg {
@@ -1155,7 +1159,7 @@ button.dlt-btn:focus {
     align-items: center;
     padding: 4vw 0 1vw;
   }
-  @media (min-width: 300px) {
+  @media (min-width: 400px) {
     .menualt .menu-container ul a {
       font-size: 0.9em;
     }
@@ -1198,7 +1202,7 @@ button.dlt-btn:focus {
   transform: rotate(0deg);
 }
 
-@media (min-width: 300px) {
+@media (min-width: 400px) {
   .toolbar {
     max-width: 17em;
   }
@@ -1207,7 +1211,7 @@ button.dlt-btn:focus {
   }
 } /*END media*/
 
-@media (min-width: 600px) {
+@media (min-width: 700px) {
   .menualt .menu-container:not(.altnav) ul li a,
   .menualt button.search,
   .menualt button.settings {
@@ -1219,6 +1223,7 @@ button.dlt-btn:focus {
     transform-origin: right;
     align-items: center;
     padding: 0.8em 1.4rem 0em;
+    min-width: max-content;
   }
   .menualt .menu-container:not(.altnav) ul li a svg,
   .menualt button.search svg,
@@ -1245,7 +1250,7 @@ button.dlt-btn:focus {
   .menualt .menu-container:not(.altnav) ul li a span,
   .menualt button.search span,
   .menualt button.settings span {
-    font-size: 0.9em;
+    font-size: 0.8em;
     position: absolute;
     bottom: 50%;
     left: 50%;
@@ -1331,7 +1336,7 @@ button.dlt-btn:focus {
     transform: scale(0.6);
   }
   .menualt button.settings {
-    padding-right: 2.5em;
+    padding-right: 2.8em;
   }
 } /*END media*/
 
@@ -1404,7 +1409,7 @@ button.dlt-btn:focus {
 .main-header button.search {
   display: none;
 }
-@media (max-width: 300px) {
+@media (max-width: 400px) {
   .menualt .menu-container ul a span {
     clip: rect(1px, 1px, 1px, 1px);
     -webkit-clip-path: inset(50%);

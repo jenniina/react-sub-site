@@ -118,8 +118,6 @@ const LanguageEdit = ({ user, language, setLanguage, options, getKeyByValue }: P
             </div>
             <button type='submit'>{EEdit[language]}</button>
           </form>
-
-          <Notification language={language} />
         </>
       ) : (
         <></>

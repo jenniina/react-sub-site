@@ -29,6 +29,9 @@ interface accordionProps {
   onClick?: () => void
   id?: string
   hideBrackets?: boolean
+  tooltip?: string
+  y?: 'above' | 'below'
+  x?: 'left' | 'right'
 }
 
 const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefined) => {
@@ -80,7 +83,9 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
     >
       <button
         type='button'
-        className={`accordion-btn open ${props.className}`}
+        className={`${props.tooltip ? 'tooltip-wrap' : ''} accordion-btn open ${
+          props.className
+        }`}
         onClick={toggleVisibility}
         style={visible ? { display: 'none' } : { display: 'inline-block' }}
       >
@@ -91,6 +96,10 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
         <span aria-hidden='true' className={props.hideBrackets ? 'hide' : ''}>
           &#xFE3D;
         </span>
+        <strong
+          className={props.tooltip ? `tooltip ${props.x} ${props.y}` : ''}
+          data-tooltip={props.tooltip}
+        ></strong>
       </button>
 
       <div

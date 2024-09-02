@@ -66,7 +66,6 @@ import {
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
-import Notification from './components/Notification'
 import {
   createJoke,
   deleteUserFromJoke,
@@ -1526,7 +1525,6 @@ function Jokes({
           />
         </div>
       </section>
-      <Notification language={language} />
     </>
   )
 }
