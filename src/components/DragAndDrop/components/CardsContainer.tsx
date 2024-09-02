@@ -92,7 +92,7 @@ export const CardsContainer = ({
           text={`*`}
           hideBrackets
           className={`${styles['change-status']} change-status`}
-          tooltip={EChangeCategoryTitle[language]}
+          tooltip={EChange[language]}
           x='left'
           y='below'
         >
