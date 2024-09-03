@@ -16,6 +16,8 @@ import {
   ETasksCanBeEdited,
   ETasksCanBeReorganizedByDraggingAndDropping,
 } from '../../interfaces/todo'
+import Accordion from '../../components/Accordion/Accordion'
+import { EClickHereToSeeFeatures } from '../../components/Jokes/interfaces'
 
 export default function TodoPage({
   heading,
@@ -35,22 +37,32 @@ export default function TodoPage({
         <section className='card'>
           <div>
             <div className='medium'>
-              <h2>{EFeatures[language]}</h2>
-              <ul className='ul'>
-                <li>{EKeyboardAccessible[language]}</li>
-                <li>
-                  {ERemoveTaskEitherIndividuallyOrClearAllCompletedTasksAtOnce[language]}
-                </li>
-                <li>{ETasksCanBeEdited[language]}</li>
-                <li>{ETasksCanBeReorganizedByDraggingAndDropping[language]}</li>
-                <li>{EShowsHowManyTasksAreLeftToDo[language]}</li>
-                <li>{EStoresTasksInMongoDBIfTheUserIsLoggedIn[language]}</li>
-              </ul>
-              <h3>{EKeyboardUse[language]}</h3>
-              <ul className='ul'>
-                <li>{EAddTasksByTabbingToTheInputFieldAnd[language]}</li>
-                <li>{ERemoveATaskByTabbingToTheRemoveButtonAnd[language]}</li>
-              </ul>
+              <Accordion
+                language={language}
+                text={EClickHereToSeeFeatures[language]}
+                className='features'
+              >
+                <h2>{EFeatures[language]}</h2>
+                <ul className='ul'>
+                  <li>{EKeyboardAccessible[language]}</li>
+                  <li>
+                    {
+                      ERemoveTaskEitherIndividuallyOrClearAllCompletedTasksAtOnce[
+                        language
+                      ]
+                    }
+                  </li>
+                  <li>{ETasksCanBeEdited[language]}</li>
+                  <li>{ETasksCanBeReorganizedByDraggingAndDropping[language]}</li>
+                  <li>{EShowsHowManyTasksAreLeftToDo[language]}</li>
+                  <li>{EStoresTasksInMongoDBIfTheUserIsLoggedIn[language]}</li>
+                </ul>
+                <h3>{EKeyboardUse[language]}</h3>
+                <ul className='ul'>
+                  <li>{EAddTasksByTabbingToTheInputFieldAnd[language]}</li>
+                  <li>{ERemoveATaskByTabbingToTheRemoveButtonAnd[language]}</li>
+                </ul>
+              </Accordion>
             </div>
           </div>
         </section>

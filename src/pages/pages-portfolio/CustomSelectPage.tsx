@@ -64,6 +64,8 @@ import {
 } from '../../interfaces/select'
 import { ETodoApp } from '../../components/Todo/interfaces'
 import { EThereWasAnErrorSendingTheMessage } from '../../interfaces/form'
+import { EClickHereToSeeFeatures } from '../../components/Jokes/interfaces'
+import Accordion from '../../components/Accordion/Accordion'
 
 export default function CustomSelectPage({
   heading,
@@ -200,27 +202,35 @@ export default function CustomSelectPage({
         <section className='card'>
           <div>
             <div className='medium'>
-              <h2>{EFeatures[language]}</h2>
-              <ul className='ul'>
-                <li>{ESingleSelectOrMultipleSelect[language]}</li>
-                <li>{EMoveToItemWithKeyboardKeys[language]}</li>
-                <li>{ELabelCanBeHiddenFromViewButIsStillAccessible[language]}</li>
-              </ul>
-              <h3>{EKeyboardUse[language]}</h3>
-              <ul className='ul'>
-                <li>{ETabToSelectEnterOrSpaceToOpen[language]}</li>
-                <li>{EUseUpAndDownArrowKeysToMoveToAnOption[language]}</li>
-                <li>
-                  {
-                    EAlternativelyMoveToAnItemOnTheListByWritingTheFirstFewLetters[
-                      language
-                    ]
-                  }
-                </li>
-                <li>{ESelectOptionWithEnterOrSpace[language]}</li>
-                <li>{EPressTabToMoveToTheSelectedButtonsOrToTheClearButton[language]}</li>
-                <li>{EPressEscapeToCloseDropdownWithoutSelectingAnOption[language]}</li>
-              </ul>
+              <Accordion
+                language={language}
+                text={EClickHereToSeeFeatures[language]}
+                className='features'
+              >
+                <h2>{EFeatures[language]}</h2>
+                <ul className='ul'>
+                  <li>{ESingleSelectOrMultipleSelect[language]}</li>
+                  <li>{EMoveToItemWithKeyboardKeys[language]}</li>
+                  <li>{ELabelCanBeHiddenFromViewButIsStillAccessible[language]}</li>
+                </ul>
+                <h3>{EKeyboardUse[language]}</h3>
+                <ul className='ul'>
+                  <li>{ETabToSelectEnterOrSpaceToOpen[language]}</li>
+                  <li>{EUseUpAndDownArrowKeysToMoveToAnOption[language]}</li>
+                  <li>
+                    {
+                      EAlternativelyMoveToAnItemOnTheListByWritingTheFirstFewLetters[
+                        language
+                      ]
+                    }
+                  </li>
+                  <li>{ESelectOptionWithEnterOrSpace[language]}</li>
+                  <li>
+                    {EPressTabToMoveToTheSelectedButtonsOrToTheClearButton[language]}
+                  </li>
+                  <li>{EPressEscapeToCloseDropdownWithoutSelectingAnOption[language]}</li>
+                </ul>
+              </Accordion>
               <div className={selectStyles['selects-container']}>
                 <h3>{ECustomSelect[language]}</h3>
                 <form ref={form} onSubmit={handleSubmit} id='survey'>
