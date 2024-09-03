@@ -1884,3 +1884,12 @@ export enum ECategoriesCanBeRenamed {
   cs = 'Kategorie lze přejmenovat',
   fi = 'Kategoriat voidaan nimetä uudelleen',
 }
+export enum ERenameTitle {
+  en = 'Rename title',
+  es = 'Renombrar título',
+  fr = 'Renommer le titre',
+  de = 'Titel umbenennen',
+  pt = 'Renomear título',
+  cs = 'Přejmenovat název',
+  fi = 'Nimeä uudelleen',
+}
