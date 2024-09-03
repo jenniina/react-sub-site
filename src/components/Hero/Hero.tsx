@@ -80,16 +80,21 @@ export default function Hero({
   const resetButton = useRef() as RefObject<HTMLButtonElement>
   const ulRef = useRef() as RefObject<HTMLUListElement>
 
-  //Make ELSE-item dots follow the mouse:
-  const follow = (e: PointerEvent) => {
-    const eyes = [...document.querySelectorAll<HTMLSpanElement>('.inner')]
-    if (eyes) {
+  //Make eyes follow the mouse:
+  const follow = (e: Event) => {
+    const eyes = [...document.querySelectorAll<HTMLSpanElement>('.eye .inner')]
+    if (eyes.length > 0) {
       eyes.forEach((eye) => {
         const rect = eye.getBoundingClientRect()
         const x = rect.left + rect.width / 2
         const y = rect.top + rect.height / 2
-        const rotation = radianToAngle(e.clientX, e.clientY, x, y)
-        eye.style.transform = `rotate(${rotation}deg);`
+        const rotation = radianToAngle(
+          (e as PointerEvent).clientX,
+          (e as PointerEvent).clientY,
+          x,
+          y
+        )
+        eye.style.transform = `rotate(${rotation}deg)`
       })
     }
   }
@@ -101,7 +106,7 @@ export default function Hero({
     return deg
   }
 
-  useEventListener('mousemove', (e: PointerEvent) => {
+  useEventListener('mousemove', (e: Event) => {
     follow(e)
   })
 
@@ -397,7 +402,7 @@ export default function Hero({
               ) {
                 const style: React.CSSProperties = {
                   position: 'absolute',
-                  top: `calc(3vh + calc(1vh * ${item.e * 3} * ${item.size / 6}))`,
+                  top: `calc(-10vh + 1vh * ${item.e * 3} * ${item.size / 6})`,
                   left: `calc(2% + ${item.i / 1.1} * 1vw * ${item.e})`,
                   backgroundColor: `transparent`,
                   color: `${item.color}`,
@@ -599,7 +604,7 @@ export default function Hero({
                   <li
                     key={`${item.color}${index}`}
                     id={`eye${index + 1}`}
-                    className={`${styles.item} ${styles.eyes} ${styles[location]} 
+                    className={`eye ${styles.item} ${styles.eyes} ${styles[location]} 
                                 ${
                                   windowHeight < windowWidth ? styles.wide : styles.tall
                                 }`}
