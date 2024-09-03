@@ -87,7 +87,6 @@ export default function Portfolio({
                 <li>@reduxjs/toolkit</li>
                 <li>axios</li>
                 <li>uuid</li>
-                <li>lodash</li>
               </ul>
             </div>
             <ul className={`${styles.list}`}>
