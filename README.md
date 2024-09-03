@@ -44,7 +44,6 @@ The site is built with React and uses the following libraries:
 
     - @reduxjs/toolkit: Redux toolkit is used for state management.
     - axios: Axios is used for making HTTP requests.
-    - lodash: Lodash is used for utility functions.
     - react-icons: React icons is used for displaying icons.
     - react-redux: React redux is used for state management.
     - react-router-dom: React router dom is used for routing.

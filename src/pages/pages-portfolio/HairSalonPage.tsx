@@ -3,6 +3,7 @@ import Accordion from '../../components/Accordion/Accordion'
 import Hero from '../../components/Hero/Hero'
 import { EDependencies, EFeatures, ELanguages } from '../../interfaces'
 import { ESalonIntro1, ESalonIntro2, ESalonIntro3 } from '../../interfaces/salon'
+import { EClickHereToSeeFeatures } from '../../components/Jokes/interfaces'
 
 export default function HairSalonPage({
   heading,
@@ -25,7 +26,7 @@ export default function HairSalonPage({
             <div className='medium'>
               <Accordion
                 language={language}
-                text={EFeatures[language]}
+                text={EClickHereToSeeFeatures[language]}
                 className='salon-features'
                 setIsFormOpen={setIsFormOpen}
               >

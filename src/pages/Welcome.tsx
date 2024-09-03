@@ -116,6 +116,25 @@ export default function Home({
   return (
     <div className={`welcome ${type} ${lightTheme ? styles.light : ''}`}>
       <Hero language={language} address='welcome' heading={heading} text={text} />
+      <Select
+        language={language}
+        id='language-welcome'
+        className={`${styles['language-welcome']} language ${styles.language}`}
+        instructions={ELanguageTitle[language]}
+        hide
+        options={options(ELanguages)}
+        value={
+          language
+            ? ({
+                value: language,
+                label: getKeyByValue(ELanguages, language),
+              } as SelectOption)
+            : undefined
+        }
+        onChange={(o) => {
+          setLanguage(o?.value as ELanguages)
+        }}
+      />
       <div className='inner-wrap'>
         <section className={`card`}>
           <div>
@@ -136,25 +155,7 @@ export default function Home({
                 </Link>
               </li>
             </ul>
-            <Select
-              language={language}
-              id='language-welcome'
-              className={`language ${styles.language}`}
-              instructions={ELanguageTitle[language]}
-              hide
-              options={options(ELanguages)}
-              value={
-                language
-                  ? ({
-                      value: language,
-                      label: getKeyByValue(ELanguages, language),
-                    } as SelectOption)
-                  : undefined
-              }
-              onChange={(o) => {
-                setLanguage(o?.value as ELanguages)
-              }}
-            />
+
             <div className={`${styles.newest}`}>
               <h2 className={`${styles.subheading}`}>
                 {ENewest[language]} / {EEdited[language]}

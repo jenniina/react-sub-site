@@ -158,6 +158,12 @@
   font-size: 1.8em;
 }
 
+.language-welcome {
+  position: relative;
+  top: -5rem;
+  margin-bottom: -3rem;
+}
+
 @media (min-width: 600px) {
   .list {
     flex-flow: row nowrap;

@@ -6,6 +6,7 @@ import {
   EChange,
   EChangeCategoryTitle,
   ELanguages,
+  ERenameTitle,
   ESpecialCharactersOrSpaceNotAllowed,
   ESubmit,
 } from '../../../interfaces'
@@ -92,7 +93,7 @@ export const CardsContainer = ({
           text={`*`}
           hideBrackets
           className={`${styles['change-status']} change-status`}
-          tooltip={EChange[language]}
+          tooltip={ERenameTitle[language]}
           x='left'
           y='below'
         >
