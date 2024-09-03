@@ -33,8 +33,8 @@ export default function Home({
   const { array, set, push, remove, filter, update, clear } = useArray([1, 2, 3, 4, 5, 6])
 
   const [key, setKey] = useState('')
-  useEventListener('keydown', (e: KeyboardEvent) => {
-    setKey(e.key)
+  useEventListener('keydown', (e: Event) => {
+    setKey((e as KeyboardEvent).key)
   })
 
   const headerTwoRef = useRef() as RefObject<HTMLElement>
