@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { useTheme } from '../hooks/useTheme'
 import {
   EBlobAppIntro,
+  EBlobAppSlogan,
   ECustomSelect,
   ECustomSelectIntro,
   EDependencies,
@@ -33,9 +34,14 @@ import { RiTodoLine, RiDragDropLine, RiDragMove2Fill } from 'react-icons/ri'
 import { GiAbstract019, GiComb } from 'react-icons/gi'
 import { MdOutlineQuiz } from 'react-icons/md'
 import { GrGraphQl } from 'react-icons/gr'
-import { ETheComediansCompanion } from '../components/Jokes/interfaces'
+import {
+  ESeeLocalJokes,
+  ESubmitAJoke,
+  ETheComediansCompanion,
+} from '../components/Jokes/interfaces'
 import { ETodoApp } from '../components/Todo/interfaces'
 import { ETryDraggingTheBlobs } from '../interfaces/blobs'
+import { EBlobArtApp } from '../interfaces/about'
 
 export default function Portfolio({
   heading,
@@ -51,6 +57,10 @@ export default function Portfolio({
   const form = useRef() as RefObject<HTMLFormElement>
 
   const lightTheme = useTheme()
+
+  const capitalizeFirst = (string: string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1)
+  }
 
   return (
     <div className={`portfolio ${type} ${lightTheme ? styles.light : ''}`}>
@@ -93,9 +103,11 @@ export default function Portfolio({
               <li>
                 <Link to='/portfolio/blob'>
                   <RiDragMove2Fill />
-                  <span>{EDraggableBlobs[language]}</span>
+                  <span>{EBlobArtApp[language]}</span>
                 </Link>
-                <p>{EBlobAppIntro[language]}</p>
+                <p>
+                  {EBlobAppSlogan[language]}. {EBlobAppIntro[language]}
+                </p>
               </li>
               <li>
                 <Link to='/portfolio/quiz'>
@@ -109,7 +121,11 @@ export default function Portfolio({
                   <GiAbstract019 />
                   <span>{ETheComediansCompanion[language]}</span>
                 </Link>
-                <p>{EJokesAppIntro[language]}</p>
+                <p>
+                  {EJokesAppIntro[language]}{' '}
+                  {capitalizeFirst(ESubmitAJoke[language].toLowerCase())}.{' '}
+                  {ESeeLocalJokes[language]}.
+                </p>
               </li>
               <li>
                 <Link to='/portfolio/graphql'>

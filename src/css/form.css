@@ -48,6 +48,7 @@ legend {
 legend > p {
   font-size: clamp(calc(1rem * var(--responsive_scale)), 1.5vw, var(--title-XS));
   font-family: var(--text-family);
+  letter-spacing: 0;
   padding-top: 0;
 }
 @media (min-width: 300px) {
