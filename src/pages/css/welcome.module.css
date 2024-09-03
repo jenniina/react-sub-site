@@ -163,9 +163,16 @@
   top: -6rem;
   margin-bottom: -3rem;
   gap: 0.5em;
+  background-color: hsla(var(--hue-primary), 100%, 2%, 0.3);
+  padding: 0.6em 0.3em 0.3em;
+  border-radius: var(--radius-small);
+}
+.light .language-welcome {
+  background-color: hsla(var(--hue-primary), 100%, 97%, 0.3);
 }
 .language-welcome > span {
   padding-left: 0.5em;
+  text-shadow: 0.1em 0.1em 0.1em var(--color-primary-1);
 }
 
 @media (min-width: 600px) {
