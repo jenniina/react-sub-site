@@ -18,6 +18,7 @@ import {
   EButton,
   EButtons,
   EChangeCategoryTitle,
+  EChangeLanguage,
   EContact,
   EDragAndDrop,
   EEdit,
@@ -120,8 +121,7 @@ export default function Home({
         language={language}
         id='language-welcome'
         className={`${styles['language-welcome']} language ${styles.language}`}
-        instructions={ELanguageTitle[language]}
-        hide
+        instructions={`${EChangeLanguage[language]}:`}
         options={options(ELanguages)}
         value={
           language

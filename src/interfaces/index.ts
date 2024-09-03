@@ -1893,3 +1893,12 @@ export enum ERenameTitle {
   cs = 'Přejmenovat název',
   fi = 'Nimeä uudelleen',
 }
+export enum EChangeLanguage {
+  en = 'Change language',
+  es = 'Cambiar idioma',
+  fr = 'Changer de langue',
+  de = 'Sprache ändern',
+  pt = 'Mudar idioma',
+  cs = 'Změnit jazyk',
+  fi = 'Vaihda kieli',
+}
