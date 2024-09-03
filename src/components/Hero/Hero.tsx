@@ -641,109 +641,14 @@ export default function Hero({
                   </li>
                 )
               } else {
-                // //ELSE
-                // const style: React.CSSProperties = {
-                //   position: 'absolute',
-                //   top: touchDevice
-                //     ? `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.3}))`
-                //     : `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.9}))`,
-                //   left: `calc(1% + calc(${item.i} * 1vw * ${item.e}))`,
-                //   backgroundColor: `transparent`,
-                //   color: `${item.color}`,
-                //   ['--i' as string]: `${item.i}`,
-                //   ['--e' as string]: `${item.e}`,
-                //   ['--s2' as string]: `${item.size}`,
-                //   ['--s' as string]:
-                //     windowWidth < windowHeight ? `${item.size}vh` : `${item.size}vw`,
-                //   width:
-                //     windowWidth < windowHeight
-                //       ? `calc(${item.size - 2} * 0.8vh)`
-                //       : `calc(${item.size - 2} * 0.8vw)`,
-                //   height:
-                //     windowWidth < windowHeight
-                //       ? `calc(${item.size - 2} * 0.8vh)`
-                //       : `calc(${item.size - 2} * 0.8vw)`,
-                //   minHeight: '40px',
-                //   minWidth: '40px',
-                //   maxHeight: '90px',
-                //   maxWidth: '90px',
-                //   borderRadius: '65% 65% 70% 60% / 60% 70% 60% 65%',
-                //   opacity: `0.${item.size > 6 ? 7 : Math.ceil(item.size)}`,
-                // }
-                // const styleInner: React.CSSProperties = {
-                //   position: 'absolute',
-                //   top: `0`,
-                //   left: `0`,
-                //   backgroundColor: `transparent`,
-                //   width: '100%',
-                //   height: '100%',
-                //   borderRadius: '65% 65% 70% 60% / 60% 70% 60% 65%',
-                //   opacity: `0.${item.size > 6 ? 99 : Math.ceil(item.size + 3)}
-                //                     }`,
-                // }
-
-                // return (
-                //   //ELSE
-
-                //   <li
-                //     key={`${item.color}${index}`}
-                //     id={`eye${index + 1}`}
-                //     className={`${styles.item} ${styles.eyes} ${styles[location]}
-                //                 ${
-                //                   windowHeight < windowWidth ? styles.wide : styles.tall
-                //                 }`}
-                //     style={style}
-                //     role={'option'}
-                //     tabIndex={0}
-                //     onFocus={(e) => {
-                //       ulRef.current?.setAttribute(
-                //         'aria-activedescendant',
-                //         `${e.target.id}`
-                //       )
-                //     }}
-                //     onBlurCapture={(e) => {
-                //       ulRef.current?.setAttribute('aria-activedescendant', '')
-                //     }}
-                //     onPointerEnter={(e) => movingItem(e)}
-                //     // onPointerEnter={e => addDirectionClass(e)}
-                //     onPointerCancel={(e) => {
-                //       removeItem(e.target as HTMLElement)
-                //     }}
-                //     onMouseDown={(e) => {
-                //       removeItem(e.target as HTMLElement)
-                //     }}
-                //     onTouchStart={(e) => {
-                //       removeItem(e.target as HTMLElement)
-                //     }}
-                //     onPointerDown={(e) => {
-                //       removeItem(e.target as HTMLElement)
-                //     }}
-                //     onKeyDown={(e) => {
-                //       switch (e.key) {
-                //         case 'Enter':
-                //         case 'Space':
-                //           e.preventDefault()
-                //           removeItem(e.target as HTMLElement)
-                //           break
-                //         case 'Escape':
-                //           if (resetButton.current) resetButton.current.focus()
-                //       }
-                //     }}
-                //   >
-                //     <div style={styleInner} className={`inner ${styles.inner}`}>
-                //       <span className='else-eye'>
-                //         <span className='scr'>eye {index + 1}</span>
-                //       </span>
-                //     </div>
-                //   </li>
-                // )
-
                 // ELSE
 
                 const border = `clamp(40px, calc(0.6vw * ${item.size}), 200px)`
 
                 const style: React.CSSProperties = {
-                  ['--rotate' as string]: `${item.rotation}deg`,
+                  ['--rotate' as string]: `${
+                    item.rotation ?? `${useRandomMinMax(165, 195)}`
+                  }deg`,
                   ['--color' as string]: `${item.color}`,
                   ['--color2' as string]: 'hsla(0, 0%, 100%, 0.7)',
                   ['--s' as string]: `${item.size}`,
