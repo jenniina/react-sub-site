@@ -37,6 +37,7 @@ import {
   ENameYourArtwork,
   EPointerUse,
   EPressEnterToCycleThroughTheDifferentColors,
+  EPressTheCameraSymbolToTakeAScreenshot,
   ERemovable,
   ERemoveABlobByDraggingItToTheBottomLeftXSign,
   ERemoveABlobByPressingDeleteOr,
@@ -44,6 +45,7 @@ import {
   EResetTheBlobArrayToANewConfiguration,
   ESaturation,
   ESaving,
+  EScreenshot,
   ESlidersToControlBackground,
   EStopScrollingBehaviorToUseTheMouseWheelFreely,
   ETabToABlobAndWithItInFocus,
@@ -123,6 +125,15 @@ export default function BlobPage({
                         <li>{ENameYourArtwork[language]}</li>
                         <li>{ERenameYourArtwork[language]}</li>
                         <li>{EEditArtwork[language]}</li>
+                      </ul>
+                    </li>
+                    <li>
+                      {EScreenshot[language]}:
+                      <big>
+                        <i>({ENew[language]}!)</i>
+                      </big>
+                      <ul>
+                        <li>{EPressTheCameraSymbolToTakeAScreenshot[language]}</li>
                       </ul>
                     </li>
 
