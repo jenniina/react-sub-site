@@ -27,6 +27,7 @@ import {
   EPasswordsDoNotMatch,
   ERegister,
   ERegistrationSuccesful,
+  EReset,
   ESave,
   ESavingSuccessful,
   ESpecialCharactersNotAllowed,
@@ -82,6 +83,9 @@ import {
   ELoadingSavedArtwork,
   ENoSavedArtworkYet,
   EDisableScrollInOrderToUseTheMouseWheelToResizeABlob,
+  EClickHereToTakeAScreenshot,
+  EScreenshotTaken,
+  EScreenshot,
 } from '../../interfaces/blobs'
 import {
   BiChevronsDown,
@@ -90,7 +94,7 @@ import {
   BiChevronsUp,
 } from 'react-icons/bi'
 import { ImEnlarge2, ImShrink2 } from 'react-icons/im'
-import { FaPlus, FaRegClone, FaSave, FaTimes } from 'react-icons/fa'
+import { FaCamera, FaPlus, FaRegClone, FaSave, FaTimes } from 'react-icons/fa'
 import DragContainer from './components/DragContainer'
 import useWindowSize from '../../hooks/useWindowSize'
 import { IUser } from '../../interfaces'
@@ -102,6 +106,7 @@ import { initializeUser } from '../../reducers/authReducer'
 import { initializeUsers } from '../../reducers/usersReducer'
 import { useNavigate } from 'react-router-dom'
 import blobService from './services/blob'
+import { BsFillCameraFill } from 'react-icons/bs'
 
 let angle = '90deg'
 let color = 'cyan'
@@ -127,6 +132,8 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   const stopBlobs = useRef() as RefObject<HTMLButtonElement>
   const disableScrollButton = useRef() as RefObject<HTMLButtonElement>
   const resetBlobs = useRef() as RefObject<HTMLButtonElement>
+  const blobScreenshot = useRef() as RefObject<HTMLDivElement>
+  const screenshotImg = useRef() as RefObject<HTMLImageElement>
 
   const exitApp = useRef() as RefObject<HTMLDivElement>
 
@@ -1110,6 +1117,84 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     }
   }
 
+  // const takeScreenshot = async () => {
+  //   const dragWrap = document.getElementById(`drag-slider-wrap`)
+  //   if (dragWrap) {
+  //     try {
+  //       const response = await blobService.takeScreenshot(
+  //         window.location.href,
+  //         '#drag-slider-wrap',
+  //         language
+  //       )
+  //       console.log(response)
+  //       const img = document.createElement('img')
+  //       img.src = response
+  //       dragWrap.appendChild(img)
+  //     } catch (error) {
+  //       console.error('Error taking screenshot:', error)
+  //     }
+  //   }
+  // }
+  const imgStyle: CSSProperties = {
+    display: 'none',
+    width: 'auto',
+    height: 'auto',
+    margin: '0 auto',
+  }
+
+  const takeScreenshot = async () => {
+    const dragWrap = document.getElementById('drag-slider-wrap')
+    if (dragWrap) {
+      try {
+        let localStorageData: { [key: string]: string } = {}
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i)
+          if (key) {
+            const value = localStorage.getItem(key)
+            if (value !== null) {
+              localStorageData[key] = value
+            }
+          }
+        }
+
+        const url = import.meta.env.VITE_BASE_URI ?? 'https://bg.jenniina.fi'
+        const baseUrl = `${url}/api/blobs/screenshot`
+
+        const response = await fetch(baseUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            url: window.location.href,
+            selector: `#drag-wrap${d}`,
+            language,
+            localStorageData,
+            width: windowWidth,
+            height: windowHeight,
+          }),
+        })
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`)
+        }
+
+        const data = await response.json()
+        const img = screenshotImg.current
+        if (img) {
+          img.src = `data:image/png;base64,${data.screenshot}`
+          img.style.display = 'block'
+
+          blobScreenshot.current?.appendChild(img)
+          img.scrollIntoView({ behavior: 'smooth' })
+          dispatch2(notify(EScreenshotTaken[language], false, 8))
+        }
+      } catch (error) {
+        console.error('Error taking screenshot:', error)
+      }
+    }
+  }
+
   return (
     <>
       <section id={`drag-container${d}`} className={`drag-container drag-container${d}`}>
@@ -1143,7 +1228,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
               resetBlobsFunction(e)
             }}
           >
-            {EResetBlobs[language]}
+            {EReset[language]}
           </button>
           <button
             ref={disableScrollButton}
@@ -1175,14 +1260,23 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             {markerEnabled ? EMarkerOn[language] : EMarkerOff[language]}
           </button>
           <button
+            id='toggle-controls'
             className='toggle-controls'
             onClick={() => setControlsVisible(!controlsVisible)}
           >
             {controlsVisible ? EHideControls[language] : EShowControls[language]}
           </button>
+          <button onClick={takeScreenshot} className='reset screenshot tooltip-wrap'>
+            <BsFillCameraFill />
+            <span
+              className='tooltip left below space'
+              data-tooltip={EClickHereToTakeAScreenshot[language]}
+            ></span>
+          </button>
         </div>
         <div
           ref={dragWrapOuter}
+          id='drag-wrap-outer'
           className='drag-wrap-outer'
           style={{
             ...dragWrapOuterLightness,
@@ -1301,7 +1395,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             />
           )}
 
-          <div ref={dragWrap} className='drag-wrap'>
+          <div ref={dragWrap} id={`drag-wrap${d}`} className='drag-wrap'>
             <DragContainer
               layerAmount={layerAmount}
               layer={activeLayer}
@@ -1519,7 +1613,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             {EResetLightness[language]}
           </button>
         </div>
-        <div className='drag-slider-wrap'>
+        <div id='drag-slider-wrap' className='drag-slider-wrap'>
           <label htmlFor={`drag-slider-saturation${d}`} id={`saturationdescription${d}`}>
             {EAdjustBackgroundSaturation[language]}
           </label>
@@ -1698,6 +1792,9 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             </div>
           </div>
         )}
+        <div ref={blobScreenshot} id='blob-screenshot'>
+          <img src='' ref={screenshotImg} alt={EScreenshot[language]} style={imgStyle} />
+        </div>
       </section>
 
       <svg className='filter'>

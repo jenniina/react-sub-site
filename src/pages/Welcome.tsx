@@ -77,6 +77,7 @@ import {
   ENameYourArtwork,
   ERemovable,
   ERenameYourArtwork,
+  EScreenshot,
   EToggleControlVisibility,
 } from '../interfaces/blobs'
 import { EAddAColor } from '../interfaces/draganddrop'
@@ -167,6 +168,15 @@ export default function Home({
                     <li>
                       <strong>{ESeptember[language]}</strong>
                       <ul>
+                        <li>
+                          <Link to='/portfolio/blob'>
+                            <TbBlob />
+                            {EBlobs[language]}:
+                          </Link>
+                          <i>
+                            {EAddedNewFeatures[language]}: {EScreenshot[language]}!
+                          </i>
+                        </li>
                         <li>
                           <Link to='/portfolio/draganddrop'>
                             <RiDragDropLine />

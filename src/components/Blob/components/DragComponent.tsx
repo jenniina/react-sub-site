@@ -9,6 +9,7 @@ import {
   PointerEvent as PointerEventReact,
   Dispatch as DispatchReact,
   useCallback,
+  CSSProperties,
 } from 'react'
 import { Draggable, focusedBlob, ColorPair } from '../interfaces'
 import Blob from './Blob'
@@ -647,6 +648,18 @@ const DragComponent = (props: DragComponentProps) => {
   //     }
   //   }, [props.draggables?.[props.d]?.length])
 
+  const layerStyle: CSSProperties = {
+    WebkitFilter: 'url(#svgfilter)',
+    filter: 'url(#svgfilter)',
+    backgroundColor: 'transparent',
+    width: '100%',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    height: '100%',
+    pointerEvents: 'none',
+  }
+
   return (
     <ul
       ref={props.dragUlRef}
@@ -655,6 +668,7 @@ const DragComponent = (props: DragComponentProps) => {
       className={`drag-container${props.d}-layer drag-container${props.d}-layer${props.layer} ${props.className}`}
       aria-labelledby={`blobdescription${props.d}`}
       aria-activedescendant=''
+      style={layerStyle}
     >
       {props.items?.map((item: Draggable, index: number) => {
         if (item !== null && item !== undefined) {

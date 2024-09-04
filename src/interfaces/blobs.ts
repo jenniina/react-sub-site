@@ -833,3 +833,30 @@ export enum EAMaxOf30CharactersPlease {
   cs = 'Maximálně 30 znaků, prosím',
   fi = 'Enintään 30 merkkiä, kiitos',
 }
+export enum EClickHereToTakeAScreenshot {
+  en = 'Click here to take a screenshot',
+  es = 'Haga clic aquí para tomar una captura de pantalla',
+  fr = 'Cliquez ici pour prendre une capture d’écran',
+  de = 'Klicken Sie hier, um einen Screenshot zu machen',
+  pt = 'Clique aqui para tirar um screenshot',
+  cs = 'Klikněte sem pro pořízení snímku obrazovky',
+  fi = 'Napsauta tästä ottaaksesi kuvakaappauksen',
+}
+export enum EScreenshotTaken {
+  en = 'Screenshot taken',
+  es = 'Captura de pantalla tomada',
+  fr = 'Capture d’écran prise',
+  de = 'Screenshot gemacht',
+  pt = 'Screenshot tirado',
+  cs = 'Snímek obrazovky pořízen',
+  fi = 'Kuvakaappaus otettu',
+}
+export enum EScreenshot {
+  en = 'Screenshot',
+  es = 'Captura de pantalla',
+  fr = 'Capture d’écran',
+  de = 'Screenshot',
+  pt = 'Screenshot',
+  cs = 'Snímek obrazovky',
+  fi = 'Kuvakaappaus',
+}

@@ -29,7 +29,8 @@ export const ScrollToTop: FC<{
   }
   return (
     <button
-      className={`${styles['to-top-btn']} ${showTopBtn ? styles.show : ''} ${
+      id='to-top-btn'
+      className={`to-top-btn ${styles['to-top-btn']} ${showTopBtn ? styles.show : ''} ${
         styleMenu ? styles.alt : ''
       }`}
       onClick={goToTop}

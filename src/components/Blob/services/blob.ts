@@ -74,10 +74,20 @@ const deleteBlobsVersionByUser = async (
   return response.data
 }
 
+const takeScreenshot = async (url: string, selector: string, language: ELanguages) => {
+  const response = await axios.post(`${baseUrl}/screenshot`, {
+    url,
+    selector,
+    language,
+  })
+  return response.data
+}
+
 export default {
   getAllBlobsByUser,
   getBlobsVersionByUser,
   saveBlobsByUser,
   editBlobsByUser,
   deleteBlobsVersionByUser,
+  takeScreenshot,
 }
