@@ -1176,6 +1176,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
         })
 
         if (!response.ok) {
+          dispatch2(notify(EError[language], true, 8))
           throw new Error(`Error: ${response.statusText}`)
         }
 
@@ -1190,6 +1191,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           dispatch2(notify(EScreenshotTaken[language], false, 8))
         }
       } catch (error) {
+        dispatch2(notify(EError[language], true, 8))
         console.error('Error taking screenshot:', error)
       }
     }
@@ -1270,7 +1272,10 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             <BsFillCameraFill />
             <span
               className='tooltip left below space'
-              data-tooltip={EClickHereToTakeAScreenshot[language]}
+              data-tooltip={
+                `TEMPORARILY BROKEN!`
+                // EClickHereToTakeAScreenshot[language]
+              }
             ></span>
           </button>
         </div>
