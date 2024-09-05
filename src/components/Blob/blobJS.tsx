@@ -134,6 +134,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   const resetBlobs = useRef() as RefObject<HTMLButtonElement>
   const blobScreenshot = useRef() as RefObject<HTMLDivElement>
   const screenshotImg = useRef() as RefObject<HTMLImageElement>
+  const [loading, setLoading] = useState(false)
 
   const exitApp = useRef() as RefObject<HTMLDivElement>
 
@@ -1156,10 +1157,11 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             }
           }
         }
-
-        const url = import.meta.env.VITE_BASE_URI ?? 'https://bg.jenniina.fi'
+        setLoading(true)
+        const url =
+          import.meta.env.VITE_BASE_URI ??
+          'https://react-bg.braveisland-7060f196.westeurope.azurecontainerapps.io'
         const baseUrl = `${url}/api/blobs/screenshot`
-
         const response = await fetch(baseUrl, {
           method: 'POST',
           headers: {
@@ -1177,10 +1179,12 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
         if (!response.ok) {
           dispatch2(notify(EError[language], true, 8))
+          setLoading(false)
           throw new Error(`Error: ${response.statusText}`)
         }
 
         const data = await response.json()
+
         const img = screenshotImg.current
         if (img) {
           img.src = `data:image/png;base64,${data.screenshot}`
@@ -1189,6 +1193,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           blobScreenshot.current?.appendChild(img)
           img.scrollIntoView({ behavior: 'smooth' })
           dispatch2(notify(EScreenshotTaken[language], false, 8))
+          setLoading(false)
         }
       } catch (error) {
         dispatch2(notify(EError[language], true, 8))
@@ -1273,7 +1278,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             <span
               className='tooltip left below space'
               data-tooltip={
-                `TEMPORARILY BROKEN!`
+                loading ? `TEMPORARILY BROKEN! LOADING...` : `TEMPORARILY BROKEN!`
                 // EClickHereToTakeAScreenshot[language]
               }
             ></span>

@@ -1,6 +1,8 @@
 import axios, { AxiosRequestConfig } from 'axios'
 
-const url = import.meta.env.VITE_BASE_URI ?? 'https://bg.jenniina.fi'
+const url =
+  import.meta.env.VITE_BASE_URI ??
+  'https://react-bg.braveisland-7060f196.westeurope.azurecontainerapps.io'
 const baseUrl = `${url}/api/login`
 
 type credentials = {
