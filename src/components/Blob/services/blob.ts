@@ -2,7 +2,9 @@ import axios, { AxiosRequestConfig } from 'axios'
 import { Draggable, BackgroundColor } from '../interfaces'
 import { ELanguages } from '../../../interfaces'
 
-const url = import.meta.env.VITE_BASE_URI ?? 'https://bg.jenniina.fi'
+const url =
+  import.meta.env.VITE_BASE_URI ??
+  'https://react-bg.braveisland-7060f196.westeurope.azurecontainerapps.io'
 const baseUrl = `${url}/api/blobs`
 
 // router.get('/api/blobs/:user/:language', getAllBlobsByUser)
