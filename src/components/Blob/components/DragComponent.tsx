@@ -184,7 +184,9 @@ const DragComponent = (props: DragComponentProps) => {
       target: HTMLElement
     ) => {
       e.stopPropagation()
-      isTouchDevice() && e.preventDefault()
+      if (isTouchDevice()) {
+        document.addEventListener('touchmove', preventDefault, { passive: false })
+      }
       if (moveElement) {
         //e.preventDefault();
         let newX = !isTouchDevice()
@@ -199,8 +201,6 @@ const DragComponent = (props: DragComponentProps) => {
           (target as HTMLElement).offsetLeft - (initialX - newX) + 'px'
         initialX = newX
         initialY = newY
-
-        isTouchDevice() ? (document.body.style.overflow = 'hidden') : null
       }
     },
     [isTouchDevice]
@@ -231,6 +231,7 @@ const DragComponent = (props: DragComponentProps) => {
 
       if (isTouchDevice()) {
         document.removeEventListener('touchstart', preventDefault)
+        document.removeEventListener('touchmove', preventDefault)
         document.removeEventListener('touchmove', preventDefault)
       }
 
