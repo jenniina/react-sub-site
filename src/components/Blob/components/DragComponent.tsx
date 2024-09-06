@@ -81,7 +81,7 @@ interface DragComponentProps {
   clickOutsideRef: RefObject<HTMLDivElement>
 }
 
-let currentFocusedElement: HTMLElement | null = null
+let currentFocusedElement: HTMLElement | null
 
 const DragComponent = (props: DragComponentProps) => {
   const dispatch = useAppDispatch()
@@ -165,11 +165,9 @@ const DragComponent = (props: DragComponentProps) => {
       props.setActiveLayer(parseInt(layer) ?? 0)
 
       if (isTouchDevice()) {
-        document.addEventListener('touchstart', preventDefault, { passive: false })
         document.addEventListener('touchmove', preventDefault, { passive: false })
+        document.body.style.overflow = 'hidden'
       }
-
-      isTouchDevice() ? (document.body.style.overflow = 'hidden') : null
     },
     [keyDown, isTouchDevice]
   )
@@ -188,7 +186,7 @@ const DragComponent = (props: DragComponentProps) => {
     ) => {
       e.stopPropagation()
       if (isTouchDevice()) {
-        document.addEventListener('touchmove', preventDefault, { passive: false })
+        e.preventDefault()
       }
       if (moveElement) {
         //e.preventDefault();
@@ -222,6 +220,7 @@ const DragComponent = (props: DragComponentProps) => {
       target: HTMLElement
     ) => {
       e.stopPropagation()
+      e.preventDefault()
       moveElement = false
       currentFocusedElement = null
       props.setFocusedBlob(null)
@@ -233,13 +232,9 @@ const DragComponent = (props: DragComponentProps) => {
       const hitbox = target.querySelector('div')
 
       if (isTouchDevice()) {
-        document.removeEventListener('touchstart', preventDefault)
         document.removeEventListener('touchmove', preventDefault)
-        document.removeEventListener('touchmove', preventDefault)
+        document.body.style.overflowY = 'auto'
       }
-
-      isTouchDevice() ? (document.body.style.overflowY = 'auto') : null
-
       props.colorPairs.forEach((colorPair, index) => {
         const colorBlock = props.colorBlockProps[index]
 
@@ -307,9 +302,8 @@ const DragComponent = (props: DragComponentProps) => {
       moveElement = false
       currentFocusedElement = null
       if (isTouchDevice()) {
-        document.removeEventListener('touchstart', preventDefault)
         document.removeEventListener('touchmove', preventDefault)
-        document.removeEventListener('touchmove', preventDefault)
+        document.body.style.overflowY = 'auto'
       }
       ;(target as HTMLElement).classList.remove('drag')
       ;(target as HTMLElement).setAttribute('aria-grabbed', 'false')
@@ -325,8 +319,6 @@ const DragComponent = (props: DragComponentProps) => {
 
   useEffect(() => {
     if (isTouchDevice() && !currentFocusedElement) {
-      document.removeEventListener('touchstart', preventDefault)
-      document.removeEventListener('touchmove', preventDefault)
       document.removeEventListener('touchmove', preventDefault)
       document.body.style.overflowY = 'auto'
     }
