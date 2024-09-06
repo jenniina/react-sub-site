@@ -138,6 +138,7 @@ const Blob = ({
         }}
         onMouseMove={(e) => {
           if (e.buttons === 1) {
+            e.stopPropagation()
             const liElement = e.currentTarget.parentElement as HTMLElement
             liElement.draggable = true
             movement(e, liElement)
@@ -149,6 +150,7 @@ const Blob = ({
           }
         }}
         onMouseLeave={(e) => {
+          e.stopPropagation()
           const liElement = e.currentTarget.parentElement as HTMLElement
           liElement.draggable = false
           stopMoving(e, liElement)
