@@ -299,6 +299,20 @@ const DragComponent = (props: DragComponentProps) => {
     [keyDown]
   )
 
+  useEffect(() => {
+    const preventDefault = (e: Event) => e.preventDefault()
+
+    document.addEventListener('touchstart', preventDefault, { passive: false })
+    document.addEventListener('touchmove', preventDefault, { passive: false })
+    document.addEventListener('touchend', preventDefault, { passive: false })
+
+    return () => {
+      document.removeEventListener('touchstart', preventDefault)
+      document.removeEventListener('touchmove', preventDefault)
+      document.removeEventListener('touchend', preventDefault)
+    }
+  }, [])
+
   //on blob blur
   function blurred(draggable: HTMLElement) {
     draggable.classList.remove('drag')
