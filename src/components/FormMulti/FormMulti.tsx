@@ -102,9 +102,9 @@ function FormMulti({ language }: { language: ELanguages }) {
       /*middle step with empty fields*/ !isFirstStep &&
       !isLastStep &&
       (data.email == null ||
-        data.email == '' ||
+        data.email.trim() == '' ||
         data.message == null ||
-        data.message == '')
+        data.message.trim() == '')
     ) {
       setShowError(true)
       setTimeout(() => {

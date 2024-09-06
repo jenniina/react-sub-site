@@ -129,7 +129,7 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
                     value={username}
                     required
                     autoComplete='email'
-                    onChange={({ target }) => setUsername(target.value)}
+                    onChange={({ target }) => setUsername(target.value.trim())}
                   />
                   <span>{EUsername[language]}: </span>
                 </label>
@@ -142,7 +142,7 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
                     required
                     autoComplete='current-password'
                     value={password}
-                    onChange={({ target }) => setPassword(target.value)}
+                    onChange={({ target }) => setPassword(target.value.trim())}
                   />
                   <span>{EPassword[language]}: </span>
                 </label>

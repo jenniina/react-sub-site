@@ -111,7 +111,7 @@ const LanguageEdit = ({ user, language, setLanguage, options, getKeyByValue }: P
                   name='old-password'
                   id='old-password-user-language'
                   value={passwordOld}
-                  onChange={({ target }) => setPasswordOld(target.value)}
+                  onChange={({ target }) => setPasswordOld(target.value.trim())}
                 />
                 <span>{ECurrentPassword[language]}</span>
               </label>

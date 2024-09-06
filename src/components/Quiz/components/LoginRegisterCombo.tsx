@@ -37,7 +37,7 @@ const LoginRegisterCombo: FC<LoginRegisterComboProps> = ({
 
   const handleRegister = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
-    if (password !== confirmPassword) {
+    if (password.trim() !== confirmPassword.trim()) {
       dispatch(notify(EPasswordsDoNotMatch[language], true, 8))
       return
     }

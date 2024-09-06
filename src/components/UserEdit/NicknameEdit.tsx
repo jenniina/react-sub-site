@@ -112,7 +112,7 @@ const NicknameEdit = ({ user, language }: Props) => {
                   name='old-password'
                   id='old-password-user'
                   value={passwordOld}
-                  onChange={({ target }) => setPasswordOld(target.value)}
+                  onChange={({ target }) => setPasswordOld(target.value.trim())}
                 />
                 <span>{ECurrentPassword[language]}</span>
               </label>
