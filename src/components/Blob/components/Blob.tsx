@@ -189,6 +189,19 @@ const Blob = ({
           const liElement = e.currentTarget.parentElement as HTMLElement
           wheel(liElement)
         }}
+        onDragStart={(e) => {
+          e.preventDefault()
+        }}
+        onDrag={(e) => {
+          e.preventDefault()
+        }}
+        onDragEnd={(e) => {
+          const liElement = e.currentTarget.parentElement as HTMLElement
+          liElement.draggable = false
+          stopMovementCheck(e, liElement)
+          if (selectedvalue0.current)
+            selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
+        }}
         // onFocus={(e) => {
         //   const liElement = e.currentTarget.parentElement as HTMLElement
         //   focused(liElement as HTMLElement)
