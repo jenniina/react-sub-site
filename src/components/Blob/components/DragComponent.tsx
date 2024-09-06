@@ -234,7 +234,7 @@ const DragComponent = (props: DragComponentProps) => {
         document.removeEventListener('touchmove', preventDefault)
       }
 
-      isTouchDevice() ? (document.body.style.overflow = 'auto') : null
+      isTouchDevice() ? (document.body.style.overflowY = 'auto') : null
 
       props.colorPairs.forEach((colorPair, index) => {
         const colorBlock = props.colorBlockProps[index]
@@ -310,6 +310,41 @@ const DragComponent = (props: DragComponentProps) => {
     },
     [keyDown]
   )
+
+  useEffect(() => {
+    document.addEventListener('touchend', (e) => {
+      if (currentFocusedElement) {
+        stopMovementCheck(e, currentFocusedElement)
+      }
+    })
+    document.addEventListener('touchcancel', (e) => {
+      if (currentFocusedElement) {
+        stopMovementCheck(e, currentFocusedElement)
+      }
+    })
+    document.addEventListener('dragend', (e) => {
+      if (currentFocusedElement) {
+        stopMovementCheck(e, currentFocusedElement)
+      }
+    })
+    return () => {
+      document.removeEventListener('touchend', (e) => {
+        if (currentFocusedElement) {
+          stopMovementCheck(e, currentFocusedElement)
+        }
+      })
+      document.removeEventListener('touchcancel', (e) => {
+        if (currentFocusedElement) {
+          stopMovementCheck(e, currentFocusedElement)
+        }
+      })
+      document.removeEventListener('dragend', (e) => {
+        if (currentFocusedElement) {
+          stopMovementCheck(e, currentFocusedElement)
+        }
+      })
+    }
+  }, [stopMovementCheck, currentFocusedElement])
 
   //on blob blur
   function blurred(draggable: HTMLElement) {
@@ -433,7 +468,7 @@ const DragComponent = (props: DragComponentProps) => {
         //e.stopImmediatePropagation()
 
         props.setScroll(true)
-        document.body.style.overflow = 'auto'
+        document.body.style.overflowY = 'auto'
 
         if (props.exitApp.current) {
           props.exitApp.current.setAttribute('tabindex', '0')
