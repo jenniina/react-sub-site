@@ -107,6 +107,7 @@ import { initializeUsers } from '../../reducers/usersReducer'
 import { useNavigate } from 'react-router-dom'
 import blobService from './services/blob'
 import { BsFillCameraFill } from 'react-icons/bs'
+import { ELoading } from '../Todo/interfaces'
 
 let angle = '90deg'
 let color = 'cyan'
@@ -1137,7 +1138,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   //   }
   // }
   const imgStyle: CSSProperties = {
-    display: 'none',
     width: 'auto',
     height: 'auto',
     margin: '0 auto',
@@ -1185,13 +1185,14 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
         const data = await response.json()
 
+        const container = blobScreenshot.current
         const img = screenshotImg.current
-        if (img) {
+        if (container && img) {
           img.src = `data:image/png;base64,${data.screenshot}`
-          img.style.display = 'block'
+          container.style.display = 'block'
 
           blobScreenshot.current?.appendChild(img)
-          img.scrollIntoView({ behavior: 'smooth' })
+          img.scrollIntoView({ behavior: 'smooth', block: 'start' })
           dispatch2(notify(EScreenshotTaken[language], false, 8))
           setLoading(false)
         }
@@ -1199,6 +1200,20 @@ export default function BlobJS({ language }: { language: ELanguages }) {
         dispatch2(notify(EError[language], true, 8))
         console.error('Error taking screenshot:', error)
       }
+    }
+  }
+
+  const saveScreenshot = () => {
+    const img = screenshotImg.current
+    if (img && img.src) {
+      const link = document.createElement('a')
+      link.href = img.src
+      link.download = 'blobs.png'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    } else {
+      console.error('No screenshot available to save.')
     }
   }
 
@@ -1278,8 +1293,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             <span
               className='tooltip left below space'
               data-tooltip={
-                loading ? `TEMPORARILY BROKEN! LOADING...` : `TEMPORARILY BROKEN!`
-                // EClickHereToTakeAScreenshot[language]
+                loading ? ELoading[language] : EClickHereToTakeAScreenshot[language]
               }
             ></span>
           </button>
@@ -1802,8 +1816,9 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             </div>
           </div>
         )}
-        <div ref={blobScreenshot} id='blob-screenshot'>
+        <div ref={blobScreenshot} id='blob-screenshot' style={{ display: 'none' }}>
           <img src='' ref={screenshotImg} alt={EScreenshot[language]} style={imgStyle} />
+          <button onClick={saveScreenshot}>{ESave[language]}</button>
         </div>
       </section>
 
