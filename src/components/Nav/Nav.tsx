@@ -393,7 +393,7 @@ const Nav = (
 
   const handleRegister = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
-    if (password !== confirmPassword) {
+    if (password.trim() !== confirmPassword.trim()) {
       dispatch(notify(`${EPasswordsDoNotMatch}`, true, 8))
       return
     }

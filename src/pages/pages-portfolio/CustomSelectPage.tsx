@@ -336,7 +336,7 @@ export default function CustomSelectPage({
                             setEmail(e.target.value)
                             setData((prevData) => ({
                               ...prevData,
-                              email: e.target.value,
+                              email: e.target.value.trim(),
                             }))
                           }}
                           className='bg'

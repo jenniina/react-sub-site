@@ -44,7 +44,7 @@ const UsernameEdit = ({ user, language }: Props) => {
       }
 
       if (user) {
-        if (username === user.username) {
+        if (username.trim() === user.username.trim()) {
           dispatch(notify(`${EUsernameIsTheSame[language]}`, true, 5))
           return
         }
@@ -98,7 +98,7 @@ const UsernameEdit = ({ user, language }: Props) => {
                   name='username'
                   id='username'
                   value={username}
-                  onChange={({ target }) => setUsername(target.value)}
+                  onChange={({ target }) => setUsername(target.value.trim())}
                 />
                 <span>{EEmail[language]}</span>
               </label>
@@ -112,7 +112,7 @@ const UsernameEdit = ({ user, language }: Props) => {
                   name='old-password'
                   id='old-password-username'
                   value={passwordOld}
-                  onChange={({ target }) => setPasswordOld(target.value)}
+                  onChange={({ target }) => setPasswordOld(target.value.trim())}
                 />
                 <span>{ECurrentPassword[language]}</span>
               </label>

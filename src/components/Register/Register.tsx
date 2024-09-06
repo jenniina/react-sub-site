@@ -96,7 +96,7 @@ const Register = ({
                     id={`username-${text}`}
                     value={username}
                     autoComplete='email'
-                    onChange={({ target }) => setUsername(target.value)}
+                    onChange={({ target }) => setUsername(target.value.trim())}
                   />
                   <span>{EEmail[language]}</span>
                 </label>
@@ -110,7 +110,7 @@ const Register = ({
                     id={`password-${text}`}
                     value={password}
                     autoComplete='on'
-                    onChange={({ target }) => setPassword(target.value)}
+                    onChange={({ target }) => setPassword(target.value.trim())}
                   />
                   <span>{EPassword[language]}</span>
                 </label>
@@ -123,7 +123,7 @@ const Register = ({
                     name='confirmPassword'
                     id={`confirmPassword-${text}`}
                     value={confirmPassword}
-                    onChange={({ target }) => setConfirmPassword(target.value)}
+                    onChange={({ target }) => setConfirmPassword(target.value.trim())}
                   />
                   <span>{EConfirmPassword[language]}</span>
                 </label>

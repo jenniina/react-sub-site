@@ -34,7 +34,7 @@ const PasswordEdit = ({ user, language }: Props) => {
   const handleUserSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
-      if (password !== confirmPassword) {
+      if (password.trim() !== confirmPassword.trim()) {
         dispatch(notify(EPasswordsDoNotMatch[language], true, 5))
         return
       } else if (password.length < 10) {
@@ -96,7 +96,7 @@ const PasswordEdit = ({ user, language }: Props) => {
                   name='old-password'
                   id='old-password'
                   value={passwordOld}
-                  onChange={({ target }) => setPasswordOld(target.value)}
+                  onChange={({ target }) => setPasswordOld(target.value.trim())}
                 />
                 <span>{ECurrentPassword[language]}</span>
               </label>
@@ -109,7 +109,7 @@ const PasswordEdit = ({ user, language }: Props) => {
                   name='password'
                   id='password'
                   value={password}
-                  onChange={({ target }) => setPassword(target.value)}
+                  onChange={({ target }) => setPassword(target.value.trim())}
                 />
                 <span>{EPassword[language]}</span>
               </label>
@@ -122,7 +122,7 @@ const PasswordEdit = ({ user, language }: Props) => {
                   name='confirmPassword'
                   id='confirmPassword'
                   value={confirmPassword}
-                  onChange={({ target }) => setConfirmPassword(target.value)}
+                  onChange={({ target }) => setConfirmPassword(target.value.trim())}
                 />
                 <span>{EConfirmPassword[language]}</span>
               </label>
