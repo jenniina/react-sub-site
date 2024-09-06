@@ -175,6 +175,7 @@ const DragComponent = (props: DragComponentProps) => {
       target: HTMLElement
     ) => {
       e.stopPropagation()
+      isTouchDevice() && e.preventDefault()
       if (moveElement) {
         //e.preventDefault();
         let newX = !isTouchDevice()
