@@ -1187,12 +1187,11 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
         const container = blobScreenshot.current
         const img = screenshotImg.current
+
         if (container && img) {
           img.src = `data:image/png;base64,${data.screenshot}`
           container.style.display = 'block'
-
-          blobScreenshot.current?.appendChild(img)
-          img.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          img.scrollIntoView({ behavior: 'smooth', block: 'center' })
           dispatch2(notify(EScreenshotTaken[language], false, 8))
           setLoading(false)
         }
@@ -1216,6 +1215,10 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       console.error('No screenshot available to save.')
     }
   }
+
+  useEffect(() => {
+    if (loading) dispatch2(notify(`${ELoading[language]}...`, false, 8))
+  }, [loading])
 
   return (
     <>
@@ -1288,7 +1291,11 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           >
             {controlsVisible ? EHideControls[language] : EShowControls[language]}
           </button>
-          <button onClick={takeScreenshot} className='reset screenshot tooltip-wrap'>
+          <button
+            disabled={loading}
+            onClick={takeScreenshot}
+            className='reset screenshot tooltip-wrap'
+          >
             <BsFillCameraFill />
             <span
               className='tooltip left below space'
