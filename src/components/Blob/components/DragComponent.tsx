@@ -187,6 +187,7 @@ const DragComponent = (props: DragComponentProps) => {
       e.stopPropagation()
       if (isTouchDevice()) {
         e.preventDefault()
+        document.body.style.overflow = 'hidden'
       }
       if (moveElement) {
         //e.preventDefault();
@@ -235,6 +236,10 @@ const DragComponent = (props: DragComponentProps) => {
         document.removeEventListener('touchmove', preventDefault)
         document.body.style.overflowY = 'auto'
       }
+      props.scroll
+        ? (document.body.style.overflowY = 'auto')
+        : (document.body.style.overflow = 'hidden')
+
       props.colorPairs.forEach((colorPair, index) => {
         const colorBlock = props.colorBlockProps[index]
 
@@ -305,6 +310,9 @@ const DragComponent = (props: DragComponentProps) => {
         document.removeEventListener('touchmove', preventDefault)
         document.body.style.overflowY = 'auto'
       }
+      props.scroll
+        ? (document.body.style.overflowY = 'auto')
+        : (document.body.style.overflow = 'hidden')
       ;(target as HTMLElement).classList.remove('drag')
       ;(target as HTMLElement).setAttribute('aria-grabbed', 'false')
       props.getPosition(target as HTMLElement)
@@ -343,6 +351,7 @@ const DragComponent = (props: DragComponentProps) => {
       }
     })
     return () => {
+      document.removeEventListener('touchmove', preventDefault)
       document.removeEventListener('mouseup', (e) => {
         if (currentFocusedElement) {
           stopMovementCheck(e, currentFocusedElement)
