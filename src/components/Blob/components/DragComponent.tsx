@@ -126,6 +126,8 @@ const DragComponent = (props: DragComponentProps) => {
     onOutsideClick: handleOutsideClick,
   })
 
+  const preventDefault = (e: Event) => e.preventDefault()
+
   const start = useCallback(
     (
       e:
@@ -158,6 +160,11 @@ const DragComponent = (props: DragComponentProps) => {
       document.addEventListener('keydown', keyDown)
       const layer = (target as HTMLElement).style.getPropertyValue('--layer')
       props.setActiveLayer(parseInt(layer) ?? 0)
+
+      if (isTouchDevice()) {
+        document.addEventListener('touchstart', preventDefault, { passive: false })
+        document.addEventListener('touchmove', preventDefault, { passive: false })
+      }
 
       isTouchDevice() ? (document.body.style.overflow = 'hidden') : null
     },
@@ -221,6 +228,11 @@ const DragComponent = (props: DragComponentProps) => {
       scale = isNaN(scale) ? 8 : scale
 
       const hitbox = target.querySelector('div')
+
+      if (isTouchDevice()) {
+        document.removeEventListener('touchstart', preventDefault)
+        document.removeEventListener('touchmove', preventDefault)
+      }
 
       isTouchDevice() ? (document.body.style.overflow = 'auto') : null
 
@@ -298,20 +310,6 @@ const DragComponent = (props: DragComponentProps) => {
     },
     [keyDown]
   )
-
-  useEffect(() => {
-    const preventDefault = (e: Event) => e.preventDefault()
-
-    document.addEventListener('touchstart', preventDefault, { passive: false })
-    document.addEventListener('touchmove', preventDefault, { passive: false })
-    document.addEventListener('touchend', preventDefault, { passive: false })
-
-    return () => {
-      document.removeEventListener('touchstart', preventDefault)
-      document.removeEventListener('touchmove', preventDefault)
-      document.removeEventListener('touchend', preventDefault)
-    }
-  }, [])
 
   //on blob blur
   function blurred(draggable: HTMLElement) {
