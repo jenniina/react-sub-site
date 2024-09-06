@@ -163,6 +163,7 @@ const Blob = ({
             selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
         }}
         onTouchStart={(e) => {
+          e.preventDefault()
           const liElement = e.currentTarget.parentElement as HTMLElement
           liElement.draggable = true
           start(e, liElement)
@@ -172,6 +173,7 @@ const Blob = ({
             }`
         }}
         onTouchMove={(e) => {
+          e.preventDefault()
           const liElement = e.currentTarget.parentElement as HTMLElement
           liElement.draggable = true
           movement(e, liElement)
