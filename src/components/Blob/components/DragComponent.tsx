@@ -13,9 +13,11 @@ import {
 } from 'react'
 import { Draggable, focusedBlob, ColorPair } from '../interfaces'
 import Blob from './Blob'
-import { ELanguages } from '../../../interfaces'
+import { ELanguages, EWelcome } from '../../../interfaces'
 import { ESelectedBlobNone } from '../../../interfaces/blobs'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
+import { notify } from '../../../reducers/notificationReducer'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
 
 let moveElement: boolean
 let reset = true
@@ -82,6 +84,7 @@ interface DragComponentProps {
 let currentFocusedElement: HTMLElement | null = null
 
 const DragComponent = (props: DragComponentProps) => {
+  const dispatch = useAppDispatch()
   //Detect touch device
   const isTouchDevice = () => {
     try {
@@ -316,6 +319,9 @@ const DragComponent = (props: DragComponentProps) => {
     },
     [keyDown]
   )
+  useEffect(() => {
+    isTouchDevice() ? dispatch(notify(EWelcome[props.language], false, 2)) : null
+  }, [])
 
   useEffect(() => {
     if (isTouchDevice() && !currentFocusedElement) {
