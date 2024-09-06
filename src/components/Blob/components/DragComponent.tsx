@@ -158,6 +158,8 @@ const DragComponent = (props: DragComponentProps) => {
       document.addEventListener('keydown', keyDown)
       const layer = (target as HTMLElement).style.getPropertyValue('--layer')
       props.setActiveLayer(parseInt(layer) ?? 0)
+
+      isTouchDevice() ? (document.body.style.overflow = 'hidden') : null
     },
     [keyDown, isTouchDevice]
   )
@@ -190,6 +192,8 @@ const DragComponent = (props: DragComponentProps) => {
           (target as HTMLElement).offsetLeft - (initialX - newX) + 'px'
         initialX = newX
         initialY = newY
+
+        isTouchDevice() ? (document.body.style.overflow = 'hidden') : null
       }
     },
     [isTouchDevice]
@@ -217,6 +221,8 @@ const DragComponent = (props: DragComponentProps) => {
       scale = isNaN(scale) ? 8 : scale
 
       const hitbox = target.querySelector('div')
+
+      isTouchDevice() ? (document.body.style.overflow = 'auto') : null
 
       props.colorPairs.forEach((colorPair, index) => {
         const colorBlock = props.colorBlockProps[index]
