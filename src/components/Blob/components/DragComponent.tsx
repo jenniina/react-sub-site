@@ -318,6 +318,12 @@ const DragComponent = (props: DragComponentProps) => {
   )
 
   useEffect(() => {
+    if (isTouchDevice() && !currentFocusedElement) {
+      document.removeEventListener('touchstart', preventDefault)
+      document.removeEventListener('touchmove', preventDefault)
+      document.removeEventListener('touchmove', preventDefault)
+      document.body.style.overflowY = 'auto'
+    }
     document.addEventListener('mouseup', (e) => {
       if (currentFocusedElement) {
         stopMovementCheck(e, currentFocusedElement)
