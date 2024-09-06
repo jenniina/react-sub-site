@@ -303,6 +303,11 @@ const DragComponent = (props: DragComponentProps) => {
       e.stopPropagation()
       moveElement = false
       currentFocusedElement = null
+      if (isTouchDevice()) {
+        document.removeEventListener('touchstart', preventDefault)
+        document.removeEventListener('touchmove', preventDefault)
+        document.removeEventListener('touchmove', preventDefault)
+      }
       ;(target as HTMLElement).classList.remove('drag')
       ;(target as HTMLElement).setAttribute('aria-grabbed', 'false')
       props.getPosition(target as HTMLElement)
@@ -313,6 +318,11 @@ const DragComponent = (props: DragComponentProps) => {
   )
 
   useEffect(() => {
+    document.addEventListener('mouseup', (e) => {
+      if (currentFocusedElement) {
+        stopMovementCheck(e, currentFocusedElement)
+      }
+    })
     document.addEventListener('touchend', (e) => {
       if (currentFocusedElement) {
         stopMovementCheck(e, currentFocusedElement)
@@ -329,6 +339,11 @@ const DragComponent = (props: DragComponentProps) => {
       }
     })
     return () => {
+      document.removeEventListener('mouseup', (e) => {
+        if (currentFocusedElement) {
+          stopMovementCheck(e, currentFocusedElement)
+        }
+      })
       document.removeEventListener('touchend', (e) => {
         if (currentFocusedElement) {
           stopMovementCheck(e, currentFocusedElement)
