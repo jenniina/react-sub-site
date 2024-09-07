@@ -178,9 +178,6 @@ const Blob = ({
         onTouchMove={(e) => {
           e.preventDefault()
           e.stopPropagation()
-          const liElement = e.currentTarget.parentElement as HTMLElement
-          liElement.draggable = true
-          movement(e, liElement)
         }}
         onTouchEnd={(e) => {
           const liElement = e.currentTarget.parentElement as HTMLElement
@@ -193,13 +190,11 @@ const Blob = ({
           const liElement = e.currentTarget.parentElement as HTMLElement
           wheel(liElement)
         }}
-        onDragStart={(e) => {
-          e.preventDefault()
-          e.stopPropagation()
-        }}
+        onDragStart={(e) => {}}
         onDrag={(e) => {
-          e.preventDefault()
-          e.stopPropagation()
+          const liElement = e.currentTarget.parentElement as HTMLElement
+          liElement.draggable = true
+          movement(e, liElement)
         }}
         onDragEnd={(e) => {
           e.stopPropagation()
