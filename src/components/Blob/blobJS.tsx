@@ -1278,7 +1278,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             onClick={() => setMarkerEnabled(!markerEnabled)}
           >
             <span
-              className='tooltip left below space'
+              className='tooltip left above space'
               data-tooltip={`${EToggleMarkerVisibilityWhenUsingAKeyboard[language]}`}
             ></span>
             {markerEnabled ? EMarkerOn[language] : EMarkerOff[language]}
@@ -1294,7 +1294,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             }}
           >
             <span
-              className='tooltip right below space'
+              className='tooltip right above space'
               data-tooltip={
                 scroll
                   ? EDisableScrollInOrderToUseTheMouseWheelToResizeABlob[language]
