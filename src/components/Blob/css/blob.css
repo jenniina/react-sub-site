@@ -71,10 +71,30 @@ svg.filter {
 #drag-container0 .make-larger,
 #drag-container0 .make-smaller,
 #drag-container0 .make-more,
-#drag-container0 .delete-blob {
+#drag-container0 .delete-blob,
+#drag-container0 .layer-adjust {
   background-color: lightgray;
   cursor: help;
   z-index: 2;
+}
+#root #drag-container0 button.layer-adjust {
+  color: black;
+  font-size: 1.4rem;
+  height: 1.6rem;
+  width: 1.6rem;
+  line-height: 1;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0.2rem;
+  border: none;
+  padding: 0;
+  background: none;
+  background-color: lightgray;
+}
+#drag-container0 .layer-adjust > * {
+  color: black;
 }
 #drag-container0 .make-random {
   cursor: pointer;
@@ -92,7 +112,25 @@ svg.filter {
   box-shadow: inset 0.1rem -0.1rem 0.4rem -0.2rem rgba(0, 0, 0, 0.4),
     inset 0.1rem -0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
 }
-#drag-container0 .make-smaller {
+
+#drag-container0 .delete-blob,
+#drag-container0 .layer-buttons button {
+  -webkit-box-shadow: inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
+    inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
+  -o-box-shadow: inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
+    inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
+  -ms-box-shadow: inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
+    inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
+    inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
+  -ms-box-shadow: inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
+    inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
+  box-shadow: inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
+    inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+#drag-container0 .make-smaller,
+#drag-container0 button.layer-adjust {
   -webkit-box-shadow: inset 0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
     inset 0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
   -o-box-shadow: inset 0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
@@ -116,22 +154,6 @@ svg.filter {
     inset -0.1rem -0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
   box-shadow: inset -0.1rem -0.1rem 0.4rem -0.2rem rgba(0, 0, 0, 0.4),
     inset -0.1rem -0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
-}
-#drag-container0 .delete-blob,
-#drag-container0 .layer-buttons button {
-  -webkit-box-shadow: inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
-    inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
-  -o-box-shadow: inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
-    inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
-  -ms-box-shadow: inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
-    inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
-    inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
-  -ms-box-shadow: inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
-    inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
-  box-shadow: inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
-    inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
-  z-index: 2;
 }
 #drag-container0 .drag-slider-wrap {
   -ms-flex-preferred-size: 100%;
@@ -657,7 +679,6 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
 #drag-container0 .make-more,
 #drag-container0 .delete-blob {
   color: black;
-  background-color: white;
 }
 #drag-container0 .make-more:hover::after,
 #drag-container0 .delete-blob:hover::after,

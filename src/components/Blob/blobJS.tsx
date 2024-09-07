@@ -86,12 +86,16 @@ import {
   EClickHereToTakeAScreenshot,
   EScreenshotTaken,
   EScreenshot,
+  EIncreaseBlobLayerBy1Instructions,
+  EDecreaseBlobLayerBy1Instructions,
 } from '../../interfaces/blobs'
 import {
+  BiChevronDown,
   BiChevronsDown,
   BiChevronsLeft,
   BiChevronsRight,
   BiChevronsUp,
+  BiChevronUp,
 } from 'react-icons/bi'
 import { ImEnlarge2, ImShrink2 } from 'react-icons/im'
 import { FaCamera, FaPlus, FaRegClone, FaSave, FaTimes } from 'react-icons/fa'
@@ -161,6 +165,9 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   const makeRandom0 = useRef() as RefObject<HTMLButtonElement>
 
   const layerButtons0 = useRef() as RefObject<HTMLDivElement>
+  const layerIncrease = useRef() as RefObject<HTMLButtonElement>
+  const layerDecrease = useRef() as RefObject<HTMLButtonElement>
+
   const markerDivRef = useRef<HTMLDivElement>(null)
 
   const sliderLightnessInput = useRef() as RefObject<HTMLInputElement>
@@ -219,11 +226,12 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   ]
 
   const changeBlobLayer = (draggable: Draggable, layer: number) => {
+    console.log(draggable, layer)
     dispatch({
       type: 'updateDraggable',
-      payload: { draggable: { ...draggable, layer: layer } },
+      payload: { draggable: { ...draggable, layer } },
     })
-    saveDraggables()
+    //saveDraggables()
     setActiveLayer(layer)
   }
 
@@ -1028,6 +1036,8 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     // }
   }, [windowWidth])
 
+  const breakpoint = 700
+
   const widthResize = () => {
     //place layer-buttons to the middle in the bottom
     if (layerButtons0.current && dragWrap.current) {
@@ -1083,7 +1093,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
         79
       )
 
-    windowWidth < 330 && makeSmaller0.current && dragWrap.current
+    windowWidth < breakpoint && makeSmaller0.current && dragWrap.current
       ? place(
           makeSmaller0.current,
           95 - (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
@@ -1092,16 +1102,17 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       : makeSmaller0.current && dragWrap.current
       ? place(
           makeSmaller0.current,
-          77 - (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
+          85 - (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
           93
         )
       : null
-    windowWidth < 330 && deleteBlob0.current && dragWrap.current
+    windowWidth < breakpoint && deleteBlob0.current && dragWrap.current
       ? place(deleteBlob0.current, 5, 93)
       : deleteBlob0.current && dragWrap.current
-      ? place(deleteBlob0.current, 23, 93)
+      ? place(deleteBlob0.current, 15, 93)
       : null
   }
+
   function place(element: HTMLElement, x_pos: number, y_pos: number) {
     if (element && dragWrap.current) {
       element.style.left = (dragWrap.current.offsetWidth / 100) * x_pos + 'px'
@@ -1478,6 +1489,8 @@ export default function BlobJS({ language }: { language: ELanguages }) {
               makeSmaller0={makeSmaller0}
               makeMore0={makeMore0}
               deleteBlob0={deleteBlob0}
+              layerIncrease={layerIncrease}
+              layerDecrease={layerDecrease}
               dragWrap={dragWrap}
               exitApp={exitApp}
               selectedvalue0={selectedvalue0}
@@ -1505,6 +1518,17 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             className={`layer-buttons ${!controlsVisible ? 'hidden' : ''}`}
             ref={layerButtons0}
           >
+            <button
+              ref={layerDecrease}
+              id='layer-decrease'
+              className='layer-adjust layer-decrease tooltip-wrap'
+            >
+              <span
+                className='tooltip above right'
+                data-tooltip={EDecreaseBlobLayerBy1Instructions[language]}
+              ></span>
+              <BiChevronDown />
+            </button>
             {Array.from({ length: layerAmount }, (_, i) => i).map((layer) => (
               <button
                 key={layer}
@@ -1530,6 +1554,17 @@ export default function BlobJS({ language }: { language: ELanguages }) {
                 <span className='scr'>{ELayer[language]}</span> {layer + 1}
               </button>
             ))}
+            <button
+              ref={layerIncrease}
+              id='layer-increase'
+              className='layer-adjust layer-increase tooltip-wrap'
+            >
+              <span
+                className='tooltip above left'
+                data-tooltip={EIncreaseBlobLayerBy1Instructions[language]}
+              ></span>
+              <BiChevronUp />
+            </button>
           </div>
           <div
             ref={colorBlockOrange}
