@@ -178,6 +178,9 @@ const Blob = ({
         onTouchMove={(e) => {
           e.preventDefault()
           e.stopPropagation()
+          const liElement = e.currentTarget.parentElement as HTMLElement
+          liElement.draggable = true
+          movement(e, liElement)
         }}
         onTouchEnd={(e) => {
           const liElement = e.currentTarget.parentElement as HTMLElement
@@ -190,20 +193,7 @@ const Blob = ({
           const liElement = e.currentTarget.parentElement as HTMLElement
           wheel(liElement)
         }}
-        onDragStart={(e) => {}}
-        onDrag={(e) => {
-          const liElement = e.currentTarget.parentElement as HTMLElement
-          liElement.draggable = true
-          movement(e, liElement)
-        }}
-        onDragEnd={(e) => {
-          e.stopPropagation()
-          const liElement = e.currentTarget.parentElement as HTMLElement
-          liElement.draggable = false
-          stopMovementCheck(e, liElement)
-          if (selectedvalue0.current)
-            selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
-        }}
+
         // onFocus={(e) => {
         //   const liElement = e.currentTarget.parentElement as HTMLElement
         //   focused(liElement as HTMLElement)

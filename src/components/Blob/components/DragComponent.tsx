@@ -83,6 +83,11 @@ interface DragComponentProps {
 
 let currentFocusedElement: HTMLElement | null
 
+const preventDefault = (e: Event) => {
+  e.preventDefault()
+  e.stopImmediatePropagation()
+}
+
 const DragComponent = (props: DragComponentProps) => {
   const dispatch = useAppDispatch()
   //Detect touch device
@@ -118,24 +123,28 @@ const DragComponent = (props: DragComponentProps) => {
   const handleOutsideClick = useCallback(
     (e: Event) => {
       document.removeEventListener('keydown', keyDown)
+      document.removeEventListener('touchmove', preventDefault)
     },
     [keyDown]
   )
+
   useEffect(() => {
+    if (!currentFocusedElement) {
+      document.body.style.overflowY = 'auto'
+      document.body.style.overflowX = 'hidden'
+      document.removeEventListener('keydown', keyDown)
+      document.removeEventListener('touchmove', preventDefault)
+    }
     return () => {
       document.removeEventListener('keydown', keyDown)
+      document.removeEventListener('touchmove', preventDefault)
     }
-  }, [])
+  }, [currentFocusedElement])
 
   useOutsideClick({
     ref: props.clickOutsideRef,
     onOutsideClick: handleOutsideClick,
   })
-
-  const preventDefault = (e: Event) => {
-    e.preventDefault()
-    e.stopPropagation()
-  }
 
   const start = useCallback(
     (
@@ -335,9 +344,6 @@ const DragComponent = (props: DragComponentProps) => {
     },
     [keyDown]
   )
-  useEffect(() => {
-    isTouchDevice() ? dispatch(notify(EWelcome[props.language], false, 2)) : null
-  }, [])
 
   useEffect(() => {
     if (isTouchDevice() && !currentFocusedElement) {
