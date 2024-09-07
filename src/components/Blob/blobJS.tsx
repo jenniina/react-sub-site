@@ -753,7 +753,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
   const addRandomDraggable = () => {
     const colorswitch = () => {
-      let number: number = Math.ceil(getRandomMinMax(0.001, 17))
+      let number: number = Math.ceil(getRandomMinMax(0.001, 20))
 
       switch (number) {
         case 1:
@@ -806,6 +806,15 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           break
         case 17:
           color = 'hotpink'
+          break
+        case 18:
+          color = 'saddlebrown'
+          break
+        case 19:
+          color = 'sandybrown'
+          break
+        case 20:
+          color = 'rosybrown'
           break
         default:
           color = 'cyan'
