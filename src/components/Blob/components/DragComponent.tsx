@@ -114,17 +114,19 @@ const DragComponent = (props: DragComponentProps) => {
     let layer = draggable.layer
     if (layer < props.layerAmount - 1) {
       layer = layer + 1
+
+      props.changeBlobLayer(draggable, layer)
+      target.style.setProperty('--layer', `${layer}`)
     }
-    props.changeBlobLayer(draggable, layer)
-    target.style.setProperty('--layer', `${layer}`)
   }
   const decreaseBlobLayer = (target: HTMLElement, draggable: Draggable) => {
     let layer = draggable.layer
     if (layer > 0) {
       layer = layer - 1
+
+      props.changeBlobLayer(draggable, layer)
+      target.style.setProperty('--layer', `${layer}`)
     }
-    props.changeBlobLayer(draggable, layer)
-    target.style.setProperty('--layer', `${layer}`)
   }
 
   //Check to see if elements overlap
@@ -258,8 +260,7 @@ const DragComponent = (props: DragComponentProps) => {
       e.stopPropagation()
       e.preventDefault()
       moveElement = false
-      currentFocusedElement = null
-      props.setFocusedBlob(null)
+
       document.removeEventListener('keydown', keyDown)
       let value = (target as HTMLElement).style.getPropertyValue('--i')
       let scale = parseFloat(value)
@@ -353,6 +354,8 @@ const DragComponent = (props: DragComponentProps) => {
       ;(target as HTMLElement).setAttribute('aria-grabbed', 'false')
       props.getPosition(target as HTMLElement)
       ;(target as HTMLElement).blur()
+      currentFocusedElement = null
+      props.setFocusedBlob(null)
     },
     [
       angle,
