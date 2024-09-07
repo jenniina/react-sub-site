@@ -95,6 +95,9 @@ const DragComponent = (props: DragComponentProps) => {
       return false
     }
   }
+
+  //const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0
+
   useEffect(() => {
     isTouchDevice()
   }, [])
