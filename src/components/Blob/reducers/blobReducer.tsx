@@ -55,7 +55,7 @@ function blobReducer(
       const newDraggablesUpdate = state.draggables.map((subArray) =>
         subArray.map((draggable) =>
           draggable.id === action.payload.draggable?.id
-            ? action.payload.draggable
+            ? { ...draggable, ...action.payload.draggable, id: draggable.id }
             : draggable
         )
       )

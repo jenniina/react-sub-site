@@ -190,7 +190,6 @@ const DragComponent = (props: DragComponentProps) => {
       initialY = !isTouchDevice()
         ? (e as PointerEvent).clientY
         : (e as TouchEvent).touches[0].clientY
-      props.getPosition(target as HTMLElement)
       ;(target as HTMLElement).classList.add('drag')
       const highestZIndexForLayer = props.highestZIndex[props.layer]
       target.style.setProperty('z-index', `${Math.max(1, highestZIndexForLayer + 1)}`)
@@ -218,8 +217,7 @@ const DragComponent = (props: DragComponentProps) => {
         | PointerEvent
         | TouchEventReact
         | MouseEventReact
-        | PointerEventReact,
-      target: HTMLElement
+        | PointerEventReact
     ) => {
       e.stopPropagation()
       if (isTouchDevice()) {
@@ -234,10 +232,10 @@ const DragComponent = (props: DragComponentProps) => {
         let newY = !isTouchDevice()
           ? (e as PointerEvent).clientY
           : (e as TouchEvent).touches[0].clientY
-        ;(target as HTMLElement).style.top =
-          (target as HTMLElement).offsetTop - (initialY - newY) + 'px'
-        ;(target as HTMLElement).style.left =
-          (target as HTMLElement).offsetLeft - (initialX - newX) + 'px'
+        ;(currentFocusedElement as HTMLElement).style.top =
+          (currentFocusedElement as HTMLElement).offsetTop - (initialY - newY) + 'px'
+        ;(currentFocusedElement as HTMLElement).style.left =
+          (currentFocusedElement as HTMLElement).offsetLeft - (initialX - newX) + 'px'
         initialX = newX
         initialY = newY
       }
@@ -350,9 +348,9 @@ const DragComponent = (props: DragComponentProps) => {
       ) {
         removeBlob(target as HTMLElement)
       }
+      props.getPosition(target as HTMLElement)
       ;(target as HTMLElement).classList.remove('drag')
       ;(target as HTMLElement).setAttribute('aria-grabbed', 'false')
-      props.getPosition(target as HTMLElement)
       ;(target as HTMLElement).blur()
       currentFocusedElement = null
       props.setFocusedBlob(null)
@@ -388,9 +386,9 @@ const DragComponent = (props: DragComponentProps) => {
       } else {
         document.body.style.overflow = 'hidden'
       }
+      //props.getPosition(target as HTMLElement)
       ;(target as HTMLElement).classList.remove('drag')
       ;(target as HTMLElement).setAttribute('aria-grabbed', 'false')
-      props.getPosition(target as HTMLElement)
       document.removeEventListener('keydown', keyDown)
       ;(target as HTMLElement).blur()
     },
@@ -403,38 +401,38 @@ const DragComponent = (props: DragComponentProps) => {
       document.body.style.overflowY = 'auto'
       document.body.style.overflowX = 'hidden'
     }
-    const handleMouseUp = (e: MouseEvent) => {
-      if (currentFocusedElement) {
-        stopMovementCheck(e, currentFocusedElement)
-      }
-    }
-    const handleTouchEnd = (e: TouchEvent) => {
-      if (currentFocusedElement) {
-        stopMovementCheck(e, currentFocusedElement)
-      }
-    }
-    const handleTouchCancel = (e: TouchEvent) => {
-      if (currentFocusedElement) {
-        stopMovementCheck(e, currentFocusedElement)
-      }
-    }
-    const handleDragEnd = (e: DragEvent) => {
-      if (currentFocusedElement) {
-        stopMovementCheck(e, currentFocusedElement)
-      }
-    }
+    // const handleMouseUp = (e: MouseEvent) => {
+    //   if (currentFocusedElement) {
+    //     stopMovementCheck(e, currentFocusedElement)
+    //   }
+    // }
+    // const handleTouchEnd = (e: TouchEvent) => {
+    //   if (currentFocusedElement) {
+    //     stopMovementCheck(e, currentFocusedElement)
+    //   }
+    // }
+    // const handleTouchCancel = (e: TouchEvent) => {
+    //   if (currentFocusedElement) {
+    //     stopMovementCheck(e, currentFocusedElement)
+    //   }
+    // }
+    // const handleDragEnd = (e: DragEvent) => {
+    //   if (currentFocusedElement) {
+    //     stopMovementCheck(e, currentFocusedElement)
+    //   }
+    // }
 
-    document.addEventListener('mouseup', handleMouseUp)
-    document.addEventListener('touchend', handleTouchEnd)
-    document.addEventListener('touchcancel', handleTouchCancel)
-    document.addEventListener('dragend', handleDragEnd)
+    // document.addEventListener('mouseup', handleMouseUp)
+    // document.addEventListener('touchend', handleTouchEnd)
+    // document.addEventListener('touchcancel', handleTouchCancel)
+    // document.addEventListener('dragend', handleDragEnd)
 
-    return () => {
-      document.removeEventListener('mouseup', handleMouseUp)
-      document.removeEventListener('touchend', handleTouchEnd)
-      document.removeEventListener('touchcancel', handleTouchCancel)
-      document.removeEventListener('dragend', handleDragEnd)
-    }
+    // return () => {
+    //   document.removeEventListener('mouseup', handleMouseUp)
+    //   document.removeEventListener('touchend', handleTouchEnd)
+    //   document.removeEventListener('touchcancel', handleTouchCancel)
+    //   document.removeEventListener('dragend', handleDragEnd)
+    // }
   }, [stopMovementCheck, stopMoving, currentFocusedElement])
 
   //on blob blur
@@ -443,8 +441,8 @@ const DragComponent = (props: DragComponentProps) => {
     draggable.setAttribute('aria-grabbed', 'false')
     props.dragWrap.current?.setAttribute('aria-activedescendant', '')
     document.removeEventListener('keydown', keyDown)
-    draggable.draggable = false
     props.getPosition(draggable)
+    draggable.draggable = false
     currentFocusedElement = null
   }
 
