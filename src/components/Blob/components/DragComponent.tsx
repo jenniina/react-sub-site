@@ -129,7 +129,10 @@ const DragComponent = (props: DragComponentProps) => {
     onOutsideClick: handleOutsideClick,
   })
 
-  const preventDefault = (e: Event) => e.preventDefault()
+  const preventDefault = (e: Event) => {
+    e.preventDefault()
+    e.stopPropagation()
+  }
 
   const start = useCallback(
     (
@@ -235,10 +238,14 @@ const DragComponent = (props: DragComponentProps) => {
       if (isTouchDevice()) {
         document.removeEventListener('touchmove', preventDefault)
         document.body.style.overflowY = 'auto'
+        document.body.style.overflowX = 'hidden'
       }
-      props.scroll
-        ? (document.body.style.overflowY = 'auto')
-        : (document.body.style.overflow = 'hidden')
+      if (props.scroll) {
+        document.body.style.overflowY = 'auto'
+        document.body.style.overflowX = 'hidden'
+      } else {
+        document.body.style.overflow = 'hidden'
+      }
 
       props.colorPairs.forEach((colorPair, index) => {
         const colorBlock = props.colorBlockProps[index]
@@ -309,10 +316,14 @@ const DragComponent = (props: DragComponentProps) => {
       if (isTouchDevice()) {
         document.removeEventListener('touchmove', preventDefault)
         document.body.style.overflowY = 'auto'
+        document.body.style.overflowX = 'hidden'
       }
-      props.scroll
-        ? (document.body.style.overflowY = 'auto')
-        : (document.body.style.overflow = 'hidden')
+      if (props.scroll) {
+        document.body.style.overflowY = 'auto'
+        document.body.style.overflowX = 'hidden'
+      } else {
+        document.body.style.overflow = 'hidden'
+      }
       ;(target as HTMLElement).classList.remove('drag')
       ;(target as HTMLElement).setAttribute('aria-grabbed', 'false')
       props.getPosition(target as HTMLElement)
@@ -329,51 +340,41 @@ const DragComponent = (props: DragComponentProps) => {
     if (isTouchDevice() && !currentFocusedElement) {
       document.removeEventListener('touchmove', preventDefault)
       document.body.style.overflowY = 'auto'
+      document.body.style.overflowX = 'hidden'
     }
-    document.addEventListener('mouseup', (e) => {
+    const handleMouseUp = (e: MouseEvent) => {
       if (currentFocusedElement) {
         stopMovementCheck(e, currentFocusedElement)
       }
-    })
-    document.addEventListener('touchend', (e) => {
+    }
+    const handleTouchEnd = (e: TouchEvent) => {
       if (currentFocusedElement) {
         stopMovementCheck(e, currentFocusedElement)
       }
-    })
-    document.addEventListener('touchcancel', (e) => {
+    }
+    const handleTouchCancel = (e: TouchEvent) => {
       if (currentFocusedElement) {
         stopMovementCheck(e, currentFocusedElement)
       }
-    })
-    document.addEventListener('dragend', (e) => {
+    }
+    const handleDragEnd = (e: DragEvent) => {
       if (currentFocusedElement) {
         stopMovementCheck(e, currentFocusedElement)
       }
-    })
+    }
+
+    document.addEventListener('mouseup', handleMouseUp)
+    document.addEventListener('touchend', handleTouchEnd)
+    document.addEventListener('touchcancel', handleTouchCancel)
+    document.addEventListener('dragend', handleDragEnd)
+
     return () => {
-      document.removeEventListener('touchmove', preventDefault)
-      document.removeEventListener('mouseup', (e) => {
-        if (currentFocusedElement) {
-          stopMovementCheck(e, currentFocusedElement)
-        }
-      })
-      document.removeEventListener('touchend', (e) => {
-        if (currentFocusedElement) {
-          stopMovementCheck(e, currentFocusedElement)
-        }
-      })
-      document.removeEventListener('touchcancel', (e) => {
-        if (currentFocusedElement) {
-          stopMovementCheck(e, currentFocusedElement)
-        }
-      })
-      document.removeEventListener('dragend', (e) => {
-        if (currentFocusedElement) {
-          stopMovementCheck(e, currentFocusedElement)
-        }
-      })
+      document.removeEventListener('mouseup', handleMouseUp)
+      document.removeEventListener('touchend', handleTouchEnd)
+      document.removeEventListener('touchcancel', handleTouchCancel)
+      document.removeEventListener('dragend', handleDragEnd)
     }
-  }, [stopMovementCheck, currentFocusedElement])
+  }, [stopMovementCheck, stopMoving, currentFocusedElement])
 
   //on blob blur
   function blurred(draggable: HTMLElement) {
@@ -498,6 +499,7 @@ const DragComponent = (props: DragComponentProps) => {
 
         props.setScroll(true)
         document.body.style.overflowY = 'auto'
+        document.body.style.overflowX = 'hidden'
 
         if (props.exitApp.current) {
           props.exitApp.current.setAttribute('tabindex', '0')

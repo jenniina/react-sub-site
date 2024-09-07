@@ -857,11 +857,18 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     })
   }
 
+  const preventDefault = (e: Event) => {
+    e.preventDefault()
+    e.stopPropagation()
+  }
+
   function disableScroll() {
     if (scroll) {
+      document.addEventListener('touchmove', preventDefault, { passive: false })
       document.body.style.overflow = 'hidden'
     } else {
       document.body.style.overflow = 'auto'
+      document.removeEventListener('touchmove', preventDefault)
     }
     setScroll(!scroll)
   }
@@ -1256,6 +1263,16 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             {EReset[language]}
           </button>
           <button
+            className='toggle-marker tooltip-wrap'
+            onClick={() => setMarkerEnabled(!markerEnabled)}
+          >
+            <span
+              className='tooltip left below space'
+              data-tooltip={`${EToggleMarkerVisibilityWhenUsingAKeyboard[language]}`}
+            ></span>
+            {markerEnabled ? EMarkerOn[language] : EMarkerOff[language]}
+          </button>
+          <button
             ref={disableScrollButton}
             id={`disable-scroll${d}`}
             className='disable-scroll tooltip-wrap'
@@ -1273,16 +1290,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
               }
             ></span>
             {scroll ? EDisableScroll[language] : EEnableScroll[language]}
-          </button>
-          <button
-            className='toggle-marker tooltip-wrap'
-            onClick={() => setMarkerEnabled(!markerEnabled)}
-          >
-            <span
-              className='tooltip left below space'
-              data-tooltip={`${EToggleMarkerVisibilityWhenUsingAKeyboard[language]}`}
-            ></span>
-            {markerEnabled ? EMarkerOn[language] : EMarkerOff[language]}
           </button>
           <button
             id='toggle-controls'
