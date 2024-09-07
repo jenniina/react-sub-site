@@ -226,12 +226,10 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   ]
 
   const changeBlobLayer = (draggable: Draggable, layer: number) => {
-    console.log(draggable, layer)
     dispatch({
       type: 'updateDraggable',
       payload: { draggable: { ...draggable, layer } },
     })
-    //saveDraggables()
     setActiveLayer(layer)
   }
 
