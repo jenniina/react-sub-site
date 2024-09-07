@@ -30,6 +30,7 @@ let angle = '90deg'
 interface DragComponentProps {
   layer: number
   isCurrentLayer: boolean
+  layerAmount: number
   setActiveLayer: Dispatch<SetStateAction<number>>
   changeBlobLayer: (draggable: Draggable, layer: number) => void
   className: string
@@ -66,6 +67,8 @@ interface DragComponentProps {
   makeSmaller0: RefObject<HTMLButtonElement>
   makeMore0: RefObject<HTMLButtonElement>
   deleteBlob0: RefObject<HTMLButtonElement>
+  layerIncrease: RefObject<HTMLButtonElement>
+  layerDecrease: RefObject<HTMLButtonElement>
   sliderLightnessInput: RefObject<HTMLInputElement>
   sliderSaturationInput: RefObject<HTMLInputElement>
   sliderHueInput: RefObject<HTMLInputElement>
@@ -89,7 +92,6 @@ const preventDefault = (e: Event) => {
 }
 
 const DragComponent = (props: DragComponentProps) => {
-  const dispatch = useAppDispatch()
   //Detect touch device
   const isTouchDevice = () => {
     try {
@@ -106,6 +108,24 @@ const DragComponent = (props: DragComponentProps) => {
   useEffect(() => {
     isTouchDevice()
   }, [])
+
+  // Change the layer of the blob by 1 up to the maximum layer amount
+  const increaseBlobLayer = (target: HTMLElement, draggable: Draggable) => {
+    let layer = draggable.layer
+    if (layer < props.layerAmount - 1) {
+      layer = layer + 1
+    }
+    props.changeBlobLayer(draggable, layer)
+    target.style.setProperty('--layer', `${layer}`)
+  }
+  const decreaseBlobLayer = (target: HTMLElement, draggable: Draggable) => {
+    let layer = draggable.layer
+    if (layer > 0) {
+      layer = layer - 1
+    }
+    props.changeBlobLayer(draggable, layer)
+    target.style.setProperty('--layer', `${layer}`)
+  }
 
   //Check to see if elements overlap
   function elementsOverlap(element1: HTMLElement, element2: HTMLElement) {
@@ -247,6 +267,22 @@ const DragComponent = (props: DragComponentProps) => {
 
       const hitbox = target.querySelector('div')
 
+      const draggable: Draggable = {
+        layer: parseInt(target.style.getPropertyValue('--layer')),
+        id: target.id,
+        number: parseInt(target.id.replace('blob', '').split('-')[0], 10),
+        i: scale,
+        x: target.style.left,
+        y: target.style.top,
+        z: target.style.zIndex,
+        display: 'block',
+        ariaGrabbed: false,
+        draggable: true,
+        tabIndex: 0,
+        background:
+          target.style.background || 'linear-gradient(90deg, cyan, greenyellow)',
+      }
+
       if (isTouchDevice()) {
         document.removeEventListener('touchmove', preventDefault)
         document.body.style.overflowY = 'auto'
@@ -257,6 +293,19 @@ const DragComponent = (props: DragComponentProps) => {
         document.body.style.overflowX = 'hidden'
       } else {
         document.body.style.overflow = 'hidden'
+      }
+
+      if (
+        props.layerIncrease.current &&
+        elementsOverlap(hitbox as HTMLElement, props.layerIncrease.current)
+      ) {
+        increaseBlobLayer(target, draggable)
+      }
+      if (
+        props.layerDecrease.current &&
+        elementsOverlap(hitbox as HTMLElement, props.layerDecrease.current)
+      ) {
+        decreaseBlobLayer(target, draggable)
       }
 
       props.colorPairs.forEach((colorPair, index) => {

@@ -49,6 +49,8 @@ interface DragComponentProps {
   makeSmaller0: RefObject<HTMLButtonElement>
   makeMore0: RefObject<HTMLButtonElement>
   deleteBlob0: RefObject<HTMLButtonElement>
+  layerIncrease: RefObject<HTMLButtonElement>
+  layerDecrease: RefObject<HTMLButtonElement>
   sliderLightnessInput: RefObject<HTMLInputElement>
   sliderSaturationInput: RefObject<HTMLInputElement>
   sliderHueInput: RefObject<HTMLInputElement>
@@ -90,6 +92,7 @@ const DragContainer = (props: DragComponentProps) => {
         <DragComponent
           key={layer}
           layer={layer}
+          layerAmount={props.layerAmount}
           isCurrentLayer={layer === props.layer}
           setActiveLayer={props.setActiveLayer}
           changeBlobLayer={props.changeBlobLayer}
@@ -120,6 +123,8 @@ const DragContainer = (props: DragComponentProps) => {
           makeSmaller0={props.makeSmaller0}
           makeMore0={props.makeMore0}
           deleteBlob0={props.deleteBlob0}
+          layerIncrease={props.layerIncrease}
+          layerDecrease={props.layerDecrease}
           dragWrap={props.dragWrap}
           exitApp={props.exitApp}
           selectedvalue0={props.selectedvalue0}

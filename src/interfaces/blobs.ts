@@ -651,6 +651,24 @@ export enum EReleaseToChangeColorInstructions {
   cs = 'Uvolněte blob poblíž mě, abyste změnili barvu! Použití klávesnice: stiskněte Enter s fokusem na blob',
   fi = 'Vapauta mollukka lähelleni vaihtaaksesi väriä! Näppäinkäyttö: paina Enter mollukkaa tarkastellessasi',
 }
+export enum EIncreaseBlobLayerBy1Instructions {
+  en = 'Release a blob near me to move it up one layer!',
+  es = '¡Suelta un blob cerca de mí para moverlo una capa hacia arriba!',
+  fr = 'Relâchez un blob près de moi pour le déplacer d une couche vers le haut!',
+  de = 'Lassen Sie einen Blob in meiner Nähe los, um ihn um eine Schicht nach oben zu bewegen!',
+  pt = 'Solte um blob perto de mim para movê-lo uma camada para cima!',
+  cs = 'Uvolněte blob poblíž mě, abyste ho posunuli o jednu vrstvu nahoru!',
+  fi = 'Vapauta mollukka lähelleni siirtääksesi sen yhtä kerrosta ylemmäksi!',
+}
+export enum EDecreaseBlobLayerBy1Instructions {
+  en = 'Release a blob near me to move it down one layer!',
+  es = '¡Suelta un blob cerca de mí para moverlo una capa hacia abajo!',
+  fr = 'Relâchez un blob près de moi pour le déplacer d une couche vers le bas!',
+  de = 'Lassen Sie einen Blob in meiner Nähe los, um ihn um eine Schicht nach unten zu bewegen!',
+  pt = 'Solte um blob perto de mim para movê-lo uma camada para baixo!',
+  cs = 'Uvolněte blob poblíž mě, abyste ho posunuli o jednu vrstvu dolů!',
+  fi = 'Vapauta mollukka lähelleni siirtääksesi sen yhtä kerrosta alemmaksi!',
+}
 export enum EHideControls {
   en = 'Hide controls',
   es = 'Ocultar controles',
