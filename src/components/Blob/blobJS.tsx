@@ -19,6 +19,7 @@ import {
 } from './interfaces'
 import { BlobContext, Props } from './components/BlobProvider'
 import {
+  EDownload,
   EEdit,
   EError,
   ELanguages,
@@ -1244,7 +1245,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   }
 
   useEffect(() => {
-    if (loading) dispatch2(notify(`${ELoading[language]}...`, false, 8))
+    if (loading) dispatch2(notify(`${ELoading[language]}...`, false, 11))
   }, [loading])
 
   return (
@@ -1877,8 +1878,9 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           </div>
         )}
         <div ref={blobScreenshot} id='blob-screenshot' style={{ display: 'none' }}>
+          <button onClick={saveScreenshot}>{EDownload[language]}</button>
           <img src='' ref={screenshotImg} alt={EScreenshot[language]} style={imgStyle} />
-          <button onClick={saveScreenshot}>{ESave[language]}</button>
+          <button onClick={saveScreenshot}>{EDownload[language]}</button>
         </div>
       </section>
 

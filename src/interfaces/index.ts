@@ -1902,3 +1902,12 @@ export enum EChangeLanguage {
   cs = 'Změnit jazyk',
   fi = 'Vaihda kieli',
 }
+export enum EDownload {
+  en = 'Download',
+  es = 'Descargar',
+  fr = 'Télécharger',
+  de = 'Herunterladen',
+  pt = 'Baixar',
+  cs = 'Stáhnout',
+  fi = 'Lataa',
+}
