@@ -839,19 +839,19 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   //save blob stats to localhost array
   const getPosition = (draggable: HTMLElement) => {
     const blobID = draggable.id
-    const blobNumber = draggable.id.replace(/^\D+/g, '') //replace non-numbers with empty
-    const blobI = window.getComputedStyle(draggable).getPropertyValue('--i')
-    const blobX = window.getComputedStyle(draggable).getPropertyValue('left')
-    const blobY = window.getComputedStyle(draggable).getPropertyValue('top')
-    const blobZ = window.getComputedStyle(draggable).getPropertyValue('z-index')
-    const blobColor1 = window.getComputedStyle(draggable).getPropertyValue('background')
-    const blobDisplay = window.getComputedStyle(draggable).getPropertyValue('display')
-    const layer = window.getComputedStyle(draggable).getPropertyValue('--layer')
+    const blobNumber = parseInt(draggable.id.replace('blob', '').split('-')[0], 10)
+    const blobI = draggable.style.getPropertyValue('--i')
+    const blobX = draggable.style.getPropertyValue('left')
+    const blobY = draggable.style.getPropertyValue('top')
+    const blobZ = draggable.style.getPropertyValue('z-index')
+    const blobColor1 = draggable.style.getPropertyValue('background')
+    const blobDisplay = draggable.style.getPropertyValue('display')
+    const layer = draggable.style.getPropertyValue('--layer')
 
-    const blobDraggables: Draggable = {
+    const blobDraggable: Draggable = {
       layer: layer ? parseInt(layer) : activeLayer,
       id: blobID,
-      number: parseInt(blobNumber),
+      number: blobNumber,
       i: parseFloat(blobI),
       x: blobX,
       y: blobY,
@@ -865,7 +865,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
     dispatch({
       type: 'updateDraggable',
-      payload: { draggable: blobDraggables, id: blobDraggables.id },
+      payload: { draggable: blobDraggable },
     })
   }
 
