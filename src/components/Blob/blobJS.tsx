@@ -108,6 +108,7 @@ import { useNavigate } from 'react-router-dom'
 import blobService from './services/blob'
 import { BsFillCameraFill } from 'react-icons/bs'
 import { ELoading } from '../Todo/interfaces'
+import useDisableScroll from '../../hooks/useDisableScroll'
 
 let angle = '90deg'
 let color = 'cyan'
@@ -117,6 +118,10 @@ let color2 = 'greenyellow'
 const defaultLightness = '30'
 const defaultSaturation = '80'
 const defaultHue = '214'
+
+const preventDefault = (e: Event) => {
+  e.preventDefault()
+}
 
 export default function BlobJS({ language }: { language: ELanguages }) {
   const { state, dispatch } = useContext(BlobContext) as Props
@@ -635,7 +640,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     }
   }, [])
 
-  const amountOfBlobs = windowWidth > 400 ? 10 : 6 // Initial amount of blobs
+  const amountOfBlobs = windowWidth > 700 ? 10 : 6 // Initial amount of blobs
 
   const escape = (e: KeyboardEvent) => {
     switch (e.key) {
@@ -857,21 +862,27 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     })
   }
 
-  const preventDefault = (e: Event) => {
-    e.preventDefault()
-    e.stopPropagation()
-  }
-
-  function disableScroll() {
-    if (scroll) {
+  useEffect(() => {
+    if (!scroll) {
       document.addEventListener('touchmove', preventDefault, { passive: false })
       document.body.style.overflow = 'hidden'
     } else {
-      document.body.style.overflow = 'auto'
+      document.body.style.overflowY = 'auto'
+      document.body.style.overflowX = 'hidden'
       document.removeEventListener('touchmove', preventDefault)
     }
+
+    return () => {
+      document.body.style.overflowY = 'auto'
+      document.body.style.overflowX = 'hidden'
+      document.removeEventListener('touchmove', preventDefault)
+    }
+  }, [scroll])
+
+  function disableScroll() {
     setScroll(!scroll)
   }
+  // const disableScroll = useDisableScroll()
 
   //SLIDERS
 
@@ -1272,6 +1283,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             ></span>
             {markerEnabled ? EMarkerOn[language] : EMarkerOff[language]}
           </button>
+
           <button
             ref={disableScrollButton}
             id={`disable-scroll${d}`}
@@ -1291,6 +1303,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             ></span>
             {scroll ? EDisableScroll[language] : EEnableScroll[language]}
           </button>
+
           <button
             id='toggle-controls'
             className='toggle-controls'
