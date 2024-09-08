@@ -25,9 +25,7 @@ import {
   ELanguages,
   ELogin,
   EOr,
-  EPasswordsDoNotMatch,
   ERegister,
-  ERegistrationSuccesful,
   EReset,
   ESave,
   ESavingSuccessful,
@@ -90,6 +88,9 @@ import {
   EIncreaseBlobLayerBy1Instructions,
   EDecreaseBlobLayerBy1Instructions,
   ENoScreenshotAvailableToSave,
+  EYouMayFindTheImageBelow,
+  EKeyboardUsePressTheCorrespondingLayerNumber,
+  EMoreColorsAvailable,
 } from '../../interfaces/blobs'
 import {
   BiChevronDown,
@@ -114,7 +115,6 @@ import { useNavigate } from 'react-router-dom'
 import blobService from './services/blob'
 import { BsFillCameraFill } from 'react-icons/bs'
 import { ELoading } from '../Todo/interfaces'
-import useDisableScroll from '../../hooks/useDisableScroll'
 
 let angle = '90deg'
 let color = 'cyan'
@@ -878,7 +878,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       document.body.style.overflowX = 'hidden'
       document.removeEventListener('touchmove', preventDefault)
     }
-
     return () => {
       document.body.style.overflowY = 'auto'
       document.body.style.overflowX = 'hidden'
@@ -1033,19 +1032,18 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     // return () => {
     //   window.removeEventListener('resize', widthResize)
     // }
-  }, [windowWidth])
+  }, [windowWidth, windowHeight, scroll])
 
   const breakpoint = 700
 
   const widthResize = () => {
-    //place layer-buttons to the middle in the bottom
+    //place these items every time the window is resized
     if (layerButtons0.current && dragWrap.current) {
       layerButtons0.current.style.left =
         dragWrap.current.offsetWidth / 2 - layerButtons0.current.offsetWidth / 2 + 'px'
       layerButtons0.current.style.top =
         dragWrap.current.offsetHeight - layerButtons0.current.offsetHeight + 'px'
     }
-    //place these items every time the window is resized
     if (makeLarger0.current && dragWrap.current)
       place(
         makeLarger0.current,
@@ -1155,7 +1153,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
   const takeScreenshot = async () => {
     const dragWrap = document.getElementById('drag-slider-wrap')
-    if (dragWrap) {
+    if (dragWrap && !loading) {
       try {
         let localStorageData: { [key: string]: string } = {}
         for (let i = 0; i < localStorage.length; i++) {
@@ -1201,8 +1199,14 @@ export default function BlobJS({ language }: { language: ELanguages }) {
         if (container && img) {
           img.src = `data:image/png;base64,${data.screenshot}`
           container.style.display = 'block'
-          img.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-          dispatch2(notify(EScreenshotTaken[language], false, 8))
+          img.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          dispatch2(
+            notify(
+              `${EScreenshotTaken[language]}; ${EYouMayFindTheImageBelow[language]}`,
+              false,
+              10
+            )
+          )
           setLoading(false)
           setScroll(true)
         }
@@ -1378,13 +1382,13 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             className={`make-random tooltip-wrap  ${!controlsVisible ? 'hidden' : ''}`}
             id={`make-random${d}`}
             role='tooltip'
-            aria-label={EClickMeToMakeARandomBlob[language]}
+            aria-label={`${EClickMeToMakeARandomBlob[language]}. ${EMoreColorsAvailable[language]}`}
             onClick={() => addRandomDraggable()}
           >
             <FaPlus />
             <span
               className='tooltip left below'
-              data-tooltip={EClickMeToMakeARandomBlob[language]}
+              data-tooltip={`${EClickMeToMakeARandomBlob[language]}. ${EMoreColorsAvailable[language]}!`}
             ></span>
           </button>
           <button
@@ -1402,26 +1406,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
               data-tooltip={ERemovalInstructions[language]}
             ></span>
           </button>
-          <div className={`movers-wrap movers-wrap1 ${!controlsVisible ? 'hidden' : ''}`}>
-            <button className={`moveleft mover`} onClick={handleMoveRight}>
-              <BiChevronsLeft />
-              <span className='scr'>{EMoveViewLeft[language]}</span>
-            </button>
-            <button className={`moveright mover`} onClick={handleMoveLeft}>
-              <BiChevronsRight />
-              <span className='scr'>{EMoveViewRight[language]}</span>
-            </button>
-          </div>
-          <div className={`movers-wrap movers-wrap2 ${!controlsVisible ? 'hidden' : ''}`}>
-            <button className={`moveup mover`} onClick={handleMoveDown}>
-              <BiChevronsUp />
-              <span className='scr'>{EMoveViewUp[language]}</span>
-            </button>
-            <button className={`movedown mover`} onClick={handleMoveUp}>
-              <BiChevronsDown />
-              <span className='scr'>{EMoveViewDown[language]}</span>
-            </button>
-          </div>
+
           {markerEnabled && usingKeyboard && focusedBlob && (
             <div
               ref={markerDivRef}
@@ -1497,6 +1482,27 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             />
           </div>
 
+          <div className={`movers-wrap movers-wrap1 ${!controlsVisible ? 'hidden' : ''}`}>
+            <button className={`moveleft mover`} onClick={handleMoveRight}>
+              <BiChevronsLeft />
+              <span className='scr'>{EMoveViewLeft[language]}</span>
+            </button>
+            <button className={`moveright mover`} onClick={handleMoveLeft}>
+              <BiChevronsRight />
+              <span className='scr'>{EMoveViewRight[language]}</span>
+            </button>
+          </div>
+          <div className={`movers-wrap movers-wrap2 ${!controlsVisible ? 'hidden' : ''}`}>
+            <button className={`moveup mover`} onClick={handleMoveDown}>
+              <BiChevronsUp />
+              <span className='scr'>{EMoveViewUp[language]}</span>
+            </button>
+            <button className={`movedown mover`} onClick={handleMoveUp}>
+              <BiChevronsDown />
+              <span className='scr'>{EMoveViewDown[language]}</span>
+            </button>
+          </div>
+
           <div
             className={`layer-buttons ${!controlsVisible ? 'hidden' : ''}`}
             ref={layerButtons0}
@@ -1508,7 +1514,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             >
               <span
                 className='tooltip above right'
-                data-tooltip={EDecreaseBlobLayerBy1Instructions[language]}
+                data-tooltip={`${EDecreaseBlobLayerBy1Instructions[language]} ${EKeyboardUsePressTheCorrespondingLayerNumber[language]}`}
               ></span>
               <BiChevronDown />
             </button>
@@ -1544,7 +1550,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             >
               <span
                 className='tooltip above left'
-                data-tooltip={EIncreaseBlobLayerBy1Instructions[language]}
+                data-tooltip={`${EIncreaseBlobLayerBy1Instructions[language]} ${EKeyboardUsePressTheCorrespondingLayerNumber[language]}`}
               ></span>
               <BiChevronUp />
             </button>
