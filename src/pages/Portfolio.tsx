@@ -42,6 +42,7 @@ import {
 import { ETodoApp } from '../components/Todo/interfaces'
 import { ETryDraggingTheBlobs } from '../interfaces/blobs'
 import { EBlobArtApp } from '../interfaces/about'
+import Accordion from '../components/Accordion/Accordion'
 
 export default function Portfolio({
   heading,
@@ -88,16 +89,38 @@ export default function Portfolio({
               <h2>React Apps</h2>
 
               <p>{EReactSpecificAppsMadeWithViteAndTypescript[language]}</p>
-              <p id='list-libraries-label'>{EDependencies[language]}:</p>
-              <ul id='list-libraries' aria-labelledby='list-libraries-label'>
-                <li>react-icons</li>
-                <li>react-dom</li>
-                <li>react-router-dom</li>
-                <li>react-redux</li>
-                <li>@reduxjs/toolkit</li>
-                <li>axios</li>
-                <li>uuid</li>
-              </ul>
+              <Accordion
+                language={language}
+                text={EDependencies[language]}
+                className='dependencies'
+              >
+                <p id='list-libraries-label'>{EDependencies[language]}:</p>
+                <ul id='list-libraries' aria-labelledby='list-libraries-label'>
+                  <li>react-icons</li>
+                  <li>react-dom</li>
+                  <li>react-router-dom</li>
+                  <li>react-redux</li>
+                  <li>@reduxjs/toolkit</li>
+                  <li>axios</li>
+                  <li>uuid</li>
+                </ul>
+                <p id='list-libraries-label2'>Backend {EDependencies[language]}:</p>
+                <ul id='list-libraries2' aria-labelledby='list-libraries-label2'>
+                  <li>bcryptjs</li>
+                  <li>branca</li>
+                  <li>circular-json</li>
+                  <li>cors</li>
+                  <li>dotenv</li>
+                  <li>express</li>
+                  <li>express-validator</li>
+                  <li>flatted</li>
+                  <li>jsonwebtoken</li>
+                  <li>mongoose</li>
+                  <li>nodemailer</li>
+                  <li>puppeteer</li>
+                  <li>sanitize-html</li>
+                </ul>
+              </Accordion>
             </div>
             <ul className={`${styles.list}`}>
               <li>
