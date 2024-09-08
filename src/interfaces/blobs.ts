@@ -606,13 +606,13 @@ export enum ERemovalInstructions {
   fi = 'Poista mollukka tuomalla se minulle! Näppäinkäyttö: paina Delete mollukkaa tarkastellessasi',
 }
 export enum ECloneInstructions {
-  en = 'Release a blob here to duplicate it! Keyboard use: press 3 with blob in focus',
-  es = '¡Suelta un blob aquí para duplicarlo! Uso del teclado: presiona 3 con el blob enfocado',
-  fr = 'Relâchez un blob ici pour le dupliquer! Utilisation du clavier: appuyez sur 3 avec le blob en focus',
-  de = 'Lassen Sie einen Blob hier los, um ihn zu duplizieren! Tastaturverwendung: Drücken Sie 3 mit Blob im Fokus',
-  pt = 'Solte um blob aqui para duplicá-lo! Uso do teclado: pressione 3 com o blob em foco',
-  cs = 'Uvolněte blob zde, abyste ho duplikovali! Použití klávesnice: stiskněte 3 s fokusem na blob',
-  fi = 'Vapauta mollukka tänne kloonataksesi sen! Näppäinkäyttö: paina 3 mollukkaa tarkastellessasi',
+  en = 'Release a blob here to duplicate it! Keyboard use: press C or D with blob in focus',
+  es = '¡Suelta un blob aquí para duplicarlo! Uso del teclado: presiona C o D con el blob enfocado',
+  fr = 'Relâchez un blob ici pour le dupliquer! Utilisation du clavier: appuyez sur C ou D avec le blob en focus',
+  de = 'Lassen Sie einen Blob hier los, um ihn zu duplizieren! Tastaturverwendung: Drücken Sie C oder D mit Blob im Fokus',
+  pt = 'Solte um blob aqui para duplicá-lo! Uso do teclado: pressione C ou D com o blob em foco',
+  cs = 'Uvolněte blob zde, abyste ho duplikovali! Použití klávesnice: stiskněte C nebo D s fokusem na blob',
+  fi = 'Vapauta mollukka tänne kloonataksesi se! Näppäinkäyttö: paina C tai D mollukka fokuksessa',
 }
 export enum EClickMeToMakeARandomBlob {
   en = 'Click me to make a random blob',

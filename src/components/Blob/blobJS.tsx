@@ -22,7 +22,9 @@ import {
   EDownload,
   EEdit,
   EError,
+  EErrorConnectingToTheServer,
   ELanguages,
+  ELoad,
   ELogin,
   EOr,
   ERegister,
@@ -119,6 +121,7 @@ import { useNavigate } from 'react-router-dom'
 import blobService from './services/blob'
 import { BsFillCameraFill } from 'react-icons/bs'
 import { ELoading } from '../Todo/interfaces'
+import { EDelete } from '../Jokes/interfaces'
 
 let angle = '90deg'
 let color = 'cyan'
@@ -137,6 +140,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   const { state, dispatch } = useContext(BlobContext) as Props
   const dispatch2 = useAppDispatch()
   const user = useSelector((state: ReducerProps) => state.auth?.user) as IUser
+  const users = useSelector((state: ReducerProps) => state.users) as IUser[]
 
   const d = 0 // for the time being, only one d is used
 
@@ -1184,7 +1188,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   }
 
   const imgStyle: CSSProperties = {
-    width: 'auto',
+    width: '100%',
     height: 'auto',
     margin: '0 auto',
   }
@@ -1850,6 +1854,8 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             <h2>{EArt[language]}</h2>
             {isLoading ? (
               <p>{ELoadingSavedArtwork[language]}</p>
+            ) : !users || users.length < 1 ? (
+              <p>{EErrorConnectingToTheServer[language]}</p>
             ) : !hasSavedFiles ? (
               <p>{ENoSavedArtworkYet[language]}</p>
             ) : (
@@ -1862,14 +1868,14 @@ export default function BlobJS({ language }: { language: ELanguages }) {
                         <button
                           onClick={() => loadBlobsFromServer(Number(dKey), versionName)}
                         >
-                          Load
+                          {ELoad[language]}
                         </button>
                         <button
                           onClick={() =>
                             deleteBlobsVersionFromServer(Number(dKey), versionName)
                           }
                         >
-                          Delete
+                          {EDelete[language]}
                         </button>
                         <Accordion
                           language={language}
