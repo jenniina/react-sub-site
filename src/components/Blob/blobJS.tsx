@@ -665,11 +665,13 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
   function resetBlobsFunction(e: MouseEventReact | TouchEventReact | PointerEventReact) {
     e.preventDefault()
-    window.localStorage.removeItem(localStorageDraggables)
-    dispatch({ type: 'resetBlobs', payload: {} })
-    dispatch({ type: 'setDraggablesAtD', payload: { d, draggables: [] } })
+    if (window.confirm(`${EResetBlobs[language]}?`)) {
+      window.localStorage.removeItem(localStorageDraggables)
+      dispatch({ type: 'resetBlobs', payload: {} })
+      dispatch({ type: 'setDraggablesAtD', payload: { d, draggables: [] } })
 
-    makeAnew(amountOfBlobs)
+      makeAnew(amountOfBlobs)
+    }
   }
 
   const makeAnew = (amount: number) => {
