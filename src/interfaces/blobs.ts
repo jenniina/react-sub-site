@@ -780,14 +780,14 @@ export enum EEditArtwork {
   cs = 'Upravte své umění',
   fi = 'Muokkaa teostasi',
 }
-export enum ESavedArt {
-  en = 'Saved art',
-  es = 'Arte guardado',
-  fr = 'Art enregistré',
-  de = 'Gespeicherte Kunst',
-  pt = 'Arte salvo',
-  cs = 'Uložené umění',
-  fi = 'Tallennettu taide',
+export enum EArtSaved {
+  en = 'Art has been saved',
+  es = 'El arte ha sido guardado',
+  fr = 'L art a été enregistré',
+  de = 'Kunst wurde gespeichert',
+  pt = 'A arte foi salva',
+  cs = 'Umění bylo uloženo',
+  fi = 'Taide on tallennettu',
 }
 export enum ENoSavedArtworkYet {
   en = 'No saved artwork yet',
@@ -1007,4 +1007,13 @@ export enum EKeysMayBeUsedWhileMouseIsPressedDown {
   pt = 'As teclas podem ser usadas enquanto o mouse está pressionado em um blob',
   cs = 'Klávesy mohou být použity, když je myš stisknuta na blobu',
   fi = 'Näppäimiä voidaan käyttää, kun hiiri on painettuna mollukan päällä',
+}
+export enum EArt {
+  en = 'Art',
+  es = 'Arte',
+  fr = 'Art',
+  de = 'Kunst',
+  pt = 'Arte',
+  cs = 'Umění',
+  fi = 'Taide',
 }

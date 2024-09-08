@@ -72,7 +72,7 @@ import {
   ENameYourArtwork,
   ERenameYourArtwork,
   ERename,
-  ESavedArt,
+  EArtSaved,
   EAreYouSureYouWantToDeleteThisVersion,
   ENoteThatUnsavedChangesWillBeLost,
   EDeletedArt,
@@ -94,6 +94,7 @@ import {
   ECannotLowerEveryBlobFurther,
   EClickHereToMoveUpLayer,
   EClickHereToMoveDownLayer,
+  EArt,
 } from '../../interfaces/blobs'
 import {
   BiChevronDown,
@@ -1263,7 +1264,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
-      dispatch2(notify(ESavedArt[language], false, 8))
+      dispatch2(notify(EArtSaved[language], false, 8))
     } else {
       dispatch2(notify(ENoScreenshotAvailableToSave[language], true, 8))
       console.error(ENoScreenshotAvailableToSave[language])
@@ -1836,7 +1837,17 @@ export default function BlobJS({ language }: { language: ELanguages }) {
                 <button type='submit'>{ESave[language]}</button>
               </form>
             </div>
-            <h2>{ESavedArt[language]}</h2>
+            <div ref={blobScreenshot} id='blob-screenshot' style={{ display: 'none' }}>
+              <button onClick={saveScreenshot}>{EDownload[language]}</button>
+              <img
+                src=''
+                ref={screenshotImg}
+                alt={EScreenshot[language]}
+                style={imgStyle}
+              />
+              <button onClick={saveScreenshot}>{EDownload[language]}</button>
+            </div>
+            <h2>{EArt[language]}</h2>
             {isLoading ? (
               <p>{ELoadingSavedArtwork[language]}</p>
             ) : !hasSavedFiles ? (
@@ -1924,11 +1935,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             </div>
           </div>
         )}
-        <div ref={blobScreenshot} id='blob-screenshot' style={{ display: 'none' }}>
-          <button onClick={saveScreenshot}>{EDownload[language]}</button>
-          <img src='' ref={screenshotImg} alt={EScreenshot[language]} style={imgStyle} />
-          <button onClick={saveScreenshot}>{EDownload[language]}</button>
-        </div>
       </section>
 
       <svg className='filter'>
