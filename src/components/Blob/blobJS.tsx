@@ -91,6 +91,9 @@ import {
   EYouMayFindTheImageBelow,
   EKeyboardUsePressTheCorrespondingLayerNumber,
   EMoreColorsAvailable,
+  ECannotLowerEveryBlobFurther,
+  EClickHereToMoveUpLayer,
+  EClickHereToMoveDownLayer,
 } from '../../interfaces/blobs'
 import {
   BiChevronDown,
@@ -663,6 +666,38 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     }
   }, [])
 
+  // Change every blob's layer by plus or minus one, unless any blob is already on the highest or lowest layer
+
+  const changeEveryLayer = (amount: number) => {
+    const isAnyOnLowestLayer = draggables[d].some(
+      (draggable) => draggable.layer === 0 && amount < 0
+    )
+    const isAnyOnHighestLayer = draggables[d].some(
+      (draggable) => draggable.layer === layerAmount - 1 && amount > 0
+    )
+
+    if (isAnyOnLowestLayer) {
+      dispatch2(notify(ECannotLowerEveryBlobFurther[language], true, 8))
+      return
+    }
+
+    if (isAnyOnHighestLayer) {
+      dispatch2(notify(ECannotLowerEveryBlobFurther[language], true, 8))
+      return
+    }
+
+    const newDraggables = draggables[d].map((draggable) => {
+      const layer = draggable.layer + amount
+      if (layer >= 0 && layer < layerAmount) {
+        return { ...draggable, layer }
+      } else {
+        return draggable
+      }
+    })
+
+    dispatch({ type: 'setDraggablesAtD', payload: { d, draggables: newDraggables } })
+  }
+
   function resetBlobsFunction(e: MouseEventReact | TouchEventReact | PointerEventReact) {
     e.preventDefault()
     if (window.confirm(`${EResetBlobs[language]}?`)) {
@@ -1101,14 +1136,14 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       : makeSmaller0.current && dragWrap.current
       ? place(
           makeSmaller0.current,
-          85 - (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
+          87 - (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
           93
         )
       : null
     windowWidth < breakpoint && deleteBlob0.current && dragWrap.current
       ? place(deleteBlob0.current, 5, 93)
       : deleteBlob0.current && dragWrap.current
-      ? place(deleteBlob0.current, 15, 93)
+      ? place(deleteBlob0.current, 13, 93)
       : null
   }
 
@@ -1510,6 +1545,16 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             ref={layerButtons0}
           >
             <button
+              className='layer-button every-layer tooltip-wrap'
+              onClick={() => changeEveryLayer(-1)}
+            >
+              <span
+                className='tooltip above right'
+                data-tooltip={EClickHereToMoveDownLayer[language]}
+              ></span>
+              <BiChevronsDown />
+            </button>
+            <button
               ref={layerDecrease}
               id='layer-decrease'
               className='layer-adjust layer-decrease tooltip-wrap'
@@ -1555,6 +1600,16 @@ export default function BlobJS({ language }: { language: ELanguages }) {
                 data-tooltip={`${EIncreaseBlobLayerBy1Instructions[language]} ${EKeyboardUsePressTheCorrespondingLayerNumber[language]}`}
               ></span>
               <BiChevronUp />
+            </button>
+            <button
+              className='layer-button every-layer tooltip-wrap'
+              onClick={() => changeEveryLayer(1)}
+            >
+              <span
+                className='tooltip above left'
+                data-tooltip={EClickHereToMoveUpLayer[language]}
+              ></span>
+              <BiChevronsUp />
             </button>
           </div>
           <div

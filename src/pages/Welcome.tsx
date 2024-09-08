@@ -69,10 +69,12 @@ import {
 import { GrGraphQl } from 'react-icons/gr'
 import {
   EButtonsTo,
+  EDragBlobToIconsNextToLayerButtons,
   EEditArtwork,
   ELayers,
   ELoginToSaveBlobsToServer,
   EManyVersions,
+  EMoveEveryBlobUpOrDownOneLayerByPressingTheButtons,
   EMoveViewInDifferentDirections,
   ENameYourArtwork,
   ERemovable,
@@ -174,7 +176,9 @@ export default function Home({
                             {EBlobs[language]}:
                           </Link>
                           <i>
-                            {EAddedNewFeatures[language]}: {EScreenshot[language]}!
+                            {EAddedNewFeatures[language]}: {EScreenshot[language]}!{' '}
+                            {EMoveEveryBlobUpOrDownOneLayerByPressingTheButtons[language]}
+                            . {EDragBlobToIconsNextToLayerButtons[language]}
                           </i>
                         </li>
                         <li>
