@@ -623,6 +623,16 @@ export enum EClickMeToMakeARandomBlob {
   cs = 'Klikněte na mě, abyste vytvořili náhodný blob',
   fi = 'Klikkaa minua luodaksesi satunnaisen mollukan',
 }
+
+export enum EMoreColorsAvailable {
+  en = 'More colors available',
+  es = 'Más colores disponibles',
+  fr = 'Plus de couleurs disponibles',
+  de = 'Mehr Farben verfügbar',
+  pt = 'Mais cores disponíveis',
+  cs = 'Další barvy k dispozici',
+  fi = 'Enemmän värejä saatavilla',
+}
 export enum EAlternatively {
   en = 'Alternatively',
   es = 'Alternativamente',
@@ -895,4 +905,23 @@ export enum ENoScreenshotAvailableToSave {
   pt = 'Nenhum screenshot disponível para salvar',
   cs = 'Žádný snímek obrazovky není k dispozici k uložení',
   fi = 'Ei kuvakaappausta tallennettavaksi',
+}
+export enum EYouMayFindTheImageBelow {
+  en = 'You may find the image below',
+  es = 'Puede encontrar la imagen a continuación',
+  fr = 'Vous pouvez trouver l’image ci-dessous',
+  de = 'Sie finden das Bild unten',
+  pt = 'Você pode encontrar a imagem abaixo',
+  cs = 'Níže můžete najít obrázek',
+  fi = 'Löydät kuvan alempana',
+}
+//Keyboard use: Press the corresponding layer number with the blob in focus
+export enum EKeyboardUsePressTheCorrespondingLayerNumber {
+  en = 'Keyboard use: Press the corresponding layer number with the blob in focus',
+  es = 'Uso del teclado: presione el número de capa correspondiente con el blob enfocado',
+  fr = 'Utilisation du clavier: appuyez sur le numéro de couche correspondant avec le blob en focus',
+  de = 'Tastaturverwendung: Drücken Sie die entsprechende Schichtnummer mit dem Blob im Fokus',
+  pt = 'Uso do teclado: pressione o número da camada correspondente com o blob em foco',
+  cs = 'Použití klávesnice: Stiskněte odpovídající číslo vrstvy s fokusem na blob',
+  fi = 'Näppäinkäyttö: Paina vastaavaa kerrosnumeroa mollukkaa tarkastellessasi',
 }
