@@ -528,11 +528,11 @@ body .z {
 }
 .accordion-container .accordion-btn.open span {
   display: inline-block;
-  -webkit-transform: translateY(0.3em) rotate(180deg);
+  /* -webkit-transform: translateY(0.3em) rotate(180deg);
   -ms-transform: translateY(0.3em) rotate(180deg);
   -o-transform: translateY(0.3em) rotate(180deg);
   -moz-transform: translateY(0.3em) rotate(180deg);
-  transform: translateY(0.3em) rotate(180deg);
+  transform: translateY(0.3em) rotate(180deg); */
 }
 .accordion-container .accordion-btn.open span.hide {
   display: none;

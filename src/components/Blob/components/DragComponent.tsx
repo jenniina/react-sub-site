@@ -274,10 +274,6 @@ const DragComponent = (props: DragComponentProps) => {
         x: target.style.left,
         y: target.style.top,
         z: target.style.zIndex,
-        display: 'block',
-        ariaGrabbed: false,
-        draggable: true,
-        tabIndex: 0,
         background:
           target.style.background || 'linear-gradient(90deg, cyan, greenyellow)',
       }
@@ -522,10 +518,6 @@ const DragComponent = (props: DragComponentProps) => {
       x: target.style.getPropertyValue('left').toString(),
       y: target.style.getPropertyValue('top').toString(),
       z: target.style.zIndex || '0',
-      display: 'block',
-      ariaGrabbed: false,
-      draggable: true,
-      tabIndex: 0,
       background: target.style.background || 'linear-gradient(90deg, cyan, greenyellow)',
     }
 

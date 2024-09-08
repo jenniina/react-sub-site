@@ -887,3 +887,12 @@ export enum EPressTheCameraSymbolToTakeAScreenshot {
   cs = 'Stiskněte symbol kamery pro pořízení snímku obrazovky',
   fi = 'Paina kamera-symbolia ottaaksesi kuvakaappauksen',
 }
+export enum ENoScreenshotAvailableToSave {
+  en = 'No screenshot available to save',
+  es = 'No hay captura de pantalla disponible para guardar',
+  fr = 'Aucune capture d’écran disponible à enregistrer',
+  de = 'Kein Screenshot verfügbar zum Speichern',
+  pt = 'Nenhum screenshot disponível para salvar',
+  cs = 'Žádný snímek obrazovky není k dispozici k uložení',
+  fi = 'Ei kuvakaappausta tallennettavaksi',
+}
