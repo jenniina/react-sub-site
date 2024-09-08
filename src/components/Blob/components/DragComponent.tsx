@@ -643,6 +643,8 @@ const DragComponent = (props: DragComponentProps) => {
         break
       case 'C': //make a new clone
       case 'c':
+      case 'D':
+      case 'd':
       case '+':
         //e.stopImmediatePropagation()
         e.preventDefault()

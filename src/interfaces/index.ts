@@ -1911,3 +1911,12 @@ export enum EDownload {
   cs = 'Stáhnout',
   fi = 'Lataa',
 }
+export enum EErrorConnectingToTheServer {
+  en = 'Error connecting to the server',
+  es = 'Error al conectar al servidor',
+  fr = 'Erreur de connexion au serveur',
+  de = 'Fehler beim Verbinden mit dem Server',
+  pt = 'Erro ao conectar ao servidor',
+  cs = 'Chyba připojení k serveru',
+  fi = 'Virhe yhdistettäessä palvelimeen',
+}
