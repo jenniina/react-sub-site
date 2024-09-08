@@ -1920,3 +1920,12 @@ export enum EErrorConnectingToTheServer {
   cs = 'Chyba připojení k serveru',
   fi = 'Virhe yhdistettäessä palvelimeen',
 }
+export enum ELoad {
+  en = 'Load',
+  es = 'Cargar',
+  fr = 'Charger',
+  de = 'Laden',
+  pt = 'Carregar',
+  cs = 'Načíst',
+  fi = 'Lataa',
+}

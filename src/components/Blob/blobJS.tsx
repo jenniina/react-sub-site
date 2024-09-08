@@ -24,6 +24,7 @@ import {
   EError,
   EErrorConnectingToTheServer,
   ELanguages,
+  ELoad,
   ELogin,
   EOr,
   ERegister,
@@ -120,6 +121,7 @@ import { useNavigate } from 'react-router-dom'
 import blobService from './services/blob'
 import { BsFillCameraFill } from 'react-icons/bs'
 import { ELoading } from '../Todo/interfaces'
+import { EDelete } from '../Jokes/interfaces'
 
 let angle = '90deg'
 let color = 'cyan'
@@ -1866,14 +1868,14 @@ export default function BlobJS({ language }: { language: ELanguages }) {
                         <button
                           onClick={() => loadBlobsFromServer(Number(dKey), versionName)}
                         >
-                          Load
+                          {ELoad[language]}
                         </button>
                         <button
                           onClick={() =>
                             deleteBlobsVersionFromServer(Number(dKey), versionName)
                           }
                         >
-                          Delete
+                          {EDelete[language]}
                         </button>
                         <Accordion
                           language={language}
