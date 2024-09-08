@@ -1104,13 +1104,14 @@
 .bottom::after {
   content: attr(data-instructions);
   position: absolute;
-  bottom: 4em;
+  bottom: -2em;
   right: 1em;
   opacity: 0;
   transition-property: opacity;
   transition-timing-function: ease-in-out;
   transition-duration: 500ms;
   transition-delay: 0s;
+  z-index: 3;
 }
 .bottom:hover::after {
   opacity: 1;

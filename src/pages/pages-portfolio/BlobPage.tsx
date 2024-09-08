@@ -2,6 +2,7 @@ import BlobJS from '../../components/Blob/blobJS'
 import Hero from '../../components/Hero/Hero'
 import {
   EBlobs,
+  EButton,
   EDraggable,
   EFeatures,
   EInstructions,
@@ -21,8 +22,11 @@ import {
   ECloneABlobByDraggingItToTheTopLeftPlusSign,
   ECloneABlobByPressingCOr,
   ECloneable,
+  EDownloadYourArtwork,
+  EDragBlobToIconsNextToLayerButtons,
   EEditArtwork,
   EHue,
+  EKeysMayBeUsedWhileMouseIsPressedDown,
   ELayer,
   ELayerInstructions,
   ELayers,
@@ -32,9 +36,12 @@ import {
   EMakeBlobLargerByPressingBL,
   EMakeBlobSmallerByPressingS,
   EManyVersions,
+  EMoreColorsAvailable,
   EMoveBlobToBottomByPressingZOrToTopByPressingT,
+  EMoveEveryBlobUpOrDownOneLayerByPressingTheButtons,
   EMoveViewInDifferentDirections,
   ENameYourArtwork,
+  EPlacesTheImageDownBelow,
   EPointerUse,
   EPressEnterToCycleThroughTheDifferentColors,
   EPressTheCameraSymbolToTakeAScreenshot,
@@ -112,6 +119,10 @@ export default function BlobPage({
                         <li>
                           {EChangeTheLayerOfTheFocusedBlobByPressingTheNumber[language]}
                         </li>
+                        <li>{EDragBlobToIconsNextToLayerButtons[language]}</li>
+                        <li>
+                          {EMoveEveryBlobUpOrDownOneLayerByPressingTheButtons[language]}
+                        </li>
                       </ul>
                     </li>
                     <li>
@@ -134,6 +145,10 @@ export default function BlobPage({
                       </big>
                       <ul>
                         <li>{EPressTheCameraSymbolToTakeAScreenshot[language]}</li>
+                        <li>{EPlacesTheImageDownBelow[language]}</li>
+                        <li>
+                          {EDownloadYourArtwork[language]} ({EButton[language]})
+                        </li>
                       </ul>
                     </li>
 
@@ -156,7 +171,10 @@ export default function BlobPage({
                         </li>
                         <li>{EMoveViewInDifferentDirections[language]}</li>
                         <li>{EToggleControlVisibility[language]}</li>
-                        <li>{EMakeARandomBlobByClickingThePlusSign[language]}</li>
+                        <li>
+                          {EMakeARandomBlobByClickingThePlusSign[language]} (
+                          {EMoreColorsAvailable[language]})
+                        </li>
                       </ul>
                     </li>
                     <li>
@@ -181,6 +199,8 @@ export default function BlobPage({
                     <li>{EChangeBlobSizeByScrollingWithTheMouseWheel[language]}</li>
                     <li>{ECloneABlobByDraggingItToTheTopLeftPlusSign[language]}</li>
                     <li>{ERemoveABlobByDraggingItToTheBottomLeftXSign[language]}</li>
+                    <li>{EDragBlobToIconsNextToLayerButtons[language]}</li>
+                    <li>{EKeysMayBeUsedWhileMouseIsPressedDown[language]}</li>
                   </ul>
                   <h4>{EKeyboardUse[language]}</h4>
                   <ul className='ul'>

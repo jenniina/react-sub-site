@@ -915,7 +915,6 @@ export enum EYouMayFindTheImageBelow {
   cs = 'Níže můžete najít obrázek',
   fi = 'Löydät kuvan alempana',
 }
-//Keyboard use: Press the corresponding layer number with the blob in focus
 export enum EKeyboardUsePressTheCorrespondingLayerNumber {
   en = 'Keyboard use: Press the corresponding layer number with the blob in focus',
   es = 'Uso del teclado: presione el número de capa correspondiente con el blob enfocado',
@@ -924,4 +923,88 @@ export enum EKeyboardUsePressTheCorrespondingLayerNumber {
   pt = 'Uso do teclado: pressione o número da camada correspondente com o blob em foco',
   cs = 'Použití klávesnice: Stiskněte odpovídající číslo vrstvy s fokusem na blob',
   fi = 'Näppäinkäyttö: Paina vastaavaa kerrosnumeroa mollukkaa tarkastellessasi',
+}
+export enum ECannotLowerEveryBlobFurther {
+  en = 'Cannot lower every blob further, one or more blobs are already on the lowest layer',
+  es = 'No se puede bajar más ningún blob, uno o más blobs ya están en la capa más baja',
+  fr = "Impossible d'abaisser chaque blob davantage, un ou plusieurs blobs sont déjà sur la couche la plus basse",
+  de = 'Kann keinen Blob weiter senken, einer oder mehrere Blobs befinden sich bereits auf der untersten Ebene',
+  pt = 'Não é possível abaixar mais nenhum blob, um ou mais blobs já estão na camada mais baixa',
+  cs = 'Nelze snížit všechny blob více, jeden nebo více blobů je již na nejnižší vrstvě',
+  fi = 'Ei voi laskea jokaista mollukkaa alemmas, yksi tai useampi mollukka on jo alimmalla kerroksella',
+}
+export enum ECannotRaiseEveryBlobFurther {
+  en = 'Cannot raise every blob further, one or more blobs are already on the highest layer',
+  es = 'No se puede subir más ningún blob, uno o más blobs ya están en la capa más alta',
+  fr = 'Impossible de lever chaque blob davantage, un ou plusieurs blobs sont déjà sur la couche la plus haute',
+  de = 'Kann keinen Blob weiter anheben, einer oder mehrere Blobs befinden sich bereits auf der höchsten Ebene',
+  pt = 'Não é possível levantar mais nenhum blob, um ou mais blobs já estão na camada mais alta',
+  cs = 'Nelze zvýšit všechny blob více, jeden nebo více blobů je již na nejvyšší vrstvě',
+  fi = 'Ei voi nostaa jokaista mollukkaa ylemmäs, yksi tai useampi mollukka on jo ylimmällä kerroksella',
+}
+
+export enum EClickHereToMoveDownLayer {
+  en = 'Click here to move every blob down one layer',
+  es = 'Haz clic aquí para mover cada blob una capa hacia abajo',
+  fr = "Cliquez ici pour déplacer chaque blob d'une couche vers le bas",
+  de = 'Klicken Sie hier, um jeden Blob eine Ebene nach unten zu verschieben',
+  pt = 'Clique aqui para mover cada blob uma camada para baixo',
+  cs = 'Klikněte zde pro přesunutí každého blobu o jednu vrstvu dolů',
+  fi = 'Klikkaa tästä siirtääksesi jokaista mollukkaa yhtä kerrosta alemmas',
+}
+
+export enum EClickHereToMoveUpLayer {
+  en = 'Click here to move every blob up one layer',
+  es = 'Haz clic aquí para mover cada blob una capa hacia arriba',
+  fr = "Cliquez ici pour déplacer chaque blob d'une couche vers le haut",
+  de = 'Klicken Sie hier, um jeden Blob eine Ebene nach oben zu verschieben',
+  pt = 'Clique aqui para mover cada blob uma camada para cima',
+  cs = 'Klikněte zde pro přesunutí každého blobu o jednu vrstvu nahoru',
+  fi = 'Klikkaa tästä siirtääksesi jokaista mollukkaa yhtä kerrosta ylemmäs',
+}
+export enum EDownloadYourArtwork {
+  en = 'Download your artwork',
+  es = 'Descarga tu obra de arte',
+  fr = 'Téléchargez votre œuvre d art',
+  de = 'Laden Sie Ihr Kunstwerk herunter',
+  pt = 'Baixe sua obra de arte',
+  cs = 'Stáhněte si své umění',
+  fi = 'Lataa taideteoksesi',
+}
+export enum EPlacesTheImageDownBelow {
+  en = 'Places the image down below',
+  es = 'Coloca la imagen abajo',
+  fr = 'Place l image en bas',
+  de = 'Platziert das Bild unten',
+  pt = 'Coloca a imagem abaixo',
+  cs = 'Umístí obrázek dolů',
+  fi = 'Sijoittaa luodun kuvan sivun alaosaan',
+}
+export enum EDragBlobToIconsNextToLayerButtons {
+  en = 'Drag blob to icons that are next to the layer buttons, in order to move them up or down a layer',
+  es = 'Arrastra el blob a los íconos que están junto a los botones de capa, para moverlos hacia arriba o hacia abajo una capa',
+  fr = 'Faites glisser le blob vers les icônes situées à côté des boutons de couche, afin de les déplacer vers le haut ou vers le bas d une couche',
+  de = 'Ziehen Sie den Blob zu den Symbolen neben den Schichttasten, um sie eine Ebene nach oben oder unten zu verschieben',
+  pt = 'Arraste o blob para os ícones que estão ao lado dos botões de camada, para movê-los para cima ou para baixo uma camada',
+  cs = 'Přetáhněte blob na ikony vedle tlačítek vrstvy, abyste je posunuli nahoru nebo dolů o vrstvu',
+  fi = 'Vedä mollukka kuvakkeiden päälle kerrospainikkeiden vieressä siirtääksesi ne kerrosta ylemmäs tai alemmas',
+}
+export enum EMoveEveryBlobUpOrDownOneLayerByPressingTheButtons {
+  en = 'Move every blob up or down one layer by pressing the buttons next to the layer buttons',
+  es = 'Mueve cada blob hacia arriba o hacia abajo una capa presionando los botones junto a los botones de capa',
+  fr = 'Déplacez chaque blob d une couche vers le haut ou vers le bas en appuyant sur les boutons à côté des boutons de couche',
+  de = 'Verschieben Sie jeden Blob eine Ebene nach oben oder unten, indem Sie die Tasten neben den Schichttasten drücken',
+  pt = 'Mova cada blob uma camada para cima ou para baixo pressionando os botões ao lado dos botões de camada',
+  cs = 'Posuňte každý blob o jednu vrstvu nahoru nebo dolů stisknutím tlačítek vedle tlačítek vrstvy',
+  fi = 'Siirrä jokaista mollukkaa yhtä kerrosta ylemmäs tai alemmas painamalla painikkeita kerrospainikkeiden vieressä',
+}
+// Keys may be used while the mouse is pressed down on a blob
+export enum EKeysMayBeUsedWhileMouseIsPressedDown {
+  en = 'Keys may be used while the mouse is pressed down on a blob',
+  es = 'Las teclas se pueden usar mientras el mouse está presionado en un blob',
+  fr = 'Les touches peuvent être utilisées lorsque la souris est enfoncée sur un blob',
+  de = 'Tasten können verwendet werden, während die Maus auf einem Blob gedrückt ist',
+  pt = 'As teclas podem ser usadas enquanto o mouse está pressionado em um blob',
+  cs = 'Klávesy mohou být použity, když je myš stisknuta na blobu',
+  fi = 'Näppäimiä voidaan käyttää, kun hiiri on painettuna mollukan päällä',
 }
