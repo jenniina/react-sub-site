@@ -90,11 +90,11 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
         style={visible ? { display: 'none' } : { display: 'inline-block' }}
       >
         <span aria-hidden='true' className={props.hideBrackets ? 'hide' : ''}>
-          &#xFE3D;
+          &raquo;
         </span>
         <i>&nbsp;{props.text}&nbsp;</i>
         <span aria-hidden='true' className={props.hideBrackets ? 'hide' : ''}>
-          &#xFE3D;
+          &laquo;
         </span>
         <strong
           className={props.tooltip ? `tooltip ${props.x} ${props.y}` : ''}
