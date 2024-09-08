@@ -89,6 +89,7 @@ import {
   EScreenshot,
   EIncreaseBlobLayerBy1Instructions,
   EDecreaseBlobLayerBy1Instructions,
+  ENoScreenshotAvailableToSave,
 } from '../../interfaces/blobs'
 import {
   BiChevronDown,
@@ -401,24 +402,23 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           if (!window.confirm(EAVersionAlreadyExistsOverwrite[language])) {
             return
           }
-        } else {
-          blobService
-            .saveBlobsByUser(
-              user?._id,
-              d,
-              draggables[d],
-              name,
-              backgroundColor[d],
-              language
-            )
-            .then(() => {
-              setTrackSaving(!trackSaving)
-              dispatch2(notify(ESavingSuccessful[language], false, 8))
-            })
-            .catch((error) => {
-              dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
-            })
         }
+        blobService
+          .saveBlobsByUser(
+            user?._id,
+            d,
+            draggables[d],
+            name,
+            backgroundColor[d],
+            language
+          )
+          .then(() => {
+            setTrackSaving(!trackSaving)
+            dispatch2(notify(ESavingSuccessful[language], false, 8))
+          })
+          .catch((error) => {
+            dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
+          })
       } else {
         dispatch2(notify(ELoginToSaveBlobs[language], true, 8))
       }
@@ -583,10 +583,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             x: `${blobs[i].x}`,
             y: `${blobs[i].y}`,
             z: `${blobs[i].z}`,
-            display: `${blobs[i].display}` ?? 'block',
-            ariaGrabbed: false,
-            draggable: true,
-            tabIndex: 0,
             background: `${
               blobs[i].background ?? 'linear-gradient(90deg, cyan, greenyellow)'
             }`,
@@ -854,7 +850,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     const blobY = draggable.style.getPropertyValue('top')
     const blobZ = draggable.style.getPropertyValue('z-index')
     const blobColor1 = draggable.style.getPropertyValue('background')
-    const blobDisplay = draggable.style.getPropertyValue('display')
     const layer = draggable.style.getPropertyValue('--layer')
 
     const blobDraggable: Draggable = {
@@ -865,10 +860,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       x: blobX,
       y: blobY,
       z: blobZ,
-      display: blobDisplay,
-      ariaGrabbed: false,
-      draggable: true,
-      tabIndex: 0,
       background: blobColor1 ?? 'linear-gradient(90deg, cyan, greenyellow)',
     }
 
@@ -1156,24 +1147,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     }
   }
 
-  // const takeScreenshot = async () => {
-  //   const dragWrap = document.getElementById(`drag-slider-wrap`)
-  //   if (dragWrap) {
-  //     try {
-  //       const response = await blobService.takeScreenshot(
-  //         window.location.href,
-  //         '#drag-slider-wrap',
-  //         language
-  //       )
-  //       console.log(response)
-  //       const img = document.createElement('img')
-  //       img.src = response
-  //       dragWrap.appendChild(img)
-  //     } catch (error) {
-  //       console.error('Error taking screenshot:', error)
-  //     }
-  //   }
-  // }
   const imgStyle: CSSProperties = {
     width: 'auto',
     height: 'auto',
@@ -1228,13 +1201,14 @@ export default function BlobJS({ language }: { language: ELanguages }) {
         if (container && img) {
           img.src = `data:image/png;base64,${data.screenshot}`
           container.style.display = 'block'
-          img.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          img.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
           dispatch2(notify(EScreenshotTaken[language], false, 8))
           setLoading(false)
+          setScroll(true)
         }
       } catch (error) {
         dispatch2(notify(EError[language], true, 8))
-        console.error('Error taking screenshot:', error)
+        console.error(EError[language], error)
       }
     }
   }
@@ -1248,13 +1222,15 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
+      dispatch2(notify(ESavedArt[language], false, 8))
     } else {
-      console.error('No screenshot available to save.')
+      dispatch2(notify(ENoScreenshotAvailableToSave[language], true, 8))
+      console.error(ENoScreenshotAvailableToSave[language])
     }
   }
 
   useEffect(() => {
-    if (loading) dispatch2(notify(`${ELoading[language]}...`, false, 11))
+    if (loading) dispatch2(notify(`${ELoading[language]}...`, false, 15))
   }, [loading])
 
   return (
@@ -1309,7 +1285,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             className='disable-scroll tooltip-wrap'
             onClick={() => {
               disableScroll()
-              widthResize()
             }}
           >
             <span

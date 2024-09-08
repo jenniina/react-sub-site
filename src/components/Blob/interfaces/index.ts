@@ -10,10 +10,6 @@ export type Draggable = {
   x: string
   y: string
   z: string
-  display: string
-  ariaGrabbed: boolean
-  draggable: boolean
-  tabIndex: number
   background: string
   function?: Function
 }
