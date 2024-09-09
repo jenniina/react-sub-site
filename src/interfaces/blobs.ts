@@ -1017,3 +1017,30 @@ export enum EArt {
   cs = 'Umění',
   fi = 'Taide',
 }
+export enum ESeeSampleArtworkCreatedWithTheApp {
+  en = 'See sample artwork created with the app',
+  es = 'Ver arte de muestra creada con la aplicación',
+  fr = 'Voir des œuvres d art de démonstration créées avec l application',
+  de = 'Sehen Sie sich mit der App erstellte Beispiele an',
+  pt = 'Veja a arte de exemplo criada com o aplicativo',
+  cs = 'Podívejte se na ukázkové umění vytvořené s aplikací',
+  fi = 'Katso sovelluksella luotu esimerkkitaide',
+}
+export enum ESampleArtwork {
+  en = 'Sample artwork',
+  es = 'Arte de muestra',
+  fr = 'Œuvre d art de démonstration',
+  de = 'Beispielkunst',
+  pt = 'Arte de exemplo',
+  cs = 'Ukázkové umění',
+  fi = 'Esimerkkitaide',
+}
+export enum EFlyingBird {
+  en = 'Flying bird',
+  es = 'Pájaro volador',
+  fr = 'Oiseau volant',
+  de = 'Fliegender Vogel',
+  pt = 'Pássaro voador',
+  cs = 'Létající pták',
+  fi = 'Lentävä lintu',
+}
