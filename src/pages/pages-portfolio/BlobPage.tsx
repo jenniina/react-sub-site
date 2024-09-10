@@ -58,6 +58,7 @@ import {
   ESeeSampleArtworkCreatedWithTheApp,
   ESlidersToControlBackground,
   EStopScrollingBehaviorToUseTheMouseWheelFreely,
+  ESwimmingFish,
   ETabToABlobAndWithItInFocus,
   EToggleControlVisibility,
   EToggleTheSubtleMovementOfTheBlobs,
@@ -68,6 +69,7 @@ import '../../components/Blob/css/blob.css'
 import Accordion from '../../components/Accordion/Accordion'
 import { EClickHereToSeeFeatures } from '../../components/Jokes/interfaces'
 import birb from '../../assets/blob-birb.png'
+import fish from '../../assets/blob-fish.png'
 import { CSSProperties } from 'react'
 
 export default function BlobPage({
@@ -81,7 +83,7 @@ export default function BlobPage({
   type: string
   language: ELanguages
 }) {
-  const birbStyle: CSSProperties = {
+  const blobStyle: CSSProperties = {
     width: '100%',
     height: 'auto',
     maxWidth: '100%',
@@ -105,7 +107,7 @@ export default function BlobPage({
                 <Accordion
                   language={language}
                   text={EClickHereToSeeFeatures[language]}
-                  className='features'
+                  className='features-blobs'
                 >
                   <div className='medium'>
                     <h2>{EFeatures[language]}</h2>
@@ -244,9 +246,15 @@ export default function BlobPage({
                   className='sample-img'
                 >
                   <figure>
-                    <img src={birb} style={birbStyle} alt={EFlyingBird[language]} />
+                    <img src={birb} style={blobStyle} alt={EFlyingBird[language]} />
                     <figcaption>
                       {ESampleArtwork[language]}: {EFlyingBird[language]}
+                    </figcaption>
+                  </figure>
+                  <figure>
+                    <img src={fish} style={blobStyle} alt={ESwimmingFish[language]} />
+                    <figcaption>
+                      {ESampleArtwork[language]}: {ESwimmingFish[language]}
                     </figcaption>
                   </figure>
                 </Accordion>

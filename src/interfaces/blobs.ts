@@ -1044,3 +1044,75 @@ export enum EFlyingBird {
   cs = 'Létající pták',
   fi = 'Lentävä lintu',
 }
+export enum ESwimmingFish {
+  en = 'Swimming fish',
+  es = 'Pez nadando',
+  fr = 'Poisson nageant',
+  de = 'Schwimmender Fisch',
+  pt = 'Peixe nadando',
+  cs = 'Plavající ryba',
+  fi = 'Uiva kala',
+}
+export enum EGetMoreLayers {
+  en = 'Get more layers',
+  es = 'Obtén más capas',
+  fr = 'Obtenez plus de couches',
+  de = 'Erhalten Sie mehr Ebenen',
+  pt = 'Obtenha mais camadas',
+  cs = 'Získejte více vrstev',
+  fi = 'Hanki lisää kerroksia',
+}
+export enum ELessenLayers {
+  en = 'Lessen layers',
+  es = 'Disminuir capas',
+  fr = 'Diminuer les couches',
+  de = 'Schichten verringern',
+  pt = 'Diminuir camadas',
+  cs = 'Zmenšit vrstvy',
+  fi = 'Vähennä kerroksia',
+}
+export enum EMaximumLayerAmountReached {
+  en = 'Maximum layer amount reached',
+  es = 'Cantidad máxima de capas alcanzada',
+  fr = 'Quantité maximale de couches atteinte',
+  de = 'Maximale Schichtmenge erreicht',
+  pt = 'Quantidade máxima de camadas atingida',
+  cs = 'Dosáhli jste maximálního počtu vrstev',
+  fi = 'Maksimikerrosmäärä saavutettu',
+}
+export enum EAddedPaginationToSavedArt {
+  en = 'Added pagination to saved art',
+  es = 'Agregada paginación al arte guardado',
+  fr = 'Ajout de la pagination à l art enregistré',
+  de = 'Seitenzahlen zum gespeicherten Kunstwerk hinzugefügt',
+  pt = 'Adicionada paginação à arte salva',
+  cs = 'Přidána stránkování k uloženému umění',
+  fi = 'Sivutus lisätty tallennetulle taiteelle',
+}
+export enum EMustHaveAtLeastOneLayer {
+  en = 'Must have at least one layer',
+  es = 'Debe tener al menos una capa',
+  fr = 'Doit avoir au moins une couche',
+  de = 'Muss mindestens eine Ebene haben',
+  pt = 'Deve ter pelo menos uma camada',
+  cs = 'Musí mít alespoň jednu vrstvu',
+  fi = 'On oltava vähintään yksi kerros',
+}
+export enum ELayerNotEmpty {
+  en = 'Layer not empty',
+  es = 'Capa no vacía',
+  fr = 'Couche non vide',
+  de = 'Ebene nicht leer',
+  pt = 'Camada não vazia',
+  cs = 'Vrstva není prázdná',
+  fi = 'Kerros ei ole tyhjä',
+}
+export enum ELayerHidden {
+  en = 'Layer hidden',
+  es = 'Capa oculta',
+  fr = 'Couche cachée',
+  de = 'Ebene ausgeblendet',
+  pt = 'Camada oculta',
+  cs = 'Vrstva skrytá',
+  fi = 'Kerros piilotettu',
+}

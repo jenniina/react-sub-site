@@ -14,6 +14,7 @@ import { LuArrowRightToLine } from 'react-icons/lu'
 
 import {
   EAbout,
+  EAddedPagination,
   EBlobs,
   EButton,
   EButtons,
@@ -68,6 +69,7 @@ import {
 } from '../interfaces/todo'
 import { GrGraphQl } from 'react-icons/gr'
 import {
+  EAddedPaginationToSavedArt,
   EButtonsTo,
   EDragBlobToIconsNextToLayerButtons,
   EEditArtwork,
@@ -79,6 +81,7 @@ import {
   ENameYourArtwork,
   ERemovable,
   ERenameYourArtwork,
+  ESampleArtwork,
   EScreenshot,
   EToggleControlVisibility,
 } from '../interfaces/blobs'
@@ -170,6 +173,16 @@ export default function Home({
                     <li>
                       <strong>{ESeptember[language]}</strong>
                       <ul>
+                        <li>
+                          <Link to='/portfolio/blob'>
+                            <TbBlob />
+                            {EBlobs[language]}:
+                          </Link>
+                          <i>
+                            {ESampleArtwork[language]}. {EAddedNewFeatures[language]}:{' '}
+                            {EAddedPaginationToSavedArt[language]}
+                          </i>
+                        </li>
                         <li>
                           <Link to='/portfolio/blob'>
                             <TbBlob />
