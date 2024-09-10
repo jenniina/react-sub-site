@@ -299,23 +299,28 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     }
   }, [])
 
-  function loadDraggables(): Draggable[] | null {
-    const draggablesJSON = localStorage.getItem(localStorageDraggables)
-    if (
-      draggablesJSON == null ||
-      draggablesJSON == undefined ||
-      draggablesJSON === 'undefined'
-    )
-      return null
-    //else return JSON.parse(draggablesJSON)
-    else {
-      const draggables: Draggable[] = JSON.parse(draggablesJSON)
-      // Ensure each draggable has a layer property
-      return draggables.map((draggable) => ({
-        ...draggable,
-        layer: draggable.layer ?? 0,
-      }))
-    }
+  function loadDraggables(): Promise<Draggable[] | null> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const draggablesJSON = localStorage.getItem(localStorageDraggables)
+        if (
+          draggablesJSON == null ||
+          draggablesJSON == undefined ||
+          draggablesJSON === 'undefined'
+        ) {
+          resolve(null)
+        } else {
+          const draggables: Draggable[] = JSON.parse(draggablesJSON)
+          // Ensure each draggable has a layer property
+          resolve(
+            draggables.map((draggable) => ({
+              ...draggable,
+              layer: draggable.layer ?? 0,
+            }))
+          )
+        }
+      }, 600)
+    })
   }
 
   function loadLayerAmount(): number {
@@ -617,10 +622,14 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   }
 
   useEffect(() => {
-    const delay = setTimeout(() => {
+    const delay = setTimeout(async () => {
       const loadedDraggables = loadDraggables()
-      if (loadedDraggables && loadedDraggables?.length > 0) {
-        makeFromStorage(loadedDraggables)
+      const draggables = await loadedDraggables
+      if (draggables && draggables.length > 0) {
+        if (draggables && draggables.length > 0) {
+          makeFromStorage(draggables)
+        }
+
         // dispatch({
         //   type: 'setDraggablesAtD',
         //   payload: { d, draggables: loadedDraggables },
@@ -670,10 +679,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       }
 
       setLayerAmount(Math.max(...blobs.map((d) => d.layer)) + 1)
-      setTimeout(() => {
-        saveDraggables()
-        saveLayerAmount()
-      }, 300)
     }
     setHasBeenMade(true)
   }
@@ -859,10 +864,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     }
 
     setLayerAmount(defaultLayerAmount)
-    setTimeout(() => {
-      saveDraggables()
-      saveLayerAmount()
-    }, 300)
   }
 
   function getRandomMinMax(min: number, max: number) {
