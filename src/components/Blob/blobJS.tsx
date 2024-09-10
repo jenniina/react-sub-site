@@ -103,7 +103,7 @@ import {
   EClickHereToMoveDownLayer,
   EArt,
   EGetMoreLayers,
-  ELessenLayers,
+  EDeleteHiddenLayers,
   EMaximumLayerAmountReached,
   EMustHaveAtLeastOneLayer,
   ELayerNotEmpty,
@@ -1845,7 +1845,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             >
               <span
                 className='tooltip above right'
-                data-tooltip={ELessenLayers[language]}
+                data-tooltip={EDeleteHiddenLayers[language]}
               ></span>
               <BiMinus />
             </button>
