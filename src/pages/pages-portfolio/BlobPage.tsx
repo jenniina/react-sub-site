@@ -8,7 +8,9 @@ import {
   EInstructions,
   EKeyboardUse,
   ELanguages,
+  ELogin,
   ENew,
+  ERegister,
 } from '../../interfaces'
 import {
   EBlurIntoOneAnother,
@@ -27,6 +29,8 @@ import {
   EEditArtwork,
   EFlyingBird,
   EHue,
+  EIfABlobYouClickedHidesAnotherYouMayPlaceTheBlobBackToTheBottomOfThePile,
+  EIfYouNeedToSetABlobNearTheEdgeOfTheScreen,
   EKeysMayBeUsedWhileMouseIsPressedDown,
   ELayer,
   ELayerInstructions,
@@ -38,6 +42,7 @@ import {
   EMakeBlobSmallerByPressingS,
   EManyVersions,
   EMoreColorsAvailable,
+  EMoreColorsAvailableThroughRandomBlobButton,
   EMoveBlobToBottomByPressingZOrToTopByPressingT,
   EMoveEveryBlobUpOrDownOneLayerByPressingTheButtons,
   EMoveViewInDifferentDirections,
@@ -46,6 +51,7 @@ import {
   EPointerUse,
   EPressEnterToCycleThroughTheDifferentColors,
   EPressTheCameraSymbolToTakeAScreenshot,
+  ERegisterAndLogInToSaveYourArtwork,
   ERemovable,
   ERemoveABlobByDraggingItToTheBottomLeftXSign,
   ERemoveABlobByPressingDeleteOr,
@@ -60,10 +66,16 @@ import {
   EStopScrollingBehaviorToUseTheMouseWheelFreely,
   ESwimmingFish,
   ETabToABlobAndWithItInFocus,
+  ETipsAndTricks,
   EToggleControlVisibility,
   EToggleTheSubtleMovementOfTheBlobs,
   ETryDraggingTheBlobs,
   EWhichBlobIsCurrentlyActiveCanBeSeenAtTheTopLeftOfTheContainer,
+  EYouCanChangeTheDimensionsOfTheScreenshotByResizingYourBrowserWindow,
+  EYouMayAlsoMoveTheEntireViewWithTheAngleQuotationMarkButtons,
+  EYouMayChangeBlobSizeWithTheMouseWheel,
+  EYouMayCloneARareColorBlobByPressingCOrD,
+  EYouMayUseKeyboardShortcutsWhileMouseIsPressedDown,
 } from '../../interfaces/blobs'
 import '../../components/Blob/css/blob.css'
 import Accordion from '../../components/Accordion/Accordion'
@@ -71,6 +83,7 @@ import { EClickHereToSeeFeatures } from '../../components/Jokes/interfaces'
 import birb from '../../assets/blob-birb.png'
 import fish from '../../assets/blob-fish.png'
 import { CSSProperties } from 'react'
+import { Link } from 'react-router-dom'
 
 export default function BlobPage({
   heading,
@@ -163,6 +176,13 @@ export default function BlobPage({
                           <li>{EPlacesTheImageDownBelow[language]}</li>
                           <li>
                             {EDownloadYourArtwork[language]} ({EButton[language]})
+                          </li>
+                          <li>
+                            {
+                              EYouCanChangeTheDimensionsOfTheScreenshotByResizingYourBrowserWindow[
+                                language
+                              ]
+                            }
                           </li>
                         </ul>
                       </li>
@@ -257,6 +277,53 @@ export default function BlobPage({
                       {ESampleArtwork[language]}: {ESwimmingFish[language]}
                     </figcaption>
                   </figure>
+                </Accordion>
+                <Accordion
+                  language={language}
+                  text={ETipsAndTricks[language]}
+                  className='blob-tips-and-tricks'
+                >
+                  <h2 id='blob-tips-heading'>{ETipsAndTricks[language]}</h2>
+                  <ul className='ul' aria-describedby='blob-tips-heading'>
+                    <li>
+                      {EIfYouNeedToSetABlobNearTheEdgeOfTheScreen[language]}.{' '}
+                      {
+                        EYouMayAlsoMoveTheEntireViewWithTheAngleQuotationMarkButtons[
+                          language
+                        ]
+                      }{' '}
+                    </li>
+                    <li>{EYouMayChangeBlobSizeWithTheMouseWheel[language]} </li>
+                    <li>
+                      {EYouMayUseKeyboardShortcutsWhileMouseIsPressedDown[language]}{' '}
+                    </li>
+                    <li>
+                      {EMoreColorsAvailableThroughRandomBlobButton[language]}.{' '}
+                      {EYouMayCloneARareColorBlobByPressingCOrD[language]}
+                    </li>
+                    <li>
+                      {
+                        EYouCanChangeTheDimensionsOfTheScreenshotByResizingYourBrowserWindow[
+                          language
+                        ]
+                      }
+                    </li>
+                    <li>
+                      {
+                        EIfABlobYouClickedHidesAnotherYouMayPlaceTheBlobBackToTheBottomOfThePile[
+                          language
+                        ]
+                      }
+                    </li>
+                    <li>
+                      <>{ERegisterAndLogInToSaveYourArtwork[language]}</>{' '}
+                      <div>
+                        <Link to='?login=login'>{ELogin[language]}</Link>
+                        &nbsp;&nbsp;/&nbsp;&nbsp;
+                        <Link to='?register=register'>{ERegister[language]}</Link>
+                      </div>
+                    </li>
+                  </ul>
                 </Accordion>
               </div>
             </div>

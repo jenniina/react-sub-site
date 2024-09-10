@@ -1,6 +1,12 @@
 import { useState, useEffect, FC } from 'react'
 import { BiChevronsUp } from 'react-icons/bi'
-import { EExitToMainSite, ELanguages, EScrollToTheTop } from '../../interfaces'
+import {
+  EDisclaimer,
+  EExitToMainSite,
+  ELanguages,
+  EScrollToTheTop,
+} from '../../interfaces'
+import { Link } from 'react-router-dom'
 
 export const Footer: FC<{ styleMenu: boolean | undefined; language: ELanguages }> = ({
   styleMenu,
@@ -33,6 +39,10 @@ export const Footer: FC<{ styleMenu: boolean | undefined; language: ELanguages }
         <span>{EExitToMainSite[language]}</span>&nbsp;
         <span aria-hidden='true'>&times;</span>
       </a>
+
+      <Link to='/disclaimer' className='footer1'>
+        {EDisclaimer[language]}
+      </Link>
 
       {showTopBtn ? (
         <button className='footer2' style={{ display: 'inline-block' }} onClick={toTop}>

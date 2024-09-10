@@ -1062,15 +1062,16 @@ export enum EGetMoreLayers {
   cs = 'Získejte více vrstev',
   fi = 'Hanki lisää kerroksia',
 }
-export enum ELessenLayers {
-  en = 'Lessen layers',
-  es = 'Disminuir capas',
-  fr = 'Diminuer les couches',
-  de = 'Schichten verringern',
-  pt = 'Diminuir camadas',
-  cs = 'Zmenšit vrstvy',
-  fi = 'Vähennä kerroksia',
+export enum EDeleteHiddenLayers {
+  en = 'Delete hidden layers',
+  es = 'Eliminar capas ocultas',
+  fr = 'Supprimer les couches cachées',
+  de = 'Ausgeblendete Ebenen löschen',
+  pt = 'Excluir camadas ocultas',
+  cs = 'Smazat skryté vrstvy',
+  fi = 'Poista piilotetut kerrokset',
 }
+
 export enum EMaximumLayerAmountReached {
   en = 'Maximum layer amount reached',
   es = 'Cantidad máxima de capas alcanzada',
@@ -1115,4 +1116,96 @@ export enum ELayerHidden {
   pt = 'Camada oculta',
   cs = 'Vrstva skrytá',
   fi = 'Kerros piilotettu',
+}
+export enum ETipsAndTricks {
+  en = 'Tips and tricks',
+  es = 'Consejos y trucos',
+  fr = 'Conseils et astuces',
+  de = 'Tipps und Tricks',
+  pt = 'Dicas e truques',
+  cs = 'Tipy a triky',
+  fi = 'Vinkit ja niksit',
+}
+export enum EIfYouNeedToSetABlobNearTheEdgeOfTheScreen {
+  en = 'If you need to set a blob near the edge of the screen, you may hide the controls by pressing the Hide controls button',
+  es = 'Si necesita colocar un blob cerca del borde de la pantalla, puede ocultar los controles presionando el botón Ocultar controles',
+  fr = 'Si vous devez placer un blob près du bord de l écran, vous pouvez masquer les contrôles en appuyant sur le bouton Masquer les contrôles',
+  de = 'Wenn Sie einen Blob am Bildschirmrand platzieren müssen, können Sie die Steuerungen ausblenden, indem Sie auf die Schaltfläche Steuerungen ausblenden drücken',
+  pt = 'Se você precisar definir um blob perto da borda da tela, pode ocultar os controles pressionando o botão Ocultar controles',
+  cs = 'Pokud potřebujete nastavit blob blízko okraje obrazovky, můžete skrýt ovládací prvky stisknutím tlačítka Skrýt ovládací prvky',
+  fi = 'Jos tarvitset asettaa mollukan lähelle näytön reunaa, voit piilottaa painikkeet painamalla Piilota painikkeet -painiketta',
+}
+export enum EYouMayAlsoMoveTheEntireViewWithTheAngleQuotationMarkButtons {
+  en = 'You may also move the entire view with the angle quotation mark buttons',
+  es = 'También puede mover toda la vista con los botones de comillas de ángulo',
+  fr = 'Vous pouvez également déplacer l ensemble de la vue avec les boutons de guillemets d angle',
+  de = 'Sie können auch die gesamte Ansicht mit den Winkel-Anführungszeichen-Tasten verschieben',
+  pt = 'Você também pode mover toda a visualização com os botões de aspas angulares',
+  cs = 'Můžete také přesunout celý pohled pomocí tlačítek úhlových uvozovek',
+  fi = 'Voit myös siirtää koko näkymää kaksoiskulmapainikkeilla',
+}
+export enum EYouMayChangeBlobSizeWithTheMouseWheel {
+  en = 'You may change blob size with the mouse wheel, by disabling the scroll by pressing the Disable Scroll button. Press the button again or Escape to enable scroll again',
+  es = 'Puede cambiar el tamaño del blob con la rueda del mouse, deshabilitando el desplazamiento presionando el botón Deshabilitar desplazamiento. Presione el botón nuevamente o Escape para habilitar el desplazamiento nuevamente',
+  fr = 'Vous pouvez changer la taille du blob avec la molette de la souris, en désactivant le défilement en appuyant sur le bouton Désactiver le défilement. Appuyez à nouveau sur le bouton ou sur Échap pour réactiver le défilement',
+  de = 'Sie können die Größe des Blobs mit dem Mausrad ändern, indem Sie das Scrollen deaktivieren, indem Sie die Schaltfläche Scrollen deaktivieren drücken. Drücken Sie die Schaltfläche erneut oder Escape, um das Scrollen wieder zu aktivieren',
+  pt = 'Você pode alterar o tamanho do blob com a roda do mouse, desabilitando a rolagem pressionando o botão Desativar rolagem. Pressione o botão novamente ou Escape para habilitar a rolagem novamente',
+  cs = 'Velikost blobu můžete změnit kolečkem myši tím, že zakážete posouvání stisknutím tlačítka Zakázat posouvání. Stiskněte tlačítko znovu nebo Escape pro opětovné povolení posouvání',
+  fi = 'Voit muuttaa mollukan kokoa hiiren pyörällä poistamalla vierityksen käytöstä painamalla Poista vieritys käytöstä -painiketta. Paina painiketta uudelleen tai Escapeta aktivoidaksesi vierityksen uudelleen',
+}
+export enum EYouMayUseKeyboardShortcutsWhileMouseIsPressedDown {
+  en = 'You may use keyboard shortcuts while the mouse is pressed down on a blob',
+  es = 'Puede usar accesos directos de teclado mientras el mouse está presionado en un blob',
+  fr = 'Vous pouvez utiliser des raccourcis clavier lorsque la souris est enfoncée sur un blob',
+  de = 'Sie können Tastenkombinationen verwenden, während die Maus auf einem Blob gedrückt ist',
+  pt = 'Você pode usar atalhos de teclado enquanto o mouse está pressionado em um blob',
+  cs = 'Můžete používat klávesové zkratky, když je myš stisknuta na blobu',
+  fi = 'Voit käyttää näppäinoikoteitä, kun hiiri on painettuna mollukan päällä',
+}
+export enum ERegisterAndLogInToSaveYourArtwork {
+  en = 'Register and log in to save your artwork to the server and never lose it again',
+  es = 'Regístrese e inicie sesión para guardar su obra de arte en el servidor y nunca volver a perderla',
+  fr = 'Inscrivez-vous et connectez-vous pour enregistrer votre œuvre d art sur le serveur et ne la perdez plus jamais',
+  de = 'Registrieren und anmelden, um Ihr Kunstwerk auf dem Server zu speichern und es nie wieder zu verlieren',
+  pt = 'Registre-se e faça login para salvar sua obra de arte no servidor e nunca mais perdê-la',
+  cs = 'Zaregistrujte se a přihlaste se pro uložení svého umění na server a už ho nikdy neztratíte',
+  fi = 'Rekisteröidy ja kirjaudu sisään tallentaaksesi taideteoksesi palvelimelle ja et menetä sitä',
+}
+export enum EMoreColorsAvailableThroughRandomBlobButton {
+  en = 'More colors are available through the random blob button: the plus sign at the top middle of the screen',
+  es = 'Más colores están disponibles a través del botón de blob aleatorio: el signo más en la parte superior del centro de la pantalla',
+  fr = 'Plus de couleurs sont disponibles via le bouton de blob aléatoire: le signe plus en haut au milieu de l écran',
+  de = 'Mehr Farben sind über die zufällige Blob-Schaltfläche verfügbar: das Pluszeichen in der Mitte oben auf dem Bildschirm',
+  pt = 'Mais cores estão disponíveis através do botão de blob aleatório: o sinal de mais no topo do meio da tela',
+  cs = 'Další barvy jsou k dispozici pomocí tlačítka náhodného blobu: plusový znak v horní části obrazovky',
+  fi = 'Lisää värejä on saatavilla satunnaisen mollukan painikkeen kautta: plussamerkki näytön yläosassa keskellä',
+}
+export enum EYouMayCloneARareColorBlobByPressingCOrD {
+  en = 'You may clone a rare color blob by pressing C or D with it in focus',
+  es = 'Puede clonar un blob de color raro presionando C o D con él enfocado',
+  fr = 'Vous pouvez cloner un blob de couleur rare en appuyant sur C ou D avec lui en focus',
+  de = 'Sie können einen Blob mit seltener Farbe klonen, indem Sie C oder D drücken, wenn er im Fokus steht',
+  pt = 'Você pode clonar um blob de cor rara pressionando C ou D com ele em foco',
+  cs = 'Můžete klonovat vzácný barevný blob stisknutím C nebo D s fokusem na něj',
+  fi = 'Voit kloonata harvinaisen värillisen mollukan painamalla C tai D, kun se on valittuna',
+}
+// You can change the dimensions of the screenshot by resizing your browser window
+export enum EYouCanChangeTheDimensionsOfTheScreenshotByResizingYourBrowserWindow {
+  en = 'You can change the dimensions of the screenshot by resizing your browser window',
+  es = 'Puede cambiar las dimensiones de la captura de pantalla redimensionando la ventana de su navegador',
+  fr = 'Vous pouvez changer les dimensions de la capture d écran en redimensionnant la fenêtre de votre navigateur',
+  de = 'Sie können die Abmessungen des Screenshots ändern, indem Sie das Browserfenster neu dimensionieren',
+  pt = 'Você pode alterar as dimensões da captura de tela redimensionando a janela do navegador',
+  cs = 'Rozměry snímku obrazovky můžete změnit změnou velikosti okna prohlížeče',
+  fi = 'Voit muuttaa kuvakaappauksen mittoja muuttamalla selainikkunan kokoa',
+}
+// If a blob you clicked hides another, you may place the blob back to the bottom of the pile by pressing Z
+export enum EIfABlobYouClickedHidesAnotherYouMayPlaceTheBlobBackToTheBottomOfThePile {
+  en = 'If a blob you clicked hides another, you may place the blob back to the bottom of the pile by pressing Z',
+  es = 'Si un blob que hizo clic oculta a otro, puede colocar el blob de nuevo en la parte inferior de la pila presionando Z',
+  fr = 'Si un blob que vous avez cliqué en cache un autre, vous pouvez replacer le blob en bas de la pile en appuyant sur Z',
+  de = 'Wenn ein Blob, den Sie angeklickt haben, einen anderen verbirgt, können Sie den Blob durch Drücken von Z wieder unten auf den Stapel legen',
+  pt = 'Se um blob que você clicou esconde outro, você pode colocar o blob de volta ao fundo da pilha pressionando Z',
+  cs = 'Pokud blob, na který jste klikli, skrývá jiný, můžete blob vrátit zpět na spodek hromady stisknutím Z',
+  fi = 'Jos mollukka, johon napsautit, piilottaa toisen, voit laittaa mollukan takaisin pinon pohjalle painamalla Z',
 }
