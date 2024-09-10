@@ -10,10 +10,12 @@ import {
   EPleaseUseGoodTasteWhenChoosingYourNickname,
   ERegister,
   ReducerProps,
+  EDisclaimer,
 } from '../../interfaces'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { initializeUser } from '../../reducers/authReducer'
 import Notification from '../Notification/Notification'
+import { Link } from 'react-router-dom'
 
 interface Props {
   language: ELanguages
@@ -128,6 +130,18 @@ const Register = ({
                   <span>{EConfirmPassword[language]}</span>
                 </label>
               </div>
+              <Link
+                to='/disclaimer'
+                style={{
+                  display: 'flex',
+                  flexFlow: 'row wrap',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  margin: '1rem auto',
+                }}
+              >
+                <small>{EDisclaimer[language]}</small>
+              </Link>
               <button type='submit' className='restore'>
                 {ERegister[language]}
               </button>

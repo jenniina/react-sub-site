@@ -38,6 +38,9 @@ import {
   EBlobAppSlogan,
   EHairSalonWebsite,
   EGraphQLSite,
+  EDisclaimer,
+  EPrivacyAndSecurityDisclaimer,
+  ELastUpdated,
 } from './interfaces'
 import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
 import { isTouchDevice } from './hooks/useDraggable'
@@ -63,6 +66,8 @@ import Notification from './components/Notification/Notification'
 import { EEditUserSettings } from './components/UserEdit/interfaces'
 import { EReactApps } from './interfaces/about'
 import HairSalonPage from './pages/pages-portfolio/HairSalonPage'
+import useWindowSize from './hooks/useWindowSize'
+import Disclaimer from './pages/Disclaimer'
 
 const App: FC = () => {
   const touchDevice = isTouchDevice()
@@ -99,6 +104,8 @@ const App: FC = () => {
     'JokeAppLanguage',
     ELanguages.English
   )
+
+  const { windowWidth, windowHeight } = useWindowSize()
 
   useEffect(() => {
     window.scrollTo({
@@ -196,7 +203,7 @@ const App: FC = () => {
     }, 1000) //Page has time to load
 
     return () => clearTimeout(timeoutId)
-  }, [location])
+  }, [location, windowWidth, windowHeight])
 
   return (
     <BlobProvider>
@@ -247,6 +254,17 @@ const App: FC = () => {
                     language={language}
                     heading={EAbout[language]}
                     text={EThisSite[language]}
+                    type='page'
+                  />
+                }
+              />
+              <Route
+                path='/disclaimer'
+                element={
+                  <Disclaimer
+                    language={language}
+                    heading={EPrivacyAndSecurityDisclaimer[language]}
+                    text={`${ELastUpdated[language]}: 2024/09/10`}
                     type='page'
                   />
                 }

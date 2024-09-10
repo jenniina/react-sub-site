@@ -8,6 +8,7 @@ import {
   MouseEvent as MouseEventReact,
   TouchEvent as TouchEventReact,
   FormEvent,
+  Fragment,
 } from 'react'
 import {
   Draggable,
@@ -19,6 +20,7 @@ import {
 } from './interfaces'
 import { BlobContext, Props } from './components/BlobProvider'
 import {
+  EAreYouSureYouWantToProceed,
   EDownload,
   EEdit,
   EError,
@@ -26,7 +28,10 @@ import {
   ELanguages,
   ELoad,
   ELogin,
+  ENext,
   EOr,
+  EPage,
+  EPrevious,
   ERegister,
   EReset,
   ESave,
@@ -97,6 +102,13 @@ import {
   EClickHereToMoveUpLayer,
   EClickHereToMoveDownLayer,
   EArt,
+  EGetMoreLayers,
+  ELessenLayers,
+  EMaximumLayerAmountReached,
+  EMustHaveAtLeastOneLayer,
+  ELayerNotEmpty,
+  ECannotRaiseEveryBlobFurther,
+  ELayerHidden,
 } from '../../interfaces/blobs'
 import {
   BiChevronDown,
@@ -105,6 +117,8 @@ import {
   BiChevronsRight,
   BiChevronsUp,
   BiChevronUp,
+  BiMinus,
+  BiPlus,
 } from 'react-icons/bi'
 import { ImEnlarge2, ImShrink2 } from 'react-icons/im'
 import { FaCamera, FaPlus, FaRegClone, FaSave, FaTimes } from 'react-icons/fa'
@@ -122,6 +136,8 @@ import blobService from './services/blob'
 import { BsFillCameraFill } from 'react-icons/bs'
 import { ELoading } from '../Todo/interfaces'
 import { EDelete } from '../Jokes/interfaces'
+import React from 'react'
+import { save } from '../Jokes/reducers/jokeReducer'
 
 let angle = '90deg'
 let color = 'cyan'
@@ -131,6 +147,8 @@ let color2 = 'greenyellow'
 const defaultLightness = '30'
 const defaultSaturation = '80'
 const defaultHue = '214'
+
+const defaultLayerAmount = 3
 
 const preventDefault = (e: Event) => {
   e.preventDefault()
@@ -174,7 +192,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   const deleteBlob0 = useRef() as RefObject<HTMLButtonElement>
   const makeRandom0 = useRef() as RefObject<HTMLButtonElement>
 
-  const layerButtons0 = useRef() as RefObject<HTMLDivElement>
   const layerIncrease = useRef() as RefObject<HTMLButtonElement>
   const layerDecrease = useRef() as RefObject<HTMLButtonElement>
 
@@ -189,6 +206,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   const isLocalhost =
     window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
 
+  const localStorageLayerAmount = `${isLocalhost ? 'local-' : ''}BlobLayerAmount`
   const localStorageBackground = `${isLocalhost ? 'local-' : ''}BackgroundColor${[d]}`
   const localStorageDraggables = `${isLocalhost ? 'local-' : ''}Draggables${[d]}`
 
@@ -198,7 +216,11 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
   const { windowHeight, windowWidth } = useWindowSize()
 
-  const [layerAmount, setLayerAmount] = useState<number>(3)
+  // const [layerAmount, setLayerAmount] = useLocalStorage<number>(
+  //   'blobLayerAmount',
+  //   state.draggables[d]?.length > 0 ? Math.max(...state.draggables[d].map((d) => d.layer)) + 1 : defaultLayerAmount
+  // )
+
   const [activeLayer, setActiveLayer] = useState<number>(0)
   const [hiddenLayers, setHiddenLayers] = useState<Set<number>>(new Set())
   const [highestZIndex, setHighestZIndex] = useState<Record<number, number>>({}) // {0: 144, 1: 146, 2: 24}
@@ -236,9 +258,10 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   ]
 
   const changeBlobLayer = (draggable: Draggable, layer: number) => {
+    const z = highestZIndex[layer] + 1
     dispatch({
       type: 'updateDraggable',
-      payload: { draggable: { ...draggable, layer } },
+      payload: { draggable: { ...draggable, layer, z } },
     })
     setActiveLayer(layer)
   }
@@ -257,7 +280,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
   //Check for keyboard use for the focusedBlob marker
   useEffect(() => {
-    const keydownListener = () => setUsingKeyboard(true)
+    const keyupListener = () => setUsingKeyboard(true)
     const mousedownListener = () => {
       setUsingKeyboard(false)
     }
@@ -265,12 +288,12 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       setFocusedBlob(null) // To prevent Marker from showing up after keyboard use and mouseup
     }
 
-    window.addEventListener('keydown', keydownListener)
+    window.addEventListener('keyup', keyupListener)
     window.addEventListener('mousedown', mousedownListener)
     window.addEventListener('mouseup', handleMouseUp)
 
     return () => {
-      window.removeEventListener('keydown', keydownListener)
+      window.removeEventListener('keyup', keyupListener)
       window.removeEventListener('mousedown', mousedownListener)
       window.removeEventListener('mouseup', handleMouseUp)
     }
@@ -295,10 +318,25 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     }
   }
 
+  function loadLayerAmount(): number {
+    //first check if draggables[d] has blobs, then find the highest layer. If there are no find the local storage value, finally if there is no local storage value, return the default value
+    if (draggables[d]?.length > 0) {
+      return Math.max(...draggables[d].map((d) => d.layer)) + 1
+    } else {
+      const layerAmount = localStorage.getItem(localStorageLayerAmount)
+      if (layerAmount == null) return defaultLayerAmount
+      else return parseInt(layerAmount)
+    }
+  }
+
   function loadBackground(): BackgroundColor[] {
     const backgroundColorJSON = localStorage.getItem(localStorageBackground)
     if (backgroundColorJSON == null) return []
     else return JSON.parse(backgroundColorJSON)
+  }
+
+  function saveLayerAmount() {
+    localStorage.setItem(localStorageLayerAmount, JSON.stringify(layerAmount))
   }
 
   function saveBackground() {
@@ -322,6 +360,8 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   //   console.log('savedDraggablesbyD:', JSON.stringify(savedDraggablesbyD, null, 2))
   // }, [savedDraggablesbyD])
 
+  const [layerAmount, setLayerAmount] = useState<number>(loadLayerAmount())
+
   const getBlobsFromServer = async () => {
     setIsLoading(true)
     try {
@@ -344,7 +384,23 @@ export default function BlobJS({ language }: { language: ELanguages }) {
                 sortedDraggables[d][versionName] = item
               })
 
-              // Update the state with the sorted draggables
+              // // Update the state with the sorted draggables
+              // setLayerAmount(
+              //   Math.max(
+              //     ...Object.values(sortedDraggables).map((d) => {
+              //       return Math.max(
+              //         ...Object.values(d).map((version) => {
+              //           return version.draggables.length > 0
+              //             ? Math.max(...version.draggables.map((d) => d.layer))
+              //             : 0
+              //         })
+              //       )
+              //     })
+              //   ) + 1
+              // )
+              // setTimeout(() => {
+              //   saveLayerAmount()
+              // }, 300)
               setSavedDraggablesByD(sortedDraggables)
               setHasSavedFiles(Object.keys(sortedDraggables).length > 0)
             }
@@ -379,6 +435,9 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       dispatch2(notify(ESpecialCharactersNotAllowed[language], true, 8))
     }
   }
+
+  //draggable[d] highest layer:
+  // console.log('highest layer:', Math.max(...draggables[d].map((d) => d.layer)))
 
   const handleNewNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
@@ -485,6 +544,13 @@ export default function BlobJS({ language }: { language: ELanguages }) {
         blobService
           .getBlobsVersionByUser(user?._id, d, newVersion, language)
           .then((response) => {
+            const highestLayerInDraggables = Math.max(
+              ...response.draggables.map((draggable: Draggable) => draggable.layer)
+            )
+            setLayerAmount(highestLayerInDraggables + 1)
+            setTimeout(() => {
+              saveLayerAmount()
+            }, 300)
             dispatch({
               type: 'setDraggablesAtD',
               payload: { d, draggables: response.draggables },
@@ -497,6 +563,10 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           .then(() => {
             setName(newVersion)
             scrollToArt()
+
+            setTimeout(() => {
+              widthResize()
+            }, 300)
           })
           .catch((error) => {
             dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
@@ -598,7 +668,12 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           dispatch({ type: 'addDraggable', payload: { d, draggable: newDraggable } })
         }
       }
-      saveDraggables()
+
+      setLayerAmount(Math.max(...blobs.map((d) => d.layer)) + 1)
+      setTimeout(() => {
+        saveDraggables()
+        saveLayerAmount()
+      }, 300)
     }
     setHasBeenMade(true)
   }
@@ -659,20 +734,19 @@ export default function BlobJS({ language }: { language: ELanguages }) {
         //e.preventDefault()
         //e.stopImmediatePropagation()
         setScroll(true)
-        document.body.style.overflow = 'auto'
+        document.body.style.overflowY = 'auto'
+        document.body.style.overflowX = 'hidden'
         break
     }
   }
-
   useEffect(() => {
-    window.addEventListener('keydown', escape)
+    window.addEventListener('keyup', escape)
     return () => {
-      window.removeEventListener('keydown', escape)
+      window.removeEventListener('keyup', escape)
     }
   }, [])
 
   // Change every blob's layer by plus or minus one, unless any blob is already on the highest or lowest layer
-
   const changeEveryLayer = (amount: number) => {
     const isAnyOnLowestLayer = draggables[d].some(
       (draggable) => draggable.layer === 0 && amount < 0
@@ -687,7 +761,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     }
 
     if (isAnyOnHighestLayer) {
-      dispatch2(notify(ECannotLowerEveryBlobFurther[language], true, 8))
+      dispatch2(notify(ECannotRaiseEveryBlobFurther[language], true, 8))
       return
     }
 
@@ -711,6 +785,11 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       dispatch({ type: 'setDraggablesAtD', payload: { d, draggables: [] } })
 
       makeAnew(amountOfBlobs)
+      setLayerAmount(defaultLayerAmount)
+      setTimeout(() => {
+        widthResize()
+        saveLayerAmount()
+      }, 300)
     }
   }
 
@@ -761,7 +840,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
       const [colorFirst, colorSecond] = colorswitch()
 
-      const newDraggable = {
+      const newDraggable: Draggable = {
         layer: activeLayer,
         id: `blob${i + 1}-${d}`,
         number: i + 1,
@@ -771,18 +850,19 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             ? `${(windowWidth / 100) * getRandomMinMax(2, 70)}px`
             : `${(windowWidth / 100) * getRandomMinMax(2, 50)}px`,
         y: `${(windowHeight / 100) * getRandomMinMax(2, 60)}px`,
-        z: '1',
-        display: 'block',
-        ariaGrabbed: false,
-        draggable: true,
-        tabIndex: 0,
+        z: `1`,
         background: `linear-gradient(${angle ?? '90deg'}, ${colorFirst ?? 'cyan'},${
           colorSecond ?? 'greenyellow'
         })`,
       }
       dispatch({ type: 'addDraggable', payload: { d, draggable: newDraggable } })
     }
-    saveDraggables()
+
+    setLayerAmount(defaultLayerAmount)
+    setTimeout(() => {
+      saveDraggables()
+      saveLayerAmount()
+    }, 300)
   }
 
   function getRandomMinMax(min: number, max: number) {
@@ -790,6 +870,10 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   }
 
   const addRandomDraggable = () => {
+    if (hiddenLayers.has(activeLayer)) {
+      dispatch2(notify(ELayerHidden[language], true, 8))
+      return
+    }
     const colorswitch = () => {
       let number: number = Math.ceil(getRandomMinMax(0.001, 20))
 
@@ -864,18 +948,14 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     const colorFirst = colorswitch()
     const colorSecond = colorswitch()
 
-    const newDraggable = {
+    const newDraggable: Draggable = {
       layer: activeLayer,
       id: `blob${state.highestBlobNumber + 1}-${d}`,
       number: state.highestBlobNumber + 1,
       i: Math.ceil(getRandomMinMax(6.5, 10)),
       x: `${(windowWidth / 100) * getRandomMinMax(25, 55)}px`,
       y: `${(windowHeight / 100) * getRandomMinMax(2, 15)}px`,
-      z: '1',
-      display: 'block',
-      ariaGrabbed: false,
-      draggable: true,
-      tabIndex: 0,
+      z: `${highestZIndex[activeLayer] + 1}`,
       background: `linear-gradient(${angle ?? '90deg'}, ${colorFirst ?? 'cyan'},${
         colorSecond ?? 'greenyellow'
       })`,
@@ -1066,7 +1146,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   //END SLIDERS
 
   useEffect(() => {
-    // // Getting the width of the browser on load
     widthResize()
 
     // window.addEventListener('resize', widthResize)
@@ -1080,12 +1159,21 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
   const widthResize = () => {
     //place these items every time the window is resized
-    if (layerButtons0.current && dragWrap.current) {
-      layerButtons0.current.style.left =
-        dragWrap.current.offsetWidth / 2 - layerButtons0.current.offsetWidth / 2 + 'px'
-      layerButtons0.current.style.top =
-        dragWrap.current.offsetHeight - layerButtons0.current.offsetHeight + 'px'
-    }
+    if (layerIncrease.current && dragWrap.current) place(layerIncrease.current, 57, 93.5)
+    if (layerDecrease.current && dragWrap.current)
+      place(
+        layerDecrease.current,
+        43 - (layerDecrease.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
+        93.5
+      )
+    if (makeSmaller0.current && dragWrap.current)
+      place(
+        makeSmaller0.current,
+        87 - (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
+        93
+      )
+    if (deleteBlob0.current && dragWrap.current) place(deleteBlob0.current, 13, 93)
+
     if (makeLarger0.current && dragWrap.current)
       place(
         makeLarger0.current,
@@ -1095,10 +1183,10 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
     if (colorBlockOrange.current && dragWrap.current)
       place(colorBlockOrange.current, 0, 19)
-    if (colorBlockRed.current && dragWrap.current) place(colorBlockRed.current, 0, 39)
+    if (colorBlockRed.current && dragWrap.current) place(colorBlockRed.current, 0, 37)
     if (colorBlockPurple.current && dragWrap.current)
-      place(colorBlockPurple.current, 0, 59)
-    if (colorBlockBlue.current && dragWrap.current) place(colorBlockBlue.current, 0, 79)
+      place(colorBlockPurple.current, 0, 57)
+    if (colorBlockBlue.current && dragWrap.current) place(colorBlockBlue.current, 0, 77)
 
     if (colorBlockYellowLime0.current && dragWrap.current)
       place(
@@ -1114,14 +1202,14 @@ export default function BlobJS({ language }: { language: ELanguages }) {
         100 -
           (colorBlockCyanYellow0.current.offsetWidth / dragWrap.current?.offsetWidth) *
             100,
-        39
+        37
       )
     if (colorBlockCyanPink0.current && dragWrap.current)
       place(
         colorBlockCyanPink0.current,
         100 -
           (colorBlockCyanPink0.current.offsetWidth / dragWrap.current?.offsetWidth) * 100,
-        59
+        57
       )
     if (colorBlockPinkYellow0.current && dragWrap.current)
       place(
@@ -1129,27 +1217,8 @@ export default function BlobJS({ language }: { language: ELanguages }) {
         100 -
           (colorBlockPinkYellow0.current.offsetWidth / dragWrap.current?.offsetWidth) *
             100,
-        79
+        77
       )
-
-    windowWidth < breakpoint && makeSmaller0.current && dragWrap.current
-      ? place(
-          makeSmaller0.current,
-          95 - (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
-          93
-        )
-      : makeSmaller0.current && dragWrap.current
-      ? place(
-          makeSmaller0.current,
-          87 - (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
-          93
-        )
-      : null
-    windowWidth < breakpoint && deleteBlob0.current && dragWrap.current
-      ? place(deleteBlob0.current, 5, 93)
-      : deleteBlob0.current && dragWrap.current
-      ? place(deleteBlob0.current, 13, 93)
-      : null
   }
 
   function place(element: HTMLElement, x_pos: number, y_pos: number) {
@@ -1276,8 +1345,108 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   }
 
   useEffect(() => {
-    if (loading) dispatch2(notify(`${ELoading[language]}...`, false, 15))
+    if (loading) dispatch2(notify(`${ELoading[language]}...`, false, 20))
   }, [loading])
+
+  const [itemsPerPage, setItemsPerPage] = useState(6)
+
+  const [currentPage, setCurrentPage] = useState<Record<number, number>>({ [d]: 1 })
+
+  // Function to handle page change
+  const handlePageChange = (dKey: number, newPage: number) => {
+    setCurrentPage((prev) => ({ ...prev, [dKey]: newPage }))
+  }
+
+  //save layer amount to local storage
+  useEffect(() => {
+    saveLayerAmount()
+  }, [layerAmount])
+
+  const deleteHiddenLayers = () => {
+    // Check if there are any hidden layers
+    if (hiddenLayers.size === 0) {
+      dispatch2(notify('Please hide the layers you want to delete.', true, 8))
+      return
+    }
+
+    // Check if any hidden layers are not empty
+    const nonEmptyHiddenLayers = Array.from(hiddenLayers).filter((layer) =>
+      draggables[d].some((draggable) => draggable.layer === layer)
+    )
+
+    if (nonEmptyHiddenLayers.length > 0) {
+      const confirmDelete = window.confirm(
+        `${ELayerNotEmpty[language]}. ${EAreYouSureYouWantToProceed[language]}`
+      )
+      if (!confirmDelete) {
+        return
+      }
+    }
+
+    // Remove hidden layers
+    const newDraggables = draggables[d].filter(
+      (draggable) => !hiddenLayers.has(draggable.layer)
+    )
+
+    const newLayerAmount = layerAmount - hiddenLayers.size
+
+    if (newLayerAmount < 1) {
+      dispatch2(notify(EMustHaveAtLeastOneLayer[language], true, 8))
+      return
+    }
+
+    // Adjust layers of remaining draggables
+    const updatedDraggables = newDraggables.map((draggable) => {
+      const layer = draggable.layer
+      let newLayer = layer
+      hiddenLayers.forEach((hiddenLayer) => {
+        if (layer > hiddenLayer) {
+          newLayer -= 1
+        }
+      })
+      return { ...draggable, layer: newLayer }
+    })
+
+    dispatch({
+      type: 'setDraggablesAtD',
+      payload: { d, draggables: updatedDraggables },
+    })
+
+    setLayerAmount(newLayerAmount)
+    setHiddenLayers(new Set()) // Reset hidden layers
+    setTimeout(() => {
+      widthResize()
+      saveLayerAmount()
+    }, 300)
+  }
+
+  const addToLayerAmount = (byAmount: number) => {
+    const newLayerAmount = layerAmount + byAmount
+
+    if (newLayerAmount > 9) {
+      dispatch2(notify(EMaximumLayerAmountReached[language], true, 8))
+      return
+    }
+
+    // Adjust layers of remaining draggables
+    const updatedDraggables = draggables[d].map((draggable) => {
+      const layer =
+        draggable.layer > activeLayer ? draggable.layer + byAmount : draggable.layer
+      return { ...draggable, layer }
+    })
+
+    dispatch({
+      type: 'setDraggablesAtD',
+      payload: { d, draggables: updatedDraggables },
+    })
+
+    setLayerAmount(newLayerAmount)
+    setHiddenLayers(new Set()) // Reset hidden layers
+    setTimeout(() => {
+      widthResize()
+      saveLayerAmount()
+    }, 300)
+  }
 
   return (
     <>
@@ -1328,7 +1497,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           <button
             ref={disableScrollButton}
             id={`disable-scroll${d}`}
-            className='disable-scroll tooltip-wrap'
+            className={`disable-scroll tooltip-wrap ${!scroll ? 'active' : ''}`}
             onClick={() => {
               disableScroll()
             }}
@@ -1545,78 +1714,32 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             </button>
           </div>
 
-          <div
-            className={`layer-buttons ${!controlsVisible ? 'hidden' : ''}`}
-            ref={layerButtons0}
+          <button
+            ref={layerDecrease}
+            id='layer-decrease'
+            className={`layer-adjust layer-decrease tooltip-wrap ${
+              !controlsVisible ? 'hidden' : ''
+            }`}
           >
-            <button
-              className='layer-button every-layer tooltip-wrap'
-              onClick={() => changeEveryLayer(-1)}
-            >
-              <span
-                className='tooltip above right'
-                data-tooltip={EClickHereToMoveDownLayer[language]}
-              ></span>
-              <BiChevronsDown />
-            </button>
-            <button
-              ref={layerDecrease}
-              id='layer-decrease'
-              className='layer-adjust layer-decrease tooltip-wrap'
-            >
-              <span
-                className='tooltip above right'
-                data-tooltip={`${EDecreaseBlobLayerBy1Instructions[language]} ${EKeyboardUsePressTheCorrespondingLayerNumber[language]}`}
-              ></span>
-              <BiChevronDown />
-            </button>
-            {Array.from({ length: layerAmount }, (_, i) => i).map((layer) => (
-              <button
-                key={layer}
-                onClick={() => {
-                  if (activeLayer === layer) {
-                    toggleLayerVisibility(layer)
-                  } else {
-                    setActiveLayer(layer)
-                  }
-                }}
-                className={`layer-button tooltip-wrap ${
-                  activeLayer === layer ? 'active' : ''
-                } ${hiddenLayers.has(layer) ? 'dim' : ''}`}
-              >
-                <span
-                  className='tooltip above right'
-                  data-tooltip={
-                    activeLayer === layer
-                      ? EToggleLayerByClickingMe[language]
-                      : EChangeLayerByClickingMe[language]
-                  }
-                ></span>
-                <span className='scr'>{ELayer[language]}</span> {layer + 1}
-              </button>
-            ))}
-            <button
-              ref={layerIncrease}
-              id='layer-increase'
-              className='layer-adjust layer-increase tooltip-wrap'
-            >
-              <span
-                className='tooltip above left'
-                data-tooltip={`${EIncreaseBlobLayerBy1Instructions[language]} ${EKeyboardUsePressTheCorrespondingLayerNumber[language]}`}
-              ></span>
-              <BiChevronUp />
-            </button>
-            <button
-              className='layer-button every-layer tooltip-wrap'
-              onClick={() => changeEveryLayer(1)}
-            >
-              <span
-                className='tooltip above left'
-                data-tooltip={EClickHereToMoveUpLayer[language]}
-              ></span>
-              <BiChevronsUp />
-            </button>
-          </div>
+            <span
+              className='tooltip above right'
+              data-tooltip={`${EDecreaseBlobLayerBy1Instructions[language]} ${EKeyboardUsePressTheCorrespondingLayerNumber[language]}`}
+            ></span>
+            <BiChevronDown />
+          </button>
+          <button
+            ref={layerIncrease}
+            id='layer-increase'
+            className={`layer-adjust layer-increase tooltip-wrap ${
+              !controlsVisible ? 'hidden' : ''
+            }`}
+          >
+            <span
+              className='tooltip above left'
+              data-tooltip={`${EIncreaseBlobLayerBy1Instructions[language]} ${EKeyboardUsePressTheCorrespondingLayerNumber[language]}`}
+            ></span>
+            <BiChevronUp />
+          </button>
           <div
             ref={colorBlockOrange}
             className={`colorblock color-orange tooltip-wrap ${
@@ -1712,6 +1835,80 @@ export default function BlobJS({ language }: { language: ELanguages }) {
               className='tooltip left above'
               data-tooltip={EReleaseToChangeColorInstructions[language]}
             ></span>
+          </div>
+        </div>
+        <div className='layer-control-wrap layer-buttons'>
+          <div className='layer-btn-wrap'>
+            <button
+              className='layer-amount decrease-layer-amount tooltip-wrap'
+              onClick={deleteHiddenLayers}
+            >
+              <span
+                className='tooltip above right'
+                data-tooltip={ELessenLayers[language]}
+              ></span>
+              <BiMinus />
+            </button>
+            <button
+              id='every-layer-minus'
+              className='layer-button every-layer tooltip-wrap'
+              onClick={() => changeEveryLayer(-1)}
+            >
+              <span
+                className='tooltip above right'
+                data-tooltip={EClickHereToMoveDownLayer[language]}
+              ></span>
+              <BiChevronsDown />
+            </button>
+          </div>
+          <div className='layer-btn-wrap'>
+            {Array.from({ length: layerAmount }, (_, i) => i).map((layer, index) => (
+              <button
+                key={`${layer}*${index}`}
+                onClick={() => {
+                  if (activeLayer === layer) {
+                    toggleLayerVisibility(layer)
+                  } else {
+                    setActiveLayer(layer)
+                  }
+                }}
+                className={`layer-button tooltip-wrap ${
+                  activeLayer === layer ? 'active' : ''
+                } ${hiddenLayers.has(layer) ? 'dim' : ''}`}
+              >
+                <span
+                  className='tooltip above right'
+                  data-tooltip={
+                    activeLayer === layer
+                      ? EToggleLayerByClickingMe[language]
+                      : EChangeLayerByClickingMe[language]
+                  }
+                ></span>
+                <span className='scr'>{ELayer[language]}</span> {layer + 1}
+              </button>
+            ))}
+          </div>
+          <div className='layer-btn-wrap'>
+            <button
+              className='layer-button every-layer tooltip-wrap'
+              onClick={() => changeEveryLayer(1)}
+            >
+              <span
+                className='tooltip above left'
+                data-tooltip={EClickHereToMoveUpLayer[language]}
+              ></span>
+              <BiChevronsUp />
+            </button>
+            <button
+              className='layer-amount increase-layer-amount tooltip-wrap'
+              onClick={() => addToLayerAmount(1)}
+            >
+              <span
+                className='tooltip above left'
+                data-tooltip={EGetMoreLayers[language]}
+              ></span>
+              <BiPlus />
+            </button>
           </div>
         </div>
         <div className='drag-slider-wrap'>
@@ -1859,73 +2056,125 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             ) : !hasSavedFiles ? (
               <p>{ENoSavedArtworkYet[language]}</p>
             ) : (
-              Object.keys(savedDraggablesbyD).map((dKey) => (
-                <ul key={dKey} className='blob-versions-wrap'>
-                  {Object.keys(savedDraggablesbyD[Number(dKey)]).map((versionName) => (
-                    <li key={versionName} className='blob-version-item'>
-                      <span>{versionName}</span>
-                      <div className='button-wrap'>
-                        <button
-                          onClick={() => loadBlobsFromServer(Number(dKey), versionName)}
-                        >
-                          {ELoad[language]}
-                        </button>
+              Object.keys(savedDraggablesbyD).map((dKey, index) => {
+                const versions = Object.keys(savedDraggablesbyD[Number(dKey)])
+                const totalPages = Math.ceil(versions.length / itemsPerPage)
+                const current = currentPage[Number(dKey)] ?? 1
+                const startIdx = (current - 1) * itemsPerPage
+                const endIdx = startIdx + itemsPerPage
+                const currentVersions = versions.slice(startIdx, endIdx)
+
+                return (
+                  <Fragment key={`${dKey}:${index}`}>
+                    <ul key={`${dKey}+${index}`} className='blob-versions-wrap'>
+                      {currentVersions.map((versionName, index) => (
+                        <li key={`${versionName}+${index}`} className='blob-version-item'>
+                          <span>{versionName}</span>
+                          <div className='button-wrap'>
+                            <button
+                              onClick={() =>
+                                loadBlobsFromServer(Number(dKey), versionName)
+                              }
+                            >
+                              {ELoad[language]}
+                            </button>
+                            <button
+                              onClick={() =>
+                                deleteBlobsVersionFromServer(Number(dKey), versionName)
+                              }
+                            >
+                              {EDelete[language]}
+                            </button>
+                            <Accordion
+                              language={language}
+                              id={`accordion-blobnewname-${versionName.replace(
+                                /\s/g,
+                                '-'
+                              )}`}
+                              className='blobnewname'
+                              text={ERename[language]}
+                              hideBrackets={true}
+                              onClick={() => {
+                                setNewName(versionName)
+                                setEditName(versionName)
+                              }}
+                              isOpen={editName === versionName}
+                            >
+                              <div className='input-wrap'>
+                                <label
+                                  htmlFor={`blobnewname-${versionName.replace(
+                                    /\s/g,
+                                    '-'
+                                  )}`}
+                                >
+                                  <input
+                                    id={`blobnewname-${versionName.replace(/\s/g, '-')}`}
+                                    type='text'
+                                    value={newName}
+                                    onChange={handleNewNameChange}
+                                    placeholder={ERenameYourArtwork[language]}
+                                    maxLength={30}
+                                  />
+                                  <span>{ERename[language]}:</span>
+                                </label>
+                              </div>
+                              <button
+                                onClick={() => {
+                                  if (versionName !== newName) {
+                                    editBlobsByUser(versionName, newName)
+                                  } else
+                                    dispatch2(
+                                      notify(
+                                        `${EError[language]}: ${ERenameYourArtwork[language]}`,
+                                        true,
+                                        5
+                                      )
+                                    )
+                                }}
+                              >
+                                {EEdit[language]}
+                              </button>
+                            </Accordion>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                    {/* Pagination Controls */}
+                    <div className='pagination-controls flex center gap-half margin0auto'>
+                      {current !== 1 ? (
                         <button
                           onClick={() =>
-                            deleteBlobsVersionFromServer(Number(dKey), versionName)
+                            handlePageChange(Number(dKey), Math.max(current - 1, 1))
                           }
+                          disabled={current === 1}
                         >
-                          {EDelete[language]}
+                          &laquo; {EPrevious[language]}
                         </button>
-                        <Accordion
-                          language={language}
-                          id={`accordion-blobnewname-${versionName.replace(/\s/g, '-')}`}
-                          className='blobnewname'
-                          text={ERename[language]}
-                          hideBrackets={true}
-                          onClick={() => {
-                            setNewName(versionName)
-                            setEditName(versionName)
-                          }}
-                          isOpen={editName === versionName}
+                      ) : (
+                        <></>
+                      )}
+                      <span>
+                        {EPage[language]} {current} / {totalPages}
+                      </span>
+                      {current !== totalPages ? (
+                        <button
+                          onClick={() =>
+                            handlePageChange(
+                              Number(dKey),
+                              Math.min(current + 1, totalPages)
+                            )
+                          }
+                          disabled={current === totalPages}
                         >
-                          <div className='input-wrap'>
-                            <label
-                              htmlFor={`blobnewname-${versionName.replace(/\s/g, '-')}`}
-                            >
-                              <input
-                                id={`blobnewname-${versionName.replace(/\s/g, '-')}`}
-                                type='text'
-                                value={newName}
-                                onChange={handleNewNameChange}
-                                placeholder={ERenameYourArtwork[language]}
-                                maxLength={30}
-                              />
-                              <span>{ERename[language]}:</span>
-                            </label>
-                          </div>
-                          <button
-                            onClick={() => {
-                              if (versionName !== newName) {
-                                editBlobsByUser(versionName, newName)
-                              } else
-                                dispatch2(
-                                  notify(
-                                    `${EError[language]}: ${ERenameYourArtwork[language]}`,
-                                    true,
-                                    5
-                                  )
-                                )
-                            }}
-                          >
-                            {EEdit[language]}
-                          </button>
-                        </Accordion>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              ))
+                          {ENext[language]} &raquo;
+                        </button>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+                  </Fragment>
+                )
+              })
             )}
           </div>
         ) : (

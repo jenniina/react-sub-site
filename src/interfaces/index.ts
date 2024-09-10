@@ -1929,3 +1929,232 @@ export enum ELoad {
   cs = 'Načíst',
   fi = 'Lataa',
 }
+export enum EPrevious {
+  en = 'Previous',
+  es = 'Anterior',
+  fr = 'Précédent',
+  de = 'Vorherige',
+  pt = 'Anterior',
+  cs = 'Předchozí',
+  fi = 'Edellinen',
+}
+export enum ENext {
+  en = 'Next',
+  es = 'Siguiente',
+  fr = 'Suivant',
+  de = 'Nächste',
+  pt = 'Próximo',
+  cs = 'Další',
+  fi = 'Seuraava',
+}
+export enum EPage {
+  en = 'Page',
+  es = 'Página',
+  fr = 'Page',
+  de = 'Seite',
+  pt = 'Página',
+  cs = 'Stránka',
+  fi = 'Sivu',
+}
+export enum EAddedPagination {
+  en = 'Added pagination',
+  es = 'Paginación añadida',
+  fr = 'Pagination ajoutée',
+  de = 'Seitennummerierung hinzugefügt',
+  pt = 'Paginação adicionada',
+  cs = 'Přidána stránkování',
+  fi = 'Sivutus lisätty',
+}
+export enum EAreYouSureYouWantToProceed {
+  en = 'Are you sure you want to proceed?',
+  es = '¿Estás seguro de que quieres proceder?',
+  fr = 'Êtes-vous sûr de vouloir continuer?',
+  de = 'Möchten Sie wirklich fortfahren?',
+  pt = 'Tem certeza de que deseja prosseguir?',
+  cs = 'Jste si jisti, že chcete pokračovat?',
+  fi = 'Oletko varma, että haluat jatkaa?',
+}
+// Privacy and Security Disclaimer
+// Data Collection and Storage:
+
+// We collect and store the email address you provide as your username.
+// Your password is securely hashed and stored in our database. We do not store your password in plain text.
+// Data Protection:
+
+// We use industry-standard security measures to protect your data, including encryption and secure hashing algorithms.
+// Access to your data is restricted to authorized personnel only.
+// User Responsibilities:
+
+// Please choose a strong and unique password to enhance your account security.
+// Do not share your password with anyone.
+// Your Rights:
+
+// You have the right to access, modify, or delete your personal information stored in our system.
+// If you have any concerns about your data security, please contact our support team.
+// Changes to This Disclaimer:
+
+// We may update this disclaimer from time to time. We will notify you of any significant changes by posting the new disclaimer on our website.
+// By using our service, you agree to the collection and use of your information in accordance with this disclaimer.
+
+export enum EDisclaimer {
+  en = 'Disclaimer',
+  es = 'Descargo de responsabilidad',
+  fr = 'Avis de non-responsabilité',
+  de = 'Haftungsausschluss',
+  pt = 'Aviso Legal',
+  cs = 'Ochranná doložka',
+  fi = 'Vastuuvapauslauseke',
+}
+export enum EPrivacyAndSecurityDisclaimer {
+  en = 'Privacy and Security Disclaimer',
+  es = 'Descargo de responsabilidad de privacidad y seguridad',
+  fr = 'Avis de confidentialité et de sécurité',
+  de = 'Haftungsausschluss für Datenschutz und Sicherheit',
+  pt = 'Aviso de privacidade e segurança',
+  cs = 'Ochrana osobních údajů a bezpečnostní prohlášení',
+  fi = 'Tietosuoja- ja tietoturvaohje',
+}
+export enum EDataCollectionAndStorage {
+  en = 'Data Collection and Storage',
+  es = 'Recolección y almacenamiento de datos',
+  fr = 'Collecte et stockage de données',
+  de = 'Datenerfassung und Speicherung',
+  pt = 'Coleta e armazenamento de dados',
+  cs = 'Sběr a ukládání dat',
+  fi = 'Tietojen kerääminen ja tallentaminen',
+}
+export enum EWeCollectAndStoreTheEmailAddress {
+  en = 'We collect and store the email address you provide as your username.',
+  es = 'Recopilamos y almacenamos la dirección de correo electrónico que proporciona como su nombre de usuario.',
+  fr = 'Nous collectons et stockons l adresse e-mail que vous fournissez en tant que nom d utilisateur.',
+  de = 'Wir erfassen und speichern die E-Mail-Adresse, die Sie als Benutzernamen angeben.',
+  pt = 'Coletamos e armazenamos o endereço de e-mail que você fornece como seu nome de usuário.',
+  cs = 'Sbíráme a ukládáme e-mailovou adresu, kterou poskytnete jako své uživatelské jméno.',
+  fi = 'Keräämme ja tallennamme sähköpostiosoitteen, jonka annat käyttäjänimesi.',
+}
+export enum EYourPasswordIsSecurelyHashed {
+  en = 'Your password is securely hashed and stored in our database. We do not store your password in plain text.',
+  es = 'Su contraseña se cifra de forma segura y se almacena en nuestra base de datos. No almacenamos su contraseña en texto sin formato.',
+  fr = 'Votre mot de passe est crypté de manière sécurisée et stocké dans notre base de données. Nous ne stockons pas votre mot de passe en texte clair.',
+  de = 'Ihr Passwort wird sicher gehasht und in unserer Datenbank gespeichert. Wir speichern Ihr Passwort nicht im Klartext.',
+  pt = 'Sua senha é criptografada com segurança e armazenada em nosso banco de dados. Não armazenamos sua senha em texto simples.',
+  cs = 'Vaše heslo je bezpečně zahashováno a uloženo v naší databázi. Heslo neukládáme v čistém textu.',
+  fi = 'Salasanasi on turvallisesti tiivistetty ja tallennettu tietokantaamme. Emme tallenna salasanaasi selkokielisenä.',
+}
+export enum EDataProtection {
+  en = 'Data Protection',
+  es = 'Protección de datos',
+  fr = 'Protection des données',
+  de = 'Datenschutz',
+  pt = 'Proteção de dados',
+  cs = 'Ochrana dat',
+  fi = 'Tietosuoja',
+}
+export enum EWeUseIndustryStandardSecurityMeasures {
+  en = 'We use industry-standard security measures to protect your data, including encryption and secure hashing algorithms.',
+  es = 'Utilizamos medidas de seguridad estándar de la industria para proteger sus datos, incluidos algoritmos de cifrado y hash seguros.',
+  fr = 'Nous utilisons des mesures de sécurité standard de l industrie pour protéger vos données, y compris le chiffrement et les algorithmes de hachage sécurisés.',
+  de = 'Wir verwenden branchenübliche Sicherheitsmaßnahmen zum Schutz Ihrer Daten, einschließlich Verschlüsselung und sicherer Hash-Algorithmen.',
+  pt = 'Utilizamos medidas de segurança padrão da indústria para proteger seus dados, incluindo algoritmos de criptografia e hash seguros.',
+  cs = 'Používáme standardní bezpečnostní opatření průmyslu k ochraně vašich dat, včetně šifrování a bezpečných hašovacích algoritmů.',
+  fi = 'Käytämme teollisuusstandardin mukaisia turvatoimenpiteitä suojataksesi tietosi, mukaan lukien salaus ja turvalliset tiivistysalgoritmit.',
+}
+export enum EAccessToYourDataIsRestricted {
+  en = 'Access to your data is restricted to authorized personnel only.',
+  es = 'El acceso a sus datos está restringido solo al personal autorizado.',
+  fr = 'L accès à vos données est limité au personnel autorisé uniquement.',
+  de = 'Der Zugriff auf Ihre Daten ist nur für autorisiertes Personal beschränkt.',
+  pt = 'O acesso aos seus dados é restrito apenas ao pessoal autorizado.',
+  cs = 'Přístup k vašim datům je omezen pouze na autorizovaný personál.',
+  fi = 'Pääsy tietoihisi on rajoitettu vain valtuutettuun henkilöstöön.',
+}
+export enum EUserResponsibilities {
+  en = 'User Responsibilities',
+  es = 'Responsabilidades del usuario',
+  fr = 'Responsabilités de l utilisateur',
+  de = 'Benutzerpflichten',
+  pt = 'Responsabilidades do usuário',
+  cs = 'Uživatelské povinnosti',
+  fi = 'Käyttäjän vastuut',
+}
+export enum EPleaseChooseAStrongAndUniquePassword {
+  en = 'Please choose a strong and unique password to enhance your account security.',
+  es = 'Por favor, elija una contraseña fuerte y única para mejorar la seguridad de su cuenta.',
+  fr = 'Veuillez choisir un mot de passe fort et unique pour renforcer la sécurité de votre compte.',
+  de = 'Bitte wählen Sie ein starkes und einzigartiges Passwort, um die Sicherheit Ihres Kontos zu erhöhen.',
+  pt = 'Por favor, escolha uma senha forte e única para aumentar a segurança da sua conta.',
+  cs = 'Vyberte prosím silné a jedinečné heslo, abyste zvýšili bezpečnost svého účtu.',
+  fi = 'Valitse vahva ja uniikki salasana lisätäksesi tilisi turvallisuutta.',
+}
+export enum EDoNotShareYourPasswordWithAnyone {
+  en = 'Do not share your password with anyone.',
+  es = 'No comparta su contraseña con nadie.',
+  fr = 'Ne partagez pas votre mot de passe avec qui que ce soit.',
+  de = 'Teilen Sie Ihr Passwort nicht mit anderen.',
+  pt = 'Não compartilhe sua senha com ninguém.',
+  cs = 'Nesdílejte své heslo s nikým.',
+  fi = 'Älä jaa salasanaasi kenenkään kanssa.',
+}
+export enum EYourRights {
+  en = 'Your Rights',
+  es = 'Tus derechos',
+  fr = 'Vos droits',
+  de = 'Deine Rechte',
+  pt = 'Seus direitos',
+  cs = 'Vaše práva',
+  fi = 'Oikeutesi',
+}
+export enum EYouHaveTheRightToAccessModifyOrDelete {
+  en = 'You have the right to access, modify, or delete your personal information stored in our system.',
+  es = 'Tiene derecho a acceder, modificar o eliminar su información personal almacenada en nuestro sistema.',
+  fr = 'Vous avez le droit d accéder, de modifier ou de supprimer vos informations personnelles stockées dans notre système.',
+  de = 'Sie haben das Recht, auf Ihre in unserem System gespeicherten persönlichen Informationen zuzugreifen, sie zu ändern oder zu löschen.',
+  pt = 'Você tem o direito de acessar, modificar ou excluir suas informações pessoais armazenadas em nosso sistema.',
+  cs = 'Máte právo přistupovat, měnit nebo mazat své osobní informace uložené v našem systému.',
+  fi = 'Sinulla on oikeus käyttää, muokata tai poistaa henkilökohtaiset tietosi, jotka on tallennettu järjestelmäämme.',
+}
+export enum EIfYouHaveAnyConcernsAboutYourDataSecurity {
+  en = 'If you have any concerns about your data security, please contact our support team.',
+  es = 'Si tiene alguna inquietud sobre la seguridad de sus datos, comuníquese con nuestro equipo de soporte.',
+  fr = 'Si vous avez des préoccupations concernant la sécurité de vos données, veuillez contacter notre équipe de support.',
+  de = 'Wenn Sie Bedenken hinsichtlich der Sicherheit Ihrer Daten haben, wenden Sie sich bitte an unser Support-Team.',
+  pt = 'Se você tiver alguma preocupação sobre a segurança de seus dados, entre em contato com nossa equipe de suporte.',
+  cs = 'Pokud máte obavy o bezpečnost svých dat, obraťte se na naši podporu.',
+  fi = 'Jos sinulla on huolenaiheita tietoturvasi suhteen, ota yhteyttä tukitiimiimme.',
+}
+export enum EChangesToThisDisclaimer {
+  en = 'Changes to This Disclaimer',
+  es = 'Cambios a este descargo de responsabilidad',
+  fr = 'Changements à cet avis de non-responsabilité',
+  de = 'Änderungen an diesem Haftungsausschluss',
+  pt = 'Alterações a este aviso de isenção',
+  cs = 'Změny tohoto prohlášení',
+  fi = 'Muutokset tähän vastuuvapauslausekkeeseen',
+}
+export enum EWeMayUpdateThisDisclaimerFromTimeToTime {
+  en = 'We may update this disclaimer from time to time. We will notify you of any significant changes by posting the new disclaimer on our website.',
+  es = 'Podemos actualizar este descargo de responsabilidad de vez en cuando. Le notificaremos cualquier cambio significativo publicando el nuevo descargo de responsabilidad en nuestro sitio web.',
+  fr = 'Nous pouvons mettre à jour cet avis de non-responsabilité de temps à autre. Nous vous informerons de tout changement significatif en publiant le nouvel avis de non-responsabilité sur notre site Web.',
+  de = 'Wir können diesen Haftungsausschluss von Zeit zu Zeit aktualisieren. Wir informieren Sie über wesentliche Änderungen, indem wir den neuen Haftungsausschluss auf unserer Website veröffentlichen.',
+  pt = 'Podemos atualizar este aviso de isenção de responsabilidade de tempos em tempos. Notificaremos você sobre quaisquer alterações significativas, publicando o novo aviso de isenção em nosso site.',
+  cs = 'Můžeme aktualizovat toto prohlášení z času na čas. O jakýchkoli významných změnách vás budeme informovat zveřejněním nového prohlášení na našich webových stránkách.',
+  fi = 'Voimme päivittää tätä vastuuvapauslauseketta aika ajoin. Ilmoitamme sinulle merkittävistä muutoksista julkaisemalla uuden vastuuvapauslausekkeen verkkosivustollamme.',
+}
+export enum EByUsingOurService {
+  en = 'By using our service, you agree to the collection and use of your information in accordance with this disclaimer.',
+  es = 'Al utilizar nuestro servicio, acepta la recopilación y el uso de su información de acuerdo con este descargo de responsabilidad.',
+  fr = 'En utilisant notre service, vous acceptez la collecte et l utilisation de vos informations conformément à cet avis de non-responsabilité.',
+  de = 'Durch die Nutzung unseres Dienstes stimmen Sie der Erfassung und Verwendung Ihrer Informationen gemäß diesem Haftungsausschluss zu.',
+  pt = 'Ao usar nosso serviço, você concorda com a coleta e o uso de suas informações de acordo com este aviso de isenção de responsabilidade.',
+  cs = 'Používáním našich služeb souhlasíte se sběrem a použitím vašich informací v souladu s tímto prohlášením.',
+  fi = 'Käyttämällä palveluamme hyväksyt tietojesi keräämisen ja käytön tämän vastuuvapauslausekkeen mukaisesti.',
+}
+export enum ELastUpdated {
+  en = 'Last updated',
+  es = 'Última actualización',
+  fr = 'Dernière mise à jour',
+  de = 'Zuletzt aktualisiert',
+  pt = 'Última atualização',
+  cs = 'Naposledy aktualizováno',
+  fi = 'Viimeksi päivitetty',
+}
