@@ -1586,7 +1586,14 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           <button
             id='toggle-controls'
             className='toggle-controls'
-            onClick={() => setControlsVisible(!controlsVisible)}
+            onClick={() => {
+              setControlsVisible(!controlsVisible)
+              if (!controlsVisible) {
+                setTimeout(() => {
+                  widthResize()
+                }, 200)
+              }
+            }}
           >
             {controlsVisible ? EHideControls[language] : EShowControls[language]}
           </button>
