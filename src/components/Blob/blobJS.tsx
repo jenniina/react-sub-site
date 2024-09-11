@@ -626,60 +626,61 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   }
 
   useEffect(() => {
-    const delay = setTimeout(async () => {
+    const load = async () => {
       const loadedDraggables = await loadDraggables()
       const loadedBackgroundColor = await loadBackground()
-      if (loadedBackgroundColor) {
-        dispatch({
-          type: 'setBackgroundColor',
-          payload: { d, backgroundColor: loadedBackgroundColor },
-        })
+      const delay = setTimeout(async () => {
+        if (loadedBackgroundColor) {
+          dispatch({
+            type: 'setBackgroundColor',
+            payload: { d, backgroundColor: loadedBackgroundColor },
+          })
+          saveBackground(loadedBackgroundColor)
 
-        saveBackground(loadedBackgroundColor)
+          setSliderLightVal(loadedBackgroundColor[0])
+          setSliderSatVal(loadedBackgroundColor[1])
+          setSliderHueVal(loadedBackgroundColor[2])
 
-        setSliderLightVal(loadedBackgroundColor[0])
-        setSliderSatVal(loadedBackgroundColor[1])
-        setSliderHueVal(loadedBackgroundColor[2])
-
-        dragWrapOuter.current?.style.setProperty(
-          '--lightness',
-          `${loadedBackgroundColor[0]}`
-        )
-        dragWrapOuter.current?.style.setProperty(
-          '--saturation',
-          `${loadedBackgroundColor[1]}`
-        )
-        dragWrapOuter.current?.style.setProperty('--hue', `${loadedBackgroundColor[2]}`)
-      } else {
-        dispatch({
-          type: 'setBackgroundColor',
-          payload: {
-            d,
-            backgroundColor: [defaultLightness, defaultSaturation, defaultHue],
-          },
-        })
-        saveBackground([defaultLightness, defaultSaturation, defaultHue])
-      }
-      if (loadedDraggables && loadedDraggables.length > 0) {
-        if (loadedDraggables && loadedDraggables.length > 0) {
-          makeFromStorage(loadedDraggables)
+          dragWrapOuter.current?.style.setProperty(
+            '--lightness',
+            `${loadedBackgroundColor[0]}`
+          )
+          dragWrapOuter.current?.style.setProperty(
+            '--saturation',
+            `${loadedBackgroundColor[1]}`
+          )
+          dragWrapOuter.current?.style.setProperty('--hue', `${loadedBackgroundColor[2]}`)
+        } else {
+          dispatch({
+            type: 'setBackgroundColor',
+            payload: {
+              d,
+              backgroundColor: [defaultLightness, defaultSaturation, defaultHue],
+            },
+          })
+          saveBackground([defaultLightness, defaultSaturation, defaultHue])
         }
+        if (loadedDraggables && loadedDraggables.length > 0) {
+          if (loadedDraggables && loadedDraggables.length > 0) {
+            makeFromStorage(loadedDraggables)
+          }
 
-        // dispatch({
-        //   type: 'setDraggablesAtD',
-        //   payload: { d, draggables: loadedDraggables },
-        // })
-        setHasBeenMade(true)
-      } else if (
-        (loadedDraggables === null || loadedDraggables === undefined) &&
-        !hasBeenMade
-      ) {
-        makeAnew(amountOfBlobs)
-        setHasBeenMade(true)
-      }
-    }, 300) // 300ms delay
-
-    return () => clearTimeout(delay)
+          // dispatch({
+          //   type: 'setDraggablesAtD',
+          //   payload: { d, draggables: loadedDraggables },
+          // })
+          setHasBeenMade(true)
+        } else if (
+          (loadedDraggables === null || loadedDraggables === undefined) &&
+          !hasBeenMade
+        ) {
+          makeAnew(amountOfBlobs)
+          setHasBeenMade(true)
+        }
+      }, 300) // 300ms delay
+      return () => clearTimeout(delay)
+    }
+    load()
   }, [])
 
   useEffect(() => {
@@ -1123,38 +1124,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
         }
   )
 
-  useEffect(() => {
-    const lightness: BackgroundColor = backgroundColor?.[0]
-      ? backgroundColor[0]
-      : defaultLightness
-    const saturation: BackgroundColor = backgroundColor?.[1]
-      ? backgroundColor[1]
-      : defaultSaturation
-    const hue: BackgroundColor = backgroundColor?.[2] ? backgroundColor[2] : defaultHue
-
-    setSliderLightVal(lightness ?? defaultLightness)
-
-    setSliderSatVal(saturation ?? defaultSaturation)
-
-    setSliderHueVal(hue ?? defaultHue)
-
-    setDragWrapOuterLightness({ ['--lightness' as string]: `${lightness}` })
-    setDragWrapOuterSaturation({ ['--saturation' as string]: `${saturation}` })
-    setDragWrapOuterHue({ ['--hue' as string]: `${hue}` })
-
-    //save to state
-    const updatedBackgroundColor = [...backgroundColor]
-    updatedBackgroundColor[0] = lightness
-    updatedBackgroundColor[1] = saturation
-    updatedBackgroundColor[2] = hue
-    dispatch({
-      type: 'setBackgroundColor',
-      payload: { d, backgroundColor: updatedBackgroundColor },
-    })
-
-    saveBackground([lightness, saturation, hue])
-  }, [])
-
   function sliderLightness() {
     if (dragWrapOuter.current) {
       //dragWrapOuter.style.setProperty('--lightness', `${lightness}`)
@@ -1196,7 +1165,23 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     }
   }
 
+  //To force the sliders to update
+  useEffect(() => {
+    if (sliderLightnessInput.current)
+      setSliderLightVal(sliderLightnessInput.current.value)
+  }, [sliderLightnessInput?.current?.value])
+
+  useEffect(() => {
+    if (sliderSaturationInput.current)
+      setSliderSatVal(sliderSaturationInput.current.value)
+  }, [sliderSaturationInput?.current?.value])
+
+  useEffect(() => {
+    if (sliderHueInput.current) setSliderHueVal(sliderHueInput.current.value)
+  }, [sliderHueInput?.current?.value])
+
   function sliderLightnessReset() {
+    //dragWrapOuter.current?.style.setProperty('--lightness', `${sliderLightVal}`)
     setDragWrapOuterLightness({ ['--lightness' as string]: `${defaultLightness}` })
     if (sliderLightnessInput.current)
       sliderLightnessInput.current.value = defaultLightness
@@ -1210,6 +1195,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     })
   }
   function sliderSaturationReset() {
+    //dragWrapOuter?.style.setProperty('--saturation', `${sliderSatVal}`)
     setDragWrapOuterSaturation({ ['--saturation' as string]: `${defaultSaturation}` })
     if (sliderSaturationInput.current)
       sliderSaturationInput.current.value = defaultSaturation
@@ -1223,6 +1209,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     })
   }
   function sliderHueReset() {
+    //dragWrapOuter.current?.style.setProperty('--hue', `${sliderHueVal}`)
     setDragWrapOuterHue({ ['--hue' as string]: `${defaultHue}` })
     if (sliderHueInput.current) sliderHueInput.current.value = defaultHue
     setSliderHueVal(defaultHue)
