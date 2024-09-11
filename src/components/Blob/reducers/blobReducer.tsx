@@ -1,14 +1,24 @@
-import { Draggable } from '../interfaces'
+import { BackgroundColor, Draggable } from '../interfaces'
+import { ReducerProps } from '../interfaces'
+
+const initialState: ReducerProps['blob'] = {
+  draggables: [] as Draggable[][],
+  dragItemList: [] as Draggable[],
+  highestBlobNumber: 0,
+  hasBeenMadeFromStorage: false,
+  backgroundColor: ['30', '80', '214'] as BackgroundColor[],
+}
 
 function blobReducer(
-  state: { draggables: Draggable[][]; highestBlobNumber: 0 },
+  state = initialState,
   action: {
     type: any
     payload: {
       d: number
-      draggables: Draggable[][]
-      draggable: Draggable | null
-      id: string
+      draggables?: Draggable[][]
+      draggable?: Draggable | null
+      id?: string
+      backgroundColor?: BackgroundColor[]
     }
   }
 ) {
@@ -102,6 +112,9 @@ function blobReducer(
           }))
         ),
       }
+    case 'setBackgroundColor':
+      return { ...state, backgroundColor: action.payload.backgroundColor }
+
     default:
       return state
   }

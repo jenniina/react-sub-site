@@ -61,9 +61,6 @@ interface DragComponentProps {
   deleteBlob0: RefObject<HTMLButtonElement>
   layerIncrease: RefObject<HTMLButtonElement>
   layerDecrease: RefObject<HTMLButtonElement>
-  sliderLightnessInput: RefObject<HTMLInputElement>
-  sliderSaturationInput: RefObject<HTMLInputElement>
-  sliderHueInput: RefObject<HTMLInputElement>
   getRandomMinMax: (min: number, max: number) => number
   focusedBlob: focusedBlob | null
   setFocusedBlob: Dispatch<SetStateAction<focusedBlob | null>>
@@ -812,9 +809,6 @@ const DragContainer = (props: DragComponentProps) => {
           stopBlobs={props.stopBlobs}
           disableScrollButton={props.disableScrollButton}
           resetBlobs={props.resetBlobs}
-          sliderLightnessInput={props.sliderLightnessInput}
-          sliderSaturationInput={props.sliderSaturationInput}
-          sliderHueInput={props.sliderHueInput}
           getRandomMinMax={props.getRandomMinMax}
           focusedBlob={props.focusedBlob}
           setFocusedBlob={props.setFocusedBlob}

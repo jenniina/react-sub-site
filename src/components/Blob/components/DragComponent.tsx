@@ -54,9 +54,6 @@ interface DragComponentProps {
   deleteBlob0: RefObject<HTMLButtonElement>
   layerIncrease: RefObject<HTMLButtonElement>
   layerDecrease: RefObject<HTMLButtonElement>
-  sliderLightnessInput: RefObject<HTMLInputElement>
-  sliderSaturationInput: RefObject<HTMLInputElement>
-  sliderHueInput: RefObject<HTMLInputElement>
   getRandomMinMax: (min: number, max: number) => number
   focusedBlob: focusedBlob | null
   setFocusedBlob: Dispatch<SetStateAction<focusedBlob | null>>
