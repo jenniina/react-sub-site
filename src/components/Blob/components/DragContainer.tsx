@@ -73,7 +73,7 @@ interface DragComponentProps {
 }
 
 let moveElement: boolean
-let reset = true
+let reset: boolean = true
 
 let initialX = 0
 let initialY = 0
@@ -167,6 +167,7 @@ const DragContainer = (props: DragComponentProps) => {
 
   const handleOutsideClick = useCallback(
     (e: Event) => {
+      reset = true
       document.removeEventListener('keyup', keyUp)
       document.removeEventListener('touchmove', preventDefault)
     },
@@ -286,7 +287,7 @@ const DragContainer = (props: DragComponentProps) => {
       // document.removeEventListener('keyup', keyUp)
       let value = (target as HTMLElement).style.getPropertyValue('--i')
       let scale = parseFloat(value)
-      scale = isNaN(scale) ? 8 : scale
+      scale = isNaN(scale) ? 7 : scale
 
       const hitbox = target.querySelector('div')
 
@@ -341,7 +342,7 @@ const DragContainer = (props: DragComponentProps) => {
         elementsOverlap(hitbox as HTMLElement, props.makeLarger0.current)
       ) {
         scale += 0.5
-        scale = Math.min(Math.max(8, scale), 20)
+        scale = Math.min(Math.max(7, scale), 20)
         ;(target as HTMLElement).style.setProperty('--i', `${scale}`)
       }
       if (
@@ -349,7 +350,7 @@ const DragContainer = (props: DragComponentProps) => {
         elementsOverlap(hitbox as HTMLElement, props.makeSmaller0.current)
       ) {
         scale -= 0.5
-        scale = Math.min(Math.max(8, scale), 20)
+        scale = Math.min(Math.max(7, scale), 20)
         ;(target as HTMLElement).style.setProperty('--i', `${scale}`)
       }
       if (
@@ -488,13 +489,13 @@ const DragContainer = (props: DragComponentProps) => {
     //e.preventDefault();
     let value = (target as HTMLElement).style.getPropertyValue('--i')
     let scale = parseFloat(value)
-    scale = isNaN(scale) ? 8 : scale
+    scale = isNaN(scale) ? 7 : scale
 
     scale += e.deltaY * -0.00005
     // Restrict scale
-    scale = Math.min(Math.max(8, scale), 20)
+    scale = Math.min(Math.max(7, scale), 20)
     // Apply
-    ;(target as HTMLElement).style.setProperty('--i', `${scale ?? 8}`)
+    ;(target as HTMLElement).style.setProperty('--i', `${scale ?? 7}`)
   }
 
   // Keyboard use
@@ -521,7 +522,7 @@ const DragContainer = (props: DragComponentProps) => {
 
     let value = (target as HTMLElement).style.getPropertyValue('--i')
     let scale = parseFloat(value)
-    scale = isNaN(scale) ? 8 : scale
+    scale = isNaN(scale) ? 7 : scale
 
     // let attrLeft = window
     //   .getComputedStyle(e.target as HTMLElement)
@@ -651,8 +652,8 @@ const DragContainer = (props: DragComponentProps) => {
         if (reset) {
           reset = false
           scale -= 0.5
-          scale = Math.min(Math.max(8, scale), 20)
-          ;(target as HTMLElement).style.setProperty('--i', `${scale ?? 8}`)
+          scale = Math.min(Math.max(7, scale), 20)
+          ;(target as HTMLElement).style.setProperty('--i', `${scale ?? 7}`)
 
           const cooldown = () => {
             reset = true
@@ -669,8 +670,8 @@ const DragContainer = (props: DragComponentProps) => {
         if (reset) {
           reset = false
           scale += 0.5
-          scale = Math.min(Math.max(8, scale), 20)
-          ;(target as HTMLElement).style.setProperty('--i', `${scale ?? 8}`)
+          scale = Math.min(Math.max(7, scale), 20)
+          ;(target as HTMLElement).style.setProperty('--i', `${scale ?? 7}`)
 
           const cooldown = () => {
             reset = true
@@ -683,15 +684,29 @@ const DragContainer = (props: DragComponentProps) => {
       case 'D':
       case 'd':
       case '+':
-        //e.stopImmediatePropagation()
         e.preventDefault()
-        makeBlob(target as HTMLElement)
+        //e.stopImmediatePropagation()
+        if (reset) {
+          reset = false
+          makeBlob(target as HTMLElement)
+          const cooldown = () => {
+            reset = true
+          }
+          setTimeout(cooldown, 100)
+        }
         break
       case 'Delete': //remove blob
       case '-':
         //e.stopImmediatePropagation()
         e.preventDefault()
-        removeBlob(target as HTMLElement)
+        if (reset) {
+          reset = false
+          removeBlob(target as HTMLElement)
+          const cooldown = () => {
+            reset = true
+          }
+          setTimeout(cooldown, 100)
+        }
         break
     }
   }
@@ -720,21 +735,19 @@ const DragContainer = (props: DragComponentProps) => {
     const newId = maxId + 1
 
     let parsedValue = parseInt((target as HTMLElement).style.getPropertyValue('--i'), 10)
+    const blobLayer = parseInt(
+      (target as HTMLElement).style.getPropertyValue('--layer'),
+      10
+    )
 
-    const newDraggable = {
-      layer: props.layer,
+    const newDraggable: Draggable = {
+      layer: blobLayer,
       id: `blob${newId}-${props.d}`,
       number: newId,
-      //get style property --i from target
-
-      i: isNaN(parsedValue) ? 8 : parsedValue,
+      i: isNaN(parsedValue) ? 7 : parsedValue,
       x: `${target.style.left}`,
       y: `${target.style.top}`,
       z: `${Math.max(1, props.highestZIndex[props.layer] + 1)}`,
-      display: 'block',
-      ariaGrabbed: false,
-      draggable: true,
-      tabIndex: 0,
       background: `${
         target.style.background ?? 'linear-gradient(90deg, cyan, greenyellow)'
       }`,

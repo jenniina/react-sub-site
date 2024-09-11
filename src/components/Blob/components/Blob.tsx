@@ -193,36 +193,6 @@ const Blob = ({
           const liElement = e.currentTarget.parentElement as HTMLElement
           wheel(liElement)
         }}
-
-        // onFocus={(e) => {
-        //   const liElement = e.currentTarget.parentElement as HTMLElement
-        //   focused(liElement as HTMLElement)
-        //   const blob = liElement as HTMLElement
-        //   const blobRect = blob.getBoundingClientRect()
-        //   const parentRect = (blob.parentNode as HTMLDivElement)?.getBoundingClientRect()
-
-        //   const blobStyle = window.getComputedStyle(blob)
-        //   const marginTop = parseFloat(blobStyle.marginTop)
-        //   const marginLeft = parseFloat(blobStyle.marginLeft)
-
-        //   setFocusedBlob({
-        //     top: blobRect.top - parentRect.top - marginTop,
-        //     left: blobRect.left - parentRect.left - marginLeft,
-        //     width: blobRect.width,
-        //     height: blobRect.height,
-        //   })
-        //   if (selectedvalue0.current)
-        //     selectedvalue0.current.textContent = `${ESelectedBlob[language]}: ${
-        //       (liElement as HTMLElement)?.querySelector('span')?.textContent
-        //     }`
-        // }}
-        // onBlurCapture={(e) => {
-        //   const liElement = e.currentTarget.parentElement as HTMLElement
-        //   liElement.draggable = false
-        //   blurred(liElement as HTMLElement)
-        //   if (selectedvalue0.current)
-        //     selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
-        // }}
       ></div>
       <span className='scr'>
         {EBlob[language]} {item.number}

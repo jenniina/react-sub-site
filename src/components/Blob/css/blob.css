@@ -47,10 +47,10 @@ svg.filter {
 }
 
 #drag-container0 .dragzone {
-  -webkit-filter: blur(35px);
-  filter: blur(35px);
-  min-height: 78px;
-  min-width: 78px;
+  -webkit-filter: blur(34px);
+  filter: blur(34px);
+  min-height: 72px;
+  min-width: 72px;
   max-height: 300px;
   max-width: 300px;
   height: calc(var(--i) * 10px);
