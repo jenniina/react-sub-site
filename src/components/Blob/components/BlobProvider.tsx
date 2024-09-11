@@ -1,20 +1,19 @@
 import { useReducer, FC, ReactNode, createContext, Dispatch } from 'react'
 import blobReducer from '../reducers/blobReducer'
-import { Draggable } from '../interfaces'
-
-interface State {
-  draggables: Draggable[][] | []
-  highestBlobNumber: number
-}
+import { BackgroundColor, Draggable } from '../interfaces'
+import { ReducerProps } from '../interfaces'
 
 export interface Props {
-  state: State
+  state: ReducerProps['blob']
   dispatch: Dispatch<any>
 }
 
-const initialState: State = {
+const initialState: ReducerProps['blob'] = {
   draggables: [] as Draggable[][],
+  dragItemList: [] as Draggable[],
   highestBlobNumber: 0,
+  hasBeenMadeFromStorage: false,
+  backgroundColor: [] as BackgroundColor[],
 }
 
 export const BlobContext = createContext<Props | undefined>(undefined)

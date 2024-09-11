@@ -201,8 +201,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   const sliderSaturationInput = useRef() as RefObject<HTMLInputElement>
   const sliderHueInput = useRef() as RefObject<HTMLInputElement>
 
-  const backgroundColor: BackgroundColor[][] = []
-
   const isLocalhost =
     window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
 
@@ -210,7 +208,9 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   const localStorageBackground = `${isLocalhost ? 'local-' : ''}BackgroundColor${[d]}`
   const localStorageDraggables = `${isLocalhost ? 'local-' : ''}Draggables${[d]}`
 
-  backgroundColor[d] = loadBackground()
+  const backgroundColor = state.backgroundColor as BackgroundColor[]
+
+  //loadBackground()
 
   const draggables = state.draggables as Draggable[][]
 
@@ -319,7 +319,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             }))
           )
         }
-      }, 600)
+      }, 300)
     })
   }
 
@@ -334,18 +334,28 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     }
   }
 
-  function loadBackground(): BackgroundColor[] {
-    const backgroundColorJSON = localStorage.getItem(localStorageBackground)
-    if (backgroundColorJSON == null) return []
-    else return JSON.parse(backgroundColorJSON)
+  function loadBackground(): Promise<BackgroundColor[] | null> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const backgroundColorJSON = localStorage.getItem(localStorageBackground)
+        if (
+          backgroundColorJSON == null ||
+          backgroundColorJSON == undefined ||
+          backgroundColorJSON === 'undefined'
+        ) {
+          resolve(null)
+        } else {
+          resolve(JSON.parse(backgroundColorJSON))
+        }
+      }, 300)
+    })
   }
 
   function saveLayerAmount() {
     localStorage.setItem(localStorageLayerAmount, JSON.stringify(layerAmount))
   }
-
-  function saveBackground() {
-    localStorage.setItem(localStorageBackground, JSON.stringify(backgroundColor[d]))
+  function saveBackground(bg: BackgroundColor[] = backgroundColor) {
+    localStorage.setItem(localStorageBackground, JSON.stringify(bg))
   }
   function saveDraggables() {
     localStorage.setItem(localStorageDraggables, JSON.stringify(draggables[d]))
@@ -476,14 +486,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           }
         }
         blobService
-          .saveBlobsByUser(
-            user?._id,
-            d,
-            draggables[d],
-            name,
-            backgroundColor[d],
-            language
-          )
+          .saveBlobsByUser(user?._id, d, draggables[d], name, backgroundColor, language)
           .then(() => {
             setTrackSaving(!trackSaving)
             dispatch2(notify(ESavingSuccessful[language], false, 8))
@@ -522,7 +525,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
               d,
               draggables[d],
               versionName,
-              backgroundColor[d],
+              backgroundColor,
               language,
               newVersion
             )
@@ -548,7 +551,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       if (window.confirm(ENoteThatUnsavedChangesWillBeLost[language])) {
         blobService
           .getBlobsVersionByUser(user?._id, d, newVersion, language)
-          .then((response) => {
+          .then((response: SavedBlobs) => {
             const highestLayerInDraggables = Math.max(
               ...response.draggables.map((draggable: Draggable) => draggable.layer)
             )
@@ -564,6 +567,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
               type: 'setBackgroundColor',
               payload: { d, backgroundColor: response.backgroundColor },
             })
+            saveBackground(response.backgroundColor)
           })
           .then(() => {
             setName(newVersion)
@@ -623,11 +627,42 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
   useEffect(() => {
     const delay = setTimeout(async () => {
-      const loadedDraggables = loadDraggables()
-      const draggables = await loadedDraggables
-      if (draggables && draggables.length > 0) {
-        if (draggables && draggables.length > 0) {
-          makeFromStorage(draggables)
+      const loadedDraggables = await loadDraggables()
+      const loadedBackgroundColor = await loadBackground()
+      if (loadedBackgroundColor) {
+        dispatch({
+          type: 'setBackgroundColor',
+          payload: { d, backgroundColor: loadedBackgroundColor },
+        })
+
+        saveBackground(loadedBackgroundColor)
+
+        setSliderLightVal(loadedBackgroundColor[0])
+        setSliderSatVal(loadedBackgroundColor[1])
+        setSliderHueVal(loadedBackgroundColor[2])
+
+        dragWrapOuter.current?.style.setProperty(
+          '--lightness',
+          `${loadedBackgroundColor[0]}`
+        )
+        dragWrapOuter.current?.style.setProperty(
+          '--saturation',
+          `${loadedBackgroundColor[1]}`
+        )
+        dragWrapOuter.current?.style.setProperty('--hue', `${loadedBackgroundColor[2]}`)
+      } else {
+        dispatch({
+          type: 'setBackgroundColor',
+          payload: {
+            d,
+            backgroundColor: [defaultLightness, defaultSaturation, defaultHue],
+          },
+        })
+        saveBackground([defaultLightness, defaultSaturation, defaultHue])
+      }
+      if (loadedDraggables && loadedDraggables.length > 0) {
+        if (loadedDraggables && loadedDraggables.length > 0) {
+          makeFromStorage(loadedDraggables)
         }
 
         // dispatch({
@@ -635,11 +670,14 @@ export default function BlobJS({ language }: { language: ELanguages }) {
         //   payload: { d, draggables: loadedDraggables },
         // })
         setHasBeenMade(true)
-      } else if (loadedDraggables === null && !hasBeenMade) {
+      } else if (
+        (loadedDraggables === null || loadedDraggables === undefined) &&
+        !hasBeenMade
+      ) {
         makeAnew(amountOfBlobs)
         setHasBeenMade(true)
       }
-    }, 100) // 100ms delay
+    }, 300) // 300ms delay
 
     return () => clearTimeout(delay)
   }, [])
@@ -653,10 +691,10 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   }, [state.draggables])
 
   function makeFromStorage(blobs: Draggable[]) {
-    if (backgroundColor[d]?.length > 1) {
-      dragWrapOuter.current?.style.setProperty('--lightness', `${backgroundColor[d][0]}`)
-      dragWrapOuter.current?.style.setProperty('--saturation', `${backgroundColor[d][1]}`)
-      dragWrapOuter.current?.style.setProperty('--hue', `${backgroundColor[d][2]}`)
+    if (backgroundColor) {
+      dragWrapOuter.current?.style.setProperty('--lightness', `${backgroundColor[0]}`)
+      dragWrapOuter.current?.style.setProperty('--saturation', `${backgroundColor[1]}`)
+      dragWrapOuter.current?.style.setProperty('--hue', `${backgroundColor[2]}`)
     }
     if (!hasBeenMade && blobs && blobs?.length > 0) {
       //dispatch({ type: 'resetBlobs', payload: {} })
@@ -788,7 +826,14 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       window.localStorage.removeItem(localStorageDraggables)
       dispatch({ type: 'resetBlobs', payload: {} })
       dispatch({ type: 'setDraggablesAtD', payload: { d, draggables: [] } })
-
+      dispatch({
+        type: 'setBackgroundColor',
+        payload: {
+          d,
+          backgroundColor: [defaultLightness, defaultSaturation, defaultHue],
+        },
+      })
+      saveBackground([defaultLightness, defaultSaturation, defaultHue])
       makeAnew(amountOfBlobs)
       setLayerAmount(defaultLayerAmount)
       setTimeout(() => {
@@ -863,6 +908,14 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       dispatch({ type: 'addDraggable', payload: { d, draggable: newDraggable } })
     }
 
+    dispatch({
+      type: 'setBackgroundColor',
+      payload: {
+        d,
+        backgroundColor: [defaultLightness, defaultSaturation, defaultHue],
+      },
+    })
+    saveBackground([defaultLightness, defaultSaturation, defaultHue])
     setLayerAmount(defaultLayerAmount)
   }
 
@@ -991,6 +1044,17 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       payload: { draggable: blobDraggable },
     })
   }
+  useEffect(() => {
+    if (backgroundColor.length === 3) {
+      dragWrapOuter.current?.style.setProperty('--lightness', `${backgroundColor[0]}`)
+      dragWrapOuter.current?.style.setProperty('--saturation', `${backgroundColor[1]}`)
+      dragWrapOuter.current?.style.setProperty('--hue', `${backgroundColor[2]}`)
+
+      setSliderLightVal(backgroundColor[0])
+      setSliderSatVal(backgroundColor[1])
+      setSliderHueVal(backgroundColor[2])
+    }
+  }, [backgroundColor])
 
   useEffect(() => {
     if (!scroll) {
@@ -1011,17 +1075,25 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   function disableScroll() {
     setScroll(!scroll)
   }
-  // const disableScroll = useDisableScroll()
 
   //SLIDERS
 
-  const [slider1Val, setSlider1Val] = useState(backgroundColor[d][0] ?? defaultLightness)
-  const [slider2Val, setSlider2Val] = useState(backgroundColor[d][1] ?? defaultSaturation)
-  const [slider3Val, setSlider3Val] = useState(backgroundColor[d][2] ?? defaultHue)
+  const [sliderLightVal, setSliderLightVal] = useState(() => {
+    const savedBackground = localStorage.getItem(localStorageBackground)
+    const backgroundColor = savedBackground ? JSON.parse(savedBackground) : null
+    return backgroundColor?.[0] ?? defaultLightness
+  })
+  const [sliderSatVal, setSliderSatVal] = useState(() => {
+    const savedBackground = localStorage.getItem(localStorageBackground)
+    const backgroundColor = savedBackground ? JSON.parse(savedBackground) : null
+    return backgroundColor?.[1] ?? defaultSaturation
+  })
 
-  let lightness = slider1Val
-  let saturation = slider2Val
-  let hue = slider3Val
+  const [sliderHueVal, setSliderHueVal] = useState(() => {
+    const savedBackground = localStorage.getItem(localStorageBackground)
+    const backgroundColor = savedBackground ? JSON.parse(savedBackground) : null
+    return backgroundColor?.[2] ?? defaultHue
+  })
 
   const [dragWrapOuterLightness, setDragWrapOuterLightness] = useState<CSSProperties>(
     sliderLightnessInput.current
@@ -1029,7 +1101,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           ['--lightness' as string]: `${sliderLightnessInput.current.value}`,
         }
       : {
-          ['--lightness' as string]: `${slider1Val}`,
+          ['--lightness' as string]: `${sliderLightVal}`,
         }
   )
   const [dragWrapOuterSaturation, setDragWrapOuterSaturation] = useState<CSSProperties>(
@@ -1038,7 +1110,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           ['--saturation' as string]: `${sliderSaturationInput.current.value}`,
         }
       : {
-          ['--saturation' as string]: `${slider2Val}`,
+          ['--saturation' as string]: `${sliderSatVal}`,
         }
   )
   const [dragWrapOuterHue, setDragWrapOuterHue] = useState<CSSProperties>(
@@ -1047,116 +1119,126 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           ['--hue' as string]: `${sliderHueInput.current.value}`,
         }
       : {
-          ['--hue' as string]: `${slider3Val}`,
+          ['--hue' as string]: `${sliderHueVal}`,
         }
   )
 
   useEffect(() => {
-    const lightness: BackgroundColor = backgroundColor[d][0]
-      ? backgroundColor[d][0]
+    const lightness: BackgroundColor = backgroundColor?.[0]
+      ? backgroundColor[0]
       : defaultLightness
-    const saturation: BackgroundColor = backgroundColor[d][1]
-      ? backgroundColor[d][1]
+    const saturation: BackgroundColor = backgroundColor?.[1]
+      ? backgroundColor[1]
       : defaultSaturation
-    const hue: BackgroundColor = backgroundColor[d][2]
-      ? backgroundColor[d][2]
-      : defaultHue
+    const hue: BackgroundColor = backgroundColor?.[2] ? backgroundColor[2] : defaultHue
 
-    setSlider1Val(lightness ?? defaultLightness)
+    setSliderLightVal(lightness ?? defaultLightness)
 
-    setSlider2Val(saturation ?? defaultSaturation)
+    setSliderSatVal(saturation ?? defaultSaturation)
 
-    setSlider3Val(hue ?? defaultHue)
+    setSliderHueVal(hue ?? defaultHue)
 
     setDragWrapOuterLightness({ ['--lightness' as string]: `${lightness}` })
     setDragWrapOuterSaturation({ ['--saturation' as string]: `${saturation}` })
     setDragWrapOuterHue({ ['--hue' as string]: `${hue}` })
 
-    backgroundColor[d][0] = lightness
-    backgroundColor[d][1] = saturation
-    backgroundColor[d][2] = hue
+    //save to state
+    const updatedBackgroundColor = [...backgroundColor]
+    updatedBackgroundColor[0] = lightness
+    updatedBackgroundColor[1] = saturation
+    updatedBackgroundColor[2] = hue
+    dispatch({
+      type: 'setBackgroundColor',
+      payload: { d, backgroundColor: updatedBackgroundColor },
+    })
 
-    saveBackground()
+    saveBackground([lightness, saturation, hue])
   }, [])
 
   function sliderLightness() {
-    lightness = slider1Val
     if (dragWrapOuter.current) {
       //dragWrapOuter.style.setProperty('--lightness', `${lightness}`)
-      setDragWrapOuterLightness({ ['--lightness' as string]: `${lightness}` })
+      setDragWrapOuterLightness({ ['--lightness' as string]: `${sliderLightVal}` })
 
-      const background: BackgroundColor = lightness
-      backgroundColor[d][0] = background
-      saveBackground()
+      const updatedBackgroundColor = [...backgroundColor]
+      updatedBackgroundColor[0] = sliderLightVal
+      dispatch({
+        type: 'setBackgroundColor',
+        payload: { d, backgroundColor: updatedBackgroundColor },
+      })
+      saveBackground(updatedBackgroundColor)
     }
   }
   function sliderSaturation() {
-    saturation = slider2Val
     if (dragWrapOuter.current) {
       //dragWrapOuter.style.setProperty('--saturation', `${saturation}`)
-      setDragWrapOuterSaturation({ ['--saturation' as string]: `${saturation}` })
-      const background: BackgroundColor = saturation
-      backgroundColor[d][1] = background
-      saveBackground()
+      setDragWrapOuterSaturation({ ['--saturation' as string]: `${sliderSatVal}` })
+      const updatedBackgroundColor = [...backgroundColor]
+      updatedBackgroundColor[1] = sliderSatVal
+      dispatch({
+        type: 'setBackgroundColor',
+        payload: { d, backgroundColor: updatedBackgroundColor },
+      })
+      saveBackground(updatedBackgroundColor)
     }
   }
   function sliderHue() {
-    hue = slider3Val
     if (dragWrapOuter.current) {
       //dragWrapOuter.style.setProperty('--hue', `${hue}`)
-      setDragWrapOuterHue({ ['--hue' as string]: `${hue}` })
-      const background: BackgroundColor = hue
-      backgroundColor[d][2] = background
-      saveBackground()
+      setDragWrapOuterHue({ ['--hue' as string]: `${sliderHueVal}` })
+      const updatedBackgroundColor = [...backgroundColor]
+      updatedBackgroundColor[2] = sliderHueVal
+      dispatch({
+        type: 'setBackgroundColor',
+        payload: { d, backgroundColor: updatedBackgroundColor },
+      })
+      saveBackground(updatedBackgroundColor)
     }
   }
 
-  //To force the sliders to update
-  useEffect(() => {
-    if (sliderLightnessInput.current) setSlider1Val(sliderLightnessInput.current.value)
-  }, [slider1Val, sliderLightnessInput?.current?.value])
-
-  useEffect(() => {
-    if (sliderSaturationInput.current) setSlider2Val(sliderSaturationInput.current.value)
-  }, [slider2Val, sliderLightnessInput?.current?.value])
-
-  useEffect(() => {
-    if (sliderHueInput.current) setSlider3Val(sliderHueInput.current.value)
-  }, [slider3Val, sliderLightnessInput?.current?.value])
-
   function sliderLightnessReset() {
-    //dragWrapOuter.current?.style.setProperty('--lightness', `${defaultLightness}`)
     setDragWrapOuterLightness({ ['--lightness' as string]: `${defaultLightness}` })
     if (sliderLightnessInput.current)
       sliderLightnessInput.current.value = defaultLightness
-    setSlider1Val(defaultLightness)
+    setSliderLightVal(defaultLightness)
+    //save to state
+    const updatedBackgroundColor = [...backgroundColor]
+    updatedBackgroundColor[0] = defaultLightness
+    dispatch({
+      type: 'setBackgroundColor',
+      payload: { d, backgroundColor: updatedBackgroundColor },
+    })
   }
   function sliderSaturationReset() {
-    //dragWrapOuter?.style.setProperty('--saturation', `${slider2Val}`)
     setDragWrapOuterSaturation({ ['--saturation' as string]: `${defaultSaturation}` })
     if (sliderSaturationInput.current)
       sliderSaturationInput.current.value = defaultSaturation
-    setSlider2Val(defaultSaturation)
+    setSliderSatVal(defaultSaturation)
+    //save to state
+    const updatedBackgroundColor = [...backgroundColor]
+    updatedBackgroundColor[2] = defaultSaturation
+    dispatch({
+      type: 'setBackgroundColor',
+      payload: { d, backgroundColor: updatedBackgroundColor },
+    })
   }
   function sliderHueReset() {
-    //dragWrapOuter.current?.style.setProperty('--hue', `${slider3Val}`)
     setDragWrapOuterHue({ ['--hue' as string]: `${defaultHue}` })
     if (sliderHueInput.current) sliderHueInput.current.value = defaultHue
-    setSlider3Val(defaultHue)
+    setSliderHueVal(defaultHue)
+    //save to state
+    const updatedBackgroundColor = [...backgroundColor]
+    updatedBackgroundColor[2] = defaultHue
+    dispatch({
+      type: 'setBackgroundColor',
+      payload: { d, backgroundColor: updatedBackgroundColor },
+    })
   }
   //END SLIDERS
 
   useEffect(() => {
     widthResize()
-
-    // window.addEventListener('resize', widthResize)
-
-    // return () => {
-    //   window.removeEventListener('resize', widthResize)
-    // }
   }, [windowWidth, windowHeight, scroll])
-
-  const breakpoint = 700
 
   const widthResize = () => {
     //place these items every time the window is resized
@@ -1679,9 +1761,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
               stopBlobs={stopBlobs}
               disableScrollButton={disableScrollButton}
               resetBlobs={resetBlobs}
-              sliderLightnessInput={sliderLightnessInput}
-              sliderSaturationInput={sliderSaturationInput}
-              sliderHueInput={sliderHueInput}
               getRandomMinMax={getRandomMinMax}
               focusedBlob={focusedBlob}
               setFocusedBlob={setFocusedBlob}
@@ -1919,29 +1998,29 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           <input
             ref={sliderLightnessInput}
             onChange={(e) => {
-              setSlider1Val(e.target.value)
+              setSliderLightVal(e.target.value)
               sliderLightness()
             }}
             onMouseUp={(e) => {
-              setSlider1Val((e.target as HTMLInputElement).value)
+              setSliderLightVal((e.target as HTMLInputElement).value)
               sliderLightness()
             }}
             onPointerUp={(e) => {
-              setSlider1Val((e.target as HTMLInputElement).value)
+              setSliderLightVal((e.target as HTMLInputElement).value)
               sliderLightness()
             }}
             type='range'
             min={0}
             max={100}
-            defaultValue={slider1Val}
+            value={sliderLightVal}
             className='drag-slider drag-slider-lightness'
             id={`drag-slider-lightness${d}`}
           />
-          <span>{slider1Val}</span>
+          <span>{sliderLightVal}</span>
 
           <button
             onClick={() => {
-              setSlider1Val(defaultLightness)
+              setSliderLightVal(defaultLightness)
               sliderLightnessReset()
             }}
           >
@@ -1955,28 +2034,28 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           <input
             ref={sliderSaturationInput}
             onChange={(e) => {
-              setSlider2Val(e.target.value)
+              setSliderSatVal(e.target.value)
               sliderSaturation()
             }}
             onMouseUp={(e) => {
-              setSlider2Val((e.target as HTMLInputElement).value)
+              setSliderSatVal((e.target as HTMLInputElement).value)
               sliderSaturation()
             }}
             onPointerUp={(e) => {
-              setSlider2Val((e.target as HTMLInputElement).value)
+              setSliderSatVal((e.target as HTMLInputElement).value)
               sliderSaturation()
             }}
             type='range'
             min={0}
-            max='100'
-            defaultValue={slider2Val}
+            max={100}
+            value={sliderSatVal}
             className='drag-slider drag-slider-saturation'
             id={`drag-slider-saturation${d}`}
           />
-          <span>{slider2Val}</span>
+          <span>{sliderSatVal}</span>
           <button
             onClick={() => {
-              setSlider2Val(defaultSaturation)
+              setSliderSatVal(defaultSaturation)
               sliderSaturationReset()
             }}
           >
@@ -1990,28 +2069,28 @@ export default function BlobJS({ language }: { language: ELanguages }) {
           <input
             ref={sliderHueInput}
             onChange={(e) => {
-              setSlider3Val(e.target.value)
+              setSliderHueVal(e.target.value)
               sliderHue()
             }}
             onMouseUp={(e) => {
-              setSlider3Val((e.target as HTMLInputElement).value)
+              setSliderHueVal((e.target as HTMLInputElement).value)
               sliderHue()
             }}
             onPointerUp={(e) => {
-              setSlider3Val((e.target as HTMLInputElement).value)
+              setSliderHueVal((e.target as HTMLInputElement).value)
               sliderHue()
             }}
             type='range'
             min={0}
-            max='359'
-            defaultValue={slider3Val}
+            max={359}
+            value={sliderHueVal}
             className='drag-slider drag-slider-hue'
             id={`drag-slider-hue${d}`}
           />
-          <span>{slider3Val}</span>
+          <span>{sliderHueVal}</span>
           <button
             onClick={() => {
-              setSlider3Val(defaultHue)
+              setSliderHueVal(defaultHue)
               sliderHueReset()
             }}
           >
