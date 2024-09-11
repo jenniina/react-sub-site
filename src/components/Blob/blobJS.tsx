@@ -261,7 +261,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     const z = highestZIndex[layer] + 1
     dispatch({
       type: 'updateDraggable',
-      payload: { draggable: { ...draggable, layer, z } },
+      payload: { d, draggable: { ...draggable, layer, z } },
     })
     setActiveLayer(layer)
   }
@@ -357,8 +357,8 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   function saveBackground(bg: BackgroundColor[] = backgroundColor) {
     localStorage.setItem(localStorageBackground, JSON.stringify(bg))
   }
-  function saveDraggables() {
-    localStorage.setItem(localStorageDraggables, JSON.stringify(draggables[d]))
+  function saveDraggables(blob: Draggable[] = draggables[d]) {
+    localStorage.setItem(localStorageDraggables, JSON.stringify(blob))
   }
   const [name, setName] = useState('Blob Art')
   const [newName, setNewName] = useState(name)
@@ -684,12 +684,12 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   }, [])
 
   useEffect(() => {
-    if (state.draggables !== undefined && draggables[d]?.length > 0) {
+    if (draggables[d] !== undefined && draggables[d]?.length > 0) {
       saveDraggables()
       const highestZ = getHighestZIndex(draggables[d])
       setHighestZIndex(highestZ)
     }
-  }, [state.draggables])
+  }, [draggables[d]])
 
   function makeFromStorage(blobs: Draggable[]) {
     if (backgroundColor) {
@@ -895,7 +895,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
         layer: activeLayer,
         id: `blob${i + 1}-${d}`,
         number: i + 1,
-        i: windowWidth > 400 ? getRandomMinMax(8, 20) : getRandomMinMax(8, 10),
+        i: windowWidth > 400 ? getRandomMinMax(7, 20) : getRandomMinMax(7, 10),
         x:
           windowWidth > windowHeight
             ? `${(windowWidth / 100) * getRandomMinMax(2, 70)}px`
@@ -1042,9 +1042,10 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
     dispatch({
       type: 'updateDraggable',
-      payload: { draggable: blobDraggable },
+      payload: { d, draggable: blobDraggable },
     })
   }
+
   useEffect(() => {
     if (backgroundColor.length === 3) {
       dragWrapOuter.current?.style.setProperty('--lightness', `${backgroundColor[0]}`)
