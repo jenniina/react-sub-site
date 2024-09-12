@@ -72,23 +72,36 @@ function blobReducer(
           ),
           0 // This is a fallback in case the array is empty
         )
-        const newId = maxId + 1
-        const newDraggable = {
+
+        let newId = maxId + 1
+        let newDraggable: Draggable = {
           ...action.payload.draggable,
           id: `blob${newId}-${action.payload.d}`,
           number: newId,
         }
+        let draggableExists = true
 
-        const draggableExists = newDraggablesDuplicate[action.payload.d].some(
-          (draggable) => draggable.id === newDraggable.id
-        )
+        // Loop until a unique ID is found
+        while (draggableExists) {
+          newDraggable = {
+            ...action.payload.draggable,
+            id: `blob${newId}-${action.payload.d}`,
+            number: newId,
+          }
 
-        if (!draggableExists) {
-          newDraggablesDuplicate[action.payload.d] = [
-            ...newDraggablesDuplicate[action.payload.d],
-            newDraggable,
-          ]
+          draggableExists = newDraggablesDuplicate[action.payload.d].some(
+            (draggable) => draggable.id === newDraggable.id
+          )
+
+          if (draggableExists) {
+            newId += 1
+          }
         }
+
+        newDraggablesDuplicate[action.payload.d] = [
+          ...newDraggablesDuplicate[action.payload.d],
+          newDraggable,
+        ]
       }
 
       const newStateDuplicate = {
