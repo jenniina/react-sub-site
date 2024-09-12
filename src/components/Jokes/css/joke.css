@@ -1012,6 +1012,7 @@ button.random-btn {
 }
 button.blocked-btn {
   flex: 0 1 max-content;
+  font-size: 0.8em;
 }
 button.blocked-btn.active {
   flex: 1 0 100%;
