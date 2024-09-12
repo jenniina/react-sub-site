@@ -22,8 +22,8 @@ const createNewUser = async (newUser: user) => {
   return response
 }
 
-const deleteUser = async (id: user['_id']) => {
-  const response = await axios.delete(`${baseUrl}/${id}`, getConfig())
+const deleteUser = async (id: user['_id'], deleteJokes: boolean) => {
+  const response = await axios.delete(`${baseUrl}/${id}/${deleteJokes}`, getConfig())
   return response.data as AxiosResponse<{ success: boolean; message: string }>
 }
 
