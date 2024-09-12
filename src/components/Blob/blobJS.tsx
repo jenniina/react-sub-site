@@ -150,6 +150,18 @@ const defaultHue = '214'
 
 const defaultLayerAmount = 3
 
+// Should be in the same order as colorBlockProps
+const colorPairs: ColorPair[] = [
+  { color1: 'lemonchiffon', color2: 'pink' }, //colorBlockPinkYellow0
+  { color1: 'lemonchiffon', color2: 'greenyellow' }, //colorBlockYellowLime0
+  { color1: 'cyan', color2: 'greenyellow' }, //colorBlockCyanYellow0
+  { color1: 'cyan', color2: 'pink' }, //colorBlockCyanPink0
+  { color1: 'darkorange', color2: 'orange' }, //colorBlockOrange
+  { color1: 'red', color2: 'tomato' }, //colorBlockRed
+  { color1: 'magenta', color2: 'violet' }, //colorBlockPurple
+  { color1: 'deepskyblue', color2: 'dodgerblue' }, //colorBlockBlue
+]
+
 const preventDefault = (e: Event) => {
   e.preventDefault()
 }
@@ -234,17 +246,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   const [paused, setPaused] = useState(false)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
 
-  // Should be in the same order as colorBlockProps
-  const colorPairs: ColorPair[] = [
-    { color1: 'lemonchiffon', color2: 'pink' }, //colorBlockPinkYellow0
-    { color1: 'lemonchiffon', color2: 'greenyellow' }, //colorBlockYellowLime0
-    { color1: 'cyan', color2: 'greenyellow' }, //colorBlockCyanYellow0
-    { color1: 'cyan', color2: 'pink' }, //colorBlockCyanPink0
-    { color1: 'darkorange', color2: 'orange' }, //colorBlockOrange
-    { color1: 'red', color2: 'tomato' }, //colorBlockRed
-    { color1: 'magenta', color2: 'violet' }, //colorBlockPurple
-    { color1: 'deepskyblue', color2: 'dodgerblue' }, //colorBlockBlue
-  ]
   // Should be in the same order as colorPairs:
   const colorBlockProps = [
     colorBlockPinkYellow0,
@@ -1024,7 +1025,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     dispatch({ type: 'addDraggable', payload: { d, draggable: newDraggable } })
   }
 
-  //save blob stats to localhost array
   const getPosition = (draggable: HTMLElement) => {
     const blobID = draggable.id
     const blobNumber = parseInt(draggable.id.replace('blob', '').split('-')[0], 10)

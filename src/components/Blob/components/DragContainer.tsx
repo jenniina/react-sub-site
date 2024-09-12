@@ -19,6 +19,7 @@ import { ESelectedBlobNone } from '../../../interfaces/blobs'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
 import { notify } from '../../../reducers/notificationReducer'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
+import { current } from '@reduxjs/toolkit'
 
 interface DragComponentProps {
   layer: number
@@ -498,6 +499,24 @@ const DragContainer = (props: DragComponentProps) => {
     ;(target as HTMLElement).style.setProperty('--i', `${scale ?? 7}`)
   }
 
+  useEffect(() => {
+    const target = currentFocusedElement
+    if (target) {
+      const { color1, color2 } = props.colorPairs[props.colorIndex]
+      const newBackground = `linear-gradient(${angle}, ${color1}, ${color2})`
+      ;(target as HTMLElement).style.backgroundImage = newBackground
+
+      const draggable = props.items.find((d) => d.id === target.id)
+      // Update the draggable's background in the state
+      const updatedDraggable = { ...draggable, background: newBackground }
+
+      props.dispatch({
+        type: 'updateDraggable',
+        payload: { d: props.d, draggable: updatedDraggable },
+      })
+    }
+  }, [props.colorIndex])
+
   // Keyboard use
   function keyUp(e: KeyboardEvent) {
     const movePx = 5
@@ -602,16 +621,11 @@ const DragContainer = (props: DragComponentProps) => {
         props.exitApp.current?.focus()
         break
       case 'Enter': //Cycle through colors
-        e.stopImmediatePropagation()
+        e.stopPropagation()
+        e.preventDefault()
         if ((target as HTMLElement).closest(`.drag-container${props.d}`)) {
           props.setColorIndex((prevColorIndex) => {
             const nextColorIndex = (prevColorIndex + 1) % props.colorPairs.length
-            const { color1, color2 } = props.colorPairs[nextColorIndex]
-
-            ;(
-              target as HTMLElement
-            ).style.backgroundImage = `linear-gradient(${angle}, ${color1},${color2})`
-
             return nextColorIndex // Return the new color index
           })
         }
@@ -709,7 +723,6 @@ const DragContainer = (props: DragComponentProps) => {
         }
         break
     }
-    props.getPosition(target as HTMLElement)
   }
 
   //Remove exit notice's tabindex and text as unnecessary after leaving it
@@ -769,7 +782,6 @@ const DragContainer = (props: DragComponentProps) => {
           amountOfBlobs={props.amountOfBlobs}
           saveDraggables={props.saveDraggables}
           getPosition={props.getPosition}
-          colorBlockProps={props.colorBlockProps}
           colorBlockOrange={props.colorBlockOrange}
           colorBlockRed={props.colorBlockRed}
           colorBlockPurple={props.colorBlockPurple}
@@ -794,9 +806,6 @@ const DragContainer = (props: DragComponentProps) => {
           getRandomMinMax={props.getRandomMinMax}
           focusedBlob={props.focusedBlob}
           setFocusedBlob={props.setFocusedBlob}
-          colorIndex={props.colorIndex}
-          setColorIndex={props.setColorIndex}
-          colorPairs={props.colorPairs}
           scroll={props.scroll}
           setScroll={props.setScroll}
           clickOutsideRef={props.clickOutsideRef}
