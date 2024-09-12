@@ -9,6 +9,7 @@ import {
   TouchEvent as TouchEventReact,
   FormEvent,
   Fragment,
+  ChangeEvent,
 } from 'react'
 import {
   Draggable,
@@ -135,11 +136,8 @@ import { initializeUser } from '../../reducers/authReducer'
 import { initializeUsers } from '../../reducers/usersReducer'
 import { useNavigate } from 'react-router-dom'
 import blobService from './services/blob'
-import { BsFillCameraFill } from 'react-icons/bs'
 import { ELoading } from '../Todo/interfaces'
 import { EDelete } from '../Jokes/interfaces'
-import React from 'react'
-import { save } from '../Jokes/reducers/jokeReducer'
 
 let angle = '90deg'
 let color = 'cyan'
@@ -238,15 +236,15 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   const [activeLayer, setActiveLayer] = useState<number>(0)
   const [hiddenLayers, setHiddenLayers] = useState<Set<number>>(new Set())
   const [highestZIndex, setHighestZIndex] = useState<Record<number, number>>({}) // {0: 144, 1: 146, 2: 24}
-  const [colorIndex, setColorIndex] = useState(0)
+  const [colorIndex, setColorIndex] = useState<number>(0)
   const [focusedBlob, setFocusedBlob] = useState<focusedBlob | null>(null)
-  const [usingKeyboard, setUsingKeyboard] = useState(false)
-  const [markerEnabled, setMarkerEnabled] = useState(true)
-  const [controlsVisible, setControlsVisible] = useState(true)
+  const [usingKeyboard, setUsingKeyboard] = useState<boolean>(false)
+  const [markerEnabled, setMarkerEnabled] = useState<boolean>(true)
+  const [controlsVisible, setControlsVisible] = useState<boolean>(true)
   const [scroll, setScroll] = useState<boolean>(true)
   const [hasBeenMade, setHasBeenMade] = useState<boolean>(false)
-  const [paused, setPaused] = useState(false)
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+  const [paused, setPaused] = useState<boolean>(false)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState<boolean>(false)
 
   // Should be in the same order as colorPairs:
   const colorBlockProps = [
@@ -445,7 +443,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
   const regex = /^[\w\s\u00C0-\u024F\u1E00-\u1EFF-_]*$/
 
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     if (regex.test(value)) {
       setName(value)
@@ -457,7 +455,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
   //draggable[d] highest layer:
   // console.log('highest layer:', Math.max(...draggables[d].map((d) => d.layer)))
 
-  const handleNewNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNewNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     if (regex.test(value)) {
       setNewName(value)
@@ -1581,6 +1579,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
       <></>
     )
   }
+
   return (
     <>
       <section id={`drag-container${d}`} className={`drag-container drag-container${d}`}>
@@ -1665,7 +1664,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
             onClick={takeScreenshot}
             className='reset screenshot tooltip-wrap'
           >
-            <BsFillCameraFill />
+            <FaCamera />
             <span
               className='tooltip left below space'
               data-tooltip={

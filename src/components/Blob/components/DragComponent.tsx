@@ -14,51 +14,16 @@ import { ELanguages } from '../../../interfaces'
 
 interface DragComponentProps {
   layer: number
-  isCurrentLayer: boolean
-  layerAmount: number
-  setActiveLayer: Dispatch<SetStateAction<number>>
-  changeBlobLayer: (draggable: Draggable, layer: number) => void
   className: string
-  paused: boolean
-  setPaused: Dispatch<SetStateAction<boolean>>
-  prefersReducedMotion: boolean
-  highestZIndex: Record<number, number>
-  setHighestZIndex: Dispatch<SetStateAction<Record<number, number>>>
   language: ELanguages
-  dispatch: DispatchReact<any>
   d: number
   items: Draggable[]
-  amountOfBlobs: number
   saveDraggables: () => void
-  getPosition: (target: HTMLElement) => void
   dragWrap: RefObject<HTMLDivElement>
-  dragWrapOuter: RefObject<HTMLDivElement>
   dragUlRef: RefObject<HTMLUListElement>
   selectedvalue0: RefObject<HTMLSpanElement>
-  stopBlobs: RefObject<HTMLButtonElement>
-  disableScrollButton: RefObject<HTMLButtonElement>
-  resetBlobs: RefObject<HTMLButtonElement>
-  exitApp: RefObject<HTMLDivElement>
-  colorBlockYellowLime0: RefObject<HTMLDivElement>
-  colorBlockCyanYellow0: RefObject<HTMLDivElement>
-  colorBlockCyanPink0: RefObject<HTMLDivElement>
-  colorBlockPinkYellow0: RefObject<HTMLDivElement>
-  colorBlockOrange: RefObject<HTMLDivElement>
-  colorBlockRed: RefObject<HTMLDivElement>
-  colorBlockPurple: RefObject<HTMLDivElement>
-  colorBlockBlue: RefObject<HTMLDivElement>
-  makeLarger0: RefObject<HTMLButtonElement>
-  makeSmaller0: RefObject<HTMLButtonElement>
-  makeMore0: RefObject<HTMLButtonElement>
-  deleteBlob0: RefObject<HTMLButtonElement>
-  layerIncrease: RefObject<HTMLButtonElement>
-  layerDecrease: RefObject<HTMLButtonElement>
-  getRandomMinMax: (min: number, max: number) => number
   focusedBlob: focusedBlob | null
   setFocusedBlob: Dispatch<SetStateAction<focusedBlob | null>>
-  scroll: boolean
-  setScroll: Dispatch<SetStateAction<boolean>>
-  clickOutsideRef: RefObject<HTMLDivElement>
   start: (
     e:
       | TouchEvent
