@@ -401,7 +401,7 @@ const DragContainer = (props: DragComponentProps) => {
         document.body.style.overflow = 'hidden'
       }
 
-      //props.getPosition(target as HTMLElement)
+      props.getPosition(target as HTMLElement)
       ;(target as HTMLElement).classList.remove('drag')
       ;(target as HTMLElement).setAttribute('aria-grabbed', 'false')
       // document.removeEventListener('keyup', keyUp)
@@ -709,6 +709,7 @@ const DragContainer = (props: DragComponentProps) => {
         }
         break
     }
+    props.getPosition(target as HTMLElement)
   }
 
   //Remove exit notice's tabindex and text as unnecessary after leaving it
