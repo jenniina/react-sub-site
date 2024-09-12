@@ -29,8 +29,6 @@ export interface RefObject<T> {
 export interface ReducerProps {
   blob: {
     draggables: Draggable[][]
-    dragItemList: Draggable[]
-    highestBlobNumber: number
     hasBeenMadeFromStorage: boolean
     backgroundColor: BackgroundColor[]
   }

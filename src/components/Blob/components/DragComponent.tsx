@@ -28,7 +28,6 @@ interface DragComponentProps {
   dispatch: DispatchReact<any>
   d: number
   items: Draggable[]
-  draggables: Draggable[][]
   amountOfBlobs: number
   saveDraggables: () => void
   getPosition: (target: HTMLElement) => void
