@@ -8,10 +8,8 @@ export interface Props {
   dispatch: Dispatch<any>
 }
 
-const initialState: ReducerProps['blob'] = {
+const initialState: Props['state'] = {
   draggables: [] as Draggable[][],
-  dragItemList: [] as Draggable[],
-  highestBlobNumber: 0,
   hasBeenMadeFromStorage: false,
   backgroundColor: [] as BackgroundColor[],
 }

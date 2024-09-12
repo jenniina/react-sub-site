@@ -35,7 +35,6 @@ interface DragComponentProps {
   dispatch: DispatchReact<any>
   d: number
   items: Draggable[]
-  draggables: Draggable[][]
   amountOfBlobs: number
   saveDraggables: () => void
   getPosition: (target: HTMLElement) => void
@@ -207,6 +206,7 @@ const DragContainer = (props: DragComponentProps) => {
       }
 
       moveElement = true
+      currentFocusedElement = target
 
       initialX = !isTouchDevice()
         ? (e as PointerEvent).clientX
@@ -219,7 +219,7 @@ const DragContainer = (props: DragComponentProps) => {
       target.style.setProperty('z-index', `${Math.max(1, highestZIndexForLayer + 1)}`)
       ;(target as HTMLElement).setAttribute('aria-grabbed', 'true')
       //;(target as HTMLElement).focus() // This breaks dragging once a key is pressed and only clears after clicking away from the target
-      currentFocusedElement = target
+
       document.addEventListener('keyup', keyUp)
       const layer = (target as HTMLElement).style.getPropertyValue('--layer')
       props.setActiveLayer(parseInt(layer) ?? 0)
@@ -357,13 +357,13 @@ const DragContainer = (props: DragComponentProps) => {
         props.makeMore0.current &&
         elementsOverlap(hitbox as HTMLElement, props.makeMore0.current)
       ) {
-        makeBlob(target as HTMLElement)
+        makeBlob(draggable)
       }
       if (
         props.deleteBlob0.current &&
         elementsOverlap(hitbox as HTMLElement, props.deleteBlob0.current)
       ) {
-        removeBlob(target as HTMLElement)
+        removeBlob(draggable)
       }
       props.getPosition(target as HTMLElement)
       ;(target as HTMLElement).classList.remove('drag')
@@ -688,7 +688,7 @@ const DragContainer = (props: DragComponentProps) => {
         //e.stopImmediatePropagation()
         if (reset) {
           reset = false
-          makeBlob(target as HTMLElement)
+          makeBlob(draggable)
           const cooldown = () => {
             reset = true
           }
@@ -701,7 +701,7 @@ const DragContainer = (props: DragComponentProps) => {
         e.preventDefault()
         if (reset) {
           reset = false
-          removeBlob(target as HTMLElement)
+          removeBlob(draggable)
           const cooldown = () => {
             reset = true
           }
@@ -721,50 +721,18 @@ const DragContainer = (props: DragComponentProps) => {
   }
 
   //Clone blob
-  function makeBlob(target: HTMLElement) {
-    // Find the maximum id currently in state
-    const maxId = Math.max(
-      ...props.draggables.flatMap((draggables) =>
-        draggables.map((draggable) =>
-          parseInt(draggable.id.replace('blob', '').split('-')[0], 10)
-        )
-      ),
-      0 // This is a fallback in case the array is empty
-    )
-
-    const newId = maxId + 1
-
-    let parsedValue = parseInt((target as HTMLElement).style.getPropertyValue('--i'), 10)
-    const blobLayer = parseInt(
-      (target as HTMLElement).style.getPropertyValue('--layer'),
-      10
-    )
-
-    const newDraggable: Draggable = {
-      layer: blobLayer,
-      id: `blob${newId}-${props.d}`,
-      number: newId,
-      i: isNaN(parsedValue) ? 7 : parsedValue,
-      x: `${target.style.left}`,
-      y: `${target.style.top}`,
-      z: `${Math.max(1, props.highestZIndex[props.layer] + 1)}`,
-      background: `${
-        target.style.background ?? 'linear-gradient(90deg, cyan, greenyellow)'
-      }`,
-    }
-
+  function makeBlob(draggable: Draggable) {
     props.dispatch({
-      type: 'addDraggable',
-      payload: { d: props.d, draggable: newDraggable },
+      type: 'duplicateDraggable',
+      payload: { d: props.d, draggable },
     })
   }
 
   const [deleteId, setDeleteId] = useState<string>('')
 
   //Remove blob
-  function removeBlob(target: HTMLElement) {
-    const id = target.id
-    setDeleteId(id)
+  function removeBlob(draggable: Draggable) {
+    setDeleteId(draggable.id)
     if (props.selectedvalue0.current)
       props.selectedvalue0.current.textContent = `${ESelectedBlobNone[props.language]}`
   }
@@ -772,8 +740,9 @@ const DragContainer = (props: DragComponentProps) => {
   useEffect(() => {
     if (deleteId) {
       props.dispatch({ type: 'removeDraggable', payload: { d: props.d, id: deleteId } })
+      setDeleteId('')
     }
-  }, [deleteId])
+  }, [deleteId, props.d, props.dispatch])
 
   return (
     <>
@@ -817,7 +786,6 @@ const DragContainer = (props: DragComponentProps) => {
           dragWrap={props.dragWrap}
           exitApp={props.exitApp}
           selectedvalue0={props.selectedvalue0}
-          draggables={props.draggables}
           dragWrapOuter={props.dragWrapOuter}
           stopBlobs={props.stopBlobs}
           disableScrollButton={props.disableScrollButton}

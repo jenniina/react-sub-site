@@ -3,8 +3,6 @@ import { ReducerProps } from '../interfaces'
 
 const initialState: ReducerProps['blob'] = {
   draggables: [] as Draggable[][],
-  dragItemList: [] as Draggable[],
-  highestBlobNumber: 0,
   hasBeenMadeFromStorage: false,
   backgroundColor: ['30', '80', '214'] as BackgroundColor[],
 }
@@ -47,20 +45,64 @@ function blobReducer(
           (draggable) => draggable.id === action.payload.draggable?.id
         )
         if (!draggableExists) {
-          newDraggablesAdd[action.payload.d].push(action.payload.draggable)
+          newDraggablesAdd[action.payload.d] = [
+            ...newDraggablesAdd[action.payload.d],
+            action.payload.draggable,
+          ]
         }
       }
-      return {
+      const newStateAdd = {
         ...state,
         draggables: newDraggablesAdd,
-        highestBlobNumber: state.highestBlobNumber + 1,
       }
+      return newStateAdd
+    case 'duplicateDraggable':
+      const newDraggablesDuplicate = [...state.draggables]
+      if (!newDraggablesDuplicate[action.payload.d]) {
+        newDraggablesDuplicate[action.payload.d] = []
+      }
+
+      if (action.payload.draggable) {
+        // Find the highest ID currently in state
+        const maxId = Math.max(
+          ...newDraggablesDuplicate.flatMap((draggables) =>
+            draggables.map((draggable) =>
+              parseInt(draggable.id.replace('blob', '').split('-')[0], 10)
+            )
+          ),
+          0 // This is a fallback in case the array is empty
+        )
+        const newId = maxId + 1
+        const newDraggable = {
+          ...action.payload.draggable,
+          id: `blob${newId}-${action.payload.d}`,
+          number: newId,
+        }
+
+        const draggableExists = newDraggablesDuplicate[action.payload.d].some(
+          (draggable) => draggable.id === newDraggable.id
+        )
+
+        if (!draggableExists) {
+          newDraggablesDuplicate[action.payload.d] = [
+            ...newDraggablesDuplicate[action.payload.d],
+            newDraggable,
+          ]
+        }
+      }
+
+      const newStateDuplicate = {
+        ...state,
+        draggables: newDraggablesDuplicate,
+      }
+      return newStateDuplicate
     case 'removeDraggable':
       const newDraggables = [...state.draggables]
       newDraggables[action.payload.d] = newDraggables[action.payload.d]?.filter(
         (item) => item.id !== action.payload.id
       )
-      return { ...state, draggables: newDraggables }
+      const newStateRemove = { ...state, draggables: newDraggables }
+      return newStateRemove
     case 'updateDraggable':
       const newDraggablesUpdate = state.draggables.map((subArray) =>
         subArray.map((draggable) =>

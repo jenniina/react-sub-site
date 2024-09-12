@@ -1003,10 +1003,16 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     const colorFirst = colorswitch()
     const colorSecond = colorswitch()
 
+    const maxId = Math.max(
+      ...draggables[d].map((draggable: Draggable) =>
+        parseInt(draggable.id.split('-')[0].replace('blob', ''), 10)
+      )
+    )
+
     const newDraggable: Draggable = {
       layer: activeLayer,
-      id: `blob${state.highestBlobNumber + 1}-${d}`,
-      number: state.highestBlobNumber + 1,
+      id: `blob${maxId + 1}-${d}`,
+      number: maxId + 1,
       i: Math.ceil(getRandomMinMax(6.5, 10)),
       x: `${(windowWidth / 100) * getRandomMinMax(25, 55)}px`,
       y: `${(windowHeight / 100) * getRandomMinMax(2, 15)}px`,
@@ -1751,7 +1757,6 @@ export default function BlobJS({ language }: { language: ELanguages }) {
               dragWrap={dragWrap}
               exitApp={exitApp}
               selectedvalue0={selectedvalue0}
-              draggables={draggables}
               dragWrapOuter={dragWrapOuter}
               stopBlobs={stopBlobs}
               disableScrollButton={disableScrollButton}
