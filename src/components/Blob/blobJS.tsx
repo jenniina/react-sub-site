@@ -21,6 +21,7 @@ import {
 import { BlobContext, Props } from './components/BlobProvider'
 import {
   EAreYouSureYouWantToProceed,
+  EBackToStart,
   EDownload,
   EEdit,
   EError,
@@ -37,6 +38,7 @@ import {
   ESave,
   ESavingSuccessful,
   ESpecialCharactersNotAllowed,
+  EToLastPage,
   ReducerProps,
 } from '../../interfaces'
 import {
@@ -1525,6 +1527,60 @@ export default function BlobJS({ language }: { language: ELanguages }) {
     }, 300)
   }
 
+  const pagination = (dKey: string, current: number, totalPages: number) => {
+    return hasSavedFiles ? (
+      <div className='pagination-controls flex center gap-half margin0auto'>
+        {current !== 1 ? (
+          <>
+            <button
+              onClick={() => handlePageChange(Number(dKey), 1)}
+              disabled={current === 1}
+              className='btn-small pagination-btn'
+            >
+              &laquo;&nbsp;<span className='scr'>{EBackToStart[language]}</span>
+            </button>
+            <button
+              onClick={() => handlePageChange(Number(dKey), Math.max(current - 1, 1))}
+              disabled={current === 1}
+              className='btn-small pagination-btn'
+            >
+              &nbsp;&lsaquo;&nbsp;<span className='scr'>{EPrevious[language]}</span>
+            </button>
+          </>
+        ) : (
+          <></>
+        )}
+        <span>
+          {EPage[language]} {current} / {totalPages}
+        </span>
+        {current !== totalPages ? (
+          <>
+            <button
+              onClick={() =>
+                handlePageChange(Number(dKey), Math.min(current + 1, totalPages))
+              }
+              disabled={current === totalPages}
+              className='btn-small pagination-btn'
+            >
+              <span className='scr'>{ENext[language]}</span>&nbsp;&rsaquo;&nbsp;
+            </button>
+
+            <button
+              onClick={() => handlePageChange(Number(dKey), totalPages)}
+              disabled={current === totalPages}
+              className='btn-small pagination-btn'
+            >
+              <span className='scr'>{EToLastPage[language]}</span>&nbsp;&raquo;
+            </button>
+          </>
+        ) : (
+          <></>
+        )}
+      </div>
+    ) : (
+      <></>
+    )
+  }
   return (
     <>
       <section id={`drag-container${d}`} className={`drag-container drag-container${d}`}>
@@ -2146,6 +2202,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
 
                 return (
                   <Fragment key={`${dKey}:${index}`}>
+                    {pagination(dKey, current, totalPages)}
                     <ul key={`${dKey}+${index}`} className='blob-versions-wrap'>
                       {currentVersions.map((versionName, index) => (
                         <li key={`${versionName}+${index}`} className='blob-version-item'>
@@ -2220,38 +2277,7 @@ export default function BlobJS({ language }: { language: ELanguages }) {
                       ))}
                     </ul>
                     {/* Pagination Controls */}
-                    <div className='pagination-controls flex center gap-half margin0auto'>
-                      {current !== 1 ? (
-                        <button
-                          onClick={() =>
-                            handlePageChange(Number(dKey), Math.max(current - 1, 1))
-                          }
-                          disabled={current === 1}
-                        >
-                          &laquo; {EPrevious[language]}
-                        </button>
-                      ) : (
-                        <></>
-                      )}
-                      <span>
-                        {EPage[language]} {current} / {totalPages}
-                      </span>
-                      {current !== totalPages ? (
-                        <button
-                          onClick={() =>
-                            handlePageChange(
-                              Number(dKey),
-                              Math.min(current + 1, totalPages)
-                            )
-                          }
-                          disabled={current === totalPages}
-                        >
-                          {ENext[language]} &raquo;
-                        </button>
-                      ) : (
-                        <></>
-                      )}
-                    </div>
+                    {pagination(dKey, current, totalPages)}
                   </Fragment>
                 )
               })
