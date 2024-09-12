@@ -9,6 +9,7 @@ import useEnterDirection from '../../hooks/useEnterDirection'
 import { ELanguages, EReset, ETryTappingTheShapes, RefObject } from '../../interfaces'
 import useEventListener from '../../hooks/useEventListener'
 import useSessionStorage from '../../hooks/useStorage'
+import { useOutsideClick } from '../../hooks/useOutsideClick'
 
 type itemProps = {
   i: number
@@ -55,6 +56,20 @@ export default function Hero({
     return location.pathname?.replace(/\/$/, '').split('/').pop() ?? ''
   }, [location])
 
+  const resetButton = useRef() as RefObject<HTMLButtonElement>
+  const ulRef = useRef() as RefObject<HTMLUListElement>
+
+  const handleOutsideClick = useCallback((e: Event) => {
+    document.removeEventListener('touchmove', Draggable.preventDefault)
+    document.body.style.overflowY = 'auto'
+    document.body.style.overflowX = 'hidden'
+  }, [])
+
+  useOutsideClick({
+    ref: ulRef,
+    onOutsideClick: handleOutsideClick,
+  })
+
   //Move items up, down, left or left, depending on the direction they're approached from:
   const movingItem = (e: React.PointerEvent<HTMLElement>) => {
     const target = e.target as HTMLElement
@@ -76,9 +91,6 @@ export default function Hero({
       default:
     }
   }
-
-  const resetButton = useRef() as RefObject<HTMLButtonElement>
-  const ulRef = useRef() as RefObject<HTMLUListElement>
 
   //Make eyes follow the mouse:
   const follow = (e: Event) => {
@@ -300,7 +312,7 @@ export default function Hero({
                     filter: 'url(#svgfilter2)',
                     opacity: 0.8,
                   }
-                : { filter: 'none' }
+                : { WebkitFilter: 'none', filter: 'none' }
             }
           >
             {array.map((item, index: number) => {
@@ -469,30 +481,39 @@ export default function Hero({
                 location == LOCATION.BLOBAPP ||
                 location == LOCATION.DND
               ) {
+                const breakpoint = 500
+                const sizing = 1
+                const sizingSmall = 0.3
                 const style: React.CSSProperties = {
                   position: 'absolute',
-                  top: `calc( ${item.e} * 1vh  * ${item.size / 2.4})`,
-                  left: `calc(2% + ${item.i * item.e} * 1vw )`,
+                  top: `calc(-20% + ${item.e} * 1.2vh * ${item.size / 2})`,
+                  left: `calc(-10% + ${item.i * item.e} * 1.2vw )`,
                   backgroundColor: `${item.color}`,
                   color: `${item.color}`, //for currentColor
                   ['--i' as string]: `${item.i}`,
                   ['--e' as string]: `${item.e}`,
-                  ['--s' as string]:
-                    windowWidth < windowHeight ? `${item.size}vh` : `${item.size}vw`,
                   width:
-                    windowWidth < windowHeight
-                      ? `calc(var(--i) * 1vh)`
-                      : `calc(var(--i) * 1vw)`,
+                    windowWidth < breakpoint && windowWidth < windowHeight
+                      ? `calc(calc(${item.size / 2} + var(--i)) * ${sizingSmall}vh)` //needs to be var(--i) to work with the wheel function
+                      : windowWidth < breakpoint && windowWidth > windowHeight
+                      ? `calc(calc(${item.size / 2} + var(--i)) * ${sizingSmall}vw)`
+                      : windowWidth < windowHeight
+                      ? `calc(calc(${item.size / 2} + var(--i)) * ${sizing}vh)`
+                      : `calc(calc(${item.size / 2} + var(--i)) * ${sizing}vw)`,
                   height:
-                    windowWidth < windowHeight
-                      ? `calc(var(--i) * 1vh)`
-                      : `calc(var(--i) * 1vw)`,
+                    windowWidth < breakpoint && windowWidth < windowHeight
+                      ? `calc(calc(${item.size / 2} + var(--i)) * ${sizingSmall}vh)`
+                      : windowWidth < breakpoint && windowWidth > windowHeight
+                      ? `calc(calc(${item.size / 2} + var(--i)) * ${sizingSmall}vw)`
+                      : windowWidth < windowHeight
+                      ? `calc(calc(${item.size / 2} + var(--i)) * ${sizing}vh)`
+                      : `calc(calc(${item.size / 2} + var(--i)) * ${sizing}vw)`,
                   minWidth: `70px`,
                   minHeight: `70px`,
-                  maxWidth: `160px`,
-                  maxHeight: `160px`,
+                  maxWidth: `200px`,
+                  maxHeight: `200px`,
                   borderRadius: '50%',
-                  opacity: `1`,
+                  opacity: `0.9`,
                   filter: 'blur(30px)',
                 }
 
