@@ -80,11 +80,11 @@ export const createUser = (newUser: IUser) => {
   }
 }
 
-export const removeUser = (id: IUser['_id']) => {
+export const removeUser = (id: IUser['_id'], deleteJokes: boolean) => {
   return async (
     dispatch: (arg0: { payload: IUser['_id']; type: 'users/remove' }) => void
   ) => {
-    const deletedUser = await userService.deleteUser(id)
+    const deletedUser = await userService.deleteUser(id, deleteJokes)
     dispatch(remove(deletedUser))
   }
 }

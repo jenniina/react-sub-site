@@ -79,6 +79,25 @@ export enum EYouWillLoseAllTheDataAssociatedWithIt {
   cs = 'Ztratíte všechna data spojená s účtem. Tuto akci nelze vrátit!',
   fi = 'Menetät kaikki tilin liittyvät tiedot. Tätä toimintoa ei voi peruuttaa!',
 }
+export enum EDoYouWishToRemoveAnyJokesYouveAuthored {
+  en = "Do you wish to remove any jokes you've authored?",
+  es = '¿Desea eliminar alguna broma que haya escrito?',
+  fr = 'Souhaitez-vous supprimer des blagues que vous avez écrites?',
+  de = 'Möchten Sie Witze entfernen, die Sie verfasst haben?',
+  pt = 'Deseja remover alguma piada que tenha escrito?',
+  cs = 'Chcete odstranit nějaké vtipy, které jste napsali?',
+  fi = 'Haluatko poistaa kirjoittamasi vitsit?',
+}
+//Account deleted
+export enum EAccountDeleted {
+  en = 'Account deleted',
+  es = 'Cuenta eliminada',
+  fr = 'Compte supprimé',
+  de = 'Konto gelöscht',
+  pt = 'Conta excluída',
+  cs = 'Účet smazán',
+  fi = 'Tili poistettu',
+}
 export enum EDeleteAccount {
   en = 'Delete account',
   es = 'Borrar cuenta',

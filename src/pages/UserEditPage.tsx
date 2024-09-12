@@ -9,6 +9,8 @@ import {
   EAreYouSureYouWantToDelete,
   EYouWillLoseAllTheDataAssociatedWithIt,
   EDeleteAccount,
+  EDoYouWishToRemoveAnyJokesYouveAuthored,
+  EAccountDeleted,
 } from '../components/UserEdit/interfaces'
 import styles from './css/useredit.module.css'
 import { SelectOption } from '../components/Select/Select'
@@ -21,6 +23,7 @@ import PasswordEdit from '../components/UserEdit/PasswordEdit'
 import UsernameEdit from '../components/UserEdit/UsernameEdit'
 import LanguageEdit from '../components/UserEdit/LanguageEdit'
 import NicknameEdit from '../components/UserEdit/NicknameEdit'
+import { notify } from '../reducers/notificationReducer'
 
 interface Props {
   language: ELanguages
@@ -71,10 +74,19 @@ const UserEditPage = ({
     if (user) {
       if (window.confirm(`${EAreYouSureYouWantToDelete[language]} ${user.username}?`))
         if (window.confirm(`${EYouWillLoseAllTheDataAssociatedWithIt[language]}`))
-          dispatch(removeUser(user._id)).then(() => {
-            dispatch(logout())
-            navigate('/')
-          })
+          if (window.confirm(EDoYouWishToRemoveAnyJokesYouveAuthored[language])) {
+            dispatch(removeUser(user._id, true)).then(() => {
+              dispatch(logout())
+              navigate('/')
+              dispatch(notify(EAccountDeleted[language], false, 8))
+            })
+          } else {
+            dispatch(removeUser(user._id, false)).then(() => {
+              dispatch(logout())
+              navigate('/')
+              dispatch(notify(EAccountDeleted[language], false, 8))
+            })
+          }
     }
   }
 
