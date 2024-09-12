@@ -376,24 +376,6 @@ export default function CustomSelectPage({
             </div>
           </div>
         </section>
-        <section>
-          <div>
-            <h2>Codesandbox</h2>
-            <iframe
-              src='https://codesandbox.io/embed/custom-select-multi-and-single-n5nhwo?fontsize=14&hidenavigation=1&theme=dark'
-              style={{
-                width: '100%',
-                height: '400px',
-                border: '0',
-                borderRadius: '4px',
-                overflow: 'hidden',
-              }}
-              title='Custom Select Multi and Single'
-              allow='accelerometer;camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb;xr-spatial-tracking' // ambient-light-sensor; vr;
-              sandbox='allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts'
-            ></iframe>
-          </div>
-        </section>
       </div>
     </div>
   )
