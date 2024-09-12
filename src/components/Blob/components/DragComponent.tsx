@@ -56,10 +56,6 @@ interface DragComponentProps {
   getRandomMinMax: (min: number, max: number) => number
   focusedBlob: focusedBlob | null
   setFocusedBlob: Dispatch<SetStateAction<focusedBlob | null>>
-  colorIndex: number
-  setColorIndex: Dispatch<SetStateAction<number>>
-  colorPairs: ColorPair[]
-  colorBlockProps: RefObject<HTMLDivElement>[]
   scroll: boolean
   setScroll: Dispatch<SetStateAction<boolean>>
   clickOutsideRef: RefObject<HTMLDivElement>
