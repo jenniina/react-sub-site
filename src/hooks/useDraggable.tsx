@@ -10,6 +10,11 @@ let zIndex0 = -1
 let moveElement = false
 let reset = true
 
+export const preventDefault = (e: Event) => {
+  e.preventDefault()
+  e.stopImmediatePropagation()
+}
+
 //Detect touch device
 export const isTouchDevice = () => {
   try {
@@ -31,8 +36,11 @@ export function start(
     | React.PointerEvent
 ) {
   e.stopPropagation()
-  if (!isTouchDevice()) e.preventDefault()
-
+  e.preventDefault()
+  if (isTouchDevice()) {
+    document.addEventListener('touchmove', preventDefault, { passive: false })
+    document.body.style.overflow = 'hidden'
+  }
   initialX = !isTouchDevice()
     ? (e as PointerEvent).clientX
     : (e as TouchEvent).touches[0].clientX
@@ -60,6 +68,7 @@ export function movement(
     | React.PointerEvent
 ) {
   e.stopPropagation()
+  e.preventDefault()
 
   if (moveElement) {
     //e.preventDefault();
@@ -89,6 +98,11 @@ export const stopMovementCheck = (
     | React.PointerEvent
 ) => {
   e.stopPropagation()
+  if (isTouchDevice()) {
+    document.removeEventListener('touchmove', preventDefault)
+    document.body.style.overflowY = 'auto'
+    document.body.style.overflowX = 'hidden'
+  }
 
   moveElement = false
   ;(e.target as HTMLElement).classList.remove('drag')
@@ -136,7 +150,7 @@ export function zoom(e: WheelEvent) {
 
   scale += e.deltaY * -0.005
   // Restrict scale
-  scale = Math.min(Math.max(2, scale), 10)
+  scale = Math.min(Math.max(2, scale), 20)
   // Apply
   ;(e.target as HTMLElement).style.setProperty('--i', `${scale}`)
   //increase z-index
@@ -204,7 +218,7 @@ export function keyDown(
       if (reset) {
         reset = false
         scale -= 1
-        scale = Math.min(Math.max(2, scale), 10)
+        scale = Math.min(Math.max(2, scale), 20)
         target.style.setProperty('--i', `${scale}`)
 
         const cooldown = () => {
@@ -222,7 +236,7 @@ export function keyDown(
       if (reset) {
         reset = false
         scale += 1
-        scale = Math.min(Math.max(2, scale), 10)
+        scale = Math.min(Math.max(2, scale), 20)
         target.style.setProperty('--i', `${scale}`)
 
         const cooldown = () => {

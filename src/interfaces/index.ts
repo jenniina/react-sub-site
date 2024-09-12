@@ -2158,3 +2158,21 @@ export enum ELastUpdated {
   cs = 'Naposledy aktualizováno',
   fi = 'Viimeksi päivitetty',
 }
+export enum EBackToStart {
+  en = 'Back to start',
+  es = 'Volver al inicio',
+  fr = 'Retour au début',
+  de = 'Zurück zum Anfang',
+  pt = 'Voltar ao início',
+  cs = 'Zpět na začátek',
+  fi = 'Takaisin alkuun',
+}
+export enum EToLastPage {
+  en = 'To last page',
+  es = 'A la última página',
+  fr = 'À la dernière page',
+  de = 'Zur letzten Seite',
+  pt = 'Para a última página',
+  cs = 'Na poslední stránku',
+  fi = 'Viimeiselle sivulle',
+}
