@@ -494,20 +494,20 @@ export default function Hero({
                   ['--e' as string]: `${item.e}`,
                   width:
                     windowWidth < breakpoint && windowWidth < windowHeight
-                      ? `calc(calc(${item.size / 2} + var(--i)) * ${sizingSmall}vh)` //needs to be var(--i) to work with the wheel function
+                      ? `calc(calc(${item.size / 3} + var(--i)) * ${sizingSmall}vh)` //needs to be var(--i) to work with the wheel function
                       : windowWidth < breakpoint && windowWidth > windowHeight
-                      ? `calc(calc(${item.size / 2} + var(--i)) * ${sizingSmall}vw)`
+                      ? `calc(calc(${item.size / 3} + var(--i)) * ${sizingSmall}vw)`
                       : windowWidth < windowHeight
-                      ? `calc(calc(${item.size / 2} + var(--i)) * ${sizing}vh)`
-                      : `calc(calc(${item.size / 2} + var(--i)) * ${sizing}vw)`,
+                      ? `calc(calc(${item.size / 3} + var(--i)) * ${sizing}vh)`
+                      : `calc(calc(${item.size / 3} + var(--i)) * ${sizing}vw)`,
                   height:
                     windowWidth < breakpoint && windowWidth < windowHeight
-                      ? `calc(calc(${item.size / 2} + var(--i)) * ${sizingSmall}vh)`
+                      ? `calc(calc(${item.size / 3} + var(--i)) * ${sizingSmall}vh)`
                       : windowWidth < breakpoint && windowWidth > windowHeight
-                      ? `calc(calc(${item.size / 2} + var(--i)) * ${sizingSmall}vw)`
+                      ? `calc(calc(${item.size / 3} + var(--i)) * ${sizingSmall}vw)`
                       : windowWidth < windowHeight
-                      ? `calc(calc(${item.size / 2} + var(--i)) * ${sizing}vh)`
-                      : `calc(calc(${item.size / 2} + var(--i)) * ${sizing}vw)`,
+                      ? `calc(calc(${item.size / 3} + var(--i)) * ${sizing}vh)`
+                      : `calc(calc(${item.size / 3} + var(--i)) * ${sizing}vw)`,
                   minWidth: `70px`,
                   minHeight: `70px`,
                   maxWidth: `200px`,
