@@ -10,6 +10,7 @@ import { ELanguages, EReset, ETryTappingTheShapes, RefObject } from '../../inter
 import useEventListener from '../../hooks/useEventListener'
 import useSessionStorage from '../../hooks/useStorage'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
+import blob from '../Blob/services/blob'
 
 type itemProps = {
   i: number
@@ -321,10 +322,10 @@ export default function Hero({
 
                 const style: React.CSSProperties = {
                   position: 'absolute',
-                  top: touchDevice
-                    ? `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.3}))`
-                    : `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.9}))`,
-                  left: `calc(1% + calc(${item.i} * 1vw * ${item.e}))`,
+                  top: `clamp(60px, calc(-5vh + calc(1vh * ${item.e} * ${
+                    item.e / 1.5
+                  })), 55vh)`,
+                  left: `clamp(1vw, calc(-5% + calc(${item.i} * 1.3vw * ${item.e})), 90vw)`,
                   width:
                     windowWidth < windowHeight
                       ? `${item.size / dividedBy}vh`
@@ -344,6 +345,8 @@ export default function Hero({
                   height: '100%',
                   minWidth: `20px`,
                   minHeight: `20px`,
+                  maxWidth: `150px`,
+                  maxHeight: `150px`,
                   borderRadius: '3px',
                   opacity: `${item.size > 6 ? `0.7` : `0.${Math.ceil(item.size + 3)}`}`,
                 }
@@ -414,8 +417,10 @@ export default function Hero({
               ) {
                 const style: React.CSSProperties = {
                   position: 'absolute',
-                  top: `calc(-10vh + 1vh * ${item.e * 3} * ${item.size / 6})`,
-                  left: `calc(2% + ${item.i / 1.1} * 1vw * ${item.e})`,
+                  top: `clamp(1vh, calc(-10vh + 1vh * ${item.e * 3} * ${
+                    item.size / 6
+                  }), 55vh)`,
+                  left: `clamp(1vw, calc(-5% + ${item.i} * 1vw * ${item.e}), 95vw)`,
                   backgroundColor: `transparent`,
                   color: `${item.color}`,
                   ['--i' as string]: `${item.i}`,
@@ -484,37 +489,54 @@ export default function Hero({
                 const breakpoint = 500
                 const sizing = 1
                 const sizingSmall = 0.3
+                const div = 3
+                //an array of blob radiuses:
+                const blobRadius = [
+                  '30% 70% 70% 30% / 30% 36% 64% 70%',
+                  '70% 30% 30% 70% / 36% 50% 36% 50%',
+                  '48% 52% 41% 59% / 48% 58% 42% 52%',
+                  '70% 30% 30% 70% / 36% 50% 36% 50%',
+                ]
+                const rotate = Math.floor(useRandomMinMax(65, 175))
+                const number = Math.floor(useRandomMinMax(0.001, 3.999))
                 const style: React.CSSProperties = {
                   position: 'absolute',
-                  top: `calc(-20% + ${item.e} * 1.2vh * ${item.size / 2})`,
-                  left: `calc(-10% + ${item.i * item.e} * 1.2vw )`,
+                  top: `clamp(60px, calc(-20% + ${item.e} * 1.2vh * ${
+                    item.size / 2
+                  }),50vh)`,
+                  left: `clamp(1vw, calc(-10% + ${
+                    item.i * item.e
+                  } * 1.2vw ), calc(100vw - 200px))`,
                   backgroundColor: `${item.color}`,
                   color: `${item.color}`, //for currentColor
                   ['--i' as string]: `${item.i}`,
                   ['--e' as string]: `${item.e}`,
+                  //needs to have var(--i) to work with the wheel function:
                   width:
                     windowWidth < breakpoint && windowWidth < windowHeight
-                      ? `calc(calc(${item.size / 3} + var(--i)) * ${sizingSmall}vh)` //needs to be var(--i) to work with the wheel function
+                      ? `calc(calc(${item.size} / ${div} + var(--i)) * ${sizingSmall}vh)`
                       : windowWidth < breakpoint && windowWidth > windowHeight
-                      ? `calc(calc(${item.size / 3} + var(--i)) * ${sizingSmall}vw)`
+                      ? `calc(calc(${item.size} / ${div} + var(--i)) * ${sizingSmall}vw)`
                       : windowWidth < windowHeight
-                      ? `calc(calc(${item.size / 3} + var(--i)) * ${sizing}vh)`
-                      : `calc(calc(${item.size / 3} + var(--i)) * ${sizing}vw)`,
+                      ? `calc(calc(${item.size} / ${div} + var(--i)) * ${sizing}vh)`
+                      : `calc(calc(${item.size} / ${div} + var(--i)) * ${sizing}vw)`,
+                  //needs to have var(--i) to work with the wheel function:
                   height:
                     windowWidth < breakpoint && windowWidth < windowHeight
-                      ? `calc(calc(${item.size / 3} + var(--i)) * ${sizingSmall}vh)`
+                      ? `calc(calc(${item.size} / ${div} + var(--i)) * ${sizingSmall}vh)`
                       : windowWidth < breakpoint && windowWidth > windowHeight
-                      ? `calc(calc(${item.size / 3} + var(--i)) * ${sizingSmall}vw)`
+                      ? `calc(calc(${item.size} / ${div} + var(--i)) * ${sizingSmall}vw)`
                       : windowWidth < windowHeight
-                      ? `calc(calc(${item.size / 3} + var(--i)) * ${sizing}vh)`
-                      : `calc(calc(${item.size / 3} + var(--i)) * ${sizing}vw)`,
+                      ? `calc(calc(${item.size} / ${div} + var(--i)) * ${sizing}vh)`
+                      : `calc(calc(${item.size} / ${div} + var(--i)) * ${sizing}vw)`,
                   minWidth: `70px`,
                   minHeight: `70px`,
                   maxWidth: `200px`,
                   maxHeight: `200px`,
-                  borderRadius: '50%',
+                  borderRadius: `${blobRadius[number]}`,
+                  transform: 'rotate(' + rotate + 'deg)',
                   opacity: `0.9`,
-                  filter: 'blur(30px)',
+                  filter: 'blur(28px)',
                 }
 
                 return (
@@ -580,12 +602,13 @@ export default function Hero({
                 )
               } else if (location === LOCATION.CONTACT || location === LOCATION.FORM) {
                 // CONTACT  // FORM
+                const mod = 0.65
                 const style: React.CSSProperties = {
                   position: 'absolute',
-                  top: touchDevice
-                    ? `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.3}))`
-                    : `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.9}))`,
-                  left: `calc(1% + calc(${item.i} * 1vw * ${item.e}))`,
+                  top: `clamp(60px, calc(-5vh + calc(1.5vh * ${item.e} * ${
+                    item.e / 1.9
+                  })),55vh)`,
+                  left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})),90vw)`,
                   backgroundColor: `transparent`,
                   color: `${item.color}`,
                   ['--i' as string]: `${item.i}`,
@@ -595,16 +618,16 @@ export default function Hero({
                     windowWidth < windowHeight ? `${item.size}vh` : `${item.size}vw`,
                   width:
                     windowWidth < windowHeight
-                      ? `calc(${item.size - 1} * 0.8vh)`
-                      : `calc(${item.size - 1} * 0.8vw)`,
+                      ? `calc(${item.size} * ${mod}vh)`
+                      : `calc(${item.size} * ${mod}vw)`,
                   height:
                     windowWidth < windowHeight
-                      ? `calc(${item.size - 1} * 0.8vh)`
-                      : `calc(${item.size - 1} * 0.8vw)`,
+                      ? `calc(${item.size} * ${mod}vh)`
+                      : `calc(${item.size} * ${mod}vw)`,
                   minHeight: '40px',
                   minWidth: '40px',
-                  maxHeight: '80px',
-                  maxWidth: '80px',
+                  maxHeight: '100px',
+                  maxWidth: '100px',
                   borderRadius: '50%',
                   opacity: `0.${item.size > 7 ? 8 : Math.ceil(item.size)}`,
                 }
@@ -681,8 +704,10 @@ export default function Hero({
                   ['--border' as string]: border,
                   borderWidth: border,
                   position: 'absolute',
-                  top: `calc(3vh + calc(1vh * ${item.e} * ${item.e / 1.3}))`,
-                  left: `calc(${item.i} * 1vw * ${item.e})`,
+                  top: `clamp(60px, calc(-5vh + calc(1vh * ${item.e} * ${
+                    item.e / 1.3
+                  })), 55vh)`,
+                  left: `clamp(1vw, calc(-5vw + ${item.i} * 1vw * ${item.e}), 90vw)`,
                   width: 0,
                   height: 0,
                   opacity: `0.${item.size > 5 ? 5 : Math.ceil(item.size)}`,
@@ -754,13 +779,13 @@ export default function Hero({
 
             <svg className='filter'>
               <filter id='svgfilter2'>
-                <feGaussianBlur in='SourceGraphic' stdDeviation='8' />
+                <feGaussianBlur in='SourceGraphic' stdDeviation='5' />
                 <feColorMatrix
                   values='
                                 1 0 0 0 0 
                                 0 1 0 0 0 
                                 0 0 1 0 0
-                                0 0 0 33 -12 
+                                0 0 0 37 -14 
                                 '
                 ></feColorMatrix>
               </filter>
