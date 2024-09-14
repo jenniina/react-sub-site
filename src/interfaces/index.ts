@@ -2176,3 +2176,30 @@ export enum EToLastPage {
   cs = 'Na poslední stránku',
   fi = 'Viimeiselle sivulle',
 }
+export enum EShape {
+  en = 'Shape',
+  es = 'Forma',
+  fr = 'Forme',
+  de = 'Form',
+  pt = 'Forma',
+  cs = 'Tvar',
+  fi = 'Muoto',
+}
+export enum EBubble {
+  en = 'Bubble',
+  es = 'Burbuja',
+  fr = 'Bulle',
+  de = 'Blase',
+  pt = 'Bolha',
+  cs = 'Bublina',
+  fi = 'Kupla',
+}
+export enum EEye {
+  en = 'Eye',
+  es = 'Ojo',
+  fr = 'Œil',
+  de = 'Auge',
+  pt = 'Olho',
+  cs = 'Okno',
+  fi = 'Silmä',
+}

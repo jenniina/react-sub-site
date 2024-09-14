@@ -6,7 +6,18 @@ import useRandomMinMax from '../../hooks/useRandomMinMax'
 import * as Draggable from '../../hooks/useDraggable'
 import { useTheme } from '../../hooks/useTheme'
 import useEnterDirection from '../../hooks/useEnterDirection'
-import { ELanguages, EReset, ETryTappingTheShapes, RefObject } from '../../interfaces'
+import {
+  EBlob,
+  EBubble,
+  EEye,
+  EHeroSection,
+  EInteractiveElements,
+  ELanguages,
+  EReset,
+  EShape,
+  ETryTappingTheShapes,
+  RefObject,
+} from '../../interfaces'
 import useEventListener from '../../hooks/useEventListener'
 import useSessionStorage from '../../hooks/useStorage'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
@@ -348,7 +359,7 @@ export default function Hero({
                   maxWidth: `150px`,
                   maxHeight: `150px`,
                   borderRadius: '3px',
-                  opacity: `${item.size > 6 ? `0.7` : `0.${Math.ceil(item.size + 3)}`}`,
+                  opacity: `${item.size > 6 ? `0.8` : `0.${Math.ceil(item.size + 2)}`}`,
                 }
 
                 return (
@@ -403,7 +414,9 @@ export default function Hero({
                         }
                         return (
                           <span key={`${item.i}-${index}`} style={style}>
-                            <span className='scr'>shape {index + 1}</span>
+                            <span className='scr'>
+                              {EShape[language]} {index + 1}
+                            </span>
                           </span>
                         )
                       })}
@@ -476,7 +489,9 @@ export default function Hero({
                     }}
                   >
                     <span>
-                      <span className='scr'>bubble {index + 1}</span>
+                      <span className='scr'>
+                        {EBubble[language]} {index + 1}
+                      </span>
                     </span>
                   </li>
                 )
@@ -596,13 +611,15 @@ export default function Hero({
                     }}
                   >
                     <span>
-                      <span className='scr'>blob {index + 1}</span>
+                      <span className='scr'>
+                        {EBlob[language]} {index + 1}
+                      </span>
                     </span>
                   </li>
                 )
               } else if (location === LOCATION.CONTACT || location === LOCATION.FORM) {
                 // CONTACT  // FORM
-                const mod = 0.65
+                const mod = useRandomMinMax(0.4, 0.7)
                 const style: React.CSSProperties = {
                   position: 'absolute',
                   top: `clamp(60px, calc(-5vh + calc(1.5vh * ${item.e} * ${
@@ -684,7 +701,9 @@ export default function Hero({
                   >
                     <div style={styleInner} className={`inner ${styles.inner}`}>
                       <span className='else-eye'>
-                        <span className='scr'>eye {index + 1}</span>
+                        <span className='scr'>
+                          {EEye[language]} {index + 1}
+                        </span>
                       </span>
                     </div>
                   </li>
@@ -768,7 +787,9 @@ export default function Hero({
                       }
                       return (
                         <span key={`${item.i}-${index}`} style={style}>
-                          <span className='scr'>shape {index + 1}</span>
+                          <span className='scr'>
+                            {EShape[language]} {index + 1}
+                          </span>
                         </span>
                       )
                     })}
@@ -809,7 +830,7 @@ export default function Hero({
       </h1>
       <p>{text}</p>
       <span id='description' className='scr'>
-        Hero section with interactive elements
+        {EHeroSection[language]}: {EInteractiveElements[language]}
       </span>
       <ItemComponent array={setupItems} location={page} />
       <div

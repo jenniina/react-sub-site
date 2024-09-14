@@ -23,6 +23,7 @@ import {
   EAppearanceNeedsWork,
   EClarification,
   EColorPicker,
+  EDoYouLikeMyCustomSelects,
   ENoneOfTheseAreRequired,
   ENotReally,
   EOrConstructiveFeedback,
@@ -164,7 +165,7 @@ export function ExtrasForm({
           </label>
         </div>
         <div className={styles.subfield}>
-          <label htmlFor='multiple-hide'>Do you like my custom selects?</label>
+          <label htmlFor='multiple-hide'>{EDoYouLikeMyCustomSelects[language]}</label>
           <span style={{ position: 'relative', zIndex: '2', width: '100%' }}>
             <Select
               language={language}
