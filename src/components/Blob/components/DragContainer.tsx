@@ -136,6 +136,7 @@ import { ELoading } from '../../Todo/interfaces'
 import { EDelete } from '../../Jokes/interfaces'
 import ColorBlocks from './ColorBlocks'
 import Sliders from './Sliders'
+import { c } from 'vite/dist/node/types.d-aGj9QkWt'
 
 // Should be in the same order as colorBlockProps
 const colorPairs: ColorPair[] = [
@@ -150,13 +151,13 @@ const colorPairs: ColorPair[] = [
 ]
 
 const colorPairs2: ColorPair[] = [
-  { color1: 'indianred', color2: 'palevioletred' }, //colorBlockTomato
+  { color1: 'indianred', color2: 'palevioletred' }, //colorBlockReddish
   { color1: 'sienna', color2: 'peru' }, //colorBlockBrown
   { color1: 'chocolate', color2: 'burlywood' }, //colorBlockTan
   { color1: 'darkkhaki', color2: 'moccasin' }, //colorBlockKhaki
-  { color1: 'slateblue', color2: 'mediumpurple' }, //colorBlockPurplish
-  { color1: 'royalblue', color2: 'dodgerblue' }, //colorBlockBluish
   { color1: 'lightslategray', color2: 'lightsteelblue' }, //colorBlockGray
+  { color1: 'slateblue', color2: 'mediumpurple' }, //colorBlockPurplish
+  { color1: 'royalblue', color2: 'turquoise' }, //colorBlockBluish
   { color1: 'cadetblue', color2: 'mediumaquamarine' }, //colorBlockGreenish
 ]
 
@@ -261,13 +262,13 @@ export default function DragContainer({
   const colorBlockCyanPink = useRef() as RefObject<HTMLDivElement>
   const colorBlockPinkYellow = useRef() as RefObject<HTMLDivElement>
 
-  const colorBlockTomato = useRef() as RefObject<HTMLDivElement>
+  const colorBlockReddish = useRef() as RefObject<HTMLDivElement>
   const colorBlockBrown = useRef() as RefObject<HTMLDivElement>
   const colorBlockKhaki = useRef() as RefObject<HTMLDivElement>
   const colorBlockBluish = useRef() as RefObject<HTMLDivElement>
+  const colorBlockGray = useRef() as RefObject<HTMLDivElement>
   const colorBlockPurplish = useRef() as RefObject<HTMLDivElement>
   const colorBlockGreenish = useRef() as RefObject<HTMLDivElement>
-  const colorBlockGray = useRef() as RefObject<HTMLDivElement>
   const colorBlockTan = useRef() as RefObject<HTMLDivElement>
 
   // Create a mapping between the ref objects and their names
@@ -283,13 +284,13 @@ export default function DragContainer({
   ])
 
   const refNameMapping2 = new Map<RefObject<HTMLDivElement>, string>([
-    [colorBlockTomato, 'colorBlockTomato'],
+    [colorBlockReddish, 'colorBlockReddish'],
     [colorBlockBrown, 'colorBlockBrown'],
     [colorBlockTan, 'colorBlockTan'],
     [colorBlockKhaki, 'colorBlockKhaki'],
+    [colorBlockGray, 'colorBlockGray'],
     [colorBlockPurplish, 'colorBlockPurplish'],
     [colorBlockBluish, 'colorBlockBluish'],
-    [colorBlockGray, 'colorBlockGray'],
     [colorBlockGreenish, 'colorBlockGreenish'],
   ])
 
@@ -314,13 +315,13 @@ export default function DragContainer({
     colorBlockCyanPink,
   ]
   const colorBlockProps2 = [
-    colorBlockTomato,
+    colorBlockReddish,
     colorBlockBrown,
     colorBlockTan,
     colorBlockKhaki,
+    colorBlockGray,
     colorBlockPurplish,
     colorBlockBluish,
-    colorBlockGray,
     colorBlockGreenish,
   ]
 
@@ -1060,7 +1061,7 @@ export default function DragContainer({
           color = 'hotpink'
           break
         case 18:
-          color = 'saddlebrown'
+          color = 'wheat'
           break
         case 19:
           color = 'sandybrown'
@@ -1109,6 +1110,18 @@ export default function DragContainer({
           break
         case 34:
           color = 'palevioletred'
+          break
+        case 35:
+          color = 'plum'
+          break
+        case 36:
+          color = 'palegreen'
+          break
+        case 37:
+          color = 'mediumaquamarine'
+          break
+        case 38:
+          color = 'lightsteelblue'
           break
         default:
           color = 'cyan'
@@ -1172,7 +1185,7 @@ export default function DragContainer({
     if (!scroll) {
       document.addEventListener('touchmove', preventDefault, { passive: false })
       document.body.style.overflow = 'hidden'
-    } else {
+    } else if (scroll) {
       document.body.style.overflowY = 'auto'
       document.body.style.overflowX = 'hidden'
       document.removeEventListener('touchmove', preventDefault)
@@ -1337,7 +1350,7 @@ export default function DragContainer({
   }, [windowWidth, windowHeight, scroll])
 
   const widthResize = () => {
-    const n = [19, 39, 59, 79]
+    const n = [17, 37, 57, 77]
     //place these items every time the window is resized
     if (layerIncrease.current && dragWrap.current) place(layerIncrease.current, 57, 93.5)
     if (layerDecrease.current && dragWrap.current)
@@ -1400,31 +1413,31 @@ export default function DragContainer({
         77
       )
 
-    if (colorBlockTomato.current && dragWrap.current)
-      place(colorBlockTomato.current, 0, n[0])
+    if (colorBlockReddish.current && dragWrap.current)
+      place(colorBlockReddish.current, 0, n[0])
     if (colorBlockBrown.current && dragWrap.current)
       place(colorBlockBrown.current, 0, n[1])
     if (colorBlockTan.current && dragWrap.current) place(colorBlockTan.current, 0, n[2])
     if (colorBlockKhaki.current && dragWrap.current)
       place(colorBlockKhaki.current, 0, n[3])
+    if (colorBlockGray.current && dragWrap.current)
+      place(
+        colorBlockGray.current,
+        100 - (colorBlockGray.current.offsetWidth / dragWrap.current?.offsetWidth) * 100,
+        n[0]
+      )
     if (colorBlockPurplish.current && dragWrap.current)
       place(
         colorBlockPurplish.current,
         100 -
           (colorBlockPurplish.current.offsetWidth / dragWrap.current?.offsetWidth) * 100,
-        n[0]
+        n[1]
       )
     if (colorBlockBluish.current && dragWrap.current)
       place(
         colorBlockBluish.current,
         100 -
           (colorBlockBluish.current.offsetWidth / dragWrap.current?.offsetWidth) * 100,
-        n[1]
-      )
-    if (colorBlockGray.current && dragWrap.current)
-      place(
-        colorBlockGray.current,
-        100 - (colorBlockGray.current.offsetWidth / dragWrap.current?.offsetWidth) * 100,
         n[2]
       )
     if (colorBlockGreenish.current && dragWrap.current)

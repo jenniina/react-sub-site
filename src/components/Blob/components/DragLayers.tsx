@@ -168,7 +168,7 @@ const DragLayers = (props: DragLayerProps) => {
   })
 
   useEffect(() => {
-    if (isTouchDevice() && !currentFocusedElement && !props.scroll) {
+    if (isTouchDevice() && !currentFocusedElement && props.scroll) {
       document.body.style.overflowY = 'auto'
       document.body.style.overflowX = 'hidden'
       document.removeEventListener('keyup', keyUp)
@@ -296,7 +296,7 @@ const DragLayers = (props: DragLayerProps) => {
         document.removeEventListener('touchmove', preventDefault)
         document.body.style.overflowY = 'auto'
         document.body.style.overflowX = 'hidden'
-      } else if (!props.scroll) {
+      } else if (isTouchDevice() && !props.scroll) {
         document.body.style.overflow = 'hidden'
       }
 
@@ -386,7 +386,7 @@ const DragLayers = (props: DragLayerProps) => {
         document.removeEventListener('touchmove', preventDefault)
         document.body.style.overflowY = 'auto'
         document.body.style.overflowX = 'hidden'
-      } else if (!props.scroll) {
+      } else if (isTouchDevice() && !props.scroll) {
         document.body.style.overflow = 'hidden'
       }
 

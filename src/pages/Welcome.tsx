@@ -14,6 +14,7 @@ import { LuArrowRightToLine } from 'react-icons/lu'
 
 import {
   EAbout,
+  EAddedAnotherInstanceOfTheBlobArtApp,
   EAddedPagination,
   EBlobs,
   EButton,
@@ -28,6 +29,7 @@ import {
   EHeroSection,
   ELanguageTitle,
   ELanguages,
+  EOlderNews,
   EPortfolio,
   EQuiz,
   EQuizApp,
@@ -86,6 +88,7 @@ import {
   EToggleControlVisibility,
 } from '../interfaces/blobs'
 import { EAddAColor } from '../interfaces/draganddrop'
+import Accordion from '../components/Accordion/Accordion'
 
 export default function Home({
   heading,
@@ -173,6 +176,13 @@ export default function Home({
                     <li>
                       <strong>{ESeptember[language]}</strong>
                       <ul>
+                        <li>
+                          <Link to='/portfolio/blob'>
+                            <TbBlob />
+                            {EBlobs[language]}:
+                          </Link>
+                          <i>{EAddedAnotherInstanceOfTheBlobArtApp[language]} </i>
+                        </li>
                         <li>
                           <Link to='/portfolio/blob'>
                             <TbBlob />
@@ -321,41 +331,49 @@ export default function Home({
                     </li>
                   </ul>
                 </li>
-                <li>
-                  <strong>2023</strong>
-                  <ul>
-                    <li>
-                      <strong>{EDecember[language]}</strong>
-                      <ul>
-                        <li>
-                          <Link to='/portfolio/jokes'>
-                            <GiAbstract019 />
-                            {ETheComediansCompanion[language]}:
-                          </Link>{' '}
-                          <i>
-                            {EAddedNewFeatures[language]}. {EOptimizing[language]}
-                          </i>
-                        </li>
-                      </ul>
-                    </li>{' '}
-                    <li>
-                      <strong>{EOctober[language]}</strong>
-                      <ul>
-                        <li>
-                          <Link to='/portfolio/quiz'>
-                            <MdOutlineQuiz />
-                            {EQuiz[language]}:
-                          </Link>{' '}
-                          <i>
-                            {ENewPortfolioItem[language]}. {ETestYourKnowledge[language]};{' '}
-                            {EQuizAppIntro[language]}
-                          </i>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </li>
               </ul>
+              <Accordion
+                language={language}
+                text={EOlderNews[language]}
+                className={`${styles.oldernews} oldernews`}
+              >
+                <ul className={`${styles.extras}`}>
+                  <li>
+                    <strong>2023</strong>
+                    <ul>
+                      <li>
+                        <strong>{EDecember[language]}</strong>
+                        <ul>
+                          <li>
+                            <Link to='/portfolio/jokes'>
+                              <GiAbstract019 />
+                              {ETheComediansCompanion[language]}:
+                            </Link>{' '}
+                            <i>
+                              {EAddedNewFeatures[language]}. {EOptimizing[language]}
+                            </i>
+                          </li>
+                        </ul>
+                      </li>{' '}
+                      <li>
+                        <strong>{EOctober[language]}</strong>
+                        <ul>
+                          <li>
+                            <Link to='/portfolio/quiz'>
+                              <MdOutlineQuiz />
+                              {EQuiz[language]}:
+                            </Link>{' '}
+                            <i>
+                              {ENewPortfolioItem[language]}.{' '}
+                              {ETestYourKnowledge[language]}; {EQuizAppIntro[language]}
+                            </i>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </Accordion>
             </div>
           </div>
         </section>
