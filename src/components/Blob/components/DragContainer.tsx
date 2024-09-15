@@ -665,7 +665,20 @@ export default function DragContainer({
               type: 'setBackgroundColor',
               payload: { d, backgroundColor: response.backgroundColor },
             })
+            console.log(response.backgroundColor)
             saveBackground(response.backgroundColor)
+            setSliderLightVal(response.backgroundColor[0])
+            setSliderSatVal(response.backgroundColor[1])
+            setSliderHueVal(response.backgroundColor[2])
+            setDragWrapOuterLightness({
+              [`--lightness${d}` as string]: `${response.backgroundColor[0]}`,
+            })
+            setDragWrapOuterSaturation({
+              [`--saturation${d}` as string]: `${response.backgroundColor[1]}`,
+            })
+            setDragWrapOuterHue({
+              [`--hue${d}` as string]: `${response.backgroundColor[2]}`,
+            })
           })
           .then(() => {
             setName(newVersion)

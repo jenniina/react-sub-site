@@ -29,6 +29,7 @@ import {
   EHeroSection,
   ELanguageTitle,
   ELanguages,
+  ENews,
   EOlderNews,
   EPortfolio,
   EQuiz,
@@ -166,9 +167,7 @@ export default function Home({
             </ul>
 
             <div className={`${styles.newest}`}>
-              <h2 className={`${styles.subheading}`}>
-                {ENewest[language]} / {EEdited[language]}
-              </h2>
+              <h2 className={`${styles.subheading}`}>{ENews[language]}</h2>
               <ul className={`${styles.extras}`}>
                 <li>
                   <strong>2024</strong>

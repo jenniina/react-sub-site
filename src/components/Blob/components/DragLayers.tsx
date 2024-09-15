@@ -326,6 +326,7 @@ const DragLayers = (props: DragLayerProps) => {
           ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
         }
       })
+
       if (
         props.makeLarger0.current &&
         elementsOverlap(hitbox as HTMLElement, props.makeLarger0.current)
@@ -613,7 +614,7 @@ const DragLayers = (props: DragLayerProps) => {
         e.preventDefault()
         if ((target as HTMLElement).closest(`.drag-container${props.d}`)) {
           props.setColorIndex((prevColorIndex) => {
-            const nextColorIndex = (prevColorIndex + 1) % props.colorPairs.length
+            const nextColorIndex = (prevColorIndex + 1) % props.colorPairs[props.d].length
             return nextColorIndex // Return the new color index
           })
         }

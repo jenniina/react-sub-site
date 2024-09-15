@@ -2221,3 +2221,12 @@ export enum EAddedAnotherInstanceOfTheBlobArtApp {
   cs = 'Přidána další instance aplikace Blob Art',
   fi = 'Lisätty toinen instanssi Blob Art -sovelluksesta',
 }
+export enum ENews {
+  en = 'News',
+  es = 'Noticias',
+  fr = 'Actualités',
+  de = 'Nachrichten',
+  pt = 'Notícias',
+  cs = 'Zprávy',
+  fi = 'Uutiset',
+}
