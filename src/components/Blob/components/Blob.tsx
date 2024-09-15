@@ -116,7 +116,7 @@ const Blob = ({
           selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
       }}
       key={index}
-      className='dragzone'
+      className='dragzone animation'
       id={item.id}
       aria-grabbed={false}
       role={'option'}
@@ -125,6 +125,16 @@ const Blob = ({
     >
       <div
         className='draggable-overlay'
+        style={
+          Number(item.i) < 9
+            ? { width: 'calc(var(--i) * 6.8px)', height: 'calc(var(--i) * 6.8px)' }
+            : Number(item.i) < 15
+            ? { width: 'calc(var(--i) * 8.8px)', height: 'calc(var(--i) * 8.8px)' }
+            : {
+                width: 'calc(var(--i) * 10px)',
+                height: 'calc(var(--i) * 10px)',
+              }
+        }
         onMouseDown={(e) => {
           e.stopPropagation()
           const liElement = e.currentTarget.parentElement as HTMLElement

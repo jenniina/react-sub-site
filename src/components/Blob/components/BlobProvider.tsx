@@ -10,8 +10,7 @@ export interface Props {
 
 const initialState: Props['state'] = {
   draggables: [] as Draggable[][],
-  hasBeenMadeFromStorage: false,
-  backgroundColor: [] as BackgroundColor[],
+  backgroundColor: [] as BackgroundColor[][],
 }
 
 export const BlobContext = createContext<Props | undefined>(undefined)

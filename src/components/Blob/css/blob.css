@@ -1,11 +1,30 @@
+.blob.page .inner-wrap {
+  gap: 3rem;
+}
+
 svg.filter {
   height: 0;
   width: 0;
 }
-#drag-container0 .drag-wrap {
+.drag-container .drag-wrap {
   background-color: transparent;
 }
-/* #drag-container0 .drag-wrap .drag-container0-layer {
+.drag-container .blob-title-wrap {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+.drag-container .blob-title-wrap > * {
+  flex: 0 0 max-content;
+  max-width: 600px;
+  text-align: center;
+}
+.drag-container .blob-title-wrap > h2 {
+  margin-top: 0.5em;
+}
+/* .drag-container .drag-wrap .drag-container0-layer {
   -webkit-filter: url(#svgfilter);
   filter: url(#svgfilter);
   background-color: transparent;
@@ -16,24 +35,33 @@ svg.filter {
   height: 100%;
   pointer-events: none;
 } */
-/* #drag-container0 .drag-wrap .drag-container0-layer > * {
+/* .drag-container .drag-wrap .drag-container0-layer > * {
   pointer-events: auto;
 } */
-#drag-container0 {
+.drag-container {
   position: relative;
 }
-#drag-container0 .drag-wrap-outer {
-  --hue: 214;
-  --saturation: 80;
-  --lightness: 30;
+.drag-container #drag-wrap-outer0 {
+  --hue0: 214;
+  --saturation0: 80;
+  --lightness0: 30;
   background-color: hsl(
-    calc(var(--hue)),
-    calc(var(--saturation) * 1%),
-    calc(var(--lightness) * 1%)
+    calc(var(--hue0)),
+    calc(var(--saturation0) * 1%),
+    calc(var(--lightness0) * 1%)
   );
 }
-
-#drag-container0 .dragzone::after {
+.drag-container #drag-wrap-outer1 {
+  --hue1: 214;
+  --saturation1: 80;
+  --lightness1: 30;
+  background-color: hsl(
+    calc(var(--hue1)),
+    calc(var(--saturation1) * 1%),
+    calc(var(--lightness1) * 1%)
+  );
+}
+.drag-container .dragzone::after {
   content: '';
   position: absolute;
   background-color: inherit;
@@ -46,9 +74,9 @@ svg.filter {
   z-index: -1;
 }
 
-#drag-container0 .dragzone {
-  -webkit-filter: blur(34px);
-  filter: blur(34px);
+.drag-container .dragzone {
+  -webkit-filter: blur(33px);
+  filter: blur(33px);
   min-height: 72px;
   min-width: 72px;
   max-height: 300px;
@@ -56,7 +84,7 @@ svg.filter {
   height: calc(var(--i) * 10px);
   width: calc(var(--i) * 10px);
 }
-#drag-container0 .colorblock {
+.drag-container .colorblock {
   -webkit-box-shadow: -4px 4px 20px 0 hsla(0, 0%, 0%, 0.2),
     -2px 2px 10px -6px hsla(0, 0%, 0%, 0.8), -2px 2px 4px -4px hsla(0, 0%, 0%, 0.8);
   -o-box-shadow: -4px 4px 20px 0 hsla(0, 0%, 0%, 0.2),
@@ -68,21 +96,21 @@ svg.filter {
   box-shadow: -4px 4px 20px 0 hsla(0, 0%, 0%, 0.2),
     -2px 2px 10px -6px hsla(0, 0%, 0%, 0.8), -2px 2px 4px -4px hsla(0, 0%, 0%, 0.8);
 }
-#drag-container0 .make-larger,
-#drag-container0 .make-smaller,
-#drag-container0 .make-more,
-#drag-container0 .delete-blob,
-#drag-container0 .layer-adjust {
+.drag-container .make-larger,
+.drag-container .make-smaller,
+.drag-container .make-more,
+.drag-container .delete-blob,
+.drag-container .layer-adjust {
   background-color: lightgray;
   cursor: help;
   z-index: 2;
 }
 
-#drag-container0 .make-random {
+.drag-container .make-random {
   cursor: pointer;
   z-index: 2;
 }
-#drag-container0 .make-larger {
+.drag-container .make-larger {
   -webkit-box-shadow: inset 0.1rem -0.1rem 0.4rem -0.2rem rgba(0, 0, 0, 0.4),
     inset 0.1rem -0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
   -o-box-shadow: inset 0.1rem -0.1rem 0.4rem -0.2rem rgba(0, 0, 0, 0.4),
@@ -95,11 +123,11 @@ svg.filter {
     inset 0.1rem -0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
 }
 
-#drag-container0 .delete-blob,
-#drag-container0 .layer-buttons button {
+.drag-container .delete-blob,
+.drag-container .layer-buttons button {
   z-index: 2;
 }
-#drag-container0 .layer-buttons .layer-btn-wrap {
+.drag-container .layer-buttons .layer-btn-wrap {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
@@ -109,20 +137,20 @@ svg.filter {
   padding: 0.8rem 0 0;
 }
 @media (min-width: 350px) {
-  #drag-container0 .layer-buttons .layer-btn-wrap {
+  .drag-container .layer-buttons .layer-btn-wrap {
     max-width: 6rem;
   }
 }
 @media (min-width: 600px) {
-  #drag-container0 .layer-buttons {
+  .drag-container .layer-buttons {
     gap: 0.3rem;
   }
-  #drag-container0 .layer-buttons .layer-btn-wrap {
+  .drag-container .layer-buttons .layer-btn-wrap {
     max-width: 21rem;
   }
 }
-#drag-container0 .make-smaller,
-#drag-container0 button.layer-adjust {
+.drag-container .make-smaller,
+.drag-container button.layer-adjust {
   -webkit-box-shadow: inset 0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
     inset 0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
   -o-box-shadow: inset 0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
@@ -135,7 +163,7 @@ svg.filter {
     inset 0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
   z-index: 2;
 }
-#drag-container0 .make-more {
+.drag-container .make-more {
   -webkit-box-shadow: inset -0.1rem -0.1rem 0.4rem -0.2rem rgba(0, 0, 0, 0.4),
     inset -0.1rem -0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
   -o-box-shadow: inset -0.1rem -0.1rem 0.4rem -0.2rem rgba(0, 0, 0, 0.4),
@@ -147,7 +175,7 @@ svg.filter {
   box-shadow: inset -0.1rem -0.1rem 0.4rem -0.2rem rgba(0, 0, 0, 0.4),
     inset -0.1rem -0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
 }
-#drag-container0 .drag-slider-wrap {
+.drag-container .drag-slider-wrap {
   -ms-flex-preferred-size: 100%;
   flex-basis: 100%;
   display: -webkit-box;
@@ -165,8 +193,8 @@ svg.filter {
   align-items: center;
   gap: 0.5rem 2%;
 }
-#drag-container0 .drag-slider-wrap > label,
-#drag-container0 .drag-slider-wrap > input {
+.drag-container .drag-slider-wrap > label,
+.drag-container .drag-slider-wrap > input {
   max-width: 68vw;
   flex: 1 0 calc(90% - 4em);
   text-align: center;
@@ -194,32 +222,32 @@ svg.filter {
 }
 
 @media (min-width: 500px) {
-  #drag-container0 .drag-slider-wrap {
+  .drag-container .drag-slider-wrap {
     margin: 0;
   }
-  #drag-container0 .drag-slider-wrap > label {
+  .drag-container .drag-slider-wrap > label {
     flex: 1 0 100%;
     max-width: 100%;
   }
-  #drag-container0 .drag-slider-wrap > input,
-  #drag-container0 .drag-slider-wrap > button {
+  .drag-container .drag-slider-wrap > input,
+  .drag-container .drag-slider-wrap > button {
     flex: 1 1 calc(45% - 4em);
   }
 }
 @media (min-width: 800px) {
-  .portfolio.page #drag-container0 {
+  .portfolio.page .drag-container {
     width: calc(96vw - var(--scrollbar_width));
     max-width: calc(96vw - var(--scrollbar_width));
     /* margin-left: calc(50% - 50vw + var(--scrollbar_width) / 2 + 2vw); */
   }
-  #drag-container0 .drag-slider-wrap {
+  .drag-container .drag-slider-wrap {
     flex: 1 1 28%;
     text-align: center;
     align-self: flex-end;
     margin-bottom: 1em;
   }
-  #drag-container0 .drag-slider-wrap > input,
-  #drag-container0 .drag-slider-wrap > button {
+  .drag-container .drag-slider-wrap > input,
+  .drag-container .drag-slider-wrap > button {
     flex: 1 0 100%;
   }
 } /* END MEDIA */
@@ -251,7 +279,7 @@ svg.filter {
 .drag-slider:hover {
   opacity: 1;
 }
-#drag-container0 .drag-slider:focus {
+.drag-container .drag-slider:focus {
   border-radius: var(--size);
   outline: dashed 2px currentColor;
   outline-offset: 0;
@@ -320,8 +348,7 @@ svg.filter {
   justify-content: space-between;
   margin: 0;
 }
-#drag-container0,
-#drag-container1 {
+.drag-container {
   width: calc(100vw - var(--scrollbar_width) - 4px);
   max-width: calc(100vw - var(--scrollbar_width) - 4px);
   /* margin-left: calc(50% - 50vw + var(--scrollbar_width) / 2); */
@@ -387,7 +414,7 @@ svg.filter {
     margin-bottom: 0.5em;
     justify-content: space-between;
   }
-  #drag-container0 .button-container button {
+  .drag-container .button-container button {
     /* width: clamp(160px, calc(20% - calc(var(--space) * 4)), 100%);
     min-width: clamp(100px, calc(20% - calc(var(--space) * 4)), 160px); */
     flex: 1 0 auto;
@@ -395,7 +422,7 @@ svg.filter {
     padding: 0.5em 0.3em;
     word-wrap: break-word;
   }
-  #drag-container0 .button-container button.screenshot {
+  .drag-container .button-container button.screenshot {
     padding: 0.3rem 0.5rem 0.2rem;
     flex: 0 0 auto;
   }
@@ -461,13 +488,13 @@ svg.filter {
   margin: 0;
   padding: 0;
 }
-#drag-container1 .drag-wrap .drag-container0-layer {
+/* #drag-container1 .drag-wrap .drag-container0-layer {
   -webkit-filter: contrast(50);
   -moz-filter: contrast(50);
   -o-filter: contrast(50);
   -ms-filter: contrast(50);
   filter: contrast(50);
-}
+} */
 .drag-wrap ul {
   list-style: none;
   overflow: hidden;
@@ -487,6 +514,10 @@ svg.filter {
   position: absolute;
   padding: 0;
   margin: 0;
+  border: 0;
+  background-color: white;
+}
+.drag-container .dragzone.animation {
   -webkit-animation: sway 3s ease-in-out infinite;
   -moz-animation: sway 3s ease-in-out infinite;
   -o-animation: sway 3s ease-in-out infinite;
@@ -502,16 +533,14 @@ svg.filter {
   -o-animation-play-state: running;
   -ms-animation-play-state: running;
   animation-play-state: running;
-  border: 0;
-  background-color: black;
 }
-#drag-container0 .paused .dragzone {
+/* .drag-container .paused .dragzone.animation {
   -webkit-animation-play-state: paused;
   -moz-animation-play-state: paused;
   -o-animation-play-state: paused;
   -ms-animation-play-state: paused;
   animation-play-state: paused;
-}
+} */
 .drag-container .dragzone .draggable-overlay {
   cursor: -webkit-grab;
   cursor: grab;
@@ -521,31 +550,27 @@ svg.filter {
   cursor: grabbing;
 }
 #drag-container1 .dragzone {
-  -webkit-filter: blur(16px);
-  filter: blur(16px);
+  -webkit-filter: blur(40px);
+  filter: blur(40px);
+  min-width: 74px;
+  min-height: 74px;
 }
 .dragzone.drag {
-  outline: white solid 10px;
-  outline-offset: -9px;
+  outline: white solid 3px;
+  outline-offset: -3px;
 }
 .dragzone span {
   color: white;
 }
 
-#drag-container1 .dragzone:hover,
-#drag-container1 .dragzone.drag,
-#drag-container1 .dragzone:focus,
-body.dark-mode .site #drag-container1 .dragzone:focus {
-  outline: purple 5px solid;
-  outline-offset: -2px;
+.drag-container .dragzone:hover,
+.drag-container .dragzone.drag,
+.drag-container .dragzone:focus,
+body.dark-mode .site .drag-container .dragzone:focus {
+  outline: white calc(var(--i) * 0.6px) solid;
+  outline-offset: calc(var(--i) * -0.6px);
 }
 
-#drag-container1 .dragzone.color-lime:hover,
-#drag-container1 .dragzone.color-lime:focus,
-#drag-container1 .dragzone.drag.color-lime:focus {
-  outline: blue 3px solid;
-  outline-offset: -2px;
-}
 .dragzone:hover {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
@@ -558,15 +583,14 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: calc(var(--i) * 9px);
-  height: calc(var(--i) * 9px);
   transform: translate(-50%, -50%);
+  border-radius: 50%;
   background: rgba(0, 0, 0, 0);
   pointer-events: auto;
 }
 
-#drag-container0 .make-larger,
-#drag-container0 .make-smaller {
+.drag-container .make-larger,
+.drag-container .make-smaller {
   position: absolute;
   text-align: center;
   font-weight: bold;
@@ -574,8 +598,8 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   color: black;
 }
 
-#drag-container0 .make-larger:hover::after,
-#drag-container0 .make-smaller:hover::after,
+.drag-container .make-larger:hover::after,
+.drag-container .make-smaller:hover::after,
 .drag-container button.toggle-marker:hover::after,
 .drag-container button.toggle-marker:focus::after {
   position: absolute;
@@ -602,7 +626,7 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
 .drag-container button.toggle-marker {
   position: relative;
 }
-#drag-container0 .make-larger {
+.drag-container .make-larger {
   font-size: 0.9rem;
   line-height: 1.5;
   padding: 0.2em;
@@ -626,7 +650,7 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
     inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
     inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
 }
-#drag-container0 .make-smaller {
+.drag-container .make-smaller {
   --bottom: -2.2rem;
   font-size: 0.85rem;
   padding: 0.08em 0.08em 0;
@@ -635,8 +659,8 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   line-height: 1.9;
   border-radius: 50%;
 }
-#drag-container0 .make-smaller,
-#drag-container0 #layer-increase {
+.drag-container .make-smaller,
+.drag-container .layer-increase {
   -webkit-box-shadow: -0.2rem -0.2rem 0.5rem rgba(0, 0, 0, 0.4),
     inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
     inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
@@ -653,15 +677,15 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
     inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
     inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
 }
-#drag-container0 .make-more,
-#drag-container0 .delete-blob,
-#drag-container0 .make-random {
+.drag-container .make-more,
+.drag-container .delete-blob,
+.drag-container .make-random {
   position: absolute;
   height: 1.6rem;
   width: 1.6rem;
   max-width: 2.5rem;
 }
-#drag-container0 .layer-buttons {
+.drag-container .layer-buttons {
   display: flex;
   max-width: max-content;
   flex-flow: column wrap;
@@ -671,35 +695,35 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   gap: 0.1rem;
 }
 @media (min-width: 300px) {
-  #drag-container0 .layer-buttons {
+  .drag-container .layer-buttons {
     flex-flow: row wrap;
     align-items: flex-start;
     gap: 0.2rem;
   }
 }
 
-#drag-container0 .layer-buttons button {
+.drag-container .layer-buttons button {
   margin: 0;
   padding: 0.2rem 0.5rem 0.3rem;
   border: 3px solid var(--color-primary-7);
   outline: 3px solid var(--color-primary-7);
   outline-offset: -5px;
 }
-#drag-container0 .layer-buttons button:hover,
-#drag-container0 .layer-buttons button:focus {
+.drag-container .layer-buttons button:hover,
+.drag-container .layer-buttons button:focus {
   border: 3px solid var(--color-primary-14);
   outline: 3px solid var(--color-primary-14);
   outline-offset: -5px;
 }
-#drag-container0 .layer-buttons button.active {
+.drag-container .layer-buttons button.active {
   outline: 3px solid black;
   border: 3px solid white;
   outline-offset: -6px;
 }
-#drag-container0 .layer-buttons button.dim {
+.drag-container .layer-buttons button.dim {
   opacity: 0.4;
 }
-#root #drag-container0 button.layer-adjust {
+#root .drag-container button.layer-adjust {
   position: absolute;
   color: black;
   font-size: 1.4rem;
@@ -717,12 +741,12 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   background: none;
   background-color: lightgray;
 }
-#drag-container0 .layer-buttons .layer-adjust > * {
+.drag-container .layer-buttons .layer-adjust > * {
   color: black;
 }
 
-#drag-container0 button.every-layer,
-#drag-container0 button.layer-amount {
+.drag-container button.every-layer,
+.drag-container button.layer-amount {
   padding: 0.15em 0.15em 0;
   font-size: 1.2rem;
 }
@@ -735,19 +759,19 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   align-items: flex-start;
   gap: 0.5rem;
 }
-.colorblock.color-orange,
-.colorblock.color-red,
-.colorblock.color-purple,
-.colorblock.color-blue {
+.colorblock.colorblockorange,
+.colorblock.colorblockred,
+.colorblock.colorblockpurple,
+.colorblock.colorblockblue {
   border-radius: 5rem 6.7rem 6.7rem 5rem / 0.7rem 8.7rem 8.7rem 0.7rem;
 }
-#drag-container0 .make-more,
-#drag-container0 .delete-blob {
+.drag-container .make-more,
+.drag-container .delete-blob {
   color: black;
 }
-#drag-container0 .make-more:hover::after,
-#drag-container0 .delete-blob:hover::after,
-#drag-container0 .make-random:hover::after {
+.drag-container .make-more:hover::after,
+.drag-container .delete-blob:hover::after,
+.drag-container .make-random:hover::after {
   position: absolute;
   font-size: 0.8rem;
   font-weight: normal;
@@ -764,8 +788,8 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   -moz-box-shadow: 0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
   box-shadow: 0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
 }
-#drag-container0 .make-more,
-#drag-container0 .make-random {
+.drag-container .make-more,
+.drag-container .make-random {
   top: 0.2rem;
   left: 23%;
   font-size: 0.9rem;
@@ -789,18 +813,18 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
     inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
     inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
 }
-#drag-container0 .make-random {
+.drag-container .make-random {
   left: calc(50% - 0.85rem);
 }
-#drag-container0 .delete-blob {
+.drag-container .delete-blob {
   height: 1.7rem;
   font-size: 1.1rem;
   line-height: 1.3;
   padding: 0.23rem 0.23rem 0.04rem 0.18rem;
   border-radius: 50%;
 }
-#drag-container0 .delete-blob,
-#drag-container0 #layer-decrease {
+.drag-container .delete-blob,
+.drag-container .layer-decrease {
   -webkit-box-shadow: 0.2rem -0.2rem 0.5rem rgba(0, 0, 0, 0.4),
     inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
     inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
@@ -832,47 +856,11 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
 } /*END media*/
 
 @media (max-width: 900px) {
-  #drag-container0 .button-container button {
+  .drag-container .button-container button {
     font-size: 0.8rem;
   }
 } /*END media*/
 
-.colorblock.color-yellowlime {
-  background: -o-linear-gradient(45deg, lemonchiffon, greenyellow);
-  background: linear-gradient(45deg, lemonchiffon, greenyellow);
-}
-.colorblock.color-cyanyellow {
-  background: -o-linear-gradient(45deg, cyan, greenyellow);
-  background: linear-gradient(45deg, cyan, greenyellow);
-}
-.colorblock.color-cyanpink {
-  background: -o-linear-gradient(45deg, cyan, lightsalmon);
-  background: linear-gradient(45deg, cyan, lightsalmon);
-}
-.colorblock.color-pinkyellow {
-  background: -o-linear-gradient(45deg, lemonchiffon, pink);
-  background: linear-gradient(45deg, lemonchiffon, pink);
-}
-
-.colorblock.color-black {
-  background-color: black;
-}
-.colorblock.color-lime {
-  background-color: lime;
-}
-
-.colorblock.color-blue {
-  background: linear-gradient(45deg, deepskyblue, dodgerblue);
-}
-.colorblock.color-purple {
-  background: linear-gradient(45deg, magenta, violet);
-}
-.colorblock.color-red {
-  background: linear-gradient(45deg, red, tomato);
-}
-.colorblock.color-orange {
-  background: linear-gradient(45deg, darkorange, orange);
-}
 .exitblob {
   flex-basis: 100%;
   text-align: center;
@@ -1117,22 +1105,22 @@ body.dark-mode .site #drag-container1 .dragzone:focus {
   word-break: keep-all;
   font-style: normal;
 }
-#drag-container0 .hidden,
+.drag-container .hidden,
 .drag-container0-layer.hidden,
-#root #drag-container0 #layer-decrease.hidden,
-#root #drag-container0 #layer-increase.hidden {
+#root .drag-container .layer-decrease.hidden,
+#root .drag-container .layer-increase.hidden {
   display: none;
 }
-#drag-container0 .disable-scroll.active {
+.drag-container .disable-scroll.active {
   outline: 4px dotted var(--color-primary-14);
   background-position: bottom;
   color: var(--color-primary-1);
 }
-#drag-container0 .btn-small {
+.drag-container .btn-small {
   max-width: max-content;
   min-width: max-content;
 }
-#drag-container0 .pagination-btn {
+.drag-container .pagination-btn {
   font-size: 1.6rem;
   padding: 0 0.5rem 0.2rem;
   margin: 0;

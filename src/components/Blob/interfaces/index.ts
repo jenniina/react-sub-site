@@ -29,8 +29,7 @@ export interface RefObject<T> {
 export interface ReducerProps {
   blob: {
     draggables: Draggable[][]
-    hasBeenMadeFromStorage: boolean
-    backgroundColor: BackgroundColor[]
+    backgroundColor: BackgroundColor[][]
   }
 }
 

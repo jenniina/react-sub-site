@@ -3,8 +3,7 @@ import { ReducerProps } from '../interfaces'
 
 const initialState: ReducerProps['blob'] = {
   draggables: [] as Draggable[][],
-  hasBeenMadeFromStorage: false,
-  backgroundColor: ['30', '80', '214'] as BackgroundColor[],
+  backgroundColor: [['30', '80', '214']] as BackgroundColor[][],
 }
 
 function blobReducer(
@@ -118,7 +117,7 @@ function blobReducer(
       return newStateRemove
     case 'updateDraggable':
       const newDraggablesUpdate = state.draggables.map((subArray) =>
-        subArray.map((draggable) =>
+        subArray?.map((draggable) =>
           draggable.id === action.payload.draggable?.id
             ? { ...draggable, ...action.payload.draggable, id: draggable.id }
             : draggable
@@ -126,12 +125,16 @@ function blobReducer(
       )
       return { ...state, draggables: newDraggablesUpdate }
     case 'resetBlobs':
-      return { draggables: [], highestBlobNumber: 0 }
+      const d = action.payload.d
+      const newDraggablesReset = state.draggables.map((subArray, index) =>
+        index === d ? [] : subArray
+      )
+      return { ...state, draggables: newDraggablesReset }
     case 'moveDraggablesLeft':
       return {
         ...state,
         draggables: state.draggables.map((subArray) =>
-          subArray.map((draggable) => ({
+          subArray?.map((draggable) => ({
             ...draggable,
             x: `${parseInt(draggable.x) - amount}px`,
           }))
@@ -141,7 +144,7 @@ function blobReducer(
       return {
         ...state,
         draggables: state.draggables.map((subArray) =>
-          subArray.map((draggable) => ({
+          subArray?.map((draggable) => ({
             ...draggable,
             x: `${parseInt(draggable.x) + amount}px`,
           }))
@@ -151,7 +154,7 @@ function blobReducer(
       return {
         ...state,
         draggables: state.draggables.map((subArray) =>
-          subArray.map((draggable) => ({
+          subArray?.map((draggable) => ({
             ...draggable,
             y: `${parseInt(draggable.y) - amount}px`,
           }))
@@ -161,14 +164,17 @@ function blobReducer(
       return {
         ...state,
         draggables: state.draggables.map((subArray) =>
-          subArray.map((draggable) => ({
+          subArray?.map((draggable) => ({
             ...draggable,
             y: `${parseInt(draggable.y) + amount}px`,
           }))
         ),
       }
     case 'setBackgroundColor':
-      return { ...state, backgroundColor: action.payload.backgroundColor }
+      const newBackgroundColor = [...state.backgroundColor]
+      newBackgroundColor[action.payload.d] =
+        action.payload.backgroundColor ?? state.backgroundColor[action.payload.d]
+      return { ...state, backgroundColor: newBackgroundColor }
 
     default:
       return state

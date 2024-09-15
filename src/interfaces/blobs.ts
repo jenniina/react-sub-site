@@ -1209,3 +1209,13 @@ export enum EIfABlobYouClickedHidesAnotherYouMayPlaceTheBlobBackToTheBottomOfThe
   cs = 'Pokud blob, na který jste klikli, skrývá jiný, můžete blob vrátit zpět na spodek hromady stisknutím Z',
   fi = 'Jos mollukka, johon napsautit, piilottaa toisen, voit laittaa mollukan takaisin pinon pohjalle painamalla Z',
 }
+// With more muted colors
+export enum EWithMoreMutedColors {
+  en = 'With more muted colors',
+  es = 'Con colores más apagados',
+  fr = 'Avec des couleurs plus sourdes',
+  de = 'Mit gedämpfteren Farben',
+  pt = 'Com cores mais suaves',
+  cs = 'S více tlumenými barvami',
+  fi = 'Hillitymmillä väreillä',
+}

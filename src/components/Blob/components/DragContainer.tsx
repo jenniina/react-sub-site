@@ -1,790 +1,2304 @@
 import {
-  RefObject,
-  Dispatch,
-  SetStateAction,
-  Dispatch as DispatchReact,
-  TouchEvent as TouchEventReact,
-  MouseEvent as MouseEventReact,
-  PointerEvent as PointerEventReact,
   useRef,
-  useState,
-  createRef,
   useEffect,
-  useCallback,
+  useState,
+  useContext,
+  CSSProperties,
+  PointerEvent as PointerEventReact,
+  MouseEvent as MouseEventReact,
+  TouchEvent as TouchEventReact,
+  FormEvent,
+  Fragment,
+  ChangeEvent,
 } from 'react'
-import { Draggable, focusedBlob, ColorPair } from '../interfaces'
-import { ELanguages } from '../../../interfaces'
-import DragComponent from './DragComponent'
-import { ESelectedBlobNone } from '../../../interfaces/blobs'
-import { useOutsideClick } from '../../../hooks/useOutsideClick'
-import { notify } from '../../../reducers/notificationReducer'
+import {
+  Draggable,
+  BackgroundColor,
+  RefObject,
+  focusedBlob,
+  ColorPair,
+  SavedBlobs,
+} from '../interfaces'
+import { BlobContext, Props } from './BlobProvider'
+import {
+  EAreYouSureYouWantToProceed,
+  EBackToStart,
+  EBlobApp,
+  EDownload,
+  EEdit,
+  EError,
+  EErrorConnectingToTheServer,
+  ELanguages,
+  ELoad,
+  ELogin,
+  ENext,
+  EOr,
+  EPage,
+  EPrevious,
+  ERegister,
+  EReset,
+  ESave,
+  ESavingSuccessful,
+  ESpecialCharactersNotAllowed,
+  EToLastPage,
+  ReducerProps,
+} from '../../../interfaces'
+import {
+  EAlternatively,
+  EChangeLayerByClickingMe,
+  EClickMeToMakeARandomBlob,
+  ECloneInstructions,
+  EDisableScroll,
+  EEnableScroll,
+  EEnlargeInstructions,
+  ELayer,
+  EMarkerOff,
+  EMarkerOn,
+  EMoveViewDown,
+  EMoveViewLeft,
+  EMoveViewRight,
+  EMoveViewUp,
+  ERemovalInstructions,
+  EResetBlobs,
+  EResizebyScrollInstructions,
+  ESelectedBlobNone,
+  EShrinkInstructions,
+  EStartSway,
+  EStopSway,
+  EToggleLayerByClickingMe,
+  EToggleMarkerVisibilityWhenUsingAKeyboard,
+  ETryDraggingTheBlobs,
+  EHideControls,
+  EShowControls,
+  EPressHereOrEscapeToRestoreScrolling,
+  ELoginToSaveBlobs,
+  EInOrderToSaveTheBlobs,
+  ENameYourArtwork,
+  ERenameYourArtwork,
+  ERename,
+  EArtSaved,
+  EAreYouSureYouWantToDeleteThisVersion,
+  ENoteThatUnsavedChangesWillBeLost,
+  EDeletedArt,
+  EAVersionAlreadyExistsOverwrite,
+  ENameTooLong,
+  EAMaxOf30CharactersPlease,
+  ELoadingSavedArtwork,
+  ENoSavedArtworkYet,
+  EDisableScrollInOrderToUseTheMouseWheelToResizeABlob,
+  EClickHereToTakeAScreenshot,
+  EScreenshotTaken,
+  EScreenshot,
+  EIncreaseBlobLayerBy1Instructions,
+  EDecreaseBlobLayerBy1Instructions,
+  ENoScreenshotAvailableToSave,
+  EYouMayFindTheImageBelow,
+  EKeyboardUsePressTheCorrespondingLayerNumber,
+  EMoreColorsAvailable,
+  ECannotLowerEveryBlobFurther,
+  EClickHereToMoveUpLayer,
+  EClickHereToMoveDownLayer,
+  EArt,
+  EGetMoreLayers,
+  EDeleteHiddenLayers,
+  EMaximumLayerAmountReached,
+  EMustHaveAtLeastOneLayer,
+  ELayerNotEmpty,
+  ECannotRaiseEveryBlobFurther,
+  ELayerHidden,
+  EWithMoreMutedColors,
+  EMoreColorsAvailableThroughRandomBlobButton,
+} from '../../../interfaces/blobs'
+import {
+  BiChevronDown,
+  BiChevronsDown,
+  BiChevronsLeft,
+  BiChevronsRight,
+  BiChevronsUp,
+  BiChevronUp,
+  BiMinus,
+  BiPlus,
+} from 'react-icons/bi'
+import { ImEnlarge2, ImShrink2 } from 'react-icons/im'
+import { FaCamera, FaPlus, FaRegClone, FaSave, FaTimes } from 'react-icons/fa'
+import DragLayer from './DragLayers'
+import useWindowSize from '../../../hooks/useWindowSize'
+import { IUser } from '../../../interfaces'
+import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
-import { current } from '@reduxjs/toolkit'
+import Accordion from '../../Accordion/Accordion'
+import { notify } from '../../../reducers/notificationReducer'
+import { initializeUser } from '../../../reducers/authReducer'
+import { initializeUsers } from '../../../reducers/usersReducer'
+import { useNavigate } from 'react-router-dom'
+import blobService from '../services/blob'
+import { ELoading } from '../../Todo/interfaces'
+import { EDelete } from '../../Jokes/interfaces'
+import ColorBlocks from './ColorBlocks'
+import Sliders from './Sliders'
 
-interface DragComponentProps {
-  layer: number
-  layerAmount: number
-  hiddenLayers: Set<number>
-  setActiveLayer: Dispatch<SetStateAction<number>>
-  changeBlobLayer: (draggable: Draggable, layer: number) => void
-  paused: boolean
-  setPaused: Dispatch<SetStateAction<boolean>>
-  prefersReducedMotion: boolean
-  highestZIndex: Record<number, number>
-  setHighestZIndex: Dispatch<SetStateAction<Record<number, number>>>
-  language: ELanguages
-  dispatch: DispatchReact<any>
-  d: number
-  items: Draggable[]
-  amountOfBlobs: number
-  saveDraggables: () => void
-  getPosition: (target: HTMLElement) => void
-  dragWrap: RefObject<HTMLDivElement>
-  dragWrapOuter: RefObject<HTMLDivElement>
-  selectedvalue0: RefObject<HTMLSpanElement>
-  stopBlobs: RefObject<HTMLButtonElement>
-  disableScrollButton: RefObject<HTMLButtonElement>
-  resetBlobs: RefObject<HTMLButtonElement>
-  exitApp: RefObject<HTMLDivElement>
-  colorBlockProps: RefObject<HTMLDivElement>[]
-  colorBlockYellowLime0: RefObject<HTMLDivElement>
-  colorBlockCyanYellow0: RefObject<HTMLDivElement>
-  colorBlockCyanPink0: RefObject<HTMLDivElement>
-  colorBlockPinkYellow0: RefObject<HTMLDivElement>
-  colorBlockOrange: RefObject<HTMLDivElement>
-  colorBlockRed: RefObject<HTMLDivElement>
-  colorBlockPurple: RefObject<HTMLDivElement>
-  colorBlockBlue: RefObject<HTMLDivElement>
-  makeLarger0: RefObject<HTMLButtonElement>
-  makeSmaller0: RefObject<HTMLButtonElement>
-  makeMore0: RefObject<HTMLButtonElement>
-  deleteBlob0: RefObject<HTMLButtonElement>
-  layerIncrease: RefObject<HTMLButtonElement>
-  layerDecrease: RefObject<HTMLButtonElement>
-  getRandomMinMax: (min: number, max: number) => number
-  focusedBlob: focusedBlob | null
-  setFocusedBlob: Dispatch<SetStateAction<focusedBlob | null>>
-  colorIndex: number
-  setColorIndex: Dispatch<SetStateAction<number>>
-  colorPairs: ColorPair[]
-  setScroll: Dispatch<SetStateAction<boolean>>
-  scroll: boolean
-  clickOutsideRef: RefObject<HTMLDivElement>
-}
+// Should be in the same order as colorBlockProps
+const colorPairs: ColorPair[] = [
+  { color1: 'darkorange', color2: 'orange' }, //colorBlockOrange
+  { color1: 'orangered', color2: 'palevioletred' }, //colorBlockRed
+  { color1: 'magenta', color2: 'violet' }, //colorBlockPurple
+  { color1: 'deepskyblue', color2: 'dodgerblue' }, //colorBlockBlue
+  { color1: 'lemonchiffon', color2: 'pink' }, //colorBlockPinkYellow
+  { color1: 'lemonchiffon', color2: 'greenyellow' }, //colorBlockYellowLime
+  { color1: 'cyan', color2: 'greenyellow' }, //colorBlockCyanYellow
+  { color1: 'cyan', color2: 'pink' }, //colorBlockCyanPink
+]
 
-let moveElement: boolean
-let reset: boolean = true
+const colorPairs2: ColorPair[] = [
+  { color1: 'indianred', color2: 'palevioletred' }, //colorBlockTomato
+  { color1: 'sienna', color2: 'peru' }, //colorBlockBrown
+  { color1: 'chocolate', color2: 'burlywood' }, //colorBlockTan
+  { color1: 'darkkhaki', color2: 'moccasin' }, //colorBlockKhaki
+  { color1: 'slateblue', color2: 'mediumpurple' }, //colorBlockPurplish
+  { color1: 'royalblue', color2: 'dodgerblue' }, //colorBlockBluish
+  { color1: 'lightslategray', color2: 'lightsteelblue' }, //colorBlockGray
+  { color1: 'cadetblue', color2: 'mediumaquamarine' }, //colorBlockGreenish
+]
 
-let initialX = 0
-let initialY = 0
+const colorPairsCombo: ColorPair[][] = [colorPairs, colorPairs2]
 
 let angle = '90deg'
+let color = 'cyan'
 
-let currentFocusedElement: HTMLElement | null
+const defaultLayerAmount = 3
 
 const preventDefault = (e: Event) => {
   e.preventDefault()
-  e.stopImmediatePropagation()
 }
 
-const DragContainer = (props: DragComponentProps) => {
-  const sortedDraggables = [...props.items].sort((a, b) => a.layer - b.layer)
+export default function DragContainer({
+  language,
+  d,
+  dragWrapOuter,
+}: {
+  language: ELanguages
+  d: number
+  dragWrapOuter: RefObject<HTMLDivElement>
+}) {
+  const defaultLightness = d === 0 ? '30' : '33'
+  const defaultSaturation = d === 0 ? '80' : '30'
+  const defaultHue = d === 0 ? '214' : '214'
 
-  const groupedDraggables = sortedDraggables.reduce((acc, draggable) => {
-    if (!acc[draggable.layer]) {
-      acc[draggable.layer] = []
-    }
-    acc[draggable.layer].push(draggable)
-    return acc
-  }, {} as Record<number, Draggable[]>)
+  const { state, dispatch } = useContext(BlobContext) as Props
+  const dispatch2 = useAppDispatch()
+  const user = useSelector((state: ReducerProps) => state.auth?.user) as IUser
+  const users = useSelector((state: ReducerProps) => state.users) as IUser[]
 
-  const layers = Array.from({ length: props.layerAmount }, (_, i) => i)
+  //const dragWrapOuter = useRef() as RefObject<HTMLDivElement>
+  const dragWrap = useRef() as RefObject<HTMLDivElement>
 
-  // const layerRefs = layers.reduce(
-  //   (acc: Record<number, RefObject<HTMLUListElement>>, layer) => {
-  //     acc[layer] = useRef(null)
-  //     return acc
-  //   },
-  //   {} as Record<number, RefObject<HTMLUListElement>>
+  const selectedvalue0 = useRef() as RefObject<HTMLSpanElement>
+
+  const stopBlobs = useRef() as RefObject<HTMLButtonElement>
+  const disableScrollButton = useRef() as RefObject<HTMLButtonElement>
+  const resetBlobs = useRef() as RefObject<HTMLButtonElement>
+  const blobScreenshot = useRef() as RefObject<HTMLDivElement>
+  const screenshotImg = useRef() as RefObject<HTMLImageElement>
+  const [loading, setLoading] = useState(false)
+
+  const exitApp = useRef() as RefObject<HTMLDivElement>
+
+  const makeLarger0 = useRef() as RefObject<HTMLButtonElement>
+  const makeSmaller0 = useRef() as RefObject<HTMLButtonElement>
+  const makeMore0 = useRef() as RefObject<HTMLButtonElement>
+  const deleteBlob0 = useRef() as RefObject<HTMLButtonElement>
+  const makeRandom0 = useRef() as RefObject<HTMLButtonElement>
+
+  const layerIncrease = useRef() as RefObject<HTMLButtonElement>
+  const layerDecrease = useRef() as RefObject<HTMLButtonElement>
+
+  const markerDivRef = useRef<HTMLDivElement>(null)
+
+  const sliderLightnessInput = useRef() as RefObject<HTMLInputElement>
+  const sliderSaturationInput = useRef() as RefObject<HTMLInputElement>
+  const sliderHueInput = useRef() as RefObject<HTMLInputElement>
+
+  const isLocalhost =
+    window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+
+  const localStorageLayerAmount = `${isLocalhost ? 'local-' : ''}BlobLayerAmount${[d]}`
+  const localStorageBackground = `${isLocalhost ? 'local-' : ''}BackgroundColor${[d]}`
+  const localStorageDraggables = `${isLocalhost ? 'local-' : ''}Draggables${[d]}`
+
+  const backgroundColor = state.backgroundColor as BackgroundColor[][]
+
+  //loadBackground()
+
+  const draggables = state.draggables as Draggable[][]
+
+  const { windowHeight, windowWidth } = useWindowSize()
+
+  // const [layerAmount, setLayerAmount] = useLocalStorage<number>(
+  //   'blobLayerAmount',
+  //   state.draggables[d]?.length > 0 ? Math.max(...state.draggables[d].map((d) => d.layer)) + 1 : defaultLayerAmount
   // )
 
-  const layerRefs = useRef<Record<number, RefObject<HTMLUListElement>>>(
-    layers.reduce((acc, layer) => {
-      acc[layer] = createRef<HTMLUListElement>()
-      return acc
-    }, {} as Record<number, RefObject<HTMLUListElement>>)
-  )
+  const [activeLayer, setActiveLayer] = useState<number>(0)
+  const [hiddenLayers, setHiddenLayers] = useState<Set<number>>(new Set())
+  const [highestZIndex, setHighestZIndex] = useState<Record<number, number>>({}) // {0: 144, 1: 146, 2: 24}
+  const [colorIndex, setColorIndex] = useState<number>(0)
+  const [focusedBlob, setFocusedBlob] = useState<focusedBlob | null>(null)
+  const [usingKeyboard, setUsingKeyboard] = useState<boolean>(false)
+  const [markerEnabled, setMarkerEnabled] = useState<boolean>(true)
+  const [controlsVisible, setControlsVisible] = useState<boolean>(true)
+  const [scroll, setScroll] = useState<boolean>(true)
+  const [hasBeenMade, setHasBeenMade] = useState<boolean>(false)
+  const [paused, setPaused] = useState<boolean>(false)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState<boolean>(false)
 
-  //Detect touch device
-  const isTouchDevice = () => {
-    try {
-      //Try to create TouchEvent (fails for desktops and throws error)
-      document.createEvent('TouchEvent')
-      return true
-    } catch (e) {
-      return false
-    }
+  const colorBlockOrange = useRef() as RefObject<HTMLDivElement>
+  const colorBlockRed = useRef() as RefObject<HTMLDivElement>
+  const colorBlockPurple = useRef() as RefObject<HTMLDivElement>
+  const colorBlockBlue = useRef() as RefObject<HTMLDivElement>
+
+  const colorBlockYellowLime = useRef() as RefObject<HTMLDivElement>
+  const colorBlockCyanYellow = useRef() as RefObject<HTMLDivElement>
+  const colorBlockCyanPink = useRef() as RefObject<HTMLDivElement>
+  const colorBlockPinkYellow = useRef() as RefObject<HTMLDivElement>
+
+  const colorBlockTomato = useRef() as RefObject<HTMLDivElement>
+  const colorBlockBrown = useRef() as RefObject<HTMLDivElement>
+  const colorBlockKhaki = useRef() as RefObject<HTMLDivElement>
+  const colorBlockBluish = useRef() as RefObject<HTMLDivElement>
+  const colorBlockPurplish = useRef() as RefObject<HTMLDivElement>
+  const colorBlockGreenish = useRef() as RefObject<HTMLDivElement>
+  const colorBlockGray = useRef() as RefObject<HTMLDivElement>
+  const colorBlockTan = useRef() as RefObject<HTMLDivElement>
+
+  // Create a mapping between the ref objects and their names
+  const refNameMapping = new Map<RefObject<HTMLDivElement>, string>([
+    [colorBlockOrange, 'colorBlockOrange'],
+    [colorBlockRed, 'colorBlockRed'],
+    [colorBlockPurple, 'colorBlockPurple'],
+    [colorBlockBlue, 'colorBlockBlue'],
+    [colorBlockYellowLime, 'colorBlockYellowLime'],
+    [colorBlockCyanYellow, 'colorBlockCyanYellow'],
+    [colorBlockCyanPink, 'colorBlockCyanPink'],
+    [colorBlockPinkYellow, 'colorBlockPinkYellow'],
+  ])
+
+  const refNameMapping2 = new Map<RefObject<HTMLDivElement>, string>([
+    [colorBlockTomato, 'colorBlockTomato'],
+    [colorBlockBrown, 'colorBlockBrown'],
+    [colorBlockTan, 'colorBlockTan'],
+    [colorBlockKhaki, 'colorBlockKhaki'],
+    [colorBlockPurplish, 'colorBlockPurplish'],
+    [colorBlockBluish, 'colorBlockBluish'],
+    [colorBlockGray, 'colorBlockGray'],
+    [colorBlockGreenish, 'colorBlockGreenish'],
+  ])
+
+  const refNameMappingCombo = [refNameMapping, refNameMapping2]
+
+  const getRefName = (
+    refNameMapping: Map<RefObject<HTMLDivElement>, string>,
+    ref: RefObject<HTMLDivElement>
+  ): string | undefined => {
+    return refNameMapping.get(ref)
   }
 
-  //const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0
+  // Should be in the same order as colorPairs:
+  const colorBlockProps = [
+    colorBlockOrange,
+    colorBlockRed,
+    colorBlockPurple,
+    colorBlockBlue,
+    colorBlockPinkYellow,
+    colorBlockYellowLime,
+    colorBlockCyanYellow,
+    colorBlockCyanPink,
+  ]
+  const colorBlockProps2 = [
+    colorBlockTomato,
+    colorBlockBrown,
+    colorBlockTan,
+    colorBlockKhaki,
+    colorBlockPurplish,
+    colorBlockBluish,
+    colorBlockGray,
+    colorBlockGreenish,
+  ]
 
-  useEffect(() => {
-    isTouchDevice()
-  }, [])
+  const colorBlockPropsCombo = [colorBlockProps, colorBlockProps2]
 
-  // Change the layer of the blob by 1 up to the maximum layer amount
-  const increaseBlobLayer = (target: HTMLElement, draggable: Draggable) => {
-    let layer = draggable.layer
-    if (layer < props.layerAmount - 1) {
-      layer = layer + 1
-
-      props.changeBlobLayer(draggable, layer)
-      target.style.setProperty('--layer', `${layer}`)
-    }
-  }
-  const decreaseBlobLayer = (target: HTMLElement, draggable: Draggable) => {
-    let layer = draggable.layer
-    if (layer > 0) {
-      layer = layer - 1
-
-      props.changeBlobLayer(draggable, layer)
-      target.style.setProperty('--layer', `${layer}`)
-    }
-  }
-
-  //Check to see if elements overlap
-  function elementsOverlap(element1: HTMLElement, element2: HTMLElement) {
-    const domRect1 = element1.getBoundingClientRect()
-    const domRect2 = element2.getBoundingClientRect()
-
-    return !(
-      domRect1.top + 5 > domRect2.bottom - 5 ||
-      domRect1.right < domRect2.left ||
-      domRect1.bottom - 5 < domRect2.top + 5 ||
-      domRect1.left > domRect2.right
-    )
+  const changeBlobLayer = (draggable: Draggable, layer: number) => {
+    const z = highestZIndex[layer] + 1
+    dispatch({
+      type: 'updateDraggable',
+      payload: { d, draggable: { ...draggable, layer, z } },
+    })
+    setActiveLayer(layer)
   }
 
-  const handleOutsideClick = useCallback(
-    (e: Event) => {
-      reset = true
-      document.removeEventListener('keyup', keyUp)
-      document.removeEventListener('touchmove', preventDefault)
-    },
-    [keyUp]
-  )
-
-  useOutsideClick({
-    ref: props.clickOutsideRef,
-    onOutsideClick: handleOutsideClick,
-  })
-
-  useEffect(() => {
-    if (isTouchDevice() && !currentFocusedElement && !props.scroll) {
-      document.body.style.overflowY = 'auto'
-      document.body.style.overflowX = 'hidden'
-      document.removeEventListener('keyup', keyUp)
-      document.removeEventListener('touchmove', preventDefault)
-    }
-  }, [currentFocusedElement, props.scroll])
-
-  const start = useCallback(
-    (
-      e:
-        | TouchEvent
-        | MouseEvent
-        | PointerEvent
-        | TouchEventReact
-        | MouseEventReact
-        | PointerEventReact,
-      target: HTMLElement
-    ) => {
-      e.stopPropagation()
-      e.preventDefault()
-
-      if (document.activeElement instanceof HTMLElement) {
-        document.activeElement.blur()
+  const toggleLayerVisibility = (layer: number) => {
+    setHiddenLayers((prevHiddenLayers) => {
+      const newHiddenLayers = new Set(prevHiddenLayers)
+      if (newHiddenLayers.has(layer)) {
+        newHiddenLayers.delete(layer)
+      } else {
+        newHiddenLayers.add(layer)
       }
-
-      moveElement = true
-      currentFocusedElement = target
-
-      initialX = !isTouchDevice()
-        ? (e as PointerEvent).clientX
-        : (e as TouchEvent).touches[0].clientX
-      initialY = !isTouchDevice()
-        ? (e as PointerEvent).clientY
-        : (e as TouchEvent).touches[0].clientY
-      ;(target as HTMLElement).classList.add('drag')
-      const highestZIndexForLayer = props.highestZIndex[props.layer]
-      target.style.setProperty('z-index', `${Math.max(1, highestZIndexForLayer + 1)}`)
-      ;(target as HTMLElement).setAttribute('aria-grabbed', 'true')
-      //;(target as HTMLElement).focus() // This breaks dragging once a key is pressed and only clears after clicking away from the target
-
-      document.addEventListener('keyup', keyUp)
-      const layer = (target as HTMLElement).style.getPropertyValue('--layer')
-      props.setActiveLayer(parseInt(layer) ?? 0)
-
-      if (isTouchDevice()) {
-        document.addEventListener('touchmove', preventDefault, { passive: false })
-        document.body.style.overflow = 'hidden'
-      }
-    },
-    [keyUp, isTouchDevice]
-  )
-
-  //Handle mousemove and touchmove
-  const movement = useCallback(
-    (
-      e:
-        | TouchEvent
-        | MouseEvent
-        | PointerEvent
-        | TouchEventReact
-        | MouseEventReact
-        | PointerEventReact
-    ) => {
-      e.stopPropagation()
-      if (isTouchDevice()) {
-        e.preventDefault()
-        document.body.style.overflow = 'hidden'
-      }
-
-      if (moveElement) {
-        //e.preventDefault();
-        let newX = !isTouchDevice()
-          ? (e as PointerEvent).clientX
-          : (e as TouchEvent).touches[0].clientX
-        let newY = !isTouchDevice()
-          ? (e as PointerEvent).clientY
-          : (e as TouchEvent).touches[0].clientY
-        ;(currentFocusedElement as HTMLElement).style.top =
-          (currentFocusedElement as HTMLElement).offsetTop - (initialY - newY) + 'px'
-        ;(currentFocusedElement as HTMLElement).style.left =
-          (currentFocusedElement as HTMLElement).offsetLeft - (initialX - newX) + 'px'
-        initialX = newX
-        initialY = newY
-      }
-    },
-    [isTouchDevice]
-  )
-
-  //Handle mouse up and touch end, check for element overlap
-  const stopMovementCheck = useCallback(
-    (
-      e:
-        | TouchEvent
-        | MouseEvent
-        | PointerEvent
-        | TouchEventReact
-        | MouseEventReact
-        | PointerEventReact,
-      target: HTMLElement
-    ) => {
-      e.stopPropagation()
-      e.preventDefault()
-      moveElement = false
-
-      // document.removeEventListener('keyup', keyUp)
-      let value = (target as HTMLElement).style.getPropertyValue('--i')
-      let scale = parseFloat(value)
-      scale = isNaN(scale) ? 7 : scale
-
-      const hitbox = target.querySelector('div')
-
-      const draggable: Draggable = {
-        layer: parseInt(target.style.getPropertyValue('--layer')),
-        id: target.id,
-        number: parseInt(target.id.replace('blob', '').split('-')[0], 10),
-        i: scale,
-        x: target.style.left,
-        y: target.style.top,
-        z: target.style.zIndex,
-        background:
-          target.style.background || 'linear-gradient(90deg, cyan, greenyellow)',
-      }
-
-      if (isTouchDevice() && props.scroll) {
-        document.removeEventListener('touchmove', preventDefault)
-        document.body.style.overflowY = 'auto'
-        document.body.style.overflowX = 'hidden'
-      } else if (!props.scroll) {
-        document.body.style.overflow = 'hidden'
-      }
-
-      if (
-        props.layerIncrease.current &&
-        elementsOverlap(hitbox as HTMLElement, props.layerIncrease.current)
-      ) {
-        increaseBlobLayer(target, draggable)
-      }
-      if (
-        props.layerDecrease.current &&
-        elementsOverlap(hitbox as HTMLElement, props.layerDecrease.current)
-      ) {
-        decreaseBlobLayer(target, draggable)
-      }
-
-      props.colorPairs.forEach((colorPair, index) => {
-        const colorBlock = props.colorBlockProps[index]
-
-        if (
-          colorBlock.current &&
-          elementsOverlap(hitbox as HTMLElement, colorBlock.current)
-        ) {
-          const { color1, color2 } = colorPair
-          ;(
-            target as HTMLElement
-          ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-        }
-      })
-      if (
-        props.makeLarger0.current &&
-        elementsOverlap(hitbox as HTMLElement, props.makeLarger0.current)
-      ) {
-        scale += 0.5
-        scale = Math.min(Math.max(7, scale), 20)
-        ;(target as HTMLElement).style.setProperty('--i', `${scale}`)
-      }
-      if (
-        props.makeSmaller0.current &&
-        elementsOverlap(hitbox as HTMLElement, props.makeSmaller0.current)
-      ) {
-        scale -= 0.5
-        scale = Math.min(Math.max(7, scale), 20)
-        ;(target as HTMLElement).style.setProperty('--i', `${scale}`)
-      }
-      if (
-        props.makeMore0.current &&
-        elementsOverlap(hitbox as HTMLElement, props.makeMore0.current)
-      ) {
-        makeBlob(draggable)
-      }
-      if (
-        props.deleteBlob0.current &&
-        elementsOverlap(hitbox as HTMLElement, props.deleteBlob0.current)
-      ) {
-        removeBlob(draggable)
-      }
-      props.getPosition(target as HTMLElement)
-      ;(target as HTMLElement).classList.remove('drag')
-      ;(target as HTMLElement).setAttribute('aria-grabbed', 'false')
-      ;(target as HTMLElement).blur()
-      currentFocusedElement = null
-      props.setFocusedBlob(null)
-    },
-    [
-      angle,
-      elementsOverlap,
-      keyUp,
-      makeBlob,
-      props.colorBlockProps,
-      props.colorPairs,
-      removeBlob,
-      props.scroll,
-    ]
-  )
-
-  //Handle mouse leave
-  const stopMoving = useCallback(
-    (
-      e: MouseEvent | MouseEventReact | PointerEvent | PointerEventReact,
-      target: HTMLElement
-    ) => {
-      e.stopPropagation()
-      moveElement = false
-      currentFocusedElement = null
-      if (isTouchDevice() && props.scroll) {
-        document.removeEventListener('touchmove', preventDefault)
-        document.body.style.overflowY = 'auto'
-        document.body.style.overflowX = 'hidden'
-      } else if (!props.scroll) {
-        document.body.style.overflow = 'hidden'
-      }
-
-      props.getPosition(target as HTMLElement)
-      ;(target as HTMLElement).classList.remove('drag')
-      ;(target as HTMLElement).setAttribute('aria-grabbed', 'false')
-      // document.removeEventListener('keyup', keyUp)
-      ;(target as HTMLElement).blur()
-    },
-    [keyUp]
-  )
-
-  useEffect(() => {
-    if (isTouchDevice() && !currentFocusedElement && props.scroll) {
-      document.removeEventListener('touchmove', preventDefault)
-      document.body.style.overflowY = 'auto'
-      document.body.style.overflowX = 'hidden'
-    }
-    // const handleMouseUp = (e: MouseEvent) => {
-    //   if (currentFocusedElement) {
-    //     stopMovementCheck(e, currentFocusedElement)
-    //   }
-    // }
-    // const handleTouchEnd = (e: TouchEvent) => {
-    //   if (currentFocusedElement) {
-    //     stopMovementCheck(e, currentFocusedElement)
-    //   }
-    // }
-    // const handleTouchCancel = (e: TouchEvent) => {
-    //   if (currentFocusedElement) {
-    //     stopMovementCheck(e, currentFocusedElement)
-    //   }
-    // }
-    // const handleDragEnd = (e: DragEvent) => {
-    //   if (currentFocusedElement) {
-    //     stopMovementCheck(e, currentFocusedElement)
-    //   }
-    // }
-
-    // document.addEventListener('mouseup', handleMouseUp)
-    // document.addEventListener('touchend', handleTouchEnd)
-    // document.addEventListener('touchcancel', handleTouchCancel)
-    // document.addEventListener('dragend', handleDragEnd)
-
-    // return () => {
-    //   document.removeEventListener('mouseup', handleMouseUp)
-    //   document.removeEventListener('touchend', handleTouchEnd)
-    //   document.removeEventListener('touchcancel', handleTouchCancel)
-    //   document.removeEventListener('dragend', handleDragEnd)
-    // }
-  }, [stopMovementCheck, stopMoving, currentFocusedElement, props.scroll])
-
-  //on blob blur
-  function blurred(draggable: HTMLElement) {
-    draggable.classList.remove('drag')
-    draggable.setAttribute('aria-grabbed', 'false')
-    props.dragWrap.current?.setAttribute('aria-activedescendant', '')
-    document.removeEventListener('keyup', keyUp)
-    props.getPosition(draggable)
-    draggable.draggable = false
-    currentFocusedElement = null
-  }
-
-  //on focused blob
-  function focused(draggable: HTMLElement) {
-    props.getPosition(draggable)
-    draggable.classList.add('drag')
-    draggable.setAttribute('aria-grabbed', 'true')
-    layerRefs.current[props.layer].current?.setAttribute(
-      'aria-activedescendant',
-      `${draggable.id}`
-    )
-    currentFocusedElement = draggable
-    const layerStyle = (draggable as HTMLElement).style.getPropertyValue('--layer')
-    props.setActiveLayer(parseInt(layerStyle) ?? 0)
-    document.addEventListener('keyup', keyUp)
-    draggable.draggable = true
-  }
-
-  //Mousewheel use
-  function wheel(draggable: HTMLElement) {
-    const zoomHandler = (e: WheelEvent) => zoom(e, draggable)
-    draggable.addEventListener('wheel', zoomHandler, { passive: false })
-    return () => {
-      draggable.removeEventListener('wheel', zoomHandler)
-    }
-  }
-  function zoom(e: WheelEvent, target: HTMLElement) {
-    //e.preventDefault();
-    let value = (target as HTMLElement).style.getPropertyValue('--i')
-    let scale = parseFloat(value)
-    scale = isNaN(scale) ? 7 : scale
-
-    scale += e.deltaY * -0.00005
-    // Restrict scale
-    scale = Math.min(Math.max(7, scale), 20)
-    // Apply
-    ;(target as HTMLElement).style.setProperty('--i', `${scale ?? 7}`)
-  }
-
-  useEffect(() => {
-    const target = currentFocusedElement
-    if (target) {
-      const { color1, color2 } = props.colorPairs[props.colorIndex]
-      const newBackground = `linear-gradient(${angle}, ${color1}, ${color2})`
-      ;(target as HTMLElement).style.backgroundImage = newBackground
-
-      const draggable = props.items.find((d) => d.id === target.id)
-      // Update the draggable's background in the state
-      const updatedDraggable = { ...draggable, background: newBackground }
-
-      props.dispatch({
-        type: 'updateDraggable',
-        payload: { d: props.d, draggable: updatedDraggable },
-      })
-    }
-  }, [props.colorIndex])
-
-  // Keyboard use
-  function keyUp(e: KeyboardEvent) {
-    const movePx = 5
-
-    const target = currentFocusedElement
-    if (!target) return
-
-    const setFocus = (target: HTMLElement) => {
-      const blobStyle = window.getComputedStyle(target)
-      const marginTop = parseFloat(blobStyle.marginTop)
-      const marginLeft = parseFloat(blobStyle.marginLeft)
-
-      const blobRect = target.getBoundingClientRect()
-      const parentRect = (target.parentNode as HTMLDivElement)?.getBoundingClientRect()
-      props.setFocusedBlob({
-        top: blobRect.top - parentRect.top - marginTop,
-        left: blobRect.left - parentRect.left - marginLeft,
-        width: blobRect.width,
-        height: blobRect.height,
-      })
-    }
-
-    let value = (target as HTMLElement).style.getPropertyValue('--i')
-    let scale = parseFloat(value)
-    scale = isNaN(scale) ? 7 : scale
-
-    // let attrLeft = window
-    //   .getComputedStyle(e.target as HTMLElement)
-    //   .getPropertyValue('left')
-    // let attrTop = window.getComputedStyle(e.target as HTMLElement).getPropertyValue('top')
-
-    let attrLeft = parseFloat(target.style.getPropertyValue('left')) || 0
-    let attrTop = parseFloat(target.style.getPropertyValue('top')) || 0
-
-    const draggable: Draggable = {
-      layer: props.layer,
-      id: target.id,
-      number: parseInt(target.id.replace('blob', '').split('-')[0], 10),
-      i: scale,
-      x: target.style.getPropertyValue('left').toString(),
-      y: target.style.getPropertyValue('top').toString(),
-      z: target.style.zIndex || '0',
-      background: target.style.background || 'linear-gradient(90deg, cyan, greenyellow)',
-    }
-
-    const updatePosition = (left: number, top: number) => {
-      target.style.left = `${left}px`
-      target.style.top = `${top}px`
-      setFocus(target)
-    }
-
-    const handleNumberPress = (layer: number) => {
-      e.preventDefault()
-      if (reset) {
-        reset = false
-        props.changeBlobLayer(draggable, layer)
-        const cooldown = () => {
-          reset = true
-        }
-        setTimeout(cooldown, 100)
-      }
-    }
-    const key = e.key
-    if (key >= '1' && key <= props.layerAmount?.toString()) {
-      handleNumberPress(parseInt(key) - 1)
-    }
-
-    switch (e.key) {
-      case 'ArrowLeft':
-        e.preventDefault()
-        updatePosition(attrLeft - movePx, attrTop)
-        break
-      case 'ArrowRight':
-        e.preventDefault()
-        updatePosition(attrLeft + movePx, attrTop)
-        break
-      case 'ArrowUp':
-        e.preventDefault()
-        updatePosition(attrLeft, attrTop - movePx)
-        break
-      case 'ArrowDown':
-        e.preventDefault()
-        updatePosition(attrLeft, attrTop + movePx)
-        break
-      case 'Escape':
-        e.preventDefault()
-        //e.stopImmediatePropagation()
-
-        props.setScroll(true)
-        document.body.style.overflowY = 'auto'
-        document.body.style.overflowX = 'hidden'
-
-        if (props.exitApp.current) {
-          props.exitApp.current.setAttribute('tabindex', '0')
-          props.exitApp.current.addEventListener('blur', exitAppBlur)
-        }
-        ;(target as HTMLElement).blur()
-        props.dragWrap.current?.blur()
-        //Go to exit notice in order to remove focus from the app
-        if (props.exitApp.current)
-          props.exitApp.current.textContent = 'Thank you for playing!'
-        props.exitApp.current?.focus()
-        break
-      case 'Enter': //Cycle through colors
-        e.stopPropagation()
-        e.preventDefault()
-        if ((target as HTMLElement).closest(`.drag-container${props.d}`)) {
-          props.setColorIndex((prevColorIndex) => {
-            const nextColorIndex = (prevColorIndex + 1) % props.colorPairs.length
-            return nextColorIndex // Return the new color index
-          })
-        }
-        break
-      case 'Z': //Move blob to the bottom of the z-index pile
-      case 'z':
-        //e.stopImmediatePropagation()
-        e.preventDefault()
-        if (reset) {
-          reset = false
-          ;(target as HTMLElement).style.setProperty('z-index', `1`)
-          const cooldown = () => {
-            reset = true
-          }
-          setTimeout(cooldown, 100)
-        }
-        break
-      case 'T': //Move blob to the top of the z-index pile
-      case 't':
-        //e.stopImmediatePropagation()
-        e.preventDefault()
-        if (reset) {
-          reset = false
-          ;(target as HTMLElement).style.setProperty(
-            'z-index',
-            `${Math.max(1, props.highestZIndex[props.layer] + 1)}`
-          )
-          const cooldown = () => {
-            reset = true
-          }
-          setTimeout(cooldown, 100)
-        }
-        break
-      case 'S':
-      case 's': //make blob smaller
-        //e.stopImmediatePropagation()
-        e.preventDefault()
-        if (reset) {
-          reset = false
-          scale -= 0.5
-          scale = Math.min(Math.max(7, scale), 20)
-          ;(target as HTMLElement).style.setProperty('--i', `${scale ?? 7}`)
-
-          const cooldown = () => {
-            reset = true
-          }
-          setTimeout(cooldown, 100)
-        }
-        break
-      case 'B': //make blob larger
-      case 'b':
-      case 'L':
-      case 'l':
-        //e.stopImmediatePropagation()
-        e.preventDefault()
-        if (reset) {
-          reset = false
-          scale += 0.5
-          scale = Math.min(Math.max(7, scale), 20)
-          ;(target as HTMLElement).style.setProperty('--i', `${scale ?? 7}`)
-
-          const cooldown = () => {
-            reset = true
-          }
-          setTimeout(cooldown, 100)
-        }
-        break
-      case 'C': //make a new clone
-      case 'c':
-      case 'D':
-      case 'd':
-      case '+':
-        e.preventDefault()
-        //e.stopImmediatePropagation()
-        if (reset) {
-          reset = false
-          makeBlob(draggable)
-          const cooldown = () => {
-            reset = true
-          }
-          setTimeout(cooldown, 100)
-        }
-        break
-      case 'Delete': //remove blob
-      case '-':
-        //e.stopImmediatePropagation()
-        e.preventDefault()
-        if (reset) {
-          reset = false
-          removeBlob(draggable)
-          const cooldown = () => {
-            reset = true
-          }
-          setTimeout(cooldown, 100)
-        }
-        break
-    }
-  }
-
-  //Remove exit notice's tabindex and text as unnecessary after leaving it
-  function exitAppBlur() {
-    if (props.exitApp.current) {
-      props.exitApp.current?.removeAttribute('tabindex')
-      props.exitApp.current?.removeEventListener('blur', exitAppBlur)
-      props.exitApp.current.textContent = ''
-    }
-  }
-
-  //Clone blob
-  function makeBlob(draggable: Draggable) {
-    props.dispatch({
-      type: 'duplicateDraggable',
-      payload: { d: props.d, draggable },
+      return newHiddenLayers
     })
   }
 
-  const [deleteId, setDeleteId] = useState<string>('')
+  //Check for keyboard use for the focusedBlob marker
+  useEffect(() => {
+    const keyupListener = () => setUsingKeyboard(true)
+    const mousedownListener = () => {
+      setUsingKeyboard(false)
+    }
+    const handleMouseUp = () => {
+      setFocusedBlob(null) // To prevent Marker from showing up after keyboard use and mouseup
+    }
 
-  //Remove blob
-  function removeBlob(draggable: Draggable) {
-    setDeleteId(draggable.id)
-    if (props.selectedvalue0.current)
-      props.selectedvalue0.current.textContent = `${ESelectedBlobNone[props.language]}`
+    window.addEventListener('keyup', keyupListener)
+    window.addEventListener('mousedown', mousedownListener)
+    window.addEventListener('mouseup', handleMouseUp)
+
+    return () => {
+      window.removeEventListener('keyup', keyupListener)
+      window.removeEventListener('mousedown', mousedownListener)
+      window.removeEventListener('mouseup', handleMouseUp)
+    }
+  }, [])
+
+  function loadDraggables(): Promise<Draggable[] | null> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const draggablesJSON = localStorage.getItem(localStorageDraggables)
+        if (
+          draggablesJSON == null ||
+          draggablesJSON == undefined ||
+          draggablesJSON === 'undefined'
+        ) {
+          resolve(null)
+        } else {
+          const draggables: Draggable[] = JSON.parse(draggablesJSON)
+          // Ensure each draggable has a layer property
+          resolve(
+            draggables.map((draggable) => ({
+              ...draggable,
+              layer: draggable.layer ?? 0,
+            }))
+          )
+        }
+      }, 300)
+    })
+  }
+
+  function loadLayerAmount(): Promise<number | null> {
+    // First check the local storage value, then check if draggables[d] has blobs, finally return the default value if both are null
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const layerAmount = localStorage.getItem(localStorageLayerAmount)
+        if (layerAmount != null) {
+          resolve(parseInt(layerAmount))
+        } else if (draggables[d]?.length > 0) {
+          resolve(Math.max(...draggables[d].map((d) => d.layer)) + 1)
+        } else {
+          resolve(defaultLayerAmount)
+        }
+      }, 100)
+    })
+  }
+
+  // if (draggables[d]?.length > 0) {
+  //   return Math.max(...draggables[d].map((d) => d.layer)) + 1
+  // } else {
+  //   const layerAmount = localStorage.getItem(localStorageLayerAmount)
+  //   if (layerAmount == null) return defaultLayerAmount
+  //   else return parseInt(layerAmount)
+  // }
+
+  function loadBackground(): Promise<BackgroundColor[] | null> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const backgroundColorJSON = localStorage.getItem(localStorageBackground)
+        if (
+          backgroundColorJSON == null ||
+          backgroundColorJSON == undefined ||
+          backgroundColorJSON === 'undefined'
+        ) {
+          resolve(null)
+        } else {
+          resolve(JSON.parse(backgroundColorJSON))
+        }
+      }, 300)
+    })
+  }
+
+  function saveLayerAmount(amount: number = layerAmount) {
+    localStorage.setItem(localStorageLayerAmount, JSON.stringify(amount))
+  }
+  function saveBackground(bg: BackgroundColor[] = backgroundColor[d]) {
+    localStorage.setItem(localStorageBackground, JSON.stringify(bg))
+  }
+  function saveDraggables(blob: Draggable[] = draggables[d]) {
+    localStorage.setItem(localStorageDraggables, JSON.stringify(blob))
+  }
+  const [name, setName] = useState('Blob Art')
+  const [newName, setNewName] = useState(name)
+  const [editName, setEditName] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
+  const [hasSavedFiles, setHasSavedFiles] = useState(false)
+
+  const [trackSaving, setTrackSaving] = useState(false)
+  const [savedDraggablesbyD, setSavedDraggablesByD] = useState<{
+    [key: number]: { [versionName: string]: SavedBlobs }
+  }>({})
+
+  // useEffect(() => {
+  //   console.log('savedDraggablesbyD:', JSON.stringify(savedDraggablesbyD, null, 2))
+  // }, [savedDraggablesbyD])
+
+  const [layerAmount, setLayerAmount] = useState<number>(0)
+
+  // useEffect(() => {
+  //   const fetchLayerAmount = async () => {
+  //     const amount = await loadLayerAmount()
+  //     setLayerAmount(amount ?? 3) // Default to 3 if null
+  //   }
+  //   fetchLayerAmount()
+  // }, [])
+
+  const getBlobsFromServer = async () => {
+    setIsLoading(true)
+    try {
+      if (user?._id) {
+        blobService
+          .getAllBlobsByUser(user?._id, d, language)
+          .then((response) => {
+            if (response) {
+              // Initialize an empty object for sortedDraggables
+              const sortedDraggables: {
+                [key: number]: { [versionName: string]: SavedBlobs }
+              } = {}
+
+              // Iterate through the response and sort draggables by d
+              response.forEach((item: SavedBlobs) => {
+                const { d, versionName } = item
+                if (!sortedDraggables[d]) {
+                  sortedDraggables[d] = {}
+                }
+                sortedDraggables[d][versionName] = item
+              })
+
+              // // Update the state with the sorted draggables
+              // setLayerAmount(
+              //   Math.max(
+              //     ...Object.values(sortedDraggables).map((d) => {
+              //       return Math.max(
+              //         ...Object.values(d).map((version) => {
+              //           return version.draggables.length > 0
+              //             ? Math.max(...version.draggables.map((d) => d.layer))
+              //             : 0
+              //         })
+              //       )
+              //     })
+              //   ) + 1
+              // )
+              // setTimeout(() => {
+              //   saveLayerAmount()
+              // }, 300)
+              setSavedDraggablesByD(sortedDraggables)
+              setHasSavedFiles(Object.keys(sortedDraggables).length > 0)
+            }
+          })
+          .catch((error) => {
+            dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
+          })
+      }
+    } catch (error) {
+      dispatch2(notify(EError[language], true, 8))
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const checkDuplicateVersionName = (versionName: string): boolean => {
+    for (const dKey in savedDraggablesbyD) {
+      if (savedDraggablesbyD[dKey][versionName]) {
+        return true
+      }
+    }
+    return false
+  }
+
+  const regex = /^[\w\s\u00C0-\u024F\u1E00-\u1EFF-_]*$/
+
+  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    if (regex.test(value)) {
+      setName(value)
+    } else {
+      dispatch2(notify(ESpecialCharactersNotAllowed[language], true, 8))
+    }
+  }
+
+  //draggable[d] highest layer:
+  // console.log('highest layer:', Math.max(...draggables[d].map((d) => d.layer)))
+
+  const handleNewNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    if (regex.test(value)) {
+      setNewName(value)
+    } else {
+      dispatch2(notify(ESpecialCharactersNotAllowed[language], true, 8))
+    }
+  }
+
+  const saveBlobsToServer = async (e: FormEvent) => {
+    e.preventDefault()
+    try {
+      if (name.trim() === '') {
+        dispatch2(notify(ENameYourArtwork[language], true, 8))
+        return
+      } else if (name.trim().length > 30) {
+        dispatch2(
+          notify(
+            `${ENameTooLong[language]}. ${EAMaxOf30CharactersPlease[language]}`,
+            true,
+            8
+          )
+        )
+        return
+      } else if (user?._id) {
+        const versionName = name.trim()
+        if (checkDuplicateVersionName(versionName)) {
+          if (!window.confirm(EAVersionAlreadyExistsOverwrite[language])) {
+            return
+          }
+        }
+        blobService
+          .saveBlobsByUser(
+            user?._id,
+            d,
+            draggables[d],
+            name,
+            backgroundColor[d],
+            language
+          )
+          .then(() => {
+            setTrackSaving(!trackSaving)
+            dispatch2(notify(ESavingSuccessful[language], false, 8))
+          })
+          .catch((error) => {
+            dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
+          })
+      } else {
+        dispatch2(notify(ELoginToSaveBlobs[language], true, 8))
+      }
+    } catch (error) {
+      dispatch2(notify(EError[language], true, 8))
+    }
+  }
+
+  const editBlobsByUser = async (versionName: string, newVersionName: string) => {
+    const newVersion = newVersionName.trim()
+    if (newVersionName.trim() === '') {
+      dispatch2(notify(ENameYourArtwork[language], true, 8))
+      return
+    } else if (newVersionName.trim().length > 30) {
+      dispatch2(
+        notify(
+          `${ENameTooLong[language]}. ${EAMaxOf30CharactersPlease[language]}`,
+          true,
+          8
+        )
+      )
+      return
+    } else {
+      try {
+        if (user?._id) {
+          blobService
+            .editBlobsByUser(
+              user?._id,
+              d,
+              draggables[d],
+              versionName,
+              backgroundColor[d],
+              language,
+              newVersion
+            )
+            .then(() => {
+              setTrackSaving(!trackSaving)
+              dispatch2(notify(ESavingSuccessful[language], false, 8))
+            })
+            .catch((error) => {
+              dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
+            })
+        } else {
+          dispatch2(notify(ELoginToSaveBlobs[language], true, 8))
+        }
+      } catch (error) {
+        dispatch2(notify(EError[language], true, 8))
+      }
+    }
+  }
+
+  const loadBlobsFromServer = (d: number, versionName: string) => {
+    const newVersion = versionName.trim()
+    if (user?._id) {
+      if (window.confirm(ENoteThatUnsavedChangesWillBeLost[language])) {
+        blobService
+          .getBlobsVersionByUser(user?._id, d, newVersion, language)
+          .then((response: SavedBlobs) => {
+            const highestLayerInDraggables = Math.max(
+              ...response.draggables.map((draggable: Draggable) => draggable.layer)
+            )
+            setLayerAmount(highestLayerInDraggables + 1)
+            setTimeout(() => {
+              saveLayerAmount(highestLayerInDraggables + 1)
+            }, 300)
+            dispatch({
+              type: 'setDraggablesAtD',
+              payload: { d, draggables: response.draggables },
+            })
+            dispatch({
+              type: 'setBackgroundColor',
+              payload: { d, backgroundColor: response.backgroundColor },
+            })
+            saveBackground(response.backgroundColor)
+          })
+          .then(() => {
+            setName(newVersion)
+            scrollToArt()
+
+            setTimeout(() => {
+              widthResize()
+            }, 300)
+          })
+          .catch((error) => {
+            dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
+          })
+      }
+    }
+  }
+
+  const deleteBlobsVersionFromServer = (d: number, versionName: string) => {
+    if (user._id) {
+      if (window.confirm(EAreYouSureYouWantToDeleteThisVersion[language])) {
+        blobService
+          .deleteBlobsVersionByUser(user._id, d, versionName, language)
+          .then(() => {
+            dispatch2(notify(EDeletedArt[language], false, 8))
+            setTrackSaving(!trackSaving)
+          })
+          .catch((error) => {
+            dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
+          })
+      }
+    }
   }
 
   useEffect(() => {
-    if (deleteId) {
-      props.dispatch({ type: 'removeDraggable', payload: { d: props.d, id: deleteId } })
-      setDeleteId('')
+    const fetchData = async () => {
+      await dispatch2(initializeUsers())
+      await dispatch2(initializeUser())
     }
-  }, [deleteId, props.d, props.dispatch])
+    fetchData()
+  }, [dispatch2])
+
+  useEffect(() => {
+    if (user) {
+      getBlobsFromServer()
+    }
+  }, [user, trackSaving])
+
+  function getHighestZIndex(draggables: Draggable[]): Record<number, number> {
+    return draggables.reduce((acc, draggable) => {
+      const zIndex = parseInt(draggable.z, 10)
+      const layer = draggable.layer
+      if (!acc[layer] || zIndex > acc[layer]) {
+        acc[layer] = zIndex
+      }
+      return acc
+    }, {} as Record<number, number>)
+  }
+
+  useEffect(() => {
+    const load = async () => {
+      const loadedDraggables = await loadDraggables()
+      const loadedBackgroundColor = await loadBackground()
+      const delay = setTimeout(async () => {
+        const loadedLayerAmount = await loadLayerAmount()
+        if (loadedBackgroundColor && loadedBackgroundColor.length === 3) {
+          dispatch({
+            type: 'setBackgroundColor',
+            payload: { d, backgroundColor: loadedBackgroundColor },
+          })
+          saveBackground(loadedBackgroundColor)
+
+          setSliderLightVal(loadedBackgroundColor[0])
+          setSliderSatVal(loadedBackgroundColor[1])
+          setSliderHueVal(loadedBackgroundColor[2])
+
+          dragWrapOuter.current?.style.setProperty(
+            `--lightness${d}`,
+            `${loadedBackgroundColor[0]}`
+          )
+          dragWrapOuter.current?.style.setProperty(
+            `--saturation${d}`,
+            `${loadedBackgroundColor[1]}`
+          )
+          dragWrapOuter.current?.style.setProperty(
+            `--hue${d}`,
+            `${loadedBackgroundColor[2]}`
+          )
+        } else {
+          dispatch({
+            type: 'setBackgroundColor',
+            payload: {
+              d,
+              backgroundColor: [defaultLightness, defaultSaturation, defaultHue],
+            },
+          })
+          saveBackground([defaultLightness, defaultSaturation, defaultHue])
+        }
+        if (loadedLayerAmount) {
+          setLayerAmount(loadedLayerAmount)
+        } else if (loadedDraggables && loadedDraggables.length > 0) {
+          setLayerAmount(Math.max(...loadedDraggables.map((d) => d.layer)) + 1)
+        }
+        if (loadedDraggables && loadedDraggables.length > 0) {
+          if (loadedDraggables && loadedDraggables.length > 0) {
+            makeFromStorage(loadedDraggables)
+          }
+
+          // dispatch({
+          //   type: 'setDraggablesAtD',
+          //   payload: { d, draggables: loadedDraggables },
+          // })
+          setHasBeenMade(true)
+        } else if (
+          (loadedDraggables === null || loadedDraggables === undefined) &&
+          !hasBeenMade
+        ) {
+          makeAnew(amountOfBlobs, d)
+          setHasBeenMade(true)
+        }
+      }, 300) // 300ms delay
+      return () => clearTimeout(delay)
+    }
+    load()
+  }, [])
+
+  useEffect(() => {
+    if (draggables[d] !== undefined && draggables[d]?.length > 0) {
+      saveDraggables()
+      const highestZ = getHighestZIndex(draggables[d])
+      setHighestZIndex(highestZ)
+    }
+  }, [draggables[d]])
+
+  function makeFromStorage(blobs: Draggable[]) {
+    if (!hasBeenMade && blobs && blobs?.length > 0) {
+      //dispatch({ type: 'resetBlobs', payload: {} })
+      for (let i: number = 0; i < blobs?.length; i++) {
+        if (blobs[i] !== null && blobs[i] !== undefined) {
+          const newDraggable = {
+            layer: blobs[i].layer,
+            id: `${blobs[i].id}`,
+            number: blobs[i].number,
+            i: blobs[i].i,
+            x: `${blobs[i].x}`,
+            y: `${blobs[i].y}`,
+            z: `${blobs[i].z}`,
+            background: `${
+              blobs[i].background ?? 'linear-gradient(90deg, cyan, greenyellow)'
+            }`,
+          }
+          dispatch({ type: 'addDraggable', payload: { d, draggable: newDraggable } })
+        }
+      }
+
+      // setLayerAmount(Math.max(...blobs.map((d) => d.layer)) + 1)
+    }
+    setHasBeenMade(true)
+  }
+
+  const handleMoveLeft = () => {
+    dispatch({ type: 'moveDraggablesLeft', payload: {} })
+  }
+  const handleMoveRight = () => {
+    dispatch({ type: 'moveDraggablesRight', payload: {} })
+  }
+  const handleMoveUp = () => {
+    dispatch({ type: 'moveDraggablesUp', payload: {} })
+  }
+  const handleMoveDown = () => {
+    dispatch({ type: 'moveDraggablesDown', payload: {} })
+  }
+
+  function stopSway(
+    e:
+      | MouseEventReact<HTMLButtonElement, MouseEvent>
+      | PointerEventReact<HTMLButtonElement>
+  ) {
+    e.preventDefault()
+
+    // if (!paused && dragWrap.current) {
+    //   setPaused(true)
+    //   dragWrap.current.classList.add('paused')
+    // } else if (paused && dragWrap.current) {
+    //   setPaused(false)
+    //   dragWrap.current.classList.remove('paused')
+    // }
+
+    const draggables = dragWrapOuter.current?.querySelectorAll('.dragzone')
+    if (draggables && !paused) {
+      draggables.forEach((draggable) => {
+        draggable.classList.remove('animation')
+        // Trigger a reflow to ensure the class removal is processed:
+        void (draggable as HTMLElement).offsetWidth
+      })
+      setPaused(true)
+    } else if (draggables) {
+      draggables.forEach((draggable) => {
+        draggable.classList.add('animation')
+        // Trigger a reflow to ensure the class addition is processed:
+        void (draggable as HTMLElement).offsetWidth
+      })
+      setPaused(false)
+    }
+  }
+  function toggleAnimation(element: HTMLElement) {
+    if (!paused) {
+      element.classList.remove('animation')
+      // Trigger a reflow to ensure the class removal is processed:
+      void element.offsetWidth
+      setPaused(true)
+    } else {
+      element.classList.add('animation')
+      void element.offsetWidth
+      setPaused(false)
+    }
+  }
+
+  useEffect(() => {
+    if (prefersReducedMotion && dragWrap.current) {
+      dragWrap.current.classList.add('paused')
+      setPaused(true)
+    }
+  }, [prefersReducedMotion])
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setPrefersReducedMotion(mediaQuery.matches)
+
+    const listener = () => setPrefersReducedMotion(mediaQuery.matches)
+    mediaQuery.addEventListener('change', listener)
+
+    return () => {
+      mediaQuery.removeEventListener('change', listener)
+    }
+  }, [])
+
+  const amountOfBlobs = windowWidth > 700 ? 10 : 6 // Initial amount of blobs
+
+  const escape = (e: KeyboardEvent) => {
+    switch (e.key) {
+      case 'Escape':
+        //e.preventDefault()
+        //e.stopImmediatePropagation()
+        setScroll(true)
+        document.body.style.overflowY = 'auto'
+        document.body.style.overflowX = 'hidden'
+        break
+    }
+  }
+  useEffect(() => {
+    window.addEventListener('keyup', escape)
+    return () => {
+      window.removeEventListener('keyup', escape)
+    }
+  }, [])
+
+  // Change every blob's layer by plus or minus one, unless any blob is already on the highest or lowest layer
+  const changeEveryLayer = (amount: number) => {
+    const isAnyOnLowestLayer = draggables[d].some(
+      (draggable) => draggable.layer === 0 && amount < 0
+    )
+    const isAnyOnHighestLayer = draggables[d].some(
+      (draggable) => draggable.layer === layerAmount - 1 && amount > 0
+    )
+
+    if (isAnyOnLowestLayer) {
+      dispatch2(notify(ECannotLowerEveryBlobFurther[language], true, 8))
+      return
+    }
+
+    if (isAnyOnHighestLayer) {
+      dispatch2(notify(ECannotRaiseEveryBlobFurther[language], true, 8))
+      return
+    }
+
+    const newDraggables = draggables[d].map((draggable) => {
+      const layer = draggable.layer + amount
+      if (layer >= 0 && layer < layerAmount) {
+        return { ...draggable, layer }
+      } else {
+        return draggable
+      }
+    })
+
+    dispatch({ type: 'setDraggablesAtD', payload: { d, draggables: newDraggables } })
+  }
+
+  function resetBlobsFunction(e: MouseEventReact | TouchEventReact | PointerEventReact) {
+    e.preventDefault()
+    if (window.confirm(`${EResetBlobs[language]}?`)) {
+      window.localStorage.removeItem(localStorageDraggables)
+      dispatch({ type: 'resetBlobs', payload: { d } })
+      dispatch({ type: 'setDraggablesAtD', payload: { d, draggables: [] } })
+      makeAnew(amountOfBlobs, d)
+      setTimeout(() => {
+        widthResize()
+        saveLayerAmount(defaultLayerAmount)
+      }, 300)
+    }
+  }
+
+  const makeAnew = (amount: number, d: number) => {
+    for (let i: number = 0; i < amount; i++) {
+      const colorswitch = () => {
+        const colorArray = d === 0 ? colorPairs : colorPairs2
+        const randomIndex = Math.floor(Math.random() * colorArray.length)
+        return [colorArray[randomIndex].color1, colorArray[randomIndex].color2]
+      }
+      const [colorFirst, colorSecond] = colorswitch()
+
+      const newDraggable: Draggable = {
+        layer: activeLayer,
+        id: `blob${i + 1}-${d}`,
+        number: i + 1,
+        i: windowWidth > 400 ? getRandomMinMax(7, 20) : getRandomMinMax(7, 10),
+        x:
+          windowWidth > windowHeight
+            ? `${(windowWidth / 100) * getRandomMinMax(2, 70)}px`
+            : `${(windowWidth / 100) * getRandomMinMax(2, 50)}px`,
+        y: `${(windowHeight / 100) * getRandomMinMax(2, 60)}px`,
+        z: `1`,
+        background: `linear-gradient(${angle ?? '90deg'}, ${colorFirst ?? 'cyan'},${
+          colorSecond ?? 'greenyellow'
+        })`,
+      }
+      dispatch({ type: 'addDraggable', payload: { d, draggable: newDraggable } })
+    }
+
+    setLayerAmount(defaultLayerAmount)
+  }
+
+  function getRandomMinMax(min: number, max: number) {
+    return Math.random() * (max - min) + min
+  }
+
+  const addRandomDraggable = () => {
+    if (hiddenLayers.has(activeLayer)) {
+      dispatch2(notify(ELayerHidden[language], true, 8))
+      return
+    }
+    const colorswitch = () => {
+      let number: number = Math.ceil(getRandomMinMax(0.001, 34))
+
+      switch (number) {
+        case 1:
+          color = 'cyan'
+          break
+        case 2:
+          color = 'lemonchiffon'
+          break
+        case 3:
+          color = 'pink'
+          break
+        case 4:
+          color = 'lemonchiffon'
+          break
+        case 5:
+          color = 'orangered'
+          break
+        case 6:
+          color = 'magenta'
+          break
+        case 7:
+          color = 'deepskyblue'
+          break
+        case 8:
+          color = 'darkorange'
+          break
+        case 9:
+          color = 'tomato'
+          break
+        case 10:
+          color = 'violet'
+          break
+        case 11:
+          color = 'dodgerblue'
+          break
+        case 12:
+          color = 'greenyellow'
+          break
+        case 13:
+          color = 'orange'
+          break
+        case 14:
+          color = 'silver'
+          break
+        case 15:
+          color = 'darkgray'
+          break
+        case 16:
+          color = 'gray'
+          break
+        case 17:
+          color = 'hotpink'
+          break
+        case 18:
+          color = 'saddlebrown'
+          break
+        case 19:
+          color = 'sandybrown'
+          break
+        case 20:
+          color = 'rosybrown'
+          break
+        case 21:
+          color = 'dimgray'
+          break
+        case 22:
+          color = 'darkkhaki'
+          break
+        case 23:
+          color = 'darkseagreen'
+          break
+        case 24:
+          color = 'slateblue'
+          break
+        case 25:
+          color = 'royalblue'
+          break
+        case 26:
+          color = 'moccasin'
+          break
+        case 27:
+          color = 'burlywood'
+          break
+        case 28:
+          color = 'chocolate'
+          break
+        case 29:
+          color = 'cadetblue'
+          break
+        case 30:
+          color = 'mediumpurple'
+          break
+        case 31:
+          color = 'sienna'
+          break
+        case 32:
+          color = 'peru'
+          break
+        case 33:
+          color = 'indianred'
+          break
+        case 34:
+          color = 'palevioletred'
+          break
+        default:
+          color = 'cyan'
+          break
+      }
+      return color
+    }
+
+    const colorFirst = colorswitch()
+    const colorSecond = colorswitch()
+
+    const maxId = Math.max(
+      ...draggables[d].map((draggable: Draggable) =>
+        parseInt(draggable.id.split('-')[0].replace('blob', ''), 10)
+      )
+    )
+
+    const newDraggable: Draggable = {
+      layer: activeLayer,
+      id: `blob${maxId + 1}-${d}`,
+      number: maxId + 1,
+      i: Math.ceil(getRandomMinMax(6.5, 10)),
+      x: `${(windowWidth / 100) * getRandomMinMax(25, 55)}px`,
+      y: `${(windowHeight / 100) * getRandomMinMax(2, 15)}px`,
+      z: `${highestZIndex[activeLayer] + 1}`,
+      background: `linear-gradient(${angle ?? '90deg'}, ${colorFirst ?? 'cyan'},${
+        colorSecond ?? 'greenyellow'
+      })`,
+    }
+    dispatch({ type: 'addDraggable', payload: { d, draggable: newDraggable } })
+  }
+
+  const getPosition = (draggable: HTMLElement) => {
+    const blobID = draggable.id
+    const blobNumber = parseInt(draggable.id.replace('blob', '').split('-')[0], 10)
+    const blobI = draggable.style.getPropertyValue('--i')
+    const blobX = draggable.style.getPropertyValue('left')
+    const blobY = draggable.style.getPropertyValue('top')
+    const blobZ = draggable.style.getPropertyValue('z-index')
+    const blobColor1 = draggable.style.getPropertyValue('background')
+    const layer = draggable.style.getPropertyValue('--layer')
+
+    const blobDraggable: Draggable = {
+      layer: layer ? parseInt(layer) : activeLayer,
+      id: blobID,
+      number: blobNumber,
+      i: parseFloat(blobI),
+      x: blobX,
+      y: blobY,
+      z: blobZ,
+      background: blobColor1 ?? 'linear-gradient(90deg, cyan, greenyellow)',
+    }
+
+    dispatch({
+      type: 'updateDraggable',
+      payload: { d, draggable: blobDraggable },
+    })
+  }
+
+  useEffect(() => {
+    if (!scroll) {
+      document.addEventListener('touchmove', preventDefault, { passive: false })
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflowY = 'auto'
+      document.body.style.overflowX = 'hidden'
+      document.removeEventListener('touchmove', preventDefault)
+    }
+    return () => {
+      document.body.style.overflowY = 'auto'
+      document.body.style.overflowX = 'hidden'
+      document.removeEventListener('touchmove', preventDefault)
+    }
+  }, [scroll])
+
+  function disableScroll() {
+    setScroll(!scroll)
+  }
+
+  // SLIDERS
+
+  const [sliderLightVal, setSliderLightVal] = useState(() => {
+    const savedBackground = localStorage.getItem(localStorageBackground)
+    const backgroundColor = savedBackground ? JSON.parse(savedBackground) : null
+    return backgroundColor?.[0] ?? defaultLightness
+  })
+  const [sliderSatVal, setSliderSatVal] = useState(() => {
+    const savedBackground = localStorage.getItem(localStorageBackground)
+    const backgroundColor = savedBackground ? JSON.parse(savedBackground) : null
+    return backgroundColor?.[1] ?? defaultSaturation
+  })
+
+  const [sliderHueVal, setSliderHueVal] = useState(() => {
+    const savedBackground = localStorage.getItem(localStorageBackground)
+    const backgroundColor = savedBackground ? JSON.parse(savedBackground) : null
+    return backgroundColor?.[2] ?? defaultHue
+  })
+
+  const [dragWrapOuterLightness, setDragWrapOuterLightness] = useState<CSSProperties>(
+    sliderLightnessInput.current
+      ? {
+          [`--lightness${d}` as string]: `${sliderLightnessInput.current.value}`,
+        }
+      : {
+          [`--lightness${d}` as string]: `${sliderLightVal}`,
+        }
+  )
+  const [dragWrapOuterSaturation, setDragWrapOuterSaturation] = useState<CSSProperties>(
+    sliderSaturationInput.current
+      ? {
+          [`--saturation${d}` as string]: `${sliderSaturationInput.current.value}`,
+        }
+      : {
+          [`--saturation${d}` as string]: `${sliderSatVal}`,
+        }
+  )
+  const [dragWrapOuterHue, setDragWrapOuterHue] = useState<CSSProperties>(
+    sliderHueInput.current
+      ? {
+          [`--hue${d}` as string]: `${sliderHueInput.current.value}`,
+        }
+      : {
+          [`--hue${d}` as string]: `${sliderHueVal}`,
+        }
+  )
+
+  function sliderLightness() {
+    if (dragWrapOuter.current) {
+      setDragWrapOuterLightness({ [`--lightness${d}` as string]: `${sliderLightVal}` })
+
+      const updatedBackgroundColor = JSON.parse(JSON.stringify(backgroundColor))
+      updatedBackgroundColor[d][0] = sliderLightVal
+      dispatch({
+        type: 'setBackgroundColor',
+        payload: { d, backgroundColor: updatedBackgroundColor[d] },
+      })
+      saveBackground(updatedBackgroundColor[d])
+    }
+  }
+  function sliderSaturation() {
+    if (dragWrapOuter.current) {
+      setDragWrapOuterSaturation({ [`--saturation${d}` as string]: `${sliderSatVal}` })
+      const updatedBackgroundColor = JSON.parse(JSON.stringify(backgroundColor))
+      updatedBackgroundColor[d][1] = sliderSatVal
+      dispatch({
+        type: 'setBackgroundColor',
+        payload: { d, backgroundColor: updatedBackgroundColor[d] },
+      })
+      saveBackground(updatedBackgroundColor[d])
+    }
+  }
+  function sliderHue() {
+    if (dragWrapOuter.current) {
+      setDragWrapOuterHue({ [`--hue${d}` as string]: `${sliderHueVal}` })
+      const updatedBackgroundColor = JSON.parse(JSON.stringify(backgroundColor))
+      updatedBackgroundColor[d][2] = sliderHueVal
+      dispatch({
+        type: 'setBackgroundColor',
+        payload: { d, backgroundColor: updatedBackgroundColor[d] },
+      })
+      saveBackground(updatedBackgroundColor[d])
+    }
+  }
+
+  //To force the sliders to update
+  useEffect(() => {
+    if (sliderLightnessInput.current)
+      setSliderLightVal(sliderLightnessInput.current.value)
+  }, [sliderLightnessInput?.current?.value])
+
+  useEffect(() => {
+    if (sliderSaturationInput.current)
+      setSliderSatVal(sliderSaturationInput.current.value)
+  }, [sliderSaturationInput?.current?.value])
+
+  useEffect(() => {
+    if (sliderHueInput.current) setSliderHueVal(sliderHueInput.current.value)
+  }, [sliderHueInput?.current?.value])
+
+  function sliderLightnessReset() {
+    setDragWrapOuterLightness({ [`--lightness${d}` as string]: `${defaultLightness}` })
+    if (sliderLightnessInput.current)
+      sliderLightnessInput.current.value = defaultLightness
+    setSliderLightVal(defaultLightness)
+    const updatedBackgroundColor = JSON.parse(JSON.stringify(backgroundColor))
+    updatedBackgroundColor[d][0] = defaultLightness
+    saveBackground(updatedBackgroundColor[d])
+    dispatch({
+      type: 'setBackgroundColor',
+      payload: { d, backgroundColor: updatedBackgroundColor[d] },
+    })
+  }
+
+  function sliderSaturationReset() {
+    setDragWrapOuterSaturation({ [`--saturation${d}` as string]: `${defaultSaturation}` })
+    if (sliderSaturationInput.current)
+      sliderSaturationInput.current.value = defaultSaturation
+    setSliderSatVal(defaultSaturation)
+    const updatedBackgroundColor = JSON.parse(JSON.stringify(backgroundColor))
+    updatedBackgroundColor[d][1] = defaultSaturation
+    saveBackground(updatedBackgroundColor[d])
+    dispatch({
+      type: 'setBackgroundColor',
+      payload: { d, backgroundColor: updatedBackgroundColor[d] },
+    })
+  }
+
+  function sliderHueReset() {
+    //dragWrapOuter.current?.style.setProperty(`--hue${d}`, `${sliderHueVal}`)
+    setDragWrapOuterHue({ [`--hue${d}` as string]: `${defaultHue}` })
+    if (sliderHueInput.current) sliderHueInput.current.value = defaultHue
+    setSliderHueVal(defaultHue)
+    const updatedBackgroundColor = JSON.parse(JSON.stringify(backgroundColor))
+    updatedBackgroundColor[d][2] = defaultHue
+    saveBackground(updatedBackgroundColor[d])
+    dispatch({
+      type: 'setBackgroundColor',
+      payload: { d, backgroundColor: updatedBackgroundColor[d] },
+    })
+  }
+
+  //END SLIDERS
+
+  useEffect(() => {
+    widthResize()
+  }, [windowWidth, windowHeight, scroll])
+
+  const widthResize = () => {
+    const n = [19, 39, 59, 79]
+    //place these items every time the window is resized
+    if (layerIncrease.current && dragWrap.current) place(layerIncrease.current, 57, 93.5)
+    if (layerDecrease.current && dragWrap.current)
+      place(
+        layerDecrease.current,
+        43 - (layerDecrease.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
+        93.5
+      )
+    if (makeSmaller0.current && dragWrap.current)
+      place(
+        makeSmaller0.current,
+        87 - (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
+        93
+      )
+    if (deleteBlob0.current && dragWrap.current) place(deleteBlob0.current, 13, 93)
+
+    if (makeLarger0.current && dragWrap.current)
+      place(
+        makeLarger0.current,
+        77 - (makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
+        0.5
+      )
+
+    if (colorBlockOrange.current && dragWrap.current)
+      place(colorBlockOrange.current, 0, n[0])
+    if (colorBlockRed.current && dragWrap.current) place(colorBlockRed.current, 0, n[1])
+    if (colorBlockPurple.current && dragWrap.current)
+      place(colorBlockPurple.current, 0, n[2])
+    if (colorBlockBlue.current && dragWrap.current) place(colorBlockBlue.current, 0, n[3])
+
+    if (colorBlockYellowLime.current && dragWrap.current)
+      place(
+        colorBlockYellowLime.current,
+        100 -
+          (colorBlockYellowLime.current.offsetWidth / dragWrap.current?.offsetWidth) *
+            100,
+        19
+      )
+    if (colorBlockCyanYellow.current && dragWrap.current)
+      place(
+        colorBlockCyanYellow.current,
+        100 -
+          (colorBlockCyanYellow.current.offsetWidth / dragWrap.current?.offsetWidth) *
+            100,
+        37
+      )
+    if (colorBlockCyanPink.current && dragWrap.current)
+      place(
+        colorBlockCyanPink.current,
+        100 -
+          (colorBlockCyanPink.current.offsetWidth / dragWrap.current?.offsetWidth) * 100,
+        57
+      )
+    if (colorBlockPinkYellow.current && dragWrap.current)
+      place(
+        colorBlockPinkYellow.current,
+        100 -
+          (colorBlockPinkYellow.current.offsetWidth / dragWrap.current?.offsetWidth) *
+            100,
+        77
+      )
+
+    if (colorBlockTomato.current && dragWrap.current)
+      place(colorBlockTomato.current, 0, n[0])
+    if (colorBlockBrown.current && dragWrap.current)
+      place(colorBlockBrown.current, 0, n[1])
+    if (colorBlockTan.current && dragWrap.current) place(colorBlockTan.current, 0, n[2])
+    if (colorBlockKhaki.current && dragWrap.current)
+      place(colorBlockKhaki.current, 0, n[3])
+    if (colorBlockPurplish.current && dragWrap.current)
+      place(
+        colorBlockPurplish.current,
+        100 -
+          (colorBlockPurplish.current.offsetWidth / dragWrap.current?.offsetWidth) * 100,
+        n[0]
+      )
+    if (colorBlockBluish.current && dragWrap.current)
+      place(
+        colorBlockBluish.current,
+        100 -
+          (colorBlockBluish.current.offsetWidth / dragWrap.current?.offsetWidth) * 100,
+        n[1]
+      )
+    if (colorBlockGray.current && dragWrap.current)
+      place(
+        colorBlockGray.current,
+        100 - (colorBlockGray.current.offsetWidth / dragWrap.current?.offsetWidth) * 100,
+        n[2]
+      )
+    if (colorBlockGreenish.current && dragWrap.current)
+      place(
+        colorBlockGreenish.current,
+        100 -
+          (colorBlockGreenish.current.offsetWidth / dragWrap.current?.offsetWidth) * 100,
+        n[3]
+      )
+  }
+
+  function place(element: HTMLElement, x_pos: number, y_pos: number) {
+    if (element && dragWrap.current) {
+      element.style.left = (dragWrap.current.offsetWidth / 100) * x_pos + 'px'
+      element.style.top = (dragWrap.current.offsetHeight / 100) * y_pos + 'px'
+    }
+  }
+
+  useEffect(() => {
+    if (focusedBlob) {
+      if (markerDivRef.current) {
+        markerDivRef.current.style.top = `${focusedBlob.top}px`
+        markerDivRef.current.style.left = `${focusedBlob.left}px`
+        markerDivRef.current.style.width = `${focusedBlob.width}px`
+        markerDivRef.current.style.height = `${focusedBlob.height}px`
+      }
+    }
+  }, [focusedBlob])
+
+  const navigate = useNavigate()
+
+  const navigateToRegister = () => {
+    navigate('/portfolio/blob?register=register')
+  }
+
+  const navigateToLogin = () => {
+    navigate('/portfolio/blob?login=login')
+  }
+
+  const scrollToArt = () => {
+    const scrollTarget = document.getElementById(`button-container${d}`)
+    if (scrollTarget) {
+      scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
+  const imgStyle: CSSProperties = {
+    width: '100%',
+    height: 'auto',
+    margin: '0 auto',
+  }
+
+  const takeScreenshot = async () => {
+    const dragWrap = document.getElementById('drag-wrap' + d)
+    if (dragWrap && !loading) {
+      try {
+        let localStorageData: { [key: string]: string } = {}
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i)
+          if (key) {
+            const value = localStorage.getItem(key)
+            if (value !== null) {
+              localStorageData[key] = value
+            }
+          }
+        }
+        setLoading(true)
+        const url =
+          import.meta.env.VITE_BASE_URI ??
+          'https://react-bg.braveisland-7060f196.westeurope.azurecontainerapps.io'
+        const baseUrl = `${url}/api/blobs/screenshot`
+        const response = await fetch(baseUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            url: window.location.href,
+            selector: `#drag-wrap${d}`,
+            language,
+            localStorageData,
+            width: windowWidth,
+            height: windowHeight,
+          }),
+        })
+
+        if (!response.ok) {
+          dispatch2(notify(EError[language], true, 8))
+          setLoading(false)
+          throw new Error(`Error: ${response.statusText}`)
+        }
+
+        const data = await response.json()
+
+        const container = blobScreenshot.current
+        const img = screenshotImg.current
+
+        if (container && img) {
+          img.src = `data:image/png;base64,${data.screenshot}`
+          container.style.display = 'block'
+          img.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          dispatch2(
+            notify(
+              `${EScreenshotTaken[language]}; ${EYouMayFindTheImageBelow[language]}`,
+              false,
+              10
+            )
+          )
+          setLoading(false)
+          setScroll(true)
+        }
+      } catch (error) {
+        dispatch2(notify(EError[language], true, 8))
+        console.error(EError[language], error)
+      }
+    }
+  }
+
+  const saveScreenshot = () => {
+    const img = screenshotImg.current
+    if (img && img.src) {
+      const link = document.createElement('a')
+      link.href = img.src
+      link.download = 'blobs.png'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      dispatch2(notify(EArtSaved[language], false, 8))
+    } else {
+      dispatch2(notify(ENoScreenshotAvailableToSave[language], true, 8))
+      console.error(ENoScreenshotAvailableToSave[language])
+    }
+  }
+
+  useEffect(() => {
+    if (loading) dispatch2(notify(`${ELoading[language]}...`, false, 20))
+  }, [loading])
+
+  const [itemsPerPage, setItemsPerPage] = useState(6)
+
+  const [currentPage, setCurrentPage] = useState<Record<number, number>>({ [d]: 1 })
+
+  // Function to handle page change
+  const handlePageChange = (dKey: number, newPage: number) => {
+    setCurrentPage((prev) => ({ ...prev, [dKey]: newPage }))
+  }
+
+  // //save layer amount to local storage
+  // useEffect(() => {
+  //   saveLayerAmount()
+  // }, [layerAmount])
+
+  const deleteHiddenLayers = () => {
+    // Check if there are any hidden layers
+    if (hiddenLayers.size === 0) {
+      dispatch2(notify('Please hide the layers you want to delete.', true, 8))
+      return
+    }
+
+    // Check if any hidden layers are not empty
+    const nonEmptyHiddenLayers = Array.from(hiddenLayers).filter((layer) =>
+      draggables[d].some((draggable) => draggable.layer === layer)
+    )
+
+    if (nonEmptyHiddenLayers.length > 0) {
+      const confirmDelete = window.confirm(
+        `${ELayerNotEmpty[language]}. ${EAreYouSureYouWantToProceed[language]}`
+      )
+      if (!confirmDelete) {
+        return
+      }
+    }
+
+    // Remove hidden layers
+    const newDraggables = draggables[d].filter(
+      (draggable) => !hiddenLayers.has(draggable.layer)
+    )
+
+    const newLayerAmount = layerAmount - hiddenLayers.size
+
+    if (newLayerAmount < 1) {
+      dispatch2(notify(EMustHaveAtLeastOneLayer[language], true, 8))
+      return
+    }
+
+    // Adjust layers of remaining draggables
+    const updatedDraggables = newDraggables.map((draggable) => {
+      const layer = draggable.layer
+      let newLayer = layer
+      hiddenLayers.forEach((hiddenLayer) => {
+        if (layer > hiddenLayer) {
+          newLayer -= 1
+        }
+      })
+      return { ...draggable, layer: newLayer }
+    })
+
+    dispatch({
+      type: 'setDraggablesAtD',
+      payload: { d, draggables: updatedDraggables },
+    })
+
+    setLayerAmount(newLayerAmount)
+    saveLayerAmount(newLayerAmount)
+    setHiddenLayers(new Set()) // Reset hidden layers
+    setTimeout(() => {
+      widthResize()
+    }, 300)
+  }
+
+  const addToLayerAmount = (byAmount: number) => {
+    const newLayerAmount = layerAmount + byAmount
+
+    if (newLayerAmount > 9) {
+      dispatch2(notify(EMaximumLayerAmountReached[language], true, 8))
+      return
+    }
+
+    // Adjust layers of remaining draggables
+    const updatedDraggables = draggables[d].map((draggable) => {
+      const layer =
+        draggable.layer > activeLayer ? draggable.layer + byAmount : draggable.layer
+      return { ...draggable, layer }
+    })
+
+    dispatch({
+      type: 'setDraggablesAtD',
+      payload: { d, draggables: updatedDraggables },
+    })
+
+    setLayerAmount(newLayerAmount)
+    saveLayerAmount(newLayerAmount)
+    setHiddenLayers(new Set()) // Reset hidden layers
+    setTimeout(() => {
+      widthResize()
+    }, 300)
+  }
+
+  const pagination = (dKey: string, current: number, totalPages: number) => {
+    return hasSavedFiles ? (
+      <div className='pagination-controls flex center gap-half margin0auto'>
+        {current !== 1 ? (
+          <>
+            <button
+              onClick={() => handlePageChange(Number(dKey), 1)}
+              disabled={current === 1}
+              className='btn-small pagination-btn'
+            >
+              &laquo;&nbsp;<span className='scr'>{EBackToStart[language]}</span>
+            </button>
+            <button
+              onClick={() => handlePageChange(Number(dKey), Math.max(current - 1, 1))}
+              disabled={current === 1}
+              className='btn-small pagination-btn'
+            >
+              &nbsp;&lsaquo;&nbsp;<span className='scr'>{EPrevious[language]}</span>
+            </button>
+          </>
+        ) : (
+          <></>
+        )}
+        <span>
+          {EPage[language]} {current} / {totalPages}
+        </span>
+        {current !== totalPages ? (
+          <>
+            <button
+              onClick={() =>
+                handlePageChange(Number(dKey), Math.min(current + 1, totalPages))
+              }
+              disabled={current === totalPages}
+              className='btn-small pagination-btn'
+            >
+              <span className='scr'>{ENext[language]}</span>&nbsp;&rsaquo;&nbsp;
+            </button>
+
+            <button
+              onClick={() => handlePageChange(Number(dKey), totalPages)}
+              disabled={current === totalPages}
+              className='btn-small pagination-btn'
+            >
+              <span className='scr'>{EToLastPage[language]}</span>&nbsp;&raquo;
+            </button>
+          </>
+        ) : (
+          <></>
+        )}
+      </div>
+    ) : (
+      <></>
+    )
+  }
 
   return (
     <>
-      {layers.map((layer) => (
-        <DragComponent
-          key={layer}
-          layer={layer}
-          dragUlRef={layerRefs.current[layer]}
-          items={groupedDraggables[layer] || []}
-          className={props.hiddenLayers.has(layer) ? 'hidden' : ''}
-          language={props.language}
-          d={props.d}
-          saveDraggables={props.saveDraggables}
-          dragWrap={props.dragWrap}
-          selectedvalue0={props.selectedvalue0}
-          focusedBlob={props.focusedBlob}
-          setFocusedBlob={props.setFocusedBlob}
-          start={start}
-          movement={movement}
-          stopMovementCheck={stopMovementCheck}
-          stopMoving={stopMoving}
-          wheel={wheel}
-          focused={focused}
-          blurred={blurred}
+      <section id={`drag-container${d}`} className={`drag-container drag-container${d}`}>
+        <div className='blob-title-wrap'>
+          <h2 className='blob-title'>
+            {EBlobApp[language]} {d + 1}
+          </h2>
+          {d === 1 ? (
+            <p>
+              {EWithMoreMutedColors[language]}.{' '}
+              {EMoreColorsAvailableThroughRandomBlobButton[language]}
+            </p>
+          ) : (
+            <p>{EMoreColorsAvailableThroughRandomBlobButton[language]}</p>
+          )}
+        </div>
+        <div className={'label-container'}>
+          <span id={`blobdescription${d}`} className={'scr'}>
+            {ETryDraggingTheBlobs[language]}
+          </span>
+          <span>
+            [{ELayer[language]}: {activeLayer + 1}]{' '}
+          </span>
+          <span ref={selectedvalue0} id={`selectedvalue${d}`} className='selectedvalue'>
+            {ESelectedBlobNone[language]}
+          </span>
+        </div>
+        <div id={`button-container${d}`} className={'button-container'}>
+          <button
+            ref={stopBlobs}
+            id={`stop-blobs${d}`}
+            className='stop-blobs'
+            onClick={(e) => {
+              stopSway(e)
+            }}
+          >
+            {paused ? EStartSway[language] : EStopSway[language]}
+          </button>
+          <button
+            ref={resetBlobs}
+            id={`reset-blobs${d}`}
+            className='reset-blobs'
+            onClick={(e) => {
+              resetBlobsFunction(e)
+            }}
+          >
+            {EReset[language]}
+          </button>
+          <button
+            className='toggle-marker tooltip-wrap'
+            onClick={() => setMarkerEnabled(!markerEnabled)}
+          >
+            <span
+              className='tooltip left above space'
+              data-tooltip={`${EToggleMarkerVisibilityWhenUsingAKeyboard[language]}`}
+            ></span>
+            {markerEnabled ? EMarkerOn[language] : EMarkerOff[language]}
+          </button>
+
+          <button
+            ref={disableScrollButton}
+            id={`disable-scroll${d}`}
+            className={`disable-scroll tooltip-wrap ${!scroll ? 'active' : ''}`}
+            onClick={() => {
+              disableScroll()
+            }}
+          >
+            <span
+              className='tooltip right above space'
+              data-tooltip={
+                scroll
+                  ? EDisableScrollInOrderToUseTheMouseWheelToResizeABlob[language]
+                  : EPressHereOrEscapeToRestoreScrolling[language]
+              }
+            ></span>
+            {scroll ? EDisableScroll[language] : EEnableScroll[language]}
+          </button>
+
+          <button
+            id={`toggle-controls${d}`}
+            className='toggle-controls'
+            onClick={() => {
+              setControlsVisible(!controlsVisible)
+              if (!controlsVisible) {
+                setTimeout(() => {
+                  widthResize()
+                }, 200)
+              }
+            }}
+          >
+            {controlsVisible ? EHideControls[language] : EShowControls[language]}
+          </button>
+          <button
+            disabled={loading}
+            onClick={takeScreenshot}
+            className='reset screenshot tooltip-wrap'
+          >
+            <FaCamera />
+            <span
+              className='tooltip left below space'
+              data-tooltip={
+                loading ? ELoading[language] : EClickHereToTakeAScreenshot[language]
+              }
+            ></span>
+          </button>
+        </div>
+        <div
+          ref={dragWrapOuter}
+          id={`drag-wrap-outer${d}`}
+          className='drag-wrap-outer'
+          style={{
+            ...dragWrapOuterLightness,
+            ...dragWrapOuterSaturation,
+            ...dragWrapOuterHue,
+          }}
+        >
+          <button
+            ref={makeSmaller0}
+            className={`make-smaller tooltip-wrap reset ${
+              !controlsVisible ? 'hidden' : ''
+            }`}
+            id={`make-smaller${d}`}
+            role='tooltip'
+            aria-label={`${EShrinkInstructions[language]}. ${EAlternatively[language]}: ${EResizebyScrollInstructions[language]}`}
+          >
+            <ImShrink2 />
+            <span
+              className='tooltip left above'
+              data-tooltip={`${EShrinkInstructions[language]}. ${EAlternatively[language]}: ${EResizebyScrollInstructions[language]}`}
+            ></span>
+          </button>
+          <button
+            ref={makeLarger0}
+            className={`make-larger tooltip-wrap reset ${
+              !controlsVisible ? 'hidden' : ''
+            }`}
+            id={`make-larger${d}`}
+            role='tooltip'
+            aria-label={`${EEnlargeInstructions[language]}. ${EAlternatively[language]}: ${EResizebyScrollInstructions[language]}`}
+          >
+            <ImEnlarge2 />
+            <span
+              className='tooltip left below'
+              data-tooltip={`${EEnlargeInstructions[language]}. ${EAlternatively[language]}: ${EResizebyScrollInstructions[language]}`}
+            ></span>
+          </button>
+
+          <button
+            ref={makeMore0}
+            className={`make-more tooltip-wrap reset ${!controlsVisible ? 'hidden' : ''}`}
+            id={`make-more${d}`}
+            role='tooltip'
+            aria-label={ECloneInstructions[language]}
+          >
+            <FaRegClone />
+            <span
+              className='tooltip right below'
+              data-tooltip={ECloneInstructions[language]}
+            ></span>
+          </button>
+          <button
+            ref={makeRandom0}
+            className={`make-random tooltip-wrap  ${!controlsVisible ? 'hidden' : ''}`}
+            id={`make-random${d}`}
+            role='tooltip'
+            aria-label={`${EClickMeToMakeARandomBlob[language]}. ${EMoreColorsAvailable[language]}`}
+            onClick={() => addRandomDraggable()}
+          >
+            <FaPlus />
+            <span
+              className='tooltip left below'
+              data-tooltip={`${EClickMeToMakeARandomBlob[language]}. ${EMoreColorsAvailable[language]}!`}
+            ></span>
+          </button>
+          <button
+            ref={deleteBlob0}
+            className={`delete-blob tooltip-wrap reset ${
+              !controlsVisible ? 'hidden' : ''
+            }`}
+            id={`delete-blob${d}`}
+            role='tooltip'
+            aria-label={ERemovalInstructions[language]}
+          >
+            <FaTimes />
+            <span
+              className='tooltip right above'
+              data-tooltip={ERemovalInstructions[language]}
+            ></span>
+          </button>
+
+          {markerEnabled && usingKeyboard && focusedBlob && (
+            <div
+              ref={markerDivRef}
+              style={{
+                position: 'absolute',
+                top: `${focusedBlob.top}px`,
+                left: `${focusedBlob.left}px`,
+                width: `${focusedBlob.width}px`,
+                height: `${focusedBlob.height}px`,
+                outline: '3px dashed black',
+                outlineOffset: '2px',
+                border: '3px dashed white',
+                borderRadius: '50%',
+                zIndex: 1000,
+              }}
+            />
+          )}
+
+          <div ref={dragWrap} id={`drag-wrap${d}`} className='drag-wrap'>
+            <DragLayer
+              layerAmount={layerAmount}
+              layer={activeLayer}
+              hiddenLayers={hiddenLayers}
+              changeBlobLayer={changeBlobLayer}
+              setActiveLayer={setActiveLayer}
+              paused={paused}
+              setPaused={setPaused}
+              prefersReducedMotion={prefersReducedMotion}
+              highestZIndex={highestZIndex}
+              setHighestZIndex={setHighestZIndex}
+              language={language}
+              dispatch={dispatch}
+              d={d}
+              items={draggables[d] ?? []}
+              amountOfBlobs={amountOfBlobs}
+              saveDraggables={saveDraggables}
+              getPosition={getPosition}
+              colorBlockProps={colorBlockPropsCombo}
+              makeLarger0={makeLarger0}
+              makeSmaller0={makeSmaller0}
+              makeMore0={makeMore0}
+              deleteBlob0={deleteBlob0}
+              layerIncrease={layerIncrease}
+              layerDecrease={layerDecrease}
+              dragWrap={dragWrap}
+              exitApp={exitApp}
+              selectedvalue0={selectedvalue0}
+              dragWrapOuter={dragWrapOuter}
+              stopBlobs={stopBlobs}
+              disableScrollButton={disableScrollButton}
+              resetBlobs={resetBlobs}
+              getRandomMinMax={getRandomMinMax}
+              focusedBlob={focusedBlob}
+              setFocusedBlob={setFocusedBlob}
+              colorIndex={colorIndex}
+              setColorIndex={setColorIndex}
+              colorPairs={colorPairsCombo}
+              scroll={scroll}
+              setScroll={setScroll}
+              clickOutsideRef={dragWrap}
+            />
+          </div>
+
+          <div className={`movers-wrap movers-wrap1 ${!controlsVisible ? 'hidden' : ''}`}>
+            <button className={`moveleft mover`} onClick={handleMoveRight}>
+              <BiChevronsLeft />
+              <span className='scr'>{EMoveViewLeft[language]}</span>
+            </button>
+            <button className={`moveright mover`} onClick={handleMoveLeft}>
+              <BiChevronsRight />
+              <span className='scr'>{EMoveViewRight[language]}</span>
+            </button>
+          </div>
+          <div className={`movers-wrap movers-wrap2 ${!controlsVisible ? 'hidden' : ''}`}>
+            <button className={`moveup mover`} onClick={handleMoveDown}>
+              <BiChevronsUp />
+              <span className='scr'>{EMoveViewUp[language]}</span>
+            </button>
+            <button className={`movedown mover`} onClick={handleMoveUp}>
+              <BiChevronsDown />
+              <span className='scr'>{EMoveViewDown[language]}</span>
+            </button>
+          </div>
+
+          <button
+            ref={layerDecrease}
+            id={`layer-decrease${d}`}
+            className={`layer-adjust layer-decrease tooltip-wrap ${
+              !controlsVisible ? 'hidden' : ''
+            }`}
+          >
+            <span
+              className='tooltip above right'
+              data-tooltip={`${EDecreaseBlobLayerBy1Instructions[language]} ${EKeyboardUsePressTheCorrespondingLayerNumber[language]}`}
+            ></span>
+            <BiChevronDown />
+          </button>
+          <button
+            ref={layerIncrease}
+            id={`layer-increase${d}`}
+            className={`layer-adjust layer-increase tooltip-wrap ${
+              !controlsVisible ? 'hidden' : ''
+            }`}
+          >
+            <span
+              className='tooltip above left'
+              data-tooltip={`${EIncreaseBlobLayerBy1Instructions[language]} ${EKeyboardUsePressTheCorrespondingLayerNumber[language]}`}
+            ></span>
+            <BiChevronUp />
+          </button>
+
+          <ColorBlocks
+            d={d}
+            language={language}
+            getRefName={getRefName}
+            map={refNameMappingCombo}
+            colorBlockProps={colorBlockPropsCombo}
+            colorPairs={colorPairsCombo}
+            controlsVisible={controlsVisible}
+          />
+        </div>
+        <div className='layer-control-wrap layer-buttons'>
+          <div className='layer-btn-wrap'>
+            <button
+              className='layer-amount decrease-layer-amount tooltip-wrap'
+              onClick={deleteHiddenLayers}
+            >
+              <span
+                className='tooltip above right'
+                data-tooltip={EDeleteHiddenLayers[language]}
+              ></span>
+              <BiMinus />
+            </button>
+            <button
+              id={`every-layer-minus${d}`}
+              className='layer-button every-layer tooltip-wrap'
+              onClick={() => changeEveryLayer(-1)}
+            >
+              <span
+                className='tooltip above right'
+                data-tooltip={EClickHereToMoveDownLayer[language]}
+              ></span>
+              <BiChevronsDown />
+            </button>
+          </div>
+          <div className='layer-btn-wrap'>
+            {Array.from({ length: layerAmount }, (_, i) => i).map((layer, index) => (
+              <button
+                key={`${layer}*${index}`}
+                onClick={() => {
+                  if (activeLayer === layer) {
+                    toggleLayerVisibility(layer)
+                  } else {
+                    setActiveLayer(layer)
+                  }
+                }}
+                className={`layer-button tooltip-wrap ${
+                  activeLayer === layer ? 'active' : ''
+                } ${hiddenLayers.has(layer) ? 'dim' : ''}`}
+              >
+                <span
+                  className='tooltip above right'
+                  data-tooltip={
+                    activeLayer === layer
+                      ? EToggleLayerByClickingMe[language]
+                      : EChangeLayerByClickingMe[language]
+                  }
+                ></span>
+                <span className='scr'>{ELayer[language]}</span> {layer + 1}
+              </button>
+            ))}
+          </div>
+          <div className='layer-btn-wrap'>
+            <button
+              className='layer-button every-layer tooltip-wrap'
+              onClick={() => changeEveryLayer(1)}
+            >
+              <span
+                className='tooltip above left'
+                data-tooltip={EClickHereToMoveUpLayer[language]}
+              ></span>
+              <BiChevronsUp />
+            </button>
+            <button
+              className='layer-amount increase-layer-amount tooltip-wrap'
+              onClick={() => addToLayerAmount(1)}
+            >
+              <span
+                className='tooltip above left'
+                data-tooltip={EGetMoreLayers[language]}
+              ></span>
+              <BiPlus />
+            </button>
+          </div>
+        </div>
+        <Sliders
+          d={d}
+          defaultHue={defaultHue}
+          defaultSaturation={defaultSaturation}
+          defaultLightness={defaultLightness}
+          setSliderHueVal={setSliderHueVal}
+          setSliderSatVal={setSliderSatVal}
+          setSliderLightVal={setSliderLightVal}
+          language={language}
+          sliderLightness={sliderLightness}
+          sliderSaturation={sliderSaturation}
+          sliderHue={sliderHue}
+          sliderLightnessReset={sliderLightnessReset}
+          sliderSaturationReset={sliderSaturationReset}
+          sliderHueReset={sliderHueReset}
+          sliderLightVal={sliderLightVal}
+          sliderSatVal={sliderSatVal}
+          sliderHueVal={sliderHueVal}
+          sliderLightnessInput={sliderLightnessInput}
+          sliderSaturationInput={sliderSaturationInput}
+          sliderHueInput={sliderHueInput}
         />
-      ))}
+        <div ref={exitApp} id={`exitblob${d}`} className='exitblob' role='dialog'></div>
+        {user ? (
+          <div className='blob-handling'>
+            <div className='full wide flex column center gap'>
+              <form onSubmit={(e) => saveBlobsToServer(e)}>
+                <div className='input-wrap'>
+                  <label htmlFor={`blobname${d}`}>
+                    <input
+                      id={`blobname${d}`}
+                      type='text'
+                      value={name}
+                      onChange={handleNameChange}
+                      placeholder={ENameYourArtwork[language]}
+                      maxLength={30}
+                    />
+                    <span>{ENameYourArtwork[language]}:</span>
+                  </label>
+                </div>
+                <button type='submit'>{ESave[language]}</button>
+              </form>
+            </div>
+            <div
+              ref={blobScreenshot}
+              id={`blob-screenshot${d}`}
+              style={{ display: 'none' }}
+            >
+              <button onClick={saveScreenshot}>{EDownload[language]}</button>
+              <img
+                src=''
+                ref={screenshotImg}
+                alt={EScreenshot[language]}
+                style={imgStyle}
+              />
+              <button onClick={saveScreenshot}>{EDownload[language]}</button>
+            </div>
+            <h2>{EArt[language]}</h2>
+            {isLoading ? (
+              <p>{ELoadingSavedArtwork[language]}</p>
+            ) : !users || users.length < 1 ? (
+              <p>{EErrorConnectingToTheServer[language]}</p>
+            ) : !hasSavedFiles ? (
+              <p>{ENoSavedArtworkYet[language]}</p>
+            ) : (
+              Object.keys(savedDraggablesbyD).map((dKey, index) => {
+                const versions = Object.keys(savedDraggablesbyD[Number(dKey)])
+                const totalPages = Math.ceil(versions.length / itemsPerPage)
+                const current = currentPage[Number(dKey)] ?? 1
+                const startIdx = (current - 1) * itemsPerPage
+                const endIdx = startIdx + itemsPerPage
+                const currentVersions = versions.slice(startIdx, endIdx)
+
+                return (
+                  <Fragment key={`${dKey}:${index}`}>
+                    {pagination(dKey, current, totalPages)}
+                    <ul key={`${dKey}+${index}`} className='blob-versions-wrap'>
+                      {currentVersions.map((versionName, index) => (
+                        <li key={`${versionName}+${index}`} className='blob-version-item'>
+                          <span>{versionName}</span>
+                          <div className='button-wrap'>
+                            <button
+                              onClick={() =>
+                                loadBlobsFromServer(Number(dKey), versionName)
+                              }
+                            >
+                              {ELoad[language]}
+                            </button>
+                            <button
+                              onClick={() =>
+                                deleteBlobsVersionFromServer(Number(dKey), versionName)
+                              }
+                            >
+                              {EDelete[language]}
+                            </button>
+                            <Accordion
+                              language={language}
+                              id={`accordion-blobnewname-${versionName.replace(
+                                /\s/g,
+                                '-'
+                              )}`}
+                              className='blobnewname'
+                              text={ERename[language]}
+                              hideBrackets={true}
+                              onClick={() => {
+                                setNewName(versionName)
+                                setEditName(versionName)
+                              }}
+                              isOpen={editName === versionName}
+                            >
+                              <div className='input-wrap'>
+                                <label
+                                  htmlFor={`blobnewname-${versionName.replace(
+                                    /\s/g,
+                                    '-'
+                                  )}`}
+                                >
+                                  <input
+                                    id={`blobnewname-${versionName.replace(/\s/g, '-')}`}
+                                    type='text'
+                                    value={newName}
+                                    onChange={handleNewNameChange}
+                                    placeholder={ERenameYourArtwork[language]}
+                                    maxLength={30}
+                                  />
+                                  <span>{ERename[language]}:</span>
+                                </label>
+                              </div>
+                              <button
+                                onClick={() => {
+                                  if (versionName !== newName) {
+                                    editBlobsByUser(versionName, newName)
+                                  } else
+                                    dispatch2(
+                                      notify(
+                                        `${EError[language]}: ${ERenameYourArtwork[language]}`,
+                                        true,
+                                        5
+                                      )
+                                    )
+                                }}
+                              >
+                                {EEdit[language]}
+                              </button>
+                            </Accordion>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                    {/* Pagination Controls */}
+                    {pagination(dKey, current, totalPages)}
+                  </Fragment>
+                )
+              })
+            )}
+          </div>
+        ) : (
+          <div className='wide flex column center gap'>
+            <div className='login-to-save wide flex column center gap-half'>
+              <FaSave />
+              {EInOrderToSaveTheBlobs[language]}
+            </div>
+            <div className={`blob-register-login-wrap`}>
+              <button onClick={navigateToLogin}>{ELogin[language]}</button>
+              <big>{EOr[language]}</big>
+              <button onClick={navigateToRegister}>{ERegister[language]}</button>
+            </div>
+          </div>
+        )}
+        <svg className='filter'>
+          <filter id='svgfilter0'>
+            <feGaussianBlur in='SourceGraphic' stdDeviation='7'></feGaussianBlur>
+            <feColorMatrix
+              values='
+1 0 0 0 0
+0 1 0 0 0
+0 0 1 0 0
+0 0 0 46 -16
+'
+            ></feColorMatrix>
+          </filter>
+        </svg>
+        <svg className='filter'>
+          <filter id='svgfilter1'>
+            <feGaussianBlur in='SourceGraphic' stdDeviation='6'></feGaussianBlur>
+            <feColorMatrix
+              values='
+1 0 0 0 0
+0 1 0 0 0
+0 0 1 0 0
+0 0 0 60 -18
+'
+            ></feColorMatrix>
+          </filter>
+        </svg>
+      </section>
     </>
   )
 }
-
-export default DragContainer

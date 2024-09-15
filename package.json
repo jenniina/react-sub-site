@@ -1,7 +1,6 @@
 {
   "name": "react-sub-site-jenniina-fi",
   "description": "React sub site for jenniina.fi",
-  "version": "1.0.4",
   "type": "module",
   "scripts": {
     "dev": "vite",
