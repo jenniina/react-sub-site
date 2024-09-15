@@ -20,8 +20,6 @@ import {
 } from '../../interfaces'
 import useEventListener from '../../hooks/useEventListener'
 import useSessionStorage from '../../hooks/useStorage'
-import { useOutsideClick } from '../../hooks/useOutsideClick'
-import blob from '../Blob/services/blob'
 
 type itemProps = {
   i: number
@@ -70,17 +68,6 @@ export default function Hero({
 
   const resetButton = useRef() as RefObject<HTMLButtonElement>
   const ulRef = useRef() as RefObject<HTMLUListElement>
-
-  const handleOutsideClick = useCallback((e: Event) => {
-    document.removeEventListener('touchmove', Draggable.preventDefault)
-    document.body.style.overflowY = 'auto'
-    document.body.style.overflowX = 'hidden'
-  }, [])
-
-  useOutsideClick({
-    ref: ulRef,
-    onOutsideClick: handleOutsideClick,
-  })
 
   //Move items up, down, left or left, depending on the direction they're approached from:
   const movingItem = (e: React.PointerEvent<HTMLElement>) => {
