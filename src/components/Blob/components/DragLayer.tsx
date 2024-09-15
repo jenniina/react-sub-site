@@ -86,7 +86,7 @@ const DragLayer = (props: DragLayerProps) => {
       ref={props.dragUlRef}
       role='listbox'
       id={`listbox${props.d}-layer${props.layer}`}
-      className={`drag-container${props.d}-layer drag-container${props.d}-layer${props.layer} ${props.className}`}
+      className={`drag-container-layer drag-container${props.d}-layer drag-container${props.d}-layer${props.layer} ${props.className}`}
       aria-labelledby={`blobdescription${props.d}`}
       aria-activedescendant=''
       style={layerStyle}

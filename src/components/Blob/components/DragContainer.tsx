@@ -1926,6 +1926,27 @@ export default function DragContainer({
             />
           )}
 
+          <div className={`movers-wrap movers-wrap1 ${!controlsVisible ? 'hidden' : ''}`}>
+            <button className={`moveleft mover`} onClick={handleMoveRight}>
+              <BiChevronsLeft />
+              <span className='scr'>{EMoveViewLeft[language]}</span>
+            </button>
+            <button className={`moveright mover`} onClick={handleMoveLeft}>
+              <BiChevronsRight />
+              <span className='scr'>{EMoveViewRight[language]}</span>
+            </button>
+          </div>
+          <div className={`movers-wrap movers-wrap2 ${!controlsVisible ? 'hidden' : ''}`}>
+            <button className={`moveup mover`} onClick={handleMoveDown}>
+              <BiChevronsUp />
+              <span className='scr'>{EMoveViewUp[language]}</span>
+            </button>
+            <button className={`movedown mover`} onClick={handleMoveUp}>
+              <BiChevronsDown />
+              <span className='scr'>{EMoveViewDown[language]}</span>
+            </button>
+          </div>
+
           <div ref={dragWrap} id={`drag-wrap${d}`} className='drag-wrap'>
             <DragLayer
               layerAmount={layerAmount}
@@ -1969,27 +1990,6 @@ export default function DragContainer({
               setScroll={setScroll}
               clickOutsideRef={dragWrap}
             />
-          </div>
-
-          <div className={`movers-wrap movers-wrap1 ${!controlsVisible ? 'hidden' : ''}`}>
-            <button className={`moveleft mover`} onClick={handleMoveRight}>
-              <BiChevronsLeft />
-              <span className='scr'>{EMoveViewLeft[language]}</span>
-            </button>
-            <button className={`moveright mover`} onClick={handleMoveLeft}>
-              <BiChevronsRight />
-              <span className='scr'>{EMoveViewRight[language]}</span>
-            </button>
-          </div>
-          <div className={`movers-wrap movers-wrap2 ${!controlsVisible ? 'hidden' : ''}`}>
-            <button className={`moveup mover`} onClick={handleMoveDown}>
-              <BiChevronsUp />
-              <span className='scr'>{EMoveViewUp[language]}</span>
-            </button>
-            <button className={`movedown mover`} onClick={handleMoveUp}>
-              <BiChevronsDown />
-              <span className='scr'>{EMoveViewDown[language]}</span>
-            </button>
           </div>
 
           <button

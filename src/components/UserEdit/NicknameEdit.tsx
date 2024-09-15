@@ -97,7 +97,7 @@ const NicknameEdit = ({ user, language }: Props) => {
                   required
                   type='text'
                   name='name'
-                  id='name'
+                  id='name-edit'
                   value={name}
                   onChange={({ target }) => setName(target.value)}
                 />

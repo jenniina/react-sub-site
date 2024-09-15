@@ -142,7 +142,7 @@ const Form = ({
         <div className='controls-wrap'>
           <Select
             language={language}
-            id='language'
+            id='language-joke'
             className='language full'
             instructions={`${ESelectALanguage[language]}:`}
             options={options(ELanguages)}
