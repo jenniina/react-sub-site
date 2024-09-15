@@ -107,7 +107,7 @@ const PasswordEdit = ({ user, language }: Props) => {
                   required
                   type='password'
                   name='password'
-                  id='password'
+                  id='password-edit'
                   value={password}
                   onChange={({ target }) => setPassword(target.value.trim())}
                 />

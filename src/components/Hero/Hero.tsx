@@ -302,8 +302,8 @@ export default function Hero({
         return (
           <ul
             ref={ulRef}
-            id='listbox'
-            role='listbox'
+            id={`listbox-hero-${location.toLowerCase()}`}
+            role={`listbox-hero-${location.toLowerCase()}`}
             aria-labelledby={`description`}
             aria-activedescendant=''
             className={`${styles.herocontent} ${styles[location] ?? ''} ${

@@ -465,7 +465,7 @@ svg.filter {
 }
 .drag-wrap-outer,
 .drag-wrap,
-.drag-wrap .drag-container0-layer {
+.drag-wrap .drag-container-layer {
   border-radius: 0; /* For better screenshot quality */
 }
 
@@ -477,7 +477,7 @@ svg.filter {
 }
 
 .drag-wrap,
-.drag-wrap .drag-container0-layer {
+.drag-wrap .drag-container-layer {
   height: 77vh;
   min-height: 450px;
   width: 100%;
@@ -1106,7 +1106,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
   font-style: normal;
 }
 .drag-container .hidden,
-.drag-container0-layer.hidden,
+.drag-container-layer.hidden,
 #root .drag-container .layer-decrease.hidden,
 #root .drag-container .layer-increase.hidden {
   display: none;
