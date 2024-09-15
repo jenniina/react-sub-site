@@ -980,6 +980,7 @@ export default function DragContainer({
   }
 
   const makeAnew = (amount: number, d: number) => {
+    setActiveLayer(0)
     for (let i: number = 0; i < amount; i++) {
       const colorswitch = () => {
         const colorArray = d === 0 ? colorPairs : colorPairs2
@@ -989,7 +990,7 @@ export default function DragContainer({
       const [colorFirst, colorSecond] = colorswitch()
 
       const newDraggable: Draggable = {
-        layer: activeLayer,
+        layer: 0,
         id: `blob${i + 1}-${d}`,
         number: i + 1,
         i: windowWidth > 400 ? getRandomMinMax(7, 20) : getRandomMinMax(7, 10),
