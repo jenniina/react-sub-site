@@ -1,4 +1,4 @@
-import BlobJS from '../../components/Blob/blobJS'
+import Blobs from '../../components/Blob/Blobs'
 import Hero from '../../components/Hero/Hero'
 import {
   EBlobs,
@@ -329,7 +329,7 @@ export default function BlobPage({
             </div>
           </div>
         </section>
-        <BlobJS language={language} />
+        <Blobs language={language} />
       </div>
     </div>
   )

@@ -1,18 +1,17 @@
 import {
   RefObject,
-  Dispatch,
   SetStateAction,
-  Dispatch as DispatchReact,
+  Dispatch,
   CSSProperties,
   TouchEvent as TouchEventReact,
   MouseEvent as MouseEventReact,
   PointerEvent as PointerEventReact,
 } from 'react'
-import { Draggable, focusedBlob, ColorPair } from '../interfaces'
+import { Draggable, focusedBlob } from '../interfaces'
 import Blob from './Blob'
 import { ELanguages } from '../../../interfaces'
 
-interface DragComponentProps {
+interface DragLayerProps {
   layer: number
   className: string
   language: ELanguages
@@ -63,7 +62,7 @@ interface DragComponentProps {
   blurred: (e: HTMLElement) => void
 }
 
-const DragComponent = (props: DragComponentProps) => {
+const DragLayer = (props: DragLayerProps) => {
   //   useEffect(() => {
   //     if (props.draggables[props.d] && props.draggables[props.d].length > 0) {
   //       props.saveDraggables()
@@ -71,8 +70,8 @@ const DragComponent = (props: DragComponentProps) => {
   //   }, [props.draggables?.[props.d]?.length])
 
   const layerStyle: CSSProperties = {
-    WebkitFilter: 'url(#svgfilter)',
-    filter: 'url(#svgfilter)',
+    WebkitFilter: `url(#svgfilter${props.d})`,
+    filter: `url(#svgfilter${props.d})`,
     backgroundColor: 'transparent',
     width: '100%',
     position: 'absolute',
@@ -119,4 +118,4 @@ const DragComponent = (props: DragComponentProps) => {
   )
 }
 
-export default DragComponent
+export default DragLayer
