@@ -518,16 +518,18 @@ svg.filter {
   background-color: white;
 }
 .drag-container .dragzone.animation {
-  -webkit-animation: sway 3s ease-in-out infinite;
-  -moz-animation: sway 3s ease-in-out infinite;
-  -o-animation: sway 3s ease-in-out infinite;
-  -ms-animation: sway 3s ease-in-out infinite;
-  animation: sway 3s ease-in-out infinite;
-  -webkit-animation-delay: calc(var(--i) * 0.25s);
-  -moz-animation-delay: calc(var(--i) * 0.25s);
-  -o-animation-delay: calc(var(--i) * 0.25s);
-  -ms-animation-delay: calc(var(--i) * 0.25s);
-  animation-delay: calc(var(--i) * 0.25s);
+  --delay: 0.21s;
+  --duration: 3s;
+  -webkit-animation: sway var(--duration) ease-in-out infinite;
+  -moz-animation: sway var(--duration) ease-in-out infinite;
+  -o-animation: sway var(--duration) ease-in-out infinite;
+  -ms-animation: sway var(--duration) ease-in-out infinite;
+  animation: sway var(--duration) ease-in-out infinite;
+  -webkit-animation-delay: calc(var(--i) * var(--delay));
+  -moz-animation-delay: calc(var(--i) * var(--delay));
+  -o-animation-delay: calc(var(--i) * var(--delay));
+  -ms-animation-delay: calc(var(--i) * var(--delay));
+  animation-delay: calc(var(--i) * var(--delay));
   -webkit-animation-play-state: running;
   -moz-animation-play-state: running;
   -o-animation-play-state: running;
@@ -759,12 +761,6 @@ body.dark-mode .site .drag-container .dragzone:focus {
   align-items: flex-start;
   gap: 0.5rem;
 }
-.colorblock.colorblockorange,
-.colorblock.colorblockred,
-.colorblock.colorblockpurple,
-.colorblock.colorblockblue {
-  border-radius: 5rem 6.7rem 6.7rem 5rem / 0.7rem 8.7rem 8.7rem 0.7rem;
-}
 .drag-container .make-more,
 .drag-container .delete-blob {
   color: black;
@@ -843,15 +839,15 @@ body.dark-mode .site .drag-container .dragzone:focus {
 }
 .colorblock {
   position: absolute;
-  width: 1.5rem;
-  height: 1.8rem;
+  width: 1.4rem;
+  height: 1.6rem;
   border-radius: 6.7rem 5rem 5rem 6.7rem / 8.7rem 0.7rem 0.7rem 8.7rem;
 }
 @media (max-width: 700px) {
   .colorblock {
     position: absolute;
     width: 0.9rem;
-    height: 1.6rem;
+    height: 1.4rem;
   }
 } /*END media*/
 

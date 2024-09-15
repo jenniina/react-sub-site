@@ -2203,3 +2203,21 @@ export enum EEye {
   cs = 'Okno',
   fi = 'Silmä',
 }
+export enum EOlderNews {
+  en = 'Older news',
+  es = 'Noticias antiguas',
+  fr = 'Anciennes nouvelles',
+  de = 'Ältere Nachrichten',
+  pt = 'Notícias antigas',
+  cs = 'Starší zprávy',
+  fi = 'Vanhemmat uutiset',
+}
+export enum EAddedAnotherInstanceOfTheBlobArtApp {
+  en = 'Added another instance of the Blob Art app',
+  es = 'Añadida otra instancia de la aplicación Blob Art',
+  fr = 'Ajouté une autre instance de l application Blob Art',
+  de = 'Eine weitere Instanz der Blob Art App hinzugefügt',
+  pt = 'Adicionada outra instância do aplicativo Blob Art',
+  cs = 'Přidána další instance aplikace Blob Art',
+  fi = 'Lisätty toinen instanssi Blob Art -sovelluksesta',
+}
