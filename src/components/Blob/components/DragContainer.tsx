@@ -137,6 +137,7 @@ import { EDelete } from '../../Jokes/interfaces'
 import ColorBlocks from './ColorBlocks'
 import Sliders from './Sliders'
 import { c } from 'vite/dist/node/types.d-aGj9QkWt'
+import { EBlobArtApp } from '../../../interfaces/about'
 
 // Should be in the same order as colorBlockProps
 const colorPairs: ColorPair[] = [
@@ -181,8 +182,8 @@ export default function DragContainer({
   d: number
   dragWrapOuter: RefObject<HTMLDivElement>
 }) {
-  const defaultLightness = d === 0 ? '30' : '33'
-  const defaultSaturation = d === 0 ? '80' : '30'
+  const defaultLightness = d === 0 ? '30' : '25'
+  const defaultSaturation = d === 0 ? '80' : '45'
   const defaultHue = d === 0 ? '214' : '214'
 
   const { state, dispatch } = useContext(BlobContext) as Props
@@ -1750,7 +1751,7 @@ export default function DragContainer({
       <section id={`drag-container${d}`} className={`drag-container drag-container${d}`}>
         <div className='blob-title-wrap'>
           <h2 className='blob-title'>
-            {EBlobApp[language]} {d + 1}
+            {EBlobArtApp[language]} {d + 1}
           </h2>
           {d === 1 ? (
             <p>
@@ -2307,7 +2308,7 @@ export default function DragContainer({
 1 0 0 0 0
 0 1 0 0 0
 0 0 1 0 0
-0 0 0 46 -16
+0 0 0 50 -18
 '
             ></feColorMatrix>
           </filter>
@@ -2320,7 +2321,7 @@ export default function DragContainer({
 1 0 0 0 0
 0 1 0 0 0
 0 0 1 0 0
-0 0 0 60 -18
+0 0 0 80 -25
 '
             ></feColorMatrix>
           </filter>

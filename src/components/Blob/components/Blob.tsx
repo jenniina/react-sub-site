@@ -85,6 +85,7 @@ const Blob = ({
     ['--i' as string]: `${item.i}`,
     ['--layer' as string]: `${layer}`,
   }
+  const innerSize = ['6.2', '9.2', '9.9', '10.6']
 
   return (
     <li
@@ -118,7 +119,6 @@ const Blob = ({
       key={index}
       className='dragzone animation'
       id={item.id}
-      aria-grabbed={false}
       role={'option'}
       tabIndex={0}
       style={blobStyle}
@@ -126,13 +126,24 @@ const Blob = ({
       <div
         className='draggable-overlay'
         style={
-          Number(item.i) < 9
-            ? { width: 'calc(var(--i) * 6.8px)', height: 'calc(var(--i) * 6.8px)' }
-            : Number(item.i) < 15
-            ? { width: 'calc(var(--i) * 8.8px)', height: 'calc(var(--i) * 8.8px)' }
+          Number(item.i) < 8
+            ? {
+                width: `calc(var(--i) * ${innerSize[0]}px)`,
+                height: `calc(var(--i) * ${innerSize[0]}px)`,
+              }
+            : Number(item.i) < 12
+            ? {
+                width: `calc(var(--i) * ${innerSize[1]}px)`,
+                height: `calc(var(--i) * ${innerSize[1]}px)`,
+              }
+            : Number(item.i) < 17
+            ? {
+                width: `calc(var(--i) * ${innerSize[2]}px)`,
+                height: `calc(var(--i) * ${innerSize[2]}px)`,
+              }
             : {
-                width: 'calc(var(--i) * 10px)',
-                height: 'calc(var(--i) * 10px)',
+                width: `calc(var(--i) * ${innerSize[3]}px)`,
+                height: `calc(var(--i) * ${innerSize[3]}px)`,
               }
         }
         onMouseDown={(e) => {
@@ -212,91 +223,3 @@ const Blob = ({
 }
 
 export default Blob
-
-{
-  /* <li
-        key={index}
-        className='dragzone'
-        id={item.id}
-        aria-grabbed={false}
-        role={'option'}
-        tabIndex={0}
-        draggable='true'
-        style={blobStyle}
-        onMouseDown={start}
-        onMouseMove={movement}
-        onMouseUp={stopMovementCheck}
-        onMouseLeave={stopMoving}
-        onTouchStart={start}
-        onTouchMove={movement}
-        onTouchEnd={stopMovementCheck}
-        onWheel={wheel}
-        onFocus={focused}
-        onBlurCapture={blurred}
-      >
-        <span className='scr'>Blob {item.number}</span>
-      </li> */
-}
-
-// <li
-//   key={index}
-//   className='dragzone'
-//   id={item.id}
-//   aria-grabbed={false}
-//   role={'option'}
-//   tabIndex={0}
-//   draggable='true'
-//   style={blobStyle}
-//   onMouseDown={(e) => {
-//     if (props.selectedvalue0.current)
-//       props.selectedvalue0.current.textContent = `Selected blob: ${
-//         (e.target as HTMLElement)?.querySelector('span')?.textContent
-//       }`
-//     start(e)
-//   }}
-//   onMouseMove={(e) => {
-//     movement(e)
-//   }}
-//   onMouseUp={(e) => {
-//     stopMovementCheck(e)
-//     if (props.selectedvalue0.current)
-//       props.selectedvalue0.current.textContent = `Selected blob: none`
-//   }}
-//   onMouseLeave={(e) => {
-//     stopMoving(e)
-//     if (props.selectedvalue0.current)
-//       props.selectedvalue0.current.textContent = `Selected blob: none`
-//   }}
-//   onTouchStart={(e) => {
-//     start(e)
-//     if (props.selectedvalue0.current)
-//       props.selectedvalue0.current.textContent = `Selected blob: ${
-//         (e.target as HTMLElement)?.querySelector('span')?.textContent
-//       }`
-//   }}
-//   onTouchMove={(e) => {
-//     movement(e)
-//   }}
-//   onTouchEnd={(e) => {
-//     stopMovementCheck(e)
-//     if (props.selectedvalue0.current)
-//       props.selectedvalue0.current.textContent = `Selected blob: none`
-//   }}
-//   onWheel={(e) => {
-//     wheel(e.target as HTMLElement)
-//   }}
-//   onFocus={(e) => {
-//     focused(e.target)
-//     if (props.selectedvalue0.current)
-//       props.selectedvalue0.current.textContent = `Selected blob: ${
-//         (e.target as HTMLElement)?.querySelector('span')?.textContent
-//       }`
-//   }}
-//   onBlurCapture={(e) => {
-//     blurred(e.target)
-//     if (props.selectedvalue0.current)
-//       props.selectedvalue0.current.textContent = `Selected blob: none`
-//   }}
-// >
-//   <span className='scr'>Blob {item.number}</span>
-// </li>

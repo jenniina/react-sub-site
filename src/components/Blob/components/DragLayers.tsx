@@ -206,7 +206,6 @@ const DragLayers = (props: DragLayerProps) => {
       ;(target as HTMLElement).classList.add('drag')
       const highestZIndexForLayer = props.highestZIndex[props.layer]
       target.style.setProperty('z-index', `${Math.max(1, highestZIndexForLayer + 1)}`)
-      ;(target as HTMLElement).setAttribute('aria-grabbed', 'true')
       //;(target as HTMLElement).focus() // This breaks dragging once a key is pressed and only clears after clicking away from the target
 
       document.addEventListener('keyup', keyUp)
@@ -357,7 +356,6 @@ const DragLayers = (props: DragLayerProps) => {
       }
       props.getPosition(target as HTMLElement)
       ;(target as HTMLElement).classList.remove('drag')
-      ;(target as HTMLElement).setAttribute('aria-grabbed', 'false')
       ;(target as HTMLElement).blur()
       currentFocusedElement = null
       props.setFocusedBlob(null)
@@ -393,7 +391,6 @@ const DragLayers = (props: DragLayerProps) => {
 
       props.getPosition(target as HTMLElement)
       ;(target as HTMLElement).classList.remove('drag')
-      ;(target as HTMLElement).setAttribute('aria-grabbed', 'false')
       // document.removeEventListener('keyup', keyUp)
       ;(target as HTMLElement).blur()
     },
@@ -443,7 +440,6 @@ const DragLayers = (props: DragLayerProps) => {
   //on blob blur
   function blurred(draggable: HTMLElement) {
     draggable.classList.remove('drag')
-    draggable.setAttribute('aria-grabbed', 'false')
     props.dragWrap.current?.setAttribute('aria-activedescendant', '')
     document.removeEventListener('keyup', keyUp)
     props.getPosition(draggable)
@@ -455,7 +451,6 @@ const DragLayers = (props: DragLayerProps) => {
   function focused(draggable: HTMLElement) {
     props.getPosition(draggable)
     draggable.classList.add('drag')
-    draggable.setAttribute('aria-grabbed', 'true')
     layerRefs.current[props.layer].current?.setAttribute(
       'aria-activedescendant',
       `${draggable.id}`

@@ -478,8 +478,8 @@ svg.filter {
 
 .drag-wrap,
 .drag-wrap .drag-container-layer {
-  height: 77vh;
-  min-height: 450px;
+  height: calc(100vh - 7rem);
+  min-height: 420px;
   width: 100%;
   min-width: 100%;
   overflow: hidden;
