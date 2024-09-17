@@ -47,6 +47,7 @@ import {
   EMoveEveryBlobUpOrDownOneLayerByPressingTheButtons,
   EMoveViewInDifferentDirections,
   ENameYourArtwork,
+  EOverAThousandPossibleColorCombinations,
   EPlacesTheImageDownBelow,
   EPointerUse,
   EPressEnterToCycleThroughTheDifferentColors,
@@ -207,8 +208,9 @@ export default function BlobPage({
                           <li>{EMoveViewInDifferentDirections[language]}</li>
                           <li>{EToggleControlVisibility[language]}</li>
                           <li>
-                            {EMakeARandomBlobByClickingThePlusSign[language]} (
-                            {EMoreColorsAvailable[language]})
+                            {EMakeARandomBlobByClickingThePlusSign[language]}.{' '}
+                            {EMoreColorsAvailable[language]}:{' '}
+                            {EOverAThousandPossibleColorCombinations[language]}
                           </li>
                         </ul>
                       </li>
@@ -299,6 +301,7 @@ export default function BlobPage({
                     </li>
                     <li>
                       {EMoreColorsAvailableThroughRandomBlobButton[language]}.{' '}
+                      {EOverAThousandPossibleColorCombinations[language]}{' '}
                       {EYouMayCloneARareColorBlobByPressingCOrD[language]}
                     </li>
                     <li>

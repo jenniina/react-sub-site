@@ -1249,13 +1249,16 @@
 
 .herocontent > .bubbles:focus-visible {
   outline: none;
+  -webkit-filter: brightness(180%) contrast(120%);
   filter: brightness(180%) contrast(120%);
 }
 .herocontent > .eyes:focus-visible {
   outline: none;
+  -webkit-filter: brightness(130%) contrast(150%);
   filter: brightness(130%) contrast(150%);
 }
 .herocontent > .geometric:focus-visible {
   outline: none;
+  -webkit-filter: brightness(130%) contrast(150%);
   filter: brightness(130%) contrast(150%);
 }

@@ -398,6 +398,7 @@ main.main-content .fullwidth1 {
     var(--color-primary-5)
   );
   z-index: -2;
+  -webkit-filter: blur(2rem);
   filter: blur(2rem);
 }
 .light .card > div::after {
@@ -412,6 +413,7 @@ main.main-content .fullwidth1 {
     transparent,
     var(--color-primary-1)
   );
+  -webkit-filter: blur(0.5rem);
   filter: blur(0.5rem);
 }
 body .z {

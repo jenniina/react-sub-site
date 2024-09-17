@@ -51,7 +51,6 @@ export function start(
   moveElement = true
   ;(e.target as HTMLElement).classList.add('drag')
   ;(e.target as HTMLElement).style.setProperty('z-index', `${zIndex}`)
-  ;(e.target as HTMLElement).setAttribute('aria-grabbed', 'true')
   //increase z-index
   zIndex += 1
   ;(e.target as HTMLElement).focus()
@@ -106,7 +105,6 @@ export const stopMovementCheck = (
 
   moveElement = false
   ;(e.target as HTMLElement).classList.remove('drag')
-  ;(e.target as HTMLElement).setAttribute('aria-grabbed', 'false')
   ;(e.target as HTMLElement).blur()
 }
 
@@ -117,23 +115,19 @@ export const stopMoving = (
   e.stopPropagation()
   moveElement = false
   ;(e.target as HTMLElement).classList.remove('drag')
-  ;(e.target as HTMLElement).setAttribute('aria-grabbed', 'false')
   ;(e.target as HTMLElement).blur()
 }
 
 //on blob blur
 export function blurred(draggable: HTMLElement) {
   draggable.classList.remove('drag')
-  draggable.setAttribute('aria-grabbed', 'false')
 }
 
 //on focused blob
 export function focused(draggable: HTMLElement) {
   draggable.classList.add('drag')
-  draggable.setAttribute('aria-grabbed', 'true')
   return () => {
     draggable.classList.remove('drag')
-    draggable.setAttribute('aria-grabbed', 'false')
   }
 }
 

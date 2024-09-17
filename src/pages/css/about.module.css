@@ -514,10 +514,12 @@
 
 .graphic img,
 .tech svg {
+  -webkit-filter: drop-shadow(0.3rem 0.3rem 0.5rem black);
   filter: drop-shadow(0.3rem 0.3rem 0.5rem black);
 }
 .light .graphic img,
 .light .tech svg {
+  -webkit-filter: drop-shadow(0.3rem 0.3rem 0.5rem white);
   filter: drop-shadow(0.3rem 0.3rem 0.5rem white);
 }
 @media (min-width: 500px) {

@@ -14,6 +14,7 @@ function blobReducer(
       d: number
       draggables?: Draggable[][]
       draggable?: Draggable | null
+      update?: Partial<Draggable>
       id?: string
       backgroundColor?: BackgroundColor[]
     }
@@ -116,18 +117,29 @@ function blobReducer(
       const newStateRemove = { ...state, draggables: newDraggables }
       return newStateRemove
     case 'updateDraggable':
-      const newDraggablesUpdate = state.draggables.map((subArray) =>
-        subArray?.map((draggable) =>
-          draggable.id === action.payload.draggable?.id
-            ? { ...draggable, ...action.payload.draggable, id: draggable.id }
-            : draggable
-        )
+      const newDraggablesUpdate = state.draggables.map((subArray, index) =>
+        index === action.payload.d
+          ? subArray?.map((draggable) =>
+              draggable.id === action.payload.draggable?.id
+                ? { ...draggable, ...action.payload.draggable, id: draggable.id }
+                : draggable
+            )
+          : subArray
       )
       return { ...state, draggables: newDraggablesUpdate }
-    case 'resetBlobs':
-      const d = action.payload.d
+    case 'partialUpdate':
+      const { d, id, update } = action.payload
+      const newDraggablesPartial = state.draggables.map((subArray, index) =>
+        index === d
+          ? subArray?.map((draggable) =>
+              draggable.id === id ? { ...draggable, ...update } : draggable
+            )
+          : subArray
+      )
+      return { ...state, draggables: newDraggablesPartial }
+    case 'resetDraggables':
       const newDraggablesReset = state.draggables.map((subArray, index) =>
-        index === d ? [] : subArray
+        index === action.payload.d ? [] : subArray
       )
       return { ...state, draggables: newDraggablesReset }
     case 'moveDraggablesLeft':
