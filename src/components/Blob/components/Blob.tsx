@@ -84,7 +84,7 @@ const Blob = ({
   setFocusedBlob,
   dragUlRef,
 }: BlobProps) => {
-  const blur = d === 1 ? clamp(21, item.i * 3, 60) : 33
+  const blur = d === 0 ? 33 : clamp(21, item.i * 3, 60)
 
   const blobStyle: CSSProperties = {
     background: `${item.background}`,
