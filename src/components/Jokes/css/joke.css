@@ -439,6 +439,7 @@ section.joke-container > div::after {
     var(--color-primary-4)
   );
   z-index: -2;
+  -webkit-filter: blur(2rem);
   filter: blur(2rem);
 }
 
@@ -457,6 +458,7 @@ section.joke-container > div::after {
     var(--color-primary-6)
   );
   z-index: -2;
+  -webkit-filter: blur(2rem);
   filter: blur(2rem);
 }
 .userjokeslist li .primary-wrap {

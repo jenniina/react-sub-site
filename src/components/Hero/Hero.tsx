@@ -538,6 +538,7 @@ export default function Hero({
                   borderRadius: `${blobRadius[number]}`,
                   transform: 'rotate(' + rotate + 'deg)',
                   opacity: `0.9`,
+                  WebkitFilter: 'blur(28px)',
                   filter: 'blur(28px)',
                 }
 

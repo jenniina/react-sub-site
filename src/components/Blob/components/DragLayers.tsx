@@ -16,6 +16,8 @@ import { ELanguages } from '../../../interfaces'
 import DragLayer from './DragLayer'
 import { ESelectedBlobNone } from '../../../interfaces/blobs'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
+import useTimeout from '../../../hooks/useTimeout'
+import { notify } from '../../../reducers/notificationReducer'
 
 interface DragLayerProps {
   layer: number
@@ -30,6 +32,7 @@ interface DragLayerProps {
   setHighestZIndex: DispatchReact<SetStateAction<Record<number, number>>>
   language: ELanguages
   dispatch: DispatchReact<any>
+  dispatch2: DispatchReact<any>
   d: number
   items: Draggable[]
   amountOfBlobs: number
@@ -96,12 +99,23 @@ const DragLayers = (props: DragLayerProps) => {
   //   {} as Record<number, RefObject<HTMLUListElement>>
   // )
 
-  const layerRefs = useRef<Record<number, RefObject<HTMLUListElement>>>(
-    layers.reduce((acc, layer) => {
+  // const layerRefs = useRef<Record<number, RefObject<HTMLUListElement>>>(
+  //   layers.reduce((acc, layer) => {
+  //     acc[layer] = createRef<HTMLUListElement>()
+  //     return acc
+  //   }, {} as Record<number, RefObject<HTMLUListElement>>)
+  // )
+
+  const layerRefs = useRef<Record<number, RefObject<HTMLUListElement>>>({})
+
+  useEffect(() => {
+    const refs = layers.reduce((acc, layer) => {
       acc[layer] = createRef<HTMLUListElement>()
       return acc
     }, {} as Record<number, RefObject<HTMLUListElement>>)
-  )
+
+    layerRefs.current = refs
+  }, [props.layerAmount])
 
   //Detect touch device
   const isTouchDevice = () => {
@@ -121,22 +135,18 @@ const DragLayers = (props: DragLayerProps) => {
   }, [])
 
   // Change the layer of the blob by 1 up to the maximum layer amount
-  const increaseBlobLayer = (target: HTMLElement, draggable: Draggable) => {
+  const increaseBlobLayer = (draggable: Draggable) => {
     let layer = draggable.layer
     if (layer < props.layerAmount - 1) {
-      layer = layer + 1
-
+      layer += 1
       props.changeBlobLayer(draggable, layer)
-      target.style.setProperty('--layer', `${layer}`)
     }
   }
-  const decreaseBlobLayer = (target: HTMLElement, draggable: Draggable) => {
+  const decreaseBlobLayer = (draggable: Draggable) => {
     let layer = draggable.layer
     if (layer > 0) {
-      layer = layer - 1
-
+      layer -= 1
       props.changeBlobLayer(draggable, layer)
-      target.style.setProperty('--layer', `${layer}`)
     }
   }
 
@@ -156,10 +166,10 @@ const DragLayers = (props: DragLayerProps) => {
   const handleOutsideClick = useCallback(
     (e: Event) => {
       reset = true
-      document.removeEventListener('keyup', keyUp)
+      document.removeEventListener('keydown', keyDown)
       document.removeEventListener('touchmove', preventDefault)
     },
-    [keyUp]
+    [keyDown]
   )
 
   useOutsideClick({
@@ -171,7 +181,7 @@ const DragLayers = (props: DragLayerProps) => {
     if (isTouchDevice() && !currentFocusedElement && props.scroll) {
       document.body.style.overflowY = 'auto'
       document.body.style.overflowX = 'hidden'
-      document.removeEventListener('keyup', keyUp)
+      document.removeEventListener('keydown', keyDown)
       document.removeEventListener('touchmove', preventDefault)
     }
   }, [currentFocusedElement, props.scroll])
@@ -205,10 +215,19 @@ const DragLayers = (props: DragLayerProps) => {
         : (e as TouchEvent).touches[0].clientY
       ;(target as HTMLElement).classList.add('drag')
       const highestZIndexForLayer = props.highestZIndex[props.layer]
-      target.style.setProperty('z-index', `${Math.max(1, highestZIndexForLayer + 1)}`)
+      props.dispatch({
+        type: 'partialUpdate',
+        payload: {
+          d: props.d,
+          id: target.id,
+          update: {
+            z: `${Math.max(1, highestZIndexForLayer + 1)}`,
+          },
+        },
+      })
       //;(target as HTMLElement).focus() // This breaks dragging once a key is pressed and only clears after clicking away from the target
 
-      document.addEventListener('keyup', keyUp)
+      document.addEventListener('keydown', keyDown)
       const layer = (target as HTMLElement).style.getPropertyValue('--layer')
       props.setActiveLayer(parseInt(layer) ?? 0)
 
@@ -217,7 +236,7 @@ const DragLayers = (props: DragLayerProps) => {
         document.body.style.overflow = 'hidden'
       }
     },
-    [keyUp, isTouchDevice]
+    [keyDown, isTouchDevice]
   )
 
   //Handle mousemove and touchmove
@@ -251,6 +270,18 @@ const DragLayers = (props: DragLayerProps) => {
           (currentFocusedElement as HTMLElement).offsetLeft - (initialX - newX) + 'px'
         initialX = newX
         initialY = newY
+
+        props.dispatch({
+          type: 'partialUpdate',
+          payload: {
+            d: props.d,
+            id: currentFocusedElement?.id,
+            update: {
+              x: (currentFocusedElement as HTMLElement).style.left,
+              y: (currentFocusedElement as HTMLElement).style.top,
+            },
+          },
+        })
       }
     },
     [isTouchDevice]
@@ -272,7 +303,7 @@ const DragLayers = (props: DragLayerProps) => {
       e.preventDefault()
       moveElement = false
 
-      // document.removeEventListener('keyup', keyUp)
+      // document.removeEventListener('keydown', keyDown)
       let value = (target as HTMLElement).style.getPropertyValue('--i')
       let scale = parseFloat(value)
       scale = isNaN(scale) ? 7 : scale
@@ -303,13 +334,13 @@ const DragLayers = (props: DragLayerProps) => {
         props.layerIncrease.current &&
         elementsOverlap(hitbox as HTMLElement, props.layerIncrease.current)
       ) {
-        increaseBlobLayer(target, draggable)
+        increaseBlobLayer(draggable)
       }
       if (
         props.layerDecrease.current &&
         elementsOverlap(hitbox as HTMLElement, props.layerDecrease.current)
       ) {
-        decreaseBlobLayer(target, draggable)
+        decreaseBlobLayer(draggable)
       }
 
       props.colorPairs[props.d].forEach((colorPair, index) => {
@@ -330,17 +361,35 @@ const DragLayers = (props: DragLayerProps) => {
         props.makeLarger0.current &&
         elementsOverlap(hitbox as HTMLElement, props.makeLarger0.current)
       ) {
-        scale += 0.5
-        scale = Math.min(Math.max(7, scale), 20)
-        ;(target as HTMLElement).style.setProperty('--i', `${scale}`)
+        scale += 0.4
+        scale = Math.min(Math.max(7, scale), 36)
+        props.dispatch({
+          type: 'partialUpdate',
+          payload: {
+            d: props.d,
+            id: target.id,
+            update: {
+              i: scale,
+            },
+          },
+        })
       }
       if (
         props.makeSmaller0.current &&
         elementsOverlap(hitbox as HTMLElement, props.makeSmaller0.current)
       ) {
-        scale -= 0.5
-        scale = Math.min(Math.max(7, scale), 20)
-        ;(target as HTMLElement).style.setProperty('--i', `${scale}`)
+        scale -= 0.4
+        scale = Math.min(Math.max(7, scale), 36)
+        props.dispatch({
+          type: 'partialUpdate',
+          payload: {
+            d: props.d,
+            id: target.id,
+            update: {
+              i: scale,
+            },
+          },
+        })
       }
       if (
         props.makeMore0.current &&
@@ -354,7 +403,7 @@ const DragLayers = (props: DragLayerProps) => {
       ) {
         removeBlob(draggable)
       }
-      props.getPosition(target as HTMLElement)
+      //  props.getPosition(target as HTMLElement)
       ;(target as HTMLElement).classList.remove('drag')
       ;(target as HTMLElement).blur()
       currentFocusedElement = null
@@ -363,7 +412,7 @@ const DragLayers = (props: DragLayerProps) => {
     [
       angle,
       elementsOverlap,
-      keyUp,
+      keyDown,
       makeBlob,
       props.colorBlockProps,
       props.colorPairs,
@@ -391,10 +440,10 @@ const DragLayers = (props: DragLayerProps) => {
 
       props.getPosition(target as HTMLElement)
       ;(target as HTMLElement).classList.remove('drag')
-      // document.removeEventListener('keyup', keyUp)
+      // document.removeEventListener('keydown', keyDown)
       ;(target as HTMLElement).blur()
     },
-    [keyUp]
+    [keyDown]
   )
 
   useEffect(() => {
@@ -440,8 +489,7 @@ const DragLayers = (props: DragLayerProps) => {
   //on blob blur
   function blurred(draggable: HTMLElement) {
     draggable.classList.remove('drag')
-    props.dragWrap.current?.setAttribute('aria-activedescendant', '')
-    document.removeEventListener('keyup', keyUp)
+    document.removeEventListener('keydown', keyDown)
     props.getPosition(draggable)
     draggable.draggable = false
     currentFocusedElement = null
@@ -451,36 +499,51 @@ const DragLayers = (props: DragLayerProps) => {
   function focused(draggable: HTMLElement) {
     props.getPosition(draggable)
     draggable.classList.add('drag')
-    layerRefs.current[props.layer].current?.setAttribute(
-      'aria-activedescendant',
-      `${draggable.id}`
-    )
+
     currentFocusedElement = draggable
     const layerStyle = (draggable as HTMLElement).style.getPropertyValue('--layer')
     props.setActiveLayer(parseInt(layerStyle) ?? 0)
-    document.addEventListener('keyup', keyUp)
+    document.addEventListener('keydown', keyDown)
     draggable.draggable = true
   }
 
   //Mousewheel use
-  function wheel(draggable: HTMLElement) {
-    const zoomHandler = (e: WheelEvent) => zoom(e, draggable)
-    draggable.addEventListener('wheel', zoomHandler, { passive: false })
+  function wheel(target: HTMLElement) {
+    const zoomHandler = (e: WheelEvent) => zoom(e, target)
+    target.addEventListener('wheel', zoomHandler, { passive: false })
     return () => {
-      draggable.removeEventListener('wheel', zoomHandler)
+      target.removeEventListener('wheel', zoomHandler)
     }
   }
   function zoom(e: WheelEvent, target: HTMLElement) {
     //e.preventDefault();
-    let value = (target as HTMLElement).style.getPropertyValue('--i')
-    let scale = parseFloat(value)
-    scale = isNaN(scale) ? 7 : scale
 
-    scale += e.deltaY * -0.00005
-    // Restrict scale
-    scale = Math.min(Math.max(7, scale), 20)
-    // Apply
-    ;(target as HTMLElement).style.setProperty('--i', `${scale ?? 7}`)
+    //scale += e.deltaY * -0.00001
+
+    if (reset) {
+      reset = false
+      const blobStyle = window.getComputedStyle(target)
+      let value =
+        blobStyle.getPropertyValue('--i') ?? target.style.getPropertyValue('--i')
+      let scale = parseFloat(value)
+      scale = isNaN(scale) ? 7 : scale
+      e.deltaY < 0 ? (scale *= 1.04) : (scale *= 0.96)
+      scale = Math.min(Math.max(7, scale), 36)
+      props.dispatch({
+        type: 'partialUpdate',
+        payload: {
+          d: props.d,
+          id: target.id,
+          update: {
+            i: scale,
+          },
+        },
+      })
+      const cooldown = () => {
+        reset = true
+      }
+      setTimeout(cooldown, 100)
+    }
   }
 
   useEffect(() => {
@@ -488,28 +551,28 @@ const DragLayers = (props: DragLayerProps) => {
     if (target) {
       const { color1, color2 } = props.colorPairs[props.d][props.colorIndex]
       const newBackground = `linear-gradient(${angle}, ${color1}, ${color2})`
-      ;(target as HTMLElement).style.backgroundImage = newBackground
-
-      const draggable = props.items.find((d) => d.id === target.id)
-      // Update the draggable's background in the state
-      const updatedDraggable = { ...draggable, background: newBackground }
 
       props.dispatch({
-        type: 'updateDraggable',
-        payload: { d: props.d, draggable: updatedDraggable },
+        type: 'partialUpdate',
+        payload: {
+          d: props.d,
+          id: target.id,
+          update: { background: newBackground },
+        },
       })
     }
   }, [props.colorIndex])
 
   // Keyboard use
-  function keyUp(e: KeyboardEvent) {
-    const movePx = 5
+  function keyDown(e: KeyboardEvent) {
+    const movePx = 4
 
     const target = currentFocusedElement
     if (!target) return
 
+    const blobStyle = window.getComputedStyle(target)
+
     const setFocus = (target: HTMLElement) => {
-      const blobStyle = window.getComputedStyle(target)
       const marginTop = parseFloat(blobStyle.marginTop)
       const marginLeft = parseFloat(blobStyle.marginLeft)
 
@@ -523,32 +586,44 @@ const DragLayers = (props: DragLayerProps) => {
       })
     }
 
-    let value = (target as HTMLElement).style.getPropertyValue('--i')
+    let value =
+      blobStyle.getPropertyValue('--i') ??
+      (target as HTMLElement).style.getPropertyValue('--i')
     let scale = parseFloat(value)
     scale = isNaN(scale) ? 7 : scale
 
-    // let attrLeft = window
-    //   .getComputedStyle(e.target as HTMLElement)
-    //   .getPropertyValue('left')
-    // let attrTop = window.getComputedStyle(e.target as HTMLElement).getPropertyValue('top')
-
-    let attrLeft = parseFloat(target.style.getPropertyValue('left')) || 0
-    let attrTop = parseFloat(target.style.getPropertyValue('top')) || 0
+    let attrLeft =
+      parseFloat(blobStyle.getPropertyValue('left')) ??
+      parseFloat(target.style.getPropertyValue('left')) ??
+      0
+    let attrTop =
+      parseFloat(blobStyle.getPropertyValue('top')) ??
+      parseFloat(target.style.getPropertyValue('top')) ??
+      0
 
     const draggable: Draggable = {
-      layer: props.layer,
+      layer: parseInt(target.style.getPropertyValue('--layer')) ?? props.layer,
       id: target.id,
       number: parseInt(target.id.replace('blob', '').split('-')[0], 10),
       i: scale,
       x: target.style.getPropertyValue('left').toString(),
       y: target.style.getPropertyValue('top').toString(),
-      z: target.style.zIndex || '0',
-      background: target.style.background || 'linear-gradient(90deg, cyan, greenyellow)',
+      z: target.style.zIndex ?? '0',
+      background: target.style.background ?? 'linear-gradient(90deg, cyan, greenyellow)',
     }
 
     const updatePosition = (left: number, top: number) => {
-      target.style.left = `${left}px`
-      target.style.top = `${top}px`
+      props.dispatch({
+        type: 'partialUpdate',
+        payload: {
+          d: props.d,
+          id: target.id,
+          update: {
+            x: `${left}px`,
+            y: `${top}px`,
+          },
+        },
+      })
       setFocus(target)
     }
 
@@ -587,7 +662,6 @@ const DragLayers = (props: DragLayerProps) => {
         break
       case 'Escape':
         e.preventDefault()
-        //e.stopImmediatePropagation()
 
         props.setScroll(true)
         document.body.style.overflowY = 'auto'
@@ -605,8 +679,8 @@ const DragLayers = (props: DragLayerProps) => {
         props.exitApp.current?.focus()
         break
       case 'Enter': //Cycle through colors
-        e.stopPropagation()
         e.preventDefault()
+        e.stopPropagation()
         if ((target as HTMLElement).closest(`.drag-container${props.d}`)) {
           props.setColorIndex((prevColorIndex) => {
             const nextColorIndex = (prevColorIndex + 1) % props.colorPairs[props.d].length
@@ -616,11 +690,19 @@ const DragLayers = (props: DragLayerProps) => {
         break
       case 'Z': //Move blob to the bottom of the z-index pile
       case 'z':
-        //e.stopImmediatePropagation()
         e.preventDefault()
         if (reset) {
           reset = false
-          ;(target as HTMLElement).style.setProperty('z-index', `1`)
+          props.dispatch({
+            type: 'partialUpdate',
+            payload: {
+              d: props.d,
+              id: target.id,
+              update: {
+                z: '0',
+              },
+            },
+          })
           const cooldown = () => {
             reset = true
           }
@@ -633,10 +715,16 @@ const DragLayers = (props: DragLayerProps) => {
         e.preventDefault()
         if (reset) {
           reset = false
-          ;(target as HTMLElement).style.setProperty(
-            'z-index',
-            `${Math.max(1, props.highestZIndex[props.layer] + 1)}`
-          )
+          props.dispatch({
+            type: 'partialUpdate',
+            payload: {
+              d: props.d,
+              id: target.id,
+              update: {
+                z: `${Math.max(1, props.highestZIndex[props.layer] + 1)}`,
+              },
+            },
+          })
           const cooldown = () => {
             reset = true
           }
@@ -645,14 +733,21 @@ const DragLayers = (props: DragLayerProps) => {
         break
       case 'S':
       case 's': //make blob smaller
-        //e.stopImmediatePropagation()
         e.preventDefault()
         if (reset) {
           reset = false
-          scale -= 0.5
-          scale = Math.min(Math.max(7, scale), 20)
-          ;(target as HTMLElement).style.setProperty('--i', `${scale ?? 7}`)
-
+          scale -= 0.4
+          scale = Math.min(Math.max(7, scale), 36)
+          props.dispatch({
+            type: 'partialUpdate',
+            payload: {
+              d: props.d,
+              id: target.id,
+              update: {
+                i: scale,
+              },
+            },
+          })
           const cooldown = () => {
             reset = true
           }
@@ -667,9 +762,18 @@ const DragLayers = (props: DragLayerProps) => {
         e.preventDefault()
         if (reset) {
           reset = false
-          scale += 0.5
-          scale = Math.min(Math.max(7, scale), 20)
-          ;(target as HTMLElement).style.setProperty('--i', `${scale ?? 7}`)
+          scale += 0.4
+          scale = Math.min(Math.max(7, scale), 36)
+          props.dispatch({
+            type: 'partialUpdate',
+            payload: {
+              d: props.d,
+              id: target.id,
+              update: {
+                i: scale,
+              },
+            },
+          })
 
           const cooldown = () => {
             reset = true

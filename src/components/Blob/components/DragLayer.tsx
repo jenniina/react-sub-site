@@ -69,15 +69,16 @@ const DragLayer = (props: DragLayerProps) => {
   //     }
   //   }, [props.draggables?.[props.d]?.length])
 
+  const svgFilter = props.d === 0 ? 0 : 1 // Choose the second filter for containers other than 0
   const layerStyle: CSSProperties = {
-    WebkitFilter: `url(#svgfilter${props.d})`,
-    filter: `url(#svgfilter${props.d})`,
+    WebkitFilter: `url(#svgfilter${svgFilter})`,
+    filter: `url(#svgfilter${svgFilter})`,
     backgroundColor: 'transparent',
-    width: '100%',
     position: 'absolute',
     top: 0,
     left: 0,
     height: '100%',
+    width: '100%',
     pointerEvents: 'none',
   }
 
@@ -97,6 +98,7 @@ const DragLayer = (props: DragLayerProps) => {
             <Blob
               layer={props.layer}
               key={index}
+              d={props.d}
               language={props.language}
               item={item}
               index={index}
@@ -110,6 +112,7 @@ const DragLayer = (props: DragLayerProps) => {
               selectedvalue0={props.selectedvalue0}
               focusedBlob={props.focusedBlob}
               setFocusedBlob={props.setFocusedBlob}
+              dragUlRef={props.dragUlRef}
             />
           )
         }

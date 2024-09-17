@@ -331,8 +331,8 @@ export default function DragContainer({
   const changeBlobLayer = (draggable: Draggable, layer: number) => {
     const z = highestZIndex[layer] + 1
     dispatch({
-      type: 'updateDraggable',
-      payload: { d, draggable: { ...draggable, layer, z } },
+      type: 'partialUpdate',
+      payload: { d, id: draggable.id, update: { layer, z } },
     })
     setActiveLayer(layer)
   }
@@ -666,7 +666,6 @@ export default function DragContainer({
               type: 'setBackgroundColor',
               payload: { d, backgroundColor: response.backgroundColor },
             })
-            console.log(response.backgroundColor)
             saveBackground(response.backgroundColor)
             setSliderLightVal(response.backgroundColor[0])
             setSliderSatVal(response.backgroundColor[1])
@@ -814,7 +813,7 @@ export default function DragContainer({
 
   function makeFromStorage(blobs: Draggable[]) {
     if (!hasBeenMade && blobs && blobs?.length > 0) {
-      //dispatch({ type: 'resetBlobs', payload: {} })
+      //dispatch({ type: 'resetDraggables', payload: {} })
       for (let i: number = 0; i < blobs?.length; i++) {
         if (blobs[i] !== null && blobs[i] !== undefined) {
           const newDraggable = {
@@ -970,7 +969,7 @@ export default function DragContainer({
     e.preventDefault()
     if (window.confirm(`${EResetBlobs[language]}?`)) {
       window.localStorage.removeItem(localStorageDraggables)
-      dispatch({ type: 'resetBlobs', payload: { d } })
+      dispatch({ type: 'resetDraggables', payload: { d } })
       dispatch({ type: 'setDraggablesAtD', payload: { d, draggables: [] } })
       makeAnew(amountOfBlobs, d)
       setTimeout(() => {
@@ -1021,8 +1020,7 @@ export default function DragContainer({
       return
     }
     const colorswitch = () => {
-      let number: number = Math.ceil(getRandomMinMax(0.001, 34))
-
+      let number: number = Math.ceil(getRandomMinMax(0.0001, 40))
       switch (number) {
         case 1:
           color = 'cyan'
@@ -1138,6 +1136,12 @@ export default function DragContainer({
         case 38:
           color = 'lightsteelblue'
           break
+        case 39:
+          color = 'aquamarine'
+          break
+        case 40:
+          color = 'yellowgreen'
+          break
         default:
           color = 'cyan'
           break
@@ -1145,6 +1149,7 @@ export default function DragContainer({
       return color
     }
 
+    // Fully random:
     const colorFirst = colorswitch()
     const colorSecond = colorswitch()
 
@@ -1171,13 +1176,21 @@ export default function DragContainer({
 
   const getPosition = (draggable: HTMLElement) => {
     const blobID = draggable.id
+    const blobStyle = window.getComputedStyle(draggable)
     const blobNumber = parseInt(draggable.id.replace('blob', '').split('-')[0], 10)
-    const blobI = draggable.style.getPropertyValue('--i')
-    const blobX = draggable.style.getPropertyValue('left')
-    const blobY = draggable.style.getPropertyValue('top')
-    const blobZ = draggable.style.getPropertyValue('z-index')
-    const blobColor1 = draggable.style.getPropertyValue('background')
-    const layer = draggable.style.getPropertyValue('--layer')
+    const blobI =
+      blobStyle.getPropertyValue('--i') ?? draggable.style.getPropertyValue('--i')
+    const blobX =
+      blobStyle.getPropertyValue('left') ?? draggable.style.getPropertyValue('left')
+    const blobY =
+      blobStyle.getPropertyValue('top') ?? draggable.style.getPropertyValue('top')
+    const blobZ =
+      blobStyle.getPropertyValue('z-index') ?? draggable.style.getPropertyValue('z-index')
+    const blobColor1 =
+      blobStyle.getPropertyValue('background') ??
+      draggable.style.getPropertyValue('background')
+    const layer =
+      blobStyle.getPropertyValue('--layer') ?? draggable.style.getPropertyValue('--layer')
 
     const blobDraggable: Draggable = {
       layer: layer ? parseInt(layer) : activeLayer,
@@ -1345,7 +1358,6 @@ export default function DragContainer({
   }
 
   function sliderHueReset() {
-    //dragWrapOuter.current?.style.setProperty(`--hue${d}`, `${sliderHueVal}`)
     setDragWrapOuterHue({ [`--hue${d}` as string]: `${defaultHue}` })
     if (sliderHueInput.current) sliderHueInput.current.value = defaultHue
     setSliderHueVal(defaultHue)
@@ -1474,10 +1486,12 @@ export default function DragContainer({
   useEffect(() => {
     if (focusedBlob) {
       if (markerDivRef.current) {
-        markerDivRef.current.style.top = `${focusedBlob.top}px`
-        markerDivRef.current.style.left = `${focusedBlob.left}px`
-        markerDivRef.current.style.width = `${focusedBlob.width}px`
-        markerDivRef.current.style.height = `${focusedBlob.height}px`
+        markerDivRef.current.style.top = `${focusedBlob.top + focusedBlob.width * 0.15}px`
+        markerDivRef.current.style.left = `${
+          focusedBlob.left + focusedBlob.width * 0.15
+        }px`
+        markerDivRef.current.style.width = `${focusedBlob.width * 0.7}px`
+        markerDivRef.current.style.height = `${focusedBlob.height * 0.7}px`
       }
     }
   }, [focusedBlob])
@@ -1941,10 +1955,10 @@ export default function DragContainer({
               ref={markerDivRef}
               style={{
                 position: 'absolute',
-                top: `${focusedBlob.top}px`,
-                left: `${focusedBlob.left}px`,
-                width: `${focusedBlob.width}px`,
-                height: `${focusedBlob.height}px`,
+                top: `${focusedBlob.top + focusedBlob.width * 0.15}px`,
+                left: `${focusedBlob.left + focusedBlob.width * 0.15}px`,
+                width: `${focusedBlob.width * 0.7}px`,
+                height: `${focusedBlob.height * 0.7}px`,
                 outline: '3px dashed black',
                 outlineOffset: '2px',
                 border: '3px dashed white',
@@ -1989,6 +2003,7 @@ export default function DragContainer({
               setHighestZIndex={setHighestZIndex}
               language={language}
               dispatch={dispatch}
+              dispatch2={dispatch2}
               d={d}
               items={draggables[d] ?? []}
               amountOfBlobs={amountOfBlobs}
@@ -2315,13 +2330,13 @@ export default function DragContainer({
         </svg>
         <svg className='filter'>
           <filter id='svgfilter1'>
-            <feGaussianBlur in='SourceGraphic' stdDeviation='6'></feGaussianBlur>
+            <feGaussianBlur in='SourceGraphic' stdDeviation='8'></feGaussianBlur>
             <feColorMatrix
               values='
 1 0 0 0 0
 0 1 0 0 0
 0 0 1 0 0
-0 0 0 80 -25
+0 0 0 46 -28
 '
             ></feColorMatrix>
           </filter>
