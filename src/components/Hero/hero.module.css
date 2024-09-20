@@ -1104,7 +1104,7 @@
 .bottom::after {
   content: attr(data-instructions);
   position: absolute;
-  bottom: -2em;
+  bottom: -1.5em;
   right: 1em;
   opacity: 0;
   transition-property: opacity;
