@@ -47,14 +47,13 @@ interface DragLayerProps {
   exitApp: RefObject<HTMLDivElement>
   colorBlockProps: RefObject<HTMLDivElement>[][]
   colorPairs: ColorPair[][]
-  makeLarger0: RefObject<HTMLButtonElement>
-  makeSmaller0: RefObject<HTMLButtonElement>
-  makeMore0: RefObject<HTMLButtonElement>
-  deleteBlob0: RefObject<HTMLButtonElement>
-  layerIncrease: RefObject<HTMLButtonElement>
-  layerDecrease: RefObject<HTMLButtonElement>
+  makeLarger0: RefObject<HTMLDivElement>
+  makeSmaller0: RefObject<HTMLDivElement>
+  makeMore0: RefObject<HTMLDivElement>
+  deleteBlob0: RefObject<HTMLDivElement>
+  layerIncrease: RefObject<HTMLDivElement>
+  layerDecrease: RefObject<HTMLDivElement>
   getRandomMinMax: (min: number, max: number) => number
-  focusedBlob: focusedBlob | null
   setFocusedBlob: DispatchReact<SetStateAction<focusedBlob | null>>
   colorIndex: number
   setColorIndex: DispatchReact<SetStateAction<number>>
@@ -68,6 +67,11 @@ let reset: boolean = true
 
 let initialX = 0
 let initialY = 0
+
+let initialDistance: number
+let initialScale: number
+let tapCount: number = 0
+let tapTimeout: NodeJS.Timeout | null = null
 
 let angle = '90deg'
 
@@ -215,6 +219,11 @@ const DragLayers = (props: DragLayerProps) => {
         : (e as TouchEvent).touches[0].clientY
       ;(target as HTMLElement).classList.add('drag')
       const highestZIndexForLayer = props.highestZIndex[props.layer]
+      if (isTouchDevice()) {
+        let value = target?.style.getPropertyValue('--i') ?? '7'
+        initialScale = parseFloat(value)
+        initialScale = isNaN(initialScale) ? 7 : initialScale
+      }
       props.dispatch({
         type: 'partialUpdate',
         payload: {
@@ -255,9 +264,7 @@ const DragLayers = (props: DragLayerProps) => {
         e.preventDefault()
         document.body.style.overflow = 'hidden'
       }
-
       if (moveElement) {
-        //e.preventDefault();
         let newX = !isTouchDevice()
           ? (e as PointerEvent).clientX
           : (e as TouchEvent).touches[0].clientX
@@ -302,6 +309,41 @@ const DragLayers = (props: DragLayerProps) => {
       e.stopPropagation()
       e.preventDefault()
       moveElement = false
+      tapCount++
+
+      if (tapTimeout) clearTimeout(tapTimeout)
+      tapTimeout = setTimeout(() => {
+        if (tapCount === 2) {
+          // Double-tap detected, shrink
+          let scale = initialScale - 0.8
+          scale = Math.max(7, scale)
+          props.dispatch({
+            type: 'partialUpdate',
+            payload: {
+              d: props.d,
+              id: currentFocusedElement?.id,
+              update: {
+                i: scale,
+              },
+            },
+          })
+        } else if (tapCount === 3) {
+          // Triple-tap detected, grow
+          let scale = initialScale + 0.8
+          scale = Math.min(36, scale)
+          props.dispatch({
+            type: 'partialUpdate',
+            payload: {
+              d: props.d,
+              id: currentFocusedElement?.id,
+              update: {
+                i: scale,
+              },
+            },
+          })
+        }
+        tapCount = 0
+      }, 300)
 
       // document.removeEventListener('keydown', keyDown)
       let value = (target as HTMLElement).style.getPropertyValue('--i')
@@ -406,7 +448,7 @@ const DragLayers = (props: DragLayerProps) => {
       //  props.getPosition(target as HTMLElement)
       ;(target as HTMLElement).classList.remove('drag')
       ;(target as HTMLElement).blur()
-      currentFocusedElement = null
+      tapCount === 0 ? (currentFocusedElement = null) : (currentFocusedElement = target)
       props.setFocusedBlob(null)
     },
     [
@@ -495,12 +537,18 @@ const DragLayers = (props: DragLayerProps) => {
     currentFocusedElement = null
   }
 
+  const [dragWrapRect, setDragWrapRect] = useState<DOMRect | undefined>(
+    props.dragWrap.current?.getBoundingClientRect()
+  )
+  const [dragWrapCurrent, setDragWrapCurrent] = useState<HTMLElement | null>(
+    props.dragWrap.current
+  )
+
   //on focused blob
   function focused(draggable: HTMLElement) {
-    props.getPosition(draggable)
-    draggable.classList.add('drag')
-
+    // props.getPosition(draggable)
     currentFocusedElement = draggable
+    draggable.classList.add('drag')
     const layerStyle = (draggable as HTMLElement).style.getPropertyValue('--layer')
     props.setActiveLayer(parseInt(layerStyle) ?? 0)
     document.addEventListener('keydown', keyDown)
@@ -858,9 +906,7 @@ const DragLayers = (props: DragLayerProps) => {
           language={props.language}
           d={props.d}
           saveDraggables={props.saveDraggables}
-          dragWrap={props.dragWrap}
           selectedvalue0={props.selectedvalue0}
-          focusedBlob={props.focusedBlob}
           setFocusedBlob={props.setFocusedBlob}
           start={start}
           movement={movement}

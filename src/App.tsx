@@ -179,32 +179,6 @@ const App: FC = () => {
     }
   }, [language])
 
-  const setTooltips = () => {
-    const tooltips = document.querySelectorAll('.tooltip-wrap .tooltip')
-
-    tooltips.forEach((tooltip) => {
-      const tooltipElement = tooltip as HTMLElement
-      const tooltipAfter = window.getComputedStyle(tooltipElement, '::after')
-      const width = tooltipAfter.getPropertyValue('width')
-      const height = tooltipAfter.getPropertyValue('height')
-
-      if (width && height) {
-        tooltipElement.style.width = width
-        tooltipElement.style.height = height
-        tooltipElement.style.setProperty('--tooltip-width', width)
-        tooltipElement.style.setProperty('--tooltip-height', height)
-      }
-    })
-  }
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setTooltips()
-    }, 1000) //Page has time to load
-
-    return () => clearTimeout(timeoutId)
-  }, [location, windowWidth, windowHeight])
-
   return (
     <BlobProvider>
       <div

@@ -8,6 +8,7 @@ svg.filter {
 }
 .drag-container .drag-wrap {
   background-color: transparent;
+  position: relative;
 }
 .drag-container .blob-title-wrap {
   display: flex;
@@ -23,6 +24,12 @@ svg.filter {
 }
 .drag-container .blob-title-wrap > h2 {
   margin-top: 0.5em;
+}
+.drag-container h3,
+.drag-container h4,
+.drag-container h5,
+.drag-container h6 {
+  margin: 0 auto;
 }
 .drag-container {
   position: relative;
@@ -61,14 +68,17 @@ svg.filter {
 }
 
 .drag-container .dragzone {
-  -webkit-filter: blur(33px);
-  filter: blur(33px);
-  min-height: 70px;
-  min-width: 70px;
-  max-height: 330px;
-  max-width: 330px;
+  min-height: 40px;
+  min-width: 40px;
+  max-height: 360px;
+  max-width: 360px;
   height: calc(var(--i) * 10px);
   width: calc(var(--i) * 10px);
+}
+#drag-container0 .dragzone {
+  /*first instance*/
+  min-height: 70px;
+  min-width: 70px;
 }
 .drag-container .colorblock {
   --box: -4px 4px 20px 0 hsla(0, 0%, 0%, 0.2), -2px 2px 10px -6px hsla(0, 0%, 0%, 0.8),
@@ -79,9 +89,10 @@ svg.filter {
   -moz-box-shadow: var(--box);
   box-shadow: var(--box);
 }
-.drag-container .make-larger,
-.drag-container .make-smaller,
+
 .drag-container .make-more,
+.drag-container .make-smaller,
+.drag-container .make-larger,
 .drag-container .delete-blob,
 .drag-container .layer-adjust {
   background-color: lightgray;
@@ -103,34 +114,12 @@ svg.filter {
   box-shadow: var(--box);
 }
 
-.drag-container .delete-blob,
-.drag-container .layer-buttons button {
+.drag-container .delete-blob {
   z-index: 2;
 }
-.drag-container .layer-buttons .layer-btn-wrap {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 0.3rem;
-  max-width: 4rem;
-  padding: 0.8rem 0 0;
-}
-@media (min-width: 350px) {
-  .drag-container .layer-buttons .layer-btn-wrap {
-    max-width: 6rem;
-  }
-}
-@media (min-width: 600px) {
-  .drag-container .layer-buttons {
-    gap: 0.3rem;
-  }
-  .drag-container .layer-buttons .layer-btn-wrap {
-    max-width: 21rem;
-  }
-}
+
 .drag-container .make-smaller,
-.drag-container button.layer-adjust {
+.drag-container .layer-adjust {
   --box: inset 0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
     inset 0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: var(--box);
@@ -138,7 +127,6 @@ svg.filter {
   -ms-box-shadow: var(--box);
   -moz-box-shadow: var(--box);
   box-shadow: var(--box);
-  z-index: 2;
 }
 .drag-container .make-more {
   --box: inset -0.1rem -0.1rem 0.4rem -0.2rem rgba(0, 0, 0, 0.4),
@@ -159,7 +147,7 @@ svg.filter {
   -webkit-box-direction: normal;
   -ms-flex-flow: row nowrap;
   flex-flow: row wrap;
-  padding: 1rem;
+  padding: 0;
   -ms-flex-pack: distribute;
   justify-content: space-around;
   -webkit-box-align: center;
@@ -167,20 +155,35 @@ svg.filter {
   align-items: center;
   gap: 0.5rem 2%;
 }
-.drag-container .drag-slider-wrap > label,
-.drag-container .drag-slider-wrap > input {
-  max-width: 68vw;
+.drag-container .drag-slider-single {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-flow: row wrap;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin: 0.5rem 0;
+  width: 100%;
+  gap: 0.5rem 0.2rem;
+}
+.drag-container .drag-slider-single > label,
+.drag-container .drag-slider-single > input {
+  /* max-width: 68vw; */
   flex: 1 0 calc(90% - 4em);
   text-align: center;
   align-self: center;
 }
 
-.drag-slider-wrap label {
+.drag-container .drag-slider-single > label {
   position: relative;
-  max-width: max-content;
   padding: 0 0 0.5em;
+  margin-bottom: 0.4em;
 }
-.drag-slider-wrap label::after {
+.drag-container .drag-slider-single > label::after {
   content: '';
   position: absolute;
   bottom: -1em;
@@ -194,18 +197,47 @@ svg.filter {
   border-width: 0.6em 0.4em;
   border-top-color: currentColor;
 }
+.drag-container .drag-slider-single > span {
+  width: 100%;
+  text-align: center;
+}
+.drag-container .drag-slider-single > button {
+  flex: 0 0 100%;
+  margin: 0 auto;
+  padding: 0.3em 0.5em;
+}
 
+@media (min-width: 260px) {
+  .drag-container .drag-slider-single > span {
+    width: initial;
+  }
+  .drag-container .drag-slider-single > button {
+    flex: 0 0 auto;
+    padding: 0.3em 1.2em;
+  }
+}
 @media (min-width: 500px) {
   .drag-container .drag-slider-wrap {
     margin: 0;
   }
-  .drag-container .drag-slider-wrap > label {
+
+  .drag-container .drag-slider-single > label {
     flex: 1 0 100%;
     max-width: 100%;
   }
-  .drag-container .drag-slider-wrap > input,
-  .drag-container .drag-slider-wrap > button {
+  .drag-container .drag-slider-single > input {
     flex: 1 1 calc(45% - 4em);
+  }
+}
+@media (min-width: 700px) {
+  .drag-container .drag-slider-single {
+    flex: 1 1 28%;
+    text-align: center;
+    align-self: flex-end;
+    margin-bottom: 1em;
+  }
+  .drag-container .drag-slider-single > button {
+    flex: 1 0 100%;
   }
 }
 @media (min-width: 800px) {
@@ -213,16 +245,6 @@ svg.filter {
     width: calc(96vw - var(--scrollbar_width));
     max-width: calc(96vw - var(--scrollbar_width));
     /* margin-left: calc(50% - 50vw + var(--scrollbar_width) / 2 + 2vw); */
-  }
-  .drag-container .drag-slider-wrap {
-    flex: 1 1 28%;
-    text-align: center;
-    align-self: flex-end;
-    margin-bottom: 1em;
-  }
-  .drag-container .drag-slider-wrap > input,
-  .drag-container .drag-slider-wrap > button {
-    flex: 1 0 100%;
   }
 } /* END MEDIA */
 
@@ -235,10 +257,12 @@ svg.filter {
   appearance: none;
   position: relative;
   height: calc(var(--size));
+  min-height: calc(var(--size));
+  width: calc(100% - 2 * var(--size));
+  min-width: calc(100% - 2 * var(--size));
   background: lightgray;
   outline: none;
   opacity: 0.6;
-  z-index: 1;
   -webkit-transition: var(--tra);
   -moz-transition: var(--tra);
   -ms-transition: var(--tra);
@@ -299,10 +323,14 @@ svg.filter {
   -moz-box-shadow: var(--box);
   box-shadow: var(--box);
 }
-
-.drag-container {
+.blob.page {
   --corner: 1rem;
   --corner2: calc(var(--corner) / 1.2);
+}
+.blob.page button {
+  border-radius: var(--corner);
+}
+.drag-container {
   --tooltip-width: 13rem;
   --tooltip-offset: 1.5rem;
   display: -webkit-box;
@@ -337,7 +365,7 @@ svg.filter {
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   margin-bottom: 0.5em;
 }
 .drag-container button {
@@ -415,7 +443,7 @@ svg.filter {
 .drag-wrap-outer {
   --tooltip-color: lightgray;
   --box: 0 10px 30px 0 hsla(0, 0%, 0%, 0.3);
-  position: relative;
+
   width: 100%;
   margin: 0;
   padding: 0;
@@ -446,18 +474,29 @@ svg.filter {
   width: 100%;
   min-width: 100%;
 }
-
+.drag-wrap-outer {
+  overflow: auto;
+}
+.drag-wrap-outest {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: auto;
+}
 .drag-wrap,
 .drag-wrap .drag-container-layer {
   height: calc(100vh - 7rem);
   min-height: 420px;
   width: 100%;
   min-width: 100%;
-  overflow: hidden;
   background-color: transparent;
-  overflow: hidden;
   margin: 0;
   padding: 0;
+  overflow: visible;
 }
 .drag-wrap ul {
   list-style: none;
@@ -476,12 +515,12 @@ svg.filter {
   background-color: white;
 }
 .drag-container .dragzone.animation {
-  --delay: 0.22s;
-  --duration: 3.3s;
+  --delay: 0.2s;
+  --del: calc(var(--i) * var(--delay));
+  --duration: 3s;
   --tra1: translatey(0px);
   --tra2: translatey(5px);
   --anim: sway var(--duration) ease-in-out infinite;
-  --del: calc(var(--i) * var(--delay));
   -webkit-animation: var(--anim);
   -moz-animation: var(--anim);
   -o-animation: var(--anim);
@@ -636,45 +675,166 @@ body.dark-mode .site .drag-container .dragzone:focus {
   width: 1.6rem;
   max-width: 2.5rem;
 }
-.drag-container .layer-buttons {
+.drag-container .delete-blob,
+.drag-container .make-larger,
+.drag-container .make-random {
+  margin: 0;
+}
+.drag-container .layer-mover-control-wrap {
   display: flex;
   max-width: max-content;
-  flex-flow: column wrap;
+  flex-flow: row wrap;
   justify-content: center;
   align-items: center;
   padding-bottom: 0.4em;
-  gap: 0.1rem;
+  gap: 0.4rem;
+  margin: 0.6rem auto 0;
 }
-@media (min-width: 300px) {
-  .drag-container .layer-buttons {
-    flex-flow: row wrap;
-    align-items: flex-start;
-    gap: 0.2rem;
+.drag-container .layer-mover-control-wrap .layers {
+  order: 5;
+}
+.drag-container .layer-mover-control-wrap .layer-tools1 {
+  order: 1;
+}
+.drag-container .layer-mover-control-wrap .layer-tools2 {
+  order: 2;
+}
+.drag-container .layer-mover-control-wrap .movers-wrap1 {
+  order: 3;
+}
+.drag-container .layer-mover-control-wrap .movers-wrap2 {
+  order: 4;
+}
+.drag-container .layer-mover-control-wrap .layers {
+  min-width: 90%;
+  width: 90%;
+}
+@media (min-width: 260px) {
+  .drag-container .layer-mover-control-wrap .movers-wrap,
+  .drag-container .layer-mover-control-wrap .layer-tools {
+    min-width: 48%;
+    width: 48%;
+    justify-content: center;
   }
-}
+  .drag-container .layer-mover-control-wrap .movers-wrap1,
+  .drag-container .layer-mover-control-wrap .layer-tools1.layer-btn-wrap {
+    justify-content: flex-end;
+  }
+  .drag-container .layer-mover-control-wrap .movers-wrap2,
+  .drag-container .layer-mover-control-wrap .layer-tools2.layer-btn-wrap {
+    justify-content: flex-start;
+  }
+} /* END media */
 
-.drag-container .layer-buttons button {
+.drag-container .layer-mover-control-wrap button {
   margin: 0;
   padding: 0.2rem 0.5rem 0.3rem;
   border: 3px solid var(--color-primary-7);
   outline: 3px solid var(--color-primary-7);
   outline-offset: -5px;
 }
-.drag-container .layer-buttons button:hover,
-.drag-container .layer-buttons button:focus {
+.drag-container .layer-mover-control-wrap button:hover,
+.drag-container .layer-mover-control-wrap button:focus {
   border: 3px solid var(--color-primary-14);
   outline: 3px solid var(--color-primary-14);
   outline-offset: -5px;
 }
-.drag-container .layer-buttons button.active {
+.drag-container .layer-mover-control-wrap button.active {
   outline: 3px solid black;
   border: 3px solid white;
   outline-offset: -6px;
 }
-.drag-container .layer-buttons button.dim {
+.drag-container .layer-mover-control-wrap button.dim {
   opacity: 0.4;
 }
-#root .drag-container button.layer-adjust {
+@media (min-width: 400px) {
+  .drag-container .layer-mover-control-wrap .layers {
+    order: 4;
+  }
+  .drag-container .layer-mover-control-wrap .movers-wrap,
+  .drag-container .layer-mover-control-wrap .layer-tools {
+    width: 4rem;
+    flex: 0 0 4rem;
+    min-width: 4rem;
+    max-width: 4rem;
+  }
+  .drag-container .layer-mover-control-wrap .layer-tools1 {
+    order: 0;
+  }
+  .drag-container .layer-mover-control-wrap .layer-tools2 {
+    order: 1;
+  }
+  .drag-container .layer-mover-control-wrap .movers-wrap1 {
+    order: 2;
+  }
+  .drag-container .layer-mover-control-wrap .movers-wrap2 {
+    order: 3;
+  }
+} /* END media */
+
+@media (min-width: 500px) {
+  .drag-container .layer-mover-control-wrap .layer-btn-wrap.layers {
+    width: 100%;
+    flex: 1 0 100%;
+    min-width: 100%;
+    max-width: 100%;
+  }
+} /* END media */
+@media (min-width: 800px) {
+  .drag-container .layer-mover-control-wrap .layer-tools1 {
+    order: 0;
+  }
+  .drag-container .layer-mover-control-wrap .layers.layer-btn-wrap {
+    flex: 0 0 max-content;
+    min-width: max-content;
+    max-width: 21rem;
+    order: 1;
+  }
+  .drag-container .layer-mover-control-wrap .layer-tools2 {
+    order: 2;
+  }
+
+  .drag-container .layer-mover-control-wrap .layer-tools {
+    width: 4rem;
+    flex: 0 0 4rem;
+    min-width: 4rem;
+    max-width: 4rem;
+  }
+  .drag-container .layer-mover-control-wrap .movers-wrap {
+    width: 45%;
+    flex: 1 0 45%;
+    min-width: 45%;
+    max-width: 45%;
+  }
+  .drag-container .layer-mover-control-wrap .movers-wrap1 {
+    order: 3;
+  }
+  .drag-container .layer-mover-control-wrap .movers-wrap2 {
+    order: 4;
+  }
+} /* END media */
+@media (min-width: 900px) {
+  .drag-container .layer-mover-control-wrap {
+    flex: 1 0 100%;
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+  }
+  .drag-container .layer-mover-control-wrap .movers-wrap {
+    width: 5rem;
+    flex: 1 0 5rem;
+    min-width: 5rem;
+    max-width: 5rem;
+  }
+  .drag-container .layer-mover-control-wrap .movers-wrap1 {
+    order: -1;
+    justify-content: flex-start;
+  }
+  .drag-container .layer-mover-control-wrap .movers-wrap2 {
+    justify-content: flex-end;
+  }
+} /* END media */
+#root .drag-container .layer-adjust {
   position: absolute;
   color: black;
   font-size: 1.4rem;
@@ -692,24 +852,16 @@ body.dark-mode .site .drag-container .dragzone:focus {
   background: none;
   background-color: lightgray;
 }
-.drag-container .layer-buttons .layer-adjust > * {
+.drag-container .layer-mover-control-wrap .layer-adjust > * {
   color: black;
 }
 
-.drag-container button.every-layer,
-.drag-container button.layer-amount {
+.drag-container .layer-mover-control-wrap .layer-tool {
   padding: 0.15em 0.15em 0;
   font-size: 1.2rem;
+  border-radius: 50%;
 }
-.layer-control-wrap {
-  width: 100%;
-  min-width: 100%;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 0.5rem;
-}
+
 .drag-container .make-more,
 .drag-container .delete-blob {
   color: black;
@@ -786,17 +938,28 @@ body.dark-mode .site .drag-container .dragzone:focus {
 .drag-container .delete-blob:hover {
   outline: 5px solid red;
 }
+.drag-container .make-larger,
+.drag-container .delete-blob,
+.drag-container .layer-adjust {
+  transform: translateY(-0.3rem);
+}
+.drag-container .make-smaller,
+.drag-container .make-more,
+.drag-container .make-random {
+  transform: translateY(0.2rem);
+}
+
 .colorblock {
   position: absolute;
   width: 1.4rem;
-  height: 1.5rem;
+  height: 1.3rem;
   border-radius: 6.7rem 5rem 5rem 6.7rem / 8.7rem 0.7rem 0.7rem 8.7rem;
 }
 @media (max-width: 700px) {
   .colorblock {
     position: absolute;
     width: 0.9rem;
-    height: 1.2rem;
+    height: 1rem;
   }
 } /*END media*/
 
@@ -853,6 +1016,23 @@ body.dark-mode .site .drag-container .dragzone:focus {
   --tooltip-color: black;
   position: relative;
 }
+.blob.page .tooltip.scr {
+  /* Reset inherited properties */
+  clip: auto;
+  -webkit-clip-path: none;
+  -moz-clip-path: none;
+  -ms-clip-path: none;
+  -o-clip-path: none;
+  clip-path: none;
+  width: auto;
+  height: auto;
+  line-height: normal;
+  overflow: visible;
+  word-wrap: normal;
+  padding: initial;
+  margin: initial;
+  border: initial;
+}
 .blob.page .tooltipwrap .tooltip {
   position: absolute;
   top: -2.5em;
@@ -868,15 +1048,15 @@ body.dark-mode .site .drag-container .dragzone:focus {
   font-weight: bold;
   cursor: help;
 }
-.blob.page .tooltipwrap:hover .tooltip::after,
-.blob.page .tooltipwrap:focus .tooltip::after {
+
+.blob.page .tooltipwrap:hover .tooltip span,
+.blob.page .tooltipwrap:focus .tooltip span {
   --box: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
   position: absolute;
   top: 0;
   right: -50%;
   height: max-content;
   width: max-content;
-  content: attr(data-tooltip);
   text-align: center;
   font-size: 0.8rem;
   font-weight: normal;
@@ -898,46 +1078,58 @@ body.dark-mode .site .drag-container .dragzone:focus {
   right: unset;
   left: 0;
 }
-.blob.page .tooltipwrap.moveleft:hover .tooltip::after,
-.blob.page .tooltipwrap.moveleft:focus .tooltip::after {
+.blob.page .tooltipwrap.moveleft:hover .tooltip span,
+.blob.page .tooltipwrap.moveleft:focus .tooltip span {
   right: unset;
   left: 0;
 }
-.blob.page .tooltipwrap.moveright:focus .tooltip::after,
-.blob.page .tooltipwrap.moveright:hover .tooltip::after {
+.blob.page .tooltipwrap.moveright:focus .tooltip span,
+.blob.page .tooltipwrap.moveright:hover .tooltip span {
   right: 0;
 }
+.movers-layers-wrap {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.1rem;
+  margin: 0 auto;
+  width: 100%;
+}
 
-.blob.page .movers-wrap1 {
-  position: absolute;
-  top: 4px;
-  left: 3px;
-  max-width: 2rem;
+.blob.page .movers-wrap {
+  max-width: 5rem;
   display: flex;
   flex-flow: row wrap;
-  justify-content: flex-start;
   align-items: center;
-  z-index: 2;
-  gap: 0.1rem;
+  margin-top: 0.2rem;
+  gap: 0.3rem;
+  margin: 0;
 }
-.blob.page .movers-wrap2 {
-  position: absolute;
-  top: 4px;
-  right: 3px;
-  max-width: 2rem;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-end;
-  align-items: center;
-  z-index: 2;
-  gap: 0.1rem;
-}
+
 .blob.page .movers-wrap button.mover {
   padding: 0.2rem 0.2rem 0.04rem;
   font-size: 1.2rem;
   margin: 0;
 }
+.drag-container .layer-mover-control-wrap .layer-btn-wrap {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem;
+}
 
+@media (min-width: 600px) {
+  .drag-container .layer-mover-control-wrap {
+    gap: 0.3rem;
+  }
+  .drag-container .layer-mover-control-wrap .layer-btn-wrap {
+    max-width: 21rem;
+  }
+}
+@media (min-width: 800px) {
+} /* END media */
 .blob-register-login-wrap {
   display: flex;
   flex-flow: row wrap;
@@ -1057,7 +1249,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
 #root .drag-container .layer-increase.hidden {
   display: none;
 }
-.drag-container .disable-scroll.active {
+.drag-container button.active {
   outline: 4px dotted var(--color-primary-14);
   background-position: bottom;
   color: var(--color-primary-1);
@@ -1066,8 +1258,44 @@ body.dark-mode .site .drag-container .dragzone:focus {
   max-width: max-content;
   min-width: max-content;
 }
-.drag-container .pagination-btn {
+.pagination-controls {
+  --width: 2.6rem;
+  --height: 1.6rem;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 auto;
+  width: 100%;
+}
+.pagination-controls .input-wrap.items-per-page,
+.pagination-controls .input-wrap.items-per-page label {
+  text-align: center;
+  font-size: 0.9em;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  flex: 0 0 auto;
+}
+.pagination-controls .input-wrap.items-per-page::before {
+  max-height: var(--height);
+  max-width: var(--width);
+}
+.pagination-controls .input-wrap.items-per-page input {
+  flex: 0 0 var(--width);
+  max-height: var(--height);
+  font-size: 0.9em;
+  max-width: var(--width);
+}
+.pagination-controls .input-wrap.items-per-page input:valid ~ span {
+  transform: translateY(0);
+  position: relative;
+  top: initial;
+}
+.blob.page .drag-container .pagination-btn {
   font-size: 1.6rem;
   padding: 0 0.5rem 0.2rem;
   margin: 0;
+  border-radius: 50%;
 }

@@ -335,7 +335,7 @@ export enum EPressHereOrEscapeToRestoreScrolling {
   fi = 'Paina tästä tai Esc palauttaaksesi sivun vierityksen',
 }
 export enum EStopSway {
-  en = 'Stop Movement',
+  en = 'Stop movement',
   es = 'Detener el movimiento',
   fr = 'Arrêter le mouvement',
   de = 'Bewegung stoppen',
@@ -344,7 +344,7 @@ export enum EStopSway {
   fi = 'Pysäytä liike',
 }
 export enum EStartSway {
-  en = 'Start Sway',
+  en = 'Start sway',
   es = 'Comience el movimiento',
   fr = 'Commencez le mouvement',
   de = 'Bewegung starten',
@@ -398,13 +398,13 @@ export enum EMarkerOff {
   fi = 'Merkkaus pois päältä',
 }
 export enum EToggleMarkerVisibilityWhenUsingAKeyboard {
-  en = 'Toggle marker visibility when using a keyboard',
-  es = 'Alternar la visibilidad del marcador al usar un teclado',
-  fr = 'Activer/désactiver la visibilité du marqueur lors de l utilisation d un clavier',
-  de = 'Umschalten der Markersichtbarkeit bei Verwendung einer Tastatur',
-  pt = 'Alternar a visibilidade do marcador ao usar um teclado',
-  cs = 'Přepnout viditelnost značky při použití klávesnice',
-  fi = 'Vaihda merkin näkyvyys, kun käytät näppäimistöä',
+  en = 'Toggle the visibility of the ring marking the active blob when using a keyboard',
+  es = 'Alternar la visibilidad del anillo que marca el blob activo al usar un teclado',
+  fr = 'Basculer la visibilité de l anneau marquant le blob actif lors de l utilisation d un clavier',
+  de = 'Schalten Sie die Sichtbarkeit des Rings um, der den aktiven Blob markiert, wenn Sie eine Tastatur verwenden',
+  pt = 'Alternar a visibilidade do anel que marca o blob ativo ao usar um teclado',
+  cs = 'Přepněte viditelnost kroužku označujícího aktivní blob při použití klávesnice',
+  fi = 'Vaihda aktiivisen mollukan merkkausrenkaan näkyvyyttä näppäimistöä käytettäessä',
 }
 export enum ETryDraggingTheBlobs {
   en = 'Try dragging the blobs',
@@ -1228,4 +1228,58 @@ export enum EOverAThousandPossibleColorCombinations {
   pt = 'Mais de mil combinações de cores possíveis!',
   cs = 'Přes tisíc možných barevných kombinací!',
   fi = 'Yli tuhat mahdollista väriyhdistelmää!',
+}
+export enum EDarkerColors {
+  en = 'Darker colors',
+  es = 'Colores más oscuros',
+  fr = 'Couleurs plus sombres',
+  de = 'Dunklere Farben',
+  pt = 'Cores mais escuras',
+  cs = 'Tmavší barvy',
+  fi = 'Tummemmat värit',
+}
+export enum EOnTouchscreensTapTheBlobTwiceToShrinkItAndThriceToEnlargeIt {
+  en = 'On touchscreens, tap the blob twice to shrink it and thrice to enlarge it',
+  es = 'En pantallas táctiles, toque el blob dos veces para reducirlo y tres veces para agrandarlo',
+  fr = 'Sur les écrans tactiles, appuyez sur le blob deux fois pour le réduire et trois fois pour l agrandir',
+  de = 'Auf Touchscreens tippen Sie zweimal auf den Blob, um ihn zu verkleinern, und dreimal, um ihn zu vergrößern',
+  pt = 'Em telas sensíveis ao toque, toque no blob duas vezes para reduzi-lo e três vezes para aumentá-lo',
+  cs = 'Na dotykových obrazovkách klepněte na blob dvakrát, abyste jej zmenšili, a třikrát, abyste jej zvětšili',
+  fi = 'Kosketusnäytöillä napauta mollukkaa kahdesti kutistaaksesi sen ja kolmesti suurentaaksesi sen',
+}
+export enum EAfterEnablingThereIsASlightDelayBeforeAllTheBlobsAreMovingAgain {
+  en = 'After enabling, there is a slight delay before all the blobs are bobbing again',
+  es = 'Después de habilitar, hay una ligera demora antes de que todos los blobs vuelvan a moverse',
+  fr = 'Après activation, il y a un léger délai avant que tous les blobs recommencent à bouger',
+  de = 'Nach dem Aktivieren gibt es eine leichte Verzögerung, bevor sich alle Blobs wieder bewegen',
+  pt = 'Após ativar, há um pequeno atraso antes que todos os blobs voltem a se mover',
+  cs = 'Po povolení dojde k mírnému zpoždění, než se všechny bloby znovu začnou pohybovat',
+  fi = 'Käyttöönoton jälkeen, mollukat lähtevät liikkeelle viiveellä',
+}
+export enum EScroll {
+  en = 'Scroll',
+  es = 'Desplazarse',
+  fr = 'Faites défiler jusqu',
+  de = 'Scrollen',
+  pt = 'Role',
+  cs = 'Přejít',
+  fi = 'Vieritä',
+}
+export enum EToBlobArt {
+  en = 'to Blob Art',
+  es = 'a Arte de Blob',
+  fr = 'à l art de Blob',
+  de = 'zu Blob Art',
+  pt = 'para Arte de Blob',
+  cs = 'k Blob Art',
+  fi = 'Mollukka-taiteeseen',
+}
+export enum EGetANewSetOfBlobs {
+  en = 'Get a new set of blobs',
+  es = 'Obtener un nuevo conjunto de blobs',
+  fr = 'Obtenez un nouvel ensemble de blobs',
+  de = 'Holen Sie sich einen neuen Satz Blobs',
+  pt = 'Obtenha um novo conjunto de blobs',
+  cs = 'Získejte novou sadu blobů',
+  fi = 'Hanki uusi setti mollukoita',
 }

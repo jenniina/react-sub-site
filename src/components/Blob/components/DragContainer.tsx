@@ -28,12 +28,16 @@ import {
   EEdit,
   EError,
   EErrorConnectingToTheServer,
+  EItemsPerPage,
   ELanguages,
   ELoad,
   ELogin,
+  ENew,
+  ENewName,
   ENext,
   EOr,
   EPage,
+  EPerPage,
   EPrevious,
   ERegister,
   EReset,
@@ -108,6 +112,9 @@ import {
   ELayerHidden,
   EWithMoreMutedColors,
   EMoreColorsAvailableThroughRandomBlobButton,
+  EDarkerColors,
+  EAfterEnablingThereIsASlightDelayBeforeAllTheBlobsAreMovingAgain,
+  EGetANewSetOfBlobs,
 } from '../../../interfaces/blobs'
 import {
   BiChevronDown,
@@ -136,33 +143,44 @@ import { ELoading } from '../../Todo/interfaces'
 import { EDelete } from '../../Jokes/interfaces'
 import ColorBlocks from './ColorBlocks'
 import Sliders from './Sliders'
-import { c } from 'vite/dist/node/types.d-aGj9QkWt'
-import { EBlobArtApp } from '../../../interfaces/about'
+import { EBlobArt } from '../../../interfaces/about'
+import { focused, isTouchDevice } from '../../../hooks/useDraggable'
 
 // Should be in the same order as colorBlockProps
 const colorPairs: ColorPair[] = [
   { color1: 'darkorange', color2: 'orange' }, //colorBlockOrange
   { color1: 'orangered', color2: 'palevioletred' }, //colorBlockRed
   { color1: 'magenta', color2: 'violet' }, //colorBlockPurple
-  { color1: 'deepskyblue', color2: 'dodgerblue' }, //colorBlockBlue
-  { color1: 'lemonchiffon', color2: 'pink' }, //colorBlockPinkYellow
-  { color1: 'lemonchiffon', color2: 'greenyellow' }, //colorBlockYellowLime
+  { color1: 'blue', color2: 'cyan' }, //colorBlockBlue
+  { color1: 'greenyellow', color2: 'lemonchiffon' }, //colorBlockYellowLime
   { color1: 'cyan', color2: 'greenyellow' }, //colorBlockCyanYellow
   { color1: 'cyan', color2: 'pink' }, //colorBlockCyanPink
+  { color1: 'lemonchiffon', color2: 'pink' }, //colorBlockPinkYellow
 ]
-
+// Should be in the same order as colorBlockProps2
 const colorPairs2: ColorPair[] = [
   { color1: 'indianred', color2: 'palevioletred' }, //colorBlockReddish
   { color1: 'sienna', color2: 'peru' }, //colorBlockBrown
   { color1: 'chocolate', color2: 'burlywood' }, //colorBlockTan
   { color1: 'darkkhaki', color2: 'moccasin' }, //colorBlockKhaki
-  { color1: 'lightslategray', color2: 'lightsteelblue' }, //colorBlockGray
   { color1: 'slateblue', color2: 'mediumpurple' }, //colorBlockPurplish
   { color1: 'royalblue', color2: 'turquoise' }, //colorBlockBluish
   { color1: 'cadetblue', color2: 'mediumaquamarine' }, //colorBlockGreenish
+  { color1: 'lightslategray', color2: 'lightsteelblue' }, //colorBlockGray
+]
+// Should be in the same order as colorBlockProps3
+const colorPairs3: ColorPair[] = [
+  { color1: 'indigo', color2: 'mediumorchid' }, //colorBlockDarkPurple
+  { color1: 'darkmagenta', color2: 'palevioletred' }, //colorBlockDarkPink
+  { color1: 'crimson', color2: 'indianred' }, //colorBlockDarkRed
+  { color1: 'chocolate', color2: 'orangered' }, //colorBlockDarkOrange
+  { color1: 'darkcyan', color2: 'olivedrab' }, //colorBlockDarkGreen
+  { color1: 'midnightblue', color2: 'darkturquoise' }, //colorBlockGreenishBlue
+  { color1: 'mediumblue', color2: 'cadetblue' }, //colorBlockDarkBlue
+  { color1: 'darkblue', color2: 'mediumslateblue' }, //colorBlockPurplishBlue
 ]
 
-const colorPairsCombo: ColorPair[][] = [colorPairs, colorPairs2]
+const colorPairsCombo: ColorPair[][] = [colorPairs, colorPairs2, colorPairs3]
 
 let angle = '90deg'
 let color = 'cyan'
@@ -176,15 +194,17 @@ const preventDefault = (e: Event) => {
 export default function DragContainer({
   language,
   d,
+  ds,
   dragWrapOuter,
 }: {
   language: ELanguages
   d: number
+  ds: number
   dragWrapOuter: RefObject<HTMLDivElement>
 }) {
-  const defaultLightness = d === 0 ? '30' : '25'
-  const defaultSaturation = d === 0 ? '80' : '45'
-  const defaultHue = d === 0 ? '214' : '214'
+  const defaultHue = '214'
+  const defaultSaturation = d === 0 ? '80' : d === 2 ? '50' : '45'
+  const defaultLightness = d === 0 ? '30' : d === 2 ? '5' : '25'
 
   const { state, dispatch } = useContext(BlobContext) as Props
   const dispatch2 = useAppDispatch()
@@ -193,6 +213,7 @@ export default function DragContainer({
 
   //const dragWrapOuter = useRef() as RefObject<HTMLDivElement>
   const dragWrap = useRef() as RefObject<HTMLDivElement>
+  const dragWrapOutest = useRef() as RefObject<HTMLDivElement>
 
   const selectedvalue0 = useRef() as RefObject<HTMLSpanElement>
 
@@ -205,14 +226,14 @@ export default function DragContainer({
 
   const exitApp = useRef() as RefObject<HTMLDivElement>
 
-  const makeLarger0 = useRef() as RefObject<HTMLButtonElement>
-  const makeSmaller0 = useRef() as RefObject<HTMLButtonElement>
-  const makeMore0 = useRef() as RefObject<HTMLButtonElement>
-  const deleteBlob0 = useRef() as RefObject<HTMLButtonElement>
-  const makeRandom0 = useRef() as RefObject<HTMLButtonElement>
+  const makeLarger0 = useRef() as RefObject<HTMLDivElement>
+  const makeSmaller0 = useRef() as RefObject<HTMLDivElement>
+  const makeMore0 = useRef() as RefObject<HTMLDivElement>
+  const deleteBlob0 = useRef() as RefObject<HTMLDivElement>
+  const layerIncrease = useRef() as RefObject<HTMLDivElement>
+  const layerDecrease = useRef() as RefObject<HTMLDivElement>
 
-  const layerIncrease = useRef() as RefObject<HTMLButtonElement>
-  const layerDecrease = useRef() as RefObject<HTMLButtonElement>
+  const makeRandom0 = useRef() as RefObject<HTMLButtonElement>
 
   const markerDivRef = useRef<HTMLDivElement>(null)
 
@@ -267,10 +288,19 @@ export default function DragContainer({
   const colorBlockBrown = useRef() as RefObject<HTMLDivElement>
   const colorBlockKhaki = useRef() as RefObject<HTMLDivElement>
   const colorBlockBluish = useRef() as RefObject<HTMLDivElement>
-  const colorBlockGray = useRef() as RefObject<HTMLDivElement>
   const colorBlockPurplish = useRef() as RefObject<HTMLDivElement>
   const colorBlockGreenish = useRef() as RefObject<HTMLDivElement>
   const colorBlockTan = useRef() as RefObject<HTMLDivElement>
+  const colorBlockGray = useRef() as RefObject<HTMLDivElement>
+
+  const colorBlockDarkPurple = useRef() as RefObject<HTMLDivElement>
+  const colorBlockDarkPink = useRef() as RefObject<HTMLDivElement>
+  const colorBlockDarkRed = useRef() as RefObject<HTMLDivElement>
+  const colorBlockDarkOrange = useRef() as RefObject<HTMLDivElement>
+  const colorBlockDarkGreen = useRef() as RefObject<HTMLDivElement>
+  const colorBlockGreenishBlue = useRef() as RefObject<HTMLDivElement>
+  const colorBlockDarkBlue = useRef() as RefObject<HTMLDivElement>
+  const colorBlockPurplishBlue = useRef() as RefObject<HTMLDivElement>
 
   // Create a mapping between the ref objects and their names
   const refNameMapping = new Map<RefObject<HTMLDivElement>, string>([
@@ -289,13 +319,24 @@ export default function DragContainer({
     [colorBlockBrown, 'colorBlockBrown'],
     [colorBlockTan, 'colorBlockTan'],
     [colorBlockKhaki, 'colorBlockKhaki'],
-    [colorBlockGray, 'colorBlockGray'],
     [colorBlockPurplish, 'colorBlockPurplish'],
     [colorBlockBluish, 'colorBlockBluish'],
     [colorBlockGreenish, 'colorBlockGreenish'],
+    [colorBlockGray, 'colorBlockGray'],
   ])
 
-  const refNameMappingCombo = [refNameMapping, refNameMapping2]
+  const refNameMapping3 = new Map<RefObject<HTMLDivElement>, string>([
+    [colorBlockDarkPurple, 'colorBlockDarkPurple'],
+    [colorBlockDarkPink, 'colorBlockDarkPink'],
+    [colorBlockDarkRed, 'colorBlockDarkRed'],
+    [colorBlockDarkOrange, 'colorBlockDarkOrange'],
+    [colorBlockDarkGreen, 'colorBlockDarkGreen'],
+    [colorBlockGreenishBlue, 'colorBlockGreenishBlue'],
+    [colorBlockDarkBlue, 'colorBlockDarkBlue'],
+    [colorBlockPurplishBlue, 'colorBlockPurplishBlue'],
+  ])
+
+  const refNameMappingCombo = [refNameMapping, refNameMapping2, refNameMapping3]
 
   const getRefName = (
     refNameMapping: Map<RefObject<HTMLDivElement>, string>,
@@ -310,23 +351,33 @@ export default function DragContainer({
     colorBlockRed,
     colorBlockPurple,
     colorBlockBlue,
-    colorBlockPinkYellow,
     colorBlockYellowLime,
     colorBlockCyanYellow,
     colorBlockCyanPink,
+    colorBlockPinkYellow,
   ]
   const colorBlockProps2 = [
     colorBlockReddish,
     colorBlockBrown,
     colorBlockTan,
     colorBlockKhaki,
-    colorBlockGray,
     colorBlockPurplish,
     colorBlockBluish,
     colorBlockGreenish,
+    colorBlockGray,
+  ]
+  const colorBlockProps3 = [
+    colorBlockDarkPurple,
+    colorBlockDarkPink,
+    colorBlockDarkRed,
+    colorBlockDarkOrange,
+    colorBlockDarkGreen,
+    colorBlockGreenishBlue,
+    colorBlockDarkBlue,
+    colorBlockPurplishBlue,
   ]
 
-  const colorBlockPropsCombo = [colorBlockProps, colorBlockProps2]
+  const colorBlockPropsCombo = [colorBlockProps, colorBlockProps2, colorBlockProps3]
 
   const changeBlobLayer = (draggable: Draggable, layer: number) => {
     const z = highestZIndex[layer] + 1
@@ -444,7 +495,7 @@ export default function DragContainer({
   function saveDraggables(blob: Draggable[] = draggables[d]) {
     localStorage.setItem(localStorageDraggables, JSON.stringify(blob))
   }
-  const [name, setName] = useState('Blob Art')
+  const [name, setName] = useState<string>(EBlobArt[language])
   const [newName, setNewName] = useState(name)
   const [editName, setEditName] = useState('')
   const [isLoading, setIsLoading] = useState(true)
@@ -667,17 +718,17 @@ export default function DragContainer({
               payload: { d, backgroundColor: response.backgroundColor },
             })
             saveBackground(response.backgroundColor)
-            setSliderLightVal(response.backgroundColor[0])
+            setSliderHueVal(response.backgroundColor[0])
             setSliderSatVal(response.backgroundColor[1])
-            setSliderHueVal(response.backgroundColor[2])
-            setDragWrapOuterLightness({
-              [`--lightness${d}` as string]: `${response.backgroundColor[0]}`,
+            setSliderLightVal(response.backgroundColor[2])
+            setDragWrapOuterHue({
+              [`--hue${d}` as string]: `${response.backgroundColor[0]}`,
             })
             setDragWrapOuterSaturation({
               [`--saturation${d}` as string]: `${response.backgroundColor[1]}`,
             })
-            setDragWrapOuterHue({
-              [`--hue${d}` as string]: `${response.backgroundColor[2]}`,
+            setDragWrapOuterLightness({
+              [`--lightness${d}` as string]: `${response.backgroundColor[2]}`,
             })
           })
           .then(() => {
@@ -749,12 +800,12 @@ export default function DragContainer({
           })
           saveBackground(loadedBackgroundColor)
 
-          setSliderLightVal(loadedBackgroundColor[0])
+          setSliderHueVal(loadedBackgroundColor[0])
           setSliderSatVal(loadedBackgroundColor[1])
-          setSliderHueVal(loadedBackgroundColor[2])
+          setSliderLightVal(loadedBackgroundColor[2])
 
           dragWrapOuter.current?.style.setProperty(
-            `--lightness${d}`,
+            `--hue${d}`,
             `${loadedBackgroundColor[0]}`
           )
           dragWrapOuter.current?.style.setProperty(
@@ -762,7 +813,7 @@ export default function DragContainer({
             `${loadedBackgroundColor[1]}`
           )
           dragWrapOuter.current?.style.setProperty(
-            `--hue${d}`,
+            `--lightness${d}`,
             `${loadedBackgroundColor[2]}`
           )
         } else {
@@ -770,10 +821,10 @@ export default function DragContainer({
             type: 'setBackgroundColor',
             payload: {
               d,
-              backgroundColor: [defaultLightness, defaultSaturation, defaultHue],
+              backgroundColor: [defaultHue, defaultSaturation, defaultLightness],
             },
           })
-          saveBackground([defaultLightness, defaultSaturation, defaultHue])
+          saveBackground([defaultHue, defaultSaturation, defaultLightness])
         }
         if (loadedLayerAmount) {
           setLayerAmount(loadedLayerAmount)
@@ -882,18 +933,6 @@ export default function DragContainer({
       setPaused(false)
     }
   }
-  function toggleAnimation(element: HTMLElement) {
-    if (!paused) {
-      element.classList.remove('animation')
-      // Trigger a reflow to ensure the class removal is processed:
-      void element.offsetWidth
-      setPaused(true)
-    } else {
-      element.classList.add('animation')
-      void element.offsetWidth
-      setPaused(false)
-    }
-  }
 
   useEffect(() => {
     if (prefersReducedMotion && dragWrap.current) {
@@ -983,7 +1022,7 @@ export default function DragContainer({
     setActiveLayer(0)
     for (let i: number = 0; i < amount; i++) {
       const colorswitch = () => {
-        const colorArray = d === 0 ? colorPairs : colorPairs2
+        const colorArray = colorPairsCombo[d]
         const randomIndex = Math.floor(Math.random() * colorArray.length)
         return [colorArray[randomIndex].color1, colorArray[randomIndex].color2]
       }
@@ -1015,6 +1054,8 @@ export default function DragContainer({
   }
 
   const addRandomDraggable = () => {
+    if (document.activeElement instanceof HTMLElement) document.activeElement.blur() // Unfocus the button after clicking, as the tooltip will otherwise stay visible and be in the way
+
     if (hiddenLayers.has(activeLayer)) {
       dispatch2(notify(ELayerHidden[language], true, 8))
       return
@@ -1219,8 +1260,6 @@ export default function DragContainer({
       document.removeEventListener('touchmove', preventDefault)
     }
     return () => {
-      document.body.style.overflowY = 'auto'
-      document.body.style.overflowX = 'hidden'
       document.removeEventListener('touchmove', preventDefault)
     }
   }, [scroll])
@@ -1231,10 +1270,10 @@ export default function DragContainer({
 
   // SLIDERS
 
-  const [sliderLightVal, setSliderLightVal] = useState(() => {
+  const [sliderHueVal, setSliderHueVal] = useState(() => {
     const savedBackground = localStorage.getItem(localStorageBackground)
     const backgroundColor = savedBackground ? JSON.parse(savedBackground) : null
-    return backgroundColor?.[0] ?? defaultLightness
+    return backgroundColor?.[0] ?? defaultHue
   })
   const [sliderSatVal, setSliderSatVal] = useState(() => {
     const savedBackground = localStorage.getItem(localStorageBackground)
@@ -1242,19 +1281,22 @@ export default function DragContainer({
     return backgroundColor?.[1] ?? defaultSaturation
   })
 
-  const [sliderHueVal, setSliderHueVal] = useState(() => {
+  const [sliderLightVal, setSliderLightVal] = useState(() => {
     const savedBackground = localStorage.getItem(localStorageBackground)
     const backgroundColor = savedBackground ? JSON.parse(savedBackground) : null
-    return backgroundColor?.[2] ?? defaultHue
+    return backgroundColor?.[2] ?? defaultLightness
   })
 
-  const [dragWrapOuterLightness, setDragWrapOuterLightness] = useState<CSSProperties>(
-    sliderLightnessInput.current
+  const backgroundColorStyle = {
+    backgroundColor: `hsl(var(--hue${d}), calc(var(--saturation${d}) * 1%), calc(var(--lightness${d}) * 1%))`,
+  }
+  const [dragWrapOuterHue, setDragWrapOuterHue] = useState<CSSProperties>(
+    sliderHueInput.current
       ? {
-          [`--lightness${d}` as string]: `${sliderLightnessInput.current.value}`,
+          [`--hue${d}` as string]: `${sliderHueInput.current.value}`,
         }
       : {
-          [`--lightness${d}` as string]: `${sliderLightVal}`,
+          [`--hue${d}` as string]: `${sliderHueVal}`,
         }
   )
   const [dragWrapOuterSaturation, setDragWrapOuterSaturation] = useState<CSSProperties>(
@@ -1266,22 +1308,21 @@ export default function DragContainer({
           [`--saturation${d}` as string]: `${sliderSatVal}`,
         }
   )
-  const [dragWrapOuterHue, setDragWrapOuterHue] = useState<CSSProperties>(
-    sliderHueInput.current
+  const [dragWrapOuterLightness, setDragWrapOuterLightness] = useState<CSSProperties>(
+    sliderLightnessInput.current
       ? {
-          [`--hue${d}` as string]: `${sliderHueInput.current.value}`,
+          [`--lightness${d}` as string]: `${sliderLightnessInput.current.value}`,
         }
       : {
-          [`--hue${d}` as string]: `${sliderHueVal}`,
+          [`--lightness${d}` as string]: `${sliderLightVal}`,
         }
   )
 
-  function sliderLightness() {
+  function sliderHue() {
     if (dragWrapOuter.current) {
-      setDragWrapOuterLightness({ [`--lightness${d}` as string]: `${sliderLightVal}` })
-
+      setDragWrapOuterHue({ [`--hue${d}` as string]: `${sliderHueVal}` })
       const updatedBackgroundColor = JSON.parse(JSON.stringify(backgroundColor))
-      updatedBackgroundColor[d][0] = sliderLightVal
+      updatedBackgroundColor[d][0] = sliderHueVal
       dispatch({
         type: 'setBackgroundColor',
         payload: { d, backgroundColor: updatedBackgroundColor[d] },
@@ -1289,6 +1330,7 @@ export default function DragContainer({
       saveBackground(updatedBackgroundColor[d])
     }
   }
+
   function sliderSaturation() {
     if (dragWrapOuter.current) {
       setDragWrapOuterSaturation({ [`--saturation${d}` as string]: `${sliderSatVal}` })
@@ -1301,11 +1343,13 @@ export default function DragContainer({
       saveBackground(updatedBackgroundColor[d])
     }
   }
-  function sliderHue() {
+
+  function sliderLightness() {
     if (dragWrapOuter.current) {
-      setDragWrapOuterHue({ [`--hue${d}` as string]: `${sliderHueVal}` })
+      setDragWrapOuterLightness({ [`--lightness${d}` as string]: `${sliderLightVal}` })
+
       const updatedBackgroundColor = JSON.parse(JSON.stringify(backgroundColor))
-      updatedBackgroundColor[d][2] = sliderHueVal
+      updatedBackgroundColor[d][2] = sliderLightVal
       dispatch({
         type: 'setBackgroundColor',
         payload: { d, backgroundColor: updatedBackgroundColor[d] },
@@ -1335,7 +1379,7 @@ export default function DragContainer({
       sliderLightnessInput.current.value = defaultLightness
     setSliderLightVal(defaultLightness)
     const updatedBackgroundColor = JSON.parse(JSON.stringify(backgroundColor))
-    updatedBackgroundColor[d][0] = defaultLightness
+    updatedBackgroundColor[d][2] = defaultLightness
     saveBackground(updatedBackgroundColor[d])
     dispatch({
       type: 'setBackgroundColor',
@@ -1362,7 +1406,7 @@ export default function DragContainer({
     if (sliderHueInput.current) sliderHueInput.current.value = defaultHue
     setSliderHueVal(defaultHue)
     const updatedBackgroundColor = JSON.parse(JSON.stringify(backgroundColor))
-    updatedBackgroundColor[d][2] = defaultHue
+    updatedBackgroundColor[d][0] = defaultHue
     saveBackground(updatedBackgroundColor[d])
     dispatch({
       type: 'setBackgroundColor',
@@ -1377,103 +1421,61 @@ export default function DragContainer({
   }, [windowWidth, windowHeight, scroll])
 
   const widthResize = () => {
-    const n = [17, 37, 57, 77]
+    const y_pos = [10, 32, 54, 76] // color block y positions
     //place these items every time the window is resized
-    if (layerIncrease.current && dragWrap.current) place(layerIncrease.current, 57, 93.5)
-    if (layerDecrease.current && dragWrap.current)
+    if (makeMore0.current && dragWrap.current) place(makeMore0.current, 23, 0)
+    if (makeRandom0.current && dragWrap.current)
       place(
-        layerDecrease.current,
-        43 - (layerDecrease.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
-        93.5
+        makeRandom0.current,
+        50 - (makeRandom0.current.offsetWidth / dragWrap.current.offsetWidth) * 50,
+        0
       )
     if (makeSmaller0.current && dragWrap.current)
       place(
         makeSmaller0.current,
-        87 - (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
-        93
+        77 - (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
+        0.3
       )
-    if (deleteBlob0.current && dragWrap.current) place(deleteBlob0.current, 13, 93)
+    if (layerDecrease.current && dragWrap.current)
+      place(
+        layerDecrease.current,
+        34,
+        100 - (layerDecrease.current.offsetHeight / dragWrap.current.offsetHeight) * 100
+      )
+    if (layerIncrease.current && dragWrap.current)
+      place(
+        layerIncrease.current,
+        66 - (layerIncrease.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
+        100 - (layerIncrease.current.offsetHeight / dragWrap.current.offsetHeight) * 100
+      )
+    if (deleteBlob0.current && dragWrap.current)
+      place(
+        deleteBlob0.current,
+        10,
+        100 - (deleteBlob0.current.offsetHeight / dragWrap.current.offsetHeight) * 100
+      )
 
     if (makeLarger0.current && dragWrap.current)
       place(
         makeLarger0.current,
-        77 - (makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
-        0.5
+        90 - (makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
+        100 - (makeLarger0.current.offsetHeight / dragWrap.current.offsetHeight) * 100
       )
-
-    if (colorBlockOrange.current && dragWrap.current)
-      place(colorBlockOrange.current, 0, n[0])
-    if (colorBlockRed.current && dragWrap.current) place(colorBlockRed.current, 0, n[1])
-    if (colorBlockPurple.current && dragWrap.current)
-      place(colorBlockPurple.current, 0, n[2])
-    if (colorBlockBlue.current && dragWrap.current) place(colorBlockBlue.current, 0, n[3])
-
-    if (colorBlockYellowLime.current && dragWrap.current)
-      place(
-        colorBlockYellowLime.current,
-        100 -
-          (colorBlockYellowLime.current.offsetWidth / dragWrap.current?.offsetWidth) *
-            100,
-        19
-      )
-    if (colorBlockCyanYellow.current && dragWrap.current)
-      place(
-        colorBlockCyanYellow.current,
-        100 -
-          (colorBlockCyanYellow.current.offsetWidth / dragWrap.current?.offsetWidth) *
-            100,
-        37
-      )
-    if (colorBlockCyanPink.current && dragWrap.current)
-      place(
-        colorBlockCyanPink.current,
-        100 -
-          (colorBlockCyanPink.current.offsetWidth / dragWrap.current?.offsetWidth) * 100,
-        57
-      )
-    if (colorBlockPinkYellow.current && dragWrap.current)
-      place(
-        colorBlockPinkYellow.current,
-        100 -
-          (colorBlockPinkYellow.current.offsetWidth / dragWrap.current?.offsetWidth) *
-            100,
-        77
-      )
-
-    if (colorBlockReddish.current && dragWrap.current)
-      place(colorBlockReddish.current, 0, n[0])
-    if (colorBlockBrown.current && dragWrap.current)
-      place(colorBlockBrown.current, 0, n[1])
-    if (colorBlockTan.current && dragWrap.current) place(colorBlockTan.current, 0, n[2])
-    if (colorBlockKhaki.current && dragWrap.current)
-      place(colorBlockKhaki.current, 0, n[3])
-    if (colorBlockGray.current && dragWrap.current)
-      place(
-        colorBlockGray.current,
-        100 - (colorBlockGray.current.offsetWidth / dragWrap.current?.offsetWidth) * 100,
-        n[0]
-      )
-    if (colorBlockPurplish.current && dragWrap.current)
-      place(
-        colorBlockPurplish.current,
-        100 -
-          (colorBlockPurplish.current.offsetWidth / dragWrap.current?.offsetWidth) * 100,
-        n[1]
-      )
-    if (colorBlockBluish.current && dragWrap.current)
-      place(
-        colorBlockBluish.current,
-        100 -
-          (colorBlockBluish.current.offsetWidth / dragWrap.current?.offsetWidth) * 100,
-        n[2]
-      )
-    if (colorBlockGreenish.current && dragWrap.current)
-      place(
-        colorBlockGreenish.current,
-        100 -
-          (colorBlockGreenish.current.offsetWidth / dragWrap.current?.offsetWidth) * 100,
-        n[3]
-      )
+    // place color blocks:
+    colorBlockPropsCombo.forEach((colorBlockArray) => {
+      colorBlockArray.forEach((colorBlock, index) => {
+        if (colorBlock.current && dragWrapOutest.current) {
+          const x =
+            index < 4
+              ? 0
+              : 100 -
+                (colorBlock.current.offsetWidth / dragWrapOutest.current.offsetWidth) *
+                  100
+          const y = y_pos[index % 4]
+          place(colorBlock.current, x, y)
+        }
+      })
+    })
   }
 
   function place(element: HTMLElement, x_pos: number, y_pos: number) {
@@ -1484,17 +1486,19 @@ export default function DragContainer({
   }
 
   useEffect(() => {
-    if (focusedBlob) {
+    if (focusedBlob && markerEnabled && usingKeyboard && focusedBlob) {
       if (markerDivRef.current) {
-        markerDivRef.current.style.top = `${focusedBlob.top + focusedBlob.width * 0.15}px`
-        markerDivRef.current.style.left = `${
-          focusedBlob.left + focusedBlob.width * 0.15
+        markerDivRef.current.style.top = `${
+          focusedBlob.top + focusedBlob.width * -0.05
         }px`
-        markerDivRef.current.style.width = `${focusedBlob.width * 0.7}px`
-        markerDivRef.current.style.height = `${focusedBlob.height * 0.7}px`
+        markerDivRef.current.style.left = `${
+          focusedBlob.left + focusedBlob.width * -0.05
+        }px`
+        markerDivRef.current.style.width = `${focusedBlob.width * 1.1}px`
+        markerDivRef.current.style.height = `${focusedBlob.height * 1.1}px`
       }
     }
-  }, [focusedBlob])
+  }, [focusedBlob, markerEnabled, usingKeyboard])
 
   const navigate = useNavigate()
 
@@ -1605,7 +1609,7 @@ export default function DragContainer({
     if (loading) dispatch2(notify(`${ELoading[language]}...`, false, 20))
   }, [loading])
 
-  const [itemsPerPage, setItemsPerPage] = useState(6)
+  const [itemsPerPage, setItemsPerPage] = useState(5)
 
   const [currentPage, setCurrentPage] = useState<Record<number, number>>({ [d]: 1 })
 
@@ -1706,8 +1710,9 @@ export default function DragContainer({
   }
 
   const pagination = (dKey: string, current: number, totalPages: number) => {
+    const uniqueNumber = Math.random().toString(36).substr(2, 9)
     return hasSavedFiles ? (
-      <div className='pagination-controls flex center gap-half margin0auto'>
+      <div className='pagination-controls'>
         {current !== 1 ? (
           <>
             <button
@@ -1754,10 +1759,33 @@ export default function DragContainer({
         ) : (
           <></>
         )}
+        <div className='input-wrap items-per-page'>
+          <label htmlFor={`items-per-page${d}-${uniqueNumber}`}>
+            <input
+              id={`items-per-page${d}-${uniqueNumber}`}
+              className=''
+              type='number'
+              value={itemsPerPage}
+              placeholder={itemsPerPage.toString()}
+              min={1}
+              max={100}
+              onChange={(e) => setItemsPerPage(Number(e.target.value))}
+            />
+            <span>{EPerPage[language]}</span>
+          </label>
+        </div>
       </div>
     ) : (
       <></>
     )
+  }
+
+  // scroll to #drag-container:
+  const goToArt1 = (number: number) => {
+    const dragContainer = document.getElementById(`drag-container${number}`)
+    if (dragContainer) {
+      dragContainer.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
   }
 
   return (
@@ -1765,12 +1793,19 @@ export default function DragContainer({
       <section id={`drag-container${d}`} className={`drag-container drag-container${d}`}>
         <div className='blob-title-wrap'>
           <h2 className='blob-title'>
-            {EBlobArtApp[language]} {d + 1}
+            {EBlobArt[language]} {d + 1}
           </h2>
-          {d === 1 ? (
+          {d === 0 ? (
+            <p>{EMoreColorsAvailableThroughRandomBlobButton[language]} </p>
+          ) : d === 1 ? (
             <p>
               {EWithMoreMutedColors[language]}.{' '}
-              {EMoreColorsAvailableThroughRandomBlobButton[language]}
+              {EMoreColorsAvailableThroughRandomBlobButton[language]}{' '}
+            </p>
+          ) : d === 2 ? (
+            <p>
+              {EDarkerColors[language]}.{' '}
+              {EMoreColorsAvailableThroughRandomBlobButton[language]}{' '}
             </p>
           ) : (
             <p>{EMoreColorsAvailableThroughRandomBlobButton[language]}</p>
@@ -1791,56 +1826,65 @@ export default function DragContainer({
           <button
             ref={stopBlobs}
             id={`stop-blobs${d}`}
-            className='stop-blobs'
+            className='stop-blobs tooltip-wrap'
             onClick={(e) => {
               stopSway(e)
             }}
+            aria-labelledby={`stop-blobs${d}-span`}
           >
+            <span id={`stop-blobs${d}-span`} className='tooltip right above space'>
+              {EAfterEnablingThereIsASlightDelayBeforeAllTheBlobsAreMovingAgain[language]}
+            </span>
             {paused ? EStartSway[language] : EStopSway[language]}
           </button>
           <button
             ref={resetBlobs}
             id={`reset-blobs${d}`}
-            className='reset-blobs'
+            aria-labelledby={`reset-blobs${d}-span`}
+            className='reset-blobs tooltip-wrap'
             onClick={(e) => {
               resetBlobsFunction(e)
             }}
           >
+            <span id={`reset-blobs${d}-span`} className='tooltip above space'>
+              {EGetANewSetOfBlobs[language]}
+            </span>{' '}
             {EReset[language]}
           </button>
           <button
+            id={`toggle-marker${d}`}
+            aria-labelledby={`toggle-marker${d}-span`}
             className='toggle-marker tooltip-wrap'
             onClick={() => setMarkerEnabled(!markerEnabled)}
           >
             <span
+              id={`toggle-marker${d}-span`}
               className='tooltip left above space'
-              data-tooltip={`${EToggleMarkerVisibilityWhenUsingAKeyboard[language]}`}
-            ></span>
+            >{`${EToggleMarkerVisibilityWhenUsingAKeyboard[language]}`}</span>
             {markerEnabled ? EMarkerOn[language] : EMarkerOff[language]}
           </button>
 
           <button
             ref={disableScrollButton}
             id={`disable-scroll${d}`}
+            aria-labelledby={`disable-scroll${d}-span`}
             className={`disable-scroll tooltip-wrap ${!scroll ? 'active' : ''}`}
             onClick={() => {
               disableScroll()
             }}
           >
-            <span
-              className='tooltip right above space'
-              data-tooltip={
-                scroll
-                  ? EDisableScrollInOrderToUseTheMouseWheelToResizeABlob[language]
-                  : EPressHereOrEscapeToRestoreScrolling[language]
-              }
-            ></span>
+            <span id={`disable-scroll${d}-span`} className='tooltip right above space'>
+              {scroll
+                ? EDisableScrollInOrderToUseTheMouseWheelToResizeABlob[language]
+                : EPressHereOrEscapeToRestoreScrolling[language]}
+            </span>
             {scroll ? EDisableScroll[language] : EEnableScroll[language]}
           </button>
 
           <button
             id={`toggle-controls${d}`}
-            className='toggle-controls'
+            aria-labelledby={`toggle-controls${d}-span`}
+            className={`toggle-controls ${!controlsVisible ? 'active' : ''}`}
             onClick={() => {
               setControlsVisible(!controlsVisible)
               if (!controlsVisible) {
@@ -1850,218 +1894,192 @@ export default function DragContainer({
               }
             }}
           >
-            {controlsVisible ? EHideControls[language] : EShowControls[language]}
+            <span id={`toggle-controls${d}-span`}>
+              {' '}
+              {controlsVisible ? EHideControls[language] : EShowControls[language]}
+            </span>
           </button>
           <button
+            id={`take-screenshot${d}`}
+            aria-labelledby={`take-screenshot${d}-span`}
             disabled={loading}
             onClick={takeScreenshot}
             className='reset screenshot tooltip-wrap'
           >
             <FaCamera />
-            <span
-              className='tooltip left below space'
-              data-tooltip={
-                loading ? ELoading[language] : EClickHereToTakeAScreenshot[language]
-              }
-            ></span>
+            <span id={`take-screenshot${d}-span`} className='tooltip left below space'>
+              {loading ? ELoading[language] : EClickHereToTakeAScreenshot[language]}
+            </span>
           </button>
         </div>
-        <div
-          ref={dragWrapOuter}
-          id={`drag-wrap-outer${d}`}
-          className='drag-wrap-outer'
-          style={{
-            ...dragWrapOuterLightness,
-            ...dragWrapOuterSaturation,
-            ...dragWrapOuterHue,
-          }}
-        >
-          <button
-            ref={makeSmaller0}
-            className={`make-smaller tooltip-wrap reset ${
-              !controlsVisible ? 'hidden' : ''
-            }`}
-            id={`make-smaller${d}`}
-            role='tooltip'
-            aria-label={`${EShrinkInstructions[language]}. ${EAlternatively[language]}: ${EResizebyScrollInstructions[language]}`}
+        <div ref={dragWrapOutest} className={`drag-wrap-outest drag-wrap-outest${d}`}>
+          <div
+            ref={dragWrapOuter}
+            id={`drag-wrap-outer${d}`}
+            className='drag-wrap-outer'
+            style={{
+              ...dragWrapOuterLightness,
+              ...dragWrapOuterSaturation,
+              ...dragWrapOuterHue,
+              ...backgroundColorStyle,
+            }}
           >
-            <ImShrink2 />
-            <span
-              className='tooltip left above'
-              data-tooltip={`${EShrinkInstructions[language]}. ${EAlternatively[language]}: ${EResizebyScrollInstructions[language]}`}
-            ></span>
-          </button>
-          <button
-            ref={makeLarger0}
-            className={`make-larger tooltip-wrap reset ${
-              !controlsVisible ? 'hidden' : ''
-            }`}
-            id={`make-larger${d}`}
-            role='tooltip'
-            aria-label={`${EEnlargeInstructions[language]}. ${EAlternatively[language]}: ${EResizebyScrollInstructions[language]}`}
-          >
-            <ImEnlarge2 />
-            <span
-              className='tooltip left below'
-              data-tooltip={`${EEnlargeInstructions[language]}. ${EAlternatively[language]}: ${EResizebyScrollInstructions[language]}`}
-            ></span>
-          </button>
-
-          <button
-            ref={makeMore0}
-            className={`make-more tooltip-wrap reset ${!controlsVisible ? 'hidden' : ''}`}
-            id={`make-more${d}`}
-            role='tooltip'
-            aria-label={ECloneInstructions[language]}
-          >
-            <FaRegClone />
-            <span
-              className='tooltip right below'
-              data-tooltip={ECloneInstructions[language]}
-            ></span>
-          </button>
-          <button
-            ref={makeRandom0}
-            className={`make-random tooltip-wrap  ${!controlsVisible ? 'hidden' : ''}`}
-            id={`make-random${d}`}
-            role='tooltip'
-            aria-label={`${EClickMeToMakeARandomBlob[language]}. ${EMoreColorsAvailable[language]}`}
-            onClick={() => addRandomDraggable()}
-          >
-            <FaPlus />
-            <span
-              className='tooltip left below'
-              data-tooltip={`${EClickMeToMakeARandomBlob[language]}. ${EMoreColorsAvailable[language]}!`}
-            ></span>
-          </button>
-          <button
-            ref={deleteBlob0}
-            className={`delete-blob tooltip-wrap reset ${
-              !controlsVisible ? 'hidden' : ''
-            }`}
-            id={`delete-blob${d}`}
-            role='tooltip'
-            aria-label={ERemovalInstructions[language]}
-          >
-            <FaTimes />
-            <span
-              className='tooltip right above'
-              data-tooltip={ERemovalInstructions[language]}
-            ></span>
-          </button>
-
-          {markerEnabled && usingKeyboard && focusedBlob && (
             <div
-              ref={markerDivRef}
-              style={{
-                position: 'absolute',
-                top: `${focusedBlob.top + focusedBlob.width * 0.15}px`,
-                left: `${focusedBlob.left + focusedBlob.width * 0.15}px`,
-                width: `${focusedBlob.width * 0.7}px`,
-                height: `${focusedBlob.height * 0.7}px`,
-                outline: '3px dashed black',
-                outlineOffset: '2px',
-                border: '3px dashed white',
-                borderRadius: '50%',
-                zIndex: 1000,
-              }}
-            />
-          )}
+              tabIndex={0}
+              ref={makeSmaller0}
+              className={`make-smaller tooltip-wrap reset ${
+                !controlsVisible ? 'hidden' : ''
+              }`}
+              id={`make-smaller${d}`}
+            >
+              <ImShrink2 />
+              <span
+                id={`make-smaller${d}-span`}
+                className='tooltip left below'
+              >{`${EShrinkInstructions[language]}. ${EAlternatively[language]}: ${EResizebyScrollInstructions[language]}`}</span>
+            </div>
+            <div
+              ref={makeLarger0}
+              className={`make-larger tooltip-wrap reset ${
+                !controlsVisible ? 'hidden' : ''
+              }`}
+              id={`make-larger${d}`}
+            >
+              <ImEnlarge2 />
+              <span
+                id={`make-larger${d}-span`}
+                className='tooltip left above'
+              >{`${EEnlargeInstructions[language]}. ${EAlternatively[language]}: ${EResizebyScrollInstructions[language]}`}</span>
+            </div>
 
-          <div className={`movers-wrap movers-wrap1 ${!controlsVisible ? 'hidden' : ''}`}>
-            <button className={`moveleft mover`} onClick={handleMoveRight}>
-              <BiChevronsLeft />
-              <span className='scr'>{EMoveViewLeft[language]}</span>
+            <div
+              ref={makeMore0}
+              className={`make-more tooltip-wrap reset ${
+                !controlsVisible ? 'hidden' : ''
+              }`}
+              id={`make-more${d}`}
+            >
+              <FaRegClone />
+              <span id={`make-more${d}-span`} className='tooltip right below'>
+                {ECloneInstructions[language]}
+              </span>
+            </div>
+            <button
+              ref={makeRandom0}
+              className={`make-random tooltip-wrap  ${!controlsVisible ? 'hidden' : ''}`}
+              id={`make-random${d}`}
+              aria-labelledby={`make-random${d}-span`}
+              onClick={() => addRandomDraggable()}
+            >
+              <FaPlus />
+              <span
+                id={`make-random${d}-span`}
+                className='tooltip below'
+              >{`${EClickMeToMakeARandomBlob[language]}. ${EMoreColorsAvailable[language]}!`}</span>
             </button>
-            <button className={`moveright mover`} onClick={handleMoveLeft}>
-              <BiChevronsRight />
-              <span className='scr'>{EMoveViewRight[language]}</span>
-            </button>
+            <div
+              ref={deleteBlob0}
+              className={`delete-blob tooltip-wrap reset ${
+                !controlsVisible ? 'hidden' : ''
+              }`}
+              id={`delete-blob${d}`}
+            >
+              <FaTimes />
+              <span id={`delete-blob${d}-span`} className='tooltip right above'>
+                {ERemovalInstructions[language]}
+              </span>
+            </div>
+
+            <div
+              ref={layerDecrease}
+              id={`layer-decrease${d}`}
+              className={`layer-adjust layer-decrease tooltip-wrap ${
+                !controlsVisible ? 'hidden' : ''
+              }`}
+            >
+              <span
+                id={`layer-decrease${d}-span`}
+                className='tooltip above right'
+              >{`${EDecreaseBlobLayerBy1Instructions[language]} ${EKeyboardUsePressTheCorrespondingLayerNumber[language]}`}</span>
+              <BiChevronDown />
+            </div>
+            <div
+              ref={layerIncrease}
+              id={`layer-increase${d}`}
+              className={`layer-adjust layer-increase tooltip-wrap ${
+                !controlsVisible ? 'hidden' : ''
+              }`}
+            >
+              <span
+                id={`layer-increase${d}-span`}
+                className='tooltip above left'
+              >{`${EIncreaseBlobLayerBy1Instructions[language]} ${EKeyboardUsePressTheCorrespondingLayerNumber[language]}`}</span>
+              <BiChevronUp />
+            </div>
+
+            {markerEnabled && usingKeyboard && focusedBlob && (
+              <div
+                ref={markerDivRef}
+                style={{
+                  position: 'absolute',
+                  top: `${focusedBlob.top + focusedBlob.width * -0.05}px`,
+                  left: `${focusedBlob.left + focusedBlob.width * -0.05}px`,
+                  width: `${focusedBlob.width * 1.1}px`,
+                  height: `${focusedBlob.height * 1.1}px`,
+                  outline: '3px dashed black',
+                  outlineOffset: '2px',
+                  border: '3px dashed white',
+                  borderRadius: '50%',
+                  zIndex: 999,
+                }}
+              />
+            )}
+
+            <div ref={dragWrap} id={`drag-wrap${d}`} className='drag-wrap'>
+              <DragLayer
+                layerAmount={layerAmount}
+                layer={activeLayer}
+                hiddenLayers={hiddenLayers}
+                changeBlobLayer={changeBlobLayer}
+                setActiveLayer={setActiveLayer}
+                paused={paused}
+                setPaused={setPaused}
+                prefersReducedMotion={prefersReducedMotion}
+                highestZIndex={highestZIndex}
+                setHighestZIndex={setHighestZIndex}
+                language={language}
+                dispatch={dispatch}
+                dispatch2={dispatch2}
+                d={d}
+                items={draggables[d] ?? []}
+                amountOfBlobs={amountOfBlobs}
+                saveDraggables={saveDraggables}
+                getPosition={getPosition}
+                colorBlockProps={colorBlockPropsCombo}
+                makeLarger0={makeLarger0}
+                makeSmaller0={makeSmaller0}
+                makeMore0={makeMore0}
+                deleteBlob0={deleteBlob0}
+                layerIncrease={layerIncrease}
+                layerDecrease={layerDecrease}
+                dragWrap={dragWrap}
+                exitApp={exitApp}
+                selectedvalue0={selectedvalue0}
+                dragWrapOuter={dragWrapOuter}
+                stopBlobs={stopBlobs}
+                disableScrollButton={disableScrollButton}
+                resetBlobs={resetBlobs}
+                getRandomMinMax={getRandomMinMax}
+                setFocusedBlob={setFocusedBlob}
+                colorIndex={colorIndex}
+                setColorIndex={setColorIndex}
+                colorPairs={colorPairsCombo}
+                scroll={scroll}
+                setScroll={setScroll}
+                clickOutsideRef={dragWrap}
+              />
+            </div>
           </div>
-          <div className={`movers-wrap movers-wrap2 ${!controlsVisible ? 'hidden' : ''}`}>
-            <button className={`moveup mover`} onClick={handleMoveDown}>
-              <BiChevronsUp />
-              <span className='scr'>{EMoveViewUp[language]}</span>
-            </button>
-            <button className={`movedown mover`} onClick={handleMoveUp}>
-              <BiChevronsDown />
-              <span className='scr'>{EMoveViewDown[language]}</span>
-            </button>
-          </div>
-
-          <div ref={dragWrap} id={`drag-wrap${d}`} className='drag-wrap'>
-            <DragLayer
-              layerAmount={layerAmount}
-              layer={activeLayer}
-              hiddenLayers={hiddenLayers}
-              changeBlobLayer={changeBlobLayer}
-              setActiveLayer={setActiveLayer}
-              paused={paused}
-              setPaused={setPaused}
-              prefersReducedMotion={prefersReducedMotion}
-              highestZIndex={highestZIndex}
-              setHighestZIndex={setHighestZIndex}
-              language={language}
-              dispatch={dispatch}
-              dispatch2={dispatch2}
-              d={d}
-              items={draggables[d] ?? []}
-              amountOfBlobs={amountOfBlobs}
-              saveDraggables={saveDraggables}
-              getPosition={getPosition}
-              colorBlockProps={colorBlockPropsCombo}
-              makeLarger0={makeLarger0}
-              makeSmaller0={makeSmaller0}
-              makeMore0={makeMore0}
-              deleteBlob0={deleteBlob0}
-              layerIncrease={layerIncrease}
-              layerDecrease={layerDecrease}
-              dragWrap={dragWrap}
-              exitApp={exitApp}
-              selectedvalue0={selectedvalue0}
-              dragWrapOuter={dragWrapOuter}
-              stopBlobs={stopBlobs}
-              disableScrollButton={disableScrollButton}
-              resetBlobs={resetBlobs}
-              getRandomMinMax={getRandomMinMax}
-              focusedBlob={focusedBlob}
-              setFocusedBlob={setFocusedBlob}
-              colorIndex={colorIndex}
-              setColorIndex={setColorIndex}
-              colorPairs={colorPairsCombo}
-              scroll={scroll}
-              setScroll={setScroll}
-              clickOutsideRef={dragWrap}
-            />
-          </div>
-
-          <button
-            ref={layerDecrease}
-            id={`layer-decrease${d}`}
-            className={`layer-adjust layer-decrease tooltip-wrap ${
-              !controlsVisible ? 'hidden' : ''
-            }`}
-          >
-            <span
-              className='tooltip above right'
-              data-tooltip={`${EDecreaseBlobLayerBy1Instructions[language]} ${EKeyboardUsePressTheCorrespondingLayerNumber[language]}`}
-            ></span>
-            <BiChevronDown />
-          </button>
-          <button
-            ref={layerIncrease}
-            id={`layer-increase${d}`}
-            className={`layer-adjust layer-increase tooltip-wrap ${
-              !controlsVisible ? 'hidden' : ''
-            }`}
-          >
-            <span
-              className='tooltip above left'
-              data-tooltip={`${EIncreaseBlobLayerBy1Instructions[language]} ${EKeyboardUsePressTheCorrespondingLayerNumber[language]}`}
-            ></span>
-            <BiChevronUp />
-          </button>
-
           <ColorBlocks
             d={d}
             language={language}
@@ -2072,34 +2090,61 @@ export default function DragContainer({
             controlsVisible={controlsVisible}
           />
         </div>
-        <div className='layer-control-wrap layer-buttons'>
-          <div className='layer-btn-wrap'>
+        <div className='layer-mover-control-wrap'>
+          <div className={`movers-wrap movers-wrap1 ${!controlsVisible ? 'hidden' : ''}`}>
             <button
-              className='layer-amount decrease-layer-amount tooltip-wrap'
+              id={`moveleft${d}`}
+              aria-labelledby={`moveleft${d}-span`}
+              className={`moveleft mover tooltip-wrap`}
+              onClick={handleMoveRight}
+            >
+              <BiChevronsLeft />
+              <span id={`moveleft${d}-span`} className='tooltip above right'>
+                {EMoveViewLeft[language]}
+              </span>
+            </button>
+            <button
+              id={`moveright${d}`}
+              aria-labelledby={`moveright${d}-span`}
+              className={`moveright mover tooltip-wrap`}
+              onClick={handleMoveLeft}
+            >
+              <BiChevronsRight />
+              <span id={`moveright${d}-span`} className='tooltip above right'>
+                {EMoveViewRight[language]}
+              </span>
+            </button>
+          </div>
+          <div className='layer-btn-wrap layer-tools layer-tools1'>
+            <button
+              id={`decrease-layer-amount${d}`}
+              aria-labelledby={`decrease-layer-amount${d}-span`}
+              className='layer-tool layer-amount decrease-layer-amount tooltip-wrap'
               onClick={deleteHiddenLayers}
             >
-              <span
-                className='tooltip above right'
-                data-tooltip={EDeleteHiddenLayers[language]}
-              ></span>
+              <span id={`decrease-layer-amount${d}-span`} className='tooltip above right'>
+                {EDeleteHiddenLayers[language]}
+              </span>
               <BiMinus />
             </button>
             <button
               id={`every-layer-minus${d}`}
-              className='layer-button every-layer tooltip-wrap'
+              aria-labelledby={`every-layer-minus${d}-span`}
+              className='layer-tool every-layer tooltip-wrap'
               onClick={() => changeEveryLayer(-1)}
             >
-              <span
-                className='tooltip above right'
-                data-tooltip={EClickHereToMoveDownLayer[language]}
-              ></span>
-              <BiChevronsDown />
+              <span id={`every-layer-minus${d}-span`} className='tooltip above right'>
+                {EClickHereToMoveDownLayer[language]}
+              </span>
+              <BiChevronDown />
             </button>
           </div>
-          <div className='layer-btn-wrap'>
+          <div className='layer-btn-wrap layers'>
             {Array.from({ length: layerAmount }, (_, i) => i).map((layer, index) => (
               <button
                 key={`${layer}*${index}`}
+                id={`layer-button${layer}`}
+                aria-labelledby={`layer-button${layer}-span`}
                 onClick={() => {
                   if (activeLayer === layer) {
                     toggleLayerVisibility(layer)
@@ -2111,38 +2156,63 @@ export default function DragContainer({
                   activeLayer === layer ? 'active' : ''
                 } ${hiddenLayers.has(layer) ? 'dim' : ''}`}
               >
-                <span
-                  className='tooltip above right'
-                  data-tooltip={
-                    activeLayer === layer
+                <span id={`layer-button${layer}-span`}>
+                  <span className='scr'>{ELayer[language]}</span> {layer + 1}{' '}
+                  <span className='tooltip above'>
+                    {activeLayer === layer
                       ? EToggleLayerByClickingMe[language]
-                      : EChangeLayerByClickingMe[language]
-                  }
-                ></span>
-                <span className='scr'>{ELayer[language]}</span> {layer + 1}
+                      : EChangeLayerByClickingMe[language]}
+                  </span>
+                </span>
               </button>
             ))}
           </div>
-          <div className='layer-btn-wrap'>
+          <div className='layer-btn-wrap layer-tools layer-tools2'>
             <button
-              className='layer-button every-layer tooltip-wrap'
+              id={`every-layer-plus${d}`}
+              aria-labelledby={`every-layer-plus${d}-span`}
+              className='layer-tool every-layer tooltip-wrap'
               onClick={() => changeEveryLayer(1)}
             >
-              <span
-                className='tooltip above left'
-                data-tooltip={EClickHereToMoveUpLayer[language]}
-              ></span>
-              <BiChevronsUp />
+              <span id={`every-layer-plus${d}-span`} className='tooltip above left'>
+                {EClickHereToMoveUpLayer[language]}
+              </span>
+              <BiChevronUp />
             </button>
             <button
-              className='layer-amount increase-layer-amount tooltip-wrap'
+              id={`increase-layer-amount${d}`}
+              aria-labelledby={`increase-layer-amount${d}-span`}
+              className='layer-tool layer-amount increase-layer-amount tooltip-wrap'
               onClick={() => addToLayerAmount(1)}
             >
-              <span
-                className='tooltip above left'
-                data-tooltip={EGetMoreLayers[language]}
-              ></span>
+              <span id={`increase-layer-amount${d}-span`} className='tooltip above left'>
+                {EGetMoreLayers[language]}
+              </span>
               <BiPlus />
+            </button>
+          </div>
+          <div className={`movers-wrap movers-wrap2 ${!controlsVisible ? 'hidden' : ''}`}>
+            <button
+              id={`moveup${d}`}
+              aria-labelledby={`moveup${d}-span`}
+              className={`moveup mover tooltip-wrap`}
+              onClick={handleMoveDown}
+            >
+              <BiChevronsUp />
+              <span id={`moveup${d}-span`} className='tooltip above left'>
+                {EMoveViewUp[language]}
+              </span>
+            </button>
+            <button
+              id={`movedown${d}`}
+              aria-labelledby={`movedown${d}-span`}
+              className={`movedown mover tooltip-wrap`}
+              onClick={handleMoveUp}
+            >
+              <BiChevronsDown />
+              <span id={`movedown${d}-span`} className='tooltip above left'>
+                {EMoveViewDown[language]}
+              </span>
             </button>
           </div>
         </div>
@@ -2168,7 +2238,7 @@ export default function DragContainer({
           sliderSaturationInput={sliderSaturationInput}
           sliderHueInput={sliderHueInput}
         />
-        <div ref={exitApp} id={`exitblob${d}`} className='exitblob' role='dialog'></div>
+        <div ref={exitApp} id={`exitblob${d}`} className='exitblob'></div>
         {user ? (
           <div className='blob-handling'>
             <div className='full wide flex column center gap'>
@@ -2203,7 +2273,7 @@ export default function DragContainer({
               />
               <button onClick={saveScreenshot}>{EDownload[language]}</button>
             </div>
-            <h2>{EArt[language]}</h2>
+            <h3>{EArt[language]}</h3>
             {isLoading ? (
               <p>{ELoadingSavedArtwork[language]}</p>
             ) : !users || users.length < 1 ? (
@@ -2232,14 +2302,15 @@ export default function DragContainer({
                                 loadBlobsFromServer(Number(dKey), versionName)
                               }
                             >
-                              {ELoad[language]}
+                              {ELoad[language]} <span className='scr'>{versionName}</span>
                             </button>
                             <button
                               onClick={() =>
                                 deleteBlobsVersionFromServer(Number(dKey), versionName)
                               }
                             >
-                              {EDelete[language]}
+                              {EDelete[language]}{' '}
+                              <span className='scr'>{versionName}</span>
                             </button>
                             <Accordion
                               language={language}
@@ -2271,7 +2342,8 @@ export default function DragContainer({
                                     placeholder={ERenameYourArtwork[language]}
                                     maxLength={30}
                                   />
-                                  <span>{ERename[language]}:</span>
+                                  <span>{ERename[language]}:</span>{' '}
+                                  <span className='scr'>{versionName}</span>
                                 </label>
                               </div>
                               <button
@@ -2288,7 +2360,10 @@ export default function DragContainer({
                                     )
                                 }}
                               >
-                                {EEdit[language]}
+                                {EEdit[language]}{' '}
+                                <span className='scr'>
+                                  {versionName}: {ENewName[language]} {newName}
+                                </span>
                               </button>
                             </Accordion>
                           </div>
