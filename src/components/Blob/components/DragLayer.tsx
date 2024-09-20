@@ -83,13 +83,9 @@ const DragLayer = (props: DragLayerProps) => {
 
   return (
     <>
-      <label
-        id={`listbox${props.d}-layer${props.layer}-label`}
-        className='scr'
-        htmlFor={`listbox${props.d}-layer${props.layer}`}
-      >
+      <span id={`listbox${props.d}-layer${props.layer}-label`} className='scr'>
         {ELayer[props.language]} {props.layer + 1}
-      </label>
+      </span>
       <ul
         ref={props.dragUlRef}
         role='listbox'
