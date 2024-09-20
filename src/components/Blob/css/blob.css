@@ -1046,7 +1046,6 @@ body.dark-mode .site .drag-container .dragzone:focus {
   align-items: center;
   font-size: 0.8rem;
   font-weight: bold;
-  cursor: help;
 }
 
 .blob.page .tooltipwrap:hover .tooltip span,
