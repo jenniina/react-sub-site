@@ -685,6 +685,7 @@ h6 {
 button,
 button.restore {
   border-radius: var(--radius-small);
+  --bg-size: auto 150px;
   /* min-width: max-content; */
   /* inline-size: min-content; */
   width: auto;
@@ -710,8 +711,40 @@ button.restore {
     var(--color-primary-7) 60%,
     var(--color-primary-2) 100%
   );
-  background-size: auto 150px;
+  background-size: var(--bg-size);
   background-position: top;
+}
+button.grayer {
+  --sat: 40%;
+  --sat2: 50%;
+  border: 1px solid hsl(var(--hue-primary), var(--sat), 30%);
+  background: linear-gradient(
+    5deg,
+    hsl(var(--hue-primary), var(--sat), 95%) 0%,
+    hsl(var(--hue-primary), var(--sat), 60%) 30%,
+    hsl(var(--hue-primary), var(--sat), 30%) 60%,
+    hsl(var(--hue-primary), var(--sat2), 6%) 100%
+  );
+  background-size: var(--bg-size);
+  background-position: top;
+}
+.light button.grayer {
+  --sat: 30%;
+  --sat2: 50%;
+  background: linear-gradient(
+    5deg,
+    hsl(var(--hue-primary), var(--sat2), 6%) 0%,
+    hsl(var(--hue-primary), var(--sat), 30%) 30%,
+    hsl(var(--hue-primary), var(--sat), 60%) 60%,
+    hsl(var(--hue-primary), var(--sat), 95%) 100%
+  );
+  background-size: var(--bg-size);
+  background-position: top;
+}
+.light button.grayer:hover,
+.light button.grayer:focus,
+.light button.grayer:focus-visible {
+  background-position: bottom;
 }
 .transformations button,
 .transformations button.restore {

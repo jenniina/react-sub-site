@@ -57,7 +57,6 @@ interface BlobProps {
   focused: (e: HTMLElement) => void
   blurred: (e: HTMLElement) => void
   selectedvalue0: RefObject<HTMLSpanElement>
-  focusedBlob: focusedBlob | null
   setFocusedBlob: Dispatch<SetStateAction<focusedBlob | null>>
   dragUlRef: RefObject<HTMLUListElement>
 }
@@ -80,11 +79,10 @@ const Blob = ({
   focused,
   blurred,
   selectedvalue0,
-  focusedBlob,
   setFocusedBlob,
   dragUlRef,
 }: BlobProps) => {
-  const blur = d === 0 ? 33 : clamp(21, item.i * 3, 60)
+  const blur = d === 0 ? 33 : clamp(21, item.i * 2.7, 60)
 
   const blobStyle: CSSProperties = {
     background: `${item.background}`,
@@ -108,13 +106,11 @@ const Blob = ({
           '10.5px', //<32
           '10px',
         ]
-      : ['5px', '5px', '5px', '5.7px', '6.7px', '7.4px', '7.9px'] // breakpoints for hitbox size due to varying levels of blur between the containers
+      : ['5.1px', '5px.2', '5px.3', '5.7px', '6.7px', '7.4px', '7.9px'] // breakpoints for hitbox size due to varying levels of blur between the containers and blob sizes
 
   return (
     <li
       onFocus={(e) => {
-        focused(e.target as HTMLElement)
-
         if (dragUlRef && dragUlRef.current)
           dragUlRef.current?.setAttribute(
             'aria-activedescendant',
@@ -122,23 +118,33 @@ const Blob = ({
           )
 
         const blob = e.target as HTMLElement
-        const blobRect = blob.getBoundingClientRect()
-        const parentRect = (blob.parentNode as HTMLDivElement)?.getBoundingClientRect()
+        const container = blob.parentNode as HTMLUListElement
 
-        const blobStyle = window.getComputedStyle(blob)
-        const marginTop = parseFloat(blobStyle.marginTop)
-        const marginLeft = parseFloat(blobStyle.marginLeft)
+        setTimeout(() => {
+          // Calculate the position of the blob after scrolling
 
-        setFocusedBlob({
-          top: blobRect.top - parentRect.top - marginTop,
-          left: blobRect.left - parentRect.left - marginLeft,
-          width: blobRect.width,
-          height: blobRect.height,
-        })
-        if (selectedvalue0.current)
-          selectedvalue0.current.textContent = `${ESelectedBlob[language]}: ${
-            (e.target as HTMLElement)?.querySelector('span')?.textContent
-          }`
+          const blobRect = blob.getBoundingClientRect()
+          const parentRect = (
+            blob.parentNode as HTMLUListElement
+          )?.getBoundingClientRect()
+          const container = blob.closest('.drag-wrap-outer') as HTMLElement
+          const scrollLeft = (container as HTMLElement)?.scrollLeft
+          const scrollTop = (container as HTMLElement)?.scrollTop
+
+          setFocusedBlob({
+            top: blobRect.top - parentRect.top - scrollTop,
+            left: blobRect.left - parentRect.left - scrollLeft,
+            width: blobRect.width,
+            height: blobRect.height,
+          })
+
+          if (selectedvalue0.current) {
+            selectedvalue0.current.textContent = `${ESelectedBlob[language]}: ${
+              blob.querySelector('span')?.textContent
+            }`
+          }
+        }, 500) // Adjust the timeout duration as needed
+        focused(blob)
       }}
       onBlur={(e) => {
         setFocusedBlob(null)

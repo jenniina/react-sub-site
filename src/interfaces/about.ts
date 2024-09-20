@@ -89,6 +89,16 @@ export enum EBlobArtApp {
   cs = 'Blob Art App',
   fi = 'Blob Art -sovellus',
 }
+export enum EBlobArt {
+  en = 'Blob Art',
+  es = 'Arte de Blob',
+  fr = 'Art Blob',
+  de = 'Blob-Kunst',
+  pt = 'Arte de Blob',
+  cs = 'Blob Art',
+  fi = 'Mollukkataide',
+}
+
 export enum EAddMoreBlobs {
   en = 'Add more blobs',
   es = 'Añadir más blobs',

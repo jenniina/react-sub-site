@@ -2230,3 +2230,30 @@ export enum ENews {
   cs = 'Zprávy',
   fi = 'Uutiset',
 }
+export enum EItemsPerPage {
+  en = 'Items per page',
+  es = 'Elementos por página',
+  fr = 'Articles par page',
+  de = 'Elemente pro Seite',
+  pt = 'Itens por página',
+  cs = 'Položek na stránku',
+  fi = 'Kohdetta sivua kohden',
+}
+export enum EPerPage {
+  en = 'per page',
+  es = 'por página',
+  fr = 'par page',
+  de = 'pro Seite',
+  pt = 'por página',
+  cs = 'na stránku',
+  fi = 'sivua kohden',
+}
+export enum ENewName {
+  en = 'New name',
+  es = 'Nuevo nombre',
+  fr = 'Nouveau nom',
+  de = 'Neuer Name',
+  pt = 'Novo nome',
+  cs = 'Nové jméno',
+  fi = 'Uusi nimi',
+}

@@ -10,6 +10,7 @@ import {
 import { Draggable, focusedBlob } from '../interfaces'
 import Blob from './Blob'
 import { ELanguages } from '../../../interfaces'
+import { ELayer } from '../../../interfaces/blobs'
 
 interface DragLayerProps {
   layer: number
@@ -18,10 +19,8 @@ interface DragLayerProps {
   d: number
   items: Draggable[]
   saveDraggables: () => void
-  dragWrap: RefObject<HTMLDivElement>
   dragUlRef: RefObject<HTMLUListElement>
   selectedvalue0: RefObject<HTMLSpanElement>
-  focusedBlob: focusedBlob | null
   setFocusedBlob: Dispatch<SetStateAction<focusedBlob | null>>
   start: (
     e:
@@ -83,41 +82,49 @@ const DragLayer = (props: DragLayerProps) => {
   }
 
   return (
-    <ul
-      ref={props.dragUlRef}
-      role='listbox'
-      id={`listbox${props.d}-layer${props.layer}`}
-      className={`drag-container-layer drag-container${props.d}-layer drag-container${props.d}-layer${props.layer} ${props.className}`}
-      aria-labelledby={`blobdescription${props.d}`}
-      aria-activedescendant=''
-      style={layerStyle}
-    >
-      {props.items?.map((item: Draggable, index: number) => {
-        if (item !== null && item !== undefined) {
-          return (
-            <Blob
-              layer={props.layer}
-              key={index}
-              d={props.d}
-              language={props.language}
-              item={item}
-              index={index}
-              start={props.start}
-              movement={props.movement}
-              stopMovementCheck={props.stopMovementCheck}
-              stopMoving={props.stopMoving}
-              wheel={props.wheel}
-              focused={props.focused}
-              blurred={props.blurred}
-              selectedvalue0={props.selectedvalue0}
-              focusedBlob={props.focusedBlob}
-              setFocusedBlob={props.setFocusedBlob}
-              dragUlRef={props.dragUlRef}
-            />
-          )
-        }
-      })}
-    </ul>
+    <>
+      <label
+        id={`listbox${props.d}-layer${props.layer}-label`}
+        className='scr'
+        htmlFor={`listbox${props.d}-layer${props.layer}`}
+      >
+        {ELayer[props.language]} {props.layer + 1}
+      </label>
+      <ul
+        ref={props.dragUlRef}
+        role='listbox'
+        id={`listbox${props.d}-layer${props.layer}`}
+        className={`drag-container-layer drag-container${props.d}-layer drag-container${props.d}-layer${props.layer} ${props.className}`}
+        aria-labelledby={`listbox${props.d}-layer${props.layer}-label`}
+        aria-activedescendant=''
+        style={layerStyle}
+      >
+        {props.items?.map((item: Draggable, index: number) => {
+          if (item !== null && item !== undefined) {
+            return (
+              <Blob
+                layer={props.layer}
+                key={index}
+                d={props.d}
+                language={props.language}
+                item={item}
+                index={index}
+                start={props.start}
+                movement={props.movement}
+                stopMovementCheck={props.stopMovementCheck}
+                stopMoving={props.stopMoving}
+                wheel={props.wheel}
+                focused={props.focused}
+                blurred={props.blurred}
+                selectedvalue0={props.selectedvalue0}
+                setFocusedBlob={props.setFocusedBlob}
+                dragUlRef={props.dragUlRef}
+              />
+            )
+          }
+        })}
+      </ul>
+    </>
   )
 }
 

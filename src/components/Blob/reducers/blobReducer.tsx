@@ -3,7 +3,7 @@ import { ReducerProps } from '../interfaces'
 
 const initialState: ReducerProps['blob'] = {
   draggables: [] as Draggable[][],
-  backgroundColor: [['30', '80', '214']] as BackgroundColor[][],
+  backgroundColor: [['214', '33', '40']] as BackgroundColor[][],
 }
 
 function blobReducer(

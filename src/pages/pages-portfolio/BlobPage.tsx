@@ -47,6 +47,7 @@ import {
   EMoveEveryBlobUpOrDownOneLayerByPressingTheButtons,
   EMoveViewInDifferentDirections,
   ENameYourArtwork,
+  EOnTouchscreensTapTheBlobTwiceToShrinkItAndThriceToEnlargeIt,
   EOverAThousandPossibleColorCombinations,
   EPlacesTheImageDownBelow,
   EPointerUse,
@@ -217,6 +218,13 @@ export default function BlobPage({
                       <li>
                         {
                           EWhichBlobIsCurrentlyActiveCanBeSeenAtTheTopLeftOfTheContainer[
+                            language
+                          ]
+                        }
+                      </li>
+                      <li>
+                        {
+                          EOnTouchscreensTapTheBlobTwiceToShrinkItAndThriceToEnlargeIt[
                             language
                           ]
                         }

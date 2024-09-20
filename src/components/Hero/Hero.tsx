@@ -290,7 +290,7 @@ export default function Hero({
           <ul
             ref={ulRef}
             id={`listbox-hero-${location.toLowerCase()}`}
-            role={`listbox-hero-${location.toLowerCase()}`}
+            role={`listbox`}
             aria-labelledby={`description`}
             aria-activedescendant=''
             className={`${styles.herocontent} ${styles[location] ?? ''} ${
