@@ -2257,3 +2257,31 @@ export enum ENewName {
   cs = 'Nové jméno',
   fi = 'Uusi nimi',
 }
+export enum EBookApp {
+  en = 'Book App (In English)',
+  es = 'Aplicación de libros (en inglés)',
+  fr = 'Application de livre (en anglais)',
+  de = 'Buch-App (auf Englisch)',
+  pt = 'Aplicativo de livro (em inglês)',
+  cs = 'Aplikace knih (v angličtině)',
+  fi = 'Kirja-sovellus (englanniksi)',
+}
+
+export enum ETheWebServiceIsHostedAtRenderCom {
+  en = 'The web service is hosted at Render.com for free, with 512 MB RAM and 0.1 CPU, hence requiring a little patience to browse. The Apollo server is connected to:',
+  es = 'El servicio web está alojado en Render.com de forma gratuita, con 512 MB de RAM y 0.1 CPU, por lo que requiere un poco de paciencia para navegar. El servidor de Apollo está conectado a:',
+  fr = 'Le service Web est hébergé sur Render.com gratuitement, avec 512 Mo de RAM et 0,1 CPU, nécessitant donc un peu de patience pour naviguer. Le serveur Apollo est connecté à:',
+  de = 'Der Webservice wird kostenlos bei Render.com gehostet, mit 512 MB RAM und 0,1 CPU, daher erfordert es etwas Geduld beim Surfen. Der Apollo-Server ist verbunden mit:',
+  pt = 'O serviço da web é hospedado gratuitamente no Render.com, com 512 MB de RAM e 0,1 CPU, portanto, requer um pouco de paciência para navegar. O servidor Apollo está conectado a:',
+  cs = 'Webová služba je hostována na Render.com zdarma, s 512 MB RAM a 0,1 CPU, a proto vyžaduje trochu trpělivosti při procházení. Server Apollo je připojen k:',
+  fi = 'Verkkopalvelu on majoitettu Render.comiin ilmaiseksi, jossa on 512 Mt RAM-muistia ja 0,1 CPU:ta, joten vaatii hieman kärsivällisyyttä selaamiseen. Apollo-palvelin on yhteydessä:',
+}
+export enum EMongoDBAtlasDatabase {
+  en = 'MongoDB Atlas database',
+  es = 'Base de datos de MongoDB Atlas',
+  fr = 'Base de données MongoDB Atlas',
+  de = 'MongoDB Atlas-Datenbank',
+  pt = 'Banco de dados MongoDB Atlas',
+  cs = 'Databáze MongoDB Atlas',
+  fi = 'MongoDB Atlas -tietokanta',
+}

@@ -15,6 +15,7 @@
 .hero h1,
 .hero p {
   overflow: visible;
+  text-align: center;
 }
 .hero.welcome.touch {
   padding-top: 0;
