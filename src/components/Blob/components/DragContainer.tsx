@@ -23,12 +23,10 @@ import { BlobContext, Props } from './BlobProvider'
 import {
   EAreYouSureYouWantToProceed,
   EBackToStart,
-  EBlobApp,
   EDownload,
   EEdit,
   EError,
   EErrorConnectingToTheServer,
-  EItemsPerPage,
   ELanguages,
   ELoad,
   ELogin,
@@ -128,7 +126,7 @@ import {
 } from 'react-icons/bi'
 import { ImEnlarge2, ImShrink2 } from 'react-icons/im'
 import { FaCamera, FaPlus, FaRegClone, FaSave, FaTimes } from 'react-icons/fa'
-import DragLayer from './DragLayers'
+import DragLayers from './DragLayers'
 import useWindowSize from '../../../hooks/useWindowSize'
 import { IUser } from '../../../interfaces'
 import { useSelector } from 'react-redux'
@@ -144,7 +142,6 @@ import { EDelete } from '../../Jokes/interfaces'
 import ColorBlocks from './ColorBlocks'
 import Sliders from './Sliders'
 import { EBlobArt } from '../../../interfaces/about'
-import { focused, isTouchDevice } from '../../../hooks/useDraggable'
 
 // Should be in the same order as colorBlockProps
 const colorPairs: ColorPair[] = [
@@ -2036,23 +2033,17 @@ export default function DragContainer({
             )}
 
             <div ref={dragWrap} id={`drag-wrap${d}`} className='drag-wrap'>
-              <DragLayer
+              <DragLayers
                 layerAmount={layerAmount}
                 layer={activeLayer}
                 hiddenLayers={hiddenLayers}
                 changeBlobLayer={changeBlobLayer}
                 setActiveLayer={setActiveLayer}
-                paused={paused}
-                setPaused={setPaused}
-                prefersReducedMotion={prefersReducedMotion}
                 highestZIndex={highestZIndex}
-                setHighestZIndex={setHighestZIndex}
                 language={language}
                 dispatch={dispatch}
-                dispatch2={dispatch2}
                 d={d}
                 items={draggables[d] ?? []}
-                amountOfBlobs={amountOfBlobs}
                 saveDraggables={saveDraggables}
                 getPosition={getPosition}
                 colorBlockProps={colorBlockPropsCombo}
@@ -2065,11 +2056,6 @@ export default function DragContainer({
                 dragWrap={dragWrap}
                 exitApp={exitApp}
                 selectedvalue0={selectedvalue0}
-                dragWrapOuter={dragWrapOuter}
-                stopBlobs={stopBlobs}
-                disableScrollButton={disableScrollButton}
-                resetBlobs={resetBlobs}
-                getRandomMinMax={getRandomMinMax}
                 setFocusedBlob={setFocusedBlob}
                 colorIndex={colorIndex}
                 setColorIndex={setColorIndex}

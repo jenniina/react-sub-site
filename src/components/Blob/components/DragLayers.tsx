@@ -25,25 +25,15 @@ interface DragLayerProps {
   hiddenLayers: Set<number>
   setActiveLayer: DispatchReact<SetStateAction<number>>
   changeBlobLayer: (draggable: Draggable, layer: number) => void
-  paused: boolean
-  setPaused: DispatchReact<SetStateAction<boolean>>
-  prefersReducedMotion: boolean
   highestZIndex: Record<number, number>
-  setHighestZIndex: DispatchReact<SetStateAction<Record<number, number>>>
   language: ELanguages
   dispatch: DispatchReact<any>
-  dispatch2: DispatchReact<any>
   d: number
   items: Draggable[]
-  amountOfBlobs: number
   saveDraggables: () => void
   getPosition: (target: HTMLElement) => void
   dragWrap: RefObject<HTMLDivElement>
-  dragWrapOuter: RefObject<HTMLDivElement>
   selectedvalue0: RefObject<HTMLSpanElement>
-  stopBlobs: RefObject<HTMLButtonElement>
-  disableScrollButton: RefObject<HTMLButtonElement>
-  resetBlobs: RefObject<HTMLButtonElement>
   exitApp: RefObject<HTMLDivElement>
   colorBlockProps: RefObject<HTMLDivElement>[][]
   colorPairs: ColorPair[][]
@@ -53,7 +43,6 @@ interface DragLayerProps {
   deleteBlob0: RefObject<HTMLDivElement>
   layerIncrease: RefObject<HTMLDivElement>
   layerDecrease: RefObject<HTMLDivElement>
-  getRandomMinMax: (min: number, max: number) => number
   setFocusedBlob: DispatchReact<SetStateAction<focusedBlob | null>>
   colorIndex: number
   setColorIndex: DispatchReact<SetStateAction<number>>
