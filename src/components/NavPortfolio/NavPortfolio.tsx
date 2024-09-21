@@ -104,6 +104,9 @@ function NavPortfolio({ language }: { language: ELanguages }) {
             <NavLink to='/portfolio/select'>{ECustomSelect[language]}</NavLink>
           </li>
           <li>
+            <NavLink to='/portfolio/graphql'>GraphQL</NavLink>
+          </li>
+          <li>
             <NavLink to='/portfolio/salon'>{EHairSalon[language]}</NavLink>
           </li>
           <li>
@@ -112,11 +115,8 @@ function NavPortfolio({ language }: { language: ELanguages }) {
           <li>
             <NavLink to='/portfolio/draganddrop'>{EDragAndDrop[language]}</NavLink>
           </li>
-          <li>
-            <NavLink to='/portfolio/todo'>{EToDo[language]}</NavLink>
-          </li>
           <li ref={lastportfolioitem} id='lastportfolioitem'>
-            <NavLink to='/portfolio/graphql'>GraphQL</NavLink>
+            <NavLink to='/portfolio/todo'>{EToDo[language]}</NavLink>
           </li>
         </ul>
 

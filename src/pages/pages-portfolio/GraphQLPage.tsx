@@ -1,7 +1,14 @@
 import { useState } from 'react'
 import Accordion from '../../components/Accordion/Accordion'
 import Hero from '../../components/Hero/Hero'
-import { EDependencies, EFeatures, ELanguages } from '../../interfaces'
+import {
+  EBookApp,
+  EDependencies,
+  EFeatures,
+  ELanguages,
+  EMongoDBAtlasDatabase,
+  ETheWebServiceIsHostedAtRenderCom,
+} from '../../interfaces'
 import { ESalonIntro1, ESalonIntro2, ESalonIntro3 } from '../../interfaces/salon'
 import { ESiteMayBeSlow } from '../../interfaces/welcome'
 
@@ -32,11 +39,9 @@ export default function GraphQLPage({
               >
                 <h2>{EFeatures[language]}</h2>
                 <p>
-                  The web service is hosted at Render.com for free, with 512 MB RAM and
-                  0.1 CPU, hence requiring a little patience to browse. The Apollo server
-                  is connected to a{' '}
+                  {ETheWebServiceIsHostedAtRenderCom[language]}{' '}
                   <a href='https://www.mongodb.com/atlas/database'>
-                    MongoDB Atlas database
+                    {EMongoDBAtlasDatabase[language]}
                   </a>
                   .
                 </p>
@@ -236,7 +241,7 @@ export default function GraphQLPage({
               >
                 <p>
                   <a href='https://jenniina-books-list-app.onrender.com/'>
-                    Book App{' '}
+                    {EBookApp[language]}{' '}
                     <span style={{ fontSize: '75%' }}>({ESiteMayBeSlow[language]})</span>{' '}
                     &raquo;
                   </a>

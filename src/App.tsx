@@ -381,7 +381,7 @@ const App: FC = () => {
                     <HairSalonPage
                       language={language}
                       heading={EHairSalonWebsite[language]}
-                      text='Hannastiina'
+                      text='React, Redux, Node.js, Express, MySQL, Sequelize'
                       type='page subpage'
                     />
                   }
