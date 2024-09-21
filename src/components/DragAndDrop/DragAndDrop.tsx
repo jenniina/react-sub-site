@@ -58,12 +58,13 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     styleElement.id = 'dnd-styles'
     document.head.appendChild(styleElement)
 
+    // Disable the link for the current status:
     const generateStyles = (statuses: Status[]) => {
       return statuses
         .map((status) => {
           const safeStatus = sanitize(status)
           return `
-          .${safeStatus} .${safeStatus} a.${safeStatus} {
+          ul.${safeStatus} li.${safeStatus} a.${safeStatus} {
             cursor: auto;
             pointer-events: none;
             color: var(--color-primary-20);
@@ -88,42 +89,6 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     ctx.fillStyle = color
     return ctx.fillStyle
   }
-
-  // const hexToHSL = (hex: string) => {
-  //   // Convert hex to RGB
-  //   let r = parseInt(hex.slice(1, 3), 16)
-  //   let g = parseInt(hex.slice(3, 5), 16)
-  //   let b = parseInt(hex.slice(5, 7), 16)
-
-  //   // Convert RGB to HSL
-  //   r /= 255
-  //   g /= 255
-  //   b /= 255
-  //   const max = Math.max(r, g, b)
-  //   const min = Math.min(r, g, b)
-  //   let h = 0,
-  //     s = 0,
-  //     l = (max + min) / 2
-
-  //   if (max !== min) {
-  //     const d = max - min
-  //     s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
-  //     switch (max) {
-  //       case r:
-  //         h = (g - b) / d + (g < b ? 6 : 0)
-  //         break
-  //       case g:
-  //         h = (b - r) / d + 2
-  //         break
-  //       case b:
-  //         h = (r - g) / d + 4
-  //         break
-  //     }
-  //     h /= 6
-  //   }
-
-  //   return { h, s, l }
-  // }
 
   const hexToRGB = (hex: string) => {
     let r = parseInt(hex.slice(1, 3), 16)
@@ -154,6 +119,30 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
       setUserColors(initialColors)
       setData(generateInitialData())
     }
+  }
+
+  const addStatus = (newStatus: string) => {
+    setStatuses((prevStatuses) => {
+      const newStatusTrim = newStatus.trim()
+      if (newStatusTrim === '') {
+        dispatch(notify(EPleaseFillInTheFields[language], true, 6))
+        return prevStatuses
+      }
+      if (prevStatuses.includes(newStatusTrim)) {
+        dispatch(notify(ETheCategoryAlreadyExists[language], true, 6))
+        return prevStatuses
+      }
+      return [...prevStatuses, newStatusTrim]
+    })
+  }
+
+  const reorderStatuses = (oldIndex: number, newIndex: number) => {
+    setStatuses((prevStatuses) => {
+      const updatedStatuses = [...prevStatuses]
+      const [removed] = updatedStatuses.splice(oldIndex, 1)
+      updatedStatuses.splice(newIndex, 0, removed)
+      return updatedStatuses
+    })
   }
 
   const updateStatus = (index: number, newStatus: string) => {
@@ -216,18 +205,8 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
       lightness = determineBackgroundLightness(color)
 
       // Randomize the item status
-      const number = Math.round(useRandomMinMax(0.1, 3))
-      switch (number) {
-        case 1:
-          state = statuses[0]
-          break
-        case 2:
-          state = statuses[1]
-          break
-        case 3:
-          state = statuses[2]
-          break
-      }
+      const randomIndex = Math.floor(Math.random() * statuses.length)
+      state = statuses[randomIndex]
 
       const item: Data = {
         id: i,
@@ -293,14 +272,6 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     } else return
   }
 
-  const {
-    isDragging,
-    listItemsByStatus,
-    handleDragging,
-    handleRenameStatus,
-    handleUpdate,
-  } = useDragAndDrop(data, statuses)
-
   const isValidColor = (color: string) => {
     const ctx = document.createElement('canvas').getContext('2d')
     if (!ctx) {
@@ -311,6 +282,15 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
   }
 
   const lightTheme = useTheme()
+
+  const {
+    isDragging,
+    listItemsByStatus,
+    setListItemsByStatus,
+    handleDragging,
+    handleRenameStatus,
+    handleUpdate,
+  } = useDragAndDrop(data, statuses)
 
   return (
     <>
@@ -329,6 +309,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
             lightTheme={lightTheme}
             sanitize={sanitize}
             updateStatus={updateStatus}
+            reorderStatuses={reorderStatuses}
           />
         ))}
       </div>

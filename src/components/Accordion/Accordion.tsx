@@ -96,10 +96,9 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
         <span aria-hidden='true' className={props.hideBrackets ? 'hide' : ''}>
           &laquo;
         </span>
-        <strong
-          className={props.tooltip ? `tooltip ${props.x} ${props.y}` : ''}
-          data-tooltip={props.tooltip}
-        ></strong>
+        <strong className={props.tooltip ? `tooltip ${props.x} ${props.y}` : ''}>
+          {props.tooltip}
+        </strong>
       </button>
 
       <div

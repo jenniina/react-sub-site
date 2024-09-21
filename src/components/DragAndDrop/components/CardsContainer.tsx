@@ -27,6 +27,7 @@ interface Props {
   lightTheme: boolean
   sanitize: (str: string) => string
   updateStatus: (index: number, status: Status) => void
+  reorderStatuses: (dragIndex: number, dropIndex: number) => void
 }
 
 export const CardsContainer = ({
@@ -41,12 +42,14 @@ export const CardsContainer = ({
   lightTheme,
   sanitize,
   updateStatus,
+  reorderStatuses,
 }: Props) => {
   const dispatch = useAppDispatch()
 
   const [theTarget, setTheTarget] = useState<number>(0)
   const [isOpen, setIsOpen] = useState(false)
   const [newStatus, setNewStatus] = useState<Status>('')
+  const [focusedCard, setFocusedCard] = useState<number | null>(null)
 
   const regex = /^[\w\u00C0-\u024F\u1E00-\u1EFF-_]*$/
 
@@ -60,21 +63,68 @@ export const CardsContainer = ({
   }
 
   const handleDrop = (e: React.DragEvent<HTMLUListElement>) => {
-    handleUpdate(+e.dataTransfer.getData('text'), status, theTarget)
-    handleDragging(false)
+    const data = JSON.parse(e.dataTransfer.getData('text/plain'))
+
+    if (data.type === 'item') {
+      handleUpdate(data.id, status, theTarget)
+      handleDragging(false)
+    }
   }
 
   const handleDragOver = (e: React.DragEvent<HTMLUListElement>) => e.preventDefault()
+
+  const handleContainerDragStart = (
+    e: React.DragEvent<HTMLSpanElement>,
+    index: number
+  ) => {
+    e.dataTransfer.setData(
+      'text/plain',
+      JSON.stringify({ type: 'span', id: index.toString() })
+    )
+    handleDragging(true)
+  }
+  const handleContainerDragOver = (e: React.DragEvent<HTMLSpanElement>) => {
+    e.stopPropagation()
+    e.preventDefault()
+  }
+  const handleContainerDrop = (
+    e: React.DragEvent<HTMLSpanElement>,
+    dropIndex: number
+  ) => {
+    e.preventDefault()
+    const data = JSON.parse(e.dataTransfer.getData('text/plain'))
+    if (data.type === 'span') {
+      const dragIndex = data.id
+
+      if (dragIndex !== dropIndex) {
+        const reorderedStatuses = Array.from(statuses)
+        const [removed] = reorderedStatuses.splice(dragIndex, 1)
+        reorderedStatuses.splice(dropIndex, 0, removed)
+
+        // Update the statuses order
+        reorderStatuses(dragIndex, dropIndex)
+      }
+
+      handleDragging(false)
+    }
+  }
 
   return (
     <div
       className={`${styles['cards-container']} ${
         isDragging ? styles['area-dragging'] : ''
       } ${lightTheme ? styles['light'] : ''}`}
+      onDrop={(e) => handleContainerDrop(e, statuses.indexOf(status))}
     >
-      <span id={`label-${sanitize(status)}`}>
+      <span
+        id={`label-${sanitize(status)}`}
+        draggable
+        onDragStart={(e) => handleContainerDragStart(e, statuses.indexOf(status))}
+        onDragOver={handleContainerDragOver}
+      >
         {(() => {
           const statusLowerCase = status.toLowerCase()
+          // translations for the initial statuses:
           switch (statusLowerCase) {
             case 'good':
               return EGood[language]
@@ -92,7 +142,7 @@ export const CardsContainer = ({
           language={language}
           text={`*`}
           hideBrackets
-          className={`${styles['change-status']} change-status`}
+          className={`narrow ${styles['change-status']} change-status`}
           tooltip={ERenameTitle[language]}
           x='left'
           y='below'
@@ -141,6 +191,8 @@ export const CardsContainer = ({
             handleRemoveColor={handleRemoveColor}
             setTheTarget={setTheTarget}
             sanitize={sanitize}
+            focusedCard={focusedCard}
+            setFocusedCard={setFocusedCard}
           />
         ))}
       </ul>

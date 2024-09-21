@@ -6,6 +6,7 @@ import {
   Dispatch,
   SetStateAction,
   CSSProperties,
+  useEffect,
 } from 'react'
 import { Data, Status } from '../interfaces'
 import styles from '../dragAndDrop.module.css'
@@ -26,6 +27,8 @@ interface Props {
   handleRemoveColor: (color: Data['content']) => void
   setTheTarget: Dispatch<SetStateAction<number>>
   sanitize: (str: string) => string
+  focusedCard: number | null
+  setFocusedCard: Dispatch<SetStateAction<number | null>>
 }
 
 function CardSingle({
@@ -40,6 +43,8 @@ function CardSingle({
   handleRemoveColor,
   setTheTarget,
   sanitize,
+  focusedCard,
+  setFocusedCard,
 }: Props) {
   const styleCard: CSSProperties = {
     backgroundColor: data?.color,
@@ -76,12 +81,12 @@ function CardSingle({
   function closing() {
     setIsOpen(false)
   }
-  // const closingRef = useOutsideClick({ onOutsideClick: closing })
+  // const cardRef = useOutsideClick({ onOutsideClick: closing })
 
-  const closingRef = useRef<HTMLLIElement>(null)
+  const cardRef = useRef<HTMLLIElement>(null)
 
   useOutsideClick({
-    ref: closingRef,
+    ref: cardRef,
     onOutsideClick: closing,
   })
 
@@ -101,7 +106,7 @@ function CardSingle({
   }
 
   const handleDragStart = (e: React.DragEvent<HTMLLIElement>, position: number) => {
-    e.dataTransfer.setData('text', `${data?.id}`)
+    e.dataTransfer.setData('text/plain', JSON.stringify({ type: 'item', id: data?.id }))
   }
 
   function containerUpdate(e: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>) {
@@ -126,29 +131,48 @@ function CardSingle({
   }
 
   const handleUpAndDown = (e: KeyboardEvent<HTMLElement>, position: number) => {
-    e.preventDefault()
+    const parentLi = (e.target as HTMLElement).closest('li') as HTMLLIElement
+    let li: HTMLLIElement | null
+    if (parentLi) {
+      li = parentLi
+    } else {
+      li = e.target as HTMLLIElement
+    }
     const previous = Number(
-      ((e.target as HTMLElement)?.previousElementSibling as HTMLLIElement)?.dataset
-        .identity
+      (li?.previousElementSibling as HTMLLIElement)?.dataset.identity
     )
-    const next = Number(
-      ((e.target as HTMLElement)?.nextElementSibling as HTMLLIElement)?.dataset.identity
-    )
+    const next = Number((li?.nextElementSibling as HTMLLIElement)?.dataset.identity)
     switch (e.key) {
       case 'ArrowUp':
-        if (data && previous) handleUpdate(position, data.status, previous)
+        if (data && previous !== null) {
+          e.preventDefault()
+          handleUpdate(position, data.status, previous)
+          setFocusedCard(position)
+        }
         break
       case 'ArrowDown':
-        if (data && next) handleUpdate(position, data.status, next)
+        if (data && next !== null) {
+          e.preventDefault()
+          handleUpdate(position, data.status, next)
+          setFocusedCard(position)
+        }
         break
+      case 'Tab':
+        setFocusedCard(null)
       default:
         break
     }
   }
 
+  useEffect(() => {
+    if (focusedCard === id) {
+      cardRef.current?.focus()
+    }
+  }, [focusedCard, id])
+
   return (
     <li
-      ref={closingRef}
+      ref={cardRef}
       draggable={'true'}
       onDragStart={(e) => handleDragStart(e, id)}
       onDragEnter={(e) => handleDragEnter(e, id)}
@@ -156,7 +180,7 @@ function CardSingle({
       role={'listitem'}
       title={data?.status}
       tabIndex={0}
-      onKeyUp={(e) => handleUpAndDown(e, id)}
+      onKeyDown={(e) => handleUpAndDown(e, id)}
       data-identity={id}
     >
       <div style={styleCard} className={`${styles['card']}`}>

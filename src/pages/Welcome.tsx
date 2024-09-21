@@ -14,6 +14,7 @@ import { LuArrowRightToLine } from 'react-icons/lu'
 
 import {
   EAbout,
+  EAccessibility,
   EAddedAnotherInstanceOfTheBlobArtApp,
   EAddedPagination,
   EBlobs,
@@ -175,6 +176,16 @@ export default function Home({
                     <li>
                       <strong>{ESeptember[language]}</strong>
                       <ul>
+                        <li>
+                          <Link to='/portfolio/draganddrop'>
+                            <RiDragDropLine />
+                            {EDragAndDrop[language]}:
+                          </Link>
+                          <i>
+                            {EBugFixes[language]}. {EAccessibility[language]}:{' '}
+                            {EOptimizing[language].toLowerCase()}.
+                          </i>
+                        </li>
                         <li>
                           <Link to='/portfolio/blob'>
                             <TbBlob />
