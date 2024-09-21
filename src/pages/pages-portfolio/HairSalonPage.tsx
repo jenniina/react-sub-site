@@ -44,23 +44,6 @@ export default function HairSalonPage({
                       <li>react redux</li>
                       <li>@reduxjs/toolkit</li>
                       <li>axios</li>
-                      <li>
-                        Dev:
-                        <ul>
-                          <li>typescript</li>
-                          <li>vite</li>
-                          <li>rimraf</li>
-                          <li>rollup-plugin-copy</li>
-                          <li>eslint</li>
-                          <li>eslint-plugin-react-hooks</li>
-                          <li>eslint-plugin-react-refresh</li>
-                          <li>@types/react</li>
-                          <li>@types/react-dom</li>
-                          <li>@typescript-eslint/eslint-plugin</li>
-                          <li>@typescript-eslint/parser</li>
-                          <li>@vitejs/plugin-react</li>
-                        </ul>
-                      </li>
                     </ul>
                   </li>
                   <li>
@@ -74,20 +57,6 @@ export default function HairSalonPage({
                       <li>bcryptjs</li>
                       <li>jsonwebtoken</li>
                       <li>dotenv</li>
-                      <li>
-                        Dev:
-                        <ul>
-                          <li>concurrently</li>
-                          <li>nodemon</li>
-                          <li>typescript</li>
-                          <li>@types/bcrypt</li>
-                          <li>@types/bcryptjs</li>
-                          <li>@types/cors</li>
-                          <li>@types/express</li>
-                          <li>@types/jsonwebtoken</li>
-                          <li>@types/node</li>
-                        </ul>
-                      </li>
                     </ul>
                   </li>
                 </ul>
