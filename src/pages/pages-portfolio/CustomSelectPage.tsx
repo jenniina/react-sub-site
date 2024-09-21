@@ -232,7 +232,7 @@ export default function CustomSelectPage({
                 </ul>
               </Accordion>
               <div className={selectStyles['selects-container']}>
-                <h3>{ECustomSelect[language]}</h3>
+                <h2>{ECustomSelect[language]}</h2>
                 <form ref={form} onSubmit={handleSubmit} id='survey'>
                   <FormWrapper
                     className='flex'
