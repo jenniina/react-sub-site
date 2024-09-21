@@ -22,7 +22,7 @@ export const useDragAndDrop = <T extends Item, S extends string>(
     setUpdatedItems(initialState)
   }, [initialState])
 
-  const storageHooks = statuses.map((status) => {
+  const storageHooks = statuses?.map((status) => {
     const items = updatedItems.filter((item) => item?.status === status)
 
     const isLocalhost =
@@ -58,7 +58,7 @@ export const useDragAndDrop = <T extends Item, S extends string>(
   }, [updatedItems])
 
   useEffect(() => {
-    statuses.forEach((status, index) => {
+    statuses?.forEach((status, index) => {
       const [storedItems, setStoredItems] = storageHooks[index]
       setStoredItems(listItemsByStatus[status].items)
     })
@@ -139,7 +139,7 @@ export const useDragAndDrop = <T extends Item, S extends string>(
       const [, setNewStoredItems] = storageHooks[oldStatusIndex]
 
       // Update items' status
-      const updatedItems = listItemsByStatus[oldStatus].items.map((item) => ({
+      const updatedItems = listItemsByStatus[oldStatus]?.items?.map((item) => ({
         ...item,
         status: newStatus,
       }))
@@ -169,6 +169,7 @@ export const useDragAndDrop = <T extends Item, S extends string>(
   return {
     isDragging,
     listItemsByStatus,
+    setListItemsByStatus,
     handleUpdate,
     handleRenameStatus,
     handleDragging,
