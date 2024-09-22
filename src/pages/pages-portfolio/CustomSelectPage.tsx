@@ -239,9 +239,9 @@ export default function CustomSelectPage({
                     title={ESurvey[language]}
                     description={EPleaseOfferSomeFeedback[language]}
                   >
-                    <h4 className='left small margin0 regular'>
+                    <h3 className='left small margin0 regular'>
                       {EDidYouFindAnyIssuesOnThisSite[language]}
-                    </h4>
+                    </h3>
                     <Select
                       language={language}
                       multiple
@@ -267,9 +267,9 @@ export default function CustomSelectPage({
                         }))
                       }}
                     />
-                    <h4 className='left small margin0 regular'>
+                    <h3 className='left small margin0 regular'>
                       {EWhichIntroSectionElementWasYourFavourite[language]}
-                    </h4>
+                    </h3>
                     <Select
                       language={language}
                       required
@@ -295,9 +295,9 @@ export default function CustomSelectPage({
                         }))
                       }}
                     />
-                    <h4 className='left small margin0 regular'>
+                    <h3 className='left small margin0 regular'>
                       {EClarificationOrFeedback[language]}
-                    </h4>
+                    </h3>
                     <div className='full'>
                       <label htmlFor='select-clarification'>
                         <input
@@ -321,9 +321,9 @@ export default function CustomSelectPage({
                         </span>
                       </label>
                     </div>
-                    <h4 className='left small margin0 regular'>
+                    <h3 className='left small margin0 regular'>
                       {EEmail[language]} ({EOptional[language].toLowerCase()})
-                    </h4>
+                    </h3>
                     <div className='full'>
                       <label htmlFor='select-email'>
                         <input
