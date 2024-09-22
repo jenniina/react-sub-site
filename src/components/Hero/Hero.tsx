@@ -316,14 +316,14 @@ export default function Hero({
           >
             {array.map((item, index: number) => {
               if (location == LOCATION.SELECT || location == LOCATION.TODO) {
-                const dividedBy = 2.2
+                const dividedBy = 2.5
 
                 const style: React.CSSProperties = {
                   position: 'absolute',
-                  top: `clamp(60px, calc(-5vh + calc(1vh * ${item.e} * ${
+                  top: `clamp(60px, calc(-5vh + calc(1.1vh * ${item.e} * ${
                     item.e / 1.5
-                  })), 55vh)`,
-                  left: `clamp(1vw, calc(-5% + calc(${item.i} * 1.3vw * ${item.e})), 90vw)`,
+                  })), 50vh)`,
+                  left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})), 95vw - ${item.size}vw)`,
                   width:
                     windowWidth < windowHeight
                       ? `${item.size / dividedBy}vh`
@@ -417,10 +417,10 @@ export default function Hero({
               ) {
                 const style: React.CSSProperties = {
                   position: 'absolute',
-                  top: `clamp(1vh, calc(-10vh + 1vh * ${item.e * 3} * ${
+                  top: `clamp(1vh - 60px, calc(-10vh + 1vh * ${item.e * 3} * ${
                     item.size / 6
                   }), 55vh)`,
-                  left: `clamp(1vw, calc(-5% + ${item.i} * 1vw * ${item.e}), 95vw)`,
+                  left: `clamp(1vw, calc(-5% + ${item.i} * 1.2vw * ${item.e}), 96vw - ${item.size}vw)`,
                   backgroundColor: `transparent`,
                   color: `${item.color}`,
                   ['--i' as string]: `${item.i}`,
@@ -499,6 +499,7 @@ export default function Hero({
                   '48% 52% 41% 59% / 48% 58% 42% 52%',
                   '70% 30% 30% 70% / 36% 50% 36% 50%',
                 ]
+                const blurLevel = item.size / div + item.i * sizingSmall * 0.6
                 const rotate = Math.floor(useRandomMinMax(65, 175))
                 const number = Math.floor(useRandomMinMax(0.001, 3.999))
                 const style: React.CSSProperties = {
@@ -513,7 +514,7 @@ export default function Hero({
                   color: `${item.color}`, //for currentColor
                   ['--i' as string]: `${item.i}`,
                   ['--e' as string]: `${item.e}`,
-                  //needs to have var(--i) to work with the wheel function:
+                  //needs to have var(--i) not ${item.i} to work with the wheel function:
                   width:
                     windowWidth < breakpoint && windowWidth < windowHeight
                       ? `calc(calc(${item.size} / ${div} + var(--i)) * ${sizingSmall}vh)`
@@ -522,7 +523,7 @@ export default function Hero({
                       : windowWidth < windowHeight
                       ? `calc(calc(${item.size} / ${div} + var(--i)) * ${sizing}vh)`
                       : `calc(calc(${item.size} / ${div} + var(--i)) * ${sizing}vw)`,
-                  //needs to have var(--i) to work with the wheel function:
+                  //needs to have var(--i) not ${item.i} to work with the wheel function:
                   height:
                     windowWidth < breakpoint && windowWidth < windowHeight
                       ? `calc(calc(${item.size} / ${div} + var(--i)) * ${sizingSmall}vh)`
@@ -538,8 +539,22 @@ export default function Hero({
                   borderRadius: `${blobRadius[number]}`,
                   transform: 'rotate(' + rotate + 'deg)',
                   opacity: `0.9`,
-                  WebkitFilter: 'blur(28px)',
-                  filter: 'blur(28px)',
+                  WebkitFilter:
+                    windowWidth < breakpoint && windowWidth < windowHeight
+                      ? `blur(${blurLevel / 3}vh)`
+                      : windowWidth < breakpoint && windowWidth > windowHeight
+                      ? `blur(${blurLevel / 3}vw)`
+                      : windowWidth < windowHeight
+                      ? `blur(${blurLevel / 2}vh)`
+                      : `blur(${blurLevel / 2}vw)`,
+                  filter:
+                    windowWidth < breakpoint && windowWidth < windowHeight
+                      ? `blur(${blurLevel / 3}vh)`
+                      : windowWidth < breakpoint && windowWidth > windowHeight
+                      ? `blur(${blurLevel / 3}vw)`
+                      : windowWidth < windowHeight
+                      ? `blur(${blurLevel / 2}vh)`
+                      : `blur(${blurLevel / 2}vw)`,
                 }
 
                 return (
@@ -714,7 +729,7 @@ export default function Hero({
                   top: `clamp(60px, calc(-5vh + calc(1vh * ${item.e} * ${
                     item.e / 1.3
                   })), 55vh)`,
-                  left: `clamp(1vw, calc(-5vw + ${item.i} * 1vw * ${item.e}), 90vw)`,
+                  left: `clamp(1vw, calc(-10vw + ${item.i} * 1.3vw * ${item.e}), 95vw - ${item.size}vw)`,
                   width: 0,
                   height: 0,
                   opacity: `0.${item.size > 5 ? 5 : Math.ceil(item.size)}`,
@@ -788,13 +803,13 @@ export default function Hero({
 
             <svg className='filter'>
               <filter id='svgfilterHero'>
-                <feGaussianBlur in='SourceGraphic' stdDeviation='5' />
+                <feGaussianBlur in='SourceGraphic' stdDeviation='7' />
                 <feColorMatrix
                   values='
                                 1 0 0 0 0 
                                 0 1 0 0 0 
                                 0 0 1 0 0
-                                0 0 0 37 -14 
+                                0 0 0 48 -20 
                                 '
                 ></feColorMatrix>
               </filter>
