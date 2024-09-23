@@ -2285,3 +2285,21 @@ export enum EMongoDBAtlasDatabase {
   cs = 'Databáze MongoDB Atlas',
   fi = 'MongoDB Atlas -tietokanta',
 }
+export enum EConfirm {
+  en = 'Confirm',
+  es = 'Confirmar',
+  fr = 'Confirmer',
+  de = 'Bestätigen',
+  pt = 'Confirmar',
+  cs = 'Potvrdit',
+  fi = 'Vahvista',
+}
+export enum EEtc {
+  en = 'etc.',
+  es = 'etc.',
+  fr = 'etc.',
+  de = 'etc.',
+  pt = 'etc.',
+  cs = 'atd.',
+  fi = 'jne.',
+}

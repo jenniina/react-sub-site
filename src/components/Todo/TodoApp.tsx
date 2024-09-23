@@ -34,6 +34,7 @@ import { initializeUser } from '../../reducers/authReducer'
 import { ReducerProps } from '../../interfaces'
 import { RootState } from '../../store'
 import { ELanguages } from '../../interfaces'
+import { EAreYouSureYouWantToClearAllCompletedTasks } from '../../interfaces/todo'
 
 interface Props {
   language: ELanguages
@@ -222,15 +223,16 @@ export default function TodoApp({ language }: Props) {
 
   async function handleClearTodos(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault()
-    if (user) {
-      await dispatch(clearCompletedTodosAsync(user._id))
-    } else {
-      dispatch(clearCompletedTodos())
-      const updatedTodos = todos.filter((todo) => !todo.complete)
-      window.localStorage.setItem(localName, JSON.stringify(updatedTodos))
+    if (window.confirm(EAreYouSureYouWantToClearAllCompletedTasks[language])) {
+      if (user) {
+        await dispatch(clearCompletedTodosAsync(user._id))
+      } else {
+        dispatch(clearCompletedTodos())
+        const updatedTodos = todos.filter((todo) => !todo.complete)
+        window.localStorage.setItem(localName, JSON.stringify(updatedTodos))
+      }
     }
   }
-
   function deleteTodo(key: string | undefined) {
     if (!key) {
       dispatch(notify(`Error: no key`, true, 8))
@@ -262,7 +264,7 @@ export default function TodoApp({ language }: Props) {
               ref={todoNameRef}
               id='taskinput'
               className={`bg`}
-              name='name'
+              name='task'
               required
               autoComplete='off'
               placeholder={`${ETask[language]}...`}
@@ -271,6 +273,7 @@ export default function TodoApp({ language }: Props) {
               {EAddTask[language]}
             </button>
             <button
+              className='danger'
               disabled={!hasCompletedTasks}
               onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
                 handleClearTodos(e)

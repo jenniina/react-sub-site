@@ -216,10 +216,7 @@ main a:visited:focus,
 main a:hover > *,
 main a:focus > *,
 main a:visited:hover > *,
-main a:visited:focus > *, 
-/* ,
-a:visited:not(.active):hover *,
-a:visited:not(.active):focus * */ {
+main a:visited:focus > * {
   color: var(--color-secondary-3);
   text-decoration: underline;
 }
@@ -230,10 +227,7 @@ a:visited:not(.active):focus * */ {
 .light main a:hover > *,
 .light main a:focus > *,
 .light main a:visited:hover > *,
-.light main a:visited:focus > * 
-/*,
- .light a:visited:not(.active):hover *,
-.light a:visited:not(.active):focus * */ {
+.light main a:visited:focus > * {
   color: var(--color-secondary-8);
 }
 main a:visited,

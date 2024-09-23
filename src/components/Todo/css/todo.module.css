@@ -44,26 +44,33 @@
   justify-content: flex-start;
   gap: 0.6em 0.8em;
 }
-.todo-ul li label {
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: 0.6em;
-  flex: 1 0 100%;
-}
-/* .todo-ul li > button {
-  height: 1em;
-  margin: 0;
-  margin-right: calc(var(--width) / 2);
-  padding: 0 0.2em;
-  line-height: 1;
+.todo-ul li span.drag-handle {
+  cursor: move;
+  flex: 0 1 1rem;
+  font-size: 1.5em;
+  display: inline-block;
+  padding: 0.1rem 0.2rem 0.1rem 0.2rem;
+  border: 2px solid transparent;
   display: flex;
   align-items: center;
   justify-content: center;
-} */
-
-.modify-todo {
+}
+.todo-ul li span.drag-handle:hover,
+.todo-ul li span.drag-handle:focus,
+.todo-ul li span.drag-handle:focus-visible {
+  border: 2px solid var(--color-primary-10);
+  border-radius: var(--radius-small);
+}
+.todo-ul li label {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0.6em;
+  flex: 0 0 calc(100% - 4rem);
+}
+.todo-ul li label > span {
+  margin-top: 0.2rem;
 }
 
 .todo-ul li .btn-wrap {
@@ -103,10 +110,6 @@
   font-weight: bold;
   z-index: 1;
 }
-/* .todo-ul li > button > span:first-child {
-  line-height: 0.6;
-  display: inline-block;
-} */
 .left-to-do {
   font-size: 0.9em;
 }
@@ -126,6 +129,11 @@
 .todo-ul li label:has(input:checked) {
   color: var(--color-gray-general);
   text-decoration: line-through 1px;
+}
+.todo-ul li input[type='checkbox' i]:hover,
+.todo-ul li input[type='checkbox' i]:focus {
+  outline: solid 3px currentColor;
+  outline: -webkit-focus-ring-color auto 3px;
 }
 
 /* In App.css
@@ -161,9 +169,21 @@ form.modify {
   .todo-ul li label {
     flex-flow: row wrap;
     align-items: flex-start;
-    max-width: calc(100% - 8em);
+    max-width: calc(100% - 10em);
   }
   .todo-ul li label > span {
     max-width: 90%;
   }
+  .todo-ul li label.open {
+    min-width: calc(100% - 3rem);
+    max-width: calc(100% - 3rem);
+  }
 } /*END media*/
+.modify-todo.open {
+  flex: 1 0 100%;
+}
+.todo-ul li .btn-wrap.open {
+  flex: 1 0 100%;
+  min-width: 100%;
+  padding-bottom: 0.6em;
+}
