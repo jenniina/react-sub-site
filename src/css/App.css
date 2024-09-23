@@ -723,6 +723,10 @@ nav .open.password-reset-container button.forgot-btn {
 #root .App .tooltip-wrap.narrow .tooltip {
   --width: clamp(3rem, calc(30vw), 5rem);
 }
+#root .App .tooltip-wrap .tooltip.narrow2,
+#root .App .tooltip-wrap.narrow2 .tooltip {
+  --width: max-content;
+}
 
 .tooltip-wrap:not(button):not(a) {
   cursor: help;
