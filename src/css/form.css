@@ -120,7 +120,7 @@ nav .input-wrap {
   top: 0;
   left: 0;
   right: 0;
-  height: 2.3em;
+  height: 2em;
   -webkit-transform: scaleY(0.08);
   -ms-transform: scaleY(0.08);
   -o-transform: scaleY(0.08);
@@ -237,7 +237,6 @@ input[type='radio' i] {
   cursor: pointer;
   border-radius: var(--radius-small);
   align-self: center;
-  justify-self: center;
   margin: 0 0 0 calc(var(--offset) * 2);
 }
 input[type='checkbox' i] {

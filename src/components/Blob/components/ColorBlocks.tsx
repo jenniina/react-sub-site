@@ -45,10 +45,9 @@ const ColorBlocks: React.FC<ColorBlockProps> = ({
             }`,
           }}
         >
-          <span
-            className={`tooltip above ${index < 4 ? 'right' : 'left'}`}
-            data-tooltip={EReleaseToChangeColorInstructions[language]}
-          ></span>
+          <span className={`tooltip below ${index < 4 ? 'right' : 'left'}`}>
+            {EReleaseToChangeColorInstructions[language]}
+          </span>
         </div>
       ))}
     </>

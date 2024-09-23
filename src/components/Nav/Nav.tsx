@@ -145,9 +145,10 @@ const Nav = (
     return (
       <ul>
         {windowWidth < breakpointSmall && !menuStyleAlt ? (
-          <li className={styles.jenniina}>
+          <li className={`tooltip-wrap ${styles.jenniina}`}>
             <a href='https://jenniina.fi'>
               <img src={lightTheme ? logoDark : logo} width='96px' height='39.6px' />
+              <span className='tooltip below narrow'>« {EExitToMainSite[language]}</span>
             </a>
           </li>
         ) : (
@@ -161,13 +162,22 @@ const Nav = (
                 to={link.href}
                 className={({ isActive }) =>
                   isActive
-                    ? `active ${styles.active} ${styles.link} tooltipwrap`
-                    : `${styles.link} tooltipwrap`
+                    ? `active ${styles.active} ${styles.link} tooltip-wrap pointer`
+                    : `${styles.link} tooltip-wrap`
                 }
               >
                 {icons(link.label)}
                 <span>{link.label}</span>
-                <b className='tooltip' aria-hidden={true} data-tooltip={link.label}></b>
+                <b
+                  className={`${
+                    menuStyleAlt && windowWidth < breakpointSmall
+                      ? `tooltip space narrow above ${index < 2 ? 'right' : 'left'}`
+                      : 'scr'
+                  }`}
+                  aria-hidden={true}
+                >
+                  {link.label}
+                </b>
               </NavLink>
             </li>
           )
@@ -211,9 +221,6 @@ const Nav = (
 
   const [isToolbarOpen, setIsToolbarOpen] = useState(false)
   const [isToolbarHidden, setIsToolbarHidden] = useState(true)
-
-  //with the clear and reset options destructured for use:
-  const { clear, reset } = useTimeout(() => setIsMainMenuHidden(true), 1000) //clear and reset could be called with something like an onClick={clear}
 
   //set delay for visibility: hidden (.hidden class) in order to allow time for exit animation to play
   const mainMenuHideDelay = () => {
@@ -426,10 +433,14 @@ const Nav = (
       <header
         ref={clickOutsideRef}
         className={`
-                ${styles['main-header']}
+                ${`main-header ${styles['main-header']}`}
                 ${scrollDirection === 'down' && scrolled ? styles.hide : styles.show} 
                 ${lightTheme ? styles.light : ''} 
-                ${menuStyleAlt ? `${styles.menualt} ` : `${styles.menumain} `} 
+                ${
+                  menuStyleAlt
+                    ? `${styles.menualt} menualt`
+                    : `${styles.menumain} menumain`
+                } 
                 ${menuStyleTransform ? `${styles.transformations}` : ''} 
                 ${styles[`${language}`]}
                 `}

@@ -336,9 +336,7 @@ ul {
 .menu-container li.Welcome a {
   flex-flow: row wrap;
 }
-.menu-container li.Welcome .jenniina {
-  /* flex: 1 0 calc(100vw - 4em - var(--scrollbar_width)); */
-  justify-self: flex-start;
+.menu-container li .jenniina {
 }
 .menu-container li a,
 .main-header button {

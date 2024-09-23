@@ -70,3 +70,12 @@ export enum ETasksCanBeReorganizedByDraggingAndDropping {
   cs = 'Úkoly lze přeuspořádat přetažením a upuštěním',
   fi = 'Tehtäviä voi järjestellä raahaamalla ja pudottamalla',
 }
+export enum EAreYouSureYouWantToClearAllCompletedTasks {
+  en = 'Are you sure you want to clear all completed tasks?',
+  es = '¿Estás seguro de que quieres borrar todas las tareas completadas?',
+  fr = 'Êtes-vous sûr de vouloir effacer toutes les tâches terminées?',
+  de = 'Möchten Sie wirklich alle abgeschlossenen Aufgaben löschen?',
+  pt = 'Tem certeza de que deseja limpar todas as tarefas concluídas?',
+  cs = 'Opravdu chcete vymazat všechny dokončené úkoly?',
+  fi = 'Oletko varma, että haluat poistaa kaikki valmiit tehtävät?',
+}

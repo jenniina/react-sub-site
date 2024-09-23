@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
-import { EEdit, ELanguages } from '../../../interfaces'
+import { EConfirm, EEdit, EEtc, ELanguages } from '../../../interfaces'
 import { EDeleteTask } from '../../../interfaces/todo'
 import Accordion from '../../Accordion/Accordion'
 import styles from '../css/todo.module.css'
 import { ITaskDraggable } from './TodoList'
 import { EAreYouSureYouWantToDelete } from '../../UserEdit/interfaces'
+import { ETask } from '../interfaces'
+import { MdDragIndicator } from 'react-icons/md'
 
 export default function Todo({
   todo,
@@ -26,6 +28,7 @@ export default function Todo({
   handleDragging: (dragging: boolean) => void
 }) {
   const [newName, setNewName] = useState(todo?.name ?? '')
+  const [isOpen, setIsOpen] = useState(false)
 
   function handleTodoClick() {
     toggleTodo(todo?.key)
@@ -34,11 +37,13 @@ export default function Todo({
     if (window.confirm(EAreYouSureYouWantToDelete[language] + ' "' + todo?.name + '"?')) {
       setNewName('')
       deleteTodo(todo?.key)
+      setIsOpen(false)
     }
   }
   const handleModify = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     modifyTodo(todo?.key, newName)
+    setIsOpen(false)
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,48 +57,127 @@ export default function Todo({
     }
   }, [todo])
 
+  const randomString = (length: number): string => {
+    const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'
+    let randomstring = ''
+    for (let i = 0; i < length; i++) {
+      const rnum = Math.floor(Math.random() * chars.length)
+      randomstring += chars.substring(rnum, rnum + 1)
+    }
+    return randomstring
+  }
+
+  const sanitize = (name: string = randomString(9)): string => {
+    return name.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '-')
+  }
+
+  const getFirstThreeWords = (name: string = ETask[language]): string => {
+    // if name is less than 5 words, return the name
+    if (name.split(' ').length <= 4) return name
+    // else return the first 3 words
+    else return name.split(' ').slice(0, 3).join(' ') + ' ' + EEtc[language]
+  }
+
+  const [allowDrag, setAllowDrag] = useState(true)
+  const [isSelectingText, setIsSelectingText] = useState(false)
+
+  const handleMouseDown = () => {
+    setAllowDrag(true)
+    setIsSelectingText(false)
+  }
+  const handleMouseOverHandle = () => {
+    setAllowDrag(true)
+  }
+  const handleMouseOverSpan = () => {
+    setAllowDrag(false)
+  }
+  const handleMouseDownSpan = () => {
+    setAllowDrag(false)
+    setIsSelectingText(true)
+  }
+  const handleMouseUpSpan = () => {
+    if (window.getSelection()?.toString()) {
+      setAllowDrag(false)
+      setIsSelectingText(true)
+    } else {
+      setAllowDrag(true)
+      setIsSelectingText(false)
+    }
+  }
+
+  const handleLabelClick = (e: React.MouseEvent<HTMLLabelElement>) => {
+    if (isSelectingText) {
+      e.preventDefault()
+    }
+  }
+
   return (
     <li
       className={`${isDragging ? 'dragging' : ''}`}
-      draggable
+      draggable={allowDrag}
       onDragStart={(e) => {
-        e.dataTransfer.setData('application/my-app', todo?.order?.toString() as string)
-        handleDragging(true)
+        if (allowDrag) {
+          e.dataTransfer.setData('application/my-app', todo?.order?.toString() as string)
+          handleDragging(true)
+        } else {
+          e.preventDefault()
+        }
       }}
       onDragEnd={() => handleDragging(false)}
     >
-      <label>
-        <input type='checkbox' checked={todo?.complete} onChange={handleTodoClick} />
-        <span>{todo?.name}</span>
+      <span
+        onMouseOver={handleMouseOverHandle}
+        onMouseDown={handleMouseDown}
+        className={styles['drag-handle']}
+      >
+        <MdDragIndicator />
+      </span>
+
+      <label className={`${isOpen ? styles.open : ''}`} onClick={handleLabelClick}>
+        <input
+          type='checkbox'
+          id={`check_${sanitize(todo?.name)}`}
+          checked={todo?.complete}
+          onChange={handleTodoClick}
+        />
+        <span
+          onMouseOver={handleMouseOverSpan}
+          onMouseDown={handleMouseDownSpan}
+          onMouseUp={handleMouseUpSpan}
+        >
+          {todo?.name}
+        </span>
       </label>
-      <div className={styles['btn-wrap']}>
+      <div className={`${isOpen ? styles.open : ''} ${styles['btn-wrap']}`}>
         <Accordion
           language={language}
           className={`${styles['modify-todo']} modify-todo`}
           text={EEdit[language]}
-          isOpen={false}
+          isOpen={isOpen}
+          setIsFormOpen={setIsOpen}
           hideBrackets={false}
           onClick={() => {
             setNewName(todo?.name ?? '')
           }}
         >
-          <form onSubmit={handleModify} className={styles.modify}>
+          <form onSubmit={handleModify} className={`${styles.modify}`}>
             <div className='input-wrap'>
               <label>
                 <input
+                  id={`task_${sanitize(todo?.name)}`}
                   required
                   type='text'
-                  name='name'
+                  name='task'
                   value={newName}
                   onChange={handleChange}
                 />
                 <span className='scr'>
-                  {EEdit[language]} {todo?.name}
+                  {EEdit[language]} {getFirstThreeWords(todo?.name)}
                 </span>
               </label>
             </div>
             <button type='submit' className='modify'>
-              {EEdit[language]}
+              {EConfirm[language]}
             </button>
           </form>
         </Accordion>

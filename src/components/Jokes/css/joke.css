@@ -1195,62 +1195,6 @@ button.blocked-btn.active {
   margin-left: auto;
 }
 
-#root .joke-container .tooltipwrap {
-  --tooltip-offset: 1.5rem;
-  --tooltip-bgcolor: lightgray;
-  --tooltip-color: black;
-  position: relative;
-}
-#root .joke-container .tooltipwrap .tooltip {
-  position: absolute;
-  width: max-content;
-  height: 3rem;
-  background-color: var(--tooltip-bgcolor);
-  color: var(--tooltip-color);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.8rem;
-  font-weight: bold;
-  cursor: help;
-}
-#root .joke-container .tooltipwrap .tooltip.above {
-  top: -2.6em;
-}
-#root .joke-container .tooltipwrap .tooltip.below {
-  top: 110%;
-}
-#root .joke-container .tooltipwrap .tooltip.right {
-  right: 0;
-}
-#root .joke-container .tooltipwrap .tooltip.left {
-  left: 0;
-}
-#root .joke-container .tooltipwrap:hover .tooltip::after,
-#root .joke-container .tooltipwrap:focus .tooltip::after {
-  position: absolute;
-  top: 0;
-  right: -50%;
-  height: max-content;
-  width: max-content;
-  content: attr(data-tooltip);
-  text-align: center;
-  font-size: 0.8rem;
-  font-weight: normal;
-  text-align: left;
-  line-height: 1;
-  background-color: var(--tooltip-bgcolor);
-  color: var(--tooltip-color);
-  padding: 0.4em 0.4em 0.4em;
-  border-radius: 5px;
-  border-bottom: gray 1px solid;
-  -webkit-box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
-  -o-box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
-  -ms-box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
-  -moz-box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
-  box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
-}
-
 @-webkit-keyframes fadeInDown {
   0% {
     opacity: 0;
