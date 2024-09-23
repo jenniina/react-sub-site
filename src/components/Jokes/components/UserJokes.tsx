@@ -772,20 +772,15 @@ const UserJokes = ({
             <BiChevronRight />
           </button>
           <button
-            className={`inner-nav-btn last tooltipwrap ${
+            className={`inner-nav-btn last tooltip-wrap ${
               currentPage === pageNumbers?.length ? 'disabled' : ''
             } ${pageNumbers?.length <= 3 ? 'hidden' : ''}`}
             disabled={currentPage === pageNumbers?.length}
             onClick={() => handlePageChange(pageNumbers?.length)}
           >
             <BiChevronsRight />
-            <span
-              className='tooltip right below'
-              data-tooltip={`${ELastPage[language]}: ${pageNumbers?.length}`}
-            >
-              <b className='scr'>
-                {ELastPage[language]}: {pageNumbers?.length}
-              </b>
+            <span className='tooltip narrow left below'>
+              {ELastPage[language]}: {pageNumbers?.length}
             </span>
           </button>
         </div>

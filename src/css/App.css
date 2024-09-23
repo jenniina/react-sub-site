@@ -667,67 +667,7 @@ body .z {
 .max-content {
   max-width: max-content;
 }
-@media (max-width: 399px) {
-  #root .App:not(.noTooltip) .site-navigation .tooltipwrap {
-    --tooltip-offset: 1.5rem;
-    --tooltip-bgcolor: lightgray;
-    --tooltip-color: black;
-    position: relative;
-  }
-  #root .App:not(.noTooltip) .site-navigation .tooltipwrap .tooltip {
-    position: absolute;
-    top: -2.5em;
-    right: 0;
-    width: max-content;
-    height: 3rem;
-    background-color: var(--tooltip-bgcolor);
-    color: var(--tooltip-color);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.8rem;
-    font-weight: bold;
-    cursor: help;
-  }
-  #root .App:not(.noTooltip) .site-navigation .tooltipwrap:hover .tooltip,
-  #root .App:not(.noTooltip) .site-navigation .tooltipwrap:focus .tooltip {
-    position: absolute;
-    top: 0;
-    right: -50%;
-    height: max-content;
-    width: max-content;
-    content: attr(data-tooltip);
-    text-align: center;
-    font-size: 0.8rem;
-    font-weight: normal;
-    text-align: left;
-    line-height: 1;
-    background-color: var(--tooltip-bgcolor);
-    color: var(--tooltip-color);
-    padding: 0.4em 0.4em 0.4em;
-    border-radius: 5px;
-    border-bottom: gray 1px solid;
-    -webkit-box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
-    -o-box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
-    -ms-box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
-    -moz-box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
-    box-shadow: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
-  }
-  #root .App:not(.noTooltip) .site-navigation li:first-child .tooltipwrap:hover .tooltip,
-  #root .App:not(.noTooltip) .site-navigation li:first-child .tooltipwrap:focus .tooltip {
-    right: unset;
-    left: 0;
-  }
-  #root .App:not(.noTooltip) .site-navigation li:first-child .tooltipwrap:hover .tooltip,
-  #root .App:not(.noTooltip) .site-navigation li:first-child .tooltipwrap:focus .tooltip {
-    right: unset;
-    left: 0;
-  }
-  #root .App:not(.noTooltip) .site-navigation li:last-child .tooltipwrap:focus .tooltip,
-  #root .App:not(.noTooltip) .site-navigation li:last-child .tooltipwrap:hover .tooltip {
-    right: 0;
-  }
-}
+
 .password-reset-wrap {
   width: 100%;
   display: flex;
@@ -784,8 +724,11 @@ nav .open.password-reset-container button.forgot-btn {
   --width: clamp(3rem, calc(30vw), 5rem);
 }
 
-.tooltip-wrap:not(button) {
+.tooltip-wrap:not(button):not(a) {
   cursor: help;
+}
+.tooltip-wrap.pointer:not(button):not(a) {
+  cursor: pointer;
 }
 #root .App .tooltip-wrap:focus .tooltip,
 #root .App .tooltip-wrap:hover .tooltip {
