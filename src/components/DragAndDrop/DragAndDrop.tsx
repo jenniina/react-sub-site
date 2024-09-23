@@ -49,7 +49,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     .flat()
 
   const sanitize = (status: string): string => {
-    return status.replace(/[^a-zA-Z0-9]/g, '-').replace(/\s+/g, '_')
+    return status.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '-')
   }
 
   // Generate and inject CSS styles whenever statuses change
