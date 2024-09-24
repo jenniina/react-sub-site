@@ -29,6 +29,8 @@ type itemProps = {
   rotation?: number
 }
 
+let isReset: boolean = true
+
 //Change these, if the addresses change, or add more as needed:
 const LOCATION = {
   HOME: '',
@@ -68,6 +70,7 @@ export default function Hero({
 
   const resetButton = useRef() as RefObject<HTMLButtonElement>
   const ulRef = useRef() as RefObject<HTMLUListElement>
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState<boolean>(false)
 
   //Move items up, down, left or left, depending on the direction they're approached from:
   const movingItem = (e: React.PointerEvent<HTMLElement>) => {
@@ -129,7 +132,14 @@ export default function Hero({
 
   const { windowHeight, windowWidth } = useWindowSize()
 
-  const removeItem = (element: HTMLElement) => {
+  const removeItem = (
+    e:
+      | React.PointerEvent<HTMLElement>
+      | React.KeyboardEvent<HTMLElement>
+      | React.MouseEvent<HTMLLIElement, MouseEvent>
+      | React.TouchEvent<HTMLLIElement>
+  ) => {
+    const element = e.target as HTMLElement
     if (!touchDevice) {
       //if not a touch device, remove item
       element.classList.add(styles.exitItem)
@@ -157,18 +167,15 @@ export default function Hero({
     }, 1000)
   }
 
-  const [values, setValues] = useSessionStorage<itemProps[]>('HeroArray', [
-    { i: 1, e: 3.274, size: 10, color: 'var(--color-secondary-7)' },
-    { i: 2, e: 5.044, size: 11, color: 'var(--color-primary-8)' },
-    { i: 3, e: 1.886, size: 9, color: 'var(--color-primary-6)' },
-    { i: 4, e: 4.966, size: 6, color: 'var(--color-primary-6)' },
-    { i: 5, e: 1.621, size: 9, color: 'var(--color-secondary-2)' },
-    { i: 6, e: 3.489, size: 11, color: 'var(--color-primary-9)' },
-    { i: 7, e: 3.79, size: 11, color: 'var(--color-secondary-5)' },
-    { i: 8, e: 8.365, size: 4, color: 'var(--color-secondary-2)' },
-    { i: 9, e: 7.846, size: 11, color: 'var(--color-primary-7)' },
-    { i: 10, e: 4.121, size: 11, color: 'var(--color-primary-9)' },
-  ])
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setPrefersReducedMotion(mediaQuery.matches)
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches)
+    mediaQuery.addEventListener('change', handler)
+    return () => mediaQuery.removeEventListener('change', handler)
+  })
+
+  const [values, setValues] = useSessionStorage<itemProps[]>('HeroArray', [])
 
   const spanArray: itemProps[] = useMemo(() => {
     let array: itemProps[] = []
@@ -208,9 +215,22 @@ export default function Hero({
     setReinitialize(!reinitialize)
   }
 
+  const escapeFunction = () => {
+    if (resetButton.current) resetButton.current.focus()
+  }
+
   const setupItems: itemProps[] = useMemo(() => {
+    const items: itemProps[] = []
+    const specialSizesCount = Math.ceil(useRandomMinMax(1.1, 3))
+    const specialIndices = new Set<number>()
+
+    // Generate unique random indices for special sizes
+    while (specialIndices.size < specialSizesCount) {
+      specialIndices.add(Math.floor(useRandomMinMax(0, amount)))
+    }
+
     for (let i: number = 0; i <= amount; i++) {
-      const number = Math.ceil(useRandomMinMax(0.2, 2))
+      const number = Math.ceil(useRandomMinMax(0.3, 2))
       let colorSwitch: string
       switch (number) {
         case 1:
@@ -222,66 +242,68 @@ export default function Hero({
         default:
           colorSwitch = `var(--color-primary-${Math.round(useRandomMinMax(9, 14))})`
       }
+
+      const size = specialIndices.has(i)
+        ? Math.round(useRandomMinMax(12, 15))
+        : Math.round(useRandomMinMax(8, 15))
+
+      const e = specialIndices.has(i) ? useRandomMinMax(7, 9) : useRandomMinMax(4, 9)
+
       const item: itemProps = {
         i: i + 1,
-        e: useRandomMinMax(4, 9),
-        size: Math.round(useRandomMinMax(8, 14)),
+        e: e, // useRandomMinMax(4, 9),
+        size: size, // Math.round(useRandomMinMax(8, 14)),
         rotation: useRandomMinMax(165, 195),
         color: colorSwitch,
       }
-      if (i == 0) {
-        setValues([])
-      } else {
-        setValues((prev) => {
-          return [...prev, item]
-        })
-      }
+      items.push(item)
     }
-    return values
+    setValues(items)
+    return items
   }, [amount, reinitialize])
 
-  const keyDown = (e: React.KeyboardEvent<HTMLLIElement>) => {
-    let attrLeft = window
-      .getComputedStyle(e.target as HTMLElement)
-      .getPropertyValue('left')
-    let attrTop = window.getComputedStyle(e.target as HTMLElement).getPropertyValue('top')
-    let movePx = 10
-    switch (e.key) {
-      case 'ArrowLeft':
-        e.preventDefault()
-        ;(e.target as HTMLElement).style.left =
-          parseFloat(attrLeft) - Number(movePx) + 'px'
-        attrLeft = window
-          .getComputedStyle(e.target as HTMLElement)
-          .getPropertyValue('left')
-        break
-      case 'ArrowRight':
-        e.preventDefault()
-        ;(e.target as HTMLElement).style.left =
-          parseFloat(attrLeft) + Number(movePx) + 'px'
-        attrLeft = window
-          .getComputedStyle(e.target as HTMLElement)
-          .getPropertyValue('left')
-        break
-      case 'ArrowUp':
-        e.preventDefault()
-        ;(e.target as HTMLElement).style.top = parseFloat(attrTop) - Number(movePx) + 'px'
-        attrTop = window.getComputedStyle(e.target as HTMLElement).getPropertyValue('top')
-        break
-      case 'ArrowDown':
-        e.preventDefault()
-        ;(e.target as HTMLElement).style.top = parseFloat(attrTop) + Number(movePx) + 'px'
-        attrTop = window.getComputedStyle(e.target as HTMLElement).getPropertyValue('top')
-        break
-      case 'Enter':
-      case 'Space':
-        e.preventDefault()
-        removeItem(e.target as HTMLElement)
-        break
-      case 'Escape':
-        if (resetButton.current) resetButton.current.focus()
-    }
-  }
+  // Move an item randomly
+  useEffect(() => {
+    if (prefersReducedMotion) return // Don't move items if user prefers reduced motion
+    const interval = setInterval(() => {
+      const newValues = [...values]
+      const randomIndex = Math.floor(Math.random() * newValues.length)
+      const itemI = newValues[randomIndex].i
+      const item = document.getElementById(`shape${itemI}`)
+
+      if (item) {
+        const currentTop = parseFloat(
+          window.getComputedStyle(item).getPropertyValue('top')
+        )
+        const currentLeft = parseFloat(
+          window.getComputedStyle(item).getPropertyValue('left')
+        )
+        const itemWidth = item.offsetWidth
+        const itemHeight = item.offsetHeight
+        const windowWidth = window.innerWidth
+        const windowHeight = window.innerHeight
+
+        const direction = Math.random() < 0.5 ? 'top' : 'left'
+        const change = Math.random() < 0.5 ? -15 : 15
+
+        if (direction === 'top') {
+          const newTop = currentTop + change
+          // Check if the new position is within the top 60px-60% of the window
+          if (newTop >= 60 && newTop + itemHeight <= windowHeight * 0.6) {
+            item.style.top = `${newTop}px`
+          }
+        } else {
+          const newLeft = currentLeft + change
+          // Check if the new position is within the window
+          if (newLeft >= 0 && newLeft + itemWidth <= windowWidth) {
+            item.style.left = `${newLeft}px`
+          }
+        }
+      }
+    }, useRandomMinMax(2000, 5000))
+
+    return () => clearInterval(interval)
+  }, [values])
 
   const ItemComponent: FC<{ array: itemProps[]; location: string }> = useCallback(
     ({ array, location }) => {
@@ -292,7 +314,6 @@ export default function Hero({
             id={`listbox-hero-${location.toLowerCase()}`}
             role={`listbox`}
             aria-labelledby={`description`}
-            aria-activedescendant=''
             className={`${styles.herocontent} ${styles[location] ?? ''} ${
               //In the case of using the blob feature for a page, add it here:
               location === LOCATION.PORTFOLIO ||
@@ -332,6 +353,10 @@ export default function Hero({
                     windowWidth < windowHeight
                       ? `${item.size / dividedBy}vh`
                       : `${item.size / dividedBy}vw`,
+                  transitionProperty:
+                    'top, left, bottom, right, transform, width, height',
+                  transitionTimingFunction: 'ease-in-out',
+                  transitionDuration: '600ms',
                 }
                 const inner: React.CSSProperties = {
                   color: `${item.color}`,
@@ -369,22 +394,29 @@ export default function Hero({
                       )
                     }}
                     onBlurCapture={(e) => {
-                      ulRef.current?.setAttribute('aria-activedescendant', '')
+                      ulRef.current?.removeAttribute('aria-activedescendant')
                     }}
                     onPointerEnter={(e) => {
                       movingItem(e)
                     }}
                     onMouseDown={(e) => {
-                      removeItem(e.target as HTMLElement)
+                      removeItem(e)
                     }}
                     onTouchStart={(e) => {
-                      removeItem(e.target as HTMLElement)
+                      removeItem(e)
                     }}
                     onPointerDown={(e) => {
-                      removeItem(e.target as HTMLElement)
+                      removeItem(e)
                     }}
                     onKeyDown={(e) => {
-                      keyDown(e)
+                      Draggable.keyDown(
+                        e,
+                        e.target as HTMLElement,
+                        () => escapeFunction(),
+                        () => removeItem(e),
+                        () => removeItem(e),
+                        null
+                      )
                     }}
                   >
                     <div style={inner}>
@@ -417,7 +449,7 @@ export default function Hero({
               ) {
                 const style: React.CSSProperties = {
                   position: 'absolute',
-                  top: `clamp(1vh - 60px, calc(-10vh + 1vh * ${item.e * 3} * ${
+                  top: `clamp(60px, calc(-20vh + 1.2vh * ${item.e * 3} * ${
                     item.size / 6
                   }), 55vh)`,
                   left: `clamp(1vw, calc(-5% + ${item.i} * 1.2vw * ${item.e}), 96vw - ${item.size}vw)`,
@@ -425,12 +457,17 @@ export default function Hero({
                   color: `${item.color}`,
                   ['--i' as string]: `${item.i}`,
                   ['--e' as string]: `${item.e}`,
+                  ['--size' as string]: `${item.size}`,
                   ['--s' as string]:
                     windowWidth < windowHeight ? `${item.size}vh` : `${item.size}vw`,
-                  width: windowWidth < windowHeight ? `${item.size}vh` : `${item.size}vw`,
+                  width:
+                    windowWidth < windowHeight
+                      ? `calc(var(--size) * 1vh)`
+                      : `calc(var(--size) * 1vw)`,
                   height:
-                    windowWidth < windowHeight ? `${item.size}vh` : `${item.size}vw`,
-                  ['--s2' as string]: item.size,
+                    windowWidth < windowHeight
+                      ? `calc(var(--size) * 1vh)`
+                      : `calc(var(--size) * 1vw)`,
                   maxHeight: '200px',
                   maxWidth: '200px',
                   minHeight: '40px',
@@ -447,7 +484,7 @@ export default function Hero({
                       windowHeight < windowWidth ? styles.wide : styles.tall
                     }`}
                     style={style}
-                    id={`bubble${index + 1}`}
+                    id={`shape${index + 1}`}
                     role={'option'}
                     tabIndex={0}
                     onFocus={(e) => {
@@ -457,22 +494,29 @@ export default function Hero({
                       )
                     }}
                     onBlurCapture={(e) => {
-                      ulRef.current?.setAttribute('aria-activedescendant', '')
+                      ulRef.current?.removeAttribute('aria-activedescendant')
                     }}
                     onPointerEnter={(e) => {
                       movingItem(e)
                     }}
                     onMouseDown={(e) => {
-                      removeItem(e.target as HTMLElement)
+                      removeItem(e)
                     }}
                     onTouchStart={(e) => {
-                      removeItem(e.target as HTMLElement)
+                      removeItem(e)
                     }}
                     onPointerDown={(e) => {
-                      removeItem(e.target as HTMLElement)
+                      removeItem(e)
                     }}
                     onKeyDown={(e) => {
-                      keyDown(e)
+                      Draggable.keyDown(
+                        e,
+                        e.target as HTMLElement,
+                        () => escapeFunction(),
+                        () => removeItem(e),
+                        () => removeItem(e),
+                        null
+                      )
                     }}
                   >
                     <span>
@@ -489,9 +533,9 @@ export default function Hero({
                 location == LOCATION.DND
               ) {
                 const breakpoint = 500
-                const sizing = 1
-                const sizingSmall = 0.3
-                const div = 3
+                const sizing = 0.7
+                const sizingSmall = 0.4
+                const div = 1
                 //an array of blob radiuses:
                 const blobRadius = [
                   '30% 70% 70% 30% / 30% 36% 64% 70%',
@@ -499,7 +543,14 @@ export default function Hero({
                   '48% 52% 41% 59% / 48% 58% 42% 52%',
                   '70% 30% 30% 70% / 36% 50% 36% 50%',
                 ]
-                const blurLevel = item.size / div + item.i * sizingSmall * 0.6
+                const filter =
+                  windowWidth < breakpoint && windowWidth < windowHeight
+                    ? `blur(calc(var(--blur) * 1vh))`
+                    : windowWidth < breakpoint && windowWidth > windowHeight
+                    ? `blur(calc(var(--blur) * 1vw))`
+                    : windowWidth < windowHeight
+                    ? `blur(calc(var(--blur) * 1.2vh))`
+                    : `blur(calc(var(--blur) * 1.2vw))`
                 const rotate = Math.floor(useRandomMinMax(65, 175))
                 const number = Math.floor(useRandomMinMax(0.001, 3.999))
                 const style: React.CSSProperties = {
@@ -514,24 +565,26 @@ export default function Hero({
                   color: `${item.color}`, //for currentColor
                   ['--i' as string]: `${item.i}`,
                   ['--e' as string]: `${item.e}`,
-                  //needs to have var(--i) not ${item.i} to work with the wheel function:
+                  ['--size' as string]: `${item.size}`,
+                  ['--blur' as string]: `clamp(2.4, calc(var(--size) * 0.2), 7)`,
+                  //needs to have var(--size) not ${item.size} to work with the resize keys and wheel function:
                   width:
                     windowWidth < breakpoint && windowWidth < windowHeight
-                      ? `calc(calc(${item.size} / ${div} + var(--i)) * ${sizingSmall}vh)`
+                      ? `calc(calc(var(--size) * ${div}) * ${sizingSmall}vh)`
                       : windowWidth < breakpoint && windowWidth > windowHeight
-                      ? `calc(calc(${item.size} / ${div} + var(--i)) * ${sizingSmall}vw)`
+                      ? `calc(calc(var(--size) * ${div}) * ${sizingSmall}vw)`
                       : windowWidth < windowHeight
-                      ? `calc(calc(${item.size} / ${div} + var(--i)) * ${sizing}vh)`
-                      : `calc(calc(${item.size} / ${div} + var(--i)) * ${sizing}vw)`,
-                  //needs to have var(--i) not ${item.i} to work with the wheel function:
+                      ? `calc(calc(var(--size) * ${div}) * ${sizing}vh)`
+                      : `calc(calc(var(--size) * ${div}) * ${sizing}vw)`,
+                  //needs to have var(--size) not ${item.size} to work with the resize keys and wheel function:
                   height:
                     windowWidth < breakpoint && windowWidth < windowHeight
-                      ? `calc(calc(${item.size} / ${div} + var(--i)) * ${sizingSmall}vh)`
+                      ? `calc(calc(var(--size) * ${div}) * ${sizingSmall}vh)`
                       : windowWidth < breakpoint && windowWidth > windowHeight
-                      ? `calc(calc(${item.size} / ${div} + var(--i)) * ${sizingSmall}vw)`
+                      ? `calc(calc(var(--size) * ${div}) * ${sizingSmall}vw)`
                       : windowWidth < windowHeight
-                      ? `calc(calc(${item.size} / ${div} + var(--i)) * ${sizing}vh)`
-                      : `calc(calc(${item.size} / ${div} + var(--i)) * ${sizing}vw)`,
+                      ? `calc(calc(var(--size) * ${div}) * ${sizing}vh)`
+                      : `calc(calc(var(--size) * ${div}) * ${sizing}vw)`,
                   minWidth: `70px`,
                   minHeight: `70px`,
                   maxWidth: `200px`,
@@ -539,22 +592,12 @@ export default function Hero({
                   borderRadius: `${blobRadius[number]}`,
                   transform: 'rotate(' + rotate + 'deg)',
                   opacity: `0.9`,
-                  WebkitFilter:
-                    windowWidth < breakpoint && windowWidth < windowHeight
-                      ? `blur(${blurLevel / 3}vh)`
-                      : windowWidth < breakpoint && windowWidth > windowHeight
-                      ? `blur(${blurLevel / 3}vw)`
-                      : windowWidth < windowHeight
-                      ? `blur(${blurLevel / 2}vh)`
-                      : `blur(${blurLevel / 2}vw)`,
-                  filter:
-                    windowWidth < breakpoint && windowWidth < windowHeight
-                      ? `blur(${blurLevel / 3}vh)`
-                      : windowWidth < breakpoint && windowWidth > windowHeight
-                      ? `blur(${blurLevel / 3}vw)`
-                      : windowWidth < windowHeight
-                      ? `blur(${blurLevel / 2}vh)`
-                      : `blur(${blurLevel / 2}vw)`,
+                  WebkitFilter: filter,
+                  filter: filter,
+                  transitionProperty:
+                    'top, left, bottom, right, transform, width, height, border-radius',
+                  transitionTimingFunction: 'ease-in-out',
+                  transitionDuration: '600ms',
                 }
 
                 return (
@@ -562,7 +605,7 @@ export default function Hero({
 
                   <li
                     key={`${item.color}${index}`}
-                    id={`blob${index + 1}`}
+                    id={`shape${index + 1}`}
                     className={`${styles.item} ${styles[location]} ${styles.portfolio} 
                                 ${
                                   windowHeight < windowWidth ? styles.wide : styles.tall
@@ -574,6 +617,8 @@ export default function Hero({
                     onMouseDown={(e) => {
                       Draggable.start(e)
                       ;(e.target as HTMLLIElement).classList.add(styles.drag)
+                      ;(e.target as HTMLLIElement).style.transitionProperty =
+                        'transform, width, height, border-radius'
                     }}
                     onMouseMove={(e) => {
                       Draggable.movement(e)
@@ -581,6 +626,8 @@ export default function Hero({
                     onMouseUp={(e) => {
                       Draggable.stopMovementCheck(e)
                       ;(e.target as HTMLLIElement).classList.remove(styles.drag)
+                      ;(e.target as HTMLLIElement).style.transitionProperty =
+                        'top, left, bottom, right, transform, width, height, border-radius'
                     }}
                     onMouseLeave={(e) => {
                       Draggable.stopMoving(e)
@@ -607,10 +654,17 @@ export default function Hero({
                     }}
                     onBlurCapture={(e) => {
                       Draggable.blurred(e.target)
-                      ulRef.current?.setAttribute('aria-activedescendant', '')
+                      ulRef.current?.removeAttribute('aria-activedescendant')
                     }}
                     onKeyDown={(e) => {
-                      keyDown(e)
+                      Draggable.keyDown(
+                        e,
+                        e.target as HTMLElement,
+                        () => escapeFunction(),
+                        () => removeItem(e),
+                        () => removeItem(e),
+                        null
+                      )
                     }}
                   >
                     <span>
@@ -633,17 +687,17 @@ export default function Hero({
                   color: `${item.color}`,
                   ['--i' as string]: `${item.i}`,
                   ['--e' as string]: `${item.e}`,
-                  ['--s2' as string]: `${item.size}`,
+                  ['--size' as string]: `${item.size}`,
                   ['--s' as string]:
                     windowWidth < windowHeight ? `${item.size}vh` : `${item.size}vw`,
                   width:
                     windowWidth < windowHeight
-                      ? `calc(${item.size} * ${mod}vh)`
-                      : `calc(${item.size} * ${mod}vw)`,
+                      ? `calc(var(--size) * ${mod}vh)`
+                      : `calc(var(--size) * ${mod}vw)`,
                   height:
                     windowWidth < windowHeight
-                      ? `calc(${item.size} * ${mod}vh)`
-                      : `calc(${item.size} * ${mod}vw)`,
+                      ? `calc(var(--size) * ${mod}vh)`
+                      : `calc(var(--size) * ${mod}vw)`,
                   minHeight: '40px',
                   minWidth: '40px',
                   maxHeight: '100px',
@@ -653,8 +707,6 @@ export default function Hero({
                 }
                 const styleInner: React.CSSProperties = {
                   position: 'absolute',
-                  top: `0`,
-                  left: `0`,
                   backgroundColor: `transparent`,
                   width: '100%',
                   height: '100%',
@@ -667,7 +719,7 @@ export default function Hero({
 
                   <li
                     key={`${item.color}${index}`}
-                    id={`eye${index + 1}`}
+                    id={`shape${index + 1}`}
                     className={`eye ${styles.item} ${styles.eyes} ${styles[location]} 
                                 ${
                                   windowHeight < windowWidth ? styles.wide : styles.tall
@@ -682,24 +734,31 @@ export default function Hero({
                       )
                     }}
                     onBlurCapture={(e) => {
-                      ulRef.current?.setAttribute('aria-activedescendant', '')
+                      ulRef.current?.removeAttribute('aria-activedescendant')
                     }}
                     onPointerEnter={(e) => movingItem(e)}
                     // onPointerEnter={e => addDirectionClass(e)}
                     onPointerCancel={(e) => {
-                      removeItem(e.target as HTMLElement)
+                      removeItem(e)
                     }}
                     onMouseDown={(e) => {
-                      removeItem(e.target as HTMLElement)
+                      removeItem(e)
                     }}
                     onTouchStart={(e) => {
-                      removeItem(e.target as HTMLElement)
+                      removeItem(e)
                     }}
                     onPointerDown={(e) => {
-                      removeItem(e.target as HTMLElement)
+                      removeItem(e)
                     }}
                     onKeyDown={(e) => {
-                      keyDown(e)
+                      Draggable.keyDown(
+                        e,
+                        e.target as HTMLElement,
+                        () => escapeFunction(),
+                        () => removeItem(e),
+                        () => removeItem(e),
+                        null
+                      )
                     }}
                   >
                     <div style={styleInner} className={`inner ${styles.inner}`}>
@@ -713,8 +772,8 @@ export default function Hero({
                 )
               } else {
                 // ELSE
-
-                const border = `clamp(40px, calc(0.6vw * ${item.size}), 200px)`
+                // var(--size) enables resizing with s, b and l
+                const border = `clamp(40px, calc(0.6vw * var(--size)), 200px)`
 
                 const style: React.CSSProperties = {
                   ['--rotate' as string]: `${
@@ -723,6 +782,7 @@ export default function Hero({
                   ['--color' as string]: `${item.color}`,
                   ['--color2' as string]: 'hsla(0, 0%, 100%, 0.7)',
                   ['--s' as string]: `${item.size}`,
+                  ['--size' as string]: `${item.size}`,
                   ['--border' as string]: border,
                   borderWidth: border,
                   position: 'absolute',
@@ -754,22 +814,29 @@ export default function Hero({
                       )
                     }}
                     onBlurCapture={(e) => {
-                      ulRef.current?.setAttribute('aria-activedescendant', '')
+                      ulRef.current?.removeAttribute('aria-activedescendant')
                     }}
                     onMouseDown={(e) => {
-                      removeItem(e.target as HTMLElement)
+                      removeItem(e)
                     }}
                     onTouchStart={(e) => {
-                      removeItem(e.target as HTMLElement)
+                      removeItem(e)
                     }}
                     onPointerDown={(e) => {
-                      removeItem(e.target as HTMLElement)
+                      removeItem(e)
                     }}
                     onPointerEnter={(e) => {
                       movingItem(e)
                     }}
                     onKeyDown={(e) => {
-                      keyDown(e)
+                      Draggable.keyDown(
+                        e,
+                        e.target as HTMLElement,
+                        () => escapeFunction(),
+                        () => removeItem(e),
+                        () => removeItem(e),
+                        null
+                      )
                     }}
                   >
                     {spanArray.map((span, index) => {
@@ -803,13 +870,13 @@ export default function Hero({
 
             <svg className='filter'>
               <filter id='svgfilterHero'>
-                <feGaussianBlur in='SourceGraphic' stdDeviation='7' />
+                <feGaussianBlur in='SourceGraphic' stdDeviation='5' />
                 <feColorMatrix
                   values='
                                 1 0 0 0 0 
                                 0 1 0 0 0 
                                 0 0 1 0 0
-                                0 0 0 48 -20 
+                                0 0 0 37 -10
                                 '
                 ></feColorMatrix>
               </filter>

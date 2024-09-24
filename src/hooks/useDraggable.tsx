@@ -139,14 +139,14 @@ export function wheel(draggable: HTMLElement) {
   }
 }
 export function zoom(e: WheelEvent) {
-  let value = (e.target as HTMLElement).style.getPropertyValue('--i')
+  let value = (e.target as HTMLElement).style.getPropertyValue('--size')
   let scale = parseFloat(value)
 
   scale += e.deltaY * -0.005
   // Restrict scale
   scale = Math.min(Math.max(2, scale), 20)
   // Apply
-  ;(e.target as HTMLElement).style.setProperty('--i', `${scale}`)
+  ;(e.target as HTMLElement).style.setProperty('--size', `${scale}`)
   //increase z-index
   zIndex += 1
 }
@@ -154,12 +154,52 @@ export function zoom(e: WheelEvent) {
 // Keyboard use
 export function keyDown(
   e: KeyboardEvent | React.KeyboardEvent<HTMLLIElement>,
-  target: HTMLElement
+  target: HTMLElement,
+  escapeFunction:
+    | ((
+        e:
+          | React.PointerEvent<HTMLElement>
+          | React.KeyboardEvent<HTMLLIElement>
+          | React.MouseEvent<HTMLLIElement, MouseEvent>
+          | React.TouchEvent<HTMLLIElement>
+          | KeyboardEvent
+      ) => void)
+    | null,
+  enterFunction:
+    | ((
+        e:
+          | React.PointerEvent<HTMLElement>
+          | React.KeyboardEvent<HTMLElement>
+          | React.MouseEvent<HTMLLIElement, MouseEvent>
+          | React.TouchEvent<HTMLLIElement>
+          | KeyboardEvent
+      ) => void)
+    | null,
+  deleteFunction:
+    | ((
+        e:
+          | React.PointerEvent<HTMLElement>
+          | React.KeyboardEvent<HTMLElement>
+          | React.MouseEvent<HTMLLIElement, MouseEvent>
+          | React.TouchEvent<HTMLLIElement>
+          | KeyboardEvent
+      ) => void)
+    | null,
+  spaceFunction:
+    | ((
+        e:
+          | React.PointerEvent<HTMLElement>
+          | React.KeyboardEvent<HTMLElement>
+          | React.MouseEvent<HTMLLIElement, MouseEvent>
+          | React.TouchEvent<HTMLLIElement>
+          | KeyboardEvent
+      ) => void)
+    | null
 ) {
-  const movePx = 8
+  const movePx = 10
 
-  let value = target.style.getPropertyValue('--i')
-  let scale = parseFloat(value)
+  const size = target.style.getPropertyValue('--size')
+  let scale = parseFloat(size)
 
   let attrLeft = window.getComputedStyle(target).getPropertyValue('left')
   let attrTop = window.getComputedStyle(target).getPropertyValue('top')
@@ -185,11 +225,6 @@ export function keyDown(
       target.style.top = parseFloat(attrTop) + Number(movePx) + 'px'
       attrTop = window.getComputedStyle(target).getPropertyValue('top')
       break
-    case 'Escape':
-      e.stopPropagation()
-      e.preventDefault()
-      target.blur()
-      break
     case 'Z':
     case 'z': //Move blob to the bottom of the z-index pile
       e.stopPropagation()
@@ -206,14 +241,15 @@ export function keyDown(
       }
       break
     case 's':
-    case 'S': //make blob smaller
+    case 'S': //make smaller
       e.stopPropagation()
       e.preventDefault()
       if (reset) {
         reset = false
         scale -= 1
         scale = Math.min(Math.max(2, scale), 20)
-        target.style.setProperty('--i', `${scale}`)
+
+        target.style.setProperty('--size', `${scale}`)
 
         const cooldown = () => {
           reset = true
@@ -224,19 +260,49 @@ export function keyDown(
     case 'B':
     case 'b':
     case 'L':
-    case 'l': //make blob larger
+    case 'l': //make larger
       e.stopPropagation()
       e.preventDefault()
       if (reset) {
         reset = false
         scale += 1
         scale = Math.min(Math.max(2, scale), 20)
-        target.style.setProperty('--i', `${scale}`)
+
+        target.style.setProperty('--size', `${scale}`)
 
         const cooldown = () => {
           reset = true
         }
         setTimeout(cooldown, 100)
+      }
+      break
+    case 'Enter':
+      if (enterFunction) {
+        e.stopPropagation()
+        e.preventDefault()
+        enterFunction(e)
+      }
+      break
+    case 'Delete':
+      if (deleteFunction) {
+        e.stopPropagation()
+        e.preventDefault()
+        deleteFunction(e)
+      }
+      break
+    case 'Escape':
+      target.blur()
+      if (escapeFunction) {
+        e.stopPropagation()
+        e.preventDefault()
+        escapeFunction(e)
+      }
+      break
+    case 'Space':
+      if (spaceFunction) {
+        e.stopPropagation()
+        e.preventDefault()
+        spaceFunction(e)
       }
       break
     default:

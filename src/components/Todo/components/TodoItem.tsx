@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { EConfirm, EEdit, EEtc, ELanguages } from '../../../interfaces'
+import { EConfirm, EDraggable, EEdit, EEtc, ELanguages } from '../../../interfaces'
 import { EDeleteTask } from '../../../interfaces/todo'
 import Accordion from '../../Accordion/Accordion'
 import styles from '../css/todo.module.css'
@@ -128,9 +128,10 @@ export default function Todo({
       <span
         onMouseOver={handleMouseOverHandle}
         onMouseDown={handleMouseDown}
-        className={styles['drag-handle']}
+        className={`${styles['drag-handle']} tooltip-wrap`}
       >
         <MdDragIndicator />
+        <span className='tooltip narrow2 below right'>{EDraggable[language]}</span>
       </span>
 
       <label className={`${isOpen ? styles.open : ''}`} onClick={handleLabelClick}>

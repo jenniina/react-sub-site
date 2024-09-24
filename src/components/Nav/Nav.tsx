@@ -25,7 +25,6 @@ import useScrollDirection from '../../hooks/useScrollDirection'
 import useWindowSize from '../../hooks/useWindowSize'
 import {
   EAbout,
-  EClose,
   EContact,
   EDarkMode,
   EEdit,
@@ -52,16 +51,14 @@ import {
 import { useOutsideClick } from '../../hooks/useOutsideClick'
 import logo from '../../assets/JLA_Jenniina-light-3-480x198.png'
 import logoDark from '../../assets/JLA_Jenniina-3-480x198.png'
-import useTimeout from '../../hooks/useTimeout'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { logout } from '../../reducers/authReducer'
-import { ELogin, ELogout, ELanguages, ELoggedInAs } from '../../interfaces'
+import { ELogout, ELanguages, ELoggedInAs } from '../../interfaces'
 import FormLogin from '../Login/Login'
 import Register from '../Register/Register'
 import { notify } from '../../reducers/notificationReducer'
 import { createUser } from '../../reducers/usersReducer'
-import Notification from '../Notification/Notification'
 import { Select, SelectOption } from '../Select/Select'
 import PasswordReset from '../PasswordReset/PasswordReset'
 import Accordion from '../Accordion/Accordion'
@@ -171,7 +168,7 @@ const Nav = (
                 <b
                   className={`${
                     menuStyleAlt && windowWidth < breakpointSmall
-                      ? `tooltip space narrow above ${index < 2 ? 'right' : 'left'}`
+                      ? `tooltip space narrow2 above ${index < 2 ? 'right' : 'left'}`
                       : 'scr'
                   }`}
                   aria-hidden={true}

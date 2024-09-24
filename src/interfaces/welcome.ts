@@ -205,3 +205,12 @@ export enum EImprovedAccessibility {
   cs = 'Zlepšená dostupnost',
   fi = 'Parannettu saavutettavuutta',
 }
+export enum ERandomHeadingItemMovement {
+  en = 'Random heading item movement',
+  es = 'Movimiento aleatorio de elementos de encabezado',
+  fr = 'Mouvement aléatoire des éléments de titre',
+  de = 'Zufällige Überschriftenbewegung',
+  pt = 'Movimento aleatório de itens de cabeçalho',
+  cs = 'Náhodný pohyb položek nadpisu',
+  fi = 'Satunnainen otsikkoalueen kohteen liike',
+}
