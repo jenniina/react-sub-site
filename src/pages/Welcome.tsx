@@ -64,6 +64,7 @@ import {
   EImprovedAccessibility,
   ESeptember,
   EJuly,
+  ERandomHeadingItemMovement,
 } from '../interfaces/welcome'
 import { Select, SelectOption } from '../components/Select/Select'
 import { ETodoApp } from '../components/Todo/interfaces'
@@ -176,6 +177,16 @@ export default function Home({
                     <li>
                       <strong>{ESeptember[language]}</strong>
                       <ul>
+                        <li>
+                          <a className='disabled'>
+                            <TbTriangleInverted />
+                            {EHeroSection[language]}:
+                          </a>{' '}
+                          <i>
+                            {EAddedNewFeatures[language]}:{' '}
+                            {ERandomHeadingItemMovement[language]}
+                          </i>
+                        </li>
                         <li>
                           <Link to='/portfolio/draganddrop'>
                             <RiDragDropLine />

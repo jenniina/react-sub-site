@@ -70,6 +70,7 @@ export default function Hero({
 
   const resetButton = useRef() as RefObject<HTMLButtonElement>
   const ulRef = useRef() as RefObject<HTMLUListElement>
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState<boolean>(false)
 
   //Move items up, down, left or left, depending on the direction they're approached from:
   const movingItem = (e: React.PointerEvent<HTMLElement>) => {
@@ -166,18 +167,15 @@ export default function Hero({
     }, 1000)
   }
 
-  const [values, setValues] = useSessionStorage<itemProps[]>('HeroArray', [
-    { i: 1, e: 3.274, size: 10, color: 'var(--color-secondary-7)' },
-    { i: 2, e: 5.044, size: 11, color: 'var(--color-primary-8)' },
-    { i: 3, e: 1.886, size: 9, color: 'var(--color-primary-6)' },
-    { i: 4, e: 4.966, size: 6, color: 'var(--color-primary-6)' },
-    { i: 5, e: 1.621, size: 9, color: 'var(--color-secondary-2)' },
-    { i: 6, e: 3.489, size: 11, color: 'var(--color-primary-9)' },
-    { i: 7, e: 3.79, size: 11, color: 'var(--color-secondary-5)' },
-    { i: 8, e: 8.365, size: 4, color: 'var(--color-secondary-2)' },
-    { i: 9, e: 7.846, size: 11, color: 'var(--color-primary-7)' },
-    { i: 10, e: 4.121, size: 11, color: 'var(--color-primary-9)' },
-  ])
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setPrefersReducedMotion(mediaQuery.matches)
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches)
+    mediaQuery.addEventListener('change', handler)
+    return () => mediaQuery.removeEventListener('change', handler)
+  })
+
+  const [values, setValues] = useSessionStorage<itemProps[]>('HeroArray', [])
 
   const spanArray: itemProps[] = useMemo(() => {
     let array: itemProps[] = []
@@ -264,6 +262,49 @@ export default function Hero({
     return items
   }, [amount, reinitialize])
 
+  // Move an item randomly
+  useEffect(() => {
+    if (prefersReducedMotion) return // Don't move items if user prefers reduced motion
+    const interval = setInterval(() => {
+      const newValues = [...values]
+      const randomIndex = Math.floor(Math.random() * newValues.length)
+      const itemI = newValues[randomIndex].i
+      const item = document.getElementById(`shape${itemI}`)
+
+      if (item) {
+        const currentTop = parseFloat(
+          window.getComputedStyle(item).getPropertyValue('top')
+        )
+        const currentLeft = parseFloat(
+          window.getComputedStyle(item).getPropertyValue('left')
+        )
+        const itemWidth = item.offsetWidth
+        const itemHeight = item.offsetHeight
+        const windowWidth = window.innerWidth
+        const windowHeight = window.innerHeight
+
+        const direction = Math.random() < 0.5 ? 'top' : 'left'
+        const change = Math.random() < 0.5 ? -15 : 15
+
+        if (direction === 'top') {
+          const newTop = currentTop + change
+          // Check if the new position is within the top 60px-60% of the window
+          if (newTop >= 60 && newTop + itemHeight <= windowHeight * 0.6) {
+            item.style.top = `${newTop}px`
+          }
+        } else {
+          const newLeft = currentLeft + change
+          // Check if the new position is within the window
+          if (newLeft >= 0 && newLeft + itemWidth <= windowWidth) {
+            item.style.left = `${newLeft}px`
+          }
+        }
+      }
+    }, useRandomMinMax(2000, 5000))
+
+    return () => clearInterval(interval)
+  }, [values])
+
   const ItemComponent: FC<{ array: itemProps[]; location: string }> = useCallback(
     ({ array, location }) => {
       {
@@ -312,6 +353,10 @@ export default function Hero({
                     windowWidth < windowHeight
                       ? `${item.size / dividedBy}vh`
                       : `${item.size / dividedBy}vw`,
+                  transitionProperty:
+                    'top, left, bottom, right, transform, width, height',
+                  transitionTimingFunction: 'ease-in-out',
+                  transitionDuration: '600ms',
                 }
                 const inner: React.CSSProperties = {
                   color: `${item.color}`,
@@ -439,7 +484,7 @@ export default function Hero({
                       windowHeight < windowWidth ? styles.wide : styles.tall
                     }`}
                     style={style}
-                    id={`bubble${index + 1}`}
+                    id={`shape${index + 1}`}
                     role={'option'}
                     tabIndex={0}
                     onFocus={(e) => {
@@ -549,6 +594,10 @@ export default function Hero({
                   opacity: `0.9`,
                   WebkitFilter: filter,
                   filter: filter,
+                  transitionProperty:
+                    'top, left, bottom, right, transform, width, height, border-radius',
+                  transitionTimingFunction: 'ease-in-out',
+                  transitionDuration: '600ms',
                 }
 
                 return (
@@ -556,7 +605,7 @@ export default function Hero({
 
                   <li
                     key={`${item.color}${index}`}
-                    id={`blob${index + 1}`}
+                    id={`shape${index + 1}`}
                     className={`${styles.item} ${styles[location]} ${styles.portfolio} 
                                 ${
                                   windowHeight < windowWidth ? styles.wide : styles.tall
@@ -568,6 +617,8 @@ export default function Hero({
                     onMouseDown={(e) => {
                       Draggable.start(e)
                       ;(e.target as HTMLLIElement).classList.add(styles.drag)
+                      ;(e.target as HTMLLIElement).style.transitionProperty =
+                        'transform, width, height, border-radius'
                     }}
                     onMouseMove={(e) => {
                       Draggable.movement(e)
@@ -575,6 +626,8 @@ export default function Hero({
                     onMouseUp={(e) => {
                       Draggable.stopMovementCheck(e)
                       ;(e.target as HTMLLIElement).classList.remove(styles.drag)
+                      ;(e.target as HTMLLIElement).style.transitionProperty =
+                        'top, left, bottom, right, transform, width, height, border-radius'
                     }}
                     onMouseLeave={(e) => {
                       Draggable.stopMoving(e)
@@ -654,8 +707,6 @@ export default function Hero({
                 }
                 const styleInner: React.CSSProperties = {
                   position: 'absolute',
-                  top: `0`,
-                  left: `0`,
                   backgroundColor: `transparent`,
                   width: '100%',
                   height: '100%',
@@ -668,7 +719,7 @@ export default function Hero({
 
                   <li
                     key={`${item.color}${index}`}
-                    id={`eye${index + 1}`}
+                    id={`shape${index + 1}`}
                     className={`eye ${styles.item} ${styles.eyes} ${styles[location]} 
                                 ${
                                   windowHeight < windowWidth ? styles.wide : styles.tall

@@ -8,6 +8,7 @@
   position: relative;
   gap: 0;
 }
+
 .hero h1 {
   margin-top: 0;
   margin-bottom: 0;
@@ -70,7 +71,7 @@
 .herocontent .triangle {
   transition-property: top, right, bottom, left, transform;
   transition-timing-function: ease-in-out;
-  transition-duration: 500ms;
+  transition-duration: 600ms;
   -webkit-tap-highlight-color: transparent;
   pointer-events: all;
 }
