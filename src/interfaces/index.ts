@@ -692,6 +692,24 @@ export enum EOnOff {
   cs = 'Zapnuto/Vypnuto',
   fi = 'Päällä/Pois',
 }
+export enum EOn {
+  en = 'On',
+  es = 'Encendido',
+  fr = 'Activé',
+  de = 'Ein',
+  pt = 'Ligado',
+  cs = 'Zapnuto',
+  fi = 'Päällä',
+}
+export enum EOff {
+  en = 'Off',
+  es = 'Apagado',
+  fr = 'Désactivé',
+  de = 'Aus',
+  pt = 'Desligado',
+  cs = 'Vypnuto',
+  fi = 'Pois',
+}
 export enum EWarning {
   en = 'Warning',
   es = 'Advertencia',
@@ -2302,4 +2320,42 @@ export enum EEtc {
   pt = 'etc.',
   cs = 'atd.',
   fi = 'jne.',
+}
+// Turn random movement off
+export enum ETurnRandomMovementOff {
+  en = 'Turn random movement off',
+  es = 'Apagar movimiento aleatorio',
+  fr = 'Désactiver le mouvement aléatoire',
+  de = 'Zufällige Bewegung ausschalten',
+  pt = 'Desligar movimento aleatório',
+  cs = 'Vypnout náhodný pohyb',
+  fi = 'Kytke satunnainen liike pois päältä',
+}
+export enum ERandomMovement {
+  en = 'Random movement',
+  es = 'Movimiento aleatorio',
+  fr = 'Mouvement aléatoire',
+  de = 'Zufällige Bewegung',
+  pt = 'Movimento aleatório',
+  cs = 'Náhodný pohyb',
+  fi = 'Satunnainen liike',
+}
+export enum ETurnRandomMovementOn {
+  en = 'Turn random movement on',
+  es = 'Encender movimiento aleatorio',
+  fr = 'Activer le mouvement aléatoire',
+  de = 'Zufällige Bewegung einschalten',
+  pt = 'Ligar movimento aleatório',
+  cs = 'Zapnout náhodný pohyb',
+  fi = 'Kytke satunnainen liike päälle',
+}
+
+export enum ERandom {
+  en = 'Random',
+  es = 'Aleatorio',
+  fr = 'Aléatoire',
+  de = 'Zufällig',
+  pt = 'Aleatório',
+  cs = 'Náhodný',
+  fi = 'Satunnainen',
 }
