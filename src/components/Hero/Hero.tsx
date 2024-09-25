@@ -13,9 +13,13 @@ import {
   EHeroSection,
   EInteractiveElements,
   ELanguages,
+  EOff,
+  EOn,
   EReset,
   EShape,
   ETryTappingTheShapes,
+  ETurnRandomMovementOff,
+  ETurnRandomMovementOn,
   RefObject,
 } from '../../interfaces'
 import useEventListener from '../../hooks/useEventListener'
@@ -28,8 +32,6 @@ type itemProps = {
   color: string
   rotation?: number
 }
-
-let isReset: boolean = true
 
 //Change these, if the addresses change, or add more as needed:
 const LOCATION = {
@@ -173,7 +175,7 @@ export default function Hero({
     const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches)
     mediaQuery.addEventListener('change', handler)
     return () => mediaQuery.removeEventListener('change', handler)
-  })
+  }, [])
 
   const [values, setValues] = useSessionStorage<itemProps[]>('HeroArray', [])
 
@@ -251,8 +253,8 @@ export default function Hero({
 
       const item: itemProps = {
         i: i + 1,
-        e: e, // useRandomMinMax(4, 9),
-        size: size, // Math.round(useRandomMinMax(8, 14)),
+        e: e,
+        size: size,
         rotation: useRandomMinMax(165, 195),
         color: colorSwitch,
       }
@@ -303,7 +305,7 @@ export default function Hero({
     }, useRandomMinMax(2000, 5000))
 
     return () => clearInterval(interval)
-  }, [values])
+  }, [values, prefersReducedMotion])
 
   const ItemComponent: FC<{ array: itemProps[]; location: string }> = useCallback(
     ({ array, location }) => {
@@ -551,7 +553,6 @@ export default function Hero({
                     : windowWidth < windowHeight
                     ? `blur(calc(var(--blur) * 1.2vh))`
                     : `blur(calc(var(--blur) * 1.2vw))`
-                const rotate = Math.floor(useRandomMinMax(65, 175))
                 const number = Math.floor(useRandomMinMax(0.001, 3.999))
                 const style: React.CSSProperties = {
                   position: 'absolute',
@@ -590,7 +591,7 @@ export default function Hero({
                   maxWidth: `200px`,
                   maxHeight: `200px`,
                   borderRadius: `${blobRadius[number]}`,
-                  transform: 'rotate(' + rotate + 'deg)',
+                  transform: 'rotate(' + item.rotation + 'deg)',
                   opacity: `0.9`,
                   WebkitFilter: filter,
                   filter: filter,
@@ -909,6 +910,29 @@ export default function Hero({
       >
         <button ref={resetButton} type='button' onClick={handleReset}>
           <span>{reset ? reset : EReset[language]}</span>
+        </button>
+      </div>
+      <div
+        className={`${styles.bottom} ${styles.bottom2}`}
+        data-instructions={
+          prefersReducedMotion
+            ? ETurnRandomMovementOn[language]
+            : ETurnRandomMovementOff[language]
+        }
+      >
+        <button
+          onClick={() => {
+            setPrefersReducedMotion(!prefersReducedMotion)
+          }}
+          type='button'
+          className={`${styles.rand}`}
+        >
+          <span>{prefersReducedMotion ? EOff[language] : EOn[language]}</span>
+          <span className='scr'>
+            {prefersReducedMotion
+              ? ETurnRandomMovementOn[language]
+              : ETurnRandomMovementOff[language]}
+          </span>
         </button>
       </div>
     </div>

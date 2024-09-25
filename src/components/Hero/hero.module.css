@@ -1103,27 +1103,76 @@
 .bottom {
   position: relative;
   width: 100%;
+  right: -0.5rem;
   height: 4em;
   max-width: 1200px;
   margin: 0 auto;
   pointer-events: none;
   padding-top: clamp(1px, 20vh, 200px);
 }
+
+.bottom2 {
+  position: absolute;
+  bottom: 0;
+  left: -1rem;
+  min-width: max-content;
+  width: calc(100% - var(--scrollbar_width) - 2.4rem);
+}
+.bottom2 button span {
+  white-space: nowrap;
+  word-break: keep-all;
+}
+.bottom2 button:hover span,
+.bottom2 button:focus span {
+  text-decoration: line-through;
+}
+
 .bottom::after {
   content: attr(data-instructions);
   position: absolute;
-  bottom: -1.5em;
-  right: 1em;
+  right: 0.4rem;
+  width: clamp(4rem, 50vw, calc(100vw - 2rem));
+  text-align: right;
   opacity: 0;
   transition-property: opacity;
   transition-timing-function: ease-in-out;
   transition-duration: 500ms;
   transition-delay: 0s;
   z-index: 3;
+  padding: 0.3em 0.6em 0.2em;
+  background: linear-gradient(90deg, transparent 0%, var(--color-primary-1) 10%);
 }
 .bottom:hover::after {
   opacity: 1;
   transition-delay: 500ms;
+}
+@media (min-width: 200px) {
+  .bottom {
+    right: 0;
+  }
+  .bottom2 {
+    width: calc(100% - var(--scrollbar_width) - 6rem);
+  }
+}
+@media (min-width: 300px) {
+  .bottom {
+    right: 0;
+  }
+  .bottom2 {
+    left: 0;
+    width: calc(100% - var(--scrollbar_width) - 10rem);
+  }
+}
+@media (min-width: 400px) {
+  .bottom::after {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--color-primary-1) 70%,
+      var(--color-primary-1) 98%,
+      transparent
+    );
+  }
 }
 /* .portfolio .bottom::after,
 .blob .bottom::after,
@@ -1150,6 +1199,8 @@
     0 0 0.3em var(--color-primary-2);
   text-shadow: 1px 1px 1px var(--color-primary-2), 0 0 1em var(--color-primary-2),
     0 0 0.3em var(--color-primary-2);
+}
+.bottom button.rand {
 }
 .bottom button:hover,
 .bottom button:focus {
