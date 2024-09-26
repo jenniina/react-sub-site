@@ -1283,3 +1283,13 @@ export enum EGetANewSetOfBlobs {
   cs = 'Získejte novou sadu blobů',
   fi = 'Hanki uusi setti mollukoita',
 }
+
+export enum EPressSpaceOrRWithABlobInFocusToCycleThroughRandomColors {
+  en = 'Press Space or R with a blob in focus to cycle through random colors',
+  es = 'Presione Espacio o R con un blob enfocado para recorrer colores aleatorios',
+  fr = 'Appuyez sur Espace ou R avec un blob en focus pour parcourir des couleurs aléatoires',
+  de = 'Drücken Sie die Leertaste oder R mit einem Blob im Fokus, um zufällige Farben durchzuschalten',
+  pt = 'Pressione Espaço ou R com um blob em foco para percorrer cores aleatórias',
+  cs = 'Stiskněte mezerník nebo R s fokusem na blob procházet náhodné barvy',
+  fi = 'Paina välilyöntiä tai R mollukan ollessa valittuna vaihtaaksesi värejä satunnaisesti',
+}

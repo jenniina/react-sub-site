@@ -16,7 +16,6 @@ import {
   EAbout,
   EAccessibility,
   EAddedAnotherInstanceOfTheBlobArtApp,
-  EAddedPagination,
   EBlobs,
   EButton,
   EButtons,
@@ -25,17 +24,14 @@ import {
   EContact,
   EDelete,
   EDragAndDrop,
-  EEdit,
   EGraphQLSite,
   EHairSalonWebsite,
   EHeroSection,
-  ELanguageTitle,
   ELanguages,
   ENews,
   EOlderNews,
   EPortfolio,
   EQuiz,
-  EQuizApp,
   EQuizAppIntro,
   EReset,
   ETestYourKnowledge,
@@ -55,11 +51,9 @@ import {
   EAugust,
   EBugFixes,
   EDecember,
-  EEdited,
   EFebruary,
   EMigratedSiteToAnotherAzureSubscription,
   ENewPortfolioItem,
-  ENewest,
   EOctober,
   EOptimizing,
   ESiteMigration,
@@ -77,7 +71,6 @@ import {
 import { GrGraphQl } from 'react-icons/gr'
 import {
   EAddedPaginationToSavedArt,
-  EButtonsTo,
   EDragBlobToIconsNextToLayerButtons,
   EEditArtwork,
   ELayers,
@@ -86,6 +79,7 @@ import {
   EMoveEveryBlobUpOrDownOneLayerByPressingTheButtons,
   EMoveViewInDifferentDirections,
   ENameYourArtwork,
+  EPressSpaceOrRWithABlobInFocusToCycleThroughRandomColors,
   ERemovable,
   ERenameYourArtwork,
   ESampleArtwork,
@@ -134,7 +128,7 @@ export default function Home({
       <Select
         language={language}
         id='language-welcome'
-        className={`${styles['language-welcome']} language ${styles.language}`}
+        className={`${styles['language-welcome']} ${styles.language} language`}
         instructions={`${EChangeLanguage[language]}:`}
         options={options(ELanguages)}
         value={
@@ -180,14 +174,29 @@ export default function Home({
                       <strong>{ESeptember[language]}</strong>
                       <ul>
                         <li>
+                          <Link to='/portfolio/blob'>
+                            <TbBlob />
+                            {EBlobs[language]}:
+                          </Link>
+                          <i>
+                            {EAddedNewFeatures[language]}:{' '}
+                            {
+                              EPressSpaceOrRWithABlobInFocusToCycleThroughRandomColors[
+                                language
+                              ]
+                            }
+                          </i>
+                        </li>
+                        <li>
                           <Link to='/portfolio/draganddrop'>
                             <RiDragDropLine />
                             {EDragAndDrop[language]}:
                           </Link>
                           <i>
-                            {EAddedNewFeatures[language]}: {EDelete[language]} (
-                            {ECategoryTitle[language].toLowerCase()}),{' '}
-                            {EAddANewCategory[language].toLowerCase()}
+                            {EAddedNewFeatures[language]}:{' '}
+                            {EDelete[language].toLowerCase()} (
+                            {firstToLowerCase(ECategoryTitle[language])}),{' '}
+                            {firstToLowerCase(EAddANewCategory[language])}
                           </i>
                         </li>
                         <li>
@@ -315,63 +324,69 @@ export default function Home({
                         </li>
                       </ul>
                     </li>
-                    <li>
-                      <strong>{EFebruary[language]}</strong>
-                      <ul>
-                        <li>
-                          <Link to='/portfolio/graphql'>
-                            <GrGraphQl />
-                            <span>{EGraphQLSite[language]}</span>
-                          </Link>
-                          <i>{ENewPortfolioItem[language]}</i>
-                        </li>
-                        <li>
-                          <Link to='/portfolio/quiz'>
-                            <TbTriangleInverted />
-                            {EHeroSection[language]}:
-                          </Link>{' '}
-                          <i>{EAddedNewIntroElements[language]}</i>
-                        </li>
-                        <li>
-                          <Link to='/portfolio/salon'>
-                            <GiComb />
-                            {EHairSalonWebsite[language]}:
-                          </Link>{' '}
-                          <i>Parturi Kampaamo Hannastiina</i>
-                        </li>
-                        <li>
-                          <Link to='/portfolio/blob'>
-                            <TbBlob />
-                            {EBlobs[language]}:
-                          </Link>
-                          <i>
-                            {EBugFixes[language]}. {EOptimizing[language]}
-                          </i>
-                        </li>
-                        <li>
-                          <Link to='/portfolio/todo'>
-                            <RiTodoLine />
-                            {ETodoApp[language]}:
-                          </Link>{' '}
-                          <i>
-                            {EAddedNewFeatures[language]}:{' '}
-                            {firstToLowerCase(ETasksCanBeEdited[language])} &{' '}
-                            {firstToLowerCase(
-                              ETasksCanBeReorganizedByDraggingAndDropping[language]
-                            )}
-                          </i>
-                        </li>
-                      </ul>
-                    </li>
                   </ul>
                 </li>
               </ul>
               <Accordion
                 language={language}
                 text={EOlderNews[language]}
-                className={`${styles.oldernews} oldernews`}
+                className={`${styles.oldernews} flex oldernews`}
               >
                 <ul className={`${styles.extras}`}>
+                  <li>
+                    <strong>2024</strong>
+                    <ul>
+                      <li>
+                        <strong>{EFebruary[language]}</strong>
+                        <ul>
+                          <li>
+                            <Link to='/portfolio/graphql'>
+                              <GrGraphQl />
+                              <span>{EGraphQLSite[language]}</span>
+                            </Link>
+                            <i>{ENewPortfolioItem[language]}</i>
+                          </li>
+                          <li>
+                            <Link to='/portfolio/quiz'>
+                              <TbTriangleInverted />
+                              {EHeroSection[language]}:
+                            </Link>{' '}
+                            <i>{EAddedNewIntroElements[language]}</i>
+                          </li>
+                          <li>
+                            <Link to='/portfolio/salon'>
+                              <GiComb />
+                              {EHairSalonWebsite[language]}:
+                            </Link>{' '}
+                            <i>Parturi Kampaamo Hannastiina</i>
+                          </li>
+                          <li>
+                            <Link to='/portfolio/blob'>
+                              <TbBlob />
+                              {EBlobs[language]}:
+                            </Link>
+                            <i>
+                              {EBugFixes[language]}. {EOptimizing[language]}
+                            </i>
+                          </li>
+                          <li>
+                            <Link to='/portfolio/todo'>
+                              <RiTodoLine />
+                              {ETodoApp[language]}:
+                            </Link>{' '}
+                            <i>
+                              {EAddedNewFeatures[language]}:{' '}
+                              {firstToLowerCase(ETasksCanBeEdited[language])} &{' '}
+                              {firstToLowerCase(
+                                ETasksCanBeReorganizedByDraggingAndDropping[language]
+                              )}
+                            </i>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+
                   <li>
                     <strong>2023</strong>
                     <ul>

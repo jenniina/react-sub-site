@@ -49,6 +49,7 @@ interface DragLayerProps {
   setScroll: DispatchReact<SetStateAction<boolean>>
   scroll: boolean
   clickOutsideRef: RefObject<HTMLDivElement>
+  colorswitch: () => string
 }
 
 let moveElement: boolean
@@ -335,7 +336,7 @@ const DragLayers = (props: DragLayerProps) => {
       }, 300)
 
       // document.removeEventListener('keydown', keyDown)
-      let value = (target as HTMLElement).style.getPropertyValue('--i')
+      let value = (target as HTMLElement).style.getPropertyValue('--i') ?? '7'
       let scale = parseFloat(value)
       scale = isNaN(scale) ? 7 : scale
 
@@ -561,7 +562,7 @@ const DragLayers = (props: DragLayerProps) => {
       reset = false
       const blobStyle = window.getComputedStyle(target)
       let value =
-        blobStyle.getPropertyValue('--i') ?? target.style.getPropertyValue('--i')
+        blobStyle.getPropertyValue('--i') ?? target.style.getPropertyValue('--i') ?? '7'
       let scale = parseFloat(value)
       scale = isNaN(scale) ? 7 : scale
       e.deltaY < 0 ? (scale *= 1.04) : (scale *= 0.96)
@@ -625,7 +626,8 @@ const DragLayers = (props: DragLayerProps) => {
 
     let value =
       blobStyle.getPropertyValue('--i') ??
-      (target as HTMLElement).style.getPropertyValue('--i')
+      (target as HTMLElement).style.getPropertyValue('--i') ??
+      '7'
     let scale = parseFloat(value)
     scale = isNaN(scale) ? 7 : scale
 
@@ -718,10 +720,35 @@ const DragLayers = (props: DragLayerProps) => {
       case 'Enter': //Cycle through colors
         e.preventDefault()
         e.stopPropagation()
-        if ((target as HTMLElement).closest(`.drag-container${props.d}`)) {
+        if ((target as HTMLElement).closest(`#drag-wrap${props.d}`)) {
           props.setColorIndex((prevColorIndex) => {
             const nextColorIndex = (prevColorIndex + 1) % props.colorPairs[props.d].length
             return nextColorIndex // Return the new color index
+          })
+        }
+        break
+      case 'R':
+      case 'r':
+      case ' ': //Cycle through random colors using colorswitch
+        e.preventDefault()
+        e.stopPropagation()
+        if ((target as HTMLElement).closest(`#drag-wrap${props.d}`)) {
+          const color1 = props.colorswitch()
+          let color2 = props.colorswitch()
+
+          // Ensure color2 is different from color1
+          while (color2 === color1) {
+            color2 = props.colorswitch()
+          }
+
+          const newBackground = `linear-gradient(${angle}, ${color1}, ${color2})`
+          props.dispatch({
+            type: 'partialUpdate',
+            payload: {
+              d: props.d,
+              id: target.id,
+              update: { background: newBackground },
+            },
           })
         }
         break

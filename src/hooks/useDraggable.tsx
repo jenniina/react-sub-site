@@ -298,7 +298,7 @@ export function keyDown(
         escapeFunction(e)
       }
       break
-    case 'Space':
+    case ' ':
       if (spaceFunction) {
         e.stopPropagation()
         e.preventDefault()

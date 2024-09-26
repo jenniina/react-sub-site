@@ -52,6 +52,7 @@ import {
   EPlacesTheImageDownBelow,
   EPointerUse,
   EPressEnterToCycleThroughTheDifferentColors,
+  EPressSpaceOrRWithABlobInFocusToCycleThroughRandomColors,
   EPressTheCameraSymbolToTakeAScreenshot,
   ERegisterAndLogInToSaveYourArtwork,
   ERemovable,
@@ -264,6 +265,14 @@ export default function BlobPage({
                           </li>
                           <li>
                             {EMoveBlobToBottomByPressingZOrToTopByPressingT[language]}
+                          </li>{' '}
+                          <li>
+                            {
+                              EPressSpaceOrRWithABlobInFocusToCycleThroughRandomColors[
+                                language
+                              ]
+                            }
+                            : {EOverAThousandPossibleColorCombinations[language]}
                           </li>
                         </ul>
                       </li>
