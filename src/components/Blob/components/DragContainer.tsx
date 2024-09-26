@@ -503,19 +503,7 @@ export default function DragContainer({
     [key: number]: { [versionName: string]: SavedBlobs }
   }>({})
 
-  // useEffect(() => {
-  //   console.log('savedDraggablesbyD:', JSON.stringify(savedDraggablesbyD, null, 2))
-  // }, [savedDraggablesbyD])
-
   const [layerAmount, setLayerAmount] = useState<number>(0)
-
-  // useEffect(() => {
-  //   const fetchLayerAmount = async () => {
-  //     const amount = await loadLayerAmount()
-  //     setLayerAmount(amount ?? 3) // Default to 3 if null
-  //   }
-  //   fetchLayerAmount()
-  // }, [])
 
   const getBlobsFromServer = async () => {
     setIsLoading(true)
@@ -590,9 +578,6 @@ export default function DragContainer({
       dispatch2(notify(ESpecialCharactersNotAllowed[language], true, 8))
     }
   }
-
-  //draggable[d] highest layer:
-  // console.log('highest layer:', Math.max(...draggables[d].map((d) => d.layer)))
 
   const handleNewNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
@@ -1050,141 +1035,142 @@ export default function DragContainer({
     return Math.random() * (max - min) + min
   }
 
+  const colorswitch = () => {
+    let number: number = Math.ceil(getRandomMinMax(0.0001, 40))
+    switch (number) {
+      case 1:
+        color = 'cyan'
+        break
+      case 2:
+        color = 'lemonchiffon'
+        break
+      case 3:
+        color = 'pink'
+        break
+      case 4:
+        color = 'lemonchiffon'
+        break
+      case 5:
+        color = 'orangered'
+        break
+      case 6:
+        color = 'magenta'
+        break
+      case 7:
+        color = 'deepskyblue'
+        break
+      case 8:
+        color = 'darkorange'
+        break
+      case 9:
+        color = 'tomato'
+        break
+      case 10:
+        color = 'violet'
+        break
+      case 11:
+        color = 'dodgerblue'
+        break
+      case 12:
+        color = 'greenyellow'
+        break
+      case 13:
+        color = 'orange'
+        break
+      case 14:
+        color = 'silver'
+        break
+      case 15:
+        color = 'darkgray'
+        break
+      case 16:
+        color = 'gray'
+        break
+      case 17:
+        color = 'hotpink'
+        break
+      case 18:
+        color = 'wheat'
+        break
+      case 19:
+        color = 'sandybrown'
+        break
+      case 20:
+        color = 'rosybrown'
+        break
+      case 21:
+        color = 'dimgray'
+        break
+      case 22:
+        color = 'darkkhaki'
+        break
+      case 23:
+        color = 'darkseagreen'
+        break
+      case 24:
+        color = 'slateblue'
+        break
+      case 25:
+        color = 'royalblue'
+        break
+      case 26:
+        color = 'moccasin'
+        break
+      case 27:
+        color = 'burlywood'
+        break
+      case 28:
+        color = 'chocolate'
+        break
+      case 29:
+        color = 'cadetblue'
+        break
+      case 30:
+        color = 'mediumpurple'
+        break
+      case 31:
+        color = 'sienna'
+        break
+      case 32:
+        color = 'peru'
+        break
+      case 33:
+        color = 'indianred'
+        break
+      case 34:
+        color = 'palevioletred'
+        break
+      case 35:
+        color = 'plum'
+        break
+      case 36:
+        color = 'palegreen'
+        break
+      case 37:
+        color = 'mediumaquamarine'
+        break
+      case 38:
+        color = 'lightsteelblue'
+        break
+      case 39:
+        color = 'aquamarine'
+        break
+      case 40:
+        color = 'yellowgreen'
+        break
+      default:
+        color = 'cyan'
+        break
+    }
+    return color
+  }
+
   const addRandomDraggable = () => {
     if (document.activeElement instanceof HTMLElement) document.activeElement.blur() // Unfocus the button after clicking, as the tooltip will otherwise stay visible and be in the way
 
     if (hiddenLayers.has(activeLayer)) {
       dispatch2(notify(ELayerHidden[language], true, 8))
       return
-    }
-    const colorswitch = () => {
-      let number: number = Math.ceil(getRandomMinMax(0.0001, 40))
-      switch (number) {
-        case 1:
-          color = 'cyan'
-          break
-        case 2:
-          color = 'lemonchiffon'
-          break
-        case 3:
-          color = 'pink'
-          break
-        case 4:
-          color = 'lemonchiffon'
-          break
-        case 5:
-          color = 'orangered'
-          break
-        case 6:
-          color = 'magenta'
-          break
-        case 7:
-          color = 'deepskyblue'
-          break
-        case 8:
-          color = 'darkorange'
-          break
-        case 9:
-          color = 'tomato'
-          break
-        case 10:
-          color = 'violet'
-          break
-        case 11:
-          color = 'dodgerblue'
-          break
-        case 12:
-          color = 'greenyellow'
-          break
-        case 13:
-          color = 'orange'
-          break
-        case 14:
-          color = 'silver'
-          break
-        case 15:
-          color = 'darkgray'
-          break
-        case 16:
-          color = 'gray'
-          break
-        case 17:
-          color = 'hotpink'
-          break
-        case 18:
-          color = 'wheat'
-          break
-        case 19:
-          color = 'sandybrown'
-          break
-        case 20:
-          color = 'rosybrown'
-          break
-        case 21:
-          color = 'dimgray'
-          break
-        case 22:
-          color = 'darkkhaki'
-          break
-        case 23:
-          color = 'darkseagreen'
-          break
-        case 24:
-          color = 'slateblue'
-          break
-        case 25:
-          color = 'royalblue'
-          break
-        case 26:
-          color = 'moccasin'
-          break
-        case 27:
-          color = 'burlywood'
-          break
-        case 28:
-          color = 'chocolate'
-          break
-        case 29:
-          color = 'cadetblue'
-          break
-        case 30:
-          color = 'mediumpurple'
-          break
-        case 31:
-          color = 'sienna'
-          break
-        case 32:
-          color = 'peru'
-          break
-        case 33:
-          color = 'indianred'
-          break
-        case 34:
-          color = 'palevioletred'
-          break
-        case 35:
-          color = 'plum'
-          break
-        case 36:
-          color = 'palegreen'
-          break
-        case 37:
-          color = 'mediumaquamarine'
-          break
-        case 38:
-          color = 'lightsteelblue'
-          break
-        case 39:
-          color = 'aquamarine'
-          break
-        case 40:
-          color = 'yellowgreen'
-          break
-        default:
-          color = 'cyan'
-          break
-      }
-      return color
     }
 
     // Fully random:
@@ -1217,7 +1203,7 @@ export default function DragContainer({
     const blobStyle = window.getComputedStyle(draggable)
     const blobNumber = parseInt(draggable.id.replace('blob', '').split('-')[0], 10)
     const blobI =
-      blobStyle.getPropertyValue('--i') ?? draggable.style.getPropertyValue('--i')
+      blobStyle.getPropertyValue('--i') ?? draggable.style.getPropertyValue('--i') ?? '7'
     const blobX =
       blobStyle.getPropertyValue('left') ?? draggable.style.getPropertyValue('left')
     const blobY =
@@ -1234,7 +1220,7 @@ export default function DragContainer({
       layer: layer ? parseInt(layer) : activeLayer,
       id: blobID,
       number: blobNumber,
-      i: parseFloat(blobI),
+      i: isNaN(parseFloat(blobI)) ? 7 : parseFloat(blobI),
       x: blobX,
       y: blobY,
       z: blobZ,
@@ -2078,6 +2064,7 @@ export default function DragContainer({
                     colorIndex={colorIndex}
                     setColorIndex={setColorIndex}
                     colorPairs={colorPairsCombo}
+                    colorswitch={colorswitch}
                     scroll={scroll}
                     setScroll={setScroll}
                     clickOutsideRef={dragWrap}

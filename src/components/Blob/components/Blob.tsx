@@ -82,7 +82,7 @@ const Blob = ({
   setFocusedBlob,
   dragUlRef,
 }: BlobProps) => {
-  const blur = d === 0 ? 33 : clamp(21, item.i * 2.5, 60)
+  const blur = d === 0 ? 33 : clamp(22, item.i * 2.6, 50)
 
   const blobStyle: CSSProperties = {
     background: `${item.background}`,
@@ -90,7 +90,7 @@ const Blob = ({
     left: `${item.x}`,
     top: `${item.y}`,
     zIndex: `${item.z}`,
-    ['--i' as string]: `${item.i}`,
+    ['--i' as string]: isNaN(Number(item.i)) ? '7' : `${item.i}`, // default value for i
     ['--layer' as string]: `${layer}`,
     WebkitFilter: `blur(${blur}px)`,
     filter: `blur(${blur}px)`,
@@ -194,6 +194,11 @@ const Blob = ({
             ? {
                 width: `calc(var(--i) * ${innerSize[5]})`,
                 height: `calc(var(--i) * ${innerSize[5]})`,
+              }
+            : isNaN(Number(item.i)) || item.i === null || item.i === undefined
+            ? {
+                width: `7 * ${innerSize[6]})`,
+                height: `7 * ${innerSize[6]})`,
               }
             : {
                 width: `calc(var(--i) * ${innerSize[6]})`,
