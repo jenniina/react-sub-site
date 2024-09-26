@@ -82,7 +82,7 @@ const Blob = ({
   setFocusedBlob,
   dragUlRef,
 }: BlobProps) => {
-  const blur = d === 0 ? 33 : clamp(21, item.i * 2.7, 60)
+  const blur = d === 0 ? 33 : clamp(21, item.i * 2.5, 60)
 
   const blobStyle: CSSProperties = {
     background: `${item.background}`,
@@ -106,7 +106,7 @@ const Blob = ({
           '10.5px', //<32
           '10px',
         ]
-      : ['5.1px', '5px.2', '5px.3', '5.7px', '6.7px', '7.4px', '7.9px'] // breakpoints for hitbox size due to varying levels of blur between the containers and blob sizes
+      : ['5.1px', '5.2px', '5.3px', '5.7px', '6.7px', '7.4px', '7.9px'] // breakpoints for hitbox size due to varying levels of blur between the containers and blob sizes
 
   return (
     <li

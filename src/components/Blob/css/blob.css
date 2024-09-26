@@ -242,8 +242,8 @@ svg.filter {
 }
 @media (min-width: 800px) {
   .portfolio.page .drag-container {
-    width: calc(96vw - var(--scrollbar_width));
-    max-width: calc(96vw - var(--scrollbar_width));
+    width: 100%; /*calc(96vw - var(--scrollbar_width)); */
+    max-width: 100%; /* calc(96vw - var(--scrollbar_width)); */
     /* margin-left: calc(50% - 50vw + var(--scrollbar_width) / 2 + 2vw); */
   }
 } /* END MEDIA */
@@ -346,8 +346,8 @@ svg.filter {
   margin: 0;
 }
 .drag-container {
-  width: calc(100vw - var(--scrollbar_width) - 4px);
-  max-width: calc(100vw - var(--scrollbar_width) - 4px);
+  width: 100%; /* calc(100vw - var(--scrollbar_width) - 4px); */
+  max-width: 100%; /* calc(100vw - var(--scrollbar_width) - 4px); */
   /* margin-left: calc(50% - 50vw + var(--scrollbar_width) / 2); */
 }
 
@@ -462,6 +462,8 @@ svg.filter {
   -moz-box-shadow: var(--box);
   box-shadow: var(--box);
 }
+.drag-container,
+.drag-wrap-outest,
 .drag-wrap-outer,
 .drag-wrap,
 .drag-wrap .drag-container-layer {
@@ -547,6 +549,7 @@ svg.filter {
 .drag-container .dragzone .draggable-overlay {
   cursor: -webkit-grab;
   cursor: grab;
+  pointer-events: all;
 }
 .drag-container .dragzone:active .draggable-overlay {
   cursor: -webkit-grabbing;
@@ -589,7 +592,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
   transform: translate(-50%, -50%);
   border-radius: 50%;
   background: rgba(0, 0, 0, 0);
-  pointer-events: auto;
+  pointer-events: all;
 }
 
 .drag-container .make-larger,
