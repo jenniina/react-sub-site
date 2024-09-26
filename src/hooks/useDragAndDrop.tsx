@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import useLocalStorage from '../hooks/useStorage'
 
 export interface IClosestItem {
@@ -22,58 +22,108 @@ export const useDragAndDrop = <T extends Item, S extends string>(
     setUpdatedItems(initialState)
   }, [initialState])
 
-  const storageHooks = statuses?.map((status) => {
-    const items = updatedItems.filter((item) => item?.status === status)
+  // const storageHooks = statuses?.map((status) => {
+  //   const items = updatedItems?.filter((item) => item?.status === status)
 
-    const isLocalhost =
-      window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-    return useLocalStorage(`${isLocalhost ? 'local-' : ''}DnD-${status}`, items)
-  })
+  //   const isLocalhost =
+  //     window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  //   return useLocalStorage(`${isLocalhost ? 'local-' : ''}DnD-${status}`, items)
+  // })
 
-  const [listItemsByStatus, setListItemsByStatus] = useState(() =>
-    statuses.reduce((acc, status, index) => {
-      const [storedItems, setStoredItems, removeStoredItems] = storageHooks[index]
+  const isLocalhost =
+    window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+
+  const storageKeys = useMemo(() => {
+    return statuses?.map((status) => `${isLocalhost ? 'local-' : ''}DnD-${status}`)
+  }, [statuses, isLocalhost])
+
+  const initializeListItemsByStatus = useCallback(() => {
+    return statuses?.reduce((acc, status, index) => {
+      const storedItems = JSON.parse(localStorage.getItem(storageKeys[index]) || '[]')
       acc[status] = {
         items: storedItems,
-        setItems: setStoredItems,
-        removeItems: removeStoredItems,
+        setItems: (items: T[]) => {
+          localStorage.setItem(storageKeys[index], JSON.stringify(items))
+          setListItemsByStatus((prev) => ({
+            ...prev,
+            [status]: {
+              ...prev[status],
+              items,
+            },
+          }))
+        },
+        removeItems: () => {
+          localStorage.removeItem(storageKeys[index])
+          setListItemsByStatus((prev) => ({
+            ...prev,
+            [status]: {
+              ...prev[status],
+              items: [],
+            },
+          }))
+        },
       }
       return acc
-    }, {} as Record<S, { items: T[]; setItems: (value: T[] | ((val: T[]) => T[])) => void; removeItems: () => void }>)
-  )
+    }, {} as Record<S, { items: T[]; setItems: (value: T[]) => void; removeItems: () => void }>)
+  }, [statuses, storageKeys])
+
+  const [listItemsByStatus, setListItemsByStatus] = useState(initializeListItemsByStatus)
 
   useEffect(() => {
-    const newListItemsByStatus = statuses.reduce((acc, status, index) => {
-      const [storedItems, setStoredItems, removeStoredItems] = storageHooks[index]
-      const items = updatedItems.filter((item) => item?.status === status)
+    const newListItemsByStatus = statuses?.reduce((acc, status, index) => {
+      const items = updatedItems.filter((item) => item.status === status)
       acc[status] = {
         items,
-        setItems: setStoredItems,
-        removeItems: removeStoredItems,
+        setItems:
+          listItemsByStatus[status]?.setItems ||
+          ((items: T[]) => {
+            localStorage.setItem(storageKeys[index], JSON.stringify(items))
+            setListItemsByStatus((prev) => ({
+              ...prev,
+              [status]: {
+                ...prev[status],
+                items,
+              },
+            }))
+          }),
+        removeItems:
+          listItemsByStatus[status]?.removeItems ||
+          (() => {
+            localStorage.removeItem(storageKeys[index])
+            setListItemsByStatus((prev) => ({
+              ...prev,
+              [status]: {
+                ...prev[status],
+                items: [],
+              },
+            }))
+          }),
       }
       return acc
-    }, {} as Record<S, { items: T[]; setItems: (value: T[] | ((val: T[]) => T[])) => void; removeItems: () => void }>)
+    }, {} as Record<S, { items: T[]; setItems: (value: T[]) => void; removeItems: () => void }>)
 
     setListItemsByStatus(newListItemsByStatus)
-  }, [updatedItems])
+  }, [updatedItems, statuses, storageKeys])
 
   useEffect(() => {
     statuses?.forEach((status, index) => {
-      const [storedItems, setStoredItems] = storageHooks[index]
-      setStoredItems(listItemsByStatus[status].items)
+      const items = updatedItems?.filter((item) => item.status === status)
+      localStorage.setItem(storageKeys[index], JSON.stringify(items))
     })
-  }, [listItemsByStatus])
+  }, [updatedItems, statuses, storageKeys])
 
   const handleUpdate = useCallback(
     (id: number, newStatus: S, target?: number) => {
-      const oldStatus = Object.keys(listItemsByStatus).find((status) =>
-        listItemsByStatus[status as S].items.find((item) => item?.id === id)
+      const oldStatus = Object.keys(listItemsByStatus)?.find((status) =>
+        listItemsByStatus?.[status as S]?.items?.find((item) => item?.id === id)
       ) as S
 
       if (!oldStatus) return
 
-      const card = listItemsByStatus[oldStatus as S].items.find((item) => item?.id === id)
-      const targetIndex = listItemsByStatus[newStatus].items.findIndex(
+      const card = listItemsByStatus?.[oldStatus as S]?.items?.find(
+        (item) => item?.id === id
+      )
+      const targetIndex = listItemsByStatus?.[newStatus]?.items?.findIndex(
         (item) => item?.id === target
       )
 
@@ -83,13 +133,13 @@ export const useDragAndDrop = <T extends Item, S extends string>(
       card.status = newStatus
 
       // Remove card from old status list
-      const oldStatusItems = listItemsByStatus[oldStatus as S].items.filter(
+      const oldStatusItems = listItemsByStatus?.[oldStatus as S]?.items?.filter(
         (item: T) => item.id !== id
       )
-      listItemsByStatus[oldStatus as S].setItems(oldStatusItems)
+      listItemsByStatus?.[oldStatus as S]?.setItems(oldStatusItems)
 
       // Create a copy of the new status list
-      let newStatusItems = [...listItemsByStatus[newStatus].items]
+      let newStatusItems = [...listItemsByStatus?.[newStatus]?.items]
 
       // Remove the card from its old position in the new status list
       newStatusItems = newStatusItems.filter((item) => item.id !== card.id)
@@ -102,7 +152,7 @@ export const useDragAndDrop = <T extends Item, S extends string>(
       )
 
       // Update the new status list
-      listItemsByStatus[newStatus].setItems(newStatusItems)
+      listItemsByStatus?.[newStatus]?.setItems(newStatusItems)
 
       // Update the listItemsByStatus state
       setListItemsByStatus((prev) => ({
@@ -126,20 +176,19 @@ export const useDragAndDrop = <T extends Item, S extends string>(
     (oldStatus: S, newStatus: S) => {
       if (oldStatus === newStatus) return
 
-      const oldStatusIndex = statuses.indexOf(oldStatus)
+      const oldStatusIndex = statuses?.indexOf(oldStatus)
 
       if (oldStatusIndex === -1) {
         console.error(`Old status "${oldStatus}" not found in statuses array`)
         return
       }
 
-      // Get the old and new storage hooks
-      const [oldStoredItems, setOldStoredItems, removeOldStoredItems] =
-        storageHooks[oldStatusIndex]
-      const [, setNewStoredItems] = storageHooks[oldStatusIndex]
+      // Get the old and new storage keys
+      const oldStorageKey = storageKeys[oldStatusIndex]
+      const newStorageKey = `${isLocalhost ? 'local-' : ''}DnD-${newStatus}`
 
       // Update items' status
-      const updatedItems = listItemsByStatus[oldStatus]?.items?.map((item) => ({
+      const updatedItems = listItemsByStatus[oldStatus].items.map((item) => ({
         ...item,
         status: newStatus,
       }))
@@ -158,10 +207,11 @@ export const useDragAndDrop = <T extends Item, S extends string>(
       }))
 
       // Update local storage
-      setNewStoredItems(updatedItems)
-      removeOldStoredItems()
+      // Update local storage
+      localStorage.setItem(newStorageKey, JSON.stringify(updatedItems))
+      localStorage.removeItem(oldStorageKey)
     },
-    [listItemsByStatus, storageHooks, statuses]
+    [listItemsByStatus, storageKeys, statuses]
   )
 
   const handleDragging = (dragging: boolean) => setIsDragging(dragging)
@@ -169,7 +219,6 @@ export const useDragAndDrop = <T extends Item, S extends string>(
   return {
     isDragging,
     listItemsByStatus,
-    setListItemsByStatus,
     handleUpdate,
     handleRenameStatus,
     handleDragging,

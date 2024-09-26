@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 // type ReturnType<T> = [T, React.Dispatch<React.SetStateAction<T>>, () => void]
 
@@ -18,7 +18,7 @@ function useStorage<T>(
   storageObject: Storage
 ): ReturnType<T> {
   const [value, setValue] = useState<T>(() => {
-    const jsonValue = storageObject.getItem(key)
+    const jsonValue = storageObject?.getItem(key)
     if (jsonValue != null) return JSON.parse(jsonValue)
 
     if (typeof defaultValue === 'function') {
@@ -29,13 +29,13 @@ function useStorage<T>(
   })
 
   useEffect(() => {
-    if (value === undefined) return storageObject.removeItem(key)
-    storageObject.setItem(key, JSON.stringify(value))
+    if (value === undefined) return storageObject?.removeItem(key)
+    storageObject?.setItem(key, JSON.stringify(value))
   }, [key, value, storageObject])
 
-  const remove = useCallback(() => {
-    return storageObject.removeItem(key)
-  }, [])
+  const remove = () => {
+    return storageObject?.removeItem(key)
+  }
 
   const setValueWithFunction = (value: T | ((val: T) => T)) => {
     if (typeof value === 'function') {

@@ -23,6 +23,7 @@ import {
   EChangeCategoryTitle,
   EChangeLanguage,
   EContact,
+  EDelete,
   EDragAndDrop,
   EEdit,
   EGraphQLSite,
@@ -38,10 +39,11 @@ import {
   EQuizAppIntro,
   EReset,
   ETestYourKnowledge,
-  EToDo,
+  EAddANewCategory,
 } from '../interfaces'
 import {
   ECategories,
+  ECategoryTitle,
   EJokeType,
   ESafemode,
   ETheComediansCompanion,
@@ -177,6 +179,17 @@ export default function Home({
                     <li>
                       <strong>{ESeptember[language]}</strong>
                       <ul>
+                        <li>
+                          <Link to='/portfolio/draganddrop'>
+                            <RiDragDropLine />
+                            {EDragAndDrop[language]}:
+                          </Link>
+                          <i>
+                            {EAddedNewFeatures[language]}: {EDelete[language]} (
+                            {ECategoryTitle[language].toLowerCase()}),{' '}
+                            {EAddANewCategory[language].toLowerCase()}
+                          </i>
+                        </li>
                         <li>
                           <a className='disabled'>
                             <TbTriangleInverted />

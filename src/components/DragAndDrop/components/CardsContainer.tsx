@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Data, Status } from '../interfaces'
 import CardSingle from './CardSingle'
 import styles from '../dragAndDrop.module.css'
 import {
   EChange,
   EChangeCategoryTitle,
+  EDelete,
+  EEdit,
   ELanguages,
   ERenameTitle,
   ESpecialCharactersOrSpaceNotAllowed,
@@ -14,6 +16,7 @@ import { EBad, EGood, ENeutral } from '../../../interfaces/draganddrop'
 import Accordion from '../../Accordion/Accordion'
 import { notify } from '../../../reducers/notificationReducer'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
+import { useOutsideClick } from '../../../hooks/useOutsideClick'
 
 interface Props {
   language: ELanguages
@@ -28,6 +31,7 @@ interface Props {
   sanitize: (str: string) => string
   updateStatus: (index: number, status: Status) => void
   reorderStatuses: (dragIndex: number, dropIndex: number) => void
+  deleteStatus: (status: string) => void
 }
 
 export const CardsContainer = ({
@@ -43,6 +47,7 @@ export const CardsContainer = ({
   sanitize,
   updateStatus,
   reorderStatuses,
+  deleteStatus,
 }: Props) => {
   const dispatch = useAppDispatch()
 
@@ -50,7 +55,7 @@ export const CardsContainer = ({
   const [isOpen, setIsOpen] = useState(false)
   const [newStatus, setNewStatus] = useState<Status>('')
   const [focusedCard, setFocusedCard] = useState<number | null>(null)
-
+  const outsideClickRef = useRef<HTMLSpanElement>(null)
   const regex = /^[\w\u00C0-\u024F\u1E00-\u1EFF-_]*$/
 
   const handleStatusNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,6 +66,11 @@ export const CardsContainer = ({
       dispatch(notify(ESpecialCharactersOrSpaceNotAllowed[language], true, 6))
     }
   }
+
+  useOutsideClick({
+    ref: outsideClickRef,
+    onOutsideClick: () => setIsOpen(false),
+  })
 
   const handleDrop = (e: React.DragEvent<HTMLUListElement>) => {
     const data = JSON.parse(e.dataTransfer.getData('text/plain'))
@@ -117,25 +127,28 @@ export const CardsContainer = ({
       onDrop={(e) => handleContainerDrop(e, statuses.indexOf(status))}
     >
       <span
+        ref={outsideClickRef}
         id={`label-${sanitize(status)}`}
         draggable
         onDragStart={(e) => handleContainerDragStart(e, statuses.indexOf(status))}
         onDragOver={handleContainerDragOver}
       >
-        {(() => {
-          const statusLowerCase = status.toLowerCase()
-          // translations for the initial statuses:
-          switch (statusLowerCase) {
-            case 'good':
-              return EGood[language]
-            case 'bad':
-              return EBad[language]
-            case 'neutral':
-              return ENeutral[language]
-            default:
-              return status
-          }
-        })()}
+        <b>
+          {(() => {
+            const statusLowerCase = status.toLowerCase()
+            // translations for the initial statuses:
+            switch (statusLowerCase) {
+              case 'good':
+                return EGood[language]
+              case 'bad':
+                return EBad[language]
+              case 'neutral':
+                return ENeutral[language]
+              default:
+                return status
+            }
+          })()}
+        </b>
         <Accordion
           isOpen={isOpen}
           setIsFormOpen={setIsOpen}
@@ -143,11 +156,12 @@ export const CardsContainer = ({
           text={`*`}
           hideBrackets
           className={`narrow ${styles['change-status']} change-status`}
-          tooltip={ERenameTitle[language]}
+          tooltip={EEdit[language]}
           x='left'
           y='below'
         >
           <form
+            className={styles['change-status-form']}
             onSubmit={(e) => {
               e.preventDefault()
               updateStatus(statuses.indexOf(status), newStatus)
@@ -166,6 +180,15 @@ export const CardsContainer = ({
               </label>
             </div>
             <button type='submit'>{ESubmit[language]}</button>
+            <button
+              type='button'
+              className='danger delete'
+              onClick={() => {
+                deleteStatus(status)
+              }}
+            >
+              {EDelete[language]}
+            </button>
           </form>
         </Accordion>
       </span>

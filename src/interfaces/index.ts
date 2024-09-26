@@ -2359,3 +2359,39 @@ export enum ERandom {
   cs = 'Náhodný',
   fi = 'Satunnainen',
 }
+export enum EItIsNotEmpty {
+  en = 'It is not empty!',
+  es = '¡No está vacío!',
+  fr = 'Ce n est pas vide!',
+  de = 'Es ist nicht leer!',
+  pt = 'Não está vazio!',
+  cs = 'Není prázdné!',
+  fi = 'Se ei ole tyhjä!',
+}
+export enum EAddANewCategory {
+  en = 'Add a new category',
+  es = 'Agregar una nueva categoría',
+  fr = 'Ajouter une nouvelle catégorie',
+  de = 'Eine neue Kategorie hinzufügen',
+  pt = 'Adicionar uma nova categoria',
+  cs = 'Přidat novou kategorii',
+  fi = 'Lisää uusi kategoria',
+}
+export enum ECannotRemoveLastCategory {
+  en = 'Cannot remove last category',
+  es = 'No se puede eliminar la última categoría',
+  fr = 'Impossible de supprimer la dernière catégorie',
+  de = 'Letzte Kategorie kann nicht entfernt werden',
+  pt = 'Não é possível remover a última categoria',
+  cs = 'Nelze odebrat poslední kategorii',
+  fi = 'Viimeistä kategoriaa ei voi poistaa',
+}
+export enum ECannotAddMoreCategories {
+  en = 'Cannot add more categories',
+  es = 'No se pueden agregar más categorías',
+  fr = 'Impossible d ajouter plus de catégories',
+  de = 'Kann keine weiteren Kategorien hinzufügen',
+  pt = 'Não é possível adicionar mais categorias',
+  cs = 'Nelze přidat další kategorie',
+  fi = 'Ei voi lisätä enempää kategorioita',
+}

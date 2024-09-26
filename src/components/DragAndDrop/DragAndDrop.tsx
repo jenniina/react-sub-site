@@ -8,10 +8,15 @@ import useRandomMinMax from '../../hooks/useRandomMinMax'
 import {
   EAreYouSureYouWantToRemoveThis,
   EForExample,
+  EItIsNotEmpty,
   ELanguages,
   ENeedHelp,
   EReset,
+  ESubmit,
   ETheCategoryAlreadyExists,
+  EAddANewCategory,
+  ECannotAddMoreCategories,
+  ECannotRemoveLastCategory,
 } from '../../interfaces'
 import { useTheme } from '../../hooks/useTheme'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
@@ -21,7 +26,11 @@ import { Select, SelectOption } from '../Select/Select'
 import { ESelectCategory } from '../Jokes/interfaces'
 import useLocalStorage from '../../hooks/useStorage'
 import { EPleaseFillInTheFields } from '../../interfaces/form'
-import { EAreYouSureYouWantToDeleteThisVersion } from '../../interfaces/blobs'
+import {
+  EAMaxOf30CharactersPlease,
+  EAreYouSureYouWantToDeleteThisVersion,
+  ENameTooLong,
+} from '../../interfaces/blobs'
 
 const initialStatuses: string[] = ['good', 'neutral', 'bad']
 
@@ -37,6 +46,8 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     `${isLocalhost ? 'local-' : ''}DnD-statuses`,
     initialStatuses
   )
+  const [newStatus, setNewStatus] = useState<string>('')
+
   const containerRef = useRef<HTMLDivElement>(null)
 
   const storedData = statuses
@@ -122,14 +133,36 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
   }
 
   const addStatus = (newStatus: string) => {
+    const newStatusTrim = newStatus.trim()
+    if (newStatusTrim.length > 30) {
+      dispatch(
+        notify(
+          `${ENameTooLong[language]}: ${EAMaxOf30CharactersPlease[language]}`,
+          true,
+          9
+        )
+      )
+      return
+    }
+    if (newStatus.trim() === '') {
+      dispatch(notify(EPleaseFillInTheFields[language], true, 6))
+      return
+    }
+    //if new status is already in the list, notify:
+    if (statuses.includes(newStatusTrim)) {
+      dispatch(notify(ETheCategoryAlreadyExists[language], true, 6))
+      return
+    }
+    // if already length 8, don't allow more statuses
+    if (statuses.length === 8) {
+      dispatch(notify(ECannotAddMoreCategories[language], true, 8))
+      return
+    }
     setStatuses((prevStatuses) => {
-      const newStatusTrim = newStatus.trim()
       if (newStatusTrim === '') {
-        dispatch(notify(EPleaseFillInTheFields[language], true, 6))
         return prevStatuses
       }
       if (prevStatuses.includes(newStatusTrim)) {
-        dispatch(notify(ETheCategoryAlreadyExists[language], true, 6))
         return prevStatuses
       }
       return [...prevStatuses, newStatusTrim]
@@ -173,6 +206,30 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
 
       return updatedStatuses
     })
+  }
+
+  const deleteStatus = (status: string) => {
+    //if only one status left, don't allow removal
+    if (statuses.length === 1) {
+      dispatch(notify(ECannotRemoveLastCategory[language], true, 8))
+      return
+    } // check if there are items with this status
+    else if (data.some((d) => d.status === status)) {
+      dispatch(
+        notify(
+          `${EAreYouSureYouWantToRemoveThis[language]} ${EItIsNotEmpty[language]}`,
+          true,
+          8
+        )
+      )
+      setStatuses((prevStatuses) => prevStatuses.filter((s) => s !== status))
+      setData((prevData) => prevData.filter((d) => d.status !== status))
+    } else if (
+      window.confirm(`${EAreYouSureYouWantToRemoveThis[language]} (${status})`)
+    ) {
+      setStatuses((prevStatuses) => prevStatuses.filter((s) => s !== status))
+      setData((prevData) => prevData.filter((d) => d.status !== status))
+    } else return
   }
 
   useEffect(() => {
@@ -286,7 +343,6 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
   const {
     isDragging,
     listItemsByStatus,
-    setListItemsByStatus,
     handleDragging,
     handleRenameStatus,
     handleUpdate,
@@ -294,7 +350,18 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
 
   return (
     <>
-      <div className={styles.grid} ref={containerRef}>
+      <div
+        className={`${styles.grid} ${
+          statuses.length < 2
+            ? styles.one
+            : statuses.length < 3
+            ? styles.two
+            : statuses?.length < 4 || statuses?.length === 5 || statuses?.length === 6
+            ? styles.three
+            : styles.four
+        }`}
+        ref={containerRef}
+      >
         {statuses.map((container) => (
           <CardsContainer
             language={language}
@@ -310,10 +377,34 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
             sanitize={sanitize}
             updateStatus={updateStatus}
             reorderStatuses={reorderStatuses}
+            deleteStatus={deleteStatus}
           />
         ))}
       </div>
       <button onClick={startAgain}>{EReset[language]}</button>
+      <div className={styles['add-status']}>
+        <h2>{EAddANewCategory[language]}</h2>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            addStatus(newStatus)
+          }}
+        >
+          <div className='input-wrap'>
+            <label htmlFor='dnd-status-add'>
+              <input
+                required
+                type='text'
+                id='dnd-status-add'
+                value={newStatus}
+                onChange={(e) => setNewStatus(e.target.value)}
+              />
+              <span>{EAddANewCategory[language]}</span>
+            </label>
+          </div>
+          <button type='submit'>{ESubmit[language]}</button>
+        </form>
+      </div>
       <div className={styles['add-color']}>
         <h2>{EAddAColor[language]}</h2>
         <p>{EForExample[language]} darkblue or lightslategray</p>
