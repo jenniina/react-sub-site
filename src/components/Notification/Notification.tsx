@@ -21,7 +21,7 @@ const Notification = ({ language = ELanguages.English, className }: Props) => {
   return (
     <div
       className={`notification ${notification.isError ? 'error' : ''}`}
-      aria-live='polite'
+      aria-live='assertive'
     >
       <p>
         {notification.message}{' '}
