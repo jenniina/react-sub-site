@@ -1,5 +1,5 @@
 import { createRef, FC, Fragment, useRef, useState } from 'react'
-import BlobJS from './components/DragContainer'
+import DragContainer from './components/DragContainer'
 import { ELanguages, RefObject } from '../../interfaces'
 import { EScroll, EToBlobArt } from '../../interfaces/blobs'
 
@@ -51,7 +51,7 @@ const Blobs: FC<BlobsProps> = ({ language }) => {
       {containers.map((container, i) => (
         <Fragment key={container}>
           {buttons(i)}
-          <BlobJS
+          <DragContainer
             language={language}
             d={container}
             ds={containers.length}

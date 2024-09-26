@@ -1787,621 +1787,661 @@ export default function DragContainer({
 
   return (
     <>
-      <section id={`drag-container${d}`} className={`drag-container drag-container${d}`}>
-        <div className='blob-title-wrap'>
-          <h2 className='blob-title'>
-            {EBlobArt[language]} {d + 1}
-          </h2>
-          {d === 0 ? (
-            <p>{EMoreColorsAvailableThroughRandomBlobButton[language]} </p>
-          ) : d === 1 ? (
-            <p>
-              {EWithMoreMutedColors[language]}.{' '}
-              {EMoreColorsAvailableThroughRandomBlobButton[language]}{' '}
-            </p>
-          ) : d === 2 ? (
-            <p>
-              {EDarkerColors[language]}.{' '}
-              {EMoreColorsAvailableThroughRandomBlobButton[language]}{' '}
-            </p>
-          ) : (
-            <p>{EMoreColorsAvailableThroughRandomBlobButton[language]}</p>
-          )}
-        </div>
-        <div className={'label-container'}>
-          <span id={`blobdescription${d}`} className={'scr'}>
-            {ETryDraggingTheBlobs[language]}
-          </span>
-          <span>
-            [{ELayer[language]}: {activeLayer + 1}]{' '}
-          </span>
-          <span ref={selectedvalue0} id={`selectedvalue${d}`} className='selectedvalue'>
-            {ESelectedBlobNone[language]}
-          </span>
-        </div>
-        <div id={`button-container${d}`} className={'button-container'}>
-          <button
-            ref={stopBlobs}
-            id={`stop-blobs${d}`}
-            className='stop-blobs tooltip-wrap'
-            onClick={(e) => {
-              stopSway(e)
-            }}
-            aria-labelledby={`stop-blobs${d}-span`}
-          >
-            <span id={`stop-blobs${d}-span`} className='tooltip right above space'>
-              {EAfterEnablingThereIsASlightDelayBeforeAllTheBlobsAreMovingAgain[language]}
-            </span>
-            {paused ? EStartSway[language] : EStopSway[language]}
-          </button>
-          <button
-            ref={resetBlobs}
-            id={`reset-blobs${d}`}
-            aria-labelledby={`reset-blobs${d}-span`}
-            className='reset-blobs tooltip-wrap'
-            onClick={(e) => {
-              resetBlobsFunction(e)
-            }}
-          >
-            <span id={`reset-blobs${d}-span`} className='tooltip above space'>
-              {EGetANewSetOfBlobs[language]}
-            </span>{' '}
-            {EReset[language]}
-          </button>
-          <button
-            id={`toggle-marker${d}`}
-            aria-labelledby={`toggle-marker${d}-span`}
-            className='toggle-marker tooltip-wrap'
-            onClick={() => setMarkerEnabled(!markerEnabled)}
-          >
-            <span
-              id={`toggle-marker${d}-span`}
-              className='tooltip left above space'
-            >{`${EToggleMarkerVisibilityWhenUsingAKeyboard[language]}`}</span>
-            {markerEnabled ? EMarkerOn[language] : EMarkerOff[language]}
-          </button>
-
-          <button
-            ref={disableScrollButton}
-            id={`disable-scroll${d}`}
-            aria-labelledby={`disable-scroll${d}-span`}
-            className={`disable-scroll tooltip-wrap ${!scroll ? 'active' : ''}`}
-            onClick={() => {
-              disableScroll()
-            }}
-          >
-            <span id={`disable-scroll${d}-span`} className='tooltip right above space'>
-              {scroll
-                ? EDisableScrollInOrderToUseTheMouseWheelToResizeABlob[language]
-                : EPressHereOrEscapeToRestoreScrolling[language]}
-            </span>
-            {scroll ? EDisableScroll[language] : EEnableScroll[language]}
-          </button>
-
-          <button
-            id={`toggle-controls${d}`}
-            aria-labelledby={`toggle-controls${d}-span`}
-            className={`toggle-controls ${!controlsVisible ? 'active' : ''}`}
-            onClick={() => {
-              setControlsVisible(!controlsVisible)
-              if (!controlsVisible) {
-                setTimeout(() => {
-                  widthResize()
-                }, 200)
-              }
-            }}
-          >
-            <span id={`toggle-controls${d}-span`}>
-              {' '}
-              {controlsVisible ? EHideControls[language] : EShowControls[language]}
-            </span>
-          </button>
-          <button
-            id={`take-screenshot${d}`}
-            aria-labelledby={`take-screenshot${d}-span`}
-            disabled={loading}
-            onClick={takeScreenshot}
-            className='reset screenshot tooltip-wrap'
-          >
-            <FaCamera />
-            <span id={`take-screenshot${d}-span`} className='tooltip left below space'>
-              {loading ? ELoading[language] : EClickHereToTakeAScreenshot[language]}
-            </span>
-          </button>
-        </div>
-        <div ref={dragWrapOutest} className={`drag-wrap-outest drag-wrap-outest${d}`}>
-          <div
-            ref={dragWrapOuter}
-            id={`drag-wrap-outer${d}`}
-            className='drag-wrap-outer'
-            style={{
-              ...dragWrapOuterLightness,
-              ...dragWrapOuterSaturation,
-              ...dragWrapOuterHue,
-              ...backgroundColorStyle,
-            }}
-          >
-            <div
-              tabIndex={0}
-              ref={makeSmaller0}
-              className={`make-smaller tooltip-wrap reset ${
-                !controlsVisible ? 'hidden' : ''
-              }`}
-              id={`make-smaller${d}`}
-            >
-              <ImShrink2 />
+      <section className='card'>
+        <div>
+          <div id={`drag-container${d}`} className={`drag-container drag-container${d}`}>
+            <div className='blob-title-wrap'>
+              <h2 className='blob-title'>
+                {EBlobArt[language]} {d + 1}
+              </h2>
+              {d === 0 ? (
+                <p>{EMoreColorsAvailableThroughRandomBlobButton[language]} </p>
+              ) : d === 1 ? (
+                <p>
+                  {EWithMoreMutedColors[language]}.{' '}
+                  {EMoreColorsAvailableThroughRandomBlobButton[language]}{' '}
+                </p>
+              ) : d === 2 ? (
+                <p>
+                  {EDarkerColors[language]}.{' '}
+                  {EMoreColorsAvailableThroughRandomBlobButton[language]}{' '}
+                </p>
+              ) : (
+                <p>{EMoreColorsAvailableThroughRandomBlobButton[language]}</p>
+              )}
+            </div>
+            <div className={'label-container'}>
+              <span id={`blobdescription${d}`} className={'scr'}>
+                {ETryDraggingTheBlobs[language]}
+              </span>
+              <span>
+                [{ELayer[language]}: {activeLayer + 1}]{' '}
+              </span>
               <span
-                id={`make-smaller${d}-span`}
-                className='tooltip left below'
-              >{`${EShrinkInstructions[language]}. ${EAlternatively[language]}: ${EResizebyScrollInstructions[language]}`}</span>
-            </div>
-            <div
-              ref={makeLarger0}
-              className={`make-larger tooltip-wrap reset ${
-                !controlsVisible ? 'hidden' : ''
-              }`}
-              id={`make-larger${d}`}
-            >
-              <ImEnlarge2 />
-              <span
-                id={`make-larger${d}-span`}
-                className='tooltip left above'
-              >{`${EEnlargeInstructions[language]}. ${EAlternatively[language]}: ${EResizebyScrollInstructions[language]}`}</span>
-            </div>
-
-            <div
-              ref={makeMore0}
-              className={`make-more tooltip-wrap reset ${
-                !controlsVisible ? 'hidden' : ''
-              }`}
-              id={`make-more${d}`}
-            >
-              <FaRegClone />
-              <span id={`make-more${d}-span`} className='tooltip right below'>
-                {ECloneInstructions[language]}
+                ref={selectedvalue0}
+                id={`selectedvalue${d}`}
+                className='selectedvalue'
+              >
+                {ESelectedBlobNone[language]}
               </span>
             </div>
-            <button
-              ref={makeRandom0}
-              className={`make-random tooltip-wrap  ${!controlsVisible ? 'hidden' : ''}`}
-              id={`make-random${d}`}
-              aria-labelledby={`make-random${d}-span`}
-              onClick={() => addRandomDraggable()}
-            >
-              <FaPlus />
-              <span
-                id={`make-random${d}-span`}
-                className='tooltip below'
-              >{`${EClickMeToMakeARandomBlob[language]}. ${EMoreColorsAvailable[language]}!`}</span>
-            </button>
-            <div
-              ref={deleteBlob0}
-              className={`delete-blob tooltip-wrap reset ${
-                !controlsVisible ? 'hidden' : ''
-              }`}
-              id={`delete-blob${d}`}
-            >
-              <FaTimes />
-              <span id={`delete-blob${d}-span`} className='tooltip right above'>
-                {ERemovalInstructions[language]}
-              </span>
-            </div>
-
-            <div
-              ref={layerDecrease}
-              id={`layer-decrease${d}`}
-              className={`layer-adjust layer-decrease tooltip-wrap ${
-                !controlsVisible ? 'hidden' : ''
-              }`}
-            >
-              <span
-                id={`layer-decrease${d}-span`}
-                className='tooltip above right'
-              >{`${EDecreaseBlobLayerBy1Instructions[language]} ${EKeyboardUsePressTheCorrespondingLayerNumber[language]}`}</span>
-              <BiChevronDown />
-            </div>
-            <div
-              ref={layerIncrease}
-              id={`layer-increase${d}`}
-              className={`layer-adjust layer-increase tooltip-wrap ${
-                !controlsVisible ? 'hidden' : ''
-              }`}
-            >
-              <span
-                id={`layer-increase${d}-span`}
-                className='tooltip above left'
-              >{`${EIncreaseBlobLayerBy1Instructions[language]} ${EKeyboardUsePressTheCorrespondingLayerNumber[language]}`}</span>
-              <BiChevronUp />
-            </div>
-
-            {markerEnabled && usingKeyboard && focusedBlob && (
-              <div
-                ref={markerDivRef}
-                style={{
-                  position: 'absolute',
-                  top: `${focusedBlob.top + focusedBlob.width * -0.05}px`,
-                  left: `${focusedBlob.left + focusedBlob.width * -0.05}px`,
-                  width: `${focusedBlob.width * 1.1}px`,
-                  height: `${focusedBlob.height * 1.1}px`,
-                  outline: '3px dashed black',
-                  outlineOffset: '2px',
-                  border: '3px dashed white',
-                  borderRadius: '50%',
-                  zIndex: 999,
-                }}
-              />
-            )}
-
-            <div ref={dragWrap} id={`drag-wrap${d}`} className='drag-wrap'>
-              <DragLayers
-                layerAmount={layerAmount}
-                layer={activeLayer}
-                hiddenLayers={hiddenLayers}
-                changeBlobLayer={changeBlobLayer}
-                setActiveLayer={setActiveLayer}
-                highestZIndex={highestZIndex}
-                language={language}
-                dispatch={dispatch}
-                d={d}
-                items={draggables[d] ?? []}
-                saveDraggables={saveDraggables}
-                getPosition={getPosition}
-                colorBlockProps={colorBlockPropsCombo}
-                makeLarger0={makeLarger0}
-                makeSmaller0={makeSmaller0}
-                makeMore0={makeMore0}
-                deleteBlob0={deleteBlob0}
-                layerIncrease={layerIncrease}
-                layerDecrease={layerDecrease}
-                dragWrap={dragWrap}
-                exitApp={exitApp}
-                selectedvalue0={selectedvalue0}
-                setFocusedBlob={setFocusedBlob}
-                colorIndex={colorIndex}
-                setColorIndex={setColorIndex}
-                colorPairs={colorPairsCombo}
-                scroll={scroll}
-                setScroll={setScroll}
-                clickOutsideRef={dragWrap}
-              />
-            </div>
-          </div>
-          <ColorBlocks
-            d={d}
-            language={language}
-            getRefName={getRefName}
-            map={refNameMappingCombo}
-            colorBlockProps={colorBlockPropsCombo}
-            colorPairs={colorPairsCombo}
-            controlsVisible={controlsVisible}
-          />
-        </div>
-        <div className='layer-mover-control-wrap'>
-          <div className={`movers-wrap movers-wrap1 ${!controlsVisible ? 'hidden' : ''}`}>
-            <button
-              id={`moveleft${d}`}
-              aria-labelledby={`moveleft${d}-span`}
-              className={`moveleft mover tooltip-wrap`}
-              onClick={handleMoveRight}
-            >
-              <BiChevronsLeft />
-              <span id={`moveleft${d}-span`} className='tooltip above right'>
-                {EMoveViewLeft[language]}
-              </span>
-            </button>
-            <button
-              id={`moveright${d}`}
-              aria-labelledby={`moveright${d}-span`}
-              className={`moveright mover tooltip-wrap`}
-              onClick={handleMoveLeft}
-            >
-              <BiChevronsRight />
-              <span id={`moveright${d}-span`} className='tooltip above right'>
-                {EMoveViewRight[language]}
-              </span>
-            </button>
-          </div>
-          <div className='layer-btn-wrap layer-tools layer-tools1'>
-            <button
-              id={`decrease-layer-amount${d}`}
-              aria-labelledby={`decrease-layer-amount${d}-span`}
-              className='layer-tool layer-amount decrease-layer-amount tooltip-wrap'
-              onClick={deleteHiddenLayers}
-            >
-              <span id={`decrease-layer-amount${d}-span`} className='tooltip above right'>
-                {EDeleteHiddenLayers[language]}
-              </span>
-              <BiMinus />
-            </button>
-            <button
-              id={`every-layer-minus${d}`}
-              aria-labelledby={`every-layer-minus${d}-span`}
-              className='layer-tool every-layer tooltip-wrap'
-              onClick={() => changeEveryLayer(-1)}
-            >
-              <span id={`every-layer-minus${d}-span`} className='tooltip above right'>
-                {EClickHereToMoveDownLayer[language]}
-              </span>
-              <BiChevronDown />
-            </button>
-          </div>
-          <div className='layer-btn-wrap layers'>
-            {Array.from({ length: layerAmount }, (_, i) => i).map((layer, index) => (
+            <div id={`button-container${d}`} className={'button-container'}>
               <button
-                key={`${layer}*${index}`}
-                id={`layer-button${layer}`}
-                aria-labelledby={`layer-button${layer}-span`}
+                ref={stopBlobs}
+                id={`stop-blobs${d}`}
+                className='stop-blobs tooltip-wrap'
+                onClick={(e) => {
+                  stopSway(e)
+                }}
+                aria-labelledby={`stop-blobs${d}-span`}
+              >
+                <span id={`stop-blobs${d}-span`} className='tooltip right above space'>
+                  {
+                    EAfterEnablingThereIsASlightDelayBeforeAllTheBlobsAreMovingAgain[
+                      language
+                    ]
+                  }
+                </span>
+                {paused ? EStartSway[language] : EStopSway[language]}
+              </button>
+              <button
+                ref={resetBlobs}
+                id={`reset-blobs${d}`}
+                aria-labelledby={`reset-blobs${d}-span`}
+                className='reset-blobs tooltip-wrap'
+                onClick={(e) => {
+                  resetBlobsFunction(e)
+                }}
+              >
+                <span id={`reset-blobs${d}-span`} className='tooltip above space'>
+                  {EGetANewSetOfBlobs[language]}
+                </span>{' '}
+                {EReset[language]}
+              </button>
+              <button
+                id={`toggle-marker${d}`}
+                aria-labelledby={`toggle-marker${d}-span`}
+                className='toggle-marker tooltip-wrap'
+                onClick={() => setMarkerEnabled(!markerEnabled)}
+              >
+                <span
+                  id={`toggle-marker${d}-span`}
+                  className='tooltip left above space'
+                >{`${EToggleMarkerVisibilityWhenUsingAKeyboard[language]}`}</span>
+                {markerEnabled ? EMarkerOn[language] : EMarkerOff[language]}
+              </button>
+
+              <button
+                ref={disableScrollButton}
+                id={`disable-scroll${d}`}
+                aria-labelledby={`disable-scroll${d}-span`}
+                className={`disable-scroll tooltip-wrap ${!scroll ? 'active' : ''}`}
                 onClick={() => {
-                  if (activeLayer === layer) {
-                    toggleLayerVisibility(layer)
-                  } else {
-                    setActiveLayer(layer)
+                  disableScroll()
+                }}
+              >
+                <span
+                  id={`disable-scroll${d}-span`}
+                  className='tooltip right above space'
+                >
+                  {scroll
+                    ? EDisableScrollInOrderToUseTheMouseWheelToResizeABlob[language]
+                    : EPressHereOrEscapeToRestoreScrolling[language]}
+                </span>
+                {scroll ? EDisableScroll[language] : EEnableScroll[language]}
+              </button>
+
+              <button
+                id={`toggle-controls${d}`}
+                aria-labelledby={`toggle-controls${d}-span`}
+                className={`toggle-controls ${!controlsVisible ? 'active' : ''}`}
+                onClick={() => {
+                  setControlsVisible(!controlsVisible)
+                  if (!controlsVisible) {
+                    setTimeout(() => {
+                      widthResize()
+                    }, 200)
                   }
                 }}
-                className={`layer-button tooltip-wrap ${
-                  activeLayer === layer ? 'active' : ''
-                } ${hiddenLayers.has(layer) ? 'dim' : ''}`}
               >
-                <span id={`layer-button${layer}-span`}>
-                  <span className='scr'>{ELayer[language]}</span> {layer + 1}{' '}
-                  <span className='tooltip above'>
-                    {activeLayer === layer
-                      ? EToggleLayerByClickingMe[language]
-                      : EChangeLayerByClickingMe[language]}
-                  </span>
+                <span id={`toggle-controls${d}-span`}>
+                  {' '}
+                  {controlsVisible ? EHideControls[language] : EShowControls[language]}
                 </span>
               </button>
-            ))}
-          </div>
-          <div className='layer-btn-wrap layer-tools layer-tools2'>
-            <button
-              id={`every-layer-plus${d}`}
-              aria-labelledby={`every-layer-plus${d}-span`}
-              className='layer-tool every-layer tooltip-wrap'
-              onClick={() => changeEveryLayer(1)}
-            >
-              <span id={`every-layer-plus${d}-span`} className='tooltip above left'>
-                {EClickHereToMoveUpLayer[language]}
-              </span>
-              <BiChevronUp />
-            </button>
-            <button
-              id={`increase-layer-amount${d}`}
-              aria-labelledby={`increase-layer-amount${d}-span`}
-              className='layer-tool layer-amount increase-layer-amount tooltip-wrap'
-              onClick={() => addToLayerAmount(1)}
-            >
-              <span id={`increase-layer-amount${d}-span`} className='tooltip above left'>
-                {EGetMoreLayers[language]}
-              </span>
-              <BiPlus />
-            </button>
-          </div>
-          <div className={`movers-wrap movers-wrap2 ${!controlsVisible ? 'hidden' : ''}`}>
-            <button
-              id={`moveup${d}`}
-              aria-labelledby={`moveup${d}-span`}
-              className={`moveup mover tooltip-wrap`}
-              onClick={handleMoveDown}
-            >
-              <BiChevronsUp />
-              <span id={`moveup${d}-span`} className='tooltip above left'>
-                {EMoveViewUp[language]}
-              </span>
-            </button>
-            <button
-              id={`movedown${d}`}
-              aria-labelledby={`movedown${d}-span`}
-              className={`movedown mover tooltip-wrap`}
-              onClick={handleMoveUp}
-            >
-              <BiChevronsDown />
-              <span id={`movedown${d}-span`} className='tooltip above left'>
-                {EMoveViewDown[language]}
-              </span>
-            </button>
-          </div>
-        </div>
-        <Sliders
-          d={d}
-          defaultHue={defaultHue}
-          defaultSaturation={defaultSaturation}
-          defaultLightness={defaultLightness}
-          setSliderHueVal={setSliderHueVal}
-          setSliderSatVal={setSliderSatVal}
-          setSliderLightVal={setSliderLightVal}
-          language={language}
-          sliderLightness={sliderLightness}
-          sliderSaturation={sliderSaturation}
-          sliderHue={sliderHue}
-          sliderLightnessReset={sliderLightnessReset}
-          sliderSaturationReset={sliderSaturationReset}
-          sliderHueReset={sliderHueReset}
-          sliderLightVal={sliderLightVal}
-          sliderSatVal={sliderSatVal}
-          sliderHueVal={sliderHueVal}
-          sliderLightnessInput={sliderLightnessInput}
-          sliderSaturationInput={sliderSaturationInput}
-          sliderHueInput={sliderHueInput}
-        />
-        <div ref={exitApp} id={`exitblob${d}`} className='exitblob'></div>
-        {user ? (
-          <div className='blob-handling'>
-            <div className='full wide flex column center gap'>
-              <form onSubmit={(e) => saveBlobsToServer(e)}>
-                <div className='input-wrap'>
-                  <label htmlFor={`blobname${d}`}>
-                    <input
-                      id={`blobname${d}`}
-                      type='text'
-                      value={name}
-                      onChange={handleNameChange}
-                      placeholder={ENameYourArtwork[language]}
-                      maxLength={30}
-                    />
-                    <span>{ENameYourArtwork[language]}:</span>
-                  </label>
+              <button
+                id={`take-screenshot${d}`}
+                aria-labelledby={`take-screenshot${d}-span`}
+                disabled={loading}
+                onClick={takeScreenshot}
+                className='reset screenshot tooltip-wrap'
+              >
+                <FaCamera />
+                <span
+                  id={`take-screenshot${d}-span`}
+                  className='tooltip left below space'
+                >
+                  {loading ? ELoading[language] : EClickHereToTakeAScreenshot[language]}
+                </span>
+              </button>
+            </div>
+            <div ref={dragWrapOutest} className={`drag-wrap-outest drag-wrap-outest${d}`}>
+              <div
+                ref={dragWrapOuter}
+                id={`drag-wrap-outer${d}`}
+                className='drag-wrap-outer'
+                style={{
+                  ...dragWrapOuterLightness,
+                  ...dragWrapOuterSaturation,
+                  ...dragWrapOuterHue,
+                  ...backgroundColorStyle,
+                }}
+              >
+                <div
+                  tabIndex={0}
+                  ref={makeSmaller0}
+                  className={`make-smaller tooltip-wrap reset ${
+                    !controlsVisible ? 'hidden' : ''
+                  }`}
+                  id={`make-smaller${d}`}
+                >
+                  <ImShrink2 />
+                  <span
+                    id={`make-smaller${d}-span`}
+                    className='tooltip left below'
+                  >{`${EShrinkInstructions[language]}. ${EAlternatively[language]}: ${EResizebyScrollInstructions[language]}`}</span>
                 </div>
-                <button type='submit'>{ESave[language]}</button>
-              </form>
-            </div>
-            <div
-              ref={blobScreenshot}
-              id={`blob-screenshot${d}`}
-              style={{ display: 'none' }}
-            >
-              <button onClick={saveScreenshot}>{EDownload[language]}</button>
-              <img
-                src=''
-                ref={screenshotImg}
-                alt={EScreenshot[language]}
-                style={imgStyle}
-              />
-              <button onClick={saveScreenshot}>{EDownload[language]}</button>
-            </div>
-            <h3>{EArt[language]}</h3>
-            {isLoading ? (
-              <p>{ELoadingSavedArtwork[language]}</p>
-            ) : !users || users.length < 1 ? (
-              <p>{EErrorConnectingToTheServer[language]}</p>
-            ) : !hasSavedFiles ? (
-              <p>{ENoSavedArtworkYet[language]}</p>
-            ) : (
-              Object.keys(savedDraggablesbyD).map((dKey, index) => {
-                const versions = Object.keys(savedDraggablesbyD[Number(dKey)])
-                const totalPages = Math.ceil(versions.length / itemsPerPage)
-                const current = currentPage[Number(dKey)] ?? 1
-                const startIdx = (current - 1) * itemsPerPage
-                const endIdx = startIdx + itemsPerPage
-                const currentVersions = versions.slice(startIdx, endIdx)
+                <div
+                  ref={makeLarger0}
+                  className={`make-larger tooltip-wrap reset ${
+                    !controlsVisible ? 'hidden' : ''
+                  }`}
+                  id={`make-larger${d}`}
+                >
+                  <ImEnlarge2 />
+                  <span
+                    id={`make-larger${d}-span`}
+                    className='tooltip left above'
+                  >{`${EEnlargeInstructions[language]}. ${EAlternatively[language]}: ${EResizebyScrollInstructions[language]}`}</span>
+                </div>
 
-                return (
-                  <Fragment key={`${dKey}:${index}`}>
-                    {pagination(dKey, current, totalPages)}
-                    <ul key={`${dKey}+${index}`} className='blob-versions-wrap'>
-                      {currentVersions.map((versionName, index) => (
-                        <li key={`${versionName}+${index}`} className='blob-version-item'>
-                          <span>{versionName}</span>
-                          <div className='button-wrap'>
-                            <button
-                              onClick={() =>
-                                loadBlobsFromServer(Number(dKey), versionName)
-                              }
+                <div
+                  ref={makeMore0}
+                  className={`make-more tooltip-wrap reset ${
+                    !controlsVisible ? 'hidden' : ''
+                  }`}
+                  id={`make-more${d}`}
+                >
+                  <FaRegClone />
+                  <span id={`make-more${d}-span`} className='tooltip right below'>
+                    {ECloneInstructions[language]}
+                  </span>
+                </div>
+                <button
+                  ref={makeRandom0}
+                  className={`make-random tooltip-wrap  ${
+                    !controlsVisible ? 'hidden' : ''
+                  }`}
+                  id={`make-random${d}`}
+                  aria-labelledby={`make-random${d}-span`}
+                  onClick={() => addRandomDraggable()}
+                >
+                  <FaPlus />
+                  <span
+                    id={`make-random${d}-span`}
+                    className='tooltip below'
+                  >{`${EClickMeToMakeARandomBlob[language]}. ${EMoreColorsAvailable[language]}!`}</span>
+                </button>
+                <div
+                  ref={deleteBlob0}
+                  className={`delete-blob tooltip-wrap reset ${
+                    !controlsVisible ? 'hidden' : ''
+                  }`}
+                  id={`delete-blob${d}`}
+                >
+                  <FaTimes />
+                  <span id={`delete-blob${d}-span`} className='tooltip right above'>
+                    {ERemovalInstructions[language]}
+                  </span>
+                </div>
+
+                <div
+                  ref={layerDecrease}
+                  id={`layer-decrease${d}`}
+                  className={`layer-adjust layer-decrease tooltip-wrap ${
+                    !controlsVisible ? 'hidden' : ''
+                  }`}
+                >
+                  <span
+                    id={`layer-decrease${d}-span`}
+                    className='tooltip above right'
+                  >{`${EDecreaseBlobLayerBy1Instructions[language]} ${EKeyboardUsePressTheCorrespondingLayerNumber[language]}`}</span>
+                  <BiChevronDown />
+                </div>
+                <div
+                  ref={layerIncrease}
+                  id={`layer-increase${d}`}
+                  className={`layer-adjust layer-increase tooltip-wrap ${
+                    !controlsVisible ? 'hidden' : ''
+                  }`}
+                >
+                  <span
+                    id={`layer-increase${d}-span`}
+                    className='tooltip above left'
+                  >{`${EIncreaseBlobLayerBy1Instructions[language]} ${EKeyboardUsePressTheCorrespondingLayerNumber[language]}`}</span>
+                  <BiChevronUp />
+                </div>
+
+                {markerEnabled && usingKeyboard && focusedBlob && (
+                  <div
+                    ref={markerDivRef}
+                    style={{
+                      position: 'absolute',
+                      top: `${focusedBlob.top + focusedBlob.width * -0.05}px`,
+                      left: `${focusedBlob.left + focusedBlob.width * -0.05}px`,
+                      width: `${focusedBlob.width * 1.1}px`,
+                      height: `${focusedBlob.height * 1.1}px`,
+                      outline: '3px dashed black',
+                      outlineOffset: '2px',
+                      border: '3px dashed white',
+                      borderRadius: '50%',
+                      zIndex: 999,
+                    }}
+                  />
+                )}
+
+                <div ref={dragWrap} id={`drag-wrap${d}`} className='drag-wrap'>
+                  <DragLayers
+                    layerAmount={layerAmount}
+                    layer={activeLayer}
+                    hiddenLayers={hiddenLayers}
+                    changeBlobLayer={changeBlobLayer}
+                    setActiveLayer={setActiveLayer}
+                    highestZIndex={highestZIndex}
+                    language={language}
+                    dispatch={dispatch}
+                    d={d}
+                    items={draggables[d] ?? []}
+                    saveDraggables={saveDraggables}
+                    getPosition={getPosition}
+                    colorBlockProps={colorBlockPropsCombo}
+                    makeLarger0={makeLarger0}
+                    makeSmaller0={makeSmaller0}
+                    makeMore0={makeMore0}
+                    deleteBlob0={deleteBlob0}
+                    layerIncrease={layerIncrease}
+                    layerDecrease={layerDecrease}
+                    dragWrap={dragWrap}
+                    exitApp={exitApp}
+                    selectedvalue0={selectedvalue0}
+                    setFocusedBlob={setFocusedBlob}
+                    colorIndex={colorIndex}
+                    setColorIndex={setColorIndex}
+                    colorPairs={colorPairsCombo}
+                    scroll={scroll}
+                    setScroll={setScroll}
+                    clickOutsideRef={dragWrap}
+                  />
+                </div>
+              </div>
+              <ColorBlocks
+                d={d}
+                language={language}
+                getRefName={getRefName}
+                map={refNameMappingCombo}
+                colorBlockProps={colorBlockPropsCombo}
+                colorPairs={colorPairsCombo}
+                controlsVisible={controlsVisible}
+              />
+            </div>
+            <div className='layer-mover-control-wrap'>
+              <div
+                className={`movers-wrap movers-wrap1 ${!controlsVisible ? 'hidden' : ''}`}
+              >
+                <button
+                  id={`moveleft${d}`}
+                  aria-labelledby={`moveleft${d}-span`}
+                  className={`moveleft mover tooltip-wrap`}
+                  onClick={handleMoveRight}
+                >
+                  <BiChevronsLeft />
+                  <span id={`moveleft${d}-span`} className='tooltip above right'>
+                    {EMoveViewLeft[language]}
+                  </span>
+                </button>
+                <button
+                  id={`moveright${d}`}
+                  aria-labelledby={`moveright${d}-span`}
+                  className={`moveright mover tooltip-wrap`}
+                  onClick={handleMoveLeft}
+                >
+                  <BiChevronsRight />
+                  <span id={`moveright${d}-span`} className='tooltip above right'>
+                    {EMoveViewRight[language]}
+                  </span>
+                </button>
+              </div>
+              <div className='layer-btn-wrap layer-tools layer-tools1'>
+                <button
+                  id={`decrease-layer-amount${d}`}
+                  aria-labelledby={`decrease-layer-amount${d}-span`}
+                  className='layer-tool layer-amount decrease-layer-amount tooltip-wrap'
+                  onClick={deleteHiddenLayers}
+                >
+                  <span
+                    id={`decrease-layer-amount${d}-span`}
+                    className='tooltip above right'
+                  >
+                    {EDeleteHiddenLayers[language]}
+                  </span>
+                  <BiMinus />
+                </button>
+                <button
+                  id={`every-layer-minus${d}`}
+                  aria-labelledby={`every-layer-minus${d}-span`}
+                  className='layer-tool every-layer tooltip-wrap'
+                  onClick={() => changeEveryLayer(-1)}
+                >
+                  <span id={`every-layer-minus${d}-span`} className='tooltip above right'>
+                    {EClickHereToMoveDownLayer[language]}
+                  </span>
+                  <BiChevronDown />
+                </button>
+              </div>
+              <div className='layer-btn-wrap layers'>
+                {Array.from({ length: layerAmount }, (_, i) => i).map((layer, index) => (
+                  <button
+                    key={`${layer}*${index}`}
+                    id={`layer-button${layer}`}
+                    aria-labelledby={`layer-button${layer}-span`}
+                    onClick={() => {
+                      if (activeLayer === layer) {
+                        toggleLayerVisibility(layer)
+                      } else {
+                        setActiveLayer(layer)
+                      }
+                    }}
+                    className={`layer-button tooltip-wrap ${
+                      activeLayer === layer ? 'active' : ''
+                    } ${hiddenLayers.has(layer) ? 'dim' : ''}`}
+                  >
+                    <span id={`layer-button${layer}-span`}>
+                      <span className='scr'>{ELayer[language]}</span> {layer + 1}{' '}
+                      <span className='tooltip above'>
+                        {activeLayer === layer
+                          ? EToggleLayerByClickingMe[language]
+                          : EChangeLayerByClickingMe[language]}
+                      </span>
+                    </span>
+                  </button>
+                ))}
+              </div>
+              <div className='layer-btn-wrap layer-tools layer-tools2'>
+                <button
+                  id={`every-layer-plus${d}`}
+                  aria-labelledby={`every-layer-plus${d}-span`}
+                  className='layer-tool every-layer tooltip-wrap'
+                  onClick={() => changeEveryLayer(1)}
+                >
+                  <span id={`every-layer-plus${d}-span`} className='tooltip above left'>
+                    {EClickHereToMoveUpLayer[language]}
+                  </span>
+                  <BiChevronUp />
+                </button>
+                <button
+                  id={`increase-layer-amount${d}`}
+                  aria-labelledby={`increase-layer-amount${d}-span`}
+                  className='layer-tool layer-amount increase-layer-amount tooltip-wrap'
+                  onClick={() => addToLayerAmount(1)}
+                >
+                  <span
+                    id={`increase-layer-amount${d}-span`}
+                    className='tooltip above left'
+                  >
+                    {EGetMoreLayers[language]}
+                  </span>
+                  <BiPlus />
+                </button>
+              </div>
+              <div
+                className={`movers-wrap movers-wrap2 ${!controlsVisible ? 'hidden' : ''}`}
+              >
+                <button
+                  id={`moveup${d}`}
+                  aria-labelledby={`moveup${d}-span`}
+                  className={`moveup mover tooltip-wrap`}
+                  onClick={handleMoveDown}
+                >
+                  <BiChevronsUp />
+                  <span id={`moveup${d}-span`} className='tooltip above left'>
+                    {EMoveViewUp[language]}
+                  </span>
+                </button>
+                <button
+                  id={`movedown${d}`}
+                  aria-labelledby={`movedown${d}-span`}
+                  className={`movedown mover tooltip-wrap`}
+                  onClick={handleMoveUp}
+                >
+                  <BiChevronsDown />
+                  <span id={`movedown${d}-span`} className='tooltip above left'>
+                    {EMoveViewDown[language]}
+                  </span>
+                </button>
+              </div>
+            </div>
+            <Sliders
+              d={d}
+              defaultHue={defaultHue}
+              defaultSaturation={defaultSaturation}
+              defaultLightness={defaultLightness}
+              setSliderHueVal={setSliderHueVal}
+              setSliderSatVal={setSliderSatVal}
+              setSliderLightVal={setSliderLightVal}
+              language={language}
+              sliderLightness={sliderLightness}
+              sliderSaturation={sliderSaturation}
+              sliderHue={sliderHue}
+              sliderLightnessReset={sliderLightnessReset}
+              sliderSaturationReset={sliderSaturationReset}
+              sliderHueReset={sliderHueReset}
+              sliderLightVal={sliderLightVal}
+              sliderSatVal={sliderSatVal}
+              sliderHueVal={sliderHueVal}
+              sliderLightnessInput={sliderLightnessInput}
+              sliderSaturationInput={sliderSaturationInput}
+              sliderHueInput={sliderHueInput}
+            />
+            <div ref={exitApp} id={`exitblob${d}`} className='exitblob'></div>
+            {user ? (
+              <div className='blob-handling'>
+                <div className='full wide flex column center gap'>
+                  <form onSubmit={(e) => saveBlobsToServer(e)}>
+                    <div className='input-wrap'>
+                      <label htmlFor={`blobname${d}`}>
+                        <input
+                          id={`blobname${d}`}
+                          type='text'
+                          value={name}
+                          onChange={handleNameChange}
+                          placeholder={ENameYourArtwork[language]}
+                          maxLength={30}
+                        />
+                        <span>{ENameYourArtwork[language]}:</span>
+                      </label>
+                    </div>
+                    <button type='submit'>{ESave[language]}</button>
+                  </form>
+                </div>
+                <div
+                  ref={blobScreenshot}
+                  id={`blob-screenshot${d}`}
+                  style={{ display: 'none' }}
+                >
+                  <button onClick={saveScreenshot}>{EDownload[language]}</button>
+                  <img
+                    src=''
+                    ref={screenshotImg}
+                    alt={EScreenshot[language]}
+                    style={imgStyle}
+                  />
+                  <button onClick={saveScreenshot}>{EDownload[language]}</button>
+                </div>
+                <h3>{EArt[language]}</h3>
+                {isLoading ? (
+                  <p>{ELoadingSavedArtwork[language]}</p>
+                ) : !users || users.length < 1 ? (
+                  <p>{EErrorConnectingToTheServer[language]}</p>
+                ) : !hasSavedFiles ? (
+                  <p>{ENoSavedArtworkYet[language]}</p>
+                ) : (
+                  Object.keys(savedDraggablesbyD).map((dKey, index) => {
+                    const versions = Object.keys(savedDraggablesbyD[Number(dKey)])
+                    const totalPages = Math.ceil(versions.length / itemsPerPage)
+                    const current = currentPage[Number(dKey)] ?? 1
+                    const startIdx = (current - 1) * itemsPerPage
+                    const endIdx = startIdx + itemsPerPage
+                    const currentVersions = versions.slice(startIdx, endIdx)
+
+                    return (
+                      <Fragment key={`${dKey}:${index}`}>
+                        {pagination(dKey, current, totalPages)}
+                        <ul key={`${dKey}+${index}`} className='blob-versions-wrap'>
+                          {currentVersions.map((versionName, index) => (
+                            <li
+                              key={`${versionName}+${index}`}
+                              className='blob-version-item'
                             >
-                              {ELoad[language]} <span className='scr'>{versionName}</span>
-                            </button>
-                            <button
-                              onClick={() =>
-                                deleteBlobsVersionFromServer(Number(dKey), versionName)
-                              }
-                            >
-                              {EDelete[language]}{' '}
-                              <span className='scr'>{versionName}</span>
-                            </button>
-                            <Accordion
-                              language={language}
-                              id={`accordion-blobnewname-${versionName.replace(
-                                /\s/g,
-                                '-'
-                              )}`}
-                              className='blobnewname'
-                              text={ERename[language]}
-                              hideBrackets={true}
-                              onClick={() => {
-                                setNewName(versionName)
-                                setEditName(versionName)
-                              }}
-                              isOpen={editName === versionName}
-                            >
-                              <div className='input-wrap'>
-                                <label
-                                  htmlFor={`blobnewname-${versionName.replace(
+                              <span>{versionName}</span>
+                              <div className='button-wrap'>
+                                <button
+                                  onClick={() =>
+                                    loadBlobsFromServer(Number(dKey), versionName)
+                                  }
+                                >
+                                  {ELoad[language]}{' '}
+                                  <span className='scr'>{versionName}</span>
+                                </button>
+                                <button
+                                  onClick={() =>
+                                    deleteBlobsVersionFromServer(
+                                      Number(dKey),
+                                      versionName
+                                    )
+                                  }
+                                >
+                                  {EDelete[language]}{' '}
+                                  <span className='scr'>{versionName}</span>
+                                </button>
+                                <Accordion
+                                  language={language}
+                                  id={`accordion-blobnewname-${versionName.replace(
                                     /\s/g,
                                     '-'
                                   )}`}
+                                  className='blobnewname'
+                                  text={ERename[language]}
+                                  hideBrackets={true}
+                                  onClick={() => {
+                                    setNewName(versionName)
+                                    setEditName(versionName)
+                                  }}
+                                  isOpen={editName === versionName}
                                 >
-                                  <input
-                                    id={`blobnewname-${versionName.replace(/\s/g, '-')}`}
-                                    type='text'
-                                    value={newName}
-                                    onChange={handleNewNameChange}
-                                    placeholder={ERenameYourArtwork[language]}
-                                    maxLength={30}
-                                  />
-                                  <span>{ERename[language]}:</span>{' '}
-                                  <span className='scr'>{versionName}</span>
-                                </label>
+                                  <div className='input-wrap'>
+                                    <label
+                                      htmlFor={`blobnewname-${versionName.replace(
+                                        /\s/g,
+                                        '-'
+                                      )}`}
+                                    >
+                                      <input
+                                        id={`blobnewname-${versionName.replace(
+                                          /\s/g,
+                                          '-'
+                                        )}`}
+                                        type='text'
+                                        value={newName}
+                                        onChange={handleNewNameChange}
+                                        placeholder={ERenameYourArtwork[language]}
+                                        maxLength={30}
+                                      />
+                                      <span>{ERename[language]}:</span>{' '}
+                                      <span className='scr'>{versionName}</span>
+                                    </label>
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      if (versionName !== newName) {
+                                        editBlobsByUser(versionName, newName)
+                                      } else
+                                        dispatch2(
+                                          notify(
+                                            `${EError[language]}: ${ERenameYourArtwork[language]}`,
+                                            true,
+                                            5
+                                          )
+                                        )
+                                    }}
+                                  >
+                                    {EEdit[language]}{' '}
+                                    <span className='scr'>
+                                      {versionName}: {ENewName[language]} {newName}
+                                    </span>
+                                  </button>
+                                </Accordion>
                               </div>
-                              <button
-                                onClick={() => {
-                                  if (versionName !== newName) {
-                                    editBlobsByUser(versionName, newName)
-                                  } else
-                                    dispatch2(
-                                      notify(
-                                        `${EError[language]}: ${ERenameYourArtwork[language]}`,
-                                        true,
-                                        5
-                                      )
-                                    )
-                                }}
-                              >
-                                {EEdit[language]}{' '}
-                                <span className='scr'>
-                                  {versionName}: {ENewName[language]} {newName}
-                                </span>
-                              </button>
-                            </Accordion>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                    {/* Pagination Controls */}
-                    {pagination(dKey, current, totalPages)}
-                  </Fragment>
-                )
-              })
+                            </li>
+                          ))}
+                        </ul>
+                        {/* Pagination Controls */}
+                        {pagination(dKey, current, totalPages)}
+                      </Fragment>
+                    )
+                  })
+                )}
+              </div>
+            ) : (
+              <div className='wide flex column center gap'>
+                <div className='login-to-save wide flex column center gap-half'>
+                  <FaSave />
+                  {EInOrderToSaveTheBlobs[language]}
+                </div>
+                <div className={`blob-register-login-wrap`}>
+                  <button onClick={navigateToLogin}>{ELogin[language]}</button>
+                  <big>{EOr[language]}</big>
+                  <button onClick={navigateToRegister}>{ERegister[language]}</button>
+                </div>
+              </div>
             )}
-          </div>
-        ) : (
-          <div className='wide flex column center gap'>
-            <div className='login-to-save wide flex column center gap-half'>
-              <FaSave />
-              {EInOrderToSaveTheBlobs[language]}
-            </div>
-            <div className={`blob-register-login-wrap`}>
-              <button onClick={navigateToLogin}>{ELogin[language]}</button>
-              <big>{EOr[language]}</big>
-              <button onClick={navigateToRegister}>{ERegister[language]}</button>
-            </div>
-          </div>
-        )}
-        <svg className='filter'>
-          <filter id='svgfilter0'>
-            <feGaussianBlur in='SourceGraphic' stdDeviation='7'></feGaussianBlur>
-            <feColorMatrix
-              values='
+            <svg className='filter'>
+              <filter id='svgfilter0'>
+                <feGaussianBlur in='SourceGraphic' stdDeviation='7'></feGaussianBlur>
+                <feColorMatrix
+                  values='
 1 0 0 0 0
 0 1 0 0 0
 0 0 1 0 0
 0 0 0 50 -18
 '
-            ></feColorMatrix>
-          </filter>
-        </svg>
-        <svg className='filter'>
-          <filter id='svgfilter1'>
-            <feGaussianBlur in='SourceGraphic' stdDeviation='8'></feGaussianBlur>
-            <feColorMatrix
-              values='
+                ></feColorMatrix>
+              </filter>
+            </svg>
+            <svg className='filter'>
+              <filter id='svgfilter1'>
+                <feGaussianBlur in='SourceGraphic' stdDeviation='8'></feGaussianBlur>
+                <feColorMatrix
+                  values='
 1 0 0 0 0
 0 1 0 0 0
 0 0 1 0 0
 0 0 0 46 -28
 '
-            ></feColorMatrix>
-          </filter>
-        </svg>
+                ></feColorMatrix>
+              </filter>
+            </svg>
+          </div>
+        </div>
       </section>
     </>
   )
