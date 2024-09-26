@@ -361,9 +361,9 @@ main.main-content .fullwidth1 {
   margin-right: auto;
 }
 .card > div {
+  --padd: 4%;
   position: relative;
-
-  padding: 2em 4% 1.4em;
+  padding: 2em var(--padd) 1.4em;
   z-index: 0;
 }
 
@@ -427,7 +427,8 @@ body .z {
 /********************************************************************/
 @media (min-width: 600px) {
   .card > div {
-    padding: 2em 8% 2em;
+    --padd: 8%;
+    padding: 2em var(--padd) 2em;
   }
 } /*************************************************** END media */
 .flex {
@@ -725,7 +726,7 @@ nav .open.password-reset-container button.forgot-btn {
 }
 #root .App .tooltip-wrap .tooltip.narrow2,
 #root .App .tooltip-wrap.narrow2 .tooltip {
-  --width: max-content;
+  --width: clamp(3rem, calc(60vw), max-content);
 }
 
 .tooltip-wrap:not(button):not(a) {
@@ -741,11 +742,8 @@ nav .open.password-reset-container button.forgot-btn {
 #root .App .tooltip-wrap .tooltip.above {
   top: unset;
   bottom: calc(var(--tooltip-offset) + 0.5em);
-  left: clamp(
-    calc(var(--tooltip-width) * -1),
-    calc(var(--tooltip-width) * -0.45),
-    calc(var(--tooltip-width) * 1)
-  );
+  left: 50%;
+  transform: translateX(-50%);
 }
 #root .App .tooltip-wrap .tooltip.above.space {
   top: unset;
@@ -753,11 +751,8 @@ nav .open.password-reset-container button.forgot-btn {
 }
 #root .App .tooltip-wrap .tooltip.below {
   top: calc(100% + var(--tooltip-offset) * 0.5 + 0.2em);
-  left: clamp(
-    calc(var(--tooltip-width) * -1),
-    calc(var(--tooltip-width) * -0.45),
-    calc(var(--tooltip-width) * 1)
-  );
+  left: 50%;
+  transform: translateX(-50%);
 }
 #root .App .tooltip-wrap .tooltip.below.space {
   top: calc(100% + var(--tooltip-offset) * 0.5 + 0.6em);
@@ -765,12 +760,14 @@ nav .open.password-reset-container button.forgot-btn {
 #root .App .tooltip-wrap .tooltip.right.above,
 #root .App .tooltip-wrap .tooltip.right.below {
   left: 0;
+  transform: unset;
   right: unset;
 }
 #root .App .tooltip-wrap .tooltip.left.above,
 #root .App .tooltip-wrap .tooltip.left.below {
-  left: calc(var(--tooltip-width) * -1 + 100%);
-  right: unset;
+  left: unset; /* calc(var(--tooltip-width) * -1 + 100%); */
+  transform: unset;
+  right: 0;
 }
 
 #root .App .tooltip-wrap .tooltip,
@@ -828,7 +825,7 @@ nav .open.password-reset-container button.forgot-btn {
   top: unset;
   bottom: calc(var(--tooltip-offset) * -0.95);
   border-top-color: var(--tooltip-bgcolor);
-  left: calc(var(--tooltip-width) * 0.5);
+  left: 47%;
 }
 #root .App .tooltip-wrap:hover .tooltip.left.above::before,
 #root .App .tooltip-wrap:focus .tooltip.left.above::before,
