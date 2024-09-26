@@ -1419,26 +1419,49 @@ export default function DragContainer({
         77 - (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
         0.3
       )
-    if (layerDecrease.current && dragWrap.current)
+    if (layerDecrease.current && dragWrap.current && windowWidth < 300)
       place(
         layerDecrease.current,
-        34,
+        27,
         100 - (layerDecrease.current.offsetHeight / dragWrap.current.offsetHeight) * 100
       )
-    if (layerIncrease.current && dragWrap.current)
+    else if (layerDecrease.current && dragWrap.current)
+      place(
+        layerDecrease.current,
+        32,
+        100 - (layerDecrease.current.offsetHeight / dragWrap.current.offsetHeight) * 100
+      )
+    if (layerIncrease.current && dragWrap.current && windowWidth < 300)
       place(
         layerIncrease.current,
-        66 - (layerIncrease.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
+        73 - (layerIncrease.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
         100 - (layerIncrease.current.offsetHeight / dragWrap.current.offsetHeight) * 100
       )
-    if (deleteBlob0.current && dragWrap.current)
+    else if (layerIncrease.current && dragWrap.current)
+      place(
+        layerIncrease.current,
+        68 - (layerIncrease.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
+        100 - (layerIncrease.current.offsetHeight / dragWrap.current.offsetHeight) * 100
+      )
+    if (deleteBlob0.current && dragWrap.current && windowWidth < 300)
+      place(
+        deleteBlob0.current,
+        2,
+        100 - (deleteBlob0.current.offsetHeight / dragWrap.current.offsetHeight) * 100
+      )
+    else if (deleteBlob0.current && dragWrap.current)
       place(
         deleteBlob0.current,
         10,
         100 - (deleteBlob0.current.offsetHeight / dragWrap.current.offsetHeight) * 100
       )
-
-    if (makeLarger0.current && dragWrap.current)
+    if (makeLarger0.current && dragWrap.current && windowWidth < 300)
+      place(
+        makeLarger0.current,
+        98 - (makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
+        100 - (makeLarger0.current.offsetHeight / dragWrap.current.offsetHeight) * 100
+      )
+    else if (makeLarger0.current && dragWrap.current)
       place(
         makeLarger0.current,
         90 - (makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
@@ -1815,13 +1838,13 @@ export default function DragContainer({
               <button
                 ref={stopBlobs}
                 id={`stop-blobs${d}`}
-                className='stop-blobs tooltip-wrap'
+                className='stop-blobs tooltip-wrap '
                 onClick={(e) => {
                   stopSway(e)
                 }}
                 aria-labelledby={`stop-blobs${d}-span`}
               >
-                <span id={`stop-blobs${d}-span`} className='tooltip right above space'>
+                <span id={`stop-blobs${d}-span`} className='tooltip above space'>
                   {
                     EAfterEnablingThereIsASlightDelayBeforeAllTheBlobsAreMovingAgain[
                       language
@@ -1852,7 +1875,7 @@ export default function DragContainer({
               >
                 <span
                   id={`toggle-marker${d}-span`}
-                  className='tooltip left above space'
+                  className='tooltip above space'
                 >{`${EToggleMarkerVisibilityWhenUsingAKeyboard[language]}`}</span>
                 {markerEnabled ? EMarkerOn[language] : EMarkerOff[language]}
               </button>
@@ -1866,10 +1889,7 @@ export default function DragContainer({
                   disableScroll()
                 }}
               >
-                <span
-                  id={`disable-scroll${d}-span`}
-                  className='tooltip right above space'
-                >
+                <span id={`disable-scroll${d}-span`} className='tooltip above space'>
                   {scroll
                     ? EDisableScrollInOrderToUseTheMouseWheelToResizeABlob[language]
                     : EPressHereOrEscapeToRestoreScrolling[language]}
@@ -1965,7 +1985,7 @@ export default function DragContainer({
                 </div>
                 <button
                   ref={makeRandom0}
-                  className={`make-random tooltip-wrap  ${
+                  className={`make-random tooltip-wrap ${
                     !controlsVisible ? 'hidden' : ''
                   }`}
                   id={`make-random${d}`}
@@ -2000,7 +2020,7 @@ export default function DragContainer({
                 >
                   <span
                     id={`layer-decrease${d}-span`}
-                    className='tooltip above right'
+                    className='tooltip above'
                   >{`${EDecreaseBlobLayerBy1Instructions[language]} ${EKeyboardUsePressTheCorrespondingLayerNumber[language]}`}</span>
                   <BiChevronDown />
                 </div>
@@ -2013,7 +2033,7 @@ export default function DragContainer({
                 >
                   <span
                     id={`layer-increase${d}-span`}
-                    className='tooltip above left'
+                    className='tooltip above'
                   >{`${EIncreaseBlobLayerBy1Instructions[language]} ${EKeyboardUsePressTheCorrespondingLayerNumber[language]}`}</span>
                   <BiChevronUp />
                 </div>
@@ -2088,22 +2108,22 @@ export default function DragContainer({
                 <button
                   id={`moveleft${d}`}
                   aria-labelledby={`moveleft${d}-span`}
-                  className={`moveleft mover tooltip-wrap`}
+                  className={`moveleft mover tooltip-wrap narrow2`}
                   onClick={handleMoveRight}
                 >
                   <BiChevronsLeft />
-                  <span id={`moveleft${d}-span`} className='tooltip above right'>
+                  <span id={`moveleft${d}-span`} className='tooltip above'>
                     {EMoveViewLeft[language]}
                   </span>
                 </button>
                 <button
                   id={`moveright${d}`}
                   aria-labelledby={`moveright${d}-span`}
-                  className={`moveright mover tooltip-wrap`}
+                  className={`moveright mover tooltip-wrap narrow2`}
                   onClick={handleMoveLeft}
                 >
                   <BiChevronsRight />
-                  <span id={`moveright${d}-span`} className='tooltip above right'>
+                  <span id={`moveright${d}-span`} className='tooltip above'>
                     {EMoveViewRight[language]}
                   </span>
                 </button>
@@ -2112,13 +2132,10 @@ export default function DragContainer({
                 <button
                   id={`decrease-layer-amount${d}`}
                   aria-labelledby={`decrease-layer-amount${d}-span`}
-                  className='layer-tool layer-amount decrease-layer-amount tooltip-wrap'
+                  className='layer-tool layer-amount decrease-layer-amount tooltip-wrap narrow2'
                   onClick={deleteHiddenLayers}
                 >
-                  <span
-                    id={`decrease-layer-amount${d}-span`}
-                    className='tooltip above right'
-                  >
+                  <span id={`decrease-layer-amount${d}-span`} className='tooltip above'>
                     {EDeleteHiddenLayers[language]}
                   </span>
                   <BiMinus />
@@ -2126,10 +2143,10 @@ export default function DragContainer({
                 <button
                   id={`every-layer-minus${d}`}
                   aria-labelledby={`every-layer-minus${d}-span`}
-                  className='layer-tool every-layer tooltip-wrap'
+                  className='layer-tool every-layer tooltip-wrap narrow2'
                   onClick={() => changeEveryLayer(-1)}
                 >
-                  <span id={`every-layer-minus${d}-span`} className='tooltip above right'>
+                  <span id={`every-layer-minus${d}-span`} className='tooltip above'>
                     {EClickHereToMoveDownLayer[language]}
                   </span>
                   <BiChevronDown />
@@ -2148,7 +2165,7 @@ export default function DragContainer({
                         setActiveLayer(layer)
                       }
                     }}
-                    className={`layer-button tooltip-wrap ${
+                    className={`layer-button tooltip-wrap narrow2 ${
                       activeLayer === layer ? 'active' : ''
                     } ${hiddenLayers.has(layer) ? 'dim' : ''}`}
                   >
@@ -2167,10 +2184,10 @@ export default function DragContainer({
                 <button
                   id={`every-layer-plus${d}`}
                   aria-labelledby={`every-layer-plus${d}-span`}
-                  className='layer-tool every-layer tooltip-wrap'
+                  className='layer-tool every-layer tooltip-wrap narrow2'
                   onClick={() => changeEveryLayer(1)}
                 >
-                  <span id={`every-layer-plus${d}-span`} className='tooltip above left'>
+                  <span id={`every-layer-plus${d}-span`} className='tooltip above'>
                     {EClickHereToMoveUpLayer[language]}
                   </span>
                   <BiChevronUp />
@@ -2178,13 +2195,10 @@ export default function DragContainer({
                 <button
                   id={`increase-layer-amount${d}`}
                   aria-labelledby={`increase-layer-amount${d}-span`}
-                  className='layer-tool layer-amount increase-layer-amount tooltip-wrap'
+                  className='layer-tool layer-amount increase-layer-amount tooltip-wrap narrow2'
                   onClick={() => addToLayerAmount(1)}
                 >
-                  <span
-                    id={`increase-layer-amount${d}-span`}
-                    className='tooltip above left'
-                  >
+                  <span id={`increase-layer-amount${d}-span`} className='tooltip above'>
                     {EGetMoreLayers[language]}
                   </span>
                   <BiPlus />
@@ -2196,22 +2210,22 @@ export default function DragContainer({
                 <button
                   id={`moveup${d}`}
                   aria-labelledby={`moveup${d}-span`}
-                  className={`moveup mover tooltip-wrap`}
+                  className={`moveup mover tooltip-wrap narrow2`}
                   onClick={handleMoveDown}
                 >
                   <BiChevronsUp />
-                  <span id={`moveup${d}-span`} className='tooltip above left'>
+                  <span id={`moveup${d}-span`} className='tooltip above'>
                     {EMoveViewUp[language]}
                   </span>
                 </button>
                 <button
                   id={`movedown${d}`}
                   aria-labelledby={`movedown${d}-span`}
-                  className={`movedown mover tooltip-wrap`}
+                  className={`movedown mover tooltip-wrap narrow2`}
                   onClick={handleMoveUp}
                 >
                   <BiChevronsDown />
-                  <span id={`movedown${d}-span`} className='tooltip above left'>
+                  <span id={`movedown${d}-span`} className='tooltip above'>
                     {EMoveViewDown[language]}
                   </span>
                 </button>
