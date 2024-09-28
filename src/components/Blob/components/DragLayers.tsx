@@ -16,8 +16,6 @@ import { ELanguages } from '../../../interfaces'
 import DragLayer from './DragLayer'
 import { ESelectedBlobNone, EThankYouForPlaying } from '../../../interfaces/blobs'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
-import useTimeout from '../../../hooks/useTimeout'
-import { notify } from '../../../reducers/notificationReducer'
 
 interface DragLayerProps {
   layer: number
@@ -50,7 +48,7 @@ interface DragLayerProps {
   scroll: boolean
   clickOutsideRef: RefObject<HTMLDivElement>
   colorswitch: () => string
-  addRandomDraggable: (layer: number) => void
+  addRandomDraggable: (x_pos: string, y_pos: string) => void
 }
 
 let moveElement: boolean
@@ -865,7 +863,7 @@ const DragLayers = (props: DragLayerProps) => {
         e.preventDefault()
         if (reset) {
           reset = false
-          props.addRandomDraggable(parseInt(layer))
+          props.addRandomDraggable(draggable.x, draggable.y)
           setTimeout(cooldown, 200)
         }
         break
