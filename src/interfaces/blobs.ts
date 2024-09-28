@@ -299,13 +299,23 @@ export enum EMakeBlobLargerByPressingBL {
   fi = 'Suurenna mollukkaa painamalla B tai L',
 }
 export enum ECloneABlobByPressingCOr {
-  en = 'Clone a blob by pressing C or +',
-  es = 'Clone un blob presionando C3 o +',
-  fr = 'Clonez un blob en appuyant sur C ou +',
-  de = 'Klonen Sie einen Blob, indem Sie C oder + drücken',
-  pt = 'Clone um blob pressionando C ou +',
-  cs = 'Klonujte blob stisknutím C nebo +',
-  fi = 'Tee mollukasta kopio painamalla C tai +',
+  en = 'Clone a blob by pressing C or D',
+  es = 'Clone un blob presionando C o D',
+  fr = 'Clonez un blob en appuyant sur C ou D',
+  de = 'Klonen Sie einen Blob, indem Sie C oder D drücken',
+  pt = 'Clone um blob pressionando C ou D',
+  cs = 'Klonujte blob stisknutím C nebo D',
+  fi = 'Tee mollukasta kopio painamalla C tai D',
+}
+
+export enum EMakeANewRandomBlobByPressingPlus {
+  en = 'Make a new random blob by pressing +',
+  es = 'Haga un nuevo blob aleatorio presionando +',
+  fr = 'Faites un nouveau blob aléatoire en appuyant sur +',
+  de = 'Erstellen Sie einen neuen zufälligen Blob, indem Sie + drücken',
+  pt = 'Faça um novo blob aleatório pressionando +',
+  cs = 'Vytvořte nový náhodný blob stisknutím +',
+  fi = 'Luo uusi satunnainen mollukka painamalla +',
 }
 export enum ERemoveABlobByPressingDeleteOr {
   en = 'Remove a blob by pressing Delete or -',
@@ -1292,4 +1302,13 @@ export enum EPressSpaceOrRWithABlobInFocusToCycleThroughRandomColors {
   pt = 'Pressione Espaço ou R com um blob em foco para percorrer cores aleatórias',
   cs = 'Stiskněte mezerník nebo R s fokusem na blob procházet náhodné barvy',
   fi = 'Paina välilyöntiä tai R mollukan ollessa valittuna vaihtaaksesi värejä satunnaisesti',
+}
+export enum EThankYouForPlaying {
+  en = 'Thank you for playing!',
+  es = '¡Gracias por jugar!',
+  fr = 'Merci d avoir joué!',
+  de = 'Danke fürs Spielen!',
+  pt = 'Obrigado por jogar!',
+  cs = 'Děkujeme za hraní!',
+  fi = 'Kiitos pelaamisesta!',
 }

@@ -106,7 +106,7 @@ const Blob = ({
           '10.5px', //<32
           '10px',
         ]
-      : ['5.1px', '5.2px', '5.3px', '5.7px', '6.7px', '7.4px', '7.9px'] // breakpoints for hitbox size due to varying levels of blur between the containers and blob sizes
+      : ['5.1px', '5.2px', '5.6px', '6.8px', '7.5px', '8px', '8.3px'] // breakpoints for hitbox size due to varying levels of blur between the containers and blob sizes
 
   return (
     <li

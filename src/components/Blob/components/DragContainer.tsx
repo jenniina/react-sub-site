@@ -817,11 +817,6 @@ export default function DragContainer({
           if (loadedDraggables && loadedDraggables.length > 0) {
             makeFromStorage(loadedDraggables)
           }
-
-          // dispatch({
-          //   type: 'setDraggablesAtD',
-          //   payload: { d, draggables: loadedDraggables },
-          // })
           setHasBeenMade(true)
         } else if (
           (loadedDraggables === null || loadedDraggables === undefined) &&
@@ -843,6 +838,52 @@ export default function DragContainer({
       setHighestZIndex(highestZ)
     }
   }, [draggables[d]])
+
+  function isValidDraggable(draggable: any): draggable is Draggable {
+    return (
+      typeof draggable === 'object' &&
+      draggable !== null &&
+      typeof draggable.layer === 'number' &&
+      typeof draggable.id === 'string' &&
+      typeof draggable.number === 'number' &&
+      typeof draggable.i === 'number' &&
+      typeof draggable.x === 'string' &&
+      typeof draggable.y === 'string' &&
+      typeof draggable.z === 'string' &&
+      !isNaN(Number(draggable.z)) &&
+      typeof draggable.background === 'string'
+    )
+  }
+
+  function correctDraggable(draggable: any): Draggable {
+    return {
+      layer: typeof draggable.layer === 'number' ? draggable.layer : 0,
+      id: typeof draggable.id === 'string' ? draggable.id : `blob${Date.now()}`,
+      number: typeof draggable.number === 'number' ? draggable.number : 0,
+      i: typeof draggable.i === 'number' ? draggable.i : 0,
+      x: typeof draggable.x === 'string' ? draggable.x : '0px',
+      y: typeof draggable.y === 'string' ? draggable.y : '0px',
+      z: !isNaN(Number(draggable.z)) ? draggable.z : '1',
+      background:
+        typeof draggable.background === 'string'
+          ? draggable.background
+          : 'linear-gradient(90deg, cyan, greenyellow)',
+    }
+  }
+
+  function updateInvalidDraggables() {
+    const correctedDraggables = draggables[d].map((draggable) =>
+      isValidDraggable(draggable) ? draggable : correctDraggable(draggable)
+    )
+    dispatch({
+      type: 'setDraggablesAtD',
+      payload: { d, draggables: correctedDraggables },
+    })
+  }
+
+  // useEffect(() => {
+  //   updateInvalidDraggables() // temporary
+  // }, [draggables[d]])
 
   function makeFromStorage(blobs: Draggable[]) {
     if (!hasBeenMade && blobs && blobs?.length > 0) {
@@ -871,16 +912,16 @@ export default function DragContainer({
   }
 
   const handleMoveLeft = () => {
-    dispatch({ type: 'moveDraggablesLeft', payload: {} })
+    dispatch({ type: 'moveDraggablesLeft', payload: { d } })
   }
   const handleMoveRight = () => {
-    dispatch({ type: 'moveDraggablesRight', payload: {} })
+    dispatch({ type: 'moveDraggablesRight', payload: { d } })
   }
   const handleMoveUp = () => {
-    dispatch({ type: 'moveDraggablesUp', payload: {} })
+    dispatch({ type: 'moveDraggablesUp', payload: { d } })
   }
   const handleMoveDown = () => {
-    dispatch({ type: 'moveDraggablesDown', payload: {} })
+    dispatch({ type: 'moveDraggablesDown', payload: { d } })
   }
 
   function stopSway(
@@ -889,15 +930,6 @@ export default function DragContainer({
       | PointerEventReact<HTMLButtonElement>
   ) {
     e.preventDefault()
-
-    // if (!paused && dragWrap.current) {
-    //   setPaused(true)
-    //   dragWrap.current.classList.add('paused')
-    // } else if (paused && dragWrap.current) {
-    //   setPaused(false)
-    //   dragWrap.current.classList.remove('paused')
-    // }
-
     const draggables = dragWrapOuter.current?.querySelectorAll('.dragzone')
     if (draggables && !paused) {
       draggables.forEach((draggable) => {
@@ -940,8 +972,6 @@ export default function DragContainer({
   const escape = (e: KeyboardEvent) => {
     switch (e.key) {
       case 'Escape':
-        //e.preventDefault()
-        //e.stopImmediatePropagation()
         setScroll(true)
         document.body.style.overflowY = 'auto'
         document.body.style.overflowX = 'hidden'
@@ -1036,137 +1066,62 @@ export default function DragContainer({
   }
 
   const colorswitch = () => {
-    let number: number = Math.ceil(getRandomMinMax(0.0001, 40))
-    switch (number) {
-      case 1:
-        color = 'cyan'
-        break
-      case 2:
-        color = 'lemonchiffon'
-        break
-      case 3:
-        color = 'pink'
-        break
-      case 4:
-        color = 'lemonchiffon'
-        break
-      case 5:
-        color = 'orangered'
-        break
-      case 6:
-        color = 'magenta'
-        break
-      case 7:
-        color = 'deepskyblue'
-        break
-      case 8:
-        color = 'darkorange'
-        break
-      case 9:
-        color = 'tomato'
-        break
-      case 10:
-        color = 'violet'
-        break
-      case 11:
-        color = 'dodgerblue'
-        break
-      case 12:
-        color = 'greenyellow'
-        break
-      case 13:
-        color = 'orange'
-        break
-      case 14:
-        color = 'silver'
-        break
-      case 15:
-        color = 'darkgray'
-        break
-      case 16:
-        color = 'gray'
-        break
-      case 17:
-        color = 'hotpink'
-        break
-      case 18:
-        color = 'wheat'
-        break
-      case 19:
-        color = 'sandybrown'
-        break
-      case 20:
-        color = 'rosybrown'
-        break
-      case 21:
-        color = 'dimgray'
-        break
-      case 22:
-        color = 'darkkhaki'
-        break
-      case 23:
-        color = 'darkseagreen'
-        break
-      case 24:
-        color = 'slateblue'
-        break
-      case 25:
-        color = 'royalblue'
-        break
-      case 26:
-        color = 'moccasin'
-        break
-      case 27:
-        color = 'burlywood'
-        break
-      case 28:
-        color = 'chocolate'
-        break
-      case 29:
-        color = 'cadetblue'
-        break
-      case 30:
-        color = 'mediumpurple'
-        break
-      case 31:
-        color = 'sienna'
-        break
-      case 32:
-        color = 'peru'
-        break
-      case 33:
-        color = 'indianred'
-        break
-      case 34:
-        color = 'palevioletred'
-        break
-      case 35:
-        color = 'plum'
-        break
-      case 36:
-        color = 'palegreen'
-        break
-      case 37:
-        color = 'mediumaquamarine'
-        break
-      case 38:
-        color = 'lightsteelblue'
-        break
-      case 39:
-        color = 'aquamarine'
-        break
-      case 40:
-        color = 'yellowgreen'
-        break
-      default:
-        color = 'cyan'
-        break
-    }
-    return color
+    const colors = [
+      'cyan',
+      'lemonchiffon',
+      'pink',
+      'orangered',
+      'magenta',
+      'deepskyblue',
+      'darkorange',
+      'tomato',
+      'violet',
+      'dodgerblue',
+      'greenyellow',
+      'orange',
+      'silver',
+      'darkgray',
+      'gray',
+      'hotpink',
+      'wheat',
+      'sandybrown',
+      'rosybrown',
+      'dimgray',
+      'darkkhaki',
+      'darkseagreen',
+      'slateblue',
+      'royalblue',
+      'moccasin',
+      'burlywood',
+      'chocolate',
+      'cadetblue',
+      'mediumpurple',
+      'sienna',
+      'peru',
+      'indianred',
+      'palevioletred',
+      'plum',
+      'palegreen',
+      'mediumaquamarine',
+      'lightsteelblue',
+      'aquamarine',
+      'yellowgreen',
+    ]
+    const randomIndex = Math.floor(Math.random() * colors.length)
+    return colors[randomIndex]
   }
 
-  const addRandomDraggable = () => {
-    if (document.activeElement instanceof HTMLElement) document.activeElement.blur() // Unfocus the button after clicking, as the tooltip will otherwise stay visible and be in the way
+  useEffect(() => {
+    return
+  }, [state.draggables])
+
+  const addRandomDraggable = (layer: number = activeLayer) => {
+    if (
+      //makeRandom0 is focused:
+      document.activeElement instanceof HTMLElement &&
+      document.activeElement.id === `make-random${d}`
+    )
+      document.activeElement.blur() // Unfocus the button after clicking, as the tooltip will otherwise stay visible and be in the way
 
     if (hiddenLayers.has(activeLayer)) {
       dispatch2(notify(ELayerHidden[language], true, 8))
@@ -1178,24 +1133,26 @@ export default function DragContainer({
     const colorSecond = colorswitch()
 
     const maxId = Math.max(
-      ...draggables[d].map((draggable: Draggable) =>
+      ...state.draggables[d].map((draggable: Draggable) =>
         parseInt(draggable.id.split('-')[0].replace('blob', ''), 10)
       )
     )
 
+    const highestZ = !isNaN(highestZIndex[layer]) ? highestZIndex[layer] + 1 : 1
+
     const newDraggable: Draggable = {
-      layer: activeLayer,
+      layer,
       id: `blob${maxId + 1}-${d}`,
       number: maxId + 1,
       i: Math.ceil(getRandomMinMax(6.5, 10)),
       x: `${(windowWidth / 100) * getRandomMinMax(25, 55)}px`,
-      y: `${(windowHeight / 100) * getRandomMinMax(2, 15)}px`,
-      z: `${highestZIndex[activeLayer] + 1}`,
+      y: `${(windowHeight / 100) * getRandomMinMax(2, 10)}px`,
+      z: `${highestZ}`,
       background: `linear-gradient(${angle ?? '90deg'}, ${colorFirst ?? 'cyan'},${
         colorSecond ?? 'greenyellow'
       })`,
     }
-    dispatch({ type: 'addDraggable', payload: { d, draggable: newDraggable } })
+    dispatch({ type: 'duplicateDraggable', payload: { d, draggable: newDraggable } })
   }
 
   const getPosition = (draggable: HTMLElement) => {
@@ -1404,22 +1361,32 @@ export default function DragContainer({
   }, [windowWidth, windowHeight, scroll])
 
   const widthResize = () => {
-    const y_pos = [10, 32, 54, 76] // color block y positions
-    //place these items every time the window is resized
-    if (makeMore0.current && dragWrap.current) place(makeMore0.current, 23, 0)
+    const breakpointSmallest = 250
+    const breakpointSmall = 300
+    const y_pos = [12, 34, 56, 78] // color block y positions
+    //place these items every time the window is resized:
+    if (makeMore0.current && dragWrap.current && windowWidth < breakpointSmallest)
+      place(makeMore0.current, 15, 0)
+    else if (makeMore0.current && dragWrap.current) place(makeMore0.current, 23, 0)
     if (makeRandom0.current && dragWrap.current)
       place(
         makeRandom0.current,
         50 - (makeRandom0.current.offsetWidth / dragWrap.current.offsetWidth) * 50,
         0
       )
-    if (makeSmaller0.current && dragWrap.current)
+    if (makeSmaller0.current && dragWrap.current && windowWidth < breakpointSmallest)
+      place(
+        makeSmaller0.current,
+        85 - (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
+        0.3
+      )
+    else if (makeSmaller0.current && dragWrap.current)
       place(
         makeSmaller0.current,
         77 - (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
         0.3
       )
-    if (layerDecrease.current && dragWrap.current && windowWidth < 300)
+    if (layerDecrease.current && dragWrap.current && windowWidth < breakpointSmall)
       place(
         layerDecrease.current,
         27,
@@ -1431,7 +1398,7 @@ export default function DragContainer({
         32,
         100 - (layerDecrease.current.offsetHeight / dragWrap.current.offsetHeight) * 100
       )
-    if (layerIncrease.current && dragWrap.current && windowWidth < 300)
+    if (layerIncrease.current && dragWrap.current && windowWidth < breakpointSmall)
       place(
         layerIncrease.current,
         73 - (layerIncrease.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
@@ -1443,7 +1410,7 @@ export default function DragContainer({
         68 - (layerIncrease.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
         100 - (layerIncrease.current.offsetHeight / dragWrap.current.offsetHeight) * 100
       )
-    if (deleteBlob0.current && dragWrap.current && windowWidth < 300)
+    if (deleteBlob0.current && dragWrap.current && windowWidth < breakpointSmall)
       place(
         deleteBlob0.current,
         2,
@@ -1455,7 +1422,7 @@ export default function DragContainer({
         10,
         100 - (deleteBlob0.current.offsetHeight / dragWrap.current.offsetHeight) * 100
       )
-    if (makeLarger0.current && dragWrap.current && windowWidth < 300)
+    if (makeLarger0.current && dragWrap.current && windowWidth < breakpointSmall)
       place(
         makeLarger0.current,
         98 - (makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) * 100,
@@ -1990,7 +1957,7 @@ export default function DragContainer({
                   }`}
                   id={`make-random${d}`}
                   aria-labelledby={`make-random${d}-span`}
-                  onClick={() => addRandomDraggable()}
+                  onClick={() => addRandomDraggable(activeLayer)}
                 >
                   <FaPlus />
                   <span
@@ -2088,6 +2055,7 @@ export default function DragContainer({
                     scroll={scroll}
                     setScroll={setScroll}
                     clickOutsideRef={dragWrap}
+                    addRandomDraggable={addRandomDraggable}
                   />
                 </div>
               </div>

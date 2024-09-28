@@ -37,6 +37,7 @@ import {
   ELayers,
   ELightness,
   ELoginToSaveBlobsToServer,
+  EMakeANewRandomBlobByPressingPlus,
   EMakeARandomBlobByClickingThePlusSign,
   EMakeBlobLargerByPressingBL,
   EMakeBlobSmallerByPressingS,
@@ -259,6 +260,7 @@ export default function BlobPage({
                           <li>{EMakeBlobSmallerByPressingS[language]}</li>
                           <li>{EMakeBlobLargerByPressingBL[language]}</li>
                           <li>{ECloneABlobByPressingCOr[language]}</li>
+                          <li>{EMakeANewRandomBlobByPressingPlus[language]}</li>
                           <li>{ERemoveABlobByPressingDeleteOr[language]}</li>
                           <li>
                             {EChangeTheLayerOfTheFocusedBlobByPressingTheNumber[language]}
