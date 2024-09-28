@@ -48,7 +48,7 @@ interface DragLayerProps {
   scroll: boolean
   clickOutsideRef: RefObject<HTMLDivElement>
   colorswitch: () => string
-  addRandomDraggable: (x_pos: string, y_pos: string) => void
+  addRandomDraggable: (x_pos: string, y_pos: string, layer: number) => void
 }
 
 let moveElement: boolean
@@ -863,7 +863,7 @@ const DragLayers = (props: DragLayerProps) => {
         e.preventDefault()
         if (reset) {
           reset = false
-          props.addRandomDraggable(draggable.x, draggable.y)
+          props.addRandomDraggable(draggable.x, draggable.y, draggable.layer)
           setTimeout(cooldown, 200)
         }
         break
