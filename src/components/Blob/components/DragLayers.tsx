@@ -14,7 +14,7 @@ import {
 import { Draggable, focusedBlob, ColorPair } from '../interfaces'
 import { ELanguages } from '../../../interfaces'
 import DragLayer from './DragLayer'
-import { ESelectedBlobNone } from '../../../interfaces/blobs'
+import { ESelectedBlobNone, EThankYouForPlaying } from '../../../interfaces/blobs'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
 import useTimeout from '../../../hooks/useTimeout'
 import { notify } from '../../../reducers/notificationReducer'
@@ -50,6 +50,7 @@ interface DragLayerProps {
   scroll: boolean
   clickOutsideRef: RefObject<HTMLDivElement>
   colorswitch: () => string
+  addRandomDraggable: (layer: number) => void
 }
 
 let moveElement: boolean
@@ -58,7 +59,6 @@ let reset: boolean = true
 let initialX = 0
 let initialY = 0
 
-let initialDistance: number
 let initialScale: number
 let tapCount: number = 0
 let tapTimeout: NodeJS.Timeout | null = null
@@ -178,7 +178,7 @@ const DragLayers = (props: DragLayerProps) => {
       document.removeEventListener('keydown', keyDown)
       document.removeEventListener('touchmove', preventDefault)
     }
-  }, [currentFocusedElement, props.scroll])
+  }, [currentFocusedElement, props.scroll, isTouchDevice, keyDown])
 
   const start = useCallback(
     (
@@ -227,8 +227,8 @@ const DragLayers = (props: DragLayerProps) => {
       //;(target as HTMLElement).focus() // This breaks dragging once a key is pressed and only clears after clicking away from the target
 
       document.addEventListener('keydown', keyDown)
-      const layer = (target as HTMLElement).style.getPropertyValue('--layer')
-      props.setActiveLayer(parseInt(layer) ?? 0)
+      const blobLayer = (target as HTMLElement).style.getPropertyValue('--layer')
+      props.setActiveLayer(isNaN(parseInt(blobLayer)) ? 1 : parseInt(blobLayer))
 
       if (isTouchDevice()) {
         document.addEventListener('touchmove', preventDefault, { passive: false })
@@ -335,7 +335,7 @@ const DragLayers = (props: DragLayerProps) => {
         tapCount = 0
       }, 300)
 
-      // document.removeEventListener('keydown', keyDown)
+      document.removeEventListener('keydown', keyDown)
       let value = (target as HTMLElement).style.getPropertyValue('--i') ?? '7'
       let scale = parseFloat(value)
       scale = isNaN(scale) ? 7 : scale
@@ -472,7 +472,7 @@ const DragLayers = (props: DragLayerProps) => {
 
       props.getPosition(target as HTMLElement)
       ;(target as HTMLElement).classList.remove('drag')
-      // document.removeEventListener('keydown', keyDown)
+      document.removeEventListener('keydown', keyDown)
       ;(target as HTMLElement).blur()
     },
     [keyDown]
@@ -527,20 +527,13 @@ const DragLayers = (props: DragLayerProps) => {
     currentFocusedElement = null
   }
 
-  const [dragWrapRect, setDragWrapRect] = useState<DOMRect | undefined>(
-    props.dragWrap.current?.getBoundingClientRect()
-  )
-  const [dragWrapCurrent, setDragWrapCurrent] = useState<HTMLElement | null>(
-    props.dragWrap.current
-  )
-
   //on focused blob
   function focused(draggable: HTMLElement) {
     // props.getPosition(draggable)
     currentFocusedElement = draggable
     draggable.classList.add('drag')
     const layerStyle = (draggable as HTMLElement).style.getPropertyValue('--layer')
-    props.setActiveLayer(parseInt(layerStyle) ?? 0)
+    props.setActiveLayer(parseInt(layerStyle) ?? 2)
     document.addEventListener('keydown', keyDown)
     draggable.draggable = true
   }
@@ -640,8 +633,10 @@ const DragLayers = (props: DragLayerProps) => {
       parseFloat(target.style.getPropertyValue('top')) ??
       0
 
+    const layer = target.style.getPropertyValue('--layer')
+
     const draggable: Draggable = {
-      layer: parseInt(target.style.getPropertyValue('--layer')) ?? props.layer,
+      layer: parseInt(layer) ?? props.layer,
       id: target.id,
       number: parseInt(target.id.replace('blob', '').split('-')[0], 10),
       i: scale,
@@ -666,38 +661,52 @@ const DragLayers = (props: DragLayerProps) => {
       setFocus(target)
     }
 
+    const cooldown = () => {
+      reset = true
+    }
+
     const handleNumberPress = (layer: number) => {
       e.preventDefault()
       if (reset) {
         reset = false
         props.changeBlobLayer(draggable, layer)
-        const cooldown = () => {
-          reset = true
-        }
         setTimeout(cooldown, 100)
       }
     }
     const key = e.key
-    if (key >= '1' && key <= props.layerAmount?.toString()) {
+    if (parseInt(key) >= 1 && parseInt(key) <= props.layerAmount) {
       handleNumberPress(parseInt(key) - 1)
     }
 
     switch (e.key) {
       case 'ArrowLeft':
         e.preventDefault()
-        updatePosition(attrLeft - movePx, attrTop)
+        if (reset) {
+          updatePosition(attrLeft - movePx, attrTop)
+          setTimeout(cooldown, 100)
+        }
+
         break
       case 'ArrowRight':
         e.preventDefault()
-        updatePosition(attrLeft + movePx, attrTop)
+        if (reset) {
+          updatePosition(attrLeft + movePx, attrTop)
+          setTimeout(cooldown, 100)
+        }
         break
       case 'ArrowUp':
         e.preventDefault()
-        updatePosition(attrLeft, attrTop - movePx)
+        if (reset) {
+          updatePosition(attrLeft, attrTop - movePx)
+          setTimeout(cooldown, 100)
+        }
         break
       case 'ArrowDown':
         e.preventDefault()
-        updatePosition(attrLeft, attrTop + movePx)
+        if (reset) {
+          updatePosition(attrLeft, attrTop + movePx)
+          setTimeout(cooldown, 100)
+        }
         break
       case 'Escape':
         e.preventDefault()
@@ -714,17 +723,22 @@ const DragLayers = (props: DragLayerProps) => {
         props.dragWrap.current?.blur()
         //Go to exit notice in order to remove focus from the app
         if (props.exitApp.current)
-          props.exitApp.current.textContent = 'Thank you for playing!'
+          props.exitApp.current.textContent = EThankYouForPlaying[props.language]
         props.exitApp.current?.focus()
         break
       case 'Enter': //Cycle through colors
         e.preventDefault()
         e.stopPropagation()
-        if ((target as HTMLElement).closest(`#drag-wrap${props.d}`)) {
-          props.setColorIndex((prevColorIndex) => {
-            const nextColorIndex = (prevColorIndex + 1) % props.colorPairs[props.d].length
-            return nextColorIndex // Return the new color index
-          })
+        if (reset) {
+          reset = false
+          if ((target as HTMLElement).closest(`#drag-wrap${props.d}`)) {
+            props.setColorIndex((prevColorIndex) => {
+              const nextColorIndex =
+                (prevColorIndex + 1) % props.colorPairs[props.d].length
+              return nextColorIndex // Return the new color index
+            })
+          }
+          setTimeout(cooldown, 100)
         }
         break
       case 'R':
@@ -732,24 +746,27 @@ const DragLayers = (props: DragLayerProps) => {
       case ' ': //Cycle through random colors using colorswitch
         e.preventDefault()
         e.stopPropagation()
-        if ((target as HTMLElement).closest(`#drag-wrap${props.d}`)) {
-          const color1 = props.colorswitch()
-          let color2 = props.colorswitch()
+        if (reset) {
+          reset = false
+          if ((target as HTMLElement).closest(`#drag-wrap${props.d}`)) {
+            const color1 = props.colorswitch()
+            let color2 = props.colorswitch()
 
-          // Ensure color2 is different from color1
-          while (color2 === color1) {
-            color2 = props.colorswitch()
+            if (color2 === color1) {
+              color2 = props.colorswitch()
+            }
+
+            const newBackground = `linear-gradient(${angle}, ${color1}, ${color2})`
+            props.dispatch({
+              type: 'partialUpdate',
+              payload: {
+                d: props.d,
+                id: target.id,
+                update: { background: newBackground },
+              },
+            })
           }
-
-          const newBackground = `linear-gradient(${angle}, ${color1}, ${color2})`
-          props.dispatch({
-            type: 'partialUpdate',
-            payload: {
-              d: props.d,
-              id: target.id,
-              update: { background: newBackground },
-            },
-          })
+          setTimeout(cooldown, 100)
         }
         break
       case 'Z': //Move blob to the bottom of the z-index pile
@@ -767,9 +784,6 @@ const DragLayers = (props: DragLayerProps) => {
               },
             },
           })
-          const cooldown = () => {
-            reset = true
-          }
           setTimeout(cooldown, 100)
         }
         break
@@ -789,9 +803,6 @@ const DragLayers = (props: DragLayerProps) => {
               },
             },
           })
-          const cooldown = () => {
-            reset = true
-          }
           setTimeout(cooldown, 100)
         }
         break
@@ -812,9 +823,6 @@ const DragLayers = (props: DragLayerProps) => {
               },
             },
           })
-          const cooldown = () => {
-            reset = true
-          }
           setTimeout(cooldown, 100)
         }
         break
@@ -838,10 +846,6 @@ const DragLayers = (props: DragLayerProps) => {
               },
             },
           })
-
-          const cooldown = () => {
-            reset = true
-          }
           setTimeout(cooldown, 100)
         }
         break
@@ -849,16 +853,20 @@ const DragLayers = (props: DragLayerProps) => {
       case 'c':
       case 'D':
       case 'd':
-      case '+':
         e.preventDefault()
         //e.stopImmediatePropagation()
         if (reset) {
           reset = false
           makeBlob(draggable)
-          const cooldown = () => {
-            reset = true
-          }
           setTimeout(cooldown, 100)
+        }
+        break
+      case '+': // Make a random blob
+        e.preventDefault()
+        if (reset) {
+          reset = false
+          props.addRandomDraggable(parseInt(layer))
+          setTimeout(cooldown, 200)
         }
         break
       case 'Delete': //remove blob
@@ -868,9 +876,6 @@ const DragLayers = (props: DragLayerProps) => {
         if (reset) {
           reset = false
           removeBlob(draggable)
-          const cooldown = () => {
-            reset = true
-          }
           setTimeout(cooldown, 100)
         }
         break

@@ -23,7 +23,7 @@ function blobReducer(
   if (!action) {
     return state
   }
-  const amount = 6
+  const pxAmount = 6
 
   switch (action.type) {
     case 'setDraggables':
@@ -145,41 +145,49 @@ function blobReducer(
     case 'moveDraggablesLeft':
       return {
         ...state,
-        draggables: state.draggables.map((subArray) =>
-          subArray?.map((draggable) => ({
-            ...draggable,
-            x: `${parseInt(draggable.x) - amount}px`,
-          }))
+        draggables: state.draggables.map((subArray, index) =>
+          index === action.payload.d
+            ? subArray?.map((draggable) => ({
+                ...draggable,
+                x: `${parseInt(draggable.x) - pxAmount}px`,
+              }))
+            : subArray
         ),
       }
     case 'moveDraggablesRight':
       return {
         ...state,
-        draggables: state.draggables.map((subArray) =>
-          subArray?.map((draggable) => ({
-            ...draggable,
-            x: `${parseInt(draggable.x) + amount}px`,
-          }))
+        draggables: state.draggables.map((subArray, index) =>
+          index === action.payload.d
+            ? subArray?.map((draggable) => ({
+                ...draggable,
+                x: `${parseInt(draggable.x) + pxAmount}px`,
+              }))
+            : subArray
         ),
       }
     case 'moveDraggablesUp':
       return {
         ...state,
-        draggables: state.draggables.map((subArray) =>
-          subArray?.map((draggable) => ({
-            ...draggable,
-            y: `${parseInt(draggable.y) - amount}px`,
-          }))
+        draggables: state.draggables.map((subArray, index) =>
+          index === action.payload.d
+            ? subArray?.map((draggable) => ({
+                ...draggable,
+                y: `${parseInt(draggable.y) - pxAmount}px`,
+              }))
+            : subArray
         ),
       }
     case 'moveDraggablesDown':
       return {
         ...state,
-        draggables: state.draggables.map((subArray) =>
-          subArray?.map((draggable) => ({
-            ...draggable,
-            y: `${parseInt(draggable.y) + amount}px`,
-          }))
+        draggables: state.draggables.map((subArray, index) =>
+          index === action.payload.d
+            ? subArray?.map((draggable) => ({
+                ...draggable,
+                y: `${parseInt(draggable.y) + pxAmount}px`,
+              }))
+            : subArray
         ),
       }
     case 'setBackgroundColor':
