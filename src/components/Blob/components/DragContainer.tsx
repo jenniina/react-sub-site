@@ -1117,7 +1117,8 @@ export default function DragContainer({
 
   const addRandomDraggable = (
     x_pos: string = `${(windowWidth / 100) * getRandomMinMax(25, 55)}px`,
-    y_pos: string = `${(windowHeight / 100) * getRandomMinMax(2, 10)}px`
+    y_pos: string = `${(windowHeight / 100) * getRandomMinMax(2, 10)}px`,
+    layer: number = activeLayer
   ) => {
     if (
       //makeRandom0 is focused:
@@ -1141,12 +1142,10 @@ export default function DragContainer({
       )
     )
 
-    const highestZ = !isNaN(highestZIndex[activeLayer])
-      ? highestZIndex[activeLayer] + 1
-      : 1
+    const highestZ = !isNaN(highestZIndex[layer]) ? highestZIndex[layer] + 1 : 1
 
     const newDraggable: Draggable = {
-      layer: activeLayer,
+      layer,
       id: `blob${maxId + 1}-${d}`,
       number: maxId + 1,
       i: Math.ceil(getRandomMinMax(6.5, 10)),
