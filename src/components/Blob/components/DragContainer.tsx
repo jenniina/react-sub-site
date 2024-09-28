@@ -1115,7 +1115,10 @@ export default function DragContainer({
     return
   }, [state.draggables])
 
-  const addRandomDraggable = (layer: number = activeLayer) => {
+  const addRandomDraggable = (
+    x_pos: string = `${(windowWidth / 100) * getRandomMinMax(25, 55)}px`,
+    y_pos: string = `${(windowHeight / 100) * getRandomMinMax(2, 10)}px`
+  ) => {
     if (
       //makeRandom0 is focused:
       document.activeElement instanceof HTMLElement &&
@@ -1138,15 +1141,17 @@ export default function DragContainer({
       )
     )
 
-    const highestZ = !isNaN(highestZIndex[layer]) ? highestZIndex[layer] + 1 : 1
+    const highestZ = !isNaN(highestZIndex[activeLayer])
+      ? highestZIndex[activeLayer] + 1
+      : 1
 
     const newDraggable: Draggable = {
-      layer,
+      layer: activeLayer,
       id: `blob${maxId + 1}-${d}`,
       number: maxId + 1,
       i: Math.ceil(getRandomMinMax(6.5, 10)),
-      x: `${(windowWidth / 100) * getRandomMinMax(25, 55)}px`,
-      y: `${(windowHeight / 100) * getRandomMinMax(2, 10)}px`,
+      x: x_pos,
+      y: y_pos,
       z: `${highestZ}`,
       background: `linear-gradient(${angle ?? '90deg'}, ${colorFirst ?? 'cyan'},${
         colorSecond ?? 'greenyellow'
@@ -1957,7 +1962,7 @@ export default function DragContainer({
                   }`}
                   id={`make-random${d}`}
                   aria-labelledby={`make-random${d}-span`}
-                  onClick={() => addRandomDraggable(activeLayer)}
+                  onClick={() => addRandomDraggable()}
                 >
                   <FaPlus />
                   <span
