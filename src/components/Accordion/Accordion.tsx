@@ -29,6 +29,7 @@ interface accordionProps {
   onClick?: () => void
   id?: string
   hideBrackets?: boolean
+  showButton?: boolean
   tooltip?: string
   y?: 'above' | 'below'
   x?: 'left' | 'right'
@@ -74,6 +75,14 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
     }
   })
 
+  const scrollToOpenBtn = () => {
+    toggleVisibility()
+    const anchor = document.querySelector(`.${props.className}-container`)
+    if (anchor) {
+      anchor.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   return (
     <div
       id={`${props.id ?? props.className}-container`}
@@ -115,6 +124,17 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
         </button>
 
         {props.children}
+
+        {props.showButton && (
+          <button
+            type='button'
+            className={`accordion-btn close ${props.className}`}
+            onClick={scrollToOpenBtn}
+          >
+            <span>&#xFE3D;</span>
+            {EClose[props.language]}
+          </button>
+        )}
       </div>
     </div>
   )

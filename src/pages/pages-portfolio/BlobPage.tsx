@@ -25,6 +25,7 @@ import {
   ECloneABlobByDraggingItToTheTopLeftPlusSign,
   ECloneABlobByPressingCOr,
   ECloneable,
+  EDog,
   EDownloadYourArtwork,
   EDragBlobToIconsNextToLayerButtons,
   EEditArtwork,
@@ -87,6 +88,7 @@ import { EClickHereToSeeFeatures } from '../../components/Jokes/interfaces'
 import birb from '../../assets/blob-birb.png'
 import fish from '../../assets/blob-fish.png'
 import bubbly from '../../assets/bubbly-fish.png'
+import dog from '../../assets/blob-dog.png'
 import { CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -126,6 +128,7 @@ export default function BlobPage({
                   language={language}
                   text={EClickHereToSeeFeatures[language]}
                   className='features-blobs'
+                  showButton
                 >
                   <div className='medium'>
                     <h2>{EFeatures[language]}</h2>
@@ -286,6 +289,7 @@ export default function BlobPage({
                   language={language}
                   text={ESeeSampleArtworkCreatedWithTheApp[language]}
                   className='sample-img'
+                  showButton
                 >
                   <figure>
                     <img src={birb} style={blobStyle} alt={EFlyingBird[language]} />
@@ -303,6 +307,12 @@ export default function BlobPage({
                     <img src={bubbly} style={blobStyle} alt={EBubblesAndFish[language]} />
                     <figcaption>
                       {ESampleArtwork[language]}: {EBubblesAndFish[language]}
+                    </figcaption>
+                  </figure>
+                  <figure>
+                    <img src={dog} style={blobStyle} alt={`${EDog[language]}?`} />
+                    <figcaption>
+                      {ESampleArtwork[language]}: {`${EDog[language]}?`}
                     </figcaption>
                   </figure>
                 </Accordion>

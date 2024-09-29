@@ -1072,6 +1072,15 @@ export enum EBubblesAndFish {
   cs = 'Bubliny a ryba',
   fi = 'Kuplia ja kala',
 }
+export enum EDog {
+  en = 'Dog',
+  es = 'Perro',
+  fr = 'Chien',
+  de = 'Hund',
+  pt = 'Cachorro',
+  cs = 'Pes',
+  fi = 'Koira',
+}
 export enum EGetMoreLayers {
   en = 'Get more layers',
   es = 'Obtén más capas',
