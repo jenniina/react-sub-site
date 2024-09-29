@@ -681,6 +681,38 @@ body .z {
   opacity: 0.8;
 }
 
+.accordion-inner {
+  transition-property: transform, opacity;
+  transition-timing-function: ease-in-out;
+  transition-duration: 330ms;
+  transform-origin: top;
+  transform: scaleY(0);
+  overflow: hidden;
+}
+
+.accordion-inner.animating.closed {
+  transform: scaleY(1);
+  opacity: 1;
+}
+.accordion-inner.animating.open {
+  transform: scaleY(0);
+  opacity: 0;
+}
+.accordion-inner.open {
+  transform: scaleY(1);
+  opacity: 1;
+  height: max-content;
+}
+.accordion-inner.closed {
+  transform: scaleY(0);
+  height: 0;
+  opacity: 0;
+}
+.accordion-container button.open {
+  margin: 0 auto;
+  flex: 1 0 auto;
+}
+
 nav .open.password-reset-container {
   width: 100%;
 }
