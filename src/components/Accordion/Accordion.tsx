@@ -37,15 +37,7 @@ interface accordionProps {
 
 const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefined) => {
   const [visible, setVisible] = useState(false)
-
-  // useEffect(() => {
-  //   if (props.isOpen !== undefined) {
-  //     setVisible(props.isOpen)
-  //     if (props.setIsFormOpen) {
-  //       props.setIsFormOpen(props.isOpen)
-  //     }
-  //   }
-  // }, [props.isOpen])
+  const [isAnimating, setIsAnimating] = useState(false)
 
   useEffect(() => {
     setVisible(props.isOpen || false)
@@ -59,13 +51,28 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
   }, [visible])
 
   const toggleVisibility = () => {
-    setVisible(!visible)
-    if (props.setIsFormOpen) {
-      props.setIsFormOpen(!visible)
-    }
-    const anchor = document.querySelector(`#${props.className}-container`)
-    if (anchor) {
-      anchor.scrollIntoView({ behavior: 'smooth' })
+    if (visible) {
+      setIsAnimating(true)
+      setTimeout(() => {
+        setVisible(false)
+        setIsAnimating(false)
+        if (props.setIsFormOpen) {
+          props.setIsFormOpen(false)
+        }
+      }, 300)
+    } else {
+      setIsAnimating(true)
+      setVisible(true)
+      setTimeout(() => {
+        setIsAnimating(false)
+      })
+      if (props.setIsFormOpen) {
+        props.setIsFormOpen(true)
+      }
+      const anchor = document.querySelector(`#${props.className}-container`)
+      if (anchor) {
+        anchor.scrollIntoView({ behavior: 'smooth' })
+      }
     }
   }
 
@@ -96,7 +103,7 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
           props.className
         }`}
         onClick={toggleVisibility}
-        style={visible ? { display: 'none' } : { display: 'inline-block' }}
+        style={visible ? { display: 'none' } : { display: 'flex' }}
       >
         <span aria-hidden='true' className={props.hideBrackets ? 'hide' : ''}>
           &raquo;
@@ -111,8 +118,10 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
       </button>
 
       <div
-        className={`accordion-inner ${props.className}`}
-        style={visible ? { display: 'block' } : { display: 'none' }}
+        className={`accordion-inner ${props.className} ${
+          isAnimating ? 'animating' : ''
+        } ${visible ? 'open' : 'closed'}`}
+        // style={visible ? { display: 'block' } : { display: 'none' }}
       >
         <button
           type='button'
