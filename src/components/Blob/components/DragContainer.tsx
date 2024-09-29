@@ -2277,7 +2277,7 @@ export default function DragContainer({
                     const currentVersions = versions.slice(startIdx, endIdx)
 
                     return (
-                      <Fragment key={`${dKey}:${index}`}>
+                      <div className='flex center margin0auto' key={`${dKey}:${index}`}>
                         {pagination(dKey, current, totalPages)}
                         <ul key={`${dKey}+${index}`} className='blob-versions-wrap'>
                           {currentVersions.map((versionName, index) => (
@@ -2369,7 +2369,7 @@ export default function DragContainer({
                         </ul>
                         {/* Pagination Controls */}
                         {pagination(dKey, current, totalPages)}
-                      </Fragment>
+                      </div>
                     )
                   })
                 )}

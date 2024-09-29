@@ -1063,6 +1063,24 @@ export enum ESwimmingFish {
   cs = 'Plavající ryba',
   fi = 'Uiva kala',
 }
+export enum EBubblesAndFish {
+  en = 'Bubbles and a fish',
+  es = 'Burbujas y un pez',
+  fr = 'Bulles et un poisson',
+  de = 'Blasen und ein Fisch',
+  pt = 'Bolhas e um peixe',
+  cs = 'Bubliny a ryba',
+  fi = 'Kuplia ja kala',
+}
+export enum EDog {
+  en = 'Dog',
+  es = 'Perro',
+  fr = 'Chien',
+  de = 'Hund',
+  pt = 'Cachorro',
+  cs = 'Pes',
+  fi = 'Koira',
+}
 export enum EGetMoreLayers {
   en = 'Get more layers',
   es = 'Obtén más capas',
