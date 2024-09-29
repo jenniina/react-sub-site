@@ -98,7 +98,7 @@ const Blob = ({
   const innerSize =
     d === 0
       ? [
-          '6.1px', //<8
+          '5.9px', //<8
           '8.2px', //<10
           '9.9px', //<20
           '10.8px', //<24
@@ -106,7 +106,7 @@ const Blob = ({
           '10.5px', //<32
           '10px',
         ]
-      : ['5.1px', '5.2px', '5.6px', '6.8px', '7.5px', '8px', '8.3px'] // breakpoints for hitbox size due to varying levels of blur between the containers and blob sizes
+      : ['5.1px', '5.4px', '6.5px', '7px', '7.8px', '8.4px', '8.6px'] // breakpoints for hitbox size due to varying levels of blur between the containers and blob sizes
 
   return (
     <li
