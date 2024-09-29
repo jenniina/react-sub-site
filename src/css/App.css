@@ -682,7 +682,7 @@ body .z {
 }
 
 .accordion-inner {
-  transition-property: transform, opacity;
+  transition-property: transform, opacity, height;
   transition-timing-function: ease-in-out;
   transition-duration: 330ms;
   transform-origin: top;
