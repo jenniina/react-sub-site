@@ -14,6 +14,7 @@ import {
 } from '../../interfaces'
 import {
   EBlurIntoOneAnother,
+  EBubblesAndFish,
   EButtonsTo,
   EChangeBlobColorByDraggingToAColorNodeOnTheSides,
   EChangeBlobSizeByDraggingItToEitherTheLOrSLetterOnTheRightHandSide,
@@ -32,7 +33,6 @@ import {
   EIfABlobYouClickedHidesAnotherYouMayPlaceTheBlobBackToTheBottomOfThePile,
   EIfYouNeedToSetABlobNearTheEdgeOfTheScreen,
   EKeysMayBeUsedWhileMouseIsPressedDown,
-  ELayer,
   ELayerInstructions,
   ELayers,
   ELightness,
@@ -86,6 +86,7 @@ import Accordion from '../../components/Accordion/Accordion'
 import { EClickHereToSeeFeatures } from '../../components/Jokes/interfaces'
 import birb from '../../assets/blob-birb.png'
 import fish from '../../assets/blob-fish.png'
+import bubbly from '../../assets/bubbly-fish.png'
 import { CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -296,6 +297,12 @@ export default function BlobPage({
                     <img src={fish} style={blobStyle} alt={ESwimmingFish[language]} />
                     <figcaption>
                       {ESampleArtwork[language]}: {ESwimmingFish[language]}
+                    </figcaption>
+                  </figure>
+                  <figure>
+                    <img src={bubbly} style={blobStyle} alt={EBubblesAndFish[language]} />
+                    <figcaption>
+                      {ESampleArtwork[language]}: {EBubblesAndFish[language]}
                     </figcaption>
                   </figure>
                 </Accordion>
