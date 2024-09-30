@@ -178,7 +178,6 @@ export enum EColorNames {
   cs = 'Seznam názvů barev',
   fi = 'Värinimien luettelo',
 }
-//Add a color
 export enum EAddAColor {
   en = 'Add a color',
   es = 'Agregar un color',
@@ -187,6 +186,15 @@ export enum EAddAColor {
   pt = 'Adicionar uma cor',
   cs = 'Přidat barvu',
   fi = 'Lisää väri',
+}
+export enum EYouMayAlsoAddOtherWordsForGenericUse {
+  en = 'You may also add other words for generic use',
+  es = 'También puede agregar otras palabras para uso genérico',
+  fr = 'Vous pouvez également ajouter d autres mots à usage générique',
+  de = 'Sie können auch andere Wörter für den generischen Gebrauch hinzufügen',
+  pt = 'Você também pode adicionar outras palavras para uso genérico',
+  cs = 'Můžete také přidat další slova pro obecné použití',
+  fi = 'Voit myös lisätä muita sanoja yleiskäyttöä varten',
 }
 export enum ENewColorsCanBeAdded {
   en = 'New colors can be added',

@@ -105,6 +105,7 @@
   cursor: pointer;
   color: inherit;
   background: none;
+  flex: 0 1 auto;
 }
 .area-dragging > ul {
   background: #3333338c;

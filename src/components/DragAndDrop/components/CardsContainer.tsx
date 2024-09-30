@@ -155,7 +155,7 @@ export const CardsContainer = ({
           language={language}
           text={`*`}
           hideBrackets
-          className={`narrow ${styles['change-status']} change-status`}
+          className={`narrow2 ${styles['change-status']} change-status`}
           tooltip={EEdit[language]}
           x='left'
           y='below'

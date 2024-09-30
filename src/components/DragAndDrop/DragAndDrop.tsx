@@ -17,11 +17,17 @@ import {
   EAddANewCategory,
   ECannotAddMoreCategories,
   ECannotRemoveLastCategory,
+  EAreYouSureYouWantToProceed,
 } from '../../interfaces'
 import { useTheme } from '../../hooks/useTheme'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
-import { EAddAColor, EColorNames, EInvalidColorName } from '../../interfaces/draganddrop'
+import {
+  EAddAColor,
+  EColorNames,
+  EInvalidColorName,
+  EYouMayAlsoAddOtherWordsForGenericUse,
+} from '../../interfaces/draganddrop'
 import { Select, SelectOption } from '../Select/Select'
 import { ESelectCategory } from '../Jokes/interfaces'
 import useLocalStorage from '../../hooks/useStorage'
@@ -297,7 +303,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
   const handleAddColor = (
     e: FormEvent,
     newColor: string,
-    newStatusForItem: Data['status']
+    statusForItem: Data['status']
   ) => {
     e.preventDefault()
     if (isValidColor(newColor)) {
@@ -307,7 +313,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
           id: updatedColors.length - 1,
           content: newColor,
           color: newColor,
-          status: newStatusForItem,
+          status: statusForItem,
           lightness: determineBackgroundLightness(newColor),
         }
         setData((prevData) => [...prevData, newItem])
@@ -315,7 +321,26 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
       })
       containerRef.current?.scrollIntoView({ behavior: 'smooth' })
     } else {
-      dispatch(notify(EInvalidColorName[language], true, 8))
+      if (
+        window.confirm(
+          `${EInvalidColorName[language]}: ${EAreYouSureYouWantToProceed[language]}`
+        )
+      ) {
+        // If the user confirms, add the color anyway with the color lightgray and lightness light. This is to enable users to add sortable items for general use
+        setUserColors((prevColors) => {
+          const updatedColors = [...prevColors, 'lightgray']
+          const newItem: Data = {
+            id: updatedColors.length - 1,
+            content: newColor,
+            color: 'lightgray',
+            status: statusForItem,
+            lightness: 'light',
+          }
+          setData((prevData) => [...prevData, newItem])
+          return updatedColors
+        })
+        containerRef.current?.scrollIntoView({ behavior: 'smooth' })
+      }
     }
   }
 
@@ -407,7 +432,10 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
       </div>
       <div className={styles['add-color']}>
         <h2>{EAddAColor[language]}</h2>
-        <p>{EForExample[language]} darkblue or lightslategray</p>
+        <p>
+          {EForExample[language]} darkblue or lightslategray.{' '}
+          {EYouMayAlsoAddOtherWordsForGenericUse[language]}
+        </p>
         <form
           onSubmit={(e) => handleAddColor(e, newColor, newStatusForItem.label as Status)}
         >
