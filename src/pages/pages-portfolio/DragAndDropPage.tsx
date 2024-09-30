@@ -22,9 +22,11 @@ import {
   EPointerAndTouchUse,
   ESortTheColorsToADifferentContainerOr,
   EStateSavedInLocalStorage,
+  ETipIfYouAddAGenericWordYouCanColorTheCard,
   EToMoveItemsToAnotherContainer,
   EUseTabKeyToNavigateToDragButton,
   EWithTheMenuOpenUseTabKeyToNavigateAnd,
+  EYouMayAlsoAddOtherWordsForGenericUse,
   EYouMayAlsoUseTheItemMenuToChooseADestination,
 } from '../../interfaces/draganddrop'
 import { ETryDraggingTheBlobs } from '../../interfaces/blobs'
@@ -68,6 +70,10 @@ export default function DragAndDropPage({
                   <li>{EStateSavedInLocalStorage[language]}</li>
                   <li>{ECategoriesCanBeRenamed[language]}</li>
                   <li>{ENewColorsCanBeAddedAndRemoved[language]}</li>
+                  <li>
+                    {EYouMayAlsoAddOtherWordsForGenericUse[language]}.{' '}
+                    {ETipIfYouAddAGenericWordYouCanColorTheCard[language]}
+                  </li>
                 </ul>
                 <h3>{EInstructions[language]}</h3>
                 <h4>{EPointerAndTouchUse[language]}</h4>

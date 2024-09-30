@@ -177,6 +177,7 @@ function CardSingle({
       onDragStart={(e) => handleDragStart(e, id)}
       onDragEnter={(e) => handleDragEnter(e, id)}
       onDragOver={(e) => handleDragOver(e)}
+      onDragEnd={() => handleDragging(false)}
       role={'listitem'}
       title={data?.status}
       tabIndex={0}

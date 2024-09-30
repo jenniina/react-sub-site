@@ -86,7 +86,7 @@ import {
   EScreenshot,
   EToggleControlVisibility,
 } from '../interfaces/blobs'
-import { EAddAColor } from '../interfaces/draganddrop'
+import { EAddAColor, EAddGenericCardsAndColorThem } from '../interfaces/draganddrop'
 import Accordion from '../components/Accordion/Accordion'
 
 export default function Home({
@@ -173,6 +173,17 @@ export default function Home({
                     <li>
                       <strong>{ESeptember[language]}</strong>
                       <ul>
+                        <li>
+                          <Link to='/portfolio/draganddrop'>
+                            <RiDragDropLine />
+                            {EDragAndDrop[language]}:
+                          </Link>
+                          <i>
+                            {EAddedNewFeatures[language]}:{' '}
+                            {firstToLowerCase(EAddGenericCardsAndColorThem[language])}
+                          </i>
+                        </li>
+
                         <li>
                           <Link to='/portfolio/blob'>
                             <TbBlob />

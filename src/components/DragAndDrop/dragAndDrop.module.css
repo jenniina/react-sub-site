@@ -1,6 +1,6 @@
 .grid {
   --radius: 5px;
-  --height: 3rem;
+  --height: 4rem;
 
   margin: 0 0 3rem;
   padding: 0;
@@ -30,14 +30,18 @@
   background-color: var(--color-gray-general);
 }
 .cards-container {
-  overflow-y: scroll;
-  min-height: 150px;
-  max-height: 30vh;
+  --min: 200px;
+  --max: 40vh;
+  min-height: var(--min);
+  max-height: var(--max);
+  overflow: hidden;
 }
 .cards-container > ul {
+  overflow-y: auto;
   margin: 0;
   padding: 0;
-  min-height: calc(100% - var(--height) * 1.4);
+  min-height: calc(var(--min) - var(--height));
+  max-height: calc(var(--max) - var(--height));
 }
 .cards-container > ul > li {
   padding: 0.6rem 4% 0 4%;
@@ -56,7 +60,7 @@
   padding-bottom: 8rem;
 }
 .cards-container > span {
-  /* height: var(--height); */
+  height: var(--height);
   margin: 0;
   display: flex;
   flex-flow: row wrap;
@@ -222,8 +226,10 @@
   padding: 1em 0;
   gap: 1em 0.5em;
 }
-
-.change-status {
+.cards-container > span {
+  position: relative;
+}
+.cards-container > span > .change-status {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
@@ -231,6 +237,20 @@
   gap: 0.5em;
   margin: 0;
   padding: 0;
+}
+.cards-container > span > .change-status > button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+}
+.cards-container > span > .change-status > div {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  z-index: 2;
+  background-color: var(--color-primary-1);
 }
 .change-status-form {
   display: flex;
@@ -269,7 +289,6 @@
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
   .cards-container {
-    overflow-y: auto;
     max-height: clamp(150px, 85vh, 900px);
   }
 }

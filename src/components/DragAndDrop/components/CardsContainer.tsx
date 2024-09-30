@@ -125,6 +125,7 @@ export const CardsContainer = ({
         isDragging ? styles['area-dragging'] : ''
       } ${lightTheme ? styles['light'] : ''}`}
       onDrop={(e) => handleContainerDrop(e, statuses.indexOf(status))}
+      onDragEnd={() => handleDragging(false)}
     >
       <span
         ref={outsideClickRef}
