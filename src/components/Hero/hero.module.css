@@ -69,7 +69,8 @@
 .herocontent .eyes,
 .herocontent .geometric,
 .herocontent .triangle {
-  transition-property: top, right, bottom, left, transform;
+  transition-property: top, right, bottom, left, transform, filter, box-shadow, outline,
+    border;
   transition-timing-function: ease-in-out;
   transition-duration: 600ms;
   -webkit-tap-highlight-color: transparent;
@@ -196,41 +197,17 @@
   pointer-events: all;
 }
 .light .herocontent .bubbles {
-  -webkit-box-shadow: inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -3 * 1px)
-      currentColor,
+  --box: inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -3 * 1px) currentColor,
     inset calc(var(--size) * -1px) calc(var(--size) * -1px) calc(var(--size) * 2 * 1px)
       calc(var(--size) * -1.5 * 1px) lime,
     inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px)
       calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
     0 0 10px -5px white, 0 0 5px -1px currentColor;
-  -moz-box-shadow: inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -3 * 1px)
-      currentColor,
-    inset calc(var(--size) * -1px) calc(var(--size) * -1px) calc(var(--size) * 2 * 1px)
-      calc(var(--size) * -1.5 * 1px) lime,
-    inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px)
-      calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
-    0 0 10px -5px white, 0 0 5px -1px currentColor;
-  -ms-box-shadow: inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -3 * 1px)
-      currentColor,
-    inset calc(var(--size) * -1px) calc(var(--size) * -1px) calc(var(--size) * 2 * 1px)
-      calc(var(--size) * -1.5 * 1px) lime,
-    inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px)
-      calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
-    0 0 10px -5px white, 0 0 5px -1px currentColor;
-  -o-box-shadow: inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -3 * 1px)
-      currentColor,
-    inset calc(var(--size) * -1px) calc(var(--size) * -1px) calc(var(--size) * 2 * 1px)
-      calc(var(--size) * -1.5 * 1px) lime,
-    inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px)
-      calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
-    0 0 10px -5px white, 0 0 5px -1px currentColor;
-  box-shadow: inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -3 * 1px)
-      currentColor,
-    inset calc(var(--size) * -1px) calc(var(--size) * -1px) calc(var(--size) * 2 * 1px)
-      calc(var(--size) * -1.5 * 1px) lime,
-    inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px)
-      calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
-    0 0 10px -5px white, 0 0 5px -1px currentColor;
+  -webkit-box-shadow: var(--box);
+  -moz-box-shadow: var(--box);
+  -ms-box-shadow: var(--box);
+  -o-box-shadow: var(--box);
+  box-shadow: var(--box);
 }
 .herocontent .bubbles {
   -webkit-animation: updown 3000ms ease-in-out infinite;
@@ -468,11 +445,12 @@
   border-radius: 50%;
   z-index: -1;
   opacity: 0.4;
-  -webkit-box-shadow: 0 0 calc(var(--s) / 8) 1px currentColor;
-  -o-box-shadow: 0 0 calc(var(--s) / 8) 1px currentColor;
-  -ms-box-shadow: 0 0 calc(var(--s) / 8) 1px currentColor;
-  -moz-box-shadow: 0 0 calc(var(--s) / 8) 1px currentColor;
-  box-shadow: 0 0 calc(var(--s) / 8) 1px currentColor;
+  --box: 0 0 calc(var(--s) / 8) 1px currentColor;
+  -webkit-box-shadow: var(--box);
+  -o-box-shadow: var(--box);
+  -ms-box-shadow: var(--box);
+  -moz-box-shadow: var(--box);
+  box-shadow: var(--box);
 }
 .herocontent .eyes .inner::after {
   content: '';
@@ -485,11 +463,12 @@
   border-radius: 50%;
   z-index: -1;
   opacity: 0.3;
-  -webkit-box-shadow: 0 0 calc(var(--s) / 4) white;
-  -o-box-shadow: 0 0 calc(var(--s) / 4) white;
-  -ms-box-shadow: 0 0 calc(var(--s) / 4) white;
-  -moz-box-shadow: 0 0 calc(var(--s) / 4) white;
-  box-shadow: 0 0 calc(var(--s) / 4) white;
+  --box: 0 0 calc(var(--s) / 4) white;
+  -webkit-box-shadow: var(--box);
+  -o-box-shadow: var(--box);
+  -ms-box-shadow: var(--box);
+  -moz-box-shadow: var(--box);
+  box-shadow: var(--box);
   transition-property: left;
   transition-timing-function: ease-in-out;
 }
@@ -513,11 +492,12 @@
   background-color: white;
   opacity: 0.2;
   border-radius: 80% 50%;
-  -webkit-box-shadow: 0 0 4px 0 white, 0 0 6px -2px white;
-  -ms-box-shadow: 0 0 4px 0 white, 0 0 6px -2px white;
-  -moz-box-shadow: 0 0 4px 0 white, 0 0 6px -2px white;
-  -o-box-shadow: 0 0 4px 0 white, 0 0 6px -2px white;
-  box-shadow: 0 0 4px 0 white, 0 0 6px -2px white;
+  --box: 0 0 4px 0 white, 0 0 6px -2px white;
+  -webkit-box-shadow: var(--box);
+  -ms-box-shadow: var(--box);
+  -moz-box-shadow: var(--box);
+  -o-box-shadow: var(--box);
+  box-shadow: var(--box);
 }
 
 .light .herocontent .bubbles span::before,
@@ -565,11 +545,12 @@
   -ms-transform: rotate(30deg);
   -moz-transform: rotate(30deg);
   transform: rotate(30deg);
-  -webkit-box-shadow: 0 0 calc(var(--s) / 10) 2px var(--color);
-  -ms-box-shadow: 0 0 calc(var(--s) / 10) 2px var(--color);
-  -moz-box-shadow: 0 0 calc(var(--s) / 10) 2px var(--color);
-  -o-box-shadow: 0 0 calc(var(--s) / 10) 2px var(--color);
-  box-shadow: 0 0 calc(var(--s) / 10) 2px var(--color);
+  --box: 0 0 calc(var(--s) / 10) 2px var(--color);
+  -webkit-box-shadow: var(--box);
+  -ms-box-shadow: var(--box);
+  -moz-box-shadow: var(--box);
+  -o-box-shadow: var(--box);
+  box-shadow: var(--box);
 }
 .light .herocontent .eyes span::before {
   opacity: 0.7;
@@ -592,16 +573,13 @@
   z-index: -1;
   opacity: 0.2;
   border-radius: 80% 50%;
-  -webkit-box-shadow: 0 0 6px 0 var(--color), 0 0 6px -3px var(--color),
-    inset 6px 8px 8px -5px black, -3px -4px 4px -2px black, -2px -3px 10px 2px white;
-  -o-box-shadow: 0 0 6px 0 var(--color), 0 0 6px -3px var(--color),
-    inset 6px 8px 8px -5px black, -3px -4px 4px -2px black, -2px -3px 10px 2px white;
-  -ms-box-shadow: 0 0 6px 0 var(--color), 0 0 6px -3px var(--color),
-    inset 6px 8px 8px -5px black, -3px -4px 4px -2px black, -2px -3px 10px 2px white;
-  -moz-box-shadow: 0 0 6px 0 var(--color), 0 0 6px -3px var(--color),
-    inset 6px 8px 8px -5px black, -3px -4px 4px -2px black, -2px -3px 10px 2px white;
-  box-shadow: 0 0 6px 0 var(--color), 0 0 6px -3px var(--color),
-    inset 6px 8px 8px -5px black, -3px -4px 4px -2px black, -2px -3px 10px 2px white;
+  --box: 0 0 6px 0 var(--color), 0 0 6px -3px var(--color), inset 6px 8px 8px -5px black,
+    -3px -4px 4px -2px black, -2px -3px 10px 2px white;
+  -webkit-box-shadow: var(--box);
+  -o-box-shadow: var(--box);
+  -ms-box-shadow: var(--box);
+  -moz-box-shadow: var(--box);
+  box-shadow: var(--box);
 }
 .light .herocontent .eyes span::after {
   opacity: 0.16;
@@ -617,19 +595,21 @@
 }
 .herocontent .eyes:hover span::before,
 .herocontent .eyes:focus span::before {
-  -webkit-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
-  -o-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
-  -ms-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
-  -moz-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
-  transform: translate(-90%, -10%) scale(0.001, 1);
+  --box: translate(-90%, -10%) scale(0.001, 1);
+  -webkit-transform: var(--box);
+  -o-transform: var(--box);
+  -ms-transform: var(--box);
+  -moz-transform: var(--box);
+  transform: var(--box);
 }
 .herocontent .eyes:hover span::after,
 .herocontent .eyes:focus span::after {
-  -webkit-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
-  -o-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
-  -ms-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
-  -moz-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
-  transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
+  --box: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
+  -webkit-transform: var(--box);
+  -o-transform: var(--box);
+  -ms-transform: var(--box);
+  -moz-transform: var(--box);
+  transform: var(--box);
 }
 .herocontent .geometric span {
   pointer-events: none;
@@ -650,6 +630,7 @@
     hide-opacity var(--time) cubic-bezier(0.28, 0.37, 0.88, 0.5) infinite;
   animation: scale var(--time) linear infinite,
     hide-opacity var(--time) cubic-bezier(0.28, 0.37, 0.88, 0.5) infinite;
+  -webkit-animation-delay: calc(calc(var(--number) + 1) * calc(var(--time) / -3.9));
   animation-delay: calc(calc(var(--number) + 1) * calc(var(--time) / -3.9));
   -webkit-animation-play-state: paused;
   -moz-animation-play-state: paused;
@@ -1306,6 +1287,10 @@
   color: var(--color-primary-15);
 }
 
+.herocontent > .bubbles:hover {
+  -webkit-filter: brightness(120%) contrast(110%);
+  filter: brightness(120%) contrast(110%);
+}
 .herocontent > .bubbles:focus-visible {
   outline: none;
   -webkit-filter: brightness(180%) contrast(120%);

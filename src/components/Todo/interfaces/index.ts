@@ -25,7 +25,7 @@ export enum EClearCompleted {
   de = 'Abgeschlossene Aufgaben Löschen',
   pt = 'Limpar Tarefas Completas',
   cs = 'Vymazat Dokončené Úkoly',
-  fi = 'Tyhjennä valmiit tehtävät',
+  fi = 'Poista valmiit tehtävät',
 }
 export enum EAddTask {
   en = 'Add Task',

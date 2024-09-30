@@ -1198,13 +1198,20 @@ export default function DragContainer({
     if (!scroll) {
       document.addEventListener('touchmove', preventDefault, { passive: false })
       document.body.style.overflow = 'hidden'
+      dragWrapOuter.current?.addEventListener('touchmove', preventDefault, {
+        passive: false,
+      })
+      if (dragWrapOuter.current) dragWrapOuter.current.style.overflow = 'hidden'
     } else if (scroll) {
       document.body.style.overflowY = 'auto'
       document.body.style.overflowX = 'hidden'
       document.removeEventListener('touchmove', preventDefault)
+      if (dragWrapOuter.current) dragWrapOuter.current.style.overflow = 'auto'
+      dragWrapOuter.current?.removeEventListener('touchmove', preventDefault)
     }
     return () => {
       document.removeEventListener('touchmove', preventDefault)
+      dragWrapOuter.current?.removeEventListener('touchmove', preventDefault)
     }
   }, [scroll])
 

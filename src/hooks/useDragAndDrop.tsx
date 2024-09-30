@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import useLocalStorage from '../hooks/useStorage'
 
 export interface IClosestItem {
@@ -67,42 +67,62 @@ export const useDragAndDrop = <T extends Item, S extends string>(
     }, {} as Record<S, { items: T[]; setItems: (value: T[]) => void; removeItems: () => void }>)
   }, [statuses, storageKeys])
 
+  const deepEqual = (a: T[] | S[], b: T[] | S[]) => {
+    return JSON.stringify(a) === JSON.stringify(b)
+  }
+
   const [listItemsByStatus, setListItemsByStatus] = useState(initializeListItemsByStatus)
 
-  useEffect(() => {
-    const newListItemsByStatus = statuses?.reduce((acc, status, index) => {
-      const items = updatedItems.filter((item) => item.status === status)
-      acc[status] = {
-        items,
-        setItems:
-          listItemsByStatus[status]?.setItems ||
-          ((items: T[]) => {
-            localStorage.setItem(storageKeys[index], JSON.stringify(items))
-            setListItemsByStatus((prev) => ({
-              ...prev,
-              [status]: {
-                ...prev[status],
-                items,
-              },
-            }))
-          }),
-        removeItems:
-          listItemsByStatus[status]?.removeItems ||
-          (() => {
-            localStorage.removeItem(storageKeys[index])
-            setListItemsByStatus((prev) => ({
-              ...prev,
-              [status]: {
-                ...prev[status],
-                items: [],
-              },
-            }))
-          }),
-      }
-      return acc
-    }, {} as Record<S, { items: T[]; setItems: (value: T[]) => void; removeItems: () => void }>)
+  const prevUpdatedItemsRef = useRef(updatedItems)
+  const prevStatusesRef = useRef(statuses)
 
-    setListItemsByStatus(newListItemsByStatus)
+  useEffect(() => {
+    const prevUpdatedItems = prevUpdatedItemsRef.current
+    const prevStatuses = prevStatusesRef.current
+
+    // Compare previous and current values
+    if (
+      !deepEqual(prevUpdatedItems, updatedItems) ||
+      !deepEqual(prevStatuses, statuses)
+    ) {
+      const newListItemsByStatus = statuses?.reduce((acc, status, index) => {
+        const items = updatedItems.filter((item) => item.status === status)
+        acc[status] = {
+          items,
+          setItems:
+            listItemsByStatus[status]?.setItems ||
+            ((items: T[]) => {
+              localStorage.setItem(storageKeys[index], JSON.stringify(items))
+              setListItemsByStatus((prev) => ({
+                ...prev,
+                [status]: {
+                  ...prev[status],
+                  items,
+                },
+              }))
+            }),
+          removeItems:
+            listItemsByStatus[status]?.removeItems ||
+            (() => {
+              localStorage.removeItem(storageKeys[index])
+              setListItemsByStatus((prev) => ({
+                ...prev,
+                [status]: {
+                  ...prev[status],
+                  items: [],
+                },
+              }))
+            }),
+        }
+        return acc
+      }, {} as Record<S, { items: T[]; setItems: (value: T[]) => void; removeItems: () => void }>)
+
+      setListItemsByStatus(newListItemsByStatus)
+
+      // Update refs with current values
+      prevUpdatedItemsRef.current = updatedItems
+      prevStatusesRef.current = statuses
+    }
   }, [updatedItems, statuses, storageKeys])
 
   useEffect(() => {

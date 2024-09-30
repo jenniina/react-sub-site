@@ -41,7 +41,7 @@ export enum ERemoveATaskByTabbingToTheRemoveButtonAnd {
   de = 'Entfernen Sie eine Aufgabe, indem Sie auf die Schaltfläche Entfernen klicken und die Leertaste drücken, oder entfernen Sie alle abgeschlossenen Aufgaben, indem Sie die Leertaste auf die Schaltfläche Abgeschlossene Aufgaben löschen drücken',
   pt = 'Remova uma tarefa clicando no botão Remover e pressionando Espaço, ou remova todas as tarefas concluídas pressionando Espaço no botão Limpar tarefas concluídas',
   cs = 'Odstraňte úkol klepnutím na tlačítko Odstranit a stisknutím mezerníku nebo odstraňte všechny dokončené úkoly stisknutím mezerníku na tlačítku Vymazat dokončené úkoly',
-  fi = 'Poista tehtävä napsauttamalla Poista-painiketta ja painamalla välilyöntiä tai poista kaikki valmiit tehtävät painamalla välilyöntiä Tyhjennä valmiit tehtävät -painikkeessa',
+  fi = 'Poista tehtävä napsauttamalla Poista-painiketta ja painamalla välilyöntiä tai poista kaikki valmiit tehtävät painamalla välilyöntiä Poista valmiit tehtävät -painikkeessa',
 }
 export enum EDeleteTask {
   en = 'Delete Task',

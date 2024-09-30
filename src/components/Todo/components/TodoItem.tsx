@@ -46,7 +46,7 @@ export default function Todo({
     setIsOpen(false)
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setNewName(e.target.value)
   }
 
@@ -71,7 +71,7 @@ export default function Todo({
     return name.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '-')
   }
 
-  const getFirstThreeWords = (name: string = ETask[language]): string => {
+  const first3Words = (name: string = ETask[language]): string => {
     // if name is less than 5 words, return the name
     if (name.split(' ').length <= 4) return name
     // else return the first 3 words
@@ -134,11 +134,14 @@ export default function Todo({
         <span className='tooltip narrow2 below right'>{EDraggable[language]}</span>
       </span>
 
-      <label className={`${isOpen ? styles.open : ''}`} onClick={handleLabelClick}>
+      <label
+        className={`${isOpen ? styles.open : styles.closed}`}
+        onClick={handleLabelClick}
+      >
         <input
           type='checkbox'
           id={`check_${sanitize(todo?.name)}`}
-          checked={todo?.complete}
+          checked={todo?.complete ?? false}
           onChange={handleTodoClick}
         />
         <span
@@ -149,7 +152,7 @@ export default function Todo({
           {todo?.name}
         </span>
       </label>
-      <div className={`${isOpen ? styles.open : ''} ${styles['btn-wrap']}`}>
+      <div className={`${isOpen ? styles.open : styles.closed} ${styles['btn-wrap']}`}>
         <Accordion
           language={language}
           className={`${styles['modify-todo']} modify-todo`}
@@ -162,27 +165,29 @@ export default function Todo({
           }}
         >
           <form onSubmit={handleModify} className={`${styles.modify}`}>
-            <div className='input-wrap'>
-              <label>
-                <input
-                  id={`task_${sanitize(todo?.name)}`}
-                  required
-                  type='text'
-                  name='task'
-                  value={newName}
-                  onChange={handleChange}
-                />
-                <span className='scr'>
-                  {EEdit[language]} {getFirstThreeWords(todo?.name)}
-                </span>
-              </label>
-            </div>
+            <label>
+              <textarea
+                id={`task_${sanitize(todo?.name)}`}
+                required
+                name='task'
+                value={newName}
+                onChange={handleChange}
+              />
+              <span className='scr'>
+                {EEdit[language]} {first3Words(todo?.name)}
+              </span>
+            </label>
+
             <button type='submit' className='modify'>
               {EConfirm[language]}
             </button>
           </form>
         </Accordion>
-        <button className={`${styles['delete']}`} onClick={handleDelete}>
+        <button
+          className={`${styles['delete']}`}
+          onClick={handleDelete}
+          data-label={EDeleteTask[language]}
+        >
           <span>&times;</span>
           <span className='scr'>{EDeleteTask[language]}</span>
         </button>

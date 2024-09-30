@@ -520,12 +520,12 @@ svg.filter {
   --duration: 3s;
   --tra1: translatey(0px);
   --tra2: translatey(5px);
-  --anim: sway var(--duration) ease-in-out infinite;
-  -webkit-animation: var(--anim);
-  -moz-animation: var(--anim);
-  -o-animation: var(--anim);
-  -ms-animation: var(--anim);
-  animation: var(--anim);
+
+  -webkit-animation: sway var(--duration) ease-in-out infinite;
+  -moz-animation: sway var(--duration) ease-in-out infinite;
+  -o-animation: sway var(--duration) ease-in-out infinite;
+  -ms-animation: sway var(--duration) ease-in-out infinite;
+  animation: sway var(--duration) ease-in-out infinite;
   -webkit-animation-delay: var(--del);
   -moz-animation-delay: var(--del);
   -o-animation-delay: var(--del);

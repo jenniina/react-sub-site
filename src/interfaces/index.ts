@@ -1154,12 +1154,12 @@ export enum EDragAndDrop {
 }
 export enum ECustomSelect {
   en = 'Custom Select',
-  es = 'Selección Personalizada',
-  fr = 'Sélection Personnalisée',
-  de = 'Benutzerdefinierte Auswahl',
-  pt = 'Seleção Personalizada',
-  cs = 'Vlastní Výběr',
-  fi = 'Räätälöitävä valinta (<select>)',
+  es = 'Personalizar <select>',
+  fr = 'Personnaliser <select>',
+  de = 'Benutzerdefiniertes <select>',
+  pt = 'Seleção personalizada <select>',
+  cs = 'Vlastní <select>',
+  fi = 'Räätälöitävä <select>',
 }
 export enum EMultistepForm {
   en = 'Multistep Form',
