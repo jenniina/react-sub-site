@@ -46,6 +46,7 @@ const LOCATION = {
   SELECT: 'select',
   SALON: 'salon',
   TODO: 'todo',
+  GRAPHQL: 'graphql',
 }
 
 export default function Hero({
@@ -338,7 +339,11 @@ export default function Hero({
             }
           >
             {array.map((item, index: number) => {
-              if (location == LOCATION.SELECT || location == LOCATION.TODO) {
+              if (
+                location == LOCATION.SELECT ||
+                location == LOCATION.TODO ||
+                location == LOCATION.GRAPHQL
+              ) {
                 const dividedBy = 2.5
 
                 const style: React.CSSProperties = {
@@ -377,7 +382,7 @@ export default function Hero({
                 }
 
                 return (
-                  // SELECT // TODO
+                  // SELECT // TODO // GRAPHQL
 
                   <li
                     key={`${item.color}${index}`}
@@ -453,8 +458,8 @@ export default function Hero({
                   position: 'absolute',
                   top: `clamp(60px, calc(-20vh + 1.2vh * ${item.e * 3} * ${
                     item.size / 6
-                  }), 55vh)`,
-                  left: `clamp(1vw, calc(-5% + ${item.i} * 1.2vw * ${item.e}), 96vw - ${item.size}vw)`,
+                  }), 45vh)`,
+                  left: `clamp(1vw, calc(-5vh + ${item.i} * 1.2vw * ${item.e}), 96vw - ${item.size}vw)`,
                   backgroundColor: `transparent`,
                   color: `${item.color}`,
                   ['--i' as string]: `${item.i}`,
@@ -464,12 +469,12 @@ export default function Hero({
                     windowWidth < windowHeight ? `${item.size}vh` : `${item.size}vw`,
                   width:
                     windowWidth < windowHeight
-                      ? `calc(var(--size) * 1vh)`
-                      : `calc(var(--size) * 1vw)`,
+                      ? `calc(var(--size) * 0.8vh)`
+                      : `calc(var(--size) * 0.8vw)`,
                   height:
                     windowWidth < windowHeight
-                      ? `calc(var(--size) * 1vh)`
-                      : `calc(var(--size) * 1vw)`,
+                      ? `calc(var(--size) * 0.8vh)`
+                      : `calc(var(--size) * 0.8vw)`,
                   maxHeight: '200px',
                   maxWidth: '200px',
                   minHeight: '40px',
