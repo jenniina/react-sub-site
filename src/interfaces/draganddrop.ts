@@ -178,7 +178,6 @@ export enum EColorNames {
   cs = 'Seznam názvů barev',
   fi = 'Värinimien luettelo',
 }
-//Add a color
 export enum EAddAColor {
   en = 'Add a color',
   es = 'Agregar un color',
@@ -187,6 +186,33 @@ export enum EAddAColor {
   pt = 'Adicionar uma cor',
   cs = 'Přidat barvu',
   fi = 'Lisää väri',
+}
+export enum EYouMayAlsoAddOtherWordsForGenericUse {
+  en = 'You may also add other words for generic use',
+  es = 'También puede agregar otras palabras para uso genérico',
+  fr = 'Vous pouvez également ajouter d autres mots à usage générique',
+  de = 'Sie können auch andere Wörter für den generischen Gebrauch hinzufügen',
+  pt = 'Você também pode adicionar outras palavras para uso genérico',
+  cs = 'Můžete také přidat další slova pro obecné použití',
+  fi = 'Voit myös lisätä muita sanoja yleiskäyttöä varten',
+}
+export enum ETipIfYouAddAGenericWordYouCanColorTheCard {
+  en = 'Tip: if you add a generic word, you can color the card by writing a color name last, e.g. "apple pink"',
+  es = 'Consejo: si agrega una palabra genérica, puede colorear la tarjeta escribiendo un nombre de color al final, por ejemplo, "manzana pink"',
+  fr = 'Astuce: si vous ajoutez un mot générique, vous pouvez colorer la carte en écrivant un nom de couleur en dernier, par exemple "pomme pink"',
+  de = 'Tipp: Wenn Sie ein generisches Wort hinzufügen, können Sie die Karte färben, indem Sie einen Farbnamen zuletzt schreiben, z.B. "Apfel pink"',
+  pt = 'Dica: se você adicionar uma palavra genérica, pode colorir o cartão escrevendo um nome de cor por último, por exemplo, "maçã pink"',
+  cs = 'Tip: Pokud přidáte obecné slovo, můžete kartu obarvit napsáním názvu barvy na konci, například "červené pink"',
+  fi = 'Vinkki: Jos lisäät yleisen sanan, voit värittää kortin kirjoittamalla värinimen viimeiseksi, esim. "omena pink"',
+}
+export enum EAddGenericCardsAndColorThem {
+  en = 'Add generic cards and color them',
+  es = 'Agregue tarjetas genéricas y colórelas',
+  fr = 'Ajoutez des cartes génériques et colorez-les',
+  de = 'Fügen Sie generische Karten hinzu und färben Sie sie ein',
+  pt = 'Adicione cartões genéricos e os colora',
+  cs = 'Přidejte obecné karty a obarvěte je',
+  fi = 'Lisää yleiskortteja ja väritä ne',
 }
 export enum ENewColorsCanBeAdded {
   en = 'New colors can be added',

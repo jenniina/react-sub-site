@@ -17,11 +17,18 @@ import {
   EAddANewCategory,
   ECannotAddMoreCategories,
   ECannotRemoveLastCategory,
+  EAreYouSureYouWantToProceed,
 } from '../../interfaces'
 import { useTheme } from '../../hooks/useTheme'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
-import { EAddAColor, EColorNames, EInvalidColorName } from '../../interfaces/draganddrop'
+import {
+  EAddAColor,
+  EColorNames,
+  EInvalidColorName,
+  ETipIfYouAddAGenericWordYouCanColorTheCard,
+  EYouMayAlsoAddOtherWordsForGenericUse,
+} from '../../interfaces/draganddrop'
 import { Select, SelectOption } from '../Select/Select'
 import { ESelectCategory } from '../Jokes/interfaces'
 import useLocalStorage from '../../hooks/useStorage'
@@ -33,6 +40,22 @@ import {
 } from '../../interfaces/blobs'
 
 const initialStatuses: string[] = ['good', 'neutral', 'bad']
+
+const initialColors = [
+  { content: 'orchid', color: 'orchid' },
+  { content: 'lightgreen', color: 'lightgreen' },
+  { content: 'lightsalmon', color: 'lightsalmon' },
+  { content: 'lightblue', color: 'lightblue' },
+  { content: 'pink', color: 'pink' },
+  { content: 'turquoise', color: 'turquoise' },
+  { content: 'blue', color: 'blue' },
+  { content: 'crimson', color: 'crimson' },
+  { content: 'yellow', color: 'yellow' },
+  { content: 'with purple written last', color: 'purple' },
+  { content: 'with orange written last', color: 'orange' },
+  { content: 'long text without color name at the end', color: 'lightgray' },
+  { content: 'some text, no color name', color: 'lightgray' },
+]
 
 export const DragAndDrop = ({ language }: { language: ELanguages }) => {
   const dispatch = useAppDispatch()
@@ -128,7 +151,9 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
       removeStatuses()
       setStatuses(initialStatuses)
       setUserColors(initialColors)
-      setData(generateInitialData())
+      setTimeout(() => {
+        setData(generateInitialData())
+      }, 400)
     }
   }
 
@@ -181,6 +206,16 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
   const updateStatus = (index: number, newStatus: string) => {
     setStatuses((prevStatuses) => {
       const newStatusTrim = newStatus.trim()
+      if (newStatusTrim.length > 30) {
+        dispatch(
+          notify(
+            `${ENameTooLong[language]}: ${EAMaxOf30CharactersPlease[language]}`,
+            true,
+            9
+          )
+        )
+        return prevStatuses
+      }
       if (newStatusTrim === '') {
         dispatch(notify(EPleaseFillInTheFields[language], true, 6))
         return prevStatuses
@@ -236,29 +271,16 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     setData(setTheData)
   }, [])
 
-  const initialColors = [
-    'orchid',
-    'lightgreen',
-    'lightsalmon',
-    'lightblue',
-    'pink',
-    'turquoise',
-    'blue',
-    'crimson',
-    'red',
-    'yellow',
-  ]
-
-  const [userColors, setUserColors] = useState<string[]>(initialColors)
+  const [userColors, setUserColors] = useState<Partial<Data>[]>(initialColors)
 
   const generateInitialData = () => {
     const array: Data[] = []
     let state: Status = initialStatuses[1]
     let lightness: Lightness
 
-    for (let i: number = 0; i < userColors.length; i++) {
-      const color = userColors[i] || 'white' // Use user-defined colors or default to 'white'
-
+    for (let i: number = 0; i < initialColors.length; i++) {
+      const color = initialColors[i].color || 'white' // Use user-defined colors or default to 'white'
+      const content = initialColors[i].content || 'white' // Use user-defined colors or default to 'white'
       lightness = determineBackgroundLightness(color)
 
       // Randomize the item status
@@ -267,7 +289,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
 
       const item: Data = {
         id: i,
-        content: color,
+        content: content,
         color: color,
         status: state,
         lightness: lightness,
@@ -297,33 +319,70 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
   const handleAddColor = (
     e: FormEvent,
     newColor: string,
-    newStatusForItem: Data['status']
+    statusForItem: Data['status']
   ) => {
     e.preventDefault()
-    if (isValidColor(newColor)) {
+    if (newColor.trim() === '') {
+      dispatch(notify(EPleaseFillInTheFields[language], true, 6))
+      return
+    }
+    // Check if there are more than one word. If the last word is a color, separate it and handle it as the color of the item:
+    const words = newColor.trim().split(' ')
+    const allButLastWord = words.length === 1 ? newColor : words.slice(0, -1).join(' ')
+    const lastWord = words.length === 1 ? newColor : words[words.length - 1]
+    const isLastWordValidColor = isValidColor(lastWord)
+
+    if (isLastWordValidColor) {
+      const highestIdInData = data.reduce(
+        (acc, item) => (item.id > acc ? item.id : acc),
+        0
+      )
+      const newItem: Data = {
+        id: highestIdInData + 1,
+        content: allButLastWord,
+        color: lastWord,
+        status: statusForItem,
+        lightness: determineBackgroundLightness(newColor),
+      }
+      setData((prevData) => [...prevData, newItem])
       setUserColors((prevColors) => {
-        const updatedColors = [...prevColors, newColor]
-        const newItem: Data = {
-          id: updatedColors.length - 1,
-          content: newColor,
-          color: newColor,
-          status: newStatusForItem,
-          lightness: determineBackgroundLightness(newColor),
-        }
-        setData((prevData) => [...prevData, newItem])
+        const updatedColors = [
+          ...prevColors,
+          { content: allButLastWord, color: lastWord },
+        ]
         return updatedColors
       })
+
       containerRef.current?.scrollIntoView({ behavior: 'smooth' })
     } else {
-      dispatch(notify(EInvalidColorName[language], true, 8))
+      if (
+        window.confirm(
+          `${EInvalidColorName[language]}: ${EAreYouSureYouWantToProceed[language]}`
+        )
+      ) {
+        // If the user confirms, add the color anyway with the color lightgray and lightness light. This is to enable users to add sortable items for general use
+        setUserColors((prevColors) => {
+          const updatedColors = [...prevColors, { content: newColor, color: 'lightgray' }]
+          const newItem: Data = {
+            id: updatedColors.length - 1,
+            content: newColor,
+            color: 'lightgray',
+            status: statusForItem,
+            lightness: 'light',
+          }
+          setData((prevData) => [...prevData, newItem])
+          return updatedColors
+        })
+        containerRef.current?.scrollIntoView({ behavior: 'smooth' })
+      }
     }
   }
 
-  const handleRemoveColor = (color: Data['content']) => {
-    if (window.confirm(`${EAreYouSureYouWantToRemoveThis[language]} (${color})`)) {
+  const handleRemoveColor = (content: Data['content']) => {
+    if (window.confirm(`${EAreYouSureYouWantToRemoveThis[language]} (${content})`)) {
       setUserColors((prevColors) => {
-        const updatedColors = prevColors.filter((c) => c !== color)
-        setData((prevData) => prevData.filter((d) => d.color !== color))
+        const updatedColors = prevColors.filter((c) => c.content !== content)
+        setData((prevData) => prevData.filter((d) => d.content !== content))
         return updatedColors
       })
     } else return
@@ -407,7 +466,11 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
       </div>
       <div className={styles['add-color']}>
         <h2>{EAddAColor[language]}</h2>
-        <p>{EForExample[language]} darkblue or lightslategray</p>
+        <p>
+          {EForExample[language]} darkblue or lightslategray.{' '}
+          {EYouMayAlsoAddOtherWordsForGenericUse[language]}.{' '}
+          {ETipIfYouAddAGenericWordYouCanColorTheCard[language]}
+        </p>
         <form
           onSubmit={(e) => handleAddColor(e, newColor, newStatusForItem.label as Status)}
         >

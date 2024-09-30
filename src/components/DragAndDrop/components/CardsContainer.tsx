@@ -125,6 +125,7 @@ export const CardsContainer = ({
         isDragging ? styles['area-dragging'] : ''
       } ${lightTheme ? styles['light'] : ''}`}
       onDrop={(e) => handleContainerDrop(e, statuses.indexOf(status))}
+      onDragEnd={() => handleDragging(false)}
     >
       <span
         ref={outsideClickRef}
@@ -155,7 +156,7 @@ export const CardsContainer = ({
           language={language}
           text={`*`}
           hideBrackets
-          className={`narrow ${styles['change-status']} change-status`}
+          className={`narrow2 ${styles['change-status']} change-status`}
           tooltip={EEdit[language]}
           x='left'
           y='below'

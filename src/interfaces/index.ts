@@ -1150,7 +1150,7 @@ export enum EDragAndDrop {
   de = 'Ziehen und Ablegen',
   pt = 'Arrastar e Soltar',
   cs = 'Táhnout a Pustit',
-  fi = 'Raahaa kohteeseen',
+  fi = 'Kohteeseen raahaus',
 }
 export enum ECustomSelect {
   en = 'Custom Select',
@@ -1195,7 +1195,7 @@ export enum ENavStyle {
   de = 'Nav Stil',
   pt = 'Nav Estilo',
   cs = 'Nav Styl',
-  fi = 'Navigointityyli',
+  fi = 'Valikkotyyli',
 }
 export enum EMenu {
   en = 'Menu',
