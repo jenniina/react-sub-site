@@ -2395,3 +2395,39 @@ export enum ECannotAddMoreCategories {
   cs = 'Nelze přidat další kategorie',
   fi = 'Ei voi lisätä enempää kategorioita',
 }
+export enum EAMaxOf30CharactersPlease {
+  en = 'A maximum of 30 characters, please',
+  es = 'Un máximo de 30 caracteres, por favor',
+  fr = "Un maximum de 30 caractères, s'il vous plaît",
+  de = 'Maximal 30 Zeichen, bitte',
+  pt = 'No máximo 30 caracteres, por favor',
+  cs = 'Maximálně 30 znaků, prosím',
+  fi = 'Enintään 30 merkkiä, kiitos',
+}
+export enum EAMaxOf20CharactersPlease {
+  en = 'A maximum of 20 characters, please',
+  es = 'Un máximo de 20 caracteres, por favor',
+  fr = "Un maximum de 20 caractères, s'il vous plaît",
+  de = 'Maximal 20 Zeichen, bitte',
+  pt = 'No máximo 20 caracteres, por favor',
+  cs = 'Maximálně 20 znaků, prosím',
+  fi = 'Enintään 20 merkkiä, kiitos',
+}
+export enum ENameTooLong {
+  en = 'The name is too long',
+  es = 'El nombre es demasiado largo',
+  fr = 'Le nom est trop long',
+  de = 'Der Name ist zu lang',
+  pt = 'O nome é muito longo',
+  cs = 'Název je příliš dlouhý',
+  fi = 'Nimi on liian pitkä',
+}
+export enum ELoading {
+  en = 'Loading',
+  es = 'Cargando',
+  fr = 'Chargement',
+  de = 'Wird geladen',
+  pt = 'Carregando',
+  cs = 'Načítání',
+  fi = 'Ladataan',
+}

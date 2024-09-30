@@ -4,11 +4,9 @@ import CardSingle from './CardSingle'
 import styles from '../dragAndDrop.module.css'
 import {
   EChange,
-  EChangeCategoryTitle,
   EDelete,
   EEdit,
   ELanguages,
-  ERenameTitle,
   ESpecialCharactersOrSpaceNotAllowed,
   ESubmit,
 } from '../../../interfaces'
@@ -130,6 +128,7 @@ export const CardsContainer = ({
       <span
         ref={outsideClickRef}
         id={`label-${sanitize(status)}`}
+        className={styles['status-label']}
         draggable
         onDragStart={(e) => handleContainerDragStart(e, statuses.indexOf(status))}
         onDragOver={handleContainerDragOver}

@@ -6,7 +6,6 @@ import {
   EAddTaskToTheTaskList,
   EClearCompleted,
   ELeftToDo,
-  ELoading,
   ETask,
   ITask,
 } from './interfaces'
@@ -33,7 +32,7 @@ import { useSelector } from 'react-redux'
 import { initializeUser } from '../../reducers/authReducer'
 import { ReducerProps } from '../../interfaces'
 import { RootState } from '../../store'
-import { ELanguages } from '../../interfaces'
+import { ELanguages, ELoading } from '../../interfaces'
 import { EAreYouSureYouWantToClearAllCompletedTasks } from '../../interfaces/todo'
 
 interface Props {

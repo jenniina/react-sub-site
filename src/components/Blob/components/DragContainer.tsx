@@ -44,6 +44,9 @@ import {
   ESpecialCharactersNotAllowed,
   EToLastPage,
   ReducerProps,
+  EAMaxOf30CharactersPlease,
+  ENameTooLong,
+  ELoading,
 } from '../../../interfaces'
 import {
   EAlternatively,
@@ -83,8 +86,6 @@ import {
   ENoteThatUnsavedChangesWillBeLost,
   EDeletedArt,
   EAVersionAlreadyExistsOverwrite,
-  ENameTooLong,
-  EAMaxOf30CharactersPlease,
   ELoadingSavedArtwork,
   ENoSavedArtworkYet,
   EDisableScrollInOrderToUseTheMouseWheelToResizeABlob,
@@ -137,7 +138,6 @@ import { initializeUser } from '../../../reducers/authReducer'
 import { initializeUsers } from '../../../reducers/usersReducer'
 import { useNavigate } from 'react-router-dom'
 import blobService from '../services/blob'
-import { ELoading } from '../../Todo/interfaces'
 import { EDelete } from '../../Jokes/interfaces'
 import ColorBlocks from './ColorBlocks'
 import Sliders from './Sliders'

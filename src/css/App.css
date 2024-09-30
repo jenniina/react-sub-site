@@ -616,6 +616,24 @@ body .z {
     opacity: 0;
   }
 }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    -webkit-transform: translate(0px, -20px);
+    -ms-transform: translate(0px, -20px);
+    -o-transform: translate(0px, -20px);
+    -moz-transform: translate(0px, -20px);
+    transform: translate(0px, -20px);
+  }
+  to {
+    -webkit-transform: translate(0, 0);
+    -ms-transform: translate(0, 0);
+    -o-transform: translate(0, 0);
+    -moz-transform: translate(0, 0);
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+}
 #root .App .App-inner-wrap .notification {
   --border-radius: 0.6em;
   position: fixed;
