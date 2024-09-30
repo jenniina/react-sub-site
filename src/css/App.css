@@ -540,18 +540,6 @@ body .z {
 .accordion-container .accordion-btn.open span.hide {
   display: none;
 }
-.modify-todo-container {
-  font-size: 0.8em;
-  margin-left: auto;
-}
-.modify-todo-container.open {
-  flex: 1 0 auto;
-  font-size: 1em;
-}
-.modify-todo-container.open button.close {
-  height: auto;
-  max-height: initial;
-}
 
 .required {
   color: red;

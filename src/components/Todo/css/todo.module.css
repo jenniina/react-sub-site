@@ -22,11 +22,6 @@
   gap: 0.5rem;
 }
 
-/* .todo-input-area button {
-  flex: 1 1 100%;
-  word-break: break-word;
-  padding: 0.6em 5%;
-} */
 .todo-ul {
   --width: 1em;
   color: var(--color-primary-20);
@@ -61,15 +56,14 @@
   border: 2px solid var(--color-primary-10);
   border-radius: var(--radius-small);
 }
-.todo-ul li label {
+.todo-ul li > label {
   display: flex;
   flex-flow: row nowrap;
   align-items: flex-start;
   justify-content: flex-start;
   gap: 0.6em;
-  flex: 0 0 calc(100% - 4rem);
 }
-.todo-ul li label > span {
+.todo-ul li > label > span {
   margin-top: 0.2rem;
 }
 
@@ -85,6 +79,45 @@
 .todo-ul li .btn-wrap button {
   max-height: 2rem;
   padding: 0.4rem 0.6rem;
+  flex: 1 0 max-content;
+  max-width: max-content;
+  margin: 0;
+}
+
+.todo-ul li .btn-wrap.closed > .modify-todo > div {
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  position: absolute;
+  white-space: nowrap;
+}
+.todo-ul li .btn-wrap.open > .modify-todo > div {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  clip: auto;
+  position: static;
+  white-space: normal;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 0.4rem;
+  align-items: center;
+  justify-content: center;
+}
+.todo-ul li .btn-wrap > .modify-todo {
+  flex: 0 0 auto;
+  margin: 0 0 0 auto;
+  max-width: max-content;
+}
+.todo-ul li .btn-wrap.open > .modify-todo {
+  flex: 1 0 calc(100% - 3rem);
+  max-width: calc(100% - 3rem);
+  display: flex;
+  flex-flow: row wrap;
+  gap: 0.2em;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 .todo-ul li .btn-wrap button.delete {
   background: transparent;
@@ -99,7 +132,7 @@
   outline: solid 2px red;
 }
 .todo-ul li .btn-wrap button.delete:hover::after {
-  content: 'Delete task';
+  content: attr(data-label);
   position: absolute;
   width: max-content;
   padding: 0 0.3em;
@@ -120,13 +153,13 @@
   margin-right: 0;
   margin-left: 0;
   margin-bottom: auto;
-  margin-top: 0.6em;
+  margin-top: 0.9em;
   width: 1em;
   height: 1em;
   cursor: pointer;
   border-radius: var(--radius-small);
 }
-.todo-ul li label:has(input:checked) {
+.todo-ul li > label:has(input:checked) {
   color: var(--color-gray-general);
   text-decoration: line-through 1px;
 }
@@ -136,49 +169,53 @@
   outline: -webkit-focus-ring-color auto 3px;
 }
 
-/* In App.css
-.modify-todo-container.open {
-  flex: 1 0 100%;
-}*/
 form.modify {
+  flex: 1 0 100%;
   display: flex;
-  flex-flow: row wrap;
-  gap: 0.5rem;
+  flex-flow: column nowrap;
+  gap: 0.3rem;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
 }
+
 @media (min-width: 300px) {
-  /* .todo-input-area li > button {
-    padding: 0.6em 1.2em;
-    flex: 1 1 40%;
-  } */
   .left-to-do {
     font-size: 0.8em;
   }
 } /*END media*/
+@media (min-width: 400px) {
+  form.modify {
+    flex-flow: row wrap;
+    gap: 0.3rem;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  form.modify,
+  form.modify label,
+  form.modify textarea {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+} /* END media */
 @media (min-width: 600px) {
   .todo-ul li {
     flex-flow: row wrap;
-    justify-content: space-between;
+    gap: 0.2em;
   }
-  .todo-ul li .btn-wrap {
-    flex: 0 0 auto;
-    max-width: max-content;
-    min-width: max-content;
-  }
-  .todo-ul li label {
+
+  .todo-ul li > label {
     flex-flow: row wrap;
     align-items: flex-start;
-    max-width: calc(100% - 10em);
   }
-  .todo-ul li label > span {
+  .todo-ul li > label > span {
     max-width: 90%;
   }
-  .todo-ul li label.open {
+  .todo-ul li > label {
     min-width: calc(100% - 3rem);
     max-width: calc(100% - 3rem);
   }
 } /*END media*/
+
 .modify-todo.open {
   flex: 1 0 100%;
 }
