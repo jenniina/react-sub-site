@@ -45,15 +45,7 @@ export enum ETask {
   cs = 'Úkol',
   fi = 'Tehtävä',
 }
-export enum ELoading {
-  en = 'Loading',
-  es = 'Cargando',
-  fr = 'Chargement',
-  de = 'Wird geladen',
-  pt = 'Carregando',
-  cs = 'Načítání',
-  fi = 'Ladataan',
-}
+
 export enum ELeftToDo {
   en = 'left to do',
   es = 'restantes',

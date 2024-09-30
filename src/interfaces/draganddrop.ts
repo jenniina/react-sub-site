@@ -232,3 +232,39 @@ export enum ENewColorsCanBeAddedAndRemoved {
   cs = 'Můžete přidávat a odebírat nové barvy',
   fi = 'Uusia värejä voidaan lisätä ja poistaa',
 }
+export enum EWithPurpleWrittenLast {
+  en = 'with purple written last',
+  es = 'con purple escrito al final',
+  fr = 'avec purple écrit en dernier',
+  de = 'mit purple zuletzt geschrieben',
+  pt = 'com purple escrito por último',
+  cs = 's purple napsáno na konci',
+  fi = 'purple kirjoitettu viimeiseksi',
+}
+export enum EWithOrangeWrittenLast {
+  en = 'with orange written last',
+  es = 'con orange escrito al final',
+  fr = 'avec orange écrit en dernier',
+  de = 'mit orange zuletzt geschrieben',
+  pt = 'com orange escrito por último',
+  cs = 's orange napsáno na konci',
+  fi = 'orange kirjoitettu viimeiseksi',
+}
+export enum ELongTextWithoutColorNameAtTheEnd {
+  en = 'long text without color name at the end',
+  es = 'texto largo sin nombre de color al final',
+  fr = 'long texte sans nom de couleur à la fin',
+  de = 'langer Text ohne Farbnamen am Ende',
+  pt = 'texto longo sem nome de cor no final',
+  cs = 'dlouhý text bez názvu barvy na konci',
+  fi = 'pitkä teksti ilman värinimeä lopussa',
+}
+export enum ESomeTextNoColorName {
+  en = 'some text, no color name',
+  es = 'algún texto, sin nombre de color',
+  fr = 'un peu de texte, pas de nom de couleur',
+  de = 'einige Texte, kein Farbname',
+  pt = 'algum texto, sem nome de cor',
+  cs = 'nějaký text, žádný název barvy',
+  fi = 'jokin teksti, ei väriä',
+}

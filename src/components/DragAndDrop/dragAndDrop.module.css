@@ -2,7 +2,7 @@
   --radius: 5px;
   --height: 4rem;
 
-  margin: 0 0 3rem;
+  margin: 0 calc(var(--padd) * -1) 3rem;
   padding: 0;
   box-sizing: border-box;
   font-weight: normal;
@@ -11,7 +11,7 @@
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
   gap: 1em 1%;
-  width: 100%;
+  width: calc(100% + var(--padd * 2));
   word-break: break-all;
 }
 
@@ -34,7 +34,7 @@
   --max: 40vh;
   min-height: var(--min);
   max-height: var(--max);
-  overflow: hidden;
+  overflow: auto;
 }
 .cards-container > ul {
   overflow-y: auto;
@@ -75,6 +75,7 @@
   font-weight: bold;
   text-transform: capitalize;
 }
+
 .cards-container > span > b {
   flex: 0 1 auto;
   max-width: calc(100% - 2.5rem);
@@ -96,6 +97,9 @@
 }
 .cards-container > span button.change-status {
   margin-bottom: 1.4rem;
+}
+.cards-container > span .change-status > button.change-status {
+  margin: 0 0 1.3em auto;
 }
 
 .cards-container > span > .change-status > button.change-status {

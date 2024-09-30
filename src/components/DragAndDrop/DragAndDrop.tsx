@@ -4,7 +4,6 @@ import { useDragAndDrop } from '../../hooks/useDragAndDrop'
 import { Status, Data, Lightness } from './interfaces'
 import { CardsContainer } from './components/CardsContainer'
 import styles from './dragAndDrop.module.css'
-import useRandomMinMax from '../../hooks/useRandomMinMax'
 import {
   EAreYouSureYouWantToRemoveThis,
   EForExample,
@@ -26,41 +25,42 @@ import {
   EAddAColor,
   EColorNames,
   EInvalidColorName,
+  ELongTextWithoutColorNameAtTheEnd,
+  ESomeTextNoColorName,
   ETipIfYouAddAGenericWordYouCanColorTheCard,
+  EWithOrangeWrittenLast,
+  EWithPurpleWrittenLast,
   EYouMayAlsoAddOtherWordsForGenericUse,
 } from '../../interfaces/draganddrop'
 import { Select, SelectOption } from '../Select/Select'
 import { ESelectCategory } from '../Jokes/interfaces'
 import useLocalStorage from '../../hooks/useStorage'
 import { EPleaseFillInTheFields } from '../../interfaces/form'
-import {
-  EAMaxOf30CharactersPlease,
-  EAreYouSureYouWantToDeleteThisVersion,
-  ENameTooLong,
-} from '../../interfaces/blobs'
+import { EAreYouSureYouWantToDeleteThisVersion } from '../../interfaces/blobs'
+import { EAMaxOf20CharactersPlease, ENameTooLong } from '../../interfaces'
 
 const initialStatuses: string[] = ['good', 'neutral', 'bad']
-
-const initialColors = [
-  { content: 'orchid', color: 'orchid' },
-  { content: 'lightgreen', color: 'lightgreen' },
-  { content: 'lightsalmon', color: 'lightsalmon' },
-  { content: 'lightblue', color: 'lightblue' },
-  { content: 'pink', color: 'pink' },
-  { content: 'turquoise', color: 'turquoise' },
-  { content: 'blue', color: 'blue' },
-  { content: 'crimson', color: 'crimson' },
-  { content: 'yellow', color: 'yellow' },
-  { content: 'with purple written last', color: 'purple' },
-  { content: 'with orange written last', color: 'orange' },
-  { content: 'long text without color name at the end', color: 'lightgray' },
-  { content: 'some text, no color name', color: 'lightgray' },
-]
 
 export const DragAndDrop = ({ language }: { language: ELanguages }) => {
   const dispatch = useAppDispatch()
 
   const [data, setData] = useState<Data[]>([])
+
+  const initialColors = [
+    { content: 'orchid', color: 'orchid' },
+    { content: 'lightgreen', color: 'lightgreen' },
+    { content: 'lightsalmon', color: 'lightsalmon' },
+    { content: 'lightblue', color: 'lightblue' },
+    { content: 'pink', color: 'pink' },
+    { content: 'turquoise', color: 'turquoise' },
+    { content: 'blue', color: 'blue' },
+    { content: 'crimson', color: 'crimson' },
+    { content: 'yellow', color: 'yellow' },
+    { content: EWithPurpleWrittenLast[language], color: 'purple' },
+    { content: EWithOrangeWrittenLast[language], color: 'orange' },
+    { content: ELongTextWithoutColorNameAtTheEnd[language], color: 'lightgray' },
+    { content: ESomeTextNoColorName[language], color: 'lightgray' },
+  ]
 
   const isLocalhost =
     window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
@@ -159,10 +159,10 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
 
   const addStatus = (newStatus: string) => {
     const newStatusTrim = newStatus.trim()
-    if (newStatusTrim.length > 30) {
+    if (newStatusTrim.length > 20) {
       dispatch(
         notify(
-          `${ENameTooLong[language]}: ${EAMaxOf30CharactersPlease[language]}`,
+          `${ENameTooLong[language]}: ${EAMaxOf20CharactersPlease[language]}`,
           true,
           9
         )
@@ -206,10 +206,10 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
   const updateStatus = (index: number, newStatus: string) => {
     setStatuses((prevStatuses) => {
       const newStatusTrim = newStatus.trim()
-      if (newStatusTrim.length > 30) {
+      if (newStatusTrim.length > 20) {
         dispatch(
           notify(
-            `${ENameTooLong[language]}: ${EAMaxOf30CharactersPlease[language]}`,
+            `${ENameTooLong[language]}: ${EAMaxOf20CharactersPlease[language]}`,
             true,
             9
           )
