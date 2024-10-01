@@ -7,7 +7,7 @@ import {
   EDelete,
   EEdit,
   ELanguages,
-  ESpecialCharactersOrSpaceNotAllowed,
+  ESpecialCharactersNotAllowed,
   ESubmit,
 } from '../../../interfaces'
 import { EBad, EGood, ENeutral } from '../../../interfaces/draganddrop'
@@ -30,6 +30,7 @@ interface Props {
   updateStatus: (index: number, status: Status) => void
   reorderStatuses: (dragIndex: number, dropIndex: number) => void
   deleteStatus: (status: string) => void
+  regex: RegExp
 }
 
 export const CardsContainer = ({
@@ -46,6 +47,7 @@ export const CardsContainer = ({
   updateStatus,
   reorderStatuses,
   deleteStatus,
+  regex,
 }: Props) => {
   const dispatch = useAppDispatch()
 
@@ -54,14 +56,13 @@ export const CardsContainer = ({
   const [newStatus, setNewStatus] = useState<Status>('')
   const [focusedCard, setFocusedCard] = useState<number | null>(null)
   const outsideClickRef = useRef<HTMLSpanElement>(null)
-  const regex = /^[\w\u00C0-\u024F\u1E00-\u1EFF-_]*$/
 
   const handleStatusNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     if (regex.test(value)) {
       setNewStatus(value)
     } else {
-      dispatch(notify(ESpecialCharactersOrSpaceNotAllowed[language], true, 6))
+      dispatch(notify(ESpecialCharactersNotAllowed[language], true, 6))
     }
   }
 
@@ -145,7 +146,7 @@ export const CardsContainer = ({
               case 'neutral':
                 return ENeutral[language]
               default:
-                return status
+                return status.replace(/_/g, ' ')
             }
           })()}
         </b>
@@ -160,6 +161,22 @@ export const CardsContainer = ({
           x='left'
           y='below'
         >
+          <i>
+            {(() => {
+              const statusLowerCase = status.toLowerCase()
+              // translations for the initial statuses:
+              switch (statusLowerCase) {
+                case 'good':
+                  return EGood[language]
+                case 'bad':
+                  return EBad[language]
+                case 'neutral':
+                  return ENeutral[language]
+                default:
+                  return status.replace(/_/g, ' ')
+              }
+            })()}
+          </i>
           <form
             className={styles['change-status-form']}
             onSubmit={(e) => {

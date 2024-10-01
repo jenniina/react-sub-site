@@ -2,7 +2,7 @@
   --radius: 5px;
   --height: 4rem;
 
-  margin: 0 calc(var(--padd) * -1) 3rem;
+  margin: 0 calc(calc(var(--padd) + calc(var(--page-padding)) / 2) * -1) 3rem;
   padding: 0;
   box-sizing: border-box;
   font-weight: normal;
@@ -11,7 +11,7 @@
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
   gap: 1em 1%;
-  width: calc(100% + var(--padd * 2));
+  width: calc(100% + var(--padd * 2) + var(--page-padding));
   word-break: break-all;
 }
 
@@ -30,11 +30,11 @@
   background-color: var(--color-gray-general);
 }
 .cards-container {
-  --min: 200px;
+  --min: 250px;
   --max: 40vh;
   min-height: var(--min);
   max-height: var(--max);
-  overflow: auto;
+  overflow: hidden;
 }
 .cards-container > ul {
   overflow-y: auto;
@@ -71,7 +71,7 @@
   background-color: black;
   color: white;
   text-align: center;
-  padding: 1rem 0;
+  padding: 0.2rem 0;
   font-weight: bold;
   text-transform: capitalize;
 }
@@ -88,12 +88,13 @@
 }
 .cards-container > span form {
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: row wrap;
   justify-content: center;
   align-items: center;
   gap: 0.5em;
   margin: 0;
-  padding: 0;
+  padding: 0 0 0.5em 0;
+  font-weight: normal;
 }
 .cards-container > span button.change-status {
   margin-bottom: 1.4rem;
@@ -263,13 +264,21 @@
   align-items: center;
   gap: 0.5em;
   margin: 0;
-  padding: 0;
 }
 .change-status-form button,
 .change-status-form button.delete {
   flex: 1 0 100%;
   width: 100%;
   min-width: 100%;
+  padding-top: 0.2em;
+  padding-bottom: 0.3em;
+}
+
+div.change-status div.change-status > i {
+  font-size: 0.9em;
+  margin-top: -1.2rem;
+  margin-bottom: 1.5rem;
+  display: block;
 }
 @media (min-width: 500px) {
   .grid {
@@ -293,7 +302,7 @@
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
   .cards-container {
-    max-height: clamp(150px, 85vh, 900px);
+    --max: 70vh;
   }
 }
 @media screen and (min-width: 800px) {
