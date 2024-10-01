@@ -41,6 +41,7 @@
   margin: 0;
   padding: 0;
   min-height: calc(var(--min) - var(--height));
+  height: calc(100% - var(--height));
   max-height: calc(var(--max) - var(--height));
 }
 .cards-container > ul > li {
@@ -132,16 +133,16 @@
   padding: 0; /* padding in CardSingle.tsx */
   cursor: pointer;
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
   justify-content: space-between;
   align-items: center;
   border: 1px solid white; /*color in CardSingle.tsx*/
 }
 .card b {
-  flex: 1 0 auto;
+  flex: 0 1 auto;
   display: flex;
-  flex-flow: row nowrap;
-  justify-content: flex-end;
+  flex-flow: row wrap;
+  justify-content: center;
   align-items: center;
 }
 .card:hover {
@@ -191,29 +192,31 @@
   display: block;
   position: absolute;
   height: auto;
-  width: auto;
-  right: 0;
-  top: calc(100% + 3.5em);
+  width: calc(100% - 4px);
+  right: 2px;
+  top: 2px;
   padding: 0.5em 0;
   z-index: 999;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  -o-transform: translateY(-50%);
-  -moz-transform: translateY(-50%);
-  transform: translateY(-50%);
   background-color: var(--color-primary-1);
   cursor: auto;
+  border-radius: var(--radius);
+  outline: 1px solid var(--color-primary-20);
 }
-.card ul {
+.card .blur.open ul {
   margin: 0;
   padding: 0;
 }
-.card ul li {
-  padding: 0 1em;
+.card .blur.open ul li {
+  padding: 0 0.2em;
   line-height: 2;
 }
 .card ul li a {
   cursor: pointer;
+}
+.card ul li a,
+.card ul li a > * {
+  line-height: 1.1;
+  flex: 0 1 auto;
 }
 /* .good .good a.good,
 .neutral .neutral a.neutral,

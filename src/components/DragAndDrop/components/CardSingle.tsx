@@ -21,9 +21,13 @@ import {
 import {
   EChange,
   ECopiedToClipboard,
+  ECopy,
   ECopyText,
+  ECopyToClipboard,
   EFailedToCopy,
   ELanguages,
+  EMove,
+  EToTarget,
 } from '../../../interfaces'
 import { notify } from '../../../reducers/notificationReducer'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
@@ -42,6 +46,7 @@ interface Props {
   sanitize: (str: string) => string
   focusedCard: number | null
   setFocusedCard: Dispatch<SetStateAction<number | null>>
+  translateStatus: (status: Status) => string
 }
 
 function CardSingle({
@@ -58,8 +63,9 @@ function CardSingle({
   sanitize,
   focusedCard,
   setFocusedCard,
+  translateStatus,
 }: Props) {
-  const dispatch2 = useAppDispatch()
+  const dispatch = useAppDispatch()
 
   const styleCard: CSSProperties = {
     backgroundColor: data?.color,
@@ -191,10 +197,10 @@ function CardSingle({
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(
         () => {
-          dispatch2(notify(ECopiedToClipboard[language], false, 3))
+          dispatch(notify(ECopiedToClipboard[language], false, 3))
         },
         (err) => {
-          dispatch2(notify(`${EFailedToCopy[language]}`, true, 3))
+          dispatch(notify(`${EFailedToCopy[language]}`, true, 3))
         }
       )
     } else {
@@ -206,9 +212,9 @@ function CardSingle({
       textArea.select()
       try {
         document.execCommand('copy')
-        dispatch2(notify(ECopiedToClipboard[language], false, 3))
+        dispatch(notify(ECopiedToClipboard[language], false, 3))
       } catch (err) {
-        dispatch2(notify(`${EFailedToCopy[language]}`, true, 3))
+        dispatch(notify(`${EFailedToCopy[language]}`, true, 3))
       }
       document.body.removeChild(textArea)
     }
@@ -223,7 +229,6 @@ function CardSingle({
       onDragOver={(e) => handleDragOver(e)}
       onDragEnd={() => handleDragging(false)}
       role={'listitem'}
-      title={data?.status}
       tabIndex={0}
       onKeyDown={(e) => handleUpAndDown(e, id)}
       data-identity={id}
@@ -243,7 +248,7 @@ function CardSingle({
           className={isOpen ? `${styles.open} ${styles.blur}` : `${styles.blur}`}
           style={styleReset}
         >
-          <span style={styleTitle}>{EChange[language]}:</span>
+          <span style={styleTitle}>{EMove[language]}:</span>
           <ul
             role='listbox'
             aria-describedby={`instructions${id}`}
@@ -255,6 +260,7 @@ function CardSingle({
                 className={styles.copy}
                 onClick={() => handleCopyToClipboard(data.content)}
                 tabIndex={0}
+                title={ECopyToClipboard[language]}
               >
                 <MdContentCopy />
                 <i>{ECopyText[language]}</i>
@@ -272,24 +278,12 @@ function CardSingle({
                   onClick={(e) => containerUpdate(e)}
                   onKeyDown={(e) => keyListen(e)}
                   tabIndex={0}
+                  title={`${EToTarget[language]}: ${translateStatus(
+                    status
+                  ).toLowerCase()}`}
                 >
                   <MdLocationOn />
-                  <i>
-                    {(() => {
-                      const statusLowerCase = status.toLowerCase()
-                      // translations for the initial statuses:
-                      switch (statusLowerCase) {
-                        case 'good':
-                          return EGood[language]
-                        case 'bad':
-                          return EBad[language]
-                        case 'neutral':
-                          return ENeutral[language]
-                        default:
-                          return status.replace(/_/g, ' ')
-                      }
-                    })()}
-                  </i>
+                  <i>{translateStatus(status)}</i>
                 </a>
               </li>
             ))}

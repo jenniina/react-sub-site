@@ -118,6 +118,20 @@ export const CardsContainer = ({
     }
   }
 
+  const translateStatus = (status: string) => {
+    const statusLowerCase = status.toLowerCase()
+    switch (statusLowerCase) {
+      case 'good':
+        return EGood[language]
+      case 'bad':
+        return EBad[language]
+      case 'neutral':
+        return ENeutral[language]
+      default:
+        return status.replace(/_/g, ' ')
+    }
+  }
+
   return (
     <div
       className={`${styles['cards-container']} ${
@@ -134,22 +148,7 @@ export const CardsContainer = ({
         onDragStart={(e) => handleContainerDragStart(e, statuses.indexOf(status))}
         onDragOver={handleContainerDragOver}
       >
-        <b>
-          {(() => {
-            const statusLowerCase = status.toLowerCase()
-            // translations for the initial statuses:
-            switch (statusLowerCase) {
-              case 'good':
-                return EGood[language]
-              case 'bad':
-                return EBad[language]
-              case 'neutral':
-                return ENeutral[language]
-              default:
-                return status.replace(/_/g, ' ')
-            }
-          })()}
-        </b>
+        <b>{translateStatus(status)}</b>
         <Accordion
           isOpen={isOpen}
           setIsFormOpen={setIsOpen}
@@ -161,22 +160,7 @@ export const CardsContainer = ({
           x='left'
           y='below'
         >
-          <i>
-            {(() => {
-              const statusLowerCase = status.toLowerCase()
-              // translations for the initial statuses:
-              switch (statusLowerCase) {
-                case 'good':
-                  return EGood[language]
-                case 'bad':
-                  return EBad[language]
-                case 'neutral':
-                  return ENeutral[language]
-                default:
-                  return status.replace(/_/g, ' ')
-              }
-            })()}
-          </i>
+          <i>{translateStatus(status)}</i>
           <form
             className={styles['change-status-form']}
             onSubmit={(e) => {
@@ -193,10 +177,10 @@ export const CardsContainer = ({
                   value={newStatus}
                   onChange={(e) => handleStatusNameChange(e)}
                 />
-                <span>{EChange[language]}</span>
+                <span>{EChange[language]}:</span>
               </label>
             </div>
-            <button type='submit'>{ESubmit[language]}</button>
+            <button type='submit'>{EChange[language]}</button>
             <button
               type='button'
               className='danger delete'
@@ -233,6 +217,7 @@ export const CardsContainer = ({
             sanitize={sanitize}
             focusedCard={focusedCard}
             setFocusedCard={setFocusedCard}
+            translateStatus={translateStatus}
           />
         ))}
       </ul>

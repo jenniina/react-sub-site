@@ -1855,7 +1855,7 @@ export enum EChangeCategoryTitle {
   de = 'Kategorie-Titel ändern',
   pt = 'Alterar título da categoria',
   cs = 'Změnit název kategorie',
-  fi = 'Vaihda kategorian otsikko',
+  fi = 'Muuta kategorian otsikko',
 }
 export enum EChange {
   en = 'Change',
@@ -1864,7 +1864,7 @@ export enum EChange {
   de = 'Ändern',
   pt = 'Alterar',
   cs = 'Změnit',
-  fi = 'Vaihda',
+  fi = 'Muuta',
 }
 export enum ETheCategoryAlreadyExists {
   en = 'The category already exists',
@@ -2467,4 +2467,40 @@ export enum ECopy {
   pt = 'Copiar',
   cs = 'Kopírovat',
   fi = 'Kopioi',
+}
+export enum ECopyToClipboard {
+  en = 'Copy to clipboard',
+  es = 'Copiar al portapapeles',
+  fr = 'Copier dans le presse-papiers',
+  de = 'In die Zwischenablage kopieren',
+  pt = 'Copiar para a área de transferência',
+  cs = 'Kopírovat do schránky',
+  fi = 'Kopioi leikepöydälle',
+}
+export enum EMove {
+  en = 'Move',
+  es = 'Mover',
+  fr = 'Déplacer',
+  de = 'Verschieben',
+  pt = 'Mover',
+  cs = 'Přesunout',
+  fi = 'Siirrä',
+}
+export enum ETarget {
+  en = 'Target',
+  es = 'Objetivo',
+  fr = 'Cible',
+  de = 'Ziel',
+  pt = 'Alvo',
+  cs = 'Cíl',
+  fi = 'Kohde',
+}
+export enum EToTarget {
+  en = 'To target',
+  es = 'A objetivo',
+  fr = 'À la cible',
+  de = 'Zum Ziel',
+  pt = 'Para o alvo',
+  cs = 'Na cíl',
+  fi = 'Kohteeseen',
 }
