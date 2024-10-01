@@ -10,10 +10,23 @@ import {
 } from 'react'
 import { Data, Status } from '../interfaces'
 import styles from '../dragAndDrop.module.css'
-import { MdOutlineDragIndicator } from 'react-icons/md'
+import { MdContentCopy, MdLocationOn, MdOutlineDragIndicator } from 'react-icons/md'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
-import { EChooseDestination } from '../../../interfaces/draganddrop'
-import { EChange, ELanguages } from '../../../interfaces'
+import {
+  EBad,
+  EChooseDestination,
+  EGood,
+  ENeutral,
+} from '../../../interfaces/draganddrop'
+import {
+  EChange,
+  ECopiedToClipboard,
+  ECopyText,
+  EFailedToCopy,
+  ELanguages,
+} from '../../../interfaces'
+import { notify } from '../../../reducers/notificationReducer'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
 
 interface Props {
   language: ELanguages
@@ -46,6 +59,8 @@ function CardSingle({
   focusedCard,
   setFocusedCard,
 }: Props) {
+  const dispatch2 = useAppDispatch()
+
   const styleCard: CSSProperties = {
     backgroundColor: data?.color,
     padding: '0.3em 5%',
@@ -69,11 +84,6 @@ function CardSingle({
     fontSize: '0.9em',
   }
 
-  const types = statuses.reduce((acc, status) => {
-    acc[status] = status
-    return acc
-  }, {} as Record<string, string>) // for example, if the statuses are ['good', 'neutral', 'bad'], then types is {good: 'good', neutral: 'neutral', bad: 'bad'}
-
   const [isOpen, setIsOpen] = useState(false)
   function toggleOpen() {
     setIsOpen((prev) => !prev)
@@ -92,7 +102,6 @@ function CardSingle({
 
   //original inspiration: https://www.aurigait.com/blog/drag-and-drop-in-react/
 
-  const dragItem = useRef<number>(0)
   const dragOverItem = useRef<number>(0)
 
   const handleDragEnter = (e: React.DragEvent<HTMLLIElement>, position: number) => {
@@ -110,16 +119,24 @@ function CardSingle({
   }
 
   function containerUpdate(e: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>) {
-    if (data) handleUpdate(data.id, (e.target as HTMLAnchorElement).textContent as Status)
+    const anchorElement = (e.target as HTMLElement).closest(
+      'a[data-status]'
+    ) as HTMLAnchorElement
+    const status = anchorElement?.dataset.status
+    if (data && status) handleUpdate(data.id, status as Status)
   }
+
   function keyListen(e: KeyboardEvent<HTMLAnchorElement>) {
     switch (e.code) {
       case 'Enter':
       case 'Space':
         e.stopPropagation()
         e.preventDefault()
-        if (data)
-          handleUpdate(data.id, (e.target as HTMLAnchorElement).textContent as Status)
+        const anchorElement = (e.target as HTMLElement).closest(
+          'a[data-status]'
+        ) as HTMLAnchorElement
+        const stat = anchorElement?.dataset.status ?? status
+        if (data) handleUpdate(data.id, stat)
         setIsOpen((prev) => !prev)
         break
       case 'Escape':
@@ -170,6 +187,33 @@ function CardSingle({
     }
   }, [focusedCard, id])
 
+  const handleCopyToClipboard = (text: string) => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(
+        () => {
+          dispatch2(notify(ECopiedToClipboard[language], false, 3))
+        },
+        (err) => {
+          dispatch2(notify(`${EFailedToCopy[language]}`, true, 3))
+        }
+      )
+    } else {
+      // Fallback method for older browsers
+      const textArea = document.createElement('textarea')
+      textArea.value = text
+      cardRef.current?.appendChild(textArea)
+      textArea.focus()
+      textArea.select()
+      try {
+        document.execCommand('copy')
+        dispatch2(notify(ECopiedToClipboard[language], false, 3))
+      } catch (err) {
+        dispatch2(notify(`${EFailedToCopy[language]}`, true, 3))
+      }
+      document.body.removeChild(textArea)
+    }
+  }
+
   return (
     <li
       ref={cardRef}
@@ -206,6 +250,16 @@ function CardSingle({
             aria-expanded={isOpen ? 'true' : 'false'}
             className={sanitize(status)}
           >
+            <li role='option' className={styles.copy}>
+              <a
+                className={styles.copy}
+                onClick={() => handleCopyToClipboard(data.content)}
+                tabIndex={0}
+              >
+                <MdContentCopy />
+                <i>{ECopyText[language]}</i>
+              </a>
+            </li>
             {statuses.map((status, i) => (
               <li
                 key={`${sanitize(status)}-${i}-${index}`}
@@ -214,11 +268,28 @@ function CardSingle({
               >
                 <a
                   className={sanitize(status)}
+                  data-status={status}
                   onClick={(e) => containerUpdate(e)}
                   onKeyDown={(e) => keyListen(e)}
                   tabIndex={0}
                 >
-                  {types[status]}
+                  <MdLocationOn />
+                  <i>
+                    {(() => {
+                      const statusLowerCase = status.toLowerCase()
+                      // translations for the initial statuses:
+                      switch (statusLowerCase) {
+                        case 'good':
+                          return EGood[language]
+                        case 'bad':
+                          return EBad[language]
+                        case 'neutral':
+                          return ENeutral[language]
+                        default:
+                          return status.replace(/_/g, ' ')
+                      }
+                    })()}
+                  </i>
                 </a>
               </li>
             ))}

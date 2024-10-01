@@ -2431,3 +2431,40 @@ export enum ELoading {
   cs = 'Načítání',
   fi = 'Ladataan',
 }
+export enum ECopiedToClipboard {
+  en = 'Copied to clipboard!',
+  es = '¡Copiado al portapapeles!',
+  fr = 'Copié dans le presse-papiers!',
+  de = 'In die Zwischenablage kopiert!',
+  pt = 'Copiado para a área de transferência!',
+  cs = 'Zkopírováno do schránky!',
+  fi = 'Kopioitu leikepöydälle!',
+}
+//Failed to copy!
+export enum EFailedToCopy {
+  en = 'Failed to copy!',
+  es = '¡Error al copiar!',
+  fr = 'Échec de la copie!',
+  de = 'Kopieren fehlgeschlagen!',
+  pt = 'Falha ao copiar!',
+  cs = 'Kopírování se nezdařilo!',
+  fi = 'Kopiointi epäonnistui!',
+}
+export enum ECopyText {
+  en = 'Copy text',
+  es = 'Copiar texto',
+  fr = 'Copier le texte',
+  de = 'Text kopieren',
+  pt = 'Copiar texto',
+  cs = 'Kopírovat text',
+  fi = 'Kopioi teksti',
+}
+export enum ECopy {
+  en = 'Copy',
+  es = 'Copiar',
+  fr = 'Copier',
+  de = 'Kopieren',
+  pt = 'Copiar',
+  cs = 'Kopírovat',
+  fi = 'Kopioi',
+}

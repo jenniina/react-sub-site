@@ -17,6 +17,7 @@ import {
   ECannotAddMoreCategories,
   ECannotRemoveLastCategory,
   EAreYouSureYouWantToProceed,
+  ESpecialCharactersNotAllowed,
 } from '../../interfaces'
 import { useTheme } from '../../hooks/useTheme'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
@@ -73,6 +74,8 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
 
   const containerRef = useRef<HTMLDivElement>(null)
 
+  const regex = /^[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF- ]*$/
+
   const storedData = statuses
     .map((status) => {
       const item = window.localStorage.getItem(
@@ -98,10 +101,20 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
         .map((status) => {
           const safeStatus = sanitize(status)
           return `
-          ul.${safeStatus} li.${safeStatus} a.${safeStatus} {
+          ul.${safeStatus} li.${safeStatus} a.${safeStatus}, 
+          ul.${safeStatus} li.${safeStatus} a.${safeStatus} i, 
+          ul.${safeStatus} li.${safeStatus} a.${safeStatus} svg {
             cursor: auto;
             pointer-events: none;
             color: var(--color-primary-20);
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+          } 
+          ul.${safeStatus} li a svg {
+            font-size: 0.7rem;
+            min-width: 1rem;
+            max-width: 1rem;
           }
         `
         })
@@ -158,40 +171,42 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
   }
 
   const addStatus = (newStatus: string) => {
-    const newStatusTrim = newStatus.trim()
-    if (newStatusTrim.length > 20) {
-      dispatch(
-        notify(
-          `${ENameTooLong[language]}: ${EAMaxOf20CharactersPlease[language]}`,
-          true,
-          9
+    if (regex.test(newStatus)) {
+      const newStatusTrim = newStatus.trim().replace(/ /g, '_')
+      if (newStatusTrim.length > 20) {
+        dispatch(
+          notify(
+            `${ENameTooLong[language]}: ${EAMaxOf20CharactersPlease[language]}`,
+            true,
+            9
+          )
         )
-      )
-      return
-    }
-    if (newStatus.trim() === '') {
-      dispatch(notify(EPleaseFillInTheFields[language], true, 6))
-      return
-    }
-    //if new status is already in the list, notify:
-    if (statuses.includes(newStatusTrim)) {
-      dispatch(notify(ETheCategoryAlreadyExists[language], true, 6))
-      return
-    }
-    // if already length 8, don't allow more statuses
-    if (statuses.length === 8) {
-      dispatch(notify(ECannotAddMoreCategories[language], true, 8))
-      return
-    }
-    setStatuses((prevStatuses) => {
-      if (newStatusTrim === '') {
-        return prevStatuses
+        return
       }
-      if (prevStatuses.includes(newStatusTrim)) {
-        return prevStatuses
+      if (newStatus.trim() === '') {
+        dispatch(notify(EPleaseFillInTheFields[language], true, 6))
+        return
       }
-      return [...prevStatuses, newStatusTrim]
-    })
+      //if new status is already in the list, notify:
+      if (statuses.includes(newStatusTrim)) {
+        dispatch(notify(ETheCategoryAlreadyExists[language], true, 6))
+        return
+      }
+      // if already length 8, don't allow more statuses
+      if (statuses.length === 8) {
+        dispatch(notify(ECannotAddMoreCategories[language], true, 8))
+        return
+      }
+      setStatuses((prevStatuses) => {
+        if (newStatusTrim === '') {
+          return prevStatuses
+        }
+        if (prevStatuses.includes(newStatusTrim)) {
+          return prevStatuses
+        }
+        return [...prevStatuses, newStatusTrim]
+      })
+    } else dispatch(notify(ESpecialCharactersNotAllowed[language], true, 6))
   }
 
   const reorderStatuses = (oldIndex: number, newIndex: number) => {
@@ -204,8 +219,12 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
   }
 
   const updateStatus = (index: number, newStatus: string) => {
+    if (!regex.test(newStatus)) {
+      dispatch(notify(ESpecialCharactersNotAllowed[language], true, 6))
+      return
+    }
     setStatuses((prevStatuses) => {
-      const newStatusTrim = newStatus.trim()
+      const newStatusTrim = newStatus.trim().replace(/ /g, '_')
       if (newStatusTrim.length > 20) {
         dispatch(
           notify(
@@ -437,6 +456,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
             updateStatus={updateStatus}
             reorderStatuses={reorderStatuses}
             deleteStatus={deleteStatus}
+            regex={regex}
           />
         ))}
       </div>
