@@ -107,10 +107,18 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
             cursor: auto;
             pointer-events: none;
             color: var(--color-primary-20);
+          } 
+          ul.${safeStatus} li a {
+            padding: 0.4em 0;
             display: flex;
+            flex-flow: row nowrap;
             justify-content: flex-start;
             align-items: center;
-          } 
+            flex: 0 1 auto;
+          }
+          ul.${safeStatus} li a > i {
+            line-height: 1;
+          }
           ul.${safeStatus} li a svg {
             font-size: 0.7rem;
             min-width: 1rem;
@@ -157,17 +165,6 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     const { r, g, b } = hexToRGB(hexColor)
     const luminance = calculateLuminance(r, g, b)
     return luminance > 0.179 ? 'light' : 'dark'
-  }
-
-  const startAgain = () => {
-    if (window.confirm(EAreYouSureYouWantToDeleteThisVersion[language])) {
-      removeStatuses()
-      setStatuses(initialStatuses)
-      setUserColors(initialColors)
-      setTimeout(() => {
-        setData(generateInitialData())
-      }, 400)
-    }
   }
 
   const addStatus = (newStatus: string) => {
@@ -286,6 +283,25 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     } else return
   }
 
+  const startAgain = () => {
+    if (window.confirm(EAreYouSureYouWantToDeleteThisVersion[language])) {
+      removeStatuses()
+      setStatuses(initialStatuses)
+      setUserColors(initialColors)
+      setData(generateInitialData())
+    }
+  }
+
+  const setTheData = useMemo(() => {
+    // If data is already in localStorage, use that
+    if (storedData.length > 0) {
+      return storedData
+    }
+    const initialData = generateInitialData()
+    setData(initialData)
+    return initialData
+  }, [])
+
   useEffect(() => {
     setData(setTheData)
   }, [])
@@ -317,17 +333,6 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     }
     return array
   }
-
-  const setTheData = useMemo(() => {
-    // If data is already in localStorage, use that
-    if (storedData.length > 0) {
-      return storedData
-    }
-
-    const initialData = generateInitialData()
-    setData(initialData)
-    return initialData
-  }, [])
 
   const [newColor, setNewColor] = useState<string>('')
   const [newStatusForItem, setNewStatusForItem] = useState<SelectOption>({

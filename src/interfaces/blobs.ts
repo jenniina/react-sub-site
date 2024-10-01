@@ -32,16 +32,16 @@ export enum EChangeLayerByClickingMe {
   de = 'Schicht ändern, indem Sie auf mich klicken',
   pt = 'Mude de camada clicando em mim',
   cs = 'Změňte vrstvu kliknutím na mě',
-  fi = 'Vaihda kerros napsauttamalla minua',
+  fi = 'Muuta kerros napsauttamalla minua',
 }
 export enum EToggleLayerByClickingMe {
-  en = 'Toggle layer by clicking me',
-  es = 'Alternar capa haciendo clic en mí',
-  fr = 'Basculer la couche en cliquant sur moi',
-  de = 'Schicht umschalten, indem Sie auf mich klicken',
-  pt = 'Alternar camada clicando em mim',
-  cs = 'Přepnout vrstvu kliknutím na mě',
-  fi = 'Vaihda kerros napsauttamalla minua',
+  en = 'Toggle layer visibility by clicking me',
+  es = 'Alternar la visibilidad de la capa haciendo clic en mí',
+  fr = 'Basculer la visibilité de la couche en cliquant sur moi',
+  de = 'Schichtsichtbarkeit umschalten, indem Sie auf mich klicken',
+  pt = 'Alternar a visibilidade da camada clicando em mim',
+  cs = 'Přepněte viditelnost vrstvy kliknutím na mě',
+  fi = 'Vaihda kerroksen näkyvyyttä napsauttamalla minua',
 }
 
 export enum EChangeTheLayerOfTheFocusedBlobByPressingTheNumber {
@@ -51,7 +51,7 @@ export enum EChangeTheLayerOfTheFocusedBlobByPressingTheNumber {
   de = 'Ändern Sie die Ebene des fokussierten Blobs, indem Sie die Zahl drücken, die der Ebene entspricht',
   pt = 'Mude a camada do blob focado pressionando o número correspondente à camada',
   cs = 'Změňte vrstvu zaměřeného blobu stisknutím čísla odpovídajícího vrstvě',
-  fi = 'Vaihda fokuksessa olevan mollukan tasoa painamalla tasoa vastaavaa numeroa näppäimistöllä',
+  fi = 'Muuta fokuksessa olevan mollukan tasoa painamalla tasoa vastaavaa numeroa näppäimistöllä',
 }
 
 export enum EBlurIntoOneAnother {
@@ -151,7 +151,7 @@ export enum EToggleControlVisibility {
   de = 'Steuerungssichtbarkeit umschalten',
   pt = 'Alternar visibilidade do controle',
   cs = 'Přepnout viditelnost ovládání',
-  fi = 'Vaihda kontrollien näkyvyyttä',
+  fi = 'Muuta kontrollien näkyvyyttä',
 }
 export enum EMakeARandomBlobByClickingThePlusSign {
   en = 'Make a random blob by clicking the plus sign',
