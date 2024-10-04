@@ -39,7 +39,7 @@ export default function FormPage({
       <div className='inner-wrap'>
         <section className='card'>
           <div>
-            <div className='medium'>
+            <div className='medium flex column gap'>
               <Accordion
                 language={language}
                 text={EClickHereToSeeFeatures[language]}
@@ -71,6 +71,9 @@ export default function FormPage({
                   </li>
                 </ul>
               </Accordion>
+              <a href='https://github.com/jenniina/react-sub-site/tree/main/src/components/FormMulti'>
+                Github
+              </a>
             </div>
           </div>
         </section>

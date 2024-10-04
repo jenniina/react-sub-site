@@ -201,7 +201,7 @@ export default function CustomSelectPage({
       <div className='inner-wrap'>
         <section className='card'>
           <div>
-            <div className='medium'>
+            <div className='medium flex column gap'>
               <Accordion
                 language={language}
                 text={EClickHereToSeeFeatures[language]}
@@ -231,6 +231,9 @@ export default function CustomSelectPage({
                   <li>{EPressEscapeToCloseDropdownWithoutSelectingAnOption[language]}</li>
                 </ul>
               </Accordion>
+              <a href='https://github.com/jenniina/react-sub-site/tree/main/src/components/Select'>
+                Github
+              </a>
               <div className={selectStyles['selects-container']}>
                 <h2>{ECustomSelect[language]}</h2>
                 <form ref={form} onSubmit={handleSubmit} id='survey'>

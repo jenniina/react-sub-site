@@ -364,6 +364,9 @@ export default function BlobPage({
                     </li>
                   </ul>
                 </Accordion>
+                <a href='https://github.com/jenniina/react-sub-site/tree/main/src/components/Blob'>
+                  GitHub
+                </a>
               </div>
             </div>
           </div>

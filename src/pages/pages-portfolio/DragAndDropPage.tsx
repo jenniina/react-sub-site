@@ -56,7 +56,7 @@ export default function DragAndDropPage({
       <div className='inner-wrap'>
         <section className='card'>
           <div>
-            <div className='medium'>
+            <div className='medium flex column gap'>
               <Accordion
                 language={language}
                 text={EClickHereToSeeFeatures[language]}
@@ -109,6 +109,9 @@ export default function DragAndDropPage({
                   </li>
                 </ul>
               </Accordion>
+              <a href='https://github.com/jenniina/react-sub-site/tree/main/src/components/DragAndDrop'>
+                Github
+              </a>
             </div>
             <h2>{EDragAndDrop[language]}</h2>
             <p>{ESortTheColorsToADifferentContainerOr[language]}</p>

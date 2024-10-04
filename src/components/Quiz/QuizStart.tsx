@@ -150,6 +150,9 @@ const QuizStart = ({
               <li>{EUserCanChooseTheDifficultyLevel[language]}</li>
               <li>{EUserCanRegisterAndLoginToSaveHighscores[language]}</li>
             </ul>
+            <a href='https://github.com/jenniina/react-sub-site/tree/main/src/components/Quiz'>
+              Github
+            </a>
           </div>
 
           <div className={`start-screen ${styles.quiz}`}>
