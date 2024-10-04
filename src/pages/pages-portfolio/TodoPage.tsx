@@ -36,7 +36,7 @@ export default function TodoPage({
       <div className='inner-wrap'>
         <section className='card'>
           <div>
-            <div className='medium'>
+            <div className='medium flex column gap'>
               <Accordion
                 language={language}
                 text={EClickHereToSeeFeatures[language]}
@@ -63,6 +63,9 @@ export default function TodoPage({
                   <li>{ERemoveATaskByTabbingToTheRemoveButtonAnd[language]}</li>
                 </ul>
               </Accordion>
+              <a href='https://github.com/jenniina/react-sub-site/tree/main/src/components/Todo'>
+                Github
+              </a>
             </div>
           </div>
         </section>

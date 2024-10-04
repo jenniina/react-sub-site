@@ -125,96 +125,101 @@ export default function JokesPage({
       <div className='inner-wrap'>
         <section className='joke-container card introduction'>
           <div>
-            <div className='flex center gap'>
-              <a href='#jokeform' className='svg-wrap newline'>
-                <span>{ESkipToJokeSearch[language]}</span>
-                <BiChevronsDown className='down' />
-              </a>
-              <a
-                href='#'
-                className='svg-wrap newline'
-                onClick={(e) => handleSkipToJokes(e)}
-              >
-                <span>{ESkipToSavedJokes[language]}</span>
-                <BiChevronsDown className='down' />
-              </a>
-            </div>
-            <div>
-              <Select
-                language={language}
-                id='main-language'
-                className='language main'
-                instructions={`${titleLanguage}:`}
-                options={options(ELanguages)}
-                value={
-                  language
-                    ? ({
-                        value: language,
-                        label: getKeyByValue(ELanguages, language),
-                      } as SelectOption)
-                    : undefined
-                }
-                onChange={(o) => {
-                  setLanguage(o?.value as ELanguages)
-                }}
-              />
-            </div>
-            <Accordion
-              language={language}
-              text={EClickHereToSeeFeatures[language]}
-              className='features'
-            >
-              <div className='medium'>
-                <h2>{EFeatures[language]}</h2>
-                <ul className='ul'>
-                  <li>
-                    {EFetchesJokesFrom[language]}{' '}
-                    <a href='https://sv443.net/jokeapi/v2/'>JokeAPI</a>
-                  </li>
-                  <li>{ERegisterAndLoginToUse[language]}</li>
-                  <li>
-                    {EAppTranslatedTo[language]}
-                    <ul>
-                      {Object.values(LanguageOfLanguage[language]).map((l: string) => {
-                        return <li key={l}>{l}</li>
-                      })}
-                    </ul>
-                  </li>
-                  <li>
-                    {EFilterJokesBy[language]}:
-                    <ul>
-                      <li>{titleLanguage}</li>
-                      <li>
-                        {EJokeTypeTitle[language]}
-                        <ul>
-                          <li>{ETwoPart[language]}</li>
-                          <li>{ESingle[language]}</li>
-                        </ul>
-                      </li>
-                      <li>
-                        {ESafemodeTitle[language]} {EOnOff[language]}
-                      </li>
-                      <li>{EKeyword[language]}</li>
-                      <li>
-                        {ECategoryTitle[language]}
-                        <ul>
-                          <li>{jokeCategoryAny[language]}</li>
-                          {Object.values(jokeCategoryByLanguage[language]).map((c) => {
-                            return <li key={c}>{c}</li>
-                          })}
-                        </ul>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    {ENote[language]}
-                    <ul>
-                      <li>{EDarkJokesAreVisibleOnlyWhenSafeModeIsOff[language]}</li>
-                    </ul>
-                  </li>
-                </ul>
+            <div className='flex column gap'>
+              <div className='flex center gap'>
+                <a href='#jokeform' className='svg-wrap newline'>
+                  <span>{ESkipToJokeSearch[language]}</span>
+                  <BiChevronsDown className='down' />
+                </a>
+                <a
+                  href='#'
+                  className='svg-wrap newline'
+                  onClick={(e) => handleSkipToJokes(e)}
+                >
+                  <span>{ESkipToSavedJokes[language]}</span>
+                  <BiChevronsDown className='down' />
+                </a>
               </div>
-            </Accordion>
+              <div>
+                <Select
+                  language={language}
+                  id='main-language'
+                  className='language main'
+                  instructions={`${titleLanguage}:`}
+                  options={options(ELanguages)}
+                  value={
+                    language
+                      ? ({
+                          value: language,
+                          label: getKeyByValue(ELanguages, language),
+                        } as SelectOption)
+                      : undefined
+                  }
+                  onChange={(o) => {
+                    setLanguage(o?.value as ELanguages)
+                  }}
+                />
+              </div>
+              <Accordion
+                language={language}
+                text={EClickHereToSeeFeatures[language]}
+                className='features'
+              >
+                <div className='medium'>
+                  <h2>{EFeatures[language]}</h2>
+                  <ul className='ul'>
+                    <li>
+                      {EFetchesJokesFrom[language]}{' '}
+                      <a href='https://sv443.net/jokeapi/v2/'>JokeAPI</a>
+                    </li>
+                    <li>{ERegisterAndLoginToUse[language]}</li>
+                    <li>
+                      {EAppTranslatedTo[language]}
+                      <ul>
+                        {Object.values(LanguageOfLanguage[language]).map((l: string) => {
+                          return <li key={l}>{l}</li>
+                        })}
+                      </ul>
+                    </li>
+                    <li>
+                      {EFilterJokesBy[language]}:
+                      <ul>
+                        <li>{titleLanguage}</li>
+                        <li>
+                          {EJokeTypeTitle[language]}
+                          <ul>
+                            <li>{ETwoPart[language]}</li>
+                            <li>{ESingle[language]}</li>
+                          </ul>
+                        </li>
+                        <li>
+                          {ESafemodeTitle[language]} {EOnOff[language]}
+                        </li>
+                        <li>{EKeyword[language]}</li>
+                        <li>
+                          {ECategoryTitle[language]}
+                          <ul>
+                            <li>{jokeCategoryAny[language]}</li>
+                            {Object.values(jokeCategoryByLanguage[language]).map((c) => {
+                              return <li key={c}>{c}</li>
+                            })}
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
+                      {ENote[language]}
+                      <ul>
+                        <li>{EDarkJokesAreVisibleOnlyWhenSafeModeIsOff[language]}</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </Accordion>
+              <a href='https://github.com/jenniina/react-sub-site/tree/main/src/components/Jokes'>
+                Github
+              </a>
+            </div>
           </div>
         </section>
 
