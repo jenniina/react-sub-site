@@ -1153,13 +1153,13 @@ export enum EDragAndDrop {
   fi = 'Kohteeseen raahaus',
 }
 export enum ECustomSelect {
-  en = 'Custom Select',
-  es = 'Personalizar <select>',
-  fr = 'Personnaliser <select>',
-  de = 'Benutzerdefiniertes <select>',
-  pt = 'Seleção personalizada <select>',
-  cs = 'Vlastní <select>',
-  fi = 'Räätälöitävä <select>',
+  en = 'Custom Select Dropdown',
+  es = 'Desplegable de selección personalizada',
+  fr = 'Menu déroulant personnalisé',
+  de = 'Angepasstes Auswahlmenü',
+  pt = 'Menu suspenso personalizado',
+  cs = 'Vlastní rozbalovací nabídka',
+  fi = 'Räätälöitävä valintavalikko',
 }
 export enum EMultistepForm {
   en = 'Multistep Form',
