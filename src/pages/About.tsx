@@ -121,7 +121,7 @@ export default function About({
     for (let i: number = 1; i <= 20; i++) {
       const item: colorProps = {
         i: i,
-        e: 41 - i,
+        e: 51 - i,
         background: `var(--color-primary-${i})`,
       }
       colorsArray.push(item)
@@ -130,11 +130,24 @@ export default function About({
     for (let i: number = 1; i <= 20; i++) {
       const item: colorProps = {
         i: 20 + i,
-        e: 21 - i,
+        e: 31 - i,
         background: `var(--color-secondary-${i})`,
       }
       colorsArray.push(item)
     }
+
+    for (let i: number = 1; i <= 10; i++) {
+      const item: colorProps = {
+        i: 40 + i,
+        e: 11 - i,
+        background: `var(--color-gray-${i})`,
+      }
+      colorsArray.push(item)
+    }
+    const visitedItem = { i: 51, e: 0, background: 'var(--color-visited)' }
+
+    colorsArray.push(visitedItem)
+
     return colorsArray
   }, [])
 
@@ -145,7 +158,7 @@ export default function About({
           const itemStyle: React.CSSProperties = {
             backgroundColor: `${item.background}`,
             color:
-              item.i < 13 || item.i > 31
+              item.i < 13 || (item.i > 31 && item.i <= 40) || (item.i > 40 && item.i < 46)
                 ? 'var(--color-primary-20)'
                 : 'var(--color-primary-1)',
             ['--i' as string]: `${item.i}`,

@@ -103,7 +103,11 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
           props.className
         }`}
         onClick={toggleVisibility}
-        style={visible ? { display: 'none' } : { display: 'flex' }}
+        style={
+          visible
+            ? { display: 'none' }
+            : { display: 'flex', alignItems: 'center', justifyContent: 'center' }
+        }
       >
         <span aria-hidden='true' className={props.hideBrackets ? 'hide' : ''}>
           &raquo;

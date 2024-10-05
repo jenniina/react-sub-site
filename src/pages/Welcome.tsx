@@ -144,7 +144,7 @@ export default function Home({
         }}
       />
       <div className='inner-wrap'>
-        <section className={`card`}>
+        <section className={`card ${styles.welcome}`}>
           <div>
             <ul className={styles.list}>
               <li>
@@ -341,7 +341,7 @@ export default function Home({
               <Accordion
                 language={language}
                 text={EOlderNews[language]}
-                className={`${styles.oldernews} flex oldernews`}
+                className={`${styles.oldernews} oldernews`}
               >
                 <ul className={`${styles.extras}`}>
                   <li>

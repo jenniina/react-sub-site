@@ -167,10 +167,6 @@ button#submit-new-joke {
   width: 100%;
   max-width: 100%;
 }
-.joke-container .accordion-container.submit-container > div {
-  flex: 1 0 100%;
-  width: 100%;
-}
 .joke-container .accordion-btn.close {
   margin: 2em auto;
 }
