@@ -1,1 +1,0 @@
-import{r as s}from"./react-A9DAvxly.js";function b(e,r="0px",n=0){const[u,c]=s.useState(!1);return s.useEffect(()=>{if(e.current==null)return;const t=new IntersectionObserver(([i])=>c(i.isIntersecting),{rootMargin:r,threshold:n});return t.observe(e.current),()=>{e.current!=null&&t.unobserve(e.current)}},[e.current,r,n]),u}export{b as u};

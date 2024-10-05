@@ -1,10 +1,9 @@
-import { useEffect } from 'react'
+import { useEffect, lazy, Suspense } from 'react'
 import { TiDeleteOutline } from 'react-icons/ti'
 import { useNavigate } from 'react-router-dom'
 import Hero from '../components/Hero/Hero'
 import { useTheme } from '../hooks/useTheme'
-import Notification from '../components/Notification/Notification'
-import { ELanguages } from '../interfaces'
+import { ELanguages, ELoading } from '../interfaces'
 import {
   EAreYouSureYouWantToDelete,
   EYouWillLoseAllTheDataAssociatedWithIt,
@@ -19,11 +18,16 @@ import { useAppDispatch } from '../hooks/useAppDispatch'
 import { ReducerProps } from '../interfaces'
 import { initializeUser, logout } from '../reducers/authReducer'
 import { removeUser } from '../reducers/usersReducer'
-import PasswordEdit from '../components/UserEdit/PasswordEdit'
-import UsernameEdit from '../components/UserEdit/UsernameEdit'
-import LanguageEdit from '../components/UserEdit/LanguageEdit'
-import NicknameEdit from '../components/UserEdit/NicknameEdit'
+// import PasswordEdit from '../components/UserEdit/PasswordEdit'
+// import UsernameEdit from '../components/UserEdit/UsernameEdit'
+// import LanguageEdit from '../components/UserEdit/LanguageEdit'
+// import NicknameEdit from '../components/UserEdit/NicknameEdit'
 import { notify } from '../reducers/notificationReducer'
+
+const PasswordEdit = lazy(() => import('../components/UserEdit/PasswordEdit'))
+const UsernameEdit = lazy(() => import('../components/UserEdit/UsernameEdit'))
+const LanguageEdit = lazy(() => import('../components/UserEdit/LanguageEdit'))
+const NicknameEdit = lazy(() => import('../components/UserEdit/NicknameEdit'))
 
 interface Props {
   language: ELanguages
@@ -98,22 +102,46 @@ const UserEditPage = ({
           <section className={`card`}>
             <div>
               <div className={styles.editform}>
-                <NicknameEdit user={user} language={language} />
+                <Suspense
+                  fallback={
+                    <div className='flex center margin0auto'>{ELoading[language]}...</div>
+                  }
+                >
+                  <NicknameEdit user={user} language={language} />
+                </Suspense>
               </div>
               <div className={styles.editform}>
-                <UsernameEdit user={user} language={language} />
+                <Suspense
+                  fallback={
+                    <div className='flex center margin0auto'>{ELoading[language]}...</div>
+                  }
+                >
+                  <UsernameEdit user={user} language={language} />
+                </Suspense>
               </div>
               <div className={styles.editform}>
-                <LanguageEdit
-                  user={user}
-                  language={language}
-                  setLanguage={setLanguage}
-                  options={options}
-                  getKeyByValue={getKeyByValue}
-                />
+                <Suspense
+                  fallback={
+                    <div className='flex center margin0auto'>{ELoading[language]}...</div>
+                  }
+                >
+                  <LanguageEdit
+                    user={user}
+                    language={language}
+                    setLanguage={setLanguage}
+                    options={options}
+                    getKeyByValue={getKeyByValue}
+                  />
+                </Suspense>
               </div>
               <div className={styles.editform}>
-                <PasswordEdit user={user} language={language} />
+                <Suspense
+                  fallback={
+                    <div className='flex center margin0auto'>{ELoading[language]}...</div>
+                  }
+                >
+                  <PasswordEdit user={user} language={language} />
+                </Suspense>
               </div>
               {user ? (
                 <form onSubmit={handleUserRemove} className='flex center'>

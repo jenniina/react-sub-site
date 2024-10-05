@@ -16,7 +16,6 @@ import {
   EHoldPointerButtonDownToDragAnItemFrom,
   EKeyboardUseWithADropdownList,
   EMoveItemsWithinTheirContainerWithTheUpOrDownArrowKeys,
-  ENewColorsCanBeAdded,
   ENewColorsCanBeAddedAndRemoved,
   EOnTouchDevicesHoldTouchForAMomentToActivateDrag,
   EPointerAndTouchUse,

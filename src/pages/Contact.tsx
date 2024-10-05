@@ -1,7 +1,10 @@
+import { lazy, Suspense } from 'react'
 import { useTheme } from '../hooks/useTheme'
 import Hero from '../components/Hero/Hero'
-import FormMulti from '../components/FormMulti/FormMulti'
-import { ELanguages } from '../interfaces'
+// import FormMulti from '../components/FormMulti/FormMulti'
+import { ELanguages, ELoading } from '../interfaces'
+
+const FormMulti = lazy(() => import('../components/FormMulti/FormMulti'))
 
 export default function Contact({
   heading,
@@ -22,7 +25,13 @@ export default function Contact({
       <div className='inner-wrap'>
         <section className='card' style={{ position: 'relative', zIndex: '2' }}>
           <div>
-            <FormMulti language={language} />
+            <Suspense
+              fallback={
+                <div className='flex center margin0auto'>{ELoading[language]}...</div>
+              }
+            >
+              <FormMulti language={language} />
+            </Suspense>
           </div>
         </section>
       </div>

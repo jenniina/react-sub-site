@@ -1,6 +1,7 @@
+import { lazy, Suspense } from 'react'
 import Hero from '../../components/Hero/Hero'
-import FormMulti from '../../components/FormMulti/FormMulti'
-import { EEmail, EFeatures, ELanguages } from '../../interfaces'
+// import FormMulti from '../../components/FormMulti/FormMulti'
+import { EEmail, EFeatures, ELanguages, ELoading } from '../../interfaces'
 import {
   EAColorYouLike,
   EAnyEncouragingWords,
@@ -21,6 +22,8 @@ import {
 } from '../../interfaces/form'
 import Accordion from '../../components/Accordion/Accordion'
 import { EClickHereToSeeFeatures } from '../../components/Jokes/interfaces'
+
+const FormMulti = lazy(() => import('../../components/FormMulti/FormMulti'))
 
 export default function FormPage({
   heading,
@@ -80,7 +83,13 @@ export default function FormPage({
         <section className='card'>
           <div>
             <h2>{EContactForm[language]}</h2>
-            <FormMulti language={language} />
+            <Suspense
+              fallback={
+                <div className='flex center margin0auto'>{ELoading[language]}...</div>
+              }
+            >
+              <FormMulti language={language} />
+            </Suspense>
           </div>
         </section>
       </div>
