@@ -64,7 +64,7 @@
   z-index: -1;
   background-color: var(--color-primary-2);
   opacity: 0.9;
-  border-bottom: solid 1px var(--color-primary-1);
+  border-bottom: solid 1px black;
   -webkit-box-shadow: inset 0 -0.3rem 2.5rem -3rem var(--color-primary-19),
     0 0.5rem 2rem -1.5rem black;
   -o-box-shadow: inset 0 -0.3rem 2.5rem -3rem var(--color-primary-19),
@@ -77,8 +77,7 @@
     0 0.5rem 2rem -1.5rem black;
 }
 .light.main-header::after {
-  background-color: var(--color-primary-1);
-  border-bottom: solid 1px var(--color-primary-5);
+  border-bottom: solid 1px var(--color-primary-4);
   opacity: 0.8;
 }
 .main-header > .header-inner-wrap {
@@ -368,7 +367,6 @@ a.link:visited:not(.active) > *,
 .main-header button,
 .toolbar label {
   color: var(--color-primary-20);
-  /* fill: var(--color-primary-20); */
 }
 .link::before,
 .link::before,
@@ -394,16 +392,7 @@ a.link:visited:not(.active):focus > *,
 .main-header button:hover,
 .main-header button:focus {
   color: var(--color-primary-16);
-  /* fill: var(--color-primary-16); */
 }
-/* .light .link:hover,
-.light .link:focus,
-.light .main-header button:hover,
-.light .main-header button:focus,
-.light a.link:visited:not(.active):hover > *,
-.light a.link:visited:not(.active):focus > * {
-  color: var(--color-primary-13);
-} */
 .link.active {
   pointer-events: none;
 }
