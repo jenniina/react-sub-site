@@ -1,4 +1,5 @@
-import Blobs from '../../components/Blob/Blobs'
+import { lazy, Suspense } from 'react'
+//import Blobs from '../../components/Blob/Blobs'
 import Hero from '../../components/Hero/Hero'
 import {
   EBlobs,
@@ -8,6 +9,7 @@ import {
   EInstructions,
   EKeyboardUse,
   ELanguages,
+  ELoading,
   ELogin,
   ENew,
   ERegister,
@@ -91,6 +93,8 @@ import bubbly from '../../assets/bubbly-fish.png'
 import dog from '../../assets/blob-dog.png'
 import { CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
+
+const Blobs = lazy(() => import('../../components/Blob/Blobs'))
 
 export default function BlobPage({
   heading,
@@ -371,7 +375,13 @@ export default function BlobPage({
             </div>
           </div>
         </section>
-        <Blobs language={language} />
+        <Suspense
+          fallback={
+            <div className='flex center margin0auto'>{ELoading[language]}...</div>
+          }
+        >
+          <Blobs language={language} />
+        </Suspense>
       </div>
     </div>
   )

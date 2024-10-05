@@ -9,7 +9,6 @@ import {
   EMongoDBAtlasDatabase,
   ETheWebServiceIsHostedAtRenderCom,
 } from '../../interfaces'
-import { ESalonIntro1, ESalonIntro2, ESalonIntro3 } from '../../interfaces/salon'
 import { ESiteMayBeSlow } from '../../interfaces/welcome'
 
 export default function GraphQLPage({

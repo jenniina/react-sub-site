@@ -1,14 +1,13 @@
-import { useEffect } from 'react'
+import { useEffect, lazy, Suspense } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { getQuestions, newAnswer } from './reducers/questionsReducer'
-import { ELanguages, EQuizApp, ReducerProps } from '../../interfaces'
-import Progress from './components/Progress'
-import Timer from './components/Timer'
+import { ELanguages, ELoading, EQuizApp, ReducerProps } from '../../interfaces'
+// import Progress from './components/Progress'
+// import Timer from './components/Timer'
 import Loader from './components/Loader'
 import Next from './components/Next'
-import Notification from '../Notification/Notification'
 import Message from './components/Message'
 import styles from '../../components/Quiz/css/quiz.module.css'
 import {
@@ -16,6 +15,9 @@ import {
   EErrorFetchingQuestions,
   EQuizInProgress,
 } from '../../interfaces/quiz'
+
+const Progress = lazy(() => import('./components/Progress'))
+const Timer = lazy(() => import('./components/Timer'))
 
 const QuizQuestion = ({ language }: { language: ELanguages }) => {
   const { difficulty } = useParams()
@@ -56,7 +58,13 @@ const QuizQuestion = ({ language }: { language: ELanguages }) => {
                 </a>
               </h1>
               <h2>{EQuizInProgress[language]}</h2>
-              <Progress language={language} />
+              <Suspense
+                fallback={
+                  <div className='flex center margin0auto'>{ELoading[language]}...</div>
+                }
+              >
+                <Progress language={language} />
+              </Suspense>
               <div className={styles.wrap}>
                 <div className={`${styles.diff}`}>
                   {EDifficulty[language]}: {difficulty}
@@ -87,7 +95,13 @@ const QuizQuestion = ({ language }: { language: ELanguages }) => {
                 </div>
               </div>
               <footer>
-                <Timer />
+                <Suspense
+                  fallback={
+                    <div className='flex center margin0auto'>{ELoading[language]}...</div>
+                  }
+                >
+                  <Timer />
+                </Suspense>
                 {answer && <Next language={language} />}
               </footer>
             </>

@@ -1,4 +1,4 @@
-import './css/quiz.module.css'
+import { lazy, Suspense } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { selectMode } from './reducers/difficultyReducer'
 import { addQuiz } from './reducers/quizReducer'
@@ -9,20 +9,13 @@ import { useEffect, useState } from 'react'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { IHighscore } from './interfaces'
 import {
-  EError,
   ELanguages,
+  ELoading,
   ENote,
-  EPasswordsDoNotMatch,
-  ERegistrationSuccesful,
   ETryTappingTheShapes,
   ReducerProps,
 } from '../../interfaces'
 import { initializeUser } from '../../reducers/authReducer'
-import { notify } from '../../reducers/notificationReducer'
-import { createUser } from '../../reducers/usersReducer'
-import FormLogin from './components/Login'
-import Register from '../Register/Register'
-import Notification from '../Notification/Notification'
 import { FaStar } from 'react-icons/fa'
 import { getUserQuiz } from './reducers/quizReducer'
 import {
@@ -36,7 +29,9 @@ import {
   EUserCanChooseTheDifficultyLevel,
   EUserCanRegisterAndLoginToSaveHighscores,
 } from '../../interfaces/quiz'
-import LoginRegisterCombo from './components/LoginRegisterCombo'
+// import LoginRegisterCombo from './components/LoginRegisterCombo'
+
+const LoginRegisterCombo = lazy(() => import('./components/LoginRegisterCombo'))
 
 const QuizStart = ({
   heading,
@@ -50,12 +45,6 @@ const QuizStart = ({
   language: ELanguages
 }) => {
   const navigate = useNavigate()
-  const [loginOpen, setLoginOpen] = useState(false)
-  const [registerOpen, setRegisterOpen] = useState(false)
-  const [username, setUsername] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
-  const [confirmPassword, setConfirmPassword] = useState<string>('')
-  const [name, setName] = useState<string>('')
   const { points, highscores, finalSeconds } = useSelector(
     (state: ReducerProps) => state.questions
   )
@@ -99,32 +88,6 @@ const QuizStart = ({
     navigate(`/portfolio/quiz/${(e.target as HTMLButtonElement).value}`)
   }
 
-  useEffect(() => {
-    const loginWrapOpen = document.querySelector('.login-wrap .open') as HTMLButtonElement
-    const loginWrapClose = document.querySelector(
-      '.login-wrap .close'
-    ) as HTMLButtonElement
-    const registerWrapOpen = document.querySelector(
-      '.register-wrap .open'
-    ) as HTMLButtonElement
-    const registerWrapClose = document.querySelector(
-      '.register-wrap .close'
-    ) as HTMLButtonElement
-
-    loginWrapOpen?.addEventListener('click', () => {
-      setLoginOpen(true)
-    })
-    loginWrapClose?.addEventListener('click', () => {
-      setLoginOpen(false)
-    })
-    registerWrapOpen?.addEventListener('click', () => {
-      setRegisterOpen(true)
-    })
-    registerWrapClose?.addEventListener('click', () => {
-      setRegisterOpen(false)
-    })
-  }, [])
-
   return (
     <>
       <Hero
@@ -154,7 +117,6 @@ const QuizStart = ({
               Github
             </a>
           </div>
-
           <div className={`start-screen ${styles.quiz}`}>
             <h2>{ETestYourGeneralKnowledgeWithThese15Questions[language]}</h2>
             <p>{EChooseDifficulty[language]}:</p>
@@ -185,12 +147,18 @@ const QuizStart = ({
               </button>
             </div>
           </div>
-          <LoginRegisterCombo
-            language={language}
-            user={user}
-            highscoresLocal={highscoresLocal}
-            text='quizstart'
-          />
+          <Suspense
+            fallback={
+              <div className='flex center margin0auto'>{ELoading[language]}...</div>
+            }
+          >
+            <LoginRegisterCombo
+              language={language}
+              user={user}
+              highscoresLocal={highscoresLocal}
+              text='quizstart'
+            />
+          </Suspense>{' '}
         </div>
       </section>
     </>

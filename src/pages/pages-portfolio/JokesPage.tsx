@@ -1,9 +1,8 @@
+import { lazy, Suspense } from 'react'
 import Hero from '../../components/Hero/Hero'
 import { BiChevronsDown } from 'react-icons/bi'
-import Jokes, {
-  jokeCategoryByLanguage,
-  jokeCategoryAny,
-} from '../../components/Jokes/Jokes'
+// import Jokes from '../../components/Jokes/Jokes'
+import { jokeCategoryByLanguage, jokeCategoryAny } from '../../components/Jokes/Jokes'
 import Accordion from '../../components/Accordion/Accordion'
 import {
   ECategories,
@@ -35,9 +34,12 @@ import {
   LanguageOfLanguage,
   ETryTappingTheShapes,
   EReset,
+  ELoading,
 } from '../../interfaces'
 import { SyntheticEvent, useEffect } from 'react'
 import { Select, SelectOption } from '../../components/Select/Select'
+
+const Jokes = lazy(() => import('../../components/Jokes/Jokes'))
 
 export default function JokesPage({
   heading,
@@ -222,8 +224,13 @@ export default function JokesPage({
             </div>
           </div>
         </section>
-
-        <Jokes language={language} setLanguage={setLanguage} />
+        <Suspense
+          fallback={
+            <div className='flex center margin0auto'>{ELoading[language]}...</div>
+          }
+        >
+          <Jokes language={language} setLanguage={setLanguage} />
+        </Suspense>{' '}
       </div>
     </div>
   )

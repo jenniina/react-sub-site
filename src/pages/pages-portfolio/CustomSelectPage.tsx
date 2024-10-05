@@ -47,7 +47,6 @@ import {
 import { sendEmail, SelectData } from './services/email'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
-import Notification from '../../components/Notification/Notification'
 import {
   EAlternativelyMoveToAnItemOnTheListByWritingTheFirstFewLetters,
   EDidYouFindAnyIssuesOnThisSite,

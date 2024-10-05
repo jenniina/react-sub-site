@@ -1,1 +1,0 @@
-.register-login-wrap{display:flex;flex-flow:row wrap;gap:calc(var(--gap) * 2);justify-content:center}.register-login-wrap>.open,.register-login-wrap>.logged{flex:1 0 100%}.login-wrap p{width:100%;display:flex;flex-flow:row wrap;gap:calc(var(--gap) * 2);align-items:center;justify-content:space-between}

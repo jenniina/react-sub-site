@@ -1,10 +1,11 @@
-import { useEffect, useState, FormEvent } from 'react'
+import { useEffect, useState, FormEvent, lazy, Suspense } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { IQuizHighscore } from './interfaces'
 import {
   EError,
   ELanguages,
+  ELoading,
   EPasswordsDoNotMatch,
   EQuizApp,
   ERegistrationSuccesful,
@@ -15,9 +16,6 @@ import { addQuiz, getUserQuiz, deleteDuplicates } from './reducers/quizReducer'
 import { initializeUser } from '../../reducers/authReducer'
 import { createUser } from '../../reducers/usersReducer'
 import { notify } from '../../reducers/notificationReducer'
-import FormLogin from './components/Login'
-import Register from '../Register/Register'
-import Notification from '../Notification/Notification'
 import styles from '../../components/Quiz/css/quiz.module.css'
 import {
   EBackToMenu,
@@ -39,7 +37,9 @@ import {
   ETryAgain,
   EYouScored,
 } from '../../interfaces/quiz'
-import LoginRegisterCombo from './components/LoginRegisterCombo'
+// import LoginRegisterCombo from './components/LoginRegisterCombo'
+
+const LoginRegisterCombo = lazy(() => import('./components/LoginRegisterCombo'))
 
 interface Props {
   language: ELanguages
@@ -263,13 +263,18 @@ const QuizFinished = ({ language }: Props) => {
                   </button>
                 </div>
               </div>
-
-              <LoginRegisterCombo
-                language={language}
-                user={user}
-                highscoresLocal={highscores}
-                text='quizfinish'
-              />
+              <Suspense
+                fallback={
+                  <div className='flex center margin0auto'>{ELoading[language]}...</div>
+                }
+              >
+                <LoginRegisterCombo
+                  language={language}
+                  user={user}
+                  highscoresLocal={highscores}
+                  text='quizfinish'
+                />
+              </Suspense>
             </div>
           </section>
         </>

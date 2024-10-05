@@ -1,11 +1,13 @@
+import { lazy, Suspense } from 'react'
 import Hero from '../../components/Hero/Hero'
 import {
   EFeatures,
   EKeyboardAccessible,
   EKeyboardUse,
   ELanguages,
+  ELoading,
 } from '../../interfaces'
-import TodoApp from '../../components/Todo/TodoApp'
+// import TodoApp from '../../components/Todo/TodoApp'
 import { ETodoApp } from '../../components/Todo/interfaces'
 import {
   EAddTasksByTabbingToTheInputFieldAnd,
@@ -18,6 +20,8 @@ import {
 } from '../../interfaces/todo'
 import Accordion from '../../components/Accordion/Accordion'
 import { EClickHereToSeeFeatures } from '../../components/Jokes/interfaces'
+
+const TodoApp = lazy(() => import('../../components/Todo/TodoApp'))
 
 export default function TodoPage({
   heading,
@@ -73,7 +77,13 @@ export default function TodoPage({
           <div>
             <div className='medium'>
               <h2>{ETodoApp[language]}</h2>
-              <TodoApp language={language} />
+              <Suspense
+                fallback={
+                  <div className='flex center margin0auto'>{ELoading[language]}...</div>
+                }
+              >
+                <TodoApp language={language} />
+              </Suspense>
             </div>
           </div>
         </section>
