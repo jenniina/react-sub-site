@@ -7,49 +7,62 @@
   color: var(--color-primary-18);
 }
 .App.light {
-  --color-primary-20: hsl(var(--hue-primary), 100%, 1.5%);
-  --color-primary-19: hsl(var(--hue-primary), 100%, 4%);
-  --color-primary-18: hsl(var(--hue-primary), 100%, 7%);
-  --color-primary-17: hsl(var(--hue-primary), 100%, 10%);
-  --color-primary-16: hsl(var(--hue-primary), 100%, 14%);
-  --color-primary-15: hsl(var(--hue-primary), 100%, 18%);
-  --color-primary-14: hsl(var(--hue-primary), 100%, 22%);
-  --color-primary-13: hsl(var(--hue-primary), 100%, 30%);
+  --color-primary-20: hsl(var(--hue-primary), var(--sat), 1.5%);
+  --color-primary-19: hsl(var(--hue-primary), var(--sat), 4%);
+  --color-primary-18: hsl(var(--hue-primary), var(--sat), 7%);
+  --color-primary-17: hsl(var(--hue-primary), var(--sat), 10%);
+  --color-primary-16: hsl(var(--hue-primary), var(--sat), 14%);
+  --color-primary-15: hsl(var(--hue-primary), var(--sat), 18%);
+  --color-primary-14: hsl(var(--hue-primary), var(--sat), 22%);
+  --color-primary-13: hsl(var(--hue-primary), var(--sat), 30%);
   /*do not change, to keep contrast accessible:*/
-  --color-primary-12: hsl(var(--hue-primary), 100%, 43%);
+  --color-primary-12: hsl(var(--hue-primary), var(--sat), 43%);
   /*do not change, to keep contrast accessible:*/
-  --color-primary-11: hsl(var(--hue-primary), 100%, 52%);
-  --color-primary-10: hsl(var(--hue-primary), 100%, 56%);
-  --color-primary-9: hsl(var(--hue-primary), 100%, 59%);
-  --color-primary-8: hsl(var(--hue-primary), 100%, 64%);
-  --color-primary-7: hsl(var(--hue-primary), 100%, 70%);
-  --color-primary-6: hsl(var(--hue-primary), 100%, 76%);
-  --color-primary-5: hsl(var(--hue-primary), 100%, 82%);
-  --color-primary-4: hsl(var(--hue-primary), 100%, 87%);
-  --color-primary-3: hsl(var(--hue-primary), 100%, 90%);
-  --color-primary-2: hsl(var(--hue-primary), 100%, 93%);
-  --color-primary-1: hsl(var(--hue-primary), 100%, 97%);
+  --color-primary-11: hsl(var(--hue-primary), var(--sat), 52%);
+  --color-primary-10: hsl(var(--hue-primary), var(--sat), 56%);
+  --color-primary-9: hsl(var(--hue-primary), var(--sat), 59%);
+  --color-primary-8: hsl(var(--hue-primary), var(--sat), 64%);
+  --color-primary-7: hsl(var(--hue-primary), var(--sat), 70%);
+  --color-primary-6: hsl(var(--hue-primary), var(--sat), 76%);
+  --color-primary-5: hsl(var(--hue-primary), var(--sat), 82%);
+  --color-primary-4: hsl(var(--hue-primary), var(--sat), 87%);
+  --color-primary-3: hsl(var(--hue-primary), var(--sat), 90%);
+  --color-primary-2: hsl(var(--hue-primary), var(--sat), 93%);
+  --color-primary-1: hsl(var(--hue-primary), var(--sat), 97%);
 
-  --color-secondary-1: hsl(var(--hue-secondary), 100%, 3%);
-  --color-secondary-2: hsl(var(--hue-secondary), 100%, 5%);
-  --color-secondary-3: hsl(var(--hue-secondary), 100%, 8%);
-  --color-secondary-4: hsl(var(--hue-secondary), 100%, 11%);
-  --color-secondary-5: hsl(var(--hue-secondary), 100%, 15%);
-  --color-secondary-6: hsl(var(--hue-secondary), 100%, 19%);
-  --color-secondary-7: hsl(var(--hue-secondary), 100%, 22%);
-  --color-secondary-8: hsl(var(--hue-secondary), 100%, 26%);
-  --color-secondary-9: hsl(var(--hue-secondary), 100%, 30%);
-  --color-secondary-10: hsl(var(--hue-secondary), 100%, 35%);
-  --color-secondary-11: hsl(var(--hue-secondary), 100%, 39%);
-  --color-secondary-12: hsl(var(--hue-secondary), 100%, 43%);
-  --color-secondary-13: hsl(var(--hue-secondary), 100%, 47%);
-  --color-secondary-14: hsl(var(--hue-secondary), 100%, 53%);
-  --color-secondary-15: hsl(var(--hue-secondary), 100%, 58%);
-  --color-secondary-16: hsl(var(--hue-secondary), 100%, 64%);
-  --color-secondary-17: hsl(var(--hue-secondary), 100%, 70%);
-  --color-secondary-18: hsl(var(--hue-secondary), 100%, 76%);
-  --color-secondary-19: hsl(var(--hue-secondary), 100%, 82%);
-  --color-secondary-20: hsl(var(--hue-secondary), 100%, 90%);
+  --color-secondary-1: hsl(var(--hue-secondary), var(--sat), 3%);
+  --color-secondary-2: hsl(var(--hue-secondary), var(--sat), 5%);
+  --color-secondary-3: hsl(var(--hue-secondary), var(--sat), 8%);
+  --color-secondary-4: hsl(var(--hue-secondary), var(--sat), 11%);
+  --color-secondary-5: hsl(var(--hue-secondary), var(--sat), 15%);
+  --color-secondary-6: hsl(var(--hue-secondary), var(--sat), 19%);
+  --color-secondary-7: hsl(var(--hue-secondary), var(--sat), 22%);
+  --color-secondary-8: hsl(var(--hue-secondary), var(--sat), 26%);
+  --color-secondary-9: hsl(var(--hue-secondary), var(--sat), 30%);
+  --color-secondary-10: hsl(var(--hue-secondary), var(--sat), 35%);
+  --color-secondary-11: hsl(var(--hue-secondary), var(--sat), 39%);
+  --color-secondary-12: hsl(var(--hue-secondary), var(--sat), 43%);
+  --color-secondary-13: hsl(var(--hue-secondary), var(--sat), 47%);
+  --color-secondary-14: hsl(var(--hue-secondary), var(--sat), 53%);
+  --color-secondary-15: hsl(var(--hue-secondary), var(--sat), 58%);
+  --color-secondary-16: hsl(var(--hue-secondary), var(--sat), 64%);
+  --color-secondary-17: hsl(var(--hue-secondary), var(--sat), 70%);
+  --color-secondary-18: hsl(var(--hue-secondary), var(--sat), 76%);
+  --color-secondary-19: hsl(var(--hue-secondary), var(--sat), 82%);
+  --color-secondary-20: hsl(var(--hue-secondary), var(--sat), 90%);
+
+  --color-visited: hsl(var(--hue-primary), 50%, 30%);
+
+  --color-gray-1: hsl(var(--hue-primary), var(--sat-fade), 90%);
+  --color-gray-2: hsl(var(--hue-primary), var(--sat-fade), 80%);
+  --color-gray-3: hsl(var(--hue-primary), var(--sat-fade), 70%);
+  --color-gray-4: hsl(var(--hue-primary), var(--sat-fade), 60%);
+  --color-gray-5: hsl(var(--hue-primary), var(--sat-fade), 50%);
+  --color-gray-6: hsl(var(--hue-primary), var(--sat-fade), 40%);
+  --color-gray-7: hsl(var(--hue-primary), var(--sat-fade), 30%);
+  --color-gray-8: hsl(var(--hue-primary), var(--sat-fade), 20%);
+  --color-gray-9: hsl(var(--hue-primary), var(--sat-fade), 10%);
+  --color-gray-10: hsl(var(--hue-primary), var(--sat-fade), 5%);
 
   color-scheme: light;
 }
@@ -69,13 +82,11 @@
 }
 /*current page: */
 nav ul li a.active,
-nav ul li a.active:hover {
-  color: var(--color-gray-lighter);
-  cursor: default;
-}
+nav ul li a.active:hover,
 .light nav ul li a.active,
 .light nav ul li a.active:hover {
-  color: var(--color-gray-dark);
+  color: var(--color-gray-7);
+  cursor: default;
 }
 
 nav ul li a.active svg,
@@ -136,8 +147,23 @@ main {
   margin-right: 1em;
   padding: 0;
 }
-.nav-sub .return {
+#root .nav-sub .return a.active {
   /*back to portfolio link*/
+  color: var(--color-visited);
+  pointer-events: all;
+  cursor: pointer;
+  border-bottom-color: transparent;
+}
+#root .nav-sub .return a.active:hover,
+#root .nav-sub .return a.active:focus {
+  color: var(--color-primary-15);
+  color: var(--color-secondary-3);
+  border-bottom-color: currentColor;
+}
+
+#root .light .nav-sub .return a.active:hover,
+#root .light .nav-sub .return a.active:focus {
+  color: var(--color-secondary-7);
 }
 .nav-sub .hide {
   /*hide back to portfolio link when on portfolio page*/
@@ -154,7 +180,8 @@ main {
 .light .nav-sub ul a {
   border-bottom-color: var(--color-primary-5);
 }
-.nav-sub ul a.active {
+.nav-sub ul a.active,
+.nav-sub ul a.active:hover {
   border-bottom-color: currentColor;
 }
 .nav-sub ul a,
@@ -252,7 +279,7 @@ button.horizonal-scroll {
   justify-content: center;
   align-items: center;
   background: var(--color-primary-2);
-  color: var(--color-gray-lighter);
+  color: var(--color-gray-7);
   padding: 0.1em;
   margin: 0;
   border: 0;
@@ -308,9 +335,6 @@ button.horizonal-scroll:hover,
 button.horizonal-scroll:focus,
 button.horizonal-scroll:focus-visible {
   color: var(--color-primary-14);
-}
-.light button.horizonal-scroll {
-  color: var(--color-gray-dark);
 }
 button.horizonal-scroll.disable {
   opacity: 0.2;

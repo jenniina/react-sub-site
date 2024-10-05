@@ -35,7 +35,7 @@ form .nowrap {
   white-space: nowrap;
 }
 fieldset:not(:last-of-type) {
-  border-bottom: 1px dashed var(--color-gray-general);
+  border-bottom: 1px dashed var(--color-gray-6);
 }
 legend {
   font-size: clamp(var(--title-M), 5vw, var(--title-L));
@@ -253,15 +253,10 @@ input[type='radio' i]::before,
 input[type='checkbox' i]::before {
   content: '';
   position: absolute;
-  outline: 0.1em solid var(--color-gray-lighter);
+  outline: 0.1em solid var(--color-gray-7);
   outline-offset: var(--offset);
   z-index: -1;
   pointer-events: none;
-}
-.light input[type='radio' i]::before,
-.light input[type='checkbox' i]::before {
-  outline-color: var(--color-gray-dark);
-  background-color: var(--color-gray-lighter);
 }
 input[type='radio' i]::before {
   top: -0em;
@@ -269,8 +264,8 @@ input[type='radio' i]::before {
   right: -0em;
   bottom: -0em;
   border-radius: 50%;
-  border: 1px solid var(--color-gray-lighter);
-  background-color: var(--color-gray-dark);
+  border: 1px solid var(--color-gray-7);
+  background-color: var(--color-gray-5);
 }
 input[type='checkbox' i]::before {
   top: -0.05em;

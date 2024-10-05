@@ -7,6 +7,11 @@
   transition-timing-function: ease-in-out;
   transition-duration: 300ms;
 }
+.list li a,
+.list li a > * {
+  text-decoration: none !important;
+  background: transparent;
+}
 .list li:hover {
   -webkit-transform: translateY(-6px);
   -ms-transform: translateY(-6px);
@@ -23,12 +28,16 @@
   transition-duration: 300ms;
   margin-top: 1.5em;
 }
+.list a svg {
+  background: transparent;
+}
 .list a:hover svg {
   -webkit-transform: scale(1.1);
   -ms-transform: scale(1.1);
   -o-transform: scale(1.1);
   -moz-transform: scale(1.1);
   transform: scale(1.1);
+  background: transparent;
 }
 .list span {
   display: inline-block;

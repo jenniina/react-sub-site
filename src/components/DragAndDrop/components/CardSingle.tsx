@@ -72,7 +72,7 @@ function CardSingle({
     padding: '0.3em 5%',
     color: data?.lightness == 'dark' ? 'white' : 'black',
     borderColor:
-      data?.lightness == 'dark' ? 'var(--color-gray-lighter)' : 'var(--color-gray-dark)',
+      data?.lightness == 'dark' ? 'var(--color-gray-7)' : 'var(--color-gray-5)',
     textShadow:
       data?.lightness == 'dark'
         ? '1px 1px 1px black'
