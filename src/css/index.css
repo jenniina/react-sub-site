@@ -758,7 +758,7 @@ button.grayer {
 }
 .transformations button,
 .transformations button.restore {
-  transition-property: border-color, color, background-position, outline;
+  transition-property: border-color, color, background-position, outline, opacity;
   transition-duration: 0.4s;
   transition-timing-function: ease-in-out;
   transition-delay: 0s;
