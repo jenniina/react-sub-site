@@ -180,6 +180,10 @@ main {
 .light .nav-sub ul a {
   border-bottom-color: var(--color-primary-5);
 }
+#root .light .nav-sub ul a,
+#root .light .nav-sub ul a > * {
+  text-decoration-color: hsla(var(--hue-primary), 0%, 0%, 0);
+}
 .nav-sub ul a.active,
 .nav-sub ul a.active:hover {
   border-bottom-color: currentColor;
@@ -222,10 +226,9 @@ main {
 .light .nav-sub ul a:hover,
 .light .nav-sub ul a:focus {
   color: var(--color-primary-9);
+  border-bottom-color: var(--color-secondary-14);
 }
 
-/*********************************************************
-@media (min-width: 600px), (max-height: 700px) {*/
 .nav-sub {
   position: relative;
   right: 0;
@@ -340,7 +343,6 @@ button.horizonal-scroll.disable {
   opacity: 0.2;
   pointer-events: none;
 }
-/*} *************************************************** END media */
 
 .page {
   padding: 0 var(--page-padding);

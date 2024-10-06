@@ -33,26 +33,19 @@ function NavPortfolio({ language }: { language: ELanguages }) {
 
   const location = useLocation()
 
-  const firstportfolioitem = useRef() as RefObject<HTMLLIElement>
-  const lastportfolioitem = useRef() as RefObject<HTMLLIElement>
-  const placeholderRef = useRef() as RefObject<HTMLLIElement>
-
-  const [firstVisibleRef, setFirstVisibleRef] = useState(firstportfolioitem)
-
-  const firstVisible = useIsOnScreen(firstVisibleRef, '-20px', 1)
-  const lastVisible = useIsOnScreen(lastportfolioitem, '-20px', 1)
-
   const scrollHorizontal = useSideScroll() as RefObject<HTMLUListElement>
+
+  const scrollAmount = 50
 
   function leftScroll() {
     if (scrollHorizontal.current && windowWidth > breakpointSmall)
       scrollHorizontal.current.scrollLeft -= 100
-    else if (scrollHorizontal.current) scrollHorizontal.current.scrollLeft -= 40
+    else if (scrollHorizontal.current) scrollHorizontal.current.scrollLeft -= scrollAmount
   }
   function rightScroll() {
     if (scrollHorizontal.current && windowWidth > breakpointSmall)
       scrollHorizontal.current.scrollLeft += 100
-    else if (scrollHorizontal.current) scrollHorizontal.current.scrollLeft += 40
+    else if (scrollHorizontal.current) scrollHorizontal.current.scrollLeft += scrollAmount
   }
 
   const navItems: NavItem[] = [
@@ -70,14 +63,20 @@ function NavPortfolio({ language }: { language: ELanguages }) {
 
   const itemRefs = navItems.map(() => useRef<HTMLLIElement>(null))
 
+  const [firstVisibleRef, setFirstVisibleRef] = useState(itemRefs[0])
+
+  const firstVisible = useIsOnScreen(firstVisibleRef, '-20px', 1)
+  const lastVisible = useIsOnScreen(itemRefs[itemRefs.length - 1], '-40px', 1)
+
   useEffect(() => {
-    if (location.pathname === '/portfolio/' || location.pathname === '/portfolio') {
+    if (firstVisible && scrollHorizontal.current) scrollHorizontal.current.scrollLeft = 0
+  }, [firstVisible, scrollHorizontal])
+
+  useEffect(() => {
+    if (location.pathname === '/portfolio') {
       setFirstVisibleRef(itemRefs[1])
     } else {
-      const firstVisibleIndex = navItems.findIndex(
-        (item) => location.pathname === item.url
-      )
-      setFirstVisibleRef(itemRefs[firstVisibleIndex] || firstportfolioitem)
+      setFirstVisibleRef(itemRefs[0])
     }
   }, [location.pathname, itemRefs, navItems])
 
@@ -86,7 +85,6 @@ function NavPortfolio({ language }: { language: ELanguages }) {
       const isFirst = item.special === 'first'
       const isLast = item.special === 'last'
       const isCurrentPath = location.pathname === item.url
-
       return (
         <li
           key={index}
@@ -101,6 +99,23 @@ function NavPortfolio({ language }: { language: ELanguages }) {
               : `portfolio-${index}`
           }
           className={isFirst && isCurrentPath ? 'hide' : isFirst ? 'return' : ''}
+          onFocus={() => {
+            if (itemRefs[index].current && scrollHorizontal.current) {
+              const itemLeft = itemRefs[index].current.offsetLeft
+              const itemRight = itemLeft + itemRefs[index].current.offsetWidth
+              const scrollLeft = scrollHorizontal.current.scrollLeft
+              const scrollRight = scrollLeft + scrollHorizontal.current.clientWidth
+              const amount = 60
+
+              // Scroll into view with an additional offset of 40px
+              if (itemLeft < scrollLeft + amount) {
+                scrollHorizontal.current.scrollLeft = itemLeft - amount
+              } else if (itemRight > scrollRight - amount) {
+                scrollHorizontal.current.scrollLeft =
+                  itemRight - scrollHorizontal.current.clientWidth + amount
+              }
+            }
+          }}
         >
           <NavLink to={item.url}>{item.name}</NavLink>
         </li>
