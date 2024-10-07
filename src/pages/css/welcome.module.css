@@ -189,7 +189,12 @@
   border-radius: var(--radius-small);
 }
 .light .language-welcome {
-  background-color: hsla(var(--hue-primary), 100%, 97%, 0.3);
+  background: linear-gradient(
+    180deg,
+    hsla(var(--hue-primary), var(--sat), 90%, 0) 0%,
+    hsla(var(--hue-primary), var(--sat), 90%, 0.4) 10%,
+    hsla(var(--hue-primary), var(--sat), 90%, 0) 100%
+  );
 }
 .language-welcome > span {
   padding-left: 0.5em;

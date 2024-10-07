@@ -46,6 +46,19 @@
   -o-text-shadow: 1px 1px 1px var(--color-primary-1), 0 0 0.1em var(--color-primary-1);
   text-shadow: 1px 1px 1px var(--color-primary-1), 0 0 0.1em var(--color-primary-1);
 }
+.hero.light h1 {
+  -webkit-text-stroke: 1px var(--color-primary-3);
+  -moz-text-stroke: 1px var(--color-primary-3);
+  -ms-text-stroke: 1px var(--color-primary-3);
+  -o-text-stroke: 1px var(--color-primary-3);
+  text-stroke: 1px var(--color-primary-3);
+  -webkit-text-shadow: 1px 1px 1px var(--color-primary-4),
+    0 0 0.1em var(--color-primary-4);
+  -moz-text-shadow: 1px 1px 1px var(--color-primary-4), 0 0 0.1em var(--color-primary-4);
+  -ms-text-shadow: 1px 1px 1px var(--color-primary-4), 0 0 0.1em var(--color-primary-4);
+  -o-text-shadow: 1px 1px 1px var(--color-primary-4), 0 0 0.1em var(--color-primary-4);
+  text-shadow: 1px 1px 1px var(--color-primary-4), 0 0 0.1em var(--color-primary-4);
+}
 .hero p {
   -webkit-text-shadow: 1px 1px 1px var(--color-primary-1), 0 0 1em var(--color-primary-1),
     0 0 0.3em var(--color-primary-1);
@@ -70,7 +83,7 @@
 .herocontent .geometric,
 .herocontent .triangle {
   transition-property: top, right, bottom, left, transform, filter, box-shadow, outline,
-    border;
+    border, width, height;
   transition-timing-function: ease-in-out;
   transition-duration: 600ms;
   -webkit-tap-highlight-color: transparent;
@@ -391,40 +404,40 @@
   -webkit-box-shadow: inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px)
       calc(var(--size) * 4 * 1px) calc(var(--size) * 7 * -1px) hotpink,
     inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 9 * -1px) lime,
-    0 0 10px 0 white, 0 0 20px -10px white,
+      calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) lawngreen,
+    0 0 10px 0 var(--color-primary-4), 0 0 20px -10px white,
     inset calc(var(--size) * 1px) 0 calc(var(--size) * 3 * 1px) 0 currentColor,
     inset calc(var(--size) * -1px) 0 calc(var(--size) * 3 * 1px) -1px white,
     0 0 10px -5px white;
   -ms-box-shadow: inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px)
       calc(var(--size) * 4 * 1px) calc(var(--size) * 7 * -1px) hotpink,
     inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 9 * -1px) lime,
-    0 0 10px 0 white, 0 0 20px -10px white,
+      calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) lawngreen,
+    0 0 10px 0 var(--color-primary-4), 0 0 20px -10px white,
     inset calc(var(--size) * 1px) 0 calc(var(--size) * 3 * 1px) 0 currentColor,
     inset calc(var(--size) * -1px) 0 calc(var(--size) * 3 * 1px) -1px white,
     0 0 10px -5px white;
   -moz-box-shadow: inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px)
       calc(var(--size) * 4 * 1px) calc(var(--size) * 7 * -1px) hotpink,
     inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 9 * -1px) lime,
-    0 0 10px 0 white, 0 0 20px -10px white,
+      calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) lawngreen,
+    0 0 10px 0 var(--color-primary-4), 0 0 20px -10px white,
     inset calc(var(--size) * 1px) 0 calc(var(--size) * 3 * 1px) 0 currentColor,
     inset calc(var(--size) * -1px) 0 calc(var(--size) * 3 * 1px) -1px white,
     0 0 10px -5px white;
   -o-box-shadow: inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px)
       calc(var(--size) * 4 * 1px) calc(var(--size) * 7 * -1px) hotpink,
     inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 9 * -1px) lime,
-    0 0 10px 0 white, 0 0 20px -10px white,
+      calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) lawngreen,
+    0 0 10px 0 var(--color-primary-4), 0 0 20px -10px white,
     inset calc(var(--size) * 1px) 0 calc(var(--size) * 3 * 1px) 0 currentColor,
     inset calc(var(--size) * -1px) 0 calc(var(--size) * 3 * 1px) -1px white,
     0 0 10px -5px white;
   box-shadow: inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px)
       calc(var(--size) * 4 * 1px) calc(var(--size) * 7 * -1px) hotpink,
     inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 9 * -1px) lime,
-    0 0 10px 0 white, 0 0 20px -10px white,
+      calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) lawngreen,
+    0 0 10px 0 var(--color-primary-4), 0 0 20px -10px white,
     inset calc(var(--size) * 1px) 0 calc(var(--size) * 3 * 1px) 0 currentColor,
     inset calc(var(--size) * -1px) 0 calc(var(--size) * 3 * 1px) -1px white,
     0 0 10px -5px white;

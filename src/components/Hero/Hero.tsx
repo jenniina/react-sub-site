@@ -240,10 +240,10 @@ export default function Hero({
           colorSwitch = `var(--color-secondary-${Math.round(useRandomMinMax(10, 13))})`
           break
         case 2:
-          colorSwitch = `var(--color-primary-${Math.round(useRandomMinMax(9, 14))})`
+          colorSwitch = `var(--color-primary-${Math.round(useRandomMinMax(9, 12))})`
           break
         default:
-          colorSwitch = `var(--color-primary-${Math.round(useRandomMinMax(9, 14))})`
+          colorSwitch = `var(--color-primary-${Math.round(useRandomMinMax(9, 12))})`
       }
 
       const size = specialIndices.has(i)
@@ -286,24 +286,56 @@ export default function Hero({
         const windowWidth = window.innerWidth
         const windowHeight = window.innerHeight
 
-        const direction = Math.random() < 0.5 ? 'top' : 'left'
-        const change = Math.random() < 0.5 ? -15 : 15
+        // Choose a random direction
+        const direction = Math.floor(Math.random() * 8)
+        const change = Math.random() < 0.5 ? -10 : 10
 
-        if (direction === 'top') {
-          const newTop = currentTop + change
-          // Check if the new position is within the top 60px-60% of the window
-          if (newTop >= 60 && newTop + itemHeight <= windowHeight * 0.6) {
-            item.style.top = `${newTop}px`
-          }
-        } else {
-          const newLeft = currentLeft + change
-          // Check if the new position is within the window
-          if (newLeft >= 0 && newLeft + itemWidth <= windowWidth) {
-            item.style.left = `${newLeft}px`
-          }
+        let newTop = currentTop
+        let newLeft = currentLeft
+
+        switch (direction) {
+          case 0: // up
+            newTop = currentTop + change
+            break
+          case 1: // down
+            newTop = currentTop - change
+            break
+          case 2: // left
+            newLeft = currentLeft + change
+            break
+          case 3: // right
+            newLeft = currentLeft - change
+            break
+          case 4: // top-left
+            newTop = currentTop + change
+            newLeft = currentLeft + change
+            break
+          case 5: // top-right
+            newTop = currentTop + change
+            newLeft = currentLeft - change
+            break
+          case 6: // bottom-left
+            newTop = currentTop - change
+            newLeft = currentLeft + change
+            break
+          case 7: // bottom-right
+            newTop = currentTop - change
+            newLeft = currentLeft - change
+            break
+        }
+
+        // Check if the new position is within the allowed boundaries
+        if (
+          newTop >= 60 &&
+          newTop + itemHeight <= windowHeight * 0.6 &&
+          newLeft >= 0 &&
+          newLeft + itemWidth <= windowWidth
+        ) {
+          item.style.top = `${newTop}px`
+          item.style.left = `${newLeft}px`
         }
       }
-    }, useRandomMinMax(2000, 5000))
+    }, useRandomMinMax(2000, 4000))
 
     return () => clearInterval(interval)
   }, [values, prefersReducedMotion])
