@@ -95,7 +95,7 @@
   --color-secondary-2: hsl(var(--hue-secondary), var(--sat), 82%);
   --color-secondary-1: hsl(var(--hue-secondary), var(--sat), 90%);
 
-  --color-visited: hsl(var(--hue-primary), 60%, 60%);
+  --color-visited: hsl(var(--hue-secondary), 44%, 66%);
 
   --color-gray-1: hsl(var(--hue-primary), var(--sat-fade), 5%);
   --color-gray-2: hsl(var(--hue-primary), var(--sat-fade), 10%);
@@ -176,7 +176,7 @@ body {
   max-width: 100vw;
 }
 body.light {
-  background-color: var(--color-primary-17);
+  background-color: var(--color-primary-18);
 }
 body * {
   scroll-margin-top: 4rem;
@@ -201,7 +201,7 @@ main a:link,
 main a > *,
 main a:link > * {
   font-weight: 500;
-  color: var(--color-primary-13);
+  color: var(--color-secondary-4);
   text-decoration: inherit;
 }
 main a {
@@ -220,8 +220,9 @@ main a.disabled *:hover,
 .light main a:link,
 .light main a > *,
 .light main a:link > * {
+  color: var(--color-primary-12);
   text-decoration: underline;
-  text-decoration-color: var(--color-primary-6);
+  text-decoration-color: var(--color-primary-8);
   background-image: linear-gradient(0deg, var(--color-primary-1) 0%, transparent 49%);
   background-size: 100% 200%;
   background-position: top;
@@ -235,7 +236,7 @@ main a:hover > *,
 main a:focus > *,
 main a:visited:hover > *,
 main a:visited:focus > * {
-  color: var(--color-secondary-3);
+  color: var(--color-secondary-1);
   text-decoration: underline;
 }
 .light main a:hover,
@@ -249,11 +250,12 @@ main a:visited:focus > * {
   color: var(--color-secondary-6);
   background-position: bottom;
   transition-origin: bottom;
-  text-decoration-color: var(--color-secondary-16);
+  text-decoration-color: var(--color-secondary-19);
 }
 main a:visited,
 main a:visited > * {
   color: var(--color-visited);
+  text-decoration-color: var(--color-visited);
 }
 main a.disabled,
 main a.disabled > *,
