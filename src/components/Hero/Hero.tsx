@@ -288,23 +288,24 @@ export default function Hero({
 
         // Choose a random direction
         const direction = Math.floor(Math.random() * 8)
-        const change = Math.random() < 0.5 ? -10 : 10
+        const change = 10
+        const changeBigger = 16
 
         let newTop = currentTop
         let newLeft = currentLeft
 
         switch (direction) {
           case 0: // up
-            newTop = currentTop + change
+            newTop = currentTop + changeBigger
             break
           case 1: // down
-            newTop = currentTop - change
+            newTop = currentTop - changeBigger
             break
           case 2: // left
-            newLeft = currentLeft + change
+            newLeft = currentLeft + changeBigger
             break
           case 3: // right
-            newLeft = currentLeft - change
+            newLeft = currentLeft - changeBigger
             break
           case 4: // top-left
             newTop = currentTop + change
@@ -714,7 +715,7 @@ export default function Hero({
                 )
               } else if (location === LOCATION.CONTACT || location === LOCATION.FORM) {
                 // CONTACT  // FORM
-                const mod = useRandomMinMax(0.4, 0.7)
+                const mod = 0.6
                 const style: React.CSSProperties = {
                   position: 'absolute',
                   top: `clamp(60px, calc(-5vh + calc(1.5vh * ${item.e} * ${

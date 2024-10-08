@@ -1,6 +1,7 @@
 .main-header {
   --radius-small: 6px;
   --height: 3em;
+  --blur: 4px;
   position: fixed;
   padding: 0;
   margin: 0;
@@ -8,6 +9,8 @@
   width: 100%;
   background-color: transparent;
   z-index: 99;
+  -webkit-backdrop-filter: blur(var(--blur));
+  backdrop-filter: blur(var(--blur));
 }
 .main-header.transformations {
   transition-property: top;
@@ -68,7 +71,7 @@
     var(--color-primary-3) 0%,
     var(--color-primary-2) 100%
   );
-  opacity: 0.9;
+  opacity: 0.8;
   border-bottom: solid 1px black;
   -webkit-box-shadow: inset 0 -0.3rem 2.5rem -3rem var(--color-primary-19),
     0 0.5rem 2rem -1.5rem black;
@@ -88,7 +91,7 @@
     var(--color-primary-5) 100%
   );
   border-bottom: solid 1px var(--color-primary-7);
-  opacity: 0.95;
+  opacity: 0.8;
 }
 .main-header > .header-inner-wrap {
   position: relative;
@@ -101,6 +104,7 @@
   height: var(--height);
   width: 100%;
   padding-right: 0.5rem;
+  background: transparent;
 }
 .main-header h2 {
   font-size: clamp(var(--title-S), 3vw, var(--title-M));
@@ -198,6 +202,7 @@ button.togglemenu[aria-expanded='true'] .menupath {
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
 }
+
 .toolbar {
   position: absolute;
   padding: 1.3em 1.4em 0.8em;
@@ -208,11 +213,10 @@ button.togglemenu[aria-expanded='true'] .menupath {
   align-items: center;
   gap: 0.7em;
   opacity: 0;
-  background-color: var(--color-primary-2);
   background: linear-gradient(
     180deg,
-    var(--color-primary-3) 0%,
-    var(--color-primary-1) 100%
+    hsla(var(--hue-primary), var(--sat), 8%, 0.9) 0%,
+    hsla(var(--hue-primary), var(--sat), 3%, 0.96) 100%
   );
   border-left: 1px solid black;
   border-top: 0;
@@ -231,13 +235,13 @@ button.togglemenu[aria-expanded='true'] .menupath {
   border-left: 1px solid var(--color-primary-6);
   background: linear-gradient(
     180deg,
-    hsla(var(--hue-primary), 100%, 86%, 0.94) 0%,
-    hsla(var(--hue-primary), 100%, 92%, 0.8) 100%
+    hsla(var(--hue-primary), var(--sat), 88%, 0.86) 0%,
+    hsla(var(--hue-primary), var(--sat), 97%, 0.9) 100%
   );
 }
 .toolbar.show {
   right: 0;
-  opacity: 0.92;
+  opacity: 1;
   -webkit-transform: translateX(0%);
   -ms-transform: translateX(0%);
   -o-transform: translateX(0%);
@@ -364,7 +368,7 @@ ul {
   display: flex;
   width: 100%;
   justify-content: flex-start;
-  gap: 0.5em;
+  gap: 0.3em;
 }
 
 .menu-container svg path {
@@ -862,27 +866,25 @@ a.link:visited:not(.active):focus > *,
     -moz-transform: translateY(-0.2rem);
     transform: translateY(-0.2rem);
   }
-  .menu-container ul li a:hover span,
-  .menu-container ul li a:focus span,
-  .main-header button.search:hover span,
-  .main-header button.search:focus span,
-  .main-header button.settings:hover span,
-  .main-header button.settings:focus span {
-    background-color: var(--color-primary-2);
-    opacity: 0.9;
+  header:not(.menualt) .menu-container ul li a span,
+  header:not(.menualt).main-header button.search span,
+  header:not(.menualt).main-header button.settings span {
+    background-image: linear-gradient(
+      180deg,
+      transparent 55%,
+      var(--color-primary-3) 95%
+    );
+    background-size: 100% 200%;
+    background-position: top;
   }
-  .light .menu-container ul li a span,
-  .light .main-header button.search span,
-  .light .main-header button.settings span {
-    background-color: transparent;
-  }
-  .light .menu-container ul li a:hover span,
-  .light .menu-container ul li a:focus span,
-  .light .main-header button.search:hover span,
-  .light .main-header button.search:focus span,
-  .light .main-header button.settings:hover span,
-  .light .main-header button.settings:focus span {
-    background-color: var(--color-primary-1);
+  header:not(.menualt) .menu-container ul li a:hover span,
+  header:not(.menualt) .menu-container ul li a:focus span,
+  header:not(.menualt).main-header button.search:hover span,
+  header:not(.menualt).main-header button.search:focus span,
+  header:not(.menualt).main-header button.settings:hover span,
+  header:not(.menualt).main-header button.settings:focus span {
+    background-position: bottom;
+    padding: 0.5em 0.6vw 0.1em;
   }
   .menu-container ul li a:hover span,
   .menu-container ul li a:focus span,
@@ -902,21 +904,6 @@ a.link:visited:not(.active):focus > *,
     -o-transform-origin: top;
     -moz-transform-origin: top;
     transform-origin: top;
-    /* -webkit-text-shadow: 1px 1px var(--color-primary-2),
-      -1px -1px var(--color-primary-2), 0 0 1em var(--color-primary-2),
-      0 0 0.3em var(--color-primary-2);
-    -moz-text-shadow: 1px 1px var(--color-primary-2),
-      -1px -1px var(--color-primary-2), 0 0 1em var(--color-primary-2),
-      0 0 0.3em var(--color-primary-2);
-    -o-text-shadow: 1px 1px var(--color-primary-2),
-      -1px -1px var(--color-primary-2), 0 0 1em var(--color-primary-2),
-      0 0 0.3em var(--color-primary-2);
-    -ms-text-shadow: 1px 1px var(--color-primary-2),
-      -1px -1px var(--color-primary-2), 0 0 1em var(--color-primary-2),
-      0 0 0.3em var(--color-primary-2);
-    text-shadow: 1px 1px var(--color-primary-2),
-      -1px -1px var(--color-primary-2), 0 0 1em var(--color-primary-2),
-      0 0 0.3em var(--color-primary-2); */
   }
   .transformations .menu-container ul li a svg,
   .transformations.main-header button.search svg,
@@ -929,8 +916,8 @@ a.link:visited:not(.active):focus > *,
   .transformations .menu-container ul li a span,
   .transformations.main-header button.search span,
   .transformations.main-header button.settings span {
-    transition-property: transform, opacity, color, background-color;
-    transition-duration: 0.3s, 0.3s, 0.3s;
+    transition-property: transform, opacity, color, background-color, background-position;
+    transition-duration: 0.3s;
     transition-delay: 0s;
     transition-timing-function: ease-in-out;
   }
@@ -1295,7 +1282,7 @@ button.dlt-btn:focus {
   .menualt.transformations button.search svg,
   .menualt.transformations button.settings span,
   .menualt.transformations button.settings svg {
-    transition-property: transform, opacity, color, fill;
+    transition-property: transform, opacity, color, fill, background-position;
     transition-duration: 0.3s;
     transition-timing-function: ease-in-out;
   }
@@ -1366,11 +1353,11 @@ button.dlt-btn:focus {
   .menualt button.settings:hover svg,
   .menualt button.settings:focus svg {
     opacity: 1;
-    -webkit-transform: scale(1.2);
-    -ms-transform: scale(1.2);
-    -o-transform: scale(1.2);
-    -moz-transform: scale(1.2);
-    transform: scale(1.2);
+    -webkit-transform: scale(1.4);
+    -ms-transform: scale(1.4);
+    -o-transform: scale(1.4);
+    -moz-transform: scale(1.4);
+    transform: scale(1.4);
   }
   .menualt .menu-container:not(.altnav) ul .link.active svg {
     opacity: 1;

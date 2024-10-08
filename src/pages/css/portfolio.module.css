@@ -7,10 +7,20 @@
   transition-timing-function: ease-in-out;
   transition-duration: 300ms;
 }
-.list li a,
-.list li a > * {
-  text-decoration: none !important;
-  background: transparent;
+.portfolio .card .list li a,
+.portfolio .card .list li a > * {
+  text-decoration: none;
+  background: none;
+}
+.portfolio .card .list li a > span {
+  background-size: 100% 200%;
+  background-position: top;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(0deg, var(--color-primary-1) 0%, transparent 28%);
+}
+.portfolio .card .list li a:hover > span,
+.portfolio .card .list li a:focus > span {
+  background-position: bottom;
 }
 .list li:hover {
   -webkit-transform: translateY(-6px);

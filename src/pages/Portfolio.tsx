@@ -64,7 +64,11 @@ export default function Portfolio({
   }
 
   return (
-    <div className={`portfolio ${type} ${lightTheme ? styles.light : ''}`}>
+    <div
+      className={`portfolio ${styles.portfolio} ${type} ${
+        lightTheme ? styles.light : ''
+      }`}
+    >
       <Hero
         language={language}
         address='portfolio'
@@ -73,7 +77,7 @@ export default function Portfolio({
         instructions={ETryDraggingTheBlobs[language]}
       />
       <div className='inner-wrap'>
-        <section className={`card`}>
+        <section className={`card ${styles.card}`}>
           <div>
             <div className={styles.notes}>
               <p className={styles.introparagraph}>

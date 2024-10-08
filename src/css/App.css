@@ -130,7 +130,7 @@ main {
   display: flex;
   justify-content: flex-end;
   text-align: center;
-  font-size: 0.9em;
+  font-size: 0.86em;
   min-width: max-content;
   width: 100%;
   margin-left: auto;
@@ -160,7 +160,6 @@ main {
 }
 #root .nav-sub .return a.active:hover,
 #root .nav-sub .return a.active:focus {
-  color: var(--color-primary-15);
   color: var(--color-secondary-3);
   border-bottom-color: currentColor;
 }
@@ -176,13 +175,17 @@ main {
 .nav-sub ul a {
   display: inline-block;
   position: relative;
-  padding: 0.1em 1em 0.1em;
+  padding: 0 1em 0.2em;
   line-height: 2;
   font-weight: normal;
-  border-bottom: 2px solid var(--color-primary-1);
+  border-top: 3px solid var(--color-primary-2);
+  border-bottom: 3px solid var(--color-primary-8);
+}
+#root .nav-sub ul a {
+  color: var(--color-primary-18);
 }
 .light .nav-sub ul a {
-  border-bottom-color: var(--color-primary-5);
+  border-bottom-color: var(--color-primary-9);
 }
 #root .light .nav-sub ul a,
 #root .light .nav-sub ul a > * {
@@ -205,7 +208,6 @@ main {
   bottom: 0;
   left: 0;
   background-color: var(--color-primary-2);
-  opacity: 0.9;
   -webkit-box-shadow: 0 0.05em 0.9em -0.7em var(--color-primary-11);
   -ms-box-shadow: 0 0.05em 0.9em -0.7em var(--color-primary-11);
   -o-box-shadow: 0 0.05em 0.9em -0.7em var(--color-primary-11);
@@ -213,7 +215,6 @@ main {
   box-shadow: 0 0.05em 0.9em -0.7em var(--color-primary-11);
 }
 .light .nav-sub ul a::after {
-  background-color: var(--color-primary-1);
   -webkit-box-shadow: 0 0.1em 0.9em -0.5em var(--color-primary-11);
   -ms-box-shadow: 0 0.1em 0.9em -0.5em var(--color-primary-11);
   -moz-box-shadow: 0 0.1em 0.9em -0.5em var(--color-primary-11);
@@ -225,12 +226,14 @@ main {
   color: var(--color-primary-15);
   outline-offset: -2px;
   text-decoration: none;
-  border-bottom: 2px solid currentColor;
+  border-bottom-color: var(--color-secondary-10);
+  border-top-width: 0;
+  border-bottom-width: 5px;
 }
 .light .nav-sub ul a:hover,
 .light .nav-sub ul a:focus {
   color: var(--color-primary-9);
-  border-bottom-color: var(--color-secondary-14);
+  border-bottom-color: var(--color-secondary-15);
 }
 
 .nav-sub {
