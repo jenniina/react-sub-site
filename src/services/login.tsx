@@ -1,15 +1,11 @@
 import axios, { AxiosRequestConfig } from 'axios'
+import { credentials } from '../interfaces'
 
 const url =
   import.meta.env.VITE_BASE_URI ??
   'https://react-bg.braveisland-7060f196.westeurope.azurecontainerapps.io'
 const baseUrl = `${url}/api/login`
 
-type credentials = {
-  username: string
-  password: string
-  language: string
-}
 let token: string | null = null
 let config: AxiosRequestConfig<any> | undefined
 

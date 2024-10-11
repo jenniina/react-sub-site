@@ -9,8 +9,6 @@
   width: 100%;
   background-color: transparent;
   z-index: 99;
-  -webkit-backdrop-filter: blur(var(--blur));
-  backdrop-filter: blur(var(--blur));
 }
 .main-header.transformations {
   transition-property: top;

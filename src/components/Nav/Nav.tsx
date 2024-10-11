@@ -62,6 +62,8 @@ import { createUser } from '../../reducers/usersReducer'
 import { Select, SelectOption } from '../Select/Select'
 import PasswordReset from '../PasswordReset/PasswordReset'
 import Accordion from '../Accordion/Accordion'
+import { TiShoppingCart } from 'react-icons/ti'
+import { ECart } from '../../interfaces/store-cart'
 
 type Link = {
   label: string

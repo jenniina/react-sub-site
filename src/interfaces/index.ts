@@ -1,6 +1,7 @@
 import { IJoke } from '../components/Jokes/interfaces'
 import { EQuizType, IQuiz, IQuestion, IHighscore } from '../components/Quiz/interfaces'
-import { ITask, ITodos } from '../components/Todo/interfaces'
+import { ITodos } from '../components/Todo/interfaces'
+import { ICart } from './store-cart'
 
 export interface RefObject<T> {
   readonly current: T | null
@@ -8,6 +9,12 @@ export interface RefObject<T> {
 
 export const breakpoint = 700
 export const breakpointSmall = 400
+
+export type credentials = {
+  username: string
+  password: string
+  language: string
+}
 
 export interface IUser {
   _id?: string
@@ -75,6 +82,7 @@ export interface ReducerProps {
     token: string
   }
   todos: ITodos
+  cart: ICart
 }
 
 export enum ELogin {
@@ -2503,4 +2511,67 @@ export enum EToTarget {
   pt = 'Para o alvo',
   cs = 'Na cíl',
   fi = 'Kohteeseen',
+}
+export enum EAdd {
+  en = 'Add',
+  es = 'Añadir',
+  fr = 'Ajouter',
+  de = 'Hinzufügen',
+  pt = 'Adicionar',
+  cs = 'Přidat',
+  fi = 'Lisää',
+}
+export enum ESubtract {
+  en = 'Subtract',
+  es = 'Restar',
+  fr = 'Soustraire',
+  de = 'Subtrahieren',
+  pt = 'Subtrair',
+  cs = 'Odečíst',
+  fi = 'Vähennä',
+}
+export enum EStore {
+  en = 'Store',
+  es = 'Almacenar',
+  fr = 'Magasin',
+  de = 'Geschäft',
+  pt = 'Loja',
+  cs = 'Obchod',
+  fi = 'Kauppa',
+}
+export enum EWebpagesAndGraphicDesign {
+  en = 'Webpages and graphic design',
+  es = 'Páginas web y diseño gráfico',
+  fr = 'Pages web et design graphique',
+  de = 'Webseiten und Grafikdesign',
+  pt = 'Páginas da web e design gráfico',
+  cs = 'Webové stránky a grafický design',
+  fi = 'Verkkosivut ja graafinen suunnittelu',
+}
+export enum EMisc {
+  en = 'Misc',
+  es = 'Varios',
+  fr = 'Divers',
+  de = 'Verschiedenes',
+  pt = 'Diversos',
+  cs = 'Různé',
+  fi = 'Sekalaista',
+}
+export enum EWebsite {
+  en = 'Website',
+  es = 'Sitio web',
+  fr = 'Site web',
+  de = 'Webseite',
+  pt = 'Site',
+  cs = 'Webová stránka',
+  fi = 'Verkkosivusto',
+}
+export enum ERemove {
+  en = 'Remove',
+  es = 'Eliminar',
+  fr = 'Supprimer',
+  de = 'Entfernen',
+  pt = 'Remover',
+  cs = 'Odstranit',
+  fi = 'Poista',
 }
