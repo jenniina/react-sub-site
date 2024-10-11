@@ -100,9 +100,9 @@ function NavPortfolio({ language }: { language: ELanguages }) {
           }
           className={isFirst && isCurrentPath ? 'hide' : isFirst ? 'return' : ''}
           onFocus={() => {
-            if (itemRefs[index].current && scrollHorizontal.current) {
-              const itemLeft = itemRefs[index].current.offsetLeft
-              const itemRight = itemLeft + itemRefs[index].current.offsetWidth
+            if (itemRefs[index] && itemRefs[index].current && scrollHorizontal.current) {
+              const itemLeft = itemRefs[index].current?.offsetLeft ?? 0
+              const itemRight = itemLeft + (itemRefs[index].current?.offsetWidth ?? 0)
               const scrollLeft = scrollHorizontal.current.scrollLeft
               const scrollRight = scrollLeft + scrollHorizontal.current.clientWidth
               const amount = 60

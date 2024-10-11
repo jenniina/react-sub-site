@@ -23,6 +23,8 @@ import QuizQuestion from './components/Quiz/QuizQuestion'
 import QuizFinished from './components/Quiz/QuizFinished'
 import HairSalonPage from './pages/pages-portfolio/HairSalonPage'
 import Disclaimer from './pages/Disclaimer'
+import CartPage from './pages/CartPage'
+import StorePage from './pages/StorePage'
 import { Footer } from './components/Footer/Footer'
 import { useTheme } from './hooks/useTheme'
 import { useScrollbarWidth } from './hooks/useScrollbarWidth'
@@ -49,6 +51,8 @@ import {
   EPrivacyAndSecurityDisclaimer,
   ELastUpdated,
   ELoading,
+  EStore,
+  EWebpagesAndGraphicDesign,
 } from './interfaces'
 import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
 import { isTouchDevice } from './hooks/useDraggable'
@@ -67,6 +71,7 @@ import { SelectOption } from './components/Select/Select'
 import Notification from './components/Notification/Notification'
 import { EEditUserSettings } from './components/UserEdit/interfaces'
 import { EReactApps } from './interfaces/about'
+import { EShoppingCart } from './interfaces/store-cart'
 
 const App: FC = () => {
   const touchDevice = isTouchDevice()
@@ -392,6 +397,28 @@ const App: FC = () => {
                     language={language}
                     heading={EContact[language]}
                     text={ELetsCollaborate[language]}
+                    type='page'
+                  />
+                }
+              />
+              <Route
+                path='/cart'
+                element={
+                  <CartPage
+                    language={language}
+                    heading={EShoppingCart[language]}
+                    text=''
+                    type='page'
+                  />
+                }
+              />
+              <Route
+                path='/store'
+                element={
+                  <StorePage
+                    language={language}
+                    heading={EStore[language]}
+                    text={EWebpagesAndGraphicDesign[language]}
                     type='page'
                   />
                 }
