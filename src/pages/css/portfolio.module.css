@@ -56,7 +56,7 @@
   font-size: clamp(var(--title-M), 4vw, var(--title-L));
 }
 .list p {
-  color: var(--color-primary-14);
+  color: var(--color-secondary-1);
   font-size: 0.9em;
 }
 

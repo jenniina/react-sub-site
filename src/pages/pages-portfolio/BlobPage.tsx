@@ -132,6 +132,7 @@ export default function BlobPage({
                   language={language}
                   text={EClickHereToSeeFeatures[language]}
                   className='features-blobs'
+                  wrapperClass='features-blobs-wrap'
                   showButton
                 >
                   <div className='medium'>
@@ -293,6 +294,7 @@ export default function BlobPage({
                   language={language}
                   text={ESeeSampleArtworkCreatedWithTheApp[language]}
                   className='sample-img'
+                  wrapperClass='sample-img-wrap'
                   showButton
                 >
                   <figure>
@@ -324,6 +326,7 @@ export default function BlobPage({
                   language={language}
                   text={ETipsAndTricks[language]}
                   className='blob-tips-and-tricks'
+                  wrapperClass='blob-tips-and-tricks-wrap'
                 >
                   <h2 id='blob-tips-heading'>{ETipsAndTricks[language]}</h2>
                   <ul className='ul' aria-describedby='blob-tips-heading'>

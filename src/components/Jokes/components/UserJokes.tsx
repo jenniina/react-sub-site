@@ -572,7 +572,9 @@ const UserJokes = ({
         let joke: any
         try {
           joke = await norrisService.searchNorrisJoke(query)
-        } catch (error) {
+        } catch (error: any) {
+          if (error.response?.data?.message)
+            dispatch(notify(error.response.data.message, true, 8))
           console.error(error)
           return null
         } finally {
@@ -647,7 +649,9 @@ const UserJokes = ({
           }
         }
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response?.data?.message)
+        dispatch(notify(error.response.data.message, true, 8))
       console.error(error)
       return null
     }
@@ -1327,6 +1331,7 @@ const UserJokes = ({
                               language={language}
                               id={`joke-edit-${joke.jokeId}`}
                               className={`joke-edit`}
+                              wrapperClass='joke-edit-wrap'
                               text={EEdit[language]}
                               onClick={() => {
                                 setJokeLanguage(joke.language)

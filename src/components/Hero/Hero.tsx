@@ -2,7 +2,7 @@ import React, { useMemo, useCallback, FC, useState, useRef, useEffect } from 're
 import { useLocation } from 'react-router-dom'
 import styles from './hero.module.css'
 import useWindowSize from '../../hooks/useWindowSize'
-import useRandomMinMax from '../../hooks/useRandomMinMax'
+import { getRandomMinMax } from '../../utils'
 import * as Draggable from '../../hooks/useDraggable'
 import { useTheme } from '../../hooks/useTheme'
 import useEnterDirection from '../../hooks/useEnterDirection'
@@ -24,6 +24,7 @@ import {
 } from '../../interfaces'
 import useEventListener from '../../hooks/useEventListener'
 import useSessionStorage from '../../hooks/useStorage'
+import useLocalStorage from '../../hooks/useStorage'
 
 type itemProps = {
   i: number
@@ -47,6 +48,8 @@ const LOCATION = {
   SALON: 'salon',
   TODO: 'todo',
   GRAPHQL: 'graphql',
+  STORE: 'store',
+  CART: 'cart',
 }
 
 export default function Hero({
@@ -73,7 +76,23 @@ export default function Hero({
 
   const resetButton = useRef() as RefObject<HTMLButtonElement>
   const ulRef = useRef() as RefObject<HTMLUListElement>
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState<boolean>(false)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useLocalStorage<boolean>(
+    'prefersReducedMotion-Hero',
+    false
+  )
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+    // Only set the state from the media query if there is no value in localStorage
+    if (localStorage.getItem('prefersReducedMotion-Hero') === null) {
+      setPrefersReducedMotion(mediaQuery.matches)
+    }
+
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches)
+    mediaQuery.addEventListener('change', handler)
+    return () => mediaQuery.removeEventListener('change', handler)
+  }, [])
 
   //Move items up, down, left or left, depending on the direction they're approached from:
   const movingItem = (e: React.PointerEvent<HTMLElement>) => {
@@ -170,14 +189,6 @@ export default function Hero({
     }, 1000)
   }
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    setPrefersReducedMotion(mediaQuery.matches)
-    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches)
-    mediaQuery.addEventListener('change', handler)
-    return () => mediaQuery.removeEventListener('change', handler)
-  }, [])
-
   const [values, setValues] = useSessionStorage<itemProps[]>('HeroArray', [])
 
   const spanArray: itemProps[] = useMemo(() => {
@@ -185,11 +196,25 @@ export default function Hero({
     for (let i: number = 1; i <= 4; i++) {
       const span: itemProps = {
         i: i,
-        e: useRandomMinMax(5, 9),
+        e: Math.round(getRandomMinMax(5, 9)),
         size: i,
         color: 'hsla(0, 0%, 100%, 0.7)',
       }
       array.push(span)
+    }
+    return array
+  }, [values])
+
+  const divArrayJewel: itemProps[] = useMemo(() => {
+    let array: itemProps[] = []
+    for (let i: number = 1; i <= 4; i++) {
+      const div: itemProps = {
+        i: i,
+        e: Math.round(getRandomMinMax(5, 9)),
+        size: i === 4 ? 66 : 100,
+        color: 'white',
+      }
+      array.push(div)
     }
     return array
   }, [values])
@@ -224,39 +249,41 @@ export default function Hero({
 
   const setupItems: itemProps[] = useMemo(() => {
     const items: itemProps[] = []
-    const specialSizesCount = Math.ceil(useRandomMinMax(1.1, 3))
+    const specialSizesCount = Math.ceil(getRandomMinMax(1.1, 3))
     const specialIndices = new Set<number>()
 
     // Generate unique random indices for special sizes
     while (specialIndices.size < specialSizesCount) {
-      specialIndices.add(Math.floor(useRandomMinMax(0, amount)))
+      specialIndices.add(Math.floor(getRandomMinMax(0, amount)))
     }
 
     for (let i: number = 0; i <= amount; i++) {
-      const number = Math.ceil(useRandomMinMax(0.3, 2))
+      const number = Math.ceil(getRandomMinMax(0.3, 2))
       let colorSwitch: string
       switch (number) {
         case 1:
-          colorSwitch = `var(--color-secondary-${Math.round(useRandomMinMax(10, 13))})`
+          colorSwitch = `var(--color-secondary-${Math.round(getRandomMinMax(10, 13))})`
           break
         case 2:
-          colorSwitch = `var(--color-primary-${Math.round(useRandomMinMax(9, 12))})`
+          colorSwitch = `var(--color-primary-${Math.round(getRandomMinMax(9, 12))})`
           break
         default:
-          colorSwitch = `var(--color-primary-${Math.round(useRandomMinMax(9, 12))})`
+          colorSwitch = `var(--color-primary-${Math.round(getRandomMinMax(9, 12))})`
       }
 
       const size = specialIndices.has(i)
-        ? Math.round(useRandomMinMax(12, 15))
-        : Math.round(useRandomMinMax(8, 15))
+        ? Math.round(getRandomMinMax(12, 15))
+        : Math.round(getRandomMinMax(8, 15))
 
-      const e = specialIndices.has(i) ? useRandomMinMax(7, 9) : useRandomMinMax(4, 9)
+      const e = specialIndices.has(i)
+        ? Math.round(getRandomMinMax(7, 9))
+        : Math.round(getRandomMinMax(4, 9))
 
       const item: itemProps = {
         i: i + 1,
         e: e,
         size: size,
-        rotation: useRandomMinMax(165, 195),
+        rotation: Math.round(getRandomMinMax(165, 195)),
         color: colorSwitch,
       }
       items.push(item)
@@ -336,7 +363,7 @@ export default function Hero({
           item.style.left = `${newLeft}px`
         }
       }
-    }, useRandomMinMax(2000, 4000))
+    }, Math.round(getRandomMinMax(2000, 4000)))
 
     return () => clearInterval(interval)
   }, [values, prefersReducedMotion])
@@ -411,7 +438,7 @@ export default function Hero({
                   maxWidth: `150px`,
                   maxHeight: `150px`,
                   borderRadius: '3px',
-                  opacity: `${item.size > 6 ? `0.8` : `0.${Math.ceil(item.size + 2)}`}`,
+                  opacity: `${item.size > 6 ? `0.9` : `0.${Math.ceil(item.size + 3)}`}`,
                 }
 
                 return (
@@ -479,6 +506,268 @@ export default function Hero({
                           </span>
                         )
                       })}
+                    </div>
+                  </li>
+                )
+              } else if (location == LOCATION.STORE) {
+                const dividedBy = 2.7
+
+                const colorArrayJewel = [
+                  'var(--color-primary-13)',
+                  'var(--color-primary-8)',
+                  'var(--color-primary-17)',
+                  'linear-gradient(90deg, var(--color-primary-9) 0%, var(--color-primary-13) 100%)',
+                ]
+                const colorArrayJewel2 = [
+                  'var(--color-secondary-10)',
+                  'var(--color-secondary-16)',
+                  'var(--color-secondary-4)',
+                  'linear-gradient(90deg, var(--color-secondary-14) 0%, var(--color-secondary-10) 100%)',
+                ]
+                const hueArray = [214, 39]
+                const colorArrays = [colorArrayJewel, colorArrayJewel2]
+                const randomOfTwo = Math.round(getRandomMinMax(0, 1))
+                const randomBG = colorArrays[randomOfTwo]
+                const hue = hueArray[randomOfTwo]
+
+                const style: React.CSSProperties = {
+                  position: 'absolute',
+                  top: `clamp(60px, calc(-5vh + calc(1.1vh * ${item.e} * ${
+                    item.e / 1.5
+                  })), 50vh)`,
+                  left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})), 95vw - ${item.size}vw)`,
+                  width:
+                    windowWidth < windowHeight
+                      ? `${item.size / dividedBy}vh`
+                      : `${item.size / dividedBy}vw`,
+                  height:
+                    windowWidth < windowHeight
+                      ? `${item.size / dividedBy}vh`
+                      : `${item.size / dividedBy}vw`,
+                  ['--rotate' as string]: `-45deg`,
+                  ['--color' as string]: `${randomBG[1]}`,
+                }
+
+                const clipArrayJewel = [
+                  'polygon(100% 0%, 50% 50%, 0% 100%, 100% 100%, 50% 50%,  0% 0%)',
+                  'polygon(0% 0%, 50% 50%, 0% 100%)',
+                  'polygon(100% 0%, 50% 50%, 100% 100%)',
+                  'none',
+                ]
+
+                return (
+                  // STORE
+
+                  <li
+                    key={`${item.color}${index}`}
+                    id={`shape${index + 1}`}
+                    className={`${styles.item} ${styles[location]} ${styles.jewel} 
+                                ${
+                                  windowHeight < windowWidth ? styles.wide : styles.tall
+                                }`}
+                    style={style}
+                    role={'option'}
+                    tabIndex={0}
+                    onFocus={(e) => {
+                      ulRef.current?.setAttribute(
+                        'aria-activedescendant',
+                        `${e.target.id}`
+                      )
+                    }}
+                    onBlurCapture={(e) => {
+                      ulRef.current?.removeAttribute('aria-activedescendant')
+                    }}
+                    onPointerEnter={(e) => {
+                      movingItem(e)
+                    }}
+                    onMouseDown={(e) => {
+                      removeItem(e)
+                    }}
+                    onTouchStart={(e) => {
+                      removeItem(e)
+                    }}
+                    onPointerDown={(e) => {
+                      removeItem(e)
+                    }}
+                    onKeyDown={(e) => {
+                      Draggable.keyDown(
+                        e,
+                        e.target as HTMLElement,
+                        () => escapeFunction(),
+                        () => removeItem(e),
+                        () => removeItem(e),
+                        null
+                      )
+                    }}
+                  >
+                    {divArrayJewel.map((span, index) => {
+                      const style: React.CSSProperties = {
+                        position: 'absolute',
+                        left: `calc(50% - ${span.size / 2}%)`,
+                        top: `calc(50% - ${span.size / 2}%)`,
+                        borderRadius: '0',
+                        // background: `${colorArrays[randomOfTwo][index]}`,
+                        ['--color' as string]: hue,
+                        ['--number' as string]: `${index}`,
+                        ['--i' as string]: `${item.i}`,
+                        width: `${span.size}%`,
+                        height: `${span.size}%`,
+                        minWidth: `${span.size}%`,
+                        minHeight: `${span.size}%`,
+                        maxWidth: `${span.size}%`,
+                        maxHeight: `${span.size}%`,
+                        opacity: `1`,
+                        clipPath: `${clipArrayJewel[index]}`,
+                      }
+                      return (
+                        <div
+                          className={index === 3 ? styles.none : ''}
+                          key={`${item.i}-${index}`}
+                          style={style}
+                        ></div>
+                      )
+                    })}
+                    <span style={style}>
+                      <span className='scr'>
+                        {EShape[language]} {index + 1}
+                      </span>
+                    </span>
+                  </li>
+                )
+              } else if (location == LOCATION.CART) {
+                const dividedBy = 2
+                const times = 1.08
+
+                const colorArrayJewel = [
+                  'var(--color-primary-11)',
+                  'var(--color-primary-6)',
+                  'var(--color-primary-13)',
+                  'linear-gradient(80deg, var(--color-primary-11), var(--color-primary-8))',
+                ]
+                const colorArrayJewel2 = [
+                  'var(--color-secondary-14)',
+                  'var(--color-secondary-17)',
+                  'var(--color-secondary-10)',
+                  'linear-gradient(80deg, var(--color-secondary-11) 0%, var(--color-secondary-13) 100%)',
+                ]
+                const colorArrays = [colorArrayJewel, colorArrayJewel2]
+                const randomOfTwo = Math.round(getRandomMinMax(0, 1))
+                const randomBG = colorArrays[randomOfTwo]
+                const hues = [214, 39]
+                const hue = hues[randomOfTwo]
+
+                const style: React.CSSProperties = {
+                  position: 'absolute',
+                  top: `clamp(60px, calc(-5vh + calc(1.1vh * ${item.e} * ${
+                    item.e / 1.5
+                  })), 50vh)`,
+                  left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})), 95vw - ${item.size}vw)`,
+                  width:
+                    windowWidth < windowHeight
+                      ? `${item.size / dividedBy}vh`
+                      : `${item.size / dividedBy}vw`,
+                  height:
+                    windowWidth < windowHeight
+                      ? `${item.size / dividedBy}vh`
+                      : `${item.size / dividedBy}vw`,
+                  ['--rotate' as string]: `70deg`,
+                  ['--color' as string]: `${randomBG[1]}`,
+                }
+
+                const clipArrayJewel = [
+                  'polygon(70.71% 100%, 100% 70.71%, 100% 29.29%, 70.71% 0%, 29.29% 0%, 0% 29.29%, 0% 70.71%, 29.29% 100%)',
+                  'polygon(50% 50%, 100% 70.71%, 100% 29.29%, 50% 50%, 70.71% 0%, 29.29% 0%, 50% 50%, 0% 70.71%, 29.29% 100%)',
+                  'polygon(70.71% 100%, 50% 50%, 50% 50%, 29.29% 0%, 0% 29.29%, 50% 50%, 29.29% 100%)',
+                  'polygon(70.71% 100%, 100% 70.71%, 100% 29.29%, 70.71% 0%, 29.29% 0%, 0% 29.29%, 0% 70.71%, 29.29% 100%)',
+                ]
+
+                return (
+                  // CART
+
+                  <li
+                    key={`${item.color}${index}`}
+                    id={`shape${index + 1}`}
+                    className={`${styles.item} ${styles[location]} ${styles.jewel} ${
+                      styles.jewel2
+                    } 
+                                ${
+                                  windowHeight < windowWidth ? styles.wide : styles.tall
+                                }`}
+                    style={style}
+                    role={'option'}
+                    tabIndex={0}
+                    onFocus={(e) => {
+                      ulRef.current?.setAttribute(
+                        'aria-activedescendant',
+                        `${e.target.id}`
+                      )
+                    }}
+                    onBlurCapture={(e) => {
+                      ulRef.current?.removeAttribute('aria-activedescendant')
+                    }}
+                    onPointerEnter={(e) => {
+                      movingItem(e)
+                    }}
+                    onMouseDown={(e) => {
+                      removeItem(e)
+                    }}
+                    onTouchStart={(e) => {
+                      removeItem(e)
+                    }}
+                    onPointerDown={(e) => {
+                      removeItem(e)
+                    }}
+                    onKeyDown={(e) => {
+                      Draggable.keyDown(
+                        e,
+                        e.target as HTMLElement,
+                        () => escapeFunction(),
+                        () => removeItem(e),
+                        () => removeItem(e),
+                        null
+                      )
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        clipPath:
+                          'polygon(70.71% 100%, 100% 70.71%, 100% 29.29%, 70.71% 0%, 29.29% 0%, 0% 29.29%, 0% 70.71%, 29.29% 100%)',
+                      }}
+                    >
+                      {divArrayJewel.map((span, index) => {
+                        const style: React.CSSProperties = {
+                          position: 'absolute',
+                          left: `calc(50% - ${(span.size * times) / 2}%)`,
+                          top: `calc(50% - ${(span.size * times) / 2}%)`,
+                          borderRadius: '0',
+                          // background: `${randomBG[index]}`,
+                          ['--color' as string]: hue,
+                          ['--number' as string]: `${index}`,
+                          ['--i' as string]: `${item.i}`,
+                          width: `${span.size * times}%`,
+                          height: `${span.size * times}%`,
+                          minWidth: `${span.size * times}%`,
+                          minHeight: `${span.size * times}%`,
+                          maxWidth: `${span.size * times}%`,
+                          maxHeight: `${span.size * times}%`,
+                          opacity: `1`,
+                          clipPath: `${clipArrayJewel[index]}`,
+                        }
+                        return (
+                          <div
+                            className={index === 3 ? styles.none : ''}
+                            key={`${item.i}-${index}`}
+                            style={style}
+                          ></div>
+                        )
+                      })}
+                      <span style={style}>
+                        <span className='scr'>
+                          {EShape[language]} {index + 1}
+                        </span>
+                      </span>
                     </div>
                   </li>
                 )
@@ -591,7 +880,7 @@ export default function Hero({
                     : windowWidth < windowHeight
                     ? `blur(calc(var(--blur) * 1.2vh))`
                     : `blur(calc(var(--blur) * 1.2vw))`
-                const number = Math.floor(useRandomMinMax(0.001, 3.999))
+                const number = Math.floor(getRandomMinMax(0.001, 3.999))
                 const style: React.CSSProperties = {
                   position: 'absolute',
                   top: `clamp(60px, calc(-20% + ${item.e} * 1.2vh * ${
@@ -816,7 +1105,7 @@ export default function Hero({
 
                 const style: React.CSSProperties = {
                   ['--rotate' as string]: `${
-                    item.rotation ?? `${useRandomMinMax(165, 195)}`
+                    item.rotation ?? `${Math.round(getRandomMinMax(165, 195))}`
                   }deg`,
                   ['--color' as string]: `${item.color}`,
                   ['--color2' as string]: 'hsla(0, 0%, 100%, 0.7)',

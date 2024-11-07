@@ -8,7 +8,6 @@ import {
   EEdit,
   ELanguages,
   ESpecialCharactersNotAllowed,
-  ESubmit,
 } from '../../../interfaces'
 import { EBad, EGood, ENeutral } from '../../../interfaces/draganddrop'
 import Accordion from '../../Accordion/Accordion'
@@ -156,6 +155,7 @@ export const CardsContainer = ({
           text={`*`}
           hideBrackets
           className={`narrow2 ${styles['change-status']} change-status`}
+          wrapperClass='change-status-wrap'
           tooltip={EEdit[language]}
           x='left'
           y='below'

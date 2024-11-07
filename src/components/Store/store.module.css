@@ -1,2 +1,344 @@
+.store-items.card {
+  padding-bottom: 1em;
+}
+
+.store .card > div {
+  --padd: 1em;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.orders-page strong {
+  line-height: 1.4;
+}
+
+.store > .inner-wrap {
+  gap: 2rem;
+}
 .foreign {
+}
+.orders,
+.order,
+.order > div {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 1em;
+  width: 100%;
+  max-width: 100%;
+}
+.order.cancelled,
+.order.cancelled > div,
+.light .order.cancelled,
+.light .order.cancelled > div {
+  border: none;
+  outline: none;
+  background: transparent;
+  min-width: 100%;
+}
+.order.cancelled > div > button {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+.order.cancelled > .change-status-main {
+  padding: 0.5em;
+  width: 100%;
+}
+.order > .change-status-main > div {
+  min-width: 100%;
+}
+.order.completed > div > button {
+  opacity: 0.7;
+}
+.order.pending > div,
+.light .order.pending > div {
+  border-right: 5px double var(--color-gray-5);
+  border-left: 5px double var(--color-gray-5);
+}
+.order.in-progress > div,
+.light .order.in-progress > div {
+  border-right: 5px double var(--color-primary-10);
+  border-left: 5px double var(--color-primary-10);
+}
+.order > .change-status-main {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-bottom: 1em;
+  margin-bottom: 3em;
+  padding: 1em;
+  margin: 3em 0;
+  width: 100%;
+}
+.order > div .change-status > button {
+  margin: 0;
+}
+.store-wrap > h2 {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.2em;
+  padding-bottom: 0.1em;
+  margin-top: 0.4em;
+  font-size: clamp(var(--title-L), 8vw, var(--title-XL));
+}
+.store-wrap > h2 > span {
+  display: inline-block;
+}
+.store-wrap h2,
+.store-wrap h3 {
+  text-align: left;
+  width: 100%;
+}
+.store-wrap h3 {
+  font-size: clamp(var(--title-S), 3vw, var(--title-M));
+  margin: 1.1em 0 0.8em;
+}
+.addition-wrap h3 {
+  font-size: inherit;
+  text-align: left;
+  font-family: var(--text-family);
+}
+.order h2 {
+  margin-top: 0.5em;
+}
+.order h3 {
+  text-align: left;
+  margin-top: 1em;
+}
+.scroll-button-wrap {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8em;
+  width: 100%;
+  max-width: 100%;
+  margin: 3em auto 0;
+  padding: 0;
+}
+.scroll-button {
+  flex: 0 0 auto;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+.scroll-button {
+}
+.store-wrap {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 1rem;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+}
+.store-wrap > div:not(.addition-wrap):not(.links),
+.order > .change-status-main,
+.item-wrap,
+.order-items .order-item {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0.3rem;
+  background-image: linear-gradient(
+    45deg,
+    hsla(var(--hue-primary), 100%, 20%, 0.2),
+    hsla(var(--hue-primary), 100%, 10%, 0.1),
+    hsla(var(--hue-primary), 100%, 15%, 0.2)
+  );
+  border-radius: var(--radius-small);
+  border: 1px solid var(--color-primary-5);
+  align-self: stretch;
+}
+.light .store-wrap > div:not(.addition-wrap):not(.links),
+.light .order > .change-status-main,
+.light .item-wrap,
+.light .order-items .order-item {
+  background-image: linear-gradient(
+    45deg,
+    hsla(var(--hue-primary), 100%, 70%, 0.2),
+    transparent,
+    hsla(var(--hue-primary), 100%, 80%, 0.2)
+  );
+  border: 1px solid var(--color-primary-1);
+}
+.store-wrap > div.links ul li {
+  margin-left: 1em;
+}
+.store-wrap > div.links ul li:has(a) {
+  color: var(--color-visited);
+}
+.order-items .order-item h3 {
+  margin-top: 0.5em;
+}
+.order-items .order-item p {
+  margin: 0.5em 0;
+}
+.order > .change-status-main {
+  padding: 1em 1em 0.8em;
+}
+.item-wrap {
+  margin-top: 2em;
+}
+.item-wrap,
+.order-items .order-item {
+  border-bottom: 1px dotted var(--color-gray-5);
+  padding: 1em;
+  margin-bottom: 1rem;
+}
+.info-wrap {
+  padding: 1em;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+.info-wrap caption {
+  text-align: center;
+  margin: 0 auto 1rem;
+  visibility: hidden;
+  max-height: 1px;
+}
+.store-wrap > div:not(.addition-wrap) > * {
+  flex-grow: 0;
+}
+.store-wrap div:not(.addition-wrap) .grow {
+  flex-grow: 1;
+}
+.store-wrap > div:not(.addition-wrap) > *:not(button):not(a) {
+  padding: 0 0.8rem;
+}
+
+.addition-wrap {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0;
+  width: 100%;
+  min-width: 100%;
+  margin: 0 auto;
+}
+.store-wrap .addition-wrap > div {
+  flex: 1 0 100%;
+  width: 100%;
+  margin: 0.3rem auto 0.5rem 0;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.store-wrap button.add-to-cart {
+  min-width: 100%;
+}
+.store-wrap .store-item .cart-link,
+.store-wrap button.add-to-cart {
+  padding-bottom: 0.8em;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.3em;
+}
+.store-wrap .store-item .cart-link {
+  text-align: center;
+  min-width: 100%;
+}
+.store-wrap .added {
+  min-width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5em;
+}
+.change-status,
+.change-status-form {
+  z-index: unset;
+}
+.change-status,
+.change-status > div,
+.change-status-form {
+  overflow: visible;
+  width: 100%;
+}
+.change-status-form {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.8em;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+}
+.change-status-form > * {
+  margin: 0;
+  min-width: 100%;
+}
+.change-status-form label > span {
+  display: inline-block;
+  margin: 0 0 0.5em;
+}
+.delete-order {
+  min-width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2em;
+}
+.delete-order button {
+  flex: 1 0 100%;
+}
+.info-table th,
+.info-table td {
+  padding: 0.2em 1em 0.2em 0;
+}
+.info-table th {
+  text-align: right;
+}
+@media (min-width: 768px) {
+  .store-wrap {
+    flex-flow: row wrap;
+  }
+  .store-wrap h2 {
+    flex: 1 0 100%;
+  }
+  .store-wrap > div:not(.addition-wrap) {
+    flex: 1 0 46%;
+  }
+}
+@media (min-width: 1024px) {
+  .store-wrap:not(.react) > div:not(.addition-wrap) {
+    flex: 1 0 28%;
+  }
+}
+@media (max-width: 400px) {
+  .info-table tbody,
+  .info-table tr {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0.5em;
+  }
+  .info-table tr {
+    gap: 0;
+  }
 }

@@ -1,6 +1,6 @@
 .select-container .container {
   background: linear-gradient(
-    5deg,
+    4deg,
     var(--color-primary-4) 0%,
     var(--color-primary-1) 100%
   );
@@ -98,7 +98,7 @@ textarea,
   input.bg /*give className of 'bg' to any inputs that need a background */ {
   background-color: var(--color-primary-1);
   background: linear-gradient(
-    5deg,
+    4deg,
     var(--color-primary-4) 0%,
     var(--color-primary-1) 100%
   );
@@ -114,7 +114,7 @@ nav .input-wrap {
 }
 .input-wrap::before,
 .input-wrap.not-required::before,
-.input-wrap.not-required:has(input:valid)::before {
+.input-wrap.not-required.not-filled::before {
   content: '';
   position: absolute;
   top: 0;
@@ -133,7 +133,7 @@ nav .input-wrap {
   transform-origin: bottom;
   background-color: var(--color-primary-1);
   background: linear-gradient(
-    5deg,
+    4deg,
     var(--color-primary-7) 0%,
     var(--color-primary-4) 0%,
     var(--color-primary-2) 100%
@@ -161,7 +161,8 @@ input:-webkit-autofill:focus {
 }
 .input-wrap:has(input:focus)::before,
 .input-wrap:has(input:valid)::before,
-.input-wrap.not-required:has(input:focus)::before {
+.input-wrap.not-required:has(input:focus)::before,
+.input-wrap.not-required.filled::before {
   -webkit-transform: scaleY(1);
   -ms-transform: scaleY(1);
   -o-transform: scaleY(1);
@@ -191,7 +192,7 @@ input:-webkit-autofill:focus {
   outline: none;
 }
 
-.input-wrap.not-required input[type='text' i] {
+.input-wrap.not-required:not(.filled) input[type='text' i] {
   color: transparent !important;
 }
 .input-wrap.not-required input:focus {
@@ -208,7 +209,8 @@ input:-webkit-autofill:focus {
 }
 .input-wrap input:focus ~ span,
 .input-wrap:not(.not-required) input:valid ~ span,
-.input-wrap.not-required input:focus ~ span {
+.input-wrap.not-required input:focus ~ span,
+.input-wrap.placeholder input ~ span {
   -webkit-transform: translateY(-2em);
   -ms-transform: translateY(-2em);
   -o-transform: translateY(-2em);
@@ -286,7 +288,10 @@ input[type='radio' i]:checked::before {
 }
 input[type='checkbox' i]:checked::before {
 }
-.input-wrap input[type='text' i] {
+.input-wrap input[type='text' i],
+.input-wrap input[type='number' i],
+.input-wrap input[type='email' i],
+.input-wrap input[type='password' i] {
   padding-left: 1.2em;
   padding-right: 1em;
 }

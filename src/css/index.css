@@ -199,12 +199,15 @@ body * {
 main a,
 main a:link,
 main a > *,
-main a:link > * {
+main a:link > *,
+button.reset.link,
+button.reset.link > * {
   font-weight: 500;
   color: var(--color-secondary-4);
   text-decoration: inherit;
 }
-main a {
+main a,
+button.reset.link {
   border-radius: var(--radius-small);
 }
 main a.disabled:hover,
@@ -219,7 +222,9 @@ main a.disabled *:hover,
 .light main a,
 .light main a:link,
 .light main a > *,
-.light main a:link > * {
+.light main a:link > *,
+.light button.reset.link,
+.light button.reset.link > * {
   color: var(--color-primary-12);
   text-decoration: underline;
   text-decoration-color: var(--color-primary-8);
@@ -235,9 +240,20 @@ main a:visited:focus,
 main a:hover > *,
 main a:focus > *,
 main a:visited:hover > *,
-main a:visited:focus > * {
+main a:visited:focus > *,
+button.reset.link:hover,
+button.reset.link:focus,
+button.reset.link:hover > *,
+button.reset.link:focus > * {
   color: var(--color-secondary-1);
   text-decoration: underline;
+}
+button.reset.link,
+button.reset.link:hover,
+button.reset.link:focus,
+button.reset.link:hover > *,
+button.reset.link:focus > * {
+  outline: none;
 }
 .light main a:hover,
 .light main a:focus,
@@ -246,7 +262,11 @@ main a:visited:focus > * {
 .light main a:hover > *,
 .light main a:focus > *,
 .light main a:visited:hover > *,
-.light main a:visited:focus > * {
+.light main a:visited:focus > *,
+.light button.reset.link:hover,
+.light button.reset.link:focus,
+.light button.reset.link:hover > *,
+.light button.reset.link:focus > * {
   color: var(--color-secondary-6);
   background-position: bottom;
   transition-origin: bottom;
@@ -693,11 +713,15 @@ h6 {
   font-size: var(--title-XS);
   font-size: clamp(var(--title-XS), 1vw, var(--title-S));
 }
+p {
+  margin-block-start: 0;
+  margin-block-end: 1em;
+}
 
 button,
 button.restore {
   border-radius: var(--radius-small);
-  --bg-size: auto 150px;
+  --bg-size: auto 260%;
   /* min-width: max-content; */
   /* inline-size: min-content; */
   width: auto;
@@ -717,25 +741,30 @@ button.restore {
   outline: 2px solid transparent;
   outline-offset: -2px;
   background: linear-gradient(
-    5deg,
-    var(--color-primary-17) 0%,
-    var(--color-primary-13) 30%,
-    var(--color-primary-7) 60%,
+    4deg,
+    var(--color-primary-16) 0%,
+    var(--color-primary-12) 30%,
+    var(--color-primary-6) 60%,
     var(--color-primary-2) 100%
   );
   background-size: var(--bg-size);
   background-position: top;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2em;
 }
 button.grayer {
   --sat: 40%;
   --sat2: 50%;
   border: 1px solid hsl(var(--hue-primary), var(--sat), 30%);
   background: linear-gradient(
-    5deg,
+    4deg,
     hsl(var(--hue-primary), var(--sat), 95%) 0%,
-    hsl(var(--hue-primary), var(--sat), 60%) 30%,
-    hsl(var(--hue-primary), var(--sat), 30%) 60%,
-    hsl(var(--hue-primary), var(--sat2), 6%) 100%
+    hsl(var(--hue-primary), var(--sat), 60%) 33%,
+    hsl(var(--hue-primary), var(--sat), 25%) 55%,
+    hsl(var(--hue-primary), var(--sat2), 3%) 100%
   );
   background-size: var(--bg-size);
   background-position: top;
@@ -744,10 +773,10 @@ button.grayer {
   --sat: 30%;
   --sat2: 50%;
   background: linear-gradient(
-    5deg,
+    4deg,
     hsl(var(--hue-primary), var(--sat2), 6%) 0%,
-    hsl(var(--hue-primary), var(--sat), 30%) 30%,
-    hsl(var(--hue-primary), var(--sat), 60%) 60%,
+    hsl(var(--hue-primary), var(--sat), 25%) 35%,
+    hsl(var(--hue-primary), var(--sat), 60%) 55%,
     hsl(var(--hue-primary), var(--sat), 95%) 100%
   );
   background-size: var(--bg-size);
@@ -760,7 +789,8 @@ button.grayer {
 }
 .transformations button,
 .transformations button.restore {
-  transition-property: border-color, color, background-position, outline, opacity;
+  transition-property: border-color, color, background-color, background-position, outline,
+    outline-offset, opacity;
   transition-duration: 0.4s;
   transition-timing-function: ease-in-out;
   transition-delay: 0s;
@@ -872,15 +902,19 @@ button.delete {
 button.delete::after {
   content: ' \00D7'; /* × */
   font-size: 1.2em;
-  position: relative;
-  bottom: -0.1em;
 }
 button.delete:hover {
   color: red;
+  text-shadow: 0 0 0.1em black;
+}
+.light button.delete:hover {
+  text-shadow: 0 0 0.1em white;
 }
 button.danger:hover {
   outline-color: red;
   border-color: red;
+  text-shadow: none;
+  background-color: var(--color-primary-1);
 }
 
 .register-login-wrap {
@@ -918,11 +952,17 @@ code {
 button.reset {
   border: none;
   display: inline-block;
-  padding: 0;
+  padding: 0.03em 0.06em 0.06em;
   font-size: inherit;
   font-weight: inherit;
   font-family: inherit;
   cursor: pointer;
   color: inherit;
   background: none;
+  outline-offset: 0;
+}
+button.reset:hover,
+button.reset:focus {
+  padding: 0.03em 0.06em 0.06em;
+  outline-offset: 0;
 }

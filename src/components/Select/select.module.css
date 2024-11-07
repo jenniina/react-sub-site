@@ -10,7 +10,7 @@
   margin: 0 auto;
   justify-content: space-around;
   flex-flow: row wrap;
-  z-index: 999;
+  z-index: 9;
 }
 
 .select-container > * {

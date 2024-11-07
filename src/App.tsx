@@ -25,6 +25,8 @@ import HairSalonPage from './pages/pages-portfolio/HairSalonPage'
 import Disclaimer from './pages/Disclaimer'
 import CartPage from './pages/CartPage'
 import StorePage from './pages/StorePage'
+import OrderPage from './pages/OrderPage'
+import TermsOfService from './pages/TermsOfService'
 import { Footer } from './components/Footer/Footer'
 import { useTheme } from './hooks/useTheme'
 import { useScrollbarWidth } from './hooks/useScrollbarWidth'
@@ -55,6 +57,7 @@ import {
   EWebpagesAndGraphicDesign,
 } from './interfaces'
 import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
+import { options } from './utils'
 import { isTouchDevice } from './hooks/useDraggable'
 import { BlobProvider } from './components/Blob/components/BlobProvider'
 import useLocalStorage from './hooks/useStorage'
@@ -71,7 +74,8 @@ import { SelectOption } from './components/Select/Select'
 import Notification from './components/Notification/Notification'
 import { EEditUserSettings } from './components/UserEdit/interfaces'
 import { EReactApps } from './interfaces/about'
-import { EShoppingCart } from './interfaces/store-cart'
+import { EOrders, EShoppingCart, ICartItem } from './interfaces/store'
+import { ETermsOfService } from './interfaces'
 
 const App: FC = () => {
   const touchDevice = isTouchDevice()
@@ -110,12 +114,30 @@ const App: FC = () => {
   )
 
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    })
+    const hash = location.hash
+    if (hash) {
+      const element = document.querySelector(hash)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
+    } else {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      })
+    }
     if (location.pathname !== displayLocation.pathname) setTransitionPage('fadeOut')
-  }, [location])
+  }, [location, displayLocation.pathname])
+
+  useEffect(() => {
+    if (transitionPage === 'fadeOut') {
+      const timer = setTimeout(() => {
+        setTransitionPage('fadeIn')
+        setDisplayLocation(location)
+      }, 500) // Match this duration with the CSS animation duration
+      return () => clearTimeout(timer)
+    }
+  }, [transitionPage, location])
 
   function getKeyByValue(
     enumObj:
@@ -134,14 +156,17 @@ const App: FC = () => {
     return undefined
   }
 
-  const options = (
-    enumObj: typeof ECategories | typeof EJokeType | typeof ESafemode | typeof ELanguages
-  ) => {
-    return Object.keys(enumObj).map((key) => ({
-      value: enumObj[key as keyof typeof enumObj],
-      label: key,
-    })) as SelectOption[]
-  }
+  // const options = (
+  //   enumObj: typeof ECategories | typeof EJokeType | typeof ESafemode | typeof ELanguages
+  // ) => {
+  //   return Object.keys(enumObj).map((key) => ({
+  //     value: enumObj[key as keyof typeof enumObj],
+  //     label: key,
+  //   })) as SelectOption[]
+  // }
+
+  const localStorageCart = 'JCart'
+  const [cart, setCart, removeCart] = useLocalStorage<ICartItem[]>(localStorageCart, [])
 
   // Scroll to item if 'to' param is in url
   // ?to=form
@@ -196,6 +221,7 @@ const App: FC = () => {
             setLanguage={setLanguage}
             options={options}
             getKeyByValue={getKeyByValue}
+            hasCartItems={cart.length > 0}
           />
 
           <main
@@ -230,17 +256,6 @@ const App: FC = () => {
                     language={language}
                     heading={EAbout[language]}
                     text={EThisSite[language]}
-                    type='page'
-                  />
-                }
-              />
-              <Route
-                path='/disclaimer'
-                element={
-                  <Disclaimer
-                    language={language}
-                    heading={EPrivacyAndSecurityDisclaimer[language]}
-                    text={`${ELastUpdated[language]}: 2024/09/10`}
                     type='page'
                   />
                 }
@@ -409,6 +424,9 @@ const App: FC = () => {
                     heading={EShoppingCart[language]}
                     text=''
                     type='page'
+                    cart={cart}
+                    setCart={setCart}
+                    removeCart={removeCart}
                   />
                 }
               />
@@ -419,6 +437,41 @@ const App: FC = () => {
                     language={language}
                     heading={EStore[language]}
                     text={EWebpagesAndGraphicDesign[language]}
+                    type='page'
+                    cart={cart}
+                    setCart={setCart}
+                  />
+                }
+              />
+              <Route
+                path='/orders'
+                element={
+                  <OrderPage
+                    language={language}
+                    heading={EOrders[language]}
+                    text=''
+                    type='page'
+                  />
+                }
+              />
+              <Route
+                path='/disclaimer'
+                element={
+                  <Disclaimer
+                    language={language}
+                    heading={EPrivacyAndSecurityDisclaimer[language]}
+                    text={`${ELastUpdated[language]}: 2024/10/20`}
+                    type='page'
+                  />
+                }
+              />
+              <Route
+                path='/terms'
+                element={
+                  <TermsOfService
+                    language={language}
+                    heading={ETermsOfService[language]}
+                    text={`${ELastUpdated[language]}: 2024/10/20`}
                     type='page'
                   />
                 }

@@ -857,7 +857,7 @@ export enum EAVersionAlreadyExistsOverwrite {
 export enum EClickHereToTakeAScreenshot {
   en = 'Click here to take a screenshot',
   es = 'Haga clic aquí para tomar una captura de pantalla',
-  fr = 'Cliquez ici pour prendre une capture d’écran',
+  fr = "Cliquez ici pour prendre une capture d'écran",
   de = 'Klicken Sie hier, um einen Screenshot zu machen',
   pt = 'Clique aqui para tirar um screenshot',
   cs = 'Klikněte sem pro pořízení snímku obrazovky',
@@ -866,7 +866,7 @@ export enum EClickHereToTakeAScreenshot {
 export enum EScreenshotTaken {
   en = 'Screenshot taken',
   es = 'Captura de pantalla tomada',
-  fr = 'Capture d’écran prise',
+  fr = "Capture d'écran prise",
   de = 'Screenshot gemacht',
   pt = 'Screenshot tirado',
   cs = 'Snímek obrazovky pořízen',
@@ -875,7 +875,7 @@ export enum EScreenshotTaken {
 export enum EScreenshot {
   en = 'Screenshot',
   es = 'Captura de pantalla',
-  fr = 'Capture d’écran',
+  fr = "Capture d'écran",
   de = 'Screenshot',
   pt = 'Screenshot',
   cs = 'Snímek obrazovky',
@@ -884,7 +884,7 @@ export enum EScreenshot {
 export enum EPressTheCameraSymbolToTakeAScreenshot {
   en = 'Press the camera symbol to take a screenshot',
   es = 'Presiona el símbolo de la cámara para tomar una captura de pantalla',
-  fr = 'Appuyez sur le symbole de la caméra pour prendre une capture d’écran',
+  fr = "Appuyez sur le symbole de la caméra pour prendre une capture d'écran",
   de = 'Drücken Sie das Kamerasymbol, um einen Screenshot zu machen',
   pt = 'Pressione o símbolo da câmera para tirar um screenshot',
   cs = 'Stiskněte symbol kamery pro pořízení snímku obrazovky',
@@ -893,7 +893,7 @@ export enum EPressTheCameraSymbolToTakeAScreenshot {
 export enum ENoScreenshotAvailableToSave {
   en = 'No screenshot available to save',
   es = 'No hay captura de pantalla disponible para guardar',
-  fr = 'Aucune capture d’écran disponible à enregistrer',
+  fr = "Aucune capture d'écran disponible à enregistrer",
   de = 'Kein Screenshot verfügbar zum Speichern',
   pt = 'Nenhum screenshot disponível para salvar',
   cs = 'Žádný snímek obrazovky není k dispozici k uložení',
@@ -902,7 +902,7 @@ export enum ENoScreenshotAvailableToSave {
 export enum EYouMayFindTheImageBelow {
   en = 'You may find the image below',
   es = 'Puede encontrar la imagen a continuación',
-  fr = 'Vous pouvez trouver l’image ci-dessous',
+  fr = "Vous pouvez trouver l'image ci-dessous",
   de = 'Sie finden das Bild unten',
   pt = 'Você pode encontrar a imagem abaixo',
   cs = 'Níže můžete najít obrázek',

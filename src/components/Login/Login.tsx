@@ -63,7 +63,8 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
       .catch((e) => {
         setLoggingIn(false)
         console.error(e)
-        if (e.code === 'ERR_BAD_REQUEST')
+        if (e.response?.data?.message) dispatch(notify(e.response.data.message, true, 8))
+        else if (e.code === 'ERR_BAD_REQUEST')
           dispatch(notify(`${EError[language]}: ${e.response.data.message}`, true, 8))
         else if (e.code === 'ERR_NETWORK') {
           dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
@@ -92,6 +93,7 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
           <Accordion
             language={language}
             className='login'
+            wrapperClass='login-wrap'
             text={ELogin[language]}
             ref={formLoginRef}
             setIsFormOpen={setIsFormOpen}

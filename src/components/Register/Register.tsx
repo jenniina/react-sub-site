@@ -66,6 +66,7 @@ const Register = ({
           <Accordion
             language={language}
             className={`accordion-register register`}
+            wrapperClass='register-wrap'
             text={ERegister[language]}
             ref={formRegisterRef}
             setIsFormOpen={setIsFormOpen}

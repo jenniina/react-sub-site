@@ -28,6 +28,7 @@ export default function HairSalonPage({
                 language={language}
                 text={EClickHereToSeeFeatures[language]}
                 className='salon-features'
+                wrapperClass='salon-features-wrap'
                 setIsFormOpen={setIsFormOpen}
               >
                 <h2>{EFeatures[language]}</h2>

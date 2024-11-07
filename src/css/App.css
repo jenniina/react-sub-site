@@ -945,3 +945,33 @@ nav .open.password-reset-container button.forgot-btn {
 big > i {
   letter-spacing: 0.05em;
 }
+
+.terms.page,
+.disclaimer.page {
+  counter-reset: section;
+}
+
+.terms.page h2::before,
+.disclaimer.page h2::before {
+  counter-increment: section;
+  content: counter(section) '. ';
+  font-weight: bold;
+}
+
+.terms.page h2 {
+  counter-reset: subsection;
+}
+
+.terms.page h3::before,
+.disclaimer.page h3::before {
+  counter-increment: subsection;
+  content: counter(section) '.' counter(subsection) '. ';
+  font-weight: bold;
+}
+
+.terms.page h2,
+.terms.page h3,
+.disclaimer.page h2,
+.disclaimer.page h3 {
+  text-align: left;
+}

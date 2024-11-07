@@ -7,6 +7,7 @@ import { ITaskDraggable } from './TodoList'
 import { EAreYouSureYouWantToDelete } from '../../UserEdit/interfaces'
 import { ETask } from '../interfaces'
 import { MdDragIndicator } from 'react-icons/md'
+import { sanitize, first3Words } from '../../../utils'
 
 export default function Todo({
   todo,
@@ -56,27 +57,6 @@ export default function Todo({
       setNewName(todo?.name || '')
     }
   }, [todo])
-
-  const randomString = (length: number): string => {
-    const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'
-    let randomstring = ''
-    for (let i = 0; i < length; i++) {
-      const rnum = Math.floor(Math.random() * chars.length)
-      randomstring += chars.substring(rnum, rnum + 1)
-    }
-    return randomstring
-  }
-
-  const sanitize = (name: string = randomString(9)): string => {
-    return name.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '-')
-  }
-
-  const first3Words = (name: string = ETask[language]): string => {
-    // if name is less than 5 words, return the name
-    if (name.split(' ').length <= 4) return name
-    // else return the first 3 words
-    else return name.split(' ').slice(0, 3).join(' ') + ' ' + EEtc[language]
-  }
 
   const [allowDrag, setAllowDrag] = useState(true)
   const [isSelectingText, setIsSelectingText] = useState(false)
@@ -156,6 +136,7 @@ export default function Todo({
         <Accordion
           language={language}
           className={`${styles['modify-todo']} modify-todo`}
+          wrapperClass='modify-todo-wrap'
           text={EEdit[language]}
           isOpen={isOpen}
           setIsFormOpen={setIsOpen}
@@ -174,7 +155,7 @@ export default function Todo({
                 onChange={handleChange}
               />
               <span className='scr'>
-                {EEdit[language]} {first3Words(todo?.name)}
+                {EEdit[language]} {first3Words(todo?.name ?? ETask[language], language)}
               </span>
             </label>
 

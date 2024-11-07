@@ -1,4 +1,5 @@
 import { FormEvent, useState, useRef, useEffect } from 'react'
+import { RiMailSendLine } from 'react-icons/ri'
 import { MessageForm } from './components/MessageForm'
 import { ExtrasForm } from './components/ExtrasForm'
 import { useMultistepForm } from './hooks/useMultistepForm'
@@ -13,7 +14,6 @@ import {
 import { FormData, INITIAL_DATA } from './interfaces'
 import styles from './form.module.css'
 import { sendEmail } from './services/email'
-import Notification from '../Notification/Notification'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import {
@@ -128,9 +128,11 @@ function FormMulti({ language }: { language: ELanguages }) {
 
   return (
     <div className={styles.wrapper}>
-      <p>
-        {EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo[language]}
-      </p>
+      {language !== ELanguages.Suomi && language !== ELanguages.English && (
+        <p>
+          {EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo[language]}
+        </p>
+      )}
       <form ref={form} onSubmit={handleSubmit} aria-labelledby='steps'>
         <span id='steps' className={styles.steps}>
           {EContactForm[language]} {EPart[language]}&nbsp;
@@ -180,8 +182,7 @@ function FormMulti({ language }: { language: ELanguages }) {
           )}
           {isLastStep && (
             <button className={isLastStep ? styles.submit : styles.next} type='submit'>
-              {sending ? ESendingEmail[language] : ESend[language]}{' '}
-              <span aria-hidden='true'>»</span>
+              {sending ? ESendingEmail[language] : ESend[language]} <RiMailSendLine />
             </button>
           )}
           {showError && (

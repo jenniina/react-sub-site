@@ -47,8 +47,8 @@
   -moz-transform: translateX(-50%) scale(1);
   transform: translateX(-50%) scale(1);
 }
-.main-header button.settings:hover span,
-.main-header button.settings:focus span {
+.main-header button.settings:not(:disabled):hover span,
+.main-header button.settings:not(:disabled):focus span {
   -webkit-transform: translateX(-60%) scale(1);
   -ms-transform: translateX(-60%) scale(1);
   -o-transform: translateX(-60%) scale(1);
@@ -661,7 +661,7 @@ a.link:visited:not(.active):focus > *,
     transition-timing-function: ease-in-out;
   }
   .main-header button.search:hover svg,
-  .main-header button.settings:hover svg,
+  .main-header button.settings:not(:disabled):hover svg,
   .main-header button.togglemenu:hover svg {
     -webkit-transform: scale(1.8);
     -ms-transform: scale(1.8);
@@ -809,8 +809,8 @@ a.link:visited:not(.active):focus > *,
   }
   .menualt .menu-container ul li a:hover,
   .menualt .menu-container ul li a:focus,
-  .menualt button.settings:hover,
-  .menualt button.settings:focus {
+  .menualt button.settings:not(:disabled):hover,
+  .menualt button.settings:not(:disabled):focus {
     -webkit-transform: translate(8px, -3px) scale(1.1);
     -ms-transform: translate(8px, -3px) scale(1.1);
     -o-transform: translate(8px, -3px) scale(1.1);
@@ -841,8 +841,8 @@ a.link:visited:not(.active):focus > *,
   .menu-container ul li a:focus svg,
   .main-header button.search:hover svg,
   .main-header button.search:focus svg,
-  .main-header button.settings:hover svg,
-  .main-header button.settings:focus svg {
+  .main-header button.settings:not(:disabled):hover svg,
+  .main-header button.settings:not(:disabled):focus svg {
     opacity: 1;
     -webkit-transform: translateX(-50%) scale(1);
     -ms-transform: translateX(-50%) scale(1);
@@ -879,8 +879,8 @@ a.link:visited:not(.active):focus > *,
   header:not(.menualt) .menu-container ul li a:focus span,
   header:not(.menualt).main-header button.search:hover span,
   header:not(.menualt).main-header button.search:focus span,
-  header:not(.menualt).main-header button.settings:hover span,
-  header:not(.menualt).main-header button.settings:focus span {
+  header:not(.menualt).main-header button.settings:not(:disabled):hover span,
+  header:not(.menualt).main-header button.settings:not(:disabled):focus span {
     background-position: bottom;
     padding: 0.5em 0.6vw 0.1em;
   }
@@ -888,8 +888,8 @@ a.link:visited:not(.active):focus > *,
   .menu-container ul li a:focus span,
   .main-header button.search:hover span,
   .main-header button.search:focus span,
-  .main-header button.settings:hover span,
-  .main-header button.settings:focus span {
+  .main-header button.settings:not(:disabled):hover span,
+  .main-header button.settings:not(:disabled):focus span {
     position: relative;
     min-width: max-content;
     -webkit-transform: translateY(1.32rem);
@@ -1269,8 +1269,8 @@ button.dlt-btn:focus {
   .menualt .menu-container:not(.altnav) ul li a:focus span,
   .menualt button.search:hover span,
   .menualt button.search:focus span,
-  .menualt button.settings:hover span,
-  .menualt button.settings:focus span {
+  .menualt button.settings:not(:disabled):hover span,
+  .menualt button.settings:not(:disabled):focus span {
     position: absolute;
     background-color: transparent;
   }
@@ -1290,10 +1290,10 @@ button.dlt-btn:focus {
   .menualt button.search:hover span,
   .menualt button.search:focus span,
   .menualt button.search:focus-visible span,
-  .menualt button.settings:hover span,
-  .menualt button.settings:focus span,
-  .menualt button.settings:focus span,
-  .menualt button.settings:focus-visible span,
+  .menualt button.settings:not(:disabled):hover span,
+  .menualt button.settings:not(:disabled):focus span,
+  .menualt button.settings:not(:disabled):focus span,
+  .menualt button.settings:not(:disabled):focus-visible span,
   .menualt .menu-container:not(.altnav) ul .link.active span {
     opacity: 1;
     -webkit-transform: translateY(100%) translateX(-50%);
@@ -1313,9 +1313,9 @@ button.dlt-btn:focus {
   .menualt button.search:hover svg,
   .menualt button.search:focus svg,
   .menualt button.search:focus-visible svg,
-  .menualt button.settings:hover svg,
-  .menualt button.settings:focus svg,
-  .menualt button.settings:focus-visible svg,
+  .menualt button.settings:not(:disabled):hover svg,
+  .menualt button.settings:not(:disabled):focus svg,
+  .menualt button.settings:not(:disabled):focus-visible svg,
   .menualt .menu-container:not(.altnav) ul .link.active svg {
     opacity: 0;
     -webkit-transform: scale(0.6);
@@ -1348,8 +1348,8 @@ button.dlt-btn:focus {
   .menualt .menu-container:not(.altnav) ul li a:focus svg,
   .menualt button.search:hover svg,
   .menualt button.search:focus svg,
-  .menualt button.settings:hover svg,
-  .menualt button.settings:focus svg {
+  .menualt button.settings:not(:disabled):hover svg,
+  .menualt button.settings:not(:disabled):focus svg {
     opacity: 1;
     -webkit-transform: scale(1.4);
     -ms-transform: scale(1.4);
@@ -1381,8 +1381,8 @@ button.dlt-btn:focus {
   .menualt .menu-container:not(.altnav) ul li a:focus span,
   .menualt button.search:hover span,
   .menualt button.search:focus span,
-  .menualt button.settings:hover span,
-  .menualt button.settings:focus span,
+  .menualt button.settings:not(:disabled):hover span,
+  .menualt button.settings:not(:disabled):focus span,
   .menualt .menu-container:not(.altnav) ul .link.active span {
     position: relative;
     top: 0;
@@ -1420,3 +1420,14 @@ button.dlt-btn:focus {
     margin-bottom: 0.2rem;
   }
 } /*END media*/
+
+button.settings:disabled:hover {
+  cursor: default;
+  color: var(--color-primary-20);
+}
+button.settings:disabled svg,
+button.settings:disabled:hover svg {
+  border-radius: 50%;
+  outline: 1px solid currentColor;
+  outline-offset: 3px;
+}

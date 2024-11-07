@@ -25,6 +25,7 @@ import {
   EChuckNorrisCategory,
 } from '../interfaces'
 import { ELanguages } from '../../../interfaces'
+import { FaAnglesDown } from 'react-icons/fa6'
 
 interface Props {
   handleFormSubmit: (e: React.FormEvent<HTMLFormElement>) => void
@@ -53,9 +54,7 @@ interface Props {
   handleToggleChangeSafemode: () => void
   handleToggleChangeEJokeType: () => void
   handleJokeSave: (e: React.FormEvent<HTMLFormElement>) => void
-  options: (
-    enumObj: typeof ECategories | typeof EJokeType | typeof ESafemode | typeof ELanguages
-  ) => SelectOption[]
+  options: (enumObj: typeof ELanguages) => SelectOption[]
   getKeyByValue: (
     enumObj: typeof ECategories | typeof EJokeType | typeof ESafemode | typeof ELanguages,
     value: ECategories | EJokeType | ESafemode | ELanguages
@@ -243,7 +242,9 @@ const Form = ({
         </div>
       </form>
 
-      <div className={`downwards-arrow ${submitted ? 'play' : ''}`}>&#10225;</div>
+      <div className={`downwards-arrow ${submitted ? 'play' : ''}`}>
+        <FaAnglesDown />
+      </div>
 
       <Joke
         joke={joke}
