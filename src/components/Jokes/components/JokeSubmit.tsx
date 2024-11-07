@@ -185,13 +185,16 @@ const JokeSubmit = ({
           )
         } else {
           setSaving(false)
-          dispatch(
-            notify(
-              `${EError[language]}: ${e.message}. ${EReportErrorToAdmin[language]}`,
-              true,
-              8
+          if (e.response?.data?.message)
+            dispatch(notify(e.response.data.message, true, 8))
+          else
+            dispatch(
+              notify(
+                `${EError[language]}: ${e.message}. ${EReportErrorToAdmin[language]}`,
+                true,
+                8
+              )
             )
-          )
         }
       })
   }
@@ -237,6 +240,7 @@ const JokeSubmit = ({
       language={language}
       text={EClickHereToWriteYourOwnJoke[language]}
       className='submit'
+      wrapperClass='submit-wrap'
     >
       <div className='submit-inner'>
         <h3>{ESubmitAJoke[language]}</h3>

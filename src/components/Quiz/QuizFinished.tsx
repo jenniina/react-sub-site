@@ -150,7 +150,9 @@ const QuizFinished = ({ language }: Props) => {
       })
       .catch((err) => {
         console.error(err)
-        dispatch(notify(`${EError[language]}: ${err.message}`, true, 8))
+        if (err.response?.data?.message)
+          dispatch(notify(err.response.data.message, true, 8))
+        else dispatch(notify(`${EError[language]}: ${err.message}`, true, 8))
       })
   }
 

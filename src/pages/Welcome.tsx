@@ -5,13 +5,15 @@ import Hero from '../components/Hero/Hero'
 import { BiChat } from 'react-icons/bi'
 import { BsPerson } from 'react-icons/bs'
 import { IoMdImages } from 'react-icons/io'
-import { GiAbstract019 } from 'react-icons/gi'
+import { GiAbstract019, GiNewShoot } from 'react-icons/gi'
 import { MdOutlineQuiz } from 'react-icons/md'
-import { RiDragDropLine, RiTodoLine } from 'react-icons/ri'
+import { RiDragDropLine, RiTodoLine, RiFileList3Line } from 'react-icons/ri'
 import { GiComb } from 'react-icons/gi'
+import { FaStoreAlt } from 'react-icons/fa'
 import { TbTriangleInverted, TbBlob } from 'react-icons/tb'
 import { LuArrowRightToLine } from 'react-icons/lu'
-
+import { LiaNewspaperSolid } from 'react-icons/lia'
+import { firstToLowerCase } from '../utils'
 import {
   EAbout,
   EAccessibility,
@@ -36,6 +38,10 @@ import {
   EReset,
   ETestYourKnowledge,
   EAddANewCategory,
+  EStore,
+  EDisclaimer,
+  ETermsOfService,
+  EPage,
 } from '../interfaces'
 import {
   ECategories,
@@ -61,6 +67,8 @@ import {
   ESeptember,
   EJuly,
   ERandomHeadingItemMovement,
+  EAdded,
+  ELaunchedAnOnlineOrderingSystem,
 } from '../interfaces/welcome'
 import { Select, SelectOption } from '../components/Select/Select'
 import { ETodoApp } from '../components/Todo/interfaces'
@@ -111,16 +119,9 @@ export default function Home({
       | typeof ELanguages,
     value: ECategories | EJokeType | ESafemode | ELanguages
   ) => string | undefined
-  options: (
-    enumObj: typeof ECategories | typeof EJokeType | typeof ESafemode | typeof ELanguages
-  ) => SelectOption[]
+  options: (enumObj: typeof ELanguages) => SelectOption[]
 }) {
   const lightTheme = useTheme()
-
-  const firstToLowerCase = (str: string) => {
-    if (!str) return str
-    return str.charAt(0).toLowerCase() + str.slice(1)
-  }
 
   return (
     <div className={`welcome ${type} ${lightTheme ? styles.light : ''}`}>
@@ -147,7 +148,7 @@ export default function Home({
         <section className={`card ${styles.welcome}`}>
           <div>
             <ul className={styles.list}>
-              <li>
+              <li className={styles['li-about']}>
                 <Link to='/about'>
                   <BsPerson /> <span>{EAbout[language]}</span>
                 </Link>
@@ -162,14 +163,43 @@ export default function Home({
                   <BiChat /> <span>{EContact[language]}</span>
                 </Link>
               </li>
+              <li>
+                <Link to='/store'>
+                  <FaStoreAlt /> <span>{EStore[language]}</span>
+                </Link>
+              </li>
             </ul>
 
             <div className={`${styles.newest}`}>
-              <h2 className={`${styles.subheading}`}>{ENews[language]}</h2>
+              <h2 className={`${styles.subheading}`}>
+                <LiaNewspaperSolid /> {ENews[language]}
+              </h2>
               <ul className={`${styles.extras}`}>
-                <li>
+                <li className={styles.first}>
                   <strong>2024</strong>
                   <ul>
+                    <li>
+                      <strong>{EOctober[language]}</strong>
+                      <ul>
+                        <li>
+                          <Link to='/store'>
+                            <FaStoreAlt />
+                            {EStore[language]}:
+                          </Link>
+                          <i>{ELaunchedAnOnlineOrderingSystem[language]}</i>
+                        </li>
+                        <li>
+                          <Link to='/terms'>
+                            <RiFileList3Line />
+                            {ETermsOfService[language]}:
+                          </Link>
+                          <i>
+                            {EAdded[language]}: {ETermsOfService[language]} (
+                            {EPage[language]})
+                          </i>
+                        </li>
+                      </ul>
+                    </li>
                     <li>
                       <strong>{ESeptember[language]}</strong>
                       <ul>
@@ -287,54 +317,6 @@ export default function Home({
                         </li>
                       </ul>
                     </li>
-                    <li>
-                      <strong>{EAugust[language]}</strong>
-                      <ul>
-                        <li>
-                          <Link to='/portfolio/blob'>
-                            <TbBlob />
-                            {EBlobs[language]}:
-                          </Link>
-                          <i>
-                            {EAddedNewFeatures[language]}:{' '}
-                            {firstToLowerCase(ELayers[language])};{' '}
-                            {firstToLowerCase(EButton[language])}:{' '}
-                            {firstToLowerCase(EToggleControlVisibility[language])}
-                          </i>
-                        </li>
-                        <li>
-                          <Link to='/portfolio/blob'>
-                            <TbBlob />
-                            {EBlobs[language]}:
-                          </Link>
-                          <i>{EImprovedAccessibility[language]}</i>
-                        </li>
-                        <li>
-                          <Link to='/portfolio/blob'>
-                            <TbBlob />
-                            {EBlobs[language]}:
-                          </Link>
-                          <i>
-                            {EAddedNewFeatures[language]}:{' '}
-                            {firstToLowerCase(EMoveViewInDifferentDirections[language])} (
-                            {firstToLowerCase(EButtons[language])}). {EBugFixes[language]}
-                            .
-                          </i>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <strong>{EJuly[language]}</strong>
-                      <ul>
-                        <li>
-                          <a className='disabled'>
-                            <LuArrowRightToLine />
-                            <span>{ESiteMigration[language]} </span>
-                          </a>
-                          <i>{EMigratedSiteToAnotherAzureSubscription[language]}</i>
-                        </li>
-                      </ul>
-                    </li>
                   </ul>
                 </li>
               </ul>
@@ -342,11 +324,60 @@ export default function Home({
                 language={language}
                 text={EOlderNews[language]}
                 className={`${styles.oldernews} oldernews`}
+                wrapperClass={styles['oldernews-wrap']}
               >
                 <ul className={`${styles.extras}`}>
                   <li>
                     <strong>2024</strong>
                     <ul>
+                      <li>
+                        <strong>{EAugust[language]}</strong>
+                        <ul>
+                          <li>
+                            <Link to='/portfolio/blob'>
+                              <TbBlob />
+                              {EBlobs[language]}:
+                            </Link>
+                            <i>
+                              {EAddedNewFeatures[language]}:{' '}
+                              {firstToLowerCase(ELayers[language])};{' '}
+                              {firstToLowerCase(EButton[language])}:{' '}
+                              {firstToLowerCase(EToggleControlVisibility[language])}
+                            </i>
+                          </li>
+                          <li>
+                            <Link to='/portfolio/blob'>
+                              <TbBlob />
+                              {EBlobs[language]}:
+                            </Link>
+                            <i>{EImprovedAccessibility[language]}</i>
+                          </li>
+                          <li>
+                            <Link to='/portfolio/blob'>
+                              <TbBlob />
+                              {EBlobs[language]}:
+                            </Link>
+                            <i>
+                              {EAddedNewFeatures[language]}:{' '}
+                              {firstToLowerCase(EMoveViewInDifferentDirections[language])}{' '}
+                              ({firstToLowerCase(EButtons[language])}).{' '}
+                              {EBugFixes[language]}.
+                            </i>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <strong>{EJuly[language]}</strong>
+                        <ul>
+                          <li>
+                            <a className='disabled'>
+                              <LuArrowRightToLine />
+                              <span>{ESiteMigration[language]} </span>
+                            </a>
+                            <i>{EMigratedSiteToAnotherAzureSubscription[language]}</i>
+                          </li>
+                        </ul>
+                      </li>
                       <li>
                         <strong>{EFebruary[language]}</strong>
                         <ul>
@@ -397,42 +428,50 @@ export default function Home({
                       </li>
                     </ul>
                   </li>
-
-                  <li>
-                    <strong>2023</strong>
-                    <ul>
-                      <li>
-                        <strong>{EDecember[language]}</strong>
-                        <ul>
-                          <li>
-                            <Link to='/portfolio/jokes'>
-                              <GiAbstract019 />
-                              {ETheComediansCompanion[language]}:
-                            </Link>{' '}
-                            <i>
-                              {EAddedNewFeatures[language]}. {EOptimizing[language]}
-                            </i>
-                          </li>
-                        </ul>
-                      </li>{' '}
-                      <li>
-                        <strong>{EOctober[language]}</strong>
-                        <ul>
-                          <li>
-                            <Link to='/portfolio/quiz'>
-                              <MdOutlineQuiz />
-                              {EQuiz[language]}:
-                            </Link>{' '}
-                            <i>
-                              {ENewPortfolioItem[language]}.{' '}
-                              {ETestYourKnowledge[language]}; {EQuizAppIntro[language]}
-                            </i>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </li>
                 </ul>
+                <Accordion
+                  language={language}
+                  text='2023'
+                  className={`${styles.oldernews} oldernews`}
+                  wrapperClass={styles['oldernews-wrap2']}
+                >
+                  <ul className={`${styles.extras}`}>
+                    <li>
+                      <strong>2023</strong>
+                      <ul>
+                        <li>
+                          <strong>{EDecember[language]}</strong>
+                          <ul>
+                            <li>
+                              <Link to='/portfolio/jokes'>
+                                <GiAbstract019 />
+                                {ETheComediansCompanion[language]}:
+                              </Link>{' '}
+                              <i>
+                                {EAddedNewFeatures[language]}. {EOptimizing[language]}
+                              </i>
+                            </li>
+                          </ul>
+                        </li>{' '}
+                        <li>
+                          <strong>{EOctober[language]}</strong>
+                          <ul>
+                            <li>
+                              <Link to='/portfolio/quiz'>
+                                <MdOutlineQuiz />
+                                {EQuiz[language]}:
+                              </Link>{' '}
+                              <i>
+                                {ENewPortfolioItem[language]}.{' '}
+                                {ETestYourKnowledge[language]}; {EQuizAppIntro[language]}
+                              </i>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </Accordion>
               </Accordion>
             </div>
           </div>

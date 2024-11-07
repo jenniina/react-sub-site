@@ -45,6 +45,7 @@ export default function TodoPage({
                 language={language}
                 text={EClickHereToSeeFeatures[language]}
                 className='features'
+                wrapperClass='features-wrap'
               >
                 <h2>{EFeatures[language]}</h2>
                 <ul className='ul'>

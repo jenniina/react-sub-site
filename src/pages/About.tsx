@@ -225,13 +225,15 @@ export default function About({
                     <li>
                       {ETheTranslationsAreDoneWithTheHelpOfGithubCopilotSo[language]}
                     </li>
-                    <li>
-                      {
-                        EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo[
-                          language
-                        ]
-                      }
-                    </li>
+                    {language !== ELanguages.Suomi && language !== ELanguages.English && (
+                      <li>
+                        {
+                          EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo[
+                            language
+                          ]
+                        }
+                      </li>
+                    )}
                   </ul>
                 </li>
                 <li>{ELightDarkModeButton[language]}</li>

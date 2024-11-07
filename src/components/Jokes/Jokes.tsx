@@ -88,6 +88,7 @@ import {
   findUserById,
 } from '../../reducers/usersReducer'
 import { AxiosError } from 'axios'
+import { options, getRandomMinMax } from '../../utils'
 
 export const jokeCategoryByLanguage: IJokeCategoryByLanguage = {
   en: {
@@ -337,8 +338,10 @@ function Jokes({
           dispatch(deleteUserFromJoke(id as string, user?._id as string)).then(() => {
             dispatch(initializeJokes())
           })
-        } catch (error) {
-          console.error(EErrorDeletingJoke[language], error)
+        } catch (error: any) {
+          if (error.response?.data?.message)
+            dispatch(notify(error.response.data.message, true, 8))
+          else console.error(EErrorDeletingJoke[language], error)
         }
       } else return
     }
@@ -404,14 +407,14 @@ function Jokes({
       } else update()
     }
 
-  const options = (
-    enumObj: typeof ECategories | typeof EJokeType | typeof ESafemode | typeof ELanguages
-  ) => {
-    return Object.keys(enumObj).map((key) => ({
-      value: enumObj[key as keyof typeof enumObj],
-      label: key,
-    })) as SelectOption[]
-  }
+  // const options = (
+  //   enumObj: typeof ECategories | typeof EJokeType | typeof ESafemode | typeof ELanguages
+  // ) => {
+  //   return Object.keys(enumObj).map((key) => ({
+  //     value: enumObj[key as keyof typeof enumObj],
+  //     label: key,
+  //   })) as SelectOption[]
+  // }
 
   const optionsCategory = (enumObj: TCategoryByLanguages) => {
     return Object.entries(enumObj).map(([key, value]) => ({
@@ -453,10 +456,6 @@ function Jokes({
     return Object.keys(obj).find((key) => obj[key] === value) as keyof typeof obj
   }
 
-  function getRandomMinMax(min: number, max: number) {
-    return Math.random() * (max - min) + min
-  }
-
   const [foundJoke, setFoundJoke] = useState<IJoke | undefined>(undefined)
 
   useEffect(() => {
@@ -485,9 +484,12 @@ function Jokes({
         dispatch(updateJoke({ ...foundJoke, user: [...foundJoke.user, user?._id] }))
           .then(() => initializeJokes())
           .catch((e) => {
-            dispatch(
-              notify(`${EError[language]}:: ${(e as Error)?.message ?? ''}`, true, 8)
-            )
+            if (e.response?.data?.message)
+              dispatch(notify(e.response.data.message, true, 8))
+            else
+              dispatch(
+                notify(`${EError[language]}:: ${(e as Error)?.message ?? ''}`, true, 8)
+              )
           })
       } else {
         if (recentJoke && recentJoke?.type === EJokeType.single) {
@@ -519,9 +521,12 @@ function Jokes({
               dispatch(initializeJokes())
             })
             .catch((e) => {
-              dispatch(
-                notify(`${EError[language]}*: ${(e as Error)?.message ?? ''}`, true, 8)
-              )
+              if (e.response?.data?.message)
+                dispatch(notify(e.response.data.message, true, 8))
+              else
+                dispatch(
+                  notify(`${EError[language]}*: ${(e as Error)?.message ?? ''}`, true, 8)
+                )
             })
         } else if (recentJoke && recentJoke?.type === EJokeType.twopart) {
           dispatch(
@@ -551,9 +556,12 @@ function Jokes({
               dispatch(initializeJokes())
             })
             .catch((e) => {
-              dispatch(
-                notify(`${EError[language]}: ${(e as Error)?.message ?? ''}`, true, 8)
-              )
+              if (e.response?.data?.message)
+                dispatch(notify(e.response.data.message, true, 8))
+              else
+                dispatch(
+                  notify(`${EError[language]}: ${(e as Error)?.message ?? ''}`, true, 8)
+                )
             })
         }
       }
@@ -1024,8 +1032,10 @@ function Jokes({
 
         await setJokeData(joke, category, joke?.subCategories ?? [], isRandom)
       }
-    } catch (error) {
-      console.error(error)
+    } catch (error: any) {
+      if (error.response?.data?.message)
+        dispatch(notify(error.response.data.message, true, 8))
+      else console.error(error)
       fetchFromJokeAPI()
     } finally {
     }
@@ -1186,8 +1196,11 @@ function Jokes({
         }
       })
       .catch((e) => {
-        console.error(e)
-        dispatch(notify(`${EError[language]}! ${e.response.data.message}`, true, 8))
+        if (e.response?.data?.message) dispatch(notify(e.response.data.message, true, 8))
+        else {
+          console.error(e)
+          dispatch(notify(`${EError[language]}! ${e.response.data.message}`, true, 8))
+        }
       })
   }
 
@@ -1361,11 +1374,15 @@ function Jokes({
                   })
               })
               .catch((error) => {
-                console.error(error)
                 dispatch(initializeJokes())
                   .then(() => dispatch(findUserById(user?._id as string)))
                   .then(() => dispatch(initializeUser()))
-                dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
+                if (error.response?.data?.message)
+                  dispatch(notify(error.response.data.message, true, 8))
+                else {
+                  console.error(error)
+                  dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 5))
+                }
                 setJoke('')
                 setDelivery('')
                 setAuthor('')
@@ -1396,8 +1413,12 @@ function Jokes({
               .then(() => dispatch(notify(`${EJokeRestored[language]}`, false, 3)))
           })
           .catch((error) => {
-            console.error(error)
-            dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
+            if (error.response?.data?.message)
+              dispatch(notify(error.response.data.message, true, 8))
+            else {
+              console.error(error)
+              dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
+            }
           })
       } else {
         dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
@@ -1412,8 +1433,12 @@ function Jokes({
             .then(() => dispatch(initializeUser()))
             .then(() => dispatch(notify(`${ESavedJoke[language]}`, false, 8)))
             .catch((error) => {
-              console.error(error)
-              dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
+              if (error.response?.data?.message)
+                dispatch(notify(error.response.data.message, true, 8))
+              else {
+                console.error(error)
+                dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
+              }
             })
         } else {
           dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))

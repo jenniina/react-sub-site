@@ -47,6 +47,7 @@ export default function FormPage({
                 language={language}
                 text={EClickHereToSeeFeatures[language]}
                 className='features'
+                wrapperClass='features-wrap'
               >
                 <h2>{EFeatures[language]}</h2>
                 <ul className='ul'>

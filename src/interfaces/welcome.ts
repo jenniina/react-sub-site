@@ -214,3 +214,30 @@ export enum ERandomHeadingItemMovement {
   cs = 'Náhodný pohyb položek nadpisu',
   fi = 'Satunnainen otsikkoalueen kohteen liike',
 }
+export enum EAdded {
+  en = 'Added',
+  es = 'Añadido',
+  fr = 'Ajouté',
+  de = 'Hinzugefügt',
+  pt = 'Adicionado',
+  cs = 'Přidáno',
+  fi = 'Lisätty',
+}
+export enum ELaunchedAnOnlineStore {
+  en = 'Launched an online store',
+  es = 'Lanzó una tienda en línea',
+  fr = 'Lancé une boutique en ligne',
+  de = 'Startete einen Online-Shop',
+  pt = 'Lançou uma loja online',
+  cs = 'Spustil online obchod',
+  fi = 'Käynnistin verkkokaupan',
+}
+export enum ELaunchedAnOnlineOrderingSystem {
+  en = 'Launched an online ordering system',
+  es = 'Lanzó un sistema de pedidos en línea',
+  fr = 'Lancé un système de commande en ligne',
+  de = 'Startete ein Online-Bestellsystem',
+  pt = 'Lançou um sistema de pedidos online',
+  cs = 'Spustil online objednávkový systém',
+  fi = 'Käynnistin verkkotilausjärjestelmän',
+}

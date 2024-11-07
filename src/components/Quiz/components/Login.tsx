@@ -73,7 +73,8 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
         setPassword('')
       })
       .catch((e) => {
-        if (e.code === 'ERR_BAD_REQUEST')
+        if (e.response?.data?.message) dispatch(notify(e.response.data.message, true, 8))
+        else if (e.code === 'ERR_BAD_REQUEST')
           dispatch(notify(`${EError['en']}: ${e.response.data.message}`, true, 8))
         else if (e.code === 'ERR_NETWORK') {
           dispatch(notify(`${EError['en']}: ${e.message}`, true, 8))
@@ -112,6 +113,7 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
           <Accordion
             language={language}
             className={`accordion-login login-to-save`}
+            wrapperClass='login-to-save-wrap'
             text={ELogInToSaveScore[language]}
             ref={formLoginRef}
             setIsFormOpen={setIsFormOpen}

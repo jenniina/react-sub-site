@@ -15,6 +15,9 @@ import {
   EChangesToThisDisclaimer,
   EWeMayUpdateThisDisclaimerFromTimeToTime,
   EByUsingOurService,
+  ETermsOfService,
+  ESeeAlso,
+  ETheFollowingAppliesToLoggingInAndStoringUserInfo,
 } from '../interfaces'
 
 import { ELanguages } from '../interfaces'
@@ -22,7 +25,7 @@ import Hero from '../components/Hero/Hero'
 import { useTheme } from '../hooks/useTheme'
 import { Link } from 'react-router-dom'
 import styles from './css/disclaimer.module.css'
-import { EBack } from '../interfaces/form'
+import { EContactForm } from '../interfaces/form'
 
 export default function Disclaimer({
   heading,
@@ -39,12 +42,16 @@ export default function Disclaimer({
 
   return (
     <>
-      <div className={`welcome ${type} ${lightTheme ? styles.light : ''}`}>
-        <Hero language={language} address='welcome' heading={heading} text={text} />
+      <div className={`disclaimer ${type} ${lightTheme ? styles.light : ''}`}>
+        <Hero language={language} address='disclaimer' heading={heading} text={text} />
 
         <div className='inner-wrap'>
           <section className={`card`}>
             <div>
+              <p>
+                {ESeeAlso[language]}: <Link to='/terms'>{ETermsOfService[language]}</Link>
+              </p>
+              <p>{ETheFollowingAppliesToLoggingInAndStoringUserInfo[language]}</p>
               <h2>{EDataCollectionAndStorage[language]}</h2>
               <p>{EWeCollectAndStoreTheEmailAddress[language]}</p>
               <p>{EYourPasswordIsSecurelyHashed[language]}</p>
@@ -56,10 +63,16 @@ export default function Disclaimer({
               <p>{EDoNotShareYourPasswordWithAnyone[language]}</p>
               <h2>{EYourRights[language]}</h2>
               <p>{EYouHaveTheRightToAccessModifyOrDelete[language]}</p>
-              <p>{EIfYouHaveAnyConcernsAboutYourDataSecurity[language]}</p>
+              <p>
+                {EIfYouHaveAnyConcernsAboutYourDataSecurity[language]}:{' '}
+                <Link to='/contact'>{EContactForm[language]}</Link>
+              </p>
               <h2>{EChangesToThisDisclaimer[language]}</h2>
               <p>{EWeMayUpdateThisDisclaimerFromTimeToTime[language]}</p>
               <p>{EByUsingOurService[language]}</p>
+              <p>
+                {ESeeAlso[language]}: <Link to='/terms'>{ETermsOfService[language]}</Link>
+              </p>
             </div>
           </section>
         </div>

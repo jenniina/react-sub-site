@@ -10,6 +10,7 @@ import {
   useEffect,
 } from 'react'
 import { EClose, ELanguages } from '../../interfaces'
+import { FaAnglesUp } from 'react-icons/fa6'
 
 interface accordionProps {
   text: string
@@ -33,6 +34,7 @@ interface accordionProps {
   tooltip?: string
   y?: 'above' | 'below'
   x?: 'left' | 'right'
+  wrapperClass: string
 }
 
 const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefined) => {
@@ -69,10 +71,6 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
       if (props.setIsFormOpen) {
         props.setIsFormOpen(true)
       }
-      const anchor = document.querySelector(`#${props.className}-container`)
-      if (anchor) {
-        anchor.scrollIntoView({ behavior: 'smooth' })
-      }
     }
   }
 
@@ -83,11 +81,26 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
   })
 
   const scrollToOpenBtn = () => {
-    toggleVisibility()
-    const anchor = document.querySelector(`.${props.className}-container`)
-    if (anchor) {
-      anchor.scrollIntoView({ behavior: 'smooth' })
+    const anchors = document.querySelectorAll(`.${props.wrapperClass}`)
+    if (anchors.length > 0) {
+      let closestAnchor: Element | null = null
+      let closestDistance = Infinity
+
+      anchors.forEach((anchor) => {
+        const rect = anchor.getBoundingClientRect()
+        const distance = rect.top
+
+        if (distance < 0 && Math.abs(distance) < closestDistance) {
+          closestAnchor = anchor
+          closestDistance = Math.abs(distance)
+        }
+      })
+
+      if (closestAnchor) {
+        ;(closestAnchor as Element).scrollIntoView({ behavior: 'smooth' })
+      }
     }
+    toggleVisibility()
   }
 
   return (
@@ -95,7 +108,7 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
       id={`${props.id ?? props.className}-container`}
       className={`${visible ? 'open' : 'closed'} ${
         props.className
-      }-container accordion-container`}
+      }-container accordion-container ${props.wrapperClass}`}
     >
       <button
         type='button'
@@ -129,10 +142,10 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
       >
         <button
           type='button'
-          className={`accordion-btn close ${props.className}`}
+          className={`accordion-btn close`}
           onClick={toggleVisibility}
         >
-          <span>&#xFE3D;</span>
+          <FaAnglesUp />
           {EClose[props.language]}
         </button>
 
@@ -141,10 +154,10 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
         {props.showButton && (
           <button
             type='button'
-            className={`accordion-btn close ${props.className}`}
+            className={`accordion-btn close`}
             onClick={scrollToOpenBtn}
           >
-            <span>&#xFE3D;</span>
+            <FaAnglesUp />
             {EClose[props.language]}
           </button>
         )}

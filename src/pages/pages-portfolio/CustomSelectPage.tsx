@@ -65,6 +65,7 @@ import { ETodoApp } from '../../components/Todo/interfaces'
 import { EThereWasAnErrorSendingTheMessage } from '../../interfaces/form'
 import { EClickHereToSeeFeatures } from '../../components/Jokes/interfaces'
 import Accordion from '../../components/Accordion/Accordion'
+import { RiMailSendLine } from 'react-icons/ri'
 
 export default function CustomSelectPage({
   heading,
@@ -159,7 +160,7 @@ export default function CustomSelectPage({
             setHasClickedSubmit(false)
             dispatch(notify(EThankYouForYourMessage[language], false, 8))
           })
-        } catch (err) {
+        } catch (err: any) {
           setSending(false)
           setError((err as Error).message)
           setShowMessage(true)
@@ -171,7 +172,9 @@ export default function CustomSelectPage({
           const message = error
             ? `${EThereWasAnErrorSendingTheMessage[language]}: ${error}`
             : EThereWasAnErrorSendingTheMessage[language]
-          dispatch(notify(message, true, 12))
+          if (err.response?.data?.message)
+            dispatch(notify(err.response.data.message, true, 8))
+          else dispatch(notify(message, true, 12))
           setSending(false)
         }
       }
@@ -205,6 +208,7 @@ export default function CustomSelectPage({
                 language={language}
                 text={EClickHereToSeeFeatures[language]}
                 className='features'
+                wrapperClass='features-wrap'
               >
                 <h2>{EFeatures[language]}</h2>
                 <ul className='ul'>
@@ -358,7 +362,8 @@ export default function CustomSelectPage({
                       </label>
                     </div>
                     <button type='submit' className={`${selectStyles.half} `}>
-                      {sending ? ESendingEmail[language] : ESend[language]}
+                      <span>{sending ? ESendingEmail[language] : ESend[language]}</span>{' '}
+                      <RiMailSendLine />
                     </button>
                     {showMessage && (
                       <div

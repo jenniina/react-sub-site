@@ -11,6 +11,7 @@ import {
   Fragment,
   ChangeEvent,
 } from 'react'
+import { getRandomMinMax } from '../../../utils'
 import {
   Draggable,
   BackgroundColor,
@@ -549,11 +550,15 @@ export default function DragContainer({
             }
           })
           .catch((error) => {
-            dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
+            if (error.response?.data?.message)
+              dispatch(notify(error.response.data.message, true, 8))
+            else dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
           })
       }
-    } catch (error) {
-      dispatch2(notify(EError[language], true, 8))
+    } catch (error: any) {
+      if (error.response?.data?.message)
+        dispatch(notify(error.response.data.message, true, 8))
+      else dispatch2(notify(EError[language], true, 8))
     } finally {
       setIsLoading(false)
     }
@@ -624,13 +629,17 @@ export default function DragContainer({
             dispatch2(notify(ESavingSuccessful[language], false, 8))
           })
           .catch((error) => {
-            dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
+            if (error.response?.data?.message)
+              dispatch(notify(error.response.data.message, true, 8))
+            else dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
           })
       } else {
         dispatch2(notify(ELoginToSaveBlobs[language], true, 8))
       }
-    } catch (error) {
-      dispatch2(notify(EError[language], true, 8))
+    } catch (error: any) {
+      if (error.response?.data?.message)
+        dispatch(notify(error.response.data.message, true, 8))
+      else dispatch2(notify(EError[language], true, 8))
     }
   }
 
@@ -666,13 +675,17 @@ export default function DragContainer({
               dispatch2(notify(ESavingSuccessful[language], false, 8))
             })
             .catch((error) => {
-              dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
+              if (error.response?.data?.message)
+                dispatch(notify(error.response.data.message, true, 8))
+              else dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
             })
         } else {
           dispatch2(notify(ELoginToSaveBlobs[language], true, 8))
         }
-      } catch (error) {
-        dispatch2(notify(EError[language], true, 8))
+      } catch (error: any) {
+        if (error.response?.data?.message)
+          dispatch(notify(error.response.data.message, true, 8))
+        else dispatch2(notify(EError[language], true, 8))
       }
     }
   }
@@ -722,7 +735,9 @@ export default function DragContainer({
             }, 300)
           })
           .catch((error) => {
-            dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
+            if (error.response?.data?.message)
+              dispatch(notify(error.response.data.message, true, 8))
+            else dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
           })
       }
     }
@@ -738,7 +753,9 @@ export default function DragContainer({
             setTrackSaving(!trackSaving)
           })
           .catch((error) => {
-            dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
+            if (error.response?.data?.message)
+              dispatch(notify(error.response.data.message, true, 8))
+            else dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
           })
       }
     }
@@ -1044,12 +1061,15 @@ export default function DragContainer({
         layer: 0,
         id: `blob${i + 1}-${d}`,
         number: i + 1,
-        i: windowWidth > 400 ? getRandomMinMax(7, 20) : getRandomMinMax(7, 10),
+        i:
+          windowWidth > 400
+            ? Math.round(getRandomMinMax(7, 20))
+            : Math.round(getRandomMinMax(7, 10)),
         x:
           windowWidth > windowHeight
-            ? `${(windowWidth / 100) * getRandomMinMax(2, 70)}px`
-            : `${(windowWidth / 100) * getRandomMinMax(2, 50)}px`,
-        y: `${(windowHeight / 100) * getRandomMinMax(2, 60)}px`,
+            ? `${(windowWidth / 100) * Math.round(getRandomMinMax(2, 70))}px`
+            : `${(windowWidth / 100) * Math.round(getRandomMinMax(2, 50))}px`,
+        y: `${(windowHeight / 100) * Math.round(getRandomMinMax(2, 60))}px`,
         z: `1`,
         background: `linear-gradient(${angle ?? '90deg'}, ${colorFirst ?? 'cyan'},${
           colorSecond ?? 'greenyellow'
@@ -1059,10 +1079,6 @@ export default function DragContainer({
     }
 
     setLayerAmount(defaultLayerAmount)
-  }
-
-  function getRandomMinMax(min: number, max: number) {
-    return Math.random() * (max - min) + min
   }
 
   const colorswitch = () => {
@@ -1116,8 +1132,8 @@ export default function DragContainer({
   }, [state.draggables])
 
   const addRandomDraggable = (
-    x_pos: string = `${(windowWidth / 100) * getRandomMinMax(25, 55)}px`,
-    y_pos: string = `${(windowHeight / 100) * getRandomMinMax(2, 10)}px`,
+    x_pos: string = `${(windowWidth / 100) * Math.round(getRandomMinMax(25, 55))}px`,
+    y_pos: string = `${(windowHeight / 100) * Math.round(getRandomMinMax(2, 10))}px`,
     layer: number = activeLayer
   ) => {
     if (
@@ -1566,8 +1582,10 @@ export default function DragContainer({
           setLoading(false)
           setScroll(true)
         }
-      } catch (error) {
-        dispatch2(notify(EError[language], true, 8))
+      } catch (error: any) {
+        if (error.response?.data?.message)
+          dispatch(notify(error.response.data.message, true, 8))
+        else dispatch2(notify(EError[language], true, 8))
         console.error(EError[language], error)
       }
     }
@@ -2320,6 +2338,7 @@ export default function DragContainer({
                                     '-'
                                   )}`}
                                   className='blobnewname'
+                                  wrapperClass='blobnewname-wrap'
                                   text={ERename[language]}
                                   hideBrackets={true}
                                   onClick={() => {

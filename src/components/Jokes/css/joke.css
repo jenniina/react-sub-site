@@ -849,7 +849,7 @@ button.delivery {
   padding: 0.3em 0;
   min-height: 2em;
   background: linear-gradient(
-    5deg,
+    4deg,
     hsla(var(--hue-primary), 100%, 35%, 0) 0%,
     hsla(var(--hue-primary), 100%, 35%, 0) 50%,
     var(--color-primary-7) 70%,

@@ -168,7 +168,9 @@ export default function TodoApp({ language }: Props) {
           })
           .catch((e) => {
             console.error(e)
-            dispatch(notify(`${e}`, true, 8))
+            if (e.response?.data?.message)
+              dispatch(notify(e.response.data.message, true, 8))
+            else dispatch(notify(`${e}`, true, 8))
           })
       } else {
         dispatch(editTodo(updatedTodo as ITask))
@@ -185,17 +187,20 @@ export default function TodoApp({ language }: Props) {
           await editTodoOrder(user._id, order).then(() => {
             dispatch(fetchTodos(user._id))
           })
-        } catch (e) {
+        } catch (e: any) {
           console.error(e)
-          dispatch(notify(`${e}`, true, 8))
+          if (e.response?.data?.message)
+            dispatch(notify(e.response.data.message, true, 8))
+          else dispatch(notify(`${e}`, true, 8))
         }
       })
     } else {
       try {
         dispatch(changeTodoOrder(order))
-      } catch (e) {
+      } catch (e: any) {
         console.error(e)
-        dispatch(notify(`${e}`, true, 8))
+        if (e.response?.data?.message) dispatch(notify(e.response.data.message, true, 8))
+        else dispatch(notify(`${e}`, true, 8))
       } finally {
         window.localStorage.setItem(localName, JSON.stringify(todos))
       }

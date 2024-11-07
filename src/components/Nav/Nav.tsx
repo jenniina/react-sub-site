@@ -8,7 +8,7 @@ import {
   useRef,
 } from 'react'
 import { BiChat } from 'react-icons/bi'
-import { BsPerson } from 'react-icons/bs'
+import { BsCart2, BsPerson } from 'react-icons/bs'
 import { CgSearch } from 'react-icons/cg'
 import { HiOutlineDotsHorizontal } from 'react-icons/hi'
 import { IoMdImages } from 'react-icons/io'
@@ -19,7 +19,7 @@ import { TfiLineDashed } from 'react-icons/tfi'
 import styles from './nav.module.css'
 //import { links } from './links.json'
 //import { skipLinks } from './linksskip.json'
-import { Link, NavLink, useLocation } from 'react-router-dom'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useTheme, useThemeUpdate } from '../../hooks/useTheme'
 import useScrollDirection from '../../hooks/useScrollDirection'
 import useWindowSize from '../../hooks/useWindowSize'
@@ -43,6 +43,7 @@ import {
   ESkipToFooter,
   ESkipToMainContent,
   ESkipToMainNavigation,
+  EStore,
   EWelcome,
   ReducerProps,
   breakpoint,
@@ -63,7 +64,8 @@ import { Select, SelectOption } from '../Select/Select'
 import PasswordReset from '../PasswordReset/PasswordReset'
 import Accordion from '../Accordion/Accordion'
 import { TiShoppingCart } from 'react-icons/ti'
-import { ECart } from '../../interfaces/store-cart'
+import { ECart } from '../../interfaces/store'
+import { FaStoreAlt } from 'react-icons/fa'
 
 type Link = {
   label: string
@@ -79,10 +81,11 @@ interface NavProps {
     value: ELanguages
   ) => undefined | SelectOption['label']
   setLanguage: (language: ELanguages) => void
+  hasCartItems: boolean
 }
 
 const Nav = (
-  { setStyleMenu, language, options, getKeyByValue, setLanguage }: NavProps,
+  { setStyleMenu, language, options, getKeyByValue, setLanguage, hasCartItems }: NavProps,
   ref: Ref<{ getStyle: () => boolean }>
 ) => {
   const user = useSelector((state: ReducerProps) => {
@@ -147,7 +150,9 @@ const Nav = (
           <li className={`tooltip-wrap ${styles.jenniina}`}>
             <a href='https://jenniina.fi'>
               <img src={lightTheme ? logoDark : logo} width='96px' height='39.6px' />
-              <span className='tooltip below narrow'>« {EExitToMainSite[language]}</span>
+              <span className='tooltip below right narrow'>
+                « {EExitToMainSite[language]}
+              </span>
             </a>
           </li>
         ) : (
@@ -201,6 +206,7 @@ const Nav = (
   }
   const lightTheme = useTheme()
   const toggleTheme = useThemeUpdate()
+  const navigate = useNavigate()
 
   // const clickOutsideRef = useOutsideClick({
   //   onOutsideClick: closingAllMenus,
@@ -419,7 +425,9 @@ const Nav = (
       })
       .catch((err) => {
         console.error(err)
-        if (err.code === 'ERR_BAD_REQUEST') {
+        if (err.response?.data?.message)
+          dispatch(notify(err.response.data.message, true, 8))
+        else if (err.code === 'ERR_BAD_REQUEST') {
           dispatch(notify(`Error: ${err.response?.data?.message}`, true, 8))
           return
         }
@@ -547,6 +555,49 @@ const Nav = (
               {ESearch[language]}
             </span>
           </button>
+          {hasCartItems && window.location.pathname !== '/cart' ? (
+            <button
+              className={`${styles.settings} ${styles.cart}`}
+              aria-label='cart'
+              disabled={window.location.pathname === '/cart'}
+              onClick={() => {
+                navigate('/cart')
+              }}
+            >
+              <BsCart2
+                style={
+                  windowWidth < breakpointSmall
+                    ? { fontSize: '1.1em' }
+                    : { fontSize: '1.4em' }
+                }
+                aria-hidden={true}
+              />
+              <span className={windowWidth < breakpoint ? 'scr' : ''}>
+                {ECart[language]}
+              </span>
+            </button>
+          ) : (
+            <button
+              className={`${styles.settings} ${styles.store}`}
+              aria-label='store'
+              disabled={window.location.pathname === '/store'}
+              onClick={() => {
+                navigate('/store')
+              }}
+            >
+              <FaStoreAlt
+                style={
+                  windowWidth < breakpointSmall
+                    ? { fontSize: '1.1em' }
+                    : { fontSize: '1.4em' }
+                }
+                aria-hidden={true}
+              />
+              <span className={windowWidth < breakpoint ? 'scr' : ''}>
+                {EStore[language]}
+              </span>
+            </button>
+          )}
           <button className={styles.settings} onClick={toggleToolbar}>
             <IoSettingsSharp
               style={
@@ -700,6 +751,7 @@ const Nav = (
                 <Accordion
                   language={language}
                   className='password-reset'
+                  wrapperClass='password-reset-wrap'
                   text={`${EForgotPassword[language]}`}
                   isOpen={isResetFormOpen}
                   setIsFormOpen={setIsResetFormOpen}

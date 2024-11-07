@@ -1,5 +1,5 @@
-import { useRef } from 'react'
 import { useTheme } from '../hooks/useTheme'
+import { firstToUpperCase } from '../utils'
 import {
   EBlobAppIntro,
   EBlobAppSlogan,
@@ -55,13 +55,7 @@ export default function Portfolio({
   type: string
   language: ELanguages
 }) {
-  const form = useRef() as RefObject<HTMLFormElement>
-
   const lightTheme = useTheme()
-
-  const capitalizeFirst = (string: string) => {
-    return string.charAt(0).toUpperCase() + string.slice(1)
-  }
 
   return (
     <div
@@ -97,6 +91,7 @@ export default function Portfolio({
                 language={language}
                 text={EDependencies[language]}
                 className='dependencies'
+                wrapperClass='dependencies-wrap'
               >
                 <p id='list-libraries-label'>{EDependencies[language]}:</p>
                 <ul id='list-libraries' aria-labelledby='list-libraries-label'>
@@ -110,9 +105,7 @@ export default function Portfolio({
                 </ul>
                 <p id='list-libraries-label2'>Backend {EDependencies[language]}:</p>
                 <ul id='list-libraries2' aria-labelledby='list-libraries-label2'>
-                  <li>bcryptjs</li>
-                  <li>branca</li>
-                  <li>circular-json</li>
+                  <li>bcryptjs</li> 
                   <li>cors</li>
                   <li>dotenv</li>
                   <li>express</li>
@@ -150,7 +143,7 @@ export default function Portfolio({
                 </Link>
                 <p>
                   {EJokesAppIntro[language]}{' '}
-                  {capitalizeFirst(ESubmitAJoke[language].toLowerCase())}.{' '}
+                  {firstToUpperCase(ESubmitAJoke[language].toLowerCase())}.{' '}
                   {ESeeLocalJokes[language]}.
                 </p>
               </li>

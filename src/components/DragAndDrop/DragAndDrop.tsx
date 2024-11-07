@@ -4,6 +4,7 @@ import { useDragAndDrop } from '../../hooks/useDragAndDrop'
 import { Status, Data, Lightness } from './interfaces'
 import { CardsContainer } from './components/CardsContainer'
 import styles from './dragAndDrop.module.css'
+import { sanitize } from '../../utils'
 import {
   EAreYouSureYouWantToRemoveThis,
   EForExample,
@@ -84,10 +85,6 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
       return item ? JSON.parse(item) : []
     })
     .flat()
-
-  const sanitize = (status: string): string => {
-    return status.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '-')
-  }
 
   // Generate and inject CSS styles whenever statuses change
   useEffect(() => {

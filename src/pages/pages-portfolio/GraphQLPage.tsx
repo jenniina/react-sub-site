@@ -34,6 +34,7 @@ export default function GraphQLPage({
                 language={language}
                 text={EFeatures[language]}
                 className='graphQL-features'
+                wrapperClass='graphQL-features-wrap'
                 setIsFormOpen={setIsFormOpen}
               >
                 <h2>{EFeatures[language]}</h2>

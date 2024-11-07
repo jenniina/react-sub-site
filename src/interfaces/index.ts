@@ -1,7 +1,7 @@
 import { IJoke } from '../components/Jokes/interfaces'
 import { EQuizType, IQuiz, IQuestion, IHighscore } from '../components/Quiz/interfaces'
 import { ITodos } from '../components/Todo/interfaces'
-import { ICart } from './store-cart'
+import { ICart } from './store'
 
 export interface RefObject<T> {
   readonly current: T | null
@@ -20,6 +20,7 @@ export interface IUser {
   _id?: string
   username: string
   name?: string
+  role?: number
   password: string
   passwordOld?: string
   language: ELanguages | string
@@ -148,6 +149,15 @@ export enum EEmail {
   cs = 'E-mailem',
   fi = 'Sähköposti',
 }
+export enum EEmailAddress {
+  en = 'Email Address',
+  es = 'Dirección de correo electrónico',
+  fr = 'Adresse e-mail',
+  de = 'E-Mail-Addresse',
+  pt = 'Endereço de email',
+  cs = 'E-mailová adresa',
+  fi = 'Sähköpostiosoite',
+}
 export enum ENickname {
   en = 'Nickname',
   es = 'Apodo',
@@ -193,7 +203,15 @@ export enum EPleaseCheckYourEmailForYourVerificationLink {
   cs = 'Zkontrolujte svůj e-mail na ověřovací odkaz',
   fi = 'Tarkista sähköpostisi löytääksesi sinne lähetetyn vahvistuslinkin',
 }
-
+export enum EPleaseNote {
+  en = 'Please note',
+  es = 'Tenga en cuenta',
+  fr = 'Veuillez noter',
+  de = 'Bitte beachten Sie',
+  pt = 'Por favor, note',
+  cs = 'Vezměte prosím na vědomí',
+  fi = 'Huomaa',
+}
 export enum EError {
   en = 'Error',
   es = 'Error',
@@ -251,6 +269,7 @@ export enum EPasswordsDoNotMatch {
 export type EGeneric<T> = {
   [key in keyof T]: T[key]
 }
+
 export enum ELanguages {
   English = 'en',
   Suomi = 'fi',
@@ -260,25 +279,6 @@ export enum ELanguages {
   Português = 'pt',
   Čeština = 'cs',
 }
-
-// export const ELanguages = {
-//   English: 'en',
-//   Español: 'es',
-//   Français: 'fr',
-//   Deutch: 'de',
-//   Português: 'pt',
-//   Čeština: 'cs',
-//   Suomi: 'fi',
-// }
-// export interface ILanguages {
-//   English: string
-//   Español: string
-//   Français: string
-//   Deutch: string
-//   Português: string
-//   Čeština: string
-//   Suomi: string
-// }
 export enum ELanguagesLong {
   en = 'English',
   es = 'Español',
@@ -690,6 +690,15 @@ export enum EDelete {
   pt = 'Excluir',
   cs = 'Odstranit',
   fi = 'Poista',
+}
+export enum EDeleted {
+  en = 'Deleted',
+  es = 'Eliminado',
+  fr = 'Supprimé',
+  de = 'Gelöscht',
+  pt = 'Excluído',
+  cs = 'Odstraněno',
+  fi = 'Poistettu',
 }
 export enum EOnOff {
   en = 'On/Off',
@@ -2140,13 +2149,13 @@ export enum EYouHaveTheRightToAccessModifyOrDelete {
   fi = 'Sinulla on oikeus käyttää, muokata tai poistaa henkilökohtaiset tietosi, jotka on tallennettu järjestelmäämme.',
 }
 export enum EIfYouHaveAnyConcernsAboutYourDataSecurity {
-  en = 'If you have any concerns about your data security, please contact our support team.',
-  es = 'Si tiene alguna inquietud sobre la seguridad de sus datos, comuníquese con nuestro equipo de soporte.',
-  fr = 'Si vous avez des préoccupations concernant la sécurité de vos données, veuillez contacter notre équipe de support.',
-  de = 'Wenn Sie Bedenken hinsichtlich der Sicherheit Ihrer Daten haben, wenden Sie sich bitte an unser Support-Team.',
-  pt = 'Se você tiver alguma preocupação sobre a segurança de seus dados, entre em contato com nossa equipe de suporte.',
-  cs = 'Pokud máte obavy o bezpečnost svých dat, obraťte se na naši podporu.',
-  fi = 'Jos sinulla on huolenaiheita tietoturvasi suhteen, ota yhteyttä tukitiimiimme.',
+  en = 'If you have any concerns about your data security, please contact me',
+  es = 'Si tiene alguna preocupación sobre la seguridad de sus datos, por favor contácteme',
+  fr = 'Si vous avez des préoccupations concernant la sécurité de vos données, veuillez me contacter',
+  de = 'Wenn Sie Bedenken hinsichtlich der Sicherheit Ihrer Daten haben, kontaktieren Sie mich bitte',
+  pt = 'Se você tiver alguma preocupação sobre a segurança de seus dados, entre em contato comigo',
+  cs = 'Pokud máte jakékoli obavy ohledně zabezpečení svých dat, kontaktujte mě',
+  fi = 'Jos sinulla on huolenaiheita tietoturvasi suhteen, ota yhteyttä',
 }
 export enum EChangesToThisDisclaimer {
   en = 'Changes to This Disclaimer',
@@ -2566,6 +2575,16 @@ export enum EWebsite {
   cs = 'Webová stránka',
   fi = 'Verkkosivusto',
 }
+export enum EWebsiteDesign {
+  en = 'Website design',
+  es = 'Diseño de sitio web',
+  fr = 'Conception de site web',
+  de = 'Webdesign',
+  pt = 'Design de site',
+  cs = 'Návrh webových stránek',
+  fi = 'Verkkosivujen suunnittelu',
+}
+
 export enum ERemove {
   en = 'Remove',
   es = 'Eliminar',
@@ -2574,4 +2593,139 @@ export enum ERemove {
   pt = 'Remover',
   cs = 'Odstranit',
   fi = 'Poista',
+}
+export enum EName {
+  en = 'Name',
+  es = 'Nombre',
+  fr = 'Nom',
+  de = 'Name',
+  pt = 'Nome',
+  cs = 'Jméno',
+  fi = 'Nimi',
+}
+export enum EMoreInformation {
+  en = 'More information',
+  es = 'Más información',
+  fr = 'Plus d informations',
+  de = 'Mehr Informationen',
+  pt = 'Mais informações',
+  cs = 'Více informací',
+  fi = 'Lisätietoja',
+}
+export enum ERequestsIdeasAndLinksForInspiration {
+  en = 'Requests, ideas and links for inspiration',
+  es = 'Solicitudes, ideas y enlaces para inspiración',
+  fr = 'Demandes, idées et liens pour l inspiration',
+  de = 'Anfragen, Ideen und Links zur Inspiration',
+  pt = 'Pedidos, ideias e links para inspiração',
+  cs = 'Žádosti, nápady a odkazy pro inspiraci',
+  fi = 'Toiveita, ideoita ja linkkejä inspiraatioon',
+}
+export enum EInfo {
+  en = 'Info',
+  es = 'Información',
+  fr = 'Info',
+  de = 'Info',
+  pt = 'Info',
+  cs = 'Info',
+  fi = 'Info',
+}
+export enum ERememberToSave {
+  en = 'Remember to save!',
+  es = '¡Recuerda guardar!',
+  fr = 'N oubliez pas de sauvegarder!',
+  de = 'Vergessen Sie nicht zu speichern!',
+  pt = 'Não se esqueça de salvar!',
+  cs = 'Nezapomeňte uložit!',
+  fi = 'Muista tallentaa!',
+}
+export enum ERemember {
+  en = 'Remember',
+  es = 'Recordar',
+  fr = 'Se souvenir',
+  de = 'Erinnern',
+  pt = 'Lembrar',
+  cs = 'Pamatovat',
+  fi = 'Muista',
+}
+export enum EHide {
+  en = 'Hide',
+  es = 'Ocultar',
+  fr = 'Cacher',
+  de = 'Verstecken',
+  pt = 'Esconder',
+  cs = 'Skrýt',
+  fi = 'Piilota',
+}
+export enum EShow {
+  en = 'Show',
+  es = 'Mostrar',
+  fr = 'Montrer',
+  de = 'Anzeigen',
+  pt = 'Mostrar',
+  cs = 'Ukázat',
+  fi = 'Näytä',
+}
+export enum EStatus {
+  en = 'Status',
+  es = 'Estado',
+  fr = 'Statut',
+  de = 'Status',
+  pt = 'Status',
+  cs = 'Stav',
+  fi = 'Tila',
+}
+export enum EIAcceptThe {
+  en = 'I accept the',
+  es = 'Acepto los',
+  fr = 'J accepte les',
+  de = 'Ich akzeptiere die',
+  pt = 'Aceito os',
+  cs = 'Přijímám',
+  fi = 'Hyväksyn',
+}
+export enum ETermsOfServiceLink {
+  en = 'terms of service',
+  es = 'términos del servicio',
+  fr = 'conditions de service',
+  de = 'Nutzungsbedingungen',
+  pt = 'termos de serviço',
+  cs = 'obchodní podmínky',
+  fi = 'käyttöehdot',
+}
+export enum ETermsOfService {
+  en = 'Terms of Service',
+  es = 'Términos del servicio',
+  fr = 'Conditions de service',
+  de = 'Nutzungsbedingungen',
+  pt = 'Termos de serviço',
+  cs = 'Obchodní podmínky',
+  fi = 'Käyttöehdot',
+}
+export enum ESeeAlso {
+  en = 'See also',
+  es = 'Ver también',
+  fr = 'Voir aussi',
+  de = 'Siehe auch',
+  pt = 'Veja também',
+  cs = 'Viz také',
+  fi = 'Katso myös',
+}
+export enum ETheFollowingAppliesToLoggingInAndStoringUserInfo {
+  en = 'The following information applies to logging in and storing user information.',
+  es = 'La siguiente información se aplica a iniciar sesión y almacenar información del usuario.',
+  fr = 'Les informations suivantes s appliquent à la connexion et au stockage des informations utilisateur.',
+  de = 'Die folgenden Informationen gelten für das Einloggen und Speichern von Benutzerinformationen.',
+  pt = 'As seguintes informações se aplicam ao login e ao armazenamento de informações do usuário.',
+  cs = 'Následující informace se vztahují k přihlášení a ukládání informací o uživatelích.',
+  fi = 'Seuraavat tiedot koskevat sivuille kirjautumista ja käyttäjätietojen tallentamista.',
+}
+export enum EClarifications {
+  en = 'Clarifications',
+  es = 'Aclaraciones',
+  fr = 'Clarifications',
+  de = 'Klarstellungen',
+  pt = 'Clarificações',
+  cs = 'Ujasnění',
+  fi = 'Selvennyksiä',
 }

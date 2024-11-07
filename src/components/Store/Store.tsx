@@ -1,184 +1,390 @@
-import { ELanguages, EWebsite } from '../../interfaces'
+import styles from './store.module.css'
+import {
+  EContact,
+  ELanguages,
+  EMainSite,
+  EWebsite,
+  EWebsiteDesign,
+} from '../../interfaces'
 import StoreItems from './components/StoreItems'
 import { FC } from 'react'
-import { EGraphicDesign, EProducts, ICartItem } from '../../interfaces/store-cart'
-
-const wordpress: Partial<ICartItem>[] = [
-  {
-    name: 'Simple WordPress Website',
-    price: 230,
-    quantity: 1,
-    description:
-      'An accessible single page website without extra functionalities. The production or translation of text and image content is not included in the basic package.',
-    details: '',
-  },
-  {
-    name: 'Simple WordPress Website with Blog and Contact Form',
-    price: 350,
-    quantity: 1,
-    description:
-      'An accessible website with a blog section and contact form. The production or translation of text and image content is not included in the basic package.',
-    details: '',
-  },
-  {
-    name: 'Simple WordPress Website with Blog, Contact Form, and Online Store',
-    price: 540,
-    quantity: 1,
-    description:
-      'An accessible website with a blog section, contact form, and online store (WooCommerce). The production or translation of text and image content is not included in the basic package.',
-    details: '',
-  },
-  {
-    name: 'WordPress Full Package',
-    price: 630,
-    quantity: 1,
-    description:
-      "Includes a design meeting (online or live) with the client and three drafts, design of the website's appearance, technical implementation, publication, and an hour of user training. The production or translation of text and image content is not included in the basic package.",
-    details: '',
-  },
-]
-
-const react: Partial<ICartItem>[] = [
-  {
-    name: 'React Website',
-    price: 380,
-    quantity: 1,
-    description:
-      'An accessible single page website without extra functionalities. The production or translation of text and image content is not included in the basic package.',
-    details: '',
-  },
-  {
-    name: 'React Website with Blog and Contact Form',
-    price: 600,
-    quantity: 1,
-    description:
-      'An accessible website with a blog section and contact form. The production or translation of text and image content is not included in the basic package.',
-    details: '',
-  },
-  {
-    name: 'React Website with Blog, Contact Form, and Online Store',
-    price: 800,
-    quantity: 1,
-    description:
-      'An accessible website with a blog section, contact form, and online store. The production or translation of text and image content is not included in the basic package.',
-    details: '',
-  },
-  {
-    name: 'React Full Package',
-    price: 980,
-    quantity: 1,
-    description:
-      "Includes a design meeting (online or live) with the client and three drafts, design of the website's appearance, technical implementation, publication, and an hour of user training. The production or translation of text and image content is not included in the basic package.",
-    details: '',
-  },
-]
-const misc: Partial<ICartItem>[] = [
-  {
-    name: 'Website Translation Work (English & Finnish)',
-    price: 22,
-    quantity: 1,
-    description: 'Translation work for websites (English & Finnish): 22€/hour.',
-    details: '',
-  },
-  {
-    name: 'Website Updates or Modifications',
-    price: 22,
-    quantity: 1,
-    description:
-      'Updates or modifications to websites: 22€/hour for React & Node-based websites.',
-    details: '',
-  },
-  {
-    name: 'Website Maintenance',
-    price: 22,
-    quantity: 1,
-    description:
-      'Website maintenance: 22€/hour for WordPress or React & Node-based websites.',
-    details: '',
-  },
-]
-
-const graphicDesign: Partial<ICartItem>[] = [
-  {
-    name: 'Poster and Flyer Design',
-    price: 320,
-    quantity: 1,
-    description: 'Includes a design meeting with the client and three drafts.',
-    details: '',
-  },
-  {
-    name: 'Logo Design',
-    price: 200,
-    quantity: 1,
-    description: 'Includes a design meeting with the client and three drafts.',
-    details: '',
-  },
-  {
-    name: 'Business Card Design',
-    price: 120,
-    quantity: 1,
-    description: 'Includes a design meeting with the client and three drafts.',
-    details: '',
-  },
-]
-
-const itemsReact = react.map((item, index) => {
-  item.id = 'react' + index.toString()
-  return item
-}) as ICartItem[]
-
-const itemsWordPress = wordpress.map((item, index) => {
-  item.id = 'wordpress' + index.toString()
-  return item
-}) as ICartItem[]
-
-const itemsMisc = misc.map((item, index) => {
-  item.id = 'misc' + index.toString()
-  return item
-}) as ICartItem[]
-
-const itemsGraphic = graphicDesign.map((item, index) => {
-  item.id = 'graphic' + index.toString()
-  return item
-}) as ICartItem[]
-
-const items = itemsReact.concat(itemsWordPress, itemsMisc, itemsGraphic)
+import ScrollButton from '../ScrollButton'
+import {
+  EAddingABlogAndContactFormToAnExistingWebsite,
+  EAddingAWebStoreToAnExistingWebsite,
+  EAnAccessibleMultiPageWebsite,
+  EAnAccessibleSinglePageWebsite,
+  EAnAccessibleWebsiteWithBlogAndContactForm,
+  EAnAccessibleWebsiteWithContactFormAndOtherFunctionality,
+  EAnAccessibleWebsiteWithBlogContactFormAndOnlineStoreWooCommerce,
+  EBusinessCardDesign,
+  EForWordPressOrReactNodeBasedWebsites,
+  EGraphicDesign,
+  EIncludesADesignMeetingWithTheClientForWebsite,
+  EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts,
+  EIncludesPrintableAndWebVersionOfTheLogo,
+  ELogoDesign,
+  EHour,
+  EProducts,
+  EReactFullPackage,
+  EReactWebsite,
+  EReactWebsiteWithContactFormAndOtherFunctionality,
+  ERequestForQuote,
+  ERequestForQuoteForProductsNotInStore,
+  ESimpleReactWebsite,
+  ESimpleWordPressWebsite,
+  EWordPressWebsiteWithBlogAndContactForm,
+  EWordPressWebsiteWithBlogContactFormAndOnlineStore,
+  ETranslationWork,
+  EWebsiteMaintenance,
+  EWebsites,
+  EWebsiteContentUpdatesOrModifications,
+  EWordPressFullPackage,
+  EWordPressWebsite,
+  ICartItem,
+  EPosterDesign,
+  EFlyerDesign,
+  EFourPageA5SizeProgramme,
+  EProgrammeDesign,
+  EOneSided,
+  ETwoSided,
+  EReactSitesAppsAreFastAndResponsive,
+  EWordPressSitesAreVersatile,
+  EUpdatingWordPressIsSimple,
+  EAddingFunctionalityToAReactSite,
+  EFunctionalitiesCanBe,
+  EIfYouAreUnsureAboutReactOrWordPress,
+  EOneSidedBusinessCard,
+  ETwoSidedBusinessCard,
+  EHourlyWorkCanBeUsed,
+  EPayFor10HoursGet13,
+  EPayFor5HoursGet6,
+  ESitesByJenniina,
+  ETrainingInWebsiteManagement,
+  ETrainingInWebsiteManagementDescription,
+  EOneHourOfTrainingIncluded,
+  EForSitesByJenniina,
+  EEGInfographicsOrMotionGraphics,
+  EPosterAndProgrammeDesign,
+  EPosterAndProgrammeCombo,
+  ETheBlogSectionCanBeNewsArticlesEtc,
+  EOrchestraWebsite,
+  EConferenceWebsite,
+  EExampleSites,
+  EPsychologistWebsite,
+  EPleaseSeeThePortfolioPagesForExamplesofPossibleFeatures,
+  EPosterAndProgramme,
+  EWebStore,
+  EBlogAndContactForm,
+  EAddonsAreAdaptedToTheStyle,
+  EMayContainEffects,
+} from '../../interfaces/store'
+import { EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo } from '../../interfaces/about'
+import { useTheme } from '../../hooks/useTheme'
+import { Link } from 'react-router-dom'
+import { EContactForm } from '../../interfaces/form'
+import { ESampleArtwork } from '../../interfaces/blobs'
+import { ENote } from '../Jokes/interfaces'
 
 interface Props {
   language: ELanguages
+  cart: ICartItem[]
+  setCart: React.Dispatch<React.SetStateAction<ICartItem[]>>
 }
 
-const ScrollButton: FC<{ name: string; id: string }> = ({ name, id }) => {
-  return (
-    <button
-      onClick={() => {
-        document.getElementById(id)?.scrollIntoView()
-      }}
-    >
-      {name}
-    </button>
-  )
-}
+const Store: FC<Props> = ({ language, cart, setCart }) => {
+  const lightTheme = useTheme()
 
-const Store: FC<Props> = ({ language }) => {
-  const itemsNameArray = [
-    { name: EWebsite[language], id: 'website', array: itemsMisc },
-    { name: 'React', id: 'react', array: itemsReact },
-    { name: 'WordPress', id: 'wordpress', array: itemsWordPress },
-    { name: EGraphicDesign[language], id: 'graphic', array: itemsGraphic },
+  const wordpress: Partial<ICartItem>[] = [
+    {
+      id: 'wordpress-simple',
+      name: ESimpleWordPressWebsite[language],
+      price: 190,
+      description: `${EAnAccessibleSinglePageWebsite[language]} ${EMayContainEffects[language]}`,
+    },
+    {
+      id: 'wordpress-website',
+      name: EWordPressWebsite[language],
+      price: 260,
+      description: `${EAnAccessibleMultiPageWebsite[language]}  ${EMayContainEffects[language]}`,
+    },
+    {
+      id: 'wordpress-blog-contact',
+      name: EWordPressWebsiteWithBlogAndContactForm[language],
+      price: 350,
+      description: `${EAnAccessibleWebsiteWithBlogAndContactForm[language]} ${ETheBlogSectionCanBeNewsArticlesEtc[language]}`,
+    },
+    {
+      id: 'wordpress-full',
+      name: EWordPressFullPackage[language],
+      price: 890,
+      description: `${EAnAccessibleWebsiteWithBlogContactFormAndOnlineStoreWooCommerce[language]}`,
+    },
+    {
+      id: 'wordpress-blog-contact-existing',
+      name: `${EBlogAndContactForm[language]} `,
+      price: 160,
+      description: `${EAddingABlogAndContactFormToAnExistingWebsite[language]} (${EWordPressWebsite[language]}).  ${EAddonsAreAdaptedToTheStyle[language]} ${ETheBlogSectionCanBeNewsArticlesEtc[language]}`,
+    },
+    {
+      id: 'wordpress-webstore',
+      name: `${EWebStore[language]}`,
+      price: 580,
+      description: `${EAddingAWebStoreToAnExistingWebsite[language]}. ${EAddonsAreAdaptedToTheStyle[language]}`,
+    },
   ]
+
+  const react: Partial<ICartItem>[] = [
+    {
+      id: 'react-simple',
+      name: ESimpleReactWebsite[language],
+      price: 340,
+      description: `${EAnAccessibleSinglePageWebsite[language]} ${EMayContainEffects[language]}`,
+    },
+    {
+      id: 'react-website',
+      name: EReactWebsite[language],
+      price: 400,
+      description: `${EAnAccessibleMultiPageWebsite[language]} ${EMayContainEffects[language]}`,
+    },
+    {
+      id: 'react-contact-functionality',
+      name: EReactWebsiteWithContactFormAndOtherFunctionality[language],
+      price: 620,
+      description: `${EAnAccessibleWebsiteWithContactFormAndOtherFunctionality[language]} ${EFunctionalitiesCanBe[language]} (Node.js app & React). ${EPleaseSeeThePortfolioPagesForExamplesofPossibleFeatures[language]}`,
+    },
+    {
+      id: 'react-adding-functionality',
+      name: `${EAddingFunctionalityToAReactSite[language]} (Node.js app & React)`,
+      price: 220,
+      description: `${EFunctionalitiesCanBe[language]} ${EAddonsAreAdaptedToTheStyle[language]} ${EPleaseSeeThePortfolioPagesForExamplesofPossibleFeatures[language]}`,
+    },
+  ]
+
+  const hourlyRateM = 26
+  const hourlyRateU = 28
+  const hourlyRateT = 33
+
+  const miscArray = {
+    maintenance: { price: hourlyRateM },
+    updates: { price: hourlyRateU },
+    translation: { price: hourlyRateT },
+    training: { price: hourlyRateT },
+  }
+
+  const misc: Partial<ICartItem>[] = [
+    {
+      name: EWebsiteMaintenance[language],
+      id: 'misc-maintenance',
+      price: miscArray.maintenance.price,
+      description: `${EWebsiteMaintenance[language]}: ${miscArray.maintenance.price}€/${EHour[language]} ${EForWordPressOrReactNodeBasedWebsites[language]}. `,
+    },
+    {
+      name: EWebsiteContentUpdatesOrModifications[language],
+      id: 'misc-updates',
+      price: miscArray.updates.price,
+      description: `${EWebsiteContentUpdatesOrModifications[language]}: ${miscArray.updates.price}€/${EHour[language]} ${EForWordPressOrReactNodeBasedWebsites[language]}. `,
+    },
+    {
+      name: ETranslationWork[language],
+      id: 'misc-translation',
+      price: miscArray.translation.price,
+      description: `${ETranslationWork[language]}: ${miscArray.translation.price}€/${EHour[language]}. `,
+    },
+    {
+      name: ETrainingInWebsiteManagement[language],
+      id: 'misc-training',
+      price: miscArray.training.price,
+      description: `${EForSitesByJenniina[language]}: ${ETrainingInWebsiteManagementDescription[language]} ${miscArray.training.price}€/${EHour[language]}. \n\n${ENote[language]} ${EOneHourOfTrainingIncluded[language]} `,
+    },
+    {
+      name: ERequestForQuote[language],
+      id: 'misc-quote',
+      price: 0,
+      description: `${ERequestForQuoteForProductsNotInStore[language]}. \n\n${
+        EEGInfographicsOrMotionGraphics[language]
+      }. ${
+        language !== ELanguages.English && language !== ELanguages.Suomi
+          ? `\n\n${EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo[language]}`
+          : ''
+      }`,
+    },
+  ]
+
+  const graphicDesign: Partial<ICartItem>[] = [
+    {
+      id: 'graphic-flyer-1',
+      name: `${EFlyerDesign[language]} 1`,
+      price: 230,
+      description: `${EOneSided[language]}. ${EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts[language]}`,
+    },
+
+    {
+      id: 'graphic-flyer-2',
+      name: `${EFlyerDesign[language]} 2`,
+      price: 270,
+      description: `${ETwoSided[language]}. ${EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts[language]}`,
+    },
+    {
+      id: 'graphic-business-card-1',
+      name: `${EBusinessCardDesign[language]} 1`,
+      price: 220,
+      description: `${EOneSidedBusinessCard[language]}. ${EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts[language]}`,
+    },
+    {
+      id: 'graphic-business-card-2',
+      name: `${EBusinessCardDesign[language]} 2`,
+      price: 320,
+      description: `${ETwoSidedBusinessCard[language]}. ${EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts[language]}`,
+    },
+    {
+      id: 'graphic-poster',
+      name: EPosterDesign[language],
+      price: 290,
+      description: `${EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts[language]}`,
+    },
+    {
+      id: 'graphic-programme',
+      name: EProgrammeDesign[language],
+      price: 320,
+      description: `${EFourPageA5SizeProgramme[language]}. ${EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts[language]}`,
+    },
+    {
+      id: 'graphic-poster-programme',
+      name: EPosterAndProgramme[language],
+      price: 400,
+      description: `${EPosterAndProgrammeCombo[language]}. ${EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts[language]}`,
+    },
+    {
+      id: 'graphic-logo',
+      name: ELogoDesign[language],
+      price: 250,
+      description: `${EIncludesPrintableAndWebVersionOfTheLogo[language]} ${EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts[language]}`,
+    },
+  ]
+
+  const itemsReact = react.map((item) => {
+    item.quantity = 0
+    item.details = ''
+    item.status = 'pending'
+    item.paid = 'none'
+    return item
+  }) as ICartItem[]
+
+  const itemsWordPress = wordpress.map((item) => {
+    item.quantity = 0
+    item.details = ''
+    item.status = 'pending'
+    item.paid = 'none'
+    return item
+  }) as ICartItem[]
+
+  const itemsGraphic = graphicDesign.map((item) => {
+    item.quantity = 0
+    item.details = ''
+    item.status = 'pending'
+    item.paid = 'none'
+    return item
+  }) as ICartItem[]
+
+  const itemsMisc = misc.map((item) => {
+    item.quantity = 0
+    item.details = ''
+    item.status = 'pending'
+    item.paid = 'none'
+    return item
+  }) as ICartItem[]
+
+  const itemsNameArray = [
+    {
+      name: EWebsites[language],
+      id: 'misc',
+      array: itemsMisc,
+      intro:
+        language !== ELanguages.Suomi && language !== ELanguages.English
+          ? `${EIfYouAreUnsureAboutReactOrWordPress[language]} ${EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo[language]}`
+          : `${EIfYouAreUnsureAboutReactOrWordPress[language]}`,
+      link: <Link to='/contact'>{EContactForm[language]}</Link>,
+    },
+    {
+      name: 'React & Node',
+      id: 'react',
+      array: itemsReact,
+      intro: `${EReactSitesAppsAreFastAndResponsive[language]}`,
+      link: null,
+    },
+    {
+      name: 'WordPress',
+      id: 'wordpress',
+      array: itemsWordPress,
+      intro: `${EWordPressSitesAreVersatile[language]} ${EUpdatingWordPressIsSimple[language]}`,
+      link: (
+        <>
+          {EExampleSites[language]} ({EMainSite[language].toLowerCase()}):
+          <ul className='ul'>
+            <li>
+              <a href='https://jenniina.fi/jyvaskylan-salonkiorkesteri-orchestra-website/#title'>
+                {EOrchestraWebsite[language]}
+              </a>{' '}
+            </li>
+            <li>
+              <a href='https://jenniina.fi/metal-2022/#metal2022'>
+                {EConferenceWebsite[language]}
+              </a>{' '}
+            </li>
+            <li>
+              <a href='https://jenniina.fi/website-of-psychologist/#sirkku'>
+                {EPsychologistWebsite[language]}
+              </a>
+            </li>
+          </ul>
+        </>
+      ),
+    },
+    {
+      name: EGraphicDesign[language],
+      id: 'graphic',
+      array: itemsGraphic,
+      intro: '',
+      link: (
+        <>
+          {EProducts[language]} ({EMainSite[language].toLowerCase()}):{' '}
+          <a href='https://jenniina.fi/portfolio#graphic-design'>
+            {EGraphicDesign[language]} ({ESampleArtwork[language]})
+          </a>
+        </>
+      ),
+    },
+  ]
+
   return (
     <>
-      {itemsNameArray.map((item) => (
-        <ScrollButton key={item.id} name={item.name} id={item.id} />
-      ))}
+      <div
+        className={`${styles['scroll-button-wrap']} ${lightTheme ? styles.light : ''}`}
+      >
+        {itemsNameArray.map((item, index) =>
+          index === 0 ? null : (
+            <ScrollButton
+              key={item.id}
+              styles={styles}
+              name={item.name}
+              id={item.id}
+              direction='below'
+            />
+          )
+        )}{' '}
+      </div>
       {itemsNameArray.map((item) => (
         <StoreItems
           key={item.id}
           id={item.id}
           language={language}
           items={item.array}
-          type={item.name}
+          name={item.name}
+          intro={item.intro}
+          link={item.link}
+          cart={cart}
+          setCart={setCart}
         />
       ))}
     </>

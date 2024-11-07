@@ -59,7 +59,9 @@ const LanguageEdit = ({ user, language, setLanguage, options, getKeyByValue }: P
           })
           .catch((error: AxiosError<{ message?: string }>) => {
             console.error(error)
-            if (error.code === 'ERR_BAD_REQUEST' && error.response?.data?.message) {
+            if (error.response?.data?.message)
+              dispatch(notify(error.response.data.message, true, 8))
+            else if (error.code === 'ERR_BAD_REQUEST' && error.response?.data?.message) {
               dispatch(
                 notify(`${EError[language]}: ${error.response.data.message}`, true, 5)
               )
@@ -72,8 +74,10 @@ const LanguageEdit = ({ user, language, setLanguage, options, getKeyByValue }: P
       }
 
       //const language = e.currentTarget.language.value
-    } catch (error) {
-      console.error('error', error)
+    } catch (error: any) {
+      if (error.response?.data?.message)
+        dispatch(notify(error.response.data.message, true, 8))
+      else console.error('error', error)
     }
   }
 

@@ -8,7 +8,7 @@
     "preview": "vite preview"
   },
   "author": "Jenniina Laine",
-  "license": "UNLICENSED",
+  "license": "Proprietary",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
     "axios": "^1.5.1",

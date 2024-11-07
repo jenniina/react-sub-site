@@ -1,5 +1,5 @@
 import { useRef, useState, FormEvent } from 'react'
-import Accordion from '../Accordion/Accordion'
+import { RiMailSendLine } from 'react-icons/ri'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import { forgot } from '../../reducers/usersReducer'
@@ -71,7 +71,7 @@ const PasswordReset = ({ language, text }: Props) => {
           </label>
         </div>
         <button type='submit' id={`forgot-${text}`} className='forgot-btn restore'>
-          {ESendResetLink[language]}
+          <span>{ESendResetLink[language]}</span> <RiMailSendLine />
         </button>
       </form>
     </>

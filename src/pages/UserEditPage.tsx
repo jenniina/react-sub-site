@@ -18,10 +18,6 @@ import { useAppDispatch } from '../hooks/useAppDispatch'
 import { ReducerProps } from '../interfaces'
 import { initializeUser, logout } from '../reducers/authReducer'
 import { removeUser } from '../reducers/usersReducer'
-// import PasswordEdit from '../components/UserEdit/PasswordEdit'
-// import UsernameEdit from '../components/UserEdit/UsernameEdit'
-// import LanguageEdit from '../components/UserEdit/LanguageEdit'
-// import NicknameEdit from '../components/UserEdit/NicknameEdit'
 import { notify } from '../reducers/notificationReducer'
 
 const PasswordEdit = lazy(() => import('../components/UserEdit/PasswordEdit'))

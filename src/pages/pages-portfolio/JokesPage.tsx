@@ -1,7 +1,6 @@
 import { lazy, Suspense } from 'react'
 import Hero from '../../components/Hero/Hero'
 import { BiChevronsDown } from 'react-icons/bi'
-// import Jokes from '../../components/Jokes/Jokes'
 import { jokeCategoryByLanguage, jokeCategoryAny } from '../../components/Jokes/Jokes'
 import Accordion from '../../components/Accordion/Accordion'
 import {
@@ -38,6 +37,7 @@ import {
 } from '../../interfaces'
 import { SyntheticEvent, useEffect } from 'react'
 import { Select, SelectOption } from '../../components/Select/Select'
+import { options } from '../../utils'
 
 const Jokes = lazy(() => import('../../components/Jokes/Jokes'))
 
@@ -56,13 +56,6 @@ export default function JokesPage({
 }) {
   const title = ETheComediansCompanion[language]
   const titleLanguage = ELanguageTitle[language]
-
-  const options = (enumObj: typeof ELanguages) => {
-    return Object.keys(enumObj).map((key) => ({
-      value: enumObj[key as keyof typeof enumObj],
-      label: key,
-    })) as SelectOption[]
-  }
 
   function getKeyByValue(
     enumObj:
@@ -166,6 +159,7 @@ export default function JokesPage({
                 language={language}
                 text={EClickHereToSeeFeatures[language]}
                 className='features'
+                wrapperClass='features-wrap'
               >
                 <div className='medium'>
                   <h2>{EFeatures[language]}</h2>
@@ -230,7 +224,7 @@ export default function JokesPage({
           }
         >
           <Jokes language={language} setLanguage={setLanguage} />
-        </Suspense>{' '}
+        </Suspense>
       </div>
     </div>
   )

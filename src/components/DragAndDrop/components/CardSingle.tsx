@@ -12,16 +12,9 @@ import { Data, Status } from '../interfaces'
 import styles from '../dragAndDrop.module.css'
 import { MdContentCopy, MdLocationOn, MdOutlineDragIndicator } from 'react-icons/md'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
+import { EChooseDestination } from '../../../interfaces/draganddrop'
 import {
-  EBad,
-  EChooseDestination,
-  EGood,
-  ENeutral,
-} from '../../../interfaces/draganddrop'
-import {
-  EChange,
   ECopiedToClipboard,
-  ECopy,
   ECopyText,
   ECopyToClipboard,
   EFailedToCopy,
@@ -213,8 +206,10 @@ function CardSingle({
       try {
         document.execCommand('copy')
         dispatch(notify(ECopiedToClipboard[language], false, 3))
-      } catch (err) {
-        dispatch(notify(`${EFailedToCopy[language]}`, true, 3))
+      } catch (err: any) {
+        if (err.response?.data?.message)
+          dispatch(notify(err.response.data.message, true, 8))
+        else dispatch(notify(`${EFailedToCopy[language]}`, true, 3))
       }
       document.body.removeChild(textArea)
     }
