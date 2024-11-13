@@ -101,7 +101,7 @@
 }
 
 .cards-container > span > .change-status > button.change-status {
-  padding: 0.3rem 0.4rem 0;
+  padding: 0.3rem 0.5rem 0 0.4rem;
   font-size: 1.5em;
   margin: 0;
   border: none;
@@ -278,6 +278,25 @@ div.change-status div.change-status > i {
   margin-top: -1.2rem;
   margin-bottom: 1.5rem;
   display: block;
+}
+div.change-status > div.change-status > button {
+  background-color: var(--color-primary-1);
+}
+div.change-status > div.change-status > i {
+  padding-left: 0.5em;
+  margin-top: 0.3rem;
+}
+.add-status form {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+  margin: 0;
+  padding: 0;
+}
+.add-status h2 {
+  margin-bottom: 1em;
 }
 @media (min-width: 500px) {
   .grid {

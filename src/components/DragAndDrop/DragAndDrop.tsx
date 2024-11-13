@@ -26,6 +26,7 @@ import { notify } from '../../reducers/notificationReducer'
 import {
   EAddAColor,
   EColorNames,
+  EDoYouWantToDeleteYourColorsText,
   EInvalidColorName,
   ELongTextWithoutColorNameAtTheEnd,
   ESomeTextNoColorName,
@@ -35,11 +36,13 @@ import {
   EYouMayAlsoAddOtherWordsForGenericUse,
 } from '../../interfaces/draganddrop'
 import { Select, SelectOption } from '../Select/Select'
-import { ESelectCategory } from '../Jokes/interfaces'
+import { EAll, ESelectCategory } from '../Jokes/interfaces'
 import useLocalStorage from '../../hooks/useStorage'
 import { EPleaseFillInTheFields } from '../../interfaces/form'
 import { EAreYouSureYouWantToDeleteThisVersion } from '../../interfaces/blobs'
 import { EAMaxOf20CharactersPlease, ENameTooLong } from '../../interfaces'
+import { EPartial } from '../../interfaces/store'
+import { EClear } from '../../interfaces/select'
 
 const initialStatuses: string[] = ['good', 'neutral', 'bad']
 
@@ -66,6 +69,11 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
 
   const isLocalhost =
     window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+
+  const [userColors, setUserColors, removeUserColors] = useLocalStorage<Partial<Data>[]>(
+    'DnD-userColors',
+    []
+  )
 
   const [statuses, setStatuses, removeStatuses] = useLocalStorage(
     `${isLocalhost ? 'local-' : ''}DnD-statuses`,
@@ -285,33 +293,113 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     let state: Status = initialStatuses[1]
     let lightness: Lightness
 
-    for (let i: number = 0; i < initialColors.length; i++) {
-      const color = initialColors[i].color || 'white' // Use user-defined colors or default to 'white'
-      const content = initialColors[i].content || 'white' // Use user-defined colors or default to 'white'
-      lightness = determineBackgroundLightness(color)
+    if (
+      userColors &&
+      userColors.length > 0 &&
+      window.confirm(EDoYouWantToDeleteYourColorsText[language])
+    ) {
+      removeUserColors()
+      for (let i: number = 0; i < initialColors.length; i++) {
+        const color = initialColors[i].color || 'lightgray'
+        const content = initialColors[i].content || 'lightgray'
+        lightness = determineBackgroundLightness(color)
 
-      // Randomize the item status
-      const randomIndex = Math.floor(Math.random() * statuses.length)
-      state = statuses[randomIndex]
+        // Randomize the item status
+        const randomIndex = Math.floor(Math.random() * statuses.length)
+        state = statuses[randomIndex]
 
-      const item: Data = {
-        id: i,
-        content: content,
-        color: color,
-        status: state,
-        lightness: lightness,
+        const item: Data = {
+          id: i,
+          content: content,
+          color: color,
+          status: state,
+          lightness: lightness,
+        }
+        array.push(item)
       }
-      array.push(item)
+      return array
+    } else {
+      for (let i: number = 0; i < userColors.length; i++) {
+        const color = userColors[i].color || 'lightgray' // Use user-defined colors or default to 'lightgray'
+        const content = userColors[i].content || 'lightgray' // Use user-defined colors or default to 'lightgray'
+        lightness = determineBackgroundLightness(color)
+
+        // Randomize the item status
+        const randomIndex = Math.floor(Math.random() * statuses.length)
+        state = statuses[randomIndex]
+
+        const item: Data = {
+          id: i,
+          content: content,
+          color: color,
+          status: state,
+          lightness: lightness,
+        }
+        array.push(item)
+      }
+      for (let i: number = 0; i < initialColors.length; i++) {
+        const color = initialColors[i].color || 'lightgray'
+        const content = initialColors[i].content || 'lightgray'
+        lightness = determineBackgroundLightness(color)
+
+        // Randomize the item status
+        const randomIndex = Math.floor(Math.random() * statuses.length)
+        state = statuses[randomIndex]
+
+        const item: Data = {
+          id: i,
+          content: content,
+          color: color,
+          status: state,
+          lightness: lightness,
+        }
+        array.push(item)
+      }
+      return array
     }
-    return array
   }
 
   const startAgain = () => {
     if (window.confirm(EAreYouSureYouWantToDeleteThisVersion[language])) {
       removeStatuses()
       setStatuses(initialStatuses)
-      setUserColors(initialColors)
       setData(generateInitialData())
+    }
+  }
+
+  const startAgainEmpty = () => {
+    if (
+      window.confirm(
+        `${EAreYouSureYouWantToDeleteThisVersion[language]} (${EClear[language]})`
+      )
+    ) {
+      if (
+        userColors &&
+        userColors.length > 0 &&
+        window.confirm(EDoYouWantToDeleteYourColorsText[language])
+      ) {
+        removeStatuses()
+        setStatuses(initialStatuses)
+        setData([])
+      } else {
+        removeStatuses()
+        setStatuses(initialStatuses)
+        setData(
+          userColors.map((item, index) => {
+            const color = item.color || 'lightgray'
+            const content = item.content || 'lightgray'
+            const lightness = determineBackgroundLightness(color)
+            const state = statuses[Math.floor(Math.random() * statuses.length)]
+            return {
+              id: index,
+              content: content,
+              color: color,
+              status: state,
+              lightness: lightness,
+            }
+          })
+        )
+      }
     }
   }
 
@@ -328,8 +416,6 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
   useEffect(() => {
     setData(setTheData)
   }, [])
-
-  const [userColors, setUserColors] = useState<Partial<Data>[]>(initialColors)
 
   const [newColor, setNewColor] = useState<string>('')
   const [newStatusForItem, setNewStatusForItem] = useState<SelectOption>({
@@ -401,9 +487,9 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
 
   const handleRemoveColor = (content: Data['content']) => {
     if (window.confirm(`${EAreYouSureYouWantToRemoveThis[language]} (${content})`)) {
+      setData((prevData) => prevData.filter((d) => d.content !== content))
       setUserColors((prevColors) => {
         const updatedColors = prevColors.filter((c) => c.content !== content)
-        setData((prevData) => prevData.filter((d) => d.content !== content))
         return updatedColors
       })
     } else return
@@ -462,7 +548,11 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
           />
         ))}
       </div>
-      <button onClick={startAgain}>{EReset[language]}</button>
+      <div className='flex center gap max-content margin0auto'>
+        <button onClick={startAgain}>{EReset[language]}</button>
+        <button onClick={startAgainEmpty}>{EClear[language]}</button>
+      </div>
+
       <div className={styles['add-status']}>
         <h2>{EAddANewCategory[language]}</h2>
         <form

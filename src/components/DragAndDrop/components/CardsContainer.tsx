@@ -154,6 +154,7 @@ export const CardsContainer = ({
           language={language}
           text={`*`}
           hideBrackets
+          onClick={() => setNewStatus(status)}
           className={`narrow2 ${styles['change-status']} change-status`}
           wrapperClass='change-status-wrap'
           tooltip={EEdit[language]}

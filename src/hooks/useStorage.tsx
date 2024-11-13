@@ -34,6 +34,7 @@ function useStorage<T>(
   }, [key, value, storageObject])
 
   const remove = () => {
+    setValue(defaultValue)
     return storageObject?.removeItem(key)
   }
 
