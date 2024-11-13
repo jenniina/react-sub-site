@@ -268,3 +268,13 @@ export enum ESomeTextNoColorName {
   cs = 'nějaký text, žádný název barvy',
   fi = 'jokin teksti, ei väriä',
 }
+
+export enum EDoYouWantToDeleteYourColorsText {
+  en = 'Do you want to also delete your colors/text?',
+  es = '¿Quieres también borrar tus colores/texto?',
+  fr = 'Voulez-vous aussi supprimer vos couleurs/texte?',
+  de = 'Möchten Sie auch Ihre Farben/Ihren Text löschen?',
+  pt = 'Você deseja também excluir suas cores/texto?',
+  cs = 'Chcete také smazat své barvy/text?',
+  fi = 'Haluatko myös poistaa omat värisi/tekstin?',
+}
