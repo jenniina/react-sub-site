@@ -114,9 +114,9 @@
   animation-delay: calc(var(--number) * -500ms);
 }
 .herocontent .jewel2 > div > div:not(.none) {
-  animation: rotate-colors2 2000ms linear infinite;
+  animation: rotate-colors2 1500ms linear infinite;
   animation-play-state: paused;
-  animation-delay: calc(var(--number) * -400ms);
+  animation-delay: calc(var(--number) * -444ms);
 }
 .herocontent .jewel:hover > div:not(.none),
 .herocontent .jewel:focus > div:not(.none),
