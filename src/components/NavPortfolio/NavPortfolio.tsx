@@ -91,7 +91,7 @@ function NavPortfolio({ language }: { language: ELanguages }) {
         inline: 'center',
       })
     }
-  }, [location.pathname, itemRefs, navItems])
+  }, [location.pathname])
 
   const renderNavItems = (items: NavItem[]) => {
     return items.map((item, index) => {
