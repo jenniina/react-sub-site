@@ -82,6 +82,17 @@ function NavPortfolio({ language }: { language: ELanguages }) {
     }
   }, [location.pathname, itemRefs, navItems])
 
+  useEffect(() => {
+    const activeIndex = navItems.findIndex((item) => item.url === location.pathname)
+    if (activeIndex !== -1 && itemRefs[activeIndex].current) {
+      itemRefs[activeIndex].current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      })
+    }
+  }, [location.pathname, itemRefs, navItems])
+
   const renderNavItems = (items: NavItem[]) => {
     return items.map((item, index) => {
       const isFirst = item.special === 'first'
