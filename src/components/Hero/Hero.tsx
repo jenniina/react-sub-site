@@ -46,6 +46,7 @@ const LOCATION = {
   JOKES: 'jokes',
   SELECT: 'select',
   SALON: 'salon',
+  COMPOSER: 'composer',
   TODO: 'todo',
   GRAPHQL: 'graphql',
   STORE: 'store',
@@ -402,7 +403,8 @@ export default function Hero({
               if (
                 location == LOCATION.SELECT ||
                 location == LOCATION.TODO ||
-                location == LOCATION.GRAPHQL
+                location == LOCATION.GRAPHQL ||
+                location == LOCATION.COMPOSER
               ) {
                 const dividedBy = 2.5
 
