@@ -21,6 +21,7 @@ import useIsOnScreen from '../../hooks/useIsOnScreen'
 import useWindowSize from '../../hooks/useWindowSize'
 import { breakpointSmall } from '../../interfaces'
 import useSideScroll from '../../hooks/useSideScroll'
+import { EComposerOlliSanta } from '../../interfaces/composer'
 
 interface NavItem {
   url: string
@@ -50,6 +51,7 @@ function NavPortfolio({ language }: { language: ELanguages }) {
 
   const navItems: NavItem[] = [
     { url: '/portfolio', name: `« ${EPortfolio[language]}`, special: 'first' },
+    { url: '/portfolio/composer', name: EComposerOlliSanta[language] },
     { url: '/portfolio/blob', name: EBlob[language] },
     { url: '/portfolio/jokes', name: EJokes[language] },
     { url: '/portfolio/quiz', name: EQuiz[language] },

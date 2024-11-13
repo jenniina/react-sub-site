@@ -22,6 +22,7 @@ import QuizStart from './components/Quiz/QuizStart'
 import QuizQuestion from './components/Quiz/QuizQuestion'
 import QuizFinished from './components/Quiz/QuizFinished'
 import HairSalonPage from './pages/pages-portfolio/HairSalonPage'
+import ComposerPage from './pages/pages-portfolio/ComposerPage'
 import Disclaimer from './pages/Disclaimer'
 import CartPage from './pages/CartPage'
 import StorePage from './pages/StorePage'
@@ -76,6 +77,7 @@ import { EEditUserSettings } from './components/UserEdit/interfaces'
 import { EReactApps } from './interfaces/about'
 import { EOrders, EShoppingCart, ICartItem } from './interfaces/store'
 import { ETermsOfService } from './interfaces'
+import { EComposerOlliSanta } from './interfaces/composer'
 
 const App: FC = () => {
   const touchDevice = isTouchDevice()
@@ -399,6 +401,17 @@ const App: FC = () => {
                       language={language}
                       heading={EHairSalonWebsite[language]}
                       text='React, Node.js, Express, MySQL, Sequelize'
+                      type='page subpage'
+                    />
+                  }
+                />
+                <Route
+                  path='/portfolio/composer'
+                  element={
+                    <ComposerPage
+                      language={language}
+                      heading={EComposerOlliSanta[language]}
+                      text='React, Node.js, Express, MongoDB'
                       type='page subpage'
                     />
                   }

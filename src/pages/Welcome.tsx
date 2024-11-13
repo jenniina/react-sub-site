@@ -13,6 +13,7 @@ import { FaStoreAlt } from 'react-icons/fa'
 import { TbTriangleInverted, TbBlob } from 'react-icons/tb'
 import { LuArrowRightToLine } from 'react-icons/lu'
 import { LiaNewspaperSolid } from 'react-icons/lia'
+import { BsMusicNoteBeamed } from 'react-icons/bs'
 import { firstToLowerCase } from '../utils'
 import {
   EAbout,
@@ -69,6 +70,7 @@ import {
   ERandomHeadingItemMovement,
   EAdded,
   ELaunchedAnOnlineOrderingSystem,
+  ENovember,
 } from '../interfaces/welcome'
 import { Select, SelectOption } from '../components/Select/Select'
 import { ETodoApp } from '../components/Todo/interfaces'
@@ -95,6 +97,7 @@ import {
   EToggleControlVisibility,
 } from '../interfaces/blobs'
 import { EAddAColor, EAddGenericCardsAndColorThem } from '../interfaces/draganddrop'
+import { EComposerOlliSanta, EAddedALinkToComposer } from '../interfaces/composer'
 import Accordion from '../components/Accordion/Accordion'
 
 export default function Home({
@@ -178,6 +181,25 @@ export default function Home({
                 <li className={styles.first}>
                   <strong>2024</strong>
                   <ul>
+                    <li>
+                      <strong>{ENovember[language]}</strong>
+                      <ul>
+                        <li>
+                          <Link to='/portfolio/composer'>
+                            <BsMusicNoteBeamed />
+                            {EComposerOlliSanta[language]}:
+                          </Link>
+                          <i>{EAddedALinkToComposer[language]}</i>
+                        </li>
+                        <li>
+                          <Link to='/portfolio/draganddrop'>
+                            <RiDragDropLine />
+                            {EDragAndDrop[language]}:
+                          </Link>
+                          <i>{EBugFixes[language]}</i>
+                        </li>
+                      </ul>
+                    </li>
                     <li>
                       <strong>{EOctober[language]}</strong>
                       <ul>
