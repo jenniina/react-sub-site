@@ -444,7 +444,7 @@ export default function Hero({
                 }
 
                 return (
-                  // SELECT // TODO // GRAPHQL
+                  // SELECT // TODO // GRAPHQL // COMPOSER
 
                   <li
                     key={`${item.color}${index}`}
@@ -640,21 +640,7 @@ export default function Hero({
                 const dividedBy = 2
                 const times = 1.08
 
-                const colorArrayJewel = [
-                  'var(--color-primary-11)',
-                  'var(--color-primary-6)',
-                  'var(--color-primary-13)',
-                  'linear-gradient(80deg, var(--color-primary-11), var(--color-primary-8))',
-                ]
-                const colorArrayJewel2 = [
-                  'var(--color-secondary-14)',
-                  'var(--color-secondary-17)',
-                  'var(--color-secondary-10)',
-                  'linear-gradient(80deg, var(--color-secondary-11) 0%, var(--color-secondary-13) 100%)',
-                ]
-                const colorArrays = [colorArrayJewel, colorArrayJewel2]
                 const randomOfTwo = Math.round(getRandomMinMax(0, 1))
-                const randomBG = colorArrays[randomOfTwo]
                 const hues = [214, 39]
                 const hue = hues[randomOfTwo]
 
@@ -673,7 +659,9 @@ export default function Hero({
                       ? `${item.size / dividedBy}vh`
                       : `${item.size / dividedBy}vw`,
                   ['--rotate' as string]: `70deg`,
-                  ['--color' as string]: `${randomBG[1]}`,
+                  ['--rotate-inner' as string]: `${Math.round(
+                    getRandomMinMax(0, 359)
+                  )}deg`,
                 }
 
                 const clipArrayJewel = [

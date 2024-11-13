@@ -106,7 +106,11 @@
 }
 .herocontent .jewel > div.none,
 .herocontent .jewel2 > div > div.none {
-  background-color: hsl(var(--color), 100%, 35%);
+  background: linear-gradient(
+    var(--rotate-inner),
+    hsl(var(--color), 100%, 30%) 0%,
+    hsl(var(--color), 100%, 60%) 100%
+  );
 }
 .herocontent .jewel > div:not(.none) {
   animation: rotate-colors 2000ms linear infinite;
@@ -116,7 +120,7 @@
 .herocontent .jewel2 > div > div:not(.none) {
   animation: rotate-colors2 1500ms linear infinite;
   animation-play-state: paused;
-  animation-delay: calc(var(--number) * -444ms);
+  animation-delay: calc(var(--number) * -555ms);
 }
 .herocontent .jewel:hover > div:not(.none),
 .herocontent .jewel:focus > div:not(.none),
@@ -126,24 +130,24 @@
 }
 @keyframes rotate-colors {
   0% {
-    background-color: hsl(var(--color), 100%, 15%);
+    background-color: hsl(var(--color), 100%, 20%);
   }
   30% {
     background-color: hsl(var(--color), 100%, 75%);
   }
   100% {
-    background-color: hsl(var(--color), 100%, 15%);
+    background-color: hsl(var(--color), 100%, 20%);
   }
 }
 @keyframes rotate-colors2 {
   0% {
-    background-color: hsl(var(--color), 100%, 15%);
+    background-color: hsl(var(--color), 100%, 20%);
   }
   50% {
-    background-color: hsl(var(--color), 100%, 85%);
+    background-color: hsl(var(--color), 100%, 90%);
   }
   100% {
-    background-color: hsl(var(--color), 100%, 15%);
+    background-color: hsl(var(--color), 100%, 20%);
   }
 }
 .herocontent .triangle {
