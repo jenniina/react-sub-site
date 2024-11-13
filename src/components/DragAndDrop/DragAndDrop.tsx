@@ -280,31 +280,6 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     } else return
   }
 
-  const startAgain = () => {
-    if (window.confirm(EAreYouSureYouWantToDeleteThisVersion[language])) {
-      removeStatuses()
-      setStatuses(initialStatuses)
-      setUserColors(initialColors)
-      setData(generateInitialData())
-    }
-  }
-
-  const setTheData = useMemo(() => {
-    // If data is already in localStorage, use that
-    if (storedData.length > 0) {
-      return storedData
-    }
-    const initialData = generateInitialData()
-    setData(initialData)
-    return initialData
-  }, [])
-
-  useEffect(() => {
-    setData(setTheData)
-  }, [])
-
-  const [userColors, setUserColors] = useState<Partial<Data>[]>(initialColors)
-
   const generateInitialData = () => {
     const array: Data[] = []
     let state: Status = initialStatuses[1]
@@ -330,6 +305,31 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     }
     return array
   }
+
+  const startAgain = () => {
+    if (window.confirm(EAreYouSureYouWantToDeleteThisVersion[language])) {
+      removeStatuses()
+      setStatuses(initialStatuses)
+      setUserColors(initialColors)
+      setData(generateInitialData())
+    }
+  }
+
+  const setTheData = useMemo(() => {
+    // If data is already in localStorage, use that
+    if (storedData.length > 0) {
+      return storedData
+    }
+    const initialData = generateInitialData()
+    setData(initialData)
+    return initialData
+  }, [])
+
+  useEffect(() => {
+    setData(setTheData)
+  }, [])
+
+  const [userColors, setUserColors] = useState<Partial<Data>[]>(initialColors)
 
   const [newColor, setNewColor] = useState<string>('')
   const [newStatusForItem, setNewStatusForItem] = useState<SelectOption>({
