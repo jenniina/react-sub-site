@@ -153,10 +153,10 @@ main {
 }
 #root .nav-sub .return a.active {
   /*back to portfolio link*/
-  color: var(--color-visited);
+  /* color: var(--color-visited); */
   pointer-events: all;
   cursor: pointer;
-  border-bottom-color: transparent;
+  border-bottom-color: var(--color-primary-8);
 }
 #root .nav-sub .return a.active:hover,
 #root .nav-sub .return a.active:focus {

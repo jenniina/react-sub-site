@@ -46,6 +46,7 @@ const LOCATION = {
   JOKES: 'jokes',
   SELECT: 'select',
   SALON: 'salon',
+  COMPOSER: 'composer',
   TODO: 'todo',
   GRAPHQL: 'graphql',
   STORE: 'store',
@@ -509,6 +510,112 @@ export default function Hero({
                     </div>
                   </li>
                 )
+              } else if (location == LOCATION.COMPOSER) {
+                const dividedBy = 2.5
+
+                const style: React.CSSProperties = {
+                  position: 'absolute',
+                  top: `clamp(100px, calc(-2vh + calc(1.1vh * ${item.e} * ${
+                    item.e / 1.5
+                  })), 50vh)`,
+                  left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})), 95vw - ${item.size}vw)`,
+                  width:
+                    windowWidth < windowHeight
+                      ? `${item.size / dividedBy}vh`
+                      : `${item.size / dividedBy}vw`,
+                  height:
+                    windowWidth < windowHeight
+                      ? `${item.size / dividedBy}vh`
+                      : `${item.size / dividedBy}vw`,
+                  transitionProperty:
+                    'top, left, bottom, right, transform, width, height',
+                  transitionTimingFunction: 'ease-in-out',
+                  transitionDuration: '600ms',
+                  opacity: `0.7`,
+                }
+                const inner: React.CSSProperties = {
+                  color: `${item.color}`,
+                  ['--i' as string]: `${item.i}`,
+                  ['--e' as string]: `${item.e}`,
+                  ['--s' as string]:
+                    windowWidth < windowHeight ? `${item.size}vh` : `${item.size}vw`,
+                  width: '100%',
+                  height: '100%',
+                  minWidth: `20px`,
+                  minHeight: `20px`,
+                  maxWidth: `150px`,
+                  maxHeight: `150px`,
+                  borderRadius: '80% 50% 80% 50%',
+                }
+
+                return (
+                  // COMPOSER
+
+                  <li
+                    key={`${item.color}${index}`}
+                    id={`shape${index + 1}`}
+                    className={`${styles.item} ${styles[location]} ${styles.note} 
+                                ${
+                                  windowHeight < windowWidth ? styles.wide : styles.tall
+                                }`}
+                    style={style}
+                    role={'option'}
+                    tabIndex={0}
+                    onFocus={(e) => {
+                      ulRef.current?.setAttribute(
+                        'aria-activedescendant',
+                        `${e.target.id}`
+                      )
+                    }}
+                    onBlurCapture={(e) => {
+                      ulRef.current?.removeAttribute('aria-activedescendant')
+                    }}
+                    onPointerEnter={(e) => {
+                      movingItem(e)
+                    }}
+                    onMouseDown={(e) => {
+                      removeItem(e)
+                    }}
+                    onTouchStart={(e) => {
+                      removeItem(e)
+                    }}
+                    onPointerDown={(e) => {
+                      removeItem(e)
+                    }}
+                    onKeyDown={(e) => {
+                      Draggable.keyDown(
+                        e,
+                        e.target as HTMLElement,
+                        () => escapeFunction(),
+                        () => removeItem(e),
+                        () => removeItem(e),
+                        null
+                      )
+                    }}
+                  >
+                    <div style={inner}>
+                      {spanArray.map((span, index) => {
+                        const style: React.CSSProperties = {
+                          position: 'absolute',
+                          borderRadius: '80% 50% 80% 50%',
+                          color: `${item.color}`,
+                          ['--color' as string]: `${span.color}`,
+                          ['--i' as string]: `${item.i}`,
+                          ['--e' as string]: `${item.e}`,
+                          ['--s' as string]: `${item.size}`,
+                          ['--number' as string]: `${index}`,
+                        }
+                        return (
+                          <span key={`${item.i}-${index}`} style={style}>
+                            <span className='scr'>
+                              {EShape[language]} {index + 1}
+                            </span>
+                          </span>
+                        )
+                      })}
+                    </div>
+                  </li>
+                )
               } else if (location == LOCATION.STORE) {
                 const dividedBy = 2.7
 
@@ -638,21 +745,7 @@ export default function Hero({
                 const dividedBy = 2
                 const times = 1.08
 
-                const colorArrayJewel = [
-                  'var(--color-primary-11)',
-                  'var(--color-primary-6)',
-                  'var(--color-primary-13)',
-                  'linear-gradient(80deg, var(--color-primary-11), var(--color-primary-8))',
-                ]
-                const colorArrayJewel2 = [
-                  'var(--color-secondary-14)',
-                  'var(--color-secondary-17)',
-                  'var(--color-secondary-10)',
-                  'linear-gradient(80deg, var(--color-secondary-11) 0%, var(--color-secondary-13) 100%)',
-                ]
-                const colorArrays = [colorArrayJewel, colorArrayJewel2]
                 const randomOfTwo = Math.round(getRandomMinMax(0, 1))
-                const randomBG = colorArrays[randomOfTwo]
                 const hues = [214, 39]
                 const hue = hues[randomOfTwo]
 
@@ -671,7 +764,9 @@ export default function Hero({
                       ? `${item.size / dividedBy}vh`
                       : `${item.size / dividedBy}vw`,
                   ['--rotate' as string]: `70deg`,
-                  ['--color' as string]: `${randomBG[1]}`,
+                  ['--rotate-inner' as string]: `${Math.round(
+                    getRandomMinMax(0, 359)
+                  )}deg`,
                 }
 
                 const clipArrayJewel = [

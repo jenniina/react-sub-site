@@ -189,6 +189,15 @@ export default function Home({
                             <BsMusicNoteBeamed />
                             {EComposerOlliSanta[language]}:
                           </Link>
+                          <i>
+                            {EAddedNewIntroElements[language]} ({EHeroSection[language]} )
+                          </i>
+                        </li>
+                        <li>
+                          <Link to='/portfolio/composer'>
+                            <BsMusicNoteBeamed />
+                            {EComposerOlliSanta[language]}:
+                          </Link>
                           <i>{EAddedALinkToComposer[language]}</i>
                         </li>
                         <li>
