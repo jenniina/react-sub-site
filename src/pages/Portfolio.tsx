@@ -131,11 +131,12 @@ export default function Portfolio({
               <li>
                 <Link to='/portfolio/composer'>
                   <BsMusicNoteBeamed />
-                  <span>{EComposerOlliSanta[language]}</span>
+                  <span>
+                    {EComposerOlliSanta[language]} ({EWebsite[language]})
+                  </span>
                 </Link>
                 <p>
-                  {EWebsite[language]}. {EComposerIntro1[language]}{' '}
-                  {EComposerIntro2[language]}
+                  {EComposerIntro1[language]} {EComposerIntro2[language]}
                 </p>
               </li>
               <li>
