@@ -511,7 +511,7 @@ export default function Hero({
                   </li>
                 )
               } else if (location == LOCATION.COMPOSER) {
-                const dividedBy = 3.5
+                const itemSize = 3.4
 
                 const style: React.CSSProperties = {
                   position: 'absolute',
@@ -519,14 +519,8 @@ export default function Hero({
                     item.e / 1.5
                   })), 50vh)`,
                   left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})), 95vw - ${item.size}vw)`,
-                  width:
-                    windowWidth < windowHeight
-                      ? `${item.size / dividedBy}vh`
-                      : `${item.size / dividedBy}vw`,
-                  height:
-                    windowWidth < windowHeight
-                      ? `${item.size / dividedBy}vh`
-                      : `${item.size / dividedBy}vw`,
+                  width: windowWidth < windowHeight ? `${itemSize}vh` : `${itemSize}vw`,
+                  height: windowWidth < windowHeight ? `${itemSize}vh` : `${itemSize}vw`,
                   transitionProperty:
                     'top, left, bottom, right, transform, width, height',
                   transitionTimingFunction: 'ease-in-out',

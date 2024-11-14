@@ -8,6 +8,12 @@
   position: relative;
   gap: 0;
 }
+.herocontent.composer {
+  background-image: url('../../assets/staff.svg');
+  background-size: 20%;
+  background-position: center;
+  background-repeat: repeat-x;
+}
 
 .hero h1,
 .hero p {
