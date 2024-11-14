@@ -111,7 +111,7 @@ export default function Portfolio({
                   <li>axios</li>
                   <li>uuid</li>
                 </ul>
-                <p id='list-libraries-label2'>Backend {EDependencies[language]}:</p>
+                <p id='list-libraries-label2'>{EDependencies[language]} (Node.js):</p>
                 <ul id='list-libraries2' aria-labelledby='list-libraries-label2'>
                   <li>bcryptjs</li>
                   <li>cors</li>
