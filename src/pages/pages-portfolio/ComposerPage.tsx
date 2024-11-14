@@ -2,7 +2,11 @@ import { useState } from 'react'
 import Accordion from '../../components/Accordion/Accordion'
 import Hero from '../../components/Hero/Hero'
 import { EDependencies, EFeatures, ELanguages } from '../../interfaces'
-import { EComposerIntro1, EComposerIntro2 } from '../../interfaces/composer'
+import {
+  EComposerIntro1,
+  EComposerIntro2,
+  EComposerIntro3,
+} from '../../interfaces/composer'
 import { EClickHereToSeeFeatures } from '../../components/Jokes/interfaces'
 
 export default function ComposerPage({
@@ -27,6 +31,9 @@ export default function ComposerPage({
               <p className='center max-content margin0auto'>
                 {EComposerIntro1[language]}
               </p>
+              <p className='center max-content margin0auto'>
+                {EComposerIntro2[language]}
+              </p>
               <div className='medium'>
                 <Accordion
                   language={language}
@@ -37,7 +44,7 @@ export default function ComposerPage({
                 >
                   <h2>{EFeatures[language]}</h2>
                   <ul className='ul'>
-                    <li>{EComposerIntro2[language]}</li>
+                    <li>{EComposerIntro3[language]}</li>
                     <li>
                       {EDependencies[language]}: React
                       <ul>
