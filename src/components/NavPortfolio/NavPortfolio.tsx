@@ -85,7 +85,7 @@ function NavPortfolio({ language }: { language: ELanguages }) {
   useEffect(() => {
     const activeIndex = navItems.findIndex((item) => item.url === location.pathname)
     if (activeIndex !== -1 && itemRefs[activeIndex].current) {
-      itemRefs[activeIndex].current.scrollIntoView({
+      itemRefs?.[activeIndex]?.current?.scrollIntoView({
         behavior: 'smooth',
         block: 'nearest',
         inline: 'center',
