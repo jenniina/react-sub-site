@@ -511,7 +511,7 @@ export default function Hero({
                   </li>
                 )
               } else if (location == LOCATION.COMPOSER) {
-                const dividedBy = 2.5
+                const dividedBy = 3.5
 
                 const style: React.CSSProperties = {
                   position: 'absolute',
