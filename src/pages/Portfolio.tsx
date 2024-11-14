@@ -23,8 +23,10 @@ import {
   ESurvey,
   EThisSiteFocusesOnReactApplications,
   ETodoAppIntro,
+  EWebsite,
   RefObject,
 } from '../interfaces'
+
 import styles from './css/portfolio.module.css'
 import Hero from '../components/Hero/Hero'
 import { Link } from 'react-router-dom'
@@ -34,6 +36,12 @@ import { RiTodoLine, RiDragDropLine, RiDragMove2Fill } from 'react-icons/ri'
 import { GiAbstract019, GiComb } from 'react-icons/gi'
 import { MdOutlineQuiz } from 'react-icons/md'
 import { GrGraphQl } from 'react-icons/gr'
+import { BsMusicNoteBeamed } from 'react-icons/bs'
+import {
+  EComposerOlliSanta,
+  EComposerIntro1,
+  EComposerIntro2,
+} from '../interfaces/composer'
 import {
   ESeeLocalJokes,
   ESubmitAJoke,
@@ -105,7 +113,7 @@ export default function Portfolio({
                 </ul>
                 <p id='list-libraries-label2'>Backend {EDependencies[language]}:</p>
                 <ul id='list-libraries2' aria-labelledby='list-libraries-label2'>
-                  <li>bcryptjs</li> 
+                  <li>bcryptjs</li>
                   <li>cors</li>
                   <li>dotenv</li>
                   <li>express</li>
@@ -121,6 +129,16 @@ export default function Portfolio({
             </div>
             <ul className={`${styles.list}`}>
               <li>
+                <Link to='/portfolio/composer'>
+                  <BsMusicNoteBeamed />
+                  <span>{EComposerOlliSanta[language]}</span>
+                </Link>
+                <p>
+                  {EWebsite[language]}. {EComposerIntro1[language]}{' '}
+                  {EComposerIntro2[language]}
+                </p>
+              </li>
+              <li>
                 <Link to='/portfolio/blob'>
                   <RiDragMove2Fill />
                   <span>{EBlobArtApp[language]}</span>
@@ -128,13 +146,6 @@ export default function Portfolio({
                 <p>
                   {EBlobAppSlogan[language]}. {EBlobAppIntro[language]}
                 </p>
-              </li>
-              <li>
-                <Link to='/portfolio/quiz'>
-                  <MdOutlineQuiz />
-                  <span>{EQuizApp[language]}</span>
-                </Link>
-                <p>{EQuizAppIntro[language]}</p>
               </li>
               <li>
                 <Link to='/portfolio/jokes'>
@@ -148,6 +159,20 @@ export default function Portfolio({
                 </p>
               </li>
               <li>
+                <Link to='/portfolio/quiz'>
+                  <MdOutlineQuiz />
+                  <span>{EQuizApp[language]}</span>
+                </Link>
+                <p>{EQuizAppIntro[language]}</p>
+              </li>
+              <li>
+                <Link to='/portfolio/select'>
+                  <BiSelectMultiple />
+                  <span>{ECustomSelect[language]}</span>
+                </Link>
+                <p>{ECustomSelectIntro[language]}</p>
+              </li>
+              <li>
                 <Link to='/portfolio/graphql'>
                   <GrGraphQl />
                   <span>GraphQL</span>
@@ -159,7 +184,7 @@ export default function Portfolio({
                   <GiComb />
                   <span>{EHairSalonWebsite[language]}</span>
                 </Link>
-                <p>Parturi Kampaamo Hannastiina</p>
+                <p>{EWebsite[language]}: Parturi Kampaamo Hannastiina</p>
               </li>
               <li>
                 <Link to='/portfolio/draganddrop'>
@@ -174,13 +199,6 @@ export default function Portfolio({
                   <span>{ETodoApp[language]}</span>
                 </Link>
                 <p>{ETodoAppIntro[language]}</p>
-              </li>
-              <li>
-                <Link to='/portfolio/select'>
-                  <BiSelectMultiple />
-                  <span>{ECustomSelect[language]}</span>
-                </Link>
-                <p>{ECustomSelectIntro[language]}</p>
               </li>
               <li className={styles.multistep}>
                 <Link to='/portfolio/form'>
