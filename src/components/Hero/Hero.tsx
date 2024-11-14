@@ -355,7 +355,7 @@ export default function Hero({
 
         // Check if the new position is within the allowed boundaries
         if (
-          newTop >= 60 &&
+          newTop >= 100 &&
           newTop + itemHeight <= windowHeight * 0.6 &&
           newLeft >= 0 &&
           newLeft + itemWidth <= windowWidth

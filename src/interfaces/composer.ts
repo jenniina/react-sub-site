@@ -27,6 +27,16 @@ export enum EComposerIntro1 {
 }
 
 export enum EComposerIntro2 {
+  en = "In addition to the artistic director's work, he composes and arranges music for all types of choirs, orchestras and bands.",
+  es = 'Además del trabajo del director artístico, compone y arregla música para todo tipo de coros, orquestas y bandas.',
+  fr = 'En plus du travail du directeur artistique, il compose et arrange de la musique pour tous types de chœurs, orchestres et groupes.',
+  de = 'Neben der Arbeit des künstlerischen Leiters komponiert und arrangiert er Musik für alle Arten von Chören, Orchestern und Bands.',
+  pt = 'Além do trabalho do diretor artístico, ele compõe e arranja música para todos os tipos de coros, orquestras e bandas.',
+  cs = 'Kromě práce uměleckého ředitele skládá a aranžuje hudbu pro všechny typy sborů, orchestrů a kapel.',
+  fi = 'Taiteellisen johtajan työn lisäksi hän säveltää ja sovittaa musiikkia kaikenlaisille kuoroille, orkestereille ja bändeille.',
+}
+
+export enum EComposerIntro3 {
   en = 'The website is built with React and Node.js, with data saved to MongoDB. The website is a single page application (SPA) that uses React Router to navigate between the different sections of the website. The website is styled with CSS and uses CSS animations to create a dynamic user experience. The site provides an API interface for logging in and viewing messages sent to Olli.',
   es = 'El sitio web está construido con React y Node.js, con datos guardados en MongoDB. El sitio web es una aplicación de página única (SPA) que utiliza React Router para navegar entre las diferentes secciones del sitio web. El sitio web está estilizado con CSS y utiliza animaciones CSS para crear una experiencia de usuario dinámica. El sitio proporciona una interfaz de API para iniciar sesión y ver mensajes enviados a Olli.',
   fr = 'Le site est construit avec React et Node.js, les données étant enregistrées dans MongoDB. Le site est une application à page unique (SPA) qui utilise React Router pour naviguer entre les différentes sections du site. Le site est stylisé avec CSS et utilise des animations CSS pour créer une expérience utilisateur dynamique. Le site fournit une interface API pour se connecter et consulter les messages envoyés à Olli.',
