@@ -10,8 +10,8 @@
 }
 .herocontent.composer {
   background-image: url('../../assets/staff.svg');
-  background-size: 20%;
-  background-position: center;
+  background-size: clamp(200px, 20%, 600px);
+  background-position: center 52%;
   background-repeat: repeat-x;
 }
 
@@ -24,7 +24,7 @@
   margin-top: 0;
   margin-bottom: 0;
 }
-.hero:has(li.geometric, li.jewel) h1 {
+.hero:has(li.geometric, li.jewel, li.note) h1 {
   z-index: 9;
 }
 

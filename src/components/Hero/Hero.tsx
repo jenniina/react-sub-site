@@ -421,9 +421,6 @@ export default function Hero({
                     windowWidth < windowHeight
                       ? `${item.size / dividedBy}vh`
                       : `${item.size / dividedBy}vw`,
-                  transitionProperty:
-                    'top, left, bottom, right, transform, width, height',
-                  transitionTimingFunction: 'ease-in-out',
                   transitionDuration: '600ms',
                 }
                 const inner: React.CSSProperties = {
@@ -434,8 +431,8 @@ export default function Hero({
                     windowWidth < windowHeight ? `${item.size}vh` : `${item.size}vw`,
                   width: '100%',
                   height: '100%',
-                  minWidth: `20px`,
-                  minHeight: `20px`,
+                  minWidth: `40px`,
+                  minHeight: `40px`,
                   maxWidth: `150px`,
                   maxHeight: `150px`,
                   borderRadius: '3px',
@@ -494,9 +491,6 @@ export default function Hero({
                           borderRadius: '3px',
                           color: `${item.color}`,
                           ['--color' as string]: `${span.color}`,
-                          ['--i' as string]: `${item.i}`,
-                          ['--e' as string]: `${item.e}`,
-                          ['--s' as string]: `${item.size}`,
                           ['--number' as string]: `${index}`,
                         }
                         return (
@@ -519,24 +513,17 @@ export default function Hero({
                     item.e / 1.5
                   })), 50vh)`,
                   left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})), 95vw - ${item.size}vw)`,
-                  width: windowWidth < windowHeight ? `${itemSize}vh` : `${itemSize}vw`,
-                  height: windowWidth < windowHeight ? `${itemSize}vh` : `${itemSize}vw`,
-                  transitionProperty:
-                    'top, left, bottom, right, transform, width, height',
-                  transitionTimingFunction: 'ease-in-out',
+                  width: `${itemSize}vw`,
+                  height: `${itemSize}vw`,
                   transitionDuration: '600ms',
                   opacity: `0.7`,
                 }
                 const inner: React.CSSProperties = {
                   color: `${item.color}`,
-                  ['--i' as string]: `${item.i}`,
-                  ['--e' as string]: `${item.e}`,
-                  ['--s' as string]:
-                    windowWidth < windowHeight ? `${item.size}vh` : `${item.size}vw`,
                   width: '100%',
                   height: '100%',
-                  minWidth: `20px`,
-                  minHeight: `20px`,
+                  minWidth: `40px`,
+                  minHeight: `40px`,
                   maxWidth: `150px`,
                   maxHeight: `150px`,
                   borderRadius: '80% 50% 80% 50%',
@@ -594,9 +581,6 @@ export default function Hero({
                           borderRadius: '80% 50% 80% 50%',
                           color: `${item.color}`,
                           ['--color' as string]: `${span.color}`,
-                          ['--i' as string]: `${item.i}`,
-                          ['--e' as string]: `${item.e}`,
-                          ['--s' as string]: `${item.size}`,
                           ['--number' as string]: `${index}`,
                         }
                         return (

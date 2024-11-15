@@ -8,6 +8,7 @@ import {
   EComposerIntro3,
 } from '../../interfaces/composer'
 import { EClickHereToSeeFeatures } from '../../components/Jokes/interfaces'
+import { EReactWebsite } from '../../interfaces/store'
 
 export default function ComposerPage({
   heading,
@@ -29,10 +30,10 @@ export default function ComposerPage({
           <div>
             <div className='medium flex column left gap'>
               <p className='center max-content margin0auto'>
-                {EComposerIntro1[language]}
-              </p>
-              <p className='center max-content margin0auto'>
+                {EReactWebsite[language]}. {EComposerIntro1[language]}{' '}
                 {EComposerIntro2[language]}
+                <br />
+                <br />
               </p>
               <div className='medium'>
                 <Accordion
@@ -77,10 +78,11 @@ export default function ComposerPage({
                   style={
                     isFormOpen
                       ? {
+                          marginTop: '2rem',
                           paddingLeft: '0.5rem',
                           fontSize: '130%',
                         }
-                      : { fontSize: '130%' }
+                      : { marginTop: '2rem', fontSize: '130%' }
                   }
                 >
                   <p>
