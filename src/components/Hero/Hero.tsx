@@ -232,6 +232,20 @@ export default function Hero({
     return array
   }, [values])
 
+  const divArrayJewel2: itemProps[] = useMemo(() => {
+    let array: itemProps[] = []
+    for (let i: number = 1; i <= 10; i++) {
+      const div: itemProps = {
+        i: i,
+        e: Math.round(getRandomMinMax(5, 9)),
+        size: i === 10 ? 66 : 100,
+        color: 'white',
+      }
+      array.push(div)
+    }
+    return array
+  }, [values])
+
   const [reinitialize, setReinitialize] = useState<boolean>(false)
 
   const [thresholdCrossed, setThresholdCrossed] = useState(false)
@@ -760,12 +774,19 @@ export default function Hero({
                   ['--rotate-inner' as string]: `${Math.round(
                     getRandomMinMax(0, 359)
                   )}deg`,
+                  ['--color' as string]: `hsl(${hue}, 100%, 70%)`,
                 }
 
-                const clipArrayJewel = [
+                const clipArrayJewel2 = [
                   'polygon(70.71% 100%, 100% 70.71%, 100% 29.29%, 70.71% 0%, 29.29% 0%, 0% 29.29%, 0% 70.71%, 29.29% 100%)',
-                  'polygon(50% 50%, 100% 70.71%, 100% 29.29%, 50% 50%, 70.71% 0%, 29.29% 0%, 50% 50%, 0% 70.71%, 29.29% 100%)',
-                  'polygon(70.71% 100%, 50% 50%, 50% 50%, 29.29% 0%, 0% 29.29%, 50% 50%, 29.29% 100%)',
+                  'polygon(50% 50%, 70.71% 0%, 29.29% 0%',
+                  'polygon(100% 29.29%, 50% 50%, 70.71% 0%',
+                  'polygon(50% 50%, 100% 70.71%, 100% 29.29%',
+                  'polygon(70.71% 100%, 50% 50%, 100% 70.71%',
+                  'polygon(70.71% 100%, 50% 50%, 29.29% 100%)',
+                  'polygon(0% 70.71%, 50% 50%, 29.29% 100%)',
+                  'polygon(0% 29.29%, 0% 70.71%, 50% 50%)',
+                  'polygon(29.29% 0%, 50% 50%, 0% 29.29%)',
                   'polygon(70.71% 100%, 100% 70.71%, 100% 29.29%, 70.71% 0%, 29.29% 0%, 0% 29.29%, 0% 70.71%, 29.29% 100%)',
                 ]
 
@@ -824,13 +845,12 @@ export default function Hero({
                           'polygon(70.71% 100%, 100% 70.71%, 100% 29.29%, 70.71% 0%, 29.29% 0%, 0% 29.29%, 0% 70.71%, 29.29% 100%)',
                       }}
                     >
-                      {divArrayJewel.map((span, index) => {
+                      {divArrayJewel2.map((span, index) => {
                         const style: CSSProperties = {
                           position: 'absolute',
                           left: `calc(50% - ${(span.size * times) / 2}%)`,
                           top: `calc(50% - ${(span.size * times) / 2}%)`,
                           borderRadius: '0',
-                          // background: `${randomBG[index]}`,
                           ['--color' as string]: hue,
                           ['--number' as string]: `${index}`,
                           ['--i' as string]: `${item.i}`,
@@ -841,11 +861,11 @@ export default function Hero({
                           maxWidth: `${span.size * times}%`,
                           maxHeight: `${span.size * times}%`,
                           opacity: `1`,
-                          clipPath: `${clipArrayJewel[index]}`,
+                          clipPath: `${clipArrayJewel2[index]}`,
                         }
                         return (
                           <div
-                            className={index === 3 ? styles.none : ''}
+                            className={index === 9 ? styles.none : ''}
                             key={`${item.i}-${index}`}
                             style={style}
                           ></div>
