@@ -817,7 +817,7 @@ nav .open.password-reset-container button.forgot-btn {
   display: inline-block;
   background-color: var(--tooltip-bgcolor);
   color: var(--tooltip-color);
-  z-index: 999;
+  z-index: 555;
   min-width: var(--width);
   width: var(--width);
 }
