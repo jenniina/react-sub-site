@@ -8,7 +8,7 @@ import {
 } from '../../interfaces'
 import { Link } from 'react-router-dom'
 
-export const Footer: FC<{ styleMenu: boolean | undefined; language: ELanguages }> = ({
+const Footer: FC<{ styleMenu: boolean | undefined; language: ELanguages }> = ({
   styleMenu,
   language,
 }) => {
@@ -55,3 +55,4 @@ export const Footer: FC<{ styleMenu: boolean | undefined; language: ELanguages }
     </footer>
   )
 }
+export default Footer
