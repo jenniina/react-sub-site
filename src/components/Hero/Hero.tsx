@@ -234,11 +234,11 @@ export default function Hero({
 
   const divArrayJewel2: itemProps[] = useMemo(() => {
     let array: itemProps[] = []
-    for (let i: number = 1; i <= 10; i++) {
+    for (let i: number = 1; i <= 9; i++) {
       const div: itemProps = {
         i: i,
         e: Math.round(getRandomMinMax(5, 9)),
-        size: i === 10 ? 66 : 100,
+        size: i === 9 ? 66 : 100,
         color: 'white',
       }
       array.push(div)
@@ -770,15 +770,14 @@ export default function Hero({
                     windowWidth < windowHeight
                       ? `${item.size / dividedBy}vh`
                       : `${item.size / dividedBy}vw`,
-                  ['--rotate' as string]: `70deg`,
+                  ['--rotate' as string]: `23deg`,
                   ['--rotate-inner' as string]: `${Math.round(
                     getRandomMinMax(0, 359)
                   )}deg`,
-                  ['--color' as string]: `hsl(${hue}, 100%, 70%)`,
+                  ['--color' as string]: `hsl(${hue}, 100%, 50%)`,
                 }
 
                 const clipArrayJewel2 = [
-                  'polygon(70.71% 100%, 100% 70.71%, 100% 29.29%, 70.71% 0%, 29.29% 0%, 0% 29.29%, 0% 70.71%, 29.29% 100%)',
                   'polygon(50% 50%, 70.71% 0%, 29.29% 0%',
                   'polygon(100% 29.29%, 50% 50%, 70.71% 0%',
                   'polygon(50% 50%, 100% 70.71%, 100% 29.29%',
@@ -865,7 +864,7 @@ export default function Hero({
                         }
                         return (
                           <div
-                            className={index === 9 ? styles.none : ''}
+                            className={index === 8 ? styles.none : ''}
                             key={`${item.i}-${index}`}
                             style={style}
                           ></div>
