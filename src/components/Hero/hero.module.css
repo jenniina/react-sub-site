@@ -126,9 +126,9 @@
   animation-delay: calc(var(--number) * -500ms);
 }
 .herocontent .jewel2 > div > div:not(.none) {
-  animation: rotate-colors2 1500ms linear infinite;
+  animation: rotate-colors2 4000ms linear infinite;
   animation-play-state: paused;
-  animation-delay: calc(var(--number) * -555ms);
+  animation-delay: calc(var(--number) * -400ms);
 }
 .herocontent .jewel:hover > div:not(.none),
 .herocontent .jewel:focus > div:not(.none),
@@ -149,13 +149,19 @@
 }
 @keyframes rotate-colors2 {
   0% {
-    background-color: hsl(var(--color), 100%, 20%);
+    background-color: hsl(var(--color), 100%, 85%);
+  }
+  40% {
+    background-color: hsl(var(--color), 100%, 26%);
   }
   50% {
-    background-color: hsl(var(--color), 100%, 90%);
+    background-color: hsl(var(--color), 100%, 20%);
+  }
+  60% {
+    background-color: hsl(var(--color), 100%, 26%);
   }
   100% {
-    background-color: hsl(var(--color), 100%, 20%);
+    background-color: hsl(var(--color), 100%, 85%);
   }
 }
 .herocontent .triangle {
@@ -214,7 +220,7 @@
   box-shadow: 0 0 10px -2px var(--color), 0 0 30px 2px var(--color);
 }
 .herocontent li.jewel2::before {
-  box-shadow: 0 0 20px -2px var(--color), 0 0 40px -4px var(--color);
+  box-shadow: 0 0 20px -10px var(--color), 0 0 40px -15px var(--color);
   position: absolute;
   content: '';
   top: 0;
