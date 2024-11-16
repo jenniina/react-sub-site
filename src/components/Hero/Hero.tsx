@@ -642,6 +642,9 @@ export default function Hero({
                       ? `${item.size / dividedBy}vh`
                       : `${item.size / dividedBy}vw`,
                   ['--rotate' as string]: `-45deg`,
+                  ['--rotate-inner' as string]: `${Math.round(
+                    getRandomMinMax(0, 359)
+                  )}deg`,
                   ['--color' as string]: `${randomBG[1]}`,
                 }
 
