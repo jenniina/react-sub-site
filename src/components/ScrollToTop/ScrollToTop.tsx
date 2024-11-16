@@ -1,9 +1,9 @@
-import React, { useState, useEffect, FC } from 'react'
+import { useState, useEffect, FC } from 'react'
 import styles from './scrolltotop.module.css'
 import { ELanguages, EScrollToTheTop } from '../../interfaces'
 import { BiChevronsUp } from 'react-icons/bi'
 
-export const ScrollToTop: FC<{
+const ScrollToTop: FC<{
   styleMenu: boolean | undefined
   language: ELanguages
 }> = ({ styleMenu, language }) => {
@@ -40,3 +40,5 @@ export const ScrollToTop: FC<{
     </button>
   )
 }
+
+export default ScrollToTop

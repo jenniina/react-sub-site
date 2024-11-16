@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 import { ColorPair, RefObject } from '../interfaces'
 import { EReleaseToChangeColorInstructions } from '../../../interfaces/blobs'
 import { ELanguages } from '../../../interfaces'
@@ -16,7 +16,7 @@ interface ColorBlockProps {
   ) => string | undefined
 }
 
-const ColorBlocks: React.FC<ColorBlockProps> = ({
+const ColorBlocks: FC<ColorBlockProps> = ({
   d,
   language,
   controlsVisible,

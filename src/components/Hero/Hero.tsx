@@ -1,4 +1,16 @@
-import React, { useMemo, useCallback, FC, useState, useRef, useEffect } from 'react'
+import {
+  useMemo,
+  useCallback,
+  FC,
+  useState,
+  useRef,
+  useEffect,
+  CSSProperties,
+  PointerEvent as ReactPointerEvent,
+  KeyboardEvent as ReactKeyboardEvent,
+  MouseEvent as ReactMouseEvent,
+  TouchEvent as ReactTouchEvent,
+} from 'react'
 import { useLocation } from 'react-router-dom'
 import styles from './hero.module.css'
 import useWindowSize from '../../hooks/useWindowSize'
@@ -96,7 +108,7 @@ export default function Hero({
   }, [])
 
   //Move items up, down, left or left, depending on the direction they're approached from:
-  const movingItem = (e: React.PointerEvent<HTMLElement>) => {
+  const movingItem = (e: ReactPointerEvent<HTMLElement>) => {
     const target = e.target as HTMLElement
     const targetLeft = window.getComputedStyle(target).getPropertyValue('left')
     const targetTop = window.getComputedStyle(target).getPropertyValue('top')
@@ -157,10 +169,10 @@ export default function Hero({
 
   const removeItem = (
     e:
-      | React.PointerEvent<HTMLElement>
-      | React.KeyboardEvent<HTMLElement>
-      | React.MouseEvent<HTMLLIElement, MouseEvent>
-      | React.TouchEvent<HTMLLIElement>
+      | ReactPointerEvent<HTMLElement>
+      | ReactKeyboardEvent<HTMLElement>
+      | ReactMouseEvent<HTMLLIElement, MouseEvent>
+      | ReactTouchEvent<HTMLLIElement>
   ) => {
     const element = e.target as HTMLElement
     if (!touchDevice) {
@@ -407,7 +419,7 @@ export default function Hero({
               ) {
                 const dividedBy = 2.5
 
-                const style: React.CSSProperties = {
+                const style: CSSProperties = {
                   position: 'absolute',
                   top: `clamp(60px, calc(-5vh + calc(1.1vh * ${item.e} * ${
                     item.e / 1.5
@@ -423,7 +435,7 @@ export default function Hero({
                       : `${item.size / dividedBy}vw`,
                   transitionDuration: '600ms',
                 }
-                const inner: React.CSSProperties = {
+                const inner: CSSProperties = {
                   color: `${item.color}`,
                   ['--i' as string]: `${item.i}`,
                   ['--e' as string]: `${item.e}`,
@@ -486,7 +498,7 @@ export default function Hero({
                   >
                     <div style={inner}>
                       {spanArray.map((span, index) => {
-                        const style: React.CSSProperties = {
+                        const style: CSSProperties = {
                           position: 'absolute',
                           borderRadius: '3px',
                           color: `${item.color}`,
@@ -507,7 +519,7 @@ export default function Hero({
               } else if (location == LOCATION.COMPOSER) {
                 const itemSize = 3.4
 
-                const style: React.CSSProperties = {
+                const style: CSSProperties = {
                   position: 'absolute',
                   top: `clamp(100px, calc(-2vh + calc(1.1vh * ${item.e} * ${
                     item.e / 1.5
@@ -518,7 +530,7 @@ export default function Hero({
                   transitionDuration: '600ms',
                   opacity: `0.7`,
                 }
-                const inner: React.CSSProperties = {
+                const inner: CSSProperties = {
                   color: `${item.color}`,
                   width: '100%',
                   height: '100%',
@@ -576,7 +588,7 @@ export default function Hero({
                   >
                     <div style={inner}>
                       {spanArray.map((span, index) => {
-                        const style: React.CSSProperties = {
+                        const style: CSSProperties = {
                           position: 'absolute',
                           borderRadius: '80% 50% 80% 50%',
                           color: `${item.color}`,
@@ -615,7 +627,7 @@ export default function Hero({
                 const randomBG = colorArrays[randomOfTwo]
                 const hue = hueArray[randomOfTwo]
 
-                const style: React.CSSProperties = {
+                const style: CSSProperties = {
                   position: 'absolute',
                   top: `clamp(60px, calc(-5vh + calc(1.1vh * ${item.e} * ${
                     item.e / 1.5
@@ -686,7 +698,7 @@ export default function Hero({
                     }}
                   >
                     {divArrayJewel.map((span, index) => {
-                      const style: React.CSSProperties = {
+                      const style: CSSProperties = {
                         position: 'absolute',
                         left: `calc(50% - ${span.size / 2}%)`,
                         top: `calc(50% - ${span.size / 2}%)`,
@@ -727,7 +739,7 @@ export default function Hero({
                 const hues = [214, 39]
                 const hue = hues[randomOfTwo]
 
-                const style: React.CSSProperties = {
+                const style: CSSProperties = {
                   position: 'absolute',
                   top: `clamp(60px, calc(-5vh + calc(1.1vh * ${item.e} * ${
                     item.e / 1.5
@@ -810,7 +822,7 @@ export default function Hero({
                       }}
                     >
                       {divArrayJewel.map((span, index) => {
-                        const style: React.CSSProperties = {
+                        const style: CSSProperties = {
                           position: 'absolute',
                           left: `calc(50% - ${(span.size * times) / 2}%)`,
                           top: `calc(50% - ${(span.size * times) / 2}%)`,
@@ -849,7 +861,7 @@ export default function Hero({
                 location == LOCATION.JOKES ||
                 location == LOCATION.SALON
               ) {
-                const style: React.CSSProperties = {
+                const style: CSSProperties = {
                   position: 'absolute',
                   top: `clamp(60px, calc(-20vh + 1.2vh * ${item.e * 3} * ${
                     item.size / 6
@@ -954,7 +966,7 @@ export default function Hero({
                     ? `blur(calc(var(--blur) * 1.2vh))`
                     : `blur(calc(var(--blur) * 1.2vw))`
                 const number = Math.floor(getRandomMinMax(0.001, 3.999))
-                const style: React.CSSProperties = {
+                const style: CSSProperties = {
                   position: 'absolute',
                   top: `clamp(60px, calc(-20% + ${item.e} * 1.2vh * ${
                     item.size / 2
@@ -1078,7 +1090,7 @@ export default function Hero({
               } else if (location === LOCATION.CONTACT || location === LOCATION.FORM) {
                 // CONTACT  // FORM
                 const mod = 0.6
-                const style: React.CSSProperties = {
+                const style: CSSProperties = {
                   position: 'absolute',
                   top: `clamp(60px, calc(-5vh + calc(1.5vh * ${item.e} * ${
                     item.e / 1.9
@@ -1106,7 +1118,7 @@ export default function Hero({
                   borderRadius: '50%',
                   opacity: `0.${item.size > 7 ? 8 : Math.ceil(item.size)}`,
                 }
-                const styleInner: React.CSSProperties = {
+                const styleInner: CSSProperties = {
                   position: 'absolute',
                   backgroundColor: `transparent`,
                   width: '100%',
@@ -1176,7 +1188,7 @@ export default function Hero({
                 // var(--size) enables resizing with s, b and l
                 const border = `clamp(40px, calc(0.6vw * var(--size)), 200px)`
 
-                const style: React.CSSProperties = {
+                const style: CSSProperties = {
                   ['--rotate' as string]: `${
                     item.rotation ?? `${Math.round(getRandomMinMax(165, 195))}`
                   }deg`,
@@ -1241,7 +1253,7 @@ export default function Hero({
                     }}
                   >
                     {spanArray.map((span, index) => {
-                      const style: React.CSSProperties = {
+                      const style: CSSProperties = {
                         position: 'absolute',
                         top: `calc(${border} * -1.1)`,
                         left: `calc(${border} * -1)`,
