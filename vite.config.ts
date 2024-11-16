@@ -23,35 +23,11 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            if (id.includes('react')) {
-              return 'react'
-            }
-            if (id.includes('react-dom')) {
-              return 'react-dom'
-            }
-            if (id.includes('react-router-dom')) {
-              return 'react-router-dom'
-            }
-            if (id.includes('react-redux')) {
-              return 'react-redux'
-            }
-            if (id.includes('@reduxjs/toolkit')) {
-              return 'redux-toolkit'
-            }
-            if (id.includes('axios')) {
-              return 'axios'
-            }
-            if (id.includes('react-icons')) {
-              return 'react-icons'
-            }
-            if (id.includes('uuid')) {
-              return 'uuid'
-            }
-            return 'vendor'
+            return id.toString().split('node_modules/')[1].split('/')[0].toString()
           }
         },
       },
     },
-    // chunkSizeWarningLimit: 500,
+    chunkSizeWarningLimit: 500,
   },
 })
