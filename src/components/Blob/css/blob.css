@@ -99,7 +99,7 @@ svg.filter {
 .drag-container .layer-adjust {
   background-color: lightgray;
   cursor: help;
-  z-index: 2;
+  z-index: 1;
 }
 
 .drag-container .make-random {

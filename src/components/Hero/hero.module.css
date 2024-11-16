@@ -23,8 +23,6 @@
 .hero h1 {
   margin-top: 0;
   margin-bottom: 0;
-}
-.hero:has(li.geometric, li.jewel, li.note) h1 {
   z-index: 9;
 }
 
@@ -1299,7 +1297,7 @@
 .herocontent {
   cursor: pointer;
 }
-.herocontent.portfolio {
+.herocontent.blob li {
   cursor: -webkit-grab;
   cursor: -moz-grab;
   cursor: grab;
