@@ -393,7 +393,7 @@ export default function DragContainer({
         newHiddenLayers.delete(layer)
       } else {
         newHiddenLayers.add(layer)
-        setActiveLayer(layer - 1)
+        setActiveLayer(layer !== 0 ? layer - 1 : layer)
         ;(document.activeElement as HTMLElement)?.blur()
       }
       return newHiddenLayers
