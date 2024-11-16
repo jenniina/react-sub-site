@@ -1041,7 +1041,9 @@ export default function Hero({
                   <li
                     key={`${item.color}${index}`}
                     id={`shape${index + 1}`}
-                    className={`${styles.item} ${styles[location]} ${styles.portfolio} 
+                    className={`${styles.item} ${styles.blob} ${styles[location]} ${
+                      styles.portfolio
+                    } 
                                 ${
                                   windowHeight < windowWidth ? styles.wide : styles.tall
                                 }`}
