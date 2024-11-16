@@ -123,11 +123,11 @@ import {
   BiChevronsRight,
   BiChevronsUp,
   BiChevronUp,
-  BiMinus,
   BiPlus,
 } from 'react-icons/bi'
 import { ImEnlarge2, ImShrink2 } from 'react-icons/im'
 import { FaCamera, FaPlus, FaRegClone, FaSave, FaTimes } from 'react-icons/fa'
+import { LiaTimesSolid } from 'react-icons/lia'
 import DragLayers from './DragLayers'
 import useWindowSize from '../../../hooks/useWindowSize'
 import { IUser } from '../../../interfaces'
@@ -393,6 +393,8 @@ export default function DragContainer({
         newHiddenLayers.delete(layer)
       } else {
         newHiddenLayers.add(layer)
+        setActiveLayer(layer - 1)
+        ;(document.activeElement as HTMLElement)?.blur()
       }
       return newHiddenLayers
     })
@@ -1517,6 +1519,11 @@ export default function DragContainer({
     }
   }
 
+  // useEffect(() => {
+  //   const layerButton = document.getElementById(`layer-button${activeLayer}`)
+  //   if (layerButton) layerButton.focus()
+  // }, [activeLayer])
+
   const imgStyle: CSSProperties = {
     width: '100%',
     height: 'auto',
@@ -2129,13 +2136,13 @@ export default function DragContainer({
                 <button
                   id={`decrease-layer-amount${d}`}
                   aria-labelledby={`decrease-layer-amount${d}-span`}
-                  className='layer-tool layer-amount decrease-layer-amount tooltip-wrap narrow2'
+                  className='layer-tool layer-amount decrease-layer-amount tooltip-wrap narrow2 danger'
                   onClick={deleteHiddenLayers}
                 >
                   <span id={`decrease-layer-amount${d}-span`} className='tooltip above'>
                     {EDeleteHiddenLayers[language]}
                   </span>
-                  <BiMinus />
+                  <LiaTimesSolid style={{ fontSize: '0.8em' }} />
                 </button>
                 <button
                   id={`every-layer-minus${d}`}
@@ -2191,6 +2198,7 @@ export default function DragContainer({
                 </button>
                 <button
                   id={`increase-layer-amount${d}`}
+                  disabled={layerAmount >= 9}
                   aria-labelledby={`increase-layer-amount${d}-span`}
                   className='layer-tool layer-amount increase-layer-amount tooltip-wrap narrow2'
                   onClick={() => addToLayerAmount(1)}

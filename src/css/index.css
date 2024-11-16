@@ -755,7 +755,8 @@ button.restore {
   align-items: center;
   gap: 0.2em;
 }
-button.grayer {
+button.grayer,
+button:disabled {
   --sat: 40%;
   --sat2: 50%;
   border: 1px solid hsl(var(--hue-primary), var(--sat), 30%);
@@ -769,7 +770,8 @@ button.grayer {
   background-size: var(--bg-size);
   background-position: top;
 }
-.light button.grayer {
+.light button.grayer,
+.light button:disabled {
   --sat: 30%;
   --sat2: 50%;
   background: linear-gradient(
@@ -781,6 +783,9 @@ button.grayer {
   );
   background-size: var(--bg-size);
   background-position: top;
+}
+button:disabled {
+  pointer-events: none;
 }
 .light button.grayer:hover,
 .light button.grayer:focus,
@@ -910,7 +915,7 @@ button.delete:hover {
 .light button.delete:hover {
   text-shadow: 0 0 0.1em white;
 }
-button.danger:hover {
+#root button.danger:hover {
   outline-color: red;
   border-color: red;
   text-shadow: none;
