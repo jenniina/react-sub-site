@@ -1297,7 +1297,7 @@
 .herocontent {
   cursor: pointer;
 }
-.herocontent.portfolio {
+.herocontent.blob li {
   cursor: -webkit-grab;
   cursor: -moz-grab;
   cursor: grab;
