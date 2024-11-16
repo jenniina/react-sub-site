@@ -1,4 +1,4 @@
-import React from 'react'
+import { Dispatch, SetStateAction } from 'react'
 import Cart from '../components/Cart/Cart'
 import Hero from '../components/Hero/Hero'
 import { ELanguages } from '../interfaces'
@@ -10,7 +10,7 @@ interface CartProps {
   type: string
   language: ELanguages
   cart: ICartItem[]
-  setCart: React.Dispatch<React.SetStateAction<ICartItem[]>>
+  setCart: Dispatch<SetStateAction<ICartItem[]>>
   removeCart: () => void
 }
 

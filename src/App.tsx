@@ -28,7 +28,7 @@ import CartPage from './pages/CartPage'
 import StorePage from './pages/StorePage'
 import OrderPage from './pages/OrderPage'
 import TermsOfService from './pages/TermsOfService'
-import { Footer } from './components/Footer/Footer'
+//import Footer from './components/Footer/Footer'
 import { useTheme } from './hooks/useTheme'
 import { useScrollbarWidth } from './hooks/useScrollbarWidth'
 import {
@@ -57,7 +57,7 @@ import {
   EStore,
   EWebpagesAndGraphicDesign,
 } from './interfaces'
-import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
+//import  ScrollToTop  from './components/ScrollToTop/ScrollToTop'
 import { options } from './utils'
 import { isTouchDevice } from './hooks/useDraggable'
 import { BlobProvider } from './components/Blob/components/BlobProvider'
@@ -78,6 +78,9 @@ import { EReactApps } from './interfaces/about'
 import { EOrders, EShoppingCart, ICartItem } from './interfaces/store'
 import { ETermsOfService } from './interfaces'
 import { EComposerOlliSanta } from './interfaces/composer'
+
+const Footer = lazy(() => import('./components/Footer/Footer'))
+const ScrollToTop = lazy(() => import('./components/ScrollToTop/ScrollToTop'))
 
 const App: FC = () => {
   const touchDevice = isTouchDevice()
@@ -491,9 +494,20 @@ const App: FC = () => {
               />
             </Routes>
           </main>
-
-          <Footer language={language} styleMenu={styleMenu} />
-          <ScrollToTop language={language} styleMenu={styleMenu} />
+          <Suspense
+            fallback={
+              <div className='flex center margin0auto'>{ELoading[language]}...</div>
+            }
+          >
+            <Footer language={language} styleMenu={styleMenu} />
+          </Suspense>
+          <Suspense
+            fallback={
+              <div className='flex center margin0auto'>{ELoading[language]}...</div>
+            }
+          >
+            <ScrollToTop language={language} styleMenu={styleMenu} />
+          </Suspense>
           <Notification language={language} />
         </div>
       </div>

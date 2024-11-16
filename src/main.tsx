@@ -1,4 +1,4 @@
-import React from 'react'
+import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux'
 import store from './store'
@@ -8,7 +8,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from './hooks/useTheme'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+  <StrictMode>
     <BrowserRouter>
       <ThemeProvider key={null} type={''} props={undefined}>
         <Provider store={store}>
@@ -16,5 +16,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         </Provider>
       </ThemeProvider>
     </BrowserRouter>
-  </React.StrictMode>
+  </StrictMode>
 )
