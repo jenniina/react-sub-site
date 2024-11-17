@@ -11,7 +11,7 @@ import {
   Fragment,
   ChangeEvent,
 } from 'react'
-import { getRandomMinMax } from '../../../utils'
+import { getRandomMinMax, sanitize } from '../../../utils'
 import {
   Draggable,
   BackgroundColor,
@@ -1520,7 +1520,7 @@ export default function DragContainer({
   }
 
   // useEffect(() => {
-  //   const layerButton = document.getElementById(`layer-button${activeLayer}`)
+  //   const layerButton = document.getElementById(`layer-button-${d}-${activeLayer}`)
   //   if (layerButton) layerButton.focus()
   // }, [activeLayer])
 
@@ -2160,8 +2160,8 @@ export default function DragContainer({
                 {Array.from({ length: layerAmount }, (_, i) => i).map((layer, index) => (
                   <button
                     key={`${layer}*${index}`}
-                    id={`layer-button${layer}`}
-                    aria-labelledby={`layer-button${layer}-span`}
+                    id={`layer-button-${d}-${layer}`}
+                    aria-labelledby={`layer-button-${d}-${layer}-span`}
                     onClick={() => {
                       if (activeLayer === layer) {
                         toggleLayerVisibility(layer)
@@ -2173,7 +2173,7 @@ export default function DragContainer({
                       activeLayer === layer ? 'active' : ''
                     } ${hiddenLayers.has(layer) ? 'dim' : ''}`}
                   >
-                    <span id={`layer-button${layer}-span`}>
+                    <span id={`layer-button-${d}-${layer}-span`}>
                       <span className='scr'>{ELayer[language]}</span> {layer + 1}{' '}
                       <span className='tooltip above'>
                         {activeLayer === layer
@@ -2357,16 +2357,10 @@ export default function DragContainer({
                                 >
                                   <div className='input-wrap'>
                                     <label
-                                      htmlFor={`blobnewname-${versionName.replace(
-                                        /\s/g,
-                                        '-'
-                                      )}`}
+                                      htmlFor={`blobnewname-${sanitize(versionName)}`}
                                     >
                                       <input
-                                        id={`blobnewname-${versionName.replace(
-                                          /\s/g,
-                                          '-'
-                                        )}`}
+                                        id={`blobnewname-${sanitize(versionName)}`}
                                         type='text'
                                         value={newName}
                                         onChange={handleNewNameChange}
