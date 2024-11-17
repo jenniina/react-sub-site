@@ -372,14 +372,14 @@ svg.filter {
   outline-offset: 3px;
 }
 .button-container button.screenshot {
-  padding: 0.3rem 0.5rem 0.1rem;
+  padding: 0.4em 0.8em;
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
 }
 .button-container button.screenshot svg {
-  font-size: 1.6rem;
+  font-size: 1.3rem;
 }
 
 @media (min-width: 300px) {
@@ -418,7 +418,6 @@ svg.filter {
     word-wrap: break-word;
   }
   .drag-container .button-container button.screenshot {
-    padding: 0.3rem 0.5rem 0.2rem;
     flex: 0 0 auto;
   }
   .drag-container button {
@@ -651,10 +650,9 @@ body.dark-mode .site .drag-container .dragzone:focus {
 .drag-container .make-smaller {
   --bottom: -2.2rem;
   font-size: 0.85rem;
-  padding: 0.15em 0.08em 0;
-  width: 1.9em;
+  padding: 0.25em 0.08em 0;
   top: 0;
-  line-height: 1.9;
+  line-height: 1.8;
   border-radius: 50%;
 }
 .drag-container .make-smaller,
@@ -670,11 +668,16 @@ body.dark-mode .site .drag-container .dragzone:focus {
 }
 .drag-container .make-more,
 .drag-container .delete-blob,
+.drag-container .make-smaller {
+  position: absolute;
+  height: 1.7rem;
+  width: 1.7rem;
+  max-width: 2.5rem;
+}
 .drag-container .make-random {
   position: absolute;
-  height: 1.6rem;
-  width: 1.6rem;
-  max-width: 2.5rem;
+  height: 1.9rem;
+  width: 1.9rem;
 }
 .drag-container .delete-blob,
 .drag-container .make-larger,
@@ -774,7 +777,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
 
 .drag-container .layer-mover-control-wrap button {
   margin: 0;
-  padding: 0.1rem 0.5rem 0.2rem;
+  padding: 0.06em 0.6em 0.2em;
   min-height: 1.7rem;
   border: 3px solid var(--color-primary-7);
   outline: 3px solid var(--color-primary-7);
@@ -969,9 +972,8 @@ body.dark-mode .site .drag-container .dragzone:focus {
   top: 0.2rem;
   left: 23%;
   font-size: 0.9rem;
-  height: 1.7rem;
   line-height: 1.2;
-  padding: 0.4rem 0.4rem 0.2rem 0.33rem;
+  padding: 0.4rem 0.4rem 0.2rem;
   border-radius: var(--corner);
   -webkit-box-shadow: var(--box);
   -o-box-shadow: var(--box);
@@ -981,13 +983,13 @@ body.dark-mode .site .drag-container .dragzone:focus {
 }
 .drag-container .make-random {
   left: calc(50% - 0.85rem);
-  padding: 0.2rem 0.4rem 0.2rem 0.33rem;
+  padding: 0.1rem 0.3rem;
 }
 .drag-container .delete-blob {
   height: 1.7rem;
   font-size: 1.1rem;
   line-height: 1.3;
-  padding: 0.3rem 0.23rem 0.03rem 0.23rem;
+  padding: 0.3rem 0.3rem 0.03rem;
   border-radius: 50%;
 }
 .drag-container .delete-blob,
@@ -1004,7 +1006,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
 .drag-container .delete-blob {
   --tra: 0.2s;
   outline: 3px solid red;
-  outline-offset: -3px;
+  outline-offset: -2px;
   -webkit-transition: outline var(--tra);
   -o-transition: outline var(--tra);
   -ms-transition: outline var(--tra);
@@ -1035,7 +1037,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
   .colorblock {
     position: absolute;
     width: 0.9rem;
-    height: 1rem;
+    height: 1.2rem;
   }
 } /*END media*/
 
@@ -1264,4 +1266,13 @@ body.dark-mode .site .drag-container .dragzone:focus {
   padding: 0 0.5rem 0.2rem;
   margin: 0;
   border-radius: 50%;
+}
+@media (min-width: 700px) {
+  .button-container button.screenshot {
+    padding: 0.15em 0.5em;
+    font-size: 1.4rem;
+  }
+  .drag-container .layer-mover-control-wrap button {
+    padding: 0.1em 0.45em 0.2em;
+  }
 }

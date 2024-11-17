@@ -1923,7 +1923,7 @@ export default function DragContainer({
                 aria-labelledby={`take-screenshot${d}-span`}
                 disabled={loading}
                 onClick={takeScreenshot}
-                className='reset screenshot tooltip-wrap'
+                className='screenshot tooltip-wrap'
               >
                 <FaCamera />
                 <span
