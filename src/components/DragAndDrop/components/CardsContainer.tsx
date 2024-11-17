@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { Data, Status } from '../interfaces'
 import CardSingle from './CardSingle'
+import { sanitize } from '../../../utils'
 import styles from '../dragAndDrop.module.css'
 import {
   EChange,
@@ -25,7 +26,6 @@ interface Props {
   handleRemoveColor: (color: Data['content']) => void
   handleDragging: (dragging: boolean) => void
   lightTheme: boolean
-  sanitize: (str: string) => string
   updateStatus: (index: number, status: Status) => void
   reorderStatuses: (dragIndex: number, dropIndex: number) => void
   deleteStatus: (status: string) => void
@@ -42,7 +42,6 @@ export const CardsContainer = ({
   handleRemoveColor,
   itemsByStatus,
   lightTheme,
-  sanitize,
   updateStatus,
   reorderStatuses,
   deleteStatus,
@@ -161,37 +160,39 @@ export const CardsContainer = ({
           x='left'
           y='below'
         >
-          <i>{translateStatus(status)}</i>
-          <form
-            className={styles['change-status-form']}
-            onSubmit={(e) => {
-              e.preventDefault()
-              updateStatus(statuses.indexOf(status), newStatus)
-            }}
-          >
-            <div className='input-wrap'>
-              <label htmlFor={`${sanitize(status)}-status`}>
-                <input
-                  type='text'
-                  required
-                  id={`${sanitize(status)}-status`}
-                  value={newStatus}
-                  onChange={(e) => handleStatusNameChange(e)}
-                />
-                <span>{EChange[language]}:</span>
-              </label>
-            </div>
-            <button type='submit'>{EChange[language]}</button>
-            <button
-              type='button'
-              className='danger delete'
-              onClick={() => {
-                deleteStatus(status)
+          <>
+            <i>{translateStatus(status)}</i>
+            <form
+              className={styles['change-status-form']}
+              onSubmit={(e) => {
+                e.preventDefault()
+                updateStatus(statuses.indexOf(status), newStatus)
               }}
             >
-              {EDelete[language]}
-            </button>
-          </form>
+              <div className='input-wrap'>
+                <label htmlFor={`${sanitize(status)}-status`}>
+                  <input
+                    type='text'
+                    required
+                    id={`${sanitize(status)}-status`}
+                    value={newStatus}
+                    onChange={(e) => handleStatusNameChange(e)}
+                  />
+                  <span>{EChange[language]}:</span>
+                </label>
+              </div>
+              <button type='submit'>{EChange[language]}</button>
+              <button
+                type='button'
+                className='danger delete'
+                onClick={() => {
+                  deleteStatus(status)
+                }}
+              >
+                {EDelete[language]}
+              </button>
+            </form>
+          </>
         </Accordion>
       </span>
       <ul
@@ -215,7 +216,6 @@ export const CardsContainer = ({
             handleUpdate={handleUpdate}
             handleRemoveColor={handleRemoveColor}
             setTheTarget={setTheTarget}
-            sanitize={sanitize}
             focusedCard={focusedCard}
             setFocusedCard={setFocusedCard}
             translateStatus={translateStatus}

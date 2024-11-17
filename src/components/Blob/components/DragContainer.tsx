@@ -11,7 +11,7 @@ import {
   Fragment,
   ChangeEvent,
 } from 'react'
-import { getRandomMinMax } from '../../../utils'
+import { getRandomMinMax, sanitize } from '../../../utils'
 import {
   Draggable,
   BackgroundColor,
@@ -125,7 +125,7 @@ import {
   BiChevronUp,
   BiPlus,
 } from 'react-icons/bi'
-import { ImEnlarge2, ImShrink2 } from 'react-icons/im'
+import { ImEnlarge2, ImShrink2, ImCamera } from 'react-icons/im'
 import { FaCamera, FaPlus, FaRegClone, FaSave, FaTimes } from 'react-icons/fa'
 import { LiaTimesSolid } from 'react-icons/lia'
 import DragLayers from './DragLayers'
@@ -1520,7 +1520,7 @@ export default function DragContainer({
   }
 
   // useEffect(() => {
-  //   const layerButton = document.getElementById(`layer-button${activeLayer}`)
+  //   const layerButton = document.getElementById(`layer-button-${d}-${activeLayer}`)
   //   if (layerButton) layerButton.focus()
   // }, [activeLayer])
 
@@ -1925,7 +1925,7 @@ export default function DragContainer({
                 onClick={takeScreenshot}
                 className='screenshot tooltip-wrap'
               >
-                <FaCamera />
+                <ImCamera />
                 <span
                   id={`take-screenshot${d}-span`}
                   className='tooltip left below space'
@@ -2062,7 +2062,7 @@ export default function DragContainer({
                 <div ref={dragWrap} id={`drag-wrap${d}`} className='drag-wrap'>
                   <DragLayers
                     layerAmount={layerAmount}
-                    layer={activeLayer}
+                    layer_={activeLayer}
                     hiddenLayers={hiddenLayers}
                     changeBlobLayer={changeBlobLayer}
                     setActiveLayer={setActiveLayer}
@@ -2160,8 +2160,8 @@ export default function DragContainer({
                 {Array.from({ length: layerAmount }, (_, i) => i).map((layer, index) => (
                   <button
                     key={`${layer}*${index}`}
-                    id={`layer-button${layer}`}
-                    aria-labelledby={`layer-button${layer}-span`}
+                    id={`layer-button-${d}-${layer}`}
+                    aria-labelledby={`layer-button-${d}-${layer}-span`}
                     onClick={() => {
                       if (activeLayer === layer) {
                         toggleLayerVisibility(layer)
@@ -2173,7 +2173,7 @@ export default function DragContainer({
                       activeLayer === layer ? 'active' : ''
                     } ${hiddenLayers.has(layer) ? 'dim' : ''}`}
                   >
-                    <span id={`layer-button${layer}-span`}>
+                    <span id={`layer-button-${d}-${layer}-span`}>
                       <span className='scr'>{ELayer[language]}</span> {layer + 1}{' '}
                       <span className='tooltip above'>
                         {activeLayer === layer
@@ -2341,10 +2341,7 @@ export default function DragContainer({
                                 </button>
                                 <Accordion
                                   language={language}
-                                  id={`accordion-blobnewname-${versionName.replace(
-                                    /\s/g,
-                                    '-'
-                                  )}`}
+                                  id={`accordion-blobnewname-${sanitize(versionName)}`}
                                   className='blobnewname'
                                   wrapperClass='blobnewname-wrap'
                                   text={ERename[language]}
@@ -2355,47 +2352,43 @@ export default function DragContainer({
                                   }}
                                   isOpen={editName === versionName}
                                 >
-                                  <div className='input-wrap'>
-                                    <label
-                                      htmlFor={`blobnewname-${versionName.replace(
-                                        /\s/g,
-                                        '-'
-                                      )}`}
-                                    >
-                                      <input
-                                        id={`blobnewname-${versionName.replace(
-                                          /\s/g,
-                                          '-'
-                                        )}`}
-                                        type='text'
-                                        value={newName}
-                                        onChange={handleNewNameChange}
-                                        placeholder={ERenameYourArtwork[language]}
-                                        maxLength={30}
-                                      />
-                                      <span>{ERename[language]}:</span>{' '}
-                                      <span className='scr'>{versionName}</span>
-                                    </label>
-                                  </div>
-                                  <button
-                                    onClick={() => {
-                                      if (versionName !== newName) {
-                                        editBlobsByUser(versionName, newName)
-                                      } else
-                                        dispatch2(
-                                          notify(
-                                            `${EError[language]}: ${ERenameYourArtwork[language]}`,
-                                            true,
-                                            5
+                                  <>
+                                    <div className='input-wrap'>
+                                      <label
+                                        htmlFor={`blobnewname-${sanitize(versionName)}`}
+                                      >
+                                        <input
+                                          id={`blobnewname-${sanitize(versionName)}`}
+                                          type='text'
+                                          value={newName}
+                                          onChange={handleNewNameChange}
+                                          placeholder={ERenameYourArtwork[language]}
+                                          maxLength={30}
+                                        />
+                                        <span>{ERename[language]}:</span>{' '}
+                                        <span className='scr'>{versionName}</span>
+                                      </label>
+                                    </div>
+                                    <button
+                                      onClick={() => {
+                                        if (versionName !== newName) {
+                                          editBlobsByUser(versionName, newName)
+                                        } else
+                                          dispatch2(
+                                            notify(
+                                              `${EError[language]}: ${ERenameYourArtwork[language]}`,
+                                              true,
+                                              5
+                                            )
                                           )
-                                        )
-                                    }}
-                                  >
-                                    {EEdit[language]}{' '}
-                                    <span className='scr'>
-                                      {versionName}: {ENewName[language]} {newName}
-                                    </span>
-                                  </button>
+                                      }}
+                                    >
+                                      {EEdit[language]}{' '}
+                                      <span className='scr'>
+                                        {versionName}: {ENewName[language]} {newName}
+                                      </span>
+                                    </button>
+                                  </>
                                 </Accordion>
                               </div>
                             </li>

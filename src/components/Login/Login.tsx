@@ -3,11 +3,9 @@ import Accordion from '../Accordion/Accordion'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import { initializeUser, login, logout } from '../../reducers/authReducer'
-import PasswordReset from '../PasswordReset/PasswordReset'
 import { useSelector } from 'react-redux'
 import {
   ELoggedInAs,
-  EClose,
   ELanguages,
   ReducerProps,
   ELogin,
@@ -18,7 +16,6 @@ import {
   ELoggingIn,
   EEdit,
 } from '../../interfaces'
-import Notification from '../Notification/Notification'
 import { Link } from 'react-router-dom'
 
 interface LoginProps {
@@ -100,43 +97,45 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
             isOpen={isOpen}
             hideBrackets={true}
           >
-            <h2>{ELogin[language]}</h2>
+            <>
+              <h2>{ELogin[language]}</h2>
 
-            <form onSubmit={handleLogin} className='login'>
-              <div className='input-wrap'>
-                <label>
-                  <input
-                    name='username'
-                    type='text'
-                    value={username}
-                    required
-                    autoComplete='email'
-                    onChange={({ target }) => setUsername(target.value.trim())}
-                  />
-                  <span>{EEmail[language]}: </span>
-                </label>
-              </div>
-              <div className='input-wrap'>
-                <label>
-                  <input
-                    name='password'
-                    type='password'
-                    required
-                    value={password}
-                    autoComplete='on'
-                    onChange={({ target }) => setPassword(target.value.trim())}
-                  />
-                  <span>{EPassword[language]}: </span>
-                </label>
-              </div>
-              <button
-                type='submit'
-                id={`login-${text}`}
-                className={`login ${text} restore`}
-              >
-                {loggingIn ? ELoggingIn[language] : ELogin[language]}
-              </button>
-            </form>
+              <form onSubmit={handleLogin} className='login'>
+                <div className='input-wrap'>
+                  <label>
+                    <input
+                      name='username'
+                      type='text'
+                      value={username}
+                      required
+                      autoComplete='email'
+                      onChange={({ target }) => setUsername(target.value.trim())}
+                    />
+                    <span>{EEmail[language]}: </span>
+                  </label>
+                </div>
+                <div className='input-wrap'>
+                  <label>
+                    <input
+                      name='password'
+                      type='password'
+                      required
+                      value={password}
+                      autoComplete='on'
+                      onChange={({ target }) => setPassword(target.value.trim())}
+                    />
+                    <span>{EPassword[language]}: </span>
+                  </label>
+                </div>
+                <button
+                  type='submit'
+                  id={`login-${text}`}
+                  className={`login ${text} restore`}
+                >
+                  {loggingIn ? ELoggingIn[language] : ELogin[language]}
+                </button>
+              </form>
+            </>
           </Accordion>
         </>
       )}

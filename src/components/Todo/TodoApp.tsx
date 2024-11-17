@@ -27,7 +27,6 @@ import {
   setAllTodos,
 } from './reducers/todoReducer'
 import { notify } from '../../reducers/notificationReducer'
-import Notification from '../Notification/Notification'
 import { useSelector } from 'react-redux'
 import { initializeUser } from '../../reducers/authReducer'
 import { ReducerProps } from '../../interfaces'
@@ -294,7 +293,6 @@ export default function TodoApp({ language }: Props) {
         </p>
         <TodoList
           todosWithIdAndStatus={todosWithIdAndStatus}
-          setTodosWithIdAndStatus={setTodosWithIdAndStatus}
           toggleTodo={toggleTodo}
           deleteTodo={deleteTodo}
           language={language}

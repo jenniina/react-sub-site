@@ -1,10 +1,9 @@
-import { useRef, useState, FormEvent } from 'react'
+import { useState, FormEvent } from 'react'
 import { RiMailSendLine } from 'react-icons/ri'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import { forgot } from '../../reducers/usersReducer'
 import {
-  EClose,
   ELanguages,
   EEmail,
   EForgotPassword,

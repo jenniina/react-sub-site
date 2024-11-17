@@ -1,11 +1,5 @@
 import styles from './store.module.css'
-import {
-  EContact,
-  ELanguages,
-  EMainSite,
-  EWebsite,
-  EWebsiteDesign,
-} from '../../interfaces'
+import { ELanguages, EMainSite } from '../../interfaces'
 import StoreItems from './components/StoreItems'
 import { FC } from 'react'
 import ScrollButton from '../ScrollButton'
@@ -20,13 +14,11 @@ import {
   EBusinessCardDesign,
   EForWordPressOrReactNodeBasedWebsites,
   EGraphicDesign,
-  EIncludesADesignMeetingWithTheClientForWebsite,
   EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts,
   EIncludesPrintableAndWebVersionOfTheLogo,
   ELogoDesign,
   EHour,
   EProducts,
-  EReactFullPackage,
   EReactWebsite,
   EReactWebsiteWithContactFormAndOtherFunctionality,
   ERequestForQuote,
@@ -34,7 +26,6 @@ import {
   ESimpleReactWebsite,
   ESimpleWordPressWebsite,
   EWordPressWebsiteWithBlogAndContactForm,
-  EWordPressWebsiteWithBlogContactFormAndOnlineStore,
   ETranslationWork,
   EWebsiteMaintenance,
   EWebsites,
@@ -56,16 +47,11 @@ import {
   EIfYouAreUnsureAboutReactOrWordPress,
   EOneSidedBusinessCard,
   ETwoSidedBusinessCard,
-  EHourlyWorkCanBeUsed,
-  EPayFor10HoursGet13,
-  EPayFor5HoursGet6,
-  ESitesByJenniina,
   ETrainingInWebsiteManagement,
   ETrainingInWebsiteManagementDescription,
   EOneHourOfTrainingIncluded,
   EForSitesByJenniina,
   EEGInfographicsOrMotionGraphics,
-  EPosterAndProgrammeDesign,
   EPosterAndProgrammeCombo,
   ETheBlogSectionCanBeNewsArticlesEtc,
   EOrchestraWebsite,

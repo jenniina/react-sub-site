@@ -3,9 +3,7 @@ import { ITask } from '../interfaces'
 import style from '../css/todo.module.css'
 import { ELanguages } from '../../../interfaces'
 import { IClosestItem, useDragAndDrop } from '../../../hooks/useDragAndDrop'
-import { useEffect, useState } from 'react'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
-import { syncTodos } from '../reducers/todoReducer'
 
 export interface ITaskDraggable extends ITask {
   id: number
@@ -19,7 +17,6 @@ export default function TodoList({
   modifyTodo,
   modifyTodoOrder,
   todosWithIdAndStatus,
-  setTodosWithIdAndStatus,
 }: {
   toggleTodo: (key: string | undefined) => void
   deleteTodo: (key: string | undefined) => void
@@ -27,7 +24,6 @@ export default function TodoList({
   modifyTodo: (key: string | undefined, name: string | undefined) => void
   modifyTodoOrder: (order: { key: ITask['key']; order: ITask['order'] }[]) => void
   todosWithIdAndStatus: ITaskDraggable[]
-  setTodosWithIdAndStatus: React.Dispatch<React.SetStateAction<ITaskDraggable[]>>
 }) {
   // const todosWithIdAndStatus = todos
   //   ?.slice()

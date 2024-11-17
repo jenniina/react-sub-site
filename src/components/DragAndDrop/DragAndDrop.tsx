@@ -540,7 +540,6 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
             handleUpdate={handleUpdate}
             handleRemoveColor={handleRemoveColor}
             lightTheme={lightTheme}
-            sanitize={sanitize}
             updateStatus={updateStatus}
             reorderStatuses={reorderStatuses}
             deleteStatus={deleteStatus}

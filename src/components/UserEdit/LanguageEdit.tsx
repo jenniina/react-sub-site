@@ -8,7 +8,6 @@ import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import { findUserById, updateUser } from '../../reducers/usersReducer'
 import { AxiosError } from 'axios'
-import Notification from '../Notification/Notification'
 import styles from './css/edit.module.css'
 
 interface Props {

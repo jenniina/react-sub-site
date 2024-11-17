@@ -495,15 +495,6 @@ export enum EAnAccessibleWebsiteWithBlogContactFormAndOnlineStore {
   cs = 'Přístupný web s blogovou sekcí, kontaktním formulářem a online obchodem.',
   fi = 'Saavutettava verkkosivusto, jossa on blogiosio, yhteydenottolomake ja verkkokauppa.',
 }
-export enum EReactFullPackage {
-  en = 'React Full Package',
-  es = 'Paquete completo de React',
-  fr = 'Forfait complet React',
-  de = 'React Vollpaket',
-  pt = 'Pacote completo React',
-  cs = 'React plný balíček',
-  fi = 'React täyspaketti',
-}
 
 export enum EIncludesADesignMeetingWithTheClientForWebsite {
   en = "Includes a design meeting with the client (online or in person), design of the website's appearance with three rounds of drafts, technical implementation, publication, and an hour of user training.",
@@ -577,15 +568,7 @@ export enum EWordPressWebsiteWithBlogAndContactForm {
   cs = 'Web WordPress s blogem a kontaktním formulářem',
   fi = 'WordPress-verkkosivusto blogilla ja yhteydenottolomakkeella',
 }
-export enum EWordPressWebsiteWithBlogContactFormAndOnlineStore {
-  en = 'WordPress Website with Blog, Contact Form, and Online Store',
-  es = 'Sitio web de WordPress con blog, formulario de contacto y tienda en línea',
-  fr = 'Site Web WordPress avec blog, formulaire de contact et boutique en ligne',
-  de = 'WordPress-Website mit Blog, Kontaktformular und Online-Shop',
-  pt = 'Site WordPress com blog, formulário de contato e loja online',
-  cs = 'Web WordPress s blogem, kontaktním formulářem a online obchodem',
-  fi = 'WordPress-verkkosivusto blogilla, yhteydenottolomakkeella ja verkkokaupalla',
-}
+
 export enum ETranslationWork {
   en = 'Translation Work (English & Finnish)',
   es = 'Trabajo de traducción (inglés y finlandés)',
@@ -667,15 +650,7 @@ export enum EPosterAndProgramme {
   cs = 'Plakát a program',
   fi = 'Juliste ja ohjelma',
 }
-export enum EPosterAndProgrammeDesign {
-  en = 'Poster and Programme Design',
-  es = 'Diseño de cartel y programa',
-  fr = "Conception d'affiches et de programmes",
-  de = 'Poster- und Programmgestaltung',
-  pt = 'Design de cartaz e programa',
-  cs = 'Návrh plakátu a programu',
-  fi = 'Julisteen ja ohjelman suunnittelu',
-}
+
 export enum EPosterAndProgrammeCombo {
   en = 'Poster and Programme Combo',
   es = 'Combo de cartel y programa',

@@ -26,6 +26,7 @@
   transition: all 0.3s linear;
   background-color: var(--color-gray-2);
 }
+
 .cards-container {
   --min: 250px;
   --max: 40vh;
@@ -33,6 +34,7 @@
   max-height: var(--max);
   overflow: hidden;
 }
+
 .cards-container > ul {
   overflow-y: auto;
   margin: 0;
@@ -327,4 +329,4 @@ div.change-status > div.change-status > i {
   .card .text {
     font-size: 0.9em;
   }
-} /* END MEDIA */
+}

@@ -101,30 +101,32 @@ export default function Portfolio({
                 className='dependencies'
                 wrapperClass='dependencies-wrap'
               >
-                <p id='list-libraries-label'>{EDependencies[language]}:</p>
-                <ul id='list-libraries' aria-labelledby='list-libraries-label'>
-                  <li>react-icons</li>
-                  <li>react-dom</li>
-                  <li>react-router-dom</li>
-                  <li>react-redux</li>
-                  <li>@reduxjs/toolkit</li>
-                  <li>axios</li>
-                  <li>uuid</li>
-                </ul>
-                <p id='list-libraries-label2'>{EDependencies[language]} (Node.js):</p>
-                <ul id='list-libraries2' aria-labelledby='list-libraries-label2'>
-                  <li>bcryptjs</li>
-                  <li>cors</li>
-                  <li>dotenv</li>
-                  <li>express</li>
-                  <li>express-validator</li>
-                  <li>flatted</li>
-                  <li>jsonwebtoken</li>
-                  <li>mongoose</li>
-                  <li>nodemailer</li>
-                  <li>puppeteer</li>
-                  <li>sanitize-html</li>
-                </ul>
+                <>
+                  <p id='list-libraries-label'>{EDependencies[language]}:</p>
+                  <ul id='list-libraries' aria-labelledby='list-libraries-label'>
+                    <li>react-icons</li>
+                    <li>react-dom</li>
+                    <li>react-router-dom</li>
+                    <li>react-redux</li>
+                    <li>@reduxjs/toolkit</li>
+                    <li>axios</li>
+                    <li>uuid</li>
+                  </ul>
+                  <p id='list-libraries-label2'>{EDependencies[language]} (Node.js):</p>
+                  <ul id='list-libraries2' aria-labelledby='list-libraries-label2'>
+                    <li>bcryptjs</li>
+                    <li>cors</li>
+                    <li>dotenv</li>
+                    <li>express</li>
+                    <li>express-validator</li>
+                    <li>flatted</li>
+                    <li>jsonwebtoken</li>
+                    <li>mongoose</li>
+                    <li>nodemailer</li>
+                    <li>puppeteer</li>
+                    <li>sanitize-html</li>
+                  </ul>
+                </>
               </Accordion>
             </div>
             <ul className={`${styles.list}`}>

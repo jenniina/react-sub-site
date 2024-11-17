@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react'
+import Jokes from '../../components/Jokes/Jokes'
 import Hero from '../../components/Hero/Hero'
 import { BiChevronsDown } from 'react-icons/bi'
 import { jokeCategoryByLanguage, jokeCategoryAny } from '../../components/Jokes/Jokes'
@@ -38,8 +38,6 @@ import {
 import { SyntheticEvent, useEffect } from 'react'
 import { Select, SelectOption } from '../../components/Select/Select'
 import { options } from '../../utils'
-
-const Jokes = lazy(() => import('../../components/Jokes/Jokes'))
 
 export default function JokesPage({
   heading,
@@ -218,13 +216,7 @@ export default function JokesPage({
             </div>
           </div>
         </section>
-        <Suspense
-          fallback={
-            <div className='flex center margin0auto'>{ELoading[language]}...</div>
-          }
-        >
-          <Jokes language={language} setLanguage={setLanguage} />
-        </Suspense>
+        <Jokes language={language} setLanguage={setLanguage} />
       </div>
     </div>
   )

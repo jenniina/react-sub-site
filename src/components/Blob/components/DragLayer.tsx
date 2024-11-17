@@ -13,7 +13,7 @@ import { ELanguages } from '../../../interfaces'
 import { ELayer } from '../../../interfaces/blobs'
 
 interface DragLayerProps {
-  layer: number
+  layer_: number
   className: string
   language: ELanguages
   d: number
@@ -61,14 +61,31 @@ interface DragLayerProps {
   blurred: (e: HTMLElement) => void
 }
 
-const DragLayer = (props: DragLayerProps) => {
+const DragLayer = ({
+  layer_,
+  className,
+  language,
+  d,
+  items,
+  saveDraggables,
+  dragUlRef,
+  selectedvalue0,
+  setFocusedBlob,
+  start,
+  movement,
+  stopMovementCheck,
+  stopMoving,
+  wheel,
+  focused,
+  blurred,
+}: DragLayerProps) => {
   //   useEffect(() => {
-  //     if (props.draggables[props.d] && props.draggables[props.d].length > 0) {
-  //       props.saveDraggables()
+  //     if (draggables[d] && draggables[d].length > 0) {
+  //       saveDraggables()
   //     }
-  //   }, [props.draggables?.[props.d]?.length])
+  //   }, [draggables?.[d]?.length])
 
-  const svgFilter = props.d === 0 ? 0 : 1 // Choose the second filter for containers other than 0
+  const svgFilter = d === 0 ? 0 : 1 // Choose the second filter for containers other than 0
   const layerStyle: CSSProperties = {
     WebkitFilter: `url(#svgfilter${svgFilter})`,
     filter: `url(#svgfilter${svgFilter})`,
@@ -83,38 +100,38 @@ const DragLayer = (props: DragLayerProps) => {
 
   return (
     <>
-      <span id={`listbox${props.d}-layer${props.layer}-label`} className='scr'>
-        {ELayer[props.language]} {props.layer + 1}
+      <span id={`listbox${d}-layer${layer_}-label`} className='scr'>
+        {ELayer[language]} {layer_ + 1}
       </span>
       <ul
-        ref={props.dragUlRef}
+        ref={dragUlRef}
         role='listbox'
-        id={`listbox${props.d}-layer${props.layer}`}
-        className={`drag-container-layer drag-container${props.d}-layer drag-container${props.d}-layer${props.layer} ${props.className}`}
-        aria-labelledby={`listbox${props.d}-layer${props.layer}-label`}
+        id={`listbox${d}-layer${layer_}`}
+        className={`drag-container-layer drag-container${d}-layer drag-container${d}-layer${layer_} ${className}`}
+        aria-labelledby={`listbox${d}-layer${layer_}-label`}
         aria-activedescendant=''
         style={layerStyle}
       >
-        {props.items?.map((item: Draggable, index: number) => {
+        {items?.map((item: Draggable, index: number) => {
           if (item !== null && item !== undefined) {
             return (
               <Blob
-                layer={props.layer}
+                layer={layer_}
                 key={index}
-                d={props.d}
-                language={props.language}
+                d={d}
+                language={language}
                 item={item}
                 index={index}
-                start={props.start}
-                movement={props.movement}
-                stopMovementCheck={props.stopMovementCheck}
-                stopMoving={props.stopMoving}
-                wheel={props.wheel}
-                focused={props.focused}
-                blurred={props.blurred}
-                selectedvalue0={props.selectedvalue0}
-                setFocusedBlob={props.setFocusedBlob}
-                dragUlRef={props.dragUlRef}
+                start={start}
+                movement={movement}
+                stopMovementCheck={stopMovementCheck}
+                stopMoving={stopMoving}
+                wheel={wheel}
+                focused={focused}
+                blurred={blurred}
+                selectedvalue0={selectedvalue0}
+                setFocusedBlob={setFocusedBlob}
+                dragUlRef={dragUlRef}
               />
             )
           }

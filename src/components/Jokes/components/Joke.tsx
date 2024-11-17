@@ -1,26 +1,13 @@
-import { useSelector } from 'react-redux'
-import { useAppDispatch } from '../../../hooks/useAppDispatch'
-import { ESave, ELanguages, ReducerProps, EUserNotUpdated } from '../../../interfaces'
+import { ELanguages } from '../../../interfaces'
 import {
-  EAreYouSureYouWantToHideThisJoke,
   EAuthor,
   ECategories,
   ECategoryTitle,
-  ECategory_en,
   EClickToReveal,
-  EDelete,
-  EDeletedJoke,
-  EErrorDeletingJoke,
   EHide,
-  EJokeHidden,
   ESaveJoke,
-  ESavedJoke,
   IJoke,
 } from '../interfaces'
-import { addToBlacklistedJokes, updateUser } from '../../../reducers/usersReducer'
-import { notify } from '../../../reducers/notificationReducer'
-import { useEffect } from 'react'
-import { initializeUser } from '../../../reducers/authReducer'
 
 interface Props {
   joke: string

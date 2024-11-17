@@ -1,4 +1,5 @@
-import Joke from './Joke'
+import { lazy, Suspense } from 'react'
+//import Joke from './Joke'
 import { Select } from '../../Select/Select'
 import { SelectOption } from '../../Select/Select'
 import { useEffect } from 'react'
@@ -24,8 +25,10 @@ import {
   IJoke,
   EChuckNorrisCategory,
 } from '../interfaces'
-import { ELanguages } from '../../../interfaces'
+import { ELanguages, ELoading } from '../../../interfaces'
 import { FaAnglesDown } from 'react-icons/fa6'
+
+const Joke = lazy(() => import('./Joke'))
 
 interface Props {
   handleFormSubmit: (e: React.FormEvent<HTMLFormElement>) => void
@@ -245,22 +248,23 @@ const Form = ({
       <div className={`downwards-arrow ${submitted ? 'play' : ''}`}>
         <FaAnglesDown />
       </div>
-
-      <Joke
-        joke={joke}
-        delivery={delivery}
-        author={author}
-        jokeId={jokeId}
-        reveal={reveal}
-        jokeCategory={jokeCategory}
-        setReveal={setReveal}
-        handleJokeSave={handleJokeSave}
-        language={language}
-        visibleJoke={visibleJoke}
-        getCategoryInLanguage={getCategoryInLanguage}
-        subCategoryResults={subCategoryResults}
-        handleBlacklistUpdate={handleBlacklistUpdate}
-      />
+      <Suspense fallback={<div>{ELoading[language]}...</div>}>
+        <Joke
+          joke={joke}
+          delivery={delivery}
+          author={author}
+          jokeId={jokeId}
+          reveal={reveal}
+          jokeCategory={jokeCategory}
+          setReveal={setReveal}
+          handleJokeSave={handleJokeSave}
+          language={language}
+          visibleJoke={visibleJoke}
+          getCategoryInLanguage={getCategoryInLanguage}
+          subCategoryResults={subCategoryResults}
+          handleBlacklistUpdate={handleBlacklistUpdate}
+        />
+      </Suspense>
     </>
   )
 }
