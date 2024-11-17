@@ -125,7 +125,7 @@ import {
   BiChevronUp,
   BiPlus,
 } from 'react-icons/bi'
-import { ImEnlarge2, ImShrink2 } from 'react-icons/im'
+import { ImEnlarge2, ImShrink2, ImCamera } from 'react-icons/im'
 import { FaCamera, FaPlus, FaRegClone, FaSave, FaTimes } from 'react-icons/fa'
 import { LiaTimesSolid } from 'react-icons/lia'
 import DragLayers from './DragLayers'
@@ -1925,7 +1925,7 @@ export default function DragContainer({
                 onClick={takeScreenshot}
                 className='screenshot tooltip-wrap'
               >
-                <FaCamera />
+                <ImCamera />
                 <span
                   id={`take-screenshot${d}-span`}
                   className='tooltip left below space'

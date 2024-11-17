@@ -419,6 +419,7 @@ svg.filter {
   }
   .drag-container .button-container button.screenshot {
     flex: 0 0 auto;
+    margin: 0;
   }
   .drag-container button {
     margin: 0 0.5em 0.3em 0.3em;
@@ -1269,10 +1270,17 @@ body.dark-mode .site .drag-container .dragzone:focus {
 }
 @media (min-width: 700px) {
   .button-container button.screenshot {
-    padding: 0.15em 0.5em;
-    font-size: 1.4rem;
+    padding: 0.3em 0.8em;
   }
   .drag-container .layer-mover-control-wrap button {
     padding: 0.1em 0.45em 0.2em;
+  }
+}
+@media (min-width: 900px) {
+  .button-container button.screenshot {
+    padding: 0.28em 0.9em;
+  }
+  .button-container button.screenshot svg {
+    font-size: 1.5rem;
   }
 }
