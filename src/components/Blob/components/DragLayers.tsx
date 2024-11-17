@@ -539,7 +539,7 @@ const DragLayers = (props: DragLayerProps) => {
   //Mousewheel use
   function wheel(target: HTMLElement) {
     const zoomHandler = (e: WheelEvent) => zoom(e, target)
-    target.addEventListener('wheel', zoomHandler, { passive: false })
+    if (!scroll) target.addEventListener('wheel', zoomHandler, { passive: false })
     return () => {
       target.removeEventListener('wheel', zoomHandler)
     }
