@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { Data, Status } from '../interfaces'
 import CardSingle from './CardSingle'
 import { sanitize } from '../../../utils'
-import styles from '../dragAndDrop.module.css'
+import styles from '../draganddrop.module.css'
 import {
   EChange,
   EDelete,

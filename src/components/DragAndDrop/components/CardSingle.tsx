@@ -9,7 +9,7 @@ import {
   useEffect,
 } from 'react'
 import { Data, Status } from '../interfaces'
-import styles from '../dragAndDrop.module.css'
+import styles from '../draganddrop.module.css'
 import { MdContentCopy, MdLocationOn, MdOutlineDragIndicator } from 'react-icons/md'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
 import { EChooseDestination } from '../../../interfaces/draganddrop'
