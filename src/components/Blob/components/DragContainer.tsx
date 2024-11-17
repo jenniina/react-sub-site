@@ -2062,7 +2062,7 @@ export default function DragContainer({
                 <div ref={dragWrap} id={`drag-wrap${d}`} className='drag-wrap'>
                   <DragLayers
                     layerAmount={layerAmount}
-                    layer={activeLayer}
+                    layer_={activeLayer}
                     hiddenLayers={hiddenLayers}
                     changeBlobLayer={changeBlobLayer}
                     setActiveLayer={setActiveLayer}
@@ -2341,10 +2341,7 @@ export default function DragContainer({
                                 </button>
                                 <Accordion
                                   language={language}
-                                  id={`accordion-blobnewname-${versionName.replace(
-                                    /\s/g,
-                                    '-'
-                                  )}`}
+                                  id={`accordion-blobnewname-${sanitize(versionName)}`}
                                   className='blobnewname'
                                   wrapperClass='blobnewname-wrap'
                                   text={ERename[language]}
@@ -2355,41 +2352,43 @@ export default function DragContainer({
                                   }}
                                   isOpen={editName === versionName}
                                 >
-                                  <div className='input-wrap'>
-                                    <label
-                                      htmlFor={`blobnewname-${sanitize(versionName)}`}
-                                    >
-                                      <input
-                                        id={`blobnewname-${sanitize(versionName)}`}
-                                        type='text'
-                                        value={newName}
-                                        onChange={handleNewNameChange}
-                                        placeholder={ERenameYourArtwork[language]}
-                                        maxLength={30}
-                                      />
-                                      <span>{ERename[language]}:</span>{' '}
-                                      <span className='scr'>{versionName}</span>
-                                    </label>
-                                  </div>
-                                  <button
-                                    onClick={() => {
-                                      if (versionName !== newName) {
-                                        editBlobsByUser(versionName, newName)
-                                      } else
-                                        dispatch2(
-                                          notify(
-                                            `${EError[language]}: ${ERenameYourArtwork[language]}`,
-                                            true,
-                                            5
+                                  <>
+                                    <div className='input-wrap'>
+                                      <label
+                                        htmlFor={`blobnewname-${sanitize(versionName)}`}
+                                      >
+                                        <input
+                                          id={`blobnewname-${sanitize(versionName)}`}
+                                          type='text'
+                                          value={newName}
+                                          onChange={handleNewNameChange}
+                                          placeholder={ERenameYourArtwork[language]}
+                                          maxLength={30}
+                                        />
+                                        <span>{ERename[language]}:</span>{' '}
+                                        <span className='scr'>{versionName}</span>
+                                      </label>
+                                    </div>
+                                    <button
+                                      onClick={() => {
+                                        if (versionName !== newName) {
+                                          editBlobsByUser(versionName, newName)
+                                        } else
+                                          dispatch2(
+                                            notify(
+                                              `${EError[language]}: ${ERenameYourArtwork[language]}`,
+                                              true,
+                                              5
+                                            )
                                           )
-                                        )
-                                    }}
-                                  >
-                                    {EEdit[language]}{' '}
-                                    <span className='scr'>
-                                      {versionName}: {ENewName[language]} {newName}
-                                    </span>
-                                  </button>
+                                      }}
+                                    >
+                                      {EEdit[language]}{' '}
+                                      <span className='scr'>
+                                        {versionName}: {ENewName[language]} {newName}
+                                      </span>
+                                    </button>
+                                  </>
                                 </Accordion>
                               </div>
                             </li>

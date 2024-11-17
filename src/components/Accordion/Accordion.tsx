@@ -5,9 +5,9 @@ import {
   Ref,
   JSXElementConstructor,
   ReactElement,
-  ReactFragment,
   ReactPortal,
   useEffect,
+  ReactNode,
 } from 'react'
 import { EClose, ELanguages } from '../../interfaces'
 import { FaAnglesUp } from 'react-icons/fa6'
@@ -20,8 +20,8 @@ interface accordionProps {
     | number
     | boolean
     | ReactElement<any, string | JSXElementConstructor<any>>
-    | ReactFragment
     | ReactPortal
+    | ReactNode
     | null
     | undefined
   isOpen?: boolean

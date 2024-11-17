@@ -24,6 +24,7 @@ import {
 } from '../../../interfaces'
 import { notify } from '../../../reducers/notificationReducer'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
+import { sanitize } from '../../../utils'
 
 interface Props {
   language: ELanguages
@@ -36,7 +37,6 @@ interface Props {
   handleUpdate: (id: number, status: Status, target?: number) => void
   handleRemoveColor: (color: Data['content']) => void
   setTheTarget: Dispatch<SetStateAction<number>>
-  sanitize: (str: string) => string
   focusedCard: number | null
   setFocusedCard: Dispatch<SetStateAction<number | null>>
   translateStatus: (status: Status) => string
@@ -53,7 +53,6 @@ function CardSingle({
   handleUpdate,
   handleRemoveColor,
   setTheTarget,
-  sanitize,
   focusedCard,
   setFocusedCard,
   translateStatus,

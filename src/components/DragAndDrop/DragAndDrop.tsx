@@ -3,7 +3,7 @@ import { useState, useMemo, FormEvent, useEffect, useRef } from 'react'
 import { useDragAndDrop } from '../../hooks/useDragAndDrop'
 import { Status, Data, Lightness } from './interfaces'
 import { CardsContainer } from './components/CardsContainer'
-import styles from './dragAndDrop.module.css'
+import styles from './draganddrop.module.css'
 import { sanitize } from '../../utils'
 import {
   EAreYouSureYouWantToRemoveThis,
@@ -540,7 +540,6 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
             handleUpdate={handleUpdate}
             handleRemoveColor={handleRemoveColor}
             lightTheme={lightTheme}
-            sanitize={sanitize}
             updateStatus={updateStatus}
             reorderStatuses={reorderStatuses}
             deleteStatus={deleteStatus}

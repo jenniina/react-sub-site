@@ -31,36 +31,38 @@ export default function HairSalonPage({
                 wrapperClass='salon-features-wrap'
                 setIsFormOpen={setIsFormOpen}
               >
-                <h2>{EFeatures[language]}</h2>
-                <ul className='ul'>
-                  <li>{ESalonIntro1[language]}</li>
-                  <li>{ESalonIntro2[language]}</li>
-                  <li>{ESalonIntro3[language]}</li>
-                  <li>
-                    {EDependencies[language]}: React
-                    <ul>
-                      <li>react</li>
-                      <li>react-dom</li>
-                      <li>react-icons</li>
-                      <li>react redux</li>
-                      <li>@reduxjs/toolkit</li>
-                      <li>axios</li>
-                    </ul>
-                  </li>
-                  <li>
-                    {EDependencies[language]}: Node.js
-                    <ul>
-                      <li>express</li>
-                      <li>express-validator</li>
-                      <li>mysql2</li>
-                      <li>sequelize</li>
-                      <li>cors</li>
-                      <li>bcryptjs</li>
-                      <li>jsonwebtoken</li>
-                      <li>dotenv</li>
-                    </ul>
-                  </li>
-                </ul>
+                <>
+                  <h2>{EFeatures[language]}</h2>
+                  <ul className='ul'>
+                    <li>{ESalonIntro1[language]}</li>
+                    <li>{ESalonIntro2[language]}</li>
+                    <li>{ESalonIntro3[language]}</li>
+                    <li>
+                      {EDependencies[language]}: React
+                      <ul>
+                        <li>react</li>
+                        <li>react-dom</li>
+                        <li>react-icons</li>
+                        <li>react redux</li>
+                        <li>@reduxjs/toolkit</li>
+                        <li>axios</li>
+                      </ul>
+                    </li>
+                    <li>
+                      {EDependencies[language]}: Node.js
+                      <ul>
+                        <li>express</li>
+                        <li>express-validator</li>
+                        <li>mysql2</li>
+                        <li>sequelize</li>
+                        <li>cors</li>
+                        <li>bcryptjs</li>
+                        <li>jsonwebtoken</li>
+                        <li>dotenv</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </>
               </Accordion>
 
               <div

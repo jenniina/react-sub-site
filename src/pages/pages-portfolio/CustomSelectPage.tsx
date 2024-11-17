@@ -210,29 +210,33 @@ export default function CustomSelectPage({
                 className='features'
                 wrapperClass='features-wrap'
               >
-                <h2>{EFeatures[language]}</h2>
-                <ul className='ul'>
-                  <li>{ESingleSelectOrMultipleSelect[language]}</li>
-                  <li>{EMoveToItemWithKeyboardKeys[language]}</li>
-                  <li>{ELabelCanBeHiddenFromViewButIsStillAccessible[language]}</li>
-                </ul>
-                <h3>{EKeyboardUse[language]}</h3>
-                <ul className='ul'>
-                  <li>{ETabToSelectEnterOrSpaceToOpen[language]}</li>
-                  <li>{EUseUpAndDownArrowKeysToMoveToAnOption[language]}</li>
-                  <li>
-                    {
-                      EAlternativelyMoveToAnItemOnTheListByWritingTheFirstFewLetters[
-                        language
-                      ]
-                    }
-                  </li>
-                  <li>{ESelectOptionWithEnterOrSpace[language]}</li>
-                  <li>
-                    {EPressTabToMoveToTheSelectedButtonsOrToTheClearButton[language]}
-                  </li>
-                  <li>{EPressEscapeToCloseDropdownWithoutSelectingAnOption[language]}</li>
-                </ul>
+                <>
+                  <h2>{EFeatures[language]}</h2>
+                  <ul className='ul'>
+                    <li>{ESingleSelectOrMultipleSelect[language]}</li>
+                    <li>{EMoveToItemWithKeyboardKeys[language]}</li>
+                    <li>{ELabelCanBeHiddenFromViewButIsStillAccessible[language]}</li>
+                  </ul>
+                  <h3>{EKeyboardUse[language]}</h3>
+                  <ul className='ul'>
+                    <li>{ETabToSelectEnterOrSpaceToOpen[language]}</li>
+                    <li>{EUseUpAndDownArrowKeysToMoveToAnOption[language]}</li>
+                    <li>
+                      {
+                        EAlternativelyMoveToAnItemOnTheListByWritingTheFirstFewLetters[
+                          language
+                        ]
+                      }
+                    </li>
+                    <li>{ESelectOptionWithEnterOrSpace[language]}</li>
+                    <li>
+                      {EPressTabToMoveToTheSelectedButtonsOrToTheClearButton[language]}
+                    </li>
+                    <li>
+                      {EPressEscapeToCloseDropdownWithoutSelectingAnOption[language]}
+                    </li>
+                  </ul>
+                </>
               </Accordion>
               <a href='https://github.com/jenniina/react-sub-site/tree/main/src/components/Select'>
                 Github

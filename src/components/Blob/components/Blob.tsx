@@ -12,6 +12,7 @@ import {
 import { Draggable, focusedBlob } from '../interfaces'
 import { EBlob, ELanguages } from '../../../interfaces'
 import { ESelectedBlob, ESelectedBlobNone } from '../../../interfaces/blobs'
+import { clamp } from '../../../utils'
 
 interface BlobProps {
   d: number
@@ -59,10 +60,6 @@ interface BlobProps {
   selectedvalue0: RefObject<HTMLSpanElement>
   setFocusedBlob: Dispatch<SetStateAction<focusedBlob | null>>
   dragUlRef: RefObject<HTMLUListElement>
-}
-
-function clamp(min: number, val: number, max: number) {
-  return Math.min(Math.max(val, min), max)
 }
 
 const Blob = ({

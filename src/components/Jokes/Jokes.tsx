@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import FormJoke from './components/FormJoke'
+import { useEffect, useState, lazy, Suspense } from 'react'
+// import FormJoke from './components/FormJoke'
 import { SelectOption } from '../Select/Select'
 import './css/joke.css'
 import {
@@ -62,6 +62,7 @@ import {
   ELanguagesLong,
   TLanguageOfLanguage,
   IBlacklistedJoke,
+  ELoading,
 } from '../../interfaces'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
@@ -76,10 +77,10 @@ import {
   updateJoke,
 } from './reducers/jokeReducer'
 import { initializeUser } from '../../reducers/authReducer'
-import UserJokes from './components/UserJokes'
+//import UserJokes from './components/UserJokes'
 import norrisService from './services/chucknorris'
 import dadjokeService from './services/dadjokes'
-import JokeSubmit from './components/JokeSubmit'
+//import JokeSubmit from './components/JokeSubmit'
 import { useNavigate } from 'react-router-dom'
 import {
   addToBlacklistedJokes,
@@ -89,6 +90,10 @@ import {
 } from '../../reducers/usersReducer'
 import { AxiosError } from 'axios'
 import { options, getRandomMinMax } from '../../utils'
+
+const FormJoke = lazy(() => import('./components/FormJoke'))
+const JokeSubmit = lazy(() => import('./components/JokeSubmit'))
+const UserJokes = lazy(() => import('./components/UserJokes'))
 
 export const jokeCategoryByLanguage: IJokeCategoryByLanguage = {
   en: {
@@ -1457,43 +1462,45 @@ function Jokes({
               {EAJokeGeneratorForTheComicallyInclined[language]}
             </p>
 
-            <FormJoke
-              handleFormSubmit={handleFormSubmit}
-              jokeCategory={jokeCategory}
-              setJokeCategory={setJokeCategory}
-              categoryValues={categoryValues}
-              setCategoryValues={setCategoryValues}
-              setQueryValue={setQueryValue}
-              setLanguage={setLanguage}
-              language={language}
-              joke={joke}
-              delivery={delivery}
-              jokeId={jokeId}
-              author={author}
-              options={options}
-              getKeyByValue={getKeyByValue}
-              query={query}
-              setQuery={setQuery}
-              isCheckedSafemode={isCheckedSafemode}
-              isCheckedJokeType={isCheckedJokeType}
-              handleToggleChangeSafemode={handleToggleChangeSafemode}
-              handleToggleChangeEJokeType={handleToggleChangeEJokeType}
-              submitted={submitted}
-              reveal={reveal}
-              setReveal={setReveal}
-              handleJokeSave={handleJokeSave}
-              optionsCategory={optionsCategory}
-              categoryByLanguages={categoryByLanguages}
-              visibleJoke={visibleJoke}
-              setVisibleJoke={setVisibleJoke}
-              norrisCategories={norrisCategories}
-              selectedNorrisCategory={selectedNorrisCategory}
-              setSelectedNorrisCategory={setSelectedNorrisCategory}
-              hasNorris={hasNorris}
-              getCategoryInLanguage={getCategoryInLanguage}
-              subCategoryResults={subCategoryResults}
-              handleBlacklistUpdate={handleBlacklistUpdate}
-            />
+            <Suspense fallback={<div>{ELoading[language]}...</div>}>
+              <FormJoke
+                handleFormSubmit={handleFormSubmit}
+                jokeCategory={jokeCategory}
+                setJokeCategory={setJokeCategory}
+                categoryValues={categoryValues}
+                setCategoryValues={setCategoryValues}
+                setQueryValue={setQueryValue}
+                setLanguage={setLanguage}
+                language={language}
+                joke={joke}
+                delivery={delivery}
+                jokeId={jokeId}
+                author={author}
+                options={options}
+                getKeyByValue={getKeyByValue}
+                query={query}
+                setQuery={setQuery}
+                isCheckedSafemode={isCheckedSafemode}
+                isCheckedJokeType={isCheckedJokeType}
+                handleToggleChangeSafemode={handleToggleChangeSafemode}
+                handleToggleChangeEJokeType={handleToggleChangeEJokeType}
+                submitted={submitted}
+                reveal={reveal}
+                setReveal={setReveal}
+                handleJokeSave={handleJokeSave}
+                optionsCategory={optionsCategory}
+                categoryByLanguages={categoryByLanguages}
+                visibleJoke={visibleJoke}
+                setVisibleJoke={setVisibleJoke}
+                norrisCategories={norrisCategories}
+                selectedNorrisCategory={selectedNorrisCategory}
+                setSelectedNorrisCategory={setSelectedNorrisCategory}
+                hasNorris={hasNorris}
+                getCategoryInLanguage={getCategoryInLanguage}
+                subCategoryResults={subCategoryResults}
+                handleBlacklistUpdate={handleBlacklistUpdate}
+              />
+            </Suspense>
           </div>
         </div>
       </section>
@@ -1511,42 +1518,46 @@ function Jokes({
             </p>
           )}
           {user && (
-            <JokeSubmit
-              userId={user?._id}
-              language={language}
-              categoryByLanguages={categoryByLanguages}
-              getKeyByValue={getKeyByValue}
-              options={options}
-              optionsCategory={optionsCategory}
-              jokeCategoryByLanguage={jokeCategoryByLanguage}
-              norrisCategories={norrisCategories}
-            />
+            <Suspense fallback={<div>{ELoading[language]}...</div>}>
+              <JokeSubmit
+                userId={user?._id}
+                language={language}
+                categoryByLanguages={categoryByLanguages}
+                getKeyByValue={getKeyByValue}
+                options={options}
+                optionsCategory={optionsCategory}
+                jokeCategoryByLanguage={jokeCategoryByLanguage}
+                norrisCategories={norrisCategories}
+              />
+            </Suspense>
           )}
         </div>
       </section>
 
       <section className={`joke-container card ${language}`}>
         <div>
-          <UserJokes
-            user={user}
-            handleDelete={handleDelete}
-            language={language}
-            isCheckedSafemode={isCheckedSafemode}
-            setIsCheckedSafemode={setIsCheckedSafemode}
-            handleToggleChangeSafemode={handleToggleChangeSafemode}
-            translateWordLanguage={translateWordLanguage}
-            getKeyofEnum={getKeyofEnum}
-            options={options}
-            optionsSortBy={optionsSortBy}
-            norrisCategories={norrisCategories}
-            getCategoryInLanguage={getCategoryInLanguage}
-            handleUpdate={handleUpdate}
-            setIsEditOpen={setIsEditOpen}
-            editId={editId}
-            setEditId={setEditId}
-            handleRemoveJokeFromBlacklisted={handleRemoveJokeFromBlacklisted}
-            handleBlacklistUpdate={handleBlacklistUpdate}
-          />
+          <Suspense fallback={<div>{ELoading[language]}...</div>}>
+            <UserJokes
+              user={user}
+              handleDelete={handleDelete}
+              language={language}
+              isCheckedSafemode={isCheckedSafemode}
+              setIsCheckedSafemode={setIsCheckedSafemode}
+              handleToggleChangeSafemode={handleToggleChangeSafemode}
+              translateWordLanguage={translateWordLanguage}
+              getKeyofEnum={getKeyofEnum}
+              options={options}
+              optionsSortBy={optionsSortBy}
+              norrisCategories={norrisCategories}
+              getCategoryInLanguage={getCategoryInLanguage}
+              handleUpdate={handleUpdate}
+              setIsEditOpen={setIsEditOpen}
+              editId={editId}
+              setEditId={setEditId}
+              handleRemoveJokeFromBlacklisted={handleRemoveJokeFromBlacklisted}
+              handleBlacklistUpdate={handleBlacklistUpdate}
+            />
+          </Suspense>
         </div>
       </section>
     </>

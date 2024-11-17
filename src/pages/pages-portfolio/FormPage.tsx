@@ -49,31 +49,33 @@ export default function FormPage({
                 className='features'
                 wrapperClass='features-wrap'
               >
-                <h2>{EFeatures[language]}</h2>
-                <ul className='ul'>
-                  <li>{EMultiStep[language]}</li>
-                  <li>{EBackAndNextButtons[language]}</li>
-                  <li>{ECustomRadioAndCheckboxInputs[language]}</li>
-                  <li>{EPromptToFillInRequiredFields[language]}</li>
-                  <li>
-                    {EFormFields[language]}
-                    <ul>
-                      <li>{EFirstName[language]} * </li>
-                      <li>{ELastName[language]} *</li>
-                      <li>{EEmail[language]} *</li>
-                      <li>{EMessageSubject[language]}</li>
-                      <li>{EMessage[language]} *</li>
-                      <li>
-                        {EAnyEncouragingWords[language]}{' '}
-                        {EOrConstructiveFeedback[language]}
-                      </li>
-                      <li>{EAColorYouLike[language]}</li>
-                      <li>{EWhichModeDoYouPreferLightDark[language]}</li>
-                      <li>{EDoYouLikeMyCustomSelects[language]}</li>
-                      <li>{EGDPRConsent[language]}</li>
-                    </ul>
-                  </li>
-                </ul>
+                <>
+                  <h2>{EFeatures[language]}</h2>
+                  <ul className='ul'>
+                    <li>{EMultiStep[language]}</li>
+                    <li>{EBackAndNextButtons[language]}</li>
+                    <li>{ECustomRadioAndCheckboxInputs[language]}</li>
+                    <li>{EPromptToFillInRequiredFields[language]}</li>
+                    <li>
+                      {EFormFields[language]}
+                      <ul>
+                        <li>{EFirstName[language]} * </li>
+                        <li>{ELastName[language]} *</li>
+                        <li>{EEmail[language]} *</li>
+                        <li>{EMessageSubject[language]}</li>
+                        <li>{EMessage[language]} *</li>
+                        <li>
+                          {EAnyEncouragingWords[language]}{' '}
+                          {EOrConstructiveFeedback[language]}
+                        </li>
+                        <li>{EAColorYouLike[language]}</li>
+                        <li>{EWhichModeDoYouPreferLightDark[language]}</li>
+                        <li>{EDoYouLikeMyCustomSelects[language]}</li>
+                        <li>{EGDPRConsent[language]}</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </>
               </Accordion>
               <a href='https://github.com/jenniina/react-sub-site/tree/main/src/components/FormMulti'>
                 Github

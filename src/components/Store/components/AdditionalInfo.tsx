@@ -1,7 +1,5 @@
 import { FC, Dispatch, SetStateAction } from 'react'
 import { ELanguages, EPleaseNote } from '../../../interfaces'
-import Accordion from '../../Accordion/Accordion'
-import { EAdditionalInformation } from '../../../interfaces/form'
 import {
   EColorsMayVaryInPrintedWorks,
   EHourlyWork,

@@ -297,30 +297,36 @@ export default function BlobPage({
                   wrapperClass='sample-img-wrap'
                   showButton
                 >
-                  <figure>
-                    <img src={birb} style={blobStyle} alt={EFlyingBird[language]} />
-                    <figcaption>
-                      {ESampleArtwork[language]}: {EFlyingBird[language]}
-                    </figcaption>
-                  </figure>
-                  <figure>
-                    <img src={fish} style={blobStyle} alt={ESwimmingFish[language]} />
-                    <figcaption>
-                      {ESampleArtwork[language]}: {ESwimmingFish[language]}
-                    </figcaption>
-                  </figure>
-                  <figure>
-                    <img src={bubbly} style={blobStyle} alt={EBubblesAndFish[language]} />
-                    <figcaption>
-                      {ESampleArtwork[language]}: {EBubblesAndFish[language]}
-                    </figcaption>
-                  </figure>
-                  <figure>
-                    <img src={dog} style={blobStyle} alt={`${EDog[language]}?`} />
-                    <figcaption>
-                      {ESampleArtwork[language]}: {`${EDog[language]}?`}
-                    </figcaption>
-                  </figure>
+                  <>
+                    <figure>
+                      <img src={birb} style={blobStyle} alt={EFlyingBird[language]} />
+                      <figcaption>
+                        {ESampleArtwork[language]}: {EFlyingBird[language]}
+                      </figcaption>
+                    </figure>
+                    <figure>
+                      <img src={fish} style={blobStyle} alt={ESwimmingFish[language]} />
+                      <figcaption>
+                        {ESampleArtwork[language]}: {ESwimmingFish[language]}
+                      </figcaption>
+                    </figure>
+                    <figure>
+                      <img
+                        src={bubbly}
+                        style={blobStyle}
+                        alt={EBubblesAndFish[language]}
+                      />
+                      <figcaption>
+                        {ESampleArtwork[language]}: {EBubblesAndFish[language]}
+                      </figcaption>
+                    </figure>
+                    <figure>
+                      <img src={dog} style={blobStyle} alt={`${EDog[language]}?`} />
+                      <figcaption>
+                        {ESampleArtwork[language]}: {`${EDog[language]}?`}
+                      </figcaption>
+                    </figure>
+                  </>
                 </Accordion>
                 <Accordion
                   language={language}
@@ -328,48 +334,50 @@ export default function BlobPage({
                   className='blob-tips-and-tricks'
                   wrapperClass='blob-tips-and-tricks-wrap'
                 >
-                  <h2 id='blob-tips-heading'>{ETipsAndTricks[language]}</h2>
-                  <ul className='ul' aria-describedby='blob-tips-heading'>
-                    <li>
-                      {EIfYouNeedToSetABlobNearTheEdgeOfTheScreen[language]}.{' '}
-                      {
-                        EYouMayAlsoMoveTheEntireViewWithTheAngleQuotationMarkButtons[
-                          language
-                        ]
-                      }{' '}
-                    </li>
-                    <li>{EYouMayChangeBlobSizeWithTheMouseWheel[language]} </li>
-                    <li>
-                      {EYouMayUseKeyboardShortcutsWhileMouseIsPressedDown[language]}{' '}
-                    </li>
-                    <li>
-                      {EMoreColorsAvailableThroughRandomBlobButton[language]}.{' '}
-                      {EOverAThousandPossibleColorCombinations[language]}{' '}
-                      {EYouMayCloneARareColorBlobByPressingCOrD[language]}
-                    </li>
-                    <li>
-                      {
-                        EYouCanChangeTheDimensionsOfTheScreenshotByResizingYourBrowserWindow[
-                          language
-                        ]
-                      }
-                    </li>
-                    <li>
-                      {
-                        EIfABlobYouClickedHidesAnotherYouMayPlaceTheBlobBackToTheBottomOfThePile[
-                          language
-                        ]
-                      }
-                    </li>
-                    <li>
-                      <>{ERegisterAndLogInToSaveYourArtwork[language]}</>{' '}
-                      <div>
-                        <Link to='?login=login'>{ELogin[language]}</Link>
-                        &nbsp;&nbsp;/&nbsp;&nbsp;
-                        <Link to='?register=register'>{ERegister[language]}</Link>
-                      </div>
-                    </li>
-                  </ul>
+                  <>
+                    <h2 id='blob-tips-heading'>{ETipsAndTricks[language]}</h2>
+                    <ul className='ul' aria-describedby='blob-tips-heading'>
+                      <li>
+                        {EIfYouNeedToSetABlobNearTheEdgeOfTheScreen[language]}.{' '}
+                        {
+                          EYouMayAlsoMoveTheEntireViewWithTheAngleQuotationMarkButtons[
+                            language
+                          ]
+                        }{' '}
+                      </li>
+                      <li>{EYouMayChangeBlobSizeWithTheMouseWheel[language]} </li>
+                      <li>
+                        {EYouMayUseKeyboardShortcutsWhileMouseIsPressedDown[language]}{' '}
+                      </li>
+                      <li>
+                        {EMoreColorsAvailableThroughRandomBlobButton[language]}.{' '}
+                        {EOverAThousandPossibleColorCombinations[language]}{' '}
+                        {EYouMayCloneARareColorBlobByPressingCOrD[language]}
+                      </li>
+                      <li>
+                        {
+                          EYouCanChangeTheDimensionsOfTheScreenshotByResizingYourBrowserWindow[
+                            language
+                          ]
+                        }
+                      </li>
+                      <li>
+                        {
+                          EIfABlobYouClickedHidesAnotherYouMayPlaceTheBlobBackToTheBottomOfThePile[
+                            language
+                          ]
+                        }
+                      </li>
+                      <li>
+                        <>{ERegisterAndLogInToSaveYourArtwork[language]}</>{' '}
+                        <div>
+                          <Link to='?login=login'>{ELogin[language]}</Link>
+                          &nbsp;&nbsp;/&nbsp;&nbsp;
+                          <Link to='?register=register'>{ERegister[language]}</Link>
+                        </div>
+                      </li>
+                    </ul>
+                  </>
                 </Accordion>
                 <a href='https://github.com/jenniina/react-sub-site/tree/main/src/components/Blob'>
                   GitHub

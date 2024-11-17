@@ -1,7 +1,9 @@
 import { FC, ReactNode, Dispatch, SetStateAction } from 'react'
+import { Link } from 'react-router-dom'
 import styles from '../store.module.css'
 import { FaWordpress, FaReact, FaNodeJs } from 'react-icons/fa'
 import { ImImages } from 'react-icons/im'
+import { BsCart2 } from 'react-icons/bs'
 import { ELanguages, ERemove, ESavingSuccessful } from '../../../interfaces'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import {
@@ -16,8 +18,6 @@ import {
 import { notify } from '../../../reducers/notificationReducer'
 import { useTheme } from '../../../hooks/useTheme'
 import AdditionalInfo from './AdditionalInfo'
-import { Link } from 'react-router-dom'
-import { BsCart2 } from 'react-icons/bs'
 import { splitToLines } from '../../../utils'
 
 interface Props {
