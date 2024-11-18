@@ -76,6 +76,7 @@ interface Props {
     language: ELanguages,
     value: string | undefined
   ) => void
+  sending: boolean
 }
 const Form = ({
   handleFormSubmit,
@@ -113,6 +114,7 @@ const Form = ({
   getCategoryInLanguage,
   subCategoryResults,
   handleBlacklistUpdate,
+  sending,
 }: Props) => {
   useEffect(() => {
     setTimeout(() => {
@@ -239,7 +241,7 @@ const Form = ({
             </label>
           </div>
 
-          <button id='generate-joke' type='submit'>
+          <button id='generate-joke' type='submit' disabled={sending}>
             {EFindAJoke[language]}
           </button>
         </div>
@@ -250,6 +252,7 @@ const Form = ({
       </div>
       <Suspense fallback={<div>{ELoading[language]}...</div>}>
         <Joke
+          sending={sending}
           joke={joke}
           delivery={delivery}
           author={author}

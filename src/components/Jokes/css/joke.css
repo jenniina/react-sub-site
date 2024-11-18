@@ -685,8 +685,7 @@ form.joke > *:not(.toggle) {
   --width: calc(var(--height) * 3.5);
 }
 .toggle-wrap .joketype.es,
-.toggle-wrap .public.fi,
-.submit.anonymous {
+.toggle-wrap .public.fi {
   --width: calc(var(--height) * 3.7);
 }
 .toggle-wrap .safemode-container.cs,
@@ -700,7 +699,8 @@ form.joke > *:not(.toggle) {
 .toggle-wrap .public.de {
   --width: calc(var(--height) * 4.1);
 }
-.userjokes.localjokes {
+.userjokes.localjokes,
+.submit.anonymous {
   --width: calc(var(--height) * 4.7);
 }
 .userjokes.localjokes.fi {

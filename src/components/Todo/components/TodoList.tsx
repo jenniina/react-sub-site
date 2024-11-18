@@ -17,6 +17,7 @@ export default function TodoList({
   modifyTodo,
   modifyTodoOrder,
   todosWithIdAndStatus,
+  sending,
 }: {
   toggleTodo: (key: string | undefined) => void
   deleteTodo: (key: string | undefined) => void
@@ -24,6 +25,7 @@ export default function TodoList({
   modifyTodo: (key: string | undefined, name: string | undefined) => void
   modifyTodoOrder: (order: { key: ITask['key']; order: ITask['order'] }[]) => void
   todosWithIdAndStatus: ITaskDraggable[]
+  sending: boolean
 }) {
   // const todosWithIdAndStatus = todos
   //   ?.slice()
@@ -98,6 +100,7 @@ export default function TodoList({
           return (
             <Todo
               key={todo?.key}
+              sending={sending}
               toggleTodo={toggleTodo}
               deleteTodo={deleteTodo}
               todo={todosWithIdAndStatus?.find((t) => t.key === todo.key)}

@@ -109,6 +109,7 @@ import { initializeUser } from '../../../reducers/authReducer'
 import norrisService from '../services/chucknorris'
 import dadjokeService from '../services/dadjokes'
 import { initializeUsers } from '../../../reducers/usersReducer'
+import { s } from 'vite/dist/node/types.d-aGj9QkWt'
 
 interface Props {
   user: IUser | undefined
@@ -146,6 +147,7 @@ interface Props {
     language: ELanguages,
     value: string | undefined
   ) => void
+  sending: boolean
 }
 
 enum ESortBy_en {
@@ -180,6 +182,7 @@ const UserJokes = ({
   setEditId,
   handleRemoveJokeFromBlacklisted,
   handleBlacklistUpdate,
+  sending,
 }: Props) => {
   const users = useSelector((state: any) => state.users)
   const userId = user?._id
@@ -1156,7 +1159,7 @@ const UserJokes = ({
                       )
                     }}
                   >
-                    <button className='' type='submit'>
+                    <button className='' type='submit' disabled={sending}>
                       {ERestore[language]}
                     </button>
                   </form>
@@ -1175,7 +1178,7 @@ const UserJokes = ({
                 </li>
               ))
             ) : currentItems && currentItems?.length > 0 ? (
-              currentItems?.map((joke) => {
+              currentItems?.map((joke: IJokeVisible) => {
                 const { visible, translatedLanguage, ...restOfJoke } = joke
                 return (
                   <li key={joke._id}>
@@ -1279,7 +1282,11 @@ const UserJokes = ({
                             }
                             className='button-wrap'
                           >
-                            <button type='submit' className='delete danger'>
+                            <button
+                              type='submit'
+                              disabled={sending}
+                              className='delete danger'
+                            >
                               {joke.user?.length > 1
                                 ? ERemove[language]
                                 : EDelete[language]}
@@ -1659,7 +1666,7 @@ const UserJokes = ({
                                     <label htmlFor='edit-private'>Private:</label>
                                   </div>
                                 </fieldset>
-                                <button type='submit' className='save'>
+                                <button type='submit' disabled={sending} className='save'>
                                   {ESaveJoke[language]}
                                 </button>
                               </form>

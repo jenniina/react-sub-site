@@ -1,4 +1,4 @@
-import { useEffect, lazy, Suspense } from 'react'
+import { useEffect, lazy, Suspense, useState } from 'react'
 import { TiDeleteOutline } from 'react-icons/ti'
 import { useNavigate } from 'react-router-dom'
 import Hero from '../components/Hero/Hero'
@@ -50,6 +50,7 @@ const UserEditPage = ({
   const lightTheme = useTheme()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const [sending, setSending] = useState(false)
 
   const user = useSelector((state: ReducerProps) => {
     return state.auth?.user
@@ -71,22 +72,33 @@ const UserEditPage = ({
 
   const handleUserRemove = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setSending(true)
     if (user) {
-      if (window.confirm(`${EAreYouSureYouWantToDelete[language]} ${user.username}?`))
-        if (window.confirm(`${EYouWillLoseAllTheDataAssociatedWithIt[language]}`))
+      if (window.confirm(`${EAreYouSureYouWantToDelete[language]} ${user.username}?`)) {
+        if (window.confirm(`${EYouWillLoseAllTheDataAssociatedWithIt[language]}`)) {
           if (window.confirm(EDoYouWishToRemoveAnyJokesYouveAuthored[language])) {
             dispatch(removeUser(user._id, true)).then(() => {
               dispatch(logout())
               navigate('/')
               dispatch(notify(EAccountDeleted[language], false, 8))
             })
+            setSending(false)
           } else {
             dispatch(removeUser(user._id, false)).then(() => {
               dispatch(logout())
               navigate('/')
               dispatch(notify(EAccountDeleted[language], false, 8))
+              setSending(false)
             })
           }
+        } else {
+          setSending(false)
+        }
+      } else {
+        setSending(false)
+      }
+    } else {
+      setSending(false)
     }
   }
 
@@ -143,6 +155,7 @@ const UserEditPage = ({
                 <form onSubmit={handleUserRemove} className='flex center'>
                   <button
                     type='submit'
+                    disabled={sending}
                     className={`submit danger ${styles['delete-account']} ${styles.submit}`}
                   >
                     <TiDeleteOutline /> {EDeleteAccount[language]}

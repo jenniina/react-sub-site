@@ -445,7 +445,7 @@ const JokeSubmit = ({
               ? EPublishAnonymously[language]
               : EPublishWithNickname[language]}
           </p>
-          <button type='submit' className='small' id='submit-new-joke'>
+          <button type='submit' className='small' disabled={saving} id='submit-new-joke'>
             {saving
               ? ESaving[language]
               : isCheckedPrivate

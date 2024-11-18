@@ -28,9 +28,11 @@ const NicknameEdit = ({ user, language }: Props) => {
 
   const [name, setName] = useState<IUser['name'] | ''>(user?.name || '')
   const [passwordOld, setPasswordOld] = useState<IUser['password'] | ''>('')
+  const [sending, setSending] = useState(false)
 
   const handleUserSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setSending(true)
     try {
       const _id = user._id
       const editedUser = {
@@ -56,6 +58,7 @@ const NicknameEdit = ({ user, language }: Props) => {
                 setPasswordOld('')
               }
             }
+            setSending(false)
           })
           .catch((error: AxiosError<{ message?: string }>) => {
             console.error(error)
@@ -70,6 +73,7 @@ const NicknameEdit = ({ user, language }: Props) => {
                 dispatch(notify(EUserNotUpdated[language], true, 5))
               }, 2000)
             }
+            setSending(false)
           })
       }
 
@@ -78,6 +82,7 @@ const NicknameEdit = ({ user, language }: Props) => {
       if (error.response?.data?.message)
         dispatch(notify(error.response.data.message, true, 8))
       else console.error('error', error)
+      setSending(false)
     }
   }
 
@@ -120,7 +125,9 @@ const NicknameEdit = ({ user, language }: Props) => {
                 <span>{ECurrentPassword[language]}</span>
               </label>
             </div>
-            <button type='submit'>{EEdit[language]}</button>
+            <button type='submit' disabled={sending}>
+              {EEdit[language]}
+            </button>
           </form>
         </>
       ) : (

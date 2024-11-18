@@ -402,11 +402,14 @@ const Nav = (
   const [password, setPassword] = useState<string>('')
   const [confirmPassword, setConfirmPassword] = useState<string>('')
   const [name, setName] = useState<string>('')
+  const [sending, setSending] = useState(false)
 
   const handleRegister = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
+    setSending(true)
     if (password.trim() !== confirmPassword.trim()) {
       dispatch(notify(`${EPasswordsDoNotMatch}`, true, 8))
+      setSending(false)
       return
     }
     dispatch(createUser({ name, username, password, language, verified: false }))
@@ -422,6 +425,7 @@ const Nav = (
         setPassword('')
         setConfirmPassword('')
         setName('')
+        setSending(false)
       })
       .catch((err) => {
         console.error(err)
@@ -432,6 +436,7 @@ const Nav = (
           return
         }
         dispatch(notify(`Error: ${err.message}`, true, 8))
+        setSending(false)
       })
   }
 
@@ -721,6 +726,7 @@ const Nav = (
                       name={name}
                       setName={setName}
                       text='nav'
+                      sending={sending}
                     />
                   </div>
                 </>

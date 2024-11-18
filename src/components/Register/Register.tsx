@@ -30,6 +30,7 @@ interface Props {
   setIsFormOpen?: (isFormOpen: boolean) => void
   text?: string
   isOpen?: boolean
+  sending: boolean
 }
 const Register = ({
   language,
@@ -45,6 +46,7 @@ const Register = ({
   setIsFormOpen,
   isOpen,
   text,
+  sending,
 }: Props) => {
   const dispatch = useAppDispatch()
 
@@ -143,7 +145,7 @@ const Register = ({
                 >
                   <small>{EDisclaimer[language]}</small>
                 </Link>
-                <button type='submit' className='restore'>
+                <button type='submit' disabled={sending} className='restore'>
                   {ERegister[language]}
                 </button>
               </form>

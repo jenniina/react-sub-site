@@ -138,6 +138,7 @@ const Cart: FC<Props> = ({ language, cart, setCart, removeCart }) => {
   const [extra, setExtra] = useLocalStorage<ICart['extra']>('JCartExtra', '')
   const [GDPR, setGDPR] = useState<boolean>(false)
   const [terms, setTerms] = useState<boolean>(false)
+  const [sending, setSending] = useState<boolean>(false)
 
   const freeHoursBreakpoint1 = 5
   const freeHoursBreakpoint2 = 10
@@ -190,15 +191,19 @@ const Cart: FC<Props> = ({ language, cart, setCart, removeCart }) => {
       <form
         onSubmit={(e) => {
           e.preventDefault()
+          setSending(true)
           if (cart.length < 1) {
             dispatch(notify(EPleaseChooseAProduct[language], true, 8))
+            setSending(false)
           }
           if (!GDPR) {
             dispatch(notify(`${ERemember[language]}: ${EGDPRConsent[language]}`, true, 8))
+            setSending(false)
           } else if (!terms) {
             dispatch(
               notify(`${ERemember[language]}: ${ETermsOfService[language]}`, true, 8)
             )
+            setSending(false)
           } else if (
             (business &&
               name &&
@@ -247,17 +252,21 @@ const Cart: FC<Props> = ({ language, cart, setCart, removeCart }) => {
                   setCart([])
                   removeCart()
                   setTotal(0)
+                  setSending(false)
                 } else {
                   dispatch(notify(res.message, false, 10))
+                  setSending(false)
                 }
               })
               .catch((err) => {
                 if (err.response && err.response.data && err.response.data.message)
                   dispatch(notify(err.response.data.message, true, 8))
                 else dispatch(notify(err.message, true, 8))
+                setSending(false)
               })
           } else {
             dispatch(notify(EPleaseFillInTheFields[language], true, 8))
+            setSending(false)
           }
         }}
         className={styles['cart-form']}
@@ -756,7 +765,7 @@ const Cart: FC<Props> = ({ language, cart, setCart, removeCart }) => {
                   </span>
                 </label>
               </div>
-              <button className={styles.submit} type='submit'>
+              <button className={styles.submit} type='submit' disabled={sending}>
                 <span>{ESubmitOrder[language]}</span> <RiMailSendLine />
               </button>
               <Accordion

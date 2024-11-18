@@ -50,7 +50,7 @@ function NavPortfolio({ language }: { language: ELanguages }) {
   }
 
   const navItems: NavItem[] = [
-    { url: '/portfolio', name: `« ${EPortfolio[language]}`, special: 'first' },
+    { url: '/portfolio', name: `${EPortfolio[language]}`, special: 'first' },
     { url: '/portfolio/composer', name: EComposerOlliSanta[language] },
     { url: '/portfolio/blob', name: EBlob[language] },
     { url: '/portfolio/jokes', name: EJokes[language] },
@@ -130,7 +130,10 @@ function NavPortfolio({ language }: { language: ELanguages }) {
             }
           }}
         >
-          <NavLink to={item.url}>{item.name}</NavLink>
+          <NavLink to={item.url}>
+            {isFirst ? <span aria-hidden='true'>&laquo;&nbsp;</span> : ''}
+            {item.name}
+          </NavLink>
         </li>
       )
     })
