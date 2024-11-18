@@ -165,18 +165,19 @@ main {
 }
 #root .nav-sub .return a.active:hover span,
 #root .nav-sub .return a.active:focus span {
-  color: var(--color-secondary-3);
+  color: var(--color-primary-18);
   text-decoration: none;
 }
 #root .nav-sub .return a.active:hover,
 #root .nav-sub .return a.active:focus {
-  color: var(--color-secondary-3);
+  color: var(--color-primary-18);
   border-bottom-color: currentColor;
+  border-bottom-color: var(--color-secondary-10);
 }
 
 #root .light .nav-sub .return a.active:hover,
 #root .light .nav-sub .return a.active:focus {
-  color: var(--color-secondary-7);
+  border-bottom-color: var(--color-secondary-15);
   text-decoration: none;
 }
 .nav-sub .hide {
