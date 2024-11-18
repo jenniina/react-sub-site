@@ -692,6 +692,11 @@ const UserJokes = ({
     }
   }, [currentPage])
 
+  useEffect(() => {
+    handlePageChange(1)
+    setShowBlacklistedJokes(false)
+  }, [localJokes])
+
   const indexOfLastItem = currentPage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   const currentItems = filteredJokes?.slice(indexOfFirstItem, indexOfLastItem)
