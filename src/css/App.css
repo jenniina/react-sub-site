@@ -202,10 +202,7 @@ main {
 #root .light .nav-sub ul a > * {
   text-decoration-color: hsla(var(--hue-primary), 0%, 0%, 0);
 }
-.nav-sub ul a.active,
-.nav-sub ul a.active:hover {
-  border-bottom-color: currentColor;
-}
+
 .nav-sub ul a,
 .nav-sub ul a::after {
   border-radius: var(--radius-large);
@@ -245,6 +242,16 @@ main {
 .light .nav-sub ul a:focus {
   color: var(--color-primary-9);
   border-bottom-color: var(--color-secondary-15);
+}
+
+.nav-sub ul li:not(.return) a.active,
+.nav-sub ul li:not(.return) a.active:hover,
+.light .nav-sub ul li:not(.return) a.active,
+.light .nav-sub ul li:not(.return) a.active:hover {
+  pointer-events: none;
+  border-bottom-color: currentColor;
+  border-top-width: 2px;
+  border-bottom-width: 3px;
 }
 
 .nav-sub {
