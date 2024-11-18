@@ -110,6 +110,7 @@ import norrisService from '../services/chucknorris'
 import dadjokeService from '../services/dadjokes'
 import { initializeUsers } from '../../../reducers/usersReducer'
 import { s } from 'vite/dist/node/types.d-aGj9QkWt'
+import { EBack, ENext } from '../../../interfaces/form'
 
 interface Props {
   user: IUser | undefined
@@ -731,22 +732,24 @@ const UserJokes = ({
       <div>
         <div className='chevrons-wrap back'>
           <button
-            className={`inner-nav-btn first ${currentPage === 1 ? 'disabled' : ''} ${
-              pageNumbers?.length <= 3 ? 'hidden' : ''
-            }`}
+            className={`inner-nav-btn first tooltip-wrap ${
+              currentPage === 1 ? 'disabled' : ''
+            } ${pageNumbers?.length <= 3 ? 'hidden' : ''}`}
             disabled={currentPage === 1}
             onClick={() => handlePageChange(1)}
           >
-            <BiChevronsLeft /> <span className='scr'>{EFirstPage[language]}</span>
+            <BiChevronsLeft />{' '}
+            <span className='tooltip narrow below right'>{EFirstPage[language]}</span>
           </button>
           <button
-            className={`inner-nav-btn back ${currentPage === 1 ? 'disabled' : ''} ${
-              pageNumbers?.length <= 3 ? 'hidden' : ''
-            }`}
+            className={`inner-nav-btn back tooltip-wrap ${
+              currentPage === 1 ? 'disabled' : ''
+            } ${pageNumbers?.length <= 3 ? 'hidden' : ''}`}
             disabled={currentPage === 1}
             onClick={() => handlePageChange(currentPage - 1)}
           >
-            <BiChevronLeft />
+            <BiChevronLeft />{' '}
+            <span className='tooltip narrow below right'>{EBack[language]}</span>
           </button>
         </div>
         <div className={`numbers${pageNumbers?.length === 1 ? ' hidden' : ''}`}>
@@ -770,13 +773,14 @@ const UserJokes = ({
         </div>
         <div className='chevrons-wrap forward'>
           <button
-            className={`inner-nav-btn forward ${
+            className={`inner-nav-btn forward tooltip-wrap ${
               currentPage === pageNumbers?.length ? 'disabled' : ''
             } ${pageNumbers?.length <= 3 ? 'hidden' : ''}`}
             disabled={currentPage === pageNumbers?.length}
             onClick={() => handlePageChange(currentPage + 1)}
           >
-            <BiChevronRight />
+            <BiChevronRight />{' '}
+            <span className='tooltip narrow below left'>{ENext[language]}</span>
           </button>
           <button
             className={`inner-nav-btn last tooltip-wrap ${

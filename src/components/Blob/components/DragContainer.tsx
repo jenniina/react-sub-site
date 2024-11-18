@@ -1925,6 +1925,7 @@ export default function DragContainer({
                 </span>
               </button>
               <button
+                type='button'
                 id={`take-screenshot${d}`}
                 aria-labelledby={`take-screenshot${d}-span`}
                 disabled={loading}

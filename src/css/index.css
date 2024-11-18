@@ -269,7 +269,7 @@ button.reset.link:focus > * {
 .light button.reset.link:focus > * {
   color: var(--color-secondary-6);
   background-position: bottom;
-  transition-origin: bottom;
+  transform-origin: bottom;
   text-decoration-color: var(--color-secondary-19);
 }
 main a:visited,
