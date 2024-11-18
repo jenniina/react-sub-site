@@ -33,8 +33,10 @@ const Order: FC<Props> = ({ language, paidStatus, itemStatus, splitToLines, info
 
   const [order, setOrder] = useState<ICart | null>(null)
   const [orderID, setOrderID] = useState<ICart['orderID']>('')
+  const [sending, setSending] = useState(false)
 
   const fetchOrder = async (ID: ICart['orderID'] = orderID) => {
+    setSending(true)
     try {
       const order = await cartService.getOrderByOrderID(language, ID)
       const ordersWithDates = {
@@ -43,10 +45,12 @@ const Order: FC<Props> = ({ language, paidStatus, itemStatus, splitToLines, info
         updatedAt: new Date(order.updatedAt),
       }
       setOrder(ordersWithDates)
+      setSending(false)
     } catch (error: any) {
       if (error.response?.data?.message)
         dispatch(notify(error.response.data.message, true, 8))
       else dispatch(notify((error as Error).message, true, 8))
+      setSending(false)
     }
   }
 
@@ -80,7 +84,9 @@ const Order: FC<Props> = ({ language, paidStatus, itemStatus, splitToLines, info
             <span className='label'>{EOrderID[language]}</span>
           </label>
         </div>
-        <button type='submit'>{ESubmit[language]}</button>
+        <button type='submit' disabled={sending}>
+          {ESubmit[language]}
+        </button>
       </form>
       {order && (
         <div>

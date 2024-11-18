@@ -131,6 +131,7 @@ export default function TodoApp({ language }: Props) {
   }, [status, error, dispatch])
 
   const [loggedIn, setLoggedIn] = useState(false)
+  const [sending, setSending] = useState(false)
 
   useEffect(() => {
     if (user?._id && !loggedIn) {
@@ -153,8 +154,10 @@ export default function TodoApp({ language }: Props) {
   }
 
   const modifyTodo = async (key: string | undefined, name: string | undefined) => {
+    setSending(true)
     if (!key) {
       dispatch(notify(`Error: no key`, true, 8))
+      setSending(false)
       return
     }
     const todo = todos.find((todo) => todo.key === key)
@@ -164,17 +167,20 @@ export default function TodoApp({ language }: Props) {
         await dispatch(editTodoAsync(user._id, key, updatedTodo as ITask))
           .then(() => {
             dispatch(notify(`Todo updated`, false, 3))
+            setSending(false)
           })
           .catch((e) => {
             console.error(e)
             if (e.response?.data?.message)
               dispatch(notify(e.response.data.message, true, 8))
             else dispatch(notify(`${e}`, true, 8))
+            setSending(false)
           })
       } else {
         dispatch(editTodo(updatedTodo as ITask))
         const updatedTodos = todos.map((todo) => (todo.key === key ? updatedTodo : todo))
         window.localStorage.setItem(localName, JSON.stringify(updatedTodos))
+        setSending(false)
       }
     }
   }
@@ -210,16 +216,22 @@ export default function TodoApp({ language }: Props) {
 
   const handleAddTodo = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setSending(true)
     const name = todoNameRef.current?.value ?? ''
-    if (name === '') return
+    if (name === '') {
+      setSending(false)
+      return
+    }
     const key = uuidv4()
     const maxOrder = todos.reduce((max, todo) => (todo.order > max ? todo.order : max), 0)
     const newTodo = { key, name: name, complete: false, order: maxOrder + 1 }
     if (user) {
       dispatch(addTodoAsync(user._id, newTodo))
+      setSending(false)
     } else {
       dispatch(addTodo(newTodo))
       window.localStorage.setItem(localName, JSON.stringify([...todos, newTodo]))
+      setSending(false)
     }
     if (todoNameRef.current) todoNameRef.current.value = ''
   }
@@ -272,7 +284,7 @@ export default function TodoApp({ language }: Props) {
               autoComplete='off'
               placeholder={`${ETask[language]}...`}
             />
-            <button id={style['submit-todo']} type='submit'>
+            <button id={style['submit-todo']} type='submit' disabled={sending}>
               {EAddTask[language]}
             </button>
             <button
@@ -292,6 +304,7 @@ export default function TodoApp({ language }: Props) {
           {todos?.filter((todo) => !todo?.complete).length} {ELeftToDo[language]}
         </p>
         <TodoList
+          sending={sending}
           todosWithIdAndStatus={todosWithIdAndStatus}
           toggleTodo={toggleTodo}
           deleteTodo={deleteTodo}

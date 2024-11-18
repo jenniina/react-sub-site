@@ -23,18 +23,22 @@ const PasswordReset = ({ language, text }: Props) => {
   const dispatch = useAppDispatch()
 
   const [username, setUsername] = useState<string | undefined>('')
+  const [sending, setSending] = useState(false)
 
   const handleForgot = async (event: FormEvent) => {
     event.preventDefault()
+    setSending(true)
     dispatch(notify(`${ESendingEmail[language]}`, false, 2))
 
     if (username) {
       await dispatch(forgot(username, language))
         .then((r) => {
           dispatch(notify(r.message || EEmailSent[language], false, 3))
+          setSending(false)
         })
         .catch((e) => {
           dispatch(notify(EEmailSent[language], false, 3))
+          setSending(false)
           // console.error(e)
           // if (e.code === 'ERR_NETWORK') {
           //   dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
@@ -48,6 +52,7 @@ const PasswordReset = ({ language, text }: Props) => {
       dispatch(
         notify(`${EError[language]}: ${EEmail[language]} ${EPassword[language]}`, true, 8)
       )
+      setSending(false)
     }
   }
 
@@ -69,7 +74,12 @@ const PasswordReset = ({ language, text }: Props) => {
             <span>{EEmail[language]}: </span>
           </label>
         </div>
-        <button type='submit' id={`forgot-${text}`} className='forgot-btn restore'>
+        <button
+          type='submit'
+          disabled={sending}
+          id={`forgot-${text}`}
+          className='forgot-btn restore'
+        >
           <span>{ESendResetLink[language]}</span> <RiMailSendLine />
         </button>
       </form>

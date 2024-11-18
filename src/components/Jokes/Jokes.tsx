@@ -246,6 +246,7 @@ function Jokes({
   const [editId, setEditId] = useState<IJoke['_id'] | null>(null)
   const [lastJokes, setLastJokes] = useState<{ jokeId: string; language: string }[]>([])
   const [lastJokesLength, setLastJokesLength] = useState<number>(6)
+  const [sending, setSending] = useState<boolean>(false)
 
   const [flags, setFlags] = useState({
     nsfw: false,
@@ -313,6 +314,7 @@ function Jokes({
   // Handle form submit
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
+    setSending(true)
     setTimeout(() => {
       setVisibleJoke(true)
     }, 400)
@@ -322,6 +324,7 @@ function Jokes({
       setSubmitted(true)
       setTimeout(() => {
         setSubmitted(false)
+        setSending(false)
       }, 5500)
       // Scroll to the anchor with id "generated-joke"
       const generatedJokeAnchor = document.querySelector('#queryValue')
@@ -335,6 +338,7 @@ function Jokes({
     (id: IJoke['_id'], joke: string) =>
     async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
       e.preventDefault()
+      setSending(true)
       if (
         window.confirm(`${EDelete[language]} ${EJoke[language].toLowerCase()} "${joke}"?`)
       ) {
@@ -343,10 +347,12 @@ function Jokes({
           dispatch(deleteUserFromJoke(id as string, user?._id as string)).then(() => {
             dispatch(initializeJokes())
           })
+          setSending(false)
         } catch (error: any) {
           if (error.response?.data?.message)
             dispatch(notify(error.response.data.message, true, 8))
           else console.error(EErrorDeletingJoke[language], error)
+          setSending(false)
         }
       } else return
     }
@@ -355,9 +361,11 @@ function Jokes({
     (id: IJoke['_id'], joke: IJoke) =>
     async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
       e.preventDefault()
+      setSending(true)
       const jokeObject = jokes.find((j) => j._id === id)
       if (!jokeObject) {
         dispatch(notify(`${EError[language]}!`, true, 8))
+        setSending(false)
         return
       }
       const handleDispatch = async (joke: IJoke) => {
@@ -368,6 +376,7 @@ function Jokes({
           dispatch(notify(`${ESavedJoke[language]}. ${r.message ?? ''}`, false, 8))
           setEditId(null)
           setIsEditOpen(false)
+          setSending(false)
         } catch (e) {
           console.error(e)
           const errorMessage =
@@ -375,6 +384,7 @@ function Jokes({
               ? ((e as AxiosError<AxiosError>)?.response?.data?.message as string)
               : (e as Error)?.message ?? ''
           dispatch(notify(`${EError[language]}: ${errorMessage}`, true, 8))
+          setSending(false)
         }
       }
       const update = () => {
@@ -384,21 +394,26 @@ function Jokes({
             Object.values(joke.flags).some((value) => value)
           ) {
             handleDispatch({ ...joke, private: true, verified: false, safe: false })
+            setSending(false)
           } else {
             handleDispatch({ ...joke, private: true, verified: false, _id: id })
+            setSending(false)
           }
         } else if (
           joke.category != ECategories.Dark &&
           !Object.values(joke.flags).some((value) => value)
         ) {
           handleDispatch({ ...joke, safe: true, _id: id })
+          setSending(false)
         } else if (
           joke.category === ECategories.Dark ||
           Object.values(joke.flags).some((value) => value)
         ) {
           handleDispatch({ ...joke, safe: false, _id: id })
+          setSending(false)
         } else {
           handleDispatch(joke)
+          setSending(false)
         }
       }
       if (jokeObject.private === true && joke.private === false) {
@@ -1407,7 +1422,7 @@ function Jokes({
   ) => {
     e.preventDefault()
     dispatch(saveMostRecentJoke(joke))
-
+    setSending(true)
     if (window.confirm(`${EAreYouSureYouWantToRestoreThisJoke[language]}`)) {
       if (user) {
         dispatch(removeJokeFromBlacklisted(user?._id, bjoke_id, joke?.language))
@@ -1425,8 +1440,10 @@ function Jokes({
               dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
             }
           })
+        setSending(false)
       } else {
         dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
+        setSending(false)
       }
     }
     setTimeout(() => {
@@ -1445,8 +1462,10 @@ function Jokes({
                 dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
               }
             })
+          setSending(false)
         } else {
           dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
+          setSending(false)
         }
       }
     }, 600)
@@ -1464,6 +1483,7 @@ function Jokes({
 
             <Suspense fallback={<div>{ELoading[language]}...</div>}>
               <FormJoke
+                sending={sending}
                 handleFormSubmit={handleFormSubmit}
                 jokeCategory={jokeCategory}
                 setJokeCategory={setJokeCategory}
@@ -1538,6 +1558,7 @@ function Jokes({
         <div>
           <Suspense fallback={<div>{ELoading[language]}...</div>}>
             <UserJokes
+              sending={sending}
               user={user}
               handleDelete={handleDelete}
               language={language}

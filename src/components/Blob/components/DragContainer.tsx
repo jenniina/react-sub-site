@@ -596,12 +596,15 @@ export default function DragContainer({
   }
 
   const saveBlobsToServer = async (e: FormEvent) => {
+    setLoading(true)
     e.preventDefault()
     try {
       if (name.trim() === '') {
         dispatch2(notify(ENameYourArtwork[language], true, 8))
+        setLoading(false)
         return
       } else if (name.trim().length > 30) {
+        setLoading(false)
         dispatch2(
           notify(
             `${ENameTooLong[language]}. ${EAMaxOf30CharactersPlease[language]}`,
@@ -628,6 +631,7 @@ export default function DragContainer({
           )
           .then(() => {
             setTrackSaving(!trackSaving)
+            setLoading(false)
             dispatch2(notify(ESavingSuccessful[language], false, 8))
           })
           .catch((error) => {
@@ -637,11 +641,13 @@ export default function DragContainer({
           })
       } else {
         dispatch2(notify(ELoginToSaveBlobs[language], true, 8))
+        setLoading(false)
       }
     } catch (error: any) {
       if (error.response?.data?.message)
         dispatch(notify(error.response.data.message, true, 8))
       else dispatch2(notify(EError[language], true, 8))
+      setLoading(false)
     }
   }
 
@@ -2276,7 +2282,9 @@ export default function DragContainer({
                         <span>{ENameYourArtwork[language]}:</span>
                       </label>
                     </div>
-                    <button type='submit'>{ESave[language]}</button>
+                    <button type='submit' disabled={loading}>
+                      {ESave[language]}
+                    </button>
                   </form>
                 </div>
                 <div

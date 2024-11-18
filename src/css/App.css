@@ -151,12 +151,22 @@ main {
   margin-right: 1em;
   padding: 0;
 }
-#root .nav-sub .return a.active {
+#root .nav-sub .return a.active,
+#root .nav-sub .return a.active span {
   /*back to portfolio link*/
-  /* color: var(--color-visited); */
   pointer-events: all;
   cursor: pointer;
   border-bottom-color: var(--color-primary-8);
+}
+#root .nav-sub .return a.active span {
+  pointer-events: none;
+  text-decoration: none;
+  color: inherit;
+}
+#root .nav-sub .return a.active:hover span,
+#root .nav-sub .return a.active:focus span {
+  color: var(--color-secondary-3);
+  text-decoration: none;
 }
 #root .nav-sub .return a.active:hover,
 #root .nav-sub .return a.active:focus {
@@ -167,6 +177,7 @@ main {
 #root .light .nav-sub .return a.active:hover,
 #root .light .nav-sub .return a.active:focus {
   color: var(--color-secondary-7);
+  text-decoration: none;
 }
 .nav-sub .hide {
   /*hide back to portfolio link when on portfolio page*/
@@ -974,4 +985,11 @@ big > i {
 .disclaimer.page h2,
 .disclaimer.page h3 {
   text-align: left;
+}
+
+#root .survey-form > * {
+  margin-bottom: 2em;
+}
+#root .survey-form > h3 {
+  margin-bottom: 0.5em;
 }

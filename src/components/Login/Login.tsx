@@ -129,6 +129,7 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
                 </div>
                 <button
                   type='submit'
+                  disabled={loggingIn}
                   id={`login-${text}`}
                   className={`login ${text} restore`}
                 >

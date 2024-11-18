@@ -27,8 +27,11 @@ const LanguageEdit = ({ user, language, setLanguage, options, getKeyByValue }: P
 
   const [lang, setLang] = useState<ELanguages>((user?.language as ELanguages) ?? language)
 
+  const [sending, setSending] = useState(false)
+
   const handleUserSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setSending(true)
     try {
       const _id = user._id
       const editedUser = {
@@ -55,6 +58,7 @@ const LanguageEdit = ({ user, language, setLanguage, options, getKeyByValue }: P
                 setPasswordOld('')
               }
             }
+            setSending(false)
           })
           .catch((error: AxiosError<{ message?: string }>) => {
             console.error(error)
@@ -69,6 +73,7 @@ const LanguageEdit = ({ user, language, setLanguage, options, getKeyByValue }: P
                 dispatch(notify(EUserNotUpdated[language], true, 5))
               }, 2000)
             }
+            setSending(false)
           })
       }
 
@@ -77,6 +82,7 @@ const LanguageEdit = ({ user, language, setLanguage, options, getKeyByValue }: P
       if (error.response?.data?.message)
         dispatch(notify(error.response.data.message, true, 8))
       else console.error('error', error)
+      setSending(false)
     }
   }
 
@@ -119,7 +125,9 @@ const LanguageEdit = ({ user, language, setLanguage, options, getKeyByValue }: P
                 <span>{ECurrentPassword[language]}</span>
               </label>
             </div>
-            <button type='submit'>{EEdit[language]}</button>
+            <button type='submit' disabled={sending}>
+              {EEdit[language]}
+            </button>
           </form>
         </>
       ) : (

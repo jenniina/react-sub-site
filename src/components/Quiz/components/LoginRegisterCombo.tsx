@@ -34,22 +34,27 @@ const LoginRegisterCombo: FC<LoginRegisterComboProps> = ({
   const [password, setPassword] = useState<string>('')
   const [confirmPassword, setConfirmPassword] = useState<string>('')
   const [name, setName] = useState<string>('')
+  const [sending, setSending] = useState(false)
 
   const handleRegister = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
+    setSending(true)
     if (password.trim() !== confirmPassword.trim()) {
       dispatch(notify(EPasswordsDoNotMatch[language], true, 8))
+      setSending(false)
       return
     }
     dispatch(createUser({ name, username, password, language: 'en' }))
       .then(async () => {
         dispatch(notify(ERegistrationSuccesful[language], false, 8))
+        setSending(false)
       })
       .catch((err) => {
         console.error(err)
         if (err.response?.data?.message)
           dispatch(notify(err.response.data.message, true, 8))
         else dispatch(notify(`${EError[language]}: ${err.message}`, true, 8))
+        setSending(false)
       })
   }
 
@@ -68,6 +73,7 @@ const LoginRegisterCombo: FC<LoginRegisterComboProps> = ({
       </div>
       <div className={`${registerOpen ? 'open' : ''}`}>
         <Register
+          sending={sending}
           setIsFormOpen={setRegisterOpen}
           language={language}
           handleRegister={handleRegister}

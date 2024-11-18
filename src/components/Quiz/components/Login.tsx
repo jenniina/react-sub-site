@@ -28,6 +28,7 @@ interface Props {
 }
 const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
   const dispatch = useAppDispatch()
+  const [sending, setSending] = useState(false)
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -65,12 +66,14 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
 
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault()
+    setSending(true)
     dispatch(notify(ELoggingIn[language], false, 8))
 
     await dispatch(login(username, password, 'en'))
       .then(() => {
         setUsername('')
         setPassword('')
+        setSending(false)
       })
       .catch((e) => {
         if (e.response?.data?.message) dispatch(notify(e.response.data.message, true, 8))
@@ -79,6 +82,7 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
         else if (e.code === 'ERR_NETWORK') {
           dispatch(notify(`${EError['en']}: ${e.message}`, true, 8))
         }
+        setSending(false)
       })
   }
   return (
@@ -149,7 +153,7 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
                   <span>{EPassword[language]}: </span>
                 </label>
               </div>
-              <button type='submit' id='login' className='login'>
+              <button type='submit' disabled={sending} id='login' className='login'>
                 {ELogin[language]}
               </button>
             </form>

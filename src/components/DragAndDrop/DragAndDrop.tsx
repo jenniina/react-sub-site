@@ -74,7 +74,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     'DnD-userColors',
     []
   )
-
+  const [sending, setSending] = useState<boolean>(false)
   const [statuses, setStatuses, removeStatuses] = useLocalStorage(
     `${isLocalhost ? 'local-' : ''}DnD-statuses`,
     initialStatuses
@@ -173,6 +173,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
   }
 
   const addStatus = (newStatus: string) => {
+    setSending(true)
     if (regex.test(newStatus)) {
       const newStatusTrim = newStatus.trim().replace(/ /g, '_')
       if (newStatusTrim.length > 20) {
@@ -183,32 +184,42 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
             9
           )
         )
+        setSending(false)
         return
       }
       if (newStatus.trim() === '') {
         dispatch(notify(EPleaseFillInTheFields[language], true, 6))
+        setSending(false)
         return
       }
       //if new status is already in the list, notify:
       if (statuses.includes(newStatusTrim)) {
         dispatch(notify(ETheCategoryAlreadyExists[language], true, 6))
+        setSending(false)
         return
       }
       // if already length 8, don't allow more statuses
       if (statuses.length === 8) {
         dispatch(notify(ECannotAddMoreCategories[language], true, 8))
+        setSending(false)
         return
       }
       setStatuses((prevStatuses) => {
         if (newStatusTrim === '') {
+          setSending(false)
           return prevStatuses
         }
         if (prevStatuses.includes(newStatusTrim)) {
+          setSending(false)
           return prevStatuses
         }
+        setSending(false)
         return [...prevStatuses, newStatusTrim]
       })
-    } else dispatch(notify(ESpecialCharactersNotAllowed[language], true, 6))
+    } else {
+      dispatch(notify(ESpecialCharactersNotAllowed[language], true, 6))
+      setSending(false)
+    }
   }
 
   const reorderStatuses = (oldIndex: number, newIndex: number) => {
@@ -429,8 +440,10 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     statusForItem: Data['status']
   ) => {
     e.preventDefault()
+    setSending(true)
     if (newColor.trim() === '') {
       dispatch(notify(EPleaseFillInTheFields[language], true, 6))
+      setSending(false)
       return
     }
     // Check if there are more than one word. If the last word is a color, separate it and handle it as the color of the item:
@@ -461,6 +474,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
       })
 
       containerRef.current?.scrollIntoView({ behavior: 'smooth' })
+      setSending(false)
     } else {
       if (
         window.confirm(
@@ -481,6 +495,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
           return updatedColors
         })
         containerRef.current?.scrollIntoView({ behavior: 'smooth' })
+        setSending(false)
       }
     }
   }
@@ -572,7 +587,9 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
               <span>{EAddANewCategory[language]}</span>
             </label>
           </div>
-          <button type='submit'>{ESubmit[language]}</button>
+          <button type='submit' disabled={sending}>
+            {ESubmit[language]}
+          </button>
         </form>
       </div>
       <div className={styles['add-color']}>
@@ -614,7 +631,9 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
               )
             }
           />
-          <button type='submit'>{EAddAColor[language]}</button>
+          <button type='submit' disabled={sending}>
+            {EAddAColor[language]}
+          </button>
         </form>
         <p>
           <span>{ENeedHelp[language]} </span>{' '}

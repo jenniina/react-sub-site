@@ -140,12 +140,12 @@ export default function CustomSelectPage({
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-
+    setSending(true)
     if (data.issues == '' || data.favoriteHero == '') {
       setHasClickedSubmit(true)
       dispatch(notify(EPleaseSelectAnOption[language], true, 5))
+      setSending(false)
     } else {
-      setSending(true)
       if (form.current) {
         try {
           await sendEmail(data as SelectData).then(() => {
@@ -243,11 +243,16 @@ export default function CustomSelectPage({
               </a>
               <div className={selectStyles['selects-container']}>
                 <h2>{ECustomSelect[language]}</h2>
-                <form ref={form} onSubmit={handleSubmit} id='survey'>
-                  <FormWrapper
-                    className='flex'
-                    title={ESurvey[language]}
-                    description={EPleaseOfferSomeFeedback[language]}
+                <FormWrapper
+                  className='flex gap column'
+                  title={ESurvey[language]}
+                  description={EPleaseOfferSomeFeedback[language]}
+                >
+                  <form
+                    ref={form}
+                    onSubmit={handleSubmit}
+                    id='survey'
+                    className='survey-form'
                   >
                     <h3 className='left small margin0 regular'>
                       {EDidYouFindAnyIssuesOnThisSite[language]}
@@ -365,7 +370,11 @@ export default function CustomSelectPage({
                         {EItIsAlrightToSendTheEnteredInformationToJenniina[language]}{' '}
                       </label>
                     </div>
-                    <button type='submit' className={`${selectStyles.half} `}>
+                    <button
+                      type='submit'
+                      disabled={sending}
+                      className={`${selectStyles.half} `}
+                    >
                       <span>{sending ? ESendingEmail[language] : ESend[language]}</span>{' '}
                       <RiMailSendLine />
                     </button>
@@ -381,8 +390,8 @@ export default function CustomSelectPage({
                         {error ? error : EThankYouForYourMessage[language]}
                       </div>
                     )}
-                  </FormWrapper>
-                </form>
+                  </form>
+                </FormWrapper>
               </div>
             </div>
           </div>

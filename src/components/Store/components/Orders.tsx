@@ -59,6 +59,7 @@ const Orders: FC<Props> = ({
 
   const [orders, setOrders] = useState<ICart[] | null>(null)
   const [priceChanged, setPriceChanged] = useState<boolean>(false)
+  const [sending, setSending] = useState<boolean>(false)
 
   const fetchAllOrders = async () => {
     try {
@@ -120,16 +121,19 @@ const Orders: FC<Props> = ({
   }
 
   const updateOrder = async (order: ICart) => {
+    setSending(true)
     cartService
       .updateOrder(language, order, user._id)
       .then((r) => {
         if (r.success) dispatch(notify(`${r.message}`, false, 5))
         fetchAllOrders()
+        setSending(false)
       })
       .catch((error) => {
         if (error.response?.data?.message) {
           dispatch(notify(error.response.data.message, true, 8))
         } else dispatch(notify((error as Error).message, true, 8))
+        setSending(false)
       })
   }
 
@@ -258,7 +262,9 @@ const Orders: FC<Props> = ({
                         )
                       }}
                     />
-                    <button type='submit'>{ESubmit[language]}</button>
+                    <button type='submit' disabled={sending}>
+                      {ESubmit[language]}
+                    </button>
                   </form>
                 </>
               </Accordion>
@@ -441,7 +447,9 @@ const Orders: FC<Props> = ({
                           }}
                         />
 
-                        <button type='submit'>{ESubmit[language]}</button>
+                        <button type='submit' disabled={sending}>
+                          {ESubmit[language]}
+                        </button>
                       </form>
                     </>
                   </Accordion>
@@ -576,7 +584,9 @@ const Orders: FC<Props> = ({
                         </div>
                       )}
 
-                      <button type='submit'>{ESubmit[language]}</button>
+                      <button type='submit' disabled={sending}>
+                        {ESubmit[language]}
+                      </button>
                     </form>
                   </>
                 </Accordion>

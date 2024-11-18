@@ -30,6 +30,7 @@ interface Props {
     language: ELanguages,
     value: string | undefined
   ) => void
+  sending: boolean
 }
 const Joke = ({
   joke,
@@ -39,6 +40,7 @@ const Joke = ({
   reveal,
   setReveal,
   handleJokeSave,
+  sending,
   language,
   visibleJoke,
   getCategoryInLanguage,
@@ -103,7 +105,11 @@ const Joke = ({
       </article>
       {joke || delivery ? (
         <div className='save-delete-wrap'>
-          <button type='submit' className={`submit ${visibleJoke ? 'fadeIn' : ''}`}>
+          <button
+            type='submit'
+            disabled={sending}
+            className={`submit ${visibleJoke ? 'fadeIn' : ''}`}
+          >
             {ESaveJoke[language]}
           </button>
           <button

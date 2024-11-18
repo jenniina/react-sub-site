@@ -30,9 +30,11 @@ const UsernameEdit = ({ user, language }: Props) => {
 
   const [username, setUsername] = useState<IUser['username']>(user?.username ?? '')
   const [passwordOld, setPasswordOld] = useState<IUser['password'] | ''>('')
+  const [sending, setSending] = useState(false)
 
   const handleUserSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setSending(true)
     try {
       const _id = user._id
       const editedUser = {
@@ -45,6 +47,7 @@ const UsernameEdit = ({ user, language }: Props) => {
       if (user) {
         if (username.trim() === user.username.trim()) {
           dispatch(notify(`${EUsernameIsTheSame[language]}`, true, 5))
+          setSending(false)
           return
         }
         dispatch(updateUsername(editedUser))
@@ -57,6 +60,7 @@ const UsernameEdit = ({ user, language }: Props) => {
                 setPasswordOld('')
               }
             }
+            setSending(false)
           })
           .catch((error: AxiosError<{ message?: string }>) => {
             console.error(error)
@@ -69,6 +73,7 @@ const UsernameEdit = ({ user, language }: Props) => {
                 dispatch(notify(EUserNotUpdated[language], true, 5))
               }, 2000)
             }
+            setSending(false)
           })
       }
 
@@ -121,7 +126,9 @@ const UsernameEdit = ({ user, language }: Props) => {
               </label>
             </div>
 
-            <button type='submit'>{EEdit[language]}</button>
+            <button type='submit' disabled={sending}>
+              {EEdit[language]}
+            </button>
           </form>
         </>
       ) : (

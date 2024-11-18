@@ -181,7 +181,11 @@ function FormMulti({ language }: { language: ELanguages }) {
             </button>
           )}
           {isLastStep && (
-            <button className={isLastStep ? styles.submit : styles.next} type='submit'>
+            <button
+              className={isLastStep ? styles.submit : styles.next}
+              type='submit'
+              disabled={sending}
+            >
               {sending ? ESendingEmail[language] : ESend[language]} <RiMailSendLine />
             </button>
           )}

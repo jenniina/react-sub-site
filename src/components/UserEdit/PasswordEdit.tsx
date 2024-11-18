@@ -29,15 +29,19 @@ const PasswordEdit = ({ user, language }: Props) => {
   const [passwordOld, setPasswordOld] = useState<IUser['password'] | ''>('')
   const [password, setPassword] = useState<IUser['password'] | ''>('')
   const [confirmPassword, setConfirmPassword] = useState<IUser['password'] | ''>('')
+  const [sending, setSending] = useState(false)
 
   const handleUserSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setSending(true)
     try {
       if (password.trim() !== confirmPassword.trim()) {
         dispatch(notify(EPasswordsDoNotMatch[language], true, 5))
+        setSending(false)
         return
       } else if (password.length < 10) {
         dispatch(notify(EPasswordMustBeAtLeastTenCharacters[language], true, 5))
+        setSending(false)
         return
       }
       const _id = user._id
@@ -61,6 +65,7 @@ const PasswordEdit = ({ user, language }: Props) => {
                 setConfirmPassword('')
               }
             }
+            setSending(false)
           })
           .catch((error: AxiosError<{ message?: string }>) => {
             console.error(error)
@@ -73,6 +78,7 @@ const PasswordEdit = ({ user, language }: Props) => {
                 dispatch(notify(EUserNotUpdated[language], true, 5))
               }, 2000)
             }
+            setSending(false)
           })
       }
 
@@ -130,7 +136,9 @@ const PasswordEdit = ({ user, language }: Props) => {
                 <span>{EConfirmPassword[language]}</span>
               </label>
             </div>
-            <button type='submit'>{EEdit[language]}</button>
+            <button type='submit' disabled={sending}>
+              {EEdit[language]}
+            </button>
           </form>
         </>
       ) : (

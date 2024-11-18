@@ -54,13 +54,17 @@ export const CardsContainer = ({
   const [newStatus, setNewStatus] = useState<Status>('')
   const [focusedCard, setFocusedCard] = useState<number | null>(null)
   const outsideClickRef = useRef<HTMLSpanElement>(null)
+  const [sending, setSending] = useState(false)
 
   const handleStatusNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSending(true)
     const value = e.target.value
     if (regex.test(value)) {
       setNewStatus(value)
+      setSending(false)
     } else {
       dispatch(notify(ESpecialCharactersNotAllowed[language], true, 6))
+      setSending(false)
     }
   }
 
@@ -181,7 +185,9 @@ export const CardsContainer = ({
                   <span>{EChange[language]}:</span>
                 </label>
               </div>
-              <button type='submit'>{EChange[language]}</button>
+              <button type='submit' disabled={sending}>
+                {EChange[language]}
+              </button>
               <button
                 type='button'
                 className='danger delete'

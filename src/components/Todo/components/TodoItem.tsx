@@ -18,6 +18,7 @@ export default function Todo({
   isDragging,
   handleUpdate,
   handleDragging,
+  sending,
 }: {
   todo: ITaskDraggable | undefined
   toggleTodo: (key: string | undefined) => void
@@ -27,6 +28,7 @@ export default function Todo({
   isDragging: boolean
   handleUpdate: (id: number, status: string, target?: number) => void
   handleDragging: (dragging: boolean) => void
+  sending: boolean
 }) {
   const [newName, setNewName] = useState(todo?.name ?? '')
   const [isOpen, setIsOpen] = useState(false)
@@ -159,7 +161,7 @@ export default function Todo({
               </span>
             </label>
 
-            <button type='submit' className='modify'>
+            <button type='submit' disabled={sending} className='modify'>
               {EConfirm[language]}
             </button>
           </form>
