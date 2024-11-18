@@ -739,7 +739,7 @@ const UserJokes = ({
             onClick={() => handlePageChange(1)}
           >
             <BiChevronsLeft />{' '}
-            <span className='tooltip narrow below right'>{EFirstPage[language]}</span>
+            <span className='tooltip narrow2below right'>{EFirstPage[language]}</span>
           </button>
           <button
             className={`inner-nav-btn back tooltip-wrap ${
@@ -749,7 +749,7 @@ const UserJokes = ({
             onClick={() => handlePageChange(currentPage - 1)}
           >
             <BiChevronLeft />{' '}
-            <span className='tooltip narrow below right'>{EBack[language]}</span>
+            <span className='tooltip narrow2below right'>{EBack[language]}</span>
           </button>
         </div>
         <div className={`numbers${pageNumbers?.length === 1 ? ' hidden' : ''}`}>
@@ -780,7 +780,7 @@ const UserJokes = ({
             onClick={() => handlePageChange(currentPage + 1)}
           >
             <BiChevronRight />{' '}
-            <span className='tooltip narrow below left'>{ENext[language]}</span>
+            <span className='tooltip narrow2below left'>{ENext[language]}</span>
           </button>
           <button
             className={`inner-nav-btn last tooltip-wrap ${
@@ -790,7 +790,7 @@ const UserJokes = ({
             onClick={() => handlePageChange(pageNumbers?.length)}
           >
             <BiChevronsRight />
-            <span className='tooltip narrow left below'>
+            <span className='tooltip narrow2left below'>
               {ELastPage[language]}: {pageNumbers?.length}
             </span>
           </button>
