@@ -76,6 +76,7 @@ import {
   FlagsLanguage,
   EAddWarningTitle,
   ELoadingJokes,
+  EThisMayTakeUpToAMinute,
 } from '../interfaces'
 import {
   IUser,
@@ -92,7 +93,7 @@ import {
   EReset,
   ENewest,
   EOldest,
-  ELikedBy,
+  ESavedBy,
   ELastPage,
   EFirstPage,
   IBlacklistedJoke,
@@ -1276,7 +1277,7 @@ const UserJokes = ({
 
                         {joke.user?.length > 1 && (
                           <span>
-                            {ELikedBy[language]} {joke.user?.length}
+                            {ESavedBy[language]} {joke.user?.length}
                           </span>
                         )}
                       </div>
@@ -1687,7 +1688,11 @@ const UserJokes = ({
                 )
               })
             ) : (
-              <li>{ELoadingJokes[language]}</li>
+              <li className='margin0auto max-content'>
+                {ELoadingJokes[language]}
+                <br />
+                <br />({EThisMayTakeUpToAMinute[language]})
+              </li>
             )}
           </ul>
           {!isRandom && !showBlacklistedJokes && pagination(2)}

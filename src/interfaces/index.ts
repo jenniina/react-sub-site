@@ -1711,14 +1711,14 @@ export enum EOldest {
   cs = 'Nejstarší',
   fi = 'Vanhin',
 }
-export enum ELikedBy {
-  en = 'Liked by',
-  es = 'Le gustó a',
-  fr = 'Aimé par',
-  de = 'Gefällt von',
-  pt = 'Gostado por',
-  cs = 'Líbí se',
-  fi = 'Tykännyt',
+export enum ESavedBy {
+  en = 'Saved by',
+  es = 'Guardado por',
+  fr = 'Sauvegardé par',
+  de = 'Gespeichert von',
+  pt = 'Salvo por',
+  cs = 'Uloženo',
+  fi = 'Tallentanut',
 }
 export enum ELastPage {
   en = 'Last page',
