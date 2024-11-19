@@ -1599,3 +1599,13 @@ export enum ELoadingJokes {
   cs = 'Načítání vtipů...',
   fi = 'Ladataan vitsejä...',
 }
+
+export enum EThisMayTakeUpToAMinute {
+  en = 'This may take up to a minute',
+  es = 'Esto puede tardar hasta un minuto',
+  fr = "Cela peut prendre jusqu'à une minute",
+  de = 'Dies kann bis zu einer Minute dauern',
+  pt = 'Isso pode levar até um minuto',
+  cs = 'To může trvat až minutu',
+  fi = 'Tämä voi kestää jopa minuutin',
+}
