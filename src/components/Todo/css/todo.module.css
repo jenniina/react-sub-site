@@ -77,7 +77,6 @@
   min-width: 100%;
 }
 .todo-ul li .btn-wrap button {
-  max-height: 2rem;
   padding: 0.4rem 0.6rem;
   flex: 1 0 max-content;
   max-width: max-content;
@@ -111,8 +110,8 @@
   max-width: max-content;
 }
 .todo-ul li .btn-wrap.open > .modify-todo {
-  flex: 1 0 calc(100% - 3rem);
-  max-width: calc(100% - 3rem);
+  flex: 1 0 100%;
+  max-width: 100%;
   display: flex;
   flex-flow: row wrap;
   gap: 0.2em;
@@ -130,18 +129,6 @@
 }
 .todo-ul li .btn-wrap button.delete:focus-visible {
   outline: solid 2px red;
-}
-.todo-ul li .btn-wrap button.delete:hover::after {
-  content: attr(data-label);
-  position: absolute;
-  width: max-content;
-  padding: 0 0.3em;
-  border-radius: var(--radius-small);
-  right: calc(var(--width) * 2);
-  background-color: var(--color-primary-20);
-  color: darkred;
-  font-weight: bold;
-  z-index: 1;
 }
 .left-to-do {
   font-size: 0.9em;
@@ -181,6 +168,10 @@ form.modify {
 @media (min-width: 300px) {
   .left-to-do {
     font-size: 0.8em;
+  }
+  .todo-ul li .btn-wrap.open > .modify-todo {
+    flex: 1 0 calc(100% - 3rem);
+    max-width: calc(100% - 3rem);
   }
 } /*END media*/
 @media (min-width: 400px) {

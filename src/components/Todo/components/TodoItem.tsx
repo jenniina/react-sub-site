@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react'
-import { EConfirm, EDraggable, EEdit, EEtc, ELanguages } from '../../../interfaces'
+import {
+  EClose,
+  EConfirm,
+  EDraggable,
+  EEdit,
+  EEtc,
+  ELanguages,
+} from '../../../interfaces'
 import { EDeleteTask } from '../../../interfaces/todo'
 import Accordion from '../../Accordion/Accordion'
 import styles from '../css/todo.module.css'
@@ -8,6 +15,7 @@ import { EAreYouSureYouWantToDelete } from '../../UserEdit/interfaces'
 import { ETask } from '../interfaces'
 import { MdDragIndicator } from 'react-icons/md'
 import { sanitize, first3Words } from '../../../utils'
+import { FaAnglesUp } from 'react-icons/fa6'
 
 export default function Todo({
   todo,
@@ -153,6 +161,7 @@ export default function Todo({
                 id={`task_${sanitize(todo?.name)}`}
                 required
                 name='task'
+                rows={4}
                 value={newName}
                 onChange={handleChange}
               />
@@ -167,12 +176,15 @@ export default function Todo({
           </form>
         </Accordion>
         <button
-          className={`${styles['delete']}`}
-          onClick={handleDelete}
-          data-label={EDeleteTask[language]}
+          className={`${styles['delete']} tooltip-wrap`}
+          onClick={isOpen ? () => setIsOpen(false) : handleDelete}
         >
-          <span>&times;</span>
-          <span className='scr'>{EDeleteTask[language]}</span>
+          <span aria-hidden='true'>
+            {isOpen ? <FaAnglesUp style={{ fontSize: '0.8em' }} /> : <>&times;</>}
+          </span>
+          <span className='tooltip below left narrow2'>
+            {isOpen ? EClose[language] : EDeleteTask[language]}
+          </span>
         </button>
       </div>
     </li>
