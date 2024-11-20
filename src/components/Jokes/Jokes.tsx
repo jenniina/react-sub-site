@@ -48,6 +48,7 @@ import {
   EJokeRestored,
   EAreYouSureYouWantToRestoreThisJoke,
   EWouldYouLikeToSaveTheJoke,
+  EJokesLoaded,
 } from './interfaces'
 import {
   ELogin,
@@ -280,6 +281,14 @@ function Jokes({
 
   useEffect(() => {
     dispatch(initializeJokes())
+      .then(() => {
+        notify(`${EJokesLoaded[language]}...`, false, 3)
+      })
+      .catch((e) => {
+        if (e.response?.data?.message) dispatch(notify(e.response.data.message, true, 8))
+        else
+          dispatch(notify(`${EError[language]}: ${(e as Error)?.message ?? ''}`, true, 8))
+      })
   }, [])
 
   useEffect(() => {

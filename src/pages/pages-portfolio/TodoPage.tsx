@@ -78,7 +78,7 @@ export default function TodoPage({
         </section>
         <section className='card'>
           <div>
-            <div className='medium'>
+            <div className='medium flex column gap'>
               <h2>{ETodoApp[language]}</h2>
               <Suspense
                 fallback={

@@ -295,6 +295,7 @@ const JokeSubmit = ({
                 name='joke'
                 id='submit-joke-single-input'
                 required
+                rows={4}
                 value={joke}
                 onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
                   setJoke(e.target.value)
