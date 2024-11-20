@@ -103,7 +103,7 @@ export function ExtrasForm({
             autoFocus
             name='encouragement'
             value={encouragement}
-            rows={2}
+            rows={3}
             placeholder={EOrConstructiveFeedback[language]}
             onChange={(e) => updateFields({ encouragement: e.target.value })}
           />

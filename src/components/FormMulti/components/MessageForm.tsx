@@ -106,7 +106,7 @@ export function MessageForm({
           required
           name='message'
           value={message}
-          rows={3}
+          rows={4}
           placeholder={ELetMeKnowWhatOnYourMind[language]}
           onChange={(e) => updateFields({ message: e.target.value })}
         />

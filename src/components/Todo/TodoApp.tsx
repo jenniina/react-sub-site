@@ -135,9 +135,16 @@ export default function TodoApp({ language }: Props) {
 
   useEffect(() => {
     if (user?._id && !loggedIn) {
-      dispatch(syncTodos(user._id)).then(() => {
-        setLoggedIn(true)
-      })
+      dispatch(syncTodos(user._id))
+        .then(() => {
+          setLoggedIn(true)
+        })
+        .catch((e) => {
+          console.error(e)
+          if (e.response?.data?.message)
+            dispatch(notify(e.response.data.message, true, 8))
+          else dispatch(notify(`${e.message}`, true, 8))
+        })
     }
   }, [user?._id])
 
@@ -279,6 +286,7 @@ export default function TodoApp({ language }: Props) {
               ref={todoNameRef}
               id='taskinput'
               className={`bg`}
+              rows={3}
               name='task'
               required
               autoComplete='off'
