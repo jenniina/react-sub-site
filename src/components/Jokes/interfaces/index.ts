@@ -1599,6 +1599,15 @@ export enum ELoadingJokes {
   cs = 'Načítání vtipů...',
   fi = 'Ladataan vitsejä...',
 }
+export enum EJokesLoaded {
+  en = 'Jokes loaded',
+  es = 'Bromas cargadas',
+  fr = 'Blagues chargées',
+  de = 'Witze geladen',
+  pt = 'Piadas carregadas',
+  cs = 'Vtipy načteny',
+  fi = 'Vitsit ladattu',
+}
 
 export enum EThisMayTakeUpToAMinute {
   en = 'This may take up to a minute',
