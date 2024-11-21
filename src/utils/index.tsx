@@ -74,3 +74,13 @@ export const scrollIntoView = (
 export function clamp(min: number, val: number, max: number) {
   return Math.min(Math.max(val, min), max)
 }
+
+export function createSelectOptions(
+  enums: Array<Record<ELanguages, string>>,
+  language: ELanguages
+): SelectOption[] {
+  return enums.map((enumObj) => {
+    const label = enumObj[language]
+    return { label, value: label }
+  })
+}

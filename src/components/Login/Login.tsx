@@ -15,6 +15,7 @@ import {
   EError,
   ELoggingIn,
   EEdit,
+  ELoggedOut,
 } from '../../interfaces'
 import { Link } from 'react-router-dom'
 
@@ -44,6 +45,13 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
 
   const handleLogout = () => {
     dispatch(logout())
+      .then(() => {
+        dispatch(notify(`${ELoggedOut[language]}`, false, 4))
+      })
+      .catch((e) => {
+        console.error(e)
+        dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
+      })
   }
 
   const handleLogin = async (event: FormEvent) => {

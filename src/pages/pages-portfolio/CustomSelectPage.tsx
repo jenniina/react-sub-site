@@ -16,10 +16,16 @@ import {
   EDarkMode,
   EDiamondShapes,
   EDragAndDrop,
+  EEightSidedJewels,
   EEmail,
   EEyes,
   EFeatures,
+  EFourSidedJewels,
+  EGraphQLSite,
+  EHairSalonWebsite,
+  EInvertedTriangles,
   EItIsAlrightToSendTheEnteredInformationToJenniina,
+  EJokePage,
   EKeyboardUse,
   ELanguages,
   ELightMode,
@@ -30,6 +36,7 @@ import {
   EOther,
   EPleaseOfferSomeFeedback,
   EPleaseSelectAnOption,
+  EQuizApp,
   ESend,
   ESendingEmail,
   ESurvey,
@@ -66,6 +73,8 @@ import { EThereWasAnErrorSendingTheMessage } from '../../interfaces/form'
 import { EClickHereToSeeFeatures } from '../../components/Jokes/interfaces'
 import Accordion from '../../components/Accordion/Accordion'
 import { RiMailSendLine } from 'react-icons/ri'
+import { EComposerPage, EMusicNotes } from '../../interfaces/composer'
+import { createSelectOptions } from '../../utils'
 
 export default function CustomSelectPage({
   heading,
@@ -78,47 +87,51 @@ export default function CustomSelectPage({
   type: string
   language: ELanguages
 }) {
-  function createSelectOptions(
-    enums: Array<Record<ELanguages, string>>,
-    language: ELanguages
-  ): SelectOption[] {
-    return enums.map((enumObj) => {
-      const label = enumObj[language]
-      return { label, value: label }
-    })
-  }
+  const issueEnums = [
+    ENoIssues,
+    EAccessibility,
+    EAppearance,
+    EText,
+    ETranslations,
+    EAnimation,
+    ELightMode,
+    EDarkMode,
+    ENavigation,
+    EButtons,
+    EBlobApp,
+    EDragAndDrop,
+    ETodoApp,
+    ECustomSelect,
+    EMultiStepContactForm,
+    EJokePage,
+    EQuizApp,
+    EComposerPage,
+    EHairSalonWebsite,
+    EGraphQLSite,
+    EOther,
+  ]
 
-  const options1 = createSelectOptions(
-    [
-      EAccessibility,
-      EAppearance,
-      EText,
-      EAnimation,
-      ELightMode,
-      EDarkMode,
-      ENavigation,
-      EButtons,
-      EBlobApp,
-      EDragAndDrop,
-      ETodoApp,
-      ECustomSelect,
-      EMultiStepContactForm,
-      ETranslations,
-      EOther,
-      ENoIssues,
-    ],
-    language
-  )
+  const enumOptions2 = [
+    EPleaseSelectAnOption,
+    EBlobs,
+    EBubbles,
+    EEyes,
+    EDiamondShapes,
+    EInvertedTriangles,
+    EFourSidedJewels,
+    EEightSidedJewels,
+    EMusicNotes,
+  ]
 
-  const options2 = createSelectOptions(
-    [EPleaseSelectAnOption, EBlobs, EBubbles, EEyes, EDiamondShapes],
-    language
-  )
+  const options1 = createSelectOptions(issueEnums, language)
+
+  const options2 = createSelectOptions(enumOptions2, language)
 
   const [value1, setValue1] = useState<SelectOption[]>([])
   const [value2, setValue2] = useState<SelectOption | undefined>(options2[0])
   const [input, setInput] = useState<string>('')
   const [email, setEmail] = useState<string>('')
+  const [oldLanguage, setOldLanguage] = useState<ELanguages>(language)
 
   const [data, setData] = useState<SelectData>({
     language: language,
@@ -127,6 +140,53 @@ export default function CustomSelectPage({
     clarification: '',
     email: '',
   })
+
+  useEffect(() => {
+    const translateIssues = (issues: string, newLanguage: ELanguages) => {
+      const translatedIssues = issues
+        .split(', ')
+        .map((issue) => {
+          const enumObj = issueEnums.find((enumObj) => enumObj[oldLanguage] === issue)
+          return enumObj ? enumObj[newLanguage] : issue
+        })
+        .join(', ')
+      return translatedIssues
+    }
+
+    setData((prevData) => ({
+      ...prevData,
+      issues: translateIssues(prevData.issues || '', language),
+    }))
+
+    const translateValue1 = (valueArray: SelectOption[], newLanguage: ELanguages) => {
+      return valueArray.map((option) => {
+        const enumObj = issueEnums.find(
+          (enumObj) => enumObj[oldLanguage] === option.label
+        )
+        return enumObj ? { ...option, label: enumObj[newLanguage] } : option
+      })
+    }
+
+    const translateValue2 = (
+      value: SelectOption | undefined,
+      newLanguage: ELanguages
+    ) => {
+      if (value) {
+        const enumObj = enumOptions2.find(
+          (enumObj) => enumObj[oldLanguage] === value.label
+        )
+        return enumObj ? { ...value, label: enumObj[newLanguage] } : value
+      }
+      return value
+    }
+
+    setValue1((prevValue1) => translateValue1(prevValue1, language))
+    setValue2((prevValue2) => translateValue2(prevValue2, language))
+    setTimeout(() => {
+      setOldLanguage(language)
+    }, 1000)
+  }, [language])
+
   const [sending, setSending] = useState(false)
   const [hasClickedSubmit, setHasClickedSubmit] = useState(false)
 
@@ -141,7 +201,12 @@ export default function CustomSelectPage({
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setSending(true)
-    if (data.issues == '' || data.favoriteHero == '') {
+    if (
+      data.issues == '' ||
+      data.favoriteHero == '' ||
+      data.favoriteHero == undefined ||
+      data.issues == undefined
+    ) {
       setHasClickedSubmit(true)
       dispatch(notify(EPleaseSelectAnOption[language], true, 5))
       setSending(false)
@@ -158,6 +223,13 @@ export default function CustomSelectPage({
               setShowMessage(false)
             }, 100000)
             setHasClickedSubmit(false)
+            setData({
+              language: language,
+              issues: '',
+              favoriteHero: '',
+              clarification: '',
+              email: '',
+            })
             dispatch(notify(EThankYouForYourMessage[language], false, 8))
           })
         } catch (err: any) {

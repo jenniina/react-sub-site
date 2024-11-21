@@ -45,3 +45,21 @@ export enum EComposerIntro3 {
   cs = 'Stránka je postavena s Reactem a Node.js, s daty uloženými v MongoDB. Webová stránka je jednostránková aplikace (SPA), která používá React Router k navigaci mezi různými sekcemi webu. Stránka je stylována s CSS a používá CSS animace k vytvoření dynamické uživatelské zkušenosti. Stránka poskytuje rozhraní API pro přihlášení a zobrazení zpráv odeslaných Ollimu.',
   fi = 'Sivusto on rakennettu Reactilla ja Node.js:llä, ja tiedot tallennetaan MongoDB:hen. Sivusto on yhden sivun sovellus (SPA), joka käyttää React Routeria navigoidakseen sivuston eri osioiden välillä. Sivusto on tyylitelty CSS:llä ja käyttää CSS-animaatioita luodakseen dynaamisen käyttäjäkokemuksen. Sivusto tarjoaa API-rajapinnan Ollille sisäänkirjautumista ja lähetettyjen viestien tarkastelua varten.',
 }
+export enum EMusicNotes {
+  en = 'Music Notes',
+  es = 'Notas Musicales',
+  fr = 'Notes de Musique',
+  de = 'Musiknoten',
+  pt = 'Notas Musicais',
+  cs = 'Hudební Noty',
+  fi = 'Nuotit',
+}
+export enum EComposerPage {
+  en = 'Composer Page',
+  es = 'Página del Compositor',
+  fr = 'Page du Compositeur',
+  de = 'Komponistenseite',
+  pt = 'Página do Compositor',
+  cs = 'Stránka Skladatele',
+  fi = 'Säveltäjän sivu',
+}
