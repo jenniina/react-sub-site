@@ -354,9 +354,9 @@ export function Select({
       </div>
       {showValidationError && (
         <span className={`${styles['required-message']} required-message`}>
-          &#11165;
-          {requiredMessage}
-          &#11165;
+          <span className={styles['caret-up']}></span>
+          <span>{requiredMessage}</span>
+          <span className={styles['caret-up']}></span>
         </span>
       )}
     </div>

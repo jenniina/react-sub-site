@@ -3,6 +3,18 @@
 }
 
 .select-container {
+  --color-text: var(--color-primary-20);
+  --color-fg: var(--color-primary-13);
+  --color-bg-main: var(--color-primary-2);
+  --color-bg-selected: var(--color-primary-5);
+  --color-highlighted: var(--color-primary-7);
+  --color-warning: red;
+  --padding: 0.5em;
+  --size: 1.5em;
+  --border: 0.05em;
+  --radius: 0.3em;
+  --transition-type: ease-in-out;
+  --transition-duration: 0.3s;
   position: relative;
   display: flex;
   gap: 1rem;
@@ -18,19 +30,6 @@
 }
 
 .container {
-  --color-text: var(--color-primary-20);
-  --color-fg: var(--color-primary-13);
-  --color-bg-main: var(--color-primary-2);
-  --color-bg-selected: var(--color-primary-5);
-  --color-highlighted: var(--color-primary-7);
-  --color-warning: red;
-  --padding: 0.5em;
-  --size: 1.5em;
-  --border: 0.05em;
-  --radius: 0.3em;
-  --transition-type: ease-in-out;
-  --transition-duration: 0.3s;
-
   position: relative;
 
   width: 13em;
@@ -133,6 +132,31 @@ button.clear-btn:hover {
 .caret:hover {
   border-top-color: var(--color-text);
   cursor: pointer;
+}
+.required-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+.caret-up {
+  display: inline-block;
+  border: calc(var(--border) * 5) solid transparent;
+  border-bottom-color: red;
+  border-bottom-width: calc(var(--border) * 12);
+  transform: translateY(-45%);
+  z-index: -1;
+}
+.caret-up::after {
+  content: '';
+  display: block;
+  position: absolute;
+  background: red;
+  bottom: calc(var(--border) * -22);
+  left: 50%;
+  width: calc(var(--border) * 2);
+  height: calc(var(--border) * 10);
+  transform: translateX(-50%);
 }
 
 .options {
