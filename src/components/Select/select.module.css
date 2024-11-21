@@ -132,6 +132,7 @@ button.clear-btn:hover {
 .container:hover .caret,
 .caret:hover {
   border-top-color: var(--color-text);
+  cursor: pointer;
 }
 
 .options {

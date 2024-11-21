@@ -104,6 +104,15 @@ export enum ELogout {
   cs = 'Odhlásit se',
   fi = 'Kirjaudu ulos',
 }
+export enum ELoggedOut {
+  en = 'Logged out',
+  es = 'Desconectado',
+  fr = 'Déconnecté',
+  de = 'Ausgeloggt',
+  pt = 'Desconectado',
+  cs = 'Odhlášeno',
+  fi = 'Kirjauduttu ulos',
+}
 export enum ERegister {
   en = 'Register',
   es = 'Registrarse',
@@ -2728,4 +2737,31 @@ export enum EClarifications {
   pt = 'Clarificações',
   cs = 'Ujasnění',
   fi = 'Selvennyksiä',
+}
+export enum EFourSidedJewels {
+  en = 'Four-sided jewels',
+  es = 'Joyas de cuatro lados',
+  fr = 'Joyaux à quatre côtés',
+  de = 'Vierseitige Juwelen',
+  pt = 'Joias de quatro lados',
+  cs = 'Čtyřstranné šperky',
+  fi = 'Nelisivuiset jalokivet',
+}
+export enum EEightSidedJewels {
+  en = 'Eight-sided jewels',
+  es = 'Joyas de ocho lados',
+  fr = 'Joyaux à huit côtés',
+  de = 'Achtseitige Juwelen',
+  pt = 'Joias de oito lados',
+  cs = 'Osmistranné šperky',
+  fi = 'Kahdeksansivuiset jalokivet',
+}
+export enum EJokePage {
+  en = 'Joke page',
+  es = 'Página de chiste',
+  fr = 'Page de blague',
+  de = 'Witzseite',
+  pt = 'Página de piada',
+  cs = 'Stránka vtipů',
+  fi = 'Vitsisivu',
 }

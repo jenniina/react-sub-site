@@ -549,19 +549,20 @@ export default function DragContainer({
               // }, 300)
               setSavedDraggablesByD(sortedDraggables)
               setHasSavedFiles(Object.keys(sortedDraggables).length > 0)
+              setIsLoading(false)
             }
           })
           .catch((error) => {
             if (error.response?.data?.message)
               dispatch(notify(error.response.data.message, true, 8))
             else dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
+            setIsLoading(false)
           })
       }
     } catch (error: any) {
       if (error.response?.data?.message)
         dispatch(notify(error.response.data.message, true, 8))
       else dispatch2(notify(EError[language], true, 8))
-    } finally {
       setIsLoading(false)
     }
   }
