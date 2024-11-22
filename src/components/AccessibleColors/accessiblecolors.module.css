@@ -1,0 +1,108 @@
+.color-container {
+  overflow: visible;
+}
+
+.color-picker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.color-blocks {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0;
+  overflow-x: auto;
+  overflow-y: visible;
+  height: max-content;
+}
+
+.block-wrap {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3em;
+  padding: 0;
+  margin: 0;
+}
+.color-wrap,
+.color-block {
+  position: relative;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 5px;
+  box-sizing: border-box;
+}
+.color-block {
+  cursor: grab;
+}
+.color-block:active {
+  cursor: grabbing;
+}
+.block-wrap button {
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0 0.3em;
+}
+
+.compliance-indicators {
+  position: absolute;
+  top: 1em;
+  left: 50%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  transform: translateX(-50%);
+}
+
+.indicator-aa::before,
+.indicator-aaa::before,
+.indicator-null::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: var(--left);
+  width: var(--width-full);
+  height: 2px;
+  border-radius: 0;
+  background-color: var(--color);
+}
+
+.indicator-aa {
+  position: relative;
+  margin: 0.5em;
+  border-radius: 5%;
+  cursor: pointer;
+}
+
+.indicator-aaa {
+  position: relative;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.indicator-null {
+  position: relative;
+  cursor: default;
+}
+
+.compliance-info {
+  background: black;
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-size: 10px;
+  text-align: center;
+}

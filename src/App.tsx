@@ -28,6 +28,7 @@ import CartPage from './pages/CartPage'
 import StorePage from './pages/StorePage'
 import OrderPage from './pages/OrderPage'
 import TermsOfService from './pages/TermsOfService'
+import ColorsPage from './pages/pages-portfolio/ColorsPage'
 //import Footer from './components/Footer/Footer'
 import { useTheme } from './hooks/useTheme'
 import { useScrollbarWidth } from './hooks/useScrollbarWidth'
@@ -78,6 +79,7 @@ import { EReactApps } from './interfaces/about'
 import { EOrders, EShoppingCart, ICartItem } from './interfaces/store'
 import { ETermsOfService } from './interfaces'
 import { EComposerOlliSanta } from './interfaces/composer'
+import { EColorAccessibility, ETestColorCombinations } from './interfaces/colors'
 
 const Footer = lazy(() => import('./components/Footer/Footer'))
 const ScrollToTop = lazy(() => import('./components/ScrollToTop/ScrollToTop'))
@@ -415,6 +417,17 @@ const App: FC = () => {
                       language={language}
                       heading={EComposerOlliSanta[language]}
                       text='React, Node.js, Express, MongoDB'
+                      type='page subpage'
+                    />
+                  }
+                />
+                <Route
+                  path='/portfolio/colors'
+                  element={
+                    <ColorsPage
+                      language={language}
+                      heading={EColorAccessibility[language]}
+                      text={ETestColorCombinations[language]}
                       type='page subpage'
                     />
                   }
