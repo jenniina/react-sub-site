@@ -213,6 +213,18 @@ const App: FC = () => {
     }
   }, [language])
 
+  // hide #to-top-btn when on the /portfolio/colors page:
+
+  const [toTopBtn, setToTopBtn] = useState(true)
+
+  useEffect(() => {
+    if (location.pathname === '/portfolio/colors') {
+      setToTopBtn(false)
+    } else {
+      setToTopBtn(true)
+    }
+  }, [location.pathname])
+
   return (
     <BlobProvider>
       <div
@@ -514,13 +526,15 @@ const App: FC = () => {
           >
             <Footer language={language} styleMenu={styleMenu} />
           </Suspense>
-          <Suspense
-            fallback={
-              <div className='flex center margin0auto'>{ELoading[language]}...</div>
-            }
-          >
-            <ScrollToTop language={language} styleMenu={styleMenu} />
-          </Suspense>
+          {toTopBtn && (
+            <Suspense
+              fallback={
+                <div className='flex center margin0auto'>{ELoading[language]}...</div>
+              }
+            >
+              <ScrollToTop language={language} styleMenu={styleMenu} />
+            </Suspense>
+          )}
           <Notification language={language} />
         </div>
       </div>

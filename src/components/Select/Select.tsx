@@ -25,6 +25,7 @@ type SingleSelectProps = {
 type SelectProps = {
   instructions: string
   hide?: boolean
+  hideDelete?: boolean
   id: string
   className: string
   options: SelectOption[]
@@ -43,6 +44,7 @@ let searchTerm = ''
 export function Select({
   instructions,
   hide,
+  hideDelete,
   id,
   className,
   multiple,
@@ -273,16 +275,18 @@ export function Select({
             <span>{selectAnOption}</span>
           )}
         </span>
-        <button
-          onClick={(e) => {
-            e.stopPropagation()
-            clearOptions(e)
-          }}
-          className={`${styles['clear-btn']} clear-btn`}
-        >
-          <span aria-hidden='true'>&times;</span>
-          <span className={`${styles.scr} scr`}>{clear}</span>
-        </button>
+        {!hideDelete && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              clearOptions(e)
+            }}
+            className={`${styles['clear-btn']} clear-btn`}
+          >
+            <span aria-hidden='true'>&times;</span>
+            <span className={`${styles.scr} scr`}>{clear}</span>
+          </button>
+        )}
 
         <div className={`${styles.caret} caret`}></div>
         <ul
