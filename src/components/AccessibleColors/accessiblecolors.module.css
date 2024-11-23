@@ -159,6 +159,9 @@
   font-size: 10px;
   text-align: center;
 }
+.compliance-info * {
+  font-size: inherit;
+}
 .color-edit-container,
 .color-edit-container > .color-format-select,
 .color-edit-container > .color-format-select > * {
@@ -206,6 +209,14 @@
 .form > button.color-format-submit {
   padding: 0.3em 0.4em;
   width: 100%;
+}
+.color-name > span {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: flex-end;
+  min-height: 2em;
+  line-height: 1;
 }
 @media (min-width: 300px) {
   .color-edit-container > .color-format-select > div > span {

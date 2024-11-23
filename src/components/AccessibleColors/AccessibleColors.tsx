@@ -1,7 +1,7 @@
 import { useState, useEffect, FC, useRef } from 'react'
 import styles from './accessiblecolors.module.css'
 import useLocalStorage from '../../hooks/useStorage'
-import { ELanguages, ERemove, ESubmit } from '../../interfaces'
+import { ELanguages, ERemove } from '../../interfaces'
 import { useDragAndDrop } from '../../hooks/useDragAndDrop'
 import { EAddAColor } from '../../interfaces/draganddrop'
 import ColorsInput from './ColorsInput'
@@ -96,12 +96,14 @@ const hslToRGB = (h: number, s: number, l: number) => {
   return { r: Math.round(r * 255), g: Math.round(g * 255), b: Math.round(b * 255) }
 }
 
-const calculateLuminance = (r: number, g: number, b: number) => {
-  const a = [r, g, b].map((v) => {
-    v /= 255
-    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)
+const calculateLuminance = (r: number, g: number, b: number): number => {
+  const [R, G, B] = [r, g, b].map((v) => {
+    const normalized = v / 255
+    return normalized <= 0.03928
+      ? normalized / 12.92
+      : Math.pow((normalized + 0.055) / 1.055, 2.4)
   })
-  return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722
+  return R * 0.2126 + G * 0.7152 + B * 0.0722
 }
 
 const getContrastRatio = (lum1: number, lum2: number) => {
@@ -110,21 +112,51 @@ const getContrastRatio = (lum1: number, lum2: number) => {
   return (lighter + 0.05) / (darker + 0.05)
 }
 
-const determineAccessibility = (color1: string, color2: string) => {
-  const hex1 = color1.startsWith('#') ? color1 : colorNameToHex(color1)
-  const hex2 = color2.startsWith('#') ? color2 : colorNameToHex(color2)
+const determineAccessibility = (color1: ColorBlock, color2: ColorBlock) => {
+  const parseColor = (color: ColorBlock) => {
+    let r: number, g: number, b: number
 
-  const { r: r1, g: g1, b: b1 } = hexToRGB(hex1)
-  const { r: r2, g: g2, b: b2 } = hexToRGB(hex2)
+    if (color.colorFormat === 'hex') {
+      ;({ r, g, b } = hexToRGB(color.color))
+    } else if (color.colorFormat === 'rgb') {
+      const rgbMatch = color.color.match(
+        /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i
+      )
+      if (rgbMatch) {
+        r = Number(rgbMatch[1])
+        g = Number(rgbMatch[2])
+        b = Number(rgbMatch[3])
+      } else {
+        throw new Error('Invalid RGB format')
+      }
+    } else if (color.colorFormat === 'hsl') {
+      const hslMatch = color.color.match(
+        /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i
+      )
+      if (hslMatch) {
+        const h = Number(hslMatch[1])
+        const s = Number(hslMatch[2])
+        const l = Number(hslMatch[3])
+        ;({ r, g, b } = hslToRGB(h, s, l))
+      } else {
+        throw new Error('Invalid HSL format')
+      }
+    } else {
+      throw new Error('Unsupported color format')
+    }
 
-  const lum1 = calculateLuminance(r1, g1, b1)
-  const lum2 = calculateLuminance(r2, g2, b2)
+    return { r, g, b }
+  }
+
+  const rgb1 = parseColor(color1)
+  const rgb2 = parseColor(color2)
+
+  const lum1 = calculateLuminance(rgb1.r, rgb1.g, rgb1.b)
+  const lum2 = calculateLuminance(rgb2.r, rgb2.g, rgb2.b)
 
   const contrastRatio = getContrastRatio(lum1, lum2)
 
-  // WCAG AA requires a contrast ratio of at least 4.5:1 for normal text
   const isAACompliant = contrastRatio >= 4.5
-  // WCAG AAA requires a contrast ratio of at least 7:1 for normal text
   const isAAACompliant = contrastRatio >= 7
 
   return { isAACompliant, isAAACompliant }
@@ -145,7 +177,10 @@ interface Props {
 
 const AccessibleColors: FC<Props> = ({ language }) => {
   const lightTheme = useTheme()
-  const [colors, setColors] = useLocalStorage<ColorBlock[]>('Jenniina-colors', [])
+  const [colors, setColors, deleteColors] = useLocalStorage<ColorBlock[]>(
+    'Jenniina-colors',
+    []
+  )
   const [inputs, setInputs] = useState<{ id: number; input: string }[]>(
     colors.map((block) => ({ id: block.id, input: block.color }))
   )
@@ -164,44 +199,39 @@ const AccessibleColors: FC<Props> = ({ language }) => {
 
   const addColor = () => {
     const { r, g, b } = hexToRGB(currentColor)
+    const { h, s, l } = rgbToHSL(r, g, b)
     const lum = calculateLuminance(r, g, b)
 
     const newColorBlock: ColorBlock = {
       id: idCounter,
-      color: currentColor,
+      color: `hsl(${h}, ${s}%, ${l}%)`,
       luminance: lum,
       status: status,
-      colorFormat: 'hex',
+      colorFormat: 'hsl',
       compliantColorsAA: [],
       compliantColorsAAA: [],
     }
 
-    // Determine AA and AAA compliance with existing colors
     const compliantAA = colors
-      .filter(
-        (block) => determineAccessibility(newColorBlock.color, block.color).isAACompliant
-      )
+      .filter((block) => determineAccessibility(newColorBlock, block).isAACompliant)
       .map((block) => block.id)
 
     const compliantAAA = colors
-      .filter(
-        (block) => determineAccessibility(newColorBlock.color, block.color).isAAACompliant
-      )
+      .filter((block) => determineAccessibility(newColorBlock, block).isAAACompliant)
       .map((block) => block.id)
 
     newColorBlock.compliantColorsAA = compliantAA
     newColorBlock.compliantColorsAAA = compliantAAA
 
-    // Update existing colors' compliantColorsAA and compliantColorsAAA
     const updatedColors = colors.map((block) => {
-      const accessibility = determineAccessibility(newColorBlock.color, block.color)
+      const accessibility = determineAccessibility(newColorBlock, block)
       return {
         ...block,
         compliantColorsAA: accessibility.isAACompliant
-          ? [...block.compliantColorsAA, newColorBlock.id]
+          ? [...new Set([...block.compliantColorsAA, newColorBlock.id])]
           : block.compliantColorsAA,
         compliantColorsAAA: accessibility.isAAACompliant
-          ? [...block.compliantColorsAAA, newColorBlock.id]
+          ? [...new Set([...block.compliantColorsAAA, newColorBlock.id])]
           : block.compliantColorsAAA,
       }
     })
@@ -228,96 +258,135 @@ const AccessibleColors: FC<Props> = ({ language }) => {
   }
 
   const updateColor = (id: number, newColor: string, format: 'hex' | 'rgb' | 'hsl') => {
-    let hexColor = newColor
     try {
-      if (format === 'rgb') {
-        const rgb = newColor.match(
-          /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/
+      let storedColor: string
+      let r: number, g: number, b: number
+
+      // Parse and store the color based on the selected format
+      if (format === 'hsl') {
+        const hslMatch = newColor.match(
+          /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i
         )
-        if (!rgb) throw new Error('Invalid RGB format')
-        const r = Number(rgb[1])
-        const g = Number(rgb[2])
-        const b = Number(rgb[3])
-        if ([r, g, b].some((v) => v < 0 || v > 255))
-          throw new Error('RGB values must be between 0 and 255')
-        hexColor = rgbToHex(r, g, b)
-      } else if (format === 'hsl') {
-        const hsl = newColor.match(
-          /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/
-        )
-        if (!hsl) throw new Error('Invalid HSL format')
-        const h = Number(hsl[1])
-        const s = Number(hsl[2])
-        const l = Number(hsl[3])
-        if (h < 0 || h > 360 || s < 0 || s > 100 || l < 0 || l > 100)
+        if (!hslMatch) throw new Error('Invalid HSL format')
+
+        const h = Number(hslMatch[1])
+        const s = Number(hslMatch[2])
+        const l = Number(hslMatch[3])
+
+        if (h < 0 || h > 360 || s < 0 || s > 100 || l < 0 || l > 100) {
           throw new Error('HSL values out of range')
-        const { r, g, b } = hslToRGB(h, s, l)
-        hexColor = rgbToHex(r, g, b)
+        }
+
+        storedColor = `hsl(${h}, ${s}%, ${l}%)`
+
+        const rgb = hslToRGB(h, s, l)
+        r = rgb.r
+        g = rgb.g
+        b = rgb.b
+      } else if (format === 'rgb') {
+        const rgbMatch = newColor.match(
+          /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i
+        )
+        if (!rgbMatch) throw new Error('Invalid RGB format')
+
+        const rVal = Number(rgbMatch[1])
+        const gVal = Number(rgbMatch[2])
+        const bVal = Number(rgbMatch[3])
+
+        if ([rVal, gVal, bVal].some((v) => v < 0 || v > 255)) {
+          throw new Error('RGB values must be between 0 and 255')
+        }
+
+        storedColor = `rgb(${rVal}, ${gVal}, ${bVal})`
+        r = rVal
+        g = gVal
+        b = bVal
       } else if (format === 'hex') {
         if (!/^#([0-9A-F]{3}){1,2}$/i.test(newColor))
           throw new Error('Invalid Hex format')
-        hexColor = newColor.toUpperCase()
-      }
-    } catch (error) {
-      console.error(`Error updating color:`, error)
-      return
-    }
 
-    const { r, g, b } = hexToRGB(hexColor)
-    const lum = calculateLuminance(r, g, b)
-
-    const updatedColors = colors.map((block) => {
-      if (block.id === id) {
-        // Update the specific block
-        return {
-          ...block,
-          color: hexColor,
-          colorFormat: format,
-          luminance: lum,
-        }
+        storedColor = newColor.toUpperCase()
+        const rgb = hexToRGB(storedColor)
+        r = rgb.r
+        g = rgb.g
+        b = rgb.b
       } else {
-        // Recalculate compliance
-        const accessibility = determineAccessibility(block.color, hexColor)
-        return {
-          ...block,
-          compliantColorsAA: accessibility.isAACompliant
-            ? block.compliantColorsAA.includes(id)
-              ? block.compliantColorsAA
-              : [...block.compliantColorsAA, id]
-            : block.compliantColorsAA.filter((cid) => cid !== id),
-          compliantColorsAAA: accessibility.isAAACompliant
-            ? block.compliantColorsAAA.includes(id)
-              ? block.compliantColorsAAA
-              : [...block.compliantColorsAAA, id]
-            : block.compliantColorsAAA.filter((cid) => cid !== id),
-        }
+        throw new Error('Unsupported color format')
       }
-    }) as ColorBlock[]
 
-    // Recalculate compliances for the updated block
-    const updatedBlock = updatedColors.find((block) => block.id === id)
-    if (updatedBlock) {
-      updatedBlock.compliantColorsAA = updatedColors
-        .filter(
-          (block) =>
-            block.id !== id &&
-            determineAccessibility(updatedBlock.color, block.color).isAACompliant
-        )
-        .map((block) => block.id)
+      const lum = calculateLuminance(r, g, b)
 
-      updatedBlock.compliantColorsAAA = updatedColors
-        .filter(
-          (block) =>
-            block.id !== id &&
-            determineAccessibility(updatedBlock.color, block.color).isAAACompliant
-        )
-        .map((block) => block.id)
+      const updatedColors = colors.map((block) => {
+        if (block.id === id) {
+          return {
+            ...block,
+            color: storedColor,
+            colorFormat: format,
+            luminance: lum,
+          }
+        } else {
+          const accessibility = determineAccessibility(block, {
+            id,
+            color: storedColor,
+            colorFormat: format,
+            luminance: lum,
+            status: block.status,
+            compliantColorsAA: block.compliantColorsAA,
+            compliantColorsAAA: block.compliantColorsAAA,
+          })
+          return {
+            ...block,
+            compliantColorsAA: accessibility.isAACompliant
+              ? [...new Set([...block.compliantColorsAA, id])]
+              : block.compliantColorsAA.filter((cid) => cid !== id),
+            compliantColorsAAA: accessibility.isAAACompliant
+              ? [...new Set([...block.compliantColorsAAA, id])]
+              : block.compliantColorsAAA.filter((cid) => cid !== id),
+          }
+        }
+      }) as ColorBlock[]
+
+      const updatedBlock = updatedColors.find((block) => block.id === id)
+      if (updatedBlock) {
+        updatedBlock.compliantColorsAA = updatedColors
+          .filter(
+            (block) =>
+              block.id !== id && determineAccessibility(updatedBlock, block).isAACompliant
+          )
+          .map((block) => block.id)
+
+        updatedBlock.compliantColorsAAA = updatedColors
+          .filter(
+            (block) =>
+              block.id !== id &&
+              determineAccessibility(updatedBlock, block).isAAACompliant
+          )
+          .map((block) => block.id)
+      }
+
+      setColors([...updatedColors])
+    } catch (error) {
+      console.error('Error updating color:', error)
     }
-
-    setColors([...updatedColors])
   }
 
-  const baseWidth = 5.5
+  //   useEffect(() => {
+  //     const updatedColors = colors.map((block) => {
+  //       if (block.colorFormat === 'hex') {
+  //         const { r, g, b } = hexToRGB(block.color)
+  //         const { h, s, l } = rgbToHSL(r, g, b)
+  //         return {
+  //           ...block,
+  //           color: `hsl(${h}, ${s}%, ${l}%)`,
+  //           colorFormat: 'hsl',
+  //         }
+  //       }
+  //       return block
+  //     }) as ColorBlock[]
+  //     setColors(updatedColors)
+  //   }, [])
+
+  const baseWidth = 8
   const [widthNumber, setWidth] = useLocalStorage('Jenniina-color-block-width', baseWidth)
   const width = `${widthNumber}em`
 
@@ -325,9 +394,14 @@ const AccessibleColors: FC<Props> = ({ language }) => {
 
   const dynamicFontSize = {
     tooltip: `${0.75 * fontSizeMultiplier}em`,
-    colorName: `${0.8 * fontSizeMultiplier}em`,
+    colorName: `${0.7 * fontSizeMultiplier}em`,
     input: `${0.8 * fontSizeMultiplier}em`,
   }
+
+  // TODO:
+  // Give screenshot ability
+  // Give print ability
+  // Give export ability
 
   const handleDragStart = (e: React.DragEvent<HTMLLIElement>, position: number) => {
     e.dataTransfer.setData('text/plain', JSON.stringify({ type: 'item', id: position }))
@@ -356,6 +430,41 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     setColors(listItemsByStatus[status]?.items)
   }, [listItemsByStatus])
 
+  const formatColor = (color: string, format: 'hex' | 'rgb' | 'hsl') => {
+    const hslRegex = /^hsl\(\s*(\d+),\s*(\d+)%,\s*(\d+)%\)$/
+    const match = color.match(hslRegex)
+    if (!match) return color
+
+    const h = Number(match[1])
+    const s = Number(match[2])
+    const l = Number(match[3])
+
+    if (format === 'hsl') {
+      return color
+    } else if (format === 'rgb') {
+      const { r, g, b } = hslToRGB(h, s, l)
+      return `rgb(${r}, ${g}, ${b})`
+    } else if (format === 'hex') {
+      const { r, g, b } = hslToRGB(h, s, l)
+      const hex = rgbToHex(r, g, b)
+      return hex.toUpperCase()
+    }
+    return color
+  }
+
+  //   useEffect(() => {
+  //     deleteColors()
+  //     setColors([])
+  //     setIdCounter(1)
+  //   }, [])
+
+  useEffect(() => {
+    // console.log(colors)
+    if (colors.length < 1) {
+      setIdCounter(1)
+    }
+  }, [colors])
+
   return (
     <div
       id={styles['color-container']}
@@ -376,18 +485,21 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           {EAddAColor[language]}
         </button>
       </div>
-      <div className={styles['width-wrap']}>
-        <label htmlFor='color-block-width'>{EEditSize[language]}</label>
-        <input
-          id='color-block-width'
-          type='range'
-          min={5.5}
-          max={12}
-          step={0.5}
-          value={widthNumber}
-          onChange={(e) => setWidth(Number(e.target.value))}
-        />
-      </div>
+
+      {colors?.length > 0 && (
+        <div className={styles['width-wrap']}>
+          <label htmlFor='color-block-width'>{EEditSize[language]}</label>
+          <input
+            id='color-block-width'
+            type='range'
+            min={5.5}
+            max={12}
+            step={0.5}
+            value={widthNumber}
+            onChange={(e) => setWidth(Number(e.target.value))}
+          />
+        </div>
+      )}
       <div id='color-blocks' className={styles['color-blocks']}>
         {listItemsByStatus[status]?.items.map((block) => {
           return (
@@ -461,7 +573,9 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                               <span
                                 id={`span-${otherColor.id}-${block.id}`}
                                 className={`tooltip below narrow3 ${styles['tooltip']}`}
-                                style={{ fontSize: '0.75em' }}
+                                style={{
+                                  fontSize: `clamp(0.75rem, ${dynamicFontSize.input}, 1rem)`,
+                                }}
                               >{`${EAAACompliantWithID[language]}: ${otherColor.id}`}</span>
                             </div>
                           )
@@ -484,7 +598,9 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                               <span
                                 id={`span-${otherColor.id}-${block.id}`}
                                 className='tooltip below narrow3'
-                                style={{ fontSize: '0.75em' }}
+                                style={{
+                                  fontSize: `clamp(0.75rem, ${dynamicFontSize.input}, 1rem)`,
+                                }}
                               >{`${EAACompliantWithID[language]}: ${otherColor.id}`}</span>
                             </div>
                           )
@@ -515,18 +631,18 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    padding: '1em 0.5em 0.5em',
+                    padding: '0.5em 0.1em ',
                   }}
                   className={styles['color-name']}
                 >
                   <span
                     style={{
-                      color: block.luminance < 0.5 ? 'white' : 'black',
-                      display: 'inline-block',
-                      fontSize: `clamp(0.75rem, ${dynamicFontSize.colorName}, 2rem)`,
+                      color: block.luminance < 0.179 ? 'white' : 'black',
+                      fontSize: `clamp(0.75rem, ${dynamicFontSize.input}, 0.9rem)`,
+                      textAlign: 'center',
                     }}
                   >
-                    {block.color}
+                    {formatColor(block.color, block.colorFormat)}
                   </span>
                 </div>
                 <div className={styles['color-edit-container']}>
@@ -537,22 +653,21 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                     width={width}
                     hexToRGB={hexToRGB}
                     rgbToHSL={rgbToHSL}
-                    fontSize={`clamp(0.75rem, ${dynamicFontSize.input}, 1.8rem)`}
+                    rgbToHex={rgbToHex}
+                    hslToRGB={hslToRGB}
+                    fontSize={`clamp(0.75rem, ${dynamicFontSize.input}, 1rem)`}
                   />
                 </div>
                 <button
-                  aria-labelledby={`span-${block.id}`}
-                  className='tooltip-wrap small danger gray'
+                  className='tooltip-wrap small delete danger gray'
                   onClick={() => removeColor(block.id)}
                   style={{
                     margin: '0.8em 0',
+                    width: `clamp(3em, ${width}, 8em)`,
                     fontSize: `clamp(0.75rem, ${dynamicFontSize.input}, 2rem)`,
                   }}
                 >
-                  <span aria-hidden='true'>&times;</span>
-                  <span id={`span-${block.id}`} className='tooltip above narrow2'>
-                    {ERemove[language]}
-                  </span>
+                  {ERemove[language]}
                 </button>
                 <div
                   aria-hidden='true'
@@ -565,7 +680,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                     display: 'flex',
                     flexFlow: 'column nowrap',
                     gap: '0.5em',
-                    fontSize: `clamp(0.75rem, ${dynamicFontSize.input}, 2rem)`,
+                    fontSize: `clamp(0.75rem, ${dynamicFontSize.input}, 1rem)`,
                   }}
                 >
                   <div>
