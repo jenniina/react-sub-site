@@ -1,7 +1,8 @@
 import { useState, useEffect, FC, useRef } from 'react'
 import styles from './accessiblecolors.module.css'
+import { notify } from '../../reducers/notificationReducer'
 import useLocalStorage from '../../hooks/useStorage'
-import { ELanguages, ERemove } from '../../interfaces'
+import { EDownload, ELanguages, ERemove } from '../../interfaces'
 import { useDragAndDrop } from '../../hooks/useDragAndDrop'
 import { EAddAColor } from '../../interfaces/draganddrop'
 import ColorsInput from './ColorsInput'
@@ -13,15 +14,23 @@ import {
   EHideColorName,
   ENoCompliantColors,
   ERemoveColorConfirmation,
+  ESaveAsSVG,
   EShowColorName,
   EToggleColorNameVisibility,
 } from '../../interfaces/colors'
 import { useTheme } from '../../hooks/useTheme'
 import {
+  EArtSaved,
+  EClickHereToTakeAScreenshot,
   EHideControls,
+  ENoScreenshotAvailableToSave,
+  EScreenshot,
   EShowControls,
+  ETakingScreenShot,
   EToggleControlVisibility,
 } from '../../interfaces/blobs'
+import useWindowSize from '../../hooks/useWindowSize'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
 
 const colorNameToHex = (color: string) => {
   const ctx = document.createElement('canvas').getContext('2d')
@@ -170,6 +179,14 @@ const determineAccessibility = (color1: ColorBlock, color2: ColorBlock) => {
   return { isAACompliant, isAAACompliant }
 }
 
+////
+//
+//
+//
+//
+//
+////
+
 interface ColorBlock {
   id: number
   color: string
@@ -184,8 +201,9 @@ interface Props {
 }
 
 const AccessibleColors: FC<Props> = ({ language }) => {
+  const dispatch = useAppDispatch()
   const lightTheme = useTheme()
-  const [show, setShow] = useLocalStorage('Jenniina-showControls', true)
+  const [show, setShow] = useState(true)
   const [showColorName, setShowColorName] = useLocalStorage(
     'Jenniina-showColorNames',
     true
@@ -204,6 +222,216 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     colors,
     [status]
   )
+
+  const baseWidth = 8
+  const [widthNumber, setWidth] = useLocalStorage('Jenniina-color-block-width', baseWidth)
+  const width = `${widthNumber}em`
+
+  const fontSizeMultiplier = widthNumber / baseWidth
+
+  const dynamicFontSize = {
+    tooltip: `${0.75 * fontSizeMultiplier}em`,
+    colorName: `${0.7 * fontSizeMultiplier}em`,
+    input: `${0.8 * fontSizeMultiplier}em`,
+  }
+
+  const [loading, setLoading] = useState<boolean>(false)
+  const colorScreenshot = useRef<HTMLDivElement>(null)
+  const screenshotImg = useRef<HTMLImageElement>(null)
+  const { windowWidth, windowHeight } = useWindowSize()
+
+  const takeScreenshot = async () => {
+    const colorBlocks = document.getElementById('color-blocks')
+    if (colorBlocks && !loading) {
+      try {
+        let localStorageData: { [key: string]: string } = {}
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i)
+          if (key) {
+            const value = localStorage.getItem(key)
+            if (value !== null) {
+              localStorageData[key] = value
+            }
+          }
+        }
+        setLoading(true)
+        const url =
+          import.meta.env.VITE_BASE_URI ??
+          'https://react-bg.braveisland-7060f196.westeurope.azurecontainerapps.io'
+        const baseUrl = `${url}/api/screenshot`
+        const response = await fetch(baseUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            url: window.location.href,
+            selector: '#color-blocks',
+            language,
+            localStorageData,
+            width: windowWidth,
+            height: windowHeight,
+          }),
+        })
+
+        if (!response.ok) {
+          console.error('Error taking screenshot:', response.statusText)
+          setLoading(false)
+          throw new Error(`Error: ${response.statusText}`)
+        }
+
+        const data = await response.json()
+
+        if (screenshotImg.current) {
+          screenshotImg.current.src = `data:image/png;base64,${data.screenshot}`
+          if (colorScreenshot.current) {
+            colorScreenshot.current.style.display = 'block'
+            screenshotImg.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }
+          console.log('Screenshot taken successfully')
+        }
+        setLoading(false)
+      } catch (error: any) {
+        console.error('Error capturing screenshot:', error)
+        setLoading(false)
+      }
+    }
+  }
+
+  const saveScreenshot = () => {
+    const img = screenshotImg.current
+    if (img && img.src) {
+      const link = document.createElement('a')
+      link.href = img.src
+      link.download = 'blobs.png'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      dispatch(notify(EArtSaved[language], false, 8))
+    } else {
+      dispatch(notify(ENoScreenshotAvailableToSave[language], true, 8))
+      console.error(ENoScreenshotAvailableToSave[language])
+    }
+  }
+
+  const generateSVG = (): string => {
+    const widthNumber = 40
+    const blockWidth = widthNumber
+    const indicatorSize = blockWidth / 3
+    const squareSize = indicatorSize * 0.6
+    const indicatorSpacing = indicatorSize / 2
+    const padding = widthNumber / 3
+
+    const totalIndicators = colors.length
+    const blockHeight =
+      totalIndicators * (indicatorSize + indicatorSpacing) -
+      indicatorSpacing +
+      padding * 2
+
+    const svgWidth = colors.length * blockWidth
+    const svgHeight = blockHeight
+
+    const blocksSVG = colors
+      .map((block, index) => {
+        const xPosition = index * blockWidth
+
+        // Generate compliance indicators for each other color
+        const indicators = colors
+          .map((otherColor, idx) => {
+            const xIndicator = xPosition + (blockWidth - indicatorSize) / 2
+            const yIndicator = padding + idx * (indicatorSize + indicatorSpacing)
+
+            if (otherColor.id === block.id) {
+              // Transparent indicator for the block itself
+              return `
+              <rect
+                x="${xPosition + (blockWidth - indicatorSize) / 2}"
+                y="${yIndicator}"
+                width="${indicatorSize}"
+                height="${indicatorSize}"
+                fill="transparent"
+              />
+            `
+            } else if (block.compliantColorsAAA.includes(otherColor.id)) {
+              // Large circle for AAA compliance
+              return `
+              <circle
+                cx="${xPosition + blockWidth / 2}"
+                cy="${yIndicator + indicatorSize / 2}"
+                r="${indicatorSize / 2}"
+                fill="${otherColor.color}"
+              />
+            `
+            } else if (block.compliantColorsAA.includes(otherColor.id)) {
+              // Small square for AA compliance
+              const xSquare = xIndicator + (indicatorSize - squareSize) / 2
+              const ySquare = yIndicator + (indicatorSize - squareSize) / 2
+
+              return `
+              <rect
+                x="${xSquare}"
+                y="${ySquare}"
+                width="${squareSize}"
+                height="${squareSize}"
+                fill="${otherColor.color}"
+              />
+            `
+            } else {
+              // Transparent indicator (no compliance)
+              return `
+              <rect
+                x="${xIndicator}"
+                y="${yIndicator}"
+                width="${indicatorSize}"
+                height="${indicatorSize}"
+                fill="transparent"
+              />
+            `
+            }
+          })
+          .join('')
+
+        // Color block rectangle (column)
+        return `
+          <g>
+            <!-- Color Block -->
+            <rect
+              x="${xPosition}"
+              y="0"
+              width="${blockWidth}"
+              height="${blockHeight}"
+              fill="${block.color}"
+            />
+            <!-- Compliance Indicators -->
+            ${indicators}
+          </g>
+        `
+      })
+      .join('')
+
+    const svgContent = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}">
+        ${blocksSVG}
+      </svg>
+    `
+
+    return svgContent
+  }
+
+  const saveAsSVG = () => {
+    const svgContent = generateSVG()
+    const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = 'color-blocks.svg'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+    dispatch(notify(ESaveAsSVG[language], false, 5))
+  }
+
   const dragOverItem = useRef<number>(0)
   const [theTarget, setTheTarget] = useState<number>(0)
 
@@ -380,34 +608,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     }
   }
 
-  //   useEffect(() => {
-  //     const updatedColors = colors.map((block) => {
-  //       if (block.colorFormat === 'hex') {
-  //         const { r, g, b } = hexToRGB(block.color)
-  //         const { h, s, l } = rgbToHSL(r, g, b)
-  //         return {
-  //           ...block,
-  //           color: `hsl(${h}, ${s}%, ${l}%)`,
-  //           colorFormat: 'hsl',
-  //         }
-  //       }
-  //       return block
-  //     }) as ColorBlock[]
-  //     setColors(updatedColors)
-  //   }, [])
-
-  const baseWidth = 8
-  const [widthNumber, setWidth] = useLocalStorage('Jenniina-color-block-width', baseWidth)
-  const width = `${widthNumber}em`
-
-  const fontSizeMultiplier = widthNumber / baseWidth
-
-  const dynamicFontSize = {
-    tooltip: `${0.75 * fontSizeMultiplier}em`,
-    colorName: `${0.7 * fontSizeMultiplier}em`,
-    input: `${0.8 * fontSizeMultiplier}em`,
-  }
-
   // TODO:
   // Give screenshot ability
   // Give print ability
@@ -497,17 +697,33 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       </div>
 
       {colors?.length > 0 && (
-        <div className={styles['width-wrap']}>
-          <label htmlFor='color-block-width'>{EEditSize[language]}</label>
-          <input
-            id='color-block-width'
-            type='range'
-            min={5.5}
-            max={12}
-            step={0.5}
-            value={widthNumber}
-            onChange={(e) => setWidth(Number(e.target.value))}
-          />
+        <div className={styles.wrap}>
+          <div className={styles['width-wrap']}>
+            <label htmlFor='color-block-width'>{EEditSize[language]}</label>
+            <input
+              id='color-block-width'
+              type='range'
+              min={5.5}
+              max={12}
+              step={0.5}
+              value={widthNumber}
+              onChange={(e) => setWidth(Number(e.target.value))}
+            />
+          </div>
+          <button
+            type='button'
+            onClick={takeScreenshot}
+            className={`gray tooltip-wrap ${styles['screenshot']}`}
+            disabled={loading}
+          >
+            {loading ? ETakingScreenShot[language] : EScreenshot[language]}
+            <span className='tooltip below narrow2'>
+              {EClickHereToTakeAScreenshot[language]}
+            </span>
+          </button>
+          <button type='button' onClick={saveAsSVG} className='gray'>
+            {ESaveAsSVG[language]}
+          </button>
         </div>
       )}
       <div
@@ -727,7 +943,12 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       <div className={`${styles['toggle-controls']}`}>
         <div>
           <strong>{EToggleControlVisibility[language]}</strong>
-          <button type='button' onClick={() => setShow(!show)} className='gray'>
+          <button
+            id='toggle-controls'
+            type='button'
+            onClick={() => setShow(!show)}
+            className='gray'
+          >
             {show ? EHideControls[language] : EShowControls[language]}
           </button>{' '}
         </div>
@@ -741,6 +962,20 @@ const AccessibleColors: FC<Props> = ({ language }) => {
             {showColorName ? EHideColorName[language] : EShowColorName[language]}
           </button>
         </div>
+      </div>
+
+      <div
+        ref={colorScreenshot}
+        className={styles['screenshot-container']}
+        style={{ display: 'none' }}
+      >
+        <button onClick={saveScreenshot} className='gray small'>
+          {EDownload[language]}
+        </button>
+        <img ref={screenshotImg} alt='Screenshot' className={styles['screenshot-img']} />
+        <button onClick={saveScreenshot} className='gray small'>
+          {EDownload[language]}
+        </button>
       </div>
     </div>
   )

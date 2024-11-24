@@ -130,3 +130,12 @@ export enum EHideColorName {
   cs = 'Skrýt název barvy',
   fi = 'Piilota värinimi',
 }
+export enum ESaveAsSVG {
+  en = 'Save as SVG',
+  es = 'Guardar como SVG',
+  fr = 'Enregistrer en SVG',
+  de = 'Als SVG speichern',
+  pt = 'Salvar como SVG',
+  cs = 'Uložit jako SVG',
+  fi = 'Tallenna SVG-muodossa',
+}
