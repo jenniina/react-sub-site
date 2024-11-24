@@ -34,21 +34,25 @@
   align-items: center;
   justify-content: center;
   gap: 1em;
-  max-width: clamp(100px, 90vw, 24em);
   margin-bottom: 2em;
 }
 .color-picker > input[type='color' i] {
-  min-width: clamp(100px, 80vw, var(--size));
-  width: clamp(100px, 80vw, var(--size));
-  max-width: clamp(100px, 80vw, var(--size));
-  height: clamp(100px, 80vw, var(--size));
-  min-height: clamp(100px, 80vw, var(--size));
-  max-height: clamp(100px, 80vw, var(--size));
-  outline: 8px solid gray;
-  outline-offset: -8px;
+  min-width: clamp(40px, 80vw, var(--size));
+  width: clamp(40px, 80vw, var(--size));
+  max-width: clamp(40px, 80vw, var(--size));
+  min-height: clamp(40px, 80vw, var(--size));
+  height: clamp(40px, 80vw, var(--size));
+  max-height: clamp(40px, 80vw, var(--size));
+  outline: 8px solid black;
+  outline-offset: -7px;
   border-radius: 50%;
 }
-.color-picker > button[type='button' i] {
+.light .color-picker > input[type='color' i] {
+  outline: 8px solid white;
+}
+#color-container .color-picker > button {
+  padding: 0.3em 0.2em;
+  min-width: 100%;
 }
 .width-wrap {
   margin: 0 auto 2em;
@@ -58,6 +62,7 @@
   width: clamp(100px, 70vw, 400px);
 }
 .color-blocks {
+  --size: 96vw;
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
@@ -66,7 +71,12 @@
   overflow-x: auto;
   overflow-y: visible;
   height: max-content;
-  max-width: 96vw;
+  width: clamp(100px, max-content, var(--size));
+  max-width: var(--size);
+}
+
+.color-blocks.overflow {
+  overflow-y: hidden;
 }
 
 .block-wrap {
@@ -103,12 +113,10 @@
 .color-block:active {
   cursor: grabbing;
 }
-.block-wrap button {
-  border: none;
-  border-radius: 4px;
+#color-container .block-wrap button {
   cursor: pointer;
-  margin: 0 0.3em;
-  background: linear;
+  padding: 0.3em 0.2em;
+  width: 100%;
 }
 
 .compliance-indicators {
@@ -152,15 +160,24 @@
   position: relative;
 }
 
-.compliance-info {
-  background: transparent;
-  border-radius: 4px;
-  padding: 2px 4px;
-  font-size: 10px;
-  text-align: center;
-}
 .compliance-info * {
   font-size: inherit;
+}
+
+.toggle-controls {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 3em 1em;
+  margin: 3em auto 1em;
+  max-width: clamp(100px, 92%, 92vw);
+}
+.toggle-controls > div {
+  display: flex;
+  flex-flow: column nowrap;
+  max-width: clamp(100px, 92%, 92vw);
+  gap: 1em;
 }
 .color-edit-container,
 .color-edit-container > .color-format-select,
@@ -173,10 +190,8 @@
   gap: 0.2em;
   padding-top: 0.5em;
 }
-
 .color-edit-container > .color-format-select > div {
   flex-flow: row nowrap;
-
   background: linear-gradient(4deg, hsl(0, 0%, 10%) 0%, hsl(0, 0%, 3%) 100%);
   background-size: var(--bg-size);
   background-position: top;
@@ -206,9 +221,13 @@
   min-width: 92%;
   margin: 0.3em auto 0;
 }
-.form > button.color-format-submit {
-  padding: 0.3em 0.4em;
+#color-container .form > button.color-format-submit,
+#color-container .color-wrap button.remove {
+  padding: 0.3em 0.2em;
   width: 100%;
+}
+#color-container .color-wrap button.remove {
+  outline: gray solid 1px;
 }
 .color-name > span {
   display: flex;
@@ -217,6 +236,21 @@
   align-items: flex-end;
   min-height: 2em;
   line-height: 1;
+}
+.inputs > label {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5em;
+}
+.inputs > label > span {
+  white-space: nowrap;
+}
+.inputs.hex-input > label {
+  flex-flow: column nowrap;
+  margin-top: 1.5em;
+  min-height: 4.5em;
 }
 @media (min-width: 300px) {
   .color-edit-container > .color-format-select > div > span {

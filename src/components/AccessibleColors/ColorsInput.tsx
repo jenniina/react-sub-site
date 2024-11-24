@@ -47,16 +47,67 @@ const ColorsInput: FC<Props> = ({
       colorFormatOptions[0]
   )
 
-  const extractHSL = (hslString: string): [number, number, number] => {
-    const match = hslString.match(hslRegex)
-    if (!match) {
-      throw new Error('Invalid HSL format')
+  const [hex, setHex] = useState<string>('')
+  const [r, setR] = useState<number>(0)
+  const [g, setG] = useState<number>(0)
+  const [b, setB] = useState<number>(0)
+  const [h, setH] = useState<number>(0)
+  const [s, setS] = useState<number>(0)
+  const [l, setL] = useState<number>(0)
+
+  useEffect(() => {
+    switch (block.colorFormat) {
+      case 'hex': {
+        setHex(block.color)
+        const { r, g, b } = hexToRGB(block.color)
+        setR(r)
+        setG(g)
+        setB(b)
+        const { h, s, l } = rgbToHSL(r, g, b)
+        setH(h)
+        setS(s)
+        setL(l)
+        break
+      }
+      case 'rgb': {
+        const rgbMatch = block.color.match(rgbRegex)
+        if (rgbMatch) {
+          const rVal = Number(rgbMatch[1])
+          const gVal = Number(rgbMatch[2])
+          const bVal = Number(rgbMatch[3])
+          setR(rVal)
+          setG(gVal)
+          setB(bVal)
+          const { h, s, l } = rgbToHSL(rVal, gVal, bVal)
+          setH(h)
+          setS(s)
+          setL(l)
+        }
+        break
+      }
+      case 'hsl': {
+        const hslMatch = block.color.match(hslRegex)
+        if (hslMatch) {
+          const hVal = Number(hslMatch[1])
+          const sVal = Number(hslMatch[2])
+          const lVal = Number(hslMatch[3])
+          setH(hVal)
+          setS(sVal)
+          setL(lVal)
+          const { r, g, b } = hslToRGB(hVal, sVal, lVal)
+          setR(r)
+          setG(g)
+          setB(b)
+          const hexVal = rgbToHex(r, g, b)
+          setHex(hexVal)
+        }
+        break
+      }
+      default:
+        break
     }
-    const h = Number(match[1])
-    const s = Number(match[2])
-    const l = Number(match[3])
-    return [h, s, l]
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [block.color, block.colorFormat])
 
   const getRGBValues = (): { r: number; g: number; b: number } => {
     if (block.colorFormat === 'hsl') {
@@ -86,20 +137,31 @@ const ColorsInput: FC<Props> = ({
     throw new Error('Unsupported color format')
   }
 
-  const getDisplayColor = (format: 'hsl' | 'rgb' | 'hex'): string => {
-    if (format === block.colorFormat) {
-      return block.color
-    }
+  // const getDisplayColor = (format: 'hsl' | 'rgb' | 'hex'): string => {
+  //   if (format === block.colorFormat) {
+  //     return block.color
+  //   }
 
-    const { r, g, b } = getRGBValues()
+  //   const { r, g, b } = getRGBValues()
 
-    if (format === 'hsl') {
-      const { h, s, l } = rgbToHSL(r, g, b)
-      return `hsl(${h}, ${s}%, ${l}%)`
+  //   if (format === 'hsl') {
+  //     const { h, s, l } = rgbToHSL(r, g, b)
+  //     return `hsl(${h}, ${s}%, ${l}%)`
+  //   } else if (format === 'rgb') {
+  //     return `rgb(${r}, ${g}, ${b})`
+  //   } else if (format === 'hex') {
+  //     return rgbToHex(r, g, b).toUpperCase()
+  //   }
+  //   return block.color
+  // }
+
+  const getDisplayColor = (format: 'hex' | 'rgb' | 'hsl'): string => {
+    if (format === 'hex') {
+      return hex
     } else if (format === 'rgb') {
       return `rgb(${r}, ${g}, ${b})`
-    } else if (format === 'hex') {
-      return rgbToHex(r, g, b).toUpperCase()
+    } else if (format === 'hsl') {
+      return `hsl(${h}, ${s}%, ${l}%)`
     }
     return block.color
   }
@@ -115,12 +177,49 @@ const ColorsInput: FC<Props> = ({
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selected, block.color])
+  }, [selected])
 
   //   useEffect(() => {
   //     deleteSelected()
   //     setSelected(colorFormatOptions[0])
   //   }, [])
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const format = selected?.value as 'hex' | 'rgb' | 'hsl'
+
+    try {
+      let formattedColor: string
+
+      if (format === 'hex') {
+        if (hexRegex.test(hex)) {
+          formattedColor = hex.toUpperCase()
+          updateColor(block.id, formattedColor, 'hex')
+        } else {
+          throw new Error('Invalid Hex format.')
+        }
+      } else if (format === 'rgb') {
+        if ([r, g, b].every((v) => v >= 0 && v <= 255)) {
+          formattedColor = `rgb(${r}, ${g}, ${b})`
+          updateColor(block.id, formattedColor, 'rgb')
+        } else {
+          throw new Error('RGB values must be within valid ranges.')
+        }
+      } else if (format === 'hsl') {
+        if (h >= 0 && h <= 360 && s >= 0 && s <= 100 && l >= 0 && l <= 100) {
+          formattedColor = `hsl(${h}, ${s}%, ${l}%)`
+          updateColor(block.id, formattedColor, 'hsl')
+        } else {
+          throw new Error('HSL values must be within valid ranges.')
+        }
+      } else {
+        throw new Error('Unsupported color format.')
+      }
+    } catch (error: any) {
+      console.error(error.message)
+      // Optionally, implement user-facing error handling here
+    }
+  }
 
   return (
     <>
@@ -135,77 +234,78 @@ const ColorsInput: FC<Props> = ({
         value={selected}
         onChange={(o) => {
           setSelected(o)
-          const newFormat = o?.value as 'hsl' | 'hex' | 'rgb'
-          try {
-            const displayColor = getDisplayColor(newFormat)
-            setInput(displayColor)
-          } catch (error) {
-            console.error(`Error converting color to ${newFormat}:`, error)
-            setInput(block.color)
-          }
+          // const newFormat = o?.value as 'hsl' | 'hex' | 'rgb'
+          // try {
+          //   const displayColor = getDisplayColor(newFormat)
+          //   setInput(displayColor)
+          // } catch (error) {
+          //   console.error(`Error converting color to ${newFormat}:`, error)
+          //   setInput(block.color)
+          // }
         }}
       />
 
       <form
         className={styles.form}
-        onSubmit={(e) => {
-          e.preventDefault()
+        onSubmit={
+          handleSubmit
+          // e.preventDefault()
 
-          const format = selected?.value as 'hsl' | 'rgb' | 'hex'
+          // const format = selected?.value as 'hsl' | 'rgb' | 'hex'
 
-          try {
-            let formattedColor: string
+          // try {
+          //   let formattedColor: string
 
-            if (format === 'hsl') {
-              const hslRegex =
-                /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i
-              const match = input.match(hslRegex)
-              if (match) {
-                const h = Number(match[1])
-                const s = Number(match[2])
-                const l = Number(match[3])
-                if (h >= 0 && h <= 360 && s >= 0 && s <= 100 && l >= 0 && l <= 100) {
-                  formattedColor = `hsl(${h}, ${s}%, ${l}%)`
-                  updateColor(block.id, formattedColor, 'hsl')
-                } else {
-                  throw new Error('HSL values must be within valid ranges.')
-                }
-              } else {
-                throw new Error('Invalid HSL format.')
-              }
-            } else if (format === 'rgb') {
-              const rgbRegex = /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i
-              const match = input.match(rgbRegex)
-              if (match) {
-                const r = Number(match[1])
-                const g = Number(match[2])
-                const b = Number(match[3])
-                if ([r, g, b].every((v) => v >= 0 && v <= 255)) {
-                  formattedColor = `rgb(${r}, ${g}, ${b})`
-                  updateColor(block.id, formattedColor, 'rgb')
-                } else {
-                  throw new Error('RGB values must be within valid ranges.')
-                }
-              } else {
-                throw new Error('Invalid RGB format.')
-              }
-            } else if (format === 'hex') {
-              const hexRegex = /^#([0-9A-F]{3}){1,2}$/i
-              if (hexRegex.test(input)) {
-                formattedColor = input.toUpperCase()
-                updateColor(block.id, formattedColor, 'hex')
-              } else {
-                throw new Error('Invalid Hex format.')
-              }
-            } else {
-              throw new Error('Unsupported color format.')
-            }
-          } catch (error: any) {
-            console.error(error.message)
-          }
-        }}
+          //   if (format === 'hsl') {
+          //     const hslRegex =
+          //       /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i
+          //     const match = input.match(hslRegex)
+          //     if (match) {
+          //       const h = Number(match[1])
+          //       const s = Number(match[2])
+          //       const l = Number(match[3])
+          //       if (h >= 0 && h <= 360 && s >= 0 && s <= 100 && l >= 0 && l <= 100) {
+          //         formattedColor = `hsl(${h}, ${s}%, ${l}%)`
+          //         updateColor(block.id, formattedColor, 'hsl')
+          //       } else {
+          //         throw new Error('HSL values must be within valid ranges.')
+          //       }
+          //     } else {
+          //       throw new Error('Invalid HSL format.')
+          //     }
+          //   } else if (format === 'rgb') {
+          //     const rgbRegex = /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i
+          //     const match = input.match(rgbRegex)
+          //     if (match) {
+          //       const r = Number(match[1])
+          //       const g = Number(match[2])
+          //       const b = Number(match[3])
+          //       if ([r, g, b].every((v) => v >= 0 && v <= 255)) {
+          //         formattedColor = `rgb(${r}, ${g}, ${b})`
+          //         updateColor(block.id, formattedColor, 'rgb')
+          //       } else {
+          //         throw new Error('RGB values must be within valid ranges.')
+          //       }
+          //     } else {
+          //       throw new Error('Invalid RGB format.')
+          //     }
+          //   } else if (format === 'hex') {
+          //     const hexRegex = /^#([0-9A-F]{3}){1,2}$/i
+          //     if (hexRegex.test(input)) {
+          //       formattedColor = input.toUpperCase()
+          //       updateColor(block.id, formattedColor, 'hex')
+          //     } else {
+          //       throw new Error('Invalid Hex format.')
+          //     }
+          //   } else {
+          //     throw new Error('Unsupported color format.')
+          //   }
+          // } catch (error: any) {
+          //   console.error(error.message)
+          // }
+        }
       >
-        <input
+        {/* <input
           type='text'
           value={input}
           onChange={(e) => {
@@ -213,9 +313,122 @@ const ColorsInput: FC<Props> = ({
           }}
           className={styles['color-input']}
           style={{ maxWidth: `${width}`, fontSize: fontSize }}
-        />
+        /> */}
+
+        {selected?.value === 'hex' && (
+          <div className={`${styles.inputs} ${styles['hex-input']}`}>
+            <label>
+              <span>Hex: </span>
+              <input
+                name={`hex-input-${block.id}`}
+                type='text'
+                value={hex}
+                onChange={(e) => setHex(e.target.value)}
+                className={styles['color-input']}
+                style={{ maxWidth: `${width}`, fontSize: fontSize }}
+                placeholder='#FFFFFF'
+              />
+            </label>
+          </div>
+        )}
+
+        {selected?.value === 'rgb' && (
+          <div className={`${styles.inputs} ${styles['rgb-inputs']}`}>
+            <label>
+              <span>R: </span>
+              <input
+                name={`r-input-${block.id}`}
+                type='number'
+                value={r}
+                onChange={(e) => setR(Number(e.target.value))}
+                min={0}
+                max={255}
+                className={styles['color-input']}
+                style={{ maxWidth: `${width}`, fontSize: fontSize }}
+              />
+            </label>
+
+            <label>
+              <span>G: </span>
+              <input
+                name={`g-input-${block.id}`}
+                type='number'
+                value={g}
+                onChange={(e) => setG(Number(e.target.value))}
+                min={0}
+                max={255}
+                className={styles['color-input']}
+                style={{ maxWidth: `${width}`, fontSize: fontSize }}
+              />
+            </label>
+
+            <label>
+              <span>B: </span>
+              <input
+                name={`b-input-${block.id}`}
+                type='number'
+                value={b}
+                onChange={(e) => setB(Number(e.target.value))}
+                min={0}
+                max={255}
+                className={styles['color-input']}
+                style={{ maxWidth: `${width}`, fontSize: fontSize }}
+              />
+            </label>
+          </div>
+        )}
+
+        {selected?.value === 'hsl' && (
+          <div className={`${styles.inputs} ${styles['hsl-inputs']}`}>
+            <label>
+              <span>H: </span>
+              <input
+                name={`h-input-${block.id}`}
+                type='number'
+                value={h}
+                onChange={(e) => setH(Number(e.target.value))}
+                min={0}
+                max={360}
+                className={styles['color-input']}
+                style={{ maxWidth: `${width}`, fontSize: fontSize }}
+              />{' '}
+            </label>
+            <label>
+              <span>S: </span>
+              <input
+                name={`s-input-${block.id}`}
+                type='number'
+                value={s}
+                onChange={(e) => setS(Number(e.target.value))}
+                min={0}
+                max={100}
+                className={styles['color-input']}
+                style={{ maxWidth: `${width}`, fontSize: fontSize }}
+              />
+            </label>
+
+            <label>
+              <span>L: </span>
+              <input
+                name={`l-input-${block.id}`}
+                type='number'
+                value={l}
+                onChange={(e) => setL(Number(e.target.value))}
+                min={0}
+                max={100}
+                className={styles['color-input']}
+                style={{ maxWidth: `${width}`, fontSize: fontSize }}
+              />
+            </label>
+          </div>
+        )}
+
         <button
-          style={{ maxWidth: `${width}`, fontSize: fontSize }}
+          style={{
+            minWidth: `calc(100% - 4px)`,
+            maxWidth: `calc(100% - 4px)`,
+            fontSize: fontSize,
+          }}
           type='submit'
           className={`${styles['color-format-submit']} small gray`}
         >

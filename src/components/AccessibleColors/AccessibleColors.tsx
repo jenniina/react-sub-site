@@ -10,10 +10,18 @@ import {
   EAACompliantWithID,
   EColorPicker,
   EEditSize,
+  EHideColorName,
   ENoCompliantColors,
   ERemoveColorConfirmation,
+  EShowColorName,
+  EToggleColorNameVisibility,
 } from '../../interfaces/colors'
 import { useTheme } from '../../hooks/useTheme'
+import {
+  EHideControls,
+  EShowControls,
+  EToggleControlVisibility,
+} from '../../interfaces/blobs'
 
 const colorNameToHex = (color: string) => {
   const ctx = document.createElement('canvas').getContext('2d')
@@ -177,12 +185,14 @@ interface Props {
 
 const AccessibleColors: FC<Props> = ({ language }) => {
   const lightTheme = useTheme()
+  const [show, setShow] = useLocalStorage('Jenniina-showControls', true)
+  const [showColorName, setShowColorName] = useLocalStorage(
+    'Jenniina-showColorNames',
+    true
+  )
   const [colors, setColors, deleteColors] = useLocalStorage<ColorBlock[]>(
     'Jenniina-colors',
     []
-  )
-  const [inputs, setInputs] = useState<{ id: number; input: string }[]>(
-    colors.map((block) => ({ id: block.id, input: block.color }))
   )
   const [currentColor, setCurrentColor] = useLocalStorage<string>(
     'Jenniina-currentColor',
@@ -500,7 +510,12 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           />
         </div>
       )}
-      <div id='color-blocks' className={styles['color-blocks']}>
+      <div
+        id='color-blocks'
+        className={`${styles['color-blocks']} ${
+          !showColorName || !show ? styles.overflow : ''
+        }`}
+      >
         {listItemsByStatus[status]?.items.map((block) => {
           return (
             <ul
@@ -623,83 +638,109 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                     </div>
                   </li>
                 </ul>
-                <div
-                  style={{
-                    backgroundColor: block.color,
-                    width: `${width}`,
-                    maxWidth: `${width}`,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    padding: '0.5em 0.1em ',
-                  }}
-                  className={styles['color-name']}
-                >
-                  <span
+                {showColorName && (
+                  <div
                     style={{
-                      color: block.luminance < 0.179 ? 'white' : 'black',
-                      fontSize: `clamp(0.75rem, ${dynamicFontSize.input}, 0.9rem)`,
-                      textAlign: 'center',
+                      backgroundColor: block.color,
+                      width: `${width}`,
+                      maxWidth: `${width}`,
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: '0.5em 0.1em ',
                     }}
+                    className={styles['color-name']}
                   >
-                    {formatColor(block.color, block.colorFormat)}
-                  </span>
-                </div>
-                <div className={styles['color-edit-container']}>
-                  <ColorsInput
-                    language={language}
-                    block={block}
-                    updateColor={updateColor}
-                    width={width}
-                    hexToRGB={hexToRGB}
-                    rgbToHSL={rgbToHSL}
-                    rgbToHex={rgbToHex}
-                    hslToRGB={hslToRGB}
-                    fontSize={`clamp(0.75rem, ${dynamicFontSize.input}, 1rem)`}
-                  />
-                </div>
-                <button
-                  className='tooltip-wrap small delete danger gray'
-                  onClick={() => removeColor(block.id)}
-                  style={{
-                    margin: '0.8em 0',
-                    width: `clamp(3em, ${width}, 8em)`,
-                    fontSize: `clamp(0.75rem, ${dynamicFontSize.input}, 2rem)`,
-                  }}
-                >
-                  {ERemove[language]}
-                </button>
-                <div
-                  aria-hidden='true'
-                  className={styles['compliance-info']}
-                  style={{
-                    maxWidth: `clamp(5em,max-content, ${width})`,
-                    margin: ' 0 0 0.8em',
-                    padding: '0.8em 0',
-                    textAlign: 'left',
-                    display: 'flex',
-                    flexFlow: 'column nowrap',
-                    gap: '0.5em',
-                    fontSize: `clamp(0.75rem, ${dynamicFontSize.input}, 1rem)`,
-                  }}
-                >
-                  <div>
-                    <strong>AA:</strong>{' '}
-                    {block.compliantColorsAA.length > 0
-                      ? `${block.compliantColorsAA.join(', ')}`
-                      : ENoCompliantColors[language]}
+                    <span
+                      style={{
+                        color: block.luminance < 0.179 ? 'white' : 'black',
+                        fontSize: `clamp(0.75rem, ${dynamicFontSize.input}, 0.9rem)`,
+                        textAlign: 'center',
+                      }}
+                    >
+                      {block.color}
+                    </span>
                   </div>
-                  <div>
-                    <strong>AAA:</strong>{' '}
-                    {block.compliantColorsAAA.length > 0
-                      ? `${block.compliantColorsAAA.join(', ')}`
-                      : ENoCompliantColors[language]}
-                  </div>
-                </div>
+                )}
+                {show && (
+                  <>
+                    <div className={styles['color-edit-container']}>
+                      <ColorsInput
+                        language={language}
+                        block={block}
+                        updateColor={updateColor}
+                        width={width}
+                        hexToRGB={hexToRGB}
+                        rgbToHSL={rgbToHSL}
+                        rgbToHex={rgbToHex}
+                        hslToRGB={hslToRGB}
+                        fontSize={`clamp(0.75rem, ${dynamicFontSize.input}, 1rem)`}
+                      />
+                    </div>
+                    <button
+                      className={`tooltip-wrap small delete danger gray ${styles.remove}`}
+                      onClick={() => removeColor(block.id)}
+                      style={{
+                        margin: '0.8em auto',
+                        width: `calc(100% - 4px)`,
+                        minWidth: `calc(100% - 4px)`,
+                        fontSize: `clamp(0.75rem, ${dynamicFontSize.input}, 2rem)`,
+                      }}
+                    >
+                      {ERemove[language]}
+                    </button>
+                    <div
+                      aria-hidden='true'
+                      className={styles['compliance-info']}
+                      style={{
+                        width: `calc(100% - 8px)`,
+                        margin: ' 0 0.1em 0.5em',
+                        textAlign: 'left',
+                        display: 'flex',
+                        flexFlow: 'column nowrap',
+                        alignItems: 'flex-start',
+                        justifyContent: 'flex-start',
+                        gap: '0.5em',
+                        fontSize: `clamp(0.75rem, ${dynamicFontSize.input}, 1rem)`,
+                      }}
+                    >
+                      <div>
+                        <strong>AA:</strong>{' '}
+                        {block.compliantColorsAA.length > 0
+                          ? `${block.compliantColorsAA.join(', ')}`
+                          : ENoCompliantColors[language]}
+                      </div>
+                      <div>
+                        <strong>AAA:</strong>{' '}
+                        {block.compliantColorsAAA.length > 0
+                          ? `${block.compliantColorsAAA.join(', ')}`
+                          : ENoCompliantColors[language]}
+                      </div>
+                    </div>
+                  </>
+                )}
               </li>
             </ul>
           )
         })}
+      </div>
+      <div className={`${styles['toggle-controls']}`}>
+        <div>
+          <strong>{EToggleControlVisibility[language]}</strong>
+          <button type='button' onClick={() => setShow(!show)} className='gray'>
+            {show ? EHideControls[language] : EShowControls[language]}
+          </button>{' '}
+        </div>
+        <div>
+          <strong>{EToggleColorNameVisibility[language]}</strong>
+          <button
+            type='button'
+            onClick={() => setShowColorName(!showColorName)}
+            className='gray'
+          >
+            {showColorName ? EHideColorName[language] : EShowColorName[language]}
+          </button>
+        </div>
       </div>
     </div>
   )

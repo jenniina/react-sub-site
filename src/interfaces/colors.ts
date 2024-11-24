@@ -103,3 +103,30 @@ export enum EAAACompliantWithID {
   cs = 'AAA kompatibilní s ID',
   fi = 'AAA-yhteensopiva ID:n kanssa',
 }
+export enum EToggleColorNameVisibility {
+  en = 'Toggle color name visibility',
+  es = 'Alternar visibilidad del nombre del color',
+  fr = 'Basculer la visibilité du nom de la couleur',
+  de = 'Sichtbarkeit des Farbnamen umschalten',
+  pt = 'Alternar visibilidade do nome da cor',
+  cs = 'Přepnout viditelnost názvu barvy',
+  fi = 'Muuta värin nimen näkyvyyttä',
+}
+export enum EShowColorName {
+  en = 'Show color name',
+  es = 'Mostrar nombre de color',
+  fr = 'Afficher le nom de la couleur',
+  de = 'Farbnamen anzeigen',
+  pt = 'Mostrar nome da cor',
+  cs = 'Zobrazit název barvy',
+  fi = 'Näytä värinimi',
+}
+export enum EHideColorName {
+  en = 'Hide color name',
+  es = 'Ocultar nombre de color',
+  fr = 'Masquer le nom de la couleur',
+  de = 'Farbnamen ausblenden',
+  pt = 'Ocultar nome da cor',
+  cs = 'Skrýt název barvy',
+  fi = 'Piilota värinimi',
+}
