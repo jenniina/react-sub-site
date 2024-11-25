@@ -37,10 +37,7 @@ const ColorsInput: FC<Props> = ({
     { value: 'rgb', label: 'RGB' },
     { value: 'hex', label: 'Hex' },
   ]
-  const [selected, setSelected, deleteSelected] = useLocalStorage<
-    SelectOption | undefined
-  >(
-    `Jenniina-color-format-${block.id}`,
+  const [selected, setSelected] = useState<SelectOption | undefined>(
     colorFormatOptions.find((option) => option.value === block.colorFormat) ||
       colorFormatOptions[0]
   )
