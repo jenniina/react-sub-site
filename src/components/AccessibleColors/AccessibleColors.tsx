@@ -402,7 +402,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
   }
 
   useEffect(() => {
-    if (!colors || colors.length < 1) {
+    if (!colors || colors?.length < 1) {
       setColors(defaultColors)
     }
   }, [])
@@ -495,14 +495,14 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     const lineHeight = indicatorSize / 20
     const fontSize = blockWidth / 10
 
-    const totalIndicators = colors?.length
+    const totalIndicators = listItemsByStatus[status]?.items?.length
     const blockHeight =
       totalIndicators * (indicatorSize + indicatorSpacing) -
       indicatorSpacing +
       padding * 2
     const textBlockHeight = showColorName ? fontSize + padding : 0
 
-    const svgWidth = colors.length * blockWidth
+    const svgWidth = listItemsByStatus[status]?.items.length * blockWidth
     const svgHeight = blockHeight + textBlockHeight
 
     const blocksGroup = colors
@@ -741,7 +741,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     }
 
     // Iterate over existing color blocks to determine compliance levels
-    colors?.forEach((block) => {
+    listItemsByStatus[status]?.items?.forEach((block) => {
       const compliance = determineAccessibility(newColorBlock, block)
 
       if (compliance.isAAARegularTextCompliant) {
@@ -757,7 +757,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     })
 
     // Remove duplicate IDs by converting to Set and back to array
-    const updatedColors = colors.map((block) => ({
+    const updatedColors = listItemsByStatus[status]?.items.map((block) => ({
       ...block,
       compliantColors: {
         AAA_RegularText: Array.from(new Set(block.compliantColors?.AAA_RegularText)),
@@ -853,7 +853,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
 
       const lum = calculateLuminance(r, g, b)
 
-      const updatedColors = colors.map((block) => {
+      const updatedColors = listItemsByStatus[status]?.items.map((block) => {
         if (block.id === id) {
           return {
             ...block,
@@ -971,7 +971,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
   }, [listItemsByStatus])
 
   useEffect(() => {
-    if (colors.length < 1) {
+    if (listItemsByStatus[status]?.items.length < 1) {
       setIdCounter(1)
     }
   }, [colors])
@@ -1000,7 +1000,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     >
       {' '}
       <div className={styles['btn-wrap']}>
-        {colors?.length > 0 && (
+        {listItemsByStatus[status]?.items?.length > 0 && (
           <>
             <button type='button' onClick={saveAsPNG} className='gray small'>
               {ESaveAsPNG[language]}&nbsp;&nbsp;
@@ -1303,7 +1303,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           )
         })}
       </div>
-      {colors?.length > 0 && (
+      {listItemsByStatus[status]?.items?.length > 0 && (
         <>
           <div className={styles['width-wrap']}>
             <label htmlFor='color-block-width'>{EEditSize[language]}</label>
