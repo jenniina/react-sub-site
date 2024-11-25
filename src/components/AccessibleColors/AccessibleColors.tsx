@@ -323,7 +323,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
   ]
 
   const [colors, setColors, deleteColors] = useLocalStorage<ColorBlock[]>(
-    'Jenniina-colors',
+    'Jenniina-colorsAccessibility',
     defaultColors
   )
   const [currentColor, setCurrentColor] = useLocalStorage<string>(
@@ -400,6 +400,12 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       throw new Error(`Unsupported color format: ${format}`)
     }
   }
+
+  useEffect(() => {
+    if (colors === undefined || colors.length === 0) {
+      setColors(defaultColors)
+    }
+  }, [])
 
   const ComplianceShapes: Record<
     'AA_RegularText' | 'AA_UIComponents' | 'AAA_RegularText',
