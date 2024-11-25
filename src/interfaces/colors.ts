@@ -18,6 +18,16 @@ export enum ETestColorCombinations {
   fi = 'Testaa väriyhdistelmiä saavutettavuuden kannalta',
 }
 
+export enum ERoundIndicatorMarks {
+  en = 'The round indicator marks the highest AAA-compatibility, while the smaller square marks AA-compatibility',
+  es = 'El indicador redondo marca la mayor compatibilidad AAA, mientras que el cuadrado más pequeño marca la compatibilidad AA',
+  fr = "L'indicateur rond marque la plus haute compatibilité AAA, tandis que le carré plus petit marque la compatibilité AA",
+  de = 'Der runde Indikator kennzeichnet die höchste AAA-Kompatibilität, während das kleinere Quadrat die AA-Kompatibilität kennzeichnet',
+  pt = 'O indicador redondo marca a maior compatibilidade AAA, enquanto o quadrado menor marca a compatibilidade AA',
+  cs = 'Kulový indikátor označuje nejvyšší kompatibilitu AAA, zatímco menší čtverec označuje kompatibilitu AA',
+  fi = 'Pyöreä indikaattori merkitsee korkeaa AAA-yhteensopivuutta, kun taas pienempi neliö merkitsee AA-yhteensopivuutta',
+}
+
 export enum EColorPicker {
   en = 'Color Picker',
   es = 'Selector de color',
@@ -138,4 +148,49 @@ export enum ESaveAsSVG {
   pt = 'Salvar como SVG',
   cs = 'Uložit jako SVG',
   fi = 'Tallenna SVG-muodossa',
+}
+export enum ESaveAsPNG {
+  en = 'Save as PNG',
+  es = 'Guardar como PNG',
+  fr = 'Enregistrer en PNG',
+  de = 'Als PNG speichern',
+  pt = 'Salvar como PNG',
+  cs = 'Uložit jako PNG',
+  fi = 'Tallenna PNG-muodossa',
+}
+export enum EWithOrWithoutColorName {
+  en = 'With or without colorname',
+  es = 'Con o sin nombre de color',
+  fr = 'Avec ou sans nom de couleur',
+  de = 'Mit oder ohne Farbnamen',
+  pt = 'Com ou sem nome de cor',
+  cs = 'S názvem nebo bez názvu barvy',
+  fi = 'Värinimen kanssa tai ilman',
+}
+export enum EHintOrganizingColors {
+  en = 'Hint: organizing the colors in darkest-to-light or lighest-to-dark creates more appealing visuals',
+  es = 'Sugerencia: organizar los colores de más oscuro a más claro o de más claro a más oscuro crea visuales más atractivos',
+  fr = 'Astuce : organiser les couleurs du plus foncé au plus clair ou du plus clair au plus foncé crée des visuels plus attrayants',
+  de = 'Tipp: Das Organisieren der Farben von dunkel nach hell oder von hell nach dunkel schafft ansprechendere Bilder',
+  pt = 'Dica: organizar as cores do mais escuro para o mais claro ou do mais claro para o mais escuro cria visuais mais atraentes',
+  cs = 'Tip: organizování barev od nejtmavší po nejsvětlejší nebo od nejsvětlejší po nejtmavší vytváří atraktivnější vizuály',
+  fi = 'Vihje: värien järjestäminen tummimmasta vaaleimpaan tai vaaleimmasta tummimpaan luo houkuttelevampia visuaaleja',
+}
+export enum EColorsCanBeReorderedByDragging {
+  en = 'Colors can be reordered by dragging',
+  es = 'Los colores se pueden reordenar arrastrando',
+  fr = 'Les couleurs peuvent être réorganisées en les faisant glisser',
+  de = 'Farben können durch Ziehen neu geordnet werden',
+  pt = 'As cores podem ser reorganizadas arrastando',
+  cs = 'Barvy lze přeuspořádat přetažením',
+  fi = 'Värejä voidaan järjestää uudelleen raahaamalla',
+}
+export enum EColors {
+  en = 'Colors',
+  es = 'Colores',
+  fr = 'Couleurs',
+  de = 'Farben',
+  pt = 'Cores',
+  cs = 'Barvy',
+  fi = 'Värit',
 }

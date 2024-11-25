@@ -2,7 +2,7 @@ import { useState, useEffect, FC, useRef } from 'react'
 import styles from './accessiblecolors.module.css'
 import { notify } from '../../reducers/notificationReducer'
 import useLocalStorage from '../../hooks/useStorage'
-import { EDownload, ELanguages, ERemove } from '../../interfaces'
+import { EDarkMode, ELanguages, ELightMode, ERemove, EReset } from '../../interfaces'
 import { useDragAndDrop } from '../../hooks/useDragAndDrop'
 import { EAddAColor } from '../../interfaces/draganddrop'
 import ColorsInput from './ColorsInput'
@@ -14,32 +14,23 @@ import {
   EHideColorName,
   ENoCompliantColors,
   ERemoveColorConfirmation,
+  ESaveAsPNG,
   ESaveAsSVG,
   EShowColorName,
   EToggleColorNameVisibility,
 } from '../../interfaces/colors'
-import { useTheme } from '../../hooks/useTheme'
+import { useTheme, useThemeUpdate } from '../../hooks/useTheme'
 import {
+  EAreYouSureYouWantToDeleteThisVersion,
   EArtSaved,
-  EClickHereToTakeAScreenshot,
   EHideControls,
-  ENoScreenshotAvailableToSave,
-  EScreenshot,
   EShowControls,
-  ETakingScreenShot,
   EToggleControlVisibility,
 } from '../../interfaces/blobs'
-import useWindowSize from '../../hooks/useWindowSize'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
-
-const colorNameToHex = (color: string) => {
-  const ctx = document.createElement('canvas').getContext('2d')
-  if (!ctx) {
-    throw new Error('Canvas context not available')
-  }
-  ctx.fillStyle = color
-  return ctx.fillStyle
-}
+import { EClear } from '../../interfaces/select'
+import { MdDarkMode, MdLightMode } from 'react-icons/md'
+import { PiDownloadSimpleFill } from 'react-icons/pi'
 
 const hexToRGB = (hex: string) => {
   let r = parseInt(hex.slice(1, 3), 16)
@@ -203,25 +194,79 @@ interface Props {
 const AccessibleColors: FC<Props> = ({ language }) => {
   const dispatch = useAppDispatch()
   const lightTheme = useTheme()
+  const toggleTheme = useThemeUpdate()
   const [show, setShow] = useState(true)
   const [showColorName, setShowColorName] = useLocalStorage(
     'Jenniina-showColorNames',
     true
   )
+  const status = 'colors'
+  const format = 'hsl'
+
+  const defaultColors: ColorBlock[] = [
+    {
+      id: 1,
+      color: 'hsl(200, 50%, 10%)',
+      luminance: 0.008568125618069307,
+      status: status,
+      colorFormat: format,
+      compliantColorsAA: [3, 4, 5],
+      compliantColorsAAA: [4, 5],
+    },
+    {
+      id: 2,
+      color: 'hsl(200, 50%, 35%)',
+      luminance: 0.08865558628577294,
+      status: status,
+      colorFormat: format,
+      compliantColorsAA: [5],
+      compliantColorsAAA: [],
+    },
+    {
+      id: 3,
+      color: 'hsl(200, 50%, 55%)',
+      luminance: 0.27467731206038465,
+      status: status,
+      colorFormat: format,
+      compliantColorsAA: [1],
+      compliantColorsAAA: [],
+    },
+    {
+      id: 4,
+      color: 'hsl(200, 50%, 75%)',
+      luminance: 0.5711248294648731,
+      status: status,
+      colorFormat: format,
+      compliantColorsAA: [1],
+      compliantColorsAAA: [1],
+    },
+    {
+      id: 5,
+      color: 'hsl(200, 50%, 90%)',
+      luminance: 0.7912979403326302,
+      status: status,
+      colorFormat: format,
+      compliantColorsAA: [1, 2],
+      compliantColorsAAA: [1],
+    },
+  ]
+
   const [colors, setColors, deleteColors] = useLocalStorage<ColorBlock[]>(
     'Jenniina-colors',
-    []
+    defaultColors
   )
   const [currentColor, setCurrentColor] = useLocalStorage<string>(
     'Jenniina-currentColor',
-    '#ffffff'
+    '#7D7D7D'
   )
   const [idCounter, setIdCounter] = useLocalStorage<number>('Jenniina-idCounter', 1)
-  const status = 'colors'
+
   const { isDragging, listItemsByStatus, handleDragging, handleUpdate } = useDragAndDrop(
     colors,
     [status]
   )
+  const dragOverItem = useRef<number>(0)
+  const [theTarget, setTheTarget] = useState<number>(0)
 
   const baseWidth = 8
   const [widthNumber, setWidth] = useLocalStorage('Jenniina-color-block-width', baseWidth)
@@ -230,112 +275,55 @@ const AccessibleColors: FC<Props> = ({ language }) => {
   const fontSizeMultiplier = widthNumber / baseWidth
 
   const dynamicFontSize = {
-    tooltip: `${0.75 * fontSizeMultiplier}em`,
+    tooltip: `${0.7 * fontSizeMultiplier}em`,
     colorName: `${0.7 * fontSizeMultiplier}em`,
     input: `${0.8 * fontSizeMultiplier}em`,
   }
 
-  const [loading, setLoading] = useState<boolean>(false)
-  const colorScreenshot = useRef<HTMLDivElement>(null)
-  const screenshotImg = useRef<HTMLImageElement>(null)
-  const { windowWidth, windowHeight } = useWindowSize()
-
-  const takeScreenshot = async () => {
-    const colorBlocks = document.getElementById('color-blocks')
-    if (colorBlocks && !loading) {
-      try {
-        let localStorageData: { [key: string]: string } = {}
-        for (let i = 0; i < localStorage.length; i++) {
-          const key = localStorage.key(i)
-          if (key) {
-            const value = localStorage.getItem(key)
-            if (value !== null) {
-              localStorageData[key] = value
-            }
-          }
-        }
-        setLoading(true)
-        const url =
-          import.meta.env.VITE_BASE_URI ??
-          'https://react-bg.braveisland-7060f196.westeurope.azurecontainerapps.io'
-        const baseUrl = `${url}/api/screenshot`
-        const response = await fetch(baseUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            url: window.location.href,
-            selector: '#color-blocks',
-            language,
-            localStorageData,
-            width: windowWidth,
-            height: windowHeight,
-          }),
-        })
-
-        if (!response.ok) {
-          console.error('Error taking screenshot:', response.statusText)
-          setLoading(false)
-          throw new Error(`Error: ${response.statusText}`)
-        }
-
-        const data = await response.json()
-
-        if (screenshotImg.current) {
-          screenshotImg.current.src = `data:image/png;base64,${data.screenshot}`
-          if (colorScreenshot.current) {
-            colorScreenshot.current.style.display = 'block'
-            screenshotImg.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
-          }
-          console.log('Screenshot taken successfully')
-        }
-        setLoading(false)
-      } catch (error: any) {
-        console.error('Error capturing screenshot:', error)
-        setLoading(false)
-      }
-    }
-  }
-
-  const saveScreenshot = () => {
-    const img = screenshotImg.current
-    if (img && img.src) {
-      const link = document.createElement('a')
-      link.href = img.src
-      link.download = 'blobs.png'
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      dispatch(notify(EArtSaved[language], false, 8))
-    } else {
-      dispatch(notify(ENoScreenshotAvailableToSave[language], true, 8))
-      console.error(ENoScreenshotAvailableToSave[language])
-    }
-  }
-
-  const generateSVG = (): string => {
-    const widthNumber = 40
-    const blockWidth = widthNumber
+  const generateSVG = (): { svgContent: string; svgWidth: number; svgHeight: number } => {
+    const width = widthNumber * 20
+    const blockWidth = width
     const indicatorSize = blockWidth / 3
     const squareSize = indicatorSize * 0.6
-    const indicatorSpacing = indicatorSize / 2
-    const padding = widthNumber / 3
+    const indicatorSpacing = indicatorSize / 1.5
+    const padding = width / 4
+    const lineHeight = indicatorSize / 20
+    const fontSize = blockWidth / 10
 
     const totalIndicators = colors.length
     const blockHeight =
       totalIndicators * (indicatorSize + indicatorSpacing) -
       indicatorSpacing +
       padding * 2
+    const textBlockHeight = showColorName ? fontSize + padding : 0
 
     const svgWidth = colors.length * blockWidth
-    const svgHeight = blockHeight
+    const svgHeight = blockHeight + textBlockHeight
+
+    const lines = colors
+      .map((colorItem, idx) => {
+        const yIndicator = padding + idx * (indicatorSize + indicatorSpacing)
+        const yLine = yIndicator + (indicatorSize - lineHeight) / 2
+        const lineColor = colorItem.color
+
+        return `
+        <rect
+          x="0"
+          y="${yLine}"
+          width="${svgWidth}"
+          height="${lineHeight}"
+          fill="${lineColor}"
+          stroke="none"
+        />
+      `
+      })
+      .join('')
 
     const blocksSVG = colors
       .map((block, index) => {
         const xPosition = index * blockWidth
 
-        // Generate compliance indicators for each other color
+        // Compliance indicators for each color
         const indicators = colors
           .map((otherColor, idx) => {
             const xIndicator = xPosition + (blockWidth - indicatorSize) / 2
@@ -350,6 +338,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                 width="${indicatorSize}"
                 height="${indicatorSize}"
                 fill="transparent"
+                stroke="none"
               />
             `
             } else if (block.compliantColorsAAA.includes(otherColor.id)) {
@@ -360,6 +349,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                 cy="${yIndicator + indicatorSize / 2}"
                 r="${indicatorSize / 2}"
                 fill="${otherColor.color}"
+                stroke="none"
               />
             `
             } else if (block.compliantColorsAA.includes(otherColor.id)) {
@@ -374,6 +364,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                 width="${squareSize}"
                 height="${squareSize}"
                 fill="${otherColor.color}"
+                stroke="none"
               />
             `
             } else {
@@ -385,25 +376,62 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                 width="${indicatorSize}"
                 height="${indicatorSize}"
                 fill="transparent"
+                stroke="none"
               />
             `
             }
           })
           .join('')
 
-        // Color block rectangle (column)
+        // Color block rectangle
+        const blockRect = `
+          <rect
+            x="${xPosition}"
+            y="0"
+            width="${blockWidth}"
+            height="${blockHeight}"
+            fill="${block.color}"
+            stroke="none"
+          />
+        `
+
+        // Text background rectangle and label
+        const textContent = showColorName
+          ? `
+          <!-- Text Background -->
+          <rect
+            x="${xPosition}"
+            y="${blockHeight - 0.5}"  
+            width="${blockWidth}"
+            height="${textBlockHeight}"
+            fill="${block.color}"
+            stroke="none"
+          />
+          <!-- Color Text Label -->
+          <text
+            x="${xPosition + blockWidth / 2}"
+            y="${blockHeight + textBlockHeight / 2 + fontSize / 3}"
+            font-size="${fontSize}"
+            font-family="Arial"
+            text-anchor="middle"
+            dominant-baseline="middle"
+            fill="${block.luminance > 0.179 ? '#000000' : '#FFFFFF'}"
+            stroke="none"
+          >
+            ${block.color}
+          </text>
+        `
+          : ''
+
+        // Group the block, indicators, and optional text label
         return `
           <g>
             <!-- Color Block -->
-            <rect
-              x="${xPosition}"
-              y="0"
-              width="${blockWidth}"
-              height="${blockHeight}"
-              fill="${block.color}"
-            />
+            ${blockRect}
             <!-- Compliance Indicators -->
             ${indicators}
+            <!-- Color Text Label -->
+            ${textContent}
           </g>
         `
       })
@@ -411,15 +439,18 @@ const AccessibleColors: FC<Props> = ({ language }) => {
 
     const svgContent = `
       <svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}">
+        <!-- Color Blocks and Indicators -->
         ${blocksSVG}
+        <!-- Lines -->
+        ${lines}
       </svg>
     `
 
-    return svgContent
+    return { svgContent, svgWidth, svgHeight }
   }
 
   const saveAsSVG = () => {
-    const svgContent = generateSVG()
+    const { svgContent } = generateSVG()
     const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' })
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
@@ -429,11 +460,48 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     link.click()
     document.body.removeChild(link)
     URL.revokeObjectURL(url)
-    dispatch(notify(ESaveAsSVG[language], false, 5))
+    dispatch(notify(EArtSaved[language], false, 5))
   }
 
-  const dragOverItem = useRef<number>(0)
-  const [theTarget, setTheTarget] = useState<number>(0)
+  const saveAsPNG = () => {
+    const { svgContent, svgWidth, svgHeight } = generateSVG()
+
+    const img = new Image()
+    img.width = svgWidth
+    img.height = svgHeight
+
+    const svgBlob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' })
+    const url = URL.createObjectURL(svgBlob)
+
+    img.onload = () => {
+      const canvas = document.createElement('canvas')
+      canvas.width = svgWidth
+      canvas.height = svgHeight
+      const context = canvas.getContext('2d')
+
+      context?.drawImage(img, 0, 0)
+
+      const pngDataUrl = canvas.toDataURL('image/png')
+
+      const link = document.createElement('a')
+      link.href = pngDataUrl
+      link.download = 'color-blocks.png'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+
+      URL.revokeObjectURL(url)
+      dispatch(notify(EArtSaved[language], false, 5))
+    }
+
+    img.onerror = (err) => {
+      console.error('Error loading SVG into image for PNG conversion:', err)
+      URL.revokeObjectURL(url)
+      // Optional: dispatch an error notification
+    }
+
+    img.src = url
+  }
 
   const addColor = () => {
     const { r, g, b } = hexToRGB(currentColor)
@@ -608,11 +676,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     }
   }
 
-  // TODO:
-  // Give screenshot ability
-  // Give print ability
-  // Give export ability
-
   const handleDragStart = (e: React.DragEvent<HTMLLIElement>, position: number) => {
     e.dataTransfer.setData('text/plain', JSON.stringify({ type: 'item', id: position }))
   }
@@ -662,18 +725,25 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     return color
   }
 
-  //   useEffect(() => {
-  //     deleteColors()
-  //     setColors([])
-  //     setIdCounter(1)
-  //   }, [])
-
   useEffect(() => {
-    // console.log(colors)
     if (colors.length < 1) {
       setIdCounter(1)
     }
   }, [colors])
+
+  const clear = () => {
+    if (window.confirm(EAreYouSureYouWantToDeleteThisVersion[language])) {
+      deleteColors()
+      setColors([])
+    }
+  }
+
+  const reset = () => {
+    if (window.confirm(EAreYouSureYouWantToDeleteThisVersion[language])) {
+      deleteColors()
+      setColors(defaultColors)
+    }
+  }
 
   return (
     <div
@@ -681,6 +751,34 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       className={`${styles['color-container']} ${lightTheme ? styles.light : ''}`}
       style={{ ['--font-size' as string]: dynamicFontSize.input }}
     >
+      {' '}
+      <div className={styles['btn-wrap']}>
+        {colors?.length > 0 && (
+          <>
+            <button type='button' onClick={saveAsPNG} className='gray small'>
+              {ESaveAsPNG[language]}&nbsp;&nbsp;
+              <PiDownloadSimpleFill />
+            </button>
+            <button type='button' onClick={saveAsSVG} className='gray small'>
+              {ESaveAsSVG[language]}&nbsp;&nbsp;
+              <PiDownloadSimpleFill />
+            </button>
+          </>
+        )}
+        <button onClick={toggleTheme} className='gray small'>
+          {lightTheme ? (
+            <>
+              {EDarkMode[language]}&nbsp;&nbsp;
+              <MdDarkMode />
+            </>
+          ) : (
+            <>
+              {ELightMode[language]}&nbsp;&nbsp;
+              <MdLightMode />{' '}
+            </>
+          )}
+        </button>
+      </div>
       <div className={styles['color-picker']}>
         <label htmlFor='color-input' className=' '>
           {EColorPicker[language]}:
@@ -691,46 +789,21 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           value={currentColor}
           onChange={(e) => setCurrentColor(e.target.value)}
         />
-        <button className='gray' type='button' onClick={addColor}>
+        <button className='gray small' type='button' onClick={addColor}>
           {EAddAColor[language]}
         </button>
+        <button className='gray small' type='button' onClick={reset}>
+          {EReset[language]}
+        </button>
+        <button className='gray small' type='button' onClick={clear}>
+          {EClear[language]}
+        </button>
       </div>
-
-      {colors?.length > 0 && (
-        <div className={styles.wrap}>
-          <div className={styles['width-wrap']}>
-            <label htmlFor='color-block-width'>{EEditSize[language]}</label>
-            <input
-              id='color-block-width'
-              type='range'
-              min={5.5}
-              max={12}
-              step={0.5}
-              value={widthNumber}
-              onChange={(e) => setWidth(Number(e.target.value))}
-            />
-          </div>
-          <button
-            type='button'
-            onClick={takeScreenshot}
-            className={`gray tooltip-wrap ${styles['screenshot']}`}
-            disabled={loading}
-          >
-            {loading ? ETakingScreenShot[language] : EScreenshot[language]}
-            <span className='tooltip below narrow2'>
-              {EClickHereToTakeAScreenshot[language]}
-            </span>
-          </button>
-          <button type='button' onClick={saveAsSVG} className='gray'>
-            {ESaveAsSVG[language]}
-          </button>
-        </div>
-      )}
       <div
         id='color-blocks'
         className={`${styles['color-blocks']} ${
           !showColorName || !show ? styles.overflow : ''
-        }`}
+        } ${isDragging ? styles.drag : ''}`}
       >
         {listItemsByStatus[status]?.items.map((block) => {
           return (
@@ -805,7 +878,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                                 id={`span-${otherColor.id}-${block.id}`}
                                 className={`tooltip below narrow3 ${styles['tooltip']}`}
                                 style={{
-                                  fontSize: `clamp(0.75rem, ${dynamicFontSize.input}, 1rem)`,
+                                  fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 1rem)`,
                                 }}
                               >{`${EAAACompliantWithID[language]}: ${otherColor.id}`}</span>
                             </div>
@@ -830,7 +903,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                                 id={`span-${otherColor.id}-${block.id}`}
                                 className='tooltip below narrow3'
                                 style={{
-                                  fontSize: `clamp(0.75rem, ${dynamicFontSize.input}, 1rem)`,
+                                  fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 1rem)`,
                                 }}
                               >{`${EAACompliantWithID[language]}: ${otherColor.id}`}</span>
                             </div>
@@ -870,7 +943,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                     <span
                       style={{
                         color: block.luminance < 0.179 ? 'white' : 'black',
-                        fontSize: `clamp(0.75rem, ${dynamicFontSize.input}, 0.9rem)`,
+                        fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 0.9rem)`,
                         textAlign: 'center',
                       }}
                     >
@@ -940,43 +1013,45 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           )
         })}
       </div>
-      <div className={`${styles['toggle-controls']}`}>
-        <div>
-          <strong>{EToggleControlVisibility[language]}</strong>
-          <button
-            id='toggle-controls'
-            type='button'
-            onClick={() => setShow(!show)}
-            className='gray'
-          >
-            {show ? EHideControls[language] : EShowControls[language]}
-          </button>{' '}
-        </div>
-        <div>
-          <strong>{EToggleColorNameVisibility[language]}</strong>
-          <button
-            type='button'
-            onClick={() => setShowColorName(!showColorName)}
-            className='gray'
-          >
-            {showColorName ? EHideColorName[language] : EShowColorName[language]}
-          </button>
-        </div>
-      </div>
-
-      <div
-        ref={colorScreenshot}
-        className={styles['screenshot-container']}
-        style={{ display: 'none' }}
-      >
-        <button onClick={saveScreenshot} className='gray small'>
-          {EDownload[language]}
-        </button>
-        <img ref={screenshotImg} alt='Screenshot' className={styles['screenshot-img']} />
-        <button onClick={saveScreenshot} className='gray small'>
-          {EDownload[language]}
-        </button>
-      </div>
+      {colors?.length > 0 && (
+        <>
+          <div className={styles['width-wrap']}>
+            <label htmlFor='color-block-width'>{EEditSize[language]}</label>
+            <input
+              id='color-block-width'
+              type='range'
+              min={6}
+              max={12}
+              step={0.5}
+              value={widthNumber}
+              onChange={(e) => setWidth(Number(e.target.value))}
+            />
+          </div>
+          <div className={`${styles['toggle-controls']}`}>
+            <div>
+              <strong>{EToggleControlVisibility[language]}</strong>
+              <button
+                id='toggle-controls'
+                type='button'
+                onClick={() => setShow(!show)}
+                className='gray small'
+              >
+                {show ? EHideControls[language] : EShowControls[language]}
+              </button>
+            </div>
+            <div>
+              <strong>{EToggleColorNameVisibility[language]}</strong>
+              <button
+                type='button'
+                onClick={() => setShowColorName(!showColorName)}
+                className='gray small'
+              >
+                {showColorName ? EHideColorName[language] : EShowColorName[language]}
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }

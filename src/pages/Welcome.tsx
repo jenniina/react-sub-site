@@ -2,7 +2,7 @@ import { useTheme } from '../hooks/useTheme'
 import { Link } from 'react-router-dom'
 import styles from './css/welcome.module.css'
 import Hero from '../components/Hero/Hero'
-import { BiChat } from 'react-icons/bi'
+import { BiChat, BiSolidColorFill } from 'react-icons/bi'
 import { BsPerson } from 'react-icons/bs'
 import { IoMdImages } from 'react-icons/io'
 import { GiAbstract019, GiNewShoot } from 'react-icons/gi'
@@ -99,6 +99,7 @@ import {
 import { EAddAColor, EAddGenericCardsAndColorThem } from '../interfaces/draganddrop'
 import { EComposerOlliSanta, EAddedALinkToComposer } from '../interfaces/composer'
 import Accordion from '../components/Accordion/Accordion'
+import { EColorAccessibility, ETestColorCombinations } from '../interfaces/colors'
 
 export default function Home({
   heading,
@@ -185,6 +186,16 @@ export default function Home({
                       <strong>{ENovember[language]}</strong>
                       <ul>
                         <li>
+                          <Link to='/portfolio/colors'>
+                            <BiSolidColorFill />
+                            {EColorAccessibility[language]}:
+                          </Link>
+                          <i>
+                            {ENewPortfolioItem[language]}:{' '}
+                            {ETestColorCombinations[language]}
+                          </i>
+                        </li>
+                        <li>
                           <Link to='/portfolio/composer'>
                             <BsMusicNoteBeamed />
                             {EComposerOlliSanta[language]}:
@@ -198,7 +209,10 @@ export default function Home({
                             <BsMusicNoteBeamed />
                             {EComposerOlliSanta[language]}:
                           </Link>
-                          <i>{EAddedALinkToComposer[language]}</i>
+                          <i>
+                            {ENewPortfolioItem[language]}:{' '}
+                            {EAddedALinkToComposer[language]}
+                          </i>
                         </li>
                         <li>
                           <Link to='/portfolio/draganddrop'>

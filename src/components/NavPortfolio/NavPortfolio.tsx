@@ -5,7 +5,6 @@ import {
   EBlob,
   ECustomSelect,
   EDragAndDrop,
-  EGraphQLSite,
   EHairSalon,
   EJokes,
   ELanguages,
@@ -17,6 +16,7 @@ import {
   EToDo,
   RefObject,
 } from '../../interfaces'
+import { EColorAccessibility } from '../../interfaces/colors'
 import useIsOnScreen from '../../hooks/useIsOnScreen'
 import useWindowSize from '../../hooks/useWindowSize'
 import { breakpointSmall } from '../../interfaces'
@@ -51,6 +51,7 @@ function NavPortfolio({ language }: { language: ELanguages }) {
 
   const navItems: NavItem[] = [
     { url: '/portfolio', name: `${EPortfolio[language]}`, special: 'first' },
+    { url: '/portfolio/colors', name: EColorAccessibility[language] },
     { url: '/portfolio/composer', name: EComposerOlliSanta[language] },
     { url: '/portfolio/blob', name: EBlob[language] },
     { url: '/portfolio/jokes', name: EJokes[language] },

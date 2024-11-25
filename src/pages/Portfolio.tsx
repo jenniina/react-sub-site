@@ -31,7 +31,7 @@ import styles from './css/portfolio.module.css'
 import Hero from '../components/Hero/Hero'
 import { Link } from 'react-router-dom'
 import { AiOutlineForm } from 'react-icons/ai'
-import { BiSelectMultiple } from 'react-icons/bi'
+import { BiSelectMultiple, BiSolidColorFill } from 'react-icons/bi'
 import { RiTodoLine, RiDragDropLine, RiDragMove2Fill } from 'react-icons/ri'
 import { GiAbstract019, GiComb } from 'react-icons/gi'
 import { MdOutlineQuiz } from 'react-icons/md'
@@ -51,6 +51,7 @@ import { ETodoApp } from '../components/Todo/interfaces'
 import { ETryDraggingTheBlobs } from '../interfaces/blobs'
 import { EBlobArtApp } from '../interfaces/about'
 import Accordion from '../components/Accordion/Accordion'
+import { EColorAccessibility, ETestColorCombinations } from '../interfaces/colors'
 
 export default function Portfolio({
   heading,
@@ -130,6 +131,15 @@ export default function Portfolio({
               </Accordion>
             </div>
             <ul className={`${styles.list}`}>
+              <li>
+                <Link to='/portfolio/colors'>
+                  <BiSolidColorFill />
+                  <span>
+                    {EColorAccessibility[language]} ({EWebsite[language]})
+                  </span>
+                </Link>
+                <p>{ETestColorCombinations[language]}</p>
+              </li>
               <li>
                 <Link to='/portfolio/composer'>
                   <BsMusicNoteBeamed />

@@ -43,23 +43,30 @@
   min-height: clamp(40px, 80vw, var(--size));
   height: clamp(40px, 80vw, var(--size));
   max-height: clamp(40px, 80vw, var(--size));
-  outline: 8px solid black;
-  outline-offset: -7px;
+  outline: 10px solid white;
+  outline-offset: -8px;
   border-radius: 50%;
 }
 .light .color-picker > input[type='color' i] {
-  outline: 8px solid white;
+  outline: 10px solid black;
 }
 #color-container .color-picker > button {
-  padding: 0.3em 0.2em;
-  min-width: 100%;
 }
 .width-wrap {
-  margin: 0 auto 2em;
+  margin: 2em auto 0;
 }
 .width-wrap,
 .width-wrap > * {
   width: clamp(100px, 70vw, 400px);
+}
+.btn-wrap {
+  width: clamp(100px, 70vw, 800px);
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+  margin-bottom: 3em;
 }
 .color-blocks {
   --size: 96vw;
@@ -73,6 +80,15 @@
   height: max-content;
   width: clamp(100px, max-content, var(--size));
   max-width: var(--size);
+}
+.color-blocks li ul li {
+  border: 1px solid var(--color);
+}
+.color-blocks.drag li ul li {
+  outline: 2px dashed black;
+  outline-offset: -1px;
+  border: 1px dashed white;
+  cursor: grabbing;
 }
 
 .color-blocks.overflow {
@@ -242,6 +258,7 @@
   justify-content: flex-start;
   align-items: center;
   gap: 0.5em;
+  color: var(--color-primary-20);
 }
 .inputs > label > span {
   white-space: nowrap;
