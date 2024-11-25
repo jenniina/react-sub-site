@@ -850,7 +850,7 @@ nav .open.password-reset-container button.forgot-btn {
 }
 #root .App .tooltip-wrap .tooltip.narrow3,
 #root .App .tooltip-wrap.narrow3 .tooltip {
-  --width: clamp(3rem, calc(60vw), 5.5rem);
+  --width: clamp(3rem, calc(60vw), 6em);
   --tooltip-max-width: var(--width);
 }
 .tooltip-wrap:not(button):not(a) {

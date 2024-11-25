@@ -154,7 +154,7 @@
   top: 50%;
   left: var(--left);
   width: var(--width-full);
-  height: 2px;
+  height: calc(var(--width-full) * 0.015);
   border-radius: 0;
   background-color: var(--color);
   z-index: -1;
@@ -258,8 +258,8 @@
 }
 .inputs.hex-input > label {
   flex-flow: column nowrap;
-  margin-top: 1.5em;
-  min-height: 4.5em;
+  margin-top: 0.35em;
+  gap: 0.1em;
 }
 @media (min-width: 300px) {
   .color-edit-container > .color-format-select > div > span {
