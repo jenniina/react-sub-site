@@ -320,7 +320,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
  <circle
   cx="${xPosition + blockWidth / 2}"
   cy="${yIndicator + indicatorSize / 2}"
-  r="${indicatorSize * 0.35}"
+  r="${indicatorSize * 0.32}"
   fill="${convertedBlockColor}"
   stroke="${convertedOtherColor}"
   stroke-width="${indicatorSize * 0.1}"
@@ -343,9 +343,9 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       return `
     <rect
   x="${xPosition + blockWidth / 2 - indicatorSize * 0.2}"
-  y="${yIndicator + indicatorSize / 2 - indicatorSize * 0.2}"
-  width="${indicatorSize * 0.4}"
-  height="${indicatorSize * 0.4}"
+  y="${yIndicator + indicatorSize / 2 - indicatorSize * 0.15}"
+  width="${indicatorSize * 0.3}"
+  height="${indicatorSize * 0.3}"
   fill="${convertedBlockColor}"
   stroke="${convertedOtherColor}"
   stroke-width="${indicatorSize * 0.1}"
@@ -1057,7 +1057,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                                 outline: `calc(${width} * ${times * 1.1}) solid ${
                                   otherColor.color
                                 }`,
-                                outlineOffset: `0`,
+                                outlineOffset: `calc(${width} * -0.013)`,
                                 ['--left' as string]: `calc(calc(${width} / 5) * -2)`,
                                 width: `calc(${width} / 5)`,
                                 height: `calc(${width} / 5)`,
@@ -1084,13 +1084,13 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                               className={`${styles['indicator-aa-ui']} ${styles.indicator} tooltip-wrap`}
                               style={{
                                 ['--color' as string]: otherColor.color,
-                                ['--left' as string]: `calc(calc(${width} / 6) * -2.5)`,
+                                ['--left' as string]: `calc(calc(${width} / 7) * -3)`,
                                 backgroundColor: block.color,
                                 outline: `calc(${width} * ${times}) solid ${otherColor.color}`,
                                 outlineOffset: `calc(${width} * ${times} * -1)`,
-                                width: `calc(${width} / 6)`,
-                                height: `calc(${width} / 6)`,
-                                margin: `calc(${width} / 12)`,
+                                width: `calc(${width} / 7)`,
+                                height: `calc(${width} / 7)`,
+                                margin: `calc(${width} / 10.5)`,
                               }}
                               aria-labelledby={`span-ui-${otherColor.id}-${block.id}-${randomString}`}
                             >
