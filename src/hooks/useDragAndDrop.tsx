@@ -33,7 +33,10 @@ export const useDragAndDrop = <T extends Item, S extends string>(
     return statuses?.reduce((acc, status, index) => {
       const storedItems = JSON.parse(localStorage.getItem(storageKeys[index]) || '[]')
       acc[status] = {
-        items: storedItems,
+        items:
+          storedItems.length > 0
+            ? storedItems
+            : initialState.filter((item) => item.status === status),
         setItems: (items: T[]) => {
           localStorage.setItem(storageKeys[index], JSON.stringify(items))
           setListItemsByStatus((prev) => ({

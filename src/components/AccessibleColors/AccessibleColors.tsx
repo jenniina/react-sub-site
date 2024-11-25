@@ -402,16 +402,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     }
   }
 
-  useEffect(() => {
-    if (
-      !listItemsByStatus[status]?.items ||
-      listItemsByStatus[status]?.items.length < 1
-    ) {
-      console.log('items')
-      setColors(defaultColors)
-    }
-  }, [])
-
   const ComplianceShapes: Record<
     'AA_RegularText' | 'AA_UIComponents' | 'AAA_RegularText',
     ComplianceShapeFunction
@@ -974,6 +964,21 @@ const AccessibleColors: FC<Props> = ({ language }) => {
   useEffect(() => {
     setColors(listItemsByStatus[status]?.items)
   }, [listItemsByStatus])
+
+  useEffect(() => {
+    if (
+      !listItemsByStatus[status]?.items ||
+      listItemsByStatus[status]?.items.length < 1
+    ) {
+      console.log('items')
+      setColors(defaultColors)
+    }
+  }, [])
+
+  useEffect(() => {
+    console.log('Current Colors:', colors)
+    console.log('listItemsByStatus', listItemsByStatus)
+  }, [colors])
 
   useEffect(() => {
     if (listItemsByStatus[status]?.items.length < 1) {
