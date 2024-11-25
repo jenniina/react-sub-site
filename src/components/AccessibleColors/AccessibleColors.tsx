@@ -402,7 +402,11 @@ const AccessibleColors: FC<Props> = ({ language }) => {
   }
 
   useEffect(() => {
-    if (!colors || colors?.length < 1) {
+    if (
+      !listItemsByStatus[status]?.items ||
+      listItemsByStatus[status]?.items.length < 1
+    ) {
+      console.log('items')
       setColors(defaultColors)
     }
   }, [])
