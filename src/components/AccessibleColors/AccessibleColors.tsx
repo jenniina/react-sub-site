@@ -402,7 +402,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
   }
 
   useEffect(() => {
-    if (colors === undefined || colors.length === 0) {
+    if (!colors || colors.length < 1) {
       setColors(defaultColors)
     }
   }, [])
@@ -495,7 +495,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     const lineHeight = indicatorSize / 20
     const fontSize = blockWidth / 10
 
-    const totalIndicators = colors.length
+    const totalIndicators = colors?.length
     const blockHeight =
       totalIndicators * (indicatorSize + indicatorSpacing) -
       indicatorSpacing +
@@ -506,7 +506,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     const svgHeight = blockHeight + textBlockHeight
 
     const blocksGroup = colors
-      .map((block, index) => {
+      ?.map((block, index) => {
         const xPosition = index * blockWidth
 
         // Convert block color
@@ -570,7 +570,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       .join('')
 
     const linesGroup = colors
-      .map((colorItem, idx) => {
+      ?.map((colorItem, idx) => {
         const yIndicator = padding + idx * (indicatorSize + indicatorSpacing)
         const yLine = yIndicator + (indicatorSize - lineHeight) / 2
         const lineColor = parseColor(colorItem.color, colorItem.colorFormat)
@@ -589,7 +589,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       .join('')
 
     const indicatorsGroup = colors
-      .map((block, index) => {
+      ?.map((block, index) => {
         const xPosition = index * blockWidth
 
         // Determine highest compliance level for each color
@@ -607,7 +607,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
         }
 
         const indicators = colors
-          .filter((other) => other.id !== block.id)
+          ?.filter((other) => other.id !== block.id)
           .map((other) => {
             const complianceLevel = highestCompliance(other.id)
             if (!complianceLevel) return ''
@@ -741,7 +741,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     }
 
     // Iterate over existing color blocks to determine compliance levels
-    colors.forEach((block) => {
+    colors?.forEach((block) => {
       const compliance = determineAccessibility(newColorBlock, block)
 
       if (compliance.isAAARegularTextCompliant) {
@@ -969,28 +969,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
   useEffect(() => {
     setColors(listItemsByStatus[status]?.items)
   }, [listItemsByStatus])
-
-  const formatColor = (color: string, format: 'hex' | 'rgb' | 'hsl') => {
-    const hslRegex = /^hsl\(\s*(\d+),\s*(\d+)%,\s*(\d+)%\)$/
-    const match = color.match(hslRegex)
-    if (!match) return color
-
-    const h = Number(match[1])
-    const s = Number(match[2])
-    const l = Number(match[3])
-
-    if (format === 'hsl') {
-      return color
-    } else if (format === 'rgb') {
-      const { r, g, b } = hslToRGB(h, s, l)
-      return `rgb(${r}, ${g}, ${b})`
-    } else if (format === 'hex') {
-      const { r, g, b } = hslToRGB(h, s, l)
-      const hex = rgbToHex(r, g, b)
-      return hex.toUpperCase()
-    }
-    return color
-  }
 
   useEffect(() => {
     if (colors.length < 1) {
