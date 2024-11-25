@@ -320,7 +320,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
  <circle
   cx="${xPosition + blockWidth / 2}"
   cy="${yIndicator + indicatorSize / 2}"
-  r="${indicatorSize * 0.35}"
+  r="${indicatorSize * 0.32}"
   fill="${convertedBlockColor}"
   stroke="${convertedOtherColor}"
   stroke-width="${indicatorSize * 0.1}"
@@ -1057,7 +1057,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                                 outline: `calc(${width} * ${times * 1.1}) solid ${
                                   otherColor.color
                                 }`,
-                                outlineOffset: `0`,
+                                outlineOffset: `calc(${width} * -0.013)`,
                                 ['--left' as string]: `calc(calc(${width} / 5) * -2)`,
                                 width: `calc(${width} / 5)`,
                                 height: `calc(${width} / 5)`,
