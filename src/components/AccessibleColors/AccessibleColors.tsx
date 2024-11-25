@@ -217,6 +217,72 @@ const determineAccessibility = (
   }
 }
 
+const status = 'colors'
+const format = 'hsl'
+
+const defaultColors: ColorBlock[] = [
+  {
+    id: 1,
+    color: 'hsl(200, 50%, 10%)',
+    luminance: 0.011540526030345211,
+    status: status,
+    colorFormat: format,
+    compliantColors: {
+      AAA_RegularText: [4, 5],
+      AA_UIComponents: [3, 4, 5],
+      AA_RegularText: [3, 4, 5],
+    },
+  },
+  {
+    id: 2,
+    color: 'hsl(200, 50%, 35%)',
+    luminance: 0.12179747967530058,
+    status: status,
+    colorFormat: format,
+    compliantColors: {
+      AAA_RegularText: [],
+      AA_UIComponents: [4, 5],
+      AA_RegularText: [5],
+    },
+  },
+  {
+    id: 3,
+    color: 'hsl(200, 50%, 55%)',
+    luminance: 0.3071249100459835,
+    status: status,
+    colorFormat: format,
+    compliantColors: {
+      AAA_RegularText: [],
+      AA_UIComponents: [1],
+      AA_RegularText: [1],
+    },
+  },
+  {
+    id: 4,
+    color: 'hsl(200, 50%, 75%)',
+    luminance: 0.5493970089199802,
+    status: status,
+    colorFormat: format,
+    compliantColors: {
+      AAA_RegularText: [1],
+      AA_UIComponents: [1, 2],
+      AA_RegularText: [1],
+    },
+  },
+  {
+    id: 5,
+    color: 'hsl(200, 50%, 90%)',
+    luminance: 0.800081557105977,
+    status: status,
+    colorFormat: format,
+    compliantColors: {
+      AAA_RegularText: [1],
+      AA_UIComponents: [1, 2],
+      AA_RegularText: [1, 2],
+    },
+  },
+]
+
 ////
 //
 //
@@ -256,71 +322,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     'Jenniina-showColorNames',
     true
   )
-  const status = 'colors'
-  const format = 'hsl'
-
-  const defaultColors: ColorBlock[] = [
-    {
-      id: 1,
-      color: 'hsl(200, 50%, 10%)',
-      luminance: 0.011540526030345211,
-      status: status,
-      colorFormat: format,
-      compliantColors: {
-        AAA_RegularText: [4, 5],
-        AA_UIComponents: [3, 4, 5],
-        AA_RegularText: [3, 4, 5],
-      },
-    },
-    {
-      id: 2,
-      color: 'hsl(200, 50%, 35%)',
-      luminance: 0.12179747967530058,
-      status: status,
-      colorFormat: format,
-      compliantColors: {
-        AAA_RegularText: [],
-        AA_UIComponents: [4, 5],
-        AA_RegularText: [5],
-      },
-    },
-    {
-      id: 3,
-      color: 'hsl(200, 50%, 55%)',
-      luminance: 0.3071249100459835,
-      status: status,
-      colorFormat: format,
-      compliantColors: {
-        AAA_RegularText: [],
-        AA_UIComponents: [1],
-        AA_RegularText: [1],
-      },
-    },
-    {
-      id: 4,
-      color: 'hsl(200, 50%, 75%)',
-      luminance: 0.5493970089199802,
-      status: status,
-      colorFormat: format,
-      compliantColors: {
-        AAA_RegularText: [1],
-        AA_UIComponents: [1, 2],
-        AA_RegularText: [1],
-      },
-    },
-    {
-      id: 5,
-      color: 'hsl(200, 50%, 90%)',
-      luminance: 0.800081557105977,
-      status: status,
-      colorFormat: format,
-      compliantColors: {
-        AAA_RegularText: [1],
-        AA_UIComponents: [1, 2],
-        AA_RegularText: [1, 2],
-      },
-    },
-  ]
 
   const [colors, setColors, deleteColors] = useLocalStorage<ColorBlock[]>(
     'Jenniina-colorsAccessibility',
@@ -509,7 +510,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     const svgWidth = listItemsByStatus[status]?.items.length * blockWidth
     const svgHeight = blockHeight + textBlockHeight
 
-    const blocksGroup = colors
+    const blocksGroup = listItemsByStatus[status]?.items
       ?.map((block, index) => {
         const xPosition = index * blockWidth
 
@@ -573,7 +574,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       })
       .join('')
 
-    const linesGroup = colors
+    const linesGroup = listItemsByStatus[status]?.items
       ?.map((colorItem, idx) => {
         const yIndicator = padding + idx * (indicatorSize + indicatorSpacing)
         const yLine = yIndicator + (indicatorSize - lineHeight) / 2
@@ -592,7 +593,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       })
       .join('')
 
-    const indicatorsGroup = colors
+    const indicatorsGroup = listItemsByStatus[status]?.items
       ?.map((block, index) => {
         const xPosition = index * blockWidth
 
@@ -610,7 +611,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           return null
         }
 
-        const indicators = colors
+        const indicators = listItemsByStatus[status]?.items
           ?.filter((other) => other.id !== block.id)
           .map((other) => {
             const complianceLevel = highestCompliance(other.id)
@@ -776,7 +777,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
 
   const removeColor = (id: number) => {
     if (window.confirm(ERemoveColorConfirmation[language])) {
-      const updatedColors = colors
+      const updatedColors = listItemsByStatus[status]?.items
         .filter((block) => block.id !== id)
         .map((block) => ({
           ...block,
