@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import { ELanguages, ESubmit } from '../../interfaces'
-import styles from './accessibleColors.module.css'
+import styles from './accessiblecolors.module.css'
 import { Select, SelectOption } from '../Select/Select'
 import { EColorFormat, ESelectColorFormat } from '../../interfaces/colors'
 import useLocalStorage from '../../hooks/useStorage'
