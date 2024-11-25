@@ -200,5 +200,5 @@ export enum EAAGraphicElementCompliantWithID {
   de = 'AAA-Grafikelement konform mit ID',
   pt = 'Elemento gráfico AA conforme com ID',
   cs = 'Grafický prvek AA kompatibilní s ID',
-  fi = 'AA-grafiikkaelementin kanssa yhteensopiva ID:llä',
+  fi = 'AA-grafiikan kanssa yhteensopiva ID:n kanssa',
 }

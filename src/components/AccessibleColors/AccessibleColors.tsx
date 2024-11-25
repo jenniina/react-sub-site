@@ -5,6 +5,7 @@ import useLocalStorage from '../../hooks/useStorage'
 import {
   EDarkMode,
   EDeleted,
+  EError,
   ELanguages,
   ELightMode,
   ERemove,
@@ -39,123 +40,18 @@ import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { EClear } from '../../interfaces/select'
 import { MdDarkMode, MdLightMode } from 'react-icons/md'
 import { PiDownloadSimpleFill } from 'react-icons/pi'
+import {
+  calculateLuminance,
+  getContrastRatio,
+  getRandomString,
+  hexToRGB,
+  hslToHex,
+  hslToRGB,
+  rgbToHex,
+  rgbToHSL,
+} from '../../utils'
 
-const hexToRGB = (hex: string) => {
-  let r = parseInt(hex.slice(1, 3), 16)
-  let g = parseInt(hex.slice(3, 5), 16)
-  let b = parseInt(hex.slice(5, 7), 16)
-  return { r, g, b }
-}
-
-const rgbToHex = (r: number, g: number, b: number) => {
-  return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`
-}
-
-const rgbToHSL = (r: number, g: number, b: number) => {
-  r /= 255
-  g /= 255
-  b /= 255
-  const max = Math.max(r, g, b)
-  const min = Math.min(r, g, b)
-  let h = 0,
-    s = 0,
-    l = (max + min) / 2
-
-  if (max !== min) {
-    const d = max - min
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
-    switch (max) {
-      case r:
-        h = (g - b) / d + (g < b ? 6 : 0)
-        break
-      case g:
-        h = (b - r) / d + 2
-        break
-      case b:
-        h = (r - g) / d + 4
-        break
-      default:
-        break
-    }
-    h /= 6
-  }
-
-  return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) }
-}
-
-const hslToRGB = (h: number, s: number, l: number) => {
-  h /= 360
-  s /= 100
-  l /= 100
-
-  let r: number, g: number, b: number
-
-  if (s === 0) {
-    r = g = b = l
-  } else {
-    const hue2rgb = (p: number, q: number, t: number) => {
-      if (t < 0) t += 1
-      if (t > 1) t -= 1
-      if (t < 1 / 6) return p + (q - p) * 6 * t
-      if (t < 1 / 2) return q
-      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6
-      return p
-    }
-
-    const q = l < 0.5 ? l * (1 + s) : l + s - l * s
-    const p = 2 * l - q
-    r = hue2rgb(p, q, h + 1 / 3)
-    g = hue2rgb(p, q, h)
-    b = hue2rgb(p, q, h - 1 / 3)
-  }
-
-  return { r: Math.round(r * 255), g: Math.round(g * 255), b: Math.round(b * 255) }
-}
-
-const hslToHex = (h: number, s: number, l: number): string => {
-  s /= 100
-  l /= 100
-
-  const hue2rgb = (p: number, q: number, t: number): number => {
-    if (t < 0) t += 1
-    if (t > 1) t -= 1
-    if (t < 1 / 6) return p + (q - p) * 6 * t
-    if (t < 1 / 2) return q
-    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6
-    return p
-  }
-
-  let r: number, g: number, b: number
-
-  if (s === 0) {
-    r = g = b = l // achromatic
-  } else {
-    const q = l < 0.5 ? l * (1 + s) : l + s - l * s
-    const p = 2 * l - q
-    const hk = h / 360
-    r = hue2rgb(p, q, hk + 1 / 3)
-    g = hue2rgb(p, q, hk)
-    b = hue2rgb(p, q, hk - 1 / 3)
-  }
-
-  return rgbToHex(Math.round(r * 255), Math.round(g * 255), Math.round(b * 255))
-}
-
-const calculateLuminance = (r: number, g: number, b: number): number => {
-  const [R, G, B] = [r, g, b].map((v) => {
-    const normalized = v / 255
-    return normalized <= 0.03928
-      ? normalized / 12.92
-      : Math.pow((normalized + 0.055) / 1.055, 2.4)
-  })
-  return R * 0.2126 + G * 0.7152 + B * 0.0722
-}
-
-const getContrastRatio = (lum1: number, lum2: number) => {
-  const lighter = Math.max(lum1, lum2)
-  const darker = Math.min(lum1, lum2)
-  return (lighter + 0.05) / (darker + 0.05)
-}
+const randomString = getRandomString(5)
 
 interface ComplianceResult {
   isAARegularTextCompliant: boolean
@@ -403,7 +299,9 @@ const AccessibleColors: FC<Props> = ({ language }) => {
   }
 
   const ComplianceShapes: Record<
-    'AA_RegularText' | 'AA_UIComponents' | 'AAA_RegularText',
+    | ComplianceLevel.AA_RegularText
+    | ComplianceLevel.AA_UIComponents
+    | ComplianceLevel.AAA_RegularText,
     ComplianceShapeFunction
   > = {
     AA_RegularText: ({
@@ -411,7 +309,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       yIndicator,
       blockWidth,
       indicatorSize,
-      squareSize,
       otherColor,
       blockColor,
       colorFormatBlock,
@@ -426,7 +323,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
   r="${indicatorSize * 0.35}"
   fill="${convertedBlockColor}"
   stroke="${convertedOtherColor}"
-  stroke-width="5"
+  stroke-width="${indicatorSize * 0.1}"
 />
 `
     },
@@ -435,7 +332,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       yIndicator,
       blockWidth,
       indicatorSize,
-      squareSize,
       otherColor,
       blockColor,
       colorFormatBlock,
@@ -446,13 +342,13 @@ const AccessibleColors: FC<Props> = ({ language }) => {
 
       return `
     <rect
-  x="${xPosition + blockWidth / 2 - squareSize * 0.35}"
-  y="${yIndicator + indicatorSize / 2 - squareSize * 0.35}"
-  width="${squareSize * 0.7}"
-  height="${squareSize * 0.7}"
+  x="${xPosition + blockWidth / 2 - indicatorSize * 0.2}"
+  y="${yIndicator + indicatorSize / 2 - indicatorSize * 0.2}"
+  width="${indicatorSize * 0.4}"
+  height="${indicatorSize * 0.4}"
   fill="${convertedBlockColor}"
   stroke="${convertedOtherColor}"
-  stroke-width="4"
+  stroke-width="${indicatorSize * 0.1}"
 />
 `
     },
@@ -461,7 +357,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       yIndicator,
       blockWidth,
       indicatorSize,
-      squareSize,
       otherColor,
       blockColor,
       colorFormatBlock,
@@ -484,7 +379,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     const width = widthNumber * 20
     const blockWidth = width
     const indicatorSize = blockWidth / 3
-    const squareSize = indicatorSize * 0.5
     const indicatorSpacing = indicatorSize / 1.5
     const padding = width / 4
     const lineHeight = indicatorSize / 20
@@ -510,6 +404,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           convertedBlockColor = parseColor(block.color, block.colorFormat)
         } catch (error) {
           console.error(error)
+          dispatch(notify(`${EError[language]}: ${(error as Error).message}`, true, 4))
           convertedBlockColor = '#000000' // Default to black on error
         }
 
@@ -592,11 +487,11 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           otherId: number
         ): keyof typeof ComplianceShapes | null => {
           if (block.compliantColors?.AAA_RegularText?.includes(otherId))
-            return 'AAA_RegularText'
+            return ComplianceLevel.AAA_RegularText
           if (block.compliantColors?.AA_RegularText?.includes(otherId))
-            return 'AA_RegularText'
+            return ComplianceLevel.AA_RegularText
           if (block.compliantColors?.AA_UIComponents?.includes(otherId))
-            return 'AA_UIComponents'
+            return ComplianceLevel.AA_UIComponents
 
           return null
         }
@@ -612,7 +507,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
               yIndicator: padding + (other.id - 1) * (indicatorSize + indicatorSpacing),
               blockWidth,
               indicatorSize,
-              squareSize,
+
               otherColor: other.color,
               blockColor: block.color,
               colorFormatBlock: block.colorFormat,
@@ -656,7 +551,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     yIndicator: number
     blockWidth: number
     indicatorSize: number
-    squareSize: number
     otherColor: string
     blockColor: string
     colorFormatBlock: string
@@ -711,7 +605,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     img.onerror = (err) => {
       console.error('Error loading SVG into image for PNG conversion:', err)
       URL.revokeObjectURL(url)
-      // Optional: dispatch an error notification
+      dispatch(notify(EError[language], true, 4))
     }
 
     img.src = url
@@ -935,6 +829,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       setColors([...updatedColors])
     } catch (error) {
       console.error('Error updating color:', error)
+      dispatch(notify(`${EError[language]}: ${(error as Error).message}`, true, 4))
     }
   }
 
@@ -970,15 +865,9 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       !listItemsByStatus[status]?.items ||
       listItemsByStatus[status]?.items.length < 1
     ) {
-      console.log('items')
       setColors(defaultColors)
     }
   }, [])
-
-  useEffect(() => {
-    console.log('Current Colors:', colors)
-    console.log('listItemsByStatus', listItemsByStatus)
-  }, [colors])
 
   useEffect(() => {
     if (listItemsByStatus[status]?.items.length < 1) {
@@ -1116,25 +1005,22 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                             ></div>
                           )
                         }
-                        let complianceLevel: keyof ComplianceResult | null = null
+                        let complianceLevel: ComplianceLevel | null = null
                         if (
                           block.compliantColors?.AAA_RegularText?.includes(otherColor.id)
                         ) {
-                          complianceLevel = 'AAA_RegularText' as keyof ComplianceResult
+                          complianceLevel = ComplianceLevel.AAA_RegularText
                         } else if (
                           block.compliantColors?.AA_RegularText?.includes(otherColor.id)
                         ) {
-                          complianceLevel = 'AA_RegularText' as keyof ComplianceResult
+                          complianceLevel = ComplianceLevel.AA_RegularText
                         } else if (
                           block.compliantColors?.AA_UIComponents?.includes(otherColor.id)
                         ) {
-                          complianceLevel = 'AA_UIComponents' as keyof ComplianceResult
+                          complianceLevel = ComplianceLevel.AA_UIComponents
                         }
 
-                        if (
-                          complianceLevel ===
-                          ('AAA_RegularText' as keyof ComplianceResult)
-                        ) {
+                        if (complianceLevel === ComplianceLevel.AAA_RegularText) {
                           return (
                             <div
                               key={`aaa-${otherColor.color}-${otherColor.id}`}
@@ -1147,20 +1033,19 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                                 width: `calc(${width} / 3)`,
                                 height: `calc(${width} / 3)`,
                               }}
-                              aria-labelledby={`span-${otherColor.id}-${block.id}`}
+                              aria-labelledby={`span-${otherColor.id}-${block.id}-${randomString}`}
                             >
                               <span
-                                id={`span-${otherColor.id}-${block.id}`}
+                                id={`span-${otherColor.id}-${block.id}-${randomString}`}
                                 className={`tooltip below narrow3 ${styles['tooltip']}`}
                                 style={{
-                                  fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 1rem)`,
+                                  fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 0.9rem)`,
+                                  ['--tooltip-max-width' as string]: width,
                                 }}
                               >{`${EAAACompliantWithID[language]}: ${otherColor.id}`}</span>
                             </div>
                           )
-                        } else if (
-                          complianceLevel === ('AA_RegularText' as keyof ComplianceResult)
-                        ) {
+                        } else if (complianceLevel === ComplianceLevel.AA_RegularText) {
                           return (
                             <div
                               key={`aa-${otherColor.color}-${otherColor.id}`}
@@ -1169,7 +1054,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                               style={{
                                 ['--color' as string]: otherColor.color,
                                 backgroundColor: block.color,
-                                outline: `calc(${width} * ${times * 1.2}) solid ${
+                                outline: `calc(${width} * ${times * 1.1}) solid ${
                                   otherColor.color
                                 }`,
                                 outlineOffset: `0`,
@@ -1179,21 +1064,19 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                                 margin: `calc(${width} / 15)`,
                                 borderRadius: '50%',
                               }}
-                              aria-labelledby={`span-${otherColor.id}-${block.id}`}
+                              aria-labelledby={`span-${otherColor.id}-${block.id}-${randomString}`}
                             >
                               <span
-                                id={`span-${otherColor.id}-${block.id}`}
+                                id={`span-${otherColor.id}-${block.id}-${randomString}`}
                                 className='tooltip below narrow3'
                                 style={{
-                                  fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 1rem)`,
+                                  fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 0.9rem)`,
+                                  ['--tooltip-max-width' as string]: width,
                                 }}
                               >{`${EAACompliantWithID[language]}: ${otherColor.id}`}</span>
                             </div>
                           )
-                        } else if (
-                          complianceLevel ===
-                          ('AA_UIComponents' as keyof ComplianceResult)
-                        ) {
+                        } else if (complianceLevel === ComplianceLevel.AA_UIComponents) {
                           return (
                             <div
                               key={`aa-ui-${otherColor.color}-${otherColor.id}`}
@@ -1209,13 +1092,14 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                                 height: `calc(${width} / 6)`,
                                 margin: `calc(${width} / 12)`,
                               }}
-                              aria-labelledby={`span-ui-${otherColor.id}-${block.id}`}
+                              aria-labelledby={`span-ui-${otherColor.id}-${block.id}-${randomString}`}
                             >
                               <span
-                                id={`span-ui-${otherColor.id}-${block.id}`}
+                                id={`span-ui-${otherColor.id}-${block.id}-${randomString}`}
                                 className={`tooltip below narrow3 ${styles['tooltip']}`}
                                 style={{
-                                  fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 1rem)`,
+                                  fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 0.9rem)`,
+                                  ['--tooltip-max-width' as string]: width,
                                 }}
                               >{`${EAAGraphicElementCompliantWithID[language]}: ${otherColor.id}`}</span>
                             </div>
@@ -1256,7 +1140,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                     <span
                       style={{
                         color: block.luminance < 0.179 ? 'white' : 'black',
-                        fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 0.9rem)`,
+                        fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 1.2rem)`,
                         textAlign: 'center',
                       }}
                     >
@@ -1291,21 +1175,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                     >
                       {ERemove[language]}
                     </button>
-                    <div
-                      aria-hidden='true'
-                      className={styles['compliance-info']}
-                      style={{
-                        width: `calc(100% - 8px)`,
-                        margin: ' 0 0.1em 0.5em',
-                        textAlign: 'left',
-                        display: 'flex',
-                        flexFlow: 'column nowrap',
-                        alignItems: 'flex-start',
-                        justifyContent: 'flex-start',
-                        gap: '0.5em',
-                        fontSize: `clamp(0.75rem, ${dynamicFontSize.input}, 1rem)`,
-                      }}
-                    ></div>
                   </>
                 )}
               </li>
