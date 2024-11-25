@@ -342,23 +342,28 @@ h6 {
 .left {
   text-align: left;
 }
-.small {
+#root .small {
   font-size: calc(1rem * var(--responsive_scale));
   letter-spacing: calc(var(--letter-spacing) * 2);
 }
-.margin0 {
+#root button.small {
+  font-size: calc(0.8rem * var(--responsive_scale));
+  letter-spacing: calc(var(--letter-spacing) * -0.9);
+  padding: 0.3em 0.9em;
+}
+#root .margin0 {
   margin: 0;
 }
-.margin0auto {
+#root .margin0auto {
   margin: 0 auto;
 }
-.margin-b1 {
+#root .margin-b1 {
   margin-bottom: 1em;
 }
-.margin-b2 {
+#root .margin-b2 {
   margin-bottom: 2em;
 }
-.regular {
+#root .regular {
   font-family: var(--text-family);
   letter-spacing: var(--letter-spacing);
   font-weight: 400;
@@ -787,9 +792,35 @@ button:disabled {
 button:disabled {
   pointer-events: none;
 }
+button.gray {
+  background: linear-gradient(
+    4deg,
+    hsl(0, 0%, 80%) 0%,
+    hsl(0, 0%, 60%) 30%,
+    hsl(0, 0%, 10%) 60%,
+    hsl(0, 0%, 3%) 100%
+  );
+  background-size: var(--bg-size);
+  background-position: top;
+  border-color: gray;
+}
+.light button.gray {
+  background: linear-gradient(
+    4deg,
+    hsl(0, 0%, 5%) 0%,
+    hsl(0, 0%, 10%) 30%,
+    hsl(0, 0%, 70%) 60%,
+    hsl(0, 0%, 90%) 100%
+  );
+  background-size: var(--bg-size);
+  background-position: top;
+}
 .light button.grayer:hover,
 .light button.grayer:focus,
-.light button.grayer:focus-visible {
+.light button.grayer:focus-visible,
+.light button.gray:hover,
+.light button.gray:focus,
+.light button.gray:focus-visible {
   background-position: bottom;
 }
 .transformations button,

@@ -881,6 +881,15 @@ export enum EScreenshot {
   cs = 'Snímek obrazovky',
   fi = 'Kuvakaappaus',
 }
+export enum ETakingScreenShot {
+  en = 'Taking screenshot...',
+  es = 'Tomando una captura de pantalla...',
+  fr = "Prise de capture d'écran en cours...",
+  de = 'Screenshot wird aufgenommen...',
+  pt = 'Capturando tela...',
+  cs = 'Probíhá pořizování snímku obrazovky...',
+  fi = 'Otetaan kuvakaappausta...',
+}
 export enum EPressTheCameraSymbolToTakeAScreenshot {
   en = 'Press the camera symbol to take a screenshot',
   es = 'Presiona el símbolo de la cámara para tomar una captura de pantalla',

@@ -28,6 +28,7 @@ import CartPage from './pages/CartPage'
 import StorePage from './pages/StorePage'
 import OrderPage from './pages/OrderPage'
 import TermsOfService from './pages/TermsOfService'
+import ColorsPage from './pages/pages-portfolio/ColorsPage'
 //import Footer from './components/Footer/Footer'
 import { useTheme } from './hooks/useTheme'
 import { useScrollbarWidth } from './hooks/useScrollbarWidth'
@@ -78,6 +79,7 @@ import { EReactApps } from './interfaces/about'
 import { EOrders, EShoppingCart, ICartItem } from './interfaces/store'
 import { ETermsOfService } from './interfaces'
 import { EComposerOlliSanta } from './interfaces/composer'
+import { EColorAccessibility, ETestColorCombinations } from './interfaces/colors'
 
 const Footer = lazy(() => import('./components/Footer/Footer'))
 const ScrollToTop = lazy(() => import('./components/ScrollToTop/ScrollToTop'))
@@ -210,6 +212,18 @@ const App: FC = () => {
       document.head.removeChild(script)
     }
   }, [language])
+
+  // hide #to-top-btn when on the /portfolio/colors page:
+
+  const [toTopBtn, setToTopBtn] = useState(true)
+
+  useEffect(() => {
+    if (location.pathname === '/portfolio/colors') {
+      setToTopBtn(false)
+    } else {
+      setToTopBtn(true)
+    }
+  }, [location.pathname])
 
   return (
     <BlobProvider>
@@ -419,6 +433,17 @@ const App: FC = () => {
                     />
                   }
                 />
+                <Route
+                  path='/portfolio/colors'
+                  element={
+                    <ColorsPage
+                      language={language}
+                      heading={EColorAccessibility[language]}
+                      text={ETestColorCombinations[language]}
+                      type='page subpage'
+                    />
+                  }
+                />
               </Route>
 
               <Route
@@ -501,13 +526,15 @@ const App: FC = () => {
           >
             <Footer language={language} styleMenu={styleMenu} />
           </Suspense>
-          <Suspense
-            fallback={
-              <div className='flex center margin0auto'>{ELoading[language]}...</div>
-            }
-          >
-            <ScrollToTop language={language} styleMenu={styleMenu} />
-          </Suspense>
+          {toTopBtn && (
+            <Suspense
+              fallback={
+                <div className='flex center margin0auto'>{ELoading[language]}...</div>
+              }
+            >
+              <ScrollToTop language={language} styleMenu={styleMenu} />
+            </Suspense>
+          )}
           <Notification language={language} />
         </div>
       </div>

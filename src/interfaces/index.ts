@@ -2765,3 +2765,12 @@ export enum EJokePage {
   cs = 'Stránka vtipů',
   fi = 'Vitsisivu',
 }
+export enum EContains {
+  en = 'Contains',
+  es = 'Contiene',
+  fr = 'Contient',
+  de = 'Enthält',
+  pt = 'Contém',
+  cs = 'Obsahuje',
+  fi = 'Sisältää',
+}
