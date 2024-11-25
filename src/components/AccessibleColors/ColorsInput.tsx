@@ -32,8 +32,6 @@ const ColorsInput: FC<Props> = ({
   const rgbRegex = /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i
   const hexRegex = /^#([0-9A-F]{3}){1,2}$/i
 
-  const [input, setInput] = useState(block.color)
-
   const colorFormatOptions: SelectOption[] = [
     { value: 'hsl', label: 'HSL' },
     { value: 'rgb', label: 'RGB' },
@@ -107,77 +105,7 @@ const ColorsInput: FC<Props> = ({
         break
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [block.color, block.colorFormat])
-
-  const getRGBValues = (): { r: number; g: number; b: number } => {
-    if (block.colorFormat === 'hsl') {
-      const hslMatch = block.color.match(
-        /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i
-      )
-      if (hslMatch) {
-        const h = Number(hslMatch[1])
-        const s = Number(hslMatch[2])
-        const l = Number(hslMatch[3])
-        return hslToRGB(h, s, l)
-      }
-    } else if (block.colorFormat === 'rgb') {
-      const rgbMatch = block.color.match(
-        /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i
-      )
-      if (rgbMatch) {
-        return {
-          r: Number(rgbMatch[1]),
-          g: Number(rgbMatch[2]),
-          b: Number(rgbMatch[3]),
-        }
-      }
-    } else if (block.colorFormat === 'hex') {
-      return hexToRGB(block.color)
-    }
-    throw new Error('Unsupported color format')
-  }
-
-  // const getDisplayColor = (format: 'hsl' | 'rgb' | 'hex'): string => {
-  //   if (format === block.colorFormat) {
-  //     return block.color
-  //   }
-
-  //   const { r, g, b } = getRGBValues()
-
-  //   if (format === 'hsl') {
-  //     const { h, s, l } = rgbToHSL(r, g, b)
-  //     return `hsl(${h}, ${s}%, ${l}%)`
-  //   } else if (format === 'rgb') {
-  //     return `rgb(${r}, ${g}, ${b})`
-  //   } else if (format === 'hex') {
-  //     return rgbToHex(r, g, b).toUpperCase()
-  //   }
-  //   return block.color
-  // }
-
-  const getDisplayColor = (format: 'hex' | 'rgb' | 'hsl'): string => {
-    if (format === 'hex') {
-      return hex
-    } else if (format === 'rgb') {
-      return `rgb(${r}, ${g}, ${b})`
-    } else if (format === 'hsl') {
-      return `hsl(${h}, ${s}%, ${l}%)`
-    }
-    return block.color
-  }
-
-  useEffect(() => {
-    if (selected) {
-      try {
-        const displayColor = getDisplayColor(selected.value as 'hsl' | 'rgb' | 'hex')
-        setInput(displayColor)
-      } catch (error) {
-        console.error(`Error converting color to ${selected.value}:`, error)
-        setInput(block.color)
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selected])
+  }, [])
 
   //   useEffect(() => {
   //     deleteSelected()
@@ -217,7 +145,6 @@ const ColorsInput: FC<Props> = ({
       }
     } catch (error: any) {
       console.error(error.message)
-      // Optionally, implement user-facing error handling here
     }
   }
 

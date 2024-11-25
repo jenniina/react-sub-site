@@ -2,13 +2,21 @@ import { useState, useEffect, FC, useRef } from 'react'
 import styles from './accessiblecolors.module.css'
 import { notify } from '../../reducers/notificationReducer'
 import useLocalStorage from '../../hooks/useStorage'
-import { EDarkMode, ELanguages, ELightMode, ERemove, EReset } from '../../interfaces'
+import {
+  EDarkMode,
+  EDeleted,
+  ELanguages,
+  ELightMode,
+  ERemove,
+  EReset,
+} from '../../interfaces'
 import { useDragAndDrop } from '../../hooks/useDragAndDrop'
 import { EAddAColor } from '../../interfaces/draganddrop'
 import ColorsInput from './ColorsInput'
 import {
   EAAACompliantWithID,
   EAACompliantWithID,
+  EAAGraphicElementCompliantWithID,
   EColorPicker,
   EEditSize,
   EHideColorName,
@@ -104,6 +112,35 @@ const hslToRGB = (h: number, s: number, l: number) => {
   return { r: Math.round(r * 255), g: Math.round(g * 255), b: Math.round(b * 255) }
 }
 
+const hslToHex = (h: number, s: number, l: number): string => {
+  s /= 100
+  l /= 100
+
+  const hue2rgb = (p: number, q: number, t: number): number => {
+    if (t < 0) t += 1
+    if (t > 1) t -= 1
+    if (t < 1 / 6) return p + (q - p) * 6 * t
+    if (t < 1 / 2) return q
+    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6
+    return p
+  }
+
+  let r: number, g: number, b: number
+
+  if (s === 0) {
+    r = g = b = l // achromatic
+  } else {
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s
+    const p = 2 * l - q
+    const hk = h / 360
+    r = hue2rgb(p, q, hk + 1 / 3)
+    g = hue2rgb(p, q, hk)
+    b = hue2rgb(p, q, hk - 1 / 3)
+  }
+
+  return rgbToHex(Math.round(r * 255), Math.round(g * 255), Math.round(b * 255))
+}
+
 const calculateLuminance = (r: number, g: number, b: number): number => {
   const [R, G, B] = [r, g, b].map((v) => {
     const normalized = v / 255
@@ -120,8 +157,17 @@ const getContrastRatio = (lum1: number, lum2: number) => {
   return (lighter + 0.05) / (darker + 0.05)
 }
 
-const determineAccessibility = (color1: ColorBlock, color2: ColorBlock) => {
-  const parseColor = (color: ColorBlock) => {
+interface ComplianceResult {
+  isAARegularTextCompliant: boolean
+  isAAARegularTextCompliant: boolean
+  isAAUIComponentsCompliant: boolean
+}
+
+const determineAccessibility = (
+  color1: ColorBlock,
+  color2: ColorBlock
+): ComplianceResult => {
+  const parseC = (color: ColorBlock) => {
     let r: number, g: number, b: number
 
     if (color.colorFormat === 'hex') {
@@ -156,18 +202,19 @@ const determineAccessibility = (color1: ColorBlock, color2: ColorBlock) => {
     return { r, g, b }
   }
 
-  const rgb1 = parseColor(color1)
-  const rgb2 = parseColor(color2)
+  const rgb1 = parseC(color1)
+  const rgb2 = parseC(color2)
 
   const lum1 = calculateLuminance(rgb1.r, rgb1.g, rgb1.b)
   const lum2 = calculateLuminance(rgb2.r, rgb2.g, rgb2.b)
 
   const contrastRatio = getContrastRatio(lum1, lum2)
 
-  const isAACompliant = contrastRatio >= 4.5
-  const isAAACompliant = contrastRatio >= 7
-
-  return { isAACompliant, isAAACompliant }
+  return {
+    isAAARegularTextCompliant: contrastRatio >= 7,
+    isAARegularTextCompliant: contrastRatio >= 4.5,
+    isAAUIComponentsCompliant: contrastRatio >= 3,
+  }
 }
 
 ////
@@ -178,14 +225,23 @@ const determineAccessibility = (color1: ColorBlock, color2: ColorBlock) => {
 //
 ////
 
+enum ComplianceLevel {
+  AA_RegularText = 'AA_RegularText',
+  AAA_RegularText = 'AAA_RegularText',
+  AA_UIComponents = 'AA_UIComponents',
+}
+
 interface ColorBlock {
   id: number
   color: string
   luminance: number
   status: string
   colorFormat: 'hex' | 'rgb' | 'hsl'
-  compliantColorsAA: number[] // IDs of compliant color blocks
-  compliantColorsAAA: number[] // IDs of compliant color blocks
+  compliantColors: {
+    AA_RegularText: number[]
+    AAA_RegularText: number[]
+    AA_UIComponents: number[]
+  }
 }
 interface Props {
   language: ELanguages
@@ -207,47 +263,62 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     {
       id: 1,
       color: 'hsl(200, 50%, 10%)',
-      luminance: 0.008568125618069307,
+      luminance: 0.011540526030345211,
       status: status,
       colorFormat: format,
-      compliantColorsAA: [3, 4, 5],
-      compliantColorsAAA: [4, 5],
+      compliantColors: {
+        AAA_RegularText: [4, 5],
+        AA_UIComponents: [3, 4, 5],
+        AA_RegularText: [3, 4, 5],
+      },
     },
     {
       id: 2,
       color: 'hsl(200, 50%, 35%)',
-      luminance: 0.08865558628577294,
+      luminance: 0.12179747967530058,
       status: status,
       colorFormat: format,
-      compliantColorsAA: [5],
-      compliantColorsAAA: [],
+      compliantColors: {
+        AAA_RegularText: [],
+        AA_UIComponents: [4, 5],
+        AA_RegularText: [5],
+      },
     },
     {
       id: 3,
       color: 'hsl(200, 50%, 55%)',
-      luminance: 0.27467731206038465,
+      luminance: 0.3071249100459835,
       status: status,
       colorFormat: format,
-      compliantColorsAA: [1],
-      compliantColorsAAA: [],
+      compliantColors: {
+        AAA_RegularText: [],
+        AA_UIComponents: [1],
+        AA_RegularText: [1],
+      },
     },
     {
       id: 4,
       color: 'hsl(200, 50%, 75%)',
-      luminance: 0.5711248294648731,
+      luminance: 0.5493970089199802,
       status: status,
       colorFormat: format,
-      compliantColorsAA: [1],
-      compliantColorsAAA: [1],
+      compliantColors: {
+        AAA_RegularText: [1],
+        AA_UIComponents: [1, 2],
+        AA_RegularText: [1],
+      },
     },
     {
       id: 5,
       color: 'hsl(200, 50%, 90%)',
-      luminance: 0.7912979403326302,
+      luminance: 0.800081557105977,
       status: status,
       colorFormat: format,
-      compliantColorsAA: [1, 2],
-      compliantColorsAAA: [1],
+      compliantColors: {
+        AAA_RegularText: [1],
+        AA_UIComponents: [1, 2],
+        AA_RegularText: [1, 2],
+      },
     },
   ]
 
@@ -280,11 +351,139 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     input: `${0.8 * fontSizeMultiplier}em`,
   }
 
+  const parseColor = (color: string, format: string): string => {
+    if (format === 'hex') {
+      // Validate HEX format
+      const hexRegex = /^#([A-Fa-f0-9]{6})$/
+      if (hexRegex.test(color)) {
+        return color.toUpperCase()
+      } else {
+        throw new Error(`Invalid HEX color format: ${color}`)
+      }
+    } else if (format === 'rgb') {
+      const rgbMatch = color.match(
+        /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i
+      )
+      if (rgbMatch) {
+        const r = Number(rgbMatch[1])
+        const g = Number(rgbMatch[2])
+        const b = Number(rgbMatch[3])
+        if ([r, g, b].every((val) => val >= 0 && val <= 255)) {
+          return rgbToHex(r, g, b)
+        } else {
+          throw new Error(`RGB values out of range in color: ${color}`)
+        }
+      } else {
+        throw new Error(`Invalid RGB color format: ${color}`)
+      }
+    } else if (format === 'hsl') {
+      const hslMatch = color.match(
+        /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i
+      )
+      if (hslMatch) {
+        const h = Number(hslMatch[1])
+        const s = Number(hslMatch[2])
+        const l = Number(hslMatch[3])
+        if (
+          [h, s, l].every((val, idx) =>
+            idx === 0 ? val >= 0 && val <= 360 : val >= 0 && val <= 100
+          )
+        ) {
+          return hslToHex(h, s, l)
+        } else {
+          throw new Error(`HSL values out of range in color: ${color}`)
+        }
+      } else {
+        throw new Error(`Invalid HSL color format: ${color}`)
+      }
+    } else {
+      throw new Error(`Unsupported color format: ${format}`)
+    }
+  }
+
+  const ComplianceShapes: Record<
+    'AA_RegularText' | 'AA_UIComponents' | 'AAA_RegularText',
+    ComplianceShapeFunction
+  > = {
+    AA_RegularText: ({
+      xPosition,
+      yIndicator,
+      blockWidth,
+      indicatorSize,
+      squareSize,
+      otherColor,
+      blockColor,
+      colorFormatBlock,
+      colorFormatOther,
+    }) => {
+      const convertedBlockColor = parseColor(blockColor, colorFormatBlock)
+      const convertedOtherColor = parseColor(otherColor, colorFormatOther)
+      return `
+ <circle
+  cx="${xPosition + blockWidth / 2}"
+  cy="${yIndicator + indicatorSize / 2}"
+  r="${indicatorSize * 0.35}"
+  fill="${convertedBlockColor}"
+  stroke="${convertedOtherColor}"
+  stroke-width="5"
+/>
+`
+    },
+    AA_UIComponents: ({
+      xPosition,
+      yIndicator,
+      blockWidth,
+      indicatorSize,
+      squareSize,
+      otherColor,
+      blockColor,
+      colorFormatBlock,
+      colorFormatOther,
+    }) => {
+      const convertedBlockColor = parseColor(blockColor, colorFormatBlock)
+      const convertedOtherColor = parseColor(otherColor, colorFormatOther)
+
+      return `
+    <rect
+  x="${xPosition + blockWidth / 2 - squareSize * 0.35}"
+  y="${yIndicator + indicatorSize / 2 - squareSize * 0.35}"
+  width="${squareSize * 0.7}"
+  height="${squareSize * 0.7}"
+  fill="${convertedBlockColor}"
+  stroke="${convertedOtherColor}"
+  stroke-width="4"
+/>
+`
+    },
+    AAA_RegularText: ({
+      xPosition,
+      yIndicator,
+      blockWidth,
+      indicatorSize,
+      squareSize,
+      otherColor,
+      blockColor,
+      colorFormatBlock,
+      colorFormatOther,
+    }) => {
+      const convertedOtherColor = parseColor(otherColor, colorFormatOther)
+      return `
+<circle
+  cx="${xPosition + blockWidth / 2}"
+  cy="${yIndicator + indicatorSize / 2}"
+  r="${indicatorSize / 2}"
+  fill="${convertedOtherColor}"
+  stroke="none"
+/>
+`
+    },
+  }
+
   const generateSVG = (): { svgContent: string; svgWidth: number; svgHeight: number } => {
     const width = widthNumber * 20
     const blockWidth = width
     const indicatorSize = blockWidth / 3
-    const squareSize = indicatorSize * 0.6
+    const squareSize = indicatorSize * 0.5
     const indicatorSpacing = indicatorSize / 1.5
     const padding = width / 4
     const lineHeight = indicatorSize / 20
@@ -300,11 +499,75 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     const svgWidth = colors.length * blockWidth
     const svgHeight = blockHeight + textBlockHeight
 
-    const lines = colors
+    const blocksGroup = colors
+      .map((block, index) => {
+        const xPosition = index * blockWidth
+
+        // Convert block color
+        let convertedBlockColor: string
+        try {
+          convertedBlockColor = parseColor(block.color, block.colorFormat)
+        } catch (error) {
+          console.error(error)
+          convertedBlockColor = '#000000' // Default to black on error
+        }
+
+        // Color block rectangle
+        const blockRect = `
+        <rect
+          x="${xPosition}"
+          y="0"
+          width="${blockWidth}"
+          height="${blockHeight}"
+          fill="${convertedBlockColor}"
+          stroke="none"
+        />
+      `
+
+        // Text background rectangle and label
+        const textContent = showColorName
+          ? `
+        <!-- Text Background -->
+        <rect
+          x="${xPosition}"
+          y="${blockHeight - 0.5}"  
+          width="${blockWidth}"
+          height="${textBlockHeight}"
+          fill="${convertedBlockColor}"
+          stroke="none"
+        />
+        <!-- Color Text Label -->
+        <text
+          x="${xPosition + blockWidth / 2}"
+          y="${blockHeight + textBlockHeight / 2 + fontSize / 3}"
+          font-size="${fontSize}"
+          font-family="Arial"
+          text-anchor="middle"
+          dominant-baseline="middle"
+          fill="${block.luminance > 0.179 ? '#000000' : '#FFFFFF'}"
+          stroke="none"
+        >
+          ${block.color}
+        </text>
+      `
+          : ''
+
+        return `
+        <g>
+          <!-- Color Block -->
+          ${blockRect} 
+          <!-- Color Text Label -->
+          ${textContent}
+        </g>
+      `
+      })
+      .join('')
+
+    const linesGroup = colors
       .map((colorItem, idx) => {
         const yIndicator = padding + idx * (indicatorSize + indicatorSpacing)
         const yLine = yIndicator + (indicatorSize - lineHeight) / 2
-        const lineColor = colorItem.color
+        const lineColor = parseColor(colorItem.color, colorItem.colorFormat)
 
         return `
         <rect
@@ -319,135 +582,85 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       })
       .join('')
 
-    const blocksSVG = colors
+    const indicatorsGroup = colors
       .map((block, index) => {
         const xPosition = index * blockWidth
 
-        // Compliance indicators for each color
+        // Determine highest compliance level for each color
+        const highestCompliance = (
+          otherId: number
+        ): keyof typeof ComplianceShapes | null => {
+          if (block.compliantColors?.AAA_RegularText?.includes(otherId))
+            return 'AAA_RegularText'
+          if (block.compliantColors?.AA_RegularText?.includes(otherId))
+            return 'AA_RegularText'
+          if (block.compliantColors?.AA_UIComponents?.includes(otherId))
+            return 'AA_UIComponents'
+
+          return null
+        }
+
         const indicators = colors
-          .map((otherColor, idx) => {
-            const xIndicator = xPosition + (blockWidth - indicatorSize) / 2
-            const yIndicator = padding + idx * (indicatorSize + indicatorSpacing)
+          .filter((other) => other.id !== block.id)
+          .map((other) => {
+            const complianceLevel = highestCompliance(other.id)
+            if (!complianceLevel) return ''
 
-            if (otherColor.id === block.id) {
-              // Transparent indicator for the block itself
-              return `
-              <rect
-                x="${xPosition + (blockWidth - indicatorSize) / 2}"
-                y="${yIndicator}"
-                width="${indicatorSize}"
-                height="${indicatorSize}"
-                fill="transparent"
-                stroke="none"
-              />
-            `
-            } else if (block.compliantColorsAAA.includes(otherColor.id)) {
-              // Large circle for AAA compliance
-              return `
-              <circle
-                cx="${xPosition + blockWidth / 2}"
-                cy="${yIndicator + indicatorSize / 2}"
-                r="${indicatorSize / 2}"
-                fill="${otherColor.color}"
-                stroke="none"
-              />
-            `
-            } else if (block.compliantColorsAA.includes(otherColor.id)) {
-              // Small square for AA compliance
-              const xSquare = xIndicator + (indicatorSize - squareSize) / 2
-              const ySquare = yIndicator + (indicatorSize - squareSize) / 2
-
-              return `
-              <rect
-                x="${xSquare}"
-                y="${ySquare}"
-                width="${squareSize}"
-                height="${squareSize}"
-                fill="${otherColor.color}"
-                stroke="none"
-              />
-            `
-            } else {
-              // Transparent indicator (no compliance)
-              return `
-              <rect
-                x="${xIndicator}"
-                y="${yIndicator}"
-                width="${indicatorSize}"
-                height="${indicatorSize}"
-                fill="transparent"
-                stroke="none"
-              />
-            `
-            }
+            return ComplianceShapes[complianceLevel]({
+              xPosition,
+              yIndicator: padding + (other.id - 1) * (indicatorSize + indicatorSpacing),
+              blockWidth,
+              indicatorSize,
+              squareSize,
+              otherColor: other.color,
+              blockColor: block.color,
+              colorFormatBlock: block.colorFormat,
+              colorFormatOther: other.colorFormat,
+            })
           })
           .join('')
 
-        // Color block rectangle
-        const blockRect = `
-          <rect
-            x="${xPosition}"
-            y="0"
-            width="${blockWidth}"
-            height="${blockHeight}"
-            fill="${block.color}"
-            stroke="none"
-          />
-        `
-
-        // Text background rectangle and label
-        const textContent = showColorName
-          ? `
-          <!-- Text Background -->
-          <rect
-            x="${xPosition}"
-            y="${blockHeight - 0.5}"  
-            width="${blockWidth}"
-            height="${textBlockHeight}"
-            fill="${block.color}"
-            stroke="none"
-          />
-          <!-- Color Text Label -->
-          <text
-            x="${xPosition + blockWidth / 2}"
-            y="${blockHeight + textBlockHeight / 2 + fontSize / 3}"
-            font-size="${fontSize}"
-            font-family="Arial"
-            text-anchor="middle"
-            dominant-baseline="middle"
-            fill="${block.luminance > 0.179 ? '#000000' : '#FFFFFF'}"
-            stroke="none"
-          >
-            ${block.color}
-          </text>
-        `
-          : ''
-
-        // Group the block, indicators, and optional text label
         return `
-          <g>
-            <!-- Color Block -->
-            ${blockRect}
-            <!-- Compliance Indicators -->
-            ${indicators}
-            <!-- Color Text Label -->
-            ${textContent}
-          </g>
-        `
+        <g>
+          <!-- Compliance Indicators -->
+          ${indicators}
+        </g>
+      `
       })
       .join('')
 
     const svgContent = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}">
-        <!-- Color Blocks and Indicators -->
-        ${blocksSVG}
-        <!-- Lines -->
-        ${lines}
-      </svg>
-    `
+    <svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}">
+      <!-- Color Blocks -->
+      <g>
+        ${blocksGroup}
+      </g>
+      <!-- Lines -->
+      <g>
+        ${linesGroup}
+      </g>
+      <!-- Compliance Indicators -->
+      <g>
+        ${indicatorsGroup}
+      </g>
+    </svg>
+  `
 
     return { svgContent, svgWidth, svgHeight }
   }
+
+  // Compliance Shapes Mapping
+  type ComplianceShapeFunction = (props: {
+    xPosition: number
+    yIndicator: number
+    blockWidth: number
+    indicatorSize: number
+    squareSize: number
+    otherColor: string
+    blockColor: string
+    colorFormatBlock: string
+    colorFormatOther: string
+  }) => string
 
   const saveAsSVG = () => {
     const { svgContent } = generateSVG()
@@ -514,33 +727,38 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       luminance: lum,
       status: status,
       colorFormat: 'hsl',
-      compliantColorsAA: [],
-      compliantColorsAAA: [],
+      compliantColors: {
+        AA_RegularText: [],
+        AAA_RegularText: [],
+        AA_UIComponents: [],
+      },
     }
 
-    const compliantAA = colors
-      .filter((block) => determineAccessibility(newColorBlock, block).isAACompliant)
-      .map((block) => block.id)
+    // Iterate over existing color blocks to determine compliance levels
+    colors.forEach((block) => {
+      const compliance = determineAccessibility(newColorBlock, block)
 
-    const compliantAAA = colors
-      .filter((block) => determineAccessibility(newColorBlock, block).isAAACompliant)
-      .map((block) => block.id)
-
-    newColorBlock.compliantColorsAA = compliantAA
-    newColorBlock.compliantColorsAAA = compliantAAA
-
-    const updatedColors = colors.map((block) => {
-      const accessibility = determineAccessibility(newColorBlock, block)
-      return {
-        ...block,
-        compliantColorsAA: accessibility.isAACompliant
-          ? [...new Set([...block.compliantColorsAA, newColorBlock.id])]
-          : block.compliantColorsAA,
-        compliantColorsAAA: accessibility.isAAACompliant
-          ? [...new Set([...block.compliantColorsAAA, newColorBlock.id])]
-          : block.compliantColorsAAA,
+      if (compliance.isAAARegularTextCompliant) {
+        newColorBlock.compliantColors?.AAA_RegularText.push(block.id)
+        block.compliantColors?.AAA_RegularText.push(newColorBlock.id)
+      } else if (compliance.isAARegularTextCompliant) {
+        newColorBlock.compliantColors?.AA_RegularText.push(block.id)
+        block.compliantColors?.AA_RegularText.push(newColorBlock.id)
+      } else if (compliance.isAAUIComponentsCompliant) {
+        newColorBlock.compliantColors?.AA_UIComponents?.push(block.id)
+        block.compliantColors?.AA_UIComponents?.push(newColorBlock.id)
       }
     })
+
+    // Remove duplicate IDs by converting to Set and back to array
+    const updatedColors = colors.map((block) => ({
+      ...block,
+      compliantColors: {
+        AAA_RegularText: Array.from(new Set(block.compliantColors?.AAA_RegularText)),
+        AA_RegularText: Array.from(new Set(block.compliantColors?.AA_RegularText)),
+        AA_UIComponents: Array.from(new Set(block.compliantColors?.AA_UIComponents)),
+      },
+    }))
 
     setColors([...updatedColors, newColorBlock])
     setIdCounter(idCounter + 1)
@@ -552,14 +770,21 @@ const AccessibleColors: FC<Props> = ({ language }) => {
         .filter((block) => block.id !== id)
         .map((block) => ({
           ...block,
-          compliantColorsAA: block.compliantColorsAA.filter(
-            (compliantId) => compliantId !== id
-          ),
-          compliantColorsAAA: block.compliantColorsAAA.filter(
-            (compliantId) => compliantId !== id
-          ),
+          compliantColors: {
+            AAA_RegularText: block.compliantColors?.AAA_RegularText.filter(
+              (compliantId) => compliantId !== id
+            ),
+            AA_RegularText: block.compliantColors?.AA_RegularText.filter(
+              (compliantId) => compliantId !== id
+            ),
+            AA_UIComponents: block.compliantColors?.AA_UIComponents?.filter(
+              (compliantId) => compliantId !== id
+            ),
+          },
         }))
+
       setColors(updatedColors)
+      dispatch(notify(EDeleted[language], false, 5))
     }
   }
 
@@ -629,6 +854,11 @@ const AccessibleColors: FC<Props> = ({ language }) => {
             color: storedColor,
             colorFormat: format,
             luminance: lum,
+            compliantColors: {
+              AAA_RegularText: [],
+              AA_RegularText: [],
+              AA_UIComponents: [],
+            },
           }
         } else {
           const accessibility = determineAccessibility(block, {
@@ -637,37 +867,68 @@ const AccessibleColors: FC<Props> = ({ language }) => {
             colorFormat: format,
             luminance: lum,
             status: block.status,
-            compliantColorsAA: block.compliantColorsAA,
-            compliantColorsAAA: block.compliantColorsAAA,
+            compliantColors: {
+              AAA_RegularText: [],
+              AA_RegularText: [],
+              AA_UIComponents: [],
+            },
           })
           return {
             ...block,
-            compliantColorsAA: accessibility.isAACompliant
-              ? [...new Set([...block.compliantColorsAA, id])]
-              : block.compliantColorsAA.filter((cid) => cid !== id),
-            compliantColorsAAA: accessibility.isAAACompliant
-              ? [...new Set([...block.compliantColorsAAA, id])]
-              : block.compliantColorsAAA.filter((cid) => cid !== id),
+            compliantColors: {
+              AAA_RegularText: accessibility.isAAARegularTextCompliant
+                ? [...new Set([...block.compliantColors?.AAA_RegularText, id])]
+                : block.compliantColors?.AAA_RegularText.filter((cid) => cid !== id),
+              AA_RegularText: accessibility.isAARegularTextCompliant
+                ? [...new Set([...block.compliantColors?.AA_RegularText, id])]
+                : block.compliantColors?.AA_RegularText.filter((cid) => cid !== id),
+              AA_UIComponents: accessibility.isAAUIComponentsCompliant
+                ? [...new Set([...block.compliantColors?.AA_UIComponents, id])]
+                : block.compliantColors?.AA_UIComponents?.filter((cid) => cid !== id),
+            },
           }
         }
       }) as ColorBlock[]
 
-      const updatedBlock = updatedColors.find((block) => block.id === id)
-      if (updatedBlock) {
-        updatedBlock.compliantColorsAA = updatedColors
-          .filter(
-            (block) =>
-              block.id !== id && determineAccessibility(updatedBlock, block).isAACompliant
-          )
-          .map((block) => block.id)
+      const determineComplianceForBlock = (
+        block: ColorBlock,
+        allColors: ColorBlock[]
+      ) => {
+        let aaa: number[] = []
+        let aaUI: number[] = []
+        let aaRegular: number[] = []
 
-        updatedBlock.compliantColorsAAA = updatedColors
-          .filter(
-            (block) =>
-              block.id !== id &&
-              determineAccessibility(updatedBlock, block).isAAACompliant
-          )
-          .map((block) => block.id)
+        allColors.forEach((other) => {
+          if (other.id === block.id) return
+          const accessibility = determineAccessibility(block, other)
+          if (accessibility.isAAARegularTextCompliant) {
+            aaa.push(other.id)
+          }
+          if (accessibility.isAARegularTextCompliant) {
+            aaRegular.push(other.id)
+          }
+          if (accessibility.isAAUIComponentsCompliant) {
+            aaUI.push(other.id)
+          }
+        })
+
+        return {
+          AAA_RegularText: Array.from(new Set(aaa)),
+          AA_RegularText: Array.from(new Set(aaRegular)),
+          AA_UIComponents: Array.from(new Set(aaUI)),
+        }
+      }
+
+      const updatedBlockIndex = updatedColors.findIndex((block) => block.id === id)
+      if (updatedBlockIndex !== -1) {
+        const recalculatedCompliance = determineComplianceForBlock(
+          updatedColors[updatedBlockIndex],
+          updatedColors
+        )
+        updatedColors[updatedBlockIndex] = {
+          ...updatedColors[updatedBlockIndex],
+          compliantColors: recalculatedCompliance,
+        }
       }
 
       setColors([...updatedColors])
@@ -744,6 +1005,8 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       setColors(defaultColors)
     }
   }
+
+  const times = 0.04
 
   return (
     <div
@@ -859,7 +1122,25 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                             ></div>
                           )
                         }
-                        if (block.compliantColorsAAA.includes(otherColor.id)) {
+                        let complianceLevel: keyof ComplianceResult | null = null
+                        if (
+                          block.compliantColors?.AAA_RegularText?.includes(otherColor.id)
+                        ) {
+                          complianceLevel = 'AAA_RegularText' as keyof ComplianceResult
+                        } else if (
+                          block.compliantColors?.AA_RegularText?.includes(otherColor.id)
+                        ) {
+                          complianceLevel = 'AA_RegularText' as keyof ComplianceResult
+                        } else if (
+                          block.compliantColors?.AA_UIComponents?.includes(otherColor.id)
+                        ) {
+                          complianceLevel = 'AA_UIComponents' as keyof ComplianceResult
+                        }
+
+                        if (
+                          complianceLevel ===
+                          ('AAA_RegularText' as keyof ComplianceResult)
+                        ) {
                           return (
                             <div
                               key={`aaa-${otherColor.color}-${otherColor.id}`}
@@ -883,7 +1164,9 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                               >{`${EAAACompliantWithID[language]}: ${otherColor.id}`}</span>
                             </div>
                           )
-                        } else if (block.compliantColorsAA.includes(otherColor.id)) {
+                        } else if (
+                          complianceLevel === ('AA_RegularText' as keyof ComplianceResult)
+                        ) {
                           return (
                             <div
                               key={`aa-${otherColor.color}-${otherColor.id}`}
@@ -891,11 +1174,16 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                               className={`${styles['indicator-aa']} ${styles.indicator} tooltip-wrap`}
                               style={{
                                 ['--color' as string]: otherColor.color,
-                                backgroundColor: otherColor.color,
+                                backgroundColor: block.color,
+                                outline: `calc(${width} * ${times * 1.2}) solid ${
+                                  otherColor.color
+                                }`,
+                                outlineOffset: `0`,
                                 ['--left' as string]: `calc(calc(${width} / 5) * -2)`,
                                 width: `calc(${width} / 5)`,
                                 height: `calc(${width} / 5)`,
                                 margin: `calc(${width} / 15)`,
+                                borderRadius: '50%',
                               }}
                               aria-labelledby={`span-${otherColor.id}-${block.id}`}
                             >
@@ -908,7 +1196,38 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                               >{`${EAACompliantWithID[language]}: ${otherColor.id}`}</span>
                             </div>
                           )
+                        } else if (
+                          complianceLevel ===
+                          ('AA_UIComponents' as keyof ComplianceResult)
+                        ) {
+                          return (
+                            <div
+                              key={`aa-ui-${otherColor.color}-${otherColor.id}`}
+                              tabIndex={0}
+                              className={`${styles['indicator-aa-ui']} ${styles.indicator} tooltip-wrap`}
+                              style={{
+                                ['--color' as string]: otherColor.color,
+                                ['--left' as string]: `calc(calc(${width} / 6) * -2.5)`,
+                                backgroundColor: block.color,
+                                outline: `calc(${width} * ${times}) solid ${otherColor.color}`,
+                                outlineOffset: `calc(${width} * ${times} * -1)`,
+                                width: `calc(${width} / 6)`,
+                                height: `calc(${width} / 6)`,
+                                margin: `calc(${width} / 12)`,
+                              }}
+                              aria-labelledby={`span-ui-${otherColor.id}-${block.id}`}
+                            >
+                              <span
+                                id={`span-ui-${otherColor.id}-${block.id}`}
+                                className={`tooltip below narrow3 ${styles['tooltip']}`}
+                                style={{
+                                  fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 1rem)`,
+                                }}
+                              >{`${EAAGraphicElementCompliantWithID[language]}: ${otherColor.id}`}</span>
+                            </div>
+                          )
                         }
+
                         return (
                           <div
                             aria-hidden='true'
@@ -992,20 +1311,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                         gap: '0.5em',
                         fontSize: `clamp(0.75rem, ${dynamicFontSize.input}, 1rem)`,
                       }}
-                    >
-                      <div>
-                        <strong>AA:</strong>{' '}
-                        {block.compliantColorsAA.length > 0
-                          ? `${block.compliantColorsAA.join(', ')}`
-                          : ENoCompliantColors[language]}
-                      </div>
-                      <div>
-                        <strong>AAA:</strong>{' '}
-                        {block.compliantColorsAAA.length > 0
-                          ? `${block.compliantColorsAAA.join(', ')}`
-                          : ENoCompliantColors[language]}
-                      </div>
-                    </div>
+                    ></div>
                   </>
                 )}
               </li>

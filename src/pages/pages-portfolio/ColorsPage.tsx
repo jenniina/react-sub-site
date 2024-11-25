@@ -8,7 +8,7 @@ import {
   EColorsCanBeReorderedByDragging,
   EEditSize,
   EHintOrganizingColors,
-  ERoundIndicatorMarks,
+  ETheRoundIndicatorHollowIndicatorAndSmallHollowSquare,
   ESaveAsPNG,
   ESaveAsSVG,
   ESelectColorFormat,
@@ -43,7 +43,7 @@ const ColorsPage = ({
           >
             <ul className='ul medium'>
               <li>{ETestColorCombinations[language]}</li>
-              <li>{ERoundIndicatorMarks[language]}</li>
+              <li>{ETheRoundIndicatorHollowIndicatorAndSmallHollowSquare[language]}</li>
               <li>{EColorsCanBeReorderedByDragging[language]}</li>
               <li>{EHintOrganizingColors[language]}</li>
               <li>

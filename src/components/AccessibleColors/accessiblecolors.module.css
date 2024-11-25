@@ -148,9 +148,7 @@
 #color-container .indicator > .tooltip {
   top: calc(100% + var(--tooltip-offset) * 0.5) !important;
 }
-.indicator-aa::before,
-.indicator-aaa::before,
-.indicator-null::before {
+.indicator::before {
   content: '';
   position: absolute;
   top: 50%;
@@ -159,12 +157,7 @@
   height: 2px;
   border-radius: 0;
   background-color: var(--color);
-}
-
-.indicator-aa {
-  position: relative;
-  margin: 0.5em;
-  border-radius: 5%;
+  z-index: -1;
 }
 
 .indicator-aaa {

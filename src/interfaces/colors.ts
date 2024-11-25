@@ -18,16 +18,15 @@ export enum ETestColorCombinations {
   fi = 'Testaa väriyhdistelmiä saavutettavuuden kannalta',
 }
 
-export enum ERoundIndicatorMarks {
-  en = 'The round indicator marks the highest AAA-compatibility, while the smaller square marks AA-compatibility',
-  es = 'El indicador redondo marca la mayor compatibilidad AAA, mientras que el cuadrado más pequeño marca la compatibilidad AA',
-  fr = "L'indicateur rond marque la plus haute compatibilité AAA, tandis que le carré plus petit marque la compatibilité AA",
-  de = 'Der runde Indikator kennzeichnet die höchste AAA-Kompatibilität, während das kleinere Quadrat die AA-Kompatibilität kennzeichnet',
-  pt = 'O indicador redondo marca a maior compatibilidade AAA, enquanto o quadrado menor marca a compatibilidade AA',
-  cs = 'Kulový indikátor označuje nejvyšší kompatibilitu AAA, zatímco menší čtverec označuje kompatibilitu AA',
-  fi = 'Pyöreä indikaattori merkitsee korkeaa AAA-yhteensopivuutta, kun taas pienempi neliö merkitsee AA-yhteensopivuutta',
+export enum ETheRoundIndicatorHollowIndicatorAndSmallHollowSquare {
+  en = 'The big filled round indicator marks the highest AAA-compatibility for regular text, while the hollow round indicator marks AA-compatibility for regular text. The lowest compatibility for only UI and other graphical elements is marked by a small hollow square',
+  es = 'El indicador redondo grande relleno marca la mayor compatibilidad AAA para texto regular, mientras que el indicador redondo hueco marca la compatibilidad AA para texto regular. La compatibilidad más baja solo para la interfaz de usuario y otros elementos gráficos está marcada por un pequeño cuadrado hueco',
+  fr = "Le grand indicateur rond rempli marque la plus haute compatibilité AAA pour le texte régulier, tandis que l'indicateur rond creux marque la compatibilité AA pour le texte régulier. La compatibilité la plus basse uniquement pour l'interface utilisateur et d'autres éléments graphiques est marquée par un petit carré creux",
+  de = 'Der große gefüllte runde Indikator kennzeichnet die höchste AAA-Kompatibilität für normalen Text, während der hohle runde Indikator die AA-Kompatibilität für normalen Text kennzeichnet. Die niedrigste Kompatibilität nur für die Benutzeroberfläche und andere grafische Elemente wird durch ein kleines hohles Quadrat gekennzeichnet',
+  pt = 'O grande indicador redondo preenchido marca a maior compatibilidade AAA para texto regular, enquanto o indicador redondo oco marca a compatibilidade AA para texto regular. A compatibilidade mais baixa apenas para a interface do usuário e outros elementos gráficos é marcada por um pequeno quadrado oco',
+  cs = 'Velký plný kulový indikátor označuje nejvyšší kompatibilitu AAA pro běžný text, zatímco dutý kulový indikátor označuje kompatibilitu AA pro běžný text. Nejnižší kompatibilita pouze pro uživatelské rozhraní a další grafické prvky je označena malým dutým čtvercem',
+  fi = 'Suuri täytetty pyöreä indikaattori merkitsee korkeinta AAA-yhteensopivuutta tavalliselle tekstille, kun taas ontto pyöreä indikaattori merkitsee AA-yhteensopivuutta tavalliselle tekstille. Alin yhteensopivuus vain käyttöliittymälle ja muille graafisille elementeille on merkitty pienellä ontolla neliöllä',
 }
-
 export enum EColorPicker {
   en = 'Color Picker',
   es = 'Selector de color',
@@ -193,4 +192,13 @@ export enum EColors {
   pt = 'Cores',
   cs = 'Barvy',
   fi = 'Värit',
+}
+export enum EAAGraphicElementCompliantWithID {
+  en = 'AA Graphic element compliant with ID',
+  es = 'Elemento gráfico AA conforme con ID',
+  fr = 'Élément graphique AA conforme avec ID',
+  de = 'AAA-Grafikelement konform mit ID',
+  pt = 'Elemento gráfico AA conforme com ID',
+  cs = 'Grafický prvek AA kompatibilní s ID',
+  fi = 'AA-grafiikkaelementin kanssa yhteensopiva ID:llä',
 }
