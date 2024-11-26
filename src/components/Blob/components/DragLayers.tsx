@@ -14,7 +14,7 @@ import {
 import { Draggable, focusedBlob, ColorPair, Modes } from '../interfaces'
 import { ELanguages } from '../../../interfaces'
 import DragLayer from './DragLayer'
-import { ESelectedBlobNone, EThankYouForPlaying } from '../../../interfaces/blobs'
+import { EThankYouForPlaying } from '../../../interfaces/blobs'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
 
 interface DragLayerProps {
@@ -33,15 +33,15 @@ interface DragLayerProps {
   dragWrap: RefObject<HTMLDivElement>
   selectedvalue0: RefObject<HTMLSpanElement>
   exitApp: RefObject<HTMLDivElement>
-  colorBlockProps: RefObject<HTMLDivElement>[][]
+  colorBlockProps: RefObject<HTMLButtonElement>[][]
   colorPairs: ColorPair[][]
-  makeLarger0: RefObject<HTMLDivElement>
-  makeSmaller0: RefObject<HTMLDivElement>
+  makeLarger0: RefObject<HTMLButtonElement>
+  makeSmaller0: RefObject<HTMLButtonElement>
   makeMore0: RefObject<HTMLButtonElement>
   removeBlob: (draggable: Draggable) => void
   mode: Modes
-  layerIncrease: RefObject<HTMLDivElement>
-  layerDecrease: RefObject<HTMLDivElement>
+  layerIncrease: RefObject<HTMLButtonElement>
+  layerDecrease: RefObject<HTMLButtonElement>
   setFocusedBlob: DispatchReact<SetStateAction<focusedBlob | null>>
   colorIndex: number
   setColorIndex: DispatchReact<SetStateAction<number>>
@@ -50,6 +50,7 @@ interface DragLayerProps {
   clickOutsideRef: RefObject<HTMLDivElement>
   colorswitch: () => string
   addRandomDraggable: (x_pos: string, y_pos: string, layer: number) => void
+  changeColor: (id: string) => void
 }
 
 let moveElement: boolean
@@ -104,6 +105,7 @@ const DragLayers = ({
   clickOutsideRef,
   colorswitch,
   addRandomDraggable,
+  changeColor,
 }: DragLayerProps) => {
   const sortedDraggables = [...items].sort((a, b) => a.layer - b.layer)
 
@@ -116,21 +118,6 @@ const DragLayers = ({
   }, {} as Record<number, Draggable[]>)
 
   const layers = Array.from({ length: layerAmount }, (_, i) => i)
-
-  // const layerRefs = layers.reduce(
-  //   (acc: Record<number, RefObject<HTMLUListElement>>, layer) => {
-  //     acc[layer] = useRef(null)
-  //     return acc
-  //   },
-  //   {} as Record<number, RefObject<HTMLUListElement>>
-  // )
-
-  // const layerRefs = useRef<Record<number, RefObject<HTMLUListElement>>>(
-  //   layers.reduce((acc, layer) => {
-  //     acc[layer] = createRef<HTMLUListElement>()
-  //     return acc
-  //   }, {} as Record<number, RefObject<HTMLUListElement>>)
-  // )
 
   const layerRefs = useRef<Record<number, RefObject<HTMLUListElement>>>({})
 
@@ -159,35 +146,6 @@ const DragLayers = ({
   useEffect(() => {
     isTouchDevice()
   }, [])
-
-  // Change the layer of the blob by 1 up to the maximum layer amount
-  const increaseBlobLayer = (draggable: Draggable) => {
-    let layer = draggable.layer
-    if (layer < layerAmount - 1) {
-      layer += 1
-      changeBlobLayer(draggable, layer)
-    }
-  }
-  const decreaseBlobLayer = (draggable: Draggable) => {
-    let layer = draggable.layer
-    if (layer > 0) {
-      layer -= 1
-      changeBlobLayer(draggable, layer)
-    }
-  }
-
-  //Check to see if elements overlap
-  function elementsOverlap(element1: HTMLElement, element2: HTMLElement) {
-    const domRect1 = element1.getBoundingClientRect()
-    const domRect2 = element2.getBoundingClientRect()
-
-    return !(
-      domRect1.top + 5 > domRect2.bottom - 5 ||
-      domRect1.right < domRect2.left ||
-      domRect1.bottom - 5 < domRect2.top + 5 ||
-      domRect1.left > domRect2.right
-    )
-  }
 
   const handleOutsideClick = useCallback(
     (e: Event) => {
@@ -372,20 +330,6 @@ const DragLayers = ({
       let scale = parseFloat(value)
       scale = isNaN(scale) ? 7 : scale
 
-      const hitbox = target.querySelector('div')
-
-      const draggable: Draggable = {
-        layer: parseInt(target.style.getPropertyValue('--layer')),
-        id: target.id,
-        number: parseInt(target.id.replace('blob', '').split('-')[0], 10),
-        i: scale,
-        x: target.style.left,
-        y: target.style.top,
-        z: target.style.zIndex,
-        background:
-          target.style.background || 'linear-gradient(90deg, cyan, greenyellow)',
-      }
-
       if (isTouchDevice() && scroll) {
         document.removeEventListener('touchmove', preventDefault)
         document.body.style.overflowY = 'auto'
@@ -394,75 +338,12 @@ const DragLayers = ({
         document.body.style.overflow = 'hidden'
       }
 
-      if (
-        layerIncrease.current &&
-        elementsOverlap(hitbox as HTMLElement, layerIncrease.current)
-      ) {
-        increaseBlobLayer(draggable)
-      }
-      if (
-        layerDecrease.current &&
-        elementsOverlap(hitbox as HTMLElement, layerDecrease.current)
-      ) {
-        decreaseBlobLayer(draggable)
-      }
-
-      colorPairs[d].forEach((colorPair, index) => {
-        const colorBlock = colorBlockProps[d][index]
-
-        if (
-          colorBlock.current &&
-          elementsOverlap(hitbox as HTMLElement, colorBlock.current)
-        ) {
-          const { color1, color2 } = colorPair
-          ;(
-            target as HTMLElement
-          ).style.background = `linear-gradient(${angle}, ${color1},${color2})`
-        }
-      })
-
-      if (
-        makeLarger0.current &&
-        elementsOverlap(hitbox as HTMLElement, makeLarger0.current)
-      ) {
-        scale += 0.4
-        scale = Math.min(Math.max(7, scale), 36)
-        dispatch({
-          type: 'partialUpdate',
-          payload: {
-            d: d,
-            id: target.id,
-            update: {
-              i: scale,
-            },
-          },
-        })
-      }
-      if (
-        makeSmaller0.current &&
-        elementsOverlap(hitbox as HTMLElement, makeSmaller0.current)
-      ) {
-        scale -= 0.4
-        scale = Math.min(Math.max(7, scale), 36)
-        dispatch({
-          type: 'partialUpdate',
-          payload: {
-            d: d,
-            id: target.id,
-            update: {
-              i: scale,
-            },
-          },
-        })
-      }
-
-      //  getPosition(target as HTMLElement)
       ;(target as HTMLElement).classList.remove('drag')
       ;(target as HTMLElement).blur()
       tapCount === 0 ? (currentFocusedElement = null) : (currentFocusedElement = target)
       setFocusedBlob(null)
     },
-    [angle, elementsOverlap, keyDown, colorBlockProps, colorPairs, scroll]
+    [angle, keyDown, scroll]
   )
 
   //Handle mouse leave
@@ -496,38 +377,6 @@ const DragLayers = ({
       document.body.style.overflowY = 'auto'
       document.body.style.overflowX = 'hidden'
     }
-    // const handleMouseUp = (e: MouseEvent) => {
-    //   if (currentFocusedElement) {
-    //     stopMovementCheck(e, currentFocusedElement)
-    //   }
-    // }
-    // const handleTouchEnd = (e: TouchEvent) => {
-    //   if (currentFocusedElement) {
-    //     stopMovementCheck(e, currentFocusedElement)
-    //   }
-    // }
-    // const handleTouchCancel = (e: TouchEvent) => {
-    //   if (currentFocusedElement) {
-    //     stopMovementCheck(e, currentFocusedElement)
-    //   }
-    // }
-    // const handleDragEnd = (e: DragEvent) => {
-    //   if (currentFocusedElement) {
-    //     stopMovementCheck(e, currentFocusedElement)
-    //   }
-    // }
-
-    // document.addEventListener('mouseup', handleMouseUp)
-    // document.addEventListener('touchend', handleTouchEnd)
-    // document.addEventListener('touchcancel', handleTouchCancel)
-    // document.addEventListener('dragend', handleDragEnd)
-
-    // return () => {
-    //   document.removeEventListener('mouseup', handleMouseUp)
-    //   document.removeEventListener('touchend', handleTouchEnd)
-    //   document.removeEventListener('touchcancel', handleTouchCancel)
-    //   document.removeEventListener('dragend', handleDragEnd)
-    // }
   }, [stopMovementCheck, stopMoving, currentFocusedElement, scroll])
 
   //on blob blur
@@ -948,6 +797,9 @@ const DragLayers = ({
           blurred={blurred}
           removeBlob={removeBlob}
           mode={mode}
+          changeBlobLayer={changeBlobLayer}
+          layerAmount={layerAmount}
+          changeColor={changeColor}
         />
       ))}
     </>

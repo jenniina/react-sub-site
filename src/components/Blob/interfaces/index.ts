@@ -50,5 +50,6 @@ export type Modes =
   | 'clone'
   | 'scale-up'
   | 'scale-down'
-  | 'level-up'
-  | 'level-down'
+  | 'layer-up'
+  | 'layer-down'
+  | 'changeColor'

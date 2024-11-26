@@ -61,6 +61,9 @@ interface DragLayerProps {
   blurred: (e: HTMLElement) => void
   removeBlob: (draggable: Draggable) => void
   mode: Modes
+  changeBlobLayer: (draggable: Draggable, layer: number) => void
+  layerAmount: number
+  changeColor: (id: string) => void
 }
 
 const DragLayer = ({
@@ -82,6 +85,9 @@ const DragLayer = ({
   blurred,
   removeBlob,
   mode,
+  layerAmount,
+  changeBlobLayer,
+  changeColor,
 }: DragLayerProps) => {
   //   useEffect(() => {
   //     if (draggables[d] && draggables[d].length > 0) {
@@ -138,6 +144,9 @@ const DragLayer = ({
                 dragUlRef={dragUlRef}
                 removeBlob={removeBlob}
                 mode={mode}
+                changeBlobLayer={changeBlobLayer}
+                layerAmount={layerAmount}
+                changeColor={changeColor}
               />
             )
           }

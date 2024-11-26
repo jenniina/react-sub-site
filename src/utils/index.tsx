@@ -201,3 +201,15 @@ export const getContrastRatio = (lum1: number, lum2: number) => {
   const darker = Math.min(lum1, lum2)
   return (lighter + 0.05) / (darker + 0.05)
 }
+
+export function elementsOverlap(element1: HTMLElement, element2: HTMLElement) {
+  const domRect1 = element1.getBoundingClientRect()
+  const domRect2 = element2.getBoundingClientRect()
+
+  return !(
+    domRect1.top + 5 > domRect2.bottom - 5 ||
+    domRect1.right < domRect2.left ||
+    domRect1.bottom - 5 < domRect2.top + 5 ||
+    domRect1.left > domRect2.right
+  )
+}

@@ -81,6 +81,7 @@ import {
 import { GrGraphQl } from 'react-icons/gr'
 import {
   EAddedPaginationToSavedArt,
+  EChangedAllControlsToButtons,
   ECloneABlobByClickingTheTopLeftPlusSign,
   EDragBlobToIconsNextToLayerButtons,
   EEditArtwork,
@@ -102,6 +103,7 @@ import { EAddAColor, EAddGenericCardsAndColorThem } from '../interfaces/dragandd
 import { EComposerOlliSanta, EAddedALinkToComposer } from '../interfaces/composer'
 import Accordion from '../components/Accordion/Accordion'
 import { EColorAccessibility, ETestColorCombinations } from '../interfaces/colors'
+import { ERemoveBlobs } from '../interfaces/about'
 
 export default function Home({
   heading,
@@ -192,11 +194,7 @@ export default function Home({
                             <TbBlob />
                             {EBlobs[language]}:
                           </Link>
-                          <i>
-                            {EAddedNewFeatures[language]}: 1:{' '}
-                            {ERemoveABlobByClickingTheBottomLeftXSign[language]}; 2:{' '}
-                            {ECloneABlobByClickingTheTopLeftPlusSign[language]}
-                          </i>
+                          <i>{EChangedAllControlsToButtons[language]}</i>
                         </li>
                         <li>
                           <Link to='/portfolio/colors'>

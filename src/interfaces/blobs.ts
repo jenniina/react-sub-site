@@ -281,13 +281,13 @@ export enum EPressEnterToCycleThroughTheDifferentColors {
   fi = 'Paina Enter-näppäintä vaihtaaksesi eri väreihin',
 }
 export enum ELayerInstructions {
-  en = 'Blobs can be organized into three layers, found at the bottom of the container. Choose a layer by clicking the button, and toggle layer visibility by clicking the button of the active layer.',
-  es = 'Los blobs se pueden organizar en tres capas, que se encuentran en la parte inferior del contenedor. Elija una capa haciendo clic en el botón, y alterne la visibilidad de la capa haciendo clic en el botón de la capa activa.',
-  fr = 'Les blobs peuvent être organisés en trois couches, situées en bas du conteneur. Choisissez une couche en cliquant sur le bouton, et basculez la visibilité de la couche en cliquant sur le bouton de la couche active.',
-  de = 'Blobs können in drei Schichten organisiert werden, die sich unten im Container befinden. Wählen Sie eine Schicht, indem Sie auf die Schaltfläche klicken, und schalten Sie die Sichtbarkeit der Schicht um, indem Sie auf die Schaltfläche der aktiven Schicht klicken.',
-  pt = 'Os blobs podem ser organizados em três camadas, encontradas na parte inferior do contêiner. Escolha uma camada clicando no botão e alterne a visibilidade da camada clicando no botão da camada ativa.',
-  cs = 'Bloby lze organizovat do tří vrstev, které se nacházejí na dně kontejneru. Vyberte vrstvu kliknutím na tlačítko a přepněte viditelnost vrstvy kliknutím na tlačítko aktivní vrstvy.',
-  fi = 'Mollukat voidaan järjestää kolmeen kerrokseen, jotka löytyvät kontin pohjasta. Valitse kerros napsauttamalla painiketta ja vaihda kerroksen näkyvyys napsauttamalla aktiivisen kerroksen painiketta.',
+  en = 'Blobs can be organized into layers, found at the bottom of the container. Choose a layer by clicking the button, and toggle layer visibility by clicking the button of the active layer.',
+  es = 'Los blobs se pueden organizar en capas, que se encuentran en la parte inferior del contenedor. Elige una capa haciendo clic en el botón y alterna la visibilidad de la capa haciendo clic en el botón de la capa activa.',
+  fr = 'Les blobs peuvent être organisés en couches, situées en bas du conteneur. Choisissez une couche en cliquant sur le bouton et basculez la visibilité de la couche en cliquant sur le bouton de la couche active.',
+  de = 'Blobs können in Ebenen organisiert werden, die sich am unteren Ende des Containers befinden. Wählen Sie eine Ebene aus, indem Sie auf die Schaltfläche klicken, und schalten Sie die Sichtbarkeit der Ebene um, indem Sie auf die Schaltfläche der aktiven Ebene klicken.',
+  pt = 'Os blobs podem ser organizados em camadas, encontradas na parte inferior do contêiner. Escolha uma camada clicando no botão e alterne a visibilidade da camada clicando no botão da camada ativa.',
+  cs = 'Bloby lze uspořádat do vrstev, které se nacházejí na spodní části kontejneru. Vyberte vrstvu kliknutím na tlačítko a přepínejte viditelnost vrstvy kliknutím na tlačítko aktivní vrstvy.',
+  fi = 'Mollukat voidaan järjestää kerroksiin, joiden numerot löytyvät alaosasta. Valitse kerros napsauttamalla painiketta ja vaihda kerroksen näkyvyys napsauttamalla aktiivisen kerroksen painiketta.',
 }
 export enum EMakeBlobSmallerByPressingS {
   en = 'Make blob smaller by pressing S',
@@ -598,22 +598,22 @@ export enum EMoveViewInDifferentDirections {
 }
 
 export enum EEnlargeInstructions {
-  en = 'Enlarge a blob by dragging it over me! Keyboard use: press B or L with blob in focus',
-  es = '¡Agrandar un blob arrastrándolo sobre mí! Uso del teclado: presione B o L con el blob enfocado',
-  fr = 'Agrandissez un blob en le faisant glisser sur moi! Utilisation du clavier: appuyez sur B ou L avec le blob en focus',
-  de = 'Vergrößern Sie einen Blob, indem Sie ihn über mich ziehen! Tastaturverwendung: Drücken Sie B oder L mit Blob im Fokus',
-  pt = 'Aumente um blob arrastando-o sobre mim! Uso do teclado: pressione B ou L com o blob em foco',
-  cs = 'Zvětšete blob tím, že ho přetáhnete přes mě! Použití klávesnice: stiskněte B nebo L s fokusem na blob',
-  fi = 'Suurenna mollukka vetämällä se päälleni! Näppäinkäyttö: paina B tai L mollukka fokuksessa',
+  en = 'Enlarge a blob by clicking me and then the blob! Keyboard use: press B or L with blob in focus',
+  es = 'Haga que el blob sea más grande haciendo clic en mí y luego en el blob! Uso del teclado: presiona B o L con el blob enfocado',
+  fr = 'Agrandissez un blob en cliquant sur moi puis sur le blob! Utilisation du clavier: appuyez sur B ou L avec le blob en focus',
+  de = 'Vergrößern Sie einen Blob, indem Sie mich und dann den Blob anklicken! Tastaturgebrauch: Drücken Sie B oder L mit Blob im Fokus',
+  pt = 'Aumente um blob clicando em mim e depois no blob! Uso do teclado: pressione B ou L com o blob em foco',
+  cs = 'Zvětšete blob kliknutím na mě a poté na blob! Použití klávesnice: stiskněte B nebo L se zaměřeným blobem',
+  fi = 'Suurenna mollukkaa klikkaamalla minua ja sitten mollukkaa! Näppäinkäyttö: paina B tai L mollukka fokuksessa',
 }
 export enum EShrinkInstructions {
-  en = 'Make a blob smaller by releasing it near me! Keyboard use: press S with blob in focus',
-  es = '¡Haga que un blob sea más pequeño liberándolo cerca de mí! Uso del teclado: presione S con el blob enfocado',
-  fr = 'Rendez un blob plus petit en le relâchant près de moi! Utilisation du clavier: appuyez sur S avec le blob en focus',
-  de = 'Machen Sie einen Blob kleiner, indem Sie ihn in meiner Nähe loslassen! Tastaturverwendung: Drücken Sie S mit Blob im Fokus',
-  pt = 'Faça um blob menor liberando-o perto de mim! Uso do teclado: pressione S com o blob em foco',
-  cs = 'Zmenšete blob tím, že ho uvolníte poblíž mě! Použití klávesnice: stiskněte S s fokusem na blob',
-  fi = 'Pienennä mollukka vapauttamalla se lähelleni! Näppäinkäyttö: paina S mollukkaa tarkastellessasi',
+  en = 'Make a blob smaller by clicking me and then the blob! Keyboard use: press S with blob in focus',
+  es = 'Hacer que el blob sea más pequeño haciendo clic en mí y luego en el blob! Uso del teclado: presiona S con el blob enfocado',
+  fr = 'Rendez le blob plus petit en cliquant sur moi puis sur le blob! Utilisation du clavier : appuyez sur S avec le blob en focus',
+  de = 'Machen Sie den Blob kleiner, indem Sie auf mich und dann auf den Blob klicken! Tastaturgebrauch: Drücken Sie S mit dem Blob im Fokus',
+  pt = 'Faça o blob menor clicando em mim e depois no blob! Uso do teclado: pressione S com o blob em foco',
+  cs = 'Zmenšete blob kliknutím na mě a poté na blob! Použití klávesnice: stiskněte S s blobem ve fokusu',
+  fi = 'Pienennä mollukkaa klikkaamalla minua ja sitten mollukkaa! Näppäinkäyttö: paina S mollukka fokuksessa',
 }
 export enum ERemovalInstructions {
   en = 'Remove a blob by clicking me and then the blob! Keyboard use: press Delete with blob in focus',
@@ -671,32 +671,32 @@ export enum EResizebyScrollInstructions {
   fi = 'Paina Poista vieritys käytöstä ja käytä hiiren pyörää muuttaaksesi kokoa',
 }
 
-export enum EReleaseToChangeColorInstructions {
-  en = 'Release a blob near me to change color! Keyboard use: press Enter with blob in focus',
-  es = '¡Suelta un blob cerca de mí para cambiar el color! Uso del teclado: presiona Enter con el blob enfocado',
-  fr = 'Relâchez un blob près de moi pour changer de couleur! Utilisation du clavier: appuyez sur Entrée avec le blob en focus',
-  de = 'Lassen Sie einen Blob in meiner Nähe los, um die Farbe zu ändern! Tastaturverwendung: Drücken Sie Enter mit Blob im Fokus',
-  pt = 'Solte um blob perto de mim para mudar a cor! Uso do teclado: pressione Enter com o blob em foco',
-  cs = 'Uvolněte blob poblíž mě, abyste změnili barvu! Použití klávesnice: stiskněte Enter s fokusem na blob',
-  fi = 'Vapauta mollukka lähelleni vaihtaaksesi väriä! Näppäinkäyttö: paina Enter mollukkaa tarkastellessasi',
+export enum EChangeColorInstructions {
+  en = 'Click me and then a blob to change its color! Keyboard use: press Enter with blob in focus',
+  es = '¡Haz clic en mí y luego en un blob para cambiar su color! Uso del teclado: presiona Enter con el blob enfocado',
+  fr = 'Cliquez sur moi puis sur un blob pour changer sa couleur ! Utilisation du clavier : appuyez sur Entrée avec le blob en focus',
+  de = 'Klicke mich an und dann auf einen Blob, um seine Farbe zu ändern! Tastaturgebrauch: Drücke Enter mit dem Blob im Fokus',
+  pt = 'Clique em mim e depois em um blob para mudar sua cor! Uso do teclado: pressione Enter com o blob em foco',
+  cs = 'Klikněte na mě a poté na blob, abyste změnili jeho barvu! Použití klávesnice: stiskněte Enter s blobem ve fokusu',
+  fi = 'Klikkaa minua ja sitten mollukkaa vaihtaaksesi sen väriä! Näppäinkäyttö: paina Enter mollukka fokuksessa',
 }
 export enum EIncreaseBlobLayerBy1Instructions {
-  en = 'Release a blob near me to move it up one layer!',
-  es = '¡Suelta un blob cerca de mí para moverlo una capa hacia arriba!',
-  fr = 'Relâchez un blob près de moi pour le déplacer d une couche vers le haut!',
-  de = 'Lassen Sie einen Blob in meiner Nähe los, um ihn um eine Schicht nach oben zu bewegen!',
-  pt = 'Solte um blob perto de mim para movê-lo uma camada para cima!',
-  cs = 'Uvolněte blob poblíž mě, abyste ho posunuli o jednu vrstvu nahoru!',
-  fi = 'Vapauta mollukka lähelleni siirtääksesi sen yhtä kerrosta ylemmäksi!',
+  en = 'Click me and then a blob to move it up one layer!',
+  es = 'Haz clic en mí y luego en un blob para moverlo una capa hacia arriba!',
+  fr = "Cliquez sur moi et ensuite sur un blob pour le déplacer d'une couche vers le haut!",
+  de = 'Klicke mich an und dann auf einen Blob, um ihn eine Ebene nach oben zu bewegen!',
+  pt = 'Clique em mim e depois em um blob para movê-lo uma camada para cima!',
+  cs = 'Klikněte na mě a poté na blob, abyste ho posunuli o jednu vrstvu výš!',
+  fi = 'Klikkaa minua ja sitten mollukkaa siirtääksesi sitä yhtä kerrosta ylemmäksi!',
 }
 export enum EDecreaseBlobLayerBy1Instructions {
-  en = 'Release a blob near me to move it down one layer!',
-  es = '¡Suelta un blob cerca de mí para moverlo una capa hacia abajo!',
-  fr = 'Relâchez un blob près de moi pour le déplacer d une couche vers le bas!',
-  de = 'Lassen Sie einen Blob in meiner Nähe los, um ihn um eine Schicht nach unten zu bewegen!',
-  pt = 'Solte um blob perto de mim para movê-lo uma camada para baixo!',
-  cs = 'Uvolněte blob poblíž mě, abyste ho posunuli o jednu vrstvu dolů!',
-  fi = 'Vapauta mollukka lähelleni siirtääksesi sen yhtä kerrosta alemmaksi!',
+  en = 'Click me and then a blob to move it down one layer!',
+  es = 'Haz clic en mí y luego en un blob para moverlo una capa hacia abajo!',
+  fr = "Cliquez sur moi et ensuite sur un blob pour le déplacer d'une couche vers le bas!",
+  de = 'Klicke mich an und dann auf einen Blob, um ihn eine Ebene nach unten zu bewegen!',
+  pt = 'Clique em mim e depois em um blob para movê-lo uma camada para baixo!',
+  cs = 'Klikněte na mě a poté na blob, abyste ho posunuli o jednu vrstvu dolů!',
+  fi = 'Klikkaa minua ja sitten mollukkaa siirtääksesi sen yhtä kerrosta alemmaksi!',
 }
 export enum EHideControls {
   en = 'Hide controls',
@@ -942,9 +942,9 @@ export enum EKeyboardUsePressTheCorrespondingLayerNumber {
   de = 'Tastaturverwendung: Drücken Sie die entsprechende Schichtnummer mit dem Blob im Fokus',
   pt = 'Uso do teclado: pressione o número da camada correspondente com o blob em foco',
   cs = 'Použití klávesnice: Stiskněte odpovídající číslo vrstvy s fokusem na blob',
-  fi = 'Näppäinkäyttö: Paina vastaavaa kerrosnumeroa mollukkaa tarkastellessasi',
+  fi = 'Näppäinkäyttö: Paina vastaavaa kerrosnumeroa mollukka fokuksessa',
 }
-export enum ECannotLowerEveryBlobFurther {
+export enum ECannotLowerEveryBlobFurtherSomeBlobsAlreadyLowest {
   en = 'Cannot lower every blob further, one or more blobs are already on the lowest layer',
   es = 'No se puede bajar más ningún blob, uno o más blobs ya están en la capa más baja',
   fr = "Impossible d'abaisser chaque blob davantage, un ou plusieurs blobs sont déjà sur la couche la plus basse",
@@ -952,6 +952,15 @@ export enum ECannotLowerEveryBlobFurther {
   pt = 'Não é possível abaixar mais nenhum blob, um ou mais blobs já estão na camada mais baixa',
   cs = 'Nelze snížit všechny blob více, jeden nebo více blobů je již na nejnižší vrstvě',
   fi = 'Ei voi laskea jokaista mollukkaa alemmas, yksi tai useampi mollukka on jo alimmalla kerroksella',
+}
+export enum ECannotLowerBlobFurther {
+  en = 'Cannot lower this blob further',
+  es = 'No se puede bajar este blob más',
+  fr = 'Impossible de diminuer davantage ce blob',
+  de = 'Kann diesen Blob nicht weiter senken',
+  pt = 'Não é possível diminuir mais este blob',
+  cs = 'Nelze tento blob dále snížit',
+  fi = 'Mollukkaa ei voi laskea enempää',
 }
 export enum ECannotRaiseEveryBlobFurther {
   en = 'Cannot raise every blob further, one or more blobs are already on the highest layer',
@@ -963,6 +972,15 @@ export enum ECannotRaiseEveryBlobFurther {
   fi = 'Ei voi nostaa jokaista mollukkaa ylemmäs, yksi tai useampi mollukka on jo ylimmällä kerroksella',
 }
 
+export enum ECannotRaiseBlobFurther {
+  en = 'Cannot raise this blob further',
+  es = 'No se puede levantar más este blob',
+  fr = 'Impossible de lever davantage ce blob',
+  de = 'Kann diesen Blob nicht weiter anheben',
+  pt = 'Não é possível levantar este blob mais',
+  cs = 'Nelze tento blob dále zvýšit',
+  fi = 'Mollukkaa ei voi nostaa enempää',
+}
 export enum EClickHereToMoveDownLayer {
   en = 'Click here to move every blob down one layer',
   es = 'Haz clic aquí para mover cada blob una capa hacia abajo',
@@ -1001,13 +1019,13 @@ export enum EPlacesTheImageDownBelow {
   fi = 'Sijoittaa luodun kuvan sivun alaosaan',
 }
 export enum EDragBlobToIconsNextToLayerButtons {
-  en = 'Drag blob to icons that are next to the layer buttons, in order to move them up or down a layer',
-  es = 'Arrastra el blob a los íconos que están junto a los botones de capa, para moverlos hacia arriba o hacia abajo una capa',
-  fr = 'Faites glisser le blob vers les icônes situées à côté des boutons de couche, afin de les déplacer vers le haut ou vers le bas d une couche',
-  de = 'Ziehen Sie den Blob zu den Symbolen neben den Schichttasten, um sie eine Ebene nach oben oder unten zu verschieben',
-  pt = 'Arraste o blob para os ícones que estão ao lado dos botões de camada, para movê-los para cima ou para baixo uma camada',
-  cs = 'Přetáhněte blob na ikony vedle tlačítek vrstvy, abyste je posunuli nahoru nebo dolů o vrstvu',
-  fi = 'Vedä mollukka kuvakkeiden päälle kerrospainikkeiden vieressä siirtääksesi ne kerrosta ylemmäs tai alemmas',
+  en = 'Click the layer buttons and then a blob in order to move the blob up or down a layer',
+  es = 'Haz clic en los botones de capa y luego en un blob para mover el blob hacia arriba o hacia abajo una capa',
+  fr = "Cliquez sur les boutons de couche puis sur un blob pour déplacer le blob vers le haut ou vers le bas d'une couche",
+  de = 'Klicke auf die Ebenentasten und dann auf einen Blob, um den Blob eine Ebene nach oben oder unten zu bewegen',
+  pt = 'Clique nos botões de camada e depois em um blob para mover o blob uma camada para cima ou para baixo',
+  cs = 'Klikněte na tlačítka vrstvy a poté na blob, abyste posunuli blob o jednu vrstvu nahoru nebo dolů',
+  fi = 'Klikkaa kerrospainikketta ja mollukkaa siirtääksesi mollukan kerrosta ylemmäs tai alemmas',
 }
 export enum EMoveEveryBlobUpOrDownOneLayerByPressingTheButtons {
   en = 'Move every blob up or down one layer by pressing the buttons next to the layer buttons',
@@ -1349,4 +1367,51 @@ export enum ECloneModeOn {
   pt = 'Modo de clonagem ativado!',
   cs = 'Režim klonování zapnut!',
   fi = 'Kloonitila päällä!',
+}
+export enum ELayerDecreaseModeOn {
+  en = 'Layer decrease mode on!',
+  es = '¡Modo de disminución de capa activado!',
+  fr = 'Mode de diminution de couche activé!',
+  de = 'Schicht-Verringern-Modus aktiviert!',
+  pt = 'Modo de diminuição de camada ativado!',
+  cs = 'Režim snižování vrstvy zapnut!',
+  fi = 'Kerroksen lasku päällä!',
+}
+export enum ELayerIncreaseModeOn {
+  en = 'Layer increase mode on!',
+  es = '¡Modo de aumento de capa activado!',
+  fr = "Mode d'augmentation de couche activé!",
+  de = 'Schicht-Erhöhen-Modus aktiviert!',
+  pt = 'Modo de aumento de camada ativado!',
+  cs = 'Režim zvyšování vrstvy zapnut!',
+  fi = 'Kerroksen nosto päällä!',
+}
+
+export enum ESizeDecreaseModeOn {
+  en = 'Size decrease mode on!',
+  es = '¡Modo de disminución de tamaño activado!',
+  fr = 'Mode de diminution de taille activé !',
+  de = 'Größensenkungsmodus aktiviert!',
+  pt = 'Modo de diminuição de tamanho ativado!',
+  cs = 'Režim snižování velikosti zapnut!',
+  fi = 'Koon pienentäminen päällä!',
+}
+export enum ESizeIncreaseModeOn {
+  en = 'Size increase mode on!',
+  es = '¡Modo de aumento de tamaño activado!',
+  fr = "Mode d'augmentation de taille activé!",
+  de = 'Größenerhöhungsmodus aktiviert!',
+  pt = 'Modo de aumento de tamanho ativado!',
+  cs = 'Režim zvyšování velikosti zapnut!',
+  fi = 'Koon suurentaminen päällä!',
+}
+
+export enum EChangedAllControlsToButtons {
+  en = 'Changed all controls to buttons',
+  es = 'Cambiado todos los controles a botones',
+  fr = 'Tous les contrôles ont été changés en boutons',
+  de = 'Alle Steuerungen in Schaltflächen geändert',
+  pt = 'Alterados todos os controles para botões',
+  cs = 'Všechny ovládací prvky byly změněny na tlačítka',
+  fi = 'Kaikki kontrollit muutettiin painikkeiksi',
 }

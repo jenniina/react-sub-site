@@ -100,7 +100,7 @@ import {
   EYouMayFindTheImageBelow,
   EKeyboardUsePressTheCorrespondingLayerNumber,
   EMoreColorsAvailable,
-  ECannotLowerEveryBlobFurther,
+  ECannotLowerEveryBlobFurtherSomeBlobsAlreadyLowest,
   EClickHereToMoveUpLayer,
   EClickHereToMoveDownLayer,
   EArt,
@@ -118,6 +118,10 @@ import {
   EGetANewSetOfBlobs,
   EDeleteModeOn,
   ECloneModeOn,
+  ELayerIncreaseModeOn,
+  ELayerDecreaseModeOn,
+  ESizeIncreaseModeOn,
+  ESizeDecreaseModeOn,
 } from '../../../interfaces/blobs'
 import {
   BiChevronDown,
@@ -227,12 +231,12 @@ export default function DragContainer({
 
   const exitApp = useRef() as RefObject<HTMLDivElement>
 
-  const makeLarger0 = useRef() as RefObject<HTMLDivElement>
-  const makeSmaller0 = useRef() as RefObject<HTMLDivElement>
+  const makeLarger0 = useRef() as RefObject<HTMLButtonElement>
+  const makeSmaller0 = useRef() as RefObject<HTMLButtonElement>
   const makeMore0 = useRef() as RefObject<HTMLButtonElement>
   const deleteBlob0 = useRef() as RefObject<HTMLButtonElement>
-  const layerIncrease = useRef() as RefObject<HTMLDivElement>
-  const layerDecrease = useRef() as RefObject<HTMLDivElement>
+  const layerIncrease = useRef() as RefObject<HTMLButtonElement>
+  const layerDecrease = useRef() as RefObject<HTMLButtonElement>
 
   const makeRandom0 = useRef() as RefObject<HTMLButtonElement>
 
@@ -275,36 +279,36 @@ export default function DragContainer({
   const [paused, setPaused] = useState<boolean>(false)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState<boolean>(false)
 
-  const colorBlockOrange = useRef() as RefObject<HTMLDivElement>
-  const colorBlockRed = useRef() as RefObject<HTMLDivElement>
-  const colorBlockPurple = useRef() as RefObject<HTMLDivElement>
-  const colorBlockBlue = useRef() as RefObject<HTMLDivElement>
+  const colorBlockOrange = useRef() as RefObject<HTMLButtonElement>
+  const colorBlockRed = useRef() as RefObject<HTMLButtonElement>
+  const colorBlockPurple = useRef() as RefObject<HTMLButtonElement>
+  const colorBlockBlue = useRef() as RefObject<HTMLButtonElement>
 
-  const colorBlockYellowLime = useRef() as RefObject<HTMLDivElement>
-  const colorBlockCyanYellow = useRef() as RefObject<HTMLDivElement>
-  const colorBlockCyanPink = useRef() as RefObject<HTMLDivElement>
-  const colorBlockPinkYellow = useRef() as RefObject<HTMLDivElement>
+  const colorBlockYellowLime = useRef() as RefObject<HTMLButtonElement>
+  const colorBlockCyanYellow = useRef() as RefObject<HTMLButtonElement>
+  const colorBlockCyanPink = useRef() as RefObject<HTMLButtonElement>
+  const colorBlockPinkYellow = useRef() as RefObject<HTMLButtonElement>
 
-  const colorBlockReddish = useRef() as RefObject<HTMLDivElement>
-  const colorBlockBrown = useRef() as RefObject<HTMLDivElement>
-  const colorBlockKhaki = useRef() as RefObject<HTMLDivElement>
-  const colorBlockBluish = useRef() as RefObject<HTMLDivElement>
-  const colorBlockPurplish = useRef() as RefObject<HTMLDivElement>
-  const colorBlockGreenish = useRef() as RefObject<HTMLDivElement>
-  const colorBlockTan = useRef() as RefObject<HTMLDivElement>
-  const colorBlockGray = useRef() as RefObject<HTMLDivElement>
+  const colorBlockReddish = useRef() as RefObject<HTMLButtonElement>
+  const colorBlockBrown = useRef() as RefObject<HTMLButtonElement>
+  const colorBlockKhaki = useRef() as RefObject<HTMLButtonElement>
+  const colorBlockBluish = useRef() as RefObject<HTMLButtonElement>
+  const colorBlockPurplish = useRef() as RefObject<HTMLButtonElement>
+  const colorBlockGreenish = useRef() as RefObject<HTMLButtonElement>
+  const colorBlockTan = useRef() as RefObject<HTMLButtonElement>
+  const colorBlockGray = useRef() as RefObject<HTMLButtonElement>
 
-  const colorBlockDarkPurple = useRef() as RefObject<HTMLDivElement>
-  const colorBlockDarkPink = useRef() as RefObject<HTMLDivElement>
-  const colorBlockDarkRed = useRef() as RefObject<HTMLDivElement>
-  const colorBlockDarkOrange = useRef() as RefObject<HTMLDivElement>
-  const colorBlockDarkGreen = useRef() as RefObject<HTMLDivElement>
-  const colorBlockGreenishBlue = useRef() as RefObject<HTMLDivElement>
-  const colorBlockDarkBlue = useRef() as RefObject<HTMLDivElement>
-  const colorBlockPurplishBlue = useRef() as RefObject<HTMLDivElement>
+  const colorBlockDarkPurple = useRef() as RefObject<HTMLButtonElement>
+  const colorBlockDarkPink = useRef() as RefObject<HTMLButtonElement>
+  const colorBlockDarkRed = useRef() as RefObject<HTMLButtonElement>
+  const colorBlockDarkOrange = useRef() as RefObject<HTMLButtonElement>
+  const colorBlockDarkGreen = useRef() as RefObject<HTMLButtonElement>
+  const colorBlockGreenishBlue = useRef() as RefObject<HTMLButtonElement>
+  const colorBlockDarkBlue = useRef() as RefObject<HTMLButtonElement>
+  const colorBlockPurplishBlue = useRef() as RefObject<HTMLButtonElement>
 
   // Create a mapping between the ref objects and their names
-  const refNameMapping = new Map<RefObject<HTMLDivElement>, string>([
+  const refNameMapping = new Map<RefObject<HTMLButtonElement>, string>([
     [colorBlockOrange, 'colorBlockOrange'],
     [colorBlockRed, 'colorBlockRed'],
     [colorBlockPurple, 'colorBlockPurple'],
@@ -315,7 +319,7 @@ export default function DragContainer({
     [colorBlockPinkYellow, 'colorBlockPinkYellow'],
   ])
 
-  const refNameMapping2 = new Map<RefObject<HTMLDivElement>, string>([
+  const refNameMapping2 = new Map<RefObject<HTMLButtonElement>, string>([
     [colorBlockReddish, 'colorBlockReddish'],
     [colorBlockBrown, 'colorBlockBrown'],
     [colorBlockTan, 'colorBlockTan'],
@@ -326,7 +330,7 @@ export default function DragContainer({
     [colorBlockGray, 'colorBlockGray'],
   ])
 
-  const refNameMapping3 = new Map<RefObject<HTMLDivElement>, string>([
+  const refNameMapping3 = new Map<RefObject<HTMLButtonElement>, string>([
     [colorBlockDarkPurple, 'colorBlockDarkPurple'],
     [colorBlockDarkPink, 'colorBlockDarkPink'],
     [colorBlockDarkRed, 'colorBlockDarkRed'],
@@ -340,8 +344,8 @@ export default function DragContainer({
   const refNameMappingCombo = [refNameMapping, refNameMapping2, refNameMapping3]
 
   const getRefName = (
-    refNameMapping: Map<RefObject<HTMLDivElement>, string>,
-    ref: RefObject<HTMLDivElement>
+    refNameMapping: Map<RefObject<HTMLButtonElement>, string>,
+    ref: RefObject<HTMLButtonElement>
   ): string | undefined => {
     return refNameMapping.get(ref)
   }
@@ -379,6 +383,26 @@ export default function DragContainer({
   ]
 
   const colorBlockPropsCombo = [colorBlockProps, colorBlockProps2, colorBlockProps3]
+
+  const [selectedColor, setSelectedColor] = useState<string>('')
+
+  const changeColor = (id: string) => {
+    if (!selectedColor) {
+      return
+    }
+    dispatch({
+      type: 'partialUpdate',
+      payload: {
+        d: d,
+        id: id,
+        update: {
+          background: selectedColor,
+        },
+      },
+    })
+    setSelectedColor('')
+    setMode('none')
+  }
 
   const changeBlobLayer = (draggable: Draggable, layer: number) => {
     const z = highestZIndex[layer] + 1
@@ -1024,7 +1048,9 @@ export default function DragContainer({
     )
 
     if (isAnyOnLowestLayer) {
-      dispatch2(notify(ECannotLowerEveryBlobFurther[language], true, 8))
+      dispatch2(
+        notify(ECannotLowerEveryBlobFurtherSomeBlobsAlreadyLowest[language], true, 8)
+      )
       return
     }
 
@@ -1984,33 +2010,49 @@ export default function DragContainer({
                   ...backgroundColorStyle,
                 }}
               >
-                <div
+                <button
                   tabIndex={0}
                   ref={makeSmaller0}
-                  className={`make-smaller tooltip-wrap reset ${
+                  className={`make-smaller tooltip-wrap restore ${
                     !controlsVisible ? 'hidden' : ''
                   }`}
                   id={`make-smaller${d}`}
+                  onClick={() => {
+                    toggleMode('scale-down')
+                  }}
                 >
                   <ImShrink2 />
+                  {mode === 'scale-down' && (
+                    <span className='scale-down-alert'>
+                      {ESizeDecreaseModeOn[language]}
+                    </span>
+                  )}
                   <span
                     id={`make-smaller${d}-span`}
                     className='tooltip left below'
                   >{`${EShrinkInstructions[language]}. ${EAlternatively[language]}: ${EResizebyScrollInstructions[language]}`}</span>
-                </div>
-                <div
+                </button>
+                <button
                   ref={makeLarger0}
-                  className={`make-larger tooltip-wrap reset ${
+                  className={`make-larger tooltip-wrap restore ${
                     !controlsVisible ? 'hidden' : ''
                   }`}
                   id={`make-larger${d}`}
+                  onClick={() => {
+                    toggleMode('scale-up')
+                  }}
                 >
                   <ImEnlarge2 />
+                  {mode === 'scale-up' && (
+                    <span className='scale-up-alert'>
+                      {ESizeIncreaseModeOn[language]}
+                    </span>
+                  )}
                   <span
                     id={`make-larger${d}-span`}
                     className='tooltip left above'
                   >{`${EEnlargeInstructions[language]}. ${EAlternatively[language]}: ${EResizebyScrollInstructions[language]}`}</span>
-                </div>
+                </button>
 
                 <button
                   ref={makeMore0}
@@ -2020,7 +2062,6 @@ export default function DragContainer({
                   id={`make-more${d}`}
                   onClick={() => {
                     toggleMode('clone')
-                    setDeleteId('')
                   }}
                 >
                   <FaRegClone />
@@ -2054,7 +2095,7 @@ export default function DragContainer({
                   id={`delete-blob${d}`}
                   onClick={() => toggleMode('delete')}
                 >
-                  <FaTimes />
+                  <span style={{ fontSize: '1.2em' }}>&times;</span>
                   {mode === 'delete' && (
                     <span className='delete-alert'>{EDeleteModeOn[language]}</span>
                   )}
@@ -2063,32 +2104,44 @@ export default function DragContainer({
                   </span>
                 </button>
 
-                <div
+                <button
                   ref={layerDecrease}
                   id={`layer-decrease${d}`}
-                  className={`layer-adjust layer-decrease tooltip-wrap ${
+                  className={`layer-adjust layer-decrease tooltip-wrap restore ${
                     !controlsVisible ? 'hidden' : ''
                   }`}
+                  onClick={() => toggleMode('layer-down')}
                 >
+                  {mode === 'layer-down' && (
+                    <span className='layer-down-alert'>
+                      {ELayerDecreaseModeOn[language]}
+                    </span>
+                  )}
                   <span
                     id={`layer-decrease${d}-span`}
                     className='tooltip above'
                   >{`${EDecreaseBlobLayerBy1Instructions[language]} ${EKeyboardUsePressTheCorrespondingLayerNumber[language]}`}</span>
                   <BiChevronDown />
-                </div>
-                <div
+                </button>
+                <button
                   ref={layerIncrease}
                   id={`layer-increase${d}`}
-                  className={`layer-adjust layer-increase tooltip-wrap ${
+                  className={`layer-adjust layer-increase tooltip-wrap restore ${
                     !controlsVisible ? 'hidden' : ''
                   }`}
+                  onClick={() => toggleMode('layer-up')}
                 >
+                  {mode === 'layer-up' && (
+                    <span className='layer-up-alert'>
+                      {ELayerIncreaseModeOn[language]}
+                    </span>
+                  )}
                   <span
                     id={`layer-increase${d}-span`}
                     className='tooltip above'
                   >{`${EIncreaseBlobLayerBy1Instructions[language]} ${EKeyboardUsePressTheCorrespondingLayerNumber[language]}`}</span>
                   <BiChevronUp />
-                </div>
+                </button>
 
                 {markerEnabled && usingKeyboard && focusedBlob && (
                   <div
@@ -2142,6 +2195,7 @@ export default function DragContainer({
                     clickOutsideRef={dragWrap}
                     addRandomDraggable={addRandomDraggable}
                     mode={mode}
+                    changeColor={changeColor}
                   />
                 </div>
               </div>
@@ -2153,6 +2207,8 @@ export default function DragContainer({
                 colorBlockProps={colorBlockPropsCombo}
                 colorPairs={colorPairsCombo}
                 controlsVisible={controlsVisible}
+                setSelectedColor={setSelectedColor}
+                setMode={setMode}
               />
             </div>
             <div className='layer-mover-control-wrap'>
@@ -2192,7 +2248,7 @@ export default function DragContainer({
                   <span id={`decrease-layer-amount${d}-span`} className='tooltip above'>
                     {EDeleteHiddenLayers[language]}
                   </span>
-                  <LiaTimesSolid style={{ fontSize: '0.8em' }} />
+                  &times;
                 </button>
                 <button
                   id={`every-layer-minus${d}`}
