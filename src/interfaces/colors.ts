@@ -37,23 +37,23 @@ export enum EHighestAAAComplianceWithRegularText {
   fi = 'Korkein AAA-yhteensopivuus tavalliselle tekstille',
 }
 export enum EMinimumAAComplianceWithRegularText {
-  en = 'Minimum AA-compliance with regular text',
-  es = 'Cumplimiento mínimo AA con texto regular',
-  fr = 'Conformité minimale AA avec le texte régulier',
-  de = 'Minimale AA-Konformität mit normalem Text',
-  pt = 'Conformidade mínima AA com texto regular',
-  cs = 'Minimální shoda AA s běžným textem',
-  fi = 'AA-yhteensopivuus tavalliselle tekstille',
+  en = 'Minimum AA-compliance with regular text or AAA-compliance with large text',
+  es = 'Cumplimiento mínimo AA con texto regular o cumplimiento AAA con texto grande',
+  fr = 'Conformité minimale AA avec le texte régulier ou conformité AAA avec le texte large',
+  de = 'Minimale AA-Konformität mit normalem Text oder AAA-Konformität mit großem Text',
+  pt = 'Conformidade mínima AA com texto regular ou conformidade AAA com texto grande',
+  cs = 'Minimální shoda AA s běžným textem nebo shoda AAA s velkým textem',
+  fi = 'AA-yhteensopivuus tavalliselle tekstille tai AAA-yhteensopivuus isolle tekstille',
 }
 
 export enum EAAACompliantWithUI {
-  en = 'AA-compatibility only with UI and other graphical elements',
-  es = 'Compatibilidad AA solo con la interfaz de usuario y otros elementos gráficos',
-  fr = "Compatibilité AA uniquement avec l'interface utilisateur et d'autres éléments graphiques",
-  de = 'AA-Kompatibilität nur mit der Benutzeroberfläche und anderen grafischen Elementen',
-  pt = 'Compatibilidade AA apenas com a interface do usuário e outros elementos gráficos',
-  cs = 'AA kompatibilita pouze s uživatelským rozhraním a dalšími grafickými prvky',
-  fi = 'AA-yhteensopivuus vain käyttöliittymän ja muiden graafisten elementtien kanssa',
+  en = 'AA-compatibility with graphical elements and large text',
+  es = 'Compatibilidad AA con elementos gráficos y texto grande',
+  fr = 'Compatibilité AA avec des éléments graphiques et du texte large',
+  de = 'AA-Kompatibilität mit grafischen Elementen und großem Text',
+  pt = 'Compatibilidade AA com elementos gráficos e texto grande',
+  cs = 'AA kompatibilita s grafickými prvky a velkým textem',
+  fi = 'AA-yhteensopivuus graafisten elementtien ja suuren tekstin kanssa',
 }
 export enum EColorPicker {
   en = 'Color Picker',
@@ -140,6 +140,16 @@ export enum EAAACompliantWithID {
   cs = 'AAA kompatibilní s ID',
   fi = 'AAA-yhteensopiva ID:n kanssa',
 }
+export enum EAAGraphicElementCompliantWithID {
+  en = 'AA Graphic element and large text compliant with ID',
+  es = 'Elemento gráfico AA y texto grande compatible con ID',
+  fr = 'Élément graphique AA et texte large conforme avec ID',
+  de = 'AA-Grafikelement und großer Text konform mit ID',
+  pt = 'Elemento gráfico AA e texto grande compatível com ID',
+  cs = 'AA grafický prvek a velký text kompatibilní s ID',
+  fi = 'AA-grafiikan ja ison tekstin kanssa yhteensopiva ID:n kanssa',
+}
+
 export enum EToggleColorNameVisibility {
   en = 'Toggle color name visibility',
   es = 'Alternar visibilidad del nombre del color',
@@ -220,13 +230,4 @@ export enum EColors {
   pt = 'Cores',
   cs = 'Barvy',
   fi = 'Värit',
-}
-export enum EAAGraphicElementCompliantWithID {
-  en = 'AA Graphic element compliant with ID',
-  es = 'Elemento gráfico AA conforme con ID',
-  fr = 'Élément graphique AA conforme avec ID',
-  de = 'AAA-Grafikelement konform mit ID',
-  pt = 'Elemento gráfico AA conforme com ID',
-  cs = 'Grafický prvek AA kompatibilní s ID',
-  fi = 'AA-grafiikan kanssa yhteensopiva ID:n kanssa',
 }
