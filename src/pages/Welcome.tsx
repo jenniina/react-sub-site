@@ -81,6 +81,7 @@ import {
 import { GrGraphQl } from 'react-icons/gr'
 import {
   EAddedPaginationToSavedArt,
+  ECloneABlobByClickingTheTopLeftPlusSign,
   EDragBlobToIconsNextToLayerButtons,
   EEditArtwork,
   ELayers,
@@ -192,8 +193,9 @@ export default function Home({
                             {EBlobs[language]}:
                           </Link>
                           <i>
-                            {EAddedNewFeatures[language]}:{' '}
-                            {ERemoveABlobByClickingTheBottomLeftXSign[language]}
+                            {EAddedNewFeatures[language]}: 1:{' '}
+                            {ERemoveABlobByClickingTheBottomLeftXSign[language]}; 2:{' '}
+                            {ECloneABlobByClickingTheTopLeftPlusSign[language]}
                           </i>
                         </li>
                         <li>

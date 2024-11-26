@@ -8,11 +8,14 @@ import {
   TouchEvent as TouchEventReact,
   MouseEvent as MouseEventReact,
   PointerEvent as PointerEventReact,
+  useContext,
 } from 'react'
-import { Draggable, focusedBlob } from '../interfaces'
+import { Draggable, focusedBlob, Modes } from '../interfaces'
 import { EBlob, ELanguages } from '../../../interfaces'
 import { ESelectedBlob, ESelectedBlobNone } from '../../../interfaces/blobs'
 import { clamp } from '../../../utils'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
+import { BlobContext, Props } from './BlobProvider'
 
 interface BlobProps {
   d: number
@@ -61,7 +64,7 @@ interface BlobProps {
   setFocusedBlob: Dispatch<SetStateAction<focusedBlob | null>>
   dragUlRef: RefObject<HTMLUListElement>
   removeBlob: (draggable: Draggable) => void
-  isDeleteMode: boolean
+  mode: Modes
 }
 
 const Blob = ({
@@ -81,9 +84,10 @@ const Blob = ({
   setFocusedBlob,
   dragUlRef,
   removeBlob,
-  isDeleteMode,
+  mode,
 }: BlobProps) => {
   const blur = d === 0 ? 33 : clamp(22, item.i * 2.6, 50)
+  const { dispatch } = useContext(BlobContext) as Props
 
   const blobStyle: CSSProperties = {
     background: `${item.background}`,
@@ -110,9 +114,15 @@ const Blob = ({
         ]
       : ['5.1px', '5.4px', '6.5px', '7px', '7.8px', '8.4px', '8.6px'] // breakpoints for hitbox size due to varying levels of blur between the containers and blob sizes
 
+  const duplicate = (draggable: Draggable) => {
+    dispatch({ type: 'duplicateDraggable', payload: { d, draggable } })
+  }
+
   const handleClick = (e: React.MouseEvent) => {
-    if (isDeleteMode) {
+    if (mode === 'delete') {
       removeBlob(item)
+    } else if (mode === 'clone') {
+      duplicate(item)
     }
   }
 
@@ -126,7 +136,6 @@ const Blob = ({
           )
 
         const blob = e.target as HTMLElement
-        const container = blob.parentNode as HTMLUListElement
 
         setTimeout(() => {
           // Calculate the position of the blob after scrolling
@@ -164,7 +173,9 @@ const Blob = ({
           selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
       }}
       key={index}
-      className={`dragzone animation ${isDeleteMode ? 'del' : ''}`}
+      className={`dragzone animation ${
+        mode === 'delete' ? 'del' : mode === 'clone' ? 'copy' : ''
+      }`}
       id={item.id}
       role={'option'}
       tabIndex={0}

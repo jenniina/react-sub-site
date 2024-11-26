@@ -19,6 +19,7 @@ import {
   focusedBlob,
   ColorPair,
   SavedBlobs,
+  Modes,
 } from '../interfaces'
 import { BlobContext, Props } from './BlobProvider'
 import {
@@ -116,6 +117,7 @@ import {
   EAfterEnablingThereIsASlightDelayBeforeAllTheBlobsAreMovingAgain,
   EGetANewSetOfBlobs,
   EDeleteModeOn,
+  ECloneModeOn,
 } from '../../../interfaces/blobs'
 import {
   BiChevronDown,
@@ -227,7 +229,7 @@ export default function DragContainer({
 
   const makeLarger0 = useRef() as RefObject<HTMLDivElement>
   const makeSmaller0 = useRef() as RefObject<HTMLDivElement>
-  const makeMore0 = useRef() as RefObject<HTMLDivElement>
+  const makeMore0 = useRef() as RefObject<HTMLButtonElement>
   const deleteBlob0 = useRef() as RefObject<HTMLButtonElement>
   const layerIncrease = useRef() as RefObject<HTMLDivElement>
   const layerDecrease = useRef() as RefObject<HTMLDivElement>
@@ -1727,13 +1729,16 @@ export default function DragContainer({
   }
 
   const [deleteId, setDeleteId] = useState<string>('')
-  const [deleteMode, setDeleteMode] = useState<boolean>(false)
+  const [mode, setMode] = useState<Modes>('none')
 
-  const toggleDeleteMode = () => {
-    setDeleteMode((prev) => !prev)
-    if (deleteMode) {
-      setDeleteId('')
-    }
+  const toggleMode = (selectedMode: Modes) => {
+    setMode((prevMode) => {
+      const newMode = prevMode === selectedMode ? 'none' : selectedMode
+      if (newMode !== selectedMode) {
+        setDeleteId('')
+      }
+      return newMode
+    })
   }
 
   //Remove blob
@@ -2007,18 +2012,25 @@ export default function DragContainer({
                   >{`${EEnlargeInstructions[language]}. ${EAlternatively[language]}: ${EResizebyScrollInstructions[language]}`}</span>
                 </div>
 
-                <div
+                <button
                   ref={makeMore0}
-                  className={`make-more tooltip-wrap reset ${
+                  className={`make-more tooltip-wrap restore ${
                     !controlsVisible ? 'hidden' : ''
                   }`}
                   id={`make-more${d}`}
+                  onClick={() => {
+                    toggleMode('clone')
+                    setDeleteId('')
+                  }}
                 >
                   <FaRegClone />
+                  {mode === 'clone' && (
+                    <span className='clone-alert'>{ECloneModeOn[language]}</span>
+                  )}
                   <span id={`make-more${d}-span`} className='tooltip right below'>
                     {ECloneInstructions[language]}
                   </span>
-                </div>
+                </button>
                 <button
                   ref={makeRandom0}
                   className={`make-random tooltip-wrap ${
@@ -2040,10 +2052,10 @@ export default function DragContainer({
                     !controlsVisible ? 'hidden' : ''
                   }`}
                   id={`delete-blob${d}`}
-                  onClick={toggleDeleteMode}
+                  onClick={() => toggleMode('delete')}
                 >
                   <FaTimes />
-                  {deleteMode && (
+                  {mode === 'delete' && (
                     <span className='delete-alert'>{EDeleteModeOn[language]}</span>
                   )}
                   <span id={`delete-blob${d}-span`} className='tooltip right above'>
@@ -2114,9 +2126,7 @@ export default function DragContainer({
                     makeLarger0={makeLarger0}
                     makeSmaller0={makeSmaller0}
                     makeMore0={makeMore0}
-                    deleteBlob0={deleteBlob0}
                     removeBlob={removeBlob}
-                    isDeleteMode={deleteMode}
                     layerIncrease={layerIncrease}
                     layerDecrease={layerDecrease}
                     dragWrap={dragWrap}
@@ -2131,6 +2141,7 @@ export default function DragContainer({
                     setScroll={setScroll}
                     clickOutsideRef={dragWrap}
                     addRandomDraggable={addRandomDraggable}
+                    mode={mode}
                   />
                 </div>
               </div>

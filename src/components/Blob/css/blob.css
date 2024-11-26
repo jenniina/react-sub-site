@@ -92,7 +92,6 @@ svg.filter {
   box-shadow: var(--box);
 }
 
-.drag-container .make-more,
 .drag-container .make-smaller,
 .drag-container .make-larger,
 .drag-container .layer-adjust {
@@ -124,7 +123,8 @@ svg.filter {
 .drag-container .delete-blob:focus {
   transform: scale(1.1) translateY(-0.3rem);
 }
-.drag-container .delete-blob .delete-alert {
+.drag-container .delete-blob .delete-alert,
+.drag-container .make-more .clone-alert {
   position: absolute;
   background-color: var(--color-primary-20);
   color: var(--color-primary-1);
@@ -139,6 +139,9 @@ svg.filter {
   border-radius: var(--radius-small);
   line-height: 1;
 }
+.drag-container .make-more .clone-alert {
+  top: 50%;
+}
 
 .drag-container .make-smaller,
 .drag-container .layer-adjust {
@@ -151,6 +154,8 @@ svg.filter {
   box-shadow: var(--box);
 }
 .drag-container .make-more {
+  z-index: 1;
+  padding: 0.1rem 0.4rem 0.2rem;
   --box: inset -0.1rem -0.1rem 0.4rem -0.2rem rgba(0, 0, 0, 0.4),
     inset -0.1rem -0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: var(--box);
@@ -572,6 +577,9 @@ svg.filter {
 .drag-container .dragzone.del .draggable-overlay {
   cursor: crosshair;
 }
+.drag-container .dragzone.copy .draggable-overlay {
+  cursor: copy;
+}
 .drag-container .dragzone:active .draggable-overlay {
   cursor: -webkit-grabbing;
   cursor: grabbing;
@@ -964,9 +972,6 @@ body.dark-mode .site .drag-container .dragzone:focus {
   border-radius: 50%;
 }
 
-.drag-container .make-more {
-  color: black;
-}
 .drag-container .make-more:hover::after,
 .drag-container .delete-blob:hover::after,
 .drag-container .make-random:hover::after {
@@ -1042,6 +1047,9 @@ body.dark-mode .site .drag-container .dragzone:focus {
 .drag-container .make-more,
 .drag-container .make-random {
   transform: translateY(0.2rem);
+}
+.drag-container .make-more {
+  padding: 0.2rem 0.4rem 0.2rem;
 }
 
 .colorblock {

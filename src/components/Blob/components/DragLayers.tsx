@@ -11,7 +11,7 @@ import {
   useEffect,
   useCallback,
 } from 'react'
-import { Draggable, focusedBlob, ColorPair } from '../interfaces'
+import { Draggable, focusedBlob, ColorPair, Modes } from '../interfaces'
 import { ELanguages } from '../../../interfaces'
 import DragLayer from './DragLayer'
 import { ESelectedBlobNone, EThankYouForPlaying } from '../../../interfaces/blobs'
@@ -37,10 +37,9 @@ interface DragLayerProps {
   colorPairs: ColorPair[][]
   makeLarger0: RefObject<HTMLDivElement>
   makeSmaller0: RefObject<HTMLDivElement>
-  makeMore0: RefObject<HTMLDivElement>
-  deleteBlob0: RefObject<HTMLButtonElement>
+  makeMore0: RefObject<HTMLButtonElement>
   removeBlob: (draggable: Draggable) => void
-  isDeleteMode: boolean
+  mode: Modes
   layerIncrease: RefObject<HTMLDivElement>
   layerDecrease: RefObject<HTMLDivElement>
   setFocusedBlob: DispatchReact<SetStateAction<focusedBlob | null>>
@@ -93,9 +92,8 @@ const DragLayers = ({
   makeLarger0,
   makeSmaller0,
   makeMore0,
-  deleteBlob0,
   removeBlob,
-  isDeleteMode,
+  mode,
   layerIncrease,
   layerDecrease,
   setFocusedBlob,
@@ -457,28 +455,14 @@ const DragLayers = ({
           },
         })
       }
-      if (
-        makeMore0.current &&
-        elementsOverlap(hitbox as HTMLElement, makeMore0.current)
-      ) {
-        makeBlob(draggable)
-      }
+
       //  getPosition(target as HTMLElement)
       ;(target as HTMLElement).classList.remove('drag')
       ;(target as HTMLElement).blur()
       tapCount === 0 ? (currentFocusedElement = null) : (currentFocusedElement = target)
       setFocusedBlob(null)
     },
-    [
-      angle,
-      elementsOverlap,
-      keyDown,
-      makeBlob,
-      colorBlockProps,
-      colorPairs,
-      removeBlob,
-      scroll,
-    ]
+    [angle, elementsOverlap, keyDown, colorBlockProps, colorPairs, scroll]
   )
 
   //Handle mouse leave
@@ -963,7 +947,7 @@ const DragLayers = ({
           focused={focused}
           blurred={blurred}
           removeBlob={removeBlob}
-          isDeleteMode={isDeleteMode}
+          mode={mode}
         />
       ))}
     </>

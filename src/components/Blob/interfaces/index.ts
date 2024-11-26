@@ -43,3 +43,12 @@ export interface ColorPair {
   color1: string
   color2: string
 }
+
+export type Modes =
+  | 'none'
+  | 'delete'
+  | 'clone'
+  | 'scale-up'
+  | 'scale-down'
+  | 'level-up'
+  | 'level-down'

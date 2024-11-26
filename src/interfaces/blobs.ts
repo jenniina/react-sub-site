@@ -235,14 +235,14 @@ export enum EChangeBlobSizeByScrollingWithTheMouseWheel {
   cs = 'Velikost blobu změníte posouváním kolečka myši (poznámka: posouvání můžete nejprve zakázat tlačítkem v pravém horním rohu)',
   fi = 'Vaihda mollukan kokoa vierittämällä hiiren pyörällä (huomaa: haluat ehkä ensin poistaa sivun vierittämisen käytöstä yläoikealla olevalla painikkeella)',
 }
-export enum ECloneABlobByDraggingItToTheTopLeftPlusSign {
-  en = 'Clone a blob by dragging it to the top left copy sign',
-  es = 'Clone un blob arrastrándolo al signo de copia en la esquina superior izquierda',
-  fr = 'Clonez un blob en le faisant glisser vers le signe de copie en haut à gauche',
-  de = 'Klonen Sie einen Blob, indem Sie ihn zum linken oberen Kopierschild ziehen',
-  pt = 'Clone um blob arrastando-o para o sinal de cópia no canto superior esquerdo',
-  cs = 'Klonujte blob přetažením na levý horní znaménko kopírování',
-  fi = 'Kloonaa mollukka vetämällä se vasemman yläkulman kopiosymbolin luo',
+export enum ECloneABlobByClickingTheTopLeftPlusSign {
+  en = 'Clone a blob by clicking the top left copy sign and then the blob',
+  es = 'Clona un blob haciendo clic en el signo de copia en la esquina superior izquierda y luego en el blob',
+  fr = 'Cloner un blob en cliquant sur le signe de copie en haut à gauche, puis sur le blob',
+  de = 'Klonen Sie einen Blob, indem Sie auf das Kopiersymbol oben links und dann auf den Blob klicken',
+  pt = 'Clone um blob clicando no ícone de cópia no canto superior esquerdo e depois no blob',
+  cs = 'Klonujte blob kliknutím na kopírovací symbol v levém horním rohu a poté na blob',
+  fi = 'Kloonaa mollukka klikkaamalla vasemman yläkulman kopiosymbolia ja sitten mollukkaa',
 }
 export enum ERemoveABlobByClickingTheBottomLeftXSign {
   en = 'Remove a blob by clicking the bottom left x sign and then the blob',
@@ -254,13 +254,13 @@ export enum ERemoveABlobByClickingTheBottomLeftXSign {
   fi = 'Poista mollukka klikkaamalla vasemman alakulman x-merkkiä ja sitten mollukkaa',
 }
 export enum ERememberToDisableTheButtonWhenFinished {
-  en = 'Remember to disable the delete button when finished!',
-  es = 'Recuerde deshabilitar el botón de eliminar cuando haya terminado!',
-  fr = "N'oubliez pas de désactiver le bouton de suppression une fois terminé!",
-  de = 'Denken Sie daran, die Löschtaste nach Abschluss zu deaktivieren!',
-  pt = 'Lembre-se de desativar o botão de excluir quando terminar!',
-  cs = 'Nezapomeňte po dokončení deaktivovat tlačítko odstranění!',
-  fi = 'Muista klikata poistopainiketta uudestaan, kun olet valmis!',
+  en = 'Remember to disable the button when finished!',
+  es = '¡Recuerda desactivar el botón cuando hayas terminado!',
+  fr = "N'oubliez pas de désactiver le bouton une fois terminé!",
+  de = 'Denken Sie daran, den Knopf zu deaktivieren, wenn Sie fertig sind!',
+  pt = 'Lembre-se de desativar o botão quando terminar!',
+  cs = 'Nezapomeňte vypnout tlačítko po dokončení!',
+  fi = 'Muista klikata painiketta uudestaan, kun olet valmis!',
 }
 export enum ETabToABlobAndWithItInFocus {
   en = 'Tab to a blob, and with it in focus:',
@@ -625,13 +625,13 @@ export enum ERemovalInstructions {
   fi = 'Poista mollukka napsauttamalla minua ja sitten mollukkaa! Näppäinkäyttö: paina Delete, kun mollukka on valittuna',
 }
 export enum ECloneInstructions {
-  en = 'Release a blob here to duplicate it! Keyboard use: press C or D with blob in focus',
-  es = '¡Suelta un blob aquí para duplicarlo! Uso del teclado: presiona C o D con el blob enfocado',
-  fr = 'Relâchez un blob ici pour le dupliquer! Utilisation du clavier: appuyez sur C ou D avec le blob en focus',
-  de = 'Lassen Sie einen Blob hier los, um ihn zu duplizieren! Tastaturverwendung: Drücken Sie C oder D mit Blob im Fokus',
-  pt = 'Solte um blob aqui para duplicá-lo! Uso do teclado: pressione C ou D com o blob em foco',
-  cs = 'Uvolněte blob zde, abyste ho duplikovali! Použití klávesnice: stiskněte C nebo D s fokusem na blob',
-  fi = 'Vapauta mollukka tänne kloonataksesi se! Näppäinkäyttö: paina C tai D mollukka fokuksessa',
+  en = 'Click me and then a blob to duplicate it! Keyboard use: press C or D with blob in focus',
+  es = '¡Haga clic en mí y luego en un blob para duplicarlo! Uso del teclado: presione C o D con el blob enfocado',
+  fr = 'Cliquez sur moi puis sur un blob pour le dupliquer! Utilisation du clavier : appuyez sur C ou D avec le blob en focus',
+  de = 'Klicken Sie auf mich und dann auf einen Blob, um ihn zu duplizieren! Tastaturgebrauch: Drücken Sie C oder D mit Blob im Fokus',
+  pt = 'Clique em mim e depois em um blob para duplicá-lo! Uso do teclado: pressione C ou D com o blob em foco',
+  cs = 'Klikněte na mě a poté na blob pro jeho duplikaci! Použití klávesnice: stiskněte C nebo D s blobem v fokus',
+  fi = 'Klikkaa minua ja sitten mollukkaa kloonataksesi sen! Näppäinkäyttö: paina C tai D mollukka fokuksessa',
 }
 export enum EClickMeToMakeARandomBlob {
   en = 'Click me to make a random blob',
@@ -1339,4 +1339,14 @@ export enum EThankYouForPlaying {
   pt = 'Obrigado por jogar!',
   cs = 'Děkujeme za hraní!',
   fi = 'Kiitos pelaamisesta!',
+}
+
+export enum ECloneModeOn {
+  en = 'Clone mode on',
+  es = '¡Modo de clonación activado!',
+  fr = 'Mode de clonage activé!',
+  de = 'Klonmodus aktiviert!',
+  pt = 'Modo de clonagem ativado!',
+  cs = 'Režim klonování zapnut!',
+  fi = 'Kloonitila päällä!',
 }
