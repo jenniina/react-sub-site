@@ -164,7 +164,7 @@ const Blob = ({
           selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
       }}
       key={index}
-      className='dragzone animation'
+      className={`dragzone animation ${isDeleteMode ? 'del' : ''}`}
       id={item.id}
       role={'option'}
       tabIndex={0}
