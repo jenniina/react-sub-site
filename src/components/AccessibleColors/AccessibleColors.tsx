@@ -395,7 +395,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     const textBlockHeight = showColorName ? fontSize + padding : 0
 
     const svgWidth = listItemsByStatus[status]?.items.length * blockWidth
-    const svgHeight = blockHeight + textBlockHeight
+    const svgHeight = blockHeight + textBlockHeight * 1.6
 
     const blocksGroup = listItemsByStatus[status]?.items
       ?.map((block, index) => {
@@ -528,6 +528,43 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       })
       .join('')
 
+    const linkMargin = 10
+    const linkX = svgWidth - linkMargin
+    const linkY = svgHeight - linkMargin * 1.5
+    const linkURL = 'https://colors.jenniina.fi'
+
+    const linkElement = `
+      <a href="${linkURL}" target="_blank" rel="noopener noreferrer">
+        <text
+          x="${linkX}"
+          y="${linkY}"
+          font-size="${fontSize}"
+          font-family="Arial"
+          text-anchor="end"
+          fill="#000000"
+          stroke="none"
+        >
+          ${linkURL}
+        </text>
+      </a>
+    `
+
+    const linkElement2 = `
+      <a href="${linkURL}" target="_blank" rel="noopener noreferrer">
+        <text
+          x="${linkMargin}"
+          y="${linkY}"
+          font-size="${fontSize}"
+          font-family="Arial"
+          text-anchor="start"
+          fill="#FFFFFF"
+          stroke="none"
+        >
+          ${linkURL}
+        </text>
+      </a>
+    `
+
     const svgContent = `
     <svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}">
       <!-- Color Blocks -->
@@ -541,6 +578,13 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       <!-- Compliance Indicators -->
       <g>
         ${indicatorsGroup}
+      </g>
+      <!-- Source Link -->
+      <g>
+        ${linkElement2}
+      </g>
+      <g>
+        ${linkElement}
       </g>
     </svg>
   `
