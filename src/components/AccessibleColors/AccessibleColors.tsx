@@ -16,11 +16,14 @@ import { EAddAColor } from '../../interfaces/draganddrop'
 import ColorsInput from './ColorsInput'
 import {
   EAAACompliantWithID,
+  EAAACompliantWithUI,
   EAACompliantWithID,
   EAAGraphicElementCompliantWithID,
   EColorPicker,
   EEditSize,
   EHideColorName,
+  EHighestAAAComplianceWithRegularText,
+  EMinimumAAComplianceWithRegularText,
   ENoCompliantColors,
   ERemoveColorConfirmation,
   ESaveAsPNG,
@@ -897,7 +900,53 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       className={`${styles['color-container']} ${lightTheme ? styles.light : ''}`}
       style={{ ['--font-size' as string]: dynamicFontSize.input }}
     >
-      {' '}
+      <div id='info' className={styles['info-wrap']}>
+        <ul>
+          <li>
+            <div
+              style={{
+                display: 'inline-block',
+                backgroundColor: 'var(--color-primary-20)',
+                borderRadius: '50%',
+                width: `2em`,
+                height: `2em`,
+              }}
+            ></div>
+            <span>{EHighestAAAComplianceWithRegularText[language]}</span>
+          </li>
+          <li>
+            <div
+              style={{
+                display: 'inline-block',
+                backgroundColor: 'transparent',
+                outline: `0.3em solid var(--color-primary-20)`,
+                outlineOffset: `-0.3em`,
+                borderRadius: '50%',
+                width: `1.7em`,
+                height: `1.7em`,
+                margin: '0 0.2em 0 0.2em ',
+              }}
+            ></div>
+            <span>{EMinimumAAComplianceWithRegularText[language]}</span>
+          </li>
+          <li>
+            <div
+              style={{
+                display: 'inline-block',
+                backgroundColor: 'transparent',
+                outline: `0.3em solid var(--color-primary-20)`,
+                outlineOffset: `-0.26em`,
+                borderRadius: '0',
+                width: `0.9em`,
+                height: `0.9em`,
+                margin: '0 0.65em 0 0.65em',
+              }}
+            ></div>
+            <span>{EAAACompliantWithUI[language]}</span>
+          </li>
+        </ul>
+      </div>
+
       <div className={styles['btn-wrap']}>
         {listItemsByStatus[status]?.items?.length > 0 && (
           <>
