@@ -8,11 +8,20 @@ import {
   TouchEvent as TouchEventReact,
   MouseEvent as MouseEventReact,
   PointerEvent as PointerEventReact,
+  useContext,
 } from 'react'
-import { Draggable, focusedBlob } from '../interfaces'
+import { Draggable, focusedBlob, Modes } from '../interfaces'
 import { EBlob, ELanguages } from '../../../interfaces'
-import { ESelectedBlob, ESelectedBlobNone } from '../../../interfaces/blobs'
+import {
+  ECannotLowerBlobFurther,
+  ECannotRaiseBlobFurther,
+  ESelectedBlob,
+  ESelectedBlobNone,
+} from '../../../interfaces/blobs'
 import { clamp } from '../../../utils'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
+import { BlobContext, Props } from './BlobProvider'
+import { notify } from '../../../reducers/notificationReducer'
 
 interface BlobProps {
   d: number
@@ -61,7 +70,10 @@ interface BlobProps {
   setFocusedBlob: Dispatch<SetStateAction<focusedBlob | null>>
   dragUlRef: RefObject<HTMLUListElement>
   removeBlob: (draggable: Draggable) => void
-  isDeleteMode: boolean
+  mode: Modes
+  changeBlobLayer: (draggable: Draggable, layer: number) => void
+  layerAmount: number
+  changeColor: (id: string) => void
 }
 
 const Blob = ({
@@ -81,9 +93,14 @@ const Blob = ({
   setFocusedBlob,
   dragUlRef,
   removeBlob,
-  isDeleteMode,
+  mode,
+  changeBlobLayer,
+  layerAmount,
+  changeColor,
 }: BlobProps) => {
   const blur = d === 0 ? 33 : clamp(22, item.i * 2.6, 50)
+  const { dispatch } = useContext(BlobContext) as Props
+  const dispatch2 = useAppDispatch()
 
   const blobStyle: CSSProperties = {
     background: `${item.background}`,
@@ -111,8 +128,58 @@ const Blob = ({
       : ['5.1px', '5.4px', '6.5px', '7px', '7.8px', '8.4px', '8.6px'] // breakpoints for hitbox size due to varying levels of blur between the containers and blob sizes
 
   const handleClick = (e: React.MouseEvent) => {
-    if (isDeleteMode) {
+    if (mode === 'changeColor') {
+      changeColor(item.id)
+    } else if (mode === 'delete') {
       removeBlob(item)
+    } else if (mode === 'clone') {
+      dispatch({ type: 'duplicateDraggable', payload: { d, item } })
+    } else if (mode === 'layer-up') {
+      let layer = item.layer
+      if (layer < layerAmount - 1) {
+        layer += 1
+        changeBlobLayer(item, layer)
+      } else {
+        dispatch2(notify(ECannotRaiseBlobFurther[language], true, 4))
+      }
+    } else if (mode === 'layer-down') {
+      let layer = item.layer
+      if (layer > 0) {
+        layer -= 1
+        changeBlobLayer(item, layer)
+      } else {
+        dispatch2(notify(ECannotLowerBlobFurther[language], true, 4))
+      }
+    } else if (mode === 'scale-down') {
+      let scale = item.i
+      scale = isNaN(scale) ? 7 : scale
+      scale -= 0.4
+      scale = Math.min(Math.max(7, scale), 36)
+      dispatch({
+        type: 'partialUpdate',
+        payload: {
+          d: d,
+          id: item.id,
+          update: {
+            i: scale,
+          },
+        },
+      })
+    } else if (mode === 'scale-up') {
+      let scale = item.i
+      scale = isNaN(scale) ? 7 : scale
+      scale += 0.4
+      scale = Math.min(Math.max(7, scale), 36)
+      dispatch({
+        type: 'partialUpdate',
+        payload: {
+          d: d,
+          id: item.id,
+          update: {
+            i: scale,
+          },
+        },
+      })
     }
   }
 
@@ -126,7 +193,6 @@ const Blob = ({
           )
 
         const blob = e.target as HTMLElement
-        const container = blob.parentNode as HTMLUListElement
 
         setTimeout(() => {
           // Calculate the position of the blob after scrolling
@@ -164,7 +230,17 @@ const Blob = ({
           selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
       }}
       key={index}
-      className={`dragzone animation ${isDeleteMode ? 'del' : ''}`}
+      className={`dragzone animation ${
+        mode === 'delete'
+          ? 'del'
+          : mode === 'clone'
+          ? 'copy'
+          : mode === 'scale-down'
+          ? 'smaller'
+          : mode === 'scale-up'
+          ? 'larger'
+          : ''
+      }`}
       id={item.id}
       role={'option'}
       tabIndex={0}

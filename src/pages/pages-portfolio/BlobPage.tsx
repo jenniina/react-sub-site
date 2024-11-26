@@ -24,7 +24,7 @@ import {
   EChangeTheLayerOfTheFocusedBlobByPressingTheNumber,
   EChangeableColor,
   EChangeableSize,
-  ECloneABlobByDraggingItToTheTopLeftPlusSign,
+  ECloneABlobByClickingTheTopLeftPlusSign,
   ECloneABlobByPressingCOr,
   ECloneable,
   EDog,
@@ -256,7 +256,10 @@ export default function BlobPage({
                         }
                       </li>
                       <li>{EChangeBlobSizeByScrollingWithTheMouseWheel[language]}</li>
-                      <li>{ECloneABlobByDraggingItToTheTopLeftPlusSign[language]}</li>
+                      <li>
+                        {ECloneABlobByClickingTheTopLeftPlusSign[language]}.{' '}
+                        {ERememberToDisableTheButtonWhenFinished[language]}
+                      </li>
                       <li>
                         {ERemoveABlobByClickingTheBottomLeftXSign[language]}.{' '}
                         {ERememberToDisableTheButtonWhenFinished[language]}

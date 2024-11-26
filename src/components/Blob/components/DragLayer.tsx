@@ -7,7 +7,7 @@ import {
   MouseEvent as MouseEventReact,
   PointerEvent as PointerEventReact,
 } from 'react'
-import { Draggable, focusedBlob } from '../interfaces'
+import { Draggable, focusedBlob, Modes } from '../interfaces'
 import Blob from './Blob'
 import { ELanguages } from '../../../interfaces'
 import { ELayer } from '../../../interfaces/blobs'
@@ -60,7 +60,10 @@ interface DragLayerProps {
   focused: (e: HTMLElement) => void
   blurred: (e: HTMLElement) => void
   removeBlob: (draggable: Draggable) => void
-  isDeleteMode: boolean
+  mode: Modes
+  changeBlobLayer: (draggable: Draggable, layer: number) => void
+  layerAmount: number
+  changeColor: (id: string) => void
 }
 
 const DragLayer = ({
@@ -81,7 +84,10 @@ const DragLayer = ({
   focused,
   blurred,
   removeBlob,
-  isDeleteMode,
+  mode,
+  layerAmount,
+  changeBlobLayer,
+  changeColor,
 }: DragLayerProps) => {
   //   useEffect(() => {
   //     if (draggables[d] && draggables[d].length > 0) {
@@ -137,7 +143,10 @@ const DragLayer = ({
                 setFocusedBlob={setFocusedBlob}
                 dragUlRef={dragUlRef}
                 removeBlob={removeBlob}
-                isDeleteMode={isDeleteMode}
+                mode={mode}
+                changeBlobLayer={changeBlobLayer}
+                layerAmount={layerAmount}
+                changeColor={changeColor}
               />
             )
           }

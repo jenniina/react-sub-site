@@ -92,12 +92,8 @@ svg.filter {
   box-shadow: var(--box);
 }
 
-.drag-container .make-more,
 .drag-container .make-smaller,
-.drag-container .make-larger,
-.drag-container .layer-adjust {
-  background-color: lightgray;
-  cursor: help;
+.drag-container .make-larger {
   z-index: 1;
 }
 
@@ -105,30 +101,22 @@ svg.filter {
   cursor: pointer;
   z-index: 1;
 }
-.drag-container .make-larger {
-  --box: inset 0.1rem -0.1rem 0.4rem -0.2rem rgba(0, 0, 0, 0.4),
-    inset 0.1rem -0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
-  -webkit-box-shadow: var(--box);
-  -o-box-shadow: var(--box);
-  -ms-box-shadow: var(--box);
-  -moz-box-shadow: var(--box);
-  box-shadow: var(--box);
-}
 
 .drag-container .delete-blob {
   z-index: 1;
-  transform: scale(1) translateY(-0.3rem);
+  transform: translateY(-0.3rem);
   transform-origin: 80% 50%;
 }
-.drag-container .delete-blob:hover,
-.drag-container .delete-blob:focus {
-  transform: scale(1.1) translateY(-0.3rem);
-}
-.drag-container .delete-blob .delete-alert {
+.drag-container .delete-blob .delete-alert,
+.drag-container .make-more .clone-alert,
+.drag-container .layer-decrease .layer-down-alert,
+.drag-container .layer-increase .layer-up-alert,
+.drag-container .scale-up-alert,
+.drag-container .scale-down-alert {
   position: absolute;
   background-color: var(--color-primary-20);
   color: var(--color-primary-1);
-  top: -50%;
+  top: -80%;
   left: 120%;
   min-width: clamp(10px, 70vw, 130px);
   font-size: 0.8rem;
@@ -138,19 +126,24 @@ svg.filter {
   padding: 0.2rem 0.5rem;
   border-radius: var(--radius-small);
   line-height: 1;
+  font-weight: normal;
 }
-
-.drag-container .make-smaller,
-.drag-container .layer-adjust {
-  --box: inset 0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
-    inset 0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
-  -webkit-box-shadow: var(--box);
-  -o-box-shadow: var(--box);
-  -ms-box-shadow: var(--box);
-  -moz-box-shadow: var(--box);
-  box-shadow: var(--box);
+.drag-container .make-more .clone-alert,
+.drag-container .scale-down-alert {
+  top: 80%;
+}
+.drag-container .layer-increase .layer-up-alert,
+.drag-container .scale-up-alert,
+.drag-container .scale-down-alert {
+  left: unset;
+  right: 120%;
+}
+.drag-container .scale-up-alert {
+  top: -150%;
 }
 .drag-container .make-more {
+  z-index: 1;
+  padding: 0.1rem 0.4rem 0.2rem;
   --box: inset -0.1rem -0.1rem 0.4rem -0.2rem rgba(0, 0, 0, 0.4),
     inset -0.1rem -0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: var(--box);
@@ -452,11 +445,6 @@ svg.filter {
   outline-offset: -2px;
   border-radius: var(--corner);
 }
-.drag-container button:hover,
-.drag-container button:focus {
-  outline: currentColor 2px solid;
-  outline-offset: -2px;
-}
 
 .drag-wrap-outer {
   --tooltip-color: lightgray;
@@ -572,6 +560,15 @@ svg.filter {
 .drag-container .dragzone.del .draggable-overlay {
   cursor: crosshair;
 }
+.drag-container .dragzone.copy .draggable-overlay {
+  cursor: copy;
+}
+.drag-container .dragzone.larger .draggable-overlay {
+  cursor: ne-resize;
+}
+.drag-container .dragzone.smaller .draggable-overlay {
+  cursor: s-resize;
+}
 .drag-container .dragzone:active .draggable-overlay {
   cursor: -webkit-grabbing;
   cursor: grabbing;
@@ -621,48 +618,15 @@ body.dark-mode .site .drag-container .dragzone:focus {
   position: absolute;
   text-align: center;
   font-weight: bold;
-  outline-offset: 1px;
-  color: black;
 }
 
-.drag-container .make-larger:hover::after,
-.drag-container .make-smaller:hover::after,
-.drag-container button.toggle-marker:hover::after,
-.drag-container button.toggle-marker:focus::after {
-  --box: -0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
-  position: absolute;
-  font-size: 0.8rem;
-  font-weight: normal;
-  text-align: left;
-  width: var(--tooltip-width);
-  line-height: 1;
-  background-color: var(--tooltip-color);
-  padding: 0.2em 0.4em 0.4em;
-  border-radius: 5px;
-  border-bottom: gray 1px solid;
-  -webkit-box-shadow: var(--box);
-  -o-box-shadow: var(--box);
-  -ms-box-shadow: var(--box);
-  -moz-box-shadow: var(--box);
-  box-shadow: var(--box);
-}
-.drag-container button.toggle-marker:hover::after,
-.drag-container button.toggle-marker:focus::after {
-  color: black;
-  background-color: white;
-}
 .drag-container button.toggle-marker {
   position: relative;
 }
-.drag-container .make-larger {
+.drag-container .make-smaller {
   --box: -0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.4),
     inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
     inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
-  font-size: 0.9rem;
-  line-height: 1.5;
-  padding: 0.3em 0.2em 0;
-  width: 1.8em;
-  height: 1.8em;
   top: 0.2rem;
   border-radius: var(--corner2);
   -webkit-box-shadow: var(--box);
@@ -674,12 +638,12 @@ body.dark-mode .site .drag-container .dragzone:focus {
 .drag-container .make-smaller {
   --bottom: -2.2rem;
   font-size: 0.85rem;
-  padding: 0.25em 0.08em 0;
+  padding: 0.1em 0.08em 0.1em;
   top: 0;
   line-height: 1.8;
   border-radius: 50%;
 }
-.drag-container .make-smaller,
+.drag-container .make-larger,
 .drag-container .layer-increase {
   --box: -0.2rem -0.2rem 0.5rem rgba(0, 0, 0, 0.4),
     inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
@@ -689,6 +653,11 @@ body.dark-mode .site .drag-container .dragzone:focus {
   -ms-box-shadow: var(--box);
   -moz-box-shadow: var(--box);
   box-shadow: var(--box);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  padding: 0.1em 0.2em 0.1em;
+  width: 1.8em;
+  height: 1.8em;
 }
 .drag-container .make-more,
 .drag-container .delete-blob,
@@ -938,7 +907,6 @@ body.dark-mode .site .drag-container .dragzone:focus {
 } /* END media */
 #root .drag-container .layer-adjust {
   position: absolute;
-  color: black;
   font-size: 1.4rem;
   height: 1.6rem;
   width: 1.6rem;
@@ -948,14 +916,8 @@ body.dark-mode .site .drag-container .dragzone:focus {
   justify-content: center;
   align-items: center;
   margin: 0 0.2rem;
-  border: none;
-  outline: none;
   padding: 0;
-  background: none;
-  background-color: lightgray;
-}
-.drag-container .layer-mover-control-wrap .layer-adjust > * {
-  color: black;
+  z-index: 1;
 }
 
 .drag-container .layer-mover-control-wrap .layer-tool {
@@ -964,29 +926,6 @@ body.dark-mode .site .drag-container .dragzone:focus {
   border-radius: 50%;
 }
 
-.drag-container .make-more {
-  color: black;
-}
-.drag-container .make-more:hover::after,
-.drag-container .delete-blob:hover::after,
-.drag-container .make-random:hover::after {
-  --box: 0.3em 0.5em 1em -0.5em rgba(0, 0, 0, 0.4);
-  position: absolute;
-  font-size: 0.8rem;
-  font-weight: normal;
-  text-align: left;
-  width: var(--tooltip-width);
-  line-height: 1;
-  background-color: var(--tooltip-color);
-  padding: 0.2em 0.4em 0.4em;
-  border-radius: 5px;
-  border-bottom: gray 1px solid;
-  -webkit-box-shadow: var(--box);
-  -o-box-shadow: var(--box);
-  -ms-box-shadow: var(--box);
-  -moz-box-shadow: var(--box);
-  box-shadow: var(--box);
-}
 .drag-container .make-more,
 .drag-container .make-random {
   --box: 0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.4),
@@ -996,7 +935,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
   left: 23%;
   font-size: 0.9rem;
   line-height: 1.2;
-  padding: 0.4rem 0.4rem 0.2rem;
+  padding: 0.1rem 0.4rem 0.1rem;
   border-radius: var(--corner);
   -webkit-box-shadow: var(--box);
   -o-box-shadow: var(--box);
@@ -1010,9 +949,8 @@ body.dark-mode .site .drag-container .dragzone:focus {
 }
 .drag-container .delete-blob {
   height: 1.7rem;
-  font-size: 1.1rem;
   line-height: 1.3;
-  padding: 0.1rem 0.3rem 0.03rem;
+  padding: 0 0.3rem 0.1rem;
   border-radius: 50%;
 }
 .drag-container .delete-blob,
@@ -1028,7 +966,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
 }
 .drag-container .delete-blob {
   outline: 3px solid red;
-  outline-offset: -2px;
+  outline-offset: -4px;
 }
 .drag-container .delete-blob:hover {
   outline: 5px solid red;
@@ -1043,12 +981,15 @@ body.dark-mode .site .drag-container .dragzone:focus {
 .drag-container .make-random {
   transform: translateY(0.2rem);
 }
-
-.colorblock {
+.drag-container .make-more {
+  padding: 0.2rem 0.4rem 0.2rem;
+}
+.drag-container .colorblock {
   position: absolute;
   width: 1.4rem;
   height: 1.3rem;
   border-radius: 6.7rem 5rem 5rem 6.7rem / 8.7rem 0.7rem 0.7rem 8.7rem;
+  margin: 0;
 }
 @media (max-width: 700px) {
   .colorblock {
