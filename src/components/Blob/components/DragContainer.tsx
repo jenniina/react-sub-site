@@ -115,6 +115,7 @@ import {
   EDarkerColors,
   EAfterEnablingThereIsASlightDelayBeforeAllTheBlobsAreMovingAgain,
   EGetANewSetOfBlobs,
+  EDeleteModeOn,
 } from '../../../interfaces/blobs'
 import {
   BiChevronDown,
@@ -227,7 +228,7 @@ export default function DragContainer({
   const makeLarger0 = useRef() as RefObject<HTMLDivElement>
   const makeSmaller0 = useRef() as RefObject<HTMLDivElement>
   const makeMore0 = useRef() as RefObject<HTMLDivElement>
-  const deleteBlob0 = useRef() as RefObject<HTMLDivElement>
+  const deleteBlob0 = useRef() as RefObject<HTMLButtonElement>
   const layerIncrease = useRef() as RefObject<HTMLDivElement>
   const layerDecrease = useRef() as RefObject<HTMLDivElement>
 
@@ -1725,6 +1726,30 @@ export default function DragContainer({
     }, 300)
   }
 
+  const [deleteId, setDeleteId] = useState<string>('')
+  const [deleteMode, setDeleteMode] = useState<boolean>(false)
+
+  const toggleDeleteMode = () => {
+    setDeleteMode((prev) => !prev)
+    if (deleteMode) {
+      setDeleteId('')
+    }
+  }
+
+  //Remove blob
+  function removeBlob(draggable: Draggable) {
+    setDeleteId(draggable.id)
+    if (selectedvalue0.current)
+      selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
+  }
+
+  useEffect(() => {
+    if (deleteId) {
+      dispatch({ type: 'removeDraggable', payload: { d: d, id: deleteId } })
+      setDeleteId('')
+    }
+  }, [deleteId, d, dispatch])
+
   const pagination = (dKey: string, current: number, totalPages: number) => {
     const uniqueNumber = Math.random().toString(36).substr(2, 9)
     return hasSavedFiles ? (
@@ -2009,18 +2034,22 @@ export default function DragContainer({
                     className='tooltip below'
                   >{`${EClickMeToMakeARandomBlob[language]}. ${EMoreColorsAvailable[language]}!`}</span>
                 </button>
-                <div
+                <button
                   ref={deleteBlob0}
-                  className={`delete-blob tooltip-wrap reset ${
+                  className={`delete-blob tooltip-wrap restore ${
                     !controlsVisible ? 'hidden' : ''
                   }`}
                   id={`delete-blob${d}`}
+                  onClick={toggleDeleteMode}
                 >
                   <FaTimes />
+                  {deleteMode && (
+                    <span className='delete-alert'>{EDeleteModeOn[language]}</span>
+                  )}
                   <span id={`delete-blob${d}-span`} className='tooltip right above'>
                     {ERemovalInstructions[language]}
                   </span>
-                </div>
+                </button>
 
                 <div
                   ref={layerDecrease}
@@ -2086,6 +2115,8 @@ export default function DragContainer({
                     makeSmaller0={makeSmaller0}
                     makeMore0={makeMore0}
                     deleteBlob0={deleteBlob0}
+                    removeBlob={removeBlob}
+                    isDeleteMode={deleteMode}
                     layerIncrease={layerIncrease}
                     layerDecrease={layerDecrease}
                     dragWrap={dragWrap}

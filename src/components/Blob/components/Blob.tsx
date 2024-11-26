@@ -60,6 +60,8 @@ interface BlobProps {
   selectedvalue0: RefObject<HTMLSpanElement>
   setFocusedBlob: Dispatch<SetStateAction<focusedBlob | null>>
   dragUlRef: RefObject<HTMLUListElement>
+  removeBlob: (draggable: Draggable) => void
+  isDeleteMode: boolean
 }
 
 const Blob = ({
@@ -78,6 +80,8 @@ const Blob = ({
   selectedvalue0,
   setFocusedBlob,
   dragUlRef,
+  removeBlob,
+  isDeleteMode,
 }: BlobProps) => {
   const blur = d === 0 ? 33 : clamp(22, item.i * 2.6, 50)
 
@@ -92,6 +96,7 @@ const Blob = ({
     WebkitFilter: `blur(${blur}px)`,
     filter: `blur(${blur}px)`,
   }
+
   const innerSize =
     d === 0
       ? [
@@ -104,6 +109,12 @@ const Blob = ({
           '10px',
         ]
       : ['5.1px', '5.4px', '6.5px', '7px', '7.8px', '8.4px', '8.6px'] // breakpoints for hitbox size due to varying levels of blur between the containers and blob sizes
+
+  const handleClick = (e: React.MouseEvent) => {
+    if (isDeleteMode) {
+      removeBlob(item)
+    }
+  }
 
   return (
     <li
@@ -158,6 +169,7 @@ const Blob = ({
       role={'option'}
       tabIndex={0}
       style={blobStyle}
+      onClick={handleClick}
     >
       <div
         className='draggable-overlay'
