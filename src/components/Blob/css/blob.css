@@ -95,7 +95,6 @@ svg.filter {
 .drag-container .make-more,
 .drag-container .make-smaller,
 .drag-container .make-larger,
-.drag-container .delete-blob,
 .drag-container .layer-adjust {
   background-color: lightgray;
   cursor: help;
@@ -118,6 +117,28 @@ svg.filter {
 
 .drag-container .delete-blob {
   z-index: 1;
+  transform: translateY(-0.3rem);
+}
+.drag-container .delete-blob:hover,
+.drag-container .delete-blob:focus {
+  padding: 0;
+  transform: scale(1.1) translateY(-0.3rem);
+  transform-origin: bottom;
+}
+.drag-container .delete-blob .delete-alert {
+  position: absolute;
+  background-color: var(--color-primary-20);
+  color: var(--color-primary-1);
+  top: -50%;
+  left: 120%;
+  min-width: clamp(10px, 70vw, 130px);
+  font-size: 0.8rem;
+  pointer-events: none;
+  white-space: wrap;
+  text-align: left;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-small);
+  line-height: 1;
 }
 
 .drag-container .make-smaller,
@@ -941,8 +962,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
   border-radius: 50%;
 }
 
-.drag-container .make-more,
-.drag-container .delete-blob {
+.drag-container .make-more {
   color: black;
 }
 .drag-container .make-more:hover::after,
@@ -990,7 +1010,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
   height: 1.7rem;
   font-size: 1.1rem;
   line-height: 1.3;
-  padding: 0.3rem 0.3rem 0.03rem;
+  padding: 0.1rem 0.3rem 0.03rem;
   border-radius: 50%;
 }
 .drag-container .delete-blob,
@@ -1005,20 +1025,13 @@ body.dark-mode .site .drag-container .dragzone:focus {
   box-shadow: var(--box);
 }
 .drag-container .delete-blob {
-  --tra: 0.2s;
   outline: 3px solid red;
   outline-offset: -2px;
-  -webkit-transition: outline var(--tra);
-  -o-transition: outline var(--tra);
-  -ms-transition: outline var(--tra);
-  -moz-transition: outline var(--tra);
-  transition: outline var(--tra);
 }
 .drag-container .delete-blob:hover {
-  outline: 5px solid red;
+  outline: 5px double red;
 }
 .drag-container .make-larger,
-.drag-container .delete-blob,
 .drag-container .layer-adjust {
   transform: translateY(-0.3rem);
 }
@@ -1268,6 +1281,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
   margin: 0;
   border-radius: 50%;
 }
+
 @media (min-width: 700px) {
   .button-container button.screenshot {
     padding: 0.3em 0.8em;

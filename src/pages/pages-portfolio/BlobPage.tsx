@@ -59,8 +59,9 @@ import {
   EPressSpaceOrRWithABlobInFocusToCycleThroughRandomColors,
   EPressTheCameraSymbolToTakeAScreenshot,
   ERegisterAndLogInToSaveYourArtwork,
+  ERememberToDisableTheButtonWhenFinished,
   ERemovable,
-  ERemoveABlobByDraggingItToTheBottomLeftXSign,
+  ERemoveABlobByClickingTheBottomLeftXSign,
   ERemoveABlobByPressingDeleteOr,
   ERenameYourArtwork,
   EResetTheBlobArrayToANewConfiguration,
@@ -256,7 +257,10 @@ export default function BlobPage({
                       </li>
                       <li>{EChangeBlobSizeByScrollingWithTheMouseWheel[language]}</li>
                       <li>{ECloneABlobByDraggingItToTheTopLeftPlusSign[language]}</li>
-                      <li>{ERemoveABlobByDraggingItToTheBottomLeftXSign[language]}</li>
+                      <li>
+                        {ERemoveABlobByClickingTheBottomLeftXSign[language]}.{' '}
+                        {ERememberToDisableTheButtonWhenFinished[language]}
+                      </li>
                       <li>{EDragBlobToIconsNextToLayerButtons[language]}</li>
                       <li>{EKeysMayBeUsedWhileMouseIsPressedDown[language]}</li>
                     </ul>

@@ -91,6 +91,7 @@ import {
   ENameYourArtwork,
   EPressSpaceOrRWithABlobInFocusToCycleThroughRandomColors,
   ERemovable,
+  ERemoveABlobByClickingTheBottomLeftXSign,
   ERenameYourArtwork,
   ESampleArtwork,
   EScreenshot,
@@ -185,6 +186,16 @@ export default function Home({
                     <li>
                       <strong>{ENovember[language]}</strong>
                       <ul>
+                        <li>
+                          <Link to='/portfolio/blob'>
+                            <TbBlob />
+                            {EBlobs[language]}:
+                          </Link>
+                          <i>
+                            {EAddedNewFeatures[language]}:{' '}
+                            {ERemoveABlobByClickingTheBottomLeftXSign[language]}
+                          </i>
+                        </li>
                         <li>
                           <Link to='/portfolio/colors'>
                             <BiSolidColorFill />

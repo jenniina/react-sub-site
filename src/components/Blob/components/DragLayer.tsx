@@ -59,6 +59,8 @@ interface DragLayerProps {
   wheel: (target: HTMLElement) => void
   focused: (e: HTMLElement) => void
   blurred: (e: HTMLElement) => void
+  removeBlob: (draggable: Draggable) => void
+  isDeleteMode: boolean
 }
 
 const DragLayer = ({
@@ -78,6 +80,8 @@ const DragLayer = ({
   wheel,
   focused,
   blurred,
+  removeBlob,
+  isDeleteMode,
 }: DragLayerProps) => {
   //   useEffect(() => {
   //     if (draggables[d] && draggables[d].length > 0) {
@@ -132,6 +136,8 @@ const DragLayer = ({
                 selectedvalue0={selectedvalue0}
                 setFocusedBlob={setFocusedBlob}
                 dragUlRef={dragUlRef}
+                removeBlob={removeBlob}
+                isDeleteMode={isDeleteMode}
               />
             )
           }

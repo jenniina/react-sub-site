@@ -38,7 +38,9 @@ interface DragLayerProps {
   makeLarger0: RefObject<HTMLDivElement>
   makeSmaller0: RefObject<HTMLDivElement>
   makeMore0: RefObject<HTMLDivElement>
-  deleteBlob0: RefObject<HTMLDivElement>
+  deleteBlob0: RefObject<HTMLButtonElement>
+  removeBlob: (draggable: Draggable) => void
+  isDeleteMode: boolean
   layerIncrease: RefObject<HTMLDivElement>
   layerDecrease: RefObject<HTMLDivElement>
   setFocusedBlob: DispatchReact<SetStateAction<focusedBlob | null>>
@@ -92,6 +94,8 @@ const DragLayers = ({
   makeSmaller0,
   makeMore0,
   deleteBlob0,
+  removeBlob,
+  isDeleteMode,
   layerIncrease,
   layerDecrease,
   setFocusedBlob,
@@ -458,12 +462,6 @@ const DragLayers = ({
         elementsOverlap(hitbox as HTMLElement, makeMore0.current)
       ) {
         makeBlob(draggable)
-      }
-      if (
-        deleteBlob0.current &&
-        elementsOverlap(hitbox as HTMLElement, deleteBlob0.current)
-      ) {
-        removeBlob(draggable)
       }
       //  getPosition(target as HTMLElement)
       ;(target as HTMLElement).classList.remove('drag')
@@ -927,21 +925,21 @@ const DragLayers = ({
     })
   }
 
-  const [deleteId, setDeleteId] = useState<string>('')
+  // const [deleteId, setDeleteId] = useState<string>('')
 
-  //Remove blob
-  function removeBlob(draggable: Draggable) {
-    setDeleteId(draggable.id)
-    if (selectedvalue0.current)
-      selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
-  }
+  // //Remove blob
+  // function removeBlob(draggable: Draggable) {
+  //   setDeleteId(draggable.id)
+  //   if (selectedvalue0.current)
+  //     selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
+  // }
 
-  useEffect(() => {
-    if (deleteId) {
-      dispatch({ type: 'removeDraggable', payload: { d: d, id: deleteId } })
-      setDeleteId('')
-    }
-  }, [deleteId, d, dispatch])
+  // useEffect(() => {
+  //   if (deleteId) {
+  //     dispatch({ type: 'removeDraggable', payload: { d: d, id: deleteId } })
+  //     setDeleteId('')
+  //   }
+  // }, [deleteId, d, dispatch])
 
   return (
     <>
@@ -964,6 +962,8 @@ const DragLayers = ({
           wheel={wheel}
           focused={focused}
           blurred={blurred}
+          removeBlob={removeBlob}
+          isDeleteMode={isDeleteMode}
         />
       ))}
     </>

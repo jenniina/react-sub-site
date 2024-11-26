@@ -244,14 +244,23 @@ export enum ECloneABlobByDraggingItToTheTopLeftPlusSign {
   cs = 'Klonujte blob přetažením na levý horní znaménko kopírování',
   fi = 'Kloonaa mollukka vetämällä se vasemman yläkulman kopiosymbolin luo',
 }
-export enum ERemoveABlobByDraggingItToTheBottomLeftXSign {
-  en = 'Remove a blob by dragging it to the bottom left x sign',
-  es = 'Elimine un blob arrastrándolo al signo x inferior izquierdo',
-  fr = 'Supprimez un blob en le faisant glisser vers le signe x en bas à gauche',
-  de = 'Entfernen Sie einen Blob, indem Sie ihn zum unteren linken x-Zeichen ziehen',
-  pt = 'Remova um blob arrastando-o para o sinal x inferior esquerdo',
-  cs = 'Odstraňte blob přetažením do levého dolního x',
-  fi = 'Poista mollukka vetämällä se vasemman alakulman x-merkin luo',
+export enum ERemoveABlobByClickingTheBottomLeftXSign {
+  en = 'Remove a blob by clicking the bottom left x sign and then the blob',
+  es = 'Elimine un blob haciendo clic en el signo x de la parte inferior izquierda y luego en el blob',
+  fr = 'Supprimez un blob en cliquant sur le signe x en bas à gauche, puis sur le blob',
+  de = 'Entfernen Sie einen Blob, indem Sie auf das x-Symbol unten links und dann auf den Blob klicken',
+  pt = 'Remova um blob clicando no sinal x no canto inferior esquerdo e depois no blob',
+  cs = 'Odstraňte blob kliknutím na znak x vlevo dole a poté na blob',
+  fi = 'Poista mollukka klikkaamalla vasemman alakulman x-merkkiä ja sitten mollukkaa',
+}
+export enum ERememberToDisableTheButtonWhenFinished {
+  en = 'Remember to disable the delete button when finished!',
+  es = 'Recuerde deshabilitar el botón de eliminar cuando haya terminado!',
+  fr = "N'oubliez pas de désactiver le bouton de suppression une fois terminé!",
+  de = 'Denken Sie daran, die Löschtaste nach Abschluss zu deaktivieren!',
+  pt = 'Lembre-se de desativar o botão de excluir quando terminar!',
+  cs = 'Nezapomeňte po dokončení deaktivovat tlačítko odstranění!',
+  fi = 'Muista klikata poistopainiketta uudestaan, kun olet valmis!',
 }
 export enum ETabToABlobAndWithItInFocus {
   en = 'Tab to a blob, and with it in focus:',
@@ -607,13 +616,13 @@ export enum EShrinkInstructions {
   fi = 'Pienennä mollukka vapauttamalla se lähelleni! Näppäinkäyttö: paina S mollukkaa tarkastellessasi',
 }
 export enum ERemovalInstructions {
-  en = 'Remove a blob by bringing it to me! Keyboard use: press Delete with blob in focus',
-  es = '¡Elimine un blob trayéndolo a mí! Uso del teclado: presione Eliminar con el blob enfocado',
-  fr = 'Supprimez un blob en le ramenant vers moi! Utilisation du clavier: appuyez sur Supprimer avec le blob en focus',
-  de = 'Entfernen Sie einen Blob, indem Sie ihn zu mir bringen! Tastaturverwendung: Drücken Sie Löschen mit Blob im Fokus',
-  pt = 'Remova um blob trazendo-o para mim! Uso do teclado: pressione Excluir com o blob em foco',
-  cs = 'Odstraňte blob tím, že ho přivedete ke mně! Použití klávesnice: stiskněte Delete s fokusem na blob',
-  fi = 'Poista mollukka tuomalla se minulle! Näppäinkäyttö: paina Delete mollukkaa tarkastellessasi',
+  en = 'Remove a blob by clicking me and then the blob! Keyboard use: press Delete with blob in focus',
+  es = 'Elimina un blob haciendo clic en mí y luego en el blob. Uso del teclado: presiona Delete con el blob en foco',
+  fr = 'Supprimez un blob en cliquant sur moi, puis sur le blob. Utilisation du clavier : appuyez sur Delete avec le blob en focus',
+  de = 'Entferne einen Blob, indem du mich und dann den Blob anklickst! Tastaturgebrauch: Drücke Delete mit dem Blob im Fokus',
+  pt = 'Remova um blob clicando em mim e depois no blob! Uso do teclado: pressione Delete com o blob em foco',
+  cs = 'Odstraňte blob kliknutím na mě a poté na blob! Použití klávesnice: stiskněte Delete s blobem v fokus',
+  fi = 'Poista mollukka napsauttamalla minua ja sitten mollukkaa! Näppäinkäyttö: paina Delete, kun mollukka on valittuna',
 }
 export enum ECloneInstructions {
   en = 'Release a blob here to duplicate it! Keyboard use: press C or D with blob in focus',
@@ -843,6 +852,15 @@ export enum EDeletedArt {
   pt = 'Arte excluída',
   cs = 'Smazané umění',
   fi = 'Teos poistettu',
+}
+export enum EDeleteModeOn {
+  en = 'Delete mode on!',
+  es = '¡Modo de eliminación activado!',
+  fr = 'Mode de suppression activé!',
+  de = 'Löschmodus aktiviert!',
+  pt = 'Modo de exclusão ativado!',
+  cs = 'Režim mazání zapnut!',
+  fi = 'Poistotila päällä!',
 }
 export enum EAVersionAlreadyExistsOverwrite {
   en = 'A version with this name already exists. Do you want to overwrite it?',
