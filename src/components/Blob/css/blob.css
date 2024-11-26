@@ -117,13 +117,12 @@ svg.filter {
 
 .drag-container .delete-blob {
   z-index: 1;
-  transform: translateY(-0.3rem);
+  transform: scale(1) translateY(-0.3rem);
+  transform-origin: 80% 50%;
 }
 .drag-container .delete-blob:hover,
 .drag-container .delete-blob:focus {
-  padding: 0;
   transform: scale(1.1) translateY(-0.3rem);
-  transform-origin: bottom;
 }
 .drag-container .delete-blob .delete-alert {
   position: absolute;
@@ -569,6 +568,9 @@ svg.filter {
   cursor: -webkit-grab;
   cursor: grab;
   pointer-events: all;
+}
+.drag-container .dragzone.del .draggable-overlay {
+  cursor: crosshair;
 }
 .drag-container .dragzone:active .draggable-overlay {
   cursor: -webkit-grabbing;
@@ -1029,7 +1031,8 @@ body.dark-mode .site .drag-container .dragzone:focus {
   outline-offset: -2px;
 }
 .drag-container .delete-blob:hover {
-  outline: 5px double red;
+  outline: 5px solid red;
+  outline-offset: -2px;
 }
 .drag-container .make-larger,
 .drag-container .layer-adjust {

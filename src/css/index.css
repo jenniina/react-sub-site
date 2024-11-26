@@ -826,7 +826,7 @@ button.gray {
 .transformations button,
 .transformations button.restore {
   transition-property: border-color, color, background-color, background-position, outline,
-    outline-offset, opacity;
+    outline-offset, opacity, transform;
   transition-duration: 0.4s;
   transition-timing-function: ease-in-out;
   transition-delay: 0s;
