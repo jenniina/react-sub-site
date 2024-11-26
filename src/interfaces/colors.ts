@@ -27,6 +27,34 @@ export enum ETheRoundIndicatorHollowIndicatorAndSmallHollowSquare {
   cs = 'Velký plný kulový indikátor označuje nejvyšší kompatibilitu AAA pro běžný text, zatímco dutý kulový indikátor označuje kompatibilitu AA pro běžný text. Nejnižší kompatibilita pouze pro uživatelské rozhraní a další grafické prvky je označena malým dutým čtvercem',
   fi = 'Suuri täytetty pyöreä indikaattori merkitsee korkeinta AAA-yhteensopivuutta tavalliselle tekstille, kun taas ontto pyöreä indikaattori merkitsee AA-yhteensopivuutta tavalliselle tekstille. Alin yhteensopivuus vain käyttöliittymälle ja muille graafisille elementeille on merkitty pienellä ontolla neliöllä',
 }
+export enum EHighestAAAComplianceWithRegularText {
+  en = 'Highest AAA-compliance with regular text',
+  es = 'Mayor cumplimiento AAA con texto regular',
+  fr = 'Conformité AAA la plus élevée avec le texte régulier',
+  de = 'Höchste AAA-Konformität mit normalem Text',
+  pt = 'Maior conformidade AAA com texto regular',
+  cs = 'Nejvyšší shoda AAA s běžným textem',
+  fi = 'Korkein AAA-yhteensopivuus tavalliselle tekstille',
+}
+export enum EMinimumAAComplianceWithRegularText {
+  en = 'Minimum AA-compliance with regular text',
+  es = 'Cumplimiento mínimo AA con texto regular',
+  fr = 'Conformité minimale AA avec le texte régulier',
+  de = 'Minimale AA-Konformität mit normalem Text',
+  pt = 'Conformidade mínima AA com texto regular',
+  cs = 'Minimální shoda AA s běžným textem',
+  fi = 'AA-yhteensopivuus tavalliselle tekstille',
+}
+
+export enum EAAACompliantWithUI {
+  en = 'AA-compatibility only with UI and other graphical elements',
+  es = 'Compatibilidad AA solo con la interfaz de usuario y otros elementos gráficos',
+  fr = "Compatibilité AA uniquement avec l'interface utilisateur et d'autres éléments graphiques",
+  de = 'AA-Kompatibilität nur mit der Benutzeroberfläche und anderen grafischen Elementen',
+  pt = 'Compatibilidade AA apenas com a interface do usuário e outros elementos gráficos',
+  cs = 'AA kompatibilita pouze s uživatelským rozhraním a dalšími grafickými prvky',
+  fi = 'AA-yhteensopivuus vain käyttöliittymän ja muiden graafisten elementtien kanssa',
+}
 export enum EColorPicker {
   en = 'Color Picker',
   es = 'Selector de color',
