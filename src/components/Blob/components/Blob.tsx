@@ -108,7 +108,7 @@ const Blob = ({
     left: `${item.x}`,
     top: `${item.y}`,
     zIndex: `${item.z}`,
-    ['--i' as string]: isNaN(Number(item.i)) ? '7' : `${item.i}`, // default value for i
+    ['--i' as string]: isNaN(Number(item.i)) ? '10' : `${item.i}`, // default value for i
     ['--layer' as string]: `${layer}`,
     WebkitFilter: `blur(${blur}px)`,
     filter: `blur(${blur}px)`,
@@ -152,7 +152,7 @@ const Blob = ({
       }
     } else if (mode === 'scale-down') {
       let scale = item.i
-      scale = isNaN(scale) ? 7 : scale
+      scale = isNaN(scale) ? 10 : scale
       scale -= 0.4
       scale = Math.min(Math.max(7, scale), 36)
       dispatch({
@@ -167,7 +167,7 @@ const Blob = ({
       })
     } else if (mode === 'scale-up') {
       let scale = item.i
-      scale = isNaN(scale) ? 7 : scale
+      scale = isNaN(scale) ? 10 : scale
       scale += 0.4
       scale = Math.min(Math.max(7, scale), 36)
       dispatch({
