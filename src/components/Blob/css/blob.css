@@ -107,13 +107,18 @@ svg.filter {
   transform: translateY(-0.3rem);
   transform-origin: 80% 50%;
 }
+.colorblock .color-alert {
+  display: none;
+}
 .drag-container .delete-blob .delete-alert,
 .drag-container .make-more .clone-alert,
 .drag-container .layer-decrease .layer-down-alert,
 .drag-container .layer-increase .layer-up-alert,
 .drag-container .scale-up-alert,
-.drag-container .scale-down-alert {
+.drag-container .scale-down-alert,
+.colorblock.active .color-alert {
   position: absolute;
+  display: block;
   background-color: var(--color-primary-20);
   color: var(--color-primary-1);
   top: -80%;
@@ -140,6 +145,21 @@ svg.filter {
 }
 .drag-container .scale-up-alert {
   top: -150%;
+}
+.colorblock.active .color-alert {
+  top: -110%;
+  min-width: max-content;
+  max-width: max-content;
+  padding: 0.2em 0.3em;
+  border: 2px dashed black;
+  outline: 2px dashed white;
+}
+.colorblock.active.left .color-alert {
+  left: 0;
+}
+.colorblock.active.right .color-alert {
+  right: 0;
+  left: unset;
 }
 .drag-container .make-more {
   z-index: 1;
