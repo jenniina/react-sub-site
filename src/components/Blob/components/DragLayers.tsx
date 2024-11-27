@@ -200,9 +200,9 @@ const DragLayers = ({
       ;(target as HTMLElement).classList.add('drag')
       const highestZIndexForLayer = highestZIndex[layer_]
       if (isTouchDevice()) {
-        let value = target?.style.getPropertyValue('--i') ?? '7'
+        let value = target?.style.getPropertyValue('--i') ?? '10'
         initialScale = parseFloat(value)
-        initialScale = isNaN(initialScale) ? 7 : initialScale
+        initialScale = isNaN(initialScale) ? 10 : initialScale
       }
       dispatch({
         type: 'partialUpdate',
@@ -326,9 +326,9 @@ const DragLayers = ({
       }, 300)
 
       document.removeEventListener('keydown', keyDown)
-      let value = (target as HTMLElement).style.getPropertyValue('--i') ?? '7'
+      let value = (target as HTMLElement).style.getPropertyValue('--i') ?? '10'
       let scale = parseFloat(value)
-      scale = isNaN(scale) ? 7 : scale
+      scale = isNaN(scale) ? 10 : scale
 
       if (isTouchDevice() && scroll) {
         document.removeEventListener('touchmove', preventDefault)
@@ -416,9 +416,9 @@ const DragLayers = ({
       reset = false
       const blobStyle = window.getComputedStyle(target)
       let value =
-        blobStyle.getPropertyValue('--i') ?? target.style.getPropertyValue('--i') ?? '7'
+        blobStyle.getPropertyValue('--i') ?? target.style.getPropertyValue('--i') ?? '10'
       let scale = parseFloat(value)
-      scale = isNaN(scale) ? 7 : scale
+      scale = isNaN(scale) ? 10 : scale
       e.deltaY < 0 ? (scale *= 1.04) : (scale *= 0.96)
       scale = Math.min(Math.max(7, scale), 36)
       dispatch({
@@ -481,9 +481,9 @@ const DragLayers = ({
     let value =
       blobStyle.getPropertyValue('--i') ??
       (target as HTMLElement).style.getPropertyValue('--i') ??
-      '7'
+      '10'
     let scale = parseFloat(value)
-    scale = isNaN(scale) ? 7 : scale
+    scale = isNaN(scale) ? 10 : scale
 
     let attrLeft =
       parseFloat(blobStyle.getPropertyValue('left')) ??

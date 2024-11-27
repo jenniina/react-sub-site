@@ -1216,7 +1216,7 @@ export default function DragContainer({
     const blobStyle = window.getComputedStyle(draggable)
     const blobNumber = parseInt(draggable.id.replace('blob', '').split('-')[0], 10)
     const blobI =
-      blobStyle.getPropertyValue('--i') ?? draggable.style.getPropertyValue('--i') ?? '7'
+      blobStyle.getPropertyValue('--i') ?? draggable.style.getPropertyValue('--i') ?? '10'
     const blobX =
       blobStyle.getPropertyValue('left') ?? draggable.style.getPropertyValue('left')
     const blobY =
@@ -1233,7 +1233,7 @@ export default function DragContainer({
       layer: layer ? parseInt(layer) : activeLayer,
       id: blobID,
       number: blobNumber,
-      i: isNaN(parseFloat(blobI)) ? 7 : parseFloat(blobI),
+      i: isNaN(parseFloat(blobI)) ? 10 : parseFloat(blobI),
       x: blobX,
       y: blobY,
       z: blobZ,

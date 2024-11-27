@@ -455,7 +455,7 @@ svg.filter {
     min-width: clamp(100px, calc(20% - calc(var(--space) * 4)), 160px); */
     flex: 1 0 auto;
     margin: 0.3em var(--space) 0.3em 0;
-    padding: 0.5em 0.3em;
+    padding: 0.5em 0.8em;
     word-wrap: break-word;
   }
   .drag-container .button-container button.screenshot {
@@ -757,7 +757,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
   justify-content: center;
   align-items: center;
   padding-bottom: 0.4em;
-  gap: 0.5rem;
+  gap: 0.6rem;
   margin: 0.6rem auto 0;
 }
 .movers-layers-wrap {
@@ -802,7 +802,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
   flex-flow: row wrap;
   justify-content: center;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.3rem;
 }
 
 .drag-container .layer-mover-control-wrap .layers {
@@ -846,14 +846,14 @@ body.dark-mode .site .drag-container .dragzone:focus {
   padding: 0.06em 0.6em 0.2em;
   min-height: 1.7rem;
   border: 3px solid var(--color-primary-7);
-  outline: 3px solid var(--color-primary-7);
-  outline-offset: -5px;
+  outline: 4px solid var(--color-primary-7);
+  outline-offset: -3px;
 }
 .drag-container .layer-mover-control-wrap button:hover,
 .drag-container .layer-mover-control-wrap button:focus {
   border: 3px solid var(--color-primary-14);
-  outline: 3px solid var(--color-primary-14);
-  outline-offset: -5px;
+  outline: 4px solid var(--color-primary-14);
+  outline-offset: -3px;
 }
 .drag-container .layer-mover-control-wrap button.active {
   outline: 3px solid black;
@@ -999,11 +999,22 @@ body.dark-mode .site .drag-container .dragzone:focus {
   border-radius: 50%;
 }
 
-.drag-container .make-more,
+.drag-container .make-more {
+  --box: 0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.4);
+  top: 0.2rem;
+  left: 23%;
+  font-size: 0.9rem;
+  line-height: 1.2;
+  padding: 0.1rem 0.4rem 0.1rem;
+  border-radius: var(--corner);
+  -webkit-box-shadow: var(--box);
+  -o-box-shadow: var(--box);
+  -ms-box-shadow: var(--box);
+  -moz-box-shadow: var(--box);
+  box-shadow: var(--box);
+}
 .drag-container .make-random {
-  --box: 0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.4),
-    inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
-    inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
+  --box: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.4);
   top: 0.2rem;
   left: 23%;
   font-size: 0.9rem;
@@ -1059,15 +1070,16 @@ body.dark-mode .site .drag-container .dragzone:focus {
 }
 .drag-container .colorblock {
   position: absolute;
-  width: 1.4rem;
-  height: 1.3rem;
+  width: 1.2rem;
+  height: 1.4rem;
   border-radius: 6.7rem 5rem 5rem 6.7rem / 8.7rem 0.7rem 0.7rem 8.7rem;
   margin: 0;
+  padding: 0;
 }
 @media (max-width: 700px) {
   .colorblock {
     position: absolute;
-    width: 0.9rem;
+    width: 1.2rem;
     height: 1.2rem;
   }
 } /*END media*/
