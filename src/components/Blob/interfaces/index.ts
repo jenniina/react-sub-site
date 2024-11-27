@@ -52,4 +52,4 @@ export type Modes =
   | 'scale-down'
   | 'layer-up'
   | 'layer-down'
-  | 'changeColor'
+  | 'change-color'

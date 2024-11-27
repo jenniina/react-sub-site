@@ -128,7 +128,7 @@ const Blob = ({
       : ['5.1px', '5.4px', '6.5px', '7px', '7.8px', '8.4px', '8.6px'] // breakpoints for hitbox size due to varying levels of blur between the containers and blob sizes
 
   const handleClick = (e: React.MouseEvent) => {
-    if (mode === 'changeColor') {
+    if (mode === 'change-color') {
       changeColor(item.id)
     } else if (mode === 'delete') {
       removeBlob(item)

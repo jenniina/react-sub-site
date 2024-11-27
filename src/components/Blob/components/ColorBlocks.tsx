@@ -38,7 +38,7 @@ const ColorBlocks: FC<ColorBlockProps> = ({
       setMode('none')
     } else {
       setSelectedColor(color)
-      setMode('changeColor')
+      setMode('change-color')
     }
   }
   return (
