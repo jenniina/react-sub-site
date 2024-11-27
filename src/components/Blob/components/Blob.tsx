@@ -133,7 +133,7 @@ const Blob = ({
     } else if (mode === 'delete') {
       removeBlob(item)
     } else if (mode === 'clone') {
-      dispatch({ type: 'duplicateDraggable', payload: { d, item } })
+      dispatch({ type: 'duplicateDraggable', payload: { d, draggable: item } })
     } else if (mode === 'layer-up') {
       let layer = item.layer
       if (layer < layerAmount - 1) {
@@ -230,17 +230,7 @@ const Blob = ({
           selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
       }}
       key={index}
-      className={`dragzone animation ${
-        mode === 'delete'
-          ? 'del'
-          : mode === 'clone'
-          ? 'copy'
-          : mode === 'scale-down'
-          ? 'smaller'
-          : mode === 'scale-up'
-          ? 'larger'
-          : ''
-      }`}
+      className={`dragzone animation ${mode}`}
       id={item.id}
       role={'option'}
       tabIndex={0}
