@@ -146,13 +146,21 @@ svg.filter {
 .drag-container .scale-up-alert {
   top: -150%;
 }
+.colorblock.active,
+.colorblock.active:hover,
+.colorblock.active:focus,
+.colorblock.active:focus-visible {
+  border-color: black;
+  outline-color: black;
+  outline-width: 3px;
+  outline-offset: -3px;
+}
 .colorblock.active .color-alert {
   top: -110%;
   min-width: max-content;
   max-width: max-content;
   padding: 0.2em 0.3em;
   border: 2px dashed black;
-  outline: 2px dashed white;
 }
 .colorblock.active.left .color-alert {
   left: 0;
@@ -577,19 +585,28 @@ svg.filter {
   cursor: grab;
   pointer-events: all;
 }
-.drag-container .dragzone.del .draggable-overlay {
-  cursor: crosshair;
+.drag-container .dragzone.delete .draggable-overlay {
+  cursor: url('../../../assets/cursor_delete.svg') 16 16, crosshair;
 }
-.drag-container .dragzone.copy .draggable-overlay {
-  cursor: copy;
+.drag-container .dragzone.clone .draggable-overlay {
+  cursor: url('../../../assets/cursor_clone.svg') 16 16, copy;
 }
-.drag-container .dragzone.larger .draggable-overlay {
-  cursor: ne-resize;
+.drag-container .dragzone.scale-up .draggable-overlay {
+  cursor: url('../../../assets/cursor_scale_up.svg') 16 16, ne-resize;
 }
-.drag-container .dragzone.smaller .draggable-overlay {
-  cursor: s-resize;
+.drag-container .dragzone.scale-down .draggable-overlay {
+  cursor: url('../../../assets/cursor_scale_down.svg') 16 16, s-resize;
 }
-.drag-container .dragzone:active .draggable-overlay {
+.drag-container .dragzone.layer-up .draggable-overlay {
+  cursor: url('../../../assets/cursor_layer_up.svg') 16 16, pointer;
+}
+.drag-container .dragzone.layer-down .draggable-overlay {
+  cursor: url('../../../assets/cursor_layer_down.svg') 16 16, pointer;
+}
+.drag-container .dragzone.changeColor .draggable-overlay {
+  cursor: url('../../../assets/cursor_change_color.svg') 16 16, pointer;
+}
+.drag-container .dragzone.drag-container .dragzone:active .draggable-overlay {
   cursor: -webkit-grabbing;
   cursor: grabbing;
 }
