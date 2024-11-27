@@ -400,8 +400,6 @@ export default function DragContainer({
         },
       },
     })
-    setSelectedColor('')
-    setMode('none')
   }
 
   const changeBlobLayer = (draggable: Draggable, layer: number) => {
@@ -2208,6 +2206,7 @@ export default function DragContainer({
                 colorPairs={colorPairsCombo}
                 controlsVisible={controlsVisible}
                 setSelectedColor={setSelectedColor}
+                selectedColor={selectedColor}
                 setMode={setMode}
               />
             </div>

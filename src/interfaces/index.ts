@@ -2774,3 +2774,12 @@ export enum EContains {
   cs = 'Obsahuje',
   fi = 'Sisältää',
 }
+export enum EActive {
+  en = 'Active',
+  es = 'Activo',
+  fr = 'Actif',
+  de = 'Aktiv',
+  pt = 'Ativo',
+  cs = 'Aktivní',
+  fi = 'Aktiivinen',
+}
