@@ -134,9 +134,7 @@ export default function Portfolio({
               <li>
                 <Link to='/portfolio/colors'>
                   <BiSolidColorFill />
-                  <span>
-                    {EColorAccessibility[language]} ({EWebsite[language]})
-                  </span>
+                  <span>{EColorAccessibility[language]}</span>
                 </Link>
                 <p>{ETestColorCombinations[language]}</p>
               </li>
