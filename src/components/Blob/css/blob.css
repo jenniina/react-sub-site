@@ -1076,6 +1076,13 @@ body.dark-mode .site .drag-container .dragzone:focus {
   margin: 0;
   padding: 0;
 }
+.drag-container .colorblock:focus,
+.drag-container .colorblock:focus-visible,
+.drag-container .colorblock.active {
+  outline-color: black;
+  outline-width: 3px;
+  outline-offset: -3px;
+}
 @media (max-width: 700px) {
   .colorblock {
     position: absolute;
