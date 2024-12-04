@@ -1,3 +1,4 @@
+import { ReactNode } from 'react'
 import { IJoke } from '../components/Jokes/interfaces'
 import { EQuizType, IQuiz, IQuestion, IHighscore } from '../components/Quiz/interfaces'
 import { ITodos } from '../components/Todo/interfaces'
@@ -84,6 +85,10 @@ export interface ReducerProps {
   }
   todos: ITodos
   cart: ICart
+}
+
+export interface ModalProps {
+  children: ReactNode
 }
 
 export enum ELogin {
@@ -1122,7 +1127,7 @@ export enum EBlob {
   de = 'Kugel',
   pt = 'Bola',
   cs = 'Koule',
-  fi = 'Blob/mollukka',
+  fi = 'Mollukka',
 }
 export enum EBlobs {
   en = 'Blobs',
@@ -1131,7 +1136,7 @@ export enum EBlobs {
   de = 'Kugeln',
   pt = 'Bolas',
   cs = 'Koule',
-  fi = 'Blobs/mollukat',
+  fi = 'Mollukat',
 }
 export enum EBlobApp {
   en = 'Blob App',
@@ -1683,6 +1688,15 @@ export enum EPleaseUseGoodTasteWhenChoosingYourNickname {
   pt = 'Por favor, use bom gosto ao escolher seu apelido',
   cs = 'Použijte prosím dobrý vkus při výběru přezdívky',
   fi = 'Pyydän noudattamaan hyvää makua nimimerkin valitsemisessa',
+}
+export enum EProfanityWillBeRemovedByTheAdmin {
+  en = 'Profanity will be removed by the admin',
+  es = 'La grosería será eliminada por el administrador',
+  fr = "La grossièreté sera supprimée par l'administrateur",
+  de = 'Unflätige Ausdrücke werden vom Administrator entfernt',
+  pt = 'Palavrões serão removidos pelo administrador',
+  cs = 'Sprostota bude odstraněna správcem',
+  fi = 'Loukkaavat ilmaisut poistetaan ylläpidon toimesta',
 }
 export enum EOldestFirst {
   en = 'Oldest first',
@@ -2782,4 +2796,22 @@ export enum EActive {
   pt = 'Ativo',
   cs = 'Aktivní',
   fi = 'Aktiivinen',
+}
+export enum EStop {
+  en = 'Stop',
+  es = 'Detener',
+  fr = 'Arrêter',
+  de = 'Stop',
+  pt = 'Parar',
+  cs = 'Zastavit',
+  fi = 'Lopeta',
+}
+export enum ETryWithADifferentBrowser {
+  en = 'Try with a different browser',
+  es = 'Intente con un navegador diferente',
+  fr = 'Essayez avec un navigateur différent',
+  de = 'Versuchen Sie es mit einem anderen Browser',
+  pt = 'Tente com um navegador diferente',
+  cs = 'Zkuste to s jiným prohlížečem',
+  fi = 'Kokeile toisella selaimella',
 }

@@ -36,12 +36,14 @@ type SelectProps = {
   validated?: boolean
   remove?: string
   clear?: string
+  z?: number
 } & (SingleSelectProps | MultipleSelectProps)
 
 let debounceTimeout: ReturnType<typeof setTimeout>
 let searchTerm = ''
 
 export function Select({
+  z,
   instructions,
   hide,
   hideDelete,
@@ -182,7 +184,10 @@ export function Select({
   }, [isOpen, highlightedIndex, options])
 
   return (
-    <div className={`${styles['select-container']} select-container ${className}`}>
+    <div
+      className={`${styles['select-container']} select-container ${className}`}
+      style={{ zIndex: z }}
+    >
       <span
         id={`${id}-instructions`}
         className={`

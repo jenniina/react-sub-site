@@ -52,6 +52,8 @@ import { ETryDraggingTheBlobs } from '../interfaces/blobs'
 import { EBlobArtApp } from '../interfaces/about'
 import Accordion from '../components/Accordion/Accordion'
 import { EColorAccessibility, ETestColorCombinations } from '../interfaces/colors'
+import { HiSquares2X2 } from 'react-icons/hi2'
+import { EMemoryGame, EMemoryGameIntro } from '../interfaces/memory'
 
 export default function Portfolio({
   heading,
@@ -137,6 +139,13 @@ export default function Portfolio({
                   <span>{EColorAccessibility[language]}</span>
                 </Link>
                 <p>{ETestColorCombinations[language]}</p>
+              </li>
+              <li>
+                <Link to='/portfolio/memory'>
+                  <HiSquares2X2 />
+                  <span>{EMemoryGame[language]}</span>
+                </Link>
+                <p>{EMemoryGameIntro[language]}</p>
               </li>
               <li>
                 <Link to='/portfolio/composer'>

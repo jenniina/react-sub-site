@@ -22,6 +22,7 @@ import useWindowSize from '../../hooks/useWindowSize'
 import { breakpointSmall } from '../../interfaces'
 import useSideScroll from '../../hooks/useSideScroll'
 import { EComposerOlliSanta } from '../../interfaces/composer'
+import { EMemoryGame } from '../../interfaces/memory'
 
 interface NavItem {
   url: string
@@ -51,6 +52,7 @@ function NavPortfolio({ language }: { language: ELanguages }) {
 
   const navItems: NavItem[] = [
     { url: '/portfolio', name: `${EPortfolio[language]}`, special: 'first' },
+    { url: '/portfolio/memory', name: EMemoryGame[language] },
     { url: '/portfolio/colors', name: EColorAccessibility[language] },
     { url: '/portfolio/composer', name: EComposerOlliSanta[language] },
     { url: '/portfolio/blob', name: EBlob[language] },

@@ -1,5 +1,6 @@
-import Store from '../components/Store/Store'
-import { ELanguages } from '../interfaces'
+import { lazy, Suspense } from 'react'
+//import Store from '../components/Store/Store'
+import { ELanguages, ELoading } from '../interfaces'
 import Hero from '../components/Hero/Hero'
 import { ICartItem } from '../interfaces/store'
 import styles from '../components/Store/store.module.css'
@@ -13,6 +14,8 @@ interface StoreProps {
   setCart: React.Dispatch<React.SetStateAction<ICartItem[]>>
 }
 
+const Store = lazy(() => import('../components/Store/Store'))
+
 const StorePage: React.FC<StoreProps> = ({
   language,
   heading,
@@ -25,7 +28,9 @@ const StorePage: React.FC<StoreProps> = ({
     <div className={`store ${type} ${styles.store}`}>
       <Hero language={language} address='store' heading={heading} text={text} />
       <div className={`inner-wrap ${styles['inner-wrap']}`}>
-        <Store language={language} cart={cart} setCart={setCart} />
+        <Suspense fallback={<div>{ELoading[language]}...</div>}>
+          <Store language={language} cart={cart} setCart={setCart} />
+        </Suspense>
       </div>
     </div>
   )

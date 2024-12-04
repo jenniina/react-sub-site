@@ -80,6 +80,9 @@ import { EOrders, EShoppingCart, ICartItem } from './interfaces/store'
 import { ETermsOfService } from './interfaces'
 import { EComposerOlliSanta } from './interfaces/composer'
 import { EColorAccessibility, ETestColorCombinations } from './interfaces/colors'
+import { EMemoryGame, EMemoryGameIntro } from './interfaces/memory'
+import MemoryPage from './pages/pages-portfolio/MemoryPage'
+import Modal from './components/Modal/Modal'
 
 const Footer = lazy(() => import('./components/Footer/Footer'))
 const ScrollToTop = lazy(() => import('./components/ScrollToTop/ScrollToTop'))
@@ -116,7 +119,7 @@ const App: FC = () => {
   const [transitionPage, setTransitionPage] = useState('fadeIn')
 
   const [language, setLanguage] = useLocalStorage<ELanguages>(
-    'JokeAppLanguage',
+    'AppLanguage',
     ELanguages.English
   )
 
@@ -444,6 +447,17 @@ const App: FC = () => {
                     />
                   }
                 />
+                <Route
+                  path='/portfolio/memory'
+                  element={
+                    <MemoryPage
+                      language={language}
+                      heading={EMemoryGame[language]}
+                      text={EMemoryGameIntro[language]}
+                      type='page subpage'
+                    />
+                  }
+                />
               </Route>
 
               <Route
@@ -535,6 +549,7 @@ const App: FC = () => {
               <ScrollToTop language={language} styleMenu={styleMenu} />
             </Suspense>
           )}
+          <Modal language={language} />
           <Notification language={language} />
         </div>
       </div>
