@@ -104,6 +104,8 @@ import { EComposerOlliSanta, EAddedALinkToComposer } from '../interfaces/compose
 import Accordion from '../components/Accordion/Accordion'
 import { EColorAccessibility, ETestColorCombinations } from '../interfaces/colors'
 import { ERemoveBlobs } from '../interfaces/about'
+import { HiSquares2X2 } from 'react-icons/hi2'
+import { EMemoryGame, EMemoryGameIntro } from '../interfaces/memory'
 
 export default function Home({
   heading,
@@ -189,6 +191,15 @@ export default function Home({
                     <li>
                       <strong>{ENovember[language]}</strong>
                       <ul>
+                        <li>
+                          <Link to='/portfolio/memory'>
+                            <HiSquares2X2 />
+                            {EMemoryGame[language]}:
+                          </Link>
+                          <i>
+                            {ENewPortfolioItem[language]}: {EMemoryGameIntro[language]}
+                          </i>
+                        </li>
                         <li>
                           <Link to='/portfolio/blob'>
                             <TbBlob />
