@@ -1431,3 +1431,7 @@ button.settings:disabled:hover svg {
   outline: 1px solid currentColor;
   outline-offset: 3px;
 }
+button.store:disabled,
+button.cart:disabled {
+  background: transparent;
+}
