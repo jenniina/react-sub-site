@@ -19,12 +19,7 @@ const addHighScore = async (
 ) => {
   const response = await axios.post(
     `${baseUrl}/${language}/key/${highScore.levelKey}`,
-    highScore,
-    {
-      headers: {
-        'x-api-key': import.meta.env.VITE_API_KEY,
-      },
-    }
+    highScore
   )
   return response.data as IHighScoreResponse
 }
@@ -41,11 +36,7 @@ const getAllHighScores = async (language: ELanguages) => {
 
 // Delete a high score by ID
 const deleteHighScore = async (language: ELanguages, highScoreId: string) => {
-  const response = await axios.delete(`${baseUrl}/${language}/id/${highScoreId}`, {
-    headers: {
-      'x-api-key': import.meta.env.VITE_API_KEY,
-    },
-  })
+  const response = await axios.delete(`${baseUrl}/${language}/id/${highScoreId}`)
   return response.data as IHighScoreResponse
 }
 
@@ -57,12 +48,7 @@ const updateHighScore = async (
 ) => {
   const response = await axios.put(
     `${baseUrl}/${language}/id/${highScore._id}?userID=${userID}`,
-    highScore,
-    {
-      headers: {
-        'x-api-key': import.meta.env.VITE_API_KEY,
-      },
-    }
+    highScore
   )
   return response.data as IHighScoreResponse
 }
@@ -73,12 +59,7 @@ const deleteHighScoresByPlayerName = async (
   userID: IUser['_id']
 ) => {
   const response = await axios.delete(
-    `${baseUrl}/${language}/player/${playerName}?userID=${userID}`,
-    {
-      headers: {
-        'x-api-key': import.meta.env.VITE_API_KEY,
-      },
-    }
+    `${baseUrl}/${language}/player/${playerName}?userID=${userID}`
   )
   return response.data as IHighScoreResponse
 }
@@ -94,15 +75,10 @@ const changePlayerName = async (
   newName: string,
   userID: IUser['_id']
 ) => {
-  const response = await axios.put(
-    `${baseUrl}/${language}/player?userID=${userID}`,
-    { oldName, newName },
-    {
-      headers: {
-        'x-api-key': import.meta.env.VITE_API_KEY,
-      },
-    }
-  )
+  const response = await axios.put(`${baseUrl}/${language}/player?userID=${userID}`, {
+    oldName,
+    newName,
+  })
   return response.data as IHighScoreResponse
 }
 

@@ -1434,4 +1434,5 @@ button.settings:disabled:hover svg {
 button.store:disabled,
 button.cart:disabled {
   background: transparent;
+  border: 0;
 }
