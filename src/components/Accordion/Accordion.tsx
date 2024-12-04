@@ -13,7 +13,7 @@ import { EClose, ELanguages } from '../../interfaces'
 import { FaAnglesUp } from 'react-icons/fa6'
 
 interface accordionProps {
-  text: string
+  text: string | ReactNode
   className: string
   children?:
     | string
@@ -35,6 +35,7 @@ interface accordionProps {
   y?: 'above' | 'below'
   x?: 'left' | 'right'
   wrapperClass: string
+  closeClass?: string
 }
 
 const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefined) => {
@@ -106,7 +107,7 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
   return (
     <div
       id={`${props.id ?? props.className}-container`}
-      className={`${visible ? 'open' : 'closed'} ${
+      className={`${visible ? 'open' : `closed ${props.closeClass}`} ${
         props.className
       }-container accordion-container ${props.wrapperClass}`}
     >
@@ -123,13 +124,13 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
         }
       >
         <span aria-hidden='true' className={props.hideBrackets ? 'hide' : ''}>
-          &raquo;
+          &raquo;&nbsp;
         </span>
-        <i>&nbsp;{props.text}&nbsp;</i>
+        <i>{props.text}</i>
         <span aria-hidden='true' className={props.hideBrackets ? 'hide' : ''}>
-          &laquo;
+          &nbsp;&laquo;
         </span>
-        <strong className={props.tooltip ? `tooltip ${props.x} ${props.y}` : ''}>
+        <strong className={props.tooltip ? `tooltip narrow2 ${props.x} ${props.y}` : ''}>
           {props.tooltip}
         </strong>
       </button>

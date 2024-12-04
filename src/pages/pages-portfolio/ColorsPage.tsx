@@ -1,8 +1,16 @@
-import AccessibleColors from '../../components/AccessibleColors/AccessibleColors'
+import { lazy, Suspense } from 'react'
+//import AccessibleColors from '../../components/AccessibleColors/AccessibleColors'
 import Accordion from '../../components/Accordion/Accordion'
 import Hero from '../../components/Hero/Hero'
 import { EClickHereToSeeFeatures } from '../../components/Jokes/interfaces'
-import { EContains, EDragAndDrop, ELanguages, ERemove, EReset } from '../../interfaces'
+import {
+  EContains,
+  EDragAndDrop,
+  ELanguages,
+  ELoading,
+  ERemove,
+  EReset,
+} from '../../interfaces'
 import { EToggleControlVisibility } from '../../interfaces/blobs'
 import {
   EColorsCanBeReorderedByDragging,
@@ -18,6 +26,10 @@ import {
 } from '../../interfaces/colors'
 import { EColorPicker } from '../../interfaces/form'
 import { EClear } from '../../interfaces/select'
+
+const AccessibleColors = lazy(
+  () => import('../../components/AccessibleColors/AccessibleColors')
+)
 
 const ColorsPage = ({
   heading,
@@ -68,7 +80,9 @@ const ColorsPage = ({
               </li>
             </ul>
           </Accordion>
-          <AccessibleColors language={language} />
+          <Suspense fallback={<div>{ELoading[language]}...</div>}>
+            <AccessibleColors language={language} />
+          </Suspense>
         </section>
       </div>
     </div>

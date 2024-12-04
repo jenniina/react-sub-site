@@ -6,13 +6,16 @@ import App from './App'
 import './css/index.css'
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from './hooks/useTheme'
+import { ModalProvider } from './hooks/useModal'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
     <BrowserRouter>
       <ThemeProvider key={null} type={''} props={undefined}>
         <Provider store={store}>
-          <App />
+          <ModalProvider>
+            <App />
+          </ModalProvider>
         </Provider>
       </ThemeProvider>
     </BrowserRouter>

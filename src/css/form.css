@@ -117,7 +117,7 @@ nav .input-wrap {
 .input-wrap.not-required.not-filled::before {
   content: '';
   position: absolute;
-  top: 0;
+  top: 0.1em;
   left: 0;
   right: 0;
   height: 2em;

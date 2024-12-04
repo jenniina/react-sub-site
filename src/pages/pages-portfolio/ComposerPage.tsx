@@ -23,8 +23,8 @@ export default function ComposerPage({
 }) {
   const [isFormOpen, setIsFormOpen] = useState(false)
   return (
-    <div className={`form ${type}`}>
-      <Hero language={language} address='form' heading={heading} text={text} />
+    <div className={`composer ${type}`}>
+      <Hero language={language} address='composer' heading={heading} text={text} />
       <div className='inner-wrap'>
         <section className='card'>
           <div>

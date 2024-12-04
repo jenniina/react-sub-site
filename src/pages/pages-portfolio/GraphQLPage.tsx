@@ -24,8 +24,8 @@ export default function GraphQLPage({
 }) {
   const [isFormOpen, setIsFormOpen] = useState(false)
   return (
-    <div className={`form ${type}`}>
-      <Hero language={language} address='form' heading={heading} text={text} />
+    <div className={`graphql ${type}`}>
+      <Hero language={language} address='graphql' heading={heading} text={text} />
       <div className='inner-wrap'>
         <section className='card'>
           <div>

@@ -842,15 +842,16 @@ nav .open.password-reset-container button.forgot-btn {
 }
 #root .App .tooltip-wrap .tooltip.narrow,
 #root .App .tooltip-wrap.narrow .tooltip {
-  --width: clamp(3rem, calc(30vw), 5rem);
+  --width: clamp(3rem, calc(50vw), 5rem);
 }
 #root .App .tooltip-wrap .tooltip.narrow2,
 #root .App .tooltip-wrap.narrow2 .tooltip {
-  --width: clamp(3rem, calc(60vw), max-content);
+  --width: clamp(3rem, calc(80vw), max-content);
+  box-sizing: content-box;
 }
 #root .App .tooltip-wrap .tooltip.narrow3,
 #root .App .tooltip-wrap.narrow3 .tooltip {
-  --width: clamp(3rem, calc(60vw), 6em);
+  --width: clamp(2rem, calc(70vw), 6em);
   --tooltip-max-width: var(--width);
 }
 .tooltip-wrap:not(button):not(a) {
@@ -865,13 +866,13 @@ nav .open.password-reset-container button.forgot-btn {
 }
 #root .App .tooltip-wrap .tooltip.above {
   top: unset;
-  bottom: calc(var(--tooltip-offset) + 0.5em);
+  bottom: calc(110% + 1em);
   left: 50%;
   transform: translateX(-50%);
 }
 #root .App .tooltip-wrap .tooltip.above.space {
   top: unset;
-  bottom: calc(var(--tooltip-offset) + 1.2em);
+  bottom: calc(100% + 2em);
 }
 #root .App .tooltip-wrap .tooltip.below {
   top: calc(100% + var(--tooltip-offset) * 0.5 + 0.2em);

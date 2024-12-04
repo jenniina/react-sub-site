@@ -63,6 +63,7 @@ const LOCATION = {
   GRAPHQL: 'graphql',
   STORE: 'store',
   CART: 'cart',
+  MEMORY: 'memory',
 }
 
 export default function Hero({
@@ -429,7 +430,8 @@ export default function Hero({
               if (
                 location == LOCATION.SELECT ||
                 location == LOCATION.TODO ||
-                location == LOCATION.GRAPHQL
+                location == LOCATION.GRAPHQL ||
+                location == LOCATION.MEMORY
               ) {
                 const dividedBy = 2.5
 

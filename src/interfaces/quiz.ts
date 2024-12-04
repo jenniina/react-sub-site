@@ -203,7 +203,7 @@ export enum EHighscore {
   de = 'Highscore',
   pt = 'Pontuação mais alta',
   cs = 'Nejlepší skóre',
-  fi = 'Huipputulos',
+  fi = 'Huippupisteet',
 }
 export enum EPoints {
   en = 'points',
