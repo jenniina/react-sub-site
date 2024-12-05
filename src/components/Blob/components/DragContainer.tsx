@@ -216,35 +216,35 @@ export default function DragContainer({
   const user = useSelector((state: ReducerProps) => state.auth?.user) as IUser
   const users = useSelector((state: ReducerProps) => state.users) as IUser[]
 
-  //const dragWrapOuter = useRef() as RefObject<HTMLDivElement>
-  const dragWrap = useRef() as RefObject<HTMLDivElement>
-  const dragWrapOutest = useRef() as RefObject<HTMLDivElement>
+  //const dragWrapOuter = useRef(null) as RefObject<HTMLDivElement>
+  const dragWrap = useRef(null) as RefObject<HTMLDivElement>
+  const dragWrapOutest = useRef(null) as RefObject<HTMLDivElement>
 
-  const selectedvalue0 = useRef() as RefObject<HTMLSpanElement>
+  const selectedvalue0 = useRef(null) as RefObject<HTMLSpanElement>
 
-  const stopBlobs = useRef() as RefObject<HTMLButtonElement>
-  const disableScrollButton = useRef() as RefObject<HTMLButtonElement>
-  const resetBlobs = useRef() as RefObject<HTMLButtonElement>
-  const blobScreenshot = useRef() as RefObject<HTMLDivElement>
-  const screenshotImg = useRef() as RefObject<HTMLImageElement>
+  const stopBlobs = useRef(null) as RefObject<HTMLButtonElement>
+  const disableScrollButton = useRef(null) as RefObject<HTMLButtonElement>
+  const resetBlobs = useRef(null) as RefObject<HTMLButtonElement>
+  const blobScreenshot = useRef(null) as RefObject<HTMLDivElement>
+  const screenshotImg = useRef(null) as RefObject<HTMLImageElement>
   const [loading, setLoading] = useState(false)
 
-  const exitApp = useRef() as RefObject<HTMLDivElement>
+  const exitApp = useRef(null) as RefObject<HTMLDivElement>
 
-  const makeLarger0 = useRef() as RefObject<HTMLButtonElement>
-  const makeSmaller0 = useRef() as RefObject<HTMLButtonElement>
-  const makeMore0 = useRef() as RefObject<HTMLButtonElement>
-  const deleteBlob0 = useRef() as RefObject<HTMLButtonElement>
-  const layerIncrease = useRef() as RefObject<HTMLButtonElement>
-  const layerDecrease = useRef() as RefObject<HTMLButtonElement>
+  const makeLarger0 = useRef(null) as RefObject<HTMLButtonElement>
+  const makeSmaller0 = useRef(null) as RefObject<HTMLButtonElement>
+  const makeMore0 = useRef(null) as RefObject<HTMLButtonElement>
+  const deleteBlob0 = useRef(null) as RefObject<HTMLButtonElement>
+  const layerIncrease = useRef(null) as RefObject<HTMLButtonElement>
+  const layerDecrease = useRef(null) as RefObject<HTMLButtonElement>
 
-  const makeRandom0 = useRef() as RefObject<HTMLButtonElement>
+  const makeRandom0 = useRef(null) as RefObject<HTMLButtonElement>
 
   const markerDivRef = useRef<HTMLDivElement>(null)
 
-  const sliderLightnessInput = useRef() as RefObject<HTMLInputElement>
-  const sliderSaturationInput = useRef() as RefObject<HTMLInputElement>
-  const sliderHueInput = useRef() as RefObject<HTMLInputElement>
+  const sliderLightnessInput = useRef(null) as RefObject<HTMLInputElement>
+  const sliderSaturationInput = useRef(null) as RefObject<HTMLInputElement>
+  const sliderHueInput = useRef(null) as RefObject<HTMLInputElement>
 
   const isLocalhost =
     window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
@@ -279,33 +279,33 @@ export default function DragContainer({
   const [paused, setPaused] = useState<boolean>(false)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState<boolean>(false)
 
-  const colorBlockOrange = useRef() as RefObject<HTMLButtonElement>
-  const colorBlockRed = useRef() as RefObject<HTMLButtonElement>
-  const colorBlockPurple = useRef() as RefObject<HTMLButtonElement>
-  const colorBlockBlue = useRef() as RefObject<HTMLButtonElement>
+  const colorBlockOrange = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockRed = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockPurple = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockBlue = useRef(null) as RefObject<HTMLButtonElement>
 
-  const colorBlockYellowLime = useRef() as RefObject<HTMLButtonElement>
-  const colorBlockCyanYellow = useRef() as RefObject<HTMLButtonElement>
-  const colorBlockCyanPink = useRef() as RefObject<HTMLButtonElement>
-  const colorBlockPinkYellow = useRef() as RefObject<HTMLButtonElement>
+  const colorBlockYellowLime = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockCyanYellow = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockCyanPink = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockPinkYellow = useRef(null) as RefObject<HTMLButtonElement>
 
-  const colorBlockReddish = useRef() as RefObject<HTMLButtonElement>
-  const colorBlockBrown = useRef() as RefObject<HTMLButtonElement>
-  const colorBlockKhaki = useRef() as RefObject<HTMLButtonElement>
-  const colorBlockBluish = useRef() as RefObject<HTMLButtonElement>
-  const colorBlockPurplish = useRef() as RefObject<HTMLButtonElement>
-  const colorBlockGreenish = useRef() as RefObject<HTMLButtonElement>
-  const colorBlockTan = useRef() as RefObject<HTMLButtonElement>
-  const colorBlockGray = useRef() as RefObject<HTMLButtonElement>
+  const colorBlockReddish = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockBrown = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockKhaki = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockBluish = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockPurplish = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockGreenish = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockTan = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockGray = useRef(null) as RefObject<HTMLButtonElement>
 
-  const colorBlockDarkPurple = useRef() as RefObject<HTMLButtonElement>
-  const colorBlockDarkPink = useRef() as RefObject<HTMLButtonElement>
-  const colorBlockDarkRed = useRef() as RefObject<HTMLButtonElement>
-  const colorBlockDarkOrange = useRef() as RefObject<HTMLButtonElement>
-  const colorBlockDarkGreen = useRef() as RefObject<HTMLButtonElement>
-  const colorBlockGreenishBlue = useRef() as RefObject<HTMLButtonElement>
-  const colorBlockDarkBlue = useRef() as RefObject<HTMLButtonElement>
-  const colorBlockPurplishBlue = useRef() as RefObject<HTMLButtonElement>
+  const colorBlockDarkPurple = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockDarkPink = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockDarkRed = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockDarkOrange = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockDarkGreen = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockGreenishBlue = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockDarkBlue = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockPurplishBlue = useRef(null) as RefObject<HTMLButtonElement>
 
   // Create a mapping between the ref objects and their names
   const refNameMapping = new Map<RefObject<HTMLButtonElement>, string>([
@@ -1609,9 +1609,17 @@ export default function DragContainer({
         const container = blobScreenshot.current
         const img = screenshotImg.current
 
+        if (!container || !img) {
+          console.error('Refs are not attached correctly.')
+          dispatch2(notify(EError[language], true, 8))
+          setLoading(false)
+          return
+        }
+
+        console.log(container, img)
         if (container && img) {
+          container.style.transform = 'scaleY(1)'
           img.src = `data:image/png;base64,${data.screenshot}`
-          container.style.display = 'block'
           img.scrollIntoView({ behavior: 'smooth', block: 'start' })
           dispatch2(
             notify(
@@ -1622,6 +1630,9 @@ export default function DragContainer({
           )
           setLoading(false)
           setScroll(true)
+        } else {
+          dispatch2(notify(EError[language], true, 8))
+          setLoading(false)
         }
       } catch (error: any) {
         if (error.response?.data?.message)
@@ -2364,6 +2375,20 @@ export default function DragContainer({
               sliderHueInput={sliderHueInput}
             />
             <div ref={exitApp} id={`exitblob${d}`} className='exitblob'></div>
+            <div
+              ref={blobScreenshot}
+              id={`blob-screenshot${d}`}
+              style={{ transform: 'scaleY(0)' }}
+            >
+              <button onClick={saveScreenshot}>{EDownload[language]}</button>
+              <img
+                src=''
+                ref={screenshotImg}
+                alt={EScreenshot[language]}
+                style={imgStyle}
+              />
+              <button onClick={saveScreenshot}>{EDownload[language]}</button>
+            </div>
             {user ? (
               <div className='blob-handling'>
                 <div className='full wide flex column center gap'>
@@ -2386,20 +2411,7 @@ export default function DragContainer({
                     </button>
                   </form>
                 </div>
-                <div
-                  ref={blobScreenshot}
-                  id={`blob-screenshot${d}`}
-                  style={{ display: 'none' }}
-                >
-                  <button onClick={saveScreenshot}>{EDownload[language]}</button>
-                  <img
-                    src=''
-                    ref={screenshotImg}
-                    alt={EScreenshot[language]}
-                    style={imgStyle}
-                  />
-                  <button onClick={saveScreenshot}>{EDownload[language]}</button>
-                </div>
+
                 <h3>{EArt[language]}</h3>
                 {isLoading ? (
                   <p>{ELoadingSavedArtwork[language]}</p>
