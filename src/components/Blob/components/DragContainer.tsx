@@ -150,6 +150,7 @@ import { EDelete } from '../../Jokes/interfaces'
 import ColorBlocks from './ColorBlocks'
 import Sliders from './Sliders'
 import { EBlobArt } from '../../../interfaces/about'
+import { IoMdDownload } from 'react-icons/io'
 
 // Should be in the same order as colorBlockProps
 const colorPairs: ColorPair[] = [
@@ -1616,7 +1617,6 @@ export default function DragContainer({
           return
         }
 
-        console.log(container, img)
         if (container && img) {
           container.style.transform = 'scaleY(1)'
           img.src = `data:image/png;base64,${data.screenshot}`
@@ -2378,16 +2378,24 @@ export default function DragContainer({
             <div
               ref={blobScreenshot}
               id={`blob-screenshot${d}`}
+              className={`blob-screenshot-wrap`}
               style={{ transform: 'scaleY(0)' }}
             >
-              <button onClick={saveScreenshot}>{EDownload[language]}</button>
+              <div>
+                <h3>{EScreenshot[language]}</h3>
+                <button onClick={saveScreenshot}>
+                  {EDownload[language]} <IoMdDownload />
+                </button>
+              </div>
               <img
                 src=''
                 ref={screenshotImg}
                 alt={EScreenshot[language]}
                 style={imgStyle}
               />
-              <button onClick={saveScreenshot}>{EDownload[language]}</button>
+              <button onClick={saveScreenshot}>
+                {EDownload[language]} <IoMdDownload />
+              </button>
             </div>
             {user ? (
               <div className='blob-handling'>

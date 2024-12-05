@@ -412,6 +412,21 @@ svg.filter {
   outline: 1px dashed red;
   outline-offset: 3px;
 }
+.blob-screenshot-wrap {
+  margin: 2rem auto 3rem;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+}
+.blob-screenshot-wrap > div {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1em;
+}
 .button-container button.screenshot {
   padding: 0.4em 0.8em;
   display: flex;
