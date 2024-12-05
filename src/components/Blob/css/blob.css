@@ -427,6 +427,9 @@ svg.filter {
   align-items: flex-start;
   gap: 1em;
 }
+.blob-screenshot-wrap h3 {
+  margin: 0;
+}
 .button-container button.screenshot {
   padding: 0.4em 0.8em;
   display: flex;
