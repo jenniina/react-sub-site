@@ -1610,14 +1610,8 @@ export default function DragContainer({
         const container = blobScreenshot.current
         const img = screenshotImg.current
 
-        if (!container || !img) {
-          console.error('Refs are not attached correctly.')
-          dispatch2(notify(EError[language], true, 8))
-          setLoading(false)
-          return
-        }
-
         if (container && img) {
+          container.style.display = 'block'
           container.style.transform = 'scaleY(1)'
           img.src = `data:image/png;base64,${data.screenshot}`
           img.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -2379,7 +2373,7 @@ export default function DragContainer({
               ref={blobScreenshot}
               id={`blob-screenshot${d}`}
               className={`blob-screenshot-wrap`}
-              style={{ transform: 'scaleY(0)' }}
+              style={{ flex: '1 0 100%', transform: 'scaleY(0)', display: 'none' }}
             >
               <div>
                 <h3>{EScreenshot[language]}</h3>
