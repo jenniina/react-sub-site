@@ -3,15 +3,22 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3rem;
+  gap: 1rem;
   margin-top: 0;
   margin-left: calc(calc(var(--page-padding) + var(--padd)) * -1);
   min-width: calc(100% + calc(calc(var(--page-padding) + var(--padd))) * 2);
+}
+#game-container section.sectioncard {
+  margin-left: calc(var(--page-padding) / 2 * -1);
+  min-width: calc(100% + var(--page-padding));
 }
 #game-container section.sectioncard,
 #game-container section.sectioncard > div {
   width: 100%;
   padding: 0;
+}
+#game-container section.sectioncard > div {
+  padding: 2rem 0;
 }
 #game-container section.sectioncard > div > div {
   width: 100%;
@@ -360,10 +367,10 @@
   font-size: clamp(var(--title-S), 3vw, var(--title-M));
   background: linear-gradient(
     90deg,
-    transparent,
-    var(--color-primary-5),
-    var(--color-primary-5),
-    transparent
+    transparent 5%,
+    var(--color-primary-6) 35%,
+    var(--color-primary-6) 65%,
+    transparent 95%
   );
 }
 .high-scores h3::before,
@@ -375,10 +382,18 @@
   height: 0.5em;
   background: linear-gradient(
     90deg,
-    transparent 5%,
+    transparent 10%,
     var(--color-primary-5) 45%,
     var(--color-primary-5) 55%,
-    transparent 95%
+    transparent 90%
+  );
+}
+.high-scores h4 {
+  background: linear-gradient(
+    0deg,
+    var(--color-primary-6) 0%,
+    var(--color-primary-5) 30%,
+    var(--color-primary-4) 100%
   );
 }
 .high-scores h3::before {
@@ -565,6 +580,26 @@
   outline: 8px double var(--color-primary-20);
   outline-offset: -6px;
 }
+button.active::before {
+  content: '';
+  position: absolute;
+  top: -0.3rem;
+  left: -0.3rem;
+  width: calc(100% + 0.6rem);
+  height: calc(100% + 0.6rem);
+  border-radius: 50%;
+  background: hsl(var(--hue-primary), var(--sat-fade), 40%);
+  z-index: -1;
+}
+.set-card-type button.active::before {
+  top: -0.1em;
+  left: -0.1em;
+  width: calc(100% + 0.2em);
+  height: calc(100% + 0.2em);
+}
+.light button.active::before {
+  background: hsl(var(--hue-primary), var(--sat-fade), 60%);
+}
 #game-container button.active:hover,
 #game-container button.active:focus {
   background-position: top;
@@ -600,9 +635,10 @@ button.finish {
   margin: 0 0.4em -0.1em 0;
 }
 button.big {
+  --radius: 2em;
   font-size: 1.5em;
   padding: 0.8em 1.5em;
-  border-radius: 2em;
+  border-radius: var(--radius);
   flex: 0 0 auto;
   margin: 3rem auto;
   outline: 6px double var(--color-primary-10);
@@ -612,5 +648,26 @@ button.big:hover,
 button.big:focus {
   outline: 6px double var(--color-primary-20);
   outline-offset: 0;
-  transform: scale(1.05);
+  /* transform: scale(1.05);*/ /*Destroyed background-position*/
+}
+
+button.big::before {
+  content: '';
+  position: absolute;
+  top: -0.3rem;
+  left: -0.3rem;
+  width: calc(100% + 0.6rem);
+  height: calc(100% + 0.6rem);
+  border-radius: var(--radius);
+  background: var(--color-primary-6);
+  border: 0.15rem solid var(--color-primary-5);
+  z-index: -1;
+  transition-property: transform;
+  transition-duration: 0.4s;
+  transition-timing-function: ease-in-out, border-radius;
+}
+button.big:hover::before,
+button.big:focus::before {
+  transform: scale(1.06, 1.14);
+  border-radius: calc(var(--radius) + 1rem);
 }
