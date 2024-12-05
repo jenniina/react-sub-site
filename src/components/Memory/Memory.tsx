@@ -51,6 +51,7 @@ import {
   EDelete,
   EEdit,
   ELanguages,
+  ELoading,
   EName,
   ENewName,
   EPleaseUseGoodTasteWhenChoosingYourNickname,
@@ -348,6 +349,7 @@ const Memory: FC<Props> = ({ language }) => {
                   return (
                     <>
                       <h4 key={mode}>{modePart}</h4>
+                      {loading && <p>{ELoading[language]}...</p>}
                       {error && (
                         <p>
                           {error} &mdash; {ETryWithADifferentBrowser[language]}
@@ -713,6 +715,7 @@ const Memory: FC<Props> = ({ language }) => {
                           />
                         )}
                       </h3>
+                      {loading && <p>{ELoading[language]}...</p>}
                       {error && (
                         <p>
                           {error} &mdash; {ETryWithADifferentBrowser[language]}
