@@ -1350,7 +1350,7 @@
   content: attr(data-instructions);
   position: absolute;
   right: 0.4rem;
-  width: clamp(4rem, 50vw, 600px);
+  width: clamp(4rem, 50vw, 400px);
   text-align: right;
   opacity: 0;
   transition-property: opacity;
@@ -1358,7 +1358,7 @@
   transition-duration: 500ms;
   transition-delay: 0s;
   z-index: 3;
-  padding: 0.3em 0.6em 0.2em;
+  padding: 0.4em 0.6em 0.4em;
   background: linear-gradient(90deg, transparent 0%, var(--color-primary-1) 10%);
 }
 .bottom:hover::after {
