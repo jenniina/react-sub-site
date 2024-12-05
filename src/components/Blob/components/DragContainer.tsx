@@ -1616,7 +1616,6 @@ export default function DragContainer({
           return
         }
 
-        console.log(container, img)
         if (container && img) {
           container.style.transform = 'scaleY(1)'
           img.src = `data:image/png;base64,${data.screenshot}`
