@@ -1913,7 +1913,7 @@ export default function DragContainer({
                 }}
                 aria-labelledby={`stop-blobs${d}-span`}
               >
-                <span id={`stop-blobs${d}-span`} className='tooltip above space'>
+                <span id={`stop-blobs${d}-span`} className='tooltip above'>
                   {
                     EAfterEnablingThereIsASlightDelayBeforeAllTheBlobsAreMovingAgain[
                       language
@@ -1931,7 +1931,7 @@ export default function DragContainer({
                   resetBlobsFunction(e)
                 }}
               >
-                <span id={`reset-blobs${d}-span`} className='tooltip above space'>
+                <span id={`reset-blobs${d}-span`} className='tooltip above'>
                   {EGetANewSetOfBlobs[language]}
                 </span>{' '}
                 {EReset[language]}
@@ -1944,7 +1944,7 @@ export default function DragContainer({
               >
                 <span
                   id={`toggle-marker${d}-span`}
-                  className='tooltip above space'
+                  className='tooltip above'
                 >{`${EToggleMarkerVisibilityWhenUsingAKeyboard[language]}`}</span>
                 {markerEnabled ? EMarkerOn[language] : EMarkerOff[language]}
               </button>
@@ -1958,7 +1958,7 @@ export default function DragContainer({
                   disableScroll()
                 }}
               >
-                <span id={`disable-scroll${d}-span`} className='tooltip above space'>
+                <span id={`disable-scroll${d}-span`} className='tooltip above'>
                   {scroll
                     ? EDisableScrollInOrderToUseTheMouseWheelToResizeABlob[language]
                     : EPressHereOrEscapeToRestoreScrolling[language]}
@@ -1993,10 +1993,7 @@ export default function DragContainer({
                 className='screenshot tooltip-wrap'
               >
                 <ImCamera />
-                <span
-                  id={`take-screenshot${d}-span`}
-                  className='tooltip left below space'
-                >
+                <span id={`take-screenshot${d}-span`} className='tooltip left above'>
                   {loading ? ELoading[language] : EClickHereToTakeAScreenshot[language]}
                 </span>
               </button>
