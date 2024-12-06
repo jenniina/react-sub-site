@@ -212,33 +212,46 @@
   gap: 1em;
 }
 .color-edit-container,
-.color-edit-container > .color-format-select,
-.color-edit-container > .color-format-select > * {
+.color-edit-container > .color-select,
+.color-edit-container > .color-select > * {
   width: 99%;
   max-width: 99%;
   font-size: clamp(0.8rem, calc(var(--font-size) * 0.8), 2rem);
 }
-.color-edit-container > .color-format-select {
+.color-edit-container > .color-select {
   gap: 0.2em;
   padding-top: 0.5em;
 }
-.color-edit-container > .color-format-select > div {
+.color-edit-container > .color-select > div {
   flex-flow: row nowrap;
   background: linear-gradient(4deg, hsl(0, 0%, 10%) 0%, hsl(0, 0%, 3%) 100%);
   background-size: var(--bg-size);
   background-position: top;
   border-bottom-color: gray;
 }
-.color-edit-container > .color-format-select > div > div {
+.color-edit-container > .color-select > div > div {
   border-top-color: gray;
 }
-.light .color-edit-container > .color-format-select > div {
+.light .color-edit-container > .color-select > div {
   background: linear-gradient(4deg, hsl(0, 0%, 70%) 0%, hsl(0, 0%, 90%) 100%);
   background-size: var(--bg-size);
   background-position: top;
 }
-.color-edit-container > .color-format-select > div > span {
+.color-edit-container > .color-select > div > span {
   max-width: calc(100% - 3em);
+}
+.mode-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+  margin: 0 auto;
+}
+.mode-container > .color-select {
+  max-width: 12rem;
+  margin: 0;
+  padding: 0;
 }
 .form {
   display: flex;
@@ -286,7 +299,7 @@
   gap: 0.1em;
 }
 @media (min-width: 300px) {
-  .color-edit-container > .color-format-select > div > span {
+  .color-edit-container > .color-select > div > span {
     max-width: 100%;
   }
 }

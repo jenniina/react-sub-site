@@ -102,7 +102,11 @@ import {
 import { EAddAColor, EAddGenericCardsAndColorThem } from '../interfaces/draganddrop'
 import { EComposerOlliSanta, EAddedALinkToComposer } from '../interfaces/composer'
 import Accordion from '../components/Accordion/Accordion'
-import { EColorAccessibility, ETestColorCombinations } from '../interfaces/colors'
+import {
+  EColorAccessibility,
+  EGenerateRandomColors,
+  ETestColorCombinations,
+} from '../interfaces/colors'
 import { EMemoryGame, EMemoryGameIntro } from '../interfaces/memory'
 import MemorySVG from '../components/Memory/components/MemorySVG'
 
@@ -190,6 +194,16 @@ export default function Home({
                     <li>
                       <strong>{EDecember[language]}</strong>
                       <ul>
+                        <li>
+                          <Link to='/portfolio/colors'>
+                            <BiSolidColorFill />
+                            {EColorAccessibility[language]}:
+                          </Link>
+                          <i>
+                            {EAddedNewFeatures[language]}:{' '}
+                            {EGenerateRandomColors[language]}
+                          </i>
+                        </li>
                         <li>
                           <Link to='/portfolio/memory'>
                             <MemorySVG size='32' />

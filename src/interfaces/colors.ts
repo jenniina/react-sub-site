@@ -231,3 +231,75 @@ export enum EColors {
   cs = 'Barvy',
   fi = 'Värit',
 }
+export enum EGenerateRandomColors {
+  en = 'Generate random colors',
+  es = 'Generar colores aleatorios',
+  fr = 'Générer des couleurs aléatoires',
+  de = 'Zufällige Farben generieren',
+  pt = 'Gerar cores aleatórias',
+  cs = 'Generovat náhodné barvy',
+  fi = 'Generoi satunnaisia värejä',
+}
+export enum ERandomColorGeneration {
+  en = 'Random color generation',
+  es = 'Generación de colores aleatorios',
+  fr = 'Génération de couleurs aléatoires',
+  de = 'Zufällige Farbgenerierung',
+  pt = 'Geração de cores aleatórias',
+  cs = 'Generování náhodných barev',
+  fi = 'Satunnaisen värin luominen',
+}
+export enum EColorMode {
+  en = 'Color mode',
+  es = 'Modo de color',
+  fr = 'Mode couleur',
+  de = 'Farbmodus',
+  pt = 'Modo de cor',
+  cs = 'Režim barvy',
+  fi = 'Värimoodi',
+}
+export enum ESelectColorMode {
+  en = 'Select color mode',
+  es = 'Seleccionar modo de color',
+  fr = 'Sélectionner le mode couleur',
+  de = 'Farbmodus auswählen',
+  pt = 'Selecione o modo de cor',
+  cs = 'Vyberte režim barvy',
+  fi = 'Valitse värimoodi',
+}
+export enum EMonochromatic {
+  en = 'Monochromatic',
+  es = 'Monocromático',
+  fr = 'Monochromatique',
+  de = 'Monochromatisch',
+  pt = 'Monocromático',
+  cs = 'Monochromatický',
+  fi = 'Monokromaattinen',
+}
+export enum EAnalogous {
+  en = 'Analogous',
+  es = 'Análogo',
+  fr = 'Analogique',
+  de = 'Analog',
+  pt = 'Análogo',
+  cs = 'Analogický',
+  fi = 'Analoginen',
+}
+export enum EComplementary {
+  en = 'Complementary',
+  es = 'Complementario',
+  fr = 'Complémentaire',
+  de = 'Komplementär',
+  pt = 'Complementar',
+  cs = 'Komplementární',
+  fi = 'Komplementaarinen',
+}
+export enum ETriad {
+  en = 'Triad',
+  es = 'Tríada',
+  fr = 'Triade',
+  de = 'Triade',
+  pt = 'Tríade',
+  cs = 'Triáda',
+  fi = 'Triadi',
+}

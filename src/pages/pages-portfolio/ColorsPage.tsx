@@ -5,8 +5,10 @@ import Hero from '../../components/Hero/Hero'
 import { EClickHereToSeeFeatures } from '../../components/Jokes/interfaces'
 import {
   EContains,
+  EDarkMode,
   EDragAndDrop,
   ELanguages,
+  ELightMode,
   ELoading,
   ERemove,
   EReset,
@@ -23,6 +25,8 @@ import {
   ETestColorCombinations,
   EToggleColorNameVisibility,
   EWithOrWithoutColorName,
+  EGenerateRandomColors,
+  ERandomColorGeneration,
 } from '../../interfaces/colors'
 import { EColorPicker } from '../../interfaces/form'
 import { EClear } from '../../interfaces/select'
@@ -59,6 +63,10 @@ const ColorsPage = ({
               <li>{EColorsCanBeReorderedByDragging[language]}</li>
               <li>{EHintOrganizingColors[language]}</li>
               <li>
+                {ERandomColorGeneration[language]}:{' '}
+                <a href='http://colormind.io/api-access/'>API</a>
+              </li>
+              <li>
                 {EContains[language]}
                 <ul>
                   <li>{EColorPicker[language]}</li>
@@ -76,6 +84,10 @@ const ColorsPage = ({
                   <li>{ERemove[language]}</li>
                   <li>{EReset[language]}</li>
                   <li>{EClear[language]}</li>
+                  <li>
+                    {ELightMode[language]}/{EDarkMode[language]}
+                  </li>
+                  <li>{EGenerateRandomColors[language]}</li>
                 </ul>
               </li>
             </ul>
