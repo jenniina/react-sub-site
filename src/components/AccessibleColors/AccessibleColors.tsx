@@ -348,6 +348,9 @@ const AccessibleColors: FC<Props> = ({ language }) => {
   const RandomRGBvalue = () => {
     return Math.floor(Math.random() * 256)
   }
+  const random0to100 = () => {
+    return Math.floor(Math.random() * 101)
+  }
 
   // const colorModeOptions: SelectOption[] = [
   //   { value: 'analogous', label: EAnalogous[language] },
@@ -364,83 +367,99 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     l: number
   }
 
+  const adjustment = Math.floor(Math.random() * 10) + 10
+
   type TColorMode = 'analogous' | 'complementary' | 'triad' | 'monochromatic'
 
   const generateColors = (mode: TColorMode, baseHSL: HSLColor): number[][] => {
-    const colors: number[][] = []
+    const colorset: number[][] = []
     switch (mode) {
       case 'analogous':
-        for (let i = 1; i <= 2; i++) {
+        for (let i = 1; i <= 4; i++) {
+          const adjustedL = (baseHSL.l + adjustment * i) % 100
           const analogousHSL: [number, number, number] = [
             (baseHSL.h + 30 * i) % 360,
-            baseHSL.s,
-            baseHSL.l,
+            random0to100(),
+            adjustedL,
           ]
           const rgb = hslToRGB(...analogousHSL)
-          colors.push([rgb.r, rgb.g, rgb.b])
+          colorset.push([rgb.r, rgb.g, rgb.b])
         }
         break
       case 'complementary':
         const complementaryHSL: [number, number, number] = [
           (baseHSL.h + 180) % 360,
-          baseHSL.s,
-          baseHSL.l,
+          random0to100(),
+          random0to100(),
         ]
         const complementaryRGB = hslToRGB(...complementaryHSL)
-        colors.push([complementaryRGB.r, complementaryRGB.g, complementaryRGB.b])
+        colorset.push([complementaryRGB.r, complementaryRGB.g, complementaryRGB.b])
+        for (let i = 1; i <= 3; i++) {
+          const adjustedL = (baseHSL.l + adjustment * i) % 100
+          const variationHSL: [number, number, number] = [
+            (complementaryHSL[0] + 30 * i) % 360,
+            random0to100(),
+            adjustedL,
+          ]
+          const variationRGB = hslToRGB(...variationHSL)
+          colorset.push([variationRGB.r, variationRGB.g, variationRGB.b])
+        }
         break
       case 'triad':
-        for (let i = 1; i <= 2; i++) {
+        for (let i = 1; i <= 4; i++) {
+          const adjustedL = (baseHSL.l + adjustment * i) % 100
           const triadHSL: [number, number, number] = [
-            (baseHSL.h + 120 * i) % 360,
-            baseHSL.s,
-            baseHSL.l,
+            (baseHSL.h + 90 * i) % 360,
+            random0to100(),
+            adjustedL,
           ]
           const rgb = hslToRGB(...triadHSL)
-          colors.push([rgb.r, rgb.g, rgb.b])
+          colorset.push([rgb.r, rgb.g, rgb.b])
         }
         break
       case 'monochromatic':
-        const increaseLumHSL: [number, number, number] = [
-          baseHSL.h,
-          baseHSL.s,
-          Math.min(baseHSL.l + 10, 100),
-        ]
-        const decreaseLumHSL: [number, number, number] = [
-          baseHSL.h,
-          baseHSL.s,
-          Math.max(baseHSL.l - 10, 0),
-        ]
-        const increaseLumRGB = hslToRGB(...increaseLumHSL)
-        const decreaseLumRGB = hslToRGB(...decreaseLumHSL)
-        colors.push([increaseLumRGB.r, increaseLumRGB.g, increaseLumRGB.b])
-        colors.push([decreaseLumRGB.r, decreaseLumRGB.g, decreaseLumRGB.b])
+        for (let i = 1; i <= 4; i++) {
+          const adjustedL = (baseHSL.l + adjustment * i) % 100
+          const adjustedHSL: [number, number, number] = [
+            baseHSL.h,
+            random0to100(),
+            adjustedL,
+          ]
+          const rgb = hslToRGB(...adjustedHSL)
+          colorset.push([rgb.r, rgb.g, rgb.b])
+        }
         break
       default:
         // Fallback to analogous
-        for (let i = 1; i <= 2; i++) {
+        for (let i = 1; i <= 4; i++) {
+          const adjustedL = (baseHSL.l + adjustment * i) % 100
           const defaultHSL: [number, number, number] = [
             (baseHSL.h + 30 * i) % 360,
-            baseHSL.s,
-            baseHSL.l,
+            random0to100(),
+            adjustedL,
           ]
           const rgb = hslToRGB(...defaultHSL)
-          colors.push([rgb.r, rgb.g, rgb.b])
+          colorset.push([rgb.r, rgb.g, rgb.b])
         }
         break
     }
-    return colors
+    return colorset
   }
 
   const buildColors = (existingColors: ColorBlock[]): number[][] => {
     const newColors: number[][] = []
 
     if (existingColors.length === 0) {
-      // Generate five colors when no existing colors
-      for (let i = 0; i < 5; i++) {
-        const color = [RandomRGBvalue(), RandomRGBvalue(), RandomRGBvalue()]
-        newColors.push(color)
-      }
+      // Generate a base color
+      const baseColor = [RandomRGBvalue(), RandomRGBvalue(), RandomRGBvalue()]
+      newColors.push(baseColor)
+      const baseHSL = rgbToHSL(baseColor[0], baseColor[1], baseColor[2])
+
+      // Generate additional colors based on the selected colorMode
+      const generated = generateColors(colorMode as TColorMode, baseHSL)
+      newColors.push(...generated)
+
+      return newColors //.slice(0, 5)
     } else {
       // Generate two new colors based on the last existing color
       const baseColor = existingColors[existingColors.length - 1]
@@ -490,7 +509,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       }
     }
 
-    return newColors
+    return newColors.slice(0, existingColors.length + 2)
   }
 
   const fetchColorPalette = () => {
