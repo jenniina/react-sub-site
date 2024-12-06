@@ -61,11 +61,8 @@ const ColorsPage = ({
               <li>{ETestColorCombinations[language]}</li>
               <li>{ETheRoundIndicatorHollowIndicatorAndSmallHollowSquare[language]}</li>
               <li>{EColorsCanBeReorderedByDragging[language]}</li>
+              <li>{ERandomColorGeneration[language]}</li>
               <li>{EHintOrganizingColors[language]}</li>
-              <li>
-                {ERandomColorGeneration[language]}:{' '}
-                <a href='http://colormind.io/api-access/'>API</a>
-              </li>
               <li>
                 {EContains[language]}
                 <ul>
