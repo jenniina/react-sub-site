@@ -619,6 +619,7 @@ const Memory: FC<Props> = ({ language }) => {
                       <>
                         {playerOptions.map((count) => (
                           <PlayerAmountButton
+                            language={language}
                             key={count}
                             value={count}
                             isActive={players.length === count}
