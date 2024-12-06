@@ -52,8 +52,8 @@ import { ETryDraggingTheBlobs } from '../interfaces/blobs'
 import { EBlobArtApp } from '../interfaces/about'
 import Accordion from '../components/Accordion/Accordion'
 import { EColorAccessibility, ETestColorCombinations } from '../interfaces/colors'
-import { HiSquares2X2 } from 'react-icons/hi2'
 import { EMemoryGame, EMemoryGameIntro } from '../interfaces/memory'
+import MemorySVG from '../components/Memory/components/MemorySVG'
 
 export default function Portfolio({
   heading,
@@ -142,7 +142,7 @@ export default function Portfolio({
               </li>
               <li>
                 <Link to='/portfolio/memory'>
-                  <HiSquares2X2 />
+                  <MemorySVG size='50' />
                   <span>{EMemoryGame[language]}</span>
                 </Link>
                 <p>{EMemoryGameIntro[language]}</p>
