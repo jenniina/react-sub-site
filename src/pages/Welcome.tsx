@@ -189,7 +189,7 @@ export default function Home({
                   <strong>2024</strong>
                   <ul>
                     <li>
-                      <strong>{ENovember[language]}</strong>
+                      <strong>{EDecember[language]}</strong>
                       <ul>
                         <li>
                           <Link to='/portfolio/memory'>
@@ -200,6 +200,11 @@ export default function Home({
                             {ENewPortfolioItem[language]}: {EMemoryGameIntro[language]}
                           </i>
                         </li>
+                      </ul>
+                    </li>
+                    <li>
+                      <strong>{ENovember[language]}</strong>
+                      <ul>
                         <li>
                           <Link to='/portfolio/blob'>
                             <TbBlob />
