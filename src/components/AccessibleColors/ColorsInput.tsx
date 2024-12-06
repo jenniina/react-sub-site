@@ -120,6 +120,20 @@ const ColorsInput: FC<Props> = ({
         } else {
           throw new Error('Invalid Hex format.')
         }
+      } else if (format === 'rgb') {
+        if (r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255) {
+          formattedColor = `rgb(${r}, ${g}, ${b})`
+          updateColor(block.id, formattedColor, 'rgb')
+        } else {
+          throw new Error('Invalid RGB values.')
+        }
+      } else if (format === 'hsl') {
+        if (h >= 0 && h <= 360 && s >= 0 && s <= 100 && l >= 0 && l <= 100) {
+          formattedColor = `hsl(${h}, ${s}%, ${l}%)`
+          updateColor(block.id, formattedColor, 'hsl')
+        } else {
+          throw new Error('Invalid HSL values.')
+        }
       } else {
         throw new Error('Unsupported color format.')
       }
@@ -178,8 +192,8 @@ const ColorsInput: FC<Props> = ({
     <>
       <Select
         hideDelete
-        id='color-format-select'
-        className={styles['color-format-select']}
+        id='color-select'
+        className={styles['color-select']}
         language={language}
         instructions={ESelectColorFormat[language]}
         hide
@@ -222,7 +236,10 @@ const ColorsInput: FC<Props> = ({
       )}
 
       {selected?.value === 'rgb' && (
-        <div className={`${styles.inputs} ${styles['rgb-inputs']}`}>
+        <form
+          className={`${styles.inputs} ${styles['rgb-inputs']}`}
+          onSubmit={handleSubmit}
+        >
           <label>
             <span>R: </span>
             <input
@@ -264,11 +281,26 @@ const ColorsInput: FC<Props> = ({
               style={{ maxWidth: `${width}`, fontSize: fontSize }}
             />
           </label>
-        </div>
+
+          <button
+            style={{
+              minWidth: `calc(100% - 4px)`,
+              maxWidth: `calc(100% - 4px)`,
+              fontSize: fontSize,
+            }}
+            type='submit'
+            className={`${styles['color-format-submit']} small gray`}
+          >
+            {ESubmit[language]}
+          </button>
+        </form>
       )}
 
       {selected?.value === 'hsl' && (
-        <div className={`${styles.inputs} ${styles['hsl-inputs']}`}>
+        <form
+          className={`${styles.inputs} ${styles['hsl-inputs']}`}
+          onSubmit={handleSubmit}
+        >
           <label>
             <span>H: </span>
             <input
@@ -309,7 +341,19 @@ const ColorsInput: FC<Props> = ({
               style={{ maxWidth: `${width}`, fontSize: fontSize }}
             />
           </label>
-        </div>
+
+          <button
+            style={{
+              minWidth: `calc(100% - 4px)`,
+              maxWidth: `calc(100% - 4px)`,
+              fontSize: fontSize,
+            }}
+            type='submit'
+            className={`${styles['color-format-submit']} small gray`}
+          >
+            {ESubmit[language]}
+          </button>
+        </form>
       )}
     </>
   )

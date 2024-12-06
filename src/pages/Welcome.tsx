@@ -102,10 +102,13 @@ import {
 import { EAddAColor, EAddGenericCardsAndColorThem } from '../interfaces/draganddrop'
 import { EComposerOlliSanta, EAddedALinkToComposer } from '../interfaces/composer'
 import Accordion from '../components/Accordion/Accordion'
-import { EColorAccessibility, ETestColorCombinations } from '../interfaces/colors'
-import { ERemoveBlobs } from '../interfaces/about'
-import { HiSquares2X2 } from 'react-icons/hi2'
+import {
+  EColorAccessibility,
+  EGenerateRandomColors,
+  ETestColorCombinations,
+} from '../interfaces/colors'
 import { EMemoryGame, EMemoryGameIntro } from '../interfaces/memory'
+import MemorySVG from '../components/Memory/components/MemorySVG'
 
 export default function Home({
   heading,
@@ -192,8 +195,18 @@ export default function Home({
                       <strong>{EDecember[language]}</strong>
                       <ul>
                         <li>
+                          <Link to='/portfolio/colors'>
+                            <BiSolidColorFill />
+                            {EColorAccessibility[language]}:
+                          </Link>
+                          <i>
+                            {EAddedNewFeatures[language]}:{' '}
+                            {EGenerateRandomColors[language]}
+                          </i>
+                        </li>
+                        <li>
                           <Link to='/portfolio/memory'>
-                            <HiSquares2X2 />
+                            <MemorySVG size='32' />
                             {EMemoryGame[language]}:
                           </Link>
                           <i>
