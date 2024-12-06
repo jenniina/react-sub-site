@@ -528,7 +528,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
 
     random = Math.floor(Math.random() * colorModeOptions.length)
     setColorMode(colorModeOptions[random])
-    // dispatch(notify('Colors generated successfully!', false, 5))
   }
 
   const parseColor = (color: string, format: string): string => {
