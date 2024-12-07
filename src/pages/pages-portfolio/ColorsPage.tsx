@@ -25,8 +25,9 @@ import {
   ETestColorCombinations,
   EToggleColorNameVisibility,
   EWithOrWithoutColorName,
-  EGenerateRandomColors,
+  EGenerateColors,
   ERandomColorGeneration,
+  ENeedAFreshSetOfColors,
 } from '../../interfaces/colors'
 import { EColorPicker } from '../../interfaces/form'
 import { EClear } from '../../interfaces/select'
@@ -63,6 +64,7 @@ const ColorsPage = ({
               <li>{EColorsCanBeReorderedByDragging[language]}</li>
               <li>{ERandomColorGeneration[language]}</li>
               <li>{EHintOrganizingColors[language]}</li>
+              <li>{ENeedAFreshSetOfColors[language]}</li>
               <li>
                 {EContains[language]}
                 <ul>
@@ -84,7 +86,7 @@ const ColorsPage = ({
                   <li>
                     {ELightMode[language]}/{EDarkMode[language]}
                   </li>
-                  <li>{EGenerateRandomColors[language]}</li>
+                  <li>{EGenerateColors[language]}</li>
                 </ul>
               </li>
             </ul>

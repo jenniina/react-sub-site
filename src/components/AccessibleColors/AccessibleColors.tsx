@@ -20,11 +20,12 @@ import {
   EAACompliantWithID,
   EAAGraphicElementCompliantWithID,
   EAnalogous,
+  EClearAndGenerateNew,
   EColorMode,
   EColorPicker,
   EComplementary,
   EEditSize,
-  EGenerateRandomColors,
+  EGenerateColors,
   EHideColorName,
   EHighestAAAComplianceWithRegularText,
   EMinimumAAComplianceWithRegularText,
@@ -33,7 +34,9 @@ import {
   ERemoveColorConfirmation,
   ESaveAsPNG,
   ESaveAsSVG,
+  ESelectColorMode,
   EShowColorName,
+  ETetrad,
   EToggleColorNameVisibility,
   ETriad,
 } from '../../interfaces/colors'
@@ -51,20 +54,25 @@ import { MdDarkMode, MdLightMode } from 'react-icons/md'
 import { PiDownloadSimpleFill } from 'react-icons/pi'
 import {
   calculateLuminance,
+  clampValue,
   getContrastRatio,
   getRandomString,
   hexToRGB,
   hslToHex,
   hslToRGB,
+  removeMinus,
   rgbToHex,
   rgbToHSL,
 } from '../../utils'
+import { Select, SelectOption } from '../Select/Select'
+import useRandomMinMax from '../../hooks/useRandomMinMax'
+import { FaArrowRight } from 'react-icons/fa'
 
 const randomString = getRandomString(5)
 
-const colorModeOptions = ['analogous', 'complementary', 'triad', 'monochromatic']
+//const colorModeOptions = ['analogous', 'complementary', 'triad', 'monochromatic']
 
-let random: number = Math.floor(Math.random() * colorModeOptions.length)
+// let random: number = Math.floor(Math.random() * colorModeOptions.length)
 
 interface ComplianceResult {
   isAARegularTextCompliant: boolean
@@ -304,62 +312,63 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     return { updatedColor1: color1, updatedColor2: color2 }
   }
 
-  const transformColorsToRGB = (colors: ColorBlock[]): (number[] | 'N')[] => {
-    return colors.map((color) => {
-      try {
-        let rgb: { r: number; g: number; b: number }
-        if (color.colorFormat === 'hex') {
-          rgb = hexToRGB(color.color)
-        } else if (color.colorFormat === 'rgb') {
-          const rgbMatch = color.color.match(
-            /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i
-          )
-          if (rgbMatch) {
-            rgb = {
-              r: Number(rgbMatch[1]),
-              g: Number(rgbMatch[2]),
-              b: Number(rgbMatch[3]),
-            }
-          } else {
-            throw new Error('Invalid RGB format')
-          }
-        } else if (color.colorFormat === 'hsl') {
-          const hslMatch = color.color.match(
-            /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i
-          )
-          if (hslMatch) {
-            const h = Number(hslMatch[1])
-            const s = Number(hslMatch[2])
-            const l = Number(hslMatch[3])
-            rgb = hslToRGB(h, s, l)
-          } else {
-            throw new Error('Invalid HSL format')
-          }
-        } else {
-          throw new Error('Unsupported color format')
-        }
-        return [rgb.r, rgb.g, rgb.b]
-      } catch (error) {
-        console.error(`Error transforming color ID ${color.id}:`, error)
-        return 'N'
+  const [showBlock, setShowBlock] = useState(false)
+  const delay = 800
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout
+    if (colors.length < 1) {
+      timer = setTimeout(() => {
+        setShowBlock(true)
+      }, delay)
+    } else {
+      setShowBlock(false)
+    }
+    return () => {
+      if (timer) {
+        clearTimeout(timer)
       }
-    })
-  }
+    }
+  }, [colors.length])
+
   const RandomRGBvalue = () => {
     return Math.floor(Math.random() * 256)
   }
-  const random0to100 = () => {
-    return Math.floor(Math.random() * 101)
+  const randomUpTo100 = () => {
+    const value = Math.ceil(useRandomMinMax(30, 100))
+    return clampValue(30, value, 100)
+  }
+  const randomUpTo90 = () => {
+    const value = Math.ceil(useRandomMinMax(5, 90))
+    return clampValue(5, value, 90)
+  }
+  const randomHSLColor = (type: string = 'array') => {
+    if (type === 'hsl') {
+      const h = Math.floor(Math.random() * 360)
+      const s = clampValue(30, Math.ceil(useRandomMinMax(30, 100)), 100)
+      const l = clampValue(5, Math.ceil(useRandomMinMax(5, 90)), 90)
+      return `hsl(${h}, ${s}%, ${l}%)`
+    } else {
+      const h = Math.floor(Math.random() * 360)
+      const s = clampValue(30, Math.ceil(useRandomMinMax(30, 100)), 100)
+      const l = clampValue(5, Math.ceil(useRandomMinMax(5, 90)), 90)
+      return [h, s, l]
+    }
   }
 
-  // const colorModeOptions: SelectOption[] = [
-  //   { value: 'analogous', label: EAnalogous[language] },
-  //   { value: 'complementary', label: EComplementary[language] },
-  //   { value: 'triad', label: ETriad[language] },
-  //   { value: 'monochromatic', label: EMonochromatic[language] },
-  // ]
+  const colorModeOptions: SelectOption[] = [
+    { value: 'analogous', label: EAnalogous[language] },
+    { value: 'complementary', label: EComplementary[language] },
+    { value: 'monochromatic', label: EMonochromatic[language] },
+    { value: 'triad', label: ETriad[language] },
+    { value: 'tetrad', label: ETetrad[language] },
+  ]
 
-  const [colorMode, setColorMode] = useState(colorModeOptions[random])
+  let random: number = Math.floor(Math.random() * colorModeOptions.length)
+
+  const [colorMode, setColorMode] = useState<SelectOption | undefined>(
+    colorModeOptions[random]
+  )
 
   interface HSLColor {
     h: number
@@ -367,19 +376,19 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     l: number
   }
 
-  const adjustment = Math.floor(Math.random() * 10) + 10
+  const adjustment = Math.round(useRandomMinMax(10, 30))
 
-  type TColorMode = 'analogous' | 'complementary' | 'triad' | 'monochromatic'
+  type TColorMode = 'analogous' | 'complementary' | 'triad' | 'tetrad' | 'monochromatic'
 
   const generateColors = (mode: TColorMode, baseHSL: HSLColor): number[][] => {
     const colorset: number[][] = []
     switch (mode) {
       case 'analogous':
         for (let i = 1; i <= 4; i++) {
-          const adjustedL = (baseHSL.l + adjustment * i) % 100
+          const adjustedL = removeMinus((baseHSL.l - adjustment * i + 90) % 90)
           const analogousHSL: [number, number, number] = [
             (baseHSL.h + 30 * i) % 360,
-            random0to100(),
+            randomUpTo100(),
             adjustedL,
           ]
           const rgb = hslToRGB(...analogousHSL)
@@ -389,16 +398,16 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       case 'complementary':
         const complementaryHSL: [number, number, number] = [
           (baseHSL.h + 180) % 360,
-          random0to100(),
-          random0to100(),
+          baseHSL.s,
+          baseHSL.l,
         ]
         const complementaryRGB = hslToRGB(...complementaryHSL)
         colorset.push([complementaryRGB.r, complementaryRGB.g, complementaryRGB.b])
         for (let i = 1; i <= 3; i++) {
-          const adjustedL = (baseHSL.l + adjustment * i) % 100
+          const adjustedL = removeMinus((baseHSL.l - adjustment * i + 90) % 90)
           const variationHSL: [number, number, number] = [
             (complementaryHSL[0] + 30 * i) % 360,
-            random0to100(),
+            randomUpTo100(),
             adjustedL,
           ]
           const variationRGB = hslToRGB(...variationHSL)
@@ -406,11 +415,11 @@ const AccessibleColors: FC<Props> = ({ language }) => {
         }
         break
       case 'triad':
-        for (let i = 1; i <= 4; i++) {
-          const adjustedL = (baseHSL.l + adjustment * i) % 100
+        for (let i = 1; i <= 2; i++) {
+          const adjustedL = removeMinus((baseHSL.l - adjustment * i + 90) % 90)
           const triadHSL: [number, number, number] = [
-            (baseHSL.h + 90 * i) % 360,
-            random0to100(),
+            (baseHSL.h + 120 * i) % 360,
+            randomUpTo100(),
             adjustedL,
           ]
           const rgb = hslToRGB(...triadHSL)
@@ -419,23 +428,35 @@ const AccessibleColors: FC<Props> = ({ language }) => {
         break
       case 'monochromatic':
         for (let i = 1; i <= 4; i++) {
-          const adjustedL = (baseHSL.l + adjustment * i) % 100
+          const adjustedL = removeMinus((baseHSL.l - adjustment * i + 90) % 90)
           const adjustedHSL: [number, number, number] = [
             baseHSL.h,
-            random0to100(),
+            randomUpTo100(),
             adjustedL,
           ]
           const rgb = hslToRGB(...adjustedHSL)
           colorset.push([rgb.r, rgb.g, rgb.b])
         }
         break
+      case 'tetrad':
+        for (let i = 1; i <= 3; i++) {
+          const adjustedL = removeMinus((baseHSL.l - adjustment * i + 90) % 90)
+          const tetradHSL: [number, number, number] = [
+            (baseHSL.h + 90 * i) % 360,
+            randomUpTo100(),
+            adjustedL,
+          ]
+          const rgb = hslToRGB(...tetradHSL)
+          colorset.push([rgb.r, rgb.g, rgb.b])
+        }
+        break
       default:
         // Fallback to analogous
         for (let i = 1; i <= 4; i++) {
-          const adjustedL = (baseHSL.l + adjustment * i) % 100
+          const adjustedL = removeMinus((baseHSL.l - adjustment * i + 90) % 90)
           const defaultHSL: [number, number, number] = [
             (baseHSL.h + 30 * i) % 360,
-            random0to100(),
+            randomUpTo100(),
             adjustedL,
           ]
           const rgb = hslToRGB(...defaultHSL)
@@ -445,18 +466,29 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     }
     return colorset
   }
+  const [colorsReset, setColorsReset] = useState(false)
 
   const buildColors = (existingColors: ColorBlock[]): number[][] => {
     const newColors: number[][] = []
 
-    if (existingColors.length === 0) {
-      // Generate a base color
-      const baseColor = [RandomRGBvalue(), RandomRGBvalue(), RandomRGBvalue()]
-      newColors.push(baseColor)
-      const baseHSL = rgbToHSL(baseColor[0], baseColor[1], baseColor[2])
+    if (existingColors.length === 0 || colorsReset) {
+      //// Generate a base color
+      // const baseColor = [RandomRGBvalue(), RandomRGBvalue(), RandomRGBvalue()]
+      const baseColor = randomHSLColor('array')
+      if (Array.isArray(baseColor)) {
+        newColors.push(baseColor)
+      }
+      const baseHSL = rgbToHSL(
+        Number(baseColor[0]),
+        Number(baseColor[1]),
+        Number(baseColor[2])
+      )
+
+      baseHSL.s = clampValue(30, baseHSL.s, 100)
+      baseHSL.l = clampValue(5, baseHSL.l, 90)
 
       // Generate additional colors based on the selected colorMode
-      const generated = generateColors(colorMode as TColorMode, baseHSL)
+      const generated = generateColors(colorMode?.value as TColorMode, baseHSL)
       newColors.push(...generated)
 
       return newColors //.slice(0, 5)
@@ -498,7 +530,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
         }
 
         const baseHSL = rgbToHSL(baseRGB.r, baseRGB.g, baseRGB.b)
-        const generated = generateColors(colorMode as TColorMode, baseHSL)
+        const generated = generateColors(colorMode?.value as TColorMode, baseHSL)
         newColors.push(...generated.slice(0, 2))
       } catch (error) {
         console.error('Error generating new colors:', error)
@@ -511,6 +543,29 @@ const AccessibleColors: FC<Props> = ({ language }) => {
 
     return newColors.slice(0, existingColors.length + 2)
   }
+
+  const clear = () => {
+    deleteColors()
+    setColors([])
+    setIdCounter(1)
+  }
+
+  const reset = () => {
+    deleteColors()
+    setColors(defaultColors)
+    setIdCounter(defaultColors.length + 1)
+  }
+
+  const resetAndFetch = () => {
+    setColorsReset(true)
+    clear()
+  }
+
+  useEffect(() => {
+    if (colorsReset && colors.length === 0) {
+      fetchColorPalette()
+    }
+  }, [colorsReset, colors])
 
   const fetchColorPalette = () => {
     const newRGBColors = buildColors(colors)
@@ -547,6 +602,8 @@ const AccessibleColors: FC<Props> = ({ language }) => {
 
     random = Math.floor(Math.random() * colorModeOptions.length)
     setColorMode(colorModeOptions[random])
+
+    setColorsReset(false)
   }
 
   const parseColor = (color: string, format: string): string => {
@@ -579,18 +636,15 @@ const AccessibleColors: FC<Props> = ({ language }) => {
         /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i
       )
       if (hslMatch) {
-        const h = Number(hslMatch[1])
-        const s = Number(hslMatch[2])
-        const l = Number(hslMatch[3])
-        if (
-          [h, s, l].every((val, idx) =>
-            idx === 0 ? val >= 0 && val <= 360 : val >= 0 && val <= 100
-          )
-        ) {
-          return hslToHex(h, s, l)
-        } else {
-          throw new Error(`HSL values out of range in color: ${color}`)
-        }
+        let h = Number(hslMatch[1])
+        let s = Number(hslMatch[2])
+        let l = Number(hslMatch[3])
+
+        h = (h + 360) % 360
+        s = clampValue(0, s, 100)
+        l = clampValue(0, l, 100)
+
+        return `hsl(${h}, ${s}%, ${l}%)`
       } else {
         throw new Error(`Invalid HSL color format: ${color}`)
       }
@@ -1005,27 +1059,25 @@ const AccessibleColors: FC<Props> = ({ language }) => {
   }
 
   const removeColor = (id: number) => {
-    if (window.confirm(ERemoveColorConfirmation[language])) {
-      const updatedColors = listItemsByStatus[status]?.items
-        .filter((block) => block.id !== id)
-        .map((block) => ({
-          ...block,
-          compliantColors: {
-            AAA_RegularText: block.compliantColors?.AAA_RegularText.filter(
-              (compliantId) => compliantId !== id
-            ),
-            AA_RegularText: block.compliantColors?.AA_RegularText.filter(
-              (compliantId) => compliantId !== id
-            ),
-            AA_UIComponents: block.compliantColors?.AA_UIComponents?.filter(
-              (compliantId) => compliantId !== id
-            ),
-          },
-        }))
+    const updatedColors = listItemsByStatus[status]?.items
+      .filter((block) => block.id !== id)
+      .map((block) => ({
+        ...block,
+        compliantColors: {
+          AAA_RegularText: block.compliantColors?.AAA_RegularText.filter(
+            (compliantId) => compliantId !== id
+          ),
+          AA_RegularText: block.compliantColors?.AA_RegularText.filter(
+            (compliantId) => compliantId !== id
+          ),
+          AA_UIComponents: block.compliantColors?.AA_UIComponents?.filter(
+            (compliantId) => compliantId !== id
+          ),
+        },
+      }))
 
-      setColors(updatedColors)
-      dispatch(notify(EDeleted[language], false, 5))
-    }
+    setColors(updatedColors)
+    dispatch(notify(EDeleted[language], false, 5))
   }
 
   const updateColor = (id: number, newColor: string, format: 'hex' | 'rgb' | 'hsl') => {
@@ -1216,22 +1268,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
   //   }
   // }, [colors])
 
-  const clear = () => {
-    if (window.confirm(EAreYouSureYouWantToDeleteThisVersion[language])) {
-      deleteColors()
-      setColors([])
-      setIdCounter(1)
-    }
-  }
-
-  const reset = () => {
-    if (window.confirm(EAreYouSureYouWantToDeleteThisVersion[language])) {
-      deleteColors()
-      setColors(defaultColors)
-      setIdCounter(defaultColors.length + 1)
-    }
-  }
-
   const times = 0.04
 
   return (
@@ -1333,9 +1369,31 @@ const AccessibleColors: FC<Props> = ({ language }) => {
         <button className='gray small' type='button' onClick={clear}>
           {EClear[language]}
         </button>
+
         <button className='gray small' type='button' onClick={fetchColorPalette}>
-          {EGenerateRandomColors[language]}
+          {EGenerateColors[language]}
         </button>
+        <button className='gray small' type='button' onClick={resetAndFetch}>
+          {EClearAndGenerateNew[language]}
+        </button>
+
+        {showBlock && (
+          <div
+            className={`${styles['color-edit-container']} ${styles['mode-container']}`}
+          >
+            <FaArrowRight />{' '}
+            <Select
+              options={colorModeOptions}
+              value={colorMode}
+              onChange={(o) => setColorMode(o)}
+              id='color-mode'
+              instructions={ESelectColorMode[language]}
+              className={`${styles['color-select']}`}
+              hide
+              hideDelete
+            />
+          </div>
+        )}
       </div>
       <div
         id='color-blocks'
