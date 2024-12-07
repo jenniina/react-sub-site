@@ -106,6 +106,31 @@ const ColorsInput: FC<Props> = ({
     }
   }, [])
 
+  useEffect(() => {
+    if (!selected) return
+
+    switch (selected.value) {
+      case 'hex': {
+        // Convert current RGB to Hex
+        const hexVal = rgbToHex(r, g, b)
+        setHex(hexVal)
+        break
+      }
+      case 'rgb': {
+        break
+      }
+      case 'hsl': {
+        const { h, s, l } = rgbToHSL(r, g, b)
+        setH(h)
+        setS(s)
+        setL(l)
+        break
+      }
+      default:
+        break
+    }
+  }, [selected, r, g, b, rgbToHex, rgbToHSL])
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     const format = selected?.value as 'hex' | 'rgb' | 'hsl'
@@ -117,6 +142,14 @@ const ColorsInput: FC<Props> = ({
         if (hexRegex.test(hex)) {
           formattedColor = hex.toUpperCase()
           updateColor(block.id, formattedColor, 'hex')
+          const { r, g, b } = hexToRGB(formattedColor)
+          setR(r)
+          setG(g)
+          setB(b)
+          const { h, s, l } = rgbToHSL(r, g, b)
+          setH(h)
+          setS(s)
+          setL(l)
         } else {
           throw new Error('Invalid Hex format.')
         }
@@ -124,6 +157,12 @@ const ColorsInput: FC<Props> = ({
         if (r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255) {
           formattedColor = `rgb(${r}, ${g}, ${b})`
           updateColor(block.id, formattedColor, 'rgb')
+          const hexVal = rgbToHex(r, g, b)
+          setHex(hexVal)
+          const { h, s, l } = rgbToHSL(r, g, b)
+          setH(h)
+          setS(s)
+          setL(l)
         } else {
           throw new Error('Invalid RGB values.')
         }
@@ -131,6 +170,12 @@ const ColorsInput: FC<Props> = ({
         if (h >= 0 && h <= 360 && s >= 0 && s <= 100 && l >= 0 && l <= 100) {
           formattedColor = `hsl(${h}, ${s}%, ${l}%)`
           updateColor(block.id, formattedColor, 'hsl')
+          const { r, g, b } = hslToRGB(h, s, l)
+          setR(r)
+          setG(g)
+          setB(b)
+          const hexVal = rgbToHex(r, g, b)
+          setHex(hexVal)
         } else {
           throw new Error('Invalid HSL values.')
         }

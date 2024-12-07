@@ -293,10 +293,16 @@
 .inputs > label > span {
   white-space: nowrap;
 }
+
 .inputs.hex-input > label {
   flex-flow: column nowrap;
-  margin-top: 0.35em;
+  margin-top: 1.55em;
+  margin-bottom: 0.65em;
   gap: 0.1em;
+}
+.inputs.hex-input > label > span {
+  align-self: flex-start;
+  margin-left: 0.5em;
 }
 @media (min-width: 300px) {
   .color-edit-container > .color-select > div > span {

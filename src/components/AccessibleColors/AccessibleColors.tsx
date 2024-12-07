@@ -493,7 +493,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       })
       newColors.push(...generated)
 
-      return newColors //.slice(0, 5)
+      return newColors
     } else {
       // Generate two new colors based on the last existing color
       const baseColor = existingColors[existingColors.length - 1]
