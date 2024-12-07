@@ -66,7 +66,6 @@ import {
 } from '../../utils'
 import { Select, SelectOption } from '../Select/Select'
 import useRandomMinMax from '../../hooks/useRandomMinMax'
-import { FaArrowRight } from 'react-icons/fa'
 
 const randomString = getRandomString(5)
 
@@ -313,7 +312,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
   }
 
   const [showBlock, setShowBlock] = useState(false)
-  const delay = 800
+  const delay = 500
 
   useEffect(() => {
     let timer: NodeJS.Timeout
@@ -345,13 +344,13 @@ const AccessibleColors: FC<Props> = ({ language }) => {
   const randomHSLColor = (type: string = 'array') => {
     if (type === 'hsl') {
       const h = Math.floor(Math.random() * 360)
-      const s = clampValue(30, Math.ceil(useRandomMinMax(30, 100)), 100)
-      const l = clampValue(5, Math.ceil(useRandomMinMax(5, 90)), 90)
+      const s = randomUpTo100()
+      const l = randomUpTo90()
       return `hsl(${h}, ${s}%, ${l}%)`
     } else {
       const h = Math.floor(Math.random() * 360)
-      const s = clampValue(30, Math.ceil(useRandomMinMax(30, 100)), 100)
-      const l = clampValue(5, Math.ceil(useRandomMinMax(5, 90)), 90)
+      const s = randomUpTo100()
+      const l = randomUpTo90()
       return [h, s, l]
     }
   }
@@ -376,7 +375,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     l: number
   }
 
-  const adjustment = Math.round(useRandomMinMax(10, 30))
+  const adjustment = Math.round(useRandomMinMax(15, 35))
 
   type TColorMode = 'analogous' | 'complementary' | 'triad' | 'tetrad' | 'monochromatic'
 
@@ -478,17 +477,20 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       if (Array.isArray(baseColor)) {
         newColors.push(baseColor)
       }
-      const baseHSL = rgbToHSL(
-        Number(baseColor[0]),
-        Number(baseColor[1]),
-        Number(baseColor[2])
-      )
-
-      baseHSL.s = clampValue(30, baseHSL.s, 100)
-      baseHSL.l = clampValue(5, baseHSL.l, 90)
+      // const baseHSL = rgbToHSL(
+      //   Number(baseColor[0]),
+      //   Number(baseColor[1]),
+      //   Number(baseColor[2])
+      // )
+      // baseHSL.s = clampValue(30, baseHSL.s, 100)
+      // baseHSL.l = clampValue(5, baseHSL.l, 90)
 
       // Generate additional colors based on the selected colorMode
-      const generated = generateColors(colorMode?.value as TColorMode, baseHSL)
+      const generated = generateColors(colorMode?.value as TColorMode, {
+        h: baseColor[0] as number,
+        s: baseColor[1] as number,
+        l: baseColor[2] as number,
+      })
       newColors.push(...generated)
 
       return newColors //.slice(0, 5)
@@ -1373,15 +1375,16 @@ const AccessibleColors: FC<Props> = ({ language }) => {
         <button className='gray small' type='button' onClick={fetchColorPalette}>
           {EGenerateColors[language]}
         </button>
-        <button className='gray small' type='button' onClick={resetAndFetch}>
-          {EClearAndGenerateNew[language]}
-        </button>
+        {!showBlock && (
+          <button className='gray small' type='button' onClick={resetAndFetch}>
+            {EClearAndGenerateNew[language]}
+          </button>
+        )}
 
         {showBlock && (
           <div
             className={`${styles['color-edit-container']} ${styles['mode-container']}`}
           >
-            <FaArrowRight />{' '}
             <Select
               options={colorModeOptions}
               value={colorMode}
