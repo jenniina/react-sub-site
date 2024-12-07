@@ -28,6 +28,12 @@ import {
   EGenerateColors,
   ERandomColorGeneration,
   ENeedAFreshSetOfColors,
+  EAnalogous,
+  EComplementary,
+  EMonochromatic,
+  ETriad,
+  ETetrad,
+  EColorModes,
 } from '../../interfaces/colors'
 import { EColorPicker } from '../../interfaces/form'
 import { EClear } from '../../interfaces/select'
@@ -65,6 +71,11 @@ const ColorsPage = ({
               <li>{ERandomColorGeneration[language]}</li>
               <li>{EHintOrganizingColors[language]}</li>
               <li>{ENeedAFreshSetOfColors[language]}</li>
+              <li>
+                {EColorModes[language]}: {EAnalogous[language]} /{' '}
+                {EComplementary[language]} / {EMonochromatic[language]} /{' '}
+                {ETriad[language]} / {ETetrad[language]}
+              </li>
               <li>
                 {EContains[language]}
                 <ul>

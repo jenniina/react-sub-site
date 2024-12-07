@@ -268,6 +268,15 @@ export enum EColorMode {
   cs = 'Režim barvy',
   fi = 'Värimoodi',
 }
+export enum EColorModes {
+  en = 'Color modes',
+  es = 'Modos de color',
+  fr = 'Modes de couleur',
+  de = 'Farbmodi',
+  pt = 'Modos de cor',
+  cs = 'Režimy barvy',
+  fi = 'Värimoodit',
+}
 export enum ESelectColorMode {
   en = 'Select color mode',
   es = 'Seleccionar modo de color',
@@ -320,7 +329,7 @@ export enum ETetrad {
   de = 'Tetrad',
   pt = 'Tetrade',
   cs = 'Tetrad',
-  fi = 'Tetrad',
+  fi = 'Tetradi',
 }
 
 export enum ENeedAFreshSetOfColors {
