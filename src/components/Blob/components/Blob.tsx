@@ -18,7 +18,7 @@ import {
   ESelectedBlob,
   ESelectedBlobNone,
 } from '../../../interfaces/blobs'
-import { clamp } from '../../../utils'
+import { clampValue } from '../../../utils'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { BlobContext, Props } from './BlobProvider'
 import { notify } from '../../../reducers/notificationReducer'
@@ -98,7 +98,7 @@ const Blob = ({
   layerAmount,
   changeColor,
 }: BlobProps) => {
-  const blur = d === 0 ? 33 : clamp(22, item.i * 2.6, 50)
+  const blur = d === 0 ? 33 : clampValue(22, item.i * 2.6, 50)
   const { dispatch } = useContext(BlobContext) as Props
   const dispatch2 = useAppDispatch()
 

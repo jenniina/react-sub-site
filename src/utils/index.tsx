@@ -71,7 +71,7 @@ export const scrollIntoView = (
   }
 }
 
-export function clamp(min: number, val: number, max: number) {
+export function clampValue(min: number, val: number, max: number) {
   return Math.min(Math.max(val, min), max)
 }
 
@@ -125,7 +125,11 @@ export const rgbToHSL = (r: number, g: number, b: number) => {
     h /= 6
   }
 
-  return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) }
+  return {
+    h: Math.round(h * 360),
+    s: Math.round(Math.min(s * 100, 100)),
+    l: Math.round(l * 100),
+  }
 }
 
 export const hslToRGB = (h: number, s: number, l: number) => {
@@ -154,7 +158,11 @@ export const hslToRGB = (h: number, s: number, l: number) => {
     b = hue2rgb(p, q, h - 1 / 3)
   }
 
-  return { r: Math.round(r * 255), g: Math.round(g * 255), b: Math.round(b * 255) }
+  return {
+    r: Math.round(Math.min(r * 255, 255)),
+    g: Math.round(Math.min(g * 255, 255)),
+    b: Math.round(Math.min(b * 255, 255)),
+  }
 }
 
 export const hslToHex = (h: number, s: number, l: number): string => {
@@ -183,7 +191,11 @@ export const hslToHex = (h: number, s: number, l: number): string => {
     b = hue2rgb(p, q, hk - 1 / 3)
   }
 
-  return rgbToHex(Math.round(r * 255), Math.round(g * 255), Math.round(b * 255))
+  return rgbToHex(
+    Math.round(Math.min(r * 255, 255)),
+    Math.round(Math.min(g * 255, 255)),
+    Math.round(Math.min(b * 255, 255))
+  )
 }
 
 export const calculateLuminance = (r: number, g: number, b: number): number => {
@@ -212,4 +224,8 @@ export function elementsOverlap(element1: HTMLElement, element2: HTMLElement) {
     domRect1.bottom - 5 < domRect2.top + 5 ||
     domRect1.left > domRect2.right
   )
+}
+
+export function removeMinus(val: number): number {
+  return val < 0 ? -val : val
 }

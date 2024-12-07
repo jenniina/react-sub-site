@@ -104,7 +104,7 @@ import { EComposerOlliSanta, EAddedALinkToComposer } from '../interfaces/compose
 import Accordion from '../components/Accordion/Accordion'
 import {
   EColorAccessibility,
-  EGenerateRandomColors,
+  EGenerateColors,
   ETestColorCombinations,
 } from '../interfaces/colors'
 import { EMemoryGame, EMemoryGameIntro } from '../interfaces/memory'
@@ -200,8 +200,7 @@ export default function Home({
                             {EColorAccessibility[language]}:
                           </Link>
                           <i>
-                            {EAddedNewFeatures[language]}:{' '}
-                            {EGenerateRandomColors[language]}
+                            {EAddedNewFeatures[language]}: {EGenerateColors[language]}
                           </i>
                         </li>
                         <li>

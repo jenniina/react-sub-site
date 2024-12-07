@@ -231,14 +231,24 @@ export enum EColors {
   cs = 'Barvy',
   fi = 'Värit',
 }
-export enum EGenerateRandomColors {
-  en = 'Generate random colors',
-  es = 'Generar colores aleatorios',
-  fr = 'Générer des couleurs aléatoires',
-  de = 'Zufällige Farben generieren',
-  pt = 'Gerar cores aleatórias',
-  cs = 'Generovat náhodné barvy',
-  fi = 'Generoi satunnaisia värejä',
+export enum EGenerateColors {
+  en = 'Generate colors',
+  es = 'Generar colores',
+  fr = 'Générer des couleurs',
+  de = 'Farben generieren',
+  pt = 'Gerar cores',
+  cs = 'Generovat barvy',
+  fi = 'Luo värejä',
+}
+
+export enum EClearAndGenerateNew {
+  en = 'Clear and generate new',
+  es = 'Borrar y generar nuevos',
+  fr = 'Effacer et générer de nouveaux',
+  de = 'Löschen und neu generieren',
+  pt = 'Limpar e gerar novos',
+  cs = 'Vyčistit a generovat nové',
+  fi = 'Tyhjennä ja generoi uudet',
 }
 export enum ERandomColorGeneration {
   en = 'Random color generation',
@@ -302,4 +312,23 @@ export enum ETriad {
   pt = 'Tríade',
   cs = 'Triáda',
   fi = 'Triadi',
+}
+export enum ETetrad {
+  en = 'Tetrad',
+  es = 'Tetrada',
+  fr = 'Tétrade',
+  de = 'Tetrad',
+  pt = 'Tetrade',
+  cs = 'Tetrad',
+  fi = 'Tetrad',
+}
+
+export enum ENeedAFreshSetOfColors {
+  en = 'Need a fresh set of colors? First clear the existing colors, then generate new ones',
+  es = '¿Necesitas un nuevo conjunto de colores? Primero borra los colores existentes, luego genera nuevos',
+  fr = "Besoin d'un nouvel ensemble de couleurs? Effacez d'abord les couleurs existantes, puis générez-en de nouvelles",
+  de = 'Brauchen Sie eine neue Farbpalette? Löschen Sie zuerst die vorhandenen Farben und generieren Sie dann neue',
+  pt = 'Precisa de um novo conjunto de cores? Primeiro limpe as cores existentes, depois gere novas',
+  cs = 'Potřebujete novou sadu barev? Nejprve vymažte existující barvy a pak vygenerujte nové',
+  fi = 'Tarvitsetko uuden väripaletin? Poista ensin olemassa olevat värit ja generoi sitten uusia',
 }
