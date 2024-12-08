@@ -37,6 +37,9 @@ type SelectProps = {
   remove?: string
   clear?: string
   z?: number
+  tooltip?: boolean
+  y?: string
+  x?: string
 } & (SingleSelectProps | MultipleSelectProps)
 
 let debounceTimeout: ReturnType<typeof setTimeout>
@@ -60,6 +63,9 @@ export function Select({
   remove = ERemove[language] ?? 'remove',
   clear = EClear[language] ?? 'clear',
   selectAnOption = EPleaseSelectAnOption[language] ?? 'Select an option',
+  tooltip,
+  y,
+  x,
 }: SelectProps) {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -185,7 +191,9 @@ export function Select({
 
   return (
     <div
-      className={`${styles['select-container']} select-container ${className}`}
+      className={`${styles['select-container']} select-container ${className} ${
+        tooltip ? 'tooltip-wrap' : ''
+      }`}
       style={{ zIndex: z }}
     >
       <span
@@ -195,7 +203,8 @@ export function Select({
                 instructions
                 ${styles[`${id}-instructions`]} 
                 ${styles.instructions}
-                ${hide ? styles.scr : ''}`}
+                ${hide && tooltip ? `tooltip ${y ?? ''} ${x ?? ''}` : ''}
+                ${hide && !tooltip ? styles.scr : ''}`}
       >
         {instructions}
       </span>

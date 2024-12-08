@@ -240,13 +240,13 @@
 .color-edit-container > .color-select > div > span {
   max-width: calc(100% - 3em);
 }
-.mode-container {
+.mode-container.color-edit-container {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
   align-items: center;
   gap: 1em;
-  margin: 0 auto;
+  margin: 0;
 }
 .mode-container > .color-select {
   max-width: 12rem;
