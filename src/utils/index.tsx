@@ -1,6 +1,13 @@
 import { Fragment } from 'react'
 import { EEtc, ELanguages } from '../interfaces'
 import { SelectOption } from '../components/Select/Select'
+import {
+  ColorBlock,
+  ComplianceResult,
+  HSLColor,
+  TColorMode,
+} from '../components/AccessibleColors/AccessibleColors'
+import useRandomMinMax from '../hooks/useRandomMinMax'
 
 export const splitToLines = (details: string) => {
   return details.split('\n').map((line: string, index: number) => (
@@ -69,6 +76,196 @@ export const scrollIntoView = (
   if (element) {
     element.scrollIntoView({ behavior: 'smooth', block, inline })
   }
+}
+
+export const RandomRGBvalue = () => {
+  return Math.floor(Math.random() * 256)
+}
+export const adjustment = Math.round(useRandomMinMax(15, 35))
+const randomUpTo100 = () => {
+  const value = Math.ceil(useRandomMinMax(30, 100))
+  return clampValue(30, value, 100)
+}
+export const randomUpTo90 = () => {
+  const value = Math.ceil(useRandomMinMax(5, 90))
+  return clampValue(5, value, 90)
+}
+export const randomHSLColor = (type: string = 'array') => {
+  if (type === 'hsl') {
+    const h = Math.floor(Math.random() * 360)
+    const s = randomUpTo100()
+    const l = randomUpTo90()
+    return `hsl(${h}, ${s}%, ${l}%)`
+  } else {
+    const h = Math.floor(Math.random() * 360)
+    const s = randomUpTo100()
+    const l = randomUpTo90()
+    return [h, s, l]
+  }
+}
+export const generateColors = (mode: TColorMode, baseHSL: HSLColor): number[][] => {
+  const colorset: number[][] = []
+  switch (mode) {
+    case 'analogous':
+      for (let i = 1; i <= 4; i++) {
+        let adjustedL = (baseHSL.l - adjustment * i + 90) % 90
+        adjustedL = clampValue(0, adjustedL, 90)
+        const analogousHSL: [number, number, number] = [
+          (baseHSL.h + 30 * i) % 360,
+          randomUpTo100(),
+          adjustedL,
+        ]
+        colorset.push(analogousHSL)
+      }
+      break
+    case 'complementary':
+      const complementaryHSL: [number, number, number] = [
+        (baseHSL.h + 180) % 360,
+        baseHSL.s,
+        baseHSL.l,
+      ]
+      colorset.push(complementaryHSL)
+      for (let i = 1; i <= 3; i++) {
+        let adjustedL = (baseHSL.l - adjustment * i + 90) % 90
+        adjustedL = clampValue(0, adjustedL, 90)
+        const variationHSL: [number, number, number] = [
+          (complementaryHSL[0] + 30 * i) % 360,
+          randomUpTo100(),
+          adjustedL,
+        ]
+        colorset.push(variationHSL)
+      }
+      break
+    case 'triad':
+      for (let i = 1; i <= 2; i++) {
+        let adjustedL = (baseHSL.l - adjustment * i + 90) % 90
+        adjustedL = clampValue(0, adjustedL, 90)
+        const triadHSL: [number, number, number] = [
+          (baseHSL.h + 120 * i) % 360,
+          randomUpTo100(),
+          adjustedL,
+        ]
+        colorset.push(triadHSL)
+      }
+      break
+    case 'monochromatic':
+      for (let i = 1; i <= 4; i++) {
+        let adjustedL = (baseHSL.l - adjustment * i + 90) % 90
+        adjustedL = clampValue(0, adjustedL, 90)
+        const adjustedHSL: [number, number, number] = [
+          baseHSL.h,
+          randomUpTo100(),
+          adjustedL,
+        ]
+        colorset.push(adjustedHSL)
+      }
+      break
+    case 'tetrad':
+      for (let i = 1; i <= 3; i++) {
+        let adjustedL = (baseHSL.l - adjustment * i + 90) % 90
+        adjustedL = clampValue(0, adjustedL, 90)
+        const tetradHSL: [number, number, number] = [
+          (baseHSL.h + 90 * i) % 360,
+          randomUpTo100(),
+          adjustedL,
+        ]
+        colorset.push(tetradHSL)
+      }
+      break
+    default:
+      // Fallback to analogous
+      for (let i = 1; i <= 4; i++) {
+        let adjustedL = (baseHSL.l - adjustment * i + 90) % 90
+        adjustedL = clampValue(0, adjustedL, 90)
+        const defaultHSL: [number, number, number] = [
+          (baseHSL.h + 30 * i) % 360,
+          randomUpTo100(),
+          adjustedL,
+        ]
+        colorset.push(defaultHSL)
+      }
+      break
+  }
+  return colorset
+}
+
+export const buildColors = (
+  existingColors: ColorBlock[],
+  colorMode: string | undefined,
+  colorsReset: boolean
+): number[][] => {
+  const newColors: number[][] = []
+
+  if (existingColors.length === 0 || colorsReset) {
+    const baseColor = randomHSLColor('array')
+    if (Array.isArray(baseColor)) {
+      newColors.push(baseColor)
+    }
+
+    // Generate additional colors based on the selected colorMode
+    const generated = generateColors(colorMode as TColorMode, {
+      h: baseColor[0] as number,
+      s: baseColor[1] as number,
+      l: baseColor[2] as number,
+    })
+    newColors.push(...generated)
+
+    return newColors
+  } else {
+    // Generate two new colors based on the last existing color
+    const baseColor = existingColors[existingColors.length - 1]
+    let baseHSL: HSLColor
+
+    try {
+      if (baseColor.colorFormat === 'hex') {
+        const rgb = hexToRGB(baseColor.color)
+        baseHSL = rgbToHSL(rgb.r, rgb.g, rgb.b)
+      } else if (baseColor.colorFormat === 'rgb') {
+        const rgbMatch = baseColor.color.match(
+          /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i
+        )
+        if (rgbMatch) {
+          const r = Number(rgbMatch[1])
+          const g = Number(rgbMatch[2])
+          const b = Number(rgbMatch[3])
+          baseHSL = rgbToHSL(r, g, b)
+        } else {
+          throw new Error('Invalid RGB format')
+        }
+      } else if (baseColor.colorFormat === 'hsl') {
+        const hslMatch = baseColor.color.match(
+          /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i
+        )
+        if (hslMatch) {
+          const h = Number(hslMatch[1])
+          const s = Number(hslMatch[2])
+          const l = Number(hslMatch[3])
+          baseHSL = { h, s, l }
+        } else {
+          throw new Error('Invalid HSL format')
+        }
+      } else {
+        throw new Error('Unsupported color format')
+      }
+
+      const generated = generateColors(colorMode as TColorMode, baseHSL)
+      if (colorMode === 'tetrad') newColors.push(...generated.slice(0, 3))
+      else newColors.push(...generated.slice(0, 2))
+    } catch (error) {
+      console.error('Error generating new colors:', error)
+      // Fallback to generating two random colors
+      for (let i = 0; i < 2; i++) {
+        const randomColor = randomHSLColor('array')
+        if (Array.isArray(randomColor)) {
+          newColors.push(randomColor)
+        }
+      }
+    }
+  }
+  if (!colorsReset && existingColors.length > 0) {
+    return newColors
+  }
+  return newColors
 }
 
 export function clampValue(min: number, val: number, max: number) {
@@ -212,6 +409,60 @@ export const getContrastRatio = (lum1: number, lum2: number) => {
   const lighter = Math.max(lum1, lum2)
   const darker = Math.min(lum1, lum2)
   return (lighter + 0.05) / (darker + 0.05)
+}
+
+export const determineAccessibility = (
+  color1: ColorBlock,
+  color2: ColorBlock
+): ComplianceResult => {
+  const parseC = (color: ColorBlock) => {
+    let r: number, g: number, b: number
+
+    if (color.colorFormat === 'hex') {
+      ;({ r, g, b } = hexToRGB(color.color))
+    } else if (color.colorFormat === 'rgb') {
+      const rgbMatch = color.color.match(
+        /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i
+      )
+      if (rgbMatch) {
+        r = Number(rgbMatch[1])
+        g = Number(rgbMatch[2])
+        b = Number(rgbMatch[3])
+      } else {
+        throw new Error('Invalid RGB format')
+      }
+    } else if (color.colorFormat === 'hsl') {
+      const hslMatch = color.color.match(
+        /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i
+      )
+      if (hslMatch) {
+        const h = Number(hslMatch[1])
+        const s = Number(hslMatch[2])
+        const l = Number(hslMatch[3])
+        ;({ r, g, b } = hslToRGB(h, s, l))
+      } else {
+        throw new Error('Invalid HSL format')
+      }
+    } else {
+      throw new Error('Unsupported color format')
+    }
+
+    return { r, g, b }
+  }
+
+  const rgb1 = parseC(color1)
+  const rgb2 = parseC(color2)
+
+  const lum1 = calculateLuminance(rgb1.r, rgb1.g, rgb1.b)
+  const lum2 = calculateLuminance(rgb2.r, rgb2.g, rgb2.b)
+
+  const contrastRatio = getContrastRatio(lum1, lum2)
+
+  return {
+    isAAARegularTextCompliant: contrastRatio >= 7,
+    isAARegularTextCompliant: contrastRatio >= 4.5,
+    isAAUIComponentsCompliant: contrastRatio >= 3,
+  }
 }
 
 export function elementsOverlap(element1: HTMLElement, element2: HTMLElement) {

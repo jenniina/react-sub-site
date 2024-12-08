@@ -120,6 +120,46 @@ export const useDragAndDrop = <T extends Item, S extends string>(
     }
   }, [updatedItems, statuses, storageKeys])
 
+  const deepEqualItem = (a: T | S, b: T | S) => {
+    return JSON.stringify(a) === JSON.stringify(b)
+  }
+
+  useEffect(() => {
+    setListItemsByStatus((prev) => {
+      const updatedList = { ...prev }
+
+      statuses.forEach((status, index) => {
+        const existingItems = prev[status]?.items || []
+        const initialStatusItems = initialState.filter((item) => item.status === status)
+
+        // Create a map for easy lookup
+        const initialItemsMap = new Map(initialStatusItems.map((item) => [item.id, item]))
+
+        // Update existing items if content has changed
+        const updatedExistingItems = existingItems.map((item) => {
+          const initialItem = initialItemsMap.get(item.id)
+          return initialItem && !deepEqualItem(item, initialItem) ? initialItem : item
+        })
+
+        // Identify new items to add
+        const existingIds = new Set(existingItems.map((item) => item.id))
+        const newItems = initialStatusItems.filter((item) => !existingIds.has(item.id))
+
+        if (newItems.length > 0) {
+          // Append new items without altering the order of existing items
+          updatedList[status].items = [...existingItems, ...newItems]
+          updatedList[status].setItems(updatedList[status].items)
+        } else if (updatedExistingItems.length !== existingItems.length) {
+          // Update items if any existing item content has changed
+          updatedList[status].items = updatedExistingItems
+          updatedList[status].setItems(updatedList[status].items)
+        }
+      })
+
+      return updatedList
+    })
+  }, [initialState, statuses])
+
   useEffect(() => {
     statuses?.forEach((status, index) => {
       const items = updatedItems?.filter((item) => item.status === status)

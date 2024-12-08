@@ -1,10 +1,10 @@
 import { FC, useEffect, useState } from 'react'
-import { EError, ELanguages, ESubmit } from '../../interfaces'
-import styles from './accessiblecolors.module.css'
-import { Select, SelectOption } from '../Select/Select'
-import { ESelectColorFormat } from '../../interfaces/colors'
-import { useAppDispatch } from '../../hooks/useAppDispatch'
-import { notify } from '../../reducers/notificationReducer'
+import { EError, ELanguages, ESubmit } from '../../../interfaces'
+import styles from '../accessiblecolors.module.css'
+import { Select, SelectOption } from '../../Select/Select'
+import { ESelectColorFormat } from '../../../interfaces/colors'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
+import { notify } from '../../../reducers/notificationReducer'
 
 interface Props {
   language: ELanguages
@@ -104,7 +104,7 @@ const ColorsInput: FC<Props> = ({
       default:
         break
     }
-  }, [])
+  }, [block.color, block.colorFormat])
 
   const change = (format: 'hex' | 'rgb' | 'hsl') => {
     try {
@@ -224,6 +224,7 @@ const ColorsInput: FC<Props> = ({
         hide
         options={colorFormatOptions}
         value={selected}
+        z={1}
         onChange={(o) => {
           setSelected(o)
           if (o?.value === 'hex') {

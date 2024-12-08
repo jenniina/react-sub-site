@@ -8,6 +8,14 @@ The site is divided into three main sections: About, Portfolio and Contact. The 
 
 ### Portfolio
 
+#### Accessible Colors App
+
+The accessible colors app is a tool that can be used to check the contrast ratio between two colors. The app uses the WCAG 2.0 guidelines to determine if the contrast ratio between two colors is sufficient for people with visual impairments. The app has a user interface that allows the user to generate color palettes (analogous, complementary, triadic, tetradic and monochromatic) and visually see whether the colors have sufficient contrast thanks to the icons that indicate the contrast ratio. The app also has a color picker that allows the user to select colors. The resulting color palettes may be saved in SVG or PNG format.
+
+#### Memory Card Game
+
+The memory card game has a user interface that allows the user to select the number of cards to play with and the type of card to use (icons, numbers or letters). The game also has a timer that counts up the time it takes to complete the game. The high scores are saved to a MongoDB database. The game stores the high scores for each difficulty level and displays the top 5 scores for each level and card type.
+
 #### Quiz App
 
 The quiz app is a simple quiz application that was built with React. The app uses the Open Trivia Database API to fetch questions and answers. The app has a simple user interface that allows the user to select a category and difficulty level for the quiz. The app also has a timer that counts down the time left to answer the questions.

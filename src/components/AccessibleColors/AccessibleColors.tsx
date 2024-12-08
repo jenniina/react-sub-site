@@ -1,4 +1,4 @@
-import { useState, useEffect, FC, useRef } from 'react'
+import { useState, useEffect, FC, useRef, useMemo } from 'react'
 import styles from './accessiblecolors.module.css'
 import { notify } from '../../reducers/notificationReducer'
 import useLocalStorage from '../../hooks/useStorage'
@@ -12,7 +12,7 @@ import {
 } from '../../interfaces'
 import { useDragAndDrop } from '../../hooks/useDragAndDrop'
 import { EAddAColor } from '../../interfaces/draganddrop'
-import ColorsInput from './ColorsInput'
+import ColorsInput from './components/ColorsInput'
 import {
   EAAACompliantWithID,
   EAAACompliantWithUI,
@@ -66,154 +66,17 @@ import {
 } from '../../utils'
 import { Select, SelectOption } from '../Select/Select'
 import useRandomMinMax from '../../hooks/useRandomMinMax'
+import useAccessibleColors from './hooks/useAccessibleColors'
 
 const randomString = getRandomString(5)
 
-//const colorModeOptions = ['analogous', 'complementary', 'triad', 'monochromatic']
-
-// let random: number = Math.floor(Math.random() * colorModeOptions.length)
-
-interface ComplianceResult {
+export interface ComplianceResult {
   isAARegularTextCompliant: boolean
   isAAARegularTextCompliant: boolean
   isAAUIComponentsCompliant: boolean
 }
 
-const determineAccessibility = (
-  color1: ColorBlock,
-  color2: ColorBlock
-): ComplianceResult => {
-  const parseC = (color: ColorBlock) => {
-    let r: number, g: number, b: number
-
-    if (color.colorFormat === 'hex') {
-      ;({ r, g, b } = hexToRGB(color.color))
-    } else if (color.colorFormat === 'rgb') {
-      const rgbMatch = color.color.match(
-        /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i
-      )
-      if (rgbMatch) {
-        r = Number(rgbMatch[1])
-        g = Number(rgbMatch[2])
-        b = Number(rgbMatch[3])
-      } else {
-        throw new Error('Invalid RGB format')
-      }
-    } else if (color.colorFormat === 'hsl') {
-      const hslMatch = color.color.match(
-        /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i
-      )
-      if (hslMatch) {
-        const h = Number(hslMatch[1])
-        const s = Number(hslMatch[2])
-        const l = Number(hslMatch[3])
-        ;({ r, g, b } = hslToRGB(h, s, l))
-      } else {
-        throw new Error('Invalid HSL format')
-      }
-    } else {
-      throw new Error('Unsupported color format')
-    }
-
-    return { r, g, b }
-  }
-
-  const rgb1 = parseC(color1)
-  const rgb2 = parseC(color2)
-
-  const lum1 = calculateLuminance(rgb1.r, rgb1.g, rgb1.b)
-  const lum2 = calculateLuminance(rgb2.r, rgb2.g, rgb2.b)
-
-  const contrastRatio = getContrastRatio(lum1, lum2)
-
-  return {
-    isAAARegularTextCompliant: contrastRatio >= 7,
-    isAARegularTextCompliant: contrastRatio >= 4.5,
-    isAAUIComponentsCompliant: contrastRatio >= 3,
-  }
-}
-
-const status = 'colors'
-const format = 'hsl'
-
-const defaultColors: ColorBlock[] = [
-  {
-    id: 1,
-    color: 'hsl(200, 50%, 10%)',
-    luminance: 0.011540526030345211,
-    status: status,
-    colorFormat: format,
-    compliantColors: {
-      AAA_RegularText: [4, 5],
-      AA_UIComponents: [3, 4, 5],
-      AA_RegularText: [3, 4, 5],
-    },
-  },
-  {
-    id: 2,
-    color: 'hsl(200, 50%, 35%)',
-    luminance: 0.12179747967530058,
-    status: status,
-    colorFormat: format,
-    compliantColors: {
-      AAA_RegularText: [],
-      AA_UIComponents: [4, 5],
-      AA_RegularText: [5],
-    },
-  },
-  {
-    id: 3,
-    color: 'hsl(200, 50%, 55%)',
-    luminance: 0.3071249100459835,
-    status: status,
-    colorFormat: format,
-    compliantColors: {
-      AAA_RegularText: [],
-      AA_UIComponents: [1],
-      AA_RegularText: [1],
-    },
-  },
-  {
-    id: 4,
-    color: 'hsl(200, 50%, 75%)',
-    luminance: 0.5493970089199802,
-    status: status,
-    colorFormat: format,
-    compliantColors: {
-      AAA_RegularText: [1],
-      AA_UIComponents: [1, 2],
-      AA_RegularText: [1],
-    },
-  },
-  {
-    id: 5,
-    color: 'hsl(200, 50%, 90%)',
-    luminance: 0.800081557105977,
-    status: status,
-    colorFormat: format,
-    compliantColors: {
-      AAA_RegularText: [1],
-      AA_UIComponents: [1, 2],
-      AA_RegularText: [1, 2],
-    },
-  },
-]
-
-////
-//
-//
-//
-//
-//
-////
-
-enum ComplianceLevel {
-  AA_RegularText = 'AA_RegularText',
-  AAA_RegularText = 'AAA_RegularText',
-  AA_UIComponents = 'AA_UIComponents',
-}
-
-interface ColorBlock {
+export interface ColorBlock {
   id: number
   color: string
   luminance: number
@@ -225,11 +88,57 @@ interface ColorBlock {
     AA_UIComponents: number[]
   }
 }
+
+export type TColorMode =
+  | 'analogous'
+  | 'complementary'
+  | 'triad'
+  | 'tetrad'
+  | 'monochromatic'
+
+export interface HSLColor {
+  h: number
+  s: number
+  l: number
+}
+
+export enum ComplianceLevel {
+  AA_RegularText = 'AA_RegularText',
+  AAA_RegularText = 'AAA_RegularText',
+  AA_UIComponents = 'AA_UIComponents',
+}
+
+////
+//
+//
+//
+//
+//
+////
+
 interface Props {
   language: ELanguages
 }
-
+const status = 'colors'
 const AccessibleColors: FC<Props> = ({ language }) => {
+  const {
+    colors,
+    setColors,
+    addColor,
+    removeColor,
+    updateColor,
+    currentColor,
+    setCurrentColor,
+    resetColors,
+    clearColors,
+    mode,
+    setMode,
+    makeColorPalette,
+    setColorsReset,
+  } = useAccessibleColors('analogous')
+
+  const statuses = useMemo(() => [status], [])
+
   const dispatch = useAppDispatch()
   const lightTheme = useTheme()
   const toggleTheme = useThemeUpdate()
@@ -239,19 +148,9 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     true
   )
 
-  const [colors, setColors, deleteColors] = useLocalStorage<ColorBlock[]>(
-    'Jenniina-colorsAccessibility',
-    defaultColors
-  )
-  const [currentColor, setCurrentColor] = useLocalStorage<string>(
-    'Jenniina-currentColor',
-    '#7D7D7D'
-  )
-  const [idCounter, setIdCounter] = useLocalStorage<number>('Jenniina-idCounter', 1)
-
   const { isDragging, listItemsByStatus, handleDragging, handleUpdate } = useDragAndDrop(
     colors,
-    [status]
+    statuses
   )
   const dragOverItem = useRef<number>(0)
   const [theTarget, setTheTarget] = useState<number>(0)
@@ -261,74 +160,11 @@ const AccessibleColors: FC<Props> = ({ language }) => {
   const width = `${widthNumber}em`
 
   const fontSizeMultiplier = widthNumber / baseWidth
-
   const dynamicFontSize = {
     tooltip: `${0.7 * fontSizeMultiplier}em`,
     colorName: `${0.7 * fontSizeMultiplier}em`,
     input: `${0.8 * fontSizeMultiplier}em`,
   }
-
-  const updateCompliance = (
-    color1: ColorBlock,
-    color2: ColorBlock
-  ): { updatedColor1: ColorBlock; updatedColor2: ColorBlock } => {
-    const compliance = determineAccessibility(color1, color2)
-
-    if (compliance.isAAARegularTextCompliant) {
-      color1.compliantColors.AAA_RegularText.push(color2.id)
-      color2.compliantColors.AAA_RegularText.push(color1.id)
-    }
-    if (compliance.isAARegularTextCompliant) {
-      color1.compliantColors.AA_RegularText.push(color2.id)
-      color2.compliantColors.AA_RegularText.push(color1.id)
-    }
-    if (compliance.isAAUIComponentsCompliant) {
-      color1.compliantColors.AA_UIComponents.push(color2.id)
-      color2.compliantColors.AA_UIComponents.push(color1.id)
-    }
-
-    // Remove duplicates
-    color1.compliantColors.AAA_RegularText = Array.from(
-      new Set(color1.compliantColors.AAA_RegularText)
-    )
-    color1.compliantColors.AA_RegularText = Array.from(
-      new Set(color1.compliantColors.AA_RegularText)
-    )
-    color1.compliantColors.AA_UIComponents = Array.from(
-      new Set(color1.compliantColors.AA_UIComponents)
-    )
-
-    color2.compliantColors.AAA_RegularText = Array.from(
-      new Set(color2.compliantColors.AAA_RegularText)
-    )
-    color2.compliantColors.AA_RegularText = Array.from(
-      new Set(color2.compliantColors.AA_RegularText)
-    )
-    color2.compliantColors.AA_UIComponents = Array.from(
-      new Set(color2.compliantColors.AA_UIComponents)
-    )
-
-    return { updatedColor1: color1, updatedColor2: color2 }
-  }
-
-  const [showBlock, setShowBlock] = useState(false)
-  const delay = 500
-
-  useEffect(() => {
-    let timer: NodeJS.Timeout
-    if (colors.length < 1) {
-      timer = setTimeout(() => {
-        setShowBlock(true)
-      }, delay)
-    } else {
-      setShowBlock(false)
-    }
-    return () => {
-      if (timer) {
-        clearTimeout(timer)
-      }
-    }
-  }, [colors.length])
 
   const RandomRGBvalue = () => {
     return Math.floor(Math.random() * 256)
@@ -369,246 +205,13 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     colorModeOptions[random]
   )
 
-  interface HSLColor {
-    h: number
-    s: number
-    l: number
-  }
-
-  const adjustment = Math.round(useRandomMinMax(15, 35))
-
-  type TColorMode = 'analogous' | 'complementary' | 'triad' | 'tetrad' | 'monochromatic'
-
-  const generateColors = (mode: TColorMode, baseHSL: HSLColor): number[][] => {
-    const colorset: number[][] = []
-    switch (mode) {
-      case 'analogous':
-        for (let i = 1; i <= 4; i++) {
-          let adjustedL = (baseHSL.l - adjustment * i + 90) % 90
-          adjustedL = clampValue(0, adjustedL, 90)
-          const analogousHSL: [number, number, number] = [
-            (baseHSL.h + 30 * i) % 360,
-            randomUpTo100(),
-            adjustedL,
-          ]
-          colorset.push(analogousHSL)
-        }
-        break
-      case 'complementary':
-        const complementaryHSL: [number, number, number] = [
-          (baseHSL.h + 180) % 360,
-          baseHSL.s,
-          baseHSL.l,
-        ]
-        const complementaryRGB = hslToRGB(...complementaryHSL)
-        colorset.push([complementaryRGB.r, complementaryRGB.g, complementaryRGB.b])
-        for (let i = 1; i <= 3; i++) {
-          let adjustedL = (baseHSL.l - adjustment * i + 90) % 90
-          adjustedL = clampValue(0, adjustedL, 90)
-          const variationHSL: [number, number, number] = [
-            (complementaryHSL[0] + 30 * i) % 360,
-            randomUpTo100(),
-            adjustedL,
-          ]
-          colorset.push(variationHSL)
-        }
-        break
-      case 'triad':
-        for (let i = 1; i <= 2; i++) {
-          let adjustedL = (baseHSL.l - adjustment * i + 90) % 90
-          adjustedL = clampValue(0, adjustedL, 90)
-          const triadHSL: [number, number, number] = [
-            (baseHSL.h + 120 * i) % 360,
-            randomUpTo100(),
-            adjustedL,
-          ]
-          colorset.push(triadHSL)
-        }
-        break
-      case 'monochromatic':
-        for (let i = 1; i <= 4; i++) {
-          let adjustedL = (baseHSL.l - adjustment * i + 90) % 90
-          adjustedL = clampValue(0, adjustedL, 90)
-          const adjustedHSL: [number, number, number] = [
-            baseHSL.h,
-            randomUpTo100(),
-            adjustedL,
-          ]
-          colorset.push(adjustedHSL)
-        }
-        break
-      case 'tetrad':
-        for (let i = 1; i <= 3; i++) {
-          let adjustedL = (baseHSL.l - adjustment * i + 90) % 90
-          adjustedL = clampValue(0, adjustedL, 90)
-          const tetradHSL: [number, number, number] = [
-            (baseHSL.h + 90 * i) % 360,
-            randomUpTo100(),
-            adjustedL,
-          ]
-          colorset.push(tetradHSL)
-        }
-        break
-      default:
-        // Fallback to analogous
-        for (let i = 1; i <= 4; i++) {
-          let adjustedL = (baseHSL.l - adjustment * i + 90) % 90
-          adjustedL = clampValue(0, adjustedL, 90)
-          const defaultHSL: [number, number, number] = [
-            (baseHSL.h + 30 * i) % 360,
-            randomUpTo100(),
-            adjustedL,
-          ]
-          colorset.push(defaultHSL)
-        }
-        break
-    }
-    return colorset
-  }
-  const [colorsReset, setColorsReset] = useState(false)
-
-  const buildColors = (existingColors: ColorBlock[]): number[][] => {
-    const newColors: number[][] = []
-
-    if (existingColors.length === 0 || colorsReset) {
-      //// Generate a base color
-      // const baseColor = [RandomRGBvalue(), RandomRGBvalue(), RandomRGBvalue()]
-      const baseColor = randomHSLColor('array')
-      if (Array.isArray(baseColor)) {
-        newColors.push(baseColor)
-      }
-      // const baseHSL = rgbToHSL(
-      //   Number(baseColor[0]),
-      //   Number(baseColor[1]),
-      //   Number(baseColor[2])
-      // )
-      // baseHSL.s = clampValue(30, baseHSL.s, 100)
-      // baseHSL.l = clampValue(5, baseHSL.l, 90)
-
-      // Generate additional colors based on the selected colorMode
-      const generated = generateColors(colorMode?.value as TColorMode, {
-        h: baseColor[0] as number,
-        s: baseColor[1] as number,
-        l: baseColor[2] as number,
-      })
-      newColors.push(...generated)
-
-      return newColors
-    } else {
-      // Generate two new colors based on the last existing color
-      const baseColor = existingColors[existingColors.length - 1]
-      let baseHSL: HSLColor
-
-      try {
-        if (baseColor.colorFormat === 'hex') {
-          const rgb = hexToRGB(baseColor.color)
-          baseHSL = rgbToHSL(rgb.r, rgb.g, rgb.b)
-        } else if (baseColor.colorFormat === 'rgb') {
-          const rgbMatch = baseColor.color.match(
-            /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i
-          )
-          if (rgbMatch) {
-            const r = Number(rgbMatch[1])
-            const g = Number(rgbMatch[2])
-            const b = Number(rgbMatch[3])
-            baseHSL = rgbToHSL(r, g, b)
-          } else {
-            throw new Error('Invalid RGB format')
-          }
-        } else if (baseColor.colorFormat === 'hsl') {
-          const hslMatch = baseColor.color.match(
-            /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i
-          )
-          if (hslMatch) {
-            const h = Number(hslMatch[1])
-            const s = Number(hslMatch[2])
-            const l = Number(hslMatch[3])
-            baseHSL = { h, s, l }
-          } else {
-            throw new Error('Invalid HSL format')
-          }
-        } else {
-          throw new Error('Unsupported color format')
-        }
-
-        const generated = generateColors(colorMode?.value as TColorMode, baseHSL)
-        newColors.push(...generated.slice(0, 2))
-      } catch (error) {
-        console.error('Error generating new colors:', error)
-        // Fallback to generating two random colors
-        for (let i = 0; i < 2; i++) {
-          const randomColor = randomHSLColor('array')
-          if (Array.isArray(randomColor)) {
-            newColors.push(randomColor)
-          }
-        }
-      }
-    }
-    if (!colorsReset && existingColors.length > 0) {
-      return newColors.slice(0, 2)
-    }
-    return newColors
-  }
-
-  const clear = () => {
-    deleteColors()
-    setColors([])
-    setIdCounter(1)
-  }
-
-  const reset = () => {
-    deleteColors()
-    setColors(defaultColors)
-    setIdCounter(defaultColors.length + 1)
-  }
+  useEffect(() => {
+    setMode(colorMode?.value as TColorMode)
+  }, [colorMode])
 
   const resetAndMake = () => {
     setColorsReset(true)
-    clear()
-  }
-
-  useEffect(() => {
-    if (colorsReset && colors.length === 0) {
-      makeColorPalette()
-    }
-  }, [colorsReset, colors])
-
-  const makeColorPalette = () => {
-    const newHSLColors = buildColors(colors)
-    const newColorBlocks: ColorBlock[] = newHSLColors.map((hsl, index) => {
-      const rgb = hslToRGB(hsl[0], hsl[1], hsl[2])
-      const lum = calculateLuminance(rgb.r, rgb.g, rgb.b)
-      return {
-        id: idCounter + index,
-        color: `hsl(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%)`,
-        luminance: lum,
-        status: status,
-        colorFormat: 'hsl',
-        compliantColors: {
-          AA_RegularText: [],
-          AAA_RegularText: [],
-          AA_UIComponents: [],
-        },
-      }
-    })
-
-    let updatedColors = [...colors, ...newColorBlocks]
-    updatedColors = updatedColors.map((existingColor) => {
-      newColorBlocks.forEach((newColor) => {
-        const { updatedColor1, updatedColor2 } = updateCompliance(existingColor, newColor)
-        existingColor = updatedColor1
-        newColor = updatedColor2
-      })
-      return existingColor
-    })
-
-    setColors(updatedColors)
-    setIdCounter(idCounter + newColorBlocks.length)
-
-    // random = Math.floor(Math.random() * colorModeOptions.length)
-    // setColorMode(colorModeOptions[random])
-
-    setColorsReset(false)
+    clearColors()
   }
 
   const parseColor = (color: string, format: string): string => {
@@ -1015,225 +618,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     img.src = url
   }
 
-  const addColor = () => {
-    const { r, g, b } = hexToRGB(currentColor)
-    const { h, s, l } = rgbToHSL(r, g, b)
-    const lum = calculateLuminance(r, g, b)
-
-    const newColorBlock: ColorBlock = {
-      id: idCounter,
-      color: `hsl(${h}, ${s}%, ${l}%)`,
-      luminance: lum,
-      status: status,
-      colorFormat: 'hsl',
-      compliantColors: {
-        AA_RegularText: [],
-        AAA_RegularText: [],
-        AA_UIComponents: [],
-      },
-    }
-
-    // Iterate over existing color blocks to determine compliance levels
-    listItemsByStatus[status]?.items?.forEach((block) => {
-      const compliance = determineAccessibility(newColorBlock, block)
-
-      if (compliance.isAAARegularTextCompliant) {
-        newColorBlock.compliantColors?.AAA_RegularText.push(block.id)
-        block.compliantColors?.AAA_RegularText.push(newColorBlock.id)
-      } else if (compliance.isAARegularTextCompliant) {
-        newColorBlock.compliantColors?.AA_RegularText.push(block.id)
-        block.compliantColors?.AA_RegularText.push(newColorBlock.id)
-      } else if (compliance.isAAUIComponentsCompliant) {
-        newColorBlock.compliantColors?.AA_UIComponents?.push(block.id)
-        block.compliantColors?.AA_UIComponents?.push(newColorBlock.id)
-      }
-    })
-
-    // Remove duplicate IDs by converting to Set and back to array
-    const updatedColors = listItemsByStatus[status]?.items.map((block) => ({
-      ...block,
-      compliantColors: {
-        AAA_RegularText: Array.from(new Set(block.compliantColors?.AAA_RegularText)),
-        AA_RegularText: Array.from(new Set(block.compliantColors?.AA_RegularText)),
-        AA_UIComponents: Array.from(new Set(block.compliantColors?.AA_UIComponents)),
-      },
-    }))
-
-    setIdCounter(idCounter + 1)
-    setColors([...updatedColors, newColorBlock])
-  }
-
-  const removeColor = (id: number) => {
-    const updatedColors = listItemsByStatus[status]?.items
-      .filter((block) => block.id !== id)
-      .map((block) => ({
-        ...block,
-        compliantColors: {
-          AAA_RegularText: block.compliantColors?.AAA_RegularText.filter(
-            (compliantId) => compliantId !== id
-          ),
-          AA_RegularText: block.compliantColors?.AA_RegularText.filter(
-            (compliantId) => compliantId !== id
-          ),
-          AA_UIComponents: block.compliantColors?.AA_UIComponents?.filter(
-            (compliantId) => compliantId !== id
-          ),
-        },
-      }))
-
-    setColors(updatedColors)
-  }
-
-  const updateColor = (id: number, newColor: string, format: 'hex' | 'rgb' | 'hsl') => {
-    try {
-      let storedColor: string
-      let r: number, g: number, b: number
-
-      // Parse and store the color based on the selected format
-      if (format === 'hsl') {
-        const hslMatch = newColor.match(
-          /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i
-        )
-        if (!hslMatch) throw new Error('Invalid HSL format')
-
-        const h = Number(hslMatch[1])
-        const s = Number(hslMatch[2])
-        const l = Number(hslMatch[3])
-
-        if (h < 0 || h > 360 || s < 0 || s > 100 || l < 0 || l > 100) {
-          throw new Error('HSL values out of range')
-        }
-
-        storedColor = `hsl(${h}, ${s}%, ${l}%)`
-
-        const rgb = hslToRGB(h, s, l)
-        r = rgb.r
-        g = rgb.g
-        b = rgb.b
-      } else if (format === 'rgb') {
-        const rgbMatch = newColor.match(
-          /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i
-        )
-        if (!rgbMatch) throw new Error('Invalid RGB format')
-
-        const rVal = Number(rgbMatch[1])
-        const gVal = Number(rgbMatch[2])
-        const bVal = Number(rgbMatch[3])
-
-        if ([rVal, gVal, bVal].some((v) => v < 0 || v > 255)) {
-          throw new Error('RGB values must be between 0 and 255')
-        }
-
-        storedColor = `rgb(${rVal}, ${gVal}, ${bVal})`
-        r = rVal
-        g = gVal
-        b = bVal
-      } else if (format === 'hex') {
-        if (!/^#([0-9A-F]{3}){1,2}$/i.test(newColor))
-          throw new Error('Invalid Hex format')
-
-        storedColor = newColor.toUpperCase()
-        const rgb = hexToRGB(storedColor)
-        r = rgb.r
-        g = rgb.g
-        b = rgb.b
-      } else {
-        throw new Error('Unsupported color format')
-      }
-
-      const lum = calculateLuminance(r, g, b)
-
-      const updatedColors = listItemsByStatus[status]?.items.map((block) => {
-        if (block.id === id) {
-          return {
-            ...block,
-            color: storedColor,
-            colorFormat: format,
-            luminance: lum,
-            compliantColors: {
-              AAA_RegularText: [],
-              AA_RegularText: [],
-              AA_UIComponents: [],
-            },
-          }
-        } else {
-          const accessibility = determineAccessibility(block, {
-            id,
-            color: storedColor,
-            colorFormat: format,
-            luminance: lum,
-            status: block.status,
-            compliantColors: {
-              AAA_RegularText: [],
-              AA_RegularText: [],
-              AA_UIComponents: [],
-            },
-          })
-          return {
-            ...block,
-            compliantColors: {
-              AAA_RegularText: accessibility.isAAARegularTextCompliant
-                ? [...new Set([...block.compliantColors?.AAA_RegularText, id])]
-                : block.compliantColors?.AAA_RegularText.filter((cid) => cid !== id),
-              AA_RegularText: accessibility.isAARegularTextCompliant
-                ? [...new Set([...block.compliantColors?.AA_RegularText, id])]
-                : block.compliantColors?.AA_RegularText.filter((cid) => cid !== id),
-              AA_UIComponents: accessibility.isAAUIComponentsCompliant
-                ? [...new Set([...block.compliantColors?.AA_UIComponents, id])]
-                : block.compliantColors?.AA_UIComponents?.filter((cid) => cid !== id),
-            },
-          }
-        }
-      }) as ColorBlock[]
-
-      const determineComplianceForBlock = (
-        block: ColorBlock,
-        allColors: ColorBlock[]
-      ) => {
-        let aaa: number[] = []
-        let aaUI: number[] = []
-        let aaRegular: number[] = []
-
-        allColors.forEach((other) => {
-          if (other.id === block.id) return
-          const accessibility = determineAccessibility(block, other)
-          if (accessibility.isAAARegularTextCompliant) {
-            aaa.push(other.id)
-          }
-          if (accessibility.isAARegularTextCompliant) {
-            aaRegular.push(other.id)
-          }
-          if (accessibility.isAAUIComponentsCompliant) {
-            aaUI.push(other.id)
-          }
-        })
-
-        return {
-          AAA_RegularText: Array.from(new Set(aaa)),
-          AA_RegularText: Array.from(new Set(aaRegular)),
-          AA_UIComponents: Array.from(new Set(aaUI)),
-        }
-      }
-
-      const updatedBlockIndex = updatedColors.findIndex((block) => block.id === id)
-      if (updatedBlockIndex !== -1) {
-        const recalculatedCompliance = determineComplianceForBlock(
-          updatedColors[updatedBlockIndex],
-          updatedColors
-        )
-        updatedColors[updatedBlockIndex] = {
-          ...updatedColors[updatedBlockIndex],
-          compliantColors: recalculatedCompliance,
-        }
-      }
-
-      setColors([...updatedColors])
-    } catch (error) {
-      console.error('Error updating color:', error)
-      dispatch(notify(`${EError[language]}: ${(error as Error).message}`, true, 4))
-    }
-  }
-
   const handleDragStart = (e: React.DragEvent<HTMLLIElement>, position: number) => {
     e.dataTransfer.setData('text/plain', JSON.stringify({ type: 'item', id: position }))
   }
@@ -1253,6 +637,9 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     const data = JSON.parse(e.dataTransfer.getData('text/plain'))
     if (data.type === 'item') {
       handleUpdate(data.id, status, theTarget)
+      setTimeout(() => {
+        setColors(listItemsByStatus[status]?.items)
+      }, 200)
       handleDragging(false)
     }
   }
@@ -1262,15 +649,9 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       !listItemsByStatus[status]?.items ||
       listItemsByStatus[status]?.items.length < 1
     ) {
-      setColors(defaultColors)
+      resetColors()
     }
   }, [])
-
-  // useEffect(() => {
-  //   if (listItemsByStatus[status]?.items.length < 1) {
-  //     setIdCounter(1)
-  //   }
-  // }, [colors])
 
   const times = 0.04
 
@@ -1367,10 +748,10 @@ const AccessibleColors: FC<Props> = ({ language }) => {
         <button className='gray small' type='button' onClick={addColor}>
           {EAddAColor[language]}
         </button>
-        <button className='gray small' type='button' onClick={reset}>
+        <button className='gray small' type='button' onClick={resetColors}>
           {EReset[language]}
         </button>
-        <button className='gray small' type='button' onClick={clear}>
+        <button className='gray small' type='button' onClick={clearColors}>
           {EClear[language]}
         </button>
 
@@ -1386,6 +767,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
             hideDelete
             tooltip={true}
             y='above narrow2'
+            z={3}
           />
           <button
             className='gray small tooltip-wrap'
@@ -1410,11 +792,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       >
         {listItemsByStatus[status]?.items.map((block) => {
           return (
-            <ul
-              key={`${block.color}-${block.id}`}
-              className={styles['block-wrap']}
-              onDrop={handleDrop}
-            >
+            <ul key={`${block.id}`} className={styles['block-wrap']} onDrop={handleDrop}>
               <li
                 className={styles['color-wrap']}
                 title={`ID: ${block.id}`}

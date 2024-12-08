@@ -499,7 +499,6 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
       }
     }
   }
-
   const handleRemoveColor = (content: Data['content']) => {
     if (window.confirm(`${EAreYouSureYouWantToRemoveThis[language]} (${content})`)) {
       setData((prevData) => prevData.filter((d) => d.content !== content))
