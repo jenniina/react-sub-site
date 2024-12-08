@@ -26,6 +26,7 @@ import {
   EComplementary,
   EEditSize,
   EGenerateColors,
+  EGeneratesColorsBasedOnLastColor,
   EHideColorName,
   EHighestAAAComplianceWithRegularText,
   EMinimumAAComplianceWithRegularText,
@@ -35,6 +36,7 @@ import {
   ESaveAsPNG,
   ESaveAsSVG,
   ESelectColorMode,
+  ESelectColorModeForNewColors,
   EShowColorName,
   ETetrad,
   EToggleColorNameVisibility,
@@ -60,7 +62,6 @@ import {
   hexToRGB,
   hslToHex,
   hslToRGB,
-  removeMinus,
   rgbToHex,
   rgbToHSL,
 } from '../../utils'
@@ -384,14 +385,14 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     switch (mode) {
       case 'analogous':
         for (let i = 1; i <= 4; i++) {
-          const adjustedL = removeMinus((baseHSL.l - adjustment * i + 90) % 90)
+          let adjustedL = (baseHSL.l - adjustment * i + 90) % 90
+          adjustedL = clampValue(0, adjustedL, 90)
           const analogousHSL: [number, number, number] = [
             (baseHSL.h + 30 * i) % 360,
             randomUpTo100(),
             adjustedL,
           ]
-          const rgb = hslToRGB(...analogousHSL)
-          colorset.push([rgb.r, rgb.g, rgb.b])
+          colorset.push(analogousHSL)
         }
         break
       case 'complementary':
@@ -403,63 +404,63 @@ const AccessibleColors: FC<Props> = ({ language }) => {
         const complementaryRGB = hslToRGB(...complementaryHSL)
         colorset.push([complementaryRGB.r, complementaryRGB.g, complementaryRGB.b])
         for (let i = 1; i <= 3; i++) {
-          const adjustedL = removeMinus((baseHSL.l - adjustment * i + 90) % 90)
+          let adjustedL = (baseHSL.l - adjustment * i + 90) % 90
+          adjustedL = clampValue(0, adjustedL, 90)
           const variationHSL: [number, number, number] = [
             (complementaryHSL[0] + 30 * i) % 360,
             randomUpTo100(),
             adjustedL,
           ]
-          const variationRGB = hslToRGB(...variationHSL)
-          colorset.push([variationRGB.r, variationRGB.g, variationRGB.b])
+          colorset.push(variationHSL)
         }
         break
       case 'triad':
         for (let i = 1; i <= 2; i++) {
-          const adjustedL = removeMinus((baseHSL.l - adjustment * i + 90) % 90)
+          let adjustedL = (baseHSL.l - adjustment * i + 90) % 90
+          adjustedL = clampValue(0, adjustedL, 90)
           const triadHSL: [number, number, number] = [
             (baseHSL.h + 120 * i) % 360,
             randomUpTo100(),
             adjustedL,
           ]
-          const rgb = hslToRGB(...triadHSL)
-          colorset.push([rgb.r, rgb.g, rgb.b])
+          colorset.push(triadHSL)
         }
         break
       case 'monochromatic':
         for (let i = 1; i <= 4; i++) {
-          const adjustedL = removeMinus((baseHSL.l - adjustment * i + 90) % 90)
+          let adjustedL = (baseHSL.l - adjustment * i + 90) % 90
+          adjustedL = clampValue(0, adjustedL, 90)
           const adjustedHSL: [number, number, number] = [
             baseHSL.h,
             randomUpTo100(),
             adjustedL,
           ]
-          const rgb = hslToRGB(...adjustedHSL)
-          colorset.push([rgb.r, rgb.g, rgb.b])
+          colorset.push(adjustedHSL)
         }
         break
       case 'tetrad':
         for (let i = 1; i <= 3; i++) {
-          const adjustedL = removeMinus((baseHSL.l - adjustment * i + 90) % 90)
+          let adjustedL = (baseHSL.l - adjustment * i + 90) % 90
+          adjustedL = clampValue(0, adjustedL, 90)
           const tetradHSL: [number, number, number] = [
             (baseHSL.h + 90 * i) % 360,
             randomUpTo100(),
             adjustedL,
           ]
-          const rgb = hslToRGB(...tetradHSL)
-          colorset.push([rgb.r, rgb.g, rgb.b])
+          colorset.push(tetradHSL)
         }
         break
       default:
         // Fallback to analogous
         for (let i = 1; i <= 4; i++) {
-          const adjustedL = removeMinus((baseHSL.l - adjustment * i + 90) % 90)
+          let adjustedL = (baseHSL.l - adjustment * i + 90) % 90
+          adjustedL = clampValue(0, adjustedL, 90)
           const defaultHSL: [number, number, number] = [
             (baseHSL.h + 30 * i) % 360,
             randomUpTo100(),
             adjustedL,
           ]
-          const rgb = hslToRGB(...defaultHSL)
-          colorset.push([rgb.r, rgb.g, rgb.b])
+          colorset.push(defaultHSL)
         }
         break
     }
@@ -497,21 +498,21 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     } else {
       // Generate two new colors based on the last existing color
       const baseColor = existingColors[existingColors.length - 1]
-      let baseRGB: { r: number; g: number; b: number }
+      let baseHSL: HSLColor
 
       try {
         if (baseColor.colorFormat === 'hex') {
-          baseRGB = hexToRGB(baseColor.color)
+          const rgb = hexToRGB(baseColor.color)
+          baseHSL = rgbToHSL(rgb.r, rgb.g, rgb.b)
         } else if (baseColor.colorFormat === 'rgb') {
           const rgbMatch = baseColor.color.match(
             /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i
           )
           if (rgbMatch) {
-            baseRGB = {
-              r: Number(rgbMatch[1]),
-              g: Number(rgbMatch[2]),
-              b: Number(rgbMatch[3]),
-            }
+            const r = Number(rgbMatch[1])
+            const g = Number(rgbMatch[2])
+            const b = Number(rgbMatch[3])
+            baseHSL = rgbToHSL(r, g, b)
           } else {
             throw new Error('Invalid RGB format')
           }
@@ -523,7 +524,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
             const h = Number(hslMatch[1])
             const s = Number(hslMatch[2])
             const l = Number(hslMatch[3])
-            baseRGB = hslToRGB(h, s, l)
+            baseHSL = { h, s, l }
           } else {
             throw new Error('Invalid HSL format')
           }
@@ -531,19 +532,23 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           throw new Error('Unsupported color format')
         }
 
-        const baseHSL = rgbToHSL(baseRGB.r, baseRGB.g, baseRGB.b)
         const generated = generateColors(colorMode?.value as TColorMode, baseHSL)
         newColors.push(...generated.slice(0, 2))
       } catch (error) {
         console.error('Error generating new colors:', error)
         // Fallback to generating two random colors
         for (let i = 0; i < 2; i++) {
-          newColors.push([RandomRGBvalue(), RandomRGBvalue(), RandomRGBvalue()])
+          const randomColor = randomHSLColor('array')
+          if (Array.isArray(randomColor)) {
+            newColors.push(randomColor)
+          }
         }
       }
     }
-
-    return newColors.slice(0, existingColors.length + 2)
+    if (!colorsReset && existingColors.length > 0) {
+      return newColors.slice(0, 2)
+    }
+    return newColors
   }
 
   const clear = () => {
@@ -558,26 +563,25 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     setIdCounter(defaultColors.length + 1)
   }
 
-  const resetAndFetch = () => {
+  const resetAndMake = () => {
     setColorsReset(true)
     clear()
   }
 
   useEffect(() => {
     if (colorsReset && colors.length === 0) {
-      fetchColorPalette()
+      makeColorPalette()
     }
   }, [colorsReset, colors])
 
-  const fetchColorPalette = () => {
-    const newRGBColors = buildColors(colors)
-    const newColorBlocks: ColorBlock[] = newRGBColors.map((rgb, index) => {
-      const [r, g, b] = rgb
-      const hsl = rgbToHSL(r, g, b)
-      const lum = calculateLuminance(r, g, b)
+  const makeColorPalette = () => {
+    const newHSLColors = buildColors(colors)
+    const newColorBlocks: ColorBlock[] = newHSLColors.map((hsl, index) => {
+      const rgb = hslToRGB(hsl[0], hsl[1], hsl[2])
+      const lum = calculateLuminance(rgb.r, rgb.g, rgb.b)
       return {
         id: idCounter + index,
-        color: `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`,
+        color: `hsl(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%)`,
         luminance: lum,
         status: status,
         colorFormat: 'hsl',
@@ -602,8 +606,8 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     setColors(updatedColors)
     setIdCounter(idCounter + newColorBlocks.length)
 
-    random = Math.floor(Math.random() * colorModeOptions.length)
-    setColorMode(colorModeOptions[random])
+    // random = Math.floor(Math.random() * colorModeOptions.length)
+    // setColorMode(colorModeOptions[random])
 
     setColorsReset(false)
   }
@@ -638,9 +642,9 @@ const AccessibleColors: FC<Props> = ({ language }) => {
         /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i
       )
       if (hslMatch) {
-        let h = Number(hslMatch[1])
-        let s = Number(hslMatch[2])
-        let l = Number(hslMatch[3])
+        let h = clampValue(0, Number(hslMatch[1]), 360)
+        let s = clampValue(0, Number(hslMatch[2]), 100)
+        let l = clampValue(0, Number(hslMatch[3]), 100)
 
         h = (h + 360) % 360
         s = clampValue(0, s, 100)
@@ -1372,31 +1376,34 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           {EClear[language]}
         </button>
 
-        <button className='gray small' type='button' onClick={fetchColorPalette}>
-          {EGenerateColors[language]}
+        <button className='gray small' type='button' onClick={resetAndMake}>
+          {EClearAndGenerateNew[language]}
         </button>
-        {!showBlock && (
-          <button className='gray small' type='button' onClick={resetAndFetch}>
-            {EClearAndGenerateNew[language]}
-          </button>
-        )}
 
-        {showBlock && (
-          <div
-            className={`${styles['color-edit-container']} ${styles['mode-container']}`}
+        <div className={`${styles['color-edit-container']} ${styles['mode-container']}`}>
+          <Select
+            options={colorModeOptions}
+            value={colorMode}
+            onChange={(o) => setColorMode(o)}
+            id='color-mode'
+            instructions={ESelectColorModeForNewColors[language]}
+            className={`${styles['color-select']}`}
+            hide
+            hideDelete
+            tooltip={true}
+            y='above narrow2'
+          />
+          <button
+            className='gray small tooltip-wrap'
+            type='button'
+            onClick={makeColorPalette}
           >
-            <Select
-              options={colorModeOptions}
-              value={colorMode}
-              onChange={(o) => setColorMode(o)}
-              id='color-mode'
-              instructions={ESelectColorMode[language]}
-              className={`${styles['color-select']}`}
-              hide
-              hideDelete
-            />
-          </div>
-        )}
+            {EGenerateColors[language]}
+            <span className='tooltip above narrow2'>
+              {EGeneratesColorsBasedOnLastColor[language]}
+            </span>
+          </button>{' '}
+        </div>
       </div>
       <div
         id='color-blocks'

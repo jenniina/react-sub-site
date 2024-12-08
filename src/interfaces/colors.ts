@@ -341,3 +341,21 @@ export enum ENeedAFreshSetOfColors {
   cs = 'Potřebujete novou sadu barev? Nejprve vymažte existující barvy a pak vygenerujte nové',
   fi = 'Tarvitsetko uuden väripaletin? Poista ensin olemassa olevat värit ja generoi sitten uusia',
 }
+export enum EGeneratesColorsBasedOnLastColor {
+  en = 'Uses the last color as the basis for new colors',
+  es = 'Utiliza el último color como base para nuevos colores',
+  fr = 'Utilise la dernière couleur comme base pour de nouvelles couleurs',
+  de = 'Verwendet die letzte Farbe als Basis für neue Farben',
+  pt = 'Usa a última cor como base para novas cores',
+  cs = 'Používá poslední barvu jako základ pro nové barvy',
+  fi = 'Käyttää viimeistä väriä uusien värien perustana',
+}
+export enum ESelectColorModeForNewColors {
+  en = 'Select color mode for generating new colors',
+  es = 'Seleccionar modo de color para generar nuevos colores',
+  fr = 'Sélectionnez le mode couleur pour générer de nouvelles couleurs',
+  de = 'Wählen Sie den Farbmodus zum Generieren neuer Farben aus',
+  pt = 'Selecione o modo de cor para gerar novas cores',
+  cs = 'Vyberte režim barvy pro generování nových barev',
+  fi = 'Valitse värimoodi uusien värien luomista varten',
+}
