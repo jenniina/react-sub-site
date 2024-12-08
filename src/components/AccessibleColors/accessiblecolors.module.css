@@ -296,8 +296,7 @@
 
 .inputs.hex-input > label {
   flex-flow: column nowrap;
-  margin-top: 1.55em;
-  margin-bottom: 0.65em;
+  margin-top: 0.35em;
   gap: 0.1em;
 }
 .inputs.hex-input > label > span {

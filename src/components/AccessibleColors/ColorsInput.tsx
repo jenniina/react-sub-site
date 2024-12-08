@@ -5,7 +5,6 @@ import { Select, SelectOption } from '../Select/Select'
 import { ESelectColorFormat } from '../../interfaces/colors'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
-import { c } from 'vite/dist/node/types.d-aGj9QkWt'
 
 interface Props {
   language: ELanguages
@@ -123,6 +122,7 @@ const ColorsInput: FC<Props> = ({
           setH(h)
           setS(s)
           setL(l)
+          updateColor(block.id, hex, 'hex')
         } else {
           throw new Error('Invalid Hex format.')
         }
@@ -136,6 +136,7 @@ const ColorsInput: FC<Props> = ({
           setH(h)
           setS(s)
           setL(l)
+          updateColor(block.id, `rgb(${r}, ${g}, ${b})`, 'rgb')
         } else {
           throw new Error('Invalid RGB values.')
         }
@@ -149,6 +150,7 @@ const ColorsInput: FC<Props> = ({
           setB(b)
           const hexVal = rgbToHex(r, g, b)
           setHex(hexVal)
+          updateColor(block.id, `hsl(${h}, ${s}%, ${l}%)`, 'hsl')
         } else {
           throw new Error('Invalid HSL values.')
         }
@@ -227,14 +229,17 @@ const ColorsInput: FC<Props> = ({
           if (o?.value === 'hex') {
             const currentHex = rgbToHex(r, g, b)
             setHex(currentHex)
+            updateColor(block.id, currentHex, 'hex')
           } else if (o?.value === 'rgb') {
             setR(r)
             setG(g)
             setB(b)
+            updateColor(block.id, `rgb(${r}, ${g}, ${b})`, 'rgb')
           } else if (o?.value === 'hsl') {
             setH(h)
             setS(s)
             setL(l)
+            updateColor(block.id, `hsl(${h}, ${s}%, ${l}%)`, 'hsl')
           }
         }}
       />
@@ -316,18 +321,6 @@ const ColorsInput: FC<Props> = ({
               style={{ maxWidth: `${width}`, fontSize: fontSize }}
             />
           </label>
-
-          <button
-            style={{
-              minWidth: `calc(100% - 4px)`,
-              maxWidth: `calc(100% - 4px)`,
-              fontSize: fontSize,
-            }}
-            type='submit'
-            className={`${styles['color-format-submit']} small gray`}
-          >
-            {ESubmit[language]}
-          </button>
         </form>
       )}
 
@@ -376,18 +369,6 @@ const ColorsInput: FC<Props> = ({
               style={{ maxWidth: `${width}`, fontSize: fontSize }}
             />
           </label>
-
-          <button
-            style={{
-              minWidth: `calc(100% - 4px)`,
-              maxWidth: `calc(100% - 4px)`,
-              fontSize: fontSize,
-            }}
-            type='submit'
-            className={`${styles['color-format-submit']} small gray`}
-          >
-            {ESubmit[language]}
-          </button>
         </form>
       )}
     </>
