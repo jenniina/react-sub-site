@@ -4,7 +4,6 @@ import { notify } from '../../reducers/notificationReducer'
 import useLocalStorage from '../../hooks/useStorage'
 import {
   EDarkMode,
-  EDeleted,
   EError,
   ELanguages,
   ELightMode,
@@ -1083,7 +1082,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       }))
 
     setColors(updatedColors)
-    dispatch(notify(EDeleted[language], false, 5))
   }
 
   const updateColor = (id: number, newColor: string, format: 'hex' | 'rgb' | 'hsl') => {
@@ -1376,10 +1374,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           {EClear[language]}
         </button>
 
-        <button className='gray small' type='button' onClick={resetAndMake}>
-          {EClearAndGenerateNew[language]}
-        </button>
-
         <div className={`${styles['color-edit-container']} ${styles['mode-container']}`}>
           <Select
             options={colorModeOptions}
@@ -1402,7 +1396,10 @@ const AccessibleColors: FC<Props> = ({ language }) => {
             <span className='tooltip above narrow2'>
               {EGeneratesColorsBasedOnLastColor[language]}
             </span>
-          </button>{' '}
+          </button>
+          <button className='gray small' type='button' onClick={resetAndMake}>
+            {EClearAndGenerateNew[language]}
+          </button>
         </div>
       </div>
       <div
