@@ -5,6 +5,7 @@ import { Select, SelectOption } from '../Select/Select'
 import { ESelectColorFormat } from '../../interfaces/colors'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
+import { c } from 'vite/dist/node/types.d-aGj9QkWt'
 
 interface Props {
   language: ELanguages
@@ -106,35 +107,7 @@ const ColorsInput: FC<Props> = ({
     }
   }, [])
 
-  useEffect(() => {
-    if (!selected) return
-
-    switch (selected.value) {
-      case 'hex': {
-        // Convert current RGB to Hex
-        const hexVal = rgbToHex(r, g, b)
-        setHex(hexVal)
-        break
-      }
-      case 'rgb': {
-        break
-      }
-      case 'hsl': {
-        const { h, s, l } = rgbToHSL(r, g, b)
-        setH(h)
-        setS(s)
-        setL(l)
-        break
-      }
-      default:
-        break
-    }
-  }, [selected, r, g, b, rgbToHex, rgbToHSL])
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    const format = selected?.value as 'hex' | 'rgb' | 'hsl'
-
+  const change = (format: 'hex' | 'rgb' | 'hsl') => {
     try {
       let formattedColor: string
 
@@ -186,6 +159,11 @@ const ColorsInput: FC<Props> = ({
       console.error(error.message)
       dispatch(notify(EError[language] + ' ' + error.message, true, 4))
     }
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    change(selected?.value as 'hex' | 'rgb' | 'hsl')
   }
 
   const handleHSLChange = (component: 'h' | 's' | 'l', value: number) => {
@@ -246,6 +224,18 @@ const ColorsInput: FC<Props> = ({
         value={selected}
         onChange={(o) => {
           setSelected(o)
+          if (o?.value === 'hex') {
+            const currentHex = rgbToHex(r, g, b)
+            setHex(currentHex)
+          } else if (o?.value === 'rgb') {
+            setR(r)
+            setG(g)
+            setB(b)
+          } else if (o?.value === 'hsl') {
+            setH(h)
+            setS(s)
+            setL(l)
+          }
         }}
       />
 
