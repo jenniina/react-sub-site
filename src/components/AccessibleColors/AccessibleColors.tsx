@@ -10,7 +10,7 @@ import {
   ERemove,
   EReset,
 } from '../../interfaces'
-import { useDragAndDrop } from './hooks/useDragAndDrop'
+import { useDragAndDrop } from './hooks/useColorDragAndDrop'
 import { EAddAColor } from '../../interfaces/draganddrop'
 import ColorsInput from './components/ColorsInput'
 import {
