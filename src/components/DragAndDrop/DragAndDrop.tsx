@@ -19,6 +19,7 @@ import {
   ECannotRemoveLastCategory,
   EAreYouSureYouWantToProceed,
   ESpecialCharactersNotAllowed,
+  EOr,
 } from '../../interfaces'
 import { useTheme } from '../../hooks/useTheme'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
@@ -30,6 +31,7 @@ import {
   EInvalidColorName,
   ELongTextWithoutColorNameAtTheEnd,
   ESomeTextNoColorName,
+  EThisWillResultInAPinkCardWithAppleWrittenOnIt,
   ETipIfYouAddAGenericWordYouCanColorTheCard,
   EWithOrangeWrittenLast,
   EWithPurpleWrittenLast,
@@ -575,6 +577,57 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
         <button onClick={startAgainEmpty}>{EClear[language]}</button>
       </div>
 
+      <div className={styles['add-color']}>
+        <h2>{EAddAColor[language]}</h2>
+        <p>
+          {EForExample[language]} "darkblue" {EOr[language]} "slategray".{' '}
+          {EYouMayAlsoAddOtherWordsForGenericUse[language]}.{' '}
+          {ETipIfYouAddAGenericWordYouCanColorTheCard[language]}.{' '}
+          {EThisWillResultInAPinkCardWithAppleWrittenOnIt[language]}.
+        </p>
+        <form
+          onSubmit={(e) => handleAddColor(e, newColor, newStatusForItem.label as Status)}
+        >
+          <div className={`input-wrap ${styles['input-wrap']}`}>
+            <label htmlFor='dnd-color-add'>
+              <input
+                required
+                type='text'
+                id='dnd-color-add'
+                value={newColor}
+                onChange={(e) => setNewColor(e.target.value)}
+              />
+              <span>{EAddAColor[language]}</span>
+            </label>
+          </div>
+          <Select
+            language={language}
+            id='dnd-color-status'
+            className={`${styles['color-select']} color`}
+            instructions={ESelectCategory[language]}
+            hide
+            options={statuses.map((status) => ({ label: status, value: status }))}
+            value={newStatusForItem}
+            onChange={(o) =>
+              setNewStatusForItem(
+                o || {
+                  label: statuses[0],
+                  value: statuses[0],
+                }
+              )
+            }
+          />
+          <button type='submit' disabled={sending}>
+            {EAddAColor[language]}
+          </button>
+        </form>
+        <p className='textcenter'>
+          <span>{ENeedHelp[language]} </span>{' '}
+          <a href='https://htmlcolorcodes.com/color-names/' target='_blank'>
+            {EColorNames[language]}
+          </a>
+        </p>
+      </div>
       <div className={styles['add-status']}>
         <h2>{EAddANewCategory[language]}</h2>
         <form
@@ -599,56 +652,6 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
             {ESubmit[language]}
           </button>
         </form>
-      </div>
-      <div className={styles['add-color']}>
-        <h2>{EAddAColor[language]}</h2>
-        <p>
-          {EForExample[language]} darkblue or lightslategray.{' '}
-          {EYouMayAlsoAddOtherWordsForGenericUse[language]}.{' '}
-          {ETipIfYouAddAGenericWordYouCanColorTheCard[language]}
-        </p>
-        <form
-          onSubmit={(e) => handleAddColor(e, newColor, newStatusForItem.label as Status)}
-        >
-          <div className='input-wrap'>
-            <label htmlFor='dnd-color-add'>
-              <input
-                required
-                type='text'
-                id='dnd-color-add'
-                value={newColor}
-                onChange={(e) => setNewColor(e.target.value)}
-              />
-              <span>{EAddAColor[language]}</span>
-            </label>
-          </div>
-          <Select
-            language={language}
-            id='dnd-color-status'
-            className='color'
-            instructions={ESelectCategory[language]}
-            hide
-            options={statuses.map((status) => ({ label: status, value: status }))}
-            value={newStatusForItem}
-            onChange={(o) =>
-              setNewStatusForItem(
-                o || {
-                  label: statuses[0],
-                  value: statuses[0],
-                }
-              )
-            }
-          />
-          <button type='submit' disabled={sending}>
-            {EAddAColor[language]}
-          </button>
-        </form>
-        <p>
-          <span>{ENeedHelp[language]} </span>{' '}
-          <a href='https://htmlcolorcodes.com/color-names/' target='_blank'>
-            {EColorNames[language]}
-          </a>
-        </p>
       </div>
     </>
   )

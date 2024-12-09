@@ -68,7 +68,7 @@ function CardSingle({
     textShadow:
       data?.lightness == 'dark'
         ? '1px 1px 1px black'
-        : '-8px 0 12px rgba(255,255,255,0.5), 8px 0 12px rgba(255,255,255,0.5)',
+        : '1px -1px 3px rgba(255,255,255,0.6), -1px 1px 3px rgba(255,255,255,0.6)',
   }
   const styleReset: CSSProperties = {
     color: 'var(--color-primary-20)',

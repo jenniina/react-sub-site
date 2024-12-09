@@ -37,16 +37,16 @@ function NavPortfolio({ language }: { language: ELanguages }) {
 
   const scrollHorizontal = useSideScroll() as RefObject<HTMLUListElement>
 
-  const scrollAmount = 50
+  const scrollAmount = 60
 
   function leftScroll() {
     if (scrollHorizontal.current && windowWidth > breakpointSmall)
-      scrollHorizontal.current.scrollLeft -= 100
+      scrollHorizontal.current.scrollLeft -= 200
     else if (scrollHorizontal.current) scrollHorizontal.current.scrollLeft -= scrollAmount
   }
   function rightScroll() {
     if (scrollHorizontal.current && windowWidth > breakpointSmall)
-      scrollHorizontal.current.scrollLeft += 100
+      scrollHorizontal.current.scrollLeft += 200
     else if (scrollHorizontal.current) scrollHorizontal.current.scrollLeft += scrollAmount
   }
 
@@ -121,7 +121,7 @@ function NavPortfolio({ language }: { language: ELanguages }) {
               const itemRight = itemLeft + (itemRefs[index].current?.offsetWidth ?? 0)
               const scrollLeft = scrollHorizontal.current.scrollLeft
               const scrollRight = scrollLeft + scrollHorizontal.current.clientWidth
-              const amount = 60
+              const amount = 100
 
               // Scroll into view with an additional offset of 40px
               if (itemLeft < scrollLeft + amount) {

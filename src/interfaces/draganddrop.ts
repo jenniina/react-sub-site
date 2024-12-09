@@ -205,6 +205,15 @@ export enum ETipIfYouAddAGenericWordYouCanColorTheCard {
   cs = 'Tip: Pokud přidáte obecné slovo, můžete kartu obarvit napsáním názvu barvy na konci, například "červené pink"',
   fi = 'Vinkki: Jos lisäät yleisen sanan, voit värittää kortin kirjoittamalla värinimen viimeiseksi, esim. "omena pink"',
 }
+export enum EThisWillResultInAPinkCardWithAppleWrittenOnIt {
+  en = 'This will result in a pink card with "apple" written on it',
+  es = 'Esto resultará en una tarjeta rosa con "manzana" escrita en ella',
+  fr = 'Cela donnera une carte rose avec "pomme" écrit dessus',
+  de = 'Das ergibt eine rosa Karte mit "Apfel" darauf geschrieben',
+  pt = 'Isso resultará em um cartão rosa com "maçã" escrito nele',
+  cs = 'To způsobí růžovou kartu s napsaným "jablko"',
+  fi = 'Tämä johtaa pinkkiin korttiin, jossa lukee "omena"',
+}
 export enum EAddGenericCardsAndColorThem {
   en = 'Add generic cards and color them',
   es = 'Agregue tarjetas genéricas y colórelas',
