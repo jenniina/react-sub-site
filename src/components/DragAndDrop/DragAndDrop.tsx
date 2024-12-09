@@ -49,7 +49,7 @@ const initialStatuses: string[] = ['good', 'neutral', 'bad']
 export const DragAndDrop = ({ language }: { language: ELanguages }) => {
   const dispatch = useAppDispatch()
 
-  const [data, setData] = useState<Data[]>([])
+  const [data, setData, removeData] = useLocalStorage<Data[]>('DnD-data', [])
 
   const initialColors = [
     { content: 'orchid', color: 'orchid' },
@@ -309,6 +309,8 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
       userColors.length > 0 &&
       window.confirm(EDoYouWantToDeleteYourColorsText[language])
     ) {
+      removeData()
+      setData([])
       removeUserColors()
       for (let i: number = 0; i < initialColors.length; i++) {
         const color = initialColors[i].color || 'lightgray'
@@ -330,6 +332,8 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
       }
       return array
     } else {
+      removeData()
+      setData([])
       for (let i: number = 0; i < userColors.length; i++) {
         const color = userColors[i].color || 'lightgray' // Use user-defined colors or default to 'lightgray'
         const content = userColors[i].content || 'lightgray' // Use user-defined colors or default to 'lightgray'
@@ -389,12 +393,18 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
         userColors.length > 0 &&
         window.confirm(EDoYouWantToDeleteYourColorsText[language])
       ) {
+        statuses.forEach((status) => {
+          listItemsByStatus[status].removeItems()
+        })
         removeStatuses()
         setStatuses(initialStatuses)
+        removeData()
         setData([])
       } else {
         removeStatuses()
         setStatuses(initialStatuses)
+        removeData()
+        setData([])
         setData(
           userColors.map((item, index) => {
             const color = item.color || 'lightgray'
@@ -420,13 +430,12 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
       return storedData
     }
     const initialData = generateInitialData()
-    setData(initialData)
     return initialData
   }, [])
 
   useEffect(() => {
     setData(setTheData)
-  }, [])
+  }, [setTheData])
 
   const [newColor, setNewColor] = useState<string>('')
   const [newStatusForItem, setNewStatusForItem] = useState<SelectOption>({
