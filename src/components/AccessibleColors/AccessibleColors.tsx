@@ -210,6 +210,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
   }, [colorMode])
 
   const resetAndMake = () => {
+    listItemsByStatus[status].removeItems()
     setColorsReset(true)
     clearColors()
   }
@@ -346,18 +347,19 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     const padding = width / 4
     const lineHeight = indicatorSize / 20
     const fontSize = blockWidth / 10
+    const items = listItemsByStatus[status]?.items || []
 
-    const totalIndicators = listItemsByStatus[status]?.items?.length
+    const totalIndicators = items?.length
     const blockHeight =
       totalIndicators * (indicatorSize + indicatorSpacing) -
       indicatorSpacing +
       padding * 2
     const textBlockHeight = showColorName ? fontSize + padding : 0
 
-    const svgWidth = listItemsByStatus[status]?.items.length * blockWidth
+    const svgWidth = items.length * blockWidth
     const svgHeight = blockHeight + textBlockHeight * 1.6
 
-    const blocksGroup = listItemsByStatus[status]?.items
+    const blocksGroup = items
       ?.map((block, index) => {
         const xPosition = index * blockWidth
 
@@ -422,7 +424,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       })
       .join('')
 
-    const linesGroup = listItemsByStatus[status]?.items
+    const linesGroup = items
       ?.map((colorItem, idx) => {
         const yIndicator = padding + idx * (indicatorSize + indicatorSpacing)
         const yLine = yIndicator + (indicatorSize - lineHeight) / 2
@@ -441,7 +443,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       })
       .join('')
 
-    const indicatorsGroup = listItemsByStatus[status]?.items
+    const indicatorsGroup = items
       ?.map((block, index) => {
         const xPosition = index * blockWidth
 
@@ -459,15 +461,16 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           return null
         }
 
-        const indicators = listItemsByStatus[status]?.items
-          ?.filter((other) => other.id !== block.id)
+        const indicators = items
+          ?.filter((_, otherIdx) => otherIdx !== index)
           .map((other) => {
             const complianceLevel = highestCompliance(other.id)
             if (!complianceLevel) return ''
 
             return ComplianceShapes[complianceLevel]({
               xPosition,
-              yIndicator: padding + (other.id - 1) * (indicatorSize + indicatorSpacing),
+              yIndicator:
+                padding + items.indexOf(other) * (indicatorSize + indicatorSpacing),
               blockWidth,
               indicatorSize,
 
@@ -751,7 +754,14 @@ const AccessibleColors: FC<Props> = ({ language }) => {
         <button className='gray small' type='button' onClick={resetColors}>
           {EReset[language]}
         </button>
-        <button className='gray small' type='button' onClick={clearColors}>
+        <button
+          className='gray small'
+          type='button'
+          onClick={() => {
+            listItemsByStatus[status].removeItems()
+            clearColors()
+          }}
+        >
           {EClear[language]}
         </button>
 
