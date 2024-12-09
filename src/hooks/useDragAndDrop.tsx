@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import useLocalStorage from '../hooks/useStorage'
 
 export interface IClosestItem {
   offset: number
@@ -221,7 +220,6 @@ export const useDragAndDrop = <T extends Item, S extends string>(
         },
       }))
 
-      // Update local storage
       // Update local storage
       localStorage.setItem(newStorageKey, JSON.stringify(updatedItems))
       localStorage.removeItem(oldStorageKey)

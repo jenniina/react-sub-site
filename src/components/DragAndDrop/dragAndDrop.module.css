@@ -162,7 +162,7 @@
   background: none;
   border: 0;
   outline: 0;
-  padding: 0.2em;
+  padding: 0.1em 0.2em 0.3em 0.2em;
   margin: 0;
   color: currentColor;
   display: flex;
@@ -300,6 +300,21 @@ div.change-status > div.change-status > i {
 .add-status h2 {
   margin-bottom: 1em;
 }
+.input-wrap {
+  max-width: 12em;
+}
+.color-select {
+  margin: 0;
+}
+.color-select > div {
+  padding-top: 0.1em;
+  padding-bottom: 0.1em;
+}
+.color-select ~ button {
+  padding-top: 0.45em;
+  padding-bottom: 0.45em;
+}
+
 @media (min-width: 500px) {
   .grid {
     grid-template-columns: 1fr 1fr;
