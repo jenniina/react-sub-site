@@ -114,7 +114,9 @@ export default function DragAndDropPage({
               </a>
             </div>
             <h2>{EDragAndDrop[language]}</h2>
-            <p>{ESortTheColorsToADifferentContainerOr[language]}</p>
+            <p className='textcenter'>
+              {ESortTheColorsToADifferentContainerOr[language]}
+            </p>
             <DragAndDrop language={language} />
           </div>
         </section>
