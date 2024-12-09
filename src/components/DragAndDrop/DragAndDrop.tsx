@@ -354,7 +354,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
         }
         array.push(item)
       }
-      for (let i: number = 0; i < initialColors.length; i++) {
+      for (let i: number = userColors.length; i < initialColors.length; i++) {
         const color = initialColors[i].color || 'lightgray'
         const content = initialColors[i].content || 'lightgray'
         lightness = determineBackgroundLightness(color)
