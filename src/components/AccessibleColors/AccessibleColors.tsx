@@ -1,4 +1,4 @@
-import { useState, useEffect, FC, useRef, useMemo } from 'react'
+import { useState, useEffect, FC, useRef, useMemo, lazy, Suspense } from 'react'
 import styles from './accessiblecolors.module.css'
 import { notify } from '../../reducers/notificationReducer'
 import useLocalStorage from '../../hooks/useStorage'
@@ -7,12 +7,13 @@ import {
   EError,
   ELanguages,
   ELightMode,
+  ELoading,
   ERemove,
   EReset,
 } from '../../interfaces'
 import { useDragAndDrop } from './hooks/useColorDragAndDrop'
 import { EAddAColor } from '../../interfaces/draganddrop'
-import ColorsInput from './components/ColorsInput'
+//import ColorsInput from './components/ColorsInput'
 import {
   EAAACompliantWithID,
   EAAACompliantWithUI,
@@ -67,6 +68,8 @@ import {
 import { Select, SelectOption } from '../Select/Select'
 import useRandomMinMax from '../../hooks/useRandomMinMax'
 import useAccessibleColors from './hooks/useAccessibleColors'
+
+const ColorsInput = lazy(() => import('./components/ColorsInput'))
 
 const randomString = getRandomString(5)
 
@@ -983,17 +986,19 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                 {show && (
                   <>
                     <div className={styles['color-edit-container']}>
-                      <ColorsInput
-                        language={language}
-                        block={block}
-                        updateColor={updateColor}
-                        width={width}
-                        hexToRGB={hexToRGB}
-                        rgbToHSL={rgbToHSL}
-                        rgbToHex={rgbToHex}
-                        hslToRGB={hslToRGB}
-                        fontSize={`clamp(0.75rem, ${dynamicFontSize.input}, 1rem)`}
-                      />
+                      <Suspense fallback={<div>{ELoading[language]}...</div>}>
+                        <ColorsInput
+                          language={language}
+                          block={block}
+                          updateColor={updateColor}
+                          width={width}
+                          hexToRGB={hexToRGB}
+                          rgbToHSL={rgbToHSL}
+                          rgbToHex={rgbToHex}
+                          hslToRGB={hslToRGB}
+                          fontSize={`clamp(0.75rem, ${dynamicFontSize.input}, 1rem)`}
+                        />
+                      </Suspense>
                     </div>
                     <button
                       className={`tooltip-wrap small delete danger gray ${styles.remove}`}

@@ -1,10 +1,18 @@
 import { splitToLines } from '../utils'
 import styles from '../components/Store/store.module.css'
-import Order from '../components/Store/components/Order'
-import { EEmail, EHide, ELanguages, EName, EShow, ReducerProps } from '../interfaces'
+//import Order from '../components/Store/components/Order'
+import {
+  EEmail,
+  EHide,
+  ELanguages,
+  ELoading,
+  EName,
+  EShow,
+  ReducerProps,
+} from '../interfaces'
 import Hero from '../components/Hero/Hero'
 import { useSelector } from 'react-redux'
-import Orders from '../components/Store/components/Orders'
+//import Orders from '../components/Store/components/Orders'
 import {
   EBillingAddress,
   EBusinessID,
@@ -24,9 +32,12 @@ import {
   ICart,
   IInfo,
 } from '../interfaces/store'
-import { Fragment, useEffect, useState } from 'react'
+import { lazy, Suspense } from 'react'
 import { SelectOption } from '../components/Select/Select'
 import { status, paid } from '../interfaces/store'
+
+const Order = lazy(() => import('../components/Store/components/Order'))
+const Orders = lazy(() => import('../components/Store/components/Orders'))
 
 interface OrderPageProps {
   language: ELanguages
@@ -105,24 +116,28 @@ const OrderPage: React.FC<OrderPageProps> = ({ language, heading, text, type }) 
         <section className='card' style={{ position: 'relative', zIndex: 2 }}>
           <div>
             {!orderID && user && user?.role && user?.role > 1 ? (
-              <Orders
-                language={language}
-                user={user}
-                statusOptions={statusOptions}
-                paidOptions={paidOptions}
-                splitToLines={splitToLines}
-                paidStatus={paidStatus}
-                itemStatus={itemStatus}
-                info={info}
-              />
+              <Suspense fallback={<div>{ELoading[language]}...</div>}>
+                <Orders
+                  language={language}
+                  user={user}
+                  statusOptions={statusOptions}
+                  paidOptions={paidOptions}
+                  splitToLines={splitToLines}
+                  paidStatus={paidStatus}
+                  itemStatus={itemStatus}
+                  info={info}
+                />
+              </Suspense>
             ) : (
-              <Order
-                language={language}
-                paidStatus={paidStatus}
-                itemStatus={itemStatus}
-                splitToLines={splitToLines}
-                info={info}
-              />
+              <Suspense fallback={<div>{ELoading[language]}...</div>}>
+                <Order
+                  language={language}
+                  paidStatus={paidStatus}
+                  itemStatus={itemStatus}
+                  splitToLines={splitToLines}
+                  info={info}
+                />
+              </Suspense>
             )}
           </div>
         </section>
