@@ -128,20 +128,14 @@ export const generateColors = (mode: TColorMode, baseHSL: HSLColor): number[][] 
       let adjustedL =
         randomOneOrTwo === 1 ? baseHSL.l + adjustment : baseHSL.l - adjustment
       adjustedL = clampValue(0, adjustedL, 90)
-      const complementaryHSL: [number, number, number] = [
-        (baseHSL.h + 180) % 360,
-        baseHSL.s,
-        adjustedL,
-      ]
-      colorset.push(complementaryHSL)
-      for (let i = 2; i <= 4; i++) {
+      for (let i = 1; i <= 4; i++) {
         let adjustedL =
           randomOneOrTwo === 1
             ? (baseHSL.l + adjustment * i) % 90
             : (baseHSL.l - adjustment * i + 90) % 90
         adjustedL = clampValue(0, adjustedL, 90)
         const variationHSL: [number, number, number] = [
-          (complementaryHSL[0] + 30 * i) % 360,
+          i % 2 === 0 ? baseHSL.h : (baseHSL.h + 180) % 360,
           randomUpTo100(),
           adjustedL,
         ]
