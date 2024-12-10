@@ -169,18 +169,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     input: `${0.8 * fontSizeMultiplier}em`,
   }
 
-  const RandomRGBvalue = () => {
-    return Math.floor(Math.random() * 256)
-  }
-  const randomUpTo100 = () => {
-    const value = Math.ceil(useRandomMinMax(30, 100))
-    return clampValue(30, value, 100)
-  }
-  const randomUpTo90 = () => {
-    const value = Math.ceil(useRandomMinMax(5, 90))
-    return clampValue(5, value, 90)
-  }
-
   const colorModeOptions: SelectOption[] = [
     { value: 'analogous', label: EAnalogous[language] },
     { value: 'complementary', label: EComplementary[language] },

@@ -349,60 +349,6 @@ const useAccessibleColors = (initialColorMode: TColorMode) => {
     }
   }, [colorsReset, colors])
 
-  //   const updateCompliance = (
-  //     color1: ColorBlock,
-  //     color2: ColorBlock
-  //   ): { updatedColor1: ColorBlock; updatedColor2: ColorBlock } => {
-  //     const compliance = determineAccessibility(color1, color2)
-
-  //     const updatedColor1 = { ...color1 }
-  //     const updatedColor2 = { ...color2 }
-
-  //     if (compliance.isAAARegularTextCompliant) {
-  //       updatedColor1.compliantColors.AAA_RegularText = Array.from(
-  //         new Set([...updatedColor1.compliantColors.AAA_RegularText, color2.id])
-  //       )
-  //       updatedColor2.compliantColors.AAA_RegularText = Array.from(
-  //         new Set([...updatedColor2.compliantColors.AAA_RegularText, color1.id])
-  //       )
-  //     } else {
-  //       updatedColor1.compliantColors.AAA_RegularText =
-  //         updatedColor1.compliantColors.AAA_RegularText.filter((cid) => cid !== color2.id)
-  //       updatedColor2.compliantColors.AAA_RegularText =
-  //         updatedColor2.compliantColors.AAA_RegularText.filter((cid) => cid !== color1.id)
-  //     }
-
-  //     if (compliance.isAARegularTextCompliant) {
-  //       updatedColor1.compliantColors.AA_RegularText = Array.from(
-  //         new Set([...updatedColor1.compliantColors.AA_RegularText, color2.id])
-  //       )
-  //       updatedColor2.compliantColors.AA_RegularText = Array.from(
-  //         new Set([...updatedColor2.compliantColors.AA_RegularText, color1.id])
-  //       )
-  //     } else {
-  //       updatedColor1.compliantColors.AA_RegularText =
-  //         updatedColor1.compliantColors.AA_RegularText.filter((cid) => cid !== color2.id)
-  //       updatedColor2.compliantColors.AA_RegularText =
-  //         updatedColor2.compliantColors.AA_RegularText.filter((cid) => cid !== color1.id)
-  //     }
-
-  //     if (compliance.isAAUIComponentsCompliant) {
-  //       updatedColor1.compliantColors.AA_UIComponents = Array.from(
-  //         new Set([...updatedColor1.compliantColors.AA_UIComponents, color2.id])
-  //       )
-  //       updatedColor2.compliantColors.AA_UIComponents = Array.from(
-  //         new Set([...updatedColor2.compliantColors.AA_UIComponents, color1.id])
-  //       )
-  //     } else {
-  //       updatedColor1.compliantColors.AA_UIComponents =
-  //         updatedColor1.compliantColors.AA_UIComponents.filter((cid) => cid !== color2.id)
-  //       updatedColor2.compliantColors.AA_UIComponents =
-  //         updatedColor2.compliantColors.AA_UIComponents.filter((cid) => cid !== color1.id)
-  //     }
-
-  //     return { updatedColor1, updatedColor2 }
-  //   }
-
   return {
     colors,
     setColors,
