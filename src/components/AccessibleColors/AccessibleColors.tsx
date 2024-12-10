@@ -856,7 +856,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                                 width: `calc(${width} / 3)`,
                                 height: `calc(${width} / 3)`,
                               }}
-                              aria-labelledby={`span-${otherColor.id}-${block.id}-${randomString}`}
                             >
                               <span
                                 id={`span-${otherColor.id}-${block.id}-${randomString}`}
@@ -887,7 +886,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                                 margin: `calc(${width} / 15)`,
                                 borderRadius: '50%',
                               }}
-                              aria-labelledby={`span-${otherColor.id}-${block.id}-${randomString}`}
                             >
                               <span
                                 id={`span-${otherColor.id}-${block.id}-${randomString}`}
@@ -915,7 +913,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                                 height: `calc(${width} / 7)`,
                                 margin: `calc(${width} / 10.5)`,
                               }}
-                              aria-labelledby={`span-ui-${otherColor.id}-${block.id}-${randomString}`}
                             >
                               <span
                                 id={`span-ui-${otherColor.id}-${block.id}-${randomString}`}
