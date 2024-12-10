@@ -177,19 +177,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     const value = Math.ceil(useRandomMinMax(5, 90))
     return clampValue(5, value, 90)
   }
-  const randomHSLColor = (type: string = 'array') => {
-    if (type === 'hsl') {
-      const h = Math.floor(Math.random() * 360)
-      const s = randomUpTo100()
-      const l = randomUpTo90()
-      return `hsl(${h}, ${s}%, ${l}%)`
-    } else {
-      const h = Math.floor(Math.random() * 360)
-      const s = randomUpTo100()
-      const l = randomUpTo90()
-      return [h, s, l]
-    }
-  }
 
   const colorModeOptions: SelectOption[] = [
     { value: 'analogous', label: EAnalogous[language] },

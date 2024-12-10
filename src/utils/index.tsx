@@ -81,7 +81,7 @@ export const scrollIntoView = (
 export const RandomRGBvalue = () => {
   return Math.floor(Math.random() * 256)
 }
-export const adjustment = Math.round(useRandomMinMax(15, 35))
+
 const randomUpTo100 = () => {
   const value = Math.ceil(useRandomMinMax(30, 100))
   return clampValue(30, value, 100)
@@ -91,6 +91,7 @@ export const randomUpTo90 = () => {
   return clampValue(5, value, 90)
 }
 export const randomHSLColor = (type: string = 'array') => {
+  const randomOneOrTwo = Math.random() < 0.5 ? 1 : 2
   if (type === 'hsl') {
     const h = Math.floor(Math.random() * 360)
     const s = randomUpTo100()
@@ -99,16 +100,21 @@ export const randomHSLColor = (type: string = 'array') => {
   } else {
     const h = Math.floor(Math.random() * 360)
     const s = randomUpTo100()
-    const l = randomUpTo90()
+    const l = randomOneOrTwo === 1 ? 5 : 85
     return [h, s, l]
   }
 }
 export const generateColors = (mode: TColorMode, baseHSL: HSLColor): number[][] => {
+  const randomOneOrTwo = baseHSL.l < 50 ? 1 : 2
+  const adjustment = Math.round(useRandomMinMax(15, 20))
   const colorset: number[][] = []
   switch (mode) {
     case 'analogous':
       for (let i = 1; i <= 4; i++) {
-        let adjustedL = (baseHSL.l - adjustment * i + 90) % 90
+        let adjustedL =
+          randomOneOrTwo === 1
+            ? (baseHSL.l + adjustment * i) % 90
+            : (baseHSL.l - adjustment * i + 90) % 90
         adjustedL = clampValue(0, adjustedL, 90)
         const analogousHSL: [number, number, number] = [
           (baseHSL.h + 30 * i) % 360,
@@ -119,14 +125,20 @@ export const generateColors = (mode: TColorMode, baseHSL: HSLColor): number[][] 
       }
       break
     case 'complementary':
+      let adjustedL =
+        randomOneOrTwo === 1 ? baseHSL.l + adjustment : baseHSL.l - adjustment
+      adjustedL = clampValue(0, adjustedL, 90)
       const complementaryHSL: [number, number, number] = [
         (baseHSL.h + 180) % 360,
         baseHSL.s,
-        baseHSL.l,
+        adjustedL,
       ]
       colorset.push(complementaryHSL)
-      for (let i = 1; i <= 3; i++) {
-        let adjustedL = (baseHSL.l - adjustment * i + 90) % 90
+      for (let i = 2; i <= 4; i++) {
+        let adjustedL =
+          randomOneOrTwo === 1
+            ? (baseHSL.l + adjustment * i) % 90
+            : (baseHSL.l - adjustment * i + 90) % 90
         adjustedL = clampValue(0, adjustedL, 90)
         const variationHSL: [number, number, number] = [
           (complementaryHSL[0] + 30 * i) % 360,
@@ -138,7 +150,10 @@ export const generateColors = (mode: TColorMode, baseHSL: HSLColor): number[][] 
       break
     case 'triad':
       for (let i = 1; i <= 2; i++) {
-        let adjustedL = (baseHSL.l - adjustment * i + 90) % 90
+        let adjustedL =
+          randomOneOrTwo === 1
+            ? (baseHSL.l + adjustment * i) % 90
+            : (baseHSL.l - adjustment * i + 90) % 90
         adjustedL = clampValue(0, adjustedL, 90)
         const triadHSL: [number, number, number] = [
           (baseHSL.h + 120 * i) % 360,
@@ -150,7 +165,10 @@ export const generateColors = (mode: TColorMode, baseHSL: HSLColor): number[][] 
       break
     case 'monochromatic':
       for (let i = 1; i <= 4; i++) {
-        let adjustedL = (baseHSL.l - adjustment * i + 90) % 90
+        let adjustedL =
+          randomOneOrTwo === 1
+            ? (baseHSL.l + adjustment * i) % 90
+            : (baseHSL.l - adjustment * i + 90) % 90
         adjustedL = clampValue(0, adjustedL, 90)
         const adjustedHSL: [number, number, number] = [
           baseHSL.h,
@@ -162,7 +180,10 @@ export const generateColors = (mode: TColorMode, baseHSL: HSLColor): number[][] 
       break
     case 'tetrad':
       for (let i = 1; i <= 3; i++) {
-        let adjustedL = (baseHSL.l - adjustment * i + 90) % 90
+        let adjustedL =
+          randomOneOrTwo === 1
+            ? (baseHSL.l + adjustment * i) % 90
+            : (baseHSL.l - adjustment * i + 90) % 90
         adjustedL = clampValue(0, adjustedL, 90)
         const tetradHSL: [number, number, number] = [
           (baseHSL.h + 90 * i) % 360,
@@ -175,7 +196,10 @@ export const generateColors = (mode: TColorMode, baseHSL: HSLColor): number[][] 
     default:
       // Fallback to analogous
       for (let i = 1; i <= 4; i++) {
-        let adjustedL = (baseHSL.l - adjustment * i + 90) % 90
+        let adjustedL =
+          randomOneOrTwo === 1
+            ? (baseHSL.l + adjustment * i) % 90
+            : (baseHSL.l - adjustment * i + 90) % 90
         adjustedL = clampValue(0, adjustedL, 90)
         const defaultHSL: [number, number, number] = [
           (baseHSL.h + 30 * i) % 360,

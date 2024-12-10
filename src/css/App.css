@@ -1006,3 +1006,6 @@ big > i {
 #root .survey-form > h3 {
   margin-bottom: 0.5em;
 }
+.colors section > div {
+  padding-top: 2em;
+}
