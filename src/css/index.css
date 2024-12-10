@@ -44,8 +44,8 @@
       ) * var(--responsive_scale)
   );
 
-  --hue-primary: 219;
-  --hue-secondary: 39;
+  --hue-primary: 216;
+  --hue-secondary: 36;
   --sat: 100%;
   --sat-fade: 10%;
 
