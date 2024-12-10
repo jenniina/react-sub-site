@@ -27,6 +27,7 @@ const CardTypeButton: FC<CardTypeButtonProps> = ({ option, isActive, onClick }) 
       className={`tooltip-wrap ${isActive ? `${styles.active} grayer` : ''}`}
       onClick={onClick}
       disabled={isActive}
+      aria-label={option.label}
     >
       {getCardTypeIcon(option.value)}
       <span className='tooltip above narrow2 space'>{option.label}</span>
