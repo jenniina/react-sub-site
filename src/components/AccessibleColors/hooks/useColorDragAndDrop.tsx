@@ -18,10 +18,6 @@ export const useDragAndDrop = <T extends Item, S extends string>(
   const [isDragging, setIsDragging] = useState(false)
   const [updatedItems, setUpdatedItems] = useState(initialState)
 
-  useEffect(() => {
-    setUpdatedItems(initialState)
-  }, [initialState])
-
   const isLocalhost =
     window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
 
@@ -68,13 +64,11 @@ export const useDragAndDrop = <T extends Item, S extends string>(
 
   const [listItemsByStatus, setListItemsByStatus] = useState(initializeListItemsByStatus)
 
-  const isInitialSync = useRef(true)
+  // useEffect(() => {
+  //   setUpdatedItems(initialState)
+  // }, [initialState])
 
   useEffect(() => {
-    if (isInitialSync.current) {
-      isInitialSync.current = false
-      return
-    }
     statuses.forEach((status, index) => {
       const existingItems = listItemsByStatus[status]?.items || []
       const initialStatusItems = initialState.filter((item) => item.status === status)
@@ -83,13 +77,18 @@ export const useDragAndDrop = <T extends Item, S extends string>(
       const initialItemMap = new Map(initialStatusItems.map((item) => [item.id, item]))
 
       // Update existing items if their content has changed
-      const updatedExistingItems = existingItems.map((existingItem) => {
-        const initialItem = initialItemMap.get(existingItem.id)
-        if (initialItem && JSON.stringify(existingItem) !== JSON.stringify(initialItem)) {
-          return initialItem
-        }
-        return existingItem
-      })
+      const updatedExistingItems = existingItems
+        .map((existingItem) => {
+          const initialItem = initialItemMap.get(existingItem.id)
+          if (
+            initialItem &&
+            JSON.stringify(existingItem) !== JSON.stringify(initialItem)
+          ) {
+            return initialItem
+          }
+          return existingItem
+        })
+        .filter((item) => initialItemMap.has(item.id))
 
       // Identify new items to append (present in initialState but not in existingItems)
       const existingIds = new Set(existingItems.map((item) => item.id))
@@ -109,48 +108,48 @@ export const useDragAndDrop = <T extends Item, S extends string>(
       const items = listItemsByStatus[status]?.items || []
       localStorage.setItem(storageKeys[index], JSON.stringify(items))
     })
-  }, [initialState, statuses, storageKeys, listItemsByStatus, deepEqual])
+  }, [initialState, statuses, storageKeys, deepEqual])
 
   const deepEqualItem = (a: T | S, b: T | S) => {
     return JSON.stringify(a) === JSON.stringify(b)
   }
 
-  useEffect(() => {
-    statuses.forEach((status, index) => {
-      const existingItems = listItemsByStatus[status]?.items || []
-      const initialStatusItems = initialState.filter((item) => item.status === status)
+  // useEffect(() => {
+  //   statuses.forEach((status, index) => {
+  //     const existingItems = listItemsByStatus[status]?.items || []
+  //     const initialStatusItems = initialState.filter((item) => item.status === status)
 
-      // Create a map of initial items for quick lookup by ID
-      const initialItemMap = new Map(initialStatusItems.map((item) => [item.id, item]))
+  //     // Create a map of initial items for quick lookup by ID
+  //     const initialItemMap = new Map(initialStatusItems.map((item) => [item.id, item]))
 
-      // Update existing items if their content has changed
-      const updatedExistingItems = existingItems.map((existingItem) => {
-        const initialItem = initialItemMap.get(existingItem.id)
-        if (initialItem && JSON.stringify(existingItem) !== JSON.stringify(initialItem)) {
-          return initialItem
-        }
-        return existingItem
-      })
+  //     // Update existing items if their content has changed
+  //     const updatedExistingItems = existingItems.map((existingItem) => {
+  //       const initialItem = initialItemMap.get(existingItem.id)
+  //       if (initialItem && JSON.stringify(existingItem) !== JSON.stringify(initialItem)) {
+  //         return initialItem
+  //       }
+  //       return existingItem
+  //     })
 
-      // Identify new items to append (present in initialState but not in existingItems)
-      const existingIds = new Set(existingItems.map((item) => item.id))
-      const newItems = initialStatusItems.filter((item) => !existingIds.has(item.id))
+  //     // Identify new items to append (present in initialState but not in existingItems)
+  //     const existingIds = new Set(existingItems.map((item) => item.id))
+  //     const newItems = initialStatusItems.filter((item) => !existingIds.has(item.id))
 
-      // Combine updated existing items with new items
-      const combinedItems = [...updatedExistingItems, ...newItems]
+  //     // Combine updated existing items with new items
+  //     const combinedItems = [...updatedExistingItems, ...newItems]
 
-      // Only update if there are changes to prevent unnecessary re-renders
-      if (!deepEqual(existingItems, combinedItems)) {
-        listItemsByStatus[status].setItems(combinedItems)
-      }
-    })
+  //     // Only update if there are changes to prevent unnecessary re-renders
+  //     if (!deepEqual(existingItems, combinedItems)) {
+  //       listItemsByStatus[status].setItems(combinedItems)
+  //     }
+  //   })
 
-    // Update local storage for each status
-    statuses.forEach((status, index) => {
-      const items = listItemsByStatus[status]?.items || []
-      localStorage.setItem(storageKeys[index], JSON.stringify(items))
-    })
-  }, [initialState, statuses, storageKeys, listItemsByStatus, deepEqual])
+  //   // Update local storage for each status
+  //   statuses.forEach((status, index) => {
+  //     const items = listItemsByStatus[status]?.items || []
+  //     localStorage.setItem(storageKeys[index], JSON.stringify(items))
+  //   })
+  // }, [initialState, statuses, storageKeys, listItemsByStatus, deepEqual])
 
   useEffect(() => {
     setUpdatedItems(statuses.flatMap((status) => listItemsByStatus[status]?.items || []))
@@ -257,7 +256,6 @@ export const useDragAndDrop = <T extends Item, S extends string>(
         },
       }))
 
-      // Update local storage
       // Update local storage
       localStorage.setItem(newStorageKey, JSON.stringify(updatedItems))
       localStorage.removeItem(oldStorageKey)
