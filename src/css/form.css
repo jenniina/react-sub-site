@@ -240,6 +240,7 @@ input[type='radio' i] {
   border-radius: var(--radius-small);
   align-self: center;
   margin: 0 0 0 calc(var(--offset) * 2);
+  pointer-events: auto;
 }
 input[type='checkbox' i] {
   margin-right: 1.3em;
@@ -281,6 +282,7 @@ input[type='radio' i]:checked::before,
 input[type='checkbox' i]:checked::before {
   outline-color: currentColor;
   outline-width: 0.22em;
+  pointer-events: none;
 }
 input[type='radio' i]:checked::before {
   background-color: var(--color-primary-11);

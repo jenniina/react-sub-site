@@ -8,19 +8,71 @@ interface Props {
 }
 
 const Modal: FC<Props> = ({ language }) => {
-  const { modal } = useModal()
-  const [closed, setClosed] = useState(false)
+  const { modal, closeModal } = useModal()
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
+  const previouslyFocusedElement = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
-    setClosed(false)
-  }, [modal])
+    if (modal) {
+      previouslyFocusedElement.current = document.activeElement as HTMLElement
 
-  if (modal === null || modal === undefined || closed) {
+      closeButtonRef.current?.focus()
+
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Tab') {
+          const focusableElements =
+            closeButtonRef.current?.parentElement?.querySelectorAll(
+              'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            )
+          if (!focusableElements || focusableElements.length === 0) {
+            e.preventDefault()
+            return
+          }
+          const firstElement = focusableElements?.[0] as HTMLElement
+          const lastElement = focusableElements?.[
+            focusableElements.length - 1
+          ] as HTMLElement
+
+          if (e.shiftKey) {
+            // Shift + Tab
+            if (document.activeElement === firstElement) {
+              e.preventDefault()
+              lastElement?.focus()
+            }
+          } else {
+            // Tab
+            if (document.activeElement === lastElement) {
+              e.preventDefault()
+              firstElement?.focus()
+            }
+          }
+        } else if (e.key === 'Escape') {
+          handleClose()
+        }
+      }
+
+      document.addEventListener('keydown', handleKeyDown)
+
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown)
+        if (previouslyFocusedElement.current) previouslyFocusedElement.current.focus()
+        else document.body.focus()
+      }
+    }
+  }, [modal, closeButtonRef.current])
+
+  const handleClose = () => {
+    closeModal()
+    if (previouslyFocusedElement.current) previouslyFocusedElement.current.focus()
+    else document.body.focus()
+  }
+
+  if (modal === null || modal === undefined || !modal.children) {
     return null
   }
 
   return (
-    <div className={`${styles['modal-overlay']}`} onClick={() => setClosed(true)}>
+    <div className={`${styles['modal-overlay']}`} onClick={handleClose}>
       <div
         className={`${styles['modal-content']} ${modal.className ?? ''}`}
         onClick={(e) => e.stopPropagation()}
@@ -29,8 +81,9 @@ const Modal: FC<Props> = ({ language }) => {
         aria-label={modal.title}
       >
         <button
+          ref={closeButtonRef}
           className={`${styles['close-button']} tooltip-wrap`}
-          onClick={() => setClosed(true)}
+          onClick={handleClose}
         >
           <span aria-hidden='true'>&times;</span>
           <span className='scr'>{EClose[language]}</span>
