@@ -82,7 +82,9 @@ export default function TodoPage({
               <h2>{ETodoApp[language]}</h2>
               <Suspense
                 fallback={
-                  <div className='flex center margin0auto'>{ELoading[language]}...</div>
+                  <div className='flex center margin0auto textcenter'>
+                    {ELoading[language]}...
+                  </div>
                 }
               >
                 <TodoApp language={language} />

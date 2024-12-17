@@ -409,7 +409,7 @@ button.horizonal-scroll.disable {
   flex-flow: row wrap;
   gap: calc(var(--margin) * 3) 2%;
   justify-content: center;
-  margin: 0 auto;
+  margin: 2em auto 0;
 }
 .page > .inner-wrap > * {
   flex: 1 1 calc(100vw - calc(var(--page-padding) * 2) - var(--scrollbar_width));
@@ -446,7 +446,6 @@ main.main-content .fullwidth1 {
   --padd: 4%;
   position: relative;
   padding: 2em var(--padd) 1.4em;
-  z-index: 0;
 }
 
 .card > div::before,
@@ -965,6 +964,18 @@ nav .open.password-reset-container button.forgot-btn {
 #root .App .tooltip-wrap:focus .tooltip.right.below::before {
   right: unset;
   left: calc(var(--tooltip-offset) * 0.3);
+}
+#root .App .tooltip-wrap .tooltip.center,
+#root .App .tooltip-wrap .tooltip.center {
+  top: calc(50% - 0.5em);
+  left: calc(50% - var(--width) * 0.5);
+  right: unset;
+}
+.dblock {
+  display: block;
+}
+.iblock {
+  display: inline-block;
 }
 big > i {
   letter-spacing: 0.05em;

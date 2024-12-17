@@ -60,7 +60,9 @@ const QuizQuestion = ({ language }: { language: ELanguages }) => {
               <h2>{EQuizInProgress[language]}</h2>
               <Suspense
                 fallback={
-                  <div className='flex center margin0auto'>{ELoading[language]}...</div>
+                  <div className='flex center margin0auto textcenter'>
+                    {ELoading[language]}...
+                  </div>
                 }
               >
                 <Progress language={language} />
@@ -97,7 +99,9 @@ const QuizQuestion = ({ language }: { language: ELanguages }) => {
               <footer>
                 <Suspense
                   fallback={
-                    <div className='flex center margin0auto'>{ELoading[language]}...</div>
+                    <div className='flex center margin0auto textcenter'>
+                      {ELoading[language]}...
+                    </div>
                   }
                 >
                   <Timer />

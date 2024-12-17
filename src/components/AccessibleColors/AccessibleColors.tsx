@@ -582,6 +582,8 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       const link = document.createElement('a')
       link.href = pngDataUrl
       link.download = 'color-blocks.png'
+      link.target = '_blank'
+      link.rel = 'noreferrer'
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
@@ -971,7 +973,13 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                 {show && (
                   <>
                     <div className={styles['color-edit-container']}>
-                      <Suspense fallback={<div>{ELoading[language]}...</div>}>
+                      <Suspense
+                        fallback={
+                          <div className='flex center margin0auto textcenter'>
+                            {ELoading[language]}...
+                          </div>
+                        }
+                      >
                         <ColorsInput
                           language={language}
                           block={block}

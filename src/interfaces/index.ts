@@ -89,6 +89,8 @@ export interface ReducerProps {
 
 export interface ModalProps {
   children: ReactNode
+  className: string
+  title: string
 }
 
 export enum ELogin {
@@ -2814,4 +2816,58 @@ export enum ETryWithADifferentBrowser {
   pt = 'Tente com um navegador diferente',
   cs = 'Zkuste to s jiným prohlížečem',
   fi = 'Kokeile toisella selaimella',
+}
+export enum ESearchParameters {
+  en = 'Search parameters',
+  es = 'Parámetros de búsqueda',
+  fr = 'Paramètres de recherche',
+  de = 'Suchparameter',
+  pt = 'Parâmetros de pesquisa',
+  cs = 'Parametry hledání',
+  fi = 'Hakuparametrit',
+}
+export enum EFetchMore {
+  en = 'Fetch more',
+  es = 'Obtener más',
+  fr = 'Chercher plus',
+  de = 'Mehr holen',
+  pt = 'Buscar mais',
+  cs = 'Načíst více',
+  fi = 'Hae lisää',
+}
+export enum ENoMoreResults {
+  en = 'No more results',
+  es = 'No hay más resultados',
+  fr = 'Pas plus de résultats',
+  de = 'Keine weiteren Ergebnisse',
+  pt = 'Sem mais resultados',
+  cs = 'Žádné další výsledky',
+  fi = 'Ei enempää tuloksia',
+}
+export enum ECurrent {
+  en = 'Current',
+  es = 'Actual',
+  fr = 'Courant',
+  de = 'Aktuell',
+  pt = 'Atual',
+  cs = 'Aktuální',
+  fi = 'Nykyinen',
+}
+export enum EUpdated {
+  en = 'Updated',
+  es = 'Actualizado',
+  fr = 'Mis à jour',
+  de = 'Aktualisiert',
+  pt = 'Atualizado',
+  cs = 'Aktualizováno',
+  fi = 'Päivitetty',
+}
+export enum EClickToChooseSearchTerm {
+  en = 'Click a word to choose a search term',
+  es = 'Haga clic en una palabra para elegir un término de búsqueda',
+  fr = 'Cliquez sur un mot pour choisir un terme de recherche',
+  de = 'Klicken Sie auf ein Wort, um einen Suchbegriff auszuwählen',
+  pt = 'Clique em uma palavra para escolher um termo de pesquisa',
+  cs = 'Klikněte na slovo, abyste vybrali hledaný výraz',
+  fi = 'Valitse hakutermi napsauttamalla sanaa',
 }

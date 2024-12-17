@@ -267,7 +267,9 @@ const QuizFinished = ({ language }: Props) => {
               </div>
               <Suspense
                 fallback={
-                  <div className='flex center margin0auto'>{ELoading[language]}...</div>
+                  <div className='flex center margin0auto textcenter'>
+                    {ELoading[language]}...
+                  </div>
                 }
               >
                 <LoginRegisterCombo

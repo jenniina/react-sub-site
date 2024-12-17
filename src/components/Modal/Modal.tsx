@@ -20,19 +20,23 @@ const Modal: FC<Props> = ({ language }) => {
   }
 
   return (
-    <div className={styles['modal-overlay']} onClick={() => setClosed(true)}>
+    <div className={`${styles['modal-overlay']}`} onClick={() => setClosed(true)}>
       <div
-        className={`${styles['modal-content']} tooltip-wrap`}
+        className={`${styles['modal-content']} ${modal.className ?? ''}`}
         onClick={(e) => e.stopPropagation()}
         role='dialog'
         aria-modal='true'
+        aria-label={modal.title}
       >
         <button
           className={`${styles['close-button']} tooltip-wrap`}
           onClick={() => setClosed(true)}
         >
           <span aria-hidden='true'>&times;</span>
-          <span className='tooltip below left narrow2'>{EClose[language]}</span>
+          <span className='scr'>{EClose[language]}</span>
+          <span aria-hidden='true' className='tooltip below left narrow2'>
+            {EClose[language]}
+          </span>
         </button>
         {modal?.children}
       </div>

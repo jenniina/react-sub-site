@@ -1,0 +1,60 @@
+.poem-section {
+  margin-top: 2em;
+}
+.poem-section > div {
+  padding: 1em;
+}
+
+.accordion:not(.closed-accordion),
+.accordion:not(.closed-accordion) > div {
+  overflow: visible;
+  z-index: 100;
+}
+.accordion:not(.closed-accordion) > div {
+  border: 2px solid var(--color-primary-10);
+  border-top-color: var(--color-primary-13);
+  border-bottom-color: var(--color-primary-7);
+  padding: 1em 0.3em;
+  max-width: clamp(100px, max-content, calc(100vw - var(--scrollbar_width)));
+  margin: 1em 0;
+  border-radius: var(--radius);
+}
+
+.accordion h2 {
+  margin-top: 0.5em;
+}
+.accordion,
+.accordion form {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: var(--gap);
+  margin: 0 auto;
+}
+.accordion .accordion-select {
+  z-index: 100;
+  margin: 0;
+}
+.accordion .accordion-select > div > ul {
+  max-height: 13rem;
+}
+.accordion.closed-accordion {
+  flex-flow: column nowrap;
+}
+.accordion * {
+  max-width: clamp(100px, max-content, calc(100vw - var(--scrollbar_width)));
+}
+.accordion-submit {
+  padding: 0.35em 1em;
+}
+.accordion-paragraph-wrap p {
+  margin: 2.2em 0 2em;
+}
+@media (min-width: 300px) {
+  .accordion:not(.closed-accordion) > div {
+    padding: 1em 2em;
+    margin: 1em auto 4em;
+    max-width: calc(var(--width) * 2 + var(--gap));
+  }
+}

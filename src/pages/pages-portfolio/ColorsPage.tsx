@@ -102,7 +102,13 @@ const ColorsPage = ({
               </li>
             </ul>
           </Accordion>
-          <Suspense fallback={<div>{ELoading[language]}...</div>}>
+          <Suspense
+            fallback={
+              <div className='flex center margin0auto textcenter'>
+                {ELoading[language]}...
+              </div>
+            }
+          >
             <AccessibleColors language={language} />
           </Suspense>
         </section>

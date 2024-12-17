@@ -4,7 +4,7 @@ import { ModalProps } from '../interfaces'
 interface ModalContextType {
   modal: ModalProps | null
   setModal: (modal: ModalProps | null) => void
-  show: ({ children }: { children: ReactNode }) => void
+  show: ({ children, className, title }: ModalProps) => void
 }
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined)
@@ -12,8 +12,16 @@ const ModalContext = createContext<ModalContextType | undefined>(undefined)
 export const ModalProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [modal, setModal] = useState<ModalProps | null>(null)
 
-  const show = ({ children }: { children: ReactNode }) => {
-    setModal({ children })
+  const show = ({
+    title,
+    children,
+    className,
+  }: {
+    children: ReactNode
+    className: string
+    title: string
+  }) => {
+    setModal({ children, className, title })
   }
 
   return (

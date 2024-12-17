@@ -109,6 +109,7 @@ import {
 } from '../interfaces/colors'
 import { EMemoryGame, EMemoryGameIntro } from '../interfaces/memory'
 import MemorySVG from '../components/Memory/components/MemorySVG'
+import { EMedia, EMediaWithQuotesOrPoems } from '../interfaces/images'
 
 export default function Home({
   heading,
@@ -194,6 +195,16 @@ export default function Home({
                     <li>
                       <strong>{EDecember[language]}</strong>
                       <ul>
+                        <li>
+                          <Link to='/portfolio/media'>
+                            <IoMdImages />
+                            {EMedia[language]}:
+                          </Link>
+                          <i>
+                            {ENewPortfolioItem[language]}:{' '}
+                            {EMediaWithQuotesOrPoems[language]}
+                          </i>
+                        </li>
                         <li>
                           <Link to='/portfolio/colors'>
                             <BiSolidColorFill />

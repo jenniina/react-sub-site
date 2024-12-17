@@ -320,7 +320,9 @@ export default function TodoApp({ language }: Props) {
           modifyTodo={modifyTodo}
           modifyTodoOrder={modifyTodoOrder}
         />
-        {status === 'loading' && <p>{ELoading[language]}...</p>}
+        {status === 'loading' && (
+          <p className='flex center margin0auto textcenter'>{ELoading[language]}...</p>
+        )}
       </div>
     </>
   )

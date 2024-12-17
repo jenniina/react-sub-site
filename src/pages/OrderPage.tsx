@@ -116,7 +116,13 @@ const OrderPage: React.FC<OrderPageProps> = ({ language, heading, text, type }) 
         <section className='card' style={{ position: 'relative', zIndex: 2 }}>
           <div>
             {!orderID && user && user?.role && user?.role > 1 ? (
-              <Suspense fallback={<div>{ELoading[language]}...</div>}>
+              <Suspense
+                fallback={
+                  <div className='flex center margin0auto textcenter'>
+                    {ELoading[language]}...
+                  </div>
+                }
+              >
                 <Orders
                   language={language}
                   user={user}
@@ -129,7 +135,13 @@ const OrderPage: React.FC<OrderPageProps> = ({ language, heading, text, type }) 
                 />
               </Suspense>
             ) : (
-              <Suspense fallback={<div>{ELoading[language]}...</div>}>
+              <Suspense
+                fallback={
+                  <div className='flex center margin0auto textcenter'>
+                    {ELoading[language]}...
+                  </div>
+                }
+              >
                 <Order
                   language={language}
                   paidStatus={paidStatus}

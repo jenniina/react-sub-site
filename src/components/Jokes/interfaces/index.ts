@@ -169,6 +169,7 @@ export enum EInEnglish {
   de = 'auf Englisch',
   pt = 'em inglês',
   cs = 'anglicky',
+  fi = 'englanniksi',
 }
 
 export enum ECategory_en {
