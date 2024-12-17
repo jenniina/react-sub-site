@@ -140,7 +140,10 @@ const Images: FC<Props> = ({ language }) => {
     Orientation.Horizontal,
     Orientation.Vertical,
   ]
-  const optionsTextTypes: SelectOption[] = generateOptions(textTypes, language)
+  const optionsTextTypes: SelectOption[] = [
+    { label: EPoem[language], value: 'poem' },
+    { label: EQuote[language], value: 'quote' },
+  ]
   const categoryTypes: Category[] = Object.values(Category)
   const colorTypes: Color[] = Object.values(Color)
   const orderByTypes: OrderBy[] = Object.values(OrderBy)
