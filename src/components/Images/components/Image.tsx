@@ -60,36 +60,63 @@ const Image: FC<ImageProps> = ({ image, language, show, searchTerm, textType }) 
     }
   }
 
+  const handleShowModal = () => {
+    show({
+      title: image.tags,
+      className: styles['image-modal'],
+      children: (
+        <ImageModal
+          image={image}
+          language={language}
+          handleDownload={handleDownload}
+          searchTerm={searchTerm}
+          textType={textType}
+        />
+      ),
+    })
+  }
+
   return (
     <div key={image.id} className={`tooltip-wrap ${styles['image-wrap']}`}>
-      <img
-        src={image.webformatURL}
-        alt={image.tags}
-        title={image.tags}
-        loading='lazy'
-        className={`${styles['image-small']}`}
+      <button
+        type='button'
         style={{
-          width: '100%',
-          height: 'auto',
-          borderRadius: '8px',
+          background: 'none',
+          border: 'none',
+          padding: 0,
           cursor: 'pointer',
+          width: '100%',
         }}
-        onClick={() => {
-          show({
-            title: image.tags,
-            className: styles['image-modal'],
-            children: (
-              <ImageModal
-                image={image}
-                language={language}
-                handleDownload={handleDownload}
-                searchTerm={searchTerm}
-                textType={textType}
-              />
-            ),
-          })
+        aria-label={EClickToOpenLargeImage[language]}
+        onClick={handleShowModal}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            handleShowModal()
+          }
         }}
-      />
+      >
+        <img
+          src={image.webformatURL}
+          alt={image.tags}
+          title={image.tags}
+          loading='lazy'
+          className={`${styles['image-small']}`}
+          tabIndex={0}
+          style={{
+            width: '100%',
+            height: 'auto',
+            borderRadius: '8px',
+            cursor: 'pointer',
+          }}
+          onClick={handleShowModal}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              handleShowModal()
+            }
+          }}
+        />
+      </button>
       <span className='tooltip above narrow2'>{EClickToOpenLargeImage[language]}</span>
       <p>
         <small>

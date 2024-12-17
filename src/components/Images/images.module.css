@@ -90,8 +90,12 @@
   align-items: center;
   gap: calc(var(--gap) * 1.2) calc(var(--gap) * 2);
   margin: 2em 0;
+  position: relative;
+  z-index: 1;
 }
-.radio-wrap > span {
+.radio-wrap > legend {
+  font-family: var(--text-family);
+  font-size: 1rem;
   flex: 1 0 100%;
 }
 .radio-wrap > label {
@@ -100,6 +104,14 @@
   justify-content: center;
   align-items: center;
   gap: calc(var(--gap) * 0.6);
+}
+.text-type-wrap {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--gap) * 0.6);
+  margin: 2em 0;
 }
 .submit-wrap {
   display: flex;
@@ -130,15 +142,31 @@
 .column,
 .select.colors,
 .input-wrap {
-  min-width: clamp(100px, calc(var(--width) * 2 + var(--gap)), calc(100vw - 2em));
+  min-width: calc(var(--width) * 2 + var(--gap));
   width: clamp(100px, calc(var(--width) * 2 + var(--gap)), calc(100vw - 2em));
   max-width: calc(var(--width) * 2 + var(--gap));
   margin: 0;
 }
-.column {
+.search-wrap .column {
   display: flex;
   flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
   gap: calc(var(--gap) * 2);
+  min-width: 100%;
+  width: clamp(
+    100px,
+    calc(var(--width) * 2 + var(--gap)),
+    calc(100vw - calc(var(--padd) + var(--page-padding)) * 2)
+  );
+  max-width: 100%;
+}
+.search-wrap .column > .select.colors,
+.search-wrap .column > .input-wrap {
+  min-width: 100px;
+  max-width: calc(
+    100vw - calc(var(--padd) + var(--page-padding)) * 2 - var(--scrollbar_width)
+  );
   margin: 0 auto;
 }
 .select.colors > div > button {

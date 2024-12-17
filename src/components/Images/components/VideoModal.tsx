@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react'
-import { EDownload, ELanguages } from '../../../interfaces'
+import { ELanguages } from '../../../interfaces'
 import { EClickToLoadVideo, EVideoPage } from '../../../interfaces/images'
 import { VideoHit } from '../services/images'
 import useTooltip from '../../../hooks/useTooltip'
@@ -15,9 +15,16 @@ interface ModalVideoProps {
   language: ELanguages
   searchTerm: string
   textType: TTextType
+  handleDownload: () => void
 }
 
-const VideoModal: FC<ModalVideoProps> = ({ video, language, searchTerm, textType }) => {
+const VideoModal: FC<ModalVideoProps> = ({
+  video,
+  language,
+  searchTerm,
+  textType,
+  handleDownload,
+}) => {
   const { tooltip, handleMouseMove, handleMouseLeave } = useTooltip()
 
   const [quote, setQuote] = useState<QuoteItem>({
@@ -59,19 +66,6 @@ const VideoModal: FC<ModalVideoProps> = ({ video, language, searchTerm, textType
     }
   }, [language, searchTerm, textType])
 
-  const handleDownload = () => {
-    if (window.confirm(EDownload[language] + '?')) {
-      const link = document.createElement('a')
-      link.href = video.videos.medium.url
-      link.download = `video_${video.id}.mp4`
-      link.target = '_blank'
-      link.rel = 'noreferrer'
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-    }
-  }
-
   const onMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = e.currentTarget.getBoundingClientRect()
     const x = e.clientX - rect.left + 10
@@ -101,6 +95,12 @@ const VideoModal: FC<ModalVideoProps> = ({ video, language, searchTerm, textType
             cursor: 'pointer',
           }}
           onClick={handleDownload}
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              handleDownload()
+            }
+          }}
           controls
         />
         {tooltip.visible && (

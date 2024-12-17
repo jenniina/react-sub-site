@@ -5,6 +5,7 @@ interface ModalContextType {
   modal: ModalProps | null
   setModal: (modal: ModalProps | null) => void
   show: ({ children, className, title }: ModalProps) => void
+  closeModal: () => void
 }
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined)
@@ -24,8 +25,12 @@ export const ModalProvider: FC<{ children: ReactNode }> = ({ children }) => {
     setModal({ children, className, title })
   }
 
+  const closeModal = () => {
+    setModal(null)
+  }
+
   return (
-    <ModalContext.Provider value={{ modal, setModal, show }}>
+    <ModalContext.Provider value={{ modal, setModal, show, closeModal }}>
       {children}
     </ModalContext.Provider>
   )

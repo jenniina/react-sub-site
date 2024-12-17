@@ -72,7 +72,7 @@ import useWindowSize from '../../hooks/useWindowSize'
 import useTooltip from '../../hooks/useTooltip'
 import { EPoem } from '../../interfaces/poems'
 
-export type TTextType = 'all' | 'quote' | 'poem'
+export type TTextType = 'quote' | 'poem'
 
 const categoriesWithWeights = VALID_CATEGORIES.map((category) => ({
   text: category,
@@ -129,16 +129,18 @@ const Images: FC<Props> = ({ language }) => {
   const [videoType, setVideoType] = useState<TVideoTypes>('all')
   const [orientation, setOrientation] = useState<Orientation>(Orientation.All)
 
-  const [textType, setTextType] = useState<TTextType>('all')
+  const [textType, setTextType] = useState<TTextType>('poem')
 
   const imageTypes: TImageTypes[] = ['all', 'photo', 'illustration', 'vector', 'video']
   const videoTypes: TVideoTypes[] = ['all', 'film', 'animation']
+  const textTypes: TTextType[] = ['poem', 'quote']
 
   const orientationTypes: Orientation[] = [
     Orientation.All,
     Orientation.Horizontal,
     Orientation.Vertical,
   ]
+  const optionsTextTypes: SelectOption[] = generateOptions(textTypes, language)
   const categoryTypes: Category[] = Object.values(Category)
   const colorTypes: Color[] = Object.values(Color)
   const orderByTypes: OrderBy[] = Object.values(OrderBy)
@@ -581,44 +583,22 @@ const Images: FC<Props> = ({ language }) => {
               </label>
             </div>
 
-            <div className={`${styles['radio-wrap']}`}>
-              {' '}
-              <span className='dblock textcenter margin0auto'>
-                {ETextType[language]}:
-              </span>
-              <label>
-                <input
-                  type='radio'
-                  name='textType'
-                  value='all'
-                  checked={textType === 'all'}
-                  onChange={() => setTextType('all')}
-                />
-                <span>{EAll[language]}</span>
-              </label>
-              <label>
-                <input
-                  type='radio'
-                  name='textType'
-                  value='quote'
-                  checked={textType === 'quote'}
-                  onChange={() => setTextType('quote')}
-                />
-                <span>{EQuote[language]}</span>
-              </label>
-              <label>
-                <input
-                  type='radio'
-                  name='textType'
-                  value='poem'
-                  checked={textType === 'poem'}
-                  onChange={() => setTextType('poem')}
-                />
-                <span>{EPoem[language]}</span>
-              </label>
-            </div>
-
             <div className={styles['submit-wrap']}>
+              <Select
+                id='text-type'
+                className={`${styles.select} ${styles['text-type']}`}
+                hideDelete
+                instructions={ETextType[language]}
+                value={
+                  optionsTextTypes.find((o) => o.value === textType) || {
+                    label: EAll[language],
+                    value: '',
+                  }
+                }
+                onChange={(o) => setTextType(o?.value as TTextType)}
+                options={optionsTextTypes}
+                language={language}
+              />
               <Select
                 z={1}
                 id='images-per-page'
