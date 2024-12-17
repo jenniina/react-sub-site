@@ -462,7 +462,7 @@ const Images: FC<Props> = ({ language }) => {
 
                 {type !== 'video' && (
                   <Select
-                    z={7}
+                    z={8}
                     id='colors'
                     className={`${styles.select} ${styles['colors']}`}
                     multiple
@@ -476,7 +476,7 @@ const Images: FC<Props> = ({ language }) => {
               </div>
               <div className={styles['controls-wrap']}>
                 <Select
-                  z={6}
+                  z={7}
                   id='result-type'
                   className={`${styles.select} ${styles['result-type']}`}
                   hideDelete
@@ -545,7 +545,7 @@ const Images: FC<Props> = ({ language }) => {
                 />
 
                 <Select
-                  z={2}
+                  z={3}
                   id='order-by'
                   className={`${styles.select} ${styles['order-by']}`}
                   hideDelete
@@ -585,6 +585,7 @@ const Images: FC<Props> = ({ language }) => {
 
             <div className={styles['submit-wrap']}>
               <Select
+                z={2}
                 id='text-type'
                 className={`${styles.select} ${styles['text-type']}`}
                 hideDelete
