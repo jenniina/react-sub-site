@@ -28,7 +28,13 @@ const StorePage: React.FC<StoreProps> = ({
     <div className={`store ${type} ${styles.store}`}>
       <Hero language={language} address='store' heading={heading} text={text} />
       <div className={`inner-wrap ${styles['inner-wrap']}`}>
-        <Suspense fallback={<div>{ELoading[language]}...</div>}>
+        <Suspense
+          fallback={
+            <div className='flex center margin0auto textcenter'>
+              {ELoading[language]}...
+            </div>
+          }
+        >
           <Store language={language} cart={cart} setCart={setCart} />
         </Suspense>
       </div>

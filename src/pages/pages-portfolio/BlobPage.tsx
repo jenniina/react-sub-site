@@ -395,7 +395,9 @@ export default function BlobPage({
         </section>
         <Suspense
           fallback={
-            <div className='flex center margin0auto'>{ELoading[language]}...</div>
+            <div className='flex center margin0auto textcenter'>
+              {ELoading[language]}...
+            </div>
           }
         >
           <Blobs language={language} />

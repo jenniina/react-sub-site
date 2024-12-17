@@ -1,0 +1,1 @@
+import{j as r}from"./react-A9DAvxly.js";function j({title:s,description:e,className:n,children:t}){return r.jsx(r.Fragment,{children:r.jsxs("fieldset",{className:n,children:[r.jsxs("legend",{children:[s,e?r.jsxs("p",{children:[" ",e," "]}):r.jsx(r.Fragment,{})]}),t]})})}export{j as F};

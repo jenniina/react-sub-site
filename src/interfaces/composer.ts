@@ -19,7 +19,7 @@ export enum EAddedALinkToComposer {
 export enum EComposerIntro1 {
   en = 'Olli Santa is a professional choir and orchestra conductor in the Southern Finland area.',
   es = 'Olli Santa es un director de coro y orquesta profesional en el área del sur de Finlandia.',
-  fr = 'Olli Santa est un chef de chœur et d’orchestre professionnel dans la région du sud de la Finlande.',
+  fr = "Olli Santa est un chef de chœur et d'orchestre professionnel dans la région du sud de la Finlande.",
   de = 'Olli Santa ist ein professioneller Chor- und Orchesterdirigent im Süden Finnlands.',
   pt = 'Olli Santa é um maestro de coro e orquestra profissional na área do sul da Finlândia.',
   cs = 'Olli Santa je profesionální sbormistr a dirigent orchestru v jižním Finsku.',

@@ -498,3 +498,11 @@ export function elementsOverlap(element1: HTMLElement, element2: HTMLElement) {
 export function removeMinus(val: number): number {
   return val < 0 ? -val : val
 }
+
+export const translate = <T extends string | number | symbol>(
+  translationMap: Record<T, Record<ELanguages, string>>,
+  key: T,
+  language: ELanguages
+): string => {
+  return translationMap[key]?.[language] || (key as string)
+}

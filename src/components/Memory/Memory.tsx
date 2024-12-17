@@ -331,6 +331,8 @@ const Memory: FC<Props> = ({ language }) => {
         const levelKey = rest.join('_')
 
         show({
+          title: EYouMadeItToTheHighScores[language],
+          className: '',
           children: (
             <div
               id='high-scores'
@@ -349,7 +351,11 @@ const Memory: FC<Props> = ({ language }) => {
                   return (
                     <>
                       <h4 key={mode}>{modePart}</h4>
-                      {loading && <p>{ELoading[language]}...</p>}
+                      {loading && (
+                        <p className='flex center margin0auto textcenter'>
+                          {ELoading[language]}...
+                        </p>
+                      )}
                       {error && (
                         <p>
                           {error} &mdash; {ETryWithADifferentBrowser[language]}
@@ -716,7 +722,11 @@ const Memory: FC<Props> = ({ language }) => {
                           />
                         )}
                       </h3>
-                      {loading && <p>{ELoading[language]}...</p>}
+                      {loading && (
+                        <p className='flex center margin0auto textcenter'>
+                          {ELoading[language]}...
+                        </p>
+                      )}
                       {error && (
                         <p>
                           {error} &mdash; {ETryWithADifferentBrowser[language]}

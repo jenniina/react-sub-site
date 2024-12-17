@@ -83,6 +83,8 @@ import { EColorAccessibility, ETestColorCombinations } from './interfaces/colors
 import { EMemoryGame, EMemoryGameIntro } from './interfaces/memory'
 import MemoryPage from './pages/pages-portfolio/MemoryPage'
 import Modal from './components/Modal/Modal'
+import ImagesPage from './pages/pages-portfolio/ImagesPage'
+import { EMedia, EMediaWithQuotesOrPoems } from './interfaces/images'
 
 const Footer = lazy(() => import('./components/Footer/Footer'))
 const ScrollToTop = lazy(() => import('./components/ScrollToTop/ScrollToTop'))
@@ -459,6 +461,17 @@ const App: FC = () => {
                   }
                 />
               </Route>
+              <Route
+                path='/portfolio/media'
+                element={
+                  <ImagesPage
+                    heading={EMedia[language]}
+                    text={EMediaWithQuotesOrPoems[language]}
+                    type='page subpage'
+                    language={language}
+                  />
+                }
+              />
 
               <Route
                 path='/contact'
@@ -535,7 +548,9 @@ const App: FC = () => {
           </main>
           <Suspense
             fallback={
-              <div className='flex center margin0auto'>{ELoading[language]}...</div>
+              <div className='flex center margin0auto textcenter'>
+                {ELoading[language]}...
+              </div>
             }
           >
             <Footer language={language} styleMenu={styleMenu} />
@@ -543,7 +558,9 @@ const App: FC = () => {
           {toTopBtn && (
             <Suspense
               fallback={
-                <div className='flex center margin0auto'>{ELoading[language]}...</div>
+                <div className='flex center margin0auto textcenter'>
+                  {ELoading[language]}...
+                </div>
               }
             >
               <ScrollToTop language={language} styleMenu={styleMenu} />

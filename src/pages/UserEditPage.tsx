@@ -112,7 +112,9 @@ const UserEditPage = ({
               <div className={styles.editform}>
                 <Suspense
                   fallback={
-                    <div className='flex center margin0auto'>{ELoading[language]}...</div>
+                    <div className='flex center margin0auto textcenter'>
+                      {ELoading[language]}...
+                    </div>
                   }
                 >
                   <NicknameEdit user={user} language={language} />
@@ -121,7 +123,9 @@ const UserEditPage = ({
               <div className={styles.editform}>
                 <Suspense
                   fallback={
-                    <div className='flex center margin0auto'>{ELoading[language]}...</div>
+                    <div className='flex center margin0auto textcenter'>
+                      {ELoading[language]}...
+                    </div>
                   }
                 >
                   <UsernameEdit user={user} language={language} />
@@ -130,7 +134,9 @@ const UserEditPage = ({
               <div className={styles.editform}>
                 <Suspense
                   fallback={
-                    <div className='flex center margin0auto'>{ELoading[language]}...</div>
+                    <div className='flex center margin0auto textcenter'>
+                      {ELoading[language]}...
+                    </div>
                   }
                 >
                   <LanguageEdit
@@ -145,7 +151,9 @@ const UserEditPage = ({
               <div className={styles.editform}>
                 <Suspense
                   fallback={
-                    <div className='flex center margin0auto'>{ELoading[language]}...</div>
+                    <div className='flex center margin0auto textcenter'>
+                      {ELoading[language]}...
+                    </div>
                   }
                 >
                   <PasswordEdit user={user} language={language} />

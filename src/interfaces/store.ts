@@ -872,7 +872,7 @@ export enum EPayFor10HoursGet13 {
 export enum EHourlyWorkCanBeUsed {
   en = 'Hourly work can be used (for example) an hour at a time every month until the hours are used up.',
   es = 'El trabajo por horas se puede utilizar (por ejemplo) una hora a la vez cada mes hasta que se agoten las horas.',
-  fr = 'Le travail horaire peut être utilisé (par exemple) une heure à la fois chaque mois jusqu’à épuisement des heures.',
+  fr = "Le travail horaire peut être utilisé (par exemple) une heure à la fois chaque mois jusqu'à épuisement des heures.",
   de = 'Stundenarbeit kann (zum Beispiel) stundenweise jeden Monat verwendet werden, bis die Stunden aufgebraucht sind.',
   pt = 'O trabalho por hora pode ser usado (por exemplo) uma hora de cada vez a cada mês até que as horas sejam usadas.',
   cs = 'Hodinová práce může být použita (například) hodinu za hodinu každý měsíc, dokud hodiny nebudou vyčerpány.',

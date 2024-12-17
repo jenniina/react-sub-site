@@ -32,7 +32,13 @@ const CartPage: React.FC<CartProps> = ({
       <div className='inner-wrap'>
         <section className='card' style={{ position: 'relative', zIndex: 2 }}>
           <div>
-            <Suspense fallback={<div>{ELoading[language]}...</div>}>
+            <Suspense
+              fallback={
+                <div className='flex center margin0auto textcenter'>
+                  {ELoading[language]}...
+                </div>
+              }
+            >
               <Cart
                 language={language}
                 cart={cart}

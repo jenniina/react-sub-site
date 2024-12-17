@@ -250,7 +250,13 @@ const Form = ({
       <div className={`downwards-arrow ${submitted ? 'play' : ''}`}>
         <FaAnglesDown />
       </div>
-      <Suspense fallback={<div>{ELoading[language]}...</div>}>
+      <Suspense
+        fallback={
+          <div className='flex center margin0auto textcenter'>
+            {ELoading[language]}...
+          </div>
+        }
+      >
         <Joke
           sending={sending}
           joke={joke}

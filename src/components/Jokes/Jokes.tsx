@@ -1490,7 +1490,13 @@ function Jokes({
               {EAJokeGeneratorForTheComicallyInclined[language]}
             </p>
 
-            <Suspense fallback={<div>{ELoading[language]}...</div>}>
+            <Suspense
+              fallback={
+                <div className='flex center margin0auto textcenter'>
+                  {ELoading[language]}...
+                </div>
+              }
+            >
               <FormJoke
                 sending={sending}
                 handleFormSubmit={handleFormSubmit}
@@ -1547,7 +1553,13 @@ function Jokes({
             </p>
           )}
           {user && (
-            <Suspense fallback={<div>{ELoading[language]}...</div>}>
+            <Suspense
+              fallback={
+                <div className='flex center margin0auto textcenter'>
+                  {ELoading[language]}...
+                </div>
+              }
+            >
               <JokeSubmit
                 userId={user?._id}
                 language={language}
@@ -1565,7 +1577,13 @@ function Jokes({
 
       <section className={`joke-container card ${language}`}>
         <div>
-          <Suspense fallback={<div>{ELoading[language]}...</div>}>
+          <Suspense
+            fallback={
+              <div className='flex center margin0auto textcenter'>
+                {ELoading[language]}...
+              </div>
+            }
+          >
             <UserJokes
               sending={sending}
               user={user}

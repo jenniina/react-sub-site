@@ -1002,3 +1002,8 @@ button.reset:focus {
   padding: 0.03em 0.06em 0.06em;
   outline-offset: 0;
 }
+button.reset.padding,
+button.reset.padding:hover,
+button.reset.padding:focus {
+  padding: 0.3em 0.6em;
+}

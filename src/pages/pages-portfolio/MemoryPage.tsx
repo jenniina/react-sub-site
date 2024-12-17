@@ -20,7 +20,13 @@ export default function MemoryPage({
     <div className={`memory ${type}`}>
       <Hero language={language} address='memory' heading={heading} text={text} />
       <div className='inner-wrap'>
-        <Suspense fallback={<div>{ELoading[language]}...</div>}>
+        <Suspense
+          fallback={
+            <div className='flex center margin0auto textcenter'>
+              {ELoading[language]}...
+            </div>
+          }
+        >
           <Memory language={language} />
         </Suspense>
       </div>
