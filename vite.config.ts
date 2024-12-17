@@ -25,9 +25,9 @@ export default defineConfig({
           if (id.includes('node_modules')) {
             return id.toString().split('node_modules/')[1].split('/')[0].toString()
           }
-          if (id.includes('src/components')) {
-            return id.toString().split('src/components/')[1].split('/')[0].toString()
-          }
+          // if (id.includes('src/components')) {
+          //   return id.toString().split('src/components/')[1].split('/')[0].toString()
+          // }
         },
       },
     },
