@@ -61,10 +61,35 @@
   gap: 0.4em;
   font-size: 0.9em;
 }
-.image-wrap img:hover {
+.video-wrap > button:hover,
+.image-wrap > button:hover,
+.video-wrap > button:focus,
+.image-wrap > button:focus {
+  outline-width: 2px;
+  outline-color: var(--color-primary-20);
+  outline-offset: -2px;
+  border: 2px solid var(--color-primary-1);
   transform: scale(1.05);
-  transition: transform 0.3s ease-in-out;
 }
+.image-wrap.image-modal > button:hover,
+.image-wrap.image-modal > button:focus,
+.image-wrap.image-modal > button:focus-visible {
+  transform: scale(1);
+}
+.video-wrap > button img,
+.image-wrap > button img {
+  border: 4px solid transparent;
+  transition-property: border;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+}
+.video-wrap > button:hover img,
+.image-wrap > button:hover img,
+.video-wrap > button:focus img,
+.image-wrap > button:focus img {
+  border-color: var(--color-primary-1);
+}
+
 .image-small {
   width: 100%;
   margin: 0;
@@ -105,16 +130,10 @@
   align-items: center;
   gap: calc(var(--gap) * 0.6);
 }
-.text-type-wrap {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-items: center;
-  gap: calc(var(--gap) * 0.6);
-  margin: 2em 0;
-}
+
 .select.text-type {
-  max-width: 10em;
+  min-width: 7.5em;
+  max-width: 7.5em;
 }
 .submit-wrap {
   display: flex;
@@ -268,7 +287,7 @@
 }
 @media (min-width: 400px) {
   .select {
-    --temp-width: 10em;
+    --temp-width: 8em;
     min-width: var(--temp-width);
     width: calc(50% - var(--gap) / 2);
     max-width: calc(50% - var(--gap) / 2);
@@ -278,11 +297,6 @@
 @media (min-width: 500px) {
   .image-container {
     column-count: 2;
-  }
-  .select {
-    width: clamp(100px, var(--width), calc(100vw - 2em));
-    max-width: var(--width);
-    margin: 0;
   }
 }
 
