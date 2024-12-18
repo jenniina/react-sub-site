@@ -33,6 +33,7 @@ import { Link } from 'react-router-dom'
 import { AiOutlineForm } from 'react-icons/ai'
 import { BiSelectMultiple, BiSolidColorFill } from 'react-icons/bi'
 import { RiTodoLine, RiDragDropLine, RiDragMove2Fill } from 'react-icons/ri'
+import { IoMdImages } from 'react-icons/io'
 import { GiAbstract019, GiComb } from 'react-icons/gi'
 import { MdOutlineQuiz } from 'react-icons/md'
 import { GrGraphQl } from 'react-icons/gr'
@@ -54,6 +55,7 @@ import Accordion from '../components/Accordion/Accordion'
 import { EColorAccessibility, ETestColorCombinations } from '../interfaces/colors'
 import { EMemoryGame, EMemoryGameIntro } from '../interfaces/memory'
 import MemorySVG from '../components/Memory/components/MemorySVG'
+import { EMedia, EMediaWithQuotesOrPoems } from '../interfaces/images'
 
 export default function Portfolio({
   heading,
@@ -133,6 +135,13 @@ export default function Portfolio({
               </Accordion>
             </div>
             <ul className={`${styles.list}`}>
+              <li>
+                <Link to='/portfolio/media'>
+                  <IoMdImages />
+                  <span>{EMedia[language]}</span>
+                </Link>
+                <p>{EMediaWithQuotesOrPoems[language]}</p>
+              </li>
               <li>
                 <Link to='/portfolio/colors'>
                   <BiSolidColorFill />
