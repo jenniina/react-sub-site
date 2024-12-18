@@ -460,18 +460,18 @@ const App: FC = () => {
                     />
                   }
                 />
+                <Route
+                  path='/portfolio/media'
+                  element={
+                    <ImagesPage
+                      heading={EMedia[language]}
+                      text={EMediaWithQuotesOrPoems[language]}
+                      type='page subpage'
+                      language={language}
+                    />
+                  }
+                />
               </Route>
-              <Route
-                path='/portfolio/media'
-                element={
-                  <ImagesPage
-                    heading={EMedia[language]}
-                    text={EMediaWithQuotesOrPoems[language]}
-                    type='page subpage'
-                    language={language}
-                  />
-                }
-              />
 
               <Route
                 path='/contact'

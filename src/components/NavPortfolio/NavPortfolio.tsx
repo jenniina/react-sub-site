@@ -23,6 +23,7 @@ import { breakpointSmall } from '../../interfaces'
 import useSideScroll from '../../hooks/useSideScroll'
 import { EComposerOlliSanta } from '../../interfaces/composer'
 import { EMemoryGame } from '../../interfaces/memory'
+import { EMedia } from '../../interfaces/images'
 
 interface NavItem {
   url: string
@@ -52,6 +53,7 @@ function NavPortfolio({ language }: { language: ELanguages }) {
 
   const navItems: NavItem[] = [
     { url: '/portfolio', name: `${EPortfolio[language]}`, special: 'first' },
+    { url: '/portfolio/media', name: EMedia[language] },
     { url: '/portfolio/memory', name: EMemoryGame[language] },
     { url: '/portfolio/colors', name: EColorAccessibility[language] },
     { url: '/portfolio/composer', name: EComposerOlliSanta[language] },
