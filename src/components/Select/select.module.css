@@ -191,7 +191,8 @@ button.clear-btn:hover {
   margin: 0;
 }
 
-.option.selected {
+.option.selected,
+.option:focus-within {
   background-color: var(--color-bg-selected);
 }
 
@@ -200,6 +201,10 @@ button.clear-btn:hover {
 }
 .option input[type='checkbox' i] {
   appearance: none;
+}
+.option input[type='checkbox' i]:focus-visible,
+.option input[type='checkbox' i]:checked {
+  width: 1em;
 }
 
 .option-btn {
@@ -258,7 +263,7 @@ button.clear-btn:hover {
   margin: -1px;
   border: 0;
 }
-.scr:focus {
+/* .scr:focus {
   clip: auto;
   -webkit-clip-path: none;
   -moz-clip-path: none;
@@ -268,7 +273,7 @@ button.clear-btn:hover {
   width: auto;
   height: auto;
   line-height: normal;
-}
+} */
 
 @media (max-width: 299px) {
   button.clear-btn {
