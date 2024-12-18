@@ -1,4 +1,5 @@
 import { FC, useEffect, useState, MouseEvent as ReactMouseEvent } from 'react'
+import styles from '../images.module.css'
 import { ELanguages } from '../../../interfaces'
 import { EClickToLoadImage } from '../../../interfaces/images'
 import { ImageHit } from '../services/images'
@@ -81,20 +82,21 @@ const ImageModal: FC<ModalImageProps> = ({
 
   return (
     <div onMouseMove={onMouseMove} onMouseLeave={handleMouseLeave}>
-      <div className={`tooltip-wrap`}>
-        <img
-          src={image.largeImageURL}
-          alt={image.tags}
-          loading='lazy'
-          style={{
-            width: '100%',
-            height: 'auto',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            position: 'relative',
-          }}
-          onClick={handleDownload}
-        />{' '}
+      <div className={`tooltip-wrap ${styles['image-wrap']} ${styles['image-modal']}`}>
+        <button onClick={handleDownload}>
+          <img
+            src={image.largeImageURL}
+            alt={image.tags}
+            loading='lazy'
+            style={{
+              width: '100%',
+              height: 'auto',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              position: 'relative',
+            }}
+          />{' '}
+        </button>
         {tooltip.visible && (
           <span
             className={`tooltip narrow`}
