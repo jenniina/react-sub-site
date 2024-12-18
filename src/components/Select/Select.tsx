@@ -140,7 +140,7 @@ export function Select({
       if (e.target !== containerRef.current) return
       switch (e.code) {
         case 'Enter':
-        case 'Space':
+        case ' ':
           e.preventDefault()
           if (isOpen) selectOption(options[highlightedIndex])
           else setIsOpen(true)
@@ -244,7 +244,7 @@ export function Select({
                 onKeyUp={(e) => {
                   switch (e.code) {
                     case 'Enter':
-                    case 'Space':
+                    case ' ':
                       e.preventDefault()
                       setIsOpen(false)
                       selectOption(v)
