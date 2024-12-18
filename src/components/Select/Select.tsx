@@ -329,6 +329,17 @@ export function Select({
               } ${index === highlightedIndex ? `${styles.highlighted} highlighted` : ''}`}
               // id={`${id}-${(option.label).replace(/\s+/g, '-').toLowerCase().replace(/[^a-zA-Z]/g, '')}-${index}`}
               id={`${id}-${index}`}
+              onKeyDown={(e) => {
+                if (e.code === 'Enter' || e.code === ' ') {
+                  e.preventDefault()
+                  selectOption(option)
+                  setIsOpen(false)
+                } else if (e.code === 'Escape') {
+                  e.preventDefault()
+                  setIsOpen(false)
+                  containerRef.current?.focus()
+                }
+              }}
             >
               <input
                 multiple={multiple ? true : false}

@@ -263,6 +263,10 @@ button.clear-btn:hover {
   margin: -1px;
   border: 0;
 }
+.scr:focus-visible {
+  outline: none;
+}
+
 /* .scr:focus {
   clip: auto;
   -webkit-clip-path: none;
