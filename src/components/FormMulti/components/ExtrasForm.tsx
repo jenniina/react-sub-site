@@ -141,26 +141,30 @@ export function ExtrasForm({
         </div>
         <div className={styles.subfield}>
           <label className={`full`}>{EWhichModeDoYouPrefer[language]}</label>
-          <label className='nowrap'>
-            <input
-              id='form-dark'
-              type='radio'
-              name='mode'
-              value={'dark mode'}
-              onChange={(e) => updateFields({ dark: e.target.value })}
-            />{' '}
+          <label className='nowrap flex gap-half'>
+            <span className='radio-span'>
+              <input
+                id='form-dark'
+                type='radio'
+                name='mode'
+                value={'dark mode'}
+                onChange={(e) => updateFields({ dark: e.target.value })}
+              />
+            </span>{' '}
             {EDarkMode[language]}
           </label>
-          <label htmlFor='form-light' className='nowrap'>
-            <input
-              id='form-light'
-              type='radio'
-              name='mode'
-              value={'light mode'}
-              onChange={(e) => {
-                updateFields({ light: e.target.value })
-              }}
-            />{' '}
+          <label htmlFor='form-light' className='nowrap flex gap-half'>
+            <span className='radio-span'>
+              <input
+                id='form-light'
+                type='radio'
+                name='mode'
+                value={'light mode'}
+                onChange={(e) => {
+                  updateFields({ light: e.target.value })
+                }}
+              />
+            </span>{' '}
             {ELightMode[language]}
           </label>
         </div>
