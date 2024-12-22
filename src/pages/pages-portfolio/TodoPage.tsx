@@ -1,4 +1,5 @@
 import { lazy, Suspense } from 'react'
+import styles from '../../components/Todo/css/todo.module.css'
 import Hero from '../../components/Hero/Hero'
 import {
   EFeatures,
@@ -20,6 +21,7 @@ import {
 } from '../../interfaces/todo'
 import Accordion from '../../components/Accordion/Accordion'
 import { EClickHereToSeeFeatures } from '../../components/Jokes/interfaces'
+import { useTheme } from '../../hooks/useTheme'
 
 const TodoApp = lazy(() => import('../../components/Todo/TodoApp'))
 
@@ -34,8 +36,9 @@ export default function TodoPage({
   type: string
   language: ELanguages
 }) {
+  const lightMode = useTheme()
   return (
-    <div className={`todo ${type}`}>
+    <div className={`todo ${type} ${lightMode ? styles.light : ''}`}>
       <Hero language={language} address='todo' heading={heading} text={text} />
       <div className='inner-wrap'>
         <section className='card'>

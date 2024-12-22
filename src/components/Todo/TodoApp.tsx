@@ -287,21 +287,41 @@ export default function TodoApp({ language }: Props) {
     }
     const key = uuidv4()
     const maxOrder = todos.reduce((max, todo) => (todo.order > max ? todo.order : max), 0)
-    const newTodo = {
-      key,
-      name: name,
-      complete: false,
-      order: maxOrder + 1,
-      priority,
-      deadline,
-      category,
-    }
+    const minOrder = todos.reduce((min, todo) => (todo.order < min ? todo.order : min), 0)
+
+    let newTodo: ITask
+    if (priority === 'high') {
+      newTodo = {
+        key,
+        name: name,
+        complete: false,
+        order: minOrder - 1,
+        priority,
+        deadline,
+        category,
+      }
+    } else
+      newTodo = {
+        key,
+        name: name,
+        complete: false,
+        order: maxOrder + 1,
+        priority,
+        deadline,
+        category,
+      }
     if (user) {
       dispatch(addTodoAsync(user._id, newTodo))
       setSending(false)
     } else {
       dispatch(addTodo(newTodo))
       window.localStorage.setItem(localName, JSON.stringify([...todos, newTodo]))
+      //reorder todos from 0
+      const updatedTodos = todos.map((todo, index) => ({
+        ...todo,
+        order: index + 1,
+      }))
+      dispatch(setAllTodos(updatedTodos))
       setSending(false)
     }
     if (todoNameRef.current) todoNameRef.current.value = ''

@@ -26,10 +26,10 @@ export const todosSlice = createSlice({
       state.error = action.payload
     },
     addTodo: (state, action: PayloadAction<ITask>) => {
-      //state.todos.push(action.payload)
-      return {
-        ...state,
-        todos: [...state.todos, action.payload],
+      if (action.payload.priority === 'high') {
+        state.todos.unshift(action.payload) // Insert at the beginning
+      } else {
+        state.todos.push(action.payload) // Insert at the end
       }
     },
     deleteTodo: (state, action: PayloadAction<string>) => {
@@ -59,6 +59,28 @@ export const todosSlice = createSlice({
   },
 })
 
+export const addTodoAsync = (user: IUser['_id'], task: ITask) => {
+  return async (dispatch: (arg0: { payload: any; type: 'todos/addTodo' }) => void) => {
+    const newTodo = await todoService.addTodo(user, task)
+
+    if (newTodo.order < 0) {
+      fetchTodos(user)
+    } else
+      dispatch(
+        addTodo({
+          key: newTodo.key,
+          name: newTodo.name,
+          complete: newTodo.complete,
+          order: newTodo.order,
+          category: newTodo.category,
+          deadline: newTodo.deadline,
+          priority: newTodo.priority,
+          user,
+        })
+      )
+  }
+}
+
 export const fetchTodos = (user: IUser['_id']) => {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(getTodosStart())
@@ -85,24 +107,6 @@ export const fetchTodos = (user: IUser['_id']) => {
       console.error(error)
       dispatch(getTodosFailure((error as Error).message))
     }
-  }
-}
-
-export const addTodoAsync = (user: IUser['_id'], task: ITask) => {
-  return async (dispatch: (arg0: { payload: any; type: 'todos/addTodo' }) => void) => {
-    const newTodo = await todoService.addTodo(user, task)
-    dispatch(
-      addTodo({
-        key: newTodo.key,
-        name: newTodo.name,
-        complete: newTodo.complete,
-        order: newTodo.order,
-        category: newTodo.category,
-        deadline: newTodo.deadline,
-        priority: newTodo.priority,
-        user,
-      })
-    )
   }
 }
 
