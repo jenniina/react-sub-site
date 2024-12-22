@@ -63,5 +63,5 @@ export default {
   editTodo,
   clearCompletedTodos,
   editTodoOrder,
-  // addOrderToAllTodos,
+  //addOrderToAllTodos,
 }

@@ -2,7 +2,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: calc(100vw - var(--scrollbar_width));
+  width: calc(100vw - 18px);
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
@@ -25,7 +25,14 @@
   overflow-y: auto;
   width: 90%;
   max-width: 1000px;
+  margin: 0 auto;
   overflow-x: hidden;
+  display: flex;
+  gap: 1em;
+  z-index: 1001;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
 }
 
 .close-button {

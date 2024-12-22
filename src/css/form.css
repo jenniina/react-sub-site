@@ -240,20 +240,24 @@ input[type='checkbox' i] {
   align-self: center;
   margin: 0 0 0 calc(var(--offset) * 2);
   pointer-events: auto;
-  outline: 0.2em solid var(--color-gray-6);
+  outline: 0.3em solid var(--color-gray-6);
   outline-offset: -2px;
-}
-input[type='checkbox' i] {
   margin-right: 1.3em;
+  transition-property: outline-color, outline-width, outline-offset;
+  transition-timing-function: ease-in-out;
+  transition-duration: 300ms;
 }
 .radio-checkbox {
   position: relative;
 }
 
-input[type='checkbox' i]:checked {
+input[type='checkbox' i]:checked,
+input[type='checkbox' i]:hover,
+input[type='checkbox' i]:focus,
+input[type='checkbox' i]:focus-visible {
   accent-color: var(--color-primary-11);
   outline-color: currentColor;
-  outline-style: double;
+  outline-style: solid;
   outline-width: 0.4em;
   pointer-events: none;
   outline-offset: -1px;

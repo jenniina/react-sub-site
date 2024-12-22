@@ -1,9 +1,10 @@
 import Todo from './TodoItem'
-import { ITask } from '../interfaces'
+import { ITask, TPriority } from '../interfaces'
 import style from '../css/todo.module.css'
 import { ELanguages } from '../../../interfaces'
 import { IClosestItem, useDragAndDrop } from '../../../hooks/useDragAndDrop'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
+import { SelectOption } from '../../Select/Select'
 
 export interface ITaskDraggable extends ITask {
   id: number
@@ -18,14 +19,24 @@ export default function TodoList({
   modifyTodoOrder,
   todosWithIdAndStatus,
   sending,
+  priorityOptions,
+  categoryOptions,
 }: {
   toggleTodo: (key: string | undefined) => void
   deleteTodo: (key: string | undefined) => void
   language: ELanguages
-  modifyTodo: (key: string | undefined, name: string | undefined) => void
+  modifyTodo: (
+    key: string | undefined,
+    name: string | undefined,
+    priority: TPriority,
+    deadline: string,
+    category: string
+  ) => void
   modifyTodoOrder: (order: { key: ITask['key']; order: ITask['order'] }[]) => void
   todosWithIdAndStatus: ITaskDraggable[]
   sending: boolean
+  priorityOptions: SelectOption[]
+  categoryOptions: SelectOption[]
 }) {
   // const todosWithIdAndStatus = todos
   //   ?.slice()
@@ -41,8 +52,6 @@ export default function TodoList({
     ITaskDraggable,
     string
   >(todosWithIdAndStatus, ['todos'])
-
-  const dispatch = useAppDispatch()
 
   return (
     <ul
@@ -109,6 +118,9 @@ export default function TodoList({
               isDragging={isDragging}
               handleUpdate={handleUpdate}
               handleDragging={handleDragging}
+              priorityOptions={priorityOptions}
+              categoryOptions={categoryOptions}
+              zin={listItemsByStatus['todos']?.items.length}
             />
           )
         })}

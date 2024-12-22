@@ -93,6 +93,8 @@ export interface ModalProps {
   title: string
 }
 
+export type TSortDirection = 'asc' | 'desc'
+
 export enum ELogin {
   en = 'Log In',
   es = 'Iniciar sesión',
@@ -2870,4 +2872,116 @@ export enum EClickToChooseSearchTerm {
   pt = 'Clique em uma palavra para escolher um termo de pesquisa',
   cs = 'Klikněte na slovo, abyste vybrali hledaný výraz',
   fi = 'Valitse hakutermi napsauttamalla sanaa',
+}
+export enum EDay {
+  en = 'Day',
+  es = 'Día',
+  fr = 'Jour',
+  de = 'Tag',
+  pt = 'Dia',
+  cs = 'Den',
+  fi = 'Päivä',
+}
+export enum EMonth {
+  en = 'Month',
+  es = 'Mes',
+  fr = 'Mois',
+  de = 'Monat',
+  pt = 'Mês',
+  cs = 'Měsíc',
+  fi = 'Kuukausi',
+}
+
+export enum EYear {
+  en = 'Year',
+  es = 'Año',
+  fr = 'Année',
+  de = 'Jahr',
+  pt = 'Ano',
+  cs = 'Rok',
+  fi = 'Vuosi',
+}
+export enum EHour {
+  en = 'Hour',
+  es = 'Hora',
+  fr = 'Heure',
+  de = 'Stunde',
+  pt = 'Hora',
+  cs = 'Hodina',
+  fi = 'Tunti',
+}
+
+export enum EMinute {
+  en = 'Minute',
+  es = 'Minuto',
+  fr = 'Minute',
+  de = 'Minute',
+  pt = 'Minuto',
+  cs = 'Minuta',
+  fi = 'Minuutti',
+}
+
+export enum ESecond {
+  en = 'Second',
+  es = 'Segundo',
+  fr = 'Seconde',
+  de = 'Sekunde',
+  pt = 'Segundo',
+  cs = 'Sekunda',
+  fi = 'Sekunti',
+}
+
+export enum EDate {
+  en = 'Date',
+  es = 'Fecha',
+  fr = 'Date',
+  de = 'Datum',
+  pt = 'Data',
+  cs = 'Datum',
+  fi = 'Päivämäärä',
+}
+export enum ETime {
+  en = 'Time',
+  es = 'Hora',
+  fr = 'Heure',
+  de = 'Zeit',
+  pt = 'Tempo',
+  cs = 'Čas',
+  fi = 'Aika',
+}
+export enum EYearMustBeBetweenCurrentYearAnd10YearsFromNow {
+  en = 'Year must be between current year and 10 years from now',
+  es = 'El año debe estar entre el año actual y 10 años a partir de ahora',
+  fr = 'L année doit être comprise entre l année en cours et 10 ans à partir de maintenant',
+  de = 'Das Jahr muss zwischen dem aktuellen Jahr und 10 Jahren von jetzt an liegen',
+  pt = 'O ano deve estar entre o ano atual e 10 anos a partir de agora',
+  cs = 'Rok musí být mezi aktuálním rokem a 10 let od nynějška',
+  fi = 'Vuoden on oltava nykyisen vuoden ja 10 vuoden päästä',
+}
+export enum ESet {
+  en = 'Set',
+  es = 'Establecer',
+  fr = 'Ensemble',
+  de = 'Setzen',
+  pt = 'Conjunto',
+  cs = 'Nastavit',
+  fi = 'Aseta',
+}
+export enum EFiltered {
+  en = 'Filtered',
+  es = 'Filtrado',
+  fr = 'Filtré',
+  de = 'Gefiltert',
+  pt = 'Filtrado',
+  cs = 'Filtrováno',
+  fi = 'Suodatettu',
+}
+export enum ECancel {
+  en = 'Cancel',
+  es = 'Cancelar',
+  fr = 'Annuler',
+  de = 'Abbrechen',
+  pt = 'Cancelar',
+  cs = 'Zrušit',
+  fi = 'Peruuta',
 }
