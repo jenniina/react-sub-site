@@ -7,7 +7,11 @@ import {
   EClearCompleted,
   ELeftToDo,
   ETask,
+  generateOptions,
   ITask,
+  TCategory,
+  TPriority,
+  TSortOptions,
 } from './interfaces'
 import style from './css/todo.module.css'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
@@ -29,10 +33,18 @@ import {
 import { notify } from '../../reducers/notificationReducer'
 import { useSelector } from 'react-redux'
 import { initializeUser } from '../../reducers/authReducer'
-import { ReducerProps } from '../../interfaces'
+import {
+  EFiltered,
+  ENote,
+  EUpdated,
+  ReducerProps,
+  TSortDirection,
+} from '../../interfaces'
 import { RootState } from '../../store'
 import { ELanguages, ELoading } from '../../interfaces'
 import { EAreYouSureYouWantToClearAllCompletedTasks } from '../../interfaces/todo'
+import { Select } from '../Select/Select'
+import { IoMdAdd } from 'react-icons/io'
 
 interface Props {
   language: ELanguages
@@ -51,6 +63,13 @@ export default function TodoApp({ language }: Props) {
   const todos = useSelector((state: RootState) => state.todos.todos)
   const status = useSelector((state: RootState) => state.todos.status)
   const error = useSelector((state: RootState) => state.todos.error)
+
+  const [priority, setPriority] = useState<TPriority>('low')
+  const [deadline, setDeadline] = useState<string>('')
+  const [category, setCategory] = useState<TCategory>('other')
+
+  const [filterPriority, setFilterPriority] = useState<TPriority>('all')
+  const [filterCategory, setFilterCategory] = useState<string>('all')
 
   const localName = 'ReactTodos'
 
@@ -113,8 +132,14 @@ export default function TodoApp({ language }: Props) {
 
   const [todosWithIdAndStatus, setTodosWithIdAndStatus] = useState<ITaskDraggable[]>([])
 
+  const filteredTodos = todos.filter((todo) => {
+    const priorityMatch = filterPriority === 'all' || todo.priority === filterPriority
+    const categoryMatch = filterCategory === 'all' || todo.category === filterCategory
+    return priorityMatch && categoryMatch
+  })
+
   useEffect(() => {
-    const newTodosWithIdAndStatus = todos
+    const newTodosWithIdAndStatus = filteredTodos
       ?.slice()
       .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
       .map((todo) => {
@@ -122,7 +147,27 @@ export default function TodoApp({ language }: Props) {
       }) as ITaskDraggable[]
 
     setTodosWithIdAndStatus(newTodosWithIdAndStatus)
-  }, [todos])
+  }, [todos, filterPriority, filterCategory])
+
+  const filterPriorityTypes: TPriority[] = ['all', 'low', 'medium', 'high']
+  const filterCategoryTypes: TCategory[] = [
+    'all',
+    'work',
+    'personal',
+    'shopping',
+    'other',
+  ]
+
+  const priorityTypes = ['low', 'medium', 'high']
+  const categoryTypes = ['work', 'personal', 'shopping', 'other']
+
+  const filterPriorityOptions = generateOptions(filterPriorityTypes, language)
+
+  const filterCategoryOptions = generateOptions(filterCategoryTypes, language)
+
+  const priorityOptions = generateOptions(priorityTypes, language)
+
+  const categoryOptions = generateOptions(categoryTypes, language)
 
   useEffect(() => {
     if (status === 'failed') {
@@ -130,14 +175,13 @@ export default function TodoApp({ language }: Props) {
     }
   }, [status, error, dispatch])
 
-  const [loggedIn, setLoggedIn] = useState(false)
   const [sending, setSending] = useState(false)
 
   useEffect(() => {
-    if (user?._id && !loggedIn) {
+    if (user?._id) {
       dispatch(syncTodos(user._id))
         .then(() => {
-          setLoggedIn(true)
+          dispatch(fetchTodos(user._id))
         })
         .catch((e) => {
           console.error(e)
@@ -160,7 +204,13 @@ export default function TodoApp({ language }: Props) {
     }
   }
 
-  const modifyTodo = async (key: string | undefined, name: string | undefined) => {
+  const modifyTodo = async (
+    key: string | undefined,
+    name: string | undefined,
+    priority: TPriority,
+    deadline: string,
+    category: string
+  ) => {
     setSending(true)
     if (!key) {
       dispatch(notify(`Error: no key`, true, 8))
@@ -169,11 +219,11 @@ export default function TodoApp({ language }: Props) {
     }
     const todo = todos.find((todo) => todo.key === key)
     if (todo) {
-      const updatedTodo = { ...todo, name: name }
+      const updatedTodo = { ...todo, name: name, priority, deadline, category }
       if (user) {
         await dispatch(editTodoAsync(user._id, key, updatedTodo as ITask))
           .then(() => {
-            dispatch(notify(`Todo updated`, false, 3))
+            dispatch(notify(`${EUpdated[language]}`, false, 3))
             setSending(false)
           })
           .catch((e) => {
@@ -231,7 +281,15 @@ export default function TodoApp({ language }: Props) {
     }
     const key = uuidv4()
     const maxOrder = todos.reduce((max, todo) => (todo.order > max ? todo.order : max), 0)
-    const newTodo = { key, name: name, complete: false, order: maxOrder + 1 }
+    const newTodo = {
+      key,
+      name: name,
+      complete: false,
+      order: maxOrder + 1,
+      priority,
+      deadline,
+      category,
+    }
     if (user) {
       dispatch(addTodoAsync(user._id, newTodo))
       setSending(false)
@@ -292,25 +350,96 @@ export default function TodoApp({ language }: Props) {
               autoComplete='off'
               placeholder={`${ETask[language]}...`}
             />
-            <button id={style['submit-todo']} type='submit' disabled={sending}>
-              {EAddTask[language]}
-            </button>
-            <button
-              className='danger'
-              disabled={!hasCompletedTasks}
-              onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
-                handleClearTodos(e)
+            <Select
+              z={todosWithIdAndStatus.length + 5}
+              id='category'
+              className={`${style['select']} ${style['category-select']}`}
+              hideDelete
+              instructions='Select category'
+              value={
+                categoryOptions.find((o) => o.value === category) || categoryOptions[0]
               }
+              onChange={(o) => setCategory(o?.value as TCategory)}
+              options={categoryOptions}
+              language={language}
+            />
+            <Select
+              id='priority'
+              className={style['select']}
+              hideDelete
+              instructions='Select priority'
+              value={
+                priorityOptions.find((o) => o.value === priority) || priorityOptions[0]
+              }
+              onChange={(o) => setPriority(o?.value as TPriority)}
+              options={priorityOptions}
+              language={language}
+              z={todosWithIdAndStatus.length + 4}
+            />
+            <button
+              id={style['submit-todo']}
+              className={style['submit-todo']}
+              type='submit'
+              disabled={sending}
             >
-              {EClearCompleted[language]}
+              {EAddTask[language]} <IoMdAdd />
             </button>
           </div>
         </fieldset>
       </form>
+
+      <div className={style['controls-wrap']}>
+        <Select
+          id='category-filter'
+          className={`${style['select']} ${style['category-select']}`}
+          hideDelete
+          instructions='Filter by category'
+          value={
+            filterCategoryOptions.find((o) => o.value === filterCategory) ||
+            filterCategoryOptions[0]
+          }
+          onChange={(o) => setFilterCategory(o?.value as string)}
+          options={filterCategoryOptions}
+          language={language}
+          z={todosWithIdAndStatus.length + 3}
+        />
+        <Select
+          id='priority-filter'
+          className={style['select']}
+          hideDelete
+          instructions='Filter by priority'
+          value={
+            filterPriorityOptions.find((o) => o.value === filterPriority) ||
+            filterPriorityOptions[0]
+          }
+          onChange={(o) => setFilterPriority(o?.value as TPriority)}
+          options={filterPriorityOptions}
+          language={language}
+          z={todosWithIdAndStatus.length + 2}
+        />
+
+        <button
+          className={`danger ${style['clear-completed']}`}
+          disabled={!hasCompletedTasks}
+          onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
+            handleClearTodos(e)
+          }
+        >
+          {EClearCompleted[language]}
+        </button>
+      </div>
+
       <div className={style['list-wrap']}>
         <p className={style['left-to-do']}>
           {todos?.filter((todo) => !todo?.complete).length} {ELeftToDo[language]}
         </p>
+
+        {(filterPriority !== 'all' || filterCategory !== 'all') && (
+          <p className={style['filter-notification']}>
+            {ENote[language]} {EFiltered[language]}
+          </p>
+        )}
+
         <TodoList
           sending={sending}
           todosWithIdAndStatus={todosWithIdAndStatus}
@@ -319,6 +448,8 @@ export default function TodoApp({ language }: Props) {
           language={language}
           modifyTodo={modifyTodo}
           modifyTodoOrder={modifyTodoOrder}
+          priorityOptions={priorityOptions}
+          categoryOptions={categoryOptions}
         />
         {status === 'loading' && (
           <p className='flex center margin0auto textcenter'>{ELoading[language]}...</p>

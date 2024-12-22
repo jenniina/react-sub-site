@@ -97,6 +97,9 @@ export const addTodoAsync = (user: IUser['_id'], task: ITask) => {
         name: newTodo.name,
         complete: newTodo.complete,
         order: newTodo.order,
+        category: newTodo.category,
+        deadline: newTodo.deadline,
+        priority: newTodo.priority,
         user,
       })
     )
@@ -154,6 +157,9 @@ export const editTodoAsync = (user: IUser['_id'], key: ITask['key'], task: ITask
         name: newTodo.name,
         complete: newTodo.complete,
         order: newTodo.order,
+        category: newTodo.category,
+        deadline: newTodo.deadline,
+        priority: newTodo.priority,
         user,
       })
     )
@@ -169,13 +175,15 @@ export const syncTodos = (user: IUser['_id']) => {
       // Get todos from the state
       const stateTodos = getState().todos.todos
 
-      // Merge todos from the database and the state
-      const mergedTodos = [
-        ...dbTodos,
-        ...stateTodos.filter(
-          (todo) => !dbTodos.some((dbTodo: ITask) => dbTodo.key === todo.key)
-        ),
-      ]
+      const dbTodoMap = new Map<string, ITask>()
+      dbTodos.forEach((todo: ITask) => dbTodoMap.set(todo.key, todo))
+
+      stateTodos.forEach((todo) => {
+        if (!dbTodoMap.has(todo.key)) {
+          dbTodoMap.set(todo.key, todo)
+        }
+      })
+      const mergedTodos = Array.from(dbTodoMap.values())
 
       // Update the database with the merged todos
       const updatedTodos = await todoService.updateAllTodos(user, mergedTodos)

@@ -73,7 +73,7 @@ import {
   ENovember,
 } from '../interfaces/welcome'
 import { Select, SelectOption } from '../components/Select/Select'
-import { ETodoApp } from '../components/Todo/interfaces'
+import { EPriority, ETodoApp } from '../components/Todo/interfaces'
 import {
   ETasksCanBeEdited,
   ETasksCanBeReorganizedByDraggingAndDropping,
@@ -195,6 +195,17 @@ export default function Home({
                     <li>
                       <strong>{EDecember[language]}</strong>
                       <ul>
+                        <li>
+                          <Link to='/portfolio/todo'>
+                            <RiTodoLine />
+                            {ETodoApp[language]}:
+                          </Link>{' '}
+                          <i>
+                            {EAddedNewFeatures[language]}:{' '}
+                            {firstToLowerCase(EPriority[language])} &{' '}
+                            {firstToLowerCase(ECategoryTitle[language])}
+                          </i>
+                        </li>
                         <li>
                           <Link to='/portfolio/media'>
                             <IoMdImages />
