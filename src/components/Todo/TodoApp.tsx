@@ -82,6 +82,7 @@ export default function TodoApp({ language }: Props) {
   const hasCompletedTasks = todos?.some((todo) => todo.complete)
 
   useEffect(() => {
+    console.log(todos)
     if (todos.length === 0 && !user) {
       const storedTodos = JSON.parse(window.localStorage.getItem(localName) || '[]')
       const existingTodoKeys = new Set(todos.map((todo) => todo.key))
@@ -315,13 +316,15 @@ export default function TodoApp({ language }: Props) {
       setSending(false)
     } else {
       dispatch(addTodo(newTodo))
-      window.localStorage.setItem(localName, JSON.stringify([...todos, newTodo]))
-      //reorder todos from 0
-      const updatedTodos = todos.map((todo, index) => ({
-        ...todo,
-        order: index + 1,
-      }))
+      const updatedTodos = todos
+        .sort((a, b) => a.order - b.order)
+        .map((todo, index) => ({
+          ...todo,
+          order: index,
+        }))
       dispatch(setAllTodos(updatedTodos))
+      window.localStorage.setItem(localName, JSON.stringify(updatedTodos))
+      setAllTodos(updatedTodos)
       setSending(false)
     }
     if (todoNameRef.current) todoNameRef.current.value = ''
