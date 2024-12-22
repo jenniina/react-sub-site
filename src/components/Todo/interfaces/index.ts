@@ -168,6 +168,15 @@ export enum EShopping {
   cs = 'Nákupy',
   fi = 'Ostokset',
 }
+export enum ETheDateIsInThePast {
+  en = 'the date is in the past',
+  es = 'la fecha está en el pasado',
+  fr = 'la date est dans le passé',
+  de = 'das Datum liegt in der Vergangenheit',
+  pt = 'a data está no passado',
+  cs = 'datum je v minulosti',
+  fi = 'päivämäärä on menneisyydessä',
+}
 
 export const translationMap: Record<string, Record<ELanguages, string>> = {
   all: EAll,

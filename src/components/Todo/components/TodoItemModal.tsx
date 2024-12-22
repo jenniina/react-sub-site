@@ -24,6 +24,7 @@ import {
   EPriority,
   TCategory,
   TPriority,
+  ETheDateIsInThePast,
 } from '../interfaces'
 import { ESelectCategory } from '../../Jokes/interfaces'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
@@ -82,32 +83,59 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
   setNewYear,
   setIsOpen,
 }) => {
-  const dispatch = useAppDispatch()
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setNewName(e.target.value)
   }
-  const handleDateChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    setter: React.Dispatch<React.SetStateAction<string>>
-  ) => {
-    const value = e.target.value
-    if (value.length <= 2) setter(value)
-    else {
-      dispatch(notify(`${ESet[language]}: ${EDay[language]}`, true, 5))
+
+  const handleDayChange = (value: string) => {
+    if (Number(value) <= 31 && value.length <= 2) {
+      setNewDay(value)
+      setErrorMessage(null)
+    } else {
+      setErrorMessage(`${ESet[language]}: ${EDay[language]}`)
     }
   }
+
+  const handleMonthChange = (value: string) => {
+    if (Number(value) <= 12 && value.length <= 2) {
+      setNewMonth(value)
+      setErrorMessage(null)
+    } else {
+      setErrorMessage(`${ESet[language]}: ${EMonth[language]}`)
+    }
+  }
+
   const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
-    if (Number(value) <= Number(new Date().getFullYear()) + 10 && value.length <= 4)
+    if (Number(value) <= Number(new Date().getFullYear()) + 10 && value.length <= 4) {
       setNewYear(value)
-    else {
-      dispatch(notify(EYearMustBeBetweenCurrentYearAnd10YearsFromNow[language], true, 5))
+      setErrorMessage(null)
+    } else {
+      setErrorMessage(EYearMustBeBetweenCurrentYearAnd10YearsFromNow[language])
     }
   }
 
   useEffect(() => {
-    if (!showDeadline) {
+    if (newDay && newMonth && newYear) {
+      const selectedDate = new Date(Number(newYear), Number(newMonth) - 1, Number(newDay))
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+
+      setErrorMessage(null)
+      if (selectedDate < today) {
+        setErrorMessage(ETheDateIsInThePast[language])
+      }
+    }
+  }, [newDay, newMonth, newYear, language])
+
+  useEffect(() => {
+    if (showDeadline) {
+      if (!newDay) setNewDay((new Date().getDate() + 1).toString().padStart(2, '0'))
+      if (!newMonth) setNewMonth((new Date().getMonth() + 1).toString().padStart(2, '0'))
+      if (!newYear) setNewYear(new Date().getFullYear().toString())
+    } else {
       setNewDay('')
       setNewMonth('')
       setNewYear('')
@@ -218,7 +246,7 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
             hideDelete
             z={2}
           />
-          <fieldset className={styles['fieldset']}>
+          <fieldset className={`${styles['fieldset']} ${styles['deadline-wrap']}`}>
             <legend>
               <label>
                 {EDeadline[language]}{' '}
@@ -231,78 +259,83 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
               </label>
             </legend>
             {showDeadline && (
-              <div className={styles['deadline-inputs']}>
-                <div className={styles['input']}>
-                  <label
-                    className='scr'
-                    htmlFor={`day_${sanitize(
-                      first3Words(todo?.name ?? ETask[language], language)
-                    )}`}
-                  >
-                    {EDay[language]}
-                  </label>
-                  <input
-                    type='number'
-                    id={`day_${sanitize(todo?.name || 'Task')}`}
-                    name='day'
-                    min={1}
-                    max={31}
-                    value={newDay}
-                    placeholder='DD'
-                    onChange={(e) => handleDateChange(e, setNewDay)}
-                    required
-                    className='bg'
-                  />
-                </div>
+              <>
+                <div className={styles['deadline-inputs']}>
+                  <div className={styles['input']}>
+                    <label
+                      className='scr'
+                      htmlFor={`day_${sanitize(
+                        first3Words(todo?.name ?? ETask[language], language)
+                      )}`}
+                    >
+                      {EDay[language]}
+                    </label>
+                    <input
+                      type='number'
+                      id={`day_${sanitize(todo?.name || 'Task')}`}
+                      name='day'
+                      min={1}
+                      max={31}
+                      value={newDay}
+                      placeholder='DD'
+                      onChange={(e) => handleDayChange(e.target.value)}
+                      required
+                      className='bg'
+                    />
+                  </div>
 
-                <div className={styles['input']}>
-                  <label
-                    className='scr'
-                    htmlFor={`month_${sanitize(todo?.name || 'Task')}`}
-                  >
-                    {EMonth[language]}
-                  </label>
-                  <input
-                    type='number'
-                    id={`month_${sanitize(
-                      first3Words(todo?.name ?? ETask[language], language)
-                    )}`}
-                    name='month'
-                    value={newMonth}
-                    placeholder='MM'
-                    onChange={(e) => handleDateChange(e, setNewMonth)}
-                    required
-                    className='bg'
-                  />
-                </div>
+                  <div className={styles['input']}>
+                    <label
+                      className='scr'
+                      htmlFor={`month_${sanitize(todo?.name || 'Task')}`}
+                    >
+                      {EMonth[language]}
+                    </label>
+                    <input
+                      type='number'
+                      id={`month_${sanitize(
+                        first3Words(todo?.name ?? ETask[language], language)
+                      )}`}
+                      name='month'
+                      min={1}
+                      max={12}
+                      value={newMonth}
+                      placeholder='MM'
+                      onChange={(e) => handleMonthChange(e.target.value)}
+                      required
+                      className='bg'
+                    />
+                  </div>
 
-                <div className={styles['input']}>
-                  <label
-                    className='scr'
-                    htmlFor={`year_${sanitize(todo?.name || 'Task')}`}
-                  >
-                    {EYear[language]}
-                  </label>
-                  <input
-                    type='number'
-                    id={`year_${sanitize(
-                      first3Words(todo?.name ?? ETask[language], language)
-                    )}`}
-                    name='year'
-                    min={new Date().getFullYear()}
-                    max={new Date().getFullYear() + 10}
-                    value={newYear}
-                    placeholder='YYYY'
-                    onChange={(e) => handleYearChange(e)}
-                    required
-                    className='bg'
-                  />
-                </div>
-              </div>
+                  <div className={styles['input']}>
+                    <label
+                      className='scr'
+                      htmlFor={`year_${sanitize(todo?.name || 'Task')}`}
+                    >
+                      {EYear[language]}
+                    </label>
+                    <input
+                      type='number'
+                      id={`year_${sanitize(
+                        first3Words(todo?.name ?? ETask[language], language)
+                      )}`}
+                      name='year'
+                      min={new Date().getFullYear()}
+                      max={new Date().getFullYear() + 10}
+                      value={newYear}
+                      placeholder='YYYY'
+                      onChange={(e) => handleYearChange(e)}
+                      required
+                      className='bg'
+                    />
+                  </div>
+                </div>{' '}
+                {errorMessage && <p className={styles.error}>{errorMessage}</p>}
+              </>
             )}
           </fieldset>
           <fieldset className={`${styles['fieldset']} ${styles.textarea}`}>
-            <legend>{EEdit[language]}</legend>
+            <legend>{ETask[language]}</legend>
             <label>
               <textarea
                 id={`task_${sanitize(todo?.name)}`}

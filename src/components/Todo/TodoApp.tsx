@@ -34,6 +34,7 @@ import { notify } from '../../reducers/notificationReducer'
 import { useSelector } from 'react-redux'
 import { initializeUser } from '../../reducers/authReducer'
 import {
+  EFilterByCategory,
   EFiltered,
   ENote,
   EUpdated,
@@ -42,9 +43,14 @@ import {
 } from '../../interfaces'
 import { RootState } from '../../store'
 import { ELanguages, ELoading } from '../../interfaces'
-import { EAreYouSureYouWantToClearAllCompletedTasks } from '../../interfaces/todo'
+import {
+  EAreYouSureYouWantToClearAllCompletedTasks,
+  EFilterByPriority,
+  ESelectPriority,
+} from '../../interfaces/todo'
 import { Select } from '../Select/Select'
 import { IoMdAdd } from 'react-icons/io'
+import { ESelectCategory } from '../Jokes/interfaces'
 
 interface Props {
   language: ELanguages
@@ -355,7 +361,7 @@ export default function TodoApp({ language }: Props) {
               id='category'
               className={`${style['select']} ${style['category-select']}`}
               hideDelete
-              instructions='Select category'
+              instructions={ESelectCategory[language]}
               value={
                 categoryOptions.find((o) => o.value === category) || categoryOptions[0]
               }
@@ -367,7 +373,7 @@ export default function TodoApp({ language }: Props) {
               id='priority'
               className={style['select']}
               hideDelete
-              instructions='Select priority'
+              instructions={ESelectPriority[language]}
               value={
                 priorityOptions.find((o) => o.value === priority) || priorityOptions[0]
               }
@@ -393,7 +399,7 @@ export default function TodoApp({ language }: Props) {
           id='category-filter'
           className={`${style['select']} ${style['category-select']}`}
           hideDelete
-          instructions='Filter by category'
+          instructions={EFilterByCategory[language]}
           value={
             filterCategoryOptions.find((o) => o.value === filterCategory) ||
             filterCategoryOptions[0]
@@ -407,7 +413,7 @@ export default function TodoApp({ language }: Props) {
           id='priority-filter'
           className={style['select']}
           hideDelete
-          instructions='Filter by priority'
+          instructions={EFilterByPriority[language]}
           value={
             filterPriorityOptions.find((o) => o.value === filterPriority) ||
             filterPriorityOptions[0]
