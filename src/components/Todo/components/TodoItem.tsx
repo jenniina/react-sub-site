@@ -195,37 +195,40 @@ export default function Todo({
           >
             {todo?.name}
           </span>
+          <div className={`${styles['more-info-wrap']}`}>
+            {todo?.category && (
+              <span>
+                {ECategory[language]}:{' '}
+                {translate(translationMap, todo?.category, language)}
+              </span>
+            )}
+
+            {todo?.priority && todo?.category && <span aria-hidden='true'> | </span>}
+
+            {todo?.priority && (
+              <span>
+                {EPriority[language]}:{' '}
+                {translate(translationMap, todo?.priority, language)}
+              </span>
+            )}
+
+            {todo?.deadline && todo?.deadline !== '' && todo?.priority && (
+              <span aria-hidden='true'> | </span>
+            )}
+
+            {todo?.deadline && todo?.deadline !== '' && (
+              <span>
+                {EDeadline[language]}:{' '}
+                {new Date(todo.deadline).toLocaleDateString(language, {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </span>
+            )}
+          </div>
         </label>
-        <div className={`${styles['more-info-wrap']}`}>
-          {todo?.category && (
-            <span>
-              {ECategory[language]}: {translate(translationMap, todo?.category, language)}
-            </span>
-          )}
 
-          {todo?.priority && todo?.category && <span aria-hidden='true'> | </span>}
-
-          {todo?.priority && (
-            <span>
-              {EPriority[language]}: {translate(translationMap, todo?.priority, language)}
-            </span>
-          )}
-
-          {todo?.deadline && todo?.deadline !== '' && todo?.priority && (
-            <span aria-hidden='true'> | </span>
-          )}
-
-          {todo?.deadline && todo?.deadline !== '' && (
-            <span>
-              {EDeadline[language]}:{' '}
-              {new Date(todo.deadline).toLocaleDateString(language, {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </span>
-          )}
-        </div>
         <div className={`${styles['btn-wrap']}`}>
           <button
             onClick={() => setIsOpen(true)}

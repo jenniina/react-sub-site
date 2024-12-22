@@ -79,3 +79,21 @@ export enum EAreYouSureYouWantToClearAllCompletedTasks {
   cs = 'Opravdu chcete vymazat všechny dokončené úkoly?',
   fi = 'Oletko varma, että haluat poistaa kaikki valmiit tehtävät?',
 }
+export enum ESelectPriority {
+  en = 'Select Priority',
+  es = 'Seleccionar Prioridad',
+  fr = 'Sélectionner la Priorité',
+  de = 'Priorität Auswählen',
+  pt = 'Selecionar Prioridade',
+  cs = 'Vyberte Prioritu',
+  fi = 'Valitse tärkeysaste',
+}
+export enum EFilterByPriority {
+  en = 'Filter by Priority',
+  es = 'Filtrar por Prioridad',
+  fr = 'Filtrer par Priorité',
+  de = 'Nach Priorität filtern',
+  pt = 'Filtrar por Prioridade',
+  cs = 'Filtrovat podle Priority',
+  fi = 'Suodata tärkeyden mukaan',
+}
