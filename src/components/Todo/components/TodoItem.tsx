@@ -107,6 +107,12 @@ export default function Todo({
   }
 
   useEffect(() => {
+    if (todo?.deadline) {
+      setShowDeadline(true)
+    }
+  }, [todo])
+
+  useEffect(() => {
     // Ensure input values are always synchronized with todo props
     if (todo?.name !== newName) {
       setNewName(todo?.name || '')
@@ -216,16 +222,33 @@ export default function Todo({
               <span aria-hidden='true'> | </span>
             )}
 
-            {todo?.deadline && todo?.deadline !== '' && (
-              <span>
-                {EDeadline[language]}:{' '}
-                {new Date(todo.deadline).toLocaleDateString(language, {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
-              </span>
-            )}
+            {todo?.deadline &&
+              todo?.deadline !== '' &&
+              (() => {
+                const deadlineDate = new Date(todo.deadline)
+                const today = new Date()
+
+                deadlineDate.setHours(0, 0, 0, 0)
+                today.setHours(0, 0, 0, 0)
+
+                const isOverdue = deadlineDate < today
+                const isToday = deadlineDate.getTime() === today.getTime()
+
+                return (
+                  <span
+                    className={`${styles['deadline']} ${
+                      isOverdue ? styles['overdue'] : ''
+                    } ${isToday ? styles['today'] : ''}`}
+                  >
+                    {EDeadline[language]}:{' '}
+                    {new Date(todo.deadline).toLocaleDateString(language, {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </span>
+                )
+              })()}
           </div>
         </label>
 

@@ -294,6 +294,19 @@ form.modify .fieldset {
   width: 5em;
   max-width: 5em;
 }
+.deadline.today {
+  font-weight: bold;
+  text-decoration: underline;
+}
+.deadline.overdue {
+  padding: 0 0.3em;
+  font-weight: bold;
+  color: red;
+  background-color: black;
+}
+.light .deadline.overdue {
+  background-color: white;
+}
 .filter-notification {
   font-size: 1rem;
   margin: 0.5em auto 0;
