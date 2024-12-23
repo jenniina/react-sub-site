@@ -2985,3 +2985,12 @@ export enum ECancel {
   cs = 'Zrušit',
   fi = 'Peruuta',
 }
+export enum EToday {
+  en = 'Today',
+  es = 'Hoy',
+  fr = 'Aujourd hui',
+  de = 'Heute',
+  pt = 'Hoje',
+  cs = 'Dnes',
+  fi = 'Tänään',
+}
