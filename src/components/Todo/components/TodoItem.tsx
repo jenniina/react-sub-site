@@ -215,6 +215,37 @@ export default function Todo({
           >
             {todo?.name}
           </span>
+          <div className={`${styles['more-info-wrap']}`}>
+            {todo?.deadline &&
+              todo?.deadline !== '' &&
+              (() => {
+                const deadlineDate = new Date(todo.deadline)
+                const today = new Date()
+
+                deadlineDate.setHours(0, 0, 0, 0)
+                today.setHours(0, 0, 0, 0)
+
+                const isOverdue = deadlineDate < today
+                const isToday = deadlineDate.getTime() === today.getTime()
+
+                return (
+                  <span
+                    className={`${styles['deadline']} ${
+                      isOverdue ? styles['overdue'] : ''
+                    } ${isToday ? styles['today'] : ''}`}
+                  >
+                    {EDeadline[language]}:{' '}
+                    {isToday
+                      ? EToday[language]
+                      : new Date(todo.deadline).toLocaleDateString(language, {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                        })}
+                  </span>
+                )
+              })()}
+          </div>
           {/* <div className={`${styles['more-info-wrap']}`}>
             {todo?.category && (
               <span>
