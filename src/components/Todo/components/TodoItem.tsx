@@ -359,11 +359,12 @@ export default function Todo({
             className={`${styles['delete']} tooltip-wrap`}
             onClick={isOpen ? () => setIsOpen(false) : handleDelete}
           >
-            <span aria-hidden='true'>
-              {isOpen ? <FaAnglesUp style={{ fontSize: '0.8em' }} /> : <>&times;</>}
+            <span className={styles['delete-inner']} aria-hidden='true'>
+              &times;
             </span>
-            <span className='tooltip below left narrow2'>
-              {isOpen ? EClose[language] : EDeleteTask[language]}
+            <span className='scr'>{EDeleteTask[language]}</span>
+            <span className='tooltip below left narrow2' aria-hidden='true'>
+              {EDeleteTask[language]}
             </span>
           </button>
         </div>

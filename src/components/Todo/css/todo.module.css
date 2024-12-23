@@ -37,7 +37,8 @@ button.submit-todo {
 }
 .todo-ul .btn-wrap button.edit {
   border-radius: 1em;
-  padding: 0.4em;
+  padding: 0.32em 0.3em;
+  border-width: 2px;
 }
 button.cancel,
 button.cancel:hover,
@@ -247,16 +248,28 @@ button.cancel svg {
 .todo-ul > li .btn-wrap button.delete {
   background: transparent;
   border: none;
-  outline: none;
+  outline: 2px solid var(--color-gray-4);
   border-radius: 1em;
-  padding: 0.3em 0.6em;
-  outline-offset: -3px;
+  padding: 0.05em 0.45rem 0.05em;
+  outline-offset: -1px;
+  border: solid 4px transparent;
+}
+.todo-ul > li .btn-wrap button.delete .delete-inner {
+  font-size: 1.3em;
+  margin: -0.15em -0.1em -0.1em;
 }
 .todo-ul > li .btn-wrap button.delete:hover,
 .todo-ul > li .btn-wrap button.delete:focus {
-  color: red;
+  color: tomato;
   outline: solid 2px red;
   outline-offset: -2px;
+  border-color: tomato;
+}
+.light .todo-ul > li .btn-wrap button.delete:hover,
+.light .todo-ul > li .btn-wrap button.delete:focus {
+  color: maroon;
+  outline: solid 2px maroon;
+  border-color: red;
 }
 .todo-ul > li .btn-wrap button.delete:focus-visible {
   outline: solid 2px red;
