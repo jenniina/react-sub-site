@@ -46,6 +46,7 @@ import { HiDotsCircleHorizontal, HiDotsHorizontal } from 'react-icons/hi'
 import { TiShoppingCart } from 'react-icons/ti'
 import { AiOutlineEdit } from 'react-icons/ai'
 import { FaArrowAltCircleDown } from 'react-icons/fa'
+import { BsArrowDownCircleFill } from 'react-icons/bs'
 
 export default function Todo({
   todo,
@@ -300,6 +301,40 @@ export default function Todo({
         </label>
 
         <div className={`${styles['btn-wrap']}`}>
+          {todo?.priority === 'high' ? (
+            <b className={`tooltip-wrap ${styles.high}`}>
+              <FaTriangleExclamation />
+              <span className='scr'>
+                {EPriority[language]}: {EHigh[language]}
+              </span>
+              <span className='tooltip narrow2 below left' aria-hidden='true'>
+                {EPriority[language]}: {EHigh[language]}
+              </span>
+            </b>
+          ) : todo?.priority === 'medium' ? (
+            <b className={`tooltip-wrap ${styles.medium}`}>
+              <HiDotsHorizontal />
+              <span className='scr'>
+                {EPriority[language]}: {EMedium[language]}
+              </span>
+              <span className='tooltip narrow2 below left' aria-hidden='true'>
+                {EPriority[language]}: {EMedium[language]}
+              </span>
+            </b>
+          ) : todo?.priority === 'low' ? (
+            <b className={`tooltip-wrap ${styles.low}`}>
+              <BsArrowDownCircleFill viewBox='0 0 17 17' />
+              <span className='scr'>
+                {EPriority[language]}: {ELow[language]}
+              </span>
+              <span className='tooltip narrow2 below left' aria-hidden='true'>
+                {EPriority[language]}: {ELow[language]}
+              </span>
+            </b>
+          ) : (
+            <>&nbsp;</>
+          )}
+
           {todo?.category === 'personal' ? (
             <b className={`tooltip-wrap ${styles.cat}`}>
               <IoPersonCircleSharp />
@@ -342,39 +377,6 @@ export default function Todo({
             </b>
           )}
 
-          {todo?.priority === 'high' ? (
-            <b className={`tooltip-wrap ${styles.high}`}>
-              <FaTriangleExclamation />
-              <span className='scr'>
-                {EPriority[language]}: {EHigh[language]}
-              </span>
-              <span className='tooltip narrow2 below left' aria-hidden='true'>
-                {EPriority[language]}: {EHigh[language]}
-              </span>
-            </b>
-          ) : todo?.priority === 'medium' ? (
-            <b className={`tooltip-wrap ${styles.medium}`}>
-              <HiDotsHorizontal />
-              <span className='scr'>
-                {EPriority[language]}: {EMedium[language]}
-              </span>
-              <span className='tooltip narrow2 below left' aria-hidden='true'>
-                {EPriority[language]}: {EMedium[language]}
-              </span>
-            </b>
-          ) : todo?.priority === 'low' ? (
-            <b className={`tooltip-wrap ${styles.low}`}>
-              <FaArrowAltCircleDown />
-              <span className='scr'>
-                {EPriority[language]}: {ELow[language]}
-              </span>
-              <span className='tooltip narrow2 below left' aria-hidden='true'>
-                {EPriority[language]}: {ELow[language]}
-              </span>
-            </b>
-          ) : (
-            <>&nbsp;</>
-          )}
           <button
             onClick={() => setIsOpen(true)}
             className={`${styles['edit']} tooltip-wrap`}
