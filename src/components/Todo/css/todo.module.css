@@ -210,10 +210,12 @@ button.cancel svg {
   border-color: var(--color-primary-13);
 } */
 .todo-ul > li:has(input:checked) .btn-wrap > b > svg,
+.todo-ul > li:has(input:checked) .btn-wrap > b::before,
 .todo-ul > li:has(input:checked) .btn-wrap button {
   filter: grayscale(100%);
   opacity: 0.4;
 }
+
 .todo-ul > li .btn-wrap > .modify-todo:not(.closed) {
   flex: 1 0 100%;
   min-width: 100%;
@@ -257,6 +259,7 @@ button.cancel svg {
   border-radius: 1em;
   padding: 0.05em 0.45em 0.05em;
   outline-offset: -1px;
+  border-width: 2px;
 }
 .todo-ul > li .btn-wrap button.delete .delete-inner {
   font-size: 1.3em;
@@ -265,13 +268,15 @@ button.cancel svg {
 .todo-ul > li .btn-wrap button.delete:hover,
 .todo-ul > li .btn-wrap button.delete:focus {
   outline: solid 2px red;
-  outline-offset: -4px;
+  outline-offset: -5px;
   border-color: red;
+  border: solid 2px red;
 }
 .light .todo-ul > li .btn-wrap button.delete:hover,
 .light .todo-ul > li .btn-wrap button.delete:focus {
   outline-color: tomato;
   border-color: red;
+  background-position: 50% 98%;
 }
 .todo-ul > li .btn-wrap button.delete:focus-visible {
   outline: solid 2px red;
@@ -297,6 +302,14 @@ button.cancel svg {
   text-decoration: line-through 1px;
   background-color: transparent;
 }
+.todo-ul > li:has(input:checked) .btn-wrap b.medium svg {
+  fill: black;
+}
+
+.light .todo-ul > li:has(input:checked) .btn-wrap b.medium svg {
+  fill: white;
+}
+
 .todo-ul > li input[type='checkbox' i]:checked {
   accent-color: var(--color-gray-2);
 }

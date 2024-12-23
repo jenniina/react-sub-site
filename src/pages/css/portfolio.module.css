@@ -32,7 +32,7 @@
 }
 .portfolio .card .list li a:hover > span,
 .portfolio .card .list li a:focus > span {
-  background-position: bottom;
+  background-position: 50% 98%;
 }
 .list li:hover {
   -webkit-transform: translateY(-6px);

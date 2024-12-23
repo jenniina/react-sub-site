@@ -630,7 +630,7 @@ button.active::before {
 }
 #game-container button.active:hover,
 #game-container button.active:focus {
-  background-position: top;
+  background-position: 50% 3%;
   color: var(--color-primary-20);
   cursor: default;
 }

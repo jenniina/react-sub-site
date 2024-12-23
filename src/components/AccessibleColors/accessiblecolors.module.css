@@ -226,7 +226,7 @@
   flex-flow: row nowrap;
   background: linear-gradient(4deg, hsl(0, 0%, 10%) 0%, hsl(0, 0%, 3%) 100%);
   background-size: var(--bg-size);
-  background-position: top;
+  background-position: 50% 3%;
   border-bottom-color: gray;
 }
 .color-edit-container > .color-select > div > div {
@@ -235,7 +235,7 @@
 .light .color-edit-container > .color-select > div {
   background: linear-gradient(4deg, hsl(0, 0%, 70%) 0%, hsl(0, 0%, 90%) 100%);
   background-size: var(--bg-size);
-  background-position: top;
+  background-position: 50% 3%;
 }
 .color-edit-container > .color-select > div > span {
   max-width: calc(100% - 3em);
@@ -292,8 +292,11 @@
 }
 .inputs > label > span {
   white-space: nowrap;
+  width: 1em;
 }
-
+.inputs > label input {
+  min-width: calc(100% - 2em);
+}
 .inputs.hex-input > label {
   flex-flow: column nowrap;
   margin-top: 0.3em;

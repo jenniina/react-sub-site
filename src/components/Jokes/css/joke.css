@@ -856,7 +856,7 @@ button.delivery {
     var(--color-primary-2) 100%
   );
   background-size: auto 200px;
-  background-position: left 0% bottom 100%;
+  background-position: left 0% bottom 96%;
   pointer-events: all;
 }
 
@@ -869,7 +869,8 @@ button.delivery.reveal,
 button.delivery.reveal:focus {
   border: none;
   outline: none;
-  background-position: left 0% bottom 0%;
+  background-position: left 0% bottom 6%;
+  border-radius: 0.2em;
 }
 button.delivery.reveal {
   border-radius: 0;
