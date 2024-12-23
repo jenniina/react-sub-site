@@ -270,28 +270,40 @@ export default function Todo({
           {todo?.category === 'personal' ? (
             <b className={`tooltip-wrap ${styles.cat}`}>
               <IoPersonCircleSharp />
-              <span className='tooltip narrow2 below left'>
+              <span className='scr'>
+                {ECategoryTitle[language]}: {EPersonal[language]}
+              </span>
+              <span className='tooltip narrow2 below left' aria-hidden='true'>
                 {ECategoryTitle[language]}: {EPersonal[language]}
               </span>
             </b>
           ) : todo?.category === 'work' ? (
             <b className={`tooltip-wrap ${styles.cat} ${styles.bg}`}>
               <MdWork />
-              <span className='tooltip narrow2 below left'>
+              <span className='scr'>
+                {ECategoryTitle[language]}: {EWork[language]}
+              </span>
+              <span className='tooltip narrow2 below left' aria-hidden='true'>
                 {ECategoryTitle[language]}: {EWork[language]}
               </span>
             </b>
           ) : todo?.category === 'shopping' ? (
             <b className={`tooltip-wrap ${styles.cat} ${styles.bg}`}>
               <TiShoppingCart />
-              <span className='tooltip narrow2 below left'>
+              <span className='scr'>
+                {ECategoryTitle[language]}: {EShopping[language]}
+              </span>
+              <span className='tooltip narrow2 below left' aria-hidden='true'>
                 {ECategoryTitle[language]}: {EShopping[language]}
               </span>
             </b>
           ) : (
             <b className={`tooltip-wrap ${styles.cat}`}>
               <HiDotsCircleHorizontal />
-              <span className='tooltip narrow2 below left'>
+              <span className='scr'>
+                {ECategoryTitle[language]}: {EOther[language]}
+              </span>
+              <span className='tooltip narrow2 below left' aria-hidden='true'>
                 {ECategoryTitle[language]}: {EOther[language]}
               </span>
             </b>
@@ -300,21 +312,30 @@ export default function Todo({
           {todo?.priority === 'high' ? (
             <b className={`tooltip-wrap`}>
               <FcHighPriority />
-              <span className='tooltip narrow2 below left'>
+              <span className='scr'>
+                {EPriority[language]}: {EHigh[language]}
+              </span>
+              <span className='tooltip narrow2 below left' aria-hidden='true'>
                 {EPriority[language]}: {EHigh[language]}
               </span>
             </b>
           ) : todo?.priority === 'medium' ? (
             <b className={`tooltip-wrap`}>
               <FcMediumPriority />
-              <span className='tooltip narrow2 below left'>
+              <span className='scr'>
+                {EPriority[language]}: {EMedium[language]}
+              </span>
+              <span className='tooltip narrow2 below left' aria-hidden='true'>
                 {EPriority[language]}: {EMedium[language]}
               </span>
             </b>
           ) : todo?.priority === 'low' ? (
             <b className={`tooltip-wrap`}>
               <FcLowPriority />
-              <span className='tooltip narrow2 below left'>
+              <span className='scr'>
+                {EPriority[language]}: {ELow[language]}
+              </span>
+              <span className='tooltip narrow2 below left' aria-hidden='true'>
                 {EPriority[language]}: {ELow[language]}
               </span>
             </b>
