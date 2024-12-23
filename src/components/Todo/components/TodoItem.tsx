@@ -8,6 +8,8 @@ import {
   EEtc,
   ELanguages,
   EMonth,
+  EOther,
+  EToday,
   EYear,
 } from '../../../interfaces'
 import { EDeleteTask } from '../../../interfaces/todo'
@@ -18,20 +20,30 @@ import { EAreYouSureYouWantToDelete } from '../../UserEdit/interfaces'
 import {
   ECategory,
   EDeadline,
+  EHigh,
+  ELow,
+  EMedium,
   EPriority,
+  EShopping,
   ETask,
   TCategory,
   TPriority,
   translate,
   translationMap,
 } from '../interfaces'
-import { MdDragIndicator } from 'react-icons/md'
+import { MdDragIndicator, MdShoppingCart, MdWork } from 'react-icons/md'
+import { FcHighPriority, FcLowPriority, FcMediumPriority } from 'react-icons/fc'
 import { sanitize, first3Words, getRandomString } from '../../../utils'
 import { FaAnglesUp } from 'react-icons/fa6'
 import { Select, SelectOption } from '../../Select/Select'
-import { ESelectCategory } from '../../Jokes/interfaces'
+import { ECategoryTitle, ESelectCategory } from '../../Jokes/interfaces'
 import { useModal } from '../../../hooks/useModal'
 import TodoItemModal from './TodoItemModal'
+import { IoPersonCircleSharp } from 'react-icons/io5'
+import { GiCardRandom } from 'react-icons/gi'
+import { EPersonal, EWork } from '../../../interfaces/form'
+import { HiDotsCircleHorizontal } from 'react-icons/hi'
+import { TiShoppingCart } from 'react-icons/ti'
 
 export default function Todo({
   todo,
@@ -201,7 +213,7 @@ export default function Todo({
           >
             {todo?.name}
           </span>
-          <div className={`${styles['more-info-wrap']}`}>
+          {/* <div className={`${styles['more-info-wrap']}`}>
             {todo?.category && (
               <span>
                 {ECategory[language]}:{' '}
@@ -241,18 +253,74 @@ export default function Todo({
                     } ${isToday ? styles['today'] : ''}`}
                   >
                     {EDeadline[language]}:{' '}
-                    {new Date(todo.deadline).toLocaleDateString(language, {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                    })}
+                    {isToday
+                      ? EToday[language]
+                      : new Date(todo.deadline).toLocaleDateString(language, {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                        })}
                   </span>
                 )
               })()}
-          </div>
+          </div> */}
         </label>
 
         <div className={`${styles['btn-wrap']}`}>
+          {todo?.category === 'personal' ? (
+            <b className={`tooltip-wrap ${styles.cat}`}>
+              <IoPersonCircleSharp />
+              <span className='tooltip narrow2 below left'>
+                {ECategoryTitle[language]}: {EPersonal[language]}
+              </span>
+            </b>
+          ) : todo?.category === 'work' ? (
+            <b className={`tooltip-wrap ${styles.cat} ${styles.bg}`}>
+              <MdWork />
+              <span className='tooltip narrow2 below left'>
+                {ECategoryTitle[language]}: {EWork[language]}
+              </span>
+            </b>
+          ) : todo?.category === 'shopping' ? (
+            <b className={`tooltip-wrap ${styles.cat} ${styles.bg}`}>
+              <TiShoppingCart />
+              <span className='tooltip narrow2 below left'>
+                {ECategoryTitle[language]}: {EShopping[language]}
+              </span>
+            </b>
+          ) : (
+            <b className={`tooltip-wrap ${styles.cat}`}>
+              <HiDotsCircleHorizontal />
+              <span className='tooltip narrow2 below left'>
+                {ECategoryTitle[language]}: {EOther[language]}
+              </span>
+            </b>
+          )}
+
+          {todo?.priority === 'high' ? (
+            <b className={`tooltip-wrap`}>
+              <FcHighPriority />
+              <span className='tooltip narrow2 below left'>
+                {EPriority[language]}: {EHigh[language]}
+              </span>
+            </b>
+          ) : todo?.priority === 'medium' ? (
+            <b className={`tooltip-wrap`}>
+              <FcMediumPriority />
+              <span className='tooltip narrow2 below left'>
+                {EPriority[language]}: {EMedium[language]}
+              </span>
+            </b>
+          ) : todo?.priority === 'low' ? (
+            <b className={`tooltip-wrap`}>
+              <FcLowPriority />
+              <span className='tooltip narrow2 below left'>
+                {EPriority[language]}: {ELow[language]}
+              </span>
+            </b>
+          ) : (
+            <>&nbsp;</>
+          )}
           <button
             onClick={() => setIsOpen(true)}
             className={`${styles['edit']} tooltip-wrap`}
