@@ -34,7 +34,7 @@ import {
 import { MdDragIndicator, MdShoppingCart, MdWork } from 'react-icons/md'
 import { FcHighPriority, FcLowPriority, FcMediumPriority } from 'react-icons/fc'
 import { sanitize, first3Words, getRandomString } from '../../../utils'
-import { FaAnglesUp } from 'react-icons/fa6'
+import { FaAnglesUp, FaTriangleExclamation } from 'react-icons/fa6'
 import { Select, SelectOption } from '../../Select/Select'
 import { ECategoryTitle, ESelectCategory } from '../../Jokes/interfaces'
 import { useModal } from '../../../hooks/useModal'
@@ -42,8 +42,10 @@ import TodoItemModal from './TodoItemModal'
 import { IoPersonCircleSharp } from 'react-icons/io5'
 import { GiCardRandom } from 'react-icons/gi'
 import { EPersonal, EWork } from '../../../interfaces/form'
-import { HiDotsCircleHorizontal } from 'react-icons/hi'
+import { HiDotsCircleHorizontal, HiDotsHorizontal } from 'react-icons/hi'
 import { TiShoppingCart } from 'react-icons/ti'
+import { AiOutlineEdit } from 'react-icons/ai'
+import { FaArrowAltCircleDown } from 'react-icons/fa'
 
 export default function Todo({
   todo,
@@ -310,8 +312,8 @@ export default function Todo({
           )}
 
           {todo?.priority === 'high' ? (
-            <b className={`tooltip-wrap`}>
-              <FcHighPriority />
+            <b className={`tooltip-wrap ${styles.high}`}>
+              <FaTriangleExclamation />
               <span className='scr'>
                 {EPriority[language]}: {EHigh[language]}
               </span>
@@ -320,8 +322,8 @@ export default function Todo({
               </span>
             </b>
           ) : todo?.priority === 'medium' ? (
-            <b className={`tooltip-wrap`}>
-              <FcMediumPriority />
+            <b className={`tooltip-wrap ${styles.medium}`}>
+              <HiDotsHorizontal />
               <span className='scr'>
                 {EPriority[language]}: {EMedium[language]}
               </span>
@@ -330,8 +332,8 @@ export default function Todo({
               </span>
             </b>
           ) : todo?.priority === 'low' ? (
-            <b className={`tooltip-wrap`}>
-              <FcLowPriority />
+            <b className={`tooltip-wrap ${styles.low}`}>
+              <FaArrowAltCircleDown />
               <span className='scr'>
                 {EPriority[language]}: {ELow[language]}
               </span>
@@ -347,7 +349,11 @@ export default function Todo({
             className={`${styles['edit']} tooltip-wrap`}
             disabled={todo?.complete ?? false}
           >
-            {EEdit[language]}
+            <AiOutlineEdit />
+            <span className='scr'>{EEdit[language]}</span>
+            <span className='tooltip narrow2 below left' aria-hidden='true'>
+              {EEdit[language]}
+            </span>
           </button>
           <button
             className={`${styles['delete']} tooltip-wrap`}
