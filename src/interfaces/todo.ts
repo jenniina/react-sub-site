@@ -50,7 +50,7 @@ export enum EDeleteTask {
   de = 'Aufgabe Löschen',
   pt = 'Excluir Tarefa',
   cs = 'Odstranit Úkol',
-  fi = 'Poista Tehtävä',
+  fi = 'Poista tehtävä',
 }
 export enum ETasksCanBeEdited {
   en = 'Tasks can be edited',
