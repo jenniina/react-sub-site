@@ -1,5 +1,5 @@
-import { useRef, useEffect, useState } from 'react'
-import TodoList, { ITaskDraggable } from './components/TodoList'
+import { useRef, useEffect, useState, lazy, Suspense } from 'react'
+import { ITaskDraggable } from './components/TodoList'
 import { v4 as uuidv4 } from 'uuid'
 import {
   EAddTask,
@@ -51,6 +51,8 @@ import {
 import { Select } from '../Select/Select'
 import { IoMdAdd } from 'react-icons/io'
 import { ESelectCategory } from '../Jokes/interfaces'
+
+const TodoList = lazy(() => import('./components/TodoList'))
 
 interface Props {
   language: ELanguages
@@ -467,17 +469,23 @@ export default function TodoApp({ language }: Props) {
           </p>
         )}
 
-        <TodoList
-          sending={sending}
-          todosWithIdAndStatus={todosWithIdAndStatus}
-          toggleTodo={toggleTodo}
-          deleteTodo={deleteTodo}
-          language={language}
-          modifyTodo={modifyTodo}
-          modifyTodoOrder={modifyTodoOrder}
-          priorityOptions={priorityOptions}
-          categoryOptions={categoryOptions}
-        />
+        <Suspense
+          fallback={
+            <p className='flex center margin0auto textcenter'>{ELoading[language]}...</p>
+          }
+        >
+          <TodoList
+            sending={sending}
+            todosWithIdAndStatus={todosWithIdAndStatus}
+            toggleTodo={toggleTodo}
+            deleteTodo={deleteTodo}
+            language={language}
+            modifyTodo={modifyTodo}
+            modifyTodoOrder={modifyTodoOrder}
+            priorityOptions={priorityOptions}
+            categoryOptions={categoryOptions}
+          />
+        </Suspense>
         {status === 'loading' && (
           <p className='flex center margin0auto textcenter'>{ELoading[language]}...</p>
         )}
