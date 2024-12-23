@@ -341,7 +341,7 @@ const ColorsInput: FC<Props> = ({
               max={360}
               className={styles['color-input']}
               style={{ maxWidth: `${width}`, fontSize: fontSize }}
-            />{' '}
+            />
           </label>
           <label>
             <span>S: </span>

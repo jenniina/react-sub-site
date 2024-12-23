@@ -873,7 +873,7 @@ a.link:visited:not(.active):focus > *,
       var(--color-primary-3) 95%
     );
     background-size: 100% 200%;
-    background-position: top;
+    background-position: 50% 3%;
   }
   header:not(.menualt) .menu-container ul li a:hover span,
   header:not(.menualt) .menu-container ul li a:focus span,
@@ -881,7 +881,7 @@ a.link:visited:not(.active):focus > *,
   header:not(.menualt).main-header button.search:focus span,
   header:not(.menualt).main-header button.settings:not(:disabled):hover span,
   header:not(.menualt).main-header button.settings:not(:disabled):focus span {
-    background-position: bottom;
+    background-position: 50% 98%;
     padding: 0.5em 0.6vw 0.1em;
   }
   .menu-container ul li a:hover span,

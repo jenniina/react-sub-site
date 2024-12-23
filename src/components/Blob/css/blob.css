@@ -1287,7 +1287,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
 }
 .drag-container button.active {
   outline: 4px dotted var(--color-primary-14);
-  background-position: bottom;
+  background-position: 50% 98%;
   color: var(--color-primary-1);
 }
 .drag-container .btn-small {
