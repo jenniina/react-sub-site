@@ -13,7 +13,7 @@ import {
   TPriority,
   TSortOptions,
 } from './interfaces'
-import style from './css/todo.module.css'
+import styles from './css/todo.module.css'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import {
   addTodo,
@@ -34,8 +34,11 @@ import { notify } from '../../reducers/notificationReducer'
 import { useSelector } from 'react-redux'
 import { initializeUser } from '../../reducers/authReducer'
 import {
+  ECharactersLeft,
   EFilterByCategory,
   EFiltered,
+  EMax,
+  ENameTooLong,
   ENote,
   EUpdated,
   ReducerProps,
@@ -53,6 +56,8 @@ import { IoMdAdd } from 'react-icons/io'
 import { ESelectCategory } from '../Jokes/interfaces'
 
 const TodoList = lazy(() => import('./components/TodoList'))
+
+const maxCharacters = 300
 
 interface Props {
   language: ELanguages
@@ -278,13 +283,20 @@ export default function TodoApp({ language }: Props) {
   }
 
   const todoNameRef = useRef<HTMLTextAreaElement>(null)
+  const [name, setName] = useState<string>('')
 
   const handleAddTodo = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setSending(true)
-    const name = todoNameRef.current?.value ?? ''
+    // const name = todoNameRef.current?.value ?? ''
     if (name === '') {
       setSending(false)
+      dispatch(notify(EAddTask[language], true, 3))
+      return
+    }
+    if (name.length > maxCharacters) {
+      setSending(false)
+      dispatch(notify(`${ENameTooLong[language]} (${maxCharacters} max)`, true, 8))
       return
     }
     const key = uuidv4()
@@ -364,10 +376,10 @@ export default function TodoApp({ language }: Props) {
 
   return (
     <>
-      <form onSubmit={handleAddTodo} className={style['form']}>
+      <form onSubmit={handleAddTodo} className={styles['form']}>
         <fieldset>
           <legend className='scr'>{EAddTaskToTheTaskList[language]}</legend>
-          <div className={style['todo-input-area']}>
+          <div className={styles['todo-input-area']}>
             <label htmlFor='taskinput'>{EAddTask[language]}</label>
             <textarea
               ref={todoNameRef}
@@ -375,14 +387,24 @@ export default function TodoApp({ language }: Props) {
               className={`bg`}
               rows={3}
               name='task'
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               required
               autoComplete='off'
               placeholder={`${ETask[language]}...`}
             />
+            <p className={styles.small}>
+              {maxCharacters - name.length} {ECharactersLeft[language]} ({EMax[language]}:{' '}
+              {maxCharacters}){' '}
+              {name.length > maxCharacters && (
+                <span className={styles.warning}>{ENameTooLong[language]}</span>
+              )}
+            </p>
+
             <Select
               z={todosWithIdAndStatus.length + 5}
               id='category'
-              className={`${style['select']} ${style['category-select']}`}
+              className={`${styles['select']} ${styles['category-select']}`}
               hideDelete
               instructions={ESelectCategory[language]}
               value={
@@ -394,7 +416,7 @@ export default function TodoApp({ language }: Props) {
             />
             <Select
               id='priority'
-              className={style['select']}
+              className={styles['select']}
               hideDelete
               instructions={ESelectPriority[language]}
               value={
@@ -406,8 +428,8 @@ export default function TodoApp({ language }: Props) {
               z={todosWithIdAndStatus.length + 4}
             />
             <button
-              id={style['submit-todo']}
-              className={style['submit-todo']}
+              id={styles['submit-todo']}
+              className={styles['submit-todo']}
               type='submit'
               disabled={sending}
             >
@@ -417,10 +439,10 @@ export default function TodoApp({ language }: Props) {
         </fieldset>
       </form>
 
-      <div className={style['controls-wrap']}>
+      <div className={styles['controls-wrap']}>
         <Select
           id='category-filter'
-          className={`${style['select']} ${style['category-select']}`}
+          className={`${styles['select']} ${styles['category-select']}`}
           hideDelete
           instructions={EFilterByCategory[language]}
           value={
@@ -434,7 +456,7 @@ export default function TodoApp({ language }: Props) {
         />
         <Select
           id='priority-filter'
-          className={style['select']}
+          className={styles['select']}
           hideDelete
           instructions={EFilterByPriority[language]}
           value={
@@ -448,7 +470,7 @@ export default function TodoApp({ language }: Props) {
         />
 
         <button
-          className={`danger ${style['clear-completed']}`}
+          className={`danger ${styles['clear-completed']}`}
           disabled={!hasCompletedTasks}
           onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
             handleClearTodos(e)
@@ -458,13 +480,13 @@ export default function TodoApp({ language }: Props) {
         </button>
       </div>
 
-      <div className={style['list-wrap']}>
-        <p className={style['left-to-do']}>
+      <div className={styles['list-wrap']}>
+        <p className={styles['left-to-do']}>
           {todos?.filter((todo) => !todo?.complete).length} {ELeftToDo[language]}
         </p>
 
         {(filterPriority !== 'all' || filterCategory !== 'all') && (
-          <p className={style['filter-notification']}>
+          <p className={styles['filter-notification']}>
             {ENote[language]} {EFiltered[language]}
           </p>
         )}

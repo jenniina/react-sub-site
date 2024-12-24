@@ -2994,3 +2994,21 @@ export enum EToday {
   cs = 'Dnes',
   fi = 'Tänään',
 }
+export enum ECharactersLeft {
+  en = 'characters left',
+  es = 'caracteres restantes',
+  fr = 'caractères restants',
+  de = 'Zeichen übrig',
+  pt = 'caracteres restantes',
+  cs = 'znaků zbývá',
+  fi = 'merkkiä jäljellä',
+}
+export enum EMax {
+  en = 'max',
+  es = 'máx',
+  fr = 'max',
+  de = 'max',
+  pt = 'máx',
+  cs = 'max',
+  fi = 'max',
+}
