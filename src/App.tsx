@@ -427,7 +427,7 @@ const App: FC = () => {
                     }
                   />
                   <Route
-                    path='/portfolio/quiz/:difficulty'
+                    path='/portfolio/quiz/difficulty/:difficulty'
                     element={
                       <Suspense
                         fallback={

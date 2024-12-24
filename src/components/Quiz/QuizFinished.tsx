@@ -259,7 +259,7 @@ const QuizFinished = ({ language }: Props) => {
                   </button>
                   <button
                     className='btn'
-                    onClick={() => navigate(`/portfolio/quiz/${mode}`)}
+                    onClick={() => navigate(`/portfolio/quiz/difficulty/${mode}`)}
                   >
                     {ETryAgain[language]}
                   </button>

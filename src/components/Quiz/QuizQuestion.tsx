@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { getQuestions, newAnswer } from './reducers/questionsReducer'
 import { ELanguages, ELoading, EQuizApp, ReducerProps } from '../../interfaces'
-// import Progress from './components/Progress'
+import Progress from './components/Progress'
 // import Timer from './components/Timer'
 import Loader from './components/Loader'
 import Next from './components/Next'
@@ -16,7 +16,6 @@ import {
   EQuizInProgress,
 } from '../../interfaces/quiz'
 
-const Progress = lazy(() => import('./components/Progress'))
 const Timer = lazy(() => import('./components/Timer'))
 
 const QuizQuestion = ({ language }: { language: ELanguages }) => {
@@ -46,9 +45,21 @@ const QuizQuestion = ({ language }: { language: ELanguages }) => {
     <section className={`card ${styles.top}`}>
       <div>
         <div className={`${styles.quiz} `}>
-          {status === 'loading' && <Loader language={language} />}
+          {status === 'loading' && (
+            <>
+              <a href='#' onClick={goToMainPage}>
+                &laquo;&nbsp;{EQuizApp[language]}
+              </a>
+              <Loader language={language} />
+            </>
+          )}
           {status === 'error' && (
-            <Message type='error' message={EErrorFetchingQuestions[language]} />
+            <>
+              <a href='#' onClick={goToMainPage}>
+                &laquo;&nbsp;{EQuizApp[language]}
+              </a>
+              <Message type='error' message={EErrorFetchingQuestions[language]} />
+            </>
           )}
           {status === 'ready' && (
             <>
@@ -58,15 +69,9 @@ const QuizQuestion = ({ language }: { language: ELanguages }) => {
                 </a>
               </h1>
               <h2>{EQuizInProgress[language]}</h2>
-              <Suspense
-                fallback={
-                  <div className='flex center margin0auto textcenter'>
-                    {ELoading[language]}...
-                  </div>
-                }
-              >
-                <Progress language={language} />
-              </Suspense>
+
+              <Progress language={language} />
+
               <div className={styles.wrap}>
                 <div className={`${styles.diff}`}>
                   {EDifficulty[language]}: {difficulty}
