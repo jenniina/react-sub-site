@@ -5,7 +5,7 @@ import {
   ELastName,
   EThisContactFormIsSplitIntoThreeSteps,
 } from '../../../interfaces/form'
-import { FormWrapper } from './FormWrapper'
+import FormWrapper from './FormWrapper'
 
 type UserData = {
   firstName: string
@@ -17,7 +17,7 @@ type UserFormProps = UserData & {
   language: ELanguages
 }
 
-export function InitialForm({
+export default function InitialForm({
   firstName,
   lastName,
   updateFields,

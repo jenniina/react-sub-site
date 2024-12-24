@@ -7,12 +7,15 @@ import { TbCancel } from 'react-icons/tb'
 import { sanitize, first3Words, getRandomString } from '../../../utils'
 import {
   ECancel,
+  ECharactersLeft,
   EClose,
   EConfirm,
   EDay,
   EEdit,
   ELanguages,
+  EMax,
   EMonth,
+  ENameTooLong,
   ESet,
   EYear,
   EYearMustBeBetweenCurrentYearAnd10YearsFromNow,
@@ -57,6 +60,7 @@ interface TodoItemModalProps {
   setNewMonth: React.Dispatch<React.SetStateAction<string>>
   newYear: string
   setNewYear: React.Dispatch<React.SetStateAction<string>>
+  maxCharacters: number
 }
 
 const TodoItemModal: React.FC<TodoItemModalProps> = ({
@@ -82,6 +86,7 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
   newYear,
   setNewYear,
   setIsOpen,
+  maxCharacters,
 }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
@@ -345,6 +350,13 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
                 value={newName}
                 onChange={handleChange}
               />
+              <p className={styles.small}>
+                {maxCharacters - newName.length} {ECharactersLeft[language]} (
+                {EMax[language]}: {maxCharacters}){' '}
+                {newName.length > maxCharacters && (
+                  <span className={styles.warning}>{ENameTooLong[language]}</span>
+                )}
+              </p>
               <span className='scr'>
                 {EEdit[language]} {first3Words(todo?.name ?? ETask[language], language)}
               </span>

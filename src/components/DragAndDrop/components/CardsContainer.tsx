@@ -32,7 +32,7 @@ interface Props {
   regex: RegExp
 }
 
-export const CardsContainer = ({
+const CardsContainer = ({
   language,
   status,
   statuses,
@@ -231,3 +231,5 @@ export const CardsContainer = ({
     </div>
   )
 }
+
+export default CardsContainer

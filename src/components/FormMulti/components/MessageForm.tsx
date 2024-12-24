@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { FormWrapper } from './FormWrapper'
+import FormWrapper from './FormWrapper'
 import styles from '../form.module.css'
 import { Select, SelectOption } from '../../Select/Select'
 import { ELanguages, ENone, EOther, EPleaseSelectAnOption } from '../../../interfaces'
@@ -24,7 +24,7 @@ type MessageFormProps = MessageData & {
   language: ELanguages
 }
 
-export function MessageForm({
+export default function MessageForm({
   email,
   message,
   select,

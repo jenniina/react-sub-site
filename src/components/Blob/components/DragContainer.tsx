@@ -10,6 +10,8 @@ import {
   FormEvent,
   Fragment,
   ChangeEvent,
+  lazy,
+  Suspense,
 } from 'react'
 import { getRandomMinMax, sanitize } from '../../../utils'
 import {
@@ -133,9 +135,8 @@ import {
   BiPlus,
 } from 'react-icons/bi'
 import { ImEnlarge2, ImShrink2, ImCamera } from 'react-icons/im'
-import { FaCamera, FaPlus, FaRegClone, FaSave, FaTimes } from 'react-icons/fa'
-import { LiaTimesSolid } from 'react-icons/lia'
-import DragLayers from './DragLayers'
+import { FaPlus, FaRegClone, FaSave } from 'react-icons/fa'
+//import DragLayers from './DragLayers'
 import useWindowSize from '../../../hooks/useWindowSize'
 import { IUser } from '../../../interfaces'
 import { useSelector } from 'react-redux'
@@ -147,10 +148,14 @@ import { initializeUsers } from '../../../reducers/usersReducer'
 import { useNavigate } from 'react-router-dom'
 import blobService from '../services/blob'
 import { EDelete } from '../../Jokes/interfaces'
-import ColorBlocks from './ColorBlocks'
-import Sliders from './Sliders'
+//import ColorBlocks from './ColorBlocks'
+// import Sliders from './Sliders'
 import { EBlobArt } from '../../../interfaces/about'
 import { IoMdDownload } from 'react-icons/io'
+
+const ColorBlocks = lazy(() => import('./ColorBlocks'))
+const Sliders = lazy(() => import('./Sliders'))
+const DragLayers = lazy(() => import('./DragLayers'))
 
 // Should be in the same order as colorBlockProps
 const colorPairs: ColorPair[] = [
@@ -2162,55 +2167,71 @@ export default function DragContainer({
                 )}
 
                 <div ref={dragWrap} id={`drag-wrap${d}`} className='drag-wrap'>
-                  <DragLayers
-                    layerAmount={layerAmount}
-                    layer_={activeLayer}
-                    hiddenLayers={hiddenLayers}
-                    changeBlobLayer={changeBlobLayer}
-                    setActiveLayer={setActiveLayer}
-                    highestZIndex={highestZIndex}
-                    language={language}
-                    dispatch={dispatch}
-                    d={d}
-                    items={draggables[d] ?? []}
-                    saveDraggables={saveDraggables}
-                    getPosition={getPosition}
-                    colorBlockProps={colorBlockPropsCombo}
-                    makeLarger0={makeLarger0}
-                    makeSmaller0={makeSmaller0}
-                    makeMore0={makeMore0}
-                    removeBlob={removeBlob}
-                    layerIncrease={layerIncrease}
-                    layerDecrease={layerDecrease}
-                    dragWrap={dragWrap}
-                    exitApp={exitApp}
-                    selectedvalue0={selectedvalue0}
-                    setFocusedBlob={setFocusedBlob}
-                    colorIndex={colorIndex}
-                    setColorIndex={setColorIndex}
-                    colorPairs={colorPairsCombo}
-                    colorswitch={colorswitch}
-                    scroll={scroll}
-                    setScroll={setScroll}
-                    clickOutsideRef={dragWrap}
-                    addRandomDraggable={addRandomDraggable}
-                    mode={mode}
-                    changeColor={changeColor}
-                  />
+                  <Suspense
+                    fallback={
+                      <div className='flex center margin0auto textcenter'>
+                        {ELoading[language]}...
+                      </div>
+                    }
+                  >
+                    <DragLayers
+                      layerAmount={layerAmount}
+                      layer_={activeLayer}
+                      hiddenLayers={hiddenLayers}
+                      changeBlobLayer={changeBlobLayer}
+                      setActiveLayer={setActiveLayer}
+                      highestZIndex={highestZIndex}
+                      language={language}
+                      dispatch={dispatch}
+                      d={d}
+                      items={draggables[d] ?? []}
+                      saveDraggables={saveDraggables}
+                      getPosition={getPosition}
+                      colorBlockProps={colorBlockPropsCombo}
+                      makeLarger0={makeLarger0}
+                      makeSmaller0={makeSmaller0}
+                      makeMore0={makeMore0}
+                      removeBlob={removeBlob}
+                      layerIncrease={layerIncrease}
+                      layerDecrease={layerDecrease}
+                      dragWrap={dragWrap}
+                      exitApp={exitApp}
+                      selectedvalue0={selectedvalue0}
+                      setFocusedBlob={setFocusedBlob}
+                      colorIndex={colorIndex}
+                      setColorIndex={setColorIndex}
+                      colorPairs={colorPairsCombo}
+                      colorswitch={colorswitch}
+                      scroll={scroll}
+                      setScroll={setScroll}
+                      clickOutsideRef={dragWrap}
+                      addRandomDraggable={addRandomDraggable}
+                      mode={mode}
+                      changeColor={changeColor}
+                    />
+                  </Suspense>
                 </div>
               </div>
-              <ColorBlocks
-                d={d}
-                language={language}
-                getRefName={getRefName}
-                map={refNameMappingCombo}
-                colorBlockProps={colorBlockPropsCombo}
-                colorPairs={colorPairsCombo}
-                controlsVisible={controlsVisible}
-                setSelectedColor={setSelectedColor}
-                selectedColor={selectedColor}
-                setMode={setMode}
-              />
+              <Suspense
+                fallback={
+                  <div className='flex center margin0auto textcenter'>
+                    {ELoading[language]}...
+                  </div>
+                }
+              >
+                <ColorBlocks
+                  d={d}
+                  language={language}
+                  getRefName={getRefName}
+                  map={refNameMappingCombo}
+                  colorBlockProps={colorBlockPropsCombo}
+                  colorPairs={colorPairsCombo}
+                  controlsVisible={controlsVisible}
+                  setSelectedColor={setSelectedColor}
+                  selectedColor={selectedColor}
+                  setMode={setMode}
+                />
+              </Suspense>
             </div>
             <div className='layer-mover-control-wrap'>
               <div
@@ -2343,28 +2364,36 @@ export default function DragContainer({
                 </button>
               </div>
             </div>
-            <Sliders
-              d={d}
-              defaultHue={defaultHue}
-              defaultSaturation={defaultSaturation}
-              defaultLightness={defaultLightness}
-              setSliderHueVal={setSliderHueVal}
-              setSliderSatVal={setSliderSatVal}
-              setSliderLightVal={setSliderLightVal}
-              language={language}
-              sliderLightness={sliderLightness}
-              sliderSaturation={sliderSaturation}
-              sliderHue={sliderHue}
-              sliderLightnessReset={sliderLightnessReset}
-              sliderSaturationReset={sliderSaturationReset}
-              sliderHueReset={sliderHueReset}
-              sliderLightVal={sliderLightVal}
-              sliderSatVal={sliderSatVal}
-              sliderHueVal={sliderHueVal}
-              sliderLightnessInput={sliderLightnessInput}
-              sliderSaturationInput={sliderSaturationInput}
-              sliderHueInput={sliderHueInput}
-            />
+            <Suspense
+              fallback={
+                <div className='flex center margin0auto textcenter'>
+                  {ELoading[language]}...
+                </div>
+              }
+            >
+              <Sliders
+                d={d}
+                defaultHue={defaultHue}
+                defaultSaturation={defaultSaturation}
+                defaultLightness={defaultLightness}
+                setSliderHueVal={setSliderHueVal}
+                setSliderSatVal={setSliderSatVal}
+                setSliderLightVal={setSliderLightVal}
+                language={language}
+                sliderLightness={sliderLightness}
+                sliderSaturation={sliderSaturation}
+                sliderHue={sliderHue}
+                sliderLightnessReset={sliderLightnessReset}
+                sliderSaturationReset={sliderSaturationReset}
+                sliderHueReset={sliderHueReset}
+                sliderLightVal={sliderLightVal}
+                sliderSatVal={sliderSatVal}
+                sliderHueVal={sliderHueVal}
+                sliderLightnessInput={sliderLightnessInput}
+                sliderSaturationInput={sliderSaturationInput}
+                sliderHueInput={sliderHueInput}
+              />
+            </Suspense>
             <div ref={exitApp} id={`exitblob${d}`} className='exitblob'></div>
             <div
               ref={blobScreenshot}

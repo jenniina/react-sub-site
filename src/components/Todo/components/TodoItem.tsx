@@ -8,6 +8,7 @@ import {
   EEtc,
   ELanguages,
   EMonth,
+  ENameTooLong,
   EOther,
   EToday,
   EYear,
@@ -18,6 +19,7 @@ import styles from '../css/todo.module.css'
 import { ITaskDraggable } from './TodoList'
 import { EAreYouSureYouWantToDelete } from '../../UserEdit/interfaces'
 import {
+  EAddTask,
   ECategory,
   EDeadline,
   EHigh,
@@ -47,6 +49,8 @@ import { TiShoppingCart } from 'react-icons/ti'
 import { AiOutlineEdit } from 'react-icons/ai'
 import { FaArrowAltCircleDown } from 'react-icons/fa'
 import { BsArrowDownCircleFill } from 'react-icons/bs'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
+import { notify } from '../../../reducers/notificationReducer'
 
 export default function Todo({
   todo,
@@ -61,6 +65,7 @@ export default function Todo({
   priorityOptions,
   categoryOptions,
   zin,
+  maxCharacters,
 }: {
   todo: ITaskDraggable | undefined
   toggleTodo: (key: string | undefined) => void
@@ -80,7 +85,9 @@ export default function Todo({
   priorityOptions: SelectOption[]
   categoryOptions: SelectOption[]
   zin: number
+  maxCharacters: number
 }) {
+  const dispatch = useAppDispatch()
   const [newName, setNewName] = useState(todo?.name ?? '')
   const [showDeadline, setShowDeadline] = useState(false)
   const [newPriority, setNewPriority] = useState<TPriority>(todo?.priority || 'low')
@@ -113,6 +120,14 @@ export default function Todo({
   }
   const handleModify = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (newName === '') {
+      dispatch(notify(EAddTask[language], true, 5))
+      return
+    }
+    if (newName.length > maxCharacters) {
+      dispatch(notify(ENameTooLong[language], true, 5))
+      return
+    }
     modifyTodo(todo?.key, newName, newPriority, combinedDeadline, newCategory)
     setIsOpen(false)
   }
@@ -426,6 +441,7 @@ export default function Todo({
             sending={sending}
             todo={todo}
             setIsOpen={setIsOpen}
+            maxCharacters={maxCharacters}
           />
         )}
       </li>

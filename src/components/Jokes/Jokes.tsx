@@ -5,12 +5,6 @@ import './css/joke.css'
 import {
   IJoke,
   EJokeType,
-  ECategory_en,
-  ECategory_cs,
-  ECategory_de,
-  ECategory_es,
-  ECategory_fr,
-  ECategory_pt,
   ESavedJoke,
   ETheComediansCompanion,
   ESafemode,
@@ -31,6 +25,12 @@ import {
   EAJokeGeneratorForTheComicallyInclined,
   EExtraCategories,
   ENoJokeFoundWithThisSearchTerm,
+  ECategory_en,
+  ECategory_cs,
+  ECategory_de,
+  ECategory_es,
+  ECategory_fr,
+  ECategory_pt,
   ECategory_fi,
   TCategoryByLanguages,
   EMaybeTryAnotherLanguage,
@@ -49,6 +49,8 @@ import {
   EAreYouSureYouWantToRestoreThisJoke,
   EWouldYouLikeToSaveTheJoke,
   EJokesLoaded,
+  jokeCategoryAny,
+  jokeCategoryByLanguage,
 } from './interfaces'
 import {
   ELogin,
@@ -95,89 +97,6 @@ import { options, getRandomMinMax } from '../../utils'
 const FormJoke = lazy(() => import('./components/FormJoke'))
 const JokeSubmit = lazy(() => import('./components/JokeSubmit'))
 const UserJokes = lazy(() => import('./components/UserJokes'))
-
-export const jokeCategoryByLanguage: IJokeCategoryByLanguage = {
-  en: {
-    Programming: ECategory_en.Programming,
-    Misc: ECategory_en.Misc,
-    Dark: ECategory_en.Dark,
-    Pun: ECategory_en.Pun,
-    Spooky: ECategory_en.Spooky,
-    Christmas: ECategory_en.Christmas,
-    ChuckNorris: ECategory_en.ChuckNorris,
-    DadJoke: ECategory_en.DadJoke,
-  },
-  es: {
-    Programming: ECategory_es.Programming,
-    Misc: ECategory_es.Misc,
-    Dark: ECategory_es.Dark,
-    Pun: ECategory_es.Pun,
-    Spooky: ECategory_es.Spooky,
-    Christmas: ECategory_es.Christmas,
-    ChuckNorris: ECategory_es.ChuckNorris,
-    DadJoke: ECategory_es.DadJoke,
-  },
-  fr: {
-    Programming: ECategory_fr.Programming,
-    Misc: ECategory_fr.Misc,
-    Dark: ECategory_fr.Dark,
-    Pun: ECategory_fr.Pun,
-    Spooky: ECategory_fr.Spooky,
-    Christmas: ECategory_fr.Christmas,
-    ChuckNorris: ECategory_fr.ChuckNorris,
-    DadJoke: ECategory_fr.DadJoke,
-  },
-  de: {
-    Programming: ECategory_de.Programming,
-    Misc: ECategory_de.Misc,
-    Dark: ECategory_de.Dark,
-    Pun: ECategory_de.Pun,
-    Spooky: ECategory_de.Spooky,
-    Christmas: ECategory_de.Christmas,
-    ChuckNorris: ECategory_de.ChuckNorris,
-    DadJoke: ECategory_de.DadJoke,
-  },
-  pt: {
-    Programming: ECategory_pt.Programming,
-    Misc: ECategory_pt.Misc,
-    Dark: ECategory_pt.Dark,
-    Pun: ECategory_pt.Pun,
-    Spooky: ECategory_pt.Spooky,
-    Christmas: ECategory_pt.Christmas,
-    ChuckNorris: ECategory_pt.ChuckNorris,
-    DadJoke: ECategory_pt.DadJoke,
-  },
-  cs: {
-    Programming: ECategory_cs.Programming,
-    Misc: ECategory_cs.Misc,
-    Dark: ECategory_cs.Dark,
-    Pun: ECategory_cs.Pun,
-    Spooky: ECategory_cs.Spooky,
-    Christmas: ECategory_cs.Christmas,
-    ChuckNorris: ECategory_cs.ChuckNorris,
-    DadJoke: ECategory_cs.DadJoke,
-  },
-  fi: {
-    Programming: ECategory_fi.Programming,
-    Misc: ECategory_fi.Misc,
-    Dark: ECategory_fi.Dark,
-    Pun: ECategory_fi.Pun,
-    Spooky: ECategory_fi.Spooky,
-    Christmas: ECategory_fi.Christmas,
-    ChuckNorris: ECategory_fi.ChuckNorris,
-    DadJoke: ECategory_fi.DadJoke,
-  },
-}
-
-export const jokeCategoryAny = {
-  en: 'Any',
-  es: 'Cualquiera',
-  fr: "N'importe quel",
-  de: 'Irgendein',
-  pt: 'Qualquer',
-  cs: 'Jakýkoliv',
-  fi: 'Mikä tahansa',
-}
 
 function Jokes({
   language,

@@ -1,4 +1,4 @@
-import { useMemo, FC } from 'react'
+import { useMemo, lazy, Suspense } from 'react'
 import { useTheme } from '../hooks/useTheme'
 import { Link } from 'react-router-dom'
 import styles from './css/about.module.css'
@@ -26,6 +26,7 @@ import {
   ELanguageSelect,
   ELanguages,
   ELightDarkModeButton,
+  ELoading,
   ELogInAndRegisterButtons,
   EMainSite,
   EMovementAccordingToPointerEnterDirection,
@@ -89,7 +90,9 @@ import { EChangeableColor, EChangeableSize } from '../interfaces/blobs'
 import { ETodoApp } from '../components/Todo/interfaces'
 import { ETheComediansCompanion } from '../components/Jokes/interfaces'
 
-type colorProps = {
+const ColorComponent = lazy(() => import('../components/About/ColorComponent'))
+
+export type colorProps = {
   i: number
   e: number
   background: string
@@ -143,38 +146,6 @@ export default function About({
 
     return colorsArray
   }, [])
-
-  const ColorComponent: FC<{ array: colorProps[] }> = ({ array }) => {
-    return (
-      <ul style={{ marginTop: '3em' }} className={`fullwidth1 ${styles['color-ul']}`}>
-        {array.map((item, index: number) => {
-          const itemStyle: React.CSSProperties = {
-            backgroundColor: `${item.background}`,
-            color:
-              item.i < 13 || (item.i > 31 && item.i <= 40) || (item.i > 40 && item.i < 46)
-                ? 'var(--color-primary-20)'
-                : 'var(--color-primary-1)',
-            ['--i' as string]: `${item.i}`,
-            ['--e' as string]: `${item.e}`,
-          }
-          const spanStyle: React.CSSProperties = {
-            ['--i' as string]: `${item.i}`,
-            ['--e' as string]: `${item.e}`,
-          }
-
-          return (
-            <li
-              key={`${item.background}${index}`}
-              className={styles.shape}
-              style={itemStyle}
-            >
-              <span style={spanStyle}>{itemStyle.backgroundColor}</span>
-            </li>
-          )
-        })}
-      </ul>
-    )
-  }
 
   return (
     <div className={`about ${type} ${lightTheme ? styles.light : ''}`}>
@@ -414,8 +385,15 @@ export default function About({
               </div>
             </div>
           </div>
-
-          <ColorComponent array={setupColorblocks} />
+          <Suspense
+            fallback={
+              <div className='flex center margin0auto textcenter'>
+                {ELoading[language]}...
+              </div>
+            }
+          >
+            <ColorComponent array={setupColorblocks} />
+          </Suspense>
         </section>
       </div>
     </div>

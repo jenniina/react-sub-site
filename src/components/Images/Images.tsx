@@ -67,10 +67,11 @@ import {
 import { SMALLER_CATEGORIES, WEIGHTED } from '../Quotes/services/quotes'
 import { VALID_CATEGORIES } from '../Quotes/services/quotes'
 import { scrollIntoView } from '../../utils'
-import WordCloud from '../AccessibleColors/components/WordCloud/WordCloud'
 import useWindowSize from '../../hooks/useWindowSize'
 import useTooltip from '../../hooks/useTooltip'
 import { EPoem } from '../../interfaces/poems'
+
+const WordCloud = lazy(() => import('../WordCloud/WordCloud'))
 
 export type TTextType = 'quote' | 'poem'
 
@@ -416,26 +417,34 @@ const Images: FC<Props> = ({ language }) => {
             onMouseMove={onMouseMove}
             onMouseLeave={handleMouseLeave}
           >
-            <WordCloud
-              language={language}
-              title={EQuoteCategories[language]}
-              onClick={handleSetSearchTerm}
-              words={
-                windowWidth > 700
-                  ? categoriesWithWeights
-                  : windowWidth > 500
-                  ? categoriesWithWeightsSmaller
-                  : categoriesWithWeightsSmallest
+            <Suspense
+              fallback={
+                <div className='flex center margin0auto textcenter'>
+                  {ELoading[language]}...
+                </div>
               }
-              width={
-                windowWidth < 300
-                  ? windowWidth - 20
-                  : windowWidth < 600
-                  ? windowWidth - 80
-                  : windowWidth - (windowWidth / 100) * 30
-              }
-              height={windowWidth < 300 ? 900 : windowWidth < 500 ? 800 : 500}
-            />
+            >
+              <WordCloud
+                language={language}
+                title={EQuoteCategories[language]}
+                onClick={handleSetSearchTerm}
+                words={
+                  windowWidth > 700
+                    ? categoriesWithWeights
+                    : windowWidth > 500
+                    ? categoriesWithWeightsSmaller
+                    : categoriesWithWeightsSmallest
+                }
+                width={
+                  windowWidth < 300
+                    ? windowWidth - 20
+                    : windowWidth < 600
+                    ? windowWidth - 80
+                    : windowWidth - (windowWidth / 100) * 30
+                }
+                height={windowWidth < 300 ? 900 : windowWidth < 500 ? 800 : 500}
+              />
+            </Suspense>
             {tooltip.visible && (
               <span
                 className={`tooltip narrow`}

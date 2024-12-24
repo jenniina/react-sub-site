@@ -1,11 +1,12 @@
-import { FormEvent, useState, useRef, useEffect } from 'react'
+import { FormEvent, useState, useRef, useEffect, lazy, Suspense } from 'react'
 import { RiMailSendLine } from 'react-icons/ri'
-import { MessageForm } from './components/MessageForm'
-import { ExtrasForm } from './components/ExtrasForm'
+//import  MessageForm  from './components/MessageForm'
+//import  ExtrasForm  from './components/ExtrasForm'
 import { useMultistepForm } from './hooks/useMultistepForm'
-import { InitialForm } from './components/InitialForm'
+//import  InitialForm  from './components/InitialForm'
 import {
   ELanguages,
+  ELoading,
   ESend,
   ESendingEmail,
   EThankYouForYourMessage,
@@ -26,6 +27,10 @@ import {
 } from '../../interfaces/form'
 import { EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo } from '../../interfaces/about'
 
+const MessageForm = lazy(() => import('./components/MessageForm'))
+const ExtrasForm = lazy(() => import('./components/ExtrasForm'))
+const InitialForm = lazy(() => import('./components/InitialForm'))
+
 function FormMulti({ language }: { language: ELanguages }) {
   const form = useRef() as RefObject<HTMLFormElement>
 
@@ -41,24 +46,48 @@ function FormMulti({ language }: { language: ELanguages }) {
   }
   const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next, goTo } =
     useMultistepForm([
-      <InitialForm
-        {...data}
-        updateFields={updateFields}
-        key={`InitialForm`}
-        language={language}
-      />,
-      <MessageForm
-        {...data}
-        updateFields={updateFields}
-        key={`MessageForm`}
-        language={language}
-      />,
-      <ExtrasForm
-        {...data}
-        updateFields={updateFields}
-        key={`ExtrasForm`}
-        language={language}
-      />,
+      <Suspense
+        fallback={
+          <div className='flex center margin0auto textcenter'>
+            {ELoading[language]}...
+          </div>
+        }
+      >
+        <InitialForm
+          {...data}
+          updateFields={updateFields}
+          key={`InitialForm`}
+          language={language}
+        />
+      </Suspense>,
+      <Suspense
+        fallback={
+          <div className='flex center margin0auto textcenter'>
+            {ELoading[language]}...
+          </div>
+        }
+      >
+        <MessageForm
+          {...data}
+          updateFields={updateFields}
+          key={`MessageForm`}
+          language={language}
+        />
+      </Suspense>,
+      <Suspense
+        fallback={
+          <div className='flex center margin0auto textcenter'>
+            {ELoading[language]}...
+          </div>
+        }
+      >
+        <ExtrasForm
+          {...data}
+          updateFields={updateFields}
+          key={`ExtrasForm`}
+          language={language}
+        />
+      </Suspense>,
     ])
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -143,18 +172,35 @@ function FormMulti({ language }: { language: ELanguages }) {
         <div className={styles.hiddenform}>
           {isLastStep ? (
             <>
-              <InitialForm
-                {...data}
-                updateFields={updateFields}
-                language={language}
-                key={`InitialForm2`}
-              />
-              <MessageForm
-                {...data}
-                updateFields={updateFields}
-                language={language}
-                key={`MessageForm2`}
-              />
+              {' '}
+              <Suspense
+                fallback={
+                  <div className='flex center margin0auto textcenter'>
+                    {ELoading[language]}...
+                  </div>
+                }
+              >
+                <InitialForm
+                  {...data}
+                  updateFields={updateFields}
+                  language={language}
+                  key={`InitialForm2`}
+                />
+              </Suspense>
+              <Suspense
+                fallback={
+                  <div className='flex center margin0auto textcenter'>
+                    {ELoading[language]}...
+                  </div>
+                }
+              >
+                <MessageForm
+                  {...data}
+                  updateFields={updateFields}
+                  language={language}
+                  key={`MessageForm2`}
+                />
+              </Suspense>
             </>
           ) : (
             ''

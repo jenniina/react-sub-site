@@ -1,8 +1,8 @@
-import { createRef, FC, Fragment, useRef, useState } from 'react'
-import DragContainer from './components/DragContainer'
-import { ELanguages, RefObject } from '../../interfaces'
+import { createRef, FC, Fragment, useRef, lazy, Suspense } from 'react'
+import { ELanguages, ELoading, RefObject } from '../../interfaces'
 import { EScroll, EToBlobArt } from '../../interfaces/blobs'
 
+const DragContainer = lazy(() => import('./components/DragContainer'))
 interface BlobsProps {
   language: ELanguages
 }
@@ -51,12 +51,20 @@ const Blobs: FC<BlobsProps> = ({ language }) => {
       {containers.map((container, i) => (
         <Fragment key={container}>
           {buttons(i)}
-          <DragContainer
-            language={language}
-            d={container}
-            ds={containers.length}
-            dragWrapOuter={containerRefs.current[container]}
-          />
+          <Suspense
+            fallback={
+              <div className='flex center margin0auto textcenter'>
+                {ELoading[language]}...
+              </div>
+            }
+          >
+            <DragContainer
+              language={language}
+              d={container}
+              ds={containers.length}
+              dragWrapOuter={containerRefs.current[container]}
+            />
+          </Suspense>
         </Fragment>
       ))}
       {buttons(-1)}
