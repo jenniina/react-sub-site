@@ -555,8 +555,9 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
         }`}
         ref={containerRef}
       >
-        {statuses.map((container) => (
+        {statuses.map((container, index) => (
           <Suspense
+            key={index}
             fallback={
               <div className='flex center margin0auto textcenter'>
                 {ELoading[language]}...
