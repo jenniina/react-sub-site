@@ -716,14 +716,15 @@ body .z {
     opacity: 1;
   }
 }
-#root .App .App-inner-wrap .notification {
+#root .App .App-inner-wrap .notification,
+#modal-root .notification {
   --border-radius: 0.6em;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 999;
+  z-index: 9999;
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
@@ -731,7 +732,8 @@ body .z {
   text-align: center;
   pointer-events: none;
 }
-#root .App .App-inner-wrap .notification p {
+#root .App .App-inner-wrap .notification p,
+#modal-root .notification p {
   margin: 0;
   max-width: 40em;
   background-color: var(--color-primary-2);
@@ -745,12 +747,14 @@ body .z {
   align-items: center;
   gap: var(--gap);
 }
-#root .App .App-inner-wrap .notification.error p {
+#root .App .App-inner-wrap .notification.error p,
+#modal-root .notification.error p {
   color: red;
   background-color: black;
   border: 0.3em solid red;
 }
-#root .App .App-inner-wrap .notification p {
+#root .App .App-inner-wrap .notification p,
+#modal-root .notification p {
   pointer-events: all;
 }
 .max-content {

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { FormWrapper } from './FormWrapper'
+import FormWrapper from './FormWrapper'
 import styles from '../form.module.css'
 import { HEX } from '../interfaces'
 import { Select, SelectOption } from '../../Select/Select'
@@ -45,7 +45,7 @@ type ExtrasFormProps = ExtrasData & {
   language: ELanguages
 }
 
-export function ExtrasForm({
+export default function ExtrasForm({
   encouragement,
   color,
   dark,

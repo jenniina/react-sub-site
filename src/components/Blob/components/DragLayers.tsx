@@ -10,12 +10,16 @@ import {
   createRef,
   useEffect,
   useCallback,
+  lazy,
+  Suspense,
 } from 'react'
 import { Draggable, focusedBlob, ColorPair, Modes } from '../interfaces'
-import { ELanguages } from '../../../interfaces'
-import DragLayer from './DragLayer'
+import { ELanguages, ELoading } from '../../../interfaces'
+//import DragLayer from './DragLayer'
 import { EThankYouForPlaying } from '../../../interfaces/blobs'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
+
+const DragLayer = lazy(() => import('./DragLayer'))
 
 interface DragLayerProps {
   layer_: number
@@ -777,30 +781,38 @@ const DragLayers = ({
   return (
     <>
       {layers.map((l) => (
-        <DragLayer
-          key={l}
-          layer_={l}
-          dragUlRef={layerRefs.current[l]}
-          items={groupedDraggables[l] || []}
-          className={hiddenLayers.has(l) ? 'hidden' : ''}
-          language={language}
-          d={d}
-          saveDraggables={saveDraggables}
-          selectedvalue0={selectedvalue0}
-          setFocusedBlob={setFocusedBlob}
-          start={start}
-          movement={movement}
-          stopMovementCheck={stopMovementCheck}
-          stopMoving={stopMoving}
-          wheel={wheel}
-          focused={focused}
-          blurred={blurred}
-          removeBlob={removeBlob}
-          mode={mode}
-          changeBlobLayer={changeBlobLayer}
-          layerAmount={layerAmount}
-          changeColor={changeColor}
-        />
+        <Suspense
+          fallback={
+            <div className='flex center margin0auto textcenter'>
+              {ELoading[language]}...
+            </div>
+          }
+        >
+          <DragLayer
+            key={l}
+            layer_={l}
+            dragUlRef={layerRefs.current[l]}
+            items={groupedDraggables[l] || []}
+            className={hiddenLayers.has(l) ? 'hidden' : ''}
+            language={language}
+            d={d}
+            saveDraggables={saveDraggables}
+            selectedvalue0={selectedvalue0}
+            setFocusedBlob={setFocusedBlob}
+            start={start}
+            movement={movement}
+            stopMovementCheck={stopMovementCheck}
+            stopMoving={stopMoving}
+            wheel={wheel}
+            focused={focused}
+            blurred={blurred}
+            removeBlob={removeBlob}
+            mode={mode}
+            changeBlobLayer={changeBlobLayer}
+            layerAmount={layerAmount}
+            changeColor={changeColor}
+          />
+        </Suspense>
       ))}
     </>
   )

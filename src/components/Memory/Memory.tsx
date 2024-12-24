@@ -1,5 +1,14 @@
 import styles from './memory.module.css'
-import { FC, ReactElement, useState, useEffect, ChangeEvent, Fragment } from 'react'
+import {
+  FC,
+  ReactElement,
+  useState,
+  useEffect,
+  ChangeEvent,
+  Fragment,
+  lazy,
+  Suspense,
+} from 'react'
 import {
   FaAppleAlt,
   FaAnchor,
@@ -108,10 +117,10 @@ import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import useLocalStorage from '../../hooks/useStorage'
 import { useTheme } from '../../hooks/useTheme'
-import CardTypeButton from './components/CardTypeButton'
-import GridSizeButton from './components/GridSizeButton'
-import PlayerAmountButton from './components/PlayerAmountButton'
-import GameGrid from './components/GameGrid'
+//import CardTypeButton from './components/CardTypeButton'
+//import GridSizeButton from './components/GridSizeButton'
+//import PlayerAmountButton from './components/PlayerAmountButton'
+//import GameGrid from './components/GameGrid'
 import useTimer from '../../hooks/useTimer'
 import useHighScores from './hooks/useHighScores'
 import { IHighScore } from '../../interfaces/memory'
@@ -124,6 +133,11 @@ import { scrollIntoView } from '../../utils'
 import Accordion from '../Accordion/Accordion'
 import { AiFillEdit } from 'react-icons/ai'
 import useWindowSize from '../../hooks/useWindowSize'
+
+const CardTypeButton = lazy(() => import('./components/CardTypeButton'))
+const GridSizeButton = lazy(() => import('./components/GridSizeButton'))
+const PlayerAmountButton = lazy(() => import('./components/PlayerAmountButton'))
+const GameGrid = lazy(() => import('./components/GameGrid'))
 
 type Player = {
   id: number
@@ -596,12 +610,20 @@ const Memory: FC<Props> = ({ language }) => {
                   <h3>{ECardType[language]}</h3>
                   <div className={styles['set-card-type']}>
                     {optionsType.map((option) => (
-                      <CardTypeButton
-                        key={option.value}
-                        option={option}
-                        isActive={cardType?.value === option.value}
-                        onClick={() => setCardType(option)}
-                      />
+                      <Suspense
+                        fallback={
+                          <div className='flex center margin0auto textcenter'>
+                            {ELoading[language]}...
+                          </div>
+                        }
+                      >
+                        <CardTypeButton
+                          key={option.value}
+                          option={option}
+                          isActive={cardType?.value === option.value}
+                          onClick={() => setCardType(option)}
+                        />
+                      </Suspense>
                     ))}
                   </div>
                 </div>
@@ -609,12 +631,20 @@ const Memory: FC<Props> = ({ language }) => {
                   <h3>{EGridSize[language]}</h3>
                   <div className={styles['set-grid']}>
                     {optionsSize.map((option) => (
-                      <GridSizeButton
-                        key={option.value}
-                        option={option}
-                        isActive={gridSize?.value === option.value}
-                        onClick={() => setGridSize(option)}
-                      />
+                      <Suspense
+                        fallback={
+                          <div className='flex center margin0auto textcenter'>
+                            {ELoading[language]}...
+                          </div>
+                        }
+                      >
+                        <GridSizeButton
+                          key={option.value}
+                          option={option}
+                          isActive={gridSize?.value === option.value}
+                          onClick={() => setGridSize(option)}
+                        />
+                      </Suspense>
                     ))}
                   </div>
                 </div>
@@ -624,13 +654,21 @@ const Memory: FC<Props> = ({ language }) => {
                     {
                       <>
                         {playerOptions.map((count) => (
-                          <PlayerAmountButton
-                            language={language}
-                            key={count}
-                            value={count}
-                            isActive={players.length === count}
-                            onClick={() => handlePlayerAmountChange(count)}
-                          />
+                          <Suspense
+                            fallback={
+                              <div className='flex center margin0auto textcenter'>
+                                {ELoading[language]}...
+                              </div>
+                            }
+                          >
+                            <PlayerAmountButton
+                              language={language}
+                              key={count}
+                              value={count}
+                              isActive={players.length === count}
+                              onClick={() => handlePlayerAmountChange(count)}
+                            />
+                          </Suspense>
                         ))}
                       </>
                     }
@@ -919,18 +957,26 @@ const Memory: FC<Props> = ({ language }) => {
                   {players[currentPlayer].score}
                 </div>
               </div>
-              <GameGrid
-                language={language}
-                setGameStarted={setGameStarted}
-                gridSize={gridSize.value}
-                cards={cards}
-                cardType={cardType}
-                flippedCards={flippedCards}
-                flippedOverCards={flippedOverCards}
-                matchedCards={matchedCards}
-                handleCardClick={handleCardClick}
-                renderCardContent={renderCardContent}
-              />
+              <Suspense
+                fallback={
+                  <div className='flex center margin0auto textcenter'>
+                    {ELoading[language]}...
+                  </div>
+                }
+              >
+                <GameGrid
+                  language={language}
+                  setGameStarted={setGameStarted}
+                  gridSize={gridSize.value}
+                  cards={cards}
+                  cardType={cardType}
+                  flippedCards={flippedCards}
+                  flippedOverCards={flippedOverCards}
+                  matchedCards={matchedCards}
+                  handleCardClick={handleCardClick}
+                  renderCardContent={renderCardContent}
+                />
+              </Suspense>
             </div>
           </div>
         </section>

@@ -1,10 +1,11 @@
-import Todo from './TodoItem'
+import { lazy, Suspense } from 'react'
 import { ITask, TPriority } from '../interfaces'
 import style from '../css/todo.module.css'
-import { ELanguages } from '../../../interfaces'
+import { ELanguages, ELoading } from '../../../interfaces'
 import { IClosestItem, useDragAndDrop } from '../../../hooks/useDragAndDrop'
-import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { SelectOption } from '../../Select/Select'
+
+const Todo = lazy(() => import('./TodoItem'))
 
 export interface ITaskDraggable extends ITask {
   id: number
@@ -21,6 +22,7 @@ export default function TodoList({
   sending,
   priorityOptions,
   categoryOptions,
+  maxCharacters,
 }: {
   toggleTodo: (key: string | undefined) => void
   deleteTodo: (key: string | undefined) => void
@@ -37,6 +39,7 @@ export default function TodoList({
   sending: boolean
   priorityOptions: SelectOption[]
   categoryOptions: SelectOption[]
+  maxCharacters: number
 }) {
   // const todosWithIdAndStatus = todos
   //   ?.slice()
@@ -107,21 +110,31 @@ export default function TodoList({
         .sort((a, b) => (a.complete === b.complete ? 0 : a.complete ? 1 : -1))
         .map((todo) => {
           return (
-            <Todo
+            <Suspense
               key={todo?.key}
-              sending={sending}
-              toggleTodo={toggleTodo}
-              deleteTodo={deleteTodo}
-              todo={todosWithIdAndStatus?.find((t) => t.key === todo.key)}
-              language={language}
-              modifyTodo={modifyTodo}
-              isDragging={isDragging}
-              handleUpdate={handleUpdate}
-              handleDragging={handleDragging}
-              priorityOptions={priorityOptions}
-              categoryOptions={categoryOptions}
-              zin={listItemsByStatus['todos']?.items.length}
-            />
+              fallback={
+                <div className='flex center margin0auto textcenter'>
+                  {ELoading[language]}...
+                </div>
+              }
+            >
+              <Todo
+                key={todo?.key}
+                sending={sending}
+                toggleTodo={toggleTodo}
+                deleteTodo={deleteTodo}
+                todo={todosWithIdAndStatus?.find((t) => t.key === todo.key)}
+                language={language}
+                modifyTodo={modifyTodo}
+                isDragging={isDragging}
+                handleUpdate={handleUpdate}
+                handleDragging={handleDragging}
+                priorityOptions={priorityOptions}
+                categoryOptions={categoryOptions}
+                zin={listItemsByStatus['todos']?.items.length}
+                maxCharacters={maxCharacters}
+              />
+            </Suspense>
           )
         })}
     </ul>

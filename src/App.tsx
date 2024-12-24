@@ -12,15 +12,11 @@ import BlobPage from './pages/pages-portfolio/BlobPage'
 import DragAndDropPage from './pages/pages-portfolio/DragAndDropPage'
 import TodoPage from './pages/pages-portfolio/TodoPage'
 import CustomSelectPage from './pages/pages-portfolio/CustomSelectPage'
-import NavPortfolio from './components/NavPortfolio/NavPortfolio'
 import FormPage from './pages/pages-portfolio/FormPage'
 import GraphQLPage from './pages/pages-portfolio/GraphQLPage'
 import UserEditPage from './pages/UserEditPage'
 import JokesPage from './pages/pages-portfolio/JokesPage'
 import QuizPage from './pages/pages-portfolio/QuizPage'
-import QuizStart from './components/Quiz/QuizStart'
-import QuizQuestion from './components/Quiz/QuizQuestion'
-import QuizFinished from './components/Quiz/QuizFinished'
 import HairSalonPage from './pages/pages-portfolio/HairSalonPage'
 import ComposerPage from './pages/pages-portfolio/ComposerPage'
 import Disclaimer from './pages/Disclaimer'
@@ -29,7 +25,6 @@ import StorePage from './pages/StorePage'
 import OrderPage from './pages/OrderPage'
 import TermsOfService from './pages/TermsOfService'
 import ColorsPage from './pages/pages-portfolio/ColorsPage'
-//import Footer from './components/Footer/Footer'
 import { useTheme } from './hooks/useTheme'
 import { useScrollbarWidth } from './hooks/useScrollbarWidth'
 import {
@@ -58,7 +53,6 @@ import {
   EStore,
   EWebpagesAndGraphicDesign,
 } from './interfaces'
-//import  ScrollToTop  from './components/ScrollToTop/ScrollToTop'
 import { options } from './utils'
 import { isTouchDevice } from './hooks/useDraggable'
 import { BlobProvider } from './components/Blob/components/BlobProvider'
@@ -88,6 +82,10 @@ import { EMedia, EMediaWithQuotesOrPoems } from './interfaces/images'
 
 const Footer = lazy(() => import('./components/Footer/Footer'))
 const ScrollToTop = lazy(() => import('./components/ScrollToTop/ScrollToTop'))
+const QuizStart = lazy(() => import('./components/Quiz/QuizStart'))
+const QuizQuestion = lazy(() => import('./components/Quiz/QuizQuestion'))
+const QuizFinished = lazy(() => import('./components/Quiz/QuizFinished'))
+const NavPortfolio = lazy(() => import('./components/NavPortfolio/NavPortfolio'))
 
 const App: FC = () => {
   const touchDevice = isTouchDevice()
@@ -305,7 +303,20 @@ const App: FC = () => {
                 }
               />
 
-              <Route path='/portfolio' element={<NavPortfolio language={language} />}>
+              <Route
+                path='/portfolio'
+                element={
+                  <Suspense
+                    fallback={
+                      <div className='flex center margin0auto textcenter'>
+                        {ELoading[language]}...
+                      </div>
+                    }
+                  >
+                    <NavPortfolio language={language} />
+                  </Suspense>
+                }
+              >
                 <Route
                   index
                   element={
@@ -399,21 +410,49 @@ const App: FC = () => {
                   <Route
                     index
                     element={
-                      <QuizStart
-                        heading={EQuizApp[language]}
-                        text={ETestYourKnowledge[language]}
-                        type='page subpage'
-                        language={language}
-                      />
+                      <Suspense
+                        fallback={
+                          <div className='flex center margin0auto textcenter'>
+                            {ELoading[language]}...
+                          </div>
+                        }
+                      >
+                        <QuizStart
+                          heading={EQuizApp[language]}
+                          text={ETestYourKnowledge[language]}
+                          type='page subpage'
+                          language={language}
+                        />
+                      </Suspense>
                     }
                   />
                   <Route
                     path='/portfolio/quiz/:difficulty'
-                    element={<QuizQuestion language={language} />}
+                    element={
+                      <Suspense
+                        fallback={
+                          <div className='flex center margin0auto textcenter'>
+                            {ELoading[language]}...
+                          </div>
+                        }
+                      >
+                        <QuizQuestion language={language} />
+                      </Suspense>
+                    }
                   />
                   <Route
                     path='/portfolio/quiz/results'
-                    element={<QuizFinished language={language} />}
+                    element={
+                      <Suspense
+                        fallback={
+                          <div className='flex center margin0auto textcenter'>
+                            {ELoading[language]}...
+                          </div>
+                        }
+                      >
+                        <QuizFinished language={language} />
+                      </Suspense>
+                    }
                   />
                 </Route>
                 <Route

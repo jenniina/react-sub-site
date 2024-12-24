@@ -1,8 +1,7 @@
-import { useState, useMemo, FormEvent, useEffect, useRef } from 'react'
-// import { useDragAndDrop } from './hooks/useDragAndDrop'
+import { useState, useMemo, FormEvent, useEffect, useRef, lazy, Suspense } from 'react'
 import { useDragAndDrop } from '../../hooks/useDragAndDrop'
 import { Status, Data, Lightness } from './interfaces'
-import { CardsContainer } from './components/CardsContainer'
+//import  CardsContainer  from './components/CardsContainer'
 import styles from './dragAndDrop.module.css'
 import { sanitize } from '../../utils'
 import {
@@ -20,6 +19,7 @@ import {
   EAreYouSureYouWantToProceed,
   ESpecialCharactersNotAllowed,
   EOr,
+  ELoading,
 } from '../../interfaces'
 import { useTheme } from '../../hooks/useTheme'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
@@ -45,6 +45,8 @@ import { EAreYouSureYouWantToDeleteThisVersion } from '../../interfaces/blobs'
 import { EAMaxOf20CharactersPlease, ENameTooLong } from '../../interfaces'
 import { EPartial } from '../../interfaces/store'
 import { EClear } from '../../interfaces/select'
+
+const CardsContainer = lazy(() => import('./components/CardsContainer'))
 
 const initialStatuses: string[] = ['good', 'neutral', 'bad']
 
@@ -554,22 +556,30 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
         ref={containerRef}
       >
         {statuses.map((container) => (
-          <CardsContainer
-            language={language}
-            itemsByStatus={listItemsByStatus[container]?.items}
-            status={container}
-            statuses={statuses}
-            key={container}
-            isDragging={isDragging}
-            handleDragging={handleDragging}
-            handleUpdate={handleUpdate}
-            handleRemoveColor={handleRemoveColor}
-            lightTheme={lightTheme}
-            updateStatus={updateStatus}
-            reorderStatuses={reorderStatuses}
-            deleteStatus={deleteStatus}
-            regex={regex}
-          />
+          <Suspense
+            fallback={
+              <div className='flex center margin0auto textcenter'>
+                {ELoading[language]}...
+              </div>
+            }
+          >
+            <CardsContainer
+              language={language}
+              itemsByStatus={listItemsByStatus[container]?.items}
+              status={container}
+              statuses={statuses}
+              key={container}
+              isDragging={isDragging}
+              handleDragging={handleDragging}
+              handleUpdate={handleUpdate}
+              handleRemoveColor={handleRemoveColor}
+              lightTheme={lightTheme}
+              updateStatus={updateStatus}
+              reorderStatuses={reorderStatuses}
+              deleteStatus={deleteStatus}
+              regex={regex}
+            />
+          </Suspense>
         ))}
       </div>
       <div className='flex center gap max-content margin0auto'>

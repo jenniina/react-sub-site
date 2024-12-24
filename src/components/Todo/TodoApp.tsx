@@ -506,6 +506,7 @@ export default function TodoApp({ language }: Props) {
             modifyTodoOrder={modifyTodoOrder}
             priorityOptions={priorityOptions}
             categoryOptions={categoryOptions}
+            maxCharacters={maxCharacters}
           />
         </Suspense>
         {status === 'loading' && (
