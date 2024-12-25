@@ -164,7 +164,7 @@ export default function About({
                 </a>
               </p>
               <p>
-                <a href='https://github.com/jenniina/react-sub-site-backend'>
+                <a href='https://github.com/jenniina/react-bg'>
                   {ENodeGithubRepository[language]}
                 </a>
               </p>
@@ -276,84 +276,6 @@ export default function About({
                 <Link to='/portfolio'>{EInThePortfolioSection[language]}</Link>
               </big>
 
-              <ul className='ul'>
-                <li>
-                  <big>
-                    <Link to='/portfolio/quiz'>{EQuizApp[language]}</Link>
-                  </big>
-                  <ul>
-                    <li>{EFetchesQuestionsFromAnAPI[language]}</li>
-                    <li>{EUserCanChooseTheDifficultyLevel[language]}</li>
-                    <li>{EUsesMongoDBToStoreTheInformationWhenLoggedIn[language]}</li>
-                  </ul>
-                </li>
-                <li>
-                  <big>
-                    <Link to='/portfolio/jokes'>{ETheComediansCompanion[language]}</Link>
-                  </big>
-                  <ul>
-                    <li>{EFetchesQuestionsFromAnAPI[language]}</li>
-                    <li>{ECustomizableOptions[language]}</li>
-                    <li>
-                      {ESavesLatestJokeInLocalStorageAndUsesMongoDBToStore[language]}
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <big>
-                    <Link to='/portfolio/blob'>{EBlobArtApp[language]}</Link>
-                  </big>
-                  <ul>
-                    <li>{EDraggableBlobs[language]}</li>
-                    <li>{EChangeableColor[language]}</li>
-                    <li>{EChangeableSize[language]}</li>
-                    <li>{EAddMoreBlobs[language]}</li>
-                    <li>{ERemoveBlobs[language]}</li>
-                  </ul>
-                </li>
-                <li>
-                  <big>
-                    <Link to='/portfolio/draganddrop'>{EDragAndDrop[language]}</Link>
-                  </big>
-                  <ul>
-                    <li>{EDraggableListElements[language]}</li>
-                    <li>{ESortableWithinTheirContainer[language]}</li>
-                    <li>{ECanBeMovedToTwoOtherContainers[language]}</li>
-                    <li>{EKeyboardAccessibleDropDownList[language]}</li>
-                  </ul>
-                </li>
-                <li>
-                  <big>
-                    <Link to='/portfolio/todo'>{ETodoApp[language]}</Link>
-                  </big>
-                  <ul>
-                    <li>{EAddTasksToList[language]}</li>
-                    <li>{ERemoveTasksOneByOneOrEveryFinishedTaskAtOnce[language]}</li>
-                    <li>{ESeeNumberOfUnfinishedTasks[language]}</li>
-                    <li>{EUsesLocalStorageToStoreTheInformation[language]}</li>
-                  </ul>
-                </li>
-                <li>
-                  <big>
-                    <Link to='/portfolio/select'>{ECustomSelect[language]}</Link>
-                  </big>
-                  <ul>
-                    <li>{ESingleSelect[language]}</li>
-                    <li>{EMultipleSelect[language]}</li>
-                    <li>{ENavigateWithArrowKeys[language]}</li>
-                    <li>{EGoToItemByTypingTheFirstFewLettersOfTheItem[language]}</li>
-                  </ul>
-                </li>
-                <li>
-                  <big>
-                    <Link to='/portfolio/form'>{EMultistepForm[language]}</Link>
-                  </big>
-                  <ul>
-                    <li>{EThreeStepFullyFunctionalContactForm[language]}</li>
-                    <li>{EUsesANodeBackendToSendTheMessage[language]}</li>
-                  </ul>
-                </li>
-              </ul>
               <h3 id='other' className='left'>
                 {EOtherFeatures[language]}
               </h3>

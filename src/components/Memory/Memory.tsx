@@ -609,8 +609,9 @@ const Memory: FC<Props> = ({ language }) => {
                 <div>
                   <h3>{ECardType[language]}</h3>
                   <div className={styles['set-card-type']}>
-                    {optionsType.map((option) => (
+                    {optionsType.map((option, index) => (
                       <Suspense
+                        key={index}
                         fallback={
                           <div className='flex center margin0auto textcenter'>
                             {ELoading[language]}...
@@ -630,8 +631,9 @@ const Memory: FC<Props> = ({ language }) => {
                 <div>
                   <h3>{EGridSize[language]}</h3>
                   <div className={styles['set-grid']}>
-                    {optionsSize.map((option) => (
+                    {optionsSize.map((option, index) => (
                       <Suspense
+                        key={index}
                         fallback={
                           <div className='flex center margin0auto textcenter'>
                             {ELoading[language]}...
@@ -653,8 +655,9 @@ const Memory: FC<Props> = ({ language }) => {
                   <div className={styles['set-players']}>
                     {
                       <>
-                        {playerOptions.map((count) => (
+                        {playerOptions.map((count, index) => (
                           <Suspense
+                            key={index}
                             fallback={
                               <div className='flex center margin0auto textcenter'>
                                 {ELoading[language]}...

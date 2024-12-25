@@ -83,9 +83,9 @@ const QuizStart = ({
     }
   }, [user])
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch(selectMode((e.target as HTMLButtonElement).value))
-    navigate(`/portfolio/quiz/${(e.target as HTMLButtonElement).value}`)
+  const handleClick = (value: string) => {
+    dispatch(selectMode(value))
+    navigate(`/portfolio/quiz/difficulty/${value}`)
   }
 
   return (
@@ -123,23 +123,20 @@ const QuizStart = ({
             <div className={`${styles.difficulty}`}>
               <button
                 className={`${styles.mode} ${styles.easy}`}
-                value='easy'
-                onClick={(e) => handleClick(e)}
+                onClick={() => handleClick('easy')}
               >
                 {EEasy[language]} <FaStar />
               </button>
               <button
                 className={`${styles.mode} ${styles.medium}`}
-                value='medium'
-                onClick={(e) => handleClick(e)}
+                onClick={() => handleClick('medium')}
               >
                 {EMedium[language]} <FaStar />
                 <FaStar />
               </button>
               <button
                 className={`${styles.mode} ${styles.hard}`}
-                value='hard'
-                onClick={(e) => handleClick(e)}
+                onClick={() => handleClick('hard')}
               >
                 {EHard[language]} <FaStar />
                 <FaStar />
@@ -160,7 +157,7 @@ const QuizStart = ({
               highscoresLocal={highscoresLocal}
               text='quizstart'
             />
-          </Suspense>{' '}
+          </Suspense>
         </div>
       </section>
     </>

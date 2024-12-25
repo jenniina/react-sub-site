@@ -780,8 +780,9 @@ const DragLayers = ({
 
   return (
     <>
-      {layers.map((l) => (
+      {layers.map((l, index) => (
         <Suspense
+          key={index}
           fallback={
             <div className='flex center margin0auto textcenter'>
               {ELoading[language]}...

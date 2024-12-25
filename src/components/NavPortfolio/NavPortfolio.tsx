@@ -61,9 +61,9 @@ function NavPortfolio({ language }: { language: ELanguages }) {
     { url: '/portfolio/jokes', name: EJokes[language] },
     { url: '/portfolio/quiz', name: EQuiz[language] },
     { url: '/portfolio/select', name: ECustomSelect[language] },
-    { url: '/portfolio/graphql', name: 'GraphQL' },
     { url: '/portfolio/salon', name: EHairSalon[language] },
     { url: '/portfolio/draganddrop', name: EDragAndDrop[language] },
+    { url: '/portfolio/graphql', name: 'GraphQL' },
     { url: '/portfolio/form', name: EMultistepForm[language] },
     { url: '/portfolio/todo', name: EToDo[language], special: 'last' },
   ]
