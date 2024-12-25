@@ -3012,3 +3012,12 @@ export enum EMax {
   cs = 'max',
   fi = 'max',
 }
+export enum ECharacters {
+  en = 'characters',
+  es = 'caracteres',
+  fr = 'caractères',
+  de = 'Zeichen',
+  pt = 'caracteres',
+  cs = 'znaky',
+  fi = 'merkkiä',
+}

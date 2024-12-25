@@ -39,8 +39,8 @@ export default function ComposerPage({
                 <Accordion
                   language={language}
                   text={EClickHereToSeeFeatures[language]}
-                  className='salon-features'
-                  wrapperClass='salon-features-wrap'
+                  className='composer-features'
+                  wrapperClass='mb3'
                   setIsFormOpen={setIsFormOpen}
                 >
                   <>

@@ -28,7 +28,7 @@ export default function HairSalonPage({
                 language={language}
                 text={EClickHereToSeeFeatures[language]}
                 className='salon-features'
-                wrapperClass='salon-features-wrap'
+                wrapperClass='mb3'
                 setIsFormOpen={setIsFormOpen}
               >
                 <>
