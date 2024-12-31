@@ -26,13 +26,6 @@ export default function Portfolio({
         lightTheme ? styles.light : ''
       }`}
     >
-      <Hero
-        language={language}
-        address='portfolio'
-        heading={heading}
-        text={text}
-        instructions={ETryDraggingTheBlobs[language]}
-      />
       <div className='inner-wrap'>
         <Suspense
           fallback={

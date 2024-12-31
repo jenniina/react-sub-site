@@ -55,7 +55,6 @@ const ColorsPage = ({
 }) => {
   return (
     <div className={`colors ${type}`}>
-      <Hero language={language} address='colors' heading={heading} text={text} />
       <div className='inner-wrap'>
         <section>
           <Accordion

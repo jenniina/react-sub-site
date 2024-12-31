@@ -86,10 +86,15 @@
   font-size: 1.1em;
 }
 .herocontent {
+  --time: 400ms;
   z-index: 2;
   height: 100%;
   padding: 0;
   pointer-events: none;
+  transition-property: opacity;
+  transition-timing-function: ease-in-out;
+  transition-duration: 400ms;
+  transition-delay: 0s;
 }
 .herocontent .bubbles,
 .herocontent .eyes,
@@ -1542,4 +1547,30 @@
   outline: none;
   -webkit-filter: brightness(130%) contrast(150%);
   filter: brightness(130%) contrast(150%);
+}
+
+.herocontent.fadeIn,
+.hero h1.fadeIn {
+  -webkit-animation: fadeIn var(--time) ease-in-out forwards;
+  -o-animation: fadeIn var(--time) ease-in-out forwards;
+  -ms-animation: fadeIn var(--time) ease-in-out forwards;
+  -moz-animation: fadeIn var(--time) ease-in-out forwards;
+  animation: fadeIn var(--time) ease-in-out forwards;
+}
+
+.herocontent.fadeOut,
+.hero h1.fadeOut {
+  -webkit-animation: fadeIn var(--time) ease-in-out backwards;
+  -o-animation: fadeIn var(--time) ease-in-out backwards;
+  -ms-animation: fadeIn var(--time) ease-in-out backwards;
+  -moz-animation: fadeIn var(--time) ease-in-out backwards;
+  animation: fadeIn var(--time) ease-in-out backwards;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }

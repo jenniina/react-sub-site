@@ -105,7 +105,6 @@ const UserEditPage = ({
   return (
     <>
       <div className={`edit ${type} ${lightTheme ? styles.light : ''}`}>
-        <Hero language={language} address='edit' heading={heading} text={text} />
         <div className='inner-wrap'>
           <section className={`card`}>
             <div>

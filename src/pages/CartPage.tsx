@@ -28,7 +28,6 @@ const CartPage: React.FC<CartProps> = ({
 }) => {
   return (
     <div className={`cart ${type}`}>
-      <Hero language={language} address='cart' heading={heading} text={text} />
       <div className='inner-wrap'>
         <section className='card' style={{ position: 'relative', zIndex: 2 }}>
           <div>

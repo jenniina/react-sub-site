@@ -26,7 +26,6 @@ const StorePage: React.FC<StoreProps> = ({
 }) => {
   return (
     <div className={`store ${type} ${styles.store}`}>
-      <Hero language={language} address='store' heading={heading} text={text} />
       <div className={`inner-wrap ${styles['inner-wrap']}`}>
         <Suspense
           fallback={

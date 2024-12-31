@@ -1,0 +1,1 @@
+import{j as r}from"./react-kX_YxI4E.js";function t({title:e,description:s,children:n}){return r.jsx(r.Fragment,{children:r.jsxs("fieldset",{children:[r.jsxs("legend",{children:[" ",e,r.jsxs("p",{children:[" ",s," "]})]}),n]})})}export{t as F};

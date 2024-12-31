@@ -19,7 +19,6 @@ export default function HairSalonPage({
   const [isFormOpen, setIsFormOpen] = useState(false)
   return (
     <div className={`salon ${type}`}>
-      <Hero language={language} address='salon' heading={heading} text={text} />
       <div className='inner-wrap'>
         <section className='card'>
           <div>

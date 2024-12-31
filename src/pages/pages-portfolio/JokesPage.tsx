@@ -111,15 +111,6 @@ export default function JokesPage({
         .toLowerCase()
         .replace(/[^a-zA-Z]/g, '')} ${type} ${language}`}
     >
-      <Hero
-        language={language}
-        address='jokes'
-        heading={title}
-        text={text}
-        reset={EReset[language]}
-        instructions={ETryTappingTheShapes[language]}
-      />
-
       <div className='inner-wrap'>
         <section className='joke-container card introduction'>
           <div>

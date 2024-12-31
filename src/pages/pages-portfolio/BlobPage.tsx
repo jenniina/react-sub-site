@@ -117,13 +117,6 @@ export default function BlobPage({
   }
   return (
     <div className={`blob ${type}`}>
-      <Hero
-        language={language}
-        address='blob'
-        heading={heading}
-        text={text}
-        instructions={ETryDraggingTheBlobs[language]}
-      />
       <div className='inner-wrap'>
         <section>
           <div className='card'>

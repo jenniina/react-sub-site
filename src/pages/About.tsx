@@ -14,9 +14,11 @@ import {
   EDragAndDrop,
   EDraggable,
   EDraggableBlobs,
+  EEightSidedJewels,
   EElements,
   EElementsRotateToFaceCursor,
   EFeaturesOfThisSite,
+  EFourSidedJewels,
   EHeroSection,
   EHoverFocusAnimation,
   EIcon,
@@ -41,6 +43,7 @@ import {
   ESettings,
   ESiteSettings,
   ESquaresStandingOnTheirCorner,
+  EStore,
   ESurvey,
   ETwoStylesAtSmallScreenSizeAndTwoAtLargeScreenSize,
 } from '../interfaces'
@@ -89,6 +92,8 @@ import { EUserCanChooseTheDifficultyLevel } from '../interfaces/quiz'
 import { EChangeableColor, EChangeableSize } from '../interfaces/blobs'
 import { ETodoApp } from '../components/Todo/interfaces'
 import { ETheComediansCompanion } from '../components/Jokes/interfaces'
+import { EComposerPage, EMusicNotes } from '../interfaces/composer'
+import { ECart } from '../interfaces/store'
 
 const ColorComponent = lazy(() => import('../components/About/ColorComponent'))
 
@@ -149,14 +154,13 @@ export default function About({
 
   return (
     <div className={`about ${type} ${lightTheme ? styles.light : ''}`}>
-      <Hero language={language} address='about' heading={heading} text={text} />
       <div>
         <section className={`card ${styles.section}`}>
           <div>
             <div className='wide'>
               <p>{EAboutThisSite[language]}</p>
               <p>
-                <a href='https://jenniina.fi#portfolio'>{EMainSite[language]}</a>
+                <a href='https://jenniina.fi'>{EMainSite[language]}</a>
               </p>
               <p>
                 <a href='https://github.com/jenniina/react-sub-site'>
@@ -245,7 +249,18 @@ export default function About({
                     <li>
                       {EBubbles[language]} ({ESeeTheTopOfTheCurrentPage[language]})
                     </li>
-
+                    <li>
+                      {EMusicNotes[language]}{' '}
+                      <Link to='/portfolio/composer'>({EComposerPage[language]})</Link>
+                    </li>
+                    <li>
+                      {EFourSidedJewels[language]}{' '}
+                      <Link to='/store'>({EStore[language]})</Link>
+                    </li>
+                    <li>
+                      {EEightSidedJewels[language]}{' '}
+                      <Link to='/cart'>({ECart[language]})</Link>
+                    </li>
                     <li>
                       {EDraggableBlobs[language]}{' '}
                       <Link to='/portfolio'>({EPortfolio[language]})</Link>

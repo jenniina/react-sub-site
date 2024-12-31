@@ -39,7 +39,6 @@ export default function TodoPage({
   const lightMode = useTheme()
   return (
     <div className={`todo ${type} ${lightMode ? styles.light : ''}`}>
-      <Hero language={language} address='todo' heading={heading} text={text} />
       <div className='inner-wrap'>
         <section className='card'>
           <div>

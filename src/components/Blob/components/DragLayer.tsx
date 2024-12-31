@@ -97,15 +97,20 @@ const DragLayer = ({
 
   const svgFilter = d === 0 ? 0 : 1 // Choose the second filter for containers other than 0
   const layerStyle: CSSProperties = {
-    WebkitFilter: `url(#svgfilter${svgFilter})`,
-    filter: `url(#svgfilter${svgFilter})`,
-    backgroundColor: 'transparent',
+    WebkitFilter: `url(#svgGaussian${svgFilter}) url(#svgMatrix${svgFilter})`,
+    filter: `url(#svgGaussian${svgFilter}) url(#svgMatrix${svgFilter})`,
     position: 'absolute',
     top: 0,
     left: 0,
     height: '100%',
     width: '100%',
     pointerEvents: 'none',
+    minHeight: '420px',
+    minWidth: '100%',
+    margin: '0',
+    padding: '0',
+    overflow: 'visible',
+    borderRadius: '0',
   }
 
   return (

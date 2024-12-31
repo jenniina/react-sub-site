@@ -54,7 +54,6 @@ export default function Home({
 
   return (
     <div className={`welcome ${type} ${lightTheme ? styles.light : ''}`}>
-      <Hero language={language} address='welcome' heading={heading} text={text} />
       <Select
         language={language}
         id='language-welcome'

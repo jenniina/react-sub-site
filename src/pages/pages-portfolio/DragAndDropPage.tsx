@@ -45,13 +45,6 @@ export default function DragAndDropPage({
 }) {
   return (
     <div className={`draganddrop ${type}`}>
-      <Hero
-        language={language}
-        address='draganddrop'
-        heading={heading}
-        text={text}
-        instructions={ETryDraggingTheBlobs[language]}
-      />
       <div className='inner-wrap'>
         <section className='card'>
           <div>
