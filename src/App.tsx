@@ -52,6 +52,8 @@ import {
   ELoading,
   EStore,
   EWebpagesAndGraphicDesign,
+  EReset,
+  ETryTappingTheShapes,
 } from './interfaces'
 import { options } from './utils'
 import { isTouchDevice } from './hooks/useDraggable'
@@ -79,6 +81,8 @@ import MemoryPage from './pages/pages-portfolio/MemoryPage'
 import Modal from './components/Modal/Modal'
 import ImagesPage from './pages/pages-portfolio/ImagesPage'
 import { EMedia, EMediaWithQuotesOrPoems } from './interfaces/images'
+import Hero from './components/Hero/Hero'
+import { ETryDraggingTheBlobs } from './interfaces/blobs'
 
 const Footer = lazy(() => import('./components/Footer/Footer'))
 const ScrollToTop = lazy(() => import('./components/ScrollToTop/ScrollToTop'))
@@ -86,6 +90,7 @@ const QuizStart = lazy(() => import('./components/Quiz/QuizStart'))
 const QuizQuestion = lazy(() => import('./components/Quiz/QuizQuestion'))
 const QuizFinished = lazy(() => import('./components/Quiz/QuizFinished'))
 const NavPortfolio = lazy(() => import('./components/NavPortfolio/NavPortfolio'))
+import { Location as RouterLocation } from 'react-router-dom'
 
 const App: FC = () => {
   const touchDevice = isTouchDevice()
@@ -114,7 +119,7 @@ const App: FC = () => {
 
   const location = useLocation()
 
-  const [displayLocation, setDisplayLocation] = useState(location)
+  const [displayLocation, setDisplayLocation] = useState<RouterLocation>(location)
 
   const [transitionPage, setTransitionPage] = useState('fadeIn')
 
@@ -228,6 +233,187 @@ const App: FC = () => {
     }
   }, [location.pathname])
 
+  interface heroProps {
+    heading: string
+    text: string
+    address: string
+    reset?: string
+    instructions?: string
+    language: ELanguages
+  }
+
+  const heroConfig: { [key: string]: heroProps } = {
+    '/': {
+      heading: EWelcome[language],
+      text: EToTheReactSiteOfJenniinaFi[language],
+      address: '',
+      language,
+    },
+    '/portfolio': {
+      heading: EPortfolio[language],
+      text: 'ReactJS',
+      address: 'portfolio',
+      language,
+      instructions: ETryDraggingTheBlobs[language],
+    },
+    '/portfolio/salon': {
+      heading: EHairSalonWebsite[language],
+      text: 'React, Node.js, Express, MySQL, Sequelize',
+      address: 'salon',
+      language,
+    },
+    '/portfolio/composer': {
+      heading: EComposerOlliSanta[language],
+      text: 'React, Node.js, Express, MongoDB',
+      address: 'composer',
+      language,
+    },
+    '/portfolio/graphql': {
+      heading: 'GraphQL',
+      text: EGraphQLSite[language],
+      address: 'graphql',
+      language,
+    },
+    '/portfolio/blob': {
+      heading: EBlobs[language],
+      text: EBlobAppSlogan[language],
+      address: 'blob',
+      language,
+      instructions: ETryDraggingTheBlobs[language],
+    },
+    '/portfolio/draganddrop': {
+      heading: EDragAndDrop[language],
+      text: '',
+      address: 'draganddrop',
+      language,
+      instructions: ETryDraggingTheBlobs[language],
+    },
+    '/portfolio/todo': {
+      heading: ETodoApp[language],
+      text: EGetOrganizedOneTaskAtATime[language],
+      address: 'todo',
+      language,
+    },
+    '/portfolio/select': {
+      heading: ECustomSelect[language],
+      text: '',
+      address: 'select',
+      language,
+    },
+    '/portfolio/form': {
+      heading: EMultistepForm[language],
+      text: '',
+      address: 'form',
+      language,
+    },
+    '/portfolio/jokes': {
+      heading: ETheComediansCompanion[language],
+      text: EAJokeGeneratorForTheComicallyInclined[language],
+      address: 'jokes',
+      language,
+      reset: EReset[language],
+      instructions: ETryTappingTheShapes[language],
+    },
+    '/portfolio/quiz': {
+      heading: EQuizApp[language],
+      text: ETestYourKnowledge[language],
+      address: 'quiz',
+      language,
+      instructions: ETryTappingTheShapes[language],
+    },
+    '/portfolio/colors': {
+      heading: EColorAccessibility[language],
+      text: ETestColorCombinations[language],
+      address: 'colors',
+      language,
+    },
+    '/portfolio/memory': {
+      heading: EMemoryGame[language],
+      text: EMemoryGameIntro[language],
+      address: 'memory',
+      language,
+    },
+    '/portfolio/media': {
+      heading: EMedia[language],
+      text: EMediaWithQuotesOrPoems[language],
+      address: 'media',
+      language,
+    },
+    '/about': {
+      heading: EAbout[language],
+      text: EThisSite[language],
+      address: 'about',
+      language,
+    },
+    '/contact': {
+      heading: EContact[language],
+      text: ELetsCollaborate[language],
+      address: 'contact',
+      language,
+    },
+    '/cart': {
+      heading: EShoppingCart[language],
+      text: '',
+      address: 'cart',
+      language,
+    },
+    '/store': {
+      heading: EStore[language],
+      text: EWebpagesAndGraphicDesign[language],
+      address: 'store',
+      language,
+    },
+    '/disclaimer': {
+      heading: EPrivacyAndSecurityDisclaimer[language],
+      text: `${ELastUpdated[language]}: 2024/10/20`,
+      address: 'disclaimer',
+      language,
+    },
+    '/terms': {
+      heading: ETermsOfService[language],
+      text: `${ELastUpdated[language]}: 2024/10/20`,
+      address: 'terms',
+      language,
+    },
+    '/orders': {
+      heading: EOrders[language],
+      text: '',
+      address: 'orders',
+      language,
+    },
+    '/edit': {
+      heading: EUserEdit[language],
+      text: EEditUserSettings[language],
+      address: 'edit',
+      language,
+    },
+    '/test': {
+      heading: 'Test Page',
+      text: '',
+      address: 'test',
+      language,
+    },
+  }
+
+  const [heroProps, setHeroProps] = useState<{
+    heading: string
+    text: string
+    address: string
+    reset?: string
+    instructions?: string
+  }>({
+    heading: '',
+    text: '',
+    address: '',
+  })
+
+  useEffect(() => {
+    const path = displayLocation.pathname
+    const config = heroConfig[path] || heroConfig['/']
+    setHeroProps(config)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname, language, displayLocation.pathname])
+
   return (
     <BlobProvider>
       <div
@@ -256,6 +442,16 @@ const App: FC = () => {
               }
             }}
           >
+            {heroProps.heading && (
+              <Hero
+                displayLocation={displayLocation}
+                language={language}
+                address={heroProps.address}
+                heading={heroProps.heading}
+                text={heroProps.text}
+              />
+            )}
+
             <Routes location={displayLocation}>
               <Route
                 path='*'

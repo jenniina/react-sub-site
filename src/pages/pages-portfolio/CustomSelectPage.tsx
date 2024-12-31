@@ -271,7 +271,6 @@ export default function CustomSelectPage({
 
   return (
     <div className={`select ${type}`}>
-      <Hero language={language} address='select' heading={heading} text={text} />
       <div className='inner-wrap'>
         <section className='card'>
           <div>

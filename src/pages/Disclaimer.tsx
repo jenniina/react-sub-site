@@ -43,8 +43,6 @@ export default function Disclaimer({
   return (
     <>
       <div className={`disclaimer ${type} ${lightTheme ? styles.light : ''}`}>
-        <Hero language={language} address='disclaimer' heading={heading} text={text} />
-
         <div className='inner-wrap'>
           <section className={`card`}>
             <div>

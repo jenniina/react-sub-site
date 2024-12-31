@@ -18,7 +18,6 @@ export default function MemoryPage({
 }) {
   return (
     <div className={`memory ${type}`}>
-      <Hero language={language} address='memory' heading={heading} text={text} />
       <div className='inner-wrap'>
         <Suspense
           fallback={

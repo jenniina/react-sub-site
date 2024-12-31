@@ -111,7 +111,6 @@ const OrderPage: React.FC<OrderPageProps> = ({ language, heading, text, type }) 
 
   return (
     <div className={`order ${type} ${styles['orders-page']}`}>
-      <Hero language={language} address='order' heading={heading} text={text} />
       <div className='inner-wrap'>
         <section className='card' style={{ position: 'relative', zIndex: 2 }}>
           <div>

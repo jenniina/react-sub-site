@@ -1817,7 +1817,7 @@ export enum ESquaresStandingOnTheirCorner {
   de = 'Quadrate stehen auf ihrer Ecke',
   pt = 'Quadrados em pé no canto',
   cs = 'Čtverce stojí na svém rohu',
-  fi = 'Neliöt seisovat kulmassaan',
+  fi = 'Neliöt seisovat kulmallaan',
 }
 export enum EGraphQLSite {
   en = 'GraphQL site',

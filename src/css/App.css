@@ -257,7 +257,6 @@ main {
 }
 
 .nav-sub {
-  position: relative;
   right: 0;
   -webkit-transform: translateX(0%);
   -ms-transform: translateX(0%);

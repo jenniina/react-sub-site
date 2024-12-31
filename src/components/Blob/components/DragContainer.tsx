@@ -13,7 +13,8 @@ import {
   lazy,
   Suspense,
 } from 'react'
-import { getRandomMinMax, sanitize } from '../../../utils'
+import domtoimage from 'dom-to-image-more'
+import { getRandomMinMax, hslToHex, sanitize } from '../../../utils'
 import {
   Draggable,
   BackgroundColor,
@@ -1570,6 +1571,71 @@ export default function DragContainer({
     margin: '0 auto',
   }
 
+  const [screenshot, setScreenshot] = useState<string | null>(null)
+
+  const takeScreenshot2 = async () => {
+    if (!dragWrap.current) return
+    setLoading(true)
+    setScreenshot(null)
+    try {
+      const getBackgroundColor = hslToHex(
+        Number(backgroundColor[d][0]),
+        Number(backgroundColor[d][1]),
+        Number(backgroundColor[d][2])
+      )
+      console.log(backgroundColor, getBackgroundColor)
+
+      interface DomToImageOptions {
+        scale: number
+        useCORS: boolean
+        allowTaint: boolean
+        bgcolor: string
+        width: number
+        height: number
+        onclone: (clonedNode: HTMLElement) => void
+      }
+
+      const svgFilter = d === 0 ? 0 : 1
+
+      const dataUrl: string = await domtoimage.toPng(dragWrap.current, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: false,
+        bgcolor: getBackgroundColor,
+        width: dragWrap.current.offsetWidth,
+        height: dragWrap.current.offsetHeight,
+        onclone: (clonedNode: HTMLElement) => {
+          const originalSvg: SVGSVGElement | null = document.querySelector(
+            `svg#svgfilter${svgFilter}`
+          )
+          if (originalSvg) {
+            const clonedSvg: SVGSVGElement = originalSvg.cloneNode(true) as SVGSVGElement
+            clonedNode.appendChild(clonedSvg)
+          }
+        },
+      } as DomToImageOptions)
+
+      if (dataUrl) {
+        setScreenshot(dataUrl)
+        //download the image
+        const link = document.createElement('a')
+        link.href = dataUrl
+        link.download = 'blobs.png'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        dispatch(notify(EArtSaved[language], false, 8))
+      } else {
+        dispatch(notify(EError[language], true, 8))
+      }
+    } catch (err) {
+      console.error('Screenshot Error:', err)
+      dispatch(notify(EError[language], true, 8))
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const takeScreenshot = async () => {
     const dragWrap = document.getElementById('drag-wrap' + d)
     if (dragWrap && !loading) {
@@ -2002,6 +2068,19 @@ export default function DragContainer({
                   {loading ? ELoading[language] : EClickHereToTakeAScreenshot[language]}
                 </span>
               </button>
+              <button
+                type='button'
+                aria-labelledby={`take-screenshot${d}-span2`}
+                disabled={loading}
+                onClick={takeScreenshot2}
+                className='reset'
+                style={{ padding: '0' }}
+              >
+                -
+                <span id={`take-screenshot${d}-span2`} className='scr'>
+                  temporary
+                </span>
+              </button>
             </div>
             <div ref={dragWrapOutest} className={`drag-wrap-outest drag-wrap-outest${d}`}>
               <div
@@ -2166,7 +2245,23 @@ export default function DragContainer({
                   />
                 )}
 
-                <div ref={dragWrap} id={`drag-wrap${d}`} className='drag-wrap'>
+                <div
+                  ref={dragWrap}
+                  id={`drag-wrap${d}`}
+                  className='drag-wrap'
+                  style={{
+                    height: 'calc(100vh - 7rem)',
+                    minHeight: '420px',
+                    width: '100%',
+                    minWidth: '100%',
+                    backgroundColor: 'transparent',
+                    margin: '0',
+                    padding: '0',
+                    overflow: 'visible',
+                    borderRadius: '0',
+                    position: 'relative',
+                  }}
+                >
                   <Suspense
                     fallback={
                       <div className='flex center margin0auto textcenter'>
@@ -2561,31 +2656,40 @@ export default function DragContainer({
                 </div>
               </div>
             )}
-            <svg className='filter'>
-              <filter id='svgfilter0'>
-                <feGaussianBlur in='SourceGraphic' stdDeviation='7'></feGaussianBlur>
-                <feColorMatrix
-                  values='
+            <svg className='filter' id={`svgfilter0`}>
+              <defs>
+                <filter id='svgGaussian0'>
+                  <feGaussianBlur in='SourceGraphic' stdDeviation='7'></feGaussianBlur>
+                </filter>
+                <filter id='svgMatrix0'>
+                  <feColorMatrix
+                    values='
 1 0 0 0 0
 0 1 0 0 0
 0 0 1 0 0
 0 0 0 50 -18
 '
-                ></feColorMatrix>
-              </filter>
+                  ></feColorMatrix>{' '}
+                </filter>
+              </defs>
             </svg>
-            <svg className='filter'>
-              <filter id='svgfilter1'>
-                <feGaussianBlur in='SourceGraphic' stdDeviation='8'></feGaussianBlur>
-                <feColorMatrix
-                  values='
+            <svg className='filter' id='svgfilter1'>
+              <defs>
+                {' '}
+                <filter id='svgGaussian1'>
+                  <feGaussianBlur in='SourceGraphic' stdDeviation='8'></feGaussianBlur>
+                </filter>
+                <filter id='svgMatrix1'>
+                  <feColorMatrix
+                    values='
 1 0 0 0 0
 0 1 0 0 0
 0 0 1 0 0
 0 0 0 46 -28
 '
-                ></feColorMatrix>
-              </filter>
+                  ></feColorMatrix>
+                </filter>
+              </defs>
             </svg>
           </div>
         </div>

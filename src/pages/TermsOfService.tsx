@@ -73,8 +73,6 @@ export default function TermsOfService({
   return (
     <>
       <div className={`terms ${type} ${lightTheme ? styles.light : ''}`}>
-        <Hero language={language} address='terms' heading={heading} text={text} />
-
         <div className='inner-wrap'>
           <section className={`card`}>
             <div>

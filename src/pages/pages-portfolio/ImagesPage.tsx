@@ -31,7 +31,6 @@ const ImagesPage = ({
 }) => {
   return (
     <div className={`media ${type} ${styles['images-wrap']}`}>
-      <Hero language={language} address='media' heading={heading} text={text} />
       <div className={`inner-wrap ${styles['inner-wrap']}`}>
         <section className={`card ${styles['features-card']}`}>
           <div>

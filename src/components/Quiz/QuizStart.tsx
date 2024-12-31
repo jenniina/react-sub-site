@@ -90,14 +90,6 @@ const QuizStart = ({
 
   return (
     <>
-      <Hero
-        language={language}
-        address='portfolio'
-        heading={heading}
-        text={text}
-        reset='Reset'
-        instructions={ETryTappingTheShapes[language]}
-      />
       <section className={`card`}>
         <div>
           <div className={`medium ${styles.features}`}>

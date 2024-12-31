@@ -6,10 +6,7 @@ svg.filter {
   height: 0;
   width: 0;
 }
-.drag-container .drag-wrap {
-  background-color: transparent;
-  position: relative;
-}
+
 .drag-container .blob-title-wrap {
   display: flex;
   flex-flow: column nowrap;
@@ -393,11 +390,12 @@ svg.filter {
 .button-container {
   flex: 0 1 100%;
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: column wrap;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.5em;
   gap: 0.2em 0.4em;
+  max-width: calc(100vw - var(--scrollbar_width) - 2 * var(--page-padding));
 }
 .button-container button {
   min-width: 100%;
@@ -464,14 +462,14 @@ svg.filter {
   .button-container {
     --space: 0.4em;
     flex: 1 1 auto;
-    flex-flow: row nowrap;
+    flex-flow: row wrap;
     margin-bottom: 0.5em;
-    justify-content: space-between;
+    justify-content: flex-start;
   }
   .drag-container .button-container button {
     /* width: clamp(160px, calc(20% - calc(var(--space) * 4)), 100%);
     min-width: clamp(100px, calc(20% - calc(var(--space) * 4)), 160px); */
-    flex: 1 0 auto;
+    flex: 0 0 auto;
     margin: 0.3em var(--space) 0.3em 0;
     padding: 0.5em 0.8em;
     word-wrap: break-word;
@@ -516,9 +514,7 @@ svg.filter {
 }
 .drag-container,
 .drag-wrap-outest,
-.drag-wrap-outer,
-.drag-wrap,
-.drag-wrap .drag-container-layer {
+.drag-wrap-outer {
   border-radius: 0; /* For better screenshot quality */
 }
 
@@ -541,7 +537,7 @@ svg.filter {
   overflow: hidden;
   height: auto;
 }
-.drag-wrap,
+/* .drag-wrap,
 .drag-wrap .drag-container-layer {
   height: calc(100vh - 7rem);
   min-height: 420px;
@@ -551,7 +547,7 @@ svg.filter {
   margin: 0;
   padding: 0;
   overflow: visible;
-}
+} */
 .drag-wrap ul {
   list-style: none;
   overflow: hidden;

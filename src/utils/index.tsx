@@ -1,5 +1,5 @@
 import { Fragment } from 'react'
-import { EEtc, ELanguages } from '../interfaces'
+import { EError, EEtc, ELanguages } from '../interfaces'
 import { SelectOption } from '../components/Select/Select'
 import {
   ColorBlock,
@@ -8,6 +8,7 @@ import {
   TColorMode,
 } from '../components/AccessibleColors/AccessibleColors'
 import useRandomMinMax from '../hooks/useRandomMinMax'
+import domtoimage from 'dom-to-image-more'
 
 export const splitToLines = (details: string) => {
   return details.split('\n').map((line: string, index: number) => (

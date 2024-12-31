@@ -198,6 +198,9 @@ body * {
   transition-duration: 200ms;
   transition-delay: 0s;
 }
+main {
+  position: relative;
+}
 main a,
 main a:link,
 main a > *,

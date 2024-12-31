@@ -27,7 +27,7 @@
   );
 }
 .color-picker {
-  --size: 5em;
+  --size: 4em;
   flex: 1 0 100%;
   display: flex;
   flex-flow: row wrap;
@@ -37,13 +37,14 @@
   margin-bottom: 2em;
 }
 .color-picker > input[type='color' i] {
-  min-width: clamp(40px, 20vw, var(--size));
-  width: clamp(40px, 20vw, var(--size));
-  max-width: clamp(40px, 20vw, var(--size));
-  min-height: clamp(40px, 20vw, var(--size));
-  height: clamp(40px, 20vw, var(--size));
-  max-height: clamp(40px, 20vw, var(--size));
-  outline: 10px solid white;
+  --clamp: clamp(30px, 10vw, var(--size));
+  min-width: var(--clamp);
+  width: var(--clamp);
+  max-width: var(--clamp);
+  min-height: var(--clamp);
+  height: var(--clamp);
+  max-height: var(--clamp);
+  outline: 8px solid white;
   outline-offset: -8px;
   border-radius: 50%;
 }
@@ -228,6 +229,7 @@
   background-size: var(--bg-size);
   background-position: 50% 3%;
   border-bottom-color: gray;
+  margin: 0;
 }
 .color-edit-container > .color-select > div > div {
   border-top-color: gray;

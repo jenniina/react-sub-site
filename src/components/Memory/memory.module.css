@@ -57,19 +57,7 @@
   flex: 1 0 100%;
   max-width: 20rem;
 }
-@media (min-width: 700px) {
-  .settings > div > div {
-    flex: 1 0 calc(50% - 2em);
-    max-width: 13rem;
-  }
-}
-@media (min-width: 1000px) {
-  .settings > div > div,
-  #game-container .settings .player-names-wrap {
-    flex: 1 0 calc(33% - 2em);
-    max-width: 13rem;
-  }
-}
+
 .grid-wrap {
   position: relative;
 }
@@ -477,23 +465,7 @@
 .delete-name-form > div {
   margin-top: 3em;
 }
-@media (min-width: 700px) {
-  .high-scores > div {
-    width: calc(50% - 0.5em);
-    min-width: clamp(150px, calc(50% - 0.5em), 18rem);
-  }
-}
-@media (min-width: 1000px) {
-  #game-container .high-scores {
-    margin-left: calc(var(--page-padding) / 2 * -1);
-    min-width: calc(100% + var(--page-padding));
-  }
-  .high-scores > div {
-    width: calc(33% - 1em);
-    min-width: clamp(150px, calc(33% - 1em), 18rem);
-    max-width: 18rem;
-  }
-}
+
 .select {
   margin: 0 0 1em 0;
 }
@@ -511,14 +483,15 @@
   flex-flow: row wrap;
   justify-content: center;
   align-items: center;
-  gap: 1em;
+  gap: 1em 1.4em;
   margin-bottom: 2em;
 }
 .set-card-type button,
 .set-players button,
 .set-grid button {
   font-weight: bold;
-  outline: 6px double var(--color-primary-6);
+  outline: 2px solid var(--color-primary-6);
+  outline-offset: 3px;
   border: 3.5px solid var(--color-primary-6);
 }
 .set-card-type button::before,
@@ -537,7 +510,7 @@
 }
 .set-card-type button,
 .set-card-type button svg {
-  font-size: clamp(var(--title-XXL), 23vw, var(--title-XXXL));
+  font-size: calc(var(--title-XXXL) + 0.6rem);
 }
 .set-card-type button {
   border-radius: 50%;
@@ -568,8 +541,8 @@
 }
 .container .set-grid button.active,
 .container .set-players button.active {
-  outline: 5px double var(--color-primary-20);
-  outline-offset: -1px;
+  outline: 1px solid var(--color-primary-20);
+  outline-offset: 3px;
   border: 3px solid var(--color-primary-20);
 }
 .set-players,
@@ -600,8 +573,8 @@
   height: 3em;
 }
 .container button.active {
-  outline: 8px double var(--color-primary-20);
-  outline-offset: -1px;
+  outline: 2px solid var(--color-primary-20);
+  outline-offset: 3px;
 }
 button.active::before {
   content: '';
@@ -616,10 +589,10 @@ button.active::before {
   z-index: -1;
 }
 .set-card-type button.active::before {
-  top: -0.2em;
-  left: -0.2em;
-  width: calc(100% + 0.4em);
-  height: calc(100% + 0.4em);
+  top: -0.15em;
+  left: -0.15em;
+  width: calc(100% + 0.3em);
+  height: calc(100% + 0.3em);
 }
 .light button.active::before {
   background: hsl(var(--hue-primary), var(--sat-fade), 65%);
@@ -698,4 +671,42 @@ button.big:hover::before,
 button.big:focus::before {
   transform: scale(1.06, 1.14);
   border-radius: calc(var(--radius) + 1rem);
+}
+
+@media (min-width: 200px) {
+  .set-card-type button,
+  .set-card-type button svg {
+    font-size: calc(var(--title-XXL) + 0.6rem);
+  }
+}
+@media (min-width: 700px) {
+  .settings > div > div {
+    flex: 1 0 calc(50% - 2em);
+    max-width: 13rem;
+  }
+}
+@media (min-width: 1000px) {
+  .settings > div > div,
+  #game-container .settings .player-names-wrap {
+    flex: 1 0 calc(33% - 2em);
+    max-width: 13rem;
+  }
+}
+
+@media (min-width: 700px) {
+  .high-scores > div {
+    width: calc(50% - 0.5em);
+    min-width: clamp(150px, calc(50% - 0.5em), 18rem);
+  }
+}
+@media (min-width: 1000px) {
+  #game-container .high-scores {
+    margin-left: calc(var(--page-padding) / 2 * -1);
+    min-width: calc(100% + var(--page-padding));
+  }
+  .high-scores > div {
+    width: calc(33% - 1em);
+    min-width: clamp(150px, calc(33% - 1em), 18rem);
+    max-width: 18rem;
+  }
 }
