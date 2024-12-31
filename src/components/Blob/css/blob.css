@@ -1319,6 +1319,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
   max-height: var(--height);
   font-size: 0.9em;
   max-width: var(--width);
+  padding: 0 0 0 0.5em;
 }
 .pagination-controls .input-wrap.items-per-page input:valid ~ span {
   transform: translateY(0);
@@ -1330,6 +1331,21 @@ body.dark-mode .site .drag-container .dragzone:focus {
   padding: 0 0.5rem 0.2rem;
   margin: 0;
   border-radius: 50%;
+}
+
+.blob-version-item .button-wrap {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 auto;
+}
+.blob-version-item .button-wrap .blobnewname-wrap.closed > div {
+  display: none;
+}
+.blob-version-item .button-wrap .blobnewname-wrap.closed > button {
+  margin: 0;
 }
 
 @media (min-width: 700px) {
