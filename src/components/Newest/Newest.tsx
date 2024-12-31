@@ -71,6 +71,7 @@ import {
   EAdded,
   ELaunchedAnOnlineOrderingSystem,
   ENovember,
+  EMovedBackendFromAzureToMyOwnDomain,
 } from '../../interfaces/welcome'
 import { Select, SelectOption } from '../Select/Select'
 import { EPriority, ETodoApp } from '../Todo/interfaces'
@@ -126,6 +127,13 @@ export default function Newest({ language }: { language: ELanguages }) {
             <li>
               <strong>{EDecember[language]}</strong>
               <ul>
+                <li>
+                  <a className='disabled'>
+                    <LuArrowRightToLine />
+                    <span>{ESiteMigration[language]} </span>
+                  </a>
+                  <i>{EMovedBackendFromAzureToMyOwnDomain[language]}</i>
+                </li>
                 <li>
                   <Link to='/portfolio/todo'>
                     <RiTodoLine />
