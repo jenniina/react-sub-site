@@ -1571,19 +1571,15 @@ export default function DragContainer({
     margin: '0 auto',
   }
 
-  const [screenshot, setScreenshot] = useState<string | null>(null)
-
-  const takeScreenshot2 = async () => {
+  const takeScreenshot = async () => {
     if (!dragWrap.current) return
     setLoading(true)
-    setScreenshot(null)
     try {
       const getBackgroundColor = hslToHex(
         Number(backgroundColor[d][0]),
         Number(backgroundColor[d][1]),
         Number(backgroundColor[d][2])
       )
-      console.log(backgroundColor, getBackgroundColor)
 
       interface DomToImageOptions {
         scale: number
@@ -1616,8 +1612,6 @@ export default function DragContainer({
       } as DomToImageOptions)
 
       if (dataUrl) {
-        setScreenshot(dataUrl)
-        //download the image
         const link = document.createElement('a')
         link.href = dataUrl
         link.download = 'blobs.png'
@@ -1633,94 +1627,6 @@ export default function DragContainer({
       dispatch(notify(EError[language], true, 8))
     } finally {
       setLoading(false)
-    }
-  }
-
-  const takeScreenshot = async () => {
-    const dragWrap = document.getElementById('drag-wrap' + d)
-    if (dragWrap && !loading) {
-      try {
-        let localStorageData: { [key: string]: string } = {}
-        for (let i = 0; i < localStorage.length; i++) {
-          const key = localStorage.key(i)
-          if (key) {
-            const value = localStorage.getItem(key)
-            if (value !== null) {
-              localStorageData[key] = value
-            }
-          }
-        }
-        setLoading(true)
-        const url =
-          import.meta.env.VITE_BASE_URI ??
-          'https://react-bg.braveisland-7060f196.westeurope.azurecontainerapps.io'
-        const baseUrl = `${url}/api/blobs/screenshot`
-        const response = await fetch(baseUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            url: window.location.href,
-            selector: `#drag-wrap${d}`,
-            language,
-            localStorageData,
-            width: windowWidth,
-            height: windowHeight,
-          }),
-        })
-
-        if (!response.ok) {
-          dispatch2(notify(EError[language], true, 8))
-          setLoading(false)
-          throw new Error(`Error: ${response.statusText}`)
-        }
-
-        const data = await response.json()
-
-        const container = blobScreenshot.current
-        const img = screenshotImg.current
-
-        if (container && img) {
-          container.style.display = 'block'
-          container.style.transform = 'scaleY(1)'
-          img.src = `data:image/png;base64,${data.screenshot}`
-          img.scrollIntoView({ behavior: 'smooth', block: 'start' })
-          dispatch2(
-            notify(
-              `${EScreenshotTaken[language]}; ${EYouMayFindTheImageBelow[language]}`,
-              false,
-              10
-            )
-          )
-          setLoading(false)
-          setScroll(true)
-        } else {
-          dispatch2(notify(EError[language], true, 8))
-          setLoading(false)
-        }
-      } catch (error: any) {
-        if (error.response?.data?.message)
-          dispatch(notify(error.response.data.message, true, 8))
-        else dispatch2(notify(EError[language], true, 8))
-        console.error(EError[language], error)
-      }
-    }
-  }
-
-  const saveScreenshot = () => {
-    const img = screenshotImg.current
-    if (img && img.src) {
-      const link = document.createElement('a')
-      link.href = img.src
-      link.download = 'blobs.png'
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      dispatch2(notify(EArtSaved[language], false, 8))
-    } else {
-      dispatch2(notify(ENoScreenshotAvailableToSave[language], true, 8))
-      console.error(ENoScreenshotAvailableToSave[language])
     }
   }
 
@@ -2066,19 +1972,6 @@ export default function DragContainer({
                 <ImCamera />
                 <span id={`take-screenshot${d}-span`} className='tooltip left above'>
                   {loading ? ELoading[language] : EClickHereToTakeAScreenshot[language]}
-                </span>
-              </button>
-              <button
-                type='button'
-                aria-labelledby={`take-screenshot${d}-span2`}
-                disabled={loading}
-                onClick={takeScreenshot2}
-                className='reset'
-                style={{ padding: '0' }}
-              >
-                -
-                <span id={`take-screenshot${d}-span2`} className='scr'>
-                  temporary
                 </span>
               </button>
             </div>
@@ -2490,28 +2383,7 @@ export default function DragContainer({
               />
             </Suspense>
             <div ref={exitApp} id={`exitblob${d}`} className='exitblob'></div>
-            <div
-              ref={blobScreenshot}
-              id={`blob-screenshot${d}`}
-              className={`blob-screenshot-wrap`}
-              style={{ flex: '1 0 100%', transform: 'scaleY(0)', display: 'none' }}
-            >
-              <div>
-                <h3>{EScreenshot[language]}</h3>
-                <button onClick={saveScreenshot}>
-                  {EDownload[language]} <IoMdDownload />
-                </button>
-              </div>
-              <img
-                src=''
-                ref={screenshotImg}
-                alt={EScreenshot[language]}
-                style={imgStyle}
-              />
-              <button onClick={saveScreenshot}>
-                {EDownload[language]} <IoMdDownload />
-              </button>
-            </div>
+
             {user ? (
               <div className='blob-handling'>
                 <div className='full wide flex column center gap'>
