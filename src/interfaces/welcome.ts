@@ -241,3 +241,12 @@ export enum ELaunchedAnOnlineOrderingSystem {
   cs = 'Spustil online objednávkový systém',
   fi = 'Käynnistin verkkotilausjärjestelmän',
 }
+export enum EMovedBackendFromAzureToMyOwnDomain {
+  en = 'Moved backend from Azure to my own domain',
+  es = 'Movió el backend de Azure a mi propio dominio',
+  fr = "Déplacé le backend d'Azure vers mon propre domaine",
+  de = 'Backend von Azure auf meine eigene Domain verschoben',
+  pt = 'Mudou o backend da Azure para o meu próprio domínio',
+  cs = 'Přesunul backend z Azure na svou vlastní doménu',
+  fi = 'Siirsin taustajärjestelmän Azuresta omaan verkkotunnukseeni',
+}
