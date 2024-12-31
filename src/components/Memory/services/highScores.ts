@@ -2,9 +2,7 @@ import axios from 'axios'
 import { ELanguages, IUser } from '../../../interfaces'
 import { IHighScore, IHighScoreResponse, IPlayer } from '../../../interfaces/memory'
 
-const url =
-  import.meta.env.VITE_BASE_URI ??
-  'https://react-bg.braveisland-7060f196.westeurope.azurecontainerapps.io'
+const url = import.meta.env.VITE_BASE_URI ?? 'https://bg.jenniina.fi'
 const baseUrl = `${url}/api/highscores`
 
 const addHighScore = async (
