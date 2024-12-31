@@ -97,7 +97,6 @@ export default function Portfolio({ language }: { language: ELanguages }) {
                 <li>jsonwebtoken</li>
                 <li>mongoose</li>
                 <li>nodemailer</li>
-                <li>puppeteer</li>
                 <li>sanitize-html</li>
               </ul>
             </>

@@ -2,9 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios'
 import { Draggable, BackgroundColor } from '../interfaces'
 import { ELanguages } from '../../../interfaces'
 
-const url =
-  import.meta.env.VITE_BASE_URI ??
-  'https://react-bg.braveisland-7060f196.westeurope.azurecontainerapps.io'
+const url = import.meta.env.VITE_BASE_URI ?? 'https://bg.jenniina.fi'
 const baseUrl = `${url}/api/blobs`
 
 // router.get('/api/blobs/:user/:language', getAllBlobsByUser)
@@ -76,20 +74,10 @@ const deleteBlobsVersionByUser = async (
   return response.data
 }
 
-const takeScreenshot = async (url: string, selector: string, language: ELanguages) => {
-  const response = await axios.post(`${baseUrl}/screenshot`, {
-    url,
-    selector,
-    language,
-  })
-  return response.data
-}
-
 export default {
   getAllBlobsByUser,
   getBlobsVersionByUser,
   saveBlobsByUser,
   editBlobsByUser,
   deleteBlobsVersionByUser,
-  takeScreenshot,
 }
