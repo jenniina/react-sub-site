@@ -8,8 +8,8 @@ import {
   ELanguages,
   EMongoDBAtlasDatabase,
   ETheWebServiceIsHostedAtRenderCom,
-} from '../../interfaces'
-import { ESiteMayBeSlow } from '../../interfaces/welcome'
+} from '../../types'
+import { ESiteMayBeSlow } from '../../types/welcome'
 
 export default function GraphQLPage({
   heading,

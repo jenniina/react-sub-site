@@ -54,7 +54,7 @@ import {
   EWebpagesAndGraphicDesign,
   EReset,
   ETryTappingTheShapes,
-} from './interfaces'
+} from './types'
 import { options } from './utils'
 import { isTouchDevice } from './hooks/useDraggable'
 import { BlobProvider } from './components/Blob/components/BlobProvider'
@@ -66,23 +66,23 @@ import {
   ESafemode,
   ETheComediansCompanion,
   TCategoryByLanguages,
-} from './components/Jokes/interfaces'
-import { EGetOrganizedOneTaskAtATime, ETodoApp } from './components/Todo/interfaces'
+} from './components/Jokes/types'
+import { EGetOrganizedOneTaskAtATime, ETodoApp } from './components/Todo/types'
 import { SelectOption } from './components/Select/Select'
 import Notification from './components/Notification/Notification'
-import { EEditUserSettings } from './components/UserEdit/interfaces'
-import { EReactApps } from './interfaces/about'
-import { EOrders, EShoppingCart, ICartItem } from './interfaces/store'
-import { ETermsOfService } from './interfaces'
-import { EComposerOlliSanta } from './interfaces/composer'
-import { EColorAccessibility, ETestColorCombinations } from './interfaces/colors'
-import { EMemoryGame, EMemoryGameIntro } from './interfaces/memory'
+import { EEditUserSettings } from './components/UserEdit/types'
+import { EReactApps } from './types/about'
+import { EOrders, EShoppingCart, ICartItem } from './types/store'
+import { ETermsOfService } from './types'
+import { EComposerOlliSanta } from './types/composer'
+import { EColorAccessibility, ETestColorCombinations } from './types/colors'
+import { EMemoryGame, EMemoryGameIntro } from './types/memory'
 import MemoryPage from './pages/pages-portfolio/MemoryPage'
 import Modal from './components/Modal/Modal'
 import ImagesPage from './pages/pages-portfolio/ImagesPage'
-import { EMedia, EMediaWithQuotesOrPoems } from './interfaces/images'
+import { EMedia, EMediaWithQuotesOrPoems } from './types/images'
 import Hero from './components/Hero/Hero'
-import { ETryDraggingTheBlobs } from './interfaces/blobs'
+import { ETryDraggingTheBlobs } from './types/blobs'
 
 const Footer = lazy(() => import('./components/Footer/Footer'))
 const ScrollToTop = lazy(() => import('./components/ScrollToTop/ScrollToTop'))

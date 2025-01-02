@@ -32,7 +32,7 @@ import {
   EClickHereToWriteYourOwnJoke,
   EReportErrorToAdmin,
   ESaving,
-} from '../interfaces'
+} from '../types'
 import {
   ESelectAnOption,
   ESend,
@@ -41,7 +41,7 @@ import {
   IUser,
   ENickname,
   EError,
-} from '../../../interfaces'
+} from '../../../types'
 import { ChangeEvent, useEffect, useState } from 'react'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
 import Accordion from '../../Accordion/Accordion'

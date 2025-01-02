@@ -1,11 +1,11 @@
 import { lazy, Suspense } from 'react'
 import Accordion from '../../components/Accordion/Accordion'
 import Hero from '../../components/Hero/Hero'
-import { ELanguages, ELoading } from '../../interfaces'
+import { ELanguages, ELoading } from '../../types'
 import styles from '../../components/Images/images.module.css'
-import { EClickHereToSeeFeatures } from '../../components/Jokes/interfaces'
+import { EClickHereToSeeFeatures } from '../../components/Jokes/types'
 import { VALID_CATEGORIES, WEIGHTED } from '../../components/Quotes/services/quotes'
-import { EQuoteCategories } from '../../interfaces/quotes'
+import { EQuoteCategories } from '../../types/quotes'
 import {
   EAndPoemsAreFrom,
   EClickingAnImageOpensAModalWithALargerVersion,
@@ -14,7 +14,7 @@ import {
   ETheImageOrVideoHasARandomQuoteOrPoemAddedToIt,
   ETheWordCloudIsFormedFromTheDifferentCategoriesAvailableInTheQuotesAPI,
   EYouMaySearchForImagesFetchedFromThePixabayAPI,
-} from '../../interfaces/images'
+} from '../../types/images'
 
 const Images = lazy(() => import('../../components/Images/Images'))
 

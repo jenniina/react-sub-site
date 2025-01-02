@@ -2,7 +2,7 @@ import { lazy, Suspense } from 'react'
 import { useTheme } from '../hooks/useTheme'
 import Hero from '../components/Hero/Hero'
 // import FormMulti from '../components/FormMulti/FormMulti'
-import { ELanguages, ELoading } from '../interfaces'
+import { ELanguages, ELoading } from '../types'
 
 const FormMulti = lazy(() => import('../components/FormMulti/FormMulti'))
 

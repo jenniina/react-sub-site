@@ -10,9 +10,9 @@ import {
   ELoading,
   ERemove,
   EReset,
-} from '../../interfaces'
+} from '../../types'
 import { useDragAndDrop } from './hooks/useColorDragAndDrop'
-import { EAddAColor } from '../../interfaces/draganddrop'
+import { EAddAColor } from '../../types/draganddrop'
 //import ColorsInput from './components/ColorsInput'
 import {
   EAAACompliantWithID,
@@ -41,7 +41,7 @@ import {
   ETetrad,
   EToggleColorNameVisibility,
   ETriad,
-} from '../../interfaces/colors'
+} from '../../types/colors'
 import { useTheme, useThemeUpdate } from '../../hooks/useTheme'
 import {
   EAreYouSureYouWantToDeleteThisVersion,
@@ -49,9 +49,9 @@ import {
   EHideControls,
   EShowControls,
   EToggleControlVisibility,
-} from '../../interfaces/blobs'
+} from '../../types/blobs'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
-import { EClear } from '../../interfaces/select'
+import { EClear } from '../../types/select'
 import { MdDarkMode, MdLightMode } from 'react-icons/md'
 import { PiDownloadSimpleFill } from 'react-icons/pi'
 import {

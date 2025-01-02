@@ -28,8 +28,8 @@ import {
   EVideoTypes,
   ESearchforVideos,
   ETextType,
-} from '../../interfaces/images'
-import { EQuote, EQuoteCategories } from '../../interfaces/quotes'
+} from '../../types/images'
+import { EQuote, EQuoteCategories } from '../../types/quotes'
 import {
   EClickToChooseSearchTerm,
   ECurrent,
@@ -44,17 +44,17 @@ import {
   EPrevious,
   ESearchParameters,
   EUpdated,
-} from '../../interfaces'
-import { EPleaseEnterASearchTerm, ESearchForMedia, EType } from '../../interfaces/images'
+} from '../../types'
+import { EPleaseEnterASearchTerm, ESearchForMedia, EType } from '../../types/images'
 import { Select, SelectOption } from '../Select/Select'
 import {
   ECategoryTitle,
   EOrderBy,
   ESafemodeTitle,
   ESearchByKeyword,
-} from '../Jokes/interfaces'
-import { generateOptions } from '../../interfaces/images'
-import { EColors } from '../../interfaces/colors'
+} from '../Jokes/types'
+import { generateOptions } from '../../types/images'
+import { EColors } from '../../types/colors'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import { useModal } from '../../hooks/useModal'
@@ -69,7 +69,7 @@ import { VALID_CATEGORIES } from '../Quotes/services/quotes'
 import { scrollIntoView } from '../../utils'
 import useWindowSize from '../../hooks/useWindowSize'
 import useTooltip from '../../hooks/useTooltip'
-import { EPoem } from '../../interfaces/poems'
+import { EPoem } from '../../types/poems'
 
 const WordCloud = lazy(() => import('../WordCloud/WordCloud'))
 

@@ -11,13 +11,13 @@ import {
   EError,
   EUserUpdated,
   EUserNotUpdated,
-} from '../../interfaces'
+} from '../../types'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import { updatePassword } from '../../reducers/usersReducer'
 import { AxiosError } from 'axios'
 import styles from './css/edit.module.css'
-import { EEditPassword } from './interfaces'
+import { EEditPassword } from './types'
 
 interface Props {
   language: ELanguages

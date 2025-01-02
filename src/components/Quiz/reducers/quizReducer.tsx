@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import quizService from '../services/quiz'
-import { IQuizHighscore } from '../interfaces'
+import { IQuizHighscore } from '../types'
 
 const initialState = {
   options: {

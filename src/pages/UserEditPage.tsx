@@ -3,19 +3,19 @@ import { TiDeleteOutline } from 'react-icons/ti'
 import { useNavigate } from 'react-router-dom'
 import Hero from '../components/Hero/Hero'
 import { useTheme } from '../hooks/useTheme'
-import { ELanguages, ELoading } from '../interfaces'
+import { ELanguages, ELoading } from '../types'
 import {
   EAreYouSureYouWantToDelete,
   EYouWillLoseAllTheDataAssociatedWithIt,
   EDeleteAccount,
   EDoYouWishToRemoveAnyJokesYouveAuthored,
   EAccountDeleted,
-} from '../components/UserEdit/interfaces'
+} from '../components/UserEdit/types'
 import styles from './css/useredit.module.css'
 import { SelectOption } from '../components/Select/Select'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../hooks/useAppDispatch'
-import { ReducerProps } from '../interfaces'
+import { ReducerProps } from '../types'
 import { initializeUser, logout } from '../reducers/authReducer'
 import { removeUser } from '../reducers/usersReducer'
 import { notify } from '../reducers/notificationReducer'

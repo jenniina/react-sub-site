@@ -1,5 +1,5 @@
-import { ELanguages, ELanguageTitle } from '../../../interfaces'
-import { IUser } from '../../../interfaces'
+import { ELanguages, ELanguageTitle } from '../../../types'
+import { IUser } from '../../../types'
 
 export enum EFilterFurther {
   en = 'Filter further',

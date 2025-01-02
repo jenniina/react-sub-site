@@ -1,8 +1,8 @@
 import { lazy, Suspense } from 'react'
 //import Store from '../components/Store/Store'
-import { ELanguages, ELoading } from '../interfaces'
+import { ELanguages, ELoading } from '../types'
 import Hero from '../components/Hero/Hero'
-import { ICartItem } from '../interfaces/store'
+import { ICartItem } from '../types/store'
 import styles from '../components/Store/store.module.css'
 
 interface StoreProps {

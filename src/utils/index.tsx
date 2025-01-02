@@ -1,5 +1,5 @@
 import { Fragment } from 'react'
-import { EError, EEtc, ELanguages } from '../interfaces'
+import { EError, EEtc, ELanguages } from '../types'
 import { SelectOption } from '../components/Select/Select'
 import {
   ColorBlock,

@@ -48,14 +48,14 @@ import {
   ReducerProps,
   breakpoint,
   breakpointSmall,
-} from '../../interfaces'
+} from '../../types'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
 import logo from '../../assets/JLA_Jenniina-light-3-480x198.png'
 import logoDark from '../../assets/JLA_Jenniina-3-480x198.png'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { logout } from '../../reducers/authReducer'
-import { ELogout, ELanguages, ELoggedInAs } from '../../interfaces'
+import { ELogout, ELanguages, ELoggedInAs } from '../../types'
 import FormLogin from '../Login/Login'
 import Register from '../Register/Register'
 import { notify } from '../../reducers/notificationReducer'
@@ -64,7 +64,7 @@ import { Select, SelectOption } from '../Select/Select'
 import PasswordReset from '../PasswordReset/PasswordReset'
 import Accordion from '../Accordion/Accordion'
 import { TiShoppingCart } from 'react-icons/ti'
-import { ECart } from '../../interfaces/store'
+import { ECart } from '../../types/store'
 import { FaStoreAlt } from 'react-icons/fa'
 
 type Link = {

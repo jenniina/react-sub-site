@@ -2,8 +2,8 @@ import { lazy, Suspense } from 'react'
 import { Dispatch, SetStateAction } from 'react'
 //import Cart from '../components/Cart/Cart'
 import Hero from '../components/Hero/Hero'
-import { ELanguages, ELoading } from '../interfaces'
-import { ICartItem } from '../interfaces/store'
+import { ELanguages, ELoading } from '../types'
+import { ICartItem } from '../types/store'
 
 interface CartProps {
   heading: string

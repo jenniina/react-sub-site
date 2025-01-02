@@ -15,13 +15,13 @@ import {
   EPortfolio,
   EStore,
   ELoading,
-} from '../interfaces'
+} from '../types'
 import {
   ECategories,
   EJokeType,
   ESafemode,
   TCategoryByLanguages,
-} from '../components/Jokes/interfaces'
+} from '../components/Jokes/types'
 import { Select, SelectOption } from '../components/Select/Select'
 
 const Newest = lazy(() => import('../components/Newest/Newest'))

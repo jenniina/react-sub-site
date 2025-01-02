@@ -2,7 +2,7 @@ import { lazy, Suspense } from 'react'
 //import AccessibleColors from '../../components/AccessibleColors/AccessibleColors'
 import Accordion from '../../components/Accordion/Accordion'
 import Hero from '../../components/Hero/Hero'
-import { EClickHereToSeeFeatures } from '../../components/Jokes/interfaces'
+import { EClickHereToSeeFeatures } from '../../components/Jokes/types'
 import {
   EContains,
   EDarkMode,
@@ -12,8 +12,8 @@ import {
   ELoading,
   ERemove,
   EReset,
-} from '../../interfaces'
-import { EToggleControlVisibility } from '../../interfaces/blobs'
+} from '../../types'
+import { EToggleControlVisibility } from '../../types/blobs'
 import {
   EColorsCanBeReorderedByDragging,
   EEditSize,
@@ -34,9 +34,9 @@ import {
   ETriad,
   ETetrad,
   EColorModes,
-} from '../../interfaces/colors'
-import { EColorPicker } from '../../interfaces/form'
-import { EClear } from '../../interfaces/select'
+} from '../../types/colors'
+import { EColorPicker } from '../../types/form'
+import { EClear } from '../../types/select'
 
 const AccessibleColors = lazy(
   () => import('../../components/AccessibleColors/AccessibleColors')

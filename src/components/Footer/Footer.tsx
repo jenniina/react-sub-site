@@ -1,11 +1,6 @@
 import { useState, useEffect, FC } from 'react'
 import { BiChevronsUp } from 'react-icons/bi'
-import {
-  EDisclaimer,
-  EExitToMainSite,
-  ELanguages,
-  EScrollToTheTop,
-} from '../../interfaces'
+import { EDisclaimer, EExitToMainSite, ELanguages, EScrollToTheTop } from '../../types'
 import { Link } from 'react-router-dom'
 
 const Footer: FC<{ styleMenu: boolean | undefined; language: ELanguages }> = ({

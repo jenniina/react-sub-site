@@ -1,12 +1,6 @@
 import { useEffect, useRef, useState, FormEvent } from 'react'
-import { IHighscore } from '../interfaces'
-import {
-  ELoggingIn,
-  ELogin,
-  EPassword,
-  EUsername,
-  ReducerProps,
-} from '../../../interfaces'
+import { IHighscore } from '../types'
+import { ELoggingIn, ELogin, EPassword, EUsername, ReducerProps } from '../../../types'
 import Accordion from '../../Accordion/Accordion'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { notify } from '../../../reducers/notificationReducer'
@@ -15,8 +9,8 @@ import { initializeUser, login, logout } from '../../../reducers/authReducer'
 import { useSelector } from 'react-redux'
 import Scores from './Scores'
 import styles from '../css/quiz.module.css'
-import { ELogout, EError, EEdit, ELanguages, ELoggedInAs } from '../../../interfaces'
-import { ELogInToSaveScore } from '../../../interfaces/quiz'
+import { ELogout, EError, EEdit, ELanguages, ELoggedInAs } from '../../../types'
+import { ELogInToSaveScore } from '../../../types/quiz'
 import { Link } from 'react-router-dom'
 
 interface Props {

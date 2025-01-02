@@ -10,14 +10,14 @@ import {
   PointerEvent as PointerEventReact,
   useContext,
 } from 'react'
-import { Draggable, focusedBlob, Modes } from '../interfaces'
-import { EBlob, ELanguages } from '../../../interfaces'
+import { Draggable, focusedBlob, Modes } from '../types'
+import { EBlob, ELanguages } from '../../../types'
 import {
   ECannotLowerBlobFurther,
   ECannotRaiseBlobFurther,
   ESelectedBlob,
   ESelectedBlobNone,
-} from '../../../interfaces/blobs'
+} from '../../../types/blobs'
 import { clampValue } from '../../../utils'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { BlobContext, Props } from './BlobProvider'

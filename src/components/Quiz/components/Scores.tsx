@@ -1,6 +1,6 @@
-import { IHighscore } from '../interfaces'
+import { IHighscore } from '../types'
 import styles from '../css/quiz.module.css'
-import { ELanguages } from '../../../interfaces'
+import { ELanguages } from '../../../types'
 import {
   EDifficulty,
   EEasy,
@@ -10,9 +10,9 @@ import {
   EScore,
   ESpeed,
   EYourHighscores,
-} from '../../../interfaces/quiz'
+} from '../../../types/quiz'
 import useWindowSize from '../../../hooks/useWindowSize'
-import { breakpointSmall } from '../../../interfaces'
+import { breakpointSmall } from '../../../types'
 import { useEffect, useState } from 'react'
 
 interface Props {

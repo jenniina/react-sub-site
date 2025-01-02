@@ -1,10 +1,10 @@
-import { ELanguages } from '../../../interfaces'
+import { ELanguages } from '../../../types'
 import {
   EBasicDetails,
   EFirstName,
   ELastName,
   EThisContactFormIsSplitIntoThreeSteps,
-} from '../../../interfaces/form'
+} from '../../../types/form'
 import FormWrapper from './FormWrapper'
 
 type UserData = {

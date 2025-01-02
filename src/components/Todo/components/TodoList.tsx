@@ -1,7 +1,7 @@
 import { lazy, Suspense } from 'react'
-import { ITask, TPriority } from '../interfaces'
+import { ITask, TPriority } from '../types'
 import style from '../css/todo.module.css'
-import { ELanguages, ELoading } from '../../../interfaces'
+import { ELanguages, ELoading } from '../../../types'
 import { IClosestItem, useDragAndDrop } from '../../../hooks/useDragAndDrop'
 import { SelectOption } from '../../Select/Select'
 

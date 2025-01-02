@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { FormData } from '../interfaces'
+import { FormData } from '../types'
 
 const url = import.meta.env.VITE_BASE_URI ?? 'https://bg.jenniina.fi'
 export const sendEmail = async (data: FormData) => {

@@ -1,8 +1,8 @@
 import { FC, useEffect, useState } from 'react'
-import { EError, ELanguages, ESubmit } from '../../../interfaces'
+import { EError, ELanguages, ESubmit } from '../../../types'
 import styles from '../accessiblecolors.module.css'
 import { Select, SelectOption } from '../../Select/Select'
-import { ESelectColorFormat } from '../../../interfaces/colors'
+import { ESelectColorFormat } from '../../../types/colors'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { notify } from '../../../reducers/notificationReducer'
 

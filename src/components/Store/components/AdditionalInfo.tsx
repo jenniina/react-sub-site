@@ -1,5 +1,5 @@
 import { FC, Dispatch, SetStateAction } from 'react'
-import { ELanguages, EPleaseNote } from '../../../interfaces'
+import { ELanguages, EPleaseNote } from '../../../types'
 import {
   EColorsMayVaryInPrintedWorks,
   EHourlyWork,
@@ -16,8 +16,8 @@ import {
   EWordPressPaidPluginsNotIncluded,
   ICanHelpWithFindingPrintingServices,
   ICartItem,
-} from '../../../interfaces/store'
-import { EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo } from '../../../interfaces/about'
+} from '../../../types/store'
+import { EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo } from '../../../types/about'
 import { scrollIntoView } from '../../../utils'
 
 export interface AccProps {

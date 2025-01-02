@@ -23,7 +23,7 @@ import {
   ColorPair,
   SavedBlobs,
   Modes,
-} from '../interfaces'
+} from '../types'
 import { BlobContext, Props } from './BlobProvider'
 import {
   EAreYouSureYouWantToProceed,
@@ -52,7 +52,7 @@ import {
   EAMaxOf30CharactersPlease,
   ENameTooLong,
   ELoading,
-} from '../../../interfaces'
+} from '../../../types'
 import {
   EAlternatively,
   EChangeLayerByClickingMe,
@@ -125,7 +125,7 @@ import {
   ELayerDecreaseModeOn,
   ESizeIncreaseModeOn,
   ESizeDecreaseModeOn,
-} from '../../../interfaces/blobs'
+} from '../../../types/blobs'
 import {
   BiChevronDown,
   BiChevronsDown,
@@ -139,7 +139,7 @@ import { ImEnlarge2, ImShrink2, ImCamera } from 'react-icons/im'
 import { FaPlus, FaRegClone, FaSave } from 'react-icons/fa'
 //import DragLayers from './DragLayers'
 import useWindowSize from '../../../hooks/useWindowSize'
-import { IUser } from '../../../interfaces'
+import { IUser } from '../../../types'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import Accordion from '../../Accordion/Accordion'
@@ -148,10 +148,10 @@ import { initializeUser } from '../../../reducers/authReducer'
 import { initializeUsers } from '../../../reducers/usersReducer'
 import { useNavigate } from 'react-router-dom'
 import blobService from '../services/blob'
-import { EDelete } from '../../Jokes/interfaces'
+import { EDelete } from '../../Jokes/types'
 //import ColorBlocks from './ColorBlocks'
 // import Sliders from './Sliders'
-import { EBlobArt } from '../../../interfaces/about'
+import { EBlobArt } from '../../../types/about'
 import { IoMdDownload } from 'react-icons/io'
 
 const ColorBlocks = lazy(() => import('./ColorBlocks'))

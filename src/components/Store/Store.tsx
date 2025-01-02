@@ -1,5 +1,5 @@
 import styles from './store.module.css'
-import { ELanguages, EMainSite } from '../../interfaces'
+import { ELanguages, EMainSite } from '../../types'
 import StoreItems from './components/StoreItems'
 import { FC } from 'react'
 import ScrollButton from '../ScrollButton'
@@ -64,13 +64,13 @@ import {
   EBlogAndContactForm,
   EAddonsAreAdaptedToTheStyle,
   EMayContainEffects,
-} from '../../interfaces/store'
-import { EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo } from '../../interfaces/about'
+} from '../../types/store'
+import { EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo } from '../../types/about'
 import { useTheme } from '../../hooks/useTheme'
 import { Link } from 'react-router-dom'
-import { EContactForm } from '../../interfaces/form'
-import { ESampleArtwork } from '../../interfaces/blobs'
-import { ENote } from '../Jokes/interfaces'
+import { EContactForm } from '../../types/form'
+import { ESampleArtwork } from '../../types/blobs'
+import { ENote } from '../Jokes/types'
 
 interface Props {
   language: ELanguages

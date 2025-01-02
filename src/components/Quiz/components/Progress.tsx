@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
-import { ELanguages, ReducerProps } from '../../../interfaces'
+import { ELanguages, ReducerProps } from '../../../types'
 import styles from '../css/quiz.module.css'
-import { EQuestion, EScore } from '../../../interfaces/quiz'
+import { EQuestion, EScore } from '../../../types/quiz'
 
 const Progress = ({ language }: { language: ELanguages }) => {
   const { answer, index, points } = useSelector((state: ReducerProps) => state.questions)

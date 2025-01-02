@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { Data, Status } from '../interfaces'
+import { Data, Status } from '../types'
 import CardSingle from './CardSingle'
 import { sanitize } from '../../../utils'
 import styles from '../dragAndDrop.module.css'
@@ -9,8 +9,8 @@ import {
   EEdit,
   ELanguages,
   ESpecialCharactersNotAllowed,
-} from '../../../interfaces'
-import { EBad, EGood, ENeutral } from '../../../interfaces/draganddrop'
+} from '../../../types'
+import { EBad, EGood, ENeutral } from '../../../types/draganddrop'
 import Accordion from '../../Accordion/Accordion'
 import { notify } from '../../../reducers/notificationReducer'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'

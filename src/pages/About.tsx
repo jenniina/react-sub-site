@@ -46,7 +46,7 @@ import {
   EStore,
   ESurvey,
   ETwoStylesAtSmallScreenSizeAndTwoAtLargeScreenSize,
-} from '../interfaces'
+} from '../types'
 import {
   EAddMoreBlobs,
   EAddTasksToList,
@@ -87,13 +87,13 @@ import {
   EUsesLocalStorageToStoreTheInformation,
   EUsesMongoDBToStoreTheInformationWhenLoggedIn,
   EWaveAnimationAtTheMainHeading,
-} from '../interfaces/about'
-import { EUserCanChooseTheDifficultyLevel } from '../interfaces/quiz'
-import { EChangeableColor, EChangeableSize } from '../interfaces/blobs'
-import { ETodoApp } from '../components/Todo/interfaces'
-import { ETheComediansCompanion } from '../components/Jokes/interfaces'
-import { EComposerPage, EMusicNotes } from '../interfaces/composer'
-import { ECart } from '../interfaces/store'
+} from '../types/about'
+import { EUserCanChooseTheDifficultyLevel } from '../types/quiz'
+import { EChangeableColor, EChangeableSize } from '../types/blobs'
+import { ETodoApp } from '../components/Todo/types'
+import { ETheComediansCompanion } from '../components/Jokes/types'
+import { EComposerPage, EMusicNotes } from '../types/composer'
+import { ECart } from '../types/store'
 
 const ColorComponent = lazy(() => import('../components/About/ColorComponent'))
 

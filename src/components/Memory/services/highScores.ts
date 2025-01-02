@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { ELanguages, IUser } from '../../../interfaces'
-import { IHighScore, IHighScoreResponse, IPlayer } from '../../../interfaces/memory'
+import { ELanguages, IUser } from '../../../types'
+import { IHighScore, IHighScoreResponse, IPlayer } from '../../../types/memory'
 
 const url = import.meta.env.VITE_BASE_URI ?? 'https://bg.jenniina.fi'
 const baseUrl = `${url}/api/highscores`

@@ -1,4 +1,4 @@
-import { ELanguages } from '../../../interfaces'
+import { ELanguages } from '../../../types'
 import {
   EAuthor,
   ECategories,
@@ -7,7 +7,7 @@ import {
   EHide,
   ESaveJoke,
   IJoke,
-} from '../interfaces'
+} from '../types'
 
 interface Props {
   joke: string

@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { ITask } from '../interfaces'
-import { IUser } from '../../../interfaces'
+import { ITask } from '../types'
+import { IUser } from '../../../types'
 
 const url = import.meta.env.VITE_BASE_URI ?? 'https://bg.jenniina.fi'
 const baseUrl = `${url}/api/todo`

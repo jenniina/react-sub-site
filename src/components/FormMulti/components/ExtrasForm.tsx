@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import FormWrapper from './FormWrapper'
 import styles from '../form.module.css'
-import { HEX } from '../interfaces'
+import { HEX } from '../types'
 import { Select, SelectOption } from '../../Select/Select'
 import useLocalStorage from '../../../hooks/useStorage'
 import {
@@ -14,7 +14,7 @@ import {
   EPleaseSelectAnOption,
   EYes,
   EYouMaySelectMultipleOptions,
-} from '../../../interfaces'
+} from '../../../types'
 import {
   EAColorYouLike,
   EAccessibilityIssue,
@@ -28,7 +28,7 @@ import {
   ENotReally,
   EOrConstructiveFeedback,
   EWhichModeDoYouPrefer,
-} from '../../../interfaces/form'
+} from '../../../types/form'
 
 type ExtrasData = {
   encouragement: string

@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { ELanguages } from '../../../interfaces'
-import { Category, Color, Orientation, TImageTypes } from '../../../interfaces/images'
+import { ELanguages } from '../../../types'
+import { Category, Color, Orientation, TImageTypes } from '../../../types/images'
 
 export interface SearchOptions {
   q: string

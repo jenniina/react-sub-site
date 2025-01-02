@@ -1,7 +1,7 @@
 import { lazy, Suspense } from 'react'
 import Hero from '../../components/Hero/Hero'
 // import FormMulti from '../../components/FormMulti/FormMulti'
-import { EEmail, EFeatures, ELanguages, ELoading } from '../../interfaces'
+import { EEmail, EFeatures, ELanguages, ELoading } from '../../types'
 import {
   EAColorYouLike,
   EAnyEncouragingWords,
@@ -19,9 +19,9 @@ import {
   EOrConstructiveFeedback,
   EPromptToFillInRequiredFields,
   EWhichModeDoYouPreferLightDark,
-} from '../../interfaces/form'
+} from '../../types/form'
 import Accordion from '../../components/Accordion/Accordion'
-import { EClickHereToSeeFeatures } from '../../components/Jokes/interfaces'
+import { EClickHereToSeeFeatures } from '../../components/Jokes/types'
 
 const FormMulti = lazy(() => import('../../components/FormMulti/FormMulti'))
 

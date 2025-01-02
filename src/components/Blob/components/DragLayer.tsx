@@ -7,10 +7,10 @@ import {
   MouseEvent as MouseEventReact,
   PointerEvent as PointerEventReact,
 } from 'react'
-import { Draggable, focusedBlob, Modes } from '../interfaces'
+import { Draggable, focusedBlob, Modes } from '../types'
 import Blob from './Blob'
-import { ELanguages } from '../../../interfaces'
-import { ELayer } from '../../../interfaces/blobs'
+import { ELanguages } from '../../../types'
+import { ELayer } from '../../../types/blobs'
 
 interface DragLayerProps {
   layer_: number

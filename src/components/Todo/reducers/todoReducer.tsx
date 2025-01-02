@@ -1,8 +1,8 @@
 import { Action, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppDispatch, RootState } from '../../../store' // COMBINE THE STORES
-import { ITask, TodosState } from '../interfaces'
+import { ITask, TodosState } from '../types'
 import todoService from '../services/todo'
-import { IUser } from '../../../interfaces'
+import { IUser } from '../../../types'
 
 const initialState: TodosState = {
   todos: [],

@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios'
-import { IJoke } from '../interfaces'
+import { IJoke } from '../types'
 
 const url = import.meta.env.VITE_BASE_URI ?? 'https://bg.jenniina.fi'
 const baseUrl = `${url}/api/jokes`

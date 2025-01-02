@@ -4,7 +4,7 @@ import styles from '../store.module.css'
 import { FaWordpress, FaReact, FaNodeJs } from 'react-icons/fa'
 import { ImImages } from 'react-icons/im'
 import { BsCart2 } from 'react-icons/bs'
-import { ELanguages, ERemove, ESavingSuccessful } from '../../../interfaces'
+import { ELanguages, ERemove, ESavingSuccessful } from '../../../types'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import {
   EAddedToCart,
@@ -14,7 +14,7 @@ import {
   EGoToCart,
   EPrice,
   ICartItem,
-} from '../../../interfaces/store'
+} from '../../../types/store'
 import { notify } from '../../../reducers/notificationReducer'
 import { useTheme } from '../../../hooks/useTheme'
 import AdditionalInfo from './AdditionalInfo'

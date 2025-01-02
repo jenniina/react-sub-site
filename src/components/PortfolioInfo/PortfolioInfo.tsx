@@ -23,7 +23,7 @@ import {
   EThisSiteFocusesOnReactApplications,
   ETodoAppIntro,
   EWebsite,
-} from '../../interfaces'
+} from '../../types'
 
 import styles from '../../pages/css/portfolio.module.css'
 import { Link } from 'react-router-dom'
@@ -39,15 +39,15 @@ import {
   EComposerOlliSanta,
   EComposerIntro1,
   EComposerIntro2,
-} from '../../interfaces/composer'
-import { ESeeLocalJokes, ESubmitAJoke, ETheComediansCompanion } from '../Jokes/interfaces'
-import { ETodoApp } from '../Todo/interfaces'
-import { EBlobArtApp } from '../../interfaces/about'
+} from '../../types/composer'
+import { ESeeLocalJokes, ESubmitAJoke, ETheComediansCompanion } from '../Jokes/types'
+import { ETodoApp } from '../Todo/types'
+import { EBlobArtApp } from '../../types/about'
 import Accordion from '../Accordion/Accordion'
-import { EColorAccessibility, ETestColorCombinations } from '../../interfaces/colors'
-import { EMemoryGame, EMemoryGameIntro } from '../../interfaces/memory'
+import { EColorAccessibility, ETestColorCombinations } from '../../types/colors'
+import { EMemoryGame, EMemoryGameIntro } from '../../types/memory'
 import MemorySVG from '../Memory/components/MemorySVG'
-import { EMedia, EMediaWithQuotesOrPoems } from '../../interfaces/images'
+import { EMedia, EMediaWithQuotesOrPoems } from '../../types/images'
 
 export default function Portfolio({ language }: { language: ELanguages }) {
   const lightTheme = useTheme()

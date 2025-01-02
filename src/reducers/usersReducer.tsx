@@ -1,9 +1,9 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import userService from '../services/users'
-import { EPleaseGiveValidEmail, IUser, ELanguages, IBlacklistedJoke } from '../interfaces'
+import { EPleaseGiveValidEmail, IUser, ELanguages, IBlacklistedJoke } from '../types'
 import AppThunk from '../store'
 import { AxiosResponse } from 'axios'
-import { IJoke } from '../components/Jokes/interfaces'
+import { IJoke } from '../components/Jokes/types'
 
 const usersSlice = createSlice({
   name: 'users',

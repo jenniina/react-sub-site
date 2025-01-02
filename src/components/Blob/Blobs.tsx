@@ -1,6 +1,6 @@
 import { createRef, FC, Fragment, useRef, lazy, Suspense } from 'react'
-import { ELanguages, ELoading, RefObject } from '../../interfaces'
-import { EScroll, EToBlobArt } from '../../interfaces/blobs'
+import { ELanguages, ELoading, RefObject } from '../../types'
+import { EScroll, EToBlobArt } from '../../types/blobs'
 
 const DragContainer = lazy(() => import('./components/DragContainer'))
 interface BlobsProps {

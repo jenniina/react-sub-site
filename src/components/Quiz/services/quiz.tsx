@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { IQuizHighscore } from '../interfaces'
+import { IQuizHighscore } from '../types'
 
 const url = import.meta.env.VITE_BASE_URI ?? 'https://bg.jenniina.fi'
 const baseUrl = `${url}/api/quiz`

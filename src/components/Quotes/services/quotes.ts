@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { ELanguages } from '../../../interfaces'
-import { translationMapQuotes } from '../../../interfaces/quotes'
+import { ELanguages } from '../../../types'
+import { translationMapQuotes } from '../../../types/quotes'
 
 export const WEIGHTED = [
   'amazing',

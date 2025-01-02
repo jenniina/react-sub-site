@@ -11,8 +11,8 @@ import {
   ESendingEmail,
   EThankYouForYourMessage,
   RefObject,
-} from '../../interfaces'
-import { FormData, INITIAL_DATA } from './interfaces'
+} from '../../types'
+import { FormData, INITIAL_DATA } from './types'
 import styles from './form.module.css'
 import { sendEmail } from './services/email'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
@@ -24,8 +24,8 @@ import {
   EPart,
   EPleaseFillInTheFields,
   EThereWasAnErrorSendingTheMessage,
-} from '../../interfaces/form'
-import { EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo } from '../../interfaces/about'
+} from '../../types/form'
+import { EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo } from '../../types/about'
 
 const MessageForm = lazy(() => import('./components/MessageForm'))
 const ExtrasForm = lazy(() => import('./components/ExtrasForm'))

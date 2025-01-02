@@ -77,7 +77,7 @@ import {
   EAddWarningTitle,
   ELoadingJokes,
   EThisMayTakeUpToAMinute,
-} from '../interfaces'
+} from '../types'
 import {
   IUser,
   ELanguages,
@@ -98,7 +98,7 @@ import {
   EFirstPage,
   IBlacklistedJoke,
   ESave,
-} from '../../../interfaces'
+} from '../../../types'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
 import { Select, SelectOption } from '../../Select/Select'
 import { useSelector } from 'react-redux'
@@ -111,7 +111,7 @@ import norrisService from '../services/chucknorris'
 import dadjokeService from '../services/dadjokes'
 import { initializeUsers } from '../../../reducers/usersReducer'
 import { s } from 'vite/dist/node/types.d-aGj9QkWt'
-import { EBack, ENext } from '../../../interfaces/form'
+import { EBack, ENext } from '../../../types/form'
 
 interface Props {
   user: IUser | undefined

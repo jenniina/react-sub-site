@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import styles from './select.module.css'
-import { ELanguages, EPleaseSelectAnOption } from '../../interfaces'
+import { ELanguages, EPleaseSelectAnOption } from '../../types'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
-import { EClear, ERemove, EThisFieldIsRequired } from '../../interfaces/select'
+import { EClear, ERemove, EThisFieldIsRequired } from '../../types/select'
 // import { v4 as uuidv4 } from 'uuid'
 
 export type SelectOption = {

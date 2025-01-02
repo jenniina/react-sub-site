@@ -8,7 +8,7 @@ import {
   EInstructions,
   EKeyboardUse,
   ELanguages,
-} from '../../interfaces'
+} from '../../types'
 import {
   EAndPressEnterKeyToOpenMenu,
   ECanRearrangeWithinTheirContainer,
@@ -27,10 +27,10 @@ import {
   EWithTheMenuOpenUseTabKeyToNavigateAnd,
   EYouMayAlsoAddOtherWordsForGenericUse,
   EYouMayAlsoUseTheItemMenuToChooseADestination,
-} from '../../interfaces/draganddrop'
-import { ETryDraggingTheBlobs } from '../../interfaces/blobs'
+} from '../../types/draganddrop'
+import { ETryDraggingTheBlobs } from '../../types/blobs'
 import Accordion from '../../components/Accordion/Accordion'
-import { EClickHereToSeeFeatures } from '../../components/Jokes/interfaces'
+import { EClickHereToSeeFeatures } from '../../components/Jokes/types'
 
 export default function DragAndDropPage({
   heading,

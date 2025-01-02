@@ -7,9 +7,9 @@ import {
   EKeyboardUse,
   ELanguages,
   ELoading,
-} from '../../interfaces'
+} from '../../types'
 // import TodoApp from '../../components/Todo/TodoApp'
-import { ETodoApp } from '../../components/Todo/interfaces'
+import { ETodoApp } from '../../components/Todo/types'
 import {
   EAddTasksByTabbingToTheInputFieldAnd,
   ERemoveATaskByTabbingToTheRemoveButtonAnd,
@@ -18,9 +18,9 @@ import {
   EStoresTasksInMongoDBIfTheUserIsLoggedIn,
   ETasksCanBeEdited,
   ETasksCanBeReorganizedByDraggingAndDropping,
-} from '../../interfaces/todo'
+} from '../../types/todo'
 import Accordion from '../../components/Accordion/Accordion'
-import { EClickHereToSeeFeatures } from '../../components/Jokes/interfaces'
+import { EClickHereToSeeFeatures } from '../../components/Jokes/types'
 import { useTheme } from '../../hooks/useTheme'
 
 const TodoApp = lazy(() => import('../../components/Todo/TodoApp'))

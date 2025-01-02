@@ -10,14 +10,14 @@ import {
   EUserUpdated,
   EUserNotUpdated,
   EPleaseUseGoodTasteWhenChoosingYourNickname,
-} from '../../interfaces'
+} from '../../types'
 import { initializeUser, refreshUser } from '../../reducers/authReducer'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import { findUserById, updateUser } from '../../reducers/usersReducer'
 import { AxiosError } from 'axios'
 import styles from './css/edit.module.css'
-import { EEditPreferredNickname } from './interfaces'
+import { EEditPreferredNickname } from './types'
 
 interface Props {
   language: ELanguages

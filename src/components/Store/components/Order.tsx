@@ -12,12 +12,12 @@ import {
   ICart,
   ICartItem,
   IInfo,
-} from '../../../interfaces/store'
-import { EInfo, ELanguages, ELastUpdated, EStatus, ESubmit } from '../../../interfaces'
+} from '../../../types/store'
+import { EInfo, ELanguages, ELastUpdated, EStatus, ESubmit } from '../../../types'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { notify } from '../../../reducers/notificationReducer'
 import { useTheme } from '../../../hooks/useTheme'
-import { paid, status } from '../../../interfaces/store'
+import { paid, status } from '../../../types/store'
 
 interface Props {
   language: ELanguages

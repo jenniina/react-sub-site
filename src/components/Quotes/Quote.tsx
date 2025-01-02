@@ -1,7 +1,7 @@
 import { FC, ReactNode, useRef, useState } from 'react'
 import { QuoteItem } from './services/quotes'
-import { ECopiedToClipboard, ECopyToClipboard, ELanguages } from '../../interfaces'
-import { ECategoryTitle } from '../Jokes/interfaces'
+import { ECopiedToClipboard, ECopyToClipboard, ELanguages } from '../../types'
+import { ECategoryTitle } from '../Jokes/types'
 
 interface QuoteProps {
   quote: QuoteItem

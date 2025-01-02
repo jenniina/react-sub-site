@@ -16,7 +16,7 @@ import {
   ELoggingIn,
   EEdit,
   ELoggedOut,
-} from '../../interfaces'
+} from '../../types'
 import { Link } from 'react-router-dom'
 
 interface LoginProps {

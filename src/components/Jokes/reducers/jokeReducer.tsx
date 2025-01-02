@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { IJoke } from '../interfaces'
+import { IJoke } from '../types'
 import jokeService from '../services/jokes'
 
 const jokeSlice = createSlice({

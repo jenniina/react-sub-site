@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { ELanguages } from '../../../interfaces'
+import { ELanguages } from '../../../types'
 
 export interface PoemItem {
   title: string

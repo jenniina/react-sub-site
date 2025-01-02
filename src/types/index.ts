@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
-import { IJoke } from '../components/Jokes/interfaces'
-import { EQuizType, IQuiz, IQuestion, IHighscore } from '../components/Quiz/interfaces'
-import { ITodos } from '../components/Todo/interfaces'
+import { IJoke } from '../components/Jokes/types'
+import { EQuizType, IQuiz, IQuestion, IHighscore } from '../components/Quiz/types'
+import { ITodos } from '../components/Todo/types'
 import { ICart } from './store'
 
 export interface RefObject<T> {

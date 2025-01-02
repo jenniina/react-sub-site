@@ -12,7 +12,7 @@ import {
   EEmailSent,
   EError,
   ESendingEmail,
-} from '../../interfaces'
+} from '../../types'
 
 interface Props {
   language: ELanguages

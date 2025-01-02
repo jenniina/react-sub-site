@@ -1,7 +1,7 @@
 import { FC, ReactNode, useEffect, useRef, useState } from 'react'
 import styles from './modal.module.css'
 import { useModal } from '../../hooks/useModal'
-import { EClose, ELanguages } from '../../interfaces'
+import { EClose, ELanguages } from '../../types'
 
 interface Props {
   language: ELanguages

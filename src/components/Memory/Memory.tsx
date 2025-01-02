@@ -70,7 +70,7 @@ import {
   ETryWithADifferentBrowser,
   IUser,
   ReducerProps,
-} from '../../interfaces'
+} from '../../types'
 import {
   EAdvanced,
   EBeginner,
@@ -100,8 +100,8 @@ import {
   EDuet,
   EHighScores,
   EFastestTime,
-} from '../../interfaces/memory'
-import { EGoodJob, EScore } from '../../interfaces/quiz'
+} from '../../types/memory'
+import { EGoodJob, EScore } from '../../types/quiz'
 import { Md123, MdAbc, MdInsertEmoticon } from 'react-icons/md'
 import { HiMiniSparkles } from 'react-icons/hi2'
 import {
@@ -112,7 +112,7 @@ import {
   FaMagnifyingGlass,
   FaPencil,
 } from 'react-icons/fa6'
-import { CardType } from '../../interfaces/memory'
+import { CardType } from '../../types/memory'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import useLocalStorage from '../../hooks/useStorage'
@@ -123,7 +123,7 @@ import { useTheme } from '../../hooks/useTheme'
 //import GameGrid from './components/GameGrid'
 import useTimer from '../../hooks/useTimer'
 import useHighScores from './hooks/useHighScores'
-import { IHighScore } from '../../interfaces/memory'
+import { IHighScore } from '../../types/memory'
 import { useModal } from '../../hooks/useModal'
 // import highScoresService from './services/highScores'
 import TimerDisplay from './components/TimerDisplay'

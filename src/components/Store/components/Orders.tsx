@@ -12,8 +12,8 @@ import {
   EPaymentState,
   EOrdered,
   ERequestsAndNeeds,
-} from '../../../interfaces/store'
-import { EOrderID, EPrice, ETotal, ICart, IInfo } from '../../../interfaces/store'
+} from '../../../types/store'
+import { EOrderID, EPrice, ETotal, ICart, IInfo } from '../../../types/store'
 import {
   EDelete,
   EDeleted,
@@ -24,13 +24,13 @@ import {
   EStatus,
   ESubmit,
   IUser,
-} from '../../../interfaces'
+} from '../../../types'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { notify } from '../../../reducers/notificationReducer'
-import { EAreYouSureYouWantToDelete } from '../../UserEdit/interfaces'
+import { EAreYouSureYouWantToDelete } from '../../UserEdit/types'
 import Accordion from '../../Accordion/Accordion'
 import { Select, SelectOption } from '../../Select/Select'
-import { EAdditionalInformation } from '../../../interfaces/form'
+import { EAdditionalInformation } from '../../../types/form'
 import { useTheme } from '../../../hooks/useTheme'
 
 interface Props {

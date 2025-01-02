@@ -1,7 +1,7 @@
 import { FC, Fragment, ReactNode, useRef, useState } from 'react'
 import { getPoem, PoemItem } from './services/poems'
-import { ECopiedToClipboard, ECopyToClipboard, ELanguages } from '../../interfaces'
-import { ECategoryTitle } from '../Jokes/interfaces'
+import { ECopiedToClipboard, ECopyToClipboard, ELanguages } from '../../types'
+import { ECategoryTitle } from '../Jokes/types'
 
 interface PoemProps {
   poem: PoemItem
