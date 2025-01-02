@@ -9,10 +9,10 @@ import {
   IUser,
   EPasswordsDoNotMatch,
   ERegistrationSuccesful,
-} from '../../../interfaces'
+} from '../../../types'
 import { createUser } from '../../../reducers/usersReducer'
 import styles from '../css/quiz.module.css'
-import { IHighscore } from '../interfaces'
+import { IHighscore } from '../types'
 
 interface LoginRegisterComboProps {
   language: ELanguages

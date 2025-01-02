@@ -1,7 +1,7 @@
 import { useReducer, FC, ReactNode, createContext, Dispatch } from 'react'
 import blobReducer from '../reducers/blobReducer'
-import { BackgroundColor, Draggable } from '../interfaces'
-import { ReducerProps } from '../interfaces'
+import { BackgroundColor, Draggable } from '../types'
+import { ReducerProps } from '../types'
 
 export interface Props {
   state: ReducerProps['blob']

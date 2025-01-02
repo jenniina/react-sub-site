@@ -11,7 +11,7 @@ import {
   ERegister,
   ReducerProps,
   EDisclaimer,
-} from '../../interfaces'
+} from '../../types'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { initializeUser } from '../../reducers/authReducer'
 import { Link } from 'react-router-dom'

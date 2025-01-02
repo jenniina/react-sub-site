@@ -43,7 +43,7 @@ import {
   EDisclaimer,
   ETermsOfService,
   EPage,
-} from '../../interfaces'
+} from '../../types'
 import {
   ECategories,
   ECategoryTitle,
@@ -51,7 +51,7 @@ import {
   ESafemode,
   ETheComediansCompanion,
   TCategoryByLanguages,
-} from '../Jokes/interfaces'
+} from '../Jokes/types'
 import {
   EAddedNewFeatures,
   EAddedNewIntroElements,
@@ -72,13 +72,13 @@ import {
   ELaunchedAnOnlineOrderingSystem,
   ENovember,
   EMovedBackendFromAzureToMyOwnDomain,
-} from '../../interfaces/welcome'
+} from '../../types/welcome'
 import { Select, SelectOption } from '../Select/Select'
-import { EPriority, ETodoApp } from '../Todo/interfaces'
+import { EPriority, ETodoApp } from '../Todo/types'
 import {
   ETasksCanBeEdited,
   ETasksCanBeReorganizedByDraggingAndDropping,
-} from '../../interfaces/todo'
+} from '../../types/todo'
 import { GrGraphQl } from 'react-icons/gr'
 import {
   EAddedPaginationToSavedArt,
@@ -99,18 +99,18 @@ import {
   ESampleArtwork,
   EScreenshot,
   EToggleControlVisibility,
-} from '../../interfaces/blobs'
-import { EAddAColor, EAddGenericCardsAndColorThem } from '../../interfaces/draganddrop'
-import { EComposerOlliSanta, EAddedALinkToComposer } from '../../interfaces/composer'
+} from '../../types/blobs'
+import { EAddAColor, EAddGenericCardsAndColorThem } from '../../types/draganddrop'
+import { EComposerOlliSanta, EAddedALinkToComposer } from '../../types/composer'
 import Accordion from '../Accordion/Accordion'
 import {
   EColorAccessibility,
   EGenerateColors,
   ETestColorCombinations,
-} from '../../interfaces/colors'
-import { EMemoryGame, EMemoryGameIntro } from '../../interfaces/memory'
+} from '../../types/colors'
+import { EMemoryGame, EMemoryGameIntro } from '../../types/memory'
 import MemorySVG from '../Memory/components/MemorySVG'
-import { EMedia, EMediaWithQuotesOrPoems } from '../../interfaces/images'
+import { EMedia, EMediaWithQuotesOrPoems } from '../../types/images'
 
 export default function Newest({ language }: { language: ELanguages }) {
   const lightTheme = useTheme()

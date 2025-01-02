@@ -1,4 +1,4 @@
-import { EDisclaimer, ELanguages, ESeeAlso, EStore } from '../interfaces'
+import { EDisclaimer, ELanguages, ESeeAlso, EStore } from '../types'
 import Hero from '../components/Hero/Hero'
 import { useTheme } from '../hooks/useTheme'
 import styles from './css/disclaimer.module.css'
@@ -27,9 +27,9 @@ import {
   EEnFiPrintingCostsNotIncluded,
   EEnFiSupplierMayUseProductInMarketing,
   EEnFiSupplierMayHelpWithHostingAndPrintingSolutions,
-} from '../interfaces/fien'
+} from '../types/fien'
 import { Link } from 'react-router-dom'
-import { EProducts } from '../interfaces/store'
+import { EProducts } from '../types/store'
 
 export function TermsProducts({ language }: { language: ELanguages }) {
   const lang: EEnFi = language === 'fi' ? EEnFi.Suomi : EEnFi.English

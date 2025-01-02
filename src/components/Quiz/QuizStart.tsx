@@ -7,14 +7,14 @@ import Hero from '../Hero/Hero'
 import styles from './css/quiz.module.css'
 import { useEffect, useState } from 'react'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
-import { IHighscore } from './interfaces'
+import { IHighscore } from './types'
 import {
   ELanguages,
   ELoading,
   ENote,
   ETryTappingTheShapes,
   ReducerProps,
-} from '../../interfaces'
+} from '../../types'
 import { initializeUser } from '../../reducers/authReducer'
 import { FaStar } from 'react-icons/fa'
 import { getUserQuiz } from './reducers/quizReducer'
@@ -28,7 +28,7 @@ import {
   ETestYourGeneralKnowledgeWithThese15Questions,
   EUserCanChooseTheDifficultyLevel,
   EUserCanRegisterAndLoginToSaveHighscores,
-} from '../../interfaces/quiz'
+} from '../../types/quiz'
 // import LoginRegisterCombo from './components/LoginRegisterCombo'
 
 const LoginRegisterCombo = lazy(() => import('./components/LoginRegisterCombo'))

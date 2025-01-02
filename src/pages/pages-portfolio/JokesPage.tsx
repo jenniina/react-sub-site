@@ -1,10 +1,7 @@
 import { lazy, Suspense } from 'react'
 import Hero from '../../components/Hero/Hero'
 import { BiChevronsDown } from 'react-icons/bi'
-import {
-  jokeCategoryByLanguage,
-  jokeCategoryAny,
-} from '../../components/Jokes/interfaces'
+import { jokeCategoryByLanguage, jokeCategoryAny } from '../../components/Jokes/types'
 import Accordion from '../../components/Accordion/Accordion'
 import {
   ECategories,
@@ -26,7 +23,7 @@ import {
   TCategoryByLanguages,
   ESkipToSavedJokes,
   ESkipToJokeSearch,
-} from '../../components/Jokes/interfaces'
+} from '../../components/Jokes/types'
 import {
   EOnOff,
   EFeatures,
@@ -37,7 +34,7 @@ import {
   ETryTappingTheShapes,
   EReset,
   ELoading,
-} from '../../interfaces'
+} from '../../types'
 import { SyntheticEvent, useEffect } from 'react'
 import { Select, SelectOption } from '../../components/Select/Select'
 import { options } from '../../utils'

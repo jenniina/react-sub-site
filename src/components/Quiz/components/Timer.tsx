@@ -8,7 +8,7 @@ import {
   lessSeconds,
   finalSeconds,
 } from '../reducers/questionsReducer'
-import { ReducerProps } from '../../../interfaces'
+import { ReducerProps } from '../../../types'
 import styles from '../css/quiz.module.css'
 
 const Timer = () => {

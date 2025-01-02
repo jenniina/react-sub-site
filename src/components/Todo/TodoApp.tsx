@@ -12,7 +12,7 @@ import {
   TCategory,
   TPriority,
   TSortOptions,
-} from './interfaces'
+} from './types'
 import styles from './css/todo.module.css'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import {
@@ -43,17 +43,17 @@ import {
   EUpdated,
   ReducerProps,
   TSortDirection,
-} from '../../interfaces'
+} from '../../types'
 import { RootState } from '../../store'
-import { ELanguages, ELoading } from '../../interfaces'
+import { ELanguages, ELoading } from '../../types'
 import {
   EAreYouSureYouWantToClearAllCompletedTasks,
   EFilterByPriority,
   ESelectPriority,
-} from '../../interfaces/todo'
+} from '../../types/todo'
 import { Select } from '../Select/Select'
 import { IoMdAdd } from 'react-icons/io'
-import { ESelectCategory } from '../Jokes/interfaces'
+import { ESelectCategory } from '../Jokes/types'
 
 const TodoList = lazy(() => import('./components/TodoList'))
 
@@ -73,7 +73,7 @@ export default function TodoApp({ language }: Props) {
     dispatch(initializeUser())
   }, [])
 
-  const todos = useSelector((state: RootState) => state.todos.todos)
+  const todos = useSelector((state: RootState) => state.todos.todos) as ITask[]
   const status = useSelector((state: RootState) => state.todos.status)
   const error = useSelector((state: RootState) => state.todos.error)
 
@@ -86,7 +86,7 @@ export default function TodoApp({ language }: Props) {
 
   const localName = 'ReactTodos'
 
-  const hasCompletedTasks = todos?.some((todo) => todo.complete)
+  const hasCompletedTasks: boolean = todos?.some((todo) => todo.complete)
 
   useEffect(() => {
     if (todos.length === 0 && !user) {

@@ -2,10 +2,10 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { nextQuestion, gameFinished, finalSeconds } from '../reducers/questionsReducer'
-import { ELanguages, ReducerProps } from '../../../interfaces'
+import { ELanguages, ReducerProps } from '../../../types'
 import styles from '../css/quiz.module.css'
-import { ENext } from '../../../interfaces/form'
-import { EFinish } from '../../../interfaces/quiz'
+import { ENext } from '../../../types/form'
+import { EFinish } from '../../../types/quiz'
 
 const Next = ({ language }: { language: ELanguages }) => {
   const { index } = useSelector((state: ReducerProps) => state.questions)

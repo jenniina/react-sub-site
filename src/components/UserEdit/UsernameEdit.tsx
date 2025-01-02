@@ -9,7 +9,7 @@ import {
   EUserNotUpdated,
   EError,
   EUserUpdated,
-} from '../../interfaces'
+} from '../../types'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import { updateUsername } from '../../reducers/usersReducer'
@@ -19,7 +19,7 @@ import {
   ECurrentEmail,
   EEditEmail,
   ESendsAnEmailToTheNewAddressForVerification,
-} from './interfaces'
+} from './types'
 
 interface Props {
   language: ELanguages

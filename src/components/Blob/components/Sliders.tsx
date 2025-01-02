@@ -6,8 +6,8 @@ import {
   EAdjustBackgroundHue,
   EAdjustBackgroundLightness,
   EAdjustBackgroundSaturation,
-} from '../../../interfaces/blobs'
-import { ELanguages } from '../../../interfaces'
+} from '../../../types/blobs'
+import { ELanguages } from '../../../types'
 
 interface SlidersProps {
   language: ELanguages

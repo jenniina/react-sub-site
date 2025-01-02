@@ -1,6 +1,6 @@
-import { ELanguages, ENone, EOther, EText, IUser } from '../../../interfaces'
-import { EPersonal, EWork } from '../../../interfaces/form'
-import { EAll } from '../../Jokes/interfaces'
+import { ELanguages, ENone, EOther, EText, IUser } from '../../../types'
+import { EPersonal, EWork } from '../../../types/form'
+import { EAll } from '../../Jokes/types'
 import { SelectOption } from '../../Select/Select'
 
 export type TPriority = 'all' | 'low' | 'medium' | 'high'

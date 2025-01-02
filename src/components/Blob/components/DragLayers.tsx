@@ -13,10 +13,10 @@ import {
   lazy,
   Suspense,
 } from 'react'
-import { Draggable, focusedBlob, ColorPair, Modes } from '../interfaces'
-import { ELanguages, ELoading } from '../../../interfaces'
+import { Draggable, focusedBlob, ColorPair, Modes } from '../types'
+import { ELanguages, ELoading } from '../../../types'
 //import DragLayer from './DragLayer'
-import { EThankYouForPlaying } from '../../../interfaces/blobs'
+import { EThankYouForPlaying } from '../../../types/blobs'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
 
 const DragLayer = lazy(() => import('./DragLayer'))

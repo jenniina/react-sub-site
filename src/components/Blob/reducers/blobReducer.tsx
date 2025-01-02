@@ -1,5 +1,5 @@
-import { BackgroundColor, Draggable } from '../interfaces'
-import { ReducerProps } from '../interfaces'
+import { BackgroundColor, Draggable } from '../types'
+import { ReducerProps } from '../types'
 
 const initialState: ReducerProps['blob'] = {
   draggables: [] as Draggable[][],

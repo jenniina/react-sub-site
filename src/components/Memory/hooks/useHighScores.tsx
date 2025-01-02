@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import useLocalStorage from '../../../hooks/useStorage'
-import { ELanguages, IUser } from '../../../interfaces'
+import { ELanguages, IUser } from '../../../types'
 import highScoresService from '../services/highScores'
 import {
   HighScores,
@@ -8,14 +8,14 @@ import {
   IPlayer,
   IHighScoreResponse,
   GameMode,
-} from '../../../interfaces/memory'
+} from '../../../types/memory'
 import {
   EErrorDeletingHighScore,
   EErrorRetrievingHighScores,
   EErrorUpdatingHighScore,
   EHighScoreDeletedSuccessfully,
   EHighScoreUpdatedSuccessfully,
-} from '../../../interfaces/memory'
+} from '../../../types/memory'
 
 const storedLanguage = localStorage.getItem('AppLanguage')
 const language = storedLanguage

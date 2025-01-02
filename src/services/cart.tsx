@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { ELanguages, IUser } from '../interfaces'
-import { ICart, ICartItem } from '../interfaces/store'
+import { ELanguages, IUser } from '../types'
+import { ICart, ICartItem } from '../types/store'
 
 export interface ICartResponse {
   success: boolean

@@ -1,12 +1,12 @@
 import { FC, FormEvent } from 'react'
-import { ELanguages, ESearch } from '../../interfaces'
+import { ELanguages, ESearch } from '../../types'
 import Accordion from '../Accordion/Accordion'
 import styles from './poems.module.css'
-import { EInEnglish, ENote } from '../Jokes/interfaces'
+import { EInEnglish, ENote } from '../Jokes/types'
 import useLocalStorage from '../../hooks/useStorage'
 import { getPoem, PoemItem } from './services/poems'
 import Poem from './Poem'
-import { ESearchForPoem } from '../../interfaces/poems'
+import { ESearchForPoem } from '../../types/poems'
 
 interface Props {
   language: ELanguages

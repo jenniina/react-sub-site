@@ -19,7 +19,7 @@ import {
   ESet,
   EYear,
   EYearMustBeBetweenCurrentYearAnd10YearsFromNow,
-} from '../../../interfaces'
+} from '../../../types'
 import {
   ECategory,
   ETask,
@@ -28,8 +28,8 @@ import {
   TCategory,
   TPriority,
   ETheDateIsInThePast,
-} from '../interfaces'
-import { ESelectCategory } from '../../Jokes/interfaces'
+} from '../types'
+import { ESelectCategory } from '../../Jokes/types'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { notify } from '../../../reducers/notificationReducer'
 import { FaRegCheckCircle } from 'react-icons/fa'

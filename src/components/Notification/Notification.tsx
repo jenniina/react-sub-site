@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-import { EClose, ELanguages, ReducerProps } from '../../interfaces'
+import { EClose, ELanguages, ReducerProps } from '../../types'
 import { useEffect, useState } from 'react'
 
 interface Props {

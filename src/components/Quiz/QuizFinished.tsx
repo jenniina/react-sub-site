@@ -1,7 +1,7 @@
 import { useEffect, useState, FormEvent, lazy, Suspense } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { IQuizHighscore } from './interfaces'
+import { IQuizHighscore } from './types'
 import {
   EError,
   ELanguages,
@@ -10,7 +10,7 @@ import {
   EQuizApp,
   ERegistrationSuccesful,
   ReducerProps,
-} from '../../interfaces'
+} from '../../types'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { addQuiz, getUserQuiz, deleteDuplicates } from './reducers/quizReducer'
 import { initializeUser } from '../../reducers/authReducer'
@@ -36,7 +36,7 @@ import {
   ESpeed,
   ETryAgain,
   EYouScored,
-} from '../../interfaces/quiz'
+} from '../../types/quiz'
 // import LoginRegisterCombo from './components/LoginRegisterCombo'
 
 const LoginRegisterCombo = lazy(() => import('./components/LoginRegisterCombo'))

@@ -18,14 +18,14 @@ import {
   ETermsOfService,
   ESeeAlso,
   ETheFollowingAppliesToLoggingInAndStoringUserInfo,
-} from '../interfaces'
+} from '../types'
 
-import { ELanguages } from '../interfaces'
+import { ELanguages } from '../types'
 import Hero from '../components/Hero/Hero'
 import { useTheme } from '../hooks/useTheme'
 import { Link } from 'react-router-dom'
 import styles from './css/disclaimer.module.css'
-import { EContactForm } from '../interfaces/form'
+import { EContactForm } from '../types/form'
 
 export default function Disclaimer({
   heading,

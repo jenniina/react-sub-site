@@ -13,7 +13,7 @@ import {
   ELogin,
   ENew,
   ERegister,
-} from '../../interfaces'
+} from '../../types'
 import {
   EBlurIntoOneAnother,
   EBubblesAndFish,
@@ -84,10 +84,10 @@ import {
   EYouMayChangeBlobSizeWithTheMouseWheel,
   EYouMayCloneARareColorBlobByPressingCOrD,
   EYouMayUseKeyboardShortcutsWhileMouseIsPressedDown,
-} from '../../interfaces/blobs'
+} from '../../types/blobs'
 import '../../components/Blob/css/blob.css'
 import Accordion from '../../components/Accordion/Accordion'
-import { EClickHereToSeeFeatures } from '../../components/Jokes/interfaces'
+import { EClickHereToSeeFeatures } from '../../components/Jokes/types'
 import birb from '../../assets/blob-birb.png'
 import fish from '../../assets/blob-fish.png'
 import bubbly from '../../assets/bubbly-fish.png'

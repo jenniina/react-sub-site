@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios'
-import { Draggable, BackgroundColor } from '../interfaces'
-import { ELanguages } from '../../../interfaces'
+import { Draggable, BackgroundColor } from '../types'
+import { ELanguages } from '../../../types'
 
 const url = import.meta.env.VITE_BASE_URI ?? 'https://bg.jenniina.fi'
 const baseUrl = `${url}/api/blobs`

@@ -8,11 +8,11 @@ import {
   CSSProperties,
   useEffect,
 } from 'react'
-import { Data, Status } from '../interfaces'
+import { Data, Status } from '../types'
 import styles from '../dragAndDrop.module.css'
 import { MdContentCopy, MdLocationOn, MdOutlineDragIndicator } from 'react-icons/md'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
-import { EChooseDestination } from '../../../interfaces/draganddrop'
+import { EChooseDestination } from '../../../types/draganddrop'
 import {
   ECopiedToClipboard,
   ECopyText,
@@ -21,7 +21,7 @@ import {
   ELanguages,
   EMove,
   EToTarget,
-} from '../../../interfaces'
+} from '../../../types'
 import { notify } from '../../../reducers/notificationReducer'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { sanitize } from '../../../utils'

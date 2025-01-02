@@ -9,7 +9,7 @@ import {
   useEffect,
   ReactNode,
 } from 'react'
-import { EClose, ELanguages } from '../../interfaces'
+import { EClose, ELanguages } from '../../types'
 import { FaAnglesUp } from 'react-icons/fa6'
 
 interface accordionProps {

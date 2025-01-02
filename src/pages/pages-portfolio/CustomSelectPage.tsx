@@ -44,13 +44,8 @@ import {
   EThankYouForYourMessage,
   EYouMaySelectMultipleOptions,
   RefObject,
-} from '../../interfaces'
-import {
-  EClear,
-  ERemove,
-  EThisFieldIsRequired,
-  ETranslations,
-} from '../../interfaces/select'
+} from '../../types'
+import { EClear, ERemove, EThisFieldIsRequired, ETranslations } from '../../types/select'
 import { sendEmail, SelectData } from './services/email'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
@@ -67,13 +62,13 @@ import {
   ETabToSelectEnterOrSpaceToOpen,
   EUseUpAndDownArrowKeysToMoveToAnOption,
   EWhichIntroSectionElementWasYourFavourite,
-} from '../../interfaces/select'
-import { ETodoApp } from '../../components/Todo/interfaces'
-import { EThereWasAnErrorSendingTheMessage } from '../../interfaces/form'
-import { EClickHereToSeeFeatures } from '../../components/Jokes/interfaces'
+} from '../../types/select'
+import { ETodoApp } from '../../components/Todo/types'
+import { EThereWasAnErrorSendingTheMessage } from '../../types/form'
+import { EClickHereToSeeFeatures } from '../../components/Jokes/types'
 import Accordion from '../../components/Accordion/Accordion'
 import { RiMailSendLine } from 'react-icons/ri'
-import { EComposerPage, EMusicNotes } from '../../interfaces/composer'
+import { EComposerPage, EMusicNotes } from '../../types/composer'
 import { createSelectOptions } from '../../utils'
 
 export default function CustomSelectPage({

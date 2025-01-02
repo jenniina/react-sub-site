@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-import { IUser as user, ELanguages, IBlacklistedJoke } from '../interfaces'
+import { IUser as user, ELanguages, IBlacklistedJoke } from '../types'
 
 const url = import.meta.env.VITE_BASE_URI ?? 'https://bg.jenniina.fi'
 const baseUrl = `${url}/api/users`

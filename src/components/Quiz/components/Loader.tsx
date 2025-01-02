@@ -1,5 +1,5 @@
-import { ELanguages } from '../../../interfaces'
-import { ELoadingQuestions } from '../../../interfaces/quiz'
+import { ELanguages } from '../../../types'
+import { ELoadingQuestions } from '../../../types/quiz'
 import styles from '../css/quiz.module.css'
 
 const Loader = ({ language }: { language: ELanguages }) => {

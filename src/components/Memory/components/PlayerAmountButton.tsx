@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import styles from '../memory.module.css'
-import { EDuet, ESolo } from '../../../interfaces/memory'
-import { ELanguages } from '../../../interfaces'
+import { EDuet, ESolo } from '../../../types/memory'
+import { ELanguages } from '../../../types'
 
 interface PlayerAmountButtonProps {
   language: ELanguages

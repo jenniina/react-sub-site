@@ -1,4 +1,4 @@
-import { IUser } from '../../../interfaces'
+import { IUser } from '../../../types'
 
 export type BackgroundColor = string
 

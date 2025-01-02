@@ -7,7 +7,7 @@ import {
   ECopyToClipboard,
   EFailedToCopy,
   ELanguages,
-} from '../../interfaces'
+} from '../../types'
 import { useTheme } from '../../hooks/useTheme'
 import useWindowSize from '../../hooks/useWindowSize'
 import useRandomMinMax from '../../hooks/useRandomMinMax'

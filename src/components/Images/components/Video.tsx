@@ -1,11 +1,11 @@
 import { FC, ReactNode } from 'react'
 import styles from '../images.module.css'
-import { EClickToOpenLargeVideo, EVideoPage } from '../../../interfaces/images'
-import { EAuthor } from '../../Jokes/interfaces'
+import { EClickToOpenLargeVideo, EVideoPage } from '../../../types/images'
+import { EAuthor } from '../../Jokes/types'
 import { VideoHit } from '../services/images'
-import { EDownload, ELanguages } from '../../../interfaces'
+import { EDownload, ELanguages } from '../../../types'
 import VideoModal from './VideoModal'
-import { ModalProps } from '../../../interfaces'
+import { ModalProps } from '../../../types'
 import { TTextType } from '../Images'
 
 interface VideoProps {

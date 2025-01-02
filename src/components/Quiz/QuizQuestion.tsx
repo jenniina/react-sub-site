@@ -3,18 +3,14 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { getQuestions, newAnswer } from './reducers/questionsReducer'
-import { ELanguages, ELoading, EQuizApp, ReducerProps } from '../../interfaces'
+import { ELanguages, ELoading, EQuizApp, ReducerProps } from '../../types'
 import Progress from './components/Progress'
 // import Timer from './components/Timer'
 import Loader from './components/Loader'
 import Next from './components/Next'
 import Message from './components/Message'
 import styles from '../../components/Quiz/css/quiz.module.css'
-import {
-  EDifficulty,
-  EErrorFetchingQuestions,
-  EQuizInProgress,
-} from '../../interfaces/quiz'
+import { EDifficulty, EErrorFetchingQuestions, EQuizInProgress } from '../../types/quiz'
 
 const Timer = lazy(() => import('./components/Timer'))
 

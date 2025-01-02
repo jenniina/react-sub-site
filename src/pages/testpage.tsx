@@ -6,7 +6,7 @@ import useEventListener from '../hooks/useEventListener'
 import useIsOnScreen from '../hooks/useIsOnScreen'
 import useMediaQuery from '../hooks/useMediaQuery'
 import useSize from '../hooks/useSize'
-import { ELanguages, RefObject } from '../interfaces'
+import { ELanguages, RefObject } from '../types'
 import useToggle from '../hooks/useToggle'
 
 import Hero from '../components/Hero/Hero'

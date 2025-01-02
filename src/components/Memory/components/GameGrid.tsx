@@ -1,9 +1,9 @@
 import { FC, CSSProperties, memo, useEffect, useState } from 'react'
 import styles from '../memory.module.css'
-import { CardType, EStopGame } from '../../../interfaces/memory'
+import { CardType, EStopGame } from '../../../types/memory'
 import useWindowSize from '../../../hooks/useWindowSize'
-import { EFinish } from '../../../interfaces/quiz'
-import { ELanguages } from '../../../interfaces'
+import { EFinish } from '../../../types/quiz'
+import { ELanguages } from '../../../types'
 
 interface Player {
   id: number

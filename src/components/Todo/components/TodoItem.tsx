@@ -12,12 +12,12 @@ import {
   EOther,
   EToday,
   EYear,
-} from '../../../interfaces'
-import { EDeleteTask } from '../../../interfaces/todo'
+} from '../../../types'
+import { EDeleteTask } from '../../../types/todo'
 import Accordion from '../../Accordion/Accordion'
 import styles from '../css/todo.module.css'
 import { ITaskDraggable } from './TodoList'
-import { EAreYouSureYouWantToDelete } from '../../UserEdit/interfaces'
+import { EAreYouSureYouWantToDelete } from '../../UserEdit/types'
 import {
   EAddTask,
   ECategory,
@@ -32,18 +32,18 @@ import {
   TPriority,
   translate,
   translationMap,
-} from '../interfaces'
+} from '../types'
 import { MdDragIndicator, MdShoppingCart, MdWork } from 'react-icons/md'
 import { FcHighPriority, FcLowPriority, FcMediumPriority } from 'react-icons/fc'
 import { sanitize, first3Words, getRandomString } from '../../../utils'
 import { FaAnglesUp, FaTriangleExclamation } from 'react-icons/fa6'
 import { Select, SelectOption } from '../../Select/Select'
-import { ECategoryTitle, ESelectCategory } from '../../Jokes/interfaces'
+import { ECategoryTitle, ESelectCategory } from '../../Jokes/types'
 import { useModal } from '../../../hooks/useModal'
 import TodoItemModal from './TodoItemModal'
 import { IoPersonCircleSharp } from 'react-icons/io5'
 import { GiCardRandom } from 'react-icons/gi'
-import { EPersonal, EWork } from '../../../interfaces/form'
+import { EPersonal, EWork } from '../../../types/form'
 import { HiDotsCircleHorizontal, HiDotsHorizontal } from 'react-icons/hi'
 import { TiShoppingCart } from 'react-icons/ti'
 import { AiOutlineEdit } from 'react-icons/ai'

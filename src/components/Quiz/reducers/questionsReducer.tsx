@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import { returnMode } from './difficultyReducer'
-import { IQuestion } from '../interfaces'
-import { ReducerProps } from '../../../interfaces'
+import { IQuestion } from '../types'
+import { ReducerProps } from '../../../types'
 
 function shuffleArray(array: any[]) {
   const newArray = [...array]

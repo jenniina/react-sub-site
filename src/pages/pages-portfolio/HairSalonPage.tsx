@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import Accordion from '../../components/Accordion/Accordion'
 import Hero from '../../components/Hero/Hero'
-import { EDependencies, EFeatures, ELanguages } from '../../interfaces'
-import { ESalonIntro1, ESalonIntro2, ESalonIntro3 } from '../../interfaces/salon'
-import { EClickHereToSeeFeatures } from '../../components/Jokes/interfaces'
+import { EDependencies, EFeatures, ELanguages } from '../../types'
+import { ESalonIntro1, ESalonIntro2, ESalonIntro3 } from '../../types/salon'
+import { EClickHereToSeeFeatures } from '../../components/Jokes/types'
 
 export default function HairSalonPage({
   heading,

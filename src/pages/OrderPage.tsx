@@ -1,15 +1,7 @@
 import { splitToLines } from '../utils'
 import styles from '../components/Store/store.module.css'
 //import Order from '../components/Store/components/Order'
-import {
-  EEmail,
-  EHide,
-  ELanguages,
-  ELoading,
-  EName,
-  EShow,
-  ReducerProps,
-} from '../interfaces'
+import { EEmail, EHide, ELanguages, ELoading, EName, EShow, ReducerProps } from '../types'
 import Hero from '../components/Hero/Hero'
 import { useSelector } from 'react-redux'
 //import Orders from '../components/Store/components/Orders'
@@ -31,10 +23,10 @@ import {
   EPostalCode,
   ICart,
   IInfo,
-} from '../interfaces/store'
+} from '../types/store'
 import { lazy, Suspense } from 'react'
 import { SelectOption } from '../components/Select/Select'
-import { status, paid } from '../interfaces/store'
+import { status, paid } from '../types/store'
 
 const Order = lazy(() => import('../components/Store/components/Order'))
 const Orders = lazy(() => import('../components/Store/components/Orders'))

@@ -33,7 +33,7 @@ import {
   ETurnRandomMovementOff,
   ETurnRandomMovementOn,
   RefObject,
-} from '../../interfaces'
+} from '../../types'
 import useEventListener from '../../hooks/useEventListener'
 import useSessionStorage from '../../hooks/useStorage'
 import useLocalStorage from '../../hooks/useStorage'

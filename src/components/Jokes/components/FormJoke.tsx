@@ -24,8 +24,8 @@ import {
   TCategoryByLanguages,
   IJoke,
   EChuckNorrisCategory,
-} from '../interfaces'
-import { ELanguages, ELoading } from '../../../interfaces'
+} from '../types'
+import { ELanguages, ELoading } from '../../../types'
 import { FaAnglesDown } from 'react-icons/fa6'
 
 const Joke = lazy(() => import('./Joke'))

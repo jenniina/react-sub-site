@@ -25,7 +25,7 @@ import {
   ETermsOfServiceLink,
   EYes,
   ReducerProps,
-} from '../../interfaces'
+} from '../../types'
 import {
   ICart,
   EAddToCart,
@@ -68,7 +68,7 @@ import {
   EEG,
   EDesiredReference,
   ETermsRelatedToProducts,
-} from '../../interfaces/store'
+} from '../../types/store'
 import useLocalStorage from '../../hooks/useStorage'
 import Accordion from '../Accordion/Accordion'
 import { useTheme } from '../../hooks/useTheme'
@@ -78,14 +78,14 @@ import {
   EClarification,
   EGDPRConsent,
   EPleaseFillInTheFields,
-} from '../../interfaces/form'
+} from '../../types/form'
 import { notify } from '../../reducers/notificationReducer'
 import { Link } from 'react-router-dom'
 import { getRandomLetters, getRandomMinMax, splitToLines } from '../../utils'
 import ButtonToggle from '../ButtonToggle/ButtonToggle'
 import { FaHourglassStart, FaStoreAlt } from 'react-icons/fa'
 import { RiMailSendLine } from 'react-icons/ri'
-import { EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo } from '../../interfaces/about'
+import { EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo } from '../../types/about'
 import { TermsProducts } from '../../pages/TermsOfService'
 
 interface Props {

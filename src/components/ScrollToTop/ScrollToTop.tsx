@@ -1,6 +1,6 @@
 import { useState, useEffect, FC } from 'react'
 import styles from './scrolltotop.module.css'
-import { ELanguages, EScrollToTheTop } from '../../interfaces'
+import { ELanguages, EScrollToTheTop } from '../../types'
 import { BiChevronsUp } from 'react-icons/bi'
 
 const ScrollToTop: FC<{

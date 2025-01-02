@@ -1,7 +1,7 @@
 import { lazy, Suspense } from 'react'
 import Hero from '../../components/Hero/Hero'
 //import Memory from '../../components/Memory/Memory'
-import { ELanguages, ELoading } from '../../interfaces'
+import { ELanguages, ELoading } from '../../types'
 
 const Memory = lazy(() => import('../../components/Memory/Memory'))
 

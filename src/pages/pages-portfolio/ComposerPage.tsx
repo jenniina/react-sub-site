@@ -1,14 +1,10 @@
 import { useState } from 'react'
 import Accordion from '../../components/Accordion/Accordion'
 import Hero from '../../components/Hero/Hero'
-import { EDependencies, EFeatures, ELanguages } from '../../interfaces'
-import {
-  EComposerIntro1,
-  EComposerIntro2,
-  EComposerIntro3,
-} from '../../interfaces/composer'
-import { EClickHereToSeeFeatures } from '../../components/Jokes/interfaces'
-import { EReactWebsite } from '../../interfaces/store'
+import { EDependencies, EFeatures, ELanguages } from '../../types'
+import { EComposerIntro1, EComposerIntro2, EComposerIntro3 } from '../../types/composer'
+import { EClickHereToSeeFeatures } from '../../components/Jokes/types'
+import { EReactWebsite } from '../../types/store'
 
 export default function ComposerPage({
   heading,

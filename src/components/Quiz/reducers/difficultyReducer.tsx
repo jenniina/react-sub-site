@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { ReducerProps } from '../../../interfaces'
+import { ReducerProps } from '../../../types'
 
 const difficultySlice = createSlice({
   name: 'difficulty',

@@ -1,7 +1,7 @@
 import { FC, useState } from 'react'
-import { ColorPair, Modes, RefObject } from '../interfaces'
-import { EChangeColorInstructions } from '../../../interfaces/blobs'
-import { EActive, ELanguages } from '../../../interfaces'
+import { ColorPair, Modes, RefObject } from '../types'
+import { EChangeColorInstructions } from '../../../types/blobs'
+import { EActive, ELanguages } from '../../../types'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
 
 interface ColorBlockProps {

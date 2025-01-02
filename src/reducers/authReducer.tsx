@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import loginService from '../services/login'
-import { IUser } from '../interfaces'
+import { IUser } from '../types'
 
 const authSlice = createSlice({
   name: 'auth',

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import FormWrapper from './FormWrapper'
 import styles from '../form.module.css'
 import { Select, SelectOption } from '../../Select/Select'
-import { ELanguages, ENone, EOther, EPleaseSelectAnOption } from '../../../interfaces'
+import { ELanguages, ENone, EOther, EPleaseSelectAnOption } from '../../../types'
 import {
   ELetMeKnowWhatOnYourMind,
   EMessage,
@@ -11,7 +11,7 @@ import {
   EPleaseSendMeAFewWords,
   EWork,
   EYourEmail,
-} from '../../../interfaces/form'
+} from '../../../types/form'
 
 type MessageData = {
   email: string

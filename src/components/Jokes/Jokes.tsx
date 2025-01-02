@@ -51,7 +51,7 @@ import {
   EJokesLoaded,
   jokeCategoryAny,
   jokeCategoryByLanguage,
-} from './interfaces'
+} from './types'
 import {
   ELogin,
   EError,
@@ -66,7 +66,7 @@ import {
   TLanguageOfLanguage,
   IBlacklistedJoke,
   ELoading,
-} from '../../interfaces'
+} from '../../types'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'

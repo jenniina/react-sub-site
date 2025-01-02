@@ -1,9 +1,9 @@
 import { lazy, Suspense } from 'react'
 import { useTheme } from '../hooks/useTheme'
-import { ELanguages, ELoading } from '../interfaces'
+import { ELanguages, ELoading } from '../types'
 import styles from './css/portfolio.module.css'
 import Hero from '../components/Hero/Hero'
-import { ETryDraggingTheBlobs } from '../interfaces/blobs'
+import { ETryDraggingTheBlobs } from '../types/blobs'
 
 const PortfolioInfo = lazy(() => import('../components/PortfolioInfo/PortfolioInfo'))
 

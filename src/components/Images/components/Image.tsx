@@ -4,16 +4,16 @@ import {
   EClickToLoadImage,
   EClickToOpenLargeImage,
   EImagePage,
-} from '../../../interfaces/images'
-import { EAuthor } from '../../Jokes/interfaces'
+} from '../../../types/images'
+import { EAuthor } from '../../Jokes/types'
 import { ImageHit } from '../services/images'
-import { EDownload, EError, ELanguages } from '../../../interfaces'
+import { EDownload, EError, ELanguages } from '../../../types'
 import useTooltip from '../../../hooks/useTooltip'
 import ImageModal from './ImageModal'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { notify } from '../../../reducers/notificationReducer'
 import { sanitize } from '../../../utils'
-import { ModalProps } from '../../../interfaces'
+import { ModalProps } from '../../../types'
 import { TTextType } from '../Images'
 
 interface ImageProps {

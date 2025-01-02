@@ -15,15 +15,15 @@ import {
   EScrollToTheRight,
   EToDo,
   RefObject,
-} from '../../interfaces'
-import { EColorAccessibility } from '../../interfaces/colors'
+} from '../../types'
+import { EColorAccessibility } from '../../types/colors'
 import useIsOnScreen from '../../hooks/useIsOnScreen'
 import useWindowSize from '../../hooks/useWindowSize'
-import { breakpointSmall } from '../../interfaces'
+import { breakpointSmall } from '../../types'
 import useSideScroll from '../../hooks/useSideScroll'
-import { EComposerOlliSanta } from '../../interfaces/composer'
-import { EMemoryGame } from '../../interfaces/memory'
-import { EMedia } from '../../interfaces/images'
+import { EComposerOlliSanta } from '../../types/composer'
+import { EMemoryGame } from '../../types/memory'
+import { EMedia } from '../../types/images'
 
 interface NavItem {
   url: string

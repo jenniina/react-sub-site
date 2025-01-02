@@ -1,6 +1,6 @@
 import { useState, useMemo, FormEvent, useEffect, useRef, lazy, Suspense } from 'react'
 import { useDragAndDrop } from '../../hooks/useDragAndDrop'
-import { Status, Data, Lightness } from './interfaces'
+import { Status, Data, Lightness } from './types'
 //import  CardsContainer  from './components/CardsContainer'
 import styles from './dragAndDrop.module.css'
 import { sanitize } from '../../utils'
@@ -20,7 +20,7 @@ import {
   ESpecialCharactersNotAllowed,
   EOr,
   ELoading,
-} from '../../interfaces'
+} from '../../types'
 import { useTheme } from '../../hooks/useTheme'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
@@ -36,15 +36,15 @@ import {
   EWithOrangeWrittenLast,
   EWithPurpleWrittenLast,
   EYouMayAlsoAddOtherWordsForGenericUse,
-} from '../../interfaces/draganddrop'
+} from '../../types/draganddrop'
 import { Select, SelectOption } from '../Select/Select'
-import { EAll, ESelectCategory } from '../Jokes/interfaces'
+import { EAll, ESelectCategory } from '../Jokes/types'
 import useLocalStorage from '../../hooks/useStorage'
-import { EPleaseFillInTheFields } from '../../interfaces/form'
-import { EAreYouSureYouWantToDeleteThisVersion } from '../../interfaces/blobs'
-import { EAMaxOf20CharactersPlease, ENameTooLong } from '../../interfaces'
-import { EPartial } from '../../interfaces/store'
-import { EClear } from '../../interfaces/select'
+import { EPleaseFillInTheFields } from '../../types/form'
+import { EAreYouSureYouWantToDeleteThisVersion } from '../../types/blobs'
+import { EAMaxOf20CharactersPlease, ENameTooLong } from '../../types'
+import { EPartial } from '../../types/store'
+import { EClear } from '../../types/select'
 
 const CardsContainer = lazy(() => import('./components/CardsContainer'))
 
