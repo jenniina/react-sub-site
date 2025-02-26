@@ -1,6 +1,16 @@
-import { createRef, FC, Fragment, useRef, lazy, Suspense } from 'react'
+import {
+  createRef,
+  FC,
+  Fragment,
+  useRef,
+  lazy,
+  Suspense,
+  useState,
+  useEffect,
+} from 'react'
 import { ELanguages, ELoading, RefObject } from '../../types'
 import { EScroll, EToBlobArt } from '../../types/blobs'
+import { useSearchParams } from 'react-router-dom'
 
 const DragContainer = lazy(() => import('./components/DragContainer'))
 interface BlobsProps {
@@ -16,6 +26,25 @@ const Blobs: FC<BlobsProps> = ({ language }) => {
       return acc
     }, {} as Record<number, RefObject<HTMLDivElement>>)
   )
+
+  const [scroll, setScroll] = useState<boolean>(true)
+  const [searchParams, setSearchParams] = useSearchParams({
+    scroll: 'true',
+  })
+
+  useEffect(() => {
+    const scroll = searchParams.get('scroll')
+    if (scroll) {
+      setScroll(scroll === 'true')
+    }
+  }, [searchParams])
+
+  useEffect(() => {
+    const newParams = new URLSearchParams(searchParams)
+    newParams.set('scroll', scroll.toString())
+    setSearchParams(newParams)
+  }, [scroll, searchParams, setSearchParams])
+
   const buttons = (number: number) => {
     return (
       <div className='to-blob-art-btn-wrap flex center gap-half'>
@@ -63,6 +92,8 @@ const Blobs: FC<BlobsProps> = ({ language }) => {
               d={container}
               ds={containers.length}
               dragWrapOuter={containerRefs.current[container]}
+              scroll={scroll}
+              setScroll={setScroll}
             />
           </Suspense>
         </Fragment>
