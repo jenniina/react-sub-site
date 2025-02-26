@@ -16,13 +16,19 @@ export function useThemeUpdate() {
 export function ThemeProvider({ children }: ReactPortal) {
   const prefersLight = useMediaQuery('(prefers-color-scheme: light)')
 
-  const isLocalhost =
-    window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-
   const [lightTheme, setLightTheme] = useLocalStorage(
-    `${isLocalhost ? 'local-' : ''}useLightMode`,
+    `useLightMode`,
     prefersLight ? true : false
   )
+
+  // Read the ?light query parameter and update theme
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const lightParam = params.get('light')
+    if (lightParam !== null) {
+      setLightTheme(lightParam === 'true')
+    }
+  }, [setLightTheme])
 
   const lightEnabled = lightTheme ?? prefersLight
 

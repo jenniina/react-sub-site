@@ -1,6 +1,6 @@
 import { FC, useEffect, useState, MouseEvent as ReactMouseEvent } from 'react'
 import styles from '../images.module.css'
-import { ELanguages } from '../../../types'
+import { EError, ELanguages } from '../../../types'
 import { EClickToLoadImage } from '../../../types/images'
 import { ImageHit } from '../services/images'
 import useTooltip from '../../../hooks/useTooltip'
@@ -10,6 +10,8 @@ import Poem from '../../Poems/Poem'
 import { getPoem } from '../../Poems/services/poems'
 import { TTextType } from '../Images'
 import { PoemItem } from '../../Poems/services/poems'
+import { notify } from '../../../reducers/notificationReducer'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
 
 interface ModalImageProps {
   image: ImageHit
@@ -26,6 +28,7 @@ const ImageModal: FC<ModalImageProps> = ({
   searchTerm,
   textType,
 }) => {
+  const dispatch = useAppDispatch()
   const { tooltip, handleMouseMove, handleMouseLeave } = useTooltip()
 
   const onMouseMove = (e: ReactMouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -36,7 +39,6 @@ const ImageModal: FC<ModalImageProps> = ({
   }
   const [quote, setQuote] = useState<QuoteItem>({
     quote: '',
-    category: '',
     author: '',
   })
 
@@ -57,8 +59,9 @@ const ImageModal: FC<ModalImageProps> = ({
       fetchPoem()
     } else if (textType === 'quote') {
       const fetchQuote = async () => {
-        const quote = await getQuote(language, searchTerm)
-        setQuote(quote)
+        const response = await getQuote(language, searchTerm)
+        if (response.quote) setQuote(response.quote)
+        else dispatch(notify(response.message ?? EError[language], true, 8))
       }
       fetchQuote()
     } else {
@@ -72,8 +75,9 @@ const ImageModal: FC<ModalImageProps> = ({
         fetchPoem()
       } else {
         const fetchQuote = async () => {
-          const quote = await getQuote(language, searchTerm)
-          setQuote(quote)
+          const response = await getQuote(language, searchTerm)
+          if (response.quote) setQuote(response.quote)
+          else dispatch(notify(response.message ?? EError[language], true, 8))
         }
         fetchQuote()
       }
@@ -83,7 +87,7 @@ const ImageModal: FC<ModalImageProps> = ({
   return (
     <div onMouseMove={onMouseMove} onMouseLeave={handleMouseLeave}>
       <div className={`tooltip-wrap ${styles['image-wrap']} ${styles['image-modal']}`}>
-        <button onClick={handleDownload}>
+        <button onClick={handleDownload} className='reset'>
           <img
             src={image.largeImageURL}
             alt={image.tags}

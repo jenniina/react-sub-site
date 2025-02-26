@@ -66,8 +66,8 @@ import {
   rgbToHSL,
 } from '../../utils'
 import { Select, SelectOption } from '../Select/Select'
-import useRandomMinMax from '../../hooks/useRandomMinMax'
 import useAccessibleColors from './hooks/useAccessibleColors'
+import { useSearchParams } from 'react-router-dom'
 
 const ColorsInput = lazy(() => import('./components/ColorsInput'))
 
@@ -145,11 +145,13 @@ const AccessibleColors: FC<Props> = ({ language }) => {
   const dispatch = useAppDispatch()
   const lightTheme = useTheme()
   const toggleTheme = useThemeUpdate()
-  const [show, setShow] = useState(true)
-  const [showColorName, setShowColorName] = useLocalStorage(
-    'Jenniina-showColorNames',
-    true
-  )
+  const [searchParams, setSearchParams] = useSearchParams({
+    show: 'true',
+    name: 'true',
+    mode: 'analogous',
+  })
+  const show = (searchParams.get('show') || 'true') === 'true'
+  const name = (searchParams.get('name') || 'true') === 'true'
 
   const { isDragging, listItemsByStatus, handleDragging, handleUpdate } = useDragAndDrop(
     colors,
@@ -177,14 +179,12 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     { value: 'tetrad', label: ETetrad[language] },
   ]
 
-  let random: number = Math.floor(Math.random() * colorModeOptions.length)
+  const random: number = Math.floor(Math.random() * colorModeOptions.length)
 
-  const [colorMode, setColorMode] = useState<SelectOption | undefined>(
-    colorModeOptions[random]
-  )
+  const colorMode = (searchParams.get('mode') || colorModeOptions[random]) as TColorMode
 
   useEffect(() => {
-    setMode(colorMode?.value as TColorMode)
+    setMode(colorMode as TColorMode)
   }, [colorMode])
 
   const resetAndMake = () => {
@@ -332,7 +332,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       totalIndicators * (indicatorSize + indicatorSpacing) -
       indicatorSpacing +
       padding * 2
-    const textBlockHeight = showColorName ? fontSize + padding : 0
+    const textBlockHeight = name ? fontSize + padding : 0
 
     const svgWidth = items.length * blockWidth
     const svgHeight = blockHeight + textBlockHeight * 1.6
@@ -364,7 +364,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       `
 
         // Text background rectangle and label
-        const textContent = showColorName
+        const textContent = name
           ? `
         <!-- Text Background -->
         <rect
@@ -748,8 +748,24 @@ const AccessibleColors: FC<Props> = ({ language }) => {
         <div className={`${styles['color-edit-container']} ${styles['mode-container']}`}>
           <Select
             options={colorModeOptions}
-            value={colorMode}
-            onChange={(o) => setColorMode(o)}
+            value={
+              {
+                value: mode,
+                label: colorModeOptions.find((o) => o.value === mode)?.label,
+              } as SelectOption
+            }
+            onChange={(o) =>
+              setSearchParams(
+                (prev) => {
+                  prev.set('mode', (o?.value || colorModeOptions[random].value) as string)
+                  return prev
+                },
+                {
+                  replace: true,
+                  preventScrollReset: true,
+                }
+              )
+            }
             id='color-mode'
             instructions={ESelectColorModeForNewColors[language]}
             className={`${styles['color-select']}`}
@@ -776,9 +792,9 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       </div>
       <div
         id='color-blocks'
-        className={`${styles['color-blocks']} ${
-          !showColorName || !show ? styles.overflow : ''
-        } ${isDragging ? styles.drag : ''}`}
+        className={`${styles['color-blocks']} ${!name || !show ? styles.overflow : ''} ${
+          isDragging ? styles.drag : ''
+        }`}
       >
         {listItemsByStatus[status]?.items.map((block) => {
           return (
@@ -946,7 +962,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                     </div>
                   </li>
                 </ul>
-                {showColorName && (
+                {name && (
                   <div
                     style={{
                       backgroundColor: block.color,
@@ -1032,7 +1048,18 @@ const AccessibleColors: FC<Props> = ({ language }) => {
               <button
                 id='toggle-controls'
                 type='button'
-                onClick={() => setShow(!show)}
+                onClick={() =>
+                  setSearchParams(
+                    (prev) => {
+                      prev.set('show', show ? 'false' : 'true')
+                      return prev
+                    },
+                    {
+                      replace: true,
+                      preventScrollReset: true,
+                    }
+                  )
+                }
                 className='gray small'
               >
                 {show ? EHideControls[language] : EShowControls[language]}
@@ -1042,10 +1069,21 @@ const AccessibleColors: FC<Props> = ({ language }) => {
               <strong>{EToggleColorNameVisibility[language]}</strong>
               <button
                 type='button'
-                onClick={() => setShowColorName(!showColorName)}
+                onClick={() =>
+                  setSearchParams(
+                    (prev) => {
+                      prev.set('name', name ? 'false' : 'true')
+                      return prev
+                    },
+                    {
+                      replace: true,
+                      preventScrollReset: true,
+                    }
+                  )
+                }
                 className='gray small'
               >
-                {showColorName ? EHideColorName[language] : EShowColorName[language]}
+                {name ? EHideColorName[language] : EShowColorName[language]}
               </button>
             </div>
           </div>

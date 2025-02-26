@@ -135,7 +135,7 @@ const App: FC = () => {
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' })
       }
-    } else {
+    } else if (location.pathname !== displayLocation.pathname) {
       window.scrollTo({
         top: 0,
         behavior: 'smooth',

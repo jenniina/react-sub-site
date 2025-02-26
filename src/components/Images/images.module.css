@@ -272,7 +272,6 @@
 }
 .image-modal,
 .video-modal {
-  --height: 98vh;
 }
 .images-wrap .inner-wrap {
   gap: 1em;

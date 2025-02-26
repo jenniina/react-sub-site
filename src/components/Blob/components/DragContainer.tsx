@@ -12,6 +12,8 @@ import {
   ChangeEvent,
   lazy,
   Suspense,
+  Dispatch as DispatchReact,
+  SetStateAction,
 } from 'react'
 import domtoimage from 'dom-to-image-more'
 import { getRandomMinMax, hslToHex, sanitize } from '../../../utils'
@@ -152,7 +154,6 @@ import { EDelete } from '../../Jokes/types'
 //import ColorBlocks from './ColorBlocks'
 // import Sliders from './Sliders'
 import { EBlobArt } from '../../../types/about'
-import { IoMdDownload } from 'react-icons/io'
 
 const ColorBlocks = lazy(() => import('./ColorBlocks'))
 const Sliders = lazy(() => import('./Sliders'))
@@ -208,11 +209,15 @@ export default function DragContainer({
   d,
   ds,
   dragWrapOuter,
+  scroll,
+  setScroll,
 }: {
   language: ELanguages
   d: number
   ds: number
   dragWrapOuter: RefObject<HTMLDivElement>
+  scroll: boolean
+  setScroll: DispatchReact<SetStateAction<boolean>>
 }) {
   const defaultHue = '214'
   const defaultSaturation = d === 0 ? '80' : d === 2 ? '50' : '45'
@@ -281,7 +286,6 @@ export default function DragContainer({
   const [usingKeyboard, setUsingKeyboard] = useState<boolean>(false)
   const [markerEnabled, setMarkerEnabled] = useState<boolean>(true)
   const [controlsVisible, setControlsVisible] = useState<boolean>(true)
-  const [scroll, setScroll] = useState<boolean>(true)
   const [hasBeenMade, setHasBeenMade] = useState<boolean>(false)
   const [paused, setPaused] = useState<boolean>(false)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState<boolean>(false)
@@ -1031,6 +1035,7 @@ export default function DragContainer({
     switch (e.key) {
       case 'Escape':
         setScroll(true)
+
         document.body.style.overflowY = 'auto'
         document.body.style.overflowX = 'hidden'
         break
