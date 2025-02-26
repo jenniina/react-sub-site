@@ -21,12 +21,9 @@ export const useDragAndDrop = <T extends Item, S extends string>(
     setUpdatedItems(initialState)
   }, [initialState])
 
-  const isLocalhost =
-    window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-
   const storageKeys = useMemo(() => {
-    return statuses?.map((status) => `${isLocalhost ? 'local-' : ''}DnD-${status}`)
-  }, [statuses, isLocalhost])
+    return statuses?.map((status) => `DnD-${status}`)
+  }, [statuses])
 
   const initializeListItemsByStatus = useCallback(() => {
     return statuses?.reduce((acc, status, index) => {
@@ -199,7 +196,7 @@ export const useDragAndDrop = <T extends Item, S extends string>(
 
       // Get the old and new storage keys
       const oldStorageKey = storageKeys[oldStatusIndex]
-      const newStorageKey = `${isLocalhost ? 'local-' : ''}DnD-${newStatus}`
+      const newStorageKey = `DnD-${newStatus}`
 
       // Update items' status
       const updatedItems = listItemsByStatus[oldStatus].items.map((item) => ({
