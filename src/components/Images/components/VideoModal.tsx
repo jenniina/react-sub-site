@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react'
-import { ELanguages } from '../../../types'
+import { EError, ELanguages } from '../../../types'
 import { EClickToLoadVideo, EVideoPage } from '../../../types/images'
 import { VideoHit } from '../services/images'
 import useTooltip from '../../../hooks/useTooltip'
@@ -9,6 +9,8 @@ import { EAuthor } from '../../Jokes/types'
 import Poem from '../../Poems/Poem'
 import { getPoem, PoemItem } from '../../Poems/services/poems'
 import { TTextType } from '../Images'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
+import { notify } from '../../../reducers/notificationReducer'
 
 interface ModalVideoProps {
   video: VideoHit
@@ -25,11 +27,12 @@ const VideoModal: FC<ModalVideoProps> = ({
   textType,
   handleDownload,
 }) => {
+  const dispatch = useAppDispatch()
+
   const { tooltip, handleMouseMove, handleMouseLeave } = useTooltip()
 
   const [quote, setQuote] = useState<QuoteItem>({
     quote: '',
-    category: '',
     author: '',
   })
 
@@ -46,8 +49,9 @@ const VideoModal: FC<ModalVideoProps> = ({
   }
 
   const fetchQuote = async () => {
-    const quote = await getQuote(language, searchTerm)
-    setQuote(quote)
+    const response = await getQuote(language, searchTerm)
+    if (response.quote) setQuote(response.quote)
+    else dispatch(notify(response.message ?? EError[language], true, 8))
   }
 
   useEffect(() => {

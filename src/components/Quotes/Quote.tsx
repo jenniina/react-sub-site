@@ -1,7 +1,6 @@
 import { FC, ReactNode, useRef, useState } from 'react'
 import { QuoteItem } from './services/quotes'
 import { ECopiedToClipboard, ECopyToClipboard, ELanguages } from '../../types'
-import { ECategoryTitle } from '../Jokes/types'
 
 interface QuoteProps {
   quote: QuoteItem
@@ -59,9 +58,6 @@ const Quote: FC<QuoteProps> = ({ quote, language, url, title }) => {
       </p>
 
       <div className='flex gap'>
-        <small style={{ maxWidth: 'max-content', margin: '0' }}>
-          [ {ECategoryTitle[language]}: {quote.category} ]
-        </small>
         <button
           className='small'
           style={{ maxWidth: 'max-content', marginLeft: '1em' }}

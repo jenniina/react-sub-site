@@ -133,13 +133,12 @@ for (const [category, translations] of Object.entries(translationMapQuotes)) {
 
 export interface QuoteItem {
   author: string
-  category: string
   quote: string
 }
 
 export interface QuotesResponse {
   success: boolean
-  quote: QuoteItem[]
+  quote: QuoteItem | null
   message?: string
 }
 
@@ -174,16 +173,16 @@ const extractCategory = (searchTerms: string): string => {
 export const getQuote = async (
   language: ELanguages,
   searchTerms: string
-): Promise<QuoteItem> => {
+): Promise<QuotesResponse> => {
   try {
     const category = extractCategory(searchTerms)
 
     const response = await axios.get<QuotesResponse>(`${baseUrl}/${language}/${category}`)
 
     if (response.data.success && response.data.quote) {
-      return response.data.quote[0]
+      return response.data
     } else {
-      throw new Error(response.data.message || 'Failed to fetch quote.')
+      return { success: false, quote: null, message: response.data.message }
     }
   } catch (error) {
     console.error('Error fetching quote:', error)
