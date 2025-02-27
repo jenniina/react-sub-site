@@ -32,8 +32,19 @@ const VideoModal: FC<ModalVideoProps> = ({
   const { tooltip, handleMouseMove, handleMouseLeave } = useTooltip()
 
   const [quote, setQuote] = useState<QuoteItem>({
-    quote: '',
-    author: '',
+    id: 0,
+    content: '',
+    originator: {
+      name: '',
+      id: 0,
+      description: '',
+      language_code: 'en',
+      master_id: 0,
+      url: '',
+    },
+    tags: [''],
+    url: '',
+    language_code: 'en',
   })
 
   const [poem, setPoem] = useState<PoemItem>({

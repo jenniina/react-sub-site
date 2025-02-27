@@ -131,9 +131,22 @@ for (const [category, translations] of Object.entries(translationMapQuotes)) {
   }
 }
 
+export interface Originator {
+  id: number
+  language_code: string
+  description: string
+  master_id: number
+  name: string
+  url: string
+}
+
 export interface QuoteItem {
-  author: string
-  quote: string
+  id: number
+  content: string
+  originator: Originator
+  language_code: string
+  url: string
+  tags: string[]
 }
 
 export interface QuotesResponse {
