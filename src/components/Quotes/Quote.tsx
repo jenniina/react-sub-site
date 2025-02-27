@@ -14,7 +14,7 @@ const Quote: FC<QuoteProps> = ({ quote, language, url, title }) => {
   const ref = useRef<HTMLParagraphElement>(null)
 
   const copyToClipboard = () => {
-    const textToCopy = `"${quote.quote}" - ${quote.author}`
+    const textToCopy = `"${quote.content}" - ${quote.originator.name}`
 
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(textToCopy).then(
@@ -44,16 +44,16 @@ const Quote: FC<QuoteProps> = ({ quote, language, url, title }) => {
     }
   }
 
-  if (quote.quote === '') return <></>
+  if (quote.content === '') return <></>
 
   return (
     <>
       <p ref={ref}>
         <i>
           <big style={{ display: 'inline-block', margin: '0 0 0.5em' }}>
-            "{quote.quote}"
+            "{quote.content}"
           </big>
-          &mdash;&nbsp;{quote.author}
+          &mdash;&nbsp;{quote.originator.name}
         </i>
       </p>
 

@@ -56,27 +56,17 @@ const ImagesPage = ({
                 <li>
                   {EQuotesAreFrom[language]}{' '}
                   <a
-                    href='https://www.api-ninjas.com/api/quotes'
+                    href='https://rapidapi.com/martin.svoboda/api/quotes15'
                     target='_blank'
                     rel='noreferrer'
                   >
-                    API Ninjas
+                    RapidAPI
                   </a>{' '}
                   {EAndPoemsAreFrom[language]}{' '}
                   <a href='https://poetrydb.org/' target='_blank' rel='noreferrer'>
                     PoetryDB
                   </a>{' '}
                   {language === 'fi' ? 'API:sta' : ''}
-                </li>
-                <li>
-                  {
-                    ETheWordCloudIsFormedFromTheDifferentCategoriesAvailableInTheQuotesAPI[
-                      language
-                    ]
-                  }
-                </li>
-                <li>
-                  {EQuoteCategories[language]}: {VALID_CATEGORIES.join(', ')}
                 </li>
               </ul>
             </Accordion>
