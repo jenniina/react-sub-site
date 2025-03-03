@@ -250,3 +250,12 @@ export enum EMovedBackendFromAzureToMyOwnDomain {
   cs = 'Přesunul backend z Azure na svou vlastní doménu',
   fi = 'Siirsin taustajärjestelmän Azuresta omaan verkkotunnukseeni',
 }
+export enum EChangedQuotesAPI {
+  en = 'Changed Quotes API',
+  es = 'Cambié la API de Cotizaciones',
+  fr = "Changé l'API des citations",
+  de = 'Zitate-API geändert',
+  pt = 'Alterei a API de Cotações',
+  cs = 'Změnil jsem API pro citace',
+  fi = 'Vaihdoin lainausten API:n',
+}

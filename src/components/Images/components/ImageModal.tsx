@@ -70,9 +70,15 @@ const ImageModal: FC<ModalImageProps> = ({
       fetchPoem()
     } else if (textType === 'quote') {
       const fetchQuote = async () => {
-        const response = await getQuote(language, searchTerm)
-        if (response.quote) setQuote(response.quote)
-        else dispatch(notify(response.message ?? EError[language], true, 8))
+        if ((language = ELanguages.Suomi)) {
+          const response = await getQuote(ELanguages.English, searchTerm)
+          if (response.quote) setQuote(response.quote)
+          else dispatch(notify(response.message ?? EError[language], true, 8))
+        } else {
+          const response = await getQuote(language, searchTerm)
+          if (response.quote) setQuote(response.quote)
+          else dispatch(notify(response.message ?? EError[language], true, 8))
+        }
       }
       fetchQuote()
     } else {

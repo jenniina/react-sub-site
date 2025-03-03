@@ -2,11 +2,13 @@ import { useState, useEffect, FC } from 'react'
 import styles from './scrolltotop.module.css'
 import { ELanguages, EScrollToTheTop } from '../../types'
 import { BiChevronsUp } from 'react-icons/bi'
+import { useLocation } from 'react-router-dom'
 
 const ScrollToTop: FC<{
   styleMenu: boolean | undefined
   language: ELanguages
 }> = ({ styleMenu, language }) => {
+  const location = useLocation()
   const [showTopBtn, setShowTopBtn] = useState(false)
   useEffect(() => {
     window.addEventListener('scroll', scrollY)
@@ -21,12 +23,21 @@ const ScrollToTop: FC<{
       setShowTopBtn(false)
     }
   }
+
   const goToTop = () => {
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     })
   }
+
+  useEffect(() => {
+    // hide #to-top-btn when on the /portfolio/colors page:
+    if (location.pathname === '/portfolio/colors') {
+      setShowTopBtn(false)
+    }
+  }, [location.pathname])
+
   return (
     <button
       id='to-top-btn'

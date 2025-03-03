@@ -9,18 +9,15 @@ import { notify } from '../../reducers/notificationReducer'
 import { findUserById, updateUser } from '../../reducers/usersReducer'
 import { AxiosError } from 'axios'
 import styles from './css/edit.module.css'
+import { getKeyByValue } from '../../utils'
 
 interface Props {
   language: ELanguages
   user: IUser
   setLanguage: (language: ELanguages) => void
   options: (enumObj: typeof ELanguages) => SelectOption[]
-  getKeyByValue: (
-    enumObj: typeof ELanguages,
-    value: ELanguages
-  ) => undefined | SelectOption['label']
 }
-const LanguageEdit = ({ user, language, setLanguage, options, getKeyByValue }: Props) => {
+const LanguageEdit = ({ user, language, setLanguage, options }: Props) => {
   const dispatch = useAppDispatch()
 
   const [passwordOld, setPasswordOld] = useState<IUser['password'] | ''>('')

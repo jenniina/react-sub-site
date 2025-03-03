@@ -2,7 +2,6 @@ import { lazy, Suspense } from 'react'
 import { useTheme } from '../hooks/useTheme'
 import { Link } from 'react-router-dom'
 import styles from './css/welcome.module.css'
-import Hero from '../components/Hero/Hero'
 import { BiChat } from 'react-icons/bi'
 import { BsPerson } from 'react-icons/bs'
 import { IoMdImages } from 'react-icons/io'
@@ -16,13 +15,8 @@ import {
   EStore,
   ELoading,
 } from '../types'
-import {
-  ECategories,
-  EJokeType,
-  ESafemode,
-  TCategoryByLanguages,
-} from '../components/Jokes/types'
 import { Select, SelectOption } from '../components/Select/Select'
+import { getKeyByValue } from '../utils'
 
 const Newest = lazy(() => import('../components/Newest/Newest'))
 
@@ -32,7 +26,6 @@ export default function Home({
   type,
   language,
   setLanguage,
-  getKeyByValue,
   options,
 }: {
   heading: string
@@ -40,14 +33,6 @@ export default function Home({
   type: string
   language: ELanguages
   setLanguage: (language: ELanguages) => void
-  getKeyByValue: (
-    enumObj:
-      | TCategoryByLanguages
-      | typeof EJokeType
-      | typeof ESafemode
-      | typeof ELanguages,
-    value: ECategories | EJokeType | ESafemode | ELanguages
-  ) => string | undefined
   options: (enumObj: typeof ELanguages) => SelectOption[]
 }) {
   const lightTheme = useTheme()
