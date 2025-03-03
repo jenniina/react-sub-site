@@ -91,11 +91,20 @@ import { TermsProducts } from '../../pages/TermsOfService'
 interface Props {
   language: ELanguages
   cart: ICartItem[]
-  setCart: React.Dispatch<React.SetStateAction<ICartItem[]>>
+  addToCart: (item: ICartItem | undefined) => void
+  removeFromCart: (itemId: string) => void
+  editDetails: (itemId: string, details: string) => void
   removeCart: () => void
 }
 
-const Cart: FC<Props> = ({ language, cart, setCart, removeCart }) => {
+const Cart: FC<Props> = ({
+  language,
+  cart,
+  addToCart,
+  removeFromCart,
+  editDetails,
+  removeCart,
+}) => {
   const lightTheme = useTheme()
   const dispatch = useAppDispatch()
 
@@ -160,12 +169,15 @@ const Cart: FC<Props> = ({ language, cart, setCart, removeCart }) => {
     })
   }, [name, companyName, email, businessID, zip, city, address, country, phone])
 
-  const handleQuantityChange = (itemId: string, change: number) => {
-    setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.id === itemId ? { ...item, quantity: item.quantity + change } : item
-      )
-    )
+  const handleQuantityChange = (item: ICartItem | undefined, change: number) => {
+    if (change < 0 && item) {
+      removeFromCart(item?.id)
+    }
+    if (change > 0) {
+      addToCart(item)
+    } else {
+      return
+    }
   }
 
   //set total
@@ -249,7 +261,6 @@ const Cart: FC<Props> = ({ language, cart, setCart, removeCart }) => {
               .then((res) => {
                 if (res.success) {
                   dispatch(notify(res.message, false, 10))
-                  setCart([])
                   removeCart()
                   setTotal(0)
                   setSending(false)
@@ -272,158 +283,150 @@ const Cart: FC<Props> = ({ language, cart, setCart, removeCart }) => {
         className={styles['cart-form']}
       >
         {cart.map((item, index) => {
-          if (item.quantity < 1 || isNaN(item.quantity))
-            setCart(cart.filter((i) => i.id !== item.id))
-          else
-            return (
-              <div key={`${item.id}-${index}`} className={styles.wrap}>
-                <h2>
-                  <span>{index + 1}. </span>
-                  <span>{item.name}</span>
-                </h2>
-                <p>{splitToLines(item.description)}</p>
-                <AdditionalInfo
-                  type={item.id}
-                  language={language}
-                  styles={styles}
-                  isOpen={true}
-                  setIsFormOpen={() => {}}
-                  classNameWrap={styles['additional-info-wrap']}
-                  text={EIncludes[language]}
-                />
-                <div className={`${styles['quantity']}`}>
-                  {item.id !== 'misc-quote' ? (
-                    <>
-                      <button
-                        type='button'
-                        onClick={() => {
-                          if (item.quantity - 1 < 1) {
-                            if (window.confirm(`${ERemove[language]}: ${item.name}?`)) {
-                              //remove item from cart
-                              setCart(cart.filter((i) => i.id !== item.id))
-                              return
-                            } else return
-                          }
-                          handleQuantityChange(item.id, -1)
-                        }}
-                        className={`tooltip-wrap ${styles['quantity-btn']}`}
-                      >
-                        <span className='tooltip above space right narrow2'>
-                          {ESubtractFromCart[language]}
-                        </span>
-                        <span>-1</span>
-                      </button>
-
-                      <span>
-                        {EQuantity[language]}: {item.quantity}
-                      </span>
-
-                      <button
-                        type='button'
-                        onClick={() => {
-                          handleQuantityChange(item.id, 1)
-                        }}
-                        className={`tooltip-wrap ${styles['quantity-btn']}`}
-                      >
-                        <span className='tooltip above space right narrow2'>
-                          {EAddToCart[language]}
-                        </span>
-                        <span>+1</span>
-                      </button>
-                    </>
-                  ) : (
+          return (
+            <div key={`${item.id}-${index}`} className={styles.wrap}>
+              <h2>
+                <span>{index + 1}. </span>
+                <span>{item.name}</span>
+              </h2>
+              <p>{splitToLines(item.description)}</p>
+              <AdditionalInfo
+                type={item.id}
+                language={language}
+                styles={styles}
+                isOpen={true}
+                setIsFormOpen={() => {}}
+                classNameWrap={styles['additional-info-wrap']}
+                text={EIncludes[language]}
+              />
+              <div className={`${styles['quantity']}`}>
+                {item.id !== 'misc-quote' ? (
+                  <>
                     <button
                       type='button'
                       onClick={() => {
                         if (item.quantity - 1 < 1) {
                           if (window.confirm(`${ERemove[language]}: ${item.name}?`)) {
                             //remove item from cart
-                            setCart(cart.filter((i) => i.id !== item.id))
+                            removeFromCart(item.id)
                             return
                           } else return
                         }
-                        handleQuantityChange(item.id, -1)
+                        handleQuantityChange(item, -1)
                       }}
+                      className={`tooltip-wrap ${styles['quantity-btn']}`}
                     >
-                      <span>{ERemove[language]}</span>
+                      <span className='tooltip above space right narrow2'>
+                        {ESubtractFromCart[language]}
+                      </span>
+                      <span>-1</span>
                     </button>
-                  )}
-                  {item.quantity >= freeHoursBreakpoint2 ? (
+
                     <span>
-                      {ETotal[language]}: {item.quantity + freeAmount2} {EHours[language]}
+                      {EQuantity[language]}: {item.quantity}
                     </span>
-                  ) : item.quantity >= freeHoursBreakpoint1 ? (
-                    <span>
-                      {ETotal[language]}: {item.quantity + freeAmount1} {EHours[language]}
-                    </span>
-                  ) : (
-                    ''
-                  )}
-                </div>
-                {item.id !== 'misc-quote' ? (
-                  <>
-                    <p>
-                      {EPrice[language]}: {item.price} € &times; {item.quantity} ={' '}
-                      <b>{item.price * item.quantity} €</b>
-                    </p>
+
+                    <button
+                      type='button'
+                      onClick={() => {
+                        handleQuantityChange(item, 1)
+                      }}
+                      className={`tooltip-wrap ${styles['quantity-btn']}`}
+                    >
+                      <span className='tooltip above space right narrow2'>
+                        {EAddToCart[language]}
+                      </span>
+                      <span>+1</span>
+                    </button>
                   </>
                 ) : (
-                  <p>
-                    {EPrice[language]}: {item.price} €{' '}
-                  </p>
+                  <button
+                    type='button'
+                    onClick={() => {
+                      if (item.quantity - 1 < 1) {
+                        if (window.confirm(`${ERemove[language]}: ${item.name}?`)) {
+                          removeFromCart(item.id)
+                          return
+                        } else return
+                      }
+                      handleQuantityChange(item, -1)
+                    }}
+                  >
+                    <span>{ERemove[language]}</span>
+                  </button>
                 )}
-
-                {item.id.startsWith('misc') && item.quantity >= freeHoursBreakpoint1 && (
-                  <p>
-                    <big>
-                      <FaHourglassStart /> <span>{EFreeHourUnlocked[language]}</span>{' '}
-                      {item.quantity >= freeHoursBreakpoint2 ? (
-                        <>
-                          <strong> &times; {freeAmount2} </strong>
-                          <span>&mdash;</span>{' '}
-                          <span>{ESaveTheFollowingAmountOfMoney[language]}</span>
-                          <strong> {item.price * freeAmount2} € </strong>
-                        </>
-                      ) : item.quantity >= freeHoursBreakpoint1 ? (
-                        <>
-                          <span> &mdash;</span>{' '}
-                          <span>{ESaveTheFollowingAmountOfMoney[language]}</span>
-                          <strong> {item.price} € </strong>
-                        </>
-                      ) : (
-                        ''
-                      )}
-                    </big>
-                  </p>
+                {item.quantity >= freeHoursBreakpoint2 ? (
+                  <span>
+                    {ETotal[language]}: {item.quantity + freeAmount2} {EHours[language]}
+                  </span>
+                ) : item.quantity >= freeHoursBreakpoint1 ? (
+                  <span>
+                    {ETotal[language]}: {item.quantity + freeAmount1} {EHours[language]}
+                  </span>
+                ) : (
+                  ''
                 )}
+              </div>
+              {item.id !== 'misc-quote' ? (
+                <>
+                  <p>
+                    {EPrice[language]}: {item.price} € &times; {item.quantity} ={' '}
+                    <b>{item.price * item.quantity} €</b>
+                  </p>
+                </>
+              ) : (
+                <p>
+                  {EPrice[language]}: {item.price} €{' '}
+                </p>
+              )}
 
-                <div className={styles['item-details']}>
-                  <div className={`${styles['textarea-wrap']} textarea-wrap`}>
-                    <label htmlFor={`${item.id}-details`}>
-                      <span>{ERequestsAndNeeds[language]}:</span>
-                      <textarea
-                        rows={5}
-                        required
-                        id={`details-${item.id}`}
-                        name={`details-${item.id}`}
-                        placeholder={
-                          item.id.startsWith('misc') && item.id !== 'misc-quote'
-                            ? EAdditionalInformation[language]
-                            : ERequestsIdeasAndLinksForInspiration[language]
-                        }
-                        onChange={(e) => {
-                          setCart(
-                            cart.map((i) =>
-                              i.id === item.id ? { ...i, details: e.target.value } : i
-                            )
-                          )
-                        }}
-                      />
-                    </label>
-                  </div>
+              {item.id.startsWith('misc') && item.quantity >= freeHoursBreakpoint1 && (
+                <p>
+                  <big>
+                    <FaHourglassStart /> <span>{EFreeHourUnlocked[language]}</span>{' '}
+                    {item.quantity >= freeHoursBreakpoint2 ? (
+                      <>
+                        <strong> &times; {freeAmount2} </strong>
+                        <span>&mdash;</span>{' '}
+                        <span>{ESaveTheFollowingAmountOfMoney[language]}</span>
+                        <strong> {item.price * freeAmount2} € </strong>
+                      </>
+                    ) : item.quantity >= freeHoursBreakpoint1 ? (
+                      <>
+                        <span> &mdash;</span>{' '}
+                        <span>{ESaveTheFollowingAmountOfMoney[language]}</span>
+                        <strong> {item.price} € </strong>
+                      </>
+                    ) : (
+                      ''
+                    )}
+                  </big>
+                </p>
+              )}
+
+              <div className={styles['item-details']}>
+                <div className={`${styles['textarea-wrap']} textarea-wrap`}>
+                  <label htmlFor={`${item.id}-details`}>
+                    <span>{ERequestsAndNeeds[language]}:</span>
+                    <textarea
+                      rows={5}
+                      required
+                      id={`details-${item.id}`}
+                      name={`details-${item.id}`}
+                      placeholder={
+                        item.id.startsWith('misc') && item.id !== 'misc-quote'
+                          ? EAdditionalInformation[language]
+                          : ERequestsIdeasAndLinksForInspiration[language]
+                      }
+                      onChange={(e) => {
+                        editDetails(item.id, e.target.value)
+                      }}
+                    />
+                  </label>
                 </div>
               </div>
-            )
+            </div>
+          )
         })}
         {cart.length > 0 ? (
           <>
@@ -782,7 +785,6 @@ const Cart: FC<Props> = ({ language, cart, setCart, removeCart }) => {
                 type='button'
                 onClick={() => {
                   if (window.confirm(`${ERemove[language]}: ${ECart[language]}?`)) {
-                    setCart([])
                     removeCart()
                     setTotal(0)
                   }
