@@ -32,21 +32,9 @@ interface Props {
   text: string
   type: string
   options: (enumObj: typeof ELanguages) => SelectOption[]
-  getKeyByValue: (
-    enumObj: typeof ELanguages,
-    value: ELanguages
-  ) => undefined | SelectOption['label']
 }
 
-const UserEditPage = ({
-  language,
-  setLanguage,
-  heading,
-  text,
-  type,
-  options,
-  getKeyByValue,
-}: Props) => {
+const UserEditPage = ({ language, setLanguage, heading, text, type, options }: Props) => {
   const lightTheme = useTheme()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -143,7 +131,6 @@ const UserEditPage = ({
                     language={language}
                     setLanguage={setLanguage}
                     options={options}
-                    getKeyByValue={getKeyByValue}
                   />
                 </Suspense>
               </div>

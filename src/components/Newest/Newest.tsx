@@ -72,6 +72,8 @@ import {
   ELaunchedAnOnlineOrderingSystem,
   ENovember,
   EMovedBackendFromAzureToMyOwnDomain,
+  EJanuary,
+  EChangedQuotesAPI,
 } from '../../types/welcome'
 import { Select, SelectOption } from '../Select/Select'
 import { EPriority, ETodoApp } from '../Todo/types'
@@ -121,6 +123,23 @@ export default function Newest({ language }: { language: ELanguages }) {
         <LiaNewspaperSolid /> {ENews[language]}
       </h2>
       <ul className={`${styles.extras}`}>
+        <li className={styles.first}>
+          <strong>2025</strong>
+          <ul>
+            <li>
+              <strong>{EFebruary[language]}</strong>
+              <ul>
+                <li>
+                  <Link to='/portfolio/media'>
+                    <IoMdImages />
+                    {EMedia[language]}:
+                  </Link>
+                  <i>{EChangedQuotesAPI[language]}</i>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
         <li className={styles.first}>
           <strong>2024</strong>
           <ul>

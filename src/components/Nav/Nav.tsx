@@ -66,6 +66,7 @@ import Accordion from '../Accordion/Accordion'
 import { TiShoppingCart } from 'react-icons/ti'
 import { ECart } from '../../types/store'
 import { FaStoreAlt } from 'react-icons/fa'
+import { getKeyByValue } from '../../utils'
 
 type Link = {
   label: string
@@ -76,16 +77,12 @@ interface NavProps {
   setStyleMenu: (style: boolean) => void
   language: ELanguages
   options: (enumObj: typeof ELanguages) => SelectOption[]
-  getKeyByValue: (
-    enumObj: typeof ELanguages,
-    value: ELanguages
-  ) => undefined | SelectOption['label']
   setLanguage: (language: ELanguages) => void
   hasCartItems: boolean
 }
 
 const Nav = (
-  { setStyleMenu, language, options, getKeyByValue, setLanguage, hasCartItems }: NavProps,
+  { setStyleMenu, language, options, setLanguage, hasCartItems }: NavProps,
   ref: Ref<{ getStyle: () => boolean }>
 ) => {
   const user = useSelector((state: ReducerProps) => {

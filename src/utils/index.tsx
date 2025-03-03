@@ -9,6 +9,12 @@ import {
 } from '../components/AccessibleColors/AccessibleColors'
 import useRandomMinMax from '../hooks/useRandomMinMax'
 import domtoimage from 'dom-to-image-more'
+import {
+  ECategories,
+  EJokeType,
+  ESafemode,
+  TCategoryByLanguages,
+} from '../components/Jokes/types'
 
 export const splitToLines = (details: string) => {
   return details.split('\n').map((line: string, index: number) => (
@@ -506,4 +512,17 @@ export const translate = <T extends string | number | symbol>(
   language: ELanguages
 ): string => {
   return translationMap[key]?.[language] || (key as string)
+}
+
+export function getKeyByValue(
+  enumObj: TCategoryByLanguages | typeof EJokeType | typeof ESafemode | typeof ELanguages,
+  value: ECategories | EJokeType | ESafemode | ELanguages
+) {
+  for (const key in enumObj) {
+    if (enumObj[key as keyof typeof enumObj] === value) {
+      return key as SelectOption['label']
+    }
+  }
+  // Handle the case where the value is not found in the enum
+  return undefined
 }
