@@ -11,7 +11,9 @@ interface CartProps {
   type: string
   language: ELanguages
   cart: ICartItem[]
-  setCart: Dispatch<SetStateAction<ICartItem[]>>
+  addToCart: (item: ICartItem | undefined) => void
+  editDetails: (itemId: string, details: string) => void
+  removeFromCart: (itemId: string) => void
   removeCart: () => void
 }
 
@@ -23,7 +25,9 @@ const CartPage: React.FC<CartProps> = ({
   type,
   language,
   cart,
-  setCart,
+  addToCart,
+  removeFromCart,
+  editDetails,
   removeCart,
 }) => {
   return (
@@ -41,8 +45,10 @@ const CartPage: React.FC<CartProps> = ({
               <Cart
                 language={language}
                 cart={cart}
-                setCart={setCart}
+                addToCart={addToCart}
+                removeFromCart={removeFromCart}
                 removeCart={removeCart}
+                editDetails={editDetails}
               />
             </Suspense>
           </div>

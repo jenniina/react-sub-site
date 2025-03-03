@@ -201,7 +201,11 @@ const heroConfig: { [key: string]: (language: ELanguages) => HeroProps } = {
   }),
 }
 
-export function useHeroProps(displayPath: string, language: ELanguages): HeroProps {
+export function useHeroProps(
+  pathname: string,
+  displayPath: string,
+  language: ELanguages
+): HeroProps {
   const [heroProps, setHeroProps] = useState<{
     heading: string
     text: string
@@ -220,7 +224,7 @@ export function useHeroProps(displayPath: string, language: ELanguages): HeroPro
     const config = heroConfig[displayPath] || heroConfig['/']
     setHeroProps(config(language))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.pathname, language, displayPath])
+  }, [pathname, language, displayPath])
 
   return heroProps
 }

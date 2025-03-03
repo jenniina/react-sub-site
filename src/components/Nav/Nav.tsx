@@ -67,6 +67,8 @@ import { TiShoppingCart } from 'react-icons/ti'
 import { ECart } from '../../types/store'
 import { FaStoreAlt } from 'react-icons/fa'
 import { getKeyByValue } from '../../utils'
+import useCart from '../../hooks/useCart'
+import { options } from '../../utils'
 
 type Link = {
   label: string
@@ -76,15 +78,15 @@ type Link = {
 interface NavProps {
   setStyleMenu: (style: boolean) => void
   language: ELanguages
-  options: (enumObj: typeof ELanguages) => SelectOption[]
   setLanguage: (language: ELanguages) => void
-  hasCartItems: boolean
 }
 
 const Nav = (
-  { setStyleMenu, language, options, setLanguage, hasCartItems }: NavProps,
+  { setStyleMenu, language, setLanguage }: NavProps,
   ref: Ref<{ getStyle: () => boolean }>
 ) => {
+  const { cart } = useCart()
+
   const user = useSelector((state: ReducerProps) => {
     return state.auth?.user
   })
@@ -557,7 +559,7 @@ const Nav = (
               {ESearch[language]}
             </span>
           </button>
-          {hasCartItems && window.location.pathname !== '/cart' ? (
+          {cart.length > 0 && window.location.pathname !== '/cart' ? (
             <button
               className={`${styles.settings} ${styles.cart}`}
               aria-label='cart'
