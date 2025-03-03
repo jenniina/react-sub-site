@@ -49,7 +49,6 @@ export const MainProvider: FC<{
 }) => {
   const [transitionPage, setTransitionPage] = useState('fadeIn')
 
-  // Replace inline scroll effect with our hook:
   useScrollToHashOrTop(displayLocation.pathname)
 
   // Update document language and title
