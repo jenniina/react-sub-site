@@ -27,7 +27,6 @@ import TermsOfService from './pages/TermsOfService'
 import ColorsPage from './pages/pages-portfolio/ColorsPage'
 import {
   RefObject,
-  ELanguages,
   EWelcome,
   EToTheReactSiteOfJenniinaFi,
   EAbout,
@@ -78,8 +77,6 @@ const QuizQuestion = lazy(() => import('./components/Quiz/QuizQuestion'))
 const QuizFinished = lazy(() => import('./components/Quiz/QuizFinished'))
 const NavPortfolio = lazy(() => import('./components/NavPortfolio/NavPortfolio'))
 import { Location as RouterLocation } from 'react-router-dom'
-import { useScrollToHashOrTop } from './hooks/useScrollTo'
-import { useDocumentTitleAndLanguage } from './hooks/useDocumentTitleAndLanguage'
 import { useHeroProps } from './hooks/useHeroProps'
 import { MainProvider } from './contexts/MainContext'
 import { LanguageContext } from './contexts/LanguageContext'
@@ -92,11 +89,6 @@ const App: FC = () => {
   const [displayLocation, setDisplayLocation] = useState<RouterLocation>(location)
 
   const heroProps = useHeroProps(displayLocation.pathname, language)
-
-  useScrollToHashOrTop(displayLocation.pathname)
-
-  // Update document language and title
-  useDocumentTitleAndLanguage({ language })
 
   const [styleMenu, setStyleMenu] = useState<boolean>()
   const menuStyle = useRef() as RefObject<{ getStyle: () => boolean }>
