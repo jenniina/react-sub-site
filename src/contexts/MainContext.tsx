@@ -32,7 +32,7 @@ export const MainContext = createContext<MainContextProps | undefined>(undefined
 
 export const MainProvider: FC<{
   language: ELanguages
-  setLanguage: Dispatch<SetStateAction<ELanguages>>
+  setLanguage: (lang: ELanguages) => void
   location: RouterLocation
   displayLocation: RouterLocation
   setDisplayLocation: Dispatch<SetStateAction<RouterLocation>>

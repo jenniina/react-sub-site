@@ -1,4 +1,4 @@
-import { useState, FC, useRef, useEffect, Suspense, lazy } from 'react'
+import { useState, FC, useRef, useEffect, Suspense, lazy, useContext } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import './css/App.css'
 import './css/form.css'
@@ -88,16 +88,14 @@ import { useScrollToHashOrTop } from './hooks/useScrollTo'
 import { useDocumentTitleAndLanguage } from './hooks/useDocumentTitleAndLanguage'
 import { useHeroProps } from './hooks/useHeroProps'
 import { MainProvider } from './contexts/MainContext'
+import { LanguageContext } from './contexts/LanguageContext'
 
 const App: FC = () => {
+  const { language, setLanguage } = useContext(LanguageContext)!
+
   const location = useLocation()
 
   const [displayLocation, setDisplayLocation] = useState<RouterLocation>(location)
-
-  const [language, setLanguage] = useLocalStorage<ELanguages>(
-    'AppLanguage',
-    ELanguages.English
-  )
 
   const heroProps = useHeroProps(displayLocation.pathname, language)
 
