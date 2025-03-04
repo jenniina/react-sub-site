@@ -1,9 +1,7 @@
-import { useTheme } from '../../hooks/useTheme'
 import { Link } from 'react-router-dom'
 import styles from '../../pages/css/welcome.module.css'
-import Hero from '../Hero/Hero'
-import { BiChat, BiSolidColorFill } from 'react-icons/bi'
-import { BsPerson } from 'react-icons/bs'
+import { BiSolidColorFill } from 'react-icons/bi'
+import { BsCart2, BsPerson } from 'react-icons/bs'
 import { IoMdImages } from 'react-icons/io'
 import { GiAbstract019, GiNewShoot } from 'react-icons/gi'
 import { MdOutlineQuiz } from 'react-icons/md'
@@ -16,15 +14,12 @@ import { LiaNewspaperSolid } from 'react-icons/lia'
 import { BsMusicNoteBeamed } from 'react-icons/bs'
 import { firstToLowerCase } from '../../utils'
 import {
-  EAbout,
   EAccessibility,
   EAddedAnotherInstanceOfTheBlobArtApp,
   EBlobs,
   EButton,
   EButtons,
   EChangeCategoryTitle,
-  EChangeLanguage,
-  EContact,
   EDelete,
   EDragAndDrop,
   EGraphQLSite,
@@ -33,25 +28,16 @@ import {
   ELanguages,
   ENews,
   EOlderNews,
-  EPortfolio,
   EQuiz,
   EQuizAppIntro,
   EReset,
   ETestYourKnowledge,
   EAddANewCategory,
   EStore,
-  EDisclaimer,
   ETermsOfService,
   EPage,
 } from '../../types'
-import {
-  ECategories,
-  ECategoryTitle,
-  EJokeType,
-  ESafemode,
-  ETheComediansCompanion,
-  TCategoryByLanguages,
-} from '../Jokes/types'
+import { ECategoryTitle, ETheComediansCompanion } from '../Jokes/types'
 import {
   EAddedNewFeatures,
   EAddedNewIntroElements,
@@ -72,10 +58,10 @@ import {
   ELaunchedAnOnlineOrderingSystem,
   ENovember,
   EMovedBackendFromAzureToMyOwnDomain,
-  EJanuary,
   EChangedQuotesAPI,
+  EMarch,
+  EChangeLog,
 } from '../../types/welcome'
-import { Select, SelectOption } from '../Select/Select'
 import { EPriority, ETodoApp } from '../Todo/types'
 import {
   ETasksCanBeEdited,
@@ -85,7 +71,6 @@ import { GrGraphQl } from 'react-icons/gr'
 import {
   EAddedPaginationToSavedArt,
   EChangedAllControlsToButtons,
-  ECloneABlobByClickingTheTopLeftPlusSign,
   EDragBlobToIconsNextToLayerButtons,
   EEditArtwork,
   ELayers,
@@ -96,7 +81,6 @@ import {
   ENameYourArtwork,
   EPressSpaceOrRWithABlobInFocusToCycleThroughRandomColors,
   ERemovable,
-  ERemoveABlobByClickingTheBottomLeftXSign,
   ERenameYourArtwork,
   ESampleArtwork,
   EScreenshot,
@@ -113,19 +97,30 @@ import {
 import { EMemoryGame, EMemoryGameIntro } from '../../types/memory'
 import MemorySVG from '../Memory/components/MemorySVG'
 import { EMedia, EMediaWithQuotesOrPoems } from '../../types/images'
+import { ECart } from '../../types/store'
 
 export default function Newest({ language }: { language: ELanguages }) {
-  const lightTheme = useTheme()
-
   return (
     <div className={`${styles.newest}`}>
       <h2 className={`${styles.subheading}`}>
-        <LiaNewspaperSolid /> {ENews[language]}
+        <LiaNewspaperSolid /> {EChangeLog[language]}
       </h2>
       <ul className={`${styles.extras}`}>
         <li className={styles.first}>
           <strong>2025</strong>
           <ul>
+            <li>
+              <strong>{EMarch[language]}</strong>
+              <ul>
+                <li>
+                  <Link to='/cart'>
+                    <BsCart2 />
+                    {ECart[language]}:
+                  </Link>
+                  <i>{EBugFixes[language]}</i>
+                </li>
+              </ul>
+            </li>
             <li>
               <strong>{EFebruary[language]}</strong>
               <ul>
@@ -149,7 +144,7 @@ export default function Newest({ language }: { language: ELanguages }) {
                 <li>
                   <a className='disabled'>
                     <LuArrowRightToLine />
-                    <span>{ESiteMigration[language]} </span>
+                    <span>{ESiteMigration[language]}: </span>
                   </a>
                   <i>{EMovedBackendFromAzureToMyOwnDomain[language]}</i>
                 </li>
@@ -259,117 +254,6 @@ export default function Newest({ language }: { language: ELanguages }) {
                 </li>
               </ul>
             </li>
-            <li>
-              <strong>{ESeptember[language]}</strong>
-              <ul>
-                <li>
-                  <Link to='/portfolio/draganddrop'>
-                    <RiDragDropLine />
-                    {EDragAndDrop[language]}:
-                  </Link>
-                  <i>
-                    {EAddedNewFeatures[language]}:{' '}
-                    {firstToLowerCase(EAddGenericCardsAndColorThem[language])}
-                  </i>
-                </li>
-
-                <li>
-                  <Link to='/portfolio/blob'>
-                    <TbBlob />
-                    {EBlobs[language]}:
-                  </Link>
-                  <i>
-                    {EAddedNewFeatures[language]}:{' '}
-                    {EPressSpaceOrRWithABlobInFocusToCycleThroughRandomColors[language]}
-                  </i>
-                </li>
-                <li>
-                  <Link to='/portfolio/draganddrop'>
-                    <RiDragDropLine />
-                    {EDragAndDrop[language]}:
-                  </Link>
-                  <i>
-                    {EAddedNewFeatures[language]}: {EDelete[language].toLowerCase()} (
-                    {firstToLowerCase(ECategoryTitle[language])}),{' '}
-                    {firstToLowerCase(EAddANewCategory[language])}
-                  </i>
-                </li>
-                <li>
-                  <a className='disabled'>
-                    <TbTriangleInverted />
-                    {EHeroSection[language]}:
-                  </a>{' '}
-                  <i>
-                    {EAddedNewFeatures[language]}: {ERandomHeadingItemMovement[language]}
-                  </i>
-                </li>
-                <li>
-                  <Link to='/portfolio/draganddrop'>
-                    <RiDragDropLine />
-                    {EDragAndDrop[language]}:
-                  </Link>
-                  <i>
-                    {EBugFixes[language]}. {EAccessibility[language]}:{' '}
-                    {EOptimizing[language].toLowerCase()}.
-                  </i>
-                </li>
-                <li>
-                  <Link to='/portfolio/blob'>
-                    <TbBlob />
-                    {EBlobs[language]}:
-                  </Link>
-                  <i>{EAddedAnotherInstanceOfTheBlobArtApp[language]} </i>
-                </li>
-                <li>
-                  <Link to='/portfolio/blob'>
-                    <TbBlob />
-                    {EBlobs[language]}:
-                  </Link>
-                  <i>
-                    {ESampleArtwork[language]}. {EAddedNewFeatures[language]}:{' '}
-                    {EAddedPaginationToSavedArt[language]}
-                  </i>
-                </li>
-                <li>
-                  <Link to='/portfolio/blob'>
-                    <TbBlob />
-                    {EBlobs[language]}:
-                  </Link>
-                  <i>
-                    {EAddedNewFeatures[language]}: {EScreenshot[language]}!{' '}
-                    {EMoveEveryBlobUpOrDownOneLayerByPressingTheButtons[language]}.{' '}
-                    {EDragBlobToIconsNextToLayerButtons[language]}
-                  </i>
-                </li>
-                <li>
-                  <Link to='/portfolio/draganddrop'>
-                    <RiDragDropLine />
-                    {EDragAndDrop[language]}:
-                  </Link>
-                  <i>
-                    {EAddedNewFeatures[language]}:{' '}
-                    {firstToLowerCase(EAddAColor[language])},{' '}
-                    {firstToLowerCase(EChangeCategoryTitle[language])},{' '}
-                    {firstToLowerCase(EReset[language])},{' '}
-                    {firstToLowerCase(ERemovable[language])}
-                  </i>
-                </li>
-                <li>
-                  <Link to='/portfolio/blob'>
-                    <TbBlob />
-                    {EBlobs[language]}:
-                  </Link>
-                  <i>
-                    {EAddedNewFeatures[language]}:{' '}
-                    {firstToLowerCase(ELoginToSaveBlobsToServer[language])},{' '}
-                    {firstToLowerCase(EManyVersions[language])},{' '}
-                    {firstToLowerCase(ENameYourArtwork[language])},{' '}
-                    {firstToLowerCase(ERenameYourArtwork[language])},{' '}
-                    {firstToLowerCase(EEditArtwork[language])}
-                  </i>
-                </li>
-              </ul>
-            </li>
           </ul>
         </li>
       </ul>
@@ -384,6 +268,122 @@ export default function Newest({ language }: { language: ELanguages }) {
             <li>
               <strong>2024</strong>
               <ul>
+                <li>
+                  <strong>{ESeptember[language]}</strong>
+                  <ul>
+                    <li>
+                      <Link to='/portfolio/draganddrop'>
+                        <RiDragDropLine />
+                        {EDragAndDrop[language]}:
+                      </Link>
+                      <i>
+                        {EAddedNewFeatures[language]}:{' '}
+                        {firstToLowerCase(EAddGenericCardsAndColorThem[language])}
+                      </i>
+                    </li>
+
+                    <li>
+                      <Link to='/portfolio/blob'>
+                        <TbBlob />
+                        {EBlobs[language]}:
+                      </Link>
+                      <i>
+                        {EAddedNewFeatures[language]}:{' '}
+                        {
+                          EPressSpaceOrRWithABlobInFocusToCycleThroughRandomColors[
+                            language
+                          ]
+                        }
+                      </i>
+                    </li>
+                    <li>
+                      <Link to='/portfolio/draganddrop'>
+                        <RiDragDropLine />
+                        {EDragAndDrop[language]}:
+                      </Link>
+                      <i>
+                        {EAddedNewFeatures[language]}: {EDelete[language].toLowerCase()} (
+                        {firstToLowerCase(ECategoryTitle[language])}),{' '}
+                        {firstToLowerCase(EAddANewCategory[language])}
+                      </i>
+                    </li>
+                    <li>
+                      <a className='disabled'>
+                        <TbTriangleInverted />
+                        {EHeroSection[language]}:
+                      </a>{' '}
+                      <i>
+                        {EAddedNewFeatures[language]}:{' '}
+                        {ERandomHeadingItemMovement[language]}
+                      </i>
+                    </li>
+                    <li>
+                      <Link to='/portfolio/draganddrop'>
+                        <RiDragDropLine />
+                        {EDragAndDrop[language]}:
+                      </Link>
+                      <i>
+                        {EBugFixes[language]}. {EAccessibility[language]}:{' '}
+                        {EOptimizing[language].toLowerCase()}.
+                      </i>
+                    </li>
+                    <li>
+                      <Link to='/portfolio/blob'>
+                        <TbBlob />
+                        {EBlobs[language]}:
+                      </Link>
+                      <i>{EAddedAnotherInstanceOfTheBlobArtApp[language]} </i>
+                    </li>
+                    <li>
+                      <Link to='/portfolio/blob'>
+                        <TbBlob />
+                        {EBlobs[language]}:
+                      </Link>
+                      <i>
+                        {ESampleArtwork[language]}. {EAddedNewFeatures[language]}:{' '}
+                        {EAddedPaginationToSavedArt[language]}
+                      </i>
+                    </li>
+                    <li>
+                      <Link to='/portfolio/blob'>
+                        <TbBlob />
+                        {EBlobs[language]}:
+                      </Link>
+                      <i>
+                        {EAddedNewFeatures[language]}: {EScreenshot[language]}!{' '}
+                        {EMoveEveryBlobUpOrDownOneLayerByPressingTheButtons[language]}.{' '}
+                        {EDragBlobToIconsNextToLayerButtons[language]}
+                      </i>
+                    </li>
+                    <li>
+                      <Link to='/portfolio/draganddrop'>
+                        <RiDragDropLine />
+                        {EDragAndDrop[language]}:
+                      </Link>
+                      <i>
+                        {EAddedNewFeatures[language]}:{' '}
+                        {firstToLowerCase(EAddAColor[language])},{' '}
+                        {firstToLowerCase(EChangeCategoryTitle[language])},{' '}
+                        {firstToLowerCase(EReset[language])},{' '}
+                        {firstToLowerCase(ERemovable[language])}
+                      </i>
+                    </li>
+                    <li>
+                      <Link to='/portfolio/blob'>
+                        <TbBlob />
+                        {EBlobs[language]}:
+                      </Link>
+                      <i>
+                        {EAddedNewFeatures[language]}:{' '}
+                        {firstToLowerCase(ELoginToSaveBlobsToServer[language])},{' '}
+                        {firstToLowerCase(EManyVersions[language])},{' '}
+                        {firstToLowerCase(ENameYourArtwork[language])},{' '}
+                        {firstToLowerCase(ERenameYourArtwork[language])},{' '}
+                        {firstToLowerCase(EEditArtwork[language])}
+                      </i>
+                    </li>
+                  </ul>
+                </li>
                 <li>
                   <strong>{EAugust[language]}</strong>
                   <ul>
@@ -425,7 +425,7 @@ export default function Newest({ language }: { language: ELanguages }) {
                     <li>
                       <a className='disabled'>
                         <LuArrowRightToLine />
-                        <span>{ESiteMigration[language]} </span>
+                        <span>{ESiteMigration[language]}: </span>
                       </a>
                       <i>{EMigratedSiteToAnotherAzureSubscription[language]}</i>
                     </li>
