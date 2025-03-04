@@ -39,6 +39,7 @@ const useCart = () => {
 
   const clearCart = () => {
     removeCart()
+    setCart([])
   }
 
   return {
