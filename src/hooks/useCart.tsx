@@ -10,13 +10,27 @@ const useCart = () => {
   )
 
   const addToCart = (item: ICartItem | undefined) => {
-    if (!item || cart.some((cartItem) => cartItem.id === item.id)) {
-      return
-    } else setCart([...cart, item])
+    if (item) {
+      const existingItem = cart.find((i) => i.id === item.id)
+      if (existingItem) {
+        existingItem.quantity += 1
+        setCart([...cart])
+        return
+      } else {
+        setCart([...cart, item])
+      }
+    }
   }
 
   const removeFromCart = (itemId: string) => {
-    setCart(cart.filter((item) => item.id !== itemId))
+    const existingItem = cart.find((i) => i.id === itemId)
+    if (existingItem && existingItem.quantity > 1) {
+      existingItem.quantity -= 1
+      setCart([...cart])
+      return
+    } else {
+      setCart(cart.filter((i) => i.id !== itemId))
+    }
   }
 
   const editDetails = (itemId: string, details: string) => {

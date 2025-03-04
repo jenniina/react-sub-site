@@ -26,7 +26,8 @@ interface Props {
   name: string
   id: string
   cart: ICartItem[]
-  setCart: Dispatch<SetStateAction<ICartItem[]>>
+  addToCart: (item: ICartItem) => void
+  removeFromCart: (itemId: string) => void
   intro: string
   link: ReactNode | null
 }
@@ -37,7 +38,8 @@ const StoreItems: FC<Props> = ({
   name,
   id,
   cart,
-  setCart,
+  addToCart,
+  removeFromCart,
   intro,
   link,
 }) => {
@@ -133,7 +135,7 @@ const StoreItems: FC<Props> = ({
                                 `${ERemove[language]} ${item.name} ${ECart[language]}?`
                               )
                             )
-                              setCart(cart.filter((cartItem) => cartItem.id !== item.id))
+                              removeFromCart(item.id)
                           }}
                         >
                           {ERemove[language]}
@@ -149,15 +151,13 @@ const StoreItems: FC<Props> = ({
                           (cartItem) => cartItem.id === item.id
                         )
                         if (existingItemInCart) {
-                          setCart(
-                            cart.map((cartItem) =>
-                              cartItem.id === item.id
-                                ? { ...cartItem, quantity: cartItem.quantity + 1 }
-                                : cartItem
-                            )
-                          )
+                          addToCart({
+                            ...item,
+                            quantity: existingItemInCart.quantity + 1,
+                          })
+                          dispatch(notify(`${ESavingSuccessful[language]}`, false, 3))
                         } else {
-                          setCart([...cart, { ...item, quantity: 1 }])
+                          addToCart({ ...item, quantity: 1 })
                           dispatch(notify(`${ESavingSuccessful[language]}`, false, 3))
                         }
                       }}

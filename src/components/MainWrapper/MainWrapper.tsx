@@ -430,7 +430,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
               text={EWebpagesAndGraphicDesign[language]}
               type='page'
               cart={cart}
-              setCart={clearCart}
+              addToCart={addToCart}
+              removeFromCart={removeFromCart}
             />
           }
         />
