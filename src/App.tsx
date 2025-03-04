@@ -16,13 +16,13 @@ const App: FC = () => {
   const { language, setLanguage } = useContext(LanguageContext)!
 
   const [styleMenu, setStyleMenu] = useState<boolean>()
-  const menuStyle = useRef() as RefObject<{ getStyle: () => boolean }>
+  const menuStyleRef = useRef() as RefObject<{ getStyle: () => boolean }>
 
   return (
-    <UIProvider language={language} menuStyle={menuStyle}>
+    <UIProvider language={language} menuStyle={menuStyleRef}>
       <Nav
         setStyleMenu={setStyleMenu}
-        ref={menuStyle}
+        ref={menuStyleRef}
         language={language}
         setLanguage={setLanguage}
       />
