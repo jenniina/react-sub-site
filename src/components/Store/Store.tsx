@@ -75,10 +75,11 @@ import { ENote } from '../Jokes/types'
 interface Props {
   language: ELanguages
   cart: ICartItem[]
-  setCart: React.Dispatch<React.SetStateAction<ICartItem[]>>
+  addToCart: (item: ICartItem) => void
+  removeFromCart: (itemId: string) => void
 }
 
-const Store: FC<Props> = ({ language, cart, setCart }) => {
+const Store: FC<Props> = ({ language, cart, addToCart, removeFromCart }) => {
   const lightTheme = useTheme()
 
   const wordpress: Partial<ICartItem>[] = [
@@ -370,7 +371,8 @@ const Store: FC<Props> = ({ language, cart, setCart }) => {
           intro={item.intro}
           link={item.link}
           cart={cart}
-          setCart={setCart}
+          addToCart={addToCart}
+          removeFromCart={removeFromCart}
         />
       ))}
     </>

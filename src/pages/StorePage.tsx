@@ -11,7 +11,8 @@ interface StoreProps {
   text: string
   type: string
   cart: ICartItem[]
-  setCart: React.Dispatch<React.SetStateAction<ICartItem[]>>
+  addToCart: (item: ICartItem) => void
+  removeFromCart: (itemId: string) => void
 }
 
 const Store = lazy(() => import('../components/Store/Store'))
@@ -22,7 +23,8 @@ const StorePage: React.FC<StoreProps> = ({
   text,
   type,
   cart,
-  setCart,
+  addToCart,
+  removeFromCart,
 }) => {
   return (
     <div className={`store ${type} ${styles.store}`}>
@@ -34,7 +36,12 @@ const StorePage: React.FC<StoreProps> = ({
             </div>
           }
         >
-          <Store language={language} cart={cart} setCart={setCart} />
+          <Store
+            language={language}
+            cart={cart}
+            addToCart={addToCart}
+            removeFromCart={removeFromCart}
+          />
         </Suspense>
       </div>
     </div>

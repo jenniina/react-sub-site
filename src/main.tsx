@@ -15,7 +15,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <BrowserRouter>
       <LanguageProvider>
         <BlobProvider>
-          <ThemeProvider key={null} type={''} props={undefined}>
+          <ThemeProvider>
             <Provider store={store}>
               <ModalProvider>
                 <App />

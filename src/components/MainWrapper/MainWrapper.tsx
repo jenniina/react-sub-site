@@ -1,7 +1,6 @@
 import { Routes, Route, Location as RouterLocation, useLocation } from 'react-router-dom'
 import { options } from '../../utils'
 import { Suspense, lazy, useEffect, useState } from 'react'
-import Test from '../../pages/testpage'
 import Portfolio from '../../pages/Portfolio'
 import About from '../../pages/About'
 import CartPage from '../../pages/CartPage'
@@ -171,8 +170,6 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             />
           }
         />
-
-        <Route path='/test' element={<Test heading='Test Page' text='' type='page' />} />
 
         <Route
           path='/edit'
@@ -433,7 +430,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
               text={EWebpagesAndGraphicDesign[language]}
               type='page'
               cart={cart}
-              setCart={clearCart}
+              addToCart={addToCart}
+              removeFromCart={removeFromCart}
             />
           }
         />
