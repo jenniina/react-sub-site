@@ -259,3 +259,21 @@ export enum EChangedQuotesAPI {
   cs = 'Změnil jsem API pro citace',
   fi = 'Vaihdoin lainausten API:n',
 }
+export enum EChanges {
+  en = 'Changes',
+  es = 'Cambios',
+  fr = 'Changements',
+  de = 'Änderungen',
+  pt = 'Alterações',
+  cs = 'Změny',
+  fi = 'Muutokset',
+}
+export enum EChangeLog {
+  en = 'Change log',
+  es = 'Registro de cambios',
+  fr = 'Journal des modifications',
+  de = 'Änderungsprotokoll',
+  pt = 'Registro de alterações',
+  cs = 'Záznam změn',
+  fi = 'Muutosloki',
+}
