@@ -1,99 +1,10 @@
-import { useMemo, lazy, Suspense } from 'react'
+import { useMemo, lazy, Suspense, useContext } from 'react'
 import { useTheme } from '../hooks/useTheme'
 import { Link } from 'react-router-dom'
 import styles from './css/about.module.css'
-import Hero from '../components/Hero/Hero'
 import { IoSettingsSharp } from 'react-icons/io5'
-import {
-  EAboutThisSite,
-  EAlienEyes,
-  EBubbles,
-  EButtonToToggleBetweenNavigationStyles,
-  EContact,
-  ECustomSelect,
-  EDragAndDrop,
-  EDraggable,
-  EDraggableBlobs,
-  EEightSidedJewels,
-  EElements,
-  EElementsRotateToFaceCursor,
-  EFeaturesOfThisSite,
-  EFourSidedJewels,
-  EHeroSection,
-  EHoverFocusAnimation,
-  EIcon,
-  EInteractiveElements,
-  EInvertedTriangles,
-  EKeyboardFocusMoveItemsWithArrowKeys,
-  ELanguageSelect,
-  ELanguages,
-  ELightDarkModeButton,
-  ELoading,
-  ELogInAndRegisterButtons,
-  EMainSite,
-  EMovementAccordingToPointerEnterDirection,
-  EMultistepForm,
-  EPleaseReportAnyIssuesWithTheSiteToJenniina,
-  EPortfolio,
-  EQuizApp,
-  ERemoveWithClickOrEnterWhenFocused,
-  EReplacedByUserEditAndLogoutButtonsWhenLoggedIn,
-  ESeeSettingsAtMenuBar,
-  ESeeTheTopOfTheCurrentPage,
-  ESettings,
-  ESiteSettings,
-  ESquaresStandingOnTheirCorner,
-  EStore,
-  ESurvey,
-  ETwoStylesAtSmallScreenSizeAndTwoAtLargeScreenSize,
-} from '../types'
-import {
-  EAddMoreBlobs,
-  EAddTasksToList,
-  EAnimatedClipPathsAndTextRotationOnHoverWithDynamicDelay,
-  EBackToTopButtonAtTheLowerRightCornerAndAtTheFooter,
-  EBlobArtApp,
-  ECanBeMovedToTwoOtherContainers,
-  ECustomizableOptions,
-  EDraggableListElements,
-  EExitLinksAtTheTopAndBottomOfThePages,
-  EFetchesQuestionsFromAnAPI,
-  EGoToItemByTypingTheFirstFewLettersOfTheItem,
-  EInThePortfolioSection,
-  EKeyboardAccessibleDropDownList,
-  EMultipleSelect,
-  ENavigateWithArrowKeys,
-  ENodeGithubRepository,
-  EOtherFeatures,
-  EPageTransitionAnimation,
-  EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo,
-  EPressEscapeToSkipToResetButton,
-  EReactApps,
-  EReactGithubRepository,
-  ERemoveBlobs,
-  ERemoveTasksOneByOneOrEveryFinishedTaskAtOnce,
-  EResetButtonOnTheLowerRightCornerResetsTheInteractiveElements,
-  ESavesLatestJokeInLocalStorageAndUsesMongoDBToStore,
-  ESeeNumberOfUnfinishedTasks,
-  ESingleSelect,
-  ESiteColors,
-  ESortableWithinTheirContainer,
-  ETheSiteColorsLightnessesSwitchInLightMode1,
-  ETheSiteColorsLightnessesSwitchInLightMode2,
-  ETheSiteIsTranslatedToSixLanguagesWhichWere,
-  ETheTranslationsAreDoneWithTheHelpOfGithubCopilotSo,
-  EThreeStepFullyFunctionalContactForm,
-  EUsesANodeBackendToSendTheMessage,
-  EUsesLocalStorageToStoreTheInformation,
-  EUsesMongoDBToStoreTheInformationWhenLoggedIn,
-  EWaveAnimationAtTheMainHeading,
-} from '../types/about'
-import { EUserCanChooseTheDifficultyLevel } from '../types/quiz'
-import { EChangeableColor, EChangeableSize } from '../types/blobs'
-import { ETodoApp } from '../components/Todo/types'
-import { ETheComediansCompanion } from '../components/Jokes/types'
-import { EComposerPage, EMusicNotes } from '../types/composer'
-import { ECart } from '../types/store'
+import { ELanguages } from '../types'
+import { LanguageContext } from '../contexts/LanguageContext'
 
 const ColorComponent = lazy(() => import('../components/About/ColorComponent'))
 
@@ -114,6 +25,8 @@ export default function About({
   type: string
   language: ELanguages
 }) {
+  const { t } = useContext(LanguageContext)!
+
   const lightTheme = useTheme()
 
   const colorsArray: colorProps[] = []
@@ -158,126 +71,112 @@ export default function About({
         <section className={`card ${styles.section}`}>
           <div>
             <div className='wide'>
-              <p>{EAboutThisSite[language]}</p>
+              <p>{t('EAboutThisSite')}</p>
               <p>
-                <a href='https://jenniina.fi'>{EMainSite[language]}</a>
+                <a href='https://jenniina.fi'>{t('EMainSite')}</a>
               </p>
               <p>
                 <a href='https://github.com/jenniina/react-sub-site'>
-                  {EReactGithubRepository[language]}
+                  {t('EReactGithubRepository')}
                 </a>
               </p>
               <p>
                 <a href='https://github.com/jenniina/react-bg'>
-                  {ENodeGithubRepository[language]}
+                  {t('ENodeGithubRepository')}
                 </a>
               </p>
-              <p>{ETheSiteIsTranslatedToSixLanguagesWhichWere[language]}</p>
+              <p>{t('ETheSiteIsTranslatedToSixLanguagesWhichWere')}</p>
               <p>
-                {EPleaseReportAnyIssuesWithTheSiteToJenniina[language]}:{' '}
+                {t('EPleaseReportAnyIssuesWithTheSiteToJenniina')}:{' '}
                 <Link to='/portfolio/select?survey=true'>
-                  {ESurvey[language].toLowerCase()}
+                  {t('ESurvey').toLowerCase()}
                 </Link>{' '}
               </p>
 
-              <h2 id='site-features'>{EFeaturesOfThisSite[language]}</h2>
+              <h2 id='site-features'>{t('EFeaturesOfThisSite')}</h2>
 
               <h3 id='settings' className='left'>
-                {ESiteSettings[language]}
+                {t('ESiteSettings')}
               </h3>
               <big>
-                {ESeeSettingsAtMenuBar[language]}{' '}
+                {t('ESeeSettingsAtMenuBar')}{' '}
                 <IoSettingsSharp
                   style={{ display: 'inline-block', marginBottom: '-0.15em' }}
                 />{' '}
-                <span className='scr'>{ESettings[language]}</span> -
-                {EIcon[language].toLowerCase()}
+                <span className='scr'>{t('ESettings')}</span> -{t('EIcon').toLowerCase()}
               </big>
               <ul className='ul'>
                 <li>
-                  {ELanguageSelect[language]}
+                  {t('ELanguageSelect')}
                   <ul>
-                    <li>
-                      {ETheTranslationsAreDoneWithTheHelpOfGithubCopilotSo[language]}
-                    </li>
-                    {language !== ELanguages.Suomi && language !== ELanguages.English && (
+                    <li>{t('ETheTranslationsAreDoneWithTheHelpOfGithubCopilotSo')}</li>
+                    {language !== ELanguages.fi && language !== ELanguages.en && (
                       <li>
-                        {
-                          EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo[
-                            language
-                          ]
-                        }
+                        {t(
+                          'EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo'
+                        )}
                       </li>
                     )}
                   </ul>
                 </li>
-                <li>{ELightDarkModeButton[language]}</li>
+                <li>{t('ELightDarkModeButton')}</li>
                 <li>
-                  {EButtonToToggleBetweenNavigationStyles[language]}
+                  {t('EButtonToToggleBetweenNavigationStyles')}
                   <ul>
-                    <li>
-                      {ETwoStylesAtSmallScreenSizeAndTwoAtLargeScreenSize[language]}
-                    </li>
+                    <li>{t('ETwoStylesAtSmallScreenSizeAndTwoAtLargeScreenSize')}</li>
                   </ul>
                 </li>
                 <li>
-                  {ELogInAndRegisterButtons[language]}.{' '}
-                  {EReplacedByUserEditAndLogoutButtonsWhenLoggedIn[language]}
+                  {t('ELogInAndRegisterButtons')}.{' '}
+                  {t('EReplacedByUserEditAndLogoutButtonsWhenLoggedIn')}
                 </li>
               </ul>
 
               <h3 id='hero' className='left'>
-                {EHeroSection[language]}
+                {t('EHeroSection')}
               </h3>
-              <big>{EInteractiveElements[language]}</big>
+              <big>{t('EInteractiveElements')}</big>
               <ul className='ul'>
-                <li>{EHoverFocusAnimation[language]}</li>
-                <li>{EMovementAccordingToPointerEnterDirection[language]}</li>
-                <li>{ERemoveWithClickOrEnterWhenFocused[language]}</li>
+                <li>{t('EHoverFocusAnimation')}</li>
+                <li>{t('EMovementAccordingToPointerEnterDirection')}</li>
+                <li>{t('ERemoveWithClickOrEnterWhenFocused')}</li>
                 <li>
-                  {
-                    EResetButtonOnTheLowerRightCornerResetsTheInteractiveElements[
-                      language
-                    ]
-                  }
+                  {t('EResetButtonOnTheLowerRightCornerResetsTheInteractiveElements')}
                 </li>
-                <li>{EPressEscapeToSkipToResetButton[language]}</li>
-                <li>{EKeyboardFocusMoveItemsWithArrowKeys[language]}</li>
+                <li>{t('EPressEscapeToSkipToResetButton')}</li>
+                <li>{t('EKeyboardFocusMoveItemsWithArrowKeys')}</li>
                 <li>
-                  {EElements[language]}
+                  {t('EElements')}
                   <ul>
                     <li>
-                      {EBubbles[language]} ({ESeeTheTopOfTheCurrentPage[language]})
+                      {t('EBubbles')} ({t('ESeeTheTopOfTheCurrentPage')})
                     </li>
                     <li>
-                      {EMusicNotes[language]}{' '}
-                      <Link to='/portfolio/composer'>({EComposerPage[language]})</Link>
+                      {t('EMusicNotes')}{' '}
+                      <Link to='/portfolio/composer'>({t('EComposerPage')})</Link>
                     </li>
                     <li>
-                      {EFourSidedJewels[language]}{' '}
-                      <Link to='/store'>({EStore[language]})</Link>
+                      {t('EFourSidedJewels')} <Link to='/store'>({t('EStore')})</Link>
                     </li>
                     <li>
-                      {EEightSidedJewels[language]}{' '}
-                      <Link to='/cart'>({ECart[language]})</Link>
+                      {t('EEightSidedJewels')} <Link to='/cart'>({t('ECart')})</Link>
                     </li>
                     <li>
-                      {EDraggableBlobs[language]}{' '}
-                      <Link to='/portfolio'>({EPortfolio[language]})</Link>
+                      {t('EDraggableBlobs')}{' '}
+                      <Link to='/portfolio'>({t('EPortfolio')})</Link>
                     </li>
                     <li>
-                      {ESquaresStandingOnTheirCorner[language]}{' '}
-                      <Link to='/portfolio/todo'>({ETodoApp[language]})</Link>
+                      {t('ESquaresStandingOnTheirCorner')}{' '}
+                      <Link to='/portfolio/todo'>({t('ETodoApp')})</Link>
                     </li>
                     <li>
-                      {EInvertedTriangles[language]}{' '}
-                      <Link to='/portfolio/quiz'>({EQuizApp[language]})</Link>
+                      {t('EInvertedTriangles')}{' '}
+                      <Link to='/portfolio/quiz'>({t('EQuizApp')})</Link>
                     </li>
                     <li>
-                      {EAlienEyes[language]}{' '}
-                      <Link to='/contact'>({EContact[language]})</Link>
+                      {t('EAlienEyes')} <Link to='/contact'>({t('EContact')})</Link>
                       <ul>
-                        <li>{EElementsRotateToFaceCursor[language]}</li>
+                        <li>{t('EElementsRotateToFaceCursor')}</li>
                       </ul>
                     </li>
                   </ul>
@@ -285,20 +184,20 @@ export default function About({
               </ul>
 
               <h3 id='react' className='left'>
-                {EReactApps[language]}
+                {t('EReactApps')}
               </h3>
               <big>
-                <Link to='/portfolio'>{EInThePortfolioSection[language]}</Link>
+                <Link to='/portfolio'>{t('EInThePortfolioSection')}</Link>
               </big>
 
               <h3 id='other' className='left'>
-                {EOtherFeatures[language]}
+                {t('EOtherFeatures')}
               </h3>
               <ul className='ul'>
-                <li>{EPageTransitionAnimation[language]}</li>
-                <li>{EWaveAnimationAtTheMainHeading[language]}</li>
-                <li>{EBackToTopButtonAtTheLowerRightCornerAndAtTheFooter[language]}</li>
-                <li>{EExitLinksAtTheTopAndBottomOfThePages[language]}</li>
+                <li>{t('EPageTransitionAnimation')}</li>
+                <li>{t('EWaveAnimationAtTheMainHeading')}</li>
+                <li>{t('EBackToTopButtonAtTheLowerRightCornerAndAtTheFooter')}</li>
+                <li>{t('EExitLinksAtTheTopAndBottomOfThePages')}</li>
               </ul>
             </div>
           </div>
@@ -309,24 +208,20 @@ export default function About({
             <div>
               <div className='wide'>
                 <h3 id='color' className='left' style={{ marginTop: 0 }}>
-                  {ESiteColors[language]}
+                  {t('ESiteColors')}
                 </h3>
                 <p>
-                  {ETheSiteColorsLightnessesSwitchInLightMode1[language]}{' '}
+                  {t('ETheSiteColorsLightnessesSwitchInLightMode1')}{' '}
                   <code>var(--color-primary-1)</code>{' '}
-                  {ETheSiteColorsLightnessesSwitchInLightMode2[language]}
+                  {t('ETheSiteColorsLightnessesSwitchInLightMode2')}
                 </p>
-                <p>
-                  {EAnimatedClipPathsAndTextRotationOnHoverWithDynamicDelay[language]}
-                </p>
+                <p>{t('EAnimatedClipPathsAndTextRotationOnHoverWithDynamicDelay')}</p>
               </div>
             </div>
           </div>
           <Suspense
             fallback={
-              <div className='flex center margin0auto textcenter'>
-                {ELoading[language]}...
-              </div>
+              <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
             }
           >
             <ColorComponent array={setupColorblocks} />

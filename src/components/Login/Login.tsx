@@ -1,23 +1,12 @@
-import { useEffect, useRef, useState, FormEvent } from 'react'
+import { useEffect, useRef, useState, FormEvent, useContext } from 'react'
 import Accordion from '../Accordion/Accordion'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import { initializeUser, login, logout } from '../../reducers/authReducer'
 import { useSelector } from 'react-redux'
-import {
-  ELoggedInAs,
-  ELanguages,
-  ReducerProps,
-  ELogin,
-  ELogout,
-  EEmail,
-  EPassword,
-  EError,
-  ELoggingIn,
-  EEdit,
-  ELoggedOut,
-} from '../../types'
+import { ELanguages, ReducerProps } from '../../types'
 import { Link } from 'react-router-dom'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 interface LoginProps {
   language: ELanguages
@@ -27,6 +16,8 @@ interface LoginProps {
 }
 
 const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
+  const { t } = useContext(LanguageContext)!
+
   const dispatch = useAppDispatch()
 
   const [username, setUsername] = useState('')
@@ -46,17 +37,17 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
   const handleLogout = () => {
     dispatch(logout())
       .then(() => {
-        dispatch(notify(`${ELoggedOut[language]}`, false, 4))
+        dispatch(notify(`${t('ELoggedOut')}`, false, 4))
       })
       .catch((e) => {
         console.error(e)
-        dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
+        dispatch(notify(`${t('EError')}: ${e.message}`, true, 8))
       })
   }
 
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault()
-    dispatch(notify(`${ELoggingIn[language]}`, false, 3))
+    dispatch(notify(`${t('ELoggingIn')}`, false, 3))
     setLoggingIn(true)
     await dispatch(login(username, password, language))
       .then(() => {
@@ -70,9 +61,9 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
         console.error(e)
         if (e.response?.data?.message) dispatch(notify(e.response.data.message, true, 8))
         else if (e.code === 'ERR_BAD_REQUEST')
-          dispatch(notify(`${EError[language]}: ${e.response.data.message}`, true, 8))
+          dispatch(notify(`${t('EError')}: ${e.response.data.message}`, true, 8))
         else if (e.code === 'ERR_NETWORK') {
-          dispatch(notify(`${EError[language]}: ${e.message}`, true, 8))
+          dispatch(notify(`${t('EError')}: ${e.message}`, true, 8))
         }
       })
   }
@@ -82,15 +73,15 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
       {user ? (
         <div className='logout-wrap'>
           <span>
-            {ELoggedInAs[language]} {user?.name ? user?.name : user.username}{' '}
+            {t('ELoggedInAs')} {user?.name ? user?.name : user.username}{' '}
           </span>
-          <Link to='/edit'>{EEdit[language]}</Link>
+          <Link to='/edit'>{t('EEdit')}</Link>
           <button
             onClick={handleLogout}
             id={`logout-${text}`}
             className={`logout danger ${text}`}
           >
-            {ELogout[language]} &times;
+            {t('ELogout')} &times;
           </button>
         </div>
       ) : (
@@ -99,14 +90,14 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
             language={language}
             className='login'
             wrapperClass='login-wrap'
-            text={ELogin[language]}
+            text={t('ELogin')}
             ref={formLoginRef}
             setIsFormOpen={setIsFormOpen}
             isOpen={isOpen}
             hideBrackets={true}
           >
             <>
-              <h2>{ELogin[language]}</h2>
+              <h2>{t('ELogin')}</h2>
 
               <form onSubmit={handleLogin} className='login'>
                 <div className='input-wrap'>
@@ -119,7 +110,7 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
                       autoComplete='email'
                       onChange={({ target }) => setUsername(target.value.trim())}
                     />
-                    <span>{EEmail[language]}: </span>
+                    <span>{t('EEmail')}: </span>
                   </label>
                 </div>
                 <div className='input-wrap'>
@@ -132,7 +123,7 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
                       autoComplete='on'
                       onChange={({ target }) => setPassword(target.value.trim())}
                     />
-                    <span>{EPassword[language]}: </span>
+                    <span>{t('EPassword')}: </span>
                   </label>
                 </div>
                 <button
@@ -141,7 +132,7 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
                   id={`login-${text}`}
                   className={`login ${text} restore`}
                 >
-                  {loggingIn ? ELoggingIn[language] : ELogin[language]}
+                  {loggingIn ? t('ELoggingIn') : t('ELogin')}
                 </button>
               </form>
             </>

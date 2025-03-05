@@ -1,48 +1,16 @@
 import {
-  EJoke,
   EJokeType,
-  ESingle,
-  ETwoPart,
   IJokeCategoryByLanguage,
-  EJokeSetup,
-  EJokeDelivery,
-  ESubmitAJoke,
-  ECategoryTitle,
   ECategory_en,
   FlagsLanguage,
-  EAddWarningTitle,
-  EJokeTypeTitle,
-  ESubmitAJokeTo,
   TCategoryByLanguages,
-  EPublic,
-  EPrivate,
-  ESavedJoke,
   IJoke,
   ECategories,
-  EAny,
-  EIfTheJokeIsNotPrivateVerificationIsNeeded,
-  EJokeIsSetToPrivateAndWillOnlyBeSeenByYouAndTheAdministrator,
-  EJokeIsSetToPublicAndWillNeedVerificationFromAnAdministrator,
-  EJokeLanguage,
-  EAnonymous,
-  EPublishWithNickname,
-  EPublishAnonymously,
-  EPublish,
-  EPrivacy,
-  EClickHereToWriteYourOwnJoke,
-  EReportErrorToAdmin,
-  ESaving,
+  EJokeDelivery,
+  EJokeSetup,
 } from '../types'
-import {
-  ESelectAnOption,
-  ESend,
-  ELanguages,
-  ELanguagesLong,
-  IUser,
-  ENickname,
-  EError,
-} from '../../../types'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ELanguages, ELanguagesLong, IUser } from '../../../types'
+import { ChangeEvent, useContext, useEffect, useState } from 'react'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
 import Accordion from '../../Accordion/Accordion'
 import { Select, SelectOption } from '../../Select/Select'
@@ -52,6 +20,7 @@ import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { v4 as uuidv4 } from 'uuid'
 import { initializeUser } from '../../../reducers/authReducer'
 import { findUserById } from '../../../reducers/usersReducer'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 interface Props {
   userId: IUser['_id']
@@ -59,7 +28,7 @@ interface Props {
   optionsCategory: (enumObj: TCategoryByLanguages) => SelectOption[]
   categoryByLanguages: TCategoryByLanguages
   jokeCategoryByLanguage: IJokeCategoryByLanguage
-  options: (enumObj: typeof ELanguages) => SelectOption[]
+  options: (enumObj: typeof ELanguagesLong) => SelectOption[]
   getKeyByValue: (
     enumObj: typeof ELanguages,
     value: ELanguages
@@ -76,9 +45,9 @@ const JokeSubmit = ({
   getKeyByValue,
   norrisCategories,
 }: Props) => {
-  const [languageSubmit, setLanguageSubmit] = useState<ELanguages>(
-    ELanguages[ELanguagesLong[language]]
-  )
+  const { t } = useContext(LanguageContext)!
+
+  const [languageSubmit, setLanguageSubmit] = useState<ELanguages>(ELanguages[language])
   const [jokeType, setJokeType] = useState<EJokeType>(EJokeType.single)
   const [setupTitle, setSetupTitle] = useState<EJokeSetup>(EJokeSetup.en)
   const [deliveryTitle, setDeliveryTitle] = useState<EJokeDelivery>(EJokeDelivery.en)
@@ -92,7 +61,7 @@ const JokeSubmit = ({
     label: jokeCategoryByLanguage[language].Misc,
     value: ECategory_en.Misc,
   } as SelectOption)
-  const selectAnOption = ESelectAnOption[language]
+  const selectAnOption = t('ESelectAnOption')
   const [selectedCategory, setSelectedCategory] = useState<ECategories | ''>('')
   const [selectedNorrisCategory, setSelectedNorrisCategory] = useState<
     SelectOption | undefined
@@ -170,7 +139,7 @@ const JokeSubmit = ({
             setDelivery('')
             setSaving(false)
           })
-        dispatch(notify(`${ESavedJoke[language]}. ${r.message ?? ''}`, false, 8))
+        dispatch(notify(`${t('ESavedJoke')}. ${r.message ?? ''}`, false, 8))
       })
       .catch((e) => {
         console.error(e)
@@ -178,7 +147,7 @@ const JokeSubmit = ({
         if (e.code === 'ERR_BAD_RESPONSE') {
           dispatch(
             notify(
-              `${EError[language]}: ${e.response.data.message}. ${EReportErrorToAdmin[language]}`,
+              `${t('EError')}: ${e.response.data.message}. ${t('EReportErrorToAdmin')}`,
               true,
               8
             )
@@ -189,11 +158,7 @@ const JokeSubmit = ({
             dispatch(notify(e.response.data.message, true, 8))
           else
             dispatch(
-              notify(
-                `${EError[language]}: ${e.message}. ${EReportErrorToAdmin[language]}`,
-                true,
-                8
-              )
+              notify(`${t('EError')}: ${e.message}. ${t('EReportErrorToAdmin')}`, true, 8)
             )
         }
       })
@@ -238,15 +203,15 @@ const JokeSubmit = ({
   return (
     <Accordion
       language={language}
-      text={EClickHereToWriteYourOwnJoke[language]}
+      text={t('EClickHereToWriteYourOwnJoke')}
       className='submit'
       wrapperClass='submit-wrap'
     >
       <div className='submit-inner'>
-        <h3>{ESubmitAJoke[language]}</h3>
-        <p className='textcenter'>{ESubmitAJokeTo[language]} jenniina.fi</p>
+        <h3>{t('ESubmitAJoke')}</h3>
+        <p className='textcenter'>{t('ESubmitAJokeTo')} jenniina.fi</p>
         <p className='textcenter mb3'>
-          {EIfTheJokeIsNotPrivateVerificationIsNeeded[language]}
+          {t('EIfTheJokeIsNotPrivateVerificationIsNeeded')}
         </p>
         <form onSubmit={handleNewJokeSubmit} className='form-submit-new'>
           <div className='toggle-wrap'>
@@ -255,10 +220,10 @@ const JokeSubmit = ({
               name='submit-joketype'
               id='submit-joketype'
               hideLabel={false}
-              label={`${EJokeTypeTitle[language]}: `}
+              label={`${t('EJokeTypeTitle')}: `}
               className={`${language} submit joketype`}
-              on={ETwoPart[language]}
-              off={ESingle[language]}
+              on={t('ETwoPart')}
+              off={t('ESingle')}
               handleToggleChange={handleToggleChangeJokeType}
               equal={true}
             />
@@ -267,10 +232,10 @@ const JokeSubmit = ({
               name='submit-private'
               id='submit-private'
               hideLabel={false}
-              label={`${EPrivacy[language]}: `}
+              label={`${t('EPrivacy')}: `}
               className={`${language} submit private`}
-              on={EPrivate[language]}
-              off={EPublic[language]}
+              on={t('EPrivate')}
+              off={t('EPublic')}
               handleToggleChange={handleToggleChangePublic}
               equal={false}
             />
@@ -279,10 +244,10 @@ const JokeSubmit = ({
               name='submit-anonymous'
               id='submit-anonymous'
               hideLabel={false}
-              label={`${EPublishWithNickname[language]}: `}
+              label={`${t('EPublishWithNickname')}: `}
               className={`${language} submit anonymous`}
-              on={EAnonymous[language]}
-              off={ENickname[language]}
+              on={t('EAnonymous')}
+              off={t('ENickname')}
               handleToggleChange={handleToggleChangeAnonymous}
               equal={false}
             />
@@ -290,7 +255,7 @@ const JokeSubmit = ({
 
           {jokeType === EJokeType.single ? (
             <label htmlFor='submit-joke-single-input' className='textarea-wrap'>
-              <span>{EJoke[language]}</span>
+              <span>{t('EJoke')}</span>
               <textarea
                 name='joke'
                 id='submit-joke-single-input'
@@ -343,7 +308,7 @@ const JokeSubmit = ({
                 language={language}
                 id='submit-category-select'
                 className='submit'
-                instructions={`${ECategoryTitle[language]}:`}
+                instructions={`${t('ECategoryTitle')}:`}
                 selectAnOption={selectAnOption}
                 value={jokeCategory}
                 options={optionsCategory(categoryByLanguages as any)}
@@ -357,7 +322,7 @@ const JokeSubmit = ({
                 id='jokeCategoryNorrisCategories-submit'
                 className={`category extras narrow ${hasNorris ? '' : 'hidden'}`}
                 instructions={`Chuck Norris Category:`}
-                selectAnOption={EAny[language]}
+                selectAnOption={t('EAny')}
                 value={selectedNorrisCategory}
                 options={norrisCategories}
                 onChange={(o) => {
@@ -372,13 +337,13 @@ const JokeSubmit = ({
             language={language}
             id='submit-language'
             className='submit narrow'
-            instructions={`${EJokeLanguage[language]}:`}
-            options={options(ELanguages)}
+            instructions={`${t('EJokeLanguage')}:`}
+            options={options(ELanguagesLong)}
             value={
               language
                 ? ({
-                    value: ELanguages[ELanguagesLong[languageSubmit]],
-                    label: getKeyByValue(ELanguages, languageSubmit),
+                    value: ELanguages[languageSubmit],
+                    label: ELanguagesLong[languageSubmit],
                   } as SelectOption)
                 : undefined
             }
@@ -388,7 +353,7 @@ const JokeSubmit = ({
           />
 
           <fieldset>
-            <legend>{EAddWarningTitle[language]}</legend>
+            <legend>{t('EAddWarningTitle')}</legend>
 
             <div className='checkbox-wrap'>
               <div>
@@ -438,20 +403,14 @@ const JokeSubmit = ({
           </fieldset>
           <p>
             {isCheckedPrivate
-              ? EJokeIsSetToPrivateAndWillOnlyBeSeenByYouAndTheAdministrator[language]
-              : EJokeIsSetToPublicAndWillNeedVerificationFromAnAdministrator[language]}
+              ? t('EJokeIsSetToPrivateAndWillOnlyBeSeenByYouAndTheAdministrator')
+              : t('EJokeIsSetToPublicAndWillNeedVerificationFromAnAdministrator')}
             <br />
             <br />
-            {isCheckedAnonymous
-              ? EPublishAnonymously[language]
-              : EPublishWithNickname[language]}
+            {isCheckedAnonymous ? t('EPublishAnonymously') : t('EPublishWithNickname')}
           </p>
           <button type='submit' className='small' disabled={saving} id='submit-new-joke'>
-            {saving
-              ? ESaving[language]
-              : isCheckedPrivate
-              ? EPublish[language]
-              : ESend[language]}
+            {saving ? t('ESaving') : isCheckedPrivate ? t('EPublish') : t('ESend')}
           </button>
         </form>
       </div>

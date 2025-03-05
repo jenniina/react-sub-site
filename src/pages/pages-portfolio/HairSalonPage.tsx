@@ -1,9 +1,7 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import Accordion from '../../components/Accordion/Accordion'
-import Hero from '../../components/Hero/Hero'
-import { EDependencies, EFeatures, ELanguages } from '../../types'
-import { ESalonIntro1, ESalonIntro2, ESalonIntro3 } from '../../types/salon'
-import { EClickHereToSeeFeatures } from '../../components/Jokes/types'
+import { ELanguages } from '../../types'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 export default function HairSalonPage({
   heading,
@@ -16,6 +14,8 @@ export default function HairSalonPage({
   type: string
   language: ELanguages
 }) {
+  const { t } = useContext(LanguageContext)!
+
   const [isFormOpen, setIsFormOpen] = useState(false)
   return (
     <div className={`salon ${type}`}>
@@ -25,19 +25,19 @@ export default function HairSalonPage({
             <div className='medium'>
               <Accordion
                 language={language}
-                text={EClickHereToSeeFeatures[language]}
+                text={t('EClickHereToSeeFeatures')}
                 className='salon-features'
                 wrapperClass='mb3'
                 setIsFormOpen={setIsFormOpen}
               >
                 <>
-                  <h2>{EFeatures[language]}</h2>
+                  <h2>{t('EFeatures')}</h2>
                   <ul className='ul'>
-                    <li>{ESalonIntro1[language]}</li>
-                    <li>{ESalonIntro2[language]}</li>
-                    <li>{ESalonIntro3[language]}</li>
+                    <li>{t('ESalonIntro1')}</li>
+                    <li>{t('ESalonIntro2')}</li>
+                    <li>{t('ESalonIntro3')}</li>
                     <li>
-                      {EDependencies[language]}: React
+                      {t('EDependencies')}: React
                       <ul>
                         <li>react</li>
                         <li>react-dom</li>
@@ -48,7 +48,7 @@ export default function HairSalonPage({
                       </ul>
                     </li>
                     <li>
-                      {EDependencies[language]}: Node.js
+                      {t('EDependencies')}: Node.js
                       <ul>
                         <li>express</li>
                         <li>express-validator</li>

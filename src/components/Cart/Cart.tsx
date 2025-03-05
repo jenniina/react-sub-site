@@ -1,92 +1,21 @@
-import { useEffect, FC, useState } from 'react'
+import { useEffect, FC, useState, useContext } from 'react'
 import styles from './cart.module.css'
 import AdditionalInfo from '../Store/components/AdditionalInfo'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
-import {
-  EClarifications,
-  EEdit,
-  EEmail,
-  EEmailAddress,
-  EIAcceptThe,
-  EInfo,
-  EItIsAlrightToSendTheEnteredInformationToJenniina,
-  ELanguages,
-  EMoreInformation,
-  EName,
-  ENo,
-  EOptional,
-  ERemember,
-  ERememberToSave,
-  ERemove,
-  ERequestsIdeasAndLinksForInspiration,
-  ESave,
-  EStore,
-  ETermsOfService,
-  ETermsOfServiceLink,
-  EYes,
-  ReducerProps,
-} from '../../types'
-import {
-  ICart,
-  EAddToCart,
-  ECart,
-  ESubtractFromCart,
-  ICartItem,
-  ETotal,
-  EClearCart,
-  ESubmitOrder,
-  EPleaseChooseAProduct,
-  EEmptyCart,
-  EQuantity,
-  EPrice,
-  EBackToStore,
-  ERequestsAndNeeds,
-  ECompany,
-  EAssociation,
-  ECompanyOrAssociation,
-  EPrivatePerson,
-  EBusinessID,
-  EContactPerson,
-  ECountry,
-  EBillingAddress,
-  ECity,
-  EPostalCode,
-  EPhone,
-  ECompanyName,
-  EAssociationName,
-  EPrintingCostsNotIncluded,
-  EFreeHourUnlocked,
-  EPayFor5HoursGet6,
-  EHourlyWorkCanBeUsed,
-  EPayFor10HoursGet13,
-  EHour,
-  EHours,
-  ESaveTheFollowingAmountOfMoney,
-  paid,
-  status,
-  EIncludes,
-  EEG,
-  EDesiredReference,
-  ETermsRelatedToProducts,
-} from '../../types/store'
+import { ELanguages } from '../../types'
+import { ICart, ICartItem } from '../../types/store'
 import useLocalStorage from '../../hooks/useStorage'
 import Accordion from '../Accordion/Accordion'
 import { useTheme } from '../../hooks/useTheme'
 import cartService from '../../services/cart'
-import {
-  EAdditionalInformation,
-  EClarification,
-  EGDPRConsent,
-  EPleaseFillInTheFields,
-} from '../../types/form'
 import { notify } from '../../reducers/notificationReducer'
 import { Link } from 'react-router-dom'
 import { getRandomLetters, getRandomMinMax, splitToLines } from '../../utils'
 import ButtonToggle from '../ButtonToggle/ButtonToggle'
 import { FaHourglassStart, FaStoreAlt } from 'react-icons/fa'
 import { RiMailSendLine } from 'react-icons/ri'
-import { EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo } from '../../types/about'
 import { TermsProducts } from '../../pages/TermsOfService'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
@@ -105,6 +34,8 @@ const Cart: FC<Props> = ({
   editDetails,
   removeCart,
 }) => {
+  const { t } = useContext(LanguageContext)!
+
   const lightTheme = useTheme()
   const dispatch = useAppDispatch()
 
@@ -193,28 +124,24 @@ const Cart: FC<Props> = ({
     <div className={`${styles['cart-wrap']} ${lightTheme ? styles.light : ''}`}>
       <Link to='/store' className={styles['back-to-store']}>
         <span aria-hidden={true}>&laquo;</span> <FaStoreAlt />{' '}
-        <strong>{EBackToStore[language]}</strong>
+        <strong>{t('EBackToStore')}</strong>
       </Link>
-      {language !== ELanguages.Suomi && language !== ELanguages.English && (
-        <p>
-          {EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo[language]}
-        </p>
+      {language !== ELanguages.fi && language !== ELanguages.en && (
+        <p>{t('EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo')}</p>
       )}
       <form
         onSubmit={(e) => {
           e.preventDefault()
           setSending(true)
           if (cart.length < 1) {
-            dispatch(notify(EPleaseChooseAProduct[language], true, 8))
+            dispatch(notify(t('EPleaseChooseAProduct'), true, 8))
             setSending(false)
           }
           if (!GDPR) {
-            dispatch(notify(`${ERemember[language]}: ${EGDPRConsent[language]}`, true, 8))
+            dispatch(notify(`${t('ERemember')}: ${t('EGDPRConsent')}`, true, 8))
             setSending(false)
           } else if (!terms) {
-            dispatch(
-              notify(`${ERemember[language]}: ${ETermsOfService[language]}`, true, 8)
-            )
+            dispatch(notify(`${t('ERemember')}: ${t('ETermsOfService')}`, true, 8))
             setSending(false)
           } else if (
             (business &&
@@ -276,7 +203,7 @@ const Cart: FC<Props> = ({
                 setSending(false)
               })
           } else {
-            dispatch(notify(EPleaseFillInTheFields[language], true, 8))
+            dispatch(notify(t('EPleaseFillInTheFields'), true, 8))
             setSending(false)
           }
         }}
@@ -297,7 +224,7 @@ const Cart: FC<Props> = ({
                 isOpen={true}
                 setIsFormOpen={() => {}}
                 classNameWrap={styles['additional-info-wrap']}
-                text={EIncludes[language]}
+                text={t('EIncludes')}
               />
               <div className={`${styles['quantity']}`}>
                 {item.id !== 'misc-quote' ? (
@@ -306,7 +233,7 @@ const Cart: FC<Props> = ({
                       type='button'
                       onClick={() => {
                         if (item.quantity - 1 < 1) {
-                          if (window.confirm(`${ERemove[language]}: ${item.name}?`)) {
+                          if (window.confirm(`${t('ERemove')}: ${item.name}?`)) {
                             //remove item from cart
                             removeFromCart(item.id)
                             return
@@ -317,13 +244,13 @@ const Cart: FC<Props> = ({
                       className={`tooltip-wrap ${styles['quantity-btn']}`}
                     >
                       <span className='tooltip above space right narrow2'>
-                        {ESubtractFromCart[language]}
+                        {t('ESubtractFromCart')}
                       </span>
                       <span>-1</span>
                     </button>
 
                     <span>
-                      {EQuantity[language]}: {item.quantity}
+                      {t('EQuantity')}: {item.quantity}
                     </span>
 
                     <button
@@ -334,7 +261,7 @@ const Cart: FC<Props> = ({
                       className={`tooltip-wrap ${styles['quantity-btn']}`}
                     >
                       <span className='tooltip above space right narrow2'>
-                        {EAddToCart[language]}
+                        {t('EAddToCart')}
                       </span>
                       <span>+1</span>
                     </button>
@@ -344,7 +271,7 @@ const Cart: FC<Props> = ({
                     type='button'
                     onClick={() => {
                       if (item.quantity - 1 < 1) {
-                        if (window.confirm(`${ERemove[language]}: ${item.name}?`)) {
+                        if (window.confirm(`${t('ERemove')}: ${item.name}?`)) {
                           removeFromCart(item.id)
                           return
                         } else return
@@ -352,16 +279,16 @@ const Cart: FC<Props> = ({
                       handleQuantityChange(item, -1)
                     }}
                   >
-                    <span>{ERemove[language]}</span>
+                    <span>{t('ERemove')}</span>
                   </button>
                 )}
                 {item.quantity >= freeHoursBreakpoint2 ? (
                   <span>
-                    {ETotal[language]}: {item.quantity + freeAmount2} {EHours[language]}
+                    {t('ETotal')}: {item.quantity + freeAmount2} {t('EHours')}
                   </span>
                 ) : item.quantity >= freeHoursBreakpoint1 ? (
                   <span>
-                    {ETotal[language]}: {item.quantity + freeAmount1} {EHours[language]}
+                    {t('ETotal')}: {item.quantity + freeAmount1} {t('EHours')}
                   </span>
                 ) : (
                   ''
@@ -370,31 +297,31 @@ const Cart: FC<Props> = ({
               {item.id !== 'misc-quote' ? (
                 <>
                   <p>
-                    {EPrice[language]}: {item.price} € &times; {item.quantity} ={' '}
+                    {t('EPrice')}: {item.price} € &times; {item.quantity} ={' '}
                     <b>{item.price * item.quantity} €</b>
                   </p>
                 </>
               ) : (
                 <p>
-                  {EPrice[language]}: {item.price} €{' '}
+                  {t('EPrice')}: {item.price} €{' '}
                 </p>
               )}
 
               {item.id.startsWith('misc') && item.quantity >= freeHoursBreakpoint1 && (
                 <p>
                   <big>
-                    <FaHourglassStart /> <span>{EFreeHourUnlocked[language]}</span>{' '}
+                    <FaHourglassStart /> <span>{t('EFreeHourUnlocked')}</span>{' '}
                     {item.quantity >= freeHoursBreakpoint2 ? (
                       <>
                         <strong> &times; {freeAmount2} </strong>
                         <span>&mdash;</span>{' '}
-                        <span>{ESaveTheFollowingAmountOfMoney[language]}</span>
+                        <span>{t('ESaveTheFollowingAmountOfMoney')}</span>
                         <strong> {item.price * freeAmount2} € </strong>
                       </>
                     ) : item.quantity >= freeHoursBreakpoint1 ? (
                       <>
                         <span> &mdash;</span>{' '}
-                        <span>{ESaveTheFollowingAmountOfMoney[language]}</span>
+                        <span>{t('ESaveTheFollowingAmountOfMoney')}</span>
                         <strong> {item.price} € </strong>
                       </>
                     ) : (
@@ -407,7 +334,7 @@ const Cart: FC<Props> = ({
               <div className={styles['item-details']}>
                 <div className={`${styles['textarea-wrap']} textarea-wrap`}>
                   <label htmlFor={`${item.id}-details`}>
-                    <span>{ERequestsAndNeeds[language]}:</span>
+                    <span>{t('ERequestsAndNeeds')}:</span>
                     <textarea
                       rows={5}
                       required
@@ -415,8 +342,8 @@ const Cart: FC<Props> = ({
                       name={`details-${item.id}`}
                       placeholder={
                         item.id.startsWith('misc') && item.id !== 'misc-quote'
-                          ? EAdditionalInformation[language]
-                          : ERequestsIdeasAndLinksForInspiration[language]
+                          ? t('EAdditionalInformation')
+                          : t('ERequestsIdeasAndLinksForInspiration')
                       }
                       onChange={(e) => {
                         editDetails(item.id, e.target.value)
@@ -433,7 +360,7 @@ const Cart: FC<Props> = ({
             <p className={styles.total}>
               <big>
                 <span>
-                  {ETotal[language]}: {total} €{' '}
+                  {t('ETotal')}: {total} €{' '}
                 </span>
               </big>
             </p>
@@ -444,12 +371,12 @@ const Cart: FC<Props> = ({
                   id='business-toggle'
                   className={`${styles.toggle}`}
                   name='company'
-                  on={EYes[language]}
-                  off={ENo[language]}
+                  on={t('EYes')}
+                  off={t('ENo')}
                   equal
                   isChecked={business}
                   handleToggleChange={() => setBusiness(!business)}
-                  label={`${ECompanyOrAssociation[language]}: `}
+                  label={`${t('ECompanyOrAssociation')}: `}
                 />
               </div>
               {business ? (
@@ -462,10 +389,10 @@ const Cart: FC<Props> = ({
                         id='business-id'
                         required
                         value={businessID}
-                        placeholder={EBusinessID[language]}
+                        placeholder={t('EBusinessID')}
                         onChange={(e) => setBusinessID(e.target.value)}
                       />
-                      <span>{EBusinessID[language]}:</span>
+                      <span>{t('EBusinessID')}:</span>
                     </label>
                   </div>
 
@@ -477,11 +404,11 @@ const Cart: FC<Props> = ({
                         name='company'
                         required
                         value={companyName}
-                        placeholder={`${ECompanyName[language]}/${EAssociationName[language]}`}
+                        placeholder={`${t('ECompanyName')}/${t('EAssociationName')}`}
                         onChange={(e) => setCompanyName(e.target.value)}
                       />
                       <span>
-                        {ECompany[language]}/{EAssociation[language]}:
+                        {t('ECompany')}/{t('EAssociation')}:
                       </span>
                     </label>
                   </div>
@@ -494,10 +421,10 @@ const Cart: FC<Props> = ({
                         name='name'
                         required
                         value={name}
-                        placeholder={EContactPerson[language]}
+                        placeholder={t('EContactPerson')}
                         onChange={(e) => setName(e.target.value)}
                       />
-                      <span>{EContactPerson[language]}:</span>
+                      <span>{t('EContactPerson')}:</span>
                     </label>
                   </div>
 
@@ -509,10 +436,10 @@ const Cart: FC<Props> = ({
                         id='email-cart'
                         required
                         value={email}
-                        placeholder={EEmailAddress[language]}
+                        placeholder={t('EEmailAddress')}
                         onChange={(e) => setEmail(e.target.value)}
                       />
-                      <span>{EEmail[language]}:</span>
+                      <span>{t('EEmail')}:</span>
                     </label>
                   </div>
                   <div className={`${styles['input-wrap']} input-wrap placeholder`}>
@@ -523,10 +450,10 @@ const Cart: FC<Props> = ({
                         name='address'
                         required
                         value={address}
-                        placeholder={EBillingAddress[language]}
+                        placeholder={t('EBillingAddress')}
                         onChange={(e) => setAddress(e.target.value)}
                       />
-                      <span>{EBillingAddress[language]}:</span>
+                      <span>{t('EBillingAddress')}:</span>
                     </label>
                   </div>
                   <div className={`${styles['input-wrap']} input-wrap placeholder`}>
@@ -537,7 +464,7 @@ const Cart: FC<Props> = ({
                         name='postal-code'
                         required
                         value={zip}
-                        placeholder={EPostalCode[language]}
+                        placeholder={t('EPostalCode')}
                         onChange={(e) => setZip(e.target.value)}
                         onKeyDown={(e) => {
                           if (
@@ -552,7 +479,7 @@ const Cart: FC<Props> = ({
                           }
                         }}
                       />
-                      <span>{EPostalCode[language]}:</span>
+                      <span>{t('EPostalCode')}:</span>
                     </label>
                   </div>
                   <div className={`${styles['input-wrap']} input-wrap placeholder`}>
@@ -563,10 +490,10 @@ const Cart: FC<Props> = ({
                         name='city'
                         required
                         value={city}
-                        placeholder={ECity[language]}
+                        placeholder={t('ECity')}
                         onChange={(e) => setCity(e.target.value)}
                       />
-                      <span>{ECity[language]}:</span>
+                      <span>{t('ECity')}:</span>
                     </label>
                   </div>
                   <div className={`${styles['input-wrap']} input-wrap placeholder`}>
@@ -577,10 +504,10 @@ const Cart: FC<Props> = ({
                         name='country'
                         required
                         value={country}
-                        placeholder={ECountry[language]}
+                        placeholder={t('ECountry')}
                         onChange={(e) => setCountry(e.target.value)}
                       />
-                      <span>{ECountry[language]}:</span>
+                      <span>{t('ECountry')}:</span>
                     </label>
                   </div>
                   <div
@@ -596,7 +523,7 @@ const Cart: FC<Props> = ({
                         id='phone-cart'
                         name='phone'
                         value={phone}
-                        placeholder={EPhone[language]}
+                        placeholder={t('EPhone')}
                         onChange={(e) => setPhone(e.target.value)}
                         onKeyDown={(e) => {
                           if (
@@ -613,7 +540,8 @@ const Cart: FC<Props> = ({
                         }}
                       />
                       <span>
-                        {EPhone[language]} ({EOptional[language].toLowerCase()}):
+                        {t('EPhone')} ({t('EOptional').toLowerCase()}
+                        ):
                       </span>
                     </label>
                   </div>
@@ -628,10 +556,10 @@ const Cart: FC<Props> = ({
                         name='name'
                         required
                         value={name}
-                        placeholder={EPrivatePerson[language]}
+                        placeholder={t('EPrivatePerson')}
                         onChange={(e) => setName(e.target.value)}
                       />
-                      <span>{EName[language]}:</span>
+                      <span>{t('EName')}:</span>
                     </label>
                   </div>
                   <div className={`${styles['input-wrap']} input-wrap placeholder`}>
@@ -642,10 +570,10 @@ const Cart: FC<Props> = ({
                         id='email-cart'
                         required
                         value={email}
-                        placeholder={EEmailAddress[language]}
+                        placeholder={t('EEmailAddress')}
                         onChange={(e) => setEmail(e.target.value)}
                       />
-                      <span>{EEmail[language]}:</span>
+                      <span>{t('EEmail')}:</span>
                     </label>
                   </div>
                   <div className={`${styles['input-wrap']} input-wrap placeholder`}>
@@ -656,10 +584,10 @@ const Cart: FC<Props> = ({
                         name='address'
                         required
                         value={address}
-                        placeholder={EBillingAddress[language]}
+                        placeholder={t('EBillingAddress')}
                         onChange={(e) => setAddress(e.target.value)}
                       />
-                      <span>{EBillingAddress[language]}:</span>
+                      <span>{t('EBillingAddress')}:</span>
                     </label>
                   </div>
                   <div className={`${styles['input-wrap']} input-wrap placeholder`}>
@@ -670,7 +598,7 @@ const Cart: FC<Props> = ({
                         id='zip-cart'
                         required
                         value={zip}
-                        placeholder={EPostalCode[language]}
+                        placeholder={t('EPostalCode')}
                         onChange={(e) => setZip(e.target.value)}
                         onKeyDown={(e) => {
                           if (
@@ -685,7 +613,7 @@ const Cart: FC<Props> = ({
                           }
                         }}
                       />
-                      <span>{EPostalCode[language]}:</span>
+                      <span>{t('EPostalCode')}:</span>
                     </label>
                   </div>
                   <div className={`${styles['input-wrap']} input-wrap placeholder`}>
@@ -696,10 +624,10 @@ const Cart: FC<Props> = ({
                         name='city'
                         required
                         value={city}
-                        placeholder={ECity[language]}
+                        placeholder={t('ECity')}
                         onChange={(e) => setCity(e.target.value)}
                       />
-                      <span>{ECity[language]}:</span>
+                      <span>{t('ECity')}:</span>
                     </label>
                   </div>
                   <div className={`${styles['input-wrap']} input-wrap placeholder`}>
@@ -710,23 +638,23 @@ const Cart: FC<Props> = ({
                         name='country'
                         required
                         value={country}
-                        placeholder={ECountry[language]}
+                        placeholder={t('ECountry')}
                         onChange={(e) => setCountry(e.target.value)}
                       />
-                      <span>{ECountry[language]}:</span>
+                      <span>{t('ECountry')}:</span>
                     </label>
                   </div>
                 </>
               )}
               <div className={`${styles['textarea-wrap']} textarea-wrap`}>
                 <label htmlFor='extra'>
-                  <span>{EAdditionalInformation[language]}:</span>
+                  <span>{t('EAdditionalInformation')}:</span>
                   <textarea
                     rows={5}
                     id='extra'
                     value={extra}
-                    placeholder={`${EClarifications[language]}${
-                      business ? `, ${EEG[language]} ${EDesiredReference[language]}` : ''
+                    placeholder={`${t('EClarifications')}${
+                      business ? `, ${t('EEG')} ${t('EDesiredReference')}` : ''
                     }`}
                     onChange={(e) => setExtra(e.target.value)}
                   />
@@ -747,8 +675,7 @@ const Cart: FC<Props> = ({
                     }}
                   />
                   <span>
-                    {EIAcceptThe[language]}{' '}
-                    <Link to='/terms'>{ETermsOfServiceLink[language]}</Link>
+                    {t('EIAcceptThe')} <Link to='/terms'>{t('ETermsOfServiceLink')}</Link>
                   </span>
                 </label>
               </div>
@@ -763,17 +690,15 @@ const Cart: FC<Props> = ({
                       setGDPR(e.target.checked)
                     }}
                   />
-                  <span>
-                    {EItIsAlrightToSendTheEnteredInformationToJenniina[language]}
-                  </span>
+                  <span>{t('EItIsAlrightToSendTheEnteredInformationToJenniina')}</span>
                 </label>
               </div>
               <button className={styles.submit} type='submit' disabled={sending}>
-                <span>{ESubmitOrder[language]}</span> <RiMailSendLine />
+                <span>{t('ESubmitOrder')}</span> <RiMailSendLine />
               </button>
               <Accordion
                 className='cart-accordion grayer'
-                text={ETermsRelatedToProducts[language]}
+                text={t('ETermsRelatedToProducts')}
                 language={language}
                 wrapperClass={styles['more-info-wrap']}
               >
@@ -784,20 +709,20 @@ const Cart: FC<Props> = ({
               <button
                 type='button'
                 onClick={() => {
-                  if (window.confirm(`${ERemove[language]}: ${ECart[language]}?`)) {
+                  if (window.confirm(`${t('ERemove')}: ${t('ECart')}?`)) {
                     removeCart()
                     setTotal(0)
                   }
                 }}
                 className='danger delete'
               >
-                {EClearCart[language]}
+                {t('EClearCart')}
               </button>
             </div>
           </>
         ) : (
           <>
-            <p className='flex center'>[ {EEmptyCart[language]} ]</p>
+            <p className='flex center'>[ {t('EEmptyCart')} ]</p>
           </>
         )}{' '}
       </form>

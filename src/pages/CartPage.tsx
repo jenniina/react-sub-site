@@ -1,9 +1,7 @@
-import { lazy, Suspense } from 'react'
-import { Dispatch, SetStateAction } from 'react'
-//import Cart from '../components/Cart/Cart'
-import Hero from '../components/Hero/Hero'
-import { ELanguages, ELoading } from '../types'
+import { lazy, Suspense, useContext } from 'react'
+import { ELanguages } from '../types'
 import { ICartItem } from '../types/store'
+import { LanguageContext } from '../contexts/LanguageContext'
 
 interface CartProps {
   heading: string
@@ -30,6 +28,8 @@ const CartPage: React.FC<CartProps> = ({
   editDetails,
   removeCart,
 }) => {
+  const { t } = useContext(LanguageContext)!
+
   return (
     <div className={`cart ${type}`}>
       <div className='inner-wrap'>
@@ -38,7 +38,7 @@ const CartPage: React.FC<CartProps> = ({
             <Suspense
               fallback={
                 <div className='flex center margin0auto textcenter'>
-                  {ELoading[language]}...
+                  {t('ELoading')}...
                 </div>
               }
             >

@@ -1,8 +1,8 @@
-import { FC, useState } from 'react'
+import { FC, useContext, useState } from 'react'
 import { ColorPair, Modes, RefObject } from '../types'
-import { EChangeColorInstructions } from '../../../types/blobs'
-import { EActive, ELanguages } from '../../../types'
+import { ELanguages } from '../../../types'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 interface ColorBlockProps {
   d: number
@@ -32,6 +32,8 @@ const ColorBlocks: FC<ColorBlockProps> = ({
   selectedColor,
   setMode,
 }) => {
+  const { t } = useContext(LanguageContext)!
+
   const handleClick = (color: string) => {
     if (selectedColor === color) {
       setSelectedColor('')
@@ -68,10 +70,10 @@ const ColorBlocks: FC<ColorBlockProps> = ({
               }`,
             }}
           >
-            <i className='color-alert'>{EActive[language]}</i>
+            <i className='color-alert'>{t('EActive')}</i>
 
             <span className={`tooltip below ${index < 4 ? 'right' : 'left'}`}>
-              {EChangeColorInstructions[language]}
+              {t('EChangeColorInstructions')}
             </span>
           </button>
         )

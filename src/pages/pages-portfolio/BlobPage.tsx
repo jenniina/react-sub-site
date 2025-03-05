@@ -1,99 +1,14 @@
-import { lazy, Suspense } from 'react'
-//import Blobs from '../../components/Blob/Blobs'
-import Hero from '../../components/Hero/Hero'
-import {
-  EBlobs,
-  EButton,
-  EDraggable,
-  EFeatures,
-  EInstructions,
-  EKeyboardUse,
-  ELanguages,
-  ELoading,
-  ELogin,
-  ENew,
-  ERegister,
-} from '../../types'
-import {
-  EBlurIntoOneAnother,
-  EBubblesAndFish,
-  EButtonsTo,
-  EChangeBlobColorByDraggingToAColorNodeOnTheSides,
-  EChangeBlobSizeByDraggingItToEitherTheLOrSLetterOnTheRightHandSide,
-  EChangeBlobSizeByScrollingWithTheMouseWheel,
-  EChangeTheLayerOfTheFocusedBlobByPressingTheNumber,
-  EChangeableColor,
-  EChangeableSize,
-  ECloneABlobByClickingTheTopLeftPlusSign,
-  ECloneABlobByPressingCOr,
-  ECloneable,
-  EDog,
-  EDownloadYourArtwork,
-  EDragBlobToIconsNextToLayerButtons,
-  EEditArtwork,
-  EFlyingBird,
-  EHue,
-  EIfABlobYouClickedHidesAnotherYouMayPlaceTheBlobBackToTheBottomOfThePile,
-  EIfYouNeedToSetABlobNearTheEdgeOfTheScreen,
-  EKeysMayBeUsedWhileMouseIsPressedDown,
-  ELayerInstructions,
-  ELayers,
-  ELightness,
-  ELoginToSaveBlobsToServer,
-  EMakeANewRandomBlobByPressingPlus,
-  EMakeARandomBlobByClickingThePlusSign,
-  EMakeBlobLargerByPressingBL,
-  EMakeBlobSmallerByPressingS,
-  EManyVersions,
-  EMoreColorsAvailable,
-  EMoreColorsAvailableThroughRandomBlobButton,
-  EMoveBlobToBottomByPressingZOrToTopByPressingT,
-  EMoveEveryBlobUpOrDownOneLayerByPressingTheButtons,
-  EMoveViewInDifferentDirections,
-  ENameYourArtwork,
-  EOnTouchscreensTapTheBlobTwiceToShrinkItAndThriceToEnlargeIt,
-  EOverAThousandPossibleColorCombinations,
-  EPlacesTheImageDownBelow,
-  EPointerUse,
-  EPressEnterToCycleThroughTheDifferentColors,
-  EPressSpaceOrRWithABlobInFocusToCycleThroughRandomColors,
-  EPressTheCameraSymbolToTakeAScreenshot,
-  ERegisterAndLogInToSaveYourArtwork,
-  ERememberToDisableTheButtonWhenFinished,
-  ERemovable,
-  ERemoveABlobByClickingTheBottomLeftXSign,
-  ERemoveABlobByPressingDeleteOr,
-  ERenameYourArtwork,
-  EResetTheBlobArrayToANewConfiguration,
-  ESampleArtwork,
-  ESaturation,
-  ESaving,
-  EScreenshot,
-  ESeeSampleArtworkCreatedWithTheApp,
-  ESlidersToControlBackground,
-  EStopScrollingBehaviorToUseTheMouseWheelFreely,
-  ESwimmingFish,
-  ETabToABlobAndWithItInFocus,
-  ETipsAndTricks,
-  EToggleControlVisibility,
-  EToggleTheSubtleMovementOfTheBlobs,
-  ETryDraggingTheBlobs,
-  EWhichBlobIsCurrentlyActiveCanBeSeenAtTheTopLeftOfTheContainer,
-  EYouCanChangeTheDimensionsOfTheScreenshotByResizingYourBrowserWindow,
-  EYouMayAlsoMoveTheEntireViewWithTheAngleQuotationMarkButtons,
-  EYouMayChangeBlobSizeWithTheMouseWheel,
-  EYouMayCloneARareColorBlobByPressingCOrD,
-  EYouMayUseKeyboardShortcutsWhileMouseIsPressedDown,
-} from '../../types/blobs'
+import { lazy, Suspense, useContext } from 'react'
+import { ELanguages } from '../../types'
 import '../../components/Blob/css/blob.css'
 import Accordion from '../../components/Accordion/Accordion'
-import { EClickHereToSeeFeatures } from '../../components/Jokes/types'
 import birb from '../../assets/blob-birb.png'
 import fish from '../../assets/blob-fish.png'
 import bubbly from '../../assets/bubbly-fish.png'
 import dog from '../../assets/blob-dog.png'
 import { CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 const Blobs = lazy(() => import('../../components/Blob/Blobs'))
 
@@ -108,6 +23,8 @@ export default function BlobPage({
   type: string
   language: ELanguages
 }) {
+  const { t } = useContext(LanguageContext)!
+
   const blobStyle: CSSProperties = {
     width: '100%',
     height: 'auto',
@@ -124,166 +41,150 @@ export default function BlobPage({
               <div className='flex column gap'>
                 <Accordion
                   language={language}
-                  text={EClickHereToSeeFeatures[language]}
+                  text={t('EClickHereToSeeFeatures')}
                   className='features-blobs'
                   wrapperClass='features-blobs-wrap'
                   showButton
                 >
                   <div className='medium'>
-                    <h2>{EFeatures[language]}</h2>
+                    <h2>{t('EFeatures')}</h2>
                     <ul className='ul'>
                       <li>
-                        {EBlobs[language]}:
+                        {t('EBlobs')}:
                         <ul>
-                          <li>{EDraggable[language]}</li>
-                          <li>{EBlurIntoOneAnother[language]}</li>
-                          <li>{EChangeableColor[language]}</li>
-                          <li>{EChangeableSize[language]}</li>
-                          <li>{ECloneable[language]}</li>
-                          <li>{ERemovable[language]}</li>
+                          <li>{t('EDraggable')}</li>
+                          <li>{t('EBlurIntoOneAnother')}</li>
+                          <li>{t('EChangeableColor')}</li>
+                          <li>{t('EChangeableSize')}</li>
+                          <li>{t('ECloneable')}</li>
+                          <li>{t('ERemovable')}</li>
                         </ul>
                       </li>
 
                       <li>
-                        {ELayers[language]}:{' '}
+                        {t('ELayers')}:{' '}
                         <big>
-                          <i>({ENew[language]}!)</i>
+                          <i>({t('ENew')}!)</i>
                         </big>
                         <ul>
-                          <li>{ELayerInstructions[language]}</li>
+                          <li>{t('ELayerInstructions')}</li>
                           <li>
-                            {EChangeTheLayerOfTheFocusedBlobByPressingTheNumber[language]}
+                            {t('EChangeTheLayerOfTheFocusedBlobByPressingTheNumber')}
                           </li>
-                          <li>{EDragBlobToIconsNextToLayerButtons[language]}</li>
+                          <li>{t('EDragBlobToIconsNextToLayerButtons')}</li>
                           <li>
-                            {EMoveEveryBlobUpOrDownOneLayerByPressingTheButtons[language]}
+                            {t('EMoveEveryBlobUpOrDownOneLayerByPressingTheButtons')}
                           </li>
                         </ul>
                       </li>
                       <li>
-                        {ESaving[language]}:{' '}
+                        {t('ESaving')}:{' '}
                         <big>
-                          <i>({ENew[language]}!)</i>
+                          <i>({t('ENew')}!)</i>
                         </big>
                         <ul>
-                          <li>{ELoginToSaveBlobsToServer[language]}</li>
-                          <li>{EManyVersions[language]}</li>
-                          <li>{ENameYourArtwork[language]}</li>
-                          <li>{ERenameYourArtwork[language]}</li>
-                          <li>{EEditArtwork[language]}</li>
+                          <li>{t('ELoginToSaveBlobsToServer')}</li>
+                          <li>{t('EManyVersions')}</li>
+                          <li>{t('ENameYourArtwork')}</li>
+                          <li>{t('ERenameYourArtwork')}</li>
+                          <li>{t('EEditArtwork')}</li>
                         </ul>
                       </li>
                       <li>
-                        {EScreenshot[language]}:
+                        {t('EScreenshot')}:
                         <big>
-                          <i>({ENew[language]}!)</i>
+                          <i>({t('ENew')}!)</i>
                         </big>
                         <ul>
-                          <li>{EPressTheCameraSymbolToTakeAScreenshot[language]}</li>
-                          <li>{EPlacesTheImageDownBelow[language]}</li>
+                          <li>{t('EPressTheCameraSymbolToTakeAScreenshot')}</li>
+                          <li>{t('EPlacesTheImageDownBelow')}</li>
                           <li>
-                            {EDownloadYourArtwork[language]} ({EButton[language]})
+                            {t('EDownloadYourArtwork')} ({t('EButton')})
                           </li>
                           <li>
-                            {
-                              EYouCanChangeTheDimensionsOfTheScreenshotByResizingYourBrowserWindow[
-                                language
-                              ]
-                            }
+                            {t(
+                              'EYouCanChangeTheDimensionsOfTheScreenshotByResizingYourBrowserWindow'
+                            )}
                           </li>
                         </ul>
                       </li>
 
                       <li>
-                        {ESlidersToControlBackground[language]}:
+                        {t('ESlidersToControlBackground')}:
                         <ul>
-                          <li>{ELightness[language]}</li>
-                          <li>{ESaturation[language]}</li>
-                          <li>{EHue[language]}</li>
+                          <li>{t('ELightness')}</li>
+                          <li>{t('ESaturation')}</li>
+                          <li>{t('EHue')}</li>
                         </ul>
                       </li>
 
                       <li>
-                        {EButtonsTo[language]}:
+                        {t('EButtonsTo')}:
                         <ul>
-                          <li>{EToggleTheSubtleMovementOfTheBlobs[language]}</li>
-                          <li>{EResetTheBlobArrayToANewConfiguration[language]}</li>
+                          <li>{t('EToggleTheSubtleMovementOfTheBlobs')}</li>
+                          <li>{t('EResetTheBlobArrayToANewConfiguration')}</li>
+                          <li>{t('EStopScrollingBehaviorToUseTheMouseWheelFreely')}</li>
+                          <li>{t('EMoveViewInDifferentDirections')}</li>
+                          <li>{t('EToggleControlVisibility')}</li>
                           <li>
-                            {EStopScrollingBehaviorToUseTheMouseWheelFreely[language]}
-                          </li>
-                          <li>{EMoveViewInDifferentDirections[language]}</li>
-                          <li>{EToggleControlVisibility[language]}</li>
-                          <li>
-                            {EMakeARandomBlobByClickingThePlusSign[language]}.{' '}
-                            {EMoreColorsAvailable[language]}:{' '}
-                            {EOverAThousandPossibleColorCombinations[language]}
+                            {t('EMakeARandomBlobByClickingThePlusSign')}.{' '}
+                            {t('EMoreColorsAvailable')}:{' '}
+                            {t('EOverAThousandPossibleColorCombinations')}
                           </li>
                         </ul>
                       </li>
                       <li>
-                        {
-                          EWhichBlobIsCurrentlyActiveCanBeSeenAtTheTopLeftOfTheContainer[
-                            language
-                          ]
-                        }
+                        {t(
+                          'EWhichBlobIsCurrentlyActiveCanBeSeenAtTheTopLeftOfTheContainer'
+                        )}
                       </li>
                       <li>
-                        {
-                          EOnTouchscreensTapTheBlobTwiceToShrinkItAndThriceToEnlargeIt[
-                            language
-                          ]
-                        }
+                        {t(
+                          'EOnTouchscreensTapTheBlobTwiceToShrinkItAndThriceToEnlargeIt'
+                        )}
                       </li>
                     </ul>
-                    <h3>{EInstructions[language]}</h3>
-                    <h4>{EPointerUse[language]}</h4>
+                    <h3>{t('EInstructions')}</h3>
+                    <h4>{t('EPointerUse')}</h4>
                     <ul className='ul'>
+                      <li>{t('EChangeBlobColorByDraggingToAColorNodeOnTheSides')}</li>
                       <li>
-                        {EChangeBlobColorByDraggingToAColorNodeOnTheSides[language]}
+                        {t(
+                          'EChangeBlobSizeByDraggingItToEitherTheLOrSLetterOnTheRightHandSide'
+                        )}
+                      </li>
+                      <li>{t('EChangeBlobSizeByScrollingWithTheMouseWheel')}</li>
+                      <li>
+                        {t('ECloneABlobByClickingTheTopLeftPlusSign')}.{' '}
+                        {t('ERememberToDisableTheButtonWhenFinished')}
                       </li>
                       <li>
-                        {
-                          EChangeBlobSizeByDraggingItToEitherTheLOrSLetterOnTheRightHandSide[
-                            language
-                          ]
-                        }
+                        {t('ERemoveABlobByClickingTheBottomLeftXSign')}.{' '}
+                        {t('ERememberToDisableTheButtonWhenFinished')}
                       </li>
-                      <li>{EChangeBlobSizeByScrollingWithTheMouseWheel[language]}</li>
-                      <li>
-                        {ECloneABlobByClickingTheTopLeftPlusSign[language]}.{' '}
-                        {ERememberToDisableTheButtonWhenFinished[language]}
-                      </li>
-                      <li>
-                        {ERemoveABlobByClickingTheBottomLeftXSign[language]}.{' '}
-                        {ERememberToDisableTheButtonWhenFinished[language]}
-                      </li>
-                      <li>{EDragBlobToIconsNextToLayerButtons[language]}</li>
-                      <li>{EKeysMayBeUsedWhileMouseIsPressedDown[language]}</li>
+                      <li>{t('EDragBlobToIconsNextToLayerButtons')}</li>
+                      <li>{t('EKeysMayBeUsedWhileMouseIsPressedDown')}</li>
                     </ul>
-                    <h4>{EKeyboardUse[language]}</h4>
+                    <h4>{t('EKeyboardUse')}</h4>
                     <ul className='ul'>
                       <li>
-                        {ETabToABlobAndWithItInFocus[language]}
+                        {t('ETabToABlobAndWithItInFocus')}
                         <ul>
-                          <li>{EPressEnterToCycleThroughTheDifferentColors[language]}</li>
-                          <li>{EMakeBlobSmallerByPressingS[language]}</li>
-                          <li>{EMakeBlobLargerByPressingBL[language]}</li>
-                          <li>{ECloneABlobByPressingCOr[language]}</li>
-                          <li>{EMakeANewRandomBlobByPressingPlus[language]}</li>
-                          <li>{ERemoveABlobByPressingDeleteOr[language]}</li>
+                          <li>{t('EPressEnterToCycleThroughTheDifferentColors')}</li>
+                          <li>{t('EMakeBlobSmallerByPressingS')}</li>
+                          <li>{t('EMakeBlobLargerByPressingBL')}</li>
+                          <li>{t('ECloneABlobByPressingCOr')}</li>
+                          <li>{t('EMakeANewRandomBlobByPressingPlus')}</li>
+                          <li>{t('ERemoveABlobByPressingDeleteOr')}</li>
                           <li>
-                            {EChangeTheLayerOfTheFocusedBlobByPressingTheNumber[language]}
+                            {t('EChangeTheLayerOfTheFocusedBlobByPressingTheNumber')}
                           </li>
+                          <li>{t('EMoveBlobToBottomByPressingZOrToTopByPressingT')}</li>{' '}
                           <li>
-                            {EMoveBlobToBottomByPressingZOrToTopByPressingT[language]}
-                          </li>{' '}
-                          <li>
-                            {
-                              EPressSpaceOrRWithABlobInFocusToCycleThroughRandomColors[
-                                language
-                              ]
-                            }
-                            : {EOverAThousandPossibleColorCombinations[language]}
+                            {t(
+                              'EPressSpaceOrRWithABlobInFocusToCycleThroughRandomColors'
+                            )}
+                            : {t('EOverAThousandPossibleColorCombinations')}
                           </li>
                         </ul>
                       </li>
@@ -292,88 +193,76 @@ export default function BlobPage({
                 </Accordion>
                 <Accordion
                   language={language}
-                  text={ESeeSampleArtworkCreatedWithTheApp[language]}
+                  text={t('ESeeSampleArtworkCreatedWithTheApp')}
                   className='sample-img'
                   wrapperClass='sample-img-wrap'
                   showButton
                 >
                   <>
                     <figure>
-                      <img src={birb} style={blobStyle} alt={EFlyingBird[language]} />
+                      <img src={birb} style={blobStyle} alt={t('EFlyingBird')} />
                       <figcaption>
-                        {ESampleArtwork[language]}: {EFlyingBird[language]}
+                        {t('ESampleArtwork')}: {t('EFlyingBird')}
                       </figcaption>
                     </figure>
                     <figure>
-                      <img src={fish} style={blobStyle} alt={ESwimmingFish[language]} />
+                      <img src={fish} style={blobStyle} alt={t('ESwimmingFish')} />
                       <figcaption>
-                        {ESampleArtwork[language]}: {ESwimmingFish[language]}
+                        {t('ESampleArtwork')}: {t('ESwimmingFish')}
                       </figcaption>
                     </figure>
                     <figure>
-                      <img
-                        src={bubbly}
-                        style={blobStyle}
-                        alt={EBubblesAndFish[language]}
-                      />
+                      <img src={bubbly} style={blobStyle} alt={t('EBubblesAndFish')} />
                       <figcaption>
-                        {ESampleArtwork[language]}: {EBubblesAndFish[language]}
+                        {t('ESampleArtwork')}: {t('EBubblesAndFish')}
                       </figcaption>
                     </figure>
                     <figure>
-                      <img src={dog} style={blobStyle} alt={`${EDog[language]}?`} />
+                      <img src={dog} style={blobStyle} alt={`${t('EDog')}?`} />
                       <figcaption>
-                        {ESampleArtwork[language]}: {`${EDog[language]}?`}
+                        {t('ESampleArtwork')}: {`${t('EDog')}?`}
                       </figcaption>
                     </figure>
                   </>
                 </Accordion>
                 <Accordion
                   language={language}
-                  text={ETipsAndTricks[language]}
+                  text={t('ETipsAndTricks')}
                   className='blob-tips-and-tricks'
                   wrapperClass='blob-tips-and-tricks-wrap'
                 >
                   <>
-                    <h2 id='blob-tips-heading'>{ETipsAndTricks[language]}</h2>
+                    <h2 id='blob-tips-heading'>{t('ETipsAndTricks')}</h2>
                     <ul className='ul' aria-describedby='blob-tips-heading'>
                       <li>
-                        {EIfYouNeedToSetABlobNearTheEdgeOfTheScreen[language]}.{' '}
-                        {
-                          EYouMayAlsoMoveTheEntireViewWithTheAngleQuotationMarkButtons[
-                            language
-                          ]
-                        }{' '}
+                        {t('EIfYouNeedToSetABlobNearTheEdgeOfTheScreen')}.{' '}
+                        {t(
+                          'EYouMayAlsoMoveTheEntireViewWithTheAngleQuotationMarkButtons'
+                        )}{' '}
                       </li>
-                      <li>{EYouMayChangeBlobSizeWithTheMouseWheel[language]} </li>
+                      <li>{t('EYouMayChangeBlobSizeWithTheMouseWheel')} </li>
+                      <li>{t('EYouMayUseKeyboardShortcutsWhileMouseIsPressedDown')} </li>
                       <li>
-                        {EYouMayUseKeyboardShortcutsWhileMouseIsPressedDown[language]}{' '}
-                      </li>
-                      <li>
-                        {EMoreColorsAvailableThroughRandomBlobButton[language]}.{' '}
-                        {EOverAThousandPossibleColorCombinations[language]}{' '}
-                        {EYouMayCloneARareColorBlobByPressingCOrD[language]}
+                        {t('EMoreColorsAvailableThroughRandomBlobButton')}.{' '}
+                        {t('EOverAThousandPossibleColorCombinations')}{' '}
+                        {t('EYouMayCloneARareColorBlobByPressingCOrD')}
                       </li>
                       <li>
-                        {
-                          EYouCanChangeTheDimensionsOfTheScreenshotByResizingYourBrowserWindow[
-                            language
-                          ]
-                        }
+                        {t(
+                          'EYouCanChangeTheDimensionsOfTheScreenshotByResizingYourBrowserWindow'
+                        )}
                       </li>
                       <li>
-                        {
-                          EIfABlobYouClickedHidesAnotherYouMayPlaceTheBlobBackToTheBottomOfThePile[
-                            language
-                          ]
-                        }
+                        {t(
+                          'EIfABlobYouClickedHidesAnotherYouMayPlaceTheBlobBackToTheBottomOfThePile'
+                        )}
                       </li>
                       <li>
-                        <>{ERegisterAndLogInToSaveYourArtwork[language]}</>{' '}
+                        <>{t('ERegisterAndLogInToSaveYourArtwork')}</>{' '}
                         <div>
-                          <Link to='?login=login'>{ELogin[language]}</Link>
+                          <Link to='?login=login'>{t('ELogin')}</Link>
                           &nbsp;&nbsp;/&nbsp;&nbsp;
-                          <Link to='?register=register'>{ERegister[language]}</Link>
+                          <Link to='?register=register'>{t('ERegister')}</Link>
                         </div>
                       </li>
                     </ul>
@@ -388,9 +277,7 @@ export default function BlobPage({
         </section>
         <Suspense
           fallback={
-            <div className='flex center margin0auto textcenter'>
-              {ELoading[language]}...
-            </div>
+            <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
           }
         >
           <Blobs language={language} />

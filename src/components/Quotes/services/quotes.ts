@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { EError, ELanguages } from '../../../types'
+import { ELanguages } from '../../../types'
 import { translationMapQuotes } from '../../../types/quotes'
 
 export const WEIGHTED = [

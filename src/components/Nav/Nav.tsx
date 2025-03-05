@@ -6,6 +6,7 @@ import {
   Ref,
   useImperativeHandle,
   useRef,
+  useContext,
 } from 'react'
 import { BiChat } from 'react-icons/bi'
 import { BsCart2, BsPerson } from 'react-icons/bs'
@@ -17,37 +18,16 @@ import { RiHomeSmileLine } from 'react-icons/ri'
 import { TbLayoutNavbar } from 'react-icons/tb'
 import { TfiLineDashed } from 'react-icons/tfi'
 import styles from './nav.module.css'
-//import { links } from './links.json'
-//import { skipLinks } from './linksskip.json'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useTheme, useThemeUpdate } from '../../hooks/useTheme'
 import useScrollDirection from '../../hooks/useScrollDirection'
 import useWindowSize from '../../hooks/useWindowSize'
 import {
-  EAbout,
-  EContact,
-  EDarkMode,
-  EEdit,
-  EExitToMainSite,
-  EForgotPassword,
-  ELanguageTitle,
-  ELightMode,
-  EMenu,
-  ENavStyle,
-  EPasswordsDoNotMatch,
-  EPleaseCheckYourEmailForYourVerificationLink,
-  EPortfolio,
-  ERegistrationSuccesful,
-  ESearch,
-  ESettings,
-  ESkipToFooter,
-  ESkipToMainContent,
-  ESkipToMainNavigation,
-  EStore,
-  EWelcome,
   ReducerProps,
   breakpoint,
   breakpointSmall,
+  ELanguages,
+  ELanguagesLong,
 } from '../../types'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
 import logo from '../../assets/JLA_Jenniina-light-3-480x198.png'
@@ -55,7 +35,6 @@ import logoDark from '../../assets/JLA_Jenniina-3-480x198.png'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { logout } from '../../reducers/authReducer'
-import { ELogout, ELanguages, ELoggedInAs } from '../../types'
 import FormLogin from '../Login/Login'
 import Register from '../Register/Register'
 import { notify } from '../../reducers/notificationReducer'
@@ -63,12 +42,10 @@ import { createUser } from '../../reducers/usersReducer'
 import { Select, SelectOption } from '../Select/Select'
 import PasswordReset from '../PasswordReset/PasswordReset'
 import Accordion from '../Accordion/Accordion'
-import { TiShoppingCart } from 'react-icons/ti'
-import { ECart } from '../../types/store'
 import { FaStoreAlt } from 'react-icons/fa'
-import { getKeyByValue } from '../../utils'
 import useCart from '../../hooks/useCart'
 import { options } from '../../utils'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 type Link = {
   label: string
@@ -87,6 +64,8 @@ const Nav = (
 ) => {
   const { cart } = useCart()
 
+  const { t } = useContext(LanguageContext)!
+
   const user = useSelector((state: ReducerProps) => {
     return state.auth?.user
   })
@@ -95,50 +74,50 @@ const Nav = (
 
   const links = [
     {
-      label: EWelcome[language],
+      label: t('EWelcome'),
       href: '/',
     },
     {
-      label: EAbout[language],
+      label: t('EAbout'),
       href: '/about',
     },
     {
-      label: EPortfolio[language],
+      label: t('EPortfolio'),
       href: '/portfolio',
     },
     {
-      label: EContact[language],
+      label: t('EContact'),
       href: '/contact',
     },
   ]
 
   const skipLinks = [
     {
-      label: ESkipToMainNavigation[language],
+      label: t('ESkipToMainNavigation'),
       href: '#site-navigation',
     },
     {
-      label: ESkipToMainContent[language],
+      label: t('ESkipToMainContent'),
       href: '#main-content',
     },
     {
-      label: ESkipToFooter[language],
+      label: t('ESkipToFooter'),
       href: '#main-footer',
     },
   ]
 
   const icons = (label: string) => {
-    if (label === EWelcome[language])
+    if (label === t('EWelcome'))
       return (
         <RiHomeSmileLine className={windowWidth < breakpoint ? styles.smallnav : ''} />
       )
-    else if (label === EAbout[language])
+    else if (label === t('EAbout'))
       return <BsPerson className={windowWidth < breakpoint ? styles.smallnav : ''} />
     //MdOutlinePerson
-    else if (label === EPortfolio[language])
+    else if (label === t('EPortfolio'))
       return <IoMdImages className={windowWidth < breakpoint ? styles.smallnav : ''} />
     //BiImage IoImagesOutline BiImages FaRegImages  MdImportContacts
-    else if (label === EContact[language])
+    else if (label === t('EContact'))
       return <BiChat className={windowWidth < breakpoint ? styles.smallnav : ''} />
   }
 
@@ -149,9 +128,7 @@ const Nav = (
           <li className={`tooltip-wrap ${styles.jenniina}`}>
             <a href='https://jenniina.fi'>
               <img src={lightTheme ? logoDark : logo} width='96px' height='39.6px' />
-              <span className='tooltip below right narrow'>
-                « {EExitToMainSite[language]}
-              </span>
+              <span className='tooltip below right narrow'>« {t('EExitToMainSite')}</span>
             </a>
           </li>
         ) : (
@@ -407,7 +384,7 @@ const Nav = (
     e.preventDefault()
     setSending(true)
     if (password.trim() !== confirmPassword.trim()) {
-      dispatch(notify(`${EPasswordsDoNotMatch}`, true, 8))
+      dispatch(notify(`${t('EPasswordsDoNotMatch')}`, true, 8))
       setSending(false)
       return
     }
@@ -415,7 +392,9 @@ const Nav = (
       .then(async () => {
         dispatch(
           notify(
-            `${ERegistrationSuccesful[language]} - ${EPleaseCheckYourEmailForYourVerificationLink[language]} `,
+            `${t('ERegistrationSuccesful')} - ${t(
+              'EPleaseCheckYourEmailForYourVerificationLink'
+            )} `,
             false,
             8
           )
@@ -469,7 +448,7 @@ const Nav = (
                         ${windowWidth < breakpointSmall ? 'scr' : ''}`}
           >
             <a href='https://jenniina.fi/'>
-              <span>« {EExitToMainSite[language]}</span>
+              <span>« {t('EExitToMainSite')}</span>
             </a>
           </div>
           <button
@@ -502,9 +481,7 @@ const Nav = (
                 ></path>
               </g>
             </svg>
-            <span className={windowWidth < breakpoint ? 'scr' : ''}>
-              {EMenu[language]}
-            </span>
+            <span className={windowWidth < breakpoint ? 'scr' : ''}>{t('EMenu')}</span>
           </button>
           <nav
             id={'site-navigation'}
@@ -555,9 +532,7 @@ const Nav = (
               }
               aria-hidden={true}
             />
-            <span className={windowWidth < breakpoint ? 'scr' : ''}>
-              {ESearch[language]}
-            </span>
+            <span className={windowWidth < breakpoint ? 'scr' : ''}>{t('ESearch')}</span>
           </button>
           {cart.length > 0 && window.location.pathname !== '/cart' ? (
             <button
@@ -576,9 +551,7 @@ const Nav = (
                 }
                 aria-hidden={true}
               />
-              <span className={windowWidth < breakpoint ? 'scr' : ''}>
-                {ECart[language]}
-              </span>
+              <span className={windowWidth < breakpoint ? 'scr' : ''}>{t('ECart')}</span>
             </button>
           ) : (
             <button
@@ -597,9 +570,7 @@ const Nav = (
                 }
                 aria-hidden={true}
               />
-              <span className={windowWidth < breakpoint ? 'scr' : ''}>
-                {EStore[language]}
-              </span>
+              <span className={windowWidth < breakpoint ? 'scr' : ''}>{t('EStore')}</span>
             </button>
           )}
           <button className={styles.settings} onClick={toggleToolbar}>
@@ -612,7 +583,7 @@ const Nav = (
               aria-hidden={true}
             />
             <span id='settings' className={windowWidth < breakpoint ? 'scr' : ''}>
-              {ESettings[language]}
+              {t('ESettings')}
             </span>
           </button>
           <nav
@@ -631,14 +602,14 @@ const Nav = (
               language={language}
               id='language-navbar'
               className={`language ${styles.language}`}
-              instructions={ELanguageTitle[language]}
+              instructions={t('ELanguageTitle')}
               hide
-              options={options(ELanguages)}
+              options={options(ELanguagesLong)}
               value={
                 language
                   ? ({
                       value: language,
-                      label: getKeyByValue(ELanguages, language),
+                      label: ELanguagesLong[language],
                     } as SelectOption)
                   : undefined
               }
@@ -648,7 +619,7 @@ const Nav = (
             />
             <div className={styles.toolwrap}>
               <label htmlFor='dlt-btn'>
-                {lightTheme ? EDarkMode[language] : ELightMode[language]}
+                {lightTheme ? t('EDarkMode') : t('ELightMode')}
               </label>
               <button
                 id='dlt-btn'
@@ -663,7 +634,7 @@ const Nav = (
                   <div className={`${styles['dlt-btn-inner-left']}`}>
                     <div className={`${styles['dlt-innermost']}`}>
                       <span className='scr'>
-                        {lightTheme ? EDarkMode[language] : ELightMode[language]}
+                        {lightTheme ? t('EDarkMode') : t('ELightMode')}
                       </span>
                     </div>
                   </div>
@@ -672,7 +643,7 @@ const Nav = (
             </div>
 
             <div className={styles.toolwrap}>
-              <label htmlFor='navbar-style'>{ENavStyle[language]}</label>
+              <label htmlFor='navbar-style'>{t('ENavStyle')}</label>
               <button
                 id='navbar-style'
                 onClick={menuStyleAltToggle}
@@ -739,14 +710,14 @@ const Nav = (
                         : `${styles.link}`
                     }
                   >
-                    <span>{EEdit[language]}</span>
+                    <span>{t('EEdit')}</span>
                   </NavLink>
                   <button
                     onClick={handleLogout}
                     id='logoutnav'
                     className={`logout danger ${styles.logout}`}
                   >
-                    {ELogout[language]} &times;
+                    {t('ELogout')} &times;
                   </button>
                 </>
               )}
@@ -757,7 +728,7 @@ const Nav = (
                   language={language}
                   className='password-reset'
                   wrapperClass='password-reset-wrap'
-                  text={`${EForgotPassword[language]}`}
+                  text={`${t('EForgotPassword')}`}
                   isOpen={isResetFormOpen}
                   setIsFormOpen={setIsResetFormOpen}
                   hideBrackets={true}

@@ -1,23 +1,13 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useContext, useEffect, useState } from 'react'
 import styles from '../store.module.css'
 import cartService from '../../../services/cart'
-import {
-  EContainsVAT,
-  EOrder,
-  EOrdered,
-  EOrderID,
-  EPaymentState,
-  EPrice,
-  ETotal,
-  ICart,
-  ICartItem,
-  IInfo,
-} from '../../../types/store'
-import { EInfo, ELanguages, ELastUpdated, EStatus, ESubmit } from '../../../types'
+import { ICart, IInfo } from '../../../types/store'
+import { ELanguages } from '../../../types'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { notify } from '../../../reducers/notificationReducer'
 import { useTheme } from '../../../hooks/useTheme'
 import { paid, status } from '../../../types/store'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
@@ -28,6 +18,8 @@ interface Props {
 }
 
 const Order: FC<Props> = ({ language, paidStatus, itemStatus, splitToLines, info }) => {
+  const { t } = useContext(LanguageContext)!
+
   const dispatch = useAppDispatch()
   const lightTheme = useTheme()
 
@@ -81,11 +73,11 @@ const Order: FC<Props> = ({ language, paidStatus, itemStatus, splitToLines, info
               value={orderID}
               onChange={(e) => setOrderID(e.target.value as ICart['orderID'])}
             />
-            <span className='label'>{EOrderID[language]}</span>
+            <span className='label'>{t('EOrderID')}</span>
           </label>
         </div>
         <button type='submit' disabled={sending}>
-          {ESubmit[language]}
+          {t('ESubmit')}
         </button>
       </form>
       {order && (
@@ -101,7 +93,7 @@ const Order: FC<Props> = ({ language, paidStatus, itemStatus, splitToLines, info
                   </h3>
                   <p>{item.description}</p>
                   <p>
-                    <strong>{EPrice[language]}:</strong>{' '}
+                    <strong>{t('EPrice')}:</strong>{' '}
                     {item.id === 'misc-quote'
                       ? item.price + ' €'
                       : item.price +
@@ -112,15 +104,14 @@ const Order: FC<Props> = ({ language, paidStatus, itemStatus, splitToLines, info
                         ' €'}
                   </p>
                   <p>
-                    <strong>{EInfo[language]}:</strong> <br />{' '}
-                    {splitToLines(item.details)}
+                    <strong>{t('EInfo')}:</strong> <br /> {splitToLines(item.details)}
                   </p>
                   <p>
-                    <strong>{EStatus[language]}:</strong> {itemStatus(item.status)}{' '}
+                    <strong>{t('EStatus')}:</strong> {itemStatus(item.status)}{' '}
                   </p>
                   {item.id === 'misc-quote' ? null : (
                     <p key={item.id}>
-                      <strong>{EPaymentState[language]}:</strong> {paidStatus[item.paid]}
+                      <strong>{t('EPaymentState')}:</strong> {paidStatus[item.paid]}
                     </p>
                   )}
                 </div>
@@ -129,7 +120,7 @@ const Order: FC<Props> = ({ language, paidStatus, itemStatus, splitToLines, info
           </div>
           <div className={styles['info-wrap']}>
             <table className={`${styles['info-table']}`}>
-              <caption>{EInfo[language]}</caption>
+              <caption>{t('EInfo')}</caption>
               <tbody>
                 {Object.keys(order.info).map((key) => {
                   if (key === '_id') return null
@@ -147,15 +138,15 @@ const Order: FC<Props> = ({ language, paidStatus, itemStatus, splitToLines, info
             </table>
             <p>{order.extra}</p>
             <p>
-              {ETotal[language]}: <big>{order.total} € </big>
+              {t('ETotal')}: <big>{order.total} € </big>
               <br />
             </p>
 
             <p>
-              {EStatus[language]}: {itemStatus(order.status)}
+              {t('EStatus')}: {itemStatus(order.status)}
             </p>
             <p>
-              {EPaymentState[language]}:{' '}
+              {t('EPaymentState')}:{' '}
               {
                 paidStatus[
                   order.items.every((item) => item.paid === 'full')
@@ -167,10 +158,10 @@ const Order: FC<Props> = ({ language, paidStatus, itemStatus, splitToLines, info
               }
             </p>
             <p>
-              <strong>{EOrdered[language]}: </strong>
+              <strong>{t('EOrdered')}: </strong>
               {order.createdAt?.toLocaleDateString()}{' '}
               {order.createdAt?.toLocaleTimeString()} <br />
-              <strong>{ELastUpdated[language]}: </strong>
+              <strong>{t('ELastUpdated')}: </strong>
               {order.updatedAt.toLocaleDateString()}{' '}
               {order.updatedAt?.toLocaleTimeString()}
             </p>

@@ -1,16 +1,15 @@
-import { FC, useEffect, useState } from 'react'
-import { EError, ELanguages } from '../../../types'
-import { EClickToLoadVideo, EVideoPage } from '../../../types/images'
+import { FC, useContext, useEffect, useState } from 'react'
+import { ELanguages } from '../../../types'
 import { VideoHit } from '../services/images'
 import useTooltip from '../../../hooks/useTooltip'
 import Quote from '../../Quotes/Quote'
 import { getQuote, QuoteItem } from '../../Quotes/services/quotes'
-import { EAuthor } from '../../Jokes/types'
 import Poem from '../../Poems/Poem'
 import { getPoem, PoemItem } from '../../Poems/services/poems'
 import { TTextType } from '../Images'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { notify } from '../../../reducers/notificationReducer'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 interface ModalVideoProps {
   video: VideoHit
@@ -27,6 +26,8 @@ const VideoModal: FC<ModalVideoProps> = ({
   textType,
   handleDownload,
 }) => {
+  const { t } = useContext(LanguageContext)!
+
   const dispatch = useAppDispatch()
 
   const { tooltip, handleMouseMove, handleMouseLeave } = useTooltip()
@@ -60,14 +61,14 @@ const VideoModal: FC<ModalVideoProps> = ({
   }
 
   const fetchQuote = async () => {
-    if ((language = ELanguages.Suomi)) {
-      const response = await getQuote(ELanguages.English, searchTerm)
+    if ((language = ELanguages.fi)) {
+      const response = await getQuote(ELanguages.en, searchTerm)
       if (response.quote) setQuote(response.quote)
-      else dispatch(notify(response.message ?? EError[language], true, 8))
+      else dispatch(notify(response.message ?? t('EError'), true, 8))
     } else {
       const response = await getQuote(language, searchTerm)
       if (response.quote) setQuote(response.quote)
-      else dispatch(notify(response.message ?? EError[language], true, 8))
+      else dispatch(notify(response.message ?? t('EError'), true, 8))
     }
   }
 
@@ -129,7 +130,7 @@ const VideoModal: FC<ModalVideoProps> = ({
             className={`tooltip center narrow`}
             style={{ top: tooltip.y, left: tooltip.x, right: 'unset' }}
           >
-            {EClickToLoadVideo[language]}
+            {t('EClickToLoadVideo')}
           </span>
         )}
       </div>
@@ -140,7 +141,7 @@ const VideoModal: FC<ModalVideoProps> = ({
           url={video.pageURL}
           title={
             <>
-              {EVideoPage[language]} ({EAuthor[language]}: {video.user})
+              {t('EVideoPage')} ({t('EAuthor')}: {video.user})
             </>
           }
         />

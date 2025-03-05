@@ -1,16 +1,12 @@
-import { FC, useRef, useState, useEffect } from 'react'
+import { FC, useRef, useState, useEffect, useContext } from 'react'
 import styles from './wordcloud.module.css'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
-import {
-  ECopiedToClipboard,
-  ECopyToClipboard,
-  EFailedToCopy,
-  ELanguages,
-} from '../../types'
+import { ELanguages } from '../../types'
 import { useTheme } from '../../hooks/useTheme'
 import useWindowSize from '../../hooks/useWindowSize'
 import useRandomMinMax from '../../hooks/useRandomMinMax'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 interface Word {
   text: string
@@ -36,6 +32,8 @@ const WordCloud: FC<WordCloudProps> = ({
   width = 600,
   height = 400,
 }) => {
+  const { t } = useContext(LanguageContext)!
+
   const dispatch = useAppDispatch()
   const [placedWords, setPlacedWords] = useState<JSX.Element[]>([])
   const lightMode = useTheme()
@@ -190,10 +188,10 @@ const WordCloud: FC<WordCloudProps> = ({
     } else if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(textToCopy).then(
         () => {
-          dispatch(notify(ECopiedToClipboard[language], false, 3))
+          dispatch(notify(t('ECopiedToClipboard'), false, 3))
         },
         (error) => {
-          dispatch(notify(`${EFailedToCopy[language]}`, true, 3))
+          dispatch(notify(`${t('EFailedToCopy')}`, true, 3))
           console.error('Failed to copy:', error)
         }
       )
@@ -206,10 +204,10 @@ const WordCloud: FC<WordCloudProps> = ({
       textArea.select()
       try {
         document.execCommand('copy')
-        dispatch(notify(ECopiedToClipboard[language], false, 3))
+        dispatch(notify(t('ECopiedToClipboard'), false, 3))
       } catch (error: any) {
         console.error('Failed to copy:', error)
-        dispatch(notify(`${EFailedToCopy[language]}`, true, 3))
+        dispatch(notify(`${t('EFailedToCopy')}`, true, 3))
       }
       ref.current?.removeChild(textArea)
     }
@@ -267,7 +265,7 @@ const WordCloud: FC<WordCloudProps> = ({
                 handleWordClick(word.text)
               }
             }}
-            aria-label={title ?? `${ECopyToClipboard[language]}: ${word.text}`}
+            aria-label={title ?? `${t('ECopyToClipboard')}: ${word.text}`}
           >
             {word.text}
           </text>
@@ -331,7 +329,7 @@ const WordCloud: FC<WordCloudProps> = ({
                       handleWordClick(word.text)
                     }
                   }}
-                  aria-label={title ?? `${ECopyToClipboard[language]}: ${word.text}`}
+                  aria-label={title ?? `${t('ECopyToClipboard')}: ${word.text}`}
                 >
                   {word.text}
                 </text>

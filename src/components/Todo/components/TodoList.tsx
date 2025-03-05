@@ -1,9 +1,10 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useContext } from 'react'
 import { ITask, TPriority } from '../types'
 import style from '../css/todo.module.css'
-import { ELanguages, ELoading } from '../../../types'
+import { ELanguages } from '../../../types'
 import { IClosestItem, useDragAndDrop } from '../../../hooks/useDragAndDrop'
 import { SelectOption } from '../../Select/Select'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 const Todo = lazy(() => import('./TodoItem'))
 
@@ -50,6 +51,8 @@ export default function TodoList({
   //   .map((todo, index) => {
   //     return { ...todo, id: index, status: 'todos' }
   //   }) as ITaskDraggable[]
+
+  const { t } = useContext(LanguageContext)!
 
   const { isDragging, listItemsByStatus, handleUpdate, handleDragging } = useDragAndDrop<
     ITaskDraggable,
@@ -114,7 +117,7 @@ export default function TodoList({
               key={todo?.key}
               fallback={
                 <div className='flex center margin0auto textcenter'>
-                  {ELoading[language]}...
+                  {t('ELoading')}...
                 </div>
               }
             >

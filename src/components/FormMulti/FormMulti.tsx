@@ -1,37 +1,21 @@
-import { FormEvent, useState, useRef, useEffect, lazy, Suspense } from 'react'
+import { FormEvent, useState, useRef, useEffect, lazy, Suspense, useContext } from 'react'
 import { RiMailSendLine } from 'react-icons/ri'
-//import  MessageForm  from './components/MessageForm'
-//import  ExtrasForm  from './components/ExtrasForm'
 import { useMultistepForm } from './hooks/useMultistepForm'
-//import  InitialForm  from './components/InitialForm'
-import {
-  ELanguages,
-  ELoading,
-  ESend,
-  ESendingEmail,
-  EThankYouForYourMessage,
-  RefObject,
-} from '../../types'
+import { ELanguages, RefObject } from '../../types'
 import { FormData, INITIAL_DATA } from './types'
 import styles from './form.module.css'
 import { sendEmail } from './services/email'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
-import {
-  EBack,
-  EContactForm,
-  ENext,
-  EPart,
-  EPleaseFillInTheFields,
-  EThereWasAnErrorSendingTheMessage,
-} from '../../types/form'
-import { EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo } from '../../types/about'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 const MessageForm = lazy(() => import('./components/MessageForm'))
 const ExtrasForm = lazy(() => import('./components/ExtrasForm'))
 const InitialForm = lazy(() => import('./components/InitialForm'))
 
 function FormMulti({ language }: { language: ELanguages }) {
+  const { t } = useContext(LanguageContext)!
+
   const form = useRef() as RefObject<HTMLFormElement>
 
   const [data, setData] = useState(INITIAL_DATA)
@@ -48,9 +32,7 @@ function FormMulti({ language }: { language: ELanguages }) {
     useMultistepForm([
       <Suspense
         fallback={
-          <div className='flex center margin0auto textcenter'>
-            {ELoading[language]}...
-          </div>
+          <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
         }
       >
         <InitialForm
@@ -62,9 +44,7 @@ function FormMulti({ language }: { language: ELanguages }) {
       </Suspense>,
       <Suspense
         fallback={
-          <div className='flex center margin0auto textcenter'>
-            {ELoading[language]}...
-          </div>
+          <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
         }
       >
         <MessageForm
@@ -76,9 +56,7 @@ function FormMulti({ language }: { language: ELanguages }) {
       </Suspense>,
       <Suspense
         fallback={
-          <div className='flex center margin0auto textcenter'>
-            {ELoading[language]}...
-          </div>
+          <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
         }
       >
         <ExtrasForm
@@ -106,11 +84,11 @@ function FormMulti({ language }: { language: ELanguages }) {
           setTimeout(() => {
             setShowMessage(false)
           }, 100000)
-          dispatch(notify(EThankYouForYourMessage[language], false, 8))
+          dispatch(notify(t('EThankYouForYourMessage'), false, 8))
         })
       } catch (error) {
         console.error('error', error)
-        alert(EThereWasAnErrorSendingTheMessage[language])
+        alert(t('EThereWasAnErrorSendingTheMessage'))
       }
     }
   }
@@ -157,14 +135,12 @@ function FormMulti({ language }: { language: ELanguages }) {
 
   return (
     <div className={styles.wrapper}>
-      {language !== ELanguages.Suomi && language !== ELanguages.English && (
-        <p>
-          {EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo[language]}
-        </p>
+      {language !== ELanguages.fi && language !== ELanguages.en && (
+        <p>{t('EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo')}</p>
       )}
       <form ref={form} onSubmit={handleSubmit} aria-labelledby='steps'>
         <span id='steps' className={styles.steps}>
-          {EContactForm[language]} {EPart[language]}&nbsp;
+          {t('EContactForm')} {t('EPart')}&nbsp;
           <span>
             {currentStepIndex + 1}&nbsp;/&nbsp;{steps.length}
           </span>
@@ -176,7 +152,7 @@ function FormMulti({ language }: { language: ELanguages }) {
               <Suspense
                 fallback={
                   <div className='flex center margin0auto textcenter'>
-                    {ELoading[language]}...
+                    {t('ELoading')}...
                   </div>
                 }
               >
@@ -190,7 +166,7 @@ function FormMulti({ language }: { language: ELanguages }) {
               <Suspense
                 fallback={
                   <div className='flex center margin0auto textcenter'>
-                    {ELoading[language]}...
+                    {t('ELoading')}...
                   </div>
                 }
               >
@@ -212,7 +188,7 @@ function FormMulti({ language }: { language: ELanguages }) {
         <div className={styles.btns} style={{ position: 'relative' }}>
           {!isFirstStep && (
             <button type='button' onClick={back}>
-              <span aria-hidden='true'>«</span> {EBack[language]}
+              <span aria-hidden='true'>«</span> {t('EBack')}
             </button>
           )}
           {!isLastStep && (
@@ -222,7 +198,7 @@ function FormMulti({ language }: { language: ELanguages }) {
               className={isLastStep ? styles.submit : styles.next}
               onClick={handleNext}
             >
-              {sending ? ESendingEmail[language] : ENext[language]}{' '}
+              {sending ? t('ESendingEmail') : t('ENext')}{' '}
               <span aria-hidden='true'>»</span>
             </button>
           )}
@@ -232,7 +208,7 @@ function FormMulti({ language }: { language: ELanguages }) {
               type='submit'
               disabled={sending}
             >
-              {sending ? ESendingEmail[language] : ESend[language]} <RiMailSendLine />
+              {sending ? t('ESendingEmail') : t('ESend')} <RiMailSendLine />
             </button>
           )}
           {showError && (
@@ -246,7 +222,7 @@ function FormMulti({ language }: { language: ELanguages }) {
                 letterSpacing: '0.04em',
               }}
             >
-              {EPleaseFillInTheFields[language]}
+              {t('EPleaseFillInTheFields')}
             </div>
           )}
           {showMessage && (
@@ -261,7 +237,7 @@ function FormMulti({ language }: { language: ELanguages }) {
                 letterSpacing: '0.04em',
               }}
             >
-              {EThankYouForYourMessage[language]}
+              {t('EThankYouForYourMessage')}
             </div>
           )}
         </div>

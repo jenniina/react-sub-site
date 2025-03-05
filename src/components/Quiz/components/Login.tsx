@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState, FormEvent } from 'react'
+import { useEffect, useRef, useState, FormEvent, useContext } from 'react'
 import { IHighscore } from '../types'
-import { ELoggingIn, ELogin, EPassword, EUsername, ReducerProps } from '../../../types'
+import { ELanguages, ReducerProps } from '../../../types'
 import Accordion from '../../Accordion/Accordion'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { notify } from '../../../reducers/notificationReducer'
@@ -9,9 +9,8 @@ import { initializeUser, login, logout } from '../../../reducers/authReducer'
 import { useSelector } from 'react-redux'
 import Scores from './Scores'
 import styles from '../css/quiz.module.css'
-import { ELogout, EError, EEdit, ELanguages, ELoggedInAs } from '../../../types'
-import { ELogInToSaveScore } from '../../../types/quiz'
 import { Link } from 'react-router-dom'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 interface Props {
   easy: IHighscore['easy']
@@ -21,6 +20,8 @@ interface Props {
   setIsFormOpen?: (isFormOpen: boolean) => void
 }
 const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
+  const { t } = useContext(LanguageContext)!
+
   const dispatch = useAppDispatch()
   const [sending, setSending] = useState(false)
 
@@ -61,7 +62,7 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault()
     setSending(true)
-    dispatch(notify(ELoggingIn[language], false, 8))
+    dispatch(notify(t('ELoggingIn'), false, 8))
 
     await dispatch(login(username, password, 'en'))
       .then(() => {
@@ -72,9 +73,9 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
       .catch((e) => {
         if (e.response?.data?.message) dispatch(notify(e.response.data.message, true, 8))
         else if (e.code === 'ERR_BAD_REQUEST')
-          dispatch(notify(`${EError['en']}: ${e.response.data.message}`, true, 8))
+          dispatch(notify(`${t('EError')}: ${e.response.data.message}`, true, 8))
         else if (e.code === 'ERR_NETWORK') {
-          dispatch(notify(`${EError['en']}: ${e.message}`, true, 8))
+          dispatch(notify(`${t('EError')}: ${e.message}`, true, 8))
         }
         setSending(false)
       })
@@ -85,12 +86,11 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
         <>
           <p>
             <span>
-              {ELoggedInAs[(user?.language as ELanguages) ?? 'en']}{' '}
-              {user?.name ? user?.name : user.username}{' '}
+              {t('ELoggedInAs')} {user?.name ? user?.name : user.username}{' '}
             </span>
-            <Link to='/edit'>{`${EEdit[user?.language as ELanguages]}`}</Link>
+            <Link to='/edit'>{`${t('EEdit')}`}</Link>
             <button onClick={handleLogout} id='logout' className='logout danger'>
-              {ELogout[(user?.language as ELanguages) ?? 'en']} &times;
+              {t('ELogout')} &times;
             </button>
           </p>
           <button
@@ -112,12 +112,12 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
             language={language}
             className={`accordion-login login-to-save`}
             wrapperClass='login-to-save-wrap'
-            text={ELogInToSaveScore[language]}
+            text={t('ELogInToSaveScore')}
             ref={formLoginRef}
             setIsFormOpen={setIsFormOpen}
             hideBrackets={true}
           >
-            <h2>{ELogInToSaveScore[language]}</h2>
+            <h2>{t('ELogInToSaveScore')}</h2>
 
             <form onSubmit={handleLogin} className={`login ${styles.login}`}>
               <div className='input-wrap'>
@@ -131,7 +131,7 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
                     autoComplete='email'
                     onChange={({ target }) => setUsername(target.value.trim())}
                   />
-                  <span>{EUsername[language]}: </span>
+                  <span>{t('EUsername')}: </span>
                 </label>
               </div>
               <div className='input-wrap'>
@@ -144,11 +144,11 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
                     value={password}
                     onChange={({ target }) => setPassword(target.value.trim())}
                   />
-                  <span>{EPassword[language]}: </span>
+                  <span>{t('EPassword')}: </span>
                 </label>
               </div>
               <button type='submit' disabled={sending} id='login' className='login'>
-                {ELogin[language]}
+                {t('ELogin')}
               </button>
             </form>
           </Accordion>

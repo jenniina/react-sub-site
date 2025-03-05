@@ -1,5 +1,3 @@
-import { SelectOption } from '../Select/Select'
-
 export type FormData = {
   firstName: string
   lastName: string

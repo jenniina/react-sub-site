@@ -1,24 +1,8 @@
-import { FC, Dispatch, SetStateAction } from 'react'
-import { ELanguages, EPleaseNote } from '../../../types'
-import {
-  EColorsMayVaryInPrintedWorks,
-  EHourlyWork,
-  EHourlyWorkCanBeUsed,
-  EICanHelpWithFindingHosting,
-  EIncludesADesignMeetingWithTheClientForWebsite,
-  EPayFor10HoursGet13,
-  EPayFor5HoursGet6,
-  EPrintingCostsNotIncluded,
-  ESeeTranslationServiceProduct,
-  ETextAndImageContentIsNotIncluded,
-  ETheseAreAgreedSeparately,
-  EWebHostingAndDomainNotIncluded,
-  EWordPressPaidPluginsNotIncluded,
-  ICanHelpWithFindingPrintingServices,
-  ICartItem,
-} from '../../../types/store'
-import { EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo } from '../../../types/about'
+import { FC, Dispatch, SetStateAction, useContext } from 'react'
+import { ELanguages } from '../../../types'
+import { ICartItem } from '../../../types/store'
 import { scrollIntoView } from '../../../utils'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 export interface AccProps {
   type: ICartItem['id']
@@ -39,69 +23,58 @@ const AdditionalInfo: FC<AccProps> = ({
   setIsFormOpen,
   text,
 }) => {
+  const { t } = useContext(LanguageContext)!
+
   return (
     <div className={styles['addition-wrap']}>
       <div className={styles['additional-information']}>
         <h3 style={{ marginTop: 0 }}>
-          {type.startsWith('misc')
-            ? `${EHourlyWork[language]}: `
-            : `${EPleaseNote[language]}: `}
+          {type.startsWith('misc') ? `${t('EHourlyWork')}: ` : `${t('EPleaseNote')}: `}
         </h3>
         {type.startsWith('graphic') ? (
           <>
             <p>
-              {EPrintingCostsNotIncluded[language]}.{' '}
-              {ICanHelpWithFindingPrintingServices[language]}
+              {t('EPrintingCostsNotIncluded')}. {t('ICanHelpWithFindingPrintingServices')}
             </p>
-            <p>{EColorsMayVaryInPrintedWorks[language]}</p>
-            {language !== ELanguages.English && language !== ELanguages.Suomi && (
+            <p>{t('EColorsMayVaryInPrintedWorks')}</p>
+            {language !== ELanguages.en && language !== ELanguages.fi && (
               <p>
-                {
-                  EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo[
-                    language
-                  ]
-                }
+                {t('EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo')}
               </p>
             )}
           </>
         ) : type.startsWith('react') || type.startsWith('wordpress') ? (
           <>
-            <p> {EIncludesADesignMeetingWithTheClientForWebsite[language]}</p>
+            <p> {t('EIncludesADesignMeetingWithTheClientForWebsite')}</p>
             <p>
-              {ETextAndImageContentIsNotIncluded[language]}.{' '}
+              {t('ETextAndImageContentIsNotIncluded')}.{' '}
               <button
                 className='reset link'
                 onClick={() => scrollIntoView('misc-translation')}
               >
-                {ESeeTranslationServiceProduct[language]}
+                {t('ESeeTranslationServiceProduct')}
               </button>
             </p>
             <p>
-              {EWebHostingAndDomainNotIncluded[language]}.{' '}
-              {EICanHelpWithFindingHosting[language]}
+              {t('EWebHostingAndDomainNotIncluded')}. {t('EICanHelpWithFindingHosting')}
             </p>
             {type.startsWith('wordpress') && (
               <p>
-                {EWordPressPaidPluginsNotIncluded[language]}{' '}
-                {ETheseAreAgreedSeparately[language]}
+                {t('EWordPressPaidPluginsNotIncluded')} {t('ETheseAreAgreedSeparately')}
               </p>
             )}
-            {language !== ELanguages.English && language !== ELanguages.Suomi && (
+            {language !== ELanguages.en && language !== ELanguages.fi && (
               <p>
-                {
-                  EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo[
-                    language
-                  ]
-                }
+                {t('EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo')}
               </p>
             )}
           </>
         ) : type.startsWith('misc') ? (
           <>
             <p>
-              {EPayFor5HoursGet6[language]} {EPayFor10HoursGet13[language]}
+              {t('EPayFor5HoursGet6')} {t('EPayFor10HoursGet13')}
             </p>
-            <p>{EHourlyWorkCanBeUsed[language]}</p>
+            <p>{t('EHourlyWorkCanBeUsed')}</p>
           </>
         ) : (
           <></>

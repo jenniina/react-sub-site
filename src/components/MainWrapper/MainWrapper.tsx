@@ -1,6 +1,6 @@
 import { Routes, Route, Location as RouterLocation, useLocation } from 'react-router-dom'
 import { options } from '../../utils'
-import { Suspense, lazy, useEffect, useState } from 'react'
+import { Suspense, lazy, useContext, useEffect, useState } from 'react'
 import Portfolio from '../../pages/Portfolio'
 import About from '../../pages/About'
 import CartPage from '../../pages/CartPage'
@@ -24,47 +24,12 @@ import StorePage from '../../pages/StorePage'
 import TermsOfService from '../../pages/TermsOfService'
 import UserEditPage from '../../pages/UserEditPage'
 import Welcome from '../../pages/Welcome'
-import {
-  EWelcome,
-  EToTheReactSiteOfJenniinaFi,
-  EAbout,
-  EThisSite,
-  EUserEdit,
-  ELoading,
-  EPortfolio,
-  EGraphQLSite,
-  EBlobs,
-  EBlobAppSlogan,
-  EDragAndDrop,
-  ECustomSelect,
-  EMultistepForm,
-  EQuizApp,
-  ETestYourKnowledge,
-  EHairSalonWebsite,
-  EContact,
-  ELetsCollaborate,
-  EStore,
-  EWebpagesAndGraphicDesign,
-  EPrivacyAndSecurityDisclaimer,
-  ELastUpdated,
-  ETermsOfService,
-  ELanguages,
-} from '../../types'
-import { EColorAccessibility, ETestColorCombinations } from '../../types/colors'
-import { EComposerOlliSanta } from '../../types/composer'
-import { EMedia, EMediaWithQuotesOrPoems } from '../../types/images'
-import { EMemoryGame, EMemoryGameIntro } from '../../types/memory'
-import { EShoppingCart, EOrders } from '../../types/store'
-import {
-  ETheComediansCompanion,
-  EAJokeGeneratorForTheComicallyInclined,
-} from '../Jokes/types'
-import { ETodoApp, EGetOrganizedOneTaskAtATime } from '../Todo/types'
-import { EEditUserSettings } from '../UserEdit/types'
+import { ELanguages } from '../../types'
 import { useHeroProps } from '../../hooks/useHeroProps'
 import { useDocumentTitleAndLanguage } from '../../hooks/useDocumentTitleAndLanguage'
 import Hero from '../Hero/Hero'
 import useCart from '../../hooks/useCart'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 const QuizStart = lazy(() => import('../Quiz/QuizStart'))
 const QuizQuestion = lazy(() => import('../Quiz/QuizQuestion'))
@@ -78,6 +43,8 @@ interface Props {
 
 const MainWrapper = ({ language, setLanguage }: Props) => {
   const { cart, addToCart, removeFromCart, editDetails, clearCart } = useCart()
+
+  const { t } = useContext(LanguageContext)!
 
   const location = useLocation()
 
@@ -152,8 +119,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             <Welcome
               language={language}
               setLanguage={setLanguage}
-              heading={EWelcome[language]}
-              text={EToTheReactSiteOfJenniinaFi[language]}
+              heading={t('EWelcome')}
+              text={t('EToTheReactSiteOfJenniinaFi')}
               type='page'
               options={options}
             />
@@ -164,8 +131,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
           element={
             <About
               language={language}
-              heading={EAbout[language]}
-              text={EThisSite[language]}
+              heading={t('EAbout')}
+              text={t('EThisSite')}
               type='page'
             />
           }
@@ -175,8 +142,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
           path='/edit'
           element={
             <UserEditPage
-              heading={EUserEdit[language]}
-              text={EEditUserSettings[language]}
+              heading={t('EUserEdit')}
+              text={t('EEditUserSettings')}
               type='page'
               language={language}
               setLanguage={setLanguage}
@@ -191,7 +158,7 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             <Suspense
               fallback={
                 <div className='flex center margin0auto textcenter'>
-                  {ELoading[language]}...
+                  {t('ELoading')}...
                 </div>
               }
             >
@@ -203,7 +170,7 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             index
             element={
               <Portfolio
-                heading={EPortfolio[language]}
+                heading={t('EPortfolio')}
                 type='page'
                 text='ReactJS'
                 language={language}
@@ -216,7 +183,7 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
               <GraphQLPage
                 language={language}
                 heading='GraphQL'
-                text={EGraphQLSite[language]}
+                text={t('EGraphQLSite')}
                 type='page subpage'
               />
             }
@@ -226,8 +193,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             element={
               <BlobPage
                 language={language}
-                heading={EBlobs[language]}
-                text={EBlobAppSlogan[language]}
+                heading={t('EBlobs')}
+                text={t('EBlobAppSlogan')}
                 type='page subpage'
               />
             }
@@ -237,7 +204,7 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             element={
               <DragAndDropPage
                 language={language}
-                heading={EDragAndDrop[language]}
+                heading={t('EDragAndDrop')}
                 text=''
                 type='page subpage'
               />
@@ -247,8 +214,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             path='/portfolio/todo'
             element={
               <TodoPage
-                heading={ETodoApp[language]}
-                text={EGetOrganizedOneTaskAtATime[language]}
+                heading={t('ETodoApp')}
+                text={t('EGetOrganizedOneTaskAtATime')}
                 type='page subpage'
                 language={language}
               />
@@ -259,7 +226,7 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             element={
               <CustomSelectPage
                 language={language}
-                heading={ECustomSelect[language]}
+                heading={t('ECustomSelect')}
                 text=''
                 type='page subpage'
               />
@@ -270,7 +237,7 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             element={
               <FormPage
                 language={language}
-                heading={EMultistepForm[language]}
+                heading={t('EMultistepForm')}
                 text=''
                 type='page subpage'
               />
@@ -280,8 +247,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             path='/portfolio/jokes/*'
             element={
               <JokesPage
-                heading={ETheComediansCompanion[language]}
-                text={EAJokeGeneratorForTheComicallyInclined[language]}
+                heading={t('ETheComediansCompanion')}
+                text={t('EAJokeGeneratorForTheComicallyInclined')}
                 type='page subpage'
                 language={language}
                 setLanguage={setLanguage}
@@ -295,13 +262,13 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
                 <Suspense
                   fallback={
                     <div className='flex center margin0auto textcenter'>
-                      {ELoading[language]}...
+                      {t('ELoading')}...
                     </div>
                   }
                 >
                   <QuizStart
-                    heading={EQuizApp[language]}
-                    text={ETestYourKnowledge[language]}
+                    heading={t('EQuizApp')}
+                    text={t('ETestYourKnowledge')}
                     type='page subpage'
                     language={language}
                   />
@@ -314,7 +281,7 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
                 <Suspense
                   fallback={
                     <div className='flex center margin0auto textcenter'>
-                      {ELoading[language]}...
+                      {t('ELoading')}...
                     </div>
                   }
                 >
@@ -328,7 +295,7 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
                 <Suspense
                   fallback={
                     <div className='flex center margin0auto textcenter'>
-                      {ELoading[language]}...
+                      {t('ELoading')}...
                     </div>
                   }
                 >
@@ -342,7 +309,7 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             element={
               <HairSalonPage
                 language={language}
-                heading={EHairSalonWebsite[language]}
+                heading={t('EHairSalonWebsite')}
                 text='React, Node.js, Express, MySQL, Sequelize'
                 type='page subpage'
               />
@@ -353,7 +320,7 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             element={
               <ComposerPage
                 language={language}
-                heading={EComposerOlliSanta[language]}
+                heading={t('EComposerOlliSanta')}
                 text='React, Node.js, Express, MongoDB'
                 type='page subpage'
               />
@@ -364,8 +331,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             element={
               <ColorsPage
                 language={language}
-                heading={EColorAccessibility[language]}
-                text={ETestColorCombinations[language]}
+                heading={t('EColorAccessibility')}
+                text={t('ETestColorCombinations')}
                 type='page subpage'
               />
             }
@@ -375,8 +342,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             element={
               <MemoryPage
                 language={language}
-                heading={EMemoryGame[language]}
-                text={EMemoryGameIntro[language]}
+                heading={t('EMemoryGame')}
+                text={t('EMemoryGameIntro')}
                 type='page subpage'
               />
             }
@@ -385,8 +352,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             path='/portfolio/media'
             element={
               <ImagesPage
-                heading={EMedia[language]}
-                text={EMediaWithQuotesOrPoems[language]}
+                heading={t('EMedia')}
+                text={t('EMediaWithQuotesOrPoems')}
                 type='page subpage'
                 language={language}
               />
@@ -399,8 +366,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
           element={
             <Contact
               language={language}
-              heading={EContact[language]}
-              text={ELetsCollaborate[language]}
+              heading={t('EContact')}
+              text={t('ELetsCollaborate')}
               type='page'
             />
           }
@@ -410,7 +377,7 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
           element={
             <CartPage
               language={language}
-              heading={EShoppingCart[language]}
+              heading={t('EShoppingCart')}
               text=''
               type='page'
               cart={cart}
@@ -426,8 +393,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
           element={
             <StorePage
               language={language}
-              heading={EStore[language]}
-              text={EWebpagesAndGraphicDesign[language]}
+              heading={t('EStore')}
+              text={t('EWebpagesAndGraphicDesign')}
               type='page'
               cart={cart}
               addToCart={addToCart}
@@ -438,12 +405,7 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
         <Route
           path='/orders'
           element={
-            <OrderPage
-              language={language}
-              heading={EOrders[language]}
-              text=''
-              type='page'
-            />
+            <OrderPage language={language} heading={t('EOrders')} text='' type='page' />
           }
         />
         <Route
@@ -451,8 +413,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
           element={
             <Disclaimer
               language={language}
-              heading={EPrivacyAndSecurityDisclaimer[language]}
-              text={`${ELastUpdated[language]}: 2024/10/20`}
+              heading={t('EPrivacyAndSecurityDisclaimer')}
+              text={`${t('ELastUpdated')}: 2024/10/20`}
               type='page'
             />
           }
@@ -462,8 +424,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
           element={
             <TermsOfService
               language={language}
-              heading={ETermsOfService[language]}
-              text={`${ELastUpdated[language]}: 2024/10/20`}
+              heading={t('ETermsOfService')}
+              text={`${t('ELastUpdated')}: 2024/10/20`}
               type='page'
             />
           }

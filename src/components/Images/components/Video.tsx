@@ -1,12 +1,11 @@
-import { FC, ReactNode } from 'react'
+import { FC, useContext } from 'react'
 import styles from '../images.module.css'
-import { EClickToOpenLargeVideo, EVideoPage } from '../../../types/images'
-import { EAuthor } from '../../Jokes/types'
 import { VideoHit } from '../services/images'
-import { EDownload, ELanguages } from '../../../types'
+import { ELanguages } from '../../../types'
 import VideoModal from './VideoModal'
 import { ModalProps } from '../../../types'
 import { TTextType } from '../Images'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 interface VideoProps {
   video: VideoHit
@@ -17,8 +16,10 @@ interface VideoProps {
 }
 
 const Video: FC<VideoProps> = ({ video, language, show, searchTerm, textType }) => {
+  const { t } = useContext(LanguageContext)!
+
   const handleDownload = async () => {
-    if (window.confirm(EDownload[language] + '?')) {
+    if (window.confirm(t('EDownload') + '?')) {
       const response = await fetch(video.videos.large.url, { mode: 'cors' })
 
       if (!response.ok) {
@@ -72,7 +73,7 @@ const Video: FC<VideoProps> = ({ video, language, show, searchTerm, textType }) 
           cursor: 'pointer',
           width: '100%',
         }}
-        aria-label={EClickToOpenLargeVideo[language]}
+        aria-label={t('EClickToOpenLargeVideo')}
         onClick={handleShowModal}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
@@ -93,11 +94,11 @@ const Video: FC<VideoProps> = ({ video, language, show, searchTerm, textType }) 
           }}
         />
       </button>
-      <span className='tooltip above narrow2'>{EClickToOpenLargeVideo[language]}</span>
+      <span className='tooltip above narrow2'>{t('EClickToOpenLargeVideo')}</span>
       <p>
         <small>
           <a href={video.pageURL} target='_blank' rel='noreferrer'>
-            {EVideoPage[language]} ({EAuthor[language]}: {video.user})
+            {t('EVideoPage')} ({t('EAuthor')}: {video.user})
           </a>
         </small>
       </p>

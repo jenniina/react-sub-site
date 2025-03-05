@@ -1,15 +1,7 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import Accordion from '../../components/Accordion/Accordion'
-import Hero from '../../components/Hero/Hero'
-import {
-  EBookApp,
-  EDependencies,
-  EFeatures,
-  ELanguages,
-  EMongoDBAtlasDatabase,
-  ETheWebServiceIsHostedAtRenderCom,
-} from '../../types'
-import { ESiteMayBeSlow } from '../../types/welcome'
+import { ELanguages } from '../../types'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 export default function GraphQLPage({
   heading,
@@ -22,6 +14,8 @@ export default function GraphQLPage({
   type: string
   language: ELanguages
 }) {
+  const { t } = useContext(LanguageContext)!
+
   const [isFormOpen, setIsFormOpen] = useState(false)
   return (
     <div className={`graphql ${type}`}>
@@ -31,22 +25,22 @@ export default function GraphQLPage({
             <div className='medium'>
               <Accordion
                 language={language}
-                text={EFeatures[language]}
+                text={t('EFeatures')}
                 className='graphQL-features'
                 wrapperClass='graphQL-features-wrap'
                 setIsFormOpen={setIsFormOpen}
               >
-                <h2>{EFeatures[language]}</h2>
+                <h2>{t('EFeatures')}</h2>
                 <p>
-                  {ETheWebServiceIsHostedAtRenderCom[language]}{' '}
+                  {t('ETheWebServiceIsHostedAtRenderCom')}{' '}
                   <a href='https://www.mongodb.com/atlas/database'>
-                    {EMongoDBAtlasDatabase[language]}
+                    {t('EMongoDBAtlasDatabase')}
                   </a>
                   .
                 </p>
                 <ul className='ul'>
                   <li>
-                    {EDependencies[language]}: React
+                    {t('EDependencies')}: React
                     <ul>
                       <li>
                         <a href='https://www.apollographql.com/docs/react/get-started/'>
@@ -121,7 +115,7 @@ export default function GraphQLPage({
                     </ul>
                   </li>
                   <li>
-                    {EDependencies[language]}: Node.js
+                    {t('EDependencies')}: Node.js
                     <ul>
                       <li>
                         <a href='https://graphql.org/'>GraphQL</a>
@@ -240,8 +234,8 @@ export default function GraphQLPage({
               >
                 <p>
                   <a href='https://jenniina-books-list-app.onrender.com/'>
-                    {EBookApp[language]}{' '}
-                    <span style={{ fontSize: '75%' }}>({ESiteMayBeSlow[language]})</span>{' '}
+                    {t('EBookApp')}{' '}
+                    <span style={{ fontSize: '75%' }}>({t('ESiteMayBeSlow')})</span>{' '}
                     &raquo;
                   </a>
                 </p>

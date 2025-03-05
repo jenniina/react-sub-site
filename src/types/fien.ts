@@ -1,6 +1,6 @@
 export enum EEnFi {
-  English = 'en',
-  Suomi = 'fi',
+  en = 'en',
+  fi = 'fi',
 }
 export enum EEnFiSupplier {
   en = 'Supplier',

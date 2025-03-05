@@ -1,30 +1,16 @@
-import { useEffect, useState, lazy, Suspense } from 'react'
+import { useEffect, useState, lazy, Suspense, useContext } from 'react'
 // import FormJoke from './components/FormJoke'
 import { SelectOption } from '../Select/Select'
 import './css/joke.css'
 import {
   IJoke,
   EJokeType,
-  ESavedJoke,
-  ETheComediansCompanion,
   ESafemode,
   EQueryKey,
-  EDelete,
-  ECategoryTitle,
-  ESafeTitle,
-  EUnsafeTitle,
-  EJoke,
-  ESingle,
-  ETwoPart,
-  EClickToReveal,
   ECategories,
   IJokeCategoryByLanguage,
-  ELoginOrRegisterToSave,
   ESortBy,
-  EJokeAlreadySaved,
-  EAJokeGeneratorForTheComicallyInclined,
   EExtraCategories,
-  ENoJokeFoundWithThisSearchTerm,
   ECategory_en,
   ECategory_cs,
   ECategory_de,
@@ -33,39 +19,16 @@ import {
   ECategory_pt,
   ECategory_fi,
   TCategoryByLanguages,
-  EMaybeTryAnotherLanguage,
-  EErrorDeletingJoke,
-  ETryAnotherSearchTerm,
   IJokeTwoPart,
-  EAreYouSureYouWantToMakeThisJokePublic,
-  EAreYouSureYouWantToMakeThisJokePrivate,
-  EAnonymous,
   norrisCategoryTranslations as norrisCats,
-  EAny,
-  EAreYouSureYouWantToHideThisJoke,
-  EJokeHidden,
-  EThisJokeIsAlreadyBlacklisted,
-  EJokeRestored,
-  EAreYouSureYouWantToRestoreThisJoke,
-  EWouldYouLikeToSaveTheJoke,
-  EJokesLoaded,
-  jokeCategoryAny,
   jokeCategoryByLanguage,
 } from './types'
 import {
-  ELogin,
-  EError,
-  ELanguageTitle,
-  ELoggedInAs,
   ELanguages,
   ReducerProps,
   IUser,
-  ERegister,
-  LanguageOfLanguage,
-  ELanguagesLong,
-  TLanguageOfLanguage,
   IBlacklistedJoke,
-  ELoading,
+  ELanguagesLong,
 } from '../../types'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
@@ -93,6 +56,7 @@ import {
 } from '../../reducers/usersReducer'
 import { AxiosError } from 'axios'
 import { options, getRandomMinMax } from '../../utils'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 const FormJoke = lazy(() => import('./components/FormJoke'))
 const JokeSubmit = lazy(() => import('./components/JokeSubmit'))
@@ -105,6 +69,8 @@ function Jokes({
   language: ELanguages
   setLanguage: (language: ELanguages) => void
 }) {
+  const { t } = useContext(LanguageContext)!
+
   const jokes = useSelector((state: ReducerProps) => {
     return state.jokes?.jokes
   })
@@ -131,7 +97,7 @@ function Jokes({
     fi: ECategory_fi,
   }
 
-  const translateWordLanguage = ELanguageTitle[language]
+  const translateWordLanguage = t('ELanguageTitle')
   const [joke, setJoke] = useState<string>('')
   const [delivery, setDelivery] = useState<string>('')
   const [author, setAuthor] = useState<string>('')
@@ -201,12 +167,11 @@ function Jokes({
   useEffect(() => {
     dispatch(initializeJokes())
       .then(() => {
-        notify(`${EJokesLoaded[language]}...`, false, 3)
+        notify(`${t('EJokesLoaded')}...`, false, 3)
       })
       .catch((e) => {
         if (e.response?.data?.message) dispatch(notify(e.response.data.message, true, 8))
-        else
-          dispatch(notify(`${EError[language]}: ${(e as Error)?.message ?? ''}`, true, 8))
+        else dispatch(notify(`${t('EError')}: ${(e as Error)?.message ?? ''}`, true, 8))
       })
   }, [])
 
@@ -267,9 +232,7 @@ function Jokes({
     async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
       e.preventDefault()
       setSending(true)
-      if (
-        window.confirm(`${EDelete[language]} ${EJoke[language].toLowerCase()} "${joke}"?`)
-      ) {
+      if (window.confirm(`${t('EDelete')} ${t('EJoke').toLowerCase()} "${joke}"?`)) {
         try {
           // Make an API request to delete the user's ID from the joke's user array
           dispatch(deleteUserFromJoke(id as string, user?._id as string)).then(() => {
@@ -279,7 +242,7 @@ function Jokes({
         } catch (error: any) {
           if (error.response?.data?.message)
             dispatch(notify(error.response.data.message, true, 8))
-          else console.error(EErrorDeletingJoke[language], error)
+          else console.error(t('EErrorDeletingJoke'), error)
           setSending(false)
         }
       } else return
@@ -292,7 +255,7 @@ function Jokes({
       setSending(true)
       const jokeObject = jokes.find((j) => j._id === id)
       if (!jokeObject) {
-        dispatch(notify(`${EError[language]}!`, true, 8))
+        dispatch(notify(`${t('EError')}!`, true, 8))
         setSending(false)
         return
       }
@@ -301,7 +264,7 @@ function Jokes({
           await dispatch(updateJoke(joke))
           await dispatch(initializeJokes())
           const r = await dispatch(updateJoke({ ...joke, verified: false, _id: id }))
-          dispatch(notify(`${ESavedJoke[language]}. ${r.message ?? ''}`, false, 8))
+          dispatch(notify(`${t('ESavedJoke')}. ${r.message ?? ''}`, false, 8))
           setEditId(null)
           setIsEditOpen(false)
           setSending(false)
@@ -311,7 +274,7 @@ function Jokes({
             (e as AxiosError)?.code === 'ERR_BAD_RESPONSE'
               ? ((e as AxiosError<AxiosError>)?.response?.data?.message as string)
               : (e as Error)?.message ?? ''
-          dispatch(notify(`${EError[language]}: ${errorMessage}`, true, 8))
+          dispatch(notify(`${t('EError')}: ${errorMessage}`, true, 8))
           setSending(false)
         }
       }
@@ -345,11 +308,11 @@ function Jokes({
         }
       }
       if (jokeObject.private === true && joke.private === false) {
-        if (window.confirm(EAreYouSureYouWantToMakeThisJokePublic[language])) {
+        if (window.confirm(t('EAreYouSureYouWantToMakeThisJokePublic'))) {
           update()
         }
       } else if (jokeObject.private === false && joke.private === true) {
-        if (window.confirm(EAreYouSureYouWantToMakeThisJokePrivate[language])) {
+        if (window.confirm(t('EAreYouSureYouWantToMakeThisJokePrivate'))) {
           update()
         }
       } else update()
@@ -421,12 +384,12 @@ function Jokes({
   const handleJokeSave = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
     if (!user) {
-      dispatch(notify(`${ELoginOrRegisterToSave[language]}`, false, 8))
+      dispatch(notify(`${t('ELoginOrRegisterToSave')}`, false, 8))
       return
     } else {
       if (foundJoke) {
         if (foundJoke.user.includes(user?._id?.toString())) {
-          dispatch(notify(`${EJokeAlreadySaved[language]}`, false, 8))
+          dispatch(notify(`${t('EJokeAlreadySaved')}`, false, 8))
           return
         }
         dispatch(updateJoke({ ...foundJoke, user: [...foundJoke.user, user?._id] }))
@@ -435,9 +398,7 @@ function Jokes({
             if (e.response?.data?.message)
               dispatch(notify(e.response.data.message, true, 8))
             else
-              dispatch(
-                notify(`${EError[language]}:: ${(e as Error)?.message ?? ''}`, true, 8)
-              )
+              dispatch(notify(`${t('EError')}:: ${(e as Error)?.message ?? ''}`, true, 8))
           })
       } else {
         if (recentJoke && recentJoke?.type === EJokeType.single) {
@@ -473,7 +434,7 @@ function Jokes({
                 dispatch(notify(e.response.data.message, true, 8))
               else
                 dispatch(
-                  notify(`${EError[language]}*: ${(e as Error)?.message ?? ''}`, true, 8)
+                  notify(`${t('EError')}*: ${(e as Error)?.message ?? ''}`, true, 8)
                 )
             })
         } else if (recentJoke && recentJoke?.type === EJokeType.twopart) {
@@ -508,12 +469,12 @@ function Jokes({
                 dispatch(notify(e.response.data.message, true, 8))
               else
                 dispatch(
-                  notify(`${EError[language]}: ${(e as Error)?.message ?? ''}`, true, 8)
+                  notify(`${t('EError')}: ${(e as Error)?.message ?? ''}`, true, 8)
                 )
             })
         }
       }
-      dispatch(notify(`${ESavedJoke[language]}`, false, 8))
+      dispatch(notify(`${t('ESavedJoke')}`, false, 8))
     }
   }
 
@@ -554,7 +515,7 @@ function Jokes({
         category: category,
         subCategories:
           subCategories && subCategories?.length > 0 ? subCategories : undefined,
-        language: ELanguages.English,
+        language: ELanguages.en,
 
         safe:
           jokeData?.categories?.includes('explicit') ||
@@ -585,7 +546,7 @@ function Jokes({
     setJoke(jokeData.joke || jokeData.value)
     setDelivery('')
     setJokeId(jokeData.id)
-    setJokeLanguage(ELanguages.English)
+    setJokeLanguage(ELanguages.en)
     setJoke(jokeData.joke || jokeData.value)
   }
 
@@ -622,17 +583,12 @@ function Jokes({
     ) {
       let updatedJokes = jokes?.map((joke) => {
         const author = users?.find((user: IUser) => user._id == joke.author)
-        const jokeLanguage = LanguageOfLanguage[language as keyof typeof ELanguagesLong][
-          getKeyofEnum(
-            ELanguages,
-            joke.language as ELanguages
-          ) as keyof TLanguageOfLanguage[ELanguages]
-        ] as TLanguageOfLanguage[keyof typeof ELanguagesLong][keyof TLanguageOfLanguage[ELanguages]]
+        const jokeLanguage = ELanguagesLong[joke.language as keyof typeof ELanguages]
 
         return {
           ...joke,
           translatedLanguage: jokeLanguage ?? '',
-          name: joke.anonymous ? EAnonymous[language] : author?.name ?? '',
+          name: joke.anonymous ? t('EAnonymous') : author?.name ?? '',
         }
       })
       updatedJokes = !isCheckedSafemode
@@ -703,7 +659,9 @@ function Jokes({
         } else {
           dispatch(
             notify(
-              `${EError[language]}! ${ENoJokeFoundWithThisSearchTerm[language]}. ${ETryAnotherSearchTerm[language]}`,
+              `${t('EError')}! ${t('ENoJokeFoundWithThisSearchTerm')}. ${t(
+                'ETryAnotherSearchTerm'
+              )}`,
               true,
               8
             )
@@ -717,7 +675,9 @@ function Jokes({
       } else {
         dispatch(
           notify(
-            `${EError[language]}! ${ENoJokeFoundWithThisSearchTerm[language]}. ${ETryAnotherSearchTerm[language]}`,
+            `${t('EError')}! ${t('ENoJokeFoundWithThisSearchTerm')}. ${t(
+              'ETryAnotherSearchTerm'
+            )}`,
             true,
             8
           )
@@ -815,11 +775,7 @@ function Jokes({
     })
 
     // Because Finnish jokes are only in the database, we need to handle them differently
-    if (
-      newFilteredJokes &&
-      newFilteredJokes?.length > 0 &&
-      language === ELanguages.Suomi
-    ) {
+    if (newFilteredJokes && newFilteredJokes?.length > 0 && language === ELanguages.fi) {
       handleJokes(newFilteredJokes)
       return
     }
@@ -833,7 +789,7 @@ function Jokes({
 
     if (isChuckNorris || isDadJoke) {
       // ChuckNorris and DadJoke only appear in English in the API, so for other languages, you search for a joke from the database
-      if (language !== ELanguages.English) {
+      if (language !== ELanguages.en) {
         handleJokes(newFilteredJokes)
         return
       } else if (isChuckNorris && isDadJoke) {
@@ -992,9 +948,7 @@ function Jokes({
   }
 
   const noJoke = () => {
-    dispatch(
-      notify(`${EError[language]}! ${ENoJokeFoundWithThisSearchTerm[language]}`, true, 8)
-    )
+    dispatch(notify(`${t('EError')}! ${t('ENoJokeFoundWithThisSearchTerm')}`, true, 8))
 
     setJoke('')
     setDelivery('')
@@ -1054,7 +1008,9 @@ function Jokes({
           if (category === 'Any') {
             dispatch(
               notify(
-                `${EError[language]}! ${ENoJokeFoundWithThisSearchTerm[language]}. ${EMaybeTryAnotherLanguage[language]}`,
+                `${t('EError')}! ${t('ENoJokeFoundWithThisSearchTerm')}. ${t(
+                  'EMaybeTryAnotherLanguage'
+                )}`,
                 true,
                 10
               )
@@ -1069,11 +1025,7 @@ function Jokes({
             setJoke('')
             setDelivery('')
             dispatch(
-              notify(
-                `${EError[language]}! ${ENoJokeFoundWithThisSearchTerm[language]}`,
-                true,
-                8
-              )
+              notify(`${t('EError')}! ${t('ENoJokeFoundWithThisSearchTerm')}`, true, 8)
             )
 
             setJokeId('')
@@ -1147,7 +1099,7 @@ function Jokes({
         if (e.response?.data?.message) dispatch(notify(e.response.data.message, true, 8))
         else {
           console.error(e)
-          dispatch(notify(`${EError[language]}! ${e.response.data.message}`, true, 8))
+          dispatch(notify(`${t('EError')}! ${e.response.data.message}`, true, 8))
         }
       })
   }
@@ -1234,7 +1186,7 @@ function Jokes({
     if (any)
       options.unshift({
         value: 'any',
-        label: norrisCats['any'][language] || EAny[language],
+        label: norrisCats['any'][language] || t('EAny'),
       })
     return options
   }
@@ -1281,13 +1233,13 @@ function Jokes({
     language: ELanguages,
     value: string | undefined
   ) => {
-    if (window.confirm(`${EAreYouSureYouWantToHideThisJoke[language]}`)) {
+    if (window.confirm(`${t('EAreYouSureYouWantToHideThisJoke')}`)) {
       const isAlreadyBlacklisted = user?.blacklistedJokes?.some(
         (blacklistedJoke) =>
           blacklistedJoke.jokeId === jokeId && blacklistedJoke.language === language
       )
       if (isAlreadyBlacklisted) {
-        dispatch(notify(EThisJokeIsAlreadyBlacklisted[language], true, 3))
+        dispatch(notify(t('EThisJokeIsAlreadyBlacklisted'), true, 3))
         dispatch(findUserById(user?._id as string)).then(() => dispatch(initializeUser()))
         setJoke('')
         setDelivery('')
@@ -1310,7 +1262,7 @@ function Jokes({
           .then(() => {
             dispatch(addToBlacklistedJokes(user?._id, jokeId, language, value))
               .then(() => {
-                dispatch(notify(`${EJokeHidden[language]}`, false, 3))
+                dispatch(notify(`${t('EJokeHidden')}`, false, 3))
                 dispatch(initializeJokes())
                   .then(() => dispatch(findUserById(user?._id as string)))
                   .then(() => dispatch(initializeUser()))
@@ -1329,7 +1281,7 @@ function Jokes({
                   dispatch(notify(error.response.data.message, true, 8))
                 else {
                   console.error(error)
-                  dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 5))
+                  dispatch(notify(`${t('EErrorDeletingJoke')}`, false, 5))
                 }
                 setJoke('')
                 setDelivery('')
@@ -1338,7 +1290,7 @@ function Jokes({
               })
           })
       } else {
-        dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
+        dispatch(notify(`${t('EErrorDeletingJoke')}`, false, 3))
       }
     }
   }
@@ -1351,48 +1303,48 @@ function Jokes({
     e.preventDefault()
     dispatch(saveMostRecentJoke(joke))
     setSending(true)
-    if (window.confirm(`${EAreYouSureYouWantToRestoreThisJoke[language]}`)) {
+    if (window.confirm(`${t('EAreYouSureYouWantToRestoreThisJoke')}`)) {
       if (user) {
         dispatch(removeJokeFromBlacklisted(user?._id, bjoke_id, joke?.language))
           .then((data) => {
             dispatch(initializeJokes())
               .then(() => dispatch(findUserById(user?._id as string)))
               .then(() => dispatch(initializeUser()))
-              .then(() => dispatch(notify(`${EJokeRestored[language]}`, false, 3)))
+              .then(() => dispatch(notify(`${t('EJokeRestored')}`, false, 3)))
           })
           .catch((error) => {
             if (error.response?.data?.message)
               dispatch(notify(error.response.data.message, true, 8))
             else {
               console.error(error)
-              dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
+              dispatch(notify(`${t('EErrorDeletingJoke')}`, false, 3))
             }
           })
         setSending(false)
       } else {
-        dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
+        dispatch(notify(`${t('EErrorDeletingJoke')}`, false, 3))
         setSending(false)
       }
     }
     setTimeout(() => {
-      if (window.confirm(`${EWouldYouLikeToSaveTheJoke[language]}`)) {
+      if (window.confirm(`${t('EWouldYouLikeToSaveTheJoke')}`)) {
         if (user) {
           handleJokeSave(e)
           dispatch(initializeJokes())
             .then(() => dispatch(findUserById(user?._id as string)))
             .then(() => dispatch(initializeUser()))
-            .then(() => dispatch(notify(`${ESavedJoke[language]}`, false, 8)))
+            .then(() => dispatch(notify(`${t('ESavedJoke')}`, false, 8)))
             .catch((error) => {
               if (error.response?.data?.message)
                 dispatch(notify(error.response.data.message, true, 8))
               else {
                 console.error(error)
-                dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
+                dispatch(notify(`${t('EErrorDeletingJoke')}`, false, 3))
               }
             })
           setSending(false)
         } else {
-          dispatch(notify(`${EErrorDeletingJoke[language]}`, false, 3))
+          dispatch(notify(`${t('EErrorDeletingJoke')}`, false, 3))
           setSending(false)
         }
       }
@@ -1404,15 +1356,15 @@ function Jokes({
       <section className={`joke-container card ${language}`} id='jokeform'>
         <div>
           <div className='jokes-wrap'>
-            <h2>{ETheComediansCompanion[language]}</h2>
+            <h2>{t('ETheComediansCompanion')}</h2>
             <p className='center textcenter mb3'>
-              {EAJokeGeneratorForTheComicallyInclined[language]}
+              {t('EAJokeGeneratorForTheComicallyInclined')}
             </p>
 
             <Suspense
               fallback={
                 <div className='flex center margin0auto textcenter'>
-                  {ELoading[language]}...
+                  {t('ELoading')}...
                 </div>
               }
             >
@@ -1463,19 +1415,19 @@ function Jokes({
         <div>
           {!user ? (
             <div className={`register-login-wrap`}>
-              <button onClick={navigateToLogin}>{ELogin[language]}</button>
-              <button onClick={navigateToRegister}>{ERegister[language]}</button>
+              <button onClick={navigateToLogin}>{t('ELogin')}</button>
+              <button onClick={navigateToRegister}>{t('ERegister')}</button>
             </div>
           ) : (
             <p className='textcenter'>
-              {ELoggedInAs[language]} {user?.name}
+              {t('ELoggedInAs')} {user?.name}
             </p>
           )}
           {user && (
             <Suspense
               fallback={
                 <div className='flex center margin0auto textcenter'>
-                  {ELoading[language]}...
+                  {t('ELoading')}...
                 </div>
               }
             >
@@ -1498,9 +1450,7 @@ function Jokes({
         <div>
           <Suspense
             fallback={
-              <div className='flex center margin0auto textcenter'>
-                {ELoading[language]}...
-              </div>
+              <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
             }
           >
             <UserJokes

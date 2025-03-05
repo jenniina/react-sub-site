@@ -1,76 +1,12 @@
 import styles from './store.module.css'
-import { ELanguages, EMainSite } from '../../types'
+import { ELanguages } from '../../types'
 import StoreItems from './components/StoreItems'
-import { FC } from 'react'
+import { FC, useContext } from 'react'
 import ScrollButton from '../ScrollButton'
-import {
-  EAddingABlogAndContactFormToAnExistingWebsite,
-  EAddingAWebStoreToAnExistingWebsite,
-  EAnAccessibleMultiPageWebsite,
-  EAnAccessibleSinglePageWebsite,
-  EAnAccessibleWebsiteWithBlogAndContactForm,
-  EAnAccessibleWebsiteWithContactFormAndOtherFunctionality,
-  EAnAccessibleWebsiteWithBlogContactFormAndOnlineStoreWooCommerce,
-  EBusinessCardDesign,
-  EForWordPressOrReactNodeBasedWebsites,
-  EGraphicDesign,
-  EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts,
-  EIncludesPrintableAndWebVersionOfTheLogo,
-  ELogoDesign,
-  EHour,
-  EProducts,
-  EReactWebsite,
-  EReactWebsiteWithContactFormAndOtherFunctionality,
-  ERequestForQuote,
-  ERequestForQuoteForProductsNotInStore,
-  ESimpleReactWebsite,
-  ESimpleWordPressWebsite,
-  EWordPressWebsiteWithBlogAndContactForm,
-  ETranslationWork,
-  EWebsiteMaintenance,
-  EWebsites,
-  EWebsiteContentUpdatesOrModifications,
-  EWordPressFullPackage,
-  EWordPressWebsite,
-  ICartItem,
-  EPosterDesign,
-  EFlyerDesign,
-  EFourPageA5SizeProgramme,
-  EProgrammeDesign,
-  EOneSided,
-  ETwoSided,
-  EReactSitesAppsAreFastAndResponsive,
-  EWordPressSitesAreVersatile,
-  EUpdatingWordPressIsSimple,
-  EAddingFunctionalityToAReactSite,
-  EFunctionalitiesCanBe,
-  EIfYouAreUnsureAboutReactOrWordPress,
-  EOneSidedBusinessCard,
-  ETwoSidedBusinessCard,
-  ETrainingInWebsiteManagement,
-  ETrainingInWebsiteManagementDescription,
-  EOneHourOfTrainingIncluded,
-  EForSitesByJenniina,
-  EEGInfographicsOrMotionGraphics,
-  EPosterAndProgrammeCombo,
-  ETheBlogSectionCanBeNewsArticlesEtc,
-  EOrchestraWebsite,
-  EConferenceWebsite,
-  EExampleSites,
-  EPsychologistWebsite,
-  EPleaseSeeThePortfolioPagesForExamplesofPossibleFeatures,
-  EPosterAndProgramme,
-  EWebStore,
-  EBlogAndContactForm,
-  EAddonsAreAdaptedToTheStyle,
-  EMayContainEffects,
-} from '../../types/store'
-import { EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo } from '../../types/about'
+import { ICartItem } from '../../types/store'
 import { useTheme } from '../../hooks/useTheme'
 import { Link } from 'react-router-dom'
-import { EContactForm } from '../../types/form'
-import { ESampleArtwork } from '../../types/blobs'
-import { ENote } from '../Jokes/types'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
@@ -80,71 +16,89 @@ interface Props {
 }
 
 const Store: FC<Props> = ({ language, cart, addToCart, removeFromCart }) => {
+  const { t } = useContext(LanguageContext)!
+
   const lightTheme = useTheme()
 
   const wordpress: Partial<ICartItem>[] = [
     {
       id: 'wordpress-simple',
-      name: ESimpleWordPressWebsite[language],
+      name: t('ESimpleWordPressWebsite'),
       price: 190,
-      description: `${EAnAccessibleSinglePageWebsite[language]} ${EMayContainEffects[language]}`,
+      description: `${t('EAnAccessibleSinglePageWebsite')} ${t('EMayContainEffects')}`,
     },
     {
       id: 'wordpress-website',
-      name: EWordPressWebsite[language],
+      name: t('EWordPressWebsite'),
       price: 260,
-      description: `${EAnAccessibleMultiPageWebsite[language]}  ${EMayContainEffects[language]}`,
+      description: `${t('EAnAccessibleMultiPageWebsite')}  ${t('EMayContainEffects')}`,
     },
     {
       id: 'wordpress-blog-contact',
-      name: EWordPressWebsiteWithBlogAndContactForm[language],
+      name: t('EWordPressWebsiteWithBlogAndContactForm'),
       price: 350,
-      description: `${EAnAccessibleWebsiteWithBlogAndContactForm[language]} ${ETheBlogSectionCanBeNewsArticlesEtc[language]}`,
+      description: `${t('EAnAccessibleWebsiteWithBlogAndContactForm')} ${t(
+        'ETheBlogSectionCanBeNewsArticlesEtc'
+      )}`,
     },
     {
       id: 'wordpress-full',
-      name: EWordPressFullPackage[language],
+      name: t('EWordPressFullPackage'),
       price: 890,
-      description: `${EAnAccessibleWebsiteWithBlogContactFormAndOnlineStoreWooCommerce[language]}`,
+      description: `${t(
+        'EAnAccessibleWebsiteWithBlogContactFormAndOnlineStoreWooCommerce'
+      )}`,
     },
     {
       id: 'wordpress-blog-contact-existing',
-      name: `${EBlogAndContactForm[language]} `,
+      name: `${t('EBlogAndContactForm')} `,
       price: 160,
-      description: `${EAddingABlogAndContactFormToAnExistingWebsite[language]} (${EWordPressWebsite[language]}).  ${EAddonsAreAdaptedToTheStyle[language]} ${ETheBlogSectionCanBeNewsArticlesEtc[language]}`,
+      description: `${t('EAddingABlogAndContactFormToAnExistingWebsite')} (${t(
+        'EWordPressWebsite'
+      )}).  ${t('EAddonsAreAdaptedToTheStyle')} ${t(
+        'ETheBlogSectionCanBeNewsArticlesEtc'
+      )}`,
     },
     {
       id: 'wordpress-webstore',
-      name: `${EWebStore[language]}`,
+      name: `${t('EWebStore')}`,
       price: 580,
-      description: `${EAddingAWebStoreToAnExistingWebsite[language]}. ${EAddonsAreAdaptedToTheStyle[language]}`,
+      description: `${t('EAddingAWebStoreToAnExistingWebsite')}. ${t(
+        'EAddonsAreAdaptedToTheStyle'
+      )}`,
     },
   ]
 
   const react: Partial<ICartItem>[] = [
     {
       id: 'react-simple',
-      name: ESimpleReactWebsite[language],
+      name: t('ESimpleReactWebsite'),
       price: 340,
-      description: `${EAnAccessibleSinglePageWebsite[language]} ${EMayContainEffects[language]}`,
+      description: `${t('EAnAccessibleSinglePageWebsite')} ${t('EMayContainEffects')}`,
     },
     {
       id: 'react-website',
-      name: EReactWebsite[language],
+      name: t('EReactWebsite'),
       price: 400,
-      description: `${EAnAccessibleMultiPageWebsite[language]} ${EMayContainEffects[language]}`,
+      description: `${t('EAnAccessibleMultiPageWebsite')} ${t('EMayContainEffects')}`,
     },
     {
       id: 'react-contact-functionality',
-      name: EReactWebsiteWithContactFormAndOtherFunctionality[language],
+      name: t('EReactWebsiteWithContactFormAndOtherFunctionality'),
       price: 620,
-      description: `${EAnAccessibleWebsiteWithContactFormAndOtherFunctionality[language]} ${EFunctionalitiesCanBe[language]} (Node.js app & React). ${EPleaseSeeThePortfolioPagesForExamplesofPossibleFeatures[language]}`,
+      description: `${t('EAnAccessibleWebsiteWithContactFormAndOtherFunctionality')} ${t(
+        'EFunctionalitiesCanBe'
+      )} (Node.js app & React). ${t(
+        'EPleaseSeeThePortfolioPagesForExamplesofPossibleFeatures'
+      )}`,
     },
     {
       id: 'react-adding-functionality',
-      name: `${EAddingFunctionalityToAReactSite[language]} (Node.js app & React)`,
+      name: `${t('EAddingFunctionalityToAReactSite')} (Node.js app & React)`,
       price: 220,
-      description: `${EFunctionalitiesCanBe[language]} ${EAddonsAreAdaptedToTheStyle[language]} ${EPleaseSeeThePortfolioPagesForExamplesofPossibleFeatures[language]}`,
+      description: `${t('EFunctionalitiesCanBe')} ${t('EAddonsAreAdaptedToTheStyle')} ${t(
+        'EPleaseSeeThePortfolioPagesForExamplesofPossibleFeatures'
+      )}`,
     },
   ]
 
@@ -161,38 +115,50 @@ const Store: FC<Props> = ({ language, cart, addToCart, removeFromCart }) => {
 
   const misc: Partial<ICartItem>[] = [
     {
-      name: EWebsiteMaintenance[language],
+      name: t('EWebsiteMaintenance'),
       id: 'misc-maintenance',
       price: miscArray.maintenance.price,
-      description: `${EWebsiteMaintenance[language]}: ${miscArray.maintenance.price}€/${EHour[language]} ${EForWordPressOrReactNodeBasedWebsites[language]}. `,
+      description: `${t('EWebsiteMaintenance')}: ${miscArray.maintenance.price}€/${t(
+        'EHourSmall'
+      )} ${t('EForWordPressOrReactNodeBasedWebsites')}. `,
     },
     {
-      name: EWebsiteContentUpdatesOrModifications[language],
+      name: t('EWebsiteContentUpdatesOrModifications'),
       id: 'misc-updates',
       price: miscArray.updates.price,
-      description: `${EWebsiteContentUpdatesOrModifications[language]}: ${miscArray.updates.price}€/${EHour[language]} ${EForWordPressOrReactNodeBasedWebsites[language]}. `,
+      description: `${t('EWebsiteContentUpdatesOrModifications')}: ${
+        miscArray.updates.price
+      }€/${t('EHourSmall')} ${t('EForWordPressOrReactNodeBasedWebsites')}. `,
     },
     {
-      name: ETranslationWork[language],
+      name: t('ETranslationWork'),
       id: 'misc-translation',
       price: miscArray.translation.price,
-      description: `${ETranslationWork[language]}: ${miscArray.translation.price}€/${EHour[language]}. `,
+      description: `${t('ETranslationWork')}: ${miscArray.translation.price}€/${t(
+        'EHourSmall'
+      )}. `,
     },
     {
-      name: ETrainingInWebsiteManagement[language],
+      name: t('ETrainingInWebsiteManagement'),
       id: 'misc-training',
       price: miscArray.training.price,
-      description: `${EForSitesByJenniina[language]}: ${ETrainingInWebsiteManagementDescription[language]} ${miscArray.training.price}€/${EHour[language]}. \n\n${ENote[language]} ${EOneHourOfTrainingIncluded[language]} `,
+      description: `${t('EForSitesByJenniina')}: ${t(
+        'ETrainingInWebsiteManagementDescription'
+      )} ${miscArray.training.price}€/${t('EHourSmall')}. \n\n${t('ENote')} ${t(
+        'EOneHourOfTrainingIncluded'
+      )} `,
     },
     {
-      name: ERequestForQuote[language],
+      name: t('ERequestForQuote'),
       id: 'misc-quote',
       price: 0,
-      description: `${ERequestForQuoteForProductsNotInStore[language]}. \n\n${
-        EEGInfographicsOrMotionGraphics[language]
-      }. ${
-        language !== ELanguages.English && language !== ELanguages.Suomi
-          ? `\n\n${EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo[language]}`
+      description: `${t('ERequestForQuoteForProductsNotInStore')}. \n\n${t(
+        'EEGInfographicsOrMotionGraphics'
+      )}. ${
+        language !== ELanguages.en && language !== ELanguages.fi
+          ? `\n\n${t(
+              'EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo'
+            )}`
           : ''
       }`,
     },
@@ -201,52 +167,68 @@ const Store: FC<Props> = ({ language, cart, addToCart, removeFromCart }) => {
   const graphicDesign: Partial<ICartItem>[] = [
     {
       id: 'graphic-flyer-1',
-      name: `${EFlyerDesign[language]} 1`,
+      name: `${t('EFlyerDesign')} 1`,
       price: 230,
-      description: `${EOneSided[language]}. ${EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts[language]}`,
+      description: `${t('EOneSided')}. ${t(
+        'EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts'
+      )}`,
     },
 
     {
       id: 'graphic-flyer-2',
-      name: `${EFlyerDesign[language]} 2`,
+      name: `${t('EFlyerDesign')} 2`,
       price: 270,
-      description: `${ETwoSided[language]}. ${EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts[language]}`,
+      description: `${t('ETwoSided')}. ${t(
+        'EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts'
+      )}`,
     },
     {
       id: 'graphic-business-card-1',
-      name: `${EBusinessCardDesign[language]} 1`,
+      name: `${t('EBusinessCardDesign')} 1`,
       price: 220,
-      description: `${EOneSidedBusinessCard[language]}. ${EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts[language]}`,
+      description: `${t('EOneSidedBusinessCard')}. ${t(
+        'EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts'
+      )}`,
     },
     {
       id: 'graphic-business-card-2',
-      name: `${EBusinessCardDesign[language]} 2`,
+      name: `${t('EBusinessCardDesign')} 2`,
       price: 320,
-      description: `${ETwoSidedBusinessCard[language]}. ${EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts[language]}`,
+      description: `${t('ETwoSidedBusinessCard')}. ${t(
+        'EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts'
+      )}`,
     },
     {
       id: 'graphic-poster',
-      name: EPosterDesign[language],
+      name: t('EPosterDesign'),
       price: 290,
-      description: `${EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts[language]}`,
+      description: `${t(
+        'EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts'
+      )}`,
     },
     {
       id: 'graphic-programme',
-      name: EProgrammeDesign[language],
+      name: t('EProgrammeDesign'),
       price: 320,
-      description: `${EFourPageA5SizeProgramme[language]}. ${EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts[language]}`,
+      description: `${t('EFourPageA5SizeProgramme')}. ${t(
+        'EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts'
+      )}`,
     },
     {
       id: 'graphic-poster-programme',
-      name: EPosterAndProgramme[language],
+      name: t('EPosterAndProgramme'),
       price: 400,
-      description: `${EPosterAndProgrammeCombo[language]}. ${EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts[language]}`,
+      description: `${t('EPosterAndProgrammeCombo')}. ${t(
+        'EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts'
+      )}`,
     },
     {
       id: 'graphic-logo',
-      name: ELogoDesign[language],
+      name: t('ELogoDesign'),
       price: 250,
-      description: `${EIncludesPrintableAndWebVersionOfTheLogo[language]} ${EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts[language]}`,
+      description: `${t('EIncludesPrintableAndWebVersionOfTheLogo')} ${t(
+        'EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts'
+      )}`,
     },
   ]
 
@@ -284,44 +266,46 @@ const Store: FC<Props> = ({ language, cart, addToCart, removeFromCart }) => {
 
   const itemsNameArray = [
     {
-      name: EWebsites[language],
+      name: t('EWebsites'),
       id: 'misc',
       array: itemsMisc,
       intro:
-        language !== ELanguages.Suomi && language !== ELanguages.English
-          ? `${EIfYouAreUnsureAboutReactOrWordPress[language]} ${EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo[language]}`
-          : `${EIfYouAreUnsureAboutReactOrWordPress[language]}`,
-      link: <Link to='/contact'>{EContactForm[language]}</Link>,
+        language !== ELanguages.fi && language !== ELanguages.en
+          ? `${t('EIfYouAreUnsureAboutReactOrWordPress')} ${t(
+              'EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo'
+            )}`
+          : `${t('EIfYouAreUnsureAboutReactOrWordPress')}`,
+      link: <Link to='/contact'>{t('EContactForm')}</Link>,
     },
     {
       name: 'React & Node',
       id: 'react',
       array: itemsReact,
-      intro: `${EReactSitesAppsAreFastAndResponsive[language]}`,
+      intro: `${t('EReactSitesAppsAreFastAndResponsive')}`,
       link: null,
     },
     {
       name: 'WordPress',
       id: 'wordpress',
       array: itemsWordPress,
-      intro: `${EWordPressSitesAreVersatile[language]} ${EUpdatingWordPressIsSimple[language]}`,
+      intro: `${t('EWordPressSitesAreVersatile')} ${t('EUpdatingWordPressIsSimple')}`,
       link: (
         <>
-          {EExampleSites[language]} ({EMainSite[language].toLowerCase()}):
+          {t('EExampleSites')} ({t('EMainSite').toLowerCase()}):
           <ul className='ul'>
             <li>
               <a href='https://jenniina.fi/jyvaskylan-salonkiorkesteri-orchestra-website/#title'>
-                {EOrchestraWebsite[language]}
+                {t('EOrchestraWebsite')}
               </a>{' '}
             </li>
             <li>
               <a href='https://jenniina.fi/metal-2022/#metal2022'>
-                {EConferenceWebsite[language]}
+                {t('EConferenceWebsite')}
               </a>{' '}
             </li>
             <li>
               <a href='https://jenniina.fi/website-of-psychologist/#sirkku'>
-                {EPsychologistWebsite[language]}
+                {t('EPsychologistWebsite')}
               </a>
             </li>
           </ul>
@@ -329,15 +313,15 @@ const Store: FC<Props> = ({ language, cart, addToCart, removeFromCart }) => {
       ),
     },
     {
-      name: EGraphicDesign[language],
+      name: t('EGraphicDesign'),
       id: 'graphic',
       array: itemsGraphic,
       intro: '',
       link: (
         <>
-          {EProducts[language]} ({EMainSite[language].toLowerCase()}):{' '}
+          {t('EProducts')} ({t('EMainSite').toLowerCase()}):{' '}
           <a href='https://jenniina.fi/portfolio#graphic-design'>
-            {EGraphicDesign[language]} ({ESampleArtwork[language]})
+            {t('EGraphicDesign')} ({t('ESampleArtwork')})
           </a>
         </>
       ),

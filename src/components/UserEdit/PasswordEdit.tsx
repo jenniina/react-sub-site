@@ -1,29 +1,19 @@
-import { useState } from 'react'
-import {
-  ELanguages,
-  EEdit,
-  ECurrentPassword,
-  IUser,
-  EConfirmPassword,
-  EPassword,
-  EPasswordMustBeAtLeastTenCharacters,
-  EPasswordsDoNotMatch,
-  EError,
-  EUserUpdated,
-  EUserNotUpdated,
-} from '../../types'
+import { useContext, useState } from 'react'
+import { ELanguages, IUser } from '../../types'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import { updatePassword } from '../../reducers/usersReducer'
 import { AxiosError } from 'axios'
 import styles from './css/edit.module.css'
-import { EEditPassword } from './types'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
   user: IUser
 }
 const PasswordEdit = ({ user, language }: Props) => {
+  const { t } = useContext(LanguageContext)!
+
   const dispatch = useAppDispatch()
 
   const [passwordOld, setPasswordOld] = useState<IUser['password'] | ''>('')
@@ -36,11 +26,11 @@ const PasswordEdit = ({ user, language }: Props) => {
     setSending(true)
     try {
       if (password.trim() !== confirmPassword.trim()) {
-        dispatch(notify(EPasswordsDoNotMatch[language], true, 5))
+        dispatch(notify(t('EPasswordsDoNotMatch'), true, 5))
         setSending(false)
         return
       } else if (password.length < 10) {
-        dispatch(notify(EPasswordMustBeAtLeastTenCharacters[language], true, 5))
+        dispatch(notify(t('EPasswordMustBeAtLeastTenCharacters'), true, 5))
         setSending(false)
         return
       }
@@ -57,9 +47,9 @@ const PasswordEdit = ({ user, language }: Props) => {
           .then((res) => {
             if (res) {
               if (res.success === false) {
-                dispatch(notify(`${res.message || EError[language]}`, true, 5))
+                dispatch(notify(`${res.message || t('EError')}`, true, 5))
               } else {
-                dispatch(notify(`${res.message || EUserUpdated[language]}`, false, 5))
+                dispatch(notify(`${res.message || t('EUserUpdated')}`, false, 5))
                 setPasswordOld('')
                 setPassword('')
                 setConfirmPassword('')
@@ -75,7 +65,7 @@ const PasswordEdit = ({ user, language }: Props) => {
               dispatch(notify(`${error.response.data.message}`, true, 5))
             } else {
               setTimeout(() => {
-                dispatch(notify(EUserNotUpdated[language], true, 5))
+                dispatch(notify(t('EUserNotUpdated'), true, 5))
               }, 2000)
             }
             setSending(false)
@@ -94,7 +84,7 @@ const PasswordEdit = ({ user, language }: Props) => {
     <>
       {user ? (
         <>
-          <h2>{EEditPassword[language]}</h2>
+          <h2>{t('EEditPassword')}</h2>
 
           <form onSubmit={handleUserSubmit} className={styles['edit-user']}>
             <div className='input-wrap'>
@@ -107,7 +97,7 @@ const PasswordEdit = ({ user, language }: Props) => {
                   value={passwordOld}
                   onChange={({ target }) => setPasswordOld(target.value.trim())}
                 />
-                <span>{ECurrentPassword[language]}</span>
+                <span>{t('ECurrentPassword')}</span>
               </label>
             </div>
             <div className='input-wrap'>
@@ -120,7 +110,7 @@ const PasswordEdit = ({ user, language }: Props) => {
                   value={password}
                   onChange={({ target }) => setPassword(target.value.trim())}
                 />
-                <span>{EPassword[language]}</span>
+                <span>{t('EPassword')}</span>
               </label>
             </div>
             <div className='input-wrap'>
@@ -133,11 +123,11 @@ const PasswordEdit = ({ user, language }: Props) => {
                   value={confirmPassword}
                   onChange={({ target }) => setConfirmPassword(target.value.trim())}
                 />
-                <span>{EConfirmPassword[language]}</span>
+                <span>{t('EConfirmPassword')}</span>
               </label>
             </div>
             <button type='submit' disabled={sending}>
-              {EEdit[language]}
+              {t('EEdit')}
             </button>
           </form>
         </>

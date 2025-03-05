@@ -1,29 +1,12 @@
-import { useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { BiChevronsUp } from 'react-icons/bi'
-import {
-  EBlob,
-  ECustomSelect,
-  EDragAndDrop,
-  EHairSalon,
-  EJokes,
-  ELanguages,
-  EMultistepForm,
-  EPortfolio,
-  EQuiz,
-  EScrollToTheLeft,
-  EScrollToTheRight,
-  EToDo,
-  RefObject,
-} from '../../types'
-import { EColorAccessibility } from '../../types/colors'
+import { ELanguages, RefObject } from '../../types'
 import useIsOnScreen from '../../hooks/useIsOnScreen'
 import useWindowSize from '../../hooks/useWindowSize'
 import { breakpointSmall } from '../../types'
 import useSideScroll from '../../hooks/useSideScroll'
-import { EComposerOlliSanta } from '../../types/composer'
-import { EMemoryGame } from '../../types/memory'
-import { EMedia } from '../../types/images'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 interface NavItem {
   url: string
@@ -32,6 +15,8 @@ interface NavItem {
 }
 
 function NavPortfolio({ language }: { language: ELanguages }) {
+  const { t } = useContext(LanguageContext)!
+
   const { windowWidth } = useWindowSize()
 
   const location = useLocation()
@@ -52,20 +37,20 @@ function NavPortfolio({ language }: { language: ELanguages }) {
   }
 
   const navItems: NavItem[] = [
-    { url: '/portfolio', name: `${EPortfolio[language]}`, special: 'first' },
-    { url: '/portfolio/media', name: EMedia[language] },
-    { url: '/portfolio/memory', name: EMemoryGame[language] },
-    { url: '/portfolio/colors', name: EColorAccessibility[language] },
-    { url: '/portfolio/composer', name: EComposerOlliSanta[language] },
-    { url: '/portfolio/blob', name: EBlob[language] },
-    { url: '/portfolio/jokes', name: EJokes[language] },
-    { url: '/portfolio/quiz', name: EQuiz[language] },
-    { url: '/portfolio/select', name: ECustomSelect[language] },
-    { url: '/portfolio/salon', name: EHairSalon[language] },
-    { url: '/portfolio/draganddrop', name: EDragAndDrop[language] },
+    { url: '/portfolio', name: `${t('EPortfolio')}`, special: 'first' },
+    { url: '/portfolio/media', name: t('EMedia') },
+    { url: '/portfolio/memory', name: t('EMemoryGame') },
+    { url: '/portfolio/colors', name: t('EColorAccessibility') },
+    { url: '/portfolio/composer', name: t('EComposerOlliSanta') },
+    { url: '/portfolio/blob', name: t('EBlob') },
+    { url: '/portfolio/jokes', name: t('EJokes') },
+    { url: '/portfolio/quiz', name: t('EQuiz') },
+    { url: '/portfolio/select', name: t('ECustomSelect') },
+    { url: '/portfolio/salon', name: t('EHairSalon') },
+    { url: '/portfolio/draganddrop', name: t('EDragAndDrop') },
     { url: '/portfolio/graphql', name: 'GraphQL' },
-    { url: '/portfolio/form', name: EMultistepForm[language] },
-    { url: '/portfolio/todo', name: EToDo[language], special: 'last' },
+    { url: '/portfolio/form', name: t('EMultistepForm') },
+    { url: '/portfolio/todo', name: t('EToDo'), special: 'last' },
   ]
 
   const itemRefs = navItems.map(() => useRef<HTMLLIElement>(null))
@@ -154,7 +139,7 @@ function NavPortfolio({ language }: { language: ELanguages }) {
         >
           {' '}
           <BiChevronsUp />
-          <span className='scr'>{EScrollToTheLeft[language]}</span>
+          <span className='scr'>{t('EScrollToTheLeft')}</span>
         </button>
 
         <ul ref={scrollHorizontal}>{renderNavItems(navItems)}</ul>
@@ -166,7 +151,7 @@ function NavPortfolio({ language }: { language: ELanguages }) {
         >
           {' '}
           <BiChevronsUp />
-          <span className='scr'>{EScrollToTheRight[language]}</span>
+          <span className='scr'>{t('EScrollToTheRight')}</span>
         </button>
       </nav>
       <Outlet />

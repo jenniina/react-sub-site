@@ -1,57 +1,20 @@
-import { useState, useEffect, FC, useRef, useMemo, lazy, Suspense } from 'react'
+import {
+  useState,
+  useEffect,
+  FC,
+  useRef,
+  useMemo,
+  lazy,
+  Suspense,
+  useContext,
+} from 'react'
 import styles from './accessiblecolors.module.css'
 import { notify } from '../../reducers/notificationReducer'
 import useLocalStorage from '../../hooks/useStorage'
-import {
-  EDarkMode,
-  EError,
-  ELanguages,
-  ELightMode,
-  ELoading,
-  ERemove,
-  EReset,
-} from '../../types'
+import { ELanguages } from '../../types'
 import { useDragAndDrop } from './hooks/useColorDragAndDrop'
-import { EAddAColor } from '../../types/draganddrop'
-//import ColorsInput from './components/ColorsInput'
-import {
-  EAAACompliantWithID,
-  EAAACompliantWithUI,
-  EAACompliantWithID,
-  EAAGraphicElementCompliantWithID,
-  EAnalogous,
-  EClearAndGenerateNew,
-  EColorMode,
-  EColorPicker,
-  EComplementary,
-  EEditSize,
-  EGenerateColors,
-  EGeneratesColorsBasedOnLastColor,
-  EHideColorName,
-  EHighestAAAComplianceWithRegularText,
-  EMinimumAAComplianceWithRegularText,
-  EMonochromatic,
-  ENoCompliantColors,
-  ERemoveColorConfirmation,
-  ESaveAsPNG,
-  ESaveAsSVG,
-  ESelectColorMode,
-  ESelectColorModeForNewColors,
-  EShowColorName,
-  ETetrad,
-  EToggleColorNameVisibility,
-  ETriad,
-} from '../../types/colors'
 import { useTheme, useThemeUpdate } from '../../hooks/useTheme'
-import {
-  EAreYouSureYouWantToDeleteThisVersion,
-  EArtSaved,
-  EHideControls,
-  EShowControls,
-  EToggleControlVisibility,
-} from '../../types/blobs'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
-import { EClear } from '../../types/select'
 import { MdDarkMode, MdLightMode } from 'react-icons/md'
 import { PiDownloadSimpleFill } from 'react-icons/pi'
 import {
@@ -68,6 +31,7 @@ import {
 import { Select, SelectOption } from '../Select/Select'
 import useAccessibleColors from './hooks/useAccessibleColors'
 import { useSearchParams } from 'react-router-dom'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 const ColorsInput = lazy(() => import('./components/ColorsInput'))
 
@@ -140,6 +104,8 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     setColorsReset,
   } = useAccessibleColors('analogous')
 
+  const { t } = useContext(LanguageContext)!
+
   const statuses = useMemo(() => [status], [])
 
   const dispatch = useAppDispatch()
@@ -172,11 +138,11 @@ const AccessibleColors: FC<Props> = ({ language }) => {
   }
 
   const colorModeOptions: SelectOption[] = [
-    { value: 'analogous', label: EAnalogous[language] },
-    { value: 'complementary', label: EComplementary[language] },
-    { value: 'monochromatic', label: EMonochromatic[language] },
-    { value: 'triad', label: ETriad[language] },
-    { value: 'tetrad', label: ETetrad[language] },
+    { value: 'analogous', label: t('EAnalogous') },
+    { value: 'complementary', label: t('EComplementary') },
+    { value: 'monochromatic', label: t('EMonochromatic') },
+    { value: 'triad', label: t('ETriad') },
+    { value: 'tetrad', label: t('ETetrad') },
   ]
 
   const random: number = Math.floor(Math.random() * colorModeOptions.length)
@@ -347,7 +313,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           convertedBlockColor = parseColor(block.color, block.colorFormat)
         } catch (error) {
           console.error(error)
-          dispatch(notify(`${EError[language]}: ${(error as Error).message}`, true, 4))
+          dispatch(notify(`${t('EError')}: ${(error as Error).message}`, true, 4))
           convertedBlockColor = '#000000' // Default to black on error
         }
 
@@ -556,7 +522,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     link.click()
     document.body.removeChild(link)
     URL.revokeObjectURL(url)
-    dispatch(notify(EArtSaved[language], false, 5))
+    dispatch(notify(t('EArtSaved'), false, 5))
   }
 
   const saveAsPNG = () => {
@@ -589,13 +555,13 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       document.body.removeChild(link)
 
       URL.revokeObjectURL(url)
-      dispatch(notify(EArtSaved[language], false, 5))
+      dispatch(notify(t('EArtSaved'), false, 5))
     }
 
     img.onerror = (err) => {
       console.error('Error loading SVG into image for PNG conversion:', err)
       URL.revokeObjectURL(url)
-      dispatch(notify(EError[language], true, 4))
+      dispatch(notify(t('EError'), true, 4))
     }
 
     img.src = url
@@ -656,7 +622,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                 height: `2em`,
               }}
             ></div>
-            <span>{EHighestAAAComplianceWithRegularText[language]}</span>
+            <span>{t('EHighestAAAComplianceWithRegularText')}</span>
           </li>
           <li>
             <div
@@ -671,7 +637,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                 margin: '0 0.2em 0 0.2em ',
               }}
             ></div>
-            <span>{EMinimumAAComplianceWithRegularText[language]}</span>
+            <span>{t('EMinimumAAComplianceWithRegularText')}</span>
           </li>
           <li>
             <div
@@ -686,7 +652,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                 margin: '0 0.65em 0 0.65em',
               }}
             ></div>
-            <span>{EAAACompliantWithUI[language]}</span>
+            <span>{t('EAAACompliantWithUI')}</span>
           </li>
         </ul>
       </div>
@@ -695,11 +661,11 @@ const AccessibleColors: FC<Props> = ({ language }) => {
         {listItemsByStatus[status]?.items?.length > 0 && (
           <>
             <button type='button' onClick={saveAsPNG} className='gray small'>
-              {ESaveAsPNG[language]}&nbsp;&nbsp;
+              {t('ESaveAsPNG')}&nbsp;&nbsp;
               <PiDownloadSimpleFill />
             </button>
             <button type='button' onClick={saveAsSVG} className='gray small'>
-              {ESaveAsSVG[language]}&nbsp;&nbsp;
+              {t('ESaveAsSVG')}&nbsp;&nbsp;
               <PiDownloadSimpleFill />
             </button>
           </>
@@ -707,12 +673,12 @@ const AccessibleColors: FC<Props> = ({ language }) => {
         <button onClick={toggleTheme} className='gray small'>
           {lightTheme ? (
             <>
-              {EDarkMode[language]}&nbsp;&nbsp;
+              {t('EDarkMode')}&nbsp;&nbsp;
               <MdDarkMode />
             </>
           ) : (
             <>
-              {ELightMode[language]}&nbsp;&nbsp;
+              {t('ELightMode')}&nbsp;&nbsp;
               <MdLightMode />{' '}
             </>
           )}
@@ -720,7 +686,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       </div>
       <div className={styles['color-picker']}>
         <label htmlFor='color-input' className=' '>
-          {EColorPicker[language]}:
+          {t('EColorPicker')}:
         </label>
         <input
           id='color-input'
@@ -729,10 +695,10 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           onChange={(e) => setCurrentColor(e.target.value)}
         />
         <button className='gray small' type='button' onClick={addColor}>
-          {EAddAColor[language]}
+          {t('EAddAColor')}
         </button>
         <button className='gray small' type='button' onClick={resetColors}>
-          {EReset[language]}
+          {t('EReset')}
         </button>
         <button
           className='gray small'
@@ -742,7 +708,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
             clearColors()
           }}
         >
-          {EClear[language]}
+          {t('EClear')}
         </button>
 
         <div className={`${styles['color-edit-container']} ${styles['mode-container']}`}>
@@ -767,7 +733,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
               )
             }
             id='color-mode'
-            instructions={ESelectColorModeForNewColors[language]}
+            instructions={t('ESelectColorModeForNewColors')}
             className={`${styles['color-select']}`}
             hide
             hideDelete
@@ -780,13 +746,13 @@ const AccessibleColors: FC<Props> = ({ language }) => {
             type='button'
             onClick={makeColorPalette}
           >
-            {EGenerateColors[language]}
+            {t('EGenerateColors')}
             <span className='tooltip above narrow2'>
-              {EGeneratesColorsBasedOnLastColor[language]}
+              {t('EGeneratesColorsBasedOnLastColor')}
             </span>
           </button>
           <button className='gray small' type='button' onClick={resetAndMake}>
-            {EClearAndGenerateNew[language]}
+            {t('EClearAndGenerateNew')}
           </button>
         </div>
       </div>
@@ -882,7 +848,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                                   fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 0.9rem)`,
                                   ['--tooltip-max-width' as string]: width,
                                 }}
-                              >{`${EAAACompliantWithID[language]}: ${otherColor.id}`}</span>
+                              >{`${t('EAAACompliantWithID')}: ${otherColor.id}`}</span>
                             </div>
                           )
                         } else if (complianceLevel === ComplianceLevel.AA_RegularText) {
@@ -912,7 +878,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                                   fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 0.9rem)`,
                                   ['--tooltip-max-width' as string]: width,
                                 }}
-                              >{`${EAACompliantWithID[language]}: ${otherColor.id}`}</span>
+                              >{`${t('EAACompliantWithID')}: ${otherColor.id}`}</span>
                             </div>
                           )
                         } else if (complianceLevel === ComplianceLevel.AA_UIComponents) {
@@ -939,7 +905,9 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                                   fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 0.9rem)`,
                                   ['--tooltip-max-width' as string]: width,
                                 }}
-                              >{`${EAAGraphicElementCompliantWithID[language]}: ${otherColor.id}`}</span>
+                              >{`${t('EAAGraphicElementCompliantWithID')}: ${
+                                otherColor.id
+                              }`}</span>
                             </div>
                           )
                         }
@@ -992,7 +960,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                       <Suspense
                         fallback={
                           <div className='flex center margin0auto textcenter'>
-                            {ELoading[language]}...
+                            {t('ELoading')}...
                           </div>
                         }
                       >
@@ -1019,7 +987,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                         fontSize: `clamp(0.75rem, ${dynamicFontSize.input}, 2rem)`,
                       }}
                     >
-                      {ERemove[language]}
+                      {t('ERemove')}
                     </button>
                   </>
                 )}
@@ -1031,7 +999,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       {listItemsByStatus[status]?.items?.length > 0 && (
         <>
           <div className={styles['width-wrap']}>
-            <label htmlFor='color-block-width'>{EEditSize[language]}</label>
+            <label htmlFor='color-block-width'>{t('EEditSize')}</label>
             <input
               id='color-block-width'
               type='range'
@@ -1044,7 +1012,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           </div>
           <div className={`${styles['toggle-controls']}`}>
             <div>
-              <strong>{EToggleControlVisibility[language]}</strong>
+              <strong>{t('EToggleControlVisibility')}</strong>
               <button
                 id='toggle-controls'
                 type='button'
@@ -1062,11 +1030,11 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                 }
                 className='gray small'
               >
-                {show ? EHideControls[language] : EShowControls[language]}
+                {show ? t('EHideControls') : t('EShowControls')}
               </button>
             </div>
             <div>
-              <strong>{EToggleColorNameVisibility[language]}</strong>
+              <strong>{t('EToggleColorNameVisibility')}</strong>
               <button
                 type='button'
                 onClick={() =>
@@ -1083,7 +1051,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                 }
                 className='gray small'
               >
-                {name ? EHideColorName[language] : EShowColorName[language]}
+                {name ? t('EHideColorName') : t('EShowColorName')}
               </button>
             </div>
           </div>

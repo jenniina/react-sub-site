@@ -1,13 +1,6 @@
-import { FC } from 'react'
-import {
-  EResetHue,
-  EResetLightness,
-  EResetSaturation,
-  EAdjustBackgroundHue,
-  EAdjustBackgroundLightness,
-  EAdjustBackgroundSaturation,
-} from '../../../types/blobs'
+import { FC, useContext } from 'react'
 import { ELanguages } from '../../../types'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 interface SlidersProps {
   language: ELanguages
@@ -54,12 +47,14 @@ const Sliders: FC<SlidersProps> = ({
   defaultHue,
   sliderHueReset,
 }) => {
+  const { t } = useContext(LanguageContext)!
+
   return (
     <>
       <div id={`drag-slider-wrap${d}`} className='drag-slider-wrap'>
         <div className='drag-slider-single'>
           <label htmlFor={`drag-slider-hue${d}`} id={`huedescription${d}`}>
-            {EAdjustBackgroundHue[language]}
+            {t('EAdjustBackgroundHue')}
           </label>
           <input
             ref={sliderHueInput}
@@ -89,12 +84,12 @@ const Sliders: FC<SlidersProps> = ({
               sliderHueReset()
             }}
           >
-            {EResetHue[language]}
+            {t('EResetHue')}
           </button>
         </div>
         <div className='drag-slider-single'>
           <label htmlFor={`drag-slider-saturation${d}`} id={`saturationdescription${d}`}>
-            {EAdjustBackgroundSaturation[language]}
+            {t('EAdjustBackgroundSaturation')}
           </label>
           <input
             ref={sliderSaturationInput}
@@ -125,12 +120,12 @@ const Sliders: FC<SlidersProps> = ({
               sliderSaturationReset()
             }}
           >
-            {EResetSaturation[language]}
+            {t('EResetSaturation')}
           </button>
         </div>
         <div className='drag-slider-single'>
           <label htmlFor={`drag-slider-lightness${d}`} id={`lightnessdescription${d}`}>
-            {EAdjustBackgroundLightness[language]}
+            {t('EAdjustBackgroundLightness')}
           </label>
           <input
             ref={sliderLightnessInput}
@@ -161,7 +156,7 @@ const Sliders: FC<SlidersProps> = ({
               sliderLightnessReset()
             }}
           >
-            {EResetLightness[language]}
+            {t('EResetLightness')}
           </button>
         </div>
       </div>

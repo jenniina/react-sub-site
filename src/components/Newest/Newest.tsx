@@ -13,123 +13,46 @@ import { LuArrowRightToLine } from 'react-icons/lu'
 import { LiaNewspaperSolid } from 'react-icons/lia'
 import { BsMusicNoteBeamed } from 'react-icons/bs'
 import { firstToLowerCase } from '../../utils'
-import {
-  EAccessibility,
-  EAddedAnotherInstanceOfTheBlobArtApp,
-  EBlobs,
-  EButton,
-  EButtons,
-  EChangeCategoryTitle,
-  EDelete,
-  EDragAndDrop,
-  EGraphQLSite,
-  EHairSalonWebsite,
-  EHeroSection,
-  ELanguages,
-  ENews,
-  EOlderNews,
-  EQuiz,
-  EQuizAppIntro,
-  EReset,
-  ETestYourKnowledge,
-  EAddANewCategory,
-  EStore,
-  ETermsOfService,
-  EPage,
-} from '../../types'
-import { ECategoryTitle, ETheComediansCompanion } from '../Jokes/types'
-import {
-  EAddedNewFeatures,
-  EAddedNewIntroElements,
-  EAugust,
-  EBugFixes,
-  EDecember,
-  EFebruary,
-  EMigratedSiteToAnotherAzureSubscription,
-  ENewPortfolioItem,
-  EOctober,
-  EOptimizing,
-  ESiteMigration,
-  EImprovedAccessibility,
-  ESeptember,
-  EJuly,
-  ERandomHeadingItemMovement,
-  EAdded,
-  ELaunchedAnOnlineOrderingSystem,
-  ENovember,
-  EMovedBackendFromAzureToMyOwnDomain,
-  EChangedQuotesAPI,
-  EMarch,
-  EChangeLog,
-} from '../../types/welcome'
-import { EPriority, ETodoApp } from '../Todo/types'
-import {
-  ETasksCanBeEdited,
-  ETasksCanBeReorganizedByDraggingAndDropping,
-} from '../../types/todo'
+import { ELanguages } from '../../types'
 import { GrGraphQl } from 'react-icons/gr'
-import {
-  EAddedPaginationToSavedArt,
-  EChangedAllControlsToButtons,
-  EDragBlobToIconsNextToLayerButtons,
-  EEditArtwork,
-  ELayers,
-  ELoginToSaveBlobsToServer,
-  EManyVersions,
-  EMoveEveryBlobUpOrDownOneLayerByPressingTheButtons,
-  EMoveViewInDifferentDirections,
-  ENameYourArtwork,
-  EPressSpaceOrRWithABlobInFocusToCycleThroughRandomColors,
-  ERemovable,
-  ERenameYourArtwork,
-  ESampleArtwork,
-  EScreenshot,
-  EToggleControlVisibility,
-} from '../../types/blobs'
-import { EAddAColor, EAddGenericCardsAndColorThem } from '../../types/draganddrop'
-import { EComposerOlliSanta, EAddedALinkToComposer } from '../../types/composer'
 import Accordion from '../Accordion/Accordion'
-import {
-  EColorAccessibility,
-  EGenerateColors,
-  ETestColorCombinations,
-} from '../../types/colors'
-import { EMemoryGame, EMemoryGameIntro } from '../../types/memory'
 import MemorySVG from '../Memory/components/MemorySVG'
-import { EMedia, EMediaWithQuotesOrPoems } from '../../types/images'
-import { ECart } from '../../types/store'
+import { useContext } from 'react'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 export default function Newest({ language }: { language: ELanguages }) {
+  const { t } = useContext(LanguageContext)!
+
   return (
     <div className={`${styles.newest}`}>
       <h2 className={`${styles.subheading}`}>
-        <LiaNewspaperSolid /> {EChangeLog[language]}
+        <LiaNewspaperSolid /> {t('EChangeLog')}
       </h2>
       <ul className={`${styles.extras}`}>
         <li className={styles.first}>
           <strong>2025</strong>
           <ul>
             <li>
-              <strong>{EMarch[language]}</strong>
+              <strong>{t('EMarch')}</strong>
               <ul>
                 <li>
                   <Link to='/cart'>
                     <BsCart2 />
-                    {ECart[language]}:
+                    {t('ECart')}:
                   </Link>
-                  <i>{EBugFixes[language]}</i>
+                  <i>{t('EBugFixes')}</i>
                 </li>
               </ul>
             </li>
             <li>
-              <strong>{EFebruary[language]}</strong>
+              <strong>{t('EFebruary')}</strong>
               <ul>
                 <li>
                   <Link to='/portfolio/media'>
                     <IoMdImages />
-                    {EMedia[language]}:
+                    {t('EMedia')}:
                   </Link>
-                  <i>{EChangedQuotesAPI[language]}</i>
+                  <i>{t('EChangedQuotesAPI')}</i>
                 </li>
               </ul>
             </li>
@@ -139,117 +62,117 @@ export default function Newest({ language }: { language: ELanguages }) {
           <strong>2024</strong>
           <ul>
             <li>
-              <strong>{EDecember[language]}</strong>
+              <strong>{t('EDecember')}</strong>
               <ul>
                 <li>
                   <a className='disabled'>
                     <LuArrowRightToLine />
-                    <span>{ESiteMigration[language]}: </span>
+                    <span>{t('ESiteMigration')}: </span>
                   </a>
-                  <i>{EMovedBackendFromAzureToMyOwnDomain[language]}</i>
+                  <i>{t('EMovedBackendFromAzureToMyOwnDomain')}</i>
                 </li>
                 <li>
                   <Link to='/portfolio/todo'>
                     <RiTodoLine />
-                    {ETodoApp[language]}:
+                    {t('ETodoApp')}:
                   </Link>{' '}
                   <i>
-                    {EAddedNewFeatures[language]}: {firstToLowerCase(EPriority[language])}{' '}
-                    & {firstToLowerCase(ECategoryTitle[language])}
+                    {t('EAddedNewFeatures')}: {firstToLowerCase(t('EPriority'))} &{' '}
+                    {firstToLowerCase(t('ECategoryTitle'))}
                   </i>
                 </li>
                 <li>
                   <Link to='/portfolio/media'>
                     <IoMdImages />
-                    {EMedia[language]}:
+                    {t('EMedia')}:
                   </Link>
                   <i>
-                    {ENewPortfolioItem[language]}: {EMediaWithQuotesOrPoems[language]}
+                    {t('ENewPortfolioItem')}: {t('EMediaWithQuotesOrPoems')}
                   </i>
                 </li>
                 <li>
                   <Link to='/portfolio/colors'>
                     <BiSolidColorFill />
-                    {EColorAccessibility[language]}:
+                    {t('EColorAccessibility')}:
                   </Link>
                   <i>
-                    {EAddedNewFeatures[language]}: {EGenerateColors[language]}
+                    {t('EAddedNewFeatures')}: {t('EGenerateColors')}
                   </i>
                 </li>
                 <li>
                   <Link to='/portfolio/memory'>
                     <MemorySVG size='32' />
-                    {EMemoryGame[language]}:
+                    {t('EMemoryGame')}:
                   </Link>
                   <i>
-                    {ENewPortfolioItem[language]}: {EMemoryGameIntro[language]}
+                    {t('ENewPortfolioItem')}: {t('EMemoryGameIntro')}
                   </i>
                 </li>
               </ul>
             </li>
             <li>
-              <strong>{ENovember[language]}</strong>
+              <strong>{t('ENovember')}</strong>
               <ul>
                 <li>
                   <Link to='/portfolio/blob'>
                     <TbBlob />
-                    {EBlobs[language]}:
+                    {t('EBlobs')}:
                   </Link>
-                  <i>{EChangedAllControlsToButtons[language]}</i>
+                  <i>{t('EChangedAllControlsToButtons')}</i>
                 </li>
                 <li>
                   <Link to='/portfolio/colors'>
                     <BiSolidColorFill />
-                    {EColorAccessibility[language]}:
+                    {t('EColorAccessibility')}:
                   </Link>
                   <i>
-                    {ENewPortfolioItem[language]}: {ETestColorCombinations[language]}
+                    {t('ENewPortfolioItem')}: {t('ETestColorCombinations')}
                   </i>
                 </li>
                 <li>
                   <Link to='/portfolio/composer'>
                     <BsMusicNoteBeamed />
-                    {EComposerOlliSanta[language]}:
+                    {t('EComposerOlliSanta')}:
                   </Link>
                   <i>
-                    {EAddedNewIntroElements[language]} ({EHeroSection[language]} )
+                    {t('EAddedNewIntroElements')} ({t('EHeroSection')} )
                   </i>
                 </li>
                 <li>
                   <Link to='/portfolio/composer'>
                     <BsMusicNoteBeamed />
-                    {EComposerOlliSanta[language]}:
+                    {t('EComposerOlliSanta')}:
                   </Link>
                   <i>
-                    {ENewPortfolioItem[language]}: {EAddedALinkToComposer[language]}
+                    {t('ENewPortfolioItem')}: {t('EAddedALinkToComposer')}
                   </i>
                 </li>
                 <li>
                   <Link to='/portfolio/draganddrop'>
                     <RiDragDropLine />
-                    {EDragAndDrop[language]}:
+                    {t('EDragAndDrop')}:
                   </Link>
-                  <i>{EBugFixes[language]}</i>
+                  <i>{t('EBugFixes')}</i>
                 </li>
               </ul>
             </li>
             <li>
-              <strong>{EOctober[language]}</strong>
+              <strong>{t('EOctober')}</strong>
               <ul>
                 <li>
                   <Link to='/store'>
                     <FaStoreAlt />
-                    {EStore[language]}:
+                    {t('EStore')}:
                   </Link>
-                  <i>{ELaunchedAnOnlineOrderingSystem[language]}</i>
+                  <i>{t('ELaunchedAnOnlineOrderingSystem')}</i>
                 </li>
                 <li>
                   <Link to='/terms'>
                     <RiFileList3Line />
-                    {ETermsOfService[language]}:
+                    {t('ETermsOfService')}:
                   </Link>
                   <i>
-                    {EAdded[language]}: {ETermsOfService[language]} ({EPage[language]})
+                    {t('EAdded')}: {t('ETermsOfService')} ({t('EPage')})
                   </i>
                 </li>
               </ul>
@@ -259,7 +182,7 @@ export default function Newest({ language }: { language: ELanguages }) {
       </ul>
       <Accordion
         language={language}
-        text={EOlderNews[language]}
+        text={t('EOlderNews')}
         className={`${styles.oldernews} oldernews`}
         wrapperClass={styles['oldernews-wrap']}
       >
@@ -269,211 +192,204 @@ export default function Newest({ language }: { language: ELanguages }) {
               <strong>2024</strong>
               <ul>
                 <li>
-                  <strong>{ESeptember[language]}</strong>
+                  <strong>{t('ESeptember')}</strong>
                   <ul>
                     <li>
                       <Link to='/portfolio/draganddrop'>
                         <RiDragDropLine />
-                        {EDragAndDrop[language]}:
+                        {t('EDragAndDrop')}:
                       </Link>
                       <i>
-                        {EAddedNewFeatures[language]}:{' '}
-                        {firstToLowerCase(EAddGenericCardsAndColorThem[language])}
+                        {t('EAddedNewFeatures')}:{' '}
+                        {firstToLowerCase(t('EAddGenericCardsAndColorThem'))}
                       </i>
                     </li>
 
                     <li>
                       <Link to='/portfolio/blob'>
                         <TbBlob />
-                        {EBlobs[language]}:
+                        {t('EBlobs')}:
                       </Link>
                       <i>
-                        {EAddedNewFeatures[language]}:{' '}
-                        {
-                          EPressSpaceOrRWithABlobInFocusToCycleThroughRandomColors[
-                            language
-                          ]
-                        }
+                        {t('EAddedNewFeatures')}:{' '}
+                        {t('EPressSpaceOrRWithABlobInFocusToCycleThroughRandomColors')}
                       </i>
                     </li>
                     <li>
                       <Link to='/portfolio/draganddrop'>
                         <RiDragDropLine />
-                        {EDragAndDrop[language]}:
+                        {t('EDragAndDrop')}:
                       </Link>
                       <i>
-                        {EAddedNewFeatures[language]}: {EDelete[language].toLowerCase()} (
-                        {firstToLowerCase(ECategoryTitle[language])}),{' '}
-                        {firstToLowerCase(EAddANewCategory[language])}
+                        {t('EAddedNewFeatures')}: {t('EDelete').toLowerCase()} (
+                        {firstToLowerCase(t('ECategoryTitle'))}),{' '}
+                        {firstToLowerCase(t('EAddANewCategory'))}
                       </i>
                     </li>
                     <li>
                       <a className='disabled'>
                         <TbTriangleInverted />
-                        {EHeroSection[language]}:
+                        {t('EHeroSection')}:
                       </a>{' '}
                       <i>
-                        {EAddedNewFeatures[language]}:{' '}
-                        {ERandomHeadingItemMovement[language]}
+                        {t('EAddedNewFeatures')}: {t('ERandomHeadingItemMovement')}
                       </i>
                     </li>
                     <li>
                       <Link to='/portfolio/draganddrop'>
                         <RiDragDropLine />
-                        {EDragAndDrop[language]}:
+                        {t('EDragAndDrop')}:
                       </Link>
                       <i>
-                        {EBugFixes[language]}. {EAccessibility[language]}:{' '}
-                        {EOptimizing[language].toLowerCase()}.
+                        {t('EBugFixes')}. {t('EAccessibility')}:{' '}
+                        {t('EOptimizing').toLowerCase()}.
                       </i>
                     </li>
                     <li>
                       <Link to='/portfolio/blob'>
                         <TbBlob />
-                        {EBlobs[language]}:
+                        {t('EBlobs')}:
                       </Link>
-                      <i>{EAddedAnotherInstanceOfTheBlobArtApp[language]} </i>
+                      <i>{t('EAddedAnotherInstanceOfTheBlobArtApp')} </i>
                     </li>
                     <li>
                       <Link to='/portfolio/blob'>
                         <TbBlob />
-                        {EBlobs[language]}:
+                        {t('EBlobs')}:
                       </Link>
                       <i>
-                        {ESampleArtwork[language]}. {EAddedNewFeatures[language]}:{' '}
-                        {EAddedPaginationToSavedArt[language]}
+                        {t('ESampleArtwork')}. {t('EAddedNewFeatures')}:{' '}
+                        {t('EAddedPaginationToSavedArt')}
                       </i>
                     </li>
                     <li>
                       <Link to='/portfolio/blob'>
                         <TbBlob />
-                        {EBlobs[language]}:
+                        {t('EBlobs')}:
                       </Link>
                       <i>
-                        {EAddedNewFeatures[language]}: {EScreenshot[language]}!{' '}
-                        {EMoveEveryBlobUpOrDownOneLayerByPressingTheButtons[language]}.{' '}
-                        {EDragBlobToIconsNextToLayerButtons[language]}
+                        {t('EAddedNewFeatures')}: {t('EScreenshot')}!{' '}
+                        {t('EMoveEveryBlobUpOrDownOneLayerByPressingTheButtons')}.{' '}
+                        {t('EDragBlobToIconsNextToLayerButtons')}
                       </i>
                     </li>
                     <li>
                       <Link to='/portfolio/draganddrop'>
                         <RiDragDropLine />
-                        {EDragAndDrop[language]}:
+                        {t('EDragAndDrop')}:
                       </Link>
                       <i>
-                        {EAddedNewFeatures[language]}:{' '}
-                        {firstToLowerCase(EAddAColor[language])},{' '}
-                        {firstToLowerCase(EChangeCategoryTitle[language])},{' '}
-                        {firstToLowerCase(EReset[language])},{' '}
-                        {firstToLowerCase(ERemovable[language])}
+                        {t('EAddedNewFeatures')}: {firstToLowerCase(t('EAddAColor'))},{' '}
+                        {firstToLowerCase(t('EChangeCategoryTitle'))},{' '}
+                        {firstToLowerCase(t('EReset'))},{' '}
+                        {firstToLowerCase(t('ERemovable'))}
                       </i>
                     </li>
                     <li>
                       <Link to='/portfolio/blob'>
                         <TbBlob />
-                        {EBlobs[language]}:
+                        {t('EBlobs')}:
                       </Link>
                       <i>
-                        {EAddedNewFeatures[language]}:{' '}
-                        {firstToLowerCase(ELoginToSaveBlobsToServer[language])},{' '}
-                        {firstToLowerCase(EManyVersions[language])},{' '}
-                        {firstToLowerCase(ENameYourArtwork[language])},{' '}
-                        {firstToLowerCase(ERenameYourArtwork[language])},{' '}
-                        {firstToLowerCase(EEditArtwork[language])}
+                        {t('EAddedNewFeatures')}:{' '}
+                        {firstToLowerCase(t('ELoginToSaveBlobsToServer'))},{' '}
+                        {firstToLowerCase(t('EManyVersions'))},{' '}
+                        {firstToLowerCase(t('ENameYourArtwork'))},{' '}
+                        {firstToLowerCase(t('ERenameYourArtwork'))},{' '}
+                        {firstToLowerCase(t('EEditArtwork'))}
                       </i>
                     </li>
                   </ul>
                 </li>
                 <li>
-                  <strong>{EAugust[language]}</strong>
+                  <strong>{t('EAugust')}</strong>
                   <ul>
                     <li>
                       <Link to='/portfolio/blob'>
                         <TbBlob />
-                        {EBlobs[language]}:
+                        {t('EBlobs')}:
                       </Link>
                       <i>
-                        {EAddedNewFeatures[language]}:{' '}
-                        {firstToLowerCase(ELayers[language])};{' '}
-                        {firstToLowerCase(EButton[language])}:{' '}
-                        {firstToLowerCase(EToggleControlVisibility[language])}
+                        {t('EAddedNewFeatures')}: {firstToLowerCase(t('ELayers'))};{' '}
+                        {firstToLowerCase(t('EButton'))}:{' '}
+                        {firstToLowerCase(t('EToggleControlVisibility'))}
                       </i>
                     </li>
                     <li>
                       <Link to='/portfolio/blob'>
                         <TbBlob />
-                        {EBlobs[language]}:
+                        {t('EBlobs')}:
                       </Link>
-                      <i>{EImprovedAccessibility[language]}</i>
+                      <i>{t('EImprovedAccessibility')}</i>
                     </li>
                     <li>
                       <Link to='/portfolio/blob'>
                         <TbBlob />
-                        {EBlobs[language]}:
+                        {t('EBlobs')}:
                       </Link>
                       <i>
-                        {EAddedNewFeatures[language]}:{' '}
-                        {firstToLowerCase(EMoveViewInDifferentDirections[language])} (
-                        {firstToLowerCase(EButtons[language])}). {EBugFixes[language]}.
+                        {t('EAddedNewFeatures')}:{' '}
+                        {firstToLowerCase(t('EMoveViewInDifferentDirections'))} (
+                        {firstToLowerCase(t('EButtons'))}). {t('EBugFixes')}.
                       </i>
                     </li>
                   </ul>
                 </li>
                 <li>
-                  <strong>{EJuly[language]}</strong>
+                  <strong>{t('EJuly')}</strong>
                   <ul>
                     <li>
                       <a className='disabled'>
                         <LuArrowRightToLine />
-                        <span>{ESiteMigration[language]}: </span>
+                        <span>{t('ESiteMigration')}: </span>
                       </a>
-                      <i>{EMigratedSiteToAnotherAzureSubscription[language]}</i>
+                      <i>{t('EMigratedSiteToAnotherAzureSubscription')}</i>
                     </li>
                   </ul>
                 </li>
                 <li>
-                  <strong>{EFebruary[language]}</strong>
+                  <strong>{t('EFebruary')}</strong>
                   <ul>
                     <li>
                       <Link to='/portfolio/graphql'>
                         <GrGraphQl />
-                        <span>{EGraphQLSite[language]}</span>
+                        <span>{t('EGraphQLSite')}</span>
                       </Link>
-                      <i>{ENewPortfolioItem[language]}</i>
+                      <i>{t('ENewPortfolioItem')}</i>
                     </li>
                     <li>
                       <Link to='/portfolio/quiz'>
                         <TbTriangleInverted />
-                        {EHeroSection[language]}:
+                        {t('EHeroSection')}:
                       </Link>{' '}
-                      <i>{EAddedNewIntroElements[language]}</i>
+                      <i>{t('EAddedNewIntroElements')}</i>
                     </li>
                     <li>
                       <Link to='/portfolio/salon'>
                         <GiComb />
-                        {EHairSalonWebsite[language]}:
+                        {t('EHairSalonWebsite')}:
                       </Link>{' '}
                       <i>Parturi Kampaamo Hannastiina</i>
                     </li>
                     <li>
                       <Link to='/portfolio/blob'>
                         <TbBlob />
-                        {EBlobs[language]}:
+                        {t('EBlobs')}:
                       </Link>
                       <i>
-                        {EBugFixes[language]}. {EOptimizing[language]}
+                        {t('EBugFixes')}. {t('EOptimizing')}
                       </i>
                     </li>
                     <li>
                       <Link to='/portfolio/todo'>
                         <RiTodoLine />
-                        {ETodoApp[language]}:
+                        {t('ETodoApp')}:
                       </Link>{' '}
                       <i>
-                        {EAddedNewFeatures[language]}:{' '}
-                        {firstToLowerCase(ETasksCanBeEdited[language])} &{' '}
+                        {t('EAddedNewFeatures')}:{' '}
+                        {firstToLowerCase(t('ETasksCanBeEdited'))} &{' '}
                         {firstToLowerCase(
-                          ETasksCanBeReorganizedByDraggingAndDropping[language]
+                          t('ETasksCanBeReorganizedByDraggingAndDropping')
                         )}
                       </i>
                     </li>
@@ -494,30 +410,30 @@ export default function Newest({ language }: { language: ELanguages }) {
                   <strong>2023</strong>
                   <ul>
                     <li>
-                      <strong>{EDecember[language]}</strong>
+                      <strong>{t('EDecember')}</strong>
                       <ul>
                         <li>
                           <Link to='/portfolio/jokes'>
                             <GiAbstract019 />
-                            {ETheComediansCompanion[language]}:
+                            {t('ETheComediansCompanion')}:
                           </Link>{' '}
                           <i>
-                            {EAddedNewFeatures[language]}. {EOptimizing[language]}
+                            {t('EAddedNewFeatures')}. {t('EOptimizing')}
                           </i>
                         </li>
                       </ul>
                     </li>{' '}
                     <li>
-                      <strong>{EOctober[language]}</strong>
+                      <strong>{t('EOctober')}</strong>
                       <ul>
                         <li>
                           <Link to='/portfolio/quiz'>
                             <MdOutlineQuiz />
-                            {EQuiz[language]}:
+                            {t('EQuiz')}:
                           </Link>{' '}
                           <i>
-                            {ENewPortfolioItem[language]}. {ETestYourKnowledge[language]};{' '}
-                            {EQuizAppIntro[language]}
+                            {t('ENewPortfolioItem')}. {t('ETestYourKnowledge')};{' '}
+                            {t('EQuizAppIntro')}
                           </i>
                         </li>
                       </ul>

@@ -1,7 +1,5 @@
-import { ENickname, EError, EUserUpdated, EUserNotUpdated } from '../../types'
-import { EEditLanguagePreference } from './types'
-import { useState } from 'react'
-import { IUser, EEdit, ELanguages, ECurrentPassword } from '../../types'
+import { IUser, ELanguages, ELanguagesLong } from '../../types'
+import { useContext, useState } from 'react'
 import { Select, SelectOption } from '../Select/Select'
 import { initializeUser, refreshUser } from '../../reducers/authReducer'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
@@ -9,18 +7,20 @@ import { notify } from '../../reducers/notificationReducer'
 import { findUserById, updateUser } from '../../reducers/usersReducer'
 import { AxiosError } from 'axios'
 import styles from './css/edit.module.css'
-import { getKeyByValue } from '../../utils'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
   user: IUser
   setLanguage: (language: ELanguages) => void
-  options: (enumObj: typeof ELanguages) => SelectOption[]
+  options: (enumObj: typeof ELanguagesLong) => SelectOption[]
 }
 const LanguageEdit = ({ user, language, setLanguage, options }: Props) => {
   const dispatch = useAppDispatch()
 
   const [passwordOld, setPasswordOld] = useState<IUser['password'] | ''>('')
+
+  const { t } = useContext(LanguageContext)!
 
   const [lang, setLang] = useState<ELanguages>((user?.language as ELanguages) ?? language)
 
@@ -43,9 +43,9 @@ const LanguageEdit = ({ user, language, setLanguage, options }: Props) => {
           .then((res) => {
             if (res) {
               if (res.success === false) {
-                dispatch(notify(`${EError[language]}: ${res.message}`, true, 5))
+                dispatch(notify(`${t('EError')}: ${res.message}`, true, 5))
               } else {
-                dispatch(notify(`${res.message ?? EUserUpdated[lang]}`, false, 5))
+                dispatch(notify(`${res.message ?? t('EUserUpdated')}`, false, 5))
                 dispatch(refreshUser(res.user)).then(() => {
                   dispatch(findUserById(user?._id as string)).then(() =>
                     dispatch(initializeUser())
@@ -62,12 +62,10 @@ const LanguageEdit = ({ user, language, setLanguage, options }: Props) => {
             if (error.response?.data?.message)
               dispatch(notify(error.response.data.message, true, 8))
             else if (error.code === 'ERR_BAD_REQUEST' && error.response?.data?.message) {
-              dispatch(
-                notify(`${EError[language]}: ${error.response.data.message}`, true, 5)
-              )
+              dispatch(notify(`${t('EError')}: ${error.response.data.message}`, true, 5))
             } else {
               setTimeout(() => {
-                dispatch(notify(EUserNotUpdated[language], true, 5))
+                dispatch(notify(t('EUserNotUpdated'), true, 5))
               }, 2000)
             }
             setSending(false)
@@ -87,7 +85,7 @@ const LanguageEdit = ({ user, language, setLanguage, options }: Props) => {
     <>
       {user ? (
         <>
-          <h2>{EEditLanguagePreference[language]}</h2>
+          <h2>{t('EEditLanguagePreference')}</h2>
 
           <form onSubmit={handleUserSubmit} className={styles['edit-user']}>
             <Select
@@ -96,12 +94,12 @@ const LanguageEdit = ({ user, language, setLanguage, options }: Props) => {
               className={`language ${styles.language}`}
               instructions='Language'
               hide
-              options={options(ELanguages)}
+              options={options(ELanguagesLong)}
               value={
                 lang
                   ? ({
                       value: lang,
-                      label: getKeyByValue(ELanguages, lang),
+                      label: ELanguagesLong[lang],
                     } as SelectOption)
                   : undefined
               }
@@ -119,11 +117,11 @@ const LanguageEdit = ({ user, language, setLanguage, options }: Props) => {
                   value={passwordOld}
                   onChange={({ target }) => setPasswordOld(target.value.trim())}
                 />
-                <span>{ECurrentPassword[language]}</span>
+                <span>{t('ECurrentPassword')}</span>
               </label>
             </div>
             <button type='submit' disabled={sending}>
-              {EEdit[language]}
+              {t('EEdit')}
             </button>
           </form>
         </>

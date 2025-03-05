@@ -5,7 +5,7 @@ import Nav from './components/Nav/Nav'
 import Modal from './components/Modal/Modal'
 import Notification from './components/Notification/Notification'
 import MainWrapper from './components/MainWrapper/MainWrapper'
-import { RefObject, ELoading } from './types'
+import { RefObject } from './types'
 import { UIProvider } from './contexts/UIContext'
 import { LanguageContext } from './contexts/LanguageContext'
 
@@ -13,7 +13,7 @@ const Footer = lazy(() => import('./components/Footer/Footer'))
 const ScrollToTop = lazy(() => import('./components/ScrollToTop/ScrollToTop'))
 
 const App: FC = () => {
-  const { language, setLanguage } = useContext(LanguageContext)!
+  const { language, setLanguage, t } = useContext(LanguageContext)!
 
   const [styleMenu, setStyleMenu] = useState<boolean>()
   const menuStyleRef = useRef() as RefObject<{ getStyle: () => boolean }>
@@ -29,18 +29,14 @@ const App: FC = () => {
       <MainWrapper language={language} setLanguage={setLanguage} />
       <Suspense
         fallback={
-          <div className='flex center margin0auto textcenter'>
-            {ELoading[language]}...
-          </div>
+          <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
         }
       >
         <Footer language={language} styleMenu={styleMenu} />
       </Suspense>
       <Suspense
         fallback={
-          <div className='flex center margin0auto textcenter'>
-            {ELoading[language]}...
-          </div>
+          <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
         }
       >
         <ScrollToTop language={language} styleMenu={styleMenu} />

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import useLocalStorage from '../../../hooks/useStorage'
 import { ELanguages, IUser } from '../../../types'
 import highScoresService from '../services/highScores'
@@ -9,13 +9,7 @@ import {
   IHighScoreResponse,
   GameMode,
 } from '../../../types/memory'
-import {
-  EErrorDeletingHighScore,
-  EErrorRetrievingHighScores,
-  EErrorUpdatingHighScore,
-  EHighScoreDeletedSuccessfully,
-  EHighScoreUpdatedSuccessfully,
-} from '../../../types/memory'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 const storedLanguage = localStorage.getItem('AppLanguage')
 const language = storedLanguage
@@ -23,6 +17,8 @@ const language = storedLanguage
   : ('en' as ELanguages)
 
 const useHighScores = () => {
+  const { t } = useContext(LanguageContext)!
+
   const [highScores, setHighScores] = useState<HighScores>({})
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
@@ -55,8 +51,8 @@ const useHighScores = () => {
 
         setHighScores(formattedHighScores)
       } catch (err) {
-        console.error(EErrorRetrievingHighScores[language], err)
-        setError(EErrorRetrievingHighScores[language])
+        console.error(t('EErrorRetrievingHighScores'), err)
+        setError(t('EErrorRetrievingHighScores'))
       } finally {
         setLoading(false)
       }
@@ -135,8 +131,8 @@ const useHighScores = () => {
 
       return fetchedScores.slice(0, 5)
     } catch (err) {
-      console.error(EErrorRetrievingHighScores[language], err)
-      setError(EErrorRetrievingHighScores[language])
+      console.error(t('EErrorRetrievingHighScores'), err)
+      setError(t('EErrorRetrievingHighScores'))
       return []
     }
   }
@@ -160,13 +156,13 @@ const useHighScores = () => {
           })
           return updatedHighScores
         })
-        // console.log(EHighScoreDeletedSuccessfully[language])
+        // console.log(t('EHighScoreDeletedSuccessfully'))
       } else {
-        console.error(EErrorDeletingHighScore[language], response.message)
+        console.error(t('EErrorDeletingHighScore'), response.message)
       }
     } catch (err) {
-      console.error(EErrorDeletingHighScore[language], err)
-      setError(EErrorDeletingHighScore[language])
+      console.error(t('EErrorDeletingHighScore'), err)
+      setError(t('EErrorDeletingHighScore'))
     }
   }
 
@@ -210,13 +206,13 @@ const useHighScores = () => {
           }
           return prevHighScores
         })
-        console.log(EHighScoreUpdatedSuccessfully[language as ELanguages])
+        console.log(t('EHighScoreUpdatedSuccessfully'))
       } else {
-        console.error(EErrorUpdatingHighScore[language], response.message)
+        console.error(t('EErrorUpdatingHighScore'), response.message)
       }
     } catch (err) {
-      console.error(EErrorUpdatingHighScore[language], err)
-      setError(EErrorUpdatingHighScore[language])
+      console.error(t('EErrorUpdatingHighScore'), err)
+      setError(t('EErrorUpdatingHighScore'))
     }
   }
 
@@ -240,13 +236,13 @@ const useHighScores = () => {
           })
           return updatedHighScores
         })
-        // console.log(EHighScoreDeletedSuccessfully[language], playerName)
+        // console.log(t('EHighScoreDeletedSuccessfully'), playerName)
       } else {
-        console.error(EErrorDeletingHighScore[language], response.message)
+        console.error(t('EErrorDeletingHighScore'), response.message)
       }
     } catch (err) {
-      console.error(EErrorDeletingHighScore[language], err)
-      setError(EErrorDeletingHighScore[language])
+      console.error(t('EErrorDeletingHighScore'), err)
+      setError(t('EErrorDeletingHighScore'))
     }
   }
 

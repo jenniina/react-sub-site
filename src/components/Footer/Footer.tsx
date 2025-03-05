@@ -1,12 +1,15 @@
-import { useState, useEffect, FC } from 'react'
+import { useState, useEffect, FC, useContext } from 'react'
 import { BiChevronsUp } from 'react-icons/bi'
-import { EDisclaimer, EExitToMainSite, ELanguages, EScrollToTheTop } from '../../types'
+import { ELanguages } from '../../types'
 import { Link } from 'react-router-dom'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 const Footer: FC<{ styleMenu: boolean | undefined; language: ELanguages }> = ({
   styleMenu,
   language,
 }) => {
+  const { t } = useContext(LanguageContext)!
+
   const toTop = () => {
     window.scrollTo({
       top: 0,
@@ -31,17 +34,17 @@ const Footer: FC<{ styleMenu: boolean | undefined; language: ELanguages }> = ({
   return (
     <footer id='main-footer' className={`main-footer ${styleMenu ? 'alt' : ''}`}>
       <a className='footer1' href='https://jenniina.fi/'>
-        <span>{EExitToMainSite[language]}</span>&nbsp;
+        <span>{t('EExitToMainSite')}</span>&nbsp;
         <span aria-hidden='true'>&times;</span>
       </a>
 
       <Link to='/disclaimer' className='footer1'>
-        {EDisclaimer[language]}
+        {t('EDisclaimer')}
       </Link>
 
       {showTopBtn ? (
         <button className='footer2' style={{ display: 'inline-block' }} onClick={toTop}>
-          {EScrollToTheTop[language]}
+          {t('EScrollToTheTop')}
           <BiChevronsUp style={{ display: 'inline-block', marginBottom: '-0.15em' }} />
         </button>
       ) : (

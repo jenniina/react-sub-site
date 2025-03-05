@@ -12,12 +12,12 @@ import {
   useCallback,
   lazy,
   Suspense,
+  useContext,
 } from 'react'
 import { Draggable, focusedBlob, ColorPair, Modes } from '../types'
-import { ELanguages, ELoading } from '../../../types'
-//import DragLayer from './DragLayer'
-import { EThankYouForPlaying } from '../../../types/blobs'
+import { ELanguages } from '../../../types'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 const DragLayer = lazy(() => import('./DragLayer'))
 
@@ -111,6 +111,8 @@ const DragLayers = ({
   addRandomDraggable,
   changeColor,
 }: DragLayerProps) => {
+  const { t } = useContext(LanguageContext)!
+
   const sortedDraggables = [...items].sort((a, b) => a.layer - b.layer)
 
   const groupedDraggables = sortedDraggables.reduce((acc, draggable) => {
@@ -587,7 +589,7 @@ const DragLayers = ({
         ;(target as HTMLElement).blur()
         dragWrap.current?.blur()
         //Go to exit notice in order to remove focus from the app
-        if (exitApp.current) exitApp.current.textContent = EThankYouForPlaying[language]
+        if (exitApp.current) exitApp.current.textContent = t('EThankYouForPlaying')
         exitApp.current?.focus()
         break
       case 'Enter': //Cycle through colors
@@ -768,7 +770,7 @@ const DragLayers = ({
   // function removeBlob(draggable: Draggable) {
   //   setDeleteId(draggable.id)
   //   if (selectedvalue0.current)
-  //     selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
+  //     selectedvalue0.current.textContent = `${t('ESelectedBlobNone')}`
   // }
 
   // useEffect(() => {
@@ -784,9 +786,7 @@ const DragLayers = ({
         <Suspense
           key={index}
           fallback={
-            <div className='flex center margin0auto textcenter'>
-              {ELoading[language]}...
-            </div>
+            <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
           }
         >
           <DragLayer

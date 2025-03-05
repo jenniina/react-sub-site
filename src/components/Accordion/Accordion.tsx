@@ -8,9 +8,11 @@ import {
   ReactPortal,
   useEffect,
   ReactNode,
+  useContext,
 } from 'react'
-import { EClose, ELanguages } from '../../types'
+import { ELanguages } from '../../types'
 import { FaAnglesUp } from 'react-icons/fa6'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 interface accordionProps {
   text: string | ReactNode
@@ -39,6 +41,8 @@ interface accordionProps {
 }
 
 const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefined) => {
+  const { t } = useContext(LanguageContext)!
+
   const [visible, setVisible] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
 
@@ -147,7 +151,7 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
           onClick={toggleVisibility}
         >
           <FaAnglesUp />
-          {EClose[props.language]}
+          {t('EClose')}
         </button>
 
         {props.children}
@@ -159,7 +163,7 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
             onClick={scrollToOpenBtn}
           >
             <FaAnglesUp />
-            {EClose[props.language]}
+            {t('EClose')}
           </button>
         )}
       </div>

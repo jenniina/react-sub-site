@@ -1,6 +1,6 @@
-import { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { ELanguages } from '../types'
-import { EReactApps } from '../types/about'
+import { LanguageContext } from '../contexts/LanguageContext'
 
 interface UseDocTitleAndLangProps {
   language: ELanguages
@@ -11,6 +11,8 @@ export function useDocumentTitleAndLanguage({
   language,
   appName,
 }: UseDocTitleAndLangProps) {
+  const { t } = useContext(LanguageContext)!
+
   useEffect(() => {
     // Set document language attribute
     document.documentElement.lang = language
@@ -18,6 +20,6 @@ export function useDocumentTitleAndLanguage({
     // Update document title based on language and optional app name
     const h1Element = document.querySelector('h1')
     const h1Text = h1Element ? h1Element.textContent : ''
-    document.title = `${appName ? appName : EReactApps[language]} (Jenniina.fi) ${h1Text}`
+    document.title = `${appName ? appName : t('EReactApps')} (Jenniina.fi) ${h1Text}`
   }, [language, appName])
 }

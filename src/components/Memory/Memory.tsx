@@ -8,6 +8,7 @@ import {
   Fragment,
   lazy,
   Suspense,
+  useContext,
 } from 'react'
 import {
   FaAppleAlt,
@@ -56,52 +57,8 @@ import {
   FaUser,
   FaTimes,
 } from 'react-icons/fa'
-import {
-  EDelete,
-  EEdit,
-  ELanguages,
-  ELoading,
-  EName,
-  ENewName,
-  EPleaseUseGoodTasteWhenChoosingYourNickname,
-  EProfanityWillBeRemovedByTheAdmin,
-  ESettings,
-  ESpecialCharactersNotAllowed,
-  ETryWithADifferentBrowser,
-  IUser,
-  ReducerProps,
-} from '../../types'
-import {
-  EAdvanced,
-  EBeginner,
-  ECardType,
-  EDone,
-  EExpert,
-  EGridSize,
-  EIcons,
-  ELetters,
-  ENumbers,
-  EPlayer,
-  EPlayers,
-  EScores,
-  ESeconds,
-  EStartGame,
-  ETime,
-  ETimeTaken,
-  EUsual,
-  CardTypeOptions,
-  EPlayAgain,
-  EYouMadeItToTheHighScores,
-  EDeleteHighScore,
-  EDeletePlayersHighScores,
-  GameMode,
-  EGameMode,
-  ESolo,
-  EDuet,
-  EHighScores,
-  EFastestTime,
-} from '../../types/memory'
-import { EGoodJob, EScore } from '../../types/quiz'
+import { ELanguages, ReducerProps, IUser } from '../../types'
+import { CardTypeOptions, GameMode, EGameMode } from '../../types/memory'
 import { Md123, MdAbc, MdInsertEmoticon } from 'react-icons/md'
 import { HiMiniSparkles } from 'react-icons/hi2'
 import {
@@ -117,15 +74,10 @@ import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import useLocalStorage from '../../hooks/useStorage'
 import { useTheme } from '../../hooks/useTheme'
-//import CardTypeButton from './components/CardTypeButton'
-//import GridSizeButton from './components/GridSizeButton'
-//import PlayerAmountButton from './components/PlayerAmountButton'
-//import GameGrid from './components/GameGrid'
 import useTimer from '../../hooks/useTimer'
 import useHighScores from './hooks/useHighScores'
 import { IHighScore } from '../../types/memory'
 import { useModal } from '../../hooks/useModal'
-// import highScoresService from './services/highScores'
 import TimerDisplay from './components/TimerDisplay'
 import { useSelector } from 'react-redux'
 import { initializeUser } from '../../reducers/authReducer'
@@ -133,6 +85,7 @@ import { scrollIntoView } from '../../utils'
 import Accordion from '../Accordion/Accordion'
 import { AiFillEdit } from 'react-icons/ai'
 import useWindowSize from '../../hooks/useWindowSize'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 const CardTypeButton = lazy(() => import('./components/CardTypeButton'))
 const GridSizeButton = lazy(() => import('./components/GridSizeButton'))
@@ -208,6 +161,8 @@ interface Props {
 const modesOrder: Array<'solo' | 'duet'> = ['solo', 'duet']
 
 const Memory: FC<Props> = ({ language }) => {
+  const { t } = useContext(LanguageContext)!
+
   const dispatch = useAppDispatch()
   const user = useSelector((state: ReducerProps) => state.auth?.user) as IUser
   const { show } = useModal()
@@ -218,25 +173,25 @@ const Memory: FC<Props> = ({ language }) => {
   }, [])
 
   const optionsType: CardTypeOptions[] = [
-    { value: CardType.icons, label: EIcons[language] },
-    { value: CardType.numbers, label: ENumbers[language] },
-    { value: CardType.letters, label: ELetters[language] },
+    { value: CardType.icons, label: t('EIcons') },
+    { value: CardType.numbers, label: t('ENumbers') },
+    { value: CardType.letters, label: t('ELetters') },
   ]
   const [cardType, setCardType] = useLocalStorage<CardTypeOptions>(
     'memoryCardType',
     optionsType[0]
   )
   const optionsSize = [
-    { value: 4, icon: '4\u200A\u00D7\u200A4', label: `${EBeginner[language]}` },
-    { value: 6, icon: '6\u200A\u00D7\u200A6', label: `${EUsual[language]}` },
-    { value: 8, icon: '8\u200A\u00D7\u200A8', label: `${EAdvanced[language]}` },
-    { value: 10, icon: '10\u200A\u00D7\u200A10', label: `${EExpert[language]}` },
+    { value: 4, icon: '4\u200A\u00D7\u200A4', label: `${t('EBeginner')}` },
+    { value: 6, icon: '6\u200A\u00D7\u200A6', label: `${t('EUsual')}` },
+    { value: 8, icon: '8\u200A\u00D7\u200A8', label: `${t('EAdvanced')}` },
+    { value: 10, icon: '10\u200A\u00D7\u200A10', label: `${t('EExpert')}` },
   ]
 
   const [gridSize, setGridSize] = useLocalStorage('memoryGrid', optionsSize[1])
   const playerOptions = [1, 2]
   const [players, setPlayers] = useLocalStorage<Player[]>('memoryPlayers', [
-    { id: 1, name: `${EPlayer[language]} 1`, score: 0 },
+    { id: 1, name: `${t('EPlayer')} 1`, score: 0 },
   ])
   const [name, setName] = useState('')
   const [currentPlayer, setCurrentPlayer] = useState<number>(0)
@@ -345,34 +300,34 @@ const Memory: FC<Props> = ({ language }) => {
         const levelKey = rest.join('_')
 
         show({
-          title: EYouMadeItToTheHighScores[language],
+          title: t('EYouMadeItToTheHighScores'),
           className: '',
           children: (
             <div
               id='high-scores'
               className={`${styles.modal} ${lightTheme ? styles.light : ''}`}
             >
-              <h3>{EYouMadeItToTheHighScores[language]}</h3>
+              <h3>{t('EYouMadeItToTheHighScores')}</h3>
               <div className={`${styles['high-scores']}`}>
                 {(() => {
                   const mode = players.length === 1 ? EGameMode.solo : EGameMode.duet
                   let modePart = ''
                   if (mode === EGameMode.solo) {
-                    modePart = ESolo[language]
+                    modePart = t('ESolo')
                   } else if (mode === EGameMode.duet) {
-                    modePart = EDuet[language]
+                    modePart = t('EDuet')
                   }
                   return (
                     <>
                       <h4 key={mode}>{modePart}</h4>
                       {loading && (
                         <p className='flex center margin0auto textcenter'>
-                          {ELoading[language]}...
+                          {t('ELoading')}...
                         </p>
                       )}
                       {error && (
                         <p>
-                          {error} &mdash; {ETryWithADifferentBrowser[language]}
+                          {error} &mdash; {t('ETryWithADifferentBrowser')}
                         </p>
                       )}
                       {Object.keys(highScores[mode] || {})
@@ -418,7 +373,7 @@ const Memory: FC<Props> = ({ language }) => {
         })
       }, 0)
     } else if (!showModal) {
-      notify(EGoodJob[language], false, 5)
+      notify(t('EGoodJob'), false, 5)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [highScores, showModal, latestHighScoreId, loading, error])
@@ -490,7 +445,7 @@ const Memory: FC<Props> = ({ language }) => {
     const hasInvalidChars = allowedCharsRegex.test(name)
 
     if (hasInvalidChars) {
-      dispatch(notify(ESpecialCharactersNotAllowed[language], true, 5))
+      dispatch(notify(t('ESpecialCharactersNotAllowed'), true, 5))
       return
     }
 
@@ -499,7 +454,7 @@ const Memory: FC<Props> = ({ language }) => {
     setPlayers((prev) =>
       prev.map((player, idx) =>
         idx === index
-          ? { ...player, name: sanitizedName || `${EPlayer[language]} ${idx + 1}` }
+          ? { ...player, name: sanitizedName || `${t('EPlayer')} ${idx + 1}` }
           : player
       )
     )
@@ -511,7 +466,7 @@ const Memory: FC<Props> = ({ language }) => {
         const existingPlayer = prev[i]
         return existingPlayer
           ? { ...existingPlayer, id: i + 1 }
-          : { id: i + 1, name: `${EPlayer[language]} ${i + 1}`, score: 0 }
+          : { id: i + 1, name: `${t('EPlayer')} ${i + 1}`, score: 0 }
       })
       return newPlayers
     })
@@ -540,21 +495,21 @@ const Memory: FC<Props> = ({ language }) => {
           <Md123 aria-hidden='true' />
         </span>
       )
-      partName = ENumbers[language]
+      partName = t('ENumbers')
     } else if (parts[1] === CardType.letters) {
       partIcon = (
         <span className={styles['title-svg']}>
           <MdAbc aria-hidden='true' />
         </span>
       )
-      partName = ELetters[language]
+      partName = t('ELetters')
     } else if (parts[1] === CardType.icons) {
       partIcon = (
         <span className={styles['title-icon']}>
           <MdInsertEmoticon aria-hidden='true' />
         </span>
       )
-      partName = EIcons[language]
+      partName = t('EIcons')
     }
 
     return (
@@ -582,19 +537,19 @@ const Memory: FC<Props> = ({ language }) => {
         <section className={`card ${styles.sectioncard}`}>
           <div>
             <div className={styles['game-over']}>
-              <h2>{EDone[language]}</h2>
+              <h2>{t('EDone')}</h2>
               <p>
-                {ETimeTaken[language]}: <TimerDisplay timer={timer} />
+                {t('ETimeTaken')}: <TimerDisplay timer={timer} />
               </p>
               <div>
-                <h3>{EScores[language]}:</h3>
+                <h3>{t('EScores')}:</h3>
                 {players.map((player) => (
                   <p key={player.id}>
                     {player.name}: {player.score}
                   </p>
                 ))}
               </div>
-              <button onClick={initializeCards}>{EPlayAgain[language]}</button>
+              <button onClick={initializeCards}>{t('EPlayAgain')}</button>
             </div>
           </div>
         </section>
@@ -604,17 +559,17 @@ const Memory: FC<Props> = ({ language }) => {
         <section className={`card ${styles.sectioncard}`}>
           <div>
             <div id='settings' className={styles.settings}>
-              <h2 className='scr'>{ESettings[language]}</h2>
+              <h2 className='scr'>{t('ESettings')}</h2>
               <div>
                 <div>
-                  <h3>{ECardType[language]}</h3>
+                  <h3>{t('ECardType')}</h3>
                   <div className={styles['set-card-type']}>
                     {optionsType.map((option, index) => (
                       <Suspense
                         key={index}
                         fallback={
                           <div className='flex center margin0auto textcenter'>
-                            {ELoading[language]}...
+                            {t('ELoading')}...
                           </div>
                         }
                       >
@@ -629,14 +584,14 @@ const Memory: FC<Props> = ({ language }) => {
                   </div>
                 </div>
                 <div>
-                  <h3>{EGridSize[language]}</h3>
+                  <h3>{t('EGridSize')}</h3>
                   <div className={styles['set-grid']}>
                     {optionsSize.map((option, index) => (
                       <Suspense
                         key={index}
                         fallback={
                           <div className='flex center margin0auto textcenter'>
-                            {ELoading[language]}...
+                            {t('ELoading')}...
                           </div>
                         }
                       >
@@ -651,7 +606,7 @@ const Memory: FC<Props> = ({ language }) => {
                   </div>
                 </div>
                 <div className={styles['player-names-wrap']}>
-                  <h3>{EPlayers[language]}</h3>
+                  <h3>{t('EPlayers')}</h3>
                   <div className={styles['set-players']}>
                     {
                       <>
@@ -660,7 +615,7 @@ const Memory: FC<Props> = ({ language }) => {
                             key={index}
                             fallback={
                               <div className='flex center margin0auto textcenter'>
-                                {ELoading[language]}...
+                                {t('ELoading')}...
                               </div>
                             }
                           >
@@ -678,8 +633,8 @@ const Memory: FC<Props> = ({ language }) => {
                   </div>
                   <div className={styles['player-names']}>
                     <small>
-                      {EPleaseUseGoodTasteWhenChoosingYourNickname[language]}.{' '}
-                      {EProfanityWillBeRemovedByTheAdmin[language]}
+                      {t('EPleaseUseGoodTasteWhenChoosingYourNickname')}.{' '}
+                      {t('EProfanityWillBeRemovedByTheAdmin')}
                     </small>
                     {players.map((player, index) => (
                       <div key={player.id} className='input-wrap'>
@@ -692,11 +647,11 @@ const Memory: FC<Props> = ({ language }) => {
                               handlePlayerNameChange(index, e.target.value)
                             }
                             maxLength={maxLength}
-                            placeholder={`${EPlayer[language]} ${index + 1}`}
+                            placeholder={`${t('EPlayer')} ${index + 1}`}
                           />
-                          <span>{`${EPlayer[language]} ${index + 1} ${EName[
-                            language
-                          ].toLowerCase()}:`}</span>
+                          <span>{`${t('EPlayer')} ${index + 1} ${t(
+                            'EName'
+                          ).toLowerCase()}:`}</span>
                         </label>
                         <small>
                           {player.name.length}/{maxLength}
@@ -707,7 +662,7 @@ const Memory: FC<Props> = ({ language }) => {
                 </div>
               </div>
               <button className={styles['big']} onClick={initializeCards}>
-                {EStartGame[language]}
+                {t('EStartGame')}
               </button>
             </div>
           </div>
@@ -725,7 +680,7 @@ const Memory: FC<Props> = ({ language }) => {
                     style={{ transform: 'scale(0.8, 0.8)' }}
                   />
                 )}
-                {EHighScores[language]}{' '}
+                {t('EHighScores')}{' '}
                 {windowWidth > 400 && (
                   <HiMiniSparkles
                     aria-hidden='true'
@@ -735,16 +690,16 @@ const Memory: FC<Props> = ({ language }) => {
               </h2>
               <p className='textcenter margin0auto'>
                 {windowWidth > 200 && <span aria-hidden='true'>&mdash; </span>}
-                {EFastestTime[language]}
+                {t('EFastestTime')}
                 {windowWidth > 200 && <span aria-hidden='true'> &mdash;</span>}
               </p>
               <div className={styles['high-scores']}>
                 {modesOrder.map((mode) => {
                   let modePart = ''
                   if (mode === EGameMode.solo) {
-                    modePart = ESolo[language]
+                    modePart = t('ESolo')
                   } else if (mode === EGameMode.duet) {
-                    modePart = EDuet[language]
+                    modePart = t('EDuet')
                   }
                   return (
                     <Fragment key={mode}>
@@ -765,12 +720,12 @@ const Memory: FC<Props> = ({ language }) => {
                       </h3>
                       {loading && (
                         <p className='flex center margin0auto textcenter'>
-                          {ELoading[language]}...
+                          {t('ELoading')}...
                         </p>
                       )}
                       {error && (
                         <p>
-                          {error} &mdash; {ETryWithADifferentBrowser[language]}
+                          {error} &mdash; {t('ETryWithADifferentBrowser')}
                         </p>
                       )}
                       {Object.keys(highScores[mode] || {})
@@ -811,7 +766,7 @@ const Memory: FC<Props> = ({ language }) => {
                                                 isOpen={false}
                                                 closeClass={styles['close']}
                                                 setIsFormOpen={() => {}}
-                                                tooltip={EEdit[language]}
+                                                tooltip={t('EEdit')}
                                                 y='above'
                                               >
                                                 <form
@@ -837,8 +792,7 @@ const Memory: FC<Props> = ({ language }) => {
                                                         required
                                                       />
                                                       <span>
-                                                        {ENewName[language]} (
-                                                        {player.name}):
+                                                        {t('ENewName')} ({player.name}):
                                                       </span>
                                                     </label>
                                                   </div>
@@ -860,9 +814,7 @@ const Memory: FC<Props> = ({ language }) => {
                                               onClick={() => {
                                                 if (
                                                   entry._id &&
-                                                  window.confirm(
-                                                    EDeleteHighScore[language]
-                                                  )
+                                                  window.confirm(t('EDeleteHighScore'))
                                                 ) {
                                                   deleteHighScore(entry._id).catch(
                                                     (error) => {
@@ -888,7 +840,7 @@ const Memory: FC<Props> = ({ language }) => {
                                                 <FaTimes aria-hidden='true' />
                                               </span>
                                               <span className='tooltip above narrow2'>
-                                                {EDelete[language]}
+                                                {t('EDelete')}
                                               </span>
                                             </button>
                                           </>
@@ -910,7 +862,7 @@ const Memory: FC<Props> = ({ language }) => {
                   className={`${styles['delete-name-form']}`}
                   onSubmit={(event) => {
                     event.preventDefault()
-                    if (window.confirm(EDeletePlayersHighScores[language]))
+                    if (window.confirm(t('EDeletePlayersHighScores')))
                       deleteHighScoresByPlayerName(name, user?._id)
                         .then(() => {
                           setName('')
@@ -933,12 +885,12 @@ const Memory: FC<Props> = ({ language }) => {
                         onChange={(e) => setName(e.target.value)}
                       />
                       <span>
-                        {EName[language]} ({EPlayer[language]}):
+                        {t('EName')} ({t('EPlayer')}):
                       </span>
                     </label>
                   </div>
                   <button type='submit' className='danger'>
-                    {EDelete[language]}
+                    {t('EDelete')}
                   </button>
                 </form>
               )}
@@ -953,17 +905,17 @@ const Memory: FC<Props> = ({ language }) => {
             <div id='game'>
               <div className={styles.header}>
                 <div>
-                  {ETime[language]}: <TimerDisplay timer={timer} />
+                  {t('ETime')}: <TimerDisplay timer={timer} />
                 </div>
                 <div>
-                  {EPlayer[language]}: {players[currentPlayer].name} | {EScore[language]}:{' '}
+                  {t('EPlayer')}: {players[currentPlayer].name} | {t('EScore')}:{' '}
                   {players[currentPlayer].score}
                 </div>
               </div>
               <Suspense
                 fallback={
                   <div className='flex center margin0auto textcenter'>
-                    {ELoading[language]}...
+                    {t('ELoading')}...
                   </div>
                 }
               >

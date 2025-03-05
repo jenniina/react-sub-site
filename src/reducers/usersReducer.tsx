@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import userService from '../services/users'
-import { EPleaseGiveValidEmail, IUser, ELanguages, IBlacklistedJoke } from '../types'
+import { IUser, ELanguages, IBlacklistedJoke, translations as t } from '../types'
 import AppThunk from '../store'
 import { AxiosResponse } from 'axios'
 import { IJoke } from '../components/Jokes/types'
@@ -173,9 +173,7 @@ export const forgot = (username: string | undefined, language: string | ELanguag
     } else {
       return {
         success: false,
-        message: `${
-          EPleaseGiveValidEmail[(language as keyof typeof EPleaseGiveValidEmail) || 'en']
-        }`,
+        message: `${t['EPleaseGiveValidEmail'][(language as ELanguages) || 'en']}`,
       }
     }
   }

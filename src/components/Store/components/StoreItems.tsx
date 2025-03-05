@@ -1,24 +1,17 @@
-import { FC, ReactNode, Dispatch, SetStateAction } from 'react'
+import { FC, ReactNode, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import styles from '../store.module.css'
 import { FaWordpress, FaReact, FaNodeJs } from 'react-icons/fa'
 import { ImImages } from 'react-icons/im'
 import { BsCart2 } from 'react-icons/bs'
-import { ELanguages, ERemove, ESavingSuccessful } from '../../../types'
+import { ELanguages } from '../../../types'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
-import {
-  EAddedToCart,
-  EAddToCart,
-  ECart,
-  EContainsVAT,
-  EGoToCart,
-  EPrice,
-  ICartItem,
-} from '../../../types/store'
+import { ICartItem } from '../../../types/store'
 import { notify } from '../../../reducers/notificationReducer'
 import { useTheme } from '../../../hooks/useTheme'
 import AdditionalInfo from './AdditionalInfo'
 import { splitToLines } from '../../../utils'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
@@ -43,6 +36,8 @@ const StoreItems: FC<Props> = ({
   intro,
   link,
 }) => {
+  const { t } = useContext(LanguageContext)!
+
   const dispatch = useAppDispatch()
   const lightTheme = useTheme()
 
@@ -106,7 +101,7 @@ const StoreItems: FC<Props> = ({
                 key={item.id}
                 id={item.id}
                 className={`${styles['store-item']} ${
-                  language !== ELanguages.English && language !== ELanguages.Suomi
+                  language !== ELanguages.en && language !== ELanguages.fi
                     ? styles.foreign
                     : ''
                 }`}
@@ -115,10 +110,8 @@ const StoreItems: FC<Props> = ({
                 <p className={styles.grow}>{splitToLines(item.description)}</p>
 
                 <p>
-                  {EPrice[language]}: {item.price} €{' '}
-                  {item.id === 'misc-quote' ? null : (
-                    <small>({EContainsVAT[language]})</small>
-                  )}
+                  {t('EPrice')}: {item.price} €{' '}
+                  {item.id === 'misc-quote' ? null : <small>({t('EContainsVAT')})</small>}
                 </p>
 
                 {(() => {
@@ -126,19 +119,19 @@ const StoreItems: FC<Props> = ({
                   return cartItem && cartItem.quantity > 0 ? (
                     <>
                       <p className={styles.added}>
-                        <span>{EAddedToCart[language]}</span>{' '}
+                        <span>{t('EAddedToCart')}</span>{' '}
                         <button
                           className={`${styles['remove-from-cart']} danger delete`}
                           onClick={() => {
                             if (
                               window.confirm(
-                                `${ERemove[language]} ${item.name} ${ECart[language]}?`
+                                `${t('ERemove')} ${item.name} ${t('ECart')}?`
                               )
                             )
                               removeFromCart(item.id)
                           }}
                         >
-                          {ERemove[language]}
+                          {t('ERemove')}
                         </button>
                       </p>
                     </>
@@ -155,15 +148,15 @@ const StoreItems: FC<Props> = ({
                             ...item,
                             quantity: existingItemInCart.quantity + 1,
                           })
-                          dispatch(notify(`${ESavingSuccessful[language]}`, false, 3))
+                          dispatch(notify(`${t('ESavingSuccessful')}`, false, 3))
                         } else {
                           addToCart({ ...item, quantity: 1 })
-                          dispatch(notify(`${ESavingSuccessful[language]}`, false, 3))
+                          dispatch(notify(`${t('ESavingSuccessful')}`, false, 3))
                         }
                       }}
                     >
                       <BsCart2 style={{ fontSize: '1.3em' }} />{' '}
-                      <span>{EAddToCart[language]}</span>
+                      <span>{t('EAddToCart')}</span>
                     </button>
                   )
                 })()}
@@ -174,7 +167,7 @@ const StoreItems: FC<Props> = ({
                     cartItem.quantity > 0 && (
                       <Link key={cartItem.id} to='/cart' className={styles['cart-link']}>
                         <BsCart2 style={{ fontSize: '1.3em' }} />{' '}
-                        <big>{EGoToCart[language]} &raquo;</big>
+                        <big>{t('EGoToCart')} &raquo;</big>
                       </Link>
                     )
                 )}

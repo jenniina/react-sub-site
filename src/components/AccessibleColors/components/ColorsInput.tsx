@@ -1,10 +1,10 @@
-import { FC, useEffect, useState } from 'react'
-import { EError, ELanguages, ESubmit } from '../../../types'
+import { FC, useContext, useEffect, useState } from 'react'
+import { ELanguages } from '../../../types'
 import styles from '../accessiblecolors.module.css'
 import { Select, SelectOption } from '../../Select/Select'
-import { ESelectColorFormat } from '../../../types/colors'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { notify } from '../../../reducers/notificationReducer'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
@@ -29,6 +29,8 @@ const ColorsInput: FC<Props> = ({
   rgbToHex,
   rgbToHSL,
 }) => {
+  const { t } = useContext(LanguageContext)!
+
   const dispatch = useAppDispatch()
 
   const hslRegex = /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i
@@ -159,7 +161,7 @@ const ColorsInput: FC<Props> = ({
       }
     } catch (error: any) {
       console.error(error.message)
-      dispatch(notify(EError[language] + ' ' + error.message, true, 4))
+      dispatch(notify(t('EError') + ' ' + error.message, true, 4))
     }
   }
 
@@ -220,7 +222,7 @@ const ColorsInput: FC<Props> = ({
         id='color-select'
         className={styles['color-select']}
         language={language}
-        instructions={ESelectColorFormat[language]}
+        instructions={t('ESelectColorFormat')}
         hide
         options={colorFormatOptions}
         value={selected}
@@ -271,7 +273,7 @@ const ColorsInput: FC<Props> = ({
             type='submit'
             className={`${styles['color-format-submit']} small gray`}
           >
-            {ESubmit[language]}
+            {t('ESubmit')}
           </button>
         </form>
       )}

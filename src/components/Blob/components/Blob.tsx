@@ -11,17 +11,12 @@ import {
   useContext,
 } from 'react'
 import { Draggable, focusedBlob, Modes } from '../types'
-import { EBlob, ELanguages } from '../../../types'
-import {
-  ECannotLowerBlobFurther,
-  ECannotRaiseBlobFurther,
-  ESelectedBlob,
-  ESelectedBlobNone,
-} from '../../../types/blobs'
+import { ELanguages } from '../../../types'
 import { clampValue } from '../../../utils'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { BlobContext, Props } from './BlobProvider'
 import { notify } from '../../../reducers/notificationReducer'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 interface BlobProps {
   d: number
@@ -98,6 +93,8 @@ const Blob = ({
   layerAmount,
   changeColor,
 }: BlobProps) => {
+  const { t } = useContext(LanguageContext)!
+
   const blur = d === 0 ? 33 : clampValue(22, item.i * 2.6, 50)
   const { dispatch } = useContext(BlobContext) as Props
   const dispatch2 = useAppDispatch()
@@ -140,7 +137,7 @@ const Blob = ({
         layer += 1
         changeBlobLayer(item, layer)
       } else {
-        dispatch2(notify(ECannotRaiseBlobFurther[language], true, 4))
+        dispatch2(notify(t('ECannotRaiseBlobFurther'), true, 4))
       }
     } else if (mode === 'layer-down') {
       let layer = item.layer
@@ -148,7 +145,7 @@ const Blob = ({
         layer -= 1
         changeBlobLayer(item, layer)
       } else {
-        dispatch2(notify(ECannotLowerBlobFurther[language], true, 4))
+        dispatch2(notify(t('ECannotLowerBlobFurther'), true, 4))
       }
     } else if (mode === 'scale-down') {
       let scale = item.i
@@ -213,7 +210,7 @@ const Blob = ({
           })
 
           if (selectedvalue0.current) {
-            selectedvalue0.current.textContent = `${ESelectedBlob[language]}: ${
+            selectedvalue0.current.textContent = `${t('ESelectedBlob')}: ${
               blob.querySelector('span')?.textContent
             }`
           }
@@ -227,7 +224,7 @@ const Blob = ({
           dragUlRef.current?.removeAttribute('aria-activedescendant')
 
         if (selectedvalue0.current)
-          selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
+          selectedvalue0.current.textContent = `${t('ESelectedBlobNone')}`
       }}
       key={index}
       className={`dragzone animation ${mode}`}
@@ -285,7 +282,7 @@ const Blob = ({
           const liElement = e.currentTarget.parentElement as HTMLElement
           liElement.draggable = true
           if (selectedvalue0.current)
-            selectedvalue0.current.textContent = `${ESelectedBlob[language]}: ${
+            selectedvalue0.current.textContent = `${t('ESelectedBlob')}: ${
               (liElement as HTMLElement)?.querySelector('span')?.textContent
             }`
           if (dragUlRef && dragUlRef.current)
@@ -304,7 +301,7 @@ const Blob = ({
             movement(e, liElement)
 
             if (selectedvalue0.current)
-              selectedvalue0.current.textContent = `${ESelectedBlob[language]}: ${
+              selectedvalue0.current.textContent = `${t('ESelectedBlob')}: ${
                 (liElement as HTMLElement)?.querySelector('span')?.textContent
               }`
           }
@@ -317,7 +314,7 @@ const Blob = ({
             dragUlRef.current?.removeAttribute('aria-activedescendant')
           stopMoving(e, liElement)
           if (selectedvalue0.current)
-            selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
+            selectedvalue0.current.textContent = `${t('ESelectedBlobNone')}`
         }}
         onMouseUp={(e) => {
           const liElement = e.currentTarget.parentElement as HTMLElement
@@ -326,7 +323,7 @@ const Blob = ({
           if (dragUlRef && dragUlRef.current)
             dragUlRef.current?.removeAttribute('aria-activedescendant')
           if (selectedvalue0.current)
-            selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
+            selectedvalue0.current.textContent = `${t('ESelectedBlobNone')}`
         }}
         onTouchStart={(e) => {
           e.preventDefault()
@@ -340,7 +337,7 @@ const Blob = ({
             )
           start(e, liElement)
           if (selectedvalue0.current)
-            selectedvalue0.current.textContent = `${ESelectedBlob[language]}: ${
+            selectedvalue0.current.textContent = `${t('ESelectedBlob')}: ${
               (liElement as HTMLElement)?.querySelector('span')?.textContent
             }`
         }}
@@ -358,7 +355,7 @@ const Blob = ({
             dragUlRef.current?.removeAttribute('aria-activedescendant')
           stopMovementCheck(e, liElement)
           if (selectedvalue0.current)
-            selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
+            selectedvalue0.current.textContent = `${t('ESelectedBlobNone')}`
         }}
         onWheel={(e) => {
           const liElement = e.currentTarget.parentElement as HTMLElement
@@ -366,7 +363,7 @@ const Blob = ({
         }}
       ></div>
       <span className='scr'>
-        {EBlob[language]} {item.number}
+        {t('EBlob')} {item.number}
       </span>
     </li>
   )

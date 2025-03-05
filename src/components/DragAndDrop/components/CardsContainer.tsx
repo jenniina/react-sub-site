@@ -1,20 +1,14 @@
-import { useRef, useState } from 'react'
+import { useContext, useRef, useState } from 'react'
 import { Data, Status } from '../types'
 import CardSingle from './CardSingle'
 import { sanitize } from '../../../utils'
 import styles from '../dragAndDrop.module.css'
-import {
-  EChange,
-  EDelete,
-  EEdit,
-  ELanguages,
-  ESpecialCharactersNotAllowed,
-} from '../../../types'
-import { EBad, EGood, ENeutral } from '../../../types/draganddrop'
+import { ELanguages } from '../../../types'
 import Accordion from '../../Accordion/Accordion'
 import { notify } from '../../../reducers/notificationReducer'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
@@ -47,6 +41,8 @@ const CardsContainer = ({
   deleteStatus,
   regex,
 }: Props) => {
+  const { t } = useContext(LanguageContext)!
+
   const dispatch = useAppDispatch()
 
   const [theTarget, setTheTarget] = useState<number>(0)
@@ -63,7 +59,7 @@ const CardsContainer = ({
       setNewStatus(value)
       setSending(false)
     } else {
-      dispatch(notify(ESpecialCharactersNotAllowed[language], true, 6))
+      dispatch(notify(t('ESpecialCharactersNotAllowed'), true, 6))
       setSending(false)
     }
   }
@@ -124,11 +120,11 @@ const CardsContainer = ({
     const statusLowerCase = status.toLowerCase()
     switch (statusLowerCase) {
       case 'good':
-        return EGood[language]
+        return t('EGood')
       case 'bad':
-        return EBad[language]
+        return t('EBad')
       case 'neutral':
-        return ENeutral[language]
+        return t('ENeutral')
       default:
         return status.replace(/_/g, ' ')
     }
@@ -160,7 +156,7 @@ const CardsContainer = ({
           onClick={() => setNewStatus(status)}
           className={`narrow2 ${styles['change-status']} change-status`}
           wrapperClass='change-status-wrap'
-          tooltip={EEdit[language]}
+          tooltip={t('EEdit')}
           x='left'
           y='below'
         >
@@ -182,11 +178,11 @@ const CardsContainer = ({
                     value={newStatus}
                     onChange={(e) => handleStatusNameChange(e)}
                   />
-                  <span>{EChange[language]}:</span>
+                  <span>{t('EChange')}:</span>
                 </label>
               </div>
               <button type='submit' disabled={sending}>
-                {EChange[language]}
+                {t('EChange')}
               </button>
               <button
                 type='button'
@@ -195,7 +191,7 @@ const CardsContainer = ({
                   deleteStatus(status)
                 }}
               >
-                {EDelete[language]}
+                {t('EDelete')}
               </button>
             </form>
           </>

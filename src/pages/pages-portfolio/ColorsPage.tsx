@@ -1,42 +1,7 @@
-import { lazy, Suspense } from 'react'
-//import AccessibleColors from '../../components/AccessibleColors/AccessibleColors'
+import { lazy, Suspense, useContext } from 'react'
 import Accordion from '../../components/Accordion/Accordion'
-import Hero from '../../components/Hero/Hero'
-import { EClickHereToSeeFeatures } from '../../components/Jokes/types'
-import {
-  EContains,
-  EDarkMode,
-  EDragAndDrop,
-  ELanguages,
-  ELightMode,
-  ELoading,
-  ERemove,
-  EReset,
-} from '../../types'
-import { EToggleControlVisibility } from '../../types/blobs'
-import {
-  EColorsCanBeReorderedByDragging,
-  EEditSize,
-  EHintOrganizingColors,
-  ETheRoundIndicatorHollowIndicatorAndSmallHollowSquare,
-  ESaveAsPNG,
-  ESaveAsSVG,
-  ESelectColorFormat,
-  ETestColorCombinations,
-  EToggleColorNameVisibility,
-  EWithOrWithoutColorName,
-  EGenerateColors,
-  ERandomColorGeneration,
-  ENeedAFreshSetOfColors,
-  EAnalogous,
-  EComplementary,
-  EMonochromatic,
-  ETriad,
-  ETetrad,
-  EColorModes,
-} from '../../types/colors'
-import { EColorPicker } from '../../types/form'
-import { EClear } from '../../types/select'
+import { ELanguages } from '../../types'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 const AccessibleColors = lazy(
   () => import('../../components/AccessibleColors/AccessibleColors')
@@ -53,59 +18,58 @@ const ColorsPage = ({
   type: string
   language: ELanguages
 }) => {
+  const { t } = useContext(LanguageContext)!
+
   return (
     <div className={`colors ${type}`}>
       <div className='inner-wrap'>
         <section>
           <Accordion
-            text={EClickHereToSeeFeatures[language]}
+            text={t('EClickHereToSeeFeatures')}
             className='gray'
             wrapperClass=''
             language={language}
           >
             <ul className='ul medium'>
-              <li>{ETestColorCombinations[language]}</li>
-              <li>{ETheRoundIndicatorHollowIndicatorAndSmallHollowSquare[language]}</li>
-              <li>{EColorsCanBeReorderedByDragging[language]}</li>
-              <li>{ERandomColorGeneration[language]}</li>
-              <li>{EHintOrganizingColors[language]}</li>
-              <li>{ENeedAFreshSetOfColors[language]}</li>
+              <li>{t('ETestColorCombinations')}</li>
+              <li>{t('ETheRoundIndicatorHollowIndicatorAndSmallHollowSquare')}</li>
+              <li>{t('EColorsCanBeReorderedByDragging')}</li>
+              <li>{t('ERandomColorGeneration')}</li>
+              <li>{t('EHintOrganizingColors')}</li>
+              <li>{t('ENeedAFreshSetOfColors')}</li>
               <li>
-                {EColorModes[language]}: {EAnalogous[language]} /{' '}
-                {EComplementary[language]} / {EMonochromatic[language]} /{' '}
-                {ETriad[language]} / {ETetrad[language]}
+                {t('EColorModes')}: {t('EAnalogous')} / {t('EComplementary')} /{' '}
+                {t('EMonochromatic')} / {t('ETriad')} / {t('ETetrad')}
               </li>
               <li>
-                {EContains[language]}
+                {t('EContains')}
                 <ul>
-                  <li>{EColorPicker[language]}</li>
-                  <li>{ESelectColorFormat[language]}</li>
-                  <li>{EDragAndDrop[language]}</li>
-                  <li>{EToggleColorNameVisibility[language]}</li>
-                  <li>{EToggleControlVisibility[language]}</li>
-                  <li>{EEditSize[language]}</li>
+                  <li>{t('EColorPicker')}</li>
+                  <li>{t('ESelectColorFormat')}</li>
+                  <li>{t('EDragAndDrop')}</li>
+                  <li>{t('EToggleColorNameVisibility')}</li>
+                  <li>{t('EToggleControlVisibility')}</li>
+                  <li>{t('EEditSize')}</li>
                   <li>
-                    {ESaveAsSVG[language]} ({EWithOrWithoutColorName[language]})
+                    {t('ESaveAsSVG')} ({t('EWithOrWithoutColorName')})
                   </li>
                   <li>
-                    {ESaveAsPNG[language]} ({EWithOrWithoutColorName[language]})
+                    {t('ESaveAsPNG')} ({t('EWithOrWithoutColorName')})
                   </li>
-                  <li>{ERemove[language]}</li>
-                  <li>{EReset[language]}</li>
-                  <li>{EClear[language]}</li>
+                  <li>{t('ERemove')}</li>
+                  <li>{t('EReset')}</li>
+                  <li>{t('EClear')}</li>
                   <li>
-                    {ELightMode[language]}/{EDarkMode[language]}
+                    {t('ELightMode')}/{t('EDarkMode')}
                   </li>
-                  <li>{EGenerateColors[language]}</li>
+                  <li>{t('EGenerateColors')}</li>
                 </ul>
               </li>
             </ul>
           </Accordion>
           <Suspense
             fallback={
-              <div className='flex center margin0auto textcenter'>
-                {ELoading[language]}...
-              </div>
+              <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
             }
           >
             <AccessibleColors language={language} />

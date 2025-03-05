@@ -1,7 +1,6 @@
-import { FC, useEffect, useState, MouseEvent as ReactMouseEvent } from 'react'
+import { FC, useEffect, useState, MouseEvent as ReactMouseEvent, useContext } from 'react'
 import styles from '../images.module.css'
-import { EError, ELanguages } from '../../../types'
-import { EClickToLoadImage } from '../../../types/images'
+import { ELanguages } from '../../../types'
 import { ImageHit } from '../services/images'
 import useTooltip from '../../../hooks/useTooltip'
 import { getQuote, QuoteItem } from '../../Quotes/services/quotes'
@@ -12,6 +11,7 @@ import { TTextType } from '../Images'
 import { PoemItem } from '../../Poems/services/poems'
 import { notify } from '../../../reducers/notificationReducer'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 interface ModalImageProps {
   image: ImageHit
@@ -28,6 +28,8 @@ const ImageModal: FC<ModalImageProps> = ({
   searchTerm,
   textType,
 }) => {
+  const { t } = useContext(LanguageContext)!
+
   const dispatch = useAppDispatch()
   const { tooltip, handleMouseMove, handleMouseLeave } = useTooltip()
 
@@ -70,14 +72,14 @@ const ImageModal: FC<ModalImageProps> = ({
       fetchPoem()
     } else if (textType === 'quote') {
       const fetchQuote = async () => {
-        if ((language = ELanguages.Suomi)) {
-          const response = await getQuote(ELanguages.English, searchTerm)
+        if ((language = ELanguages.fi)) {
+          const response = await getQuote(ELanguages.en, searchTerm)
           if (response.quote) setQuote(response.quote)
-          else dispatch(notify(response.message ?? EError[language], true, 8))
+          else dispatch(notify(response.message ?? t('EError'), true, 8))
         } else {
           const response = await getQuote(language, searchTerm)
           if (response.quote) setQuote(response.quote)
-          else dispatch(notify(response.message ?? EError[language], true, 8))
+          else dispatch(notify(response.message ?? t('EError'), true, 8))
         }
       }
       fetchQuote()
@@ -94,7 +96,7 @@ const ImageModal: FC<ModalImageProps> = ({
         const fetchQuote = async () => {
           const response = await getQuote(language, searchTerm)
           if (response.quote) setQuote(response.quote)
-          else dispatch(notify(response.message ?? EError[language], true, 8))
+          else dispatch(notify(response.message ?? t('EError'), true, 8))
         }
         fetchQuote()
       }
@@ -123,7 +125,7 @@ const ImageModal: FC<ModalImageProps> = ({
             className={`tooltip narrow`}
             style={{ top: tooltip.y, left: tooltip.x, right: 'unset' }}
           >
-            {EClickToLoadImage[language]}
+            {t('EClickToLoadImage')}
           </span>
         )}
       </div>

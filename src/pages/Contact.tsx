@@ -1,8 +1,6 @@
-import { lazy, Suspense } from 'react'
-import { useTheme } from '../hooks/useTheme'
-import Hero from '../components/Hero/Hero'
-// import FormMulti from '../components/FormMulti/FormMulti'
-import { ELanguages, ELoading } from '../types'
+import { lazy, Suspense, useContext } from 'react'
+import { ELanguages } from '../types'
+import { LanguageContext } from '../contexts/LanguageContext'
 
 const FormMulti = lazy(() => import('../components/FormMulti/FormMulti'))
 
@@ -17,7 +15,7 @@ export default function Contact({
   type: string
   language: ELanguages
 }) {
-  const lightTheme = useTheme()
+  const { t } = useContext(LanguageContext)!
 
   return (
     <div className={`contact ${type}`}>
@@ -27,7 +25,7 @@ export default function Contact({
             <Suspense
               fallback={
                 <div className='flex center margin0auto textcenter'>
-                  {ELoading[language]}...
+                  {t('ELoading')}...
                 </div>
               }
             >

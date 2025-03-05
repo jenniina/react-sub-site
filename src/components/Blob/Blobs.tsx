@@ -7,10 +7,11 @@ import {
   Suspense,
   useState,
   useEffect,
+  useContext,
 } from 'react'
-import { ELanguages, ELoading, RefObject } from '../../types'
-import { EScroll, EToBlobArt } from '../../types/blobs'
+import { ELanguages, RefObject } from '../../types'
 import { useSearchParams } from 'react-router-dom'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 const DragContainer = lazy(() => import('./components/DragContainer'))
 interface BlobsProps {
@@ -18,6 +19,8 @@ interface BlobsProps {
 }
 
 const Blobs: FC<BlobsProps> = ({ language }) => {
+  const { t } = useContext(LanguageContext)!
+
   const containers = Array.from({ length: 3 }, (_, i) => i) // add to length if in need of more blob containers
 
   const containerRefs = useRef<Record<number, RefObject<HTMLDivElement>>>(
@@ -67,7 +70,7 @@ const Blobs: FC<BlobsProps> = ({ language }) => {
                   }
                 }}
               >
-                {EScroll[language]} {EToBlobArt[language]} {i + 1}
+                {t('EScroll')} {t('EToBlobArt')} {i + 1}
               </button>
             )
         })}
@@ -82,9 +85,7 @@ const Blobs: FC<BlobsProps> = ({ language }) => {
           {buttons(i)}
           <Suspense
             fallback={
-              <div className='flex center margin0auto textcenter'>
-                {ELoading[language]}...
-              </div>
+              <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
             }
           >
             <DragContainer

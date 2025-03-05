@@ -1,7 +1,7 @@
-import { FC, Fragment, ReactNode, useRef, useState } from 'react'
-import { getPoem, PoemItem } from './services/poems'
-import { ECopiedToClipboard, ECopyToClipboard, ELanguages } from '../../types'
-import { ECategoryTitle } from '../Jokes/types'
+import { FC, Fragment, ReactNode, useContext, useRef, useState } from 'react'
+import { PoemItem } from './services/poems'
+import { ELanguages } from '../../types'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 interface PoemProps {
   poem: PoemItem
@@ -9,6 +9,8 @@ interface PoemProps {
 }
 
 const Poem: FC<PoemProps> = ({ poem, language }) => {
+  const { t } = useContext(LanguageContext)!
+
   const [copied, setCopied] = useState(false)
   const ref = useRef<HTMLParagraphElement>(null)
 
@@ -68,7 +70,7 @@ const Poem: FC<PoemProps> = ({ poem, language }) => {
           style={{ maxWidth: 'max-content', marginLeft: '1em' }}
           onClick={copyToClipboard}
         >
-          {copied ? ECopiedToClipboard[language] : ECopyToClipboard[language]}
+          {copied ? t('ECopiedToClipboard') : t('ECopyToClipboard')}
         </button>
       </div>
     </>
