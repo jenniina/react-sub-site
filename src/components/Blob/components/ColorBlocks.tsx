@@ -62,6 +62,8 @@ const ColorBlocks: FC<ColorBlockProps> = ({
             } ${index < 4 ? 'left' : 'right'}`}
             id={`color${index}-${d}`}
             style={{
+              top: `${index < 4 ? (index + 1) * 18 : (index + 1 - 4) * 18}%`,
+              right: `${index >= 4 ? '0' : 'unset'}`,
               background: color,
               borderRadius: `${
                 index < 4
