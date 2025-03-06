@@ -188,10 +188,10 @@ const WordCloud: FC<WordCloudProps> = ({
     } else if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(textToCopy).then(
         () => {
-          dispatch(notify(t('ECopiedToClipboard'), false, 3))
+          dispatch(notify(t('CopiedToClipboard'), false, 3))
         },
         (error) => {
-          dispatch(notify(`${t('EFailedToCopy')}`, true, 3))
+          dispatch(notify(`${t('FailedToCopy')}`, true, 3))
           console.error('Failed to copy:', error)
         }
       )
@@ -204,10 +204,10 @@ const WordCloud: FC<WordCloudProps> = ({
       textArea.select()
       try {
         document.execCommand('copy')
-        dispatch(notify(t('ECopiedToClipboard'), false, 3))
+        dispatch(notify(t('CopiedToClipboard'), false, 3))
       } catch (error: any) {
         console.error('Failed to copy:', error)
-        dispatch(notify(`${t('EFailedToCopy')}`, true, 3))
+        dispatch(notify(`${t('FailedToCopy')}`, true, 3))
       }
       ref.current?.removeChild(textArea)
     }
@@ -265,7 +265,7 @@ const WordCloud: FC<WordCloudProps> = ({
                 handleWordClick(word.text)
               }
             }}
-            aria-label={title ?? `${t('ECopyToClipboard')}: ${word.text}`}
+            aria-label={title ?? `${t('CopyToClipboard')}: ${word.text}`}
           >
             {word.text}
           </text>
@@ -329,7 +329,7 @@ const WordCloud: FC<WordCloudProps> = ({
                       handleWordClick(word.text)
                     }
                   }}
-                  aria-label={title ?? `${t('ECopyToClipboard')}: ${word.text}`}
+                  aria-label={title ?? `${t('CopyToClipboard')}: ${word.text}`}
                 >
                   {word.text}
                 </text>

@@ -61,7 +61,7 @@ const JokeSubmit = ({
     label: jokeCategoryByLanguage[language].Misc,
     value: ECategory_en.Misc,
   } as SelectOption)
-  const selectAnOption = t('ESelectAnOption')
+  const selectAnOption = t('SelectAnOption')
   const [selectedCategory, setSelectedCategory] = useState<ECategories | ''>('')
   const [selectedNorrisCategory, setSelectedNorrisCategory] = useState<
     SelectOption | undefined
@@ -139,7 +139,7 @@ const JokeSubmit = ({
             setDelivery('')
             setSaving(false)
           })
-        dispatch(notify(`${t('ESavedJoke')}. ${r.message ?? ''}`, false, 8))
+        dispatch(notify(`${t('SavedJoke')}. ${r.message ?? ''}`, false, 8))
       })
       .catch((e) => {
         console.error(e)
@@ -147,7 +147,7 @@ const JokeSubmit = ({
         if (e.code === 'ERR_BAD_RESPONSE') {
           dispatch(
             notify(
-              `${t('EError')}: ${e.response.data.message}. ${t('EReportErrorToAdmin')}`,
+              `${t('Error')}: ${e.response.data.message}. ${t('ReportErrorToAdmin')}`,
               true,
               8
             )
@@ -158,7 +158,7 @@ const JokeSubmit = ({
             dispatch(notify(e.response.data.message, true, 8))
           else
             dispatch(
-              notify(`${t('EError')}: ${e.message}. ${t('EReportErrorToAdmin')}`, true, 8)
+              notify(`${t('Error')}: ${e.message}. ${t('ReportErrorToAdmin')}`, true, 8)
             )
         }
       })
@@ -203,16 +203,14 @@ const JokeSubmit = ({
   return (
     <Accordion
       language={language}
-      text={t('EClickHereToWriteYourOwnJoke')}
+      text={t('ClickHereToWriteYourOwnJoke')}
       className='submit'
       wrapperClass='submit-wrap'
     >
       <div className='submit-inner'>
-        <h3>{t('ESubmitAJoke')}</h3>
-        <p className='textcenter'>{t('ESubmitAJokeTo')} jenniina.fi</p>
-        <p className='textcenter mb3'>
-          {t('EIfTheJokeIsNotPrivateVerificationIsNeeded')}
-        </p>
+        <h3>{t('SubmitAJoke')}</h3>
+        <p className='textcenter'>{t('SubmitAJokeTo')} jenniina.fi</p>
+        <p className='textcenter mb3'>{t('IfTheJokeIsNotPrivateVerificationIsNeeded')}</p>
         <form onSubmit={handleNewJokeSubmit} className='form-submit-new'>
           <div className='toggle-wrap'>
             <ButtonToggle
@@ -220,10 +218,10 @@ const JokeSubmit = ({
               name='submit-joketype'
               id='submit-joketype'
               hideLabel={false}
-              label={`${t('EJokeTypeTitle')}: `}
+              label={`${t('JokeTypeTitle')}: `}
               className={`${language} submit joketype`}
-              on={t('ETwoPart')}
-              off={t('ESingle')}
+              on={t('TwoPart')}
+              off={t('Single')}
               handleToggleChange={handleToggleChangeJokeType}
               equal={true}
             />
@@ -232,10 +230,10 @@ const JokeSubmit = ({
               name='submit-private'
               id='submit-private'
               hideLabel={false}
-              label={`${t('EPrivacy')}: `}
+              label={`${t('Privacy')}: `}
               className={`${language} submit private`}
-              on={t('EPrivate')}
-              off={t('EPublic')}
+              on={t('Private')}
+              off={t('Public')}
               handleToggleChange={handleToggleChangePublic}
               equal={false}
             />
@@ -244,10 +242,10 @@ const JokeSubmit = ({
               name='submit-anonymous'
               id='submit-anonymous'
               hideLabel={false}
-              label={`${t('EPublishWithNickname')}: `}
+              label={`${t('PublishWithNickname')}: `}
               className={`${language} submit anonymous`}
-              on={t('EAnonymous')}
-              off={t('ENickname')}
+              on={t('Anonymous')}
+              off={t('Nickname')}
               handleToggleChange={handleToggleChangeAnonymous}
               equal={false}
             />
@@ -255,7 +253,7 @@ const JokeSubmit = ({
 
           {jokeType === EJokeType.single ? (
             <label htmlFor='submit-joke-single-input' className='textarea-wrap'>
-              <span>{t('EJoke')}</span>
+              <span>{t('Joke')}</span>
               <textarea
                 name='joke'
                 id='submit-joke-single-input'
@@ -308,7 +306,7 @@ const JokeSubmit = ({
                 language={language}
                 id='submit-category-select'
                 className='submit'
-                instructions={`${t('ECategoryTitle')}:`}
+                instructions={`${t('CategoryTitle')}:`}
                 selectAnOption={selectAnOption}
                 value={jokeCategory}
                 options={optionsCategory(categoryByLanguages as any)}
@@ -322,7 +320,7 @@ const JokeSubmit = ({
                 id='jokeCategoryNorrisCategories-submit'
                 className={`category extras narrow ${hasNorris ? '' : 'hidden'}`}
                 instructions={`Chuck Norris Category:`}
-                selectAnOption={t('EAny')}
+                selectAnOption={t('Any')}
                 value={selectedNorrisCategory}
                 options={norrisCategories}
                 onChange={(o) => {
@@ -337,7 +335,7 @@ const JokeSubmit = ({
             language={language}
             id='submit-language'
             className='submit narrow'
-            instructions={`${t('EJokeLanguage')}:`}
+            instructions={`${t('JokeLanguage')}:`}
             options={options(ELanguagesLong)}
             value={
               language
@@ -353,7 +351,7 @@ const JokeSubmit = ({
           />
 
           <fieldset>
-            <legend>{t('EAddWarningTitle')}</legend>
+            <legend>{t('AddWarningTitle')}</legend>
 
             <div className='checkbox-wrap'>
               <div>
@@ -403,14 +401,14 @@ const JokeSubmit = ({
           </fieldset>
           <p>
             {isCheckedPrivate
-              ? t('EJokeIsSetToPrivateAndWillOnlyBeSeenByYouAndTheAdministrator')
-              : t('EJokeIsSetToPublicAndWillNeedVerificationFromAnAdministrator')}
+              ? t('JokeIsSetToPrivateAndWillOnlyBeSeenByYouAndTheAdministrator')
+              : t('JokeIsSetToPublicAndWillNeedVerificationFromAnAdministrator')}
             <br />
             <br />
-            {isCheckedAnonymous ? t('EPublishAnonymously') : t('EPublishWithNickname')}
+            {isCheckedAnonymous ? t('PublishAnonymously') : t('PublishWithNickname')}
           </p>
           <button type='submit' className='small' disabled={saving} id='submit-new-joke'>
-            {saving ? t('ESaving') : isCheckedPrivate ? t('EPublish') : t('ESend')}
+            {saving ? t('Saving') : isCheckedPrivate ? t('Publish') : t('Send')}
           </button>
         </form>
       </div>

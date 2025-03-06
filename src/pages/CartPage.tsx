@@ -38,7 +38,7 @@ const CartPage: React.FC<CartProps> = ({
             <Suspense
               fallback={
                 <div className='flex center margin0auto textcenter'>
-                  {t('ELoading')}...
+                  {t('Loading')}...
                 </div>
               }
             >

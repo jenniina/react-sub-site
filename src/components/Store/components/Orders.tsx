@@ -91,7 +91,7 @@ const Orders: FC<Props> = ({
     cartService
       .deleteOrder(language, orderID, user._id)
       .then(() => {
-        dispatch(notify(`${t('EDeleted')} ${orderID}`, false, 5))
+        dispatch(notify(`${t('Deleted')} ${orderID}`, false, 5))
         fetchAllOrders()
       })
       .catch((error) => {
@@ -138,7 +138,7 @@ const Orders: FC<Props> = ({
           <Accordion
             language={language}
             text={`${
-              order.status === 'completed' ? '[ ' + t('EOrderCompleted') + ' ] ' : ''
+              order.status === 'completed' ? '[ ' + t('OrderCompleted') + ' ] ' : ''
             }${order.orderID} ${
               order.info.companyName
                 ? `${order.info.name} (${order.info.companyName})`
@@ -164,16 +164,16 @@ const Orders: FC<Props> = ({
               <div className={styles['info-wrap']}>
                 <p>
                   <big>
-                    <strong>{t('EOrderID')}: </strong>
+                    <strong>{t('OrderID')}: </strong>
                     {order.orderID}
                   </big>
                 </p>
                 <p>
-                  <strong>{t('EStatus')}: </strong>
+                  <strong>{t('Status')}: </strong>
                   {itemStatus(order.status)}
                 </p>
                 <p>
-                  <strong>{t('EPaymentState')}: </strong>
+                  <strong>{t('PaymentState')}: </strong>
                   {
                     paidStatus[
                       order.items.every((item) => item.paid === 'full')
@@ -185,20 +185,20 @@ const Orders: FC<Props> = ({
                   }
                 </p>
                 <p>
-                  {t('ETotal')}: <big>{order.total} € </big>
+                  {t('Total')}: <big>{order.total} € </big>
                 </p>
                 <table className={`${styles['info-table']}`}>
-                  <caption>{t('EOrdered')}</caption>
+                  <caption>{t('Ordered')}</caption>
                   <tbody>
                     <tr>
-                      <th>{t('EOrdered')}: </th>
+                      <th>{t('Ordered')}: </th>
                       <td>
                         {order.createdAt?.toLocaleDateString()}{' '}
                         {order.createdAt?.toLocaleTimeString()}
                       </td>
                     </tr>
                     <tr>
-                      <th>{t('ELastUpdated')}: </th>
+                      <th>{t('LastUpdated')}: </th>
                       <td>
                         {order.updatedAt.toLocaleDateString()}{' '}
                         {order.updatedAt?.toLocaleTimeString()}
@@ -210,7 +210,7 @@ const Orders: FC<Props> = ({
 
               <Accordion
                 language={language}
-                text={`${t('EEdit')} (${t('EStatus')})`}
+                text={`${t('Edit')} (${t('Status')})`}
                 hideBrackets
                 className={`narrow2 change-status`}
                 wrapperClass={styles['change-status-main']}
@@ -244,7 +244,7 @@ const Orders: FC<Props> = ({
                       }}
                     />
                     <button type='submit' disabled={sending}>
-                      {t('ESubmit')}
+                      {t('Submit')}
                     </button>
                   </form>
                 </>
@@ -255,7 +255,7 @@ const Orders: FC<Props> = ({
                   <h3>{item.name}</h3>
                   <p>{item.description}</p>
                   <p>
-                    <strong>{t('EPrice')}: </strong>
+                    <strong>{t('Price')}: </strong>
                     {item.id === 'misc-quote'
                       ? item.price + ' €'
                       : item.price +
@@ -266,23 +266,23 @@ const Orders: FC<Props> = ({
                         ' €'}
                   </p>
                   <p>
-                    <strong>{t('ERequestsAndNeeds')}: </strong> <br />
+                    <strong>{t('RequestsAndNeeds')}: </strong> <br />
                     {splitToLines(item.details)}
                   </p>
                   <p>
-                    <strong>{t('EStatus')}: </strong>
+                    <strong>{t('Status')}: </strong>
                     {itemStatus(item.status)}{' '}
                   </p>
                   {item.id === 'misc-quote' ? null : (
                     <p key={item.id}>
-                      <strong>{t('EPaymentState')}: </strong>
+                      <strong>{t('PaymentState')}: </strong>
                       {paidStatus[item.paid]}
                     </p>
                   )}
 
                   <Accordion
                     language={language}
-                    text={`${t('EEdit')}`}
+                    text={`${t('Edit')}`}
                     hideBrackets
                     className={`narrow2 change-status`}
                     wrapperClass={styles['change-status']}
@@ -298,7 +298,7 @@ const Orders: FC<Props> = ({
                         }}
                       >
                         <label>
-                          <span>{t('EPrice')}</span>
+                          <span>{t('Price')}</span>
                           <input
                             type='number'
                             className='bg'
@@ -325,7 +325,7 @@ const Orders: FC<Props> = ({
                           />
                         </label>
                         <label>
-                          <span>{t('EQuantity')}</span>
+                          <span>{t('Quantity')}</span>
                           <input
                             type='number'
                             className='bg'
@@ -352,7 +352,7 @@ const Orders: FC<Props> = ({
                         </label>
 
                         <label>
-                          <span>{t('EInfo')}</span>
+                          <span>{t('Info')}</span>
                           <textarea
                             name={`details-${item.id}`}
                             rows={6}
@@ -381,7 +381,7 @@ const Orders: FC<Props> = ({
                           language={language}
                           id={`status-${item.id}`}
                           className={`status ${selectStyles.prev2}`}
-                          instructions={t('EStatus')}
+                          instructions={t('Status')}
                           options={statusOptions}
                           value={statusOptions.find((o) => o.value === item.status)}
                           onChange={(c) => {
@@ -406,7 +406,7 @@ const Orders: FC<Props> = ({
                           language={language}
                           id={`paid-${item.id}`}
                           className={`paid ${selectStyles.prev}`}
-                          instructions={t('EPaymentState')}
+                          instructions={t('PaymentState')}
                           options={paidOptions}
                           value={paidOptions.find((o) => o.value === item.paid)}
                           onChange={(c) => {
@@ -429,7 +429,7 @@ const Orders: FC<Props> = ({
                         />
 
                         <button type='submit' disabled={sending}>
-                          {t('ESubmit')}
+                          {t('Submit')}
                         </button>
                       </form>
                     </>
@@ -438,7 +438,7 @@ const Orders: FC<Props> = ({
               ))}
               <div className={styles['info-wrap']}>
                 <table className={`${styles['info-table']}`}>
-                  <caption>{t('EInfo')}</caption>
+                  <caption>{t('Info')}</caption>
                   <tbody>
                     {Object.keys(order.info).map((key) => {
                       if (key === '_id') return null
@@ -456,14 +456,14 @@ const Orders: FC<Props> = ({
                 </table>
                 {order.extra && order.extra.trim() !== '' && (
                   <p>
-                    <strong>{t('EAdditionalInformation')}: </strong> <br />
+                    <strong>{t('AdditionalInformation')}: </strong> <br />
                     {splitToLines(order.extra)}
                   </p>
                 )}
 
                 <Accordion
                   language={language}
-                  text={`${t('EEdit')} (${t('EInfo')})`}
+                  text={`${t('Edit')} (${t('Info')})`}
                   hideBrackets
                   className={`narrow2 change-status`}
                   wrapperClass={styles['change-status-info']}
@@ -510,7 +510,7 @@ const Orders: FC<Props> = ({
                         )
                       })}
                       <label>
-                        <span>{t('EAdditionalInformation')}</span>
+                        <span>{t('AdditionalInformation')}</span>
                         <textarea
                           rows={6}
                           name={`additional-${order.orderID}`}
@@ -545,13 +545,13 @@ const Orders: FC<Props> = ({
                             )
                           }}
                         >
-                          {t('EOrderCompleted')}
+                          {t('OrderCompleted')}
                         </button>
                       ) : (
                         <div key={order.updatedAt.toString()}>
-                          {t('EOrderNotCompleted')} <br />
+                          {t('OrderNotCompleted')} <br />
                           {order.items?.some((item) => item.paid !== 'full') &&
-                            t('EMissingPayment')}
+                            t('MissingPayment')}
                           :{' '}
                           <ul className='ul'>
                             {order.items
@@ -566,7 +566,7 @@ const Orders: FC<Props> = ({
                       )}
 
                       <button type='submit' disabled={sending}>
-                        {t('ESubmit')}
+                        {t('Submit')}
                       </button>
                     </form>
                   </>
@@ -579,13 +579,13 @@ const Orders: FC<Props> = ({
                       onClick={() => {
                         if (
                           window.confirm(
-                            `${t('EAreYouSureYouWantToDelete')} ${order.orderID}?`
+                            `${t('AreYouSureYouWantToDelete')} ${order.orderID}?`
                           )
                         )
                           deleteOrder(order.orderID)
                       }}
                     >
-                      {t('EDelete')}: {order.orderID}
+                      {t('Delete')}: {order.orderID}
                     </button>
                   </div>
                 )}

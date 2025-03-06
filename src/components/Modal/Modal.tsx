@@ -90,9 +90,9 @@ const Modal: FC<Props> = ({ language }) => {
           onClick={handleClose}
         >
           <span aria-hidden='true'>&times;</span>
-          <span className='scr'>{t('EClose')}</span>
+          <span className='scr'>{t('Close')}</span>
           <span aria-hidden='true' className='tooltip below left narrow2'>
-            {t('EClose')}
+            {t('Close')}
           </span>
         </button>
         {modal?.children}

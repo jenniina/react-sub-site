@@ -37,20 +37,20 @@ function NavPortfolio({ language }: { language: ELanguages }) {
   }
 
   const navItems: NavItem[] = [
-    { url: '/portfolio', name: `${t('EPortfolio')}`, special: 'first' },
-    { url: '/portfolio/media', name: t('EMedia') },
-    { url: '/portfolio/memory', name: t('EMemoryGame') },
-    { url: '/portfolio/colors', name: t('EColorAccessibility') },
-    { url: '/portfolio/composer', name: t('EComposerOlliSanta') },
-    { url: '/portfolio/blob', name: t('EBlob') },
-    { url: '/portfolio/jokes', name: t('EJokes') },
-    { url: '/portfolio/quiz', name: t('EQuiz') },
-    { url: '/portfolio/select', name: t('ECustomSelect') },
-    { url: '/portfolio/salon', name: t('EHairSalon') },
-    { url: '/portfolio/draganddrop', name: t('EDragAndDrop') },
+    { url: '/portfolio', name: `${t('Portfolio')}`, special: 'first' },
+    { url: '/portfolio/media', name: t('Media') },
+    { url: '/portfolio/memory', name: t('MemoryGame') },
+    { url: '/portfolio/colors', name: t('ColorAccessibility') },
+    { url: '/portfolio/composer', name: t('ComposerOlliSanta') },
+    { url: '/portfolio/blob', name: t('Blob') },
+    { url: '/portfolio/jokes', name: t('Jokes') },
+    { url: '/portfolio/quiz', name: t('Quiz') },
+    { url: '/portfolio/select', name: t('CustomSelect') },
+    { url: '/portfolio/salon', name: t('HairSalon') },
+    { url: '/portfolio/draganddrop', name: t('DragAndDrop') },
     { url: '/portfolio/graphql', name: 'GraphQL' },
-    { url: '/portfolio/form', name: t('EMultistepForm') },
-    { url: '/portfolio/todo', name: t('EToDo'), special: 'last' },
+    { url: '/portfolio/form', name: t('MultistepForm') },
+    { url: '/portfolio/todo', name: t('ToDo'), special: 'last' },
   ]
 
   const itemRefs = navItems.map(() => useRef<HTMLLIElement>(null))
@@ -139,7 +139,7 @@ function NavPortfolio({ language }: { language: ELanguages }) {
         >
           {' '}
           <BiChevronsUp />
-          <span className='scr'>{t('EScrollToTheLeft')}</span>
+          <span className='scr'>{t('ScrollToTheLeft')}</span>
         </button>
 
         <ul ref={scrollHorizontal}>{renderNavItems(navItems)}</ul>
@@ -151,7 +151,7 @@ function NavPortfolio({ language }: { language: ELanguages }) {
         >
           {' '}
           <BiChevronsUp />
-          <span className='scr'>{t('EScrollToTheRight')}</span>
+          <span className='scr'>{t('ScrollToTheRight')}</span>
         </button>
       </nav>
       <Outlet />

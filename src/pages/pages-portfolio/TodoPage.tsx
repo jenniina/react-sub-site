@@ -29,26 +29,26 @@ export default function TodoPage({
             <div className='medium flex column gap'>
               <Accordion
                 language={language}
-                text={t('EClickHereToSeeFeatures')}
+                text={t('ClickHereToSeeFeatures')}
                 className='features'
                 wrapperClass='features-wrap'
               >
                 <>
-                  <h2>{t('EFeatures')}</h2>
+                  <h2>{t('Features')}</h2>
                   <ul className='ul'>
-                    <li>{t('EKeyboardAccessible')}</li>
+                    <li>{t('KeyboardAccessible')}</li>
                     <li>
-                      {t('ERemoveTaskEitherIndividuallyOrClearAllCompletedTasksAtOnce')}
+                      {t('RemoveTaskEitherIndividuallyOrClearAllCompletedTasksAtOnce')}
                     </li>
-                    <li>{t('ETasksCanBeEdited')}</li>
-                    <li>{t('ETasksCanBeReorganizedByDraggingAndDropping')}</li>
-                    <li>{t('EShowsHowManyTasksAreLeftToDo')}</li>
-                    <li>{t('EStoresTasksInMongoDBIfTheUserIsLoggedIn')}</li>
+                    <li>{t('TasksCanBeEdited')}</li>
+                    <li>{t('TasksCanBeReorganizedByDraggingAndDropping')}</li>
+                    <li>{t('ShowsHowManyTasksAreLeftToDo')}</li>
+                    <li>{t('StoresTasksInMongoDBIfTheUserIsLoggedIn')}</li>
                   </ul>
-                  <h3>{t('EKeyboardUse')}</h3>
+                  <h3>{t('KeyboardUse')}</h3>
                   <ul className='ul'>
-                    <li>{t('EAddTasksByTabbingToTheInputFieldAnd')}</li>
-                    <li>{t('ERemoveATaskByTabbingToTheRemoveButtonAnd')}</li>
+                    <li>{t('AddTasksByTabbingToTheInputFieldAnd')}</li>
+                    <li>{t('RemoveATaskByTabbingToTheRemoveButtonAnd')}</li>
                   </ul>
                 </>
               </Accordion>
@@ -61,11 +61,11 @@ export default function TodoPage({
         <section className='card'>
           <div>
             <div className='flex column gap'>
-              <h2>{t('ETodoApp')}</h2>
+              <h2>{t('TodoApp')}</h2>
               <Suspense
                 fallback={
                   <div className='flex center margin0auto textcenter'>
-                    {t('ELoading')}...
+                    {t('Loading')}...
                   </div>
                 }
               >

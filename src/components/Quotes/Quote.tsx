@@ -66,7 +66,7 @@ const Quote: FC<QuoteProps> = ({ quote, language, url, title }) => {
           style={{ maxWidth: 'max-content', marginLeft: '1em' }}
           onClick={copyToClipboard}
         >
-          {copied ? t('ECopiedToClipboard') : t('ECopyToClipboard')}
+          {copied ? t('CopiedToClipboard') : t('CopyToClipboard')}
         </button>
         {title && (
           <small>

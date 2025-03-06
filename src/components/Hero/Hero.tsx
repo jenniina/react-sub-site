@@ -544,7 +544,7 @@ export default function Hero({
                           return (
                             <span key={`${item.i}-${index}`} style={style}>
                               <span className='scr'>
-                                {t('EShape')} {index + 1}
+                                {t('Shape')} {index + 1}
                               </span>
                             </span>
                           )
@@ -634,7 +634,7 @@ export default function Hero({
                           return (
                             <span key={`${item.i}-${index}`} style={style}>
                               <span className='scr'>
-                                {t('EShape')} {index + 1}
+                                {t('Shape')} {index + 1}
                               </span>
                             </span>
                           )
@@ -765,7 +765,7 @@ export default function Hero({
                       })}
                       <span style={style}>
                         <span className='scr'>
-                          {t('EShape')} {index + 1}
+                          {t('Shape')} {index + 1}
                         </span>
                       </span>
                     </li>
@@ -894,7 +894,7 @@ export default function Hero({
                         })}
                         <span style={style}>
                           <span className='scr'>
-                            {t('EShape')} {index + 1}
+                            {t('Shape')} {index + 1}
                           </span>
                         </span>
                       </div>
@@ -979,7 +979,7 @@ export default function Hero({
                     >
                       <span>
                         <span className='scr'>
-                          {t('EBubble')} {index + 1}
+                          {t('Bubble')} {index + 1}
                         </span>
                       </span>
                     </li>
@@ -1128,7 +1128,7 @@ export default function Hero({
                     >
                       <span>
                         <span className='scr'>
-                          {t('EBlob')} {index + 1}
+                          {t('Blob')} {index + 1}
                         </span>
                       </span>
                     </li>
@@ -1223,7 +1223,7 @@ export default function Hero({
                       <div style={styleInner} className={`inner ${styles.inner}`}>
                         <span className='else-eye'>
                           <span className='scr'>
-                            {t('EEye')} {index + 1}
+                            {t('Eye')} {index + 1}
                           </span>
                         </span>
                       </div>
@@ -1317,7 +1317,7 @@ export default function Hero({
                         return (
                           <span key={`${item.i}-${index}`} style={style}>
                             <span className='scr'>
-                              {t('EShape')} {index + 1}
+                              {t('Shape')} {index + 1}
                             </span>
                           </span>
                         )
@@ -1363,7 +1363,7 @@ export default function Hero({
         <p className={`${fadeIn ? styles.fadeIn : styles.fadeOut}`}>{text}</p>
       )}
       <span id='description' className='scr'>
-        {t('EHeroSection')}: {t('EInteractiveElements')}
+        {t('HeroSection')}: {t('InteractiveElements')}
       </span>
 
       {shouldRender && (
@@ -1372,16 +1372,16 @@ export default function Hero({
 
       <div
         className={styles.bottom}
-        data-instructions={instructions ? instructions : t('ETryTappingTheShapes')}
+        data-instructions={instructions ? instructions : t('TryTappingTheShapes')}
       >
         <button ref={resetButton} type='button' onClick={handleReset}>
-          <span>{reset ? reset : t('EReset')}</span>
+          <span>{reset ? reset : t('Reset')}</span>
         </button>
       </div>
       <div
         className={`${styles.bottom} ${styles.bottom2}`}
         data-instructions={
-          prefersReducedMotion ? t('ETurnRandomMovementOn') : t('ETurnRandomMovementOff')
+          prefersReducedMotion ? t('TurnRandomMovementOn') : t('TurnRandomMovementOff')
         }
       >
         <button
@@ -1391,11 +1391,11 @@ export default function Hero({
           type='button'
           className={`${styles.rand}`}
         >
-          <span>{prefersReducedMotion ? t('EOff') : t('EOn')}</span>
+          <span>{prefersReducedMotion ? t('Off') : t('On')}</span>
           <span className='scr'>
             {prefersReducedMotion
-              ? t('ETurnRandomMovementOn')
-              : t('ETurnRandomMovementOff')}
+              ? t('TurnRandomMovementOn')
+              : t('TurnRandomMovementOff')}
           </span>
         </button>
       </div>

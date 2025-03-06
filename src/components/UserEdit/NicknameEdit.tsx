@@ -38,9 +38,9 @@ const NicknameEdit = ({ user, language }: Props) => {
           .then((res) => {
             if (res) {
               if (res.success === false) {
-                dispatch(notify(`${t('EError')}: ${res.message}`, true, 5))
+                dispatch(notify(`${t('Error')}: ${res.message}`, true, 5))
               } else {
-                dispatch(notify(`${res.message ?? t('EUserUpdated')}`, false, 5))
+                dispatch(notify(`${res.message ?? t('UserUpdated')}`, false, 5))
                 dispatch(refreshUser(res.user)).then(() => {
                   dispatch(findUserById(user?._id as string)).then(() =>
                     dispatch(initializeUser())
@@ -56,10 +56,10 @@ const NicknameEdit = ({ user, language }: Props) => {
             if (error.response?.data?.message)
               dispatch(notify(error.response.data.message, true, 8))
             else if (error.code === 'ERR_BAD_REQUEST' && error.response?.data?.message) {
-              dispatch(notify(`${t('EError')}: ${error.response.data.message}`, true, 5))
+              dispatch(notify(`${t('Error')}: ${error.response.data.message}`, true, 5))
             } else {
               setTimeout(() => {
-                dispatch(notify(t('EUserNotUpdated'), true, 5))
+                dispatch(notify(t('UserNotUpdated'), true, 5))
               }, 2000)
             }
             setSending(false)
@@ -79,12 +79,12 @@ const NicknameEdit = ({ user, language }: Props) => {
     <>
       {user ? (
         <>
-          <h2>{t('EEditPreferredNickname')}</h2>
+          <h2>{t('EditPreferredNickname')}</h2>
           <p className={styles.p}>
-            {t('ECurrentNickname')}: <strong>{user?.name}</strong>
+            {t('CurrentNickname')}: <strong>{user?.name}</strong>
           </p>
           <p className={`${styles.p} ${styles[`p-last`]}`}>
-            {t('EPleaseUseGoodTasteWhenChoosingYourNickname')}
+            {t('PleaseUseGoodTasteWhenChoosingYourNickname')}
           </p>
 
           <form onSubmit={handleUserSubmit} className={styles['edit-user']}>
@@ -98,7 +98,7 @@ const NicknameEdit = ({ user, language }: Props) => {
                   value={name}
                   onChange={({ target }) => setName(target.value)}
                 />
-                <span>{t('ENickname')}</span>
+                <span>{t('Nickname')}</span>
               </label>
             </div>
             <div className='input-wrap'>
@@ -111,11 +111,11 @@ const NicknameEdit = ({ user, language }: Props) => {
                   value={passwordOld}
                   onChange={({ target }) => setPasswordOld(target.value.trim())}
                 />
-                <span>{t('ECurrentPassword')}</span>
+                <span>{t('CurrentPassword')}</span>
               </label>
             </div>
             <button type='submit' disabled={sending}>
-              {t('EEdit')}
+              {t('Edit')}
             </button>
           </form>
         </>

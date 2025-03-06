@@ -37,17 +37,17 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
   const handleLogout = () => {
     dispatch(logout())
       .then(() => {
-        dispatch(notify(`${t('ELoggedOut')}`, false, 4))
+        dispatch(notify(`${t('LoggedOut')}`, false, 4))
       })
       .catch((e) => {
         console.error(e)
-        dispatch(notify(`${t('EError')}: ${e.message}`, true, 8))
+        dispatch(notify(`${t('Error')}: ${e.message}`, true, 8))
       })
   }
 
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault()
-    dispatch(notify(`${t('ELoggingIn')}`, false, 3))
+    dispatch(notify(`${t('LoggingIn')}`, false, 3))
     setLoggingIn(true)
     await dispatch(login(username, password, language))
       .then(() => {
@@ -61,9 +61,9 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
         console.error(e)
         if (e.response?.data?.message) dispatch(notify(e.response.data.message, true, 8))
         else if (e.code === 'ERR_BAD_REQUEST')
-          dispatch(notify(`${t('EError')}: ${e.response.data.message}`, true, 8))
+          dispatch(notify(`${t('Error')}: ${e.response.data.message}`, true, 8))
         else if (e.code === 'ERR_NETWORK') {
-          dispatch(notify(`${t('EError')}: ${e.message}`, true, 8))
+          dispatch(notify(`${t('Error')}: ${e.message}`, true, 8))
         }
       })
   }
@@ -73,15 +73,15 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
       {user ? (
         <div className='logout-wrap'>
           <span>
-            {t('ELoggedInAs')} {user?.name ? user?.name : user.username}{' '}
+            {t('LoggedInAs')} {user?.name ? user?.name : user.username}{' '}
           </span>
-          <Link to='/edit'>{t('EEdit')}</Link>
+          <Link to='/edit'>{t('Edit')}</Link>
           <button
             onClick={handleLogout}
             id={`logout-${text}`}
             className={`logout danger ${text}`}
           >
-            {t('ELogout')} &times;
+            {t('Logout')} &times;
           </button>
         </div>
       ) : (
@@ -90,14 +90,14 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
             language={language}
             className='login'
             wrapperClass='login-wrap'
-            text={t('ELogin')}
+            text={t('Login')}
             ref={formLoginRef}
             setIsFormOpen={setIsFormOpen}
             isOpen={isOpen}
             hideBrackets={true}
           >
             <>
-              <h2>{t('ELogin')}</h2>
+              <h2>{t('Login')}</h2>
 
               <form onSubmit={handleLogin} className='login'>
                 <div className='input-wrap'>
@@ -110,7 +110,7 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
                       autoComplete='email'
                       onChange={({ target }) => setUsername(target.value.trim())}
                     />
-                    <span>{t('EEmail')}: </span>
+                    <span>{t('Email')}: </span>
                   </label>
                 </div>
                 <div className='input-wrap'>
@@ -123,7 +123,7 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
                       autoComplete='on'
                       onChange={({ target }) => setPassword(target.value.trim())}
                     />
-                    <span>{t('EPassword')}: </span>
+                    <span>{t('Password')}: </span>
                   </label>
                 </div>
                 <button
@@ -132,7 +132,7 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
                   id={`login-${text}`}
                   className={`login ${text} restore`}
                 >
-                  {loggingIn ? t('ELoggingIn') : t('ELogin')}
+                  {loggingIn ? t('LoggingIn') : t('Login')}
                 </button>
               </form>
             </>

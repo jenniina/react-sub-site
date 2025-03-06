@@ -25,51 +25,51 @@ const ColorsPage = ({
       <div className='inner-wrap'>
         <section>
           <Accordion
-            text={t('EClickHereToSeeFeatures')}
+            text={t('ClickHereToSeeFeatures')}
             className='gray'
             wrapperClass=''
             language={language}
           >
             <ul className='ul medium'>
-              <li>{t('ETestColorCombinations')}</li>
-              <li>{t('ETheRoundIndicatorHollowIndicatorAndSmallHollowSquare')}</li>
-              <li>{t('EColorsCanBeReorderedByDragging')}</li>
-              <li>{t('ERandomColorGeneration')}</li>
-              <li>{t('EHintOrganizingColors')}</li>
-              <li>{t('ENeedAFreshSetOfColors')}</li>
+              <li>{t('TestColorCombinations')}</li>
+              <li>{t('TheRoundIndicatorHollowIndicatorAndSmallHollowSquare')}</li>
+              <li>{t('ColorsCanBeReorderedByDragging')}</li>
+              <li>{t('RandomColorGeneration')}</li>
+              <li>{t('HintOrganizingColors')}</li>
+              <li>{t('NeedAFreshSetOfColors')}</li>
               <li>
-                {t('EColorModes')}: {t('EAnalogous')} / {t('EComplementary')} /{' '}
-                {t('EMonochromatic')} / {t('ETriad')} / {t('ETetrad')}
+                {t('ColorModes')}: {t('Analogous')} / {t('Complementary')} /{' '}
+                {t('Monochromatic')} / {t('Triad')} / {t('Tetrad')}
               </li>
               <li>
-                {t('EContains')}
+                {t('Contains')}
                 <ul>
-                  <li>{t('EColorPicker')}</li>
-                  <li>{t('ESelectColorFormat')}</li>
-                  <li>{t('EDragAndDrop')}</li>
-                  <li>{t('EToggleColorNameVisibility')}</li>
-                  <li>{t('EToggleControlVisibility')}</li>
-                  <li>{t('EEditSize')}</li>
+                  <li>{t('ColorPicker')}</li>
+                  <li>{t('SelectColorFormat')}</li>
+                  <li>{t('DragAndDrop')}</li>
+                  <li>{t('ToggleColorNameVisibility')}</li>
+                  <li>{t('ToggleControlVisibility')}</li>
+                  <li>{t('EditSize')}</li>
                   <li>
-                    {t('ESaveAsSVG')} ({t('EWithOrWithoutColorName')})
+                    {t('SaveAsSVG')} ({t('WithOrWithoutColorName')})
                   </li>
                   <li>
-                    {t('ESaveAsPNG')} ({t('EWithOrWithoutColorName')})
+                    {t('SaveAsPNG')} ({t('WithOrWithoutColorName')})
                   </li>
-                  <li>{t('ERemove')}</li>
-                  <li>{t('EReset')}</li>
-                  <li>{t('EClear')}</li>
+                  <li>{t('Remove')}</li>
+                  <li>{t('Reset')}</li>
+                  <li>{t('Clear')}</li>
                   <li>
-                    {t('ELightMode')}/{t('EDarkMode')}
+                    {t('LightMode')}/{t('DarkMode')}
                   </li>
-                  <li>{t('EGenerateColors')}</li>
+                  <li>{t('GenerateColors')}</li>
                 </ul>
               </li>
             </ul>
           </Accordion>
           <Suspense
             fallback={
-              <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
+              <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
             }
           >
             <AccessibleColors language={language} />

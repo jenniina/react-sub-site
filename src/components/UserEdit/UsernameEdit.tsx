@@ -34,7 +34,7 @@ const UsernameEdit = ({ user, language }: Props) => {
 
       if (user) {
         if (username.trim() === user.username.trim()) {
-          dispatch(notify(`${t('EUsernameIsTheSame')}`, true, 5))
+          dispatch(notify(`${t('UsernameIsTheSame')}`, true, 5))
           setSending(false)
           return
         }
@@ -42,9 +42,9 @@ const UsernameEdit = ({ user, language }: Props) => {
           .then((res) => {
             if (res) {
               if (res.success === false) {
-                dispatch(notify(`${res.message ?? t('EError')}`, true, 5))
+                dispatch(notify(`${res.message ?? t('Error')}`, true, 5))
               } else {
-                dispatch(notify(`${res.message ?? t('EUserUpdated')}`, false, 5))
+                dispatch(notify(`${res.message ?? t('UserUpdated')}`, false, 5))
                 setPasswordOld('')
               }
             }
@@ -58,7 +58,7 @@ const UsernameEdit = ({ user, language }: Props) => {
               dispatch(notify(`${error.response.data.message}`, true, 5))
             } else {
               setTimeout(() => {
-                dispatch(notify(t('EUserNotUpdated'), true, 5))
+                dispatch(notify(t('UserNotUpdated'), true, 5))
               }, 2000)
             }
             setSending(false)
@@ -77,10 +77,10 @@ const UsernameEdit = ({ user, language }: Props) => {
     <>
       {user ? (
         <>
-          <h2>{t('EEditEmail')}</h2>
-          <p className={styles.p}>{t('ESendsAnEmailToTheNewAddressForVerification')}</p>
+          <h2>{t('EditEmail')}</h2>
+          <p className={styles.p}>{t('SendsAnEmailToTheNewAddressForVerification')}</p>
           <p className={`${styles.p} ${styles[`p-last`]}`}>
-            {t('ECurrentEmail')}: <strong>{user?.username}</strong>
+            {t('CurrentEmail')}: <strong>{user?.username}</strong>
           </p>
 
           <form onSubmit={handleUserSubmit} className={styles['edit-user']}>
@@ -94,7 +94,7 @@ const UsernameEdit = ({ user, language }: Props) => {
                   value={username}
                   onChange={({ target }) => setUsername(target.value.trim())}
                 />
-                <span>{t('EEmail')}</span>
+                <span>{t('Email')}</span>
               </label>
             </div>
 
@@ -108,12 +108,12 @@ const UsernameEdit = ({ user, language }: Props) => {
                   value={passwordOld}
                   onChange={({ target }) => setPasswordOld(target.value.trim())}
                 />
-                <span>{t('ECurrentPassword')}</span>
+                <span>{t('CurrentPassword')}</span>
               </label>
             </div>
 
             <button type='submit' disabled={sending}>
-              {t('EEdit')}
+              {t('Edit')}
             </button>
           </form>
         </>

@@ -59,7 +59,7 @@ const CardsContainer = ({
       setNewStatus(value)
       setSending(false)
     } else {
-      dispatch(notify(t('ESpecialCharactersNotAllowed'), true, 6))
+      dispatch(notify(t('SpecialCharactersNotAllowed'), true, 6))
       setSending(false)
     }
   }
@@ -120,11 +120,11 @@ const CardsContainer = ({
     const statusLowerCase = status.toLowerCase()
     switch (statusLowerCase) {
       case 'good':
-        return t('EGood')
+        return t('Good')
       case 'bad':
-        return t('EBad')
+        return t('Bad')
       case 'neutral':
-        return t('ENeutral')
+        return t('Neutral')
       default:
         return status.replace(/_/g, ' ')
     }
@@ -156,7 +156,7 @@ const CardsContainer = ({
           onClick={() => setNewStatus(status)}
           className={`narrow2 ${styles['change-status']} change-status`}
           wrapperClass='change-status-wrap'
-          tooltip={t('EEdit')}
+          tooltip={t('Edit')}
           x='left'
           y='below'
         >
@@ -178,11 +178,11 @@ const CardsContainer = ({
                     value={newStatus}
                     onChange={(e) => handleStatusNameChange(e)}
                   />
-                  <span>{t('EChange')}:</span>
+                  <span>{t('Change')}:</span>
                 </label>
               </div>
               <button type='submit' disabled={sending}>
-                {t('EChange')}
+                {t('Change')}
               </button>
               <button
                 type='button'
@@ -191,7 +191,7 @@ const CardsContainer = ({
                   deleteStatus(status)
                 }}
               >
-                {t('EDelete')}
+                {t('Delete')}
               </button>
             </form>
           </>

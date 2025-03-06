@@ -32,7 +32,7 @@ function FormMulti({ language }: { language: ELanguages }) {
     useMultistepForm([
       <Suspense
         fallback={
-          <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
+          <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
         }
       >
         <InitialForm
@@ -44,7 +44,7 @@ function FormMulti({ language }: { language: ELanguages }) {
       </Suspense>,
       <Suspense
         fallback={
-          <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
+          <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
         }
       >
         <MessageForm
@@ -56,7 +56,7 @@ function FormMulti({ language }: { language: ELanguages }) {
       </Suspense>,
       <Suspense
         fallback={
-          <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
+          <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
         }
       >
         <ExtrasForm
@@ -84,11 +84,11 @@ function FormMulti({ language }: { language: ELanguages }) {
           setTimeout(() => {
             setShowMessage(false)
           }, 100000)
-          dispatch(notify(t('EThankYouForYourMessage'), false, 8))
+          dispatch(notify(t('ThankYouForYourMessage'), false, 8))
         })
       } catch (error) {
         console.error('error', error)
-        alert(t('EThereWasAnErrorSendingTheMessage'))
+        alert(t('ThereWasAnErrorSendingTheMessage'))
       }
     }
   }
@@ -136,11 +136,11 @@ function FormMulti({ language }: { language: ELanguages }) {
   return (
     <div className={styles.wrapper}>
       {language !== ELanguages.fi && language !== ELanguages.en && (
-        <p>{t('EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo')}</p>
+        <p>{t('PleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo')}</p>
       )}
       <form ref={form} onSubmit={handleSubmit} aria-labelledby='steps'>
         <span id='steps' className={styles.steps}>
-          {t('EContactForm')} {t('EPart')}&nbsp;
+          {t('ContactForm')} {t('Part')}&nbsp;
           <span>
             {currentStepIndex + 1}&nbsp;/&nbsp;{steps.length}
           </span>
@@ -152,7 +152,7 @@ function FormMulti({ language }: { language: ELanguages }) {
               <Suspense
                 fallback={
                   <div className='flex center margin0auto textcenter'>
-                    {t('ELoading')}...
+                    {t('Loading')}...
                   </div>
                 }
               >
@@ -166,7 +166,7 @@ function FormMulti({ language }: { language: ELanguages }) {
               <Suspense
                 fallback={
                   <div className='flex center margin0auto textcenter'>
-                    {t('ELoading')}...
+                    {t('Loading')}...
                   </div>
                 }
               >
@@ -188,7 +188,7 @@ function FormMulti({ language }: { language: ELanguages }) {
         <div className={styles.btns} style={{ position: 'relative' }}>
           {!isFirstStep && (
             <button type='button' onClick={back}>
-              <span aria-hidden='true'>«</span> {t('EBack')}
+              <span aria-hidden='true'>«</span> {t('Back')}
             </button>
           )}
           {!isLastStep && (
@@ -198,8 +198,7 @@ function FormMulti({ language }: { language: ELanguages }) {
               className={isLastStep ? styles.submit : styles.next}
               onClick={handleNext}
             >
-              {sending ? t('ESendingEmail') : t('ENext')}{' '}
-              <span aria-hidden='true'>»</span>
+              {sending ? t('SendingEmail') : t('Next')} <span aria-hidden='true'>»</span>
             </button>
           )}
           {isLastStep && (
@@ -208,7 +207,7 @@ function FormMulti({ language }: { language: ELanguages }) {
               type='submit'
               disabled={sending}
             >
-              {sending ? t('ESendingEmail') : t('ESend')} <RiMailSendLine />
+              {sending ? t('SendingEmail') : t('Send')} <RiMailSendLine />
             </button>
           )}
           {showError && (
@@ -222,7 +221,7 @@ function FormMulti({ language }: { language: ELanguages }) {
                 letterSpacing: '0.04em',
               }}
             >
-              {t('EPleaseFillInTheFields')}
+              {t('PleaseFillInTheFields')}
             </div>
           )}
           {showMessage && (
@@ -237,7 +236,7 @@ function FormMulti({ language }: { language: ELanguages }) {
                 letterSpacing: '0.04em',
               }}
             >
-              {t('EThankYouForYourMessage')}
+              {t('ThankYouForYourMessage')}
             </div>
           )}
         </div>

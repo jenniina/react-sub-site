@@ -1,5 +1,11 @@
 import { Fragment } from 'react'
-import { ELanguages, ELanguagesLong, translations as t } from '../types'
+import {
+  ELanguages,
+  ELanguagesLong,
+  translations as t,
+  TranslationKey,
+  TranslationLang,
+} from '../types'
 import { SelectOption } from '../components/Select/Select'
 import {
   ColorBlock,
@@ -41,7 +47,7 @@ export const first3Words = (name: string, language: ELanguages): string => {
   // if name is less than 5 words, return the name
   if (name.split(' ').length <= 4) return name
   // else return the first 3 words
-  else return name.split(' ').slice(0, 3).join(' ') + ' ' + t['EEtc'][language]
+  else return name.split(' ').slice(0, 3).join(' ') + ' ' + t['Etc'][language]
 }
 
 export const options = (enumObj: typeof ELanguagesLong) => {
@@ -312,8 +318,10 @@ export function createSelectOptionsFromT(
   language: ELanguages
 ): SelectOption[] {
   return array.map((key) => ({
-    value: key,
-    label: t[key] ? t[key][language] : key,
+    value: key as string,
+    label: t[key as TranslationKey]
+      ? t[key as TranslationKey][language as TranslationLang]
+      : (key as string),
   }))
 }
 

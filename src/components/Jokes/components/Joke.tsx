@@ -52,7 +52,7 @@ const Joke = ({
       <article aria-live='polite' className={`joke ${visibleJoke ? 'fadeIn' : ''}`}>
         <p className={`${visibleJoke ? 'fadeIn' : ''} ${!delivery ? 'no-delivery' : ''}`}>
           <small>
-            {t('ECategoryTitle')}: {getCategoryInLanguage(jokeCategory, language)}
+            {t('CategoryTitle')}: {getCategoryInLanguage(jokeCategory, language)}
           </small>
         </p>
         <p className={`${visibleJoke ? 'fadeIn' : ''} ${!delivery ? 'no-delivery' : ''}`}>
@@ -68,7 +68,7 @@ const Joke = ({
         >
           <>
             <span {...(!reveal ? { 'aria-hidden': true } : { 'aria-hidden': false })}>
-              {t('EClickToReveal')}
+              {t('ClickToReveal')}
             </span>
             {delivery ? (
               <p aria-live='assertive' className={`${visibleJoke ? 'fadeIn' : ''}`}>
@@ -82,7 +82,7 @@ const Joke = ({
         {author ? (
           <p className={`author ${visibleJoke ? 'fadeIn' : ''}`}>
             <small>
-              {t('EAuthor')}: {author}
+              {t('Author')}: {author}
             </small>
           </p>
         ) : (
@@ -91,7 +91,7 @@ const Joke = ({
         {subCategoryResults.length > 0 ? (
           <p className={`sub-categories ${visibleJoke ? 'fadeIn' : ''}`}>
             <small>
-              {t('ECategoryTitle')}:{' '}
+              {t('CategoryTitle')}:{' '}
               {subCategoryResults.map((category) => category).join(', ')}
             </small>
           </p>
@@ -106,7 +106,7 @@ const Joke = ({
             disabled={sending}
             className={`submit ${visibleJoke ? 'fadeIn' : ''}`}
           >
-            {t('ESaveJoke')}
+            {t('SaveJoke')}
           </button>
           <button
             type='button'
@@ -121,7 +121,7 @@ const Joke = ({
               )
             }
           >
-            {t('EHide')}
+            {t('Hide')}
           </button>
         </div>
       ) : (

@@ -24,13 +24,13 @@ const Next = ({ language }: { language: ELanguages }) => {
   if (index < 14)
     return (
       <button className={`${styles.next}`} onClick={() => dispatch(nextQuestion())}>
-        {t('ENext')}
+        {t('Next')}
       </button>
     )
 
   return (
     <button className={`${styles.next}`} onClick={handleFinish}>
-      {t('EFinish')}
+      {t('Finish')}
     </button>
   )
 }

@@ -35,7 +35,7 @@ const Notification = ({ language = ELanguages.en, className }: Props) => {
             setClosed(true)
           }}
         >
-          <span>{t('EClose')}</span>
+          <span>{t('Close')}</span>
           <span aria-hidden='true' className='times'>
             &times;
           </span>

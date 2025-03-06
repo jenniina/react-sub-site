@@ -25,23 +25,23 @@ const Scores = ({ easy, medium, hard, language }: Props) => {
 
   return (
     <table className={styles.highscores}>
-      <caption>{t('EYourHighscores')}</caption>
+      <caption>{t('YourHighscores')}</caption>
       <thead>
         <tr className={styles.th}>
-          <th>{t('EDifficulty')}</th>
-          <th className={styles.score}>{t('EScore')}</th>
+          <th>{t('Difficulty')}</th>
+          <th className={styles.score}>{t('Score')}</th>
           {show && <th className={styles.percentage}>%</th>}
-          <th>{t('ESpeed')}</th>
+          <th>{t('Speed')}</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <th>{t('EEasy')}</th>
+          <th>{t('Easy')}</th>
           <td>{easy ? easy.score : 0}/300</td>
           {show && <td>{+((easy.score * 100) / 300).toFixed(1)}%</td>}
           <td>
             {easy.score === 0 || easy.time === 0 ? (
-              t('ENA')
+              t('NA')
             ) : (
               <>
                 {Math.floor(easy.time / 60) < 10 && '0'}
@@ -52,12 +52,12 @@ const Scores = ({ easy, medium, hard, language }: Props) => {
           </td>
         </tr>
         <tr>
-          <th>{t('EMedium')}</th>
+          <th>{t('Medium')}</th>
           <td>{medium ? medium.score : 0}/300</td>
           {show && <td>{+((medium.score * 100) / 300).toFixed(1)}%</td>}
           <td>
             {medium.score === 0 || medium.time === 0 ? (
-              t('ENA')
+              t('NA')
             ) : (
               <>
                 {Math.floor(medium.time / 60) < 10 && '0'}
@@ -68,12 +68,12 @@ const Scores = ({ easy, medium, hard, language }: Props) => {
           </td>
         </tr>
         <tr>
-          <th>{t('EHard')}</th>
+          <th>{t('Hard')}</th>
           <td>{hard ? hard.score : 0}/300</td>
           {show && <td>{+((hard.score * 100) / 300).toFixed(1)}%</td>}
           <td>
             {hard.score === 0 || hard.time === 0 ? (
-              t('ENA')
+              t('NA')
             ) : (
               <>
                 {Math.floor(hard.time / 60) < 10 && '0'}

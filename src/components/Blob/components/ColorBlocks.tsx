@@ -70,10 +70,10 @@ const ColorBlocks: FC<ColorBlockProps> = ({
               }`,
             }}
           >
-            <i className='color-alert'>{t('EActive')}</i>
+            <i className='color-alert'>{t('Active')}</i>
 
             <span className={`tooltip below ${index < 4 ? 'right' : 'left'}`}>
-              {t('EChangeColorInstructions')}
+              {t('ChangeColorInstructions')}
             </span>
           </button>
         )

@@ -26,11 +26,11 @@ const PasswordEdit = ({ user, language }: Props) => {
     setSending(true)
     try {
       if (password.trim() !== confirmPassword.trim()) {
-        dispatch(notify(t('EPasswordsDoNotMatch'), true, 5))
+        dispatch(notify(t('PasswordsDoNotMatch'), true, 5))
         setSending(false)
         return
       } else if (password.length < 10) {
-        dispatch(notify(t('EPasswordMustBeAtLeastTenCharacters'), true, 5))
+        dispatch(notify(t('PasswordMustBeAtLeastTenCharacters'), true, 5))
         setSending(false)
         return
       }
@@ -47,9 +47,9 @@ const PasswordEdit = ({ user, language }: Props) => {
           .then((res) => {
             if (res) {
               if (res.success === false) {
-                dispatch(notify(`${res.message || t('EError')}`, true, 5))
+                dispatch(notify(`${res.message || t('Error')}`, true, 5))
               } else {
-                dispatch(notify(`${res.message || t('EUserUpdated')}`, false, 5))
+                dispatch(notify(`${res.message || t('UserUpdated')}`, false, 5))
                 setPasswordOld('')
                 setPassword('')
                 setConfirmPassword('')
@@ -65,7 +65,7 @@ const PasswordEdit = ({ user, language }: Props) => {
               dispatch(notify(`${error.response.data.message}`, true, 5))
             } else {
               setTimeout(() => {
-                dispatch(notify(t('EUserNotUpdated'), true, 5))
+                dispatch(notify(t('UserNotUpdated'), true, 5))
               }, 2000)
             }
             setSending(false)
@@ -84,7 +84,7 @@ const PasswordEdit = ({ user, language }: Props) => {
     <>
       {user ? (
         <>
-          <h2>{t('EEditPassword')}</h2>
+          <h2>{t('EditPassword')}</h2>
 
           <form onSubmit={handleUserSubmit} className={styles['edit-user']}>
             <div className='input-wrap'>
@@ -97,7 +97,7 @@ const PasswordEdit = ({ user, language }: Props) => {
                   value={passwordOld}
                   onChange={({ target }) => setPasswordOld(target.value.trim())}
                 />
-                <span>{t('ECurrentPassword')}</span>
+                <span>{t('CurrentPassword')}</span>
               </label>
             </div>
             <div className='input-wrap'>
@@ -110,7 +110,7 @@ const PasswordEdit = ({ user, language }: Props) => {
                   value={password}
                   onChange={({ target }) => setPassword(target.value.trim())}
                 />
-                <span>{t('EPassword')}</span>
+                <span>{t('Password')}</span>
               </label>
             </div>
             <div className='input-wrap'>
@@ -123,11 +123,11 @@ const PasswordEdit = ({ user, language }: Props) => {
                   value={confirmPassword}
                   onChange={({ target }) => setConfirmPassword(target.value.trim())}
                 />
-                <span>{t('EConfirmPassword')}</span>
+                <span>{t('ConfirmPassword')}</span>
               </label>
             </div>
             <button type='submit' disabled={sending}>
-              {t('EEdit')}
+              {t('Edit')}
             </button>
           </form>
         </>

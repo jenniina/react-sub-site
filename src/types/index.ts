@@ -123,15 +123,10 @@ export enum ELanguageTitle {
   fi = 'Kieli',
 }
 
-type Translations = {
-  [key: string]: {
-    [key: string]: string
-  }
-}
-
 export type EGeneric<T> = {
   [key in keyof T]: T[key]
 }
+
 export const LanguageOfLanguage: TLanguageOfLanguage = {
   en: {
     English: 'English',
@@ -337,8 +332,14 @@ export type ELanguageOfLanguage = {
   fi: ELanguageOfLanguage_fi
 }
 
-export const translations: Translations = {
-  ELanguagesLong: {
+// type Translations = {
+//   [key: string]: {
+//     [key: string]: string
+//   }
+// }
+
+export const translations = {
+  LanguagesLong: {
     en: 'English',
     es: 'Español',
     fr: 'Français',
@@ -347,7 +348,7 @@ export const translations: Translations = {
     cs: 'Čeština',
     fi: 'Suomi',
   },
-  ELanguageTitle: {
+  LanguageTitle: {
     en: 'Language',
     es: 'Idioma',
     fr: 'Langue',
@@ -356,7 +357,7 @@ export const translations: Translations = {
     cs: 'Jazyk',
     fi: 'Kieli',
   },
-  ESelectLanguage: {
+  SelectLanguage: {
     en: 'Select Language',
     es: 'Seleccionar idioma',
     fr: 'Sélectionnez la langue',
@@ -365,7 +366,7 @@ export const translations: Translations = {
     cs: 'Vyberte jazyk',
     fi: 'Valitse kieli',
   },
-  ETheFollowingAppliesToLoggingInAndStoringUserInfo: {
+  TheFollowingAppliesToLoggingInAndStoringUserInfo: {
     en: 'The following information applies to logging in and storing user information.',
     es: 'La siguiente información se aplica a iniciar sesión y almacenar información del usuario.',
     fr: 'Les informations suivantes s appliquent à la connexion et au stockage des informations utilisateur.',
@@ -374,7 +375,7 @@ export const translations: Translations = {
     cs: 'Následující informace se vztahují k přihlášení a ukládání informací o uživatelích.',
     fi: 'Seuraavat tiedot koskevat sivuille kirjautumista ja käyttäjätietojen tallentamista.',
   },
-  EClarifications: {
+  Clarifications: {
     en: 'Clarifications',
     es: 'Aclaraciones',
     fr: 'Clarifications',
@@ -383,7 +384,7 @@ export const translations: Translations = {
     cs: 'Ujasnění',
     fi: 'Selvennyksiä',
   },
-  EFourSidedJewels: {
+  FourSidedJewels: {
     en: 'Four-sided jewels',
     es: 'Joyas de cuatro lados',
     fr: 'Joyaux à quatre côtés',
@@ -392,7 +393,7 @@ export const translations: Translations = {
     cs: 'Čtyřstranné šperky',
     fi: 'Nelisivuiset jalokivet',
   },
-  EEightSidedJewels: {
+  EightSidedJewels: {
     en: 'Eight-sided jewels',
     es: 'Joyas de ocho lados',
     fr: 'Joyaux à huit côtés',
@@ -401,7 +402,7 @@ export const translations: Translations = {
     cs: 'Osmistranné šperky',
     fi: 'Kahdeksansivuiset jalokivet',
   },
-  EJokePage: {
+  JokePage: {
     en: 'Joke page',
     es: 'Página de chiste',
     fr: 'Page de blague',
@@ -410,7 +411,7 @@ export const translations: Translations = {
     cs: 'Stránka vtipů',
     fi: 'Vitsisivu',
   },
-  EContains: {
+  Contains: {
     en: 'Contains',
     es: 'Contiene',
     fr: 'Contient',
@@ -419,7 +420,7 @@ export const translations: Translations = {
     cs: 'Obsahuje',
     fi: 'Sisältää',
   },
-  EActive: {
+  Active: {
     en: 'Active',
     es: 'Activo',
     fr: 'Actif',
@@ -428,7 +429,7 @@ export const translations: Translations = {
     cs: 'Aktivní',
     fi: 'Aktiivinen',
   },
-  EStop: {
+  Stop: {
     en: 'Stop',
     es: 'Detener',
     fr: 'Arrêter',
@@ -437,7 +438,7 @@ export const translations: Translations = {
     cs: 'Zastavit',
     fi: 'Lopeta',
   },
-  ETryWithADifferentBrowser: {
+  TryWithADifferentBrowser: {
     en: 'Try with a different browser',
     es: 'Intente con un navegador diferente',
     fr: 'Essayez avec un navigateur différent',
@@ -446,7 +447,7 @@ export const translations: Translations = {
     cs: 'Zkuste to s jiným prohlížečem',
     fi: 'Kokeile toisella selaimella',
   },
-  ESearchParameters: {
+  SearchParameters: {
     en: 'Search parameters',
     es: 'Parámetros de búsqueda',
     fr: 'Paramètres de recherche',
@@ -455,7 +456,7 @@ export const translations: Translations = {
     cs: 'Parametry hledání',
     fi: 'Hakuparametrit',
   },
-  EFetchMore: {
+  FetchMore: {
     en: 'Fetch more',
     es: 'Obtener más',
     fr: 'Chercher plus',
@@ -464,7 +465,7 @@ export const translations: Translations = {
     cs: 'Načíst více',
     fi: 'Hae lisää',
   },
-  ENoMoreResults: {
+  NoMoreResults: {
     en: 'No more results',
     es: 'No hay más resultados',
     fr: 'Pas plus de résultats',
@@ -473,7 +474,7 @@ export const translations: Translations = {
     cs: 'Žádné další výsledky',
     fi: 'Ei enempää tuloksia',
   },
-  ECurrent: {
+  Current: {
     en: 'Current',
     es: 'Actual',
     fr: 'Courant',
@@ -482,7 +483,7 @@ export const translations: Translations = {
     cs: 'Aktuální',
     fi: 'Nykyinen',
   },
-  EUpdated: {
+  Updated: {
     en: 'Updated',
     es: 'Actualizado',
     fr: 'Mis à jour',
@@ -491,7 +492,7 @@ export const translations: Translations = {
     cs: 'Aktualizováno',
     fi: 'Päivitetty',
   },
-  EClickToChooseSearchTerm: {
+  ClickToChooseSearchTerm: {
     en: 'Click a word to choose a search term',
     es: 'Haga clic en una palabra para elegir un término de búsqueda',
     fr: 'Cliquez sur un mot pour choisir un terme de recherche',
@@ -500,7 +501,7 @@ export const translations: Translations = {
     cs: 'Klikněte na slovo, abyste vybrali hledaný výraz',
     fi: 'Valitse hakutermi napsauttamalla sanaa',
   },
-  EDay: {
+  Day: {
     en: 'Day',
     es: 'Día',
     fr: 'Jour',
@@ -509,7 +510,7 @@ export const translations: Translations = {
     cs: 'Den',
     fi: 'Päivä',
   },
-  EMonth: {
+  Month: {
     en: 'Month',
     es: 'Mes',
     fr: 'Mois',
@@ -518,7 +519,7 @@ export const translations: Translations = {
     cs: 'Měsíc',
     fi: 'Kuukausi',
   },
-  EYear: {
+  Year: {
     en: 'Year',
     es: 'Año',
     fr: 'Année',
@@ -527,7 +528,7 @@ export const translations: Translations = {
     cs: 'Rok',
     fi: 'Vuosi',
   },
-  EHour: {
+  Hour: {
     en: 'Hour',
     es: 'Hora',
     fr: 'Heure',
@@ -536,7 +537,7 @@ export const translations: Translations = {
     cs: 'Hodina',
     fi: 'Tunti',
   },
-  EMinute: {
+  Minute: {
     en: 'Minute',
     es: 'Minuto',
     fr: 'Minute',
@@ -545,7 +546,7 @@ export const translations: Translations = {
     cs: 'Minuta',
     fi: 'Minuutti',
   },
-  ESecond: {
+  Second: {
     en: 'Second',
     es: 'Segundo',
     fr: 'Seconde',
@@ -554,7 +555,7 @@ export const translations: Translations = {
     cs: 'Sekunda',
     fi: 'Sekunti',
   },
-  EDate: {
+  Date: {
     en: 'Date',
     es: 'Fecha',
     fr: 'Date',
@@ -563,7 +564,7 @@ export const translations: Translations = {
     cs: 'Datum',
     fi: 'Päivämäärä',
   },
-  ETime: {
+  Time: {
     en: 'Time',
     es: 'Hora',
     fr: 'Heure',
@@ -572,7 +573,7 @@ export const translations: Translations = {
     cs: 'Čas',
     fi: 'Aika',
   },
-  EYearMustBeBetweenCurrentYearAnd10YearsFromNow: {
+  YearMustBeBetweenCurrentYearAnd10YearsFromNow: {
     en: 'Year must be between current year and 10 years from now',
     es: 'El año debe estar entre el año actual y 10 años a partir de ahora',
     fr: 'L année doit être comprise entre l année en cours et 10 ans à partir de maintenant',
@@ -581,7 +582,7 @@ export const translations: Translations = {
     cs: 'Rok musí být mezi aktuálním rokem a 10 let od nynějška',
     fi: 'Vuoden on oltava nykyisen vuoden ja 10 vuoden päästä',
   },
-  ESet: {
+  Set: {
     en: 'Set',
     es: 'Establecer',
     fr: 'Ensemble',
@@ -590,7 +591,7 @@ export const translations: Translations = {
     cs: 'Nastavit',
     fi: 'Aseta',
   },
-  EFiltered: {
+  Filtered: {
     en: 'Filtered',
     es: 'Filtrado',
     fr: 'Filtré',
@@ -599,7 +600,7 @@ export const translations: Translations = {
     cs: 'Filtrováno',
     fi: 'Suodatettu',
   },
-  ECancel: {
+  Cancel: {
     en: 'Cancel',
     es: 'Cancelar',
     fr: 'Annuler',
@@ -608,7 +609,7 @@ export const translations: Translations = {
     cs: 'Zrušit',
     fi: 'Peruuta',
   },
-  EToday: {
+  Today: {
     en: 'Today',
     es: 'Hoy',
     fr: 'Aujourd hui',
@@ -617,7 +618,7 @@ export const translations: Translations = {
     cs: 'Dnes',
     fi: 'Tänään',
   },
-  ECharactersLeft: {
+  CharactersLeft: {
     en: 'characters left',
     es: 'caracteres restantes',
     fr: 'caractères restants',
@@ -626,7 +627,7 @@ export const translations: Translations = {
     cs: 'znaků zbývá',
     fi: 'merkkiä jäljellä',
   },
-  EMax: {
+  Max: {
     en: 'max',
     es: 'máx',
     fr: 'max',
@@ -635,7 +636,7 @@ export const translations: Translations = {
     cs: 'max',
     fi: 'max',
   },
-  ECharacters: {
+  Characters: {
     en: 'characters',
     es: 'caracteres',
     fr: 'caractères',
@@ -644,7 +645,7 @@ export const translations: Translations = {
     cs: 'znaky',
     fi: 'merkkiä',
   },
-  ELogin: {
+  Login: {
     en: 'Log In',
     es: 'Iniciar sesión',
     fr: "S'identifier",
@@ -653,7 +654,7 @@ export const translations: Translations = {
     cs: 'Přihlásit se',
     fi: 'Kirjaudu sisään',
   },
-  ELogout: {
+  Logout: {
     en: 'Log Out',
     es: 'Cerrar sesión',
     fr: 'Se déconnecter',
@@ -662,7 +663,7 @@ export const translations: Translations = {
     cs: 'Odhlásit se',
     fi: 'Kirjaudu ulos',
   },
-  ELoggedOut: {
+  LoggedOut: {
     en: 'Logged out',
     es: 'Desconectado',
     fr: 'Déconnecté',
@@ -671,7 +672,7 @@ export const translations: Translations = {
     cs: 'Odhlášeno',
     fi: 'Kirjauduttu ulos',
   },
-  ERegister: {
+  Register: {
     en: 'Register',
     es: 'Registrarse',
     fr: "S'inscrire",
@@ -680,7 +681,7 @@ export const translations: Translations = {
     cs: 'Registrovat',
     fi: 'Rekisteröidy',
   },
-  ERegistration: {
+  Registration: {
     en: 'Registration',
     es: 'Registro',
     fr: 'Inscription',
@@ -689,7 +690,7 @@ export const translations: Translations = {
     cs: 'Registrace',
     fi: 'Rekisteröinti',
   },
-  EForgotPassword: {
+  ForgotPassword: {
     en: 'Forgot Password?',
     es: '¿Olvidaste tu contraseña?',
     fr: 'Mot de passe oublié?',
@@ -698,7 +699,7 @@ export const translations: Translations = {
     cs: 'Zapomněli jste heslo?',
     fi: 'Unohtuiko salasana?',
   },
-  ESendResetLink: {
+  SendResetLink: {
     en: 'Send Reset Link',
     es: 'Enviar enlace de restablecimiento',
     fr: 'Envoyer le lien de réinitialisation',
@@ -707,7 +708,7 @@ export const translations: Translations = {
     cs: 'Odeslat odkaz na obnovení',
     fi: 'Lähetä nollauslinkki',
   },
-  EEmail: {
+  Email: {
     en: 'Email',
     es: 'Correo electrónico',
     fr: 'Email',
@@ -716,7 +717,7 @@ export const translations: Translations = {
     cs: 'E-mailem',
     fi: 'Sähköposti',
   },
-  EEmailAddress: {
+  EmailAddress: {
     en: 'Email Address',
     es: 'Dirección de correo electrónico',
     fr: 'Adresse e-mail',
@@ -725,7 +726,7 @@ export const translations: Translations = {
     cs: 'E-mailová adresa',
     fi: 'Sähköpostiosoite',
   },
-  ENickname: {
+  Nickname: {
     en: 'Nickname',
     es: 'Apodo',
     fr: 'Surnom',
@@ -734,7 +735,7 @@ export const translations: Translations = {
     cs: 'Přezdívka',
     fi: 'Nimimerkki',
   },
-  EPassword: {
+  Password: {
     en: 'Password',
     es: 'Contraseña',
     fr: 'Mot de passe',
@@ -743,7 +744,7 @@ export const translations: Translations = {
     cs: 'Heslo',
     fi: 'Salasana',
   },
-  EConfirmPassword: {
+  ConfirmPassword: {
     en: 'Confirm Password',
     es: 'Confirmar contraseña',
     fr: 'Confirmez le mot de passe',
@@ -752,7 +753,7 @@ export const translations: Translations = {
     cs: 'Potvrďte heslo',
     fi: 'Vahvista salasana',
   },
-  ERegistrationSuccesful: {
+  RegistrationSuccesful: {
     en: 'Registration successful',
     es: 'Registro exitoso',
     fr: 'Inscription réussie',
@@ -761,7 +762,7 @@ export const translations: Translations = {
     cs: 'Registrace úspěšná',
     fi: 'Rekisteröinti onnistui',
   },
-  EPleaseCheckYourEmailForYourVerificationLink: {
+  PleaseCheckYourEmailForYourVerificationLink: {
     en: 'Please check your email for your verification link',
     es: 'Por favor revise su correo electrónico para obtener su enlace de verificación',
     fr: 'Veuillez vérifier votre e-mail pour votre lien de vérification',
@@ -770,7 +771,7 @@ export const translations: Translations = {
     cs: 'Zkontrolujte svůj e-mail na ověřovací odkaz',
     fi: 'Tarkista sähköpostisi löytääksesi sinne lähetetyn vahvistuslinkin',
   },
-  EPleaseNote: {
+  PleaseNote: {
     en: 'Please note',
     es: 'Tenga en cuenta',
     fr: 'Veuillez noter',
@@ -779,7 +780,7 @@ export const translations: Translations = {
     cs: 'Vezměte prosím na vědomí',
     fi: 'Huomaa',
   },
-  EError: {
+  Error: {
     en: 'Error',
     es: 'Error',
     fr: 'Erreur',
@@ -788,7 +789,7 @@ export const translations: Translations = {
     cs: 'Chyba',
     fi: 'Virhe',
   },
-  ELoggingIn: {
+  LoggingIn: {
     en: 'Logging in...',
     es: 'Iniciando sesión...',
     fr: 'Connexion en cours...',
@@ -797,7 +798,7 @@ export const translations: Translations = {
     cs: 'Přihlašování...',
     fi: 'Kirjaudutaan...',
   },
-  ESendingEmail: {
+  SendingEmail: {
     en: 'Sending email...',
     es: 'Enviando correo electrónico...',
     fr: "Envoi d'email...",
@@ -806,7 +807,7 @@ export const translations: Translations = {
     cs: 'Odesílání e-mailu...',
     fi: 'Lähetetään sähköpostia...',
   },
-  EEmailSent: {
+  EmailSent: {
     en: 'Email sent',
     es: 'Correo electrónico enviado',
     fr: 'Email envoyé',
@@ -815,7 +816,7 @@ export const translations: Translations = {
     cs: 'E-mail odeslán',
     fi: 'Sähköposti lähetetty',
   },
-  EPleaseGiveValidEmail: {
+  PleaseGiveValidEmail: {
     en: 'Please give valid email',
     es: 'Por favor, dé un correo electrónico válido',
     fr: 'Veuillez donner un email valide',
@@ -824,7 +825,7 @@ export const translations: Translations = {
     cs: 'Zadejte platný e-mail',
     fi: 'Anna kelvollinen sähköpostiosoite',
   },
-  EPasswordsDoNotMatch: {
+  PasswordsDoNotMatch: {
     en: 'Passwords do not match',
     es: 'Las contraseñas no coinciden',
     fr: 'Les mots de passe ne correspondent pas',
@@ -833,7 +834,7 @@ export const translations: Translations = {
     cs: 'Hesla se neshodují',
     fi: 'Salasanat eivät täsmää',
   },
-  EChangesToThisDisclaimer: {
+  ChangesToThisDisclaimer: {
     en: 'Changes to This Disclaimer',
     es: 'Cambios a este descargo de responsabilidad',
     fr: 'Changements à cet avis de non-responsabilité',
@@ -842,7 +843,7 @@ export const translations: Translations = {
     cs: 'Změny tohoto prohlášení',
     fi: 'Muutokset tähän vastuuvapauslausekkeeseen',
   },
-  EWeMayUpdateThisDisclaimerFromTimeToTime: {
+  WeMayUpdateThisDisclaimerFromTimeToTime: {
     en: 'We may update this disclaimer from time to time. We will notify you of any significant changes by posting the new disclaimer on our website.',
     es: 'Podemos actualizar este descargo de responsabilidad de vez en cuando. Le notificaremos cualquier cambio significativo publicando el nuevo descargo de responsabilidad en nuestro sitio web.',
     fr: 'Nous pouvons mettre à jour cet avis de non-responsabilité de temps à autre. Nous vous informerons de tout changement significatif en publiant le nouvel avis de non-responsabilité sur notre site Web.',
@@ -851,7 +852,7 @@ export const translations: Translations = {
     cs: 'Můžeme aktualizovat toto prohlášení z času na čas. O jakýchkoli významných změnách vás budeme informovat zveřejněním nového prohlášení na našich webových stránkách.',
     fi: 'Voimme päivittää tätä vastuuvapauslauseketta aika ajoin. Ilmoitamme sinulle merkittävistä muutoksista julkaisemalla uuden vastuuvapauslausekkeen verkkosivustollamme.',
   },
-  EByUsingOurService: {
+  ByUsingOurService: {
     en: 'By using our service, you agree to the collection and use of your information in accordance with this disclaimer.',
     es: 'Al utilizar nuestro servicio, acepta la recopilación y el uso de su información de acuerdo con este descargo de responsabilidad.',
     fr: 'En utilisant notre service, vous acceptez la collecte et l utilisation de vos informations conformément à cet avis de non-responsabilité.',
@@ -860,7 +861,7 @@ export const translations: Translations = {
     cs: 'Používáním našich služeb souhlasíte se sběrem a použitím vašich informací v souladu s tímto prohlášením.',
     fi: 'Käyttämällä palveluamme hyväksyt tietojesi keräämisen ja käytön tämän vastuuvapauslausekkeen mukaisesti.',
   },
-  ELastUpdated: {
+  LastUpdated: {
     en: 'Last updated',
     es: 'Última actualización',
     fr: 'Dernière mise à jour',
@@ -869,7 +870,7 @@ export const translations: Translations = {
     cs: 'Naposledy aktualizováno',
     fi: 'Viimeksi päivitetty',
   },
-  EBackToStart: {
+  BackToStart: {
     en: 'Back to start',
     es: 'Volver al inicio',
     fr: 'Retour au début',
@@ -878,7 +879,7 @@ export const translations: Translations = {
     cs: 'Zpět na začátek',
     fi: 'Takaisin alkuun',
   },
-  EToLastPage: {
+  ToLastPage: {
     en: 'To last page',
     es: 'A la última página',
     fr: 'À la dernière page',
@@ -887,7 +888,7 @@ export const translations: Translations = {
     cs: 'Na poslední stránku',
     fi: 'Viimeiselle sivulle',
   },
-  EShape: {
+  Shape: {
     en: 'Shape',
     es: 'Forma',
     fr: 'Forme',
@@ -896,7 +897,7 @@ export const translations: Translations = {
     cs: 'Tvar',
     fi: 'Muoto',
   },
-  EBubble: {
+  Bubble: {
     en: 'Bubble',
     es: 'Burbuja',
     fr: 'Bulle',
@@ -905,7 +906,7 @@ export const translations: Translations = {
     cs: 'Bublina',
     fi: 'Kupla',
   },
-  EEye: {
+  Eye: {
     en: 'Eye',
     es: 'Ojo',
     fr: 'Œil',
@@ -914,7 +915,7 @@ export const translations: Translations = {
     cs: 'Okno',
     fi: 'Silmä',
   },
-  EOlderNews: {
+  OlderNews: {
     en: 'Older news',
     es: 'Noticias antiguas',
     fr: 'Anciennes nouvelles',
@@ -923,7 +924,7 @@ export const translations: Translations = {
     cs: 'Starší zprávy',
     fi: 'Vanhemmat uutiset',
   },
-  EAddedAnotherInstanceOfTheBlobArtApp: {
+  AddedAnotherInstanceOfTheBlobArtApp: {
     en: 'Added another instance of the Blob Art app',
     es: 'Añadida otra instancia de la aplicación Blob Art',
     fr: 'Ajouté une autre instance de l application Blob Art',
@@ -932,7 +933,7 @@ export const translations: Translations = {
     cs: 'Přidána další instance aplikace Blob Art',
     fi: 'Lisätty toinen instanssi Blob Art -sovelluksesta',
   },
-  ENews: {
+  News: {
     en: 'News',
     es: 'Noticias',
     fr: 'Actualités',
@@ -941,7 +942,7 @@ export const translations: Translations = {
     cs: 'Zprávy',
     fi: 'Uutiset',
   },
-  EItemsPerPage: {
+  ItemsPerPage: {
     en: 'Items per page',
     es: 'Elementos por página',
     fr: 'Articles par page',
@@ -950,7 +951,7 @@ export const translations: Translations = {
     cs: 'Položek na stránku',
     fi: 'Kohdetta sivua kohden',
   },
-  EPerPage: {
+  PerPage: {
     en: 'per page',
     es: 'por página',
     fr: 'par page',
@@ -959,7 +960,7 @@ export const translations: Translations = {
     cs: 'na stránku',
     fi: 'sivua kohden',
   },
-  ENewName: {
+  NewName: {
     en: 'New name',
     es: 'Nuevo nombre',
     fr: 'Nouveau nom',
@@ -968,7 +969,7 @@ export const translations: Translations = {
     cs: 'Nové jméno',
     fi: 'Uusi nimi',
   },
-  EBookApp: {
+  BookApp: {
     en: 'Book App (In English)',
     es: 'Aplicación de libros (en inglés)',
     fr: 'Application de livre (en anglais)',
@@ -977,7 +978,7 @@ export const translations: Translations = {
     cs: 'Aplikace knih (v angličtině)',
     fi: 'Kirja-sovellus (englanniksi)',
   },
-  ETheWebServiceIsHostedAtRenderCom: {
+  TheWebServiceIsHostedAtRenderCom: {
     en: 'The web service is hosted at Render.com for free, with 512 MB RAM and 0.1 CPU, hence requiring a little patience to browse. The Apollo server is connected to:',
     es: 'El servicio web está alojado en Render.com de forma gratuita, con 512 MB de RAM y 0.1 CPU, por lo que requiere un poco de paciencia para navegar. El servidor de Apollo está conectado a:',
     fr: 'Le service Web est hébergé sur Render.com gratuitement, avec 512 Mo de RAM et 0,1 CPU, nécessitant donc un peu de patience pour naviguer. Le serveur Apollo est connecté à:',
@@ -986,7 +987,7 @@ export const translations: Translations = {
     cs: 'Webová služba je hostována na Render.com zdarma, s 512 MB RAM a 0,1 CPU, a proto vyžaduje trochu trpělivosti při procházení. Server Apollo je připojen k:',
     fi: 'Verkkopalvelu on majoitettu Render.comiin ilmaiseksi, jossa on 512 Mt RAM-muistia ja 0,1 CPU:ta, joten vaatii hieman kärsivällisyyttä selaamiseen. Apollo-palvelin on yhteydessä:',
   },
-  EMongoDBAtlasDatabase: {
+  MongoDBAtlasDatabase: {
     en: 'MongoDB Atlas database',
     es: 'Base de datos de MongoDB Atlas',
     fr: 'Base de données MongoDB Atlas',
@@ -995,7 +996,7 @@ export const translations: Translations = {
     cs: 'Databáze MongoDB Atlas',
     fi: 'MongoDB Atlas -tietokanta',
   },
-  EConfirm: {
+  Confirm: {
     en: 'Confirm',
     es: 'Confirmar',
     fr: 'Confirmer',
@@ -1004,7 +1005,7 @@ export const translations: Translations = {
     cs: 'Potvrdit',
     fi: 'Vahvista',
   },
-  EEtc: {
+  Etc: {
     en: 'etc.',
     es: 'etc.',
     fr: 'etc.',
@@ -1013,7 +1014,7 @@ export const translations: Translations = {
     cs: 'atd.',
     fi: 'jne.',
   },
-  ETurnRandomMovementOff: {
+  TurnRandomMovementOff: {
     en: 'Turn random movement off',
     es: 'Apagar movimiento aleatorio',
     fr: 'Désactiver le mouvement aléatoire',
@@ -1022,7 +1023,7 @@ export const translations: Translations = {
     cs: 'Vypnout náhodný pohyb',
     fi: 'Kytke satunnainen liike pois päältä',
   },
-  ERandomMovement: {
+  RandomMovement: {
     en: 'Random movement',
     es: 'Movimiento aleatorio',
     fr: 'Mouvement aléatoire',
@@ -1031,7 +1032,7 @@ export const translations: Translations = {
     cs: 'Náhodný pohyb',
     fi: 'Satunnainen liike',
   },
-  ETurnRandomMovementOn: {
+  TurnRandomMovementOn: {
     en: 'Turn random movement on',
     es: 'Encender movimiento aleatorio',
     fr: 'Activer le mouvement aléatoire',
@@ -1040,7 +1041,7 @@ export const translations: Translations = {
     cs: 'Zapnout náhodný pohyb',
     fi: 'Kytke satunnainen liike päälle',
   },
-  EItIsNotEmpty: {
+  ItIsNotEmpty: {
     en: 'It is not empty!',
     es: '¡No está vacío!',
     fr: 'Ce n est pas vide!',
@@ -1049,7 +1050,7 @@ export const translations: Translations = {
     cs: 'Není prázdné!',
     fi: 'Se ei ole tyhjä!',
   },
-  EAddANewCategory: {
+  AddANewCategory: {
     en: 'Add a new category',
     es: 'Agregar una nueva categoría',
     fr: 'Ajouter une nouvelle catégorie',
@@ -1058,7 +1059,7 @@ export const translations: Translations = {
     cs: 'Přidat novou kategorii',
     fi: 'Lisää uusi kategoria',
   },
-  ECannotRemoveLastCategory: {
+  CannotRemoveLastCategory: {
     en: 'Cannot remove last category',
     es: 'No se puede eliminar la última categoría',
     fr: 'Impossible de supprimer la dernière catégorie',
@@ -1067,7 +1068,7 @@ export const translations: Translations = {
     cs: 'Nelze odebrat poslední kategorii',
     fi: 'Viimeistä kategoriaa ei voi poistaa',
   },
-  ECannotAddMoreCategories: {
+  CannotAddMoreCategories: {
     en: 'Cannot add more categories',
     es: 'No se pueden agregar más categorías',
     fr: 'Impossible d ajouter plus de catégories',
@@ -1076,7 +1077,7 @@ export const translations: Translations = {
     cs: 'Nelze přidat další kategorie',
     fi: 'Ei voi lisätä enempää kategorioita',
   },
-  EAMaxOf30CharactersPlease: {
+  AMaxOf30CharactersPlease: {
     en: 'A maximum of 30 characters, please',
     es: 'Un máximo de 30 caracteres, por favor',
     fr: "Un maximum de 30 caractères, s'il vous plaît",
@@ -1085,7 +1086,7 @@ export const translations: Translations = {
     cs: 'Maximálně 30 znaků, prosím',
     fi: 'Enintään 30 merkkiä, kiitos',
   },
-  EAMaxOf20CharactersPlease: {
+  AMaxOf20CharactersPlease: {
     en: 'A maximum of 20 characters, please',
     es: 'Un máximo de 20 caracteres, por favor',
     fr: "Un maximum de 20 caractères, s'il vous plaît",
@@ -1094,7 +1095,7 @@ export const translations: Translations = {
     cs: 'Maximálně 20 znaků, prosím',
     fi: 'Enintään 20 merkkiä, kiitos',
   },
-  ENameTooLong: {
+  NameTooLong: {
     en: 'The name is too long',
     es: 'El nombre es demasiado largo',
     fr: 'Le nom est trop long',
@@ -1103,7 +1104,7 @@ export const translations: Translations = {
     cs: 'Název je příliš dlouhý',
     fi: 'Nimi on liian pitkä',
   },
-  ELoading: {
+  Loading: {
     en: 'Loading',
     es: 'Cargando',
     fr: 'Chargement',
@@ -1112,7 +1113,7 @@ export const translations: Translations = {
     cs: 'Načítání',
     fi: 'Ladataan',
   },
-  ECopiedToClipboard: {
+  CopiedToClipboard: {
     en: 'Copied to clipboard!',
     es: '¡Copiado al portapapeles!',
     fr: 'Copié dans le presse-papiers!',
@@ -1121,7 +1122,7 @@ export const translations: Translations = {
     cs: 'Zkopírováno do schránky!',
     fi: 'Kopioitu leikepöydälle!',
   },
-  EFailedToCopy: {
+  FailedToCopy: {
     en: 'Failed to copy!',
     es: '¡Error al copiar!',
     fr: 'Échec de la copie!',
@@ -1130,7 +1131,7 @@ export const translations: Translations = {
     cs: 'Kopírování se nezdařilo!',
     fi: 'Kopiointi epäonnistui!',
   },
-  ECopyText: {
+  CopyText: {
     en: 'Copy text',
     es: 'Copiar texto',
     fr: 'Copier le texte',
@@ -1139,7 +1140,7 @@ export const translations: Translations = {
     cs: 'Kopírovat text',
     fi: 'Kopioi teksti',
   },
-  ECopy: {
+  Copy: {
     en: 'Copy',
     es: 'Copiar',
     fr: 'Copier',
@@ -1148,7 +1149,7 @@ export const translations: Translations = {
     cs: 'Kopírovat',
     fi: 'Kopioi',
   },
-  ECopyToClipboard: {
+  CopyToClipboard: {
     en: 'Copy to clipboard',
     es: 'Copiar al portapapeles',
     fr: 'Copier dans le presse-papiers',
@@ -1157,7 +1158,7 @@ export const translations: Translations = {
     cs: 'Kopírovat do schránky',
     fi: 'Kopioi leikepöydälle',
   },
-  EMove: {
+  Move: {
     en: 'Move',
     es: 'Mover',
     fr: 'Déplacer',
@@ -1166,7 +1167,7 @@ export const translations: Translations = {
     cs: 'Přesunout',
     fi: 'Siirrä',
   },
-  ETarget: {
+  Target: {
     en: 'Target',
     es: 'Objetivo',
     fr: 'Cible',
@@ -1175,7 +1176,7 @@ export const translations: Translations = {
     cs: 'Cíl',
     fi: 'Kohde',
   },
-  EToTarget: {
+  ToTarget: {
     en: 'To target',
     es: 'A objetivo',
     fr: 'À la cible',
@@ -1184,7 +1185,7 @@ export const translations: Translations = {
     cs: 'Na cíl',
     fi: 'Kohteeseen',
   },
-  EAdd: {
+  Add: {
     en: 'Add',
     es: 'Añadir',
     fr: 'Ajouter',
@@ -1193,7 +1194,7 @@ export const translations: Translations = {
     cs: 'Přidat',
     fi: 'Lisää',
   },
-  ESubtract: {
+  Subtract: {
     en: 'Subtract',
     es: 'Restar',
     fr: 'Soustraire',
@@ -1202,7 +1203,7 @@ export const translations: Translations = {
     cs: 'Odečíst',
     fi: 'Vähennä',
   },
-  EStore: {
+  Store: {
     en: 'Store',
     es: 'Almacenar',
     fr: 'Magasin',
@@ -1211,7 +1212,7 @@ export const translations: Translations = {
     cs: 'Obchod',
     fi: 'Kauppa',
   },
-  EWebpagesAndGraphicDesign: {
+  WebpagesAndGraphicDesign: {
     en: 'Webpages and graphic design',
     es: 'Páginas web y diseño gráfico',
     fr: 'Pages web et design graphique',
@@ -1220,7 +1221,7 @@ export const translations: Translations = {
     cs: 'Webové stránky a grafický design',
     fi: 'Verkkosivut ja graafinen suunnittelu',
   },
-  EMisc: {
+  Misc: {
     en: 'Misc',
     es: 'Varios',
     fr: 'Divers',
@@ -1229,7 +1230,7 @@ export const translations: Translations = {
     cs: 'Různé',
     fi: 'Sekalaista',
   },
-  EWebsite: {
+  Website: {
     en: 'Website',
     es: 'Sitio web',
     fr: 'Site web',
@@ -1238,7 +1239,7 @@ export const translations: Translations = {
     cs: 'Webová stránka',
     fi: 'Verkkosivusto',
   },
-  EWebsiteDesign: {
+  WebsiteDesign: {
     en: 'Website design',
     es: 'Diseño de sitio web',
     fr: 'Conception de site web',
@@ -1247,7 +1248,7 @@ export const translations: Translations = {
     cs: 'Návrh webových stránek',
     fi: 'Verkkosivujen suunnittelu',
   },
-  EName: {
+  Name: {
     en: 'Name',
     es: 'Nombre',
     fr: 'Nom',
@@ -1256,7 +1257,7 @@ export const translations: Translations = {
     cs: 'Jméno',
     fi: 'Nimi',
   },
-  EMoreInformation: {
+  MoreInformation: {
     en: 'More information',
     es: 'Más información',
     fr: 'Plus d informations',
@@ -1265,7 +1266,7 @@ export const translations: Translations = {
     cs: 'Více informací',
     fi: 'Lisätietoja',
   },
-  ERequestsIdeasAndLinksForInspiration: {
+  RequestsIdeasAndLinksForInspiration: {
     en: 'Requests, ideas and links for inspiration',
     es: 'Solicitudes, ideas y enlaces para inspiración',
     fr: 'Demandes, idées et liens pour l inspiration',
@@ -1274,7 +1275,7 @@ export const translations: Translations = {
     cs: 'Žádosti, nápady a odkazy pro inspiraci',
     fi: 'Toiveita, ideoita ja linkkejä inspiraatioon',
   },
-  EInfo: {
+  Info: {
     en: 'Info',
     es: 'Información',
     fr: 'Info',
@@ -1283,7 +1284,7 @@ export const translations: Translations = {
     cs: 'Info',
     fi: 'Info',
   },
-  ERememberToSave: {
+  RememberToSave: {
     en: 'Remember to save!',
     es: '¡Recuerda guardar!',
     fr: 'N oubliez pas de sauvegarder!',
@@ -1292,7 +1293,7 @@ export const translations: Translations = {
     cs: 'Nezapomeňte uložit!',
     fi: 'Muista tallentaa!',
   },
-  ERemember: {
+  Remember: {
     en: 'Remember',
     es: 'Recordar',
     fr: 'Se souvenir',
@@ -1301,7 +1302,7 @@ export const translations: Translations = {
     cs: 'Pamatovat',
     fi: 'Muista',
   },
-  EHide: {
+  Hide: {
     en: 'Hide',
     es: 'Ocultar',
     fr: 'Cacher',
@@ -1310,7 +1311,7 @@ export const translations: Translations = {
     cs: 'Skrýt',
     fi: 'Piilota',
   },
-  EShow: {
+  Show: {
     en: 'Show',
     es: 'Mostrar',
     fr: 'Montrer',
@@ -1319,7 +1320,7 @@ export const translations: Translations = {
     cs: 'Ukázat',
     fi: 'Näytä',
   },
-  EStatus: {
+  Status: {
     en: 'Status',
     es: 'Estado',
     fr: 'Statut',
@@ -1328,7 +1329,7 @@ export const translations: Translations = {
     cs: 'Stav',
     fi: 'Tila',
   },
-  EIAcceptThe: {
+  IAcceptThe: {
     en: 'I accept the',
     es: 'Acepto los',
     fr: 'J accepte les',
@@ -1337,7 +1338,7 @@ export const translations: Translations = {
     cs: 'Přijímám',
     fi: 'Hyväksyn',
   },
-  ETermsOfServiceLink: {
+  TermsOfServiceLink: {
     en: 'terms of service',
     es: 'términos del servicio',
     fr: 'conditions de service',
@@ -1346,7 +1347,7 @@ export const translations: Translations = {
     cs: 'obchodní podmínky',
     fi: 'käyttöehdot',
   },
-  ETermsOfService: {
+  TermsOfService: {
     en: 'Terms of Service',
     es: 'Términos del servicio',
     fr: 'Conditions de service',
@@ -1355,7 +1356,7 @@ export const translations: Translations = {
     cs: 'Obchodní podmínky',
     fi: 'Käyttöehdot',
   },
-  ESeeAlso: {
+  SeeAlso: {
     en: 'See also',
     es: 'Ver también',
     fr: 'Voir aussi',
@@ -1364,7 +1365,7 @@ export const translations: Translations = {
     cs: 'Viz také',
     fi: 'Katso myös',
   },
-  EDisclaimer: {
+  Disclaimer: {
     en: 'Disclaimer',
     es: 'Descargo de responsabilidad',
     fr: 'Avis de non-responsabilité',
@@ -1373,7 +1374,7 @@ export const translations: Translations = {
     cs: 'Ochranná doložka',
     fi: 'Vastuuvapauslauseke',
   },
-  EPrivacyAndSecurityDisclaimer: {
+  PrivacyAndSecurityDisclaimer: {
     en: 'Privacy and Security Disclaimer',
     es: 'Descargo de responsabilidad de privacidad y seguridad',
     fr: 'Avis de confidentialité et de sécurité',
@@ -1382,7 +1383,7 @@ export const translations: Translations = {
     cs: 'Ochrana osobních údajů a bezpečnostní prohlášení',
     fi: 'Tietosuoja- ja tietoturvaohje',
   },
-  EDataCollectionAndStorage: {
+  DataCollectionAndStorage: {
     en: 'Data Collection and Storage',
     es: 'Recolección y almacenamiento de datos',
     fr: 'Collecte et stockage de données',
@@ -1391,7 +1392,7 @@ export const translations: Translations = {
     cs: 'Sběr a ukládání dat',
     fi: 'Tietojen kerääminen ja tallentaminen',
   },
-  EWeCollectAndStoreTheEmailAddress: {
+  WeCollectAndStoreTheEmailAddress: {
     en: 'We collect and store the email address you provide as your username.',
     es: 'Recopilamos y almacenamos la dirección de correo electrónico que proporciona como su nombre de usuario.',
     fr: 'Nous collectons et stockons l adresse e-mail que vous fournissez en tant que nom d utilisateur.',
@@ -1400,7 +1401,7 @@ export const translations: Translations = {
     cs: 'Sbíráme a ukládáme e-mailovou adresu, kterou poskytnete jako své uživatelské jméno.',
     fi: 'Keräämme ja tallennamme sähköpostiosoitteen, jonka annat käyttäjänimesi.',
   },
-  EYourPasswordIsSecurelyHashed: {
+  YourPasswordIsSecurelyHashed: {
     en: 'Your password is securely hashed and stored in our database. We do not store your password in plain text.',
     es: 'Su contraseña se cifra de forma segura y se almacena en nuestra base de datos. No almacenamos su contraseña en texto sin formato.',
     fr: 'Votre mot de passe est crypté de manière sécurisée et stocké dans notre base de données. Nous ne stockons pas votre mot de passe en texte clair.',
@@ -1409,7 +1410,7 @@ export const translations: Translations = {
     cs: 'Vaše heslo je bezpečně zahashováno a uloženo v naší databázi. Heslo neukládáme v čistém textu.',
     fi: 'Salasanasi on turvallisesti tiivistetty ja tallennettu tietokantaamme. Emme tallenna salasanaasi selkokielisenä.',
   },
-  EDataProtection: {
+  DataProtection: {
     en: 'Data Protection',
     es: 'Protección de datos',
     fr: 'Protection des données',
@@ -1418,7 +1419,7 @@ export const translations: Translations = {
     cs: 'Ochrana dat',
     fi: 'Tietosuoja',
   },
-  EWeUseIndustryStandardSecurityMeasures: {
+  WeUseIndustryStandardSecurityMeasures: {
     en: 'We use industry-standard security measures to protect your data, including encryption and secure hashing algorithms.',
     es: 'Utilizamos medidas de seguridad estándar de la industria para proteger sus datos, incluidos algoritmos de cifrado y hash seguros.',
     fr: 'Nous utilisons des mesures de sécurité standard de l industrie pour protéger vos données, y compris le chiffrement et les algorithmes de hachage sécurisés.',
@@ -1427,7 +1428,7 @@ export const translations: Translations = {
     cs: 'Používáme standardní bezpečnostní opatření průmyslu k ochraně vašich dat, včetně šifrování a bezpečných hašovacích algoritmů.',
     fi: 'Käytämme teollisuusstandardin mukaisia turvatoimenpiteitä suojataksesi tietosi, mukaan lukien salaus ja turvalliset tiivistysalgoritmit.',
   },
-  EAccessToYourDataIsRestricted: {
+  AccessToYourDataIsRestricted: {
     en: 'Access to your data is restricted to authorized personnel only.',
     es: 'El acceso a sus datos está restringido solo al personal autorizado.',
     fr: 'L accès à vos données est limité au personnel autorisé uniquement.',
@@ -1436,7 +1437,7 @@ export const translations: Translations = {
     cs: 'Přístup k vašim datům je omezen pouze na autorizovaný personál.',
     fi: 'Pääsy tietoihisi on rajoitettu vain valtuutettuun henkilöstöön.',
   },
-  EUserResponsibilities: {
+  UserResponsibilities: {
     en: 'User Responsibilities',
     es: 'Responsabilidades del usuario',
     fr: 'Responsabilités de l utilisateur',
@@ -1445,7 +1446,7 @@ export const translations: Translations = {
     cs: 'Uživatelské povinnosti',
     fi: 'Käyttäjän vastuut',
   },
-  EPleaseChooseAStrongAndUniquePassword: {
+  PleaseChooseAStrongAndUniquePassword: {
     en: 'Please choose a strong and unique password to enhance your account security.',
     es: 'Por favor, elija una contraseña fuerte y única para mejorar la seguridad de su cuenta.',
     fr: 'Veuillez choisir un mot de passe fort et unique pour renforcer la sécurité de votre compte.',
@@ -1454,7 +1455,7 @@ export const translations: Translations = {
     cs: 'Vyberte prosím silné a jedinečné heslo, abyste zvýšili bezpečnost svého účtu.',
     fi: 'Valitse vahva ja uniikki salasana lisätäksesi tilisi turvallisuutta.',
   },
-  EDoNotShareYourPasswordWithAnyone: {
+  DoNotShareYourPasswordWithAnyone: {
     en: 'Do not share your password with anyone.',
     es: 'No comparta su contraseña con nadie.',
     fr: 'Ne partagez pas votre mot de passe avec qui que ce soit.',
@@ -1463,7 +1464,7 @@ export const translations: Translations = {
     cs: 'Nesdílejte své heslo s nikým.',
     fi: 'Älä jaa salasanaasi kenenkään kanssa.',
   },
-  EYourRights: {
+  YourRights: {
     en: 'Your Rights',
     es: 'Tus derechos',
     fr: 'Vos droits',
@@ -1472,7 +1473,7 @@ export const translations: Translations = {
     cs: 'Vaše práva',
     fi: 'Oikeutesi',
   },
-  EYouHaveTheRightToAccessModifyOrDelete: {
+  YouHaveTheRightToAccessModifyOrDelete: {
     en: 'You have the right to access, modify, or delete your personal information stored in our system.',
     es: 'Tiene derecho a acceder, modificar o eliminar su información personal almacenada en nuestro sistema.',
     fr: 'Vous avez le droit d accéder, de modifier ou de supprimer vos informations personnelles stockées dans notre système.',
@@ -1481,7 +1482,7 @@ export const translations: Translations = {
     cs: 'Máte právo přistupovat, měnit nebo mazat své osobní informace uložené v našem systému.',
     fi: 'Sinulla on oikeus käyttää, muokata tai poistaa henkilökohtaiset tietosi, jotka on tallennettu järjestelmäämme.',
   },
-  EIfYouHaveAnyConcernsAboutYourDataSecurity: {
+  IfYouHaveAnyConcernsAboutYourDataSecurity: {
     en: 'If you have any concerns about your data security, please contact me',
     es: 'Si tiene alguna preocupación sobre la seguridad de sus datos, por favor contácteme',
     fr: 'Si vous avez des préoccupations concernant la sécurité de vos données, veuillez me contacter',
@@ -1490,7 +1491,7 @@ export const translations: Translations = {
     cs: 'Pokud máte jakékoli obavy ohledně zabezpečení svých dat, kontaktujte mě',
     fi: 'Jos sinulla on huolenaiheita tietoturvasi suhteen, ota yhteyttä',
   },
-  EAlienEyes: {
+  AlienEyes: {
     en: 'Alien eyes',
     es: 'Ojos de alienígena',
     fr: "Yeux d'alien",
@@ -1499,7 +1500,7 @@ export const translations: Translations = {
     cs: 'Oči vetřelce',
     fi: 'Alien-silmät',
   },
-  EEyes: {
+  Eyes: {
     en: 'Eyes',
     es: 'Ojos',
     fr: 'Yeux',
@@ -1508,7 +1509,7 @@ export const translations: Translations = {
     cs: 'Oči',
     fi: 'Silmät',
   },
-  EDiamondShapes: {
+  DiamondShapes: {
     en: 'Diamond shapes',
     es: 'Formas de diamante',
     fr: 'Formes de diamant',
@@ -1517,7 +1518,7 @@ export const translations: Translations = {
     cs: 'Tvary diamantů',
     fi: 'Timanttimuodot',
   },
-  EYouMaySelectMultipleOptions: {
+  YouMaySelectMultipleOptions: {
     en: 'You may select multiple options',
     es: 'Puede seleccionar varias opciones',
     fr: 'Vous pouvez sélectionner plusieurs options',
@@ -1526,7 +1527,7 @@ export const translations: Translations = {
     cs: 'Můžete vybrat více možností',
     fi: 'Voit valita useita vaihtoehtoja',
   },
-  EPleaseOfferSomeFeedback: {
+  PleaseOfferSomeFeedback: {
     en: 'Please offer some feedback',
     es: 'Por favor ofrezca algunos comentarios',
     fr: 'Veuillez offrir des commentaires',
@@ -1535,7 +1536,7 @@ export const translations: Translations = {
     cs: 'Nabídněte prosím zpětnou vazbu',
     fi: 'Anna palautetta',
   },
-  ESurvey: {
+  Survey: {
     en: 'Survey',
     es: 'Encuesta',
     fr: 'Enquête',
@@ -1544,7 +1545,7 @@ export const translations: Translations = {
     cs: 'Průzkum',
     fi: 'Kysely',
   },
-  EPleaseReportAnyIssuesWithTheSiteToJenniina: {
+  PleaseReportAnyIssuesWithTheSiteToJenniina: {
     en: 'Please report any issues with the site to Jenniina',
     es: 'Informe cualquier problema con el sitio a Jenniina',
     fr: 'Veuillez signaler tout problème avec le site à Jenniina',
@@ -1553,7 +1554,7 @@ export const translations: Translations = {
     cs: 'Prosím, nahlaste Jenniině jakékoliv problémy se stránkou',
     fi: 'Pyydän ilmoittamaan sivuston ongelmista',
   },
-  EInstructions: {
+  Instructions: {
     en: 'Instructions',
     es: 'Instrucciones',
     fr: 'Instructions',
@@ -1562,7 +1563,7 @@ export const translations: Translations = {
     cs: 'Instrukce',
     fi: 'Ohjeet',
   },
-  ENote: {
+  Note: {
     en: 'Note!',
     es: '¡Nota!',
     fr: 'Remarque!',
@@ -1571,7 +1572,7 @@ export const translations: Translations = {
     cs: 'Poznámka!',
     fi: 'Huom!',
   },
-  EUserNotUpdated: {
+  UserNotUpdated: {
     en: 'User not updated',
     es: 'Usuario no actualizado',
     fr: 'Utilisateur non mis à jour',
@@ -1580,7 +1581,7 @@ export const translations: Translations = {
     cs: 'Uživatel neaktualizován',
     fi: 'Käyttäjätietoja ei päivitetty',
   },
-  EUserUpdated: {
+  UserUpdated: {
     en: 'User updated',
     es: 'Usuario actualizado',
     fr: 'Utilisateur mis à jour',
@@ -1589,7 +1590,7 @@ export const translations: Translations = {
     cs: 'Uživatel aktualizován',
     fi: 'Käyttäjätiedot päivitetty',
   },
-  EPasswordMustBeAtLeastTenCharacters: {
+  PasswordMustBeAtLeastTenCharacters: {
     en: 'Password must be at least 10 characters',
     es: 'La contraseña debe tener al menos 10 caracteres',
     fr: 'Le mot de passe doit comporter au moins 10 caractères',
@@ -1598,7 +1599,7 @@ export const translations: Translations = {
     cs: 'Heslo musí mít nejméně 10 znaků',
     fi: 'Salasanan on oltava vähintään 10 merkkiä pitkä',
   },
-  EPleaseUseGoodTasteWhenChoosingYourNickname: {
+  PleaseUseGoodTasteWhenChoosingYourNickname: {
     en: 'Please use good taste when choosing your nickname',
     es: 'Por favor, use buen gusto al elegir su apodo',
     fr: 'Veuillez utiliser bon goût lors du choix de votre surnom',
@@ -1607,7 +1608,7 @@ export const translations: Translations = {
     cs: 'Použijte prosím dobrý vkus při výběru přezdívky',
     fi: 'Pyydän noudattamaan hyvää makua nimimerkin valitsemisessa',
   },
-  EProfanityWillBeRemovedByTheAdmin: {
+  ProfanityWillBeRemovedByTheAdmin: {
     en: 'Profanity will be removed by the admin',
     es: 'La grosería será eliminada por el administrador',
     fr: "La grossièreté sera supprimée par l'administrateur",
@@ -1616,7 +1617,7 @@ export const translations: Translations = {
     cs: 'Sprostota bude odstraněna správcem',
     fi: 'Loukkaavat ilmaisut poistetaan ylläpidon toimesta',
   },
-  EOldestFirst: {
+  OldestFirst: {
     en: 'Oldest first',
     es: 'El más antiguo primero',
     fr: "Le plus ancien d'abord",
@@ -1625,7 +1626,7 @@ export const translations: Translations = {
     cs: 'Nejstarší první',
     fi: 'Vanhin ensin',
   },
-  ENewestFirst: {
+  NewestFirst: {
     en: 'Newest first',
     es: 'El más nuevo primero',
     fr: "Le plus récent d'abord",
@@ -1634,7 +1635,7 @@ export const translations: Translations = {
     cs: 'Nejnovější první',
     fi: 'Uusin ensin',
   },
-  ENewest: {
+  Newest: {
     en: 'Newest',
     es: 'El más nuevo',
     fr: 'Le plus récent',
@@ -1643,7 +1644,7 @@ export const translations: Translations = {
     cs: 'Nejnovější',
     fi: 'Uusin',
   },
-  EOldest: {
+  Oldest: {
     en: 'Oldest',
     es: 'El más antiguo',
     fr: 'Le plus ancien',
@@ -1652,7 +1653,7 @@ export const translations: Translations = {
     cs: 'Nejstarší',
     fi: 'Vanhin',
   },
-  ESavedBy: {
+  SavedBy: {
     en: 'Saved by',
     es: 'Guardado por',
     fr: 'Sauvegardé par',
@@ -1661,7 +1662,7 @@ export const translations: Translations = {
     cs: 'Uloženo',
     fi: 'Tallentanut',
   },
-  ELastPage: {
+  LastPage: {
     en: 'Last page',
     es: 'Última página',
     fr: 'Dernière page',
@@ -1670,7 +1671,7 @@ export const translations: Translations = {
     cs: 'Poslední stránka',
     fi: 'Viimeinen sivu',
   },
-  EFirstPage: {
+  FirstPage: {
     en: 'First page',
     es: 'Primera página',
     fr: 'Première page',
@@ -1679,7 +1680,7 @@ export const translations: Translations = {
     cs: 'První stránka',
     fi: 'Ensimmäinen sivu',
   },
-  EHairSalonWebsite: {
+  HairSalonWebsite: {
     en: 'Hair salon website',
     es: 'Sitio web de salón de belleza',
     fr: 'Site web de salon de coiffure',
@@ -1688,7 +1689,7 @@ export const translations: Translations = {
     cs: 'Webové stránky kadeřnictví',
     fi: 'Parturi-kampaamon verkkosivusto',
   },
-  EHairSalon: {
+  HairSalon: {
     en: 'Hair salon',
     es: 'Salón de belleza',
     fr: 'Salon de coiffure',
@@ -1697,7 +1698,7 @@ export const translations: Translations = {
     cs: 'Kadeřnictví',
     fi: 'Parturi-kampaamo',
   },
-  ETriangles: {
+  Triangles: {
     en: 'Triangles',
     es: 'Triángulos',
     fr: 'Triangles',
@@ -1706,7 +1707,7 @@ export const translations: Translations = {
     cs: 'Trojúhelníky',
     fi: 'Kolmiot',
   },
-  EInvertedTriangles: {
+  InvertedTriangles: {
     en: 'Inverted triangles',
     es: 'Triángulos invertidos',
     fr: 'Triangles inversés',
@@ -1715,7 +1716,7 @@ export const translations: Translations = {
     cs: 'Obrácené trojúhelníky',
     fi: 'Käänteiset kolmiot',
   },
-  ESquares: {
+  Squares: {
     en: 'Squares',
     es: 'Cuadrados',
     fr: 'Carrés',
@@ -1724,7 +1725,7 @@ export const translations: Translations = {
     cs: 'Čtverce',
     fi: 'Neliöt',
   },
-  ESquaresStandingOnTheirCorner: {
+  SquaresStandingOnTheirCorner: {
     en: 'Squares standing on their corner',
     es: 'Cuadrados de pie en su esquina',
     fr: 'Carrés debout sur leur coin',
@@ -1733,7 +1734,7 @@ export const translations: Translations = {
     cs: 'Čtverce stojí na svém rohu',
     fi: 'Neliöt seisovat kulmallaan',
   },
-  EGraphQLSite: {
+  GraphQLSite: {
     en: 'GraphQL site',
     es: 'Sitio de GraphQL',
     fr: 'Site GraphQL',
@@ -1742,7 +1743,7 @@ export const translations: Translations = {
     cs: 'GraphQL web',
     fi: 'GraphQL-sivusto',
   },
-  EScrollToTheLeft: {
+  ScrollToTheLeft: {
     en: 'Scroll to the left',
     es: 'Desplázate hacia la izquierda',
     fr: 'Faites défiler vers la gauche',
@@ -1751,7 +1752,7 @@ export const translations: Translations = {
     cs: 'Posuňte se doleva',
     fi: 'Vieritä vasemmalle',
   },
-  EScrollToTheRight: {
+  ScrollToTheRight: {
     en: 'Scroll to the right',
     es: 'Desplázate hacia la derecha',
     fr: 'Faites défiler vers la droite',
@@ -1760,7 +1761,7 @@ export const translations: Translations = {
     cs: 'Posuňte se doprava',
     fi: 'Vieritä oikealle',
   },
-  EScrollToTheTop: {
+  ScrollToTheTop: {
     en: 'Scroll to the top',
     es: 'Desplázate hacia arriba',
     fr: 'Faites défiler vers le haut',
@@ -1769,7 +1770,7 @@ export const translations: Translations = {
     cs: 'Posuňte se nahoru',
     fi: 'Vieritä takaisin ylös',
   },
-  ESkipToMainNavigation: {
+  SkipToMainNavigation: {
     en: 'Skip to main navigation',
     es: 'Saltar a la navegación principal',
     fr: 'Passer à la navigation principale',
@@ -1778,7 +1779,7 @@ export const translations: Translations = {
     cs: 'Přejít na hlavní navigaci',
     fi: 'Siirry päävalikkoon',
   },
-  ESkipToMainContent: {
+  SkipToMainContent: {
     en: 'Skip to main content',
     es: 'Saltar al contenido principal',
     fr: 'Passer au contenu principal',
@@ -1787,7 +1788,7 @@ export const translations: Translations = {
     cs: 'Přejít na hlavní obsah',
     fi: 'Siirry pääsisältöön',
   },
-  ESkipToFooter: {
+  SkipToFooter: {
     en: 'Skip to footer',
     es: 'Saltar al pie de página',
     fr: 'Passer au pied de page',
@@ -1796,7 +1797,7 @@ export const translations: Translations = {
     cs: 'Přejít na zápatí',
     fi: 'Siirry alatunnisteeseen',
   },
-  EThisSiteFocusesOnReactApplications: {
+  ThisSiteFocusesOnReactApplications: {
     en: 'This site focuses on React applications. Non-React porfolio items may be found at the portfolio section of the main site.',
     es: 'Este sitio se centra en aplicaciones React. Los elementos de cartera no React se pueden encontrar en la sección de cartera del sitio principal.',
     fr: 'Ce site se concentre sur les applications React. Les éléments de portefeuille non React se trouvent dans la section portefeuille du site principal.',
@@ -1805,7 +1806,7 @@ export const translations: Translations = {
     cs: 'Tato stránka se zaměřuje na aplikace React. Ne-React položky portfolia najdete v sekci portfolia hlavního webu.',
     fi: 'Tämä sivusto keskittyy React-sovelluksiin. Muita sovellusratkaisuja löytyy pääsivuston portfoliosta.',
   },
-  EMainSite: {
+  MainSite: {
     en: 'Main Site',
     es: 'Sitio Principal',
     fr: 'Site Principal',
@@ -1814,7 +1815,7 @@ export const translations: Translations = {
     cs: 'Hlavní stránka',
     fi: 'Pääsivusto',
   },
-  EReactSpecificAppsMadeWithViteAndTypescript: {
+  ReactSpecificAppsMadeWithViteAndTypescript: {
     en: 'React-specific apps made with Vite and Typescript. Each app is designed to be both pointer- and keyboard-accessible.',
     es: 'Aplicaciones específicas de React hechas con Vite y Typescript. Cada aplicación está diseñada para ser accesible tanto con puntero como con teclado.',
     fr: 'Applications spécifiques à React réalisées avec Vite et Typescript. Chaque application est conçue pour être accessible à la fois avec le pointeur et le clavier.',
@@ -1823,7 +1824,7 @@ export const translations: Translations = {
     cs: 'Aplikace specifické pro React vyrobené s Vite a Typescript. Každá aplikace je navržena tak, aby byla přístupná jak ukazovátkem, tak klávesnicí.',
     fi: 'React-sovelluksia (Vite ja Typescript). Jokainen sovellus on suunniteltu sekä osoittimella että näppäimistöllä käytettäväksi.',
   },
-  EDependencies: {
+  Dependencies: {
     en: 'Dependencies',
     es: 'Dependencias',
     fr: 'Dépendances',
@@ -1832,7 +1833,7 @@ export const translations: Translations = {
     cs: 'Závislosti',
     fi: 'Riippuvuudet',
   },
-  EQuizAppIntro: {
+  QuizAppIntro: {
     en: 'A quiz app with three difficulty levels, a timer, and a highscore list. The app uses the The Trivia API to fetch questions.',
     es: 'Una aplicación de cuestionario con tres niveles de dificultad, un temporizador y una lista de puntuaciones altas. La aplicación utiliza la API de la base de datos de preguntas abiertas para recuperar preguntas.',
     fr: "Une application de quiz avec trois niveaux de difficulté, une minuterie et une liste de scores élevés. L'application utilise l'API de la base de données de quiz ouverte pour récupérer des questions.",
@@ -1841,7 +1842,7 @@ export const translations: Translations = {
     cs: 'Aplikace kvízu se třemi obtížnostmi, časovačem a seznamem nejlepších výsledků. Aplikace používá API databáze otázek Trivia k získání otázek.',
     fi: 'Tietovisailu, jossa on kolme vaikeustasoa, ajastin ja kunkin vaikeustason piste-ennätysten lista. Sovellus käyttää The Trivia API:a kysymysten hakemiseen.',
   },
-  EJokesAppIntro: {
+  JokesAppIntro: {
     en: 'A joke app with customizable options that uses the JokeAPI to fetch jokes.',
     es: 'Una aplicación de chistes con opciones personalizables que utiliza JokeAPI para buscar chistes.',
     fr: 'Une application de blagues avec des options personnalisables qui utilise JokeAPI pour récupérer des blagues.',
@@ -1850,7 +1851,7 @@ export const translations: Translations = {
     cs: 'Aplikace vtipů s možnostmi přizpůsobení, která používá JokeAPI k získání vtipů.',
     fi: 'Vitsisovellus, jossa on muokattavia vaihtoehtoja ja joka käyttää JokeAPI:a vitsien hakemiseen.',
   },
-  EBlobAppIntro: {
+  BlobAppIntro: {
     en: 'A custom draggables app with blobs that can be dragged around.',
     es: 'Una aplicación de arrastrables personalizada con bolitas que se pueden arrastrar',
     fr: 'Une application de glisser-déposer personnalisée avec des blobs qui peuvent être déplacés',
@@ -1859,7 +1860,7 @@ export const translations: Translations = {
     cs: 'Vlastní aplikace přetahovatelných prvků s bloby, které lze přetahovat',
     fi: 'Raahattavat-sovellus, joka sisältää raahattavia toisiinsa sulautuvia mollukoita',
   },
-  EDragAndDropAppIntro: {
+  DragAndDropAppIntro: {
     en: 'A custom drag-and-drop app.',
     es: 'Una aplicación de arrastrar y soltar personalizada.',
     fr: 'Une application de glisser-déposer personnalisée.',
@@ -1868,7 +1869,7 @@ export const translations: Translations = {
     cs: 'Vlastní aplikace přetahování a přetažení.',
     fi: 'Räätälöity raahattavat-sovellus (Drag and Drop).',
   },
-  ETodoAppIntro: {
+  TodoAppIntro: {
     en: 'A todo-app using localStorage and Mongo-DB when the user is logged in.',
     es: 'Una aplicación de tareas que utiliza localStorage y Mongo-DB cuando el usuario está conectado.',
     fr: "Une application todo utilisant localStorage et Mongo-DB lorsque l'utilisateur est connecté.",
@@ -1877,7 +1878,7 @@ export const translations: Translations = {
     cs: 'Aplikace todo pomocí localStorage a Mongo-DB, když je uživatel přihlášen.',
     fi: 'Tehtävälista, joka käyttää localStoragea ja Mongo-DB:tä, kun käyttäjä on kirjautunut sisään.',
   },
-  ECustomSelectIntro: {
+  CustomSelectIntro: {
     en: 'A custom select component that can be used as a single- or multiple-select alternative.',
     es: 'Un componente de selección personalizado que se puede utilizar como una alternativa de selección única o múltiple.',
     fr: 'Un composant de sélection personnalisé qui peut être utilisé comme une alternative de sélection unique ou multiple.',
@@ -1886,7 +1887,7 @@ export const translations: Translations = {
     cs: 'Vlastní výběrový prvek, který lze použít jako jednotlivý nebo vícevýběrový prvek.',
     fi: 'Räätälöitävä select-komponentin vaihtoehto: yksittäis- tai monivalinta.',
   },
-  EMultistepFormIntro: {
+  MultistepFormIntro: {
     en: 'A three-step fully functional contact form.',
     es: 'Un formulario de contacto totalmente funcional de tres pasos.',
     fr: 'Un formulaire de contact entièrement fonctionnel en trois étapes.',
@@ -1895,7 +1896,7 @@ export const translations: Translations = {
     cs: 'Třístupňový plně funkční kontaktní formulář.',
     fi: 'Kolmivaiheinen yhteydenottolomake.',
   },
-  EKeyboardUse: {
+  KeyboardUse: {
     en: 'Keyboard use',
     es: 'Uso del teclado',
     fr: 'Utilisation du clavier',
@@ -1904,7 +1905,7 @@ export const translations: Translations = {
     cs: 'Použití klávesnice',
     fi: 'Näppäimistökäyttö',
   },
-  EKeyboardAccessible: {
+  KeyboardAccessible: {
     en: 'Keyboard accessible',
     es: 'Accesible con teclado',
     fr: 'Accessible au clavier',
@@ -1913,7 +1914,7 @@ export const translations: Translations = {
     cs: 'Přístupné klávesnicí',
     fi: 'Näppäimistösaavutettava',
   },
-  EClarificationOrFeedback: {
+  ClarificationOrFeedback: {
     en: 'Clarification or feedback',
     es: 'Aclaración o comentarios',
     fr: 'Clarification ou commentaires',
@@ -1922,7 +1923,7 @@ export const translations: Translations = {
     cs: 'Objasnění nebo zpětná vazba',
     fi: 'Selvennys tai palaute',
   },
-  EOptional: {
+  Optional: {
     en: 'Optional',
     es: 'Opcional',
     fr: 'Optionnel',
@@ -1931,7 +1932,7 @@ export const translations: Translations = {
     cs: 'Volitelný',
     fi: 'Valinnainen',
   },
-  EItIsAlrightToSendTheEnteredInformationToJenniina: {
+  ItIsAlrightToSendTheEnteredInformationToJenniina: {
     en: 'It is alright to send the entered information to Jenniina',
     es: 'Está bien enviar la información ingresada a Jenniina',
     fr: "Il est bon d'envoyer les informations saisies à Jenniina",
@@ -1940,7 +1941,7 @@ export const translations: Translations = {
     cs: 'Je v pořádku poslat zadané informace Jenniině',
     fi: 'Suostun siihen, että syötetyt tiedot lähetetään Jenniinalle',
   },
-  EYes: {
+  Yes: {
     en: 'Yes',
     es: 'Sí',
     fr: 'Oui',
@@ -1949,7 +1950,7 @@ export const translations: Translations = {
     cs: 'Ano',
     fi: 'Kyllä',
   },
-  ENo: {
+  No: {
     en: 'No',
     es: 'No',
     fr: 'Non',
@@ -1958,7 +1959,7 @@ export const translations: Translations = {
     cs: 'Ne',
     fi: 'Ei',
   },
-  EThankYouForYourMessage: {
+  ThankYouForYourMessage: {
     en: 'Thank you for your message!',
     es: '¡Gracias por tu mensaje!',
     fr: 'Merci pour votre message!',
@@ -1967,7 +1968,7 @@ export const translations: Translations = {
     cs: 'Děkuji za vaši zprávu!',
     fi: 'Kiitos viestistäsi!',
   },
-  EAccessibility: {
+  Accessibility: {
     en: 'Accessibility',
     es: 'Accesibilidad',
     fr: 'Accessibilité',
@@ -1976,7 +1977,7 @@ export const translations: Translations = {
     cs: 'Přístupnost',
     fi: 'Saavutettavuus',
   },
-  EAppearance: {
+  Appearance: {
     en: 'Appearance',
     es: 'Apariencia',
     fr: 'Apparence',
@@ -1985,7 +1986,7 @@ export const translations: Translations = {
     cs: 'Vzhled',
     fi: 'Ulkoasu',
   },
-  EText: {
+  Text: {
     en: 'Text',
     es: 'Texto',
     fr: 'Texte',
@@ -1994,7 +1995,7 @@ export const translations: Translations = {
     cs: 'Text',
     fi: 'Teksti',
   },
-  EAnimation: {
+  Animation: {
     en: 'Animation',
     es: 'Animación',
     fr: 'Animation',
@@ -2003,7 +2004,7 @@ export const translations: Translations = {
     cs: 'Animace',
     fi: 'Animaatio',
   },
-  ENavigation: {
+  Navigation: {
     en: 'Navigation',
     es: 'Navegación',
     fr: 'Navigation',
@@ -2012,7 +2013,7 @@ export const translations: Translations = {
     cs: 'Navigace',
     fi: 'Navigaatio',
   },
-  EButtons: {
+  Buttons: {
     en: 'Buttons',
     es: 'Botones',
     fr: 'Boutons',
@@ -2021,7 +2022,7 @@ export const translations: Translations = {
     cs: 'Tlačítka',
     fi: 'Painikkeet',
   },
-  EMultiStepContactForm: {
+  MultiStepContactForm: {
     en: 'Multi-step contact form',
     es: 'Formulario de contacto de varios pasos',
     fr: 'Formulaire de contact à plusieurs étapes',
@@ -2030,7 +2031,7 @@ export const translations: Translations = {
     cs: 'Vícestupňový kontaktní formulář',
     fi: 'Monivaiheinen yhteydenottolomake',
   },
-  EOther: {
+  Other: {
     en: 'Other',
     es: 'Otro',
     fr: 'Autre',
@@ -2039,7 +2040,7 @@ export const translations: Translations = {
     cs: 'Jiný',
     fi: 'Muu',
   },
-  EClarifiedBelow: {
+  ClarifiedBelow: {
     en: 'Clarified below',
     es: 'Aclarado a continuación',
     fr: 'Clarifié ci-dessous',
@@ -2048,7 +2049,7 @@ export const translations: Translations = {
     cs: 'Objasněno níže',
     fi: 'Selvennetty alla',
   },
-  ENoIssues: {
+  NoIssues: {
     en: 'No issues',
     es: 'Sin problemas',
     fr: 'Pas de problèmes',
@@ -2057,7 +2058,7 @@ export const translations: Translations = {
     cs: 'Žádné problémy',
     fi: 'Ei ongelmia',
   },
-  EPleaseSelectAnOption: {
+  PleaseSelectAnOption: {
     en: 'Please select an option',
     es: 'Por favor seleccione una opción',
     fr: 'Veuillez sélectionner une option',
@@ -2066,7 +2067,7 @@ export const translations: Translations = {
     cs: 'Vyberte prosím možnost',
     fi: 'Valitse vaihtoehto',
   },
-  ENone: {
+  None: {
     en: 'None',
     es: 'Ninguno',
     fr: 'Aucun',
@@ -2075,7 +2076,7 @@ export const translations: Translations = {
     cs: 'Žádný',
     fi: 'Ei mitään',
   },
-  EHeroSection: {
+  HeroSection: {
     en: 'Hero/Intro section',
     es: 'Sección de introducción',
     fr: "Section d'introduction",
@@ -2084,7 +2085,7 @@ export const translations: Translations = {
     cs: 'Úvodní sekce',
     fi: 'Hero/Intro-osio',
   },
-  EInteractiveElements: {
+  InteractiveElements: {
     en: 'Interactive elements',
     es: 'Elementos interactivos',
     fr: 'Éléments interactifs',
@@ -2093,7 +2094,7 @@ export const translations: Translations = {
     cs: 'Interaktivní prvky',
     fi: 'Vuorovaikutteiset elementit',
   },
-  EBubbles: {
+  Bubbles: {
     en: 'Bubbles',
     es: 'Burbujas',
     fr: 'Bulles',
@@ -2102,7 +2103,7 @@ export const translations: Translations = {
     cs: 'Bubliny',
     fi: 'Kuplat',
   },
-  ESeeTheTopOfTheCurrentPage: {
+  SeeTheTopOfTheCurrentPage: {
     en: 'See the top of the current page',
     es: 'Ver la parte superior de la página actual',
     fr: 'Voir le haut de la page actuelle',
@@ -2111,7 +2112,7 @@ export const translations: Translations = {
     cs: 'Zobrazit vrchol aktuální stránky',
     fi: 'Katso nykyisen sivun yläosa',
   },
-  EHoverFocusAnimation: {
+  HoverFocusAnimation: {
     en: 'Hover/focus animation',
     es: 'Animación de desplazamiento/foco',
     fr: 'Animation de survol/focus',
@@ -2120,7 +2121,7 @@ export const translations: Translations = {
     cs: 'Animace přejetí/focus',
     fi: 'Hover/focus-animaatio',
   },
-  ERemoveWithClickOrEnterWhenFocused: {
+  RemoveWithClickOrEnterWhenFocused: {
     en: 'Remove with click or Enter when focused',
     es: 'Eliminar con clic o Enter cuando está enfocado',
     fr: 'Supprimer avec un clic ou Entrée lorsque vous êtes concentré',
@@ -2129,7 +2130,7 @@ export const translations: Translations = {
     cs: 'Odstraňte kliknutím nebo stisknutím klávesy Enter, když je zaměřen',
     fi: 'Poista napsauttamalla tai painamalla Enter, kun kohteessa on kohdistus (focus)',
   },
-  EPointerEnterDirectionAwareMovement: {
+  PointerEnterDirectionAwareMovement: {
     en: 'Pointer-enter direction aware movement',
     es: 'Movimiento consciente de la dirección de entrada del puntero',
     fr: "Mouvement conscient de la direction d'entrée du pointeur",
@@ -2138,7 +2139,7 @@ export const translations: Translations = {
     cs: 'Pohyb vědomý směru vstupu ukazatele',
     fi: 'Osoittimen lähestymissuunnan mukainen liike',
   },
-  EKeyboardFocusMoveItemsWithArrowKeys: {
+  KeyboardFocusMoveItemsWithArrowKeys: {
     en: 'Keyboard focus: move items with arrow keys',
     es: 'Enfoque del teclado: mueva los elementos con las teclas de flecha',
     fr: 'Focus clavier: déplacez les éléments avec les touches fléchées',
@@ -2147,7 +2148,7 @@ export const translations: Translations = {
     cs: 'Klávesnice: přesuňte položky pomocí šipek',
     fi: 'Näppäimistökäyttö: siirrä nuolinäppäimillä kohdetta tab-painikkeella kohteeseen siirryttyä',
   },
-  EGeometricShapes: {
+  GeometricShapes: {
     en: 'Geometric shapes',
     es: 'Formas geométricas',
     fr: 'Formes géométriques',
@@ -2156,7 +2157,7 @@ export const translations: Translations = {
     cs: 'Geometrické tvary',
     fi: 'Geometriset muodot',
   },
-  EElements: {
+  Elements: {
     en: 'Elements',
     es: 'Elementos',
     fr: 'Éléments',
@@ -2165,7 +2166,7 @@ export const translations: Translations = {
     cs: 'Prvky',
     fi: 'Elementit',
   },
-  EElementsRotateToFaceCursor: {
+  ElementsRotateToFaceCursor: {
     en: 'Elements rotate to face cursor',
     es: 'Los elementos giran para enfrentar el cursor',
     fr: 'Les éléments tournent pour faire face au curseur',
@@ -2174,7 +2175,7 @@ export const translations: Translations = {
     cs: 'Prvky se otáčejí, aby čelily kurzoru',
     fi: 'Elementit kääntyvät kohti osoitinta',
   },
-  EMovementAccordingToPointerEnterDirection: {
+  MovementAccordingToPointerEnterDirection: {
     en: "Movement according to pointer's enter direction",
     es: 'Movimiento según la dirección de entrada del puntero',
     fr: "Mouvement selon la direction d'entrée du pointeur",
@@ -2183,7 +2184,7 @@ export const translations: Translations = {
     cs: 'Pohyb podle směru vstupu ukazatele',
     fi: 'Elementti liikkuu osoittimen lähestymissuunnan mukaan',
   },
-  EPortfolio: {
+  Portfolio: {
     en: 'Portfolio',
     es: 'Portafolio',
     fr: 'Portfolio',
@@ -2192,7 +2193,7 @@ export const translations: Translations = {
     cs: 'Portfolio',
     fi: 'Portfolio',
   },
-  EQuiz: {
+  Quiz: {
     en: 'Quiz',
     es: 'Cuestionario',
     fr: 'Quiz',
@@ -2201,7 +2202,7 @@ export const translations: Translations = {
     cs: 'Kvíz',
     fi: 'Tietovisa',
   },
-  EQuizApp: {
+  QuizApp: {
     en: 'Quiz App',
     es: 'Aplicación de cuestionario',
     fr: 'Application de quiz',
@@ -2210,7 +2211,7 @@ export const translations: Translations = {
     cs: 'Aplikace kvízu',
     fi: 'Tietovisa-sovellus',
   },
-  ETestYourKnowledge: {
+  TestYourKnowledge: {
     en: 'Test your knowledge',
     es: 'Prueba tu conocimiento',
     fr: 'Testez vos connaissances',
@@ -2219,7 +2220,7 @@ export const translations: Translations = {
     cs: 'Otestujte své znalosti',
     fi: 'Testaa tietosi',
   },
-  EJokes: {
+  Jokes: {
     en: 'Jokes',
     es: 'Chistes',
     fr: 'Blagues',
@@ -2228,7 +2229,7 @@ export const translations: Translations = {
     cs: 'Vtipy',
     fi: 'Vitsit',
   },
-  EToDo: {
+  ToDo: {
     en: 'Todo',
     es: 'Por hacer',
     fr: 'À faire',
@@ -2237,7 +2238,7 @@ export const translations: Translations = {
     cs: 'Udělat',
     fi: 'Tehtävälista',
   },
-  EBlob: {
+  Blob: {
     en: 'Blob',
     es: 'Bolita',
     fr: 'Boule',
@@ -2246,7 +2247,7 @@ export const translations: Translations = {
     cs: 'Koule',
     fi: 'Mollukka',
   },
-  EBlobs: {
+  Blobs: {
     en: 'Blobs',
     es: 'Bolitas',
     fr: 'Boules',
@@ -2255,7 +2256,7 @@ export const translations: Translations = {
     cs: 'Koule',
     fi: 'Mollukat',
   },
-  EBlobApp: {
+  BlobApp: {
     en: 'Blob App',
     es: 'Aplicación de bolitas',
     fr: 'Application de boules',
@@ -2264,7 +2265,7 @@ export const translations: Translations = {
     cs: 'Aplikace Blob',
     fi: 'Blob-/mollukkasovellus',
   },
-  EBlobAppSlogan: {
+  BlobAppSlogan: {
     en: 'Make blob art your thing',
     es: 'Haz que el arte de las bolitas sea lo tuyo',
     fr: "Faites de l'art des blobs votre truc",
@@ -2273,7 +2274,7 @@ export const translations: Translations = {
     cs: 'Udělejte z blob art svou věc',
     fi: 'Tee mollukkataiteesta juttusi',
   },
-  EDraggable: {
+  Draggable: {
     en: 'Draggable',
     es: 'Arrastrable',
     fr: 'Déplaçable',
@@ -2282,7 +2283,7 @@ export const translations: Translations = {
     cs: 'Přetahovatelný',
     fi: 'Raahattava',
   },
-  EDraggableBlobs: {
+  DraggableBlobs: {
     en: 'Draggable blobs',
     es: 'Bolitas arrastrables',
     fr: 'Boules déplaçables',
@@ -2291,7 +2292,7 @@ export const translations: Translations = {
     cs: 'Přetahovatelné koule',
     fi: 'Raahattavat mollukat',
   },
-  EDragAndDrop: {
+  DragAndDrop: {
     en: 'Drag and Drop',
     es: 'Arrastrar y Soltar',
     fr: 'Glisser Déposer',
@@ -2300,7 +2301,7 @@ export const translations: Translations = {
     cs: 'Táhnout a Pustit',
     fi: 'Kohteeseen raahaus',
   },
-  ECustomSelect: {
+  CustomSelect: {
     en: 'Custom Select Dropdown',
     es: 'Desplegable de selección personalizada',
     fr: 'Menu déroulant personnalisé',
@@ -2309,7 +2310,7 @@ export const translations: Translations = {
     cs: 'Vlastní rozbalovací nabídka',
     fi: 'Räätälöitävä valintavalikko',
   },
-  EMultistepForm: {
+  MultistepForm: {
     en: 'Multistep Form',
     es: 'Formulario Multietapa',
     fr: 'Formulaire Multistep',
@@ -2318,7 +2319,7 @@ export const translations: Translations = {
     cs: 'Vícekrokový Formulář',
     fi: 'Monivaiheinen lomake',
   },
-  ELightMode: {
+  LightMode: {
     en: 'Light Mode',
     es: 'Modo Claro',
     fr: 'Mode Lumière',
@@ -2327,7 +2328,7 @@ export const translations: Translations = {
     cs: 'Světlý Režim',
     fi: 'Vaalea tila',
   },
-  EDarkMode: {
+  DarkMode: {
     en: 'Dark Mode',
     es: 'Modo Oscuro',
     fr: 'Mode Sombre',
@@ -2336,7 +2337,7 @@ export const translations: Translations = {
     cs: 'Tmavý Režim',
     fi: 'Tumma tila',
   },
-  ENavStyle: {
+  NavStyle: {
     en: 'Nav Style',
     es: 'Nav Estilo',
     fr: 'Nav Style',
@@ -2345,7 +2346,7 @@ export const translations: Translations = {
     cs: 'Nav Styl',
     fi: 'Valikkotyyli',
   },
-  EMenu: {
+  Menu: {
     en: 'Menu',
     es: 'Menú',
     fr: 'Menu',
@@ -2354,7 +2355,7 @@ export const translations: Translations = {
     cs: 'Menu',
     fi: 'Valikko',
   },
-  EOnOff: {
+  OnOff: {
     en: 'On/Off',
     es: 'Encendido/Apagado',
     fr: 'Activé/Désactivé',
@@ -2363,7 +2364,7 @@ export const translations: Translations = {
     cs: 'Zapnuto/Vypnuto',
     fi: 'Päällä/Pois',
   },
-  EOn: {
+  On: {
     en: 'On',
     es: 'Encendido',
     fr: 'Activé',
@@ -2372,7 +2373,7 @@ export const translations: Translations = {
     cs: 'Zapnuto',
     fi: 'Päällä',
   },
-  EOff: {
+  Off: {
     en: 'Off',
     es: 'Apagado',
     fr: 'Désactivé',
@@ -2381,7 +2382,7 @@ export const translations: Translations = {
     cs: 'Vypnuto',
     fi: 'Pois',
   },
-  EWarning: {
+  Warning: {
     en: 'Warning',
     es: 'Advertencia',
     fr: 'Attention',
@@ -2390,7 +2391,7 @@ export const translations: Translations = {
     cs: 'Varování',
     fi: 'Varoitus',
   },
-  EExitToMainSite: {
+  ExitToMainSite: {
     en: 'Exit to Main Site',
     es: 'Salir al sitio principal',
     fr: 'Quitter le site principal',
@@ -2399,7 +2400,7 @@ export const translations: Translations = {
     cs: 'Ukončit na hlavní stránku',
     fi: 'Poistu pääsivulle',
   },
-  EApp: {
+  App: {
     en: 'App',
     es: 'Aplicación',
     fr: 'Application',
@@ -2408,7 +2409,7 @@ export const translations: Translations = {
     cs: 'Aplikace',
     fi: 'Sovellus',
   },
-  EWelcome: {
+  Welcome: {
     en: 'Welcome',
     es: 'Bienvenido',
     fr: 'Bienvenue',
@@ -2417,7 +2418,7 @@ export const translations: Translations = {
     cs: 'Vítejte',
     fi: 'Tervetuloa',
   },
-  EToTheReactSiteOfJenniinaFi: {
+  ToTheReactSiteOfJenniinaFi: {
     en: 'to the React site of jenniina.fi',
     es: 'al sitio React de jenniina.fi',
     fr: 'sur le site React de jenniina.fi',
@@ -2426,7 +2427,7 @@ export const translations: Translations = {
     cs: 'na React webu jenniina.fi',
     fi: 'jenniina.fi:n React-sivustolle',
   },
-  EUserEdit: {
+  UserEdit: {
     en: 'User Edit',
     es: 'Editar Usuario',
     fr: "Modifier l'utilisateur",
@@ -2435,7 +2436,7 @@ export const translations: Translations = {
     cs: 'Upravit Uživatele',
     fi: 'Muokkaa käyttäjätietoja',
   },
-  EAbout: {
+  About: {
     en: 'About',
     es: 'Acerca de',
     fr: 'À propos de',
@@ -2444,7 +2445,7 @@ export const translations: Translations = {
     cs: 'O',
     fi: 'Sivustosta',
   },
-  EAboutThisSite: {
+  AboutThisSite: {
     en: 'This is a sub-site of jenniina.fi made with and focusing on ReactJS. Other porfolio items may be found at the portfolio section of the main site.',
     es: 'Este es un sub-sitio de jenniina.fi hecho con y enfocado en ReactJS. Otros elementos de cartera se pueden encontrar en la sección de cartera del sitio principal.',
     fr: "Ceci est un sous-site de jenniina.fi fait avec et axé sur ReactJS. D'autres éléments de portefeuille peuvent être trouvés dans la section portefeuille du site principal.",
@@ -2453,7 +2454,7 @@ export const translations: Translations = {
     cs: 'Toto je sub-site jenniina.fi vyrobený s důrazem na ReactJS. Další položky portfolia najdete v sekci portfolia hlavního webu.',
     fi: 'Tämä on jenniina.fi:n alisivusto, joka on tehty ReactJS:llä ja keskittyy siihen. Muita aiheita löytyy pääsivuston portfoliosta.',
   },
-  EThisSite: {
+  ThisSite: {
     en: 'this site',
     es: 'este sitio',
     fr: 'ce site',
@@ -2462,7 +2463,7 @@ export const translations: Translations = {
     cs: 'tento web',
     fi: 'tämä sivusto',
   },
-  EGithubRepository: {
+  GithubRepository: {
     en: 'Github Repository',
     es: 'Repositorio Github',
     fr: 'Dépôt Github',
@@ -2471,7 +2472,7 @@ export const translations: Translations = {
     cs: 'Github Repository',
     fi: 'Github repositorio',
   },
-  EFeaturesOfThisSite: {
+  FeaturesOfThisSite: {
     en: 'Features of this site',
     es: 'Características de este sitio',
     fr: 'Fonctionnalités de ce site',
@@ -2480,7 +2481,7 @@ export const translations: Translations = {
     cs: 'Funkce tohoto webu',
     fi: 'Tämän sivuston ominaisuudet',
   },
-  EContact: {
+  Contact: {
     en: 'Contact',
     es: 'Contacto',
     fr: 'Contact',
@@ -2489,7 +2490,7 @@ export const translations: Translations = {
     cs: 'Kontakt',
     fi: 'Yhteys',
   },
-  ELetsCollaborate: {
+  LetsCollaborate: {
     en: "Let's collaborate",
     es: 'Colaboremos',
     fr: 'Collaborons',
@@ -2498,7 +2499,7 @@ export const translations: Translations = {
     cs: 'Spolupracujme',
     fi: 'Tehdään yhteistyötä',
   },
-  ESettings: {
+  Settings: {
     en: 'Settings',
     es: 'Configuraciones',
     fr: 'Paramètres',
@@ -2507,7 +2508,7 @@ export const translations: Translations = {
     cs: 'Nastavení',
     fi: 'Asetukset',
   },
-  ESiteSettings: {
+  SiteSettings: {
     en: 'Site Settings',
     es: 'Configuraciones del sitio',
     fr: 'Paramètres du site',
@@ -2516,7 +2517,7 @@ export const translations: Translations = {
     cs: 'Nastavení webu',
     fi: 'Sivuston asetukset',
   },
-  ESeeSettingsAtMenuBar: {
+  SeeSettingsAtMenuBar: {
     en: 'See Settings at menu bar',
     es: 'Ver Configuraciones en la barra de menú',
     fr: 'Voir les paramètres dans la barre de menu',
@@ -2525,7 +2526,7 @@ export const translations: Translations = {
     cs: 'Zobrazit nastavení v nabídce',
     fi: 'Katso asetukset valikkopalkista',
   },
-  EIcon: {
+  Icon: {
     en: 'Icon',
     es: 'Icono',
     fr: 'Icône',
@@ -2534,7 +2535,7 @@ export const translations: Translations = {
     cs: 'Ikona',
     fi: 'Kuvake',
   },
-  ELanguageSelect: {
+  LanguageSelect: {
     en: 'Language Select',
     es: 'Selección de idioma',
     fr: 'Sélection de langue',
@@ -2543,7 +2544,7 @@ export const translations: Translations = {
     cs: 'Výběr jazyka',
     fi: 'Kielen valinta',
   },
-  ELightDarkModeButton: {
+  LightDarkModeButton: {
     en: 'Light/Dark mode button',
     es: 'Botón de modo claro/oscuro',
     fr: 'Bouton Light/Dark mode',
@@ -2552,7 +2553,7 @@ export const translations: Translations = {
     cs: 'Tlačítko Light/Dark mode',
     fi: 'Painike: vaaleatila/tummatila',
   },
-  EFourStylesAltogether: {
+  FourStylesAltogether: {
     en: 'Four styles altogether',
     es: 'Cuatro estilos en total',
     fr: 'Quatre styles au total',
@@ -2561,7 +2562,7 @@ export const translations: Translations = {
     cs: 'Celkem čtyři styly',
     fi: 'Neljä tyyliä yhteensä',
   },
-  ELogInAndRegisterButtons: {
+  LogInAndRegisterButtons: {
     en: 'Log In and Register buttons',
     es: 'Botones de inicio de sesión y registro',
     fr: "Boutons de connexion et d'inscription",
@@ -2570,7 +2571,7 @@ export const translations: Translations = {
     cs: 'Tlačítka Přihlásit a Registrovat',
     fi: 'Sisäänkirjautumis- ja rekisteröintipainikkeet',
   },
-  EReplacedByUserEditAndLogoutButtonsWhenLoggedIn: {
+  ReplacedByUserEditAndLogoutButtonsWhenLoggedIn: {
     en: 'Replaced by User Edit and Logout buttons when logged in',
     es: 'Reemplazado por los botones de edición de usuario y cierre de sesión cuando se inicia la sesión',
     fr: "Remplacé par les boutons d'édition utilisateur et de déconnexion lors de la connexion",
@@ -2579,7 +2580,7 @@ export const translations: Translations = {
     cs: 'Při přihlášení nahrazeno tlačítky Upravit uživatele a Odhlásit',
     fi: 'Ne korvataan käyttäjän muokkaus- ja kirjautumispainikkeilla, kun käyttäjä on kirjautunut sisään',
   },
-  EButtonToToggleBetweenNavigationStyles: {
+  ButtonToToggleBetweenNavigationStyles: {
     en: 'Button to toggle between navigation styles',
     es: 'Botón para alternar entre estilos de navegación',
     fr: 'Bouton pour basculer entre les styles de navigation',
@@ -2588,7 +2589,7 @@ export const translations: Translations = {
     cs: 'Tlačítko pro přepínání mezi styly navigace',
     fi: 'Painike vaihtaa navigointityylejä',
   },
-  ETwoStylesAtSmallScreenSizeAndTwoAtLargeScreenSize: {
+  TwoStylesAtSmallScreenSizeAndTwoAtLargeScreenSize: {
     en: 'Two styles at small screen size and two at large screen size',
     es: 'Dos estilos en tamaño de pantalla pequeña y dos en tamaño de pantalla grande',
     fr: 'Deux styles en petit écran et deux en grand écran',
@@ -2598,7 +2599,7 @@ export const translations: Translations = {
     fi: 'Kaksi tyyliä pienellä näytön koolla ja kaksi suurella näytön koolla',
   },
 
-  EFilter: {
+  Filter: {
     en: 'Filter',
     es: 'Filtrar',
     fr: 'Filtre',
@@ -2607,7 +2608,7 @@ export const translations: Translations = {
     cs: 'Filtr',
     fi: 'Suodata',
   },
-  EFilterByLanguage: {
+  FilterByLanguage: {
     en: 'Filter by language',
     es: 'Filtrar por idioma',
     fr: 'Filtrer par langue',
@@ -2616,7 +2617,7 @@ export const translations: Translations = {
     cs: 'Filtrovat podle jazyka',
     fi: 'Suodata kielen mukaan',
   },
-  EFilterByCategory: {
+  FilterByCategory: {
     en: 'Filter by category',
     es: 'Filtrar por categoría',
     fr: 'Filtrer par catégorie',
@@ -2625,7 +2626,7 @@ export const translations: Translations = {
     cs: 'Filtrovat podle kategorie',
     fi: 'Suodata kategorian mukaan',
   },
-  ESend: {
+  Send: {
     en: 'Send',
     es: 'Enviar',
     fr: 'Envoyer',
@@ -2634,7 +2635,7 @@ export const translations: Translations = {
     cs: 'Poslat',
     fi: 'Lähetä',
   },
-  ESave: {
+  Save: {
     en: 'Save',
     es: 'Guardar',
     fr: 'Sauvegarder',
@@ -2643,7 +2644,7 @@ export const translations: Translations = {
     cs: 'Uložit',
     fi: 'Tallenna',
   },
-  EEdit: {
+  Edit: {
     en: 'Edit',
     es: 'Editar',
     fr: 'Modifier',
@@ -2652,7 +2653,7 @@ export const translations: Translations = {
     cs: 'Upravit',
     fi: 'Muokkaa',
   },
-  EClose: {
+  Close: {
     en: 'Close',
     es: 'Cerrar',
     fr: 'Fermer',
@@ -2661,7 +2662,7 @@ export const translations: Translations = {
     cs: 'Zavřít',
     fi: 'Sulje',
   },
-  ECurrentPassword: {
+  CurrentPassword: {
     en: 'Current Password',
     es: 'Contraseña actual',
     fr: 'Mot de passe actuel',
@@ -2670,7 +2671,7 @@ export const translations: Translations = {
     cs: 'Aktuální heslo',
     fi: 'Nykyinen salasana',
   },
-  ELoggedInAs: {
+  LoggedInAs: {
     en: 'Logged in as',
     es: 'Conectado como',
     fr: 'Connecté en tant que',
@@ -2679,7 +2680,7 @@ export const translations: Translations = {
     cs: 'Přihlášen jako',
     fi: 'Kirjautuneena tunnuksella',
   },
-  ESearch: {
+  Search: {
     en: 'Search',
     es: 'Buscar',
     fr: 'Chercher',
@@ -2688,7 +2689,7 @@ export const translations: Translations = {
     cs: 'Vyhledávání',
     fi: 'Hae',
   },
-  ETryTappingTheShapes: {
+  TryTappingTheShapes: {
     en: 'Try tapping the shapes',
     es: 'Intenta tocar las formas',
     fr: 'Essayez de toucher les formes',
@@ -2697,7 +2698,7 @@ export const translations: Translations = {
     cs: 'Zkuste klepnout na tvary',
     fi: 'Kokeile klikata elementtejä',
   },
-  EReset: {
+  Reset: {
     en: 'Reset',
     es: 'Reiniciar',
     fr: 'Réinitialiser',
@@ -2706,7 +2707,7 @@ export const translations: Translations = {
     cs: 'Resetovat',
     fi: 'Nollaa',
   },
-  EUsername: {
+  Username: {
     en: 'Username',
     es: 'Nombre de usuario',
     fr: "Nom d'utilisateur",
@@ -2715,7 +2716,7 @@ export const translations: Translations = {
     cs: 'Uživatelské jméno',
     fi: 'Käyttäjätunnus',
   },
-  EUsernameIsTheSame: {
+  UsernameIsTheSame: {
     en: 'Username is the same as before',
     es: 'El nombre de usuario es el mismo que antes',
     fr: "Le nom d'utilisateur est le même qu'avant",
@@ -2724,7 +2725,7 @@ export const translations: Translations = {
     cs: 'Uživatelské jméno je stejné jako dříve',
     fi: 'Käyttäjätunnus on sama kuin aiemmin',
   },
-  ECurrentNickname: {
+  CurrentNickname: {
     en: 'Current Nickname',
     es: 'Apodo actual',
     fr: 'Surnom actuel',
@@ -2733,7 +2734,7 @@ export const translations: Translations = {
     cs: 'Aktuální přezdívka',
     fi: 'Nykyinen nimimerkki',
   },
-  ESelectAnOption: {
+  SelectAnOption: {
     en: 'Select an option',
     es: 'Seleccione una opción',
     fr: 'Sélectionnez une option',
@@ -2742,7 +2743,7 @@ export const translations: Translations = {
     cs: 'Vyberte možnost',
     fi: 'Valitse',
   },
-  EFeatures: {
+  Features: {
     en: 'Features',
     es: 'Caracteristicas',
     fr: 'Traits',
@@ -2751,7 +2752,7 @@ export const translations: Translations = {
     cs: 'Vlastnosti',
     fi: 'Ominaisuudet',
   },
-  EAppTranslatedTo: {
+  AppTranslatedTo: {
     en: 'App translated to',
     es: 'Aplicación traducida a',
     fr: 'Application traduite en',
@@ -2760,7 +2761,7 @@ export const translations: Translations = {
     cs: 'Aplikace přeložena do',
     fi: 'Sovellus käännetty',
   },
-  ESubmit: {
+  Submit: {
     en: 'Submit',
     es: 'Enviar',
     fr: 'Soumettre',
@@ -2769,7 +2770,7 @@ export const translations: Translations = {
     cs: 'Odeslat',
     fi: 'Lähetä',
   },
-  EDelete: {
+  Delete: {
     en: 'Delete',
     es: 'Eliminar',
     fr: 'Supprimer',
@@ -2778,7 +2779,7 @@ export const translations: Translations = {
     cs: 'Odstranit',
     fi: 'Poista',
   },
-  EDeleted: {
+  Deleted: {
     en: 'Deleted',
     es: 'Eliminado',
     fr: 'Supprimé',
@@ -2787,7 +2788,7 @@ export const translations: Translations = {
     cs: 'Odstraněno',
     fi: 'Poistettu',
   },
-  ESolo: {
+  Solo: {
     en: 'Solo',
     es: 'Solitario',
     fr: 'Solo',
@@ -2796,7 +2797,7 @@ export const translations: Translations = {
     cs: 'Solo',
     fi: 'Soolo',
   },
-  EDuet: {
+  Duet: {
     en: 'Duet',
     es: 'Dúo',
     fr: 'Duo',
@@ -2805,7 +2806,7 @@ export const translations: Translations = {
     cs: 'Duet',
     fi: 'Duetto',
   },
-  EHighScores: {
+  HighScores: {
     en: 'High Scores',
     es: 'Puntuaciones Altas',
     fr: 'Meilleurs Scores',
@@ -2814,7 +2815,7 @@ export const translations: Translations = {
     cs: 'Nejlepší skóre',
     fi: 'Huippupisteet',
   },
-  EMemoryGame: {
+  MemoryGame: {
     en: 'Memory Game',
     es: 'Juego de Memoria',
     fr: 'Jeu de Mémoire',
@@ -2823,7 +2824,7 @@ export const translations: Translations = {
     cs: 'Hra paměti',
     fi: 'Muistipeli',
   },
-  EMemoryGameIntro: {
+  MemoryGameIntro: {
     en: 'Test your memory with this fun game!',
     es: '¡Pon a prueba tu memoria con este divertido juego!',
     fr: 'Testez votre mémoire avec ce jeu amusant!',
@@ -2832,7 +2833,7 @@ export const translations: Translations = {
     cs: 'Vyzkoušejte si paměť s touto zábavnou hrou!',
     fi: 'Testaa muistiasi tällä hauskalla pelillä!',
   },
-  ECardType: {
+  CardType: {
     en: 'Card Type',
     es: 'Tipo de Tarjeta',
     fr: 'Type de Carte',
@@ -2841,7 +2842,7 @@ export const translations: Translations = {
     cs: 'Typ karty',
     fi: 'Korttityyppi',
   },
-  EIcons: {
+  Icons: {
     en: 'Icons',
     es: 'Iconos',
     fr: 'Icônes',
@@ -2850,7 +2851,7 @@ export const translations: Translations = {
     cs: 'Ikony',
     fi: 'Kuvakkeet',
   },
-  ELetters: {
+  Letters: {
     en: 'Letters',
     es: 'Letras',
     fr: 'Lettres',
@@ -2859,7 +2860,7 @@ export const translations: Translations = {
     cs: 'Písmena',
     fi: 'Kirjaimet',
   },
-  ENumbers: {
+  Numbers: {
     en: 'Numbers',
     es: 'Números',
     fr: 'Nombres',
@@ -2868,7 +2869,7 @@ export const translations: Translations = {
     cs: 'Čísla',
     fi: 'Numerot',
   },
-  EGridSize: {
+  GridSize: {
     en: 'Grid Size',
     es: 'Tamaño de la Cuadrícula',
     fr: 'Taille de la Grille',
@@ -2877,7 +2878,7 @@ export const translations: Translations = {
     cs: 'Velikost mřížky',
     fi: 'Ruudukon koko',
   },
-  EPlayer: {
+  Player: {
     en: 'Player',
     es: 'Jugador',
     fr: 'Joueur',
@@ -2886,7 +2887,7 @@ export const translations: Translations = {
     cs: 'Hráč',
     fi: 'Pelaaja',
   },
-  EPlayers: {
+  Players: {
     en: 'Players',
     es: 'Jugadores',
     fr: 'Joueurs',
@@ -2895,7 +2896,7 @@ export const translations: Translations = {
     cs: 'Hráči',
     fi: 'Pelaajia',
   },
-  EStartGame: {
+  StartGame: {
     en: 'Start Game',
     es: 'Comenzar Juego',
     fr: 'Démarrer le Jeu',
@@ -2904,7 +2905,7 @@ export const translations: Translations = {
     cs: 'Začít hru',
     fi: 'Aloita peli',
   },
-  EScores: {
+  Scores: {
     en: 'Scores',
     es: 'Puntuaciones',
     fr: 'Scores',
@@ -2913,7 +2914,7 @@ export const translations: Translations = {
     cs: 'Skóre',
     fi: 'Pisteet',
   },
-  ETimeTaken: {
+  TimeTaken: {
     en: 'Time taken',
     es: 'Tiempo tomado',
     fr: 'Temps pris',
@@ -2922,7 +2923,7 @@ export const translations: Translations = {
     cs: 'Uplynulý čas',
     fi: 'Kulunut aika',
   },
-  ESeconds: {
+  Seconds: {
     en: 'seconds',
     es: 'segundos',
     fr: 'secondes',
@@ -2931,7 +2932,7 @@ export const translations: Translations = {
     cs: 'sekund',
     fi: 'sekuntia',
   },
-  EDone: {
+  Done: {
     en: 'Done!',
     es: '¡Hecho!',
     fr: 'Terminé!',
@@ -2940,7 +2941,7 @@ export const translations: Translations = {
     cs: 'Hotovo!',
     fi: 'Valmis!',
   },
-  EBeginner: {
+  Beginner: {
     en: 'Beginner',
     es: 'Principiante',
     fr: 'Débutant',
@@ -2949,7 +2950,7 @@ export const translations: Translations = {
     cs: 'Začátečník',
     fi: 'Aloittelija',
   },
-  EUsual: {
+  Usual: {
     en: 'Usual',
     es: 'Usual',
     fr: 'Usuel',
@@ -2958,7 +2959,7 @@ export const translations: Translations = {
     cs: 'Běžný',
     fi: 'Perustaso',
   },
-  EAdvanced: {
+  Advanced: {
     en: 'Advanced',
     es: 'Avanzado',
     fr: 'Avancé',
@@ -2967,7 +2968,7 @@ export const translations: Translations = {
     cs: 'Pokročilý',
     fi: 'Edistynyt',
   },
-  EExpert: {
+  Expert: {
     en: 'Expert',
     es: 'Experto',
     fr: 'Expert',
@@ -2976,7 +2977,7 @@ export const translations: Translations = {
     cs: 'Expert',
     fi: 'Asiantuntija',
   },
-  EPlayAgain: {
+  PlayAgain: {
     en: 'Play Again',
     es: 'Jugar de Nuevo',
     fr: 'Rejouer',
@@ -2985,7 +2986,7 @@ export const translations: Translations = {
     cs: 'Hrát znovu',
     fi: 'Pelaa uudelleen',
   },
-  EYouMadeItToTheHighScores: {
+  YouMadeItToTheHighScores: {
     en: 'You made it to the high scores!',
     es: '¡Llegaste a las puntuaciones más altas!',
     fr: 'Vous avez atteint les meilleurs scores!',
@@ -2994,7 +2995,7 @@ export const translations: Translations = {
     cs: 'Dostali jste se na nejlepší skóre!',
     fi: 'Pääsit sijoille!',
   },
-  EHighScoreAddedSuccessfully: {
+  HighScoreAddedSuccessfully: {
     en: 'High score added successfully',
     es: 'Puntuación alta añadida con éxito',
     fr: 'Score élevé ajouté avec succès',
@@ -3003,7 +3004,7 @@ export const translations: Translations = {
     cs: 'High score úspěšně přidán',
     fi: 'Tulos lisätty onnistuneesti',
   },
-  EErrorAddingHighScore: {
+  ErrorAddingHighScore: {
     en: 'Error adding high score',
     es: 'Error al agregar puntuación alta',
     fr: "Erreur lors de l'ajout du score élevé",
@@ -3012,7 +3013,7 @@ export const translations: Translations = {
     cs: 'Chyba při přidávání vysokého skóre',
     fi: 'Virhe tuloksen lisäämisessä',
   },
-  EErrorRetrievingHighScores: {
+  ErrorRetrievingHighScores: {
     en: 'Error retrieving high scores',
     es: 'Error al recuperar las puntuaciones más altas',
     fr: 'Erreur lors de la récupération des scores élevés',
@@ -3021,7 +3022,7 @@ export const translations: Translations = {
     cs: 'Chyba při získávání vysokých skóre',
     fi: 'Virhe pisteiden noutamisessa',
   },
-  EHighScoreNotFound: {
+  HighScoreNotFound: {
     en: 'High score not found',
     es: 'Puntuación alta no encontrada',
     fr: 'Score élevé non trouvé',
@@ -3030,7 +3031,7 @@ export const translations: Translations = {
     cs: 'Vysoké skóre nebylo nalezeno',
     fi: 'Tulosta ei löytynyt',
   },
-  EHighScoreDeletedSuccessfully: {
+  HighScoreDeletedSuccessfully: {
     en: 'High score deleted successfully',
     es: 'Puntuación alta eliminada con éxito',
     fr: 'Score élevé supprimé avec succès',
@@ -3039,7 +3040,7 @@ export const translations: Translations = {
     cs: 'Vysoké skóre bylo úspěšně smazáno',
     fi: 'Tulos poistettu onnistuneesti',
   },
-  EErrorDeletingHighScore: {
+  ErrorDeletingHighScore: {
     en: 'Error deleting high score',
     es: 'Error al eliminar la puntuación alta',
     fr: 'Erreur lors de la suppression du score élevé',
@@ -3048,7 +3049,7 @@ export const translations: Translations = {
     cs: 'Chyba při mazání vysokého skóre',
     fi: 'Virhe tuloksen poistamisessa',
   },
-  EHighScoreUpdatedSuccessfully: {
+  HighScoreUpdatedSuccessfully: {
     en: 'High score updated successfully',
     es: 'Puntuación alta actualizada con éxito',
     fr: 'Score élevé mis à jour avec succès',
@@ -3057,7 +3058,7 @@ export const translations: Translations = {
     cs: 'Vysoké skóre úspěšně aktualizováno',
     fi: 'Tulos päivitetty onnistuneesti',
   },
-  EErrorUpdatingHighScore: {
+  ErrorUpdatingHighScore: {
     en: 'Error updating high score',
     es: 'Error al actualizar la puntuación alta',
     fr: 'Erreur lors de la mise à jour du score élevé',
@@ -3066,7 +3067,7 @@ export const translations: Translations = {
     cs: 'Chyba při aktualizaci vysokého skóre',
     fi: 'Virhe tuloksen päivittämisessä',
   },
-  EDeleteHighScore: {
+  DeleteHighScore: {
     en: 'Delete this high score?',
     es: '¿Eliminar esta puntuación alta?',
     fr: 'Supprimer ce score élevé?',
@@ -3075,7 +3076,7 @@ export const translations: Translations = {
     cs: 'Smazat toto vysoké skóre?',
     fi: 'Poista tämä tulos?',
   },
-  EDeletePlayersHighScores: {
+  DeletePlayersHighScores: {
     en: "Delete this player's high scores?",
     es: '¿Eliminar las puntuaciones altas de este jugador?',
     fr: 'Supprimer les scores élevés de ce joueur?',
@@ -3084,7 +3085,7 @@ export const translations: Translations = {
     cs: 'Smazat vysoké skóre tohoto hráče?',
     fi: 'Poista tämän pelaajan tulokset?',
   },
-  EStopGame: {
+  StopGame: {
     en: 'Stop Game',
     es: 'Detener Juego',
     fr: 'Arrêter le Jeu',
@@ -3093,7 +3094,7 @@ export const translations: Translations = {
     cs: 'Zastavit hru',
     fi: 'Lopeta peli',
   },
-  EFastestTime: {
+  FastestTime: {
     en: 'Fastest Time',
     es: 'Tiempo más rápido',
     fr: 'Temps le plus rapide',
@@ -3102,7 +3103,7 @@ export const translations: Translations = {
     cs: 'Nejrychlejší čas',
     fi: 'Nopein aika',
   },
-  ENew: {
+  New: {
     en: 'New',
     es: 'Nuevo',
     fr: 'Nouveau',
@@ -3111,7 +3112,7 @@ export const translations: Translations = {
     cs: 'Nový',
     fi: 'Uutta',
   },
-  EButton: {
+  Button: {
     en: 'Button',
     es: 'Botón',
     fr: 'Bouton',
@@ -3120,7 +3121,7 @@ export const translations: Translations = {
     cs: 'Tlačítko',
     fi: 'Painike',
   },
-  EOr: {
+  Or: {
     en: 'or',
     es: 'o',
     fr: 'ou',
@@ -3129,7 +3130,7 @@ export const translations: Translations = {
     cs: 'nebo',
     fi: 'tai',
   },
-  ESavingSuccessful: {
+  SavingSuccessful: {
     en: 'Saving successful',
     es: 'Guardado exitoso',
     fr: 'Enregistrement réussi',
@@ -3138,7 +3139,7 @@ export const translations: Translations = {
     cs: 'Uložení úspěšné',
     fi: 'Tallennus onnistui',
   },
-  ENeedHelp: {
+  NeedHelp: {
     en: 'Need help?',
     es: '¿Necesitas ayuda?',
     fr: "Besoin d'aide?",
@@ -3147,7 +3148,7 @@ export const translations: Translations = {
     cs: 'Potřebujete pomoc?',
     fi: 'Tarvitsetko apua?',
   },
-  EForExample: {
+  ForExample: {
     en: 'for example:',
     es: 'por ejemplo:',
     fr: 'par exemple:',
@@ -3156,7 +3157,7 @@ export const translations: Translations = {
     cs: 'například:',
     fi: 'esimerkiksi:',
   },
-  EAreYouSureYouWantToRemoveThis: {
+  AreYouSureYouWantToRemoveThis: {
     en: 'Are you sure you want to remove this?',
     es: '¿Estás seguro de que quieres eliminar esto?',
     fr: 'Êtes-vous sûr de vouloir supprimer ceci?',
@@ -3165,7 +3166,7 @@ export const translations: Translations = {
     cs: 'Jste si jisti, že chcete toto odstranit?',
     fi: 'Oletko varma, että haluat poistaa tämän?',
   },
-  EChangeCategoryTitle: {
+  ChangeCategoryTitle: {
     en: 'Change category title',
     es: 'Cambiar título de categoría',
     fr: 'Changer le titre de la catégorie',
@@ -3174,7 +3175,7 @@ export const translations: Translations = {
     cs: 'Změnit název kategorie',
     fi: 'Muuta kategorian otsikko',
   },
-  EChange: {
+  Change: {
     en: 'Change',
     es: 'Cambiar',
     fr: 'Changer',
@@ -3183,7 +3184,7 @@ export const translations: Translations = {
     cs: 'Změnit',
     fi: 'Muuta',
   },
-  ETheCategoryAlreadyExists: {
+  TheCategoryAlreadyExists: {
     en: 'The category already exists',
     es: 'La categoría ya existe',
     fr: 'La catégorie existe déjà',
@@ -3192,7 +3193,7 @@ export const translations: Translations = {
     cs: 'Kategorie již existuje',
     fi: 'Kategoria on jo olemassa',
   },
-  ESpecialCharactersNotAllowed: {
+  SpecialCharactersNotAllowed: {
     en: 'Special characters like ? are not allowed',
     es: 'No se permiten caracteres especiales como ?',
     fr: 'Les caractères spéciaux comme ? ne sont pas autorisés',
@@ -3201,7 +3202,7 @@ export const translations: Translations = {
     cs: 'Speciální znaky jako ? nejsou povoleny',
     fi: 'Erityismerkit kuten ? eivät ole sallittuja',
   },
-  ESpecialCharactersOrSpaceNotAllowed: {
+  SpecialCharactersOrSpaceNotAllowed: {
     en: 'Special characters or space are not allowed',
     es: 'No se permiten caracteres especiales o espacio',
     fr: 'Les caractères spéciaux ou l espace ne sont pas autorisés',
@@ -3210,7 +3211,7 @@ export const translations: Translations = {
     cs: 'Speciální znaky nebo mezera nejsou povoleny',
     fi: 'Erityismerkit tai välilyönti eivät ole sallittuja',
   },
-  ECategoriesCanBeRenamed: {
+  CategoriesCanBeRenamed: {
     en: 'Categories can be renamed',
     es: 'Las categorías se pueden renombrar',
     fr: 'Les catégories peuvent être renommées',
@@ -3219,7 +3220,7 @@ export const translations: Translations = {
     cs: 'Kategorie lze přejmenovat',
     fi: 'Kategoriat voidaan nimetä uudelleen',
   },
-  ERenameTitle: {
+  RenameTitle: {
     en: 'Rename title',
     es: 'Renombrar título',
     fr: 'Renommer le titre',
@@ -3228,7 +3229,7 @@ export const translations: Translations = {
     cs: 'Přejmenovat název',
     fi: 'Nimeä uudelleen',
   },
-  EChangeLanguage: {
+  ChangeLanguage: {
     en: 'Change language',
     es: 'Cambiar idioma',
     fr: 'Changer de langue',
@@ -3237,7 +3238,7 @@ export const translations: Translations = {
     cs: 'Změnit jazyk',
     fi: 'Vaihda kieli',
   },
-  EDownload: {
+  Download: {
     en: 'Download',
     es: 'Descargar',
     fr: 'Télécharger',
@@ -3246,7 +3247,7 @@ export const translations: Translations = {
     cs: 'Stáhnout',
     fi: 'Lataa',
   },
-  EErrorConnectingToTheServer: {
+  ErrorConnectingToTheServer: {
     en: 'Error connecting to the server',
     es: 'Error al conectar al servidor',
     fr: 'Erreur de connexion au serveur',
@@ -3255,7 +3256,7 @@ export const translations: Translations = {
     cs: 'Chyba připojení k serveru',
     fi: 'Virhe yhdistettäessä palvelimeen',
   },
-  ELoad: {
+  Load: {
     en: 'Load',
     es: 'Cargar',
     fr: 'Charger',
@@ -3264,7 +3265,7 @@ export const translations: Translations = {
     cs: 'Načíst',
     fi: 'Lataa',
   },
-  EPrevious: {
+  Previous: {
     en: 'Previous',
     es: 'Anterior',
     fr: 'Précédent',
@@ -3273,7 +3274,7 @@ export const translations: Translations = {
     cs: 'Předchozí',
     fi: 'Edellinen',
   },
-  ENext: {
+  Next: {
     en: 'Next',
     es: 'Siguiente',
     fr: 'Suivant',
@@ -3282,7 +3283,7 @@ export const translations: Translations = {
     cs: 'Další',
     fi: 'Seuraava',
   },
-  EPage: {
+  Page: {
     en: 'Page',
     es: 'Página',
     fr: 'Page',
@@ -3291,7 +3292,7 @@ export const translations: Translations = {
     cs: 'Stránka',
     fi: 'Sivu',
   },
-  EAddedPagination: {
+  AddedPagination: {
     en: 'Added pagination',
     es: 'Paginación añadida',
     fr: 'Pagination ajoutée',
@@ -3300,7 +3301,7 @@ export const translations: Translations = {
     cs: 'Přidána stránkování',
     fi: 'Sivutus lisätty',
   },
-  EAreYouSureYouWantToProceed: {
+  AreYouSureYouWantToProceed: {
     en: 'Are you sure you want to proceed?',
     es: '¿Estás seguro de que quieres proceder?',
     fr: 'Êtes-vous sûr de vouloir continuer?',
@@ -3309,7 +3310,7 @@ export const translations: Translations = {
     cs: 'Jste si jisti, že chcete pokračovat?',
     fi: 'Oletko varma, että haluat jatkaa?',
   },
-  EPoem: {
+  Poem: {
     en: 'Poem',
     es: 'Poema',
     fr: 'Poème',
@@ -3318,7 +3319,7 @@ export const translations: Translations = {
     cs: 'Báseň',
     fi: 'Runo',
   },
-  ESearchForPoem: {
+  SearchForPoem: {
     en: 'Search for a poem',
     es: 'Buscar un poema',
     fr: 'Rechercher un poème',
@@ -3328,7 +3329,7 @@ export const translations: Translations = {
     fi: 'Etsi runo',
   },
 
-  EQuizQuestions15AreFetchedFrom: {
+  QuizQuestions15AreFetchedFrom: {
     en: 'Quiz questions (15) are fetched from',
     es: 'Las preguntas del cuestionario (15) se obtienen de',
     fr: 'Les questions du quiz (15) sont récupérées à partir de',
@@ -3337,7 +3338,7 @@ export const translations: Translations = {
     cs: 'Otázky kvízu (15) jsou načteny z',
     fi: 'Kyselykysymykset (15) haetaan',
   },
-  EQuestionsAreInEnglish: {
+  QuestionsAreInEnglish: {
     en: 'Questions are in English',
     es: 'Las preguntas están en inglés',
     fr: 'Les questions sont en anglais',
@@ -3346,7 +3347,7 @@ export const translations: Translations = {
     cs: 'Otázky jsou v angličtině',
     fi: 'Kysymykset ovat englanniksi',
   },
-  EUserCanChooseTheDifficultyLevel: {
+  UserCanChooseTheDifficultyLevel: {
     en: 'User can choose the difficulty level (easy, medium, hard)',
     es: 'El usuario puede elegir el nivel de dificultad (fácil, medio, difícil)',
     fr: 'L utilisateur peut choisir le niveau de difficulté (facile, moyen, difficile)',
@@ -3355,7 +3356,7 @@ export const translations: Translations = {
     cs: 'Uživatel si může vybrat obtížnost (snadná, střední, těžká)',
     fi: 'Käyttäjä voi valita vaikeustason (helppo, keskitaso, vaikea)',
   },
-  EUserCanRegisterAndLoginToSaveHighscores: {
+  UserCanRegisterAndLoginToSaveHighscores: {
     en: 'User can register and login to save highscores to a MongoDB database (password is hashed)',
     es: 'El usuario puede registrarse e iniciar sesión para guardar las puntuaciones más altas en una base de datos MongoDB (la contraseña está encriptada)',
     fr: 'L utilisateur peut s inscrire et se connecter pour enregistrer les meilleurs scores dans une base de données MongoDB (le mot de passe est haché)',
@@ -3364,7 +3365,7 @@ export const translations: Translations = {
     cs: 'Uživatel se může zaregistrovat a přihlásit se, aby uložil nejlepší skóre do databáze MongoDB (heslo je zahashováno)',
     fi: 'Käyttäjä voi rekisteröityä ja kirjautua sisään tallentaakseen huipputulokset MongoDB-tietokantaan (salasana on salattu)',
   },
-  ETestYourGeneralKnowledgeWithThese15Questions: {
+  TestYourGeneralKnowledgeWithThese15Questions: {
     en: 'Test your general knowledge with these 15 questions (in English)',
     es: 'Pon a prueba tus conocimientos generales con estas 15 preguntas (en inglés)',
     fr: 'Testez vos connaissances générales avec ces 15 questions (en anglais)',
@@ -3373,7 +3374,7 @@ export const translations: Translations = {
     cs: 'Otestujte své všeobecné znalosti pomocí těchto 15 otázek (v angličtině)',
     fi: 'Testaa yleistä tietämystäsi näillä 15 kysymyksellä (englanniksi)',
   },
-  EChooseDifficulty: {
+  ChooseDifficulty: {
     en: 'Choose difficulty',
     es: 'Elige la dificultad',
     fr: 'Choisissez la difficulté',
@@ -3382,7 +3383,7 @@ export const translations: Translations = {
     cs: 'Vyberte obtížnost',
     fi: 'Valitse vaikeustaso',
   },
-  EEasy: {
+  Easy: {
     en: 'Easy',
     es: 'Fácil',
     fr: 'Facile',
@@ -3391,7 +3392,7 @@ export const translations: Translations = {
     cs: 'Snadné',
     fi: 'Helppo',
   },
-  EMedium: {
+  Medium: {
     en: 'Medium',
     es: 'Medio',
     fr: 'Moyen',
@@ -3400,7 +3401,7 @@ export const translations: Translations = {
     cs: 'Střední',
     fi: 'Keskitaso',
   },
-  EHard: {
+  Hard: {
     en: 'Hard',
     es: 'Duro',
     fr: 'Difficile',
@@ -3409,7 +3410,7 @@ export const translations: Translations = {
     cs: 'Těžký',
     fi: 'Vaikea',
   },
-  ELogInToSaveScore: {
+  LogInToSaveScore: {
     en: 'Log in to save score',
     es: 'Inicia sesión para guardar la puntuación',
     fr: 'Connectez-vous pour enregistrer le score',
@@ -3418,7 +3419,7 @@ export const translations: Translations = {
     cs: 'Přihlaste se, abyste uložili skóre',
     fi: 'Kirjaudu sisään tallentaaksesi tulokset',
   },
-  ENewHighscore: {
+  NewHighscore: {
     en: 'New Highscore!',
     es: '¡Nuevo récord!',
     fr: 'Nouveau meilleur score!',
@@ -3427,7 +3428,7 @@ export const translations: Translations = {
     cs: 'Nové nejlepší skóre!',
     fi: 'Uusi huipputulos!',
   },
-  EPerfect: {
+  Perfect: {
     en: 'Perfect!',
     es: '¡Perfecto!',
     fr: 'Parfait!',
@@ -3436,7 +3437,7 @@ export const translations: Translations = {
     cs: 'Dokonalý!',
     fi: 'Täydellinen!',
   },
-  EExcellent: {
+  Excellent: {
     en: 'Excellent!',
     es: '¡Excelente!',
     fr: 'Excellent!',
@@ -3445,7 +3446,7 @@ export const translations: Translations = {
     cs: 'Vynikající!',
     fi: 'Erinomainen!',
   },
-  EGoodJob: {
+  GoodJob: {
     en: 'Good job!',
     es: '¡Buen trabajo!',
     fr: 'Bon travail!',
@@ -3454,7 +3455,7 @@ export const translations: Translations = {
     cs: 'Dobrá práce!',
     fi: 'Hyvin tehty!',
   },
-  EBadLuck: {
+  BadLuck: {
     en: 'Bad luck!',
     es: '¡Mala suerte!',
     fr: 'Mauvaise chance!',
@@ -3463,7 +3464,7 @@ export const translations: Translations = {
     cs: 'Smůla!',
     fi: 'Huono onni!',
   },
-  EFasterThanBefore: {
+  FasterThanBefore: {
     en: 'Faster than before!',
     es: '¡Más rápido que antes!',
     fr: 'Plus rapide qu avant!',
@@ -3472,7 +3473,7 @@ export const translations: Translations = {
     cs: 'Rychleji než dříve!',
     fi: 'Nopeampi kuin aiemmin!',
   },
-  EYouScored: {
+  YouScored: {
     en: 'You scored',
     es: 'Obtuviste',
     fr: 'Vous avez marqué',
@@ -3481,7 +3482,7 @@ export const translations: Translations = {
     cs: 'Dosáhli jste',
     fi: 'Sait',
   },
-  EOutOf300Points: {
+  OutOf300Points: {
     en: 'out of 300 points',
     es: 'de 300 puntos',
     fr: 'sur 300 points',
@@ -3490,7 +3491,7 @@ export const translations: Translations = {
     cs: 'z 300 bodů',
     fi: '300 pisteestä',
   },
-  EDifficulty: {
+  Difficulty: {
     en: 'Difficulty',
     es: 'Dificultad',
     fr: 'Difficulté',
@@ -3499,7 +3500,7 @@ export const translations: Translations = {
     cs: 'Obtížnost',
     fi: 'Vaikeustaso',
   },
-  ESpeed: {
+  Speed: {
     en: 'Speed',
     es: 'Velocidad',
     fr: 'Vitesse',
@@ -3508,7 +3509,7 @@ export const translations: Translations = {
     cs: 'Rychlost',
     fi: 'Nopeus',
   },
-  ENA: {
+  NA: {
     en: 'N/A',
     es: 'N/D',
     fr: 'N/D',
@@ -3517,7 +3518,7 @@ export const translations: Translations = {
     cs: 'N/A',
     fi: 'N/A',
   },
-  EHighscore: {
+  Highscore: {
     en: 'Highscore',
     es: 'Puntuación más alta',
     fr: 'Meilleur score',
@@ -3526,7 +3527,7 @@ export const translations: Translations = {
     cs: 'Nejlepší skóre',
     fi: 'Huippupisteet',
   },
-  EPoints: {
+  Points: {
     en: 'points',
     es: 'puntos',
     fr: 'points',
@@ -3535,7 +3536,7 @@ export const translations: Translations = {
     cs: 'bodů',
     fi: 'pistettä',
   },
-  EBackToMenu: {
+  BackToMenu: {
     en: 'Back to Menu',
     es: 'Volver al Menú',
     fr: 'Retour au Menu',
@@ -3544,7 +3545,7 @@ export const translations: Translations = {
     cs: 'Zpět do Menu',
     fi: 'Takaisin valikkoon',
   },
-  ETryAgain: {
+  TryAgain: {
     en: 'Try again',
     es: 'Inténtalo de nuevo',
     fr: 'Réessayer',
@@ -3553,7 +3554,7 @@ export const translations: Translations = {
     cs: 'Zkus to znovu',
     fi: 'Yritä uudelleen',
   },
-  EErrorFetchingQuestions: {
+  ErrorFetchingQuestions: {
     en: 'Error fetching questions',
     es: 'Error al obtener preguntas',
     fr: 'Erreur lors de la récupération des questions',
@@ -3562,7 +3563,7 @@ export const translations: Translations = {
     cs: 'Chyba při načítání otázek',
     fi: 'Tapahtui virhe kysymysten noutamisessa',
   },
-  EQuizInProgress: {
+  QuizInProgress: {
     en: 'Quiz in progress',
     es: 'Cuestionario en progreso',
     fr: 'Quiz en cours',
@@ -3571,7 +3572,7 @@ export const translations: Translations = {
     cs: 'Kvíz v průběhu',
     fi: 'Kisa käynnissä',
   },
-  EFinish: {
+  Finish: {
     en: 'Finish',
     es: 'Terminar',
     fr: 'Terminer',
@@ -3580,7 +3581,7 @@ export const translations: Translations = {
     cs: 'Dokončit',
     fi: 'Valmis',
   },
-  EYourHighscores: {
+  YourHighscores: {
     en: 'Your Highscores',
     es: 'Tus puntuaciones más altas',
     fr: 'Vos meilleurs scores',
@@ -3589,7 +3590,7 @@ export const translations: Translations = {
     cs: 'Vaše nejlepší skóre',
     fi: 'Parhaat tuloksesi',
   },
-  EScore: {
+  Score: {
     en: 'Score',
     es: 'Puntuación',
     fr: 'Score',
@@ -3598,7 +3599,7 @@ export const translations: Translations = {
     cs: 'Skóre',
     fi: 'Tulos',
   },
-  EQuestion: {
+  Question: {
     en: 'Question',
     es: 'Pregunta',
     fr: 'Question',
@@ -3607,7 +3608,7 @@ export const translations: Translations = {
     cs: 'Otázka',
     fi: 'Kysymys',
   },
-  ELoadingQuestions: {
+  LoadingQuestions: {
     en: 'Loading questions...',
     es: 'Cargando preguntas...',
     fr: 'Chargement des questions...',
@@ -3616,7 +3617,7 @@ export const translations: Translations = {
     cs: 'Načítání otázek...',
     fi: 'Ladataan kysymyksiä...',
   },
-  EQuote: {
+  Quote: {
     en: 'Quote',
     es: 'Cita',
     fr: 'Citation',
@@ -3625,7 +3626,7 @@ export const translations: Translations = {
     cs: 'Citát',
     fi: 'Lainaus',
   },
-  EAge: {
+  Age: {
     en: 'Age',
     es: 'Edad',
     fr: 'Âge',
@@ -3634,7 +3635,7 @@ export const translations: Translations = {
     cs: 'Věk',
     fi: 'Ikä',
   },
-  EAlone: {
+  Alone: {
     en: 'Alone',
     es: 'Solo',
     fr: 'Seul',
@@ -3643,7 +3644,7 @@ export const translations: Translations = {
     cs: 'Sám',
     fi: 'Yksin',
   },
-  EAmazing: {
+  Amazing: {
     en: 'Amazing',
     es: 'Asombroso',
     fr: 'Incroyable',
@@ -3652,7 +3653,7 @@ export const translations: Translations = {
     cs: 'Úžasný',
     fi: 'Uskomaton',
   },
-  EAnger: {
+  Anger: {
     en: 'Anger',
     es: 'Ira',
     fr: 'Colère',
@@ -3661,7 +3662,7 @@ export const translations: Translations = {
     cs: 'Hněv',
     fi: 'Vihanpito',
   },
-  EArchitecture: {
+  Architecture: {
     en: 'Architecture',
     es: 'Arquitectura',
     fr: 'Architecture',
@@ -3670,7 +3671,7 @@ export const translations: Translations = {
     cs: 'Architektura',
     fi: 'Arkkitehtuuri',
   },
-  EArt: {
+  Art: {
     en: 'Art',
     es: 'Arte',
     fr: 'Art',
@@ -3679,7 +3680,7 @@ export const translations: Translations = {
     cs: 'Umění',
     fi: 'Taide',
   },
-  EAttitude: {
+  Attitude: {
     en: 'Attitude',
     es: 'Actitud',
     fr: 'Attitude',
@@ -3688,7 +3689,7 @@ export const translations: Translations = {
     cs: 'Postoj',
     fi: 'Asenne',
   },
-  EBeauty: {
+  Beauty: {
     en: 'Beauty',
     es: 'Belleza',
     fr: 'Beauté',
@@ -3697,7 +3698,7 @@ export const translations: Translations = {
     cs: 'Krása',
     fi: 'Kauneus',
   },
-  EBest: {
+  Best: {
     en: 'Best',
     es: 'Mejor',
     fr: 'Meilleur',
@@ -3706,7 +3707,7 @@ export const translations: Translations = {
     cs: 'Nejlepší',
     fi: 'Paras',
   },
-  EBirthday: {
+  Birthday: {
     en: 'Birthday',
     es: 'Cumpleaños',
     fr: 'Anniversaire',
@@ -3715,7 +3716,7 @@ export const translations: Translations = {
     cs: 'Narozeniny',
     fi: 'Syntymäpäivä',
   },
-  ECar: {
+  Car: {
     en: 'Car',
     es: 'Coche',
     fr: 'Voiture',
@@ -3724,7 +3725,7 @@ export const translations: Translations = {
     cs: 'Auto',
     fi: 'Auto',
   },
-  ECommunication: {
+  Communication: {
     en: 'Communication',
     es: 'Comunicación',
     fr: 'Communication',
@@ -3733,7 +3734,7 @@ export const translations: Translations = {
     cs: 'Komunikace',
     fi: 'Viestintä',
   },
-  EComputers: {
+  Computers: {
     en: 'Computers',
     es: 'Computadoras',
     fr: 'Ordinateurs',
@@ -3742,7 +3743,7 @@ export const translations: Translations = {
     cs: 'Počítače',
     fi: 'Tietokoneet',
   },
-  ECool: {
+  Cool: {
     en: 'Cool',
     es: 'Genial',
     fr: 'Cool',
@@ -3751,7 +3752,7 @@ export const translations: Translations = {
     cs: 'Skvělý',
     fi: 'Siisti',
   },
-  ECourage: {
+  Courage: {
     en: 'Courage',
     es: 'Coraje',
     fr: 'Courage',
@@ -3760,7 +3761,7 @@ export const translations: Translations = {
     cs: 'Odvaha',
     fi: 'Rohkeus',
   },
-  EDad: {
+  Dad: {
     en: 'Dad',
     es: 'Papá',
     fr: 'Papa',
@@ -3769,7 +3770,7 @@ export const translations: Translations = {
     cs: 'Táta',
     fi: 'Isä',
   },
-  EDating: {
+  Dating: {
     en: 'Dating',
     es: 'Citas',
     fr: 'Rencontres',
@@ -3778,7 +3779,7 @@ export const translations: Translations = {
     cs: 'Seznamování',
     fi: 'Treffit',
   },
-  EDeath: {
+  Death: {
     en: 'Death',
     es: 'Muerte',
     fr: 'Mort',
@@ -3787,7 +3788,7 @@ export const translations: Translations = {
     cs: 'Smrt',
     fi: 'Kuolema',
   },
-  EDesign: {
+  Design: {
     en: 'Design',
     es: 'Diseño',
     fr: 'Design',
@@ -3796,7 +3797,7 @@ export const translations: Translations = {
     cs: 'Design',
     fi: 'Suunnittelu',
   },
-  EDreams: {
+  Dreams: {
     en: 'Dreams',
     es: 'Sueños',
     fr: 'Rêves',
@@ -3805,7 +3806,7 @@ export const translations: Translations = {
     cs: 'Sny',
     fi: 'Unelmat',
   },
-  EEnvironmental: {
+  Environmental: {
     en: 'Environmental',
     es: 'Ambiental',
     fr: 'Environnemental',
@@ -3814,7 +3815,7 @@ export const translations: Translations = {
     cs: 'Environmentální',
     fi: 'Ympäristö',
   },
-  EEquality: {
+  Equality: {
     en: 'Equality',
     es: 'Igualdad',
     fr: 'Égalité',
@@ -3823,7 +3824,7 @@ export const translations: Translations = {
     cs: 'Rovnost',
     fi: 'Tasa-arvo',
   },
-  EExperience: {
+  Experience: {
     en: 'Experience',
     es: 'Experiencia',
     fr: 'Expérience',
@@ -3832,7 +3833,7 @@ export const translations: Translations = {
     cs: 'Zkušenost',
     fi: 'Kokemus',
   },
-  EFailure: {
+  Failure: {
     en: 'Failure',
     es: 'Fracaso',
     fr: 'Échec',
@@ -3841,7 +3842,7 @@ export const translations: Translations = {
     cs: 'Selhání',
     fi: 'Epäonnistuminen',
   },
-  EFaith: {
+  Faith: {
     en: 'Faith',
     es: 'Fe',
     fr: 'Foi',
@@ -3850,7 +3851,7 @@ export const translations: Translations = {
     cs: 'Víra',
     fi: 'Usko',
   },
-  EFamily: {
+  Family: {
     en: 'Family',
     es: 'Familia',
     fr: 'Famille',
@@ -3859,7 +3860,7 @@ export const translations: Translations = {
     cs: 'Rodina',
     fi: 'Perhe',
   },
-  EFamous: {
+  Famous: {
     en: 'Famous',
     es: 'Famoso',
     fr: 'Célèbre',
@@ -3868,7 +3869,7 @@ export const translations: Translations = {
     cs: 'Slavný',
     fi: 'Sanoisa',
   },
-  EFear: {
+  Fear: {
     en: 'Fear',
     es: 'Miedo',
     fr: 'Peur',
@@ -3877,7 +3878,7 @@ export const translations: Translations = {
     cs: 'Strach',
     fi: 'Pelko',
   },
-  EFitness: {
+  Fitness: {
     en: 'Fitness',
     es: 'Aptitud',
     fr: 'Fitness',
@@ -3886,7 +3887,7 @@ export const translations: Translations = {
     cs: 'Fitness',
     fi: 'Kunto',
   },
-  EForgiveness: {
+  Forgiveness: {
     en: 'Forgiveness',
     es: 'Perdón',
     fr: 'Pardon',
@@ -3895,7 +3896,7 @@ export const translations: Translations = {
     cs: 'Odpouštění',
     fi: 'Anteeksianto',
   },
-  EFreedom: {
+  Freedom: {
     en: 'Freedom',
     es: 'Libertad',
     fr: 'Liberté',
@@ -3904,7 +3905,7 @@ export const translations: Translations = {
     cs: 'Svoboda',
     fi: 'Vapaus',
   },
-  EFriendship: {
+  Friendship: {
     en: 'Friendship',
     es: 'Amistad',
     fr: 'Amitié',
@@ -3913,7 +3914,7 @@ export const translations: Translations = {
     cs: 'Přátelství',
     fi: 'Ystävyys',
   },
-  EFunny: {
+  Funny: {
     en: 'Funny',
     es: 'Divertido',
     fr: 'Drôle',
@@ -3922,7 +3923,7 @@ export const translations: Translations = {
     cs: 'Vtipný',
     fi: 'Hauska',
   },
-  EFuture: {
+  Future: {
     en: 'Future',
     es: 'Futuro',
     fr: 'Futur',
@@ -3931,7 +3932,7 @@ export const translations: Translations = {
     cs: 'Budoucnost',
     fi: 'Tulevaisuus',
   },
-  EGod: {
+  God: {
     en: 'God',
     es: 'Dios',
     fr: 'Dieu',
@@ -3940,7 +3941,7 @@ export const translations: Translations = {
     cs: 'Bůh',
     fi: 'Jumala',
   },
-  EGovernment: {
+  Government: {
     en: 'Government',
     es: 'Gobierno',
     fr: 'Gouvernement',
@@ -3949,7 +3950,7 @@ export const translations: Translations = {
     cs: 'Vláda',
     fi: 'Hallitus',
   },
-  EGraduation: {
+  Graduation: {
     en: 'Graduation',
     es: 'Graduación',
     fr: 'Remise des diplômes',
@@ -3958,7 +3959,7 @@ export const translations: Translations = {
     cs: 'Promoce',
     fi: 'Valmistuminen',
   },
-  EGreat: {
+  Great: {
     en: 'Great',
     es: 'Genial',
     fr: 'Génial',
@@ -3967,7 +3968,7 @@ export const translations: Translations = {
     cs: 'Skvělý',
     fi: 'Upea',
   },
-  EHappiness: {
+  Happiness: {
     en: 'Happiness',
     es: 'Felicidad',
     fr: 'Bonheur',
@@ -3976,7 +3977,7 @@ export const translations: Translations = {
     cs: 'Štěstí',
     fi: 'Onni',
   },
-  EHistory: {
+  History: {
     en: 'History',
     es: 'Historia',
     fr: 'Histoire',
@@ -3985,7 +3986,7 @@ export const translations: Translations = {
     cs: 'Historie',
     fi: 'Historia',
   },
-  EHome: {
+  Home: {
     en: 'Home',
     es: 'Hogar',
     fr: 'Domicile',
@@ -3994,7 +3995,7 @@ export const translations: Translations = {
     cs: 'Domov',
     fi: 'Koti',
   },
-  EHope: {
+  Hope: {
     en: 'Hope',
     es: 'Esperanza',
     fr: 'Espoir',
@@ -4003,7 +4004,7 @@ export const translations: Translations = {
     cs: 'Naděje',
     fi: 'Toivo',
   },
-  EHumor: {
+  Humor: {
     en: 'Humor',
     es: 'Humor',
     fr: 'Humour',
@@ -4012,7 +4013,7 @@ export const translations: Translations = {
     cs: 'Humor',
     fi: 'Huumori',
   },
-  EImagination: {
+  Imagination: {
     en: 'Imagination',
     es: 'Imaginación',
     fr: 'Imagination',
@@ -4021,7 +4022,7 @@ export const translations: Translations = {
     cs: 'Představivost',
     fi: 'Mielikuvitus',
   },
-  EInspirational: {
+  Inspirational: {
     en: 'Inspirational',
     es: 'Inspirador',
     fr: 'Inspirationnel',
@@ -4030,7 +4031,7 @@ export const translations: Translations = {
     cs: 'Inspirativní',
     fi: 'Inspiroiva',
   },
-  EIntelligence: {
+  Intelligence: {
     en: 'Intelligence',
     es: 'Inteligencia',
     fr: 'Intelligence',
@@ -4039,7 +4040,7 @@ export const translations: Translations = {
     cs: 'Inteligence',
     fi: 'Älykkyys',
   },
-  EJealousy: {
+  Jealousy: {
     en: 'Jealousy',
     es: 'Celos',
     fr: 'Jalousie',
@@ -4048,7 +4049,7 @@ export const translations: Translations = {
     cs: 'Žárlivost',
     fi: 'Mustasukkaisuus',
   },
-  EKnowledge: {
+  Knowledge: {
     en: 'Knowledge',
     es: 'Conocimiento',
     fr: 'Connaissance',
@@ -4057,7 +4058,7 @@ export const translations: Translations = {
     cs: 'Znalosti',
     fi: 'Tietämys',
   },
-  ELeadership: {
+  Leadership: {
     en: 'Leadership',
     es: 'Liderazgo',
     fr: 'Leadership',
@@ -4066,7 +4067,7 @@ export const translations: Translations = {
     cs: 'Vedení',
     fi: 'Johtajuus',
   },
-  ELearning: {
+  Learning: {
     en: 'Learning',
     es: 'Aprendizaje',
     fr: 'Apprentissage',
@@ -4075,7 +4076,7 @@ export const translations: Translations = {
     cs: 'Učení',
     fi: 'Oppiminen',
   },
-  ELegal: {
+  Legal: {
     en: 'Legal',
     es: 'Legal',
     fr: 'Légal',
@@ -4084,7 +4085,7 @@ export const translations: Translations = {
     cs: 'Právní',
     fi: 'Oikeudellinen',
   },
-  ELife: {
+  Life: {
     en: 'Life',
     es: 'Vida',
     fr: 'Vie',
@@ -4093,7 +4094,7 @@ export const translations: Translations = {
     cs: 'Život',
     fi: 'Elämä',
   },
-  ELove: {
+  Love: {
     en: 'Love',
     es: 'Amor',
     fr: 'Amour',
@@ -4102,7 +4103,7 @@ export const translations: Translations = {
     cs: 'Láska',
     fi: 'Rakkaus',
   },
-  EMarriage: {
+  Marriage: {
     en: 'Marriage',
     es: 'Matrimonio',
     fr: 'Mariage',
@@ -4111,7 +4112,7 @@ export const translations: Translations = {
     cs: 'Manželství',
     fi: 'Avioliitto',
   },
-  EMedical: {
+  Medical: {
     en: 'Medical',
     es: 'Médico',
     fr: 'Médical',
@@ -4120,7 +4121,7 @@ export const translations: Translations = {
     cs: 'Lékařský',
     fi: 'Lääketieteellinen',
   },
-  EMen: {
+  Men: {
     en: 'Men',
     es: 'Hombres',
     fr: 'Hommes',
@@ -4129,7 +4130,7 @@ export const translations: Translations = {
     cs: 'Muži',
     fi: 'Miehet',
   },
-  EMom: {
+  Mom: {
     en: 'Mom',
     es: 'Mamá',
     fr: 'Maman',
@@ -4138,7 +4139,7 @@ export const translations: Translations = {
     cs: 'Máma',
     fi: 'Äiti',
   },
-  EMoney: {
+  Money: {
     en: 'Money',
     es: 'Dinero',
     fr: 'Argent',
@@ -4147,7 +4148,7 @@ export const translations: Translations = {
     cs: 'Peníze',
     fi: 'Rahat',
   },
-  EMorning: {
+  Morning: {
     en: 'Morning',
     es: 'Mañana',
     fr: 'Matin',
@@ -4156,7 +4157,7 @@ export const translations: Translations = {
     cs: 'Ráno',
     fi: 'Aamu',
   },
-  EMovies: {
+  Movies: {
     en: 'Movies',
     es: 'Películas',
     fr: 'Films',
@@ -4165,7 +4166,7 @@ export const translations: Translations = {
     cs: 'Filmy',
     fi: 'Elokuvat',
   },
-  ESuccess: {
+  Success: {
     en: 'Success',
     es: 'Éxito',
     fr: 'Succès',
@@ -4174,7 +4175,7 @@ export const translations: Translations = {
     cs: 'Úspěch',
     fi: 'Menestys',
   },
-  ESearchForQuoteSeparately: {
+  SearchForQuoteSeparately: {
     en: 'Search for quote separately',
     es: 'Buscar cita por separado',
     fr: 'Rechercher une citation séparément',
@@ -4183,7 +4184,7 @@ export const translations: Translations = {
     cs: 'Hledat citát samostatně',
     fi: 'Etsi lainaus erikseen',
   },
-  EQuoteCategories: {
+  QuoteCategories: {
     en: 'Quote categories',
     es: 'Categorías de citas',
     fr: 'Catégories de citations',
@@ -4192,7 +4193,7 @@ export const translations: Translations = {
     cs: 'Kategorie citátů',
     fi: 'Lainausten kategoriat',
   },
-  ESearchForQuote: {
+  SearchForQuote: {
     en: 'Search for quote',
     es: 'Buscar cita',
     fr: 'Rechercher une citation',
@@ -4201,7 +4202,7 @@ export const translations: Translations = {
     cs: 'Hledat citát',
     fi: 'Etsi lainaus',
   },
-  ESalonIntro1: {
+  SalonIntro1: {
     en: 'Website for the hair salon "Parturi Kampaamo Hannastiina". The site is implemented with Node.js and React. Node.js serves the React site statically and provides an API interface for managing services. Editing the content of the site requires a username and password.',
     es: 'Sitio web para la peluquería "Parturi Kampaamo Hannastiina". El sitio está implementado con Node.js y React. Node.js sirve el sitio React estáticamente y proporciona una interfaz de API para administrar servicios. La edición del contenido del sitio requiere un nombre de usuario y una contraseña.',
     fr: "Site Web pour le salon de coiffure 'Parturi Kampaamo Hannastiina'. Le site est implémenté avec Node.js et React. Node.js sert le site React de manière statique et fournit une interface API pour gérer les services. La modification du contenu du site nécessite un nom d'utilisateur et un mot de passe.",
@@ -4210,7 +4211,7 @@ export const translations: Translations = {
     cs: 'Webové stránky pro kadeřnictví "Parturi Kampaamo Hannastiina". Stránka je implementována pomocí Node.js a React. Node.js poskytuje React stránku staticky a poskytuje rozhraní API pro správu služeb. Úprava obsahu webu vyžaduje uživatelské jméno a heslo.',
     fi: 'Verkkosivusto Parturi Kampaamo Hannastiina -kampaamolle. Sivusto on toteutettu Node.js:llä ja Reactilla. Node.js palvelee React-sivustoa staattisesti ja tarjoaa rajapinnan palveluiden hallintaan. Sivuston sisällön muokkaaminen vaatii käyttäjätunnuksen ja salasanan.',
   },
-  ESalonIntro2: {
+  SalonIntro2: {
     en: "The site's introduction, categories, users, and services are stored in a MySQL database, managed with Sequelize by logged-in users.",
     es: 'La introducción del sitio, las categorías, los usuarios y los servicios se almacenan en una base de datos MySQL, administrada con Sequelize por usuarios conectados.',
     fr: "L'introduction du site, les catégories, les utilisateurs et les services sont stockés dans une base de données MySQL, gérée avec Sequelize par des utilisateurs connectés.",
@@ -4219,7 +4220,7 @@ export const translations: Translations = {
     cs: 'Úvod webu, kategorie, uživatelé a služby jsou uloženy v databázi MySQL, spravované pomocí Sequelize přihlášenými uživateli.',
     fi: 'Sivuston esittely, kategoriat, käyttäjät ja palvelut tallennetaan MySQL-tietokantaan, jota hallitaan Sequelize:llä kirjautuneiden käyttäjien toimesta.',
   },
-  ESalonIntro3: {
+  SalonIntro3: {
     en: 'There are three main user roles and a fourth testing role. Site owner and site administrators can manage users and services, while authorized users can manage services. Site owner cannot be deleted. The testing role is for viewing purposes only and cannot edit the database.',
     es: 'Hay tres roles principales de usuario y un cuarto rol de prueba. El propietario del sitio y los administradores del sitio pueden administrar usuarios y servicios, mientras que los usuarios autorizados pueden administrar servicios. El propietario del sitio no se puede eliminar. El rol de prueba es solo para fines de visualización y no puede editar la base de datos.',
     fr: "Il existe trois rôles principaux d'utilisateur et un quatrième rôle de test. Le propriétaire du site et les administrateurs du site peuvent gérer les utilisateurs et les services, tandis que les utilisateurs autorisés peuvent gérer les services. Le propriétaire du site ne peut pas être supprimé. Le rôle de test est uniquement à des fins de visualisation et ne peut pas modifier la base de données.",
@@ -4228,7 +4229,7 @@ export const translations: Translations = {
     cs: 'Existují tři hlavní uživatelské role a čtvrtá testovací role. Majitel webu a správci webu mohou spravovat uživatele a služby, zatímco autorizovaní uživatelé mohou spravovat služby. Majitel webu nemůže být smazán. Testovací role je pouze pro účely zobrazení a nemůže upravovat databázi.',
     fi: 'Kolmen käyttäjäroolin lisäksi on neljäs testaajarooli. Sivuston omistaja ja sivuston ylläpitäjät voivat hallinnoida käyttäjiä ja palveluita, ja valtuutetut käyttäjät voivat hallinnoida palveluita. Sivuston omistajaa ei voi poistaa. Testaajarooli on vain tarkastelua varten, eikä voi muokata tietokantaa.',
   },
-  ESingleSelectOrMultipleSelect: {
+  SingleSelectOrMultipleSelect: {
     en: 'Single select or multiple select',
     es: 'Selección única o selección múltiple',
     fr: 'Sélection unique ou sélection multiple',
@@ -4237,7 +4238,7 @@ export const translations: Translations = {
     cs: 'Jednoduchý výběr nebo více výběr',
     fi: 'Yksittäinen valinta tai monivalinta',
   },
-  EMoveToItemWithKeyboardKeys: {
+  MoveToItemWithKeyboardKeys: {
     en: 'Move to item with keyboard keys (up or down, or by writing the first few letters of the option)',
     es: 'Mover al elemento con teclas de teclado (arriba o abajo, o escribiendo las primeras letras de la opción)',
     fr: "Déplacez-vous vers l'élément avec les touches du clavier (haut ou bas, ou en écrivant les premières lettres de l'option)",
@@ -4246,7 +4247,7 @@ export const translations: Translations = {
     cs: 'Přejděte na položku pomocí klávesnice (nahoru nebo dolů nebo napsáním prvních písmen možnosti)',
     fi: 'Siirry kohteeseen näppäimistönäppäimillä (ylös tai alas tai kirjoittamalla vaihtoehdon ensimmäiset kirjaimet)',
   },
-  ELabelCanBeHiddenFromViewButIsStillAccessible: {
+  LabelCanBeHiddenFromViewButIsStillAccessible: {
     en: 'Label can be hidden from view, but is still accessible to screen readers',
     es: 'La etiqueta se puede ocultar de la vista, pero aún es accesible para los lectores de pantalla',
     fr: "L'étiquette peut être masquée de la vue, mais reste accessible aux lecteurs d'écran",
@@ -4255,7 +4256,7 @@ export const translations: Translations = {
     cs: 'Štítek lze skrýt zobrazení, ale stále je přístupný čtečkám obrazovky',
     fi: 'Tunniste voidaan piilottaa näkymästä, mutta se on edelleen saavutettavissa näytön lukijoille',
   },
-  ETabToSelectEnterOrSpaceToOpen: {
+  TabToSelectEnterOrSpaceToOpen: {
     en: 'Tab to Select, Enter or Space to open',
     es: 'Tab para seleccionar, Enter o Espacio para abrir',
     fr: 'Tab pour sélectionner, Entrée ou Espace pour ouvrir',
@@ -4264,7 +4265,7 @@ export const translations: Translations = {
     cs: 'Karta pro výběr, Enter nebo mezerník pro otevření',
     fi: 'Välilehti valitaksesi, Enter tai Space avataksesi',
   },
-  EUseUpAndDownArrowKeysToMoveToAnOption: {
+  UseUpAndDownArrowKeysToMoveToAnOption: {
     en: 'Use up and down arrow keys to move to an option',
     es: 'Use las teclas de flecha hacia arriba y hacia abajo para moverse a una opción',
     fr: 'Utilisez les touches fléchées haut et bas pour vous déplacer vers une option',
@@ -4273,7 +4274,7 @@ export const translations: Translations = {
     cs: 'Použijte šipky nahoru a dolů pro přesun na možnost',
     fi: 'Käytä ylös- ja alasnuolinäppäimiä siirtyäksesi vaihtoehtoon',
   },
-  EAlternativelyMoveToAnItemOnTheListByWritingTheFirstFewLetters: {
+  AlternativelyMoveToAnItemOnTheListByWritingTheFirstFewLetters: {
     en: 'Alternatively move to an item on the list by writing the first few letters',
     es: 'Alternativamente, muévase a un elemento de la lista escribiendo las primeras letras',
     fr: 'Ou déplacez-vous vers un élément de la liste en écrivant les premières lettres',
@@ -4282,7 +4283,7 @@ export const translations: Translations = {
     cs: 'Nebo přejděte na položku v seznamu napsáním prvních písmen',
     fi: 'Vaihtoehtoisesti siirry kohteeseen luettelossa kirjoittamalla ensimmäiset kirjaimet',
   },
-  ESelectOptionWithEnterOrSpace: {
+  SelectOptionWithEnterOrSpace: {
     en: 'Select option with Enter or Space',
     es: 'Seleccione la opción con Enter o Space',
     fr: "Sélectionnez l'option avec Entrée ou Espace",
@@ -4291,7 +4292,7 @@ export const translations: Translations = {
     cs: 'Vyberte možnost pomocí Enter nebo mezerníku',
     fi: 'Valitse vaihtoehto painamalla Enter tai Space',
   },
-  EPressTabToMoveToTheSelectedButtonsOrToTheClearButton: {
+  PressTabToMoveToTheSelectedButtonsOrToTheClearButton: {
     en: 'Press Tab to move to the selected buttons or to the clear button',
     es: 'Presione Tab para moverse a los botones seleccionados o al botón Borrar',
     fr: 'Appuyez sur Tab pour vous déplacer vers les boutons sélectionnés ou vers le bouton Effacer',
@@ -4300,7 +4301,7 @@ export const translations: Translations = {
     cs: 'Stisknutím klávesy Tab přejdete na vybraná tlačítka nebo na tlačítko Vymazat',
     fi: 'Paina Tab siirtyäksesi valittuihin painikkeisiin tai Tyhjennä-painikkeeseen',
   },
-  EPressEscapeToCloseDropdownWithoutSelectingAnOption: {
+  PressEscapeToCloseDropdownWithoutSelectingAnOption: {
     en: 'Press Escape to close dropdown without selecting an option',
     es: 'Presione Escape para cerrar el menú desplegable sin seleccionar una opción',
     fr: 'Appuyez sur Echap pour fermer le menu déroulant sans sélectionner d option',
@@ -4309,7 +4310,7 @@ export const translations: Translations = {
     cs: 'Stisknutím klávesy Escape zavřete rozbalovací nabídku, aniž byste vybrali možnost',
     fi: 'Paina Escape sulkeaksesi avattavan valikon valitsematta vaihtoehtoa',
   },
-  EDidYouFindAnyIssuesOnThisSite: {
+  DidYouFindAnyIssuesOnThisSite: {
     en: 'Did you find any issues on this site?',
     es: '¿Encontraste algún problema en este sitio?',
     fr: 'Avez-vous trouvé des problèmes sur ce site?',
@@ -4318,7 +4319,7 @@ export const translations: Translations = {
     cs: 'Našli jste na této stránce nějaké problémy?',
     fi: 'Löysitkö ongelmia tältä sivustolta?',
   },
-  EWhichIntroSectionElementWasYourFavourite: {
+  WhichIntroSectionElementWasYourFavourite: {
     en: 'Which Hero/Intro Section element was your favourite?',
     es: '¿Cuál fue tu elemento favorito de la sección de introducción?',
     fr: 'Quel élément de la section d introduction avez-vous préféré?',
@@ -4327,7 +4328,7 @@ export const translations: Translations = {
     cs: 'Který prvek úvodní sekce byl váš oblíbený?',
     fi: 'Mikä Hero/Intro-osion elementti oli suosikkisi?',
   },
-  EKeyboardUseMoveToOptionWithArrowKeysAndSelectByPressingEnterOrSpace: {
+  KeyboardUseMoveToOptionWithArrowKeysAndSelectByPressingEnterOrSpace: {
     en: 'Keyboard use: move to option with arrow keys and select by pressing Enter or Space',
     es: 'Uso del teclado: muévase a la opción con las teclas de flecha y seleccione presionando Enter o Space',
     fr: 'Utilisation du clavier: déplacez-vous vers l option avec les touches fléchées et sélectionnez en appuyant sur Entrée ou Espace',
@@ -4336,7 +4337,7 @@ export const translations: Translations = {
     cs: 'Použití klávesnice: přejděte na možnost pomocí šipek a vyberte stisknutím klávesy Enter nebo mezerníku',
     fi: 'Näppäimistökäyttö: siirry vaihtoehtoon nuolinäppäimillä ja valitse painamalla Enter tai Space',
   },
-  ETranslations: {
+  Translations: {
     en: 'Translations',
     es: 'Traducciones',
     fr: 'Traductions',
@@ -4345,7 +4346,7 @@ export const translations: Translations = {
     cs: 'Překlady',
     fi: 'Käännökset',
   },
-  EThisFieldIsRequired: {
+  ThisFieldIsRequired: {
     en: 'This field is required',
     es: 'Este campo es obligatorio',
     fr: 'Ce champ est obligatoire',
@@ -4354,7 +4355,7 @@ export const translations: Translations = {
     cs: 'Toto pole je povinné',
     fi: 'Tämä kenttä on pakollinen',
   },
-  EClear: {
+  Clear: {
     en: 'Clear',
     es: 'Limpiar',
     fr: 'Effacer',
@@ -4363,7 +4364,7 @@ export const translations: Translations = {
     cs: 'Vymazat',
     fi: 'Tyhjennä',
   },
-  EShoppingCart: {
+  ShoppingCart: {
     en: 'Shopping Cart',
     es: 'Carrito de compras',
     fr: 'Panier',
@@ -4372,7 +4373,7 @@ export const translations: Translations = {
     cs: 'Nákupní vozík',
     fi: 'Ostoskori',
   },
-  ECart: {
+  Cart: {
     en: 'Cart',
     es: 'Carrito',
     fr: 'Panier',
@@ -4381,7 +4382,7 @@ export const translations: Translations = {
     cs: 'Košík',
     fi: 'Ostoskori',
   },
-  EAddToCart: {
+  AddToCart: {
     en: 'Add to cart',
     es: 'Añadir al carrito',
     fr: 'Ajouter au panier',
@@ -4390,7 +4391,7 @@ export const translations: Translations = {
     cs: 'Přidat do košíku',
     fi: 'Lisää ostoskoriin',
   },
-  ESubtractFromCart: {
+  SubtractFromCart: {
     en: 'Subtract from cart',
     es: 'Restar del carrito',
     fr: 'Soustraire du panier',
@@ -4399,7 +4400,7 @@ export const translations: Translations = {
     cs: 'Odečtěte z košíku',
     fi: 'Vähennä ostoskorista',
   },
-  EDeleteFromCart: {
+  DeleteFromCart: {
     en: 'Delete from cart',
     es: 'Eliminar del carrito',
     fr: 'Supprimer du panier',
@@ -4408,7 +4409,7 @@ export const translations: Translations = {
     cs: 'Odstraňte z košíku',
     fi: 'Poista ostoskorista',
   },
-  EVAT: {
+  VAT: {
     en: 'VAT 25.5%',
     es: 'IVA 25.5%',
     fr: 'TVA 25.5%',
@@ -4417,7 +4418,7 @@ export const translations: Translations = {
     cs: 'DPH 25.5%',
     fi: 'ALV 25.5%',
   },
-  EContainsVAT: {
+  ContainsVAT: {
     en: 'contains VAT 25.5%',
     es: 'contiene IVA 25.5%',
     fr: 'contient TVA 25.5%',
@@ -4426,7 +4427,7 @@ export const translations: Translations = {
     cs: 'obsahuje DPH 25.5%',
     fi: 'sisältää ALV 25.5%',
   },
-  EPrice: {
+  Price: {
     en: 'Price',
     es: 'Precio',
     fr: 'Prix',
@@ -4435,7 +4436,7 @@ export const translations: Translations = {
     cs: 'Cena',
     fi: 'Hinta',
   },
-  EQuantity: {
+  Quantity: {
     en: 'Quantity',
     es: 'Cantidad',
     fr: 'Quantité',
@@ -4444,7 +4445,7 @@ export const translations: Translations = {
     cs: 'Množství',
     fi: 'Määrä',
   },
-  ETotal: {
+  Total: {
     en: 'Total',
     es: 'Total',
     fr: 'Total',
@@ -4453,7 +4454,7 @@ export const translations: Translations = {
     cs: 'Celkem',
     fi: 'Yhteensä',
   },
-  EProducts: {
+  Products: {
     en: 'Products',
     es: 'Productos',
     fr: 'Produits',
@@ -4462,7 +4463,7 @@ export const translations: Translations = {
     cs: 'Produkty',
     fi: 'Tuotteet',
   },
-  EGraphicDesign: {
+  GraphicDesign: {
     en: 'Graphic Design',
     es: 'Diseño gráfico',
     fr: 'Graphisme',
@@ -4471,7 +4472,7 @@ export const translations: Translations = {
     cs: 'Grafický design',
     fi: 'Graafinen suunnittelu',
   },
-  EEmptyCart: {
+  EmptyCart: {
     en: 'Your cart is empty',
     es: 'Tu carrito está vacío',
     fr: 'Votre panier est vide',
@@ -4480,7 +4481,7 @@ export const translations: Translations = {
     cs: 'Váš košík je prázdný',
     fi: 'Ostoskorisi on tyhjä',
   },
-  EClearCart: {
+  ClearCart: {
     en: 'Clear cart',
     es: 'Vaciar carrito',
     fr: 'Vider le panier',
@@ -4489,7 +4490,7 @@ export const translations: Translations = {
     cs: 'Vyčistit košík',
     fi: 'Tyhjennä ostoskori',
   },
-  ESubmitOrder: {
+  SubmitOrder: {
     en: 'Submit order',
     es: 'Enviar pedido',
     fr: 'Envoyer la commande',
@@ -4498,7 +4499,7 @@ export const translations: Translations = {
     cs: 'Odeslat objednávku',
     fi: 'Lähetä tilaus',
   },
-  EPleaseChooseAProduct: {
+  PleaseChooseAProduct: {
     en: 'Please choose a product',
     es: 'Por favor, elige un producto',
     fr: 'Veuillez choisir un produit',
@@ -4507,7 +4508,7 @@ export const translations: Translations = {
     cs: 'Vyberte prosím produkt',
     fi: 'Valitse tuote',
   },
-  EAddedToCart: {
+  AddedToCart: {
     en: 'Added to cart',
     es: 'Añadido al carrito',
     fr: 'Ajouté au panier',
@@ -4516,7 +4517,7 @@ export const translations: Translations = {
     cs: 'Přidáno do košíku',
     fi: 'Lisätty ostoskoriin',
   },
-  EBackToStore: {
+  BackToStore: {
     en: 'Back to store',
     es: 'Volver a la tienda',
     fr: 'Retour à la boutique',
@@ -4525,7 +4526,7 @@ export const translations: Translations = {
     cs: 'Zpět do obchodu',
     fi: 'Takaisin kauppaan',
   },
-  ERequestsAndNeeds: {
+  RequestsAndNeeds: {
     en: 'Requests and needs',
     es: 'Solicitudes y necesidades',
     fr: 'Demandes et besoins',
@@ -4534,7 +4535,7 @@ export const translations: Translations = {
     cs: 'Přání a potřeby',
     fi: 'Toiveet ja tarpeet',
   },
-  EBusinessID: {
+  BusinessID: {
     en: 'Business ID',
     es: 'NIF',
     fr: 'Numéro de TVA',
@@ -4543,7 +4544,7 @@ export const translations: Translations = {
     cs: 'DIČ',
     fi: 'Y-tunnus',
   },
-  ECompanyName: {
+  CompanyName: {
     en: 'Company name',
     es: 'Nombre de la empresa',
     fr: "Nom de l'entreprise",
@@ -4552,7 +4553,7 @@ export const translations: Translations = {
     cs: 'Název společnosti',
     fi: 'Yrityksen nimi',
   },
-  EAssociationName: {
+  AssociationName: {
     en: 'Association name',
     es: 'Nombre de la asociación',
     fr: "Nom de l'association",
@@ -4561,7 +4562,7 @@ export const translations: Translations = {
     cs: 'Název sdružení',
     fi: 'Yhdistyksen nimi',
   },
-  EContactPerson: {
+  ContactPerson: {
     en: 'Contact person',
     es: 'Persona de contacto',
     fr: 'Personne de contact',
@@ -4570,7 +4571,7 @@ export const translations: Translations = {
     cs: 'Kontaktní osoba',
     fi: 'Yhteyshenkilö',
   },
-  EAddress: {
+  Address: {
     en: 'Address',
     es: 'Dirección',
     fr: 'Adresse',
@@ -4579,7 +4580,7 @@ export const translations: Translations = {
     cs: 'Adresa',
     fi: 'Osoite',
   },
-  EPostalCode: {
+  PostalCode: {
     en: 'Postal code',
     es: 'Código postal',
     fr: 'Code postal',
@@ -4588,7 +4589,7 @@ export const translations: Translations = {
     cs: 'PSČ',
     fi: 'Postinumero',
   },
-  ECity: {
+  City: {
     en: 'City',
     es: 'Ciudad',
     fr: 'Ville',
@@ -4597,7 +4598,7 @@ export const translations: Translations = {
     cs: 'Město',
     fi: 'Kaupunki',
   },
-  ECountry: {
+  Country: {
     en: 'Country',
     es: 'País',
     fr: 'Pays',
@@ -4606,7 +4607,7 @@ export const translations: Translations = {
     cs: 'Země',
     fi: 'Maa',
   },
-  EPhone: {
+  Phone: {
     en: 'Phone',
     es: 'Teléfono',
     fr: 'Téléphone',
@@ -4615,7 +4616,7 @@ export const translations: Translations = {
     cs: 'Telefon',
     fi: 'Puhelin',
   },
-  ECompanyOrAssociation: {
+  CompanyOrAssociation: {
     en: 'Company or association',
     es: 'Empresa o asociación',
     fr: 'Entreprise ou association',
@@ -4624,7 +4625,7 @@ export const translations: Translations = {
     cs: 'Společnost nebo sdružení',
     fi: 'Yritys tai yhdistys',
   },
-  ECompany: {
+  Company: {
     en: 'Company',
     es: 'Empresa',
     fr: 'Entreprise',
@@ -4633,7 +4634,7 @@ export const translations: Translations = {
     cs: 'Společnost',
     fi: 'Yritys',
   },
-  EAssociation: {
+  Association: {
     en: 'Association',
     es: 'Asociación',
     fr: 'Association',
@@ -4642,7 +4643,7 @@ export const translations: Translations = {
     cs: 'Sdružení',
     fi: 'Yhdistys',
   },
-  EPrivatePerson: {
+  PrivatePerson: {
     en: 'Private person',
     es: 'Persona privada',
     fr: 'Personne privée',
@@ -4651,7 +4652,7 @@ export const translations: Translations = {
     cs: 'Soukromá osoba',
     fi: 'Yksityishenkilö',
   },
-  EBillingAddress: {
+  BillingAddress: {
     en: 'Billing address',
     es: 'Dirección de facturación',
     fr: 'Adresse de facturation',
@@ -4660,7 +4661,7 @@ export const translations: Translations = {
     cs: 'Fakturační adresa',
     fi: 'Laskutusosoite',
   },
-  EOrderID: {
+  OrderID: {
     en: 'Order ID',
     es: 'ID del pedido',
     fr: 'ID de commande',
@@ -4669,7 +4670,7 @@ export const translations: Translations = {
     cs: 'ID objednávky',
     fi: 'Tilausnumero',
   },
-  EOrders: {
+  Orders: {
     en: 'Orders',
     es: 'Pedidos',
     fr: 'Commandes',
@@ -4678,7 +4679,7 @@ export const translations: Translations = {
     cs: 'Objednávky',
     fi: 'Tilaukset',
   },
-  EOrder: {
+  Order: {
     en: 'Order',
     es: 'Pedido',
     fr: 'Commande',
@@ -4687,7 +4688,7 @@ export const translations: Translations = {
     cs: 'Objednávka',
     fi: 'Tilaus',
   },
-  EOrdered: {
+  Ordered: {
     en: 'Ordered',
     es: 'Ordenado',
     fr: 'Commandé',
@@ -4696,7 +4697,7 @@ export const translations: Translations = {
     cs: 'Objednáno',
     fi: 'Tilattu',
   },
-  ETextAndImageContentIsNotIncluded: {
+  TextAndImageContentIsNotIncluded: {
     en: 'The production or translation of text and image content is not included in the basic package',
     es: 'La producción o traducción de contenido de texto e imagen no está incluida en el paquete básico',
     fr: "La production ou la traduction de contenu textuel et visuel n'est pas incluse dans le forfait de base",
@@ -4705,7 +4706,7 @@ export const translations: Translations = {
     cs: 'Výroba nebo překlad textového a obrazového obsahu není zahrnut v základním balíčku',
     fi: 'Tekstin ja kuvien tuotanto tai kääntäminen ei sisälly peruspakettiin',
   },
-  EWebHostingAndDomainNotIncluded: {
+  WebHostingAndDomainNotIncluded: {
     en: 'Web hosting and domain are not included in the price',
     es: 'El alojamiento web y el dominio no están incluidos en el precio',
     fr: "L'hébergement web et le domaine ne sont pas inclus dans le prix",
@@ -4714,7 +4715,7 @@ export const translations: Translations = {
     cs: 'Webhosting a doména nejsou zahrnuty v ceně',
     fi: 'Webhotelli ja verkkotunnus eivät sisälly hintaan',
   },
-  EPrintingCostsNotIncluded: {
+  PrintingCostsNotIncluded: {
     en: 'Printing costs are not included in the price',
     es: 'Los costos de impresión no están incluidos en el precio',
     fr: "Les coûts d'impression ne sont pas inclus dans le prix",
@@ -4723,7 +4724,7 @@ export const translations: Translations = {
     cs: 'Náklady na tisk nejsou zahrnuty v ceně',
     fi: 'Painokustannukset eivät sisälly hintaan',
   },
-  ESimpleReactWebsite: {
+  SimpleReactWebsite: {
     en: 'Simple React Website',
     es: 'Sitio web de React simple',
     fr: 'Site web React simple',
@@ -4732,7 +4733,7 @@ export const translations: Translations = {
     cs: 'Jednoduchý web React',
     fi: 'Yksinkertainen React-verkkosivusto',
   },
-  EReactWebsite: {
+  ReactWebsite: {
     en: 'React Website',
     es: 'Sitio web de React',
     fr: 'Site web React',
@@ -4741,7 +4742,7 @@ export const translations: Translations = {
     cs: 'Web React',
     fi: 'React-verkkosivusto',
   },
-  ESimpleWordPressWebsite: {
+  SimpleWordPressWebsite: {
     en: 'Simple WordPress Website',
     es: 'Sitio web de WordPress simple',
     fr: 'Site web WordPress simple',
@@ -4750,7 +4751,7 @@ export const translations: Translations = {
     cs: 'Jednoduchý web WordPress',
     fi: 'Yksinkertainen WordPress-verkkosivusto',
   },
-  EReactWebsiteWithContactFormAndOtherFunctionality: {
+  ReactWebsiteWithContactFormAndOtherFunctionality: {
     en: 'NodeJS + React Website with Contact Form and other functionality',
     es: 'Sitio web de NodeJS + React con formulario de contacto y otra funcionalidad',
     fr: 'Site Web NodeJS + React avec formulaire de contact et autres fonctionnalités',
@@ -4759,7 +4760,7 @@ export const translations: Translations = {
     cs: 'NodeJS + React Web s kontaktním formulářem a další funkcionalitou',
     fi: 'NodeJS + React-verkkosivusto yhteydenottolomakkeella ja jollakin muulla toiminnallisuudella',
   },
-  EAnAccessibleSinglePageWebsite: {
+  AnAccessibleSinglePageWebsite: {
     en: 'An accessible single page website without extra functionalities.',
     es: 'Un sitio web de una sola página accesible sin funcionalidades adicionales.',
     fr: "Un site web d'une seule page accessible sans fonctionnalités supplémentaires.",
@@ -4768,7 +4769,7 @@ export const translations: Translations = {
     cs: 'Přístupný jednostránkový web bez dalších funkcí.',
     fi: 'Saavutettava yksisivuinen verkkosivusto ilman ylimääräisiä toimintoja.',
   },
-  EMayContainEffects: {
+  MayContainEffects: {
     en: 'May contain effects such as a modal window that opens when an image is clicked, or small animations.',
     es: 'Puede contener efectos como una ventana modal que se abre al hacer clic en una imagen, o pequeñas animaciones.',
     fr: "Peut contenir des effets tels qu'une fenêtre modale qui s'ouvre lorsqu'une image est cliquée, ou de petites animations.",
@@ -4777,7 +4778,7 @@ export const translations: Translations = {
     cs: 'Může obsahovat efekty, jako je modální okno, které se otevře při kliknutí na obrázek, nebo malé animace.',
     fi: 'Sisältää kuitenkin tarvittaessa pieniä efektejä, kuten esimerkiksi modaalisen ikkunan, joka avautuu kuvaa klikattaessa, tai pieniä animaatioita.',
   },
-  EAnAccessibleMultiPageWebsite: {
+  AnAccessibleMultiPageWebsite: {
     en: 'An accessible multi-page website without extra functionalities.',
     es: 'Un sitio web de varias páginas accesible sin funcionalidades adicionales.',
     fr: 'Un site web multi-pages accessible sans fonctionnalités supplémentaires.',
@@ -4786,7 +4787,7 @@ export const translations: Translations = {
     cs: 'Přístupný vícestránkový web bez dalších funkcí.',
     fi: 'Saavutettava monisivuinen verkkosivusto ilman ylimääräisiä toimintoja.',
   },
-  EAnAccessibleWebsiteWithBlogAndContactForm: {
+  AnAccessibleWebsiteWithBlogAndContactForm: {
     en: 'An accessible website with a blog section and contact form.',
     es: 'Un sitio web accesible con una sección de blog y formulario de contacto.',
     fr: 'Un site web accessible avec une section blog et un formulaire de contact.',
@@ -4795,7 +4796,7 @@ export const translations: Translations = {
     cs: 'Přístupný web s blogovou sekcí a kontaktním formulářem.',
     fi: 'Saavutettava verkkosivusto, jossa on blogiosio ja yhteydenottolomake.',
   },
-  ETheBlogSectionCanBeNewsArticlesEtc: {
+  TheBlogSectionCanBeNewsArticlesEtc: {
     en: 'The blog section can also be news, articles, etc.',
     es: 'La sección de blog también puede ser noticias, artículos, etc.',
     fr: 'La section blog peut également être des nouvelles, des articles, etc.',
@@ -4804,7 +4805,7 @@ export const translations: Translations = {
     cs: 'Blogová sekce může být také zprávy, články atd.',
     fi: 'Blogiosio voi olla myös uutisia, artikkeleita, jne.',
   },
-  EAnAccessibleWebsiteWithContactFormAndOtherFunctionality: {
+  AnAccessibleWebsiteWithContactFormAndOtherFunctionality: {
     en: 'An accessible website with a contact form and some other functionality.',
     es: 'Un sitio web accesible con un formulario de contacto y alguna otra funcionalidad.',
     fr: 'Un site web accessible avec un formulaire de contact et une autre fonctionnalité.',
@@ -4813,7 +4814,7 @@ export const translations: Translations = {
     cs: 'Přístupný web s kontaktním formulářem a nějakou jinou funkcí.',
     fi: 'Saavutettava verkkosivusto, jossa on yhteydenottolomake ja jokin muu toiminnallisuus.',
   },
-  EAnAccessibleWebsiteWithBlogContactFormAndOnlineStore: {
+  AnAccessibleWebsiteWithBlogContactFormAndOnlineStore: {
     en: 'An accessible website with a blog section, contact form, and online store.',
     es: 'Un sitio web accesible con una sección de blog, formulario de contacto y tienda en línea.',
     fr: 'Un site web accessible avec une section blog, un formulaire de contact et une boutique en ligne.',
@@ -4822,7 +4823,7 @@ export const translations: Translations = {
     cs: 'Přístupný web s blogovou sekcí, kontaktním formulářem a online obchodem.',
     fi: 'Saavutettava verkkosivusto, jossa on blogiosio, yhteydenottolomake ja verkkokauppa.',
   },
-  EIncludesADesignMeetingWithTheClientForWebsite: {
+  IncludesADesignMeetingWithTheClientForWebsite: {
     en: "Includes a design meeting with the client (online or in person), design of the website's appearance with three rounds of drafts, technical implementation, publication, and an hour of user training.",
     es: 'Incluye una reunión de diseño con el cliente (en línea o en persona), diseño de la apariencia del sitio web con tres rondas de borradores, implementación técnica, publicación y una hora de capacitación para el usuario.',
     fr: "Comprend une réunion de conception avec le client (en ligne ou en personne), la conception de l'apparence du site Web avec trois tours de brouillons, la mise en œuvre technique, la publication et une heure de formation pour l'utilisateur.",
@@ -4831,7 +4832,7 @@ export const translations: Translations = {
     cs: 'Obsahuje schůzku o designu s klientem (online nebo osobně), design vzhledu webu s třemi kolečky návrhů, technickou implementaci, publikaci a hodinu uživatelského školení.',
     fi: 'Sisältää suunnittelukokouksen asiakkaan kanssa (verkossa tai henkilökohtaisesti), verkkosivuston ulkoasun suunnittelun ja kolme luonnoskierrosta, teknisen toteutuksen, julkaisun ja tunnin käyttäjäkoulutusta.',
   },
-  EAnAccessibleWebsiteWithBlogContactFormAndOnlineStoreWooCommerce: {
+  AnAccessibleWebsiteWithBlogContactFormAndOnlineStoreWooCommerce: {
     en: 'An accessible website with a blog section, contact form, and small online store (WooCommerce).',
     es: 'Un sitio web accesible con una sección de blog, formulario de contacto y una pequeña tienda en línea (WooCommerce).',
     fr: 'Un site web accessible avec une section blog, un formulaire de contact et une petite boutique en ligne (WooCommerce).',
@@ -4840,7 +4841,7 @@ export const translations: Translations = {
     cs: 'Přístupný web s blogovou sekcí, kontaktním formulářem a malým online obchodem (WooCommerce).',
     fi: 'Saavutettava verkkosivusto, jossa on blogiosio, yhteydenottolomake ja pieni verkkokauppa (WooCommerce).',
   },
-  EWordPressFullPackage: {
+  WordPressFullPackage: {
     en: 'WordPress Full Package',
     es: 'Paquete completo de WordPress',
     fr: 'Forfait complet WordPress',
@@ -4849,7 +4850,7 @@ export const translations: Translations = {
     cs: 'WordPress plný balíček',
     fi: 'WordPress täyspaketti',
   },
-  EAddingABlogAndContactFormToAnExistingWebsite: {
+  AddingABlogAndContactFormToAnExistingWebsite: {
     en: 'Adding a Blog and Contact Form to an Existing Website',
     es: 'Agregar un blog y un formulario de contacto a un sitio web existente',
     fr: "Ajout d'un blog et d'un formulaire de contact à un site Web existant",
@@ -4858,7 +4859,7 @@ export const translations: Translations = {
     cs: 'Přidání blogu a kontaktního formuláře na existující web',
     fi: 'Blogin ja yhteydenottolomakkeen lisääminen olemassa olevaan verkkosivustoon',
   },
-  EAddingAWebStoreToAnExistingWebsite: {
+  AddingAWebStoreToAnExistingWebsite: {
     en: 'Adding a Web Store (WooCommerce) to an existing WordPress website',
     es: 'Agregar una tienda web (WooCommerce) a un sitio web de WordPress existente',
     fr: "Ajout d'un magasin en ligne (WooCommerce) à un site Web WordPress existant",
@@ -4867,7 +4868,7 @@ export const translations: Translations = {
     cs: 'Přidání webového obchodu (WooCommerce) na existující web WordPress',
     fi: 'Verkkokaupan (WooCommerce) lisääminen olemassa olevaan WordPress-verkkosivustoon',
   },
-  EWebStore: {
+  WebStore: {
     en: 'Web store',
     es: 'Tienda en línea',
     fr: 'Boutique en ligne',
@@ -4876,7 +4877,7 @@ export const translations: Translations = {
     cs: 'Webový obchod',
     fi: 'Verkkokauppa',
   },
-  EBlogAndContactForm: {
+  BlogAndContactForm: {
     en: 'Blog and Contact Form',
     es: 'Blog y formulario de contacto',
     fr: 'Blog et formulaire de contact',
@@ -4885,7 +4886,7 @@ export const translations: Translations = {
     cs: 'Blog a kontaktní formulář',
     fi: 'Blogi ja yhteydenottolomake',
   },
-  EWordPressWebsiteWithBlogAndContactForm: {
+  WordPressWebsiteWithBlogAndContactForm: {
     en: 'WordPress Website with Blog and Contact Form',
     es: 'Sitio web de WordPress con blog y formulario de contacto',
     fr: 'Site Web WordPress avec blog et formulaire de contact',
@@ -4894,7 +4895,7 @@ export const translations: Translations = {
     cs: 'Web WordPress s blogem a kontaktním formulářem',
     fi: 'WordPress-verkkosivusto blogilla ja yhteydenottolomakkeella',
   },
-  ETranslationWork: {
+  TranslationWork: {
     en: 'Translation Work (English & Finnish)',
     es: 'Trabajo de traducción (inglés y finlandés)',
     fr: 'Travail de traduction (anglais et finnois)',
@@ -4903,7 +4904,7 @@ export const translations: Translations = {
     cs: 'Překladatelská práce (angličtina a finština)',
     fi: 'Käännöstyö (englanti ja suomi)',
   },
-  EWebsiteContentUpdatesOrModifications: {
+  WebsiteContentUpdatesOrModifications: {
     en: 'Website content updates or code modifications',
     es: 'Actualizaciones de contenido del sitio web o modificaciones de código',
     fr: 'Mises à jour du contenu du site Web ou modifications du code',
@@ -4912,7 +4913,7 @@ export const translations: Translations = {
     cs: 'Aktualizace obsahu webu nebo úpravy kódu',
     fi: 'Verkkosivuston sisällön päivitykset tai koodin muutokset',
   },
-  EHourSmall: {
+  HourSmall: {
     en: 'hour',
     es: 'hora',
     fr: 'heure',
@@ -4921,7 +4922,7 @@ export const translations: Translations = {
     cs: 'hodina',
     fi: 'tunti',
   },
-  EHours: {
+  Hours: {
     en: 'hours',
     es: 'horas',
     fr: 'heures',
@@ -4930,7 +4931,7 @@ export const translations: Translations = {
     cs: 'hodin',
     fi: 'tuntia',
   },
-  EHourlyWork: {
+  HourlyWork: {
     en: 'Hourly work',
     es: 'Trabajo por hora',
     fr: 'Travail horaire',
@@ -4939,7 +4940,7 @@ export const translations: Translations = {
     cs: 'Hodinová práce',
     fi: 'Tuntityö',
   },
-  EForWordPressOrReactNodeBasedWebsites: {
+  ForWordPressOrReactNodeBasedWebsites: {
     en: 'for WordPress or React & Node-based websites',
     es: 'para sitios web basados en WordPress o React y Node',
     fr: 'pour les sites Web basés sur WordPress ou React et Node',
@@ -4948,7 +4949,7 @@ export const translations: Translations = {
     cs: 'pro webové stránky postavené na WordPressu nebo Reactu a Node',
     fi: 'WordPress- tai React- ja Node-pohjaisille verkkosivustoille',
   },
-  EWebsiteMaintenance: {
+  WebsiteMaintenance: {
     en: 'Website Maintenance',
     es: 'Mantenimiento del sitio web',
     fr: 'Maintenance du site Web',
@@ -4957,7 +4958,7 @@ export const translations: Translations = {
     cs: 'Údržba webu',
     fi: 'Verkkosivuston ylläpito',
   },
-  EIncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts: {
+  IncludesADesignMeetingWithTheClientOnlineOrInPersonAndThreeDrafts: {
     en: 'Includes a design meeting with the client (online or in person) and three rounds of drafts.',
     es: 'Incluye una reunión de diseño con el cliente (en línea o en persona) y tres rondas de borradores.',
     fr: 'Comprend une réunion de conception avec le client (en ligne ou en personne) et trois tours de brouillons.',
@@ -4966,7 +4967,7 @@ export const translations: Translations = {
     cs: 'Obsahuje designovou schůzku s klientem (online nebo osobně) a tři kola návrhů.',
     fi: 'Sisältää suunnittelukokouksen asiakkaan kanssa (verkossa tai henkilökohtaisesti) ja kolme luonnoskierrosta.',
   },
-  EPosterAndProgramme: {
+  PosterAndProgramme: {
     en: 'Poster and Programme',
     es: 'Cartel y programa',
     fr: 'Affiche et programme',
@@ -4975,7 +4976,7 @@ export const translations: Translations = {
     cs: 'Plakát a program',
     fi: 'Juliste ja ohjelma',
   },
-  EPosterAndProgrammeCombo: {
+  PosterAndProgrammeCombo: {
     en: 'Poster and Programme Combo',
     es: 'Combo de cartel y programa',
     fr: 'Combo affiche et programme',
@@ -4984,7 +4985,7 @@ export const translations: Translations = {
     cs: 'Kombo plakátu a programu',
     fi: 'Julisteen ja ohjelman yhdistelmä',
   },
-  ELogoDesign: {
+  LogoDesign: {
     en: 'Logo Design',
     es: 'Diseño de logotipo',
     fr: 'Conception de logo',
@@ -4993,7 +4994,7 @@ export const translations: Translations = {
     cs: 'Návrh loga',
     fi: 'Logon/liikemerkin suunnittelu',
   },
-  EIncludesPrintableAndWebVersionOfTheLogo: {
+  IncludesPrintableAndWebVersionOfTheLogo: {
     en: 'Includes a printable and web version of the logo.',
     es: 'Incluye una versión imprimible y web del logotipo.',
     fr: 'Comprend une version imprimable et web du logo.',
@@ -5002,7 +5003,7 @@ export const translations: Translations = {
     cs: 'Zahrnuje tisknutelnou a webovou verzi loga.',
     fi: 'Sisältää tulostettavan ja verkkoversion logosta.',
   },
-  EBusinessCardDesign: {
+  BusinessCardDesign: {
     en: 'Business Card Design',
     es: 'Diseño de tarjeta de visita',
     fr: 'Conception de carte de visite',
@@ -5011,7 +5012,7 @@ export const translations: Translations = {
     cs: 'Návrh vizitky',
     fi: 'Käyntikortin suunnittelu',
   },
-  EOneSidedBusinessCard: {
+  OneSidedBusinessCard: {
     en: 'One-sided business card',
     es: 'Tarjeta de visita de una cara',
     fr: 'Carte de visite recto',
@@ -5020,7 +5021,7 @@ export const translations: Translations = {
     cs: 'Jednostranná vizitka',
     fi: 'Yksipuolinen käyntikortti',
   },
-  ETwoSidedBusinessCard: {
+  TwoSidedBusinessCard: {
     en: 'Two-sided business card',
     es: 'Tarjeta de visita de dos caras',
     fr: 'Carte de visite recto verso',
@@ -5029,7 +5030,7 @@ export const translations: Translations = {
     cs: 'Oboustranná vizitka',
     fi: 'Kaksipuolinen käyntikortti',
   },
-  EWebsites: {
+  Websites: {
     en: 'Websites',
     es: 'Sitios web',
     fr: 'Sites Web',
@@ -5038,7 +5039,7 @@ export const translations: Translations = {
     cs: 'Webové stránky',
     fi: 'Verkkosivut',
   },
-  EGoToCart: {
+  GoToCart: {
     en: 'Go to cart',
     es: 'Ir al carrito',
     fr: 'Aller au panier',
@@ -5047,7 +5048,7 @@ export const translations: Translations = {
     cs: 'Jít do košíku',
     fi: 'Siirry ostoskoriin',
   },
-  EWordPressPaidPluginsNotIncluded: {
+  WordPressPaidPluginsNotIncluded: {
     en: 'Possible WordPress paid plugins are not included in the price.',
     es: 'Los posibles complementos de pago de WordPress no están incluidos en el precio.',
     fr: 'Les éventuels plugins payants de WordPress ne sont pas inclus dans le prix.',
@@ -5056,7 +5057,7 @@ export const translations: Translations = {
     cs: 'Možné placené pluginy WordPress nejsou zahrnuty v ceně.',
     fi: 'Mahdolliset maksulliset WordPress-lisäosat eivät sisälly hintaan.',
   },
-  ETheseAreAgreedSeparately: {
+  TheseAreAgreedSeparately: {
     en: 'These are agreed separately.',
     es: 'Estos se acuerdan por separado.',
     fr: 'Ces éléments sont convenus séparément.',
@@ -5065,7 +5066,7 @@ export const translations: Translations = {
     cs: 'Tyto jsou dohodnuty samostatně.',
     fi: 'Nämä sovitaan erikseen.',
   },
-  ERequestForQuote: {
+  RequestForQuote: {
     en: 'Request for Quote',
     es: 'Solicitud de presupuesto',
     fr: 'Demande de devis',
@@ -5074,7 +5075,7 @@ export const translations: Translations = {
     cs: 'Žádost o cenovou nabídku',
     fi: 'Tarjouspyyntö',
   },
-  ERequestForQuoteForProductsNotInStore: {
+  RequestForQuoteForProductsNotInStore: {
     en: 'Request for quote for products not in store',
     es: 'Solicitud de presupuesto para productos que no están en la tienda',
     fr: 'Demande de devis pour des produits non disponibles en magasin',
@@ -5083,7 +5084,7 @@ export const translations: Translations = {
     cs: 'Žádost o cenovou nabídku pro produkty, které nejsou v obchodě',
     fi: 'Tarjouspyyntö tuotteille, joita ei löydy verkkokaupasta',
   },
-  EEGInfographicsOrMotionGraphics: {
+  EGInfographicsOrMotionGraphics: {
     en: 'E.g. infographics or motion graphics',
     es: 'Por ejemplo, infografías o gráficos en movimiento',
     fr: 'Par exemple, infographies ou graphiques animés',
@@ -5092,7 +5093,7 @@ export const translations: Translations = {
     cs: 'Například infografiky nebo pohyblivé grafiky',
     fi: 'Esimerkiksi infografiikkaa tai liikegrafiikkaa',
   },
-  EWordPressWebsite: {
+  WordPressWebsite: {
     en: 'WordPress Website',
     es: 'Sitio web de WordPress',
     fr: 'Site Web WordPress',
@@ -5101,7 +5102,7 @@ export const translations: Translations = {
     cs: 'Web WordPress',
     fi: 'WordPress-verkkosivusto',
   },
-  EPosterDesign: {
+  PosterDesign: {
     en: 'Poster Design',
     es: 'Diseño de póster',
     fr: "Conception d'affiche",
@@ -5110,7 +5111,7 @@ export const translations: Translations = {
     cs: 'Návrh plakátu',
     fi: 'Julisteen suunnittelu',
   },
-  EFlyerDesign: {
+  FlyerDesign: {
     en: 'Flyer Design',
     es: 'Diseño de folleto',
     fr: 'Conception de flyer',
@@ -5119,7 +5120,7 @@ export const translations: Translations = {
     cs: 'Návrh letáku',
     fi: 'Lehtisen suunnittelu',
   },
-  EOneSided: {
+  OneSided: {
     en: 'One-sided',
     es: 'De una cara',
     fr: 'Recto',
@@ -5128,7 +5129,7 @@ export const translations: Translations = {
     cs: 'Jednostranný',
     fi: 'Yksipuoleinen',
   },
-  ETwoSided: {
+  TwoSided: {
     en: 'Two-sided',
     es: 'De dos caras',
     fr: 'Recto verso',
@@ -5137,7 +5138,7 @@ export const translations: Translations = {
     cs: 'Oboustranný',
     fi: 'Kaksipuoleinen',
   },
-  EProgrammeDesign: {
+  ProgrammeDesign: {
     en: 'Programme Design',
     es: 'Diseño de programa',
     fr: 'Conception de programme',
@@ -5146,7 +5147,7 @@ export const translations: Translations = {
     cs: 'Návrh programu',
     fi: 'Ohjelman suunnittelu',
   },
-  EFourPageA5SizeProgramme: {
+  FourPageA5SizeProgramme: {
     en: 'Four-page A5-size programme (A4 folded)',
     es: 'Programa de cuatro páginas de tamaño A5 (A4 plegado)',
     fr: 'Programme de quatre pages au format A5 (A4 plié)',
@@ -5155,7 +5156,7 @@ export const translations: Translations = {
     cs: 'Čtyřstránkový program ve formátu A5 (A4 složený)',
     fi: 'Nelisivuinen A5-kokoinen ohjelma (A4 taitettuna)',
   },
-  ESeeTranslationServiceProduct: {
+  SeeTranslationServiceProduct: {
     en: 'See translation service product for English and Finnish translations',
     es: 'Consulte el producto de servicios de traducción para las traducciones al inglés y finlandés',
     fr: 'Voir le produit de service de traduction pour les traductions en anglais et en finnois',
@@ -5164,7 +5165,7 @@ export const translations: Translations = {
     cs: 'Podívejte se na produkt překladatelských služeb pro anglické a finské překlady',
     fi: 'Katso käännöspalvelun tuote englannin ja suomen käännöksille',
   },
-  EBuy5Get6: {
+  Buy5Get6: {
     en: 'Buy 5 hours, get 6 hours!',
     es: '¡Compra 5 horas, obtén 6 horas!',
     fr: 'Achetez 5 heures, obtenez 6 heures!',
@@ -5173,7 +5174,7 @@ export const translations: Translations = {
     cs: 'Kupte si 5 hodin, získejte 6 hodin!',
     fi: 'Osta 5 tuntia, saat 6 tuntia!',
   },
-  EPayFor5HoursGet6: {
+  PayFor5HoursGet6: {
     en: 'Pay for five hours of work at once, and you will get six hours worth of work.',
     es: 'Pague por cinco horas de trabajo de una vez, y obtendrá seis horas de trabajo.',
     fr: "Payez cinq heures de travail d'un coup, et vous obtiendrez six heures de travail.",
@@ -5182,7 +5183,7 @@ export const translations: Translations = {
     cs: 'Zaplaťte za pět hodin práce najednou a dostanete šest hodin práce!',
     fi: 'Maksa kerralla viiden tunnin työstä, niin saat kuuden tunnin edestä työtä.',
   },
-  EPayFor10HoursGet13: {
+  PayFor10HoursGet13: {
     en: 'Pay for ten hours of work at once, and you will get thirteen hours worth of work!',
     es: '¡Pague por diez horas de trabajo de una vez, y obtendrá trece horas de trabajo!',
     fr: "Payez dix heures de travail d'un coup, et vous obtiendrez treize heures de travail!",
@@ -5191,7 +5192,7 @@ export const translations: Translations = {
     cs: 'Zaplaťte za deset hodin práce najednou a dostanete třináct hodin práce!',
     fi: 'Maksa kerralla kymmenen tunnin työstä, niin saat kolmentoista tunnin edestä työtä!',
   },
-  EHourlyWorkCanBeUsed: {
+  HourlyWorkCanBeUsed: {
     en: 'Hourly work can be used (for example) an hour at a time every month until the hours are used up.',
     es: 'El trabajo por horas se puede utilizar (por ejemplo) una hora a la vez cada mes hasta que se agoten las horas.',
     fr: "Le travail horaire peut être utilisé (par exemple) une heure à la fois chaque mois jusqu'à épuisement des heures.",
@@ -5200,7 +5201,7 @@ export const translations: Translations = {
     cs: 'Hodinová práce může být použita (například) hodinu za hodinu každý měsíc, dokud hodiny nebudou vyčerpány.',
     fi: 'Tuntityötä voidaan käyttää (esimerkiksi) tunti kerrallaan joka kuukausi, kunnes tunnit on käytetty loppuun.',
   },
-  EFreeHourUnlocked: {
+  FreeHourUnlocked: {
     en: 'Free hour unlocked!',
     es: '¡Hora gratis desbloqueada!',
     fr: 'Heure gratuite débloquée!',
@@ -5209,7 +5210,7 @@ export const translations: Translations = {
     cs: 'Odemyká se zdarma!',
     fi: 'Ilmainen tunti saatu!',
   },
-  EReferenceForInvoice: {
+  ReferenceForInvoice: {
     en: 'Reference for invoice',
     es: 'Referencia para la factura',
     fr: 'Référence pour la facture',
@@ -5218,7 +5219,7 @@ export const translations: Translations = {
     cs: 'Reference pro fakturu',
     fi: 'Viite laskua varten',
   },
-  ESaveTheFollowingAmountOfMoney: {
+  SaveTheFollowingAmountOfMoney: {
     en: 'Save',
     es: 'Ahorra',
     fr: 'Économisez',
@@ -5227,7 +5228,7 @@ export const translations: Translations = {
     cs: 'Ušetřete',
     fi: 'Säästä',
   },
-  EOrderCompleted: {
+  OrderCompleted: {
     en: 'Order completed',
     es: 'Pedido completado',
     fr: 'Commande terminée',
@@ -5236,7 +5237,7 @@ export const translations: Translations = {
     cs: 'Objednávka dokončena',
     fi: 'Tilaus valmis',
   },
-  EOrderNotCompleted: {
+  OrderNotCompleted: {
     en: 'Order not completed',
     es: 'Pedido no completado',
     fr: 'Commande non terminée',
@@ -5245,7 +5246,7 @@ export const translations: Translations = {
     cs: 'Objednávka nebyla dokončena',
     fi: 'Tilaus ei valmis',
   },
-  EMissingPayment: {
+  MissingPayment: {
     en: 'Missing payment',
     es: 'Pago faltante',
     fr: 'Paiement manquant',
@@ -5254,7 +5255,7 @@ export const translations: Translations = {
     cs: 'Chybějící platba',
     fi: 'Maksu puuttuu',
   },
-  ENoPayment: {
+  NoPayment: {
     en: 'No payment',
     es: 'Sin pago',
     fr: 'Pas de paiement',
@@ -5263,7 +5264,7 @@ export const translations: Translations = {
     cs: 'Žádná platba',
     fi: 'Ei maksua',
   },
-  EPaymentState: {
+  PaymentState: {
     en: 'Payment state',
     es: 'Estado de pago',
     fr: 'État de paiement',
@@ -5272,7 +5273,7 @@ export const translations: Translations = {
     cs: 'Stav platby',
     fi: 'Maksun tila',
   },
-  EPartial: {
+  Partial: {
     en: 'Partial',
     es: 'Parcial',
     fr: 'Partiel',
@@ -5281,7 +5282,7 @@ export const translations: Translations = {
     cs: 'Částečný',
     fi: 'Osittainen',
   },
-  EFull: {
+  Full: {
     en: 'Full',
     es: 'Completo',
     fr: 'Complet',
@@ -5290,7 +5291,7 @@ export const translations: Translations = {
     cs: 'Plný',
     fi: 'Täysi',
   },
-  EInProgress: {
+  InProgress: {
     en: 'In progress',
     es: 'En progreso',
     fr: 'En cours',
@@ -5299,7 +5300,7 @@ export const translations: Translations = {
     cs: 'Probíhá',
     fi: 'Käynnissä',
   },
-  ECancelled: {
+  Cancelled: {
     en: 'Cancelled',
     es: 'Cancelado',
     fr: 'Annulé',
@@ -5308,7 +5309,7 @@ export const translations: Translations = {
     cs: 'Zrušeno',
     fi: 'Peruttu',
   },
-  EIncludes: {
+  Includes: {
     en: 'Includes',
     es: 'Incluye',
     fr: 'Comprend',
@@ -5317,7 +5318,7 @@ export const translations: Translations = {
     cs: 'Obsahuje',
     fi: 'Sisältää',
   },
-  EReactSitesAppsAreFastAndResponsive: {
+  ReactSitesAppsAreFastAndResponsive: {
     en: 'React sites/apps are fast and responsive, and they can be built with a variety of functionalities and interactivity.',
     es: 'Los sitios/aplicaciones de React son rápidos y receptivos, y se pueden construir con una variedad de funcionalidades e interactividad.',
     fr: "Les sites/applications React sont rapides et réactifs, et ils peuvent être construits avec une variété de fonctionnalités et d'interactivité.",
@@ -5326,7 +5327,7 @@ export const translations: Translations = {
     cs: 'Weby/aplikace React jsou rychlé a responzivní a lze je postavit s různými funkcemi a interaktivitou.',
     fi: 'React-sivustot/-sovellukset ovat nopeita ja responsiivisia, ja niitä voidaan rakentaa monenlaisilla toiminnoilla ja vuorovaikutteisuudella.',
   },
-  EWordPressSitesAreVersatile: {
+  WordPressSitesAreVersatile: {
     en: 'WordPress sites are versatile and can be built easily.',
     es: 'Los sitios de WordPress son versátiles y se pueden construir fácilmente.',
     fr: 'Les sites WordPress sont polyvalents et peuvent être construits facilement.',
@@ -5335,7 +5336,7 @@ export const translations: Translations = {
     cs: 'Webové stránky na WordPress jsou všestranné a lze je snadno postavit.',
     fi: 'WordPress-sivustot ovat monipuolisia ja niitä voidaan rakentaa helposti.',
   },
-  EUpdatingWordPressIsSimple: {
+  UpdatingWordPressIsSimple: {
     en: 'Updating WordPress is a simple matter of clicking a button, but it is important to regularily keep the site up to date to prevent security vulnerabilities.',
     es: 'Actualizar WordPress es tan simple como hacer clic en un botón, pero es importante mantener el sitio regularmente actualizado para evitar vulnerabilidades de seguridad.',
     fr: 'Mettre à jour WordPress est aussi simple que de cliquer sur un bouton, mais il est important de garder le site régulièrement à jour pour éviter les vulnérabilités de sécurité.',
@@ -5344,7 +5345,7 @@ export const translations: Translations = {
     cs: 'Aktualizace WordPressu je jednoduchá záležitost kliknutím na tlačítko, ale je důležité pravidelně udržovat web aktuální, abyste předešli bezpečnostním hrozbám.',
     fi: 'WordPressin päivittäminen on yksinkertainen asia, mutta sivusto on pidettävä säännöllisesti ajan tasalla turvallisuusuhkien välttämiseksi.',
   },
-  EDesiredReference: {
+  DesiredReference: {
     en: 'Desired reference',
     es: 'Referencia deseada',
     fr: 'Référence souhaitée',
@@ -5353,7 +5354,7 @@ export const translations: Translations = {
     cs: 'Požadovaná reference',
     fi: 'Toivottu viite',
   },
-  EEG: {
+  EG: {
     en: 'e.g.',
     es: 'por ejemplo',
     fr: 'par exemple',
@@ -5362,7 +5363,7 @@ export const translations: Translations = {
     cs: 'např.',
     fi: 'esim.',
   },
-  EAddingFunctionalityToAReactSite: {
+  AddingFunctionalityToAReactSite: {
     en: 'Adding functionality to a React site',
     es: 'Agregar funcionalidad a un sitio de React',
     fr: 'Ajout de fonctionnalités à un site React',
@@ -5371,7 +5372,7 @@ export const translations: Translations = {
     cs: 'Přidání funkcionality na web React',
     fi: 'Toiminnallisuuden lisääminen React-sivustolle',
   },
-  EFunctionalitiesCanBe: {
+  FunctionalitiesCanBe: {
     en: "Functionalities can be, for example, a restaurant menu and its editing, or a company's services and their editing, user login and order sending, or a blog and its editing.",
     es: 'Las funcionalidades pueden ser, por ejemplo, un menú de restaurante y su edición, o los servicios de una empresa y su edición, inicio de sesión de usuario y envío de pedidos, o un blog y su edición.',
     fr: "Les fonctionnalités peuvent être, par exemple, un menu de restaurant et son édition, ou les services d'une entreprise et leur édition, la connexion de l'utilisateur et l'envoi de commandes, ou un blog et son édition.",
@@ -5380,7 +5381,7 @@ export const translations: Translations = {
     cs: 'Funkcionalita může být například menu restaurace a jeho úprava, nebo služby společnosti a jejich úprava, přihlášení uživatele a odesílání objednávek, nebo blog a jeho úprava.',
     fi: 'Toiminnallisuudet voivat olla esimerkiksi ravintolan menu ja sen muokkaus, tai yrityksen palvelut ja niiden muokkaus, käyttäjien kirjautuminen ja tilausten lähettäminen, tai vaikka blogi ja sen muokkaus.',
   },
-  EIfYouAreUnsureAboutReactOrWordPress: {
+  IfYouAreUnsureAboutReactOrWordPress: {
     en: 'If you are unsure about whether React or WordPress is better suited to your needs, contact us and ask for advice. We can discuss which solution is best suited to your needs.',
     es: 'Si no está seguro de si React o WordPress se adapta mejor a sus necesidades, contáctenos y solicite asesoramiento. Podemos discutir qué solución se adapta mejor a sus necesidades.',
     fr: 'Si vous ne savez pas si React ou WordPress est le mieux adapté à vos besoins, contactez-nous et demandez conseil. Nous pouvons discuter de la solution la mieux adaptée à vos besoins.',
@@ -5389,7 +5390,7 @@ export const translations: Translations = {
     cs: 'Pokud si nejste jisti, zda je pro vaše potřeby vhodnější React nebo WordPress, kontaktujte nás a požádejte o radu. Můžeme společně projednat, které řešení je pro vás nejlepší.',
     fi: 'Jos olet epävarma siitä, sopiiko React vai WordPress paremmin tarpeisiinne, ota yhteyttä ja kysy neuvoa. Voimme keskustella siitä, mikä ratkaisu sopii parhaiten tarpeisiinne.',
   },
-  EColorsMayVaryInPrintedWorks: {
+  ColorsMayVaryInPrintedWorks: {
     en: 'In printed works, it is always possible that the colors do not exactly match the colors displayed on the screen. This is because the screen uses light and the print uses ink. Colors may also vary with different printing materials.',
     es: 'En trabajos impresos, siempre es posible que los colores no coincidan exactamente con los colores que se muestran en la pantalla. Esto se debe a que la pantalla utiliza luz y la impresión utiliza tinta. Los colores también pueden variar con diferentes materiales de impresión.',
     fr: "Dans les travaux imprimés, il est toujours possible que les couleurs ne correspondent pas exactement aux couleurs affichées à l'écran. Cela est dû au fait que l'écran utilise la lumière et l'impression utilise l'encre. Les couleurs peuvent également varier avec différents matériaux d'impression.",
@@ -5398,7 +5399,7 @@ export const translations: Translations = {
     cs: 'U tištěných prací je vždy možné, že barvy nebudou přesně odpovídat barvám zobrazeným na obrazovce. To je způsobeno tím, že obrazovka používá světlo a tisk používá inkoust. Barvy se mohou také lišit u různých tiskových materiálů.',
     fi: 'Tulostetöissä on aina mahdollista, että värit eivät vastaa täysin näytöllä näkyviä värejä. Tämä johtuu siitä, että näytöllä käytetään valoa ja tulosteessa mustetta. Värit voivat myös vaihdella eri tulostusmateriaaleilla.',
   },
-  EICanHelpWithFindingHosting: {
+  ICanHelpWithFindingHosting: {
     en: 'I can help with finding hosting solutions, but the subscriber is responsible for the costs and maintenance. I can also help with domain registration.',
     es: 'Puedo ayudar con la búsqueda de soluciones de alojamiento, pero el suscriptor es responsable de los costos y el mantenimiento. También puedo ayudar con el registro de dominios.',
     fr: "Je peux aider à trouver des solutions d'hébergement, mais l'abonné est responsable des coûts et de la maintenance. Je peux également aider à l'enregistrement de domaines.",
@@ -5416,7 +5417,7 @@ export const translations: Translations = {
     cs: 'Mohu pomoci s hledáním tiskových služeb, ale odběratel je zodpovědný za náklady.',
     fi: 'Voin auttaa painopalveluiden löytämisessä, mutta tilaaja vastaa kustannuksista.',
   },
-  ETrainingInWebsiteManagement: {
+  TrainingInWebsiteManagement: {
     en: 'Training in website management',
     es: 'Entrenamiento en gestión de sitios web',
     fr: 'Formation à la gestion de sites Web',
@@ -5425,7 +5426,7 @@ export const translations: Translations = {
     cs: 'Školení v správě webu',
     fi: 'Koulutus verkkosivujen hallintaan',
   },
-  ETrainingInWebsiteManagementDescription: {
+  TrainingInWebsiteManagementDescription: {
     en: "Training in website management for those who need to update their website themselves. The training is tailored to the customer's needs and can be done online or in person.",
     es: 'Entrenamiento en gestión de sitios web para aquellos que necesitan actualizar su sitio web ellos mismos. El entrenamiento se adapta a las necesidades del cliente y se puede hacer en línea o en persona.',
     fr: 'Formation à la gestion de sites Web pour ceux qui ont besoin de mettre à jour leur site Web eux-mêmes. La formation est adaptée aux besoins du client et peut être effectuée en ligne ou en personne.',
@@ -5434,7 +5435,7 @@ export const translations: Translations = {
     cs: 'Školení v správě webu pro ty, kteří potřebují aktualizovat svůj web sami. Školení je přizpůsobeno potřebám zákazníka a může být provedeno online nebo osobně.',
     fi: 'Koulutus verkkosivujen hallintaan niille, joilla on tarve päivittää verkkosivunsa itse. Koulutus räätälöidään asiakkaan tarpeiden mukaan ja se voidaan suorittaa verkossa tai henkilökohtaisesti.',
   },
-  ESitesByJenniina: {
+  SitesByJenniina: {
     en: 'Sites by Jenniina',
     es: 'Sitios de Jenniina',
     fr: 'Sites par Jenniina',
@@ -5443,7 +5444,7 @@ export const translations: Translations = {
     cs: 'Weby od Jenniiny',
     fi: 'Jenniinan toteuttamat verkkosivut',
   },
-  EForSitesByJenniina: {
+  ForSitesByJenniina: {
     en: 'For sites by Jenniina',
     es: 'Para sitios de Jenniina',
     fr: 'Pour les sites par Jenniina',
@@ -5452,7 +5453,7 @@ export const translations: Translations = {
     cs: 'Pro weby od Jenniiny',
     fi: 'Jenniinan toteuttamille verkkosivuille',
   },
-  EOneHourOfTrainingIncluded: {
+  OneHourOfTrainingIncluded: {
     en: 'One hour of training is included in all website packages.',
     es: 'Una hora de entrenamiento está incluida en todos los paquetes de sitios web.',
     fr: 'Une heure de formation est incluse dans tous les forfaits de sites Web.',
@@ -5461,7 +5462,7 @@ export const translations: Translations = {
     cs: 'Jedna hodina školení je zahrnuta ve všech balíčcích webu.',
     fi: 'Yksi tunti koulutusta sisältyy kaikkiin verkkosivupaketteihin.',
   },
-  EOrchestraWebsite: {
+  OrchestraWebsite: {
     en: 'Orchestra website',
     es: 'Sitio web de orquesta',
     fr: "Site Web de l'orchestre",
@@ -5470,7 +5471,7 @@ export const translations: Translations = {
     cs: 'Web orchestry',
     fi: 'Orkesterin verkkosivusto',
   },
-  EConferenceWebsite: {
+  ConferenceWebsite: {
     en: 'Conference website',
     es: 'Sitio web de conferencias',
     fr: 'Site Web de conférence',
@@ -5479,7 +5480,7 @@ export const translations: Translations = {
     cs: 'Webové stránky konference',
     fi: 'Konferenssin verkkosivusto',
   },
-  EExampleSites: {
+  ExampleSites: {
     en: 'Example sites',
     es: 'Sitios de ejemplo',
     fr: "Sites d'exemple",
@@ -5488,7 +5489,7 @@ export const translations: Translations = {
     cs: 'Příkladové weby',
     fi: 'Esimerkkisivustoja',
   },
-  EPsychologistWebsite: {
+  PsychologistWebsite: {
     en: 'Psychologist website',
     es: 'Sitio web del psicólogo',
     fr: 'Site Web du psychologue',
@@ -5497,7 +5498,7 @@ export const translations: Translations = {
     cs: 'Webové stránky psychologa',
     fi: 'Psykologin verkkosivusto',
   },
-  EPleaseSeeThePortfolioPagesForExamplesofPossibleFeatures: {
+  PleaseSeeThePortfolioPagesForExamplesofPossibleFeatures: {
     en: 'Please see the portfolio pages for examples of possible features',
     es: 'Consulte las páginas del portafolio para ver ejemplos de posibles características',
     fr: 'Veuillez consulter les pages du portfolio pour des exemples de fonctionnalités possibles',
@@ -5506,7 +5507,7 @@ export const translations: Translations = {
     cs: 'Podívejte se na stránky portfolia pro příklady možných funkcí',
     fi: 'Katso portfolion sivuja esimerkkeinä mahdollisista ominaisuuksista',
   },
-  ETermsRelatedToProducts: {
+  TermsRelatedToProducts: {
     en: 'Terms related to products',
     es: 'Términos relacionados con productos',
     fr: 'Termes liés aux produits',
@@ -5515,7 +5516,7 @@ export const translations: Translations = {
     cs: 'Podmínky související s produkty',
     fi: 'Tuotteisiin liittyvät ehdot',
   },
-  EAddonsAreAdaptedToTheStyle: {
+  AddonsAreAdaptedToTheStyle: {
     en: 'Add-ons are adapted to the style of the existing website.',
     es: 'Los complementos se adaptan al estilo del sitio web existente.',
     fr: 'Les modules complémentaires sont adaptés au style du site Web existant.',
@@ -5524,7 +5525,7 @@ export const translations: Translations = {
     cs: 'Doplňky jsou přizpůsobeny stylu stávajícího webu.',
     fi: 'Lisäosat sovitetaan olemassaolevan verkkosivuston tyyliin.',
   },
-  ERemoveTaskEitherOrClearAllCompletedTasksAtOnce: {
+  RemoveTaskEitherOrClearAllCompletedTasksAtOnce: {
     en: 'Remove task either individually or clear all completed tasks at once',
     es: 'Eliminar la tarea individualmente o borrar todas las tareas completadas a la vez',
     fr: 'Supprimer la tâche individuellement ou effacer toutes les tâches terminées à la fois',
@@ -5533,7 +5534,7 @@ export const translations: Translations = {
     cs: 'Odstraňte úkol buď jednotlivě, nebo všechny dokončené úkoly najednou',
     fi: 'Poista tehtävä joko yksittäin tai poista kaikki valmiit tehtävät kerralla',
   },
-  EShowsHowManyTasksAreLeftToDo: {
+  ShowsHowManyTasksAreLeftToDo: {
     en: 'Shows how many tasks are left to do',
     es: 'Muestra cuántas tareas quedan por hacer',
     fr: 'Montre combien de tâches il reste à faire',
@@ -5542,7 +5543,7 @@ export const translations: Translations = {
     cs: 'Ukazuje, kolik úkolů zbývá',
     fi: 'Näyttää, kuinka monta tehtävää on jäljellä',
   },
-  EStoresTasksInMongoDBIfTheUserIsLoggedIn: {
+  StoresTasksInMongoDBIfTheUserIsLoggedIn: {
     en: 'Stores tasks in MongoDB if the user is logged in',
     es: 'Almacena las tareas en MongoDB si el usuario ha iniciado sesión',
     fr: "Stocke les tâches dans MongoDB si l'utilisateur est connecté",
@@ -5551,7 +5552,7 @@ export const translations: Translations = {
     cs: 'Pokud je uživatel přihlášen, uloží úkoly do MongoDB',
     fi: 'Säilyttää tehtävät MongoDB:ssä, jos käyttäjä on kirjautunut sisään',
   },
-  EAddTasksByTabbingToTheInputFieldAnd: {
+  AddTasksByTabbingToTheInputFieldAnd: {
     en: 'Add tasks by tabbing to the input field and pressing either Enter or by tabbing to the Add Task button and pressing Space',
     es: 'Agregue tareas haciendo clic en el campo de entrada y presionando Enter o haciendo clic en el botón Agregar tarea y presionando Espacio',
     fr: 'Ajoutez des tâches en cliquant sur le champ de saisie et en appuyant sur Entrée ou en cliquant sur le bouton Ajouter une tâche et en appuyant sur Espace',
@@ -5560,7 +5561,7 @@ export const translations: Translations = {
     cs: 'Přidejte úkoly klepnutím na vstupní pole a stisknutím klávesy Enter nebo klepnutím na tlačítko Přidat úkol a stisknutím mezerníku',
     fi: 'Lisää tehtäviä siirtymällä syöttökenttään, kirjoittamalla ja painamalla Enter tai tai kirjoitettuasi siirtymällä Lisää tehtävä -painikkeeseen ja painamalla välilyöntiä',
   },
-  ERemoveATaskByTabbingToTheRemoveButtonAnd: {
+  RemoveATaskByTabbingToTheRemoveButtonAnd: {
     en: 'Remove a task by tabbing to the remove-button and pressing Space, or remove all completed tasks by pressing Space on the Clear Completed Tasks button',
     es: 'Elimine una tarea haciendo clic en el botón Eliminar y presionando Espacio, o elimine todas las tareas completadas presionando Espacio en el botón Borrar tareas completadas',
     fr: 'Supprimez une tâche en cliquant sur le bouton Supprimer et en appuyant sur Espace, ou supprimez toutes les tâches terminées en appuyant sur Espace sur le bouton Effacer les tâches terminées',
@@ -5569,7 +5570,7 @@ export const translations: Translations = {
     cs: 'Odstraňte úkol klepnutím na tlačítko Odstranit a stisknutím mezerníku nebo odstraňte všechny dokončené úkoly stisknutím mezerníku na tlačítku Vymazat dokončené úkoly',
     fi: 'Poista tehtävä napsauttamalla Poista-painiketta ja painamalla välilyöntiä tai poista kaikki valmiit tehtävät painamalla välilyöntiä Poista valmiit tehtävät -painikkeessa',
   },
-  EDeleteTask: {
+  DeleteTask: {
     en: 'Delete Task',
     es: 'Eliminar Tarea',
     fr: 'Supprimer la Tâche',
@@ -5578,7 +5579,7 @@ export const translations: Translations = {
     cs: 'Odstranit Úkol',
     fi: 'Poista tehtävä',
   },
-  ETasksCanBeEdited: {
+  TasksCanBeEdited: {
     en: 'Tasks can be edited',
     es: 'Las tareas se pueden editar',
     fr: 'Les tâches peuvent être modifiées',
@@ -5587,7 +5588,7 @@ export const translations: Translations = {
     cs: 'Úkoly lze upravit',
     fi: 'Tehtäviä voi muokata',
   },
-  ETasksCanBeReorganizedByDraggingAndDropping: {
+  TasksCanBeReorganizedByDraggingAndDropping: {
     en: 'Tasks can be reorganized by dragging and dropping',
     es: 'Las tareas se pueden reorganizar arrastrando y soltando',
     fr: 'Les tâches peuvent être réorganisées par glisser-déposer',
@@ -5596,7 +5597,7 @@ export const translations: Translations = {
     cs: 'Úkoly lze přeuspořádat přetažením a upuštěním',
     fi: 'Tehtäviä voi järjestellä raahaamalla ja pudottamalla',
   },
-  EAreYouSureYouWantToClearAllCompletedTasks: {
+  AreYouSureYouWantToClearAllCompletedTasks: {
     en: 'Are you sure you want to clear all completed tasks?',
     es: '¿Estás seguro de que quieres borrar todas las tareas completadas?',
     fr: 'Êtes-vous sûr de vouloir effacer toutes les tâches terminées?',
@@ -5605,7 +5606,7 @@ export const translations: Translations = {
     cs: 'Opravdu chcete vymazat všechny dokončené úkoly?',
     fi: 'Oletko varma, että haluat poistaa kaikki valmiit tehtävät?',
   },
-  ESelectPriority: {
+  SelectPriority: {
     en: 'Select Priority',
     es: 'Seleccionar Prioridad',
     fr: 'Sélectionner la Priorité',
@@ -5614,7 +5615,7 @@ export const translations: Translations = {
     cs: 'Vyberte Prioritu',
     fi: 'Valitse tärkeysaste',
   },
-  EFilterByPriority: {
+  FilterByPriority: {
     en: 'Filter by Priority',
     es: 'Filtrar por Prioridad',
     fr: 'Filtrer par Priorité',
@@ -5623,7 +5624,7 @@ export const translations: Translations = {
     cs: 'Filtrovat podle Priority',
     fi: 'Suodata tärkeyden mukaan',
   },
-  EEdited: {
+  Edited: {
     en: 'Edited',
     es: 'Editado',
     fr: 'Édité',
@@ -5632,7 +5633,7 @@ export const translations: Translations = {
     cs: 'Upraveno',
     fi: 'Muokattu',
   },
-  EAddedNewFeatures: {
+  AddedNewFeatures: {
     en: 'Added new features',
     es: 'Añadidas nuevas características',
     fr: 'Ajout de nouvelles fonctionnalités',
@@ -5641,7 +5642,7 @@ export const translations: Translations = {
     cs: 'Přidány nové funkce',
     fi: 'Lisätty uusia ominaisuuksia',
   },
-  EBugFixes: {
+  BugFixes: {
     en: 'Bug fixes',
     es: 'Correcciones de errores',
     fr: 'Corrections de bugs',
@@ -5650,7 +5651,7 @@ export const translations: Translations = {
     cs: 'Opravy chyb',
     fi: 'Virhekorjauksia',
   },
-  EJanuary: {
+  January: {
     en: 'January',
     es: 'Enero',
     fr: 'Janvier',
@@ -5659,7 +5660,7 @@ export const translations: Translations = {
     cs: 'Leden',
     fi: 'Tammikuu',
   },
-  EFebruary: {
+  February: {
     en: 'February',
     es: 'Febrero',
     fr: 'Février',
@@ -5668,7 +5669,7 @@ export const translations: Translations = {
     cs: 'Únor',
     fi: 'Helmikuu',
   },
-  EMarch: {
+  March: {
     en: 'March',
     es: 'Marzo',
     fr: 'Mars',
@@ -5677,7 +5678,7 @@ export const translations: Translations = {
     cs: 'Březen',
     fi: 'Maaliskuu',
   },
-  EApril: {
+  April: {
     en: 'April',
     es: 'Abril',
     fr: 'Avril',
@@ -5686,7 +5687,7 @@ export const translations: Translations = {
     cs: 'Duben',
     fi: 'Huhtikuu',
   },
-  EMay: {
+  May: {
     en: 'May',
     es: 'Mayo',
     fr: 'Mai',
@@ -5695,7 +5696,7 @@ export const translations: Translations = {
     cs: 'Květen',
     fi: 'Toukokuu',
   },
-  EJune: {
+  June: {
     en: 'June',
     es: 'Junio',
     fr: 'Juin',
@@ -5704,7 +5705,7 @@ export const translations: Translations = {
     cs: 'Červen',
     fi: 'Kesäkuu',
   },
-  EJuly: {
+  July: {
     en: 'July',
     es: 'Julio',
     fr: 'Juillet',
@@ -5713,7 +5714,7 @@ export const translations: Translations = {
     cs: 'Červenec',
     fi: 'Heinäkuu',
   },
-  EAugust: {
+  August: {
     en: 'August',
     es: 'Agosto',
     fr: 'Août',
@@ -5722,7 +5723,7 @@ export const translations: Translations = {
     cs: 'Srpen',
     fi: 'Elokuu',
   },
-  ESeptember: {
+  September: {
     en: 'September',
     es: 'Septiembre',
     fr: 'Septembre',
@@ -5731,7 +5732,7 @@ export const translations: Translations = {
     cs: 'Září',
     fi: 'Syyskuu',
   },
-  EOctober: {
+  October: {
     en: 'October',
     es: 'Octubre',
     fr: 'Octobre',
@@ -5740,7 +5741,7 @@ export const translations: Translations = {
     cs: 'Říjen',
     fi: 'Lokakuu',
   },
-  ENovember: {
+  November: {
     en: 'November',
     es: 'Noviembre',
     fr: 'Novembre',
@@ -5749,7 +5750,7 @@ export const translations: Translations = {
     cs: 'Listopad',
     fi: 'Marraskuu',
   },
-  EDecember: {
+  December: {
     en: 'December',
     es: 'Diciembre',
     fr: 'Décembre',
@@ -5758,7 +5759,7 @@ export const translations: Translations = {
     cs: 'Prosinec',
     fi: 'Joulukuu',
   },
-  EOptimizing: {
+  Optimizing: {
     en: 'Optimizing',
     es: 'Optimizando',
     fr: 'Optimisation',
@@ -5767,7 +5768,7 @@ export const translations: Translations = {
     cs: 'Optimalizace',
     fi: 'Optimointi',
   },
-  EAddedNewIntroElements: {
+  AddedNewIntroElements: {
     en: 'Added new intro elements',
     es: 'Añadidos nuevos elementos introductorios',
     fr: 'Ajout de nouveaux éléments introductifs',
@@ -5776,7 +5777,7 @@ export const translations: Translations = {
     cs: 'Přidány nové úvodní prvky',
     fi: 'Lisätty uusia introlementtejä',
   },
-  ENewPortfolioItem: {
+  NewPortfolioItem: {
     en: 'New portfolio item',
     es: 'Nuevo elemento de cartera',
     fr: 'Nouvel élément de portefeuille',
@@ -5785,7 +5786,7 @@ export const translations: Translations = {
     cs: 'Nová položka portfolia',
     fi: 'Uusi portfolio-sivu',
   },
-  ESiteMayBeSlow: {
+  SiteMayBeSlow: {
     en: 'Site may be slow',
     es: 'El sitio puede ser lento',
     fr: 'Le site peut être lent',
@@ -5794,7 +5795,7 @@ export const translations: Translations = {
     cs: 'Stránka může být pomalá',
     fi: 'Sivusto saattaa olla hidas',
   },
-  EMigratedSiteToAnotherAzureSubscription: {
+  MigratedSiteToAnotherAzureSubscription: {
     en: 'Migrated site to another Azure subscription',
     es: 'Migrado sitio a otra suscripción de Azure',
     fr: 'Site migré vers une autre abonnement Azure',
@@ -5803,7 +5804,7 @@ export const translations: Translations = {
     cs: 'Stránka přesunuta na jiný Azure předplatné',
     fi: 'Sivusto siirretty toiseen Azure-tilaukseen',
   },
-  ESiteMigration: {
+  SiteMigration: {
     en: 'Site migration',
     es: 'Migración del sitio',
     fr: 'Migration du site',
@@ -5812,7 +5813,7 @@ export const translations: Translations = {
     cs: 'Migrace stránky',
     fi: 'Sivuston siirto',
   },
-  EImprovedAccessibility: {
+  ImprovedAccessibility: {
     en: 'Improved accessibility',
     es: 'Mejora de accesibilidad',
     fr: 'Accessibilité améliorée',
@@ -5821,7 +5822,7 @@ export const translations: Translations = {
     cs: 'Zlepšená dostupnost',
     fi: 'Parannettu saavutettavuutta',
   },
-  ERandomHeadingItemMovement: {
+  RandomHeadingItemMovement: {
     en: 'Random heading item movement',
     es: 'Movimiento aleatorio de elementos de encabezado',
     fr: 'Mouvement aléatoire des éléments de titre',
@@ -5830,7 +5831,7 @@ export const translations: Translations = {
     cs: 'Náhodný pohyb položek nadpisu',
     fi: 'Satunnainen otsikkoalueen kohteen liike',
   },
-  EAdded: {
+  Added: {
     en: 'Added',
     es: 'Añadido',
     fr: 'Ajouté',
@@ -5839,7 +5840,7 @@ export const translations: Translations = {
     cs: 'Přidáno',
     fi: 'Lisätty',
   },
-  ELaunchedAnOnlineStore: {
+  LaunchedAnOnlineStore: {
     en: 'Launched an online store',
     es: 'Lanzó una tienda en línea',
     fr: 'Lancé une boutique en ligne',
@@ -5848,7 +5849,7 @@ export const translations: Translations = {
     cs: 'Spustil online obchod',
     fi: 'Käynnistin verkkokaupan',
   },
-  ELaunchedAnOnlineOrderingSystem: {
+  LaunchedAnOnlineOrderingSystem: {
     en: 'Launched an online ordering system',
     es: 'Lanzó un sistema de pedidos en línea',
     fr: 'Lancé un système de commande en ligne',
@@ -5857,7 +5858,7 @@ export const translations: Translations = {
     cs: 'Spustil online objednávkový systém',
     fi: 'Käynnistin verkkotilausjärjestelmän',
   },
-  EMovedBackendFromAzureToMyOwnDomain: {
+  MovedBackendFromAzureToMyOwnDomain: {
     en: 'Moved backend from Azure to my own domain',
     es: 'Movió el backend de Azure a mi propio dominio',
     fr: "Déplacé le backend d'Azure vers mon propre domaine",
@@ -5866,7 +5867,7 @@ export const translations: Translations = {
     cs: 'Přesunul backend z Azure na svou vlastní doménu',
     fi: 'Siirsin taustajärjestelmän Azuresta omaan verkkotunnukseeni',
   },
-  EChangedQuotesAPI: {
+  ChangedQuotesAPI: {
     en: 'Changed Quotes API',
     es: 'Cambié la API de Cotizaciones',
     fr: "Changé l'API des citations",
@@ -5875,7 +5876,7 @@ export const translations: Translations = {
     cs: 'Změnil jsem API pro citace',
     fi: 'Vaihdoin lainausten API:n',
   },
-  EChanges: {
+  Changes: {
     en: 'Changes',
     es: 'Cambios',
     fr: 'Changements',
@@ -5884,7 +5885,7 @@ export const translations: Translations = {
     cs: 'Změny',
     fi: 'Muutokset',
   },
-  EChangeLog: {
+  ChangeLog: {
     en: 'Change log',
     es: 'Registro de cambios',
     fr: 'Journal des modifications',
@@ -5893,7 +5894,7 @@ export const translations: Translations = {
     cs: 'Záznam změn',
     fi: 'Muutosloki',
   },
-  EMultiStep: {
+  MultiStep: {
     en: 'Multi-Step',
     es: 'Multi-Paso',
     fr: 'Multi-Étape',
@@ -5902,7 +5903,7 @@ export const translations: Translations = {
     cs: 'Vícekrokový',
     fi: 'Monivaiheinen',
   },
-  EBackAndNextButtons: {
+  BackAndNextButtons: {
     en: 'Back and Next buttons',
     es: 'Botones Atrás y Siguiente',
     fr: 'Boutons Précédent et Suivant',
@@ -5911,7 +5912,7 @@ export const translations: Translations = {
     cs: 'Tlačítka Zpět a Další',
     fi: 'Takaisin- ja Seuraava-painikkeet',
   },
-  ECustomRadioAndCheckboxInputs: {
+  CustomRadioAndCheckboxInputs: {
     en: 'Slightly customized radio and checkbox inputs (size increase, added outline)',
     es: 'Entradas de radio y casilla de verificación ligeramente personalizadas (aumento de tamaño, contorno agregado)',
     fr: 'Entrées radio et case à cocher légèrement personnalisées (augmentation de la taille, contour ajouté)',
@@ -5920,7 +5921,7 @@ export const translations: Translations = {
     cs: 'Mírně upravené vstupy rádia a zaškrtávací políčko (zvětšení velikosti, přidán obrys)',
     fi: 'Hieman räätälöidyt radio- ja valintalaatikot (koon suurennus, lisätty reunus)',
   },
-  EPromptToFillInRequiredFields: {
+  PromptToFillInRequiredFields: {
     en: 'Prompt to fill in the missing required fields, before moving to the next step',
     es: 'Solicitar que complete los campos obligatorios que faltan antes de pasar al siguiente paso',
     fr: 'Invitation à remplir les champs obligatoires manquants, avant de passer à l étape suivante',
@@ -5929,7 +5930,7 @@ export const translations: Translations = {
     cs: 'Vyzvat k vyplnění chybějících povinných polí před přechodem na další krok',
     fi: 'Kehote täydentää puuttuvat kentät, ennen seuraavaan askeleeseen siirtymistä',
   },
-  EFormFields: {
+  FormFields: {
     en: 'Form fields',
     es: 'Campos de formulario',
     fr: 'Champs de formulaire',
@@ -5938,7 +5939,7 @@ export const translations: Translations = {
     cs: 'Formulářová pole',
     fi: 'Lomakkeen kentät',
   },
-  EFirstName: {
+  FirstName: {
     en: 'First Name',
     es: 'Nombre',
     fr: 'Prénom',
@@ -5947,7 +5948,7 @@ export const translations: Translations = {
     cs: 'Křestní jméno',
     fi: 'Etunimi',
   },
-  ELastName: {
+  LastName: {
     en: 'Last Name',
     es: 'Apellido',
     fr: 'Nom de famille',
@@ -5956,7 +5957,7 @@ export const translations: Translations = {
     cs: 'Příjmení',
     fi: 'Sukunimi',
   },
-  EMessageSubject: {
+  MessageSubject: {
     en: 'Message Subject',
     es: 'Asunto del mensaje',
     fr: 'Sujet du message',
@@ -5965,7 +5966,7 @@ export const translations: Translations = {
     cs: 'Předmět zprávy',
     fi: 'Viestin aihe',
   },
-  EMessage: {
+  Message: {
     en: 'Message',
     es: 'Mensaje',
     fr: 'Message',
@@ -5974,7 +5975,7 @@ export const translations: Translations = {
     cs: 'Zpráva',
     fi: 'Viesti',
   },
-  EAnyEncouragingWords: {
+  AnyEncouragingWords: {
     en: 'Any encouraging words?',
     es: '¿Alguna palabra de aliento?',
     fr: 'Des mots encourageants?',
@@ -5983,7 +5984,7 @@ export const translations: Translations = {
     cs: 'Nějaká povzbuzující slova?',
     fi: 'Rohkaisevia sanoja?',
   },
-  EOrConstructiveFeedback: {
+  OrConstructiveFeedback: {
     en: 'Or constructive feedback?',
     es: '¿O comentarios constructivos?',
     fr: 'Ou des commentaires constructifs?',
@@ -5992,7 +5993,7 @@ export const translations: Translations = {
     cs: 'Nebo konstruktivní zpětná vazba?',
     fi: 'Tai rakentavaa palautetta?',
   },
-  EAColorYouLike: {
+  AColorYouLike: {
     en: 'A color you like?',
     es: '¿Un color que te gusta?',
     fr: 'Une couleur que vous aimez?',
@@ -6001,7 +6002,7 @@ export const translations: Translations = {
     cs: 'Barva, kterou máte rádi?',
     fi: 'Väri, josta pidät?',
   },
-  EWhichModeDoYouPreferLightDark: {
+  WhichModeDoYouPreferLightDark: {
     en: 'Which mode do you prefer? (Light/Dark)',
     es: '¿Qué modo prefieres? (Claro/Oscuro)',
     fr: 'Quel mode préférez-vous? (Clair/Sombre)',
@@ -6010,7 +6011,7 @@ export const translations: Translations = {
     cs: 'Který režim preferujete? (Světlo/Tma)',
     fi: 'Mitä ulkoasua suosit? (Vaalea/Tumma)',
   },
-  EWhichModeDoYouPrefer: {
+  WhichModeDoYouPrefer: {
     en: 'Which mode do you prefer?',
     es: '¿Qué modo prefieres?',
     fr: 'Quel mode préférez-vous?',
@@ -6019,7 +6020,7 @@ export const translations: Translations = {
     cs: 'Který režim preferujete?',
     fi: 'Mitä ulkoasua suosit?',
   },
-  EDoYouLikeMyCustomSelects: {
+  DoYouLikeMyCustomSelects: {
     en: 'Do you like my custom selects?',
     es: '¿Te gustan mis selecciones personalizadas?',
     fr: 'Aimez-vous mes sélections personnalisées?',
@@ -6028,7 +6029,7 @@ export const translations: Translations = {
     cs: 'Líbí se vám mé vlastní výběry?',
     fi: 'Pidätkö räätälöidyistä valintakentistäni?',
   },
-  EGDPRConsent: {
+  GDPRConsent: {
     en: 'GDPR consent',
     es: 'Consentimiento GDPR',
     fr: 'Consentement RGPD',
@@ -6037,7 +6038,7 @@ export const translations: Translations = {
     cs: 'Souhlas GDPR',
     fi: 'GDPR-suostumus',
   },
-  EContactForm: {
+  ContactForm: {
     en: 'Contact Form',
     es: 'Formulario de Contacto',
     fr: 'Formulaire de Contact',
@@ -6046,7 +6047,7 @@ export const translations: Translations = {
     cs: 'Kontaktní Formulář',
     fi: 'Yhteydenottolomake',
   },
-  EThereWasAnErrorSendingTheMessage: {
+  ThereWasAnErrorSendingTheMessage: {
     en: 'There was an error sending the message!',
     es: '¡Hubo un error al enviar el mensaje!',
     fr: 'Une erreur s est produite lors de l envoi du message!',
@@ -6055,7 +6056,7 @@ export const translations: Translations = {
     cs: 'Při odesílání zprávy došlo k chybě!',
     fi: 'Viestin lähettämisessä tapahtui virhe!',
   },
-  EPart: {
+  Part: {
     en: 'Part',
     es: 'Parte',
     fr: 'Partie',
@@ -6064,7 +6065,7 @@ export const translations: Translations = {
     cs: 'Část',
     fi: 'Osa',
   },
-  EPleaseFillInTheFields: {
+  PleaseFillInTheFields: {
     en: 'Please fill in the form fields',
     es: 'Por favor complete los campos del formulario',
     fr: 'Veuillez remplir les champs du formulaire',
@@ -6073,7 +6074,7 @@ export const translations: Translations = {
     cs: 'Vyplňte prosím pole formuláře',
     fi: 'Täytä lomakkeen kentät',
   },
-  EPleaseSendMeAFewWords: {
+  PleaseSendMeAFewWords: {
     en: "Please send me a few words, and I'll respond as soon as I can.",
     es: 'Por favor envíeme unas palabras y le responderé lo antes posible.',
     fr: "Veuillez m'envoyer quelques mots et je vous répondrai dès que possible.",
@@ -6082,7 +6083,7 @@ export const translations: Translations = {
     cs: 'Prosím, pošlete mi pár slov a já vám odpovím, jakmile budu moci.',
     fi: 'Lähetä minulle viesti, niin vastaan mahdollisimman pian.',
   },
-  EYourEmail: {
+  YourEmail: {
     en: 'Your Email',
     es: 'Tu Email',
     fr: 'Votre Email',
@@ -6091,7 +6092,7 @@ export const translations: Translations = {
     cs: 'Váš Email',
     fi: 'Sähköpostisi',
   },
-  ELetMeKnowWhatOnYourMind: {
+  LetMeKnowWhatOnYourMind: {
     en: 'Let me know what on your mind',
     es: 'Hágame saber lo que tiene en mente',
     fr: 'Faites-moi savoir ce que vous avez en tête',
@@ -6100,7 +6101,7 @@ export const translations: Translations = {
     cs: 'Dejte mi vědět, co vám leží na srdci',
     fi: 'Kerro minulle, mitä mielessäsi on',
   },
-  EBasicDetails: {
+  BasicDetails: {
     en: 'Basic Details',
     es: 'Detalles Básicos',
     fr: 'Détails de Base',
@@ -6109,7 +6110,7 @@ export const translations: Translations = {
     cs: 'Základní Detaily',
     fi: 'Perustiedot',
   },
-  EThisContactFormIsSplitIntoThreeSteps: {
+  ThisContactFormIsSplitIntoThreeSteps: {
     en: "This contact form is split into three steps for demonstration purposes. Don't worry, it's not too long.",
     es: 'Este formulario de contacto se divide en tres pasos con fines de demostración. No te preocupes, no es demasiado largo.',
     fr: "Ce formulaire de contact est divisé en trois étapes à des fins de démonstration. Ne vous inquiétez pas, ce n'est pas trop long.",
@@ -6118,7 +6119,7 @@ export const translations: Translations = {
     cs: 'Tento kontaktní formulář je pro demonstrační účely rozdělen do tří kroků. Nebojte se, není to příliš dlouhé.',
     fi: 'Tämä yhteydenottolomake on jaettu kolmeen vaiheeseen esittelytarkoituksia varten. Älä huoli, se ei ole liian pitkä.',
   },
-  EAppearanceNeedsWork: {
+  AppearanceNeedsWork: {
     en: 'Appearance needs work',
     es: 'La apariencia necesita trabajo',
     fr: "L'apparence a besoin de travail",
@@ -6127,7 +6128,7 @@ export const translations: Translations = {
     cs: 'Vzhled potřebuje práci',
     fi: 'Ulkoasu kaipaa työstämistä',
   },
-  EAccessibilityIssue: {
+  AccessibilityIssue: {
     en: 'Accessibility issue',
     es: 'Problema de accesibilidad',
     fr: 'Problème d accessibilité',
@@ -6136,7 +6137,7 @@ export const translations: Translations = {
     cs: 'Problém s přístupností',
     fi: 'Esteettömyysongelma',
   },
-  ENotReally: {
+  NotReally: {
     en: 'Not really',
     es: 'No realmente',
     fr: 'Pas vraiment',
@@ -6145,7 +6146,7 @@ export const translations: Translations = {
     cs: 'Ne opravdu',
     fi: 'Ei oikeastaan',
   },
-  EWork: {
+  Work: {
     en: 'Work',
     es: 'Trabajo',
     fr: 'Travail',
@@ -6154,7 +6155,7 @@ export const translations: Translations = {
     cs: 'Práce',
     fi: 'Työ',
   },
-  EPersonal: {
+  Personal: {
     en: 'Personal',
     es: 'Personal',
     fr: 'Personnel',
@@ -6163,7 +6164,7 @@ export const translations: Translations = {
     cs: 'Osobní',
     fi: 'Henkilökohtainen',
   },
-  EAdditionalInformation: {
+  AdditionalInformation: {
     en: 'Additional information',
     es: 'Información adicional',
     fr: 'Informations additionnelles',
@@ -6172,7 +6173,7 @@ export const translations: Translations = {
     cs: 'Další informace',
     fi: 'Lisätietoja',
   },
-  ENoneOfTheseAreRequired: {
+  NoneOfTheseAreRequired: {
     en: "Don't worry, none of these are required, but definitely appreciated. Thank you for taking the time to send me a message!",
     es: 'No se preocupe, ninguno de estos es obligatorio, pero definitivamente se agradece. ¡Gracias por tomarse el tiempo para enviarme un mensaje!',
     fr: "Ne vous inquiétez pas, rien de tout cela n'est obligatoire, mais certainement apprécié. Merci d'avoir pris le temps de m'envoyer un message!",
@@ -6181,7 +6182,7 @@ export const translations: Translations = {
     cs: 'Nemusíte se bát, žádný z nich není povinný, ale určitě je oceněn. Děkuji, že jste si vzali čas a poslali mi zprávu!',
     fi: 'Älä huoli, mitään näistä ei vaadita, mutta ehdottomasti arvostetaan. Kiitos, että käytit aikaasi lähettääksesi minulle viestin!',
   },
-  EClarification: {
+  Clarification: {
     en: 'Clarification',
     es: 'Aclaración',
     fr: 'Clarification',
@@ -6190,7 +6191,7 @@ export const translations: Translations = {
     cs: 'Objasnění',
     fi: 'Selvennys',
   },
-  EBack: {
+  Back: {
     en: 'Back',
     es: 'Atrás',
     fr: 'Retour',
@@ -6199,7 +6200,7 @@ export const translations: Translations = {
     cs: 'Zpět',
     fi: 'Takaisin',
   },
-  EDraggableWithAnyPointer: {
+  DraggableWithAnyPointer: {
     en: 'Draggable with any pointer',
     es: 'Arrastrable con cualquier puntero',
     fr: 'Glissable avec n importe quel pointeur',
@@ -6208,7 +6209,7 @@ export const translations: Translations = {
     cs: 'Přetahovatelné s libovolným ukazatelem',
     fi: 'Raahattavissa minkä tahansa osoittimen kanssa',
   },
-  EKeyboardUseWithADropdownList: {
+  KeyboardUseWithADropdownList: {
     en: 'Keyboard use: dropdown list',
     es: 'Uso del teclado: lista desplegable',
     fr: 'Utilisation du clavier: liste déroulante',
@@ -6217,7 +6218,7 @@ export const translations: Translations = {
     cs: 'Použití klávesnice: rozbalovací seznam',
     fi: 'Näppäimistön käyttö: avattava lista',
   },
-  ECanRearrangeWithinTheirContainer: {
+  CanRearrangeWithinTheirContainer: {
     en: 'Can be rearranged within their container',
     es: 'Se pueden reorganizar dentro de su contenedor',
     fr: 'Peut être réorganisé dans son conteneur',
@@ -6226,7 +6227,7 @@ export const translations: Translations = {
     cs: 'Lze přeuspořádat ve svém kontejneru',
     fi: 'Voidaan järjestellä uudelleen säiliössään',
   },
-  EStateSavedInLocalStorage: {
+  StateSavedInLocalStorage: {
     en: 'State saved in localStorage',
     es: 'Estado guardado en localStorage',
     fr: 'État enregistré dans localStorage',
@@ -6235,7 +6236,7 @@ export const translations: Translations = {
     cs: 'Stav uložený v localStorage',
     fi: 'Tila tallennetaan localStorageen',
   },
-  EPointerAndTouchUse: {
+  PointerAndTouchUse: {
     en: 'Pointer and Touch Use',
     es: 'Uso de puntero y toque',
     fr: 'Utilisation du pointeur et du toucher',
@@ -6244,7 +6245,7 @@ export const translations: Translations = {
     cs: 'Užití ukazatele a dotyku',
     fi: 'Osoitin- ja kosketuskäyttö',
   },
-  EHoldPointerButtonDownToDragAnItemFrom: {
+  HoldPointerButtonDownToDragAnItemFrom: {
     en: 'Hold pointer button down to drag an item from one container to another, or rearrange within a container',
     es: 'Mantenga presionado el botón del puntero para arrastrar un elemento de un contenedor a otro, o reorganizar dentro de un contenedor',
     fr: 'Maintenez le bouton du pointeur enfoncé pour faire glisser un élément d un conteneur à un autre, ou réorganisez-le dans un conteneur',
@@ -6253,7 +6254,7 @@ export const translations: Translations = {
     cs: 'Podržte tlačítko ukazatele stisknuté, abyste přetáhli položku z jednoho kontejneru do druhého nebo přeuspořádali v kontejneru',
     fi: 'Pidä osoitin painettuna vetääksesi kohteen yhdestä säiliöstä toiseen tai järjestelläksesi säiliön sisäisesti',
   },
-  EOnTouchDevicesHoldTouchForAMomentToActivateDrag: {
+  OnTouchDevicesHoldTouchForAMomentToActivateDrag: {
     en: 'On touch devices, hold touch for a moment to activate drag',
     es: 'En dispositivos táctiles, mantenga el toque durante un momento para activar el arrastre',
     fr: 'Sur les appareils tactiles, maintenez le toucher pendant un moment pour activer le glisser-déposer',
@@ -6262,7 +6263,7 @@ export const translations: Translations = {
     cs: 'Na dotykových zařízeních podržte dotyk na okamžik, abyste aktivaci přetáhli',
     fi: 'Kosketuslaitteissa pidä kosketusta hetken aikaa aktivoidaksesi raahaamisen',
   },
-  EYouMayAlsoUseTheItemMenuToChooseADestination: {
+  YouMayAlsoUseTheItemMenuToChooseADestination: {
     en: 'You may also use the item menu to choose a destination',
     es: 'También puede usar el menú del elemento para elegir un destino',
     fr: 'Vous pouvez également utiliser le menu de l élément pour choisir une destination',
@@ -6271,7 +6272,7 @@ export const translations: Translations = {
     cs: 'Můžete také použít nabídku položek k výběru cíle',
     fi: 'Voit myös käyttää kohteen valikkoa valitaksesi määränpään',
   },
-  EMoveItemsWithinTheirContainerWithTheUpOrDownArrowKeys: {
+  MoveItemsWithinTheirContainerWithTheUpOrDownArrowKeys: {
     en: 'Move items within their container with the Up or Down arrow keys',
     es: 'Mueva los elementos dentro de su contenedor con las teclas de flecha hacia arriba o hacia abajo',
     fr: 'Déplacez les éléments dans leur conteneur avec les touches fléchées Haut ou Bas',
@@ -6280,7 +6281,7 @@ export const translations: Translations = {
     cs: 'Přesuňte položky ve svém kontejneru pomocí šipek nahoru nebo dolů',
     fi: 'Siirrä kohteita säiliössään ylös- tai alasnuolinäppäimillä',
   },
-  EToMoveItemsToAnotherContainer: {
+  ToMoveItemsToAnotherContainer: {
     en: 'To move items to another container:',
     es: 'Para mover elementos a otro contenedor:',
     fr: 'Pour déplacer des éléments vers un autre conteneur:',
@@ -6289,7 +6290,7 @@ export const translations: Translations = {
     cs: 'Chcete-li přesunout položky do jiného kontejneru:',
     fi: 'Siirrä kohteita toiseen säiliöön:',
   },
-  EUseTabKeyToNavigateToDragButton: {
+  UseTabKeyToNavigateToDragButton: {
     en: 'use TAB-key to navigate to drag button',
     es: 'use la tecla TAB para navegar hasta el botón de arrastre',
     fr: 'utilisez la touche TAB pour naviguer jusqu au bouton de glisser-déposer',
@@ -6298,7 +6299,7 @@ export const translations: Translations = {
     cs: 'použijte klávesu TAB pro navigaci na tlačítko přetáhnutí',
     fi: 'käytä tab-näppäintä siirtyäksesi raahaamispainikkeeseen',
   },
-  EAndPressEnterKeyToOpenMenu: {
+  AndPressEnterKeyToOpenMenu: {
     en: 'and press Enter key to open menu',
     es: 'y presione la tecla Intro para abrir el menú',
     fr: 'et appuyez sur la touche Entrée pour ouvrir le menu',
@@ -6307,7 +6308,7 @@ export const translations: Translations = {
     cs: 'a stiskněte klávesu Enter pro otevření nabídky',
     fi: 'ja paina Enter-näppäintä avataksesi valikon',
   },
-  EWithTheMenuOpenUseTabKeyToNavigateAnd: {
+  WithTheMenuOpenUseTabKeyToNavigateAnd: {
     en: 'With the menu open, use TAB-key to navigate and choose the new destination with Enter or Space key',
     es: 'Con el menú abierto, use la tecla TAB para navegar y elija el nuevo destino con la tecla Intro o Espacio',
     fr: 'Avec le menu ouvert, utilisez la touche TAB pour naviguer et choisissez la nouvelle destination avec la touche Entrée ou Espace',
@@ -6316,7 +6317,7 @@ export const translations: Translations = {
     cs: 'S otevřenou nabídkou použijte klávesu TAB pro navigaci a vyberte nový cíl klávesou Enter nebo mezerník',
     fi: 'Valikon ollessa auki käytä tab-näppäintä navigoidaksesi ja valitse uusi kohde Enter- tai välilyöntinäppäimellä',
   },
-  ESortTheColorsToADifferentContainerOr: {
+  SortTheColorsToADifferentContainerOr: {
     en: 'Sort the colors to a different container or organize them within their container',
     es: 'Organice los colores en un contenedor diferente u organícelos dentro de su contenedor',
     fr: 'Triez les couleurs dans un conteneur différent ou organisez-les dans leur conteneur',
@@ -6325,7 +6326,7 @@ export const translations: Translations = {
     cs: 'Seřaďte barvy do jiného kontejneru nebo je uspořádejte ve svém kontejneru',
     fi: 'Lajittele värit eri säiliöön tai järjestä ne säiliön sisäisesti',
   },
-  EGood: {
+  Good: {
     en: 'Good',
     es: 'Bien',
     fr: 'Bien',
@@ -6334,7 +6335,7 @@ export const translations: Translations = {
     cs: 'Dobře',
     fi: 'Hyvä',
   },
-  EBad: {
+  Bad: {
     en: 'Bad',
     es: 'Mal',
     fr: 'Mal',
@@ -6343,7 +6344,7 @@ export const translations: Translations = {
     cs: 'Špatně',
     fi: 'Huono',
   },
-  ENeutral: {
+  Neutral: {
     en: 'Neutral',
     es: 'Neutral',
     fr: 'Neutre',
@@ -6352,7 +6353,7 @@ export const translations: Translations = {
     cs: 'Neutrální',
     fi: 'Neutraali',
   },
-  EChooseDestination: {
+  ChooseDestination: {
     en: 'Choose destination',
     es: 'Elegir destino',
     fr: 'Choisissez une destination',
@@ -6361,7 +6362,7 @@ export const translations: Translations = {
     cs: 'Vyberte cíl',
     fi: 'Valitse määränpää',
   },
-  EInvalidColorName: {
+  InvalidColorName: {
     en: 'Invalid color name',
     es: 'Nombre de color no válido',
     fr: 'Nom de couleur non valide',
@@ -6370,7 +6371,7 @@ export const translations: Translations = {
     cs: 'Neplatný název barvy',
     fi: 'Virheellinen värinimi',
   },
-  EColorNames: {
+  ColorNames: {
     en: 'List of color names',
     es: 'Lista de nombres de colores',
     fr: 'Liste des noms de couleurs',
@@ -6379,7 +6380,7 @@ export const translations: Translations = {
     cs: 'Seznam názvů barev',
     fi: 'Värinimien luettelo',
   },
-  EAddAColor: {
+  AddAColor: {
     en: 'Add a color',
     es: 'Agregar un color',
     fr: 'Ajouter une couleur',
@@ -6388,7 +6389,7 @@ export const translations: Translations = {
     cs: 'Přidat barvu',
     fi: 'Lisää väri',
   },
-  EYouMayAlsoAddOtherWordsForGenericUse: {
+  YouMayAlsoAddOtherWordsForGenericUse: {
     en: 'You may also add other words for generic use',
     es: 'También puede agregar otras palabras para uso genérico',
     fr: 'Vous pouvez également ajouter d autres mots à usage générique',
@@ -6397,7 +6398,7 @@ export const translations: Translations = {
     cs: 'Můžete také přidat další slova pro obecné použití',
     fi: 'Voit myös lisätä muita sanoja yleiskäyttöä varten',
   },
-  ETipIfYouAddAGenericWordYouCanColorTheCard: {
+  TipIfYouAddAGenericWordYouCanColorTheCard: {
     en: 'Tip: if you add a generic word, you can color the card by writing a color name last, e.g. "apple pink"',
     es: 'Consejo: si agrega una palabra genérica, puede colorear la tarjeta escribiendo un nombre de color al final, por ejemplo, "manzana pink"',
     fr: 'Astuce: si vous ajoutez un mot générique, vous pouvez colorer la carte en écrivant un nom de couleur en dernier, par exemple "pomme pink"',
@@ -6406,7 +6407,7 @@ export const translations: Translations = {
     cs: 'Tip: Pokud přidáte obecné slovo, můžete kartu obarvit napsáním názvu barvy na konci, například "červené pink"',
     fi: 'Vinkki: Jos lisäät yleisen sanan, voit värittää kortin kirjoittamalla värinimen viimeiseksi, esim. "omena pink"',
   },
-  EThisWillResultInAPinkCardWithAppleWrittenOnIt: {
+  ThisWillResultInAPinkCardWithAppleWrittenOnIt: {
     en: 'This will result in a pink card with "apple" written on it',
     es: 'Esto resultará en una tarjeta rosa con "manzana" escrita en ella',
     fr: 'Cela donnera une carte rose avec "pomme" écrit dessus',
@@ -6415,7 +6416,7 @@ export const translations: Translations = {
     cs: 'To způsobí růžovou kartu s napsaným "jablko"',
     fi: 'Tämä johtaa pinkkiin korttiin, jossa lukee "omena"',
   },
-  EAddGenericCardsAndColorThem: {
+  AddGenericCardsAndColorThem: {
     en: 'Add generic cards and color them',
     es: 'Agregue tarjetas genéricas y colórelas',
     fr: 'Ajoutez des cartes génériques et colorez-les',
@@ -6424,7 +6425,7 @@ export const translations: Translations = {
     cs: 'Přidejte obecné karty a obarvěte je',
     fi: 'Lisää yleiskortteja ja väritä ne',
   },
-  ENewColorsCanBeAdded: {
+  NewColorsCanBeAdded: {
     en: 'New colors can be added',
     es: 'Se pueden agregar nuevos colores',
     fr: 'De nouvelles couleurs peuvent être ajoutées',
@@ -6433,7 +6434,7 @@ export const translations: Translations = {
     cs: 'Můžete přidat nové barvy',
     fi: 'Uusia värejä voidaan lisätä',
   },
-  ENewColorsCanBeAddedAndRemoved: {
+  NewColorsCanBeAddedAndRemoved: {
     en: 'New colors can be added and removed',
     es: 'Se pueden agregar y quitar nuevos colores',
     fr: 'De nouvelles couleurs peuvent être ajoutées et supprimées',
@@ -6442,7 +6443,7 @@ export const translations: Translations = {
     cs: 'Můžete přidávat a odebírat nové barvy',
     fi: 'Uusia värejä voidaan lisätä ja poistaa',
   },
-  EWithPurpleWrittenLast: {
+  WithPurpleWrittenLast: {
     en: 'with purple written last',
     es: 'con purple escrito al final',
     fr: 'avec purple écrit en dernier',
@@ -6451,7 +6452,7 @@ export const translations: Translations = {
     cs: 's purple napsáno na konci',
     fi: 'purple kirjoitettu viimeiseksi',
   },
-  EWithOrangeWrittenLast: {
+  WithOrangeWrittenLast: {
     en: 'with orange written last',
     es: 'con orange escrito al final',
     fr: 'avec orange écrit en dernier',
@@ -6460,7 +6461,7 @@ export const translations: Translations = {
     cs: 's orange napsáno na konci',
     fi: 'orange kirjoitettu viimeiseksi',
   },
-  ELongTextWithoutColorNameAtTheEnd: {
+  LongTextWithoutColorNameAtTheEnd: {
     en: 'long text without color name at the end',
     es: 'texto largo sin nombre de color al final',
     fr: 'long texte sans nom de couleur à la fin',
@@ -6469,7 +6470,7 @@ export const translations: Translations = {
     cs: 'dlouhý text bez názvu barvy na konci',
     fi: 'pitkä teksti ilman värinimeä lopussa',
   },
-  ESomeTextNoColorName: {
+  SomeTextNoColorName: {
     en: 'some text, no color name',
     es: 'algún texto, sin nombre de color',
     fr: 'un peu de texte, pas de nom de couleur',
@@ -6478,7 +6479,7 @@ export const translations: Translations = {
     cs: 'nějaký text, žádný název barvy',
     fi: 'jokin teksti, ei väriä',
   },
-  EDoYouWantToDeleteYourColorsText: {
+  DoYouWantToDeleteYourColorsText: {
     en: 'Do you want to also delete your colors/text?',
     es: '¿Quieres también borrar tus colores/texto?',
     fr: 'Voulez-vous aussi supprimer vos couleurs/texte?',
@@ -6487,7 +6488,7 @@ export const translations: Translations = {
     cs: 'Chcete také smazat své barvy/text?',
     fi: 'Haluatko myös poistaa omat värisi/tekstin?',
   },
-  EComposerOlliSanta: {
+  ComposerOlliSanta: {
     en: 'Composer Olli Santa',
     es: 'Compositor Olli Santa',
     fr: 'Compositeur Olli Santa',
@@ -6496,7 +6497,7 @@ export const translations: Translations = {
     cs: 'Skladatel Olli Santa',
     fi: 'Säveltäjä Olli Santa',
   },
-  EAddedALinkToComposer: {
+  AddedALinkToComposer: {
     en: 'Added a link to the page of the composer Olli Santa.',
     es: 'Agregó un enlace a la página del compositor Olli Santa.',
     fr: 'Ajouté un lien vers la page du compositeur Olli Santa.',
@@ -6505,7 +6506,7 @@ export const translations: Translations = {
     cs: 'Přidán odkaz na stránku skladatele Olli Santa.',
     fi: 'Lisätty linkki säveltäjä Olli Santan sivulle.',
   },
-  EComposerIntro1: {
+  ComposerIntro1: {
     en: 'Olli Santa is a professional choir and orchestra conductor in the Southern Finland area.',
     es: 'Olli Santa es un director de coro y orquesta profesional en el área del sur de Finlandia.',
     fr: "Olli Santa est un chef de chœur et d'orchestre professionnel dans la région du sud de la Finlande.",
@@ -6514,7 +6515,7 @@ export const translations: Translations = {
     cs: 'Olli Santa je profesionální sbormistr a dirigent orchestru v jižním Finsku.',
     fi: 'Olli Santa on ammattimainen kuoro- ja orkesterinjohtaja Etelä-Suomen alueella.',
   },
-  EComposerIntro2: {
+  ComposerIntro2: {
     en: "In addition to the artistic director's work, he composes and arranges music for all types of choirs, orchestras and bands.",
     es: 'Además del trabajo del director artístico, compone y arregla música para todo tipo de coros, orquestas y bandas.',
     fr: 'En plus du travail du directeur artistique, il compose et arrange de la musique pour tous types de chœurs, orchestres et groupes.',
@@ -6523,7 +6524,7 @@ export const translations: Translations = {
     cs: 'Kromě práce uměleckého ředitele skládá a aranžuje hudbu pro všechny typy sborů, orchestrů a kapel.',
     fi: 'Taiteellisen johtajan työn lisäksi hän säveltää ja sovittaa musiikkia kaikenlaisille kuoroille, orkestereille ja bändeille.',
   },
-  EComposerIntro3: {
+  ComposerIntro3: {
     en: 'The website is built with React and Node.js, with data saved to MongoDB. The website is a single page application (SPA) that uses React Router to navigate between the different sections of the website. The website is styled with CSS and uses CSS animations to create a dynamic user experience. The site provides an API interface for logging in and viewing messages sent to Olli.',
     es: 'El sitio web está construido con React y Node.js, con datos guardados en MongoDB. El sitio web es una aplicación de página única (SPA) que utiliza React Router para navegar entre las diferentes secciones del sitio web. El sitio web está estilizado con CSS y utiliza animaciones CSS para crear una experiencia de usuario dinámica. El sitio proporciona una interfaz de API para iniciar sesión y ver mensajes enviados a Olli.',
     fr: 'Le site est construit avec React et Node.js, les données étant enregistrées dans MongoDB. Le site est une application à page unique (SPA) qui utilise React Router pour naviguer entre les différentes sections du site. Le site est stylisé avec CSS et utilise des animations CSS pour créer une expérience utilisateur dynamique. Le site fournit une interface API pour se connecter et consulter les messages envoyés à Olli.',
@@ -6532,7 +6533,7 @@ export const translations: Translations = {
     cs: 'Stránka je postavena s Reactem a Node.js, s daty uloženými v MongoDB. Webová stránka je jednostránková aplikace (SPA), která používá React Router k navigaci mezi různými sekcemi webu. Stránka je stylována s CSS a používá CSS animace k vytvoření dynamické uživatelské zkušenosti. Stránka poskytuje rozhraní API pro přihlášení a zobrazení zpráv odeslaných Ollimu.',
     fi: 'Sivusto on rakennettu Reactilla ja Node.js:llä, ja tiedot tallennetaan MongoDB:hen. Sivusto on yhden sivun sovellus (SPA), joka käyttää React Routeria navigoidakseen sivuston eri osioiden välillä. Sivusto on tyylitelty CSS:llä ja käyttää CSS-animaatioita luodakseen dynaamisen käyttäjäkokemuksen. Sivusto tarjoaa API-rajapinnan Ollille sisäänkirjautumista ja lähetettyjen viestien tarkastelua varten.',
   },
-  EMusicNotes: {
+  MusicNotes: {
     en: 'Music Notes',
     es: 'Notas Musicales',
     fr: 'Notes de Musique',
@@ -6541,7 +6542,7 @@ export const translations: Translations = {
     cs: 'Hudební Noty',
     fi: 'Nuotit',
   },
-  EComposerPage: {
+  ComposerPage: {
     en: 'Composer Page',
     es: 'Página del Compositor',
     fr: 'Page du Compositeur',
@@ -6550,7 +6551,7 @@ export const translations: Translations = {
     cs: 'Stránka Skladatele',
     fi: 'Säveltäjän sivu',
   },
-  EColorCombinations: {
+  ColorCombinations: {
     en: 'Color combinations',
     es: 'Combinaciones de colores',
     fr: 'Combinaisons de couleurs',
@@ -6559,7 +6560,7 @@ export const translations: Translations = {
     cs: 'Kombinace barev',
     fi: 'Väriyhdistelmät',
   },
-  ETestColorCombinations: {
+  TestColorCombinations: {
     en: 'Test color combinations for accessibility',
     es: 'Prueba combinaciones de colores para accesibilidad',
     fr: "Testez les combinaisons de couleurs pour l'accessibilité",
@@ -6568,7 +6569,7 @@ export const translations: Translations = {
     cs: 'Testovat kombinace barev pro přístupnost',
     fi: 'Testaa väriyhdistelmiä saavutettavuuden kannalta',
   },
-  ETheRoundIndicatorHollowIndicatorAndSmallHollowSquare: {
+  TheRoundIndicatorHollowIndicatorAndSmallHollowSquare: {
     en: 'The big filled round indicator marks the highest AAA-compatibility for regular text, while the hollow round indicator marks AA-compatibility for regular text. The lowest compatibility for only UI and other graphical elements is marked by a small hollow square',
     es: 'El indicador redondo grande relleno marca la mayor compatibilidad AAA para texto regular, mientras que el indicador redondo hueco marca la compatibilidad AA para texto regular. La compatibilidad más baja solo para la interfaz de usuario y otros elementos gráficos está marcada por un pequeño cuadrado hueco',
     fr: "Le grand indicateur rond rempli marque la plus haute compatibilité AAA pour le texte régulier, tandis que l'indicateur rond creux marque la compatibilité AA pour le texte régulier. La compatibilité la plus basse uniquement pour l'interface utilisateur et d'autres éléments graphiques est marquée par un petit carré creux",
@@ -6577,7 +6578,7 @@ export const translations: Translations = {
     cs: 'Velký plný kulový indikátor označuje nejvyšší kompatibilitu AAA pro běžný text, zatímco dutý kulový indikátor označuje kompatibilitu AA pro běžný text. Nejnižší kompatibilita pouze pro uživatelské rozhraní a další grafické prvky je označena malým dutým čtvercem',
     fi: 'Suuri täytetty pyöreä indikaattori merkitsee korkeinta AAA-yhteensopivuutta tavalliselle tekstille, kun taas ontto pyöreä indikaattori merkitsee AA-yhteensopivuutta tavalliselle tekstille. Alin yhteensopivuus vain käyttöliittymälle ja muille graafisille elementeille on merkitty pienellä ontolla neliöllä',
   },
-  EHighestAAAComplianceWithRegularText: {
+  HighestAAAComplianceWithRegularText: {
     en: 'Highest AAA-compliance with regular text',
     es: 'Mayor cumplimiento AAA con texto regular',
     fr: 'Conformité AAA la plus élevée avec le texte régulier',
@@ -6586,7 +6587,7 @@ export const translations: Translations = {
     cs: 'Nejvyšší shoda AAA s běžným textem',
     fi: 'Korkein AAA-yhteensopivuus tavalliselle tekstille',
   },
-  EMinimumAAComplianceWithRegularText: {
+  MinimumAAComplianceWithRegularText: {
     en: 'Minimum AA-compliance with regular text or AAA-compliance with large text',
     es: 'Cumplimiento mínimo AA con texto regular o cumplimiento AAA con texto grande',
     fr: 'Conformité minimale AA avec le texte régulier ou conformité AAA avec le texte large',
@@ -6595,7 +6596,7 @@ export const translations: Translations = {
     cs: 'Minimální shoda AA s běžným textem nebo shoda AAA s velkým textem',
     fi: 'AA-yhteensopivuus tavalliselle tekstille tai AAA-yhteensopivuus isolle tekstille',
   },
-  EAAACompliantWithUI: {
+  AAACompliantWithUI: {
     en: 'AA-compatibility with graphical elements and large text',
     es: 'Compatibilidad AA con elementos gráficos y texto grande',
     fr: 'Compatibilité AA avec des éléments graphiques et du texte large',
@@ -6604,7 +6605,7 @@ export const translations: Translations = {
     cs: 'AA kompatibilita s grafickými prvky a velkým textem',
     fi: 'AA-yhteensopivuus graafisten elementtien ja suuren tekstin kanssa',
   },
-  EColorPicker: {
+  ColorPicker: {
     en: 'Color Picker',
     es: 'Selector de color',
     fr: 'Sélecteur de couleur',
@@ -6613,7 +6614,7 @@ export const translations: Translations = {
     cs: 'Výběr barvy',
     fi: 'Värinvalitsin',
   },
-  EColorAccessibility: {
+  ColorAccessibility: {
     en: 'Color Accessibility',
     es: 'Accesibilidad del color',
     fr: 'Accessibilité des couleurs',
@@ -6622,7 +6623,7 @@ export const translations: Translations = {
     cs: 'Přístupnost barev',
     fi: 'Värien saavutettavuus',
   },
-  ESelectColorFormat: {
+  SelectColorFormat: {
     en: 'Select color format',
     es: 'Seleccionar formato de color',
     fr: 'Sélectionnez le format de couleur',
@@ -6631,7 +6632,7 @@ export const translations: Translations = {
     cs: 'Vyberte formát barvy',
     fi: 'Valitse väriformaatti',
   },
-  EColorFormat: {
+  ColorFormat: {
     en: 'Color Format',
     es: 'Formato de color',
     fr: 'Format de couleur',
@@ -6640,7 +6641,7 @@ export const translations: Translations = {
     cs: 'Formát barvy',
     fi: 'Väriformaatti',
   },
-  EEditSize: {
+  EditSize: {
     en: 'Edit size',
     es: 'Editar tamaño',
     fr: 'Modifier la taille',
@@ -6649,7 +6650,7 @@ export const translations: Translations = {
     cs: 'Upravit velikost',
     fi: 'Muokkaa kokoa',
   },
-  ERemoveColorConfirmation: {
+  RemoveColorConfirmation: {
     en: 'Are you sure you want to remove this color?',
     es: '¿Estás seguro de que quieres eliminar este color?',
     fr: 'Êtes-vous sûr de vouloir supprimer cette couleur?',
@@ -6658,7 +6659,7 @@ export const translations: Translations = {
     cs: 'Opravdu chcete tuto barvu odstranit?',
     fi: 'Haluatko varmasti poistaa tämän värin?',
   },
-  ENoCompliantColors: {
+  NoCompliantColors: {
     en: 'No compliant colors',
     es: 'No hay colores aceptables',
     fr: 'Pas de couleurs acceptables',
@@ -6667,7 +6668,7 @@ export const translations: Translations = {
     cs: 'Žádné přijatelné barvy',
     fi: 'Ei otollisia värejä',
   },
-  EAACompliantWithID: {
+  AACompliantWithID: {
     en: 'AA Compliant with ID',
     es: 'Cumple con AA con ID',
     fr: 'Conforme AA avec ID',
@@ -6676,7 +6677,7 @@ export const translations: Translations = {
     cs: 'AA kompatibilní s ID',
     fi: 'AA-yhteensopiva ID:n kanssa',
   },
-  EAAACompliantWithID: {
+  AAACompliantWithID: {
     en: 'AAA Compliant with ID',
     es: 'Cumple con AAA con ID',
     fr: 'Conforme AAA avec ID',
@@ -6685,7 +6686,7 @@ export const translations: Translations = {
     cs: 'AAA kompatibilní s ID',
     fi: 'AAA-yhteensopiva ID:n kanssa',
   },
-  EAAGraphicElementCompliantWithID: {
+  AAGraphicElementCompliantWithID: {
     en: 'AA Graphic element and large text compliant with ID',
     es: 'Elemento gráfico AA y texto grande compatible con ID',
     fr: 'Élément graphique AA et texte large conforme avec ID',
@@ -6694,7 +6695,7 @@ export const translations: Translations = {
     cs: 'AA grafický prvek a velký text kompatibilní s ID',
     fi: 'AA-grafiikan ja ison tekstin kanssa yhteensopiva ID:n kanssa',
   },
-  EToggleColorNameVisibility: {
+  ToggleColorNameVisibility: {
     en: 'Toggle color name visibility',
     es: 'Alternar visibilidad del nombre del color',
     fr: 'Basculer la visibilité du nom de la couleur',
@@ -6703,7 +6704,7 @@ export const translations: Translations = {
     cs: 'Přepnout viditelnost názvu barvy',
     fi: 'Muuta värin nimen näkyvyyttä',
   },
-  EShowColorName: {
+  ShowColorName: {
     en: 'Show color name',
     es: 'Mostrar nombre de color',
     fr: 'Afficher le nom de la couleur',
@@ -6712,7 +6713,7 @@ export const translations: Translations = {
     cs: 'Zobrazit název barvy',
     fi: 'Näytä värinimi',
   },
-  EHideColorName: {
+  HideColorName: {
     en: 'Hide color name',
     es: 'Ocultar nombre de color',
     fr: 'Masquer le nom de la couleur',
@@ -6721,7 +6722,7 @@ export const translations: Translations = {
     cs: 'Skrýt název barvy',
     fi: 'Piilota värinimi',
   },
-  ESaveAsSVG: {
+  SaveAsSVG: {
     en: 'Save as SVG',
     es: 'Guardar como SVG',
     fr: 'Enregistrer en SVG',
@@ -6730,7 +6731,7 @@ export const translations: Translations = {
     cs: 'Uložit jako SVG',
     fi: 'Tallenna SVG-muodossa',
   },
-  ESaveAsPNG: {
+  SaveAsPNG: {
     en: 'Save as PNG',
     es: 'Guardar como PNG',
     fr: 'Enregistrer en PNG',
@@ -6739,7 +6740,7 @@ export const translations: Translations = {
     cs: 'Uložit jako PNG',
     fi: 'Tallenna PNG-muodossa',
   },
-  EWithOrWithoutColorName: {
+  WithOrWithoutColorName: {
     en: 'With or without colorname',
     es: 'Con o sin nombre de color',
     fr: 'Avec ou sans nom de couleur',
@@ -6748,7 +6749,7 @@ export const translations: Translations = {
     cs: 'S názvem nebo bez názvu barvy',
     fi: 'Värinimen kanssa tai ilman',
   },
-  EHintOrganizingColors: {
+  HintOrganizingColors: {
     en: 'Hint: organizing the colors in darkest-to-light or lighest-to-dark creates more appealing visuals',
     es: 'Sugerencia: organizar los colores de más oscuro a más claro o de más claro a más oscuro crea visuales más atractivos',
     fr: 'Astuce : organiser les couleurs du plus foncé au plus clair ou du plus clair au plus foncé crée des visuels plus attrayants',
@@ -6757,7 +6758,7 @@ export const translations: Translations = {
     cs: 'Tip: organizování barev od nejtmavší po nejsvětlejší nebo od nejsvětlejší po nejtmavší vytváří atraktivnější vizuály',
     fi: 'Vihje: värien järjestäminen tummimmasta vaaleimpaan tai vaaleimmasta tummimpaan luo houkuttelevampia visuaaleja',
   },
-  EColorsCanBeReorderedByDragging: {
+  ColorsCanBeReorderedByDragging: {
     en: 'Colors can be reordered by dragging',
     es: 'Los colores se pueden reordenar arrastrando',
     fr: 'Les couleurs peuvent être réorganisées en les faisant glisser',
@@ -6766,7 +6767,7 @@ export const translations: Translations = {
     cs: 'Barvy lze přeuspořádat přetažením',
     fi: 'Värejä voidaan järjestää uudelleen raahaamalla',
   },
-  EColors: {
+  Colors: {
     en: 'Colors',
     es: 'Colores',
     fr: 'Couleurs',
@@ -6775,7 +6776,7 @@ export const translations: Translations = {
     cs: 'Barvy',
     fi: 'Värit',
   },
-  EGenerateColors: {
+  GenerateColors: {
     en: 'Generate colors',
     es: 'Generar colores',
     fr: 'Générer des couleurs',
@@ -6784,7 +6785,7 @@ export const translations: Translations = {
     cs: 'Generovat barvy',
     fi: 'Luo värejä',
   },
-  EClearAndGenerateNew: {
+  ClearAndGenerateNew: {
     en: 'Clear and generate new',
     es: 'Borrar y generar nuevos',
     fr: 'Effacer et générer de nouveaux',
@@ -6793,7 +6794,7 @@ export const translations: Translations = {
     cs: 'Vyčistit a generovat nové',
     fi: 'Tyhjennä ja generoi uudet',
   },
-  ERandomColorGeneration: {
+  RandomColorGeneration: {
     en: 'Random color generation',
     es: 'Generación de colores aleatorios',
     fr: 'Génération de couleurs aléatoires',
@@ -6802,7 +6803,7 @@ export const translations: Translations = {
     cs: 'Generování náhodných barev',
     fi: 'Satunnaisen värin luominen',
   },
-  EColorMode: {
+  ColorMode: {
     en: 'Color mode',
     es: 'Modo de color',
     fr: 'Mode couleur',
@@ -6811,7 +6812,7 @@ export const translations: Translations = {
     cs: 'Režim barvy',
     fi: 'Värimoodi',
   },
-  EColorModes: {
+  ColorModes: {
     en: 'Color modes',
     es: 'Modos de color',
     fr: 'Modes de couleur',
@@ -6820,7 +6821,7 @@ export const translations: Translations = {
     cs: 'Režimy barvy',
     fi: 'Värimoodit',
   },
-  ESelectColorMode: {
+  SelectColorMode: {
     en: 'Select color mode',
     es: 'Seleccionar modo de color',
     fr: 'Sélectionner le mode couleur',
@@ -6829,7 +6830,7 @@ export const translations: Translations = {
     cs: 'Vyberte režim barvy',
     fi: 'Valitse värimoodi',
   },
-  EMonochromatic: {
+  Monochromatic: {
     en: 'Monochromatic',
     es: 'Monocromático',
     fr: 'Monochromatique',
@@ -6838,7 +6839,7 @@ export const translations: Translations = {
     cs: 'Monochromatický',
     fi: 'Monokromaattinen',
   },
-  EAnalogous: {
+  Analogous: {
     en: 'Analogous',
     es: 'Análogo',
     fr: 'Analogique',
@@ -6847,7 +6848,7 @@ export const translations: Translations = {
     cs: 'Analogický',
     fi: 'Analoginen',
   },
-  EComplementary: {
+  Complementary: {
     en: 'Complementary',
     es: 'Complementario',
     fr: 'Complémentaire',
@@ -6856,7 +6857,7 @@ export const translations: Translations = {
     cs: 'Komplementární',
     fi: 'Komplementaarinen',
   },
-  ETriad: {
+  Triad: {
     en: 'Triad',
     es: 'Tríada',
     fr: 'Triade',
@@ -6865,7 +6866,7 @@ export const translations: Translations = {
     cs: 'Triáda',
     fi: 'Triadi',
   },
-  ETetrad: {
+  Tetrad: {
     en: 'Tetrad',
     es: 'Tetrada',
     fr: 'Tétrade',
@@ -6874,16 +6875,16 @@ export const translations: Translations = {
     cs: 'Tetrad',
     fi: 'Tetradi',
   },
-  ENeedAFreshSetOfColors: {
+  NeedAFreshSetOfColors: {
     en: 'Need a fresh set of colors? First clear the existing colors, then generate new ones',
     es: '¿Necesitas un nuevo conjunto de colores? Primero borra los colores existentes, luego genera nuevos',
-    fr: "Besoin d'un nouvel ensemble de couleurs? t('Effacez d'abord les couleurs existantes, puis générez-en de nouvelles",
+    fr: "Besoin d'un nouvel ensemble de couleurs? t('ffacez d'abord les couleurs existantes, puis générez-en de nouvelles",
     de: 'Brauchen Sie eine neue Farbpalette? Löschen Sie zuerst die vorhandenen Farben und generieren Sie dann neue',
     pt: 'Precisa de um novo conjunto de cores? Primeiro limpe as cores existentes, depois gere novas',
     cs: 'Potřebujete novou sadu barev? Nejprve vymažte existující barvy a pak vygenerujte nové',
     fi: 'Tarvitsetko uuden väripaletin? Poista ensin olemassa olevat värit ja generoi sitten uusia',
   },
-  EGeneratesColorsBasedOnLastColor: {
+  GeneratesColorsBasedOnLastColor: {
     en: 'Uses the last color as the basis for new colors',
     es: 'Utiliza el último color como base para nuevos colores',
     fr: 'Utilise la dernière couleur comme base pour de nouvelles couleurs',
@@ -6892,7 +6893,7 @@ export const translations: Translations = {
     cs: 'Používá poslední barvu jako základ pro nové barvy',
     fi: 'Käyttää viimeistä väriä uusien värien perustana',
   },
-  ESelectColorModeForNewColors: {
+  SelectColorModeForNewColors: {
     en: 'Select color mode for generating new colors',
     es: 'Seleccionar modo de color para generar nuevos colores',
     fr: 'Sélectionnez le mode couleur pour générer de nouvelles couleurs',
@@ -6901,7 +6902,7 @@ export const translations: Translations = {
     cs: 'Vyberte režim barvy pro generování nových barev',
     fi: 'Valitse värimoodi uusien värien luomista varten',
   },
-  ELayer: {
+  Layer: {
     en: 'Layer',
     es: 'Capa',
     fr: 'Couche',
@@ -6910,7 +6911,7 @@ export const translations: Translations = {
     cs: 'Vrstva',
     fi: 'Kerros',
   },
-  ELayers: {
+  Layers: {
     en: 'Layers',
     es: 'Capas',
     fr: 'Couches',
@@ -6919,7 +6920,7 @@ export const translations: Translations = {
     cs: 'Vrstvy',
     fi: 'Kerrokset',
   },
-  EChangeLayerByClickingMe: {
+  ChangeLayerByClickingMe: {
     en: 'Change layer by clicking me',
     es: 'Cambiar capa haciendo clic en mí',
     fr: 'Changer de couche en cliquant sur moi',
@@ -6928,7 +6929,7 @@ export const translations: Translations = {
     cs: 'Změňte vrstvu kliknutím na mě',
     fi: 'Muuta kerros napsauttamalla minua',
   },
-  EToggleLayerByClickingMe: {
+  ToggleLayerByClickingMe: {
     en: 'Toggle layer visibility by clicking me',
     es: 'Alternar la visibilidad de la capa haciendo clic en mí',
     fr: 'Basculer la visibilité de la couche en cliquant sur moi',
@@ -6937,7 +6938,7 @@ export const translations: Translations = {
     cs: 'Přepněte viditelnost vrstvy kliknutím na mě',
     fi: 'Vaihda kerroksen näkyvyyttä napsauttamalla minua',
   },
-  EChangeTheLayerOfTheFocusedBlobByPressingTheNumber: {
+  ChangeTheLayerOfTheFocusedBlobByPressingTheNumber: {
     en: 'Change the layer of the focused blob by pressing the number corresponding to the layer',
     es: 'Cambie la capa del blob enfocado presionando el número correspondiente a la capa',
     fr: 'Changez la couche du blob en focus en appuyant sur le numéro correspondant à la couche',
@@ -6946,7 +6947,7 @@ export const translations: Translations = {
     cs: 'Změňte vrstvu zaměřeného blobu stisknutím čísla odpovídajícího vrstvě',
     fi: 'Muuta fokuksessa olevan mollukan tasoa painamalla tasoa vastaavaa numeroa näppäimistöllä',
   },
-  EBlurIntoOneAnother: {
+  BlurIntoOneAnother: {
     en: 'Blur into one another',
     es: 'Desenfoque entre sí',
     fr: 'Flou les uns dans les autres',
@@ -6955,7 +6956,7 @@ export const translations: Translations = {
     cs: 'Rozmazat jeden do druhého',
     fi: 'Sulautuvat toisiinsa',
   },
-  EChangeableColor: {
+  ChangeableColor: {
     en: 'Changeable color',
     es: 'Color cambiable',
     fr: 'Couleur changeable',
@@ -6964,7 +6965,7 @@ export const translations: Translations = {
     cs: 'Měnitelná barva',
     fi: 'Väri muutettavissa',
   },
-  EChangeableSize: {
+  ChangeableSize: {
     en: 'Changeable size',
     es: 'Tamaño cambiable',
     fr: 'Taille changeable',
@@ -6973,7 +6974,7 @@ export const translations: Translations = {
     cs: 'Měnitelná velikost',
     fi: 'Koko muutettavissa',
   },
-  ECloneable: {
+  Cloneable: {
     en: 'Cloneable',
     es: 'Clonable',
     fr: 'Clonable',
@@ -6982,7 +6983,7 @@ export const translations: Translations = {
     cs: 'Klonovatelný',
     fi: 'Kloonattavissa',
   },
-  ERemovable: {
+  Removable: {
     en: 'Removable',
     es: 'Removible',
     fr: 'Supprimable',
@@ -6991,7 +6992,7 @@ export const translations: Translations = {
     cs: 'Odstranitelný',
     fi: 'Poistettavissa',
   },
-  ESlidersToControlBackground: {
+  SlidersToControlBackground: {
     en: 'Sliders to control background',
     es: 'Controles deslizantes para controlar el fondo',
     fr: 'Contrôles coulissants pour contrôler l arrière-plan',
@@ -7000,7 +7001,7 @@ export const translations: Translations = {
     cs: 'Posuvníky pro ovládání pozadí',
     fi: 'Liukusäätimet taustan hallintaan',
   },
-  ELightness: {
+  Lightness: {
     en: 'Lightness',
     es: 'Claridad',
     fr: 'Clarté',
@@ -7009,7 +7010,7 @@ export const translations: Translations = {
     cs: 'Světlost',
     fi: 'Vaaleus',
   },
-  ESaturation: {
+  Saturation: {
     en: 'Saturation',
     es: 'Saturación',
     fr: 'Saturation',
@@ -7018,7 +7019,7 @@ export const translations: Translations = {
     cs: 'Sytost',
     fi: 'Kylläisyys',
   },
-  EHue: {
+  Hue: {
     en: 'Hue',
     es: 'Matiz',
     fr: 'Teinte',
@@ -7027,7 +7028,7 @@ export const translations: Translations = {
     cs: 'Odstín',
     fi: 'Sävy',
   },
-  EButtonsTo: {
+  ButtonsTo: {
     en: 'Buttons to',
     es: 'Botones para',
     fr: 'Boutons pour',
@@ -7036,7 +7037,7 @@ export const translations: Translations = {
     cs: 'Tlačítka pro',
     fi: 'Painikkeet',
   },
-  EToggleControlVisibility: {
+  ToggleControlVisibility: {
     en: 'Toggle control visibility',
     es: 'Alternar visibilidad del control',
     fr: 'Basculer la visibilité du contrôle',
@@ -7045,7 +7046,7 @@ export const translations: Translations = {
     cs: 'Přepnout viditelnost ovládání',
     fi: 'Muuta kontrollien näkyvyyttä',
   },
-  EMakeARandomBlobByClickingThePlusSign: {
+  MakeARandomBlobByClickingThePlusSign: {
     en: 'Make a random blob by clicking the plus sign',
     es: 'Haga un blob aleatorio haciendo clic en el signo más',
     fr: 'Faites un blob aléatoire en cliquant sur le signe plus',
@@ -7054,7 +7055,7 @@ export const translations: Translations = {
     cs: 'Vytvořte náhodný blob kliknutím na znaménko plus',
     fi: 'Luo satunnainen mollukka napsauttamalla plussamerkkiä',
   },
-  EToggleTheSubtleMovementOfTheBlobs: {
+  ToggleTheSubtleMovementOfTheBlobs: {
     en: 'Toggle the subtle movement of the blobs',
     es: 'Alternar el movimiento sutil de los blobs',
     fr: 'Activer le mouvement subtil des blobs',
@@ -7063,7 +7064,7 @@ export const translations: Translations = {
     cs: 'Přepněte jemný pohyb blobů',
     fi: 'Mollukoiden hienovaraisen liikkeen päälle-/poiskytkeminen',
   },
-  EResetTheBlobArrayToANewConfiguration: {
+  ResetTheBlobArrayToANewConfiguration: {
     en: 'Reset the blob array to a new configuration',
     es: 'Restablecer la matriz de blobs a una nueva configuración',
     fr: 'Réinitialiser le tableau de blobs à une nouvelle configuration',
@@ -7072,7 +7073,7 @@ export const translations: Translations = {
     cs: 'Resetujte pole blobů na novou konfiguraci',
     fi: 'Nollaa mollukkamäärä uuteen kokoonpanoon',
   },
-  EStopScrollingBehaviorToUseTheMouseWheelFreely: {
+  StopScrollingBehaviorToUseTheMouseWheelFreely: {
     en: 'Stop scrolling behavior to use the mouse wheel freely',
     es: 'Detenga el comportamiento de desplazamiento para usar la rueda del mouse libremente',
     fr: 'Arrêtez le comportement de défilement pour utiliser la molette de la souris librement',
@@ -7081,7 +7082,7 @@ export const translations: Translations = {
     cs: 'Zastavte chování posouvání, abyste mohli myší volně používat kolečko',
     fi: 'Lopeta sivun vieritys, jotta voit käyttää hiiren pyörää vapaasti',
   },
-  EWhichBlobIsCurrentlyActiveCanBeSeenAtTheTopLeftOfTheContainer: {
+  WhichBlobIsCurrentlyActiveCanBeSeenAtTheTopLeftOfTheContainer: {
     en: 'Which blob is currently active can be seen at the top left of the container',
     es: 'Qué blob está activo actualmente se puede ver en la parte superior izquierda del contenedor',
     fr: 'Quel blob est actuellement actif peut être vu en haut à gauche du conteneur',
@@ -7090,7 +7091,7 @@ export const translations: Translations = {
     cs: 'Který blob je aktuálně aktivní, lze vidět v levém horním rohu kontejneru',
     fi: 'Ylävasemmalta voidaan nähdä mikä mollukoista on sillä hetkellä aktiivinen',
   },
-  EPointerUse: {
+  PointerUse: {
     en: 'Pointer use',
     es: 'Uso del puntero',
     fr: 'Utilisation du pointeur',
@@ -7099,7 +7100,7 @@ export const translations: Translations = {
     cs: 'Užití ukazatele',
     fi: 'Osoitinkäyttö',
   },
-  EChangeBlobColorByDraggingToAColorNodeOnTheSides: {
+  ChangeBlobColorByDraggingToAColorNodeOnTheSides: {
     en: 'Change blob color by dragging to a color node on the sides',
     es: 'Cambiar el color del blob arrastrando a un nodo de color en los lados',
     fr: 'Changez la couleur du blob en le faisant glisser vers un nœud de couleur sur les côtés',
@@ -7108,7 +7109,7 @@ export const translations: Translations = {
     cs: 'Změňte barvu blobu přetažením na barevný uzel na stranách',
     fi: 'Vaihda mollukan väri vetämällä se värielementteihin jommallakummalla sivulla',
   },
-  EChangeBlobSizeByDraggingItToEitherTheLOrSLetterOnTheRightHandSide: {
+  ChangeBlobSizeByDraggingItToEitherTheLOrSLetterOnTheRightHandSide: {
     en: 'Change blob size by dragging it to either the shrink or enlarge symbols on the right hand side',
     es: 'Cambiar el tamaño del blob arrastrándolo a los símbolos de reducción o ampliación en el lado derecho',
     fr: 'Changez la taille du blob en le faisant glisser vers les symboles de rétrécissement ou d agrandissement sur le côté droit',
@@ -7117,7 +7118,7 @@ export const translations: Translations = {
     cs: 'Velikost blobu změníte přetažením na zmenšovací nebo zvětšovací symboly na pravé straně',
     fi: 'Vaihda mollukan kokoa vetämällä se joko pienennys- tai suurennussymboleiden luo, oikealla puolella',
   },
-  EChangeBlobSizeByScrollingWithTheMouseWheel: {
+  ChangeBlobSizeByScrollingWithTheMouseWheel: {
     en: 'Change blob size by scrolling with the mouse wheel (note: you may want to disable scrolling first with the button on the top right)',
     es: 'Cambie el tamaño del blob desplazándose con la rueda del mouse (nota: es posible que desee deshabilitar el desplazamiento primero con el botón en la parte superior derecha)',
     fr: 'Changez la taille du blob en faisant défiler avec la molette de la souris (note: vous voudrez peut-être désactiver le défilement en premier avec le bouton en haut à droite)',
@@ -7126,7 +7127,7 @@ export const translations: Translations = {
     cs: 'Velikost blobu změníte posouváním kolečka myši (poznámka: posouvání můžete nejprve zakázat tlačítkem v pravém horním rohu)',
     fi: 'Vaihda mollukan kokoa vierittämällä hiiren pyörällä (huomaa: haluat ehkä ensin poistaa sivun vierittämisen käytöstä yläoikealla olevalla painikkeella)',
   },
-  ECloneABlobByClickingTheTopLeftPlusSign: {
+  CloneABlobByClickingTheTopLeftPlusSign: {
     en: 'Clone a blob by clicking the top left copy sign and then the blob',
     es: 'Clona un blob haciendo clic en el signo de copia en la esquina superior izquierda y luego en el blob',
     fr: 'Cloner un blob en cliquant sur le signe de copie en haut à gauche, puis sur le blob',
@@ -7135,7 +7136,7 @@ export const translations: Translations = {
     cs: 'Klonujte blob kliknutím na kopírovací symbol v levém horním rohu a poté na blob',
     fi: 'Kloonaa mollukka klikkaamalla vasemman yläkulman kopiosymbolia ja sitten mollukkaa',
   },
-  ERemoveABlobByClickingTheBottomLeftXSign: {
+  RemoveABlobByClickingTheBottomLeftXSign: {
     en: 'Remove a blob by clicking the bottom left x sign and then the blob',
     es: 'Elimine un blob haciendo clic en el signo x de la parte inferior izquierda y luego en el blob',
     fr: 'Supprimez un blob en cliquant sur le signe x en bas à gauche, puis sur le blob',
@@ -7144,7 +7145,7 @@ export const translations: Translations = {
     cs: 'Odstraňte blob kliknutím na znak x vlevo dole a poté na blob',
     fi: 'Poista mollukka klikkaamalla vasemman alakulman x-merkkiä ja sitten mollukkaa',
   },
-  ERememberToDisableTheButtonWhenFinished: {
+  RememberToDisableTheButtonWhenFinished: {
     en: 'Remember to disable the button when finished!',
     es: '¡Recuerda desactivar el botón cuando hayas terminado!',
     fr: "N'oubliez pas de désactiver le bouton une fois terminé!",
@@ -7153,7 +7154,7 @@ export const translations: Translations = {
     cs: 'Nezapomeňte vypnout tlačítko po dokončení!',
     fi: 'Muista klikata painiketta uudestaan, kun olet valmis!',
   },
-  ETabToABlobAndWithItInFocus: {
+  TabToABlobAndWithItInFocus: {
     en: 'Tab to a blob, and with it in focus:',
     es: 'Tab a un blob, y con él enfocado:',
     fr: 'Onglet vers un blob, et avec lui en focus:',
@@ -7162,7 +7163,7 @@ export const translations: Translations = {
     cs: 'Přejděte na blob a zaměřte se na něj:',
     fi: 'Siirry näppäimistön tab-painikkeen avulla mollukkaeseen:',
   },
-  EPressEnterToCycleThroughTheDifferentColors: {
+  PressEnterToCycleThroughTheDifferentColors: {
     en: 'Press Enter to cycle through the different colors',
     es: 'Presione Enter para recorrer los diferentes colores',
     fr: 'Appuyez sur Entrée pour parcourir les différentes couleurs',
@@ -7171,7 +7172,7 @@ export const translations: Translations = {
     cs: 'Stisknutím klávesy Enter projdete různé barvy',
     fi: 'Paina Enter-näppäintä vaihtaaksesi eri väreihin',
   },
-  ELayerInstructions: {
+  LayerInstructions: {
     en: 'Blobs can be organized into layers, found at the bottom of the container. Choose a layer by clicking the button, and toggle layer visibility by clicking the button of the active layer.',
     es: 'Los blobs se pueden organizar en capas, que se encuentran en la parte inferior del contenedor. Elige una capa haciendo clic en el botón y alterna la visibilidad de la capa haciendo clic en el botón de la capa activa.',
     fr: 'Les blobs peuvent être organisés en couches, situées en bas du conteneur. Choisissez une couche en cliquant sur le bouton et basculez la visibilité de la couche en cliquant sur le bouton de la couche active.',
@@ -7180,7 +7181,7 @@ export const translations: Translations = {
     cs: 'Bloby lze uspořádat do vrstev, které se nacházejí na spodní části kontejneru. Vyberte vrstvu kliknutím na tlačítko a přepínejte viditelnost vrstvy kliknutím na tlačítko aktivní vrstvy.',
     fi: 'Mollukat voidaan järjestää kerroksiin, joiden numerot löytyvät alaosasta. Valitse kerros napsauttamalla painiketta ja vaihda kerroksen näkyvyys napsauttamalla aktiivisen kerroksen painiketta.',
   },
-  EMakeBlobSmallerByPressingS: {
+  MakeBlobSmallerByPressingS: {
     en: 'Make blob smaller by pressing S',
     es: 'Haga que el blob sea más pequeño presionando S',
     fr: 'Rendez le blob plus petit en appuyant sur S',
@@ -7189,7 +7190,7 @@ export const translations: Translations = {
     cs: 'Blob zmenšte stisknutím S',
     fi: 'Pienennä mollukkaa painamalla S',
   },
-  EMakeBlobLargerByPressingBL: {
+  MakeBlobLargerByPressingBL: {
     en: 'Make blob larger by pressing B or L',
     es: 'Haga que el blob sea más grande presionando B o L',
     fr: 'Rendez le blob plus grand en appuyant sur B ou L',
@@ -7198,7 +7199,7 @@ export const translations: Translations = {
     cs: 'Blob zvětšíte stisknutím B nebo L',
     fi: 'Suurenna mollukkaa painamalla B tai L',
   },
-  ECloneABlobByPressingCOr: {
+  CloneABlobByPressingCOr: {
     en: 'Clone a blob by pressing C or D',
     es: 'Clone un blob presionando C o D',
     fr: 'Clonez un blob en appuyant sur C ou D',
@@ -7207,7 +7208,7 @@ export const translations: Translations = {
     cs: 'Klonujte blob stisknutím C nebo D',
     fi: 'Tee mollukasta kopio painamalla C tai D',
   },
-  EMakeANewRandomBlobByPressingPlus: {
+  MakeANewRandomBlobByPressingPlus: {
     en: 'Make a new random blob by pressing +',
     es: 'Haga un nuevo blob aleatorio presionando +',
     fr: 'Faites un nouveau blob aléatoire en appuyant sur +',
@@ -7216,7 +7217,7 @@ export const translations: Translations = {
     cs: 'Vytvořte nový náhodný blob stisknutím +',
     fi: 'Luo uusi satunnainen mollukka painamalla +',
   },
-  ERemoveABlobByPressingDeleteOr: {
+  RemoveABlobByPressingDeleteOr: {
     en: 'Remove a blob by pressing Delete or -',
     es: 'Elimine un blob presionando Eliminar o -',
     fr: 'Supprimez un blob en appuyant sur Supprimer ou -',
@@ -7225,7 +7226,7 @@ export const translations: Translations = {
     cs: 'Odstraňte blob stisknutím klávesy Delete nebo -',
     fi: 'Poista mollukka painamalla Delete tai -',
   },
-  EMoveBlobToBottomByPressingZOrToTopByPressingT: {
+  MoveBlobToBottomByPressingZOrToTopByPressingT: {
     en: 'Move blob to bottom by pressing Z or to top by pressing T',
     es: 'Mueva el blob hacia abajo presionando Z o hacia arriba presionando T',
     fr: 'Déplacez le blob vers le bas en appuyant sur Z ou vers le haut en appuyant sur T',
@@ -7234,7 +7235,7 @@ export const translations: Translations = {
     cs: 'Přesuňte blob dolů stisknutím Z nebo nahoru stisknutím T',
     fi: 'Siirrä mollukka alimmaiseksi painamalla Z tai päällimmäiseksi painamalla T',
   },
-  EPressHereOrEscapeToRestoreScrolling: {
+  PressHereOrEscapeToRestoreScrolling: {
     en: 'Press here or Escape to restore scrolling',
     es: 'Presione aquí o Escape para restaurar el desplazamiento',
     fr: 'Appuyez ici ou sur Échap pour restaurer le défilement',
@@ -7243,7 +7244,7 @@ export const translations: Translations = {
     cs: 'Stiskněte sem nebo Escape pro obnovení posouvání',
     fi: 'Paina tästä tai Esc palauttaaksesi sivun vierityksen',
   },
-  EStopSway: {
+  StopSway: {
     en: 'Stop movement',
     es: 'Detener el movimiento',
     fr: 'Arrêter le mouvement',
@@ -7252,7 +7253,7 @@ export const translations: Translations = {
     cs: 'Zastavit pohyb',
     fi: 'Pysäytä liike',
   },
-  EStartSway: {
+  StartSway: {
     en: 'Start sway',
     es: 'Comience el movimiento',
     fr: 'Commencez le mouvement',
@@ -7261,7 +7262,7 @@ export const translations: Translations = {
     cs: 'Začněte pohyb',
     fi: 'Aloita liike',
   },
-  EEnableScroll: {
+  EnableScroll: {
     en: 'Enable Scroll',
     es: 'Habilitar desplazamiento',
     fr: 'Activer le défilement',
@@ -7270,7 +7271,7 @@ export const translations: Translations = {
     cs: 'Povolit posouvání',
     fi: 'Ota vieritys käyttöön',
   },
-  EDisableScroll: {
+  DisableScroll: {
     en: 'Disable Scroll',
     es: 'Deshabilitar desplazamiento',
     fr: 'Désactiver le défilement',
@@ -7279,7 +7280,7 @@ export const translations: Translations = {
     cs: 'Zakázat posouvání',
     fi: 'Poista vieritys käytöstä',
   },
-  EDisableScrollInOrderToUseTheMouseWheelToResizeABlob: {
+  DisableScrollInOrderToUseTheMouseWheelToResizeABlob: {
     en: 'Disable scroll in order to use the mouse wheel to resize a blob',
     es: 'Deshabilitar el desplazamiento para usar la rueda del mouse para cambiar el tamaño de un blob',
     fr: 'Désactiver le défilement afin d utiliser la molette de la souris pour redimensionner un blob',
@@ -7288,7 +7289,7 @@ export const translations: Translations = {
     cs: 'Zakážete posouvání, abyste mohli použít kolečko myši k změně velikosti blobu',
     fi: 'Poista vieritys käytöstä, jotta voit käyttää hiiren pyörää mollukan kokoa muuttaaksesi',
   },
-  EMarkerOn: {
+  MarkerOn: {
     en: 'Marker on',
     es: 'Marcador encendido',
     fr: 'Marqueur allumé',
@@ -7297,7 +7298,7 @@ export const translations: Translations = {
     cs: 'Značka zapnuta',
     fi: 'Merkkaus päällä',
   },
-  EMarkerOff: {
+  MarkerOff: {
     en: 'Marker off',
     es: 'Marcador apagado',
     fr: 'Marqueur éteint',
@@ -7306,7 +7307,7 @@ export const translations: Translations = {
     cs: 'Značka vypnuta',
     fi: 'Merkkaus pois päältä',
   },
-  EToggleMarkerVisibilityWhenUsingAKeyboard: {
+  ToggleMarkerVisibilityWhenUsingAKeyboard: {
     en: 'Toggle the visibility of the ring marking the active blob when using a keyboard',
     es: 'Alternar la visibilidad del anillo que marca el blob activo al usar un teclado',
     fr: 'Basculer la visibilité de l anneau marquant le blob actif lors de l utilisation d un clavier',
@@ -7315,7 +7316,7 @@ export const translations: Translations = {
     cs: 'Přepněte viditelnost kroužku označujícího aktivní blob při použití klávesnice',
     fi: 'Vaihda aktiivisen mollukan merkkausrenkaan näkyvyyttä näppäimistöä käytettäessä',
   },
-  ETryDraggingTheBlobs: {
+  TryDraggingTheBlobs: {
     en: 'Try dragging the blobs',
     es: 'Intente arrastrar los blobs',
     fr: 'Essayez de faire glisser les blobs',
@@ -7324,7 +7325,7 @@ export const translations: Translations = {
     cs: 'Zkuste přetáhnout bloby',
     fi: 'Kokeile mollukan raahaamista',
   },
-  ESelectedBlobNone: {
+  SelectedBlobNone: {
     en: 'Selected blob: none',
     es: 'Blob seleccionado: ninguno',
     fr: 'Blob sélectionné: aucun',
@@ -7333,7 +7334,7 @@ export const translations: Translations = {
     cs: 'Vybraný blob: žádný',
     fi: 'Valittu mollukka: ei valittua',
   },
-  ESelectedBlob: {
+  SelectedBlob: {
     en: 'Selected blob',
     es: 'Blob seleccionado',
     fr: 'Blob sélectionné',
@@ -7342,7 +7343,7 @@ export const translations: Translations = {
     cs: 'Vybraný blob',
     fi: 'Valittu mollukka',
   },
-  EResetBlobs: {
+  ResetBlobs: {
     en: 'Reset Blobs',
     es: 'Restablecer Blobs',
     fr: 'Réinitialiser les Blobs',
@@ -7351,7 +7352,7 @@ export const translations: Translations = {
     cs: 'Resetovat Blobs',
     fi: 'Nollaa mollukat',
   },
-  EAdjustBackgroundLightness: {
+  AdjustBackgroundLightness: {
     en: 'Adjust background lightness',
     es: 'Ajustar la claridad del fondo',
     fr: 'Ajuster la clarté de l arrière-plan',
@@ -7360,7 +7361,7 @@ export const translations: Translations = {
     cs: 'Nastavte jas pozadí',
     fi: 'Säädä taustan vaaleutta',
   },
-  EAdjustBackgroundSaturation: {
+  AdjustBackgroundSaturation: {
     en: 'Adjust background saturation',
     es: 'Ajustar la saturación del fondo',
     fr: 'Ajuster la saturation de l arrière-plan',
@@ -7369,7 +7370,7 @@ export const translations: Translations = {
     cs: 'Nastavte sytost pozadí',
     fi: 'Säädä taustan kylläisyyttä',
   },
-  EAdjustBackgroundHue: {
+  AdjustBackgroundHue: {
     en: 'Adjust background hue',
     es: 'Ajustar el tono de fondo',
     fr: 'Ajuster la teinte de l arrière-plan',
@@ -7378,7 +7379,7 @@ export const translations: Translations = {
     cs: 'Nastavte odstín pozadí',
     fi: 'Säädä taustan sävyä',
   },
-  EResetLightness: {
+  ResetLightness: {
     en: 'Reset Lightness',
     es: 'Restablecer Claridad',
     fr: 'Réinitialiser la Clarté',
@@ -7387,7 +7388,7 @@ export const translations: Translations = {
     cs: 'Resetovat Světlost',
     fi: 'Nollaa vaaleus',
   },
-  EResetSaturation: {
+  ResetSaturation: {
     en: 'Reset Saturation',
     es: 'Restablecer Saturación',
     fr: 'Réinitialiser la Saturation',
@@ -7396,7 +7397,7 @@ export const translations: Translations = {
     cs: 'Resetovat Sytost',
     fi: 'Nollaa kylläisyys',
   },
-  EResetHue: {
+  ResetHue: {
     en: 'Reset Hue',
     es: 'Restablecer Matiz',
     fr: 'Réinitialiser la Teinte',
@@ -7405,7 +7406,7 @@ export const translations: Translations = {
     cs: 'Resetovat Odstín',
     fi: 'Nollaa sävy',
   },
-  EMoveLeft: {
+  MoveLeft: {
     en: 'Move left',
     es: 'Mover a la izquierda',
     fr: 'Déplacer à gauche',
@@ -7414,7 +7415,7 @@ export const translations: Translations = {
     cs: 'Pohnout doleva',
     fi: 'Siirry vasemmalle',
   },
-  EMoveRight: {
+  MoveRight: {
     en: 'Move right',
     es: 'Mover a la derecha',
     fr: 'Déplacer à droite',
@@ -7423,7 +7424,7 @@ export const translations: Translations = {
     cs: 'Pohnout doprava',
     fi: 'Siirry oikealle',
   },
-  EMoveUp: {
+  MoveUp: {
     en: 'Move up',
     es: 'Mover hacia arriba',
     fr: 'Déplacer vers le haut',
@@ -7432,7 +7433,7 @@ export const translations: Translations = {
     cs: 'Pohnout nahoru',
     fi: 'Siirry ylös',
   },
-  EMoveDown: {
+  MoveDown: {
     en: 'Move down',
     es: 'Mover hacia abajo',
     fr: 'Déplacer vers le bas',
@@ -7441,7 +7442,7 @@ export const translations: Translations = {
     cs: 'Pohnout dolů',
     fi: 'Siirry alas',
   },
-  EMoveViewUp: {
+  MoveViewUp: {
     en: 'Move view up',
     es: 'Mover vista hacia arriba',
     fr: 'Déplacer la vue vers le haut',
@@ -7450,7 +7451,7 @@ export const translations: Translations = {
     cs: 'Pohyb pohledu nahoru',
     fi: 'Siirrä näkymää ylös',
   },
-  EMoveViewDown: {
+  MoveViewDown: {
     en: 'Move view down',
     es: 'Mover vista hacia abajo',
     fr: 'Déplacer la vue vers le bas',
@@ -7459,7 +7460,7 @@ export const translations: Translations = {
     cs: 'Pohyb pohledu dolů',
     fi: 'Siirrä näkymää alas',
   },
-  EMoveViewLeft: {
+  MoveViewLeft: {
     en: 'Move view left',
     es: 'Mover vista a la izquierda',
     fr: 'Déplacer la vue à gauche',
@@ -7468,7 +7469,7 @@ export const translations: Translations = {
     cs: 'Pohyb pohledu doleva',
     fi: 'Siirrä näkymää vasemmalle',
   },
-  EMoveViewRight: {
+  MoveViewRight: {
     en: 'Move view right',
     es: 'Mover vista a la derecha',
     fr: 'Déplacer la vue à droite',
@@ -7477,7 +7478,7 @@ export const translations: Translations = {
     cs: 'Pohyb pohledu doprava',
     fi: 'Siirrä näkymää oikealle',
   },
-  EMoveViewInDifferentDirections: {
+  MoveViewInDifferentDirections: {
     en: 'Move view in different directions',
     es: 'Mover vista en diferentes direcciones',
     fr: 'Déplacer la vue dans différentes directions',
@@ -7486,7 +7487,7 @@ export const translations: Translations = {
     cs: 'Pohyb pohledu v různých směrech',
     fi: 'Siirrä näkymää eri suuntiin',
   },
-  EEnlargeInstructions: {
+  EnlargeInstructions: {
     en: 'Enlarge a blob by clicking me and then the blob! Keyboard use: press B or L with blob in focus',
     es: 'Haga que el blob sea más grande haciendo clic en mí y luego en el blob! Uso del teclado: presiona B o L con el blob enfocado',
     fr: 'Agrandissez un blob en cliquant sur moi puis sur le blob! Utilisation du clavier: appuyez sur B ou L avec le blob en focus',
@@ -7495,7 +7496,7 @@ export const translations: Translations = {
     cs: 'Zvětšete blob kliknutím na mě a poté na blob! Použití klávesnice: stiskněte B nebo L se zaměřeným blobem',
     fi: 'Suurenna mollukkaa klikkaamalla minua ja sitten mollukkaa! Näppäinkäyttö: paina B tai L mollukka fokuksessa',
   },
-  EShrinkInstructions: {
+  ShrinkInstructions: {
     en: 'Make a blob smaller by clicking me and then the blob! Keyboard use: press S with blob in focus',
     es: 'Hacer que el blob sea más pequeño haciendo clic en mí y luego en el blob! Uso del teclado: presiona S con el blob enfocado',
     fr: 'Rendez le blob plus petit en cliquant sur moi puis sur le blob! Utilisation du clavier : appuyez sur S avec le blob en focus',
@@ -7504,7 +7505,7 @@ export const translations: Translations = {
     cs: 'Zmenšete blob kliknutím na mě a poté na blob! Použití klávesnice: stiskněte S s blobem ve fokusu',
     fi: 'Pienennä mollukkaa klikkaamalla minua ja sitten mollukkaa! Näppäinkäyttö: paina S mollukka fokuksessa',
   },
-  ERemovalInstructions: {
+  RemovalInstructions: {
     en: 'Remove a blob by clicking me and then the blob! Keyboard use: press Delete with blob in focus',
     es: 'Elimina un blob haciendo clic en mí y luego en el blob. Uso del teclado: presiona Delete con el blob en foco',
     fr: 'Supprimez un blob en cliquant sur moi, puis sur le blob. Utilisation du clavier : appuyez sur Delete avec le blob en focus',
@@ -7513,7 +7514,7 @@ export const translations: Translations = {
     cs: 'Odstraňte blob kliknutím na mě a poté na blob! Použití klávesnice: stiskněte Delete s blobem v fokus',
     fi: 'Poista mollukka napsauttamalla minua ja sitten mollukkaa! Näppäinkäyttö: paina Delete, kun mollukka on valittuna',
   },
-  ECloneInstructions: {
+  CloneInstructions: {
     en: 'Click me and then a blob to duplicate it! Keyboard use: press C or D with blob in focus',
     es: '¡Haga clic en mí y luego en un blob para duplicarlo! Uso del teclado: presione C o D con el blob enfocado',
     fr: 'Cliquez sur moi puis sur un blob pour le dupliquer! Utilisation du clavier : appuyez sur C ou D avec le blob en focus',
@@ -7522,7 +7523,7 @@ export const translations: Translations = {
     cs: 'Klikněte na mě a poté na blob pro jeho duplikaci! Použití klávesnice: stiskněte C nebo D s blobem v fokus',
     fi: 'Klikkaa minua ja sitten mollukkaa kloonataksesi sen! Näppäinkäyttö: paina C tai D mollukka fokuksessa',
   },
-  EClickMeToMakeARandomBlob: {
+  ClickMeToMakeARandomBlob: {
     en: 'Click me to make a random blob',
     es: 'Haz clic en mí para hacer un blob aleatorio',
     fr: 'Cliquez sur moi pour créer un blob aléatoire',
@@ -7531,7 +7532,7 @@ export const translations: Translations = {
     cs: 'Klikněte na mě, abyste vytvořili náhodný blob',
     fi: 'Klikkaa minua luodaksesi satunnaisen mollukan',
   },
-  EMoreColorsAvailable: {
+  MoreColorsAvailable: {
     en: 'More colors available',
     es: 'Más colores disponibles',
     fr: 'Plus de couleurs disponibles',
@@ -7540,7 +7541,7 @@ export const translations: Translations = {
     cs: 'Další barvy k dispozici',
     fi: 'Enemmän värejä saatavilla',
   },
-  EAlternatively: {
+  Alternatively: {
     en: 'Alternatively',
     es: 'Alternativamente',
     fr: 'Alternativement',
@@ -7549,7 +7550,7 @@ export const translations: Translations = {
     cs: 'Alternativně',
     fi: 'Vaihtoehtoisesti',
   },
-  EResizebyScrollInstructions: {
+  ResizebyScrollInstructions: {
     en: 'Press Disable Scroll and use the mousewheel to resize',
     es: 'Presione Deshabilitar desplazamiento y use la rueda del mouse para cambiar el tamaño',
     fr: 'Appuyez sur Désactiver le défilement et utilisez la molette de la souris pour redimensionner',
@@ -7558,7 +7559,7 @@ export const translations: Translations = {
     cs: 'Stiskněte Zakázat posouvání a použijte kolečko myši k změně velikosti',
     fi: 'Paina Poista vieritys käytöstä ja käytä hiiren pyörää muuttaaksesi kokoa',
   },
-  EChangeColorInstructions: {
+  ChangeColorInstructions: {
     en: 'Click me and then a blob to change its color! Keyboard use: press Enter with blob in focus',
     es: '¡Haz clic en mí y luego en un blob para cambiar su color! Uso del teclado: presiona Enter con el blob enfocado',
     fr: 'Cliquez sur moi puis sur un blob pour changer sa couleur ! Utilisation du clavier : appuyez sur Entrée avec le blob en focus',
@@ -7567,7 +7568,7 @@ export const translations: Translations = {
     cs: 'Klikněte na mě a poté na blob, abyste změnili jeho barvu! Použití klávesnice: stiskněte Enter s blobem ve fokusu',
     fi: 'Klikkaa minua ja sitten mollukkaa vaihtaaksesi sen väriä! Näppäinkäyttö: paina Enter mollukka fokuksessa',
   },
-  EIncreaseBlobLayerBy1Instructions: {
+  IncreaseBlobLayerBy1Instructions: {
     en: 'Click me and then a blob to move it up one layer!',
     es: 'Haz clic en mí y luego en un blob para moverlo una capa hacia arriba!',
     fr: "Cliquez sur moi et ensuite sur un blob pour le déplacer d'une couche vers le haut!",
@@ -7576,7 +7577,7 @@ export const translations: Translations = {
     cs: 'Klikněte na mě a poté na blob, abyste ho posunuli o jednu vrstvu výš!',
     fi: 'Klikkaa minua ja sitten mollukkaa siirtääksesi sitä yhtä kerrosta ylemmäksi!',
   },
-  EDecreaseBlobLayerBy1Instructions: {
+  DecreaseBlobLayerBy1Instructions: {
     en: 'Click me and then a blob to move it down one layer!',
     es: 'Haz clic en mí y luego en un blob para moverlo una capa hacia abajo!',
     fr: "Cliquez sur moi et ensuite sur un blob pour le déplacer d'une couche vers le bas!",
@@ -7585,7 +7586,7 @@ export const translations: Translations = {
     cs: 'Klikněte na mě a poté na blob, abyste ho posunuli o jednu vrstvu dolů!',
     fi: 'Klikkaa minua ja sitten mollukkaa siirtääksesi sen yhtä kerrosta alemmaksi!',
   },
-  EHideControls: {
+  HideControls: {
     en: 'Hide controls',
     es: 'Ocultar controles',
     fr: 'Masquer les contrôles',
@@ -7594,7 +7595,7 @@ export const translations: Translations = {
     cs: 'Skrýt ovládací prvky',
     fi: 'Piilota painikkeet',
   },
-  EShowControls: {
+  ShowControls: {
     en: 'Show controls',
     es: 'Mostrar controles',
     fr: 'Afficher les contrôles',
@@ -7603,7 +7604,7 @@ export const translations: Translations = {
     cs: 'Zobrazit ovládací prvky',
     fi: 'Näytä painikkeet',
   },
-  ELoginToSaveBlobs: {
+  LoginToSaveBlobs: {
     en: 'Login to save blobs',
     es: 'Inicie sesión para guardar blobs',
     fr: 'Connectez-vous pour enregistrer les blobs',
@@ -7612,7 +7613,7 @@ export const translations: Translations = {
     cs: 'Přihlaste se pro uložení blobů',
     fi: 'Kirjaudu sisään tallentaaksesi mollukat',
   },
-  ELoginToSaveBlobsToServer: {
+  LoginToSaveBlobsToServer: {
     en: 'Login to save blobs to server',
     es: 'Inicie sesión para guardar blobs en el servidor',
     fr: 'Connectez-vous pour enregistrer les blobs sur le serveur',
@@ -7621,7 +7622,7 @@ export const translations: Translations = {
     cs: 'Přihlaste se pro uložení blobů na server',
     fi: 'Kirjaudu sisään tallentaaksesi mollukat palvelimelle',
   },
-  EManyVersions: {
+  ManyVersions: {
     en: 'Many versions',
     es: 'Muchas versiones',
     fr: 'Beaucoup de versions',
@@ -7630,7 +7631,7 @@ export const translations: Translations = {
     cs: 'Mnoho verzí',
     fi: 'Monta versiota',
   },
-  EInOrderToSaveTheBlobs: {
+  InOrderToSaveTheBlobs: {
     en: 'In order to save the blobs:',
     es: 'Para guardar los blobs:',
     fr: 'Afin d enregistrer les blobs:',
@@ -7639,7 +7640,7 @@ export const translations: Translations = {
     cs: 'Pro uložení blobů:',
     fi: 'Tallentaaksesi mollukat:',
   },
-  ENameYourArtwork: {
+  NameYourArtwork: {
     en: 'Name your artwork',
     es: 'Nombre de tu obra de arte',
     fr: 'Nommez votre œuvre d art',
@@ -7648,7 +7649,7 @@ export const translations: Translations = {
     cs: 'Pojmenujte své umění',
     fi: 'Nimeä taideteoksesi',
   },
-  ERenameYourArtwork: {
+  RenameYourArtwork: {
     en: 'Rename your art',
     es: 'Renombrar tu arte',
     fr: 'Renommez votre art',
@@ -7657,7 +7658,7 @@ export const translations: Translations = {
     cs: 'Přejmenujte své umění',
     fi: 'Nimeä teoksesi',
   },
-  ERename: {
+  Rename: {
     en: 'Rename',
     es: 'Renombrar',
     fr: 'Renommer',
@@ -7666,7 +7667,7 @@ export const translations: Translations = {
     cs: 'Přejmenovat',
     fi: 'Nimeä',
   },
-  EMaximumLayerAmountReached: {
+  MaximumLayerAmountReached: {
     en: 'Maximum layer amount reached',
     es: 'Cantidad máxima de capas alcanzada',
     fr: 'Quantité maximale de couches atteinte',
@@ -7675,7 +7676,7 @@ export const translations: Translations = {
     cs: 'Dosáhli jste maximálního počtu vrstev',
     fi: 'Maksimikerrosmäärä saavutettu',
   },
-  EAddedPaginationToSavedArt: {
+  AddedPaginationToSavedArt: {
     en: 'Added pagination to saved art',
     es: 'Agregada paginación al arte guardado',
     fr: 'Ajout de la pagination à l art enregistré',
@@ -7684,7 +7685,7 @@ export const translations: Translations = {
     cs: 'Přidána stránkování k uloženému umění',
     fi: 'Sivutus lisätty tallennetulle taiteelle',
   },
-  EMustHaveAtLeastOneLayer: {
+  MustHaveAtLeastOneLayer: {
     en: 'Must have at least one layer',
     es: 'Debe tener al menos una capa',
     fr: 'Doit avoir au moins une couche',
@@ -7693,7 +7694,7 @@ export const translations: Translations = {
     cs: 'Musí mít alespoň jednu vrstvu',
     fi: 'On oltava vähintään yksi kerros',
   },
-  ELayerNotEmpty: {
+  LayerNotEmpty: {
     en: 'Layer not empty',
     es: 'Capa no vacía',
     fr: 'Couche non vide',
@@ -7702,7 +7703,7 @@ export const translations: Translations = {
     cs: 'Vrstva není prázdná',
     fi: 'Kerros ei ole tyhjä',
   },
-  ELayerHidden: {
+  LayerHidden: {
     en: 'Layer hidden',
     es: 'Capa oculta',
     fr: 'Couche cachée',
@@ -7711,7 +7712,7 @@ export const translations: Translations = {
     cs: 'Vrstva skrytá',
     fi: 'Kerros piilotettu',
   },
-  ETipsAndTricks: {
+  TipsAndTricks: {
     en: 'Tips and tricks',
     es: 'Consejos y trucos',
     fr: 'Conseils et astuces',
@@ -7720,7 +7721,7 @@ export const translations: Translations = {
     cs: 'Tipy a triky',
     fi: 'Vinkit ja niksit',
   },
-  EIfYouNeedToSetABlobNearTheEdgeOfTheScreen: {
+  IfYouNeedToSetABlobNearTheEdgeOfTheScreen: {
     en: 'If you need to set a blob near the edge of the screen, you may hide the controls by pressing the Hide controls button',
     es: 'Si necesita colocar un blob cerca del borde de la pantalla, puede ocultar los controles presionando el botón Ocultar controles',
     fr: 'Si vous devez placer un blob près du bord de l écran, vous pouvez masquer les contrôles en appuyant sur le bouton Masquer les contrôles',
@@ -7729,7 +7730,7 @@ export const translations: Translations = {
     cs: 'Pokud potřebujete nastavit blob blízko okraje obrazovky, můžete skrýt ovládací prvky stisknutím tlačítka Skrýt ovládací prvky',
     fi: 'Jos tarvitset asettaa mollukan lähelle näytön reunaa, voit piilottaa painikkeet painamalla Piilota painikkeet -painiketta',
   },
-  EYouMayAlsoMoveTheEntireViewWithTheAngleQuotationMarkButtons: {
+  YouMayAlsoMoveTheEntireViewWithTheAngleQuotationMarkButtons: {
     en: 'You may also move the entire view with the angle quotation mark buttons',
     es: 'También puede mover toda la vista con los botones de comillas de ángulo',
     fr: 'Vous pouvez également déplacer l ensemble de la vue avec les boutons de guillemets d angle',
@@ -7738,7 +7739,7 @@ export const translations: Translations = {
     cs: 'Můžete také přesunout celý pohled pomocí tlačítek úhlových uvozovek',
     fi: 'Voit myös siirtää koko näkymää kaksoiskulmapainikkeilla',
   },
-  EYouMayChangeBlobSizeWithTheMouseWheel: {
+  YouMayChangeBlobSizeWithTheMouseWheel: {
     en: 'You may change blob size with the mouse wheel, by disabling the scroll by pressing the Disable Scroll button. Press the button again or Escape to enable scroll again',
     es: 'Puede cambiar el tamaño del blob con la rueda del mouse, deshabilitando el desplazamiento presionando el botón Deshabilitar desplazamiento. Presione el botón nuevamente o Escape para habilitar el desplazamiento nuevamente',
     fr: 'Vous pouvez changer la taille du blob avec la molette de la souris, en désactivant le défilement en appuyant sur le bouton Désactiver le défilement. Appuyez à nouveau sur le bouton ou sur Échap pour réactiver le défilement',
@@ -7747,7 +7748,7 @@ export const translations: Translations = {
     cs: 'Velikost blobu můžete změnit kolečkem myši tím, že zakážete posouvání stisknutím tlačítka Zakázat posouvání. Stiskněte tlačítko znovu nebo Escape pro opětovné povolení posouvání',
     fi: 'Voit muuttaa mollukan kokoa hiiren pyörällä poistamalla vierityksen käytöstä painamalla Poista vieritys käytöstä -painiketta. Paina painiketta uudelleen tai Escapeta aktivoidaksesi vierityksen uudelleen',
   },
-  EYouMayUseKeyboardShortcutsWhileMouseIsPressedDown: {
+  YouMayUseKeyboardShortcutsWhileMouseIsPressedDown: {
     en: 'You may use keyboard shortcuts while the mouse is pressed down on a blob',
     es: 'Puede usar accesos directos de teclado mientras el mouse está presionado en un blob',
     fr: 'Vous pouvez utiliser des raccourcis clavier lorsque la souris est enfoncée sur un blob',
@@ -7756,7 +7757,7 @@ export const translations: Translations = {
     cs: 'Můžete používat klávesové zkratky, když je myš stisknuta na blobu',
     fi: 'Voit käyttää näppäinoikoteitä, kun hiiri on painettuna mollukan päällä',
   },
-  ERegisterAndLogInToSaveYourArtwork: {
+  RegisterAndLogInToSaveYourArtwork: {
     en: 'Register and log in to save your artwork to the server and never lose it again',
     es: 'Regístrese e inicie sesión para guardar su obra de arte en el servidor y nunca volver a perderla',
     fr: 'Inscrivez-vous et connectez-vous pour enregistrer votre œuvre d art sur le serveur et ne la perdez plus jamais',
@@ -7765,7 +7766,7 @@ export const translations: Translations = {
     cs: 'Zaregistrujte se a přihlaste se pro uložení svého umění na server a už ho nikdy neztratíte',
     fi: 'Rekisteröidy ja kirjaudu sisään tallentaaksesi taideteoksesi palvelimelle ja et menetä sitä',
   },
-  EMoreColorsAvailableThroughRandomBlobButton: {
+  MoreColorsAvailableThroughRandomBlobButton: {
     en: 'More colors are available through the random blob button: the plus sign at the top middle of the screen',
     es: 'Más colores están disponibles a través del botón de blob aleatorio: el signo más en la parte superior del centro de la pantalla',
     fr: 'Plus de couleurs sont disponibles via le bouton de blob aléatoire: le signe plus en haut au milieu de l écran',
@@ -7774,7 +7775,7 @@ export const translations: Translations = {
     cs: 'Další barvy jsou k dispozici pomocí tlačítka náhodného blobu: plusový znak v horní části obrazovky',
     fi: 'Lisää värejä on saatavilla satunnaisen mollukan painikkeen kautta: plussamerkki näytön yläosassa keskellä',
   },
-  EYouMayCloneARareColorBlobByPressingCOrD: {
+  YouMayCloneARareColorBlobByPressingCOrD: {
     en: 'You may clone a rare color blob by pressing C or D with it in focus',
     es: 'Puede clonar un blob de color raro presionando C o D con él enfocado',
     fr: 'Vous pouvez cloner un blob de couleur rare en appuyant sur C ou D avec lui en focus',
@@ -7783,7 +7784,7 @@ export const translations: Translations = {
     cs: 'Můžete klonovat vzácný barevný blob stisknutím C nebo D s fokusem na něj',
     fi: 'Voit kloonata harvinaisen värillisen mollukan painamalla C tai D, kun se on valittuna',
   },
-  EYouCanChangeTheDimensionsOfTheScreenshotByResizingYourBrowserWindow: {
+  YouCanChangeTheDimensionsOfTheScreenshotByResizingYourBrowserWindow: {
     en: 'You can change the dimensions of the screenshot by resizing your browser window',
     es: 'Puede cambiar las dimensiones de la captura de pantalla redimensionando la ventana de su navegador',
     fr: 'Vous pouvez changer les dimensions de la capture d écran en redimensionnant la fenêtre de votre navigateur',
@@ -7792,7 +7793,7 @@ export const translations: Translations = {
     cs: 'Rozměry snímku obrazovky můžete změnit změnou velikosti okna prohlížeče',
     fi: 'Voit muuttaa kuvakaappauksen mittoja muuttamalla selainikkunan kokoa',
   },
-  EIfABlobYouClickedHidesAnotherYouMayPlaceTheBlobBackToTheBottomOfThePile: {
+  IfABlobYouClickedHidesAnotherYouMayPlaceTheBlobBackToTheBottomOfThePile: {
     en: 'If a blob you clicked hides another, you may place the blob back to the bottom of the pile by pressing Z',
     es: 'Si un blob que hizo clic oculta a otro, puede colocar el blob de nuevo en la parte inferior de la pila presionando Z',
     fr: 'Si un blob que vous avez cliqué en cache un autre, vous pouvez replacer le blob en bas de la pile en appuyant sur Z',
@@ -7801,7 +7802,7 @@ export const translations: Translations = {
     cs: 'Pokud blob, na který jste klikli, skrývá jiný, můžete blob vrátit zpět na spodek hromady stisknutím Z',
     fi: 'Jos mollukka, johon napsautit, piilottaa toisen, voit laittaa mollukan takaisin pinon pohjalle painamalla Z',
   },
-  EWithMoreMutedColors: {
+  WithMoreMutedColors: {
     en: 'With more muted colors',
     es: 'Con colores más apagados',
     fr: 'Avec des couleurs plus sourdes',
@@ -7810,7 +7811,7 @@ export const translations: Translations = {
     cs: 'S více tlumenými barvami',
     fi: 'Hillitymmillä väreillä',
   },
-  EOverAThousandPossibleColorCombinations: {
+  OverAThousandPossibleColorCombinations: {
     en: 'Over a thousand possible color combinations!',
     es: '¡Más de mil combinaciones de colores posibles!',
     fr: 'Plus de mille combinaisons de couleurs possibles!',
@@ -7819,7 +7820,7 @@ export const translations: Translations = {
     cs: 'Přes tisíc možných barevných kombinací!',
     fi: 'Yli tuhat mahdollista väriyhdistelmää!',
   },
-  EDarkerColors: {
+  DarkerColors: {
     en: 'Darker colors',
     es: 'Colores más oscuros',
     fr: 'Couleurs plus sombres',
@@ -7828,7 +7829,7 @@ export const translations: Translations = {
     cs: 'Tmavší barvy',
     fi: 'Tummemmat värit',
   },
-  EOnTouchscreensTapTheBlobTwiceToShrinkItAndThriceToEnlargeIt: {
+  OnTouchscreensTapTheBlobTwiceToShrinkItAndThriceToEnlargeIt: {
     en: 'On touchscreens, tap the blob twice to shrink it and thrice to enlarge it',
     es: 'En pantallas táctiles, toque el blob dos veces para reducirlo y tres veces para agrandarlo',
     fr: 'Sur les écrans tactiles, appuyez sur le blob deux fois pour le réduire et trois fois pour l agrandir',
@@ -7837,7 +7838,7 @@ export const translations: Translations = {
     cs: 'Na dotykových obrazovkách klepněte na blob dvakrát, abyste jej zmenšili, a třikrát, abyste jej zvětšili',
     fi: 'Kosketusnäytöillä napauta mollukkaa kahdesti kutistaaksesi sen ja kolmesti suurentaaksesi sen',
   },
-  EAfterEnablingThereIsASlightDelayBeforeAllTheBlobsAreMovingAgain: {
+  AfterEnablingThereIsASlightDelayBeforeAllTheBlobsAreMovingAgain: {
     en: 'After enabling, there is a slight delay before all the blobs are bobbing again',
     es: 'Después de habilitar, hay una ligera demora antes de que todos los blobs vuelvan a moverse',
     fr: 'Après activation, il y a un léger délai avant que tous les blobs recommencent à bouger',
@@ -7846,7 +7847,7 @@ export const translations: Translations = {
     cs: 'Po povolení dojde k mírnému zpoždění, než se všechny bloby znovu začnou pohybovat',
     fi: 'Käyttöönoton jälkeen, mollukat lähtevät liikkeelle viiveellä',
   },
-  EScroll: {
+  Scroll: {
     en: 'Scroll',
     es: 'Desplazarse',
     fr: 'Faites défiler jusqu',
@@ -7855,7 +7856,7 @@ export const translations: Translations = {
     cs: 'Přejít',
     fi: 'Vieritä',
   },
-  EToBlobArt: {
+  ToBlobArt: {
     en: 'to Blob Art',
     es: 'a Arte de Blob',
     fr: 'à l art de Blob',
@@ -7864,7 +7865,7 @@ export const translations: Translations = {
     cs: 'k Blob Art',
     fi: 'Mollukka-taiteeseen',
   },
-  EGetANewSetOfBlobs: {
+  GetANewSetOfBlobs: {
     en: 'Get a new set of blobs',
     es: 'Obtener un nuevo conjunto de blobs',
     fr: 'Obtenez un nouvel ensemble de blobs',
@@ -7874,7 +7875,7 @@ export const translations: Translations = {
     fi: 'Hanki uusi setti mollukoita',
   },
 
-  EPressSpaceOrRWithABlobInFocusToCycleThroughRandomColors: {
+  PressSpaceOrRWithABlobInFocusToCycleThroughRandomColors: {
     en: 'Press Space or R with a blob in focus to cycle through random colors',
     es: 'Presione Espacio o R con un blob enfocado para recorrer colores aleatorios',
     fr: 'Appuyez sur Espace ou R avec un blob en focus pour parcourir des couleurs aléatoires',
@@ -7883,7 +7884,7 @@ export const translations: Translations = {
     cs: 'Stiskněte mezerník nebo R s fokusem na blob procházet náhodné barvy',
     fi: 'Paina välilyöntiä tai R mollukan ollessa valittuna vaihtaaksesi värejä satunnaisesti',
   },
-  EThankYouForPlaying: {
+  ThankYouForPlaying: {
     en: 'Thank you for playing!',
     es: '¡Gracias por jugar!',
     fr: 'Merci d avoir joué!',
@@ -7893,7 +7894,7 @@ export const translations: Translations = {
     fi: 'Kiitos pelaamisesta!',
   },
 
-  ECloneModeOn: {
+  CloneModeOn: {
     en: 'Clone mode on',
     es: '¡Modo de clonación activado!',
     fr: 'Mode de clonage activé!',
@@ -7902,7 +7903,7 @@ export const translations: Translations = {
     cs: 'Režim klonování zapnut!',
     fi: 'Kloonitila päällä!',
   },
-  ELayerDecreaseModeOn: {
+  LayerDecreaseModeOn: {
     en: 'Layer decrease mode on!',
     es: '¡Modo de disminución de capa activado!',
     fr: 'Mode de diminution de couche activé!',
@@ -7911,7 +7912,7 @@ export const translations: Translations = {
     cs: 'Režim snižování vrstvy zapnut!',
     fi: 'Kerroksen lasku päällä!',
   },
-  ELayerIncreaseModeOn: {
+  LayerIncreaseModeOn: {
     en: 'Layer increase mode on!',
     es: '¡Modo de aumento de capa activado!',
     fr: "Mode d'augmentation de couche activé!",
@@ -7921,7 +7922,7 @@ export const translations: Translations = {
     fi: 'Kerroksen nosto päällä!',
   },
 
-  ESizeDecreaseModeOn: {
+  SizeDecreaseModeOn: {
     en: 'Size decrease mode on!',
     es: '¡Modo de disminución de tamaño activado!',
     fr: 'Mode de diminution de taille activé !',
@@ -7930,7 +7931,7 @@ export const translations: Translations = {
     cs: 'Režim snižování velikosti zapnut!',
     fi: 'Koon pienentäminen päällä!',
   },
-  ESizeIncreaseModeOn: {
+  SizeIncreaseModeOn: {
     en: 'Size increase mode on!',
     es: '¡Modo de aumento de tamaño activado!',
     fr: "Mode d'augmentation de taille activé!",
@@ -7940,7 +7941,7 @@ export const translations: Translations = {
     fi: 'Koon suurentaminen päällä!',
   },
 
-  EChangedAllControlsToButtons: {
+  ChangedAllControlsToButtons: {
     en: 'Changed all controls to buttons',
     es: 'Cambiado todos los controles a botones',
     fr: 'Tous les contrôles ont été changés en boutons',
@@ -7950,7 +7951,7 @@ export const translations: Translations = {
     fi: 'Kaikki kontrollit muutettiin painikkeiksi',
   },
 
-  EResetButtonOnTheLowerRightCornerResetsTheInteractiveElements: {
+  ResetButtonOnTheLowerRightCornerResetsTheInteractiveElements: {
     en: 'Reset button on the lower right corner resets the interactive elements',
     es: 'El botón de reinicio en la esquina inferior derecha restablece los elementos interactivos',
     fr: 'Le bouton de réinitialisation dans le coin inférieur droit réinitialise les éléments interactifs',
@@ -7959,7 +7960,7 @@ export const translations: Translations = {
     cs: 'Tlačítko Reset v pravém dolním rohu vynuluje interaktivní prvky',
     fi: '"Nollaa"-painike oikeassa alakulmassa nollaa interaktiiviset elementit',
   },
-  EPressEscapeToSkipToResetButton: {
+  PressEscapeToSkipToResetButton: {
     en: 'Press Escape to skip to reset button',
     es: 'Presione Escape para saltar al botón de reinicio',
     fr: 'Appuyez sur Echap pour passer au bouton de réinitialisation',
@@ -7968,7 +7969,7 @@ export const translations: Translations = {
     cs: 'Stisknutím klávesy Escape přejdete na tlačítko Reset',
     fi: 'Paina Escape hypätäksesi nollauspainikkeeseen',
   },
-  EReactApps: {
+  ReactApps: {
     en: 'React Apps',
     es: 'Aplicaciones React',
     fr: 'Applications React',
@@ -7977,7 +7978,7 @@ export const translations: Translations = {
     cs: 'React Apps',
     fi: 'React-sovellukset',
   },
-  EInThePortfolioSection: {
+  InThePortfolioSection: {
     en: 'In the Portfolio section',
     es: 'En la sección de cartera',
     fr: 'Dans la section Portfolio',
@@ -7986,7 +7987,7 @@ export const translations: Translations = {
     cs: 'V sekci Portfolio',
     fi: 'Portfoliossa',
   },
-  EFetchesQuestionsFromAnAPI: {
+  FetchesQuestionsFromAnAPI: {
     en: 'Fetches questions from an API',
     es: 'Obtiene preguntas de una API',
     fr: 'Récupère des questions à partir d une API',
@@ -7995,7 +7996,7 @@ export const translations: Translations = {
     cs: 'Načte otázky z API',
     fi: 'Hakee kysymyksiä API:sta',
   },
-  EUsesMongoDBToStoreTheInformationWhenLoggedIn: {
+  UsesMongoDBToStoreTheInformationWhenLoggedIn: {
     en: 'Uses Mongo-DB to store the information, when logged in',
     es: 'Utiliza Mongo-DB para almacenar la información cuando está conectado',
     fr: 'Utilise Mongo-DB pour stocker les informations, lorsqu il est connecté',
@@ -8004,7 +8005,7 @@ export const translations: Translations = {
     cs: 'Při přihlášení používá Mongo-DB k uložení informací',
     fi: 'Käyttää Mongo-DB:tä tallentaakseen tiedot sisäänkirjautuessaan',
   },
-  EFetchesJokesFromAnAPI: {
+  FetchesJokesFromAnAPI: {
     en: 'Fetches jokes from an API',
     es: 'Obtiene chistes de una API',
     fr: 'Récupère des blagues à partir d une API',
@@ -8013,7 +8014,7 @@ export const translations: Translations = {
     cs: 'Načte vtipy z API',
     fi: 'Hakee vitsejä API:sta',
   },
-  ECustomizableOptions: {
+  CustomizableOptions: {
     en: 'Customizable options',
     es: 'Opciones personalizables',
     fr: 'Options personnalisables',
@@ -8022,7 +8023,7 @@ export const translations: Translations = {
     cs: 'Přizpůsobitelné možnosti',
     fi: 'Mukautettavat vaihtoehdot',
   },
-  ESavesLatestJokeInLocalStorageAndUsesMongoDBToStore: {
+  SavesLatestJokeInLocalStorageAndUsesMongoDBToStore: {
     en: 'Saves latest joke in localStorage and uses Mongo-DB to store the latest favorite joke, when logged in.',
     es: 'Guarda el último chiste en localStorage y usa Mongo-DB para almacenar el último chiste favorito, cuando está conectado.',
     fr: 'Enregistre la dernière blague dans localStorage et utilise Mongo-DB pour stocker la dernière blague préférée, lorsqu il est connecté.',
@@ -8031,7 +8032,7 @@ export const translations: Translations = {
     cs: 'Ukládá nejnovější vtip do localStorage a při přihlášení používá Mongo-DB k uložení nejnovějšího oblíbeného vtipu.',
     fi: 'Tallentaa uusimman vitsin localStorageen ja käyttää Mongo-DB:tä tallentaakseen viimeisimmän vitsin sisäänkirjautuessa.',
   },
-  EBlobArtApp: {
+  BlobArtApp: {
     en: 'Blob Art App',
     es: 'Aplicación de arte Blob',
     fr: 'Application d art Blob',
@@ -8040,7 +8041,7 @@ export const translations: Translations = {
     cs: 'Blob Art App',
     fi: 'Blob Art -sovellus',
   },
-  EBlobArt: {
+  BlobArt: {
     en: 'Blob Art',
     es: 'Arte de Blob',
     fr: 'Art Blob',
@@ -8049,7 +8050,7 @@ export const translations: Translations = {
     cs: 'Blob Art',
     fi: 'Mollukkataide',
   },
-  EAddMoreBlobs: {
+  AddMoreBlobs: {
     en: 'Add more blobs',
     es: 'Añadir más blobs',
     fr: 'Ajouter plus de blobs',
@@ -8058,7 +8059,7 @@ export const translations: Translations = {
     cs: 'Přidejte více blobů',
     fi: 'Lisää enemmän mollukoita',
   },
-  ERemoveBlobs: {
+  RemoveBlobs: {
     en: 'Remove blobs',
     es: 'Eliminar blobs',
     fr: 'Supprimer les blobs',
@@ -8067,7 +8068,7 @@ export const translations: Translations = {
     cs: 'Odstraňte bloby',
     fi: 'Mollukoiden poisto',
   },
-  EDraggableListElements: {
+  DraggableListElements: {
     en: 'Draggable list elements',
     es: 'Elementos de lista arrastrables',
     fr: 'Éléments de liste déplaçables',
@@ -8076,7 +8077,7 @@ export const translations: Translations = {
     cs: 'Přesouvatelné prvky seznamu',
     fi: 'Raahattavat luetteloelementit',
   },
-  ESortableWithinTheirContainer: {
+  SortableWithinTheirContainer: {
     en: 'Sortable within their container',
     es: 'Ordenable dentro de su contenedor',
     fr: 'Triable dans leur conteneur',
@@ -8085,7 +8086,7 @@ export const translations: Translations = {
     cs: 'Tříditelné ve svém kontejneru',
     fi: 'Lajiteltavissa omassa säiliössään',
   },
-  ECanBeMovedToTwoOtherContainers: {
+  CanBeMovedToTwoOtherContainers: {
     en: 'Can be moved to two other containers',
     es: 'Se puede mover a otros dos contenedores',
     fr: 'Peut être déplacé vers deux autres conteneurs',
@@ -8094,7 +8095,7 @@ export const translations: Translations = {
     cs: 'Lze přesunout do dvou dalších kontejnerů',
     fi: 'Voidaan siirtää kahteen muuhun säiliöön',
   },
-  EKeyboardAccessibleDropDownList: {
+  KeyboardAccessibleDropDownList: {
     en: 'Keyboard accessible drop-down list',
     es: 'Lista desplegable accesible con el teclado',
     fr: 'Liste déroulante accessible au clavier',
@@ -8103,7 +8104,7 @@ export const translations: Translations = {
     cs: 'Rozbalovací seznam přístupný klávesnicí',
     fi: 'Näppäimistösaavutettava avattava luettelo',
   },
-  EUsesLocalStorageToStoreTheInformation: {
+  UsesLocalStorageToStoreTheInformation: {
     en: 'Uses localStorage to store the information',
     es: 'Utiliza localStorage para almacenar la información',
     fr: 'Utilise localStorage pour stocker les informations',
@@ -8112,7 +8113,7 @@ export const translations: Translations = {
     cs: 'Používá localStorage k uložení informací',
     fi: 'Käyttää localStoragea tallentaakseen tiedot',
   },
-  ESeeNumberOfUnfinishedTasks: {
+  SeeNumberOfUnfinishedTasks: {
     en: 'See number of unfinished tasks',
     es: 'Ver el número de tareas sin terminar',
     fr: 'Voir le nombre de tâches inachevées',
@@ -8121,7 +8122,7 @@ export const translations: Translations = {
     cs: 'Zobrazit počet nedokončených úkolů',
     fi: 'Katso keskeneräisten tehtävien määrä',
   },
-  ERemoveTasksOneByOneOrEveryFinishedTaskAtOnce: {
+  RemoveTasksOneByOneOrEveryFinishedTaskAtOnce: {
     en: 'Remove tasks one by one or every finished task at once',
     es: 'Eliminar tareas una por una o todas las tareas terminadas a la vez',
     fr: 'Supprimez les tâches une par une ou toutes les tâches terminées à la fois',
@@ -8130,7 +8131,7 @@ export const translations: Translations = {
     cs: 'Odstraňte úkoly jeden po druhém nebo všechny dokončené úkoly najednou',
     fi: 'Poista tehtävät yksi kerrallaan tai kaikki valmiit tehtävät kerralla',
   },
-  EAddTasksToList: {
+  AddTasksToList: {
     en: 'Add tasks to list',
     es: 'Agregar tareas a la lista',
     fr: 'Ajouter des tâches à la liste',
@@ -8139,7 +8140,7 @@ export const translations: Translations = {
     cs: 'Přidat úkoly do seznamu',
     fi: 'Lisää tehtävät luetteloon',
   },
-  ESingleSelect: {
+  SingleSelect: {
     en: 'Single select',
     es: 'Selección única',
     fr: 'Sélection unique',
@@ -8148,7 +8149,7 @@ export const translations: Translations = {
     cs: 'Jediný výběr',
     fi: 'Yksittäinen valinta',
   },
-  EMultipleSelect: {
+  MultipleSelect: {
     en: 'Multiple select',
     es: 'Selección múltiple',
     fr: 'Sélection multiple',
@@ -8157,7 +8158,7 @@ export const translations: Translations = {
     cs: 'Více výběrů',
     fi: 'Monivalinta',
   },
-  ENavigateWithArrowKeys: {
+  NavigateWithArrowKeys: {
     en: 'Navigate with arrow keys',
     es: 'Navegar con las teclas de flecha',
     fr: 'Naviguer avec les touches fléchées',
@@ -8166,7 +8167,7 @@ export const translations: Translations = {
     cs: 'Navigujte pomocí šipek',
     fi: 'Navigoi nuolinäppäimillä',
   },
-  EGoToItemByTypingTheFirstFewLettersOfTheItem: {
+  GoToItemByTypingTheFirstFewLettersOfTheItem: {
     en: 'Go to item by typing the first few letters of the item',
     es: 'Vaya al elemento escribiendo las primeras letras del elemento',
     fr: 'Accédez à l élément en tapant les premières lettres de l élément',
@@ -8175,7 +8176,7 @@ export const translations: Translations = {
     cs: 'Přejděte na položku zadáním prvních písmen položky',
     fi: 'Siirry kohteeseen kirjoittamalla kohteen ensimmäiset kirjaimet',
   },
-  EThreeStepFullyFunctionalContactForm: {
+  ThreeStepFullyFunctionalContactForm: {
     en: 'Three step fully functional contact form',
     es: 'Formulario de contacto totalmente funcional de tres pasos',
     fr: 'Formulaire de contact entièrement fonctionnel en trois étapes',
@@ -8184,7 +8185,7 @@ export const translations: Translations = {
     cs: 'Třístupňový plně funkční kontaktní formulář',
     fi: 'Kolmivaiheinen yhteydenottolomake',
   },
-  EUsesANodeBackendToSendTheMessage: {
+  UsesANodeBackendToSendTheMessage: {
     en: 'Uses a node backend to send the message',
     es: 'Utiliza un backend de node para enviar el mensaje',
     fr: 'Utilise un backend de Node pour envoyer le message',
@@ -8193,7 +8194,7 @@ export const translations: Translations = {
     cs: 'Používá node backend k odeslání zprávy',
     fi: 'Käyttää Node-taustaa viestin lähettämiseen',
   },
-  EOtherFeatures: {
+  OtherFeatures: {
     en: 'Other features',
     es: 'Otras características',
     fr: 'Autres caractéristiques',
@@ -8202,7 +8203,7 @@ export const translations: Translations = {
     cs: 'Další funkce',
     fi: 'Muut ominaisuudet',
   },
-  EPageTransitionAnimation: {
+  PageTransitionAnimation: {
     en: 'Page transition animation',
     es: 'Animación de transición de página',
     fr: 'Animation de transition de page',
@@ -8211,7 +8212,7 @@ export const translations: Translations = {
     cs: 'Animace přechodu stránky',
     fi: 'Sivun siirtymäanimaatio',
   },
-  EWaveAnimationAtTheMainHeading: {
+  WaveAnimationAtTheMainHeading: {
     en: 'Wave animation at the main heading',
     es: 'Animación de onda en el título principal',
     fr: 'Animation d onde au titre principal',
@@ -8220,7 +8221,7 @@ export const translations: Translations = {
     cs: 'Vlnová animace v hlavním nadpisu',
     fi: 'Aaltoanimaatio pääotsikossa',
   },
-  EBackToTopButtonAtTheLowerRightCornerAndAtTheFooter: {
+  BackToTopButtonAtTheLowerRightCornerAndAtTheFooter: {
     en: 'Back to top button at the lower right corner and at the footer',
     es: 'Botón de volver arriba en la esquina inferior derecha y en el pie de página',
     fr: 'Bouton de retour en haut dans le coin inférieur droit et dans le pied de page',
@@ -8229,7 +8230,7 @@ export const translations: Translations = {
     cs: 'Tlačítko Zpět na horním pravém rohu a v zápatí',
     fi: 'Takaisin ylös -painike oikeassa alakulmassa ja alatunnisteessa',
   },
-  EExitLinksAtTheTopAndBottomOfThePages: {
+  ExitLinksAtTheTopAndBottomOfThePages: {
     en: 'Exit links at the top and bottom of the pages to go back to the main jenniina.fi site',
     es: 'Enlaces de salida en la parte superior e inferior de las páginas para volver al sitio principal de jenniina.fi',
     fr: 'Liens de sortie en haut et en bas des pages pour revenir au site principal jenniina.fi',
@@ -8238,7 +8239,7 @@ export const translations: Translations = {
     cs: 'Odkazy na výstupu na horní a dolní části stránek, abyste se vrátili na hlavní stránku jenniina.fi',
     fi: 'Poistumislinkit sivujen ylä- ja alareunassa palataksesi pääsivulle jenniina.fi',
   },
-  ESiteColors: {
+  SiteColors: {
     en: 'Site Colors',
     es: 'Colores del sitio',
     fr: 'Couleurs du site',
@@ -8247,7 +8248,7 @@ export const translations: Translations = {
     cs: 'Barvy webu',
     fi: 'Sivuston värit',
   },
-  ETheSiteColorsLightnessesSwitchInLightMode1: {
+  TheSiteColorsLightnessesSwitchInLightMode1: {
     en: 'The site colors lightnesses switch in light mode, wherein',
     es: 'Los colores del sitio cambian de luminosidad en el modo claro, donde',
     fr: 'Les luminosités des couleurs du site passent en mode clair, où',
@@ -8256,7 +8257,7 @@ export const translations: Translations = {
     cs: 'Světelnost barvy webu se přepne do světlého režimu, kde',
     fi: 'Sivuston värit vaihtuvat vaaleassa tilassa, jossa',
   },
-  ETheSiteColorsLightnessesSwitchInLightMode2: {
+  TheSiteColorsLightnessesSwitchInLightMode2: {
     en: 'becomes the lightest color instead of the darkest.',
     es: 'se convierte en el color más claro en lugar del más oscuro.',
     fr: 'devient la couleur la plus claire au lieu de la plus sombre.',
@@ -8265,7 +8266,7 @@ export const translations: Translations = {
     cs: 'se stane nejsvětlejší barvou místo nejtmavší.',
     fi: 'muuttuu vaaleimmaksi väriksi tummimman sijaan.',
   },
-  EAnimatedClipPathsAndTextRotationOnHoverWithDynamicDelay: {
+  AnimatedClipPathsAndTextRotationOnHoverWithDynamicDelay: {
     en: 'Animated clip-paths and text rotation on hover with dynamic delay',
     es: 'Recortes de clip animados y rotación de texto al pasar el mouse con retraso dinámico',
     fr: 'Découpages animés et rotation du texte au survol avec délai dynamique',
@@ -8274,7 +8275,7 @@ export const translations: Translations = {
     cs: 'Animované výřezy a rotace textu při najetí myší s dynamickým zpožděním',
     fi: 'Alla olevilla värikentillä on animoidut leikepolut ja tekstin kallistaminen, jotka aktivoituvat hiiren ollessa elementin päällä, dynaamisella viiveellä',
   },
-  EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo: {
+  PleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo: {
     en: 'Please note that the author (Jenniina Laine) speaks only English and Finnish, so please use one of these languages when contacting.',
     es: 'Tenga en cuenta que la autora (Jenniina Laine) habla solo inglés y finlandés, así que utilice uno de estos idiomas al contactar.',
     fr: 'Veuillez noter que l auteur (Jenniina Laine) ne parle qu anglais et finnois, veuillez donc utiliser l une de ces langues lors de la prise de contact.',
@@ -8283,7 +8284,7 @@ export const translations: Translations = {
     cs: 'Všimněte si, že autor (Jenniina Laine) mluví pouze anglicky a finsky, takže při kontaktování použijte jeden z těchto jazyků.',
     fi: 'Pyydän käyttämään yhteydenottoon joko englantia tai suomea.',
   },
-  ETheTranslationsAreDoneWithTheHelpOfGithubCopilotSo: {
+  TheTranslationsAreDoneWithTheHelpOfGithubCopilotSo: {
     en: 'The translations are done with the help of Github Copilot (except for English and Finnish), so they may not be perfect',
     es: 'Las traducciones se realizan con la ayuda de Github Copilot (excepto inglés y finlandés), por lo que pueden no ser perfectas',
     fr: 'Les traductions sont faites avec l aide de Github Copilot (sauf pour l anglais et le finnois), elles peuvent donc ne pas être parfaites',
@@ -8292,7 +8293,7 @@ export const translations: Translations = {
     cs: 'Překlady jsou prováděny s pomocí Github Copilot (kromě angličtiny a finštiny), takže nemusí být perfektní',
     fi: 'Käännökset on tehty Github Copilotin avulla (englantia ja suomea lukuunottamatta), joten ne eivät välttämättä ole täydellisiä',
   },
-  EReactGithubRepository: {
+  ReactGithubRepository: {
     en: 'React Github Repository',
     es: 'Repositorio de Github React',
     fr: 'Dépôt Github React',
@@ -8301,7 +8302,7 @@ export const translations: Translations = {
     cs: 'React Github Repository',
     fi: 'React Github -repositorio',
   },
-  ENodeGithubRepository: {
+  NodeGithubRepository: {
     en: 'Node Github Repository',
     es: 'Repositorio Github Node',
     fr: 'Dépôt Github Node',
@@ -8310,7 +8311,7 @@ export const translations: Translations = {
     cs: 'Node Github Repository',
     fi: 'Node Github -repositorio',
   },
-  ETheSiteIsTranslatedToSixLanguagesWhichWere: {
+  TheSiteIsTranslatedToSixLanguagesWhichWere: {
     en: 'The site is translated to seven languages, six of which were chosen based on the supported languages of JokeAPI, from which the translation idea came from, and the seventh one being Finnish.',
     es: 'El sitio está traducido a siete idiomas, seis de los cuales fueron elegidos en función de los idiomas admitidos de JokeAPI, de donde provino la idea de la traducción, y el séptimo es finlandés.',
     fr: 'Le site est traduit en sept langues, dont six ont été choisies en fonction des langues prises en charge par JokeAPI, d où est venue l idée de la traduction, et la septième étant le finnois.',
@@ -8320,7 +8321,7 @@ export const translations: Translations = {
     fi: 'Sivusto on käännetty seitsemälle kielelle, joista kuusi valittiin JokeAPI:n tuettujen kielten perusteella, mistä käännösidea tuli. Seitsemäs kieli on suomi.',
   },
 
-  EImagePage: {
+  ImagePage: {
     en: 'Image page',
     es: 'Página de imagen',
     fr: "Page d'image",
@@ -8329,7 +8330,7 @@ export const translations: Translations = {
     cs: 'Stránka obrázku',
     fi: 'Kuvan sivu',
   },
-  EMediaPerPage: {
+  MediaPerPage: {
     en: 'Media per page',
     es: 'Medios por página',
     fr: 'Médias par page',
@@ -8338,7 +8339,7 @@ export const translations: Translations = {
     cs: 'Média na stránku',
     fi: 'Mediaa per sivu',
   },
-  EClickToOpenLargeImage: {
+  ClickToOpenLargeImage: {
     en: 'Click to open large image',
     es: 'Haz clic para abrir la imagen grande',
     fr: 'Cliquez pour ouvrir une grande image',
@@ -8347,7 +8348,7 @@ export const translations: Translations = {
     cs: 'Kliknutím otevřete velký obrázek',
     fi: 'Napsauta avataksesi suuren kuvan',
   },
-  EClickToLoadImage: {
+  ClickToLoadImage: {
     en: 'Click to load image',
     es: 'Haz clic para cargar la imagen',
     fr: 'Cliquez pour charger l image',
@@ -8356,7 +8357,7 @@ export const translations: Translations = {
     cs: 'Kliknutím načtěte obrázek',
     fi: 'Napsauta ladataksesi kuvan',
   },
-  EClickToLoadVideo: {
+  ClickToLoadVideo: {
     en: 'Click to load video',
     es: 'Haz clic para cargar el video',
     fr: 'Cliquez pour charger la vidéo',
@@ -8365,7 +8366,7 @@ export const translations: Translations = {
     cs: 'Kliknutím načtěte video',
     fi: 'Napsauta ladataksesi videon',
   },
-  EClickToOpenLargeVideo: {
+  ClickToOpenLargeVideo: {
     en: 'Click to open large video',
     es: 'Haz clic para abrir el video grande',
     fr: 'Cliquez pour ouvrir une grande vidéo',
@@ -8374,7 +8375,7 @@ export const translations: Translations = {
     cs: 'Kliknutím otevřete velké video',
     fi: 'Napsauta avataksesi videon suurena',
   },
-  EVideoPage: {
+  VideoPage: {
     en: 'Video page',
     es: 'Página de video',
     fr: 'Page vidéo',
@@ -8383,7 +8384,7 @@ export const translations: Translations = {
     cs: 'Stránka videa',
     fi: 'Videon sivu',
   },
-  EVectorImagesCanBeDownloaded: {
+  VectorImagesCanBeDownloaded: {
     en: 'Vector images in vector form can be downloaded from the image page',
     es: 'Las imágenes vectoriales en forma de vector se pueden descargar desde la página de la imagen',
     fr: 'Les images vectorielles sous forme vectorielle peuvent être téléchargées depuis la page de l image',
@@ -8392,7 +8393,7 @@ export const translations: Translations = {
     cs: 'Vektorové obrázky ve vektorové formě lze stáhnout ze stránky s obrázkem',
     fi: 'Vektorikuvat voidaan ladata kuvan sivulta vektorimuodossa',
   },
-  EImagesAndQuotes: {
+  ImagesAndQuotes: {
     en: 'Images and Quotes',
     es: 'Imágenes y citas',
     fr: 'Images et citations',
@@ -8401,7 +8402,7 @@ export const translations: Translations = {
     cs: 'Obrázky a citáty',
     fi: 'Kuvia ja lainauksia',
   },
-  EBatchesOf: {
+  BatchesOf: {
     en: 'Batches of',
     es: 'Lotes de',
     fr: 'Lots de',
@@ -8410,7 +8411,7 @@ export const translations: Translations = {
     cs: 'Série',
     fi: ' ',
   },
-  EOfMedia: {
+  OfMedia: {
     en: 'media',
     es: 'medios',
     fr: 'médias',
@@ -8419,7 +8420,7 @@ export const translations: Translations = {
     cs: 'média',
     fi: 'median erät',
   },
-  EVideoTypes: {
+  VideoTypes: {
     en: 'Video types',
     es: 'Tipos de video',
     fr: 'Types de vidéo',
@@ -8428,7 +8429,7 @@ export const translations: Translations = {
     cs: 'Typy videa',
     fi: 'Videotyypit',
   },
-  EMedia: {
+  Media: {
     en: 'Media',
     es: 'Medios',
     fr: 'Médias',
@@ -8437,7 +8438,7 @@ export const translations: Translations = {
     cs: 'Média',
     fi: 'Media',
   },
-  EMediaWithQuotesOrPoems: {
+  MediaWithQuotesOrPoems: {
     en: 'Media with quotes or poems',
     es: 'Medios con citas o poemas',
     fr: 'Médias avec citations ou poèmes',
@@ -8446,7 +8447,7 @@ export const translations: Translations = {
     cs: 'Média s citáty nebo básněmi',
     fi: 'Mediaa lainauksilla tai runoilla',
   },
-  ETextType: {
+  TextType: {
     en: 'Text type',
     es: 'Tipo de texto',
     fr: 'Type de texte',
@@ -8455,7 +8456,7 @@ export const translations: Translations = {
     cs: 'Typ textu',
     fi: 'Tekstin tyyppi',
   },
-  EYouMaySearchForImagesFetchedFromThePixabayAPI: {
+  YouMaySearchForImagesFetchedFromThePixabayAPI: {
     en: 'You may search for images fetched from the Pixabay API.',
     es: 'Puede buscar imágenes obtenidas de la API de Pixabay.',
     fr: 'Vous pouvez rechercher des images extraites de l API Pixabay.',
@@ -8464,7 +8465,7 @@ export const translations: Translations = {
     cs: 'Můžete hledat obrázky získané z API Pixabay.',
     fi: 'Voit etsiä Pixabayn API:sta haettuja kuvia.',
   },
-  EClickingAnImageOpensAModalWithALargerVersion: {
+  ClickingAnImageOpensAModalWithALargerVersion: {
     en: 'Clicking an image opens a modal with a larger version. Clicking a video preview image opens a modal with the video.',
     es: 'Hacer clic en una imagen abre un modal con una versión más grande. Hacer clic en una imagen de vista previa de video abre un modal con el video.',
     fr: 'Cliquer sur une image ouvre un modal avec une version plus grande. Cliquer sur une image de prévisualisation de vidéo ouvre un modal avec la vidéo.',
@@ -8473,7 +8474,7 @@ export const translations: Translations = {
     cs: 'Kliknutím na obrázek se otevře modální okno s větší verzí. Kliknutím na obrázek náhledu videa se otevře modální okno s videem.',
     fi: 'Kuvaa napsauttamalla avautuu modaalinen ikkuna suuremmalla versiolla. Videon esikatselukuvaa napsauttamalla avautuu modaalinen ikkuna videolla.',
   },
-  ETheImageOrVideoHasARandomQuoteOrPoemAddedToIt: {
+  TheImageOrVideoHasARandomQuoteOrPoemAddedToIt: {
     en: 'The image or video has a random quote or poem added to it.',
     es: 'La imagen o video tiene una cita o poema aleatorio añadido a ella.',
     fr: 'L image ou la vidéo a une citation ou un poème aléatoire ajouté à elle.',
@@ -8482,7 +8483,7 @@ export const translations: Translations = {
     cs: 'Obrázek nebo video má přidánu náhodnou citaci nebo báseň.',
     fi: 'Kuvaan tai videoon on lisätty satunnainen lainaus tai runo.',
   },
-  ETheWordCloudIsFormedFromTheDifferentCategoriesAvailableInTheQuotesAPI: {
+  TheWordCloudIsFormedFromTheDifferentCategoriesAvailableInTheQuotesAPI: {
     en: 'The word cloud is formed from the different categories available in the quotes API.',
     es: 'La nube de palabras está formada por las diferentes categorías disponibles en la API de citas.',
     fr: 'Le nuage de mots est formé à partir des différentes catégories disponibles dans l API de citations.',
@@ -8491,7 +8492,7 @@ export const translations: Translations = {
     cs: 'Oblak slov je tvořen různými kategoriemi dostupnými v API citátů.',
     fi: 'Sanapilvi muodostuu eri kategorioista, jotka ovat saatavilla lainaus-API:ssa.',
   },
-  EIAddedValueToTheSearchOfImagesAndVideosWithRandomQuotesOrPoems: {
+  IAddedValueToTheSearchOfImagesAndVideosWithRandomQuotesOrPoems: {
     en: 'I added value to the search of images and videos with random quotes or poems. Sometimes they will be suitable for the image, other times they might be hilariously out of place.',
     es: 'Añadí valor a la búsqueda de imágenes y videos con citas o poemas aleatorios. A veces serán adecuados para la imagen, otras veces pueden ser hilarantemente inapropiados.',
     fr: 'J ai ajouté de la valeur à la recherche d images et de vidéos avec des citations ou des poèmes aléatoires. Parfois, ils seront adaptés à l image, d autres fois, ils pourraient être hilarants.',
@@ -8500,7 +8501,7 @@ export const translations: Translations = {
     cs: 'Přidal jsem hodnotu do hledání obrázků a videí s náhodnými citáty nebo básněmi. Někdy budou vhodné k obrázku, jindy mohou být vtipně nevhodné.',
     fi: 'Lisäsin arvoa kuvien ja videoiden etsimiseen satunnaisilla lainauksilla tai runoilla. Joskus ne sopivat kuvaan, toisinaan ne voivat olla hulvattoman epäsopivia.',
   },
-  EOnceYouClickOpenAnImageOrVideo: {
+  OnceYouClickOpenAnImageOrVideo: {
     en: 'Once you click an image or video, you get a random quote or poem in English. Other languages are not available due to the limitations of the API.',
     es: 'Una vez que haga clic en una imagen o video, obtendrá una cita o poema aleatorio en inglés. Otros idiomas no están disponibles debido a las limitaciones de la API.',
     fr: 'Une fois que vous cliquez sur une image ou une vidéo, vous obtenez une citation ou un poème au hasard en anglais. D autres langues ne sont pas disponibles en raison des limites de l API.',
@@ -8508,7 +8509,7 @@ export const translations: Translations = {
     pt: 'Depois de clicar em uma imagem ou vídeo, você obtém uma citação ou poema aleatório em inglês. Outros idiomas não estão disponíveis devido às limitações da API.',
     fi: 'Kun napsautat kuvan tai videon isommaksi, saat satunnaisen lainauksen tai runon englanniksi. Muita kieliä ei ole saatavilla API:n rajoitusten vuoksi.',
   },
-  EQuotesAreFrom: {
+  QuotesAreFrom: {
     en: 'Quotes are from',
     es: 'Las citas son de',
     fr: 'Les citations sont de',
@@ -8517,7 +8518,7 @@ export const translations: Translations = {
     cs: 'Citáty jsou z',
     fi: 'Lainaukset ovat peräisin',
   },
-  EAndPoemsAreFrom: {
+  AndPoemsAreFrom: {
     en: 'and poems are from',
     es: 'y los poemas son de',
     fr: 'et les poèmes sont de',
@@ -8527,7 +8528,7 @@ export const translations: Translations = {
     fi: 'API:sta ja runot',
   },
 
-  EImagesKuvia: {
+  ImagesKuvia: {
     en: 'Images',
     es: 'Imágenes',
     fr: 'Images',
@@ -8536,7 +8537,7 @@ export const translations: Translations = {
     cs: 'Obrázky',
     fi: 'Kuvia',
   },
-  EImagesKuvat: {
+  ImagesKuvat: {
     en: 'Images',
     es: 'Imágenes',
     fr: 'Images',
@@ -8545,7 +8546,7 @@ export const translations: Translations = {
     cs: 'Obrázky',
     fi: 'Kuvat',
   },
-  ESearchForMedia: {
+  SearchForMedia: {
     en: 'Search for media',
     es: 'Buscar medios',
     fr: 'Rechercher des médias',
@@ -8554,7 +8555,7 @@ export const translations: Translations = {
     cs: 'Hledat média',
     fi: 'Etsi mediaa',
   },
-  ESearchforVideos: {
+  SearchforVideos: {
     en: 'Search for videos',
     es: 'Buscar videos',
     fr: 'Rechercher des vidéos',
@@ -8563,7 +8564,7 @@ export const translations: Translations = {
     cs: 'Hledat videa',
     fi: 'Etsi videoita',
   },
-  EType: {
+  Type: {
     en: 'Type',
     es: 'Tipo',
     fr: 'Type',
@@ -8572,7 +8573,7 @@ export const translations: Translations = {
     cs: 'Typ',
     fi: 'Tyyppi',
   },
-  EPleaseEnterASearchTerm: {
+  PleaseEnterASearchTerm: {
     en: 'Please enter a search term',
     es: 'Por favor, introduce un término de búsqueda',
     fr: 'Veuillez entrer un terme de recherche',
@@ -8581,7 +8582,7 @@ export const translations: Translations = {
     cs: 'Zadejte prosím hledaný výraz',
     fi: 'Anna hakutermi',
   },
-  EEditorsChoice: {
+  EditorsChoice: {
     en: "Editor's Choice",
     es: 'Elección del editor',
     fr: "Choix de l'éditeur",
@@ -8590,7 +8591,7 @@ export const translations: Translations = {
     cs: 'Výběr editora',
     fi: 'Toimituksen valinta',
   },
-  EFilterFurther: {
+  FilterFurther: {
     en: 'Filter further',
     es: 'Filtrar más',
     fr: 'Filtrer davantage',
@@ -8599,7 +8600,7 @@ export const translations: Translations = {
     cs: 'Filtrovat dále',
     fi: 'Suodata lisää',
   },
-  EAddWarningTitle: {
+  AddWarningTitle: {
     en: 'Add Warning',
     es: 'Agregar advertencia',
     fr: 'Ajouter un avertissement',
@@ -8608,7 +8609,7 @@ export const translations: Translations = {
     cs: 'Přidat varování',
     fi: 'Lisää varoitus',
   },
-  EInEnglish: {
+  InEnglish: {
     en: 'in English',
     es: 'en inglés',
     fr: 'en anglais',
@@ -8617,7 +8618,7 @@ export const translations: Translations = {
     cs: 'anglicky',
     fi: 'englanniksi',
   },
-  ETheComediansCompanion: {
+  TheComediansCompanion: {
     en: "The Comedian's Companion",
     es: 'El Compañero del Comediante',
     fr: 'Le Compagnon du Comédien',
@@ -8626,7 +8627,7 @@ export const translations: Translations = {
     cs: 'Společník komika',
     fi: 'Koomikon Kumppani',
   },
-  EFindAJoke: {
+  FindAJoke: {
     en: 'Find a joke',
     es: 'Encuentra una broma',
     fr: 'Trouver une blague',
@@ -8635,7 +8636,7 @@ export const translations: Translations = {
     cs: 'Najít vtip',
     fi: 'Etsi vitsi',
   },
-  EAJokeGeneratorForTheComicallyInclined: {
+  AJokeGeneratorForTheComicallyInclined: {
     en: 'A Joke Generator for the Comically Inclined',
     es: 'Un generador de chistes para los cómicamente inclinados',
     fr: 'Un générateur de blagues pour les comiquement enclins',
@@ -8644,7 +8645,7 @@ export const translations: Translations = {
     cs: 'Generátor vtipů pro komicky nakloněné',
     fi: 'Vitsihaku vitsiniekoille',
   },
-  ESaveJoke: {
+  SaveJoke: {
     en: 'Save Joke',
     es: 'Guardar chiste',
     fr: 'Enregistrer la blague',
@@ -8653,7 +8654,7 @@ export const translations: Translations = {
     cs: 'Uložit vtip',
     fi: 'Tallenna vitsi',
   },
-  ESavedJoke: {
+  SavedJoke: {
     en: 'Saved joke',
     es: 'Chiste guardado',
     fr: 'Blague enregistrée',
@@ -8662,7 +8663,7 @@ export const translations: Translations = {
     cs: 'Uložený vtip',
     fi: 'Vitsi tallennettu',
   },
-  EYourSavedJokes: {
+  YourSavedJokes: {
     en: 'Your Saved Jokes',
     es: 'Tus chistes guardados',
     fr: 'Vos blagues enregistrées',
@@ -8671,7 +8672,7 @@ export const translations: Translations = {
     cs: 'Vaše uložené vtipy',
     fi: 'Tallentamasi vitsit',
   },
-  EJokeAlreadySaved: {
+  JokeAlreadySaved: {
     en: 'Joke already saved',
     es: 'Chiste ya guardado',
     fr: 'Blague déjà enregistrée',
@@ -8680,7 +8681,7 @@ export const translations: Translations = {
     cs: 'Vtip již uložen',
     fi: 'Vitsi on jo tallennettu',
   },
-  ECategoryTitle: {
+  CategoryTitle: {
     en: 'Category',
     es: 'Categoría',
     fr: 'Catégorie',
@@ -8689,7 +8690,7 @@ export const translations: Translations = {
     cs: 'Kategorie',
     fi: 'Kategoria',
   },
-  EChuckNorrisCategory: {
+  ChuckNorrisCategory: {
     en: 'Chuck Norris Category',
     es: 'Categoría Chuck Norris',
     fr: 'Catégorie Chuck Norris',
@@ -8698,7 +8699,7 @@ export const translations: Translations = {
     cs: 'Kategorie Chuck Norris',
     fi: 'Chuck Norris -kategoria',
   },
-  ESelectACategory: {
+  SelectACategory: {
     en: 'Select a category',
     es: 'Seleccione una categoría',
     fr: 'Sélectionnez une catégorie',
@@ -8707,7 +8708,7 @@ export const translations: Translations = {
     cs: 'Vyberte kategorii',
     fi: 'Valitse kategoria',
   },
-  ESelectExtraCategories: {
+  SelectExtraCategories: {
     en: 'Extra Categories',
     es: 'Categorías Extra',
     fr: 'Catégories supplémentaires',
@@ -8716,7 +8717,7 @@ export const translations: Translations = {
     cs: 'Další kategorie',
     fi: 'Lisäkategoriat',
   },
-  ESelectALanguage: {
+  SelectALanguage: {
     en: 'Select a language',
     es: 'Seleccione un idioma',
     fr: 'Sélectionnez une langue',
@@ -8725,7 +8726,7 @@ export const translations: Translations = {
     cs: 'Vyberte jazyk',
     fi: 'Valitse kieli',
   },
-  ESafeTitle: {
+  SafeTitle: {
     en: 'Safe',
     es: 'Seguro',
     fr: 'Sûr',
@@ -8734,7 +8735,7 @@ export const translations: Translations = {
     cs: 'Bezpečné',
     fi: 'Turvallinen',
   },
-  EUnsafeTitle: {
+  UnsafeTitle: {
     en: 'Unsafe',
     es: 'Inseguro',
     fr: 'Pas sûr',
@@ -8743,7 +8744,7 @@ export const translations: Translations = {
     cs: 'Nebezpečné',
     fi: 'Turvaton',
   },
-  EJoke: {
+  Joke: {
     en: 'Joke',
     es: 'Chiste',
     fr: 'Blague',
@@ -8752,7 +8753,7 @@ export const translations: Translations = {
     cs: 'Vtip',
     fi: 'Vitsi',
   },
-  EClickToReveal: {
+  ClickToReveal: {
     en: 'Click to reveal',
     es: 'Clic para revelar',
     fr: 'Cliquez pour révéler',
@@ -8761,7 +8762,7 @@ export const translations: Translations = {
     cs: 'Kliknutím zobrazíte',
     fi: 'Napsauta paljastaaksesi',
   },
-  EClickHereToSeeFeatures: {
+  ClickHereToSeeFeatures: {
     en: 'Click here to see the features',
     cs: 'Klikněte zde pro zobrazení funkcí',
     de: 'Klicken Sie hier, um die Funktionen anzuzeigen',
@@ -8770,7 +8771,7 @@ export const translations: Translations = {
     pt: 'Clique aqui para ver os recursos',
     fi: 'Napsauta tätä nähdäksesi eri ominaisuudet',
   },
-  ESortByTitle: {
+  SortByTitle: {
     en: 'Sort by',
     es: 'Ordenar por',
     fr: 'Trier par',
@@ -8779,7 +8780,7 @@ export const translations: Translations = {
     cs: 'Seřadit podle',
     fi: 'Lajittele',
   },
-  EOrderBy: {
+  OrderBy: {
     en: 'Order by',
     es: 'Ordenar por',
     fr: 'Trier par',
@@ -8788,7 +8789,7 @@ export const translations: Translations = {
     cs: 'Seřadit podle',
     fi: 'Järjestä',
   },
-  ESubmitAJoke: {
+  SubmitAJoke: {
     en: 'Submit a Joke',
     es: 'Enviar una broma',
     fr: 'Soumettre une blague',
@@ -8797,7 +8798,7 @@ export const translations: Translations = {
     cs: 'Odeslat vtip',
     fi: 'Kirjoita oma vitsi',
   },
-  ESubmitAJokeTo: {
+  SubmitAJokeTo: {
     en: 'Submit a Joke to ',
     es: 'Enviar una broma a ',
     fr: 'Soumettre une blague à ',
@@ -8806,7 +8807,7 @@ export const translations: Translations = {
     cs: 'Odeslat vtip do ',
     fi: 'Lähetä vitsi kohteeseen ',
   },
-  EJokeSetup: {
+  JokeSetup: {
     en: 'Setup',
     es: 'Configurar',
     fr: 'Configuration',
@@ -8815,7 +8816,7 @@ export const translations: Translations = {
     cs: 'Nastavení',
     fi: 'Pohjustus',
   },
-  EJokeDelivery: {
+  JokeDelivery: {
     en: 'Punchline',
     es: 'Remate',
     fr: 'Pointe',
@@ -8824,7 +8825,7 @@ export const translations: Translations = {
     cs: 'Pointe',
     fi: 'Huipennus',
   },
-  ESingle: {
+  Single: {
     en: 'Single',
     es: 'Soltero',
     fr: 'Célibataire',
@@ -8833,7 +8834,7 @@ export const translations: Translations = {
     cs: 'Single',
     fi: 'Yksiosainen',
   },
-  ETwoPart: {
+  TwoPart: {
     en: 'Two-Part',
     es: 'Dos partes',
     fr: 'Deux parties',
@@ -8842,7 +8843,7 @@ export const translations: Translations = {
     cs: 'Dvoudílný',
     fi: 'Kaksiosainen',
   },
-  ESafemodeTitle: {
+  SafemodeTitle: {
     en: 'Safe Mode',
     es: 'Modo seguro',
     fr: 'Mode sécurisé',
@@ -8851,7 +8852,7 @@ export const translations: Translations = {
     cs: 'Bezpečný režim',
     fi: 'Turvallinen',
   },
-  ESearchByKeyword: {
+  SearchByKeyword: {
     en: 'Search by keyword',
     es: 'Buscar por palabra clave',
     fr: 'Recherche par mot-clé',
@@ -8860,7 +8861,7 @@ export const translations: Translations = {
     cs: 'Hledat podle klíčového slova',
     fi: 'Hae avainsanalla',
   },
-  EKeyword: {
+  Keyword: {
     en: 'Keyword',
     es: 'Palabra clave',
     fr: 'Mot-clé',
@@ -8869,7 +8870,7 @@ export const translations: Translations = {
     cs: 'Klíčové slovo',
     fi: 'Avainsana',
   },
-  ELoginOrRegisterToSave: {
+  LoginOrRegisterToSave: {
     en: 'Please login or register to save the joke',
     es: 'Por favor inicie sesión o regístrese para guardar la broma',
     fr: 'Veuillez vous connecter ou vous inscrire pour enregistrer la blague',
@@ -8878,7 +8879,7 @@ export const translations: Translations = {
     cs: 'Přihlaste se nebo se zaregistrujte, abyste uložili vtip',
     fi: 'Kirjaudu sisään tai rekisteröidy tallentaaksesi vitsin',
   },
-  EAny: {
+  Any: {
     en: 'Any',
     es: 'Cualquiera',
     fr: "N'importe quel",
@@ -8887,7 +8888,7 @@ export const translations: Translations = {
     cs: 'Jakýkoliv',
     fi: 'Mikä tahansa',
   },
-  ENoJokeFound: {
+  NoJokeFound: {
     en: 'No joke found',
     es: 'No se encontró broma',
     fr: 'Pas de blague trouvée',
@@ -8896,7 +8897,7 @@ export const translations: Translations = {
     cs: 'Nenalezen žádný vtip',
     fi: 'Vitsiä ei löytynyt',
   },
-  ENoJokeFoundWithThisSearchTerm: {
+  NoJokeFoundWithThisSearchTerm: {
     en: 'No joke found with this search term',
     es: 'No se encontró broma con este término de búsqueda',
     fr: 'Pas de blague trouvée avec ce terme de recherche',
@@ -8905,7 +8906,7 @@ export const translations: Translations = {
     cs: 'Nenalezen žádný vtip s tímto vyhledávacím výrazem',
     fi: 'Vitsiä ei löytynyt tällä hakusanalla',
   },
-  ENoJokesYet: {
+  NoJokesYet: {
     en: 'No jokes yet',
     es: 'Aún no hay bromas',
     fr: 'Pas encore de blagues',
@@ -8914,7 +8915,7 @@ export const translations: Translations = {
     cs: 'Zatím žádné vtipy',
     fi: 'Ei vielä vitsejä',
   },
-  EJokeTypeTitle: {
+  JokeTypeTitle: {
     en: 'Joke Type',
     es: 'Tipo de broma',
     fr: 'Type de blague',
@@ -8923,7 +8924,7 @@ export const translations: Translations = {
     cs: 'Typ vtipu',
     fi: 'Vitsityyppi',
   },
-  ERegisterAndLoginToUse: {
+  RegisterAndLoginToUse: {
     en: 'Register and log in to save your favorite jokes to a Mongo-DB database',
     es: 'Regístrese e inicie sesión para guardar sus chistes favoritos en una base de datos Mongo-DB',
     fr: 'Inscrivez-vous et connectez-vous pour enregistrer vos blagues préférées dans une base de données Mongo-DB',
@@ -8932,7 +8933,7 @@ export const translations: Translations = {
     cs: 'Zaregistrujte se a přihlaste se, abyste si mohli uložit své oblíbené vtipy do databáze Mongo-DB',
     fi: 'Rekisteröidy ja kirjaudu sisään tallentaaksesi suosikkivitsisi Mongo-DB-tietokantaan',
   },
-  EFetchesJokesFrom: {
+  FetchesJokesFrom: {
     en: 'Fetches jokes from',
     es: 'Busca chistes de',
     fr: 'Récupère des blagues de',
@@ -8941,7 +8942,7 @@ export const translations: Translations = {
     cs: 'Načte vtipy z',
     fi: 'Noutaa vitsejä sijainnista',
   },
-  EFilterJokesBy: {
+  FilterJokesBy: {
     en: 'Filter jokes by',
     es: 'Filtrar chistes por',
     fr: 'Filtrer les blagues par',
@@ -8950,7 +8951,7 @@ export const translations: Translations = {
     cs: 'Filtrovat vtipy podle',
     fi: 'Suodata vitsejä:',
   },
-  EDadJoke: {
+  DadJoke: {
     en: 'Dad joke',
     es: 'Chiste de papá',
     fr: 'Blague de papa',
@@ -8959,7 +8960,7 @@ export const translations: Translations = {
     cs: 'Otcovský vtip',
     fi: 'Iskävitsi',
   },
-  EDarkJokesAreVisibleOnlyWhenSafeModeIsOff: {
+  DarkJokesAreVisibleOnlyWhenSafeModeIsOff: {
     en: '"Dark" jokes are visible only when Safe Mode is off',
     es: 'Las "bromas oscuras" son visibles solo cuando el Modo seguro está desactivado',
     fr: 'Les "blagues sombres" ne sont visibles que lorsque le mode sécurisé est désactivé',
@@ -8968,7 +8969,7 @@ export const translations: Translations = {
     cs: '"Temné" vtipy jsou viditelné pouze tehdy, když je bezpečný režim vypnutý',
     fi: 'Synkät (Dark) vitsit näkyvät vain, kun turvallinen tila on pois päältä',
   },
-  EPublic: {
+  Public: {
     en: 'Public',
     es: 'Público',
     fr: 'Public',
@@ -8977,7 +8978,7 @@ export const translations: Translations = {
     cs: 'Veřejnost',
     fi: 'Julkinen',
   },
-  EPrivate: {
+  Private: {
     en: 'Private',
     es: 'Privado',
     fr: 'Privé',
@@ -8986,7 +8987,7 @@ export const translations: Translations = {
     cs: 'Soukromý',
     fi: 'Yksityinen',
   },
-  EMaybeTryAnotherLanguage: {
+  MaybeTryAnotherLanguage: {
     en: 'Maybe try another language?',
     es: '¿Quizás probar otro idioma?',
     fr: 'Peut-être essayer une autre langue?',
@@ -8995,7 +8996,7 @@ export const translations: Translations = {
     cs: 'Možná zkusit jiný jazyk?',
     fi: 'Kokeile ehkä toisella kielellä?',
   },
-  EErrorDeletingJoke: {
+  ErrorDeletingJoke: {
     en: 'There was an error deleting the joke',
     es: 'Se produjo un error al eliminar la broma',
     fr: "Une erreur s'est produite lors de la suppression de la blague",
@@ -9004,7 +9005,7 @@ export const translations: Translations = {
     cs: 'Při mazání vtipu došlo k chybě',
     fi: 'Vitsin poistamisessa tapahtui virhe',
   },
-  ESort: {
+  Sort: {
     en: 'Sort',
     es: 'Ordenar',
     fr: 'Trier',
@@ -9013,7 +9014,7 @@ export const translations: Translations = {
     cs: 'Seřadit',
     fi: 'Lajittele',
   },
-  EIfTheJokeIsNotPrivateVerificationIsNeeded: {
+  IfTheJokeIsNotPrivateVerificationIsNeeded: {
     en: 'If the joke is not private, verification is needed from the administrator',
     es: 'Si la broma no es privada, se necesita verificación del administrador',
     fr: "Si la blague n'est pas privée, une vérification est nécessaire de la part de l'administrateur",
@@ -9022,7 +9023,7 @@ export const translations: Translations = {
     cs: 'Pokud vtip není soukromý, je potřeba ověření od správce',
     fi: 'Jos vitsi ei ole yksityinen, tarvitaan hallinnon vahvistus',
   },
-  EJokeIsSetToPrivateAndWillOnlyBeSeenByYouAndTheAdministrator: {
+  JokeIsSetToPrivateAndWillOnlyBeSeenByYouAndTheAdministrator: {
     en: 'Joke is set to private and will only be seen by you and the administrator',
     es: 'La broma está configurada como privada y solo será visible para usted y el administrador',
     fr: "La blague est définie sur privée et ne sera visible que par vous et l'administrateur",
@@ -9031,7 +9032,7 @@ export const translations: Translations = {
     cs: 'Vtip je nastaven na soukromý a uvidíte ho pouze vy a správce',
     fi: 'Vitsi on asetettu yksityiseksi ja sitä näkevät vain sinä ja hallinto',
   },
-  EJokeIsSetToPublicAndWillNeedVerificationFromAnAdministrator: {
+  JokeIsSetToPublicAndWillNeedVerificationFromAnAdministrator: {
     en: 'Joke is set to public and will need verification from an administrator',
     es: 'La broma está configurada como pública y necesitará verificación de un administrador',
     fr: "La blague est définie sur publique et aura besoin d'une vérification de la part d'un administrateur",
@@ -9040,7 +9041,7 @@ export const translations: Translations = {
     cs: 'Vtip je nastaven na veřejný a bude potřebovat ověření od správce',
     fi: 'Vitsi on asetettu julkiseksi ja se vaatii vahvistuksen hallinnolta',
   },
-  EJokeLanguage: {
+  JokeLanguage: {
     en: 'Joke language',
     es: 'Idioma de la broma',
     fr: 'Langue de la blague',
@@ -9049,7 +9050,7 @@ export const translations: Translations = {
     cs: 'Jazyk vtipu',
     fi: 'Vitsin kieli',
   },
-  ELocalJokes: {
+  LocalJokes: {
     en: 'Local jokes',
     es: 'Chistes locales',
     fr: 'Blagues locales',
@@ -9058,7 +9059,7 @@ export const translations: Translations = {
     cs: 'Místní vtipy',
     fi: 'Paikalliset vitsit',
   },
-  EYourJokes: {
+  YourJokes: {
     en: 'Your jokes',
     es: 'Tus chistes',
     fr: 'Vos blagues',
@@ -9067,7 +9068,7 @@ export const translations: Translations = {
     cs: 'Vaše vtipy',
     fi: 'Tallentamasi vitsit',
   },
-  EUserSubmittedJokes: {
+  UserSubmittedJokes: {
     en: 'User submitted jokes',
     es: 'Chistes enviados por el usuario',
     fr: 'Blagues soumises par les utilisateurs',
@@ -9076,7 +9077,7 @@ export const translations: Translations = {
     cs: 'Vtipy zaslané uživatelem',
     fi: 'Käyttäjien vitsit',
   },
-  EAnonymous: {
+  Anonymous: {
     en: 'Anonymous',
     es: 'Anónimo',
     fr: 'Anonyme',
@@ -9085,7 +9086,7 @@ export const translations: Translations = {
     cs: 'Anonymní',
     fi: 'Anonyymi',
   },
-  EPublish: {
+  Publish: {
     en: 'Publish',
     es: 'Publicar',
     fr: 'Publier',
@@ -9094,7 +9095,7 @@ export const translations: Translations = {
     cs: 'Publikovat',
     fi: 'Julkaise',
   },
-  EPrivacy: {
+  Privacy: {
     en: 'Privacy',
     es: 'Privacidad',
     fr: 'Intimité',
@@ -9103,7 +9104,7 @@ export const translations: Translations = {
     cs: 'Soukromí',
     fi: 'Yksityisyys',
   },
-  EPublishWithNickname: {
+  PublishWithNickname: {
     en: 'Publish with nickname',
     es: 'Publicar con apodo',
     fr: 'Publier avec un pseudonyme',
@@ -9112,7 +9113,7 @@ export const translations: Translations = {
     cs: 'Publikovat s přezdívkou',
     fi: 'Julkaise nimimerkillä',
   },
-  EPublishAnonymously: {
+  PublishAnonymously: {
     en: 'Publish anonymously',
     es: 'Publicar anónimamente',
     fr: 'Publier anonymement',
@@ -9121,7 +9122,7 @@ export const translations: Translations = {
     cs: 'Publikovat anonymně',
     fi: 'Julkaise nimettömänä',
   },
-  EAuthor: {
+  Author: {
     en: 'Author',
     es: 'Autor',
     fr: 'Auteur',
@@ -9130,7 +9131,7 @@ export const translations: Translations = {
     cs: 'Autor',
     fi: 'Tekijä',
   },
-  EPopular: {
+  Popular: {
     en: 'Popular',
     es: 'Popular',
     fr: 'Populaire',
@@ -9139,7 +9140,7 @@ export const translations: Translations = {
     cs: 'Populární',
     fi: 'Suosittu',
   },
-  EPopularity: {
+  Popularity: {
     en: 'Popularity',
     es: 'Popularidad',
     fr: 'Popularité',
@@ -9148,7 +9149,7 @@ export const translations: Translations = {
     cs: 'Oblíbenost',
     fi: 'Suosio',
   },
-  ERandomJoke: {
+  RandomJoke: {
     en: 'Random joke',
     es: 'Broma aleatoria',
     fr: 'Blague aléatoire',
@@ -9157,7 +9158,7 @@ export const translations: Translations = {
     cs: 'Náhodný vtip',
     fi: 'Satunnainen vitsi',
   },
-  ERandom: {
+  Random: {
     en: 'Random',
     es: 'Aleatorio',
     fr: 'Aléatoire',
@@ -9166,7 +9167,7 @@ export const translations: Translations = {
     cs: 'Náhodný',
     fi: 'Satunnainen',
   },
-  EAllJokes: {
+  AllJokes: {
     en: 'All jokes',
     es: 'Todos los chistes',
     fr: 'Toutes les blagues',
@@ -9175,7 +9176,7 @@ export const translations: Translations = {
     cs: 'Všechny vtipy',
     fi: 'Kaikki vitsit',
   },
-  EAll: {
+  All: {
     en: 'All',
     es: 'Todos',
     fr: 'Tout',
@@ -9184,7 +9185,7 @@ export const translations: Translations = {
     cs: 'Všechny',
     fi: 'Kaikki',
   },
-  EClickHereToWriteYourOwnJoke: {
+  ClickHereToWriteYourOwnJoke: {
     en: 'Click here to write your own joke',
     es: 'Haga clic aquí para escribir su propia broma',
     fr: 'Cliquez ici pour écrire votre propre blague',
@@ -9193,7 +9194,7 @@ export const translations: Translations = {
     cs: 'Kliknutím sem napíšete vlastní vtip',
     fi: 'Napsauta tätä kirjoittaaksesi oman vitsisi',
   },
-  EThereAreNoJokesInFinnish: {
+  ThereAreNoJokesInFinnish: {
     en: 'There are no jokes in Finnish',
     es: 'No hay bromas en finlandés',
     fr: "Il n'y a pas de blagues en finnois",
@@ -9202,7 +9203,7 @@ export const translations: Translations = {
     cs: 'Nejsou žádné vtipy ve finštině',
     fi: 'Suomeksi ei ole vitsejä',
   },
-  ESeeLocalJokes: {
+  SeeLocalJokes: {
     en: 'See local jokes',
     es: 'Ver chistes locales',
     fr: 'Voir les blagues locales',
@@ -9211,7 +9212,7 @@ export const translations: Translations = {
     cs: 'Zobrazit místní vtipy',
     fi: 'Katso paikalliset vitsit',
   },
-  ESeeLocalJokesBelow: {
+  SeeLocalJokesBelow: {
     en: 'See local jokes below',
     es: 'Ver chistes locales a continuación',
     fr: 'Voir les blagues locales ci-dessous',
@@ -9220,7 +9221,7 @@ export const translations: Translations = {
     cs: 'Zobrazit místní vtipy níže',
     fi: 'Katso paikalliset vitsit alempana',
   },
-  ETryAnotherSearchTerm: {
+  TryAnotherSearchTerm: {
     en: 'Try another search term',
     es: 'Prueba otro término de búsqueda',
     fr: 'Essayez un autre terme de recherche',
@@ -9229,7 +9230,7 @@ export const translations: Translations = {
     cs: 'Zkuste jiný vyhledávací výraz',
     fi: 'Kokeile toisella hakuehdolla',
   },
-  EReportErrorToAdmin: {
+  ReportErrorToAdmin: {
     en: 'Report error to admin',
     es: 'Informar error al administrador',
     fr: "Signaler une erreur à l'administrateur",
@@ -9238,7 +9239,7 @@ export const translations: Translations = {
     cs: 'Nahlásit chybu správci',
     fi: 'Ilmoita virheestä ylläpidolle',
   },
-  EAreYouSureYouWantToMakeThisJokePublic: {
+  AreYouSureYouWantToMakeThisJokePublic: {
     en: 'Are you sure you want to make this joke public? It will need verification from an administrator',
     es: '¿Estás seguro de que quieres hacer esta broma pública? Necesitará verificación de un administrador',
     fr: "Êtes-vous sûr de vouloir rendre cette blague publique? Il aura besoin d'une vérification de la part d'un administrateur",
@@ -9247,7 +9248,7 @@ export const translations: Translations = {
     cs: 'Jste si jisti, že chcete tento vtip zveřejnit? Bude potřebovat ověření od správce',
     fi: 'Oletko varma, että haluat tehdä tämän vitsin julkiseksi? Se vaatii vahvistuksen hallinnolta',
   },
-  EPending: {
+  Pending: {
     en: 'Pending',
     es: 'Pendiente',
     fr: 'En attente',
@@ -9256,7 +9257,7 @@ export const translations: Translations = {
     cs: 'Čekající',
     fi: 'Odottaa',
   },
-  EPendingVerification: {
+  PendingVerification: {
     en: 'Pending verification',
     es: 'Verificación pendiente',
     fr: 'Vérification en attente',
@@ -9265,7 +9266,7 @@ export const translations: Translations = {
     cs: 'Čekající ověření',
     fi: 'Odottaa vahvistusta',
   },
-  EAreYouSureYouWantToMakeThisJokePrivate: {
+  AreYouSureYouWantToMakeThisJokePrivate: {
     en: 'Are you sure you want to make this joke private? Republishing will require verification from an administrator',
     es: '¿Estás seguro de que quieres hacer esta broma privada? Volver a publicar requerirá verificación de un administrador',
     fr: "Êtes-vous sûr de vouloir rendre cette blague privée? La republication nécessitera une vérification de la part d'un administrateur",
@@ -9274,7 +9275,7 @@ export const translations: Translations = {
     cs: 'Jste si jisti, že chcete tento vtip udělat soukromým? Opětovné zveřejnění bude vyžadovat ověření od správce',
     fi: 'Oletko varma, että haluat tehdä tämän vitsin yksityiseksi? Uudelleenjulkaisu vaatii vahvistuksen hallinnolta',
   },
-  ESelectCategory: {
+  SelectCategory: {
     en: 'Select category',
     es: 'Seleccionar categoría',
     fr: 'Sélectionnez une catégorie',
@@ -9283,7 +9284,7 @@ export const translations: Translations = {
     cs: 'Vyberte kategorii',
     fi: 'Valitse kategoria',
   },
-  EOnlyPrivateJokesCanBeEdited: {
+  OnlyPrivateJokesCanBeEdited: {
     en: 'The text of jokes can be edited only when private',
     es: 'El texto de las bromas solo se puede editar cuando es privado',
     fr: "Le texte des blagues ne peut être modifié que lorsqu'il est privé",
@@ -9292,7 +9293,7 @@ export const translations: Translations = {
     cs: 'Text vtipů lze upravovat pouze v případě soukromého',
     fi: 'Vitsien tekstiä voi muokata vain silloin, kun se on yksityinen',
   },
-  ERepublishingWillRequireVerificationFromAnAdministrator: {
+  RepublishingWillRequireVerificationFromAnAdministrator: {
     en: 'Republishing will require verification from an administrator',
     es: 'Volver a publicar requerirá verificación de un administrador',
     fr: "La republication nécessitera une vérification de la part d'un administrateur",
@@ -9301,7 +9302,7 @@ export const translations: Translations = {
     cs: 'Opětovné zveřejnění bude vyžadovat ověření od správce',
     fi: 'Uudelleenjulkaisu vaatii vahvistuksen hallinnolta',
   },
-  ESkipToSavedJokes: {
+  SkipToSavedJokes: {
     en: 'Skip to saved jokes',
     es: 'Saltar a las bromas guardadas',
     fr: 'Passer aux blagues enregistrées',
@@ -9310,7 +9311,7 @@ export const translations: Translations = {
     cs: 'Přejít na uložené vtipy',
     fi: 'Siirry tallennettuihin vitseihin',
   },
-  ESaving: {
+  Saving: {
     en: 'Saving...',
     es: 'Guardando...',
     fr: 'Sauvegarde...',
@@ -9319,7 +9320,7 @@ export const translations: Translations = {
     cs: 'Ukládání...',
     fi: 'Tallennetaan...',
   },
-  ESkipToJokeSearch: {
+  SkipToJokeSearch: {
     en: 'Skip to joke search',
     es: 'Saltar a la búsqueda de bromas',
     fr: 'Passer à la recherche de blagues',
@@ -9328,7 +9329,7 @@ export const translations: Translations = {
     cs: 'Přejít na vyhledávání vtipů',
     fi: 'Siirry vitsihakuun',
   },
-  ELatest: {
+  Latest: {
     en: 'Latest',
     es: 'Últimos',
     fr: 'Derniers',
@@ -9337,7 +9338,7 @@ export const translations: Translations = {
     cs: 'Posledních',
     fi: 'Viimeisimmät',
   },
-  EGetLatest: {
+  GetLatest: {
     en: 'Get latest',
     es: 'Obtener los últimos',
     fr: 'Obtenez les derniers',
@@ -9346,7 +9347,7 @@ export const translations: Translations = {
     cs: 'Získejte posledních',
     fi: 'Hae viimeisimmät',
   },
-  EHowMany: {
+  HowMany: {
     en: 'How many',
     es: 'Cuántos',
     fr: 'Combien',
@@ -9355,7 +9356,7 @@ export const translations: Translations = {
     cs: 'Kolik',
     fi: 'Kuinka monta',
   },
-  EJokeCopiedToClipboard: {
+  JokeCopiedToClipboard: {
     en: 'Joke copied to clipboard',
     es: 'Broma copiada al portapapeles',
     fr: 'Blague copiée dans le presse-papiers',
@@ -9364,7 +9365,7 @@ export const translations: Translations = {
     cs: 'Vtip zkopírován do schránky',
     fi: 'Vitsi kopioitu leikepöydälle',
   },
-  EFailedToCopyJokeToClipboard: {
+  FailedToCopyJokeToClipboard: {
     en: 'Failed to copy joke to clipboard',
     es: 'Error al copiar la broma al portapapeles',
     fr: 'Impossible de copier la blague dans le presse-papiers',
@@ -9373,7 +9374,7 @@ export const translations: Translations = {
     cs: 'Chyba při kopírování vtipu do schránky',
     fi: 'Vitsin kopioiminen leikepöydälle epäonnistui',
   },
-  EDeletedJoke: {
+  DeletedJoke: {
     en: 'Deleted joke',
     es: 'Broma eliminada',
     fr: 'Blague supprimée',
@@ -9382,7 +9383,7 @@ export const translations: Translations = {
     cs: 'Smazaný vtip',
     fi: 'Vitsi poistettu',
   },
-  EJokeHidden: {
+  JokeHidden: {
     en: 'Joke hidden',
     es: 'Broma oculta',
     fr: 'Blague cachée',
@@ -9391,7 +9392,7 @@ export const translations: Translations = {
     cs: 'Vtip skrytý',
     fi: 'Vitsi piilotettu',
   },
-  EAreYouSureYouWantToHideThisJoke: {
+  AreYouSureYouWantToHideThisJoke: {
     en: 'Are you sure you want to hide this joke?',
     es: '¿Estás seguro de que quieres ocultar esta broma?',
     fr: 'Êtes-vous sûr de vouloir cacher cette blague?',
@@ -9400,7 +9401,7 @@ export const translations: Translations = {
     cs: 'Jste si jisti, že chcete tento vtip skrýt?',
     fi: 'Oletko varma, että haluat piilottaa tämän vitsin?',
   },
-  EThisJokeIsAlreadyBlacklisted: {
+  ThisJokeIsAlreadyBlacklisted: {
     en: 'This joke is already blacklisted.',
     es: 'Esta broma ya está en la lista negra.',
     fr: 'Cette blague est déjà sur liste noire.',
@@ -9409,7 +9410,7 @@ export const translations: Translations = {
     cs: 'Tento vtip je již na černé listině.',
     fi: 'Tämä vitsi on jo piilotettu.',
   },
-  EShowHiddenJokes: {
+  ShowHiddenJokes: {
     en: 'Show hidden jokes',
     es: 'Mostrar bromas ocultas',
     fr: 'Afficher les blagues cachées',
@@ -9418,7 +9419,7 @@ export const translations: Translations = {
     cs: 'Zobrazit skryté vtipy',
     fi: 'Näytä piilotetut vitsit',
   },
-  EHideJokes: {
+  HideJokes: {
     en: 'Hide jokes',
     es: 'Ocultar bromas',
     fr: 'Masquer les blagues',
@@ -9427,7 +9428,7 @@ export const translations: Translations = {
     cs: 'Skrýt vtipy',
     fi: 'Piilota vitsit',
   },
-  ERestore: {
+  Restore: {
     en: 'Restore',
     es: 'Restaurar',
     fr: 'Restaurer',
@@ -9436,7 +9437,7 @@ export const translations: Translations = {
     cs: 'Obnovit',
     fi: 'Palauta',
   },
-  EJokeRestored: {
+  JokeRestored: {
     en: 'Joke restored',
     es: 'Broma restaurada',
     fr: 'Blague restaurée',
@@ -9445,7 +9446,7 @@ export const translations: Translations = {
     cs: 'Vtip obnoven',
     fi: 'Vitsi palautettu',
   },
-  EAreYouSureYouWantToRestoreThisJoke: {
+  AreYouSureYouWantToRestoreThisJoke: {
     en: 'Are you sure you want to restore this joke?',
     es: '¿Estás seguro de que quieres restaurar esta broma?',
     fr: 'Êtes-vous sûr de vouloir restaurer cette blague?',
@@ -9454,7 +9455,7 @@ export const translations: Translations = {
     cs: 'Jste si jisti, že chcete tento vtip obnovit?',
     fi: 'Oletko varma, että haluat palauttaa tämän vitsin?',
   },
-  EWouldYouLikeToSaveTheJoke: {
+  WouldYouLikeToSaveTheJoke: {
     en: 'Would you like to save the joke?',
     es: '¿Te gustaría guardar la broma?',
     fr: 'Souhaitez-vous enregistrer la blague?',
@@ -9463,7 +9464,7 @@ export const translations: Translations = {
     cs: 'Chcete uložit vtip?',
     fi: 'Haluatko tallentaa vitsin?',
   },
-  EBlockedJokes: {
+  BlockedJokes: {
     en: 'Blocked jokes',
     es: 'Bromas bloqueadas',
     fr: 'Blagues bloquées',
@@ -9472,7 +9473,7 @@ export const translations: Translations = {
     cs: 'Blokovat vtipy',
     fi: 'Estetyt vitsit',
   },
-  EHideBlockedJokes: {
+  HideBlockedJokes: {
     en: 'Hide blocked jokes',
     es: 'Ocultar bromas bloqueadas',
     fr: 'Masquer les blagues bloquées',
@@ -9481,7 +9482,7 @@ export const translations: Translations = {
     cs: 'Skrýt blokované vtipy',
     fi: 'Piilota estetyt vitsit',
   },
-  ELatestJokes: {
+  LatestJokes: {
     en: 'Latest jokes',
     es: 'Últimas bromas',
     fr: 'Dernières blagues',
@@ -9490,7 +9491,7 @@ export const translations: Translations = {
     cs: 'Poslední vtipy',
     fi: 'Viimeisimmät vitsit',
   },
-  EBlock: {
+  Block: {
     en: 'Block',
     es: 'Bloquear',
     fr: 'Bloquer',
@@ -9499,7 +9500,7 @@ export const translations: Translations = {
     cs: 'Blok',
     fi: 'Estä',
   },
-  ERemove: {
+  Remove: {
     en: 'Remove',
     es: 'Eliminar',
     fr: 'Supprimer',
@@ -9508,7 +9509,7 @@ export const translations: Translations = {
     cs: 'Odstranit',
     fi: 'Poista',
   },
-  EBlocked: {
+  Blocked: {
     en: 'Blocked',
     es: 'Bloqueado',
     fr: 'Bloqué',
@@ -9517,7 +9518,7 @@ export const translations: Translations = {
     cs: 'Blokovaný',
     fi: 'Estetyt',
   },
-  ELoadingJokes: {
+  LoadingJokes: {
     en: 'Loading jokes...',
     es: 'Cargando bromas...',
     fr: 'Chargement des blagues...',
@@ -9526,7 +9527,7 @@ export const translations: Translations = {
     cs: 'Načítání vtipů...',
     fi: 'Ladataan vitsejä...',
   },
-  EJokesLoaded: {
+  JokesLoaded: {
     en: 'Jokes loaded',
     es: 'Bromas cargadas',
     fr: 'Blagues chargées',
@@ -9535,7 +9536,7 @@ export const translations: Translations = {
     cs: 'Vtipy načteny',
     fi: 'Vitsit ladattu',
   },
-  EThisMayTakeUpToAMinute: {
+  ThisMayTakeUpToAMinute: {
     en: 'This may take up to a minute',
     es: 'Esto puede tardar hasta un minuto',
     fr: "Cela peut prendre jusqu'à une minute",
@@ -9544,7 +9545,7 @@ export const translations: Translations = {
     cs: 'To může trvat až minutu',
     fi: 'Tämä voi kestää jopa minuutin',
   },
-  EEditLanguagePreference: {
+  EditLanguagePreference: {
     en: 'Edit language preference',
     es: 'Editar preferencia de idioma',
     fr: 'Modifier les préférences linguistiques',
@@ -9553,7 +9554,7 @@ export const translations: Translations = {
     cs: 'Upravit jazykové nastavení',
     fi: 'Muokkaa kieliasetuksia',
   },
-  EEditPreferredNickname: {
+  EditPreferredNickname: {
     en: 'Edit preferred nickname',
     es: 'Editar apodo preferido',
     fr: 'Modifier le surnom préféré',
@@ -9562,7 +9563,7 @@ export const translations: Translations = {
     cs: 'Upravit preferovanou přezdívku',
     fi: 'Muokkaa nimimerkkiä',
   },
-  EEditPassword: {
+  EditPassword: {
     en: 'Edit password',
     es: 'Editar contraseña',
     fr: 'Modifier le mot de passe',
@@ -9571,7 +9572,7 @@ export const translations: Translations = {
     cs: 'Upravit heslo',
     fi: 'Muokkaa salasanaa',
   },
-  EEditEmail: {
+  EditEmail: {
     en: 'Edit email',
     es: 'Editar correo electrónico',
     fr: "Modifier l'adresse e-mail",
@@ -9580,7 +9581,7 @@ export const translations: Translations = {
     cs: 'Upravit e-mail',
     fi: 'Muokkaa sähköpostia',
   },
-  ESendsAnEmailToTheNewAddressForVerification: {
+  SendsAnEmailToTheNewAddressForVerification: {
     en: 'Sends an email to the new address for verification',
     es: 'Envía un correo electrónico a la nueva dirección para su verificación',
     fr: 'Envoie un e-mail à la nouvelle adresse pour vérification',
@@ -9589,7 +9590,7 @@ export const translations: Translations = {
     cs: 'Odešle e-mail na novou adresu k ověření',
     fi: 'Lähettää varmennuslinkin uuteen sähköpostiin',
   },
-  ECurrentEmail: {
+  CurrentEmail: {
     en: 'Current email',
     es: 'Correo electrónico actual',
     fr: 'Email actuel',
@@ -9598,7 +9599,7 @@ export const translations: Translations = {
     cs: 'Aktuální e-mail',
     fi: 'Nykyinen sähköposti',
   },
-  EEditUserSettings: {
+  EditUserSettings: {
     en: 'Here you can edit your user settings and delete your account',
     es: 'Aquí puede editar su configuración de usuario y eliminar su cuenta',
     fr: 'Vous pouvez modifier vos paramètres utilisateur ici et supprimer votre compte',
@@ -9607,7 +9608,7 @@ export const translations: Translations = {
     cs: 'Zde můžete upravit svá nastavení uživatele a smazat svůj účet',
     fi: 'Täällä voit muokata käyttäjäasetuksiasi ja poistaa tilisi',
   },
-  EAreYouSureYouWantToDelete: {
+  AreYouSureYouWantToDelete: {
     en: 'Are you sure you want to delete',
     es: '¿Estás seguro de que quieres borrar',
     fr: 'Êtes-vous sûr de vouloir supprimer',
@@ -9616,7 +9617,7 @@ export const translations: Translations = {
     cs: 'Opravdu chcete smazat',
     fi: 'Haluatko varmasti poistaa',
   },
-  EYouWillLoseAllTheDataAssociatedWithIt: {
+  YouWillLoseAllTheDataAssociatedWithIt: {
     en: 'You will lose all the data associated with the account. This action cannot be undone!',
     es: 'Perderá todos los datos asociados con la cuenta. ¡Esta acción no se puede deshacer!',
     fr: 'Vous perdrez toutes les données associées au compte. Cette action ne peut pas être annulée!',
@@ -9625,7 +9626,7 @@ export const translations: Translations = {
     cs: 'Ztratíte všechna data spojená s účtem. Tuto akci nelze vrátit!',
     fi: 'Menetät kaikki tilin liittyvät tiedot. Tätä toimintoa ei voi peruuttaa!',
   },
-  EDoYouWishToRemoveAnyJokesYouveAuthored: {
+  DoYouWishToRemoveAnyJokesYouveAuthored: {
     en: "Do you wish to remove any jokes you've authored?",
     es: '¿Desea eliminar alguna broma que haya escrito?',
     fr: 'Souhaitez-vous supprimer des blagues que vous avez écrites?',
@@ -9634,7 +9635,7 @@ export const translations: Translations = {
     cs: 'Chcete odstranit nějaké vtipy, které jste napsali?',
     fi: 'Haluatko poistaa kirjoittamasi vitsit?',
   },
-  EAccountDeleted: {
+  AccountDeleted: {
     en: 'Account deleted',
     es: 'Cuenta eliminada',
     fr: 'Compte supprimé',
@@ -9643,7 +9644,7 @@ export const translations: Translations = {
     cs: 'Účet smazán',
     fi: 'Tili poistettu',
   },
-  EDeleteAccount: {
+  DeleteAccount: {
     en: 'Delete account',
     es: 'Borrar cuenta',
     fr: 'Supprimer le compte',
@@ -9653,7 +9654,7 @@ export const translations: Translations = {
     fi: 'Poista tili',
   },
 
-  EClearCompleted: {
+  ClearCompleted: {
     en: 'Clear Completed Tasks',
     es: 'Borrar Tareas Completadas',
     fr: 'Effacer les Tâches Terminées',
@@ -9662,7 +9663,7 @@ export const translations: Translations = {
     cs: 'Vymazat Dokončené Úkoly',
     fi: 'Poista valmiit tehtävät',
   },
-  EAddTask: {
+  AddTask: {
     en: 'Add Task',
     es: 'Agregar Tarea',
     fr: 'Ajouter une Tâche',
@@ -9671,7 +9672,7 @@ export const translations: Translations = {
     cs: 'Přidat Úkol',
     fi: 'Lisää tehtävä',
   },
-  ETask: {
+  Task: {
     en: 'Task',
     es: 'Tarea',
     fr: 'Tâche',
@@ -9680,7 +9681,7 @@ export const translations: Translations = {
     cs: 'Úkol',
     fi: 'Tehtävä',
   },
-  ELeftToDo: {
+  LeftToDo: {
     en: 'left to do',
     es: 'restantes',
     fr: 'restantes',
@@ -9689,7 +9690,7 @@ export const translations: Translations = {
     cs: 'zbývá',
     fi: 'jäljellä',
   },
-  EAddTaskToTheTaskList: {
+  AddTaskToTheTaskList: {
     en: 'Add task to the task list',
     es: 'Agregar tarea a la lista de tareas',
     fr: 'Ajouter une tâche à la liste des tâches',
@@ -9698,7 +9699,7 @@ export const translations: Translations = {
     cs: 'Přidat úkol do seznamu úkolů',
     fi: 'Lisää tehtävä tehtäväluetteloon',
   },
-  ETodoApp: {
+  TodoApp: {
     en: 'Todo App',
     es: 'Aplicación de Tareas',
     fr: 'Application de Tâches',
@@ -9707,7 +9708,7 @@ export const translations: Translations = {
     cs: 'Úkolová Aplikace',
     fi: 'Tehtäväsovellus',
   },
-  EGetOrganizedOneTaskAtATime: {
+  GetOrganizedOneTaskAtATime: {
     en: 'Get organized, one task at a time!',
     es: '¡Organízate, una tarea a la vez!',
     fr: 'Organisez-vous, une tâche à la fois!',
@@ -9716,7 +9717,7 @@ export const translations: Translations = {
     cs: 'Zorganizujte se, jedna úloha za druhou!',
     fi: 'Järjestäydy, yksi tehtävä kerrallaan!',
   },
-  ETheDateIsInThePast: {
+  TheDateIsInThePast: {
     en: 'the date is in the past',
     es: 'la fecha está en el pasado',
     fr: 'la date est dans le passé',
@@ -9725,7 +9726,7 @@ export const translations: Translations = {
     cs: 'datum je v minulosti',
     fi: 'päivämäärä on menneisyydessä',
   },
-  ELow: {
+  Low: {
     en: 'Low',
     es: 'Bajo',
     fr: 'Faible',
@@ -9734,7 +9735,7 @@ export const translations: Translations = {
     cs: 'Nízký',
     fi: 'Matala',
   },
-  EHigh: {
+  High: {
     en: 'High',
     es: 'Alto',
     fr: 'Haut',
@@ -9743,7 +9744,7 @@ export const translations: Translations = {
     cs: 'Vysoký',
     fi: 'Korkea',
   },
-  EPriority: {
+  Priority: {
     en: 'Priority',
     es: 'Prioridad',
     fr: 'Priorité',
@@ -9752,7 +9753,7 @@ export const translations: Translations = {
     cs: 'Priorita',
     fi: 'Tärkeys',
   },
-  EDeadline: {
+  Deadline: {
     en: 'Deadline',
     es: 'Fecha Límite',
     fr: 'Date Limite',
@@ -9761,7 +9762,7 @@ export const translations: Translations = {
     cs: 'Termín',
     fi: 'Määräaika',
   },
-  ECategory: {
+  Category: {
     en: 'Category',
     es: 'Categoría',
     fr: 'Catégorie',
@@ -9770,7 +9771,7 @@ export const translations: Translations = {
     cs: 'Kategorie',
     fi: 'Kategoria',
   },
-  EShopping: {
+  Shopping: {
     en: 'Shopping',
     es: 'Compras',
     fr: 'Achats',
@@ -9779,7 +9780,7 @@ export const translations: Translations = {
     cs: 'Nákupy',
     fi: 'Ostokset',
   },
-  ESampleArtwork: {
+  SampleArtwork: {
     en: 'Sample artwork',
     es: 'Obra de arte de muestra',
     fr: "Œuvre d'art échantillon",
@@ -9788,7 +9789,7 @@ export const translations: Translations = {
     cs: 'Ukázkové umění',
     fi: 'Näyte taiteesta',
   },
-  EScreenshot: {
+  Screenshot: {
     en: 'Screenshot',
     es: 'Captura de pantalla',
     fr: "Capture d'écran",
@@ -9797,7 +9798,7 @@ export const translations: Translations = {
     cs: 'Snímek obrazovky',
     fi: 'Näyttökuva',
   },
-  EMoveEveryBlobUpOrDownOneLayerByPressingTheButtons: {
+  MoveEveryBlobUpOrDownOneLayerByPressingTheButtons: {
     en: 'Move every blob up or down one layer by pressing the buttons',
     es: 'Mueva cada mancha hacia arriba o hacia abajo una capa presionando los botones',
     fr: "Déplacez chaque tache vers le haut ou vers le bas d'une couche en appuyant sur les boutons",
@@ -9806,7 +9807,7 @@ export const translations: Translations = {
     cs: 'Přesuňte každou skvrnu o jednu vrstvu nahoru nebo dolů stisknutím tlačítek',
     fi: 'Siirrä jokaista mollukkaa yhden kerroksen ylös tai alas painamalla painikkeita',
   },
-  EDragBlobToIconsNextToLayerButtons: {
+  DragBlobToIconsNextToLayerButtons: {
     en: 'Click the layer buttons and then a blob in order to move the blob up or down a layer',
     es: 'Haz clic en los botones de capa y luego en un blob para mover el blob hacia arriba o hacia abajo una capa',
     fr: "Cliquez sur les boutons de couche puis sur un blob pour déplacer le blob vers le haut ou vers le bas d'une couche",
@@ -9816,7 +9817,7 @@ export const translations: Translations = {
     fi: 'Klikkaa kerrospainikketta ja mollukkaa siirtääksesi mollukan kerrosta ylemmäs tai alemmas',
   },
 
-  EEditArtwork: {
+  EditArtwork: {
     en: 'Edit your artwork',
     es: 'Editar tu obra de arte',
     fr: 'Modifier votre œuvre d art',
@@ -9825,7 +9826,7 @@ export const translations: Translations = {
     cs: 'Upravte své umění',
     fi: 'Muokkaa teostasi',
   },
-  EArtSaved: {
+  ArtSaved: {
     en: 'Art has been saved',
     es: 'El arte ha sido guardado',
     fr: 'L art a été enregistré',
@@ -9834,7 +9835,7 @@ export const translations: Translations = {
     cs: 'Umění bylo uloženo',
     fi: 'Taide on tallennettu',
   },
-  ENoSavedArtworkYet: {
+  NoSavedArtworkYet: {
     en: 'No saved artwork yet',
     es: 'Aún no hay arte guardado',
     fr: 'Pas encore d œuvre d art enregistrée',
@@ -9843,7 +9844,7 @@ export const translations: Translations = {
     cs: 'Zatím nebylo uloženo žádné umění',
     fi: 'Ei tallennettua taidetta vielä',
   },
-  ELoadingSavedArtwork: {
+  LoadingSavedArtwork: {
     en: 'Loading saved artwork...',
     es: 'Cargando arte guardado...',
     fr: 'Chargement de l œuvre d art enregistrée...',
@@ -9852,7 +9853,7 @@ export const translations: Translations = {
     cs: 'Načítání uloženého umění...',
     fi: 'Ladataan tallennettua taidetta...',
   },
-  EAreYouSureYouWantToDeleteThisVersion: {
+  AreYouSureYouWantToDeleteThisVersion: {
     en: 'Are you sure you want to delete this version?',
     es: '¿Estás seguro de que quieres eliminar esta versión?',
     fr: 'Êtes-vous sûr de vouloir supprimer cette version?',
@@ -9861,7 +9862,7 @@ export const translations: Translations = {
     cs: 'Opravdu chcete smazat tuto verzi?',
     fi: 'Haluatko varmasti poistaa tämän version?',
   },
-  ENoteThatUnsavedChangesWillBeLost: {
+  NoteThatUnsavedChangesWillBeLost: {
     en: 'Note that unsaved changes will be lost. Are you sure you want to load?',
     es: 'Tenga en cuenta que los cambios no guardados se perderán. ¿Estás seguro de que quieres cargar?',
     fr: 'Notez que les modifications non enregistrées seront perdues. Êtes-vous sûr de vouloir charger?',
@@ -9870,7 +9871,7 @@ export const translations: Translations = {
     cs: 'Upozorňujeme, že neuložené změny budou ztraceny. Opravdu chcete načíst?',
     fi: 'Huomaa, että tallentamattomat muutokset menetetään. Haluatko varmasti ladata?',
   },
-  EDeletedArt: {
+  DeletedArt: {
     en: 'Deleted art',
     es: 'Arte eliminado',
     fr: 'Art supprimé',
@@ -9879,7 +9880,7 @@ export const translations: Translations = {
     cs: 'Smazané umění',
     fi: 'Teos poistettu',
   },
-  EDeleteModeOn: {
+  DeleteModeOn: {
     en: 'Delete mode on!',
     es: '¡Modo de eliminación activado!',
     fr: 'Mode de suppression activé!',
@@ -9888,7 +9889,7 @@ export const translations: Translations = {
     cs: 'Režim mazání zapnut!',
     fi: 'Poistotila päällä!',
   },
-  EAVersionAlreadyExistsOverwrite: {
+  AVersionAlreadyExistsOverwrite: {
     en: 'A version with this name already exists. Do you want to overwrite it?',
     es: 'Ya existe una versión con este nombre. ¿Quieres sobrescribirla?',
     fr: 'Une version portant ce nom existe déjà. Voulez-vous la remplacer?',
@@ -9897,7 +9898,7 @@ export const translations: Translations = {
     cs: 'Verze s tímto názvem již existuje. Chcete ji přepsat?',
     fi: 'Versio tällä nimellä on jo olemassa. Haluatko korvata sen?',
   },
-  EClickHereToTakeAScreenshot: {
+  ClickHereToTakeAScreenshot: {
     en: 'Click here to take a screenshot',
     es: 'Haga clic aquí para tomar una captura de pantalla',
     fr: "Cliquez ici pour prendre une capture d'écran",
@@ -9906,7 +9907,7 @@ export const translations: Translations = {
     cs: 'Klikněte sem pro pořízení snímku obrazovky',
     fi: 'Napsauta tästä ottaaksesi kuvakaappauksen',
   },
-  EScreenshotTaken: {
+  ScreenshotTaken: {
     en: 'Screenshot taken',
     es: 'Captura de pantalla tomada',
     fr: "Capture d'écran prise",
@@ -9915,7 +9916,7 @@ export const translations: Translations = {
     cs: 'Snímek obrazovky pořízen',
     fi: 'Kuvakaappaus otettu',
   },
-  ETakingScreenShot: {
+  TakingScreenShot: {
     en: 'Taking screenshot...',
     es: 'Tomando una captura de pantalla...',
     fr: "Prise de capture d'écran en cours...",
@@ -9924,7 +9925,7 @@ export const translations: Translations = {
     cs: 'Probíhá pořizování snímku obrazovky...',
     fi: 'Otetaan kuvakaappausta...',
   },
-  EPressTheCameraSymbolToTakeAScreenshot: {
+  PressTheCameraSymbolToTakeAScreenshot: {
     en: 'Press the camera symbol to take a screenshot',
     es: 'Presiona el símbolo de la cámara para tomar una captura de pantalla',
     fr: "Appuyez sur le symbole de la caméra pour prendre une capture d'écran",
@@ -9933,7 +9934,7 @@ export const translations: Translations = {
     cs: 'Stiskněte symbol kamery pro pořízení snímku obrazovky',
     fi: 'Paina kamera-symbolia ottaaksesi kuvakaappauksen',
   },
-  ENoScreenshotAvailableToSave: {
+  NoScreenshotAvailableToSave: {
     en: 'No screenshot available to save',
     es: 'No hay captura de pantalla disponible para guardar',
     fr: "Aucune capture d'écran disponible à enregistrer",
@@ -9942,7 +9943,7 @@ export const translations: Translations = {
     cs: 'Žádný snímek obrazovky není k dispozici k uložení',
     fi: 'Ei kuvakaappausta tallennettavaksi',
   },
-  EYouMayFindTheImageBelow: {
+  YouMayFindTheImageBelow: {
     en: 'You may find the image below',
     es: 'Puede encontrar la imagen a continuación',
     fr: "Vous pouvez trouver l'image ci-dessous",
@@ -9951,7 +9952,7 @@ export const translations: Translations = {
     cs: 'Níže můžete najít obrázek',
     fi: 'Löydät kuvan alempana',
   },
-  EKeyboardUsePressTheCorrespondingLayerNumber: {
+  KeyboardUsePressTheCorrespondingLayerNumber: {
     en: 'Keyboard use: Press the corresponding layer number with the blob in focus',
     es: 'Uso del teclado: presione el número de capa correspondiente con el blob enfocado',
     fr: 'Utilisation du clavier: appuyez sur le numéro de couche correspondant avec le blob en focus',
@@ -9960,7 +9961,7 @@ export const translations: Translations = {
     cs: 'Použití klávesnice: Stiskněte odpovídající číslo vrstvy s fokusem na blob',
     fi: 'Näppäinkäyttö: Paina vastaavaa kerrosnumeroa mollukka fokuksessa',
   },
-  ECannotLowerEveryBlobFurtherSomeBlobsAlreadyLowest: {
+  CannotLowerEveryBlobFurtherSomeBlobsAlreadyLowest: {
     en: 'Cannot lower every blob further, one or more blobs are already on the lowest layer',
     es: 'No se puede bajar más ningún blob, uno o más blobs ya están en la capa más baja',
     fr: "Impossible d'abaisser chaque blob davantage, un ou plusieurs blobs sont déjà sur la couche la plus basse",
@@ -9969,7 +9970,7 @@ export const translations: Translations = {
     cs: 'Nelze snížit všechny blob více, jeden nebo více blobů je již na nejnižší vrstvě',
     fi: 'Ei voi laskea jokaista mollukkaa alemmas, yksi tai useampi mollukka on jo alimmalla kerroksella',
   },
-  ECannotLowerBlobFurther: {
+  CannotLowerBlobFurther: {
     en: 'Cannot lower this blob further',
     es: 'No se puede bajar este blob más',
     fr: 'Impossible de diminuer davantage ce blob',
@@ -9978,7 +9979,7 @@ export const translations: Translations = {
     cs: 'Nelze tento blob dále snížit',
     fi: 'Mollukkaa ei voi laskea enempää',
   },
-  ECannotRaiseEveryBlobFurther: {
+  CannotRaiseEveryBlobFurther: {
     en: 'Cannot raise every blob further, one or more blobs are already on the highest layer',
     es: 'No se puede subir más ningún blob, uno o más blobs ya están en la capa más alta',
     fr: 'Impossible de lever chaque blob davantage, un ou plusieurs blobs sont déjà sur la couche la plus haute',
@@ -9987,7 +9988,7 @@ export const translations: Translations = {
     cs: 'Nelze zvýšit všechny blob více, jeden nebo více blobů je již na nejvyšší vrstvě',
     fi: 'Ei voi nostaa jokaista mollukkaa ylemmäs, yksi tai useampi mollukka on jo ylimmällä kerroksella',
   },
-  ECannotRaiseBlobFurther: {
+  CannotRaiseBlobFurther: {
     en: 'Cannot raise this blob further',
     es: 'No se puede levantar más este blob',
     fr: 'Impossible de lever davantage ce blob',
@@ -9996,7 +9997,7 @@ export const translations: Translations = {
     cs: 'Nelze tento blob dále zvýšit',
     fi: 'Mollukkaa ei voi nostaa enempää',
   },
-  EClickHereToMoveDownLayer: {
+  ClickHereToMoveDownLayer: {
     en: 'Click here to move every blob down one layer',
     es: 'Haz clic aquí para mover cada blob una capa hacia abajo',
     fr: "Cliquez ici pour déplacer chaque blob d'une couche vers le bas",
@@ -10005,7 +10006,7 @@ export const translations: Translations = {
     cs: 'Klikněte zde pro přesunutí každého blobu o jednu vrstvu dolů',
     fi: 'Klikkaa tästä siirtääksesi jokaista mollukkaa yhtä kerrosta alemmas',
   },
-  EClickHereToMoveUpLayer: {
+  ClickHereToMoveUpLayer: {
     en: 'Click here to move every blob up one layer',
     es: 'Haz clic aquí para mover cada blob una capa hacia arriba',
     fr: "Cliquez ici pour déplacer chaque blob d'une couche vers le haut",
@@ -10014,7 +10015,7 @@ export const translations: Translations = {
     cs: 'Klikněte zde pro přesunutí každého blobu o jednu vrstvu nahoru',
     fi: 'Klikkaa tästä siirtääksesi jokaista mollukkaa yhtä kerrosta ylemmäs',
   },
-  EDownloadYourArtwork: {
+  DownloadYourArtwork: {
     en: 'Download your artwork',
     es: 'Descarga tu obra de arte',
     fr: 'Téléchargez votre œuvre d art',
@@ -10023,7 +10024,7 @@ export const translations: Translations = {
     cs: 'Stáhněte si své umění',
     fi: 'Lataa taideteoksesi',
   },
-  EPlacesTheImageDownBelow: {
+  PlacesTheImageDownBelow: {
     en: 'Places the image down below',
     es: 'Coloca la imagen abajo',
     fr: 'Place l image en bas',
@@ -10032,7 +10033,7 @@ export const translations: Translations = {
     cs: 'Umístí obrázek dolů',
     fi: 'Sijoittaa luodun kuvan sivun alaosaan',
   },
-  EKeysMayBeUsedWhileMouseIsPressedDown: {
+  KeysMayBeUsedWhileMouseIsPressedDown: {
     en: 'Keys may be used while the mouse is pressed down on a blob',
     es: 'Las teclas se pueden usar mientras el mouse está presionado en un blob',
     fr: 'Les touches peuvent être utilisées lorsque la souris est enfoncée sur un blob',
@@ -10041,7 +10042,7 @@ export const translations: Translations = {
     cs: 'Klávesy mohou být použity, když je myš stisknuta na blobu',
     fi: 'Näppäimiä voidaan käyttää, kun hiiri on painettuna mollukan päällä',
   },
-  ESeeSampleArtworkCreatedWithTheApp: {
+  SeeSampleArtworkCreatedWithTheApp: {
     en: 'See sample artwork created with the app',
     es: 'Ver arte de muestra creada con la aplicación',
     fr: 'Voir des œuvres d art de démonstration créées avec l application',
@@ -10050,7 +10051,7 @@ export const translations: Translations = {
     cs: 'Podívejte se na ukázkové umění vytvořené s aplikací',
     fi: 'Katso sovelluksella luotu esimerkkitaide',
   },
-  EFlyingBird: {
+  FlyingBird: {
     en: 'Flying bird',
     es: 'Pájaro volador',
     fr: 'Oiseau volant',
@@ -10059,7 +10060,7 @@ export const translations: Translations = {
     cs: 'Létající pták',
     fi: 'Lentävä lintu',
   },
-  ESwimmingFish: {
+  SwimmingFish: {
     en: 'Swimming fish',
     es: 'Pez nadando',
     fr: 'Poisson nageant',
@@ -10068,7 +10069,7 @@ export const translations: Translations = {
     cs: 'Plavající ryba',
     fi: 'Uiva kala',
   },
-  EBubblesAndFish: {
+  BubblesAndFish: {
     en: 'Bubbles and a fish',
     es: 'Burbujas y un pez',
     fr: 'Bulles et un poisson',
@@ -10077,7 +10078,7 @@ export const translations: Translations = {
     cs: 'Bubliny a ryba',
     fi: 'Kuplia ja kala',
   },
-  EDog: {
+  Dog: {
     en: 'Dog',
     es: 'Perro',
     fr: 'Chien',
@@ -10086,7 +10087,7 @@ export const translations: Translations = {
     cs: 'Pes',
     fi: 'Koira',
   },
-  EGetMoreLayers: {
+  GetMoreLayers: {
     en: 'Get more layers',
     es: 'Obtén más capas',
     fr: 'Obtenez plus de couches',
@@ -10095,7 +10096,7 @@ export const translations: Translations = {
     cs: 'Získejte více vrstev',
     fi: 'Hanki lisää kerroksia',
   },
-  EDeleteHiddenLayers: {
+  DeleteHiddenLayers: {
     en: 'Delete hidden layers',
     es: 'Eliminar capas ocultas',
     fr: 'Supprimer les couches cachées',
@@ -10104,7 +10105,7 @@ export const translations: Translations = {
     cs: 'Smazat skryté vrstvy',
     fi: 'Poista piilotetut kerrokset',
   },
-  EOrientation: {
+  Orientation: {
     en: 'Orientation',
     es: 'Orientación',
     fr: 'Orientation',
@@ -10113,7 +10114,7 @@ export const translations: Translations = {
     cs: 'Orientace',
     fi: 'Suunta',
   },
-  ERemoveTaskEitherIndividuallyOrClearAllCompletedTasksAtOnce: {
+  RemoveTaskEitherIndividuallyOrClearAllCompletedTasksAtOnce: {
     en: 'Remove task either individually or clear all completed tasks at once',
     es: 'Eliminar la tarea individualmente o borrar todas las tareas completadas a la vez',
     fr: 'Supprimer la tâche individuellement ou effacer toutes les tâches terminées à la fois',
@@ -10122,7 +10123,7 @@ export const translations: Translations = {
     cs: 'Odstraňte úkol buď jednotlivě, nebo všechny dokončené úkoly najednou',
     fi: 'Poista tehtävä joko yksittäin tai poista kaikki valmiit tehtävät kerralla',
   },
-  ERefactoredTranslations: {
+  RefactoredTranslations: {
     en: 'Refactored translations',
     es: 'Refactoricé las traducciones',
     fr: 'J ai refactorisé les traductions',
@@ -10131,4 +10132,8 @@ export const translations: Translations = {
     cs: 'Přepracoval jsem překlady',
     fi: 'Refaktoroin käännökset',
   },
-}
+} as const
+
+export type Translations = typeof translations
+export type TranslationKey = keyof Translations
+export type TranslationLang = keyof (typeof translations)[TranslationKey]

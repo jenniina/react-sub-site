@@ -41,10 +41,10 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     { content: 'blue', color: 'blue' },
     { content: 'crimson', color: 'crimson' },
     { content: 'yellow', color: 'yellow' },
-    { content: t('EWithPurpleWrittenLast'), color: 'purple' },
-    { content: t('EWithOrangeWrittenLast'), color: 'orange' },
-    { content: t('ELongTextWithoutColorNameAtTheEnd'), color: 'lightgray' },
-    { content: t('ESomeTextNoColorName'), color: 'lightgray' },
+    { content: t('WithPurpleWrittenLast'), color: 'purple' },
+    { content: t('WithOrangeWrittenLast'), color: 'orange' },
+    { content: t('LongTextWithoutColorNameAtTheEnd'), color: 'lightgray' },
+    { content: t('SomeTextNoColorName'), color: 'lightgray' },
   ]
 
   const isLocalhost =
@@ -157,26 +157,24 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     if (regex.test(newStatus)) {
       const newStatusTrim = newStatus.trim().replace(/ /g, '_')
       if (newStatusTrim.length > 20) {
-        dispatch(
-          notify(`${t('ENameTooLong')}: ${t('EAMaxOf20CharactersPlease')}`, true, 9)
-        )
+        dispatch(notify(`${t('NameTooLong')}: ${t('AMaxOf20CharactersPlease')}`, true, 9))
         setSending(false)
         return
       }
       if (newStatus.trim() === '') {
-        dispatch(notify(t('EPleaseFillInTheFields'), true, 6))
+        dispatch(notify(t('PleaseFillInTheFields'), true, 6))
         setSending(false)
         return
       }
       //if new status is already in the list, notify:
       if (statuses.includes(newStatusTrim)) {
-        dispatch(notify(t('ETheCategoryAlreadyExists'), true, 6))
+        dispatch(notify(t('TheCategoryAlreadyExists'), true, 6))
         setSending(false)
         return
       }
       // if already length 8, don't allow more statuses
       if (statuses.length === 8) {
-        dispatch(notify(t('ECannotAddMoreCategories'), true, 8))
+        dispatch(notify(t('CannotAddMoreCategories'), true, 8))
         setSending(false)
         return
       }
@@ -193,7 +191,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
         return [...prevStatuses, newStatusTrim]
       })
     } else {
-      dispatch(notify(t('ESpecialCharactersNotAllowed'), true, 6))
+      dispatch(notify(t('SpecialCharactersNotAllowed'), true, 6))
       setSending(false)
     }
   }
@@ -209,23 +207,21 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
 
   const updateStatus = (index: number, newStatus: string) => {
     if (!regex.test(newStatus)) {
-      dispatch(notify(t('ESpecialCharactersNotAllowed'), true, 6))
+      dispatch(notify(t('SpecialCharactersNotAllowed'), true, 6))
       return
     }
     setStatuses((prevStatuses) => {
       const newStatusTrim = newStatus.trim().replace(/ /g, '_')
       if (newStatusTrim.length > 20) {
-        dispatch(
-          notify(`${t('ENameTooLong')}: ${t('EAMaxOf20CharactersPlease')}`, true, 9)
-        )
+        dispatch(notify(`${t('NameTooLong')}: ${t('AMaxOf20CharactersPlease')}`, true, 9))
         return prevStatuses
       }
       if (newStatusTrim === '') {
-        dispatch(notify(t('EPleaseFillInTheFields'), true, 6))
+        dispatch(notify(t('PleaseFillInTheFields'), true, 6))
         return prevStatuses
       }
       if (prevStatuses.includes(newStatusTrim)) {
-        dispatch(notify(t('ETheCategoryAlreadyExists'), true, 6))
+        dispatch(notify(t('TheCategoryAlreadyExists'), true, 6))
         return prevStatuses
       }
 
@@ -250,16 +246,16 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
   const deleteStatus = (status: string) => {
     //if only one status left, don't allow removal
     if (statuses.length === 1) {
-      dispatch(notify(t('ECannotRemoveLastCategory'), true, 8))
+      dispatch(notify(t('CannotRemoveLastCategory'), true, 8))
       return
     } // check if there are items with this status
     else if (data.some((d) => d.status === status)) {
       dispatch(
-        notify(`${t('EAreYouSureYouWantToRemoveThis')} ${t('EItIsNotEmpty')}`, true, 8)
+        notify(`${t('AreYouSureYouWantToRemoveThis')} ${t('ItIsNotEmpty')}`, true, 8)
       )
       setStatuses((prevStatuses) => prevStatuses.filter((s) => s !== status))
       setData((prevData) => prevData.filter((d) => d.status !== status))
-    } else if (window.confirm(`${t('EAreYouSureYouWantToRemoveThis')} (${status})`)) {
+    } else if (window.confirm(`${t('AreYouSureYouWantToRemoveThis')} (${status})`)) {
       setStatuses((prevStatuses) => prevStatuses.filter((s) => s !== status))
       setData((prevData) => prevData.filter((d) => d.status !== status))
     } else return
@@ -273,7 +269,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     if (
       userColors &&
       userColors.length > 0 &&
-      window.confirm(t('EDoYouWantToDeleteYourColorsText'))
+      window.confirm(t('DoYouWantToDeleteYourColorsText'))
     ) {
       removeData()
       setData([])
@@ -341,7 +337,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
   }
 
   const startAgain = () => {
-    if (window.confirm(t('EAreYouSureYouWantToDeleteThisVersion'))) {
+    if (window.confirm(t('AreYouSureYouWantToDeleteThisVersion'))) {
       removeStatuses()
       setStatuses(initialStatuses)
       setData(generateInitialData())
@@ -349,13 +345,11 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
   }
 
   const startAgainEmpty = () => {
-    if (
-      window.confirm(`${t('EAreYouSureYouWantToDeleteThisVersion')} (${t('EClear')})`)
-    ) {
+    if (window.confirm(`${t('AreYouSureYouWantToDeleteThisVersion')} (${t('Clear')})`)) {
       if (
         userColors &&
         userColors.length > 0 &&
-        window.confirm(t('EDoYouWantToDeleteYourColorsText'))
+        window.confirm(t('DoYouWantToDeleteYourColorsText'))
       ) {
         statuses.forEach((status) => {
           listItemsByStatus[status].removeItems()
@@ -415,7 +409,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     e.preventDefault()
     setSending(true)
     if (newColor.trim() === '') {
-      dispatch(notify(t('EPleaseFillInTheFields'), true, 6))
+      dispatch(notify(t('PleaseFillInTheFields'), true, 6))
       setSending(false)
       return
     }
@@ -450,7 +444,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
       setSending(false)
     } else {
       if (
-        window.confirm(`${t('EInvalidColorName')}: ${t('EAreYouSureYouWantToProceed')}`)
+        window.confirm(`${t('InvalidColorName')}: ${t('AreYouSureYouWantToProceed')}`)
       ) {
         // If the user confirms, add the color anyway with the color lightgray and lightness light. This is to enable users to add sortable items for general use
         setUserColors((prevColors) => {
@@ -471,7 +465,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     }
   }
   const handleRemoveColor = (content: Data['content']) => {
-    if (window.confirm(`${t('EAreYouSureYouWantToRemoveThis')} (${content})`)) {
+    if (window.confirm(`${t('AreYouSureYouWantToRemoveThis')} (${content})`)) {
       setData((prevData) => prevData.filter((d) => d.content !== content))
       setUserColors((prevColors) => {
         const updatedColors = prevColors.filter((c) => c.content !== content)
@@ -517,7 +511,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
           <Suspense
             key={index}
             fallback={
-              <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
+              <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
             }
           >
             <CardsContainer
@@ -540,17 +534,17 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
         ))}
       </div>
       <div className='flex center gap max-content margin0auto'>
-        <button onClick={startAgain}>{t('EReset')}</button>
-        <button onClick={startAgainEmpty}>{t('EClear')}</button>
+        <button onClick={startAgain}>{t('Reset')}</button>
+        <button onClick={startAgainEmpty}>{t('Clear')}</button>
       </div>
 
       <div className={styles['add-color']}>
-        <h2>{t('EAddAColor')}</h2>
+        <h2>{t('AddAColor')}</h2>
         <p>
-          {t('EForExample')} "darkblue" {t('EOr')} "slategray".{' '}
-          {t('EYouMayAlsoAddOtherWordsForGenericUse')}.{' '}
-          {t('ETipIfYouAddAGenericWordYouCanColorTheCard')}.{' '}
-          {t('EThisWillResultInAPinkCardWithAppleWrittenOnIt')}.
+          {t('ForExample')} "darkblue" {t('Or')} "slategray".{' '}
+          {t('YouMayAlsoAddOtherWordsForGenericUse')}.{' '}
+          {t('TipIfYouAddAGenericWordYouCanColorTheCard')}.{' '}
+          {t('ThisWillResultInAPinkCardWithAppleWrittenOnIt')}.
         </p>
         <form
           onSubmit={(e) => handleAddColor(e, newColor, newStatusForItem.label as Status)}
@@ -564,14 +558,14 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
                 value={newColor}
                 onChange={(e) => setNewColor(e.target.value)}
               />
-              <span>{t('EAddAColor')}</span>
+              <span>{t('AddAColor')}</span>
             </label>
           </div>
           <Select
             language={language}
             id='dnd-color-status'
             className={`${styles['color-select']} color`}
-            instructions={t('ESelectCategory')}
+            instructions={t('SelectCategory')}
             hide
             options={statuses.map((status) => ({ label: status, value: status }))}
             value={newStatusForItem}
@@ -585,18 +579,18 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
             }
           />
           <button type='submit' disabled={sending}>
-            {t('EAddAColor')}
+            {t('AddAColor')}
           </button>
         </form>
         <p className='textcenter'>
-          <span>{t('ENeedHelp')} </span>{' '}
+          <span>{t('NeedHelp')} </span>{' '}
           <a href='https://htmlcolorcodes.com/color-names/' target='_blank'>
-            {t('EColorNames')}
+            {t('ColorNames')}
           </a>
         </p>
       </div>
       <div className={styles['add-status']}>
-        <h2>{t('EAddANewCategory')}</h2>
+        <h2>{t('AddANewCategory')}</h2>
         <form
           onSubmit={(e) => {
             e.preventDefault()
@@ -612,11 +606,11 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
                 value={newStatus}
                 onChange={(e) => setNewStatus(e.target.value)}
               />
-              <span>{t('EAddANewCategory')}</span>
+              <span>{t('AddANewCategory')}</span>
             </label>
           </div>
           <button type='submit' disabled={sending}>
-            {t('ESubmit')}
+            {t('Submit')}
           </button>
         </form>
       </div>

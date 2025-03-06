@@ -19,7 +19,7 @@ const Video: FC<VideoProps> = ({ video, language, show, searchTerm, textType }) 
   const { t } = useContext(LanguageContext)!
 
   const handleDownload = async () => {
-    if (window.confirm(t('EDownload') + '?')) {
+    if (window.confirm(t('Download') + '?')) {
       const response = await fetch(video.videos.large.url, { mode: 'cors' })
 
       if (!response.ok) {
@@ -73,7 +73,7 @@ const Video: FC<VideoProps> = ({ video, language, show, searchTerm, textType }) 
           cursor: 'pointer',
           width: '100%',
         }}
-        aria-label={t('EClickToOpenLargeVideo')}
+        aria-label={t('ClickToOpenLargeVideo')}
         onClick={handleShowModal}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
@@ -94,11 +94,11 @@ const Video: FC<VideoProps> = ({ video, language, show, searchTerm, textType }) 
           }}
         />
       </button>
-      <span className='tooltip above narrow2'>{t('EClickToOpenLargeVideo')}</span>
+      <span className='tooltip above narrow2'>{t('ClickToOpenLargeVideo')}</span>
       <p>
         <small>
           <a href={video.pageURL} target='_blank' rel='noreferrer'>
-            {t('EVideoPage')} ({t('EAuthor')}: {video.user})
+            {t('VideoPage')} ({t('Author')}: {video.user})
           </a>
         </small>
       </p>

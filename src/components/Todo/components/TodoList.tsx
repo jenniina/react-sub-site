@@ -117,7 +117,7 @@ export default function TodoList({
               key={todo?.key}
               fallback={
                 <div className='flex center margin0auto textcenter'>
-                  {t('ELoading')}...
+                  {t('Loading')}...
                 </div>
               }
             >

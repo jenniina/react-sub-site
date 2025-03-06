@@ -57,20 +57,20 @@ const UserEditPage = ({ language, setLanguage, heading, text, type, options }: P
     e.preventDefault()
     setSending(true)
     if (user) {
-      if (window.confirm(`${t('EAreYouSureYouWantToDelete')} ${user.username}?`)) {
-        if (window.confirm(`${t('EYouWillLoseAllTheDataAssociatedWithIt')}`)) {
-          if (window.confirm(t('EDoYouWishToRemoveAnyJokesYouveAuthored'))) {
+      if (window.confirm(`${t('AreYouSureYouWantToDelete')} ${user.username}?`)) {
+        if (window.confirm(`${t('YouWillLoseAllTheDataAssociatedWithIt')}`)) {
+          if (window.confirm(t('DoYouWishToRemoveAnyJokesYouveAuthored'))) {
             dispatch(removeUser(user._id, true)).then(() => {
               dispatch(logout())
               navigate('/')
-              dispatch(notify(t('EAccountDeleted'), false, 8))
+              dispatch(notify(t('AccountDeleted'), false, 8))
             })
             setSending(false)
           } else {
             dispatch(removeUser(user._id, false)).then(() => {
               dispatch(logout())
               navigate('/')
-              dispatch(notify(t('EAccountDeleted'), false, 8))
+              dispatch(notify(t('AccountDeleted'), false, 8))
               setSending(false)
             })
           }
@@ -95,7 +95,7 @@ const UserEditPage = ({ language, setLanguage, heading, text, type, options }: P
                 <Suspense
                   fallback={
                     <div className='flex center margin0auto textcenter'>
-                      {t('ELoading')}...
+                      {t('Loading')}...
                     </div>
                   }
                 >
@@ -106,7 +106,7 @@ const UserEditPage = ({ language, setLanguage, heading, text, type, options }: P
                 <Suspense
                   fallback={
                     <div className='flex center margin0auto textcenter'>
-                      {t('ELoading')}...
+                      {t('Loading')}...
                     </div>
                   }
                 >
@@ -117,7 +117,7 @@ const UserEditPage = ({ language, setLanguage, heading, text, type, options }: P
                 <Suspense
                   fallback={
                     <div className='flex center margin0auto textcenter'>
-                      {t('ELoading')}...
+                      {t('Loading')}...
                     </div>
                   }
                 >
@@ -133,7 +133,7 @@ const UserEditPage = ({ language, setLanguage, heading, text, type, options }: P
                 <Suspense
                   fallback={
                     <div className='flex center margin0auto textcenter'>
-                      {t('ELoading')}...
+                      {t('Loading')}...
                     </div>
                   }
                 >
@@ -147,7 +147,7 @@ const UserEditPage = ({ language, setLanguage, heading, text, type, options }: P
                     disabled={sending}
                     className={`submit danger ${styles['delete-account']} ${styles.submit}`}
                   >
-                    <TiDeleteOutline /> {t('EDeleteAccount')}
+                    <TiDeleteOutline /> {t('DeleteAccount')}
                   </button>
                 </form>
               ) : (

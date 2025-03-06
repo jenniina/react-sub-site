@@ -74,50 +74,50 @@ const Nav = (
 
   const links = [
     {
-      label: t('EWelcome'),
+      label: t('Welcome'),
       href: '/',
     },
     {
-      label: t('EAbout'),
+      label: t('About'),
       href: '/about',
     },
     {
-      label: t('EPortfolio'),
+      label: t('Portfolio'),
       href: '/portfolio',
     },
     {
-      label: t('EContact'),
+      label: t('Contact'),
       href: '/contact',
     },
   ]
 
   const skipLinks = [
     {
-      label: t('ESkipToMainNavigation'),
+      label: t('SkipToMainNavigation'),
       href: '#site-navigation',
     },
     {
-      label: t('ESkipToMainContent'),
+      label: t('SkipToMainContent'),
       href: '#main-content',
     },
     {
-      label: t('ESkipToFooter'),
+      label: t('SkipToFooter'),
       href: '#main-footer',
     },
   ]
 
   const icons = (label: string) => {
-    if (label === t('EWelcome'))
+    if (label === t('Welcome'))
       return (
         <RiHomeSmileLine className={windowWidth < breakpoint ? styles.smallnav : ''} />
       )
-    else if (label === t('EAbout'))
+    else if (label === t('About'))
       return <BsPerson className={windowWidth < breakpoint ? styles.smallnav : ''} />
     //MdOutlinePerson
-    else if (label === t('EPortfolio'))
+    else if (label === t('Portfolio'))
       return <IoMdImages className={windowWidth < breakpoint ? styles.smallnav : ''} />
     //BiImage IoImagesOutline BiImages FaRegImages  MdImportContacts
-    else if (label === t('EContact'))
+    else if (label === t('Contact'))
       return <BiChat className={windowWidth < breakpoint ? styles.smallnav : ''} />
   }
 
@@ -128,7 +128,7 @@ const Nav = (
           <li className={`tooltip-wrap ${styles.jenniina}`}>
             <a href='https://jenniina.fi'>
               <img src={lightTheme ? logoDark : logo} width='96px' height='39.6px' />
-              <span className='tooltip below right narrow'>« {t('EExitToMainSite')}</span>
+              <span className='tooltip below right narrow'>« {t('ExitToMainSite')}</span>
             </a>
           </li>
         ) : (
@@ -384,7 +384,7 @@ const Nav = (
     e.preventDefault()
     setSending(true)
     if (password.trim() !== confirmPassword.trim()) {
-      dispatch(notify(`${t('EPasswordsDoNotMatch')}`, true, 8))
+      dispatch(notify(`${t('PasswordsDoNotMatch')}`, true, 8))
       setSending(false)
       return
     }
@@ -392,8 +392,8 @@ const Nav = (
       .then(async () => {
         dispatch(
           notify(
-            `${t('ERegistrationSuccesful')} - ${t(
-              'EPleaseCheckYourEmailForYourVerificationLink'
+            `${t('RegistrationSuccesful')} - ${t(
+              'PleaseCheckYourEmailForYourVerificationLink'
             )} `,
             false,
             8
@@ -448,7 +448,7 @@ const Nav = (
                         ${windowWidth < breakpointSmall ? 'scr' : ''}`}
           >
             <a href='https://jenniina.fi/'>
-              <span>« {t('EExitToMainSite')}</span>
+              <span>« {t('ExitToMainSite')}</span>
             </a>
           </div>
           <button
@@ -481,7 +481,7 @@ const Nav = (
                 ></path>
               </g>
             </svg>
-            <span className={windowWidth < breakpoint ? 'scr' : ''}>{t('EMenu')}</span>
+            <span className={windowWidth < breakpoint ? 'scr' : ''}>{t('Menu')}</span>
           </button>
           <nav
             id={'site-navigation'}
@@ -532,7 +532,7 @@ const Nav = (
               }
               aria-hidden={true}
             />
-            <span className={windowWidth < breakpoint ? 'scr' : ''}>{t('ESearch')}</span>
+            <span className={windowWidth < breakpoint ? 'scr' : ''}>{t('Search')}</span>
           </button>
           {cart.length > 0 && window.location.pathname !== '/cart' ? (
             <button
@@ -551,7 +551,7 @@ const Nav = (
                 }
                 aria-hidden={true}
               />
-              <span className={windowWidth < breakpoint ? 'scr' : ''}>{t('ECart')}</span>
+              <span className={windowWidth < breakpoint ? 'scr' : ''}>{t('Cart')}</span>
             </button>
           ) : (
             <button
@@ -570,7 +570,7 @@ const Nav = (
                 }
                 aria-hidden={true}
               />
-              <span className={windowWidth < breakpoint ? 'scr' : ''}>{t('EStore')}</span>
+              <span className={windowWidth < breakpoint ? 'scr' : ''}>{t('Store')}</span>
             </button>
           )}
           <button className={styles.settings} onClick={toggleToolbar}>
@@ -583,7 +583,7 @@ const Nav = (
               aria-hidden={true}
             />
             <span id='settings' className={windowWidth < breakpoint ? 'scr' : ''}>
-              {t('ESettings')}
+              {t('Settings')}
             </span>
           </button>
           <nav
@@ -602,7 +602,7 @@ const Nav = (
               language={language}
               id='language-navbar'
               className={`language ${styles.language}`}
-              instructions={t('ELanguageTitle')}
+              instructions={t('LanguageTitle')}
               hide
               options={options(ELanguagesLong)}
               value={
@@ -619,7 +619,7 @@ const Nav = (
             />
             <div className={styles.toolwrap}>
               <label htmlFor='dlt-btn'>
-                {lightTheme ? t('EDarkMode') : t('ELightMode')}
+                {lightTheme ? t('DarkMode') : t('LightMode')}
               </label>
               <button
                 id='dlt-btn'
@@ -634,7 +634,7 @@ const Nav = (
                   <div className={`${styles['dlt-btn-inner-left']}`}>
                     <div className={`${styles['dlt-innermost']}`}>
                       <span className='scr'>
-                        {lightTheme ? t('EDarkMode') : t('ELightMode')}
+                        {lightTheme ? t('DarkMode') : t('LightMode')}
                       </span>
                     </div>
                   </div>
@@ -643,7 +643,7 @@ const Nav = (
             </div>
 
             <div className={styles.toolwrap}>
-              <label htmlFor='navbar-style'>{t('ENavStyle')}</label>
+              <label htmlFor='navbar-style'>{t('NavStyle')}</label>
               <button
                 id='navbar-style'
                 onClick={menuStyleAltToggle}
@@ -710,14 +710,14 @@ const Nav = (
                         : `${styles.link}`
                     }
                   >
-                    <span>{t('EEdit')}</span>
+                    <span>{t('Edit')}</span>
                   </NavLink>
                   <button
                     onClick={handleLogout}
                     id='logoutnav'
                     className={`logout danger ${styles.logout}`}
                   >
-                    {t('ELogout')} &times;
+                    {t('Logout')} &times;
                   </button>
                 </>
               )}
@@ -728,7 +728,7 @@ const Nav = (
                   language={language}
                   className='password-reset'
                   wrapperClass='password-reset-wrap'
-                  text={`${t('EForgotPassword')}`}
+                  text={`${t('ForgotPassword')}`}
                   isOpen={isResetFormOpen}
                   setIsFormOpen={setIsResetFormOpen}
                   hideBrackets={true}

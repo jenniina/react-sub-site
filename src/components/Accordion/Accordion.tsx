@@ -151,7 +151,7 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
           onClick={toggleVisibility}
         >
           <FaAnglesUp />
-          {t('EClose')}
+          {t('Close')}
         </button>
 
         {props.children}
@@ -163,7 +163,7 @@ const Accordion = forwardRef((props: accordionProps, ref: Ref<unknown> | undefin
             onClick={scrollToOpenBtn}
           >
             <FaAnglesUp />
-            {t('EClose')}
+            {t('Close')}
           </button>
         )}
       </div>

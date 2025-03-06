@@ -61,16 +61,16 @@ const Register = ({
             language={language}
             className={`accordion-register register`}
             wrapperClass='register-wrap'
-            text={t('ERegister')}
+            text={t('Register')}
             ref={formRegisterRef}
             setIsFormOpen={setIsFormOpen}
             isOpen={isOpen}
             hideBrackets={true}
           >
             <>
-              <h2>{t('ERegister')}</h2>
+              <h2>{t('Register')}</h2>
               <form onSubmit={handleRegister} className={`register ${text}`}>
-                <p>{t('EPleaseUseGoodTasteWhenChoosingYourNickname')}</p>
+                <p>{t('PleaseUseGoodTasteWhenChoosingYourNickname')}</p>
                 <div className='input-wrap'>
                   <label>
                     <input
@@ -82,7 +82,7 @@ const Register = ({
                       autoComplete='name'
                       onChange={({ target }) => setName(target.value)}
                     />
-                    <span>{t('ENickname')}</span>
+                    <span>{t('Nickname')}</span>
                   </label>
                 </div>
                 <div className='input-wrap'>
@@ -96,7 +96,7 @@ const Register = ({
                       autoComplete='email'
                       onChange={({ target }) => setUsername(target.value.trim())}
                     />
-                    <span>{t('EEmail')}</span>
+                    <span>{t('Email')}</span>
                   </label>
                 </div>
                 <div className='input-wrap'>
@@ -110,7 +110,7 @@ const Register = ({
                       autoComplete='on'
                       onChange={({ target }) => setPassword(target.value.trim())}
                     />
-                    <span>{t('EPassword')}</span>
+                    <span>{t('Password')}</span>
                   </label>
                 </div>
                 <div className='input-wrap'>
@@ -123,7 +123,7 @@ const Register = ({
                       value={confirmPassword}
                       onChange={({ target }) => setConfirmPassword(target.value.trim())}
                     />
-                    <span>{t('EConfirmPassword')}</span>
+                    <span>{t('ConfirmPassword')}</span>
                   </label>
                 </div>
                 <Link
@@ -136,10 +136,10 @@ const Register = ({
                     margin: '1rem auto',
                   }}
                 >
-                  <small>{t('EDisclaimer')}</small>
+                  <small>{t('Disclaimer')}</small>
                 </Link>
                 <button type='submit' disabled={sending} className='restore'>
-                  {t('ERegister')}
+                  {t('Register')}
                 </button>
               </form>
             </>

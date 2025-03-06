@@ -79,7 +79,7 @@ export default function Todo({
     toggleTodo(todo?.key)
   }
   function handleDelete() {
-    if (window.confirm(t('EAreYouSureYouWantToDelete') + ' "' + todo?.name + '"?')) {
+    if (window.confirm(t('AreYouSureYouWantToDelete') + ' "' + todo?.name + '"?')) {
       setNewName('')
       deleteTodo(todo?.key)
       setIsOpen(false)
@@ -88,11 +88,11 @@ export default function Todo({
   const handleModify = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (newName === '') {
-      dispatch(notify(t('EAddTask'), true, 5))
+      dispatch(notify(t('AddTask'), true, 5))
       return
     }
     if (newName.length > maxCharacters) {
-      dispatch(notify(t('ENameTooLong'), true, 5))
+      dispatch(notify(t('NameTooLong'), true, 5))
       return
     }
     modifyTodo(todo?.key, newName, newPriority, combinedDeadline, newCategory)
@@ -182,7 +182,7 @@ export default function Todo({
           className={`${styles['drag-handle']} tooltip-wrap`}
         >
           <MdDragIndicator />
-          <span className='tooltip narrow2 below right'>{t('EDraggable')}</span>
+          <span className='tooltip narrow2 below right'>{t('Draggable')}</span>
         </span>
         <label onClick={handleLabelClick}>
           <input
@@ -217,9 +217,9 @@ export default function Todo({
                       isOverdue ? styles['overdue'] : ''
                     } ${isToday ? styles['today'] : ''}`}
                   >
-                    {t('EDeadline')}:{' '}
+                    {t('Deadline')}:{' '}
                     {isToday
-                      ? t('EToday')
+                      ? t('Today')
                       : new Date(todo.deadline).toLocaleDateString(language, {
                           year: 'numeric',
                           month: 'long',
@@ -232,7 +232,7 @@ export default function Todo({
           {/* <div className={`${styles['more-info-wrap']}`}>
             {todo?.category && (
               <span>
-                {t('ECategory')}:{' '}
+                {t('Category')}:{' '}
                 {translate(translationMap, todo?.category, language)}
               </span>
             )}
@@ -241,7 +241,7 @@ export default function Todo({
 
             {todo?.priority && (
               <span>
-                {t('EPriority')}:{' '}
+                {t('Priority')}:{' '}
                 {translate(translationMap, todo?.priority, language)}
               </span>
             )}
@@ -268,9 +268,9 @@ export default function Todo({
                       isOverdue ? styles['overdue'] : ''
                     } ${isToday ? styles['today'] : ''}`}
                   >
-                    {t('EDeadline')}:{' '}
+                    {t('Deadline')}:{' '}
                     {isToday
-                      ? t('EToday')
+                      ? t('Today')
                       : new Date(todo.deadline).toLocaleDateString(language, {
                           year: 'numeric',
                           month: 'long',
@@ -287,30 +287,30 @@ export default function Todo({
             <b className={`tooltip-wrap ${styles.high}`}>
               <FaTriangleExclamation />
               <span className='scr'>
-                {t('EPriority')}: {t('EHigh')}
+                {t('Priority')}: {t('High')}
               </span>
               <span className='tooltip narrow2 below left' aria-hidden='true'>
-                {t('EPriority')}: {t('EHigh')}
+                {t('Priority')}: {t('High')}
               </span>
             </b>
           ) : todo?.priority === 'medium' ? (
             <b className={`tooltip-wrap ${styles.medium}`}>
               <HiDotsHorizontal />
               <span className='scr'>
-                {t('EPriority')}: {t('EMedium')}
+                {t('Priority')}: {t('Medium')}
               </span>
               <span className='tooltip narrow2 below left' aria-hidden='true'>
-                {t('EPriority')}: {t('EMedium')}
+                {t('Priority')}: {t('Medium')}
               </span>
             </b>
           ) : todo?.priority === 'low' ? (
             <b className={`tooltip-wrap ${styles.low}`}>
               <BsArrowDownCircleFill viewBox='0 0 17 17' />
               <span className='scr'>
-                {t('EPriority')}: {t('ELow')}
+                {t('Priority')}: {t('Low')}
               </span>
               <span className='tooltip narrow2 below left' aria-hidden='true'>
-                {t('EPriority')}: {t('ELow')}
+                {t('Priority')}: {t('Low')}
               </span>
             </b>
           ) : (
@@ -321,40 +321,40 @@ export default function Todo({
             <b className={`tooltip-wrap ${styles.cat}`}>
               <IoPersonCircleSharp />
               <span className='scr'>
-                {t('ECategoryTitle')}: {t('EPersonal')}
+                {t('CategoryTitle')}: {t('Personal')}
               </span>
               <span className='tooltip narrow2 below left' aria-hidden='true'>
-                {t('ECategoryTitle')}: {t('EPersonal')}
+                {t('CategoryTitle')}: {t('Personal')}
               </span>
             </b>
           ) : todo?.category === 'work' ? (
             <b className={`tooltip-wrap ${styles.cat} ${styles.bg}`}>
               <MdWork />
               <span className='scr'>
-                {t('ECategoryTitle')}: {t('EWork')}
+                {t('CategoryTitle')}: {t('Work')}
               </span>
               <span className='tooltip narrow2 below left' aria-hidden='true'>
-                {t('ECategoryTitle')}: {t('EWork')}
+                {t('CategoryTitle')}: {t('Work')}
               </span>
             </b>
           ) : todo?.category === 'shopping' ? (
             <b className={`tooltip-wrap ${styles.cat} ${styles.bg}`}>
               <TiShoppingCart />
               <span className='scr'>
-                {t('ECategoryTitle')}: {t('EShopping')}
+                {t('CategoryTitle')}: {t('Shopping')}
               </span>
               <span className='tooltip narrow2 below left' aria-hidden='true'>
-                {t('ECategoryTitle')}: {t('EShopping')}
+                {t('CategoryTitle')}: {t('Shopping')}
               </span>
             </b>
           ) : (
             <b className={`tooltip-wrap ${styles.cat}`}>
               <HiDotsCircleHorizontal />
               <span className='scr'>
-                {t('ECategoryTitle')}: {t('EOther')}
+                {t('CategoryTitle')}: {t('Other')}
               </span>
               <span className='tooltip narrow2 below left' aria-hidden='true'>
-                {t('ECategoryTitle')}: {t('EOther')}
+                {t('CategoryTitle')}: {t('Other')}
               </span>
             </b>
           )}
@@ -365,9 +365,9 @@ export default function Todo({
             disabled={todo?.complete ?? false}
           >
             <AiOutlineEdit />
-            <span className='scr'>{t('EEdit')}</span>
+            <span className='scr'>{t('Edit')}</span>
             <span className='tooltip narrow2 below left' aria-hidden='true'>
-              {t('EEdit')}
+              {t('Edit')}
             </span>
           </button>
           <button
@@ -377,9 +377,9 @@ export default function Todo({
             <span className={styles['delete-inner']} aria-hidden='true'>
               &times;
             </span>
-            <span className='scr'>{t('EDeleteTask')}</span>
+            <span className='scr'>{t('DeleteTask')}</span>
             <span className='tooltip below left narrow2' aria-hidden='true'>
-              {t('EDeleteTask')}
+              {t('DeleteTask')}
             </span>
           </button>
         </div>

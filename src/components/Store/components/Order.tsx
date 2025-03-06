@@ -73,11 +73,11 @@ const Order: FC<Props> = ({ language, paidStatus, itemStatus, splitToLines, info
               value={orderID}
               onChange={(e) => setOrderID(e.target.value as ICart['orderID'])}
             />
-            <span className='label'>{t('EOrderID')}</span>
+            <span className='label'>{t('OrderID')}</span>
           </label>
         </div>
         <button type='submit' disabled={sending}>
-          {t('ESubmit')}
+          {t('Submit')}
         </button>
       </form>
       {order && (
@@ -93,7 +93,7 @@ const Order: FC<Props> = ({ language, paidStatus, itemStatus, splitToLines, info
                   </h3>
                   <p>{item.description}</p>
                   <p>
-                    <strong>{t('EPrice')}:</strong>{' '}
+                    <strong>{t('Price')}:</strong>{' '}
                     {item.id === 'misc-quote'
                       ? item.price + ' €'
                       : item.price +
@@ -104,14 +104,14 @@ const Order: FC<Props> = ({ language, paidStatus, itemStatus, splitToLines, info
                         ' €'}
                   </p>
                   <p>
-                    <strong>{t('EInfo')}:</strong> <br /> {splitToLines(item.details)}
+                    <strong>{t('Info')}:</strong> <br /> {splitToLines(item.details)}
                   </p>
                   <p>
-                    <strong>{t('EStatus')}:</strong> {itemStatus(item.status)}{' '}
+                    <strong>{t('Status')}:</strong> {itemStatus(item.status)}{' '}
                   </p>
                   {item.id === 'misc-quote' ? null : (
                     <p key={item.id}>
-                      <strong>{t('EPaymentState')}:</strong> {paidStatus[item.paid]}
+                      <strong>{t('PaymentState')}:</strong> {paidStatus[item.paid]}
                     </p>
                   )}
                 </div>
@@ -120,7 +120,7 @@ const Order: FC<Props> = ({ language, paidStatus, itemStatus, splitToLines, info
           </div>
           <div className={styles['info-wrap']}>
             <table className={`${styles['info-table']}`}>
-              <caption>{t('EInfo')}</caption>
+              <caption>{t('Info')}</caption>
               <tbody>
                 {Object.keys(order.info).map((key) => {
                   if (key === '_id') return null
@@ -138,15 +138,15 @@ const Order: FC<Props> = ({ language, paidStatus, itemStatus, splitToLines, info
             </table>
             <p>{order.extra}</p>
             <p>
-              {t('ETotal')}: <big>{order.total} € </big>
+              {t('Total')}: <big>{order.total} € </big>
               <br />
             </p>
 
             <p>
-              {t('EStatus')}: {itemStatus(order.status)}
+              {t('Status')}: {itemStatus(order.status)}
             </p>
             <p>
-              {t('EPaymentState')}:{' '}
+              {t('PaymentState')}:{' '}
               {
                 paidStatus[
                   order.items.every((item) => item.paid === 'full')
@@ -158,10 +158,10 @@ const Order: FC<Props> = ({ language, paidStatus, itemStatus, splitToLines, info
               }
             </p>
             <p>
-              <strong>{t('EOrdered')}: </strong>
+              <strong>{t('Ordered')}: </strong>
               {order.createdAt?.toLocaleDateString()}{' '}
               {order.createdAt?.toLocaleTimeString()} <br />
-              <strong>{t('ELastUpdated')}: </strong>
+              <strong>{t('LastUpdated')}: </strong>
               {order.updatedAt.toLocaleDateString()}{' '}
               {order.updatedAt?.toLocaleTimeString()}
             </p>

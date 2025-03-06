@@ -13,11 +13,11 @@ const Progress = ({ language }: { language: ELanguages }) => {
     <header className={`${styles.progress}`}>
       <progress max='15' value={index + Number(answer !== null)} />
       <p>
-        {t('EQuestion')}&nbsp;&nbsp;<b>{index + 1}</b> / 15
+        {t('Question')}&nbsp;&nbsp;<b>{index + 1}</b> / 15
       </p>
       <p>
         <b>
-          {t('EScore')}: {points}
+          {t('Score')}: {points}
         </b>{' '}
         / 300
       </p>

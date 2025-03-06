@@ -184,10 +184,10 @@ function CardSingle({
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(
         () => {
-          dispatch(notify(t('ECopiedToClipboard'), false, 3))
+          dispatch(notify(t('CopiedToClipboard'), false, 3))
         },
         (err) => {
-          dispatch(notify(`${t('EFailedToCopy')}`, true, 3))
+          dispatch(notify(`${t('FailedToCopy')}`, true, 3))
         }
       )
     } else {
@@ -199,11 +199,11 @@ function CardSingle({
       textArea.select()
       try {
         document.execCommand('copy')
-        dispatch(notify(t('ECopiedToClipboard'), false, 3))
+        dispatch(notify(t('CopiedToClipboard'), false, 3))
       } catch (err: any) {
         if (err.response?.data?.message)
           dispatch(notify(err.response.data.message, true, 8))
-        else dispatch(notify(`${t('EFailedToCopy')}`, true, 3))
+        else dispatch(notify(`${t('FailedToCopy')}`, true, 3))
       }
       document.body.removeChild(textArea)
     }
@@ -229,7 +229,7 @@ function CardSingle({
           <button aria-haspopup='true' onClick={toggleOpen}>
             <MdOutlineDragIndicator aria-hidden='true' />
             <span className='scr' id={`instructions${id}`}>
-              {t('EChooseDestination')}
+              {t('ChooseDestination')}
             </span>
           </button>
         </b>
@@ -237,7 +237,7 @@ function CardSingle({
           className={isOpen ? `${styles.open} ${styles.blur}` : `${styles.blur}`}
           style={styleReset}
         >
-          <span style={styleTitle}>{t('EMove')}:</span>
+          <span style={styleTitle}>{t('Move')}:</span>
           <ul
             role='listbox'
             aria-describedby={`instructions${id}`}
@@ -249,10 +249,10 @@ function CardSingle({
                 className={styles.copy}
                 onClick={() => handleCopyToClipboard(data.content)}
                 tabIndex={0}
-                title={t('ECopyToClipboard')}
+                title={t('CopyToClipboard')}
               >
                 <MdContentCopy />
-                <i>{t('ECopyText')}</i>
+                <i>{t('CopyText')}</i>
               </a>
             </li>
             {statuses.map((status, i) => (
@@ -267,7 +267,7 @@ function CardSingle({
                   onClick={(e) => containerUpdate(e)}
                   onKeyDown={(e) => keyListen(e)}
                   tabIndex={0}
-                  title={`${t('EToTarget')}: ${translateStatus(status).toLowerCase()}`}
+                  title={`${t('ToTarget')}: ${translateStatus(status).toLowerCase()}`}
                 >
                   <MdLocationOn />
                   <i>{translateStatus(status)}</i>

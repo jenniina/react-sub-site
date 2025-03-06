@@ -76,7 +76,7 @@ const QuizFinished = ({ language }: Props) => {
             },
             user: user._id,
           }
-          dispatch(notify(t('ENewHighscore'), false, 3))
+          dispatch(notify(t('NewHighscore'), false, 3))
 
           dispatch(addQuiz(quizScore)).then((r) => {
             //console.log('r1: ', r)
@@ -94,13 +94,13 @@ const QuizFinished = ({ language }: Props) => {
           }
 
           if (r.highscores[mode].score < points) {
-            dispatch(notify(t('ENewHighscore'), false, 3))
+            dispatch(notify(t('NewHighscore'), false, 3))
             quizScore.highscores[mode].time = finalSeconds // Update time if new score is higher
           } else if (
             r.highscores[mode].score === points &&
             r.highscores[mode].time > finalSeconds
           ) {
-            dispatch(notify(t('EFasterThanBefore'), false, 3))
+            dispatch(notify(t('FasterThanBefore'), false, 3))
             quizScore.highscores[mode].time = finalSeconds // Update time if score is equal and time is faster
           }
 
@@ -115,18 +115,18 @@ const QuizFinished = ({ language }: Props) => {
   const handleRegister = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
     if (password !== confirmPassword) {
-      dispatch(notify(t('EPasswordsDoNotMatch'), true, 8))
+      dispatch(notify(t('PasswordsDoNotMatch'), true, 8))
       return
     }
     dispatch(createUser({ name, username, password, language: 'en' }))
       .then(async () => {
-        dispatch(notify(t('ERegistrationSuccesful'), false, 8))
+        dispatch(notify(t('RegistrationSuccesful'), false, 8))
       })
       .catch((err) => {
         console.error(err)
         if (err.response?.data?.message)
           dispatch(notify(err.response.data.message, true, 8))
-        else dispatch(notify(`${t('EError')}: ${err.message}`, true, 8))
+        else dispatch(notify(`${t('Error')}: ${err.message}`, true, 8))
       })
   }
 
@@ -134,16 +134,16 @@ const QuizFinished = ({ language }: Props) => {
 
   switch (true) {
     case percentage === 100:
-      congrats = t('EPerfect')
+      congrats = t('Perfect')
       break
     case percentage >= 80 && percentage < 100:
-      congrats = t('EExcellent')
+      congrats = t('Excellent')
       break
     case percentage >= 50 && percentage < 80:
-      congrats = t('EGoodJob')
+      congrats = t('GoodJob')
       break
     case percentage >= 0 && percentage < 50:
-      congrats = t('EBadLuck')
+      congrats = t('BadLuck')
       break
     default:
       congrats = ''
@@ -188,24 +188,24 @@ const QuizFinished = ({ language }: Props) => {
               <div className={`${styles.quiz}`}>
                 <h1 className={styles.h1}>
                   <a href='#' onClick={goToMainPage}>
-                    &laquo;&nbsp;{t('EQuizApp')}
+                    &laquo;&nbsp;{t('QuizApp')}
                   </a>
                 </h1>
                 <h2>{congrats}</h2>
                 <p className='result'>
-                  {t('EYouScored')} <strong>{points}</strong> {t('EOutOf300Points')} (
+                  {t('YouScored')} <strong>{points}</strong> {t('OutOf300Points')} (
                   {percentage}%)
                 </p>
                 <p>
-                  {t('EDifficulty')}:{' '}
+                  {t('Difficulty')}:{' '}
                   {(() => {
                     switch (mode) {
                       case 'easy':
-                        return t('EEasy')
+                        return t('Easy')
                       case 'medium':
-                        return t('EMedium')
+                        return t('Medium')
                       case 'hard':
-                        return t('EHard')
+                        return t('Hard')
                       default:
                         return mode
                     }
@@ -214,35 +214,35 @@ const QuizFinished = ({ language }: Props) => {
                 <p>
                   {finalSeconds === 0 ? (
                     <>
-                      {t('ESpeed')}: {t('ENA')}
+                      {t('Speed')}: {t('NA')}
                     </>
                   ) : (
                     <>
-                      {t('ESpeed')}: {mins < 10 && '0'}
+                      {t('Speed')}: {mins < 10 && '0'}
                       {mins}:{sec < 10 && '0'}
                       {sec}
                     </>
                   )}
                 </p>
                 <p className='highscore'>
-                  ({t('EHighscore')}: {highscores[mode].score} {t('EPoints')})
+                  ({t('Highscore')}: {highscores[mode].score} {t('Points')})
                 </p>
                 <div className={`${styles.reset}`}>
                   <button className='btn' onClick={() => navigate(`/portfolio/quiz`)}>
-                    {t('EBackToMenu')}
+                    {t('BackToMenu')}
                   </button>
                   <button
                     className='btn'
                     onClick={() => navigate(`/portfolio/quiz/difficulty/${mode}`)}
                   >
-                    {t('ETryAgain')}
+                    {t('TryAgain')}
                   </button>
                 </div>
               </div>
               <Suspense
                 fallback={
                   <div className='flex center margin0auto textcenter'>
-                    {t('ELoading')}...
+                    {t('Loading')}...
                   </div>
                 }
               >

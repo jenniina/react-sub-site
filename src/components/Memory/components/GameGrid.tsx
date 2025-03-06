@@ -100,7 +100,7 @@ const GameGrid: FC<GameGridProps> = ({
           setGameStarted(false)
         }}
       >
-        {t('EStopGame')}
+        {t('StopGame')}
       </button>
     </>
   )

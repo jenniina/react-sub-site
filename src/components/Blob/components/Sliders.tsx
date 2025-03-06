@@ -54,7 +54,7 @@ const Sliders: FC<SlidersProps> = ({
       <div id={`drag-slider-wrap${d}`} className='drag-slider-wrap'>
         <div className='drag-slider-single'>
           <label htmlFor={`drag-slider-hue${d}`} id={`huedescription${d}`}>
-            {t('EAdjustBackgroundHue')}
+            {t('AdjustBackgroundHue')}
           </label>
           <input
             ref={sliderHueInput}
@@ -84,12 +84,12 @@ const Sliders: FC<SlidersProps> = ({
               sliderHueReset()
             }}
           >
-            {t('EResetHue')}
+            {t('ResetHue')}
           </button>
         </div>
         <div className='drag-slider-single'>
           <label htmlFor={`drag-slider-saturation${d}`} id={`saturationdescription${d}`}>
-            {t('EAdjustBackgroundSaturation')}
+            {t('AdjustBackgroundSaturation')}
           </label>
           <input
             ref={sliderSaturationInput}
@@ -120,12 +120,12 @@ const Sliders: FC<SlidersProps> = ({
               sliderSaturationReset()
             }}
           >
-            {t('EResetSaturation')}
+            {t('ResetSaturation')}
           </button>
         </div>
         <div className='drag-slider-single'>
           <label htmlFor={`drag-slider-lightness${d}`} id={`lightnessdescription${d}`}>
-            {t('EAdjustBackgroundLightness')}
+            {t('AdjustBackgroundLightness')}
           </label>
           <input
             ref={sliderLightnessInput}
@@ -156,7 +156,7 @@ const Sliders: FC<SlidersProps> = ({
               sliderLightnessReset()
             }}
           >
-            {t('EResetLightness')}
+            {t('ResetLightness')}
           </button>
         </div>
       </div>

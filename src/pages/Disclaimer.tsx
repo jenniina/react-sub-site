@@ -27,29 +27,29 @@ export default function Disclaimer({
           <section className={`card`}>
             <div>
               <p>
-                {t('ESeeAlso')}: <Link to='/terms'>{t('ETermsOfService')}</Link>
+                {t('SeeAlso')}: <Link to='/terms'>{t('TermsOfService')}</Link>
               </p>
-              <p>{t('ETheFollowingAppliesToLoggingInAndStoringUserInfo')}</p>
-              <h2>{t('EDataCollectionAndStorage')}</h2>
-              <p>{t('EWeCollectAndStoreTheEmailAddress')}</p>
-              <p>{t('EYourPasswordIsSecurelyHashed')}</p>
-              <h2>{t('EDataProtection')}</h2>
-              <p>{t('EWeUseIndustryStandardSecurityMeasures')}</p>
-              <p>{t('EAccessToYourDataIsRestricted')}</p>
-              <h2>{t('EUserResponsibilities')}</h2>
-              <p>{t('EPleaseChooseAStrongAndUniquePassword')}</p>
-              <p>{t('EDoNotShareYourPasswordWithAnyone')}</p>
-              <h2>{t('EYourRights')}</h2>
-              <p>{t('EYouHaveTheRightToAccessModifyOrDelete')}</p>
+              <p>{t('TheFollowingAppliesToLoggingInAndStoringUserInfo')}</p>
+              <h2>{t('DataCollectionAndStorage')}</h2>
+              <p>{t('WeCollectAndStoreTheEmailAddress')}</p>
+              <p>{t('YourPasswordIsSecurelyHashed')}</p>
+              <h2>{t('DataProtection')}</h2>
+              <p>{t('WeUseIndustryStandardSecurityMeasures')}</p>
+              <p>{t('AccessToYourDataIsRestricted')}</p>
+              <h2>{t('UserResponsibilities')}</h2>
+              <p>{t('PleaseChooseAStrongAndUniquePassword')}</p>
+              <p>{t('DoNotShareYourPasswordWithAnyone')}</p>
+              <h2>{t('YourRights')}</h2>
+              <p>{t('YouHaveTheRightToAccessModifyOrDelete')}</p>
               <p>
-                {t('EIfYouHaveAnyConcernsAboutYourDataSecurity')}:{' '}
-                <Link to='/contact'>{t('EContactForm')}</Link>
+                {t('IfYouHaveAnyConcernsAboutYourDataSecurity')}:{' '}
+                <Link to='/contact'>{t('ContactForm')}</Link>
               </p>
-              <h2>{t('EChangesToThisDisclaimer')}</h2>
-              <p>{t('EWeMayUpdateThisDisclaimerFromTimeToTime')}</p>
-              <p>{t('EByUsingOurService')}</p>
+              <h2>{t('ChangesToThisDisclaimer')}</h2>
+              <p>{t('WeMayUpdateThisDisclaimerFromTimeToTime')}</p>
+              <p>{t('ByUsingOurService')}</p>
               <p>
-                {t('ESeeAlso')}: <Link to='/terms'>{t('ETermsOfService')}</Link>
+                {t('SeeAlso')}: <Link to='/terms'>{t('TermsOfService')}</Link>
               </p>
             </div>
           </section>

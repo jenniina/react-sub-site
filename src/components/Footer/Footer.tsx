@@ -34,17 +34,17 @@ const Footer: FC<{ styleMenu: boolean | undefined; language: ELanguages }> = ({
   return (
     <footer id='main-footer' className={`main-footer ${styleMenu ? 'alt' : ''}`}>
       <a className='footer1' href='https://jenniina.fi/'>
-        <span>{t('EExitToMainSite')}</span>&nbsp;
+        <span>{t('ExitToMainSite')}</span>&nbsp;
         <span aria-hidden='true'>&times;</span>
       </a>
 
       <Link to='/disclaimer' className='footer1'>
-        {t('EDisclaimer')}
+        {t('Disclaimer')}
       </Link>
 
       {showTopBtn ? (
         <button className='footer2' style={{ display: 'inline-block' }} onClick={toTop}>
-          {t('EScrollToTheTop')}
+          {t('ScrollToTheTop')}
           <BiChevronsUp style={{ display: 'inline-block', marginBottom: '-0.15em' }} />
         </button>
       ) : (

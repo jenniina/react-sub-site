@@ -22,7 +22,7 @@ export default function MemoryPage({
       <div className='inner-wrap'>
         <Suspense
           fallback={
-            <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
+            <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
           }
         >
           <Memory language={language} />

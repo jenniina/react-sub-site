@@ -62,7 +62,7 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault()
     setSending(true)
-    dispatch(notify(t('ELoggingIn'), false, 8))
+    dispatch(notify(t('LoggingIn'), false, 8))
 
     await dispatch(login(username, password, 'en'))
       .then(() => {
@@ -73,9 +73,9 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
       .catch((e) => {
         if (e.response?.data?.message) dispatch(notify(e.response.data.message, true, 8))
         else if (e.code === 'ERR_BAD_REQUEST')
-          dispatch(notify(`${t('EError')}: ${e.response.data.message}`, true, 8))
+          dispatch(notify(`${t('Error')}: ${e.response.data.message}`, true, 8))
         else if (e.code === 'ERR_NETWORK') {
-          dispatch(notify(`${t('EError')}: ${e.message}`, true, 8))
+          dispatch(notify(`${t('Error')}: ${e.message}`, true, 8))
         }
         setSending(false)
       })
@@ -86,11 +86,11 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
         <>
           <p>
             <span>
-              {t('ELoggedInAs')} {user?.name ? user?.name : user.username}{' '}
+              {t('LoggedInAs')} {user?.name ? user?.name : user.username}{' '}
             </span>
-            <Link to='/edit'>{`${t('EEdit')}`}</Link>
+            <Link to='/edit'>{`${t('Edit')}`}</Link>
             <button onClick={handleLogout} id='logout' className='logout danger'>
-              {t('ELogout')} &times;
+              {t('Logout')} &times;
             </button>
           </p>
           <button
@@ -112,12 +112,12 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
             language={language}
             className={`accordion-login login-to-save`}
             wrapperClass='login-to-save-wrap'
-            text={t('ELogInToSaveScore')}
+            text={t('LogInToSaveScore')}
             ref={formLoginRef}
             setIsFormOpen={setIsFormOpen}
             hideBrackets={true}
           >
-            <h2>{t('ELogInToSaveScore')}</h2>
+            <h2>{t('LogInToSaveScore')}</h2>
 
             <form onSubmit={handleLogin} className={`login ${styles.login}`}>
               <div className='input-wrap'>
@@ -131,7 +131,7 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
                     autoComplete='email'
                     onChange={({ target }) => setUsername(target.value.trim())}
                   />
-                  <span>{t('EUsername')}: </span>
+                  <span>{t('Username')}: </span>
                 </label>
               </div>
               <div className='input-wrap'>
@@ -144,11 +144,11 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
                     value={password}
                     onChange={({ target }) => setPassword(target.value.trim())}
                   />
-                  <span>{t('EPassword')}: </span>
+                  <span>{t('Password')}: </span>
                 </label>
               </div>
               <button type='submit' disabled={sending} id='login' className='login'>
-                {t('ELogin')}
+                {t('Login')}
               </button>
             </form>
           </Accordion>

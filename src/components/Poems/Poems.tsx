@@ -36,17 +36,17 @@ const Poems: FC<Props> = ({ language }) => {
           id='search-poem'
           className='poem-accordion'
           wrapperClass={styles.accordion}
-          text={t('ESearchForPoem')}
+          text={t('SearchForPoem')}
           closeClass={styles['closed-accordion']}
         >
           <>
-            <h2>{t('ESearchForPoem')}</h2>
+            <h2>{t('SearchForPoem')}</h2>
             <p className='textcenter'>
-              ({t('ENote')} {t('EInEnglish')})
+              ({t('Note')} {t('InEnglish')})
             </p>
             <form onSubmit={fetchPoem}>
               <button className={styles['accordion-submit']} type='submit'>
-                {t('ESearch')}
+                {t('Search')}
               </button>
             </form>
             {!poem ||

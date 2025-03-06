@@ -26,51 +26,51 @@ export default function DragAndDropPage({
             <div className='medium flex column gap'>
               <Accordion
                 language={language}
-                text={t('EClickHereToSeeFeatures')}
+                text={t('ClickHereToSeeFeatures')}
                 className='features'
                 wrapperClass='features-wrap'
               >
-                <h2>{t('EFeatures')}</h2>
+                <h2>{t('Features')}</h2>
                 <ul className='ul'>
-                  <li>{t('EDraggableWithAnyPointer')}</li>
-                  <li>{t('EKeyboardUseWithADropdownList')}</li>
-                  <li>{t('ECanRearrangeWithinTheirContainer')}</li>
-                  <li>{t('EStateSavedInLocalStorage')}</li>
-                  <li>{t('ECategoriesCanBeRenamed')}</li>
-                  <li>{t('ENewColorsCanBeAddedAndRemoved')}</li>
+                  <li>{t('DraggableWithAnyPointer')}</li>
+                  <li>{t('KeyboardUseWithADropdownList')}</li>
+                  <li>{t('CanRearrangeWithinTheirContainer')}</li>
+                  <li>{t('StateSavedInLocalStorage')}</li>
+                  <li>{t('CategoriesCanBeRenamed')}</li>
+                  <li>{t('NewColorsCanBeAddedAndRemoved')}</li>
                   <li>
-                    {t('EYouMayAlsoAddOtherWordsForGenericUse')}.{' '}
-                    {t('ETipIfYouAddAGenericWordYouCanColorTheCard')}
+                    {t('YouMayAlsoAddOtherWordsForGenericUse')}.{' '}
+                    {t('TipIfYouAddAGenericWordYouCanColorTheCard')}
                   </li>
                 </ul>
-                <h3>{t('EInstructions')}</h3>
-                <h4>{t('EPointerAndTouchUse')}</h4>
+                <h3>{t('Instructions')}</h3>
+                <h4>{t('PointerAndTouchUse')}</h4>
                 <ul className='ul'>
-                  <li>{t('EHoldPointerButtonDownToDragAnItemFrom')}</li>
-                  <li>{t('EOnTouchDevicesHoldTouchForAMomentToActivateDrag')}</li>
+                  <li>{t('HoldPointerButtonDownToDragAnItemFrom')}</li>
+                  <li>{t('OnTouchDevicesHoldTouchForAMomentToActivateDrag')}</li>
                   <li>
-                    {t('EYouMayAlsoUseTheItemMenuToChooseADestination')}:{' '}
+                    {t('YouMayAlsoUseTheItemMenuToChooseADestination')}:{' '}
                     <MdOutlineDragIndicator
                       aria-hidden='true'
                       style={{ display: 'inline-block', marginBottom: '-0.15em' }}
                     />{' '}
                   </li>
                 </ul>
-                <h4>{t('EKeyboardUse')}</h4>
+                <h4>{t('KeyboardUse')}</h4>
                 <ul className='ul'>
-                  <li>{t('EMoveItemsWithinTheirContainerWithTheUpOrDownArrowKeys')}</li>
+                  <li>{t('MoveItemsWithinTheirContainerWithTheUpOrDownArrowKeys')}</li>
                   <li>
-                    {t('EToMoveItemsToAnotherContainer')}
+                    {t('ToMoveItemsToAnotherContainer')}
                     <ul>
                       <li>
-                        {t('EUseTabKeyToNavigateToDragButton')}{' '}
+                        {t('UseTabKeyToNavigateToDragButton')}{' '}
                         <MdOutlineDragIndicator
                           aria-hidden='true'
                           style={{ display: 'inline-block', marginBottom: '-0.15em' }}
                         />{' '}
-                        {t('EAndPressEnterKeyToOpenMenu')}
+                        {t('AndPressEnterKeyToOpenMenu')}
                       </li>
-                      <li>{t('EWithTheMenuOpenUseTabKeyToNavigateAnd')}</li>
+                      <li>{t('WithTheMenuOpenUseTabKeyToNavigateAnd')}</li>
                     </ul>
                   </li>
                 </ul>
@@ -79,8 +79,8 @@ export default function DragAndDropPage({
                 Github
               </a>
             </div>
-            <h2>{t('EDragAndDrop')}</h2>
-            <p className='textcenter'>{t('ESortTheColorsToADifferentContainerOr')}</p>
+            <h2>{t('DragAndDrop')}</h2>
+            <p className='textcenter'>{t('SortTheColorsToADifferentContainerOr')}</p>
             <DragAndDrop language={language} />
           </div>
         </section>

@@ -24,24 +24,24 @@ export default function ComposerPage({
           <div>
             <div className='medium flex column left gap'>
               <p className='center max-content margin0auto'>
-                {t('EReactWebsite')}. {t('EComposerIntro1')} {t('EComposerIntro2')}
+                {t('ReactWebsite')}. {t('ComposerIntro1')} {t('ComposerIntro2')}
                 <br />
                 <br />
               </p>
               <div className='medium'>
                 <Accordion
                   language={language}
-                  text={t('EClickHereToSeeFeatures')}
+                  text={t('ClickHereToSeeFeatures')}
                   className='composer-features'
                   wrapperClass='mb3'
                   setIsFormOpen={setIsFormOpen}
                 >
                   <>
-                    <h2>{t('EFeatures')}</h2>
+                    <h2>{t('Features')}</h2>
                     <ul className='ul'>
-                      <li>{t('EComposerIntro3')}</li>
+                      <li>{t('ComposerIntro3')}</li>
                       <li>
-                        {t('EDependencies')}: React
+                        {t('Dependencies')}: React
                         <ul>
                           <li>react</li>
                           <li>react-dom</li>
@@ -52,7 +52,7 @@ export default function ComposerPage({
                         </ul>
                       </li>
                       <li>
-                        {t('EDependencies')}: Node.js
+                        {t('Dependencies')}: Node.js
                         <ul>
                           <li>express</li>
                           <li>express-validator</li>

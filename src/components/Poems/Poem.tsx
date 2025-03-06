@@ -70,7 +70,7 @@ const Poem: FC<PoemProps> = ({ poem, language }) => {
           style={{ maxWidth: 'max-content', marginLeft: '1em' }}
           onClick={copyToClipboard}
         >
-          {copied ? t('ECopiedToClipboard') : t('ECopyToClipboard')}
+          {copied ? t('CopiedToClipboard') : t('CopyToClipboard')}
         </button>
       </div>
     </>

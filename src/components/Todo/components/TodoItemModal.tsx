@@ -77,7 +77,7 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
       setNewDay(value)
       setErrorMessage(null)
     } else {
-      setErrorMessage(`${t('ESet')}: ${t('EDay')}`)
+      setErrorMessage(`${t('Set')}: ${t('Day')}`)
     }
   }
 
@@ -86,7 +86,7 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
       setNewMonth(value)
       setErrorMessage(null)
     } else {
-      setErrorMessage(`${t('ESet')}: ${t('EMonth')}`)
+      setErrorMessage(`${t('Set')}: ${t('Month')}`)
     }
   }
 
@@ -96,7 +96,7 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
       setNewYear(value)
       setErrorMessage(null)
     } else {
-      setErrorMessage(t('EYearMustBeBetweenCurrentYearAnd10YearsFromNow'))
+      setErrorMessage(t('YearMustBeBetweenCurrentYearAnd10YearsFromNow'))
     }
   }
 
@@ -108,7 +108,7 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
 
       setErrorMessage(null)
       if (selectedDate < today) {
-        setErrorMessage(t('ETheDateIsInThePast'))
+        setErrorMessage(t('TheDateIsInThePast'))
       }
     }
   }, [newDay, newMonth, newYear, language])
@@ -200,12 +200,12 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
           onClick={handleClose}
         >
           <span aria-hidden='true'>&times;</span>
-          <span className='scr'>{t('EClose')}</span>
+          <span className='scr'>{t('Close')}</span>
           <span aria-hidden='true' className='tooltip below left narrow2'>
-            {t('EClose')}
+            {t('Close')}
           </span>
         </button>
-        <h2>{t('EEdit')}</h2>
+        <h2>{t('Edit')}</h2>
         <form onSubmit={handleModify} className={`${styles.modify}`}>
           <Select
             id={`category_${sanitize(first3Words(todo?.name ?? randomString, language))}`}
@@ -213,7 +213,7 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
             value={categoryOptions?.find((o) => o.value === newCategory)}
             onChange={(o) => setNewCategory(o?.value as TCategory)}
             options={categoryOptions}
-            instructions={t('ESelectCategory')}
+            instructions={t('SelectCategory')}
             language={language}
             hideDelete
             z={3}
@@ -224,7 +224,7 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
             value={priorityOptions?.find((o) => o.value === newPriority)}
             onChange={(o) => setNewPriority(o?.value as TPriority)}
             options={priorityOptions}
-            instructions={t('EPriority')}
+            instructions={t('Priority')}
             language={language}
             hideDelete
             z={2}
@@ -232,7 +232,7 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
           <fieldset className={`${styles['fieldset']} ${styles['deadline-wrap']}`}>
             <legend>
               <label>
-                {t('EDeadline')}{' '}
+                {t('Deadline')}{' '}
                 <input
                   style={{ marginLeft: '0.5em' }}
                   type='checkbox'
@@ -248,10 +248,10 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
                     <label
                       className='scr'
                       htmlFor={`day_${sanitize(
-                        first3Words(todo?.name ?? t('ETask'), language)
+                        first3Words(todo?.name ?? t('Task'), language)
                       )}`}
                     >
-                      {t('EDay')}
+                      {t('Day')}
                     </label>
                     <input
                       type='number'
@@ -272,12 +272,12 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
                       className='scr'
                       htmlFor={`month_${sanitize(todo?.name || 'Task')}`}
                     >
-                      {t('EMonth')}
+                      {t('Month')}
                     </label>
                     <input
                       type='number'
                       id={`month_${sanitize(
-                        first3Words(todo?.name ?? t('ETask'), language)
+                        first3Words(todo?.name ?? t('Task'), language)
                       )}`}
                       name='month'
                       min={1}
@@ -295,12 +295,12 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
                       className='scr'
                       htmlFor={`year_${sanitize(todo?.name || 'Task')}`}
                     >
-                      {t('EYear')}
+                      {t('Year')}
                     </label>
                     <input
                       type='number'
                       id={`year_${sanitize(
-                        first3Words(todo?.name ?? t('ETask'), language)
+                        first3Words(todo?.name ?? t('Task'), language)
                       )}`}
                       name='year'
                       min={new Date().getFullYear()}
@@ -318,7 +318,7 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
             )}
           </fieldset>
           <fieldset className={`${styles['fieldset']} ${styles.textarea}`}>
-            <legend>{t('ETask')}</legend>
+            <legend>{t('Task')}</legend>
             <label>
               <textarea
                 id={`task_${sanitize(todo?.name)}`}
@@ -329,26 +329,26 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
                 onChange={handleChange}
               />
               <p className={styles.small}>
-                {maxCharacters - newName.length} {t('ECharactersLeft')} ({t('EMax')}:{' '}
+                {maxCharacters - newName.length} {t('CharactersLeft')} ({t('Max')}:{' '}
                 {maxCharacters}){' '}
                 {newName.length > maxCharacters && (
-                  <span className={styles.warning}>{t('ENameTooLong')}</span>
+                  <span className={styles.warning}>{t('NameTooLong')}</span>
                 )}
               </p>
               <span className='scr'>
-                {t('EEdit')} {first3Words(todo?.name ?? t('ETask'), language)}
+                {t('Edit')} {first3Words(todo?.name ?? t('Task'), language)}
               </span>
             </label>
           </fieldset>
           <button type='submit' disabled={sending} className='modify'>
-            {t('EConfirm')} <FaRegCheckCircle />
+            {t('Confirm')} <FaRegCheckCircle />
           </button>
           <button
             onClick={handleClose}
             className={`reset ${styles['cancel']}`}
             type='button'
           >
-            {t('ECancel')} <TbCancel />
+            {t('Cancel')} <TbCancel />
           </button>
         </form>
       </div>

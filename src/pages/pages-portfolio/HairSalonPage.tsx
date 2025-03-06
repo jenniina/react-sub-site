@@ -25,19 +25,19 @@ export default function HairSalonPage({
             <div className='medium'>
               <Accordion
                 language={language}
-                text={t('EClickHereToSeeFeatures')}
+                text={t('ClickHereToSeeFeatures')}
                 className='salon-features'
                 wrapperClass='mb3'
                 setIsFormOpen={setIsFormOpen}
               >
                 <>
-                  <h2>{t('EFeatures')}</h2>
+                  <h2>{t('Features')}</h2>
                   <ul className='ul'>
-                    <li>{t('ESalonIntro1')}</li>
-                    <li>{t('ESalonIntro2')}</li>
-                    <li>{t('ESalonIntro3')}</li>
+                    <li>{t('SalonIntro1')}</li>
+                    <li>{t('SalonIntro2')}</li>
+                    <li>{t('SalonIntro3')}</li>
                     <li>
-                      {t('EDependencies')}: React
+                      {t('Dependencies')}: React
                       <ul>
                         <li>react</li>
                         <li>react-dom</li>
@@ -48,7 +48,7 @@ export default function HairSalonPage({
                       </ul>
                     </li>
                     <li>
-                      {t('EDependencies')}: Node.js
+                      {t('Dependencies')}: Node.js
                       <ul>
                         <li>express</li>
                         <li>express-validator</li>

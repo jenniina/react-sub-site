@@ -26,32 +26,32 @@ export default function FormPage({
             <div className='medium flex column gap'>
               <Accordion
                 language={language}
-                text={t('EClickHereToSeeFeatures')}
+                text={t('ClickHereToSeeFeatures')}
                 className='features'
                 wrapperClass='features-wrap'
               >
                 <>
-                  <h2>{t('EFeatures')}</h2>
+                  <h2>{t('Features')}</h2>
                   <ul className='ul'>
-                    <li>{t('EMultiStep')}</li>
-                    <li>{t('EBackAndNextButtons')}</li>
-                    <li>{t('ECustomRadioAndCheckboxInputs')}</li>
-                    <li>{t('EPromptToFillInRequiredFields')}</li>
+                    <li>{t('MultiStep')}</li>
+                    <li>{t('BackAndNextButtons')}</li>
+                    <li>{t('CustomRadioAndCheckboxInputs')}</li>
+                    <li>{t('PromptToFillInRequiredFields')}</li>
                     <li>
-                      {t('EFormFields')}
+                      {t('FormFields')}
                       <ul>
-                        <li>{t('EFirstName')} * </li>
-                        <li>{t('ELastName')} *</li>
-                        <li>{t('EEmail')} *</li>
-                        <li>{t('EMessageSubject')}</li>
-                        <li>{t('EMessage')} *</li>
+                        <li>{t('FirstName')} * </li>
+                        <li>{t('LastName')} *</li>
+                        <li>{t('Email')} *</li>
+                        <li>{t('MessageSubject')}</li>
+                        <li>{t('Message')} *</li>
                         <li>
-                          {t('EAnyEncouragingWords')} {t('EOrConstructiveFeedback')}
+                          {t('AnyEncouragingWords')} {t('OrConstructiveFeedback')}
                         </li>
-                        <li>{t('EAColorYouLike')}</li>
-                        <li>{t('EWhichModeDoYouPreferLightDark')}</li>
-                        <li>{t('EDoYouLikeMyCustomSelects')}</li>
-                        <li>{t('EGDPRConsent')}</li>
+                        <li>{t('AColorYouLike')}</li>
+                        <li>{t('WhichModeDoYouPreferLightDark')}</li>
+                        <li>{t('DoYouLikeMyCustomSelects')}</li>
+                        <li>{t('GDPRConsent')}</li>
                       </ul>
                     </li>
                   </ul>
@@ -65,11 +65,11 @@ export default function FormPage({
         </section>
         <section className='card'>
           <div>
-            <h2>{t('EContactForm')}</h2>
+            <h2>{t('ContactForm')}</h2>
             <Suspense
               fallback={
                 <div className='flex center margin0auto textcenter'>
-                  {t('ELoading')}...
+                  {t('Loading')}...
                 </div>
               }
             >

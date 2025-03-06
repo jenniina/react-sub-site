@@ -51,8 +51,8 @@ const useHighScores = () => {
 
         setHighScores(formattedHighScores)
       } catch (err) {
-        console.error(t('EErrorRetrievingHighScores'), err)
-        setError(t('EErrorRetrievingHighScores'))
+        console.error(t('ErrorRetrievingHighScores'), err)
+        setError(t('ErrorRetrievingHighScores'))
       } finally {
         setLoading(false)
       }
@@ -131,8 +131,8 @@ const useHighScores = () => {
 
       return fetchedScores.slice(0, 5)
     } catch (err) {
-      console.error(t('EErrorRetrievingHighScores'), err)
-      setError(t('EErrorRetrievingHighScores'))
+      console.error(t('ErrorRetrievingHighScores'), err)
+      setError(t('ErrorRetrievingHighScores'))
       return []
     }
   }
@@ -156,13 +156,13 @@ const useHighScores = () => {
           })
           return updatedHighScores
         })
-        // console.log(t('EHighScoreDeletedSuccessfully'))
+        // console.log(t('HighScoreDeletedSuccessfully'))
       } else {
-        console.error(t('EErrorDeletingHighScore'), response.message)
+        console.error(t('ErrorDeletingHighScore'), response.message)
       }
     } catch (err) {
-      console.error(t('EErrorDeletingHighScore'), err)
-      setError(t('EErrorDeletingHighScore'))
+      console.error(t('ErrorDeletingHighScore'), err)
+      setError(t('ErrorDeletingHighScore'))
     }
   }
 
@@ -206,13 +206,13 @@ const useHighScores = () => {
           }
           return prevHighScores
         })
-        console.log(t('EHighScoreUpdatedSuccessfully'))
+        console.log(t('HighScoreUpdatedSuccessfully'))
       } else {
-        console.error(t('EErrorUpdatingHighScore'), response.message)
+        console.error(t('ErrorUpdatingHighScore'), response.message)
       }
     } catch (err) {
-      console.error(t('EErrorUpdatingHighScore'), err)
-      setError(t('EErrorUpdatingHighScore'))
+      console.error(t('ErrorUpdatingHighScore'), err)
+      setError(t('ErrorUpdatingHighScore'))
     }
   }
 
@@ -236,13 +236,13 @@ const useHighScores = () => {
           })
           return updatedHighScores
         })
-        // console.log(t('EHighScoreDeletedSuccessfully'), playerName)
+        // console.log(t('HighScoreDeletedSuccessfully'), playerName)
       } else {
-        console.error(t('EErrorDeletingHighScore'), response.message)
+        console.error(t('ErrorDeletingHighScore'), response.message)
       }
     } catch (err) {
-      console.error(t('EErrorDeletingHighScore'), err)
-      setError(t('EErrorDeletingHighScore'))
+      console.error(t('ErrorDeletingHighScore'), err)
+      setError(t('ErrorDeletingHighScore'))
     }
   }
 

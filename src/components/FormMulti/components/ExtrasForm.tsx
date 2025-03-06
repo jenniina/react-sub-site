@@ -38,16 +38,16 @@ export default function ExtrasForm({
   const [values, setValues] = useLocalStorage<SelectOption[]>(`multivalues`, [])
 
   const options: SelectOption[] = [
-    { label: t('EYes'), value: t('EYes') },
-    { label: t('EAppearanceNeedsWork'), value: t('EAppearanceNeedsWork') },
-    { label: t('EAccessibilityIssue'), value: t('EAccessibilityIssue') },
+    { label: t('Yes'), value: t('Yes') },
+    { label: t('AppearanceNeedsWork'), value: t('AppearanceNeedsWork') },
+    { label: t('AccessibilityIssue'), value: t('AccessibilityIssue') },
     {
-      label: `${t('EOther')}, ${t('EClarifiedBelow')}`,
-      value: t('EOther'),
+      label: `${t('Other')}, ${t('ClarifiedBelow')}`,
+      value: t('Other'),
     },
     {
-      label: `${t('ENotReally')}, ${t('EClarifiedBelow')}`,
-      value: t('ENotReally'),
+      label: `${t('NotReally')}, ${t('ClarifiedBelow')}`,
+      value: t('NotReally'),
     },
   ]
 
@@ -64,12 +64,12 @@ export default function ExtrasForm({
   return (
     <>
       <FormWrapper
-        title={t('EAdditionalInformation')}
-        description={t('ENoneOfTheseAreRequired')}
+        title={t('AdditionalInformation')}
+        description={t('NoneOfTheseAreRequired')}
       >
         <div className={styles.subfield}>
           <label className='full left' htmlFor='form-encouragement'>
-            {t('EAnyEncouragingWords')}
+            {t('AnyEncouragingWords')}
           </label>
           <textarea
             id='form-encouragement'
@@ -78,7 +78,7 @@ export default function ExtrasForm({
             name='encouragement'
             value={encouragement}
             rows={3}
-            placeholder={t('EOrConstructiveFeedback')}
+            placeholder={t('OrConstructiveFeedback')}
             onChange={(e) => updateFields({ encouragement: e.target.value })}
           />
         </div>
@@ -88,7 +88,7 @@ export default function ExtrasForm({
             className={`left nowrap full ${styles.colorlabel}`}
             htmlFor='form-color2'
           >
-            {t('EAColorYouLike')}
+            {t('AColorYouLike')}
           </label>
 
           <input
@@ -101,7 +101,7 @@ export default function ExtrasForm({
             onChange={(e) => updateFields({ color: e.target.value })}
           />
           <label className='scr' htmlFor='form-color'>
-            {t('EAColorYouLike')} {t('EColorPicker')}
+            {t('AColorYouLike')} {t('ColorPicker')}
           </label>
           <input
             id='form-color'
@@ -114,7 +114,7 @@ export default function ExtrasForm({
           />
         </div>
         <div className={styles.subfield}>
-          <label className={`full`}>{t('EWhichModeDoYouPrefer')}</label>
+          <label className={`full`}>{t('WhichModeDoYouPrefer')}</label>
           <label className='nowrap flex gap-half'>
             <span className='radio-span'>
               <input
@@ -125,7 +125,7 @@ export default function ExtrasForm({
                 onChange={(e) => updateFields({ dark: e.target.value })}
               />
             </span>{' '}
-            {t('EDarkMode')}
+            {t('DarkMode')}
           </label>
           <label htmlFor='form-light' className='nowrap flex gap-half'>
             <span className='radio-span'>
@@ -139,19 +139,19 @@ export default function ExtrasForm({
                 }}
               />
             </span>{' '}
-            {t('ELightMode')}
+            {t('LightMode')}
           </label>
         </div>
         <div className={styles.subfield}>
-          <label htmlFor='multiple-hide'>{t('EDoYouLikeMyCustomSelects')}</label>
+          <label htmlFor='multiple-hide'>{t('DoYouLikeMyCustomSelects')}</label>
           <span style={{ position: 'relative', zIndex: '2', width: '100%' }}>
             <Select
               language={language}
               multiple
               id='multiple-hide'
               className={styles.dropdownmultiple}
-              instructions={`${t('EPleaseSelectAnOption')}. ${t(
-                'EYouMaySelectMultipleOptions'
+              instructions={`${t('PleaseSelectAnOption')}. ${t(
+                'YouMaySelectMultipleOptions'
               )}`}
               hide
               options={options}
@@ -190,7 +190,7 @@ export default function ExtrasForm({
             }}
           /> */}
           <label className={`full`}>
-            <span>{t('EClarification')}</span>
+            <span>{t('Clarification')}</span>
             <input
               className={`bg`}
               type='text'
@@ -216,7 +216,7 @@ export default function ExtrasForm({
             <i className='required' aria-hidden='true'>
               *
             </i>{' '}
-            {t('EItIsAlrightToSendTheEnteredInformationToJenniina')}{' '}
+            {t('ItIsAlrightToSendTheEnteredInformationToJenniina')}{' '}
           </label>
         </div>
       </FormWrapper>

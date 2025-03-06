@@ -29,52 +29,52 @@ const AdditionalInfo: FC<AccProps> = ({
     <div className={styles['addition-wrap']}>
       <div className={styles['additional-information']}>
         <h3 style={{ marginTop: 0 }}>
-          {type.startsWith('misc') ? `${t('EHourlyWork')}: ` : `${t('EPleaseNote')}: `}
+          {type.startsWith('misc') ? `${t('HourlyWork')}: ` : `${t('PleaseNote')}: `}
         </h3>
         {type.startsWith('graphic') ? (
           <>
             <p>
-              {t('EPrintingCostsNotIncluded')}. {t('ICanHelpWithFindingPrintingServices')}
+              {t('PrintingCostsNotIncluded')}. {t('ICanHelpWithFindingPrintingServices')}
             </p>
-            <p>{t('EColorsMayVaryInPrintedWorks')}</p>
+            <p>{t('ColorsMayVaryInPrintedWorks')}</p>
             {language !== ELanguages.en && language !== ELanguages.fi && (
               <p>
-                {t('EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo')}
+                {t('PleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo')}
               </p>
             )}
           </>
         ) : type.startsWith('react') || type.startsWith('wordpress') ? (
           <>
-            <p> {t('EIncludesADesignMeetingWithTheClientForWebsite')}</p>
+            <p> {t('IncludesADesignMeetingWithTheClientForWebsite')}</p>
             <p>
-              {t('ETextAndImageContentIsNotIncluded')}.{' '}
+              {t('TextAndImageContentIsNotIncluded')}.{' '}
               <button
                 className='reset link'
                 onClick={() => scrollIntoView('misc-translation')}
               >
-                {t('ESeeTranslationServiceProduct')}
+                {t('SeeTranslationServiceProduct')}
               </button>
             </p>
             <p>
-              {t('EWebHostingAndDomainNotIncluded')}. {t('EICanHelpWithFindingHosting')}
+              {t('WebHostingAndDomainNotIncluded')}. {t('ICanHelpWithFindingHosting')}
             </p>
             {type.startsWith('wordpress') && (
               <p>
-                {t('EWordPressPaidPluginsNotIncluded')} {t('ETheseAreAgreedSeparately')}
+                {t('WordPressPaidPluginsNotIncluded')} {t('TheseAreAgreedSeparately')}
               </p>
             )}
             {language !== ELanguages.en && language !== ELanguages.fi && (
               <p>
-                {t('EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo')}
+                {t('PleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo')}
               </p>
             )}
           </>
         ) : type.startsWith('misc') ? (
           <>
             <p>
-              {t('EPayFor5HoursGet6')} {t('EPayFor10HoursGet13')}
+              {t('PayFor5HoursGet6')} {t('PayFor10HoursGet13')}
             </p>
-            <p>{t('EHourlyWorkCanBeUsed')}</p>
+            <p>{t('HourlyWorkCanBeUsed')}</p>
           </>
         ) : (
           <></>

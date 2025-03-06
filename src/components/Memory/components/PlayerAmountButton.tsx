@@ -28,7 +28,7 @@ const PlayerAmountButton: FC<PlayerAmountButtonProps> = ({
     >
       <span>{value}</span>
       <span className='tooltip above narrow2'>
-        {Number(value) > 1 ? t('EDuet') : t('ESolo')}
+        {Number(value) > 1 ? t('Duet') : t('Solo')}
       </span>
     </button>
   )

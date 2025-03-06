@@ -43,9 +43,9 @@ const LanguageEdit = ({ user, language, setLanguage, options }: Props) => {
           .then((res) => {
             if (res) {
               if (res.success === false) {
-                dispatch(notify(`${t('EError')}: ${res.message}`, true, 5))
+                dispatch(notify(`${t('Error')}: ${res.message}`, true, 5))
               } else {
-                dispatch(notify(`${res.message ?? t('EUserUpdated')}`, false, 5))
+                dispatch(notify(`${res.message ?? t('UserUpdated')}`, false, 5))
                 dispatch(refreshUser(res.user)).then(() => {
                   dispatch(findUserById(user?._id as string)).then(() =>
                     dispatch(initializeUser())
@@ -62,10 +62,10 @@ const LanguageEdit = ({ user, language, setLanguage, options }: Props) => {
             if (error.response?.data?.message)
               dispatch(notify(error.response.data.message, true, 8))
             else if (error.code === 'ERR_BAD_REQUEST' && error.response?.data?.message) {
-              dispatch(notify(`${t('EError')}: ${error.response.data.message}`, true, 5))
+              dispatch(notify(`${t('Error')}: ${error.response.data.message}`, true, 5))
             } else {
               setTimeout(() => {
-                dispatch(notify(t('EUserNotUpdated'), true, 5))
+                dispatch(notify(t('UserNotUpdated'), true, 5))
               }, 2000)
             }
             setSending(false)
@@ -85,7 +85,7 @@ const LanguageEdit = ({ user, language, setLanguage, options }: Props) => {
     <>
       {user ? (
         <>
-          <h2>{t('EEditLanguagePreference')}</h2>
+          <h2>{t('EditLanguagePreference')}</h2>
 
           <form onSubmit={handleUserSubmit} className={styles['edit-user']}>
             <Select
@@ -117,11 +117,11 @@ const LanguageEdit = ({ user, language, setLanguage, options }: Props) => {
                   value={passwordOld}
                   onChange={({ target }) => setPasswordOld(target.value.trim())}
                 />
-                <span>{t('ECurrentPassword')}</span>
+                <span>{t('CurrentPassword')}</span>
               </label>
             </div>
             <button type='submit' disabled={sending}>
-              {t('EEdit')}
+              {t('Edit')}
             </button>
           </form>
         </>

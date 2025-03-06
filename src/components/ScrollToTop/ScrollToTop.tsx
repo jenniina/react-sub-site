@@ -50,7 +50,7 @@ const ScrollToTop: FC<{
       onClick={goToTop}
     >
       <BiChevronsUp className={styles['icon']} />
-      <span className='scr'>{t('EScrollToTheTop')}</span>
+      <span className='scr'>{t('ScrollToTheTop')}</span>
     </button>
   )
 }

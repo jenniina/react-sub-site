@@ -29,14 +29,14 @@ const App: FC = () => {
       <MainWrapper language={language} setLanguage={setLanguage} />
       <Suspense
         fallback={
-          <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
+          <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
         }
       >
         <Footer language={language} styleMenu={styleMenu} />
       </Suspense>
       <Suspense
         fallback={
-          <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
+          <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
         }
       >
         <ScrollToTop language={language} styleMenu={styleMenu} />

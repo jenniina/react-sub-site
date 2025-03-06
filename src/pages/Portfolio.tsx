@@ -30,7 +30,7 @@ export default function Portfolio({
       <div className='inner-wrap'>
         <Suspense
           fallback={
-            <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
+            <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
           }
         >
           <PortfolioInfo language={language} />

@@ -25,22 +25,22 @@ const ImagesPage = ({
         <section className={`card ${styles['features-card']}`}>
           <div>
             <Accordion
-              text={t('EClickHereToSeeFeatures')}
+              text={t('ClickHereToSeeFeatures')}
               className=''
               wrapperClass=''
               language={language}
             >
               <ul className='ul medium'>
-                <li>{t('EYouMaySearchForImagesFetchedFromThePixabayAPI')}</li>
+                <li>{t('YouMaySearchForImagesFetchedFromThePixabayAPI')}</li>
                 <li>
-                  {t('EIAddedValueToTheSearchOfImagesAndVideosWithRandomQuotesOrPoems')}
+                  {t('IAddedValueToTheSearchOfImagesAndVideosWithRandomQuotesOrPoems')}
                 </li>
                 <li>
-                  {t('EClickingAnImageOpensAModalWithALargerVersion')}{' '}
-                  {t('ETheImageOrVideoHasARandomQuoteOrPoemAddedToIt')}
+                  {t('ClickingAnImageOpensAModalWithALargerVersion')}{' '}
+                  {t('TheImageOrVideoHasARandomQuoteOrPoemAddedToIt')}
                 </li>
                 <li>
-                  {t('EQuotesAreFrom')}{' '}
+                  {t('QuotesAreFrom')}{' '}
                   <a
                     href='https://rapidapi.com/martin.svoboda/api/quotes15'
                     target='_blank'
@@ -48,7 +48,7 @@ const ImagesPage = ({
                   >
                     RapidAPI
                   </a>{' '}
-                  {t('EAndPoemsAreFrom')}{' '}
+                  {t('AndPoemsAreFrom')}{' '}
                   <a href='https://poetrydb.org/' target='_blank' rel='noreferrer'>
                     PoetryDB
                   </a>{' '}
@@ -61,7 +61,7 @@ const ImagesPage = ({
 
         <Suspense
           fallback={
-            <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
+            <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
           }
         >
           <Images language={language} />

@@ -27,27 +27,27 @@ export default function MessageForm({
 
   const options: SelectOption[] = [
     {
-      label: t('EPleaseSelectAnOption'),
-      value: t('ENone'),
+      label: t('PleaseSelectAnOption'),
+      value: t('None'),
     },
     {
-      label: t('EWork'),
-      value: t('EWork'),
+      label: t('Work'),
+      value: t('Work'),
     },
     {
-      label: t('EPersonal'),
-      value: t('EPersonal'),
+      label: t('Personal'),
+      value: t('Personal'),
     },
     {
-      label: t('EOther'),
-      value: t('EOther'),
+      label: t('Other'),
+      value: t('Other'),
     },
   ]
 
   const [selectsingle, setSelect] = useState<SelectOption | undefined>(options[0])
 
   return (
-    <FormWrapper title='Message' description={t('EPleaseSendMeAFewWords')}>
+    <FormWrapper title='Message' description={t('PleaseSendMeAFewWords')}>
       <div className={styles.subfield} style={{ paddingTop: '4em' }}>
         <div className='input-wrap'>
           <label>
@@ -61,7 +61,7 @@ export default function MessageForm({
               onChange={(e) => updateFields({ email: e.target.value })}
             />
             <span>
-              {t('EYourEmail')}{' '}
+              {t('YourEmail')}{' '}
               <i className='required' aria-hidden='true'>
                 *
               </i>
@@ -71,12 +71,12 @@ export default function MessageForm({
       </div>
 
       <div className={styles.subfield}>
-        <label>{t('EMessageSubject')}</label>
+        <label>{t('MessageSubject')}</label>
         <Select
           language={language}
           id='single'
           className={`${styles.dropdownsingle} full`}
-          instructions={t('EPleaseSelectAnOption')}
+          instructions={t('PleaseSelectAnOption')}
           hide
           options={options}
           value={selectsingle}
@@ -90,7 +90,7 @@ export default function MessageForm({
       </div>
       <div className={styles.subfield}>
         <label htmlFor='form-message'>
-          {t('EMessage')}{' '}
+          {t('Message')}{' '}
           <i className='required' aria-hidden='true'>
             *
           </i>
@@ -101,7 +101,7 @@ export default function MessageForm({
           name='message'
           value={message}
           rows={4}
-          placeholder={t('ELetMeKnowWhatOnYourMind')}
+          placeholder={t('LetMeKnowWhatOnYourMind')}
           onChange={(e) => updateFields({ message: e.target.value })}
         />
       </div>

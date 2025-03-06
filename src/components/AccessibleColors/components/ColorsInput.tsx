@@ -161,7 +161,7 @@ const ColorsInput: FC<Props> = ({
       }
     } catch (error: any) {
       console.error(error.message)
-      dispatch(notify(t('EError') + ' ' + error.message, true, 4))
+      dispatch(notify(t('Error') + ' ' + error.message, true, 4))
     }
   }
 
@@ -222,7 +222,7 @@ const ColorsInput: FC<Props> = ({
         id='color-select'
         className={styles['color-select']}
         language={language}
-        instructions={t('ESelectColorFormat')}
+        instructions={t('SelectColorFormat')}
         hide
         options={colorFormatOptions}
         value={selected}
@@ -273,7 +273,7 @@ const ColorsInput: FC<Props> = ({
             type='submit'
             className={`${styles['color-format-submit']} small gray`}
           >
-            {t('ESubmit')}
+            {t('Submit')}
           </button>
         </form>
       )}

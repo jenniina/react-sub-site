@@ -405,17 +405,17 @@ const UserJokes = ({
   const handleJokeSave = (_id: IJoke['_id']) => {
     const findJoke = jokes?.find((j: IJoke) => j._id === _id)
     if (!findJoke) {
-      dispatch(notify(`${t('ENoJokeFound')}`, true, 8))
+      dispatch(notify(`${t('NoJokeFound')}`, true, 8))
       return
     }
     if (findJoke) {
       if (findJoke.user?.includes(userId?.toString())) {
-        dispatch(notify(`${t('EJokeAlreadySaved')}`, false, 8))
+        dispatch(notify(`${t('JokeAlreadySaved')}`, false, 8))
         return
       }
       dispatch(updateJoke({ ...findJoke, user: [...findJoke.user, userId] })).then(() => {
         dispatch(initializeJokes())
-        dispatch(notify(`${t('ESavedJoke')}`, false, 8))
+        dispatch(notify(`${t('SavedJoke')}`, false, 8))
       })
     }
   }
@@ -656,10 +656,10 @@ const UserJokes = ({
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text).then(
       function () {
-        dispatch(notify(`${t('EJokeCopiedToClipboard')}`, false, 3))
+        dispatch(notify(`${t('JokeCopiedToClipboard')}`, false, 3))
       },
       function () {
-        dispatch(notify(`${t('EFailedToCopyJokeToClipboard')}`, true, 3))
+        dispatch(notify(`${t('FailedToCopyJokeToClipboard')}`, true, 3))
       }
     )
   }
@@ -683,7 +683,7 @@ const UserJokes = ({
             onClick={() => handlePageChange(1)}
           >
             <BiChevronsLeft />{' '}
-            <span className='tooltip narrow2 below right'>{t('EFirstPage')}</span>
+            <span className='tooltip narrow2 below right'>{t('FirstPage')}</span>
           </button>
           <button
             className={`inner-nav-btn back tooltip-wrap ${
@@ -693,7 +693,7 @@ const UserJokes = ({
             onClick={() => handlePageChange(currentPage - 1)}
           >
             <BiChevronLeft />{' '}
-            <span className='tooltip narrow2 below right'>{t('EBack')}</span>
+            <span className='tooltip narrow2 below right'>{t('Back')}</span>
           </button>
         </div>
         <div className={`numbers${pageNumbers?.length === 1 ? ' hidden' : ''}`}>
@@ -724,7 +724,7 @@ const UserJokes = ({
             onClick={() => handlePageChange(currentPage + 1)}
           >
             <BiChevronRight />{' '}
-            <span className='tooltip narrow2 below left'>{t('ENext')}</span>
+            <span className='tooltip narrow2 below left'>{t('Next')}</span>
           </button>
           <button
             className={`inner-nav-btn last tooltip-wrap ${
@@ -735,7 +735,7 @@ const UserJokes = ({
           >
             <BiChevronsRight />
             <span className='tooltip narrow2 left below'>
-              {t('ELastPage')}: {pageNumbers?.length}
+              {t('LastPage')}: {pageNumbers?.length}
             </span>
           </button>
         </div>
@@ -754,7 +754,7 @@ const UserJokes = ({
             setItemsPerPage(e.target.valueAsNumber > 0 ? e.target.valueAsNumber : 1)
           }
         />{' '}
-        <span id='items-per-page'>{t('EPerPage')}</span>{' '}
+        <span id='items-per-page'>{t('PerPage')}</span>{' '}
       </div>
     </div>
   )
@@ -769,7 +769,7 @@ const UserJokes = ({
               setShowBlacklistedJokes(false)
             }}
           >
-            {!localJokes ? t('ESeeLocalJokes') : t('ELocalJokes')}
+            {!localJokes ? t('SeeLocalJokes') : t('LocalJokes')}
           </button>
           <button
             className={`btn${!localJokes && !showBlacklistedJokes ? ' active' : ''}`}
@@ -778,7 +778,7 @@ const UserJokes = ({
               setShowBlacklistedJokes(false)
             }}
           >
-            {t('EYourSavedJokes')}
+            {t('YourSavedJokes')}
           </button>
         </div>
       )}
@@ -787,9 +787,9 @@ const UserJokes = ({
         <div>
           {!showBlacklistedJokes && (
             <>
-              <h3>{localJokes ? t('ELocalJokes') : t('EYourSavedJokes')}</h3>
+              <h3>{localJokes ? t('LocalJokes') : t('YourSavedJokes')}</h3>
               {localJokes && (
-                <p className='mb3 flex center textcenter'> {t('EUserSubmittedJokes')}</p>
+                <p className='mb3 flex center textcenter'> {t('UserSubmittedJokes')}</p>
               )}
 
               <div className='toggle-wrap'>
@@ -802,10 +802,10 @@ const UserJokes = ({
                       className={`${language} ${
                         !isCheckedSafemode ? 'unsafe' : ''
                       } userjokes safemode`}
-                      label={`${t('EFilter')}: `}
+                      label={`${t('Filter')}: `}
                       hideLabel={false}
-                      on={t('ESafeTitle')}
-                      off={t('EUnsafeTitle')}
+                      on={t('SafeTitle')}
+                      off={t('UnsafeTitle')}
                       handleToggleChange={handleToggleChangeSafemode}
                     />
                     {sortBy === ESortBy_en.age && (
@@ -814,10 +814,10 @@ const UserJokes = ({
                         name='age'
                         id='age'
                         className={`${language} age`}
-                        label={`${t('EAge')}: `}
+                        label={`${t('Age')}: `}
                         hideLabel={false}
-                        on={t('ENewest')}
-                        off={t('EOldest')}
+                        on={t('Newest')}
+                        off={t('Oldest')}
                         handleToggleChange={() => {
                           handleToggleChangeNewest()
                         }}
@@ -830,7 +830,7 @@ const UserJokes = ({
                       language={language}
                       id='sortby'
                       className='sortby'
-                      instructions={`${t('EOrderBy')}:`}
+                      instructions={`${t('OrderBy')}:`}
                       options={optionsSortBy(ESortBy)}
                       value={
                         {
@@ -850,9 +850,9 @@ const UserJokes = ({
                       language={language}
                       id='joke-languages'
                       className='language-filter'
-                      instructions={`${t('EFilterByLanguage')}:`}
+                      instructions={`${t('FilterByLanguage')}:`}
                       options={[
-                        { label: t('EAll'), value: '' },
+                        { label: t('All'), value: '' },
                         ...Array.from(
                           new Set(userJokes?.map((joke) => joke.language))
                         ).map((language) => {
@@ -882,7 +882,7 @@ const UserJokes = ({
                                 ],
                               value: selectedLanguage,
                             } as SelectOption)
-                          : { label: t('EAll'), value: '' }
+                          : { label: t('All'), value: '' }
                       }
                       onChange={(o: SelectOption | undefined) => {
                         setSelectedLanguage(o?.value as ELanguages)
@@ -894,9 +894,9 @@ const UserJokes = ({
                       language={language}
                       id='single-category-select'
                       className='single-category-select'
-                      instructions={`${t('EFilterByCategory')}:`}
+                      instructions={`${t('FilterByCategory')}:`}
                       options={[
-                        { label: t('ESelectACategory'), value: '' },
+                        { label: t('SelectACategory'), value: '' },
                         ...(Object.values(ECategories).map((category) => {
                           return {
                             label: getCategoryInLanguage(category, language),
@@ -913,7 +913,7 @@ const UserJokes = ({
                               ),
                               value: selectedCategory,
                             } as SelectOption)
-                          : { label: t('ESelectACategory'), value: '' }
+                          : { label: t('SelectACategory'), value: '' }
                       }
                       onChange={(o) => {
                         setSelectedCategory(o?.value as ECategories)
@@ -929,7 +929,7 @@ const UserJokes = ({
                       language={language}
                       id='userNorrisCategories'
                       className={`category extras ${hasNorris ? '' : 'hidden'}`}
-                      instructions={`${t('EFilterFurther')}:`}
+                      instructions={`${t('FilterFurther')}:`}
                       selectAnOption={norrisOptions[0].label}
                       value={selectedNorrisCategory}
                       options={norrisOptions}
@@ -948,9 +948,9 @@ const UserJokes = ({
                           id='search-jokes'
                           value={searchTerm}
                           onChange={handleSearchChange}
-                          placeholder={t('ESearch')}
+                          placeholder={t('Search')}
                         />
-                        <span>{t('ESearchByKeyword')}</span>
+                        <span>{t('SearchByKeyword')}</span>
                       </label>
                     </div>
                   </div>
@@ -962,7 +962,7 @@ const UserJokes = ({
                   className='reset-btn delete danger'
                   onClick={() => resetFilters()}
                 >
-                  <MdOutlineSettingsBackupRestore /> <span>{t('EReset')}</span>
+                  <MdOutlineSettingsBackupRestore /> <span>{t('Reset')}</span>
                 </button>
               </div>
             </>
@@ -980,7 +980,7 @@ const UserJokes = ({
                     setLatest(false)
                   }}
                 >
-                  {t('ERandom')} <FaRandom />
+                  {t('Random')} <FaRandom />
                 </button>{' '}
                 <button
                   className={`icontext all-or-latest-btn ${
@@ -992,7 +992,7 @@ const UserJokes = ({
                     setLatest(false)
                   }}
                 >
-                  {t('EAllJokes')} <FaList />
+                  {t('AllJokes')} <FaList />
                 </button>
                 <div className='flex center'>
                   <button
@@ -1005,7 +1005,7 @@ const UserJokes = ({
                       setLatest(true)
                     }}
                   >
-                    {t('ELatest')}
+                    {t('Latest')}
                     <span className='scr'>{latestNumber}</span>{' '}
                     {latestNumber === 3 && <MdOutlineFilter3 />}
                     {latestNumber === 4 && <MdOutlineFilter4 />}
@@ -1029,7 +1029,7 @@ const UserJokes = ({
                       }}
                     />
                     <label htmlFor='number-of-latest' className='scr'>
-                      <span>{t('EHowMany')}</span>
+                      <span>{t('HowMany')}</span>
                     </label>
                   </div>
                 </div>
@@ -1042,11 +1042,11 @@ const UserJokes = ({
               >
                 {showBlacklistedJokes ? (
                   <>
-                    {t('EHideBlockedJokes')} <ImBlocked />
+                    {t('HideBlockedJokes')} <ImBlocked />
                   </>
                 ) : (
                   <>
-                    {t('EBlocked')} <ImEyeBlocked />
+                    {t('Blocked')} <ImEyeBlocked />
                   </>
                 )}
               </button>
@@ -1064,12 +1064,12 @@ const UserJokes = ({
                     type='text'
                     onChange={handleSearchChange}
                   />
-                  <span>{t('ESearchByKeyword')}</span>
+                  <span>{t('SearchByKeyword')}</span>
                 </label>
               </div>
             </div>
           ) : showBlacklistedJokes ? (
-            <p className='textcenter'>{t('ENoJokesYet')}</p>
+            <p className='textcenter'>{t('NoJokesYet')}</p>
           ) : (
             ''
           )}
@@ -1089,7 +1089,7 @@ const UserJokes = ({
                     }}
                   >
                     <button className='' type='submit' disabled={sending}>
-                      {t('ERestore')}
+                      {t('Restore')}
                     </button>
                   </form>
                   {joke ? (
@@ -1131,7 +1131,7 @@ const UserJokes = ({
                                     ? { 'aria-hidden': true }
                                     : { 'aria-hidden': false })}
                                 >
-                                  <BiChevronsRight /> {t('EClickToReveal')}{' '}
+                                  <BiChevronsRight /> {t('ClickToReveal')}{' '}
                                   <BiChevronsLeft />
                                 </span>
                                 <p aria-live='assertive'>
@@ -1148,7 +1148,7 @@ const UserJokes = ({
                     <div className='secondary-wrap'>
                       <div>
                         <span>
-                          {t('ECategoryTitle')}:{' '}
+                          {t('CategoryTitle')}:{' '}
                           {getCategoryInLanguage(joke.category, language)}{' '}
                           {joke.subCategories &&
                           joke.subCategories?.length > 0 &&
@@ -1175,28 +1175,28 @@ const UserJokes = ({
                           {translateWordLanguage}: {joke.translatedLanguage}
                         </span>
                         {joke.anonymous ? (
-                          <span>{t('EAnonymous')} </span>
+                          <span>{t('Anonymous')} </span>
                         ) : joke.anonymous === false ? (
                           <span>
-                            {t('EAuthor')}: {joke.name ?? ''}
+                            {t('Author')}: {joke.name ?? ''}
                           </span>
                         ) : (
                           ''
                         )}
                         {!localJokes && userId && joke.private ? (
-                          <span>{t('EPrivate')}</span>
+                          <span>{t('Private')}</span>
                         ) : !localJokes && userId && joke.private === false ? (
-                          <span>{t('EPublic')}</span>
+                          <span>{t('Public')}</span>
                         ) : (
                           ''
                         )}
                         {joke.private === false && joke.verified === false && (
-                          <span>{t('EPendingVerification')}</span>
+                          <span>{t('PendingVerification')}</span>
                         )}
 
                         {joke.user?.length > 1 && (
                           <span>
-                            {t('ESavedBy')} {joke.user?.length}
+                            {t('SavedBy')} {joke.user?.length}
                           </span>
                         )}
                       </div>
@@ -1216,7 +1216,7 @@ const UserJokes = ({
                               disabled={sending}
                               className='delete danger'
                             >
-                              {joke.user?.length > 1 ? t('ERemove') : t('EDelete')}
+                              {joke.user?.length > 1 ? t('Remove') : t('Delete')}
                             </button>
                           </form>
                         )}
@@ -1234,7 +1234,7 @@ const UserJokes = ({
                             }
                             className='delete danger'
                           >
-                            {t('EBlock')}
+                            {t('Block')}
                           </button>
                         )}
 
@@ -1243,7 +1243,7 @@ const UserJokes = ({
                             onClick={() => handleJokeSave(joke._id)}
                             className='save'
                           >
-                            {t('ESaveJoke')} <MdSave />
+                            {t('SaveJoke')} <MdSave />
                           </button>
                         )}
 
@@ -1256,7 +1256,7 @@ const UserJokes = ({
                             )
                           }
                         >
-                          {t('ECopy')} <IoCopyOutline />
+                          {t('Copy')} <IoCopyOutline />
                         </button>
                         {userId &&
                           joke.user?.includes(userId) &&
@@ -1266,7 +1266,7 @@ const UserJokes = ({
                               id={`joke-edit-${joke.jokeId}`}
                               className={`joke-edit`}
                               wrapperClass='joke-edit-wrap'
-                              text={t('EEdit')}
+                              text={t('Edit')}
                               onClick={() => {
                                 setJokeLanguage(joke.language)
                                 setJokeCategory(joke.category as ECategories)
@@ -1302,7 +1302,7 @@ const UserJokes = ({
                                               )
                                             }}
                                           />
-                                          <span>{t('EJokeSetup')}</span>
+                                          <span>{t('JokeSetup')}</span>
                                         </label>
                                       </div>
                                       <div className='input-wrap'>
@@ -1323,7 +1323,7 @@ const UserJokes = ({
                                               )
                                             }}
                                           />
-                                          <span>{t('EJokeDelivery')}</span>{' '}
+                                          <span>{t('JokeDelivery')}</span>{' '}
                                         </label>
                                       </div>
                                     </>
@@ -1347,14 +1347,14 @@ const UserJokes = ({
                                             )
                                           }}
                                         />
-                                        <span>{t('EJoke')}</span>
+                                        <span>{t('Joke')}</span>
                                       </label>
                                     </div>
                                   ) : (
                                     <div>
-                                      {t('EOnlyPrivateJokesCanBeEdited')}. {t('ENote')}{' '}
+                                      {t('OnlyPrivateJokesCanBeEdited')}. {t('Note')}{' '}
                                       {t(
-                                        'ERepublishingWillRequireVerificationFromAnAdministrator'
+                                        'RepublishingWillRequireVerificationFromAnAdministrator'
                                       )}
                                     </div>
                                   )}
@@ -1366,7 +1366,7 @@ const UserJokes = ({
                                         language={language}
                                         id='edit-language'
                                         className='edit-language'
-                                        instructions={`${t('ELanguageTitle')}:`}
+                                        instructions={`${t('LanguageTitle')}:`}
                                         hide
                                         options={options(ELanguagesLong)}
                                         value={
@@ -1398,10 +1398,10 @@ const UserJokes = ({
                                         language={language}
                                         id='edit-category'
                                         className='edit-category'
-                                        instructions={`${t('ESelectCategory')}:`}
+                                        instructions={`${t('SelectCategory')}:`}
                                         hide
                                         options={[
-                                          { label: t('EAny'), value: '' },
+                                          { label: t('Any'), value: '' },
                                           ...(Object.values(ECategories).map(
                                             (category) => {
                                               return {
@@ -1439,7 +1439,7 @@ const UserJokes = ({
                                     </div>
 
                                     <fieldset>
-                                      <legend>{t('EAddWarningTitle')}</legend>
+                                      <legend>{t('AddWarningTitle')}</legend>
 
                                       <div className='checkbox-wrap'>
                                         <div>
@@ -1591,7 +1591,7 @@ const UserJokes = ({
                                   </div>
                                 </fieldset>
                                 <button type='submit' disabled={sending} className='save'>
-                                  {t('ESaveJoke')}
+                                  {t('SaveJoke')}
                                 </button>
                               </form>
                             </Accordion>
@@ -1603,9 +1603,9 @@ const UserJokes = ({
               })
             ) : (
               <li className='margin0auto max-content'>
-                {t('ELoadingJokes')}
+                {t('LoadingJokes')}
                 <br />
-                <br />({t('EThisMayTakeUpToAMinute')})
+                <br />({t('ThisMayTakeUpToAMinute')})
               </li>
             )}
           </ul>
@@ -1622,7 +1622,7 @@ const UserJokes = ({
               setShowBlacklistedJokes(false)
             }}
           >
-            {!localJokes ? t('ESeeLocalJokes') : t('ELocalJokes')}
+            {!localJokes ? t('SeeLocalJokes') : t('LocalJokes')}
           </button>
           <button
             className={`btn${!localJokes && !showBlacklistedJokes ? ' active' : ''}`}
@@ -1631,7 +1631,7 @@ const UserJokes = ({
               setShowBlacklistedJokes(false)
             }}
           >
-            {t('EYourSavedJokes')}
+            {t('YourSavedJokes')}
           </button>
         </div>
       )}

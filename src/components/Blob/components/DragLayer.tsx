@@ -113,7 +113,7 @@ const DragLayer = ({
   return (
     <>
       <span id={`listbox${d}-layer${layer_}-label`} className='scr'>
-        {t('ELayer')} {layer_ + 1}
+        {t('Layer')} {layer_ + 1}
       </span>
       <ul
         ref={dragUlRef}

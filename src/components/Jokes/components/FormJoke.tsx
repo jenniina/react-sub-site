@@ -131,7 +131,7 @@ const Form = ({
             language={language}
             id='language-joke'
             className='language full'
-            instructions={`${t('ESelectALanguage')}:`}
+            instructions={`${t('SelectALanguage')}:`}
             options={options(ELanguagesLong)}
             value={
               language
@@ -153,9 +153,9 @@ const Form = ({
               name='safemode'
               id='safemode'
               className={`${language} ${!isCheckedSafemode ? 'unsafe' : ''} safemode`}
-              label={`${t('ESafemodeTitle')}: `}
-              on={t('ESafeTitle')}
-              off={t('EUnsafeTitle')}
+              label={`${t('SafemodeTitle')}: `}
+              on={t('SafeTitle')}
+              off={t('UnsafeTitle')}
               handleToggleChange={handleToggleChangeSafemode}
             />
 
@@ -164,9 +164,9 @@ const Form = ({
               name='joketype'
               id='joketype'
               className={`${language} joketype`}
-              label={`${t('EJokeTypeTitle')}: `}
-              on={t('ETwoPart')}
-              off={t('ESingle')}
+              label={`${t('JokeTypeTitle')}: `}
+              on={t('TwoPart')}
+              off={t('Single')}
               handleToggleChange={handleToggleChangeEJokeType}
               equal={true}
             />
@@ -179,8 +179,8 @@ const Form = ({
             multiple
             id='jokeCategory'
             className={`category`}
-            instructions={`${t('ESelectACategory')}:`}
-            selectAnOption={t('EAny')}
+            instructions={`${t('SelectACategory')}:`}
+            selectAnOption={t('Any')}
             value={categoryValues}
             options={optionsCategory(categoryByLanguages as any)}
             onChange={(o: SelectOption[]) => {
@@ -196,8 +196,8 @@ const Form = ({
           language={language}
           id='jokeCategoryNorrisCategories'
           className={`category extras ${hasNorris ? '' : 'hidden'}`}
-          instructions={`${t('EChuckNorrisCategory')}:`}
-          selectAnOption={t('EAny')}
+          instructions={`${t('ChuckNorrisCategory')}:`}
+          selectAnOption={t('Any')}
           value={selectedNorrisCategory}
           options={norrisCategories}
           onChange={(o) => {
@@ -220,12 +220,12 @@ const Form = ({
                   )
                 }}
               />
-              <span>{t('ESearchByKeyword')}</span>
+              <span>{t('SearchByKeyword')}</span>
             </label>
           </div>
 
           <button id='generate-joke' type='submit' disabled={sending}>
-            {t('EFindAJoke')}
+            {t('FindAJoke')}
           </button>
         </div>
       </form>
@@ -235,7 +235,7 @@ const Form = ({
       </div>
       <Suspense
         fallback={
-          <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
+          <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
         }
       >
         <Joke

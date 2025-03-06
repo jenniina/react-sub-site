@@ -138,11 +138,11 @@ const AccessibleColors: FC<Props> = ({ language }) => {
   }
 
   const colorModeOptions: SelectOption[] = [
-    { value: 'analogous', label: t('EAnalogous') },
-    { value: 'complementary', label: t('EComplementary') },
-    { value: 'monochromatic', label: t('EMonochromatic') },
-    { value: 'triad', label: t('ETriad') },
-    { value: 'tetrad', label: t('ETetrad') },
+    { value: 'analogous', label: t('Analogous') },
+    { value: 'complementary', label: t('Complementary') },
+    { value: 'monochromatic', label: t('Monochromatic') },
+    { value: 'triad', label: t('Triad') },
+    { value: 'tetrad', label: t('Tetrad') },
   ]
 
   const random: number = Math.floor(Math.random() * colorModeOptions.length)
@@ -313,7 +313,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           convertedBlockColor = parseColor(block.color, block.colorFormat)
         } catch (error) {
           console.error(error)
-          dispatch(notify(`${t('EError')}: ${(error as Error).message}`, true, 4))
+          dispatch(notify(`${t('Error')}: ${(error as Error).message}`, true, 4))
           convertedBlockColor = '#000000' // Default to black on error
         }
 
@@ -522,7 +522,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     link.click()
     document.body.removeChild(link)
     URL.revokeObjectURL(url)
-    dispatch(notify(t('EArtSaved'), false, 5))
+    dispatch(notify(t('ArtSaved'), false, 5))
   }
 
   const saveAsPNG = () => {
@@ -555,13 +555,13 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       document.body.removeChild(link)
 
       URL.revokeObjectURL(url)
-      dispatch(notify(t('EArtSaved'), false, 5))
+      dispatch(notify(t('ArtSaved'), false, 5))
     }
 
     img.onerror = (err) => {
       console.error('Error loading SVG into image for PNG conversion:', err)
       URL.revokeObjectURL(url)
-      dispatch(notify(t('EError'), true, 4))
+      dispatch(notify(t('Error'), true, 4))
     }
 
     img.src = url
@@ -622,7 +622,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                 height: `2em`,
               }}
             ></div>
-            <span>{t('EHighestAAAComplianceWithRegularText')}</span>
+            <span>{t('HighestAAAComplianceWithRegularText')}</span>
           </li>
           <li>
             <div
@@ -637,7 +637,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                 margin: '0 0.2em 0 0.2em ',
               }}
             ></div>
-            <span>{t('EMinimumAAComplianceWithRegularText')}</span>
+            <span>{t('MinimumAAComplianceWithRegularText')}</span>
           </li>
           <li>
             <div
@@ -652,7 +652,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                 margin: '0 0.65em 0 0.65em',
               }}
             ></div>
-            <span>{t('EAAACompliantWithUI')}</span>
+            <span>{t('AAACompliantWithUI')}</span>
           </li>
         </ul>
       </div>
@@ -661,11 +661,11 @@ const AccessibleColors: FC<Props> = ({ language }) => {
         {listItemsByStatus[status]?.items?.length > 0 && (
           <>
             <button type='button' onClick={saveAsPNG} className='gray small'>
-              {t('ESaveAsPNG')}&nbsp;&nbsp;
+              {t('SaveAsPNG')}&nbsp;&nbsp;
               <PiDownloadSimpleFill />
             </button>
             <button type='button' onClick={saveAsSVG} className='gray small'>
-              {t('ESaveAsSVG')}&nbsp;&nbsp;
+              {t('SaveAsSVG')}&nbsp;&nbsp;
               <PiDownloadSimpleFill />
             </button>
           </>
@@ -673,12 +673,12 @@ const AccessibleColors: FC<Props> = ({ language }) => {
         <button onClick={toggleTheme} className='gray small'>
           {lightTheme ? (
             <>
-              {t('EDarkMode')}&nbsp;&nbsp;
+              {t('DarkMode')}&nbsp;&nbsp;
               <MdDarkMode />
             </>
           ) : (
             <>
-              {t('ELightMode')}&nbsp;&nbsp;
+              {t('LightMode')}&nbsp;&nbsp;
               <MdLightMode />{' '}
             </>
           )}
@@ -686,7 +686,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       </div>
       <div className={styles['color-picker']}>
         <label htmlFor='color-input' className=' '>
-          {t('EColorPicker')}:
+          {t('ColorPicker')}:
         </label>
         <input
           id='color-input'
@@ -695,10 +695,10 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           onChange={(e) => setCurrentColor(e.target.value)}
         />
         <button className='gray small' type='button' onClick={addColor}>
-          {t('EAddAColor')}
+          {t('AddAColor')}
         </button>
         <button className='gray small' type='button' onClick={resetColors}>
-          {t('EReset')}
+          {t('Reset')}
         </button>
         <button
           className='gray small'
@@ -708,7 +708,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
             clearColors()
           }}
         >
-          {t('EClear')}
+          {t('Clear')}
         </button>
 
         <div className={`${styles['color-edit-container']} ${styles['mode-container']}`}>
@@ -733,7 +733,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
               )
             }
             id='color-mode'
-            instructions={t('ESelectColorModeForNewColors')}
+            instructions={t('SelectColorModeForNewColors')}
             className={`${styles['color-select']}`}
             hide
             hideDelete
@@ -746,13 +746,13 @@ const AccessibleColors: FC<Props> = ({ language }) => {
             type='button'
             onClick={makeColorPalette}
           >
-            {t('EGenerateColors')}
+            {t('GenerateColors')}
             <span className='tooltip above narrow2'>
-              {t('EGeneratesColorsBasedOnLastColor')}
+              {t('GeneratesColorsBasedOnLastColor')}
             </span>
           </button>
           <button className='gray small' type='button' onClick={resetAndMake}>
-            {t('EClearAndGenerateNew')}
+            {t('ClearAndGenerateNew')}
           </button>
         </div>
       </div>
@@ -848,7 +848,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                                   fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 0.9rem)`,
                                   ['--tooltip-max-width' as string]: width,
                                 }}
-                              >{`${t('EAAACompliantWithID')}: ${otherColor.id}`}</span>
+                              >{`${t('AAACompliantWithID')}: ${otherColor.id}`}</span>
                             </div>
                           )
                         } else if (complianceLevel === ComplianceLevel.AA_RegularText) {
@@ -878,7 +878,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                                   fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 0.9rem)`,
                                   ['--tooltip-max-width' as string]: width,
                                 }}
-                              >{`${t('EAACompliantWithID')}: ${otherColor.id}`}</span>
+                              >{`${t('AACompliantWithID')}: ${otherColor.id}`}</span>
                             </div>
                           )
                         } else if (complianceLevel === ComplianceLevel.AA_UIComponents) {
@@ -905,7 +905,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                                   fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 0.9rem)`,
                                   ['--tooltip-max-width' as string]: width,
                                 }}
-                              >{`${t('EAAGraphicElementCompliantWithID')}: ${
+                              >{`${t('AAGraphicElementCompliantWithID')}: ${
                                 otherColor.id
                               }`}</span>
                             </div>
@@ -960,7 +960,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                       <Suspense
                         fallback={
                           <div className='flex center margin0auto textcenter'>
-                            {t('ELoading')}...
+                            {t('Loading')}...
                           </div>
                         }
                       >
@@ -987,7 +987,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                         fontSize: `clamp(0.75rem, ${dynamicFontSize.input}, 2rem)`,
                       }}
                     >
-                      {t('ERemove')}
+                      {t('Remove')}
                     </button>
                   </>
                 )}
@@ -999,7 +999,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       {listItemsByStatus[status]?.items?.length > 0 && (
         <>
           <div className={styles['width-wrap']}>
-            <label htmlFor='color-block-width'>{t('EEditSize')}</label>
+            <label htmlFor='color-block-width'>{t('EditSize')}</label>
             <input
               id='color-block-width'
               type='range'
@@ -1012,7 +1012,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           </div>
           <div className={`${styles['toggle-controls']}`}>
             <div>
-              <strong>{t('EToggleControlVisibility')}</strong>
+              <strong>{t('ToggleControlVisibility')}</strong>
               <button
                 id='toggle-controls'
                 type='button'
@@ -1030,11 +1030,11 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                 }
                 className='gray small'
               >
-                {show ? t('EHideControls') : t('EShowControls')}
+                {show ? t('HideControls') : t('ShowControls')}
               </button>
             </div>
             <div>
-              <strong>{t('EToggleColorNameVisibility')}</strong>
+              <strong>{t('ToggleColorNameVisibility')}</strong>
               <button
                 type='button'
                 onClick={() =>
@@ -1051,7 +1051,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                 }
                 className='gray small'
               >
-                {name ? t('EHideColorName') : t('EShowColorName')}
+                {name ? t('HideColorName') : t('ShowColorName')}
               </button>
             </div>
           </div>

@@ -80,7 +80,7 @@ export default function TermsOfService({
             <div>
               <p>{EEnFiWelcomeToTermsOfService[lang]}</p>
               <p>
-                {t('ESeeAlso')}: <Link to='/disclaimer'>{t('EDisclaimer')}</Link>
+                {t('SeeAlso')}: <Link to='/disclaimer'>{t('Disclaimer')}</Link>
               </p>
 
               <h2>{EEnFiAcceptanceOfTerms[lang]}</h2>
@@ -95,7 +95,7 @@ export default function TermsOfService({
               <h2>{EEnFiTermination[lang]}</h2>
               <p>{EEnFiTerminationText[lang]}</p>
 
-              <h2>{t('EProducts')}</h2>
+              <h2>{t('Products')}</h2>
               <TermsProducts language={language} />
 
               <h2>{EContactMe[lang]}</h2>

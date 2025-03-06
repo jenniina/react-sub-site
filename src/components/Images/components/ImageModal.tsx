@@ -75,11 +75,11 @@ const ImageModal: FC<ModalImageProps> = ({
         if ((language = ELanguages.fi)) {
           const response = await getQuote(ELanguages.en, searchTerm)
           if (response.quote) setQuote(response.quote)
-          else dispatch(notify(response.message ?? t('EError'), true, 8))
+          else dispatch(notify(response.message ?? t('Error'), true, 8))
         } else {
           const response = await getQuote(language, searchTerm)
           if (response.quote) setQuote(response.quote)
-          else dispatch(notify(response.message ?? t('EError'), true, 8))
+          else dispatch(notify(response.message ?? t('Error'), true, 8))
         }
       }
       fetchQuote()
@@ -96,7 +96,7 @@ const ImageModal: FC<ModalImageProps> = ({
         const fetchQuote = async () => {
           const response = await getQuote(language, searchTerm)
           if (response.quote) setQuote(response.quote)
-          else dispatch(notify(response.message ?? t('EError'), true, 8))
+          else dispatch(notify(response.message ?? t('Error'), true, 8))
         }
         fetchQuote()
       }
@@ -125,7 +125,7 @@ const ImageModal: FC<ModalImageProps> = ({
             className={`tooltip narrow`}
             style={{ top: tooltip.y, left: tooltip.x, right: 'unset' }}
           >
-            {t('EClickToLoadImage')}
+            {t('ClickToLoadImage')}
           </span>
         )}
       </div>

@@ -35,8 +35,8 @@ export default function JokesPage({
 }) {
   const { t } = useContext(LanguageContext)!
 
-  const title = t('ETheComediansCompanion')
-  const titleLanguage = t('ELanguageTitle')
+  const title = t('TheComediansCompanion')
+  const titleLanguage = t('LanguageTitle')
 
   function getKeyByValue(
     enumObj:
@@ -95,7 +95,7 @@ export default function JokesPage({
             <div className='flex column gap'>
               <div className='flex center gap'>
                 <a href='#jokeform' className='svg-wrap newline'>
-                  <span>{t('ESkipToJokeSearch')}</span>
+                  <span>{t('SkipToJokeSearch')}</span>
                   <BiChevronsDown className='down' />
                 </a>
                 <a
@@ -103,7 +103,7 @@ export default function JokesPage({
                   className='svg-wrap newline'
                   onClick={(e) => handleSkipToJokes(e)}
                 >
-                  <span>{t('ESkipToSavedJokes')}</span>
+                  <span>{t('SkipToSavedJokes')}</span>
                   <BiChevronsDown className='down' />
                 </a>
               </div>
@@ -129,20 +129,20 @@ export default function JokesPage({
               </div>
               <Accordion
                 language={language}
-                text={t('EClickHereToSeeFeatures')}
+                text={t('ClickHereToSeeFeatures')}
                 className='features'
                 wrapperClass='features-wrap'
               >
                 <div className='medium'>
-                  <h2>{t('EFeatures')}</h2>
+                  <h2>{t('Features')}</h2>
                   <ul className='ul'>
                     <li>
-                      {t('EFetchesJokesFrom')}{' '}
+                      {t('FetchesJokesFrom')}{' '}
                       <a href='https://sv443.net/jokeapi/v2/'>JokeAPI</a>
                     </li>
-                    <li>{t('ERegisterAndLoginToUse')}</li>
+                    <li>{t('RegisterAndLoginToUse')}</li>
                     <li>
-                      {t('EAppTranslatedTo')}
+                      {t('AppTranslatedTo')}
                       <ul>
                         {Object.values(LanguageOfLanguage[language]).map((l: string) => {
                           return <li key={l}>{l}</li>
@@ -150,22 +150,22 @@ export default function JokesPage({
                       </ul>
                     </li>
                     <li>
-                      {t('EFilterJokesBy')}:
+                      {t('FilterJokesBy')}:
                       <ul>
                         <li>{titleLanguage}</li>
                         <li>
-                          {t('EJokeTypeTitle')}
+                          {t('JokeTypeTitle')}
                           <ul>
-                            <li>{t('ETwoPart')}</li>
-                            <li>{t('ESingle')}</li>
+                            <li>{t('TwoPart')}</li>
+                            <li>{t('Single')}</li>
                           </ul>
                         </li>
                         <li>
-                          {t('ESafemodeTitle')} {t('EOnOff')}
+                          {t('SafemodeTitle')} {t('OnOff')}
                         </li>
-                        <li>{t('EKeyword')}</li>
+                        <li>{t('Keyword')}</li>
                         <li>
-                          {t('ECategoryTitle')}
+                          {t('CategoryTitle')}
                           <ul>
                             <li>{jokeCategoryAny[language]}</li>
                             {Object.values(jokeCategoryByLanguage[language]).map((c) => {
@@ -176,9 +176,9 @@ export default function JokesPage({
                       </ul>
                     </li>
                     <li>
-                      {t('ENote')}
+                      {t('Note')}
                       <ul>
-                        <li>{t('EDarkJokesAreVisibleOnlyWhenSafeModeIsOff')}</li>
+                        <li>{t('DarkJokesAreVisibleOnlyWhenSafeModeIsOff')}</li>
                       </ul>
                     </li>
                   </ul>
@@ -192,7 +192,7 @@ export default function JokesPage({
         </section>
         <Suspense
           fallback={
-            <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
+            <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
           }
         >
           <Jokes language={language} setLanguage={setLanguage} />

@@ -37,20 +37,20 @@ const LoginRegisterCombo: FC<LoginRegisterComboProps> = ({
     e.preventDefault()
     setSending(true)
     if (password.trim() !== confirmPassword.trim()) {
-      dispatch(notify(t('EPasswordsDoNotMatch'), true, 8))
+      dispatch(notify(t('PasswordsDoNotMatch'), true, 8))
       setSending(false)
       return
     }
     dispatch(createUser({ name, username, password, language: 'en' }))
       .then(async () => {
-        dispatch(notify(t('ERegistrationSuccesful'), false, 8))
+        dispatch(notify(t('RegistrationSuccesful'), false, 8))
         setSending(false)
       })
       .catch((err) => {
         console.error(err)
         if (err.response?.data?.message)
           dispatch(notify(err.response.data.message, true, 8))
-        else dispatch(notify(`${t('EError')}: ${err.message}`, true, 8))
+        else dispatch(notify(`${t('Error')}: ${err.message}`, true, 8))
         setSending(false)
       })
   }

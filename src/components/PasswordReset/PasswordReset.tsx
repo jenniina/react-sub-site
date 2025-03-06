@@ -22,35 +22,35 @@ const PasswordReset = ({ language, text }: Props) => {
   const handleForgot = async (event: FormEvent) => {
     event.preventDefault()
     setSending(true)
-    dispatch(notify(`${t('ESendingEmail')}`, false, 2))
+    dispatch(notify(`${t('SendingEmail')}`, false, 2))
 
     if (username) {
       await dispatch(forgot(username, language))
         .then((r) => {
-          dispatch(notify(r.message || t('EEmailSent'), false, 3))
+          dispatch(notify(r.message || t('EmailSent'), false, 3))
           setSending(false)
         })
         .catch((e) => {
-          dispatch(notify(t('EEmailSent'), false, 3))
+          dispatch(notify(t('EmailSent'), false, 3))
           setSending(false)
           // console.error(e)
           // if (e.code === 'ERR_NETWORK') {
-          //   dispatch(notify(`${t('EError')}: ${e.message}`, true, 8))
+          //   dispatch(notify(`${t('Error')}: ${e.message}`, true, 8))
           // } else if (e.code === 'ERR_BAD_REQUEST')
-          //   dispatch(notify(`${t('EError')}: ${e.response.data.message}`, true, 8))
+          //   dispatch(notify(`${t('Error')}: ${e.response.data.message}`, true, 8))
           // else {
-          //   dispatch(notify(`${t('EError')}: ${e.message}`, true, 8))
+          //   dispatch(notify(`${t('Error')}: ${e.message}`, true, 8))
           // }
         })
     } else {
-      dispatch(notify(`${t('EError')}: ${t('EEmail')} ${t('EPassword')}`, true, 8))
+      dispatch(notify(`${t('Error')}: ${t('Email')} ${t('Password')}`, true, 8))
       setSending(false)
     }
   }
 
   return (
     <>
-      <h2>{t('EForgotPassword')}</h2>
+      <h2>{t('ForgotPassword')}</h2>
 
       <form onSubmit={handleForgot} className='forgot'>
         <div className='input-wrap'>
@@ -63,7 +63,7 @@ const PasswordReset = ({ language, text }: Props) => {
               autoComplete='email'
               onChange={({ target }) => setUsername(target.value.trim())}
             />
-            <span>{t('EEmail')}: </span>
+            <span>{t('Email')}: </span>
           </label>
         </div>
         <button
@@ -72,7 +72,7 @@ const PasswordReset = ({ language, text }: Props) => {
           id={`forgot-${text}`}
           className='forgot-btn restore'
         >
-          <span>{t('ESendResetLink')}</span> <RiMailSendLine />
+          <span>{t('SendResetLink')}</span> <RiMailSendLine />
         </button>
       </form>
     </>

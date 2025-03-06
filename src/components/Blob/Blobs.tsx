@@ -70,7 +70,7 @@ const Blobs: FC<BlobsProps> = ({ language }) => {
                   }
                 }}
               >
-                {t('EScroll')} {t('EToBlobArt')} {i + 1}
+                {t('Scroll')} {t('ToBlobArt')} {i + 1}
               </button>
             )
         })}
@@ -85,7 +85,7 @@ const Blobs: FC<BlobsProps> = ({ language }) => {
           {buttons(i)}
           <Suspense
             fallback={
-              <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
+              <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
             }
           >
             <DragContainer

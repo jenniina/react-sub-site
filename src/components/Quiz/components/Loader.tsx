@@ -9,7 +9,7 @@ const Loader = ({ language }: { language: ELanguages }) => {
   return (
     <div className={`${styles['loader-wrap']}`}>
       <div className={`${styles.loader}`}></div>
-      <h3>{t('ELoadingQuestions')}</h3>
+      <h3>{t('LoadingQuestions')}</h3>
     </div>
   )
 }

@@ -428,7 +428,7 @@ export default function DragContainer({
   function saveDraggables(blob: Draggable[] = draggables[d]) {
     localStorage.setItem(localStorageDraggables, JSON.stringify(blob))
   }
-  const [name, setName] = useState<string>(t('EBlobArt'))
+  const [name, setName] = useState<string>(t('BlobArt'))
   const [newName, setNewName] = useState(name)
   const [editName, setEditName] = useState('')
   const [isLoading, setIsLoading] = useState(true)
@@ -488,14 +488,14 @@ export default function DragContainer({
           .catch((error) => {
             if (error.response?.data?.message)
               dispatch(notify(error.response.data.message, true, 8))
-            else dispatch2(notify(`${t('EError')}: ${error.message}`, true, 8))
+            else dispatch2(notify(`${t('Error')}: ${error.message}`, true, 8))
             setIsLoading(false)
           })
       }
     } catch (error: any) {
       if (error.response?.data?.message)
         dispatch(notify(error.response.data.message, true, 8))
-      else dispatch2(notify(t('EError'), true, 8))
+      else dispatch2(notify(t('Error'), true, 8))
       setIsLoading(false)
     }
   }
@@ -516,7 +516,7 @@ export default function DragContainer({
     if (regex.test(value)) {
       setName(value)
     } else {
-      dispatch2(notify(t('ESpecialCharactersNotAllowed'), true, 8))
+      dispatch2(notify(t('SpecialCharactersNotAllowed'), true, 8))
     }
   }
 
@@ -525,7 +525,7 @@ export default function DragContainer({
     if (regex.test(value)) {
       setNewName(value)
     } else {
-      dispatch2(notify(t('ESpecialCharactersNotAllowed'), true, 8))
+      dispatch2(notify(t('SpecialCharactersNotAllowed'), true, 8))
     }
   }
 
@@ -534,19 +534,19 @@ export default function DragContainer({
     e.preventDefault()
     try {
       if (name.trim() === '') {
-        dispatch2(notify(t('ENameYourArtwork'), true, 8))
+        dispatch2(notify(t('NameYourArtwork'), true, 8))
         setLoading(false)
         return
       } else if (name.trim().length > 30) {
         setLoading(false)
         dispatch2(
-          notify(`${t('ENameTooLong')}. ${t('EAMaxOf30CharactersPlease')}`, true, 8)
+          notify(`${t('NameTooLong')}. ${t('AMaxOf30CharactersPlease')}`, true, 8)
         )
         return
       } else if (user?._id) {
         const versionName = name.trim()
         if (checkDuplicateVersionName(versionName)) {
-          if (!window.confirm(t('EAVersionAlreadyExistsOverwrite'))) {
+          if (!window.confirm(t('AVersionAlreadyExistsOverwrite'))) {
             return
           }
         }
@@ -562,21 +562,21 @@ export default function DragContainer({
           .then(() => {
             setTrackSaving(!trackSaving)
             setLoading(false)
-            dispatch2(notify(t('ESavingSuccessful'), false, 8))
+            dispatch2(notify(t('SavingSuccessful'), false, 8))
           })
           .catch((error) => {
             if (error.response?.data?.message)
               dispatch(notify(error.response.data.message, true, 8))
-            else dispatch2(notify(`${t('EError')}: ${error.message}`, true, 8))
+            else dispatch2(notify(`${t('Error')}: ${error.message}`, true, 8))
           })
       } else {
-        dispatch2(notify(t('ELoginToSaveBlobs'), true, 8))
+        dispatch2(notify(t('LoginToSaveBlobs'), true, 8))
         setLoading(false)
       }
     } catch (error: any) {
       if (error.response?.data?.message)
         dispatch(notify(error.response.data.message, true, 8))
-      else dispatch2(notify(t('EError'), true, 8))
+      else dispatch2(notify(t('Error'), true, 8))
       setLoading(false)
     }
   }
@@ -584,12 +584,10 @@ export default function DragContainer({
   const editBlobsByUser = async (versionName: string, newVersionName: string) => {
     const newVersion = newVersionName.trim()
     if (newVersionName.trim() === '') {
-      dispatch2(notify(t('ENameYourArtwork'), true, 8))
+      dispatch2(notify(t('NameYourArtwork'), true, 8))
       return
     } else if (newVersionName.trim().length > 30) {
-      dispatch2(
-        notify(`${t('ENameTooLong')}. ${t('EAMaxOf30CharactersPlease')}`, true, 8)
-      )
+      dispatch2(notify(`${t('NameTooLong')}. ${t('AMaxOf30CharactersPlease')}`, true, 8))
       return
     } else {
       try {
@@ -606,20 +604,20 @@ export default function DragContainer({
             )
             .then(() => {
               setTrackSaving(!trackSaving)
-              dispatch2(notify(t('ESavingSuccessful'), false, 8))
+              dispatch2(notify(t('SavingSuccessful'), false, 8))
             })
             .catch((error) => {
               if (error.response?.data?.message)
                 dispatch(notify(error.response.data.message, true, 8))
-              else dispatch2(notify(`${t('EError')}: ${error.message}`, true, 8))
+              else dispatch2(notify(`${t('Error')}: ${error.message}`, true, 8))
             })
         } else {
-          dispatch2(notify(t('ELoginToSaveBlobs'), true, 8))
+          dispatch2(notify(t('LoginToSaveBlobs'), true, 8))
         }
       } catch (error: any) {
         if (error.response?.data?.message)
           dispatch(notify(error.response.data.message, true, 8))
-        else dispatch2(notify(t('EError'), true, 8))
+        else dispatch2(notify(t('Error'), true, 8))
       }
     }
   }
@@ -627,7 +625,7 @@ export default function DragContainer({
   const loadBlobsFromServer = (d: number, versionName: string) => {
     const newVersion = versionName.trim()
     if (user?._id) {
-      if (window.confirm(t('ENoteThatUnsavedChangesWillBeLost'))) {
+      if (window.confirm(t('NoteThatUnsavedChangesWillBeLost'))) {
         blobService
           .getBlobsVersionByUser(user?._id, d, newVersion, language)
           .then((response: SavedBlobs) => {
@@ -671,7 +669,7 @@ export default function DragContainer({
           .catch((error) => {
             if (error.response?.data?.message)
               dispatch(notify(error.response.data.message, true, 8))
-            else dispatch2(notify(`${t('EError')}: ${error.message}`, true, 8))
+            else dispatch2(notify(`${t('Error')}: ${error.message}`, true, 8))
           })
       }
     }
@@ -679,17 +677,17 @@ export default function DragContainer({
 
   const deleteBlobsVersionFromServer = (d: number, versionName: string) => {
     if (user._id) {
-      if (window.confirm(t('EAreYouSureYouWantToDeleteThisVersion'))) {
+      if (window.confirm(t('AreYouSureYouWantToDeleteThisVersion'))) {
         blobService
           .deleteBlobsVersionByUser(user._id, d, versionName, language)
           .then(() => {
-            dispatch2(notify(t('EDeletedArt'), false, 8))
+            dispatch2(notify(t('DeletedArt'), false, 8))
             setTrackSaving(!trackSaving)
           })
           .catch((error) => {
             if (error.response?.data?.message)
               dispatch(notify(error.response.data.message, true, 8))
-            else dispatch2(notify(`${t('EError')}: ${error.message}`, true, 8))
+            else dispatch2(notify(`${t('Error')}: ${error.message}`, true, 8))
           })
       }
     }
@@ -947,12 +945,12 @@ export default function DragContainer({
     )
 
     if (isAnyOnLowestLayer) {
-      dispatch2(notify(t('ECannotLowerEveryBlobFurtherSomeBlobsAlreadyLowest'), true, 8))
+      dispatch2(notify(t('CannotLowerEveryBlobFurtherSomeBlobsAlreadyLowest'), true, 8))
       return
     }
 
     if (isAnyOnHighestLayer) {
-      dispatch2(notify(t('ECannotRaiseEveryBlobFurther'), true, 8))
+      dispatch2(notify(t('CannotRaiseEveryBlobFurther'), true, 8))
       return
     }
 
@@ -970,7 +968,7 @@ export default function DragContainer({
 
   function resetBlobsFunction(e: MouseEventReact | TouchEventReact | PointerEventReact) {
     e.preventDefault()
-    if (window.confirm(`${t('EResetBlobs')}?`)) {
+    if (window.confirm(`${t('ResetBlobs')}?`)) {
       window.localStorage.removeItem(localStorageDraggables)
       dispatch({ type: 'resetDraggables', payload: { d } })
       dispatch({ type: 'setDraggablesAtD', payload: { d, draggables: [] } })
@@ -1079,7 +1077,7 @@ export default function DragContainer({
       document.activeElement.blur() // Unfocus the button after clicking, as the tooltip will otherwise stay visible and be in the way
 
     if (hiddenLayers.has(activeLayer)) {
-      dispatch2(notify(t('ELayerHidden'), true, 8))
+      dispatch2(notify(t('LayerHidden'), true, 8))
       return
     }
 
@@ -1510,20 +1508,20 @@ export default function DragContainer({
         document.body.appendChild(link)
         link.click()
         document.body.removeChild(link)
-        dispatch(notify(t('EArtSaved'), false, 8))
+        dispatch(notify(t('ArtSaved'), false, 8))
       } else {
-        dispatch(notify(t('EError'), true, 8))
+        dispatch(notify(t('Error'), true, 8))
       }
     } catch (err) {
       console.error('Screenshot Error:', err)
-      dispatch(notify(t('EError'), true, 8))
+      dispatch(notify(t('Error'), true, 8))
     } finally {
       setLoading(false)
     }
   }
 
   useEffect(() => {
-    if (loading) dispatch2(notify(`${t('ELoading')}...`, false, 20))
+    if (loading) dispatch2(notify(`${t('Loading')}...`, false, 20))
   }, [loading])
 
   const [itemsPerPage, setItemsPerPage] = useState(5)
@@ -1554,7 +1552,7 @@ export default function DragContainer({
 
     if (nonEmptyHiddenLayers.length > 0) {
       const confirmDelete = window.confirm(
-        `${t('ELayerNotEmpty')}. ${t('EAreYouSureYouWantToProceed')}`
+        `${t('LayerNotEmpty')}. ${t('AreYouSureYouWantToProceed')}`
       )
       if (!confirmDelete) {
         return
@@ -1569,7 +1567,7 @@ export default function DragContainer({
     const newLayerAmount = layerAmount - hiddenLayers.size
 
     if (newLayerAmount < 1) {
-      dispatch2(notify(t('EMustHaveAtLeastOneLayer'), true, 8))
+      dispatch2(notify(t('MustHaveAtLeastOneLayer'), true, 8))
       return
     }
 
@@ -1602,7 +1600,7 @@ export default function DragContainer({
     const newLayerAmount = layerAmount + byAmount
 
     if (newLayerAmount > 9) {
-      dispatch2(notify(t('EMaximumLayerAmountReached'), true, 8))
+      dispatch2(notify(t('MaximumLayerAmountReached'), true, 8))
       return
     }
 
@@ -1643,7 +1641,7 @@ export default function DragContainer({
   function removeBlob(draggable: Draggable) {
     setDeleteId(draggable.id)
     if (selectedvalue0.current)
-      selectedvalue0.current.textContent = `${t('ESelectedBlobNone')}`
+      selectedvalue0.current.textContent = `${t('SelectedBlobNone')}`
   }
 
   useEffect(() => {
@@ -1664,21 +1662,21 @@ export default function DragContainer({
               disabled={current === 1}
               className='btn-small pagination-btn'
             >
-              &laquo;&nbsp;<span className='scr'>{t('EBackToStart')}</span>
+              &laquo;&nbsp;<span className='scr'>{t('BackToStart')}</span>
             </button>
             <button
               onClick={() => handlePageChange(Number(dKey), Math.max(current - 1, 1))}
               disabled={current === 1}
               className='btn-small pagination-btn'
             >
-              &nbsp;&lsaquo;&nbsp;<span className='scr'>{t('EPrevious')}</span>
+              &nbsp;&lsaquo;&nbsp;<span className='scr'>{t('Previous')}</span>
             </button>
           </>
         ) : (
           <></>
         )}
         <span>
-          {t('EPage')} {current} / {totalPages}
+          {t('Page')} {current} / {totalPages}
         </span>
         {current !== totalPages ? (
           <>
@@ -1689,7 +1687,7 @@ export default function DragContainer({
               disabled={current === totalPages}
               className='btn-small pagination-btn'
             >
-              <span className='scr'>{t('ENext')}</span>&nbsp;&rsaquo;&nbsp;
+              <span className='scr'>{t('Next')}</span>&nbsp;&rsaquo;&nbsp;
             </button>
 
             <button
@@ -1697,7 +1695,7 @@ export default function DragContainer({
               disabled={current === totalPages}
               className='btn-small pagination-btn'
             >
-              <span className='scr'>{t('EToLastPage')}</span>&nbsp;&raquo;
+              <span className='scr'>{t('ToLastPage')}</span>&nbsp;&raquo;
             </button>
           </>
         ) : (
@@ -1715,7 +1713,7 @@ export default function DragContainer({
               max={100}
               onChange={(e) => setItemsPerPage(Number(e.target.value))}
             />
-            <span>{t('EPerPage')}</span>
+            <span>{t('PerPage')}</span>
           </label>
         </div>
       </div>
@@ -1739,36 +1737,36 @@ export default function DragContainer({
           <div id={`drag-container${d}`} className={`drag-container drag-container${d}`}>
             <div className='blob-title-wrap'>
               <h2 className='blob-title'>
-                {t('EBlobArt')} {d + 1}
+                {t('BlobArt')} {d + 1}
               </h2>
               {d === 0 ? (
-                <p>{t('EMoreColorsAvailableThroughRandomBlobButton')} </p>
+                <p>{t('MoreColorsAvailableThroughRandomBlobButton')} </p>
               ) : d === 1 ? (
                 <p>
-                  {t('EWithMoreMutedColors')}.{' '}
-                  {t('EMoreColorsAvailableThroughRandomBlobButton')}{' '}
+                  {t('WithMoreMutedColors')}.{' '}
+                  {t('MoreColorsAvailableThroughRandomBlobButton')}{' '}
                 </p>
               ) : d === 2 ? (
                 <p>
-                  {t('EDarkerColors')}. {t('EMoreColorsAvailableThroughRandomBlobButton')}{' '}
+                  {t('DarkerColors')}. {t('MoreColorsAvailableThroughRandomBlobButton')}{' '}
                 </p>
               ) : (
-                <p>{t('EMoreColorsAvailableThroughRandomBlobButton')}</p>
+                <p>{t('MoreColorsAvailableThroughRandomBlobButton')}</p>
               )}
             </div>
             <div className={'label-container'}>
               <span id={`blobdescription${d}`} className={'scr'}>
-                {t('ETryDraggingTheBlobs')}
+                {t('TryDraggingTheBlobs')}
               </span>
               <span>
-                [{t('ELayer')}: {activeLayer + 1}]{' '}
+                [{t('Layer')}: {activeLayer + 1}]{' '}
               </span>
               <span
                 ref={selectedvalue0}
                 id={`selectedvalue${d}`}
                 className='selectedvalue'
               >
-                {t('ESelectedBlobNone')}
+                {t('SelectedBlobNone')}
               </span>
             </div>
             <div id={`button-container${d}`} className={'button-container'}>
@@ -1782,9 +1780,9 @@ export default function DragContainer({
                 aria-labelledby={`stop-blobs${d}-span`}
               >
                 <span id={`stop-blobs${d}-span`} className='tooltip above'>
-                  {t('EAfterEnablingThereIsASlightDelayBeforeAllTheBlobsAreMovingAgain')}
+                  {t('AfterEnablingThereIsASlightDelayBeforeAllTheBlobsAreMovingAgain')}
                 </span>
-                {paused ? t('EStartSway') : t('EStopSway')}
+                {paused ? t('StartSway') : t('StopSway')}
               </button>
               <button
                 ref={resetBlobs}
@@ -1796,9 +1794,9 @@ export default function DragContainer({
                 }}
               >
                 <span id={`reset-blobs${d}-span`} className='tooltip above'>
-                  {t('EGetANewSetOfBlobs')}
+                  {t('GetANewSetOfBlobs')}
                 </span>{' '}
-                {t('EReset')}
+                {t('Reset')}
               </button>
               <button
                 id={`toggle-marker${d}`}
@@ -1807,9 +1805,9 @@ export default function DragContainer({
                 onClick={() => setMarkerEnabled(!markerEnabled)}
               >
                 <span id={`toggle-marker${d}-span`} className='tooltip above'>{`${t(
-                  'EToggleMarkerVisibilityWhenUsingAKeyboard'
+                  'ToggleMarkerVisibilityWhenUsingAKeyboard'
                 )}`}</span>
-                {markerEnabled ? t('EMarkerOn') : t('EMarkerOff')}
+                {markerEnabled ? t('MarkerOn') : t('MarkerOff')}
               </button>
 
               <button
@@ -1823,10 +1821,10 @@ export default function DragContainer({
               >
                 <span id={`disable-scroll${d}-span`} className='tooltip above'>
                   {scroll
-                    ? t('EDisableScrollInOrderToUseTheMouseWheelToResizeABlob')
-                    : t('EPressHereOrEscapeToRestoreScrolling')}
+                    ? t('DisableScrollInOrderToUseTheMouseWheelToResizeABlob')
+                    : t('PressHereOrEscapeToRestoreScrolling')}
                 </span>
-                {scroll ? t('EDisableScroll') : t('EEnableScroll')}
+                {scroll ? t('DisableScroll') : t('EnableScroll')}
               </button>
 
               <button
@@ -1844,7 +1842,7 @@ export default function DragContainer({
               >
                 <span id={`toggle-controls${d}-span`}>
                   {' '}
-                  {controlsVisible ? t('EHideControls') : t('EShowControls')}
+                  {controlsVisible ? t('HideControls') : t('ShowControls')}
                 </span>
               </button>
               <button
@@ -1857,7 +1855,7 @@ export default function DragContainer({
               >
                 <ImCamera />
                 <span id={`take-screenshot${d}-span`} className='tooltip left above'>
-                  {loading ? t('ELoading') : t('EClickHereToTakeAScreenshot')}
+                  {loading ? t('Loading') : t('ClickHereToTakeAScreenshot')}
                 </span>
               </button>
             </div>
@@ -1886,11 +1884,11 @@ export default function DragContainer({
                 >
                   <ImShrink2 />
                   {mode === 'scale-down' && (
-                    <span className='scale-down-alert'>{t('ESizeDecreaseModeOn')}</span>
+                    <span className='scale-down-alert'>{t('SizeDecreaseModeOn')}</span>
                   )}
                   <span id={`make-smaller${d}-span`} className='tooltip left below'>{`${t(
-                    'EShrinkInstructions'
-                  )}. ${t('EAlternatively')}: ${t('EResizebyScrollInstructions')}`}</span>
+                    'ShrinkInstructions'
+                  )}. ${t('Alternatively')}: ${t('ResizebyScrollInstructions')}`}</span>
                 </button>
                 <button
                   ref={makeLarger0}
@@ -1904,11 +1902,11 @@ export default function DragContainer({
                 >
                   <ImEnlarge2 />
                   {mode === 'scale-up' && (
-                    <span className='scale-up-alert'>{t('ESizeIncreaseModeOn')}</span>
+                    <span className='scale-up-alert'>{t('SizeIncreaseModeOn')}</span>
                   )}
                   <span id={`make-larger${d}-span`} className='tooltip left above'>{`${t(
-                    'EEnlargeInstructions'
-                  )}. ${t('EAlternatively')}: ${t('EResizebyScrollInstructions')}`}</span>
+                    'EnlargeInstructions'
+                  )}. ${t('Alternatively')}: ${t('ResizebyScrollInstructions')}`}</span>
                 </button>
 
                 <button
@@ -1923,10 +1921,10 @@ export default function DragContainer({
                 >
                   <FaRegClone />
                   {mode === 'clone' && (
-                    <span className='clone-alert'>{t('ECloneModeOn')}</span>
+                    <span className='clone-alert'>{t('CloneModeOn')}</span>
                   )}
                   <span id={`make-more${d}-span`} className='tooltip right below'>
-                    {t('ECloneInstructions')}
+                    {t('CloneInstructions')}
                   </span>
                 </button>
                 <button
@@ -1940,8 +1938,8 @@ export default function DragContainer({
                 >
                   <FaPlus />
                   <span id={`make-random${d}-span`} className='tooltip below'>{`${t(
-                    'EClickMeToMakeARandomBlob'
-                  )}. ${t('EMoreColorsAvailable')}!`}</span>
+                    'ClickMeToMakeARandomBlob'
+                  )}. ${t('MoreColorsAvailable')}!`}</span>
                 </button>
                 <button
                   ref={deleteBlob0}
@@ -1953,10 +1951,10 @@ export default function DragContainer({
                 >
                   <span style={{ fontSize: '1.2em' }}>&times;</span>
                   {mode === 'delete' && (
-                    <span className='delete-alert'>{t('EDeleteModeOn')}</span>
+                    <span className='delete-alert'>{t('DeleteModeOn')}</span>
                   )}
                   <span id={`delete-blob${d}-span`} className='tooltip right above'>
-                    {t('ERemovalInstructions')}
+                    {t('RemovalInstructions')}
                   </span>
                 </button>
 
@@ -1969,11 +1967,11 @@ export default function DragContainer({
                   onClick={() => toggleMode('layer-down')}
                 >
                   {mode === 'layer-down' && (
-                    <span className='layer-down-alert'>{t('ELayerDecreaseModeOn')}</span>
+                    <span className='layer-down-alert'>{t('LayerDecreaseModeOn')}</span>
                   )}
                   <span id={`layer-decrease${d}-span`} className='tooltip above'>{`${t(
-                    'EDecreaseBlobLayerBy1Instructions'
-                  )} ${t('EKeyboardUsePressTheCorrespondingLayerNumber')}`}</span>
+                    'DecreaseBlobLayerBy1Instructions'
+                  )} ${t('KeyboardUsePressTheCorrespondingLayerNumber')}`}</span>
                   <BiChevronDown />
                 </button>
                 <button
@@ -1985,11 +1983,11 @@ export default function DragContainer({
                   onClick={() => toggleMode('layer-up')}
                 >
                   {mode === 'layer-up' && (
-                    <span className='layer-up-alert'>{t('ELayerIncreaseModeOn')}</span>
+                    <span className='layer-up-alert'>{t('LayerIncreaseModeOn')}</span>
                   )}
                   <span id={`layer-increase${d}-span`} className='tooltip above'>{`${t(
-                    'EIncreaseBlobLayerBy1Instructions'
-                  )} ${t('EKeyboardUsePressTheCorrespondingLayerNumber')}`}</span>
+                    'IncreaseBlobLayerBy1Instructions'
+                  )} ${t('KeyboardUsePressTheCorrespondingLayerNumber')}`}</span>
                   <BiChevronUp />
                 </button>
 
@@ -2031,7 +2029,7 @@ export default function DragContainer({
                   <Suspense
                     fallback={
                       <div className='flex center margin0auto textcenter'>
-                        {t('ELoading')}...
+                        {t('Loading')}...
                       </div>
                     }
                   >
@@ -2076,7 +2074,7 @@ export default function DragContainer({
               <Suspense
                 fallback={
                   <div className='flex center margin0auto textcenter'>
-                    {t('ELoading')}...
+                    {t('Loading')}...
                   </div>
                 }
               >
@@ -2106,7 +2104,7 @@ export default function DragContainer({
                 >
                   <BiChevronsLeft />
                   <span id={`moveleft${d}-span`} className='tooltip above'>
-                    {t('EMoveViewLeft')}
+                    {t('MoveViewLeft')}
                   </span>
                 </button>
                 <button
@@ -2117,7 +2115,7 @@ export default function DragContainer({
                 >
                   <BiChevronsRight />
                   <span id={`moveright${d}-span`} className='tooltip above'>
-                    {t('EMoveViewRight')}
+                    {t('MoveViewRight')}
                   </span>
                 </button>
               </div>
@@ -2129,7 +2127,7 @@ export default function DragContainer({
                   onClick={deleteHiddenLayers}
                 >
                   <span id={`decrease-layer-amount${d}-span`} className='tooltip above'>
-                    {t('EDeleteHiddenLayers')}
+                    {t('DeleteHiddenLayers')}
                   </span>
                   &times;
                 </button>
@@ -2140,7 +2138,7 @@ export default function DragContainer({
                   onClick={() => changeEveryLayer(-1)}
                 >
                   <span id={`every-layer-minus${d}-span`} className='tooltip above'>
-                    {t('EClickHereToMoveDownLayer')}
+                    {t('ClickHereToMoveDownLayer')}
                   </span>
                   <BiChevronDown />
                 </button>
@@ -2163,11 +2161,11 @@ export default function DragContainer({
                     } ${hiddenLayers.has(layer) ? 'dim' : ''}`}
                   >
                     <span id={`layer-button-${d}-${layer}-span`}>
-                      <span className='scr'>{t('ELayer')}</span> {layer + 1}{' '}
+                      <span className='scr'>{t('Layer')}</span> {layer + 1}{' '}
                       <span className='tooltip above'>
                         {activeLayer === layer
-                          ? t('EToggleLayerByClickingMe')
-                          : t('EChangeLayerByClickingMe')}
+                          ? t('ToggleLayerByClickingMe')
+                          : t('ChangeLayerByClickingMe')}
                       </span>
                     </span>
                   </button>
@@ -2181,7 +2179,7 @@ export default function DragContainer({
                   onClick={() => changeEveryLayer(1)}
                 >
                   <span id={`every-layer-plus${d}-span`} className='tooltip above'>
-                    {t('EClickHereToMoveUpLayer')}
+                    {t('ClickHereToMoveUpLayer')}
                   </span>
                   <BiChevronUp />
                 </button>
@@ -2193,7 +2191,7 @@ export default function DragContainer({
                   onClick={() => addToLayerAmount(1)}
                 >
                   <span id={`increase-layer-amount${d}-span`} className='tooltip above'>
-                    {t('EGetMoreLayers')}
+                    {t('GetMoreLayers')}
                   </span>
                   <BiPlus />
                 </button>
@@ -2209,7 +2207,7 @@ export default function DragContainer({
                 >
                   <BiChevronsUp />
                   <span id={`moveup${d}-span`} className='tooltip above'>
-                    {t('EMoveViewUp')}
+                    {t('MoveViewUp')}
                   </span>
                 </button>
                 <button
@@ -2220,7 +2218,7 @@ export default function DragContainer({
                 >
                   <BiChevronsDown />
                   <span id={`movedown${d}-span`} className='tooltip above'>
-                    {t('EMoveViewDown')}
+                    {t('MoveViewDown')}
                   </span>
                 </button>
               </div>
@@ -2228,7 +2226,7 @@ export default function DragContainer({
             <Suspense
               fallback={
                 <div className='flex center margin0auto textcenter'>
-                  {t('ELoading')}...
+                  {t('Loading')}...
                 </div>
               }
             >
@@ -2268,25 +2266,25 @@ export default function DragContainer({
                           type='text'
                           value={name}
                           onChange={handleNameChange}
-                          placeholder={t('ENameYourArtwork')}
+                          placeholder={t('NameYourArtwork')}
                           maxLength={30}
                         />
-                        <span>{t('ENameYourArtwork')}:</span>
+                        <span>{t('NameYourArtwork')}:</span>
                       </label>
                     </div>
                     <button type='submit' disabled={loading}>
-                      {t('ESave')}
+                      {t('Save')}
                     </button>
                   </form>
                 </div>
 
-                <h3>{t('EArt')}</h3>
+                <h3>{t('Art')}</h3>
                 {isLoading ? (
-                  <p>{t('ELoadingSavedArtwork')}</p>
+                  <p>{t('LoadingSavedArtwork')}</p>
                 ) : !users || users.length < 1 ? (
-                  <p>{t('EErrorConnectingToTheServer')}</p>
+                  <p>{t('ErrorConnectingToTheServer')}</p>
                 ) : !hasSavedFiles ? (
-                  <p>{t('ENoSavedArtworkYet')}</p>
+                  <p>{t('NoSavedArtworkYet')}</p>
                 ) : (
                   Object.keys(savedDraggablesbyD).map((dKey, index) => {
                     const versions = Object.keys(savedDraggablesbyD[Number(dKey)])
@@ -2312,7 +2310,7 @@ export default function DragContainer({
                                     loadBlobsFromServer(Number(dKey), versionName)
                                   }
                                 >
-                                  {t('ELoad')} <span className='scr'>{versionName}</span>
+                                  {t('Load')} <span className='scr'>{versionName}</span>
                                 </button>
                                 <button
                                   onClick={() =>
@@ -2322,15 +2320,14 @@ export default function DragContainer({
                                     )
                                   }
                                 >
-                                  {t('EDelete')}{' '}
-                                  <span className='scr'>{versionName}</span>
+                                  {t('Delete')} <span className='scr'>{versionName}</span>
                                 </button>
                                 <Accordion
                                   language={language}
                                   id={`accordion-blobnewname-${sanitize(versionName)}`}
                                   className='blobnewname'
                                   wrapperClass='blobnewname-wrap'
-                                  text={t('ERename')}
+                                  text={t('Rename')}
                                   hideBrackets={true}
                                   onClick={() => {
                                     setNewName(versionName)
@@ -2348,10 +2345,10 @@ export default function DragContainer({
                                           type='text'
                                           value={newName}
                                           onChange={handleNewNameChange}
-                                          placeholder={t('ERenameYourArtwork')}
+                                          placeholder={t('RenameYourArtwork')}
                                           maxLength={30}
                                         />
-                                        <span>{t('ERename')}:</span>{' '}
+                                        <span>{t('Rename')}:</span>{' '}
                                         <span className='scr'>{versionName}</span>
                                       </label>
                                     </div>
@@ -2362,18 +2359,16 @@ export default function DragContainer({
                                         } else
                                           dispatch2(
                                             notify(
-                                              `${t('EError')}: ${t(
-                                                'ERenameYourArtwork'
-                                              )}`,
+                                              `${t('Error')}: ${t('RenameYourArtwork')}`,
                                               true,
                                               5
                                             )
                                           )
                                       }}
                                     >
-                                      {t('EEdit')}{' '}
+                                      {t('Edit')}{' '}
                                       <span className='scr'>
-                                        {versionName}: {t('ENewName')} {newName}
+                                        {versionName}: {t('NewName')} {newName}
                                       </span>
                                     </button>
                                   </>
@@ -2393,12 +2388,12 @@ export default function DragContainer({
               <div className='wide flex column center gap'>
                 <div className='login-to-save wide flex column center gap-half'>
                   <FaSave />
-                  {t('EInOrderToSaveTheBlobs')}
+                  {t('InOrderToSaveTheBlobs')}
                 </div>
                 <div className={`blob-register-login-wrap`}>
-                  <button onClick={navigateToLogin}>{t('ELogin')}</button>
-                  <big>{t('EOr')}</big>
-                  <button onClick={navigateToRegister}>{t('ERegister')}</button>
+                  <button onClick={navigateToLogin}>{t('Login')}</button>
+                  <big>{t('Or')}</big>
+                  <button onClick={navigateToRegister}>{t('Register')}</button>
                 </div>
               </div>
             )}

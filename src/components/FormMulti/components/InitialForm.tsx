@@ -23,8 +23,8 @@ export default function InitialForm({
 
   return (
     <FormWrapper
-      title={t('EBasicDetails')}
-      description={t('EThisContactFormIsSplitIntoThreeSteps')}
+      title={t('BasicDetails')}
+      description={t('ThisContactFormIsSplitIntoThreeSteps')}
     >
       <div className='input-wrap'>
         <label>
@@ -37,7 +37,7 @@ export default function InitialForm({
             onChange={(e) => updateFields({ firstName: e.target.value })}
           />
           <span>
-            {t('EFirstName')}{' '}
+            {t('FirstName')}{' '}
             <i className='required' aria-hidden='true'>
               *
             </i>
@@ -55,7 +55,7 @@ export default function InitialForm({
             onChange={(e) => updateFields({ lastName: e.target.value })}
           />
           <span>
-            {t('ELastName')}{' '}
+            {t('LastName')}{' '}
             <i className='required' aria-hidden='true'>
               *
             </i>

@@ -12,39 +12,39 @@ import { createSelectOptionsFromT } from '../../utils'
 import { LanguageContext } from '../../contexts/LanguageContext'
 
 const issuesArray = [
-  'ENoIssues',
-  'EAccessibility',
-  'EAppearance',
-  'EText',
-  'ETranslations',
-  'EAnimation',
-  'ELightMode',
-  'EDarkMode',
-  'ENavigation',
-  'EButtons',
-  'EBlobApp',
-  'EDragAndDrop',
-  'ETodoApp',
-  'ECustomSelect',
-  'EMultiStepContactForm',
-  'EJokePage',
-  'EQuizApp',
-  'EComposerPage',
-  'EHairSalonWebsite',
-  'EGraphQLSite',
-  'EOther',
+  'NoIssues',
+  'Accessibility',
+  'Appearance',
+  'Text',
+  'Translations',
+  'Animation',
+  'LightMode',
+  'DarkMode',
+  'Navigation',
+  'Buttons',
+  'BlobApp',
+  'DragAndDrop',
+  'TodoApp',
+  'CustomSelect',
+  'MultiStepContactForm',
+  'JokePage',
+  'QuizApp',
+  'ComposerPage',
+  'HairSalonWebsite',
+  'GraphQLSite',
+  'Other',
 ]
 
 const selectOptions = [
-  'EPleaseSelectAnOption',
-  'EBlobs',
-  'EBubbles',
-  'EEyes',
-  'EDiamondShapes',
-  'EInvertedTriangles',
-  'EFourSidedJewels',
-  'EEightSidedJewels',
-  'EMusicNotes',
+  'PleaseSelectAnOption',
+  'Blobs',
+  'Bubbles',
+  'Eyes',
+  'DiamondShapes',
+  'InvertedTriangles',
+  'FourSidedJewels',
+  'EightSidedJewels',
+  'MusicNotes',
 ]
 
 export default function CustomSelectPage({
@@ -99,7 +99,7 @@ export default function CustomSelectPage({
       data.issues == undefined
     ) {
       setHasClickedSubmit(true)
-      dispatch(notify(t('EPleaseSelectAnOption'), true, 5))
+      dispatch(notify(t('PleaseSelectAnOption'), true, 5))
       setSending(false)
     } else {
       if (form.current) {
@@ -121,7 +121,7 @@ export default function CustomSelectPage({
               clarification: '',
               email: '',
             })
-            dispatch(notify(t('EThankYouForYourMessage'), false, 8))
+            dispatch(notify(t('ThankYouForYourMessage'), false, 8))
           })
         } catch (err: any) {
           setSending(false)
@@ -133,8 +133,8 @@ export default function CustomSelectPage({
           }, 10000)
           console.error('error', error, err)
           const message = error
-            ? `${t('EThereWasAnErrorSendingTheMessage')}: ${error}`
-            : t('EThereWasAnErrorSendingTheMessage')
+            ? `${t('ThereWasAnErrorSendingTheMessage')}: ${error}`
+            : t('ThereWasAnErrorSendingTheMessage')
           if (err.response?.data?.message)
             dispatch(notify(err.response.data.message, true, 8))
           else dispatch(notify(message, true, 12))
@@ -168,29 +168,27 @@ export default function CustomSelectPage({
             <div className='medium flex column gap'>
               <Accordion
                 language={language}
-                text={t('EClickHereToSeeFeatures')}
+                text={t('ClickHereToSeeFeatures')}
                 className='features'
                 wrapperClass='features-wrap'
               >
                 <>
-                  <h2>{t('EFeatures')}</h2>
+                  <h2>{t('Features')}</h2>
                   <ul className='ul'>
-                    <li>{t('ESingleSelectOrMultipleSelect')}</li>
-                    <li>{t('EMoveToItemWithKeyboardKeys')}</li>
-                    <li>{t('ELabelCanBeHiddenFromViewButIsStillAccessible')}</li>
+                    <li>{t('SingleSelectOrMultipleSelect')}</li>
+                    <li>{t('MoveToItemWithKeyboardKeys')}</li>
+                    <li>{t('LabelCanBeHiddenFromViewButIsStillAccessible')}</li>
                   </ul>
-                  <h3>{t('EKeyboardUse')}</h3>
+                  <h3>{t('KeyboardUse')}</h3>
                   <ul className='ul'>
-                    <li>{t('ETabToSelectEnterOrSpaceToOpen')}</li>
-                    <li>{t('EUseUpAndDownArrowKeysToMoveToAnOption')}</li>
+                    <li>{t('TabToSelectEnterOrSpaceToOpen')}</li>
+                    <li>{t('UseUpAndDownArrowKeysToMoveToAnOption')}</li>
                     <li>
-                      {t(
-                        'EAlternativelyMoveToAnItemOnTheListByWritingTheFirstFewLetters'
-                      )}
+                      {t('AlternativelyMoveToAnItemOnTheListByWritingTheFirstFewLetters')}
                     </li>
-                    <li>{t('ESelectOptionWithEnterOrSpace')}</li>
-                    <li>{t('EPressTabToMoveToTheSelectedButtonsOrToTheClearButton')}</li>
-                    <li>{t('EPressEscapeToCloseDropdownWithoutSelectingAnOption')}</li>
+                    <li>{t('SelectOptionWithEnterOrSpace')}</li>
+                    <li>{t('PressTabToMoveToTheSelectedButtonsOrToTheClearButton')}</li>
+                    <li>{t('PressEscapeToCloseDropdownWithoutSelectingAnOption')}</li>
                   </ul>
                 </>
               </Accordion>
@@ -198,11 +196,11 @@ export default function CustomSelectPage({
                 Github
               </a>
               <div className={selectStyles['selects-container']}>
-                <h2>{t('ECustomSelect')}</h2>
+                <h2>{t('CustomSelect')}</h2>
                 <FormWrapper
                   className='flex gap column'
-                  title={t('ESurvey')}
-                  description={t('EPleaseOfferSomeFeedback')}
+                  title={t('Survey')}
+                  description={t('PleaseOfferSomeFeedback')}
                 >
                   <form
                     ref={form}
@@ -211,19 +209,19 @@ export default function CustomSelectPage({
                     className='survey-form'
                   >
                     <h3 className='left small margin0 regular'>
-                      {t('EDidYouFindAnyIssuesOnThisSite')}
+                      {t('DidYouFindAnyIssuesOnThisSite')}
                     </h3>
                     <Select
                       language={language}
                       multiple
                       required
-                      requiredMessage={t('EThisFieldIsRequired')}
+                      requiredMessage={t('ThisFieldIsRequired')}
                       validated={hasClickedSubmit && value1.length == 0 ? false : true}
-                      remove={t('ERemove')}
-                      clear={t('EClear')}
+                      remove={t('Remove')}
+                      clear={t('Clear')}
                       id='multipleselectdropdown'
                       className={selectStyles.prev2}
-                      instructions={t('EYouMaySelectMultipleOptions')}
+                      instructions={t('YouMaySelectMultipleOptions')}
                       options={options1}
                       value={value1}
                       onChange={(o: SelectOption[]) => {
@@ -237,23 +235,23 @@ export default function CustomSelectPage({
                       }}
                     />
                     <h3 className='left small margin0 regular'>
-                      {t('EWhichIntroSectionElementWasYourFavourite')}
+                      {t('WhichIntroSectionElementWasYourFavourite')}
                     </h3>
                     <Select
                       language={language}
                       required
-                      requiredMessage={t('EThisFieldIsRequired')}
+                      requiredMessage={t('ThisFieldIsRequired')}
                       validated={
                         hasClickedSubmit && value2?.label == options2[0].label
                           ? false
                           : true
                       }
-                      remove={t('ERemove')}
-                      clear={t('EClear')}
+                      remove={t('Remove')}
+                      clear={t('Clear')}
                       id='single'
                       className={`full ${selectStyles.prev}`}
                       instructions={`${t(
-                        'EKeyboardUseMoveToOptionWithArrowKeysAndSelectByPressingEnterOrSpace'
+                        'KeyboardUseMoveToOptionWithArrowKeysAndSelectByPressingEnterOrSpace'
                       )}`}
                       hide
                       options={options2}
@@ -267,7 +265,7 @@ export default function CustomSelectPage({
                       }}
                     />
                     <h3 className='left small margin0 regular'>
-                      {t('EClarificationOrFeedback')}
+                      {t('ClarificationOrFeedback')}
                     </h3>
                     <div className='full'>
                       <label htmlFor='select-clarification'>
@@ -287,12 +285,12 @@ export default function CustomSelectPage({
                           className='bg'
                         />
                         <span className='scr'>
-                          {t('EClarificationOrFeedback')} ({t('EOptional').toLowerCase()})
+                          {t('ClarificationOrFeedback')} ({t('Optional').toLowerCase()})
                         </span>
                       </label>
                     </div>
                     <h3 className='left small margin0 regular'>
-                      {t('EEmail')} ({t('EOptional').toLowerCase()})
+                      {t('Email')} ({t('Optional').toLowerCase()})
                     </h3>
                     <div className='full'>
                       <label htmlFor='select-email'>
@@ -312,7 +310,7 @@ export default function CustomSelectPage({
                           className='bg'
                         />
                         <span className='scr'>
-                          {t('EEmail')} ({t('EOptional').toLowerCase()}){' '}
+                          {t('Email')} ({t('Optional').toLowerCase()}){' '}
                         </span>
                       </label>
                     </div>
@@ -322,7 +320,7 @@ export default function CustomSelectPage({
                         <span className='required' aria-hidden='true'>
                           *
                         </span>{' '}
-                        {t('EItIsAlrightToSendTheEnteredInformationToJenniina')}{' '}
+                        {t('ItIsAlrightToSendTheEnteredInformationToJenniina')}{' '}
                       </label>
                     </div>
                     <button
@@ -330,7 +328,7 @@ export default function CustomSelectPage({
                       disabled={sending}
                       className={`${selectStyles.half} `}
                     >
-                      <span>{sending ? t('ESendingEmail') : t('ESend')}</span>{' '}
+                      <span>{sending ? t('SendingEmail') : t('Send')}</span>{' '}
                       <RiMailSendLine />
                     </button>
                     {showMessage && (
@@ -342,7 +340,7 @@ export default function CustomSelectPage({
                           letterSpacing: '0.04em',
                         }}
                       >
-                        {error ? error : t('EThankYouForYourMessage')}
+                        {error ? error : t('ThankYouForYourMessage')}
                       </div>
                     )}
                   </form>

@@ -45,7 +45,7 @@ const QuizQuestion = ({ language }: { language: ELanguages }) => {
           {status === 'loading' && (
             <>
               <a href='#' onClick={goToMainPage}>
-                &laquo;&nbsp;{t('EQuizApp')}
+                &laquo;&nbsp;{t('QuizApp')}
               </a>
               <Loader language={language} />
             </>
@@ -53,25 +53,25 @@ const QuizQuestion = ({ language }: { language: ELanguages }) => {
           {status === 'error' && (
             <>
               <a href='#' onClick={goToMainPage}>
-                &laquo;&nbsp;{t('EQuizApp')}
+                &laquo;&nbsp;{t('QuizApp')}
               </a>
-              <Message type='error' message={t('EErrorFetchingQuestions')} />
+              <Message type='error' message={t('ErrorFetchingQuestions')} />
             </>
           )}
           {status === 'ready' && (
             <>
               <h1 className={styles.h1}>
                 <a href='#' onClick={goToMainPage}>
-                  &laquo;&nbsp;{t('EQuizApp')}
+                  &laquo;&nbsp;{t('QuizApp')}
                 </a>
               </h1>
-              <h2>{t('EQuizInProgress')}</h2>
+              <h2>{t('QuizInProgress')}</h2>
 
               <Progress language={language} />
 
               <div className={styles.wrap}>
                 <div className={`${styles.diff}`}>
-                  {t('EDifficulty')}: {difficulty}
+                  {t('Difficulty')}: {difficulty}
                 </div>
                 <h2 className={`${styles.question}`}>{question}</h2>
                 <div className={`${styles.options}`}>
@@ -102,7 +102,7 @@ const QuizQuestion = ({ language }: { language: ELanguages }) => {
                 <Suspense
                   fallback={
                     <div className='flex center margin0auto textcenter'>
-                      {t('ELoading')}...
+                      {t('Loading')}...
                     </div>
                   }
                 >

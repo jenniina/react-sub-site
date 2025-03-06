@@ -589,7 +589,7 @@ const DragLayers = ({
         ;(target as HTMLElement).blur()
         dragWrap.current?.blur()
         //Go to exit notice in order to remove focus from the app
-        if (exitApp.current) exitApp.current.textContent = t('EThankYouForPlaying')
+        if (exitApp.current) exitApp.current.textContent = t('ThankYouForPlaying')
         exitApp.current?.focus()
         break
       case 'Enter': //Cycle through colors
@@ -770,7 +770,7 @@ const DragLayers = ({
   // function removeBlob(draggable: Draggable) {
   //   setDeleteId(draggable.id)
   //   if (selectedvalue0.current)
-  //     selectedvalue0.current.textContent = `${t('ESelectedBlobNone')}`
+  //     selectedvalue0.current.textContent = `${t('SelectedBlobNone')}`
   // }
 
   // useEffect(() => {
@@ -786,7 +786,7 @@ const DragLayers = ({
         <Suspense
           key={index}
           fallback={
-            <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
+            <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
           }
         >
           <DragLayer

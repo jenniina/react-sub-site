@@ -110,8 +110,8 @@ const StoreItems: FC<Props> = ({
                 <p className={styles.grow}>{splitToLines(item.description)}</p>
 
                 <p>
-                  {t('EPrice')}: {item.price} €{' '}
-                  {item.id === 'misc-quote' ? null : <small>({t('EContainsVAT')})</small>}
+                  {t('Price')}: {item.price} €{' '}
+                  {item.id === 'misc-quote' ? null : <small>({t('ContainsVAT')})</small>}
                 </p>
 
                 {(() => {
@@ -119,19 +119,17 @@ const StoreItems: FC<Props> = ({
                   return cartItem && cartItem.quantity > 0 ? (
                     <>
                       <p className={styles.added}>
-                        <span>{t('EAddedToCart')}</span>{' '}
+                        <span>{t('AddedToCart')}</span>{' '}
                         <button
                           className={`${styles['remove-from-cart']} danger delete`}
                           onClick={() => {
                             if (
-                              window.confirm(
-                                `${t('ERemove')} ${item.name} ${t('ECart')}?`
-                              )
+                              window.confirm(`${t('Remove')} ${item.name} ${t('Cart')}?`)
                             )
                               removeFromCart(item.id)
                           }}
                         >
-                          {t('ERemove')}
+                          {t('Remove')}
                         </button>
                       </p>
                     </>
@@ -148,15 +146,15 @@ const StoreItems: FC<Props> = ({
                             ...item,
                             quantity: existingItemInCart.quantity + 1,
                           })
-                          dispatch(notify(`${t('ESavingSuccessful')}`, false, 3))
+                          dispatch(notify(`${t('SavingSuccessful')}`, false, 3))
                         } else {
                           addToCart({ ...item, quantity: 1 })
-                          dispatch(notify(`${t('ESavingSuccessful')}`, false, 3))
+                          dispatch(notify(`${t('SavingSuccessful')}`, false, 3))
                         }
                       }}
                     >
                       <BsCart2 style={{ fontSize: '1.3em' }} />{' '}
-                      <span>{t('EAddToCart')}</span>
+                      <span>{t('AddToCart')}</span>
                     </button>
                   )
                 })()}
@@ -167,7 +165,7 @@ const StoreItems: FC<Props> = ({
                     cartItem.quantity > 0 && (
                       <Link key={cartItem.id} to='/cart' className={styles['cart-link']}>
                         <BsCart2 style={{ fontSize: '1.3em' }} />{' '}
-                        <big>{t('EGoToCart')} &raquo;</big>
+                        <big>{t('GoToCart')} &raquo;</big>
                       </Link>
                     )
                 )}

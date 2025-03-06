@@ -71,112 +71,112 @@ export default function About({
         <section className={`card ${styles.section}`}>
           <div>
             <div className='wide'>
-              <p>{t('EAboutThisSite')}</p>
+              <p>{t('AboutThisSite')}</p>
               <p>
-                <a href='https://jenniina.fi'>{t('EMainSite')}</a>
+                <a href='https://jenniina.fi'>{t('MainSite')}</a>
               </p>
               <p>
                 <a href='https://github.com/jenniina/react-sub-site'>
-                  {t('EReactGithubRepository')}
+                  {t('ReactGithubRepository')}
                 </a>
               </p>
               <p>
                 <a href='https://github.com/jenniina/react-bg'>
-                  {t('ENodeGithubRepository')}
+                  {t('NodeGithubRepository')}
                 </a>
               </p>
-              <p>{t('ETheSiteIsTranslatedToSixLanguagesWhichWere')}</p>
+              <p>{t('TheSiteIsTranslatedToSixLanguagesWhichWere')}</p>
               <p>
-                {t('EPleaseReportAnyIssuesWithTheSiteToJenniina')}:{' '}
+                {t('PleaseReportAnyIssuesWithTheSiteToJenniina')}:{' '}
                 <Link to='/portfolio/select?survey=true'>
-                  {t('ESurvey').toLowerCase()}
+                  {t('Survey').toLowerCase()}
                 </Link>{' '}
               </p>
 
-              <h2 id='site-features'>{t('EFeaturesOfThisSite')}</h2>
+              <h2 id='site-features'>{t('FeaturesOfThisSite')}</h2>
 
               <h3 id='settings' className='left'>
-                {t('ESiteSettings')}
+                {t('SiteSettings')}
               </h3>
               <big>
-                {t('ESeeSettingsAtMenuBar')}{' '}
+                {t('SeeSettingsAtMenuBar')}{' '}
                 <IoSettingsSharp
                   style={{ display: 'inline-block', marginBottom: '-0.15em' }}
                 />{' '}
-                <span className='scr'>{t('ESettings')}</span> -{t('EIcon').toLowerCase()}
+                <span className='scr'>{t('Settings')}</span> -{t('Icon').toLowerCase()}
               </big>
               <ul className='ul'>
                 <li>
-                  {t('ELanguageSelect')}
+                  {t('LanguageSelect')}
                   <ul>
-                    <li>{t('ETheTranslationsAreDoneWithTheHelpOfGithubCopilotSo')}</li>
+                    <li>{t('TheTranslationsAreDoneWithTheHelpOfGithubCopilotSo')}</li>
                     {language !== ELanguages.fi && language !== ELanguages.en && (
                       <li>
                         {t(
-                          'EPleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo'
+                          'PleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo'
                         )}
                       </li>
                     )}
                   </ul>
                 </li>
-                <li>{t('ELightDarkModeButton')}</li>
+                <li>{t('LightDarkModeButton')}</li>
                 <li>
-                  {t('EButtonToToggleBetweenNavigationStyles')}
+                  {t('ButtonToToggleBetweenNavigationStyles')}
                   <ul>
-                    <li>{t('ETwoStylesAtSmallScreenSizeAndTwoAtLargeScreenSize')}</li>
+                    <li>{t('TwoStylesAtSmallScreenSizeAndTwoAtLargeScreenSize')}</li>
                   </ul>
                 </li>
                 <li>
-                  {t('ELogInAndRegisterButtons')}.{' '}
-                  {t('EReplacedByUserEditAndLogoutButtonsWhenLoggedIn')}
+                  {t('LogInAndRegisterButtons')}.{' '}
+                  {t('ReplacedByUserEditAndLogoutButtonsWhenLoggedIn')}
                 </li>
               </ul>
 
               <h3 id='hero' className='left'>
-                {t('EHeroSection')}
+                {t('HeroSection')}
               </h3>
-              <big>{t('EInteractiveElements')}</big>
+              <big>{t('InteractiveElements')}</big>
               <ul className='ul'>
-                <li>{t('EHoverFocusAnimation')}</li>
-                <li>{t('EMovementAccordingToPointerEnterDirection')}</li>
-                <li>{t('ERemoveWithClickOrEnterWhenFocused')}</li>
+                <li>{t('HoverFocusAnimation')}</li>
+                <li>{t('MovementAccordingToPointerEnterDirection')}</li>
+                <li>{t('RemoveWithClickOrEnterWhenFocused')}</li>
                 <li>
-                  {t('EResetButtonOnTheLowerRightCornerResetsTheInteractiveElements')}
+                  {t('ResetButtonOnTheLowerRightCornerResetsTheInteractiveElements')}
                 </li>
-                <li>{t('EPressEscapeToSkipToResetButton')}</li>
-                <li>{t('EKeyboardFocusMoveItemsWithArrowKeys')}</li>
+                <li>{t('PressEscapeToSkipToResetButton')}</li>
+                <li>{t('KeyboardFocusMoveItemsWithArrowKeys')}</li>
                 <li>
-                  {t('EElements')}
+                  {t('Elements')}
                   <ul>
                     <li>
-                      {t('EBubbles')} ({t('ESeeTheTopOfTheCurrentPage')})
+                      {t('Bubbles')} ({t('SeeTheTopOfTheCurrentPage')})
                     </li>
                     <li>
-                      {t('EMusicNotes')}{' '}
-                      <Link to='/portfolio/composer'>({t('EComposerPage')})</Link>
+                      {t('MusicNotes')}{' '}
+                      <Link to='/portfolio/composer'>({t('ComposerPage')})</Link>
                     </li>
                     <li>
-                      {t('EFourSidedJewels')} <Link to='/store'>({t('EStore')})</Link>
+                      {t('FourSidedJewels')} <Link to='/store'>({t('Store')})</Link>
                     </li>
                     <li>
-                      {t('EEightSidedJewels')} <Link to='/cart'>({t('ECart')})</Link>
+                      {t('EightSidedJewels')} <Link to='/cart'>({t('Cart')})</Link>
                     </li>
                     <li>
-                      {t('EDraggableBlobs')}{' '}
-                      <Link to='/portfolio'>({t('EPortfolio')})</Link>
+                      {t('DraggableBlobs')}{' '}
+                      <Link to='/portfolio'>({t('Portfolio')})</Link>
                     </li>
                     <li>
-                      {t('ESquaresStandingOnTheirCorner')}{' '}
-                      <Link to='/portfolio/todo'>({t('ETodoApp')})</Link>
+                      {t('SquaresStandingOnTheirCorner')}{' '}
+                      <Link to='/portfolio/todo'>({t('TodoApp')})</Link>
                     </li>
                     <li>
-                      {t('EInvertedTriangles')}{' '}
-                      <Link to='/portfolio/quiz'>({t('EQuizApp')})</Link>
+                      {t('InvertedTriangles')}{' '}
+                      <Link to='/portfolio/quiz'>({t('QuizApp')})</Link>
                     </li>
                     <li>
-                      {t('EAlienEyes')} <Link to='/contact'>({t('EContact')})</Link>
+                      {t('AlienEyes')} <Link to='/contact'>({t('Contact')})</Link>
                       <ul>
-                        <li>{t('EElementsRotateToFaceCursor')}</li>
+                        <li>{t('ElementsRotateToFaceCursor')}</li>
                       </ul>
                     </li>
                   </ul>
@@ -184,20 +184,20 @@ export default function About({
               </ul>
 
               <h3 id='react' className='left'>
-                {t('EReactApps')}
+                {t('ReactApps')}
               </h3>
               <big>
-                <Link to='/portfolio'>{t('EInThePortfolioSection')}</Link>
+                <Link to='/portfolio'>{t('InThePortfolioSection')}</Link>
               </big>
 
               <h3 id='other' className='left'>
-                {t('EOtherFeatures')}
+                {t('OtherFeatures')}
               </h3>
               <ul className='ul'>
-                <li>{t('EPageTransitionAnimation')}</li>
-                <li>{t('EWaveAnimationAtTheMainHeading')}</li>
-                <li>{t('EBackToTopButtonAtTheLowerRightCornerAndAtTheFooter')}</li>
-                <li>{t('EExitLinksAtTheTopAndBottomOfThePages')}</li>
+                <li>{t('PageTransitionAnimation')}</li>
+                <li>{t('WaveAnimationAtTheMainHeading')}</li>
+                <li>{t('BackToTopButtonAtTheLowerRightCornerAndAtTheFooter')}</li>
+                <li>{t('ExitLinksAtTheTopAndBottomOfThePages')}</li>
               </ul>
             </div>
           </div>
@@ -208,20 +208,20 @@ export default function About({
             <div>
               <div className='wide'>
                 <h3 id='color' className='left' style={{ marginTop: 0 }}>
-                  {t('ESiteColors')}
+                  {t('SiteColors')}
                 </h3>
                 <p>
-                  {t('ETheSiteColorsLightnessesSwitchInLightMode1')}{' '}
+                  {t('TheSiteColorsLightnessesSwitchInLightMode1')}{' '}
                   <code>var(--color-primary-1)</code>{' '}
-                  {t('ETheSiteColorsLightnessesSwitchInLightMode2')}
+                  {t('TheSiteColorsLightnessesSwitchInLightMode2')}
                 </p>
-                <p>{t('EAnimatedClipPathsAndTextRotationOnHoverWithDynamicDelay')}</p>
+                <p>{t('AnimatedClipPathsAndTextRotationOnHoverWithDynamicDelay')}</p>
               </div>
             </div>
           </div>
           <Suspense
             fallback={
-              <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
+              <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
             }
           >
             <ColorComponent array={setupColorblocks} />

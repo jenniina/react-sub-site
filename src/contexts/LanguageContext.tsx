@@ -1,11 +1,11 @@
 import { createContext, FC, ReactNode } from 'react'
 import useLocalStorage from '../hooks/useStorage'
-import { ELanguages, translations } from '../types'
+import { ELanguages, TranslationKey, TranslationLang, translations } from '../types'
 
 interface LanguageContextProps {
   language: ELanguages
   setLanguage: (lang: ELanguages) => void
-  t: (key: string) => string
+  t: (key: TranslationKey) => string
 }
 
 export const LanguageContext = createContext<LanguageContextProps | undefined>(undefined)
@@ -16,19 +16,17 @@ export const LanguageProvider: FC<{ children: ReactNode }> = ({ children }) => {
     ELanguages.en
   )
 
-  const t = (key: string) => {
+  const t = (key: TranslationKey) => {
     if (!translations[key]) {
       console.error(`Translation value "${key}" not found`)
-      //Remove first letter of key and return the rest of the key
-      return key.slice(1)
-    } else if (!translations[key][language]) {
+      return key
+    } else if (!translations[key][language as TranslationLang]) {
       console.error(`Translation value "${key}" not found in language "${language}"`)
       if (translations[key]['en']) {
         return translations[key]['en']
-      } //Remove first letter of key and return the rest of the key
-      else return key.slice(1)
+      } else return key
     } else {
-      return translations[key][language]
+      return translations[key][language as TranslationLang]
     }
   }
 

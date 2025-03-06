@@ -173,7 +173,7 @@ export const forgot = (username: string | undefined, language: string | ELanguag
     } else {
       return {
         success: false,
-        message: `${t['EPleaseGiveValidEmail'][(language as ELanguages) || 'en']}`,
+        message: `${t['PleaseGiveValidEmail'][(language as ELanguages) || 'en']}`,
       }
     }
   }

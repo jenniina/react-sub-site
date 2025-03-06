@@ -81,41 +81,41 @@ const QuizStart = ({
             <h2>Features</h2>
             <ul className='ul'>
               <li>
-                {t('EQuizQuestions15AreFetchedFrom')}{' '}
+                {t('QuizQuestions15AreFetchedFrom')}{' '}
                 <a href='https://the-trivia-api.com'>"the Trivia Api"</a>
               </li>
               <li>
-                {t('ENote')} {t('EQuestionsAreInEnglish')}
+                {t('Note')} {t('QuestionsAreInEnglish')}
               </li>
-              <li>{t('EUserCanChooseTheDifficultyLevel')}</li>
-              <li>{t('EUserCanRegisterAndLoginToSaveHighscores')}</li>
+              <li>{t('UserCanChooseTheDifficultyLevel')}</li>
+              <li>{t('UserCanRegisterAndLoginToSaveHighscores')}</li>
             </ul>
             <a href='https://github.com/jenniina/react-sub-site/tree/main/src/components/Quiz'>
               Github
             </a>
           </div>
           <div className={`start-screen ${styles.quiz}`}>
-            <h2>{t('ETestYourGeneralKnowledgeWithThese15Questions')}</h2>
-            <p>{t('EChooseDifficulty')}:</p>
+            <h2>{t('TestYourGeneralKnowledgeWithThese15Questions')}</h2>
+            <p>{t('ChooseDifficulty')}:</p>
             <div className={`${styles.difficulty}`}>
               <button
                 className={`${styles.mode} ${styles.easy}`}
                 onClick={() => handleClick('easy')}
               >
-                {t('EEasy')} <FaStar />
+                {t('Easy')} <FaStar />
               </button>
               <button
                 className={`${styles.mode} ${styles.medium}`}
                 onClick={() => handleClick('medium')}
               >
-                {t('EMedium')} <FaStar />
+                {t('Medium')} <FaStar />
                 <FaStar />
               </button>
               <button
                 className={`${styles.mode} ${styles.hard}`}
                 onClick={() => handleClick('hard')}
               >
-                {t('EHard')} <FaStar />
+                {t('Hard')} <FaStar />
                 <FaStar />
                 <FaStar />
               </button>
@@ -123,7 +123,7 @@ const QuizStart = ({
           </div>
           <Suspense
             fallback={
-              <div className='flex center margin0auto textcenter'>{t('ELoading')}...</div>
+              <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
             }
           >
             <LoginRegisterCombo

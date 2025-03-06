@@ -25,22 +25,22 @@ export default function GraphQLPage({
             <div className='medium'>
               <Accordion
                 language={language}
-                text={t('EFeatures')}
+                text={t('Features')}
                 className='graphQL-features'
                 wrapperClass='graphQL-features-wrap'
                 setIsFormOpen={setIsFormOpen}
               >
-                <h2>{t('EFeatures')}</h2>
+                <h2>{t('Features')}</h2>
                 <p>
-                  {t('ETheWebServiceIsHostedAtRenderCom')}{' '}
+                  {t('TheWebServiceIsHostedAtRenderCom')}{' '}
                   <a href='https://www.mongodb.com/atlas/database'>
-                    {t('EMongoDBAtlasDatabase')}
+                    {t('MongoDBAtlasDatabase')}
                   </a>
                   .
                 </p>
                 <ul className='ul'>
                   <li>
-                    {t('EDependencies')}: React
+                    {t('Dependencies')}: React
                     <ul>
                       <li>
                         <a href='https://www.apollographql.com/docs/react/get-started/'>
@@ -115,7 +115,7 @@ export default function GraphQLPage({
                     </ul>
                   </li>
                   <li>
-                    {t('EDependencies')}: Node.js
+                    {t('Dependencies')}: Node.js
                     <ul>
                       <li>
                         <a href='https://graphql.org/'>GraphQL</a>
@@ -234,8 +234,8 @@ export default function GraphQLPage({
               >
                 <p>
                   <a href='https://jenniina-books-list-app.onrender.com/'>
-                    {t('EBookApp')}{' '}
-                    <span style={{ fontSize: '75%' }}>({t('ESiteMayBeSlow')})</span>{' '}
+                    {t('BookApp')}{' '}
+                    <span style={{ fontSize: '75%' }}>({t('SiteMayBeSlow')})</span>{' '}
                     &raquo;
                   </a>
                 </p>

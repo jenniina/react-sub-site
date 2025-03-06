@@ -112,8 +112,8 @@ const Images: FC<Props> = ({ language }) => {
     Orientation.Vertical,
   ]
   const optionsTextTypes: SelectOption[] = [
-    { label: t('EPoem'), value: 'poem' },
-    { label: t('EQuote'), value: 'quote' },
+    { label: t('Poem'), value: 'poem' },
+    { label: t('Quote'), value: 'quote' },
   ]
   const categoryTypes: Category[] = Object.values(Category)
   const colorTypes: Color[] = Object.values(Color)
@@ -129,7 +129,7 @@ const Images: FC<Props> = ({ language }) => {
 
   const optionsCategories: SelectOption[] = generateOptions(categoryTypes, language)
   // add 'all' to the categories
-  optionsCategories.unshift({ label: t('EAll'), value: '' }) // does not accept 'all' as a value
+  optionsCategories.unshift({ label: t('All'), value: '' }) // does not accept 'all' as a value
   const optionsColors: SelectOption[] = generateOptions(colorTypes, language)
 
   const [category, setCategory] = useState<Category | undefined>(undefined)
@@ -194,8 +194,8 @@ const Images: FC<Props> = ({ language }) => {
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (searchTerm.trim() === '') {
-      dispatch(notify(t('EPleaseEnterASearchTerm'), true, 6))
-      setError(t('EPleaseEnterASearchTerm'))
+      dispatch(notify(t('PleaseEnterASearchTerm'), true, 6))
+      setError(t('PleaseEnterASearchTerm'))
       return
     }
     setSubPage(1)
@@ -226,8 +226,8 @@ const Images: FC<Props> = ({ language }) => {
     if (!hasSearched) return
 
     if (searchTerm.trim() === '') {
-      dispatch(notify(t('EPleaseEnterASearchTerm'), true, 6))
-      setError(t('EPleaseEnterASearchTerm'))
+      dispatch(notify(t('PleaseEnterASearchTerm'), true, 6))
+      setError(t('PleaseEnterASearchTerm'))
       return
     }
 
@@ -267,9 +267,9 @@ const Images: FC<Props> = ({ language }) => {
           onClick={() => setSubPage(1)}
         >
           <BiChevronsLeft />
-          <span className='scr'>{t('EFirstPage')}</span>
+          <span className='scr'>{t('FirstPage')}</span>
           <span aria-hidden='true' className='tooltip above narrow2'>
-            {t('EFirstPage')}
+            {t('FirstPage')}
           </span>
         </button>
         <button
@@ -278,13 +278,13 @@ const Images: FC<Props> = ({ language }) => {
           disabled={subPage === 1}
         >
           <BiChevronLeft />
-          <span className='scr'>{t('EPrevious')}</span>
+          <span className='scr'>{t('Previous')}</span>
           <span aria-hidden='true' className='tooltip above narrow2'>
-            {t('EPrevious')}
+            {t('Previous')}
           </span>
         </button>
         <span>
-          {t('EPage')} {subPage} / {totalSubPages}
+          {t('Page')} {subPage} / {totalSubPages}
         </span>
         <button
           className={`tooltip-wrap`}
@@ -292,9 +292,9 @@ const Images: FC<Props> = ({ language }) => {
           disabled={subPage === totalSubPages}
         >
           <BiChevronRight />
-          <span className='scr'>{t('ENext')}</span>
+          <span className='scr'>{t('Next')}</span>
           <span aria-hidden='true' className='tooltip above narrow2'>
-            {t('ENext')}
+            {t('Next')}
           </span>
         </button>
         <button
@@ -304,10 +304,10 @@ const Images: FC<Props> = ({ language }) => {
         >
           <BiChevronsRight />
           <span className='scr'>
-            {t('ELastPage')} ({totalSubPages})
+            {t('LastPage')} ({totalSubPages})
           </span>
           <span aria-hidden='true' className='tooltip above narrow2'>
-            {t('ELastPage')} ({totalSubPages})
+            {t('LastPage')} ({totalSubPages})
           </span>
         </button>
       </div>
@@ -326,12 +326,12 @@ const Images: FC<Props> = ({ language }) => {
         className={`tooltip-wrap ${styles['fetch-page-button']} ${
           i === fetchPage ? styles.active : ''
         }`}
-        data-current={i === fetchPage ? t('ECurrent') : ''}
+        data-current={i === fetchPage ? t('Current') : ''}
         disabled={index === fetchPage - 1 || i > totalPages}
       >
         {i}
         <span className='tooltip above narrow2'>
-          {t('EPage')} {i}
+          {t('Page')} {i}
         </span>
       </button>
     </Fragment>
@@ -340,7 +340,7 @@ const Images: FC<Props> = ({ language }) => {
   const batchesOfMedia = (
     <>
       <p className={styles['batch-paragraph']}>
-        {t('EBatchesOf')} {perFetch} {t('EOfMedia')}:
+        {t('BatchesOf')} {perFetch} {t('OfMedia')}:
       </p>
       <div
         id={`${styles['fetch-btn-wrap']}`}
@@ -351,7 +351,7 @@ const Images: FC<Props> = ({ language }) => {
             className={`reset ${styles['fetch-more-btn']}`}
             onClick={() => setFetchPage((prev) => prev - 1)}
           >
-            &laquo;&nbsp;{t('EPrevious')}
+            &laquo;&nbsp;{t('Previous')}
           </button>
         )}
         {fetchPageButtons}
@@ -360,11 +360,11 @@ const Images: FC<Props> = ({ language }) => {
             className={`reset ${styles['fetch-more-btn']}`}
             onClick={() => setFetchPage((prev) => prev + 1)}
           >
-            {t('ENext')}&nbsp;&raquo;
+            {t('Next')}&nbsp;&raquo;
           </button>
         )}
         {subPage === totalSubPages && fetchPage >= totalPages && (
-          <p className={`${styles['end-message']}`}>{t('ENoMoreResults')}</p>
+          <p className={`${styles['end-message']}`}>{t('NoMoreResults')}</p>
         )}
       </div>
     </>
@@ -373,7 +373,7 @@ const Images: FC<Props> = ({ language }) => {
   const handleSetSearchTerm = (term: string) => {
     setSearchTerm(term)
     scrollIntoView('search-container', 'start')
-    dispatch(notify(`${t('EUpdated')}: ${t('ESearchParameters')}: ${term}`, false, 4))
+    dispatch(notify(`${t('Updated')}: ${t('SearchParameters')}: ${term}`, false, 4))
   }
 
   return (
@@ -388,13 +388,13 @@ const Images: FC<Props> = ({ language }) => {
             <Suspense
               fallback={
                 <div className='flex center margin0auto textcenter'>
-                  {t('ELoading')}...
+                  {t('Loading')}...
                 </div>
               }
             >
               <WordCloud
                 language={language}
-                title={t('EQuoteCategories')}
+                title={t('QuoteCategories')}
                 onClick={handleSetSearchTerm}
                 words={
                   windowWidth > 700
@@ -418,13 +418,13 @@ const Images: FC<Props> = ({ language }) => {
                 className={`tooltip narrow`}
                 style={{ top: tooltip.y, left: tooltip.x, right: 'unset' }}
               >
-                {t('EClickToChooseSearchTerm')}
+                {t('ClickToChooseSearchTerm')}
               </span>
             )}
           </div>
           <form onSubmit={handleSearch}>
             <div className={styles['search-wrap']}>
-              <h2>{t('ESearchForMedia')}</h2>
+              <h2>{t('SearchForMedia')}</h2>
               <div className={styles['column']}>
                 <div className={`input-wrap ${styles['input-wrap']}`}>
                   <label>
@@ -434,9 +434,9 @@ const Images: FC<Props> = ({ language }) => {
                       maxLength={100}
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      placeholder={t('ESearchByKeyword')}
+                      placeholder={t('SearchByKeyword')}
                     />
-                    <span>{t('ESearchForMedia')}</span>
+                    <span>{t('SearchForMedia')}</span>
                   </label>
                 </div>
 
@@ -446,7 +446,7 @@ const Images: FC<Props> = ({ language }) => {
                     id='colors'
                     className={`${styles.select} ${styles['colors']}`}
                     multiple
-                    instructions={t('EColors')}
+                    instructions={t('Colors')}
                     value={colors}
                     onChange={(o) => setColors(o)}
                     options={optionsColors}
@@ -460,10 +460,10 @@ const Images: FC<Props> = ({ language }) => {
                   id='result-type'
                   className={`${styles.select} ${styles['result-type']}`}
                   hideDelete
-                  instructions={t('EType')}
+                  instructions={t('Type')}
                   value={
                     optionsImageTypes.find((o) => o.value === type) || {
-                      label: t('EAll'),
+                      label: t('All'),
                       value: 'all',
                     }
                   }
@@ -477,10 +477,10 @@ const Images: FC<Props> = ({ language }) => {
                     id='result-type'
                     className={`${styles.select} ${styles['result-type']}`}
                     hideDelete
-                    instructions={t('EVideoTypes')}
+                    instructions={t('VideoTypes')}
                     value={
                       optionsVideoTypes.find((o) => o.value === videoType) || {
-                        label: t('EAll'),
+                        label: t('All'),
                         value: 'all',
                       }
                     }
@@ -493,11 +493,11 @@ const Images: FC<Props> = ({ language }) => {
                     z={5}
                     id='orientation'
                     className={`${styles.select} ${styles['orientation']}`}
-                    instructions={t('EOrientation')}
+                    instructions={t('Orientation')}
                     hideDelete
                     value={
                       optionsOrientations.find((o) => o.value === orientation) || {
-                        label: t('EAll'),
+                        label: t('All'),
                         value: 'all',
                       }
                     }
@@ -512,10 +512,10 @@ const Images: FC<Props> = ({ language }) => {
                   id='category'
                   className={`${styles.select} ${styles['category']}`}
                   hideDelete
-                  instructions={t('ECategoryTitle')}
+                  instructions={t('CategoryTitle')}
                   value={
                     optionsCategories.find((o) => o.value === category) || {
-                      label: t('EAll'),
+                      label: t('All'),
                       value: '', // does not accept 'all' as a value
                     }
                   }
@@ -529,7 +529,7 @@ const Images: FC<Props> = ({ language }) => {
                   id='order-by'
                   className={`${styles.select} ${styles['order-by']}`}
                   hideDelete
-                  instructions={t('EOrderBy')}
+                  instructions={t('OrderBy')}
                   value={
                     optionsOrderBy.find((o) => o.value === order) || {
                       label: 'Popular',
@@ -550,7 +550,7 @@ const Images: FC<Props> = ({ language }) => {
                   checked={editorsChoice}
                   onChange={(e) => setEditorsChoice(e.target.checked)}
                 />
-                {t('EEditorsChoice')} (Pixabay)
+                {t('EditorsChoice')} (Pixabay)
               </label>
 
               <label>
@@ -559,7 +559,7 @@ const Images: FC<Props> = ({ language }) => {
                   checked={safeSearch}
                   onChange={(e) => setSafeSearch(e.target.checked)}
                 />
-                {t('ESafemodeTitle')}
+                {t('SafemodeTitle')}
               </label>
             </div>
 
@@ -569,10 +569,10 @@ const Images: FC<Props> = ({ language }) => {
                 id='text-type'
                 className={`${styles.select} ${styles['text-type']}`}
                 hideDelete
-                instructions={t('ETextType')}
+                instructions={t('TextType')}
                 value={
                   optionsTextTypes.find((o) => o.value === textType) || {
-                    label: t('EAll'),
+                    label: t('All'),
                     value: '',
                   }
                 }
@@ -585,7 +585,7 @@ const Images: FC<Props> = ({ language }) => {
                 id='images-per-page'
                 className={`${styles.select} ${styles['images-per-page']}`}
                 hideDelete
-                instructions={t('EMediaPerPage')}
+                instructions={t('MediaPerPage')}
                 value={
                   subPageOptions.find((o) => o.value === perSubPage) || {
                     label: '20',
@@ -600,12 +600,12 @@ const Images: FC<Props> = ({ language }) => {
               />
 
               <button type='submit' disabled={loading}>
-                {type === 'video' ? t('ESearchforVideos') : t('ESearchForMedia')}
+                {type === 'video' ? t('SearchforVideos') : t('SearchForMedia')}
               </button>
             </div>
             {type === 'vector' && (
               <p className={`textcenter flex center   ${styles.note}`}>
-                {t('ENote')} {t('EVectorImagesCanBeDownloaded')}
+                {t('Note')} {t('VectorImagesCanBeDownloaded')}
               </p>
             )}
           </form>
@@ -617,7 +617,7 @@ const Images: FC<Props> = ({ language }) => {
           <div>
             {loading && (
               <p className='textcenter flex center margin0auto textcenter'>
-                {t('ELoading')}...
+                {t('Loading')}...
               </p>
             )}
 
@@ -640,7 +640,7 @@ const Images: FC<Props> = ({ language }) => {
                               item.videos.small.width / item.videos.small.height,
                           }}
                         >
-                          {t('ELoading')}...
+                          {t('Loading')}...
                         </div>
                       }
                     >
@@ -665,7 +665,7 @@ const Images: FC<Props> = ({ language }) => {
                             aspectRatio: item.previewWidth / item.previewHeight,
                           }}
                         >
-                          {t('ELoading')}...
+                          {t('Loading')}...
                         </div>
                       }
                     >

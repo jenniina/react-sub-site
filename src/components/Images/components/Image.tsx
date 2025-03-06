@@ -24,7 +24,7 @@ const Image: FC<ImageProps> = ({ image, language, show, searchTerm, textType }) 
   const dispatch = useAppDispatch()
 
   const handleDownload = async () => {
-    if (window.confirm(t('EDownload') + '?')) {
+    if (window.confirm(t('Download') + '?')) {
       const response = await fetch(image.largeImageURL, { mode: 'cors' })
       if (!response.ok) {
         throw new Error('Network response was not ok')
@@ -51,7 +51,7 @@ const Image: FC<ImageProps> = ({ image, language, show, searchTerm, textType }) 
         window.URL.revokeObjectURL(url)
       } catch (error) {
         console.error('Download failed:', error)
-        dispatch(notify(`${t('EError')}: ${error}`, true, 5))
+        dispatch(notify(`${t('Error')}: ${error}`, true, 5))
       }
     }
   }
@@ -83,7 +83,7 @@ const Image: FC<ImageProps> = ({ image, language, show, searchTerm, textType }) 
           cursor: 'pointer',
           width: '100%',
         }}
-        aria-label={t('EClickToOpenLargeImage')}
+        aria-label={t('ClickToOpenLargeImage')}
         onClick={handleShowModal}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
@@ -113,11 +113,11 @@ const Image: FC<ImageProps> = ({ image, language, show, searchTerm, textType }) 
           }}
         />
       </button>
-      <span className='tooltip above narrow2'>{t('EClickToOpenLargeImage')}</span>
+      <span className='tooltip above narrow2'>{t('ClickToOpenLargeImage')}</span>
       <p>
         <small>
           <a href={image.pageURL} target='_blank' rel='noreferrer'>
-            {t('EImagePage')} ({t('EAuthor')}: {image.user})
+            {t('ImagePage')} ({t('Author')}: {image.user})
           </a>
         </small>
       </p>

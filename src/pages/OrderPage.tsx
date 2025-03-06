@@ -34,22 +34,22 @@ const OrderPage: React.FC<OrderPageProps> = ({ language, heading, text, type }) 
   const itemStatus = (status: status) => {
     switch (status) {
       case 'pending':
-        return t('EPending')
+        return t('Pending')
       case 'in progress':
-        return t('EInProgress')
+        return t('InProgress')
       case 'completed':
-        return t('EOrderCompleted')
+        return t('OrderCompleted')
       case 'cancelled':
-        return t('ECancelled')
+        return t('Cancelled')
       default:
-        return t('EPending')
+        return t('Pending')
     }
   }
 
   const paidStatus = {
-    none: t('ENoPayment'),
-    partial: t('EPartial'),
-    full: t('EFull'),
+    none: t('NoPayment'),
+    partial: t('Partial'),
+    full: t('Full'),
   }
 
   const statusOptions: SelectOption[] = statusesList.map((status) => ({
@@ -64,23 +64,23 @@ const OrderPage: React.FC<OrderPageProps> = ({ language, heading, text, type }) 
   const info = (key: keyof IInfo): string => {
     switch (key) {
       case 'name':
-        return t('EName')
+        return t('Name')
       case 'email':
-        return t('EEmail')
+        return t('Email')
       case 'phone':
-        return t('EPhone')
+        return t('Phone')
       case 'address':
-        return t('EBillingAddress')
+        return t('BillingAddress')
       case 'city':
-        return t('ECity')
+        return t('City')
       case 'zip':
-        return t('EPostalCode')
+        return t('PostalCode')
       case 'country':
-        return t('ECountry')
+        return t('Country')
       case 'companyName':
-        return t('ECompanyName')
+        return t('CompanyName')
       case 'businessID':
-        return t('EBusinessID')
+        return t('BusinessID')
       default:
         return key
     }
@@ -95,7 +95,7 @@ const OrderPage: React.FC<OrderPageProps> = ({ language, heading, text, type }) 
               <Suspense
                 fallback={
                   <div className='flex center margin0auto textcenter'>
-                    {t('ELoading')}...
+                    {t('Loading')}...
                   </div>
                 }
               >
@@ -114,7 +114,7 @@ const OrderPage: React.FC<OrderPageProps> = ({ language, heading, text, type }) 
               <Suspense
                 fallback={
                   <div className='flex center margin0auto textcenter'>
-                    {t('ELoading')}...
+                    {t('Loading')}...
                   </div>
                 }
               >

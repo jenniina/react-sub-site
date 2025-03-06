@@ -64,11 +64,11 @@ const VideoModal: FC<ModalVideoProps> = ({
     if ((language = ELanguages.fi)) {
       const response = await getQuote(ELanguages.en, searchTerm)
       if (response.quote) setQuote(response.quote)
-      else dispatch(notify(response.message ?? t('EError'), true, 8))
+      else dispatch(notify(response.message ?? t('Error'), true, 8))
     } else {
       const response = await getQuote(language, searchTerm)
       if (response.quote) setQuote(response.quote)
-      else dispatch(notify(response.message ?? t('EError'), true, 8))
+      else dispatch(notify(response.message ?? t('Error'), true, 8))
     }
   }
 
@@ -130,7 +130,7 @@ const VideoModal: FC<ModalVideoProps> = ({
             className={`tooltip center narrow`}
             style={{ top: tooltip.y, left: tooltip.x, right: 'unset' }}
           >
-            {t('EClickToLoadVideo')}
+            {t('ClickToLoadVideo')}
           </span>
         )}
       </div>
@@ -141,7 +141,7 @@ const VideoModal: FC<ModalVideoProps> = ({
           url={video.pageURL}
           title={
             <>
-              {t('EVideoPage')} ({t('EAuthor')}: {video.user})
+              {t('VideoPage')} ({t('Author')}: {video.user})
             </>
           }
         />

@@ -137,7 +137,7 @@ const Blob = ({
         layer += 1
         changeBlobLayer(item, layer)
       } else {
-        dispatch2(notify(t('ECannotRaiseBlobFurther'), true, 4))
+        dispatch2(notify(t('CannotRaiseBlobFurther'), true, 4))
       }
     } else if (mode === 'layer-down') {
       let layer = item.layer
@@ -145,7 +145,7 @@ const Blob = ({
         layer -= 1
         changeBlobLayer(item, layer)
       } else {
-        dispatch2(notify(t('ECannotLowerBlobFurther'), true, 4))
+        dispatch2(notify(t('CannotLowerBlobFurther'), true, 4))
       }
     } else if (mode === 'scale-down') {
       let scale = item.i
@@ -210,7 +210,7 @@ const Blob = ({
           })
 
           if (selectedvalue0.current) {
-            selectedvalue0.current.textContent = `${t('ESelectedBlob')}: ${
+            selectedvalue0.current.textContent = `${t('SelectedBlob')}: ${
               blob.querySelector('span')?.textContent
             }`
           }
@@ -224,7 +224,7 @@ const Blob = ({
           dragUlRef.current?.removeAttribute('aria-activedescendant')
 
         if (selectedvalue0.current)
-          selectedvalue0.current.textContent = `${t('ESelectedBlobNone')}`
+          selectedvalue0.current.textContent = `${t('SelectedBlobNone')}`
       }}
       key={index}
       className={`dragzone animation ${mode}`}
@@ -282,7 +282,7 @@ const Blob = ({
           const liElement = e.currentTarget.parentElement as HTMLElement
           liElement.draggable = true
           if (selectedvalue0.current)
-            selectedvalue0.current.textContent = `${t('ESelectedBlob')}: ${
+            selectedvalue0.current.textContent = `${t('SelectedBlob')}: ${
               (liElement as HTMLElement)?.querySelector('span')?.textContent
             }`
           if (dragUlRef && dragUlRef.current)
@@ -301,7 +301,7 @@ const Blob = ({
             movement(e, liElement)
 
             if (selectedvalue0.current)
-              selectedvalue0.current.textContent = `${t('ESelectedBlob')}: ${
+              selectedvalue0.current.textContent = `${t('SelectedBlob')}: ${
                 (liElement as HTMLElement)?.querySelector('span')?.textContent
               }`
           }
@@ -314,7 +314,7 @@ const Blob = ({
             dragUlRef.current?.removeAttribute('aria-activedescendant')
           stopMoving(e, liElement)
           if (selectedvalue0.current)
-            selectedvalue0.current.textContent = `${t('ESelectedBlobNone')}`
+            selectedvalue0.current.textContent = `${t('SelectedBlobNone')}`
         }}
         onMouseUp={(e) => {
           const liElement = e.currentTarget.parentElement as HTMLElement
@@ -323,7 +323,7 @@ const Blob = ({
           if (dragUlRef && dragUlRef.current)
             dragUlRef.current?.removeAttribute('aria-activedescendant')
           if (selectedvalue0.current)
-            selectedvalue0.current.textContent = `${t('ESelectedBlobNone')}`
+            selectedvalue0.current.textContent = `${t('SelectedBlobNone')}`
         }}
         onTouchStart={(e) => {
           e.preventDefault()
@@ -337,7 +337,7 @@ const Blob = ({
             )
           start(e, liElement)
           if (selectedvalue0.current)
-            selectedvalue0.current.textContent = `${t('ESelectedBlob')}: ${
+            selectedvalue0.current.textContent = `${t('SelectedBlob')}: ${
               (liElement as HTMLElement)?.querySelector('span')?.textContent
             }`
         }}
@@ -355,7 +355,7 @@ const Blob = ({
             dragUlRef.current?.removeAttribute('aria-activedescendant')
           stopMovementCheck(e, liElement)
           if (selectedvalue0.current)
-            selectedvalue0.current.textContent = `${t('ESelectedBlobNone')}`
+            selectedvalue0.current.textContent = `${t('SelectedBlobNone')}`
         }}
         onWheel={(e) => {
           const liElement = e.currentTarget.parentElement as HTMLElement
@@ -363,7 +363,7 @@ const Blob = ({
         }}
       ></div>
       <span className='scr'>
-        {t('EBlob')} {item.number}
+        {t('Blob')} {item.number}
       </span>
     </li>
   )
