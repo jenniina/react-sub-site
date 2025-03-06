@@ -4,6 +4,7 @@ import { BiSolidColorFill } from 'react-icons/bi'
 import { BsCart2, BsPerson } from 'react-icons/bs'
 import { IoMdImages } from 'react-icons/io'
 import { GiAbstract019, GiNewShoot } from 'react-icons/gi'
+import { PiWrench } from 'react-icons/pi'
 import { MdOutlineQuiz } from 'react-icons/md'
 import { RiDragDropLine, RiTodoLine, RiFileList3Line } from 'react-icons/ri'
 import { GiComb } from 'react-icons/gi'
@@ -12,7 +13,7 @@ import { TbTriangleInverted, TbBlob } from 'react-icons/tb'
 import { LuArrowRightToLine } from 'react-icons/lu'
 import { LiaNewspaperSolid } from 'react-icons/lia'
 import { BsMusicNoteBeamed } from 'react-icons/bs'
-import { firstToLowerCase } from '../../utils'
+import { firstToLowerCase, firstToUpperCase } from '../../utils'
 import { ELanguages } from '../../types'
 import { GrGraphQl } from 'react-icons/gr'
 import Accordion from '../Accordion/Accordion'
@@ -35,6 +36,13 @@ export default function Newest({ language }: { language: ELanguages }) {
             <li>
               <strong>{t('EMarch')}</strong>
               <ul>
+                <li>
+                  <a className='disabled'>
+                    <PiWrench />
+                    <span>{firstToUpperCase(t('EThisSite'))}: </span>
+                  </a>
+                  <i>{t('ERefactoredTranslations')}</i>
+                </li>
                 <li>
                   <Link to='/cart'>
                     <BsCart2 />
