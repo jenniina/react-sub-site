@@ -1,17 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useContext } from 'react'
 import FormWrapper from './FormWrapper'
 import styles from '../form.module.css'
 import { Select, SelectOption } from '../../Select/Select'
-import { ELanguages, ENone, EOther, EPleaseSelectAnOption } from '../../../types'
-import {
-  ELetMeKnowWhatOnYourMind,
-  EMessage,
-  EMessageSubject,
-  EPersonal,
-  EPleaseSendMeAFewWords,
-  EWork,
-  EYourEmail,
-} from '../../../types/form'
+import { ELanguages } from '../../../types'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 type MessageData = {
   email: string
@@ -31,29 +23,31 @@ export default function MessageForm({
   updateFields,
   language,
 }: MessageFormProps) {
+  const { t } = useContext(LanguageContext)!
+
   const options: SelectOption[] = [
     {
-      label: EPleaseSelectAnOption[language],
-      value: ENone[language],
+      label: t('PleaseSelectAnOption'),
+      value: t('None'),
     },
     {
-      label: EWork[language],
-      value: EWork[language],
+      label: t('Work'),
+      value: t('Work'),
     },
     {
-      label: EPersonal[language],
-      value: EPersonal[language],
+      label: t('Personal'),
+      value: t('Personal'),
     },
     {
-      label: EOther[language],
-      value: EOther[language],
+      label: t('Other'),
+      value: t('Other'),
     },
   ]
 
   const [selectsingle, setSelect] = useState<SelectOption | undefined>(options[0])
 
   return (
-    <FormWrapper title='Message' description={EPleaseSendMeAFewWords[language]}>
+    <FormWrapper title='Message' description={t('PleaseSendMeAFewWords')}>
       <div className={styles.subfield} style={{ paddingTop: '4em' }}>
         <div className='input-wrap'>
           <label>
@@ -67,7 +61,7 @@ export default function MessageForm({
               onChange={(e) => updateFields({ email: e.target.value })}
             />
             <span>
-              {EYourEmail[language]}{' '}
+              {t('YourEmail')}{' '}
               <i className='required' aria-hidden='true'>
                 *
               </i>
@@ -77,12 +71,12 @@ export default function MessageForm({
       </div>
 
       <div className={styles.subfield}>
-        <label>{EMessageSubject[language]}</label>
+        <label>{t('MessageSubject')}</label>
         <Select
           language={language}
           id='single'
           className={`${styles.dropdownsingle} full`}
-          instructions={EPleaseSelectAnOption[language]}
+          instructions={t('PleaseSelectAnOption')}
           hide
           options={options}
           value={selectsingle}
@@ -96,7 +90,7 @@ export default function MessageForm({
       </div>
       <div className={styles.subfield}>
         <label htmlFor='form-message'>
-          {EMessage[language]}{' '}
+          {t('Message')}{' '}
           <i className='required' aria-hidden='true'>
             *
           </i>
@@ -107,7 +101,7 @@ export default function MessageForm({
           name='message'
           value={message}
           rows={4}
-          placeholder={ELetMeKnowWhatOnYourMind[language]}
+          placeholder={t('LetMeKnowWhatOnYourMind')}
           onChange={(e) => updateFields({ message: e.target.value })}
         />
       </div>

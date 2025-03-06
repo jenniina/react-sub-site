@@ -1,36 +1,9 @@
 import { DragAndDrop } from '../../components/DragAndDrop/components'
-import Hero from '../../components/Hero/Hero'
 import { MdOutlineDragIndicator } from 'react-icons/md'
-import {
-  ECategoriesCanBeRenamed,
-  EDragAndDrop,
-  EFeatures,
-  EInstructions,
-  EKeyboardUse,
-  ELanguages,
-} from '../../types'
-import {
-  EAndPressEnterKeyToOpenMenu,
-  ECanRearrangeWithinTheirContainer,
-  EDraggableWithAnyPointer,
-  EHoldPointerButtonDownToDragAnItemFrom,
-  EKeyboardUseWithADropdownList,
-  EMoveItemsWithinTheirContainerWithTheUpOrDownArrowKeys,
-  ENewColorsCanBeAddedAndRemoved,
-  EOnTouchDevicesHoldTouchForAMomentToActivateDrag,
-  EPointerAndTouchUse,
-  ESortTheColorsToADifferentContainerOr,
-  EStateSavedInLocalStorage,
-  ETipIfYouAddAGenericWordYouCanColorTheCard,
-  EToMoveItemsToAnotherContainer,
-  EUseTabKeyToNavigateToDragButton,
-  EWithTheMenuOpenUseTabKeyToNavigateAnd,
-  EYouMayAlsoAddOtherWordsForGenericUse,
-  EYouMayAlsoUseTheItemMenuToChooseADestination,
-} from '../../types/draganddrop'
-import { ETryDraggingTheBlobs } from '../../types/blobs'
+import { ELanguages } from '../../types'
 import Accordion from '../../components/Accordion/Accordion'
-import { EClickHereToSeeFeatures } from '../../components/Jokes/types'
+import { useContext } from 'react'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 export default function DragAndDropPage({
   heading,
@@ -43,6 +16,8 @@ export default function DragAndDropPage({
   type: string
   language: ELanguages
 }) {
+  const { t } = useContext(LanguageContext)!
+
   return (
     <div className={`draganddrop ${type}`}>
       <div className='inner-wrap'>
@@ -51,53 +26,51 @@ export default function DragAndDropPage({
             <div className='medium flex column gap'>
               <Accordion
                 language={language}
-                text={EClickHereToSeeFeatures[language]}
+                text={t('ClickHereToSeeFeatures')}
                 className='features'
                 wrapperClass='features-wrap'
               >
-                <h2>{EFeatures[language]}</h2>
+                <h2>{t('Features')}</h2>
                 <ul className='ul'>
-                  <li>{EDraggableWithAnyPointer[language]}</li>
-                  <li>{EKeyboardUseWithADropdownList[language]}</li>
-                  <li>{ECanRearrangeWithinTheirContainer[language]}</li>
-                  <li>{EStateSavedInLocalStorage[language]}</li>
-                  <li>{ECategoriesCanBeRenamed[language]}</li>
-                  <li>{ENewColorsCanBeAddedAndRemoved[language]}</li>
+                  <li>{t('DraggableWithAnyPointer')}</li>
+                  <li>{t('KeyboardUseWithADropdownList')}</li>
+                  <li>{t('CanRearrangeWithinTheirContainer')}</li>
+                  <li>{t('StateSavedInLocalStorage')}</li>
+                  <li>{t('CategoriesCanBeRenamed')}</li>
+                  <li>{t('NewColorsCanBeAddedAndRemoved')}</li>
                   <li>
-                    {EYouMayAlsoAddOtherWordsForGenericUse[language]}.{' '}
-                    {ETipIfYouAddAGenericWordYouCanColorTheCard[language]}
+                    {t('YouMayAlsoAddOtherWordsForGenericUse')}.{' '}
+                    {t('TipIfYouAddAGenericWordYouCanColorTheCard')}
                   </li>
                 </ul>
-                <h3>{EInstructions[language]}</h3>
-                <h4>{EPointerAndTouchUse[language]}</h4>
+                <h3>{t('Instructions')}</h3>
+                <h4>{t('PointerAndTouchUse')}</h4>
                 <ul className='ul'>
-                  <li>{EHoldPointerButtonDownToDragAnItemFrom[language]}</li>
-                  <li>{EOnTouchDevicesHoldTouchForAMomentToActivateDrag[language]}</li>
+                  <li>{t('HoldPointerButtonDownToDragAnItemFrom')}</li>
+                  <li>{t('OnTouchDevicesHoldTouchForAMomentToActivateDrag')}</li>
                   <li>
-                    {EYouMayAlsoUseTheItemMenuToChooseADestination[language]}:{' '}
+                    {t('YouMayAlsoUseTheItemMenuToChooseADestination')}:{' '}
                     <MdOutlineDragIndicator
                       aria-hidden='true'
                       style={{ display: 'inline-block', marginBottom: '-0.15em' }}
                     />{' '}
                   </li>
                 </ul>
-                <h4>{EKeyboardUse[language]}</h4>
+                <h4>{t('KeyboardUse')}</h4>
                 <ul className='ul'>
+                  <li>{t('MoveItemsWithinTheirContainerWithTheUpOrDownArrowKeys')}</li>
                   <li>
-                    {EMoveItemsWithinTheirContainerWithTheUpOrDownArrowKeys[language]}
-                  </li>
-                  <li>
-                    {EToMoveItemsToAnotherContainer[language]}
+                    {t('ToMoveItemsToAnotherContainer')}
                     <ul>
                       <li>
-                        {EUseTabKeyToNavigateToDragButton[language]}{' '}
+                        {t('UseTabKeyToNavigateToDragButton')}{' '}
                         <MdOutlineDragIndicator
                           aria-hidden='true'
                           style={{ display: 'inline-block', marginBottom: '-0.15em' }}
                         />{' '}
-                        {EAndPressEnterKeyToOpenMenu[language]}
+                        {t('AndPressEnterKeyToOpenMenu')}
                       </li>
-                      <li>{EWithTheMenuOpenUseTabKeyToNavigateAnd[language]}</li>
+                      <li>{t('WithTheMenuOpenUseTabKeyToNavigateAnd')}</li>
                     </ul>
                   </li>
                 </ul>
@@ -106,10 +79,8 @@ export default function DragAndDropPage({
                 Github
               </a>
             </div>
-            <h2>{EDragAndDrop[language]}</h2>
-            <p className='textcenter'>
-              {ESortTheColorsToADifferentContainerOr[language]}
-            </p>
+            <h2>{t('DragAndDrop')}</h2>
+            <p className='textcenter'>{t('SortTheColorsToADifferentContainerOr')}</p>
             <DragAndDrop language={language} />
           </div>
         </section>

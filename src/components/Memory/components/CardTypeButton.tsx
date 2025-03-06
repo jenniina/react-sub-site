@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import styles from '../memory.module.css'
 import { CardType, CardTypeOptions } from '../../../types/memory'
 import { Md123, MdAbc, MdInsertEmoticon } from 'react-icons/md'

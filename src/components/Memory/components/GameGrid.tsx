@@ -1,9 +1,9 @@
-import { FC, CSSProperties, memo, useEffect, useState } from 'react'
+import { FC, CSSProperties, memo, useContext } from 'react'
 import styles from '../memory.module.css'
-import { CardType, EStopGame } from '../../../types/memory'
+import { CardType } from '../../../types/memory'
 import useWindowSize from '../../../hooks/useWindowSize'
-import { EFinish } from '../../../types/quiz'
 import { ELanguages } from '../../../types'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 interface Player {
   id: number
@@ -43,6 +43,8 @@ const GameGrid: FC<GameGridProps> = ({
   handleCardClick,
   renderCardContent,
 }) => {
+  const { t } = useContext(LanguageContext)!
+
   const { windowHeight, windowWidth } = useWindowSize()
   const size = `size${gridSize}`
 
@@ -98,7 +100,7 @@ const GameGrid: FC<GameGridProps> = ({
           setGameStarted(false)
         }}
       >
-        {EStopGame[language]}
+        {t('StopGame')}
       </button>
     </>
   )

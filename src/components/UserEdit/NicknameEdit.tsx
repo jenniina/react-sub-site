@@ -1,29 +1,20 @@
-import { useState } from 'react'
-import {
-  EError,
-  IUser,
-  ENickname,
-  EEdit,
-  ELanguages,
-  ECurrentPassword,
-  ECurrentNickname,
-  EUserUpdated,
-  EUserNotUpdated,
-  EPleaseUseGoodTasteWhenChoosingYourNickname,
-} from '../../types'
+import { useContext, useState } from 'react'
+import { IUser, ELanguages } from '../../types'
 import { initializeUser, refreshUser } from '../../reducers/authReducer'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import { findUserById, updateUser } from '../../reducers/usersReducer'
 import { AxiosError } from 'axios'
 import styles from './css/edit.module.css'
-import { EEditPreferredNickname } from './types'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
   user: IUser
 }
 const NicknameEdit = ({ user, language }: Props) => {
+  const { t } = useContext(LanguageContext)!
+
   const dispatch = useAppDispatch()
 
   const [name, setName] = useState<IUser['name'] | ''>(user?.name || '')
@@ -47,9 +38,9 @@ const NicknameEdit = ({ user, language }: Props) => {
           .then((res) => {
             if (res) {
               if (res.success === false) {
-                dispatch(notify(`${EError[language]}: ${res.message}`, true, 5))
+                dispatch(notify(`${t('Error')}: ${res.message}`, true, 5))
               } else {
-                dispatch(notify(`${res.message ?? EUserUpdated[language]}`, false, 5))
+                dispatch(notify(`${res.message ?? t('UserUpdated')}`, false, 5))
                 dispatch(refreshUser(res.user)).then(() => {
                   dispatch(findUserById(user?._id as string)).then(() =>
                     dispatch(initializeUser())
@@ -65,12 +56,10 @@ const NicknameEdit = ({ user, language }: Props) => {
             if (error.response?.data?.message)
               dispatch(notify(error.response.data.message, true, 8))
             else if (error.code === 'ERR_BAD_REQUEST' && error.response?.data?.message) {
-              dispatch(
-                notify(`${EError[language]}: ${error.response.data.message}`, true, 5)
-              )
+              dispatch(notify(`${t('Error')}: ${error.response.data.message}`, true, 5))
             } else {
               setTimeout(() => {
-                dispatch(notify(EUserNotUpdated[language], true, 5))
+                dispatch(notify(t('UserNotUpdated'), true, 5))
               }, 2000)
             }
             setSending(false)
@@ -90,12 +79,12 @@ const NicknameEdit = ({ user, language }: Props) => {
     <>
       {user ? (
         <>
-          <h2>{EEditPreferredNickname[language]}</h2>
+          <h2>{t('EditPreferredNickname')}</h2>
           <p className={styles.p}>
-            {ECurrentNickname[language]}: <strong>{user?.name}</strong>
+            {t('CurrentNickname')}: <strong>{user?.name}</strong>
           </p>
           <p className={`${styles.p} ${styles[`p-last`]}`}>
-            {EPleaseUseGoodTasteWhenChoosingYourNickname[language]}
+            {t('PleaseUseGoodTasteWhenChoosingYourNickname')}
           </p>
 
           <form onSubmit={handleUserSubmit} className={styles['edit-user']}>
@@ -109,7 +98,7 @@ const NicknameEdit = ({ user, language }: Props) => {
                   value={name}
                   onChange={({ target }) => setName(target.value)}
                 />
-                <span>{ENickname[language]}</span>
+                <span>{t('Nickname')}</span>
               </label>
             </div>
             <div className='input-wrap'>
@@ -122,11 +111,11 @@ const NicknameEdit = ({ user, language }: Props) => {
                   value={passwordOld}
                   onChange={({ target }) => setPasswordOld(target.value.trim())}
                 />
-                <span>{ECurrentPassword[language]}</span>
+                <span>{t('CurrentPassword')}</span>
               </label>
             </div>
             <button type='submit' disabled={sending}>
-              {EEdit[language]}
+              {t('Edit')}
             </button>
           </form>
         </>

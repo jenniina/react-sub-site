@@ -1,10 +1,7 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import Accordion from '../../components/Accordion/Accordion'
-import Hero from '../../components/Hero/Hero'
-import { EDependencies, EFeatures, ELanguages } from '../../types'
-import { EComposerIntro1, EComposerIntro2, EComposerIntro3 } from '../../types/composer'
-import { EClickHereToSeeFeatures } from '../../components/Jokes/types'
-import { EReactWebsite } from '../../types/store'
+import { ELanguages } from '../../types'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 export default function ComposerPage({
   heading,
@@ -17,6 +14,8 @@ export default function ComposerPage({
   type: string
   language: ELanguages
 }) {
+  const { t } = useContext(LanguageContext)!
+
   const [isFormOpen, setIsFormOpen] = useState(false)
   return (
     <div className={`composer ${type}`}>
@@ -25,25 +24,24 @@ export default function ComposerPage({
           <div>
             <div className='medium flex column left gap'>
               <p className='center max-content margin0auto'>
-                {EReactWebsite[language]}. {EComposerIntro1[language]}{' '}
-                {EComposerIntro2[language]}
+                {t('ReactWebsite')}. {t('ComposerIntro1')} {t('ComposerIntro2')}
                 <br />
                 <br />
               </p>
               <div className='medium'>
                 <Accordion
                   language={language}
-                  text={EClickHereToSeeFeatures[language]}
+                  text={t('ClickHereToSeeFeatures')}
                   className='composer-features'
                   wrapperClass='mb3'
                   setIsFormOpen={setIsFormOpen}
                 >
                   <>
-                    <h2>{EFeatures[language]}</h2>
+                    <h2>{t('Features')}</h2>
                     <ul className='ul'>
-                      <li>{EComposerIntro3[language]}</li>
+                      <li>{t('ComposerIntro3')}</li>
                       <li>
-                        {EDependencies[language]}: React
+                        {t('Dependencies')}: React
                         <ul>
                           <li>react</li>
                           <li>react-dom</li>
@@ -54,7 +52,7 @@ export default function ComposerPage({
                         </ul>
                       </li>
                       <li>
-                        {EDependencies[language]}: Node.js
+                        {t('Dependencies')}: Node.js
                         <ul>
                           <li>express</li>
                           <li>express-validator</li>

@@ -1,37 +1,16 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useContext, useEffect, useState } from 'react'
 import cartService from '../../../services/cart'
 import styles from '../store.module.css'
 import selectStyles from '../../Select/select.module.css'
-import {
-  status,
-  paid,
-  EOrderCompleted,
-  EOrderNotCompleted,
-  EMissingPayment,
-  EQuantity,
-  EPaymentState,
-  EOrdered,
-  ERequestsAndNeeds,
-} from '../../../types/store'
-import { EOrderID, EPrice, ETotal, ICart, IInfo } from '../../../types/store'
-import {
-  EDelete,
-  EDeleted,
-  EEdit,
-  EInfo,
-  ELanguages,
-  ELastUpdated,
-  EStatus,
-  ESubmit,
-  IUser,
-} from '../../../types'
+import { status, paid } from '../../../types/store'
+import { ICart, IInfo } from '../../../types/store'
+import { ELanguages, IUser } from '../../../types'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { notify } from '../../../reducers/notificationReducer'
-import { EAreYouSureYouWantToDelete } from '../../UserEdit/types'
 import Accordion from '../../Accordion/Accordion'
 import { Select, SelectOption } from '../../Select/Select'
-import { EAdditionalInformation } from '../../../types/form'
 import { useTheme } from '../../../hooks/useTheme'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
@@ -54,6 +33,8 @@ const Orders: FC<Props> = ({
   itemStatus,
   info,
 }) => {
+  const { t } = useContext(LanguageContext)!
+
   const dispatch = useAppDispatch()
   const lightTheme = useTheme()
 
@@ -110,7 +91,7 @@ const Orders: FC<Props> = ({
     cartService
       .deleteOrder(language, orderID, user._id)
       .then(() => {
-        dispatch(notify(`${EDeleted[language]} ${orderID}`, false, 5))
+        dispatch(notify(`${t('Deleted')} ${orderID}`, false, 5))
         fetchAllOrders()
       })
       .catch((error) => {
@@ -157,7 +138,7 @@ const Orders: FC<Props> = ({
           <Accordion
             language={language}
             text={`${
-              order.status === 'completed' ? '[ ' + EOrderCompleted[language] + ' ] ' : ''
+              order.status === 'completed' ? '[ ' + t('OrderCompleted') + ' ] ' : ''
             }${order.orderID} ${
               order.info.companyName
                 ? `${order.info.name} (${order.info.companyName})`
@@ -183,16 +164,16 @@ const Orders: FC<Props> = ({
               <div className={styles['info-wrap']}>
                 <p>
                   <big>
-                    <strong>{EOrderID[language]}: </strong>
+                    <strong>{t('OrderID')}: </strong>
                     {order.orderID}
                   </big>
                 </p>
                 <p>
-                  <strong>{EStatus[language]}: </strong>
+                  <strong>{t('Status')}: </strong>
                   {itemStatus(order.status)}
                 </p>
                 <p>
-                  <strong>{EPaymentState[language]}: </strong>
+                  <strong>{t('PaymentState')}: </strong>
                   {
                     paidStatus[
                       order.items.every((item) => item.paid === 'full')
@@ -204,20 +185,20 @@ const Orders: FC<Props> = ({
                   }
                 </p>
                 <p>
-                  {ETotal[language]}: <big>{order.total} € </big>
+                  {t('Total')}: <big>{order.total} € </big>
                 </p>
                 <table className={`${styles['info-table']}`}>
-                  <caption>{EOrdered[language]}</caption>
+                  <caption>{t('Ordered')}</caption>
                   <tbody>
                     <tr>
-                      <th>{EOrdered[language]}: </th>
+                      <th>{t('Ordered')}: </th>
                       <td>
                         {order.createdAt?.toLocaleDateString()}{' '}
                         {order.createdAt?.toLocaleTimeString()}
                       </td>
                     </tr>
                     <tr>
-                      <th>{ELastUpdated[language]}: </th>
+                      <th>{t('LastUpdated')}: </th>
                       <td>
                         {order.updatedAt.toLocaleDateString()}{' '}
                         {order.updatedAt?.toLocaleTimeString()}
@@ -229,7 +210,7 @@ const Orders: FC<Props> = ({
 
               <Accordion
                 language={language}
-                text={`${EEdit[language]} (${EStatus[language]})`}
+                text={`${t('Edit')} (${t('Status')})`}
                 hideBrackets
                 className={`narrow2 change-status`}
                 wrapperClass={styles['change-status-main']}
@@ -263,7 +244,7 @@ const Orders: FC<Props> = ({
                       }}
                     />
                     <button type='submit' disabled={sending}>
-                      {ESubmit[language]}
+                      {t('Submit')}
                     </button>
                   </form>
                 </>
@@ -274,7 +255,7 @@ const Orders: FC<Props> = ({
                   <h3>{item.name}</h3>
                   <p>{item.description}</p>
                   <p>
-                    <strong>{EPrice[language]}: </strong>
+                    <strong>{t('Price')}: </strong>
                     {item.id === 'misc-quote'
                       ? item.price + ' €'
                       : item.price +
@@ -285,23 +266,23 @@ const Orders: FC<Props> = ({
                         ' €'}
                   </p>
                   <p>
-                    <strong>{ERequestsAndNeeds[language]}: </strong> <br />
+                    <strong>{t('RequestsAndNeeds')}: </strong> <br />
                     {splitToLines(item.details)}
                   </p>
                   <p>
-                    <strong>{EStatus[language]}: </strong>
+                    <strong>{t('Status')}: </strong>
                     {itemStatus(item.status)}{' '}
                   </p>
                   {item.id === 'misc-quote' ? null : (
                     <p key={item.id}>
-                      <strong>{EPaymentState[language]}: </strong>
+                      <strong>{t('PaymentState')}: </strong>
                       {paidStatus[item.paid]}
                     </p>
                   )}
 
                   <Accordion
                     language={language}
-                    text={`${EEdit[language]}`}
+                    text={`${t('Edit')}`}
                     hideBrackets
                     className={`narrow2 change-status`}
                     wrapperClass={styles['change-status']}
@@ -317,7 +298,7 @@ const Orders: FC<Props> = ({
                         }}
                       >
                         <label>
-                          <span>{EPrice[language]}</span>
+                          <span>{t('Price')}</span>
                           <input
                             type='number'
                             className='bg'
@@ -344,7 +325,7 @@ const Orders: FC<Props> = ({
                           />
                         </label>
                         <label>
-                          <span>{EQuantity[language]}</span>
+                          <span>{t('Quantity')}</span>
                           <input
                             type='number'
                             className='bg'
@@ -371,7 +352,7 @@ const Orders: FC<Props> = ({
                         </label>
 
                         <label>
-                          <span>{EInfo[language]}</span>
+                          <span>{t('Info')}</span>
                           <textarea
                             name={`details-${item.id}`}
                             rows={6}
@@ -400,7 +381,7 @@ const Orders: FC<Props> = ({
                           language={language}
                           id={`status-${item.id}`}
                           className={`status ${selectStyles.prev2}`}
-                          instructions={EStatus[language]}
+                          instructions={t('Status')}
                           options={statusOptions}
                           value={statusOptions.find((o) => o.value === item.status)}
                           onChange={(c) => {
@@ -425,7 +406,7 @@ const Orders: FC<Props> = ({
                           language={language}
                           id={`paid-${item.id}`}
                           className={`paid ${selectStyles.prev}`}
-                          instructions={EPaymentState[language]}
+                          instructions={t('PaymentState')}
                           options={paidOptions}
                           value={paidOptions.find((o) => o.value === item.paid)}
                           onChange={(c) => {
@@ -448,7 +429,7 @@ const Orders: FC<Props> = ({
                         />
 
                         <button type='submit' disabled={sending}>
-                          {ESubmit[language]}
+                          {t('Submit')}
                         </button>
                       </form>
                     </>
@@ -457,7 +438,7 @@ const Orders: FC<Props> = ({
               ))}
               <div className={styles['info-wrap']}>
                 <table className={`${styles['info-table']}`}>
-                  <caption>{EInfo[language]}</caption>
+                  <caption>{t('Info')}</caption>
                   <tbody>
                     {Object.keys(order.info).map((key) => {
                       if (key === '_id') return null
@@ -475,14 +456,14 @@ const Orders: FC<Props> = ({
                 </table>
                 {order.extra && order.extra.trim() !== '' && (
                   <p>
-                    <strong>{EAdditionalInformation[language]}: </strong> <br />
+                    <strong>{t('AdditionalInformation')}: </strong> <br />
                     {splitToLines(order.extra)}
                   </p>
                 )}
 
                 <Accordion
                   language={language}
-                  text={`${EEdit[language]} (${EInfo[language]})`}
+                  text={`${t('Edit')} (${t('Info')})`}
                   hideBrackets
                   className={`narrow2 change-status`}
                   wrapperClass={styles['change-status-info']}
@@ -529,7 +510,7 @@ const Orders: FC<Props> = ({
                         )
                       })}
                       <label>
-                        <span>{EAdditionalInformation[language]}</span>
+                        <span>{t('AdditionalInformation')}</span>
                         <textarea
                           rows={6}
                           name={`additional-${order.orderID}`}
@@ -564,13 +545,13 @@ const Orders: FC<Props> = ({
                             )
                           }}
                         >
-                          {EOrderCompleted[language]}
+                          {t('OrderCompleted')}
                         </button>
                       ) : (
                         <div key={order.updatedAt.toString()}>
-                          {EOrderNotCompleted[language]} <br />
+                          {t('OrderNotCompleted')} <br />
                           {order.items?.some((item) => item.paid !== 'full') &&
-                            EMissingPayment[language]}
+                            t('MissingPayment')}
                           :{' '}
                           <ul className='ul'>
                             {order.items
@@ -585,7 +566,7 @@ const Orders: FC<Props> = ({
                       )}
 
                       <button type='submit' disabled={sending}>
-                        {ESubmit[language]}
+                        {t('Submit')}
                       </button>
                     </form>
                   </>
@@ -598,13 +579,13 @@ const Orders: FC<Props> = ({
                       onClick={() => {
                         if (
                           window.confirm(
-                            `${EAreYouSureYouWantToDelete[language]} ${order.orderID}?`
+                            `${t('AreYouSureYouWantToDelete')} ${order.orderID}?`
                           )
                         )
                           deleteOrder(order.orderID)
                       }}
                     >
-                      {EDelete[language]}: {order.orderID}
+                      {t('Delete')}: {order.orderID}
                     </button>
                   </div>
                 )}

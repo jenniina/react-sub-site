@@ -1,27 +1,7 @@
-import { lazy, Suspense } from 'react'
-import Hero from '../../components/Hero/Hero'
-// import FormMulti from '../../components/FormMulti/FormMulti'
-import { EEmail, EFeatures, ELanguages, ELoading } from '../../types'
-import {
-  EAColorYouLike,
-  EAnyEncouragingWords,
-  EBackAndNextButtons,
-  EContactForm,
-  ECustomRadioAndCheckboxInputs,
-  EDoYouLikeMyCustomSelects,
-  EFirstName,
-  EFormFields,
-  EGDPRConsent,
-  ELastName,
-  EMessage,
-  EMessageSubject,
-  EMultiStep,
-  EOrConstructiveFeedback,
-  EPromptToFillInRequiredFields,
-  EWhichModeDoYouPreferLightDark,
-} from '../../types/form'
+import { lazy, Suspense, useContext } from 'react'
+import { ELanguages } from '../../types'
 import Accordion from '../../components/Accordion/Accordion'
-import { EClickHereToSeeFeatures } from '../../components/Jokes/types'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 const FormMulti = lazy(() => import('../../components/FormMulti/FormMulti'))
 
@@ -36,6 +16,8 @@ export default function FormPage({
   type: string
   language: ELanguages
 }) {
+  const { t } = useContext(LanguageContext)!
+
   return (
     <div className={`form ${type}`}>
       <div className='inner-wrap'>
@@ -44,33 +26,32 @@ export default function FormPage({
             <div className='medium flex column gap'>
               <Accordion
                 language={language}
-                text={EClickHereToSeeFeatures[language]}
+                text={t('ClickHereToSeeFeatures')}
                 className='features'
                 wrapperClass='features-wrap'
               >
                 <>
-                  <h2>{EFeatures[language]}</h2>
+                  <h2>{t('Features')}</h2>
                   <ul className='ul'>
-                    <li>{EMultiStep[language]}</li>
-                    <li>{EBackAndNextButtons[language]}</li>
-                    <li>{ECustomRadioAndCheckboxInputs[language]}</li>
-                    <li>{EPromptToFillInRequiredFields[language]}</li>
+                    <li>{t('MultiStep')}</li>
+                    <li>{t('BackAndNextButtons')}</li>
+                    <li>{t('CustomRadioAndCheckboxInputs')}</li>
+                    <li>{t('PromptToFillInRequiredFields')}</li>
                     <li>
-                      {EFormFields[language]}
+                      {t('FormFields')}
                       <ul>
-                        <li>{EFirstName[language]} * </li>
-                        <li>{ELastName[language]} *</li>
-                        <li>{EEmail[language]} *</li>
-                        <li>{EMessageSubject[language]}</li>
-                        <li>{EMessage[language]} *</li>
+                        <li>{t('FirstName')} * </li>
+                        <li>{t('LastName')} *</li>
+                        <li>{t('Email')} *</li>
+                        <li>{t('MessageSubject')}</li>
+                        <li>{t('Message')} *</li>
                         <li>
-                          {EAnyEncouragingWords[language]}{' '}
-                          {EOrConstructiveFeedback[language]}
+                          {t('AnyEncouragingWords')} {t('OrConstructiveFeedback')}
                         </li>
-                        <li>{EAColorYouLike[language]}</li>
-                        <li>{EWhichModeDoYouPreferLightDark[language]}</li>
-                        <li>{EDoYouLikeMyCustomSelects[language]}</li>
-                        <li>{EGDPRConsent[language]}</li>
+                        <li>{t('AColorYouLike')}</li>
+                        <li>{t('WhichModeDoYouPreferLightDark')}</li>
+                        <li>{t('DoYouLikeMyCustomSelects')}</li>
+                        <li>{t('GDPRConsent')}</li>
                       </ul>
                     </li>
                   </ul>
@@ -84,11 +65,11 @@ export default function FormPage({
         </section>
         <section className='card'>
           <div>
-            <h2>{EContactForm[language]}</h2>
+            <h2>{t('ContactForm')}</h2>
             <Suspense
               fallback={
                 <div className='flex center margin0auto textcenter'>
-                  {ELoading[language]}...
+                  {t('Loading')}...
                 </div>
               }
             >

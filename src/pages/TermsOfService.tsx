@@ -1,5 +1,4 @@
-import { EDisclaimer, ELanguages, ESeeAlso, EStore } from '../types'
-import Hero from '../components/Hero/Hero'
+import { ELanguages } from '../types'
 import { useTheme } from '../hooks/useTheme'
 import styles from './css/disclaimer.module.css'
 import {
@@ -29,10 +28,11 @@ import {
   EEnFiSupplierMayHelpWithHostingAndPrintingSolutions,
 } from '../types/fien'
 import { Link } from 'react-router-dom'
-import { EProducts } from '../types/store'
+import { useContext } from 'react'
+import { LanguageContext } from '../contexts/LanguageContext'
 
 export function TermsProducts({ language }: { language: ELanguages }) {
-  const lang: EEnFi = language === 'fi' ? EEnFi.Suomi : EEnFi.English
+  const lang: EEnFi = language === 'fi' ? EEnFi.fi : EEnFi.en
 
   return (
     <>
@@ -66,9 +66,11 @@ export default function TermsOfService({
   type: string
   language: ELanguages
 }) {
+  const { t } = useContext(LanguageContext)!
+
   const lightTheme = useTheme()
 
-  const lang: EEnFi = language === 'fi' ? EEnFi.Suomi : EEnFi.English
+  const lang: EEnFi = language === 'fi' ? EEnFi.fi : EEnFi.en
 
   return (
     <>
@@ -78,8 +80,7 @@ export default function TermsOfService({
             <div>
               <p>{EEnFiWelcomeToTermsOfService[lang]}</p>
               <p>
-                {ESeeAlso[language]}:{' '}
-                <Link to='/disclaimer'>{EDisclaimer[language]}</Link>
+                {t('SeeAlso')}: <Link to='/disclaimer'>{t('Disclaimer')}</Link>
               </p>
 
               <h2>{EEnFiAcceptanceOfTerms[lang]}</h2>
@@ -94,7 +95,7 @@ export default function TermsOfService({
               <h2>{EEnFiTermination[lang]}</h2>
               <p>{EEnFiTerminationText[lang]}</p>
 
-              <h2>{EProducts[language]}</h2>
+              <h2>{t('Products')}</h2>
               <TermsProducts language={language} />
 
               <h2>{EContactMe[lang]}</h2>

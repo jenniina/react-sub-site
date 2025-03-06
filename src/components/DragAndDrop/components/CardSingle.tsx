@@ -7,24 +7,17 @@ import {
   SetStateAction,
   CSSProperties,
   useEffect,
+  useContext,
 } from 'react'
 import { Data, Status } from '../types'
 import styles from '../dragAndDrop.module.css'
 import { MdContentCopy, MdLocationOn, MdOutlineDragIndicator } from 'react-icons/md'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
-import { EChooseDestination } from '../../../types/draganddrop'
-import {
-  ECopiedToClipboard,
-  ECopyText,
-  ECopyToClipboard,
-  EFailedToCopy,
-  ELanguages,
-  EMove,
-  EToTarget,
-} from '../../../types'
+import { ELanguages } from '../../../types'
 import { notify } from '../../../reducers/notificationReducer'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { sanitize } from '../../../utils'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
@@ -57,6 +50,8 @@ function CardSingle({
   setFocusedCard,
   translateStatus,
 }: Props) {
+  const { t } = useContext(LanguageContext)!
+
   const dispatch = useAppDispatch()
 
   const styleCard: CSSProperties = {
@@ -189,10 +184,10 @@ function CardSingle({
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(
         () => {
-          dispatch(notify(ECopiedToClipboard[language], false, 3))
+          dispatch(notify(t('CopiedToClipboard'), false, 3))
         },
         (err) => {
-          dispatch(notify(`${EFailedToCopy[language]}`, true, 3))
+          dispatch(notify(`${t('FailedToCopy')}`, true, 3))
         }
       )
     } else {
@@ -204,11 +199,11 @@ function CardSingle({
       textArea.select()
       try {
         document.execCommand('copy')
-        dispatch(notify(ECopiedToClipboard[language], false, 3))
+        dispatch(notify(t('CopiedToClipboard'), false, 3))
       } catch (err: any) {
         if (err.response?.data?.message)
           dispatch(notify(err.response.data.message, true, 8))
-        else dispatch(notify(`${EFailedToCopy[language]}`, true, 3))
+        else dispatch(notify(`${t('FailedToCopy')}`, true, 3))
       }
       document.body.removeChild(textArea)
     }
@@ -234,7 +229,7 @@ function CardSingle({
           <button aria-haspopup='true' onClick={toggleOpen}>
             <MdOutlineDragIndicator aria-hidden='true' />
             <span className='scr' id={`instructions${id}`}>
-              {EChooseDestination[language]}
+              {t('ChooseDestination')}
             </span>
           </button>
         </b>
@@ -242,7 +237,7 @@ function CardSingle({
           className={isOpen ? `${styles.open} ${styles.blur}` : `${styles.blur}`}
           style={styleReset}
         >
-          <span style={styleTitle}>{EMove[language]}:</span>
+          <span style={styleTitle}>{t('Move')}:</span>
           <ul
             role='listbox'
             aria-describedby={`instructions${id}`}
@@ -254,10 +249,10 @@ function CardSingle({
                 className={styles.copy}
                 onClick={() => handleCopyToClipboard(data.content)}
                 tabIndex={0}
-                title={ECopyToClipboard[language]}
+                title={t('CopyToClipboard')}
               >
                 <MdContentCopy />
-                <i>{ECopyText[language]}</i>
+                <i>{t('CopyText')}</i>
               </a>
             </li>
             {statuses.map((status, i) => (
@@ -272,9 +267,7 @@ function CardSingle({
                   onClick={(e) => containerUpdate(e)}
                   onKeyDown={(e) => keyListen(e)}
                   tabIndex={0}
-                  title={`${EToTarget[language]}: ${translateStatus(
-                    status
-                  ).toLowerCase()}`}
+                  title={`${t('ToTarget')}: ${translateStatus(status).toLowerCase()}`}
                 >
                   <MdLocationOn />
                   <i>{translateStatus(status)}</i>

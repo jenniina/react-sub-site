@@ -1,6 +1,7 @@
-import { FC, ReactNode, useRef, useState } from 'react'
+import { FC, ReactNode, useContext, useRef, useState } from 'react'
 import { QuoteItem } from './services/quotes'
-import { ECopiedToClipboard, ECopyToClipboard, ELanguages } from '../../types'
+import { ELanguages } from '../../types'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 interface QuoteProps {
   quote: QuoteItem
@@ -10,6 +11,8 @@ interface QuoteProps {
 }
 
 const Quote: FC<QuoteProps> = ({ quote, language, url, title }) => {
+  const { t } = useContext(LanguageContext)!
+
   const [copied, setCopied] = useState(false)
   const ref = useRef<HTMLParagraphElement>(null)
 
@@ -63,7 +66,7 @@ const Quote: FC<QuoteProps> = ({ quote, language, url, title }) => {
           style={{ maxWidth: 'max-content', marginLeft: '1em' }}
           onClick={copyToClipboard}
         >
-          {copied ? ECopiedToClipboard[language] : ECopyToClipboard[language]}
+          {copied ? t('CopiedToClipboard') : t('CopyToClipboard')}
         </button>
         {title && (
           <small>

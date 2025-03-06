@@ -1,8 +1,8 @@
-import { FC, useState } from 'react'
+import { FC, useContext, useState } from 'react'
 import { ColorPair, Modes, RefObject } from '../types'
-import { EChangeColorInstructions } from '../../../types/blobs'
-import { EActive, ELanguages } from '../../../types'
+import { ELanguages } from '../../../types'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 interface ColorBlockProps {
   d: number
@@ -32,6 +32,8 @@ const ColorBlocks: FC<ColorBlockProps> = ({
   selectedColor,
   setMode,
 }) => {
+  const { t } = useContext(LanguageContext)!
+
   const handleClick = (color: string) => {
     if (selectedColor === color) {
       setSelectedColor('')
@@ -60,6 +62,8 @@ const ColorBlocks: FC<ColorBlockProps> = ({
             } ${index < 4 ? 'left' : 'right'}`}
             id={`color${index}-${d}`}
             style={{
+              top: `${index < 4 ? (index + 1) * 18 : (index + 1 - 4) * 18}%`,
+              right: `${index >= 4 ? '0' : 'unset'}`,
               background: color,
               borderRadius: `${
                 index < 4
@@ -68,10 +72,10 @@ const ColorBlocks: FC<ColorBlockProps> = ({
               }`,
             }}
           >
-            <i className='color-alert'>{EActive[language]}</i>
+            <i className='color-alert'>{t('Active')}</i>
 
             <span className={`tooltip below ${index < 4 ? 'right' : 'left'}`}>
-              {EChangeColorInstructions[language]}
+              {t('ChangeColorInstructions')}
             </span>
           </button>
         )

@@ -1,20 +1,8 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useContext } from 'react'
 import Accordion from '../../components/Accordion/Accordion'
-import Hero from '../../components/Hero/Hero'
-import { ELanguages, ELoading } from '../../types'
+import { ELanguages } from '../../types'
 import styles from '../../components/Images/images.module.css'
-import { EClickHereToSeeFeatures } from '../../components/Jokes/types'
-import { VALID_CATEGORIES, WEIGHTED } from '../../components/Quotes/services/quotes'
-import { EQuoteCategories } from '../../types/quotes'
-import {
-  EAndPoemsAreFrom,
-  EClickingAnImageOpensAModalWithALargerVersion,
-  EIAddedValueToTheSearchOfImagesAndVideosWithRandomQuotesOrPoems,
-  EQuotesAreFrom,
-  ETheImageOrVideoHasARandomQuoteOrPoemAddedToIt,
-  ETheWordCloudIsFormedFromTheDifferentCategoriesAvailableInTheQuotesAPI,
-  EYouMaySearchForImagesFetchedFromThePixabayAPI,
-} from '../../types/images'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 const Images = lazy(() => import('../../components/Images/Images'))
 
@@ -29,32 +17,30 @@ const ImagesPage = ({
   type: string
   language: ELanguages
 }) => {
+  const { t } = useContext(LanguageContext)!
+
   return (
     <div className={`media ${type} ${styles['images-wrap']}`}>
       <div className={`inner-wrap ${styles['inner-wrap']}`}>
         <section className={`card ${styles['features-card']}`}>
           <div>
             <Accordion
-              text={EClickHereToSeeFeatures[language]}
+              text={t('ClickHereToSeeFeatures')}
               className=''
               wrapperClass=''
               language={language}
             >
               <ul className='ul medium'>
-                <li>{EYouMaySearchForImagesFetchedFromThePixabayAPI[language]}</li>
+                <li>{t('YouMaySearchForImagesFetchedFromThePixabayAPI')}</li>
                 <li>
-                  {
-                    EIAddedValueToTheSearchOfImagesAndVideosWithRandomQuotesOrPoems[
-                      language
-                    ]
-                  }
+                  {t('IAddedValueToTheSearchOfImagesAndVideosWithRandomQuotesOrPoems')}
                 </li>
                 <li>
-                  {EClickingAnImageOpensAModalWithALargerVersion[language]}{' '}
-                  {ETheImageOrVideoHasARandomQuoteOrPoemAddedToIt[language]}
+                  {t('ClickingAnImageOpensAModalWithALargerVersion')}{' '}
+                  {t('TheImageOrVideoHasARandomQuoteOrPoemAddedToIt')}
                 </li>
                 <li>
-                  {EQuotesAreFrom[language]}{' '}
+                  {t('QuotesAreFrom')}{' '}
                   <a
                     href='https://rapidapi.com/martin.svoboda/api/quotes15'
                     target='_blank'
@@ -62,7 +48,7 @@ const ImagesPage = ({
                   >
                     RapidAPI
                   </a>{' '}
-                  {EAndPoemsAreFrom[language]}{' '}
+                  {t('AndPoemsAreFrom')}{' '}
                   <a href='https://poetrydb.org/' target='_blank' rel='noreferrer'>
                     PoetryDB
                   </a>{' '}
@@ -75,9 +61,7 @@ const ImagesPage = ({
 
         <Suspense
           fallback={
-            <div className='flex center margin0auto textcenter'>
-              {ELoading[language]}...
-            </div>
+            <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
           }
         >
           <Images language={language} />

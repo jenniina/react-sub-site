@@ -1,20 +1,11 @@
-import { FormEvent, useEffect, useRef } from 'react'
+import { FormEvent, useContext, useEffect, useRef } from 'react'
 import Accordion from '../Accordion/Accordion'
 import { useSelector } from 'react-redux'
-import {
-  EConfirmPassword,
-  EEmail,
-  ELanguages,
-  ENickname,
-  EPassword,
-  EPleaseUseGoodTasteWhenChoosingYourNickname,
-  ERegister,
-  ReducerProps,
-  EDisclaimer,
-} from '../../types'
+import { ELanguages, ReducerProps } from '../../types'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { initializeUser } from '../../reducers/authReducer'
 import { Link } from 'react-router-dom'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
@@ -48,6 +39,8 @@ const Register = ({
   text,
   sending,
 }: Props) => {
+  const { t } = useContext(LanguageContext)!
+
   const dispatch = useAppDispatch()
 
   const formRegisterRef = useRef<HTMLDivElement>(null)
@@ -68,16 +61,16 @@ const Register = ({
             language={language}
             className={`accordion-register register`}
             wrapperClass='register-wrap'
-            text={ERegister[language]}
+            text={t('Register')}
             ref={formRegisterRef}
             setIsFormOpen={setIsFormOpen}
             isOpen={isOpen}
             hideBrackets={true}
           >
             <>
-              <h2>{ERegister[language]}</h2>
+              <h2>{t('Register')}</h2>
               <form onSubmit={handleRegister} className={`register ${text}`}>
-                <p>{EPleaseUseGoodTasteWhenChoosingYourNickname[language]}</p>
+                <p>{t('PleaseUseGoodTasteWhenChoosingYourNickname')}</p>
                 <div className='input-wrap'>
                   <label>
                     <input
@@ -89,7 +82,7 @@ const Register = ({
                       autoComplete='name'
                       onChange={({ target }) => setName(target.value)}
                     />
-                    <span>{ENickname[language]}</span>
+                    <span>{t('Nickname')}</span>
                   </label>
                 </div>
                 <div className='input-wrap'>
@@ -103,7 +96,7 @@ const Register = ({
                       autoComplete='email'
                       onChange={({ target }) => setUsername(target.value.trim())}
                     />
-                    <span>{EEmail[language]}</span>
+                    <span>{t('Email')}</span>
                   </label>
                 </div>
                 <div className='input-wrap'>
@@ -117,7 +110,7 @@ const Register = ({
                       autoComplete='on'
                       onChange={({ target }) => setPassword(target.value.trim())}
                     />
-                    <span>{EPassword[language]}</span>
+                    <span>{t('Password')}</span>
                   </label>
                 </div>
                 <div className='input-wrap'>
@@ -130,7 +123,7 @@ const Register = ({
                       value={confirmPassword}
                       onChange={({ target }) => setConfirmPassword(target.value.trim())}
                     />
-                    <span>{EConfirmPassword[language]}</span>
+                    <span>{t('ConfirmPassword')}</span>
                   </label>
                 </div>
                 <Link
@@ -143,10 +136,10 @@ const Register = ({
                     margin: '1rem auto',
                   }}
                 >
-                  <small>{EDisclaimer[language]}</small>
+                  <small>{t('Disclaimer')}</small>
                 </Link>
                 <button type='submit' disabled={sending} className='restore'>
-                  {ERegister[language]}
+                  {t('Register')}
                 </button>
               </form>
             </>

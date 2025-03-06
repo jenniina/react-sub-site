@@ -1,27 +1,9 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useContext } from 'react'
 import styles from '../../components/Todo/css/todo.module.css'
-import Hero from '../../components/Hero/Hero'
-import {
-  EFeatures,
-  EKeyboardAccessible,
-  EKeyboardUse,
-  ELanguages,
-  ELoading,
-} from '../../types'
-// import TodoApp from '../../components/Todo/TodoApp'
-import { ETodoApp } from '../../components/Todo/types'
-import {
-  EAddTasksByTabbingToTheInputFieldAnd,
-  ERemoveATaskByTabbingToTheRemoveButtonAnd,
-  ERemoveTaskEitherIndividuallyOrClearAllCompletedTasksAtOnce,
-  EShowsHowManyTasksAreLeftToDo,
-  EStoresTasksInMongoDBIfTheUserIsLoggedIn,
-  ETasksCanBeEdited,
-  ETasksCanBeReorganizedByDraggingAndDropping,
-} from '../../types/todo'
+import { ELanguages } from '../../types'
 import Accordion from '../../components/Accordion/Accordion'
-import { EClickHereToSeeFeatures } from '../../components/Jokes/types'
 import { useTheme } from '../../hooks/useTheme'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 const TodoApp = lazy(() => import('../../components/Todo/TodoApp'))
 
@@ -36,6 +18,8 @@ export default function TodoPage({
   type: string
   language: ELanguages
 }) {
+  const { t } = useContext(LanguageContext)!
+
   const lightMode = useTheme()
   return (
     <div className={`todo ${type} ${lightMode ? styles.light : ''}`}>
@@ -45,30 +29,26 @@ export default function TodoPage({
             <div className='medium flex column gap'>
               <Accordion
                 language={language}
-                text={EClickHereToSeeFeatures[language]}
+                text={t('ClickHereToSeeFeatures')}
                 className='features'
                 wrapperClass='features-wrap'
               >
                 <>
-                  <h2>{EFeatures[language]}</h2>
+                  <h2>{t('Features')}</h2>
                   <ul className='ul'>
-                    <li>{EKeyboardAccessible[language]}</li>
+                    <li>{t('KeyboardAccessible')}</li>
                     <li>
-                      {
-                        ERemoveTaskEitherIndividuallyOrClearAllCompletedTasksAtOnce[
-                          language
-                        ]
-                      }
+                      {t('RemoveTaskEitherIndividuallyOrClearAllCompletedTasksAtOnce')}
                     </li>
-                    <li>{ETasksCanBeEdited[language]}</li>
-                    <li>{ETasksCanBeReorganizedByDraggingAndDropping[language]}</li>
-                    <li>{EShowsHowManyTasksAreLeftToDo[language]}</li>
-                    <li>{EStoresTasksInMongoDBIfTheUserIsLoggedIn[language]}</li>
+                    <li>{t('TasksCanBeEdited')}</li>
+                    <li>{t('TasksCanBeReorganizedByDraggingAndDropping')}</li>
+                    <li>{t('ShowsHowManyTasksAreLeftToDo')}</li>
+                    <li>{t('StoresTasksInMongoDBIfTheUserIsLoggedIn')}</li>
                   </ul>
-                  <h3>{EKeyboardUse[language]}</h3>
+                  <h3>{t('KeyboardUse')}</h3>
                   <ul className='ul'>
-                    <li>{EAddTasksByTabbingToTheInputFieldAnd[language]}</li>
-                    <li>{ERemoveATaskByTabbingToTheRemoveButtonAnd[language]}</li>
+                    <li>{t('AddTasksByTabbingToTheInputFieldAnd')}</li>
+                    <li>{t('RemoveATaskByTabbingToTheRemoveButtonAnd')}</li>
                   </ul>
                 </>
               </Accordion>
@@ -81,11 +61,11 @@ export default function TodoPage({
         <section className='card'>
           <div>
             <div className='flex column gap'>
-              <h2>{ETodoApp[language]}</h2>
+              <h2>{t('TodoApp')}</h2>
               <Suspense
                 fallback={
                   <div className='flex center margin0auto textcenter'>
-                    {ELoading[language]}...
+                    {t('Loading')}...
                   </div>
                 }
               >

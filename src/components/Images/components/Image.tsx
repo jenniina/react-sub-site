@@ -1,20 +1,14 @@
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, useContext } from 'react'
 import styles from '../images.module.css'
-import {
-  EClickToLoadImage,
-  EClickToOpenLargeImage,
-  EImagePage,
-} from '../../../types/images'
-import { EAuthor } from '../../Jokes/types'
 import { ImageHit } from '../services/images'
-import { EDownload, EError, ELanguages } from '../../../types'
-import useTooltip from '../../../hooks/useTooltip'
+import { ELanguages } from '../../../types'
 import ImageModal from './ImageModal'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { notify } from '../../../reducers/notificationReducer'
 import { sanitize } from '../../../utils'
 import { ModalProps } from '../../../types'
 import { TTextType } from '../Images'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 interface ImageProps {
   image: ImageHit
@@ -25,10 +19,12 @@ interface ImageProps {
 }
 
 const Image: FC<ImageProps> = ({ image, language, show, searchTerm, textType }) => {
+  const { t } = useContext(LanguageContext)!
+
   const dispatch = useAppDispatch()
 
   const handleDownload = async () => {
-    if (window.confirm(EDownload[language] + '?')) {
+    if (window.confirm(t('Download') + '?')) {
       const response = await fetch(image.largeImageURL, { mode: 'cors' })
       if (!response.ok) {
         throw new Error('Network response was not ok')
@@ -55,7 +51,7 @@ const Image: FC<ImageProps> = ({ image, language, show, searchTerm, textType }) 
         window.URL.revokeObjectURL(url)
       } catch (error) {
         console.error('Download failed:', error)
-        dispatch(notify(`${EError[language]}: ${error}`, true, 5))
+        dispatch(notify(`${t('Error')}: ${error}`, true, 5))
       }
     }
   }
@@ -87,7 +83,7 @@ const Image: FC<ImageProps> = ({ image, language, show, searchTerm, textType }) 
           cursor: 'pointer',
           width: '100%',
         }}
-        aria-label={EClickToOpenLargeImage[language]}
+        aria-label={t('ClickToOpenLargeImage')}
         onClick={handleShowModal}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
@@ -117,11 +113,11 @@ const Image: FC<ImageProps> = ({ image, language, show, searchTerm, textType }) 
           }}
         />
       </button>
-      <span className='tooltip above narrow2'>{EClickToOpenLargeImage[language]}</span>
+      <span className='tooltip above narrow2'>{t('ClickToOpenLargeImage')}</span>
       <p>
         <small>
           <a href={image.pageURL} target='_blank' rel='noreferrer'>
-            {EImagePage[language]} ({EAuthor[language]}: {image.user})
+            {t('ImagePage')} ({t('Author')}: {image.user})
           </a>
         </small>
       </p>

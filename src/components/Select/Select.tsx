@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import styles from './select.module.css'
-import { ELanguages, EPleaseSelectAnOption } from '../../types'
+import { ELanguages, translations as t } from '../../types'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
-import { EClear, ERemove, EThisFieldIsRequired } from '../../types/select'
 // import { v4 as uuidv4 } from 'uuid'
 
 export type SelectOption = {
@@ -58,11 +57,11 @@ export function Select({
   value,
   onChange,
   options,
-  language = ELanguages.English,
-  requiredMessage = EThisFieldIsRequired[language] ?? 'This field is required',
-  remove = ERemove[language] ?? 'remove',
-  clear = EClear[language] ?? 'clear',
-  selectAnOption = EPleaseSelectAnOption[language] ?? 'Select an option',
+  language = ELanguages.en,
+  requiredMessage = t['ThisFieldIsRequired'][language] ?? 'This field is required',
+  remove = t['Remove'][language] ?? 'remove',
+  clear = t['Clear'][language] ?? 'clear',
+  selectAnOption = t['PleaseSelectAnOption'][language] ?? 'Select an option',
   tooltip,
   y,
   x,

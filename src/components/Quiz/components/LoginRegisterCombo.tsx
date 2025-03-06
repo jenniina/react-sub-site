@@ -1,18 +1,13 @@
-import { FC, useState, FormEvent } from 'react'
+import { FC, useState, FormEvent, useContext } from 'react'
 import FormLogin from './Login'
 import Register from '../../Register/Register'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { notify } from '../../../reducers/notificationReducer'
-import {
-  EError,
-  ELanguages,
-  IUser,
-  EPasswordsDoNotMatch,
-  ERegistrationSuccesful,
-} from '../../../types'
+import { ELanguages, IUser } from '../../../types'
 import { createUser } from '../../../reducers/usersReducer'
 import styles from '../css/quiz.module.css'
 import { IHighscore } from '../types'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 interface LoginRegisterComboProps {
   language: ELanguages
@@ -27,6 +22,8 @@ const LoginRegisterCombo: FC<LoginRegisterComboProps> = ({
   highscoresLocal,
   text,
 }) => {
+  const { t } = useContext(LanguageContext)!
+
   const dispatch = useAppDispatch()
   const [loginOpen, setLoginOpen] = useState(false)
   const [registerOpen, setRegisterOpen] = useState(false)
@@ -40,20 +37,20 @@ const LoginRegisterCombo: FC<LoginRegisterComboProps> = ({
     e.preventDefault()
     setSending(true)
     if (password.trim() !== confirmPassword.trim()) {
-      dispatch(notify(EPasswordsDoNotMatch[language], true, 8))
+      dispatch(notify(t('PasswordsDoNotMatch'), true, 8))
       setSending(false)
       return
     }
     dispatch(createUser({ name, username, password, language: 'en' }))
       .then(async () => {
-        dispatch(notify(ERegistrationSuccesful[language], false, 8))
+        dispatch(notify(t('RegistrationSuccesful'), false, 8))
         setSending(false)
       })
       .catch((err) => {
         console.error(err)
         if (err.response?.data?.message)
           dispatch(notify(err.response.data.message, true, 8))
-        else dispatch(notify(`${EError[language]}: ${err.message}`, true, 8))
+        else dispatch(notify(`${t('Error')}: ${err.message}`, true, 8))
         setSending(false)
       })
   }

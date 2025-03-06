@@ -1,11 +1,7 @@
+import { useContext } from 'react'
 import { ELanguages } from '../../../types'
-import {
-  EBasicDetails,
-  EFirstName,
-  ELastName,
-  EThisContactFormIsSplitIntoThreeSteps,
-} from '../../../types/form'
 import FormWrapper from './FormWrapper'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 type UserData = {
   firstName: string
@@ -23,10 +19,12 @@ export default function InitialForm({
   updateFields,
   language,
 }: UserFormProps) {
+  const { t } = useContext(LanguageContext)!
+
   return (
     <FormWrapper
-      title={EBasicDetails[language]}
-      description={EThisContactFormIsSplitIntoThreeSteps[language]}
+      title={t('BasicDetails')}
+      description={t('ThisContactFormIsSplitIntoThreeSteps')}
     >
       <div className='input-wrap'>
         <label>
@@ -39,7 +37,7 @@ export default function InitialForm({
             onChange={(e) => updateFields({ firstName: e.target.value })}
           />
           <span>
-            {EFirstName[language]}{' '}
+            {t('FirstName')}{' '}
             <i className='required' aria-hidden='true'>
               *
             </i>
@@ -57,7 +55,7 @@ export default function InitialForm({
             onChange={(e) => updateFields({ lastName: e.target.value })}
           />
           <span>
-            {ELastName[language]}{' '}
+            {t('LastName')}{' '}
             <i className='required' aria-hidden='true'>
               *
             </i>

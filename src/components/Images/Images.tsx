@@ -8,6 +8,7 @@ import {
   Fragment,
   useRef,
   MouseEvent as ReactMouseEvent,
+  useContext,
 } from 'react'
 import styles from './images.module.css'
 import imagesAPI, { Hit, SearchOptions } from './services/images'
@@ -17,44 +18,11 @@ import {
   TImageTypes,
   TVideoTypes,
   Color,
-  EOrientation,
-  EEditorsChoice,
   OrderBy,
-  EMediaPerPage,
-  EVectorImagesCanBeDownloaded,
-  EAll,
-  EBatchesOf,
-  EOfMedia,
-  EVideoTypes,
-  ESearchforVideos,
-  ETextType,
 } from '../../types/images'
-import { EQuote, EQuoteCategories } from '../../types/quotes'
-import {
-  EClickToChooseSearchTerm,
-  ECurrent,
-  EFirstPage,
-  ELanguages,
-  ELastPage,
-  ELoading,
-  ENext,
-  ENoMoreResults,
-  ENote,
-  EPage,
-  EPrevious,
-  ESearchParameters,
-  EUpdated,
-} from '../../types'
-import { EPleaseEnterASearchTerm, ESearchForMedia, EType } from '../../types/images'
+import { ELanguages } from '../../types'
 import { Select, SelectOption } from '../Select/Select'
-import {
-  ECategoryTitle,
-  EOrderBy,
-  ESafemodeTitle,
-  ESearchByKeyword,
-} from '../Jokes/types'
 import { generateOptions } from '../../types/images'
-import { EColors } from '../../types/colors'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import { useModal } from '../../hooks/useModal'
@@ -69,7 +37,7 @@ import { VALID_CATEGORIES } from '../Quotes/services/quotes'
 import { scrollIntoView } from '../../utils'
 import useWindowSize from '../../hooks/useWindowSize'
 import useTooltip from '../../hooks/useTooltip'
-import { EPoem } from '../../types/poems'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 const WordCloud = lazy(() => import('../WordCloud/WordCloud'))
 
@@ -119,6 +87,8 @@ interface Props {
 }
 
 const Images: FC<Props> = ({ language }) => {
+  const { t } = useContext(LanguageContext)!
+
   const dispatch = useAppDispatch()
   const { show } = useModal()
   const [media, setMedia] = useState<Hit[]>([])
@@ -142,8 +112,8 @@ const Images: FC<Props> = ({ language }) => {
     Orientation.Vertical,
   ]
   const optionsTextTypes: SelectOption[] = [
-    { label: EPoem[language], value: 'poem' },
-    { label: EQuote[language], value: 'quote' },
+    { label: t('Poem'), value: 'poem' },
+    { label: t('Quote'), value: 'quote' },
   ]
   const categoryTypes: Category[] = Object.values(Category)
   const colorTypes: Color[] = Object.values(Color)
@@ -159,7 +129,7 @@ const Images: FC<Props> = ({ language }) => {
 
   const optionsCategories: SelectOption[] = generateOptions(categoryTypes, language)
   // add 'all' to the categories
-  optionsCategories.unshift({ label: EAll[language], value: '' }) // does not accept 'all' as a value
+  optionsCategories.unshift({ label: t('All'), value: '' }) // does not accept 'all' as a value
   const optionsColors: SelectOption[] = generateOptions(colorTypes, language)
 
   const [category, setCategory] = useState<Category | undefined>(undefined)
@@ -224,8 +194,8 @@ const Images: FC<Props> = ({ language }) => {
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (searchTerm.trim() === '') {
-      dispatch(notify(EPleaseEnterASearchTerm[language], true, 6))
-      setError(EPleaseEnterASearchTerm[language])
+      dispatch(notify(t('PleaseEnterASearchTerm'), true, 6))
+      setError(t('PleaseEnterASearchTerm'))
       return
     }
     setSubPage(1)
@@ -256,8 +226,8 @@ const Images: FC<Props> = ({ language }) => {
     if (!hasSearched) return
 
     if (searchTerm.trim() === '') {
-      dispatch(notify(EPleaseEnterASearchTerm[language], true, 6))
-      setError(EPleaseEnterASearchTerm[language])
+      dispatch(notify(t('PleaseEnterASearchTerm'), true, 6))
+      setError(t('PleaseEnterASearchTerm'))
       return
     }
 
@@ -297,9 +267,9 @@ const Images: FC<Props> = ({ language }) => {
           onClick={() => setSubPage(1)}
         >
           <BiChevronsLeft />
-          <span className='scr'>{EFirstPage[language]}</span>
+          <span className='scr'>{t('FirstPage')}</span>
           <span aria-hidden='true' className='tooltip above narrow2'>
-            {EFirstPage[language]}
+            {t('FirstPage')}
           </span>
         </button>
         <button
@@ -308,13 +278,13 @@ const Images: FC<Props> = ({ language }) => {
           disabled={subPage === 1}
         >
           <BiChevronLeft />
-          <span className='scr'>{EPrevious[language]}</span>
+          <span className='scr'>{t('Previous')}</span>
           <span aria-hidden='true' className='tooltip above narrow2'>
-            {EPrevious[language]}
+            {t('Previous')}
           </span>
         </button>
         <span>
-          {EPage[language]} {subPage} / {totalSubPages}
+          {t('Page')} {subPage} / {totalSubPages}
         </span>
         <button
           className={`tooltip-wrap`}
@@ -322,9 +292,9 @@ const Images: FC<Props> = ({ language }) => {
           disabled={subPage === totalSubPages}
         >
           <BiChevronRight />
-          <span className='scr'>{ENext[language]}</span>
+          <span className='scr'>{t('Next')}</span>
           <span aria-hidden='true' className='tooltip above narrow2'>
-            {ENext[language]}
+            {t('Next')}
           </span>
         </button>
         <button
@@ -334,10 +304,10 @@ const Images: FC<Props> = ({ language }) => {
         >
           <BiChevronsRight />
           <span className='scr'>
-            {ELastPage[language]} ({totalSubPages})
+            {t('LastPage')} ({totalSubPages})
           </span>
           <span aria-hidden='true' className='tooltip above narrow2'>
-            {ELastPage[language]} ({totalSubPages})
+            {t('LastPage')} ({totalSubPages})
           </span>
         </button>
       </div>
@@ -356,12 +326,12 @@ const Images: FC<Props> = ({ language }) => {
         className={`tooltip-wrap ${styles['fetch-page-button']} ${
           i === fetchPage ? styles.active : ''
         }`}
-        data-current={i === fetchPage ? ECurrent[language] : ''}
+        data-current={i === fetchPage ? t('Current') : ''}
         disabled={index === fetchPage - 1 || i > totalPages}
       >
         {i}
         <span className='tooltip above narrow2'>
-          {EPage[language]} {i}
+          {t('Page')} {i}
         </span>
       </button>
     </Fragment>
@@ -370,7 +340,7 @@ const Images: FC<Props> = ({ language }) => {
   const batchesOfMedia = (
     <>
       <p className={styles['batch-paragraph']}>
-        {EBatchesOf[language]} {perFetch} {EOfMedia[language]}:
+        {t('BatchesOf')} {perFetch} {t('OfMedia')}:
       </p>
       <div
         id={`${styles['fetch-btn-wrap']}`}
@@ -381,7 +351,7 @@ const Images: FC<Props> = ({ language }) => {
             className={`reset ${styles['fetch-more-btn']}`}
             onClick={() => setFetchPage((prev) => prev - 1)}
           >
-            &laquo;&nbsp;{EPrevious[language]}
+            &laquo;&nbsp;{t('Previous')}
           </button>
         )}
         {fetchPageButtons}
@@ -390,11 +360,11 @@ const Images: FC<Props> = ({ language }) => {
             className={`reset ${styles['fetch-more-btn']}`}
             onClick={() => setFetchPage((prev) => prev + 1)}
           >
-            {ENext[language]}&nbsp;&raquo;
+            {t('Next')}&nbsp;&raquo;
           </button>
         )}
         {subPage === totalSubPages && fetchPage >= totalPages && (
-          <p className={`${styles['end-message']}`}>{ENoMoreResults[language]}</p>
+          <p className={`${styles['end-message']}`}>{t('NoMoreResults')}</p>
         )}
       </div>
     </>
@@ -403,9 +373,7 @@ const Images: FC<Props> = ({ language }) => {
   const handleSetSearchTerm = (term: string) => {
     setSearchTerm(term)
     scrollIntoView('search-container', 'start')
-    dispatch(
-      notify(`${EUpdated[language]}: ${ESearchParameters[language]}: ${term}`, false, 4)
-    )
+    dispatch(notify(`${t('Updated')}: ${t('SearchParameters')}: ${term}`, false, 4))
   }
 
   return (
@@ -420,13 +388,13 @@ const Images: FC<Props> = ({ language }) => {
             <Suspense
               fallback={
                 <div className='flex center margin0auto textcenter'>
-                  {ELoading[language]}...
+                  {t('Loading')}...
                 </div>
               }
             >
               <WordCloud
                 language={language}
-                title={EQuoteCategories[language]}
+                title={t('QuoteCategories')}
                 onClick={handleSetSearchTerm}
                 words={
                   windowWidth > 700
@@ -450,13 +418,13 @@ const Images: FC<Props> = ({ language }) => {
                 className={`tooltip narrow`}
                 style={{ top: tooltip.y, left: tooltip.x, right: 'unset' }}
               >
-                {EClickToChooseSearchTerm[language]}
+                {t('ClickToChooseSearchTerm')}
               </span>
             )}
           </div>
           <form onSubmit={handleSearch}>
             <div className={styles['search-wrap']}>
-              <h2>{ESearchForMedia[language]}</h2>
+              <h2>{t('SearchForMedia')}</h2>
               <div className={styles['column']}>
                 <div className={`input-wrap ${styles['input-wrap']}`}>
                   <label>
@@ -466,9 +434,9 @@ const Images: FC<Props> = ({ language }) => {
                       maxLength={100}
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      placeholder={ESearchByKeyword[language]}
+                      placeholder={t('SearchByKeyword')}
                     />
-                    <span>{ESearchForMedia[language]}</span>
+                    <span>{t('SearchForMedia')}</span>
                   </label>
                 </div>
 
@@ -478,7 +446,7 @@ const Images: FC<Props> = ({ language }) => {
                     id='colors'
                     className={`${styles.select} ${styles['colors']}`}
                     multiple
-                    instructions={EColors[language]}
+                    instructions={t('Colors')}
                     value={colors}
                     onChange={(o) => setColors(o)}
                     options={optionsColors}
@@ -492,10 +460,10 @@ const Images: FC<Props> = ({ language }) => {
                   id='result-type'
                   className={`${styles.select} ${styles['result-type']}`}
                   hideDelete
-                  instructions={EType[language]}
+                  instructions={t('Type')}
                   value={
                     optionsImageTypes.find((o) => o.value === type) || {
-                      label: EAll[language],
+                      label: t('All'),
                       value: 'all',
                     }
                   }
@@ -509,10 +477,10 @@ const Images: FC<Props> = ({ language }) => {
                     id='result-type'
                     className={`${styles.select} ${styles['result-type']}`}
                     hideDelete
-                    instructions={EVideoTypes[language]}
+                    instructions={t('VideoTypes')}
                     value={
                       optionsVideoTypes.find((o) => o.value === videoType) || {
-                        label: EAll[language],
+                        label: t('All'),
                         value: 'all',
                       }
                     }
@@ -525,11 +493,11 @@ const Images: FC<Props> = ({ language }) => {
                     z={5}
                     id='orientation'
                     className={`${styles.select} ${styles['orientation']}`}
-                    instructions={EOrientation[language]}
+                    instructions={t('Orientation')}
                     hideDelete
                     value={
                       optionsOrientations.find((o) => o.value === orientation) || {
-                        label: EAll[language],
+                        label: t('All'),
                         value: 'all',
                       }
                     }
@@ -544,10 +512,10 @@ const Images: FC<Props> = ({ language }) => {
                   id='category'
                   className={`${styles.select} ${styles['category']}`}
                   hideDelete
-                  instructions={ECategoryTitle[language]}
+                  instructions={t('CategoryTitle')}
                   value={
                     optionsCategories.find((o) => o.value === category) || {
-                      label: EAll[language],
+                      label: t('All'),
                       value: '', // does not accept 'all' as a value
                     }
                   }
@@ -561,7 +529,7 @@ const Images: FC<Props> = ({ language }) => {
                   id='order-by'
                   className={`${styles.select} ${styles['order-by']}`}
                   hideDelete
-                  instructions={EOrderBy[language]}
+                  instructions={t('OrderBy')}
                   value={
                     optionsOrderBy.find((o) => o.value === order) || {
                       label: 'Popular',
@@ -582,7 +550,7 @@ const Images: FC<Props> = ({ language }) => {
                   checked={editorsChoice}
                   onChange={(e) => setEditorsChoice(e.target.checked)}
                 />
-                {EEditorsChoice[language]} (Pixabay)
+                {t('EditorsChoice')} (Pixabay)
               </label>
 
               <label>
@@ -591,7 +559,7 @@ const Images: FC<Props> = ({ language }) => {
                   checked={safeSearch}
                   onChange={(e) => setSafeSearch(e.target.checked)}
                 />
-                {ESafemodeTitle[language]}
+                {t('SafemodeTitle')}
               </label>
             </div>
 
@@ -601,10 +569,10 @@ const Images: FC<Props> = ({ language }) => {
                 id='text-type'
                 className={`${styles.select} ${styles['text-type']}`}
                 hideDelete
-                instructions={ETextType[language]}
+                instructions={t('TextType')}
                 value={
                   optionsTextTypes.find((o) => o.value === textType) || {
-                    label: EAll[language],
+                    label: t('All'),
                     value: '',
                   }
                 }
@@ -617,7 +585,7 @@ const Images: FC<Props> = ({ language }) => {
                 id='images-per-page'
                 className={`${styles.select} ${styles['images-per-page']}`}
                 hideDelete
-                instructions={EMediaPerPage[language]}
+                instructions={t('MediaPerPage')}
                 value={
                   subPageOptions.find((o) => o.value === perSubPage) || {
                     label: '20',
@@ -632,14 +600,12 @@ const Images: FC<Props> = ({ language }) => {
               />
 
               <button type='submit' disabled={loading}>
-                {type === 'video'
-                  ? ESearchforVideos[language]
-                  : ESearchForMedia[language]}
+                {type === 'video' ? t('SearchforVideos') : t('SearchForMedia')}
               </button>
             </div>
             {type === 'vector' && (
               <p className={`textcenter flex center   ${styles.note}`}>
-                {ENote[language]} {EVectorImagesCanBeDownloaded[language]}
+                {t('Note')} {t('VectorImagesCanBeDownloaded')}
               </p>
             )}
           </form>
@@ -651,7 +617,7 @@ const Images: FC<Props> = ({ language }) => {
           <div>
             {loading && (
               <p className='textcenter flex center margin0auto textcenter'>
-                {ELoading[language]}...
+                {t('Loading')}...
               </p>
             )}
 
@@ -674,7 +640,7 @@ const Images: FC<Props> = ({ language }) => {
                               item.videos.small.width / item.videos.small.height,
                           }}
                         >
-                          {ELoading[language]}...
+                          {t('Loading')}...
                         </div>
                       }
                     >
@@ -699,7 +665,7 @@ const Images: FC<Props> = ({ language }) => {
                             aspectRatio: item.previewWidth / item.previewHeight,
                           }}
                         >
-                          {ELoading[language]}...
+                          {t('Loading')}...
                         </div>
                       }
                     >

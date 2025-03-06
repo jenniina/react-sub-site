@@ -1,15 +1,5 @@
 import { ELanguages } from '.'
 
-export enum EQuote {
-  en = 'Quote',
-  es = 'Cita',
-  fr = 'Citation',
-  de = 'Zitat',
-  pt = 'Citação',
-  cs = 'Citát',
-  fi = 'Lainaus',
-}
-
 export enum EAge {
   en = 'Age',
   es = 'Edad',
@@ -704,31 +694,4 @@ export const translationMapQuotes: Record<string, Record<ELanguages, string>> = 
   morning: EMorning,
   movies: EMovies,
   success: ESuccess,
-}
-export enum ESearchForQuoteSeparately {
-  en = 'Search for quote separately',
-  es = 'Buscar cita por separado',
-  fr = 'Rechercher une citation séparément',
-  de = 'Suche nach Zitat separat',
-  pt = 'Pesquisar citação separadamente',
-  cs = 'Hledat citát samostatně',
-  fi = 'Etsi lainaus erikseen',
-}
-export enum EQuoteCategories {
-  en = 'Quote categories',
-  es = 'Categorías de citas',
-  fr = 'Catégories de citations',
-  de = 'Zitatkategorien',
-  pt = 'Categorias de citações',
-  cs = 'Kategorie citátů',
-  fi = 'Lainausten kategoriat',
-}
-export enum ESearchForQuote {
-  en = 'Search for quote',
-  es = 'Buscar cita',
-  fr = 'Rechercher une citation',
-  de = 'Suche nach Zitat',
-  pt = 'Pesquisar citação',
-  cs = 'Hledat citát',
-  fi = 'Etsi lainaus',
 }

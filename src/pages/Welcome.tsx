@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useContext } from 'react'
 import { useTheme } from '../hooks/useTheme'
 import { Link } from 'react-router-dom'
 import styles from './css/welcome.module.css'
@@ -6,17 +6,9 @@ import { BiChat } from 'react-icons/bi'
 import { BsPerson } from 'react-icons/bs'
 import { IoMdImages } from 'react-icons/io'
 import { FaStoreAlt } from 'react-icons/fa'
-import {
-  EAbout,
-  EChangeLanguage,
-  EContact,
-  ELanguages,
-  EPortfolio,
-  EStore,
-  ELoading,
-} from '../types'
+import { ELanguages, ELanguagesLong } from '../types'
 import { Select, SelectOption } from '../components/Select/Select'
-import { getKeyByValue } from '../utils'
+import { LanguageContext } from '../contexts/LanguageContext'
 
 const Newest = lazy(() => import('../components/Newest/Newest'))
 
@@ -33,8 +25,10 @@ export default function Home({
   type: string
   language: ELanguages
   setLanguage: (language: ELanguages) => void
-  options: (enumObj: typeof ELanguages) => SelectOption[]
+  options: (enumObj: typeof ELanguagesLong) => SelectOption[]
 }) {
+  const { t } = useContext(LanguageContext)!
+
   const lightTheme = useTheme()
 
   return (
@@ -43,13 +37,13 @@ export default function Home({
         language={language}
         id='language-welcome'
         className={`${styles['language-welcome']} ${styles.language} language`}
-        instructions={`${EChangeLanguage[language]}:`}
-        options={options(ELanguages)}
+        instructions={`${t('ChangeLanguage')}:`}
+        options={options(ELanguagesLong)}
         value={
           language
             ? ({
                 value: language,
-                label: getKeyByValue(ELanguages, language),
+                label: ELanguagesLong[language],
               } as SelectOption)
             : undefined
         }
@@ -63,29 +57,29 @@ export default function Home({
             <ul className={styles.list}>
               <li className={styles['li-about']}>
                 <Link to='/about'>
-                  <BsPerson /> <span>{EAbout[language]}</span>
+                  <BsPerson /> <span>{t('About')}</span>
                 </Link>
               </li>
               <li>
                 <Link to='/portfolio'>
-                  <IoMdImages /> <span>{EPortfolio[language]}</span>
+                  <IoMdImages /> <span>{t('Portfolio')}</span>
                 </Link>
               </li>
               <li>
                 <Link to='/contact'>
-                  <BiChat /> <span>{EContact[language]}</span>
+                  <BiChat /> <span>{t('Contact')}</span>
                 </Link>
               </li>
               <li>
                 <Link to='/store'>
-                  <FaStoreAlt /> <span>{EStore[language]}</span>
+                  <FaStoreAlt /> <span>{t('Store')}</span>
                 </Link>
               </li>
             </ul>
             <Suspense
               fallback={
                 <div className='flex center margin0auto textcenter'>
-                  {ELoading[language]}...
+                  {t('Loading')}...
                 </div>
               }
             >

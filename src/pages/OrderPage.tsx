@@ -1,32 +1,15 @@
 import { splitToLines } from '../utils'
 import styles from '../components/Store/store.module.css'
 //import Order from '../components/Store/components/Order'
-import { EEmail, EHide, ELanguages, ELoading, EName, EShow, ReducerProps } from '../types'
+import { ELanguages, ReducerProps } from '../types'
 import Hero from '../components/Hero/Hero'
 import { useSelector } from 'react-redux'
 //import Orders from '../components/Store/components/Orders'
-import {
-  EBillingAddress,
-  EBusinessID,
-  ECancelled,
-  ECity,
-  ECompanyName,
-  ECountry,
-  EFull,
-  EInProgress,
-  ENoPayment,
-  EOrderCompleted,
-  EOrders,
-  EPartial,
-  EPending,
-  EPhone,
-  EPostalCode,
-  ICart,
-  IInfo,
-} from '../types/store'
-import { lazy, Suspense } from 'react'
+import { IInfo } from '../types/store'
+import { lazy, Suspense, useContext } from 'react'
 import { SelectOption } from '../components/Select/Select'
 import { status, paid } from '../types/store'
+import { LanguageContext } from '../contexts/LanguageContext'
 
 const Order = lazy(() => import('../components/Store/components/Order'))
 const Orders = lazy(() => import('../components/Store/components/Orders'))
@@ -39,6 +22,8 @@ interface OrderPageProps {
 }
 
 const OrderPage: React.FC<OrderPageProps> = ({ language, heading, text, type }) => {
+  const { t } = useContext(LanguageContext)!
+
   const user = useSelector((state: ReducerProps) => state.auth?.user)
   const urlParams = new URLSearchParams(window.location.search)
   const orderID = urlParams.get('orderID')
@@ -49,22 +34,22 @@ const OrderPage: React.FC<OrderPageProps> = ({ language, heading, text, type }) 
   const itemStatus = (status: status) => {
     switch (status) {
       case 'pending':
-        return EPending[language]
+        return t('Pending')
       case 'in progress':
-        return EInProgress[language]
+        return t('InProgress')
       case 'completed':
-        return EOrderCompleted[language]
+        return t('OrderCompleted')
       case 'cancelled':
-        return ECancelled[language]
+        return t('Cancelled')
       default:
-        return EPending[language]
+        return t('Pending')
     }
   }
 
   const paidStatus = {
-    none: ENoPayment[language],
-    partial: EPartial[language],
-    full: EFull[language],
+    none: t('NoPayment'),
+    partial: t('Partial'),
+    full: t('Full'),
   }
 
   const statusOptions: SelectOption[] = statusesList.map((status) => ({
@@ -79,23 +64,23 @@ const OrderPage: React.FC<OrderPageProps> = ({ language, heading, text, type }) 
   const info = (key: keyof IInfo): string => {
     switch (key) {
       case 'name':
-        return EName[language]
+        return t('Name')
       case 'email':
-        return EEmail[language]
+        return t('Email')
       case 'phone':
-        return EPhone[language]
+        return t('Phone')
       case 'address':
-        return EBillingAddress[language]
+        return t('BillingAddress')
       case 'city':
-        return ECity[language]
+        return t('City')
       case 'zip':
-        return EPostalCode[language]
+        return t('PostalCode')
       case 'country':
-        return ECountry[language]
+        return t('Country')
       case 'companyName':
-        return ECompanyName[language]
+        return t('CompanyName')
       case 'businessID':
-        return EBusinessID[language]
+        return t('BusinessID')
       default:
         return key
     }
@@ -110,7 +95,7 @@ const OrderPage: React.FC<OrderPageProps> = ({ language, heading, text, type }) 
               <Suspense
                 fallback={
                   <div className='flex center margin0auto textcenter'>
-                    {ELoading[language]}...
+                    {t('Loading')}...
                   </div>
                 }
               >
@@ -129,7 +114,7 @@ const OrderPage: React.FC<OrderPageProps> = ({ language, heading, text, type }) 
               <Suspense
                 fallback={
                   <div className='flex center margin0auto textcenter'>
-                    {ELoading[language]}...
+                    {t('Loading')}...
                   </div>
                 }
               >

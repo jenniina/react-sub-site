@@ -1,13 +1,16 @@
-import { useState, useEffect, FC } from 'react'
+import { useState, useEffect, FC, useContext } from 'react'
 import styles from './scrolltotop.module.css'
-import { ELanguages, EScrollToTheTop } from '../../types'
+import { ELanguages } from '../../types'
 import { BiChevronsUp } from 'react-icons/bi'
 import { useLocation } from 'react-router-dom'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 const ScrollToTop: FC<{
   styleMenu: boolean | undefined
   language: ELanguages
 }> = ({ styleMenu, language }) => {
+  const { t } = useContext(LanguageContext)!
+
   const location = useLocation()
   const [showTopBtn, setShowTopBtn] = useState(false)
   useEffect(() => {
@@ -47,7 +50,7 @@ const ScrollToTop: FC<{
       onClick={goToTop}
     >
       <BiChevronsUp className={styles['icon']} />
-      <span className='scr'>{EScrollToTheTop[language]}</span>
+      <span className='scr'>{t('ScrollToTheTop')}</span>
     </button>
   )
 }

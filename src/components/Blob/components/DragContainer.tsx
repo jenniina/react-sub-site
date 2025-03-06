@@ -8,7 +8,6 @@ import {
   MouseEvent as MouseEventReact,
   TouchEvent as TouchEventReact,
   FormEvent,
-  Fragment,
   ChangeEvent,
   lazy,
   Suspense,
@@ -27,107 +26,7 @@ import {
   Modes,
 } from '../types'
 import { BlobContext, Props } from './BlobProvider'
-import {
-  EAreYouSureYouWantToProceed,
-  EBackToStart,
-  EDownload,
-  EEdit,
-  EError,
-  EErrorConnectingToTheServer,
-  ELanguages,
-  ELoad,
-  ELogin,
-  ENew,
-  ENewName,
-  ENext,
-  EOr,
-  EPage,
-  EPerPage,
-  EPrevious,
-  ERegister,
-  EReset,
-  ESave,
-  ESavingSuccessful,
-  ESpecialCharactersNotAllowed,
-  EToLastPage,
-  ReducerProps,
-  EAMaxOf30CharactersPlease,
-  ENameTooLong,
-  ELoading,
-} from '../../../types'
-import {
-  EAlternatively,
-  EChangeLayerByClickingMe,
-  EClickMeToMakeARandomBlob,
-  ECloneInstructions,
-  EDisableScroll,
-  EEnableScroll,
-  EEnlargeInstructions,
-  ELayer,
-  EMarkerOff,
-  EMarkerOn,
-  EMoveViewDown,
-  EMoveViewLeft,
-  EMoveViewRight,
-  EMoveViewUp,
-  ERemovalInstructions,
-  EResetBlobs,
-  EResizebyScrollInstructions,
-  ESelectedBlobNone,
-  EShrinkInstructions,
-  EStartSway,
-  EStopSway,
-  EToggleLayerByClickingMe,
-  EToggleMarkerVisibilityWhenUsingAKeyboard,
-  ETryDraggingTheBlobs,
-  EHideControls,
-  EShowControls,
-  EPressHereOrEscapeToRestoreScrolling,
-  ELoginToSaveBlobs,
-  EInOrderToSaveTheBlobs,
-  ENameYourArtwork,
-  ERenameYourArtwork,
-  ERename,
-  EArtSaved,
-  EAreYouSureYouWantToDeleteThisVersion,
-  ENoteThatUnsavedChangesWillBeLost,
-  EDeletedArt,
-  EAVersionAlreadyExistsOverwrite,
-  ELoadingSavedArtwork,
-  ENoSavedArtworkYet,
-  EDisableScrollInOrderToUseTheMouseWheelToResizeABlob,
-  EClickHereToTakeAScreenshot,
-  EScreenshotTaken,
-  EScreenshot,
-  EIncreaseBlobLayerBy1Instructions,
-  EDecreaseBlobLayerBy1Instructions,
-  ENoScreenshotAvailableToSave,
-  EYouMayFindTheImageBelow,
-  EKeyboardUsePressTheCorrespondingLayerNumber,
-  EMoreColorsAvailable,
-  ECannotLowerEveryBlobFurtherSomeBlobsAlreadyLowest,
-  EClickHereToMoveUpLayer,
-  EClickHereToMoveDownLayer,
-  EArt,
-  EGetMoreLayers,
-  EDeleteHiddenLayers,
-  EMaximumLayerAmountReached,
-  EMustHaveAtLeastOneLayer,
-  ELayerNotEmpty,
-  ECannotRaiseEveryBlobFurther,
-  ELayerHidden,
-  EWithMoreMutedColors,
-  EMoreColorsAvailableThroughRandomBlobButton,
-  EDarkerColors,
-  EAfterEnablingThereIsASlightDelayBeforeAllTheBlobsAreMovingAgain,
-  EGetANewSetOfBlobs,
-  EDeleteModeOn,
-  ECloneModeOn,
-  ELayerIncreaseModeOn,
-  ELayerDecreaseModeOn,
-  ESizeIncreaseModeOn,
-  ESizeDecreaseModeOn,
-} from '../../../types/blobs'
+import { ELanguages, ReducerProps } from '../../../types'
 import {
   BiChevronDown,
   BiChevronsDown,
@@ -139,7 +38,6 @@ import {
 } from 'react-icons/bi'
 import { ImEnlarge2, ImShrink2, ImCamera } from 'react-icons/im'
 import { FaPlus, FaRegClone, FaSave } from 'react-icons/fa'
-//import DragLayers from './DragLayers'
 import useWindowSize from '../../../hooks/useWindowSize'
 import { IUser } from '../../../types'
 import { useSelector } from 'react-redux'
@@ -150,10 +48,7 @@ import { initializeUser } from '../../../reducers/authReducer'
 import { initializeUsers } from '../../../reducers/usersReducer'
 import { useNavigate } from 'react-router-dom'
 import blobService from '../services/blob'
-import { EDelete } from '../../Jokes/types'
-//import ColorBlocks from './ColorBlocks'
-// import Sliders from './Sliders'
-import { EBlobArt } from '../../../types/about'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 const ColorBlocks = lazy(() => import('./ColorBlocks'))
 const Sliders = lazy(() => import('./Sliders'))
@@ -219,6 +114,8 @@ export default function DragContainer({
   scroll: boolean
   setScroll: DispatchReact<SetStateAction<boolean>>
 }) {
+  const { t } = useContext(LanguageContext)!
+
   const defaultHue = '214'
   const defaultSaturation = d === 0 ? '80' : d === 2 ? '50' : '45'
   const defaultLightness = d === 0 ? '30' : d === 2 ? '5' : '25'
@@ -531,7 +428,7 @@ export default function DragContainer({
   function saveDraggables(blob: Draggable[] = draggables[d]) {
     localStorage.setItem(localStorageDraggables, JSON.stringify(blob))
   }
-  const [name, setName] = useState<string>(EBlobArt[language])
+  const [name, setName] = useState<string>(t('BlobArt'))
   const [newName, setNewName] = useState(name)
   const [editName, setEditName] = useState('')
   const [isLoading, setIsLoading] = useState(true)
@@ -591,14 +488,14 @@ export default function DragContainer({
           .catch((error) => {
             if (error.response?.data?.message)
               dispatch(notify(error.response.data.message, true, 8))
-            else dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
+            else dispatch2(notify(`${t('Error')}: ${error.message}`, true, 8))
             setIsLoading(false)
           })
       }
     } catch (error: any) {
       if (error.response?.data?.message)
         dispatch(notify(error.response.data.message, true, 8))
-      else dispatch2(notify(EError[language], true, 8))
+      else dispatch2(notify(t('Error'), true, 8))
       setIsLoading(false)
     }
   }
@@ -619,7 +516,7 @@ export default function DragContainer({
     if (regex.test(value)) {
       setName(value)
     } else {
-      dispatch2(notify(ESpecialCharactersNotAllowed[language], true, 8))
+      dispatch2(notify(t('SpecialCharactersNotAllowed'), true, 8))
     }
   }
 
@@ -628,7 +525,7 @@ export default function DragContainer({
     if (regex.test(value)) {
       setNewName(value)
     } else {
-      dispatch2(notify(ESpecialCharactersNotAllowed[language], true, 8))
+      dispatch2(notify(t('SpecialCharactersNotAllowed'), true, 8))
     }
   }
 
@@ -637,23 +534,19 @@ export default function DragContainer({
     e.preventDefault()
     try {
       if (name.trim() === '') {
-        dispatch2(notify(ENameYourArtwork[language], true, 8))
+        dispatch2(notify(t('NameYourArtwork'), true, 8))
         setLoading(false)
         return
       } else if (name.trim().length > 30) {
         setLoading(false)
         dispatch2(
-          notify(
-            `${ENameTooLong[language]}. ${EAMaxOf30CharactersPlease[language]}`,
-            true,
-            8
-          )
+          notify(`${t('NameTooLong')}. ${t('AMaxOf30CharactersPlease')}`, true, 8)
         )
         return
       } else if (user?._id) {
         const versionName = name.trim()
         if (checkDuplicateVersionName(versionName)) {
-          if (!window.confirm(EAVersionAlreadyExistsOverwrite[language])) {
+          if (!window.confirm(t('AVersionAlreadyExistsOverwrite'))) {
             return
           }
         }
@@ -669,21 +562,21 @@ export default function DragContainer({
           .then(() => {
             setTrackSaving(!trackSaving)
             setLoading(false)
-            dispatch2(notify(ESavingSuccessful[language], false, 8))
+            dispatch2(notify(t('SavingSuccessful'), false, 8))
           })
           .catch((error) => {
             if (error.response?.data?.message)
               dispatch(notify(error.response.data.message, true, 8))
-            else dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
+            else dispatch2(notify(`${t('Error')}: ${error.message}`, true, 8))
           })
       } else {
-        dispatch2(notify(ELoginToSaveBlobs[language], true, 8))
+        dispatch2(notify(t('LoginToSaveBlobs'), true, 8))
         setLoading(false)
       }
     } catch (error: any) {
       if (error.response?.data?.message)
         dispatch(notify(error.response.data.message, true, 8))
-      else dispatch2(notify(EError[language], true, 8))
+      else dispatch2(notify(t('Error'), true, 8))
       setLoading(false)
     }
   }
@@ -691,16 +584,10 @@ export default function DragContainer({
   const editBlobsByUser = async (versionName: string, newVersionName: string) => {
     const newVersion = newVersionName.trim()
     if (newVersionName.trim() === '') {
-      dispatch2(notify(ENameYourArtwork[language], true, 8))
+      dispatch2(notify(t('NameYourArtwork'), true, 8))
       return
     } else if (newVersionName.trim().length > 30) {
-      dispatch2(
-        notify(
-          `${ENameTooLong[language]}. ${EAMaxOf30CharactersPlease[language]}`,
-          true,
-          8
-        )
-      )
+      dispatch2(notify(`${t('NameTooLong')}. ${t('AMaxOf30CharactersPlease')}`, true, 8))
       return
     } else {
       try {
@@ -717,20 +604,20 @@ export default function DragContainer({
             )
             .then(() => {
               setTrackSaving(!trackSaving)
-              dispatch2(notify(ESavingSuccessful[language], false, 8))
+              dispatch2(notify(t('SavingSuccessful'), false, 8))
             })
             .catch((error) => {
               if (error.response?.data?.message)
                 dispatch(notify(error.response.data.message, true, 8))
-              else dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
+              else dispatch2(notify(`${t('Error')}: ${error.message}`, true, 8))
             })
         } else {
-          dispatch2(notify(ELoginToSaveBlobs[language], true, 8))
+          dispatch2(notify(t('LoginToSaveBlobs'), true, 8))
         }
       } catch (error: any) {
         if (error.response?.data?.message)
           dispatch(notify(error.response.data.message, true, 8))
-        else dispatch2(notify(EError[language], true, 8))
+        else dispatch2(notify(t('Error'), true, 8))
       }
     }
   }
@@ -738,7 +625,7 @@ export default function DragContainer({
   const loadBlobsFromServer = (d: number, versionName: string) => {
     const newVersion = versionName.trim()
     if (user?._id) {
-      if (window.confirm(ENoteThatUnsavedChangesWillBeLost[language])) {
+      if (window.confirm(t('NoteThatUnsavedChangesWillBeLost'))) {
         blobService
           .getBlobsVersionByUser(user?._id, d, newVersion, language)
           .then((response: SavedBlobs) => {
@@ -782,7 +669,7 @@ export default function DragContainer({
           .catch((error) => {
             if (error.response?.data?.message)
               dispatch(notify(error.response.data.message, true, 8))
-            else dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
+            else dispatch2(notify(`${t('Error')}: ${error.message}`, true, 8))
           })
       }
     }
@@ -790,17 +677,17 @@ export default function DragContainer({
 
   const deleteBlobsVersionFromServer = (d: number, versionName: string) => {
     if (user._id) {
-      if (window.confirm(EAreYouSureYouWantToDeleteThisVersion[language])) {
+      if (window.confirm(t('AreYouSureYouWantToDeleteThisVersion'))) {
         blobService
           .deleteBlobsVersionByUser(user._id, d, versionName, language)
           .then(() => {
-            dispatch2(notify(EDeletedArt[language], false, 8))
+            dispatch2(notify(t('DeletedArt'), false, 8))
             setTrackSaving(!trackSaving)
           })
           .catch((error) => {
             if (error.response?.data?.message)
               dispatch(notify(error.response.data.message, true, 8))
-            else dispatch2(notify(`${EError[language]}: ${error.message}`, true, 8))
+            else dispatch2(notify(`${t('Error')}: ${error.message}`, true, 8))
           })
       }
     }
@@ -1058,14 +945,12 @@ export default function DragContainer({
     )
 
     if (isAnyOnLowestLayer) {
-      dispatch2(
-        notify(ECannotLowerEveryBlobFurtherSomeBlobsAlreadyLowest[language], true, 8)
-      )
+      dispatch2(notify(t('CannotLowerEveryBlobFurtherSomeBlobsAlreadyLowest'), true, 8))
       return
     }
 
     if (isAnyOnHighestLayer) {
-      dispatch2(notify(ECannotRaiseEveryBlobFurther[language], true, 8))
+      dispatch2(notify(t('CannotRaiseEveryBlobFurther'), true, 8))
       return
     }
 
@@ -1083,7 +968,7 @@ export default function DragContainer({
 
   function resetBlobsFunction(e: MouseEventReact | TouchEventReact | PointerEventReact) {
     e.preventDefault()
-    if (window.confirm(`${EResetBlobs[language]}?`)) {
+    if (window.confirm(`${t('ResetBlobs')}?`)) {
       window.localStorage.removeItem(localStorageDraggables)
       dispatch({ type: 'resetDraggables', payload: { d } })
       dispatch({ type: 'setDraggablesAtD', payload: { d, draggables: [] } })
@@ -1192,7 +1077,7 @@ export default function DragContainer({
       document.activeElement.blur() // Unfocus the button after clicking, as the tooltip will otherwise stay visible and be in the way
 
     if (hiddenLayers.has(activeLayer)) {
-      dispatch2(notify(ELayerHidden[language], true, 8))
+      dispatch2(notify(t('LayerHidden'), true, 8))
       return
     }
 
@@ -1623,20 +1508,20 @@ export default function DragContainer({
         document.body.appendChild(link)
         link.click()
         document.body.removeChild(link)
-        dispatch(notify(EArtSaved[language], false, 8))
+        dispatch(notify(t('ArtSaved'), false, 8))
       } else {
-        dispatch(notify(EError[language], true, 8))
+        dispatch(notify(t('Error'), true, 8))
       }
     } catch (err) {
       console.error('Screenshot Error:', err)
-      dispatch(notify(EError[language], true, 8))
+      dispatch(notify(t('Error'), true, 8))
     } finally {
       setLoading(false)
     }
   }
 
   useEffect(() => {
-    if (loading) dispatch2(notify(`${ELoading[language]}...`, false, 20))
+    if (loading) dispatch2(notify(`${t('Loading')}...`, false, 20))
   }, [loading])
 
   const [itemsPerPage, setItemsPerPage] = useState(5)
@@ -1667,7 +1552,7 @@ export default function DragContainer({
 
     if (nonEmptyHiddenLayers.length > 0) {
       const confirmDelete = window.confirm(
-        `${ELayerNotEmpty[language]}. ${EAreYouSureYouWantToProceed[language]}`
+        `${t('LayerNotEmpty')}. ${t('AreYouSureYouWantToProceed')}`
       )
       if (!confirmDelete) {
         return
@@ -1682,7 +1567,7 @@ export default function DragContainer({
     const newLayerAmount = layerAmount - hiddenLayers.size
 
     if (newLayerAmount < 1) {
-      dispatch2(notify(EMustHaveAtLeastOneLayer[language], true, 8))
+      dispatch2(notify(t('MustHaveAtLeastOneLayer'), true, 8))
       return
     }
 
@@ -1715,7 +1600,7 @@ export default function DragContainer({
     const newLayerAmount = layerAmount + byAmount
 
     if (newLayerAmount > 9) {
-      dispatch2(notify(EMaximumLayerAmountReached[language], true, 8))
+      dispatch2(notify(t('MaximumLayerAmountReached'), true, 8))
       return
     }
 
@@ -1756,7 +1641,7 @@ export default function DragContainer({
   function removeBlob(draggable: Draggable) {
     setDeleteId(draggable.id)
     if (selectedvalue0.current)
-      selectedvalue0.current.textContent = `${ESelectedBlobNone[language]}`
+      selectedvalue0.current.textContent = `${t('SelectedBlobNone')}`
   }
 
   useEffect(() => {
@@ -1777,21 +1662,21 @@ export default function DragContainer({
               disabled={current === 1}
               className='btn-small pagination-btn'
             >
-              &laquo;&nbsp;<span className='scr'>{EBackToStart[language]}</span>
+              &laquo;&nbsp;<span className='scr'>{t('BackToStart')}</span>
             </button>
             <button
               onClick={() => handlePageChange(Number(dKey), Math.max(current - 1, 1))}
               disabled={current === 1}
               className='btn-small pagination-btn'
             >
-              &nbsp;&lsaquo;&nbsp;<span className='scr'>{EPrevious[language]}</span>
+              &nbsp;&lsaquo;&nbsp;<span className='scr'>{t('Previous')}</span>
             </button>
           </>
         ) : (
           <></>
         )}
         <span>
-          {EPage[language]} {current} / {totalPages}
+          {t('Page')} {current} / {totalPages}
         </span>
         {current !== totalPages ? (
           <>
@@ -1802,7 +1687,7 @@ export default function DragContainer({
               disabled={current === totalPages}
               className='btn-small pagination-btn'
             >
-              <span className='scr'>{ENext[language]}</span>&nbsp;&rsaquo;&nbsp;
+              <span className='scr'>{t('Next')}</span>&nbsp;&rsaquo;&nbsp;
             </button>
 
             <button
@@ -1810,7 +1695,7 @@ export default function DragContainer({
               disabled={current === totalPages}
               className='btn-small pagination-btn'
             >
-              <span className='scr'>{EToLastPage[language]}</span>&nbsp;&raquo;
+              <span className='scr'>{t('ToLastPage')}</span>&nbsp;&raquo;
             </button>
           </>
         ) : (
@@ -1828,7 +1713,7 @@ export default function DragContainer({
               max={100}
               onChange={(e) => setItemsPerPage(Number(e.target.value))}
             />
-            <span>{EPerPage[language]}</span>
+            <span>{t('PerPage')}</span>
           </label>
         </div>
       </div>
@@ -1852,37 +1737,36 @@ export default function DragContainer({
           <div id={`drag-container${d}`} className={`drag-container drag-container${d}`}>
             <div className='blob-title-wrap'>
               <h2 className='blob-title'>
-                {EBlobArt[language]} {d + 1}
+                {t('BlobArt')} {d + 1}
               </h2>
               {d === 0 ? (
-                <p>{EMoreColorsAvailableThroughRandomBlobButton[language]} </p>
+                <p>{t('MoreColorsAvailableThroughRandomBlobButton')} </p>
               ) : d === 1 ? (
                 <p>
-                  {EWithMoreMutedColors[language]}.{' '}
-                  {EMoreColorsAvailableThroughRandomBlobButton[language]}{' '}
+                  {t('WithMoreMutedColors')}.{' '}
+                  {t('MoreColorsAvailableThroughRandomBlobButton')}{' '}
                 </p>
               ) : d === 2 ? (
                 <p>
-                  {EDarkerColors[language]}.{' '}
-                  {EMoreColorsAvailableThroughRandomBlobButton[language]}{' '}
+                  {t('DarkerColors')}. {t('MoreColorsAvailableThroughRandomBlobButton')}{' '}
                 </p>
               ) : (
-                <p>{EMoreColorsAvailableThroughRandomBlobButton[language]}</p>
+                <p>{t('MoreColorsAvailableThroughRandomBlobButton')}</p>
               )}
             </div>
             <div className={'label-container'}>
               <span id={`blobdescription${d}`} className={'scr'}>
-                {ETryDraggingTheBlobs[language]}
+                {t('TryDraggingTheBlobs')}
               </span>
               <span>
-                [{ELayer[language]}: {activeLayer + 1}]{' '}
+                [{t('Layer')}: {activeLayer + 1}]{' '}
               </span>
               <span
                 ref={selectedvalue0}
                 id={`selectedvalue${d}`}
                 className='selectedvalue'
               >
-                {ESelectedBlobNone[language]}
+                {t('SelectedBlobNone')}
               </span>
             </div>
             <div id={`button-container${d}`} className={'button-container'}>
@@ -1896,13 +1780,9 @@ export default function DragContainer({
                 aria-labelledby={`stop-blobs${d}-span`}
               >
                 <span id={`stop-blobs${d}-span`} className='tooltip above'>
-                  {
-                    EAfterEnablingThereIsASlightDelayBeforeAllTheBlobsAreMovingAgain[
-                      language
-                    ]
-                  }
+                  {t('AfterEnablingThereIsASlightDelayBeforeAllTheBlobsAreMovingAgain')}
                 </span>
-                {paused ? EStartSway[language] : EStopSway[language]}
+                {paused ? t('StartSway') : t('StopSway')}
               </button>
               <button
                 ref={resetBlobs}
@@ -1914,9 +1794,9 @@ export default function DragContainer({
                 }}
               >
                 <span id={`reset-blobs${d}-span`} className='tooltip above'>
-                  {EGetANewSetOfBlobs[language]}
+                  {t('GetANewSetOfBlobs')}
                 </span>{' '}
-                {EReset[language]}
+                {t('Reset')}
               </button>
               <button
                 id={`toggle-marker${d}`}
@@ -1924,11 +1804,10 @@ export default function DragContainer({
                 className='toggle-marker tooltip-wrap'
                 onClick={() => setMarkerEnabled(!markerEnabled)}
               >
-                <span
-                  id={`toggle-marker${d}-span`}
-                  className='tooltip above'
-                >{`${EToggleMarkerVisibilityWhenUsingAKeyboard[language]}`}</span>
-                {markerEnabled ? EMarkerOn[language] : EMarkerOff[language]}
+                <span id={`toggle-marker${d}-span`} className='tooltip above'>{`${t(
+                  'ToggleMarkerVisibilityWhenUsingAKeyboard'
+                )}`}</span>
+                {markerEnabled ? t('MarkerOn') : t('MarkerOff')}
               </button>
 
               <button
@@ -1942,10 +1821,10 @@ export default function DragContainer({
               >
                 <span id={`disable-scroll${d}-span`} className='tooltip above'>
                   {scroll
-                    ? EDisableScrollInOrderToUseTheMouseWheelToResizeABlob[language]
-                    : EPressHereOrEscapeToRestoreScrolling[language]}
+                    ? t('DisableScrollInOrderToUseTheMouseWheelToResizeABlob')
+                    : t('PressHereOrEscapeToRestoreScrolling')}
                 </span>
-                {scroll ? EDisableScroll[language] : EEnableScroll[language]}
+                {scroll ? t('DisableScroll') : t('EnableScroll')}
               </button>
 
               <button
@@ -1963,7 +1842,7 @@ export default function DragContainer({
               >
                 <span id={`toggle-controls${d}-span`}>
                   {' '}
-                  {controlsVisible ? EHideControls[language] : EShowControls[language]}
+                  {controlsVisible ? t('HideControls') : t('ShowControls')}
                 </span>
               </button>
               <button
@@ -1976,7 +1855,7 @@ export default function DragContainer({
               >
                 <ImCamera />
                 <span id={`take-screenshot${d}-span`} className='tooltip left above'>
-                  {loading ? ELoading[language] : EClickHereToTakeAScreenshot[language]}
+                  {loading ? t('Loading') : t('ClickHereToTakeAScreenshot')}
                 </span>
               </button>
             </div>
@@ -2005,14 +1884,11 @@ export default function DragContainer({
                 >
                   <ImShrink2 />
                   {mode === 'scale-down' && (
-                    <span className='scale-down-alert'>
-                      {ESizeDecreaseModeOn[language]}
-                    </span>
+                    <span className='scale-down-alert'>{t('SizeDecreaseModeOn')}</span>
                   )}
-                  <span
-                    id={`make-smaller${d}-span`}
-                    className='tooltip left below'
-                  >{`${EShrinkInstructions[language]}. ${EAlternatively[language]}: ${EResizebyScrollInstructions[language]}`}</span>
+                  <span id={`make-smaller${d}-span`} className='tooltip left below'>{`${t(
+                    'ShrinkInstructions'
+                  )}. ${t('Alternatively')}: ${t('ResizebyScrollInstructions')}`}</span>
                 </button>
                 <button
                   ref={makeLarger0}
@@ -2026,14 +1902,11 @@ export default function DragContainer({
                 >
                   <ImEnlarge2 />
                   {mode === 'scale-up' && (
-                    <span className='scale-up-alert'>
-                      {ESizeIncreaseModeOn[language]}
-                    </span>
+                    <span className='scale-up-alert'>{t('SizeIncreaseModeOn')}</span>
                   )}
-                  <span
-                    id={`make-larger${d}-span`}
-                    className='tooltip left above'
-                  >{`${EEnlargeInstructions[language]}. ${EAlternatively[language]}: ${EResizebyScrollInstructions[language]}`}</span>
+                  <span id={`make-larger${d}-span`} className='tooltip left above'>{`${t(
+                    'EnlargeInstructions'
+                  )}. ${t('Alternatively')}: ${t('ResizebyScrollInstructions')}`}</span>
                 </button>
 
                 <button
@@ -2048,10 +1921,10 @@ export default function DragContainer({
                 >
                   <FaRegClone />
                   {mode === 'clone' && (
-                    <span className='clone-alert'>{ECloneModeOn[language]}</span>
+                    <span className='clone-alert'>{t('CloneModeOn')}</span>
                   )}
                   <span id={`make-more${d}-span`} className='tooltip right below'>
-                    {ECloneInstructions[language]}
+                    {t('CloneInstructions')}
                   </span>
                 </button>
                 <button
@@ -2064,10 +1937,9 @@ export default function DragContainer({
                   onClick={() => addRandomDraggable()}
                 >
                   <FaPlus />
-                  <span
-                    id={`make-random${d}-span`}
-                    className='tooltip below'
-                  >{`${EClickMeToMakeARandomBlob[language]}. ${EMoreColorsAvailable[language]}!`}</span>
+                  <span id={`make-random${d}-span`} className='tooltip below'>{`${t(
+                    'ClickMeToMakeARandomBlob'
+                  )}. ${t('MoreColorsAvailable')}!`}</span>
                 </button>
                 <button
                   ref={deleteBlob0}
@@ -2079,10 +1951,10 @@ export default function DragContainer({
                 >
                   <span style={{ fontSize: '1.2em' }}>&times;</span>
                   {mode === 'delete' && (
-                    <span className='delete-alert'>{EDeleteModeOn[language]}</span>
+                    <span className='delete-alert'>{t('DeleteModeOn')}</span>
                   )}
                   <span id={`delete-blob${d}-span`} className='tooltip right above'>
-                    {ERemovalInstructions[language]}
+                    {t('RemovalInstructions')}
                   </span>
                 </button>
 
@@ -2095,14 +1967,11 @@ export default function DragContainer({
                   onClick={() => toggleMode('layer-down')}
                 >
                   {mode === 'layer-down' && (
-                    <span className='layer-down-alert'>
-                      {ELayerDecreaseModeOn[language]}
-                    </span>
+                    <span className='layer-down-alert'>{t('LayerDecreaseModeOn')}</span>
                   )}
-                  <span
-                    id={`layer-decrease${d}-span`}
-                    className='tooltip above'
-                  >{`${EDecreaseBlobLayerBy1Instructions[language]} ${EKeyboardUsePressTheCorrespondingLayerNumber[language]}`}</span>
+                  <span id={`layer-decrease${d}-span`} className='tooltip above'>{`${t(
+                    'DecreaseBlobLayerBy1Instructions'
+                  )} ${t('KeyboardUsePressTheCorrespondingLayerNumber')}`}</span>
                   <BiChevronDown />
                 </button>
                 <button
@@ -2114,14 +1983,11 @@ export default function DragContainer({
                   onClick={() => toggleMode('layer-up')}
                 >
                   {mode === 'layer-up' && (
-                    <span className='layer-up-alert'>
-                      {ELayerIncreaseModeOn[language]}
-                    </span>
+                    <span className='layer-up-alert'>{t('LayerIncreaseModeOn')}</span>
                   )}
-                  <span
-                    id={`layer-increase${d}-span`}
-                    className='tooltip above'
-                  >{`${EIncreaseBlobLayerBy1Instructions[language]} ${EKeyboardUsePressTheCorrespondingLayerNumber[language]}`}</span>
+                  <span id={`layer-increase${d}-span`} className='tooltip above'>{`${t(
+                    'IncreaseBlobLayerBy1Instructions'
+                  )} ${t('KeyboardUsePressTheCorrespondingLayerNumber')}`}</span>
                   <BiChevronUp />
                 </button>
 
@@ -2163,7 +2029,7 @@ export default function DragContainer({
                   <Suspense
                     fallback={
                       <div className='flex center margin0auto textcenter'>
-                        {ELoading[language]}...
+                        {t('Loading')}...
                       </div>
                     }
                   >
@@ -2208,7 +2074,7 @@ export default function DragContainer({
               <Suspense
                 fallback={
                   <div className='flex center margin0auto textcenter'>
-                    {ELoading[language]}...
+                    {t('Loading')}...
                   </div>
                 }
               >
@@ -2238,7 +2104,7 @@ export default function DragContainer({
                 >
                   <BiChevronsLeft />
                   <span id={`moveleft${d}-span`} className='tooltip above'>
-                    {EMoveViewLeft[language]}
+                    {t('MoveViewLeft')}
                   </span>
                 </button>
                 <button
@@ -2249,7 +2115,7 @@ export default function DragContainer({
                 >
                   <BiChevronsRight />
                   <span id={`moveright${d}-span`} className='tooltip above'>
-                    {EMoveViewRight[language]}
+                    {t('MoveViewRight')}
                   </span>
                 </button>
               </div>
@@ -2261,7 +2127,7 @@ export default function DragContainer({
                   onClick={deleteHiddenLayers}
                 >
                   <span id={`decrease-layer-amount${d}-span`} className='tooltip above'>
-                    {EDeleteHiddenLayers[language]}
+                    {t('DeleteHiddenLayers')}
                   </span>
                   &times;
                 </button>
@@ -2272,7 +2138,7 @@ export default function DragContainer({
                   onClick={() => changeEveryLayer(-1)}
                 >
                   <span id={`every-layer-minus${d}-span`} className='tooltip above'>
-                    {EClickHereToMoveDownLayer[language]}
+                    {t('ClickHereToMoveDownLayer')}
                   </span>
                   <BiChevronDown />
                 </button>
@@ -2295,11 +2161,11 @@ export default function DragContainer({
                     } ${hiddenLayers.has(layer) ? 'dim' : ''}`}
                   >
                     <span id={`layer-button-${d}-${layer}-span`}>
-                      <span className='scr'>{ELayer[language]}</span> {layer + 1}{' '}
+                      <span className='scr'>{t('Layer')}</span> {layer + 1}{' '}
                       <span className='tooltip above'>
                         {activeLayer === layer
-                          ? EToggleLayerByClickingMe[language]
-                          : EChangeLayerByClickingMe[language]}
+                          ? t('ToggleLayerByClickingMe')
+                          : t('ChangeLayerByClickingMe')}
                       </span>
                     </span>
                   </button>
@@ -2313,7 +2179,7 @@ export default function DragContainer({
                   onClick={() => changeEveryLayer(1)}
                 >
                   <span id={`every-layer-plus${d}-span`} className='tooltip above'>
-                    {EClickHereToMoveUpLayer[language]}
+                    {t('ClickHereToMoveUpLayer')}
                   </span>
                   <BiChevronUp />
                 </button>
@@ -2325,7 +2191,7 @@ export default function DragContainer({
                   onClick={() => addToLayerAmount(1)}
                 >
                   <span id={`increase-layer-amount${d}-span`} className='tooltip above'>
-                    {EGetMoreLayers[language]}
+                    {t('GetMoreLayers')}
                   </span>
                   <BiPlus />
                 </button>
@@ -2341,7 +2207,7 @@ export default function DragContainer({
                 >
                   <BiChevronsUp />
                   <span id={`moveup${d}-span`} className='tooltip above'>
-                    {EMoveViewUp[language]}
+                    {t('MoveViewUp')}
                   </span>
                 </button>
                 <button
@@ -2352,7 +2218,7 @@ export default function DragContainer({
                 >
                   <BiChevronsDown />
                   <span id={`movedown${d}-span`} className='tooltip above'>
-                    {EMoveViewDown[language]}
+                    {t('MoveViewDown')}
                   </span>
                 </button>
               </div>
@@ -2360,7 +2226,7 @@ export default function DragContainer({
             <Suspense
               fallback={
                 <div className='flex center margin0auto textcenter'>
-                  {ELoading[language]}...
+                  {t('Loading')}...
                 </div>
               }
             >
@@ -2400,25 +2266,25 @@ export default function DragContainer({
                           type='text'
                           value={name}
                           onChange={handleNameChange}
-                          placeholder={ENameYourArtwork[language]}
+                          placeholder={t('NameYourArtwork')}
                           maxLength={30}
                         />
-                        <span>{ENameYourArtwork[language]}:</span>
+                        <span>{t('NameYourArtwork')}:</span>
                       </label>
                     </div>
                     <button type='submit' disabled={loading}>
-                      {ESave[language]}
+                      {t('Save')}
                     </button>
                   </form>
                 </div>
 
-                <h3>{EArt[language]}</h3>
+                <h3>{t('Art')}</h3>
                 {isLoading ? (
-                  <p>{ELoadingSavedArtwork[language]}</p>
+                  <p>{t('LoadingSavedArtwork')}</p>
                 ) : !users || users.length < 1 ? (
-                  <p>{EErrorConnectingToTheServer[language]}</p>
+                  <p>{t('ErrorConnectingToTheServer')}</p>
                 ) : !hasSavedFiles ? (
-                  <p>{ENoSavedArtworkYet[language]}</p>
+                  <p>{t('NoSavedArtworkYet')}</p>
                 ) : (
                   Object.keys(savedDraggablesbyD).map((dKey, index) => {
                     const versions = Object.keys(savedDraggablesbyD[Number(dKey)])
@@ -2444,8 +2310,7 @@ export default function DragContainer({
                                     loadBlobsFromServer(Number(dKey), versionName)
                                   }
                                 >
-                                  {ELoad[language]}{' '}
-                                  <span className='scr'>{versionName}</span>
+                                  {t('Load')} <span className='scr'>{versionName}</span>
                                 </button>
                                 <button
                                   onClick={() =>
@@ -2455,15 +2320,14 @@ export default function DragContainer({
                                     )
                                   }
                                 >
-                                  {EDelete[language]}{' '}
-                                  <span className='scr'>{versionName}</span>
+                                  {t('Delete')} <span className='scr'>{versionName}</span>
                                 </button>
                                 <Accordion
                                   language={language}
                                   id={`accordion-blobnewname-${sanitize(versionName)}`}
                                   className='blobnewname'
                                   wrapperClass='blobnewname-wrap'
-                                  text={ERename[language]}
+                                  text={t('Rename')}
                                   hideBrackets={true}
                                   onClick={() => {
                                     setNewName(versionName)
@@ -2481,10 +2345,10 @@ export default function DragContainer({
                                           type='text'
                                           value={newName}
                                           onChange={handleNewNameChange}
-                                          placeholder={ERenameYourArtwork[language]}
+                                          placeholder={t('RenameYourArtwork')}
                                           maxLength={30}
                                         />
-                                        <span>{ERename[language]}:</span>{' '}
+                                        <span>{t('Rename')}:</span>{' '}
                                         <span className='scr'>{versionName}</span>
                                       </label>
                                     </div>
@@ -2495,16 +2359,16 @@ export default function DragContainer({
                                         } else
                                           dispatch2(
                                             notify(
-                                              `${EError[language]}: ${ERenameYourArtwork[language]}`,
+                                              `${t('Error')}: ${t('RenameYourArtwork')}`,
                                               true,
                                               5
                                             )
                                           )
                                       }}
                                     >
-                                      {EEdit[language]}{' '}
+                                      {t('Edit')}{' '}
                                       <span className='scr'>
-                                        {versionName}: {ENewName[language]} {newName}
+                                        {versionName}: {t('NewName')} {newName}
                                       </span>
                                     </button>
                                   </>
@@ -2524,12 +2388,12 @@ export default function DragContainer({
               <div className='wide flex column center gap'>
                 <div className='login-to-save wide flex column center gap-half'>
                   <FaSave />
-                  {EInOrderToSaveTheBlobs[language]}
+                  {t('InOrderToSaveTheBlobs')}
                 </div>
                 <div className={`blob-register-login-wrap`}>
-                  <button onClick={navigateToLogin}>{ELogin[language]}</button>
-                  <big>{EOr[language]}</big>
-                  <button onClick={navigateToRegister}>{ERegister[language]}</button>
+                  <button onClick={navigateToLogin}>{t('Login')}</button>
+                  <big>{t('Or')}</big>
+                  <button onClick={navigateToRegister}>{t('Register')}</button>
                 </div>
               </div>
             )}

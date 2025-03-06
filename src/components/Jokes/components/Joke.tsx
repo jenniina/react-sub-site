@@ -1,13 +1,7 @@
+import { useContext } from 'react'
 import { ELanguages } from '../../../types'
-import {
-  EAuthor,
-  ECategories,
-  ECategoryTitle,
-  EClickToReveal,
-  EHide,
-  ESaveJoke,
-  IJoke,
-} from '../types'
+import { ECategories, IJoke } from '../types'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 interface Props {
   joke: string
@@ -48,6 +42,8 @@ const Joke = ({
   jokeId,
   handleBlacklistUpdate,
 }: Props) => {
+  const { t } = useContext(LanguageContext)!
+
   return (
     <form
       onSubmit={handleJokeSave}
@@ -56,7 +52,7 @@ const Joke = ({
       <article aria-live='polite' className={`joke ${visibleJoke ? 'fadeIn' : ''}`}>
         <p className={`${visibleJoke ? 'fadeIn' : ''} ${!delivery ? 'no-delivery' : ''}`}>
           <small>
-            {ECategoryTitle[language]}: {getCategoryInLanguage(jokeCategory, language)}
+            {t('CategoryTitle')}: {getCategoryInLanguage(jokeCategory, language)}
           </small>
         </p>
         <p className={`${visibleJoke ? 'fadeIn' : ''} ${!delivery ? 'no-delivery' : ''}`}>
@@ -72,7 +68,7 @@ const Joke = ({
         >
           <>
             <span {...(!reveal ? { 'aria-hidden': true } : { 'aria-hidden': false })}>
-              {EClickToReveal[language]}
+              {t('ClickToReveal')}
             </span>
             {delivery ? (
               <p aria-live='assertive' className={`${visibleJoke ? 'fadeIn' : ''}`}>
@@ -86,7 +82,7 @@ const Joke = ({
         {author ? (
           <p className={`author ${visibleJoke ? 'fadeIn' : ''}`}>
             <small>
-              {EAuthor[language]}: {author}
+              {t('Author')}: {author}
             </small>
           </p>
         ) : (
@@ -95,7 +91,7 @@ const Joke = ({
         {subCategoryResults.length > 0 ? (
           <p className={`sub-categories ${visibleJoke ? 'fadeIn' : ''}`}>
             <small>
-              {ECategoryTitle[language]}:{' '}
+              {t('CategoryTitle')}:{' '}
               {subCategoryResults.map((category) => category).join(', ')}
             </small>
           </p>
@@ -110,7 +106,7 @@ const Joke = ({
             disabled={sending}
             className={`submit ${visibleJoke ? 'fadeIn' : ''}`}
           >
-            {ESaveJoke[language]}
+            {t('SaveJoke')}
           </button>
           <button
             type='button'
@@ -119,14 +115,13 @@ const Joke = ({
               handleBlacklistUpdate(
                 jokeId as IJoke['jokeId'],
                 language,
-                jokeCategory === ECategories.ChuckNorris &&
-                  language === ELanguages.English
+                jokeCategory === ECategories.ChuckNorris && language === ELanguages.en
                   ? (joke as string)
                   : undefined
               )
             }
           >
-            {EHide[language]}
+            {t('Hide')}
           </button>
         </div>
       ) : (

@@ -1,12 +1,15 @@
 import { useSelector } from 'react-redux'
-import { EClose, ELanguages, ReducerProps } from '../../types'
-import { useEffect, useState } from 'react'
+import { ELanguages, ReducerProps } from '../../types'
+import { useContext, useEffect, useState } from 'react'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
   className?: string
 }
-const Notification = ({ language = ELanguages.English, className }: Props) => {
+const Notification = ({ language = ELanguages.en, className }: Props) => {
+  const { t } = useContext(LanguageContext)!
+
   const notification = useSelector((state: ReducerProps) => state.notification)
   const [closed, setClosed] = useState(false)
 
@@ -32,7 +35,7 @@ const Notification = ({ language = ELanguages.English, className }: Props) => {
             setClosed(true)
           }}
         >
-          <span>{EClose[language]}</span>
+          <span>{t('Close')}</span>
           <span aria-hidden='true' className='times'>
             &times;
           </span>

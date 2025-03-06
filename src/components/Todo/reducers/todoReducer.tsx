@@ -1,4 +1,4 @@
-import { Action, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppDispatch, RootState } from '../../../store' // COMBINE THE STORES
 import { ITask, TodosState } from '../types'
 import todoService from '../services/todo'

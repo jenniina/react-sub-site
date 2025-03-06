@@ -1,9 +1,8 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useContext } from 'react'
 import { useTheme } from '../hooks/useTheme'
-import { ELanguages, ELoading } from '../types'
+import { ELanguages } from '../types'
 import styles from './css/portfolio.module.css'
-import Hero from '../components/Hero/Hero'
-import { ETryDraggingTheBlobs } from '../types/blobs'
+import { LanguageContext } from '../contexts/LanguageContext'
 
 const PortfolioInfo = lazy(() => import('../components/PortfolioInfo/PortfolioInfo'))
 
@@ -18,6 +17,8 @@ export default function Portfolio({
   type: string
   language: ELanguages
 }) {
+  const { t } = useContext(LanguageContext)!
+
   const lightTheme = useTheme()
 
   return (
@@ -29,9 +30,7 @@ export default function Portfolio({
       <div className='inner-wrap'>
         <Suspense
           fallback={
-            <div className='flex center margin0auto textcenter'>
-              {ELoading[language]}...
-            </div>
+            <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
           }
         >
           <PortfolioInfo language={language} />

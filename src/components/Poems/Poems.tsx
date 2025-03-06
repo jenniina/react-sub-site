@@ -1,18 +1,19 @@
-import { FC, FormEvent } from 'react'
-import { ELanguages, ESearch } from '../../types'
+import { FC, FormEvent, useContext } from 'react'
+import { ELanguages } from '../../types'
 import Accordion from '../Accordion/Accordion'
 import styles from './poems.module.css'
-import { EInEnglish, ENote } from '../Jokes/types'
 import useLocalStorage from '../../hooks/useStorage'
 import { getPoem, PoemItem } from './services/poems'
 import Poem from './Poem'
-import { ESearchForPoem } from '../../types/poems'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
 }
 
 const Poems: FC<Props> = ({ language }) => {
+  const { t } = useContext(LanguageContext)!
+
   const [poem, setPoem] = useLocalStorage<PoemItem>('Stored-Poem', {
     title: '',
     author: '',
@@ -35,17 +36,17 @@ const Poems: FC<Props> = ({ language }) => {
           id='search-poem'
           className='poem-accordion'
           wrapperClass={styles.accordion}
-          text={ESearchForPoem[language]}
+          text={t('SearchForPoem')}
           closeClass={styles['closed-accordion']}
         >
           <>
-            <h2>{ESearchForPoem[language]}</h2>
+            <h2>{t('SearchForPoem')}</h2>
             <p className='textcenter'>
-              ({ENote[language]} {EInEnglish[language]})
+              ({t('Note')} {t('InEnglish')})
             </p>
             <form onSubmit={fetchPoem}>
               <button className={styles['accordion-submit']} type='submit'>
-                {ESearch[language]}
+                {t('Search')}
               </button>
             </form>
             {!poem ||

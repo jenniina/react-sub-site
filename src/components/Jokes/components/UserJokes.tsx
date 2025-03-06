@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { IoCopyOutline } from 'react-icons/io5'
 import { FaRandom, FaList } from 'react-icons/fa'
 import { ImBlocked, ImEyeBlocked } from 'react-icons/im'
@@ -22,61 +22,11 @@ import {
 import { MdOutlineSettingsBackupRestore } from 'react-icons/md'
 import {
   EJokeType,
-  ESavedJoke,
-  EYourSavedJokes,
   IJoke,
-  EDelete,
-  ECategoryTitle,
-  ESafeTitle,
-  EUnsafeTitle,
-  EClickToReveal,
   ESortBy,
-  ESelectACategory,
-  ESearchByKeyword,
-  EAny,
-  ELocalJokes,
-  ENoJokesYet,
-  EUserSubmittedJokes,
-  EAnonymous,
-  EAuthor,
-  EAge,
-  EAll,
-  ERandom,
-  EAllJokes,
-  EPerPage,
-  ESeeLocalJokes,
-  ESaveJoke,
-  EOrderBy,
-  EPendingVerification,
-  ESelectCategory,
-  EJokeSetup,
-  EOnlyPrivateJokesCanBeEdited,
-  ERepublishingWillRequireVerificationFromAnAdministrator,
-  ENote,
-  EJokeDelivery,
-  EJoke,
-  EFilterFurther,
-  EPrivate,
-  EPublic,
-  EJokeAlreadySaved,
-  ENoJokeFound,
   norrisCategoryTranslations as norrisCat,
-  ELatest,
-  EHowMany,
-  EFailedToCopyJokeToClipboard,
-  EJokeCopiedToClipboard,
-  ECopy,
-  EBlockedJokes,
-  EHideBlockedJokes,
-  ERestore,
   ECategories,
-  EBlock,
-  ERemove,
-  EBlocked,
   FlagsLanguage,
-  EAddWarningTitle,
-  ELoadingJokes,
-  EThisMayTakeUpToAMinute,
 } from '../types'
 import {
   IUser,
@@ -84,20 +34,7 @@ import {
   LanguageOfLanguage,
   ELanguagesLong,
   TLanguageOfLanguage,
-  ESearch,
-  EEdit,
-  ELanguageTitle,
-  EFilterByLanguage,
-  EFilterByCategory,
-  EFilter,
-  EReset,
-  ENewest,
-  EOldest,
-  ESavedBy,
-  ELastPage,
-  EFirstPage,
   IBlacklistedJoke,
-  ESave,
 } from '../../../types'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
 import { Select, SelectOption } from '../../Select/Select'
@@ -110,8 +47,7 @@ import { initializeUser } from '../../../reducers/authReducer'
 import norrisService from '../services/chucknorris'
 import dadjokeService from '../services/dadjokes'
 import { initializeUsers } from '../../../reducers/usersReducer'
-import { s } from 'vite/dist/node/types.d-aGj9QkWt'
-import { EBack, ENext } from '../../../types/form'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 interface Props {
   user: IUser | undefined
@@ -130,7 +66,7 @@ interface Props {
   handleToggleChangeSafemode: () => void
   optionsSortBy: (enumObj: typeof ESortBy) => SelectOption[]
   getKeyofEnum: (enumObj: typeof ELanguages, value: ELanguages) => string
-  options: (enumObj: typeof ELanguages) => SelectOption[]
+  options: (enumObj: typeof ELanguagesLong) => SelectOption[]
   norrisCategories: SelectOption[]
   getCategoryInLanguage: (
     category: ECategories | null,
@@ -186,6 +122,8 @@ const UserJokes = ({
   handleBlacklistUpdate,
   sending,
 }: Props) => {
+  const { t } = useContext(LanguageContext)!
+
   const users = useSelector((state: any) => state.users)
   const userId = user?._id
   const jokes = useSelector((state: any) => state.jokes?.jokes)
@@ -215,7 +153,7 @@ const UserJokes = ({
     SelectOption | undefined
   >(norrisCategories[0])
   const [newJoke, setNewJoke] = useState<IJoke | undefined>(undefined)
-  const [jokeLanguage, setJokeLanguage] = useState<ELanguages>(ELanguages.English)
+  const [jokeLanguage, setJokeLanguage] = useState<ELanguages>(ELanguages.en)
   const [jokeCategory, setJokeCategory] = useState<ECategories>(ECategories.Misc)
   const [sortByAge, setSortByAge] = useState<EOrderByAge.newest | EOrderByAge.oldest>(
     EOrderByAge.newest
@@ -467,17 +405,17 @@ const UserJokes = ({
   const handleJokeSave = (_id: IJoke['_id']) => {
     const findJoke = jokes?.find((j: IJoke) => j._id === _id)
     if (!findJoke) {
-      dispatch(notify(`${ENoJokeFound[language]}`, true, 8))
+      dispatch(notify(`${t('NoJokeFound')}`, true, 8))
       return
     }
     if (findJoke) {
       if (findJoke.user?.includes(userId?.toString())) {
-        dispatch(notify(`${EJokeAlreadySaved[language]}`, false, 8))
+        dispatch(notify(`${t('JokeAlreadySaved')}`, false, 8))
         return
       }
       dispatch(updateJoke({ ...findJoke, user: [...findJoke.user, userId] })).then(() => {
         dispatch(initializeJokes())
-        dispatch(notify(`${ESavedJoke[language]}`, false, 8))
+        dispatch(notify(`${t('SavedJoke')}`, false, 8))
       })
     }
   }
@@ -587,7 +525,7 @@ const UserJokes = ({
             jokeId: joke.id,
             joke: joke.value,
             category: ECategories.ChuckNorris,
-            language: ELanguages.English,
+            language: ELanguages.en,
             type: EJokeType.single,
             safe:
               joke.categories?.includes('explicit') ||
@@ -609,7 +547,7 @@ const UserJokes = ({
             jokeId: result.id,
             joke: result.joke,
             category: ECategories.DadJoke,
-            language: ELanguages.English,
+            language: ELanguages.en,
             type: EJokeType.single,
             safe: true,
           }
@@ -718,10 +656,10 @@ const UserJokes = ({
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text).then(
       function () {
-        dispatch(notify(`${EJokeCopiedToClipboard[language]}`, false, 3))
+        dispatch(notify(`${t('JokeCopiedToClipboard')}`, false, 3))
       },
       function () {
-        dispatch(notify(`${EFailedToCopyJokeToClipboard[language]}`, true, 3))
+        dispatch(notify(`${t('FailedToCopyJokeToClipboard')}`, true, 3))
       }
     )
   }
@@ -745,7 +683,7 @@ const UserJokes = ({
             onClick={() => handlePageChange(1)}
           >
             <BiChevronsLeft />{' '}
-            <span className='tooltip narrow2 below right'>{EFirstPage[language]}</span>
+            <span className='tooltip narrow2 below right'>{t('FirstPage')}</span>
           </button>
           <button
             className={`inner-nav-btn back tooltip-wrap ${
@@ -755,7 +693,7 @@ const UserJokes = ({
             onClick={() => handlePageChange(currentPage - 1)}
           >
             <BiChevronLeft />{' '}
-            <span className='tooltip narrow2 below right'>{EBack[language]}</span>
+            <span className='tooltip narrow2 below right'>{t('Back')}</span>
           </button>
         </div>
         <div className={`numbers${pageNumbers?.length === 1 ? ' hidden' : ''}`}>
@@ -786,7 +724,7 @@ const UserJokes = ({
             onClick={() => handlePageChange(currentPage + 1)}
           >
             <BiChevronRight />{' '}
-            <span className='tooltip narrow2 below left'>{ENext[language]}</span>
+            <span className='tooltip narrow2 below left'>{t('Next')}</span>
           </button>
           <button
             className={`inner-nav-btn last tooltip-wrap ${
@@ -797,7 +735,7 @@ const UserJokes = ({
           >
             <BiChevronsRight />
             <span className='tooltip narrow2 left below'>
-              {ELastPage[language]}: {pageNumbers?.length}
+              {t('LastPage')}: {pageNumbers?.length}
             </span>
           </button>
         </div>
@@ -816,7 +754,7 @@ const UserJokes = ({
             setItemsPerPage(e.target.valueAsNumber > 0 ? e.target.valueAsNumber : 1)
           }
         />{' '}
-        <span id='items-per-page'>{EPerPage[language]}</span>{' '}
+        <span id='items-per-page'>{t('PerPage')}</span>{' '}
       </div>
     </div>
   )
@@ -831,7 +769,7 @@ const UserJokes = ({
               setShowBlacklistedJokes(false)
             }}
           >
-            {!localJokes ? ESeeLocalJokes[language] : ELocalJokes[language]}
+            {!localJokes ? t('SeeLocalJokes') : t('LocalJokes')}
           </button>
           <button
             className={`btn${!localJokes && !showBlacklistedJokes ? ' active' : ''}`}
@@ -840,7 +778,7 @@ const UserJokes = ({
               setShowBlacklistedJokes(false)
             }}
           >
-            {EYourSavedJokes[language]}
+            {t('YourSavedJokes')}
           </button>
         </div>
       )}
@@ -849,12 +787,9 @@ const UserJokes = ({
         <div>
           {!showBlacklistedJokes && (
             <>
-              <h3>{localJokes ? ELocalJokes[language] : EYourSavedJokes[language]}</h3>
+              <h3>{localJokes ? t('LocalJokes') : t('YourSavedJokes')}</h3>
               {localJokes && (
-                <p className='mb3 flex center textcenter'>
-                  {' '}
-                  {EUserSubmittedJokes[language]}
-                </p>
+                <p className='mb3 flex center textcenter'> {t('UserSubmittedJokes')}</p>
               )}
 
               <div className='toggle-wrap'>
@@ -867,10 +802,10 @@ const UserJokes = ({
                       className={`${language} ${
                         !isCheckedSafemode ? 'unsafe' : ''
                       } userjokes safemode`}
-                      label={`${EFilter[language]}: `}
+                      label={`${t('Filter')}: `}
                       hideLabel={false}
-                      on={ESafeTitle[language]}
-                      off={EUnsafeTitle[language]}
+                      on={t('SafeTitle')}
+                      off={t('UnsafeTitle')}
                       handleToggleChange={handleToggleChangeSafemode}
                     />
                     {sortBy === ESortBy_en.age && (
@@ -879,10 +814,10 @@ const UserJokes = ({
                         name='age'
                         id='age'
                         className={`${language} age`}
-                        label={`${EAge[language]}: `}
+                        label={`${t('Age')}: `}
                         hideLabel={false}
-                        on={ENewest[language]}
-                        off={EOldest[language]}
+                        on={t('Newest')}
+                        off={t('Oldest')}
                         handleToggleChange={() => {
                           handleToggleChangeNewest()
                         }}
@@ -895,28 +830,12 @@ const UserJokes = ({
                       language={language}
                       id='sortby'
                       className='sortby'
-                      instructions={`${EOrderBy[language]}:`}
+                      instructions={`${t('OrderBy')}:`}
                       options={optionsSortBy(ESortBy)}
                       value={
                         {
-                          label:
-                            ESortBy[sortBy][
-                              ELanguages[
-                                getKeyofEnum(
-                                  ELanguages,
-                                  language
-                                ) as keyof typeof ELanguages
-                              ]
-                            ],
-                          value:
-                            ESortBy[sortBy][
-                              ELanguages[
-                                getKeyofEnum(
-                                  ELanguages,
-                                  language
-                                ) as keyof typeof ELanguages
-                              ]
-                            ],
+                          label: ESortBy[sortBy][ELanguages[language]],
+                          value: ESortBy[sortBy][ELanguages[language]],
                         } as SelectOption
                       }
                       onChange={(o: SelectOption | undefined) => {
@@ -931,9 +850,9 @@ const UserJokes = ({
                       language={language}
                       id='joke-languages'
                       className='language-filter'
-                      instructions={`${EFilterByLanguage[language]}:`}
+                      instructions={`${t('FilterByLanguage')}:`}
                       options={[
-                        { label: EAll[language], value: '' },
+                        { label: t('All'), value: '' },
                         ...Array.from(
                           new Set(userJokes?.map((joke) => joke.language))
                         ).map((language) => {
@@ -963,7 +882,7 @@ const UserJokes = ({
                                 ],
                               value: selectedLanguage,
                             } as SelectOption)
-                          : { label: EAll[language], value: '' }
+                          : { label: t('All'), value: '' }
                       }
                       onChange={(o: SelectOption | undefined) => {
                         setSelectedLanguage(o?.value as ELanguages)
@@ -975,9 +894,9 @@ const UserJokes = ({
                       language={language}
                       id='single-category-select'
                       className='single-category-select'
-                      instructions={`${EFilterByCategory[language]}:`}
+                      instructions={`${t('FilterByCategory')}:`}
                       options={[
-                        { label: ESelectACategory[language], value: '' },
+                        { label: t('SelectACategory'), value: '' },
                         ...(Object.values(ECategories).map((category) => {
                           return {
                             label: getCategoryInLanguage(category, language),
@@ -994,7 +913,7 @@ const UserJokes = ({
                               ),
                               value: selectedCategory,
                             } as SelectOption)
-                          : { label: ESelectACategory[language], value: '' }
+                          : { label: t('SelectACategory'), value: '' }
                       }
                       onChange={(o) => {
                         setSelectedCategory(o?.value as ECategories)
@@ -1010,7 +929,7 @@ const UserJokes = ({
                       language={language}
                       id='userNorrisCategories'
                       className={`category extras ${hasNorris ? '' : 'hidden'}`}
-                      instructions={`${EFilterFurther[language]}:`}
+                      instructions={`${t('FilterFurther')}:`}
                       selectAnOption={norrisOptions[0].label}
                       value={selectedNorrisCategory}
                       options={norrisOptions}
@@ -1029,9 +948,9 @@ const UserJokes = ({
                           id='search-jokes'
                           value={searchTerm}
                           onChange={handleSearchChange}
-                          placeholder={ESearch[language]}
+                          placeholder={t('Search')}
                         />
-                        <span>{ESearchByKeyword[language]}</span>
+                        <span>{t('SearchByKeyword')}</span>
                       </label>
                     </div>
                   </div>
@@ -1043,7 +962,7 @@ const UserJokes = ({
                   className='reset-btn delete danger'
                   onClick={() => resetFilters()}
                 >
-                  <MdOutlineSettingsBackupRestore /> <span>{EReset[language]}</span>
+                  <MdOutlineSettingsBackupRestore /> <span>{t('Reset')}</span>
                 </button>
               </div>
             </>
@@ -1061,7 +980,7 @@ const UserJokes = ({
                     setLatest(false)
                   }}
                 >
-                  {ERandom[language]} <FaRandom />
+                  {t('Random')} <FaRandom />
                 </button>{' '}
                 <button
                   className={`icontext all-or-latest-btn ${
@@ -1073,7 +992,7 @@ const UserJokes = ({
                     setLatest(false)
                   }}
                 >
-                  {EAllJokes[language]} <FaList />
+                  {t('AllJokes')} <FaList />
                 </button>
                 <div className='flex center'>
                   <button
@@ -1086,7 +1005,7 @@ const UserJokes = ({
                       setLatest(true)
                     }}
                   >
-                    {ELatest[language]}
+                    {t('Latest')}
                     <span className='scr'>{latestNumber}</span>{' '}
                     {latestNumber === 3 && <MdOutlineFilter3 />}
                     {latestNumber === 4 && <MdOutlineFilter4 />}
@@ -1110,7 +1029,7 @@ const UserJokes = ({
                       }}
                     />
                     <label htmlFor='number-of-latest' className='scr'>
-                      <span>{EHowMany[language]}</span>
+                      <span>{t('HowMany')}</span>
                     </label>
                   </div>
                 </div>
@@ -1123,11 +1042,11 @@ const UserJokes = ({
               >
                 {showBlacklistedJokes ? (
                   <>
-                    {EHideBlockedJokes[language]} <ImBlocked />
+                    {t('HideBlockedJokes')} <ImBlocked />
                   </>
                 ) : (
                   <>
-                    {EBlocked[language]} <ImEyeBlocked />
+                    {t('Blocked')} <ImEyeBlocked />
                   </>
                 )}
               </button>
@@ -1145,12 +1064,12 @@ const UserJokes = ({
                     type='text'
                     onChange={handleSearchChange}
                   />
-                  <span>{ESearchByKeyword[language]}</span>
+                  <span>{t('SearchByKeyword')}</span>
                 </label>
               </div>
             </div>
           ) : showBlacklistedJokes ? (
-            <p className='textcenter'>{ENoJokesYet[language]}</p>
+            <p className='textcenter'>{t('NoJokesYet')}</p>
           ) : (
             ''
           )}
@@ -1170,7 +1089,7 @@ const UserJokes = ({
                     }}
                   >
                     <button className='' type='submit' disabled={sending}>
-                      {ERestore[language]}
+                      {t('Restore')}
                     </button>
                   </form>
                   {joke ? (
@@ -1212,7 +1131,7 @@ const UserJokes = ({
                                     ? { 'aria-hidden': true }
                                     : { 'aria-hidden': false })}
                                 >
-                                  <BiChevronsRight /> {EClickToReveal[language]}{' '}
+                                  <BiChevronsRight /> {t('ClickToReveal')}{' '}
                                   <BiChevronsLeft />
                                 </span>
                                 <p aria-live='assertive'>
@@ -1229,7 +1148,7 @@ const UserJokes = ({
                     <div className='secondary-wrap'>
                       <div>
                         <span>
-                          {ECategoryTitle[language]}:{' '}
+                          {t('CategoryTitle')}:{' '}
                           {getCategoryInLanguage(joke.category, language)}{' '}
                           {joke.subCategories &&
                           joke.subCategories?.length > 0 &&
@@ -1256,28 +1175,28 @@ const UserJokes = ({
                           {translateWordLanguage}: {joke.translatedLanguage}
                         </span>
                         {joke.anonymous ? (
-                          <span>{EAnonymous[language]} </span>
+                          <span>{t('Anonymous')} </span>
                         ) : joke.anonymous === false ? (
                           <span>
-                            {EAuthor[language]}: {joke.name ?? ''}
+                            {t('Author')}: {joke.name ?? ''}
                           </span>
                         ) : (
                           ''
                         )}
                         {!localJokes && userId && joke.private ? (
-                          <span>{EPrivate[language]}</span>
+                          <span>{t('Private')}</span>
                         ) : !localJokes && userId && joke.private === false ? (
-                          <span>{EPublic[language]}</span>
+                          <span>{t('Public')}</span>
                         ) : (
                           ''
                         )}
                         {joke.private === false && joke.verified === false && (
-                          <span>{EPendingVerification[language]}</span>
+                          <span>{t('PendingVerification')}</span>
                         )}
 
                         {joke.user?.length > 1 && (
                           <span>
-                            {ESavedBy[language]} {joke.user?.length}
+                            {t('SavedBy')} {joke.user?.length}
                           </span>
                         )}
                       </div>
@@ -1297,9 +1216,7 @@ const UserJokes = ({
                               disabled={sending}
                               className='delete danger'
                             >
-                              {joke.user?.length > 1
-                                ? ERemove[language]
-                                : EDelete[language]}
+                              {joke.user?.length > 1 ? t('Remove') : t('Delete')}
                             </button>
                           </form>
                         )}
@@ -1317,7 +1234,7 @@ const UserJokes = ({
                             }
                             className='delete danger'
                           >
-                            {EBlock[language]}
+                            {t('Block')}
                           </button>
                         )}
 
@@ -1326,7 +1243,7 @@ const UserJokes = ({
                             onClick={() => handleJokeSave(joke._id)}
                             className='save'
                           >
-                            {ESaveJoke[language]} <MdSave />
+                            {t('SaveJoke')} <MdSave />
                           </button>
                         )}
 
@@ -1339,7 +1256,7 @@ const UserJokes = ({
                             )
                           }
                         >
-                          {ECopy[language]} <IoCopyOutline />
+                          {t('Copy')} <IoCopyOutline />
                         </button>
                         {userId &&
                           joke.user?.includes(userId) &&
@@ -1349,7 +1266,7 @@ const UserJokes = ({
                               id={`joke-edit-${joke.jokeId}`}
                               className={`joke-edit`}
                               wrapperClass='joke-edit-wrap'
-                              text={EEdit[language]}
+                              text={t('Edit')}
                               onClick={() => {
                                 setJokeLanguage(joke.language)
                                 setJokeCategory(joke.category as ECategories)
@@ -1385,7 +1302,7 @@ const UserJokes = ({
                                               )
                                             }}
                                           />
-                                          <span>{EJokeSetup[language]}</span>
+                                          <span>{t('JokeSetup')}</span>
                                         </label>
                                       </div>
                                       <div className='input-wrap'>
@@ -1406,7 +1323,7 @@ const UserJokes = ({
                                               )
                                             }}
                                           />
-                                          <span>{EJokeDelivery[language]}</span>{' '}
+                                          <span>{t('JokeDelivery')}</span>{' '}
                                         </label>
                                       </div>
                                     </>
@@ -1430,18 +1347,15 @@ const UserJokes = ({
                                             )
                                           }}
                                         />
-                                        <span>{EJoke[language]}</span>
+                                        <span>{t('Joke')}</span>
                                       </label>
                                     </div>
                                   ) : (
                                     <div>
-                                      {EOnlyPrivateJokesCanBeEdited[language]}.{' '}
-                                      {ENote[language]}{' '}
-                                      {
-                                        ERepublishingWillRequireVerificationFromAnAdministrator[
-                                          language
-                                        ]
-                                      }
+                                      {t('OnlyPrivateJokesCanBeEdited')}. {t('Note')}{' '}
+                                      {t(
+                                        'RepublishingWillRequireVerificationFromAnAdministrator'
+                                      )}
                                     </div>
                                   )}
                                 </div>
@@ -1452,9 +1366,9 @@ const UserJokes = ({
                                         language={language}
                                         id='edit-language'
                                         className='edit-language'
-                                        instructions={`${ELanguageTitle[language]}:`}
+                                        instructions={`${t('LanguageTitle')}:`}
                                         hide
-                                        options={options(ELanguages)}
+                                        options={options(ELanguagesLong)}
                                         value={
                                           {
                                             label:
@@ -1484,10 +1398,10 @@ const UserJokes = ({
                                         language={language}
                                         id='edit-category'
                                         className='edit-category'
-                                        instructions={`${ESelectCategory[language]}:`}
+                                        instructions={`${t('SelectCategory')}:`}
                                         hide
                                         options={[
-                                          { label: EAny[language], value: '' },
+                                          { label: t('Any'), value: '' },
                                           ...(Object.values(ECategories).map(
                                             (category) => {
                                               return {
@@ -1525,7 +1439,7 @@ const UserJokes = ({
                                     </div>
 
                                     <fieldset>
-                                      <legend>{EAddWarningTitle[language]}</legend>
+                                      <legend>{t('AddWarningTitle')}</legend>
 
                                       <div className='checkbox-wrap'>
                                         <div>
@@ -1677,7 +1591,7 @@ const UserJokes = ({
                                   </div>
                                 </fieldset>
                                 <button type='submit' disabled={sending} className='save'>
-                                  {ESaveJoke[language]}
+                                  {t('SaveJoke')}
                                 </button>
                               </form>
                             </Accordion>
@@ -1689,9 +1603,9 @@ const UserJokes = ({
               })
             ) : (
               <li className='margin0auto max-content'>
-                {ELoadingJokes[language]}
+                {t('LoadingJokes')}
                 <br />
-                <br />({EThisMayTakeUpToAMinute[language]})
+                <br />({t('ThisMayTakeUpToAMinute')})
               </li>
             )}
           </ul>
@@ -1708,7 +1622,7 @@ const UserJokes = ({
               setShowBlacklistedJokes(false)
             }}
           >
-            {!localJokes ? ESeeLocalJokes[language] : ELocalJokes[language]}
+            {!localJokes ? t('SeeLocalJokes') : t('LocalJokes')}
           </button>
           <button
             className={`btn${!localJokes && !showBlacklistedJokes ? ' active' : ''}`}
@@ -1717,7 +1631,7 @@ const UserJokes = ({
               setShowBlacklistedJokes(false)
             }}
           >
-            {EYourSavedJokes[language]}
+            {t('YourSavedJokes')}
           </button>
         </div>
       )}

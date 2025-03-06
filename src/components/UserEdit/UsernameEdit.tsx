@@ -1,31 +1,19 @@
-import { useState } from 'react'
-import {
-  IUser,
-  EEmail,
-  ELanguages,
-  EEdit,
-  ECurrentPassword,
-  EUsernameIsTheSame,
-  EUserNotUpdated,
-  EError,
-  EUserUpdated,
-} from '../../types'
+import { useContext, useState } from 'react'
+import { IUser, ELanguages } from '../../types'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import { updateUsername } from '../../reducers/usersReducer'
 import { AxiosError } from 'axios'
 import styles from './css/edit.module.css'
-import {
-  ECurrentEmail,
-  EEditEmail,
-  ESendsAnEmailToTheNewAddressForVerification,
-} from './types'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
   user: IUser
 }
 const UsernameEdit = ({ user, language }: Props) => {
+  const { t } = useContext(LanguageContext)!
+
   const dispatch = useAppDispatch()
 
   const [username, setUsername] = useState<IUser['username']>(user?.username ?? '')
@@ -46,7 +34,7 @@ const UsernameEdit = ({ user, language }: Props) => {
 
       if (user) {
         if (username.trim() === user.username.trim()) {
-          dispatch(notify(`${EUsernameIsTheSame[language]}`, true, 5))
+          dispatch(notify(`${t('UsernameIsTheSame')}`, true, 5))
           setSending(false)
           return
         }
@@ -54,9 +42,9 @@ const UsernameEdit = ({ user, language }: Props) => {
           .then((res) => {
             if (res) {
               if (res.success === false) {
-                dispatch(notify(`${res.message ?? EError[language]}`, true, 5))
+                dispatch(notify(`${res.message ?? t('Error')}`, true, 5))
               } else {
-                dispatch(notify(`${res.message ?? EUserUpdated[language]}`, false, 5))
+                dispatch(notify(`${res.message ?? t('UserUpdated')}`, false, 5))
                 setPasswordOld('')
               }
             }
@@ -70,7 +58,7 @@ const UsernameEdit = ({ user, language }: Props) => {
               dispatch(notify(`${error.response.data.message}`, true, 5))
             } else {
               setTimeout(() => {
-                dispatch(notify(EUserNotUpdated[language], true, 5))
+                dispatch(notify(t('UserNotUpdated'), true, 5))
               }, 2000)
             }
             setSending(false)
@@ -89,12 +77,10 @@ const UsernameEdit = ({ user, language }: Props) => {
     <>
       {user ? (
         <>
-          <h2>{EEditEmail[language]}</h2>
-          <p className={styles.p}>
-            {ESendsAnEmailToTheNewAddressForVerification[language]}
-          </p>
+          <h2>{t('EditEmail')}</h2>
+          <p className={styles.p}>{t('SendsAnEmailToTheNewAddressForVerification')}</p>
           <p className={`${styles.p} ${styles[`p-last`]}`}>
-            {ECurrentEmail[language]}: <strong>{user?.username}</strong>
+            {t('CurrentEmail')}: <strong>{user?.username}</strong>
           </p>
 
           <form onSubmit={handleUserSubmit} className={styles['edit-user']}>
@@ -108,7 +94,7 @@ const UsernameEdit = ({ user, language }: Props) => {
                   value={username}
                   onChange={({ target }) => setUsername(target.value.trim())}
                 />
-                <span>{EEmail[language]}</span>
+                <span>{t('Email')}</span>
               </label>
             </div>
 
@@ -122,12 +108,12 @@ const UsernameEdit = ({ user, language }: Props) => {
                   value={passwordOld}
                   onChange={({ target }) => setPasswordOld(target.value.trim())}
                 />
-                <span>{ECurrentPassword[language]}</span>
+                <span>{t('CurrentPassword')}</span>
               </label>
             </div>
 
             <button type='submit' disabled={sending}>
-              {EEdit[language]}
+              {t('Edit')}
             </button>
           </form>
         </>

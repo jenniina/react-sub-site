@@ -1,31 +1,9 @@
-import {
-  EPrivacyAndSecurityDisclaimer,
-  EDataCollectionAndStorage,
-  EWeCollectAndStoreTheEmailAddress,
-  EYourPasswordIsSecurelyHashed,
-  EDataProtection,
-  EWeUseIndustryStandardSecurityMeasures,
-  EAccessToYourDataIsRestricted,
-  EUserResponsibilities,
-  EPleaseChooseAStrongAndUniquePassword,
-  EDoNotShareYourPasswordWithAnyone,
-  EYourRights,
-  EYouHaveTheRightToAccessModifyOrDelete,
-  EIfYouHaveAnyConcernsAboutYourDataSecurity,
-  EChangesToThisDisclaimer,
-  EWeMayUpdateThisDisclaimerFromTimeToTime,
-  EByUsingOurService,
-  ETermsOfService,
-  ESeeAlso,
-  ETheFollowingAppliesToLoggingInAndStoringUserInfo,
-} from '../types'
-
 import { ELanguages } from '../types'
-import Hero from '../components/Hero/Hero'
 import { useTheme } from '../hooks/useTheme'
 import { Link } from 'react-router-dom'
 import styles from './css/disclaimer.module.css'
-import { EContactForm } from '../types/form'
+import { useContext } from 'react'
+import { LanguageContext } from '../contexts/LanguageContext'
 
 export default function Disclaimer({
   heading,
@@ -38,6 +16,8 @@ export default function Disclaimer({
   type: string
   language: ELanguages
 }) {
+  const { t } = useContext(LanguageContext)!
+
   const lightTheme = useTheme()
 
   return (
@@ -47,29 +27,29 @@ export default function Disclaimer({
           <section className={`card`}>
             <div>
               <p>
-                {ESeeAlso[language]}: <Link to='/terms'>{ETermsOfService[language]}</Link>
+                {t('SeeAlso')}: <Link to='/terms'>{t('TermsOfService')}</Link>
               </p>
-              <p>{ETheFollowingAppliesToLoggingInAndStoringUserInfo[language]}</p>
-              <h2>{EDataCollectionAndStorage[language]}</h2>
-              <p>{EWeCollectAndStoreTheEmailAddress[language]}</p>
-              <p>{EYourPasswordIsSecurelyHashed[language]}</p>
-              <h2>{EDataProtection[language]}</h2>
-              <p>{EWeUseIndustryStandardSecurityMeasures[language]}</p>
-              <p>{EAccessToYourDataIsRestricted[language]}</p>
-              <h2>{EUserResponsibilities[language]}</h2>
-              <p>{EPleaseChooseAStrongAndUniquePassword[language]}</p>
-              <p>{EDoNotShareYourPasswordWithAnyone[language]}</p>
-              <h2>{EYourRights[language]}</h2>
-              <p>{EYouHaveTheRightToAccessModifyOrDelete[language]}</p>
+              <p>{t('TheFollowingAppliesToLoggingInAndStoringUserInfo')}</p>
+              <h2>{t('DataCollectionAndStorage')}</h2>
+              <p>{t('WeCollectAndStoreTheEmailAddress')}</p>
+              <p>{t('YourPasswordIsSecurelyHashed')}</p>
+              <h2>{t('DataProtection')}</h2>
+              <p>{t('WeUseIndustryStandardSecurityMeasures')}</p>
+              <p>{t('AccessToYourDataIsRestricted')}</p>
+              <h2>{t('UserResponsibilities')}</h2>
+              <p>{t('PleaseChooseAStrongAndUniquePassword')}</p>
+              <p>{t('DoNotShareYourPasswordWithAnyone')}</p>
+              <h2>{t('YourRights')}</h2>
+              <p>{t('YouHaveTheRightToAccessModifyOrDelete')}</p>
               <p>
-                {EIfYouHaveAnyConcernsAboutYourDataSecurity[language]}:{' '}
-                <Link to='/contact'>{EContactForm[language]}</Link>
+                {t('IfYouHaveAnyConcernsAboutYourDataSecurity')}:{' '}
+                <Link to='/contact'>{t('ContactForm')}</Link>
               </p>
-              <h2>{EChangesToThisDisclaimer[language]}</h2>
-              <p>{EWeMayUpdateThisDisclaimerFromTimeToTime[language]}</p>
-              <p>{EByUsingOurService[language]}</p>
+              <h2>{t('ChangesToThisDisclaimer')}</h2>
+              <p>{t('WeMayUpdateThisDisclaimerFromTimeToTime')}</p>
+              <p>{t('ByUsingOurService')}</p>
               <p>
-                {ESeeAlso[language]}: <Link to='/terms'>{ETermsOfService[language]}</Link>
+                {t('SeeAlso')}: <Link to='/terms'>{t('TermsOfService')}</Link>
               </p>
             </div>
           </section>

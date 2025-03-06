@@ -1,32 +1,13 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useContext } from 'react'
 //import Joke from './Joke'
 import { Select } from '../../Select/Select'
 import { SelectOption } from '../../Select/Select'
 import { useEffect } from 'react'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
-import {
-  EJokeType,
-  ESafemode,
-  EFindAJoke,
-  ESafeTitle,
-  EUnsafeTitle,
-  ESingle,
-  ETwoPart,
-  EClickToReveal,
-  IJokeCategoryByLanguage,
-  ESafemodeTitle,
-  EJokeTypeTitle,
-  ESelectACategory,
-  ESelectALanguage,
-  ESearchByKeyword,
-  EAny,
-  ECategories,
-  TCategoryByLanguages,
-  IJoke,
-  EChuckNorrisCategory,
-} from '../types'
-import { ELanguages, ELoading } from '../../../types'
+import { EJokeType, ESafemode, ECategories, TCategoryByLanguages, IJoke } from '../types'
+import { ELanguages, ELanguagesLong } from '../../../types'
 import { FaAnglesDown } from 'react-icons/fa6'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 const Joke = lazy(() => import('./Joke'))
 
@@ -57,7 +38,7 @@ interface Props {
   handleToggleChangeSafemode: () => void
   handleToggleChangeEJokeType: () => void
   handleJokeSave: (e: React.FormEvent<HTMLFormElement>) => void
-  options: (enumObj: typeof ELanguages) => SelectOption[]
+  options: (enumObj: typeof ELanguagesLong) => SelectOption[]
   getKeyByValue: (
     enumObj: typeof ECategories | typeof EJokeType | typeof ESafemode | typeof ELanguages,
     value: ECategories | EJokeType | ESafemode | ELanguages
@@ -116,6 +97,8 @@ const Form = ({
   handleBlacklistUpdate,
   sending,
 }: Props) => {
+  const { t } = useContext(LanguageContext)!
+
   useEffect(() => {
     setTimeout(() => {
       // Set z-index of select containers so that they do not open behind the next select container
@@ -148,13 +131,13 @@ const Form = ({
             language={language}
             id='language-joke'
             className='language full'
-            instructions={`${ESelectALanguage[language]}:`}
-            options={options(ELanguages)}
+            instructions={`${t('SelectALanguage')}:`}
+            options={options(ELanguagesLong)}
             value={
               language
                 ? ({
                     value: language,
-                    label: getKeyByValue(ELanguages, language),
+                    label: ELanguagesLong[language],
                   } as SelectOption)
                 : undefined
             }
@@ -170,9 +153,9 @@ const Form = ({
               name='safemode'
               id='safemode'
               className={`${language} ${!isCheckedSafemode ? 'unsafe' : ''} safemode`}
-              label={`${ESafemodeTitle[language]}: `}
-              on={ESafeTitle[language]}
-              off={EUnsafeTitle[language]}
+              label={`${t('SafemodeTitle')}: `}
+              on={t('SafeTitle')}
+              off={t('UnsafeTitle')}
               handleToggleChange={handleToggleChangeSafemode}
             />
 
@@ -181,9 +164,9 @@ const Form = ({
               name='joketype'
               id='joketype'
               className={`${language} joketype`}
-              label={`${EJokeTypeTitle[language]}: `}
-              on={ETwoPart[language]}
-              off={ESingle[language]}
+              label={`${t('JokeTypeTitle')}: `}
+              on={t('TwoPart')}
+              off={t('Single')}
               handleToggleChange={handleToggleChangeEJokeType}
               equal={true}
             />
@@ -196,8 +179,8 @@ const Form = ({
             multiple
             id='jokeCategory'
             className={`category`}
-            instructions={`${ESelectACategory[language]}:`}
-            selectAnOption={EAny[language]}
+            instructions={`${t('SelectACategory')}:`}
+            selectAnOption={t('Any')}
             value={categoryValues}
             options={optionsCategory(categoryByLanguages as any)}
             onChange={(o: SelectOption[]) => {
@@ -213,8 +196,8 @@ const Form = ({
           language={language}
           id='jokeCategoryNorrisCategories'
           className={`category extras ${hasNorris ? '' : 'hidden'}`}
-          instructions={`${EChuckNorrisCategory[language]}:`}
-          selectAnOption={EAny[language]}
+          instructions={`${t('ChuckNorrisCategory')}:`}
+          selectAnOption={t('Any')}
           value={selectedNorrisCategory}
           options={norrisCategories}
           onChange={(o) => {
@@ -237,12 +220,12 @@ const Form = ({
                   )
                 }}
               />
-              <span>{ESearchByKeyword[language]}</span>
+              <span>{t('SearchByKeyword')}</span>
             </label>
           </div>
 
           <button id='generate-joke' type='submit' disabled={sending}>
-            {EFindAJoke[language]}
+            {t('FindAJoke')}
           </button>
         </div>
       </form>
@@ -252,9 +235,7 @@ const Form = ({
       </div>
       <Suspense
         fallback={
-          <div className='flex center margin0auto textcenter'>
-            {ELoading[language]}...
-          </div>
+          <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
         }
       >
         <Joke

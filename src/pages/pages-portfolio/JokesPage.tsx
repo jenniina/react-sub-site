@@ -1,43 +1,22 @@
-import { lazy, Suspense } from 'react'
-import Hero from '../../components/Hero/Hero'
+import { lazy, Suspense, useContext } from 'react'
 import { BiChevronsDown } from 'react-icons/bi'
-import { jokeCategoryByLanguage, jokeCategoryAny } from '../../components/Jokes/types'
-import Accordion from '../../components/Accordion/Accordion'
 import {
+  jokeCategoryByLanguage,
+  jokeCategoryAny,
   ECategories,
-  EJokeType,
-  ERegisterAndLoginToUse,
-  ESafemode,
-  ETheComediansCompanion,
-  EFetchesJokesFrom,
-  EFilterJokesBy,
-  EJokeTypeTitle,
-  ETwoPart,
-  ESingle,
-  ESafemodeTitle,
-  EKeyword,
-  ECategoryTitle,
-  EClickHereToSeeFeatures,
-  EDarkJokesAreVisibleOnlyWhenSafeModeIsOff,
-  ENote,
-  TCategoryByLanguages,
-  ESkipToSavedJokes,
-  ESkipToJokeSearch,
 } from '../../components/Jokes/types'
+import Accordion from '../../components/Accordion/Accordion'
+import { EJokeType, ESafemode, TCategoryByLanguages } from '../../components/Jokes/types'
 import {
-  EOnOff,
-  EFeatures,
   ELanguageTitle,
   ELanguages,
-  EAppTranslatedTo,
+  ELanguagesLong,
   LanguageOfLanguage,
-  ETryTappingTheShapes,
-  EReset,
-  ELoading,
 } from '../../types'
 import { SyntheticEvent, useEffect } from 'react'
 import { Select, SelectOption } from '../../components/Select/Select'
 import { options } from '../../utils'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 const Jokes = lazy(() => import('../../components/Jokes/Jokes'))
 
@@ -54,8 +33,10 @@ export default function JokesPage({
   language: ELanguages
   setLanguage: (language: ELanguages) => void
 }) {
-  const title = ETheComediansCompanion[language]
-  const titleLanguage = ELanguageTitle[language]
+  const { t } = useContext(LanguageContext)!
+
+  const title = t('TheComediansCompanion')
+  const titleLanguage = t('LanguageTitle')
 
   function getKeyByValue(
     enumObj:
@@ -91,7 +72,7 @@ export default function JokesPage({
     return () => {
       document.head.removeChild(script)
     }
-  }, [language])
+  }, [language, title])
 
   const handleSkipToJokes = (e: SyntheticEvent) => {
     e.preventDefault()
@@ -114,7 +95,7 @@ export default function JokesPage({
             <div className='flex column gap'>
               <div className='flex center gap'>
                 <a href='#jokeform' className='svg-wrap newline'>
-                  <span>{ESkipToJokeSearch[language]}</span>
+                  <span>{t('SkipToJokeSearch')}</span>
                   <BiChevronsDown className='down' />
                 </a>
                 <a
@@ -122,7 +103,7 @@ export default function JokesPage({
                   className='svg-wrap newline'
                   onClick={(e) => handleSkipToJokes(e)}
                 >
-                  <span>{ESkipToSavedJokes[language]}</span>
+                  <span>{t('SkipToSavedJokes')}</span>
                   <BiChevronsDown className='down' />
                 </a>
               </div>
@@ -132,12 +113,12 @@ export default function JokesPage({
                   id='main-language'
                   className='language main'
                   instructions={`${titleLanguage}:`}
-                  options={options(ELanguages)}
+                  options={options(ELanguagesLong)}
                   value={
                     language
                       ? ({
                           value: language,
-                          label: getKeyByValue(ELanguages, language),
+                          label: ELanguagesLong[language],
                         } as SelectOption)
                       : undefined
                   }
@@ -148,20 +129,20 @@ export default function JokesPage({
               </div>
               <Accordion
                 language={language}
-                text={EClickHereToSeeFeatures[language]}
+                text={t('ClickHereToSeeFeatures')}
                 className='features'
                 wrapperClass='features-wrap'
               >
                 <div className='medium'>
-                  <h2>{EFeatures[language]}</h2>
+                  <h2>{t('Features')}</h2>
                   <ul className='ul'>
                     <li>
-                      {EFetchesJokesFrom[language]}{' '}
+                      {t('FetchesJokesFrom')}{' '}
                       <a href='https://sv443.net/jokeapi/v2/'>JokeAPI</a>
                     </li>
-                    <li>{ERegisterAndLoginToUse[language]}</li>
+                    <li>{t('RegisterAndLoginToUse')}</li>
                     <li>
-                      {EAppTranslatedTo[language]}
+                      {t('AppTranslatedTo')}
                       <ul>
                         {Object.values(LanguageOfLanguage[language]).map((l: string) => {
                           return <li key={l}>{l}</li>
@@ -169,22 +150,22 @@ export default function JokesPage({
                       </ul>
                     </li>
                     <li>
-                      {EFilterJokesBy[language]}:
+                      {t('FilterJokesBy')}:
                       <ul>
                         <li>{titleLanguage}</li>
                         <li>
-                          {EJokeTypeTitle[language]}
+                          {t('JokeTypeTitle')}
                           <ul>
-                            <li>{ETwoPart[language]}</li>
-                            <li>{ESingle[language]}</li>
+                            <li>{t('TwoPart')}</li>
+                            <li>{t('Single')}</li>
                           </ul>
                         </li>
                         <li>
-                          {ESafemodeTitle[language]} {EOnOff[language]}
+                          {t('SafemodeTitle')} {t('OnOff')}
                         </li>
-                        <li>{EKeyword[language]}</li>
+                        <li>{t('Keyword')}</li>
                         <li>
-                          {ECategoryTitle[language]}
+                          {t('CategoryTitle')}
                           <ul>
                             <li>{jokeCategoryAny[language]}</li>
                             {Object.values(jokeCategoryByLanguage[language]).map((c) => {
@@ -195,9 +176,9 @@ export default function JokesPage({
                       </ul>
                     </li>
                     <li>
-                      {ENote[language]}
+                      {t('Note')}
                       <ul>
-                        <li>{EDarkJokesAreVisibleOnlyWhenSafeModeIsOff[language]}</li>
+                        <li>{t('DarkJokesAreVisibleOnlyWhenSafeModeIsOff')}</li>
                       </ul>
                     </li>
                   </ul>
@@ -211,9 +192,7 @@ export default function JokesPage({
         </section>
         <Suspense
           fallback={
-            <div className='flex center margin0auto textcenter'>
-              {ELoading[language]}...
-            </div>
+            <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
           }
         >
           <Jokes language={language} setLanguage={setLanguage} />

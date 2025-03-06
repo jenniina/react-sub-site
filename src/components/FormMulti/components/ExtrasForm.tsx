@@ -1,34 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import FormWrapper from './FormWrapper'
 import styles from '../form.module.css'
 import { HEX } from '../types'
 import { Select, SelectOption } from '../../Select/Select'
 import useLocalStorage from '../../../hooks/useStorage'
-import {
-  EClarifiedBelow,
-  EDarkMode,
-  EItIsAlrightToSendTheEnteredInformationToJenniina,
-  ELanguages,
-  ELightMode,
-  EOther,
-  EPleaseSelectAnOption,
-  EYes,
-  EYouMaySelectMultipleOptions,
-} from '../../../types'
-import {
-  EAColorYouLike,
-  EAccessibilityIssue,
-  EAdditionalInformation,
-  EAnyEncouragingWords,
-  EAppearanceNeedsWork,
-  EClarification,
-  EColorPicker,
-  EDoYouLikeMyCustomSelects,
-  ENoneOfTheseAreRequired,
-  ENotReally,
-  EOrConstructiveFeedback,
-  EWhichModeDoYouPrefer,
-} from '../../../types/form'
+import { ELanguages } from '../../../types'
+import { LanguageContext } from '../../../contexts/LanguageContext'
 
 type ExtrasData = {
   encouragement: string
@@ -56,24 +33,21 @@ export default function ExtrasForm({
   updateFields,
   language,
 }: ExtrasFormProps) {
-  const isLocalhost =
-    window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-  const [values, setValues] = useLocalStorage<SelectOption[]>(
-    `${isLocalhost ? 'local-' : ''}multivalues`,
-    []
-  )
+  const { t } = useContext(LanguageContext)!
+
+  const [values, setValues] = useLocalStorage<SelectOption[]>(`multivalues`, [])
 
   const options: SelectOption[] = [
-    { label: EYes[language], value: EYes[language] },
-    { label: EAppearanceNeedsWork[language], value: EAppearanceNeedsWork[language] },
-    { label: EAccessibilityIssue[language], value: EAccessibilityIssue[language] },
+    { label: t('Yes'), value: t('Yes') },
+    { label: t('AppearanceNeedsWork'), value: t('AppearanceNeedsWork') },
+    { label: t('AccessibilityIssue'), value: t('AccessibilityIssue') },
     {
-      label: `${EOther[language]}, ${EClarifiedBelow[language]}`,
-      value: EOther[language],
+      label: `${t('Other')}, ${t('ClarifiedBelow')}`,
+      value: t('Other'),
     },
     {
-      label: `${ENotReally[language]}, ${EClarifiedBelow[language]}`,
-      value: ENotReally[language],
+      label: `${t('NotReally')}, ${t('ClarifiedBelow')}`,
+      value: t('NotReally'),
     },
   ]
 
@@ -90,12 +64,12 @@ export default function ExtrasForm({
   return (
     <>
       <FormWrapper
-        title={EAdditionalInformation[language]}
-        description={ENoneOfTheseAreRequired[language]}
+        title={t('AdditionalInformation')}
+        description={t('NoneOfTheseAreRequired')}
       >
         <div className={styles.subfield}>
           <label className='full left' htmlFor='form-encouragement'>
-            {EAnyEncouragingWords[language]}
+            {t('AnyEncouragingWords')}
           </label>
           <textarea
             id='form-encouragement'
@@ -104,7 +78,7 @@ export default function ExtrasForm({
             name='encouragement'
             value={encouragement}
             rows={3}
-            placeholder={EOrConstructiveFeedback[language]}
+            placeholder={t('OrConstructiveFeedback')}
             onChange={(e) => updateFields({ encouragement: e.target.value })}
           />
         </div>
@@ -114,7 +88,7 @@ export default function ExtrasForm({
             className={`left nowrap full ${styles.colorlabel}`}
             htmlFor='form-color2'
           >
-            {EAColorYouLike[language]}
+            {t('AColorYouLike')}
           </label>
 
           <input
@@ -127,7 +101,7 @@ export default function ExtrasForm({
             onChange={(e) => updateFields({ color: e.target.value })}
           />
           <label className='scr' htmlFor='form-color'>
-            {EAColorYouLike[language]} {EColorPicker[language]}
+            {t('AColorYouLike')} {t('ColorPicker')}
           </label>
           <input
             id='form-color'
@@ -140,7 +114,7 @@ export default function ExtrasForm({
           />
         </div>
         <div className={styles.subfield}>
-          <label className={`full`}>{EWhichModeDoYouPrefer[language]}</label>
+          <label className={`full`}>{t('WhichModeDoYouPrefer')}</label>
           <label className='nowrap flex gap-half'>
             <span className='radio-span'>
               <input
@@ -151,7 +125,7 @@ export default function ExtrasForm({
                 onChange={(e) => updateFields({ dark: e.target.value })}
               />
             </span>{' '}
-            {EDarkMode[language]}
+            {t('DarkMode')}
           </label>
           <label htmlFor='form-light' className='nowrap flex gap-half'>
             <span className='radio-span'>
@@ -165,18 +139,20 @@ export default function ExtrasForm({
                 }}
               />
             </span>{' '}
-            {ELightMode[language]}
+            {t('LightMode')}
           </label>
         </div>
         <div className={styles.subfield}>
-          <label htmlFor='multiple-hide'>{EDoYouLikeMyCustomSelects[language]}</label>
+          <label htmlFor='multiple-hide'>{t('DoYouLikeMyCustomSelects')}</label>
           <span style={{ position: 'relative', zIndex: '2', width: '100%' }}>
             <Select
               language={language}
               multiple
               id='multiple-hide'
               className={styles.dropdownmultiple}
-              instructions={`${EPleaseSelectAnOption[language]}. ${EYouMaySelectMultipleOptions[language]}`}
+              instructions={`${t('PleaseSelectAnOption')}. ${t(
+                'YouMaySelectMultipleOptions'
+              )}`}
               hide
               options={options}
               value={values}
@@ -214,7 +190,7 @@ export default function ExtrasForm({
             }}
           /> */}
           <label className={`full`}>
-            <span>{EClarification[language]}</span>
+            <span>{t('Clarification')}</span>
             <input
               className={`bg`}
               type='text'
@@ -240,7 +216,7 @@ export default function ExtrasForm({
             <i className='required' aria-hidden='true'>
               *
             </i>{' '}
-            {EItIsAlrightToSendTheEnteredInformationToJenniina[language]}{' '}
+            {t('ItIsAlrightToSendTheEnteredInformationToJenniina')}{' '}
           </label>
         </div>
       </FormWrapper>

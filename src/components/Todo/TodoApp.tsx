@@ -1,18 +1,7 @@
-import { useRef, useEffect, useState, lazy, Suspense } from 'react'
+import { useRef, useEffect, useState, lazy, Suspense, useContext } from 'react'
 import { ITaskDraggable } from './components/TodoList'
 import { v4 as uuidv4 } from 'uuid'
-import {
-  EAddTask,
-  EAddTaskToTheTaskList,
-  EClearCompleted,
-  ELeftToDo,
-  ETask,
-  generateOptions,
-  ITask,
-  TCategory,
-  TPriority,
-  TSortOptions,
-} from './types'
+import { generateOptions, ITask, TCategory, TPriority } from './types'
 import styles from './css/todo.module.css'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import {
@@ -33,27 +22,11 @@ import {
 import { notify } from '../../reducers/notificationReducer'
 import { useSelector } from 'react-redux'
 import { initializeUser } from '../../reducers/authReducer'
-import {
-  ECharactersLeft,
-  EFilterByCategory,
-  EFiltered,
-  EMax,
-  ENameTooLong,
-  ENote,
-  EUpdated,
-  ReducerProps,
-  TSortDirection,
-} from '../../types'
 import { RootState } from '../../store'
-import { ELanguages, ELoading } from '../../types'
-import {
-  EAreYouSureYouWantToClearAllCompletedTasks,
-  EFilterByPriority,
-  ESelectPriority,
-} from '../../types/todo'
+import { ELanguages, ReducerProps } from '../../types'
 import { Select } from '../Select/Select'
 import { IoMdAdd } from 'react-icons/io'
-import { ESelectCategory } from '../Jokes/types'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 const TodoList = lazy(() => import('./components/TodoList'))
 
@@ -63,6 +36,8 @@ interface Props {
   language: ELanguages
 }
 export default function TodoApp({ language }: Props) {
+  const { t } = useContext(LanguageContext)!
+
   const dispatch = useAppDispatch()
 
   const user = useSelector((state: ReducerProps) => {
@@ -236,7 +211,7 @@ export default function TodoApp({ language }: Props) {
       if (user) {
         await dispatch(editTodoAsync(user._id, key, updatedTodo as ITask))
           .then(() => {
-            dispatch(notify(`${EUpdated[language]}`, false, 3))
+            dispatch(notify(`${t('Updated')}`, false, 3))
             setSending(false)
           })
           .catch((e) => {
@@ -291,12 +266,12 @@ export default function TodoApp({ language }: Props) {
     // const name = todoNameRef.current?.value ?? ''
     if (name === '') {
       setSending(false)
-      dispatch(notify(EAddTask[language], true, 3))
+      dispatch(notify(t('AddTask'), true, 3))
       return
     }
     if (name.length > maxCharacters) {
       setSending(false)
-      dispatch(notify(`${ENameTooLong[language]} (${maxCharacters} max)`, true, 8))
+      dispatch(notify(`${t('NameTooLong')} (${maxCharacters} max)`, true, 8))
       return
     }
     const key = uuidv4()
@@ -344,7 +319,7 @@ export default function TodoApp({ language }: Props) {
 
   async function handleClearTodos(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault()
-    if (window.confirm(EAreYouSureYouWantToClearAllCompletedTasks[language])) {
+    if (window.confirm(t('AreYouSureYouWantToClearAllCompletedTasks'))) {
       if (user) {
         await dispatch(clearCompletedTodosAsync(user._id))
       } else {
@@ -378,9 +353,9 @@ export default function TodoApp({ language }: Props) {
     <>
       <form onSubmit={handleAddTodo} className={styles['form']}>
         <fieldset>
-          <legend className='scr'>{EAddTaskToTheTaskList[language]}</legend>
+          <legend className='scr'>{t('AddTaskToTheTaskList')}</legend>
           <div className={styles['todo-input-area']}>
-            <label htmlFor='taskinput'>{EAddTask[language]}</label>
+            <label htmlFor='taskinput'>{t('AddTask')}</label>
             <textarea
               ref={todoNameRef}
               id='taskinput'
@@ -391,13 +366,13 @@ export default function TodoApp({ language }: Props) {
               onChange={(e) => setName(e.target.value)}
               required
               autoComplete='off'
-              placeholder={`${ETask[language]}...`}
+              placeholder={`${t('Task')}...`}
             />
             <p className={styles.small}>
-              {maxCharacters - name.length} {ECharactersLeft[language]} ({EMax[language]}:{' '}
+              {maxCharacters - name.length} {t('CharactersLeft')} ({t('Max')}:{' '}
               {maxCharacters}){' '}
               {name.length > maxCharacters && (
-                <span className={styles.warning}>{ENameTooLong[language]}</span>
+                <span className={styles.warning}>{t('NameTooLong')}</span>
               )}
             </p>
 
@@ -406,7 +381,7 @@ export default function TodoApp({ language }: Props) {
               id='category'
               className={`${styles['select']} ${styles['category-select']}`}
               hideDelete
-              instructions={ESelectCategory[language]}
+              instructions={t('SelectCategory')}
               value={
                 categoryOptions.find((o) => o.value === category) || categoryOptions[0]
               }
@@ -418,7 +393,7 @@ export default function TodoApp({ language }: Props) {
               id='priority'
               className={styles['select']}
               hideDelete
-              instructions={ESelectPriority[language]}
+              instructions={t('SelectPriority')}
               value={
                 priorityOptions.find((o) => o.value === priority) || priorityOptions[0]
               }
@@ -433,7 +408,7 @@ export default function TodoApp({ language }: Props) {
               type='submit'
               disabled={sending}
             >
-              {EAddTask[language]} <IoMdAdd />
+              {t('AddTask')} <IoMdAdd />
             </button>
           </div>
         </fieldset>
@@ -444,7 +419,7 @@ export default function TodoApp({ language }: Props) {
           id='category-filter'
           className={`${styles['select']} ${styles['category-select']}`}
           hideDelete
-          instructions={EFilterByCategory[language]}
+          instructions={t('FilterByCategory')}
           value={
             filterCategoryOptions.find((o) => o.value === filterCategory) ||
             filterCategoryOptions[0]
@@ -458,7 +433,7 @@ export default function TodoApp({ language }: Props) {
           id='priority-filter'
           className={styles['select']}
           hideDelete
-          instructions={EFilterByPriority[language]}
+          instructions={t('FilterByPriority')}
           value={
             filterPriorityOptions.find((o) => o.value === filterPriority) ||
             filterPriorityOptions[0]
@@ -476,24 +451,24 @@ export default function TodoApp({ language }: Props) {
             handleClearTodos(e)
           }
         >
-          {EClearCompleted[language]}
+          {t('ClearCompleted')}
         </button>
       </div>
 
       <div className={styles['list-wrap']}>
         <p className={styles['left-to-do']}>
-          {todos?.filter((todo) => !todo?.complete).length} {ELeftToDo[language]}
+          {todos?.filter((todo) => !todo?.complete).length} {t('LeftToDo')}
         </p>
 
         {(filterPriority !== 'all' || filterCategory !== 'all') && (
           <p className={styles['filter-notification']}>
-            {ENote[language]} {EFiltered[language]}
+            {t('Note')} {t('Filtered')}
           </p>
         )}
 
         <Suspense
           fallback={
-            <p className='flex center margin0auto textcenter'>{ELoading[language]}...</p>
+            <p className='flex center margin0auto textcenter'>{t('Loading')}...</p>
           }
         >
           <TodoList
@@ -510,7 +485,7 @@ export default function TodoApp({ language }: Props) {
           />
         </Suspense>
         {status === 'loading' && (
-          <p className='flex center margin0auto textcenter'>{ELoading[language]}...</p>
+          <p className='flex center margin0auto textcenter'>{t('Loading')}...</p>
         )}
       </div>
     </>

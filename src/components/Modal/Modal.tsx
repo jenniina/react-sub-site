@@ -1,7 +1,8 @@
-import { FC, ReactNode, useEffect, useRef, useState } from 'react'
+import { FC, ReactNode, useContext, useEffect, useRef, useState } from 'react'
 import styles from './modal.module.css'
 import { useModal } from '../../hooks/useModal'
-import { EClose, ELanguages } from '../../types'
+import { ELanguages } from '../../types'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
@@ -9,6 +10,9 @@ interface Props {
 
 const Modal: FC<Props> = ({ language }) => {
   const { modal, closeModal } = useModal()
+
+  const { t } = useContext(LanguageContext)!
+
   const closeButtonRef = useRef<HTMLButtonElement>(null)
   const previouslyFocusedElement = useRef<HTMLElement | null>(null)
 
@@ -86,9 +90,9 @@ const Modal: FC<Props> = ({ language }) => {
           onClick={handleClose}
         >
           <span aria-hidden='true'>&times;</span>
-          <span className='scr'>{EClose[language]}</span>
+          <span className='scr'>{t('Close')}</span>
           <span aria-hidden='true' className='tooltip below left narrow2'>
-            {EClose[language]}
+            {t('Close')}
           </span>
         </button>
         {modal?.children}
