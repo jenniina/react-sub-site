@@ -106,12 +106,12 @@ export enum ELanguages {
 }
 export enum ELanguagesLong {
   en = 'English',
+  fi = 'Suomi',
   es = 'Español',
   fr = 'Français',
   de = 'Deutch',
   pt = 'Português',
   cs = 'Čeština',
-  fi = 'Suomi',
 }
 export enum ELanguageTitle {
   en = 'Language',
@@ -122,204 +122,6 @@ export enum ELanguageTitle {
   cs = 'Jazyk',
   fi = 'Kieli',
 }
-// export enum ESelectLanguage {
-//   en = 'Select Language',
-//   es = 'Seleccionar idioma',
-//   fr = 'Sélectionnez la langue',
-//   de = 'Sprache auswählen',
-//   pt = 'Selecione o idioma',
-//   cs = 'Vyberte jazyk',
-//   fi = 'Valitse kieli',
-// }
-// export enum EFilter {
-//   en = 'Filter',
-//   es = 'Filtrar',
-//   fr = 'Filtre',
-//   de = 'Filter',
-//   pt = 'Filtro',
-//   cs = 'Filtr',
-//   fi = 'Suodata',
-// }
-// export enum EFilterByLanguage {
-//   en = 'Filter by language',
-//   es = 'Filtrar por idioma',
-//   fr = 'Filtrer par langue',
-//   de = 'Nach Sprache filtern',
-//   pt = 'Filtrar por idioma',
-//   cs = 'Filtrovat podle jazyka',
-//   fi = 'Suodata kielen mukaan',
-// }
-// export enum EFilterByCategory {
-//   en = 'Filter by category',
-//   es = 'Filtrar por categoría',
-//   fr = 'Filtrer par catégorie',
-//   de = 'Nach Kategorie filtern',
-//   pt = 'Filtrar por categoria',
-//   cs = 'Filtrovat podle kategorie',
-//   fi = 'Suodata kategorian mukaan',
-// }
-// export enum ESend {
-//   en = 'Send',
-//   es = 'Enviar',
-//   fr = 'Envoyer',
-//   de = 'Senden',
-//   pt = 'Enviar',
-//   cs = 'Poslat',
-//   fi = 'Lähetä',
-// }
-// export enum ESave {
-//   en = 'Save',
-//   es = 'Guardar',
-//   fr = 'Sauvegarder',
-//   de = 'Speichern',
-//   pt = 'Salvar',
-//   cs = 'Uložit',
-//   fi = 'Tallenna',
-// }
-// export enum EEdit {
-//   en = 'Edit',
-//   es = 'Editar',
-//   fr = 'Modifier',
-//   de = 'Bearbeiten',
-//   pt = 'Editar',
-//   cs = 'Upravit',
-//   fi = 'Muokkaa',
-// }
-// export enum EClose {
-//   en = 'Close',
-//   es = 'Cerrar',
-//   fr = 'Fermer',
-//   de = 'Schließen',
-//   pt = 'Fechar',
-//   cs = 'Zavřít',
-//   fi = 'Sulje',
-// }
-// export enum ECurrentPassword {
-//   en = 'Current Password',
-//   es = 'Contraseña actual',
-//   fr = 'Mot de passe actuel',
-//   de = 'Aktuelles Passwort',
-//   pt = 'Senha atual',
-//   cs = 'Aktuální heslo',
-//   fi = 'Nykyinen salasana',
-// }
-// export enum ELoggedInAs {
-//   en = 'Logged in as',
-//   es = 'Conectado como',
-//   fr = 'Connecté en tant que',
-//   de = 'Angemeldet als',
-//   pt = 'Conectado como',
-//   cs = 'Přihlášen jako',
-//   fi = 'Kirjautuneena tunnuksella',
-// }
-// export enum ESearch {
-//   en = 'Search',
-//   es = 'Buscar',
-//   fr = 'Chercher',
-//   de = 'Suche',
-//   pt = 'Pesquisar',
-//   cs = 'Vyhledávání',
-//   fi = 'Hae',
-// }
-// export enum ETryTappingTheShapes {
-//   en = 'Try tapping the shapes',
-//   es = 'Intenta tocar las formas',
-//   fr = 'Essayez de toucher les formes',
-//   de = 'Versuchen Sie, die Formen zu berühren',
-//   pt = 'Tente tocar as formas',
-//   cs = 'Zkuste klepnout na tvary',
-//   fi = 'Kokeile klikata elementtejä',
-// }
-// export enum EReset {
-//   en = 'Reset',
-//   es = 'Reiniciar',
-//   fr = 'Réinitialiser',
-//   de = 'Zurücksetzen',
-//   pt = 'Redefinir',
-//   cs = 'Resetovat',
-//   fi = 'Nollaa',
-// }
-// export enum EUsername {
-//   en = 'Username',
-//   es = 'Nombre de usuario',
-//   fr = "Nom d'utilisateur",
-//   de = 'Nutzername',
-//   pt = 'Nome do usuário',
-//   cs = 'Uživatelské jméno',
-//   fi = 'Käyttäjätunnus',
-// }
-// export enum EUsernameIsTheSame {
-//   en = 'Username is the same as before',
-//   es = 'El nombre de usuario es el mismo que antes',
-//   fr = "Le nom d'utilisateur est le même qu'avant",
-//   de = 'Der Benutzername ist der gleiche wie zuvor',
-//   pt = 'O nome de usuário é o mesmo de antes',
-//   cs = 'Uživatelské jméno je stejné jako dříve',
-//   fi = 'Käyttäjätunnus on sama kuin aiemmin',
-// }
-// export enum ECurrentNickname {
-//   en = 'Current Nickname',
-//   es = 'Apodo actual',
-//   fr = 'Surnom actuel',
-//   de = 'Aktueller Spitzname',
-//   pt = 'Apelido atual',
-//   cs = 'Aktuální přezdívka',
-//   fi = 'Nykyinen nimimerkki',
-// }
-// export enum ESelectAnOption {
-//   en = 'Select an option',
-//   es = 'Seleccione una opción',
-//   fr = 'Sélectionnez une option',
-//   de = 'Wählen Sie eine Option',
-//   pt = 'Selecione uma opção',
-//   cs = 'Vyberte možnost',
-//   fi = 'Valitse',
-// }
-// export enum EFeatures {
-//   en = 'Features',
-//   es = 'Caracteristicas',
-//   fr = 'Traits',
-//   de = 'Eigenschaften',
-//   pt = 'Características',
-//   cs = 'Vlastnosti',
-//   fi = 'Ominaisuudet',
-// }
-// export enum EAppTranslatedTo {
-//   en = 'App translated to',
-//   es = 'Aplicación traducida a',
-//   fr = 'Application traduite en',
-//   de = 'App übersetzt nach',
-//   pt = 'Aplicativo traduzido para',
-//   cs = 'Aplikace přeložena do',
-//   fi = 'Sovellus käännetty',
-// }
-// export enum ESubmit {
-//   en = 'Submit',
-//   es = 'Enviar',
-//   fr = 'Soumettre',
-//   de = 'Einreichen',
-//   pt = 'Enviar',
-//   cs = 'Odeslat',
-//   fi = 'Lähetä',
-// }
-// export enum EDelete {
-//   en = 'Delete',
-//   es = 'Eliminar',
-//   fr = 'Supprimer',
-//   de = 'Löschen',
-//   pt = 'Excluir',
-//   cs = 'Odstranit',
-//   fi = 'Poista',
-// }
-// export enum EDeleted {
-//   en = 'Deleted',
-//   es = 'Eliminado',
-//   fr = 'Supprimé',
-//   de = 'Gelöscht',
-//   pt = 'Excluído',
-//   cs = 'Odstraněno',
-//   fi = 'Poistettu',
-// }
 
 type Translations = {
   [key: string]: {
@@ -10319,5 +10121,14 @@ export const translations: Translations = {
     pt: 'Remover tarefa individualmente ou limpar todas as tarefas concluídas de uma só vez',
     cs: 'Odstraňte úkol buď jednotlivě, nebo všechny dokončené úkoly najednou',
     fi: 'Poista tehtävä joko yksittäin tai poista kaikki valmiit tehtävät kerralla',
+  },
+  ERefactoredTranslations: {
+    en: 'Refactored translations',
+    es: 'Refactoricé las traducciones',
+    fr: 'J ai refactorisé les traductions',
+    de: 'Ich habe Übersetzungen refaktorisiert',
+    pt: 'Refatorei as traduções',
+    cs: 'Přepracoval jsem překlady',
+    fi: 'Refaktoroin käännökset',
   },
 }
