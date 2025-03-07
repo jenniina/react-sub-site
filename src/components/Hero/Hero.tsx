@@ -557,7 +557,7 @@ export default function Hero({
 
                   const style: CSSProperties = {
                     position: 'absolute',
-                    top: `clamp(100px, calc(-2vh + calc(1.1vh * ${item.e} * ${
+                    top: `clamp(200px, calc(-1vh + calc(1.1vh * ${item.e} * ${
                       item.e / 1.5
                     })), 50vh)`,
                     left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})), 95vw - ${item.size}vw)`,
@@ -583,7 +583,9 @@ export default function Hero({
                     <li
                       key={`${item.color}${index}`}
                       id={`shape${index + 1}`}
-                      className={`${styles.item} ${styles[location]} ${styles.note} 
+                      className={`${styles.item} ${styles[location]} ${styles.note} ${
+                        item.e > 7 ? styles.above : styles.below
+                      } ${item.e} 
                                 ${
                                   windowHeight < windowWidth ? styles.wide : styles.tall
                                 }`}

@@ -454,14 +454,24 @@
 .herocontent .note div::before {
   position: absolute;
   content: '';
-  bottom: 60%;
-  right: 0;
   height: 190%;
   width: 12%;
-  background: linear-gradient(to bottom, white 80%, transparent 98%);
   z-index: -1;
   opacity: 0.3;
+}
+.herocontent .note.above div::before {
   border-radius: 3px 3px 0 200%;
+  background: linear-gradient(to bottom, white 80%, transparent 98%);
+  bottom: 60%;
+  right: 0;
+  left: unset;
+}
+.herocontent .note.below div::before {
+  border-radius: 0 200% 3px 3px;
+  background: linear-gradient(to top, white 80%, transparent 98%);
+  top: 60%;
+  left: 0;
+  right: unset;
 }
 .light .herocontent .note div::before {
   opacity: 0.5;
@@ -470,6 +480,9 @@
 .herocontent .note span {
   background: currentColor;
   transform-origin: 100% 30%;
+}
+.herocontent .note.below span {
+  transform-origin: 0 70%;
 }
 .herocontent .geometric:hover div,
 .herocontent .geometric:focus div,
