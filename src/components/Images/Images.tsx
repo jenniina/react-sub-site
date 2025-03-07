@@ -68,7 +68,9 @@ const toLanguages = (language: ELanguages) => {
   }))
 
   categoriesWithWeightsSmaller = VALID_CATEGORIES.map((category) => ({
-    text: category,
+    text: translations[firstToUpperCase(category) as TranslationKey][
+      language as TranslationLang
+    ],
     weight:
       category === 'design'
         ? 33
@@ -80,7 +82,9 @@ const toLanguages = (language: ELanguages) => {
   }))
 
   categoriesWithWeightsSmallest = VALID_CATEGORIES.map((category) => ({
-    text: category,
+    text: translations[firstToUpperCase(category) as TranslationKey][
+      language as TranslationLang
+    ],
     weight:
       category === 'design'
         ? 28
