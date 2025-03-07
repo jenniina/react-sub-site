@@ -248,7 +248,7 @@ const WordCloud: FC<WordCloudProps> = ({
         newPositions.push({ x, y, width: textWidth, height: textHeight })
         newPlacedWords.push(
           <text
-            key={word.text}
+            key={`${word.text}-${index}`}
             x={x}
             y={y + ascent}
             fontSize={fontSize}
@@ -314,7 +314,7 @@ const WordCloud: FC<WordCloudProps> = ({
               newPositions.push(candidatePos)
               newPlacedWords.push(
                 <text
-                  key={word.text}
+                  key={`${word.text}-${index}`}
                   x={candidatePos.x}
                   y={candidatePos.y + ascent}
                   fontSize={fontSize}

@@ -20,9 +20,14 @@ import {
   Color,
   OrderBy,
 } from '../../types/images'
-import { ELanguages } from '../../types'
+import {
+  ELanguages,
+  generateOptionsFromT,
+  TranslationKey,
+  TranslationLang,
+  translations,
+} from '../../types'
 import { Select, SelectOption } from '../Select/Select'
-import { generateOptions } from '../../types/images'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import { useModal } from '../../hooks/useModal'
@@ -34,7 +39,7 @@ import {
 } from 'react-icons/bi'
 import { SMALLER_CATEGORIES, WEIGHTED } from '../Quotes/services/quotes'
 import { VALID_CATEGORIES } from '../Quotes/services/quotes'
-import { scrollIntoView } from '../../utils'
+import { firstToUpperCase, scrollIntoView } from '../../utils'
 import useWindowSize from '../../hooks/useWindowSize'
 import useTooltip from '../../hooks/useTooltip'
 import { LanguageContext } from '../../contexts/LanguageContext'
@@ -43,41 +48,49 @@ const WordCloud = lazy(() => import('../WordCloud/WordCloud'))
 
 export type TTextType = 'quote' | 'poem'
 
-const categoriesWithWeights = VALID_CATEGORIES.map((category) => ({
-  text: category,
-  weight:
-    category === 'design'
-      ? 50
-      : WEIGHTED.includes(category)
-      ? Math.floor(Math.random() * 10) + 30
-      : SMALLER_CATEGORIES.includes(category)
-      ? Math.floor(Math.random() * 5) + 15
-      : Math.floor(Math.random() * 10) + 15,
-}))
+let categoriesWithWeights: { text: string; weight: number }[] = []
+let categoriesWithWeightsSmaller: { text: string; weight: number }[] = []
+let categoriesWithWeightsSmallest: { text: string; weight: number }[] = []
 
-const categoriesWithWeightsSmaller = VALID_CATEGORIES.map((category) => ({
-  text: category,
-  weight:
-    category === 'design'
-      ? 33
-      : WEIGHTED.includes(category)
-      ? Math.floor(Math.random() * 10) + 16
-      : SMALLER_CATEGORIES.includes(category)
-      ? Math.floor(Math.random() * 5) + 14
-      : Math.floor(Math.random() * 6) + 15,
-}))
+const toLanguages = (language: ELanguages) => {
+  categoriesWithWeights = VALID_CATEGORIES.map((category) => ({
+    text: translations[firstToUpperCase(category) as TranslationKey][
+      language as TranslationLang
+    ],
+    weight:
+      category === 'design'
+        ? 50
+        : WEIGHTED.includes(category)
+        ? Math.floor(Math.random() * 10) + 30
+        : SMALLER_CATEGORIES.includes(category)
+        ? Math.floor(Math.random() * 5) + 15
+        : Math.floor(Math.random() * 10) + 15,
+  }))
 
-const categoriesWithWeightsSmallest = VALID_CATEGORIES.map((category) => ({
-  text: category,
-  weight:
-    category === 'design'
-      ? 28
-      : WEIGHTED.includes(category)
-      ? Math.floor(Math.random() * 10) + 13
-      : SMALLER_CATEGORIES.includes(category)
-      ? Math.floor(Math.random() * 5) + 14
-      : Math.floor(Math.random() * 5) + 15,
-}))
+  categoriesWithWeightsSmaller = VALID_CATEGORIES.map((category) => ({
+    text: category,
+    weight:
+      category === 'design'
+        ? 33
+        : WEIGHTED.includes(category)
+        ? Math.floor(Math.random() * 10) + 16
+        : SMALLER_CATEGORIES.includes(category)
+        ? Math.floor(Math.random() * 5) + 14
+        : Math.floor(Math.random() * 6) + 15,
+  }))
+
+  categoriesWithWeightsSmallest = VALID_CATEGORIES.map((category) => ({
+    text: category,
+    weight:
+      category === 'design'
+        ? 28
+        : WEIGHTED.includes(category)
+        ? Math.floor(Math.random() * 10) + 13
+        : SMALLER_CATEGORIES.includes(category)
+        ? Math.floor(Math.random() * 5) + 14
+        : Math.floor(Math.random() * 5) + 15,
+  }))
+}
 
 const Image = lazy(() => import('./components/Image'))
 const Video = lazy(() => import('./components/Video'))
@@ -88,6 +101,10 @@ interface Props {
 
 const Images: FC<Props> = ({ language }) => {
   const { t } = useContext(LanguageContext)!
+
+  useEffect(() => {
+    toLanguages(language)
+  }, [language])
 
   const dispatch = useAppDispatch()
   const { show } = useModal()
@@ -119,18 +136,18 @@ const Images: FC<Props> = ({ language }) => {
   const colorTypes: Color[] = Object.values(Color)
   const orderByTypes: OrderBy[] = Object.values(OrderBy)
 
-  const optionsVideoTypes: SelectOption[] = generateOptions(videoTypes, language)
-  const optionsOrderBy: SelectOption[] = generateOptions(orderByTypes, language)
-  const optionsImageTypes: SelectOption[] = generateOptions(imageTypes, language)
-  const optionsOrientations: SelectOption[] = generateOptions(
+  const optionsVideoTypes: SelectOption[] = generateOptionsFromT(videoTypes, language)
+  const optionsOrderBy: SelectOption[] = generateOptionsFromT(orderByTypes, language)
+  const optionsImageTypes: SelectOption[] = generateOptionsFromT(imageTypes, language)
+  const optionsOrientations: SelectOption[] = generateOptionsFromT(
     orientationTypes.map((o) => o),
     language
   )
 
-  const optionsCategories: SelectOption[] = generateOptions(categoryTypes, language)
+  const optionsCategories: SelectOption[] = generateOptionsFromT(categoryTypes, language)
   // add 'all' to the categories
   optionsCategories.unshift({ label: t('All'), value: '' }) // does not accept 'all' as a value
-  const optionsColors: SelectOption[] = generateOptions(colorTypes, language)
+  const optionsColors: SelectOption[] = generateOptionsFromT(colorTypes, language)
 
   const [category, setCategory] = useState<Category | undefined>(undefined)
   const [colors, setColors] = useState<SelectOption[]>([])
@@ -372,7 +389,7 @@ const Images: FC<Props> = ({ language }) => {
 
   const handleSetSearchTerm = (term: string) => {
     setSearchTerm(term)
-    scrollIntoView('search-container', 'start')
+    scrollIntoView('search-wrap', 'start')
     dispatch(notify(`${t('Updated')}: ${t('SearchParameters')}: ${term}`, false, 4))
   }
 
@@ -423,7 +440,7 @@ const Images: FC<Props> = ({ language }) => {
             )}
           </div>
           <form onSubmit={handleSearch}>
-            <div className={styles['search-wrap']}>
+            <div id='search-wrap' className={styles['search-wrap']}>
               <h2>{t('SearchForMedia')}</h2>
               <div className={styles['column']}>
                 <div className={`input-wrap ${styles['input-wrap']}`}>
