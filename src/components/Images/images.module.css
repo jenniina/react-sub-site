@@ -146,6 +146,7 @@
 .submit-wrap > button {
   padding: 0.4em 1em;
   margin: 0 0 0 -1.5em;
+  margin-bottom: 1rem;
 }
 .search-wrap .note {
   margin: 2em auto;

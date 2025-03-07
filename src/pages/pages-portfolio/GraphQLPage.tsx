@@ -228,8 +228,9 @@ export default function GraphQLPage({
                     ? {
                         paddingLeft: '0.5rem',
                         fontSize: '130%',
+                        marginTop: '1rem',
                       }
-                    : { fontSize: '130%' }
+                    : { fontSize: '130%', marginTop: '2rem' }
                 }
               >
                 <p>
