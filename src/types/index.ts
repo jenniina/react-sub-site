@@ -10506,7 +10506,7 @@ export const generateOptionsFromT = (
     label:
       translations[firstToUpperCase(value) as TranslationKey]?.[
         language as TranslationLang
-      ] || value,
+      ] || firstToUpperCase(value),
     value: value,
   }))
 }
