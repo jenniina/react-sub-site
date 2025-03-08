@@ -2600,7 +2600,6 @@ export const translations = {
     cs: 'Dva styly v malé velikosti obrazovky a dva ve velké velikosti obrazovky',
     fi: 'Kaksi tyyliä pienellä näytön koolla ja kaksi suurella näytön koolla',
   },
-
   Filter: {
     en: 'Filter',
     es: 'Filtrar',
@@ -3330,7 +3329,6 @@ export const translations = {
     cs: 'Hledat báseň',
     fi: 'Etsi runo',
   },
-
   QuizQuestions15AreFetchedFrom: {
     en: 'Quiz questions (15) are fetched from',
     es: 'Las preguntas del cuestionario (15) se obtienen de',
@@ -7876,7 +7874,6 @@ export const translations = {
     cs: 'Získejte novou sadu blobů',
     fi: 'Hanki uusi setti mollukoita',
   },
-
   PressSpaceOrRWithABlobInFocusToCycleThroughRandomColors: {
     en: 'Press Space or R with a blob in focus to cycle through random colors',
     es: 'Presione Espacio o R con un blob enfocado para recorrer colores aleatorios',
@@ -7895,7 +7892,6 @@ export const translations = {
     cs: 'Děkujeme za hraní!',
     fi: 'Kiitos pelaamisesta!',
   },
-
   CloneModeOn: {
     en: 'Clone mode on',
     es: '¡Modo de clonación activado!',
@@ -7923,7 +7919,6 @@ export const translations = {
     cs: 'Režim zvyšování vrstvy zapnut!',
     fi: 'Kerroksen nosto päällä!',
   },
-
   SizeDecreaseModeOn: {
     en: 'Size decrease mode on!',
     es: '¡Modo de disminución de tamaño activado!',
@@ -7942,7 +7937,6 @@ export const translations = {
     cs: 'Režim zvyšování velikosti zapnut!',
     fi: 'Koon suurentaminen päällä!',
   },
-
   ChangedAllControlsToButtons: {
     en: 'Changed all controls to buttons',
     es: 'Cambiado todos los controles a botones',
@@ -7952,7 +7946,6 @@ export const translations = {
     cs: 'Všechny ovládací prvky byly změněny na tlačítka',
     fi: 'Kaikki kontrollit muutettiin painikkeiksi',
   },
-
   ResetButtonOnTheLowerRightCornerResetsTheInteractiveElements: {
     en: 'Reset button on the lower right corner resets the interactive elements',
     es: 'El botón de reinicio en la esquina inferior derecha restablece los elementos interactivos',
@@ -8322,7 +8315,6 @@ export const translations = {
     cs: 'Stránka je přeložena do sedmi jazyků, z nichž šest bylo vybráno na základě podporovaných jazyků JokeAPI, ze kterého pochází myšlenka překladu, a sedmý je finština.',
     fi: 'Sivusto on käännetty seitsemälle kielelle, joista kuusi valittiin JokeAPI:n tuettujen kielten perusteella, mistä käännösidea tuli. Seitsemäs kieli on suomi.',
   },
-
   ImagePage: {
     en: 'Image page',
     es: 'Página de imagen',
@@ -8529,7 +8521,6 @@ export const translations = {
     cs: 'a básně jsou z',
     fi: 'API:sta ja runot',
   },
-
   ImagesKuvia: {
     en: 'Images',
     es: 'Imágenes',
@@ -9655,7 +9646,6 @@ export const translations = {
     cs: 'Smazat účet',
     fi: 'Poista tili',
   },
-
   ClearCompleted: {
     en: 'Clear Completed Tasks',
     es: 'Borrar Tareas Completadas',
@@ -9818,7 +9808,6 @@ export const translations = {
     cs: 'Klikněte na tlačítka vrstvy a poté na blob, abyste posunuli blob o jednu vrstvu nahoru nebo dolů',
     fi: 'Klikkaa kerrospainikketta ja mollukkaa siirtääksesi mollukan kerrosta ylemmäs tai alemmas',
   },
-
   EditArtwork: {
     en: 'Edit your artwork',
     es: 'Editar tu obra de arte',
@@ -10134,7 +10123,6 @@ export const translations = {
     cs: 'Přepracoval jsem překlady',
     fi: 'Refaktoroin käännökset',
   },
-
   Photo: {
     en: 'Photo',
     es: 'Foto',
@@ -10511,10 +10499,10 @@ export type TranslationKey = keyof Translations
 export type TranslationLang = keyof (typeof translations)[TranslationKey]
 
 export const generateOptionsFromT = (
-  enumValues: string[],
+  values: string[],
   language: ELanguages
 ): SelectOption[] => {
-  return enumValues.map((value) => ({
+  return values.map((value) => ({
     label:
       translations[firstToUpperCase(value) as TranslationKey]?.[
         language as TranslationLang
