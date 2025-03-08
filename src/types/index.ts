@@ -3795,7 +3795,7 @@ export const translations = {
     de: 'Design',
     pt: 'Design',
     cs: 'Design',
-    fi: 'Suunnittelu',
+    fi: 'Design',
   },
   Dreams: {
     en: 'Dreams',
