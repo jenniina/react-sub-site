@@ -10,6 +10,7 @@ import {
   MouseEvent as ReactMouseEvent,
   useContext,
 } from 'react'
+import useDebounce from '../../hooks/useDebounce'
 import styles from './images.module.css'
 import imagesAPI, { Hit, SearchOptions } from './services/images'
 import {
@@ -106,10 +107,6 @@ interface Props {
 const Images: FC<Props> = ({ language }) => {
   const { t } = useContext(LanguageContext)!
 
-  useEffect(() => {
-    toLanguages(language)
-  }, [language])
-
   const dispatch = useAppDispatch()
   const { show } = useModal()
   const [media, setMedia] = useState<Hit[]>([])
@@ -164,7 +161,6 @@ const Images: FC<Props> = ({ language }) => {
   const [perSubPage, setPerSubPage] = useState<number>(20)
   const [totalSubPages, setTotalSubPages] = useState<number>(1)
   const [totalPages, setTotalPages] = useState<number>(1)
-  const [totalHits, setTotalHits] = useState<number>(0)
   const [hasSearched, setHasSearched] = useState(false)
   const isFirstRun = useRef(true)
   const [fetchPage, setFetchPage] = useState<number>(1)
@@ -174,8 +170,40 @@ const Images: FC<Props> = ({ language }) => {
     { label: '50', value: 50 },
     { label: '100', value: 100 },
   ]
-  const { windowWidth } = useWindowSize()
   const { tooltip, handleMouseMove, handleMouseLeave } = useTooltip()
+  const { windowWidth } = useWindowSize()
+  const debouncedWindowWidth = useDebounce(windowWidth, 200)
+
+  const [breakpoint, setBreakpoint] = useState<'large' | 'medium' | 'small'>(() => {
+    if (windowWidth > 700) return 'large'
+    if (windowWidth > 500) return 'medium'
+    return 'small'
+  })
+
+  const [words, setWords] = useState<{ text: string; weight: number }[]>([])
+
+  useEffect(() => {
+    let newBreakpoint: 'large' | 'medium' | 'small'
+    if (debouncedWindowWidth > 700) newBreakpoint = 'large'
+    else if (debouncedWindowWidth > 500) newBreakpoint = 'medium'
+    else newBreakpoint = 'small'
+
+    setBreakpoint((prev) => (prev !== newBreakpoint ? newBreakpoint : prev))
+  }, [debouncedWindowWidth])
+
+  useEffect(() => {
+    toLanguages(language)
+  }, [language])
+
+  useEffect(() => {
+    if (breakpoint === 'large') {
+      setWords(categoriesWithWeights)
+    } else if (breakpoint === 'medium') {
+      setWords(categoriesWithWeightsSmaller)
+    } else {
+      setWords(categoriesWithWeightsSmallest)
+    }
+  }, [language, breakpoint])
 
   const onMouseMove = (e: ReactMouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -192,7 +220,6 @@ const Images: FC<Props> = ({ language }) => {
 
     if (result.success) {
       setMedia(result.hits)
-      setTotalHits(result.totalHits)
       setTotalSubPages(
         Math.ceil(result.hits.length < perSubPage ? 1 : result.hits.length / perSubPage)
       )
@@ -417,21 +444,21 @@ const Images: FC<Props> = ({ language }) => {
                 language={language}
                 title={t('QuoteCategories')}
                 onClick={handleSetSearchTerm}
-                words={
-                  windowWidth > 700
-                    ? categoriesWithWeights
-                    : windowWidth > 500
-                    ? categoriesWithWeightsSmaller
-                    : categoriesWithWeightsSmallest
-                }
+                words={words}
                 width={
-                  windowWidth < 300
-                    ? windowWidth - 20
-                    : windowWidth < 600
-                    ? windowWidth - 80
-                    : windowWidth - (windowWidth / 100) * 30
+                  debouncedWindowWidth < 300
+                    ? debouncedWindowWidth - 20
+                    : debouncedWindowWidth < 600
+                    ? debouncedWindowWidth - 80
+                    : debouncedWindowWidth - (debouncedWindowWidth / 100) * 30
                 }
-                height={windowWidth < 300 ? 900 : windowWidth < 500 ? 800 : 500}
+                height={
+                  debouncedWindowWidth < 300
+                    ? 900
+                    : debouncedWindowWidth < 500
+                    ? 800
+                    : 500
+                }
               />
             </Suspense>
             {tooltip.visible && (
