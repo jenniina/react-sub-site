@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import styles from './select.module.css'
 import { ELanguages, translations as t } from '../../types'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
+import { sanitize } from '../../utils'
 // import { v4 as uuidv4 } from 'uuid'
 
 export type SelectOption = {
@@ -327,7 +328,7 @@ export function Select({
                 isOptionSelected(option) ? `${styles.selected} selected` : ''
               } ${index === highlightedIndex ? `${styles.highlighted} highlighted` : ''}`}
               // id={`${id}-${(option.label).replace(/\s+/g, '-').toLowerCase().replace(/[^a-zA-Z]/g, '')}-${index}`}
-              id={`${id}-${index}`}
+              id={`${id}-${index}-${sanitize(option.value.toString())}`}
               onKeyDown={(e) => {
                 if (e.code === 'Enter' || e.code === ' ') {
                   e.preventDefault()
