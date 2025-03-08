@@ -116,53 +116,43 @@ const Images: FC<Props> = ({ language }) => {
 
   const [type, setType] = useState<TImageTypes>('photo')
   const [videoType, setVideoType] = useState<TVideoTypes>('all')
-  const [orientation, setOrientation] = useState<Orientation>(Orientation.All)
-
+  const [orientation, setOrientation] = useState<Orientation>(Orientation.all)
   const [textType, setTextType] = useState<TTextType>('poem')
 
   const imageTypes: TImageTypes[] = ['all', 'photo', 'illustration', 'vector', 'video']
   const videoTypes: TVideoTypes[] = ['all', 'film', 'animation']
   const textTypes: TTextType[] = ['poem', 'quote']
-
-  const orientationTypes: Orientation[] = [
-    Orientation.All,
-    Orientation.Horizontal,
-    Orientation.Vertical,
-  ]
-  const optionsTextTypes: SelectOption[] = [
-    { label: t('Poem'), value: 'poem' },
-    { label: t('Quote'), value: 'quote' },
-  ]
-  const categoryTypes: Category[] = Object.values(Category)
   const colorTypes: Color[] = Object.values(Color)
   const orderByTypes: OrderBy[] = Object.values(OrderBy)
+  const orientationTypes: Orientation[] = Object.values(Orientation)
+  const categoryTypes: Category[] = Object.values(Category)
 
-  const optionsVideoTypes: SelectOption[] = generateOptionsFromT(videoTypes, language)
-  const optionsOrderBy: SelectOption[] = generateOptionsFromT(orderByTypes, language)
   const optionsImageTypes: SelectOption[] = generateOptionsFromT(imageTypes, language)
+  const optionsVideoTypes: SelectOption[] = generateOptionsFromT(videoTypes, language)
+  const optionsTextTypes: SelectOption[] = generateOptionsFromT(textTypes, language)
+  const optionsColors: SelectOption[] = generateOptionsFromT(colorTypes, language)
+  const optionsOrderBy: SelectOption[] = generateOptionsFromT(orderByTypes, language)
   const optionsOrientations: SelectOption[] = generateOptionsFromT(
-    orientationTypes.map((o) => o),
+    orientationTypes,
     language
   )
-
   const optionsCategories: SelectOption[] = generateOptionsFromT(categoryTypes, language)
   // add 'all' to the categories
   optionsCategories.unshift({ label: t('All'), value: '' }) // does not accept 'all' as a value
-  const optionsColors: SelectOption[] = generateOptionsFromT(colorTypes, language)
 
+  const perFetch = 100
+  const isFirstRun = useRef(true)
   const [category, setCategory] = useState<Category | undefined>(undefined)
   const [colors, setColors] = useState<SelectOption[]>([])
   const [colorList, setColorList] = useState<Color[]>([])
   const [editorsChoice, setEditorsChoice] = useState<boolean>(false)
   const [safeSearch, setSafeSearch] = useState<boolean>(true)
   const [order, setOrder] = useState<'popular' | 'latest'>('popular')
-  const [perFetch, setPerFetch] = useState<number>(100)
   const [subPage, setSubPage] = useState<number>(1)
   const [perSubPage, setPerSubPage] = useState<number>(20)
   const [totalSubPages, setTotalSubPages] = useState<number>(1)
   const [totalPages, setTotalPages] = useState<number>(1)
   const [hasSearched, setHasSearched] = useState(false)
-  const isFirstRun = useRef(true)
   const [fetchPage, setFetchPage] = useState<number>(1)
   const subPageOptions = [
     { label: '10', value: 10 },
