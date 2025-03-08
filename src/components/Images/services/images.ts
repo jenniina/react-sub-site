@@ -109,7 +109,7 @@ const searchMedia = async (
     if (options.orientation) {
       params.append('orientation', options.orientation)
     } else {
-      params.append('orientation', Orientation.All)
+      params.append('orientation', Orientation.all)
     }
 
     if (options.category) {
