@@ -37,7 +37,7 @@ export enum EAnger {
   de = 'Wut',
   pt = 'Raiva',
   cs = 'Hněv',
-  fi = 'Vihanpito',
+  fi = 'Viha',
 }
 
 export enum EArchitecture {
@@ -277,7 +277,7 @@ export enum EFamous {
   de = 'Berühmt',
   pt = 'Famoso',
   cs = 'Slavný',
-  fi = 'Sanoisa',
+  fi = 'Kuuluisa',
 }
 
 export enum EFear {

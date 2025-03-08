@@ -3662,7 +3662,7 @@ export const translations = {
     de: 'Wut',
     pt: 'Raiva',
     cs: 'Hněv',
-    fi: 'Vihanpito',
+    fi: 'Viha',
   },
   Architecture: {
     en: 'Architecture',
@@ -3869,7 +3869,7 @@ export const translations = {
     de: 'Berühmt',
     pt: 'Famoso',
     cs: 'Slavný',
-    fi: 'Sanoisa',
+    fi: 'Kuuluisa',
   },
   Fear: {
     en: 'Fear',
