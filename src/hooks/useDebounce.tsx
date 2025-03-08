@@ -1,8 +1,12 @@
-import { useEffect } from "react"
-import useTimeout from "./useTimeout"
+import { useState, useEffect } from 'react'
 
-export default function useDebounce(callback: Function, delay: number, dependencies: Array<string | number | ConstantSourceNode>) {
-    const { reset, clear } = useTimeout(callback, delay)
-    useEffect(reset, [...dependencies, reset]) //reset when dependencies change
-    useEffect(clear, [])//to stop it from running on the first render
+export default function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value)
+
+  useEffect(() => {
+    const handler = setTimeout(() => setDebouncedValue(value), delay)
+    return () => clearTimeout(handler)
+  }, [value, delay])
+
+  return debouncedValue
 }
