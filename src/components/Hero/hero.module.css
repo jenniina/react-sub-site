@@ -124,9 +124,9 @@
   );
 }
 .herocontent .jewel > div:not(.none) {
-  animation: rotate-colors 2000ms linear infinite;
+  animation: rotate-colors 4000ms linear infinite;
   animation-play-state: paused;
-  animation-delay: calc(var(--number) * -500ms);
+  animation-delay: calc(var(--number) * -1000ms);
 }
 .herocontent .jewel2 > div > div:not(.none) {
   animation: rotate-colors2 4000ms linear infinite;
@@ -143,7 +143,7 @@
   0% {
     background-color: hsl(var(--color), 100%, 20%);
   }
-  30% {
+  20% {
     background-color: hsl(var(--color), 100%, 75%);
   }
   100% {
