@@ -31,22 +31,6 @@ const Blobs: FC<BlobsProps> = ({ language }) => {
   )
 
   const [scroll, setScroll] = useState<boolean>(true)
-  const [searchParams, setSearchParams] = useSearchParams({
-    scroll: 'true',
-  })
-
-  useEffect(() => {
-    const scroll = searchParams.get('scroll')
-    if (scroll) {
-      setScroll(scroll === 'true')
-    }
-  }, [searchParams])
-
-  useEffect(() => {
-    const newParams = new URLSearchParams(searchParams)
-    newParams.set('scroll', scroll.toString())
-    setSearchParams(newParams)
-  }, [scroll, searchParams, setSearchParams])
 
   const buttons = (number: number) => {
     return (
