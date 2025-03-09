@@ -545,6 +545,12 @@
   outline-offset: 3px;
   border: 3px solid var(--color-primary-20);
 }
+.light.container .set-grid button.active,
+.light.container .set-players button.active {
+  outline-color: var(--color-primary-14);
+  border-color: var(--color-primary-14);
+  color: var(--color-primary-14);
+}
 .set-players,
 .set-handedness {
   display: flex;
@@ -576,6 +582,9 @@
   outline: 2px solid var(--color-primary-20);
   outline-offset: 3px;
 }
+.light.container button.active {
+  outline-color: var(--color-primary-14);
+}
 button.active::before {
   content: '';
   position: absolute;
@@ -600,11 +609,17 @@ button.active::before {
 }
 .set-card-type button.active {
   border-color: var(--color-primary-20);
+  outline-width: 1px;
+  border-width: 3px;
+}
+.light .set-card-type button.active {
+  border-color: var(--color-primary-14);
+  color: var(--color-primary-14);
 }
 #game-container button.active:hover,
 #game-container button.active:focus {
   background-position: 50% 3%;
-  color: var(--color-primary-20);
+  color: var(--color-primary-17);
   cursor: default;
 }
 #game-container button.active:disabled {
