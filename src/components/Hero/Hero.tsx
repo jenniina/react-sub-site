@@ -645,7 +645,7 @@ export default function Hero({
                     </li>
                   )
                 } else if (location == LOCATION.STORE) {
-                  const dividedBy = 2.7
+                  const dividedBy = 2.2
 
                   const colorArrayJewel = [
                     'var(--color-primary-13)',
@@ -774,7 +774,7 @@ export default function Hero({
                     </li>
                   )
                 } else if (location == LOCATION.CART) {
-                  const dividedBy = 2
+                  const dividedBy = 1.8
                   const times = 1.08
 
                   const randomOfTwo = Math.round(getRandomMinMax(0, 1))
