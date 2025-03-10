@@ -680,9 +680,7 @@ export default function Hero({
                         ? `${item.size / dividedBy}vh`
                         : `${item.size / dividedBy}vw`,
                     ['--rotate' as string]: `-45deg`,
-                    ['--rotate-inner' as string]: `${Math.round(
-                      getRandomMinMax(0, 359)
-                    )}deg`,
+                    ['--rotate-inner' as string]: `-90deg`, //`${Math.round(getRandomMinMax(0, 359))}deg`,
                     ['--color' as string]: `${randomBG[1]}`,
                   }
 
@@ -796,9 +794,7 @@ export default function Hero({
                         ? `${item.size / dividedBy}vh`
                         : `${item.size / dividedBy}vw`,
                     ['--rotate' as string]: `23deg`,
-                    ['--rotate-inner' as string]: `${Math.round(
-                      getRandomMinMax(0, 359)
-                    )}deg`,
+                    ['--rotate-inner' as string]: `-135deg`, //`${Math.round(getRandomMinMax(0, 359))}deg`,
                     ['--color' as string]: `hsl(${hue}, 100%, 50%)`,
                   }
 
