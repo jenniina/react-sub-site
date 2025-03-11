@@ -119,14 +119,14 @@
 .herocontent .jewel2 > div > div.none {
   background: linear-gradient(
     var(--rotate-inner),
-    hsl(var(--color), 100%, 30%) 0%,
-    hsl(var(--color), 100%, 60%) 100%
+    hsl(var(--color), 100%, 35%) 0%,
+    hsl(var(--color), 100%, 55%) 100%
   );
 }
 .herocontent .jewel > div:not(.none) {
   animation: rotate-colors 4000ms linear infinite;
   animation-play-state: paused;
-  animation-delay: calc(var(--number) * -1000ms);
+  animation-delay: calc(var(--number) * -1000ms - 1000ms);
 }
 .herocontent .jewel2 > div > div:not(.none) {
   animation: rotate-colors2 4000ms linear infinite;
@@ -143,7 +143,7 @@
   0% {
     background-color: hsl(var(--color), 100%, 20%);
   }
-  20% {
+  50% {
     background-color: hsl(var(--color), 100%, 75%);
   }
   100% {
