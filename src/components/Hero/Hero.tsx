@@ -217,7 +217,7 @@ export default function Hero({
       const div: itemProps = {
         i: i,
         e: Math.round(getRandomMinMax(5, 10)),
-        size: i === 5 ? 66 : 100,
+        size: i === 5 ? 70 : 100,
         color: 'white',
       }
       array.push(div)
