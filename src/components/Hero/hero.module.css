@@ -143,8 +143,8 @@
   0% {
     background-color: hsl(var(--color), 100%, 20%);
   }
-  50% {
-    background-color: hsl(var(--color), 100%, 75%);
+  44% {
+    background-color: hsl(var(--color), 100%, 80%);
   }
   100% {
     background-color: hsl(var(--color), 100%, 20%);
