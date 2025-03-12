@@ -115,28 +115,38 @@
   -webkit-tap-highlight-color: transparent;
   pointer-events: all;
 }
-.herocontent .jewel > div.none,
-.herocontent .jewel2 > div > div.none {
-  background: linear-gradient(
-    var(--rotate-inner),
-    hsl(var(--color), 100%, 35%) 0%,
-    hsl(var(--color), 100%, 55%) 100%
+
+.herocontent .jewel > div > div.none {
+  background: radial-gradient(
+    circle at center,
+    hsl(var(--color), 100%, 60%) 0%,
+    hsl(var(--color), 100%, 45%) 60%,
+    hsl(var(--color), 100%, 30%) 100%
+  );
+  mix-blend-mode: color-burn;
+}
+
+.herocontent .jewel > div > div.cover {
+  background: radial-gradient(
+    circle at center,
+    hsl(var(--color), 100%, 60%) 0%,
+    hsl(var(--color), 100%, 45%) 60%,
+    hsl(var(--color), 100%, 30%) 100%
   );
 }
-.herocontent .jewel > div:not(.none) {
+
+.herocontent .jewel > div > div:not(.none):not(.cover) {
   animation: rotate-colors 4000ms linear infinite;
   animation-play-state: paused;
   animation-delay: calc(var(--number) * -500ms - 500ms);
 }
-.herocontent .jewel2 > div > div:not(.none) {
+.herocontent .jewel2 > div > div:not(.none):not(.cover) {
   animation: rotate-colors2 4000ms linear infinite;
   animation-play-state: paused;
   animation-delay: calc(var(--number) * -500ms);
 }
-.herocontent .jewel:hover > div:not(.none),
-.herocontent .jewel:focus > div:not(.none),
-.herocontent .jewel2:hover > div > div:not(.none),
-.herocontent .jewel2:focus > div > div:not(.none) {
+.herocontent .jewel:hover > div > div:not(.none):not(.cover),
+.herocontent .jewel:focus > div > div:not(.none):not(.cover) {
   animation-play-state: running;
 }
 @keyframes rotate-colors {
@@ -213,17 +223,12 @@
   -ms-animation-play-state: paused;
   animation-play-state: paused;
 }
-.herocontent li.jewel:not(.jewel2) {
-  box-shadow: 0 0 40px -8px var(--color);
-}
 .light .herocontent li.jewel {
   filter: contrast(110%) brightness(130%);
 }
-.light .herocontent li.jewel:not(.jewel2) {
-  box-shadow: 0 0 10px -2px var(--color), 0 0 30px 2px var(--color);
-}
-.herocontent li.jewel2::before {
-  box-shadow: 0 0 20px -10px var(--color), 0 0 40px -15px var(--color);
+
+.herocontent li.jewel::before {
+  box-shadow: 0 0 30px -5px var(--color), 0 0 40px -10px var(--color);
   position: absolute;
   content: '';
   top: 0;
@@ -234,10 +239,14 @@
   z-index: -1;
   background-color: transparent;
 }
-.light .herocontent li.jewel2::before {
+.herocontent li.jewel2::before {
+  box-shadow: 0 0 20px -10px var(--color), 0 0 40px -15px var(--color);
+}
+
+.light .herocontent li.jewel::before {
   box-shadow: 0 0 10px 2px white, 0 0 40px 2px white;
 }
-.herocontent li.jewel > div,
+
 .herocontent li.jewel > div > div {
   pointer-events: none;
 }

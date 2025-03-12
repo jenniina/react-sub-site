@@ -211,27 +211,13 @@ export default function Hero({
     return array
   }, [values])
 
-  // const divArrayJewel: itemProps[] = useMemo(() => {
-  //   let array: itemProps[] = []
-  //   for (let i: number = 1; i <= 5; i++) {
-  //     const div: itemProps = {
-  //       i: i,
-  //       e: Math.round(getRandomMinMax(5, 10)),
-  //       size: i === 5 ? 70 : 100,
-  //       color: 'white',
-  //     }
-  //     array.push(div)
-  //   }
-  //   return array
-  // }, [values])
-
-  const divArrayJewel2: itemProps[] = useMemo(() => {
+  const divArrayJewel: itemProps[] = useMemo(() => {
     let array: itemProps[] = []
-    for (let i: number = 1; i <= 9; i++) {
+    for (let i: number = 1; i <= 10; i++) {
       const div: itemProps = {
         i: i,
         e: Math.round(getRandomMinMax(5, 9)),
-        size: i === 9 ? 70 : 100,
+        size: i >= 9 ? 75 : 100,
         color: 'white',
       }
       array.push(div)
@@ -674,14 +660,6 @@ export default function Hero({
                     ['--color' as string]: `${randomBG}`,
                   }
 
-                  // const clipArrayJewel = [
-                  //   'polygon(100% 0%, 50% 50%, 100% 100%)',
-                  //   'polygon(0% 100%, 50% 50%, 100% 100%)',
-                  //   'polygon(0% 0%, 50% 50%, 0% 100%)',
-                  //   'polygon(0% 0%, 50% 50%, 100% 0%)',
-                  //   'none',
-                  // ]
-
                   const clipArrayJewel = [
                     'polygon(15% 0%, 50% 50%, 85% 0%)',
                     'polygon(85% 0%, 50% 50%, 100% 15%)',
@@ -691,6 +669,8 @@ export default function Hero({
                     'polygon(15% 100%, 50% 50%, 0% 85%)',
                     'polygon(0% 85%, 50% 50%, 0% 15%)',
                     'polygon(0% 15%, 50% 50%, 15% 0%)',
+                    'polygon(85% 100%, 100% 85%, 100% 15%, 85% 0%, 15% 0%, 0% 15%, 0% 85%, 15% 100%)',
+                    'polygon(85% 100%, 100% 85%, 100% 15%, 85% 0%, 15% 0%, 0% 15%, 0% 85%, 15% 100%)',
                     'polygon(85% 100%, 100% 85%, 100% 15%, 85% 0%, 15% 0%, 0% 15%, 0% 85%, 15% 100%)',
                   ]
 
@@ -739,33 +719,48 @@ export default function Hero({
                         )
                       }}
                     >
-                      {divArrayJewel2.map((span, index) => {
-                        const style: CSSProperties = {
-                          position: 'absolute',
-                          left: `calc(50% - ${span.size / 2}%)`,
-                          top: `calc(50% - ${span.size / 2}%)`,
-                          borderRadius: '0',
-                          // background: `${colorArrays[randomOfTwo][index]}`,
-                          ['--color' as string]: hue,
-                          ['--number' as string]: `${index + 1}`,
-                          ['--i' as string]: `${item.i}`,
-                          width: `${span.size}%`,
-                          height: `${span.size}%`,
-                          minWidth: `${span.size}%`,
-                          minHeight: `${span.size}%`,
-                          maxWidth: `${span.size}%`,
-                          maxHeight: `${span.size}%`,
-                          opacity: `${index === 8 ? '0.7' : '1'}`,
-                          clipPath: `${clipArrayJewel[index]}`,
-                        }
-                        return (
-                          <div
-                            className={index === 8 ? styles.none : ''}
-                            key={`${item.i}-${index}`}
-                            style={style}
-                          ></div>
-                        )
-                      })}
+                      <div
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          clipPath:
+                            'polygon(85% 100%, 100% 85%, 100% 15%, 85% 0%, 15% 0%, 0% 15%, 0% 85%, 15% 100%)',
+                        }}
+                      >
+                        {divArrayJewel.map((span, index) => {
+                          const style: CSSProperties = {
+                            position: 'absolute',
+                            left: `calc(50% - ${span.size / 2}%)`,
+                            top: `calc(50% - ${span.size / 2}%)`,
+                            borderRadius: '0',
+                            // background: `${colorArrays[randomOfTwo][index]}`,
+                            ['--color' as string]: hue,
+                            ['--number' as string]: `${index + 1}`,
+                            ['--i' as string]: `${item.i}`,
+                            width: `${span.size}%`,
+                            height: `${span.size}%`,
+                            minWidth: `${span.size}%`,
+                            minHeight: `${span.size}%`,
+                            maxWidth: `${span.size}%`,
+                            maxHeight: `${span.size}%`,
+                            opacity: `${index === 8 ? '0.3' : index === 9 ? '0.6' : '1'}`,
+                            clipPath: `${clipArrayJewel[index]}`,
+                          }
+                          return (
+                            <div
+                              className={
+                                index === 8
+                                  ? styles.none
+                                  : index === 9
+                                  ? styles.cover
+                                  : ''
+                              }
+                              key={`${item.i}-${index}`}
+                              style={style}
+                            ></div>
+                          )
+                        })}{' '}
+                      </div>
                       <span style={style}>
                         <span className='scr'>
                           {t('Shape')} {index + 1}
@@ -809,6 +804,8 @@ export default function Hero({
                     'polygon(0% 70.71%, 50% 50%, 29.29% 100%)',
                     'polygon(0% 29.29%, 0% 70.71%, 50% 50%)',
                     'polygon(29.29% 0%, 50% 50%, 0% 29.29%)',
+                    'polygon(70.71% 100%, 100% 70.71%, 100% 29.29%, 70.71% 0%, 29.29% 0%, 0% 29.29%, 0% 70.71%, 29.29% 100%)',
+                    'polygon(70.71% 100%, 100% 70.71%, 100% 29.29%, 70.71% 0%, 29.29% 0%, 0% 29.29%, 0% 70.71%, 29.29% 100%)',
                     'polygon(70.71% 100%, 100% 70.71%, 100% 29.29%, 70.71% 0%, 29.29% 0%, 0% 29.29%, 0% 70.71%, 29.29% 100%)',
                   ]
 
@@ -867,7 +864,7 @@ export default function Hero({
                             'polygon(70.71% 100%, 100% 70.71%, 100% 29.29%, 70.71% 0%, 29.29% 0%, 0% 29.29%, 0% 70.71%, 29.29% 100%)',
                         }}
                       >
-                        {divArrayJewel2.map((span, index) => {
+                        {divArrayJewel.map((span, index) => {
                           const style: CSSProperties = {
                             position: 'absolute',
                             left: `calc(50% - ${(span.size * times) / 2}%)`,
@@ -882,12 +879,18 @@ export default function Hero({
                             minHeight: `${span.size * times}%`,
                             maxWidth: `${span.size * times}%`,
                             maxHeight: `${span.size * times}%`,
-                            opacity: `${index === 8 ? '0.7' : '1'}`,
+                            opacity: `${index === 8 ? '0.4' : index === 9 ? '0.6' : '1'}`,
                             clipPath: `${clipArrayJewel2[index]}`,
                           }
                           return (
                             <div
-                              className={index === 8 ? styles.none : ''}
+                              className={
+                                index === 8
+                                  ? styles.none
+                                  : index === 9
+                                  ? styles.cover
+                                  : ''
+                              }
                               key={`${item.i}-${index}`}
                               style={style}
                             ></div>
@@ -1366,6 +1369,23 @@ export default function Hero({
       <span id='description' className='scr'>
         {t('HeroSection')}: {t('InteractiveElements')}
       </span>
+
+      <svg style={{ position: 'absolute', width: 0, height: 0 }}>
+        <defs>
+          <clipPath id='clipHole1' clipPathUnits='objectBoundingBox' clipRule='evenodd'>
+            {/* Outer polygon: your original polygon */}
+            <polygon points='0.85,1 1,0.85 1,0.15 0.85,0 0.15,0 0,0.15 0,0.85 0.15,1' />
+            {/* Inner polygon: 10% smaller */}
+            <polygon points='0.765,0.9 0.9,0.765 0.9,0.135 0.765,0 0.135,0 0,0.135 0,0.765 0.135,0.9' />
+          </clipPath>
+          <clipPath id='clipHole2' clipPathUnits='objectBoundingBox' clipRule='evenodd'>
+            {/* Outer polygon for second shape */}
+            <polygon points='0.7071,1 1,0.7071 1,0.2929 0.7071,0 0.2929,0 0,0.2929 0,0.7071 0.2929,1' />
+            {/* Inner polygon: 10% smaller */}
+            <polygon points='0.6364,0.9 0.9,0.6364 0.9,0.2616 0.6364,0 0.2616,0 0,0.2616 0,0.6364 0.2616,0.9' />
+          </clipPath>
+        </defs>
+      </svg>
 
       {shouldRender && (
         <ItemComponent array={setupItems} location={page} fadeIn={fadeIn} />
