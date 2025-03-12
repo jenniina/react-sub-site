@@ -63,7 +63,6 @@ const Nav = (
   ref: Ref<{ getStyle: () => boolean }>
 ) => {
   const { cart } = useCart()
-  console.log(cart)
 
   const { t } = useContext(LanguageContext)!
 
