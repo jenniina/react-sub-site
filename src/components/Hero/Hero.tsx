@@ -755,7 +755,7 @@ export default function Hero({
                           minHeight: `${span.size}%`,
                           maxWidth: `${span.size}%`,
                           maxHeight: `${span.size}%`,
-                          opacity: `1`,
+                          opacity: `${index === 8 ? '0.7' : '1'}`,
                           clipPath: `${clipArrayJewel[index]}`,
                         }
                         return (
@@ -882,7 +882,7 @@ export default function Hero({
                             minHeight: `${span.size * times}%`,
                             maxWidth: `${span.size * times}%`,
                             maxHeight: `${span.size * times}%`,
-                            opacity: `1`,
+                            opacity: `${index === 8 ? '0.7' : '1'}`,
                             clipPath: `${clipArrayJewel2[index]}`,
                           }
                           return (
