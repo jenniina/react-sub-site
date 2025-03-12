@@ -126,7 +126,7 @@
 .herocontent .jewel > div:not(.none) {
   animation: rotate-colors 4000ms linear infinite;
   animation-play-state: paused;
-  animation-delay: calc(var(--number) * -1000ms - 1000ms);
+  animation-delay: calc(var(--number) * -500ms - 500ms);
 }
 .herocontent .jewel2 > div > div:not(.none) {
   animation: rotate-colors2 4000ms linear infinite;
@@ -143,7 +143,7 @@
   0% {
     background-color: hsl(var(--color), 100%, 20%);
   }
-  44% {
+  50% {
     background-color: hsl(var(--color), 100%, 80%);
   }
   100% {

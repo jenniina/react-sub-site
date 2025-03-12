@@ -211,19 +211,19 @@ export default function Hero({
     return array
   }, [values])
 
-  const divArrayJewel: itemProps[] = useMemo(() => {
-    let array: itemProps[] = []
-    for (let i: number = 1; i <= 5; i++) {
-      const div: itemProps = {
-        i: i,
-        e: Math.round(getRandomMinMax(5, 10)),
-        size: i === 5 ? 70 : 100,
-        color: 'white',
-      }
-      array.push(div)
-    }
-    return array
-  }, [values])
+  // const divArrayJewel: itemProps[] = useMemo(() => {
+  //   let array: itemProps[] = []
+  //   for (let i: number = 1; i <= 5; i++) {
+  //     const div: itemProps = {
+  //       i: i,
+  //       e: Math.round(getRandomMinMax(5, 10)),
+  //       size: i === 5 ? 70 : 100,
+  //       color: 'white',
+  //     }
+  //     array.push(div)
+  //   }
+  //   return array
+  // }, [values])
 
   const divArrayJewel2: itemProps[] = useMemo(() => {
     let array: itemProps[] = []
@@ -231,7 +231,7 @@ export default function Hero({
       const div: itemProps = {
         i: i,
         e: Math.round(getRandomMinMax(5, 9)),
-        size: i === 9 ? 66 : 100,
+        size: i === 9 ? 70 : 100,
         color: 'white',
       }
       array.push(div)
@@ -647,22 +647,12 @@ export default function Hero({
                 } else if (location == LOCATION.STORE) {
                   const dividedBy = 2.2
 
-                  const colorArrayJewel = [
-                    'var(--color-primary-13)',
-                    'var(--color-primary-8)',
-                    'var(--color-primary-17)',
-                    'linear-gradient(90deg, var(--color-primary-9) 0%, var(--color-primary-13) 100%)',
-                  ]
-                  const colorArrayJewel2 = [
-                    'var(--color-secondary-10)',
-                    'var(--color-secondary-16)',
-                    'var(--color-secondary-4)',
-                    'linear-gradient(90deg, var(--color-secondary-14) 0%, var(--color-secondary-10) 100%)',
-                  ]
+                  const colorJewel = 'var(--color-primary-8)'
+                  const colorJewel2 = 'var(--color-secondary-16)'
                   const hueArray = [214, 39]
-                  const colorArrays = [colorArrayJewel, colorArrayJewel2]
+                  const colors = [colorJewel, colorJewel2]
                   const randomOfTwo = Math.round(getRandomMinMax(0, 1))
-                  const randomBG = colorArrays[randomOfTwo]
+                  const randomBG = colors[randomOfTwo]
                   const hue = hueArray[randomOfTwo]
 
                   const style: CSSProperties = {
@@ -681,15 +671,27 @@ export default function Hero({
                         : `${item.size / dividedBy}vw`,
                     ['--rotate' as string]: `-45deg`,
                     ['--rotate-inner' as string]: `-90deg`, //`${Math.round(getRandomMinMax(0, 359))}deg`,
-                    ['--color' as string]: `${randomBG[1]}`,
+                    ['--color' as string]: `${randomBG}`,
                   }
 
+                  // const clipArrayJewel = [
+                  //   'polygon(100% 0%, 50% 50%, 100% 100%)',
+                  //   'polygon(0% 100%, 50% 50%, 100% 100%)',
+                  //   'polygon(0% 0%, 50% 50%, 0% 100%)',
+                  //   'polygon(0% 0%, 50% 50%, 100% 0%)',
+                  //   'none',
+                  // ]
+
                   const clipArrayJewel = [
-                    'polygon(100% 0%, 50% 50%, 100% 100%)',
-                    'polygon(0% 100%, 50% 50%, 100% 100%)',
-                    'polygon(0% 0%, 50% 50%, 0% 100%)',
-                    'polygon(0% 0%, 50% 50%, 100% 0%)',
-                    'none',
+                    'polygon(15% 0%, 50% 50%, 85% 0%)',
+                    'polygon(85% 0%, 50% 50%, 100% 15%)',
+                    'polygon(100% 15%, 50% 50%, 100% 85%)',
+                    'polygon(100% 85%, 50% 50%, 85% 100%)',
+                    'polygon(85% 100%, 50% 50%, 15% 100%)',
+                    'polygon(15% 100%, 50% 50%, 0% 85%)',
+                    'polygon(0% 85%, 50% 50%, 0% 15%)',
+                    'polygon(0% 15%, 50% 50%, 15% 0%)',
+                    'polygon(85% 100%, 100% 85%, 100% 15%, 85% 0%, 15% 0%, 0% 15%, 0% 85%, 15% 100%)',
                   ]
 
                   return (
@@ -737,7 +739,7 @@ export default function Hero({
                         )
                       }}
                     >
-                      {divArrayJewel.map((span, index) => {
+                      {divArrayJewel2.map((span, index) => {
                         const style: CSSProperties = {
                           position: 'absolute',
                           left: `calc(50% - ${span.size / 2}%)`,
@@ -753,12 +755,12 @@ export default function Hero({
                           minHeight: `${span.size}%`,
                           maxWidth: `${span.size}%`,
                           maxHeight: `${span.size}%`,
-                          opacity: `1`,
+                          opacity: `${index === 8 ? '0.7' : '1'}`,
                           clipPath: `${clipArrayJewel[index]}`,
                         }
                         return (
                           <div
-                            className={index === 4 ? styles.none : ''}
+                            className={index === 8 ? styles.none : ''}
                             key={`${item.i}-${index}`}
                             style={style}
                           ></div>
@@ -880,7 +882,7 @@ export default function Hero({
                             minHeight: `${span.size * times}%`,
                             maxWidth: `${span.size * times}%`,
                             maxHeight: `${span.size * times}%`,
-                            opacity: `1`,
+                            opacity: `${index === 8 ? '0.7' : '1'}`,
                             clipPath: `${clipArrayJewel2[index]}`,
                           }
                           return (
