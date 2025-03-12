@@ -63,6 +63,7 @@ const Nav = (
   ref: Ref<{ getStyle: () => boolean }>
 ) => {
   const { cart } = useCart()
+  console.log(cart)
 
   const { t } = useContext(LanguageContext)!
 
@@ -534,25 +535,7 @@ const Nav = (
             />
             <span className={windowWidth < breakpoint ? 'scr' : ''}>{t('Search')}</span>
           </button>
-          {window.location.pathname !== '/store' ? (
-            <button
-              className={`${styles.settings} ${styles.store}`}
-              aria-label='store'
-              onClick={() => {
-                navigate('/store')
-              }}
-            >
-              <FaStoreAlt
-                style={
-                  windowWidth < breakpointSmall
-                    ? { fontSize: '1.1em' }
-                    : { fontSize: '1.4em' }
-                }
-                aria-hidden={true}
-              />
-              <span className={windowWidth < breakpoint ? 'scr' : ''}>{t('Store')}</span>
-            </button>
-          ) : (
+          {cart && cart.length > 0 && window.location.pathname !== '/cart' ? (
             <button
               className={`${styles.settings} ${styles.cart}`}
               aria-label='cart'
@@ -569,6 +552,24 @@ const Nav = (
                 aria-hidden={true}
               />
               <span className={windowWidth < breakpoint ? 'scr' : ''}>{t('Cart')}</span>
+            </button>
+          ) : (
+            <button
+              className={`${styles.settings} ${styles.store}`}
+              aria-label='store'
+              onClick={() => {
+                navigate('/store')
+              }}
+            >
+              <FaStoreAlt
+                style={
+                  windowWidth < breakpointSmall
+                    ? { fontSize: '1.1em' }
+                    : { fontSize: '1.4em' }
+                }
+                aria-hidden={true}
+              />
+              <span className={windowWidth < breakpoint ? 'scr' : ''}>{t('Store')}</span>
             </button>
           )}
           <button className={styles.settings} onClick={toggleToolbar}>
