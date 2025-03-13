@@ -108,7 +108,8 @@
   -webkit-tap-highlight-color: transparent;
   pointer-events: all;
 }
-.herocontent .jewel {
+.herocontent .jewel,
+.herocontent .jewel::before {
   transition-property: top, left, transform, opacity, filter; /* Removed box-shadow for dark-light transformation smoothness */
   transition-timing-function: ease-in-out;
   transition-duration: 800ms;
@@ -205,7 +206,7 @@
 }
 .herocontent li.jewel {
   filter: contrast(120%) brightness(140%);
-  opacity: 0.74;
+  opacity: 0.77;
   pointer-events: all;
   -webkit-transform: rotate(var(--rotate)) scale(1);
   -moz-transform: rotate(var(--rotate)) scale(1);
@@ -238,6 +239,7 @@
   border-radius: 50%;
   z-index: -1;
   background-color: transparent;
+  pointer-events: none;
 }
 .herocontent li.jewel2::before {
   box-shadow: 0 0 20px -10px var(--color), 0 0 40px -15px var(--color);
@@ -247,6 +249,7 @@
   box-shadow: 0 0 10px 2px white, 0 0 40px 2px white;
 }
 
+.herocontent li.jewel > div,
 .herocontent li.jewel > div > div {
   pointer-events: none;
 }
@@ -929,7 +932,8 @@
   pointer-events: none;
 }
 
-.herocontent .jewel.exitItem {
+.herocontent li.jewel.exitItem,
+.herocontent li.jewel.exitItem::before {
   opacity: 0;
   filter: contrast(150%) brightness(600%);
   pointer-events: none;

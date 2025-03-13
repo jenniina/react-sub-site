@@ -211,13 +211,27 @@ export default function Hero({
     return array
   }, [values])
 
-  const divArrayJewel: itemProps[] = useMemo(() => {
+  const divArrayJewel1: itemProps[] = useMemo(() => {
     let array: itemProps[] = []
     for (let i: number = 1; i <= 10; i++) {
       const div: itemProps = {
         i: i,
         e: Math.round(getRandomMinMax(5, 9)),
-        size: i >= 9 ? 75 : 100,
+        size: i >= 9 ? 80 : 100,
+        color: 'white',
+      }
+      array.push(div)
+    }
+    return array
+  }, [values])
+
+  const divArrayJewel2: itemProps[] = useMemo(() => {
+    let array: itemProps[] = []
+    for (let i: number = 1; i <= 10; i++) {
+      const div: itemProps = {
+        i: i,
+        e: Math.round(getRandomMinMax(5, 9)),
+        size: i >= 9 ? 77 : 100,
         color: 'white',
       }
       array.push(div)
@@ -727,7 +741,7 @@ export default function Hero({
                             'polygon(85% 100%, 100% 85%, 100% 15%, 85% 0%, 15% 0%, 0% 15%, 0% 85%, 15% 100%)',
                         }}
                       >
-                        {divArrayJewel.map((span, index) => {
+                        {divArrayJewel1.map((span, index) => {
                           const style: CSSProperties = {
                             position: 'absolute',
                             left: `calc(50% - ${span.size / 2}%)`,
@@ -864,7 +878,7 @@ export default function Hero({
                             'polygon(70.71% 100%, 100% 70.71%, 100% 29.29%, 70.71% 0%, 29.29% 0%, 0% 29.29%, 0% 70.71%, 29.29% 100%)',
                         }}
                       >
-                        {divArrayJewel.map((span, index) => {
+                        {divArrayJewel2.map((span, index) => {
                           const style: CSSProperties = {
                             position: 'absolute',
                             left: `calc(50% - ${(span.size * times) / 2}%)`,
@@ -879,7 +893,7 @@ export default function Hero({
                             minHeight: `${span.size * times}%`,
                             maxWidth: `${span.size * times}%`,
                             maxHeight: `${span.size * times}%`,
-                            opacity: `${index === 8 ? '0.4' : index === 9 ? '0.6' : '1'}`,
+                            opacity: `${index === 8 ? '0.2' : index === 9 ? '0.7' : '1'}`,
                             clipPath: `${clipArrayJewel2[index]}`,
                           }
                           return (
