@@ -647,10 +647,19 @@ export default function Hero({
                 } else if (location == LOCATION.STORE) {
                   const dividedBy = 2.2
 
-                  const colorJewel = 'var(--color-primary-8)'
-                  const colorJewel2 = 'var(--color-secondary-16)'
+                  const colorJewel = [
+                    'var(--color-primary-9)',
+                    'var(--color-primary-11)',
+                    'var(--color-primary-13)',
+                  ]
+                  const colorJewel2 = [
+                    'var(--color-secondary-5)',
+                    'var(--color-secondary-7)',
+                    'var(--color-secondary-9)',
+                  ]
                   const hueArray = [214, 39]
-                  const colors = [colorJewel, colorJewel2]
+                  const randomOfThree = Math.round(getRandomMinMax(0, 2))
+                  const colors = [colorJewel[randomOfThree], colorJewel2[randomOfThree]]
                   const randomOfTwo = Math.round(getRandomMinMax(0, 1))
                   const randomBG = colors[randomOfTwo]
                   const hue = hueArray[randomOfTwo]
@@ -672,6 +681,7 @@ export default function Hero({
                     ['--rotate' as string]: `-45deg`,
                     ['--rotate-inner' as string]: `-90deg`, //`${Math.round(getRandomMinMax(0, 359))}deg`,
                     ['--color' as string]: `${randomBG}`,
+                    ['--hue' as string]: `${hue}`,
                   }
 
                   const clipArrayJewel = [
@@ -694,7 +704,9 @@ export default function Hero({
                     <li
                       key={`${item.color}${index}`}
                       id={`shape${index + 1}`}
-                      className={`${styles.item} ${styles[location]} ${styles.jewel} 
+                      className={`${styles.item} ${styles[location]} ${styles.jewel} ${
+                        styles.jewel1
+                      } 
                                 ${
                                   windowHeight < windowWidth ? styles.wide : styles.tall
                                 }`}
@@ -748,7 +760,6 @@ export default function Hero({
                             top: `calc(50% - ${span.size / 2}%)`,
                             borderRadius: '0',
                             // background: `${colorArrays[randomOfTwo][index]}`,
-                            ['--color' as string]: hue,
                             ['--number' as string]: `${index + 1}`,
                             ['--i' as string]: `${item.i}`,
                             width: `${span.size}%`,
@@ -757,7 +768,7 @@ export default function Hero({
                             minHeight: `${span.size}%`,
                             maxWidth: `${span.size}%`,
                             maxHeight: `${span.size}%`,
-                            opacity: `${index === 8 ? '0.3' : index === 9 ? '0.6' : '1'}`,
+                            opacity: `${index === 8 ? '0.6' : index === 9 ? '0.5' : '1'}`,
                             clipPath: `${clipArrayJewel[index]}`,
                           }
                           return (
@@ -786,7 +797,21 @@ export default function Hero({
                   const dividedBy = 1.8
                   const times = 1.08
 
+                  const colorJewel = [
+                    'var(--color-primary-6)',
+                    'var(--color-primary-9)',
+                    'var(--color-primary-12)',
+                  ]
+                  const colorJewel2 = [
+                    'var(--color-secondary-7)',
+                    'var(--color-secondary-10)',
+                    'var(--color-secondary-13)',
+                  ]
+
+                  const randomOfThree = Math.round(getRandomMinMax(0, 2))
+                  const colors = [colorJewel[randomOfThree], colorJewel2[randomOfThree]]
                   const randomOfTwo = Math.round(getRandomMinMax(0, 1))
+                  const randomBG = colors[randomOfTwo]
                   const hues = [214, 39]
                   const hue = hues[randomOfTwo]
 
@@ -806,7 +831,8 @@ export default function Hero({
                         : `${item.size / dividedBy}vw`,
                     ['--rotate' as string]: `23deg`,
                     ['--rotate-inner' as string]: `-135deg`, //`${Math.round(getRandomMinMax(0, 359))}deg`,
-                    ['--color' as string]: `hsl(${hue}, 100%, 50%)`,
+                    ['--color' as string]: `${randomBG}`,
+                    ['--hue' as string]: `${hue}`,
                   }
 
                   const clipArrayJewel2 = [
@@ -884,7 +910,6 @@ export default function Hero({
                             left: `calc(50% - ${(span.size * times) / 2}%)`,
                             top: `calc(50% - ${(span.size * times) / 2}%)`,
                             borderRadius: '0',
-                            ['--color' as string]: hue,
                             ['--number' as string]: `${index}`,
                             ['--i' as string]: `${item.i}`,
                             width: `${span.size * times}%`,
@@ -893,7 +918,7 @@ export default function Hero({
                             minHeight: `${span.size * times}%`,
                             maxWidth: `${span.size * times}%`,
                             maxHeight: `${span.size * times}%`,
-                            opacity: `${index === 8 ? '0.2' : index === 9 ? '0.7' : '1'}`,
+                            opacity: `${index === 8 ? '0.4' : index === 9 ? '0.6' : '1'}`,
                             clipPath: `${clipArrayJewel2[index]}`,
                           }
                           return (
