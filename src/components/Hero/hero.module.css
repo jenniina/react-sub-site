@@ -149,13 +149,16 @@
   animation-play-state: paused;
   animation-delay: calc(var(--number) * -500ms - 2500ms);
   background-image: radial-gradient(
-    circle at center,
-    hsl(var(--hue), 100%, 40%) 30%,
-    hsl(var(--hue), 100%, 80%) 35%,
+    circle at top left,
+    hsl(var(--hue), 100%, 40%) 34%,
+    hsl(var(--hue), 100%, 80%) 37%,
     hsl(var(--hue), 100%, 40%) 40%,
+    hsl(var(--hue), 100%, 40%) 57%,
+    hsl(var(--hue), 100%, 80%) 50%,
+    hsl(var(--hue), 100%, 40%) 53%,
     hsl(var(--hue), 100%, 40%) 60%,
-    hsl(var(--hue), 100%, 80%) 65%,
-    hsl(var(--hue), 100%, 40%) 70%
+    hsl(var(--hue), 100%, 80%) 63%,
+    hsl(var(--hue), 100%, 40%) 66%
   );
   background-size: 450% 450%;
   background-position: 0 0;
@@ -165,6 +168,21 @@
   animation: rotate-colors2 4000ms linear infinite;
   animation-play-state: paused;
   animation-delay: calc(var(--number) * -500ms);
+  background-image: radial-gradient(
+    circle at top left,
+    hsl(var(--hue), 100%, 40%) 30%,
+    hsl(var(--hue), 100%, 80%) 33%,
+    hsl(var(--hue), 100%, 40%) 37%,
+    hsl(var(--hue), 100%, 40%) 47%,
+    hsl(var(--hue), 100%, 80%) 50%,
+    hsl(var(--hue), 100%, 40%) 53%,
+    hsl(var(--hue), 100%, 40%) 73%,
+    hsl(var(--hue), 100%, 80%) 77%,
+    hsl(var(--hue), 100%, 40%) 80%
+  );
+  background-size: 500% 500%;
+  background-position: 0 0;
+  background-repeat: no-repeat;
 }
 .herocontent .jewel:hover > div > div:not(.none):not(.cover),
 .herocontent .jewel:focus > div > div:not(.none):not(.cover) {
