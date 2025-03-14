@@ -123,16 +123,16 @@
     hsl(var(--hue), 100%, 65%) 0%,
     var(--color) 100%
   );
-  mix-blend-mode: multiply;
+  mix-blend-mode: hard-light;
 }
 
 .herocontent .jewel2 > div > div.none {
   background: radial-gradient(
     circle at center,
-    hsl(var(--hue), 100%, 60%) 0%,
+    hsl(var(--hue), 100%, 70%) 0%,
     var(--color) 100%
   );
-  mix-blend-mode: color-burn;
+  mix-blend-mode: hard-light;
 }
 
 .herocontent .jewel > div > div.cover {
@@ -141,12 +141,25 @@
     hsl(var(--hue), 100%, 60%) 0%,
     var(--color) 100%
   );
+  mix-blend-mode: color-burn;
 }
 
 .herocontent .jewel > div > div:not(.none):not(.cover) {
   animation: rotate-colors 4000ms linear infinite;
   animation-play-state: paused;
-  animation-delay: calc(var(--number) * -500ms - 500ms);
+  animation-delay: calc(var(--number) * -500ms - 2500ms);
+  background-image: radial-gradient(
+    circle at center,
+    hsl(var(--hue), 100%, 50%) 30%,
+    hsl(var(--hue), 100%, 80%) 35%,
+    hsl(var(--hue), 100%, 50%) 40%,
+    hsl(var(--hue), 100%, 50%) 60%,
+    hsl(var(--hue), 100%, 80%) 65%,
+    hsl(var(--hue), 100%, 50%) 70%
+  );
+  background-size: 450% 450%;
+  background-position: 0 0;
+  background-repeat: no-repeat;
 }
 .herocontent .jewel2 > div > div:not(.none):not(.cover) {
   animation: rotate-colors2 4000ms linear infinite;
@@ -159,16 +172,34 @@
 }
 @keyframes rotate-colors {
   0% {
-    background-color: hsl(var(--hue), 100%, 20%);
+    filter: contrast(20%) brightness(190%);
+    background-position: 0 0;
   }
   50% {
-    background-color: hsl(var(--hue), 100%, 80%);
+    filter: contrast(190%) brightness(50%);
+    background-position: 50% 50%;
   }
   100% {
-    background-color: hsl(var(--hue), 100%, 20%);
+    filter: contrast(20%) brightness(190%);
+    background-position: 100% 100%;
   }
 }
 @keyframes rotate-colors2 {
+  0% {
+    filter: contrast(20%) brightness(190%);
+    background-position: 0 0;
+  }
+  50% {
+    filter: contrast(190%) brightness(50%);
+    background-position: 50% 50%;
+  }
+  100% {
+    filter: contrast(20%) brightness(190%);
+    background-position: 100% 100%;
+  }
+}
+
+/* @keyframes rotate-colors2 {
   0% {
     background-color: hsl(var(--hue), 100%, 85%);
   }
@@ -184,7 +215,7 @@
   100% {
     background-color: hsl(var(--hue), 100%, 85%);
   }
-}
+} */
 .herocontent .triangle {
   --time: 800ms;
   -webkit-clip-path: polygon(50% 45%, 105% 98%, 105% 160%, -5% 160%, -5% 98%);
@@ -212,7 +243,6 @@
     var(--color);
 }
 .herocontent li.jewel {
-  filter: contrast(120%) brightness(140%);
   opacity: 0.77;
   pointer-events: all;
   -webkit-transform: rotate(var(--rotate)) scale(1);
@@ -230,9 +260,6 @@
   -o-animation-play-state: paused;
   -ms-animation-play-state: paused;
   animation-play-state: paused;
-}
-.light .herocontent li.jewel {
-  filter: contrast(110%) brightness(130%);
 }
 
 .herocontent li.jewel::before {
