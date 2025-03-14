@@ -150,12 +150,12 @@
   animation-delay: calc(var(--number) * -500ms - 2500ms);
   background-image: radial-gradient(
     circle at center,
-    hsl(var(--hue), 100%, 50%) 30%,
+    hsl(var(--hue), 100%, 40%) 30%,
     hsl(var(--hue), 100%, 80%) 35%,
-    hsl(var(--hue), 100%, 50%) 40%,
-    hsl(var(--hue), 100%, 50%) 60%,
+    hsl(var(--hue), 100%, 40%) 40%,
+    hsl(var(--hue), 100%, 40%) 60%,
     hsl(var(--hue), 100%, 80%) 65%,
-    hsl(var(--hue), 100%, 50%) 70%
+    hsl(var(--hue), 100%, 40%) 70%
   );
   background-size: 450% 450%;
   background-position: 0 0;
@@ -172,15 +172,15 @@
 }
 @keyframes rotate-colors {
   0% {
-    filter: contrast(20%) brightness(190%);
+    filter: contrast(20%) brightness(200%);
     background-position: 0 0;
   }
   50% {
-    filter: contrast(190%) brightness(50%);
+    filter: contrast(200%) brightness(80%);
     background-position: 50% 50%;
   }
   100% {
-    filter: contrast(20%) brightness(190%);
+    filter: contrast(20%) brightness(200%);
     background-position: 100% 100%;
   }
 }

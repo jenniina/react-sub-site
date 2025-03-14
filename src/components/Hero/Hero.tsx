@@ -759,7 +759,6 @@ export default function Hero({
                             left: `calc(50% - ${span.size / 2}%)`,
                             top: `calc(50% - ${span.size / 2}%)`,
                             borderRadius: '0',
-                            // background: `${colorArrays[randomOfTwo][index]}`,
                             ['--number' as string]: `${index + 1}`,
                             ['--i' as string]: `${item.i}`,
                             width: `${span.size}%`,
@@ -768,7 +767,17 @@ export default function Hero({
                             minHeight: `${span.size}%`,
                             maxWidth: `${span.size}%`,
                             maxHeight: `${span.size}%`,
-                            opacity: `${index === 8 ? '0.7' : index === 9 ? '0.3' : '1'}`,
+                            opacity: `${
+                              index === 8 && randomOfTwo === 0
+                                ? '0.7'
+                                : index === 8
+                                ? '0.8'
+                                : index === 9 && randomOfTwo === 0
+                                ? '0.3'
+                                : index === 9
+                                ? '0.4'
+                                : '1'
+                            }`,
                             clipPath: `${clipArrayJewel[index]}`,
                           }
                           return (
