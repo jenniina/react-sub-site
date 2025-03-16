@@ -46,6 +46,7 @@ import { FaStoreAlt } from 'react-icons/fa'
 import useCart from '../../hooks/useCart'
 import { options } from '../../utils'
 import { LanguageContext } from '../../contexts/LanguageContext'
+import { isTouchDevice } from '../../hooks/useDraggable'
 
 type Link = {
   label: string
@@ -180,6 +181,8 @@ const Nav = (
       </ul>
     )
   }
+
+  const touchDevice = isTouchDevice()
   const lightTheme = useTheme()
   const toggleTheme = useThemeUpdate()
   const navigate = useNavigate()
@@ -481,7 +484,9 @@ const Nav = (
                 ></path>
               </g>
             </svg>
-            <span className={windowWidth < breakpoint ? 'scr' : ''}>{t('Menu')}</span>
+            <span className={windowWidth > breakpoint && !touchDevice ? '' : 'scr'}>
+              {t('Menu')}
+            </span>
           </button>
           <nav
             id={'site-navigation'}
@@ -532,7 +537,9 @@ const Nav = (
               }
               aria-hidden={true}
             />
-            <span className={windowWidth < breakpoint ? 'scr' : ''}>{t('Search')}</span>
+            <span className={windowWidth > breakpoint && !touchDevice ? '' : 'scr'}>
+              {t('Search')}
+            </span>
           </button>
           {cart && cart.length > 0 && window.location.pathname !== '/cart' ? (
             <button
@@ -550,7 +557,9 @@ const Nav = (
                 }
                 aria-hidden={true}
               />
-              <span className={windowWidth < breakpoint ? 'scr' : ''}>{t('Cart')}</span>
+              <span className={windowWidth > breakpoint && !touchDevice ? '' : 'scr'}>
+                {t('Cart')}
+              </span>
             </button>
           ) : (
             <button
@@ -568,7 +577,9 @@ const Nav = (
                 }
                 aria-hidden={true}
               />
-              <span className={windowWidth < breakpoint ? 'scr' : ''}>{t('Store')}</span>
+              <span className={windowWidth > breakpoint && !touchDevice ? '' : 'scr'}>
+                {t('Store')}
+              </span>
             </button>
           )}
           <button className={styles.settings} onClick={toggleToolbar}>
@@ -580,7 +591,10 @@ const Nav = (
               }
               aria-hidden={true}
             />
-            <span id='settings' className={windowWidth < breakpoint ? 'scr' : ''}>
+            <span
+              id='settings'
+              className={windowWidth > breakpoint && !touchDevice ? '' : 'scr'}
+            >
               {t('Settings')}
             </span>
           </button>
