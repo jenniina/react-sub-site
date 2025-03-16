@@ -213,11 +213,11 @@ export default function Hero({
 
   const divArrayJewel1: itemProps[] = useMemo(() => {
     let array: itemProps[] = []
-    for (let i: number = 1; i <= 10; i++) {
+    for (let i: number = 1; i <= 11; i++) {
       const div: itemProps = {
         i: i,
         e: Math.round(getRandomMinMax(5, 9)),
-        size: i >= 9 ? 80 : 100,
+        size: i >= 9 ? 82 : 100,
         color: 'white',
       }
       array.push(div)
@@ -227,7 +227,7 @@ export default function Hero({
 
   const divArrayJewel2: itemProps[] = useMemo(() => {
     let array: itemProps[] = []
-    for (let i: number = 1; i <= 10; i++) {
+    for (let i: number = 1; i <= 11; i++) {
       const div: itemProps = {
         i: i,
         e: Math.round(getRandomMinMax(5, 9)),
@@ -649,13 +649,13 @@ export default function Hero({
 
                   const colorJewel = [
                     'var(--color-primary-9)',
-                    'var(--color-primary-11)',
-                    'var(--color-primary-13)',
+                    'var(--color-primary-10)',
+                    'var(--color-primary-12)',
                   ]
                   const colorJewel2 = [
-                    'var(--color-secondary-5)',
-                    'var(--color-secondary-7)',
-                    'var(--color-secondary-9)',
+                    'var(--color-secondary-8)',
+                    'var(--color-secondary-10)',
+                    'var(--color-secondary-11)',
                   ]
                   const hueArray = [214, 39]
                   const randomOfThree = Math.round(getRandomMinMax(0, 2))
@@ -695,7 +695,7 @@ export default function Hero({
                     'polygon(0% 15%, 50% 50%, 15% 0%)',
                     'polygon(85% 100%, 100% 85%, 100% 15%, 85% 0%, 15% 0%, 0% 15%, 0% 85%, 15% 100%)',
                     'polygon(85% 100%, 100% 85%, 100% 15%, 85% 0%, 15% 0%, 0% 15%, 0% 85%, 15% 100%)',
-                    'polygon(85% 100%, 100% 85%, 100% 15%, 85% 0%, 15% 0%, 0% 15%, 0% 85%, 15% 100%)',
+                    'polygon(85% 100%, 100% 85%, 100% 15%, 85% 0%, 15% 0%, 0% 15%, 0% 85%, 15% 100%, 17% 96%, 4% 83%, 4% 17%, 17% 4%, 83% 4%, 96% 17%, 96% 83%, 83% 96%, 18% 96%, 16% 100%)',
                   ]
 
                   return (
@@ -769,13 +769,17 @@ export default function Hero({
                             maxHeight: `${span.size}%`,
                             opacity: `${
                               index === 8 && randomOfTwo === 0
-                                ? '0.7'
+                                ? '0.6'
                                 : index === 8
-                                ? '0.8'
+                                ? '0.7'
                                 : index === 9 && randomOfTwo === 0
-                                ? '0.3'
-                                : index === 9
                                 ? '0.4'
+                                : index === 9
+                                ? '0.3'
+                                : index === 10 && randomOfTwo === 0
+                                ? '0.4'
+                                : index === 10
+                                ? '0.2'
                                 : '1'
                             }`,
                             clipPath: `${clipArrayJewel[index]}`,
@@ -787,6 +791,8 @@ export default function Hero({
                                   ? styles.none
                                   : index === 9
                                   ? styles.cover
+                                  : index === 10
+                                  ? styles.frame
                                   : ''
                               }
                               key={`${item.i}-${index}`}
@@ -812,9 +818,9 @@ export default function Hero({
                     'var(--color-primary-12)',
                   ]
                   const colorJewel2 = [
-                    'var(--color-secondary-7)',
-                    'var(--color-secondary-10)',
-                    'var(--color-secondary-13)',
+                    'var(--color-secondary-9)',
+                    'var(--color-secondary-11)',
+                    'var(--color-secondary-14)',
                   ]
 
                   const randomOfThree = Math.round(getRandomMinMax(0, 2))
@@ -838,7 +844,7 @@ export default function Hero({
                       windowWidth < windowHeight
                         ? `${item.size / dividedBy}vh`
                         : `${item.size / dividedBy}vw`,
-                    ['--rotate' as string]: `23deg`,
+                    ['--rotate' as string]: `-23deg`,
                     ['--rotate-inner' as string]: `-135deg`, //`${Math.round(getRandomMinMax(0, 359))}deg`,
                     ['--color' as string]: `${randomBG}`,
                     ['--hue' as string]: `${hue}`,
@@ -855,7 +861,7 @@ export default function Hero({
                     'polygon(29.29% 0%, 50% 50%, 0% 29.29%)',
                     'polygon(70.71% 100%, 100% 70.71%, 100% 29.29%, 70.71% 0%, 29.29% 0%, 0% 29.29%, 0% 70.71%, 29.29% 100%)',
                     'polygon(70.71% 100%, 100% 70.71%, 100% 29.29%, 70.71% 0%, 29.29% 0%, 0% 29.29%, 0% 70.71%, 29.29% 100%)',
-                    'polygon(70.71% 100%, 100% 70.71%, 100% 29.29%, 70.71% 0%, 29.29% 0%, 0% 29.29%, 0% 70.71%, 29.29% 100%)',
+                    'polygon(70.71% 100%, 100% 70.71%, 100% 29.29%, 70.71% 0%, 29.29% 0%, 0% 29.29%, 0% 70.71%, 29.29% 100%, 32% 96%, 5% 69%, 5% 31%, 32% 5%, 68% 5%, 95% 31%, 95% 69%, 68% 96%, 34% 96%, 32% 100%)',
                   ]
 
                   return (
@@ -927,7 +933,21 @@ export default function Hero({
                             minHeight: `${span.size * times}%`,
                             maxWidth: `${span.size * times}%`,
                             maxHeight: `${span.size * times}%`,
-                            opacity: `${index === 8 ? '0.7' : index === 9 ? '0.3' : '1'}`,
+                            opacity: `${
+                              index === 8 && randomOfTwo === 0
+                                ? '0.4'
+                                : index === 8
+                                ? '0.6'
+                                : index === 9 && randomOfTwo === 0
+                                ? '0.2'
+                                : index === 9
+                                ? '0.3'
+                                : index === 10 && randomOfTwo === 0
+                                ? '0.24'
+                                : index === 10
+                                ? '0.14'
+                                : '1'
+                            }`,
                             clipPath: `${clipArrayJewel2[index]}`,
                           }
                           return (
@@ -937,6 +957,8 @@ export default function Hero({
                                   ? styles.none
                                   : index === 9
                                   ? styles.cover
+                                  : index === 10
+                                  ? styles.frame
                                   : ''
                               }
                               key={`${item.i}-${index}`}
