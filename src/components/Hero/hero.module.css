@@ -120,7 +120,7 @@
 .herocontent .jewel1 > div > div.none {
   background: radial-gradient(
     circle at center,
-    hsl(var(--hue), 100%, 65%) 0%,
+    hsl(var(--hue), 100%, 80%) 0%,
     var(--color) 100%
   );
   mix-blend-mode: hard-light;
@@ -129,22 +129,42 @@
 .herocontent .jewel2 > div > div.none {
   background: radial-gradient(
     circle at center,
-    hsl(var(--hue), 100%, 70%) 0%,
+    hsl(var(--hue), 100%, 75%) 0%,
     var(--color) 100%
   );
   mix-blend-mode: hard-light;
 }
-
-.herocontent .jewel > div > div.cover {
+.herocontent .jewel1 > div > div.cover {
   background: radial-gradient(
     circle at center,
-    hsl(var(--hue), 100%, 60%) 0%,
+    hsl(var(--hue), 100%, 80%) 0%,
     var(--color) 100%
   );
-  mix-blend-mode: color-burn;
+  mix-blend-mode: darken;
+}
+.herocontent .jewel2 > div > div.cover {
+  background: radial-gradient(
+    circle at center,
+    hsl(var(--hue), 100%, 80%) 0%,
+    var(--color) 100%
+  );
+  mix-blend-mode: luminosity;
+}
+.herocontent .jewel > div > div.frame {
+  background: linear-gradient(
+    45deg,
+    hsl(var(--hue), 100%, 80%) 10%,
+    hsl(var(--hue), 100%, 40%) 20%,
+    hsl(var(--hue), 100%, 40%) 35%,
+    hsl(var(--hue), 100%, 80%) 50%,
+    hsl(var(--hue), 100%, 40%) 65%,
+    hsl(var(--hue), 100%, 40%) 85%,
+    hsl(var(--hue), 100%, 80%) 90%
+  );
+  mix-blend-mode: color-dodge;
 }
 
-.herocontent .jewel > div > div:not(.none):not(.cover) {
+.herocontent .jewel > div > div:not(.none):not(.cover):not(.frame) {
   animation: rotate-colors 4000ms linear infinite;
   animation-play-state: paused;
   animation-delay: calc(var(--number) * -500ms - 2500ms);
@@ -164,76 +184,65 @@
   background-position: 0 0;
   background-repeat: no-repeat;
 }
-.herocontent .jewel2 > div > div:not(.none):not(.cover) {
+.herocontent .jewel2 > div > div:not(.none):not(.cover):not(.frame) {
   animation: rotate-colors2 4000ms linear infinite;
   animation-play-state: paused;
-  animation-delay: calc(var(--number) * -500ms);
-  background-image: radial-gradient(
-    circle at top left,
-    hsl(var(--hue), 100%, 40%) 30%,
-    hsl(var(--hue), 100%, 80%) 33%,
-    hsl(var(--hue), 100%, 40%) 37%,
-    hsl(var(--hue), 100%, 40%) 47%,
-    hsl(var(--hue), 100%, 80%) 50%,
-    hsl(var(--hue), 100%, 40%) 53%,
-    hsl(var(--hue), 100%, 40%) 73%,
+  animation-delay: calc(var(--number) * -500ms - 1500ms);
+  background-image: linear-gradient(
+    0deg,
+    hsl(var(--hue), 100%, 40%) 20%,
+    hsl(var(--hue), 100%, 80%) 23%,
+    hsl(var(--hue), 100%, 40%) 26%,
+    hsl(var(--hue), 100%, 40%) 40%,
+    hsl(var(--hue), 100%, 80%) 43%,
+    hsl(var(--hue), 100%, 40%) 46%,
+    hsl(var(--hue), 100%, 40%) 50%,
+    hsl(var(--hue), 100%, 80%) 53%,
+    hsl(var(--hue), 100%, 40%) 56%,
+    hsl(var(--hue), 100%, 40%) 60%,
+    hsl(var(--hue), 100%, 80%) 63%,
+    hsl(var(--hue), 100%, 40%) 66%,
+    hsl(var(--hue), 100%, 40%) 74%,
     hsl(var(--hue), 100%, 80%) 77%,
     hsl(var(--hue), 100%, 40%) 80%
   );
-  background-size: 500% 500%;
+  background-size: 100% 600%;
   background-position: 0 0;
   background-repeat: no-repeat;
 }
-.herocontent .jewel:hover > div > div:not(.none):not(.cover),
-.herocontent .jewel:focus > div > div:not(.none):not(.cover) {
+.herocontent .jewel:hover > div > div:not(.none):not(.cover):not(.frame),
+.herocontent .jewel:focus > div > div:not(.none):not(.cover):not(.frame) {
   animation-play-state: running;
 }
 @keyframes rotate-colors {
   0% {
-    filter: contrast(20%) brightness(200%);
+    filter: contrast(20%) brightness(180%);
     background-position: 0 0;
   }
   50% {
-    filter: contrast(200%) brightness(80%);
+    filter: contrast(300%) brightness(80%);
     background-position: 50% 50%;
   }
   100% {
-    filter: contrast(20%) brightness(200%);
+    filter: contrast(20%) brightness(180%);
     background-position: 100% 100%;
   }
 }
 @keyframes rotate-colors2 {
   0% {
-    filter: contrast(20%) brightness(190%);
+    filter: contrast(190%) brightness(50%);
     background-position: 0 0;
   }
   50% {
-    filter: contrast(190%) brightness(50%);
-    background-position: 50% 50%;
+    filter: contrast(20%) brightness(190%);
+    background-position: 0 50%;
   }
   100% {
-    filter: contrast(20%) brightness(190%);
-    background-position: 100% 100%;
+    filter: contrast(190%) brightness(50%);
+    background-position: 0 100%;
   }
 }
 
-/* @keyframes rotate-colors2 {
-  0% {
-    background-color: hsl(var(--hue), 100%, 85%);
-  }
-  35% {
-    background-color: hsl(var(--hue), 100%, 30%);
-  }
-  50% {
-    background-color: hsl(var(--hue), 100%, 20%);
-  }
-  65% {
-    background-color: hsl(var(--hue), 100%, 30%);
-  }
-  100% {
-    background-color: hsl(var(--hue), 100%, 85%);
-  }
-} */
 .herocontent .triangle {
   --time: 800ms;
   -webkit-clip-path: polygon(50% 45%, 105% 98%, 105% 160%, -5% 160%, -5% 98%);
@@ -281,24 +290,36 @@
 }
 
 .herocontent li.jewel::before {
-  box-shadow: 0 0 30px -10px var(--color), 0 0 40px -10px var(--color);
+  box-shadow: 0 0 30px -2px hsl(var(--hue), 100%, 60%),
+    0 0 50px -10px hsl(var(--hue), 100%, 60%);
   position: absolute;
   content: '';
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 5%;
+  left: 5%;
+  width: 90%;
+  height: 90%;
   border-radius: 50%;
   z-index: -1;
   background-color: transparent;
   pointer-events: none;
 }
+.herocontent li.jewel1::before {
+  width: 80%;
+  height: 80%;
+  top: 10%;
+  left: 10%;
+  border-radius: 6%;
+}
 .herocontent li.jewel2::before {
-  box-shadow: 0 0 30px -10px var(--color), 0 0 40px -15px var(--color);
+  box-shadow: 0 0 20px -4px hsl(var(--hue), 100%, 60%),
+    0 0 60px -10px hsl(var(--hue), 100%, 60%);
 }
 
 .light .herocontent li.jewel::before {
   box-shadow: 0 0 10px 2px white, 0 0 40px 2px white;
+}
+.light .herocontent li.jewel1::before {
+  box-shadow: 0 0 40px 2px white, 0 0 60px 2px white;
 }
 
 .herocontent li.jewel > div,
