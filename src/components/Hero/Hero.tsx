@@ -706,10 +706,9 @@ export default function Hero({
                       id={`shape${index + 1}`}
                       className={`${styles.item} ${styles[location]} ${styles.jewel} ${
                         styles.jewel1
-                      } 
-                                ${
-                                  windowHeight < windowWidth ? styles.wide : styles.tall
-                                }`}
+                      } ${randomOfTwo === 0 ? styles.blue : styles.orange} ${
+                        windowHeight < windowWidth ? styles.wide : styles.tall
+                      }`}
                       style={style}
                       role={'option'}
                       tabIndex={0}
@@ -779,7 +778,7 @@ export default function Hero({
                                 : index === 10 && randomOfTwo === 0
                                 ? '0.4'
                                 : index === 10
-                                ? '0.2'
+                                ? '0.5'
                                 : '1'
                             }`,
                             clipPath: `${clipArrayJewel[index]}`,
@@ -872,7 +871,7 @@ export default function Hero({
                       id={`shape${index + 1}`}
                       className={`${styles.item} ${styles[location]} ${styles.jewel} ${
                         styles.jewel2
-                      } 
+                      } ${randomOfTwo === 0 ? styles.blue : styles.orange} 
                                 ${
                                   windowHeight < windowWidth ? styles.wide : styles.tall
                                 }`}
@@ -945,7 +944,7 @@ export default function Hero({
                                 : index === 10 && randomOfTwo === 0
                                 ? '0.24'
                                 : index === 10
-                                ? '0.14'
+                                ? '0.4'
                                 : '1'
                             }`,
                             clipPath: `${clipArrayJewel2[index]}`,
