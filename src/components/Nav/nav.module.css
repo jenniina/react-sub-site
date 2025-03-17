@@ -7,6 +7,7 @@
   margin: 0;
   height: var(--height);
   width: 100%;
+  max-width: calc(100vw - var(--scrollbar_width));
   background-color: transparent;
   z-index: 99;
 }
@@ -16,7 +17,9 @@
   transition-duration: 500ms;
 }
 .main-header.hide {
-  top: -110%; /*Using transform will mess up the position:fixed*/
+  top: calc(
+    -1 * var(--height)
+  ); /* old -110%; Using transform will mess up the position:fixed*/
 }
 .main-header.show,
 .main-header:focus-within,
@@ -192,11 +195,11 @@ button.togglemenu[aria-expanded='true'] .menupath {
   border-width: 0 0 1px 1px;
   border-radius: 0 0 0 var(--radius-small);
 }
-.menualt .menu-container,
-.menu-container,
-.toolbar,
-.menualt button.settings {
-  transition-property: transform, opacity;
+.transformations.menualt .menu-container,
+.transformations .menu-container,
+.transformations .toolbar,
+.transformations.menualt button.settings {
+  transition-property: transform, opacity, top;
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
 }
@@ -576,7 +579,7 @@ a.link:visited:not(.active):focus > *,
 /*
 /*
 /*
-/***************************** (max-width: 599px) *****************************/
+/***************************** (max-width: 699px) *****************************/
 @media (max-width: 699px) {
   /*if you change the pixel amount, also change below min-width 
   and const breakpoint in Nav.tsx
@@ -586,7 +589,6 @@ a.link:visited:not(.active):focus > *,
     position: absolute;
     padding: 0;
     top: calc(var(--height));
-    /* right: -100%; */
     right: 0;
     -webkit-transform: translateX(110%);
     -ms-transform: translateX(110%);
@@ -653,6 +655,7 @@ a.link:visited:not(.active):focus > *,
     transform: scale(1.5);
     align-self: center;
   }
+
   .transformations.main-header button.search svg,
   .transformations.main-header button.settings svg,
   .transformations.main-header button.togglemenu svg {
@@ -742,7 +745,7 @@ a.link:visited:not(.active):focus > *,
     max-width: calc(var(--widest) - calc(var(--page-padding) * 2));
     height: var(--height);
   }
-  header.main-header button.togglemenu:not(.togglemenuexception) {
+  header.main-header button.togglemenu.hidden {
     display: none;
   }
 
@@ -869,11 +872,20 @@ a.link:visited:not(.active):focus > *,
   header:not(.menualt).main-header button.settings span {
     background-image: linear-gradient(
       180deg,
-      transparent 55%,
+      transparent 50%,
       var(--color-primary-3) 95%
     );
     background-size: 100% 200%;
     background-position: 50% 3%;
+  }
+  header:not(.menualt).light .menu-container ul li a span,
+  header:not(.menualt).main-header.light button.search span,
+  header:not(.menualt).main-header.light button.settings span {
+    background-image: linear-gradient(
+      180deg,
+      transparent 50%,
+      var(--color-primary-4) 95%
+    );
   }
   header:not(.menualt) .menu-container ul li a:hover span,
   header:not(.menualt) .menu-container ul li a:focus span,
@@ -939,6 +951,10 @@ a.link:visited:not(.active):focus > *,
     padding: 0 1.2rem 0.12em;
     align-items: flex-end;
     flex: 0 0 max-content;
+  }
+  .main-header button.store,
+  .main-header button.cart {
+    padding: 0.3em 0rem 0.12em 0.6rem;
   }
 } /*END media*/
 
@@ -1109,32 +1125,44 @@ button.dlt-btn:focus {
 /*
 /*
 /*
-/***************************** (max-width: 599px) *****************************/
+/***************************** (max-width: 699px) *****************************/
 
-@media (max-width: 599px) {
+@media (max-width: 699px) {
   /*if you change the pixel amount, also change above max-width and min-width
   and const breakpoint in Nav.tsx */
   .main-header.menualt > * {
     position: initial;
   }
-  .menualt .togglemenu:not(.togglemenuexception) {
+  /* .menualt .togglemenu:not(.togglemenuexception) {
     display: none;
-  }
+  } */
   .menualt .menu-container:not(.altnav) {
-    position: fixed;
+    position: absolute;
     display: flex;
     flex-flow: row nowrap;
-    top: initial;
-    right: 0;
-    bottom: 0;
-    z-index: 999;
+    top: calc(100vh - 4.4em - 1px);
+    height: 4.4em;
+    right: unset;
+    left: 0;
     width: 100%;
+    max-width: calc(100vw - var(--scrollbar_width));
     background-color: var(--color-primary-3);
     border: 1px solid var(--color-primary-1);
+    border-bottom-color: var(--color-primary-11);
     border-top-color: var(--color-primary-11);
-    padding: 0.4em 0;
+    padding: 0.3rem 0 0.4rem;
+    visibility: visible;
+    transform: none;
   }
-  .menualt .menu-container:not(.altnav).hidden {
+  @media (max-width: 399px) {
+    .menualt .menu-container:not(.altnav) {
+      top: calc(100vh - 3.4em - 1px);
+      height: 3.4em;
+    }
+  }
+  .main-header.menualt .menu-container.hidden,
+  .main-header.menualt.hide .menu-container {
+    top: calc(100vh + 4.5em);
     visibility: visible;
   }
   .menualt .menu-container:not(.altnav) ul {
@@ -1142,29 +1170,24 @@ button.dlt-btn:focus {
     width: 100%;
   }
   .menualt .menu-container ul a {
-    font-size: 0.85em;
+    font-size: 0.85rem;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    padding: 4vw 0 1vw;
+    padding: 0.6rem 0 1vw;
   }
-  @media (min-width: 400px) {
-    .menualt .menu-container ul a {
-      font-size: 0.9em;
-    }
-  } /*END media*/
 
-  .menualt .menu-container:not(.altnav) ul a svg.smallnav {
-    font-size: 5vw;
+  .menualt .menu-container:not(.altnav) ul a svg {
+    font-size: clamp(10px, 5vw, 1.2em);
     margin: 0;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.2rem;
   }
-  .menualt.transformations .menu-container:not(.altnav) ul a svg.smallnav {
+  .menualt.transformations .menu-container:not(.altnav) ul a svg {
     transition-property: transform;
     transition-duration: 0.3s;
     transition-timing-function: ease-in-out;
   }
-  .menualt .menu-container:not(.altnav) ul a:hover svg.smallnav {
+  .menualt .menu-container:not(.altnav) ul a:hover svg {
     -webkit-transform: scale(2.1);
     -ms-transform: scale(2.1);
     -o-transform: scale(2.1);
@@ -1435,4 +1458,49 @@ button.store:disabled,
 button.cart:disabled {
   background: transparent;
   border: 0;
+}
+
+.main-header.menualt.mobile > * {
+  position: initial;
+}
+/* .menualt.mobile .togglemenu:not(.togglemenuexception) {
+  display: none;
+} */
+.main-header.menualt.mobile .menu-container {
+  position: absolute;
+  display: flex;
+  flex-flow: row nowrap;
+  top: calc(100vh - var(--height) - 4.4em - 1px);
+  height: 4.4em;
+  right: unset;
+  left: 0;
+  z-index: 999;
+  width: 100%;
+  max-width: calc(100vw - var(--scrollbar_width));
+  background-color: var(--color-primary-3);
+  border: 1px solid var(--color-primary-1);
+  border-bottom-color: var(--color-primary-11);
+  border-top-color: var(--color-primary-11);
+  padding: 0.4em 0;
+  visibility: visible;
+}
+.main-header.menualt.mobile .menu-container > * {
+  height: auto;
+  padding: 0.2rem 0;
+}
+.main-header.menualt.mobile .menu-container.hidden,
+.main-header.menualt.mobile.hide .menu-container {
+  top: calc(100vh + 4.5em);
+  visibility: visible;
+}
+.menualt.mobile .menu-container:not(.altnav) ul {
+  flex-flow: row nowrap;
+  width: 100%;
+}
+.menualt.mobile .menu-container ul a {
+  font-size: 0.85em;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  padding: 4vw 0 1vw;
 }

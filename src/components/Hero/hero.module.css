@@ -161,7 +161,12 @@
     hsl(var(--hue), 100%, 40%) 85%,
     hsl(var(--hue), 100%, 80%) 90%
   );
+}
+.herocontent .jewel.blue > div > div.frame {
   mix-blend-mode: color-dodge;
+}
+.herocontent .jewel.orange > div > div.frame {
+  mix-blend-mode: overlay;
 }
 
 .herocontent .jewel > div > div:not(.none):not(.cover):not(.frame) {

@@ -899,7 +899,7 @@ body .focus-within:focus-within {
   margin: -1px;
   border: 0;
 }
-.scr:focus {
+.scr:focus-visible {
   clip: auto;
   -webkit-clip-path: none;
   -moz-clip-path: none;

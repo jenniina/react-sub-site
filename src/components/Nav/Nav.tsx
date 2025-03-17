@@ -46,6 +46,8 @@ import { FaStoreAlt } from 'react-icons/fa'
 import useCart from '../../hooks/useCart'
 import { options } from '../../utils'
 import { LanguageContext } from '../../contexts/LanguageContext'
+import { isTouchDevice } from '../../hooks/useDraggable'
+import useLocalStorage from '../../hooks/useStorage'
 
 type Link = {
   label: string
@@ -180,13 +182,15 @@ const Nav = (
       </ul>
     )
   }
+
+  const touchDevice = isTouchDevice()
   const lightTheme = useTheme()
   const toggleTheme = useThemeUpdate()
   const navigate = useNavigate()
 
-  // const clickOutsideRef = useOutsideClick({
-  //   onOutsideClick: closingAllMenus,
-  // })
+  useEffect(() => {
+    closingAllMenus()
+  }, [window.location.pathname])
 
   const clickOutsideRef = useRef<HTMLDivElement>(null)
 
@@ -216,12 +220,12 @@ const Nav = (
   }
 
   function toggleMainMenu() {
-    if (isMainMenuOpen && windowWidth < breakpoint) {
-      setIsMainMenuOpen(false)
-      mainMenuHideDelay()
-    } else {
+    if (!isMainMenuOpen) {
       setIsMainMenuOpen(true)
       setIsMainMenuHidden(false)
+    } else {
+      setIsMainMenuOpen(false)
+      mainMenuHideDelay()
     }
     if (isToolbarOpen) {
       setIsToolbarOpen(false)
@@ -244,7 +248,7 @@ const Nav = (
 
   function closingAllMenus() {
     isMainMenuOpen ? setIsMainMenuHidden(false) : mainMenuHideDelay()
-    if (isMainMenuOpen && windowWidth < breakpoint) {
+    if (isMainMenuOpen) {
       setIsMainMenuOpen(false)
       mainMenuHideDelay()
     }
@@ -255,18 +259,17 @@ const Nav = (
     }
   }
 
-  const [menuStyleAlt, setMenuStyleAlt] = useState(true)
+  const [menuStyleAlt, setMenuStyleAlt] = useLocalStorage('alt', false)
   const [menuStyleTransform, setMenuStyleTransform] = useState(true)
 
   function menuStyleAltToggle() {
-    if (menuStyleAlt && isMainMenuOpen && windowWidth < breakpoint) {
+    if (menuStyleAlt && isMainMenuOpen) {
       setIsMainMenuOpen(false)
-
       mainMenuHideDelay()
       setTimeout(() => {
         setMenuStyleAlt(false)
       }, 300)
-    } else if (!isMainMenuOpen && windowWidth < breakpoint) {
+    } else if (!isMainMenuOpen) {
       setIsMainMenuOpen(true)
       setIsMainMenuHidden(false)
       setMenuStyleAlt(true)
@@ -290,12 +293,9 @@ const Nav = (
 
   //Main menu always visible at larger screensizes and when the altnav is seen:
   useEffect(() => {
-    if (
-      windowWidth > breakpoint ||
-      (menuStyleAlt && windowHeight > windowWidth && windowWidth < breakpoint)
-    )
+    if ((menuStyleAlt && windowHeight > windowWidth) || windowWidth > breakpoint)
       setIsMainMenuOpen(true)
-  }, [windowWidth, windowHeight])
+  }, [menuStyleAlt, windowWidth, windowHeight])
 
   useImperativeHandle(
     ref,
@@ -431,6 +431,7 @@ const Nav = (
                     ? `${styles.menualt} menualt`
                     : `${styles.menumain} menumain`
                 } 
+                ${windowHeight > windowWidth && touchDevice ? styles.mobile : ''} 
                 ${menuStyleTransform ? `${styles.transformations}` : ''} 
                 ${styles[`${language}`]}
                 `}
@@ -459,7 +460,7 @@ const Nav = (
               windowHeight < windowWidth && windowWidth < breakpoint
                 ? `${styles.togglemenuexception} ${styles.togglemenu}`
                 : styles.togglemenu
-            }`}
+            } ${windowWidth > breakpoint ? styles.hidden : ''}`}
           >
             <svg
               stroke='currentColor'
@@ -481,7 +482,9 @@ const Nav = (
                 ></path>
               </g>
             </svg>
-            <span className={windowWidth < breakpoint ? 'scr' : ''}>{t('Menu')}</span>
+            <span className={windowWidth > breakpoint && !touchDevice ? '' : 'scr'}>
+              {t('Menu')}
+            </span>
           </button>
           <nav
             id={'site-navigation'}
@@ -506,16 +509,8 @@ const Nav = (
                                     ${
                                       menuStyleAlt &&
                                       windowHeight < windowWidth &&
-                                      windowWidth > breakpointSmall &&
-                                      windowWidth < breakpoint
+                                      windowWidth > breakpointSmall
                                         ? styles.altexception
-                                        : ''
-                                    }
-                                    ${
-                                      menuStyleAlt &&
-                                      windowHeight > windowWidth &&
-                                      windowWidth < breakpoint
-                                        ? styles.keepvisible
                                         : ''
                                     }
                                     `}
@@ -532,9 +527,12 @@ const Nav = (
               }
               aria-hidden={true}
             />
-            <span className={windowWidth < breakpoint ? 'scr' : ''}>{t('Search')}</span>
+            <span className={windowWidth > breakpoint && !touchDevice ? '' : 'scr'}>
+              {t('Search')}
+            </span>
           </button>
-          {cart && cart.length > 0 && window.location.pathname !== '/cart' ? (
+          {window.location.pathname === '/store' ||
+          (cart && cart.length > 0 && window.location.pathname !== '/cart') ? (
             <button
               className={`${styles.settings} ${styles.cart}`}
               aria-label='cart'
@@ -550,7 +548,9 @@ const Nav = (
                 }
                 aria-hidden={true}
               />
-              <span className={windowWidth < breakpoint ? 'scr' : ''}>{t('Cart')}</span>
+              <span className={windowWidth > breakpoint && !touchDevice ? '' : 'scr'}>
+                {t('Cart')}
+              </span>
             </button>
           ) : (
             <button
@@ -568,7 +568,9 @@ const Nav = (
                 }
                 aria-hidden={true}
               />
-              <span className={windowWidth < breakpoint ? 'scr' : ''}>{t('Store')}</span>
+              <span className={windowWidth > breakpoint && !touchDevice ? '' : 'scr'}>
+                {t('Store')}
+              </span>
             </button>
           )}
           <button className={styles.settings} onClick={toggleToolbar}>
@@ -580,7 +582,10 @@ const Nav = (
               }
               aria-hidden={true}
             />
-            <span id='settings' className={windowWidth < breakpoint ? 'scr' : ''}>
+            <span
+              id='settings'
+              className={windowWidth > breakpoint && !touchDevice ? '' : 'scr'}
+            >
               {t('Settings')}
             </span>
           </button>

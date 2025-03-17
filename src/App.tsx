@@ -8,6 +8,7 @@ import MainWrapper from './components/MainWrapper/MainWrapper'
 import { RefObject } from './types'
 import { UIProvider } from './contexts/UIContext'
 import { LanguageContext } from './contexts/LanguageContext'
+import useLocalStorage from './hooks/useStorage'
 
 const Footer = lazy(() => import('./components/Footer/Footer'))
 const ScrollToTop = lazy(() => import('./components/ScrollToTop/ScrollToTop'))
@@ -15,7 +16,7 @@ const ScrollToTop = lazy(() => import('./components/ScrollToTop/ScrollToTop'))
 const App: FC = () => {
   const { language, setLanguage, t } = useContext(LanguageContext)!
 
-  const [styleMenu, setStyleMenu] = useState<boolean>()
+  const [styleMenu, setStyleMenu] = useLocalStorage<boolean>('styleOfMenu', false)
   const menuStyleRef = useRef() as RefObject<{ getStyle: () => boolean }>
 
   return (

@@ -37,6 +37,15 @@ export default function Newest({ language }: { language: ELanguages }) {
               <strong>{t('March')}</strong>
               <ul>
                 <li>
+                  <Link to='/cart'>
+                    <FaStoreAlt /> <BsCart2 />
+                    {t('Store')} & {t('Cart')}:
+                  </Link>
+                  <i>
+                    {t('Edited')}: {t('HeroSection')}
+                  </i>
+                </li>
+                <li>
                   <a className='disabled'>
                     <PiWrench />
                     <span>{firstToUpperCase(t('ThisSite'))}: </span>
