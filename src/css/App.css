@@ -4,7 +4,9 @@
 
 .App .App-inner-wrap {
   width: 100%;
+  max-width: calc(100vw - var(--scrollbar_width));
   color: var(--color-primary-18);
+  overflow-x: hidden;
 }
 body.light,
 .App.light {
@@ -66,9 +68,11 @@ body.light,
   --color-gray-10: hsl(var(--hue-primary), var(--sat-fade), 5%);
 
   color-scheme: light;
+  overflow-x: hidden;
 }
 .App .App-inner-wrap > .App-inner-wrap {
   margin: 0 auto;
+  overflow-x: hidden;
 }
 .App-inner-wrap::before {
   position: absolute;
