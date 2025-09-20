@@ -10,6 +10,7 @@ import Accordion from '../../components/Accordion/Accordion'
 import { RiMailSendLine } from 'react-icons/ri'
 import { createSelectOptionsFromT } from '../../utils'
 import { LanguageContext } from '../../contexts/LanguageContext'
+import { Helmet } from 'react-helmet-async'
 
 const issuesArray = [
   'NoIssues',
@@ -161,195 +162,206 @@ export default function CustomSelectPage({
   }, [])
 
   return (
-    <div className={`select ${type}`}>
-      <div className='inner-wrap'>
-        <section className='card'>
-          <div>
-            <div className='medium flex column gap'>
-              <Accordion
-                language={language}
-                text={t('ClickHereToSeeFeatures')}
-                className='features'
-                wrapperClass='features-wrap'
-              >
-                <>
-                  <h2>{t('Features')}</h2>
-                  <ul className='ul'>
-                    <li>{t('SingleSelectOrMultipleSelect')}</li>
-                    <li>{t('MoveToItemWithKeyboardKeys')}</li>
-                    <li>{t('LabelCanBeHiddenFromViewButIsStillAccessible')}</li>
-                  </ul>
-                  <h3>{t('KeyboardUse')}</h3>
-                  <ul className='ul'>
-                    <li>{t('TabToSelectEnterOrSpaceToOpen')}</li>
-                    <li>{t('UseUpAndDownArrowKeysToMoveToAnOption')}</li>
-                    <li>
-                      {t('AlternativelyMoveToAnItemOnTheListByWritingTheFirstFewLetters')}
-                    </li>
-                    <li>{t('SelectOptionWithEnterOrSpace')}</li>
-                    <li>{t('PressTabToMoveToTheSelectedButtonsOrToTheClearButton')}</li>
-                    <li>{t('PressEscapeToCloseDropdownWithoutSelectingAnOption')}</li>
-                  </ul>
-                </>
-              </Accordion>
-              <a href='https://github.com/jenniina/react-sub-site/tree/main/src/components/Select'>
-                Github
-              </a>
-              <div className={selectStyles['selects-container']}>
-                <h2>{t('CustomSelect')}</h2>
-                <FormWrapper
-                  className='flex gap column'
-                  title={t('Survey')}
-                  description={t('PleaseOfferSomeFeedback')}
+    <>
+      <Helmet>
+        <title>
+          {t('CustomSelect')} | {t('CustomSelectIntro')}
+        </title>
+        <meta name='description' content={t('CustomSelectIntro')} />
+        <link rel='canonical' href={`https://react.jenniina.fi/portfolio/select`} />
+      </Helmet>
+      <div className={`select ${type}`}>
+        <div className='inner-wrap'>
+          <section className='card'>
+            <div>
+              <div className='medium flex column gap'>
+                <Accordion
+                  language={language}
+                  text={t('ClickHereToSeeFeatures')}
+                  className='features'
+                  wrapperClass='features-wrap'
                 >
-                  <form
-                    ref={form}
-                    onSubmit={handleSubmit}
-                    id='survey'
-                    className='survey-form'
+                  <>
+                    <h2>{t('Features')}</h2>
+                    <ul className='ul'>
+                      <li>{t('SingleSelectOrMultipleSelect')}</li>
+                      <li>{t('MoveToItemWithKeyboardKeys')}</li>
+                      <li>{t('LabelCanBeHiddenFromViewButIsStillAccessible')}</li>
+                    </ul>
+                    <h3>{t('KeyboardUse')}</h3>
+                    <ul className='ul'>
+                      <li>{t('TabToSelectEnterOrSpaceToOpen')}</li>
+                      <li>{t('UseUpAndDownArrowKeysToMoveToAnOption')}</li>
+                      <li>
+                        {t(
+                          'AlternativelyMoveToAnItemOnTheListByWritingTheFirstFewLetters'
+                        )}
+                      </li>
+                      <li>{t('SelectOptionWithEnterOrSpace')}</li>
+                      <li>{t('PressTabToMoveToTheSelectedButtonsOrToTheClearButton')}</li>
+                      <li>{t('PressEscapeToCloseDropdownWithoutSelectingAnOption')}</li>
+                    </ul>
+                  </>
+                </Accordion>
+                <a href='https://github.com/jenniina/react-sub-site/tree/main/src/components/Select'>
+                  Github
+                </a>
+                <div className={selectStyles['selects-container']}>
+                  <h2>{t('CustomSelect')}</h2>
+                  <FormWrapper
+                    className='flex gap column'
+                    title={t('Survey')}
+                    description={t('PleaseOfferSomeFeedback')}
                   >
-                    <h3 className='left small margin0 regular'>
-                      {t('DidYouFindAnyIssuesOnThisSite')}
-                    </h3>
-                    <Select
-                      language={language}
-                      multiple
-                      required
-                      requiredMessage={t('ThisFieldIsRequired')}
-                      validated={hasClickedSubmit && value1.length == 0 ? false : true}
-                      remove={t('Remove')}
-                      clear={t('Clear')}
-                      id='multipleselectdropdown'
-                      className={selectStyles.prev2}
-                      instructions={t('YouMaySelectMultipleOptions')}
-                      options={options1}
-                      value={value1}
-                      onChange={(o: SelectOption[]) => {
-                        setValue1(o)
-                        setData((prevData: SelectData) => ({
-                          ...prevData,
-                          issues: (o as SelectOption[] | undefined)
-                            ?.map((option: SelectOption) => option.label)
-                            .join(', '),
-                        }))
-                      }}
-                    />
-                    <h3 className='left small margin0 regular'>
-                      {t('WhichIntroSectionElementWasYourFavourite')}
-                    </h3>
-                    <Select
-                      language={language}
-                      required
-                      requiredMessage={t('ThisFieldIsRequired')}
-                      validated={
-                        hasClickedSubmit && value2?.label == options2[0].label
-                          ? false
-                          : true
-                      }
-                      remove={t('Remove')}
-                      clear={t('Clear')}
-                      id='single'
-                      className={`full ${selectStyles.prev}`}
-                      instructions={`${t(
-                        'KeyboardUseMoveToOptionWithArrowKeysAndSelectByPressingEnterOrSpace'
-                      )}`}
-                      hide
-                      options={options2}
-                      value={value2}
-                      onChange={(o) => {
-                        setValue2(o)
-                        setData((prevData) => ({
-                          ...prevData,
-                          favoriteHero: o?.label,
-                        }))
-                      }}
-                    />
-                    <h3 className='left small margin0 regular'>
-                      {t('ClarificationOrFeedback')}
-                    </h3>
-                    <div className='full'>
-                      <label htmlFor='select-clarification'>
-                        <input
-                          id='select-clarification'
-                          autoComplete='off'
-                          type='text'
-                          name='clarification'
-                          value={input}
-                          onChange={(e) => {
-                            setInput(e.target.value)
-                            setData((prevData) => ({
-                              ...prevData,
-                              clarification: e.target.value,
-                            }))
-                          }}
-                          className='bg'
-                        />
-                        <span className='scr'>
-                          {t('ClarificationOrFeedback')} ({t('Optional').toLowerCase()})
-                        </span>
-                      </label>
-                    </div>
-                    <h3 className='left small margin0 regular'>
-                      {t('Email')} ({t('Optional').toLowerCase()})
-                    </h3>
-                    <div className='full'>
-                      <label htmlFor='select-email'>
-                        <input
-                          id='select-email'
-                          autoComplete='email'
-                          type='email'
-                          name='email'
-                          value={email}
-                          onChange={(e) => {
-                            setEmail(e.target.value)
-                            setData((prevData) => ({
-                              ...prevData,
-                              email: e.target.value.trim(),
-                            }))
-                          }}
-                          className='bg'
-                        />
-                        <span className='scr'>
-                          {t('Email')} ({t('Optional').toLowerCase()}){' '}
-                        </span>
-                      </label>
-                    </div>
-                    <div>
-                      <input id='form-gdpr' required type='checkbox' name='gdpr' />
-                      <label htmlFor='form-gdpr'>
-                        <span className='required' aria-hidden='true'>
-                          *
-                        </span>{' '}
-                        {t('ItIsAlrightToSendTheEnteredInformationToJenniina')}{' '}
-                      </label>
-                    </div>
-                    <button
-                      type='submit'
-                      disabled={sending}
-                      className={`${selectStyles.half} `}
+                    <form
+                      ref={form}
+                      onSubmit={handleSubmit}
+                      id='survey'
+                      className='survey-form'
                     >
-                      <span>{sending ? t('SendingEmail') : t('Send')}</span>{' '}
-                      <RiMailSendLine />
-                    </button>
-                    {showMessage && (
-                      <div
-                        aria-live='assertive'
-                        style={{
-                          fontWeight: 'bold',
-                          color: 'inherit',
-                          letterSpacing: '0.04em',
+                      <h3 className='left small margin0 regular'>
+                        {t('DidYouFindAnyIssuesOnThisSite')}
+                      </h3>
+                      <Select
+                        language={language}
+                        multiple
+                        required
+                        requiredMessage={t('ThisFieldIsRequired')}
+                        validated={hasClickedSubmit && value1.length == 0 ? false : true}
+                        remove={t('Remove')}
+                        clear={t('Clear')}
+                        id='multipleselectdropdown'
+                        className={selectStyles.prev2}
+                        instructions={t('YouMaySelectMultipleOptions')}
+                        options={options1}
+                        value={value1}
+                        onChange={(o: SelectOption[]) => {
+                          setValue1(o)
+                          setData((prevData: SelectData) => ({
+                            ...prevData,
+                            issues: (o as SelectOption[] | undefined)
+                              ?.map((option: SelectOption) => option.label)
+                              .join(', '),
+                          }))
                         }}
-                      >
-                        {error ? error : t('ThankYouForYourMessage')}
+                      />
+                      <h3 className='left small margin0 regular'>
+                        {t('WhichIntroSectionElementWasYourFavourite')}
+                      </h3>
+                      <Select
+                        language={language}
+                        required
+                        requiredMessage={t('ThisFieldIsRequired')}
+                        validated={
+                          hasClickedSubmit && value2?.label == options2[0].label
+                            ? false
+                            : true
+                        }
+                        remove={t('Remove')}
+                        clear={t('Clear')}
+                        id='single'
+                        className={`full ${selectStyles.prev}`}
+                        instructions={`${t(
+                          'KeyboardUseMoveToOptionWithArrowKeysAndSelectByPressingEnterOrSpace'
+                        )}`}
+                        hide
+                        options={options2}
+                        value={value2}
+                        onChange={(o) => {
+                          setValue2(o)
+                          setData((prevData) => ({
+                            ...prevData,
+                            favoriteHero: o?.label,
+                          }))
+                        }}
+                      />
+                      <h3 className='left small margin0 regular'>
+                        {t('ClarificationOrFeedback')}
+                      </h3>
+                      <div className='full'>
+                        <label htmlFor='select-clarification'>
+                          <input
+                            id='select-clarification'
+                            autoComplete='off'
+                            type='text'
+                            name='clarification'
+                            value={input}
+                            onChange={(e) => {
+                              setInput(e.target.value)
+                              setData((prevData) => ({
+                                ...prevData,
+                                clarification: e.target.value,
+                              }))
+                            }}
+                            className='bg'
+                          />
+                          <span className='scr'>
+                            {t('ClarificationOrFeedback')} ({t('Optional').toLowerCase()})
+                          </span>
+                        </label>
                       </div>
-                    )}
-                  </form>
-                </FormWrapper>
+                      <h3 className='left small margin0 regular'>
+                        {t('Email')} ({t('Optional').toLowerCase()})
+                      </h3>
+                      <div className='full'>
+                        <label htmlFor='select-email'>
+                          <input
+                            id='select-email'
+                            autoComplete='email'
+                            type='email'
+                            name='email'
+                            value={email}
+                            onChange={(e) => {
+                              setEmail(e.target.value)
+                              setData((prevData) => ({
+                                ...prevData,
+                                email: e.target.value.trim(),
+                              }))
+                            }}
+                            className='bg'
+                          />
+                          <span className='scr'>
+                            {t('Email')} ({t('Optional').toLowerCase()}){' '}
+                          </span>
+                        </label>
+                      </div>
+                      <div>
+                        <input id='form-gdpr' required type='checkbox' name='gdpr' />
+                        <label htmlFor='form-gdpr'>
+                          <span className='required' aria-hidden='true'>
+                            *
+                          </span>{' '}
+                          {t('ItIsAlrightToSendTheEnteredInformationToJenniina')}{' '}
+                        </label>
+                      </div>
+                      <button
+                        type='submit'
+                        disabled={sending}
+                        className={`${selectStyles.half} `}
+                      >
+                        <span>{sending ? t('SendingEmail') : t('Send')}</span>{' '}
+                        <RiMailSendLine />
+                      </button>
+                      {showMessage && (
+                        <div
+                          aria-live='assertive'
+                          style={{
+                            fontWeight: 'bold',
+                            color: 'inherit',
+                            letterSpacing: '0.04em',
+                          }}
+                        >
+                          {error ? error : t('ThankYouForYourMessage')}
+                        </div>
+                      )}
+                    </form>
+                  </FormWrapper>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
       </div>
-    </div>
+    </>
   )
 }

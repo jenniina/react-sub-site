@@ -3,6 +3,7 @@ import { useTheme } from '../hooks/useTheme'
 import { ELanguages } from '../types'
 import styles from './css/portfolio.module.css'
 import { LanguageContext } from '../contexts/LanguageContext'
+import { Helmet } from 'react-helmet-async'
 
 const PortfolioInfo = lazy(() => import('../components/PortfolioInfo/PortfolioInfo'))
 
@@ -22,20 +23,27 @@ export default function Portfolio({
   const lightTheme = useTheme()
 
   return (
-    <div
-      className={`portfolio ${styles.portfolio} ${type} ${
-        lightTheme ? styles.light : ''
-      }`}
-    >
-      <div className='inner-wrap'>
-        <Suspense
-          fallback={
-            <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
-          }
-        >
-          <PortfolioInfo language={language} />
-        </Suspense>
+    <>
+      <Helmet>
+        <title>{t('Portfolio')} | react.jenniina.fi</title>
+        <meta name='description' content={t('AboutThisSite')} />
+        <link rel='canonical' href={`https://react.jenniina.fi/portfolio`} />
+      </Helmet>
+      <div
+        className={`portfolio ${styles.portfolio} ${type} ${
+          lightTheme ? styles.light : ''
+        }`}
+      >
+        <div className='inner-wrap'>
+          <Suspense
+            fallback={
+              <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
+            }
+          >
+            <PortfolioInfo language={language} />
+          </Suspense>
+        </div>
       </div>
-    </div>
+    </>
   )
 }

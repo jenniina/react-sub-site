@@ -1,6 +1,6 @@
 .hero {
   padding-top: 10vh;
-  min-height: clamp(300px, 80vh, 1000px);
+  min-height: clamp(300px, 92vh, 1100px);
   display: flex;
   flex-flow: column nowrap;
   justify-content: flex-end;

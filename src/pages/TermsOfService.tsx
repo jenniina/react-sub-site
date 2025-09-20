@@ -26,16 +26,26 @@ import {
   EEnFiPrintingCostsNotIncluded,
   EEnFiSupplierMayUseProductInMarketing,
   EEnFiSupplierMayHelpWithHostingAndPrintingSolutions,
+  EETermsOfService,
 } from '../types/fien'
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'
 import { LanguageContext } from '../contexts/LanguageContext'
+import { Helmet } from 'react-helmet-async'
 
 export function TermsProducts({ language }: { language: ELanguages }) {
   const lang: EEnFi = language === 'fi' ? EEnFi.fi : EEnFi.en
 
   return (
     <>
+      <Helmet>
+        <title>{EETermsOfService[lang]}</title>
+        <meta
+          name='description'
+          content={`${EEnFiWelcomeToTermsOfService[lang]} | ${EEnFiCustomer[lang]}`}
+        />
+        <link rel='canonical' href={`https://react.jenniina.fi/terms`} />
+      </Helmet>
       <p>
         <strong>{EEnFiSupplier[lang]}:</strong> Jenniina Laine <br />
         <strong>{EEnFiCustomer[lang]}:</strong> {EEnFiCustomerCompany[lang]}

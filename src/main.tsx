@@ -9,21 +9,24 @@ import { ThemeProvider } from './contexts/ThemeContext'
 import { ModalProvider } from './hooks/useModal'
 import { LanguageProvider } from './contexts/LanguageContext'
 import { BlobProvider } from './components/Blob/components/BlobProvider'
+import { HelmetProvider } from 'react-helmet-async'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
-    <BrowserRouter>
-      <LanguageProvider>
-        <BlobProvider>
-          <ThemeProvider>
-            <Provider store={store}>
-              <ModalProvider>
-                <App />
-              </ModalProvider>
-            </Provider>
-          </ThemeProvider>
-        </BlobProvider>
-      </LanguageProvider>
-    </BrowserRouter>
+    <HelmetProvider>
+      <BrowserRouter>
+        <LanguageProvider>
+          <BlobProvider>
+            <ThemeProvider>
+              <Provider store={store}>
+                <ModalProvider>
+                  <App />
+                </ModalProvider>
+              </Provider>
+            </ThemeProvider>
+          </BlobProvider>
+        </LanguageProvider>
+      </BrowserRouter>
+    </HelmetProvider>
   </StrictMode>
 )

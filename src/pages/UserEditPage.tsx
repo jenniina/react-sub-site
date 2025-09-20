@@ -12,6 +12,7 @@ import { initializeUser, logout } from '../reducers/authReducer'
 import { removeUser } from '../reducers/usersReducer'
 import { notify } from '../reducers/notificationReducer'
 import { LanguageContext } from '../contexts/LanguageContext'
+import { Helmet } from 'react-helmet-async'
 
 const PasswordEdit = lazy(() => import('../components/UserEdit/PasswordEdit'))
 const UsernameEdit = lazy(() => import('../components/UserEdit/UsernameEdit'))
@@ -87,6 +88,11 @@ const UserEditPage = ({ language, setLanguage, heading, text, type, options }: P
 
   return (
     <>
+      <Helmet>
+        <title>{t('UserEdit')} | react.jenniina.fi</title>
+        <meta name='description' content={`${t('UserEdit')} | react.jenniina.fi`} />
+        <link rel='canonical' href={`https://react.jenniina.fi/user/edit`} />
+      </Helmet>
       <div className={`edit ${type} ${lightTheme ? styles.light : ''}`}>
         <div className='inner-wrap'>
           <section className={`card`}>

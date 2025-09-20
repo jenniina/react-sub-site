@@ -205,7 +205,7 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
               <DragAndDropPage
                 language={language}
                 heading={t('DragAndDrop')}
-                text=''
+                text={t('DragAndDropAppIntro')}
                 type='page subpage'
               />
             }
@@ -414,7 +414,7 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             <Disclaimer
               language={language}
               heading={t('PrivacyAndSecurityDisclaimer')}
-              text={`${t('LastUpdated')}: 2024/10/20`}
+              text={`${t('LastUpdated')}: 2025/9/20`}
               type='page'
             />
           }
