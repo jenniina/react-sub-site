@@ -56,5 +56,6 @@ The site is built with React and uses the following libraries:
     - react-redux: React redux is used for state management.
     - react-router-dom: React router dom is used for routing.
     - uuid: UUID is used for generating unique ids.
+    - react-helmet-async: React helmet async is used for managing the document head.
 
 The site is built with Vite and uses TypeScript for type checking.

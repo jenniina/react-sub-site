@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import styles from './css/disclaimer.module.css'
 import { useContext } from 'react'
 import { LanguageContext } from '../contexts/LanguageContext'
+import { Helmet } from 'react-helmet-async'
 
 export default function Disclaimer({
   heading,
@@ -22,6 +23,11 @@ export default function Disclaimer({
 
   return (
     <>
+      <Helmet>
+        <title>{t('PrivacyAndSecurityDisclaimer')} | react.jenniina.fi</title>
+        <meta name='description' content={t('PrivacyAndSecurityDisclaimer')} />
+        <link rel='canonical' href={`https://react.jenniina.fi/disclaimer`} />
+      </Helmet>
       <div className={`disclaimer ${type} ${lightTheme ? styles.light : ''}`}>
         <div className='inner-wrap'>
           <section className={`card`}>
@@ -29,10 +35,18 @@ export default function Disclaimer({
               <p>
                 {t('SeeAlso')}: <Link to='/terms'>{t('TermsOfService')}</Link>
               </p>
+              <h2>{t('TheDataController')}</h2>
+              <p>{t('TheDataControllerIs')}</p>
               <p>{t('TheFollowingAppliesToLoggingInAndStoringUserInfo')}</p>
               <h2>{t('DataCollectionAndStorage')}</h2>
               <p>{t('WeCollectAndStoreTheEmailAddress')}</p>
               <p>{t('YourPasswordIsSecurelyHashed')}</p>
+              <p>{t('OtherPersonalDataIsNotCollected')}</p>
+              <h2>{t('LegalBasisForProcessing')}</h2>
+              <p>{t('WeProcessYourPersonalDataOnBasisOf')} </p>
+              <ul>
+                <li>{t('ContractToProvideServices')}</li>
+              </ul>
               <h2>{t('DataProtection')}</h2>
               <p>{t('WeUseIndustryStandardSecurityMeasures')}</p>
               <p>{t('AccessToYourDataIsRestricted')}</p>

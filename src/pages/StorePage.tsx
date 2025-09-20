@@ -5,6 +5,7 @@ import Hero from '../components/Hero/Hero'
 import { ICartItem } from '../types/store'
 import styles from '../components/Store/store.module.css'
 import { LanguageContext } from '../contexts/LanguageContext'
+import { Helmet } from 'react-helmet-async'
 
 interface StoreProps {
   language: ELanguages
@@ -30,22 +31,32 @@ const StorePage: React.FC<StoreProps> = ({
   const { t } = useContext(LanguageContext)!
 
   return (
-    <div className={`store ${type} ${styles.store}`}>
-      <div className={`inner-wrap ${styles['inner-wrap']}`}>
-        <Suspense
-          fallback={
-            <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
-          }
-        >
-          <Store
-            language={language}
-            cart={cart}
-            addToCart={addToCart}
-            removeFromCart={removeFromCart}
-          />
-        </Suspense>
+    <>
+      <Helmet>
+        <title>{t('Store')} | react.jenniina.fi</title>
+        <meta
+          name='description'
+          content={`${t('Store')} | ${t('WebpagesAndGraphicDesign')}`}
+        />
+        <link rel='canonical' href={`https://react.jenniina.fi/store`} />
+      </Helmet>
+      <div className={`store ${type} ${styles.store}`}>
+        <div className={`inner-wrap ${styles['inner-wrap']}`}>
+          <Suspense
+            fallback={
+              <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
+            }
+          >
+            <Store
+              language={language}
+              cart={cart}
+              addToCart={addToCart}
+              removeFromCart={removeFromCart}
+            />
+          </Suspense>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 

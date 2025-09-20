@@ -10,6 +10,7 @@ import { lazy, Suspense, useContext } from 'react'
 import { SelectOption } from '../components/Select/Select'
 import { status, paid } from '../types/store'
 import { LanguageContext } from '../contexts/LanguageContext'
+import { Helmet } from 'react-helmet-async'
 
 const Order = lazy(() => import('../components/Store/components/Order'))
 const Orders = lazy(() => import('../components/Store/components/Orders'))
@@ -87,50 +88,57 @@ const OrderPage: React.FC<OrderPageProps> = ({ language, heading, text, type }) 
   }
 
   return (
-    <div className={`order ${type} ${styles['orders-page']}`}>
-      <div className='inner-wrap'>
-        <section className='card' style={{ position: 'relative', zIndex: 2 }}>
-          <div>
-            {!orderID && user && user?.role && user?.role > 1 ? (
-              <Suspense
-                fallback={
-                  <div className='flex center margin0auto textcenter'>
-                    {t('Loading')}...
-                  </div>
-                }
-              >
-                <Orders
-                  language={language}
-                  user={user}
-                  statusOptions={statusOptions}
-                  paidOptions={paidOptions}
-                  splitToLines={splitToLines}
-                  paidStatus={paidStatus}
-                  itemStatus={itemStatus}
-                  info={info}
-                />
-              </Suspense>
-            ) : (
-              <Suspense
-                fallback={
-                  <div className='flex center margin0auto textcenter'>
-                    {t('Loading')}...
-                  </div>
-                }
-              >
-                <Order
-                  language={language}
-                  paidStatus={paidStatus}
-                  itemStatus={itemStatus}
-                  splitToLines={splitToLines}
-                  info={info}
-                />
-              </Suspense>
-            )}
-          </div>
-        </section>
+    <>
+      <Helmet>
+        <title>{t('Orders')} | react.jenniina.fi</title>
+        <meta name='description' content={t('Orders')} />
+        <link rel='canonical' href={`https://react.jenniina.fi/orders`} />
+      </Helmet>
+      <div className={`order ${type} ${styles['orders-page']}`}>
+        <div className='inner-wrap'>
+          <section className='card' style={{ position: 'relative', zIndex: 2 }}>
+            <div>
+              {!orderID && user && user?.role && user?.role > 1 ? (
+                <Suspense
+                  fallback={
+                    <div className='flex center margin0auto textcenter'>
+                      {t('Loading')}...
+                    </div>
+                  }
+                >
+                  <Orders
+                    language={language}
+                    user={user}
+                    statusOptions={statusOptions}
+                    paidOptions={paidOptions}
+                    splitToLines={splitToLines}
+                    paidStatus={paidStatus}
+                    itemStatus={itemStatus}
+                    info={info}
+                  />
+                </Suspense>
+              ) : (
+                <Suspense
+                  fallback={
+                    <div className='flex center margin0auto textcenter'>
+                      {t('Loading')}...
+                    </div>
+                  }
+                >
+                  <Order
+                    language={language}
+                    paidStatus={paidStatus}
+                    itemStatus={itemStatus}
+                    splitToLines={splitToLines}
+                    info={info}
+                  />
+                </Suspense>
+              )}
+            </div>
+          </section>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 export default OrderPage

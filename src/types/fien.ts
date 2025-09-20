@@ -14,6 +14,10 @@ export enum EEnFiCustomerCompany {
   en = 'The person/company/association ordering the product from Jenniina',
   fi = 'Tuotteen Jenniinalta tilaava henkilö/yritys/yhdistys',
 }
+export enum EETermsOfService {
+  en = 'Terms of Service',
+  fi = 'Käyttöehdot',
+}
 export enum EEnFiWelcomeToTermsOfService {
   en = 'Welcome to our Terms of Service page. Please read the following terms carefully.',
   fi = 'Tervetuloa käyttöehtosivullemme. Lue seuraavat ehdot huolellisesti.',

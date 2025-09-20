@@ -1,6 +1,7 @@
 import { lazy, Suspense, useContext } from 'react'
 import { ELanguages } from '../types'
 import { LanguageContext } from '../contexts/LanguageContext'
+import { Helmet } from 'react-helmet-async'
 
 const FormMulti = lazy(() => import('../components/FormMulti/FormMulti'))
 
@@ -18,22 +19,29 @@ export default function Contact({
   const { t } = useContext(LanguageContext)!
 
   return (
-    <div className={`contact ${type}`}>
-      <div className='inner-wrap'>
-        <section className='card' style={{ position: 'relative', zIndex: '2' }}>
-          <div>
-            <Suspense
-              fallback={
-                <div className='flex center margin0auto textcenter'>
-                  {t('Loading')}...
-                </div>
-              }
-            >
-              <FormMulti language={language} />
-            </Suspense>
-          </div>
-        </section>
+    <>
+      <Helmet>
+        <title>{t('ContactForm')} | react.jenniina.fi</title>
+        <meta name='description' content={t('ContactForm')} />
+        <link rel='canonical' href={`https://react.jenniina.fi/contact`} />
+      </Helmet>
+      <div className={`contact ${type}`}>
+        <div className='inner-wrap'>
+          <section className='card' style={{ position: 'relative', zIndex: '2' }}>
+            <div>
+              <Suspense
+                fallback={
+                  <div className='flex center margin0auto textcenter'>
+                    {t('Loading')}...
+                  </div>
+                }
+              >
+                <FormMulti language={language} />
+              </Suspense>
+            </div>
+          </section>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
