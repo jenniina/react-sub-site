@@ -8,13 +8,11 @@
     <url>
         <loc>https://react.jenniina.fi/about</loc>
         <priority>0.80</priority>
-    </url>
- 
+    </url> 
     <url>
         <loc>https://react.jenniina.fi/contact</loc>
         <priority>0.60</priority>
     </url>
-
     <url>
         <loc>https://react.jenniina.fi/portfolio</loc>
         <priority>0.90</priority>
@@ -86,6 +84,6 @@
     <url>
         <loc>https://react.jenniina.fi/terms</loc>
         <priority>0.80</priority>
-    </url>
+    </url>    
     
 </urlset>
