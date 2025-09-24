@@ -10546,6 +10546,15 @@ export const translations = {
     cs: 'Film',
     fi: 'Elokuva',
   },
+  WCAGTool: {
+    en: 'WCAG Contrast Checker Tool',
+    es: 'Herramienta de Verificación de Contraste WCAG',
+    fr: 'Outil de Vérification du Contraste WCAG',
+    de: 'WCAG-Kontrastprüfwerkzeug',
+    pt: 'Ferramenta de Verificação de Contraste WCAG',
+    cs: 'Nástroj pro kontrolu kontrastu WCAG',
+    fi: 'WCAG kontrastin tarkistustyökalu',
+  },
 } as const
 
 export type Translations = typeof translations

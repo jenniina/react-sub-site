@@ -457,9 +457,9 @@ export default function Hero({
 
                   const style: CSSProperties = {
                     position: 'absolute',
-                    top: `clamp(60px, calc(-5vh + calc(1.1vh * ${item.e} * ${
+                    top: `clamp(60px, calc(-5vh + calc(1.3vh * ${item.e} * ${
                       item.e / 1.5
-                    })), 50vh)`,
+                    })), calc(80vh - 50px - ${item.size / dividedBy}vh))`,
                     left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})), 95vw - ${item.size}vw)`,
                     width:
                       windowWidth < windowHeight
@@ -479,8 +479,8 @@ export default function Hero({
                       windowWidth < windowHeight ? `${item.size}vh` : `${item.size}vw`,
                     width: '100%',
                     height: '100%',
-                    minWidth: `40px`,
-                    minHeight: `40px`,
+                    minWidth: `44px`,
+                    minHeight: `44px`,
                     maxWidth: `150px`,
                     maxHeight: `150px`,
                     borderRadius: '3px',
@@ -559,7 +559,7 @@ export default function Hero({
                     position: 'absolute',
                     top: `clamp(200px, calc(-1vh + calc(1.1vh * ${item.e} * ${
                       item.e / 1.5
-                    })), 50vh)`,
+                    })), calc(80vh - ${itemSize}vh))`,
                     left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})), 95vw - ${item.size}vw)`,
                     width: `${itemSize}vw`,
                     height: `${itemSize}vw`,
@@ -570,8 +570,8 @@ export default function Hero({
                     color: `${item.color}`,
                     width: '100%',
                     height: '100%',
-                    minWidth: `40px`,
-                    minHeight: `40px`,
+                    minWidth: `44px`,
+                    minHeight: `44px`,
                     maxWidth: `150px`,
                     maxHeight: `150px`,
                     borderRadius: '80% 50% 80% 50%',
@@ -666,9 +666,9 @@ export default function Hero({
 
                   const style: CSSProperties = {
                     position: 'absolute',
-                    top: `clamp(60px, calc(-5vh + calc(1.1vh * ${item.e} * ${
+                    top: `clamp(60px, calc(-5vh + calc(1.3vh * ${item.e} * ${
                       item.e / 1.5
-                    })), 50vh)`,
+                    })), calc(80vh - 50px - ${item.size / dividedBy}vh))`,
                     left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})), 95vw - ${item.size}vw)`,
                     width:
                       windowWidth < windowHeight
@@ -833,7 +833,7 @@ export default function Hero({
                     position: 'absolute',
                     top: `clamp(60px, calc(-5vh + calc(1.1vh * ${item.e} * ${
                       item.e / 1.5
-                    })), 50vh)`,
+                    })), calc(80vh - 50px - ${item.size / dividedBy}vh))`,
                     left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})), 95vw - ${item.size}vw)`,
                     width:
                       windowWidth < windowHeight
@@ -982,8 +982,8 @@ export default function Hero({
                     position: 'absolute',
                     top: `clamp(60px, calc(-20vh + 1.2vh * ${item.e * 3} * ${
                       item.size / 6
-                    }), 45vh)`,
-                    left: `clamp(1vw, calc(-5vh + ${item.i} * 1.2vw * ${item.e}), 96vw - ${item.size}vw)`,
+                    }), calc(80vh - 50px - calc(var(--size, 200px) * 0.8vh)))`,
+                    left: `clamp(1vw, calc(-5vh + ${item.i} * 1.4vw * ${item.e}), 96vw - ${item.size}vw)`,
                     backgroundColor: `transparent`,
                     color: `${item.color}`,
                     ['--i' as string]: `${item.i}`,
@@ -1001,8 +1001,8 @@ export default function Hero({
                         : `calc(var(--size) * 0.8vw)`,
                     maxHeight: '200px',
                     maxWidth: '200px',
-                    minHeight: '40px',
-                    minWidth: '40px',
+                    minHeight: '44px',
+                    minWidth: '44px',
                     borderRadius: '65% 65% 70% 60% / 60% 70% 60% 65%',
                     opacity: `0.${item.size > 8 ? 8 : Math.ceil(item.size)}`,
                   }
@@ -1085,9 +1085,9 @@ export default function Hero({
                   const number = Math.floor(getRandomMinMax(0.001, 3.999))
                   const style: CSSProperties = {
                     position: 'absolute',
-                    top: `clamp(60px, calc(-20% + ${item.e} * 1.2vh * ${
+                    top: `clamp(60px, calc(-20% + ${item.e} * 1.4vh * ${
                       item.size / 2
-                    }),50vh)`,
+                    }), calc(80vh - 50px - calc(var(--size, 200px) * 0.8vh)))`,
                     left: `clamp(1vw, calc(-10% + ${
                       item.i * item.e
                     } * 1.2vw ), calc(100vw - 200px))`,
@@ -1109,12 +1109,12 @@ export default function Hero({
                     //needs to have var(--size) not ${item.size} to work with the resize keys and wheel function:
                     height:
                       windowWidth < breakpoint && windowWidth < windowHeight
-                        ? `calc(calc(var(--size) * ${div}) * ${sizingSmall}vh)`
+                        ? `calc(calc(var(--size, 200px) * ${div}) * ${sizingSmall}vh)`
                         : windowWidth < breakpoint && windowWidth > windowHeight
-                        ? `calc(calc(var(--size) * ${div}) * ${sizingSmall}vw)`
+                        ? `calc(calc(var(--size, 200px) * ${div}) * ${sizingSmall}vw)`
                         : windowWidth < windowHeight
-                        ? `calc(calc(var(--size) * ${div}) * ${sizing}vh)`
-                        : `calc(calc(var(--size) * ${div}) * ${sizing}vw)`,
+                        ? `calc(calc(var(--size, 200px) * ${div}) * ${sizing}vh)`
+                        : `calc(calc(var(--size, 200px) * ${div}) * ${sizing}vw)`,
                     minWidth: `70px`,
                     minHeight: `70px`,
                     maxWidth: `200px`,
@@ -1213,7 +1213,7 @@ export default function Hero({
                     position: 'absolute',
                     top: `clamp(60px, calc(-5vh + calc(1.5vh * ${item.e} * ${
                       item.e / 1.9
-                    })),55vh)`,
+                    })), calc(80vh - 50px - calc(var(--size, 120px) * ${mod}vh)))`,
                     left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})),90vw)`,
                     backgroundColor: `transparent`,
                     color: `${item.color}`,
@@ -1224,16 +1224,16 @@ export default function Hero({
                       windowWidth < windowHeight ? `${item.size}vh` : `${item.size}vw`,
                     width:
                       windowWidth < windowHeight
-                        ? `calc(var(--size) * ${mod}vh)`
-                        : `calc(var(--size) * ${mod}vw)`,
+                        ? `calc(var(--size, 120px) * ${mod}vh)`
+                        : `calc(var(--size, 120px) * ${mod}vw)`,
                     height:
                       windowWidth < windowHeight
-                        ? `calc(var(--size) * ${mod}vh)`
-                        : `calc(var(--size) * ${mod}vw)`,
-                    minHeight: '40px',
-                    minWidth: '40px',
-                    maxHeight: '100px',
-                    maxWidth: '100px',
+                        ? `calc(var(--size, 120px) * ${mod}vh)`
+                        : `calc(var(--size, 120px) * ${mod}vw)`,
+                    minHeight: '44px',
+                    minWidth: '44px',
+                    maxHeight: '120px',
+                    maxWidth: '120px',
                     borderRadius: '50%',
                     opacity: `0.${item.size > 7 ? 8 : Math.ceil(item.size)}`,
                   }
@@ -1318,9 +1318,9 @@ export default function Hero({
                     ['--border' as string]: border,
                     borderWidth: border,
                     position: 'absolute',
-                    top: `clamp(60px, calc(-5vh + calc(1vh * ${item.e} * ${
+                    top: `clamp(60px, calc(-5vh + calc(1.2vh * ${item.e} * ${
                       item.e / 1.3
-                    })), 55vh)`,
+                    })), calc(80vh - 50px - ${item.size / 1.3}vh))`,
                     left: `clamp(1vw, calc(-10vw + ${item.i} * 1.3vw * ${item.e}), 95vw - ${item.size}vw)`,
                     width: 0,
                     height: 0,

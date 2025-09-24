@@ -82,7 +82,7 @@ export default function Portfolio({ language }: { language: ELanguages }) {
               <BiSolidColorFill />
               <span>{t('ColorAccessibility')}</span>
             </Link>
-            <p>{t('TestColorCombinations')}</p>
+            <p>{t('WCAGTool')}</p>
           </li>
           <li>
             <Link to='/portfolio/memory'>

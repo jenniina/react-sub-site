@@ -332,7 +332,7 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
               <ColorsPage
                 language={language}
                 heading={t('ColorAccessibility')}
-                text={t('TestColorCombinations')}
+                text={`${t('WCAGTool')}`}
                 type='page subpage'
               />
             }
