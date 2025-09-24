@@ -36,7 +36,7 @@ export default function Home({
     <>
       <Helmet>
         <title>
-          {t('Welcome')} {t('ToTheReactSiteOfJenniinaFi')}
+          {t('Welcome')} {t('ToTheReactSiteOfJenniinaFi')} | Jenniina Laine
         </title>
         <meta name='description' content={`${t('Welcome')} | ${t('AboutThisSite')}`} />
         <link rel='canonical' href={`https://react.jenniina.fi/`} />

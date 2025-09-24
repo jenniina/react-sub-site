@@ -25,11 +25,13 @@ const ColorsPage = ({
     <>
       <Helmet>
         <title>
-          {t('ColorAccessibility')} | {t('TestColorCombinations')}
+          {t('ColorAccessibility')} | {t('WCAGTool')}
         </title>
         <meta
           name='description'
-          content={`${t('ColorAccessibility')} - ${t('TestColorCombinations')}`}
+          content={`${t('ColorAccessibility')} - ${t('WCAGTool')} - ${t(
+            'TestColorCombinations'
+          )}`}
         />
         <link rel='canonical' href={`https://react.jenniina.fi/portfolio/colors`} />
       </Helmet>

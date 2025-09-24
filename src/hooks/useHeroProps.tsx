@@ -91,7 +91,7 @@ const heroConfig: { [key: string]: (language: ELanguages) => HeroProps } = {
   }),
   '/portfolio/colors': (language) => ({
     heading: t['ColorAccessibility'][language],
-    text: t['TestColorCombinations'][language],
+    text: t['WCAGTool'][language],
     address: 'colors',
     language,
   }),
