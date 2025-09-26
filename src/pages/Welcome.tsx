@@ -85,7 +85,7 @@ export default function Home({
                   </Link>
                 </li>
               </ul>
-              <Suspense
+              {/* <Suspense
                 fallback={
                   <div className='flex center margin0auto textcenter'>
                     {t('Loading')}...
@@ -93,7 +93,7 @@ export default function Home({
                 }
               >
                 <Newest language={language} />
-              </Suspense>
+              </Suspense> */}
             </div>
           </section>
         </div>
