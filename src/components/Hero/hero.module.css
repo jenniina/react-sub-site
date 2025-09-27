@@ -441,11 +441,11 @@
   box-shadow: var(--box);
 }
 .herocontent .bubbles {
-  -webkit-animation: updown 3000ms ease-in-out infinite;
-  -o-animation: updown 3000ms ease-in-out infinite;
-  -ms-animation: updown 3000ms ease-in-out infinite;
-  -moz-animation: updown 3000ms ease-in-out infinite;
-  animation: updown 3000ms ease-in-out infinite;
+  -webkit-animation: skewWobble 200ms ease-in-out infinite;
+  -o-animation: skewWobble 200ms ease-in-out infinite;
+  -ms-animation: skewWobble 200ms ease-in-out infinite;
+  -moz-animation: skewWobble 200ms ease-in-out infinite;
+  animation: skewWobble 200ms ease-in-out infinite;
   -webkit-animation-play-state: paused;
   -moz-animation-play-state: paused;
   -o-animation-play-state: paused;
@@ -1309,6 +1309,30 @@
     -ms-transform: scale(1.2);
     -moz-transform: scale(1.2);
     transform: scale(1.2);
+  }
+}
+@keyframes skewWobble {
+  0%,
+  100% {
+    -webkit-transform: skewX(0deg);
+    -o-transform: skewX(0deg);
+    -ms-transform: skewX(0deg);
+    -moz-transform: skewX(0deg);
+    transform: skewX(0deg);
+  }
+  25% {
+    -webkit-transform: skewX(2deg);
+    -o-transform: skewX(2deg);
+    -ms-transform: skewX(2deg);
+    -moz-transform: skewX(2deg);
+    transform: skewX(2deg);
+  }
+  75% {
+    -webkit-transform: skewX(-2deg);
+    -o-transform: skewX(-2deg);
+    -ms-transform: skewX(-2deg);
+    -moz-transform: skewX(-2deg);
+    transform: skewX(-2deg);
   }
 }
 @keyframes updown {
