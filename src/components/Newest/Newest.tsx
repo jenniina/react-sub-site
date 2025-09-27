@@ -34,6 +34,18 @@ export default function Newest({ language }: { language: ELanguages }) {
           <strong>2025</strong>
           <ul>
             <li>
+              <strong>{t('September')}</strong>
+              <ul>
+                <li>
+                  <a className='disabled'>
+                    <RiFileList3Line />
+                    SEO:
+                  </a>
+                  <i>{t('Edited')}</i>
+                </li>
+              </ul>
+            </li>
+            {/* <li>
               <strong>{t('March')}</strong>
               <ul>
                 <li>
@@ -72,10 +84,10 @@ export default function Newest({ language }: { language: ELanguages }) {
                   <i>{t('ChangedQuotesAPI')}</i>
                 </li>
               </ul>
-            </li>
+            </li> */}
           </ul>
         </li>
-        <li className={styles.first}>
+        {/* <li className={styles.first}>
           <strong>2024</strong>
           <ul>
             <li>
@@ -195,9 +207,9 @@ export default function Newest({ language }: { language: ELanguages }) {
               </ul>
             </li>
           </ul>
-        </li>
+        </li> */}
       </ul>
-      <Accordion
+      {/* <Accordion
         language={language}
         text={t('OlderNews')}
         className={`${styles.oldernews} oldernews`}
@@ -460,7 +472,7 @@ export default function Newest({ language }: { language: ELanguages }) {
             </>
           </Accordion>
         </>
-      </Accordion>
+      </Accordion> */}
     </div>
   )
 }

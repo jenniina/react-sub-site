@@ -974,7 +974,7 @@ export default function Hero({
                     </li>
                   )
                 } else if (
-                  location == LOCATION.ABOUT ||
+                  location == LOCATION.HOME ||
                   location == LOCATION.JOKES ||
                   location == LOCATION.SALON
                 ) {
@@ -1008,7 +1008,7 @@ export default function Hero({
                   }
 
                   return (
-                    //ABOUT // JOKES // SALON
+                    //HOME // JOKES // SALON
                     <li
                       key={`${item.color}${index}`}
                       className={`${styles.item} ${styles.about} ${styles.bubbles} ${
