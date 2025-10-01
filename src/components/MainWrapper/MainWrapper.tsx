@@ -64,7 +64,7 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
     if (langParam && Object.values(ELanguages).includes(langParam as any)) {
       setLanguage(langParam as ELanguages)
     }
-  }, [setLanguage])
+  }, [])
 
   useEffect(() => {
     const hash = location.hash
