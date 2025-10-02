@@ -1,47 +1,56 @@
-import { Link } from 'react-router-dom'
-import styles from '../../pages/css/welcome.module.css'
-import { BiSolidColorFill } from 'react-icons/bi'
-import { BsCart2, BsPerson } from 'react-icons/bs'
-import { IoMdImages } from 'react-icons/io'
-import { GiAbstract019, GiNewShoot } from 'react-icons/gi'
-import { PiWrench } from 'react-icons/pi'
-import { MdOutlineQuiz } from 'react-icons/md'
-import { RiDragDropLine, RiTodoLine, RiFileList3Line } from 'react-icons/ri'
-import { GiComb } from 'react-icons/gi'
-import { FaStoreAlt } from 'react-icons/fa'
-import { TbTriangleInverted, TbBlob } from 'react-icons/tb'
-import { LuArrowRightToLine } from 'react-icons/lu'
-import { LiaNewspaperSolid } from 'react-icons/lia'
-import { BsMusicNoteBeamed } from 'react-icons/bs'
-import { firstToLowerCase, firstToUpperCase } from '../../utils'
-import { ELanguages } from '../../types'
-import { GrGraphQl } from 'react-icons/gr'
-import Accordion from '../Accordion/Accordion'
-import MemorySVG from '../Memory/components/MemorySVG'
-import { useContext } from 'react'
-import { LanguageContext } from '../../contexts/LanguageContext'
+import { Link } from "react-router-dom";
+import styles from "../../pages/css/welcome.module.css";
+import { BiSolidColorFill } from "react-icons/bi";
+import { BsCart2, BsPerson } from "react-icons/bs";
+import { IoMdImages } from "react-icons/io";
+import { GiAbstract019, GiNewShoot } from "react-icons/gi";
+import { PiWrench } from "react-icons/pi";
+import { MdOutlineQuiz } from "react-icons/md";
+import { RiDragDropLine, RiTodoLine, RiFileList3Line } from "react-icons/ri";
+import { GiComb } from "react-icons/gi";
+import { FaStoreAlt } from "react-icons/fa";
+import { TbTriangleInverted, TbBlob } from "react-icons/tb";
+import { LuArrowRightToLine } from "react-icons/lu";
+import { LiaNewspaperSolid } from "react-icons/lia";
+import { BsMusicNoteBeamed } from "react-icons/bs";
+import { firstToLowerCase, firstToUpperCase } from "../../utils";
+import { ELanguages } from "../../types";
+import { GrGraphQl } from "react-icons/gr";
+import Accordion from "../Accordion/Accordion";
+import MemorySVG from "../Memory/components/MemorySVG";
+import { useContext } from "react";
+import { LanguageContext } from "../../contexts/LanguageContext";
 
 export default function Newest({ language }: { language: ELanguages }) {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useContext(LanguageContext)!;
 
   return (
     <div className={`${styles.newest}`}>
       <h2 className={`${styles.subheading}`}>
-        <LiaNewspaperSolid /> {t('ChangeLog')}
+        <LiaNewspaperSolid /> {t("ChangeLog")}
       </h2>
       <ul className={`${styles.extras}`}>
         <li className={styles.first}>
           <strong>2025</strong>
           <ul>
             <li>
-              <strong>{t('September')}</strong>
+              <strong>{t("September")}</strong>
               <ul>
                 <li>
-                  <a className='disabled'>
+                  <Link to="/portfolio/colors">
+                    <BiSolidColorFill />
+                    {t("ColorAccessibility")}:
+                  </Link>
+                  <i>
+                    {t("BugFixes")}. {t("Optimizing")}
+                  </i>
+                </li>
+                <li>
+                  <a className="disabled">
                     <RiFileList3Line />
                     SEO:
                   </a>
-                  <i>{t('Edited')}</i>
+                  <i>{t("Edited")}</i>
                 </li>
               </ul>
             </li>
@@ -474,5 +483,5 @@ export default function Newest({ language }: { language: ELanguages }) {
         </>
       </Accordion> */}
     </div>
-  )
+  );
 }
