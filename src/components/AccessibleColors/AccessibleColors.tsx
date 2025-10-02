@@ -225,15 +225,75 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       colorFormatBlock,
       colorFormatOther,
     }) => {
-      const convertedBlockColor = parseColor(blockColor, colorFormatBlock);
-      const convertedOtherColor = parseColor(otherColor, colorFormatOther);
+      // Always use hex for block and other color
+      let blockHex, otherHex;
+      if (colorFormatBlock === "hex") {
+        blockHex = blockColor;
+      } else if (colorFormatBlock === "rgb") {
+        const rgbMatch = blockColor.match(
+          /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i
+        );
+        blockHex = rgbMatch
+          ? rgbToHex(
+              Number(rgbMatch[1]),
+              Number(rgbMatch[2]),
+              Number(rgbMatch[3])
+            )
+          : "#000000";
+      } else if (colorFormatBlock === "hsl") {
+        const hslMatch = blockColor.match(
+          /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i
+        );
+        if (hslMatch) {
+          const rgb = hslToRGB(
+            Number(hslMatch[1]),
+            Number(hslMatch[2]),
+            Number(hslMatch[3])
+          );
+          blockHex = rgbToHex(rgb.r, rgb.g, rgb.b);
+        } else {
+          blockHex = "#000000";
+        }
+      } else {
+        blockHex = "#000000";
+      }
+      if (colorFormatOther === "hex") {
+        otherHex = otherColor;
+      } else if (colorFormatOther === "rgb") {
+        const rgbMatch = otherColor.match(
+          /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i
+        );
+        otherHex = rgbMatch
+          ? rgbToHex(
+              Number(rgbMatch[1]),
+              Number(rgbMatch[2]),
+              Number(rgbMatch[3])
+            )
+          : "#000000";
+      } else if (colorFormatOther === "hsl") {
+        const hslMatch = otherColor.match(
+          /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i
+        );
+        if (hslMatch) {
+          const rgb = hslToRGB(
+            Number(hslMatch[1]),
+            Number(hslMatch[2]),
+            Number(hslMatch[3])
+          );
+          otherHex = rgbToHex(rgb.r, rgb.g, rgb.b);
+        } else {
+          otherHex = "#000000";
+        }
+      } else {
+        otherHex = "#000000";
+      }
       return `
  <circle
   cx="${xPosition + blockWidth / 2}"
   cy="${yIndicator + indicatorSize / 2}"
   r="${indicatorSize * 0.32}"
-  fill="${convertedBlockColor}"
-  stroke="${convertedOtherColor}"
+  fill="${blockHex}"
+  stroke="${otherHex}"
   stroke-width="${indicatorSize * 0.1}"
 />
 `;
@@ -248,17 +308,75 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       colorFormatBlock,
       colorFormatOther,
     }) => {
-      const convertedBlockColor = parseColor(blockColor, colorFormatBlock);
-      const convertedOtherColor = parseColor(otherColor, colorFormatOther);
-
+      let blockHex, otherHex;
+      if (colorFormatBlock === "hex") {
+        blockHex = blockColor;
+      } else if (colorFormatBlock === "rgb") {
+        const rgbMatch = blockColor.match(
+          /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i
+        );
+        blockHex = rgbMatch
+          ? rgbToHex(
+              Number(rgbMatch[1]),
+              Number(rgbMatch[2]),
+              Number(rgbMatch[3])
+            )
+          : "#000000";
+      } else if (colorFormatBlock === "hsl") {
+        const hslMatch = blockColor.match(
+          /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i
+        );
+        if (hslMatch) {
+          const rgb = hslToRGB(
+            Number(hslMatch[1]),
+            Number(hslMatch[2]),
+            Number(hslMatch[3])
+          );
+          blockHex = rgbToHex(rgb.r, rgb.g, rgb.b);
+        } else {
+          blockHex = "#000000";
+        }
+      } else {
+        blockHex = "#000000";
+      }
+      if (colorFormatOther === "hex") {
+        otherHex = otherColor;
+      } else if (colorFormatOther === "rgb") {
+        const rgbMatch = otherColor.match(
+          /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i
+        );
+        otherHex = rgbMatch
+          ? rgbToHex(
+              Number(rgbMatch[1]),
+              Number(rgbMatch[2]),
+              Number(rgbMatch[3])
+            )
+          : "#000000";
+      } else if (colorFormatOther === "hsl") {
+        const hslMatch = otherColor.match(
+          /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i
+        );
+        if (hslMatch) {
+          const rgb = hslToRGB(
+            Number(hslMatch[1]),
+            Number(hslMatch[2]),
+            Number(hslMatch[3])
+          );
+          otherHex = rgbToHex(rgb.r, rgb.g, rgb.b);
+        } else {
+          otherHex = "#000000";
+        }
+      } else {
+        otherHex = "#000000";
+      }
       return `
     <rect
   x="${xPosition + blockWidth / 2 - indicatorSize * 0.2}"
   y="${yIndicator + indicatorSize / 2 - indicatorSize * 0.15}"
   width="${indicatorSize * 0.3}"
   height="${indicatorSize * 0.3}"
-  fill="${convertedBlockColor}"
-  stroke="${convertedOtherColor}"
+  fill="${blockHex}"
+  stroke="${otherHex}"
   stroke-width="${indicatorSize * 0.1}"
 />
 `;
@@ -273,13 +391,43 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       colorFormatBlock,
       colorFormatOther,
     }) => {
-      const convertedOtherColor = parseColor(otherColor, colorFormatOther);
+      let otherHex;
+      if (colorFormatOther === "hex") {
+        otherHex = otherColor;
+      } else if (colorFormatOther === "rgb") {
+        const rgbMatch = otherColor.match(
+          /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i
+        );
+        otherHex = rgbMatch
+          ? rgbToHex(
+              Number(rgbMatch[1]),
+              Number(rgbMatch[2]),
+              Number(rgbMatch[3])
+            )
+          : "#000000";
+      } else if (colorFormatOther === "hsl") {
+        const hslMatch = otherColor.match(
+          /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i
+        );
+        if (hslMatch) {
+          const rgb = hslToRGB(
+            Number(hslMatch[1]),
+            Number(hslMatch[2]),
+            Number(hslMatch[3])
+          );
+          otherHex = rgbToHex(rgb.r, rgb.g, rgb.b);
+        } else {
+          otherHex = "#000000";
+        }
+      } else {
+        otherHex = "#000000";
+      }
       return `
 <circle
   cx="${xPosition + blockWidth / 2}"
   cy="${yIndicator + indicatorSize / 2}"
   r="${indicatorSize / 2}"
-  fill="${convertedOtherColor}"
+  fill="${otherHex}"
   stroke="none"
 />
 `;
@@ -314,16 +462,47 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       ?.map((block, index) => {
         const xPosition = index * blockWidth;
 
-        // Convert block color
-        let convertedBlockColor: string;
+        // Always use hex for block color
+        let hexColor: string;
         try {
-          convertedBlockColor = parseColor(block.color, block.colorFormat);
+          if (block.colorFormat === "hex") {
+            hexColor = block.color;
+          } else if (block.colorFormat === "rgb") {
+            const rgbMatch = block.color.match(
+              /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i
+            );
+            if (rgbMatch) {
+              hexColor = rgbToHex(
+                Number(rgbMatch[1]),
+                Number(rgbMatch[2]),
+                Number(rgbMatch[3])
+              );
+            } else {
+              throw new Error("Invalid RGB format");
+            }
+          } else if (block.colorFormat === "hsl") {
+            const hslMatch = block.color.match(
+              /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i
+            );
+            if (hslMatch) {
+              const rgb = hslToRGB(
+                Number(hslMatch[1]),
+                Number(hslMatch[2]),
+                Number(hslMatch[3])
+              );
+              hexColor = rgbToHex(rgb.r, rgb.g, rgb.b);
+            } else {
+              throw new Error("Invalid HSL format");
+            }
+          } else {
+            hexColor = "#000000";
+          }
         } catch (error) {
           console.error(error);
           dispatch(
             notify(`${t("Error")}: ${(error as Error).message}`, true, 4)
           );
-          convertedBlockColor = "#000000"; // Default to black on error
+          hexColor = "#000000"; // Default to black on error
         }
 
         // Color block rectangle
@@ -333,7 +512,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           y="0"
           width="${blockWidth}"
           height="${blockHeight}"
-          fill="${convertedBlockColor}"
+          fill="${hexColor}"
           stroke="none"
         />
       `;
@@ -347,7 +526,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           y="${blockHeight - 0.5}"
           width="${blockWidth}"
           height="${textBlockHeight}"
-          fill="${convertedBlockColor}"
+          fill="${hexColor}"
           stroke="none"
         />
         <!-- Color Text Label -->
@@ -381,7 +560,38 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       ?.map((colorItem, idx) => {
         const yIndicator = padding + idx * (indicatorSize + indicatorSpacing);
         const yLine = yIndicator + (indicatorSize - lineHeight) / 2;
-        const lineColor = parseColor(colorItem.color, colorItem.colorFormat);
+        // Always use hex for line color
+        let lineHex;
+        if (colorItem.colorFormat === "hex") {
+          lineHex = colorItem.color;
+        } else if (colorItem.colorFormat === "rgb") {
+          const rgbMatch = colorItem.color.match(
+            /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i
+          );
+          lineHex = rgbMatch
+            ? rgbToHex(
+                Number(rgbMatch[1]),
+                Number(rgbMatch[2]),
+                Number(rgbMatch[3])
+              )
+            : "#000000";
+        } else if (colorItem.colorFormat === "hsl") {
+          const hslMatch = colorItem.color.match(
+            /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i
+          );
+          if (hslMatch) {
+            const rgb = hslToRGB(
+              Number(hslMatch[1]),
+              Number(hslMatch[2]),
+              Number(hslMatch[3])
+            );
+            lineHex = rgbToHex(rgb.r, rgb.g, rgb.b);
+          } else {
+            lineHex = "#000000";
+          }
+        } else {
+          lineHex = "#000000";
+        }
 
         return `
         <rect
@@ -389,7 +599,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           y="${yLine}"
           width="${svgWidth}"
           height="${lineHeight}"
-          fill="${lineColor}"
+          fill="${lineHex}"
           stroke="none"
         />
       `;
