@@ -282,6 +282,7 @@ const useAccessibleColors = (initialColorMode: TColorMode) => {
     idCounter,
     recalculateCompliance,
     setColors,
+    updateSearchParams,
     setIdCounter,
     colors,
   ]);
@@ -308,7 +309,7 @@ const useAccessibleColors = (initialColorMode: TColorMode) => {
       setColors(recalculatedColors);
       updateSearchParams(recalculatedColors);
     },
-    [colors, recalculateCompliance, setColors]
+    [colors, recalculateCompliance, setColors, updateSearchParams]
   );
 
   const updateColor = useCallback(
@@ -445,7 +446,7 @@ const useAccessibleColors = (initialColorMode: TColorMode) => {
         console.error("Error updating color:", error);
       }
     },
-    [colors, setColors]
+    [colors, setColors, recalculateCompliance, updateSearchParams]
   );
 
   const resetColors = useCallback(() => {
@@ -453,14 +454,14 @@ const useAccessibleColors = (initialColorMode: TColorMode) => {
     setColors(defaultColors);
     updateSearchParams(defaultColors);
     setIdCounter(defaultColors.length + 1);
-  }, [deleteColors, setColors, setIdCounter]);
+  }, [deleteColors, setColors, setIdCounter, updateSearchParams]);
 
   const clearColors = useCallback(() => {
     deleteColors();
     setColors([]);
     updateSearchParams([]);
     setIdCounter(1);
-  }, [deleteColors, setColors, setIdCounter]);
+  }, [deleteColors, setColors, setIdCounter, updateSearchParams]);
 
   const makeColorPalette = useCallback(() => {
     const newHSLColors = buildColors(colors, mode, colorsReset);
@@ -495,6 +496,7 @@ const useAccessibleColors = (initialColorMode: TColorMode) => {
     colorsReset,
     recalculateCompliance,
     setColors,
+    updateSearchParams,
     setIdCounter,
   ]);
 
@@ -515,10 +517,10 @@ const useAccessibleColors = (initialColorMode: TColorMode) => {
     clearColors,
     currentColor,
     setCurrentColor,
-    updateSearchParams,
     mode,
     setMode,
     makeColorPalette,
+    updateSearchParams,
   };
 };
 

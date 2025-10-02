@@ -100,7 +100,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     clearColors,
     mode,
     setMode,
-    updateSearchParams,
     makeColorPalette,
     setColorsReset,
   } = useAccessibleColors("analogous");
@@ -124,6 +123,23 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     useDragAndDrop(colors, statuses);
   const dragOverItem = useRef<number>(0);
   const [theTarget, setTheTarget] = useState<number>(0);
+
+  // Sync drag-and-drop state with colors from URL/localStorage
+  useEffect(() => {
+    // Only update if colors are different from DnD state
+    const dndItems = listItemsByStatus[status]?.items || [];
+    const isDifferent =
+      dndItems.length !== colors.length ||
+      dndItems.some(
+        (item, idx) =>
+          item.id !== colors[idx]?.id ||
+          item.colorFormat !== colors[idx]?.colorFormat ||
+          item.color !== colors[idx]?.color
+      );
+    if (isDifferent) {
+      listItemsByStatus[status]?.setItems(colors);
+    }
+  }, [colors, listItemsByStatus, status]);
 
   const baseWidth = 8;
   const [widthNumber, setWidth] = useLocalStorage(
