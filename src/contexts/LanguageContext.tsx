@@ -11,10 +11,23 @@ interface LanguageContextProps {
 export const LanguageContext = createContext<LanguageContextProps | undefined>(undefined)
 
 export const LanguageProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useLocalStorage<ELanguages>(
+
+  const [language, setLanguageRaw] = useLocalStorage<ELanguages>(
     'AppLanguage',
     ELanguages.en
   )
+
+  // Remove only the 'lang' query param when present, keep others
+  const setLanguage = (lang: ELanguages) => {
+    setLanguageRaw(lang);
+    const url = new URL(window.location.href);
+    if (url.searchParams.has('lang')) {
+      url.searchParams.delete('lang');
+      const newSearch = url.searchParams.toString();
+      const newUrl = url.pathname + (newSearch ? `?${newSearch}` : '') + url.hash;
+      window.history.replaceState({}, '', newUrl);
+    }
+  }  
 
   const t = (key: TranslationKey) => {
     if (!translations[key]) {

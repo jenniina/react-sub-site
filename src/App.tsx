@@ -9,6 +9,7 @@ import { RefObject } from './types'
 import { UIProvider } from './contexts/UIContext'
 import { LanguageContext } from './contexts/LanguageContext'
 import useLocalStorage from './hooks/useStorage'
+import { Helmet } from "react-helmet-async"
 
 const Footer = lazy(() => import('./components/Footer/Footer'))
 const ScrollToTop = lazy(() => import('./components/ScrollToTop/ScrollToTop'))
@@ -19,7 +20,11 @@ const App: FC = () => {
   const [styleMenu, setStyleMenu] = useLocalStorage<boolean>('styleOfMenu', false)
   const menuStyleRef = useRef() as RefObject<{ getStyle: () => boolean }>
 
-  return (
+  return (<>
+  <Helmet>
+        <meta charSet="utf-8" /> 
+        <meta name="author" content="Jenniina Laine" /> 
+  </Helmet>
     <UIProvider language={language} menuStyle={menuStyleRef}>
       <Nav
         setStyleMenu={setStyleMenu}
@@ -44,7 +49,7 @@ const App: FC = () => {
       </Suspense>
       <Modal language={language} />
       <Notification language={language} />
-    </UIProvider>
+    </UIProvider></>
   )
 }
 
