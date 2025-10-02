@@ -21,6 +21,7 @@ import { SiSvgtrace } from "react-icons/si";
 import { BiReset } from "react-icons/bi";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { LuCirclePlus } from "react-icons/lu";
+import { LiaUndoAltSolid } from "react-icons/lia";
 import {
   clampValue,
   getRandomString,
@@ -124,6 +125,8 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     useDragAndDrop(colors, statuses);
   const dragOverItem = useRef<number>(0);
   const [theTarget, setTheTarget] = useState<number>(0);
+
+  const [haveCleared, setHaveCleared] = useState(false);
 
   const baseWidth = 8;
   const [widthNumber, setWidth] = useLocalStorage(
@@ -846,24 +849,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       style={{ ["--font-size" as string]: dynamicFontSize.input }}
     >
       <div id="info" className={styles["info-wrap"]}>
-        <div className={styles["btn-wrap"]}>
-          <button
-            className={`gray small ${styles["column"]} ${styles["flat-top"]}`}
-            type="button"
-            //scroll to #colorpicker
-            onClick={() => {
-              const element = document.getElementById("colorpicker");
-              element?.focus();
-              element?.scrollIntoView({ behavior: "smooth" });
-            }}
-          >
-            {t("SkipToMainContent")}
-            <span className={`${styles["rotate90"]} ${styles["skip-arrow"]}`}>
-              &raquo;
-            </span>
-          </button>
-        </div>
-        <h2>{t("SymbolMeanings")}</h2>
+        v<h2>{t("SymbolMeanings")}</h2>
         <ul>
           <li>
             <div
@@ -911,15 +897,24 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       </div>
 
       <div className={styles["btn-wrap"]}>
-        <button onClick={toggleTheme} className="gray ">
+        {lightTheme ? (
+          <>
+            <span>{t("DarkMode")}:</span>
+          </>
+        ) : (
+          <>
+            <span>{t("LightMode")}:</span>
+          </>
+        )}
+        <button onClick={toggleTheme} className={`gray ${styles["mode-btn"]}`}>
           {lightTheme ? (
             <>
-              {t("DarkMode")}&nbsp;&nbsp;
+              <span className="scr">{t("DarkMode")}</span>
               <MdDarkMode />
             </>
           ) : (
             <>
-              {t("LightMode")}&nbsp;&nbsp;
+              <span className="scr">{t("LightMode")}</span>
               <MdLightMode />{" "}
             </>
           )}
@@ -946,7 +941,18 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       </div>
 
       <div className={styles["btn-wrap"]}>
-        <button className="gray small" type="button" onClick={resetColors}>
+        <button
+          className="gray small"
+          type="button"
+          onClick={() => {
+            if (
+              colors.length === 0 ||
+              window.confirm(t("AreYouSureYouWantToResetAllColors"))
+            ) {
+              resetColors();
+            }
+          }}
+        >
           {t("Reset")}&nbsp;&nbsp;
           <BiReset />
         </button>
@@ -954,8 +960,10 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           className="gray small"
           type="button"
           onClick={() => {
-            listItemsByStatus[status].removeItems();
-            clearColors();
+            if (window.confirm(t("AreYouSureYouWantToClearAllColors") || "")) {
+              listItemsByStatus[status].removeItems();
+              clearColors();
+            }
           }}
         >
           {t("Clear")}&nbsp;&nbsp;
@@ -1027,9 +1035,20 @@ const AccessibleColors: FC<Props> = ({ language }) => {
               {t("GeneratesColorsBasedOnLastColor")}
             </span>
           </button>
-          <button className="gray small" type="button" onClick={resetAndMake}>
+          <button
+            className="gray small"
+            type="button"
+            onClick={() => {
+              if (
+                haveCleared === true ||
+                window.confirm(t("AreYouSureYouWantToClearAllColors") || "")
+              )
+                resetAndMake();
+              setHaveCleared(true);
+            }}
+          >
             {t("ClearAndGenerateNew")}&nbsp;&nbsp;
-            <RiDeleteBin2Line />
+            <LiaUndoAltSolid />
           </button>
         </div>
       </div>
