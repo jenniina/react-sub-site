@@ -145,7 +145,9 @@ const useAccessibleColors = (initialColorMode: TColorMode) => {
                 },
               };
             });
-            setColors(loadedColors);
+            // Recalculate compliance for loaded colors
+            const recalculatedColors = recalculateCompliance(loadedColors);
+            setColors(recalculatedColors);
           }
         } catch (e) {
           // Ignore invalid param
