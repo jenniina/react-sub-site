@@ -16,7 +16,11 @@ import { useDragAndDrop } from "./hooks/useColorDragAndDrop";
 import { useTheme, useThemeUpdate } from "../../hooks/useTheme";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
-import { PiDownloadSimpleFill } from "react-icons/pi";
+import { PiDownloadSimpleFill, PiImage } from "react-icons/pi";
+import { SiSvgtrace } from "react-icons/si";
+import { BiReset } from "react-icons/bi";
+import { RiDeleteBin2Line } from "react-icons/ri";
+import { LuCirclePlus } from "react-icons/lu";
 import {
   clampValue,
   getRandomString,
@@ -121,23 +125,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
   const dragOverItem = useRef<number>(0);
   const [theTarget, setTheTarget] = useState<number>(0);
 
-  // Sync drag-and-drop state with colors from URL/localStorage
-  useEffect(() => {
-    // Only update if colors are different from DnD state
-    const dndItems = listItemsByStatus[status]?.items || [];
-    const isDifferent =
-      dndItems.length !== colors.length ||
-      dndItems.some(
-        (item, idx) =>
-          item.id !== colors[idx]?.id ||
-          item.colorFormat !== colors[idx]?.colorFormat ||
-          item.color !== colors[idx]?.color
-      );
-    if (isDifferent) {
-      listItemsByStatus[status]?.setItems(colors);
-    }
-  }, [colors, listItemsByStatus, status]);
-
   const baseWidth = 8;
   const [widthNumber, setWidth] = useLocalStorage(
     "Jenniina-color-block-width",
@@ -238,15 +225,75 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       colorFormatBlock,
       colorFormatOther,
     }) => {
-      const convertedBlockColor = parseColor(blockColor, colorFormatBlock);
-      const convertedOtherColor = parseColor(otherColor, colorFormatOther);
+      // Always use hex for block and other color
+      let blockHex, otherHex;
+      if (colorFormatBlock === "hex") {
+        blockHex = blockColor;
+      } else if (colorFormatBlock === "rgb") {
+        const rgbMatch = blockColor.match(
+          /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i
+        );
+        blockHex = rgbMatch
+          ? rgbToHex(
+              Number(rgbMatch[1]),
+              Number(rgbMatch[2]),
+              Number(rgbMatch[3])
+            )
+          : "#000000";
+      } else if (colorFormatBlock === "hsl") {
+        const hslMatch = blockColor.match(
+          /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i
+        );
+        if (hslMatch) {
+          const rgb = hslToRGB(
+            Number(hslMatch[1]),
+            Number(hslMatch[2]),
+            Number(hslMatch[3])
+          );
+          blockHex = rgbToHex(rgb.r, rgb.g, rgb.b);
+        } else {
+          blockHex = "#000000";
+        }
+      } else {
+        blockHex = "#000000";
+      }
+      if (colorFormatOther === "hex") {
+        otherHex = otherColor;
+      } else if (colorFormatOther === "rgb") {
+        const rgbMatch = otherColor.match(
+          /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i
+        );
+        otherHex = rgbMatch
+          ? rgbToHex(
+              Number(rgbMatch[1]),
+              Number(rgbMatch[2]),
+              Number(rgbMatch[3])
+            )
+          : "#000000";
+      } else if (colorFormatOther === "hsl") {
+        const hslMatch = otherColor.match(
+          /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i
+        );
+        if (hslMatch) {
+          const rgb = hslToRGB(
+            Number(hslMatch[1]),
+            Number(hslMatch[2]),
+            Number(hslMatch[3])
+          );
+          otherHex = rgbToHex(rgb.r, rgb.g, rgb.b);
+        } else {
+          otherHex = "#000000";
+        }
+      } else {
+        otherHex = "#000000";
+      }
       return `
  <circle
   cx="${xPosition + blockWidth / 2}"
   cy="${yIndicator + indicatorSize / 2}"
   r="${indicatorSize * 0.32}"
-  fill="${convertedBlockColor}"
-  stroke="${convertedOtherColor}"
+  fill="${blockHex}"
+  stroke="${otherHex}"
   stroke-width="${indicatorSize * 0.1}"
 />
 `;
@@ -261,17 +308,75 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       colorFormatBlock,
       colorFormatOther,
     }) => {
-      const convertedBlockColor = parseColor(blockColor, colorFormatBlock);
-      const convertedOtherColor = parseColor(otherColor, colorFormatOther);
-
+      let blockHex, otherHex;
+      if (colorFormatBlock === "hex") {
+        blockHex = blockColor;
+      } else if (colorFormatBlock === "rgb") {
+        const rgbMatch = blockColor.match(
+          /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i
+        );
+        blockHex = rgbMatch
+          ? rgbToHex(
+              Number(rgbMatch[1]),
+              Number(rgbMatch[2]),
+              Number(rgbMatch[3])
+            )
+          : "#000000";
+      } else if (colorFormatBlock === "hsl") {
+        const hslMatch = blockColor.match(
+          /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i
+        );
+        if (hslMatch) {
+          const rgb = hslToRGB(
+            Number(hslMatch[1]),
+            Number(hslMatch[2]),
+            Number(hslMatch[3])
+          );
+          blockHex = rgbToHex(rgb.r, rgb.g, rgb.b);
+        } else {
+          blockHex = "#000000";
+        }
+      } else {
+        blockHex = "#000000";
+      }
+      if (colorFormatOther === "hex") {
+        otherHex = otherColor;
+      } else if (colorFormatOther === "rgb") {
+        const rgbMatch = otherColor.match(
+          /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i
+        );
+        otherHex = rgbMatch
+          ? rgbToHex(
+              Number(rgbMatch[1]),
+              Number(rgbMatch[2]),
+              Number(rgbMatch[3])
+            )
+          : "#000000";
+      } else if (colorFormatOther === "hsl") {
+        const hslMatch = otherColor.match(
+          /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i
+        );
+        if (hslMatch) {
+          const rgb = hslToRGB(
+            Number(hslMatch[1]),
+            Number(hslMatch[2]),
+            Number(hslMatch[3])
+          );
+          otherHex = rgbToHex(rgb.r, rgb.g, rgb.b);
+        } else {
+          otherHex = "#000000";
+        }
+      } else {
+        otherHex = "#000000";
+      }
       return `
     <rect
   x="${xPosition + blockWidth / 2 - indicatorSize * 0.2}"
   y="${yIndicator + indicatorSize / 2 - indicatorSize * 0.15}"
   width="${indicatorSize * 0.3}"
   height="${indicatorSize * 0.3}"
-  fill="${convertedBlockColor}"
-  stroke="${convertedOtherColor}"
+  fill="${blockHex}"
+  stroke="${otherHex}"
   stroke-width="${indicatorSize * 0.1}"
 />
 `;
@@ -286,13 +391,43 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       colorFormatBlock,
       colorFormatOther,
     }) => {
-      const convertedOtherColor = parseColor(otherColor, colorFormatOther);
+      let otherHex;
+      if (colorFormatOther === "hex") {
+        otherHex = otherColor;
+      } else if (colorFormatOther === "rgb") {
+        const rgbMatch = otherColor.match(
+          /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i
+        );
+        otherHex = rgbMatch
+          ? rgbToHex(
+              Number(rgbMatch[1]),
+              Number(rgbMatch[2]),
+              Number(rgbMatch[3])
+            )
+          : "#000000";
+      } else if (colorFormatOther === "hsl") {
+        const hslMatch = otherColor.match(
+          /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i
+        );
+        if (hslMatch) {
+          const rgb = hslToRGB(
+            Number(hslMatch[1]),
+            Number(hslMatch[2]),
+            Number(hslMatch[3])
+          );
+          otherHex = rgbToHex(rgb.r, rgb.g, rgb.b);
+        } else {
+          otherHex = "#000000";
+        }
+      } else {
+        otherHex = "#000000";
+      }
       return `
 <circle
   cx="${xPosition + blockWidth / 2}"
   cy="${yIndicator + indicatorSize / 2}"
   r="${indicatorSize / 2}"
-  fill="${convertedOtherColor}"
+  fill="${otherHex}"
   stroke="none"
 />
 `;
@@ -327,16 +462,47 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       ?.map((block, index) => {
         const xPosition = index * blockWidth;
 
-        // Convert block color
-        let convertedBlockColor: string;
+        // Always use hex for block color
+        let hexColor: string;
         try {
-          convertedBlockColor = parseColor(block.color, block.colorFormat);
+          if (block.colorFormat === "hex") {
+            hexColor = block.color;
+          } else if (block.colorFormat === "rgb") {
+            const rgbMatch = block.color.match(
+              /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i
+            );
+            if (rgbMatch) {
+              hexColor = rgbToHex(
+                Number(rgbMatch[1]),
+                Number(rgbMatch[2]),
+                Number(rgbMatch[3])
+              );
+            } else {
+              throw new Error("Invalid RGB format");
+            }
+          } else if (block.colorFormat === "hsl") {
+            const hslMatch = block.color.match(
+              /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i
+            );
+            if (hslMatch) {
+              const rgb = hslToRGB(
+                Number(hslMatch[1]),
+                Number(hslMatch[2]),
+                Number(hslMatch[3])
+              );
+              hexColor = rgbToHex(rgb.r, rgb.g, rgb.b);
+            } else {
+              throw new Error("Invalid HSL format");
+            }
+          } else {
+            hexColor = "#000000";
+          }
         } catch (error) {
           console.error(error);
           dispatch(
             notify(`${t("Error")}: ${(error as Error).message}`, true, 4)
           );
-          convertedBlockColor = "#000000"; // Default to black on error
+          hexColor = "#000000"; // Default to black on error
         }
 
         // Color block rectangle
@@ -346,7 +512,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           y="0"
           width="${blockWidth}"
           height="${blockHeight}"
-          fill="${convertedBlockColor}"
+          fill="${hexColor}"
           stroke="none"
         />
       `;
@@ -360,7 +526,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           y="${blockHeight - 0.5}"
           width="${blockWidth}"
           height="${textBlockHeight}"
-          fill="${convertedBlockColor}"
+          fill="${hexColor}"
           stroke="none"
         />
         <!-- Color Text Label -->
@@ -394,7 +560,38 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       ?.map((colorItem, idx) => {
         const yIndicator = padding + idx * (indicatorSize + indicatorSpacing);
         const yLine = yIndicator + (indicatorSize - lineHeight) / 2;
-        const lineColor = parseColor(colorItem.color, colorItem.colorFormat);
+        // Always use hex for line color
+        let lineHex;
+        if (colorItem.colorFormat === "hex") {
+          lineHex = colorItem.color;
+        } else if (colorItem.colorFormat === "rgb") {
+          const rgbMatch = colorItem.color.match(
+            /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i
+          );
+          lineHex = rgbMatch
+            ? rgbToHex(
+                Number(rgbMatch[1]),
+                Number(rgbMatch[2]),
+                Number(rgbMatch[3])
+              )
+            : "#000000";
+        } else if (colorItem.colorFormat === "hsl") {
+          const hslMatch = colorItem.color.match(
+            /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i
+          );
+          if (hslMatch) {
+            const rgb = hslToRGB(
+              Number(hslMatch[1]),
+              Number(hslMatch[2]),
+              Number(hslMatch[3])
+            );
+            lineHex = rgbToHex(rgb.r, rgb.g, rgb.b);
+          } else {
+            lineHex = "#000000";
+          }
+        } else {
+          lineHex = "#000000";
+        }
 
         return `
         <rect
@@ -402,7 +599,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           y="${yLine}"
           width="${svgWidth}"
           height="${lineHeight}"
-          fill="${lineColor}"
+          fill="${lineHex}"
           stroke="none"
         />
       `;
@@ -649,6 +846,24 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       style={{ ["--font-size" as string]: dynamicFontSize.input }}
     >
       <div id="info" className={styles["info-wrap"]}>
+        <div className={styles["btn-wrap"]}>
+          <button
+            className={`gray small ${styles["column"]} ${styles["flat-top"]}`}
+            type="button"
+            //scroll to #colorpicker
+            onClick={() => {
+              const element = document.getElementById("colorpicker");
+              element?.focus();
+              element?.scrollIntoView({ behavior: "smooth" });
+            }}
+          >
+            {t("SkipToMainContent")}
+            <span className={`${styles["rotate90"]} ${styles["skip-arrow"]}`}>
+              &raquo;
+            </span>
+          </button>
+        </div>
+        <h2>{t("SymbolMeanings")}</h2>
         <ul>
           <li>
             <div
@@ -696,19 +911,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       </div>
 
       <div className={styles["btn-wrap"]}>
-        {listItemsByStatus[status]?.items?.length > 0 && (
-          <>
-            <button type="button" onClick={saveAsPNG} className="gray small">
-              {t("SaveAsPNG")}&nbsp;&nbsp;
-              <PiDownloadSimpleFill />
-            </button>
-            <button type="button" onClick={saveAsSVG} className="gray small">
-              {t("SaveAsSVG")}&nbsp;&nbsp;
-              <PiDownloadSimpleFill />
-            </button>
-          </>
-        )}
-        <button onClick={toggleTheme} className="gray small">
+        <button onClick={toggleTheme} className="gray ">
           {lightTheme ? (
             <>
               {t("DarkMode")}&nbsp;&nbsp;
@@ -722,7 +925,45 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           )}
         </button>
       </div>
-      <div className={styles["color-picker"]}>
+
+      <div className={styles["btn-wrap"]}>
+        {listItemsByStatus[status]?.items?.length > 0 && (
+          <>
+            <button type="button" onClick={saveAsPNG} className="gray small">
+              <SiSvgtrace />
+              &nbsp;&nbsp;
+              {t("SaveAsPNG")}&nbsp;&nbsp;
+              <PiDownloadSimpleFill />
+            </button>
+            <button type="button" onClick={saveAsSVG} className="gray small">
+              <PiImage />
+              &nbsp;&nbsp;
+              {t("SaveAsSVG")}&nbsp;&nbsp;
+              <PiDownloadSimpleFill />
+            </button>
+          </>
+        )}
+      </div>
+
+      <div className={styles["btn-wrap"]}>
+        <button className="gray small" type="button" onClick={resetColors}>
+          {t("Reset")}&nbsp;&nbsp;
+          <BiReset />
+        </button>
+        <button
+          className="gray small"
+          type="button"
+          onClick={() => {
+            listItemsByStatus[status].removeItems();
+            clearColors();
+          }}
+        >
+          {t("Clear")}&nbsp;&nbsp;
+          <RiDeleteBin2Line />
+        </button>
+      </div>
+
+      <div id="colorpicker" className={styles["color-picker"]}>
         <label htmlFor="color-input" className=" ">
           {t("ColorPicker")}:
         </label>
@@ -734,23 +975,13 @@ const AccessibleColors: FC<Props> = ({ language }) => {
             setCurrentColor(e.target.value);
           }}
         />
-        <button className="gray small" type="button" onClick={addColor}>
-          {t("AddAColor")}
+        <button className="gray" type="button" onClick={addColor}>
+          {t("AddAColor")}&nbsp;&nbsp;
+          <LuCirclePlus />
         </button>
-        <button className="gray small" type="button" onClick={resetColors}>
-          {t("Reset")}
-        </button>
-        <button
-          className="gray small"
-          type="button"
-          onClick={() => {
-            listItemsByStatus[status].removeItems();
-            clearColors();
-          }}
-        >
-          {t("Clear")}
-        </button>
+      </div>
 
+      <div className={styles["btn-wrap"]}>
         <div
           className={`${styles["color-edit-container"]} ${styles["mode-container"]}`}
         >
@@ -780,24 +1011,25 @@ const AccessibleColors: FC<Props> = ({ language }) => {
             id="color-mode"
             instructions={t("SelectColorModeForNewColors")}
             className={`${styles["color-select"]}`}
-            hide
             hideDelete
             tooltip={true}
             y="above narrow2"
             z={3}
           />
           <button
-            className="gray small tooltip-wrap"
+            className={`gray small tooltip-wrap ${styles["flat-left"]}`}
             type="button"
             onClick={makeColorPalette}
           >
-            {t("GenerateColors")}
+            {t("AddToColors")}&nbsp;&nbsp;
+            <LuCirclePlus />
             <span className="tooltip above narrow2">
               {t("GeneratesColorsBasedOnLastColor")}
             </span>
           </button>
           <button className="gray small" type="button" onClick={resetAndMake}>
-            {t("ClearAndGenerateNew")}
+            {t("ClearAndGenerateNew")}&nbsp;&nbsp;
+            <RiDeleteBin2Line />
           </button>
         </div>
       </div>

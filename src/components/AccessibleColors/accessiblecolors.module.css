@@ -36,7 +36,7 @@
   gap: 1em;
   margin-bottom: 2em;
 }
-.color-picker > input[type='color' i] {
+.color-picker > input[type="color" i] {
   --clamp: clamp(30px, 10vw, var(--size));
   min-width: var(--clamp);
   width: var(--clamp);
@@ -48,10 +48,20 @@
   outline-offset: -8px;
   border-radius: 50%;
 }
-.light .color-picker > input[type='color' i] {
+.light .color-picker > input[type="color" i] {
   outline: 10px solid black;
 }
-#color-container .color-picker > button {
+.color-picker > button {
+  border-radius: 0 999px 999px 0;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  padding: 0.2em 0.2em 0.2em 0.6em;
+}
+.color-picker > button svg {
+  width: 2em;
+  height: 2em;
 }
 .width-wrap {
   margin: 2em auto 0;
@@ -68,6 +78,46 @@
   align-items: center;
   gap: 1em;
   margin-bottom: 3em;
+}
+#color-container .btn-wrap .mode-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 0.8em;
+}
+.btn-wrap button {
+  border-radius: 999px;
+}
+#color-container .mode-container button {
+  padding: 0.2em 0.4em 0.2em 0.6em;
+}
+#color-container .btn-wrap button.flat-left {
+  border-radius: 0 999px 999px 0;
+  padding: 0.2em 0.25em 0.2em 0.6em;
+}
+.btn-wrap svg {
+  width: 2em;
+  height: 2em;
+}
+.btn-wrap .mode-container svg {
+  width: 1.4em;
+  height: 1.4em;
+}
+#color-container .rotate90 {
+  display: block;
+  transform: rotate(90deg);
+}
+#color-container .flat-top {
+  border-radius: 0 0 999px 999px;
+}
+#color-container .column {
+  flex-flow: column nowrap;
+  gap: 0.1em;
+}
+.skip-arrow {
+  font-size: 2em;
+  line-height: 0.8;
 }
 .info-wrap ul {
   display: flex;
@@ -174,7 +224,7 @@
   top: calc(100% + var(--tooltip-offset) * 0.5) !important;
 }
 .indicator::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: var(--left);
