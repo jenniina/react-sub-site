@@ -61,6 +61,16 @@ const ColorsInput: FC<Props> = ({
       colorFormatOptions[0]
   );
 
+  // Sync dropdown selection with block.colorFormat
+  useEffect(() => {
+    const newSelected = colorFormatOptions.find(
+      (option) => option.value === block.colorFormat
+    );
+    if (newSelected && newSelected.value !== selected?.value) {
+      setSelected(newSelected);
+    }
+  }, [block.colorFormat]);
+
   const [hex, setHex] = useState<string>("");
   const [r, setR] = useState<number>(0);
   const [g, setG] = useState<number>(0);
