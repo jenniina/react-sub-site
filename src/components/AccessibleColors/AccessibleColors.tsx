@@ -16,7 +16,11 @@ import { useDragAndDrop } from "./hooks/useColorDragAndDrop";
 import { useTheme, useThemeUpdate } from "../../hooks/useTheme";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
-import { PiDownloadSimpleFill } from "react-icons/pi";
+import { PiDownloadSimpleFill, PiImage } from "react-icons/pi";
+import { SiSvgtrace } from "react-icons/si";
+import { BiReset } from "react-icons/bi";
+import { RiDeleteBin2Line } from "react-icons/ri";
+import { LuCirclePlus } from "react-icons/lu";
 import {
   clampValue,
   getRandomString,
@@ -120,23 +124,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     useDragAndDrop(colors, statuses);
   const dragOverItem = useRef<number>(0);
   const [theTarget, setTheTarget] = useState<number>(0);
-
-  // Sync drag-and-drop state with colors from URL/localStorage
-  useEffect(() => {
-    // Only update if colors are different from DnD state
-    const dndItems = listItemsByStatus[status]?.items || [];
-    const isDifferent =
-      dndItems.length !== colors.length ||
-      dndItems.some(
-        (item, idx) =>
-          item.id !== colors[idx]?.id ||
-          item.colorFormat !== colors[idx]?.colorFormat ||
-          item.color !== colors[idx]?.color
-      );
-    if (isDifferent) {
-      listItemsByStatus[status]?.setItems(colors);
-    }
-  }, [colors, listItemsByStatus, status]);
 
   const baseWidth = 8;
   const [widthNumber, setWidth] = useLocalStorage(
@@ -649,6 +636,24 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       style={{ ["--font-size" as string]: dynamicFontSize.input }}
     >
       <div id="info" className={styles["info-wrap"]}>
+        <div className={styles["btn-wrap"]}>
+          <button
+            className={`gray small ${styles["column"]} ${styles["flat-top"]}`}
+            type="button"
+            //scroll to #colorpicker
+            onClick={() => {
+              const element = document.getElementById("colorpicker");
+              element?.focus();
+              element?.scrollIntoView({ behavior: "smooth" });
+            }}
+          >
+            {t("SkipToMainContent")}
+            <span className={`${styles["rotate90"]} ${styles["skip-arrow"]}`}>
+              &raquo;
+            </span>
+          </button>
+        </div>
+        <h2>{t("SymbolMeanings")}</h2>
         <ul>
           <li>
             <div
@@ -696,19 +701,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       </div>
 
       <div className={styles["btn-wrap"]}>
-        {listItemsByStatus[status]?.items?.length > 0 && (
-          <>
-            <button type="button" onClick={saveAsPNG} className="gray small">
-              {t("SaveAsPNG")}&nbsp;&nbsp;
-              <PiDownloadSimpleFill />
-            </button>
-            <button type="button" onClick={saveAsSVG} className="gray small">
-              {t("SaveAsSVG")}&nbsp;&nbsp;
-              <PiDownloadSimpleFill />
-            </button>
-          </>
-        )}
-        <button onClick={toggleTheme} className="gray small">
+        <button onClick={toggleTheme} className="gray ">
           {lightTheme ? (
             <>
               {t("DarkMode")}&nbsp;&nbsp;
@@ -722,7 +715,45 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           )}
         </button>
       </div>
-      <div className={styles["color-picker"]}>
+
+      <div className={styles["btn-wrap"]}>
+        {listItemsByStatus[status]?.items?.length > 0 && (
+          <>
+            <button type="button" onClick={saveAsPNG} className="gray small">
+              <SiSvgtrace />
+              &nbsp;&nbsp;
+              {t("SaveAsPNG")}&nbsp;&nbsp;
+              <PiDownloadSimpleFill />
+            </button>
+            <button type="button" onClick={saveAsSVG} className="gray small">
+              <PiImage />
+              &nbsp;&nbsp;
+              {t("SaveAsSVG")}&nbsp;&nbsp;
+              <PiDownloadSimpleFill />
+            </button>
+          </>
+        )}
+      </div>
+
+      <div className={styles["btn-wrap"]}>
+        <button className="gray small" type="button" onClick={resetColors}>
+          {t("Reset")}&nbsp;&nbsp;
+          <BiReset />
+        </button>
+        <button
+          className="gray small"
+          type="button"
+          onClick={() => {
+            listItemsByStatus[status].removeItems();
+            clearColors();
+          }}
+        >
+          {t("Clear")}&nbsp;&nbsp;
+          <RiDeleteBin2Line />
+        </button>
+      </div>
+
+      <div id="colorpicker" className={styles["color-picker"]}>
         <label htmlFor="color-input" className=" ">
           {t("ColorPicker")}:
         </label>
@@ -734,23 +765,13 @@ const AccessibleColors: FC<Props> = ({ language }) => {
             setCurrentColor(e.target.value);
           }}
         />
-        <button className="gray small" type="button" onClick={addColor}>
-          {t("AddAColor")}
+        <button className="gray" type="button" onClick={addColor}>
+          {t("AddAColor")}&nbsp;&nbsp;
+          <LuCirclePlus />
         </button>
-        <button className="gray small" type="button" onClick={resetColors}>
-          {t("Reset")}
-        </button>
-        <button
-          className="gray small"
-          type="button"
-          onClick={() => {
-            listItemsByStatus[status].removeItems();
-            clearColors();
-          }}
-        >
-          {t("Clear")}
-        </button>
+      </div>
 
+      <div className={styles["btn-wrap"]}>
         <div
           className={`${styles["color-edit-container"]} ${styles["mode-container"]}`}
         >
@@ -780,24 +801,25 @@ const AccessibleColors: FC<Props> = ({ language }) => {
             id="color-mode"
             instructions={t("SelectColorModeForNewColors")}
             className={`${styles["color-select"]}`}
-            hide
             hideDelete
             tooltip={true}
             y="above narrow2"
             z={3}
           />
           <button
-            className="gray small tooltip-wrap"
+            className={`gray small tooltip-wrap ${styles["flat-left"]}`}
             type="button"
             onClick={makeColorPalette}
           >
-            {t("GenerateColors")}
+            {t("AddToColors")}&nbsp;&nbsp;
+            <LuCirclePlus />
             <span className="tooltip above narrow2">
               {t("GeneratesColorsBasedOnLastColor")}
             </span>
           </button>
           <button className="gray small" type="button" onClick={resetAndMake}>
-            {t("ClearAndGenerateNew")}
+            {t("ClearAndGenerateNew")}&nbsp;&nbsp;
+            <RiDeleteBin2Line />
           </button>
         </div>
       </div>
