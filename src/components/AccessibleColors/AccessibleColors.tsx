@@ -18,12 +18,9 @@ import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 import { PiDownloadSimpleFill } from "react-icons/pi";
 import {
-  calculateLuminance,
   clampValue,
-  getContrastRatio,
   getRandomString,
   hexToRGB,
-  hslToHex,
   hslToRGB,
   rgbToHex,
   rgbToHSL,

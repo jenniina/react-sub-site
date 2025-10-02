@@ -1,11 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import useLocalStorage from "../../../hooks/useStorage";
-import {
-  ColorBlock,
-  TColorMode,
-  HSLColor,
-  ComplianceResult,
-} from "../AccessibleColors";
+import { ColorBlock, TColorMode } from "../AccessibleColors";
 import {
   calculateLuminance,
   determineAccessibility,
@@ -13,8 +8,6 @@ import {
   hslToRGB,
   rgbToHSL,
   hexToRGB,
-  rgbToHex,
-  getHexFromColor,
 } from "../../../utils";
 
 const status = "colors";
