@@ -1,11 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import useLocalStorage from "../../../hooks/useStorage";
-import {
-  ColorBlock,
-  TColorMode,
-  HSLColor,
-  ComplianceResult,
-} from "../AccessibleColors";
+import { ColorBlock, TColorMode } from "../AccessibleColors";
 import {
   calculateLuminance,
   determineAccessibility,
@@ -13,8 +8,6 @@ import {
   hslToRGB,
   rgbToHSL,
   hexToRGB,
-  rgbToHex,
-  getHexFromColor,
 } from "../../../utils";
 
 const status = "colors";
@@ -152,7 +145,9 @@ const useAccessibleColors = (initialColorMode: TColorMode) => {
                 },
               };
             });
-            setColors(loadedColors);
+            // Recalculate compliance for loaded colors
+            const recalculatedColors = recalculateCompliance(loadedColors);
+            setColors(recalculatedColors);
           }
         } catch (e) {
           // Ignore invalid param

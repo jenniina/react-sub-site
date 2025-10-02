@@ -5,7 +5,6 @@ import { Select, SelectOption } from "../../Select/Select";
 import { useAppDispatch } from "../../../hooks/useAppDispatch";
 import { notify } from "../../../reducers/notificationReducer";
 import { LanguageContext } from "../../../contexts/LanguageContext";
-import { ColorBlock } from "../AccessibleColors";
 
 interface Props {
   language: ELanguages;
