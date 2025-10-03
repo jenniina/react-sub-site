@@ -21,9 +21,17 @@ const Confirm: React.FC<ConfirmProps> = ({
 }) => {
   const { t } = React.useContext(LanguageContext)!;
   return (
-    <section id={styles.confirm} className={styles.confirm}>
+    <aside
+      id={styles.confirm}
+      className={styles.confirm}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="confirm-message"
+    >
       <div className={styles.content}>
-        <p className={styles.message}>{message}</p>
+        <p className={styles.message} id="confirm-message">
+          {message}
+        </p>
         <div className={styles.buttons}>
           <button className={styles["confirm-btn"]} onClick={onConfirm}>
             {confirmText ? confirmText : t("Confirm")}&nbsp;&nbsp;
@@ -35,7 +43,7 @@ const Confirm: React.FC<ConfirmProps> = ({
           </button>
         </div>
       </div>
-    </section>
+    </aside>
   );
 };
 
