@@ -26,7 +26,11 @@
   background-size: 100% 200%;
   background-position: top;
   background-repeat: no-repeat;
-  background-image: linear-gradient(0deg, var(--color-primary-1) 0%, transparent 28%);
+  background-image: linear-gradient(
+    0deg,
+    var(--color-primary-1) 0%,
+    transparent 28%
+  );
   line-height: 1.1;
   margin-bottom: 0.3em;
 }
@@ -105,6 +109,26 @@
 }
 .notes .introparagraph {
   margin-bottom: 4em;
+}
+#color-page .btn-wrap {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+#color-page .btn-wrap .rotate90 {
+  display: block;
+  transform: rotate(90deg);
+  font-size: 2.8em;
+  line-height: 0.9;
+  margin: 0 0 -0.2em 0;
+}
+#color-page .btn-wrap .flat-top {
+  border-radius: 0 0 999px 999px;
+}
+#color-page .btn-wrap .column {
+  flex-flow: column nowrap;
+  gap: 0;
 }
 
 @media (min-width: 600px) {

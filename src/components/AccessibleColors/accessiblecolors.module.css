@@ -104,17 +104,7 @@
   width: 1.4em;
   height: 1.4em;
 }
-#color-container .rotate90 {
-  display: block;
-  transform: rotate(90deg);
-}
-#color-container .flat-top {
-  border-radius: 0 0 999px 999px;
-}
-#color-container .column {
-  flex-flow: column nowrap;
-  gap: 0.1em;
-}
+
 .skip-arrow {
   font-size: 2em;
   line-height: 0.8;
@@ -142,6 +132,9 @@
 }
 .info-wrap li div {
   flex: 0 0 auto;
+}
+.mode-btn {
+  padding: 0.4em;
 }
 .color-blocks {
   --size: 96vw;
