@@ -5,7 +5,7 @@ import {
   useCallback,
   ReactNode,
 } from "react";
-import Confirm from "../components/Confirm/confirm";
+import Confirm from "../components/Confirm/Confirm";
 
 interface ConfirmOptions {
   message: string;
