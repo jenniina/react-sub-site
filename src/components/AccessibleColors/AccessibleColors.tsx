@@ -34,6 +34,7 @@ import { Select, SelectOption } from "../Select/Select";
 import useAccessibleColors from "./hooks/useAccessibleColors";
 import { useSearchParams } from "react-router-dom";
 import { LanguageContext } from "../../contexts/LanguageContext";
+import { useConfirm } from "../../contexts/ConfirmContext";
 
 const ColorsInput = lazy(() => import("./components/ColorsInput"));
 
@@ -107,6 +108,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
   } = useAccessibleColors("analogous");
 
   const { t } = useContext(LanguageContext)!;
+  const confirm = useConfirm();
 
   const statuses = useMemo(() => [status], []);
 
@@ -944,10 +946,12 @@ const AccessibleColors: FC<Props> = ({ language }) => {
         <button
           className="gray small"
           type="button"
-          onClick={() => {
+          onClick={async () => {
             if (
               colors.length === 0 ||
-              window.confirm(t("AreYouSureYouWantToResetAllColors"))
+              (await confirm({
+                message: t("AreYouSureYouWantToResetAllColors"),
+              }))
             ) {
               resetColors();
             }
@@ -959,8 +963,12 @@ const AccessibleColors: FC<Props> = ({ language }) => {
         <button
           className="gray small"
           type="button"
-          onClick={() => {
-            if (window.confirm(t("AreYouSureYouWantToClearAllColors") || "")) {
+          onClick={async () => {
+            if (
+              await confirm({
+                message: t("AreYouSureYouWantToClearAllColors") || "",
+              })
+            ) {
               listItemsByStatus[status].removeItems();
               clearColors();
             }
@@ -1038,10 +1046,12 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           <button
             className="gray small"
             type="button"
-            onClick={() => {
+            onClick={async () => {
               if (
                 haveCleared === true ||
-                window.confirm(t("AreYouSureYouWantToClearAllColors") || "")
+                (await confirm({
+                  message: t("AreYouSureYouWantToClearAllColors") || "",
+                }))
               )
                 resetAndMake();
               setHaveCleared(true);

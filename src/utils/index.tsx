@@ -285,11 +285,11 @@ export const buildColors = (
 
       const generated = generateColors(colorMode as TColorMode, baseHSL);
       if (colorMode === "tetrad") newColors.push(...generated.slice(0, 3));
-      else newColors.push(...generated.slice(0, 2));
+      else newColors.push(...generated.slice(0, 3));
     } catch (error) {
       console.error("Error generating new colors:", error);
-      // Fallback to generating two random colors
-      for (let i = 0; i < 2; i++) {
+      // Fallback to generating three random colors
+      for (let i = 0; i < 3; i++) {
         const randomColor = randomHSLColor("array");
         if (Array.isArray(randomColor)) {
           newColors.push(randomColor);
