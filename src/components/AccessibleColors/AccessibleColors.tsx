@@ -927,13 +927,13 @@ const AccessibleColors: FC<Props> = ({ language }) => {
         {listItemsByStatus[status]?.items?.length > 0 && (
           <>
             <button type="button" onClick={saveAsPNG} className="gray small">
-              <SiSvgtrace />
+              <PiImage />
               &nbsp;&nbsp;
               {t("SaveAsPNG")}&nbsp;&nbsp;
               <PiDownloadSimpleFill />
             </button>
             <button type="button" onClick={saveAsSVG} className="gray small">
-              <PiImage />
+              <SiSvgtrace />
               &nbsp;&nbsp;
               {t("SaveAsSVG")}&nbsp;&nbsp;
               <PiDownloadSimpleFill />
