@@ -76,10 +76,14 @@ body.light,
 }
 .App-inner-wrap::before {
   position: absolute;
-  content: '';
+  content: "";
   height: 60vh;
   width: 100%;
-  background-image: linear-gradient(to bottom, var(--color-primary-3), transparent);
+  background-image: linear-gradient(
+    to bottom,
+    var(--color-primary-3),
+    transparent
+  );
 }
 .light .App-inner-wrap::before {
   height: 70vh;
@@ -136,11 +140,12 @@ main {
   justify-content: flex-end;
   text-align: center;
   font-size: 0.86em;
-  min-width: max-content;
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  max-width: calc(var(--widest) - calc(var(--page-padding) * 2));
+  /* max-width: calc(var(--widest) - calc(var(--page-padding) * 2)); */
+  min-width: calc(100vw + 1px - var(--scrollbar_width));
+  margin-right: calc(50% - 50vw + calc(var(--scrollbar_width) / 2));
   z-index: 2;
 }
 .nav-sub * {
@@ -214,7 +219,7 @@ main {
   border-radius: var(--radius-large);
 }
 .nav-sub ul a::after {
-  content: '';
+  content: "";
   position: absolute;
   z-index: -1;
   top: 0;
@@ -454,7 +459,7 @@ main.main-content .fullwidth1 {
 
 .card > div::before,
 .card > div::after {
-  content: '';
+  content: "";
   position: absolute;
 }
 .card > div::before {
@@ -965,10 +970,11 @@ nav .open.password-reset-container button.forgot-btn {
 #root .App .tooltip-wrap:focus .tooltip::before,
 .tooltip-wrap:hover .tooltip::before,
 .tooltip-wrap:focus .tooltip::before {
-  content: '';
+  content: "";
   position: absolute;
   border: 1em solid transparent;
-  border-width: calc(var(--tooltip-offset) * 0.5) calc(var(--tooltip-offset) * 0.2);
+  border-width: calc(var(--tooltip-offset) * 0.5)
+    calc(var(--tooltip-offset) * 0.2);
   z-index: 1;
 }
 #root .App .tooltip-wrap:hover .tooltip.below::before,
@@ -1036,7 +1042,7 @@ big > i {
 .terms.page h2::before,
 .disclaimer.page h2::before {
   counter-increment: section;
-  content: counter(section) '. ';
+  content: counter(section) ". ";
   font-weight: bold;
 }
 
@@ -1047,7 +1053,7 @@ big > i {
 .terms.page h3::before,
 .disclaimer.page h3::before {
   counter-increment: subsection;
-  content: counter(section) '.' counter(subsection) '. ';
+  content: counter(section) "." counter(subsection) ". ";
   font-weight: bold;
 }
 
@@ -1066,4 +1072,17 @@ big > i {
 }
 .colors section > div {
   padding-top: 2em;
+}
+
+#root .p05 {
+  padding: 0.5em;
+}
+#root .p1 {
+  padding: 1em;
+}
+#root .m05 {
+  margin: 0.5em;
+}
+#root .m1 {
+  margin: 1em;
 }

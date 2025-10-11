@@ -10,7 +10,7 @@
   overflow: hidden;
 }
 .herocontent.composer {
-  background-image: url('../../assets/staff.svg');
+  background-image: url("../../assets/staff.svg");
   background-size: clamp(200px, 20%, 600px);
   background-position: center 52%;
   background-repeat: repeat-x;
@@ -52,38 +52,44 @@
   -moz-text-stroke: 1px var(--color-primary-1);
   -ms-text-stroke: 1px var(--color-primary-1);
   -o-text-stroke: 1px var(--color-primary-1);
-  text-stroke: 1px var(--color-primary-1);
   -webkit-text-shadow: 1px 1px 1px var(--color-primary-1),
     0 0 0.1em var(--color-primary-1);
-  -moz-text-shadow: 1px 1px 1px var(--color-primary-1), 0 0 0.1em var(--color-primary-1);
-  -ms-text-shadow: 1px 1px 1px var(--color-primary-1), 0 0 0.1em var(--color-primary-1);
-  -o-text-shadow: 1px 1px 1px var(--color-primary-1), 0 0 0.1em var(--color-primary-1);
-  text-shadow: 1px 1px 1px var(--color-primary-1), 0 0 0.1em var(--color-primary-1);
+  -moz-text-shadow: 1px 1px 1px var(--color-primary-1),
+    0 0 0.1em var(--color-primary-1);
+  -ms-text-shadow: 1px 1px 1px var(--color-primary-1),
+    0 0 0.1em var(--color-primary-1);
+  -o-text-shadow: 1px 1px 1px var(--color-primary-1),
+    0 0 0.1em var(--color-primary-1);
+  text-shadow: 1px 1px 1px var(--color-primary-1),
+    0 0 0.1em var(--color-primary-1);
 }
 .hero.light h1 {
   -webkit-text-stroke: 1px var(--color-primary-3);
   -moz-text-stroke: 1px var(--color-primary-3);
   -ms-text-stroke: 1px var(--color-primary-3);
   -o-text-stroke: 1px var(--color-primary-3);
-  text-stroke: 1px var(--color-primary-3);
   -webkit-text-shadow: 1px 1px 1px var(--color-primary-4),
     0 0 0.1em var(--color-primary-4);
-  -moz-text-shadow: 1px 1px 1px var(--color-primary-4), 0 0 0.1em var(--color-primary-4);
-  -ms-text-shadow: 1px 1px 1px var(--color-primary-4), 0 0 0.1em var(--color-primary-4);
-  -o-text-shadow: 1px 1px 1px var(--color-primary-4), 0 0 0.1em var(--color-primary-4);
-  text-shadow: 1px 1px 1px var(--color-primary-4), 0 0 0.1em var(--color-primary-4);
+  -moz-text-shadow: 1px 1px 1px var(--color-primary-4),
+    0 0 0.1em var(--color-primary-4);
+  -ms-text-shadow: 1px 1px 1px var(--color-primary-4),
+    0 0 0.1em var(--color-primary-4);
+  -o-text-shadow: 1px 1px 1px var(--color-primary-4),
+    0 0 0.1em var(--color-primary-4);
+  text-shadow: 1px 1px 1px var(--color-primary-4),
+    0 0 0.1em var(--color-primary-4);
 }
 .hero p {
-  -webkit-text-shadow: 1px 1px 1px var(--color-primary-1), 0 0 1em var(--color-primary-1),
-    0 0 0.3em var(--color-primary-1);
-  -moz-text-shadow: 1px 1px 1px var(--color-primary-1), 0 0 1em var(--color-primary-1),
-    0 0 0.3em var(--color-primary-1);
-  -ms-text-shadow: 1px 1px 1px var(--color-primary-1), 0 0 1em var(--color-primary-1),
-    0 0 0.3em var(--color-primary-1);
-  -o-text-shadow: 1px 1px 1px var(--color-primary-1), 0 0 1em var(--color-primary-1),
-    0 0 0.3em var(--color-primary-1);
-  text-shadow: 1px 1px 1px var(--color-primary-1), 0 0 1em var(--color-primary-1),
-    0 0 0.3em var(--color-primary-1);
+  -webkit-text-shadow: 1px 1px 1px var(--color-primary-1),
+    0 0 1em var(--color-primary-1), 0 0 0.3em var(--color-primary-1);
+  -moz-text-shadow: 1px 1px 1px var(--color-primary-1),
+    0 0 1em var(--color-primary-1), 0 0 0.3em var(--color-primary-1);
+  -ms-text-shadow: 1px 1px 1px var(--color-primary-1),
+    0 0 1em var(--color-primary-1), 0 0 0.3em var(--color-primary-1);
+  -o-text-shadow: 1px 1px 1px var(--color-primary-1),
+    0 0 1em var(--color-primary-1), 0 0 0.3em var(--color-primary-1);
+  text-shadow: 1px 1px 1px var(--color-primary-1),
+    0 0 1em var(--color-primary-1), 0 0 0.3em var(--color-primary-1);
   font-size: 1.1em;
 }
 .herocontent {
@@ -102,8 +108,8 @@
 .herocontent .geometric,
 .herocontent .triangle,
 .herocontent .note {
-  transition-property: top, right, bottom, left, transform, filter, box-shadow, outline,
-    border, width, height, opacity;
+  transition-property: top, right, bottom, left, transform, filter, box-shadow,
+    outline, border, width, height, opacity;
   transition-timing-function: ease-in-out;
   transition-duration: 600ms;
   -webkit-tap-highlight-color: transparent;
@@ -268,12 +274,12 @@
     calc(-0.33vw * var(--s)) var(--color);
   -moz-box-shadow: 0 calc(0.3vw * var(--s)) calc(0.3vw * var(--s))
     calc(-0.33vw * var(--s)) var(--color);
-  -ms-box-shadow: 0 calc(0.3vw * var(--s)) calc(0.3vw * var(--s)) calc(-0.33vw * var(--s))
-    var(--color);
-  -o-box-shadow: 0 calc(0.3vw * var(--s)) calc(0.3vw * var(--s)) calc(-0.33vw * var(--s))
-    var(--color);
-  box-shadow: 0 calc(0.3vw * var(--s)) calc(0.3vw * var(--s)) calc(-0.33vw * var(--s))
-    var(--color);
+  -ms-box-shadow: 0 calc(0.3vw * var(--s)) calc(0.3vw * var(--s))
+    calc(-0.33vw * var(--s)) var(--color);
+  -o-box-shadow: 0 calc(0.3vw * var(--s)) calc(0.3vw * var(--s))
+    calc(-0.33vw * var(--s)) var(--color);
+  box-shadow: 0 calc(0.3vw * var(--s)) calc(0.3vw * var(--s))
+    calc(-0.33vw * var(--s)) var(--color);
 }
 .herocontent li.jewel {
   opacity: 0.77;
@@ -299,7 +305,7 @@
   box-shadow: 0 0 30px -2px hsl(var(--hue), 100%, 60%),
     0 0 50px -10px hsl(var(--hue), 100%, 60%);
   position: absolute;
-  content: '';
+  content: "";
   top: 5%;
   left: 5%;
   width: 90%;
@@ -339,7 +345,7 @@
 }
 .herocontent .triangle::after,
 .herocontent .triangle::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: calc(var(--border) * -1);
@@ -428,9 +434,10 @@
   pointer-events: all;
 }
 .light .herocontent .bubbles {
-  --box: inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -3 * 1px) currentColor,
-    inset calc(var(--size) * -1px) calc(var(--size) * -1px) calc(var(--size) * 2 * 1px)
-      calc(var(--size) * -1.5 * 1px) lime,
+  --box: inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -3 * 1px)
+      currentColor,
+    inset calc(var(--size) * -1px) calc(var(--size) * -1px)
+      calc(var(--size) * 2 * 1px) calc(var(--size) * -1.5 * 1px) lime,
     inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px)
       calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
     0 0 10px -5px white, 0 0 5px -1px currentColor;
@@ -451,35 +458,39 @@
   -o-animation-play-state: paused;
   -ms-animation-play-state: paused;
   animation-play-state: paused;
-  -webkit-box-shadow: inset 0 calc(var(--size) * -6 * 1px) calc(var(--size) * 6 * 1px)
-      calc(var(--size) * -8 * 1px) currentColor,
+  -webkit-box-shadow: inset 0 calc(var(--size) * -6 * 1px)
+      calc(var(--size) * 6 * 1px) calc(var(--size) * -8 * 1px) currentColor,
     inset calc(var(--size) * -3 * 1px) calc(var(--size) * -3 * 1px)
       calc(var(--size) * 2 * 1px) calc(var(--size) * -4 * 1px) green,
-    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px) currentColor,
+    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px)
+      currentColor,
     inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px)
       calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
     0 0 10px -5px white, 0 0 12px -3px currentColor, 0 0 30px -10px currentColor;
-  -o-box-shadow: inset 0 calc(var(--size) * -6 * 1px) calc(var(--size) * 6 * 1px)
-      calc(var(--size) * -8 * 1px) currentColor,
+  -o-box-shadow: inset 0 calc(var(--size) * -6 * 1px)
+      calc(var(--size) * 6 * 1px) calc(var(--size) * -8 * 1px) currentColor,
     inset calc(var(--size) * -3 * 1px) calc(var(--size) * -3 * 1px)
       calc(var(--size) * 2 * 1px) calc(var(--size) * -4 * 1px) green,
-    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px) currentColor,
+    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px)
+      currentColor,
     inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px)
       calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
     0 0 10px -5px white, 0 0 12px -3px currentColor, 0 0 30px -10px currentColor;
-  -ms-box-shadow: inset 0 calc(var(--size) * -6 * 1px) calc(var(--size) * 6 * 1px)
-      calc(var(--size) * -8 * 1px) currentColor,
+  -ms-box-shadow: inset 0 calc(var(--size) * -6 * 1px)
+      calc(var(--size) * 6 * 1px) calc(var(--size) * -8 * 1px) currentColor,
     inset calc(var(--size) * -3 * 1px) calc(var(--size) * -3 * 1px)
       calc(var(--size) * 2 * 1px) calc(var(--size) * -4 * 1px) green,
-    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px) currentColor,
+    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px)
+      currentColor,
     inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px)
       calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
     0 0 10px -5px white, 0 0 12px -3px currentColor, 0 0 30px -10px currentColor;
-  -moz-box-shadow: inset 0 calc(var(--size) * -6 * 1px) calc(var(--size) * 6 * 1px)
-      calc(var(--size) * -8 * 1px) currentColor,
+  -moz-box-shadow: inset 0 calc(var(--size) * -6 * 1px)
+      calc(var(--size) * 6 * 1px) calc(var(--size) * -8 * 1px) currentColor,
     inset calc(var(--size) * -3 * 1px) calc(var(--size) * -3 * 1px)
       calc(var(--size) * 2 * 1px) calc(var(--size) * -4 * 1px) green,
-    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px) currentColor,
+    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px)
+      currentColor,
     inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px)
       calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
     0 0 10px -5px white, 0 0 12px -3px currentColor, 0 0 30px -10px currentColor;
@@ -487,7 +498,8 @@
       calc(var(--size) * -8 * 1px) currentColor,
     inset calc(var(--size) * -3 * 1px) calc(var(--size) * -3 * 1px)
       calc(var(--size) * 2 * 1px) calc(var(--size) * -4 * 1px) green,
-    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px) currentColor,
+    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px)
+      currentColor,
     inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px)
       calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
     0 0 10px -5px white, 0 0 12px -3px currentColor, 0 0 30px -10px currentColor;
@@ -544,7 +556,7 @@
 }
 .herocontent .note div::before {
   position: absolute;
-  content: '';
+  content: "";
   height: 190%;
   width: 12%;
   z-index: -1;
@@ -600,7 +612,6 @@
   --box: 0 0 30px 2px white;
   -webkit-box-shadow: var(--box);
   -ms-box-shadow: var(--box);
-  moz-box-shadow: var(--box);
   -o-box-shadow: var(--box);
   box-shadow: var(--box);
   background-color: currentColor;
@@ -612,7 +623,6 @@
   --box: 0 0 30px 2px white;
   -webkit-box-shadow: var(--box);
   -ms-box-shadow: var(--box);
-  moz-box-shadow: var(--box);
   -o-box-shadow: var(--box);
   box-shadow: var(--box);
   background-color: currentColor;
@@ -648,8 +658,9 @@
   -moz-transform: rotate(-80deg);
   transform: rotate(-80deg);
   pointer-events: none;
-  -webkit-box-shadow: inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) hotpink,
+  -webkit-box-shadow: inset calc(var(--size) * 8 * 1px)
+      calc(var(--size) / 4 * -1px) calc(var(--size) * 4 * 1px)
+      calc(var(--size) * 8 * -1px) hotpink,
     inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px)
       calc(var(--size) * 4 * 1px) calc(var(--size) * 9 * -1px) lime,
     0 0 4px 0 currentColor, 0 0 9px -5px white, 0 0 40px -10px currentColor,
@@ -672,8 +683,9 @@
     inset calc(var(--size) * 1px) 0 calc(var(--size) * 3 * 1px) 0 currentColor,
     inset calc(var(--size) * -1px) 0 calc(var(--size) * 3 * 1px) 0 white,
     0 0 10px -5px white;
-  -moz-box-shadow: inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) hotpink,
+  -moz-box-shadow: inset calc(var(--size) * 8 * 1px)
+      calc(var(--size) / 4 * -1px) calc(var(--size) * 4 * 1px)
+      calc(var(--size) * 8 * -1px) hotpink,
     inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px)
       calc(var(--size) * 4 * 1px) calc(var(--size) * 9 * -1px) lime,
     0 0 4px 0 currentColor, 0 0 9px -5px white, 0 0 40px -10px currentColor,
@@ -690,8 +702,9 @@
     0 0 10px -5px white;
 }
 .light .herocontent .eyes .inner {
-  -webkit-box-shadow: inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 7 * -1px) hotpink,
+  -webkit-box-shadow: inset calc(var(--size) * 8 * 1px)
+      calc(var(--size) / 4 * -1px) calc(var(--size) * 4 * 1px)
+      calc(var(--size) * 7 * -1px) hotpink,
     inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px)
       calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) lawngreen,
     0 0 10px 0 var(--color-primary-4), 0 0 20px -10px white,
@@ -706,8 +719,9 @@
     inset calc(var(--size) * 1px) 0 calc(var(--size) * 3 * 1px) 0 currentColor,
     inset calc(var(--size) * -1px) 0 calc(var(--size) * 3 * 1px) -1px white,
     0 0 10px -5px white;
-  -moz-box-shadow: inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 7 * -1px) hotpink,
+  -moz-box-shadow: inset calc(var(--size) * 8 * 1px)
+      calc(var(--size) / 4 * -1px) calc(var(--size) * 4 * 1px)
+      calc(var(--size) * 7 * -1px) hotpink,
     inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px)
       calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) lawngreen,
     0 0 10px 0 var(--color-primary-4), 0 0 20px -10px white,
@@ -732,7 +746,7 @@
     0 0 10px -5px white;
 }
 .herocontent .eyes .inner::before {
-  content: '';
+  content: "";
   position: absolute;
   width: 60%;
   height: 60%;
@@ -755,7 +769,7 @@
   box-shadow: var(--box);
 }
 .herocontent .eyes .inner::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 5%;
   height: 5%;
@@ -789,7 +803,7 @@
 .herocontent .bubbles span::before,
 .herocontent .bubbles span::after,
 .herocontent .eyes span::before {
-  content: '';
+  content: "";
   position: absolute;
   background-color: white;
   opacity: 0.2;
@@ -859,7 +873,7 @@
 }
 .herocontent .eyes span::after {
   --color: black;
-  content: '';
+  content: "";
   position: absolute;
   background-color: transparent;
   top: 22%;
@@ -875,8 +889,9 @@
   z-index: -1;
   opacity: 0.2;
   border-radius: 80% 50%;
-  --box: 0 0 6px 0 var(--color), 0 0 6px -3px var(--color), inset 6px 8px 8px -5px black,
-    -3px -4px 4px -2px black, -2px -3px 10px 2px white;
+  --box: 0 0 6px 0 var(--color), 0 0 6px -3px var(--color),
+    inset 6px 8px 8px -5px black, -3px -4px 4px -2px black,
+    -2px -3px 10px 2px white;
   -webkit-box-shadow: var(--box);
   -o-box-shadow: var(--box);
   -ms-box-shadow: var(--box);
@@ -905,7 +920,8 @@
 }
 .herocontent .eyes:hover span::after,
 .herocontent .eyes:focus span::after {
-  -webkit-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
+  -webkit-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg)
+    scale(1, 0.01);
   -o-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
   -ms-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
   -moz-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
@@ -932,7 +948,9 @@
     hide-opacity var(--time) cubic-bezier(0.28, 0.37, 0.88, 0.5) infinite;
   animation: scale var(--time) linear infinite,
     hide-opacity var(--time) cubic-bezier(0.28, 0.37, 0.88, 0.5) infinite;
-  -webkit-animation-delay: calc(calc(var(--number) + 1) * calc(var(--time) / -3.9));
+  -webkit-animation-delay: calc(
+    calc(var(--number) + 1) * calc(var(--time) / -3.9)
+  );
   animation-delay: calc(calc(var(--number) + 1) * calc(var(--time) / -3.9));
   -webkit-animation-play-state: paused;
   -moz-animation-play-state: paused;
@@ -956,10 +974,14 @@
     hide-opacity var(--time) linear infinite;
   animation: scale-over var(--time) linear infinite,
     hide-opacity var(--time) linear infinite;
-  -webkit-animation-delay: calc(calc(var(--number) + 1) * calc(var(--time) / -3.9));
+  -webkit-animation-delay: calc(
+    calc(var(--number) + 1) * calc(var(--time) / -3.9)
+  );
   -o-animation-delay: calc(calc(var(--number) + 1) * calc(var(--time) / -3.9));
   -ms-animation-delay: calc(calc(var(--number) + 1) * calc(var(--time) / -3.9));
-  -moz-animation-delay: calc(calc(var(--number) + 1) * calc(var(--time) / -3.9));
+  -moz-animation-delay: calc(
+    calc(var(--number) + 1) * calc(var(--time) / -3.9)
+  );
   animation-delay: calc(calc(var(--number) + 1) * calc(var(--time) / -4));
   -webkit-animation-play-state: paused;
   -moz-animation-play-state: paused;
@@ -1047,14 +1069,14 @@
     opacity: 0;
     -webkit-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
       calc(-0.1vw * var(--s)) var(--color);
-    -o-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s)) calc(-0.1vw * var(--s))
-      var(--color);
+    -o-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
+      calc(-0.1vw * var(--s)) var(--color);
     -ms-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
       calc(-0.1vw * var(--s)) var(--color);
     -moz-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
       calc(-0.1vw * var(--s)) var(--color);
-    box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s)) calc(-0.1vw * var(--s))
-      var(--color);
+    box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
+      calc(-0.1vw * var(--s)) var(--color);
   }
   10% {
     opacity: 0.5;
@@ -1066,14 +1088,14 @@
     opacity: 0;
     -webkit-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
       calc(-0.9vw * var(--s)) var(--color);
-    -o-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s)) calc(-0.9vw * var(--s))
-      var(--color);
+    -o-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
+      calc(-0.9vw * var(--s)) var(--color);
     -ms-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
       calc(-0.9vw * var(--s)) var(--color);
     -moz-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
       calc(-0.9vw * var(--s)) var(--color);
-    box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s)) calc(-0.9vw * var(--s))
-      var(--color);
+    box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
+      calc(-0.9vw * var(--s)) var(--color);
   }
 }
 @keyframes box-shadow-light {
@@ -1081,14 +1103,14 @@
     opacity: 0;
     -webkit-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
       calc(-0.1vw * var(--s)) var(--color2);
-    -o-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s)) calc(-0.1vw * var(--s))
-      var(--color2);
+    -o-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
+      calc(-0.1vw * var(--s)) var(--color2);
     -ms-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
       calc(-0.1vw * var(--s)) var(--color2);
     -moz-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
       calc(-0.1vw * var(--s)) var(--color2);
-    box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s)) calc(-0.1vw * var(--s))
-      var(--color2);
+    box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
+      calc(-0.1vw * var(--s)) var(--color2);
   }
   10% {
     opacity: 0.9;
@@ -1100,14 +1122,14 @@
     opacity: 0;
     -webkit-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
       calc(-0.9vw * var(--s)) var(--color2);
-    -o-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s)) calc(-0.9vw * var(--s))
-      var(--color2);
+    -o-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
+      calc(-0.9vw * var(--s)) var(--color2);
     -ms-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
       calc(-0.9vw * var(--s)) var(--color2);
     -moz-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
       calc(-0.9vw * var(--s)) var(--color2);
-    box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s)) calc(-0.9vw * var(--s))
-      var(--color2);
+    box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
+      calc(-0.9vw * var(--s)) var(--color2);
   }
 }
 @keyframes hide-triangle {
@@ -1454,6 +1476,10 @@
 
 .bottom {
   position: relative;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: 0.5rem;
   width: 100%;
   right: -0.5rem;
   height: 4em;
@@ -1463,26 +1489,15 @@
   padding-top: clamp(1px, 20vh, 200px);
 }
 
-.bottom2 {
-  position: absolute;
-  bottom: 0;
-  left: unset;
-  right: 60px;
-  min-width: max-content;
-  width: calc(100% - var(--scrollbar_width) - 2.4rem);
-}
-.bottom2 button span {
-  white-space: nowrap;
-  word-break: keep-all;
-}
-.bottom2 button:hover span,
-.bottom2 button:focus span {
+.bottom button.rand:hover span,
+.bottom button.rand:focus span {
   text-decoration: line-through;
 }
 
-.bottom::after {
+.bottom button span:first-of-type::after {
   content: attr(data-instructions);
   position: absolute;
+  top: -3rem;
   right: 0.4rem;
   width: clamp(4rem, 50vw, 400px);
   text-align: right;
@@ -1491,11 +1506,15 @@
   transition-timing-function: ease-in-out;
   transition-duration: 500ms;
   transition-delay: 0s;
-  z-index: 3;
+  z-index: 6;
   padding: 0.4em 0.6em 0.4em;
-  background: linear-gradient(90deg, transparent 0%, var(--color-primary-1) 10%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-primary-1) 10%
+  );
 }
-.bottom:hover::after {
+.hero .bottom button:hover span:first-of-type::after {
   opacity: 1;
   transition-delay: 500ms;
 }
@@ -1516,7 +1535,7 @@
   }
 }
 @media (min-width: 400px) {
-  .bottom::after {
+  .bottom button span:first-of-type::after {
     background: linear-gradient(
       90deg,
       transparent 0%,
@@ -1532,33 +1551,34 @@
   content: 'Try dragging the blobs';
 } */
 .bottom button {
+  position: relative;
   pointer-events: auto;
-  position: absolute;
-  bottom: 0;
-  right: 0;
   background: none;
   border: none;
   outline: 0;
   line-height: 2;
-  padding: 0;
-  -webkit-text-shadow: 1px 1px 1px var(--color-primary-2), 0 0 1em var(--color-primary-2),
-    0 0 0.3em var(--color-primary-2);
-  -moz-text-shadow: 1px 1px 1px var(--color-primary-2), 0 0 1em var(--color-primary-2),
-    0 0 0.3em var(--color-primary-2);
-  -ms-text-shadow: 1px 1px 1px var(--color-primary-2), 0 0 1em var(--color-primary-2),
-    0 0 0.3em var(--color-primary-2);
-  -o-text-shadow: 1px 1px 1px var(--color-primary-2), 0 0 1em var(--color-primary-2),
-    0 0 0.3em var(--color-primary-2);
-  text-shadow: 1px 1px 1px var(--color-primary-2), 0 0 1em var(--color-primary-2),
-    0 0 0.3em var(--color-primary-2);
-}
-.bottom button.rand {
+  padding: 0 1em;
+  -webkit-text-shadow: 1px 1px 1px var(--color-primary-2),
+    0 0 1em var(--color-primary-2), 0 0 0.3em var(--color-primary-2);
+  -moz-text-shadow: 1px 1px 1px var(--color-primary-2),
+    0 0 1em var(--color-primary-2), 0 0 0.3em var(--color-primary-2);
+  -ms-text-shadow: 1px 1px 1px var(--color-primary-2),
+    0 0 1em var(--color-primary-2), 0 0 0.3em var(--color-primary-2);
+  -o-text-shadow: 1px 1px 1px var(--color-primary-2),
+    0 0 1em var(--color-primary-2), 0 0 0.3em var(--color-primary-2);
+  text-shadow: 1px 1px 1px var(--color-primary-2),
+    0 0 1em var(--color-primary-2), 0 0 0.3em var(--color-primary-2);
 }
 .bottom button:hover,
 .bottom button:focus {
   outline: 0;
 }
-.bottom button span {
+.bottom button span:last-of-type {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: block;
   height: 100%;
   width: 100%;
@@ -1566,10 +1586,10 @@
 }
 .bottom button::before,
 .bottom button::after,
-.bottom button span::before,
-.bottom button span::after {
+.bottom button span:last-of-type:before,
+.bottom button span:last-of-type::after {
   --time: 500ms;
-  content: '';
+  content: "";
   position: absolute;
   background-color: currentColor;
   transition-property: transform;
@@ -1603,8 +1623,8 @@
   -moz-transform-origin: right;
   transform-origin: right;
 }
-.bottom button span::before,
-.bottom button span::after {
+.bottom button span:last-of-type:before,
+.bottom button span:last-of-type::after {
   width: 0.14em;
   height: 100%;
   -webkit-transform: scaleY(0);
@@ -1615,7 +1635,7 @@
   top: 0;
   bottom: 0;
 }
-.bottom button span::before {
+.bottom button span:last-of-type:before {
   -webkit-transform-origin: bottom;
   -o-transform-origin: bottom;
   -ms-transform-origin: bottom;
@@ -1623,7 +1643,7 @@
   transform-origin: bottom;
   left: 0.5em;
 }
-.bottom button span::after {
+.bottom button span:last-of-type::after {
   -webkit-transform-origin: top;
   -o-transform-origin: top;
   -ms-transform-origin: top;
@@ -1641,10 +1661,10 @@
   -moz-transform: scaleX(100%);
   transform: scaleX(100%);
 }
-.bottom button:hover span::before,
-.bottom button:focus span::before,
-.bottom button:hover span::after,
-.bottom button:focus span::after {
+.bottom button:hover span:last-of-type:before,
+.bottom button:focus span:last-of-type:before,
+.bottom button:hover span:last-of-type:after,
+.bottom button:focus span:last-of-type:after {
   -webkit-transform: scaleY(100%);
   -o-transform: scaleY(100%);
   -ms-transform: scaleY(100%);

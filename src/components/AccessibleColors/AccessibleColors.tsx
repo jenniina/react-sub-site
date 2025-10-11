@@ -845,13 +845,13 @@ const AccessibleColors: FC<Props> = ({ language }) => {
   return (
     <div
       id={styles["color-container"]}
-      className={`${styles["color-container"]} ${
+      className={`fullwidth ${styles["color-container"]} ${
         lightTheme ? styles.light : ""
       }`}
       style={{ ["--font-size" as string]: dynamicFontSize.input }}
     >
       <div id="info" className={styles["info-wrap"]}>
-        v<h2>{t("SymbolMeanings")}</h2>
+        <h2>{t("SymbolMeanings")}</h2>
         <ul>
           <li>
             <div
@@ -923,21 +923,37 @@ const AccessibleColors: FC<Props> = ({ language }) => {
         </button>
       </div>
 
-      <div className={styles["btn-wrap"]}>
+      <div className={`${styles["btn-wrap"]} ${styles["export-wrap"]}`}>
         {listItemsByStatus[status]?.items?.length > 0 && (
           <>
-            <button type="button" onClick={saveAsPNG} className="gray small">
-              <PiImage />
-              &nbsp;&nbsp;
-              {t("SaveAsPNG")}&nbsp;&nbsp;
-              <PiDownloadSimpleFill />
-            </button>
-            <button type="button" onClick={saveAsSVG} className="gray small">
-              <SiSvgtrace />
-              &nbsp;&nbsp;
-              {t("SaveAsSVG")}&nbsp;&nbsp;
-              <PiDownloadSimpleFill />
-            </button>
+            <div>
+              <button
+                type="button"
+                title={t("SaveAsPNG")}
+                onClick={saveAsPNG}
+                className="reset p1"
+              >
+                <PiImage fontSize={"2em"} />
+              </button>
+              <button type="button" onClick={saveAsPNG} className="gray small">
+                {t("SaveAsPNG")}
+                <PiDownloadSimpleFill />
+              </button>
+            </div>
+            <div>
+              <button
+                type="button"
+                title={t("SaveAsSVG")}
+                onClick={saveAsSVG}
+                className="reset p1"
+              >
+                <SiSvgtrace fontSize={"2em"} />
+              </button>
+              <button type="button" onClick={saveAsSVG} className="gray small">
+                {t("SaveAsSVG")}
+                <PiDownloadSimpleFill />
+              </button>
+            </div>
           </>
         )}
       </div>
