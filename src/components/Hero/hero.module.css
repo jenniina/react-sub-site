@@ -52,7 +52,6 @@
   -moz-text-stroke: 1px var(--color-primary-1);
   -ms-text-stroke: 1px var(--color-primary-1);
   -o-text-stroke: 1px var(--color-primary-1);
-  text-stroke: 1px var(--color-primary-1);
   -webkit-text-shadow: 1px 1px 1px var(--color-primary-1),
     0 0 0.1em var(--color-primary-1);
   -moz-text-shadow: 1px 1px 1px var(--color-primary-1),
@@ -69,7 +68,6 @@
   -moz-text-stroke: 1px var(--color-primary-3);
   -ms-text-stroke: 1px var(--color-primary-3);
   -o-text-stroke: 1px var(--color-primary-3);
-  text-stroke: 1px var(--color-primary-3);
   -webkit-text-shadow: 1px 1px 1px var(--color-primary-4),
     0 0 0.1em var(--color-primary-4);
   -moz-text-shadow: 1px 1px 1px var(--color-primary-4),
@@ -614,7 +612,6 @@
   --box: 0 0 30px 2px white;
   -webkit-box-shadow: var(--box);
   -ms-box-shadow: var(--box);
-  moz-box-shadow: var(--box);
   -o-box-shadow: var(--box);
   box-shadow: var(--box);
   background-color: currentColor;
@@ -626,7 +623,6 @@
   --box: 0 0 30px 2px white;
   -webkit-box-shadow: var(--box);
   -ms-box-shadow: var(--box);
-  moz-box-shadow: var(--box);
   -o-box-shadow: var(--box);
   box-shadow: var(--box);
   background-color: currentColor;
@@ -1480,6 +1476,10 @@
 
 .bottom {
   position: relative;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: 0.5rem;
   width: 100%;
   right: -0.5rem;
   height: 4em;
@@ -1489,26 +1489,15 @@
   padding-top: clamp(1px, 20vh, 200px);
 }
 
-.bottom2 {
-  position: absolute;
-  bottom: 0;
-  left: unset;
-  right: 60px;
-  min-width: max-content;
-  width: calc(100% - var(--scrollbar_width) - 2.4rem);
-}
-.bottom2 button span {
-  white-space: nowrap;
-  word-break: keep-all;
-}
-.bottom2 button:hover span,
-.bottom2 button:focus span {
+.bottom button.rand:hover span,
+.bottom button.rand:focus span {
   text-decoration: line-through;
 }
 
-.bottom::after {
+.bottom button span:first-of-type::after {
   content: attr(data-instructions);
   position: absolute;
+  top: -3rem;
   right: 0.4rem;
   width: clamp(4rem, 50vw, 400px);
   text-align: right;
@@ -1517,7 +1506,7 @@
   transition-timing-function: ease-in-out;
   transition-duration: 500ms;
   transition-delay: 0s;
-  z-index: 3;
+  z-index: 6;
   padding: 0.4em 0.6em 0.4em;
   background: linear-gradient(
     90deg,
@@ -1525,7 +1514,7 @@
     var(--color-primary-1) 10%
   );
 }
-.bottom:hover::after {
+.hero .bottom button:hover span:first-of-type::after {
   opacity: 1;
   transition-delay: 500ms;
 }
@@ -1546,7 +1535,7 @@
   }
 }
 @media (min-width: 400px) {
-  .bottom::after {
+  .bottom button span:first-of-type::after {
     background: linear-gradient(
       90deg,
       transparent 0%,
@@ -1562,15 +1551,13 @@
   content: 'Try dragging the blobs';
 } */
 .bottom button {
+  position: relative;
   pointer-events: auto;
-  position: absolute;
-  bottom: 0;
-  right: 0;
   background: none;
   border: none;
   outline: 0;
   line-height: 2;
-  padding: 0;
+  padding: 0 1em;
   -webkit-text-shadow: 1px 1px 1px var(--color-primary-2),
     0 0 1em var(--color-primary-2), 0 0 0.3em var(--color-primary-2);
   -moz-text-shadow: 1px 1px 1px var(--color-primary-2),
@@ -1582,13 +1569,16 @@
   text-shadow: 1px 1px 1px var(--color-primary-2),
     0 0 1em var(--color-primary-2), 0 0 0.3em var(--color-primary-2);
 }
-.bottom button.rand {
-}
 .bottom button:hover,
 .bottom button:focus {
   outline: 0;
 }
-.bottom button span {
+.bottom button span:last-of-type {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: block;
   height: 100%;
   width: 100%;
@@ -1596,8 +1586,8 @@
 }
 .bottom button::before,
 .bottom button::after,
-.bottom button span::before,
-.bottom button span::after {
+.bottom button span:last-of-type:before,
+.bottom button span:last-of-type::after {
   --time: 500ms;
   content: "";
   position: absolute;
@@ -1633,8 +1623,8 @@
   -moz-transform-origin: right;
   transform-origin: right;
 }
-.bottom button span::before,
-.bottom button span::after {
+.bottom button span:last-of-type:before,
+.bottom button span:last-of-type::after {
   width: 0.14em;
   height: 100%;
   -webkit-transform: scaleY(0);
@@ -1645,7 +1635,7 @@
   top: 0;
   bottom: 0;
 }
-.bottom button span::before {
+.bottom button span:last-of-type:before {
   -webkit-transform-origin: bottom;
   -o-transform-origin: bottom;
   -ms-transform-origin: bottom;
@@ -1653,7 +1643,7 @@
   transform-origin: bottom;
   left: 0.5em;
 }
-.bottom button span::after {
+.bottom button span:last-of-type::after {
   -webkit-transform-origin: top;
   -o-transform-origin: top;
   -ms-transform-origin: top;
@@ -1671,10 +1661,10 @@
   -moz-transform: scaleX(100%);
   transform: scaleX(100%);
 }
-.bottom button:hover span::before,
-.bottom button:focus span::before,
-.bottom button:hover span::after,
-.bottom button:focus span::after {
+.bottom button:hover span:last-of-type:before,
+.bottom button:focus span:last-of-type:before,
+.bottom button:hover span:last-of-type:after,
+.bottom button:focus span:last-of-type:after {
   -webkit-transform: scaleY(100%);
   -o-transform: scaleY(100%);
   -ms-transform: scaleY(100%);

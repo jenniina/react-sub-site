@@ -1517,24 +1517,22 @@ export default function Hero({
         <ItemComponent array={setupItems} location={page} fadeIn={fadeIn} />
       )}
 
-      <div
-        className={styles.bottom}
-        data-instructions={
-          instructions ? instructions : t("TryTappingTheShapes")
-        }
-      >
-        <button ref={resetButton} type="button" onClick={handleReset}>
-          <span>{reset ? reset : t("Reset")}</span>
+      <div className={styles.bottom}>
+        <button
+          ref={resetButton}
+          className={`${styles.resetText}`}
+          type="button"
+          onClick={handleReset}
+        >
+          <span
+            data-instructions={
+              instructions ? instructions : t("TryTappingTheShapes")
+            }
+          >
+            {reset ? reset : t("Reset")}
+          </span>
+          <span> </span>
         </button>
-      </div>
-      <div
-        className={`${styles.bottom} ${styles.bottom2}`}
-        data-instructions={
-          prefersReducedMotion
-            ? t("TurnRandomMovementOn")
-            : t("TurnRandomMovementOff")
-        }
-      >
         <button
           onClick={() => {
             setPrefersReducedMotion(!prefersReducedMotion);
@@ -1542,12 +1540,21 @@ export default function Hero({
           type="button"
           className={`${styles.rand}`}
         >
-          <span>{prefersReducedMotion ? t("Off") : t("On")}</span>
+          <span
+            data-instructions={
+              prefersReducedMotion
+                ? t("TurnRandomMovementOn")
+                : t("TurnRandomMovementOff")
+            }
+          >
+            {prefersReducedMotion ? t("Off") : t("On")}
+          </span>
           <span className="scr">
             {prefersReducedMotion
               ? t("TurnRandomMovementOn")
               : t("TurnRandomMovementOff")}
           </span>
+          <span> </span>
         </button>
       </div>
     </div>
