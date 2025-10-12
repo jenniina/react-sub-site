@@ -923,78 +923,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
         </button>
       </div>
 
-      <div className={`${styles["btn-wrap"]} ${styles["export-wrap"]}`}>
-        {listItemsByStatus[status]?.items?.length > 0 && (
-          <>
-            <div>
-              <button
-                type="button"
-                title={t("SaveAsPNG")}
-                onClick={saveAsPNG}
-                className="reset p1"
-              >
-                <PiImage fontSize={"2em"} />
-              </button>
-              <button type="button" onClick={saveAsPNG} className="gray small">
-                {t("SaveAsPNG")}
-                <PiDownloadSimpleFill />
-              </button>
-            </div>
-            <div>
-              <button
-                type="button"
-                title={t("SaveAsSVG")}
-                onClick={saveAsSVG}
-                className="reset p1"
-              >
-                <SiSvgtrace fontSize={"2em"} />
-              </button>
-              <button type="button" onClick={saveAsSVG} className="gray small">
-                {t("SaveAsSVG")}
-                <PiDownloadSimpleFill />
-              </button>
-            </div>
-          </>
-        )}
-      </div>
-
-      <div className={styles["btn-wrap"]}>
-        <button
-          className="gray small"
-          type="button"
-          onClick={async () => {
-            if (
-              colors.length === 0 ||
-              (await confirm({
-                message: t("AreYouSureYouWantToResetAllColors"),
-              }))
-            ) {
-              resetColors();
-            }
-          }}
-        >
-          {t("Reset")}&nbsp;&nbsp;
-          <BiReset />
-        </button>
-        <button
-          className="gray small"
-          type="button"
-          onClick={async () => {
-            if (
-              await confirm({
-                message: t("AreYouSureYouWantToClearAllColors") || "",
-              })
-            ) {
-              listItemsByStatus[status].removeItems();
-              clearColors();
-            }
-          }}
-        >
-          {t("Clear")}&nbsp;&nbsp;
-          <RiDeleteBin2Line />
-        </button>
-      </div>
-
       <div id="colorpicker" className={styles["color-picker"]}>
         <label htmlFor="color-input" className=" ">
           {t("ColorPicker")}:
@@ -1008,6 +936,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           }}
         />
         <button className="gray" type="button" onClick={addColor}>
+          <span className={`transf ${styles["circle-left-edge"]}`}>&nbsp;</span>
           {t("AddAColor")}&nbsp;&nbsp;
           <LuCirclePlus />
         </button>
@@ -1338,6 +1267,130 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           );
         })}
       </div>
+
+      <div className={`${styles["btn-wrap"]} ${styles["export-wrap"]}`}>
+        {listItemsByStatus[status]?.items?.length > 0 && (
+          <>
+            <div>
+              <div>
+                <button
+                  type="button"
+                  aria-hidden="true"
+                  title={t("Reset")}
+                  onClick={async () => {
+                    if (
+                      colors.length === 0 ||
+                      (await confirm({
+                        message: t("AreYouSureYouWantToResetAllColors"),
+                      }))
+                    ) {
+                      resetColors();
+                    }
+                  }}
+                  className="reset p1"
+                >
+                  <BiReset fontSize={"1.8em"} />
+                </button>
+                <button
+                  className="gray small"
+                  type="button"
+                  onClick={async () => {
+                    if (
+                      colors.length === 0 ||
+                      (await confirm({
+                        message: t("AreYouSureYouWantToResetAllColors"),
+                      }))
+                    ) {
+                      resetColors();
+                    }
+                  }}
+                >
+                  {t("Reset")}&nbsp;&nbsp;
+                  <BiReset />
+                </button>
+              </div>
+              <div>
+                <button
+                  type="button"
+                  aria-hidden="true"
+                  title={t("Clear")}
+                  onClick={async () => {
+                    if (
+                      await confirm({
+                        message: t("AreYouSureYouWantToClearAllColors") || "",
+                      })
+                    ) {
+                      listItemsByStatus[status].removeItems();
+                      clearColors();
+                    }
+                  }}
+                  className="reset p1"
+                >
+                  <RiDeleteBin2Line fontSize={"1.8em"} />
+                </button>
+                <button
+                  className="gray small"
+                  type="button"
+                  onClick={async () => {
+                    if (
+                      await confirm({
+                        message: t("AreYouSureYouWantToClearAllColors") || "",
+                      })
+                    ) {
+                      listItemsByStatus[status].removeItems();
+                      clearColors();
+                    }
+                  }}
+                >
+                  {t("Clear")}&nbsp;&nbsp;
+                  <RiDeleteBin2Line />
+                </button>
+              </div>
+            </div>
+            <div>
+              <div>
+                <button
+                  type="button"
+                  aria-hidden="true"
+                  title={t("SaveAsPNG")}
+                  onClick={saveAsPNG}
+                  className="reset p1"
+                >
+                  <PiImage fontSize={"1.8em"} />
+                </button>
+                <button
+                  type="button"
+                  onClick={saveAsPNG}
+                  className="gray small"
+                >
+                  {t("SaveAsPNG")}
+                  <PiDownloadSimpleFill />
+                </button>
+              </div>
+              <div>
+                <button
+                  type="button"
+                  aria-hidden="true"
+                  title={t("SaveAsSVG")}
+                  onClick={saveAsSVG}
+                  className="reset p1"
+                >
+                  <SiSvgtrace fontSize={"1.6em"} />
+                </button>
+                <button
+                  type="button"
+                  onClick={saveAsSVG}
+                  className="gray small"
+                >
+                  {t("SaveAsSVG")}
+                  <PiDownloadSimpleFill />
+                </button>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+
       {listItemsByStatus[status]?.items?.length > 0 && (
         <>
           <div className={styles["width-wrap"]}>
