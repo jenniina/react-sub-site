@@ -1,4 +1,4 @@
-import { useState, FC, useRef, Suspense, lazy, useContext } from "react";
+import { FC, useRef, Suspense, lazy, useContext } from "react";
 import "./css/App.css";
 import "./css/form.css";
 import Nav from "./components/Nav/Nav";
@@ -9,7 +9,9 @@ import { RefObject } from "./types";
 import { UIProvider } from "./contexts/UIContext";
 import { LanguageContext } from "./contexts/LanguageContext";
 import useLocalStorage from "./hooks/useStorage";
-import { Helmet } from "react-helmet-async";
+import * as HelmetAsync from "react-helmet-async";
+const { Helmet } = HelmetAsync;
+
 import { ConfirmProvider } from "./contexts/ConfirmContext";
 
 const Footer = lazy(() => import("./components/Footer/Footer"));
@@ -26,9 +28,10 @@ const App: FC = () => {
 
   return (
     <>
-      <Helmet>
+      <Helmet prioritizeSeoTags={true}>
         <meta charSet="utf-8" />
         <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
       </Helmet>
       <UIProvider language={language} menuStyle={menuStyleRef}>
         <ConfirmProvider>

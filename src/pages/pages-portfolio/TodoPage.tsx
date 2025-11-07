@@ -1,12 +1,13 @@
-import { lazy, Suspense, useContext } from 'react'
-import styles from '../../components/Todo/css/todo.module.css'
-import { ELanguages } from '../../types'
-import Accordion from '../../components/Accordion/Accordion'
-import { useTheme } from '../../hooks/useTheme'
-import { LanguageContext } from '../../contexts/LanguageContext'
-import { Helmet } from 'react-helmet-async'
+import { lazy, Suspense, useContext } from "react";
+import styles from "../../components/Todo/css/todo.module.css";
+import { ELanguages } from "../../types";
+import Accordion from "../../components/Accordion/Accordion";
+import { useTheme } from "../../hooks/useTheme";
+import { LanguageContext } from "../../contexts/LanguageContext";
+import * as HelmetAsync from "react-helmet-async";
+const { Helmet } = HelmetAsync;
 
-const TodoApp = lazy(() => import('../../components/Todo/TodoApp'))
+const TodoApp = lazy(() => import("../../components/Todo/TodoApp"));
 
 export default function TodoPage({
   heading,
@@ -14,67 +15,82 @@ export default function TodoPage({
   type,
   language,
 }: {
-  heading: string
-  text: string
-  type: string
-  language: ELanguages
+  heading: string;
+  text: string;
+  type: string;
+  language: ELanguages;
 }) {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useContext(LanguageContext)!;
 
-  const lightMode = useTheme()
+  const lightMode = useTheme();
   return (
     <>
-      <Helmet>
+      <Helmet prioritizeSeoTags={true}>
         <title>
-          {t('TodoApp')} | {t('GetOrganizedOneTaskAtATime')}
+          {t("TodoApp")} | {t("GetOrganizedOneTaskAtATime")}
         </title>
-        <meta name='description' content={t('TodoAppIntro')} />
-        <link rel='canonical' href={`https://react.jenniina.fi/portfolio/todo`} />
+        <meta name="description" content={t("TodoAppIntro")} />
+        <link
+          rel="canonical"
+          href={`https://react.jenniina.fi/portfolio/todo`}
+        />
+        <meta
+          property="og:title"
+          content={`${t("TodoApp")} | react.jenniina.fi`}
+        />
+        <meta property="og:description" content={t("TodoAppIntro")} />
+        <meta
+          property="og:url"
+          content={`https://react.jenniina.fi/portfolio/todo`}
+        />
+        <meta property="og:type" content="website" />
       </Helmet>
-      <div className={`todo ${type} ${lightMode ? styles.light : ''}`}>
-        <div className='inner-wrap'>
-          <section className='card'>
+      <div className={`todo ${type} ${lightMode ? styles.light : ""}`}>
+        <div className="inner-wrap">
+          <section className="card">
             <div>
-              <div className='medium flex column gap'>
+              <div className="medium flex column gap">
                 <Accordion
                   language={language}
-                  text={t('ClickHereToSeeFeatures')}
-                  className='features'
-                  wrapperClass='features-wrap'
+                  text={t("ClickHereToSeeFeatures")}
+                  className="features"
+                  wrapperClass="features-wrap"
                 >
                   <>
-                    <h2>{t('Features')}</h2>
-                    <ul className='ul'>
-                      <li>{t('KeyboardAccessible')}</li>
+                    <h2>{t("Features")}</h2>
+                    <ul className="ul">
+                      <li>{t("KeyboardAccessible")}</li>
                       <li>
-                        {t('RemoveTaskEitherIndividuallyOrClearAllCompletedTasksAtOnce')}
+                        {t(
+                          "RemoveTaskEitherIndividuallyOrClearAllCompletedTasksAtOnce"
+                        )}
                       </li>
-                      <li>{t('TasksCanBeEdited')}</li>
-                      <li>{t('TasksCanBeReorganizedByDraggingAndDropping')}</li>
-                      <li>{t('ShowsHowManyTasksAreLeftToDo')}</li>
-                      <li>{t('StoresTasksInMongoDBIfTheUserIsLoggedIn')}</li>
+                      <li>{t("TasksCanBeEdited")}</li>
+                      <li>{t("TasksCanBeReorganizedByDraggingAndDropping")}</li>
+                      <li>{t("ShowsHowManyTasksAreLeftToDo")}</li>
+                      <li>{t("StoresTasksInMongoDBIfTheUserIsLoggedIn")}</li>
                     </ul>
-                    <h3>{t('KeyboardUse')}</h3>
-                    <ul className='ul'>
-                      <li>{t('AddTasksByTabbingToTheInputFieldAnd')}</li>
-                      <li>{t('RemoveATaskByTabbingToTheRemoveButtonAnd')}</li>
+                    <h3>{t("KeyboardUse")}</h3>
+                    <ul className="ul">
+                      <li>{t("AddTasksByTabbingToTheInputFieldAnd")}</li>
+                      <li>{t("RemoveATaskByTabbingToTheRemoveButtonAnd")}</li>
                     </ul>
                   </>
                 </Accordion>
-                <a href='https://github.com/jenniina/react-sub-site/tree/main/src/components/Todo'>
+                <a href="https://github.com/jenniina/react-sub-site/tree/main/src/components/Todo">
                   Github
                 </a>
               </div>
             </div>
           </section>
-          <section className='card'>
+          <section className="card">
             <div>
-              <div className='flex column gap'>
-                <h2>{t('TodoApp')}</h2>
+              <div className="flex column gap">
+                <h2>{t("TodoApp")}</h2>
                 <Suspense
                   fallback={
-                    <div className='flex center margin0auto textcenter'>
-                      {t('Loading')}...
+                    <div className="flex center margin0auto textcenter">
+                      {t("Loading")}...
                     </div>
                   }
                 >
@@ -86,5 +102,5 @@ export default function TodoPage({
         </div>
       </div>
     </>
-  )
+  );
 }

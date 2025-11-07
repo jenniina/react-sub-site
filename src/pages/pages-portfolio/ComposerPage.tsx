@@ -1,8 +1,9 @@
-import { useContext, useState } from 'react'
-import Accordion from '../../components/Accordion/Accordion'
-import { ELanguages } from '../../types'
-import { LanguageContext } from '../../contexts/LanguageContext'
-import { Helmet } from 'react-helmet-async'
+import { useContext, useState } from "react";
+import Accordion from "../../components/Accordion/Accordion";
+import { ELanguages } from "../../types";
+import { LanguageContext } from "../../contexts/LanguageContext";
+import * as HelmetAsync from "react-helmet-async";
+const { Helmet } = HelmetAsync;
 
 export default function ComposerPage({
   heading,
@@ -10,45 +11,63 @@ export default function ComposerPage({
   type,
   language,
 }: {
-  heading: string
-  text: string
-  type: string
-  language: ELanguages
+  heading: string;
+  text: string;
+  type: string;
+  language: ELanguages;
 }) {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useContext(LanguageContext)!;
 
-  const [isFormOpen, setIsFormOpen] = useState(false)
+  const [isFormOpen, setIsFormOpen] = useState(false);
   return (
     <>
-      <Helmet>
-        <title>{t('ComposerOlliSanta')} | React, Node.js, Express, MongoDB</title>
-        <meta name='description' content={t('ComposerIntro1')} />
-        <link rel='canonical' href={`https://react.jenniina.fi/portfolio/composer`} />
+      <Helmet prioritizeSeoTags={true}>
+        <title>
+          {t("ComposerOlliSanta")} | React, Node.js, Express, MongoDB
+        </title>
+        <meta name="description" content={t("ComposerIntro1")} />
+        <link
+          rel="canonical"
+          href={`https://react.jenniina.fi/portfolio/composer`}
+        />
+        <meta
+          property="og:title"
+          content={`${t(
+            "ComposerOlliSanta"
+          )} | React, Node.js, Express, MongoDB`}
+        />
+        <meta property="og:description" content={t("ComposerIntro1")} />
+        <meta
+          property="og:url"
+          content={`https://react.jenniina.fi/portfolio/composer`}
+        />
+        <meta property="og:type" content="website" />
       </Helmet>
       <div className={`composer ${type}`}>
-        <div className='inner-wrap'>
-          <section className='card'>
+        <div className="inner-wrap">
+          <section className="card">
             <div>
-              <div className='medium flex column left gap'>
-                <p className='center max-content margin0auto'>
-                  {t('ReactWebsite')}. {t('ComposerIntro1')} {t('ComposerIntro2')}
+              <div className="medium flex column left gap">
+                <p className="center max-content margin0auto">
+                  {t("ReactWebsite")}. {t("ComposerIntro1")}{" "}
+                  {t("ComposerIntro2")}
                   <br />
                   <br />
                 </p>
-                <div className='medium'>
+                <div className="medium">
                   <Accordion
                     language={language}
-                    text={t('ClickHereToSeeFeatures')}
-                    className='composer-features'
-                    wrapperClass='mb3'
+                    text={t("ClickHereToSeeFeatures")}
+                    className="composer-features"
+                    wrapperClass="mb3"
                     setIsFormOpen={setIsFormOpen}
                   >
                     <>
-                      <h2>{t('Features')}</h2>
-                      <ul className='ul'>
-                        <li>{t('ComposerIntro3')}</li>
+                      <h2>{t("Features")}</h2>
+                      <ul className="ul">
+                        <li>{t("ComposerIntro3")}</li>
                         <li>
-                          {t('Dependencies')}: React
+                          {t("Dependencies")}: React
                           <ul>
                             <li>react</li>
                             <li>react-dom</li>
@@ -59,7 +78,7 @@ export default function ComposerPage({
                           </ul>
                         </li>
                         <li>
-                          {t('Dependencies')}: Node.js
+                          {t("Dependencies")}: Node.js
                           <ul>
                             <li>express</li>
                             <li>express-validator</li>
@@ -80,18 +99,20 @@ export default function ComposerPage({
                     style={
                       isFormOpen
                         ? {
-                            marginTop: '2rem',
-                            paddingLeft: '0.5rem',
-                            fontSize: '130%',
+                            marginTop: "2rem",
+                            paddingLeft: "0.5rem",
+                            fontSize: "130%",
                           }
-                        : { marginTop: '2rem', fontSize: '130%' }
+                        : { marginTop: "2rem", fontSize: "130%" }
                     }
                   >
                     <p>
-                      <a href='https://ollisanta.fi'>Olli Santa &raquo;</a>
+                      <a href="https://ollisanta.fi">Olli Santa &raquo;</a>
                     </p>
                     <p>
-                      <a href='https://github.com/jenniina/OlliSanta'>Github &raquo;</a>
+                      <a href="https://github.com/jenniina/OlliSanta">
+                        Github &raquo;
+                      </a>
                     </p>
                   </div>
                 </div>
@@ -101,5 +122,5 @@ export default function ComposerPage({
         </div>
       </div>
     </>
-  )
+  );
 }

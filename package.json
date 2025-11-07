@@ -4,13 +4,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "author": "Jenniina Laine",
   "license": "Proprietary",
   "dependencies": {
-    "@reduxjs/toolkit": "^1.9.7",
+    "@reduxjs/toolkit": "^2.0.1",
     "axios": "^1.5.1",
     "dom-to-image-more": "^3.5.0",
     "esbuild": "^0.25.0",
