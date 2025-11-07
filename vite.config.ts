@@ -50,10 +50,4 @@ export default defineConfig({
     },
     chunkSizeWarningLimit: 550,
   },
-  ssr: {
-    noExternal: ["react-helmet-async", "@reduxjs/toolkit"],
-  },
-  optimizeDeps: {
-    include: ["react-helmet-async", "@reduxjs/toolkit"],
-  },
 });

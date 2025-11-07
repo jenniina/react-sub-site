@@ -1,17 +1,24 @@
 {
   "mimeTypes": {
     ".js": "text/javascript",
-    ".mjs": "text/javascript"
+    ".mjs": "text/javascript",
+    ".jsx": "text/javascript"
   },
   "navigationFallback": {
-    "rewrite": "/index.html"
+    "rewrite": "/index.html",
+    "exclude": ["/assets/*", "*.{css,scss,js,png,gif,ico,jpg,svg}"]
   },
   "routes": [
     {
-      "route": "/*",
+      "route": "/assets/*",
       "headers": {
-        "Cache-Control": "no-cache"
+        "cache-control": "max-age=31536000"
       }
     }
-  ]
+  ],
+  "responseOverrides": {
+    "404": {
+      "rewrite": "/index.html"
+    }
+  }
 }
