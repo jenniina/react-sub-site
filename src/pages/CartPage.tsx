@@ -1,22 +1,23 @@
-import { lazy, Suspense, useContext } from 'react'
-import { ELanguages } from '../types'
-import { ICartItem } from '../types/store'
-import { LanguageContext } from '../contexts/LanguageContext'
-import { Helmet } from 'react-helmet-async'
+import { lazy, Suspense, useContext } from "react";
+import { ELanguages } from "../types";
+import { ICartItem } from "../types/store";
+import { LanguageContext } from "../contexts/LanguageContext";
+import * as HelmetAsync from "react-helmet-async";
+const { Helmet } = HelmetAsync;
 
 interface CartProps {
-  heading: string
-  text: string
-  type: string
-  language: ELanguages
-  cart: ICartItem[]
-  addToCart: (item: ICartItem | undefined) => void
-  editDetails: (itemId: string, details: string) => void
-  removeFromCart: (itemId: string) => void
-  removeCart: () => void
+  heading: string;
+  text: string;
+  type: string;
+  language: ELanguages;
+  cart: ICartItem[];
+  addToCart: (item: ICartItem | undefined) => void;
+  editDetails: (itemId: string, details: string) => void;
+  removeFromCart: (itemId: string) => void;
+  removeCart: () => void;
 }
 
-const Cart = lazy(() => import('../components/Cart/Cart'))
+const Cart = lazy(() => import("../components/Cart/Cart"));
 
 const CartPage: React.FC<CartProps> = ({
   heading,
@@ -29,23 +30,30 @@ const CartPage: React.FC<CartProps> = ({
   editDetails,
   removeCart,
 }) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useContext(LanguageContext)!;
 
   return (
     <>
-      <Helmet>
-        <title>{t('Cart')} | react.jenniina.fi</title>
-        <meta name='description' content={t('Cart')} />
-        <link rel='canonical' href={`https://react.jenniina.fi/cart`} />
+      <Helmet prioritizeSeoTags={true}>
+        <title>{t("Cart")} | react.jenniina.fi</title>
+        <meta name="description" content={t("Cart")} />
+        <link rel="canonical" href={`https://react.jenniina.fi/cart`} />
+        <meta
+          property="og:title"
+          content={`${t("Cart")} | react.jenniina.fi`}
+        />
+        <meta property="og:description" content={t("Cart")} />
+        <meta property="og:url" content={`https://react.jenniina.fi/cart`} />
+        <meta property="og:type" content="website" />
       </Helmet>
       <div className={`cart ${type}`}>
-        <div className='inner-wrap'>
-          <section className='card' style={{ position: 'relative', zIndex: 2 }}>
+        <div className="inner-wrap">
+          <section className="card" style={{ position: "relative", zIndex: 2 }}>
             <div>
               <Suspense
                 fallback={
-                  <div className='flex center margin0auto textcenter'>
-                    {t('Loading')}...
+                  <div className="flex center margin0auto textcenter">
+                    {t("Loading")}...
                   </div>
                 }
               >
@@ -63,7 +71,7 @@ const CartPage: React.FC<CartProps> = ({
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default CartPage
+export default CartPage;

@@ -1,0 +1,1754 @@
+{
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/dom-to-image-more/dist/dom-to-image-more.min.js?commonjs-es-import": [
+    "/assets/dom-to-image-more-sr33WCep.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/dom-to-image-more/dist/dom-to-image-more.min.js?commonjs-module": [
+    "/assets/dom-to-image-more-sr33WCep.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js?commonjs-es-import": [
+    "/assets/hoist-non-react-statics-C-Qo8PK8.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/hoist-non-react-statics/node_modules/react-is/cjs/react-is.production.min.js?commonjs-exports": [
+    "/assets/hoist-non-react-statics-C-Qo8PK8.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/hoist-non-react-statics/node_modules/react-is/index.js?commonjs-module": [
+    "/assets/hoist-non-react-statics-C-Qo8PK8.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/invariant/browser.js?commonjs-es-import": [
+    "/assets/invariant-B_pwkeTo.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/react-dom/cjs/react-dom.production.min.js?commonjs-exports": [
+    "/assets/react-dom-DKT7fI1i.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/react-dom/client.js?commonjs-es-import": [
+    "/assets/react-dom-DKT7fI1i.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/react-dom/client.js?commonjs-exports": [
+    "/assets/react-dom-DKT7fI1i.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/react-dom/index.js?commonjs-es-import": [
+    "/assets/react-dom-DKT7fI1i.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/react-dom/index.js?commonjs-module": [
+    "/assets/react-dom-DKT7fI1i.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/react-fast-compare/index.js?commonjs-es-import": [
+    "/assets/react-fast-compare-BHbKlhN4.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/react-is/cjs/react-is.production.min.js?commonjs-exports": [
+    "/assets/react-is-BwqtTtay.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/react-is/index.js?commonjs-es-import": [
+    "/assets/react-is-BwqtTtay.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/react-is/index.js?commonjs-module": [
+    "/assets/react-is-BwqtTtay.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/react/cjs/react-jsx-runtime.production.min.js?commonjs-exports": [
+    "/assets/react-B6RMQhYh.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/react/cjs/react.production.min.js?commonjs-exports": [
+    "/assets/react-B6RMQhYh.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/react/index.js?commonjs-es-import": [
+    "/assets/react-B6RMQhYh.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/react/index.js?commonjs-module": [
+    "/assets/react-B6RMQhYh.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/react/jsx-runtime.js?commonjs-es-import": [
+    "/assets/react-B6RMQhYh.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/react/jsx-runtime.js?commonjs-module": [
+    "/assets/react-B6RMQhYh.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/scheduler/cjs/scheduler.production.min.js?commonjs-exports": [
+    "/assets/scheduler-C323NY8X.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/scheduler/index.js?commonjs-module": [
+    "/assets/scheduler-C323NY8X.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/shallowequal/index.js?commonjs-es-import": [
+    "/assets/shallowequal-C7ef0Lra.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/use-sync-external-store/cjs/use-sync-external-store-shim.production.min.js?commonjs-exports": [
+    "/assets/use-sync-external-store-w3cjJFH7.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/use-sync-external-store/cjs/use-sync-external-store-shim/with-selector.production.min.js?commonjs-exports": [
+    "/assets/use-sync-external-store-w3cjJFH7.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/use-sync-external-store/shim/index.js?commonjs-es-import": [
+    "/assets/use-sync-external-store-w3cjJFH7.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/use-sync-external-store/shim/index.js?commonjs-module": [
+    "/assets/use-sync-external-store-w3cjJFH7.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/use-sync-external-store/shim/with-selector.js?commonjs-es-import": [
+    "/assets/use-sync-external-store-w3cjJFH7.js"
+  ],
+  "\u0000C:/Users/jenni/Documents/WEB/React/jlai-react-subsite/react-sub-site/node_modules/use-sync-external-store/shim/with-selector.js?commonjs-module": [
+    "/assets/use-sync-external-store-w3cjJFH7.js"
+  ],
+  "\u0000commonjsHelpers.js": [
+    "/assets/dom-to-image-more-sr33WCep.js"
+  ],
+  "\u0000vite/modulepreload-polyfill.js": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "\u0000vite/preload-helper.js": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "index.html": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "node_modules/@babel/runtime/helpers/esm/extends.js": [
+    "/assets/@babel-l0sNRNKZ.js"
+  ],
+  "node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js": [
+    "/assets/@babel-l0sNRNKZ.js"
+  ],
+  "node_modules/@reduxjs/toolkit/dist/redux-toolkit.modern.mjs": [
+    "/assets/@reduxjs-CJhiLCiq.js"
+  ],
+  "node_modules/@remix-run/router/dist/router.js": [
+    "/assets/@remix-run-CeDW-7A3.js"
+  ],
+  "node_modules/axios/index.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/adapters/adapters.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/adapters/fetch.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/adapters/xhr.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/axios.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/cancel/CancelToken.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/cancel/CanceledError.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/cancel/isCancel.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/core/Axios.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/core/AxiosError.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/core/AxiosHeaders.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/core/InterceptorManager.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/core/buildFullPath.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/core/dispatchRequest.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/core/mergeConfig.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/core/settle.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/core/transformData.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/defaults/index.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/defaults/transitional.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/env/data.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/helpers/AxiosURLSearchParams.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/helpers/HttpStatusCode.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/helpers/bind.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/helpers/buildURL.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/helpers/combineURLs.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/helpers/composeSignals.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/helpers/cookies.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/helpers/formDataToJSON.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/helpers/isAbsoluteURL.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/helpers/isAxiosError.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/helpers/isURLSameOrigin.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/helpers/null.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/helpers/parseHeaders.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/helpers/parseProtocol.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/helpers/progressEventReducer.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/helpers/resolveConfig.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/helpers/speedometer.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/helpers/spread.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/helpers/throttle.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/helpers/toFormData.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/helpers/toURLEncodedForm.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/helpers/trackStream.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/helpers/validator.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/platform/browser/classes/Blob.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/platform/browser/classes/FormData.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/platform/browser/classes/URLSearchParams.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/platform/browser/index.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/platform/common/utils.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/platform/index.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/axios/lib/utils.js": [
+    "/assets/axios-ngrFHoWO.js"
+  ],
+  "node_modules/dom-to-image-more/dist/dom-to-image-more.min.js": [
+    "/assets/dom-to-image-more-sr33WCep.js"
+  ],
+  "node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js": [
+    "/assets/hoist-non-react-statics-C-Qo8PK8.js"
+  ],
+  "node_modules/hoist-non-react-statics/node_modules/react-is/cjs/react-is.production.min.js": [
+    "/assets/hoist-non-react-statics-C-Qo8PK8.js"
+  ],
+  "node_modules/hoist-non-react-statics/node_modules/react-is/index.js": [
+    "/assets/hoist-non-react-statics-C-Qo8PK8.js"
+  ],
+  "node_modules/immer/dist/immer.mjs": [
+    "/assets/immer-BGhKXxrG.js"
+  ],
+  "node_modules/invariant/browser.js": [
+    "/assets/invariant-B_pwkeTo.js"
+  ],
+  "node_modules/react-dom/cjs/react-dom.production.min.js": [
+    "/assets/react-dom-DKT7fI1i.js"
+  ],
+  "node_modules/react-dom/client.js": [
+    "/assets/react-dom-DKT7fI1i.js"
+  ],
+  "node_modules/react-dom/index.js": [
+    "/assets/react-dom-DKT7fI1i.js"
+  ],
+  "node_modules/react-fast-compare/index.js": [
+    "/assets/react-fast-compare-BHbKlhN4.js"
+  ],
+  "node_modules/react-helmet-async/lib/index.esm.js": [
+    "/assets/react-helmet-async-DQ_5QNst.js"
+  ],
+  "node_modules/react-icons/ai/index.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/bi/index.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/bs/index.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/cg/index.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/fa/index.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/fa6/index.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/gi/index.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/go/index.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/gr/index.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/hi/index.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/hi2/index.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/im/index.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/io/index.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/io5/index.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/lia/index.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/lib/iconBase.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/lib/iconContext.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/lib/iconsManifest.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/lib/index.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/lu/index.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/md/index.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/pi/index.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/ri/index.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/si/index.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/tb/index.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/tfi/index.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-icons/ti/index.mjs": [
+    "/assets/react-icons-CHi_nPWV.js"
+  ],
+  "node_modules/react-is/cjs/react-is.production.min.js": [
+    "/assets/react-is-BwqtTtay.js"
+  ],
+  "node_modules/react-is/index.js": [
+    "/assets/react-is-BwqtTtay.js"
+  ],
+  "node_modules/react-redux/es/components/Context.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/components/Provider.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/components/connect.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/connect/invalidArgFactory.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/connect/mapDispatchToProps.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/connect/mapStateToProps.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/connect/mergeProps.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/connect/selectorFactory.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/connect/verifySubselectors.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/connect/wrapMapToProps.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/exports.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/hooks/useDispatch.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/hooks/useReduxContext.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/hooks/useSelector.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/hooks/useStore.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/index.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/types.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/utils/Subscription.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/utils/batch.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/utils/bindActionCreators.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/utils/isPlainObject.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/utils/reactBatchedUpdates.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/utils/shallowEqual.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/utils/useIsomorphicLayoutEffect.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/utils/useSyncExternalStore.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/utils/verifyPlainObject.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-redux/es/utils/warning.js": [
+    "/assets/react-redux-CQ4WY322.js"
+  ],
+  "node_modules/react-router-dom/dist/index.js": [
+    "/assets/react-router-dom-_ze6FMLH.js"
+  ],
+  "node_modules/react-router/dist/index.js": [
+    "/assets/react-router-hVrguzn3.js"
+  ],
+  "node_modules/react/cjs/react-jsx-runtime.production.min.js": [
+    "/assets/react-B6RMQhYh.js"
+  ],
+  "node_modules/react/cjs/react.production.min.js": [
+    "/assets/react-B6RMQhYh.js"
+  ],
+  "node_modules/react/index.js": [
+    "/assets/react-B6RMQhYh.js"
+  ],
+  "node_modules/react/jsx-runtime.js": [
+    "/assets/react-B6RMQhYh.js"
+  ],
+  "node_modules/redux-thunk/dist/redux-thunk.mjs": [
+    "/assets/redux-thunk-ClJT1hhx.js"
+  ],
+  "node_modules/redux/dist/redux.mjs": [
+    "/assets/redux-BXkGT1VS.js"
+  ],
+  "node_modules/reselect/dist/reselect.mjs": [
+    "/assets/reselect-COXr-VPP.js"
+  ],
+  "node_modules/scheduler/cjs/scheduler.production.min.js": [
+    "/assets/scheduler-C323NY8X.js"
+  ],
+  "node_modules/scheduler/index.js": [
+    "/assets/scheduler-C323NY8X.js"
+  ],
+  "node_modules/shallowequal/index.js": [
+    "/assets/shallowequal-C7ef0Lra.js"
+  ],
+  "node_modules/use-sync-external-store/cjs/use-sync-external-store-shim.production.min.js": [
+    "/assets/use-sync-external-store-w3cjJFH7.js"
+  ],
+  "node_modules/use-sync-external-store/cjs/use-sync-external-store-shim/with-selector.production.min.js": [
+    "/assets/use-sync-external-store-w3cjJFH7.js"
+  ],
+  "node_modules/use-sync-external-store/shim/index.js": [
+    "/assets/use-sync-external-store-w3cjJFH7.js"
+  ],
+  "node_modules/use-sync-external-store/shim/with-selector.js": [
+    "/assets/use-sync-external-store-w3cjJFH7.js"
+  ],
+  "node_modules/uuid/dist/esm-browser/index.js": [
+    "/assets/uuid-BOvFkHkt.js"
+  ],
+  "node_modules/uuid/dist/esm-browser/md5.js": [
+    "/assets/uuid-BOvFkHkt.js"
+  ],
+  "node_modules/uuid/dist/esm-browser/native.js": [
+    "/assets/uuid-BOvFkHkt.js"
+  ],
+  "node_modules/uuid/dist/esm-browser/nil.js": [
+    "/assets/uuid-BOvFkHkt.js"
+  ],
+  "node_modules/uuid/dist/esm-browser/parse.js": [
+    "/assets/uuid-BOvFkHkt.js"
+  ],
+  "node_modules/uuid/dist/esm-browser/regex.js": [
+    "/assets/uuid-BOvFkHkt.js"
+  ],
+  "node_modules/uuid/dist/esm-browser/rng.js": [
+    "/assets/uuid-BOvFkHkt.js"
+  ],
+  "node_modules/uuid/dist/esm-browser/sha1.js": [
+    "/assets/uuid-BOvFkHkt.js"
+  ],
+  "node_modules/uuid/dist/esm-browser/stringify.js": [
+    "/assets/uuid-BOvFkHkt.js"
+  ],
+  "node_modules/uuid/dist/esm-browser/v1.js": [
+    "/assets/uuid-BOvFkHkt.js"
+  ],
+  "node_modules/uuid/dist/esm-browser/v3.js": [
+    "/assets/uuid-BOvFkHkt.js"
+  ],
+  "node_modules/uuid/dist/esm-browser/v35.js": [
+    "/assets/uuid-BOvFkHkt.js"
+  ],
+  "node_modules/uuid/dist/esm-browser/v4.js": [
+    "/assets/uuid-BOvFkHkt.js"
+  ],
+  "node_modules/uuid/dist/esm-browser/v5.js": [
+    "/assets/uuid-BOvFkHkt.js"
+  ],
+  "node_modules/uuid/dist/esm-browser/validate.js": [
+    "/assets/uuid-BOvFkHkt.js"
+  ],
+  "node_modules/uuid/dist/esm-browser/version.js": [
+    "/assets/uuid-BOvFkHkt.js"
+  ],
+  "src/App.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/assets/JLA_Jenniina-3-480x198.png": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/assets/JLA_Jenniina-light-3-480x198.png": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/assets/blob-birb.png": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/assets/blob-dog.png": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/assets/blob-fish.png": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/assets/bubbly-fish.png": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/About/ColorComponent.tsx": [
+    "/assets/ColorComponent-BkGQVtBR.js"
+  ],
+  "src/components/AccessibleColors/AccessibleColors.tsx": [
+    "/assets/AccessibleColors-BtfFnYcW.js",
+    "/assets/AccessibleColors-DSwXUHAd.css"
+  ],
+  "src/components/AccessibleColors/accessiblecolors.module.css": [
+    "/assets/AccessibleColors-BtfFnYcW.js",
+    "/assets/AccessibleColors-DSwXUHAd.css"
+  ],
+  "src/components/AccessibleColors/components/ColorsInput.tsx": [
+    "/assets/ColorsInput-v6i7gz82.js"
+  ],
+  "src/components/AccessibleColors/hooks/useAccessibleColors.tsx": [
+    "/assets/AccessibleColors-BtfFnYcW.js",
+    "/assets/AccessibleColors-DSwXUHAd.css"
+  ],
+  "src/components/AccessibleColors/hooks/useColorDragAndDrop.tsx": [
+    "/assets/AccessibleColors-BtfFnYcW.js",
+    "/assets/AccessibleColors-DSwXUHAd.css"
+  ],
+  "src/components/Accordion/Accordion.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Blob/Blobs.tsx": [
+    "/assets/Blobs-1dZPwuZr.js"
+  ],
+  "src/components/Blob/components/Blob.tsx": [
+    "/assets/DragLayer-BKqnTheE.js"
+  ],
+  "src/components/Blob/components/BlobProvider.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Blob/components/ColorBlocks.tsx": [
+    "/assets/ColorBlocks-DBQCamrl.js"
+  ],
+  "src/components/Blob/components/DragContainer.tsx": [
+    "/assets/DragContainer-CId8P2Rr.js"
+  ],
+  "src/components/Blob/components/DragLayer.tsx": [
+    "/assets/DragLayer-BKqnTheE.js"
+  ],
+  "src/components/Blob/components/DragLayers.tsx": [
+    "/assets/DragLayers-DXrvDq_r.js"
+  ],
+  "src/components/Blob/components/Sliders.tsx": [
+    "/assets/Sliders-CcPRhOnI.js"
+  ],
+  "src/components/Blob/css/blob.css": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Blob/reducers/blobReducer.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Blob/services/blob.ts": [
+    "/assets/DragContainer-CId8P2Rr.js"
+  ],
+  "src/components/ButtonToggle/ButtonToggle.tsx": [
+    "/assets/ButtonToggle-Dv_a2E7u.js",
+    "/assets/ButtonToggle-CsVqfVrg.css"
+  ],
+  "src/components/ButtonToggle/buttonToggle.module.css": [
+    "/assets/ButtonToggle-Dv_a2E7u.js",
+    "/assets/ButtonToggle-CsVqfVrg.css"
+  ],
+  "src/components/Cart/Cart.tsx": [
+    "/assets/Cart-Chn7cmsp.js",
+    "/assets/Cart-BI4AEBGy.css"
+  ],
+  "src/components/Cart/cart.module.css": [
+    "/assets/Cart-Chn7cmsp.js",
+    "/assets/Cart-BI4AEBGy.css"
+  ],
+  "src/components/Confirm/Confirm.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Confirm/css/confirm.module.css": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/DragAndDrop/DragAndDrop.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/DragAndDrop/components/CardSingle.tsx": [
+    "/assets/CardsContainer-BxwYd7kO.js"
+  ],
+  "src/components/DragAndDrop/components/CardsContainer.tsx": [
+    "/assets/CardsContainer-BxwYd7kO.js"
+  ],
+  "src/components/DragAndDrop/dragAndDrop.module.css": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Footer/Footer.tsx": [
+    "/assets/Footer-ByO1KFxP.js"
+  ],
+  "src/components/FormMulti/FormMulti.tsx": [
+    "/assets/FormMulti-M9Vojyxd.js",
+    "/assets/FormMulti-BD0dd4mW.css"
+  ],
+  "src/components/FormMulti/components/ExtrasForm.tsx": [
+    "/assets/ExtrasForm-DQ-Mecr5.js"
+  ],
+  "src/components/FormMulti/components/FormWrapper.tsx": [
+    "/assets/FormWrapper-BoFVVhKH.js"
+  ],
+  "src/components/FormMulti/components/InitialForm.tsx": [
+    "/assets/InitialForm-qLujHcD9.js"
+  ],
+  "src/components/FormMulti/components/MessageForm.tsx": [
+    "/assets/MessageForm-Cve9dOG4.js"
+  ],
+  "src/components/FormMulti/form.module.css": [
+    "/assets/FormMulti-M9Vojyxd.js",
+    "/assets/FormMulti-BD0dd4mW.css"
+  ],
+  "src/components/FormMulti/hooks/useMultistepForm.tsx": [
+    "/assets/FormMulti-M9Vojyxd.js",
+    "/assets/FormMulti-BD0dd4mW.css"
+  ],
+  "src/components/FormMulti/services/email.tsx": [
+    "/assets/FormMulti-M9Vojyxd.js",
+    "/assets/FormMulti-BD0dd4mW.css"
+  ],
+  "src/components/FormMulti/types.tsx": [
+    "/assets/FormMulti-M9Vojyxd.js",
+    "/assets/FormMulti-BD0dd4mW.css"
+  ],
+  "src/components/FormWrapper/FormWrapper.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Hero/Hero.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Hero/hero.module.css": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Images/Images.tsx": [
+    "/assets/Images-Cecg8HgV.js"
+  ],
+  "src/components/Images/components/Image.tsx": [
+    "/assets/Image-DABrlkBC.js"
+  ],
+  "src/components/Images/components/ImageModal.tsx": [
+    "/assets/Image-DABrlkBC.js"
+  ],
+  "src/components/Images/components/Video.tsx": [
+    "/assets/Video-B9kGVNu3.js"
+  ],
+  "src/components/Images/components/VideoModal.tsx": [
+    "/assets/Video-B9kGVNu3.js"
+  ],
+  "src/components/Images/images.module.css": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Images/services/images.ts": [
+    "/assets/Images-Cecg8HgV.js"
+  ],
+  "src/components/Jokes/Jokes.tsx": [
+    "/assets/Jokes-BQuHEBB2.js",
+    "/assets/Jokes-D9DZFa4V.css"
+  ],
+  "src/components/Jokes/components/FormJoke.tsx": [
+    "/assets/FormJoke-BvazehuQ.js"
+  ],
+  "src/components/Jokes/components/Joke.tsx": [
+    "/assets/Joke-XqirHPUl.js"
+  ],
+  "src/components/Jokes/components/JokeSubmit.tsx": [
+    "/assets/JokeSubmit-DD_eCZkC.js"
+  ],
+  "src/components/Jokes/components/UserJokes.tsx": [
+    "/assets/UserJokes-Dv-VJbbo.js"
+  ],
+  "src/components/Jokes/css/joke.css": [
+    "/assets/Jokes-BQuHEBB2.js",
+    "/assets/Jokes-D9DZFa4V.css"
+  ],
+  "src/components/Jokes/reducers/jokeReducer.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Jokes/services/chucknorris.tsx": [
+    "/assets/Jokes-BQuHEBB2.js",
+    "/assets/Jokes-D9DZFa4V.css"
+  ],
+  "src/components/Jokes/services/dadjokes.tsx": [
+    "/assets/Jokes-BQuHEBB2.js",
+    "/assets/Jokes-D9DZFa4V.css"
+  ],
+  "src/components/Jokes/services/jokes.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Jokes/types/index.ts": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Login/Login.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/MainWrapper/MainWrapper.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Memory/Memory.tsx": [
+    "/assets/Memory-BcpqiZKs.js",
+    "/assets/Memory-DBNEoXmc.css"
+  ],
+  "src/components/Memory/components/CardTypeButton.tsx": [
+    "/assets/CardTypeButton-BXhSZbKT.js"
+  ],
+  "src/components/Memory/components/GameGrid.tsx": [
+    "/assets/GameGrid-BvKADbFi.js"
+  ],
+  "src/components/Memory/components/GridSizeButton.tsx": [
+    "/assets/GridSizeButton-DHQNOUw4.js"
+  ],
+  "src/components/Memory/components/MemorySVG.tsx": [
+    "/assets/PortfolioInfo-Db6nBnQ4.js"
+  ],
+  "src/components/Memory/components/PlayerAmountButton.tsx": [
+    "/assets/PlayerAmountButton-DDABDREB.js"
+  ],
+  "src/components/Memory/components/TimerDisplay.tsx": [
+    "/assets/Memory-BcpqiZKs.js",
+    "/assets/Memory-DBNEoXmc.css"
+  ],
+  "src/components/Memory/hooks/useHighScores.tsx": [
+    "/assets/Memory-BcpqiZKs.js",
+    "/assets/Memory-DBNEoXmc.css"
+  ],
+  "src/components/Memory/memory.module.css": [
+    "/assets/Memory-BcpqiZKs.js",
+    "/assets/Memory-DBNEoXmc.css"
+  ],
+  "src/components/Memory/services/highScores.ts": [
+    "/assets/Memory-BcpqiZKs.js",
+    "/assets/Memory-DBNEoXmc.css"
+  ],
+  "src/components/Modal/Modal.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Modal/modal.module.css": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Nav/Nav.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Nav/nav.module.css": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/NavPortfolio/NavPortfolio.tsx": [
+    "/assets/NavPortfolio-CQkyH-bw.js"
+  ],
+  "src/components/Newest/Newest.tsx": [
+    "/assets/Newest-BmkmCiNW.js"
+  ],
+  "src/components/Notification/Notification.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/PasswordReset/PasswordReset.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Poems/Poem.tsx": [
+    "/assets/poems-bs1mEwct.js"
+  ],
+  "src/components/Poems/services/poems.ts": [
+    "/assets/poems-bs1mEwct.js"
+  ],
+  "src/components/PortfolioInfo/PortfolioInfo.tsx": [
+    "/assets/PortfolioInfo-Db6nBnQ4.js"
+  ],
+  "src/components/Quiz/QuizFinished.tsx": [
+    "/assets/QuizFinished-7bLXN03r.js"
+  ],
+  "src/components/Quiz/QuizQuestion.tsx": [
+    "/assets/QuizQuestion-CBHPvI_x.js"
+  ],
+  "src/components/Quiz/QuizStart.tsx": [
+    "/assets/QuizStart-DzmU6des.js"
+  ],
+  "src/components/Quiz/components/Loader.tsx": [
+    "/assets/QuizQuestion-CBHPvI_x.js"
+  ],
+  "src/components/Quiz/components/Login.tsx": [
+    "/assets/LoginRegisterCombo-CGNbqp_R.js"
+  ],
+  "src/components/Quiz/components/LoginRegisterCombo.tsx": [
+    "/assets/LoginRegisterCombo-CGNbqp_R.js"
+  ],
+  "src/components/Quiz/components/Message.tsx": [
+    "/assets/QuizQuestion-CBHPvI_x.js"
+  ],
+  "src/components/Quiz/components/Next.tsx": [
+    "/assets/QuizQuestion-CBHPvI_x.js"
+  ],
+  "src/components/Quiz/components/Progress.tsx": [
+    "/assets/QuizQuestion-CBHPvI_x.js"
+  ],
+  "src/components/Quiz/components/Scores.tsx": [
+    "/assets/LoginRegisterCombo-CGNbqp_R.js"
+  ],
+  "src/components/Quiz/components/Timer.tsx": [
+    "/assets/Timer-BmlsnVaC.js"
+  ],
+  "src/components/Quiz/css/quiz.module.css": [
+    "/assets/quiz.module-DCrCubZg.js",
+    "/assets/quiz-Bmyx5hYj.css"
+  ],
+  "src/components/Quiz/reducers/difficultyReducer.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Quiz/reducers/questionsReducer.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Quiz/reducers/quizReducer.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Quiz/services/quiz.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Quotes/Quote.tsx": [
+    "/assets/poems-bs1mEwct.js"
+  ],
+  "src/components/Quotes/services/quotes.ts": [
+    "/assets/Images-Cecg8HgV.js"
+  ],
+  "src/components/Register/Register.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/ScrollButton/index.tsx": [
+    "/assets/Store-ChEpGqhR.js"
+  ],
+  "src/components/ScrollToTop/ScrollToTop.tsx": [
+    "/assets/ScrollToTop-BhWrHEL7.js",
+    "/assets/ScrollToTop-BuUEp_16.css"
+  ],
+  "src/components/ScrollToTop/scrolltotop.module.css": [
+    "/assets/ScrollToTop-BhWrHEL7.js",
+    "/assets/ScrollToTop-BuUEp_16.css"
+  ],
+  "src/components/Select/Select.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Select/select.module.css": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Store/Store.tsx": [
+    "/assets/Store-ChEpGqhR.js"
+  ],
+  "src/components/Store/components/AdditionalInfo.tsx": [
+    "/assets/AdditionalInfo-B7njHQWB.js"
+  ],
+  "src/components/Store/components/Order.tsx": [
+    "/assets/Order-B8pBaaX-.js"
+  ],
+  "src/components/Store/components/Orders.tsx": [
+    "/assets/Orders-D5fz4BwX.js"
+  ],
+  "src/components/Store/components/StoreItems.tsx": [
+    "/assets/Store-ChEpGqhR.js"
+  ],
+  "src/components/Store/store.module.css": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Todo/TodoApp.tsx": [
+    "/assets/TodoApp-DrMA91pW.js"
+  ],
+  "src/components/Todo/components/TodoItem.tsx": [
+    "/assets/TodoItem-Ccx8Eaxf.js"
+  ],
+  "src/components/Todo/components/TodoItemModal.tsx": [
+    "/assets/TodoItem-Ccx8Eaxf.js"
+  ],
+  "src/components/Todo/components/TodoList.tsx": [
+    "/assets/TodoList-Bv1QP1H4.js"
+  ],
+  "src/components/Todo/css/todo.module.css": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Todo/reducers/todoReducer.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Todo/services/todo.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/components/Todo/types/index.ts": [
+    "/assets/TodoApp-DrMA91pW.js"
+  ],
+  "src/components/UserEdit/LanguageEdit.tsx": [
+    "/assets/LanguageEdit-BJqMzFnI.js"
+  ],
+  "src/components/UserEdit/NicknameEdit.tsx": [
+    "/assets/NicknameEdit-BKrfdjx2.js"
+  ],
+  "src/components/UserEdit/PasswordEdit.tsx": [
+    "/assets/PasswordEdit-B-91F1CD.js"
+  ],
+  "src/components/UserEdit/UsernameEdit.tsx": [
+    "/assets/UsernameEdit-CmpJbz4w.js"
+  ],
+  "src/components/UserEdit/css/edit.module.css": [
+    "/assets/edit.module-3NLXhYEv.js",
+    "/assets/edit-C2GQvHoC.css"
+  ],
+  "src/components/WordCloud/WordCloud.tsx": [
+    "/assets/WordCloud-Jd-0d4PU.js",
+    "/assets/WordCloud-XAYHoXfe.css"
+  ],
+  "src/components/WordCloud/wordcloud.module.css": [
+    "/assets/WordCloud-Jd-0d4PU.js",
+    "/assets/WordCloud-XAYHoXfe.css"
+  ],
+  "src/contexts/ConfirmContext.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/contexts/LanguageContext.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/contexts/ThemeContext.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/contexts/UIContext.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/css/App.css": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/css/form.css": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/css/index.css": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/hooks/useAppDispatch.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/hooks/useCart.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/hooks/useDebounce.tsx": [
+    "/assets/Images-Cecg8HgV.js"
+  ],
+  "src/hooks/useDocumentTitleAndLanguage.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/hooks/useDragAndDrop.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/hooks/useDraggable.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/hooks/useEnterDirection.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/hooks/useEventListener.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/hooks/useHeroProps.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/hooks/useIsOnScreen.tsx": [
+    "/assets/NavPortfolio-CQkyH-bw.js"
+  ],
+  "src/hooks/useMediaQuery.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/hooks/useModal.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/hooks/useOutsideClick.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/hooks/useRandomMinMax.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/hooks/useScrollDirection.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/hooks/useScrollbarWidth.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/hooks/useSideScroll.tsx": [
+    "/assets/NavPortfolio-CQkyH-bw.js"
+  ],
+  "src/hooks/useStorage.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/hooks/useTheme.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/hooks/useTimer.tsx": [
+    "/assets/Memory-BcpqiZKs.js",
+    "/assets/Memory-DBNEoXmc.css"
+  ],
+  "src/hooks/useTooltip.tsx": [
+    "/assets/Images-Cecg8HgV.js"
+  ],
+  "src/hooks/useWindowSize.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/main.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/About.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/CartPage.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/Contact.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/Disclaimer.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/OrderPage.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/Portfolio.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/StorePage.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/TermsOfService.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/UserEditPage.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/Welcome.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/css/about.module.css": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/css/disclaimer.module.css": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/css/portfolio.module.css": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/css/useredit.module.css": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/css/welcome.module.css": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/pages-portfolio/BlobPage.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/pages-portfolio/ColorsPage.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/pages-portfolio/ComposerPage.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/pages-portfolio/CustomSelectPage.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/pages-portfolio/DragAndDropPage.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/pages-portfolio/FormPage.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/pages-portfolio/GraphQLPage.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/pages-portfolio/HairSalonPage.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/pages-portfolio/ImagesPage.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/pages-portfolio/JokesPage.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/pages-portfolio/MemoryPage.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/pages-portfolio/QuizPage.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/pages-portfolio/TodoPage.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/pages-portfolio/css/quiz.css": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/pages/pages-portfolio/services/email.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/reducers/authReducer.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/reducers/notificationReducer.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/reducers/usersReducer.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/services/cart.tsx": [
+    "/assets/cart-C501ueEG.js"
+  ],
+  "src/services/login.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/services/users.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/store.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/types/fien.ts": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/types/images.ts": [
+    "/assets/Images-Cecg8HgV.js"
+  ],
+  "src/types/index.ts": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ],
+  "src/types/memory.ts": [
+    "/assets/Memory-BcpqiZKs.js",
+    "/assets/Memory-DBNEoXmc.css"
+  ],
+  "src/types/quotes.ts": [
+    "/assets/Images-Cecg8HgV.js"
+  ],
+  "src/utils/index.tsx": [
+    "/assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "/assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "/assets/blob-birb-rIQ95fzW.png",
+    "/assets/blob-fish-hK19U7c_.png",
+    "/assets/bubbly-fish-B6j5IlMc.png",
+    "/assets/blob-dog-BUAU-ueh.png"
+  ]
+}
