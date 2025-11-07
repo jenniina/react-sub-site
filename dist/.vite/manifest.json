@@ -1,0 +1,1833 @@
+{
+  "_@babel-l0sNRNKZ.js": {
+    "file": "assets/@babel-l0sNRNKZ.js",
+    "name": "@babel"
+  },
+  "_@reduxjs-CJhiLCiq.js": {
+    "file": "assets/@reduxjs-CJhiLCiq.js",
+    "name": "@reduxjs",
+    "imports": [
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js"
+    ]
+  },
+  "_@remix-run-CeDW-7A3.js": {
+    "file": "assets/@remix-run-CeDW-7A3.js",
+    "name": "@remix-run"
+  },
+  "_AccessibleColors-CJLRwcwa.js": {
+    "file": "assets/AccessibleColors-CJLRwcwa.js",
+    "name": "AccessibleColors",
+    "isDynamicEntry": true,
+    "imports": [
+      "_main-_oimaMDG.js",
+      "_react-B6RMQhYh.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js"
+    ],
+    "dynamicImports": [
+      "src/components/AccessibleColors/components/ColorsInput.tsx"
+    ],
+    "css": [
+      "assets/AccessibleColors-DSwXUHAd.css"
+    ]
+  },
+  "_AccessibleColors-DSwXUHAd.css": {
+    "file": "assets/AccessibleColors-DSwXUHAd.css",
+    "src": "_AccessibleColors-DSwXUHAd.css"
+  },
+  "_AdditionalInfo-BIGQZlly.js": {
+    "file": "assets/AdditionalInfo-BIGQZlly.js",
+    "name": "AdditionalInfo",
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_main-_oimaMDG.js"
+    ]
+  },
+  "_ButtonToggle-CsVqfVrg.css": {
+    "file": "assets/ButtonToggle-CsVqfVrg.css",
+    "src": "_ButtonToggle-CsVqfVrg.css"
+  },
+  "_ButtonToggle-D22bLnDR.js": {
+    "file": "assets/ButtonToggle-D22bLnDR.js",
+    "name": "ButtonToggle",
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_main-_oimaMDG.js"
+    ],
+    "css": [
+      "assets/ButtonToggle-CsVqfVrg.css"
+    ]
+  },
+  "_FormMulti-BD0dd4mW.css": {
+    "file": "assets/FormMulti-BD0dd4mW.css",
+    "src": "_FormMulti-BD0dd4mW.css"
+  },
+  "_FormMulti-MLoOnH_Q.js": {
+    "file": "assets/FormMulti-MLoOnH_Q.js",
+    "name": "FormMulti",
+    "isDynamicEntry": true,
+    "imports": [
+      "_main-_oimaMDG.js",
+      "_react-B6RMQhYh.js",
+      "_react-icons-CHi_nPWV.js",
+      "_axios-ngrFHoWO.js"
+    ],
+    "dynamicImports": [
+      "src/components/FormMulti/components/MessageForm.tsx",
+      "src/components/FormMulti/components/ExtrasForm.tsx",
+      "src/components/FormMulti/components/InitialForm.tsx"
+    ],
+    "css": [
+      "assets/FormMulti-BD0dd4mW.css"
+    ]
+  },
+  "_FormWrapper-BoFVVhKH.js": {
+    "file": "assets/FormWrapper-BoFVVhKH.js",
+    "name": "FormWrapper",
+    "imports": [
+      "_react-B6RMQhYh.js"
+    ]
+  },
+  "_Images-Ct2FV7S6.js": {
+    "file": "assets/Images-Ct2FV7S6.js",
+    "name": "Images",
+    "isDynamicEntry": true,
+    "imports": [
+      "_main-_oimaMDG.js",
+      "_react-B6RMQhYh.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js"
+    ],
+    "dynamicImports": [
+      "src/components/WordCloud/WordCloud.tsx",
+      "src/components/Images/components/Image.tsx",
+      "src/components/Images/components/Video.tsx"
+    ]
+  },
+  "_Jokes-Bha9-SQf.js": {
+    "file": "assets/Jokes-Bha9-SQf.js",
+    "name": "Jokes",
+    "isDynamicEntry": true,
+    "imports": [
+      "_main-_oimaMDG.js",
+      "_react-B6RMQhYh.js",
+      "_react-redux-CQ4WY322.js",
+      "_axios-ngrFHoWO.js",
+      "_react-router-hVrguzn3.js"
+    ],
+    "dynamicImports": [
+      "src/components/Jokes/components/FormJoke.tsx",
+      "src/components/Jokes/components/JokeSubmit.tsx",
+      "src/components/Jokes/components/UserJokes.tsx"
+    ],
+    "css": [
+      "assets/Jokes-D9DZFa4V.css"
+    ]
+  },
+  "_Jokes-D9DZFa4V.css": {
+    "file": "assets/Jokes-D9DZFa4V.css",
+    "src": "_Jokes-D9DZFa4V.css"
+  },
+  "_Memory-DBNEoXmc.css": {
+    "file": "assets/Memory-DBNEoXmc.css",
+    "src": "_Memory-DBNEoXmc.css"
+  },
+  "_Memory-DLqNTlbS.js": {
+    "file": "assets/Memory-DLqNTlbS.js",
+    "name": "Memory",
+    "isDynamicEntry": true,
+    "imports": [
+      "_main-_oimaMDG.js",
+      "_react-B6RMQhYh.js",
+      "_react-icons-CHi_nPWV.js",
+      "_axios-ngrFHoWO.js",
+      "_react-redux-CQ4WY322.js"
+    ],
+    "dynamicImports": [
+      "src/components/Memory/components/CardTypeButton.tsx",
+      "src/components/Memory/components/GridSizeButton.tsx",
+      "src/components/Memory/components/PlayerAmountButton.tsx",
+      "src/components/Memory/components/GameGrid.tsx"
+    ],
+    "css": [
+      "assets/Memory-DBNEoXmc.css"
+    ]
+  },
+  "_axios-ngrFHoWO.js": {
+    "file": "assets/axios-ngrFHoWO.js",
+    "name": "axios"
+  },
+  "_cart-C501ueEG.js": {
+    "file": "assets/cart-C501ueEG.js",
+    "name": "cart",
+    "imports": [
+      "_axios-ngrFHoWO.js"
+    ]
+  },
+  "_dom-to-image-more-sr33WCep.js": {
+    "file": "assets/dom-to-image-more-sr33WCep.js",
+    "name": "dom-to-image-more"
+  },
+  "_edit-C2GQvHoC.css": {
+    "file": "assets/edit-C2GQvHoC.css",
+    "src": "_edit-C2GQvHoC.css"
+  },
+  "_edit.module-3NLXhYEv.js": {
+    "file": "assets/edit.module-3NLXhYEv.js",
+    "name": "edit.module",
+    "css": [
+      "assets/edit-C2GQvHoC.css"
+    ]
+  },
+  "_hoist-non-react-statics-C-Qo8PK8.js": {
+    "file": "assets/hoist-non-react-statics-C-Qo8PK8.js",
+    "name": "hoist-non-react-statics"
+  },
+  "_immer-BGhKXxrG.js": {
+    "file": "assets/immer-BGhKXxrG.js",
+    "name": "immer"
+  },
+  "_invariant-B_pwkeTo.js": {
+    "file": "assets/invariant-B_pwkeTo.js",
+    "name": "invariant",
+    "imports": [
+      "_dom-to-image-more-sr33WCep.js"
+    ]
+  },
+  "_main-DPWMNifH.css": {
+    "file": "assets/main-DPWMNifH.css",
+    "src": "_main-DPWMNifH.css"
+  },
+  "_main-_oimaMDG.js": {
+    "file": "assets/main-_oimaMDG.js",
+    "name": "main",
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_react-dom-DKT7fI1i.js",
+      "_react-redux-CQ4WY322.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_react-router-hVrguzn3.js",
+      "_react-helmet-async-DQ_5QNst.js"
+    ],
+    "dynamicImports": [
+      "src/components/PortfolioInfo/PortfolioInfo.tsx",
+      "src/components/About/ColorComponent.tsx",
+      "src/components/Cart/Cart.tsx",
+      "_FormMulti-MLoOnH_Q.js",
+      "src/components/Store/components/Order.tsx",
+      "src/components/Store/components/Orders.tsx",
+      "src/components/Blob/Blobs.tsx",
+      "_AccessibleColors-CJLRwcwa.js",
+      "src/components/DragAndDrop/components/CardsContainer.tsx",
+      "_FormMulti-MLoOnH_Q.js",
+      "_Images-Ct2FV7S6.js",
+      "_Jokes-Bha9-SQf.js",
+      "_Memory-DLqNTlbS.js",
+      "src/components/Todo/TodoApp.tsx",
+      "src/components/Store/Store.tsx",
+      "src/components/UserEdit/PasswordEdit.tsx",
+      "src/components/UserEdit/UsernameEdit.tsx",
+      "src/components/UserEdit/LanguageEdit.tsx",
+      "src/components/UserEdit/NicknameEdit.tsx",
+      "src/components/Newest/Newest.tsx",
+      "src/components/Quiz/QuizStart.tsx",
+      "src/components/Quiz/QuizQuestion.tsx",
+      "src/components/Quiz/QuizFinished.tsx",
+      "src/components/NavPortfolio/NavPortfolio.tsx",
+      "src/components/Footer/Footer.tsx",
+      "src/components/ScrollToTop/ScrollToTop.tsx"
+    ],
+    "css": [
+      "assets/main-DPWMNifH.css"
+    ],
+    "assets": [
+      "assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+      "assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+      "assets/blob-birb-rIQ95fzW.png",
+      "assets/blob-fish-hK19U7c_.png",
+      "assets/bubbly-fish-B6j5IlMc.png",
+      "assets/blob-dog-BUAU-ueh.png"
+    ]
+  },
+  "_poems-jiD5jmyY.js": {
+    "file": "assets/poems-jiD5jmyY.js",
+    "name": "poems",
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_main-_oimaMDG.js",
+      "_axios-ngrFHoWO.js"
+    ]
+  },
+  "_quiz-Bmyx5hYj.css": {
+    "file": "assets/quiz-Bmyx5hYj.css",
+    "src": "_quiz-Bmyx5hYj.css"
+  },
+  "_quiz.module-DCrCubZg.js": {
+    "file": "assets/quiz.module-DCrCubZg.js",
+    "name": "quiz.module",
+    "css": [
+      "assets/quiz-Bmyx5hYj.css"
+    ]
+  },
+  "_react-B6RMQhYh.js": {
+    "file": "assets/react-B6RMQhYh.js",
+    "name": "react",
+    "imports": [
+      "_dom-to-image-more-sr33WCep.js"
+    ]
+  },
+  "_react-dom-DKT7fI1i.js": {
+    "file": "assets/react-dom-DKT7fI1i.js",
+    "name": "react-dom",
+    "imports": [
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-B6RMQhYh.js",
+      "_scheduler-C323NY8X.js"
+    ]
+  },
+  "_react-fast-compare-BHbKlhN4.js": {
+    "file": "assets/react-fast-compare-BHbKlhN4.js",
+    "name": "react-fast-compare",
+    "imports": [
+      "_dom-to-image-more-sr33WCep.js"
+    ]
+  },
+  "_react-helmet-async-DQ_5QNst.js": {
+    "file": "assets/react-helmet-async-DQ_5QNst.js",
+    "name": "react-helmet-async",
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "_react-icons-CHi_nPWV.js": {
+    "file": "assets/react-icons-CHi_nPWV.js",
+    "name": "react-icons",
+    "imports": [
+      "_react-B6RMQhYh.js"
+    ]
+  },
+  "_react-is-BwqtTtay.js": {
+    "file": "assets/react-is-BwqtTtay.js",
+    "name": "react-is"
+  },
+  "_react-redux-CQ4WY322.js": {
+    "file": "assets/react-redux-CQ4WY322.js",
+    "name": "react-redux",
+    "imports": [
+      "_react-dom-DKT7fI1i.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-B6RMQhYh.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js"
+    ]
+  },
+  "_react-router-dom-_ze6FMLH.js": {
+    "file": "assets/react-router-dom-_ze6FMLH.js",
+    "name": "react-router-dom",
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_react-dom-DKT7fI1i.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js"
+    ]
+  },
+  "_react-router-hVrguzn3.js": {
+    "file": "assets/react-router-hVrguzn3.js",
+    "name": "react-router",
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_@remix-run-CeDW-7A3.js"
+    ]
+  },
+  "_redux-BXkGT1VS.js": {
+    "file": "assets/redux-BXkGT1VS.js",
+    "name": "redux"
+  },
+  "_redux-thunk-ClJT1hhx.js": {
+    "file": "assets/redux-thunk-ClJT1hhx.js",
+    "name": "redux-thunk"
+  },
+  "_reselect-COXr-VPP.js": {
+    "file": "assets/reselect-COXr-VPP.js",
+    "name": "reselect"
+  },
+  "_scheduler-C323NY8X.js": {
+    "file": "assets/scheduler-C323NY8X.js",
+    "name": "scheduler"
+  },
+  "_shallowequal-C7ef0Lra.js": {
+    "file": "assets/shallowequal-C7ef0Lra.js",
+    "name": "shallowequal",
+    "imports": [
+      "_dom-to-image-more-sr33WCep.js"
+    ]
+  },
+  "_use-sync-external-store-w3cjJFH7.js": {
+    "file": "assets/use-sync-external-store-w3cjJFH7.js",
+    "name": "use-sync-external-store",
+    "imports": [
+      "_react-B6RMQhYh.js"
+    ]
+  },
+  "_uuid-BOvFkHkt.js": {
+    "file": "assets/uuid-BOvFkHkt.js",
+    "name": "uuid"
+  },
+  "index.html": {
+    "file": "assets/app-BT0KeowM.js",
+    "name": "app",
+    "src": "index.html",
+    "isEntry": true,
+    "imports": [
+      "_main-_oimaMDG.js",
+      "_react-B6RMQhYh.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/assets/JLA_Jenniina-3-480x198.png": {
+    "file": "assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+    "src": "src/assets/JLA_Jenniina-3-480x198.png"
+  },
+  "src/assets/JLA_Jenniina-light-3-480x198.png": {
+    "file": "assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+    "src": "src/assets/JLA_Jenniina-light-3-480x198.png"
+  },
+  "src/assets/blob-birb.png": {
+    "file": "assets/blob-birb-rIQ95fzW.png",
+    "src": "src/assets/blob-birb.png"
+  },
+  "src/assets/blob-dog.png": {
+    "file": "assets/blob-dog-BUAU-ueh.png",
+    "src": "src/assets/blob-dog.png"
+  },
+  "src/assets/blob-fish.png": {
+    "file": "assets/blob-fish-hK19U7c_.png",
+    "src": "src/assets/blob-fish.png"
+  },
+  "src/assets/bubbly-fish.png": {
+    "file": "assets/bubbly-fish-B6j5IlMc.png",
+    "src": "src/assets/bubbly-fish.png"
+  },
+  "src/components/About/ColorComponent.tsx": {
+    "file": "assets/ColorComponent-ZwQHTPPh.js",
+    "name": "ColorComponent",
+    "src": "src/components/About/ColorComponent.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_main-_oimaMDG.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/AccessibleColors/components/ColorsInput.tsx": {
+    "file": "assets/ColorsInput-V5OiUZID.js",
+    "name": "ColorsInput",
+    "src": "src/components/AccessibleColors/components/ColorsInput.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_AccessibleColors-CJLRwcwa.js",
+      "_main-_oimaMDG.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/Blob/Blobs.tsx": {
+    "file": "assets/Blobs-4_1Yue4y.js",
+    "name": "Blobs",
+    "src": "src/components/Blob/Blobs.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_main-_oimaMDG.js",
+      "_react-B6RMQhYh.js",
+      "_react-dom-DKT7fI1i.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ],
+    "dynamicImports": [
+      "src/components/Blob/components/DragContainer.tsx"
+    ]
+  },
+  "src/components/Blob/components/ColorBlocks.tsx": {
+    "file": "assets/ColorBlocks-Bf0nNaSv.js",
+    "name": "ColorBlocks",
+    "src": "src/components/Blob/components/ColorBlocks.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_main-_oimaMDG.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/Blob/components/DragContainer.tsx": {
+    "file": "assets/DragContainer-ClQ3CcKU.js",
+    "name": "DragContainer",
+    "src": "src/components/Blob/components/DragContainer.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_main-_oimaMDG.js",
+      "_react-B6RMQhYh.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-redux-CQ4WY322.js",
+      "_axios-ngrFHoWO.js",
+      "_react-router-hVrguzn3.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js",
+      "_use-sync-external-store-w3cjJFH7.js"
+    ],
+    "dynamicImports": [
+      "src/components/Blob/components/ColorBlocks.tsx",
+      "src/components/Blob/components/Sliders.tsx",
+      "src/components/Blob/components/DragLayers.tsx"
+    ]
+  },
+  "src/components/Blob/components/DragLayer.tsx": {
+    "file": "assets/DragLayer-C7ZoavWe.js",
+    "name": "DragLayer",
+    "src": "src/components/Blob/components/DragLayer.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_main-_oimaMDG.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/Blob/components/DragLayers.tsx": {
+    "file": "assets/DragLayers-BQ8ZrMAm.js",
+    "name": "DragLayers",
+    "src": "src/components/Blob/components/DragLayers.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_main-_oimaMDG.js",
+      "_react-B6RMQhYh.js",
+      "_react-dom-DKT7fI1i.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ],
+    "dynamicImports": [
+      "src/components/Blob/components/DragLayer.tsx"
+    ]
+  },
+  "src/components/Blob/components/Sliders.tsx": {
+    "file": "assets/Sliders-D3cbz2kd.js",
+    "name": "Sliders",
+    "src": "src/components/Blob/components/Sliders.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_main-_oimaMDG.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/Cart/Cart.tsx": {
+    "file": "assets/Cart-DHOvtwaK.js",
+    "name": "Cart",
+    "src": "src/components/Cart/Cart.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_AdditionalInfo-BIGQZlly.js",
+      "_main-_oimaMDG.js",
+      "_cart-C501ueEG.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_ButtonToggle-D22bLnDR.js",
+      "_react-icons-CHi_nPWV.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ],
+    "css": [
+      "assets/Cart-BI4AEBGy.css"
+    ]
+  },
+  "src/components/DragAndDrop/components/CardsContainer.tsx": {
+    "file": "assets/CardsContainer-C_PBF1TV.js",
+    "name": "CardsContainer",
+    "src": "src/components/DragAndDrop/components/CardsContainer.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_main-_oimaMDG.js",
+      "_react-icons-CHi_nPWV.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/Footer/Footer.tsx": {
+    "file": "assets/Footer-C_9n662U.js",
+    "name": "Footer",
+    "src": "src/components/Footer/Footer.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_main-_oimaMDG.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/FormMulti/components/ExtrasForm.tsx": {
+    "file": "assets/ExtrasForm-BxcAW7sg.js",
+    "name": "ExtrasForm",
+    "src": "src/components/FormMulti/components/ExtrasForm.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_FormWrapper-BoFVVhKH.js",
+      "_FormMulti-MLoOnH_Q.js",
+      "_main-_oimaMDG.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-icons-CHi_nPWV.js",
+      "_axios-ngrFHoWO.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/FormMulti/components/InitialForm.tsx": {
+    "file": "assets/InitialForm-C0637OP6.js",
+    "name": "InitialForm",
+    "src": "src/components/FormMulti/components/InitialForm.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_FormWrapper-BoFVVhKH.js",
+      "_main-_oimaMDG.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/FormMulti/components/MessageForm.tsx": {
+    "file": "assets/MessageForm-CKgAoW84.js",
+    "name": "MessageForm",
+    "src": "src/components/FormMulti/components/MessageForm.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_FormWrapper-BoFVVhKH.js",
+      "_FormMulti-MLoOnH_Q.js",
+      "_main-_oimaMDG.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-icons-CHi_nPWV.js",
+      "_axios-ngrFHoWO.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/Images/components/Image.tsx": {
+    "file": "assets/Image-BbKaI3iM.js",
+    "name": "Image",
+    "src": "src/components/Images/components/Image.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_main-_oimaMDG.js",
+      "_Images-Ct2FV7S6.js",
+      "_poems-jiD5jmyY.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/Images/components/Video.tsx": {
+    "file": "assets/Video-DiS5t0mm.js",
+    "name": "Video",
+    "src": "src/components/Images/components/Video.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_main-_oimaMDG.js",
+      "_Images-Ct2FV7S6.js",
+      "_poems-jiD5jmyY.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/Jokes/components/FormJoke.tsx": {
+    "file": "assets/FormJoke-tny964sC.js",
+    "name": "FormJoke",
+    "src": "src/components/Jokes/components/FormJoke.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_main-_oimaMDG.js",
+      "_react-B6RMQhYh.js",
+      "_ButtonToggle-D22bLnDR.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-dom-DKT7fI1i.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ],
+    "dynamicImports": [
+      "src/components/Jokes/components/Joke.tsx"
+    ]
+  },
+  "src/components/Jokes/components/Joke.tsx": {
+    "file": "assets/Joke-DByEA4Lu.js",
+    "name": "Joke",
+    "src": "src/components/Jokes/components/Joke.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_main-_oimaMDG.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/Jokes/components/JokeSubmit.tsx": {
+    "file": "assets/JokeSubmit-BazZ7GK2.js",
+    "name": "JokeSubmit",
+    "src": "src/components/Jokes/components/JokeSubmit.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_main-_oimaMDG.js",
+      "_ButtonToggle-D22bLnDR.js",
+      "_uuid-BOvFkHkt.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/Jokes/components/UserJokes.tsx": {
+    "file": "assets/UserJokes-kpmKsmh6.js",
+    "name": "UserJokes",
+    "src": "src/components/Jokes/components/UserJokes.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_react-icons-CHi_nPWV.js",
+      "_main-_oimaMDG.js",
+      "_ButtonToggle-D22bLnDR.js",
+      "_react-redux-CQ4WY322.js",
+      "_Jokes-Bha9-SQf.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js",
+      "_use-sync-external-store-w3cjJFH7.js"
+    ]
+  },
+  "src/components/Memory/components/CardTypeButton.tsx": {
+    "file": "assets/CardTypeButton-BCkxJKl0.js",
+    "name": "CardTypeButton",
+    "src": "src/components/Memory/components/CardTypeButton.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_Memory-DLqNTlbS.js",
+      "_react-icons-CHi_nPWV.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_main-_oimaMDG.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/Memory/components/GameGrid.tsx": {
+    "file": "assets/GameGrid-BnkXoqhP.js",
+    "name": "GameGrid",
+    "src": "src/components/Memory/components/GameGrid.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_Memory-DLqNTlbS.js",
+      "_main-_oimaMDG.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-icons-CHi_nPWV.js",
+      "_axios-ngrFHoWO.js",
+      "_react-redux-CQ4WY322.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/Memory/components/GridSizeButton.tsx": {
+    "file": "assets/GridSizeButton-CuRNP29F.js",
+    "name": "GridSizeButton",
+    "src": "src/components/Memory/components/GridSizeButton.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_Memory-DLqNTlbS.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_main-_oimaMDG.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/Memory/components/PlayerAmountButton.tsx": {
+    "file": "assets/PlayerAmountButton-BMsUX9wO.js",
+    "name": "PlayerAmountButton",
+    "src": "src/components/Memory/components/PlayerAmountButton.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_Memory-DLqNTlbS.js",
+      "_main-_oimaMDG.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-icons-CHi_nPWV.js",
+      "_axios-ngrFHoWO.js",
+      "_react-redux-CQ4WY322.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/NavPortfolio/NavPortfolio.tsx": {
+    "file": "assets/NavPortfolio-DPK3JSSM.js",
+    "name": "NavPortfolio",
+    "src": "src/components/NavPortfolio/NavPortfolio.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-icons-CHi_nPWV.js",
+      "_main-_oimaMDG.js",
+      "_react-router-hVrguzn3.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/Newest/Newest.tsx": {
+    "file": "assets/Newest-Cw4Et2KD.js",
+    "name": "Newest",
+    "src": "src/components/Newest/Newest.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_main-_oimaMDG.js",
+      "_react-icons-CHi_nPWV.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/PortfolioInfo/PortfolioInfo.tsx": {
+    "file": "assets/PortfolioInfo-B2xgVVXi.js",
+    "name": "PortfolioInfo",
+    "src": "src/components/PortfolioInfo/PortfolioInfo.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_main-_oimaMDG.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-icons-CHi_nPWV.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/Quiz/QuizFinished.tsx": {
+    "file": "assets/QuizFinished-BjPP86B6.js",
+    "name": "QuizFinished",
+    "src": "src/components/Quiz/QuizFinished.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_main-_oimaMDG.js",
+      "_react-B6RMQhYh.js",
+      "_react-redux-CQ4WY322.js",
+      "_quiz.module-DCrCubZg.js",
+      "_react-router-hVrguzn3.js",
+      "_react-dom-DKT7fI1i.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_scheduler-C323NY8X.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js",
+      "_use-sync-external-store-w3cjJFH7.js"
+    ],
+    "dynamicImports": [
+      "src/components/Quiz/components/LoginRegisterCombo.tsx"
+    ]
+  },
+  "src/components/Quiz/QuizQuestion.tsx": {
+    "file": "assets/QuizQuestion-6tWw_ezm.js",
+    "name": "QuizQuestion",
+    "src": "src/components/Quiz/QuizQuestion.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_main-_oimaMDG.js",
+      "_react-B6RMQhYh.js",
+      "_react-redux-CQ4WY322.js",
+      "_quiz.module-DCrCubZg.js",
+      "_react-router-hVrguzn3.js",
+      "_react-dom-DKT7fI1i.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_scheduler-C323NY8X.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js",
+      "_use-sync-external-store-w3cjJFH7.js"
+    ],
+    "dynamicImports": [
+      "src/components/Quiz/components/Timer.tsx"
+    ]
+  },
+  "src/components/Quiz/QuizStart.tsx": {
+    "file": "assets/QuizStart-DX_cqkqa.js",
+    "name": "QuizStart",
+    "src": "src/components/Quiz/QuizStart.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_main-_oimaMDG.js",
+      "_react-B6RMQhYh.js",
+      "_react-redux-CQ4WY322.js",
+      "_quiz.module-DCrCubZg.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-hVrguzn3.js",
+      "_react-dom-DKT7fI1i.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_scheduler-C323NY8X.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js",
+      "_use-sync-external-store-w3cjJFH7.js"
+    ],
+    "dynamicImports": [
+      "src/components/Quiz/components/LoginRegisterCombo.tsx"
+    ]
+  },
+  "src/components/Quiz/components/LoginRegisterCombo.tsx": {
+    "file": "assets/LoginRegisterCombo-mGZPCNJW.js",
+    "name": "LoginRegisterCombo",
+    "src": "src/components/Quiz/components/LoginRegisterCombo.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_main-_oimaMDG.js",
+      "_react-redux-CQ4WY322.js",
+      "_quiz.module-DCrCubZg.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js",
+      "_use-sync-external-store-w3cjJFH7.js"
+    ]
+  },
+  "src/components/Quiz/components/Timer.tsx": {
+    "file": "assets/Timer-DcmNzGBz.js",
+    "name": "Timer",
+    "src": "src/components/Quiz/components/Timer.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_react-redux-CQ4WY322.js",
+      "_main-_oimaMDG.js",
+      "_quiz.module-DCrCubZg.js",
+      "_react-router-hVrguzn3.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/ScrollToTop/ScrollToTop.tsx": {
+    "file": "assets/ScrollToTop-CpdfUc3R.js",
+    "name": "ScrollToTop",
+    "src": "src/components/ScrollToTop/ScrollToTop.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_react-icons-CHi_nPWV.js",
+      "_main-_oimaMDG.js",
+      "_react-router-hVrguzn3.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ],
+    "css": [
+      "assets/ScrollToTop-BuUEp_16.css"
+    ]
+  },
+  "src/components/Store/Store.tsx": {
+    "file": "assets/Store-D7-r4Xho.js",
+    "name": "Store",
+    "src": "src/components/Store/Store.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_main-_oimaMDG.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-icons-CHi_nPWV.js",
+      "_AdditionalInfo-BIGQZlly.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/Store/components/Order.tsx": {
+    "file": "assets/Order-Us-_RXx4.js",
+    "name": "Order",
+    "src": "src/components/Store/components/Order.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_main-_oimaMDG.js",
+      "_cart-C501ueEG.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/Store/components/Orders.tsx": {
+    "file": "assets/Orders-CatF0WdQ.js",
+    "name": "Orders",
+    "src": "src/components/Store/components/Orders.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_cart-C501ueEG.js",
+      "_main-_oimaMDG.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_axios-ngrFHoWO.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/Todo/TodoApp.tsx": {
+    "file": "assets/TodoApp-Dhwi9q9I.js",
+    "name": "TodoApp",
+    "src": "src/components/Todo/TodoApp.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_main-_oimaMDG.js",
+      "_react-B6RMQhYh.js",
+      "_react-redux-CQ4WY322.js",
+      "_react-icons-CHi_nPWV.js",
+      "_uuid-BOvFkHkt.js",
+      "_react-dom-DKT7fI1i.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_scheduler-C323NY8X.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js",
+      "_use-sync-external-store-w3cjJFH7.js"
+    ],
+    "dynamicImports": [
+      "src/components/Todo/components/TodoList.tsx"
+    ]
+  },
+  "src/components/Todo/components/TodoItem.tsx": {
+    "file": "assets/TodoItem-DBo3zta3.js",
+    "name": "TodoItem",
+    "src": "src/components/Todo/components/TodoItem.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_main-_oimaMDG.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-dom-DKT7fI1i.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js",
+      "_scheduler-C323NY8X.js"
+    ]
+  },
+  "src/components/Todo/components/TodoList.tsx": {
+    "file": "assets/TodoList-D1136FRw.js",
+    "name": "TodoList",
+    "src": "src/components/Todo/components/TodoList.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_main-_oimaMDG.js",
+      "_react-B6RMQhYh.js",
+      "_react-dom-DKT7fI1i.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ],
+    "dynamicImports": [
+      "src/components/Todo/components/TodoItem.tsx"
+    ]
+  },
+  "src/components/UserEdit/LanguageEdit.tsx": {
+    "file": "assets/LanguageEdit-Bs3CU5D9.js",
+    "name": "LanguageEdit",
+    "src": "src/components/UserEdit/LanguageEdit.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_main-_oimaMDG.js",
+      "_edit.module-3NLXhYEv.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/UserEdit/NicknameEdit.tsx": {
+    "file": "assets/NicknameEdit-CM7lt15h.js",
+    "name": "NicknameEdit",
+    "src": "src/components/UserEdit/NicknameEdit.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_main-_oimaMDG.js",
+      "_edit.module-3NLXhYEv.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/UserEdit/PasswordEdit.tsx": {
+    "file": "assets/PasswordEdit-DlWcSQ2e.js",
+    "name": "PasswordEdit",
+    "src": "src/components/UserEdit/PasswordEdit.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_main-_oimaMDG.js",
+      "_edit.module-3NLXhYEv.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/UserEdit/UsernameEdit.tsx": {
+    "file": "assets/UsernameEdit-CkMnQj6t.js",
+    "name": "UsernameEdit",
+    "src": "src/components/UserEdit/UsernameEdit.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_main-_oimaMDG.js",
+      "_edit.module-3NLXhYEv.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ]
+  },
+  "src/components/WordCloud/WordCloud.tsx": {
+    "file": "assets/WordCloud-C27bFoq7.js",
+    "name": "WordCloud",
+    "src": "src/components/WordCloud/WordCloud.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_main-_oimaMDG.js",
+      "_dom-to-image-more-sr33WCep.js",
+      "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
+      "_react-redux-CQ4WY322.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_redux-BXkGT1VS.js",
+      "_immer-BGhKXxrG.js",
+      "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
+      "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
+      "_react-fast-compare-BHbKlhN4.js",
+      "_invariant-B_pwkeTo.js",
+      "_shallowequal-C7ef0Lra.js"
+    ],
+    "css": [
+      "assets/WordCloud-XAYHoXfe.css"
+    ]
+  }
+}

@@ -1,8 +1,9 @@
-import { useContext, useState } from 'react'
-import Accordion from '../../components/Accordion/Accordion'
-import { ELanguages } from '../../types'
-import { LanguageContext } from '../../contexts/LanguageContext'
-import { Helmet } from 'react-helmet-async'
+import { useContext, useState } from "react";
+import Accordion from "../../components/Accordion/Accordion";
+import { ELanguages } from "../../types";
+import { LanguageContext } from "../../contexts/LanguageContext";
+import * as HelmetAsync from "react-helmet-async";
+const { Helmet } = HelmetAsync;
 
 export default function HairSalonPage({
   heading,
@@ -10,43 +11,56 @@ export default function HairSalonPage({
   type,
   language,
 }: {
-  heading: string
-  text: string
-  type: string
-  language: ELanguages
+  heading: string;
+  text: string;
+  type: string;
+  language: ELanguages;
 }) {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useContext(LanguageContext)!;
 
-  const [isFormOpen, setIsFormOpen] = useState(false)
+  const [isFormOpen, setIsFormOpen] = useState(false);
   return (
     <>
-      <Helmet>
+      <Helmet prioritizeSeoTags={true}>
         <title>
-          {t('HairSalon')} Hannastiina | {t('HairSalonWebsite')}
+          {t("HairSalon")} Hannastiina | {t("HairSalonWebsite")}
         </title>
-        <meta name='description' content={t('HairSalonWebsite')} />
-        <link rel='canonical' href={`https://react.jenniina.fi/portfolio/salon`} />
+        <meta name="description" content={t("HairSalonWebsite")} />
+        <link
+          rel="canonical"
+          href={`https://react.jenniina.fi/portfolio/salon`}
+        />
+        <meta
+          property="og:title"
+          content={`${t("HairSalon")} Hannastiina | react.jenniina.fi`}
+        />
+        <meta property="og:description" content={t("HairSalonWebsite")} />
+        <meta
+          property="og:url"
+          content={`https://react.jenniina.fi/portfolio/salon`}
+        />
+        <meta property="og:type" content="website" />
       </Helmet>
       <div className={`salon ${type}`}>
-        <div className='inner-wrap'>
-          <section className='card'>
+        <div className="inner-wrap">
+          <section className="card">
             <div>
-              <div className='medium'>
+              <div className="medium">
                 <Accordion
                   language={language}
-                  text={t('ClickHereToSeeFeatures')}
-                  className='salon-features'
-                  wrapperClass='mb3'
+                  text={t("ClickHereToSeeFeatures")}
+                  className="salon-features"
+                  wrapperClass="mb3"
                   setIsFormOpen={setIsFormOpen}
                 >
                   <>
-                    <h2>{t('Features')}</h2>
-                    <ul className='ul'>
-                      <li>{t('SalonIntro1')}</li>
-                      <li>{t('SalonIntro2')}</li>
-                      <li>{t('SalonIntro3')}</li>
+                    <h2>{t("Features")}</h2>
+                    <ul className="ul">
+                      <li>{t("SalonIntro1")}</li>
+                      <li>{t("SalonIntro2")}</li>
+                      <li>{t("SalonIntro3")}</li>
                       <li>
-                        {t('Dependencies')}: React
+                        {t("Dependencies")}: React
                         <ul>
                           <li>react</li>
                           <li>react-dom</li>
@@ -57,7 +71,7 @@ export default function HairSalonPage({
                         </ul>
                       </li>
                       <li>
-                        {t('Dependencies')}: Node.js
+                        {t("Dependencies")}: Node.js
                         <ul>
                           <li>express</li>
                           <li>express-validator</li>
@@ -77,19 +91,21 @@ export default function HairSalonPage({
                   style={
                     isFormOpen
                       ? {
-                          paddingLeft: '0.5rem',
-                          fontSize: '130%',
+                          paddingLeft: "0.5rem",
+                          fontSize: "130%",
                         }
-                      : { fontSize: '130%' }
+                      : { fontSize: "130%" }
                   }
                 >
                   <p>
-                    <a href='https://hannastiina.jenniina.fi'>
+                    <a href="https://hannastiina.jenniina.fi">
                       Parturi Kampaamo Hannastiina &raquo;
                     </a>
                   </p>
                   <p>
-                    <a href='https://github.com/jenniina/hannastiina'>Github &raquo;</a>
+                    <a href="https://github.com/jenniina/hannastiina">
+                      Github &raquo;
+                    </a>
                   </p>
                 </div>
               </div>
@@ -98,5 +114,5 @@ export default function HairSalonPage({
         </div>
       </div>
     </>
-  )
+  );
 }

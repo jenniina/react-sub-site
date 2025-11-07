@@ -1,25 +1,30 @@
-import { lazy, Suspense, useContext } from 'react'
-import { BiChevronsDown } from 'react-icons/bi'
+import { lazy, Suspense, useContext } from "react";
+import { BiChevronsDown } from "react-icons/bi";
 import {
   jokeCategoryByLanguage,
   jokeCategoryAny,
   ECategories,
-} from '../../components/Jokes/types'
-import Accordion from '../../components/Accordion/Accordion'
-import { EJokeType, ESafemode, TCategoryByLanguages } from '../../components/Jokes/types'
+} from "../../components/Jokes/types";
+import Accordion from "../../components/Accordion/Accordion";
+import {
+  EJokeType,
+  ESafemode,
+  TCategoryByLanguages,
+} from "../../components/Jokes/types";
 import {
   ELanguageTitle,
   ELanguages,
   ELanguagesLong,
   LanguageOfLanguage,
-} from '../../types'
-import { SyntheticEvent, useEffect } from 'react'
-import { Select, SelectOption } from '../../components/Select/Select'
-import { options } from '../../utils'
-import { LanguageContext } from '../../contexts/LanguageContext'
-import { Helmet } from 'react-helmet-async'
+} from "../../types";
+import { SyntheticEvent, useEffect } from "react";
+import { Select, SelectOption } from "../../components/Select/Select";
+import { options } from "../../utils";
+import { LanguageContext } from "../../contexts/LanguageContext";
+import * as HelmetAsync from "react-helmet-async";
+const { Helmet } = HelmetAsync;
 
-const Jokes = lazy(() => import('../../components/Jokes/Jokes'))
+const Jokes = lazy(() => import("../../components/Jokes/Jokes"));
 
 export default function JokesPage({
   heading,
@@ -28,16 +33,16 @@ export default function JokesPage({
   language,
   setLanguage,
 }: {
-  heading: string
-  text: string
-  type: string
-  language: ELanguages
-  setLanguage: (language: ELanguages) => void
+  heading: string;
+  text: string;
+  type: string;
+  language: ELanguages;
+  setLanguage: (language: ELanguages) => void;
 }) {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useContext(LanguageContext)!;
 
-  const title = t('TheComediansCompanion')
-  const titleLanguage = t('LanguageTitle')
+  const title = t("TheComediansCompanion");
+  const titleLanguage = t("LanguageTitle");
 
   function getKeyByValue(
     enumObj:
@@ -49,78 +54,91 @@ export default function JokesPage({
   ) {
     for (const key in enumObj) {
       if (enumObj[key as keyof typeof enumObj] === value) {
-        return key as SelectOption['label']
+        return key as SelectOption["label"];
       }
     }
     // Handle the case where the value is not found in the enum
-    return undefined
+    return undefined;
   }
 
   useEffect(() => {
-    const languageFromStorage = localStorage.getItem('AppLanguage')
+    const languageFromStorage = localStorage.getItem("AppLanguage");
     if (languageFromStorage) {
-      setLanguage(JSON.parse(languageFromStorage))
+      setLanguage(JSON.parse(languageFromStorage));
     }
-  }, [])
+  }, []);
 
   // Set the document language and title
   useEffect(() => {
-    const script = document.createElement('script')
-    script.type = 'text/javascript'
-    script.innerHTML = `document.documentElement.lang = '${language}';`
-    document.head.appendChild(script)
-    document.title = title
+    const script = document.createElement("script");
+    script.type = "text/javascript";
+    script.innerHTML = `document.documentElement.lang = '${language}';`;
+    document.head.appendChild(script);
+    document.title = title;
     return () => {
-      document.head.removeChild(script)
-    }
-  }, [language, title])
+      document.head.removeChild(script);
+    };
+  }, [language, title]);
 
   const handleSkipToJokes = (e: SyntheticEvent) => {
-    e.preventDefault()
-    const anchor = document.querySelector('#saved')
+    e.preventDefault();
+    const anchor = document.querySelector("#saved");
     if (anchor) {
-      anchor.scrollIntoView({ behavior: 'smooth' })
+      anchor.scrollIntoView({ behavior: "smooth" });
     }
-  }
+  };
 
   return (
     <>
-      <Helmet>
+      <Helmet prioritizeSeoTags={true}>
         <title>
-          {t('Jokes')} | {t('TheComediansCompanion')}
+          {t("Jokes")} | {t("TheComediansCompanion")}
         </title>
-        <meta name='description' content={t('JokesAppIntro')} />
-        <link rel='canonical' href={`https://react.jenniina.fi/portfolio/jokes`} />
+        <meta name="description" content={t("JokesAppIntro")} />
+        <link
+          rel="canonical"
+          href={`https://react.jenniina.fi/portfolio/jokes`}
+        />
+        <meta
+          property="og:title"
+          content={`${t("Jokes")} | react.jenniina.fi`}
+        />
+        <meta property="og:description" content={t("JokesAppIntro")} />
+        <meta
+          property="og:url"
+          content={`https://react.jenniina.fi/portfolio/jokes`}
+        />
+        <meta property="og:type" content="website" />
       </Helmet>
       <div
         className={`${heading
-          .replace(/\s+/g, '-')
+          .replace(/\s+/g, "-")
           .toLowerCase()
-          .replace(/[^a-zA-Z]/g, '')} ${type} ${language}`}
+          .replace(/[^a-zA-Z]/g, "")} ${type} ${language}`}
       >
-        <div className='inner-wrap'>
-          <section className='joke-container card introduction'>
+        <div className="inner-wrap">
+          <section className="joke-container card introduction">
             <div>
-              <div className='flex column gap'>
-                <div className='flex center gap'>
-                  <a href='#jokeform' className='svg-wrap newline'>
-                    <span>{t('SkipToJokeSearch')}</span>
-                    <BiChevronsDown className='down' />
+              <div className="flex column gap">
+                <div className="flex center gap">
+                  <a href="#jokeform" className="svg-wrap newline">
+                    <span>{t("SkipToJokeSearch")}</span>
+                    <BiChevronsDown className="down" />
                   </a>
                   <a
-                    href='#'
-                    className='svg-wrap newline'
+                    href="#"
+                    className="svg-wrap newline"
                     onClick={(e) => handleSkipToJokes(e)}
                   >
-                    <span>{t('SkipToSavedJokes')}</span>
-                    <BiChevronsDown className='down' />
+                    <span>{t("SkipToSavedJokes")}</span>
+                    <BiChevronsDown className="down" />
                   </a>
                 </div>
                 <div>
                   <Select
                     language={language}
-                    id='main-language'
-                    className='language main'
+                    id="main-language"
+                    className="language main"
                     instructions={`${titleLanguage}:`}
                     options={options(ELanguagesLong)}
                     value={
@@ -132,72 +150,74 @@ export default function JokesPage({
                         : undefined
                     }
                     onChange={(o) => {
-                      setLanguage(o?.value as ELanguages)
+                      setLanguage(o?.value as ELanguages);
                     }}
                   />
                 </div>
                 <Accordion
                   language={language}
-                  text={t('ClickHereToSeeFeatures')}
-                  className='features'
-                  wrapperClass='features-wrap'
+                  text={t("ClickHereToSeeFeatures")}
+                  className="features"
+                  wrapperClass="features-wrap"
                 >
-                  <div className='medium'>
-                    <h2>{t('Features')}</h2>
-                    <ul className='ul'>
+                  <div className="medium">
+                    <h2>{t("Features")}</h2>
+                    <ul className="ul">
                       <li>
-                        {t('FetchesJokesFrom')}{' '}
-                        <a href='https://sv443.net/jokeapi/v2/'>JokeAPI</a>
+                        {t("FetchesJokesFrom")}{" "}
+                        <a href="https://sv443.net/jokeapi/v2/">JokeAPI</a>
                       </li>
-                      <li>{t('RegisterAndLoginToUse')}</li>
+                      <li>{t("RegisterAndLoginToUse")}</li>
                       <li>
-                        {t('AppTranslatedTo')}
+                        {t("AppTranslatedTo")}
                         <ul>
                           {Object.values(LanguageOfLanguage[language]).map(
                             (l: string) => {
-                              return <li key={l}>{l}</li>
+                              return <li key={l}>{l}</li>;
                             }
                           )}
                         </ul>
                       </li>
                       <li>
-                        {t('FilterJokesBy')}:
+                        {t("FilterJokesBy")}:
                         <ul>
                           <li>{titleLanguage}</li>
                           <li>
-                            {t('JokeTypeTitle')}
+                            {t("JokeTypeTitle")}
                             <ul>
-                              <li>{t('TwoPart')}</li>
-                              <li>{t('Single')}</li>
+                              <li>{t("TwoPart")}</li>
+                              <li>{t("Single")}</li>
                             </ul>
                           </li>
                           <li>
-                            {t('SafemodeTitle')} {t('OnOff')}
+                            {t("SafemodeTitle")} {t("OnOff")}
                           </li>
-                          <li>{t('Keyword')}</li>
+                          <li>{t("Keyword")}</li>
                           <li>
-                            {t('CategoryTitle')}
+                            {t("CategoryTitle")}
                             <ul>
                               <li>{jokeCategoryAny[language]}</li>
-                              {Object.values(jokeCategoryByLanguage[language]).map(
-                                (c) => {
-                                  return <li key={c}>{c}</li>
-                                }
-                              )}
+                              {Object.values(
+                                jokeCategoryByLanguage[language]
+                              ).map((c) => {
+                                return <li key={c}>{c}</li>;
+                              })}
                             </ul>
                           </li>
                         </ul>
                       </li>
                       <li>
-                        {t('Note')}
+                        {t("Note")}
                         <ul>
-                          <li>{t('DarkJokesAreVisibleOnlyWhenSafeModeIsOff')}</li>
+                          <li>
+                            {t("DarkJokesAreVisibleOnlyWhenSafeModeIsOff")}
+                          </li>
                         </ul>
                       </li>
                     </ul>
                   </div>
                 </Accordion>
-                <a href='https://github.com/jenniina/react-sub-site/tree/main/src/components/Jokes'>
+                <a href="https://github.com/jenniina/react-sub-site/tree/main/src/components/Jokes">
                   Github
                 </a>
               </div>
@@ -205,7 +225,9 @@ export default function JokesPage({
           </section>
           <Suspense
             fallback={
-              <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
+              <div className="flex center margin0auto textcenter">
+                {t("Loading")}...
+              </div>
             }
           >
             <Jokes language={language} setLanguage={setLanguage} />
@@ -213,5 +235,5 @@ export default function JokesPage({
         </div>
       </div>
     </>
-  )
+  );
 }

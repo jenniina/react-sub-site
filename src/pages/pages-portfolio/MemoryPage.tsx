@@ -1,9 +1,10 @@
-import { lazy, Suspense, useContext } from 'react'
-import { ELanguages } from '../../types'
-import { LanguageContext } from '../../contexts/LanguageContext'
-import { Helmet } from 'react-helmet-async'
+import { lazy, Suspense, useContext } from "react";
+import { ELanguages } from "../../types";
+import { LanguageContext } from "../../contexts/LanguageContext";
+import * as HelmetAsync from "react-helmet-async";
+const { Helmet } = HelmetAsync;
 
-const Memory = lazy(() => import('../../components/Memory/Memory'))
+const Memory = lazy(() => import("../../components/Memory/Memory"));
 
 export default function MemoryPage({
   heading,
@@ -11,27 +12,42 @@ export default function MemoryPage({
   type,
   language,
 }: {
-  heading: string
-  text: string
-  type: string
-  language: ELanguages
+  heading: string;
+  text: string;
+  type: string;
+  language: ELanguages;
 }) {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useContext(LanguageContext)!;
 
   return (
     <>
-      <Helmet>
+      <Helmet prioritizeSeoTags={true}>
         <title>
-          {t('MemoryGame')} | {t('MemoryGameIntro')}
+          {t("MemoryGame")} | {t("MemoryGameIntro")}
         </title>
-        <meta name='description' content={t('MemoryGameIntro')} />
-        <link rel='canonical' href={`https://react.jenniina.fi/portfolio/memory`} />
+        <meta name="description" content={t("MemoryGameIntro")} />
+        <link
+          rel="canonical"
+          href={`https://react.jenniina.fi/portfolio/memory`}
+        />
+        <meta
+          property="og:title"
+          content={`${t("MemoryGame")} | react.jenniina.fi`}
+        />
+        <meta property="og:description" content={t("MemoryGameIntro")} />
+        <meta
+          property="og:url"
+          content={`https://react.jenniina.fi/portfolio/memory`}
+        />
+        <meta property="og:type" content="website" />
       </Helmet>
       <div className={`memory ${type}`}>
-        <div className='inner-wrap'>
+        <div className="inner-wrap">
           <Suspense
             fallback={
-              <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
+              <div className="flex center margin0auto textcenter">
+                {t("Loading")}...
+              </div>
             }
           >
             <Memory language={language} />
@@ -39,5 +55,5 @@ export default function MemoryPage({
         </div>
       </div>
     </>
-  )
+  );
 }

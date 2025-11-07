@@ -1,11 +1,14 @@
-import { lazy, Suspense, useContext } from 'react'
-import { useTheme } from '../hooks/useTheme'
-import { ELanguages } from '../types'
-import styles from './css/portfolio.module.css'
-import { LanguageContext } from '../contexts/LanguageContext'
-import { Helmet } from 'react-helmet-async'
+import { lazy, Suspense, useContext } from "react";
+import { useTheme } from "../hooks/useTheme";
+import { ELanguages } from "../types";
+import styles from "./css/portfolio.module.css";
+import { LanguageContext } from "../contexts/LanguageContext";
+import * as HelmetAsync from "react-helmet-async";
+const { Helmet } = HelmetAsync;
 
-const PortfolioInfo = lazy(() => import('../components/PortfolioInfo/PortfolioInfo'))
+const PortfolioInfo = lazy(
+  () => import("../components/PortfolioInfo/PortfolioInfo")
+);
 
 export default function Portfolio({
   heading,
@@ -13,31 +16,43 @@ export default function Portfolio({
   type,
   language,
 }: {
-  heading: string
-  text: string
-  type: string
-  language: ELanguages
+  heading: string;
+  text: string;
+  type: string;
+  language: ELanguages;
 }) {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useContext(LanguageContext)!;
 
-  const lightTheme = useTheme()
+  const lightTheme = useTheme();
 
   return (
     <>
-      <Helmet>
-        <title>{t('Portfolio')} | react.jenniina.fi</title>
-        <meta name='description' content={t('AboutThisSite')} />
-        <link rel='canonical' href={`https://react.jenniina.fi/portfolio`} />
+      <Helmet prioritizeSeoTags={true}>
+        <title>{t("Portfolio")} | react.jenniina.fi</title>
+        <meta name="description" content={t("AboutThisSite")} />
+        <link rel="canonical" href={`https://react.jenniina.fi/portfolio`} />
+        <meta
+          property="og:title"
+          content={`${t("Portfolio")} | react.jenniina.fi`}
+        />
+        <meta property="og:description" content={t("AboutThisSite")} />
+        <meta
+          property="og:url"
+          content={`https://react.jenniina.fi/portfolio`}
+        />
+        <meta property="og:type" content="website" />
       </Helmet>
       <div
         className={`portfolio ${styles.portfolio} ${type} ${
-          lightTheme ? styles.light : ''
+          lightTheme ? styles.light : ""
         }`}
       >
-        <div className='inner-wrap'>
+        <div className="inner-wrap">
           <Suspense
             fallback={
-              <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
+              <div className="flex center margin0auto textcenter">
+                {t("Loading")}...
+              </div>
             }
           >
             <PortfolioInfo language={language} />
@@ -45,5 +60,5 @@ export default function Portfolio({
         </div>
       </div>
     </>
-  )
+  );
 }
