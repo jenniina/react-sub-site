@@ -10,27 +10,15 @@ export default defineConfig({
     react(),
     {
       ...copy({
-        targets: [{ src: "routes.json", dest: "dist" }],
+        targets: [
+          { src: "routes.json", dest: "dist" },
+          { src: "staticwebapp.config.json", dest: "dist" },
+        ],
         hook: "writeBundle", // run the plugin after all the files are bundled and written to disk
         copyOnce: true,
       }),
       enforce: "post", // run the plugin after all the other plugins
     },
-    // // Custom plugin to ensure index.html exists after build
-    // {
-    //   name: "ensure-index-html",
-    //   writeBundle() {
-    //     const indexPath = path.resolve("dist", "index.html");
-    //     const rootIndexPath = path.resolve("index.html");
-
-    //     setTimeout(() => {
-    //       if (!fs.existsSync(indexPath) && fs.existsSync(rootIndexPath)) {
-    //         fs.copyFileSync(rootIndexPath, indexPath);
-    //         console.log("✅ Restored index.html to dist/");
-    //       }
-    //     }, 1000); // Wait 1 second after build completes
-    //   },
-    // },
   ],
   server: {
     host: true,
@@ -43,6 +31,9 @@ export default defineConfig({
         main: "index.html",
       },
       output: {
+        entryFileNames: "assets/[name]-[hash].js",
+        chunkFileNames: "assets/[name]-[hash].js",
+        assetFileNames: "assets/[name]-[hash].[ext]",
         manualChunks(id) {
           if (id.includes("node_modules")) {
             return id
@@ -57,7 +48,7 @@ export default defineConfig({
         },
       },
     },
-    chunkSizeWarningLimit: 500,
+    chunkSizeWarningLimit: 550,
   },
   ssr: {
     noExternal: ["react-helmet-async", "@reduxjs/toolkit"],
