@@ -16,12 +16,12 @@
     "file": "assets/@remix-run-CeDW-7A3.js",
     "name": "@remix-run"
   },
-  "_AccessibleColors-BtfFnYcW.js": {
-    "file": "assets/AccessibleColors-BtfFnYcW.js",
+  "_AccessibleColors-CJLRwcwa.js": {
+    "file": "assets/AccessibleColors-CJLRwcwa.js",
     "name": "AccessibleColors",
     "isDynamicEntry": true,
     "imports": [
-      "index.html",
+      "_main-_oimaMDG.js",
       "_react-B6RMQhYh.js",
       "_react-icons-CHi_nPWV.js",
       "_react-router-dom-_ze6FMLH.js"
@@ -37,24 +37,24 @@
     "file": "assets/AccessibleColors-DSwXUHAd.css",
     "src": "_AccessibleColors-DSwXUHAd.css"
   },
-  "_AdditionalInfo-B7njHQWB.js": {
-    "file": "assets/AdditionalInfo-B7njHQWB.js",
+  "_AdditionalInfo-BIGQZlly.js": {
+    "file": "assets/AdditionalInfo-BIGQZlly.js",
     "name": "AdditionalInfo",
     "imports": [
       "_react-B6RMQhYh.js",
-      "index.html"
+      "_main-_oimaMDG.js"
     ]
   },
   "_ButtonToggle-CsVqfVrg.css": {
     "file": "assets/ButtonToggle-CsVqfVrg.css",
     "src": "_ButtonToggle-CsVqfVrg.css"
   },
-  "_ButtonToggle-Dv_a2E7u.js": {
-    "file": "assets/ButtonToggle-Dv_a2E7u.js",
+  "_ButtonToggle-D22bLnDR.js": {
+    "file": "assets/ButtonToggle-D22bLnDR.js",
     "name": "ButtonToggle",
     "imports": [
       "_react-B6RMQhYh.js",
-      "index.html"
+      "_main-_oimaMDG.js"
     ],
     "css": [
       "assets/ButtonToggle-CsVqfVrg.css"
@@ -64,12 +64,12 @@
     "file": "assets/FormMulti-BD0dd4mW.css",
     "src": "_FormMulti-BD0dd4mW.css"
   },
-  "_FormMulti-M9Vojyxd.js": {
-    "file": "assets/FormMulti-M9Vojyxd.js",
+  "_FormMulti-MLoOnH_Q.js": {
+    "file": "assets/FormMulti-MLoOnH_Q.js",
     "name": "FormMulti",
     "isDynamicEntry": true,
     "imports": [
-      "index.html",
+      "_main-_oimaMDG.js",
       "_react-B6RMQhYh.js",
       "_react-icons-CHi_nPWV.js",
       "_axios-ngrFHoWO.js"
@@ -90,12 +90,12 @@
       "_react-B6RMQhYh.js"
     ]
   },
-  "_Images-Cecg8HgV.js": {
-    "file": "assets/Images-Cecg8HgV.js",
+  "_Images-Ct2FV7S6.js": {
+    "file": "assets/Images-Ct2FV7S6.js",
     "name": "Images",
     "isDynamicEntry": true,
     "imports": [
-      "index.html",
+      "_main-_oimaMDG.js",
       "_react-B6RMQhYh.js",
       "_axios-ngrFHoWO.js",
       "_react-icons-CHi_nPWV.js"
@@ -106,12 +106,12 @@
       "src/components/Images/components/Video.tsx"
     ]
   },
-  "_Jokes-BQuHEBB2.js": {
-    "file": "assets/Jokes-BQuHEBB2.js",
+  "_Jokes-Bha9-SQf.js": {
+    "file": "assets/Jokes-Bha9-SQf.js",
     "name": "Jokes",
     "isDynamicEntry": true,
     "imports": [
-      "index.html",
+      "_main-_oimaMDG.js",
       "_react-B6RMQhYh.js",
       "_react-redux-CQ4WY322.js",
       "_axios-ngrFHoWO.js",
@@ -130,12 +130,16 @@
     "file": "assets/Jokes-D9DZFa4V.css",
     "src": "_Jokes-D9DZFa4V.css"
   },
-  "_Memory-BcpqiZKs.js": {
-    "file": "assets/Memory-BcpqiZKs.js",
+  "_Memory-DBNEoXmc.css": {
+    "file": "assets/Memory-DBNEoXmc.css",
+    "src": "_Memory-DBNEoXmc.css"
+  },
+  "_Memory-DLqNTlbS.js": {
+    "file": "assets/Memory-DLqNTlbS.js",
     "name": "Memory",
     "isDynamicEntry": true,
     "imports": [
-      "index.html",
+      "_main-_oimaMDG.js",
       "_react-B6RMQhYh.js",
       "_react-icons-CHi_nPWV.js",
       "_axios-ngrFHoWO.js",
@@ -150,10 +154,6 @@
     "css": [
       "assets/Memory-DBNEoXmc.css"
     ]
-  },
-  "_Memory-DBNEoXmc.css": {
-    "file": "assets/Memory-DBNEoXmc.css",
-    "src": "_Memory-DBNEoXmc.css"
   },
   "_axios-ngrFHoWO.js": {
     "file": "assets/axios-ngrFHoWO.js",
@@ -196,12 +196,72 @@
       "_dom-to-image-more-sr33WCep.js"
     ]
   },
-  "_poems-bs1mEwct.js": {
-    "file": "assets/poems-bs1mEwct.js",
+  "_main-DPWMNifH.css": {
+    "file": "assets/main-DPWMNifH.css",
+    "src": "_main-DPWMNifH.css"
+  },
+  "_main-_oimaMDG.js": {
+    "file": "assets/main-_oimaMDG.js",
+    "name": "main",
+    "imports": [
+      "_react-B6RMQhYh.js",
+      "_react-dom-DKT7fI1i.js",
+      "_react-redux-CQ4WY322.js",
+      "_@reduxjs-CJhiLCiq.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_hoist-non-react-statics-C-Qo8PK8.js",
+      "_react-is-BwqtTtay.js",
+      "_react-router-hVrguzn3.js",
+      "_react-helmet-async-DQ_5QNst.js"
+    ],
+    "dynamicImports": [
+      "src/components/PortfolioInfo/PortfolioInfo.tsx",
+      "src/components/About/ColorComponent.tsx",
+      "src/components/Cart/Cart.tsx",
+      "_FormMulti-MLoOnH_Q.js",
+      "src/components/Store/components/Order.tsx",
+      "src/components/Store/components/Orders.tsx",
+      "src/components/Blob/Blobs.tsx",
+      "_AccessibleColors-CJLRwcwa.js",
+      "src/components/DragAndDrop/components/CardsContainer.tsx",
+      "_FormMulti-MLoOnH_Q.js",
+      "_Images-Ct2FV7S6.js",
+      "_Jokes-Bha9-SQf.js",
+      "_Memory-DLqNTlbS.js",
+      "src/components/Todo/TodoApp.tsx",
+      "src/components/Store/Store.tsx",
+      "src/components/UserEdit/PasswordEdit.tsx",
+      "src/components/UserEdit/UsernameEdit.tsx",
+      "src/components/UserEdit/LanguageEdit.tsx",
+      "src/components/UserEdit/NicknameEdit.tsx",
+      "src/components/Newest/Newest.tsx",
+      "src/components/Quiz/QuizStart.tsx",
+      "src/components/Quiz/QuizQuestion.tsx",
+      "src/components/Quiz/QuizFinished.tsx",
+      "src/components/NavPortfolio/NavPortfolio.tsx",
+      "src/components/Footer/Footer.tsx",
+      "src/components/ScrollToTop/ScrollToTop.tsx"
+    ],
+    "css": [
+      "assets/main-DPWMNifH.css"
+    ],
+    "assets": [
+      "assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
+      "assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
+      "assets/blob-birb-rIQ95fzW.png",
+      "assets/blob-fish-hK19U7c_.png",
+      "assets/bubbly-fish-B6j5IlMc.png",
+      "assets/blob-dog-BUAU-ueh.png"
+    ]
+  },
+  "_poems-jiD5jmyY.js": {
+    "file": "assets/poems-jiD5jmyY.js",
     "name": "poems",
     "imports": [
       "_react-B6RMQhYh.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_axios-ngrFHoWO.js"
     ]
   },
@@ -324,71 +384,33 @@
     "name": "uuid"
   },
   "index.html": {
-    "file": "assets/app-C3K_VWIj.js",
+    "file": "assets/app-BT0KeowM.js",
     "name": "app",
     "src": "index.html",
     "isEntry": true,
     "imports": [
+      "_main-_oimaMDG.js",
       "_react-B6RMQhYh.js",
+      "_dom-to-image-more-sr33WCep.js",
       "_react-dom-DKT7fI1i.js",
+      "_scheduler-C323NY8X.js",
       "_react-redux-CQ4WY322.js",
-      "_@reduxjs-CJhiLCiq.js",
-      "_axios-ngrFHoWO.js",
-      "_react-icons-CHi_nPWV.js",
-      "_react-router-dom-_ze6FMLH.js",
       "_hoist-non-react-statics-C-Qo8PK8.js",
       "_react-is-BwqtTtay.js",
-      "_react-router-hVrguzn3.js",
-      "_react-helmet-async-DQ_5QNst.js",
-      "_dom-to-image-more-sr33WCep.js",
-      "_scheduler-C323NY8X.js",
       "_use-sync-external-store-w3cjJFH7.js",
+      "_@reduxjs-CJhiLCiq.js",
       "_redux-BXkGT1VS.js",
       "_immer-BGhKXxrG.js",
       "_redux-thunk-ClJT1hhx.js",
+      "_axios-ngrFHoWO.js",
+      "_react-icons-CHi_nPWV.js",
+      "_react-router-dom-_ze6FMLH.js",
+      "_react-router-hVrguzn3.js",
       "_@remix-run-CeDW-7A3.js",
+      "_react-helmet-async-DQ_5QNst.js",
       "_react-fast-compare-BHbKlhN4.js",
       "_invariant-B_pwkeTo.js",
       "_shallowequal-C7ef0Lra.js"
-    ],
-    "dynamicImports": [
-      "src/components/PortfolioInfo/PortfolioInfo.tsx",
-      "src/components/About/ColorComponent.tsx",
-      "src/components/Cart/Cart.tsx",
-      "_FormMulti-M9Vojyxd.js",
-      "src/components/Store/components/Order.tsx",
-      "src/components/Store/components/Orders.tsx",
-      "src/components/Blob/Blobs.tsx",
-      "_AccessibleColors-BtfFnYcW.js",
-      "src/components/DragAndDrop/components/CardsContainer.tsx",
-      "_FormMulti-M9Vojyxd.js",
-      "_Images-Cecg8HgV.js",
-      "_Jokes-BQuHEBB2.js",
-      "_Memory-BcpqiZKs.js",
-      "src/components/Todo/TodoApp.tsx",
-      "src/components/Store/Store.tsx",
-      "src/components/UserEdit/PasswordEdit.tsx",
-      "src/components/UserEdit/UsernameEdit.tsx",
-      "src/components/UserEdit/LanguageEdit.tsx",
-      "src/components/UserEdit/NicknameEdit.tsx",
-      "src/components/Newest/Newest.tsx",
-      "src/components/Quiz/QuizStart.tsx",
-      "src/components/Quiz/QuizQuestion.tsx",
-      "src/components/Quiz/QuizFinished.tsx",
-      "src/components/NavPortfolio/NavPortfolio.tsx",
-      "src/components/Footer/Footer.tsx",
-      "src/components/ScrollToTop/ScrollToTop.tsx"
-    ],
-    "css": [
-      "assets/app-DPWMNifH.css"
-    ],
-    "assets": [
-      "assets/JLA_Jenniina-light-3-480x198-WevMf7uo.png",
-      "assets/JLA_Jenniina-3-480x198-Bu0NpiM3.png",
-      "assets/blob-birb-rIQ95fzW.png",
-      "assets/blob-fish-hK19U7c_.png",
-      "assets/bubbly-fish-B6j5IlMc.png",
-      "assets/blob-dog-BUAU-ueh.png"
     ]
   },
   "src/assets/JLA_Jenniina-3-480x198.png": {
@@ -416,13 +438,13 @@
     "src": "src/assets/bubbly-fish.png"
   },
   "src/components/About/ColorComponent.tsx": {
-    "file": "assets/ColorComponent-BkGQVtBR.js",
+    "file": "assets/ColorComponent-ZwQHTPPh.js",
     "name": "ColorComponent",
     "src": "src/components/About/ColorComponent.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-dom-DKT7fI1i.js",
       "_scheduler-C323NY8X.js",
@@ -446,14 +468,14 @@
     ]
   },
   "src/components/AccessibleColors/components/ColorsInput.tsx": {
-    "file": "assets/ColorsInput-v6i7gz82.js",
+    "file": "assets/ColorsInput-V5OiUZID.js",
     "name": "ColorsInput",
     "src": "src/components/AccessibleColors/components/ColorsInput.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
-      "_AccessibleColors-BtfFnYcW.js",
-      "index.html",
+      "_AccessibleColors-CJLRwcwa.js",
+      "_main-_oimaMDG.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-icons-CHi_nPWV.js",
       "_react-router-dom-_ze6FMLH.js",
@@ -477,12 +499,12 @@
     ]
   },
   "src/components/Blob/Blobs.tsx": {
-    "file": "assets/Blobs-1dZPwuZr.js",
+    "file": "assets/Blobs-4_1Yue4y.js",
     "name": "Blobs",
     "src": "src/components/Blob/Blobs.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "index.html",
+      "_main-_oimaMDG.js",
       "_react-B6RMQhYh.js",
       "_react-dom-DKT7fI1i.js",
       "_dom-to-image-more-sr33WCep.js",
@@ -510,13 +532,13 @@
     ]
   },
   "src/components/Blob/components/ColorBlocks.tsx": {
-    "file": "assets/ColorBlocks-DBQCamrl.js",
+    "file": "assets/ColorBlocks-Bf0nNaSv.js",
     "name": "ColorBlocks",
     "src": "src/components/Blob/components/ColorBlocks.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-dom-DKT7fI1i.js",
       "_scheduler-C323NY8X.js",
@@ -540,12 +562,12 @@
     ]
   },
   "src/components/Blob/components/DragContainer.tsx": {
-    "file": "assets/DragContainer-CId8P2Rr.js",
+    "file": "assets/DragContainer-ClQ3CcKU.js",
     "name": "DragContainer",
     "src": "src/components/Blob/components/DragContainer.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "index.html",
+      "_main-_oimaMDG.js",
       "_react-B6RMQhYh.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-icons-CHi_nPWV.js",
@@ -575,13 +597,13 @@
     ]
   },
   "src/components/Blob/components/DragLayer.tsx": {
-    "file": "assets/DragLayer-BKqnTheE.js",
+    "file": "assets/DragLayer-C7ZoavWe.js",
     "name": "DragLayer",
     "src": "src/components/Blob/components/DragLayer.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-dom-DKT7fI1i.js",
       "_scheduler-C323NY8X.js",
@@ -605,12 +627,12 @@
     ]
   },
   "src/components/Blob/components/DragLayers.tsx": {
-    "file": "assets/DragLayers-DXrvDq_r.js",
+    "file": "assets/DragLayers-BQ8ZrMAm.js",
     "name": "DragLayers",
     "src": "src/components/Blob/components/DragLayers.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "index.html",
+      "_main-_oimaMDG.js",
       "_react-B6RMQhYh.js",
       "_react-dom-DKT7fI1i.js",
       "_dom-to-image-more-sr33WCep.js",
@@ -638,13 +660,13 @@
     ]
   },
   "src/components/Blob/components/Sliders.tsx": {
-    "file": "assets/Sliders-CcPRhOnI.js",
+    "file": "assets/Sliders-D3cbz2kd.js",
     "name": "Sliders",
     "src": "src/components/Blob/components/Sliders.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-dom-DKT7fI1i.js",
       "_scheduler-C323NY8X.js",
@@ -668,17 +690,17 @@
     ]
   },
   "src/components/Cart/Cart.tsx": {
-    "file": "assets/Cart-Chn7cmsp.js",
+    "file": "assets/Cart-DHOvtwaK.js",
     "name": "Cart",
     "src": "src/components/Cart/Cart.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
-      "_AdditionalInfo-B7njHQWB.js",
-      "index.html",
+      "_AdditionalInfo-BIGQZlly.js",
+      "_main-_oimaMDG.js",
       "_cart-C501ueEG.js",
       "_react-router-dom-_ze6FMLH.js",
-      "_ButtonToggle-Dv_a2E7u.js",
+      "_ButtonToggle-D22bLnDR.js",
       "_react-icons-CHi_nPWV.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-dom-DKT7fI1i.js",
@@ -704,13 +726,13 @@
     ]
   },
   "src/components/DragAndDrop/components/CardsContainer.tsx": {
-    "file": "assets/CardsContainer-BxwYd7kO.js",
+    "file": "assets/CardsContainer-C_PBF1TV.js",
     "name": "CardsContainer",
     "src": "src/components/DragAndDrop/components/CardsContainer.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_react-icons-CHi_nPWV.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-dom-DKT7fI1i.js",
@@ -734,7 +756,7 @@
     ]
   },
   "src/components/Footer/Footer.tsx": {
-    "file": "assets/Footer-ByO1KFxP.js",
+    "file": "assets/Footer-C_9n662U.js",
     "name": "Footer",
     "src": "src/components/Footer/Footer.tsx",
     "isDynamicEntry": true,
@@ -742,7 +764,7 @@
       "_react-B6RMQhYh.js",
       "_react-icons-CHi_nPWV.js",
       "_react-router-dom-_ze6FMLH.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-dom-DKT7fI1i.js",
       "_scheduler-C323NY8X.js",
@@ -764,15 +786,15 @@
     ]
   },
   "src/components/FormMulti/components/ExtrasForm.tsx": {
-    "file": "assets/ExtrasForm-DQ-Mecr5.js",
+    "file": "assets/ExtrasForm-BxcAW7sg.js",
     "name": "ExtrasForm",
     "src": "src/components/FormMulti/components/ExtrasForm.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
       "_FormWrapper-BoFVVhKH.js",
-      "_FormMulti-M9Vojyxd.js",
-      "index.html",
+      "_FormMulti-MLoOnH_Q.js",
+      "_main-_oimaMDG.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-icons-CHi_nPWV.js",
       "_axios-ngrFHoWO.js",
@@ -796,14 +818,14 @@
     ]
   },
   "src/components/FormMulti/components/InitialForm.tsx": {
-    "file": "assets/InitialForm-qLujHcD9.js",
+    "file": "assets/InitialForm-C0637OP6.js",
     "name": "InitialForm",
     "src": "src/components/FormMulti/components/InitialForm.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
       "_FormWrapper-BoFVVhKH.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-dom-DKT7fI1i.js",
       "_scheduler-C323NY8X.js",
@@ -827,15 +849,15 @@
     ]
   },
   "src/components/FormMulti/components/MessageForm.tsx": {
-    "file": "assets/MessageForm-Cve9dOG4.js",
+    "file": "assets/MessageForm-CKgAoW84.js",
     "name": "MessageForm",
     "src": "src/components/FormMulti/components/MessageForm.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
       "_FormWrapper-BoFVVhKH.js",
-      "_FormMulti-M9Vojyxd.js",
-      "index.html",
+      "_FormMulti-MLoOnH_Q.js",
+      "_main-_oimaMDG.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-icons-CHi_nPWV.js",
       "_axios-ngrFHoWO.js",
@@ -859,15 +881,15 @@
     ]
   },
   "src/components/Images/components/Image.tsx": {
-    "file": "assets/Image-DABrlkBC.js",
+    "file": "assets/Image-BbKaI3iM.js",
     "name": "Image",
     "src": "src/components/Images/components/Image.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
-      "index.html",
-      "_Images-Cecg8HgV.js",
-      "_poems-bs1mEwct.js",
+      "_main-_oimaMDG.js",
+      "_Images-Ct2FV7S6.js",
+      "_poems-jiD5jmyY.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-dom-DKT7fI1i.js",
       "_scheduler-C323NY8X.js",
@@ -891,15 +913,15 @@
     ]
   },
   "src/components/Images/components/Video.tsx": {
-    "file": "assets/Video-B9kGVNu3.js",
+    "file": "assets/Video-DiS5t0mm.js",
     "name": "Video",
     "src": "src/components/Images/components/Video.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
-      "index.html",
-      "_Images-Cecg8HgV.js",
-      "_poems-bs1mEwct.js",
+      "_main-_oimaMDG.js",
+      "_Images-Ct2FV7S6.js",
+      "_poems-jiD5jmyY.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-dom-DKT7fI1i.js",
       "_scheduler-C323NY8X.js",
@@ -923,14 +945,14 @@
     ]
   },
   "src/components/Jokes/components/FormJoke.tsx": {
-    "file": "assets/FormJoke-BvazehuQ.js",
+    "file": "assets/FormJoke-tny964sC.js",
     "name": "FormJoke",
     "src": "src/components/Jokes/components/FormJoke.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "index.html",
+      "_main-_oimaMDG.js",
       "_react-B6RMQhYh.js",
-      "_ButtonToggle-Dv_a2E7u.js",
+      "_ButtonToggle-D22bLnDR.js",
       "_react-icons-CHi_nPWV.js",
       "_react-dom-DKT7fI1i.js",
       "_dom-to-image-more-sr33WCep.js",
@@ -957,13 +979,13 @@
     ]
   },
   "src/components/Jokes/components/Joke.tsx": {
-    "file": "assets/Joke-XqirHPUl.js",
+    "file": "assets/Joke-DByEA4Lu.js",
     "name": "Joke",
     "src": "src/components/Jokes/components/Joke.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-dom-DKT7fI1i.js",
       "_scheduler-C323NY8X.js",
@@ -987,14 +1009,14 @@
     ]
   },
   "src/components/Jokes/components/JokeSubmit.tsx": {
-    "file": "assets/JokeSubmit-DD_eCZkC.js",
+    "file": "assets/JokeSubmit-BazZ7GK2.js",
     "name": "JokeSubmit",
     "src": "src/components/Jokes/components/JokeSubmit.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
-      "index.html",
-      "_ButtonToggle-Dv_a2E7u.js",
+      "_main-_oimaMDG.js",
+      "_ButtonToggle-D22bLnDR.js",
       "_uuid-BOvFkHkt.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-dom-DKT7fI1i.js",
@@ -1019,17 +1041,17 @@
     ]
   },
   "src/components/Jokes/components/UserJokes.tsx": {
-    "file": "assets/UserJokes-Dv-VJbbo.js",
+    "file": "assets/UserJokes-kpmKsmh6.js",
     "name": "UserJokes",
     "src": "src/components/Jokes/components/UserJokes.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
       "_react-icons-CHi_nPWV.js",
-      "index.html",
-      "_ButtonToggle-Dv_a2E7u.js",
+      "_main-_oimaMDG.js",
+      "_ButtonToggle-D22bLnDR.js",
       "_react-redux-CQ4WY322.js",
-      "_Jokes-BQuHEBB2.js",
+      "_Jokes-Bha9-SQf.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-dom-DKT7fI1i.js",
       "_scheduler-C323NY8X.js",
@@ -1051,16 +1073,16 @@
     ]
   },
   "src/components/Memory/components/CardTypeButton.tsx": {
-    "file": "assets/CardTypeButton-BXhSZbKT.js",
+    "file": "assets/CardTypeButton-BCkxJKl0.js",
     "name": "CardTypeButton",
     "src": "src/components/Memory/components/CardTypeButton.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
-      "_Memory-BcpqiZKs.js",
+      "_Memory-DLqNTlbS.js",
       "_react-icons-CHi_nPWV.js",
       "_dom-to-image-more-sr33WCep.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_react-dom-DKT7fI1i.js",
       "_scheduler-C323NY8X.js",
       "_react-redux-CQ4WY322.js",
@@ -1082,14 +1104,14 @@
     ]
   },
   "src/components/Memory/components/GameGrid.tsx": {
-    "file": "assets/GameGrid-BvKADbFi.js",
+    "file": "assets/GameGrid-BnkXoqhP.js",
     "name": "GameGrid",
     "src": "src/components/Memory/components/GameGrid.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
-      "_Memory-BcpqiZKs.js",
-      "index.html",
+      "_Memory-DLqNTlbS.js",
+      "_main-_oimaMDG.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-icons-CHi_nPWV.js",
       "_axios-ngrFHoWO.js",
@@ -1113,15 +1135,15 @@
     ]
   },
   "src/components/Memory/components/GridSizeButton.tsx": {
-    "file": "assets/GridSizeButton-DHQNOUw4.js",
+    "file": "assets/GridSizeButton-CuRNP29F.js",
     "name": "GridSizeButton",
     "src": "src/components/Memory/components/GridSizeButton.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
-      "_Memory-BcpqiZKs.js",
+      "_Memory-DLqNTlbS.js",
       "_dom-to-image-more-sr33WCep.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_react-dom-DKT7fI1i.js",
       "_scheduler-C323NY8X.js",
       "_react-redux-CQ4WY322.js",
@@ -1144,14 +1166,14 @@
     ]
   },
   "src/components/Memory/components/PlayerAmountButton.tsx": {
-    "file": "assets/PlayerAmountButton-DDABDREB.js",
+    "file": "assets/PlayerAmountButton-BMsUX9wO.js",
     "name": "PlayerAmountButton",
     "src": "src/components/Memory/components/PlayerAmountButton.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
-      "_Memory-BcpqiZKs.js",
-      "index.html",
+      "_Memory-DLqNTlbS.js",
+      "_main-_oimaMDG.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-icons-CHi_nPWV.js",
       "_axios-ngrFHoWO.js",
@@ -1175,7 +1197,7 @@
     ]
   },
   "src/components/NavPortfolio/NavPortfolio.tsx": {
-    "file": "assets/NavPortfolio-CQkyH-bw.js",
+    "file": "assets/NavPortfolio-DPK3JSSM.js",
     "name": "NavPortfolio",
     "src": "src/components/NavPortfolio/NavPortfolio.tsx",
     "isDynamicEntry": true,
@@ -1183,7 +1205,7 @@
       "_react-B6RMQhYh.js",
       "_react-router-dom-_ze6FMLH.js",
       "_react-icons-CHi_nPWV.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_react-router-hVrguzn3.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-dom-DKT7fI1i.js",
@@ -1205,14 +1227,14 @@
     ]
   },
   "src/components/Newest/Newest.tsx": {
-    "file": "assets/Newest-BmkmCiNW.js",
+    "file": "assets/Newest-Cw4Et2KD.js",
     "name": "Newest",
     "src": "src/components/Newest/Newest.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
       "_react-router-dom-_ze6FMLH.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_react-icons-CHi_nPWV.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-dom-DKT7fI1i.js",
@@ -1235,13 +1257,13 @@
     ]
   },
   "src/components/PortfolioInfo/PortfolioInfo.tsx": {
-    "file": "assets/PortfolioInfo-Db6nBnQ4.js",
+    "file": "assets/PortfolioInfo-B2xgVVXi.js",
     "name": "PortfolioInfo",
     "src": "src/components/PortfolioInfo/PortfolioInfo.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_react-router-dom-_ze6FMLH.js",
       "_react-icons-CHi_nPWV.js",
       "_dom-to-image-more-sr33WCep.js",
@@ -1265,12 +1287,12 @@
     ]
   },
   "src/components/Quiz/QuizFinished.tsx": {
-    "file": "assets/QuizFinished-7bLXN03r.js",
+    "file": "assets/QuizFinished-BjPP86B6.js",
     "name": "QuizFinished",
     "src": "src/components/Quiz/QuizFinished.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "index.html",
+      "_main-_oimaMDG.js",
       "_react-B6RMQhYh.js",
       "_react-redux-CQ4WY322.js",
       "_quiz.module-DCrCubZg.js",
@@ -1299,12 +1321,12 @@
     ]
   },
   "src/components/Quiz/QuizQuestion.tsx": {
-    "file": "assets/QuizQuestion-CBHPvI_x.js",
+    "file": "assets/QuizQuestion-6tWw_ezm.js",
     "name": "QuizQuestion",
     "src": "src/components/Quiz/QuizQuestion.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "index.html",
+      "_main-_oimaMDG.js",
       "_react-B6RMQhYh.js",
       "_react-redux-CQ4WY322.js",
       "_quiz.module-DCrCubZg.js",
@@ -1333,12 +1355,12 @@
     ]
   },
   "src/components/Quiz/QuizStart.tsx": {
-    "file": "assets/QuizStart-DzmU6des.js",
+    "file": "assets/QuizStart-DX_cqkqa.js",
     "name": "QuizStart",
     "src": "src/components/Quiz/QuizStart.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "index.html",
+      "_main-_oimaMDG.js",
       "_react-B6RMQhYh.js",
       "_react-redux-CQ4WY322.js",
       "_quiz.module-DCrCubZg.js",
@@ -1367,13 +1389,13 @@
     ]
   },
   "src/components/Quiz/components/LoginRegisterCombo.tsx": {
-    "file": "assets/LoginRegisterCombo-CGNbqp_R.js",
+    "file": "assets/LoginRegisterCombo-mGZPCNJW.js",
     "name": "LoginRegisterCombo",
     "src": "src/components/Quiz/components/LoginRegisterCombo.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_react-redux-CQ4WY322.js",
       "_quiz.module-DCrCubZg.js",
       "_react-router-dom-_ze6FMLH.js",
@@ -1398,14 +1420,14 @@
     ]
   },
   "src/components/Quiz/components/Timer.tsx": {
-    "file": "assets/Timer-BmlsnVaC.js",
+    "file": "assets/Timer-DcmNzGBz.js",
     "name": "Timer",
     "src": "src/components/Quiz/components/Timer.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
       "_react-redux-CQ4WY322.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_quiz.module-DCrCubZg.js",
       "_react-router-hVrguzn3.js",
       "_dom-to-image-more-sr33WCep.js",
@@ -1429,14 +1451,14 @@
     ]
   },
   "src/components/ScrollToTop/ScrollToTop.tsx": {
-    "file": "assets/ScrollToTop-BhWrHEL7.js",
+    "file": "assets/ScrollToTop-CpdfUc3R.js",
     "name": "ScrollToTop",
     "src": "src/components/ScrollToTop/ScrollToTop.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
       "_react-icons-CHi_nPWV.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_react-router-hVrguzn3.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-dom-DKT7fI1i.js",
@@ -1462,16 +1484,16 @@
     ]
   },
   "src/components/Store/Store.tsx": {
-    "file": "assets/Store-ChEpGqhR.js",
+    "file": "assets/Store-D7-r4Xho.js",
     "name": "Store",
     "src": "src/components/Store/Store.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_react-router-dom-_ze6FMLH.js",
       "_react-icons-CHi_nPWV.js",
-      "_AdditionalInfo-B7njHQWB.js",
+      "_AdditionalInfo-BIGQZlly.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-dom-DKT7fI1i.js",
       "_scheduler-C323NY8X.js",
@@ -1493,13 +1515,13 @@
     ]
   },
   "src/components/Store/components/Order.tsx": {
-    "file": "assets/Order-B8pBaaX-.js",
+    "file": "assets/Order-Us-_RXx4.js",
     "name": "Order",
     "src": "src/components/Store/components/Order.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_cart-C501ueEG.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-dom-DKT7fI1i.js",
@@ -1524,14 +1546,14 @@
     ]
   },
   "src/components/Store/components/Orders.tsx": {
-    "file": "assets/Orders-D5fz4BwX.js",
+    "file": "assets/Orders-CatF0WdQ.js",
     "name": "Orders",
     "src": "src/components/Store/components/Orders.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
       "_cart-C501ueEG.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_dom-to-image-more-sr33WCep.js",
       "_axios-ngrFHoWO.js",
       "_react-dom-DKT7fI1i.js",
@@ -1555,12 +1577,12 @@
     ]
   },
   "src/components/Todo/TodoApp.tsx": {
-    "file": "assets/TodoApp-DrMA91pW.js",
+    "file": "assets/TodoApp-Dhwi9q9I.js",
     "name": "TodoApp",
     "src": "src/components/Todo/TodoApp.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "index.html",
+      "_main-_oimaMDG.js",
       "_react-B6RMQhYh.js",
       "_react-redux-CQ4WY322.js",
       "_react-icons-CHi_nPWV.js",
@@ -1589,13 +1611,13 @@
     ]
   },
   "src/components/Todo/components/TodoItem.tsx": {
-    "file": "assets/TodoItem-Ccx8Eaxf.js",
+    "file": "assets/TodoItem-DBo3zta3.js",
     "name": "TodoItem",
     "src": "src/components/Todo/components/TodoItem.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_react-icons-CHi_nPWV.js",
       "_react-dom-DKT7fI1i.js",
       "_dom-to-image-more-sr33WCep.js",
@@ -1619,12 +1641,12 @@
     ]
   },
   "src/components/Todo/components/TodoList.tsx": {
-    "file": "assets/TodoList-Bv1QP1H4.js",
+    "file": "assets/TodoList-D1136FRw.js",
     "name": "TodoList",
     "src": "src/components/Todo/components/TodoList.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "index.html",
+      "_main-_oimaMDG.js",
       "_react-B6RMQhYh.js",
       "_react-dom-DKT7fI1i.js",
       "_dom-to-image-more-sr33WCep.js",
@@ -1652,13 +1674,13 @@
     ]
   },
   "src/components/UserEdit/LanguageEdit.tsx": {
-    "file": "assets/LanguageEdit-BJqMzFnI.js",
+    "file": "assets/LanguageEdit-Bs3CU5D9.js",
     "name": "LanguageEdit",
     "src": "src/components/UserEdit/LanguageEdit.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_edit.module-3NLXhYEv.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-dom-DKT7fI1i.js",
@@ -1683,13 +1705,13 @@
     ]
   },
   "src/components/UserEdit/NicknameEdit.tsx": {
-    "file": "assets/NicknameEdit-BKrfdjx2.js",
+    "file": "assets/NicknameEdit-CM7lt15h.js",
     "name": "NicknameEdit",
     "src": "src/components/UserEdit/NicknameEdit.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_edit.module-3NLXhYEv.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-dom-DKT7fI1i.js",
@@ -1714,13 +1736,13 @@
     ]
   },
   "src/components/UserEdit/PasswordEdit.tsx": {
-    "file": "assets/PasswordEdit-B-91F1CD.js",
+    "file": "assets/PasswordEdit-DlWcSQ2e.js",
     "name": "PasswordEdit",
     "src": "src/components/UserEdit/PasswordEdit.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_edit.module-3NLXhYEv.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-dom-DKT7fI1i.js",
@@ -1745,13 +1767,13 @@
     ]
   },
   "src/components/UserEdit/UsernameEdit.tsx": {
-    "file": "assets/UsernameEdit-CmpJbz4w.js",
+    "file": "assets/UsernameEdit-CkMnQj6t.js",
     "name": "UsernameEdit",
     "src": "src/components/UserEdit/UsernameEdit.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_edit.module-3NLXhYEv.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-dom-DKT7fI1i.js",
@@ -1776,13 +1798,13 @@
     ]
   },
   "src/components/WordCloud/WordCloud.tsx": {
-    "file": "assets/WordCloud-Jd-0d4PU.js",
+    "file": "assets/WordCloud-C27bFoq7.js",
     "name": "WordCloud",
     "src": "src/components/WordCloud/WordCloud.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-B6RMQhYh.js",
-      "index.html",
+      "_main-_oimaMDG.js",
       "_dom-to-image-more-sr33WCep.js",
       "_react-dom-DKT7fI1i.js",
       "_scheduler-C323NY8X.js",
