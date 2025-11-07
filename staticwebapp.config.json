@@ -6,14 +6,23 @@
   },
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/assets/*", "*.{css,scss,js,png,gif,ico,jpg,svg}"]
+    "exclude": [
+      "/assets/*",
+      "*.{css,scss,js,png,gif,ico,jpg,svg,woff,woff2,ttf,eot}"
+    ]
   },
   "routes": [
     {
+      "route": "/assets/*.js",
+      "headers": {
+        "content-type": "application/javascript; charset=utf-8",
+        "cache-control": "max-age=31536000"
+      }
+    },
+    {
       "route": "/assets/*",
       "headers": {
-        "cache-control": "max-age=31536000",
-        "content-type": "text/javascript"
+        "cache-control": "max-age=31536000"
       }
     },
     {
@@ -26,5 +35,6 @@
     "404": {
       "rewrite": "/index.html"
     }
-  }
+  },
+  "trailingSlash": "never"
 }

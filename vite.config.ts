@@ -11,7 +11,7 @@ export default defineConfig({
     {
       ...copy({
         targets: [
-          { src: "routes.json", dest: "dist" },
+          // { src: "routes.json", dest: "dist" },
           { src: "staticwebapp.config.json", dest: "dist" },
         ],
         hook: "writeBundle", // run the plugin after all the files are bundled and written to disk
@@ -49,5 +49,11 @@ export default defineConfig({
       },
     },
     chunkSizeWarningLimit: 550,
+  },
+  ssr: {
+    noExternal: ["react-helmet-async", "@reduxjs/toolkit"],
+  },
+  optimizeDeps: {
+    include: ["react-helmet-async", "@reduxjs/toolkit"],
   },
 });
