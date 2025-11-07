@@ -16,21 +16,21 @@ export default defineConfig({
       }),
       enforce: "post", // run the plugin after all the other plugins
     },
-    // Custom plugin to ensure index.html exists after build
-    {
-      name: "ensure-index-html",
-      writeBundle() {
-        const indexPath = path.resolve("dist", "index.html");
-        const rootIndexPath = path.resolve("index.html");
+    // // Custom plugin to ensure index.html exists after build
+    // {
+    //   name: "ensure-index-html",
+    //   writeBundle() {
+    //     const indexPath = path.resolve("dist", "index.html");
+    //     const rootIndexPath = path.resolve("index.html");
 
-        setTimeout(() => {
-          if (!fs.existsSync(indexPath) && fs.existsSync(rootIndexPath)) {
-            fs.copyFileSync(rootIndexPath, indexPath);
-            console.log("✅ Restored index.html to dist/");
-          }
-        }, 1000); // Wait 1 second after build completes
-      },
-    },
+    //     setTimeout(() => {
+    //       if (!fs.existsSync(indexPath) && fs.existsSync(rootIndexPath)) {
+    //         fs.copyFileSync(rootIndexPath, indexPath);
+    //         console.log("✅ Restored index.html to dist/");
+    //       }
+    //     }, 1000); // Wait 1 second after build completes
+    //   },
+    // },
   ],
   server: {
     host: true,
