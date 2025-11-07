@@ -1,8 +1,6 @@
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import react from "@vitejs/plugin-react-swc";
 import copy from "rollup-plugin-copy";
-import fs from "fs";
-import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -36,9 +34,6 @@ export default defineConfig({
               .split("/")[0]
               .toString();
           }
-          // if (id.includes('src/components')) {
-          //   return id.toString().split('src/components/')[1].split('/')[0].toString()
-          // }
         },
       },
     },
