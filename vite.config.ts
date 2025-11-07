@@ -19,8 +19,8 @@ export default defineConfig({
   },
   base: "/",
   build: {
+    outDir: "dist",
     rollupOptions: {
-      input: "src/main.tsx",
       output: {
         manualChunks(id) {
           if (id.includes("node_modules")) {
@@ -37,5 +37,11 @@ export default defineConfig({
       },
     },
     chunkSizeWarningLimit: 500,
+  },
+  ssr: {
+    noExternal: ["react-helmet-async", "@reduxjs/toolkit"],
+  },
+  optimizeDeps: {
+    include: ["react-helmet-async", "@reduxjs/toolkit"],
   },
 });
