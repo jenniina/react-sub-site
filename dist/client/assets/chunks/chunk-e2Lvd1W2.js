@@ -1,0 +1,1 @@
+const _={confirm:"_confirm_1lwr5_1",content:"_content_1lwr5_31",buttons:"_buttons_1lwr5_59","confirm-btn":"_confirm-btn_1lwr5_89","cancel-btn":"_cancel-btn_1lwr5_105",message:"_message_1lwr5_119"};export{_ as s};

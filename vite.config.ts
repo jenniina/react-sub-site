@@ -30,9 +30,6 @@ export default defineConfig({
   build: {
     outDir: "dist",
     rollupOptions: {
-      // input: {
-      //   main: "index.html",
-      // },
       output: {
         manualChunks(id) {
           if (id.includes("node_modules")) {
@@ -45,6 +42,21 @@ export default defineConfig({
         },
       },
     },
-    chunkSizeWarningLimit: 1050,
+    minify: "terser",
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+        pure_funcs: ["console.log", "console.info", "console.debug"], // Remove specific console methods
+        unused: true,
+        dead_code: true,
+      },
+      mangle: {
+        safari10: true,
+      },
+      format: {
+        comments: false, // Remove all comments
+      },
+    },
   },
 });

@@ -37,6 +37,7 @@
     "@vitejs/plugin-react": "^4.3.4",
     "eslint-plugin-react": "^7.37.5",
     "rollup-plugin-copy": "^3.5.0",
+    "terser": "^5.44.1",
     "typescript": "^4.6.4",
     "vike": "^0.4.245",
     "vite": "^6.0.0"

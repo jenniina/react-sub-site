@@ -1,0 +1,1 @@
+import{j as e}from"./chunk-CAff-kf5.js";function n({title:n,description:r,children:s}){return e.jsx(e.Fragment,{children:e.jsxs("fieldset",{children:[e.jsxs("legend",{children:[" ",n,e.jsxs("p",{children:[" ",r," "]})]}),s]})})}export{n as F};
