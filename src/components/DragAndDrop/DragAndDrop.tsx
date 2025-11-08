@@ -20,12 +20,16 @@ import { Select, SelectOption } from "../Select/Select";
 import useLocalStorage from "../../hooks/useStorage";
 import { LanguageContext } from "../../contexts/LanguageContext";
 import { useConfirm } from "../../contexts/ConfirmContext";
+import { useIsClient, useWindow } from "../../hooks/useSSR";
 
 const CardsContainer = lazy(() => import("./components/CardsContainer"));
 
 const initialStatuses: string[] = ["good", "neutral", "bad"];
 
 export const DragAndDrop = ({ language }: { language: ELanguages }) => {
+  const isClient = useIsClient();
+  const windowObj = useWindow();
+
   const { t } = useContext(LanguageContext)!;
   const confirm = useConfirm();
 
@@ -65,16 +69,17 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
 
   const storedData = statuses
     .map((status) => {
-      const item = window.localStorage.getItem(`DnD-${status}`);
+      if (!isClient || !windowObj) return;
+      const item = windowObj.localStorage.getItem(`DnD-${status}`);
       return item ? JSON.parse(item) : [];
     })
     .flat();
 
   // Generate and inject CSS styles whenever statuses change
   useEffect(() => {
-    const styleElement = document.createElement("style");
+    const styleElement = document?.createElement("style");
     styleElement.id = "dnd-styles";
-    document.head.appendChild(styleElement);
+    document?.head.appendChild(styleElement);
 
     // Disable the link for the current status:
     const generateStyles = (statuses: Status[]) => {
@@ -113,12 +118,12 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     styleElement.innerHTML = styles;
 
     return () => {
-      document.head.removeChild(styleElement);
+      document?.head.removeChild(styleElement);
     };
   }, [statuses]);
 
   const colorNameToHex = (color: string) => {
-    const ctx = document.createElement("canvas").getContext("2d");
+    const ctx = document?.createElement("canvas").getContext("2d");
     if (!ctx) {
       throw new Error("Canvas context not available");
     }
@@ -513,7 +518,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
   };
 
   const isValidColor = (color: string) => {
-    const ctx = document.createElement("canvas").getContext("2d");
+    const ctx = document?.createElement("canvas").getContext("2d");
     if (!ctx) {
       throw new Error("Canvas context not available");
     }

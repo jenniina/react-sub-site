@@ -21,9 +21,6 @@ import { SyntheticEvent, useEffect } from "react";
 import { Select, SelectOption } from "../../components/Select/Select";
 import { options } from "../../utils";
 import { LanguageContext } from "../../contexts/LanguageContext";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
-
 const Jokes = lazy(() => import("../../components/Jokes/Jokes"));
 
 export default function JokesPage({
@@ -70,19 +67,19 @@ export default function JokesPage({
 
   // Set the document language and title
   useEffect(() => {
-    const script = document.createElement("script");
+    const script = document?.createElement("script");
     script.type = "text/javascript";
-    script.innerHTML = `document.documentElement.lang = '${language}';`;
-    document.head.appendChild(script);
-    document.title = title;
+    script.innerHTML = `document?.documentElement.lang = '${language}';`;
+    document?.head.appendChild(script);
+    document ? (document.title = title) : null;
     return () => {
-      document.head.removeChild(script);
+      document?.head.removeChild(script);
     };
   }, [language, title]);
 
   const handleSkipToJokes = (e: SyntheticEvent) => {
     e.preventDefault();
-    const anchor = document.querySelector("#saved");
+    const anchor = document?.querySelector("#saved");
     if (anchor) {
       anchor.scrollIntoView({ behavior: "smooth" });
     }
@@ -90,7 +87,11 @@ export default function JokesPage({
 
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/*  <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>
           {t("Jokes")} | {t("TheComediansCompanion")}
         </title>
@@ -109,7 +110,7 @@ export default function JokesPage({
           content={`https://react.jenniina.fi/portfolio/jokes`}
         />
         <meta property="og:type" content="website" />
-      </Helmet>
+      </Helmet> */}
       <div
         className={`${heading
           .replace(/\s+/g, "-")

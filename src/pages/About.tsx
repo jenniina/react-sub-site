@@ -5,9 +5,6 @@ import styles from "./css/about.module.css";
 import { IoSettingsSharp } from "react-icons/io5";
 import { ELanguages } from "../types";
 import { LanguageContext } from "../contexts/LanguageContext";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
-
 const ColorComponent = lazy(() => import("../components/About/ColorComponent"));
 
 export type colorProps = {
@@ -69,7 +66,11 @@ export default function About({
 
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/* <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>{t("About")} | React, Node.js, Express, MongoDB</title>
         <meta
           name="description"
@@ -86,7 +87,7 @@ export default function About({
         />
         <meta property="og:url" content={`https://react.jenniina.fi/about`} />
         <meta property="og:type" content="website" />
-      </Helmet>
+      </Helmet> **/}
       <div className={`about ${type} ${lightTheme ? styles.light : ""}`}>
         <div>
           <section className={`card ${styles.section}`}>

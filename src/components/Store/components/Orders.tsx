@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import cartService from "../../../services/cart";
 import styles from "../store.module.css";
 import selectStyles from "../../Select/select.module.css";
@@ -18,7 +18,7 @@ interface Props {
   user: IUser;
   statusOptions: SelectOption[];
   paidOptions: SelectOption[];
-  splitToLines: (details: string) => JSX.Element[];
+  splitToLines: (details: string) => React.JSX.Element[];
   paidStatus: { [key in paid]: string };
   itemStatus: (status: status) => string;
   info: (key: keyof IInfo) => string;

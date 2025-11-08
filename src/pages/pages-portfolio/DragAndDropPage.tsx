@@ -4,9 +4,6 @@ import { ELanguages } from "../../types";
 import Accordion from "../../components/Accordion/Accordion";
 import { useContext } from "react";
 import { LanguageContext } from "../../contexts/LanguageContext";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
-
 export default function DragAndDropPage({
   heading,
   text,
@@ -22,7 +19,11 @@ export default function DragAndDropPage({
 
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/*  <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>
           {t("DragAndDrop")} | {t("DragAndDropAppIntro")}
         </title>
@@ -41,7 +42,7 @@ export default function DragAndDropPage({
           content={`https://react.jenniina.fi/portfolio/draganddrop`}
         />
         <meta property="og:type" content="website" />
-      </Helmet>
+      </Helmet> */}
       <div className={`draganddrop ${type}`}>
         <div className="inner-wrap">
           <section className="card">

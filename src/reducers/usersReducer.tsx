@@ -60,11 +60,13 @@ export const findUserById = (id: string) => {
   ) => {
     const user = await userService.searchId(id);
     dispatch({ type: "users/searchId", payload: user });
-    const token = window.localStorage.getItem("JokeApptoken");
-    window.localStorage.setItem(
-      "loggedJokeAppUser",
-      JSON.stringify({ user, token })
-    );
+    const token = window ? window.localStorage.getItem("JokeApptoken") : null;
+    window
+      ? window.localStorage.setItem(
+          "loggedJokeAppUser",
+          JSON.stringify({ user, token })
+        )
+      : null;
     return user;
   };
 };

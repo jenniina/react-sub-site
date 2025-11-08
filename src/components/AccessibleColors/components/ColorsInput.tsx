@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import { ELanguages } from "../../../types";
 import styles from "../accessiblecolors.module.css";
 import { Select, SelectOption } from "../../Select/Select";

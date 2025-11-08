@@ -4,9 +4,6 @@ import { Link } from "react-router-dom";
 import styles from "./css/disclaimer.module.css";
 import { useContext } from "react";
 import { LanguageContext } from "../contexts/LanguageContext";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
-
 export default function Disclaimer({
   heading,
   text,
@@ -24,7 +21,11 @@ export default function Disclaimer({
 
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/* <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>{t("PrivacyAndSecurityDisclaimer")} | react.jenniina.fi</title>
         <meta name="description" content={t("PrivacyAndSecurityDisclaimer")} />
         <link rel="canonical" href={`https://react.jenniina.fi/disclaimer`} />
@@ -41,7 +42,7 @@ export default function Disclaimer({
           content={`https://react.jenniina.fi/disclaimer`}
         />
         <meta property="og:type" content="website" />
-      </Helmet>
+      </Helmet> **/}
       <div className={`disclaimer ${type} ${lightTheme ? styles.light : ""}`}>
         <div className="inner-wrap">
           <section className={`card`}>

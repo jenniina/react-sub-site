@@ -2,16 +2,14 @@ import { splitToLines } from "../utils";
 import styles from "../components/Store/store.module.css";
 //import Order from '../components/Store/components/Order'
 import { ELanguages, ReducerProps } from "../types";
-import Hero from "../components/Hero/Hero";
 import { useSelector } from "react-redux";
 //import Orders from '../components/Store/components/Orders'
 import { IInfo } from "../types/store";
-import { lazy, Suspense, useContext } from "react";
+import React, { lazy, Suspense, useContext } from "react";
 import { SelectOption } from "../components/Select/Select";
 import { status, paid } from "../types/store";
 import { LanguageContext } from "../contexts/LanguageContext";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
+import { useIsClient, useWindow } from "../hooks/useSSR";
 
 const Order = lazy(() => import("../components/Store/components/Order"));
 const Orders = lazy(() => import("../components/Store/components/Orders"));
@@ -29,10 +27,15 @@ const OrderPage: React.FC<OrderPageProps> = ({
   text,
   type,
 }) => {
+  const isClient = useIsClient();
+  const windowObj = useWindow();
+
   const { t } = useContext(LanguageContext)!;
 
   const user = useSelector((state: ReducerProps) => state.auth?.user);
-  const urlParams = new URLSearchParams(window.location.search);
+  const urlParams = new URLSearchParams(
+    windowObj ? windowObj.location.search : ""
+  );
   const orderID = urlParams.get("orderID");
 
   const statusesList: status[] = [
@@ -100,7 +103,11 @@ const OrderPage: React.FC<OrderPageProps> = ({
 
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/* <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>{t("Orders")} | react.jenniina.fi</title>
         <meta name="description" content={t("Orders")} />
         <link rel="canonical" href={`https://react.jenniina.fi/orders`} />
@@ -111,7 +118,7 @@ const OrderPage: React.FC<OrderPageProps> = ({
         <meta property="og:description" content={t("Orders")} />
         <meta property="og:url" content={`https://react.jenniina.fi/orders`} />
         <meta property="og:type" content="website" />
-      </Helmet>
+      </Helmet> **/}
       <div className={`order ${type} ${styles["orders-page"]}`}>
         <div className="inner-wrap">
           <section className="card" style={{ position: "relative", zIndex: 2 }}>

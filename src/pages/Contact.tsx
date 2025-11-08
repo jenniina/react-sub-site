@@ -1,9 +1,6 @@
 import { lazy, Suspense, useContext } from "react";
 import { ELanguages } from "../types";
 import { LanguageContext } from "../contexts/LanguageContext";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
-
 const FormMulti = lazy(() => import("../components/FormMulti/FormMulti"));
 
 export default function Contact({
@@ -21,7 +18,11 @@ export default function Contact({
 
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/* <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>{t("ContactForm")} | react.jenniina.fi</title>
         <meta name="description" content={t("ContactForm")} />
         <link rel="canonical" href={`https://react.jenniina.fi/contact`} />
@@ -32,7 +33,7 @@ export default function Contact({
         <meta property="og:description" content={t("ContactForm")} />
         <meta property="og:url" content={`https://react.jenniina.fi/contact`} />
         <meta property="og:type" content="website" />
-      </Helmet>
+      </Helmet> **/}
       <div className={`contact ${type}`}>
         <div className="inner-wrap">
           <section

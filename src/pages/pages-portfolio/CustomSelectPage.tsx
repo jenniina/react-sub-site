@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useContext } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { Select, SelectOption } from "../../components/Select/Select";
 import FormWrapper from "../../components/FormWrapper/FormWrapper";
 import selectStyles from "../../components/Select/select.module.css";
@@ -10,8 +10,7 @@ import Accordion from "../../components/Accordion/Accordion";
 import { RiMailSendLine } from "react-icons/ri";
 import { createSelectOptionsFromT } from "../../utils";
 import { LanguageContext } from "../../contexts/LanguageContext";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
+import { useIsClient, useWindow } from "../../hooks/useSSR";
 
 const issuesArray = [
   "NoIssues",
@@ -60,6 +59,9 @@ export default function CustomSelectPage({
   type: string;
   language: ELanguages;
 }) {
+  const isClient = useIsClient();
+  const windowObj = useWindow();
+
   const { t } = useContext(LanguageContext)!;
 
   const options1 = createSelectOptionsFromT(issuesArray, language);
@@ -146,11 +148,13 @@ export default function CustomSelectPage({
     }
   }
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
+    const params = new URLSearchParams(
+      windowObj ? windowObj.location.search : ""
+    );
 
     setTimeout(() => {
       if (params.get("survey")) {
-        const survey = document.getElementById("survey");
+        const survey = document?.getElementById("survey");
         if (survey) {
           survey.scrollIntoView({
             behavior: "smooth",
@@ -164,7 +168,11 @@ export default function CustomSelectPage({
 
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/*  <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>
           {t("CustomSelect")} | {t("CustomSelectIntro")}
         </title>
@@ -183,7 +191,7 @@ export default function CustomSelectPage({
           content={`https://react.jenniina.fi/portfolio/select`}
         />
         <meta property="og:type" content="website" />
-      </Helmet>
+      </Helmet> */}
       <div className={`select ${type}`}>
         <div className="inner-wrap">
           <section className="card">

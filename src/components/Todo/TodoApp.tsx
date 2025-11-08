@@ -1,4 +1,11 @@
-import { useRef, useEffect, useState, lazy, Suspense, useContext } from "react";
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  lazy,
+  Suspense,
+  useContext,
+} from "react";
 import { ITaskDraggable } from "./components/TodoList";
 import { v4 as uuidv4 } from "uuid";
 import { generateOptions, ITask, TCategory, TPriority } from "./types";
@@ -28,6 +35,7 @@ import { Select } from "../Select/Select";
 import { IoMdAdd } from "react-icons/io";
 import { LanguageContext } from "../../contexts/LanguageContext";
 import { useConfirm } from "../../contexts/ConfirmContext";
+import { useIsClient, useWindow } from "../../hooks/useSSR";
 
 const TodoList = lazy(() => import("./components/TodoList"));
 
@@ -37,6 +45,9 @@ interface Props {
   language: ELanguages;
 }
 export default function TodoApp({ language }: Props) {
+  const isClient = useIsClient();
+  const windowObj = useWindow();
+
   const { t } = useContext(LanguageContext)!;
   const confirm = useConfirm();
 
@@ -66,9 +77,10 @@ export default function TodoApp({ language }: Props) {
   const hasCompletedTasks: boolean = todos?.some((todo) => todo.complete);
 
   useEffect(() => {
+    if (!isClient || !windowObj) return;
     if (todos.length === 0 && !user) {
       const storedTodos = JSON.parse(
-        window.localStorage.getItem(localName) || "[]"
+        windowObj.localStorage.getItem(localName) || "[]"
       );
       const existingTodoKeys = new Set(todos.map((todo) => todo.key));
       storedTodos.forEach((todo: any) => {
@@ -77,12 +89,13 @@ export default function TodoApp({ language }: Props) {
         }
       });
     }
-  }, [dispatch, todos, user]);
+  }, [dispatch, todos, user, isClient]);
 
   useEffect(() => {
+    if (!isClient || !windowObj) return;
     // Save todos to local storage whenever they change
-    window.localStorage.setItem(localName, JSON.stringify(todos));
-  }, [todos]);
+    windowObj.localStorage.setItem(localName, JSON.stringify(todos));
+  }, [todos, isClient]);
 
   const findDuplicates = (todos: ITask[]) => {
     const seenKeys = new Set();
@@ -107,7 +120,8 @@ export default function TodoApp({ language }: Props) {
     } else {
       dispatch(deleteTodoFromState(key));
       const updatedTodos = todos.filter((todo) => todo.key !== key);
-      window.localStorage.setItem(localName, JSON.stringify(updatedTodos));
+      if (!isClient || !windowObj) return;
+      windowObj.localStorage.setItem(localName, JSON.stringify(updatedTodos));
     }
   };
 
@@ -234,8 +248,9 @@ export default function TodoApp({ language }: Props) {
         const updatedTodos = todos.map((todo) =>
           todo.key === key ? updatedTodo : todo
         );
-        window.localStorage.setItem(localName, JSON.stringify(updatedTodos));
         setSending(false);
+        if (!isClient || !windowObj) return;
+        windowObj.localStorage.setItem(localName, JSON.stringify(updatedTodos));
       }
     }
   };
@@ -265,7 +280,8 @@ export default function TodoApp({ language }: Props) {
           dispatch(notify(e.response.data.message, true, 8));
         else dispatch(notify(`${e}`, true, 8));
       } finally {
-        window.localStorage.setItem(localName, JSON.stringify(todos));
+        if (!isClient || !windowObj) return;
+        windowObj.localStorage.setItem(localName, JSON.stringify(todos));
       }
     }
   };
@@ -329,9 +345,10 @@ export default function TodoApp({ language }: Props) {
           order: index,
         }));
       dispatch(setAllTodos(updatedTodos));
-      window.localStorage.setItem(localName, JSON.stringify(updatedTodos));
       setAllTodos(updatedTodos);
       setSending(false);
+      if (!isClient || !windowObj) return;
+      windowObj.localStorage.setItem(localName, JSON.stringify(updatedTodos));
     }
     if (todoNameRef.current) todoNameRef.current.value = "";
   };
@@ -348,7 +365,8 @@ export default function TodoApp({ language }: Props) {
       } else {
         dispatch(clearCompletedTodos());
         const updatedTodos = todos.filter((todo) => !todo.complete);
-        window.localStorage.setItem(localName, JSON.stringify(updatedTodos));
+        if (!isClient || !windowObj) return;
+        windowObj.localStorage.setItem(localName, JSON.stringify(updatedTodos));
       }
     }
   }
@@ -368,7 +386,8 @@ export default function TodoApp({ language }: Props) {
         order: index + 1,
       }));
       dispatch(setAllTodos(updatedTodos));
-      window.localStorage.setItem(localName, JSON.stringify(updatedTodos));
+      if (!isClient || !windowObj) return;
+      windowObj.localStorage.setItem(localName, JSON.stringify(updatedTodos));
     }
   }
 

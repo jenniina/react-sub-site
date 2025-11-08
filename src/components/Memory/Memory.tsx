@@ -1,5 +1,5 @@
 import styles from "./memory.module.css";
-import {
+import React, {
   FC,
   ReactElement,
   useState,
@@ -101,7 +101,7 @@ type Player = {
   score: number;
 };
 
-const iconSet: JSX.Element[] = [
+const iconSet: React.JSX.Element[] = [
   <FaAnchor />,
   <FaAppleAlt />,
   <FaBicycle />,

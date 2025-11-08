@@ -1,4 +1,4 @@
-import { useEffect, lazy, Suspense, useState, useContext } from "react";
+import React, { useEffect, lazy, Suspense, useState, useContext } from "react";
 import { TiDeleteOutline } from "react-icons/ti";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme";
@@ -12,9 +12,6 @@ import { initializeUser, logout } from "../reducers/authReducer";
 import { removeUser } from "../reducers/usersReducer";
 import { notify } from "../reducers/notificationReducer";
 import { LanguageContext } from "../contexts/LanguageContext";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
-
 import { useConfirm } from "../contexts/ConfirmContext";
 
 const PasswordEdit = lazy(() => import("../components/UserEdit/PasswordEdit"));
@@ -111,7 +108,11 @@ const UserEditPage = ({
 
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/*  <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>{t("UserEdit")} | react.jenniina.fi</title>
         <meta
           name="description"
@@ -131,7 +132,7 @@ const UserEditPage = ({
           content={`https://react.jenniina.fi/user/edit`}
         />
         <meta property="og:type" content="website" />
-      </Helmet>
+      </Helmet> */}
       <div className={`edit ${type} ${lightTheme ? styles.light : ""}`}>
         <div className="inner-wrap">
           <section className={`card`}>

@@ -1,4 +1,4 @@
-import { useEffect, useState, lazy, Suspense, useContext } from "react";
+import React, { useEffect, useState, lazy, Suspense, useContext } from "react";
 // import FormJoke from './components/FormJoke'
 import { SelectOption } from "../Select/Select";
 import "./css/joke.css";
@@ -233,7 +233,7 @@ function Jokes({
         setSending(false);
       }, 5500);
       // Scroll to the anchor with id "generated-joke"
-      const generatedJokeAnchor = document.querySelector("#queryValue");
+      const generatedJokeAnchor = document?.querySelector("#queryValue");
       if (generatedJokeAnchor) {
         generatedJokeAnchor.scrollIntoView({ behavior: "smooth" });
       }
@@ -1275,16 +1275,16 @@ function Jokes({
 
   useEffect(() => {
     //Close the login or the register form when the other one is opened
-    const loginWrapOpen = document.querySelector(
+    const loginWrapOpen = document?.querySelector(
       ".login-container.closed button.open"
     ) as HTMLButtonElement;
-    const loginWrapClose = document.querySelector(
+    const loginWrapClose = document?.querySelector(
       ".login-container.open button.close"
     ) as HTMLButtonElement;
-    const registerWrapOpen = document.querySelector(
+    const registerWrapOpen = document?.querySelector(
       ".register-container.closed button.open"
     ) as HTMLButtonElement;
-    const registerWrapClose = document.querySelector(
+    const registerWrapClose = document?.querySelector(
       ".register-container.open button.close"
     ) as HTMLButtonElement;
 

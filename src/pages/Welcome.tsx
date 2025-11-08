@@ -9,9 +9,6 @@ import { FaStoreAlt } from "react-icons/fa";
 import { ELanguages, ELanguagesLong } from "../types";
 import { Select, SelectOption } from "../components/Select/Select";
 import { LanguageContext } from "../contexts/LanguageContext";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
-
 const Newest = lazy(() => import("../components/Newest/Newest"));
 
 export default function Home({
@@ -35,7 +32,11 @@ export default function Home({
 
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/*  <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>
           {t("Welcome")} {t("ToTheReactSiteOfJenniinaFi")} | Jenniina Laine
         </title>
@@ -54,7 +55,7 @@ export default function Home({
         />
         <meta property="og:url" content={`https://react.jenniina.fi/`} />
         <meta property="og:type" content="website" />
-      </Helmet>
+      </Helmet> */}
       <div className={`welcome ${type} ${lightTheme ? styles.light : ""}`}>
         <Select
           language={language}

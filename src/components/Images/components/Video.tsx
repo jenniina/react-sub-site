@@ -7,6 +7,7 @@ import { ModalProps } from "../../../types";
 import { TTextType } from "../Images";
 import { LanguageContext } from "../../../contexts/LanguageContext";
 import { useConfirm } from "../../../contexts/ConfirmContext";
+import { useIsClient, useWindow } from "../../../hooks/useSSR";
 
 interface VideoProps {
   video: VideoHit;
@@ -23,10 +24,15 @@ const Video: FC<VideoProps> = ({
   searchTerm,
   textType,
 }) => {
+  const isClient = useIsClient();
+  const windowObj = useWindow();
+
   const { t } = useContext(LanguageContext)!;
   const confirm = useConfirm();
 
   const handleDownload = async () => {
+    if (!isClient || !windowObj) return;
+
     if (await confirm({ message: `${t("Download") + "?"}` })) {
       const response = await fetch(video.videos.large.url, { mode: "cors" });
 
@@ -36,7 +42,7 @@ const Video: FC<VideoProps> = ({
 
       const blob = await response.blob();
 
-      const url = window.URL.createObjectURL(blob);
+      const url = windowObj.URL.createObjectURL(blob);
 
       const fileExtensionMatch = video.videos.large.url
         ? video.videos.large.url.match(/\.(mp4)$/i)
@@ -45,14 +51,14 @@ const Video: FC<VideoProps> = ({
         ? fileExtensionMatch[1].toLowerCase()
         : "mp4";
 
-      const link = document.createElement("a");
+      const link = document?.createElement("a");
       link.href = url;
       link.download = `video_${video.id}.${extension}`;
       link.target = "_blank";
       link.rel = "noreferrer";
-      document.body.appendChild(link);
+      document?.body.appendChild(link);
       link.click();
-      document.body.removeChild(link);
+      document?.body.removeChild(link);
     }
   };
 

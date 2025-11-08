@@ -1,174 +1,190 @@
-import { FC, useContext, useEffect, useState } from 'react'
-import styles from '../store.module.css'
-import cartService from '../../../services/cart'
-import { ICart, IInfo } from '../../../types/store'
-import { ELanguages } from '../../../types'
-import { useAppDispatch } from '../../../hooks/useAppDispatch'
-import { notify } from '../../../reducers/notificationReducer'
-import { useTheme } from '../../../hooks/useTheme'
-import { paid, status } from '../../../types/store'
-import { LanguageContext } from '../../../contexts/LanguageContext'
+import React, { FC, useContext, useEffect, useState } from "react";
+import styles from "../store.module.css";
+import cartService from "../../../services/cart";
+import { ICart, IInfo } from "../../../types/store";
+import { ELanguages } from "../../../types";
+import { useAppDispatch } from "../../../hooks/useAppDispatch";
+import { notify } from "../../../reducers/notificationReducer";
+import { useTheme } from "../../../hooks/useTheme";
+import { paid, status } from "../../../types/store";
+import { LanguageContext } from "../../../contexts/LanguageContext";
+import { useIsClient, useWindow } from "../../../hooks/useSSR";
 
 interface Props {
-  language: ELanguages
-  paidStatus: { [key in paid]: string }
-  itemStatus: (status: status) => string
-  splitToLines: (details: string) => JSX.Element[]
-  info: (key: keyof IInfo) => string
+  language: ELanguages;
+  paidStatus: { [key in paid]: string };
+  itemStatus: (status: status) => string;
+  splitToLines: (details: string) => React.JSX.Element[];
+  info: (key: keyof IInfo) => string;
 }
 
-const Order: FC<Props> = ({ language, paidStatus, itemStatus, splitToLines, info }) => {
-  const { t } = useContext(LanguageContext)!
+const Order: FC<Props> = ({
+  language,
+  paidStatus,
+  itemStatus,
+  splitToLines,
+  info,
+}) => {
+  const isClient = useIsClient();
+  const windowObj = useWindow();
 
-  const dispatch = useAppDispatch()
-  const lightTheme = useTheme()
+  const { t } = useContext(LanguageContext)!;
 
-  const [order, setOrder] = useState<ICart | null>(null)
-  const [orderID, setOrderID] = useState<ICart['orderID']>('')
-  const [sending, setSending] = useState(false)
+  const dispatch = useAppDispatch();
+  const lightTheme = useTheme();
 
-  const fetchOrder = async (ID: ICart['orderID'] = orderID) => {
-    setSending(true)
+  const [order, setOrder] = useState<ICart | null>(null);
+  const [orderID, setOrderID] = useState<ICart["orderID"]>("");
+  const [sending, setSending] = useState(false);
+
+  const fetchOrder = async (ID: ICart["orderID"] = orderID) => {
+    setSending(true);
     try {
-      const order = await cartService.getOrderByOrderID(language, ID)
+      const order = await cartService.getOrderByOrderID(language, ID);
       const ordersWithDates = {
         ...order,
         createdAt: new Date(order.createdAt),
         updatedAt: new Date(order.updatedAt),
-      }
-      setOrder(ordersWithDates)
-      setSending(false)
+      };
+      setOrder(ordersWithDates);
+      setSending(false);
     } catch (error: any) {
       if (error.response?.data?.message)
-        dispatch(notify(error.response.data.message, true, 8))
-      else dispatch(notify((error as Error).message, true, 8))
-      setSending(false)
+        dispatch(notify(error.response.data.message, true, 8));
+      else dispatch(notify((error as Error).message, true, 8));
+      setSending(false);
     }
-  }
+  };
 
   // if the address has ?orderID=123456-AB, fetch the order
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search)
-    const ID = urlParams.get('orderID')
+    if (!isClient || !windowObj) return;
+    const urlParams = new URLSearchParams(windowObj.location.search);
+    const ID = urlParams.get("orderID");
     if (ID) {
-      setOrderID(ID as ICart['orderID'])
-      fetchOrder(ID)
+      setOrderID(ID as ICart["orderID"]);
+      fetchOrder(ID);
     }
-  }, [])
+  }, [isClient]);
 
   return (
-    <div className={`${styles['order-wrap']} ${lightTheme ? styles.light : ''}`}>
+    <div
+      className={`${styles["order-wrap"]} ${lightTheme ? styles.light : ""}`}
+    >
       <form
         onSubmit={(e) => {
-          e.preventDefault()
-          fetchOrder()
+          e.preventDefault();
+          fetchOrder();
         }}
       >
-        <div className='input-wrap'>
+        <div className="input-wrap">
           <label>
             <input
-              type='text'
+              type="text"
               required
-              name='orderID'
+              name="orderID"
               value={orderID}
-              onChange={(e) => setOrderID(e.target.value as ICart['orderID'])}
+              onChange={(e) => setOrderID(e.target.value as ICart["orderID"])}
             />
-            <span className='label'>{t('OrderID')}</span>
+            <span className="label">{t("OrderID")}</span>
           </label>
         </div>
-        <button type='submit' disabled={sending}>
-          {t('Submit')}
+        <button type="submit" disabled={sending}>
+          {t("Submit")}
         </button>
       </form>
       {order && (
         <div>
           <h2>{order.orderID}</h2>
-          <div className={styles['order-items']}>
+          <div className={styles["order-items"]}>
             {order.items?.map((item) => {
               return (
-                <div key={item.id} className={styles['order-item']}>
+                <div key={item.id} className={styles["order-item"]}>
                   <h3>
                     {item.name}
-                    {item.id === 'misc-quote' ? '' : ` x ${item.quantity}`}
+                    {item.id === "misc-quote" ? "" : ` x ${item.quantity}`}
                   </h3>
                   <p>{item.description}</p>
                   <p>
-                    <strong>{t('Price')}:</strong>{' '}
-                    {item.id === 'misc-quote'
-                      ? item.price + ' €'
+                    <strong>{t("Price")}:</strong>{" "}
+                    {item.id === "misc-quote"
+                      ? item.price + " €"
                       : item.price +
-                        ' x ' +
+                        " x " +
                         item.quantity +
-                        ' = ' +
+                        " = " +
                         item.quantity * item.price +
-                        ' €'}
+                        " €"}
                   </p>
                   <p>
-                    <strong>{t('Info')}:</strong> <br /> {splitToLines(item.details)}
+                    <strong>{t("Info")}:</strong> <br />{" "}
+                    {splitToLines(item.details)}
                   </p>
                   <p>
-                    <strong>{t('Status')}:</strong> {itemStatus(item.status)}{' '}
+                    <strong>{t("Status")}:</strong> {itemStatus(item.status)}{" "}
                   </p>
-                  {item.id === 'misc-quote' ? null : (
+                  {item.id === "misc-quote" ? null : (
                     <p key={item.id}>
-                      <strong>{t('PaymentState')}:</strong> {paidStatus[item.paid]}
+                      <strong>{t("PaymentState")}:</strong>{" "}
+                      {paidStatus[item.paid]}
                     </p>
                   )}
                 </div>
-              )
-            })}{' '}
+              );
+            })}{" "}
           </div>
-          <div className={styles['info-wrap']}>
-            <table className={`${styles['info-table']}`}>
-              <caption>{t('Info')}</caption>
+          <div className={styles["info-wrap"]}>
+            <table className={`${styles["info-table"]}`}>
+              <caption>{t("Info")}</caption>
               <tbody>
                 {Object.keys(order.info).map((key) => {
-                  if (key === '_id') return null
+                  if (key === "_id") return null;
                   return (
                     order.info[key as keyof typeof order.info] !== null &&
-                    order.info[key as keyof typeof order.info]?.trim() !== '' && (
+                    order.info[key as keyof typeof order.info]?.trim() !==
+                      "" && (
                       <tr key={key}>
                         <th>{info(key as keyof IInfo)}:</th>
                         <td>{order.info[key as keyof typeof order.info]}</td>
                       </tr>
                     )
-                  )
+                  );
                 })}
               </tbody>
             </table>
             <p>{order.extra}</p>
             <p>
-              {t('Total')}: <big>{order.total} € </big>
+              {t("Total")}: <big>{order.total} € </big>
               <br />
             </p>
 
             <p>
-              {t('Status')}: {itemStatus(order.status)}
+              {t("Status")}: {itemStatus(order.status)}
             </p>
             <p>
-              {t('PaymentState')}:{' '}
+              {t("PaymentState")}:{" "}
               {
                 paidStatus[
-                  order.items.every((item) => item.paid === 'full')
-                    ? 'full'
-                    : order.items.every((item) => item.paid === 'none')
-                    ? 'none'
-                    : 'partial'
+                  order.items.every((item) => item.paid === "full")
+                    ? "full"
+                    : order.items.every((item) => item.paid === "none")
+                    ? "none"
+                    : "partial"
                 ]
               }
             </p>
             <p>
-              <strong>{t('Ordered')}: </strong>
-              {order.createdAt?.toLocaleDateString()}{' '}
+              <strong>{t("Ordered")}: </strong>
+              {order.createdAt?.toLocaleDateString()}{" "}
               {order.createdAt?.toLocaleTimeString()} <br />
-              <strong>{t('LastUpdated')}: </strong>
-              {order.updatedAt.toLocaleDateString()}{' '}
+              <strong>{t("LastUpdated")}: </strong>
+              {order.updatedAt.toLocaleDateString()}{" "}
               {order.updatedAt?.toLocaleTimeString()}
             </p>
           </div>
         </div>
       )}
     </div>
-  )
-}
-export default Order
+  );
+};
+export default Order;

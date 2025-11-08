@@ -50,6 +50,7 @@ import { useNavigate } from "react-router-dom";
 import blobService from "../services/blob";
 import { LanguageContext } from "../../../contexts/LanguageContext";
 import { useConfirm } from "../../../contexts/ConfirmContext";
+import { useIsClient, useWindow } from "../../../hooks/useSSR";
 
 const ColorBlocks = lazy(() => import("./ColorBlocks"));
 const Sliders = lazy(() => import("./Sliders"));
@@ -115,6 +116,9 @@ export default function DragContainer({
   scroll: boolean;
   setScroll: DispatchReact<SetStateAction<boolean>>;
 }) {
+  const isClient = useIsClient();
+  const windowObj = useWindow();
+
   const { t } = useContext(LanguageContext)!;
   const confirm = useConfirm();
 
@@ -337,7 +341,7 @@ export default function DragContainer({
       } else {
         newHiddenLayers.add(layer);
         setActiveLayer(layer !== 0 ? layer - 1 : layer);
-        (document.activeElement as HTMLElement)?.blur();
+        if (document) (document.activeElement as HTMLElement)?.blur();
       }
       return newHiddenLayers;
     });
@@ -352,17 +356,18 @@ export default function DragContainer({
     const handleMouseUp = () => {
       setFocusedBlob(null); // To prevent Marker from showing up after keyboard use and mouseup
     };
-
-    window.addEventListener("keyup", keyupListener);
-    window.addEventListener("mousedown", mousedownListener);
-    window.addEventListener("mouseup", handleMouseUp);
+    if (!isClient || !windowObj) return;
+    windowObj.addEventListener("keyup", keyupListener);
+    windowObj.addEventListener("mousedown", mousedownListener);
+    windowObj.addEventListener("mouseup", handleMouseUp);
 
     return () => {
-      window.removeEventListener("keyup", keyupListener);
-      window.removeEventListener("mousedown", mousedownListener);
-      window.removeEventListener("mouseup", handleMouseUp);
+      if (!isClient || !windowObj) return;
+      windowObj.removeEventListener("keyup", keyupListener);
+      windowObj.removeEventListener("mousedown", mousedownListener);
+      windowObj.removeEventListener("mouseup", handleMouseUp);
     };
-  }, []);
+  }, [isClient]);
 
   function loadDraggables(): Promise<Draggable[] | null> {
     return new Promise((resolve) => {
@@ -941,7 +946,8 @@ export default function DragContainer({
   }, [prefersReducedMotion]);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!isClient || !windowObj) return;
+    const mediaQuery = windowObj.matchMedia("(prefers-reduced-motion: reduce)");
     setPrefersReducedMotion(mediaQuery.matches);
 
     const listener = () => setPrefersReducedMotion(mediaQuery.matches);
@@ -959,15 +965,18 @@ export default function DragContainer({
       case "Escape":
         setScroll(true);
 
-        document.body.style.overflowY = "auto";
-        document.body.style.overflowX = "hidden";
+        if (document) {
+          document.body.style.overflowY = "auto";
+          document.body.style.overflowX = "hidden";
+        }
         break;
     }
   };
   useEffect(() => {
-    window.addEventListener("keyup", escape);
+    if (!isClient || !windowObj) return;
+    windowObj.addEventListener("keyup", escape);
     return () => {
-      window.removeEventListener("keyup", escape);
+      windowObj.removeEventListener("keyup", escape);
     };
   }, []);
 
@@ -1012,7 +1021,10 @@ export default function DragContainer({
   ) {
     e.preventDefault();
     if (await confirm({ message: `${t("ResetBlobs")}?` })) {
-      window.localStorage.removeItem(localStorageDraggables);
+      if (!isClient || !windowObj) return;
+
+      windowObj.localStorage.removeItem(localStorageDraggables);
+
       dispatch({ type: "resetDraggables", payload: { d } });
       dispatch({ type: "setDraggablesAtD", payload: { d, draggables: [] } });
       makeAnew(amountOfBlobs, d);
@@ -1121,6 +1133,7 @@ export default function DragContainer({
   ) => {
     if (
       //makeRandom0 is focused:
+      document &&
       document.activeElement instanceof HTMLElement &&
       document.activeElement.id === `make-random${d}`
     )
@@ -1165,7 +1178,8 @@ export default function DragContainer({
 
   const getPosition = (draggable: HTMLElement) => {
     const blobID = draggable.id;
-    const blobStyle = window.getComputedStyle(draggable);
+    if (!isClient || !windowObj) return;
+    const blobStyle = windowObj.getComputedStyle(draggable);
     const blobNumber = parseInt(
       draggable.id.replace("blob", "").split("-")[0],
       10
@@ -1208,17 +1222,17 @@ export default function DragContainer({
   };
 
   useEffect(() => {
-    if (!scroll) {
+    if (!scroll && document) {
       document.addEventListener("touchmove", preventDefault, {
         passive: false,
       });
-      document.body.style.overflow = "hidden";
+      if (document) document.body.style.overflow = "hidden";
       dragWrapOuter.current?.addEventListener("touchmove", preventDefault, {
         passive: false,
       });
       if (dragWrapOuter.current)
         dragWrapOuter.current.style.overflow = "hidden";
-    } else if (scroll) {
+    } else if (scroll && document) {
       document.body.style.overflowY = "auto";
       document.body.style.overflowX = "hidden";
       document.removeEventListener("touchmove", preventDefault);
@@ -1226,7 +1240,7 @@ export default function DragContainer({
       dragWrapOuter.current?.removeEventListener("touchmove", preventDefault);
     }
     return () => {
-      document.removeEventListener("touchmove", preventDefault);
+      document?.removeEventListener("touchmove", preventDefault);
       dragWrapOuter.current?.removeEventListener("touchmove", preventDefault);
     };
   }, [scroll]);
@@ -1588,7 +1602,9 @@ export default function DragContainer({
   };
 
   const scrollToArt = () => {
-    const scrollTarget = document.getElementById(`button-container${d}`);
+    const scrollTarget = document
+      ? document.getElementById(`button-container${d}`)
+      : null;
     if (scrollTarget) {
       scrollTarget.scrollIntoView({ behavior: "smooth", block: "start" });
     }
@@ -1635,9 +1651,9 @@ export default function DragContainer({
         width: dragWrap.current.offsetWidth,
         height: dragWrap.current.offsetHeight,
         onclone: (clonedNode: HTMLElement) => {
-          const originalSvg: SVGSVGElement | null = document.querySelector(
-            `svg#svgfilter${svgFilter}`
-          );
+          const originalSvg: SVGSVGElement | null = document
+            ? document.querySelector(`svg#svgfilter${svgFilter}`)
+            : null;
           if (originalSvg) {
             const clonedSvg: SVGSVGElement = originalSvg.cloneNode(
               true
@@ -1648,13 +1664,16 @@ export default function DragContainer({
       } as DomToImageOptions);
 
       if (dataUrl) {
-        const link = document.createElement("a");
-        link.href = dataUrl;
-        link.download = "blobs.png";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        dispatch(notify(t("ArtSaved"), false, 8));
+        const link = document?.createElement("a");
+        if (link) {
+          link.href = dataUrl;
+          link.download = "blobs.png";
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+
+          dispatch(notify(t("ArtSaved"), false, 8));
+        }
       } else {
         dispatch(notify(t("Error"), true, 8));
       }
@@ -1879,7 +1898,7 @@ export default function DragContainer({
 
   // scroll to #drag-container:
   const goToArt1 = (number: number) => {
-    const dragContainer = document.getElementById(`drag-container${number}`);
+    const dragContainer = document?.getElementById(`drag-container${number}`);
     if (dragContainer) {
       dragContainer.scrollIntoView({ behavior: "smooth", block: "start" });
     }

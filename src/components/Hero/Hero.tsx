@@ -25,6 +25,7 @@ import useSessionStorage from "../../hooks/useStorage";
 import useLocalStorage from "../../hooks/useStorage";
 import { Location as RouterLocation } from "react-router-dom";
 import { LanguageContext } from "../../contexts/LanguageContext";
+import { useIsClient, useWindow } from "../../hooks/useSSR";
 
 type itemProps = {
   i: number;
@@ -71,6 +72,9 @@ export default function Hero({
   language: ELanguages;
   displayLocation: RouterLocation;
 }) {
+  const isClient = useIsClient();
+  const windowObj = useWindow();
+
   const { t } = useContext(LanguageContext)!;
 
   const location = useLocation();
@@ -86,7 +90,8 @@ export default function Hero({
     useLocalStorage<boolean>("prefersReducedMotion-Hero", false);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!isClient || !windowObj) return;
+    const mediaQuery = windowObj.matchMedia("(prefers-reduced-motion: reduce)");
 
     // Only set the state from the media query if there is no value in localStorage
     if (localStorage.getItem("prefersReducedMotion-Hero") === null) {
@@ -97,13 +102,19 @@ export default function Hero({
       setPrefersReducedMotion(e.matches);
     mediaQuery.addEventListener("change", handler);
     return () => mediaQuery.removeEventListener("change", handler);
-  }, []);
+  }, [isClient]);
 
   //Move items up, down, left or left, depending on the direction they're approached from:
   const movingItem = (e: ReactPointerEvent<HTMLElement>) => {
+    if (!isClient || !windowObj) return;
+
     const target = e.target as HTMLElement;
-    const targetLeft = window.getComputedStyle(target).getPropertyValue("left");
-    const targetTop = window.getComputedStyle(target).getPropertyValue("top");
+    const targetLeft = windowObj
+      .getComputedStyle(target)
+      .getPropertyValue("left");
+    const targetTop = windowObj
+      .getComputedStyle(target)
+      .getPropertyValue("top");
     const from = useEnterDirection(e);
     switch (from) {
       case "top":
@@ -123,7 +134,9 @@ export default function Hero({
 
   //Make eyes follow the mouse:
   const follow = (e: Event) => {
-    const eyes = [...document.querySelectorAll<HTMLSpanElement>(".eye .inner")];
+    const eyes = [
+      ...document?.querySelectorAll<HTMLSpanElement>(".eye .inner"),
+    ];
     if (eyes.length > 0) {
       eyes.forEach((eye) => {
         const rect = eye.getBoundingClientRect();
@@ -319,24 +332,26 @@ export default function Hero({
 
   // Move an item randomly
   useEffect(() => {
+    if (!isClient || !windowObj) return;
+
     if (prefersReducedMotion) return; // Don't move items if user prefers reduced motion
     const interval = setInterval(() => {
       const newValues = [...values];
       const randomIndex = Math.floor(Math.random() * newValues.length);
       const itemI = newValues[randomIndex].i;
-      const item = document.getElementById(`shape${itemI}`);
+      const item = document?.getElementById(`shape${itemI}`);
 
       if (item) {
         const currentTop = parseFloat(
-          window.getComputedStyle(item).getPropertyValue("top")
+          windowObj.getComputedStyle(item).getPropertyValue("top")
         );
         const currentLeft = parseFloat(
-          window.getComputedStyle(item).getPropertyValue("left")
+          windowObj.getComputedStyle(item).getPropertyValue("left")
         );
         const itemWidth = item.offsetWidth;
         const itemHeight = item.offsetHeight;
-        const windowWidth = window.innerWidth;
-        const windowHeight = window.innerHeight;
+        const windowWidth = windowObj.innerWidth;
+        const windowHeight = windowObj.innerHeight;
 
         // Choose a random direction
         const direction = Math.floor(Math.random() * 8);
@@ -391,7 +406,7 @@ export default function Hero({
     }, Math.round(getRandomMinMax(2000, 4000)));
 
     return () => clearInterval(interval);
-  }, [values, prefersReducedMotion]);
+  }, [values, prefersReducedMotion, isClient]);
 
   const [shouldRender, setShouldRender] = useState<boolean>(true);
   const [fadeIn, setFadeIn] = useState<boolean>(false);

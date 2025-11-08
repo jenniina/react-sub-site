@@ -10,6 +10,7 @@ import { ModalProps } from "../../../types";
 import { TTextType } from "../Images";
 import { LanguageContext } from "../../../contexts/LanguageContext";
 import { useConfirm } from "../../../contexts/ConfirmContext";
+import { useIsClient, useWindow } from "../../../hooks/useSSR";
 
 interface ImageProps {
   image: ImageHit;
@@ -26,12 +27,17 @@ const Image: FC<ImageProps> = ({
   searchTerm,
   textType,
 }) => {
+  const isClient = useIsClient();
+  const windowObj = useWindow();
+
   const { t } = useContext(LanguageContext)!;
   const confirm = useConfirm();
 
   const dispatch = useAppDispatch();
 
   const handleDownload = async () => {
+    if (!isClient || !windowObj) return;
+
     if (await confirm({ message: t("Download") + "?" })) {
       const response = await fetch(image.largeImageURL, { mode: "cors" });
       if (!response.ok) {
@@ -41,7 +47,7 @@ const Image: FC<ImageProps> = ({
       try {
         const blob = await response.blob();
 
-        const url = window.URL.createObjectURL(blob);
+        const url = windowObj.URL.createObjectURL(blob);
 
         const fileExtensionMatch = image.largeImageURL.match(
           /\.(jpg|jpeg|png|gif|bmp|webp)$/i
@@ -50,17 +56,17 @@ const Image: FC<ImageProps> = ({
           ? fileExtensionMatch[1].toLowerCase()
           : "jpg";
 
-        const link = document.createElement("a");
+        const link = document?.createElement("a");
         link.href = url;
         link.download = `${sanitize(`${image.id}`)}-${sanitize(
           image.user
         )}.${extension}`;
         link.target = "_blank";
         link.rel = "noreferrer";
-        document.body.appendChild(link);
+        document?.body.appendChild(link);
         link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
+        document?.body.removeChild(link);
+        windowObj.URL.revokeObjectURL(url);
       } catch (error) {
         console.error("Download failed:", error);
         dispatch(notify(`${t("Error")}: ${error}`, true, 5));

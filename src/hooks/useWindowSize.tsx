@@ -1,24 +1,66 @@
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from "react";
+// import { useIsClient, useWindow } from "./useSSR";
 
-function getWindowSize() {
-    const { innerWidth: windowWidth, innerHeight: windowHeight } = window;
-    return {
-        windowWidth,
-        windowHeight
-    };
-}
+// function getWindowSize() {
+//   const isClient = useIsClient();
+//   const windowObj = useWindow();
+
+//   if (!isClient || !windowObj) return { windowWidth: 1200, windowHeight: 800 };
+//   const { innerWidth: windowWidth, innerHeight: windowHeight } = windowObj;
+//   return {
+//     windowWidth,
+//     windowHeight,
+//   };
+// }
+
+// export default function useWindowSize() {
+//   const isClient = useIsClient();
+
+//   const [windowSize, setWindowSize] = useState(getWindowSize());
+
+//   useEffect(() => {
+//     if (!isClient || typeof window === "undefined") return;
+
+//     function handleResize() {
+//       setWindowSize(getWindowSize());
+//     }
+
+//     if (!isClient  ) return;
+//     windowObj.addEventListener("resize", handleResize);
+//     return () => windowObj.removeEventListener("resize", handleResize);
+//   }, [isClient, windowObj]);
+
+//   return windowSize;
+// }
+
+import { useState, useEffect } from "react";
+import { useIsClient } from "./useSSR";
 
 export default function useWindowSize() {
-    const [windowSize, setWindowSize] = useState(getWindowSize());
+  const isClient = useIsClient();
 
-    useEffect(() => {
-        function handleResize() {
-            setWindowSize(getWindowSize());
-        }
+  // Provide desktop defaults for SSR
+  const [windowSize, setWindowSize] = useState({
+    windowWidth: 1200, // Default to desktop width
+    windowHeight: 800, // Default to desktop height
+  });
 
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+  useEffect(() => {
+    if (!isClient || typeof window === "undefined") return;
 
-    return windowSize;
+    function handleResize() {
+      setWindowSize({
+        windowWidth: window.innerWidth,
+        windowHeight: window.innerHeight,
+      });
+    }
+
+    // Set initial values
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [isClient]);
+
+  return windowSize;
 }

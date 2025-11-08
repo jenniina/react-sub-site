@@ -31,15 +31,16 @@ import {
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { LanguageContext } from "../contexts/LanguageContext";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
-
 export function TermsProducts({ language }: { language: ELanguages }) {
   const lang: EEnFi = language === "fi" ? EEnFi.fi : EEnFi.en;
 
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/*  <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>{EETermsOfService[lang]}</title>
         <meta
           name="description"
@@ -53,7 +54,7 @@ export function TermsProducts({ language }: { language: ELanguages }) {
         />
         <meta property="og:url" content={`https://react.jenniina.fi/terms`} />
         <meta property="og:type" content="website" />
-      </Helmet>
+      </Helmet> */}
       <p>
         <strong>{EEnFiSupplier[lang]}:</strong> Jenniina Laine <br />
         <strong>{EEnFiCustomer[lang]}:</strong> {EEnFiCustomerCompany[lang]}

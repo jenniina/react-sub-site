@@ -2,9 +2,6 @@ import { useContext, useState } from "react";
 import Accordion from "../../components/Accordion/Accordion";
 import { ELanguages } from "../../types";
 import { LanguageContext } from "../../contexts/LanguageContext";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
-
 export default function ComposerPage({
   heading,
   text,
@@ -21,7 +18,11 @@ export default function ComposerPage({
   const [isFormOpen, setIsFormOpen] = useState(false);
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/*  <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>
           {t("ComposerOlliSanta")} | React, Node.js, Express, MongoDB
         </title>
@@ -42,7 +43,7 @@ export default function ComposerPage({
           content={`https://react.jenniina.fi/portfolio/composer`}
         />
         <meta property="og:type" content="website" />
-      </Helmet>
+      </Helmet> */}
       <div className={`composer ${type}`}>
         <div className="inner-wrap">
           <section className="card">

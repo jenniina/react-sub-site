@@ -2,9 +2,6 @@ import { lazy, Suspense, useContext } from "react";
 import Accordion from "../../components/Accordion/Accordion";
 import { ELanguages } from "../../types";
 import { LanguageContext } from "../../contexts/LanguageContext";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
-
 import styles from "../css//portfolio.module.css";
 
 const AccessibleColors = lazy(
@@ -26,7 +23,11 @@ const ColorsPage = ({
 
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/*  <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>
           {t("ColorAccessibility")} | {t("WCAGTool")}
         </title>
@@ -55,7 +56,7 @@ const ColorsPage = ({
           content={`https://react.jenniina.fi/portfolio/colors`}
         />
         <meta property="og:type" content="website" />
-      </Helmet>
+      </Helmet> */}
       <div id={`${styles["color-page"]}`} className={`colors ${type}`}>
         <div className="inner-wrap">
           <section>
@@ -66,7 +67,7 @@ const ColorsPage = ({
                 type="button"
                 //scroll to #colorpicker
                 onClick={() => {
-                  const element = document.getElementById("colorpicker");
+                  const element = document?.getElementById("colorpicker");
                   element?.focus();
                   element?.scrollIntoView({ behavior: "smooth" });
                 }}

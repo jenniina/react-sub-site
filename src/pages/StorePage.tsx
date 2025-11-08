@@ -1,13 +1,10 @@
-import { lazy, Suspense, useContext } from "react";
+import React, { lazy, Suspense, useContext } from "react";
 //import Store from '../components/Store/Store'
 import { ELanguages } from "../types";
 import Hero from "../components/Hero/Hero";
 import { ICartItem } from "../types/store";
 import styles from "../components/Store/store.module.css";
 import { LanguageContext } from "../contexts/LanguageContext";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
-
 interface StoreProps {
   language: ELanguages;
   heading: string;
@@ -33,7 +30,11 @@ const StorePage: React.FC<StoreProps> = ({
 
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/*  <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>{t("Store")} | react.jenniina.fi</title>
         <meta
           name="description"
@@ -50,7 +51,7 @@ const StorePage: React.FC<StoreProps> = ({
         />
         <meta property="og:url" content={`https://react.jenniina.fi/store`} />
         <meta property="og:type" content="website" />
-      </Helmet>
+      </Helmet> */}
       <div className={`store ${type} ${styles.store}`}>
         <div className={`inner-wrap ${styles["inner-wrap"]}`}>
           <Suspense

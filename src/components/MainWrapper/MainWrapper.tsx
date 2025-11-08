@@ -1,105 +1,124 @@
-import { Routes, Route, Location as RouterLocation, useLocation } from 'react-router-dom'
-import { options } from '../../utils'
-import { Suspense, lazy, useContext, useEffect, useState } from 'react'
-import Portfolio from '../../pages/Portfolio'
-import About from '../../pages/About'
-import CartPage from '../../pages/CartPage'
-import Contact from '../../pages/Contact'
-import Disclaimer from '../../pages/Disclaimer'
-import OrderPage from '../../pages/OrderPage'
-import BlobPage from '../../pages/pages-portfolio/BlobPage'
-import ColorsPage from '../../pages/pages-portfolio/ColorsPage'
-import ComposerPage from '../../pages/pages-portfolio/ComposerPage'
-import CustomSelectPage from '../../pages/pages-portfolio/CustomSelectPage'
-import DragAndDropPage from '../../pages/pages-portfolio/DragAndDropPage'
-import FormPage from '../../pages/pages-portfolio/FormPage'
-import GraphQLPage from '../../pages/pages-portfolio/GraphQLPage'
-import HairSalonPage from '../../pages/pages-portfolio/HairSalonPage'
-import ImagesPage from '../../pages/pages-portfolio/ImagesPage'
-import JokesPage from '../../pages/pages-portfolio/JokesPage'
-import MemoryPage from '../../pages/pages-portfolio/MemoryPage'
-import QuizPage from '../../pages/pages-portfolio/QuizPage'
-import TodoPage from '../../pages/pages-portfolio/TodoPage'
-import StorePage from '../../pages/StorePage'
-import TermsOfService from '../../pages/TermsOfService'
-import UserEditPage from '../../pages/UserEditPage'
-import Welcome from '../../pages/Welcome'
-import { ELanguages } from '../../types'
-import { useHeroProps } from '../../hooks/useHeroProps'
-import { useDocumentTitleAndLanguage } from '../../hooks/useDocumentTitleAndLanguage'
-import Hero from '../Hero/Hero'
-import useCart from '../../hooks/useCart'
-import { LanguageContext } from '../../contexts/LanguageContext'
+import {
+  Routes,
+  Route,
+  Location as RouterLocation,
+  useLocation,
+} from "react-router-dom";
+import { options } from "../../utils";
+import { Suspense, lazy, useContext, useEffect, useState } from "react";
+import Portfolio from "../../pages/Portfolio";
+import About from "../../pages/About";
+import CartPage from "../../pages/CartPage";
+import Contact from "../../pages/Contact";
+import Disclaimer from "../../pages/Disclaimer";
+import OrderPage from "../../pages/OrderPage";
+import BlobPage from "../../pages/pages-portfolio/BlobPage";
+import ColorsPage from "../../pages/pages-portfolio/ColorsPage";
+import ComposerPage from "../../pages/pages-portfolio/ComposerPage";
+import CustomSelectPage from "../../pages/pages-portfolio/CustomSelectPage";
+import DragAndDropPage from "../../pages/pages-portfolio/DragAndDropPage";
+import FormPage from "../../pages/pages-portfolio/FormPage";
+import GraphQLPage from "../../pages/pages-portfolio/GraphQLPage";
+import HairSalonPage from "../../pages/pages-portfolio/HairSalonPage";
+import ImagesPage from "../../pages/pages-portfolio/ImagesPage";
+import JokesPage from "../../pages/pages-portfolio/JokesPage";
+import MemoryPage from "../../pages/pages-portfolio/MemoryPage";
+import QuizPage from "../../pages/pages-portfolio/QuizPage";
+import TodoPage from "../../pages/pages-portfolio/TodoPage";
+import StorePage from "../../pages/StorePage";
+import TermsOfService from "../../pages/TermsOfService";
+import UserEditPage from "../../pages/UserEditPage";
+import Welcome from "../../pages/Welcome";
+import { ELanguages } from "../../types";
+import { useHeroProps } from "../../hooks/useHeroProps";
+import { useDocumentTitleAndLanguage } from "../../hooks/useDocumentTitleAndLanguage";
+import Hero from "../Hero/Hero";
+import useCart from "../../hooks/useCart";
+import { LanguageContext } from "../../contexts/LanguageContext";
+import { useIsClient, useWindow } from "../../hooks/useSSR";
 
-const QuizStart = lazy(() => import('../Quiz/QuizStart'))
-const QuizQuestion = lazy(() => import('../Quiz/QuizQuestion'))
-const QuizFinished = lazy(() => import('../Quiz/QuizFinished'))
-const NavPortfolio = lazy(() => import('../NavPortfolio/NavPortfolio'))
+const QuizStart = lazy(() => import("../Quiz/QuizStart"));
+const QuizQuestion = lazy(() => import("../Quiz/QuizQuestion"));
+const QuizFinished = lazy(() => import("../Quiz/QuizFinished"));
+const NavPortfolio = lazy(() => import("../NavPortfolio/NavPortfolio"));
 
 interface Props {
-  language: ELanguages
-  setLanguage: (lang: ELanguages) => void
+  language: ELanguages;
+  setLanguage: (lang: ELanguages) => void;
 }
 
 const MainWrapper = ({ language, setLanguage }: Props) => {
-  const { cart, addToCart, removeFromCart, editDetails, clearCart } = useCart()
+  const isClient = useIsClient();
+  const windowObj = useWindow();
 
-  const { t } = useContext(LanguageContext)!
+  const { cart, addToCart, removeFromCart, editDetails, clearCart } = useCart();
 
-  const location = useLocation()
+  const { t } = useContext(LanguageContext)!;
 
-  const [displayLocation, setDisplayLocation] = useState<RouterLocation>(location)
+  const location = useLocation();
 
-  const heroProps = useHeroProps(location.pathname, displayLocation.pathname, language)
+  const [displayLocation, setDisplayLocation] =
+    useState<RouterLocation>(location);
 
-  const [transitionPage, setTransitionPage] = useState('fadeIn')
+  const heroProps = useHeroProps(
+    location.pathname,
+    displayLocation.pathname,
+    language
+  );
+
+  const [transitionPage, setTransitionPage] = useState("fadeIn");
 
   // Update document language and title
-  useDocumentTitleAndLanguage({ language })
+  useDocumentTitleAndLanguage({ language });
 
   // Change language with ?lang=fi etc:
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search)
-    const langParam = urlParams.get('lang')
+    if (!isClient || !windowObj) return;
+    const urlParams = new URLSearchParams(windowObj.location.search);
+    const langParam = urlParams.get("lang");
     if (langParam && Object.values(ELanguages).includes(langParam as any)) {
-      setLanguage(langParam as ELanguages)
+      setLanguage(langParam as ELanguages);
     }
-  }, [])
+  }, [isClient, setLanguage]);
 
   useEffect(() => {
-    const hash = location.hash
+    if (!isClient || !windowObj) return;
+
+    const hash = location.hash;
     if (hash) {
-      const element = document.querySelector(hash)
+      const element = document?.querySelector(hash);
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth' })
+        element.scrollIntoView({ behavior: "smooth" });
       }
     } else if (location.pathname !== displayLocation.pathname) {
-      window.scrollTo({
+      if (!isClient || !windowObj) return;
+      windowObj.scrollTo({
         top: 0,
-        behavior: 'smooth',
-      })
+        behavior: "smooth",
+      });
     }
-    if (location.pathname !== displayLocation.pathname) setTransitionPage('fadeOut')
-  }, [location, displayLocation.pathname])
+    if (location.pathname !== displayLocation.pathname)
+      setTransitionPage("fadeOut");
+  }, [location, displayLocation.pathname, isClient]);
 
   useEffect(() => {
-    if (transitionPage === 'fadeOut') {
+    if (transitionPage === "fadeOut") {
       const timer = setTimeout(() => {
-        setTransitionPage('fadeIn')
-        setDisplayLocation(location)
-      }, 500) // Match this duration with the CSS animation duration
-      return () => clearTimeout(timer)
+        setTransitionPage("fadeIn");
+        setDisplayLocation(location);
+      }, 500); // Match this duration with the CSS animation duration
+      return () => clearTimeout(timer);
     }
-  }, [transitionPage, location])
+  }, [transitionPage, location]);
 
   return (
     <main
       id={`main-content`}
       className={`${transitionPage} main-content z`}
       onAnimationEnd={() => {
-        if (transitionPage === 'fadeOut') {
-          setTransitionPage('fadeIn')
-          setDisplayLocation(location)
+        if (transitionPage === "fadeOut") {
+          setTransitionPage("fadeIn");
+          setDisplayLocation(location);
         }
       }}
     >
@@ -114,37 +133,37 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
       )}
       <Routes location={displayLocation}>
         <Route
-          path='*'
+          path="*"
           element={
             <Welcome
               language={language}
               setLanguage={setLanguage}
-              heading={t('Welcome')}
-              text={t('ToTheReactSiteOfJenniinaFi')}
-              type='page'
+              heading={t("Welcome")}
+              text={t("ToTheReactSiteOfJenniinaFi")}
+              type="page"
               options={options}
             />
           }
         />
         <Route
-          path='/about'
+          path="/about"
           element={
             <About
               language={language}
-              heading={t('About')}
-              text={t('ThisSite')}
-              type='page'
+              heading={t("About")}
+              text={t("ThisSite")}
+              type="page"
             />
           }
         />
 
         <Route
-          path='/edit'
+          path="/edit"
           element={
             <UserEditPage
-              heading={t('UserEdit')}
-              text={t('EditUserSettings')}
-              type='page'
+              heading={t("UserEdit")}
+              text={t("EditUserSettings")}
+              type="page"
               language={language}
               setLanguage={setLanguage}
               options={options}
@@ -153,12 +172,12 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
         />
 
         <Route
-          path='/portfolio'
+          path="/portfolio"
           element={
             <Suspense
               fallback={
-                <div className='flex center margin0auto textcenter'>
-                  {t('Loading')}...
+                <div className="flex center margin0auto textcenter">
+                  {t("Loading")}...
                 </div>
               }
             >
@@ -170,118 +189,118 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             index
             element={
               <Portfolio
-                heading={t('Portfolio')}
-                type='page'
-                text='ReactJS'
+                heading={t("Portfolio")}
+                type="page"
+                text="ReactJS"
                 language={language}
               />
             }
           />
           <Route
-            path='/portfolio/graphql'
+            path="/portfolio/graphql"
             element={
               <GraphQLPage
                 language={language}
-                heading='GraphQL'
-                text={t('GraphQLSite')}
-                type='page subpage'
+                heading="GraphQL"
+                text={t("GraphQLSite")}
+                type="page subpage"
               />
             }
           />
           <Route
-            path='/portfolio/blob'
+            path="/portfolio/blob"
             element={
               <BlobPage
                 language={language}
-                heading={t('Blobs')}
-                text={t('BlobAppSlogan')}
-                type='page subpage'
+                heading={t("Blobs")}
+                text={t("BlobAppSlogan")}
+                type="page subpage"
               />
             }
           />
           <Route
-            path='/portfolio/draganddrop'
+            path="/portfolio/draganddrop"
             element={
               <DragAndDropPage
                 language={language}
-                heading={t('DragAndDrop')}
-                text={t('DragAndDropAppIntro')}
-                type='page subpage'
+                heading={t("DragAndDrop")}
+                text={t("DragAndDropAppIntro")}
+                type="page subpage"
               />
             }
           />
           <Route
-            path='/portfolio/todo'
+            path="/portfolio/todo"
             element={
               <TodoPage
-                heading={t('TodoApp')}
-                text={t('GetOrganizedOneTaskAtATime')}
-                type='page subpage'
+                heading={t("TodoApp")}
+                text={t("GetOrganizedOneTaskAtATime")}
+                type="page subpage"
                 language={language}
               />
             }
           />
           <Route
-            path='/portfolio/select'
+            path="/portfolio/select"
             element={
               <CustomSelectPage
                 language={language}
-                heading={t('CustomSelect')}
-                text=''
-                type='page subpage'
+                heading={t("CustomSelect")}
+                text=""
+                type="page subpage"
               />
             }
           />
           <Route
-            path='/portfolio/form'
+            path="/portfolio/form"
             element={
               <FormPage
                 language={language}
-                heading={t('MultistepForm')}
-                text=''
-                type='page subpage'
+                heading={t("MultistepForm")}
+                text=""
+                type="page subpage"
               />
             }
           />
           <Route
-            path='/portfolio/jokes/*'
+            path="/portfolio/jokes/*"
             element={
               <JokesPage
-                heading={t('TheComediansCompanion')}
-                text={t('AJokeGeneratorForTheComicallyInclined')}
-                type='page subpage'
+                heading={t("TheComediansCompanion")}
+                text={t("AJokeGeneratorForTheComicallyInclined")}
+                type="page subpage"
                 language={language}
                 setLanguage={setLanguage}
               />
             }
           />
-          <Route path='/portfolio/quiz/' element={<QuizPage />}>
+          <Route path="/portfolio/quiz/" element={<QuizPage />}>
             <Route
               index
               element={
                 <Suspense
                   fallback={
-                    <div className='flex center margin0auto textcenter'>
-                      {t('Loading')}...
+                    <div className="flex center margin0auto textcenter">
+                      {t("Loading")}...
                     </div>
                   }
                 >
                   <QuizStart
-                    heading={t('QuizApp')}
-                    text={t('TestYourKnowledge')}
-                    type='page subpage'
+                    heading={t("QuizApp")}
+                    text={t("TestYourKnowledge")}
+                    type="page subpage"
                     language={language}
                   />
                 </Suspense>
               }
             />
             <Route
-              path='/portfolio/quiz/difficulty/:difficulty'
+              path="/portfolio/quiz/difficulty/:difficulty"
               element={
                 <Suspense
                   fallback={
-                    <div className='flex center margin0auto textcenter'>
-                      {t('Loading')}...
+                    <div className="flex center margin0auto textcenter">
+                      {t("Loading")}...
                     </div>
                   }
                 >
@@ -290,12 +309,12 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
               }
             />
             <Route
-              path='/portfolio/quiz/results'
+              path="/portfolio/quiz/results"
               element={
                 <Suspense
                   fallback={
-                    <div className='flex center margin0auto textcenter'>
-                      {t('Loading')}...
+                    <div className="flex center margin0auto textcenter">
+                      {t("Loading")}...
                     </div>
                   }
                 >
@@ -305,56 +324,56 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             />
           </Route>
           <Route
-            path='/portfolio/salon'
+            path="/portfolio/salon"
             element={
               <HairSalonPage
                 language={language}
-                heading={t('HairSalonWebsite')}
-                text='React, Node.js, Express, MySQL, Sequelize'
-                type='page subpage'
+                heading={t("HairSalonWebsite")}
+                text="React, Node.js, Express, MySQL, Sequelize"
+                type="page subpage"
               />
             }
           />
           <Route
-            path='/portfolio/composer'
+            path="/portfolio/composer"
             element={
               <ComposerPage
                 language={language}
-                heading={t('ComposerOlliSanta')}
-                text='React, Node.js, Express, MongoDB'
-                type='page subpage'
+                heading={t("ComposerOlliSanta")}
+                text="React, Node.js, Express, MongoDB"
+                type="page subpage"
               />
             }
           />
           <Route
-            path='/portfolio/colors'
+            path="/portfolio/colors"
             element={
               <ColorsPage
                 language={language}
-                heading={t('ColorAccessibility')}
-                text={`${t('WCAGTool')}`}
-                type='page subpage'
+                heading={t("ColorAccessibility")}
+                text={`${t("WCAGTool")}`}
+                type="page subpage"
               />
             }
           />
           <Route
-            path='/portfolio/memory'
+            path="/portfolio/memory"
             element={
               <MemoryPage
                 language={language}
-                heading={t('MemoryGame')}
-                text={t('MemoryGameIntro')}
-                type='page subpage'
+                heading={t("MemoryGame")}
+                text={t("MemoryGameIntro")}
+                type="page subpage"
               />
             }
           />
           <Route
-            path='/portfolio/media'
+            path="/portfolio/media"
             element={
               <ImagesPage
-                heading={t('Media')}
-                text={t('MediaWithQuotesOrPoems')}
-                type='page subpage'
+                heading={t("Media")}
+                text={t("MediaWithQuotesOrPoems")}
+                type="page subpage"
                 language={language}
               />
             }
@@ -362,24 +381,24 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
         </Route>
 
         <Route
-          path='/contact'
+          path="/contact"
           element={
             <Contact
               language={language}
-              heading={t('Contact')}
-              text={t('LetsCollaborate')}
-              type='page'
+              heading={t("Contact")}
+              text={t("LetsCollaborate")}
+              type="page"
             />
           }
         />
         <Route
-          path='/cart'
+          path="/cart"
           element={
             <CartPage
               language={language}
-              heading={t('ShoppingCart')}
-              text=''
-              type='page'
+              heading={t("ShoppingCart")}
+              text=""
+              type="page"
               cart={cart}
               addToCart={addToCart}
               removeFromCart={removeFromCart}
@@ -389,13 +408,13 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
           }
         />
         <Route
-          path='/store'
+          path="/store"
           element={
             <StorePage
               language={language}
-              heading={t('Store')}
-              text={t('WebpagesAndGraphicDesign')}
-              type='page'
+              heading={t("Store")}
+              text={t("WebpagesAndGraphicDesign")}
+              type="page"
               cart={cart}
               addToCart={addToCart}
               removeFromCart={removeFromCart}
@@ -403,36 +422,41 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
           }
         />
         <Route
-          path='/orders'
+          path="/orders"
           element={
-            <OrderPage language={language} heading={t('Orders')} text='' type='page' />
-          }
-        />
-        <Route
-          path='/disclaimer'
-          element={
-            <Disclaimer
+            <OrderPage
               language={language}
-              heading={t('PrivacyAndSecurityDisclaimer')}
-              text={`${t('LastUpdated')}: 2025/9/20`}
-              type='page'
+              heading={t("Orders")}
+              text=""
+              type="page"
             />
           }
         />
         <Route
-          path='/terms'
+          path="/disclaimer"
+          element={
+            <Disclaimer
+              language={language}
+              heading={t("PrivacyAndSecurityDisclaimer")}
+              text={`${t("LastUpdated")}: 2025/9/20`}
+              type="page"
+            />
+          }
+        />
+        <Route
+          path="/terms"
           element={
             <TermsOfService
               language={language}
-              heading={t('TermsOfService')}
-              text={`${t('LastUpdated')}: 2024/10/20`}
-              type='page'
+              heading={t("TermsOfService")}
+              text={`${t("LastUpdated")}: 2024/10/20`}
+              type="page"
             />
           }
         />
       </Routes>
     </main>
-  )
-}
+  );
+};
 
-export default MainWrapper
+export default MainWrapper;

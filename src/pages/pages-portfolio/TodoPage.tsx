@@ -4,9 +4,6 @@ import { ELanguages } from "../../types";
 import Accordion from "../../components/Accordion/Accordion";
 import { useTheme } from "../../hooks/useTheme";
 import { LanguageContext } from "../../contexts/LanguageContext";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
-
 const TodoApp = lazy(() => import("../../components/Todo/TodoApp"));
 
 export default function TodoPage({
@@ -25,7 +22,11 @@ export default function TodoPage({
   const lightMode = useTheme();
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/*  <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>
           {t("TodoApp")} | {t("GetOrganizedOneTaskAtATime")}
         </title>
@@ -44,7 +45,7 @@ export default function TodoPage({
           content={`https://react.jenniina.fi/portfolio/todo`}
         />
         <meta property="og:type" content="website" />
-      </Helmet>
+      </Helmet> */}
       <div className={`todo ${type} ${lightMode ? styles.light : ""}`}>
         <div className="inner-wrap">
           <section className="card">

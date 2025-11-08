@@ -1,10 +1,7 @@
-import { lazy, Suspense, useContext } from "react";
+import React, { lazy, Suspense, useContext } from "react";
 import { ELanguages } from "../types";
 import { ICartItem } from "../types/store";
 import { LanguageContext } from "../contexts/LanguageContext";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
-
 interface CartProps {
   heading: string;
   text: string;
@@ -34,7 +31,11 @@ const CartPage: React.FC<CartProps> = ({
 
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/* <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>{t("Cart")} | react.jenniina.fi</title>
         <meta name="description" content={t("Cart")} />
         <link rel="canonical" href={`https://react.jenniina.fi/cart`} />
@@ -45,7 +46,7 @@ const CartPage: React.FC<CartProps> = ({
         <meta property="og:description" content={t("Cart")} />
         <meta property="og:url" content={`https://react.jenniina.fi/cart`} />
         <meta property="og:type" content="website" />
-      </Helmet>
+      </Helmet> **/}
       <div className={`cart ${type}`}>
         <div className="inner-wrap">
           <section className="card" style={{ position: "relative", zIndex: 2 }}>

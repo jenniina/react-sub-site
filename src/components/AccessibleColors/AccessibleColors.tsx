@@ -1,4 +1,4 @@
-import {
+import React, {
   useState,
   useEffect,
   FC,
@@ -742,12 +742,12 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       type: "image/svg+xml;charset=utf-8",
     });
     const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
+    const link = document?.createElement("a");
     link.href = url;
     link.download = "color-blocks.svg";
-    document.body.appendChild(link);
+    document?.body.appendChild(link);
     link.click();
-    document.body.removeChild(link);
+    document?.body.removeChild(link);
     URL.revokeObjectURL(url);
     dispatch(notify(t("ArtSaved"), false, 5));
   };
@@ -765,7 +765,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     const url = URL.createObjectURL(svgBlob);
 
     img.onload = () => {
-      const canvas = document.createElement("canvas");
+      const canvas = document?.createElement("canvas");
       canvas.width = svgWidth;
       canvas.height = svgHeight;
       const context = canvas.getContext("2d");
@@ -774,14 +774,14 @@ const AccessibleColors: FC<Props> = ({ language }) => {
 
       const pngDataUrl = canvas.toDataURL("image/png");
 
-      const link = document.createElement("a");
+      const link = document?.createElement("a");
       link.href = pngDataUrl;
       link.download = "color-blocks.png";
       link.target = "_blank";
       link.rel = "noreferrer";
-      document.body.appendChild(link);
+      document?.body.appendChild(link);
       link.click();
-      document.body.removeChild(link);
+      document?.body.removeChild(link);
 
       URL.revokeObjectURL(url);
       dispatch(notify(t("ArtSaved"), false, 5));

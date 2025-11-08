@@ -1,22 +1,22 @@
-import { FC, useContext, useEffect, useState } from 'react'
-import { ELanguages } from '../../../types'
-import { VideoHit } from '../services/images'
-import useTooltip from '../../../hooks/useTooltip'
-import Quote from '../../Quotes/Quote'
-import { getQuote, QuoteItem } from '../../Quotes/services/quotes'
-import Poem from '../../Poems/Poem'
-import { getPoem, PoemItem } from '../../Poems/services/poems'
-import { TTextType } from '../Images'
-import { useAppDispatch } from '../../../hooks/useAppDispatch'
-import { notify } from '../../../reducers/notificationReducer'
-import { LanguageContext } from '../../../contexts/LanguageContext'
+import React, { FC, useContext, useEffect, useState } from "react";
+import { ELanguages } from "../../../types";
+import { VideoHit } from "../services/images";
+import useTooltip from "../../../hooks/useTooltip";
+import Quote from "../../Quotes/Quote";
+import { getQuote, QuoteItem } from "../../Quotes/services/quotes";
+import Poem from "../../Poems/Poem";
+import { getPoem, PoemItem } from "../../Poems/services/poems";
+import { TTextType } from "../Images";
+import { useAppDispatch } from "../../../hooks/useAppDispatch";
+import { notify } from "../../../reducers/notificationReducer";
+import { LanguageContext } from "../../../contexts/LanguageContext";
 
 interface ModalVideoProps {
-  video: VideoHit
-  language: ELanguages
-  searchTerm: string
-  textType: TTextType
-  handleDownload: () => void
+  video: VideoHit;
+  language: ELanguages;
+  searchTerm: string;
+  textType: TTextType;
+  handleDownload: () => void;
 }
 
 const VideoModal: FC<ModalVideoProps> = ({
@@ -26,74 +26,74 @@ const VideoModal: FC<ModalVideoProps> = ({
   textType,
   handleDownload,
 }) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useContext(LanguageContext)!;
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
-  const { tooltip, handleMouseMove, handleMouseLeave } = useTooltip()
+  const { tooltip, handleMouseMove, handleMouseLeave } = useTooltip();
 
   const [quote, setQuote] = useState<QuoteItem>({
     id: 0,
-    content: '',
+    content: "",
     originator: {
-      name: '',
+      name: "",
       id: 0,
-      description: '',
-      language_code: 'en',
+      description: "",
+      language_code: "en",
       master_id: 0,
-      url: '',
+      url: "",
     },
-    tags: [''],
-    url: '',
-    language_code: 'en',
-  })
+    tags: [""],
+    url: "",
+    language_code: "en",
+  });
 
   const [poem, setPoem] = useState<PoemItem>({
-    title: '',
-    author: '',
+    title: "",
+    author: "",
     lines: [],
-    linecount: '0',
-  })
+    linecount: "0",
+  });
 
   const fetchPoem = async (linecount: number) => {
-    const poem = await getPoem(language, linecount)
-    setPoem(poem[0])
-  }
+    const poem = await getPoem(language, linecount);
+    setPoem(poem[0]);
+  };
 
   const fetchQuote = async () => {
     if ((language = ELanguages.fi)) {
-      const response = await getQuote(ELanguages.en, searchTerm)
-      if (response.quote) setQuote(response.quote)
-      else dispatch(notify(response.message ?? t('Error'), true, 8))
+      const response = await getQuote(ELanguages.en, searchTerm);
+      if (response.quote) setQuote(response.quote);
+      else dispatch(notify(response.message ?? t("Error"), true, 8));
     } else {
-      const response = await getQuote(language, searchTerm)
-      if (response.quote) setQuote(response.quote)
-      else dispatch(notify(response.message ?? t('Error'), true, 8))
+      const response = await getQuote(language, searchTerm);
+      if (response.quote) setQuote(response.quote);
+      else dispatch(notify(response.message ?? t("Error"), true, 8));
     }
-  }
+  };
 
   useEffect(() => {
-    const linecount = Math.floor(Math.random() * 5) + 2
-    if (textType === 'poem') {
-      fetchPoem(linecount)
-    } else if (textType === 'quote') {
-      fetchQuote()
+    const linecount = Math.floor(Math.random() * 5) + 2;
+    if (textType === "poem") {
+      fetchPoem(linecount);
+    } else if (textType === "quote") {
+      fetchQuote();
     } else {
-      const randomOneOrTwo = Math.floor(Math.random() * 2) + 1
+      const randomOneOrTwo = Math.floor(Math.random() * 2) + 1;
       if (randomOneOrTwo === 1) {
-        fetchPoem(linecount)
+        fetchPoem(linecount);
       } else {
-        fetchQuote()
+        fetchQuote();
       }
     }
-  }, [language, searchTerm, textType])
+  }, [language, searchTerm, textType]);
 
   const onMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    const x = e.clientX - rect.left + 10
-    const y = e.clientY - rect.top + 10
-    handleMouseMove(x, y)
-  }
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left + 10;
+    const y = e.clientY - rect.top + 10;
+    handleMouseMove(x, y);
+  };
 
   return (
     <>
@@ -110,17 +110,17 @@ const VideoModal: FC<ModalVideoProps> = ({
           }
           title={video.tags}
           style={{
-            width: '100%',
-            height: 'auto',
-            maxHeight: '100%',
-            borderRadius: '8px',
-            cursor: 'pointer',
+            width: "100%",
+            height: "auto",
+            maxHeight: "100%",
+            borderRadius: "8px",
+            cursor: "pointer",
           }}
           onClick={handleDownload}
           tabIndex={0}
           onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              handleDownload()
+            if (e.key === "Enter" || e.key === " ") {
+              handleDownload();
             }
           }}
           controls
@@ -128,20 +128,20 @@ const VideoModal: FC<ModalVideoProps> = ({
         {tooltip.visible && (
           <span
             className={`tooltip center narrow`}
-            style={{ top: tooltip.y, left: tooltip.x, right: 'unset' }}
+            style={{ top: tooltip.y, left: tooltip.x, right: "unset" }}
           >
-            {t('ClickToLoadVideo')}
+            {t("ClickToLoadVideo")}
           </span>
         )}
       </div>
-      {textType === 'quote' ? (
+      {textType === "quote" ? (
         <Quote
           quote={quote}
           language={language}
           url={video.pageURL}
           title={
             <>
-              {t('VideoPage')} ({t('Author')}: {video.user})
+              {t("VideoPage")} ({t("Author")}: {video.user})
             </>
           }
         />
@@ -149,7 +149,7 @@ const VideoModal: FC<ModalVideoProps> = ({
         <Poem poem={poem} language={language} />
       )}
     </>
-  )
-}
+  );
+};
 
-export default VideoModal
+export default VideoModal;

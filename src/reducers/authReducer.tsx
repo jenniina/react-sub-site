@@ -22,7 +22,9 @@ export const initializeUser = () => {
   return async (
     dispatch: (arg0: { payload: any; type: "auth/setUser" }) => void
   ) => {
-    const loggedUserJSON = window.localStorage.getItem("loggedJokeAppUser");
+    const loggedUserJSON = window
+      ? window.localStorage.getItem("loggedJokeAppUser")
+      : null;
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
       loginService.setToken(user.token);
@@ -40,7 +42,9 @@ export const login = (username: string, password: string, language: string) => {
       password,
       language,
     });
-    window.localStorage.setItem("loggedJokeAppUser", JSON.stringify(user));
+    window
+      ? window.localStorage.setItem("loggedJokeAppUser", JSON.stringify(user))
+      : null;
     loginService.setToken(user.token);
     const response = dispatch(loginUser(user));
     return response;
@@ -51,7 +55,7 @@ export const logout = () => {
   return async (
     dispatch: (arg0: { payload: any; type: "auth/logoutUser" }) => void
   ) => {
-    window.localStorage.removeItem("loggedJokeAppUser");
+    window ? window.localStorage.removeItem("loggedJokeAppUser") : null;
     dispatch(logoutUser(null));
   };
 };
@@ -60,17 +64,21 @@ export const refreshUser = (user: IUser) => {
   return async (
     dispatch: (arg0: { payload: any; type: "auth/setUser" }) => void
   ) => {
-    const loggedUserJSON = window.localStorage.getItem("loggedJokeAppUser");
+    const loggedUserJSON = window
+      ? window.localStorage.getItem("loggedJokeAppUser")
+      : null;
     if (loggedUserJSON) {
       const data = JSON.parse(loggedUserJSON);
       const token = data.token;
       if (token) {
         loginService.setToken(token); // Set the token in the loginService
       }
-      window.localStorage.setItem(
-        "loggedJokeAppUser",
-        JSON.stringify({ user, token })
-      );
+      window
+        ? window.localStorage.setItem(
+            "loggedJokeAppUser",
+            JSON.stringify({ user, token })
+          )
+        : null;
       dispatch(setUser(user));
     }
   };

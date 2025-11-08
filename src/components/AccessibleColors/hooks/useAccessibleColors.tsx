@@ -9,6 +9,7 @@ import {
   rgbToHSL,
   hexToRGB,
 } from "../../../utils";
+import { useIsClient, useWindow } from "../../../hooks/useSSR";
 
 const status = "colors";
 const format = "hsl";
@@ -76,6 +77,9 @@ const defaultColors: ColorBlock[] = [
   },
 ];
 const useAccessibleColors = (initialColorMode: TColorMode) => {
+  const isClient = useIsClient();
+  const windowObj = useWindow();
+
   const [colors, setColors, deleteColors] = useLocalStorage<ColorBlock[]>(
     "Jenniina-colorsAccessibility",
     defaultColors
@@ -84,7 +88,9 @@ const useAccessibleColors = (initialColorMode: TColorMode) => {
   // On initial load, check for colors param in URL
   useEffect(() => {
     const parseColorsFromUrl = () => {
-      const url = new URL(window.location.href);
+      if (!isClient || !windowObj) return;
+
+      const url = new URL(windowObj.location.href);
       const colorsParam = url.searchParams.get("colors");
       if (colorsParam) {
         try {
@@ -160,11 +166,13 @@ const useAccessibleColors = (initialColorMode: TColorMode) => {
     const onPopState = () => {
       parseColorsFromUrl();
     };
-    window.addEventListener("popstate", onPopState);
+    if (!isClient || !windowObj) return;
+    windowObj.addEventListener("popstate", onPopState);
+
     return () => {
-      window.removeEventListener("popstate", onPopState);
+      windowObj.removeEventListener("popstate", onPopState);
     };
-  }, []);
+  }, [isClient]);
 
   const [currentColor, setCurrentColor] = useLocalStorage<string>(
     "Jenniina-currentColor",
@@ -210,9 +218,11 @@ const useAccessibleColors = (initialColorMode: TColorMode) => {
       // fallback: store as is
       return `${block.colorFormat}-${block.color}`;
     });
-    const url = new URL(window.location.href);
+    if (!isClient || !windowObj) return;
+
+    const url = new URL(windowObj.location.href);
     url.searchParams.set("colors", colorArr.join("_"));
-    window.history.replaceState(
+    windowObj.history.replaceState(
       {},
       "",
       url.pathname + "?" + url.searchParams.toString() + url.hash

@@ -13,14 +13,16 @@ import {
   HSLColor,
   TColorMode,
 } from "../components/AccessibleColors/AccessibleColors";
-import useRandomMinMax from "../hooks/useRandomMinMax";
-import domtoimage from "dom-to-image-more";
 import {
   ECategories,
   EJokeType,
   ESafemode,
   TCategoryByLanguages,
 } from "../components/Jokes/types";
+
+export function getRandomBetween(min: number, max: number) {
+  return Math.random() * (max - min) + min;
+}
 
 export const splitToLines = (details: string) => {
   return details.split("\n").map((line: string, index: number) => (
@@ -81,12 +83,15 @@ export const getRandomLetters = (length: number, capitals: boolean = false) => {
 export const getRandomMinMax = (min: number, max: number) => {
   return Math.random() * (max - min) + min;
 };
+
+type ScrollLogicalPosition = "center" | "end" | "nearest" | "start";
+
 export const scrollIntoView = (
   id: string,
   block: ScrollLogicalPosition = "start",
   inline: ScrollLogicalPosition = "nearest"
 ) => {
-  const element = document.getElementById(id);
+  const element = document?.getElementById(id);
   if (element) {
     element.scrollIntoView({ behavior: "smooth", block, inline });
   }
@@ -97,11 +102,11 @@ export const RandomRGBvalue = () => {
 };
 
 const randomUpTo100 = () => {
-  const value = Math.ceil(useRandomMinMax(30, 100));
+  const value = Math.ceil(getRandomBetween(30, 100));
   return clampValue(30, value, 100);
 };
 export const randomUpTo90 = () => {
-  const value = Math.ceil(useRandomMinMax(5, 90));
+  const value = Math.ceil(getRandomBetween(5, 90));
   return clampValue(5, value, 90);
 };
 export const randomHSLColor = (type: string = "array") => {
@@ -123,7 +128,7 @@ export const generateColors = (
   baseHSL: HSLColor
 ): number[][] => {
   const randomOneOrTwo = baseHSL.l < 50 ? 1 : 2;
-  const adjustment = Math.round(useRandomMinMax(15, 20));
+  const adjustment = Math.round(getRandomBetween(15, 20));
   const colorset: number[][] = [];
   switch (mode) {
     case "analogous":

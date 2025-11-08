@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ELanguages } from "../../../types";
 import styles from "../css/todo.module.css";
 import { ITaskDraggable } from "./TodoList";
@@ -17,6 +17,7 @@ import { useAppDispatch } from "../../../hooks/useAppDispatch";
 import { notify } from "../../../reducers/notificationReducer";
 import { LanguageContext } from "../../../contexts/LanguageContext";
 import { useConfirm } from "../../../contexts/ConfirmContext";
+import { useIsClient, useWindow } from "../../../hooks/useSSR";
 
 export default function Todo({
   todo,
@@ -53,6 +54,9 @@ export default function Todo({
   zin: number;
   maxCharacters: number;
 }) {
+  const isClient = useIsClient();
+  const windowObj = useWindow();
+
   const { t } = useContext(LanguageContext)!;
   const confirm = useConfirm();
 
@@ -152,7 +156,8 @@ export default function Todo({
     setIsSelectingText(true);
   };
   const handleMouseUpSpan = () => {
-    if (window.getSelection()?.toString()) {
+    if (!isClient || !windowObj) return;
+    if (windowObj.getSelection()?.toString()) {
       setAllowDrag(false);
       setIsSelectingText(true);
     } else {

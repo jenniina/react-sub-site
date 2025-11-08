@@ -9,9 +9,6 @@ import dog from "../../assets/blob-dog.png";
 import { CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import { LanguageContext } from "../../contexts/LanguageContext";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
-
 const Blobs = lazy(() => import("../../components/Blob/Blobs"));
 
 export default function BlobPage({
@@ -36,7 +33,11 @@ export default function BlobPage({
   };
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/*  <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>
           {t("Blobs")} | {t("BlobAppSlogan")}
         </title>
@@ -55,7 +56,7 @@ export default function BlobPage({
           content={`https://react.jenniina.fi/portfolio/blob`}
         />
         <meta property="og:type" content="website" />
-      </Helmet>
+      </Helmet> */}
       <div className={`blob ${type}`}>
         <div className="inner-wrap">
           <section>

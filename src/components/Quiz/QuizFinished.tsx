@@ -156,16 +156,16 @@ const QuizFinished = ({ language }: Props) => {
   }
 
   useEffect(() => {
-    const loginWrapOpen = document.querySelector(
+    const loginWrapOpen = document?.querySelector(
       ".login-wrap .open"
     ) as HTMLButtonElement;
-    const loginWrapClose = document.querySelector(
+    const loginWrapClose = document?.querySelector(
       ".login-wrap .close"
     ) as HTMLButtonElement;
-    const registerWrapOpen = document.querySelector(
+    const registerWrapOpen = document?.querySelector(
       ".register-wrap .open"
     ) as HTMLButtonElement;
-    const registerWrapClose = document.querySelector(
+    const registerWrapClose = document?.querySelector(
       ".register-wrap .close"
     ) as HTMLButtonElement;
 

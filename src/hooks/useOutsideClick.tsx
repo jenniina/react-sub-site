@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 
 interface Props {
-  ref: React.RefObject<HTMLElement>
-  onOutsideClick: (e: Event) => void
-  allowAnyKey?: boolean
-  triggerKeys?: string[]
+  ref: React.RefObject<HTMLElement>;
+  onOutsideClick: (e: Event) => void;
+  allowAnyKey?: boolean;
+  triggerKeys?: string[];
 }
 //https://www.npmjs.com/package/react-detect-click-outside
 type EventConfigItem = [
@@ -14,7 +14,7 @@ type EventConfigItem = [
     | ((e: Event | MouseEvent | TouchEvent) => void)
     | ((e: Event | KeyboardEvent) => void)
   )
-]
+];
 
 /**
  * Hook used to detect clicks outside a component (or an escape key press). onOutsideClick function is triggered on `click`, `touch` or escape `keyup` event.
@@ -31,51 +31,51 @@ export function useOutsideClick({
   const keyListener = useCallback(
     (e: KeyboardEvent) => {
       if (allowAnyKey) {
-        onOutsideClick(e)
+        onOutsideClick(e);
       } else if (triggerKeys) {
         if (triggerKeys.includes(e.key)) {
-          onOutsideClick(e)
+          onOutsideClick(e);
         }
       } else {
-        if (e.key === 'Escape') {
-          onOutsideClick(e)
+        if (e.key === "Escape") {
+          onOutsideClick(e);
         }
       }
     },
     [allowAnyKey, triggerKeys, onOutsideClick]
-  )
+  );
 
   const clickOrTouchListener = useCallback(
     (e: MouseEvent | TouchEvent) => {
       if (ref && ref.current) {
         if (!(ref.current! as HTMLElement).contains(e.target as HTMLElement)) {
-          onOutsideClick?.(e)
+          onOutsideClick?.(e);
         }
       }
     },
     [ref, onOutsideClick]
-  )
+  );
 
   const eventsConfig = useMemo(
     () => [
-      ['click', clickOrTouchListener] as EventConfigItem,
-      ['touchstart', clickOrTouchListener] as EventConfigItem,
-      ['keyup', keyListener] as EventConfigItem,
+      ["click", clickOrTouchListener] as EventConfigItem,
+      ["touchstart", clickOrTouchListener] as EventConfigItem,
+      ["keyup", keyListener] as EventConfigItem,
     ],
     [clickOrTouchListener, keyListener]
-  )
+  );
 
   useEffect(() => {
     eventsConfig.forEach(([eventName, listener]) => {
-      document.addEventListener(eventName, listener)
-    })
+      document?.addEventListener(eventName, listener);
+    });
 
     return () => {
       eventsConfig.forEach(([eventName, listener]) => {
-        document.removeEventListener(eventName, listener)
-      })
-    }
-  }, [eventsConfig])
+        document?.removeEventListener(eventName, listener);
+      });
+    };
+  }, [eventsConfig]);
 
   // useEffect(() => {
   //   console.log('Adding event listeners')
@@ -83,7 +83,7 @@ export function useOutsideClick({
   //   eventsConfig.map((eventConfigItem) => {
   //     const [eventName, listener] = eventConfigItem
 
-  //     document.addEventListener(eventName, listener)
+  //     document?.addEventListener(eventName, listener)
   //   })
 
   //   return () => {
@@ -92,10 +92,10 @@ export function useOutsideClick({
   //     eventsConfig.map((eventConfigItem) => {
   //       const [eventName, listener] = eventConfigItem
 
-  //       document.removeEventListener(eventName, listener)
+  //       document?.removeEventListener(eventName, listener)
   //     })
   //   }
   // }, [eventsConfig])
 
-  return ref
+  return ref;
 }
