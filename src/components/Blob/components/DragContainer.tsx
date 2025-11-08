@@ -157,19 +157,9 @@ export default function DragContainer({
   const sliderSaturationInput = useRef(null) as RefObject<HTMLInputElement>;
   const sliderHueInput = useRef(null) as RefObject<HTMLInputElement>;
 
-  const isLocalhost =
-    window.location.hostname === "localhost" ||
-    window.location.hostname === "127.0.0.1";
-
-  const localStorageLayerAmount = `${
-    isLocalhost ? "local-" : ""
-  }BlobLayerAmount${[d]}`;
-  const localStorageBackground = `${
-    isLocalhost ? "local-" : ""
-  }BackgroundColor${[d]}`;
-  const localStorageDraggables = `${isLocalhost ? "local-" : ""}Draggables${[
-    d,
-  ]}`;
+  const localStorageLayerAmount = `BlobLayerAmount${[d]}`;
+  const localStorageBackground = `BackgroundColor${[d]}`;
+  const localStorageDraggables = `Draggables${[d]}`;
 
   const backgroundColor = state.backgroundColor as BackgroundColor[][];
 

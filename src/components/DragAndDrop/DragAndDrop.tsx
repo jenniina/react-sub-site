@@ -49,16 +49,12 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     { content: t("SomeTextNoColorName"), color: "lightgray" },
   ];
 
-  const isLocalhost =
-    window.location.hostname === "localhost" ||
-    window.location.hostname === "127.0.0.1";
-
   const [userColors, setUserColors, removeUserColors] = useLocalStorage<
     Partial<Data>[]
   >("DnD-userColors", []);
   const [sending, setSending] = useState<boolean>(false);
   const [statuses, setStatuses, removeStatuses] = useLocalStorage(
-    `${isLocalhost ? "local-" : ""}DnD-statuses`,
+    `DnD-statuses`,
     initialStatuses
   );
   const [newStatus, setNewStatus] = useState<string>("");
@@ -69,9 +65,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
 
   const storedData = statuses
     .map((status) => {
-      const item = window.localStorage.getItem(
-        `${isLocalhost ? "local-" : ""}DnD-${status}`
-      );
+      const item = window.localStorage.getItem(`DnD-${status}`);
       return item ? JSON.parse(item) : [];
     })
     .flat();
