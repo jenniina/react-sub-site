@@ -9,18 +9,20 @@ function useDisableScroll() {
 
   useEffect(() => {
     if (scrollDisabled) {
-      document.addEventListener('touchmove', preventDefault, { passive: false })
-      document.body.style.overflow = 'hidden'
+      document?.addEventListener('touchmove', preventDefault, {
+        passive: false,
+      })
+      document ? (document.body.style.overflow = 'hidden') : null
     } else {
-      document.body.style.overflowY = 'auto'
-      document.body.style.overflowX = 'hidden'
-      document.removeEventListener('touchmove', preventDefault)
+      document ? (document.body.style.overflowY = 'auto') : null
+      document ? (document.body.style.overflowX = 'hidden') : null
+      document?.removeEventListener('touchmove', preventDefault)
     }
 
     return () => {
-      document.body.style.overflowY = 'auto'
-      document.body.style.overflowX = 'hidden'
-      document.removeEventListener('touchmove', preventDefault)
+      document ? (document.body.style.overflowY = 'auto') : null
+      document ? (document.body.style.overflowX = 'hidden') : null
+      document?.removeEventListener('touchmove', preventDefault)
     }
   }, [scrollDisabled])
 

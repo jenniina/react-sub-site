@@ -1,4 +1,4 @@
-import {
+import React, {
   FC,
   useState,
   useEffect,
@@ -8,6 +8,7 @@ import {
   useRef,
   useContext,
 } from 'react'
+import { useIsClient, useWindow } from '../../hooks/useSSR'
 import { BiChat } from 'react-icons/bi'
 import { BsCart2, BsPerson } from 'react-icons/bs'
 import { CgSearch } from 'react-icons/cg'
@@ -45,7 +46,7 @@ import Accordion from '../Accordion/Accordion'
 import { FaStoreAlt } from 'react-icons/fa'
 import useCart from '../../hooks/useCart'
 import { options } from '../../utils'
-import { LanguageContext } from '../../contexts/LanguageContext'
+import { useLanguageContext } from '../../contexts/LanguageContext'
 import { isTouchDevice } from '../../hooks/useDraggable'
 import useLocalStorage from '../../hooks/useStorage'
 
@@ -64,9 +65,12 @@ const Nav = (
   { setStyleMenu, language, setLanguage }: NavProps,
   ref: Ref<{ getStyle: () => boolean }>
 ) => {
+  const isClient = useIsClient()
+  const windowObj = useWindow()
+
   const { cart } = useCart()
 
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const user = useSelector((state: ReducerProps) => {
     return state.auth?.user
@@ -111,16 +115,26 @@ const Nav = (
   const icons = (label: string) => {
     if (label === t('Welcome'))
       return (
-        <RiHomeSmileLine className={windowWidth < breakpoint ? styles.smallnav : ''} />
+        <RiHomeSmileLine
+          className={windowWidth < breakpoint ? styles.smallnav : ''}
+        />
       )
     else if (label === t('About'))
-      return <BsPerson className={windowWidth < breakpoint ? styles.smallnav : ''} />
+      return (
+        <BsPerson className={windowWidth < breakpoint ? styles.smallnav : ''} />
+      )
     //MdOutlinePerson
     else if (label === t('Portfolio'))
-      return <IoMdImages className={windowWidth < breakpoint ? styles.smallnav : ''} />
+      return (
+        <IoMdImages
+          className={windowWidth < breakpoint ? styles.smallnav : ''}
+        />
+      )
     //BiImage IoImagesOutline BiImages FaRegImages  MdImportContacts
     else if (label === t('Contact'))
-      return <BiChat className={windowWidth < breakpoint ? styles.smallnav : ''} />
+      return (
+        <BiChat className={windowWidth < breakpoint ? styles.smallnav : ''} />
+      )
   }
 
   const LinkComponent: FC<{ links: Link[] }> = ({ links }) => {
@@ -128,9 +142,15 @@ const Nav = (
       <ul>
         {windowWidth < breakpointSmall && !menuStyleAlt ? (
           <li className={`tooltip-wrap ${styles.jenniina}`}>
-            <a href='https://jenniina.fi'>
-              <img src={lightTheme ? logoDark : logo} width='96px' height='39.6px' />
-              <span className='tooltip below right narrow'>« {t('ExitToMainSite')}</span>
+            <a href="https://jenniina.fi">
+              <img
+                src={lightTheme ? logoDark : logo}
+                width="96px"
+                height="39.6px"
+              />
+              <span className="tooltip below right narrow">
+                « {t('ExitToMainSite')}
+              </span>
             </a>
           </li>
         ) : (
@@ -139,7 +159,10 @@ const Nav = (
 
         {links.map((link: Link, index: number) => {
           return (
-            <li key={`${link.label}${index}`} className={`${styles[link.label]}`}>
+            <li
+              key={`${link.label}${index}`}
+              className={`${styles[link.label]}`}
+            >
               <NavLink
                 to={link.href}
                 className={({ isActive }) =>
@@ -153,7 +176,9 @@ const Nav = (
                 <b
                   className={`${
                     menuStyleAlt && windowWidth < breakpointSmall
-                      ? `tooltip space narrow2 above ${index < 2 ? 'right' : 'left'}`
+                      ? `tooltip space narrow2 above ${
+                          index < 2 ? 'right' : 'left'
+                        }`
                       : 'scr'
                   }`}
                   aria-hidden={true}
@@ -189,8 +214,10 @@ const Nav = (
   const navigate = useNavigate()
 
   useEffect(() => {
-    closingAllMenus()
-  }, [window.location.pathname])
+    if (isClient) {
+      closingAllMenus()
+    }
+  }, [isClient && windowObj?.location.pathname])
 
   const clickOutsideRef = useRef<HTMLDivElement>(null)
 
@@ -274,7 +301,7 @@ const Nav = (
       setIsMainMenuHidden(false)
       setMenuStyleAlt(true)
     } else {
-      setMenuStyleAlt((prev) => !prev)
+      setMenuStyleAlt(prev => !prev)
       //to avoid ugly transformations between the two states, set delay before transforms are set:
       setMenuStyleTransform(false)
       setTimeout(() => {
@@ -293,7 +320,10 @@ const Nav = (
 
   //Main menu always visible at larger screensizes and when the altnav is seen:
   useEffect(() => {
-    if ((menuStyleAlt && windowHeight > windowWidth) || windowWidth > breakpoint)
+    if (
+      (menuStyleAlt && windowHeight > windowWidth) ||
+      windowWidth > breakpoint
+    )
       setIsMainMenuOpen(true)
   }, [menuStyleAlt, windowWidth, windowHeight])
 
@@ -315,14 +345,16 @@ const Nav = (
   const [scrolled, setScrolled] = useState(false) //when false, keeps header visible
 
   useEffect(() => {
-    window.addEventListener('scroll', scrolling)
+    if (!isClient || !windowObj) return
+    windowObj.addEventListener('scroll', scrolling)
     return () => {
-      window.removeEventListener('scroll', scrolling)
+      windowObj.removeEventListener('scroll', scrolling)
     }
-  })
+  }, [isClient, windowObj])
 
   const scrolling = () => {
-    window.scrollY > 100 ? setScrolled(true) : setScrolled(false)
+    if (!windowObj) return
+    windowObj.scrollY > 100 ? setScrolled(true) : setScrolled(false)
   }
 
   const dispatch = useAppDispatch()
@@ -359,7 +391,8 @@ const Nav = (
   const location = useLocation()
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
+    if (!isClient || !windowObj) return
+    const params = new URLSearchParams(windowObj.location.search)
     if (params.get('login')) {
       setIsToolbarOpen(true)
       setIsToolbarHidden(false)
@@ -372,7 +405,7 @@ const Nav = (
       setIsRegisterFormOpen(true)
       setIsLoginFormOpen(false)
     }
-  }, [location])
+  }, [location, isClient, windowObj])
 
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -388,7 +421,9 @@ const Nav = (
       setSending(false)
       return
     }
-    dispatch(createUser({ name, username, password, language, verified: false }))
+    dispatch(
+      createUser({ name, username, password, language, verified: false })
+    )
       .then(async () => {
         dispatch(
           notify(
@@ -405,7 +440,7 @@ const Nav = (
         setName('')
         setSending(false)
       })
-      .catch((err) => {
+      .catch(err => {
         console.error(err)
         if (err.response?.data?.message)
           dispatch(notify(err.response.data.message, true, 8))
@@ -424,14 +459,20 @@ const Nav = (
         ref={clickOutsideRef}
         className={`
                 ${`main-header ${styles['main-header']}`}
-                ${scrollDirection === 'down' && scrolled ? styles.hide : styles.show} 
+                ${
+                  scrollDirection === 'down' && scrolled
+                    ? styles.hide
+                    : styles.show
+                } 
                 ${lightTheme ? styles.light : ''} 
                 ${
                   menuStyleAlt
                     ? `${styles.menualt} menualt`
                     : `${styles.menumain} menumain`
                 } 
-                ${windowHeight > windowWidth && touchDevice ? styles.mobile : ''} 
+                ${
+                  windowHeight > windowWidth && touchDevice ? styles.mobile : ''
+                } 
                 ${menuStyleTransform ? `${styles.transformations}` : ''} 
                 ${styles[`${language}`]}
                 `}
@@ -448,12 +489,12 @@ const Nav = (
             } 
                         ${windowWidth < breakpointSmall ? 'scr' : ''}`}
           >
-            <a href='https://jenniina.fi/'>
+            <a href="https://jenniina.fi/">
               <span>« {t('ExitToMainSite')}</span>
             </a>
           </div>
           <button
-            aria-haspopup='true'
+            aria-haspopup="true"
             aria-expanded={isMainMenuOpen}
             onClick={toggleMainMenu}
             className={`${
@@ -463,26 +504,28 @@ const Nav = (
             } ${windowWidth > breakpoint ? styles.hidden : ''}`}
           >
             <svg
-              stroke='currentColor'
-              strokeWidth='12'
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              fill='none'
-              viewBox='0 0 100 100'
-              aria-hidden='true'
-              height='1em'
-              width='1em'
-              xmlns='http://www.w3.org/2000/svg'
+              stroke="currentColor"
+              strokeWidth="12"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              fill="none"
+              viewBox="0 0 100 100"
+              aria-hidden="true"
+              height="1em"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
               style={{ fontSize: '1em' }}
             >
               <g>
                 <path
                   className={styles.menupath}
-                  d='m 90 90 l -80 -80 l 60 0 a 1 1 0 1 1 0 40 l -40 0 a 1 1 0 0 0 0 40 l 60 0 l 0 -80 l -80 80'
+                  d="m 90 90 l -80 -80 l 60 0 a 1 1 0 1 1 0 40 l -40 0 a 1 1 0 0 0 0 40 l 60 0 l 0 -80 l -80 80"
                 ></path>
               </g>
             </svg>
-            <span className={windowWidth > breakpoint && !touchDevice ? '' : 'scr'}>
+            <span
+              className={windowWidth > breakpoint && !touchDevice ? '' : 'scr'}
+            >
               {t('Menu')}
             </span>
           </button>
@@ -518,7 +561,7 @@ const Nav = (
           >
             <LinkComponent links={links} />
           </nav>
-          <button className={styles.search} role='search' aria-label='search'>
+          <button className={styles.search} role="search" aria-label="search">
             <CgSearch
               style={
                 windowWidth < breakpointSmall
@@ -527,15 +570,20 @@ const Nav = (
               }
               aria-hidden={true}
             />
-            <span className={windowWidth > breakpoint && !touchDevice ? '' : 'scr'}>
+            <span
+              className={windowWidth > breakpoint && !touchDevice ? '' : 'scr'}
+            >
               {t('Search')}
             </span>
           </button>
-          {window.location.pathname === '/store' ||
-          (cart && cart.length > 0 && window.location.pathname !== '/cart') ? (
+          {(isClient && windowObj?.location.pathname === '/store') ||
+          (cart &&
+            cart.length > 0 &&
+            windowObj &&
+            windowObj.location.pathname !== '/cart') ? (
             <button
               className={`${styles.settings} ${styles.cart}`}
-              aria-label='cart'
+              aria-label="cart"
               onClick={() => {
                 navigate('/cart')
               }}
@@ -548,14 +596,18 @@ const Nav = (
                 }
                 aria-hidden={true}
               />
-              <span className={windowWidth > breakpoint && !touchDevice ? '' : 'scr'}>
+              <span
+                className={
+                  windowWidth > breakpoint && !touchDevice ? '' : 'scr'
+                }
+              >
                 {t('Cart')}
               </span>
             </button>
           ) : (
             <button
               className={`${styles.settings} ${styles.store}`}
-              aria-label='store'
+              aria-label="store"
               onClick={() => {
                 navigate('/store')
               }}
@@ -568,7 +620,11 @@ const Nav = (
                 }
                 aria-hidden={true}
               />
-              <span className={windowWidth > breakpoint && !touchDevice ? '' : 'scr'}>
+              <span
+                className={
+                  windowWidth > breakpoint && !touchDevice ? '' : 'scr'
+                }
+              >
                 {t('Store')}
               </span>
             </button>
@@ -583,14 +639,14 @@ const Nav = (
               aria-hidden={true}
             />
             <span
-              id='settings'
+              id="settings"
               className={windowWidth > breakpoint && !touchDevice ? '' : 'scr'}
             >
               {t('Settings')}
             </span>
           </button>
           <nav
-            id='settings-toolbar'
+            id="settings-toolbar"
             className={`${styles.toolbar} 
                            ${
                              isToolbarOpen
@@ -598,12 +654,12 @@ const Nav = (
                                : `${isToolbarHidden ? styles.hidden : ''}`
                            }
                             `}
-            aria-labelledby='settings'
+            aria-labelledby="settings"
             aria-expanded={isToolbarOpen}
           >
             <Select
               language={language}
-              id='language-navbar'
+              id="language-navbar"
               className={`language ${styles.language}`}
               instructions={t('LanguageTitle')}
               hide
@@ -616,16 +672,16 @@ const Nav = (
                     } as SelectOption)
                   : undefined
               }
-              onChange={(o) => {
+              onChange={o => {
                 setLanguage(o?.value as ELanguages)
               }}
             />
             <div className={styles.toolwrap}>
-              <label htmlFor='dlt-btn'>
+              <label htmlFor="dlt-btn">
                 {lightTheme ? t('DarkMode') : t('LightMode')}
               </label>
               <button
-                id='dlt-btn'
+                id="dlt-btn"
                 className={
                   lightTheme
                     ? `${styles['dlt-btn']}`
@@ -636,7 +692,7 @@ const Nav = (
                 <div className={`${styles['dlt-inner-wrapper']}`}>
                   <div className={`${styles['dlt-btn-inner-left']}`}>
                     <div className={`${styles['dlt-innermost']}`}>
-                      <span className='scr'>
+                      <span className="scr">
                         {lightTheme ? t('DarkMode') : t('LightMode')}
                       </span>
                     </div>
@@ -646,25 +702,25 @@ const Nav = (
             </div>
 
             <div className={styles.toolwrap}>
-              <label htmlFor='navbar-style'>{t('NavStyle')}</label>
+              <label htmlFor="navbar-style">{t('NavStyle')}</label>
               <button
-                id='navbar-style'
+                id="navbar-style"
                 onClick={menuStyleAltToggle}
                 className={`${styles.navstyle} ${styles['toolbar-btn']}`}
               >
                 {windowWidth < breakpoint ? (
-                  <TbLayoutNavbar aria-hidden={true} fontSize='1.5em' />
+                  <TbLayoutNavbar aria-hidden={true} fontSize="1.5em" />
                 ) : (
                   <>
                     <HiOutlineDotsHorizontal
                       className={styles.dots}
                       aria-hidden={true}
-                      fontSize='1.8em'
+                      fontSize="1.8em"
                     />
                     <TfiLineDashed
                       className={styles.dashes}
                       aria-hidden={true}
-                      fontSize='1.8em'
+                      fontSize="1.8em"
                     />
                   </>
                 )}
@@ -676,14 +732,16 @@ const Nav = (
                 <>
                   <div
                     className={`${styles.loginregisterwrap} ${
-                      !isRegisterFormOpen && !isLoginFormOpen ? styles.closed : ''
+                      !isRegisterFormOpen && !isLoginFormOpen
+                        ? styles.closed
+                        : ''
                     }`}
                   >
                     <FormLogin
                       setIsFormOpen={setIsLoginFormOpen}
                       isOpen={isLoginFormOpen}
                       language={language}
-                      text='nav'
+                      text="nav"
                     />
                     <Register
                       language={language}
@@ -698,7 +756,7 @@ const Nav = (
                       setConfirmPassword={setConfirmPassword}
                       name={name}
                       setName={setName}
-                      text='nav'
+                      text="nav"
                       sending={sending}
                     />
                   </div>
@@ -706,7 +764,7 @@ const Nav = (
               ) : (
                 <>
                   <NavLink
-                    to='/edit'
+                    to="/edit"
                     className={({ isActive }) =>
                       isActive
                         ? `active ${styles.active} ${styles.link}`
@@ -717,7 +775,7 @@ const Nav = (
                   </NavLink>
                   <button
                     onClick={handleLogout}
-                    id='logoutnav'
+                    id="logoutnav"
                     className={`logout danger ${styles.logout}`}
                   >
                     {t('Logout')} &times;
@@ -726,17 +784,17 @@ const Nav = (
               )}
             </div>
             {!user && (
-              <div className='password-reset-wrap'>
+              <div className="password-reset-wrap">
                 <Accordion
                   language={language}
-                  className='password-reset'
-                  wrapperClass='password-reset-wrap'
+                  className="password-reset"
+                  wrapperClass="password-reset-wrap"
                   text={`${t('ForgotPassword')}`}
                   isOpen={isResetFormOpen}
                   setIsFormOpen={setIsResetFormOpen}
                   hideBrackets={true}
                 >
-                  <PasswordReset language={language} text='login' />
+                  <PasswordReset language={language} text="login" />
                 </Accordion>
               </div>
             )}

@@ -1,6 +1,11 @@
 import axios from 'axios'
 import { ELanguages } from '../../../types'
-import { Category, Color, Orientation, TImageTypes } from '../../../types/images'
+import {
+  Category,
+  Color,
+  Orientation,
+  TImageTypes,
+} from '../../../types/images'
 
 export interface SearchOptions {
   q: string
@@ -82,7 +87,7 @@ export interface ImagesResponse {
   hits: Hit[]
 }
 
-const url = import.meta.env.VITE_BASE_URI ?? 'https://bg.jenniina.fi'
+const url = import.meta.env.VITE_BASE_URI ?? 'https://react.jenniina.fi'
 const baseUrl = `${url}/api/images`
 
 const searchMedia = async (
@@ -148,7 +153,9 @@ const searchMedia = async (
         : '200'
     )
 
-    const response = await axios.get(`${baseUrl}/${language}?${params.toString()}`)
+    const response = await axios.get(
+      `${baseUrl}/${language}?${params.toString()}`
+    )
 
     return response.data as ImagesResponse
   } catch (error: any) {
@@ -156,7 +163,9 @@ const searchMedia = async (
 
     return {
       success: false,
-      message: error.response?.data?.message || `Error fetching images. ${error.message}`,
+      message:
+        error.response?.data?.message ||
+        `Error fetching images. ${error.message}`,
       totalHits: 0,
       hits: [],
     }

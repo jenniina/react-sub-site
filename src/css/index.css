@@ -1,5 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Caveat&family=Oswald:wght@500;600&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Caveat&family=Oswald:wght@500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 :root {
   --typography_ratio: 1.16;
   --responsive_scale: 0.7;
@@ -15,15 +15,18 @@
     calc(
         calc(var(--typography_ratio) * var(--typography_ratio)) *
           var(--typography_ratio) * 1rem
-      ) * var(--responsive_scale)
+      ) *
+      var(--responsive_scale)
   );
   --title-XL: calc(
     calc(
         calc(
             calc(var(--typography_ratio) * var(--typography_ratio)) *
               var(--typography_ratio)
-          ) * var(--typography_ratio) * 1rem
-      ) * var(--responsive_scale)
+          ) *
+          var(--typography_ratio) * 1rem
+      ) *
+      var(--responsive_scale)
   );
   --title-XXL: calc(
     calc(
@@ -31,9 +34,12 @@
             calc(
                 calc(var(--typography_ratio) * var(--typography_ratio)) *
                   var(--typography_ratio)
-              ) * var(--typography_ratio)
-          ) * var(--typography_ratio) * 1rem
-      ) * var(--responsive_scale)
+              ) *
+              var(--typography_ratio)
+          ) *
+          var(--typography_ratio) * 1rem
+      ) *
+      var(--responsive_scale)
   );
   --title-XXXL: calc(
     calc(
@@ -41,9 +47,12 @@
             calc(
                 calc(var(--typography_ratio) * var(--typography_ratio)) *
                   var(--typography_ratio)
-              ) * var(--typography_ratio) * var(--typography_ratio)
-          ) * var(--typography_ratio) * 1rem
-      ) * var(--responsive_scale)
+              ) *
+              var(--typography_ratio) * var(--typography_ratio)
+          ) *
+          var(--typography_ratio) * 1rem
+      ) *
+      var(--responsive_scale)
   );
 
   --hue-primary: 216;
@@ -149,10 +158,13 @@
               calc(
                   calc(var(--typography_ratio) * var(--typography_ratio)) *
                     var(--typography_ratio)
-                ) * var(--typography_ratio) * var(--typography_ratio)
-            ) * var(--typography_ratio) * var(--typography_ratio) *
+                ) *
+                var(--typography_ratio) * var(--typography_ratio)
+            ) *
+            var(--typography_ratio) * var(--typography_ratio) *
             var(--typography_ratio) * 1rem
-        ) * var(--responsive_scale)
+        ) *
+        var(--responsive_scale)
     );
   }
 } /*END media*/
@@ -198,8 +210,8 @@ body * {
 .transformations a > *,
 #modal-root a,
 #modal-root a > * {
-  transition-property: color, border, transform, font-size, fill,
-    background-position;
+  transition-property:
+    color, border, transform, font-size, fill, background-position;
   transition-timing-function: ease-in-out;
   transition-duration: 200ms;
   transition-delay: 0s;
@@ -304,16 +316,16 @@ main a.disabled > *,
 }
 /*Mark regular lists with the class 'ul' */
 .ul {
-  list-style: "#  ";
+  list-style: '#  ';
   line-height: 1.7;
   padding-inline-start: 10px;
 }
 .ul ul {
-  list-style: "//  ";
+  list-style: '//  ';
   padding-inline-start: 10px;
 }
 .ul ul ul {
-  list-style: "///  "; /*square; circle;*/
+  list-style: '///  '; /*square; circle;*/
 }
 /* li:has(big) {
   margin-top: 1em;
@@ -842,9 +854,9 @@ button.gray {
 .transformations button.restore,
 #modal-root button,
 #modal-root button.restore {
-  transition-property: border-color, color, background-color,
-    background-position, outline, outline-offset, opacity, transform,
-    border-radius;
+  transition-property:
+    border-color, color, background-color, background-position, outline,
+    outline-offset, opacity, transform, border-radius;
   transition-duration: 0.4s;
   transition-timing-function: ease-in-out;
   transition-delay: 0s;
@@ -864,20 +876,20 @@ button.restore:focus-visible {
 }
 
 button:focus-visible,
-input[type="submit"]:hover,
-input[type="submit"]:focus,
-input[type="submit"]:focus-visible,
-input[type="button"]:hover,
-input[type="button"]:focus,
-input[type="button"]:focus-visible,
+input[type='submit']:hover,
+input[type='submit']:focus,
+input[type='submit']:focus-visible,
+input[type='button']:hover,
+input[type='button']:focus,
+input[type='button']:focus-visible,
 body .focus-within:focus-within,
 button.restore:focus-visible,
-input[type="submit"].restore:hover,
-input[type="submit"].restore:focus,
-input[type="submit"].restore:focus-visible,
-input[type="button"].restore:hover,
-input[type="button"].restore:focus,
-input[type="button"].restore:focus-visible {
+input[type='submit'].restore:hover,
+input[type='submit'].restore:focus,
+input[type='submit'].restore:focus-visible,
+input[type='button'].restore:hover,
+input[type='button'].restore:focus,
+input[type='button'].restore:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: -2px;
   outline-offset: -3px;
@@ -954,7 +966,7 @@ button.delete {
   padding: 0.5em 1.2em 0.8em;
 }
 button.delete::after {
-  content: " \00D7"; /* × */
+  content: ' \00D7'; /* × */
   font-size: 1.2em;
 }
 button.delete:hover {

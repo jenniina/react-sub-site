@@ -1,24 +1,26 @@
-import { useContext, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { ELanguages, IUser } from '../../types'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import { updatePassword } from '../../reducers/usersReducer'
 import { AxiosError } from 'axios'
 import styles from './css/edit.module.css'
-import { LanguageContext } from '../../contexts/LanguageContext'
+import { useLanguageContext } from '../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
   user: IUser
 }
 const PasswordEdit = ({ user, language }: Props) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const dispatch = useAppDispatch()
 
   const [passwordOld, setPasswordOld] = useState<IUser['password'] | ''>('')
   const [password, setPassword] = useState<IUser['password'] | ''>('')
-  const [confirmPassword, setConfirmPassword] = useState<IUser['password'] | ''>('')
+  const [confirmPassword, setConfirmPassword] = useState<
+    IUser['password'] | ''
+  >('')
   const [sending, setSending] = useState(false)
 
   const handleUserSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -44,7 +46,7 @@ const PasswordEdit = ({ user, language }: Props) => {
 
       if (user) {
         dispatch(updatePassword(editedUser))
-          .then((res) => {
+          .then(res => {
             if (res) {
               if (res.success === false) {
                 dispatch(notify(`${res.message || t('Error')}`, true, 5))
@@ -61,7 +63,10 @@ const PasswordEdit = ({ user, language }: Props) => {
             console.error(error)
             if (error.response?.data?.message)
               dispatch(notify(error.response.data.message, true, 8))
-            else if (error.code === 'ERR_BAD_REQUEST' && error.response?.data?.message) {
+            else if (
+              error.code === 'ERR_BAD_REQUEST' &&
+              error.response?.data?.message
+            ) {
               dispatch(notify(`${error.response.data.message}`, true, 5))
             } else {
               setTimeout(() => {
@@ -87,46 +92,48 @@ const PasswordEdit = ({ user, language }: Props) => {
           <h2>{t('EditPassword')}</h2>
 
           <form onSubmit={handleUserSubmit} className={styles['edit-user']}>
-            <div className='input-wrap'>
+            <div className="input-wrap">
               <label>
                 <input
                   required
-                  type='password'
-                  name='old-password'
-                  id='old-password'
+                  type="password"
+                  name="old-password"
+                  id="old-password"
                   value={passwordOld}
                   onChange={({ target }) => setPasswordOld(target.value.trim())}
                 />
                 <span>{t('CurrentPassword')}</span>
               </label>
             </div>
-            <div className='input-wrap'>
+            <div className="input-wrap">
               <label>
                 <input
                   required
-                  type='password'
-                  name='password'
-                  id='password-edit'
+                  type="password"
+                  name="password"
+                  id="password-edit"
                   value={password}
                   onChange={({ target }) => setPassword(target.value.trim())}
                 />
                 <span>{t('Password')}</span>
               </label>
             </div>
-            <div className='input-wrap'>
+            <div className="input-wrap">
               <label>
                 <input
                   required
-                  type='password'
-                  name='confirmPassword'
-                  id='confirmPassword'
+                  type="password"
+                  name="confirmPassword"
+                  id="confirmPassword"
                   value={confirmPassword}
-                  onChange={({ target }) => setConfirmPassword(target.value.trim())}
+                  onChange={({ target }) =>
+                    setConfirmPassword(target.value.trim())
+                  }
                 />
                 <span>{t('ConfirmPassword')}</span>
               </label>
             </div>
-            <button type='submit' disabled={sending}>
+            <button type="submit" disabled={sending}>
               {t('Edit')}
             </button>
           </form>

@@ -37,7 +37,7 @@
 .color-picker > label {
   margin-right: 1em;
 }
-.color-picker > input[type="color" i] {
+.color-picker > input[type='color' i] {
   --clamp: clamp(30px, 10vw, var(--size));
   min-width: var(--clamp);
   width: var(--clamp);
@@ -50,7 +50,7 @@
   border-radius: 50%;
   z-index: 2;
 }
-.light .color-picker > input[type="color" i] {
+.light .color-picker > input[type='color' i] {
   outline: 10px solid black;
 }
 .color-picker > button {
@@ -272,7 +272,7 @@
   top: calc(100% + var(--tooltip-offset) * 0.5) !important;
 }
 .indicator::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 50%;
   left: var(--left);

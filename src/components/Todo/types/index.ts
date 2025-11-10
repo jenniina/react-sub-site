@@ -5,7 +5,12 @@ export type TPriority = 'all' | 'low' | 'medium' | 'high'
 
 export type TCategory = 'all' | 'work' | 'personal' | 'shopping' | 'other'
 
-export type TSortOptions = 'none' | 'text' | 'priority' | 'deadline' | 'category'
+export type TSortOptions =
+  | 'none'
+  | 'text'
+  | 'priority'
+  | 'deadline'
+  | 'category'
 
 export interface ITask {
   key: string
@@ -179,7 +184,7 @@ export const generateOptions = (
   enumValues: string[],
   language: ELanguages
 ): SelectOption[] => {
-  return enumValues.map((value) => ({
+  return enumValues.map(value => ({
     label: translationMap[value][language],
     value,
   }))

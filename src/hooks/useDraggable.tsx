@@ -2,6 +2,9 @@
 
 //     isTouchDevice();
 
+import React from 'react'
+import { useIsClient, useWindow } from '../hooks/useSSR'
+
 let initialX = 0
 let initialY = 0
 
@@ -19,7 +22,7 @@ export const preventDefault = (e: Event) => {
 export const isTouchDevice = () => {
   try {
     //Try to create TouchEvent (fails for desktops and throws error)
-    document.createEvent('TouchEvent')
+    document?.createEvent('TouchEvent')
     return true
   } catch (e) {
     return false
@@ -37,9 +40,14 @@ export function start(
 ) {
   e.stopPropagation()
   e.preventDefault()
+
   if (isTouchDevice()) {
-    document.addEventListener('touchmove', preventDefault, { passive: false })
-    document.body.style.overflow = 'hidden'
+    document
+      ? document.addEventListener('touchmove', preventDefault, {
+          passive: false,
+        })
+      : null
+    document ? (document.body.style.overflow = 'hidden') : null
   }
   initialX = !isTouchDevice()
     ? (e as PointerEvent).clientX
@@ -98,9 +106,9 @@ export const stopMovementCheck = (
 ) => {
   e.stopPropagation()
   if (isTouchDevice()) {
-    document.removeEventListener('touchmove', preventDefault)
-    document.body.style.overflowY = 'auto'
-    document.body.style.overflowX = 'hidden'
+    document ? document.removeEventListener('touchmove', preventDefault) : null
+    document ? (document.body.style.overflowY = 'auto') : null
+    document ? (document.body.style.overflowX = 'hidden') : null
   }
 
   moveElement = false
@@ -155,6 +163,7 @@ export function zoom(e: WheelEvent) {
 export function keyDown(
   e: KeyboardEvent | React.KeyboardEvent<HTMLLIElement>,
   target: HTMLElement,
+  windowObj: Window | null,
   escapeFunction:
     | ((
         e:
@@ -201,29 +210,41 @@ export function keyDown(
   const size = target.style.getPropertyValue('--size')
   let scale = parseFloat(size)
 
-  let attrLeft = window.getComputedStyle(target).getPropertyValue('left')
-  let attrTop = window.getComputedStyle(target).getPropertyValue('top')
+  let attrLeft = windowObj
+    ? windowObj.getComputedStyle(target).getPropertyValue('left')
+    : target.style.getPropertyValue('left')
+  let attrTop = windowObj
+    ? windowObj.getComputedStyle(target).getPropertyValue('top')
+    : target.style.getPropertyValue('top')
 
   switch (e.key) {
     case 'ArrowLeft':
       e.preventDefault()
       target.style.left = parseFloat(attrLeft) - Number(movePx) + 'px'
-      attrLeft = window.getComputedStyle(target).getPropertyValue('left')
+      attrLeft = windowObj
+        ? windowObj.getComputedStyle(target).getPropertyValue('left')
+        : target.style.getPropertyValue('left')
       break
     case 'ArrowRight':
       e.preventDefault()
       target.style.left = parseFloat(attrLeft) + Number(movePx) + 'px'
-      attrLeft = window.getComputedStyle(target).getPropertyValue('left')
+      attrLeft = windowObj
+        ? windowObj.getComputedStyle(target).getPropertyValue('left')
+        : target.style.getPropertyValue('left')
       break
     case 'ArrowUp':
       e.preventDefault()
       target.style.top = parseFloat(attrTop) - Number(movePx) + 'px'
-      attrTop = window.getComputedStyle(target).getPropertyValue('top')
+      attrTop = windowObj
+        ? windowObj.getComputedStyle(target).getPropertyValue('top')
+        : target.style.getPropertyValue('top')
       break
     case 'ArrowDown':
       e.preventDefault()
       target.style.top = parseFloat(attrTop) + Number(movePx) + 'px'
-      attrTop = window.getComputedStyle(target).getPropertyValue('top')
+      attrTop = windowObj
+        ? windowObj.getComputedStyle(target).getPropertyValue('top')
+        : target.style.getPropertyValue('top')
       break
     case 'Z':
     case 'z': //Move blob to the bottom of the z-index pile

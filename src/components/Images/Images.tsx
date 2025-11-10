@@ -3,12 +3,9 @@ import {
   useState,
   useEffect,
   FormEvent,
-  lazy,
-  Suspense,
   Fragment,
   useRef,
   MouseEvent as ReactMouseEvent,
-  useContext,
 } from 'react'
 import useDebounce from '../../hooks/useDebounce'
 import styles from './images.module.css'
@@ -43,18 +40,38 @@ import { VALID_CATEGORIES } from '../Quotes/services/quotes'
 import { firstToUpperCase, scrollIntoView } from '../../utils'
 import useWindowSize from '../../hooks/useWindowSize'
 import useTooltip from '../../hooks/useTooltip'
-import { LanguageContext } from '../../contexts/LanguageContext'
+import { useLanguageContext } from '../../contexts/LanguageContext'
+import WordCloud from '../WordCloud/WordCloud'
+import Image from './components/Image'
+import Video from './components/Video'
 
-const WordCloud = lazy(() => import('../WordCloud/WordCloud'))
+interface Props {
+  language: ELanguages
+}
 
-export type TTextType = 'quote' | 'poem'
+const imageTypes: TImageTypes[] = [
+  'all',
+  'photo',
+  'illustration',
+  'vector',
+  'video',
+]
+
+export type TTextType = 'poem' | 'quote'
+
+const videoTypes: TVideoTypes[] = ['all', 'film', 'animation']
+const textTypes: TTextType[] = ['poem', 'quote']
+const colorTypes: Color[] = Object.values(Color)
+const orderByTypes: OrderBy[] = Object.values(OrderBy)
+const orientationTypes: Orientation[] = Object.values(Orientation)
+const categoryTypes: Category[] = Object.values(Category)
 
 let categoriesWithWeights: { text: string; weight: number }[] = []
 let categoriesWithWeightsSmaller: { text: string; weight: number }[] = []
 let categoriesWithWeightsSmallest: { text: string; weight: number }[] = []
 
 const toLanguages = (language: ELanguages) => {
-  categoriesWithWeights = VALID_CATEGORIES.map((category) => ({
+  categoriesWithWeights = VALID_CATEGORIES.map(category => ({
     text: translations[firstToUpperCase(category) as TranslationKey][
       language as TranslationLang
     ],
@@ -62,13 +79,13 @@ const toLanguages = (language: ELanguages) => {
       category === 'design'
         ? 50
         : WEIGHTED.includes(category)
-        ? Math.floor(Math.random() * 10) + 30
-        : SMALLER_CATEGORIES.includes(category)
-        ? Math.floor(Math.random() * 5) + 15
-        : Math.floor(Math.random() * 10) + 15,
+          ? Math.floor(Math.random() * 10) + 30
+          : SMALLER_CATEGORIES.includes(category)
+            ? Math.floor(Math.random() * 5) + 15
+            : Math.floor(Math.random() * 10) + 15,
   }))
 
-  categoriesWithWeightsSmaller = VALID_CATEGORIES.map((category) => ({
+  categoriesWithWeightsSmaller = VALID_CATEGORIES.map(category => ({
     text: translations[firstToUpperCase(category) as TranslationKey][
       language as TranslationLang
     ],
@@ -76,13 +93,13 @@ const toLanguages = (language: ELanguages) => {
       category === 'design'
         ? 33
         : WEIGHTED.includes(category)
-        ? Math.floor(Math.random() * 10) + 16
-        : SMALLER_CATEGORIES.includes(category)
-        ? Math.floor(Math.random() * 5) + 14
-        : Math.floor(Math.random() * 6) + 15,
+          ? Math.floor(Math.random() * 10) + 16
+          : SMALLER_CATEGORIES.includes(category)
+            ? Math.floor(Math.random() * 5) + 14
+            : Math.floor(Math.random() * 6) + 15,
   }))
 
-  categoriesWithWeightsSmallest = VALID_CATEGORIES.map((category) => ({
+  categoriesWithWeightsSmallest = VALID_CATEGORIES.map(category => ({
     text: translations[firstToUpperCase(category) as TranslationKey][
       language as TranslationLang
     ],
@@ -90,22 +107,15 @@ const toLanguages = (language: ELanguages) => {
       category === 'design'
         ? 28
         : WEIGHTED.includes(category)
-        ? Math.floor(Math.random() * 10) + 13
-        : SMALLER_CATEGORIES.includes(category)
-        ? Math.floor(Math.random() * 5) + 14
-        : Math.floor(Math.random() * 5) + 15,
+          ? Math.floor(Math.random() * 10) + 13
+          : SMALLER_CATEGORIES.includes(category)
+            ? Math.floor(Math.random() * 5) + 14
+            : Math.floor(Math.random() * 5) + 15,
   }))
 }
 
-const Image = lazy(() => import('./components/Image'))
-const Video = lazy(() => import('./components/Video'))
-
-interface Props {
-  language: ELanguages
-}
-
 const Images: FC<Props> = ({ language }) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const dispatch = useAppDispatch()
   const { show } = useModal()
@@ -119,24 +129,34 @@ const Images: FC<Props> = ({ language }) => {
   const [orientation, setOrientation] = useState<Orientation>(Orientation.all)
   const [textType, setTextType] = useState<TTextType>('poem')
 
-  const imageTypes: TImageTypes[] = ['all', 'photo', 'illustration', 'vector', 'video']
-  const videoTypes: TVideoTypes[] = ['all', 'film', 'animation']
-  const textTypes: TTextType[] = ['poem', 'quote']
-  const colorTypes: Color[] = Object.values(Color)
-  const orderByTypes: OrderBy[] = Object.values(OrderBy)
-  const orientationTypes: Orientation[] = Object.values(Orientation)
-  const categoryTypes: Category[] = Object.values(Category)
-
-  const optionsImageTypes: SelectOption[] = generateOptionsFromT(imageTypes, language)
-  const optionsVideoTypes: SelectOption[] = generateOptionsFromT(videoTypes, language)
-  const optionsTextTypes: SelectOption[] = generateOptionsFromT(textTypes, language)
-  const optionsColors: SelectOption[] = generateOptionsFromT(colorTypes, language)
-  const optionsOrderBy: SelectOption[] = generateOptionsFromT(orderByTypes, language)
+  const optionsImageTypes: SelectOption[] = generateOptionsFromT(
+    imageTypes,
+    language
+  )
+  const optionsVideoTypes: SelectOption[] = generateOptionsFromT(
+    videoTypes,
+    language
+  )
+  const optionsTextTypes: SelectOption[] = generateOptionsFromT(
+    textTypes,
+    language
+  )
+  const optionsColors: SelectOption[] = generateOptionsFromT(
+    colorTypes,
+    language
+  )
+  const optionsOrderBy: SelectOption[] = generateOptionsFromT(
+    orderByTypes,
+    language
+  )
   const optionsOrientations: SelectOption[] = generateOptionsFromT(
     orientationTypes,
     language
   )
-  const optionsCategories: SelectOption[] = generateOptionsFromT(categoryTypes, language)
+  const optionsCategories: SelectOption[] = generateOptionsFromT(
+    categoryTypes,
+    language
+  )
   // add 'all' to the categories
   optionsCategories.unshift({ label: t('All'), value: '' }) // does not accept 'all' as a value
 
@@ -164,11 +184,13 @@ const Images: FC<Props> = ({ language }) => {
   const { windowWidth } = useWindowSize()
   const debouncedWindowWidth = useDebounce(windowWidth, 200)
 
-  const [breakpoint, setBreakpoint] = useState<'large' | 'medium' | 'small'>(() => {
-    if (windowWidth > 700) return 'large'
-    if (windowWidth > 500) return 'medium'
-    return 'small'
-  })
+  const [breakpoint, setBreakpoint] = useState<'large' | 'medium' | 'small'>(
+    () => {
+      if (windowWidth > 700) return 'large'
+      if (windowWidth > 500) return 'medium'
+      return 'small'
+    }
+  )
 
   const [words, setWords] = useState<{ text: string; weight: number }[]>([])
 
@@ -178,12 +200,8 @@ const Images: FC<Props> = ({ language }) => {
     else if (debouncedWindowWidth > 500) newBreakpoint = 'medium'
     else newBreakpoint = 'small'
 
-    setBreakpoint((prev) => (prev !== newBreakpoint ? newBreakpoint : prev))
+    setBreakpoint(prev => (prev !== newBreakpoint ? newBreakpoint : prev))
   }, [debouncedWindowWidth])
-
-  useEffect(() => {
-    toLanguages(language)
-  }, [language])
 
   useEffect(() => {
     if (breakpoint === 'large') {
@@ -194,6 +212,10 @@ const Images: FC<Props> = ({ language }) => {
       setWords(categoriesWithWeightsSmallest)
     }
   }, [language, breakpoint])
+
+  useEffect(() => {
+    toLanguages(language)
+  }, [language])
 
   const onMouseMove = (e: ReactMouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -211,7 +233,9 @@ const Images: FC<Props> = ({ language }) => {
     if (result.success) {
       setMedia(result.hits)
       setTotalSubPages(
-        Math.ceil(result.hits.length < perSubPage ? 1 : result.hits.length / perSubPage)
+        Math.ceil(
+          result.hits.length < perSubPage ? 1 : result.hits.length / perSubPage
+        )
       )
       setTotalPages(
         Math.ceil(result.totalHits < perFetch ? 1 : result.totalHits / perFetch)
@@ -225,7 +249,7 @@ const Images: FC<Props> = ({ language }) => {
   }
 
   useEffect(() => {
-    const array = colors?.map((color) => color.value)
+    const array = colors?.map(color => color.value)
     setColorList(array as Color[])
   }, [colors])
 
@@ -289,10 +313,15 @@ const Images: FC<Props> = ({ language }) => {
   }, [fetchPage])
 
   useEffect(() => {
-    setTotalSubPages(Math.ceil(media.length < perSubPage ? 1 : media.length / perSubPage))
+    setTotalSubPages(
+      Math.ceil(media.length < perSubPage ? 1 : media.length / perSubPage)
+    )
   }, [media, perSubPage])
 
-  const currentMedia = media.slice((subPage - 1) * perSubPage, subPage * perSubPage)
+  const currentMedia = media.slice(
+    (subPage - 1) * perSubPage,
+    subPage * perSubPage
+  )
 
   const pagination = () => {
     if (media.length === 0) return <></>
@@ -305,19 +334,19 @@ const Images: FC<Props> = ({ language }) => {
           onClick={() => setSubPage(1)}
         >
           <BiChevronsLeft />
-          <span className='scr'>{t('FirstPage')}</span>
-          <span aria-hidden='true' className='tooltip above narrow2'>
+          <span className="scr">{t('FirstPage')}</span>
+          <span aria-hidden="true" className="tooltip above narrow2">
             {t('FirstPage')}
           </span>
         </button>
         <button
           className={`tooltip-wrap`}
-          onClick={() => setSubPage((prev) => Math.max(prev - 1, 1))}
+          onClick={() => setSubPage(prev => Math.max(prev - 1, 1))}
           disabled={subPage === 1}
         >
           <BiChevronLeft />
-          <span className='scr'>{t('Previous')}</span>
-          <span aria-hidden='true' className='tooltip above narrow2'>
+          <span className="scr">{t('Previous')}</span>
+          <span aria-hidden="true" className="tooltip above narrow2">
             {t('Previous')}
           </span>
         </button>
@@ -326,12 +355,12 @@ const Images: FC<Props> = ({ language }) => {
         </span>
         <button
           className={`tooltip-wrap`}
-          onClick={() => setSubPage((prev) => Math.min(prev + 1, totalSubPages))}
+          onClick={() => setSubPage(prev => Math.min(prev + 1, totalSubPages))}
           disabled={subPage === totalSubPages}
         >
           <BiChevronRight />
-          <span className='scr'>{t('Next')}</span>
-          <span aria-hidden='true' className='tooltip above narrow2'>
+          <span className="scr">{t('Next')}</span>
+          <span aria-hidden="true" className="tooltip above narrow2">
             {t('Next')}
           </span>
         </button>
@@ -341,10 +370,10 @@ const Images: FC<Props> = ({ language }) => {
           onClick={() => setSubPage(totalSubPages)}
         >
           <BiChevronsRight />
-          <span className='scr'>
+          <span className="scr">
             {t('LastPage')} ({totalSubPages})
           </span>
-          <span aria-hidden='true' className='tooltip above narrow2'>
+          <span aria-hidden="true" className="tooltip above narrow2">
             {t('LastPage')} ({totalSubPages})
           </span>
         </button>
@@ -368,7 +397,7 @@ const Images: FC<Props> = ({ language }) => {
         disabled={index === fetchPage - 1 || i > totalPages}
       >
         {i}
-        <span className='tooltip above narrow2'>
+        <span className="tooltip above narrow2">
           {t('Page')} {i}
         </span>
       </button>
@@ -387,7 +416,7 @@ const Images: FC<Props> = ({ language }) => {
         {fetchPage !== 1 && (
           <button
             className={`reset ${styles['fetch-more-btn']}`}
-            onClick={() => setFetchPage((prev) => prev - 1)}
+            onClick={() => setFetchPage(prev => prev - 1)}
           >
             &laquo;&nbsp;{t('Previous')}
           </button>
@@ -396,7 +425,7 @@ const Images: FC<Props> = ({ language }) => {
         {fetchPage !== totalPages && (
           <button
             className={`reset ${styles['fetch-more-btn']}`}
-            onClick={() => setFetchPage((prev) => prev + 1)}
+            onClick={() => setFetchPage(prev => prev + 1)}
           >
             {t('Next')}&nbsp;&raquo;
           </button>
@@ -411,11 +440,13 @@ const Images: FC<Props> = ({ language }) => {
   const handleSetSearchTerm = (term: string) => {
     setSearchTerm(term)
     scrollIntoView('search-wrap', 'start')
-    dispatch(notify(`${t('Updated')}: ${t('SearchParameters')}: ${term}`, false, 4))
+    dispatch(
+      notify(`${t('Updated')}: ${t('SearchParameters')}: ${term}`, false, 4)
+    )
   }
 
   return (
-    <div id='search-container' className={styles['search-container']}>
+    <div id="search-container" className={styles['search-container']}>
       <section className={`card ${styles['settings-section']}`}>
         <div>
           <div
@@ -423,34 +454,26 @@ const Images: FC<Props> = ({ language }) => {
             onMouseMove={onMouseMove}
             onMouseLeave={handleMouseLeave}
           >
-            <Suspense
-              fallback={
-                <div className='flex center margin0auto textcenter'>
-                  {t('Loading')}...
-                </div>
-              }
-            >
-              <WordCloud
-                language={language}
-                title={t('QuoteCategories')}
-                onClick={handleSetSearchTerm}
-                words={words}
-                width={
-                  debouncedWindowWidth < 300
-                    ? debouncedWindowWidth - 20
-                    : debouncedWindowWidth < 600
+            <WordCloud
+              language={language}
+              title={t('QuoteCategories')}
+              onClick={handleSetSearchTerm}
+              words={words}
+              width={
+                debouncedWindowWidth < 300
+                  ? debouncedWindowWidth - 20
+                  : debouncedWindowWidth < 600
                     ? debouncedWindowWidth - 80
                     : debouncedWindowWidth - (debouncedWindowWidth / 100) * 30
-                }
-                height={
-                  debouncedWindowWidth < 300
-                    ? 900
-                    : debouncedWindowWidth < 500
+              }
+              height={
+                debouncedWindowWidth < 300
+                  ? 900
+                  : debouncedWindowWidth < 500
                     ? 800
                     : 500
-                }
-              />
-            </Suspense>
+              }
+            />
             {tooltip.visible && (
               <span
                 className={`tooltip narrow`}
@@ -461,17 +484,17 @@ const Images: FC<Props> = ({ language }) => {
             )}
           </div>
           <form onSubmit={handleSearch}>
-            <div id='search-wrap' className={styles['search-wrap']}>
+            <div id="search-wrap" className={styles['search-wrap']}>
               <h2>{t('SearchForMedia')}</h2>
               <div className={styles['column']}>
                 <div className={`input-wrap ${styles['input-wrap']}`}>
                   <label>
                     <input
-                      name='search'
-                      type='text'
+                      name="search"
+                      type="text"
                       maxLength={100}
                       value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
+                      onChange={e => setSearchTerm(e.target.value)}
                       placeholder={t('SearchByKeyword')}
                     />
                     <span>{t('SearchForMedia')}</span>
@@ -481,12 +504,12 @@ const Images: FC<Props> = ({ language }) => {
                 {type !== 'video' && (
                   <Select
                     z={8}
-                    id='colors'
+                    id="colors"
                     className={`${styles.select} ${styles['colors']}`}
                     multiple
                     instructions={t('Colors')}
                     value={colors}
-                    onChange={(o) => setColors(o)}
+                    onChange={o => setColors(o)}
                     options={optionsColors}
                     language={language}
                   />
@@ -495,51 +518,53 @@ const Images: FC<Props> = ({ language }) => {
               <div className={styles['controls-wrap']}>
                 <Select
                   z={7}
-                  id='result-type'
+                  id="result-type"
                   className={`${styles.select} ${styles['result-type']}`}
                   hideDelete
                   instructions={t('Type')}
                   value={
-                    optionsImageTypes.find((o) => o.value === type) || {
+                    optionsImageTypes.find(o => o.value === type) || {
                       label: t('All'),
                       value: 'all',
                     }
                   }
-                  onChange={(o) => setType(o?.value as TImageTypes)}
+                  onChange={o => setType(o?.value as TImageTypes)}
                   options={optionsImageTypes}
                   language={language}
                 />
                 {type === 'video' ? (
                   <Select
                     z={6}
-                    id='result-type'
+                    id="result-type"
                     className={`${styles.select} ${styles['result-type']}`}
                     hideDelete
                     instructions={t('VideoTypes')}
                     value={
-                      optionsVideoTypes.find((o) => o.value === videoType) || {
+                      optionsVideoTypes.find(o => o.value === videoType) || {
                         label: t('All'),
                         value: 'all',
                       }
                     }
-                    onChange={(o) => setVideoType(o?.value as TVideoTypes)}
+                    onChange={o => setVideoType(o?.value as TVideoTypes)}
                     options={optionsVideoTypes}
                     language={language}
                   />
                 ) : (
                   <Select
                     z={5}
-                    id='orientation'
+                    id="orientation"
                     className={`${styles.select} ${styles['orientation']}`}
                     instructions={t('Orientation')}
                     hideDelete
                     value={
-                      optionsOrientations.find((o) => o.value === orientation) || {
+                      optionsOrientations.find(
+                        o => o.value === orientation
+                      ) || {
                         label: t('All'),
                         value: 'all',
                       }
                     }
-                    onChange={(o) => setOrientation(o?.value as Orientation)}
+                    onChange={o => setOrientation(o?.value as Orientation)}
                     options={optionsOrientations}
                     language={language}
                   />
@@ -547,34 +572,34 @@ const Images: FC<Props> = ({ language }) => {
 
                 <Select
                   z={4}
-                  id='category'
+                  id="category"
                   className={`${styles.select} ${styles['category']}`}
                   hideDelete
                   instructions={t('CategoryTitle')}
                   value={
-                    optionsCategories.find((o) => o.value === category) || {
+                    optionsCategories.find(o => o.value === category) || {
                       label: t('All'),
                       value: '', // does not accept 'all' as a value
                     }
                   }
-                  onChange={(o) => setCategory(o?.value as Category)}
+                  onChange={o => setCategory(o?.value as Category)}
                   options={optionsCategories}
                   language={language}
                 />
 
                 <Select
                   z={3}
-                  id='order-by'
+                  id="order-by"
                   className={`${styles.select} ${styles['order-by']}`}
                   hideDelete
                   instructions={t('OrderBy')}
                   value={
-                    optionsOrderBy.find((o) => o.value === order) || {
+                    optionsOrderBy.find(o => o.value === order) || {
                       label: 'Popular',
                       value: 'popular',
                     }
                   }
-                  onChange={(o) => setOrder(o?.value as 'popular' | 'latest')}
+                  onChange={o => setOrder(o?.value as 'popular' | 'latest')}
                   options={optionsOrderBy}
                   language={language}
                 />
@@ -584,18 +609,18 @@ const Images: FC<Props> = ({ language }) => {
             <div className={`${styles['checkbox-wrap']}`}>
               <label>
                 <input
-                  type='checkbox'
+                  type="checkbox"
                   checked={editorsChoice}
-                  onChange={(e) => setEditorsChoice(e.target.checked)}
+                  onChange={e => setEditorsChoice(e.target.checked)}
                 />
                 {t('EditorsChoice')} (Pixabay)
               </label>
 
               <label>
                 <input
-                  type='checkbox'
+                  type="checkbox"
                   checked={safeSearch}
-                  onChange={(e) => setSafeSearch(e.target.checked)}
+                  onChange={e => setSafeSearch(e.target.checked)}
                 />
                 {t('SafemodeTitle')}
               </label>
@@ -604,40 +629,40 @@ const Images: FC<Props> = ({ language }) => {
             <div className={styles['submit-wrap']}>
               <Select
                 z={2}
-                id='text-type'
+                id="text-type"
                 className={`${styles.select} ${styles['text-type']}`}
                 hideDelete
                 instructions={t('TextType')}
                 value={
-                  optionsTextTypes.find((o) => o.value === textType) || {
+                  optionsTextTypes.find(o => o.value === textType) || {
                     label: t('All'),
                     value: '',
                   }
                 }
-                onChange={(o) => setTextType(o?.value as TTextType)}
+                onChange={o => setTextType(o?.value as TTextType)}
                 options={optionsTextTypes}
                 language={language}
               />
               <Select
                 z={1}
-                id='images-per-page'
+                id="images-per-page"
                 className={`${styles.select} ${styles['images-per-page']}`}
                 hideDelete
                 instructions={t('MediaPerPage')}
                 value={
-                  subPageOptions.find((o) => o.value === perSubPage) || {
+                  subPageOptions.find(o => o.value === perSubPage) || {
                     label: '20',
                     value: 20,
                   }
                 }
-                onChange={(o) => {
+                onChange={o => {
                   setPerSubPage(Number(o?.value))
                 }}
                 options={subPageOptions}
                 language={language}
               />
 
-              <button type='submit' disabled={loading}>
+              <button type="submit" disabled={loading}>
                 {type === 'video' ? t('SearchforVideos') : t('SearchForMedia')}
               </button>
             </div>
@@ -654,7 +679,7 @@ const Images: FC<Props> = ({ language }) => {
         <section className={`card ${styles['image-section']}`}>
           <div>
             {loading && (
-              <p className='textcenter flex center margin0auto textcenter'>
+              <p className="textcenter flex center margin0auto textcenter">
                 {t('Loading')}...
               </p>
             )}
@@ -662,60 +687,27 @@ const Images: FC<Props> = ({ language }) => {
             {error && <p className={styles.error}>{error}</p>}
 
             {pagination()}
-            <div id='image-container' className={styles['image-container']}>
-              {currentMedia.map((item) => (
+            <div id="image-container" className={styles['image-container']}>
+              {currentMedia.map(item => (
                 <Fragment key={item.id}>
                   {'videos' in item ? (
-                    <Suspense
-                      fallback={
-                        <div
-                          key={`key-${item.id}`}
-                          className='flex center margin0auto textcenter'
-                          style={{
-                            width: '100%',
-                            height: 'auto',
-                            aspectRatio:
-                              item.videos.small.width / item.videos.small.height,
-                          }}
-                        >
-                          {t('Loading')}...
-                        </div>
-                      }
-                    >
-                      <Video
-                        key={item.id}
-                        video={item as any}
-                        language={language}
-                        show={show}
-                        searchTerm={searchTerm}
-                        textType={textType}
-                      />
-                    </Suspense>
+                    <Video
+                      key={item.id}
+                      video={item as any}
+                      language={language}
+                      show={show}
+                      searchTerm={searchTerm}
+                      textType={textType}
+                    />
                   ) : (
-                    <Suspense
-                      fallback={
-                        <div
-                          key={`key-${item.id}`}
-                          className='flex center margin0auto textcenter'
-                          style={{
-                            width: '100%',
-                            height: `${item.previewHeight}px`,
-                            aspectRatio: item.previewWidth / item.previewHeight,
-                          }}
-                        >
-                          {t('Loading')}...
-                        </div>
-                      }
-                    >
-                      <Image
-                        key={item.id}
-                        image={item as any}
-                        language={language}
-                        show={show}
-                        searchTerm={searchTerm}
-                        textType={textType}
-                      />
-                    </Suspense>
+                    <Image
+                      key={item.id}
+                      image={item as any}
+                      language={language}
+                      show={show}
+                      searchTerm={searchTerm}
+                      textType={textType}
+                    />
                   )}
                 </Fragment>
               ))}
@@ -723,7 +715,9 @@ const Images: FC<Props> = ({ language }) => {
             {pagination()}
 
             {subPage === 1 && fetchPage > 1 && batchesOfMedia}
-            {subPage === totalSubPages && fetchPage <= totalPages && batchesOfMedia}
+            {subPage === totalSubPages &&
+              fetchPage <= totalPages &&
+              batchesOfMedia}
           </div>
         </section>
       )}

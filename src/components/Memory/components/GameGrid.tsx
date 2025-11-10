@@ -1,9 +1,9 @@
-import { FC, CSSProperties, memo, useContext } from 'react'
+import React, { FC, CSSProperties, memo, useContext } from 'react'
 import styles from '../memory.module.css'
 import { CardType } from '../../../types/memory'
 import useWindowSize from '../../../hooks/useWindowSize'
 import { ELanguages } from '../../../types'
-import { LanguageContext } from '../../../contexts/LanguageContext'
+import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 interface Player {
   id: number
@@ -13,7 +13,7 @@ interface Player {
 
 interface Card {
   id: number
-  value: string | JSX.Element
+  value: string | React.JSX.Element
 }
 
 interface GameGridProps {
@@ -43,7 +43,7 @@ const GameGrid: FC<GameGridProps> = ({
   handleCardClick,
   renderCardContent,
 }) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const { windowHeight, windowWidth } = useWindowSize()
   const size = `size${gridSize}`
@@ -58,7 +58,9 @@ const GameGrid: FC<GameGridProps> = ({
             gridTemplateRows: `repeat(${gridSize}, 1fr)`,
             ['--size' as string]: `${windowHeight > windowWidth ? 94 : 85}`,
             ['--amount' as string]: `${gridSize}`,
-            ['--multiplier' as string]: `${windowHeight > windowWidth ? '1vw' : '1vh'}`,
+            ['--multiplier' as string]: `${
+              windowHeight > windowWidth ? '1vw' : '1vh'
+            }`,
           }}
         >
           {cards.map((card, index) => {
@@ -68,8 +70,8 @@ const GameGrid: FC<GameGridProps> = ({
                   ? `${50 / gridSize}vw`
                   : `${50 / gridSize}vh`
                 : windowHeight > windowWidth
-                ? `${40 / gridSize}vw`
-                : `${40 / gridSize}vh`
+                  ? `${40 / gridSize}vw`
+                  : `${40 / gridSize}vh`
 
             const cardStyle: CSSProperties = {
               ['--fontSize' as string]: fontSize,
@@ -83,7 +85,9 @@ const GameGrid: FC<GameGridProps> = ({
                   flippedCards.includes(index) || matchedCards.includes(index)
                     ? styles.flipped
                     : ''
-                } ${flippedOverCards.includes(index) ? styles['flipped-over'] : ''}`}
+                } ${
+                  flippedOverCards.includes(index) ? styles['flipped-over'] : ''
+                }`}
                 onClick={() => handleCardClick(index)}
               >
                 <div className={styles.front}>{renderCardContent(card)}</div>
@@ -95,7 +99,7 @@ const GameGrid: FC<GameGridProps> = ({
       </div>
       <button
         className={styles.finish}
-        type='button'
+        type="button"
         onClick={() => {
           setGameStarted(false)
         }}

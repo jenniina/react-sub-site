@@ -2,7 +2,7 @@ import { FC, ReactNode, useContext, useEffect, useRef, useState } from 'react'
 import styles from './modal.module.css'
 import { useModal } from '../../hooks/useModal'
 import { ELanguages } from '../../types'
-import { LanguageContext } from '../../contexts/LanguageContext'
+import { useLanguageContext } from '../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
@@ -11,14 +11,14 @@ interface Props {
 const Modal: FC<Props> = ({ language }) => {
   const { modal, closeModal } = useModal()
 
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const closeButtonRef = useRef<HTMLButtonElement>(null)
   const previouslyFocusedElement = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     if (modal) {
-      previouslyFocusedElement.current = document.activeElement as HTMLElement
+      previouslyFocusedElement.current = document?.activeElement as HTMLElement
 
       closeButtonRef.current?.focus()
 
@@ -39,13 +39,13 @@ const Modal: FC<Props> = ({ language }) => {
 
           if (e.shiftKey) {
             // Shift + Tab
-            if (document.activeElement === firstElement) {
+            if (document?.activeElement === firstElement) {
               e.preventDefault()
               lastElement?.focus()
             }
           } else {
             // Tab
-            if (document.activeElement === lastElement) {
+            if (document?.activeElement === lastElement) {
               e.preventDefault()
               firstElement?.focus()
             }
@@ -55,20 +55,22 @@ const Modal: FC<Props> = ({ language }) => {
         }
       }
 
-      document.addEventListener('keydown', handleKeyDown)
+      document?.addEventListener('keydown', handleKeyDown)
 
       return () => {
-        document.removeEventListener('keydown', handleKeyDown)
-        if (previouslyFocusedElement.current) previouslyFocusedElement.current.focus()
-        else document.body.focus()
+        document?.removeEventListener('keydown', handleKeyDown)
+        if (previouslyFocusedElement.current)
+          previouslyFocusedElement.current.focus()
+        else document?.body.focus()
       }
     }
   }, [modal, closeButtonRef.current])
 
   const handleClose = () => {
     closeModal()
-    if (previouslyFocusedElement.current) previouslyFocusedElement.current.focus()
-    else document.body.focus()
+    if (previouslyFocusedElement.current)
+      previouslyFocusedElement.current.focus()
+    else document?.body.focus()
   }
 
   if (modal === null || modal === undefined || !modal.children) {
@@ -79,9 +81,9 @@ const Modal: FC<Props> = ({ language }) => {
     <div className={`${styles['modal-overlay']}`} onClick={handleClose}>
       <div
         className={`${styles['modal-content']} ${modal.className ?? ''}`}
-        onClick={(e) => e.stopPropagation()}
-        role='dialog'
-        aria-modal='true'
+        onClick={e => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
         aria-label={modal.title}
       >
         <button
@@ -89,9 +91,9 @@ const Modal: FC<Props> = ({ language }) => {
           className={`${styles['close-button']} tooltip-wrap`}
           onClick={handleClose}
         >
-          <span aria-hidden='true'>&times;</span>
-          <span className='scr'>{t('Close')}</span>
-          <span aria-hidden='true' className='tooltip below left narrow2'>
+          <span aria-hidden="true">&times;</span>
+          <span className="scr">{t('Close')}</span>
+          <span aria-hidden="true" className="tooltip below left narrow2">
             {t('Close')}
           </span>
         </button>

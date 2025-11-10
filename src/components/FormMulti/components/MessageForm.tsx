@@ -3,7 +3,7 @@ import FormWrapper from './FormWrapper'
 import styles from '../form.module.css'
 import { Select, SelectOption } from '../../Select/Select'
 import { ELanguages } from '../../../types'
-import { LanguageContext } from '../../../contexts/LanguageContext'
+import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 type MessageData = {
   email: string
@@ -23,7 +23,7 @@ export default function MessageForm({
   updateFields,
   language,
 }: MessageFormProps) {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const options: SelectOption[] = [
     {
@@ -44,25 +44,27 @@ export default function MessageForm({
     },
   ]
 
-  const [selectsingle, setSelect] = useState<SelectOption | undefined>(options[0])
+  const [selectsingle, setSelect] = useState<SelectOption | undefined>(
+    options[0]
+  )
 
   return (
-    <FormWrapper title='Message' description={t('PleaseSendMeAFewWords')}>
+    <FormWrapper title="Message" description={t('PleaseSendMeAFewWords')}>
       <div className={styles.subfield} style={{ paddingTop: '4em' }}>
-        <div className='input-wrap'>
+        <div className="input-wrap">
           <label>
             <input
-              id='form-email'
+              id="form-email"
               autoFocus
               required
-              type='email'
-              name='email'
+              type="email"
+              name="email"
               value={email}
-              onChange={(e) => updateFields({ email: e.target.value })}
+              onChange={e => updateFields({ email: e.target.value })}
             />
             <span>
               {t('YourEmail')}{' '}
-              <i className='required' aria-hidden='true'>
+              <i className="required" aria-hidden="true">
                 *
               </i>
             </span>
@@ -74,13 +76,13 @@ export default function MessageForm({
         <label>{t('MessageSubject')}</label>
         <Select
           language={language}
-          id='single'
+          id="single"
           className={`${styles.dropdownsingle} full`}
           instructions={t('PleaseSelectAnOption')}
           hide
           options={options}
           value={selectsingle}
-          onChange={(e) => {
+          onChange={e => {
             setSelect(e)
             updateFields({
               select: e?.label ?? selectsingle?.label,
@@ -89,20 +91,20 @@ export default function MessageForm({
         />
       </div>
       <div className={styles.subfield}>
-        <label htmlFor='form-message'>
+        <label htmlFor="form-message">
           {t('Message')}{' '}
-          <i className='required' aria-hidden='true'>
+          <i className="required" aria-hidden="true">
             *
           </i>
         </label>
         <textarea
-          id='form-message'
+          id="form-message"
           required
-          name='message'
+          name="message"
           value={message}
           rows={4}
           placeholder={t('LetMeKnowWhatOnYourMind')}
-          onChange={(e) => updateFields({ message: e.target.value })}
+          onChange={e => updateFields({ message: e.target.value })}
         />
       </div>
     </FormWrapper>

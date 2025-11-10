@@ -17,9 +17,11 @@ const useTimer = (active: boolean, precision: Precision) => {
       const increment = precision === '1s' ? 1 : 0.1
 
       interval = setInterval(() => {
-        setTimer((prev) => {
+        setTimer(prev => {
           const updatedTimer = prev + increment
-          return precision === '1s' ? updatedTimer : parseFloat(updatedTimer.toFixed(1))
+          return precision === '1s'
+            ? updatedTimer
+            : parseFloat(updatedTimer.toFixed(1))
         })
       }, intervalDuration)
     }

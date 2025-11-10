@@ -14,10 +14,10 @@ import { BsMusicNoteBeamed } from 'react-icons/bs'
 import Accordion from '../Accordion/Accordion'
 import MemorySVG from '../Memory/components/MemorySVG'
 import { useContext } from 'react'
-import { LanguageContext } from '../../contexts/LanguageContext'
+import { useLanguageContext } from '../../contexts/LanguageContext'
 
 export default function Portfolio({ language }: { language: ELanguages }) {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const lightTheme = useTheme()
 
@@ -27,11 +27,13 @@ export default function Portfolio({ language }: { language: ELanguages }) {
         <div className={styles.notes}>
           <p className={styles.introparagraph}>
             {t('ThisSiteFocusesOnReactApplications')} <br /> <br />
-            <a href='https://jenniina.fi/#portfolio'>{t('MainSite')}</a>
+            <a href="https://jenniina.fi/#portfolio">{t('MainSite')}</a>
             <br />
             <br />
             {t('PleaseReportAnyIssuesWithTheSiteToJenniina')}:{' '}
-            <Link to='/portfolio/select?survey=true'>{t('Survey').toLowerCase()}</Link>{' '}
+            <Link to="/portfolio/select?survey=true">
+              {t('Survey').toLowerCase()}
+            </Link>{' '}
           </p>
           <h2>React Apps</h2>
 
@@ -39,12 +41,12 @@ export default function Portfolio({ language }: { language: ELanguages }) {
           <Accordion
             language={language}
             text={t('Dependencies')}
-            className='dependencies'
-            wrapperClass='dependencies-wrap'
+            className="dependencies"
+            wrapperClass="dependencies-wrap"
           >
             <>
-              <p id='list-libraries-label'>{t('Dependencies')}:</p>
-              <ul id='list-libraries' aria-labelledby='list-libraries-label'>
+              <p id="list-libraries-label">{t('Dependencies')}:</p>
+              <ul id="list-libraries" aria-labelledby="list-libraries-label">
                 <li>react-icons</li>
                 <li>react-dom</li>
                 <li>react-router-dom</li>
@@ -53,8 +55,8 @@ export default function Portfolio({ language }: { language: ELanguages }) {
                 <li>axios</li>
                 <li>uuid</li>
               </ul>
-              <p id='list-libraries-label2'>{t('Dependencies')} (Node.js):</p>
-              <ul id='list-libraries2' aria-labelledby='list-libraries-label2'>
+              <p id="list-libraries-label2">{t('Dependencies')} (Node.js):</p>
+              <ul id="list-libraries2" aria-labelledby="list-libraries-label2">
                 <li>bcryptjs</li>
                 <li>cors</li>
                 <li>dotenv</li>
@@ -71,28 +73,28 @@ export default function Portfolio({ language }: { language: ELanguages }) {
         </div>
         <ul className={`${styles.list}`}>
           <li>
-            <Link to='/portfolio/media'>
+            <Link to="/portfolio/media">
               <IoMdImages />
               <span>{t('Media')}</span>
             </Link>
             <p>{t('MediaWithQuotesOrPoems')}</p>
           </li>
           <li>
-            <Link to='/portfolio/colors'>
+            <Link to="/portfolio/colors">
               <BiSolidColorFill />
               <span>{t('ColorAccessibility')}</span>
             </Link>
             <p>{t('WCAGTool')}</p>
           </li>
           <li>
-            <Link to='/portfolio/memory'>
-              <MemorySVG size='50' />
+            <Link to="/portfolio/memory">
+              <MemorySVG size="50" />
               <span>{t('MemoryGame')}</span>
             </Link>
             <p>{t('MemoryGameIntro')}</p>
           </li>
           <li>
-            <Link to='/portfolio/composer'>
+            <Link to="/portfolio/composer">
               <BsMusicNoteBeamed />
               <span>
                 {t('ComposerOlliSanta')} ({t('Website')})
@@ -103,7 +105,7 @@ export default function Portfolio({ language }: { language: ELanguages }) {
             </p>
           </li>
           <li>
-            <Link to='/portfolio/blob'>
+            <Link to="/portfolio/blob">
               <RiDragMove2Fill />
               <span>{t('BlobArtApp')}</span>
             </Link>
@@ -112,59 +114,60 @@ export default function Portfolio({ language }: { language: ELanguages }) {
             </p>
           </li>
           <li>
-            <Link to='/portfolio/jokes'>
+            <Link to="/portfolio/jokes">
               <GiAbstract019 />
               <span>{t('TheComediansCompanion')}</span>
             </Link>
             <p>
-              {t('JokesAppIntro')} {firstToUpperCase(t('SubmitAJoke').toLowerCase())}.{' '}
+              {t('JokesAppIntro')}{' '}
+              {firstToUpperCase(t('SubmitAJoke').toLowerCase())}.{' '}
               {t('SeeLocalJokes')}.
             </p>
           </li>
           <li>
-            <Link to='/portfolio/quiz'>
+            <Link to="/portfolio/quiz">
               <MdOutlineQuiz />
               <span>{t('QuizApp')}</span>
             </Link>
             <p>{t('QuizAppIntro')}</p>
           </li>
           <li>
-            <Link to='/portfolio/select'>
+            <Link to="/portfolio/select">
               <BiSelectMultiple />
               <span>{t('CustomSelect')}</span>
             </Link>
             <p>{t('CustomSelectIntro')}</p>
           </li>
           <li>
-            <Link to='/portfolio/graphql'>
+            <Link to="/portfolio/graphql">
               <GrGraphQl />
               <span>GraphQL</span>
             </Link>
             <p>{t('GraphQLSite')}</p>
           </li>
           <li>
-            <Link to='/portfolio/salon'>
+            <Link to="/portfolio/salon">
               <GiComb />
               <span>{t('HairSalonWebsite')}</span>
             </Link>
             <p>{t('Website')}: Parturi Kampaamo Hannastiina</p>
           </li>
           <li>
-            <Link to='/portfolio/draganddrop'>
+            <Link to="/portfolio/draganddrop">
               <RiDragDropLine />
               <span>{t('DragAndDrop')}</span>
             </Link>
             <p>{t('DragAndDropAppIntro')}</p>
           </li>
           <li>
-            <Link to='/portfolio/todo'>
+            <Link to="/portfolio/todo">
               <RiTodoLine />
               <span>{t('TodoApp')}</span>
             </Link>
             <p>{t('TodoAppIntro')}</p>
           </li>
           <li className={styles.multistep}>
-            <Link to='/portfolio/form'>
+            <Link to="/portfolio/form">
               <AiOutlineForm />
               <span>{t('MultistepForm')}</span>
             </Link>

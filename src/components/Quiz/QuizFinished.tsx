@@ -1,4 +1,4 @@
-import { useEffect, useState, FormEvent, lazy, Suspense, useContext } from 'react'
+import { useEffect, useState, FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { IQuizHighscore } from './types'
@@ -9,16 +9,15 @@ import { initializeUser } from '../../reducers/authReducer'
 import { createUser } from '../../reducers/usersReducer'
 import { notify } from '../../reducers/notificationReducer'
 import styles from '../../components/Quiz/css/quiz.module.css'
-import { LanguageContext } from '../../contexts/LanguageContext'
-
-const LoginRegisterCombo = lazy(() => import('./components/LoginRegisterCombo'))
+import { useLanguageContext } from '../../contexts/LanguageContext'
+import LoginRegisterCombo from './components/LoginRegisterCombo'
 
 interface Props {
   language: ELanguages
 }
 
 const QuizFinished = ({ language }: Props) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const { points, highscores, finalSeconds } = useSelector(
     (state: ReducerProps) => state.questions
@@ -54,20 +53,17 @@ const QuizFinished = ({ language }: Props) => {
     }
   }, [])
 
-  const isLocalhost =
-    window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-
   useEffect(() => {
-    if ((!user && points !== 0 && finalSeconds !== 0) || finalSeconds === undefined)
-      localStorage.setItem(
-        `${isLocalhost ? 'local-' : ''}quiz-highscores`,
-        JSON.stringify(highscores)
-      )
+    if (
+      (!user && points !== 0 && finalSeconds !== 0) ||
+      finalSeconds === undefined
+    )
+      localStorage.setItem(`quiz-highscores`, JSON.stringify(highscores))
     if (
       (user?._id && points !== 0 && finalSeconds !== 0) ||
       (user?._id && finalSeconds !== undefined)
     ) {
-      dispatch(getUserQuiz(user._id)).then((r) => {
+      dispatch(getUserQuiz(user._id)).then(r => {
         if (r === null) {
           const quizScore: IQuizHighscore = {
             highscores: {
@@ -78,9 +74,9 @@ const QuizFinished = ({ language }: Props) => {
           }
           dispatch(notify(t('NewHighscore'), false, 3))
 
-          dispatch(addQuiz(quizScore)).then((r) => {
+          dispatch(addQuiz(quizScore)).then(r => {
             //console.log('r1: ', r)
-            dispatch(deleteDuplicates(user._id)).then((r) => {
+            dispatch(deleteDuplicates(user._id)).then(r => {
               //console.log('r5: ', r)
             })
           })
@@ -104,7 +100,7 @@ const QuizFinished = ({ language }: Props) => {
             quizScore.highscores[mode].time = finalSeconds // Update time if score is equal and time is faster
           }
 
-          dispatch(addQuiz(quizScore)).then((r) => {
+          dispatch(addQuiz(quizScore)).then(r => {
             //console.log('r2: ', r)
           })
         }
@@ -122,7 +118,7 @@ const QuizFinished = ({ language }: Props) => {
       .then(async () => {
         dispatch(notify(t('RegistrationSuccesful'), false, 8))
       })
-      .catch((err) => {
+      .catch(err => {
         console.error(err)
         if (err.response?.data?.message)
           dispatch(notify(err.response.data.message, true, 8))
@@ -150,29 +146,37 @@ const QuizFinished = ({ language }: Props) => {
   }
 
   useEffect(() => {
-    const loginWrapOpen = document.querySelector('.login-wrap .open') as HTMLButtonElement
-    const loginWrapClose = document.querySelector(
+    if (typeof window === 'undefined') return
+
+    const loginWrapOpen = document?.querySelector(
+      '.login-wrap .open'
+    ) as HTMLButtonElement
+    const loginWrapClose = document?.querySelector(
       '.login-wrap .close'
     ) as HTMLButtonElement
-    const registerWrapOpen = document.querySelector(
+    const registerWrapOpen = document?.querySelector(
       '.register-wrap .open'
     ) as HTMLButtonElement
-    const registerWrapClose = document.querySelector(
+    const registerWrapClose = document?.querySelector(
       '.register-wrap .close'
     ) as HTMLButtonElement
 
-    loginWrapOpen?.addEventListener('click', () => {
-      setLoginOpen(true)
-    })
-    loginWrapClose?.addEventListener('click', () => {
-      setLoginOpen(false)
-    })
-    registerWrapOpen?.addEventListener('click', () => {
-      setRegisterOpen(true)
-    })
-    registerWrapClose?.addEventListener('click', () => {
-      setRegisterOpen(false)
-    })
+    const handleLoginOpen = () => setLoginOpen(true)
+    const handleLoginClose = () => setLoginOpen(false)
+    const handleRegisterOpen = () => setRegisterOpen(true)
+    const handleRegisterClose = () => setRegisterOpen(false)
+
+    loginWrapOpen?.addEventListener('click', handleLoginOpen)
+    loginWrapClose?.addEventListener('click', handleLoginClose)
+    registerWrapOpen?.addEventListener('click', handleRegisterOpen)
+    registerWrapClose?.addEventListener('click', handleRegisterClose)
+
+    return () => {
+      loginWrapOpen?.removeEventListener('click', handleLoginOpen)
+      loginWrapClose?.removeEventListener('click', handleLoginClose)
+      registerWrapOpen?.removeEventListener('click', handleRegisterOpen)
+      registerWrapClose?.removeEventListener('click', handleRegisterClose)
+    }
   }, [])
 
   const goToMainPage = () => {
@@ -187,14 +191,14 @@ const QuizFinished = ({ language }: Props) => {
             <div>
               <div className={`${styles.quiz}`}>
                 <h1 className={styles.h1}>
-                  <a href='#' onClick={goToMainPage}>
+                  <a href="#" onClick={goToMainPage}>
                     &laquo;&nbsp;{t('QuizApp')}
                   </a>
                 </h1>
                 <h2>{congrats}</h2>
-                <p className='result'>
-                  {t('YouScored')} <strong>{points}</strong> {t('OutOf300Points')} (
-                  {percentage}%)
+                <p className="result">
+                  {t('YouScored')} <strong>{points}</strong>{' '}
+                  {t('OutOf300Points')} ({percentage}%)
                 </p>
                 <p>
                   {t('Difficulty')}:{' '}
@@ -224,35 +228,32 @@ const QuizFinished = ({ language }: Props) => {
                     </>
                   )}
                 </p>
-                <p className='highscore'>
+                <p className="highscore">
                   ({t('Highscore')}: {highscores[mode].score} {t('Points')})
                 </p>
                 <div className={`${styles.reset}`}>
-                  <button className='btn' onClick={() => navigate(`/portfolio/quiz`)}>
+                  <button
+                    className="btn"
+                    onClick={() => navigate(`/portfolio/quiz`)}
+                  >
                     {t('BackToMenu')}
                   </button>
                   <button
-                    className='btn'
-                    onClick={() => navigate(`/portfolio/quiz/difficulty/${mode}`)}
+                    className="btn"
+                    onClick={() =>
+                      navigate(`/portfolio/quiz/difficulty/${mode}`)
+                    }
                   >
                     {t('TryAgain')}
                   </button>
                 </div>
               </div>
-              <Suspense
-                fallback={
-                  <div className='flex center margin0auto textcenter'>
-                    {t('Loading')}...
-                  </div>
-                }
-              >
-                <LoginRegisterCombo
-                  language={language}
-                  user={user}
-                  highscoresLocal={highscores}
-                  text='quizfinish'
-                />
-              </Suspense>
+              <LoginRegisterCombo
+                language={language}
+                user={user}
+                highscoresLocal={highscores}
+                text="quizfinish"
+              />
             </div>
           </section>
         </>

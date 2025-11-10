@@ -1,7 +1,7 @@
 import { FC, ReactNode, useContext, useRef, useState } from 'react'
 import { QuoteItem } from './services/quotes'
 import { ELanguages } from '../../types'
-import { LanguageContext } from '../../contexts/LanguageContext'
+import { useLanguageContext } from '../../contexts/LanguageContext'
 
 interface QuoteProps {
   quote: QuoteItem
@@ -11,7 +11,7 @@ interface QuoteProps {
 }
 
 const Quote: FC<QuoteProps> = ({ quote, language, url, title }) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const [copied, setCopied] = useState(false)
   const ref = useRef<HTMLParagraphElement>(null)
@@ -25,19 +25,19 @@ const Quote: FC<QuoteProps> = ({ quote, language, url, title }) => {
           setCopied(true)
           setTimeout(() => setCopied(false), 3000)
         },
-        (error) => {
+        error => {
           console.error('Failed to copy:', error)
         }
       )
     } else {
       // Fallback method for older browsers
-      const textArea = document.createElement('textarea')
+      const textArea = document?.createElement('textarea')
       textArea.value = textToCopy
       ref.current?.appendChild(textArea)
       textArea.focus()
       textArea.select()
       try {
-        document.execCommand('copy')
+        document?.execCommand('copy')
         setCopied(true)
         setTimeout(() => setCopied(false), 3000)
       } catch (error: any) {
@@ -60,9 +60,9 @@ const Quote: FC<QuoteProps> = ({ quote, language, url, title }) => {
         </i>
       </p>
 
-      <div className='flex gap'>
+      <div className="flex gap">
         <button
-          className='small'
+          className="small"
           style={{ maxWidth: 'max-content', marginLeft: '1em' }}
           onClick={copyToClipboard}
         >
@@ -71,7 +71,7 @@ const Quote: FC<QuoteProps> = ({ quote, language, url, title }) => {
         {title && (
           <small>
             {url ? (
-              <a href={url} target='_blank' rel='noreferrer'>
+              <a href={url} target="_blank" rel="noreferrer">
                 {title}
               </a>
             ) : (

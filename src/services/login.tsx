@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios'
 import { credentials } from '../types'
 
-const url = import.meta.env.VITE_BASE_URI ?? 'https://bg.jenniina.fi'
+const url = import.meta.env.VITE_BASE_URI ?? 'https://react.jenniina.fi'
 const baseUrl = `${url}/api/login`
 
 let token: string | null = null

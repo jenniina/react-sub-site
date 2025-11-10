@@ -1,9 +1,9 @@
-import { FC } from 'react'
+import React, { FC } from 'react'
 import styles from '../memory.module.css'
 
 interface GridSizeOption {
   value: number
-  icon: string | JSX.Element
+  icon: string | React.JSX.Element
   label: string
 }
 
@@ -13,14 +13,18 @@ interface GridSizeButtonProps {
   onClick: () => void
 }
 
-const GridSizeButton: FC<GridSizeButtonProps> = ({ option, isActive, onClick }) => (
+const GridSizeButton: FC<GridSizeButtonProps> = ({
+  option,
+  isActive,
+  onClick,
+}) => (
   <button
     className={`tooltip-wrap ${isActive ? `${styles.active} grayer` : ''}`}
     onClick={onClick}
     disabled={isActive}
   >
     <span>{option.icon}</span>
-    <span className='tooltip above narrow2 space'>{option.label}</span>
+    <span className="tooltip above narrow2 space">{option.label}</span>
   </button>
 )
 

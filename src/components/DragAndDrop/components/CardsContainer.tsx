@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { Data, Status } from '../types'
 import CardSingle from './CardSingle'
 import { sanitize } from '../../../utils'
@@ -8,7 +8,7 @@ import Accordion from '../../Accordion/Accordion'
 import { notify } from '../../../reducers/notificationReducer'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
-import { LanguageContext } from '../../../contexts/LanguageContext'
+import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
@@ -41,7 +41,7 @@ const CardsContainer = ({
   deleteStatus,
   regex,
 }: Props) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const dispatch = useAppDispatch()
 
@@ -78,7 +78,8 @@ const CardsContainer = ({
     }
   }
 
-  const handleDragOver = (e: React.DragEvent<HTMLUListElement>) => e.preventDefault()
+  const handleDragOver = (e: React.DragEvent<HTMLUListElement>) =>
+    e.preventDefault()
 
   const handleContainerDragStart = (
     e: React.DragEvent<HTMLSpanElement>,
@@ -135,7 +136,7 @@ const CardsContainer = ({
       className={`${styles['cards-container']} ${
         isDragging ? styles['area-dragging'] : ''
       } ${lightTheme ? styles['light'] : ''}`}
-      onDrop={(e) => handleContainerDrop(e, statuses.indexOf(status))}
+      onDrop={e => handleContainerDrop(e, statuses.indexOf(status))}
       onDragEnd={() => handleDragging(false)}
     >
       <span
@@ -143,7 +144,7 @@ const CardsContainer = ({
         id={`label-${sanitize(status)}`}
         className={styles['status-label']}
         draggable
-        onDragStart={(e) => handleContainerDragStart(e, statuses.indexOf(status))}
+        onDragStart={e => handleContainerDragStart(e, statuses.indexOf(status))}
         onDragOver={handleContainerDragOver}
       >
         <b>{translateStatus(status)}</b>
@@ -155,38 +156,38 @@ const CardsContainer = ({
           hideBrackets
           onClick={() => setNewStatus(status)}
           className={`narrow2 ${styles['change-status']} change-status`}
-          wrapperClass='change-status-wrap'
+          wrapperClass="change-status-wrap"
           tooltip={t('Edit')}
-          x='left'
-          y='below'
+          x="left"
+          y="below"
         >
           <>
             <i>{translateStatus(status)}</i>
             <form
               className={styles['change-status-form']}
-              onSubmit={(e) => {
+              onSubmit={e => {
                 e.preventDefault()
                 updateStatus(statuses.indexOf(status), newStatus)
               }}
             >
-              <div className='input-wrap'>
+              <div className="input-wrap">
                 <label htmlFor={`${sanitize(status)}-status`}>
                   <input
-                    type='text'
+                    type="text"
                     required
                     id={`${sanitize(status)}-status`}
                     value={newStatus}
-                    onChange={(e) => handleStatusNameChange(e)}
+                    onChange={e => handleStatusNameChange(e)}
                   />
                   <span>{t('Change')}:</span>
                 </label>
               </div>
-              <button type='submit' disabled={sending}>
+              <button type="submit" disabled={sending}>
                 {t('Change')}
               </button>
               <button
-                type='button'
-                className='danger delete'
+                type="button"
+                className="danger delete"
                 onClick={() => {
                   deleteStatus(status)
                 }}

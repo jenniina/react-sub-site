@@ -1,10 +1,6 @@
-import { lazy, Suspense, useContext } from "react";
-import { ELanguages } from "../../types";
-import { LanguageContext } from "../../contexts/LanguageContext";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
-
-const Memory = lazy(() => import("../../components/Memory/Memory"));
+import { ELanguages } from '../../types'
+import { useLanguageContext } from '../../contexts/LanguageContext'
+import Memory from '../../components/Memory/Memory'
 
 export default function MemoryPage({
   heading,
@@ -12,16 +8,20 @@ export default function MemoryPage({
   type,
   language,
 }: {
-  heading: string;
-  text: string;
-  type: string;
-  language: ELanguages;
+  heading: string
+  text: string
+  type: string
+  language: ELanguages
 }) {
-  const { t } = useContext(LanguageContext)!;
+  const { t } = useLanguageContext()
 
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/*  <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>
           {t("MemoryGame")} | {t("MemoryGameIntro")}
         </title>
@@ -40,20 +40,12 @@ export default function MemoryPage({
           content={`https://react.jenniina.fi/portfolio/memory`}
         />
         <meta property="og:type" content="website" />
-      </Helmet>
+      </Helmet> */}
       <div className={`memory ${type}`}>
         <div className="inner-wrap">
-          <Suspense
-            fallback={
-              <div className="flex center margin0auto textcenter">
-                {t("Loading")}...
-              </div>
-            }
-          >
-            <Memory language={language} />
-          </Suspense>
+          <Memory language={language} />
         </div>
       </div>
     </>
-  );
+  )
 }

@@ -11,7 +11,7 @@ const useCart = () => {
 
   const addToCart = (item: ICartItem | undefined) => {
     if (item) {
-      const existingItem = cart.find((i) => i.id === item.id)
+      const existingItem = cart.find(i => i.id === item.id)
       if (existingItem) {
         existingItem.quantity += 1
         setCart([...cart])
@@ -23,18 +23,18 @@ const useCart = () => {
   }
 
   const removeFromCart = (itemId: string) => {
-    const existingItem = cart.find((i) => i.id === itemId)
+    const existingItem = cart.find(i => i.id === itemId)
     if (existingItem && existingItem.quantity > 1) {
       existingItem.quantity -= 1
       setCart([...cart])
       return
     } else {
-      setCart(cart.filter((i) => i.id !== itemId))
+      setCart(cart.filter(i => i.id !== itemId))
     }
   }
 
   const editDetails = (itemId: string, details: string) => {
-    setCart(cart.map((i) => (i.id === itemId ? { ...i, details } : i)))
+    setCart(cart.map(i => (i.id === itemId ? { ...i, details } : i)))
   }
 
   const clearCart = () => {

@@ -1,4 +1,4 @@
-import {
+import React, {
   RefObject,
   MouseEvent,
   TouchEvent,
@@ -16,7 +16,7 @@ import { clampValue } from '../../../utils'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { BlobContext, Props } from './BlobProvider'
 import { notify } from '../../../reducers/notificationReducer'
-import { LanguageContext } from '../../../contexts/LanguageContext'
+import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 interface BlobProps {
   d: number
@@ -93,7 +93,7 @@ const Blob = ({
   layerAmount,
   changeColor,
 }: BlobProps) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const blur = d === 0 ? 33 : clampValue(22, item.i * 2.6, 50)
   const { dispatch } = useContext(BlobContext) as Props
@@ -182,7 +182,7 @@ const Blob = ({
 
   return (
     <li
-      onFocus={(e) => {
+      onFocus={e => {
         if (dragUlRef && dragUlRef.current)
           dragUlRef.current?.setAttribute(
             'aria-activedescendant',
@@ -217,7 +217,7 @@ const Blob = ({
         }, 500) // Adjust the timeout duration as needed
         focused(blob)
       }}
-      onBlur={(e) => {
+      onBlur={e => {
         setFocusedBlob(null)
         blurred(e.target as HTMLElement)
         if (dragUlRef && dragUlRef.current)
@@ -235,7 +235,7 @@ const Blob = ({
       onClick={handleClick}
     >
       <div
-        className='draggable-overlay'
+        className="draggable-overlay"
         style={
           Number(item.i) < 8
             ? {
@@ -243,41 +243,43 @@ const Blob = ({
                 height: `calc(var(--i) * ${innerSize[0]})`,
               }
             : Number(item.i) < 10
-            ? {
-                width: `calc(var(--i) * ${innerSize[1]})`,
-                height: `calc(var(--i) * ${innerSize[1]})`,
-              }
-            : Number(item.i) < 20
-            ? {
-                width: `calc(var(--i) * ${innerSize[2]})`,
-                height: `calc(var(--i) * ${innerSize[2]})`,
-              }
-            : Number(item.i) < 24
-            ? {
-                width: `calc(var(--i) * ${innerSize[3]})`,
-                height: `calc(var(--i) * ${innerSize[3]})`,
-              }
-            : Number(item.i) < 28
-            ? {
-                width: `calc(var(--i) * ${innerSize[4]})`,
-                height: `calc(var(--i) * ${innerSize[4]})`,
-              }
-            : Number(item.i) < 32
-            ? {
-                width: `calc(var(--i) * ${innerSize[5]})`,
-                height: `calc(var(--i) * ${innerSize[5]})`,
-              }
-            : isNaN(Number(item.i)) || item.i === null || item.i === undefined
-            ? {
-                width: `7 * ${innerSize[6]})`,
-                height: `7 * ${innerSize[6]})`,
-              }
-            : {
-                width: `calc(var(--i) * ${innerSize[6]})`,
-                height: `calc(var(--i) * ${innerSize[6]})`,
-              }
+              ? {
+                  width: `calc(var(--i) * ${innerSize[1]})`,
+                  height: `calc(var(--i) * ${innerSize[1]})`,
+                }
+              : Number(item.i) < 20
+                ? {
+                    width: `calc(var(--i) * ${innerSize[2]})`,
+                    height: `calc(var(--i) * ${innerSize[2]})`,
+                  }
+                : Number(item.i) < 24
+                  ? {
+                      width: `calc(var(--i) * ${innerSize[3]})`,
+                      height: `calc(var(--i) * ${innerSize[3]})`,
+                    }
+                  : Number(item.i) < 28
+                    ? {
+                        width: `calc(var(--i) * ${innerSize[4]})`,
+                        height: `calc(var(--i) * ${innerSize[4]})`,
+                      }
+                    : Number(item.i) < 32
+                      ? {
+                          width: `calc(var(--i) * ${innerSize[5]})`,
+                          height: `calc(var(--i) * ${innerSize[5]})`,
+                        }
+                      : isNaN(Number(item.i)) ||
+                          item.i === null ||
+                          item.i === undefined
+                        ? {
+                            width: `7 * ${innerSize[6]})`,
+                            height: `7 * ${innerSize[6]})`,
+                          }
+                        : {
+                            width: `calc(var(--i) * ${innerSize[6]})`,
+                            height: `calc(var(--i) * ${innerSize[6]})`,
+                          }
         }
-        onMouseDown={(e) => {
+        onMouseDown={e => {
           e.stopPropagation()
           const liElement = e.currentTarget.parentElement as HTMLElement
           liElement.draggable = true
@@ -293,7 +295,7 @@ const Blob = ({
 
           start(e, liElement)
         }}
-        onMouseMove={(e) => {
+        onMouseMove={e => {
           if (e.buttons === 1) {
             e.stopPropagation()
             const liElement = e.currentTarget.parentElement as HTMLElement
@@ -306,7 +308,7 @@ const Blob = ({
               }`
           }
         }}
-        onMouseLeave={(e) => {
+        onMouseLeave={e => {
           e.stopPropagation()
           const liElement = e.currentTarget.parentElement as HTMLElement
           liElement.draggable = false
@@ -316,7 +318,7 @@ const Blob = ({
           if (selectedvalue0.current)
             selectedvalue0.current.textContent = `${t('SelectedBlobNone')}`
         }}
-        onMouseUp={(e) => {
+        onMouseUp={e => {
           const liElement = e.currentTarget.parentElement as HTMLElement
           liElement.draggable = false
           stopMovementCheck(e, liElement)
@@ -325,7 +327,7 @@ const Blob = ({
           if (selectedvalue0.current)
             selectedvalue0.current.textContent = `${t('SelectedBlobNone')}`
         }}
-        onTouchStart={(e) => {
+        onTouchStart={e => {
           e.preventDefault()
           e.stopPropagation()
           const liElement = e.currentTarget.parentElement as HTMLElement
@@ -341,14 +343,14 @@ const Blob = ({
               (liElement as HTMLElement)?.querySelector('span')?.textContent
             }`
         }}
-        onTouchMove={(e) => {
+        onTouchMove={e => {
           e.preventDefault()
           e.stopPropagation()
           const liElement = e.currentTarget.parentElement as HTMLElement
           liElement.draggable = true
           movement(e, liElement)
         }}
-        onTouchEnd={(e) => {
+        onTouchEnd={e => {
           const liElement = e.currentTarget.parentElement as HTMLElement
           liElement.draggable = false
           if (dragUlRef && dragUlRef.current)
@@ -357,12 +359,12 @@ const Blob = ({
           if (selectedvalue0.current)
             selectedvalue0.current.textContent = `${t('SelectedBlobNone')}`
         }}
-        onWheel={(e) => {
+        onWheel={e => {
           const liElement = e.currentTarget.parentElement as HTMLElement
           wheel(liElement)
         }}
       ></div>
-      <span className='scr'>
+      <span className="scr">
         {t('Blob')} {item.number}
       </span>
     </li>

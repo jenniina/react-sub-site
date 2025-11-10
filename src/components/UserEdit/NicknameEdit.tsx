@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { IUser, ELanguages } from '../../types'
 import { initializeUser, refreshUser } from '../../reducers/authReducer'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
@@ -6,14 +6,14 @@ import { notify } from '../../reducers/notificationReducer'
 import { findUserById, updateUser } from '../../reducers/usersReducer'
 import { AxiosError } from 'axios'
 import styles from './css/edit.module.css'
-import { LanguageContext } from '../../contexts/LanguageContext'
+import { useLanguageContext } from '../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
   user: IUser
 }
 const NicknameEdit = ({ user, language }: Props) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const dispatch = useAppDispatch()
 
@@ -35,7 +35,7 @@ const NicknameEdit = ({ user, language }: Props) => {
 
       if (user) {
         dispatch(updateUser(editedUser))
-          .then((res) => {
+          .then(res => {
             if (res) {
               if (res.success === false) {
                 dispatch(notify(`${t('Error')}: ${res.message}`, true, 5))
@@ -55,8 +55,13 @@ const NicknameEdit = ({ user, language }: Props) => {
             console.error(error)
             if (error.response?.data?.message)
               dispatch(notify(error.response.data.message, true, 8))
-            else if (error.code === 'ERR_BAD_REQUEST' && error.response?.data?.message) {
-              dispatch(notify(`${t('Error')}: ${error.response.data.message}`, true, 5))
+            else if (
+              error.code === 'ERR_BAD_REQUEST' &&
+              error.response?.data?.message
+            ) {
+              dispatch(
+                notify(`${t('Error')}: ${error.response.data.message}`, true, 5)
+              )
             } else {
               setTimeout(() => {
                 dispatch(notify(t('UserNotUpdated'), true, 5))
@@ -88,33 +93,33 @@ const NicknameEdit = ({ user, language }: Props) => {
           </p>
 
           <form onSubmit={handleUserSubmit} className={styles['edit-user']}>
-            <div className='input-wrap'>
+            <div className="input-wrap">
               <label>
                 <input
                   required
-                  type='text'
-                  name='name'
-                  id='name-edit'
+                  type="text"
+                  name="name"
+                  id="name-edit"
                   value={name}
                   onChange={({ target }) => setName(target.value)}
                 />
                 <span>{t('Nickname')}</span>
               </label>
             </div>
-            <div className='input-wrap'>
+            <div className="input-wrap">
               <label>
                 <input
                   required
-                  type='password'
-                  name='old-password'
-                  id='old-password-user'
+                  type="password"
+                  name="old-password"
+                  id="old-password-user"
                   value={passwordOld}
                   onChange={({ target }) => setPasswordOld(target.value.trim())}
                 />
                 <span>{t('CurrentPassword')}</span>
               </label>
             </div>
-            <button type='submit' disabled={sending}>
+            <button type="submit" disabled={sending}>
               {t('Edit')}
             </button>
           </form>

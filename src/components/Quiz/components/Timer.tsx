@@ -12,7 +12,9 @@ import { ReducerProps } from '../../../types'
 import styles from '../css/quiz.module.css'
 
 const Timer = () => {
-  const { secondsRemaining } = useSelector((state: ReducerProps) => state.questions)
+  const { secondsRemaining } = useSelector(
+    (state: ReducerProps) => state.questions
+  )
   const sec = secondsRemaining % 60
   const mins = Math.floor(secondsRemaining / 60)
 
@@ -26,14 +28,17 @@ const Timer = () => {
       dispatch(resetTimer())
       navigate('/portfolio/quiz/results')
     }
-  }, [secondsRemaining])
+  }, [secondsRemaining, dispatch, navigate])
 
   useEffect(() => {
+    if (typeof window === 'undefined') return
+
     const timer = setInterval(() => {
       dispatch(lessSeconds())
     }, 1000)
+
     return () => clearInterval(timer)
-  }, [])
+  }, [dispatch])
 
   return (
     <div className={`${styles.timer}`}>

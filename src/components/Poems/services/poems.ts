@@ -15,7 +15,9 @@ export const getPoem = async (
   linecount: number
 ): Promise<PoemItem[]> => {
   try {
-    const response = await axios.get(`${API_URL}/random,linecount/1;${linecount}`)
+    const response = await axios.get(
+      `${API_URL}/random,linecount/1;${linecount}`
+    )
     if (response.status === 200 && response.data) {
       return response.data as PoemItem[]
     } else {

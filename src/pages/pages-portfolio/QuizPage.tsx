@@ -1,17 +1,17 @@
-import { Outlet } from "react-router-dom";
-import { useContext } from "react";
-import "./css/quiz.css";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
-
-import { LanguageContext } from "../../contexts/LanguageContext";
+import { Outlet } from 'react-router-dom'
+import './css/quiz.css'
+import { useLanguageContext } from '../../contexts/LanguageContext'
 
 export default function QuizPage() {
-  const { t } = useContext(LanguageContext)!;
+  const { t } = useLanguageContext()
 
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/*  <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>
           {t("QuizApp")} | {t("TestYourKnowledge")}
         </title>
@@ -36,10 +36,10 @@ export default function QuizPage() {
           content={`https://react.jenniina.fi/portfolio/quiz`}
         />
         <meta property="og:type" content="website" />
-      </Helmet>
+      </Helmet> */}
       <div>
         <Outlet />
       </div>
     </>
-  );
+  )
 }

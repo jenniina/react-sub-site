@@ -10,7 +10,9 @@ fieldset {
   display: flex;
   padding: 0 0 1.3em;
   /* width: 100%; */
-  max-width: calc(100vw - calc(var(--page-padding) * 4) - var(--scrollbar_width));
+  max-width: calc(
+    100vw - calc(var(--page-padding) * 4) - var(--scrollbar_width)
+  );
   border: 0;
   display: flex;
   flex-flow: row wrap;
@@ -46,7 +48,11 @@ legend {
   font-family: var(--title-family);
 }
 legend > p {
-  font-size: clamp(calc(1rem * var(--responsive_scale)), 1.5vw, var(--title-XS));
+  font-size: clamp(
+    calc(1rem * var(--responsive_scale)),
+    1.5vw,
+    var(--title-XS)
+  );
   font-family: var(--text-family);
   letter-spacing: 0;
   padding-top: 0;
@@ -155,7 +161,9 @@ input:-internal-autofill-selected {
 }
 input:-webkit-autofill,
 input:-webkit-autofill:focus {
-  transition: background-color 600000s 0s, color 600000s 0s;
+  transition:
+    background-color 600000s 0s,
+    color 600000s 0s;
   color: inherit !important;
   -webkit-box-shadow: inset 0 0 0px 1000px transparent;
 }

@@ -8,7 +8,7 @@ export interface ICartResponse {
   cart?: ICart
 }
 
-const url = import.meta.env.VITE_BASE_URI ?? 'https://bg.jenniina.fi'
+const url = import.meta.env.VITE_BASE_URI ?? 'https://react.jenniina.fi'
 const baseUrl = `${url}/api/cart`
 
 const newOrder = async (
@@ -25,7 +25,10 @@ const newOrder = async (
   return response.data as ICartResponse
 }
 
-const getOrderByOrderID = async (language: ELanguages, orderID: ICart['orderID']) => {
+const getOrderByOrderID = async (
+  language: ELanguages,
+  orderID: ICart['orderID']
+) => {
   const response = await axios.get(`${baseUrl}/${language}/${orderID}`)
   return response.data as ICart
 }
@@ -46,7 +49,11 @@ const deleteOrder = async (
   return response.data as ICartResponse
 }
 
-const updateOrder = async (language: ELanguages, order: ICart, userID: IUser['_id']) => {
+const updateOrder = async (
+  language: ELanguages,
+  order: ICart,
+  userID: IUser['_id']
+) => {
   const response = await axios.put(
     `${baseUrl}/${language}/${order.orderID}?userID=${userID}`,
     order

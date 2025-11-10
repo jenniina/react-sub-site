@@ -4,7 +4,7 @@ import { ELanguages } from '../../../types'
 import useWindowSize from '../../../hooks/useWindowSize'
 import { breakpointSmall } from '../../../types'
 import { useContext, useEffect, useState } from 'react'
-import { LanguageContext } from '../../../contexts/LanguageContext'
+import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 interface Props {
   easy: IHighscore['easy']
@@ -13,7 +13,7 @@ interface Props {
   language: ELanguages
 }
 const Scores = ({ easy, medium, hard, language }: Props) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const { windowWidth } = useWindowSize()
   const [show, setShow] = useState(true)

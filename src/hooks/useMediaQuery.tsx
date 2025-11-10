@@ -1,18 +1,26 @@
 import { useState, useEffect } from 'react'
 import useEventListener from './useEventListener'
+import { useIsClient, useWindow } from './useSSR'
 
 export default function useMediaQuery(mediaQuery: string) {
+  const isClient = useIsClient()
+  const windowObj = useWindow()
+
   const [isMatch, setIsMatch] = useState(false)
   const [mediaQueryList, setMediaQueryList] = useState<MediaQueryList>()
 
   useEffect(() => {
-    const list = window.matchMedia(mediaQuery)
+    if (!isClient || !windowObj) return
+    const list = windowObj.matchMedia(mediaQuery)
     setMediaQueryList(list)
     setIsMatch(list.matches)
-  }, [mediaQuery])
+  }, [mediaQuery, isClient])
 
-  // useEventListener("change", (e: MediaQueryList) => setIsMatch(e.matches), mediaQueryList, window)
-  useEventListener('change', (e: Event) => setIsMatch((e as MediaQueryListEvent).matches))
+  useEventListener(
+    'change' as keyof WindowEventMap,
+    (e: Event) => setIsMatch((e as MediaQueryListEvent).matches),
+    mediaQueryList
+  )
 
   return isMatch
 }

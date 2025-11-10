@@ -1,7 +1,7 @@
-import { useContext } from 'react'
+import React, { useContext } from 'react'
 import { ELanguages } from '../../../types'
 import { ECategories, IJoke } from '../types'
-import { LanguageContext } from '../../../contexts/LanguageContext'
+import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 interface Props {
   joke: string
@@ -42,36 +42,55 @@ const Joke = ({
   jokeId,
   handleBlacklistUpdate,
 }: Props) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   return (
     <form
       onSubmit={handleJokeSave}
       className={`joke-form-save ${joke && visibleJoke ? 'fadeIn' : ''}`}
     >
-      <article aria-live='polite' className={`joke ${visibleJoke ? 'fadeIn' : ''}`}>
-        <p className={`${visibleJoke ? 'fadeIn' : ''} ${!delivery ? 'no-delivery' : ''}`}>
+      <article
+        aria-live="polite"
+        className={`joke ${visibleJoke ? 'fadeIn' : ''}`}
+      >
+        <p
+          className={`${visibleJoke ? 'fadeIn' : ''} ${
+            !delivery ? 'no-delivery' : ''
+          }`}
+        >
           <small>
-            {t('CategoryTitle')}: {getCategoryInLanguage(jokeCategory, language)}
+            {t('CategoryTitle')}:{' '}
+            {getCategoryInLanguage(jokeCategory, language)}
           </small>
         </p>
-        <p className={`${visibleJoke ? 'fadeIn' : ''} ${!delivery ? 'no-delivery' : ''}`}>
+        <p
+          className={`${visibleJoke ? 'fadeIn' : ''} ${
+            !delivery ? 'no-delivery' : ''
+          }`}
+        >
           {joke}
         </p>
 
         <button
-          type='button'
+          type="button"
           onClick={() => setReveal(!reveal)}
           className={`delivery ${!delivery ? 'no-delivery' : 'has-delivery'} ${
             delivery && !reveal ? 'reveal' : ''
           } ${visibleJoke ? 'fadeIn' : ''}`}
         >
           <>
-            <span {...(!reveal ? { 'aria-hidden': true } : { 'aria-hidden': false })}>
+            <span
+              {...(!reveal
+                ? { 'aria-hidden': true }
+                : { 'aria-hidden': false })}
+            >
               {t('ClickToReveal')}
             </span>
             {delivery ? (
-              <p aria-live='assertive' className={`${visibleJoke ? 'fadeIn' : ''}`}>
+              <p
+                aria-live="assertive"
+                className={`${visibleJoke ? 'fadeIn' : ''}`}
+              >
                 {!reveal ? delivery : ''}
               </p>
             ) : (
@@ -92,7 +111,7 @@ const Joke = ({
           <p className={`sub-categories ${visibleJoke ? 'fadeIn' : ''}`}>
             <small>
               {t('CategoryTitle')}:{' '}
-              {subCategoryResults.map((category) => category).join(', ')}
+              {subCategoryResults.map(category => category).join(', ')}
             </small>
           </p>
         ) : (
@@ -100,22 +119,23 @@ const Joke = ({
         )}
       </article>
       {joke || delivery ? (
-        <div className='save-delete-wrap'>
+        <div className="save-delete-wrap">
           <button
-            type='submit'
+            type="submit"
             disabled={sending}
             className={`submit ${visibleJoke ? 'fadeIn' : ''}`}
           >
             {t('SaveJoke')}
           </button>
           <button
-            type='button'
+            type="button"
             className={`delete danger narrow ${visibleJoke ? 'fadeIn' : ''}`}
             onClick={() =>
               handleBlacklistUpdate(
                 jokeId as IJoke['jokeId'],
                 language,
-                jokeCategory === ECategories.ChuckNorris && language === ELanguages.en
+                jokeCategory === ECategories.ChuckNorris &&
+                  language === ELanguages.en
                   ? (joke as string)
                   : undefined
               )

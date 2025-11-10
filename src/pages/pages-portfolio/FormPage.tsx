@@ -1,11 +1,7 @@
-import { lazy, Suspense, useContext } from "react";
-import { ELanguages } from "../../types";
-import Accordion from "../../components/Accordion/Accordion";
-import { LanguageContext } from "../../contexts/LanguageContext";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
-
-const FormMulti = lazy(() => import("../../components/FormMulti/FormMulti"));
+import { ELanguages } from '../../types'
+import Accordion from '../../components/Accordion/Accordion'
+import { useLanguageContext } from '../../contexts/LanguageContext'
+import FormMulti from '../../components/FormMulti/FormMulti'
 
 export default function FormPage({
   heading,
@@ -13,16 +9,20 @@ export default function FormPage({
   type,
   language,
 }: {
-  heading: string;
-  text: string;
-  type: string;
-  language: ELanguages;
+  heading: string
+  text: string
+  type: string
+  language: ELanguages
 }) {
-  const { t } = useContext(LanguageContext)!;
+  const { t } = useLanguageContext()
 
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/*  <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>
           {t("MultiStepContactForm")} |{" "}
           {t("ThreeStepFullyFunctionalContactForm")}
@@ -48,7 +48,7 @@ export default function FormPage({
           content={`https://react.jenniina.fi/portfolio/form`}
         />
         <meta property="og:type" content="website" />
-      </Helmet>
+      </Helmet> */}
       <div className={`form ${type}`}>
         <div className="inner-wrap">
           <section className="card">
@@ -56,33 +56,33 @@ export default function FormPage({
               <div className="medium flex column gap">
                 <Accordion
                   language={language}
-                  text={t("ClickHereToSeeFeatures")}
+                  text={t('ClickHereToSeeFeatures')}
                   className="features"
                   wrapperClass="features-wrap"
                 >
                   <>
-                    <h2>{t("Features")}</h2>
+                    <h2>{t('Features')}</h2>
                     <ul className="ul">
-                      <li>{t("MultiStep")}</li>
-                      <li>{t("BackAndNextButtons")}</li>
-                      <li>{t("CustomRadioAndCheckboxInputs")}</li>
-                      <li>{t("PromptToFillInRequiredFields")}</li>
+                      <li>{t('MultiStep')}</li>
+                      <li>{t('BackAndNextButtons')}</li>
+                      <li>{t('CustomRadioAndCheckboxInputs')}</li>
+                      <li>{t('PromptToFillInRequiredFields')}</li>
                       <li>
-                        {t("FormFields")}
+                        {t('FormFields')}
                         <ul>
-                          <li>{t("FirstName")} * </li>
-                          <li>{t("LastName")} *</li>
-                          <li>{t("Email")} *</li>
-                          <li>{t("MessageSubject")}</li>
-                          <li>{t("Message")} *</li>
+                          <li>{t('FirstName')} * </li>
+                          <li>{t('LastName')} *</li>
+                          <li>{t('Email')} *</li>
+                          <li>{t('MessageSubject')}</li>
+                          <li>{t('Message')} *</li>
                           <li>
-                            {t("AnyEncouragingWords")}{" "}
-                            {t("OrConstructiveFeedback")}
+                            {t('AnyEncouragingWords')}{' '}
+                            {t('OrConstructiveFeedback')}
                           </li>
-                          <li>{t("AColorYouLike")}</li>
-                          <li>{t("WhichModeDoYouPreferLightDark")}</li>
-                          <li>{t("DoYouLikeMyCustomSelects")}</li>
-                          <li>{t("GDPRConsent")}</li>
+                          <li>{t('AColorYouLike')}</li>
+                          <li>{t('WhichModeDoYouPreferLightDark')}</li>
+                          <li>{t('DoYouLikeMyCustomSelects')}</li>
+                          <li>{t('GDPRConsent')}</li>
                         </ul>
                       </li>
                     </ul>
@@ -96,20 +96,12 @@ export default function FormPage({
           </section>
           <section className="card">
             <div>
-              <h2>{t("ContactForm")}</h2>
-              <Suspense
-                fallback={
-                  <div className="flex center margin0auto textcenter">
-                    {t("Loading")}...
-                  </div>
-                }
-              >
-                <FormMulti language={language} />
-              </Suspense>
+              <h2>{t('ContactForm')}</h2>
+              <FormMulti language={language} />
             </div>
           </section>
         </div>
       </div>
     </>
-  );
+  )
 }

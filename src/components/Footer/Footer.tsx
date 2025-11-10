@@ -2,29 +2,38 @@ import { useState, useEffect, FC, useContext } from 'react'
 import { BiChevronsUp } from 'react-icons/bi'
 import { ELanguages } from '../../types'
 import { Link } from 'react-router-dom'
-import { LanguageContext } from '../../contexts/LanguageContext'
+import { useLanguageContext } from '../../contexts/LanguageContext'
+import { useIsClient, useWindow } from '../../hooks/useSSR'
 
 const Footer: FC<{ styleMenu: boolean | undefined; language: ELanguages }> = ({
   styleMenu,
   language,
 }) => {
-  const { t } = useContext(LanguageContext)!
+  const isClient = useIsClient()
+  const windowObj = useWindow()
+
+  const { t } = useLanguageContext()
 
   const toTop = () => {
-    window.scrollTo({
+    if (!windowObj) return
+    if (!windowObj) return
+    windowObj.scrollTo({
       top: 0,
       behavior: 'smooth',
     })
   }
   const [showTopBtn, setShowTopBtn] = useState(false)
   useEffect(() => {
-    window.addEventListener('scroll', scrollY)
+    if (!isClient || !windowObj) return
+    windowObj.addEventListener('scroll', scrollY)
     return () => {
-      window.removeEventListener('scroll', scrollY)
+      windowObj.removeEventListener('scroll', scrollY)
     }
-  }, [])
+  }, [isClient])
+
   const scrollY = () => {
-    if (window.scrollY > 500) {
+    if (!windowObj) return
+    if (windowObj.scrollY > 500) {
       setShowTopBtn(true)
     } else {
       setShowTopBtn(false)
@@ -32,20 +41,29 @@ const Footer: FC<{ styleMenu: boolean | undefined; language: ELanguages }> = ({
   }
 
   return (
-    <footer id='main-footer' className={`main-footer ${styleMenu ? 'alt' : ''}`}>
-      <a className='footer1' href='https://jenniina.fi/'>
+    <footer
+      id="main-footer"
+      className={`main-footer ${styleMenu ? 'alt' : ''}`}
+    >
+      <a className="footer1" href="https://jenniina.fi/">
         <span>{t('ExitToMainSite')}</span>&nbsp;
-        <span aria-hidden='true'>&times;</span>
+        <span aria-hidden="true">&times;</span>
       </a>
 
-      <Link to='/disclaimer' className='footer1'>
+      <Link to="/disclaimer" className="footer1">
         {t('Disclaimer')}
       </Link>
 
       {showTopBtn ? (
-        <button className='footer2' style={{ display: 'inline-block' }} onClick={toTop}>
+        <button
+          className="footer2"
+          style={{ display: 'inline-block' }}
+          onClick={toTop}
+        >
           {t('ScrollToTheTop')}
-          <BiChevronsUp style={{ display: 'inline-block', marginBottom: '-0.15em' }} />
+          <BiChevronsUp
+            style={{ display: 'inline-block', marginBottom: '-0.15em' }}
+          />
         </button>
       ) : (
         ''

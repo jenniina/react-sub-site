@@ -1,7 +1,7 @@
 import { FC, Fragment, ReactNode, useContext, useRef, useState } from 'react'
 import { PoemItem } from './services/poems'
 import { ELanguages } from '../../types'
-import { LanguageContext } from '../../contexts/LanguageContext'
+import { useLanguageContext } from '../../contexts/LanguageContext'
 
 interface PoemProps {
   poem: PoemItem
@@ -9,13 +9,15 @@ interface PoemProps {
 }
 
 const Poem: FC<PoemProps> = ({ poem, language }) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const [copied, setCopied] = useState(false)
   const ref = useRef<HTMLParagraphElement>(null)
 
   const copyToClipboard = () => {
-    const textToCopy = `${poem.title} \n\n ${poem.lines.join('\n')}\n\n - ${poem.author}`
+    const textToCopy = `${poem.title} \n\n ${poem.lines.join('\n')}\n\n - ${
+      poem.author
+    }`
 
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(textToCopy).then(
@@ -23,19 +25,19 @@ const Poem: FC<PoemProps> = ({ poem, language }) => {
           setCopied(true)
           setTimeout(() => setCopied(false), 3000)
         },
-        (error) => {
+        error => {
           console.error('Failed to copy:', error)
         }
       )
     } else {
       // Fallback method for older browsers
-      const textArea = document.createElement('textarea')
+      const textArea = document?.createElement('textarea')
       textArea.value = textToCopy
       ref.current?.appendChild(textArea)
       textArea.focus()
       textArea.select()
       try {
-        document.execCommand('copy')
+        document?.execCommand('copy')
         setCopied(true)
         setTimeout(() => setCopied(false), 3000)
       } catch (error: any) {
@@ -64,9 +66,9 @@ const Poem: FC<PoemProps> = ({ poem, language }) => {
         </i>
       </p>
 
-      <div className='flex gap'>
+      <div className="flex gap">
         <button
-          className='small'
+          className="small"
           style={{ maxWidth: 'max-content', marginLeft: '1em' }}
           onClick={copyToClipboard}
         >

@@ -1,12 +1,12 @@
-import { FC, useRef, useState, useEffect, useContext } from 'react'
+import React, { FC, useRef, useState, useEffect, useContext } from 'react'
 import styles from './wordcloud.module.css'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import { ELanguages } from '../../types'
 import { useTheme } from '../../hooks/useTheme'
 import useWindowSize from '../../hooks/useWindowSize'
-import useRandomMinMax from '../../hooks/useRandomMinMax'
-import { LanguageContext } from '../../contexts/LanguageContext'
+import { getRandomBetween } from '../../utils'
+import { useLanguageContext } from '../../contexts/LanguageContext'
 
 interface Word {
   text: string
@@ -32,17 +32,17 @@ const WordCloud: FC<WordCloudProps> = ({
   width = 600,
   height = 400,
 }) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const dispatch = useAppDispatch()
-  const [placedWords, setPlacedWords] = useState<JSX.Element[]>([])
+  const [placedWords, setPlacedWords] = useState<React.JSX.Element[]>([])
   const lightMode = useTheme()
   const { windowWidth } = useWindowSize()
   const ref = useRef<HTMLDivElement>(null)
 
   // Function to calculate text width and height
   const calculateTextSize = (text: string, fontSize: number) => {
-    const canvas = document.createElement('canvas')
+    const canvas = document?.createElement('canvas')
     const context = canvas.getContext('2d')
     if (context) {
       context.font = `${fontSize}px Arial`
@@ -71,8 +71,8 @@ const WordCloud: FC<WordCloudProps> = ({
   ) => {
     const positions = []
 
-    const offsetWidth = newWordBox.width * useRandomMinMax(0.2, 0.4) // newWordBox.width * useRandomMinMax(-0.3, 0.3)
-    const offsetHeight = newWordBox.height * 0.2 // newWordBox.height * useRandomMinMax(-0.3, 0.3)
+    const offsetWidth = newWordBox.width * getRandomBetween(0.2, 0.4) // newWordBox.width * getRandomBetween(-0.3, 0.3)
+    const offsetHeight = newWordBox.height * 0.2 // newWordBox.height * getRandomBetween(-0.3, 0.3)
 
     // Top
     positions.push({
@@ -170,7 +170,7 @@ const WordCloud: FC<WordCloudProps> = ({
     height: number,
     existingPositions: { x: number; y: number; width: number; height: number }[]
   ) => {
-    return existingPositions.some((pos) => {
+    return existingPositions.some(pos => {
       return (
         x < pos.x + pos.width &&
         x + width > pos.x &&
@@ -190,20 +190,20 @@ const WordCloud: FC<WordCloudProps> = ({
         () => {
           dispatch(notify(t('CopiedToClipboard'), false, 3))
         },
-        (error) => {
+        error => {
           dispatch(notify(`${t('FailedToCopy')}`, true, 3))
           console.error('Failed to copy:', error)
         }
       )
     } else {
       // Fallback method for older browsers
-      const textArea = document.createElement('textarea')
+      const textArea = document?.createElement('textarea')
       textArea.value = textToCopy
       ref.current?.appendChild(textArea)
       textArea.focus()
       textArea.select()
       try {
-        document.execCommand('copy')
+        document?.execCommand('copy')
         dispatch(notify(t('CopiedToClipboard'), false, 3))
       } catch (error: any) {
         console.error('Failed to copy:', error)
@@ -226,8 +226,13 @@ const WordCloud: FC<WordCloudProps> = ({
         return a.text.length - b.text.length
       }
     })
-    const newPositions: { x: number; y: number; width: number; height: number }[] = []
-    const newPlacedWords: JSX.Element[] = []
+    const newPositions: {
+      x: number
+      y: number
+      width: number
+      height: number
+    }[] = []
+    const newPlacedWords: React.JSX.Element[] = []
 
     sortedWords.forEach((word, index) => {
       const fontSize = word.weight
@@ -252,15 +257,17 @@ const WordCloud: FC<WordCloudProps> = ({
             x={x}
             y={y + ascent}
             fontSize={fontSize}
-            fontFamily='Arial, sans-serif'
-            fill={`hsl(${(index * 110) % 360}, 100%, ${lightMode ? '20' : '70'}%)`}
+            fontFamily="Arial, sans-serif"
+            fill={`hsl(${(index * 110) % 360}, 100%, ${
+              lightMode ? '20' : '70'
+            }%)`}
             className={styles.word}
             style={{ cursor: 'pointer' }}
             onClick={() => {
               handleWordClick(word.text)
             }}
             tabIndex={0}
-            onKeyDown={(e) => {
+            onKeyDown={e => {
               if (e.key === 'Enter' || e.key === ' ') {
                 handleWordClick(word.text)
               }
@@ -318,13 +325,15 @@ const WordCloud: FC<WordCloudProps> = ({
                   x={candidatePos.x}
                   y={candidatePos.y + ascent}
                   fontSize={fontSize}
-                  fontFamily='Arial, sans-serif'
-                  fill={`hsl(${(index * 110) % 360}, 100%, ${lightMode ? '20' : '70'}%)`}
+                  fontFamily="Arial, sans-serif"
+                  fill={`hsl(${(index * 110) % 360}, 100%, ${
+                    lightMode ? '20' : '70'
+                  }%)`}
                   style={{ cursor: 'pointer' }}
                   className={styles.word}
                   onClick={() => handleWordClick(word.text)}
                   tabIndex={0}
-                  onKeyDown={(e) => {
+                  onKeyDown={e => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       handleWordClick(word.text)
                     }
@@ -344,7 +353,9 @@ const WordCloud: FC<WordCloudProps> = ({
 
       // Optional: Handle words that couldn't be placed
       if (!placed) {
-        console.warn(`Could not place word after ${attempts} attempts:: ${word.text}`)
+        console.warn(
+          `Could not place word after ${attempts} attempts:: ${word.text}`
+        )
       }
     })
 

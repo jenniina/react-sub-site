@@ -1,27 +1,28 @@
-import { useContext, useState } from "react";
-import Accordion from "../../components/Accordion/Accordion";
-import { ELanguages } from "../../types";
-import { LanguageContext } from "../../contexts/LanguageContext";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
-
+import { useState } from 'react'
+import Accordion from '../../components/Accordion/Accordion'
+import { ELanguages } from '../../types'
+import { useLanguageContext } from '../../contexts/LanguageContext'
 export default function ComposerPage({
   heading,
   text,
   type,
   language,
 }: {
-  heading: string;
-  text: string;
-  type: string;
-  language: ELanguages;
+  heading: string
+  text: string
+  type: string
+  language: ELanguages
 }) {
-  const { t } = useContext(LanguageContext)!;
+  const { t } = useLanguageContext()
 
-  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false)
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/*  <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>
           {t("ComposerOlliSanta")} | React, Node.js, Express, MongoDB
         </title>
@@ -42,32 +43,32 @@ export default function ComposerPage({
           content={`https://react.jenniina.fi/portfolio/composer`}
         />
         <meta property="og:type" content="website" />
-      </Helmet>
+      </Helmet> */}
       <div className={`composer ${type}`}>
         <div className="inner-wrap">
           <section className="card">
             <div>
               <div className="medium flex column left gap">
                 <p className="center max-content margin0auto">
-                  {t("ReactWebsite")}. {t("ComposerIntro1")}{" "}
-                  {t("ComposerIntro2")}
+                  {t('ReactWebsite')}. {t('ComposerIntro1')}{' '}
+                  {t('ComposerIntro2')}
                   <br />
                   <br />
                 </p>
                 <div className="medium">
                   <Accordion
                     language={language}
-                    text={t("ClickHereToSeeFeatures")}
+                    text={t('ClickHereToSeeFeatures')}
                     className="composer-features"
                     wrapperClass="mb3"
                     setIsFormOpen={setIsFormOpen}
                   >
                     <>
-                      <h2>{t("Features")}</h2>
+                      <h2>{t('Features')}</h2>
                       <ul className="ul">
-                        <li>{t("ComposerIntro3")}</li>
+                        <li>{t('ComposerIntro3')}</li>
                         <li>
-                          {t("Dependencies")}: React
+                          {t('Dependencies')}: React
                           <ul>
                             <li>react</li>
                             <li>react-dom</li>
@@ -78,7 +79,7 @@ export default function ComposerPage({
                           </ul>
                         </li>
                         <li>
-                          {t("Dependencies")}: Node.js
+                          {t('Dependencies')}: Node.js
                           <ul>
                             <li>express</li>
                             <li>express-validator</li>
@@ -99,11 +100,11 @@ export default function ComposerPage({
                     style={
                       isFormOpen
                         ? {
-                            marginTop: "2rem",
-                            paddingLeft: "0.5rem",
-                            fontSize: "130%",
+                            marginTop: '2rem',
+                            paddingLeft: '0.5rem',
+                            fontSize: '130%',
                           }
-                        : { marginTop: "2rem", fontSize: "130%" }
+                        : { marginTop: '2rem', fontSize: '130%' }
                     }
                   >
                     <p>
@@ -122,5 +123,5 @@ export default function ComposerPage({
         </div>
       </div>
     </>
-  );
+  )
 }

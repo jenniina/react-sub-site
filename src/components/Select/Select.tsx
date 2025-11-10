@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styles from './select.module.css'
 import { ELanguages, translations as t } from '../../types'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
@@ -59,7 +59,8 @@ export function Select({
   onChange,
   options,
   language = ELanguages.en,
-  requiredMessage = t['ThisFieldIsRequired'][language] ?? 'This field is required',
+  requiredMessage = t['ThisFieldIsRequired'][language] ??
+    'This field is required',
   remove = t['Remove'][language] ?? 'remove',
   clear = t['Clear'][language] ?? 'clear',
   selectAnOption = t['PleaseSelectAnOption'][language] ?? 'Select an option',
@@ -96,9 +97,9 @@ export function Select({
       reset = true
     }
     if (multiple) {
-      if (value?.some((o) => o.label === option.label) && reset) {
+      if (value?.some(o => o.label === option.label) && reset) {
         reset = false
-        onChange(value?.filter((o) => o.label !== option.label))
+        onChange(value?.filter(o => o.label !== option.label))
         setTimeout(cooldown, 200)
       } else if (reset) {
         reset = false
@@ -111,7 +112,9 @@ export function Select({
 
   function isOptionSelected(option: SelectOption) {
     if (multiple) {
-      return value?.some((selectedOption) => selectedOption.label === option.label)
+      return value?.some(
+        selectedOption => selectedOption.label === option.label
+      )
     } else {
       return value?.label === option.label
     }
@@ -211,37 +214,39 @@ export function Select({
 
       <div
         id={`${id}-container`}
-        role='combobox'
+        role="combobox"
         aria-labelledby={`${id}-instructions`}
         aria-controls={id}
         aria-expanded={isOpen}
         aria-activedescendant={`${id}-${highlightedIndex}`}
         ref={containerRef}
         //onBlur={() => setIsOpen(false)}
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={() => setIsOpen(prev => !prev)}
         tabIndex={0}
         className={
           multiple
             ? `${styles.multiple} ${styles.container} multiple container ${
                 showValidationError ? styles.error : ''
               }`
-            : `${styles.container} container ${showValidationError ? styles.error : ''}`
+            : `${styles.container} container ${
+                showValidationError ? styles.error : ''
+              }`
         }
       >
-        <span className={styles.scr} aria-live='polite' ref={ariaLive}></span>
+        <span className={styles.scr} aria-live="polite" ref={ariaLive}></span>
         <span className={`${styles.value} value`}>
           {multiple && value?.length === 1 && value[0].value == '' ? (
             <span>{selectAnOption}</span>
           ) : multiple && value?.length > 0 ? (
-            value?.map((v) => (
+            value?.map(v => (
               <button
-                type='button'
+                type="button"
                 key={`${v.value}`}
-                onClick={(e) => {
+                onClick={e => {
                   e.stopPropagation()
                   selectOption(v)
                 }}
-                onKeyUp={(e) => {
+                onKeyUp={e => {
                   switch (e.code) {
                     case 'Enter':
                     case ' ':
@@ -277,7 +282,10 @@ export function Select({
                 className={`${styles['option-btn']} option-btn`}
               >
                 {v?.label}
-                <span aria-hidden='true' className={`${styles['remove-btn']} remove-btn`}>
+                <span
+                  aria-hidden="true"
+                  className={`${styles['remove-btn']} remove-btn`}
+                >
                   &times;
                 </span>
                 <span className={`${styles.scr} scr`}>{remove}</span>
@@ -291,13 +299,13 @@ export function Select({
         </span>
         {!hideDelete && (
           <button
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation()
               clearOptions(e)
             }}
             className={`${styles['clear-btn']} clear-btn`}
           >
-            <span aria-hidden='true'>&times;</span>
+            <span aria-hidden="true">&times;</span>
             <span className={`${styles.scr} scr`}>{clear}</span>
           </button>
         )}
@@ -305,18 +313,20 @@ export function Select({
         <div className={`${styles.caret} caret`}></div>
         <ul
           id={id}
-          aria-label='options'
-          role='listbox'
+          aria-label="options"
+          role="listbox"
           aria-multiselectable={multiple ? 'true' : 'false'}
           aria-expanded={isOpen}
           aria-labelledby={`${id}-instructions`}
-          className={`${styles.options} options ${isOpen ? `${styles.show} show` : ''}`}
+          className={`${styles.options} options ${
+            isOpen ? `${styles.show} show` : ''
+          }`}
         >
           {options?.map((option, index) => (
             <li
-              role='option'
+              role="option"
               aria-selected={isOptionSelected(option) ? 'true' : 'false'}
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation()
                 e.preventDefault() //to stop from occasionally running selectOption(option) twice, immediately unselecting the option
                 selectOption(option)
@@ -326,10 +336,14 @@ export function Select({
               key={option.value}
               className={`${styles.option} option ${
                 isOptionSelected(option) ? `${styles.selected} selected` : ''
-              } ${index === highlightedIndex ? `${styles.highlighted} highlighted` : ''}`}
+              } ${
+                index === highlightedIndex
+                  ? `${styles.highlighted} highlighted`
+                  : ''
+              }`}
               // id={`${id}-${(option.label).replace(/\s+/g, '-').toLowerCase().replace(/[^a-zA-Z]/g, '')}-${index}`}
               id={`${id}-${index}-${sanitize(option.value.toString())}`}
-              onKeyDown={(e) => {
+              onKeyDown={e => {
                 if (e.code === 'Enter' || e.code === ' ') {
                   e.preventDefault()
                   selectOption(option)
@@ -351,7 +365,7 @@ export function Select({
                         .replace(/[^a-zA-Z]/g, '')
                     : ''
                 }`}
-                type='checkbox'
+                type="checkbox"
                 className={`${styles.scr} scr`}
                 value={option?.label}
                 name={`${id}-${

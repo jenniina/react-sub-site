@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState } from 'react'
+import React, { FC, useContext, useEffect, useState } from 'react'
 import styles from '../store.module.css'
 import cartService from '../../../services/cart'
 import { ICart, IInfo } from '../../../types/store'
@@ -7,18 +7,28 @@ import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { notify } from '../../../reducers/notificationReducer'
 import { useTheme } from '../../../hooks/useTheme'
 import { paid, status } from '../../../types/store'
-import { LanguageContext } from '../../../contexts/LanguageContext'
+import { useLanguageContext } from '../../../contexts/LanguageContext'
+import { useIsClient, useWindow } from '../../../hooks/useSSR'
 
 interface Props {
   language: ELanguages
   paidStatus: { [key in paid]: string }
   itemStatus: (status: status) => string
-  splitToLines: (details: string) => JSX.Element[]
+  splitToLines: (details: string) => React.JSX.Element[]
   info: (key: keyof IInfo) => string
 }
 
-const Order: FC<Props> = ({ language, paidStatus, itemStatus, splitToLines, info }) => {
-  const { t } = useContext(LanguageContext)!
+const Order: FC<Props> = ({
+  language,
+  paidStatus,
+  itemStatus,
+  splitToLines,
+  info,
+}) => {
+  const isClient = useIsClient()
+  const windowObj = useWindow()
+
+  const { t } = useLanguageContext()
 
   const dispatch = useAppDispatch()
   const lightTheme = useTheme()
@@ -48,35 +58,38 @@ const Order: FC<Props> = ({ language, paidStatus, itemStatus, splitToLines, info
 
   // if the address has ?orderID=123456-AB, fetch the order
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search)
+    if (!isClient || !windowObj) return
+    const urlParams = new URLSearchParams(windowObj.location.search)
     const ID = urlParams.get('orderID')
     if (ID) {
       setOrderID(ID as ICart['orderID'])
       fetchOrder(ID)
     }
-  }, [])
+  }, [isClient])
 
   return (
-    <div className={`${styles['order-wrap']} ${lightTheme ? styles.light : ''}`}>
+    <div
+      className={`${styles['order-wrap']} ${lightTheme ? styles.light : ''}`}
+    >
       <form
-        onSubmit={(e) => {
+        onSubmit={e => {
           e.preventDefault()
           fetchOrder()
         }}
       >
-        <div className='input-wrap'>
+        <div className="input-wrap">
           <label>
             <input
-              type='text'
+              type="text"
               required
-              name='orderID'
+              name="orderID"
               value={orderID}
-              onChange={(e) => setOrderID(e.target.value as ICart['orderID'])}
+              onChange={e => setOrderID(e.target.value as ICart['orderID'])}
             />
-            <span className='label'>{t('OrderID')}</span>
+            <span className="label">{t('OrderID')}</span>
           </label>
         </div>
-        <button type='submit' disabled={sending}>
+        <button type="submit" disabled={sending}>
           {t('Submit')}
         </button>
       </form>
@@ -84,7 +97,7 @@ const Order: FC<Props> = ({ language, paidStatus, itemStatus, splitToLines, info
         <div>
           <h2>{order.orderID}</h2>
           <div className={styles['order-items']}>
-            {order.items?.map((item) => {
+            {order.items?.map(item => {
               return (
                 <div key={item.id} className={styles['order-item']}>
                   <h3>
@@ -104,14 +117,17 @@ const Order: FC<Props> = ({ language, paidStatus, itemStatus, splitToLines, info
                         ' €'}
                   </p>
                   <p>
-                    <strong>{t('Info')}:</strong> <br /> {splitToLines(item.details)}
+                    <strong>{t('Info')}:</strong> <br />{' '}
+                    {splitToLines(item.details)}
                   </p>
                   <p>
-                    <strong>{t('Status')}:</strong> {itemStatus(item.status)}{' '}
+                    <strong>{t('Status')}:</strong>{' '}
+                    {itemStatus(item.status)}{' '}
                   </p>
                   {item.id === 'misc-quote' ? null : (
                     <p key={item.id}>
-                      <strong>{t('PaymentState')}:</strong> {paidStatus[item.paid]}
+                      <strong>{t('PaymentState')}:</strong>{' '}
+                      {paidStatus[item.paid]}
                     </p>
                   )}
                 </div>
@@ -122,11 +138,12 @@ const Order: FC<Props> = ({ language, paidStatus, itemStatus, splitToLines, info
             <table className={`${styles['info-table']}`}>
               <caption>{t('Info')}</caption>
               <tbody>
-                {Object.keys(order.info).map((key) => {
+                {Object.keys(order.info).map(key => {
                   if (key === '_id') return null
                   return (
                     order.info[key as keyof typeof order.info] !== null &&
-                    order.info[key as keyof typeof order.info]?.trim() !== '' && (
+                    order.info[key as keyof typeof order.info]?.trim() !==
+                      '' && (
                       <tr key={key}>
                         <th>{info(key as keyof IInfo)}:</th>
                         <td>{order.info[key as keyof typeof order.info]}</td>
@@ -149,11 +166,11 @@ const Order: FC<Props> = ({ language, paidStatus, itemStatus, splitToLines, info
               {t('PaymentState')}:{' '}
               {
                 paidStatus[
-                  order.items.every((item) => item.paid === 'full')
+                  order.items.every(item => item.paid === 'full')
                     ? 'full'
-                    : order.items.every((item) => item.paid === 'none')
-                    ? 'none'
-                    : 'partial'
+                    : order.items.every(item => item.paid === 'none')
+                      ? 'none'
+                      : 'partial'
                 ]
               }
             </p>

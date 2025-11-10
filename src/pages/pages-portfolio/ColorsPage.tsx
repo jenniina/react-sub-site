@@ -1,15 +1,8 @@
-import { lazy, Suspense, useContext } from "react";
-import Accordion from "../../components/Accordion/Accordion";
-import { ELanguages } from "../../types";
-import { LanguageContext } from "../../contexts/LanguageContext";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
-
-import styles from "../css//portfolio.module.css";
-
-const AccessibleColors = lazy(
-  () => import("../../components/AccessibleColors/AccessibleColors")
-);
+import Accordion from '../../components/Accordion/Accordion'
+import { ELanguages } from '../../types'
+import { useLanguageContext } from '../../contexts/LanguageContext'
+import AccessibleColors from '../../components/AccessibleColors/AccessibleColors'
+import styles from '../css//portfolio.module.css'
 
 const ColorsPage = ({
   heading,
@@ -17,16 +10,20 @@ const ColorsPage = ({
   type,
   language,
 }: {
-  heading: string;
-  text: string;
-  type: string;
-  language: ELanguages;
+  heading: string
+  text: string
+  type: string
+  language: ELanguages
 }) => {
-  const { t } = useContext(LanguageContext)!;
+  const { t } = useLanguageContext()
 
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/*  <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>
           {t("ColorAccessibility")} | {t("WCAGTool")}
         </title>
@@ -55,89 +52,81 @@ const ColorsPage = ({
           content={`https://react.jenniina.fi/portfolio/colors`}
         />
         <meta property="og:type" content="website" />
-      </Helmet>
-      <div id={`${styles["color-page"]}`} className={`colors ${type}`}>
+      </Helmet> */}
+      <div id={`${styles['color-page']}`} className={`colors ${type}`}>
         <div className="inner-wrap">
           <section>
-            {" "}
-            <div className={styles["btn-wrap"]}>
+            {' '}
+            <div className={styles['btn-wrap']}>
               <button
-                className={`gray small ${styles["column"]} ${styles["flat-top"]}`}
+                className={`gray small ${styles['column']} ${styles['flat-top']}`}
                 type="button"
                 //scroll to #colorpicker
                 onClick={() => {
-                  const element = document.getElementById("colorpicker");
-                  element?.focus();
-                  element?.scrollIntoView({ behavior: "smooth" });
+                  const element = document?.getElementById('colorpicker')
+                  element?.focus()
+                  element?.scrollIntoView({ behavior: 'smooth' })
                 }}
               >
-                {t("SkipToMainContent")}
+                {t('SkipToMainContent')}
                 <span
-                  className={`${styles["rotate90"]} ${styles["skip-arrow"]}`}
+                  className={`${styles['rotate90']} ${styles['skip-arrow']}`}
                 >
                   &raquo;
                 </span>
               </button>
             </div>
             <Accordion
-              text={t("ClickHereToSeeFeatures")}
+              text={t('ClickHereToSeeFeatures')}
               className="gray"
               wrapperClass=""
               language={language}
             >
               <ul className="ul medium">
-                <li>{t("TestColorCombinations")}</li>
+                <li>{t('TestColorCombinations')}</li>
                 <li>
-                  {t("TheRoundIndicatorHollowIndicatorAndSmallHollowSquare")}
+                  {t('TheRoundIndicatorHollowIndicatorAndSmallHollowSquare')}
                 </li>
-                <li>{t("ColorsCanBeReorderedByDragging")}</li>
-                <li>{t("RandomColorGeneration")}</li>
-                <li>{t("HintOrganizingColors")}</li>
-                <li>{t("NeedAFreshSetOfColors")}</li>
+                <li>{t('ColorsCanBeReorderedByDragging')}</li>
+                <li>{t('RandomColorGeneration')}</li>
+                <li>{t('HintOrganizingColors')}</li>
+                <li>{t('NeedAFreshSetOfColors')}</li>
                 <li>
-                  {t("ColorModes")}: {t("Analogous")} / {t("Complementary")} /{" "}
-                  {t("Monochromatic")} / {t("Triad")} / {t("Tetrad")}
+                  {t('ColorModes')}: {t('Analogous')} / {t('Complementary')} /{' '}
+                  {t('Monochromatic')} / {t('Triad')} / {t('Tetrad')}
                 </li>
                 <li>
-                  {t("Contains")}
+                  {t('Contains')}
                   <ul>
-                    <li>{t("ColorPicker")}</li>
-                    <li>{t("SelectColorFormat")}</li>
-                    <li>{t("DragAndDrop")}</li>
-                    <li>{t("ToggleColorNameVisibility")}</li>
-                    <li>{t("ToggleControlVisibility")}</li>
-                    <li>{t("EditSize")}</li>
+                    <li>{t('ColorPicker')}</li>
+                    <li>{t('SelectColorFormat')}</li>
+                    <li>{t('DragAndDrop')}</li>
+                    <li>{t('ToggleColorNameVisibility')}</li>
+                    <li>{t('ToggleControlVisibility')}</li>
+                    <li>{t('EditSize')}</li>
                     <li>
-                      {t("SaveAsSVG")} ({t("WithOrWithoutColorName")})
+                      {t('SaveAsSVG')} ({t('WithOrWithoutColorName')})
                     </li>
                     <li>
-                      {t("SaveAsPNG")} ({t("WithOrWithoutColorName")})
+                      {t('SaveAsPNG')} ({t('WithOrWithoutColorName')})
                     </li>
-                    <li>{t("Remove")}</li>
-                    <li>{t("Reset")}</li>
-                    <li>{t("Clear")}</li>
+                    <li>{t('Remove')}</li>
+                    <li>{t('Reset')}</li>
+                    <li>{t('Clear')}</li>
                     <li>
-                      {t("LightMode")}/{t("DarkMode")}
+                      {t('LightMode')}/{t('DarkMode')}
                     </li>
-                    <li>{t("GenerateColors")}</li>
+                    <li>{t('GenerateColors')}</li>
                   </ul>
                 </li>
               </ul>
             </Accordion>
-            <Suspense
-              fallback={
-                <div className="flex center margin0auto textcenter">
-                  {t("Loading")}...
-                </div>
-              }
-            >
-              <AccessibleColors language={language} />
-            </Suspense>
+            <AccessibleColors language={language} />
           </section>
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default ColorsPage;
+export default ColorsPage

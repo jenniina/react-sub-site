@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState } from 'react'
+import React, { FC, useContext, useEffect, useState } from 'react'
 import { ELanguages } from '../../../types'
 import { VideoHit } from '../services/images'
 import useTooltip from '../../../hooks/useTooltip'
@@ -9,7 +9,7 @@ import { getPoem, PoemItem } from '../../Poems/services/poems'
 import { TTextType } from '../Images'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { notify } from '../../../reducers/notificationReducer'
-import { LanguageContext } from '../../../contexts/LanguageContext'
+import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 interface ModalVideoProps {
   video: VideoHit
@@ -26,7 +26,7 @@ const VideoModal: FC<ModalVideoProps> = ({
   textType,
   handleDownload,
 }) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const dispatch = useAppDispatch()
 
@@ -118,7 +118,7 @@ const VideoModal: FC<ModalVideoProps> = ({
           }}
           onClick={handleDownload}
           tabIndex={0}
-          onKeyDown={(e) => {
+          onKeyDown={e => {
             if (e.key === 'Enter' || e.key === ' ') {
               handleDownload()
             }

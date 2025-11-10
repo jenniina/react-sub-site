@@ -5,14 +5,14 @@ import styles from './poems.module.css'
 import useLocalStorage from '../../hooks/useStorage'
 import { getPoem, PoemItem } from './services/poems'
 import Poem from './Poem'
-import { LanguageContext } from '../../contexts/LanguageContext'
+import { useLanguageContext } from '../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
 }
 
 const Poems: FC<Props> = ({ language }) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const [poem, setPoem] = useLocalStorage<PoemItem>('Stored-Poem', {
     title: '',
@@ -33,19 +33,19 @@ const Poems: FC<Props> = ({ language }) => {
       <div>
         <Accordion
           language={language}
-          id='search-poem'
-          className='poem-accordion'
+          id="search-poem"
+          className="poem-accordion"
           wrapperClass={styles.accordion}
           text={t('SearchForPoem')}
           closeClass={styles['closed-accordion']}
         >
           <>
             <h2>{t('SearchForPoem')}</h2>
-            <p className='textcenter'>
+            <p className="textcenter">
               ({t('Note')} {t('InEnglish')})
             </p>
             <form onSubmit={fetchPoem}>
-              <button className={styles['accordion-submit']} type='submit'>
+              <button className={styles['accordion-submit']} type="submit">
                 {t('Search')}
               </button>
             </form>

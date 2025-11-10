@@ -1,13 +1,9 @@
-import { lazy, Suspense, useContext } from "react";
-import styles from "../../components/Todo/css/todo.module.css";
-import { ELanguages } from "../../types";
-import Accordion from "../../components/Accordion/Accordion";
-import { useTheme } from "../../hooks/useTheme";
-import { LanguageContext } from "../../contexts/LanguageContext";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
-
-const TodoApp = lazy(() => import("../../components/Todo/TodoApp"));
+import styles from '../../components/Todo/css/todo.module.css'
+import { ELanguages } from '../../types'
+import Accordion from '../../components/Accordion/Accordion'
+import { useTheme } from '../../hooks/useTheme'
+import { useLanguageContext } from '../../contexts/LanguageContext'
+import TodoApp from '../../components/Todo/TodoApp'
 
 export default function TodoPage({
   heading,
@@ -15,17 +11,21 @@ export default function TodoPage({
   type,
   language,
 }: {
-  heading: string;
-  text: string;
-  type: string;
-  language: ELanguages;
+  heading: string
+  text: string
+  type: string
+  language: ELanguages
 }) {
-  const { t } = useContext(LanguageContext)!;
+  const { t } = useLanguageContext()
 
-  const lightMode = useTheme();
+  const lightMode = useTheme()
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/*  <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>
           {t("TodoApp")} | {t("GetOrganizedOneTaskAtATime")}
         </title>
@@ -44,36 +44,36 @@ export default function TodoPage({
           content={`https://react.jenniina.fi/portfolio/todo`}
         />
         <meta property="og:type" content="website" />
-      </Helmet>
-      <div className={`todo ${type} ${lightMode ? styles.light : ""}`}>
+      </Helmet> */}
+      <div className={`todo ${type} ${lightMode ? styles.light : ''}`}>
         <div className="inner-wrap">
           <section className="card">
             <div>
               <div className="medium flex column gap">
                 <Accordion
                   language={language}
-                  text={t("ClickHereToSeeFeatures")}
+                  text={t('ClickHereToSeeFeatures')}
                   className="features"
                   wrapperClass="features-wrap"
                 >
                   <>
-                    <h2>{t("Features")}</h2>
+                    <h2>{t('Features')}</h2>
                     <ul className="ul">
-                      <li>{t("KeyboardAccessible")}</li>
+                      <li>{t('KeyboardAccessible')}</li>
                       <li>
                         {t(
-                          "RemoveTaskEitherIndividuallyOrClearAllCompletedTasksAtOnce"
+                          'RemoveTaskEitherIndividuallyOrClearAllCompletedTasksAtOnce'
                         )}
                       </li>
-                      <li>{t("TasksCanBeEdited")}</li>
-                      <li>{t("TasksCanBeReorganizedByDraggingAndDropping")}</li>
-                      <li>{t("ShowsHowManyTasksAreLeftToDo")}</li>
-                      <li>{t("StoresTasksInMongoDBIfTheUserIsLoggedIn")}</li>
+                      <li>{t('TasksCanBeEdited')}</li>
+                      <li>{t('TasksCanBeReorganizedByDraggingAndDropping')}</li>
+                      <li>{t('ShowsHowManyTasksAreLeftToDo')}</li>
+                      <li>{t('StoresTasksInMongoDBIfTheUserIsLoggedIn')}</li>
                     </ul>
-                    <h3>{t("KeyboardUse")}</h3>
+                    <h3>{t('KeyboardUse')}</h3>
                     <ul className="ul">
-                      <li>{t("AddTasksByTabbingToTheInputFieldAnd")}</li>
-                      <li>{t("RemoveATaskByTabbingToTheRemoveButtonAnd")}</li>
+                      <li>{t('AddTasksByTabbingToTheInputFieldAnd')}</li>
+                      <li>{t('RemoveATaskByTabbingToTheRemoveButtonAnd')}</li>
                     </ul>
                   </>
                 </Accordion>
@@ -86,21 +86,13 @@ export default function TodoPage({
           <section className="card">
             <div>
               <div className="flex column gap">
-                <h2>{t("TodoApp")}</h2>
-                <Suspense
-                  fallback={
-                    <div className="flex center margin0auto textcenter">
-                      {t("Loading")}...
-                    </div>
-                  }
-                >
-                  <TodoApp language={language} />
-                </Suspense>
+                <h2>{t('TodoApp')}</h2>
+                <TodoApp language={language} />
               </div>
             </div>
           </section>
         </div>
       </div>
     </>
-  );
+  )
 }

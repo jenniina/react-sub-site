@@ -1,27 +1,28 @@
-import { useContext, useState } from "react";
-import Accordion from "../../components/Accordion/Accordion";
-import { ELanguages } from "../../types";
-import { LanguageContext } from "../../contexts/LanguageContext";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
-
+import { useContext, useState } from 'react'
+import Accordion from '../../components/Accordion/Accordion'
+import { ELanguages } from '../../types'
+import { useLanguageContext } from '../../contexts/LanguageContext'
 export default function GraphQLPage({
   heading,
   text,
   type,
   language,
 }: {
-  heading: string;
-  text: string;
-  type: string;
-  language: ELanguages;
+  heading: string
+  text: string
+  type: string
+  language: ELanguages
 }) {
-  const { t } = useContext(LanguageContext)!;
+  const { t } = useLanguageContext()
 
-  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false)
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/*  <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>{t("GraphQLSite")}</title>
         <meta name="description" content={t("GraphQLSite")} />
         <link
@@ -38,7 +39,7 @@ export default function GraphQLPage({
           content={`https://react.jenniina.fi/portfolio/graphql`}
         />
         <meta property="og:type" content="website" />
-      </Helmet>
+      </Helmet> */}
       <div className={`graphql ${type}`}>
         <div className="inner-wrap">
           <section className="card">
@@ -46,22 +47,22 @@ export default function GraphQLPage({
               <div className="medium">
                 <Accordion
                   language={language}
-                  text={t("Features")}
+                  text={t('Features')}
                   className="graphQL-features"
                   wrapperClass="graphQL-features-wrap"
                   setIsFormOpen={setIsFormOpen}
                 >
-                  <h2>{t("Features")}</h2>
+                  <h2>{t('Features')}</h2>
                   <p>
-                    {t("TheWebServiceIsHostedAtRenderCom")}{" "}
+                    {t('TheWebServiceIsHostedAtRenderCom')}{' '}
                     <a href="https://www.mongodb.com/atlas/database">
-                      {t("MongoDBAtlasDatabase")}
+                      {t('MongoDBAtlasDatabase')}
                     </a>
                     .
                   </p>
                   <ul className="ul">
                     <li>
-                      {t("Dependencies")}: React
+                      {t('Dependencies')}: React
                       <ul>
                         <li>
                           <a href="https://www.apollographql.com/docs/react/get-started/">
@@ -140,7 +141,7 @@ export default function GraphQLPage({
                       </ul>
                     </li>
                     <li>
-                      {t("Dependencies")}: Node.js
+                      {t('Dependencies')}: Node.js
                       <ul>
                         <li>
                           <a href="https://graphql.org/">GraphQL</a>
@@ -259,19 +260,19 @@ export default function GraphQLPage({
                   style={
                     isFormOpen
                       ? {
-                          paddingLeft: "0.5rem",
-                          fontSize: "130%",
-                          marginTop: "1rem",
+                          paddingLeft: '0.5rem',
+                          fontSize: '130%',
+                          marginTop: '1rem',
                         }
-                      : { fontSize: "130%", marginTop: "2rem" }
+                      : { fontSize: '130%', marginTop: '2rem' }
                   }
                 >
                   <p>
                     <a href="https://jenniina-books-list-app.onrender.com/">
-                      {t("BookApp")}{" "}
-                      <span style={{ fontSize: "75%" }}>
-                        ({t("SiteMayBeSlow")})
-                      </span>{" "}
+                      {t('BookApp')}{' '}
+                      <span style={{ fontSize: '75%' }}>
+                        ({t('SiteMayBeSlow')})
+                      </span>{' '}
                       &raquo;
                     </a>
                   </p>
@@ -287,5 +288,5 @@ export default function GraphQLPage({
         </div>
       </div>
     </>
-  );
+  )
 }

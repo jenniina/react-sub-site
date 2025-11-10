@@ -1,6 +1,6 @@
-import { FC, useContext } from 'react'
+import React, { FC, useContext } from 'react'
 import { ELanguages } from '../../../types'
-import { LanguageContext } from '../../../contexts/LanguageContext'
+import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 interface SlidersProps {
   language: ELanguages
@@ -47,34 +47,34 @@ const Sliders: FC<SlidersProps> = ({
   defaultHue,
   sliderHueReset,
 }) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   return (
     <>
-      <div id={`drag-slider-wrap${d}`} className='drag-slider-wrap'>
-        <div className='drag-slider-single'>
+      <div id={`drag-slider-wrap${d}`} className="drag-slider-wrap">
+        <div className="drag-slider-single">
           <label htmlFor={`drag-slider-hue${d}`} id={`huedescription${d}`}>
             {t('AdjustBackgroundHue')}
           </label>
           <input
             ref={sliderHueInput}
-            onChange={(e) => {
+            onChange={e => {
               setSliderHueVal(e.target.value)
               sliderHue()
             }}
-            onMouseUp={(e) => {
+            onMouseUp={e => {
               setSliderHueVal((e.target as HTMLInputElement).value)
               sliderHue()
             }}
-            onPointerUp={(e) => {
+            onPointerUp={e => {
               setSliderHueVal((e.target as HTMLInputElement).value)
               sliderHue()
             }}
-            type='range'
+            type="range"
             min={0}
             max={359}
             value={sliderHueVal}
-            className='drag-slider drag-slider-hue'
+            className="drag-slider drag-slider-hue"
             id={`drag-slider-hue${d}`}
           />
           <span>{sliderHueVal}</span>
@@ -87,29 +87,32 @@ const Sliders: FC<SlidersProps> = ({
             {t('ResetHue')}
           </button>
         </div>
-        <div className='drag-slider-single'>
-          <label htmlFor={`drag-slider-saturation${d}`} id={`saturationdescription${d}`}>
+        <div className="drag-slider-single">
+          <label
+            htmlFor={`drag-slider-saturation${d}`}
+            id={`saturationdescription${d}`}
+          >
             {t('AdjustBackgroundSaturation')}
           </label>
           <input
             ref={sliderSaturationInput}
-            onChange={(e) => {
+            onChange={e => {
               setSliderSatVal(e.target.value)
               sliderSaturation()
             }}
-            onMouseUp={(e) => {
+            onMouseUp={e => {
               setSliderSatVal((e.target as HTMLInputElement).value)
               sliderSaturation()
             }}
-            onPointerUp={(e) => {
+            onPointerUp={e => {
               setSliderSatVal((e.target as HTMLInputElement).value)
               sliderSaturation()
             }}
-            type='range'
+            type="range"
             min={0}
             max={100}
             value={sliderSatVal}
-            className='drag-slider drag-slider-saturation'
+            className="drag-slider drag-slider-saturation"
             id={`drag-slider-saturation${d}`}
           />
           <span>{sliderSatVal}</span>
@@ -123,29 +126,32 @@ const Sliders: FC<SlidersProps> = ({
             {t('ResetSaturation')}
           </button>
         </div>
-        <div className='drag-slider-single'>
-          <label htmlFor={`drag-slider-lightness${d}`} id={`lightnessdescription${d}`}>
+        <div className="drag-slider-single">
+          <label
+            htmlFor={`drag-slider-lightness${d}`}
+            id={`lightnessdescription${d}`}
+          >
             {t('AdjustBackgroundLightness')}
           </label>
           <input
             ref={sliderLightnessInput}
-            onChange={(e) => {
+            onChange={e => {
               setSliderLightVal(e.target.value)
               sliderLightness()
             }}
-            onMouseUp={(e) => {
+            onMouseUp={e => {
               setSliderLightVal((e.target as HTMLInputElement).value)
               sliderLightness()
             }}
-            onPointerUp={(e) => {
+            onPointerUp={e => {
               setSliderLightVal((e.target as HTMLInputElement).value)
               sliderLightness()
             }}
-            type='range'
+            type="range"
             min={0}
             max={100}
             value={sliderLightVal}
-            className='drag-slider drag-slider-lightness'
+            className="drag-slider drag-slider-lightness"
             id={`drag-slider-lightness${d}`}
           />
           <span>{sliderLightVal}</span>

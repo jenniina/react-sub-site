@@ -30,7 +30,8 @@ svg.filter {
 }
 .drag-container {
   position: relative;
-  margin: 0 calc(var(--padd) * -1) 0 calc(calc(var(--padd) + var(--page-padding)) * -1);
+  margin: 0 calc(var(--padd) * -1) 0
+    calc(calc(var(--padd) + var(--page-padding)) * -1);
   min-width: calc(100% + calc(var(--padd) + var(--page-padding)) * 2);
 }
 .drag-container #drag-wrap-outer0 {
@@ -80,7 +81,9 @@ svg.filter {
   min-width: 70px;
 }
 .drag-container .colorblock {
-  --box: -4px 4px 20px 0 hsla(0, 0%, 0%, 0.2), -2px 2px 10px -6px hsla(0, 0%, 0%, 0.8),
+  --box:
+    -4px 4px 20px 0 hsla(0, 0%, 0%, 0.2),
+    -2px 2px 10px -6px hsla(0, 0%, 0%, 0.8),
     -2px 2px 4px -4px hsla(0, 0%, 0%, 0.8);
   -webkit-box-shadow: var(--box);
   -o-box-shadow: var(--box);
@@ -169,7 +172,8 @@ svg.filter {
 .drag-container .make-more {
   z-index: 1;
   padding: 0.1rem 0.4rem 0.2rem;
-  --box: inset -0.1rem -0.1rem 0.4rem -0.2rem rgba(0, 0, 0, 0.4),
+  --box:
+    inset -0.1rem -0.1rem 0.4rem -0.2rem rgba(0, 0, 0, 0.4),
     inset -0.1rem -0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: var(--box);
   -o-box-shadow: var(--box);
@@ -345,8 +349,8 @@ svg.filter {
 }
 
 .drag-slider::-webkit-slider-runnable-track {
-  --box: inset 0 calc(var(--size) / 16) calc(var(--size) / 2) calc(var(--size) / 6 * -1)
-    black;
+  --box: inset 0 calc(var(--size) / 16) calc(var(--size) / 2)
+    calc(var(--size) / 6 * -1) black;
   width: 100%;
   background-color: white;
   border-radius: calc(var(--size));
@@ -600,25 +604,45 @@ svg.filter {
   pointer-events: all;
 }
 .drag-container .dragzone.delete .draggable-overlay {
-  cursor: url('cursor-delete.svg') 16 16, url('cursor-delete.png') 16 16, pointer;
+  cursor:
+    url('cursor-delete.svg') 16 16,
+    url('cursor-delete.png') 16 16,
+    pointer;
 }
 .drag-container .dragzone.clone .draggable-overlay {
-  cursor: url('cursor-clone.svg') 16 16, url('cursor-clone.png') 16 16, copy;
+  cursor:
+    url('cursor-clone.svg') 16 16,
+    url('cursor-clone.png') 16 16,
+    copy;
 }
 .drag-container .dragzone.scale-up .draggable-overlay {
-  cursor: url('cursor-scale-up.svg') 16 16, url('cursor-scale-up.png') 16 16, ne-resize;
+  cursor:
+    url('cursor-scale-up.svg') 16 16,
+    url('cursor-scale-up.png') 16 16,
+    ne-resize;
 }
 .drag-container .dragzone.scale-down .draggable-overlay {
-  cursor: url('cursor-scale-down.svg') 16 16, url('cursor-scale-down.png') 16 16, s-resize;
+  cursor:
+    url('cursor-scale-down.svg') 16 16,
+    url('cursor-scale-down.png') 16 16,
+    s-resize;
 }
 .drag-container .dragzone.layer-up .draggable-overlay {
-  cursor: url('cursor-layer-up.svg') 16 16, url('cursor-layer-up.png') 16 16, pointer;
+  cursor:
+    url('cursor-layer-up.svg') 16 16,
+    url('cursor-layer-up.png') 16 16,
+    pointer;
 }
 .drag-container .dragzone.layer-down .draggable-overlay {
-  cursor: url('cursor-layer-down.svg') 16 16, url('cursor-layer-down.png') 16 16, pointer;
+  cursor:
+    url('cursor-layer-down.svg') 16 16,
+    url('cursor-layer-down.png') 16 16,
+    pointer;
 }
 .drag-container .dragzone.change-color .draggable-overlay {
-  cursor: url('cursor-change-color.svg') 16 16, url('cursor-change-color.png') 16 16,
+  cursor:
+    url('cursor-change-color.svg') 16 16,
+    url('cursor-change-color.png') 16 16,
     pointer;
 }
 /* .drag-container .dragzone.delete .draggable-overlay {
@@ -711,7 +735,8 @@ body.dark-mode .site .drag-container .dragzone:focus {
   position: relative;
 }
 .drag-container .make-smaller {
-  --box: -0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.4),
+  --box:
+    -0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.4),
     inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
     inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
   top: 0.2rem;
@@ -732,7 +757,8 @@ body.dark-mode .site .drag-container .dragzone:focus {
 }
 .drag-container .make-larger,
 .drag-container .layer-increase {
-  --box: -0.2rem -0.2rem 0.5rem rgba(0, 0, 0, 0.4),
+  --box:
+    -0.2rem -0.2rem 0.5rem rgba(0, 0, 0, 0.4),
     inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
     inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: var(--box);
@@ -1053,7 +1079,8 @@ body.dark-mode .site .drag-container .dragzone:focus {
 }
 .drag-container .delete-blob,
 .drag-container .layer-decrease {
-  --box: 0.2rem -0.2rem 0.5rem rgba(0, 0, 0, 0.4),
+  --box:
+    0.2rem -0.2rem 0.5rem rgba(0, 0, 0, 0.4),
     inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4),
     inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: var(--box);

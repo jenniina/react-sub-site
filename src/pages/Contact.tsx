@@ -1,10 +1,7 @@
-import { lazy, Suspense, useContext } from "react";
-import { ELanguages } from "../types";
-import { LanguageContext } from "../contexts/LanguageContext";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
-
-const FormMulti = lazy(() => import("../components/FormMulti/FormMulti"));
+import { useContext } from 'react'
+import { ELanguages } from '../types'
+import { useLanguageContext } from '../contexts/LanguageContext'
+import FormMulti from '../components/FormMulti/FormMulti'
 
 export default function Contact({
   heading,
@@ -12,16 +9,20 @@ export default function Contact({
   type,
   language,
 }: {
-  heading: string;
-  text: string;
-  type: string;
-  language: ELanguages;
+  heading: string
+  text: string
+  type: string
+  language: ELanguages
 }) {
-  const { t } = useContext(LanguageContext)!;
+  const { t } = useLanguageContext()
 
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/* <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>{t("ContactForm")} | react.jenniina.fi</title>
         <meta name="description" content={t("ContactForm")} />
         <link rel="canonical" href={`https://react.jenniina.fi/contact`} />
@@ -32,27 +33,19 @@ export default function Contact({
         <meta property="og:description" content={t("ContactForm")} />
         <meta property="og:url" content={`https://react.jenniina.fi/contact`} />
         <meta property="og:type" content="website" />
-      </Helmet>
+      </Helmet> **/}
       <div className={`contact ${type}`}>
         <div className="inner-wrap">
           <section
             className="card"
-            style={{ position: "relative", zIndex: "2" }}
+            style={{ position: 'relative', zIndex: '2' }}
           >
             <div>
-              <Suspense
-                fallback={
-                  <div className="flex center margin0auto textcenter">
-                    {t("Loading")}...
-                  </div>
-                }
-              >
-                <FormMulti language={language} />
-              </Suspense>
+              <FormMulti language={language} />
             </div>
           </section>
         </div>
       </div>
     </>
-  );
+  )
 }

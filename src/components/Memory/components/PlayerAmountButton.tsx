@@ -1,7 +1,7 @@
 import { FC, useContext } from 'react'
 import styles from '../memory.module.css'
 import { ELanguages } from '../../../types'
-import { LanguageContext } from '../../../contexts/LanguageContext'
+import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 interface PlayerAmountButtonProps {
   language: ELanguages
@@ -16,7 +16,7 @@ const PlayerAmountButton: FC<PlayerAmountButtonProps> = ({
   isActive,
   onClick,
 }) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   return (
     <button
@@ -27,7 +27,7 @@ const PlayerAmountButton: FC<PlayerAmountButtonProps> = ({
       onClick={onClick}
     >
       <span>{value}</span>
-      <span className='tooltip above narrow2'>
+      <span className="tooltip above narrow2">
         {Number(value) > 1 ? t('Duet') : t('Solo')}
       </span>
     </button>

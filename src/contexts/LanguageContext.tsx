@@ -1,6 +1,18 @@
-import { createContext, FC, ReactNode } from 'react'
+import {
+  createContext,
+  FC,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 import useLocalStorage from '../hooks/useStorage'
-import { ELanguages, TranslationKey, TranslationLang, translations } from '../types'
+import {
+  ELanguages,
+  TranslationKey,
+  TranslationLang,
+  translations,
+} from '../types'
 
 interface LanguageContextProps {
   language: ELanguages
@@ -8,33 +20,51 @@ interface LanguageContextProps {
   t: (key: TranslationKey) => string
 }
 
-export const LanguageContext = createContext<LanguageContextProps | undefined>(undefined)
+export const LanguageContext = createContext<LanguageContextProps | null>(null)
 
-export const LanguageProvider: FC<{ children: ReactNode }> = ({ children }) => {
+interface LanguageProviderProps {
+  children: ReactNode
+}
 
+export function LanguageProvider({ children }: LanguageProviderProps) {
+  const [isClient, setIsClient] = useState(false)
   const [language, setLanguageRaw] = useLocalStorage<ELanguages>(
     'AppLanguage',
     ELanguages.en
   )
 
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
   // Remove only the 'lang' query param when present, keep others
   const setLanguage = (lang: ELanguages) => {
-    setLanguageRaw(lang);
-    const url = new URL(window.location.href);
-    if (url.searchParams.has('lang')) {
-      url.searchParams.delete('lang');
-      const newSearch = url.searchParams.toString();
-      const newUrl = url.pathname + (newSearch ? `?${newSearch}` : '') + url.hash;
-      window.history.replaceState({}, '', newUrl);
+    setLanguageRaw(lang)
+
+    if (isClient && typeof window !== 'undefined') {
+      try {
+        const url = new URL(window.location.href)
+        if (url.searchParams.has('lang')) {
+          url.searchParams.delete('lang')
+          const newSearch = url.searchParams.toString()
+          const newUrl =
+            url.pathname + (newSearch ? `?${newSearch}` : '') + url.hash
+          window.history.replaceState({}, '', newUrl)
+        }
+      } catch (error) {
+        console.warn('Failed to update URL:', error)
+      }
     }
-  }  
+  }
 
   const t = (key: TranslationKey) => {
     if (!translations[key]) {
       console.error(`Translation value "${key}" not found`)
       return key
     } else if (!translations[key][language as TranslationLang]) {
-      console.error(`Translation value "${key}" not found in language "${language}"`)
+      console.error(
+        `Translation value "${key}" not found in language "${language}"`
+      )
       if (translations[key]['en']) {
         return translations[key]['en']
       } else return key
@@ -49,3 +79,70 @@ export const LanguageProvider: FC<{ children: ReactNode }> = ({ children }) => {
     </LanguageContext.Provider>
   )
 }
+
+export function useLanguageContext() {
+  const context = useContext(LanguageContext)
+
+  if (context === null) {
+    // During SSR or if provider is missing, return safe defaults
+    return {
+      language: ELanguages.en,
+      setLanguage: () => {},
+      t: (key: TranslationKey) => key, // Return key as fallback
+    }
+  }
+
+  return context
+}
+
+// import { createContext, FC, ReactNode } from 'react'
+// import useLocalStorage from '../hooks/useStorage'
+// import { ELanguages, TranslationKey, TranslationLang, translations } from '../types'
+
+// interface LanguageContextProps {
+//   language: ELanguages
+//   setLanguage: (lang: ELanguages) => void
+//   t: (key: TranslationKey) => string
+// }
+
+// export const LanguageContext = createContext<LanguageContextProps | undefined>(undefined)
+
+// export const LanguageProvider: FC<{ children: ReactNode }> = ({ children }) => {
+
+//   const [language, setLanguageRaw] = useLocalStorage<ELanguages>(
+//     'AppLanguage',
+//     ELanguages.en
+//   )
+
+//   // Remove only the 'lang' query param when present, keep others
+//   const setLanguage = (lang: ELanguages) => {
+//     setLanguageRaw(lang);
+//     const url = new URL(window.location.href);
+//     if (url.searchParams.has('lang')) {
+//       url.searchParams.delete('lang');
+//       const newSearch = url.searchParams.toString();
+//       const newUrl = url.pathname + (newSearch ? `?${newSearch}` : '') + url.hash;
+//       window.history.replaceState({}, '', newUrl);
+//     }
+//   }
+
+//   const t = (key: TranslationKey) => {
+//     if (!translations[key]) {
+//       console.error(`Translation value "${key}" not found`)
+//       return key
+//     } else if (!translations[key][language as TranslationLang]) {
+//       console.error(`Translation value "${key}" not found in language "${language}"`)
+//       if (translations[key]['en']) {
+//         return translations[key]['en']
+//       } else return key
+//     } else {
+//       return translations[key][language as TranslationLang]
+//     }
+//   }
+
+//   return (
+//     <LanguageContext.Provider value={{ language, setLanguage, t }}>
+//       {children}
+//     </LanguageContext.Provider>
+//   )
+// }

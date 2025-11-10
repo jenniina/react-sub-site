@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react'
 export default function useEventListener(
   eventType: keyof WindowEventMap,
   callback: (e: Event) => void,
-  element = window
+  element?: Window | HTMLElement | MediaQueryList | null
 ) {
   const callbackRef = useRef(callback)
 
@@ -12,6 +12,8 @@ export default function useEventListener(
   }, [callback])
 
   useEffect(() => {
+    if (typeof window === 'undefined') return
+
     if (element == null) return
     const handler = (e: Event) => callbackRef.current(e)
     element.addEventListener(eventType, handler)

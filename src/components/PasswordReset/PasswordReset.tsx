@@ -4,7 +4,7 @@ import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import { forgot } from '../../reducers/usersReducer'
 import { ELanguages } from '../../types'
-import { LanguageContext } from '../../contexts/LanguageContext'
+import { useLanguageContext } from '../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
@@ -12,7 +12,7 @@ interface Props {
 }
 
 const PasswordReset = ({ language, text }: Props) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const dispatch = useAppDispatch()
 
@@ -26,11 +26,11 @@ const PasswordReset = ({ language, text }: Props) => {
 
     if (username) {
       await dispatch(forgot(username, language))
-        .then((r) => {
+        .then(r => {
           dispatch(notify(r.message || t('EmailSent'), false, 3))
           setSending(false)
         })
-        .catch((e) => {
+        .catch(e => {
           dispatch(notify(t('EmailSent'), false, 3))
           setSending(false)
           // console.error(e)
@@ -52,25 +52,25 @@ const PasswordReset = ({ language, text }: Props) => {
     <>
       <h2>{t('ForgotPassword')}</h2>
 
-      <form onSubmit={handleForgot} className='forgot'>
-        <div className='input-wrap'>
+      <form onSubmit={handleForgot} className="forgot">
+        <div className="input-wrap">
           <label>
             <input
-              name='username'
-              type='text'
+              name="username"
+              type="text"
               value={username}
               required
-              autoComplete='email'
+              autoComplete="email"
               onChange={({ target }) => setUsername(target.value.trim())}
             />
             <span>{t('Email')}: </span>
           </label>
         </div>
         <button
-          type='submit'
+          type="submit"
           disabled={sending}
           id={`forgot-${text}`}
-          className='forgot-btn restore'
+          className="forgot-btn restore"
         >
           <span>{t('SendResetLink')}</span> <RiMailSendLine />
         </button>

@@ -1,24 +1,32 @@
 import { useEffect, useState } from 'react'
+import { useIsClient, useWindow } from './useSSR'
 
 export default function useScrollDirection() {
-    const [scrollDirection, setScrollDirection] = useState("up");
+  const isClient = useIsClient()
+  const windowObj = useWindow()
 
-    useEffect(() => {
-        let lastScrollY = window.pageYOffset;
+  const [scrollDirection, setScrollDirection] = useState('up')
 
-        const updateScrollDirection = () => {
-            const scrollY = window.pageYOffset;
-            const direction = scrollY > lastScrollY ? "down" : "up";
-            if (direction !== scrollDirection && (scrollY - lastScrollY > 4 || scrollY - lastScrollY < -4)) {
-                setScrollDirection(direction);
-            }
-            lastScrollY = scrollY > 0 ? scrollY : 0;
-        };
-        window.addEventListener("scroll", updateScrollDirection);
-        return () => {
-            window.removeEventListener("scroll", updateScrollDirection);
-        }
-    }, [scrollDirection]);
+  useEffect(() => {
+    let lastScrollY = windowObj ? windowObj.pageYOffset : 0
 
-    return scrollDirection;
-};
+    const updateScrollDirection = () => {
+      const scrollY = windowObj ? windowObj.pageYOffset : 0
+      const direction = scrollY > lastScrollY ? 'down' : 'up'
+      if (
+        direction !== scrollDirection &&
+        (scrollY - lastScrollY > 4 || scrollY - lastScrollY < -4)
+      ) {
+        setScrollDirection(direction)
+      }
+      lastScrollY = scrollY > 0 ? scrollY : 0
+    }
+    if (!isClient || !windowObj) return
+    windowObj.addEventListener('scroll', updateScrollDirection)
+    return () => {
+      windowObj.removeEventListener('scroll', updateScrollDirection)
+    }
+  }, [scrollDirection, isClient])
+
+  return scrollDirection
+}

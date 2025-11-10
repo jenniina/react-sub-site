@@ -1,18 +1,15 @@
-import { lazy, Suspense, useContext } from "react";
-import { ELanguages } from "../../types";
-import "../../components/Blob/css/blob.css";
-import Accordion from "../../components/Accordion/Accordion";
-import birb from "../../assets/blob-birb.png";
-import fish from "../../assets/blob-fish.png";
-import bubbly from "../../assets/bubbly-fish.png";
-import dog from "../../assets/blob-dog.png";
-import { CSSProperties } from "react";
-import { Link } from "react-router-dom";
-import { LanguageContext } from "../../contexts/LanguageContext";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
-
-const Blobs = lazy(() => import("../../components/Blob/Blobs"));
+import { useContext } from 'react'
+import { ELanguages } from '../../types'
+import '../../components/Blob/css/blob.css'
+import Accordion from '../../components/Accordion/Accordion'
+import Blobs from '../../components/Blob/Blobs'
+import birb from '../../assets/blob-birb.png'
+import fish from '../../assets/blob-fish.png'
+import bubbly from '../../assets/bubbly-fish.png'
+import dog from '../../assets/blob-dog.png'
+import { CSSProperties } from 'react'
+import { Link } from 'react-router-dom'
+import { LanguageContext } from '../../contexts/LanguageContext'
 
 export default function BlobPage({
   heading,
@@ -20,23 +17,28 @@ export default function BlobPage({
   type,
   language,
 }: {
-  heading: string;
-  text: string;
-  type: string;
-  language: ELanguages;
+  heading: string
+  text: string
+  type: string
+  language: ELanguages
 }) {
-  const { t } = useContext(LanguageContext)!;
+  const languageContext = useContext(LanguageContext)
+  const t = languageContext?.t || ((key: string) => key)
 
   const blobStyle: CSSProperties = {
-    width: "100%",
-    height: "auto",
-    maxWidth: "100%",
-    display: "block",
-    margin: "1em auto",
-  };
+    width: '100%',
+    height: 'auto',
+    maxWidth: '100%',
+    display: 'block',
+    margin: '1em auto',
+  }
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/*  <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>
           {t("Blobs")} | {t("BlobAppSlogan")}
         </title>
@@ -55,7 +57,7 @@ export default function BlobPage({
           content={`https://react.jenniina.fi/portfolio/blob`}
         />
         <meta property="og:type" content="website" />
-      </Helmet>
+      </Helmet> */}
       <div className={`blob ${type}`}>
         <div className="inner-wrap">
           <section>
@@ -64,172 +66,172 @@ export default function BlobPage({
                 <div className="flex column gap">
                   <Accordion
                     language={language}
-                    text={t("ClickHereToSeeFeatures")}
+                    text={t('ClickHereToSeeFeatures')}
                     className="features-blobs"
                     wrapperClass="features-blobs-wrap"
                     showButton
                   >
                     <div className="medium">
-                      <h2>{t("Features")}</h2>
+                      <h2>{t('Features')}</h2>
                       <ul className="ul">
                         <li>
-                          {t("Blobs")}:
+                          {t('Blobs')}:
                           <ul>
-                            <li>{t("Draggable")}</li>
-                            <li>{t("BlurIntoOneAnother")}</li>
-                            <li>{t("ChangeableColor")}</li>
-                            <li>{t("ChangeableSize")}</li>
-                            <li>{t("Cloneable")}</li>
-                            <li>{t("Removable")}</li>
+                            <li>{t('Draggable')}</li>
+                            <li>{t('BlurIntoOneAnother')}</li>
+                            <li>{t('ChangeableColor')}</li>
+                            <li>{t('ChangeableSize')}</li>
+                            <li>{t('Cloneable')}</li>
+                            <li>{t('Removable')}</li>
                           </ul>
                         </li>
 
                         <li>
-                          {t("Layers")}:{" "}
+                          {t('Layers')}:{' '}
                           <big>
-                            <i>({t("New")}!)</i>
+                            <i>({t('New')}!)</i>
                           </big>
                           <ul>
-                            <li>{t("LayerInstructions")}</li>
+                            <li>{t('LayerInstructions')}</li>
                             <li>
                               {t(
-                                "ChangeTheLayerOfTheFocusedBlobByPressingTheNumber"
+                                'ChangeTheLayerOfTheFocusedBlobByPressingTheNumber'
                               )}
                             </li>
-                            <li>{t("DragBlobToIconsNextToLayerButtons")}</li>
+                            <li>{t('DragBlobToIconsNextToLayerButtons')}</li>
                             <li>
                               {t(
-                                "MoveEveryBlobUpOrDownOneLayerByPressingTheButtons"
+                                'MoveEveryBlobUpOrDownOneLayerByPressingTheButtons'
                               )}
                             </li>
                           </ul>
                         </li>
                         <li>
-                          {t("Saving")}:{" "}
+                          {t('Saving')}:{' '}
                           <big>
-                            <i>({t("New")}!)</i>
+                            <i>({t('New')}!)</i>
                           </big>
                           <ul>
-                            <li>{t("LoginToSaveBlobsToServer")}</li>
-                            <li>{t("ManyVersions")}</li>
-                            <li>{t("NameYourArtwork")}</li>
-                            <li>{t("RenameYourArtwork")}</li>
-                            <li>{t("EditArtwork")}</li>
+                            <li>{t('LoginToSaveBlobsToServer')}</li>
+                            <li>{t('ManyVersions')}</li>
+                            <li>{t('NameYourArtwork')}</li>
+                            <li>{t('RenameYourArtwork')}</li>
+                            <li>{t('EditArtwork')}</li>
                           </ul>
                         </li>
                         <li>
-                          {t("Screenshot")}:
+                          {t('Screenshot')}:
                           <big>
-                            <i>({t("New")}!)</i>
+                            <i>({t('New')}!)</i>
                           </big>
                           <ul>
                             <li>
-                              {t("PressTheCameraSymbolToTakeAScreenshot")}
+                              {t('PressTheCameraSymbolToTakeAScreenshot')}
                             </li>
-                            <li>{t("PlacesTheImageDownBelow")}</li>
+                            <li>{t('PlacesTheImageDownBelow')}</li>
                             <li>
-                              {t("DownloadYourArtwork")} ({t("Button")})
+                              {t('DownloadYourArtwork')} ({t('Button')})
                             </li>
                             <li>
                               {t(
-                                "YouCanChangeTheDimensionsOfTheScreenshotByResizingYourBrowserWindow"
+                                'YouCanChangeTheDimensionsOfTheScreenshotByResizingYourBrowserWindow'
                               )}
                             </li>
                           </ul>
                         </li>
 
                         <li>
-                          {t("SlidersToControlBackground")}:
+                          {t('SlidersToControlBackground')}:
                           <ul>
-                            <li>{t("Lightness")}</li>
-                            <li>{t("Saturation")}</li>
-                            <li>{t("Hue")}</li>
+                            <li>{t('Lightness')}</li>
+                            <li>{t('Saturation')}</li>
+                            <li>{t('Hue')}</li>
                           </ul>
                         </li>
 
                         <li>
-                          {t("ButtonsTo")}:
+                          {t('ButtonsTo')}:
                           <ul>
-                            <li>{t("ToggleTheSubtleMovementOfTheBlobs")}</li>
-                            <li>{t("ResetTheBlobArrayToANewConfiguration")}</li>
+                            <li>{t('ToggleTheSubtleMovementOfTheBlobs')}</li>
+                            <li>{t('ResetTheBlobArrayToANewConfiguration')}</li>
                             <li>
                               {t(
-                                "StopScrollingBehaviorToUseTheMouseWheelFreely"
+                                'StopScrollingBehaviorToUseTheMouseWheelFreely'
                               )}
                             </li>
-                            <li>{t("MoveViewInDifferentDirections")}</li>
-                            <li>{t("ToggleControlVisibility")}</li>
+                            <li>{t('MoveViewInDifferentDirections')}</li>
+                            <li>{t('ToggleControlVisibility')}</li>
                             <li>
-                              {t("MakeARandomBlobByClickingThePlusSign")}.{" "}
-                              {t("MoreColorsAvailable")}:{" "}
-                              {t("OverAThousandPossibleColorCombinations")}
+                              {t('MakeARandomBlobByClickingThePlusSign')}.{' '}
+                              {t('MoreColorsAvailable')}:{' '}
+                              {t('OverAThousandPossibleColorCombinations')}
                             </li>
                           </ul>
                         </li>
                         <li>
                           {t(
-                            "WhichBlobIsCurrentlyActiveCanBeSeenAtTheTopLeftOfTheContainer"
+                            'WhichBlobIsCurrentlyActiveCanBeSeenAtTheTopLeftOfTheContainer'
                           )}
                         </li>
                         <li>
                           {t(
-                            "OnTouchscreensTapTheBlobTwiceToShrinkItAndThriceToEnlargeIt"
+                            'OnTouchscreensTapTheBlobTwiceToShrinkItAndThriceToEnlargeIt'
                           )}
                         </li>
                       </ul>
-                      <h3>{t("Instructions")}</h3>
-                      <h4>{t("PointerUse")}</h4>
+                      <h3>{t('Instructions')}</h3>
+                      <h4>{t('PointerUse')}</h4>
                       <ul className="ul">
                         <li>
-                          {t("ChangeBlobColorByDraggingToAColorNodeOnTheSides")}
+                          {t('ChangeBlobColorByDraggingToAColorNodeOnTheSides')}
                         </li>
                         <li>
                           {t(
-                            "ChangeBlobSizeByDraggingItToEitherTheLOrSLetterOnTheRightHandSide"
+                            'ChangeBlobSizeByDraggingItToEitherTheLOrSLetterOnTheRightHandSide'
                           )}
                         </li>
                         <li>
-                          {t("ChangeBlobSizeByScrollingWithTheMouseWheel")}
+                          {t('ChangeBlobSizeByScrollingWithTheMouseWheel')}
                         </li>
                         <li>
-                          {t("CloneABlobByClickingTheTopLeftPlusSign")}.{" "}
-                          {t("RememberToDisableTheButtonWhenFinished")}
+                          {t('CloneABlobByClickingTheTopLeftPlusSign')}.{' '}
+                          {t('RememberToDisableTheButtonWhenFinished')}
                         </li>
                         <li>
-                          {t("RemoveABlobByClickingTheBottomLeftXSign")}.{" "}
-                          {t("RememberToDisableTheButtonWhenFinished")}
+                          {t('RemoveABlobByClickingTheBottomLeftXSign')}.{' '}
+                          {t('RememberToDisableTheButtonWhenFinished')}
                         </li>
-                        <li>{t("DragBlobToIconsNextToLayerButtons")}</li>
-                        <li>{t("KeysMayBeUsedWhileMouseIsPressedDown")}</li>
+                        <li>{t('DragBlobToIconsNextToLayerButtons')}</li>
+                        <li>{t('KeysMayBeUsedWhileMouseIsPressedDown')}</li>
                       </ul>
-                      <h4>{t("KeyboardUse")}</h4>
+                      <h4>{t('KeyboardUse')}</h4>
                       <ul className="ul">
                         <li>
-                          {t("TabToABlobAndWithItInFocus")}
+                          {t('TabToABlobAndWithItInFocus')}
                           <ul>
                             <li>
-                              {t("PressEnterToCycleThroughTheDifferentColors")}
+                              {t('PressEnterToCycleThroughTheDifferentColors')}
                             </li>
-                            <li>{t("MakeBlobSmallerByPressingS")}</li>
-                            <li>{t("MakeBlobLargerByPressingBL")}</li>
-                            <li>{t("CloneABlobByPressingCOr")}</li>
-                            <li>{t("MakeANewRandomBlobByPressingPlus")}</li>
-                            <li>{t("RemoveABlobByPressingDeleteOr")}</li>
+                            <li>{t('MakeBlobSmallerByPressingS')}</li>
+                            <li>{t('MakeBlobLargerByPressingBL')}</li>
+                            <li>{t('CloneABlobByPressingCOr')}</li>
+                            <li>{t('MakeANewRandomBlobByPressingPlus')}</li>
+                            <li>{t('RemoveABlobByPressingDeleteOr')}</li>
                             <li>
                               {t(
-                                "ChangeTheLayerOfTheFocusedBlobByPressingTheNumber"
+                                'ChangeTheLayerOfTheFocusedBlobByPressingTheNumber'
                               )}
                             </li>
                             <li>
                               {t(
-                                "MoveBlobToBottomByPressingZOrToTopByPressingT"
+                                'MoveBlobToBottomByPressingZOrToTopByPressingT'
                               )}
-                            </li>{" "}
+                            </li>{' '}
                             <li>
                               {t(
-                                "PressSpaceOrRWithABlobInFocusToCycleThroughRandomColors"
+                                'PressSpaceOrRWithABlobInFocusToCycleThroughRandomColors'
                               )}
-                              : {t("OverAThousandPossibleColorCombinations")}
+                              : {t('OverAThousandPossibleColorCombinations')}
                             </li>
                           </ul>
                         </li>
@@ -238,7 +240,7 @@ export default function BlobPage({
                   </Accordion>
                   <Accordion
                     language={language}
-                    text={t("SeeSampleArtworkCreatedWithTheApp")}
+                    text={t('SeeSampleArtworkCreatedWithTheApp')}
                     className="sample-img"
                     wrapperClass="sample-img-wrap"
                     showButton
@@ -248,82 +250,82 @@ export default function BlobPage({
                         <img
                           src={birb}
                           style={blobStyle}
-                          alt={t("FlyingBird")}
+                          alt={t('FlyingBird')}
                         />
                         <figcaption>
-                          {t("SampleArtwork")}: {t("FlyingBird")}
+                          {t('SampleArtwork')}: {t('FlyingBird')}
                         </figcaption>
                       </figure>
                       <figure>
                         <img
                           src={fish}
                           style={blobStyle}
-                          alt={t("SwimmingFish")}
+                          alt={t('SwimmingFish')}
                         />
                         <figcaption>
-                          {t("SampleArtwork")}: {t("SwimmingFish")}
+                          {t('SampleArtwork')}: {t('SwimmingFish')}
                         </figcaption>
                       </figure>
                       <figure>
                         <img
                           src={bubbly}
                           style={blobStyle}
-                          alt={t("BubblesAndFish")}
+                          alt={t('BubblesAndFish')}
                         />
                         <figcaption>
-                          {t("SampleArtwork")}: {t("BubblesAndFish")}
+                          {t('SampleArtwork')}: {t('BubblesAndFish')}
                         </figcaption>
                       </figure>
                       <figure>
-                        <img src={dog} style={blobStyle} alt={`${t("Dog")}?`} />
+                        <img src={dog} style={blobStyle} alt={`${t('Dog')}?`} />
                         <figcaption>
-                          {t("SampleArtwork")}: {`${t("Dog")}?`}
+                          {t('SampleArtwork')}: {`${t('Dog')}?`}
                         </figcaption>
                       </figure>
                     </>
                   </Accordion>
                   <Accordion
                     language={language}
-                    text={t("TipsAndTricks")}
+                    text={t('TipsAndTricks')}
                     className="blob-tips-and-tricks"
                     wrapperClass="blob-tips-and-tricks-wrap"
                   >
                     <>
-                      <h2 id="blob-tips-heading">{t("TipsAndTricks")}</h2>
+                      <h2 id="blob-tips-heading">{t('TipsAndTricks')}</h2>
                       <ul className="ul" aria-describedby="blob-tips-heading">
                         <li>
-                          {t("IfYouNeedToSetABlobNearTheEdgeOfTheScreen")}.{" "}
+                          {t('IfYouNeedToSetABlobNearTheEdgeOfTheScreen')}.{' '}
                           {t(
-                            "YouMayAlsoMoveTheEntireViewWithTheAngleQuotationMarkButtons"
-                          )}{" "}
+                            'YouMayAlsoMoveTheEntireViewWithTheAngleQuotationMarkButtons'
+                          )}{' '}
                         </li>
-                        <li>{t("YouMayChangeBlobSizeWithTheMouseWheel")} </li>
+                        <li>{t('YouMayChangeBlobSizeWithTheMouseWheel')} </li>
                         <li>
                           {t(
-                            "YouMayUseKeyboardShortcutsWhileMouseIsPressedDown"
-                          )}{" "}
+                            'YouMayUseKeyboardShortcutsWhileMouseIsPressedDown'
+                          )}{' '}
                         </li>
                         <li>
-                          {t("MoreColorsAvailableThroughRandomBlobButton")}.{" "}
-                          {t("OverAThousandPossibleColorCombinations")}{" "}
-                          {t("YouMayCloneARareColorBlobByPressingCOrD")}
+                          {t('MoreColorsAvailableThroughRandomBlobButton')}.{' '}
+                          {t('OverAThousandPossibleColorCombinations')}{' '}
+                          {t('YouMayCloneARareColorBlobByPressingCOrD')}
                         </li>
                         <li>
                           {t(
-                            "YouCanChangeTheDimensionsOfTheScreenshotByResizingYourBrowserWindow"
+                            'YouCanChangeTheDimensionsOfTheScreenshotByResizingYourBrowserWindow'
                           )}
                         </li>
                         <li>
                           {t(
-                            "IfABlobYouClickedHidesAnotherYouMayPlaceTheBlobBackToTheBottomOfThePile"
+                            'IfABlobYouClickedHidesAnotherYouMayPlaceTheBlobBackToTheBottomOfThePile'
                           )}
                         </li>
                         <li>
-                          <>{t("RegisterAndLogInToSaveYourArtwork")}</>{" "}
+                          <>{t('RegisterAndLogInToSaveYourArtwork')}</>{' '}
                           <div>
-                            <Link to="?login=login">{t("Login")}</Link>
+                            <Link to="?login=login">{t('Login')}</Link>
                             &nbsp;&nbsp;/&nbsp;&nbsp;
-                            <Link to="?register=register">{t("Register")}</Link>
+                            <Link to="?register=register">{t('Register')}</Link>
                           </div>
                         </li>
                       </ul>
@@ -336,17 +338,9 @@ export default function BlobPage({
               </div>
             </div>
           </section>
-          <Suspense
-            fallback={
-              <div className="flex center margin0auto textcenter">
-                {t("Loading")}...
-              </div>
-            }
-          >
-            <Blobs language={language} />
-          </Suspense>
+          <Blobs language={language} />
         </div>
       </div>
     </>
-  );
+  )
 }

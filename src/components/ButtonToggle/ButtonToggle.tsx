@@ -37,7 +37,7 @@ const ButtonToggle = ({
     >
       <span
         className={`label ${hideLabel ? 'scr' : ''}`}
-        aria-live='polite'
+        aria-live="polite"
         onClick={handleToggleChange as MouseEventHandler<HTMLSpanElement>}
       >
         {label}
@@ -49,15 +49,19 @@ const ButtonToggle = ({
         } ${equal ? styles.equal : ''}`}
       >
         <input
-          type='checkbox'
+          type="checkbox"
           name={name}
           id={`toggle-${id}`}
           checked={isChecked}
           onChange={handleToggleChange as ChangeEventHandler<HTMLInputElement>}
-          className='scr'
+          className="scr"
         />
         <span className={`${styles.slider} slider`}></span>
-        <span className={`${styles.labels} labels`} data-on={on} data-off={off}></span>
+        <span
+          className={`${styles.labels} labels`}
+          data-on={on}
+          data-off={off}
+        ></span>
       </label>
     </div>
   )

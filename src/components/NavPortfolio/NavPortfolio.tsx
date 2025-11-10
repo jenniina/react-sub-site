@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState, createRef } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { BiChevronsUp } from 'react-icons/bi'
 import { ELanguages, RefObject } from '../../types'
@@ -6,7 +6,7 @@ import useIsOnScreen from '../../hooks/useIsOnScreen'
 import useWindowSize from '../../hooks/useWindowSize'
 import { breakpointSmall } from '../../types'
 import useSideScroll from '../../hooks/useSideScroll'
-import { LanguageContext } from '../../contexts/LanguageContext'
+import { useLanguageContext } from '../../contexts/LanguageContext'
 
 interface NavItem {
   url: string
@@ -15,7 +15,7 @@ interface NavItem {
 }
 
 function NavPortfolio({ language }: { language: ELanguages }) {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const { windowWidth } = useWindowSize()
 
@@ -28,12 +28,14 @@ function NavPortfolio({ language }: { language: ELanguages }) {
   function leftScroll() {
     if (scrollHorizontal.current && windowWidth > breakpointSmall)
       scrollHorizontal.current.scrollLeft -= 200
-    else if (scrollHorizontal.current) scrollHorizontal.current.scrollLeft -= scrollAmount
+    else if (scrollHorizontal.current)
+      scrollHorizontal.current.scrollLeft -= scrollAmount
   }
   function rightScroll() {
     if (scrollHorizontal.current && windowWidth > breakpointSmall)
       scrollHorizontal.current.scrollLeft += 200
-    else if (scrollHorizontal.current) scrollHorizontal.current.scrollLeft += scrollAmount
+    else if (scrollHorizontal.current)
+      scrollHorizontal.current.scrollLeft += scrollAmount
   }
 
   const navItems: NavItem[] = [
@@ -53,29 +55,36 @@ function NavPortfolio({ language }: { language: ELanguages }) {
     { url: '/portfolio/todo', name: t('ToDo'), special: 'last' },
   ]
 
-  const itemRefs = navItems.map(() => useRef<HTMLLIElement>(null))
+  const itemRefs = useRef(navItems.map(() => createRef<HTMLLIElement>()))
 
-  const [firstVisibleRef, setFirstVisibleRef] = useState(itemRefs[0])
+  const [firstVisibleRef, setFirstVisibleRef] = useState(itemRefs.current[0])
 
   const firstVisible = useIsOnScreen(firstVisibleRef, '-20px', 1)
-  const lastVisible = useIsOnScreen(itemRefs[itemRefs.length - 1], '-40px', 1)
+  const lastVisible = useIsOnScreen(
+    itemRefs.current[itemRefs.current.length - 1],
+    '-40px',
+    1
+  )
 
   useEffect(() => {
-    if (firstVisible && scrollHorizontal.current) scrollHorizontal.current.scrollLeft = 0
+    if (firstVisible && scrollHorizontal.current)
+      scrollHorizontal.current.scrollLeft = 0
   }, [firstVisible, scrollHorizontal])
 
   useEffect(() => {
     if (location.pathname === '/portfolio') {
-      setFirstVisibleRef(itemRefs[1])
+      setFirstVisibleRef(itemRefs.current[1])
     } else {
-      setFirstVisibleRef(itemRefs[0])
+      setFirstVisibleRef(itemRefs.current[0])
     }
-  }, [location.pathname, itemRefs, navItems])
+  }, [location.pathname])
 
   useEffect(() => {
-    const activeIndex = navItems.findIndex((item) => item.url === location.pathname)
-    if (activeIndex !== -1 && itemRefs[activeIndex].current) {
-      itemRefs?.[activeIndex]?.current?.scrollIntoView({
+    const activeIndex = navItems.findIndex(
+      item => item.url === location.pathname
+    )
+    if (activeIndex !== -1 && itemRefs.current[activeIndex].current) {
+      itemRefs.current?.[activeIndex]?.current?.scrollIntoView({
         behavior: 'smooth',
         block: 'nearest',
         inline: 'center',
@@ -91,23 +100,31 @@ function NavPortfolio({ language }: { language: ELanguages }) {
       return (
         <li
           key={index}
-          ref={itemRefs[index]}
+          ref={itemRefs.current[index]}
           id={
             isFirst
               ? isCurrentPath
                 ? `portfolio-${index}`
                 : 'firstportfolioitem'
               : isLast
-              ? 'lastportfolioitem'
-              : `portfolio-${index}`
+                ? 'lastportfolioitem'
+                : `portfolio-${index}`
           }
-          className={isFirst && isCurrentPath ? 'hide' : isFirst ? 'return' : ''}
+          className={
+            isFirst && isCurrentPath ? 'hide' : isFirst ? 'return' : ''
+          }
           onFocus={() => {
-            if (itemRefs[index] && itemRefs[index].current && scrollHorizontal.current) {
-              const itemLeft = itemRefs[index].current?.offsetLeft ?? 0
-              const itemRight = itemLeft + (itemRefs[index].current?.offsetWidth ?? 0)
+            if (
+              itemRefs.current[index] &&
+              itemRefs.current[index].current &&
+              scrollHorizontal.current
+            ) {
+              const itemLeft = itemRefs.current[index].current?.offsetLeft ?? 0
+              const itemRight =
+                itemLeft + (itemRefs.current[index].current?.offsetWidth ?? 0)
               const scrollLeft = scrollHorizontal.current.scrollLeft
-              const scrollRight = scrollLeft + scrollHorizontal.current.clientWidth
+              const scrollRight =
+                scrollLeft + scrollHorizontal.current.clientWidth
               const amount = 100
 
               // Scroll into view with an additional offset of 40px
@@ -121,7 +138,7 @@ function NavPortfolio({ language }: { language: ELanguages }) {
           }}
         >
           <NavLink to={item.url}>
-            {isFirst ? <span aria-hidden='true'>&laquo;&nbsp;</span> : ''}
+            {isFirst ? <span aria-hidden="true">&laquo;&nbsp;</span> : ''}
             {item.name}
           </NavLink>
         </li>
@@ -139,7 +156,7 @@ function NavPortfolio({ language }: { language: ELanguages }) {
         >
           {' '}
           <BiChevronsUp />
-          <span className='scr'>{t('ScrollToTheLeft')}</span>
+          <span className="scr">{t('ScrollToTheLeft')}</span>
         </button>
 
         <ul ref={scrollHorizontal}>{renderNavItems(navItems)}</ul>
@@ -151,7 +168,7 @@ function NavPortfolio({ language }: { language: ELanguages }) {
         >
           {' '}
           <BiChevronsUp />
-          <span className='scr'>{t('ScrollToTheRight')}</span>
+          <span className="scr">{t('ScrollToTheRight')}</span>
         </button>
       </nav>
       <Outlet />

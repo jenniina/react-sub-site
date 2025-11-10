@@ -1,24 +1,85 @@
-import { useState, useEffect } from 'react'
+// import { useState, useEffect } from "react";
 
-// type ReturnType<T> = [T, React.Dispatch<React.SetStateAction<T>>, () => void]
+// export default function useLocalStorage<T>(
+//   key: string,
+//   initialValue: T
+// ): [T, (value: T) => void] {
+//   // State to store  value
+//   const [storedValue, setStoredValue] = useState<T>(() => {
+//     // Return initial value during SSR
+//     if (typeof window === "undefined") {
+//       return initialValue;
+//     }
+
+//     try {
+//       const item = window.localStorage.getItem(key);
+//       return item ? JSON.parse(item) : initialValue;
+//     } catch (error) {
+//       console.error(`Error reading localStorage key "${key}":`, error);
+//       return initialValue;
+//     }
+//   });
+
+//   // Return a wrapped version of useState's setter function that persists the new value to localStorage
+//   const setValue = (value: T) => {
+//     try {
+//       setStoredValue(value);
+
+//       // Only save to localStorage in browser
+//       if (typeof window !== "undefined") {
+//         window.localStorage.setItem(key, JSON.stringify(value));
+//       }
+//     } catch (error) {
+//       console.error(`Error setting localStorage key "${key}":`, error);
+//     }
+//   };
+
+//   // Sync with localStorage after hydration
+//   useEffect(() => {
+//     if (typeof window !== "undefined") {
+//       try {
+//         const item = window.localStorage.getItem(key);
+//         if (item) {
+//           const parsedItem = JSON.parse(item);
+//           if (parsedItem !== storedValue) {
+//             setStoredValue(parsedItem);
+//           }
+//         }
+//       } catch (error) {
+//         console.error(`Error syncing localStorage key "${key}":`, error);
+//       }
+//     }
+//   }, [key]);
+
+//   return [storedValue, setValue];
+// }
+
+import { useState, useEffect } from 'react'
 
 type ReturnType<T> = [T, (value: T | ((val: T) => T)) => void, () => void]
 
 export default function useLocalStorage<T>(key: string, defaultValue: T) {
-  return useStorage(key, defaultValue, window.localStorage)
+  // Check if we're in the browser before accessing window
+  const storage = typeof window !== 'undefined' ? window.localStorage : null
+  return useStorage(key, defaultValue, storage)
 }
 
 export function useSessionStorage<T>(key: string, defaultValue: T) {
-  return useStorage(key, defaultValue, window.sessionStorage)
+  // Check if we're in the browser before accessing window
+  const storage = typeof window !== 'undefined' ? window.sessionStorage : null
+  return useStorage(key, defaultValue, storage)
 }
 
 function useStorage<T>(
   key: string,
   defaultValue: T,
-  storageObject: Storage
+  storageObject: Storage | null
 ): ReturnType<T> {
   const [value, setValue] = useState<T>(() => {
-    const jsonValue = storageObject?.getItem(key)
+    // If no storage object (SSR), return default value
+    if (!storageObject) return defaultValue
+
+    const jsonValue = storageObject.getItem(key)
     if (jsonValue != null) return JSON.parse(jsonValue)
 
     if (typeof defaultValue === 'function') {
@@ -29,18 +90,24 @@ function useStorage<T>(
   })
 
   useEffect(() => {
-    if (value === undefined) return storageObject?.removeItem(key)
-    storageObject?.setItem(key, JSON.stringify(value))
+    // Only run effects in the browser
+    if (!storageObject) return
+
+    if (value === undefined) return storageObject.removeItem(key)
+    storageObject.setItem(key, JSON.stringify(value))
   }, [key, value, storageObject])
 
   const remove = () => {
     setValue(defaultValue)
-    return storageObject?.removeItem(key)
+    // Only remove from storage if available
+    if (storageObject) {
+      return storageObject.removeItem(key)
+    }
   }
 
   const setValueWithFunction = (value: T | ((val: T) => T)) => {
     if (typeof value === 'function') {
-      setValue((currentValue) => (value as (val: T) => T)(currentValue))
+      setValue(currentValue => (value as (val: T) => T)(currentValue))
     } else {
       setValue(value)
     }

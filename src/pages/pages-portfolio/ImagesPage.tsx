@@ -1,12 +1,8 @@
-import { lazy, Suspense, useContext } from "react";
-import Accordion from "../../components/Accordion/Accordion";
-import { ELanguages } from "../../types";
-import styles from "../../components/Images/images.module.css";
-import { LanguageContext } from "../../contexts/LanguageContext";
-import * as HelmetAsync from "react-helmet-async";
-const { Helmet } = HelmetAsync;
-
-const Images = lazy(() => import("../../components/Images/Images"));
+import Accordion from '../../components/Accordion/Accordion'
+import { ELanguages } from '../../types'
+import styles from '../../components/Images/images.module.css'
+import { useLanguageContext } from '../../contexts/LanguageContext'
+import Images from '../../components/Images/Images'
 
 const ImagesPage = ({
   heading,
@@ -14,16 +10,20 @@ const ImagesPage = ({
   type,
   language,
 }: {
-  heading: string;
-  text: string;
-  type: string;
-  language: ELanguages;
+  heading: string
+  text: string
+  type: string
+  language: ELanguages
 }) => {
-  const { t } = useContext(LanguageContext)!;
+  const { t } = useLanguageContext()
 
   return (
     <>
-      <Helmet prioritizeSeoTags={true}>
+      {/*  <Helmet prioritizeSeoTags={true}>
+        <meta charSet="utf-8" />
+        <meta name="author" content="Jenniina Laine" />
+        <meta property="og:type" content="website" />
+
         <title>
           {t("SearchForMedia")} | {t("SearchforVideos")}
         </title>
@@ -48,65 +48,57 @@ const ImagesPage = ({
           content={`https://react.jenniina.fi/portfolio/media`}
         />
         <meta property="og:type" content="website" />
-      </Helmet>
-      <div className={`media ${type} ${styles["images-wrap"]}`}>
-        <div className={`inner-wrap ${styles["inner-wrap"]}`}>
-          <section className={`card ${styles["features-card"]}`}>
+      </Helmet> */}
+      <div className={`media ${type} ${styles['images-wrap']}`}>
+        <div className={`inner-wrap ${styles['inner-wrap']}`}>
+          <section className={`card ${styles['features-card']}`}>
             <div>
               <Accordion
-                text={t("ClickHereToSeeFeatures")}
+                text={t('ClickHereToSeeFeatures')}
                 className=""
                 wrapperClass=""
                 language={language}
               >
                 <ul className="ul medium">
-                  <li>{t("YouMaySearchForImagesFetchedFromThePixabayAPI")}</li>
+                  <li>{t('YouMaySearchForImagesFetchedFromThePixabayAPI')}</li>
                   <li>
                     {t(
-                      "IAddedValueToTheSearchOfImagesAndVideosWithRandomQuotesOrPoems"
+                      'IAddedValueToTheSearchOfImagesAndVideosWithRandomQuotesOrPoems'
                     )}
                   </li>
                   <li>
-                    {t("ClickingAnImageOpensAModalWithALargerVersion")}{" "}
-                    {t("TheImageOrVideoHasARandomQuoteOrPoemAddedToIt")}
+                    {t('ClickingAnImageOpensAModalWithALargerVersion')}{' '}
+                    {t('TheImageOrVideoHasARandomQuoteOrPoemAddedToIt')}
                   </li>
                   <li>
-                    {t("QuotesAreFrom")}{" "}
+                    {t('QuotesAreFrom')}{' '}
                     <a
                       href="https://rapidapi.com/martin.svoboda/api/quotes15"
                       target="_blank"
                       rel="noreferrer"
                     >
                       RapidAPI
-                    </a>{" "}
-                    {t("AndPoemsAreFrom")}{" "}
+                    </a>{' '}
+                    {t('AndPoemsAreFrom')}{' '}
                     <a
                       href="https://poetrydb.org/"
                       target="_blank"
                       rel="noreferrer"
                     >
                       PoetryDB
-                    </a>{" "}
-                    {language === "fi" ? "API:sta" : ""}
+                    </a>{' '}
+                    {language === 'fi' ? 'API:sta' : ''}
                   </li>
                 </ul>
               </Accordion>
             </div>
           </section>
 
-          <Suspense
-            fallback={
-              <div className="flex center margin0auto textcenter">
-                {t("Loading")}...
-              </div>
-            }
-          >
-            <Images language={language} />
-          </Suspense>
+          <Images language={language} />
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default ImagesPage;
+export default ImagesPage

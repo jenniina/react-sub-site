@@ -5,7 +5,7 @@ import { ELanguages, ReducerProps } from '../../types'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { initializeUser } from '../../reducers/authReducer'
 import { Link } from 'react-router-dom'
-import { LanguageContext } from '../../contexts/LanguageContext'
+import { useLanguageContext } from '../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
@@ -39,7 +39,7 @@ const Register = ({
   text,
   sending,
 }: Props) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const dispatch = useAppDispatch()
 
@@ -54,13 +54,13 @@ const Register = ({
   }, [])
 
   return (
-    <div className='register-wrap'>
+    <div className="register-wrap">
       {!user ? (
         <>
           <Accordion
             language={language}
             className={`accordion-register register`}
-            wrapperClass='register-wrap'
+            wrapperClass="register-wrap"
             text={t('Register')}
             ref={formRegisterRef}
             setIsFormOpen={setIsFormOpen}
@@ -71,63 +71,69 @@ const Register = ({
               <h2>{t('Register')}</h2>
               <form onSubmit={handleRegister} className={`register ${text}`}>
                 <p>{t('PleaseUseGoodTasteWhenChoosingYourNickname')}</p>
-                <div className='input-wrap'>
+                <div className="input-wrap">
                   <label>
                     <input
                       required
-                      type='text'
-                      name='name'
+                      type="text"
+                      name="name"
                       id={`name-${text}`}
                       value={name}
-                      autoComplete='name'
+                      autoComplete="name"
                       onChange={({ target }) => setName(target.value)}
                     />
                     <span>{t('Nickname')}</span>
                   </label>
                 </div>
-                <div className='input-wrap'>
+                <div className="input-wrap">
                   <label>
                     <input
                       required
-                      type='text'
-                      name='username'
+                      type="text"
+                      name="username"
                       id={`username-${text}`}
                       value={username}
-                      autoComplete='email'
-                      onChange={({ target }) => setUsername(target.value.trim())}
+                      autoComplete="email"
+                      onChange={({ target }) =>
+                        setUsername(target.value.trim())
+                      }
                     />
                     <span>{t('Email')}</span>
                   </label>
                 </div>
-                <div className='input-wrap'>
+                <div className="input-wrap">
                   <label>
                     <input
                       required
-                      type='password'
-                      name='password'
+                      type="password"
+                      name="password"
                       id={`password-${text}`}
                       value={password}
-                      autoComplete='on'
-                      onChange={({ target }) => setPassword(target.value.trim())}
+                      autoComplete="on"
+                      onChange={({ target }) =>
+                        setPassword(target.value.trim())
+                      }
                     />
                     <span>{t('Password')}</span>
                   </label>
                 </div>
-                <div className='input-wrap'>
+                <div className="input-wrap">
                   <label>
                     <input
                       required
-                      type='password'
-                      name='confirmPassword'
+                      type="password"
+                      name="confirmPassword"
                       id={`confirmPassword-${text}`}
                       value={confirmPassword}
-                      onChange={({ target }) => setConfirmPassword(target.value.trim())}
+                      onChange={({ target }) =>
+                        setConfirmPassword(target.value.trim())
+                      }
                     />
                     <span>{t('ConfirmPassword')}</span>
                   </label>
                 </div>
                 <Link
-                  to='/disclaimer'
+                  to="/disclaimer"
                   style={{
                     display: 'flex',
                     flexFlow: 'row wrap',
@@ -138,7 +144,7 @@ const Register = ({
                 >
                   <small>{t('Disclaimer')}</small>
                 </Link>
-                <button type='submit' disabled={sending} className='restore'>
+                <button type="submit" disabled={sending} className="restore">
                   {t('Register')}
                 </button>
               </form>

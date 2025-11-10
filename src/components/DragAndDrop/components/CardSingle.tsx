@@ -1,4 +1,4 @@
-import {
+import React, {
   KeyboardEvent,
   MouseEvent,
   useState,
@@ -11,13 +11,17 @@ import {
 } from 'react'
 import { Data, Status } from '../types'
 import styles from '../dragAndDrop.module.css'
-import { MdContentCopy, MdLocationOn, MdOutlineDragIndicator } from 'react-icons/md'
+import {
+  MdContentCopy,
+  MdLocationOn,
+  MdOutlineDragIndicator,
+} from 'react-icons/md'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
 import { ELanguages } from '../../../types'
 import { notify } from '../../../reducers/notificationReducer'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { sanitize } from '../../../utils'
-import { LanguageContext } from '../../../contexts/LanguageContext'
+import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
@@ -50,7 +54,7 @@ function CardSingle({
   setFocusedCard,
   translateStatus,
 }: Props) {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const dispatch = useAppDispatch()
 
@@ -79,7 +83,7 @@ function CardSingle({
 
   const [isOpen, setIsOpen] = useState(false)
   function toggleOpen() {
-    setIsOpen((prev) => !prev)
+    setIsOpen(prev => !prev)
   }
   function closing() {
     setIsOpen(false)
@@ -97,7 +101,10 @@ function CardSingle({
 
   const dragOverItem = useRef<number>(0)
 
-  const handleDragEnter = (e: React.DragEvent<HTMLLIElement>, position: number) => {
+  const handleDragEnter = (
+    e: React.DragEvent<HTMLLIElement>,
+    position: number
+  ) => {
     e.preventDefault()
     setTheTarget(position)
     dragOverItem.current = position
@@ -107,11 +114,19 @@ function CardSingle({
     e.preventDefault()
   }
 
-  const handleDragStart = (e: React.DragEvent<HTMLLIElement>, position: number) => {
-    e.dataTransfer.setData('text/plain', JSON.stringify({ type: 'item', id: data?.id }))
+  const handleDragStart = (
+    e: React.DragEvent<HTMLLIElement>,
+    position: number
+  ) => {
+    e.dataTransfer.setData(
+      'text/plain',
+      JSON.stringify({ type: 'item', id: data?.id })
+    )
   }
 
-  function containerUpdate(e: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>) {
+  function containerUpdate(
+    e: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>
+  ) {
     const anchorElement = (e.target as HTMLElement).closest(
       'a[data-status]'
     ) as HTMLAnchorElement
@@ -130,7 +145,7 @@ function CardSingle({
         ) as HTMLAnchorElement
         const stat = anchorElement?.dataset.status ?? status
         if (data) handleUpdate(data.id, stat)
-        setIsOpen((prev) => !prev)
+        setIsOpen(prev => !prev)
         break
       case 'Escape':
         e.stopPropagation()
@@ -151,7 +166,9 @@ function CardSingle({
     const previous = Number(
       (li?.previousElementSibling as HTMLLIElement)?.dataset.identity
     )
-    const next = Number((li?.nextElementSibling as HTMLLIElement)?.dataset.identity)
+    const next = Number(
+      (li?.nextElementSibling as HTMLLIElement)?.dataset.identity
+    )
     switch (e.key) {
       case 'ArrowUp':
         if (data && previous !== null) {
@@ -169,6 +186,7 @@ function CardSingle({
         break
       case 'Tab':
         setFocusedCard(null)
+        break
       default:
         break
     }
@@ -186,26 +204,26 @@ function CardSingle({
         () => {
           dispatch(notify(t('CopiedToClipboard'), false, 3))
         },
-        (err) => {
+        err => {
           dispatch(notify(`${t('FailedToCopy')}`, true, 3))
         }
       )
     } else {
       // Fallback method for older browsers
-      const textArea = document.createElement('textarea')
+      const textArea = document?.createElement('textarea')
       textArea.value = text
       cardRef.current?.appendChild(textArea)
       textArea.focus()
       textArea.select()
       try {
-        document.execCommand('copy')
+        document?.execCommand('copy')
         dispatch(notify(t('CopiedToClipboard'), false, 3))
       } catch (err: any) {
         if (err.response?.data?.message)
           dispatch(notify(err.response.data.message, true, 8))
         else dispatch(notify(`${t('FailedToCopy')}`, true, 3))
       }
-      document.body.removeChild(textArea)
+      document?.body.removeChild(textArea)
     }
   }
 
@@ -213,38 +231,42 @@ function CardSingle({
     <li
       ref={cardRef}
       draggable={'true'}
-      onDragStart={(e) => handleDragStart(e, id)}
-      onDragEnter={(e) => handleDragEnter(e, id)}
-      onDragOver={(e) => handleDragOver(e)}
+      onDragStart={e => handleDragStart(e, id)}
+      onDragEnter={e => handleDragEnter(e, id)}
+      onDragOver={e => handleDragOver(e)}
       onDragEnd={() => handleDragging(false)}
       role={'listitem'}
       tabIndex={0}
-      onKeyDown={(e) => handleUpAndDown(e, id)}
+      onKeyDown={e => handleUpAndDown(e, id)}
       data-identity={id}
     >
       <div style={styleCard} className={`${styles['card']}`}>
         <span className={styles.text}>{data?.content}</span>
         <b>
-          <button onClick={() => handleRemoveColor(data.content)}>&times;</button>
-          <button aria-haspopup='true' onClick={toggleOpen}>
-            <MdOutlineDragIndicator aria-hidden='true' />
-            <span className='scr' id={`instructions${id}`}>
+          <button onClick={() => handleRemoveColor(data.content)}>
+            &times;
+          </button>
+          <button aria-haspopup="true" onClick={toggleOpen}>
+            <MdOutlineDragIndicator aria-hidden="true" />
+            <span className="scr" id={`instructions${id}`}>
               {t('ChooseDestination')}
             </span>
           </button>
         </b>
         <nav
-          className={isOpen ? `${styles.open} ${styles.blur}` : `${styles.blur}`}
+          className={
+            isOpen ? `${styles.open} ${styles.blur}` : `${styles.blur}`
+          }
           style={styleReset}
         >
           <span style={styleTitle}>{t('Move')}:</span>
           <ul
-            role='listbox'
+            role="listbox"
             aria-describedby={`instructions${id}`}
             aria-expanded={isOpen ? 'true' : 'false'}
             className={sanitize(status)}
           >
-            <li role='option' className={styles.copy}>
+            <li role="option" className={styles.copy}>
               <a
                 className={styles.copy}
                 onClick={() => handleCopyToClipboard(data.content)}
@@ -258,16 +280,18 @@ function CardSingle({
             {statuses.map((status, i) => (
               <li
                 key={`${sanitize(status)}-${i}-${index}`}
-                role='option'
+                role="option"
                 className={sanitize(status)}
               >
                 <a
                   className={sanitize(status)}
                   data-status={status}
-                  onClick={(e) => containerUpdate(e)}
-                  onKeyDown={(e) => keyListen(e)}
+                  onClick={e => containerUpdate(e)}
+                  onKeyDown={e => keyListen(e)}
                   tabIndex={0}
-                  title={`${t('ToTarget')}: ${translateStatus(status).toLowerCase()}`}
+                  title={`${t('ToTarget')}: ${translateStatus(
+                    status
+                  ).toLowerCase()}`}
                 >
                   <MdLocationOn />
                   <i>{translateStatus(status)}</i>

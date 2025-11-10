@@ -6,20 +6,18 @@ import {
   MouseEvent as MouseEventReact,
   PointerEvent as PointerEventReact,
   useRef,
-  useState,
   createRef,
   useEffect,
   useCallback,
-  lazy,
-  Suspense,
   useContext,
+  useMemo,
 } from 'react'
 import { Draggable, focusedBlob, ColorPair, Modes } from '../types'
 import { ELanguages } from '../../../types'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
-import { LanguageContext } from '../../../contexts/LanguageContext'
-
-const DragLayer = lazy(() => import('./DragLayer'))
+import { useLanguageContext } from '../../../contexts/LanguageContext'
+import { useIsClient, useWindow } from '../../../hooks/useSSR'
+import DragLayer from './DragLayer'
 
 interface DragLayerProps {
   layer_: number
@@ -111,53 +109,402 @@ const DragLayers = ({
   addRandomDraggable,
   changeColor,
 }: DragLayerProps) => {
-  const { t } = useContext(LanguageContext)!
+  const isClient = useIsClient()
+  const windowObj = useWindow()
 
-  const sortedDraggables = [...items].sort((a, b) => a.layer - b.layer)
+  const { t } = useLanguageContext()
 
-  const groupedDraggables = sortedDraggables.reduce((acc, draggable) => {
-    if (!acc[draggable.layer]) {
-      acc[draggable.layer] = []
-    }
-    acc[draggable.layer].push(draggable)
-    return acc
-  }, {} as Record<number, Draggable[]>)
+  const sortedDraggables = useMemo(
+    () => [...items].sort((a, b) => a.layer - b.layer),
+    [items]
+  )
 
-  const layers = Array.from({ length: layerAmount }, (_, i) => i)
+  const groupedDraggables = useMemo(
+    () =>
+      sortedDraggables.reduce(
+        (acc, draggable) => {
+          if (!acc[draggable.layer]) {
+            acc[draggable.layer] = []
+          }
+          acc[draggable.layer].push(draggable)
+          return acc
+        },
+        {} as Record<number, Draggable[]>
+      ),
+    [sortedDraggables]
+  )
 
-  const layerRefs = useRef<Record<number, RefObject<HTMLUListElement>>>({})
+  const layers = useMemo(
+    () => Array.from({ length: layerAmount }, (_, i) => i),
+    [layerAmount]
+  )
 
-  useEffect(() => {
-    const refs = layers.reduce((acc, layer) => {
-      acc[layer] = createRef<HTMLUListElement>()
-      return acc
-    }, {} as Record<number, RefObject<HTMLUListElement>>)
-
-    layerRefs.current = refs
+  const layerRefs = useMemo(() => {
+    return Array.from({ length: layerAmount }, (_, i) => i).reduce(
+      (acc, layer) => {
+        acc[layer] = createRef<HTMLUListElement>()
+        return acc
+      },
+      {} as Record<number, RefObject<HTMLUListElement>>
+    )
   }, [layerAmount])
 
   //Detect touch device
-  const isTouchDevice = () => {
+  const isTouchDevice = useMemo(() => {
+    if (!isClient) return false
     try {
-      //Try to create TouchEvent (fails for desktops and throws error)
-      document.createEvent('TouchEvent')
+      document?.createEvent('TouchEvent')
       return true
     } catch (e) {
       return false
     }
-  }
+  }, [isClient])
 
   //const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0
 
-  useEffect(() => {
-    isTouchDevice()
-  }, [])
+  //Remove exit notice's tabindex and text as unnecessary after leaving it
+  const exitAppBlur = useCallback(() => {
+    if (exitApp.current) {
+      exitApp.current?.removeAttribute('tabindex')
+      exitApp.current?.removeEventListener('blur', exitAppBlur)
+      exitApp.current.textContent = ''
+    }
+  }, [exitApp])
+
+  //Clone blob
+  const makeBlob = useCallback(
+    (draggable: Draggable) => {
+      dispatch({
+        type: 'duplicateDraggable',
+        payload: { d: d, draggable },
+      })
+    },
+    [dispatch, d]
+  )
+
+  // Keyboard use
+  const keyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (!isClient || !windowObj) return
+
+      const movePx = 4
+
+      const target = currentFocusedElement
+      if (!target) return
+
+      const blobStyle = windowObj.getComputedStyle(target)
+
+      const setFocus = (target: HTMLElement) => {
+        const marginTop = parseFloat(blobStyle.marginTop)
+        const marginLeft = parseFloat(blobStyle.marginLeft)
+
+        const blobRect = target.getBoundingClientRect()
+        const parentRect = (
+          target.parentNode as HTMLDivElement
+        )?.getBoundingClientRect()
+        setFocusedBlob({
+          top: blobRect.top - parentRect.top - marginTop,
+          left: blobRect.left - parentRect.left - marginLeft,
+          width: blobRect.width,
+          height: blobRect.height,
+        })
+      }
+
+      let value =
+        blobStyle.getPropertyValue('--i') ??
+        (target as HTMLElement).style.getPropertyValue('--i') ??
+        '10'
+      let scale = parseFloat(value)
+      scale = isNaN(scale) ? 10 : scale
+
+      let attrLeft =
+        parseFloat(blobStyle.getPropertyValue('left')) ??
+        parseFloat(target.style.getPropertyValue('left')) ??
+        0
+      let attrTop =
+        parseFloat(blobStyle.getPropertyValue('top')) ??
+        parseFloat(target.style.getPropertyValue('top')) ??
+        0
+
+      const layer = target.style.getPropertyValue('--layer')
+
+      const draggable: Draggable = {
+        layer: parseInt(layer) ?? layer_,
+        id: target.id,
+        number: parseInt(target.id.replace('blob', '').split('-')[0], 10),
+        i: scale,
+        x: target.style.getPropertyValue('left').toString(),
+        y: target.style.getPropertyValue('top').toString(),
+        z: target.style.zIndex ?? '0',
+        background:
+          target.style.background ??
+          'linear-gradient(90deg, cyan, greenyellow)',
+      }
+
+      const updatePosition = (left: number, top: number) => {
+        dispatch({
+          type: 'partialUpdate',
+          payload: {
+            d: d,
+            id: target.id,
+            update: {
+              x: `${left}px`,
+              y: `${top}px`,
+            },
+          },
+        })
+        setFocus(target)
+      }
+
+      const cooldown = () => {
+        reset = true
+      }
+
+      const handleNumberPress = (l: number) => {
+        e.preventDefault()
+        if (reset) {
+          reset = false
+          changeBlobLayer(draggable, l)
+          setTimeout(cooldown, 100)
+        }
+      }
+      const key = e.key
+      if (parseInt(key) >= 1 && parseInt(key) <= layerAmount) {
+        handleNumberPress(parseInt(key) - 1)
+      }
+
+      switch (e.key) {
+        case 'ArrowLeft':
+          e.preventDefault()
+          if (reset) {
+            updatePosition(attrLeft - movePx, attrTop)
+            setTimeout(cooldown, 100)
+          }
+
+          break
+        case 'ArrowRight':
+          e.preventDefault()
+          if (reset) {
+            updatePosition(attrLeft + movePx, attrTop)
+            setTimeout(cooldown, 100)
+          }
+          break
+        case 'ArrowUp':
+          e.preventDefault()
+          if (reset) {
+            updatePosition(attrLeft, attrTop - movePx)
+            setTimeout(cooldown, 100)
+          }
+          break
+        case 'ArrowDown':
+          e.preventDefault()
+          if (reset) {
+            updatePosition(attrLeft, attrTop + movePx)
+            setTimeout(cooldown, 100)
+          }
+          break
+        case 'Escape':
+          e.preventDefault()
+
+          setScroll(true)
+          document !== null ? (document.body.style.overflowY = 'auto') : null
+          document !== null ? (document.body.style.overflowX = 'hidden') : null
+
+          if (exitApp.current) {
+            exitApp.current.setAttribute('tabindex', '0')
+            exitApp.current.addEventListener('blur', exitAppBlur)
+          }
+          ;(target as HTMLElement).blur()
+          dragWrap.current?.blur()
+          //Go to exit notice in order to remove focus from the app
+          if (exitApp.current)
+            exitApp.current.textContent = t('ThankYouForPlaying')
+          exitApp.current?.focus()
+          break
+        case 'Enter': //Cycle through colors
+          e.preventDefault()
+          e.stopPropagation()
+          if (reset) {
+            reset = false
+            if ((target as HTMLElement).closest(`#drag-wrap${d}`)) {
+              setColorIndex(prevColorIndex => {
+                const nextColorIndex =
+                  (prevColorIndex + 1) % colorPairs[d].length
+                return nextColorIndex // Return the new color index
+              })
+            }
+            setTimeout(cooldown, 100)
+          }
+          break
+        case 'R':
+        case 'r':
+        case ' ': //Cycle through random colors using colorswitch
+          e.preventDefault()
+          e.stopPropagation()
+          if (reset) {
+            reset = false
+            if ((target as HTMLElement).closest(`#drag-wrap${d}`)) {
+              const color1 = colorswitch()
+              let color2 = colorswitch()
+
+              if (color2 === color1) {
+                color2 = colorswitch()
+              }
+
+              const newBackground = `linear-gradient(${angle}, ${color1}, ${color2})`
+              dispatch({
+                type: 'partialUpdate',
+                payload: {
+                  d: d,
+                  id: target.id,
+                  update: { background: newBackground },
+                },
+              })
+            }
+            setTimeout(cooldown, 100)
+          }
+          break
+        case 'Z': //Move blob to the bottom of the z-index pile
+        case 'z':
+          e.preventDefault()
+          if (reset) {
+            reset = false
+            dispatch({
+              type: 'partialUpdate',
+              payload: {
+                d: d,
+                id: target.id,
+                update: {
+                  z: '0',
+                },
+              },
+            })
+            setTimeout(cooldown, 100)
+          }
+          break
+        case 'T': //Move blob to the top of the z-index pile
+        case 't':
+          //e.stopImmediatePropagation()
+          e.preventDefault()
+          if (reset) {
+            reset = false
+            dispatch({
+              type: 'partialUpdate',
+              payload: {
+                d: d,
+                id: target.id,
+                update: {
+                  z: `${Math.max(1, highestZIndex[layer_] + 1)}`,
+                },
+              },
+            })
+            setTimeout(cooldown, 100)
+          }
+          break
+        case 'S':
+        case 's': //make blob smaller
+          e.preventDefault()
+          if (reset) {
+            reset = false
+            scale -= 0.4
+            scale = Math.min(Math.max(7, scale), 36)
+            dispatch({
+              type: 'partialUpdate',
+              payload: {
+                d: d,
+                id: target.id,
+                update: {
+                  i: scale,
+                },
+              },
+            })
+            setTimeout(cooldown, 100)
+          }
+          break
+        case 'B': //make blob larger
+        case 'b':
+        case 'L':
+        case 'l':
+          //e.stopImmediatePropagation()
+          e.preventDefault()
+          if (reset) {
+            reset = false
+            scale += 0.4
+            scale = Math.min(Math.max(7, scale), 36)
+            dispatch({
+              type: 'partialUpdate',
+              payload: {
+                d: d,
+                id: target.id,
+                update: {
+                  i: scale,
+                },
+              },
+            })
+            setTimeout(cooldown, 100)
+          }
+          break
+        case 'C': //make a new clone
+        case 'c':
+        case 'D':
+        case 'd':
+          e.preventDefault()
+          //e.stopImmediatePropagation()
+          if (reset) {
+            reset = false
+            makeBlob(draggable)
+            setTimeout(cooldown, 100)
+          }
+          break
+        case '+': // Make a random blob
+          e.preventDefault()
+          if (reset) {
+            reset = false
+            addRandomDraggable(draggable.x, draggable.y, draggable.layer)
+            setTimeout(cooldown, 200)
+          }
+          break
+        case 'Delete': //remove blob
+        case '-':
+          //e.stopImmediatePropagation()
+          e.preventDefault()
+          if (reset) {
+            reset = false
+            removeBlob(draggable)
+            setTimeout(cooldown, 100)
+          }
+          break
+      }
+    },
+    [
+      isClient,
+      windowObj,
+      d,
+      layer_,
+      layerAmount,
+      dispatch,
+      setFocusedBlob,
+      setColorIndex,
+      changeBlobLayer,
+      removeBlob,
+      setScroll,
+      exitApp,
+      dragWrap,
+      t,
+      colorPairs,
+      colorswitch,
+      addRandomDraggable,
+      makeBlob,
+      exitAppBlur,
+      highestZIndex,
+    ]
+  )
 
   const handleOutsideClick = useCallback(
     (e: Event) => {
       reset = true
-      document.removeEventListener('keydown', keyDown)
-      document.removeEventListener('touchmove', preventDefault)
+      document?.removeEventListener('keydown', keyDown)
+      document?.removeEventListener('touchmove', preventDefault)
     },
     [keyDown]
   )
@@ -168,11 +515,15 @@ const DragLayers = ({
   })
 
   useEffect(() => {
-    if (isTouchDevice() && !currentFocusedElement && scroll) {
-      document.body.style.overflowY = 'auto'
-      document.body.style.overflowX = 'hidden'
-      document.removeEventListener('keydown', keyDown)
-      document.removeEventListener('touchmove', preventDefault)
+    if (isTouchDevice && !currentFocusedElement && scroll) {
+      document !== null ? (document.body.style.overflowY = 'auto') : null
+      document !== null ? (document.body.style.overflowX = 'hidden') : null
+      document !== null
+        ? document.removeEventListener('keydown', keyDown)
+        : null
+      document !== null
+        ? document.removeEventListener('touchmove', preventDefault)
+        : null
     }
   }, [currentFocusedElement, scroll, isTouchDevice, keyDown])
 
@@ -190,22 +541,22 @@ const DragLayers = ({
       e.stopPropagation()
       e.preventDefault()
 
-      if (document.activeElement instanceof HTMLElement) {
-        document.activeElement.blur()
+      if (document?.activeElement instanceof HTMLElement) {
+        document?.activeElement.blur()
       }
 
       moveElement = true
       currentFocusedElement = target
 
-      initialX = !isTouchDevice()
+      initialX = !isTouchDevice
         ? (e as PointerEvent).clientX
         : (e as TouchEvent).touches[0].clientX
-      initialY = !isTouchDevice()
+      initialY = !isTouchDevice
         ? (e as PointerEvent).clientY
         : (e as TouchEvent).touches[0].clientY
       ;(target as HTMLElement).classList.add('drag')
       const highestZIndexForLayer = highestZIndex[layer_]
-      if (isTouchDevice()) {
+      if (isTouchDevice) {
         let value = target?.style.getPropertyValue('--i') ?? '10'
         initialScale = parseFloat(value)
         initialScale = isNaN(initialScale) ? 10 : initialScale
@@ -222,16 +573,20 @@ const DragLayers = ({
       })
       //;(target as HTMLElement).focus() // This breaks dragging once a key is pressed and only clears after clicking away from the target
 
-      document.addEventListener('keydown', keyDown)
-      const blobLayer = (target as HTMLElement).style.getPropertyValue('--layer')
+      document?.addEventListener('keydown', keyDown)
+      const blobLayer = (target as HTMLElement).style.getPropertyValue(
+        '--layer'
+      )
       setActiveLayer(isNaN(parseInt(blobLayer)) ? 1 : parseInt(blobLayer))
 
-      if (isTouchDevice()) {
-        document.addEventListener('touchmove', preventDefault, { passive: false })
-        document.body.style.overflow = 'hidden'
+      if (isTouchDevice) {
+        document?.addEventListener('touchmove', preventDefault, {
+          passive: false,
+        })
+        document !== null ? (document.body.style.overflow = 'hidden') : null
       }
     },
-    [keyDown, isTouchDevice]
+    [keyDown, isTouchDevice, dispatch, d, highestZIndex, layer_, setActiveLayer]
   )
 
   //Handle mousemove and touchmove
@@ -246,21 +601,25 @@ const DragLayers = ({
         | PointerEventReact
     ) => {
       e.stopPropagation()
-      if (isTouchDevice()) {
+      if (isTouchDevice) {
         e.preventDefault()
-        document.body.style.overflow = 'hidden'
+        document !== null ? (document.body.style.overflow = 'hidden') : null
       }
       if (moveElement) {
-        let newX = !isTouchDevice()
+        let newX = !isTouchDevice
           ? (e as PointerEvent).clientX
           : (e as TouchEvent).touches[0].clientX
-        let newY = !isTouchDevice()
+        let newY = !isTouchDevice
           ? (e as PointerEvent).clientY
           : (e as TouchEvent).touches[0].clientY
         ;(currentFocusedElement as HTMLElement).style.top =
-          (currentFocusedElement as HTMLElement).offsetTop - (initialY - newY) + 'px'
+          (currentFocusedElement as HTMLElement).offsetTop -
+          (initialY - newY) +
+          'px'
         ;(currentFocusedElement as HTMLElement).style.left =
-          (currentFocusedElement as HTMLElement).offsetLeft - (initialX - newX) + 'px'
+          (currentFocusedElement as HTMLElement).offsetLeft -
+          (initialX - newX) +
+          'px'
         initialX = newX
         initialY = newY
 
@@ -277,7 +636,7 @@ const DragLayers = ({
         })
       }
     },
-    [isTouchDevice]
+    [isTouchDevice, dispatch, d]
   )
 
   //Handle mouse up and touch end, check for element overlap
@@ -331,25 +690,29 @@ const DragLayers = ({
         tapCount = 0
       }, 300)
 
-      document.removeEventListener('keydown', keyDown)
+      document?.removeEventListener('keydown', keyDown)
       let value = (target as HTMLElement).style.getPropertyValue('--i') ?? '10'
       let scale = parseFloat(value)
       scale = isNaN(scale) ? 10 : scale
 
-      if (isTouchDevice() && scroll) {
-        document.removeEventListener('touchmove', preventDefault)
-        document.body.style.overflowY = 'auto'
-        document.body.style.overflowX = 'hidden'
-      } else if (isTouchDevice() && !scroll) {
-        document.body.style.overflow = 'hidden'
+      if (isTouchDevice && scroll) {
+        document !== null
+          ? document.removeEventListener('touchmove', preventDefault)
+          : null
+        document !== null ? (document.body.style.overflowY = 'auto') : null
+        document !== null ? (document.body.style.overflowX = 'hidden') : null
+      } else if (isTouchDevice && !scroll) {
+        document !== null ? (document.body.style.overflow = 'hidden') : null
       }
 
       ;(target as HTMLElement).classList.remove('drag')
       ;(target as HTMLElement).blur()
-      tapCount === 0 ? (currentFocusedElement = null) : (currentFocusedElement = target)
+      tapCount === 0
+        ? (currentFocusedElement = null)
+        : (currentFocusedElement = target)
       setFocusedBlob(null)
     },
-    [angle, keyDown, scroll]
+    [isTouchDevice, scroll, dispatch, d, keyDown, setFocusedBlob]
   )
 
   //Handle mouse leave
@@ -361,88 +724,116 @@ const DragLayers = ({
       e.stopPropagation()
       moveElement = false
       currentFocusedElement = null
-      if (isTouchDevice() && scroll) {
-        document.removeEventListener('touchmove', preventDefault)
-        document.body.style.overflowY = 'auto'
-        document.body.style.overflowX = 'hidden'
-      } else if (isTouchDevice() && !scroll) {
-        document.body.style.overflow = 'hidden'
+      if (isTouchDevice && scroll) {
+        document?.removeEventListener('touchmove', preventDefault)
+        document !== null ? (document.body.style.overflowY = 'auto') : null
+        document !== null ? (document.body.style.overflowX = 'hidden') : null
+      } else if (isTouchDevice && !scroll) {
+        document !== null ? (document.body.style.overflow = 'hidden') : null
       }
 
       getPosition(target as HTMLElement)
       ;(target as HTMLElement).classList.remove('drag')
-      document.removeEventListener('keydown', keyDown)
+      document?.removeEventListener('keydown', keyDown)
       ;(target as HTMLElement).blur()
     },
     [keyDown]
   )
 
   useEffect(() => {
-    if (isTouchDevice() && !currentFocusedElement && scroll) {
-      document.removeEventListener('touchmove', preventDefault)
-      document.body.style.overflowY = 'auto'
-      document.body.style.overflowX = 'hidden'
+    if (isTouchDevice && !currentFocusedElement && scroll) {
+      document?.removeEventListener('touchmove', preventDefault)
+      document !== null ? (document.body.style.overflowY = 'auto') : null
+      document !== null ? (document.body.style.overflowX = 'hidden') : null
     }
-  }, [stopMovementCheck, stopMoving, currentFocusedElement, scroll])
+  }, [
+    stopMovementCheck,
+    stopMoving,
+    currentFocusedElement,
+    scroll,
+    isTouchDevice,
+    scroll,
+    getPosition,
+  ])
 
   //on blob blur
-  function blurred(draggable: HTMLElement) {
-    draggable.classList.remove('drag')
-    document.removeEventListener('keydown', keyDown)
-    getPosition(draggable)
-    draggable.draggable = false
-    currentFocusedElement = null
-  }
+  const blurred = useCallback(
+    (draggable: HTMLElement) => {
+      draggable.classList.remove('drag')
+      document?.removeEventListener('keydown', keyDown)
+      getPosition(draggable)
+      draggable.draggable = false
+      currentFocusedElement = null
+    },
+    [keyDown, getPosition]
+  )
 
   //on focused blob
-  function focused(draggable: HTMLElement) {
-    // getPosition(draggable)
-    currentFocusedElement = draggable
-    draggable.classList.add('drag')
-    const layerStyle = (draggable as HTMLElement).style.getPropertyValue('--layer')
-    setActiveLayer(parseInt(layerStyle) ?? 2)
-    document.addEventListener('keydown', keyDown)
-    draggable.draggable = true
-  }
+  const focused = useCallback(
+    (draggable: HTMLElement) => {
+      // getPosition(draggable)
+      currentFocusedElement = draggable
+      draggable.classList.add('drag')
+      const layerStyle = (draggable as HTMLElement).style.getPropertyValue(
+        '--layer'
+      )
+      setActiveLayer(parseInt(layerStyle) ?? 2)
+      document?.addEventListener('keydown', keyDown)
+      draggable.draggable = true
+    },
+    [keyDown, setActiveLayer]
+  )
 
   //Mousewheel use
-  function wheel(target: HTMLElement) {
-    const zoomHandler = (e: WheelEvent) => zoom(e, target)
-    if (!scroll) target.addEventListener('wheel', zoomHandler, { passive: false })
-    return () => {
-      target.removeEventListener('wheel', zoomHandler)
-    }
-  }
-  function zoom(e: WheelEvent, target: HTMLElement) {
-    //e.preventDefault();
-
-    //scale += e.deltaY * -0.00001
-
-    if (reset) {
-      reset = false
-      const blobStyle = window.getComputedStyle(target)
-      let value =
-        blobStyle.getPropertyValue('--i') ?? target.style.getPropertyValue('--i') ?? '10'
-      let scale = parseFloat(value)
-      scale = isNaN(scale) ? 10 : scale
-      e.deltaY < 0 ? (scale *= 1.04) : (scale *= 0.96)
-      scale = Math.min(Math.max(7, scale), 36)
-      dispatch({
-        type: 'partialUpdate',
-        payload: {
-          d: d,
-          id: target.id,
-          update: {
-            i: scale,
-          },
-        },
-      })
-      const cooldown = () => {
-        reset = true
+  const wheel = useCallback(
+    (target: HTMLElement) => {
+      const zoomHandler = (e: WheelEvent) => zoom(e, target)
+      if (!scroll)
+        target.addEventListener('wheel', zoomHandler, { passive: false })
+      return () => {
+        target.removeEventListener('wheel', zoomHandler)
       }
-      setTimeout(cooldown, 100)
-    }
-  }
+    },
+    [scroll]
+  )
+
+  const zoom = useCallback(
+    (e: WheelEvent, target: HTMLElement) => {
+      //e.preventDefault();
+
+      //scale += e.deltaY * -0.00001
+
+      if (!isClient || !windowObj) return
+
+      if (reset) {
+        reset = false
+        const blobStyle = windowObj.getComputedStyle(target)
+        let value =
+          blobStyle.getPropertyValue('--i') ??
+          target.style.getPropertyValue('--i') ??
+          '10'
+        let scale = parseFloat(value)
+        scale = isNaN(scale) ? 10 : scale
+        e.deltaY < 0 ? (scale *= 1.04) : (scale *= 0.96)
+        scale = Math.min(Math.max(7, scale), 36)
+        dispatch({
+          type: 'partialUpdate',
+          payload: {
+            d: d,
+            id: target.id,
+            update: {
+              i: scale,
+            },
+          },
+        })
+        const cooldown = () => {
+          reset = true
+        }
+        setTimeout(cooldown, 100)
+      }
+    },
+    [isClient, windowObj, dispatch, d]
+  )
 
   useEffect(() => {
     const target = currentFocusedElement
@@ -459,310 +850,7 @@ const DragLayers = ({
         },
       })
     }
-  }, [colorIndex])
-
-  // Keyboard use
-  function keyDown(e: KeyboardEvent) {
-    const movePx = 4
-
-    const target = currentFocusedElement
-    if (!target) return
-
-    const blobStyle = window.getComputedStyle(target)
-
-    const setFocus = (target: HTMLElement) => {
-      const marginTop = parseFloat(blobStyle.marginTop)
-      const marginLeft = parseFloat(blobStyle.marginLeft)
-
-      const blobRect = target.getBoundingClientRect()
-      const parentRect = (target.parentNode as HTMLDivElement)?.getBoundingClientRect()
-      setFocusedBlob({
-        top: blobRect.top - parentRect.top - marginTop,
-        left: blobRect.left - parentRect.left - marginLeft,
-        width: blobRect.width,
-        height: blobRect.height,
-      })
-    }
-
-    let value =
-      blobStyle.getPropertyValue('--i') ??
-      (target as HTMLElement).style.getPropertyValue('--i') ??
-      '10'
-    let scale = parseFloat(value)
-    scale = isNaN(scale) ? 10 : scale
-
-    let attrLeft =
-      parseFloat(blobStyle.getPropertyValue('left')) ??
-      parseFloat(target.style.getPropertyValue('left')) ??
-      0
-    let attrTop =
-      parseFloat(blobStyle.getPropertyValue('top')) ??
-      parseFloat(target.style.getPropertyValue('top')) ??
-      0
-
-    const layer = target.style.getPropertyValue('--layer')
-
-    const draggable: Draggable = {
-      layer: parseInt(layer) ?? layer_,
-      id: target.id,
-      number: parseInt(target.id.replace('blob', '').split('-')[0], 10),
-      i: scale,
-      x: target.style.getPropertyValue('left').toString(),
-      y: target.style.getPropertyValue('top').toString(),
-      z: target.style.zIndex ?? '0',
-      background: target.style.background ?? 'linear-gradient(90deg, cyan, greenyellow)',
-    }
-
-    const updatePosition = (left: number, top: number) => {
-      dispatch({
-        type: 'partialUpdate',
-        payload: {
-          d: d,
-          id: target.id,
-          update: {
-            x: `${left}px`,
-            y: `${top}px`,
-          },
-        },
-      })
-      setFocus(target)
-    }
-
-    const cooldown = () => {
-      reset = true
-    }
-
-    const handleNumberPress = (l: number) => {
-      e.preventDefault()
-      if (reset) {
-        reset = false
-        changeBlobLayer(draggable, l)
-        setTimeout(cooldown, 100)
-      }
-    }
-    const key = e.key
-    if (parseInt(key) >= 1 && parseInt(key) <= layerAmount) {
-      handleNumberPress(parseInt(key) - 1)
-    }
-
-    switch (e.key) {
-      case 'ArrowLeft':
-        e.preventDefault()
-        if (reset) {
-          updatePosition(attrLeft - movePx, attrTop)
-          setTimeout(cooldown, 100)
-        }
-
-        break
-      case 'ArrowRight':
-        e.preventDefault()
-        if (reset) {
-          updatePosition(attrLeft + movePx, attrTop)
-          setTimeout(cooldown, 100)
-        }
-        break
-      case 'ArrowUp':
-        e.preventDefault()
-        if (reset) {
-          updatePosition(attrLeft, attrTop - movePx)
-          setTimeout(cooldown, 100)
-        }
-        break
-      case 'ArrowDown':
-        e.preventDefault()
-        if (reset) {
-          updatePosition(attrLeft, attrTop + movePx)
-          setTimeout(cooldown, 100)
-        }
-        break
-      case 'Escape':
-        e.preventDefault()
-
-        setScroll(true)
-        document.body.style.overflowY = 'auto'
-        document.body.style.overflowX = 'hidden'
-
-        if (exitApp.current) {
-          exitApp.current.setAttribute('tabindex', '0')
-          exitApp.current.addEventListener('blur', exitAppBlur)
-        }
-        ;(target as HTMLElement).blur()
-        dragWrap.current?.blur()
-        //Go to exit notice in order to remove focus from the app
-        if (exitApp.current) exitApp.current.textContent = t('ThankYouForPlaying')
-        exitApp.current?.focus()
-        break
-      case 'Enter': //Cycle through colors
-        e.preventDefault()
-        e.stopPropagation()
-        if (reset) {
-          reset = false
-          if ((target as HTMLElement).closest(`#drag-wrap${d}`)) {
-            setColorIndex((prevColorIndex) => {
-              const nextColorIndex = (prevColorIndex + 1) % colorPairs[d].length
-              return nextColorIndex // Return the new color index
-            })
-          }
-          setTimeout(cooldown, 100)
-        }
-        break
-      case 'R':
-      case 'r':
-      case ' ': //Cycle through random colors using colorswitch
-        e.preventDefault()
-        e.stopPropagation()
-        if (reset) {
-          reset = false
-          if ((target as HTMLElement).closest(`#drag-wrap${d}`)) {
-            const color1 = colorswitch()
-            let color2 = colorswitch()
-
-            if (color2 === color1) {
-              color2 = colorswitch()
-            }
-
-            const newBackground = `linear-gradient(${angle}, ${color1}, ${color2})`
-            dispatch({
-              type: 'partialUpdate',
-              payload: {
-                d: d,
-                id: target.id,
-                update: { background: newBackground },
-              },
-            })
-          }
-          setTimeout(cooldown, 100)
-        }
-        break
-      case 'Z': //Move blob to the bottom of the z-index pile
-      case 'z':
-        e.preventDefault()
-        if (reset) {
-          reset = false
-          dispatch({
-            type: 'partialUpdate',
-            payload: {
-              d: d,
-              id: target.id,
-              update: {
-                z: '0',
-              },
-            },
-          })
-          setTimeout(cooldown, 100)
-        }
-        break
-      case 'T': //Move blob to the top of the z-index pile
-      case 't':
-        //e.stopImmediatePropagation()
-        e.preventDefault()
-        if (reset) {
-          reset = false
-          dispatch({
-            type: 'partialUpdate',
-            payload: {
-              d: d,
-              id: target.id,
-              update: {
-                z: `${Math.max(1, highestZIndex[layer_] + 1)}`,
-              },
-            },
-          })
-          setTimeout(cooldown, 100)
-        }
-        break
-      case 'S':
-      case 's': //make blob smaller
-        e.preventDefault()
-        if (reset) {
-          reset = false
-          scale -= 0.4
-          scale = Math.min(Math.max(7, scale), 36)
-          dispatch({
-            type: 'partialUpdate',
-            payload: {
-              d: d,
-              id: target.id,
-              update: {
-                i: scale,
-              },
-            },
-          })
-          setTimeout(cooldown, 100)
-        }
-        break
-      case 'B': //make blob larger
-      case 'b':
-      case 'L':
-      case 'l':
-        //e.stopImmediatePropagation()
-        e.preventDefault()
-        if (reset) {
-          reset = false
-          scale += 0.4
-          scale = Math.min(Math.max(7, scale), 36)
-          dispatch({
-            type: 'partialUpdate',
-            payload: {
-              d: d,
-              id: target.id,
-              update: {
-                i: scale,
-              },
-            },
-          })
-          setTimeout(cooldown, 100)
-        }
-        break
-      case 'C': //make a new clone
-      case 'c':
-      case 'D':
-      case 'd':
-        e.preventDefault()
-        //e.stopImmediatePropagation()
-        if (reset) {
-          reset = false
-          makeBlob(draggable)
-          setTimeout(cooldown, 100)
-        }
-        break
-      case '+': // Make a random blob
-        e.preventDefault()
-        if (reset) {
-          reset = false
-          addRandomDraggable(draggable.x, draggable.y, draggable.layer)
-          setTimeout(cooldown, 200)
-        }
-        break
-      case 'Delete': //remove blob
-      case '-':
-        //e.stopImmediatePropagation()
-        e.preventDefault()
-        if (reset) {
-          reset = false
-          removeBlob(draggable)
-          setTimeout(cooldown, 100)
-        }
-        break
-    }
-  }
-
-  //Remove exit notice's tabindex and text as unnecessary after leaving it
-  function exitAppBlur() {
-    if (exitApp.current) {
-      exitApp.current?.removeAttribute('tabindex')
-      exitApp.current?.removeEventListener('blur', exitAppBlur)
-      exitApp.current.textContent = ''
-    }
-  }
-
-  //Clone blob
-  function makeBlob(draggable: Draggable) {
-    dispatch({
-      type: 'duplicateDraggable',
-      payload: { d: d, draggable },
-    })
-  }
+  }, [colorIndex, d, dispatch, colorPairs])
 
   // const [deleteId, setDeleteId] = useState<string>('')
 
@@ -780,40 +868,41 @@ const DragLayers = ({
   //   }
   // }, [deleteId, d, dispatch])
 
+  if (!isClient) {
+    return (
+      <div className="flex center margin0auto textcenter">
+        {t('Loading')}...
+      </div>
+    )
+  }
+
   return (
     <>
       {layers.map((l, index) => (
-        <Suspense
-          key={index}
-          fallback={
-            <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
-          }
-        >
-          <DragLayer
-            key={l}
-            layer_={l}
-            dragUlRef={layerRefs.current[l]}
-            items={groupedDraggables[l] || []}
-            className={hiddenLayers.has(l) ? 'hidden' : ''}
-            language={language}
-            d={d}
-            saveDraggables={saveDraggables}
-            selectedvalue0={selectedvalue0}
-            setFocusedBlob={setFocusedBlob}
-            start={start}
-            movement={movement}
-            stopMovementCheck={stopMovementCheck}
-            stopMoving={stopMoving}
-            wheel={wheel}
-            focused={focused}
-            blurred={blurred}
-            removeBlob={removeBlob}
-            mode={mode}
-            changeBlobLayer={changeBlobLayer}
-            layerAmount={layerAmount}
-            changeColor={changeColor}
-          />
-        </Suspense>
+        <DragLayer
+          key={l}
+          layer_={l}
+          dragUlRef={layerRefs[l]}
+          items={groupedDraggables[l] || []}
+          className={hiddenLayers.has(l) ? 'hidden' : ''}
+          language={language}
+          d={d}
+          saveDraggables={saveDraggables}
+          selectedvalue0={selectedvalue0}
+          setFocusedBlob={setFocusedBlob}
+          start={start}
+          movement={movement}
+          stopMovementCheck={stopMovementCheck}
+          stopMoving={stopMoving}
+          wheel={wheel}
+          focused={focused}
+          blurred={blurred}
+          removeBlob={removeBlob}
+          mode={mode}
+          changeBlobLayer={changeBlobLayer}
+          layerAmount={layerAmount}
+          changeColor={changeColor}
+        />
       ))}
     </>
   )

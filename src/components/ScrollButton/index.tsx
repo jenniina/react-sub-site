@@ -11,14 +11,14 @@ const ScrollButton: FC<{
     <button
       className={`${styles['scroll-button']}`}
       onClick={() => {
-        document.getElementById(id)?.scrollIntoView()
+        document?.getElementById(id)?.scrollIntoView()
       }}
     >
       {direction === 'above' && (
         <>
           <GoTriangleUp
-            height='1.3rem'
-            width='1.3rem'
+            height="1.3rem"
+            width="1.3rem"
             style={{ margin: '-0.4rem 0 -0.1rem' }}
           />
           <span>{name}</span>
@@ -29,8 +29,8 @@ const ScrollButton: FC<{
         <>
           <span>{name}</span>{' '}
           <GoTriangleDown
-            height='1.3rem'
-            width='1.3rem'
+            height="1.3rem"
+            width="1.3rem"
             style={{ margin: '-0.1rem 0 -0.4rem' }}
           />
         </>

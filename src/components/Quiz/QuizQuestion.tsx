@@ -1,4 +1,4 @@
-import { useEffect, lazy, Suspense, useContext } from 'react'
+import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
@@ -8,13 +8,12 @@ import Progress from './components/Progress'
 import Loader from './components/Loader'
 import Next from './components/Next'
 import Message from './components/Message'
+import Timer from './components/Timer'
 import styles from '../../components/Quiz/css/quiz.module.css'
-import { LanguageContext } from '../../contexts/LanguageContext'
-
-const Timer = lazy(() => import('./components/Timer'))
+import { useLanguageContext } from '../../contexts/LanguageContext'
 
 const QuizQuestion = ({ language }: { language: ELanguages }) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const { difficulty } = useParams()
   const { mode } = useSelector((state: ReducerProps) => state.difficulty)
@@ -44,7 +43,7 @@ const QuizQuestion = ({ language }: { language: ELanguages }) => {
         <div className={`${styles.quiz} `}>
           {status === 'loading' && (
             <>
-              <a href='#' onClick={goToMainPage}>
+              <a href="#" onClick={goToMainPage}>
                 &laquo;&nbsp;{t('QuizApp')}
               </a>
               <Loader language={language} />
@@ -52,16 +51,16 @@ const QuizQuestion = ({ language }: { language: ELanguages }) => {
           )}
           {status === 'error' && (
             <>
-              <a href='#' onClick={goToMainPage}>
+              <a href="#" onClick={goToMainPage}>
                 &laquo;&nbsp;{t('QuizApp')}
               </a>
-              <Message type='error' message={t('ErrorFetchingQuestions')} />
+              <Message type="error" message={t('ErrorFetchingQuestions')} />
             </>
           )}
           {status === 'ready' && (
             <>
               <h1 className={styles.h1}>
-                <a href='#' onClick={goToMainPage}>
+                <a href="#" onClick={goToMainPage}>
                   &laquo;&nbsp;{t('QuizApp')}
                 </a>
               </h1>
@@ -75,7 +74,7 @@ const QuizQuestion = ({ language }: { language: ELanguages }) => {
                 </div>
                 <h2 className={`${styles.question}`}>{question}</h2>
                 <div className={`${styles.options}`}>
-                  {options?.map((option) => {
+                  {options?.map(option => {
                     return (
                       <button
                         key={option}
@@ -99,15 +98,7 @@ const QuizQuestion = ({ language }: { language: ELanguages }) => {
                 </div>
               </div>
               <footer>
-                <Suspense
-                  fallback={
-                    <div className='flex center margin0auto textcenter'>
-                      {t('Loading')}...
-                    </div>
-                  }
-                >
-                  <Timer />
-                </Suspense>
+                <Timer />
                 {answer && <Next language={language} />}
               </footer>
             </>

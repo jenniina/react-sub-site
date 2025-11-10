@@ -1,4 +1,3 @@
-import { lazy, Suspense, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { selectMode } from './reducers/difficultyReducer'
 import { addQuiz } from './reducers/quizReducer'
@@ -11,10 +10,8 @@ import { ELanguages, ReducerProps } from '../../types'
 import { initializeUser } from '../../reducers/authReducer'
 import { FaStar } from 'react-icons/fa'
 import { getUserQuiz } from './reducers/quizReducer'
-import { LanguageContext } from '../../contexts/LanguageContext'
-// import LoginRegisterCombo from './components/LoginRegisterCombo'
-
-const LoginRegisterCombo = lazy(() => import('./components/LoginRegisterCombo'))
+import { useLanguageContext } from '../../contexts/LanguageContext'
+import LoginRegisterCombo from './components/LoginRegisterCombo'
 
 const QuizStart = ({
   heading,
@@ -27,7 +24,7 @@ const QuizStart = ({
   type: string
   language: ELanguages
 }) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const navigate = useNavigate()
   const { points, highscores, finalSeconds } = useSelector(
@@ -45,22 +42,14 @@ const QuizStart = ({
     dispatch(initializeUser())
   }, [])
 
-  const isLocalhost =
-    window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-
   useEffect(() => {
     if (user?._id && points !== 0 && finalSeconds !== 0) {
-      dispatch(getUserQuiz(user._id)).then((r) => {
+      dispatch(getUserQuiz(user._id)).then(r => {
         if (r !== null) {
           setHighscores(r.highscores)
-        } else if (
-          r === null &&
-          localStorage.getItem(`${isLocalhost ? 'local-' : ''}quiz-highscores`)
-        ) {
+        } else if (r === null && localStorage.getItem(`quiz-highscores`)) {
           const highscoresLocal = JSON.parse(
-            localStorage.getItem(
-              `${isLocalhost ? 'local-' : ''}quiz-highscores`
-            ) as string
+            localStorage.getItem(`quiz-highscores`) as string
           )
           dispatch(addQuiz({ highscores: highscoresLocal, user: user._id }))
         }
@@ -79,10 +68,10 @@ const QuizStart = ({
         <div>
           <div className={`medium ${styles.features}`}>
             <h2>Features</h2>
-            <ul className='ul'>
+            <ul className="ul">
               <li>
                 {t('QuizQuestions15AreFetchedFrom')}{' '}
-                <a href='https://the-trivia-api.com'>"the Trivia Api"</a>
+                <a href="https://the-trivia-api.com">"the Trivia Api"</a>
               </li>
               <li>
                 {t('Note')} {t('QuestionsAreInEnglish')}
@@ -90,7 +79,7 @@ const QuizStart = ({
               <li>{t('UserCanChooseTheDifficultyLevel')}</li>
               <li>{t('UserCanRegisterAndLoginToSaveHighscores')}</li>
             </ul>
-            <a href='https://github.com/jenniina/react-sub-site/tree/main/src/components/Quiz'>
+            <a href="https://github.com/jenniina/react-sub-site/tree/main/src/components/Quiz">
               Github
             </a>
           </div>
@@ -121,18 +110,12 @@ const QuizStart = ({
               </button>
             </div>
           </div>
-          <Suspense
-            fallback={
-              <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
-            }
-          >
-            <LoginRegisterCombo
-              language={language}
-              user={user}
-              highscoresLocal={highscoresLocal}
-              text='quizstart'
-            />
-          </Suspense>
+          <LoginRegisterCombo
+            language={language}
+            user={user}
+            highscoresLocal={highscoresLocal}
+            text="quizstart"
+          />
         </div>
       </section>
     </>

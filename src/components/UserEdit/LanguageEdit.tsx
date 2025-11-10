@@ -1,5 +1,5 @@
 import { IUser, ELanguages, ELanguagesLong } from '../../types'
-import { useContext, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Select, SelectOption } from '../Select/Select'
 import { initializeUser, refreshUser } from '../../reducers/authReducer'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
@@ -7,7 +7,7 @@ import { notify } from '../../reducers/notificationReducer'
 import { findUserById, updateUser } from '../../reducers/usersReducer'
 import { AxiosError } from 'axios'
 import styles from './css/edit.module.css'
-import { LanguageContext } from '../../contexts/LanguageContext'
+import { useLanguageContext } from '../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
@@ -20,9 +20,11 @@ const LanguageEdit = ({ user, language, setLanguage, options }: Props) => {
 
   const [passwordOld, setPasswordOld] = useState<IUser['password'] | ''>('')
 
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
-  const [lang, setLang] = useState<ELanguages>((user?.language as ELanguages) ?? language)
+  const [lang, setLang] = useState<ELanguages>(
+    (user?.language as ELanguages) ?? language
+  )
 
   const [sending, setSending] = useState(false)
 
@@ -40,7 +42,7 @@ const LanguageEdit = ({ user, language, setLanguage, options }: Props) => {
 
       if (user) {
         dispatch(updateUser(editedUser))
-          .then((res) => {
+          .then(res => {
             if (res) {
               if (res.success === false) {
                 dispatch(notify(`${t('Error')}: ${res.message}`, true, 5))
@@ -61,8 +63,13 @@ const LanguageEdit = ({ user, language, setLanguage, options }: Props) => {
             console.error(error)
             if (error.response?.data?.message)
               dispatch(notify(error.response.data.message, true, 8))
-            else if (error.code === 'ERR_BAD_REQUEST' && error.response?.data?.message) {
-              dispatch(notify(`${t('Error')}: ${error.response.data.message}`, true, 5))
+            else if (
+              error.code === 'ERR_BAD_REQUEST' &&
+              error.response?.data?.message
+            ) {
+              dispatch(
+                notify(`${t('Error')}: ${error.response.data.message}`, true, 5)
+              )
             } else {
               setTimeout(() => {
                 dispatch(notify(t('UserNotUpdated'), true, 5))
@@ -90,9 +97,9 @@ const LanguageEdit = ({ user, language, setLanguage, options }: Props) => {
           <form onSubmit={handleUserSubmit} className={styles['edit-user']}>
             <Select
               language={language}
-              id='language-register'
+              id="language-register"
               className={`language ${styles.language}`}
-              instructions='Language'
+              instructions="Language"
               hide
               options={options(ELanguagesLong)}
               value={
@@ -103,24 +110,24 @@ const LanguageEdit = ({ user, language, setLanguage, options }: Props) => {
                     } as SelectOption)
                   : undefined
               }
-              onChange={(o) => {
+              onChange={o => {
                 setLang(o?.value as ELanguages)
               }}
             />
-            <div className='input-wrap'>
+            <div className="input-wrap">
               <label>
                 <input
                   required
-                  type='password'
-                  name='old-password'
-                  id='old-password-user-language'
+                  type="password"
+                  name="old-password"
+                  id="old-password-user-language"
                   value={passwordOld}
                   onChange={({ target }) => setPasswordOld(target.value.trim())}
                 />
                 <span>{t('CurrentPassword')}</span>
               </label>
             </div>
-            <button type='submit' disabled={sending}>
+            <button type="submit" disabled={sending}>
               {t('Edit')}
             </button>
           </form>

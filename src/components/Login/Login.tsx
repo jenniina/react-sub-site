@@ -6,7 +6,7 @@ import { initializeUser, login, logout } from '../../reducers/authReducer'
 import { useSelector } from 'react-redux'
 import { ELanguages, ReducerProps } from '../../types'
 import { Link } from 'react-router-dom'
-import { LanguageContext } from '../../contexts/LanguageContext'
+import { useLanguageContext } from '../../contexts/LanguageContext'
 
 interface LoginProps {
   language: ELanguages
@@ -16,7 +16,7 @@ interface LoginProps {
 }
 
 const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const dispatch = useAppDispatch()
 
@@ -39,7 +39,7 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
       .then(() => {
         dispatch(notify(`${t('LoggedOut')}`, false, 4))
       })
-      .catch((e) => {
+      .catch(e => {
         console.error(e)
         dispatch(notify(`${t('Error')}: ${e.message}`, true, 8))
       })
@@ -56,10 +56,11 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
         setPassword('')
         setIsFormOpen && setIsFormOpen(false)
       })
-      .catch((e) => {
+      .catch(e => {
         setLoggingIn(false)
         console.error(e)
-        if (e.response?.data?.message) dispatch(notify(e.response.data.message, true, 8))
+        if (e.response?.data?.message)
+          dispatch(notify(e.response.data.message, true, 8))
         else if (e.code === 'ERR_BAD_REQUEST')
           dispatch(notify(`${t('Error')}: ${e.response.data.message}`, true, 8))
         else if (e.code === 'ERR_NETWORK') {
@@ -71,11 +72,11 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
   return (
     <>
       {user ? (
-        <div className='logout-wrap'>
+        <div className="logout-wrap">
           <span>
             {t('LoggedInAs')} {user?.name ? user?.name : user.username}{' '}
           </span>
-          <Link to='/edit'>{t('Edit')}</Link>
+          <Link to="/edit">{t('Edit')}</Link>
           <button
             onClick={handleLogout}
             id={`logout-${text}`}
@@ -88,8 +89,8 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
         <>
           <Accordion
             language={language}
-            className='login'
-            wrapperClass='login-wrap'
+            className="login"
+            wrapperClass="login-wrap"
             text={t('Login')}
             ref={formLoginRef}
             setIsFormOpen={setIsFormOpen}
@@ -99,35 +100,39 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
             <>
               <h2>{t('Login')}</h2>
 
-              <form onSubmit={handleLogin} className='login'>
-                <div className='input-wrap'>
+              <form onSubmit={handleLogin} className="login">
+                <div className="input-wrap">
                   <label>
                     <input
-                      name='username'
-                      type='text'
+                      name="username"
+                      type="text"
                       value={username}
                       required
-                      autoComplete='email'
-                      onChange={({ target }) => setUsername(target.value.trim())}
+                      autoComplete="email"
+                      onChange={({ target }) =>
+                        setUsername(target.value.trim())
+                      }
                     />
                     <span>{t('Email')}: </span>
                   </label>
                 </div>
-                <div className='input-wrap'>
+                <div className="input-wrap">
                   <label>
                     <input
-                      name='password'
-                      type='password'
+                      name="password"
+                      type="password"
                       required
                       value={password}
-                      autoComplete='on'
-                      onChange={({ target }) => setPassword(target.value.trim())}
+                      autoComplete="on"
+                      onChange={({ target }) =>
+                        setPassword(target.value.trim())
+                      }
                     />
                     <span>{t('Password')}: </span>
                   </label>
                 </div>
                 <button
-                  type='submit'
+                  type="submit"
                   disabled={loggingIn}
                   id={`login-${text}`}
                   className={`login ${text} restore`}

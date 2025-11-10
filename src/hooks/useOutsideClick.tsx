@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 
 interface Props {
   ref: React.RefObject<HTMLElement>
@@ -13,7 +13,7 @@ type EventConfigItem = [
     | ((e: Event) => void)
     | ((e: Event | MouseEvent | TouchEvent) => void)
     | ((e: Event | KeyboardEvent) => void)
-  )
+  ),
 ]
 
 /**
@@ -67,12 +67,12 @@ export function useOutsideClick({
 
   useEffect(() => {
     eventsConfig.forEach(([eventName, listener]) => {
-      document.addEventListener(eventName, listener)
+      document?.addEventListener(eventName, listener)
     })
 
     return () => {
       eventsConfig.forEach(([eventName, listener]) => {
-        document.removeEventListener(eventName, listener)
+        document?.removeEventListener(eventName, listener)
       })
     }
   }, [eventsConfig])
@@ -83,7 +83,7 @@ export function useOutsideClick({
   //   eventsConfig.map((eventConfigItem) => {
   //     const [eventName, listener] = eventConfigItem
 
-  //     document.addEventListener(eventName, listener)
+  //     document?.addEventListener(eventName, listener)
   //   })
 
   //   return () => {
@@ -92,7 +92,7 @@ export function useOutsideClick({
   //     eventsConfig.map((eventConfigItem) => {
   //       const [eventName, listener] = eventConfigItem
 
-  //       document.removeEventListener(eventName, listener)
+  //       document?.removeEventListener(eventName, listener)
   //     })
   //   }
   // }, [eventsConfig])

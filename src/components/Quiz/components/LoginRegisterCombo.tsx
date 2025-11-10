@@ -7,7 +7,7 @@ import { ELanguages, IUser } from '../../../types'
 import { createUser } from '../../../reducers/usersReducer'
 import styles from '../css/quiz.module.css'
 import { IHighscore } from '../types'
-import { LanguageContext } from '../../../contexts/LanguageContext'
+import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 interface LoginRegisterComboProps {
   language: ELanguages
@@ -22,7 +22,7 @@ const LoginRegisterCombo: FC<LoginRegisterComboProps> = ({
   highscoresLocal,
   text,
 }) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const dispatch = useAppDispatch()
   const [loginOpen, setLoginOpen] = useState(false)
@@ -46,7 +46,7 @@ const LoginRegisterCombo: FC<LoginRegisterComboProps> = ({
         dispatch(notify(t('RegistrationSuccesful'), false, 8))
         setSending(false)
       })
-      .catch((err) => {
+      .catch(err => {
         console.error(err)
         if (err.response?.data?.message)
           dispatch(notify(err.response.data.message, true, 8))
