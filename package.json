@@ -5,10 +5,15 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:debug": "cross-env NODE_ENV=debug vite build",
+    "build:prod": "cross-env NODE_ENV=production vite build",
     "preview": "vite preview",
     "lint": "eslint src/ --ext .ts,.tsx",
     "lint:fix": "eslint src/ --ext .ts,.tsx --fix",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "format:lint": "npm run format && npm run lint:fix"
   },
   "author": "Jenniina Laine",
   "license": "Proprietary",
@@ -16,18 +21,16 @@
     "@reduxjs/toolkit": "^2.0.1",
     "axios": "^1.5.1",
     "dom-to-image-more": "^3.5.0",
-    "esbuild": "^0.25.0",
-    "eslint-plugin-jsx-a11y": "^6.10.2",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "globals": "^16.5.0",
-    "jiti": "^2.6.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-icons": "^5.4.0",
     "react-redux": "^8.1.3",
     "react-router-dom": "^6.30.1",
-    "typescript-eslint": "^8.46.3",
     "uuid": "^9.0.0"
+  },
+  "resolutions": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@types/eslint-plugin-jsx-a11y": "^6.10.1",
@@ -35,10 +38,20 @@
     "@types/react-dom": "^18.0.8",
     "@types/uuid": "^8.3.4",
     "@vitejs/plugin-react": "^4.3.4",
+    "cross-env": "^10.1.0",
+    "esbuild": "^0.25.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "globals": "^16.5.0",
+    "jiti": "^2.6.1",
+    "prettier": "^3.6.2",
     "rollup-plugin-copy": "^3.5.0",
     "terser": "^5.44.1",
     "typescript": "^4.6.4",
+    "typescript-eslint": "^8.46.3",
     "vike": "^0.4.245",
     "vite": "^6.0.0"
   }

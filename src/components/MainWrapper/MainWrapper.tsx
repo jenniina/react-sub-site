@@ -3,134 +3,130 @@ import {
   Route,
   Location as RouterLocation,
   useLocation,
-} from "react-router-dom";
-import { options } from "../../utils";
-import { Suspense, lazy, useContext, useEffect, useState } from "react";
-import Portfolio from "../../pages/Portfolio";
-import About from "../../pages/About";
-import CartPage from "../../pages/CartPage";
-import Contact from "../../pages/Contact";
-import Disclaimer from "../../pages/Disclaimer";
-import OrderPage from "../../pages/OrderPage";
-import BlobPage from "../../pages/pages-portfolio/BlobPage";
-import ColorsPage from "../../pages/pages-portfolio/ColorsPage";
-import ComposerPage from "../../pages/pages-portfolio/ComposerPage";
-import CustomSelectPage from "../../pages/pages-portfolio/CustomSelectPage";
-import DragAndDropPage from "../../pages/pages-portfolio/DragAndDropPage";
-import FormPage from "../../pages/pages-portfolio/FormPage";
-import GraphQLPage from "../../pages/pages-portfolio/GraphQLPage";
-import HairSalonPage from "../../pages/pages-portfolio/HairSalonPage";
-import ImagesPage from "../../pages/pages-portfolio/ImagesPage";
-import JokesPage from "../../pages/pages-portfolio/JokesPage";
-import MemoryPage from "../../pages/pages-portfolio/MemoryPage";
-import QuizPage from "../../pages/pages-portfolio/QuizPage";
-import TodoPage from "../../pages/pages-portfolio/TodoPage";
-import StorePage from "../../pages/StorePage";
-import TermsOfService from "../../pages/TermsOfService";
-import UserEditPage from "../../pages/UserEditPage";
-import Welcome from "../../pages/Welcome";
-import { ELanguages } from "../../types";
-import { useHeroProps } from "../../hooks/useHeroProps";
-import { useDocumentTitleAndLanguage } from "../../hooks/useDocumentTitleAndLanguage";
-import Hero from "../Hero/Hero";
-import useCart from "../../hooks/useCart";
-import { LanguageContext } from "../../contexts/LanguageContext";
-import { useIsClient, useWindow } from "../../hooks/useSSR";
-
-const QuizStart = lazy(() => import("../Quiz/QuizStart"));
-const QuizQuestion = lazy(() => import("../Quiz/QuizQuestion"));
-const QuizFinished = lazy(() => import("../Quiz/QuizFinished"));
-const NavPortfolio = lazy(() => import("../NavPortfolio/NavPortfolio"));
+} from 'react-router-dom'
+import { options } from '../../utils'
+import { useEffect, useState } from 'react'
+import Portfolio from '../../pages/Portfolio'
+import About from '../../pages/About'
+import CartPage from '../../pages/CartPage'
+import Contact from '../../pages/Contact'
+import Disclaimer from '../../pages/Disclaimer'
+import OrderPage from '../../pages/OrderPage'
+import BlobPage from '../../pages/pages-portfolio/BlobPage'
+import ColorsPage from '../../pages/pages-portfolio/ColorsPage'
+import ComposerPage from '../../pages/pages-portfolio/ComposerPage'
+import CustomSelectPage from '../../pages/pages-portfolio/CustomSelectPage'
+import DragAndDropPage from '../../pages/pages-portfolio/DragAndDropPage'
+import FormPage from '../../pages/pages-portfolio/FormPage'
+import GraphQLPage from '../../pages/pages-portfolio/GraphQLPage'
+import HairSalonPage from '../../pages/pages-portfolio/HairSalonPage'
+import ImagesPage from '../../pages/pages-portfolio/ImagesPage'
+import JokesPage from '../../pages/pages-portfolio/JokesPage'
+import MemoryPage from '../../pages/pages-portfolio/MemoryPage'
+import QuizPage from '../../pages/pages-portfolio/QuizPage'
+import TodoPage from '../../pages/pages-portfolio/TodoPage'
+import StorePage from '../../pages/StorePage'
+import TermsOfService from '../../pages/TermsOfService'
+import UserEditPage from '../../pages/UserEditPage'
+import Welcome from '../../pages/Welcome'
+import { ELanguages } from '../../types'
+import { useHeroProps } from '../../hooks/useHeroProps'
+import { useDocumentTitleAndLanguage } from '../../hooks/useDocumentTitleAndLanguage'
+import Hero from '../Hero/Hero'
+import useCart from '../../hooks/useCart'
+import { useLanguageContext } from '../../contexts/LanguageContext'
+import { useIsClient, useWindow } from '../../hooks/useSSR'
+import QuizStart from '../Quiz/QuizStart'
+import QuizQuestion from '../Quiz/QuizQuestion'
+import QuizFinished from '../Quiz/QuizFinished'
+import NavPortfolio from '../NavPortfolio/NavPortfolio'
 
 interface Props {
-  language: ELanguages;
-  setLanguage: (lang: ELanguages) => void;
+  language: ELanguages
+  setLanguage: (lang: ELanguages) => void
 }
 
 const MainWrapper = ({ language, setLanguage }: Props) => {
-  const isClient = useIsClient();
-  const windowObj = useWindow();
+  const isClient = useIsClient()
+  const windowObj = useWindow()
 
-  const { cart, addToCart, removeFromCart, editDetails, clearCart } = useCart();
+  const { cart, addToCart, removeFromCart, editDetails, clearCart } = useCart()
 
-  const { t } = useContext(LanguageContext)!;
+  const { t } = useLanguageContext()
 
-  const location = useLocation();
+  const location = useLocation()
 
   const [displayLocation, setDisplayLocation] =
-    useState<RouterLocation>(location);
+    useState<RouterLocation>(location)
 
   const heroProps = useHeroProps(
     location.pathname,
     displayLocation.pathname,
     language
-  );
+  )
 
-  const [transitionPage, setTransitionPage] = useState("fadeIn");
+  const [transitionPage, setTransitionPage] = useState('fadeIn')
 
   // Update document language and title
-  useDocumentTitleAndLanguage({ language });
+  useDocumentTitleAndLanguage({ language })
 
   // Change language with ?lang=fi etc:
   useEffect(() => {
-    if (!isClient || !windowObj) return;
-    const urlParams = new URLSearchParams(windowObj.location.search);
-    const langParam = urlParams.get("lang");
+    if (!isClient || !windowObj) return
+    const urlParams = new URLSearchParams(windowObj.location.search)
+    const langParam = urlParams.get('lang')
     if (langParam && Object.values(ELanguages).includes(langParam as any)) {
-      setLanguage(langParam as ELanguages);
+      setLanguage(langParam as ELanguages)
     }
-  }, [isClient, setLanguage]);
+  }, [isClient, setLanguage])
 
   useEffect(() => {
-    if (!isClient || !windowObj) return;
+    if (!isClient || !windowObj) return
 
-    const hash = location.hash;
+    const hash = location.hash
     if (hash) {
-      const element = document?.querySelector(hash);
+      const element = document?.querySelector(hash)
       if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
+        element.scrollIntoView({ behavior: 'smooth' })
       }
     } else if (location.pathname !== displayLocation.pathname) {
-      if (!isClient || !windowObj) return;
+      if (!isClient || !windowObj) return
       windowObj.scrollTo({
         top: 0,
-        behavior: "smooth",
-      });
+        behavior: 'smooth',
+      })
     }
-    if (location.pathname !== displayLocation.pathname)
-      setTransitionPage("fadeOut");
-  }, [location, displayLocation.pathname, isClient]);
+  }, [location.pathname, displayLocation.pathname, isClient])
 
   useEffect(() => {
-    if (transitionPage === "fadeOut") {
+    if (transitionPage === 'fadeOut') {
       const timer = setTimeout(() => {
-        setTransitionPage("fadeIn");
-        setDisplayLocation(location);
-      }, 500); // Match this duration with the CSS animation duration
-      return () => clearTimeout(timer);
+        setTransitionPage('fadeIn')
+        setDisplayLocation(location)
+      }, 500) // Match this duration with the CSS animation duration
+      return () => clearTimeout(timer)
     }
-  }, [transitionPage, location]);
+  }, [transitionPage, location.pathname])
 
   return (
     <main
       id={`main-content`}
       className={`${transitionPage} main-content z`}
       onAnimationEnd={() => {
-        if (transitionPage === "fadeOut") {
-          setTransitionPage("fadeIn");
-          setDisplayLocation(location);
+        if (transitionPage === 'fadeOut') {
+          setTransitionPage('fadeIn')
+          setDisplayLocation(location)
         }
       }}
     >
-      {heroProps.heading && (
-        <Hero
-          displayLocation={displayLocation}
-          language={language}
-          address={heroProps.address}
-          heading={heroProps.heading}
-          text={heroProps.text}
-        />
-      )}
+      <Hero
+        displayLocation={displayLocation}
+        language={language}
+        address={heroProps.address}
+        heading={heroProps.heading}
+        text={heroProps.text}
+      />
+
       <Routes location={displayLocation}>
         <Route
           path="*"
@@ -138,8 +134,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             <Welcome
               language={language}
               setLanguage={setLanguage}
-              heading={t("Welcome")}
-              text={t("ToTheReactSiteOfJenniinaFi")}
+              heading={t('Welcome')}
+              text={t('ToTheReactSiteOfJenniinaFi')}
               type="page"
               options={options}
             />
@@ -150,8 +146,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
           element={
             <About
               language={language}
-              heading={t("About")}
-              text={t("ThisSite")}
+              heading={t('About')}
+              text={t('ThisSite')}
               type="page"
             />
           }
@@ -161,8 +157,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
           path="/edit"
           element={
             <UserEditPage
-              heading={t("UserEdit")}
-              text={t("EditUserSettings")}
+              heading={t('UserEdit')}
+              text={t('EditUserSettings')}
               type="page"
               language={language}
               setLanguage={setLanguage}
@@ -171,25 +167,12 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
           }
         />
 
-        <Route
-          path="/portfolio"
-          element={
-            <Suspense
-              fallback={
-                <div className="flex center margin0auto textcenter">
-                  {t("Loading")}...
-                </div>
-              }
-            >
-              <NavPortfolio language={language} />
-            </Suspense>
-          }
-        >
+        <Route path="/portfolio" element={<NavPortfolio language={language} />}>
           <Route
             index
             element={
               <Portfolio
-                heading={t("Portfolio")}
+                heading={t('Portfolio')}
                 type="page"
                 text="ReactJS"
                 language={language}
@@ -202,7 +185,7 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
               <GraphQLPage
                 language={language}
                 heading="GraphQL"
-                text={t("GraphQLSite")}
+                text={t('GraphQLSite')}
                 type="page subpage"
               />
             }
@@ -212,8 +195,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             element={
               <BlobPage
                 language={language}
-                heading={t("Blobs")}
-                text={t("BlobAppSlogan")}
+                heading={t('Blobs')}
+                text={t('BlobAppSlogan')}
                 type="page subpage"
               />
             }
@@ -223,8 +206,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             element={
               <DragAndDropPage
                 language={language}
-                heading={t("DragAndDrop")}
-                text={t("DragAndDropAppIntro")}
+                heading={t('DragAndDrop')}
+                text={t('DragAndDropAppIntro')}
                 type="page subpage"
               />
             }
@@ -233,8 +216,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             path="/portfolio/todo"
             element={
               <TodoPage
-                heading={t("TodoApp")}
-                text={t("GetOrganizedOneTaskAtATime")}
+                heading={t('TodoApp')}
+                text={t('GetOrganizedOneTaskAtATime')}
                 type="page subpage"
                 language={language}
               />
@@ -245,7 +228,7 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             element={
               <CustomSelectPage
                 language={language}
-                heading={t("CustomSelect")}
+                heading={t('CustomSelect')}
                 text=""
                 type="page subpage"
               />
@@ -256,7 +239,7 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             element={
               <FormPage
                 language={language}
-                heading={t("MultistepForm")}
+                heading={t('MultistepForm')}
                 text=""
                 type="page subpage"
               />
@@ -266,8 +249,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             path="/portfolio/jokes/*"
             element={
               <JokesPage
-                heading={t("TheComediansCompanion")}
-                text={t("AJokeGeneratorForTheComicallyInclined")}
+                heading={t('TheComediansCompanion')}
+                text={t('AJokeGeneratorForTheComicallyInclined')}
                 type="page subpage"
                 language={language}
                 setLanguage={setLanguage}
@@ -278,49 +261,21 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             <Route
               index
               element={
-                <Suspense
-                  fallback={
-                    <div className="flex center margin0auto textcenter">
-                      {t("Loading")}...
-                    </div>
-                  }
-                >
-                  <QuizStart
-                    heading={t("QuizApp")}
-                    text={t("TestYourKnowledge")}
-                    type="page subpage"
-                    language={language}
-                  />
-                </Suspense>
+                <QuizStart
+                  heading={t('QuizApp')}
+                  text={t('TestYourKnowledge')}
+                  type="page subpage"
+                  language={language}
+                />
               }
             />
             <Route
               path="/portfolio/quiz/difficulty/:difficulty"
-              element={
-                <Suspense
-                  fallback={
-                    <div className="flex center margin0auto textcenter">
-                      {t("Loading")}...
-                    </div>
-                  }
-                >
-                  <QuizQuestion language={language} />
-                </Suspense>
-              }
+              element={<QuizQuestion language={language} />}
             />
             <Route
               path="/portfolio/quiz/results"
-              element={
-                <Suspense
-                  fallback={
-                    <div className="flex center margin0auto textcenter">
-                      {t("Loading")}...
-                    </div>
-                  }
-                >
-                  <QuizFinished language={language} />
-                </Suspense>
-              }
+              element={<QuizFinished language={language} />}
             />
           </Route>
           <Route
@@ -328,7 +283,7 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             element={
               <HairSalonPage
                 language={language}
-                heading={t("HairSalonWebsite")}
+                heading={t('HairSalonWebsite')}
                 text="React, Node.js, Express, MySQL, Sequelize"
                 type="page subpage"
               />
@@ -339,7 +294,7 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             element={
               <ComposerPage
                 language={language}
-                heading={t("ComposerOlliSanta")}
+                heading={t('ComposerOlliSanta')}
                 text="React, Node.js, Express, MongoDB"
                 type="page subpage"
               />
@@ -350,8 +305,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             element={
               <ColorsPage
                 language={language}
-                heading={t("ColorAccessibility")}
-                text={`${t("WCAGTool")}`}
+                heading={t('ColorAccessibility')}
+                text={`${t('WCAGTool')}`}
                 type="page subpage"
               />
             }
@@ -361,8 +316,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             element={
               <MemoryPage
                 language={language}
-                heading={t("MemoryGame")}
-                text={t("MemoryGameIntro")}
+                heading={t('MemoryGame')}
+                text={t('MemoryGameIntro')}
                 type="page subpage"
               />
             }
@@ -371,8 +326,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
             path="/portfolio/media"
             element={
               <ImagesPage
-                heading={t("Media")}
-                text={t("MediaWithQuotesOrPoems")}
+                heading={t('Media')}
+                text={t('MediaWithQuotesOrPoems')}
                 type="page subpage"
                 language={language}
               />
@@ -385,8 +340,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
           element={
             <Contact
               language={language}
-              heading={t("Contact")}
-              text={t("LetsCollaborate")}
+              heading={t('Contact')}
+              text={t('LetsCollaborate')}
               type="page"
             />
           }
@@ -396,7 +351,7 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
           element={
             <CartPage
               language={language}
-              heading={t("ShoppingCart")}
+              heading={t('ShoppingCart')}
               text=""
               type="page"
               cart={cart}
@@ -412,8 +367,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
           element={
             <StorePage
               language={language}
-              heading={t("Store")}
-              text={t("WebpagesAndGraphicDesign")}
+              heading={t('Store')}
+              text={t('WebpagesAndGraphicDesign')}
               type="page"
               cart={cart}
               addToCart={addToCart}
@@ -426,7 +381,7 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
           element={
             <OrderPage
               language={language}
-              heading={t("Orders")}
+              heading={t('Orders')}
               text=""
               type="page"
             />
@@ -437,8 +392,8 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
           element={
             <Disclaimer
               language={language}
-              heading={t("PrivacyAndSecurityDisclaimer")}
-              text={`${t("LastUpdated")}: 2025/9/20`}
+              heading={t('PrivacyAndSecurityDisclaimer')}
+              text={`${t('LastUpdated')}: 2025/9/20`}
               type="page"
             />
           }
@@ -448,15 +403,15 @@ const MainWrapper = ({ language, setLanguage }: Props) => {
           element={
             <TermsOfService
               language={language}
-              heading={t("TermsOfService")}
-              text={`${t("LastUpdated")}: 2024/10/20`}
+              heading={t('TermsOfService')}
+              text={`${t('LastUpdated')}: 2024/10/20`}
               type="page"
             />
           }
         />
       </Routes>
     </main>
-  );
-};
+  )
+}
 
-export default MainWrapper;
+export default MainWrapper

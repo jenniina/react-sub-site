@@ -42,7 +42,7 @@ function blobReducer(
       }
       if (action.payload.draggable) {
         const draggableExists = newDraggablesAdd[action.payload.d].some(
-          (draggable) => draggable.id === action.payload.draggable?.id
+          draggable => draggable.id === action.payload.draggable?.id
         )
         if (!draggableExists) {
           newDraggablesAdd[action.payload.d] = [
@@ -65,8 +65,8 @@ function blobReducer(
       if (action.payload.draggable) {
         // Find the highest ID currently in state
         const maxId = Math.max(
-          ...newDraggablesDuplicate.flatMap((draggables) =>
-            draggables.map((draggable) =>
+          ...newDraggablesDuplicate.flatMap(draggables =>
+            draggables.map(draggable =>
               parseInt(draggable.id.replace('blob', '').split('-')[0], 10)
             )
           ),
@@ -90,7 +90,7 @@ function blobReducer(
           }
 
           draggableExists = newDraggablesDuplicate[action.payload.d].some(
-            (draggable) => draggable.id === newDraggable.id
+            draggable => draggable.id === newDraggable.id
           )
 
           if (draggableExists) {
@@ -112,16 +112,20 @@ function blobReducer(
     case 'removeDraggable':
       const newDraggables = [...state.draggables]
       newDraggables[action.payload.d] = newDraggables[action.payload.d]?.filter(
-        (item) => item.id !== action.payload.id
+        item => item.id !== action.payload.id
       )
       const newStateRemove = { ...state, draggables: newDraggables }
       return newStateRemove
     case 'updateDraggable':
       const newDraggablesUpdate = state.draggables.map((subArray, index) =>
         index === action.payload.d
-          ? subArray?.map((draggable) =>
+          ? subArray?.map(draggable =>
               draggable.id === action.payload.draggable?.id
-                ? { ...draggable, ...action.payload.draggable, id: draggable.id }
+                ? {
+                    ...draggable,
+                    ...action.payload.draggable,
+                    id: draggable.id,
+                  }
                 : draggable
             )
           : subArray
@@ -131,7 +135,7 @@ function blobReducer(
       const { d, id, update } = action.payload
       const newDraggablesPartial = state.draggables.map((subArray, index) =>
         index === d
-          ? subArray?.map((draggable) =>
+          ? subArray?.map(draggable =>
               draggable.id === id ? { ...draggable, ...update } : draggable
             )
           : subArray
@@ -147,7 +151,7 @@ function blobReducer(
         ...state,
         draggables: state.draggables.map((subArray, index) =>
           index === action.payload.d
-            ? subArray?.map((draggable) => ({
+            ? subArray?.map(draggable => ({
                 ...draggable,
                 x: `${parseInt(draggable.x) - pxAmount}px`,
               }))
@@ -159,7 +163,7 @@ function blobReducer(
         ...state,
         draggables: state.draggables.map((subArray, index) =>
           index === action.payload.d
-            ? subArray?.map((draggable) => ({
+            ? subArray?.map(draggable => ({
                 ...draggable,
                 x: `${parseInt(draggable.x) + pxAmount}px`,
               }))
@@ -171,7 +175,7 @@ function blobReducer(
         ...state,
         draggables: state.draggables.map((subArray, index) =>
           index === action.payload.d
-            ? subArray?.map((draggable) => ({
+            ? subArray?.map(draggable => ({
                 ...draggable,
                 y: `${parseInt(draggable.y) - pxAmount}px`,
               }))
@@ -183,7 +187,7 @@ function blobReducer(
         ...state,
         draggables: state.draggables.map((subArray, index) =>
           index === action.payload.d
-            ? subArray?.map((draggable) => ({
+            ? subArray?.map(draggable => ({
                 ...draggable,
                 y: `${parseInt(draggable.y) + pxAmount}px`,
               }))
@@ -193,7 +197,8 @@ function blobReducer(
     case 'setBackgroundColor':
       const newBackgroundColor = [...state.backgroundColor]
       newBackgroundColor[action.payload.d] =
-        action.payload.backgroundColor ?? state.backgroundColor[action.payload.d]
+        action.payload.backgroundColor ??
+        state.backgroundColor[action.payload.d]
       return { ...state, backgroundColor: newBackgroundColor }
 
     default:

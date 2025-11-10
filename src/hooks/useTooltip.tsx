@@ -28,7 +28,7 @@ const useTooltip = (): UseTooltipReturn => {
   }, [])
 
   const handleMouseLeave = useCallback(() => {
-    setTooltip((prev) => ({
+    setTooltip(prev => ({
       ...prev,
       visible: false,
     }))

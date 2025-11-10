@@ -9,7 +9,11 @@ interface CardTypeButtonProps {
   onClick: () => void
 }
 
-const CardTypeButton: FC<CardTypeButtonProps> = ({ option, isActive, onClick }) => {
+const CardTypeButton: FC<CardTypeButtonProps> = ({
+  option,
+  isActive,
+  onClick,
+}) => {
   const getCardTypeIcon = (value: CardType) => {
     switch (value) {
       case CardType.icons:
@@ -30,7 +34,7 @@ const CardTypeButton: FC<CardTypeButtonProps> = ({ option, isActive, onClick }) 
       aria-label={option.label}
     >
       {getCardTypeIcon(option.value)}
-      <span className='tooltip above narrow2 space'>{option.label}</span>
+      <span className="tooltip above narrow2 space">{option.label}</span>
     </button>
   )
 }

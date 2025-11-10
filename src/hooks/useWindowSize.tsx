@@ -33,34 +33,34 @@
 //   return windowSize;
 // }
 
-import { useState, useEffect } from "react";
-import { useIsClient } from "./useSSR";
+import { useState, useEffect } from 'react'
+import { useIsClient } from './useSSR'
 
 export default function useWindowSize() {
-  const isClient = useIsClient();
+  const isClient = useIsClient()
 
   // Provide desktop defaults for SSR
   const [windowSize, setWindowSize] = useState({
     windowWidth: 1200, // Default to desktop width
     windowHeight: 800, // Default to desktop height
-  });
+  })
 
   useEffect(() => {
-    if (!isClient || typeof window === "undefined") return;
+    if (!isClient || typeof window === 'undefined') return
 
     function handleResize() {
       setWindowSize({
         windowWidth: window.innerWidth,
         windowHeight: window.innerHeight,
-      });
+      })
     }
 
     // Set initial values
-    handleResize();
+    handleResize()
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [isClient]);
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [isClient])
 
-  return windowSize;
+  return windowSize
 }

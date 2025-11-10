@@ -1,67 +1,67 @@
-import { useState, useEffect, FC, useContext } from "react";
-import styles from "./scrolltotop.module.css";
-import { ELanguages } from "../../types";
-import { BiChevronsUp } from "react-icons/bi";
-import { useLocation } from "react-router-dom";
-import { LanguageContext } from "../../contexts/LanguageContext";
-import { useIsClient, useWindow } from "../../hooks/useSSR";
+import { useState, useEffect, FC, useContext } from 'react'
+import styles from './scrolltotop.module.css'
+import { ELanguages } from '../../types'
+import { BiChevronsUp } from 'react-icons/bi'
+import { useLocation } from 'react-router-dom'
+import { useLanguageContext } from '../../contexts/LanguageContext'
+import { useIsClient, useWindow } from '../../hooks/useSSR'
 
 const ScrollToTop: FC<{
-  styleMenu: boolean | undefined;
-  language: ELanguages;
+  styleMenu: boolean | undefined
+  language: ELanguages
 }> = ({ styleMenu, language }) => {
-  const isClient = useIsClient();
-  const windowObj = useWindow();
+  const isClient = useIsClient()
+  const windowObj = useWindow()
 
-  const { t } = useContext(LanguageContext)!;
+  const { t } = useLanguageContext()
 
-  const location = useLocation();
-  const [showTopBtn, setShowTopBtn] = useState(false);
+  const location = useLocation()
+  const [showTopBtn, setShowTopBtn] = useState(false)
 
   useEffect(() => {
-    if (!isClient || !windowObj) return;
-    windowObj.addEventListener("scroll", scrollY);
+    if (!isClient || !windowObj) return
+    windowObj.addEventListener('scroll', scrollY)
     return () => {
-      windowObj.removeEventListener("scroll", scrollY);
-    };
-  }, [isClient]);
+      windowObj.removeEventListener('scroll', scrollY)
+    }
+  }, [isClient])
 
   const scrollY = () => {
-    if (!isClient || !windowObj) return;
+    if (!isClient || !windowObj) return
     if (windowObj.scrollY > 500) {
-      setShowTopBtn(true);
+      setShowTopBtn(true)
     } else {
-      setShowTopBtn(false);
+      setShowTopBtn(false)
     }
-  };
+  }
 
   const goToTop = () => {
-    if (!isClient || !windowObj) return;
+    if (!isClient || !windowObj) return
     windowObj.scrollTo({
       top: 0,
-      behavior: "smooth",
-    });
-  };
+      behavior: 'smooth',
+    })
+  }
 
   useEffect(() => {
     // hide #to-top-btn when on the /portfolio/colors page:
-    if (location.pathname === "/portfolio/colors") {
-      setShowTopBtn(false);
+    if (location.pathname === '/portfolio/colors') {
+      setShowTopBtn(false)
     }
-  }, [location.pathname]);
+  }, [location.pathname])
 
   return (
     <button
       id="to-top-btn"
-      className={`to-top-btn ${styles["to-top-btn"]} ${
-        showTopBtn ? styles.show : ""
-      } ${styleMenu ? styles.alt : ""}`}
+      className={`to-top-btn ${styles['to-top-btn']} ${
+        showTopBtn ? styles.show : ''
+      } ${styleMenu ? styles.alt : ''}`}
       onClick={goToTop}
     >
-      <BiChevronsUp className={styles["icon"]} />
-      <span className="scr">{t("ScrollToTheTop")}</span>
+      <BiChevronsUp className={styles['icon']} />
+      <span className="scr">{t('ScrollToTheTop')}</span>
     </button>
-  );
-};
+  )
+}
 
-export default ScrollToTop;
+export default ScrollToTop

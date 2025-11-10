@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios'
 import { IUser as user, ELanguages, IBlacklistedJoke } from '../types'
 
-const url = import.meta.env.VITE_BASE_URI ?? 'https://bg.jenniina.fi'
+const url = import.meta.env.VITE_BASE_URI ?? 'https://react.jenniina.fi'
 const baseUrl = `${url}/api/users`
 
 const getConfig = () => ({
@@ -21,7 +21,10 @@ const createNewUser = async (newUser: user) => {
 }
 
 const deleteUser = async (id: user['_id'], deleteJokes: boolean) => {
-  const response = await axios.delete(`${baseUrl}/${id}/${deleteJokes}`, getConfig())
+  const response = await axios.delete(
+    `${baseUrl}/${id}/${deleteJokes}`,
+    getConfig()
+  )
   return response.data as AxiosResponse<{ success: boolean; message: string }>
 }
 
@@ -46,7 +49,10 @@ const addToBlacklistedJokes = async (
   const valueObject = {
     value,
   }
-  const response = await axios.put(`${baseUrl}/${id}/${jokeId}/${language}`, valueObject)
+  const response = await axios.put(
+    `${baseUrl}/${id}/${jokeId}/${language}`,
+    valueObject
+  )
   return response.data
 }
 
@@ -103,8 +109,14 @@ const searchId = async (id: string | undefined) => {
   return response.data as user
 }
 
-const forgot = async (username: string | undefined, language: string | ELanguages) => {
-  const response = await axios.post(`${baseUrl}/forgot`, { username, language })
+const forgot = async (
+  username: string | undefined,
+  language: string | ELanguages
+) => {
+  const response = await axios.post(`${baseUrl}/forgot`, {
+    username,
+    language,
+  })
   return response.data
 }
 

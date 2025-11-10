@@ -6,7 +6,11 @@ type FormWrapperProps = {
   children: ReactNode
 }
 
-export default function FormWrapper({ title, description, children }: FormWrapperProps) {
+export default function FormWrapper({
+  title,
+  description,
+  children,
+}: FormWrapperProps) {
   return (
     <>
       <fieldset>

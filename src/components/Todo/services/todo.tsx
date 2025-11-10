@@ -2,7 +2,7 @@ import axios from 'axios'
 import { ITask } from '../types'
 import { IUser } from '../../../types'
 
-const url = import.meta.env.VITE_BASE_URI ?? 'https://bg.jenniina.fi'
+const url = import.meta.env.VITE_BASE_URI ?? 'https://react.jenniina.fi'
 const baseUrl = `${url}/api/todo`
 
 const getTodos = async (user: IUser['_id']) => {
@@ -44,7 +44,9 @@ const editTodoOrder = async (
     order: ITask['order']
   }[]
 ) => {
-  const response = await axios.post(`${baseUrl}/${user}/order`, { todos: order })
+  const response = await axios.post(`${baseUrl}/${user}/order`, {
+    todos: order,
+  })
   return response.data
 }
 

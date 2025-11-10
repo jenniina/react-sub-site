@@ -11,7 +11,7 @@ import {
 import { Draggable, focusedBlob, Modes } from '../types'
 import Blob from './Blob'
 import { ELanguages } from '../../../types'
-import { LanguageContext } from '../../../contexts/LanguageContext'
+import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 interface DragLayerProps {
   layer_: number
@@ -90,7 +90,7 @@ const DragLayer = ({
   changeBlobLayer,
   changeColor,
 }: DragLayerProps) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const svgFilter = d === 0 ? 0 : 1 // Choose the second filter for containers other than 0
   const layerStyle: CSSProperties = {
@@ -112,16 +112,16 @@ const DragLayer = ({
 
   return (
     <>
-      <span id={`listbox${d}-layer${layer_}-label`} className='scr'>
+      <span id={`listbox${d}-layer${layer_}-label`} className="scr">
         {t('Layer')} {layer_ + 1}
       </span>
       <ul
         ref={dragUlRef}
-        role='listbox'
+        role="listbox"
         id={`listbox${d}-layer${layer_}`}
         className={`drag-container-layer drag-container${d}-layer drag-container${d}-layer${layer_} ${className}`}
         aria-labelledby={`listbox${d}-layer${layer_}-label`}
-        aria-activedescendant=''
+        aria-activedescendant=""
         style={layerStyle}
       >
         {items?.map((item: Draggable, index: number) => {

@@ -1,21 +1,20 @@
-import React, { lazy, Suspense, useContext } from "react";
-//import Store from '../components/Store/Store'
-import { ELanguages } from "../types";
-import Hero from "../components/Hero/Hero";
-import { ICartItem } from "../types/store";
-import styles from "../components/Store/store.module.css";
-import { LanguageContext } from "../contexts/LanguageContext";
-interface StoreProps {
-  language: ELanguages;
-  heading: string;
-  text: string;
-  type: string;
-  cart: ICartItem[];
-  addToCart: (item: ICartItem) => void;
-  removeFromCart: (itemId: string) => void;
-}
+import React from 'react'
+import { ELanguages } from '../types'
+import Hero from '../components/Hero/Hero'
+import { ICartItem } from '../types/store'
+import styles from '../components/Store/store.module.css'
+import { useLanguageContext } from '../contexts/LanguageContext'
+import Store from '../components/Store/Store'
 
-const Store = lazy(() => import("../components/Store/Store"));
+interface StoreProps {
+  language: ELanguages
+  heading: string
+  text: string
+  type: string
+  cart: ICartItem[]
+  addToCart: (item: ICartItem) => void
+  removeFromCart: (itemId: string) => void
+}
 
 const StorePage: React.FC<StoreProps> = ({
   language,
@@ -26,7 +25,7 @@ const StorePage: React.FC<StoreProps> = ({
   addToCart,
   removeFromCart,
 }) => {
-  const { t } = useContext(LanguageContext)!;
+  const { t } = useLanguageContext()
 
   return (
     <>
@@ -53,25 +52,17 @@ const StorePage: React.FC<StoreProps> = ({
         <meta property="og:type" content="website" />
       </Helmet> */}
       <div className={`store ${type} ${styles.store}`}>
-        <div className={`inner-wrap ${styles["inner-wrap"]}`}>
-          <Suspense
-            fallback={
-              <div className="flex center margin0auto textcenter">
-                {t("Loading")}...
-              </div>
-            }
-          >
-            <Store
-              language={language}
-              cart={cart}
-              addToCart={addToCart}
-              removeFromCart={removeFromCart}
-            />
-          </Suspense>
+        <div className={`inner-wrap ${styles['inner-wrap']}`}>
+          <Store
+            language={language}
+            cart={cart}
+            addToCart={addToCart}
+            removeFromCart={removeFromCart}
+          />
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default StorePage;
+export default StorePage

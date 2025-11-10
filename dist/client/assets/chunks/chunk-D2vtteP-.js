@@ -1,1 +1,0 @@
-import{j as s}from"./chunk-CAff-kf5.js";import{s as o}from"./chunk-CBqhWi5q.js";import"./chunk-BmSI4Fww.js";const a=({option:a,isActive:i,onClick:c})=>s.jsxs("button",{className:"tooltip-wrap "+(i?`${o.active} grayer`:""),onClick:c,disabled:i,children:[s.jsx("span",{children:a.icon}),s.jsx("span",{className:"tooltip above narrow2 space",children:a.label})]});export{a as default};

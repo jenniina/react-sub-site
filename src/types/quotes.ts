@@ -630,7 +630,10 @@ export enum ESuccess {
   fi = 'Menestys',
 }
 
-export const translationMapQuotes: Record<string, Record<ELanguages, string>> = {
+export const translationMapQuotes: Record<
+  string,
+  Record<ELanguages, string>
+> = {
   age: EAge,
   alone: EAlone,
   amazing: EAmazing,

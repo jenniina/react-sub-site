@@ -1,7 +1,7 @@
-import { lazy, Suspense, useContext } from "react";
-import { ELanguages } from "../types";
-import { LanguageContext } from "../contexts/LanguageContext";
-const FormMulti = lazy(() => import("../components/FormMulti/FormMulti"));
+import { useContext } from 'react'
+import { ELanguages } from '../types'
+import { useLanguageContext } from '../contexts/LanguageContext'
+import FormMulti from '../components/FormMulti/FormMulti'
 
 export default function Contact({
   heading,
@@ -9,12 +9,12 @@ export default function Contact({
   type,
   language,
 }: {
-  heading: string;
-  text: string;
-  type: string;
-  language: ELanguages;
+  heading: string
+  text: string
+  type: string
+  language: ELanguages
 }) {
-  const { t } = useContext(LanguageContext)!;
+  const { t } = useLanguageContext()
 
   return (
     <>
@@ -38,22 +38,14 @@ export default function Contact({
         <div className="inner-wrap">
           <section
             className="card"
-            style={{ position: "relative", zIndex: "2" }}
+            style={{ position: 'relative', zIndex: '2' }}
           >
             <div>
-              <Suspense
-                fallback={
-                  <div className="flex center margin0auto textcenter">
-                    {t("Loading")}...
-                  </div>
-                }
-              >
-                <FormMulti language={language} />
-              </Suspense>
+              <FormMulti language={language} />
             </div>
           </section>
         </div>
       </div>
     </>
-  );
+  )
 }

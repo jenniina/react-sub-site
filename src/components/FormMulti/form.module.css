@@ -1,7 +1,9 @@
 .wrapper {
   position: relative;
   /* max-width: max-content; */
-  max-width: calc(100vw - calc(var(--page-padding) * 2) - var(--scrollbar_width));
+  max-width: calc(
+    100vw - calc(var(--page-padding) * 2) - var(--scrollbar_width)
+  );
   margin: 0 auto;
 }
 .steps {

@@ -2,21 +2,21 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import vike from "vike/plugin";
 import copy from "rollup-plugin-copy";
+import path from "path";
+
+const isDebug = process.env.NODE_ENV === "debug";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
+    // {
+    // jsxRuntime: "automatic",
+    // }
     vike(),
-    //     {
-    //     prerender: true, // This enables SSG
-    //   }
     {
       ...copy({
-        targets: [
-          { src: "routes.json", dest: "dist" },
-          { src: "staticwebapp.config.json", dest: "dist" },
-        ],
+        targets: [{ src: "routes.json", dest: "dist" }],
         hook: "writeBundle", // run the plugin after all the files are bundled and written to disk
         copyOnce: true,
       }),
@@ -27,36 +27,77 @@ export default defineConfig({
     host: true,
   },
   base: "/",
+
+  // define: {
+  //   "process.env.NODE_ENV": '"development"',
+  //   __DEV__: true,
+  // },
+
+  // resolve: {
+  //   alias: {
+  //     react: path.resolve("node_modules/react/index.js"),
+  //     "react-dom": path.resolve("node_modules/react-dom/index.js"),
+  //     "react-dom/server": path.resolve("node_modules/react-dom/server.js"),
+  //   },
+  //   conditions: ["import", "module", "browser", "default"],
+  //   mainFields: ["module", "main"],
+  // },
+
+  // // Add define to fix exports issue
+  // define: {
+  //   // Fix CommonJS exports for ESM
+  //   global: "globalThis",
+  //   "process.env.NODE_ENV": JSON.stringify(
+  //     process.env.NODE_ENV || "development"
+  //   ),
+  // },
+
   build: {
     outDir: "dist",
+    minify: isDebug ? false : "terser",
+    sourcemap: true,
+    target: "es2015",
     rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (id.includes("node_modules")) {
-            return id
-              .toString()
-              .split("node_modules/")[1]
-              .split("/")[0]
-              .toString();
+      external: [],
+      output: isDebug
+        ? {
+            manualChunks: undefined,
           }
-        },
-      },
-    },
-    minify: "terser",
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-        pure_funcs: ["console.log", "console.info", "console.debug"], // Remove specific console methods
-        unused: true,
-        dead_code: true,
-      },
-      mangle: {
-        safari10: true,
-      },
-      format: {
-        comments: false, // Remove all comments
-      },
+        : {
+            manualChunks(id) {
+              if (id.includes("node_modules")) {
+                return id
+                  .toString()
+                  .split("node_modules/")[1]
+                  .split("/")[0]
+                  .toString();
+              }
+            },
+          },
     },
   },
+
+  // ssr: {
+  //   // Try with specific noExternal instead of true
+  //   noExternal: [
+  //     "react",
+  //     "react-dom",
+  //     "react-router-dom",
+  //     "react-redux",
+  //     "@reduxjs/toolkit",
+  //     // Don't bundle Vike - let it handle its own CommonJS
+  //   ],
+  //   target: "node",
+  //   format: "esm",
+  // },
+
+  // optimizeDeps: {
+  //   // Remove jsx-runtime from include to fix the warning
+  //   include: ["react", "react-dom", "react-router-dom"],
+  //   force: true,
+  //   esbuildOptions: {
+  //     target: "es2020",
+  //     format: "esm",
+  //   },
+  // },
 });

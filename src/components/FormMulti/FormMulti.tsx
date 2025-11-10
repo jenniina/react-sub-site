@@ -1,4 +1,4 @@
-import { FormEvent, useState, useRef, useEffect, lazy, Suspense, useContext } from 'react'
+import { FormEvent, useState, useRef, useEffect, useContext } from 'react'
 import { RiMailSendLine } from 'react-icons/ri'
 import { useMultistepForm } from './hooks/useMultistepForm'
 import { ELanguages, RefObject } from '../../types'
@@ -7,14 +7,13 @@ import styles from './form.module.css'
 import { sendEmail } from './services/email'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
-import { LanguageContext } from '../../contexts/LanguageContext'
-
-const MessageForm = lazy(() => import('./components/MessageForm'))
-const ExtrasForm = lazy(() => import('./components/ExtrasForm'))
-const InitialForm = lazy(() => import('./components/InitialForm'))
+import { useLanguageContext } from '../../contexts/LanguageContext'
+import MessageForm from './components/MessageForm'
+import ExtrasForm from './components/ExtrasForm'
+import InitialForm from './components/InitialForm'
 
 function FormMulti({ language }: { language: ELanguages }) {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const form = useRef() as RefObject<HTMLFormElement>
 
@@ -24,49 +23,39 @@ function FormMulti({ language }: { language: ELanguages }) {
   const dispatch = useAppDispatch()
 
   function updateFields(fields: Partial<FormData>) {
-    setData((prev) => {
+    setData(prev => {
       return { ...prev, ...fields }
     })
   }
-  const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next, goTo } =
-    useMultistepForm([
-      <Suspense
-        fallback={
-          <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
-        }
-      >
-        <InitialForm
-          {...data}
-          updateFields={updateFields}
-          key={`InitialForm`}
-          language={language}
-        />
-      </Suspense>,
-      <Suspense
-        fallback={
-          <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
-        }
-      >
-        <MessageForm
-          {...data}
-          updateFields={updateFields}
-          key={`MessageForm`}
-          language={language}
-        />
-      </Suspense>,
-      <Suspense
-        fallback={
-          <div className='flex center margin0auto textcenter'>{t('Loading')}...</div>
-        }
-      >
-        <ExtrasForm
-          {...data}
-          updateFields={updateFields}
-          key={`ExtrasForm`}
-          language={language}
-        />
-      </Suspense>,
-    ])
+  const {
+    steps,
+    currentStepIndex,
+    step,
+    isFirstStep,
+    isLastStep,
+    back,
+    next,
+    goTo,
+  } = useMultistepForm([
+    <InitialForm
+      {...data}
+      updateFields={updateFields}
+      key={`InitialForm`}
+      language={language}
+    />,
+    <MessageForm
+      {...data}
+      updateFields={updateFields}
+      key={`MessageForm`}
+      language={language}
+    />,
+    <ExtrasForm
+      {...data}
+      updateFields={updateFields}
+      key={`ExtrasForm`}
+      language={language}
+    />,
+  ])
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -136,10 +125,14 @@ function FormMulti({ language }: { language: ELanguages }) {
   return (
     <div className={styles.wrapper}>
       {language !== ELanguages.fi && language !== ELanguages.en && (
-        <p>{t('PleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo')}</p>
+        <p>
+          {t(
+            'PleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo'
+          )}
+        </p>
       )}
-      <form ref={form} onSubmit={handleSubmit} aria-labelledby='steps'>
-        <span id='steps' className={styles.steps}>
+      <form ref={form} onSubmit={handleSubmit} aria-labelledby="steps">
+        <span id="steps" className={styles.steps}>
           {t('ContactForm')} {t('Part')}&nbsp;
           <span>
             {currentStepIndex + 1}&nbsp;/&nbsp;{steps.length}
@@ -149,34 +142,18 @@ function FormMulti({ language }: { language: ELanguages }) {
           {isLastStep ? (
             <>
               {' '}
-              <Suspense
-                fallback={
-                  <div className='flex center margin0auto textcenter'>
-                    {t('Loading')}...
-                  </div>
-                }
-              >
-                <InitialForm
-                  {...data}
-                  updateFields={updateFields}
-                  language={language}
-                  key={`InitialForm2`}
-                />
-              </Suspense>
-              <Suspense
-                fallback={
-                  <div className='flex center margin0auto textcenter'>
-                    {t('Loading')}...
-                  </div>
-                }
-              >
-                <MessageForm
-                  {...data}
-                  updateFields={updateFields}
-                  language={language}
-                  key={`MessageForm2`}
-                />
-              </Suspense>
+              <InitialForm
+                {...data}
+                updateFields={updateFields}
+                language={language}
+                key={`InitialForm2`}
+              />
+              <MessageForm
+                {...data}
+                updateFields={updateFields}
+                language={language}
+                key={`MessageForm2`}
+              />
             </>
           ) : (
             ''
@@ -187,24 +164,25 @@ function FormMulti({ language }: { language: ELanguages }) {
 
         <div className={styles.btns} style={{ position: 'relative' }}>
           {!isFirstStep && (
-            <button type='button' onClick={back}>
-              <span aria-hidden='true'>«</span> {t('Back')}
+            <button type="button" onClick={back}>
+              <span aria-hidden="true">«</span> {t('Back')}
             </button>
           )}
           {!isLastStep && (
             <button
               ref={nextButton}
-              type='button'
+              type="button"
               className={isLastStep ? styles.submit : styles.next}
               onClick={handleNext}
             >
-              {sending ? t('SendingEmail') : t('Next')} <span aria-hidden='true'>»</span>
+              {sending ? t('SendingEmail') : t('Next')}{' '}
+              <span aria-hidden="true">»</span>
             </button>
           )}
           {isLastStep && (
             <button
               className={isLastStep ? styles.submit : styles.next}
-              type='submit'
+              type="submit"
               disabled={sending}
             >
               {sending ? t('SendingEmail') : t('Send')} <RiMailSendLine />
@@ -213,7 +191,7 @@ function FormMulti({ language }: { language: ELanguages }) {
           {showError && (
             <div
               ref={popup}
-              aria-live='assertive'
+              aria-live="assertive"
               style={{
                 position: 'absolute',
                 fontWeight: 'bold',
@@ -227,7 +205,7 @@ function FormMulti({ language }: { language: ELanguages }) {
           {showMessage && (
             <div
               ref={popup}
-              aria-live='polite'
+              aria-live="polite"
               style={{
                 position: 'absolute',
                 top: '-1.4em',

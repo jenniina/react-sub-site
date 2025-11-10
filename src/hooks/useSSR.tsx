@@ -1,16 +1,27 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
 
 export function useIsClient() {
-  const [isClient, setIsClient] = useState(false);
+  const [isClient, setIsClient] = useState(() => {
+    return typeof window !== 'undefined'
+  })
 
   useEffect(() => {
-    setIsClient(true);
-  }, []);
+    setIsClient(true)
+  }, [])
 
-  return isClient;
+  return isClient
 }
 
 export function useWindow() {
-  const isClient = useIsClient();
-  return isClient ? window : null;
+  const [windowObj, setWindowObj] = useState<Window | null>(() => {
+    return typeof window !== 'undefined' ? window : null
+  })
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setWindowObj(window)
+    }
+  }, [])
+
+  return windowObj
 }

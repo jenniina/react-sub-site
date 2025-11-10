@@ -74,15 +74,20 @@
   );
   opacity: 0.8;
   border-bottom: solid 1px black;
-  -webkit-box-shadow: inset 0 -0.3rem 2.5rem -3rem var(--color-primary-19),
+  -webkit-box-shadow:
+    inset 0 -0.3rem 2.5rem -3rem var(--color-primary-19),
     0 0.5rem 2rem -1.5rem black;
-  -o-box-shadow: inset 0 -0.3rem 2.5rem -3rem var(--color-primary-19),
+  -o-box-shadow:
+    inset 0 -0.3rem 2.5rem -3rem var(--color-primary-19),
     0 0.5rem 2rem -1.5rem black;
-  -ms-box-shadow: inset 0 -0.3rem 2.5rem -3rem var(--color-primary-19),
+  -ms-box-shadow:
+    inset 0 -0.3rem 2.5rem -3rem var(--color-primary-19),
     0 0.5rem 2rem -1.5rem black;
-  -moz-box-shadow: inset 0 -0.3rem 2.5rem -3rem var(--color-primary-19),
+  -moz-box-shadow:
+    inset 0 -0.3rem 2.5rem -3rem var(--color-primary-19),
     0 0.5rem 2rem -1.5rem black;
-  box-shadow: inset 0 -0.3rem 2.5rem -3rem var(--color-primary-19),
+  box-shadow:
+    inset 0 -0.3rem 2.5rem -3rem var(--color-primary-19),
     0 0.5rem 2rem -1.5rem black;
 }
 .light.main-header::after {
@@ -926,7 +931,8 @@ a.link:visited:not(.active):focus > *,
   .transformations .menu-container ul li a span,
   .transformations.main-header button.search span,
   .transformations.main-header button.settings span {
-    transition-property: transform, opacity, color, background-color, background-position;
+    transition-property:
+      transform, opacity, color, background-color, background-position;
     transition-duration: 0.3s;
     transition-delay: 0s;
     transition-timing-function: ease-in-out;
@@ -1021,8 +1027,8 @@ button.dlt-btn:focus {
   outline: none;
   transition-duration: 0.4s;
   transition-timing-function: ease-in-out;
-  transition-property: transform, box-shadow, background-color, margin, border, outline,
-    right;
+  transition-property:
+    transform, box-shadow, background-color, margin, border, outline, right;
 }
 .dlt-btn .dlt-btn-inner-left::before {
   /*Sun in light mode*/

@@ -1,59 +1,59 @@
-import { FC, ReactNode, useContext, useRef, useState } from "react";
-import { QuoteItem } from "./services/quotes";
-import { ELanguages } from "../../types";
-import { LanguageContext } from "../../contexts/LanguageContext";
+import { FC, ReactNode, useContext, useRef, useState } from 'react'
+import { QuoteItem } from './services/quotes'
+import { ELanguages } from '../../types'
+import { useLanguageContext } from '../../contexts/LanguageContext'
 
 interface QuoteProps {
-  quote: QuoteItem;
-  language: ELanguages;
-  url?: string;
-  title?: ReactNode;
+  quote: QuoteItem
+  language: ELanguages
+  url?: string
+  title?: ReactNode
 }
 
 const Quote: FC<QuoteProps> = ({ quote, language, url, title }) => {
-  const { t } = useContext(LanguageContext)!;
+  const { t } = useLanguageContext()
 
-  const [copied, setCopied] = useState(false);
-  const ref = useRef<HTMLParagraphElement>(null);
+  const [copied, setCopied] = useState(false)
+  const ref = useRef<HTMLParagraphElement>(null)
 
   const copyToClipboard = () => {
-    const textToCopy = `"${quote.content}" - ${quote.originator.name}`;
+    const textToCopy = `"${quote.content}" - ${quote.originator.name}`
 
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(textToCopy).then(
         () => {
-          setCopied(true);
-          setTimeout(() => setCopied(false), 3000);
+          setCopied(true)
+          setTimeout(() => setCopied(false), 3000)
         },
-        (error) => {
-          console.error("Failed to copy:", error);
+        error => {
+          console.error('Failed to copy:', error)
         }
-      );
+      )
     } else {
       // Fallback method for older browsers
-      const textArea = document?.createElement("textarea");
-      textArea.value = textToCopy;
-      ref.current?.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
+      const textArea = document?.createElement('textarea')
+      textArea.value = textToCopy
+      ref.current?.appendChild(textArea)
+      textArea.focus()
+      textArea.select()
       try {
-        document?.execCommand("copy");
-        setCopied(true);
-        setTimeout(() => setCopied(false), 3000);
+        document?.execCommand('copy')
+        setCopied(true)
+        setTimeout(() => setCopied(false), 3000)
       } catch (error: any) {
-        console.error("Failed to copy:", error);
+        console.error('Failed to copy:', error)
       }
-      ref.current?.removeChild(textArea);
+      ref.current?.removeChild(textArea)
     }
-  };
+  }
 
-  if (quote.content === "") return <></>;
+  if (quote.content === '') return <></>
 
   return (
     <>
       <p ref={ref}>
         <i>
-          <big style={{ display: "inline-block", margin: "0 0 0.5em" }}>
+          <big style={{ display: 'inline-block', margin: '0 0 0.5em' }}>
             "{quote.content}"
           </big>
           &mdash;&nbsp;{quote.originator.name}
@@ -63,10 +63,10 @@ const Quote: FC<QuoteProps> = ({ quote, language, url, title }) => {
       <div className="flex gap">
         <button
           className="small"
-          style={{ maxWidth: "max-content", marginLeft: "1em" }}
+          style={{ maxWidth: 'max-content', marginLeft: '1em' }}
           onClick={copyToClipboard}
         >
-          {copied ? t("CopiedToClipboard") : t("CopyToClipboard")}
+          {copied ? t('CopiedToClipboard') : t('CopyToClipboard')}
         </button>
         {title && (
           <small>
@@ -81,7 +81,7 @@ const Quote: FC<QuoteProps> = ({ quote, language, url, title }) => {
         )}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Quote;
+export default Quote

@@ -2,32 +2,32 @@
 
 //     isTouchDevice();
 
-import React from "react";
-import { useIsClient, useWindow } from "../hooks/useSSR";
+import React from 'react'
+import { useIsClient, useWindow } from '../hooks/useSSR'
 
-let initialX = 0;
-let initialY = 0;
+let initialX = 0
+let initialY = 0
 
-let zIndex = 1;
-let zIndex0 = -1;
-let moveElement = false;
-let reset = true;
+let zIndex = 1
+let zIndex0 = -1
+let moveElement = false
+let reset = true
 
 export const preventDefault = (e: Event) => {
-  e.preventDefault();
-  e.stopImmediatePropagation();
-};
+  e.preventDefault()
+  e.stopImmediatePropagation()
+}
 
 //Detect touch device
 export const isTouchDevice = () => {
   try {
     //Try to create TouchEvent (fails for desktops and throws error)
-    document?.createEvent("TouchEvent");
-    return true;
+    document?.createEvent('TouchEvent')
+    return true
   } catch (e) {
-    return false;
+    return false
   }
-};
+}
 
 export function start(
   e:
@@ -38,30 +38,30 @@ export function start(
     | React.MouseEvent
     | React.PointerEvent
 ) {
-  e.stopPropagation();
-  e.preventDefault();
+  e.stopPropagation()
+  e.preventDefault()
 
   if (isTouchDevice()) {
     document
-      ? document.addEventListener("touchmove", preventDefault, {
+      ? document.addEventListener('touchmove', preventDefault, {
           passive: false,
         })
-      : null;
-    document ? (document.body.style.overflow = "hidden") : null;
+      : null
+    document ? (document.body.style.overflow = 'hidden') : null
   }
   initialX = !isTouchDevice()
     ? (e as PointerEvent).clientX
-    : (e as TouchEvent).touches[0].clientX;
+    : (e as TouchEvent).touches[0].clientX
   initialY = !isTouchDevice()
     ? (e as PointerEvent).clientY
-    : (e as TouchEvent).touches[0].clientY;
+    : (e as TouchEvent).touches[0].clientY
 
-  moveElement = true;
-  (e.target as HTMLElement).classList.add("drag");
-  (e.target as HTMLElement).style.setProperty("z-index", `${zIndex}`);
+  moveElement = true
+  ;(e.target as HTMLElement).classList.add('drag')
+  ;(e.target as HTMLElement).style.setProperty('z-index', `${zIndex}`)
   //increase z-index
-  zIndex += 1;
-  (e.target as HTMLElement).focus();
+  zIndex += 1
+  ;(e.target as HTMLElement).focus()
 }
 
 //Handle mousemove and touchmove
@@ -74,23 +74,23 @@ export function movement(
     | React.MouseEvent
     | React.PointerEvent
 ) {
-  e.stopPropagation();
-  e.preventDefault();
+  e.stopPropagation()
+  e.preventDefault()
 
   if (moveElement) {
     //e.preventDefault();
     let newX = !isTouchDevice()
       ? (e as PointerEvent).clientX
-      : (e as TouchEvent).touches[0].clientX;
+      : (e as TouchEvent).touches[0].clientX
     let newY = !isTouchDevice()
       ? (e as PointerEvent).clientY
-      : (e as TouchEvent).touches[0].clientY;
-    (e.target as HTMLElement).style.top =
-      (e.target as HTMLElement).offsetTop - (initialY - newY) + "px";
-    (e.target as HTMLElement).style.left =
-      (e.target as HTMLElement).offsetLeft - (initialX - newX) + "px";
-    initialX = newX;
-    initialY = newY;
+      : (e as TouchEvent).touches[0].clientY
+    ;(e.target as HTMLElement).style.top =
+      (e.target as HTMLElement).offsetTop - (initialY - newY) + 'px'
+    ;(e.target as HTMLElement).style.left =
+      (e.target as HTMLElement).offsetLeft - (initialX - newX) + 'px'
+    initialX = newX
+    initialY = newY
   }
 }
 
@@ -104,65 +104,66 @@ export const stopMovementCheck = (
     | React.MouseEvent
     | React.PointerEvent
 ) => {
-  e.stopPropagation();
+  e.stopPropagation()
   if (isTouchDevice()) {
-    document ? document.removeEventListener("touchmove", preventDefault) : null;
-    document ? (document.body.style.overflowY = "auto") : null;
-    document ? (document.body.style.overflowX = "hidden") : null;
+    document ? document.removeEventListener('touchmove', preventDefault) : null
+    document ? (document.body.style.overflowY = 'auto') : null
+    document ? (document.body.style.overflowX = 'hidden') : null
   }
 
-  moveElement = false;
-  (e.target as HTMLElement).classList.remove("drag");
-  (e.target as HTMLElement).blur();
-};
+  moveElement = false
+  ;(e.target as HTMLElement).classList.remove('drag')
+  ;(e.target as HTMLElement).blur()
+}
 
 //Handle mouse leave
 export const stopMoving = (
   e: MouseEvent | React.MouseEvent | PointerEvent | React.PointerEvent
 ) => {
-  e.stopPropagation();
-  moveElement = false;
-  (e.target as HTMLElement).classList.remove("drag");
-  (e.target as HTMLElement).blur();
-};
+  e.stopPropagation()
+  moveElement = false
+  ;(e.target as HTMLElement).classList.remove('drag')
+  ;(e.target as HTMLElement).blur()
+}
 
 //on blob blur
 export function blurred(draggable: HTMLElement) {
-  draggable.classList.remove("drag");
+  draggable.classList.remove('drag')
 }
 
 //on focused blob
 export function focused(draggable: HTMLElement) {
-  draggable.classList.add("drag");
+  draggable.classList.add('drag')
   return () => {
-    draggable.classList.remove("drag");
-  };
+    draggable.classList.remove('drag')
+  }
 }
 
 //Mousewheel use
 export function wheel(draggable: HTMLElement) {
-  draggable.addEventListener("wheel", zoom, { passive: false });
+  draggable.addEventListener('wheel', zoom, { passive: false })
   return () => {
-    draggable.removeEventListener("wheel", zoom);
-  };
+    draggable.removeEventListener('wheel', zoom)
+  }
 }
 export function zoom(e: WheelEvent) {
-  let value = (e.target as HTMLElement).style.getPropertyValue("--size");
-  let scale = parseFloat(value);
+  let value = (e.target as HTMLElement).style.getPropertyValue('--size')
+  let scale = parseFloat(value)
 
-  scale += e.deltaY * -0.005;
+  scale += e.deltaY * -0.005
   // Restrict scale
-  scale = Math.min(Math.max(2, scale), 20);
+  scale = Math.min(Math.max(2, scale), 20)
   // Apply
-  (e.target as HTMLElement).style.setProperty("--size", `${scale}`);
+  ;(e.target as HTMLElement).style.setProperty('--size', `${scale}`)
   //increase z-index
-  zIndex += 1;
+  zIndex += 1
 }
 
 // Keyboard use
 export function keyDown(
   e: KeyboardEvent | React.KeyboardEvent<HTMLLIElement>,
   target: HTMLElement,
+  windowObj: Window | null,
   escapeFunction:
     | ((
         e:
@@ -204,130 +205,128 @@ export function keyDown(
       ) => void)
     | null
 ) {
-  const windowObj = useWindow();
+  const movePx = 10
 
-  const movePx = 10;
-
-  const size = target.style.getPropertyValue("--size");
-  let scale = parseFloat(size);
+  const size = target.style.getPropertyValue('--size')
+  let scale = parseFloat(size)
 
   let attrLeft = windowObj
-    ? windowObj.getComputedStyle(target).getPropertyValue("left")
-    : target.style.getPropertyValue("left");
+    ? windowObj.getComputedStyle(target).getPropertyValue('left')
+    : target.style.getPropertyValue('left')
   let attrTop = windowObj
-    ? windowObj.getComputedStyle(target).getPropertyValue("top")
-    : target.style.getPropertyValue("top");
+    ? windowObj.getComputedStyle(target).getPropertyValue('top')
+    : target.style.getPropertyValue('top')
 
   switch (e.key) {
-    case "ArrowLeft":
-      e.preventDefault();
-      target.style.left = parseFloat(attrLeft) - Number(movePx) + "px";
+    case 'ArrowLeft':
+      e.preventDefault()
+      target.style.left = parseFloat(attrLeft) - Number(movePx) + 'px'
       attrLeft = windowObj
-        ? windowObj.getComputedStyle(target).getPropertyValue("left")
-        : target.style.getPropertyValue("left");
-      break;
-    case "ArrowRight":
-      e.preventDefault();
-      target.style.left = parseFloat(attrLeft) + Number(movePx) + "px";
+        ? windowObj.getComputedStyle(target).getPropertyValue('left')
+        : target.style.getPropertyValue('left')
+      break
+    case 'ArrowRight':
+      e.preventDefault()
+      target.style.left = parseFloat(attrLeft) + Number(movePx) + 'px'
       attrLeft = windowObj
-        ? windowObj.getComputedStyle(target).getPropertyValue("left")
-        : target.style.getPropertyValue("left");
-      break;
-    case "ArrowUp":
-      e.preventDefault();
-      target.style.top = parseFloat(attrTop) - Number(movePx) + "px";
+        ? windowObj.getComputedStyle(target).getPropertyValue('left')
+        : target.style.getPropertyValue('left')
+      break
+    case 'ArrowUp':
+      e.preventDefault()
+      target.style.top = parseFloat(attrTop) - Number(movePx) + 'px'
       attrTop = windowObj
-        ? windowObj.getComputedStyle(target).getPropertyValue("top")
-        : target.style.getPropertyValue("top");
-      break;
-    case "ArrowDown":
-      e.preventDefault();
-      target.style.top = parseFloat(attrTop) + Number(movePx) + "px";
+        ? windowObj.getComputedStyle(target).getPropertyValue('top')
+        : target.style.getPropertyValue('top')
+      break
+    case 'ArrowDown':
+      e.preventDefault()
+      target.style.top = parseFloat(attrTop) + Number(movePx) + 'px'
       attrTop = windowObj
-        ? windowObj.getComputedStyle(target).getPropertyValue("top")
-        : target.style.getPropertyValue("top");
-      break;
-    case "Z":
-    case "z": //Move blob to the bottom of the z-index pile
-      e.stopPropagation();
-      e.preventDefault();
+        ? windowObj.getComputedStyle(target).getPropertyValue('top')
+        : target.style.getPropertyValue('top')
+      break
+    case 'Z':
+    case 'z': //Move blob to the bottom of the z-index pile
+      e.stopPropagation()
+      e.preventDefault()
       if (reset) {
-        reset = false;
-        target.style.setProperty("z-index", `${zIndex0}`);
+        reset = false
+        target.style.setProperty('z-index', `${zIndex0}`)
         //Reset z-index
-        zIndex0 -= 1;
+        zIndex0 -= 1
         const cooldown = () => {
-          reset = true;
-        };
-        setTimeout(cooldown, 100);
+          reset = true
+        }
+        setTimeout(cooldown, 100)
       }
-      break;
-    case "s":
-    case "S": //make smaller
-      e.stopPropagation();
-      e.preventDefault();
+      break
+    case 's':
+    case 'S': //make smaller
+      e.stopPropagation()
+      e.preventDefault()
       if (reset) {
-        reset = false;
-        scale -= 1;
-        scale = Math.min(Math.max(2, scale), 20);
+        reset = false
+        scale -= 1
+        scale = Math.min(Math.max(2, scale), 20)
 
-        target.style.setProperty("--size", `${scale}`);
+        target.style.setProperty('--size', `${scale}`)
 
         const cooldown = () => {
-          reset = true;
-        };
-        setTimeout(cooldown, 100);
+          reset = true
+        }
+        setTimeout(cooldown, 100)
       }
-      break;
-    case "B":
-    case "b":
-    case "L":
-    case "l": //make larger
-      e.stopPropagation();
-      e.preventDefault();
+      break
+    case 'B':
+    case 'b':
+    case 'L':
+    case 'l': //make larger
+      e.stopPropagation()
+      e.preventDefault()
       if (reset) {
-        reset = false;
-        scale += 1;
-        scale = Math.min(Math.max(2, scale), 20);
+        reset = false
+        scale += 1
+        scale = Math.min(Math.max(2, scale), 20)
 
-        target.style.setProperty("--size", `${scale}`);
+        target.style.setProperty('--size', `${scale}`)
 
         const cooldown = () => {
-          reset = true;
-        };
-        setTimeout(cooldown, 100);
+          reset = true
+        }
+        setTimeout(cooldown, 100)
       }
-      break;
-    case "Enter":
+      break
+    case 'Enter':
       if (enterFunction) {
-        e.stopPropagation();
-        e.preventDefault();
-        enterFunction(e);
+        e.stopPropagation()
+        e.preventDefault()
+        enterFunction(e)
       }
-      break;
-    case "Delete":
+      break
+    case 'Delete':
       if (deleteFunction) {
-        e.stopPropagation();
-        e.preventDefault();
-        deleteFunction(e);
+        e.stopPropagation()
+        e.preventDefault()
+        deleteFunction(e)
       }
-      break;
-    case "Escape":
-      target.blur();
+      break
+    case 'Escape':
+      target.blur()
       if (escapeFunction) {
-        e.stopPropagation();
-        e.preventDefault();
-        escapeFunction(e);
+        e.stopPropagation()
+        e.preventDefault()
+        escapeFunction(e)
       }
-      break;
-    case " ":
+      break
+    case ' ':
       if (spaceFunction) {
-        e.stopPropagation();
-        e.preventDefault();
-        spaceFunction(e);
+        e.stopPropagation()
+        e.preventDefault()
+        spaceFunction(e)
       }
-      break;
+      break
     default:
-      e.stopPropagation();
+      e.stopPropagation()
   }
 }

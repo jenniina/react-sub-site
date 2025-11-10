@@ -1,7 +1,7 @@
-export { onBeforeRender };
+export { onBeforeRender }
 
 async function onBeforeRender(pageContext: any) {
-  const { urlPathname } = pageContext;
+  const { urlPathname } = pageContext
 
   return {
     pageContext: {
@@ -9,5 +9,5 @@ async function onBeforeRender(pageContext: any) {
         route: urlPathname,
       },
     },
-  };
+  }
 }

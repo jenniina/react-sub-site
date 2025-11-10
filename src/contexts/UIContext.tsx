@@ -6,50 +6,50 @@ import React, {
   Dispatch,
   SetStateAction,
   ReactNode,
-} from "react";
-import { isTouchDevice } from "../hooks/useDraggable";
-import { useTheme } from "../hooks/useTheme";
-import { useScrollbarWidth } from "../hooks/useScrollbarWidth";
-import { ELanguages, RefObject } from "../types";
+} from 'react'
+import { isTouchDevice } from '../hooks/useDraggable'
+import { useTheme } from '../hooks/useTheme'
+import { useScrollbarWidth } from '../hooks/useScrollbarWidth'
+import { ELanguages, RefObject } from '../types'
 
 interface UIContextProps {
-  menuStyleAltTransform: boolean;
-  setMenuStyleAltTransform: Dispatch<SetStateAction<boolean>>;
-  touchDevice: boolean;
-  lightTheme: boolean;
+  menuStyleAltTransform: boolean
+  setMenuStyleAltTransform: Dispatch<SetStateAction<boolean>>
+  touchDevice: boolean
+  lightTheme: boolean
 }
 
-export const UIContext = createContext<UIContextProps | undefined>(undefined);
+export const UIContext = createContext<UIContextProps | undefined>(undefined)
 
 export const UIProvider: FC<{
-  language: ELanguages;
-  menuStyle: RefObject<{ getStyle: () => boolean }>;
-  children: ReactNode;
+  language: ELanguages
+  menuStyle: RefObject<{ getStyle: () => boolean }>
+  children: ReactNode
 }> = ({ language, menuStyle, children }) => {
-  const [menuStyleAltTransform, setMenuStyleAltTransform] = useState(false);
-  const touchDevice = isTouchDevice();
-  const lightTheme = useTheme();
-  const scrollbarWidth = useScrollbarWidth();
+  const [menuStyleAltTransform, setMenuStyleAltTransform] = useState(false)
+  const touchDevice = isTouchDevice()
+  const lightTheme = useTheme()
+  const scrollbarWidth = useScrollbarWidth()
   const styleInnerWrap: React.CSSProperties = {
-    ["--scrollbar_width" as string]: `${scrollbarWidth}px`,
-  };
+    ['--scrollbar_width' as string]: `${scrollbarWidth}px`,
+  }
 
   // Update menuStyleAltTransform when lightTheme changes
   useEffect(() => {
-    setMenuStyleAltTransform(false);
+    setMenuStyleAltTransform(false)
     const timer = setTimeout(() => {
-      setMenuStyleAltTransform(true);
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [lightTheme]);
+      setMenuStyleAltTransform(true)
+    }, 300)
+    return () => clearTimeout(timer)
+  }, [lightTheme])
 
   //So transformations don't take place when changing menu style or toggling light/dark mode:
   useEffect(() => {
-    setMenuStyleAltTransform(false);
+    setMenuStyleAltTransform(false)
     setTimeout(() => {
-      setMenuStyleAltTransform(true);
-    }, 300);
-  }, [lightTheme, menuStyle.current]);
+      setMenuStyleAltTransform(true)
+    }, 300)
+  }, [lightTheme, menuStyle.current])
 
   return (
     <UIContext.Provider
@@ -61,14 +61,14 @@ export const UIProvider: FC<{
       }}
     >
       <div
-        className={`App ${lightTheme ? "light" : ""} ${
-          touchDevice ? "touch" : ""
-        }  ${menuStyleAltTransform ? `transformations` : ""} ${language}`}
+        className={`App ${lightTheme ? 'light' : ''} ${
+          touchDevice ? 'touch' : ''
+        }  ${menuStyleAltTransform ? `transformations` : ''} ${language}`}
       >
         <div className="App-inner-wrap" style={styleInnerWrap}>
           {children}
         </div>
       </div>
     </UIContext.Provider>
-  );
-};
+  )
+}

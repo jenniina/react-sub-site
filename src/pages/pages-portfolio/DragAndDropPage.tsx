@@ -1,21 +1,20 @@
-import { DragAndDrop } from "../../components/DragAndDrop/components";
-import { MdOutlineDragIndicator } from "react-icons/md";
-import { ELanguages } from "../../types";
-import Accordion from "../../components/Accordion/Accordion";
-import { useContext } from "react";
-import { LanguageContext } from "../../contexts/LanguageContext";
+import { DragAndDrop } from '../../components/DragAndDrop/components'
+import { MdOutlineDragIndicator } from 'react-icons/md'
+import { ELanguages } from '../../types'
+import Accordion from '../../components/Accordion/Accordion'
+import { useLanguageContext } from '../../contexts/LanguageContext'
 export default function DragAndDropPage({
   heading,
   text,
   type,
   language,
 }: {
-  heading: string;
-  text: string;
-  type: string;
-  language: ELanguages;
+  heading: string
+  text: string
+  type: string
+  language: ELanguages
 }) {
-  const { t } = useContext(LanguageContext)!;
+  const { t } = useLanguageContext()
 
   return (
     <>
@@ -50,63 +49,63 @@ export default function DragAndDropPage({
               <div className="medium flex column gap">
                 <Accordion
                   language={language}
-                  text={t("ClickHereToSeeFeatures")}
+                  text={t('ClickHereToSeeFeatures')}
                   className="features"
                   wrapperClass="features-wrap"
                 >
-                  <h2>{t("Features")}</h2>
+                  <h2>{t('Features')}</h2>
                   <ul className="ul">
-                    <li>{t("DraggableWithAnyPointer")}</li>
-                    <li>{t("KeyboardUseWithADropdownList")}</li>
-                    <li>{t("CanRearrangeWithinTheirContainer")}</li>
-                    <li>{t("StateSavedInLocalStorage")}</li>
-                    <li>{t("CategoriesCanBeRenamed")}</li>
-                    <li>{t("NewColorsCanBeAddedAndRemoved")}</li>
+                    <li>{t('DraggableWithAnyPointer')}</li>
+                    <li>{t('KeyboardUseWithADropdownList')}</li>
+                    <li>{t('CanRearrangeWithinTheirContainer')}</li>
+                    <li>{t('StateSavedInLocalStorage')}</li>
+                    <li>{t('CategoriesCanBeRenamed')}</li>
+                    <li>{t('NewColorsCanBeAddedAndRemoved')}</li>
                     <li>
-                      {t("YouMayAlsoAddOtherWordsForGenericUse")}.{" "}
-                      {t("TipIfYouAddAGenericWordYouCanColorTheCard")}
+                      {t('YouMayAlsoAddOtherWordsForGenericUse')}.{' '}
+                      {t('TipIfYouAddAGenericWordYouCanColorTheCard')}
                     </li>
                   </ul>
-                  <h3>{t("Instructions")}</h3>
-                  <h4>{t("PointerAndTouchUse")}</h4>
+                  <h3>{t('Instructions')}</h3>
+                  <h4>{t('PointerAndTouchUse')}</h4>
                   <ul className="ul">
-                    <li>{t("HoldPointerButtonDownToDragAnItemFrom")}</li>
+                    <li>{t('HoldPointerButtonDownToDragAnItemFrom')}</li>
                     <li>
-                      {t("OnTouchDevicesHoldTouchForAMomentToActivateDrag")}
+                      {t('OnTouchDevicesHoldTouchForAMomentToActivateDrag')}
                     </li>
                     <li>
-                      {t("YouMayAlsoUseTheItemMenuToChooseADestination")}:{" "}
+                      {t('YouMayAlsoUseTheItemMenuToChooseADestination')}:{' '}
                       <MdOutlineDragIndicator
                         aria-hidden="true"
                         style={{
-                          display: "inline-block",
-                          marginBottom: "-0.15em",
+                          display: 'inline-block',
+                          marginBottom: '-0.15em',
                         }}
-                      />{" "}
+                      />{' '}
                     </li>
                   </ul>
-                  <h4>{t("KeyboardUse")}</h4>
+                  <h4>{t('KeyboardUse')}</h4>
                   <ul className="ul">
                     <li>
                       {t(
-                        "MoveItemsWithinTheirContainerWithTheUpOrDownArrowKeys"
+                        'MoveItemsWithinTheirContainerWithTheUpOrDownArrowKeys'
                       )}
                     </li>
                     <li>
-                      {t("ToMoveItemsToAnotherContainer")}
+                      {t('ToMoveItemsToAnotherContainer')}
                       <ul>
                         <li>
-                          {t("UseTabKeyToNavigateToDragButton")}{" "}
+                          {t('UseTabKeyToNavigateToDragButton')}{' '}
                           <MdOutlineDragIndicator
                             aria-hidden="true"
                             style={{
-                              display: "inline-block",
-                              marginBottom: "-0.15em",
+                              display: 'inline-block',
+                              marginBottom: '-0.15em',
                             }}
-                          />{" "}
-                          {t("AndPressEnterKeyToOpenMenu")}
+                          />{' '}
+                          {t('AndPressEnterKeyToOpenMenu')}
                         </li>
-                        <li>{t("WithTheMenuOpenUseTabKeyToNavigateAnd")}</li>
+                        <li>{t('WithTheMenuOpenUseTabKeyToNavigateAnd')}</li>
                       </ul>
                     </li>
                   </ul>
@@ -115,9 +114,9 @@ export default function DragAndDropPage({
                   Github
                 </a>
               </div>
-              <h2>{t("DragAndDrop")}</h2>
+              <h2>{t('DragAndDrop')}</h2>
               <p className="textcenter">
-                {t("SortTheColorsToADifferentContainerOr")}
+                {t('SortTheColorsToADifferentContainerOr')}
               </p>
               <DragAndDrop language={language} />
             </div>
@@ -125,5 +124,5 @@ export default function DragAndDropPage({
         </div>
       </div>
     </>
-  );
+  )
 }

@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios'
 import { IJoke } from '../types'
 
-const url = import.meta.env.VITE_BASE_URI ?? 'https://bg.jenniina.fi'
+const url = import.meta.env.VITE_BASE_URI ?? 'https://react.jenniina.fi'
 const baseUrl = `${url}/api/jokes`
 
 const getAll = async () => {
@@ -26,7 +26,7 @@ const create = async (newObject: IJoke) => {
 
 const update = async (newObject: IJoke) => {
   const request = axios.put(`${baseUrl}/${newObject._id}`, newObject)
-  return request.then((response) => response.data)
+  return request.then(response => response.data)
 }
 
 const remove = async (id: string | undefined) => {
@@ -40,7 +40,9 @@ const search = async (
   category: string,
   type: string
 ) => {
-  const response = await axios.get(`${baseUrl}/${jokeId}/${language}/${category}/${type}`)
+  const response = await axios.get(
+    `${baseUrl}/${jokeId}/${language}/${category}/${type}`
+  )
   return response.data
 }
 

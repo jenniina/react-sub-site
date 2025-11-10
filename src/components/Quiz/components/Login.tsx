@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux'
 import Scores from './Scores'
 import styles from '../css/quiz.module.css'
 import { Link } from 'react-router-dom'
-import { LanguageContext } from '../../../contexts/LanguageContext'
+import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 interface Props {
   easy: IHighscore['easy']
@@ -20,7 +20,7 @@ interface Props {
   setIsFormOpen?: (isFormOpen: boolean) => void
 }
 const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const dispatch = useAppDispatch()
   const [sending, setSending] = useState(false)
@@ -43,7 +43,7 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
 
   useEffect(() => {
     if (user?._id) {
-      dispatch(getUserQuiz(user._id)).then((r) => {
+      dispatch(getUserQuiz(user._id)).then(r => {
         if (r !== null) {
           setHighscores(r.highscores)
         }
@@ -70,8 +70,9 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
         setPassword('')
         setSending(false)
       })
-      .catch((e) => {
-        if (e.response?.data?.message) dispatch(notify(e.response.data.message, true, 8))
+      .catch(e => {
+        if (e.response?.data?.message)
+          dispatch(notify(e.response.data.message, true, 8))
         else if (e.code === 'ERR_BAD_REQUEST')
           dispatch(notify(`${t('Error')}: ${e.response.data.message}`, true, 8))
         else if (e.code === 'ERR_NETWORK') {
@@ -81,15 +82,19 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
       })
   }
   return (
-    <div className='login-wrap'>
+    <div className="login-wrap">
       {user ? (
         <>
           <p>
             <span>
               {t('LoggedInAs')} {user?.name ? user?.name : user.username}{' '}
             </span>
-            <Link to='/edit'>{`${t('Edit')}`}</Link>
-            <button onClick={handleLogout} id='logout' className='logout danger'>
+            <Link to="/edit">{`${t('Edit')}`}</Link>
+            <button
+              onClick={handleLogout}
+              id="logout"
+              className="logout danger"
+            >
               {t('Logout')} &times;
             </button>
           </p>
@@ -111,7 +116,7 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
           <Accordion
             language={language}
             className={`accordion-login login-to-save`}
-            wrapperClass='login-to-save-wrap'
+            wrapperClass="login-to-save-wrap"
             text={t('LogInToSaveScore')}
             ref={formLoginRef}
             setIsFormOpen={setIsFormOpen}
@@ -120,34 +125,39 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
             <h2>{t('LogInToSaveScore')}</h2>
 
             <form onSubmit={handleLogin} className={`login ${styles.login}`}>
-              <div className='input-wrap'>
-                <label htmlFor='quiz-username'>
+              <div className="input-wrap">
+                <label htmlFor="quiz-username">
                   <input
-                    id='quiz-username'
-                    name='username'
-                    type='text'
+                    id="quiz-username"
+                    name="username"
+                    type="text"
                     value={username}
                     required
-                    autoComplete='email'
+                    autoComplete="email"
                     onChange={({ target }) => setUsername(target.value.trim())}
                   />
                   <span>{t('Username')}: </span>
                 </label>
               </div>
-              <div className='input-wrap'>
+              <div className="input-wrap">
                 <label>
                   <input
-                    name='password'
-                    type='password'
+                    name="password"
+                    type="password"
                     required
-                    autoComplete='current-password'
+                    autoComplete="current-password"
                     value={password}
                     onChange={({ target }) => setPassword(target.value.trim())}
                   />
                   <span>{t('Password')}: </span>
                 </label>
               </div>
-              <button type='submit' disabled={sending} id='login' className='login'>
+              <button
+                type="submit"
+                disabled={sending}
+                id="login"
+                className="login"
+              >
                 {t('Login')}
               </button>
             </form>

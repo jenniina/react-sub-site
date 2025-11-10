@@ -9,7 +9,7 @@ export type SelectData = {
   email: string | undefined
 }
 
-const url = import.meta.env.VITE_BASE_URI ?? 'https://bg.jenniina.fi'
+const url = import.meta.env.VITE_BASE_URI ?? 'https://react.jenniina.fi'
 const baseUrl = `${url}/api`
 
 export const sendEmail = async (data: SelectData) => {

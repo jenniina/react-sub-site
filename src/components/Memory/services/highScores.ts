@@ -2,7 +2,7 @@ import axios from 'axios'
 import { ELanguages, IUser } from '../../../types'
 import { IHighScore, IHighScoreResponse, IPlayer } from '../../../types/memory'
 
-const url = import.meta.env.VITE_BASE_URI ?? 'https://bg.jenniina.fi'
+const url = import.meta.env.VITE_BASE_URI ?? 'https://react.jenniina.fi'
 const baseUrl = `${url}/api/highscores`
 
 const addHighScore = async (
@@ -34,7 +34,9 @@ const getAllHighScores = async (language: ELanguages) => {
 
 // Delete a high score by ID
 const deleteHighScore = async (language: ELanguages, highScoreId: string) => {
-  const response = await axios.delete(`${baseUrl}/${language}/id/${highScoreId}`)
+  const response = await axios.delete(
+    `${baseUrl}/${language}/id/${highScoreId}`
+  )
   return response.data as IHighScoreResponse
 }
 
@@ -63,7 +65,9 @@ const deleteHighScoresByPlayerName = async (
 }
 
 const cleanUpHighScores = async (language: ELanguages, levelKey: string) => {
-  const response = await axios.post(`${baseUrl}/${language}/cleanup/${levelKey}`)
+  const response = await axios.post(
+    `${baseUrl}/${language}/cleanup/${levelKey}`
+  )
   return response.data as IHighScoreResponse
 }
 
@@ -73,10 +77,13 @@ const changePlayerName = async (
   newName: string,
   userID: IUser['_id']
 ) => {
-  const response = await axios.put(`${baseUrl}/${language}/player?userID=${userID}`, {
-    oldName,
-    newName,
-  })
+  const response = await axios.put(
+    `${baseUrl}/${language}/player?userID=${userID}`,
+    {
+      oldName,
+      newName,
+    }
+  )
   return response.data as IHighScoreResponse
 }
 

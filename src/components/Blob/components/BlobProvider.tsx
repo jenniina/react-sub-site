@@ -19,6 +19,8 @@ export const BlobProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(blobReducer, initialState as never)
 
   return (
-    <BlobContext.Provider value={{ state, dispatch }}>{children}</BlobContext.Provider>
+    <BlobContext.Provider value={{ state, dispatch }}>
+      {children}
+    </BlobContext.Provider>
   )
 }

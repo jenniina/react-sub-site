@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios'
 import { Draggable, BackgroundColor } from '../types'
 import { ELanguages } from '../../../types'
 
-const url = import.meta.env.VITE_BASE_URI ?? 'https://bg.jenniina.fi'
+const url = import.meta.env.VITE_BASE_URI ?? 'https://react.jenniina.fi'
 const baseUrl = `${url}/api/blobs`
 
 // router.get('/api/blobs/:user/:language', getAllBlobsByUser)
@@ -10,8 +10,14 @@ const baseUrl = `${url}/api/blobs`
 // router.post('/api/blobs/:user/:versionName/:language', saveBlobsByUser)
 // router.delete('/api/blobs/:user/:versionName/:language',
 
-const getAllBlobsByUser = async (user: string, d: number, language: ELanguages) => {
-  const response = await axios.get(`${baseUrl}/${user}/${d}`, { params: { language } })
+const getAllBlobsByUser = async (
+  user: string,
+  d: number,
+  language: ELanguages
+) => {
+  const response = await axios.get(`${baseUrl}/${user}/${d}`, {
+    params: { language },
+  })
   return response.data
 }
 
@@ -21,7 +27,9 @@ const getBlobsVersionByUser = async (
   versionName: string,
   language: ELanguages
 ) => {
-  const response = await axios.get(`${baseUrl}/${user}/${d}/${versionName}/${language}`)
+  const response = await axios.get(
+    `${baseUrl}/${user}/${d}/${versionName}/${language}`
+  )
   return response.data
 }
 
@@ -52,13 +60,16 @@ const editBlobsByUser = async (
   language: ELanguages,
   newVersionName: string
 ) => {
-  const response = await axios.put(`${baseUrl}/${user}/${d}/${versionName}/${language}`, {
-    d,
-    versionName,
-    draggables,
-    backgroundColor,
-    newVersionName,
-  })
+  const response = await axios.put(
+    `${baseUrl}/${user}/${d}/${versionName}/${language}`,
+    {
+      d,
+      versionName,
+      draggables,
+      backgroundColor,
+      newVersionName,
+    }
+  )
   return response.data
 }
 

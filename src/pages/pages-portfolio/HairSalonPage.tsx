@@ -1,21 +1,21 @@
-import { useContext, useState } from "react";
-import Accordion from "../../components/Accordion/Accordion";
-import { ELanguages } from "../../types";
-import { LanguageContext } from "../../contexts/LanguageContext";
+import { useState } from 'react'
+import Accordion from '../../components/Accordion/Accordion'
+import { ELanguages } from '../../types'
+import { useLanguageContext } from '../../contexts/LanguageContext'
 export default function HairSalonPage({
   heading,
   text,
   type,
   language,
 }: {
-  heading: string;
-  text: string;
-  type: string;
-  language: ELanguages;
+  heading: string
+  text: string
+  type: string
+  language: ELanguages
 }) {
-  const { t } = useContext(LanguageContext)!;
+  const { t } = useLanguageContext()
 
-  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false)
   return (
     <>
       {/*  <Helmet prioritizeSeoTags={true}>
@@ -49,19 +49,19 @@ export default function HairSalonPage({
               <div className="medium">
                 <Accordion
                   language={language}
-                  text={t("ClickHereToSeeFeatures")}
+                  text={t('ClickHereToSeeFeatures')}
                   className="salon-features"
                   wrapperClass="mb3"
                   setIsFormOpen={setIsFormOpen}
                 >
                   <>
-                    <h2>{t("Features")}</h2>
+                    <h2>{t('Features')}</h2>
                     <ul className="ul">
-                      <li>{t("SalonIntro1")}</li>
-                      <li>{t("SalonIntro2")}</li>
-                      <li>{t("SalonIntro3")}</li>
+                      <li>{t('SalonIntro1')}</li>
+                      <li>{t('SalonIntro2')}</li>
+                      <li>{t('SalonIntro3')}</li>
                       <li>
-                        {t("Dependencies")}: React
+                        {t('Dependencies')}: React
                         <ul>
                           <li>react</li>
                           <li>react-dom</li>
@@ -72,7 +72,7 @@ export default function HairSalonPage({
                         </ul>
                       </li>
                       <li>
-                        {t("Dependencies")}: Node.js
+                        {t('Dependencies')}: Node.js
                         <ul>
                           <li>express</li>
                           <li>express-validator</li>
@@ -92,10 +92,10 @@ export default function HairSalonPage({
                   style={
                     isFormOpen
                       ? {
-                          paddingLeft: "0.5rem",
-                          fontSize: "130%",
+                          paddingLeft: '0.5rem',
+                          fontSize: '130%',
                         }
-                      : { fontSize: "130%" }
+                      : { fontSize: '130%' }
                   }
                 >
                   <p>
@@ -115,5 +115,5 @@ export default function HairSalonPage({
         </div>
       </div>
     </>
-  );
+  )
 }

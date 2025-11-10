@@ -19,8 +19,8 @@
   -o-animation-play-state: paused;
   -ms-animation-play-state: paused;
   animation-play-state: paused;
-  transition-property: transform, opacity, bottom, background-position, color, outline,
-    border;
+  transition-property:
+    transform, opacity, bottom, background-position, color, outline, border;
   transition-timing-function: cubic-bezier(0.15, 0, 0.85, 1);
   transition-duration: 500ms;
 }

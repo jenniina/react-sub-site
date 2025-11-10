@@ -1,6 +1,24 @@
-# React sub site for jenniina.fi
+# React SSR sub site for jenniina.fi
 
-This is a sub site for jenniina.fi that is built with React. It is a single page application that is used to display the React portfolio of Jenniina Laine.
+This is a server-side rendered sub site for jenniina.fi that is built with React and Vike (formerly Vite-plugin-ssr). The application features both server-side rendering (SSR) and static site generation (SSG) capabilities, providing excellent performance and SEO optimization while maintaining the interactive React portfolio of Jenniina Laine.
+
+## Architecture
+
+This application uses a modern SSR (Server-Side Rendering) architecture built with:
+
+- **Vike (v0.4.245)** - Modern SSR/SSG framework for Vite, providing server-side rendering and static site generation
+- **Vite (v6.0.0)** - Fast build tool and development server with HMR (Hot Module Replacement)
+- **React 18.3.1** - Frontend framework with modern features like concurrent rendering and automatic batching
+- **TypeScript** - Type safety and enhanced developer experience
+- **Node.js** - Server runtime for SSR and API endpoints
+
+### SSR Features
+
+- **Pre-rendering**: Static HTML generation for better SEO and faster initial page loads
+- **Client-side hydration**: Seamless transition from server-rendered HTML to interactive React components
+- **Client-side routing**: Fast navigation between pages without full page reloads
+- **SSR-safe components**: All components are designed to work both on server and client
+- **Optimized builds**: Automatic code splitting and optimization for production
 
 ## Content
 
@@ -48,14 +66,87 @@ A multi step form that uses React's useState hook to manage the state of the for
 
 ## Development
 
-The site is built with React and uses the following libraries:
+### Tech Stack
 
-    - @reduxjs/toolkit: Redux toolkit is used for state management.
-    - axios: Axios is used for making HTTP requests.
-    - react-icons: React icons is used for displaying icons.
-    - react-redux: React redux is used for state management.
-    - react-router-dom: React router dom is used for routing.
-    - uuid: UUID is used for generating unique ids.
-    - react-helmet-async: React helmet async is used for managing the document head.
+The site is built with React and server-side rendering capabilities using the following technologies:
 
-The site is built with Vite and uses TypeScript for type checking.
+#### Core Framework
+
+- **Vike (v0.4.245)**: SSR/SSG framework providing server-side rendering and static site generation
+- **Vite (v6.0.0)**: Fast build tool with HMR and optimized production builds
+- **React (v18.3.1)**: Frontend framework with concurrent features
+- **TypeScript (v4.6.4)**: Static type checking and enhanced developer experience
+
+#### State Management & Data
+
+- **@reduxjs/toolkit**: Modern Redux for predictable state management
+- **react-redux**: Official React bindings for Redux
+- **axios**: HTTP client for API requests with server-side compatibility
+
+#### Routing & Navigation
+
+- **react-router-dom**: Client-side routing with SSR support
+- **Vike routing**: File-based routing system with pre-rendering capabilities
+
+#### UI & Styling
+
+- **react-icons**: Comprehensive icon library
+- **CSS Modules**: Scoped styling with TypeScript support
+
+#### Utilities
+
+- **uuid**: Unique identifier generation
+- **dom-to-image-more**: Client-side image generation from DOM elements
+
+#### Development Tools
+
+- **ESLint**: Code linting with React and TypeScript rules
+- **Prettier**: Code formatting with custom configuration
+- **Cross-env**: Cross-platform environment variable support
+
+### Development Scripts
+
+```bash
+# Development
+npm run dev          # Start development server with HMR
+npm run preview      # Preview production build locally
+
+# Building
+npm run build        # Production build with SSR and pre-rendering
+npm run build:debug  # Debug build with additional logging
+npm run build:prod   # Production build with optimizations
+
+# Code Quality
+npm run lint         # Run ESLint
+npm run lint:fix     # Fix ESLint issues automatically
+npm run format       # Format code with Prettier
+npm run format:check # Check code formatting
+npm run format:lint  # Format and lint in sequence
+npm run type-check   # TypeScript type checking
+```
+
+### SSR Configuration
+
+The application is configured for server-side rendering with:
+
+- Pre-rendering enabled for all pages for static site generation
+- Client-side hydration for interactive components
+- SSR-safe localStorage and window object handling
+- Optimized bundle splitting for client and server builds
+
+### Project Structure
+
+```
+src/
+├── pages/           # Page components and Vike configuration
+│   ├── +config.ts   # Vike SSR configuration
+│   ├── +*.tsx       # Page layouts and rendering logic
+│   └── pages-portfolio/  # Portfolio subpages
+├── components/      # Reusable React components
+├── hooks/          # Custom React hooks (SSR-compatible)
+├── contexts/       # React context providers
+├── reducers/       # Redux reducers and slices
+├── services/       # API services and utilities
+├── types/          # TypeScript type definitions
+└── utils/          # Utility functions
+```

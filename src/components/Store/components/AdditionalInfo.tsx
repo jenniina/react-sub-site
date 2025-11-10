@@ -2,7 +2,7 @@ import { FC, Dispatch, SetStateAction, useContext } from 'react'
 import { ELanguages } from '../../../types'
 import { ICartItem } from '../../../types/store'
 import { scrollIntoView } from '../../../utils'
-import { LanguageContext } from '../../../contexts/LanguageContext'
+import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 export interface AccProps {
   type: ICartItem['id']
@@ -23,23 +23,28 @@ const AdditionalInfo: FC<AccProps> = ({
   setIsFormOpen,
   text,
 }) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   return (
     <div className={styles['addition-wrap']}>
       <div className={styles['additional-information']}>
         <h3 style={{ marginTop: 0 }}>
-          {type.startsWith('misc') ? `${t('HourlyWork')}: ` : `${t('PleaseNote')}: `}
+          {type.startsWith('misc')
+            ? `${t('HourlyWork')}: `
+            : `${t('PleaseNote')}: `}
         </h3>
         {type.startsWith('graphic') ? (
           <>
             <p>
-              {t('PrintingCostsNotIncluded')}. {t('ICanHelpWithFindingPrintingServices')}
+              {t('PrintingCostsNotIncluded')}.{' '}
+              {t('ICanHelpWithFindingPrintingServices')}
             </p>
             <p>{t('ColorsMayVaryInPrintedWorks')}</p>
             {language !== ELanguages.en && language !== ELanguages.fi && (
               <p>
-                {t('PleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo')}
+                {t(
+                  'PleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo'
+                )}
               </p>
             )}
           </>
@@ -49,23 +54,27 @@ const AdditionalInfo: FC<AccProps> = ({
             <p>
               {t('TextAndImageContentIsNotIncluded')}.{' '}
               <button
-                className='reset link'
+                className="reset link"
                 onClick={() => scrollIntoView('misc-translation')}
               >
                 {t('SeeTranslationServiceProduct')}
               </button>
             </p>
             <p>
-              {t('WebHostingAndDomainNotIncluded')}. {t('ICanHelpWithFindingHosting')}
+              {t('WebHostingAndDomainNotIncluded')}.{' '}
+              {t('ICanHelpWithFindingHosting')}
             </p>
             {type.startsWith('wordpress') && (
               <p>
-                {t('WordPressPaidPluginsNotIncluded')} {t('TheseAreAgreedSeparately')}
+                {t('WordPressPaidPluginsNotIncluded')}{' '}
+                {t('TheseAreAgreedSeparately')}
               </p>
             )}
             {language !== ELanguages.en && language !== ELanguages.fi && (
               <p>
-                {t('PleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo')}
+                {t(
+                  'PleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo'
+                )}
               </p>
             )}
           </>

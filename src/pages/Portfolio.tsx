@@ -1,11 +1,8 @@
-import { lazy, Suspense, useContext } from "react";
-import { useTheme } from "../hooks/useTheme";
-import { ELanguages } from "../types";
-import styles from "./css/portfolio.module.css";
-import { LanguageContext } from "../contexts/LanguageContext";
-const PortfolioInfo = lazy(
-  () => import("../components/PortfolioInfo/PortfolioInfo")
-);
+import { useTheme } from '../hooks/useTheme'
+import { ELanguages } from '../types'
+import styles from './css/portfolio.module.css'
+import { useLanguageContext } from '../contexts/LanguageContext'
+import PortfolioInfo from '../components/PortfolioInfo/PortfolioInfo'
 
 export default function Portfolio({
   heading,
@@ -13,14 +10,14 @@ export default function Portfolio({
   type,
   language,
 }: {
-  heading: string;
-  text: string;
-  type: string;
-  language: ELanguages;
+  heading: string
+  text: string
+  type: string
+  language: ELanguages
 }) {
-  const { t } = useContext(LanguageContext)!;
+  const { t } = useLanguageContext()
 
-  const lightTheme = useTheme();
+  const lightTheme = useTheme()
 
   return (
     <>
@@ -45,21 +42,13 @@ export default function Portfolio({
       </Helmet> **/}
       <div
         className={`portfolio ${styles.portfolio} ${type} ${
-          lightTheme ? styles.light : ""
+          lightTheme ? styles.light : ''
         }`}
       >
         <div className="inner-wrap">
-          <Suspense
-            fallback={
-              <div className="flex center margin0auto textcenter">
-                {t("Loading")}...
-              </div>
-            }
-          >
-            <PortfolioInfo language={language} />
-          </Suspense>
+          <PortfolioInfo language={language} />
         </div>
       </div>
     </>
-  );
+  )
 }

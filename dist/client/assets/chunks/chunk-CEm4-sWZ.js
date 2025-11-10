@@ -1,1 +1,0 @@
-const _={list:"_list_11q5x_1",subheading:"_subheading_11q5x_25",light:"_light_11q5x_55",welcome:"_welcome_11q5x_55","li-about":"_li-about_11q5x_139",language:"_language_11q5x_227",newest:"_newest_11q5x_285",extras:"_extras_11q5x_293",first:"_first_11q5x_343","language-welcome":"_language-welcome_11q5x_457"};export{_ as s};

@@ -9,15 +9,10 @@ import {
   IHighScoreResponse,
   GameMode,
 } from '../../../types/memory'
-import { LanguageContext } from '../../../contexts/LanguageContext'
-
-const storedLanguage = localStorage.getItem('AppLanguage')
-const language = storedLanguage
-  ? (storedLanguage.replace(/"/g, '') as ELanguages)
-  : ('en' as ELanguages)
+import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 const useHighScores = () => {
-  const { t } = useContext(LanguageContext)!
+  const { t, language } = useLanguageContext()
 
   const [highScores, setHighScores] = useState<HighScores>({})
   const [loading, setLoading] = useState<boolean>(true)
@@ -26,7 +21,8 @@ const useHighScores = () => {
   useEffect(() => {
     const fetchHighScores = async () => {
       try {
-        const fetchedHighScores = await highScoresService.getAllHighScores(language)
+        const fetchedHighScores =
+          await highScoresService.getAllHighScores(language)
         // Transform the fetched data into HighScores format
         const formattedHighScores: HighScores = {}
         fetchedHighScores.forEach((score: IHighScore) => {
@@ -41,9 +37,11 @@ const useHighScores = () => {
           }
           formattedHighScores[mode][levelKey].push(score)
         })
-        Object.keys(formattedHighScores).forEach((mode) => {
-          Object.keys(formattedHighScores[mode]).forEach((levelKey) => {
-            formattedHighScores[mode][levelKey] = formattedHighScores[mode][levelKey]
+        Object.keys(formattedHighScores).forEach(mode => {
+          Object.keys(formattedHighScores[mode]).forEach(levelKey => {
+            formattedHighScores[mode][levelKey] = formattedHighScores[mode][
+              levelKey
+            ]
               .sort((a, b) => a.time - b.time)
               .slice(0, 5) // Keep top 5
           })
@@ -74,7 +72,7 @@ const useHighScores = () => {
         const [mode, ...rest] = response.highScore.levelKey.split('_')
         const levelKey = rest.join('_')
 
-        setHighScores((prev) => {
+        setHighScores(prev => {
           const newHighScores = { ...prev }
           if (!newHighScores[mode]) {
             newHighScores[mode] = {}
@@ -85,7 +83,7 @@ const useHighScores = () => {
           const levelScores = newHighScores[mode][levelKey] || []
 
           const existingIndex = levelScores.findIndex(
-            (score) => score._id === response.highScore?._id
+            score => score._id === response.highScore?._id
           )
 
           let updated: IHighScore[]
@@ -120,7 +118,9 @@ const useHighScores = () => {
     }
   }
 
-  const getHighScoresByLevel = async (levelKey: string): Promise<IHighScore[]> => {
+  const getHighScoresByLevel = async (
+    levelKey: string
+  ): Promise<IHighScore[]> => {
     try {
       const fetchedScores = await highScoresService.getHighScoresByLevel(
         language,
@@ -139,19 +139,17 @@ const useHighScores = () => {
 
   const deleteHighScore = async (highScoreId: string): Promise<void> => {
     try {
-      const response: IHighScoreResponse = await highScoresService.deleteHighScore(
-        language,
-        highScoreId
-      )
+      const response: IHighScoreResponse =
+        await highScoresService.deleteHighScore(language, highScoreId)
       if (response.success) {
-        setHighScores((prevHighScores) => {
+        setHighScores(prevHighScores => {
           const updatedHighScores: HighScores = {}
-          Object.keys(prevHighScores).forEach((mode) => {
+          Object.keys(prevHighScores).forEach(mode => {
             updatedHighScores[mode] = { ...prevHighScores[mode] }
-            Object.keys(updatedHighScores[mode]).forEach((levelKey) => {
+            Object.keys(updatedHighScores[mode]).forEach(levelKey => {
               updatedHighScores[mode][levelKey] = updatedHighScores[mode][
                 levelKey
-              ].filter((score) => score._id !== highScoreId)
+              ].filter(score => score._id !== highScoreId)
             })
           })
           return updatedHighScores
@@ -171,17 +169,14 @@ const useHighScores = () => {
     userID: IUser['_id']
   ): Promise<void> => {
     try {
-      const response: IHighScoreResponse = await highScoresService.updateHighScore(
-        language,
-        highScore,
-        userID
-      )
+      const response: IHighScoreResponse =
+        await highScoresService.updateHighScore(language, highScore, userID)
       if (response.success && response.highScore) {
         const updatedEntry = response.highScore
         const [mode, ...rest] = updatedEntry.levelKey.split('_')
         const levelKey = rest.join('_')
 
-        setHighScores((prevHighScores) => {
+        setHighScores(prevHighScores => {
           if (!prevHighScores[mode]) {
             prevHighScores[mode] = {}
           }
@@ -189,12 +184,16 @@ const useHighScores = () => {
             prevHighScores[mode][levelKey] = []
           }
           const levelScores = prevHighScores[mode][levelKey] || []
-          const index = levelScores.findIndex((score) => score._id === updatedEntry._id)
+          const index = levelScores.findIndex(
+            score => score._id === updatedEntry._id
+          )
           if (index !== -1) {
             const updatedLevelScores = [...levelScores]
             updatedLevelScores[index] = updatedEntry
 
-            const sorted = updatedLevelScores.sort((a, b) => a.time - b.time).slice(0, 5)
+            const sorted = updatedLevelScores
+              .sort((a, b) => a.time - b.time)
+              .slice(0, 5)
 
             return {
               ...prevHighScores,
@@ -222,15 +221,22 @@ const useHighScores = () => {
   ): Promise<void> => {
     try {
       const response: IHighScoreResponse =
-        await highScoresService.deleteHighScoresByPlayerName(language, playerName, userID)
+        await highScoresService.deleteHighScoresByPlayerName(
+          language,
+          playerName,
+          userID
+        )
       if (response.success) {
-        setHighScores((prevHighScores) => {
+        setHighScores(prevHighScores => {
           const updatedHighScores: HighScores = {}
-          Object.keys(prevHighScores).forEach((mode) => {
+          Object.keys(prevHighScores).forEach(mode => {
             updatedHighScores[mode] = {}
-            Object.keys(prevHighScores[mode]).forEach((levelKey) => {
-              updatedHighScores[mode][levelKey] = prevHighScores[mode][levelKey].filter(
-                (score) => !score.players.some((player) => player.name === playerName)
+            Object.keys(prevHighScores[mode]).forEach(levelKey => {
+              updatedHighScores[mode][levelKey] = prevHighScores[mode][
+                levelKey
+              ].filter(
+                score =>
+                  !score.players.some(player => player.name === playerName)
               )
             })
           })
@@ -247,21 +253,23 @@ const useHighScores = () => {
   }
 
   const generateUniqueKey = (score: IHighScore): string => {
-    const sortedPlayers = [...score.players].sort((a, b) => a.name.localeCompare(b.name))
+    const sortedPlayers = [...score.players].sort((a, b) =>
+      a.name.localeCompare(b.name)
+    )
     const playersKey = sortedPlayers
-      .map((player) => `${player.name}:${player.score}`)
+      .map(player => `${player.name}:${player.score}`)
       .join('-')
     return `${score.levelKey}_${score.time}-${playersKey}`
   }
 
   const removeDuplicates = async () => {
     const allHighScores: IHighScore[] = Object.values(highScores)
-      .flatMap((modeScores) => Object.values(modeScores))
+      .flatMap(modeScores => Object.values(modeScores))
       .flat()
     const uniqueMap: { [key: string]: IHighScore[] } = {}
 
     // Group high scores by the unique key
-    allHighScores.forEach((score) => {
+    allHighScores.forEach(score => {
       const key = generateUniqueKey(score)
       if (!uniqueMap[key]) {
         uniqueMap[key] = []
@@ -274,7 +282,8 @@ const useHighScores = () => {
       if (duplicates.length > 1) {
         duplicates.sort(
           (a, b) =>
-            new Date(b.createdAt ?? 0).getTime() - new Date(a.createdAt ?? 0).getTime()
+            new Date(b.createdAt ?? 0).getTime() -
+            new Date(a.createdAt ?? 0).getTime()
         )
         const [keep, ...remove] = duplicates
         for (const scoreToRemove of remove) {
@@ -292,23 +301,28 @@ const useHighScores = () => {
     userID: IUser['_id']
   ) => {
     try {
-      await highScoresService.changePlayerName(language, oldName, newName, userID)
-      setHighScores((prevHighScores) => {
+      await highScoresService.changePlayerName(
+        language,
+        oldName,
+        newName,
+        userID
+      )
+      setHighScores(prevHighScores => {
         const updatedHighScores: HighScores = {}
-        Object.keys(prevHighScores).forEach((mode) => {
+        Object.keys(prevHighScores).forEach(mode => {
           updatedHighScores[mode] = {}
-          Object.keys(prevHighScores[mode]).forEach((levelKey) => {
-            updatedHighScores[mode][levelKey] = prevHighScores[mode][levelKey].map(
-              (score) => {
-                const updatedPlayers = score.players.map((player) => {
-                  if (player.name === oldName) {
-                    return { ...player, name: newName }
-                  }
-                  return player
-                })
-                return { ...score, players: updatedPlayers }
-              }
-            )
+          Object.keys(prevHighScores[mode]).forEach(levelKey => {
+            updatedHighScores[mode][levelKey] = prevHighScores[mode][
+              levelKey
+            ].map(score => {
+              const updatedPlayers = score.players.map(player => {
+                if (player.name === oldName) {
+                  return { ...player, name: newName }
+                }
+                return player
+              })
+              return { ...score, players: updatedPlayers }
+            })
           })
         })
         return updatedHighScores

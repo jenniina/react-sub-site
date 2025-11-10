@@ -5,7 +5,7 @@ import { HEX } from '../types'
 import { Select, SelectOption } from '../../Select/Select'
 import useLocalStorage from '../../../hooks/useStorage'
 import { ELanguages } from '../../../types'
-import { LanguageContext } from '../../../contexts/LanguageContext'
+import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 type ExtrasData = {
   encouragement: string
@@ -33,7 +33,7 @@ export default function ExtrasForm({
   updateFields,
   language,
 }: ExtrasFormProps) {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const [values, setValues] = useLocalStorage<SelectOption[]>(`multivalues`, [])
 
@@ -54,7 +54,7 @@ export default function ExtrasForm({
   useEffect(() => {
     updateFields({
       selectmulti: values
-        ?.map((element) => {
+        ?.map(element => {
           return element?.value
         })
         .join(', '),
@@ -68,73 +68,73 @@ export default function ExtrasForm({
         description={t('NoneOfTheseAreRequired')}
       >
         <div className={styles.subfield}>
-          <label className='full left' htmlFor='form-encouragement'>
+          <label className="full left" htmlFor="form-encouragement">
             {t('AnyEncouragingWords')}
           </label>
           <textarea
-            id='form-encouragement'
-            className='full'
+            id="form-encouragement"
+            className="full"
             autoFocus
-            name='encouragement'
+            name="encouragement"
             value={encouragement}
             rows={3}
             placeholder={t('OrConstructiveFeedback')}
-            onChange={(e) => updateFields({ encouragement: e.target.value })}
+            onChange={e => updateFields({ encouragement: e.target.value })}
           />
         </div>
         <div className={styles.subfield}>
           <label
-            id='label-color'
+            id="label-color"
             className={`left nowrap full ${styles.colorlabel}`}
-            htmlFor='form-color2'
+            htmlFor="form-color2"
           >
             {t('AColorYouLike')}
           </label>
 
           <input
-            id='form-color2'
+            id="form-color2"
             className={`half bg`}
-            aria-labelledby='label-color'
-            type='text'
-            name='color'
+            aria-labelledby="label-color"
+            type="text"
+            name="color"
             value={color}
-            onChange={(e) => updateFields({ color: e.target.value })}
+            onChange={e => updateFields({ color: e.target.value })}
           />
-          <label className='scr' htmlFor='form-color'>
+          <label className="scr" htmlFor="form-color">
             {t('AColorYouLike')} {t('ColorPicker')}
           </label>
           <input
-            id='form-color'
+            id="form-color"
             className={`half`}
-            aria-labelledby='label-color'
-            type='color'
-            name='color'
+            aria-labelledby="label-color"
+            type="color"
+            name="color"
             value={color}
-            onChange={(e) => updateFields({ color: e.target.value })}
+            onChange={e => updateFields({ color: e.target.value })}
           />
         </div>
         <div className={styles.subfield}>
           <label className={`full`}>{t('WhichModeDoYouPrefer')}</label>
-          <label className='nowrap flex gap-half'>
-            <span className='radio-span'>
+          <label className="nowrap flex gap-half">
+            <span className="radio-span">
               <input
-                id='form-dark'
-                type='radio'
-                name='mode'
+                id="form-dark"
+                type="radio"
+                name="mode"
                 value={'dark mode'}
-                onChange={(e) => updateFields({ dark: e.target.value })}
+                onChange={e => updateFields({ dark: e.target.value })}
               />
             </span>{' '}
             {t('DarkMode')}
           </label>
-          <label htmlFor='form-light' className='nowrap flex gap-half'>
-            <span className='radio-span'>
+          <label htmlFor="form-light" className="nowrap flex gap-half">
+            <span className="radio-span">
               <input
-                id='form-light'
-                type='radio'
-                name='mode'
+                id="form-light"
+                type="radio"
+                name="mode"
                 value={'light mode'}
-                onChange={(e) => {
+                onChange={e => {
                   updateFields({ light: e.target.value })
                 }}
               />
@@ -143,12 +143,12 @@ export default function ExtrasForm({
           </label>
         </div>
         <div className={styles.subfield}>
-          <label htmlFor='multiple-hide'>{t('DoYouLikeMyCustomSelects')}</label>
+          <label htmlFor="multiple-hide">{t('DoYouLikeMyCustomSelects')}</label>
           <span style={{ position: 'relative', zIndex: '2', width: '100%' }}>
             <Select
               language={language}
               multiple
-              id='multiple-hide'
+              id="multiple-hide"
               className={styles.dropdownmultiple}
               instructions={`${t('PleaseSelectAnOption')}. ${t(
                 'YouMaySelectMultipleOptions'
@@ -156,11 +156,11 @@ export default function ExtrasForm({
               hide
               options={options}
               value={values}
-              onChange={(o) => {
+              onChange={o => {
                 setValues(o)
                 updateFields({
                   selectmulti: values
-                    ?.map((element) => {
+                    ?.map(element => {
                       return element?.value
                     })
                     .join(', '),
@@ -193,27 +193,27 @@ export default function ExtrasForm({
             <span>{t('Clarification')}</span>
             <input
               className={`bg`}
-              type='text'
-              name='clarification'
-              onChange={(e) => {
+              type="text"
+              name="clarification"
+              onChange={e => {
                 updateFields({ clarification: e.target.value })
               }}
             />
           </label>
         </div>
         <div>
-          <label className='radio-checkbox'>
+          <label className="radio-checkbox">
             <input
-              id='form-gdpr'
+              id="form-gdpr"
               required
-              type='checkbox'
-              name='gdpr'
+              type="checkbox"
+              name="gdpr"
               value={'gdpr-ok'}
-              onChange={(e) => {
+              onChange={e => {
                 updateFields({ gdpr: e.target.value })
               }}
             />
-            <i className='required' aria-hidden='true'>
+            <i className="required" aria-hidden="true">
               *
             </i>{' '}
             {t('ItIsAlrightToSendTheEnteredInformationToJenniina')}{' '}

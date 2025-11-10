@@ -1,70 +1,70 @@
-import { createSlice } from "@reduxjs/toolkit";
-import quizService from "../services/quiz";
-import { IQuizHighscore } from "../types";
+import { createSlice } from '@reduxjs/toolkit'
+import quizService from '../services/quiz'
+import { IQuizHighscore } from '../types'
 
 const initialState = {
   options: {
     loading: false,
-    category: "",
-    difficulty: "",
-    type: "",
+    category: '',
+    difficulty: '',
+    type: '',
     amount_of_questions: 50,
   },
   questions: [],
   index: 0,
   score: 0,
-};
+}
 
 const quizSlice = createSlice({
-  name: "quiz",
+  name: 'quiz',
   initialState,
   reducers: {
     changeLoading(state, action) {
-      state.options.loading = action.payload;
+      state.options.loading = action.payload
     },
     changeDifficulty(state, action) {
-      state.options.difficulty = action.payload;
+      state.options.difficulty = action.payload
     },
     changeCategory(state, action) {
-      state.options.category = action.payload;
+      state.options.category = action.payload
     },
     changeType(state, action) {
-      state.options.type = action.payload;
+      state.options.type = action.payload
     },
     changeAmount(state, action) {
-      state.options.amount_of_questions = action.payload;
+      state.options.amount_of_questions = action.payload
     },
     setQuestions(state, action) {
-      state.questions = action.payload;
+      state.questions = action.payload
     },
     setScore(state, action) {
-      state.score = action.payload;
+      state.score = action.payload
     },
     setIndex(state, action) {
-      state.index = action.payload;
+      state.index = action.payload
     },
   },
-});
+})
 
 export const addQuiz = (quiz: IQuizHighscore) => {
   return async () => {
-    const newQuiz = await quizService.addQuiz(quiz);
-    return newQuiz;
-  };
-};
+    const newQuiz = await quizService.addQuiz(quiz)
+    return newQuiz
+  }
+}
 
 export const getUserQuiz = (id: string) => {
   return async () => {
-    const quiz = await quizService.getUserQuiz(id);
-    return quiz;
-  };
-};
+    const quiz = await quizService.getUserQuiz(id)
+    return quiz
+  }
+}
 
-export const deleteDuplicates = (user: IQuizHighscore["user"]) => {
+export const deleteDuplicates = (user: IQuizHighscore['user']) => {
   return async () => {
-    return await quizService.deleteDuplicates(user);
-  };
-};
+    return await quizService.deleteDuplicates(user)
+  }
+}
 
 export const {
   changeLoading,
@@ -75,6 +75,6 @@ export const {
   setQuestions,
   setIndex,
   setScore,
-} = quizSlice.actions;
+} = quizSlice.actions
 
-export default quizSlice.reducer;
+export default quizSlice.reducer

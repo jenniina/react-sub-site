@@ -1,7 +1,6 @@
-import { lazy, Suspense, useContext } from "react";
-import { ELanguages } from "../../types";
-import { LanguageContext } from "../../contexts/LanguageContext";
-const Memory = lazy(() => import("../../components/Memory/Memory"));
+import { ELanguages } from '../../types'
+import { useLanguageContext } from '../../contexts/LanguageContext'
+import Memory from '../../components/Memory/Memory'
 
 export default function MemoryPage({
   heading,
@@ -9,12 +8,12 @@ export default function MemoryPage({
   type,
   language,
 }: {
-  heading: string;
-  text: string;
-  type: string;
-  language: ELanguages;
+  heading: string
+  text: string
+  type: string
+  language: ELanguages
 }) {
-  const { t } = useContext(LanguageContext)!;
+  const { t } = useLanguageContext()
 
   return (
     <>
@@ -44,17 +43,9 @@ export default function MemoryPage({
       </Helmet> */}
       <div className={`memory ${type}`}>
         <div className="inner-wrap">
-          <Suspense
-            fallback={
-              <div className="flex center margin0auto textcenter">
-                {t("Loading")}...
-              </div>
-            }
-          >
-            <Memory language={language} />
-          </Suspense>
+          <Memory language={language} />
         </div>
       </div>
     </>
-  );
+  )
 }

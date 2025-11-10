@@ -6,7 +6,7 @@ import ScrollButton from '../ScrollButton'
 import { ICartItem } from '../../types/store'
 import { useTheme } from '../../hooks/useTheme'
 import { Link } from 'react-router-dom'
-import { LanguageContext } from '../../contexts/LanguageContext'
+import { useLanguageContext } from '../../contexts/LanguageContext'
 
 interface Props {
   language: ELanguages
@@ -16,7 +16,7 @@ interface Props {
 }
 
 const Store: FC<Props> = ({ language, cart, addToCart, removeFromCart }) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const lightTheme = useTheme()
 
@@ -25,13 +25,17 @@ const Store: FC<Props> = ({ language, cart, addToCart, removeFromCart }) => {
       id: 'wordpress-simple',
       name: t('SimpleWordPressWebsite'),
       price: 190,
-      description: `${t('AnAccessibleSinglePageWebsite')} ${t('MayContainEffects')}`,
+      description: `${t('AnAccessibleSinglePageWebsite')} ${t(
+        'MayContainEffects'
+      )}`,
     },
     {
       id: 'wordpress-website',
       name: t('WordPressWebsite'),
       price: 260,
-      description: `${t('AnAccessibleMultiPageWebsite')}  ${t('MayContainEffects')}`,
+      description: `${t('AnAccessibleMultiPageWebsite')}  ${t(
+        'MayContainEffects'
+      )}`,
     },
     {
       id: 'wordpress-blog-contact',
@@ -74,21 +78,25 @@ const Store: FC<Props> = ({ language, cart, addToCart, removeFromCart }) => {
       id: 'react-simple',
       name: t('SimpleReactWebsite'),
       price: 340,
-      description: `${t('AnAccessibleSinglePageWebsite')} ${t('MayContainEffects')}`,
+      description: `${t('AnAccessibleSinglePageWebsite')} ${t(
+        'MayContainEffects'
+      )}`,
     },
     {
       id: 'react-website',
       name: t('ReactWebsite'),
       price: 400,
-      description: `${t('AnAccessibleMultiPageWebsite')} ${t('MayContainEffects')}`,
+      description: `${t('AnAccessibleMultiPageWebsite')} ${t(
+        'MayContainEffects'
+      )}`,
     },
     {
       id: 'react-contact-functionality',
       name: t('ReactWebsiteWithContactFormAndOtherFunctionality'),
       price: 620,
-      description: `${t('AnAccessibleWebsiteWithContactFormAndOtherFunctionality')} ${t(
-        'FunctionalitiesCanBe'
-      )} (Node.js app & React). ${t(
+      description: `${t(
+        'AnAccessibleWebsiteWithContactFormAndOtherFunctionality'
+      )} ${t('FunctionalitiesCanBe')} (Node.js app & React). ${t(
         'PleaseSeeThePortfolioPagesForExamplesofPossibleFeatures'
       )}`,
     },
@@ -96,9 +104,9 @@ const Store: FC<Props> = ({ language, cart, addToCart, removeFromCart }) => {
       id: 'react-adding-functionality',
       name: `${t('AddingFunctionalityToAReactSite')} (Node.js app & React)`,
       price: 220,
-      description: `${t('FunctionalitiesCanBe')} ${t('AddonsAreAdaptedToTheStyle')} ${t(
-        'PleaseSeeThePortfolioPagesForExamplesofPossibleFeatures'
-      )}`,
+      description: `${t('FunctionalitiesCanBe')} ${t(
+        'AddonsAreAdaptedToTheStyle'
+      )} ${t('PleaseSeeThePortfolioPagesForExamplesofPossibleFeatures')}`,
     },
   ]
 
@@ -118,9 +126,9 @@ const Store: FC<Props> = ({ language, cart, addToCart, removeFromCart }) => {
       name: t('WebsiteMaintenance'),
       id: 'misc-maintenance',
       price: miscArray.maintenance.price,
-      description: `${t('WebsiteMaintenance')}: ${miscArray.maintenance.price}€/${t(
-        'HourSmall'
-      )} ${t('ForWordPressOrReactNodeBasedWebsites')}. `,
+      description: `${t('WebsiteMaintenance')}: ${
+        miscArray.maintenance.price
+      }€/${t('HourSmall')} ${t('ForWordPressOrReactNodeBasedWebsites')}. `,
     },
     {
       name: t('WebsiteContentUpdatesOrModifications'),
@@ -134,9 +142,9 @@ const Store: FC<Props> = ({ language, cart, addToCart, removeFromCart }) => {
       name: t('TranslationWork'),
       id: 'misc-translation',
       price: miscArray.translation.price,
-      description: `${t('TranslationWork')}: ${miscArray.translation.price}€/${t(
-        'HourSmall'
-      )}. `,
+      description: `${t('TranslationWork')}: ${
+        miscArray.translation.price
+      }€/${t('HourSmall')}. `,
     },
     {
       name: t('TrainingInWebsiteManagement'),
@@ -232,7 +240,7 @@ const Store: FC<Props> = ({ language, cart, addToCart, removeFromCart }) => {
     },
   ]
 
-  const itemsReact = react.map((item) => {
+  const itemsReact = react.map(item => {
     item.quantity = 0
     item.details = ''
     item.status = 'pending'
@@ -240,7 +248,7 @@ const Store: FC<Props> = ({ language, cart, addToCart, removeFromCart }) => {
     return item
   }) as ICartItem[]
 
-  const itemsWordPress = wordpress.map((item) => {
+  const itemsWordPress = wordpress.map(item => {
     item.quantity = 0
     item.details = ''
     item.status = 'pending'
@@ -248,7 +256,7 @@ const Store: FC<Props> = ({ language, cart, addToCart, removeFromCart }) => {
     return item
   }) as ICartItem[]
 
-  const itemsGraphic = graphicDesign.map((item) => {
+  const itemsGraphic = graphicDesign.map(item => {
     item.quantity = 0
     item.details = ''
     item.status = 'pending'
@@ -256,7 +264,7 @@ const Store: FC<Props> = ({ language, cart, addToCart, removeFromCart }) => {
     return item
   }) as ICartItem[]
 
-  const itemsMisc = misc.map((item) => {
+  const itemsMisc = misc.map(item => {
     item.quantity = 0
     item.details = ''
     item.status = 'pending'
@@ -275,7 +283,7 @@ const Store: FC<Props> = ({ language, cart, addToCart, removeFromCart }) => {
               'PleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo'
             )}`
           : `${t('IfYouAreUnsureAboutReactOrWordPress')}`,
-      link: <Link to='/contact'>{t('ContactForm')}</Link>,
+      link: <Link to="/contact">{t('ContactForm')}</Link>,
     },
     {
       name: 'React & Node',
@@ -288,23 +296,25 @@ const Store: FC<Props> = ({ language, cart, addToCart, removeFromCart }) => {
       name: 'WordPress',
       id: 'wordpress',
       array: itemsWordPress,
-      intro: `${t('WordPressSitesAreVersatile')} ${t('UpdatingWordPressIsSimple')}`,
+      intro: `${t('WordPressSitesAreVersatile')} ${t(
+        'UpdatingWordPressIsSimple'
+      )}`,
       link: (
         <>
           {t('ExampleSites')} ({t('MainSite').toLowerCase()}):
-          <ul className='ul'>
+          <ul className="ul">
             <li>
-              <a href='https://jenniina.fi/jyvaskylan-salonkiorkesteri-orchestra-website/#title'>
+              <a href="https://jenniina.fi/jyvaskylan-salonkiorkesteri-orchestra-website/#title">
                 {t('OrchestraWebsite')}
               </a>{' '}
             </li>
             <li>
-              <a href='https://jenniina.fi/metal-2022/#metal2022'>
+              <a href="https://jenniina.fi/metal-2022/#metal2022">
                 {t('ConferenceWebsite')}
               </a>{' '}
             </li>
             <li>
-              <a href='https://jenniina.fi/website-of-psychologist/#sirkku'>
+              <a href="https://jenniina.fi/website-of-psychologist/#sirkku">
                 {t('PsychologistWebsite')}
               </a>
             </li>
@@ -320,7 +330,7 @@ const Store: FC<Props> = ({ language, cart, addToCart, removeFromCart }) => {
       link: (
         <>
           {t('Products')} ({t('MainSite').toLowerCase()}):{' '}
-          <a href='https://jenniina.fi/portfolio#graphic-design'>
+          <a href="https://jenniina.fi/portfolio#graphic-design">
             {t('GraphicDesign')} ({t('SampleArtwork')})
           </a>
         </>
@@ -331,7 +341,9 @@ const Store: FC<Props> = ({ language, cart, addToCart, removeFromCart }) => {
   return (
     <>
       <div
-        className={`${styles['scroll-button-wrap']} ${lightTheme ? styles.light : ''}`}
+        className={`${styles['scroll-button-wrap']} ${
+          lightTheme ? styles.light : ''
+        }`}
       >
         {itemsNameArray.map((item, index) =>
           index === 0 ? null : (
@@ -340,12 +352,12 @@ const Store: FC<Props> = ({ language, cart, addToCart, removeFromCart }) => {
               styles={styles}
               name={item.name}
               id={item.id}
-              direction='below'
+              direction="below"
             />
           )
         )}{' '}
       </div>
-      {itemsNameArray.map((item) => (
+      {itemsNameArray.map(item => (
         <StoreItems
           key={item.id}
           id={item.id}

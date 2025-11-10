@@ -1,6 +1,6 @@
-import { ELanguages } from "../types";
-import { useTheme } from "../hooks/useTheme";
-import styles from "./css/disclaimer.module.css";
+import { ELanguages } from '../types'
+import { useTheme } from '../hooks/useTheme'
+import styles from './css/disclaimer.module.css'
 import {
   EContactMe,
   EContactMeText,
@@ -27,12 +27,12 @@ import {
   EEnFiSupplierMayUseProductInMarketing,
   EEnFiSupplierMayHelpWithHostingAndPrintingSolutions,
   EETermsOfService,
-} from "../types/fien";
-import { Link } from "react-router-dom";
-import { useContext } from "react";
-import { LanguageContext } from "../contexts/LanguageContext";
+} from '../types/fien'
+import { Link } from 'react-router-dom'
+import { useContext } from 'react'
+import { useLanguageContext } from '../contexts/LanguageContext'
 export function TermsProducts({ language }: { language: ELanguages }) {
-  const lang: EEnFi = language === "fi" ? EEnFi.fi : EEnFi.en;
+  const lang: EEnFi = language === 'fi' ? EEnFi.fi : EEnFi.en
 
   return (
     <>
@@ -64,14 +64,14 @@ export function TermsProducts({ language }: { language: ELanguages }) {
       <p>{EEnFiSupplierNotResponsibleForErrors[lang]}</p>
       <p>{EEnFiSupplierNotResponsibleForUpdates[lang]}</p>
       <p>
-        {EEnFiPrintingCostsNotIncluded[lang]}{" "}
+        {EEnFiPrintingCostsNotIncluded[lang]}{' '}
         {EEnFiSupplierMayHelpWithHostingAndPrintingSolutions[lang]}
       </p>
       <p>{EEnFiColorsMayVaryInPrintedWorks[lang]}</p>
       <p>{EEnFiSupplierMayUseProductInMarketing[lang]}</p>
       <p>{EEnFiOrderIsBinding[lang]}</p>
     </>
-  );
+  )
 }
 
 export default function TermsOfService({
@@ -80,26 +80,26 @@ export default function TermsOfService({
   type,
   language,
 }: {
-  heading: string;
-  text: string;
-  type: string;
-  language: ELanguages;
+  heading: string
+  text: string
+  type: string
+  language: ELanguages
 }) {
-  const { t } = useContext(LanguageContext)!;
+  const { t } = useLanguageContext()
 
-  const lightTheme = useTheme();
+  const lightTheme = useTheme()
 
-  const lang: EEnFi = language === "fi" ? EEnFi.fi : EEnFi.en;
+  const lang: EEnFi = language === 'fi' ? EEnFi.fi : EEnFi.en
 
   return (
     <>
-      <div className={`terms ${type} ${lightTheme ? styles.light : ""}`}>
+      <div className={`terms ${type} ${lightTheme ? styles.light : ''}`}>
         <div className="inner-wrap">
           <section className={`card`}>
             <div>
               <p>{EEnFiWelcomeToTermsOfService[lang]}</p>
               <p>
-                {t("SeeAlso")}: <Link to="/disclaimer">{t("Disclaimer")}</Link>
+                {t('SeeAlso')}: <Link to="/disclaimer">{t('Disclaimer')}</Link>
               </p>
 
               <h2>{EEnFiAcceptanceOfTerms[lang]}</h2>
@@ -114,12 +114,12 @@ export default function TermsOfService({
               <h2>{EEnFiTermination[lang]}</h2>
               <p>{EEnFiTerminationText[lang]}</p>
 
-              <h2>{t("Products")}</h2>
+              <h2>{t('Products')}</h2>
               <TermsProducts language={language} />
 
               <h2>{EContactMe[lang]}</h2>
               <p>
-                {EContactMeText[lang]}{" "}
+                {EContactMeText[lang]}{' '}
                 <Link to="/contact">{EContactMe[lang].toLowerCase()}</Link>
               </p>
             </div>
@@ -127,5 +127,5 @@ export default function TermsOfService({
         </div>
       </div>
     </>
-  );
+  )
 }

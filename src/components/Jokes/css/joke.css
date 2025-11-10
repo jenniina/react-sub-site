@@ -6,7 +6,9 @@
   align-items: center;
   gap: calc(var(--gap) * 2);
   margin: 0 auto;
-  max-width: calc(100vw - calc(var(--page-padding) * 4) - var(--scrollbar_width));
+  max-width: calc(
+    100vw - calc(var(--page-padding) * 4) - var(--scrollbar_width)
+  );
 }
 .joke-container.card > div {
   display: flex;
@@ -34,7 +36,8 @@
   border-width: 2px;
   border-bottom: none;
   border-color: var(--color-primary-8);
-  border-radius: calc(var(--border-radius) * 0.8) calc(var(--border-radius) * 0.8) 0 0;
+  border-radius: calc(var(--border-radius) * 0.8)
+    calc(var(--border-radius) * 0.8) 0 0;
   outline: none;
   padding: 0.8em 5% 0.5em;
 }
@@ -75,7 +78,8 @@
 .joke-container .saved .local-saved-wrap.below button,
 .joke-container .saved .local-saved-wrap.below button:hover,
 .joke-container .saved .local-saved-wrap.below button:focus {
-  border-radius: 0 0 calc(var(--border-radius) * 0.8) calc(var(--border-radius) * 0.8);
+  border-radius: 0 0 calc(var(--border-radius) * 0.8)
+    calc(var(--border-radius) * 0.8);
   border-bottom: 2px solid var(--color-primary-8);
   border-top: 0;
   -webkit-transform: translateY(-1px);
@@ -132,7 +136,11 @@
   width: 100%;
 }
 .joke-container .saved .saved-inner > .filler.below {
-  background-image: linear-gradient(180deg, transparent, var(--color-primary-2));
+  background-image: linear-gradient(
+    180deg,
+    transparent,
+    var(--color-primary-2)
+  );
 }
 .joke-container .saved .saved-inner h3 {
   margin-top: 0.5em;
@@ -155,14 +163,18 @@ button#submit-new-joke {
   display: flex;
   flex-flow: column nowrap;
   gap: calc(var(--gap) * 2);
-  max-width: calc(100vw - calc(var(--page-padding) * 4) - var(--scrollbar_width));
+  max-width: calc(
+    100vw - calc(var(--page-padding) * 4) - var(--scrollbar_width)
+  );
   justify-content: center;
   align-items: center;
 }
 .joke-container .accordion-container.submit-container.closed {
   width: 100%;
 }
-.joke-container .accordion-container.submit-container.closed > button.accordion-btn.open {
+.joke-container
+  .accordion-container.submit-container.closed
+  > button.accordion-btn.open {
   min-width: 100%;
   width: 100%;
   max-width: 100%;
@@ -181,7 +193,9 @@ form.form-submit-new {
   display: flex;
   flex-flow: column wrap;
   gap: calc(var(--gap) * 3) var(--gap);
-  max-width: calc(100vw - calc(var(--page-padding) * 4) - var(--scrollbar_width));
+  max-width: calc(
+    100vw - calc(var(--page-padding) * 4) - var(--scrollbar_width)
+  );
   justify-content: center;
   align-items: center;
 }
@@ -213,7 +227,9 @@ form.form-submit-new textarea {
   flex: 1 1 100%;
   flex-flow: column wrap;
   gap: calc(var(--gap) * 3) var(--gap);
-  max-width: calc(100vw - calc(var(--page-padding) * 4) - var(--scrollbar_width));
+  max-width: calc(
+    100vw - calc(var(--page-padding) * 4) - var(--scrollbar_width)
+  );
   justify-content: center;
   align-items: center;
 }
@@ -224,7 +240,9 @@ form.joke-edit {
   display: flex;
   flex-flow: row wrap;
   gap: calc(var(--gap) * 2) var(--gap);
-  max-width: calc(100vw - calc(var(--page-padding) * 4) - var(--scrollbar_width));
+  max-width: calc(
+    100vw - calc(var(--page-padding) * 4) - var(--scrollbar_width)
+  );
   justify-content: center;
   align-items: center;
   outline: 3px solid var(--color-primary-8);
@@ -309,8 +327,8 @@ form.joke-form-save,
 form.joke-form-save article,
 form.joke-form-save p,
 form.joke-form-save button {
-  transition-property: transform, opacity, background-position, color, border-color,
-    box-shadow;
+  transition-property:
+    transform, opacity, background-position, color, border-color, box-shadow;
   transition-duration: 0.4s;
   transition-timing-function: ease-in-out;
   -webkit-transform: scaleY(0);
@@ -516,7 +534,9 @@ form.joke {
   display: flex;
   flex-flow: row wrap;
   gap: calc(var(--gap) * 3) calc(var(--gap) / 2);
-  max-width: calc(100vw - calc(var(--page-padding) * 4) - var(--scrollbar_width));
+  max-width: calc(
+    100vw - calc(var(--page-padding) * 4) - var(--scrollbar_width)
+  );
   justify-content: center;
   align-items: flex-end;
 }
@@ -1457,7 +1477,12 @@ button.blocked-btn.active {
   .saved .toggle-wrap > div:last-child {
     margin-top: calc(var(--gap) * 1.2);
   }
-  .saved .toggle-wrap .toggle-inner-wrap .full .search-jokes.input-wrap > label {
+  .saved
+    .toggle-wrap
+    .toggle-inner-wrap
+    .full
+    .search-jokes.input-wrap
+    > label {
     margin-right: 0;
   }
   .es .saved .toggle-wrap .select-container.single-category-select {

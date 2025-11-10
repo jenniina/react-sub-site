@@ -4,44 +4,44 @@ import {
   useState,
   useCallback,
   ReactNode,
-} from "react";
-import Confirm from "../components/Confirm/Confirm";
+} from 'react'
+import Confirm from '../components/Confirm/Confirm'
 
 interface ConfirmOptions {
-  message: string;
-  confirmText?: string;
-  cancelText?: string;
+  message: string
+  confirmText?: string
+  cancelText?: string
 }
 
 interface ConfirmContextType {
-  showConfirm: (options: ConfirmOptions) => Promise<boolean>;
+  showConfirm: (options: ConfirmOptions) => Promise<boolean>
 }
 
-const ConfirmContext = createContext<ConfirmContextType | undefined>(undefined);
+const ConfirmContext = createContext<ConfirmContextType | undefined>(undefined)
 
 export const useConfirm = () => {
-  const ctx = useContext(ConfirmContext);
-  if (!ctx) throw new Error("useConfirm must be used within a ConfirmProvider");
-  return ctx.showConfirm;
-};
+  const ctx = useContext(ConfirmContext)
+  if (!ctx) throw new Error('useConfirm must be used within a ConfirmProvider')
+  return ctx.showConfirm
+}
 
 export const ConfirmProvider = ({ children }: { children: ReactNode }) => {
-  const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState<ConfirmOptions>({ message: "" });
-  const [resolver, setResolver] = useState<(result: boolean) => void>();
+  const [open, setOpen] = useState(false)
+  const [options, setOptions] = useState<ConfirmOptions>({ message: '' })
+  const [resolver, setResolver] = useState<(result: boolean) => void>()
 
   const showConfirm = useCallback((opts: ConfirmOptions) => {
-    setOptions(opts);
-    setOpen(true);
-    return new Promise<boolean>((resolve) => {
-      setResolver(() => resolve);
-    });
-  }, []);
+    setOptions(opts)
+    setOpen(true)
+    return new Promise<boolean>(resolve => {
+      setResolver(() => resolve)
+    })
+  }, [])
 
   const handleClose = (result: boolean) => {
-    setOpen(false);
-    if (resolver) resolver(result);
-  };
+    setOpen(false)
+    if (resolver) resolver(result)
+  }
 
   return (
     <ConfirmContext.Provider value={{ showConfirm }}>
@@ -56,5 +56,5 @@ export const ConfirmProvider = ({ children }: { children: ReactNode }) => {
         />
       )}
     </ConfirmContext.Provider>
-  );
-};
+  )
+}

@@ -101,7 +101,8 @@ export const VALID_CATEGORIES = [
 ]
 
 const randomCategory = (): string => {
-  const result = VALID_CATEGORIES[Math.floor(Math.random() * VALID_CATEGORIES.length)]
+  const result =
+    VALID_CATEGORIES[Math.floor(Math.random() * VALID_CATEGORIES.length)]
   const excluded = [
     'death',
     'fear',
@@ -155,7 +156,7 @@ export interface QuotesResponse {
   message?: string
 }
 
-const url = import.meta.env.VITE_BASE_URI ?? 'https://bg.jenniina.fi'
+const url = import.meta.env.VITE_BASE_URI ?? 'https://react.jenniina.fi'
 const baseUrl = `${url}/api/quotes`
 
 const extractCategory = (searchTerms: string): string => {
@@ -164,13 +165,15 @@ const extractCategory = (searchTerms: string): string => {
 
   const searchWords = lowerCaseTerms.split(/\s+/)
 
-  searchWords.forEach((word) => {
-    Object.entries(translationToCategoryMap).forEach(([translation, categories]) => {
-      // Check for partial match using 'includes'
-      if (translation.includes(word)) {
-        categories.forEach((category) => matchedCategories.add(category))
+  searchWords.forEach(word => {
+    Object.entries(translationToCategoryMap).forEach(
+      ([translation, categories]) => {
+        // Check for partial match using 'includes'
+        if (translation.includes(word)) {
+          categories.forEach(category => matchedCategories.add(category))
+        }
       }
-    })
+    )
   })
 
   if (matchedCategories.size > 0) {
@@ -190,7 +193,9 @@ export const getQuote = async (
   try {
     const category = extractCategory(searchTerms)
 
-    const response = await axios.get<QuotesResponse>(`${baseUrl}/${language}/${category}`)
+    const response = await axios.get<QuotesResponse>(
+      `${baseUrl}/${language}/${category}`
+    )
 
     if (response.data.success && response.data.quote) {
       return response.data

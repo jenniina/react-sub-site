@@ -1,50 +1,50 @@
-import { createContext, useEffect, EffectCallback, ReactNode } from "react";
-import useMediaQuery from "../hooks/useMediaQuery";
-import useLocalStorage from "../hooks/useStorage";
-import { useIsClient, useWindow } from "../hooks/useSSR";
+import { createContext, useEffect, EffectCallback, ReactNode } from 'react'
+import useMediaQuery from '../hooks/useMediaQuery'
+import useLocalStorage from '../hooks/useStorage'
+import { useIsClient, useWindow } from '../hooks/useSSR'
 
-export const ThemeContext = createContext(true);
+export const ThemeContext = createContext(true)
 export const ThemeUpdateContext = createContext<EffectCallback | undefined>(
   undefined
-);
+)
 
 interface Props {
-  children: ReactNode;
+  children: ReactNode
 }
 
 export function ThemeProvider({ children }: Props) {
-  const isClient = useIsClient();
-  const windowObj = useWindow();
+  const isClient = useIsClient()
+  const windowObj = useWindow()
 
-  const prefersLight = useMediaQuery("(prefers-color-scheme: light)");
+  const prefersLight = useMediaQuery('(prefers-color-scheme: light)')
 
   const [lightTheme, setLightTheme] = useLocalStorage(
     `useLightMode`,
     prefersLight ? true : false
-  );
+  )
 
   // Read the ?light query parameter and update theme
   useEffect(() => {
-    if (!isClient || !windowObj) return;
-    const params = new URLSearchParams(windowObj.location.search);
-    const lightParam = params.get("light");
+    if (!isClient || !windowObj) return
+    const params = new URLSearchParams(windowObj.location.search)
+    const lightParam = params.get('light')
     if (lightParam !== null) {
-      setLightTheme(lightParam === "true");
+      setLightTheme(lightParam === 'true')
     }
-  }, [setLightTheme, isClient]);
+  }, [setLightTheme, isClient])
 
-  const lightEnabled = lightTheme ?? prefersLight;
+  const lightEnabled = lightTheme ?? prefersLight
 
   function toggleTheme() {
-    setLightTheme((prevTheme) => !prevTheme);
+    setLightTheme(prevTheme => !prevTheme)
   }
 
   useEffect(() => {
     /*add 'light' class to body when lightEnabled is true*/
-    if (!isClient || typeof document === "undefined") return;
+    if (!isClient || typeof document === 'undefined') return
 
-    document?.body.classList.toggle("light", lightEnabled);
-  }, [lightEnabled, isClient]);
+    document?.body.classList.toggle('light', lightEnabled)
+  }, [lightEnabled, isClient])
 
   return (
     <ThemeContext.Provider value={lightTheme}>
@@ -52,5 +52,5 @@ export function ThemeProvider({ children }: Props) {
         {children}
       </ThemeUpdateContext.Provider>
     </ThemeContext.Provider>
-  );
+  )
 }

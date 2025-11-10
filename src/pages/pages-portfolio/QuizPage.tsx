@@ -1,10 +1,9 @@
-import { Outlet } from "react-router-dom";
-import { useContext } from "react";
-import "./css/quiz.css";
-import { LanguageContext } from "../../contexts/LanguageContext";
+import { Outlet } from 'react-router-dom'
+import './css/quiz.css'
+import { useLanguageContext } from '../../contexts/LanguageContext'
 
 export default function QuizPage() {
-  const { t } = useContext(LanguageContext)!;
+  const { t } = useLanguageContext()
 
   return (
     <>
@@ -42,5 +41,5 @@ export default function QuizPage() {
         <Outlet />
       </div>
     </>
-  );
+  )
 }

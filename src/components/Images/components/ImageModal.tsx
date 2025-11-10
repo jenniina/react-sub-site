@@ -1,4 +1,10 @@
-import { FC, useEffect, useState, MouseEvent as ReactMouseEvent, useContext } from 'react'
+import {
+  FC,
+  useEffect,
+  useState,
+  MouseEvent as ReactMouseEvent,
+  useContext,
+} from 'react'
 import styles from '../images.module.css'
 import { ELanguages } from '../../../types'
 import { ImageHit } from '../services/images'
@@ -11,7 +17,7 @@ import { TTextType } from '../Images'
 import { PoemItem } from '../../Poems/services/poems'
 import { notify } from '../../../reducers/notificationReducer'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
-import { LanguageContext } from '../../../contexts/LanguageContext'
+import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 interface ModalImageProps {
   image: ImageHit
@@ -28,7 +34,7 @@ const ImageModal: FC<ModalImageProps> = ({
   searchTerm,
   textType,
 }) => {
-  const { t } = useContext(LanguageContext)!
+  const { t } = useLanguageContext()
 
   const dispatch = useAppDispatch()
   const { tooltip, handleMouseMove, handleMouseLeave } = useTooltip()
@@ -105,12 +111,14 @@ const ImageModal: FC<ModalImageProps> = ({
 
   return (
     <div onMouseMove={onMouseMove} onMouseLeave={handleMouseLeave}>
-      <div className={`tooltip-wrap ${styles['image-wrap']} ${styles['image-modal']}`}>
-        <button onClick={handleDownload} className='reset'>
+      <div
+        className={`tooltip-wrap ${styles['image-wrap']} ${styles['image-modal']}`}
+      >
+        <button onClick={handleDownload} className="reset">
           <img
             src={image.largeImageURL}
             alt={image.tags}
-            loading='lazy'
+            loading="lazy"
             style={{
               width: '100%',
               height: 'auto',
