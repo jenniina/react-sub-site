@@ -1,7 +1,7 @@
 import styles from './store.module.css'
 import { ELanguages } from '../../types'
 import StoreItems from './components/StoreItems'
-import { FC, useContext } from 'react'
+import { FC } from 'react'
 import ScrollButton from '../ScrollButton'
 import { ICartItem } from '../../types/store'
 import { useTheme } from '../../hooks/useTheme'
@@ -9,14 +9,13 @@ import { Link } from 'react-router-dom'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 
 interface Props {
-  language: ELanguages
   cart: ICartItem[]
   addToCart: (item: ICartItem) => void
   removeFromCart: (itemId: string) => void
 }
 
-const Store: FC<Props> = ({ language, cart, addToCart, removeFromCart }) => {
-  const { t } = useLanguageContext()
+const Store: FC<Props> = ({ cart, addToCart, removeFromCart }) => {
+  const { t, language } = useLanguageContext()
 
   const lightTheme = useTheme()
 
@@ -361,7 +360,6 @@ const Store: FC<Props> = ({ language, cart, addToCart, removeFromCart }) => {
         <StoreItems
           key={item.id}
           id={item.id}
-          language={language}
           items={item.array}
           name={item.name}
           intro={item.intro}

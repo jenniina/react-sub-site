@@ -1,18 +1,8 @@
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import Accordion from '../../components/Accordion/Accordion'
-import { ELanguages } from '../../types'
 import { useLanguageContext } from '../../contexts/LanguageContext'
-export default function GraphQLPage({
-  heading,
-  text,
-  type,
-  language,
-}: {
-  heading: string
-  text: string
-  type: string
-  language: ELanguages
-}) {
+
+export default function GraphQLPage({ type }: { type: string }) {
   const { t } = useLanguageContext()
 
   const [isFormOpen, setIsFormOpen] = useState(false)
@@ -46,7 +36,6 @@ export default function GraphQLPage({
             <div>
               <div className="medium">
                 <Accordion
-                  language={language}
                   text={t('Features')}
                   className="graphQL-features"
                   wrapperClass="graphQL-features-wrap"

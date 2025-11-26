@@ -1,33 +1,35 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Data, Status } from '../types'
 import CardSingle from './CardSingle'
 import { sanitize } from '../../../utils'
 import styles from '../dragAndDrop.module.css'
-import { ELanguages } from '../../../types'
 import Accordion from '../../Accordion/Accordion'
 import { notify } from '../../../reducers/notificationReducer'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 
+interface DragData {
+  type: 'item' | 'span'
+  id: string
+}
+
 interface Props {
-  language: ELanguages
   itemsByStatus: Data[]
   status: Status
   statuses: Status[]
   isDragging: boolean
   handleUpdate: (id: number, status: Status, target?: number) => void
-  handleRemoveColor: (color: Data['content']) => void
+  handleRemoveColor: (color: Data['content']) => Promise<void>
   handleDragging: (dragging: boolean) => void
   lightTheme: boolean
   updateStatus: (index: number, status: Status) => void
   reorderStatuses: (dragIndex: number, dropIndex: number) => void
-  deleteStatus: (status: string) => void
+  deleteStatus: (status: string) => Promise<void>
   regex: RegExp
 }
 
 const CardsContainer = ({
-  language,
   status,
   statuses,
   isDragging,
@@ -59,7 +61,7 @@ const CardsContainer = ({
       setNewStatus(value)
       setSending(false)
     } else {
-      dispatch(notify(t('SpecialCharactersNotAllowed'), true, 6))
+      void dispatch(notify(t('SpecialCharactersNotAllowed'), true, 6))
       setSending(false)
     }
   }
@@ -70,10 +72,10 @@ const CardsContainer = ({
   })
 
   const handleDrop = (e: React.DragEvent<HTMLUListElement>) => {
-    const data = JSON.parse(e.dataTransfer.getData('text/plain'))
+    const data = JSON.parse(e.dataTransfer.getData('text/plain')) as DragData
 
     if (data.type === 'item') {
-      handleUpdate(data.id, status, theTarget)
+      handleUpdate(parseInt(data.id), status, theTarget)
       handleDragging(false)
     }
   }
@@ -100,9 +102,9 @@ const CardsContainer = ({
     dropIndex: number
   ) => {
     e.preventDefault()
-    const data = JSON.parse(e.dataTransfer.getData('text/plain'))
+    const data = JSON.parse(e.dataTransfer.getData('text/plain')) as DragData
     if (data.type === 'span') {
-      const dragIndex = data.id
+      const dragIndex: number = parseInt(data.id)
 
       if (dragIndex !== dropIndex) {
         const reorderedStatuses = Array.from(statuses)
@@ -135,8 +137,8 @@ const CardsContainer = ({
     <div
       className={`${styles['cards-container']} ${
         isDragging ? styles['area-dragging'] : ''
-      } ${lightTheme ? styles['light'] : ''}`}
-      onDrop={e => handleContainerDrop(e, statuses.indexOf(status))}
+      } ${lightTheme ? styles.light : ''}`}
+  onDrop={e => void handleContainerDrop(e, statuses.indexOf(status))}
       onDragEnd={() => handleDragging(false)}
     >
       <span
@@ -151,7 +153,6 @@ const CardsContainer = ({
         <Accordion
           isOpen={isOpen}
           setIsFormOpen={setIsOpen}
-          language={language}
           text={`*`}
           hideBrackets
           onClick={() => setNewStatus(status)}
@@ -189,7 +190,7 @@ const CardsContainer = ({
                 type="button"
                 className="danger delete"
                 onClick={() => {
-                  deleteStatus(status)
+                  void deleteStatus(status)
                 }}
               >
                 {t('Delete')}
@@ -200,15 +201,14 @@ const CardsContainer = ({
       </span>
       <ul
         aria-labelledby={`label-${sanitize(status)}`}
+        role="listbox"
         id={sanitize(status)}
         className={sanitize(status)}
-        role={'list'}
-        onDrop={handleDrop}
+  onDrop={(e) => void handleDrop(e)}
         onDragOver={handleDragOver}
       >
         {itemsByStatus?.map((item, index) => (
           <CardSingle
-            language={language}
             id={item.id}
             index={index}
             data={item}

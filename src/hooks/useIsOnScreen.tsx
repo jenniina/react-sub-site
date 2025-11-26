@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from 'react'
+import { useIsClient, useWindow } from '../hooks/useSSR'
 
 export default function useIsOnScreen(
   ref: React.MutableRefObject<HTMLElement | null>,
   rootMargin = '0px',
   threshold = 0.0
 ) {
+  const isClient = useIsClient()
+  const windowObj = useWindow()
+
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    if (ref.current == null) return
+    if (!isClient || !windowObj || ref.current == null) return
+    const element = ref.current
     const observer = new IntersectionObserver(
       ([entry]) => setIsVisible(entry.isIntersecting),
       { rootMargin, threshold }
     )
-    observer.observe(ref.current)
+    observer.observe(element)
     return () => {
-      if (ref.current == null) return
-      observer.unobserve(ref.current)
+      observer.unobserve(element)
     }
-  }, [ref.current, rootMargin, threshold])
+  }, [isClient, windowObj, ref, rootMargin, threshold])
 
   return isVisible
 }

@@ -1,10 +1,10 @@
 import { useSelector } from 'react-redux'
-import { ELanguages, ReducerProps } from '../../../types'
+import { ReducerProps } from '../../../types'
 import styles from '../css/quiz.module.css'
-import { useContext } from 'react'
+
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 
-const Progress = ({ language }: { language: ELanguages }) => {
+const Progress = () => {
   const { t } = useLanguageContext()
 
   const { answer, index, points } = useSelector(

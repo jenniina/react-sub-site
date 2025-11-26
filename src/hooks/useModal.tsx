@@ -1,11 +1,4 @@
-import {
-  FC,
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useEffect,
-} from 'react'
+import { FC, createContext, useState, ReactNode, useContext } from 'react'
 import { ModalProps } from '../types'
 
 interface ModalContextType {

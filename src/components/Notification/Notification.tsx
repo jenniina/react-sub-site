@@ -1,19 +1,16 @@
 import { useSelector } from 'react-redux'
-import { ELanguages, ReducerProps } from '../../types'
-import { useContext, useEffect, useState } from 'react'
+import { ReducerProps } from '../../types'
+import { useEffect, useState } from 'react'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 
-interface Props {
-  language: ELanguages
-  className?: string
-}
-const Notification = ({ language = ELanguages.en, className }: Props) => {
+const Notification = () => {
   const { t } = useLanguageContext()
 
   const notification = useSelector((state: ReducerProps) => state.notification)
   const [closed, setClosed] = useState(false)
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setClosed(false)
   }, [notification])
 

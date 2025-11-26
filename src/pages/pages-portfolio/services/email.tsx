@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { ELanguages } from '../../../types'
 
-export type SelectData = {
+export interface SelectData {
   language: ELanguages
   issues: string | undefined
   favoriteHero: string | undefined
@@ -9,10 +9,12 @@ export type SelectData = {
   email: string | undefined
 }
 
-const url = import.meta.env.VITE_BASE_URI ?? 'https://react.jenniina.fi'
+const url = 'https://react.jenniina.fi'
 const baseUrl = `${url}/api`
 
-export const sendEmail = async (data: SelectData) => {
+export const sendEmail = async (
+  data: SelectData
+): Promise<{ success: boolean; message: string }> => {
   const response = await axios.post(`${baseUrl}/send-email-select`, data)
-  return response.data
+  return response.data as { success: boolean; message: string }
 }

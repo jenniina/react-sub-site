@@ -1,15 +1,14 @@
-import { useState, useEffect, useContext } from 'react'
+import { useEffect } from 'react'
 import FormWrapper from './FormWrapper'
 import styles from '../form.module.css'
 import { HEX } from '../types'
 import { Select, SelectOption } from '../../Select/Select'
 import useLocalStorage from '../../../hooks/useStorage'
-import { ELanguages } from '../../../types'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 
-type ExtrasData = {
+interface ExtrasData {
   encouragement: string
-  color: HEX | string
+  color: HEX
   dark: string
   light: string
   gdpr: string
@@ -17,23 +16,18 @@ type ExtrasData = {
   clarification: string
 }
 
-type ExtrasFormProps = ExtrasData & {
+interface ExtrasFormProps {
+  encouragement: string
+  color: HEX
   updateFields: (fields: Partial<ExtrasData>) => void
-  language: ELanguages
 }
 
 export default function ExtrasForm({
   encouragement,
   color,
-  dark,
-  light,
-  gdpr,
-  selectmulti,
-  clarification,
   updateFields,
-  language,
 }: ExtrasFormProps) {
-  const { t } = useLanguageContext()
+  const { t, language } = useLanguageContext()
 
   const [values, setValues] = useLocalStorage<SelectOption[]>(`multivalues`, [])
 
@@ -59,7 +53,7 @@ export default function ExtrasForm({
         })
         .join(', '),
     })
-  }, [values])
+  }, [values, updateFields])
 
   return (
     <>
@@ -74,7 +68,6 @@ export default function ExtrasForm({
           <textarea
             id="form-encouragement"
             className="full"
-            autoFocus
             name="encouragement"
             value={encouragement}
             rows={3}
@@ -98,7 +91,7 @@ export default function ExtrasForm({
             type="text"
             name="color"
             value={color}
-            onChange={e => updateFields({ color: e.target.value })}
+            onChange={e => updateFields({ color: e.target.value as HEX })}
           />
           <label className="scr" htmlFor="form-color">
             {t('AColorYouLike')} {t('ColorPicker')}
@@ -110,7 +103,7 @@ export default function ExtrasForm({
             type="color"
             name="color"
             value={color}
-            onChange={e => updateFields({ color: e.target.value })}
+            onChange={e => updateFields({ color: e.target.value as HEX })}
           />
         </div>
         <div className={styles.subfield}>

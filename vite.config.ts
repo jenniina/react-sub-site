@@ -1,10 +1,10 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import vike from "vike/plugin";
-import copy from "rollup-plugin-copy";
-import path from "path";
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import vike from 'vike/plugin'
+import copy from 'rollup-plugin-copy'
+import { resolve } from 'node:path'
 
-const isDebug = process.env.NODE_ENV === "debug";
+const isDebug = process.env.NODE_ENV === 'debug'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -16,17 +16,22 @@ export default defineConfig({
     vike(),
     {
       ...copy({
-        targets: [{ src: "routes.json", dest: "dist" }],
-        hook: "writeBundle", // run the plugin after all the files are bundled and written to disk
+        targets: [
+          {
+            src: 'routes.json',
+            dest: resolve(__dirname, '../node-bg/dist/frontend'),
+          },
+        ],
+        hook: 'writeBundle', // run the plugin after all the files are bundled and written to disk
         copyOnce: true,
       }),
-      enforce: "post", // run the plugin after all the other plugins
+      enforce: 'post', // run the plugin after all the other plugins
     },
   ],
   server: {
     host: true,
   },
-  base: "/",
+  base: '/',
 
   // define: {
   //   "process.env.NODE_ENV": '"development"',
@@ -53,10 +58,10 @@ export default defineConfig({
   // },
 
   build: {
-    outDir: "dist",
-    minify: isDebug ? false : "terser",
+    outDir: resolve(__dirname, '../node-bg/dist/frontend'),
+    minify: isDebug ? false : 'terser',
     sourcemap: true,
-    target: "es2015",
+    target: 'es2015',
     rollupOptions: {
       external: [],
       output: isDebug
@@ -65,16 +70,20 @@ export default defineConfig({
           }
         : {
             manualChunks(id) {
-              if (id.includes("node_modules")) {
+              if (id.includes('node_modules')) {
                 return id
                   .toString()
-                  .split("node_modules/")[1]
-                  .split("/")[0]
-                  .toString();
+                  .split('node_modules/')[1]
+                  .split('/')[0]
+                  .toString()
               }
             },
           },
     },
+    emptyOutDir: true,
+  },
+  ssr: {
+    noExternal: true,
   },
 
   // ssr: {
@@ -100,4 +109,4 @@ export default defineConfig({
   //     format: "esm",
   //   },
   // },
-});
+})

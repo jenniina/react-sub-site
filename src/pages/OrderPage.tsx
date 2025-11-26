@@ -1,33 +1,24 @@
 import { splitToLines } from '../utils'
 import styles from '../components/Store/store.module.css'
-import { ELanguages, ReducerProps } from '../types'
+import { ReducerProps } from '../types'
 import { useSelector } from 'react-redux'
 import { IInfo } from '../types/store'
 import React from 'react'
 import { SelectOption } from '../components/Select/Select'
 import { status, paid } from '../types/store'
 import { useLanguageContext } from '../contexts/LanguageContext'
-import { useIsClient, useWindow } from '../hooks/useSSR'
+import { useWindow } from '../hooks/useSSR'
 import Order from '../components/Store/components/Order'
 import Orders from '../components/Store/components/Orders'
 
 interface OrderPageProps {
-  language: ELanguages
-  heading: string
-  text: string
   type: string
 }
 
-const OrderPage: React.FC<OrderPageProps> = ({
-  language,
-  heading,
-  text,
-  type,
-}) => {
-  const isClient = useIsClient()
+const OrderPage: React.FC<OrderPageProps> = ({ type }) => {
   const windowObj = useWindow()
 
-  const { t } = useLanguageContext()
+  const { t, language } = useLanguageContext()
 
   const user = useSelector((state: ReducerProps) => state.auth?.user)
   const urlParams = new URLSearchParams(
@@ -120,9 +111,8 @@ const OrderPage: React.FC<OrderPageProps> = ({
         <div className="inner-wrap">
           <section className="card" style={{ position: 'relative', zIndex: 2 }}>
             <div>
-              {!orderID && user && user?.role && user?.role > 1 ? (
+              {!orderID && user?.role && user?.role > 1 ? (
                 <Orders
-                  language={language}
                   user={user}
                   statusOptions={statusOptions}
                   paidOptions={paidOptions}

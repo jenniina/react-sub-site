@@ -49,7 +49,7 @@ export const first3Words = (name: string, language: ELanguages): string => {
   // if name is less than 5 words, return the name
   if (name.split(' ').length <= 4) return name
   // else return the first 3 words
-  else return name.split(' ').slice(0, 3).join(' ') + ' ' + t['Etc'][language]
+  else return name.split(' ').slice(0, 3).join(' ') + ' ' + t.Etc[language]
 }
 
 export const options = (enumObj: typeof ELanguagesLong) => {
@@ -69,7 +69,7 @@ export const getRandomString = (length: number) => {
   }
   return result
 }
-export const getRandomLetters = (length: number, capitals: boolean = false) => {
+export const getRandomLetters = (length: number, capitals = false) => {
   const lettersAll = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
   const lettersCapital = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
   const characters = capitals ? lettersCapital : lettersAll
@@ -109,7 +109,7 @@ export const randomUpTo90 = () => {
   const value = Math.ceil(getRandomBetween(5, 90))
   return clampValue(5, value, 90)
 }
-export const randomHSLColor = (type: string = 'array') => {
+export const randomHSLColor = (type = 'array') => {
   const randomOneOrTwo = Math.random() < 0.5 ? 1 : 2
   if (type === 'hsl') {
     const h = Math.floor(Math.random() * 360)
@@ -147,9 +147,6 @@ export const generateColors = (
       }
       break
     case 'complementary':
-      let adjustedL =
-        randomOneOrTwo === 1 ? baseHSL.l + adjustment : baseHSL.l - adjustment
-      adjustedL = clampValue(0, adjustedL, 90)
       for (let i = 1; i <= 4; i++) {
         let adjustedL =
           randomOneOrTwo === 1
@@ -261,8 +258,8 @@ export const buildColors = (
         const rgb = hexToRGB(baseColor.color)
         baseHSL = rgbToHSL(rgb.r, rgb.g, rgb.b)
       } else if (baseColor.colorFormat === 'rgb') {
-        const rgbMatch = baseColor.color.match(
-          /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i
+        const rgbMatch = /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i.exec(
+          baseColor.color
         )
         if (rgbMatch) {
           const r = Number(rgbMatch[1])
@@ -273,8 +270,8 @@ export const buildColors = (
           throw new Error('Invalid RGB format')
         }
       } else if (baseColor.colorFormat === 'hsl') {
-        const hslMatch = baseColor.color.match(
-          /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i
+        const hslMatch = /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i.exec(
+          baseColor.color
         )
         if (hslMatch) {
           const h = Number(hslMatch[1])
@@ -313,7 +310,7 @@ export function clampValue(min: number, val: number, max: number) {
 }
 
 export function createSelectOptions(
-  enums: Array<Record<ELanguages, string>>,
+  enums: Record<ELanguages, string>[],
   language: ELanguages
 ): SelectOption[] {
   return enums.map(enumObj => {
@@ -327,17 +324,17 @@ export function createSelectOptionsFromT(
   language: ELanguages
 ): SelectOption[] {
   return array.map(key => ({
-    value: key as string,
+    value: key,
     label: t[key as TranslationKey]
       ? t[key as TranslationKey][language as TranslationLang]
-      : (key as string),
+      : key,
   }))
 }
 
 export const hexToRGB = (hex: string) => {
-  let r = parseInt(hex.slice(1, 3), 16)
-  let g = parseInt(hex.slice(3, 5), 16)
-  let b = parseInt(hex.slice(5, 7), 16)
+  const r = parseInt(hex.slice(1, 3), 16)
+  const g = parseInt(hex.slice(3, 5), 16)
+  const b = parseInt(hex.slice(5, 7), 16)
   return { r, g, b }
 }
 
@@ -354,9 +351,9 @@ export const rgbToHSL = (r: number, g: number, b: number) => {
   b /= 255
   const max = Math.max(r, g, b)
   const min = Math.min(r, g, b)
-  let h = 0,
-    s = 0,
-    l = (max + min) / 2
+  let h = 0
+  let s = 0
+  const l = (max + min) / 2
 
   if (max !== min) {
     const d = max - min
@@ -414,6 +411,31 @@ export const hslToRGB = (h: number, s: number, l: number) => {
     r: Math.round(Math.min(r * 255, 255)),
     g: Math.round(Math.min(g * 255, 255)),
     b: Math.round(Math.min(b * 255, 255)),
+  }
+}
+
+// Return a human readable message (safely) from an unknown error.
+// Prefer axios.isAxiosError to detect axios errors and then look for a
+// `response.data.message` property if present. Otherwise fall back to Error
+// messages or a string coercion.
+import { AxiosError, isAxiosError } from 'axios'
+export function getErrorMessage(err: unknown, fallback: string): string {
+  try {
+    if (isAxiosError(err)) {
+      const axiosErr = err as AxiosError<unknown>
+      const data = axiosErr.response?.data
+      if (data && typeof data === 'object' && 'message' in data) {
+        const d = data as Record<string, unknown>
+        if (typeof d.message === 'string') return d.message
+      }
+      return axiosErr.message ?? fallback ?? 'Unknown error'
+    }
+    if (err instanceof Error) return err.message
+    if (typeof err === 'string') return err
+    return fallback ?? 'Unknown error'
+  } catch {
+    // Defensive catch: don't let a helper throw and break error handling
+    return fallback ?? 'Unknown error'
   }
 }
 
@@ -476,8 +498,8 @@ export const determineAccessibility = (
     if (color.colorFormat === 'hex') {
       ;({ r, g, b } = hexToRGB(color.color))
     } else if (color.colorFormat === 'rgb') {
-      const rgbMatch = color.color.match(
-        /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i
+      const rgbMatch = /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i.exec(
+        color.color
       )
       if (rgbMatch) {
         r = Number(rgbMatch[1])
@@ -487,8 +509,8 @@ export const determineAccessibility = (
         throw new Error('Invalid RGB format')
       }
     } else if (color.colorFormat === 'hsl') {
-      const hslMatch = color.color.match(
-        /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i
+      const hslMatch = /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i.exec(
+        color.color
       )
       if (hslMatch) {
         const h = Number(hslMatch[1])
@@ -541,7 +563,7 @@ export const translate = <T extends string | number | symbol>(
   key: T,
   language: ELanguages
 ): string => {
-  return translationMap[key]?.[language] || (key as string)
+  return translationMap[key]?.[language] ?? (key as string)
 }
 
 export function getKeyByValue(
@@ -554,7 +576,7 @@ export function getKeyByValue(
 ) {
   for (const key in enumObj) {
     if (enumObj[key as keyof typeof enumObj] === value) {
-      return key as SelectOption['label']
+      return key
     }
   }
   // Handle the case where the value is not found in the enum
@@ -565,8 +587,8 @@ export function getKeyByValue(
 export const getHexFromColor = (color: string, type: string) => {
   if (type === 'hex') return color.toUpperCase()
   if (type === 'hsl') {
-    const hslMatch = color.match(
-      /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i
+    const hslMatch = /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i.exec(
+      color
     )
     if (hslMatch) {
       const h = Number(hslMatch[1])
@@ -577,8 +599,8 @@ export const getHexFromColor = (color: string, type: string) => {
     }
   }
   if (type === 'rgb') {
-    const rgbMatch = color.match(
-      /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i
+    const rgbMatch = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.exec(
+      color
     )
     if (rgbMatch) {
       const r = Number(rgbMatch[1])
@@ -589,3 +611,6 @@ export const getHexFromColor = (color: string, type: string) => {
   }
   return color
 }
+
+export const sleep = (ms: number) =>
+  new Promise<void>(res => setTimeout(res, ms))

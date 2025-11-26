@@ -23,9 +23,9 @@ const Timer = () => {
 
   useEffect(() => {
     if (secondsRemaining === 0) {
-      dispatch(finalSeconds())
-      dispatch(gameFinished())
-      dispatch(resetTimer())
+      void dispatch(finalSeconds())
+      void dispatch(gameFinished())
+      void dispatch(resetTimer())
       navigate('/portfolio/quiz/results')
     }
   }, [secondsRemaining, dispatch, navigate])
@@ -34,7 +34,7 @@ const Timer = () => {
     if (typeof window === 'undefined') return
 
     const timer = setInterval(() => {
-      dispatch(lessSeconds())
+      void dispatch(lessSeconds())
     }, 1000)
 
     return () => clearInterval(timer)

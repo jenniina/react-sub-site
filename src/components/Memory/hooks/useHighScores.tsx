@@ -1,13 +1,11 @@
-import { useContext, useEffect, useState } from 'react'
-import useLocalStorage from '../../../hooks/useStorage'
-import { ELanguages, IUser } from '../../../types'
+import { useEffect, useState } from 'react'
+import { IUser } from '../../../types'
 import highScoresService from '../services/highScores'
 import {
   HighScores,
   IHighScore,
   IPlayer,
   IHighScoreResponse,
-  GameMode,
 } from '../../../types/memory'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 
@@ -56,8 +54,8 @@ const useHighScores = () => {
       }
     }
 
-    fetchHighScores()
-  }, [language])
+    void fetchHighScores()
+  }, [language, t])
 
   const addHighScore = async (entry: {
     levelKey: string
@@ -80,7 +78,7 @@ const useHighScores = () => {
           if (!newHighScores[mode][levelKey]) {
             newHighScores[mode][levelKey] = []
           }
-          const levelScores = newHighScores[mode][levelKey] || []
+          const levelScores = newHighScores[mode][levelKey] ?? []
 
           const existingIndex = levelScores.findIndex(
             score => score._id === response.highScore?._id
@@ -112,7 +110,7 @@ const useHighScores = () => {
 
         return response.highScore
       } else return undefined
-    } catch (err) {
+    } catch {
       setError('Failed to add high score.')
       return undefined
     }
@@ -183,7 +181,7 @@ const useHighScores = () => {
           if (!prevHighScores[mode][levelKey]) {
             prevHighScores[mode][levelKey] = []
           }
-          const levelScores = prevHighScores[mode][levelKey] || []
+          const levelScores = prevHighScores[mode][levelKey] ?? []
           const index = levelScores.findIndex(
             score => score._id === updatedEntry._id
           )
@@ -266,7 +264,7 @@ const useHighScores = () => {
     const allHighScores: IHighScore[] = Object.values(highScores)
       .flatMap(modeScores => Object.values(modeScores))
       .flat()
-    const uniqueMap: { [key: string]: IHighScore[] } = {}
+    const uniqueMap: Record<string, IHighScore[]> = {}
 
     // Group high scores by the unique key
     allHighScores.forEach(score => {
@@ -285,7 +283,7 @@ const useHighScores = () => {
             new Date(b.createdAt ?? 0).getTime() -
             new Date(a.createdAt ?? 0).getTime()
         )
-        const [keep, ...remove] = duplicates
+        const [, ...remove] = duplicates
         for (const scoreToRemove of remove) {
           if (scoreToRemove._id) {
             await deleteHighScore(scoreToRemove._id)

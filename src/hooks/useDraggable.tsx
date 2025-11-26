@@ -3,7 +3,6 @@
 //     isTouchDevice();
 
 import React from 'react'
-import { useIsClient, useWindow } from '../hooks/useSSR'
 
 let initialX = 0
 let initialY = 0
@@ -24,7 +23,7 @@ export const isTouchDevice = () => {
     //Try to create TouchEvent (fails for desktops and throws error)
     document?.createEvent('TouchEvent')
     return true
-  } catch (e) {
+  } catch {
     return false
   }
 }
@@ -42,12 +41,12 @@ export function start(
   e.preventDefault()
 
   if (isTouchDevice()) {
-    document
-      ? document.addEventListener('touchmove', preventDefault, {
-          passive: false,
-        })
-      : null
-    document ? (document.body.style.overflow = 'hidden') : null
+    if (document)
+      document.addEventListener('touchmove', preventDefault, {
+        passive: false,
+      })
+
+    if (document) document.body.style.overflow = 'hidden'
   }
   initialX = !isTouchDevice()
     ? (e as PointerEvent).clientX
@@ -79,10 +78,10 @@ export function movement(
 
   if (moveElement) {
     //e.preventDefault();
-    let newX = !isTouchDevice()
+    const newX = !isTouchDevice()
       ? (e as PointerEvent).clientX
       : (e as TouchEvent).touches[0].clientX
-    let newY = !isTouchDevice()
+    const newY = !isTouchDevice()
       ? (e as PointerEvent).clientY
       : (e as TouchEvent).touches[0].clientY
     ;(e.target as HTMLElement).style.top =
@@ -106,9 +105,9 @@ export const stopMovementCheck = (
 ) => {
   e.stopPropagation()
   if (isTouchDevice()) {
-    document ? document.removeEventListener('touchmove', preventDefault) : null
-    document ? (document.body.style.overflowY = 'auto') : null
-    document ? (document.body.style.overflowX = 'hidden') : null
+    if (document) document.removeEventListener('touchmove', preventDefault)
+    if (document) document.body.style.overflowY = 'auto'
+    if (document) document.body.style.overflowX = 'hidden'
   }
 
   moveElement = false
@@ -147,7 +146,7 @@ export function wheel(draggable: HTMLElement) {
   }
 }
 export function zoom(e: WheelEvent) {
-  let value = (e.target as HTMLElement).style.getPropertyValue('--size')
+  const value = (e.target as HTMLElement).style.getPropertyValue('--size')
   let scale = parseFloat(value)
 
   scale += e.deltaY * -0.005

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react'
 
-export default function useTimeout(callback: Function, delay: number) {
+export default function useTimeout(callback: () => void, delay: number) {
   const callbackRef = useRef(callback)
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>()
 
@@ -13,7 +13,9 @@ export default function useTimeout(callback: Function, delay: number) {
   }, [delay])
 
   const clear = useCallback(() => {
-    timeoutRef.current && clearTimeout(timeoutRef.current)
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
   }, [])
 
   useEffect(() => {

@@ -1,19 +1,9 @@
 import { DragAndDrop } from '../../components/DragAndDrop/components'
 import { MdOutlineDragIndicator } from 'react-icons/md'
-import { ELanguages } from '../../types'
 import Accordion from '../../components/Accordion/Accordion'
 import { useLanguageContext } from '../../contexts/LanguageContext'
-export default function DragAndDropPage({
-  heading,
-  text,
-  type,
-  language,
-}: {
-  heading: string
-  text: string
-  type: string
-  language: ELanguages
-}) {
+
+export default function DragAndDropPage({ type }: { type: string }) {
   const { t } = useLanguageContext()
 
   return (
@@ -48,7 +38,6 @@ export default function DragAndDropPage({
             <div>
               <div className="medium flex column gap">
                 <Accordion
-                  language={language}
                   text={t('ClickHereToSeeFeatures')}
                   className="features"
                   wrapperClass="features-wrap"
@@ -118,7 +107,7 @@ export default function DragAndDropPage({
               <p className="textcenter">
                 {t('SortTheColorsToADifferentContainerOr')}
               </p>
-              <DragAndDrop language={language} />
+              <DragAndDrop />
             </div>
           </section>
         </div>

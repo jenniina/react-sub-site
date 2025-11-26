@@ -26,13 +26,12 @@ import {
   EEnFiPrintingCostsNotIncluded,
   EEnFiSupplierMayUseProductInMarketing,
   EEnFiSupplierMayHelpWithHostingAndPrintingSolutions,
-  EETermsOfService,
 } from '../types/fien'
 import { Link } from 'react-router-dom'
-import { useContext } from 'react'
 import { useLanguageContext } from '../contexts/LanguageContext'
+
 export function TermsProducts({ language }: { language: ELanguages }) {
-  const lang: EEnFi = language === 'fi' ? EEnFi.fi : EEnFi.en
+  const lang: EEnFi = language === ELanguages.fi ? EEnFi.fi : EEnFi.en
 
   return (
     <>
@@ -74,22 +73,12 @@ export function TermsProducts({ language }: { language: ELanguages }) {
   )
 }
 
-export default function TermsOfService({
-  heading,
-  text,
-  type,
-  language,
-}: {
-  heading: string
-  text: string
-  type: string
-  language: ELanguages
-}) {
-  const { t } = useLanguageContext()
+export default function TermsOfService({ type }: { type: string }) {
+  const { t, language } = useLanguageContext()
 
   const lightTheme = useTheme()
 
-  const lang: EEnFi = language === 'fi' ? EEnFi.fi : EEnFi.en
+  const lang: EEnFi = language === ELanguages.fi ? EEnFi.fi : EEnFi.en
 
   return (
     <>

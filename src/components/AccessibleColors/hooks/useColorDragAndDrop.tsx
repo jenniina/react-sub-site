@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 export interface IClosestItem {
   offset: number
@@ -24,9 +24,11 @@ export const useDragAndDrop = <T extends Item, S extends string>(
   const initializeListItemsByStatus = useCallback(() => {
     return statuses?.reduce(
       (acc, status, index) => {
-        const storedItems =
+        const storedItems: T[] =
           typeof window !== 'undefined'
-            ? JSON.parse(localStorage.getItem(storageKeys[index]) || '[]')
+            ? (JSON.parse(
+                localStorage.getItem(storageKeys[index]) ?? '[]'
+              ) as T[])
             : []
         acc[status] = {
           items:
@@ -37,25 +39,11 @@ export const useDragAndDrop = <T extends Item, S extends string>(
             if (typeof window !== 'undefined') {
               localStorage.setItem(storageKeys[index], JSON.stringify(items))
             }
-            setListItemsByStatus(prev => ({
-              ...prev,
-              [status]: {
-                ...prev[status],
-                items,
-              },
-            }))
           },
           removeItems: () => {
             if (typeof window !== 'undefined') {
               localStorage.removeItem(storageKeys[index])
             }
-            setListItemsByStatus(prev => ({
-              ...prev,
-              [status]: {
-                ...prev[status],
-                items: [],
-              },
-            }))
           },
         }
         return acc
@@ -65,14 +53,14 @@ export const useDragAndDrop = <T extends Item, S extends string>(
         { items: T[]; setItems: (value: T[]) => void; removeItems: () => void }
       >
     )
-  }, [statuses, storageKeys])
+  }, [initialState, statuses, storageKeys])
 
   const deepEqual = (a: T[] | S[], b: T[] | S[]) => {
     return JSON.stringify(a) === JSON.stringify(b)
   }
 
   const [listItemsByStatus, setListItemsByStatus] = useState(
-    initializeListItemsByStatus
+    initializeListItemsByStatus()
   )
 
   // useEffect(() => {
@@ -80,8 +68,8 @@ export const useDragAndDrop = <T extends Item, S extends string>(
   // }, [initialState])
 
   useEffect(() => {
-    statuses.forEach((status, index) => {
-      const existingItems = listItemsByStatus[status]?.items || []
+    statuses.forEach(status => {
+      const existingItems = listItemsByStatus[status]?.items ?? []
       const initialStatusItems = initialState.filter(
         item => item.status === status
       )
@@ -122,20 +110,21 @@ export const useDragAndDrop = <T extends Item, S extends string>(
 
     // Update local storage for each status
     statuses.forEach((status, index) => {
-      const items = listItemsByStatus[status]?.items || []
+      const items = listItemsByStatus[status]?.items ?? []
       if (typeof window !== 'undefined') {
         localStorage.setItem(storageKeys[index], JSON.stringify(items))
       }
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialState, statuses, storageKeys, deepEqual])
 
-  const deepEqualItem = (a: T | S, b: T | S) => {
-    return JSON.stringify(a) === JSON.stringify(b)
-  }
+  // const deepEqualItem = (a: T | S, b: T | S) => {
+  //   return JSON.stringify(a) === JSON.stringify(b)
+  // }
 
   // useEffect(() => {
   //   statuses.forEach((status, index) => {
-  //     const existingItems = listItemsByStatus[status]?.items || []
+  //     const existingItems = listItemsByStatus[status]?.items ?? []
   //     const initialStatusItems = initialState.filter((item) => item.status === status)
 
   //     // Create a map of initial items for quick lookup by ID
@@ -165,20 +154,20 @@ export const useDragAndDrop = <T extends Item, S extends string>(
 
   //   // Update local storage for each status
   //   statuses.forEach((status, index) => {
-  //     const items = listItemsByStatus[status]?.items || []
+  //     const items = listItemsByStatus[status]?.items ?? []
   //     localStorage.setItem(storageKeys[index], JSON.stringify(items))
   //   })
   // }, [initialState, statuses, storageKeys, listItemsByStatus, deepEqual])
 
   useEffect(() => {
     setUpdatedItems(
-      statuses.flatMap(status => listItemsByStatus[status]?.items || [])
+      statuses.flatMap(status => listItemsByStatus[status]?.items ?? [])
     )
-  }, [listItemsByStatus])
+  }, [listItemsByStatus]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     statuses.forEach((status, index) => {
-      const items = listItemsByStatus[status]?.items || []
+      const items = listItemsByStatus[status]?.items ?? []
       if (typeof window !== 'undefined') {
         localStorage.setItem(storageKeys[index], JSON.stringify(items))
       }
@@ -193,7 +182,7 @@ export const useDragAndDrop = <T extends Item, S extends string>(
 
       if (!oldStatus) return
 
-      const card = listItemsByStatus?.[oldStatus as S]?.items?.find(
+      const card = listItemsByStatus?.[oldStatus]?.items?.find(
         item => item?.id === id
       )
       const targetIndex = listItemsByStatus?.[newStatus]?.items?.findIndex(
@@ -206,10 +195,10 @@ export const useDragAndDrop = <T extends Item, S extends string>(
       card.status = newStatus
 
       // Remove card from old status list
-      const oldStatusItems = listItemsByStatus?.[oldStatus as S]?.items?.filter(
+      const oldStatusItems = listItemsByStatus?.[oldStatus]?.items?.filter(
         (item: T) => item.id !== id
       )
-      listItemsByStatus?.[oldStatus as S]?.setItems(oldStatusItems)
+      listItemsByStatus?.[oldStatus]?.setItems(oldStatusItems)
 
       // Create a copy of the new status list
       let newStatusItems = [...listItemsByStatus?.[newStatus]?.items]

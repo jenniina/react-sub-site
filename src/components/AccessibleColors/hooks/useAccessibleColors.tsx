@@ -98,9 +98,9 @@ const useAccessibleColors = (initialColorMode: TColorMode) => {
 
   const determineComplianceForBlock = useCallback(
     (block: ColorBlock, allColors: ColorBlock[]) => {
-      let aaa: number[] = []
-      let aaUI: number[] = []
-      let aaRegular: number[] = []
+      const aaa: number[] = []
+      const aaUI: number[] = []
+      const aaRegular: number[] = []
 
       allColors.forEach(other => {
         if (other.id === block.id) return
@@ -162,15 +162,15 @@ const useAccessibleColors = (initialColorMode: TColorMode) => {
           })
           if (Array.isArray(arr)) {
             const loadedColors = arr.map((item, idx) => {
-              let colorFormat = item.type as 'hsl' | 'rgb' | 'hex'
-              let color = item.color
+              const colorFormat = item.type as 'hsl' | 'rgb' | 'hex'
+              const color = item.color
               // Calculate luminance from color string
               let rgb
               if (colorFormat === 'hex') {
                 rgb = hexToRGB(color)
               } else if (colorFormat === 'hsl') {
-                const hslMatch = color.match(
-                  /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i
+                const hslMatch = /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i.exec(
+                  color
                 )
                 if (hslMatch) {
                   const h = Number(hslMatch[1])
@@ -179,8 +179,8 @@ const useAccessibleColors = (initialColorMode: TColorMode) => {
                   rgb = hslToRGB(h, s, l)
                 }
               } else if (colorFormat === 'rgb') {
-                const rgbMatch = color.match(
-                  /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i
+                const rgbMatch = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.exec(
+                  color
                 )
                 if (rgbMatch) {
                   rgb = {
@@ -208,7 +208,7 @@ const useAccessibleColors = (initialColorMode: TColorMode) => {
             const recalculatedColors = recalculateCompliance(loadedColors)
             setColors(recalculatedColors)
           }
-        } catch (e) {
+        } catch {
           // Ignore invalid param
         }
       }
@@ -232,15 +232,15 @@ const useAccessibleColors = (initialColorMode: TColorMode) => {
     (colorBlocks: ColorBlock[]) => {
       const colorArr = colorBlocks.map(block => {
         if (block.colorFormat === 'hsl') {
-          const hslMatch = block.color.match(
-            /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i
+          const hslMatch = /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i.exec(
+            block.color
           )
           if (hslMatch) {
             return `hsl-${hslMatch[1]}-${hslMatch[2]}-${hslMatch[3]}`
           }
         } else if (block.colorFormat === 'rgb') {
-          const rgbMatch = block.color.match(
-            /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i
+          const rgbMatch = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.exec(
+            block.color
           )
           if (rgbMatch) {
             return `rgb-${rgbMatch[1]}-${rgbMatch[2]}-${rgbMatch[3]}`
@@ -331,8 +331,8 @@ const useAccessibleColors = (initialColorMode: TColorMode) => {
 
         // Parse and store the color based on the selected format
         if (format === 'hsl') {
-          const hslMatch = newColor.match(
-            /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i
+          const hslMatch = /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i.exec(
+            newColor
           )
           if (!hslMatch) throw new Error('Invalid HSL format')
 
@@ -351,8 +351,8 @@ const useAccessibleColors = (initialColorMode: TColorMode) => {
           g = rgb.g
           b = rgb.b
         } else if (format === 'rgb') {
-          const rgbMatch = newColor.match(
-            /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i
+          const rgbMatch = /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i.exec(
+            newColor
           )
           if (!rgbMatch) throw new Error('Invalid RGB format')
 

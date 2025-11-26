@@ -1,36 +1,41 @@
-import axios, { AxiosRequestConfig } from 'axios'
-import { IJoke } from '../types'
+import axios from 'axios'
+import { IJoke, IJokeResponse } from '../types'
 
-const url = import.meta.env.VITE_BASE_URI ?? 'https://react.jenniina.fi'
+const url = 'https://react.jenniina.fi'
 const baseUrl = `${url}/api/jokes`
 
-const getAll = async () => {
-  const response = await axios.get(baseUrl)
+const getAll = async (): Promise<IJoke[]> => {
+  const response = await axios.get<IJoke[]>(baseUrl)
   return response.data
 }
 
-const getJokesByUserId = async (userId: string | undefined) => {
-  const request = await axios.get(`${baseUrl}/user/${userId}`)
+const getJokesByUserId = async (
+  userId: string | undefined
+): Promise<IJoke[]> => {
+  const request = await axios.get<IJoke[]>(`${baseUrl}/user/${userId}`)
   return request.data
 }
 
-const create = async (newObject: IJoke) => {
+const create = async (newObject: IJoke): Promise<IJokeResponse> => {
   // const config = {
   //   headers: { Authorization: token },
   // }
 
   // const response = await axios.post(baseUrl, newObject, config)
-  const response = await axios.post(baseUrl, newObject)
+  const response = await axios.post<IJokeResponse>(baseUrl, newObject)
   return response.data
 }
 
-const update = async (newObject: IJoke) => {
-  const request = axios.put(`${baseUrl}/${newObject._id}`, newObject)
+const update = async (newObject: IJoke): Promise<IJokeResponse> => {
+  const request = axios.put<IJokeResponse>(
+    `${baseUrl}/${newObject._id}`,
+    newObject
+  )
   return request.then(response => response.data)
 }
 
-const remove = async (id: string | undefined) => {
-  const response = await axios.delete(`${baseUrl}/${id}`)
+const remove = async (id: string | undefined): Promise<IJoke> => {
+  const response = await axios.delete<IJoke>(`${baseUrl}/${id}`)
   return response.data
 }
 
@@ -40,14 +45,19 @@ const search = async (
   category: string,
   type: string
 ) => {
-  const response = await axios.get(
+  const response = await axios.get<IJoke>(
     `${baseUrl}/${jokeId}/${language}/${category}/${type}`
   )
   return response.data
 }
 
-const deleteUser = async (id: string, userId: string) => {
-  const response = await axios.delete(`${baseUrl}/${id}/delete-user/${userId}`)
+const deleteUser = async (
+  id: string,
+  userId: string
+): Promise<IJokeResponse> => {
+  const response = await axios.delete<IJokeResponse>(
+    `${baseUrl}/${id}/delete-user/${userId}`
+  )
   return response.data
 }
 

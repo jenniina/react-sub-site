@@ -87,7 +87,7 @@ export interface ImagesResponse {
   hits: Hit[]
 }
 
-const url = import.meta.env.VITE_BASE_URI ?? 'https://react.jenniina.fi'
+const url = 'https://react.jenniina.fi'
 const baseUrl = `${url}/api/images`
 
 const searchMedia = async (
@@ -158,14 +158,20 @@ const searchMedia = async (
     )
 
     return response.data as ImagesResponse
-  } catch (error: any) {
-    console.error('Error fetching images:', error)
+  } catch (err: unknown) {
+    console.error('Error fetching images:', err)
+    let message = 'Error fetching images.'
+    if (axios.isAxiosError(err)) {
+      message =
+        (err.response?.data as { message?: string } | undefined)?.message ??
+        err.message
+    } else if (err instanceof Error) {
+      message = err.message
+    }
 
     return {
       success: false,
-      message:
-        error.response?.data?.message ||
-        `Error fetching images. ${error.message}`,
+      message,
       totalHits: 0,
       hits: [],
     }

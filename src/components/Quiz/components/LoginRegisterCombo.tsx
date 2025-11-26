@@ -1,23 +1,22 @@
-import { FC, useState, FormEvent, useContext } from 'react'
+import { FC, useState, FormEvent } from 'react'
 import FormLogin from './Login'
 import Register from '../../Register/Register'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { notify } from '../../../reducers/notificationReducer'
-import { ELanguages, IUser } from '../../../types'
+import { IUser } from '../../../types'
 import { createUser } from '../../../reducers/usersReducer'
 import styles from '../css/quiz.module.css'
 import { IHighscore } from '../types'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
+import { getErrorMessage } from '../../../utils'
 
 interface LoginRegisterComboProps {
-  language: ELanguages
   user: IUser
   highscoresLocal: IHighscore
   text: string
 }
 
 const LoginRegisterCombo: FC<LoginRegisterComboProps> = ({
-  language,
   user,
   highscoresLocal,
   text,
@@ -37,20 +36,19 @@ const LoginRegisterCombo: FC<LoginRegisterComboProps> = ({
     e.preventDefault()
     setSending(true)
     if (password.trim() !== confirmPassword.trim()) {
-      dispatch(notify(t('PasswordsDoNotMatch'), true, 8))
+      void dispatch(notify(t('PasswordsDoNotMatch'), true, 8))
       setSending(false)
       return
     }
-    dispatch(createUser({ name, username, password, language: 'en' }))
-      .then(async () => {
-        dispatch(notify(t('RegistrationSuccesful'), false, 8))
+    void dispatch(createUser({ name, username, password, language: 'en' }))
+      .then(() => {
+        void dispatch(notify(t('RegistrationSuccesful'), false, 8))
         setSending(false)
       })
-      .catch(err => {
+      .catch((err: unknown) => {
         console.error(err)
-        if (err.response?.data?.message)
-          dispatch(notify(err.response.data.message, true, 8))
-        else dispatch(notify(`${t('Error')}: ${err.message}`, true, 8))
+        const message = getErrorMessage(err, t('Error'))
+        void dispatch(notify(message, true, 8))
         setSending(false)
       })
   }
@@ -62,7 +60,6 @@ const LoginRegisterCombo: FC<LoginRegisterComboProps> = ({
       <div className={`${loginOpen ? 'open' : ''} ${user ? 'logged' : ''}`}>
         <FormLogin
           setIsFormOpen={setLoginOpen}
-          language={language}
           easy={highscoresLocal.easy}
           medium={highscoresLocal.medium}
           hard={highscoresLocal.hard}
@@ -72,7 +69,6 @@ const LoginRegisterCombo: FC<LoginRegisterComboProps> = ({
         <Register
           sending={sending}
           setIsFormOpen={setRegisterOpen}
-          language={language}
           handleRegister={handleRegister}
           username={username}
           setUsername={setUsername}

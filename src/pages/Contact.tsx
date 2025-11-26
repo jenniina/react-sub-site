@@ -1,21 +1,6 @@
-import { useContext } from 'react'
-import { ELanguages } from '../types'
-import { useLanguageContext } from '../contexts/LanguageContext'
 import FormMulti from '../components/FormMulti/FormMulti'
 
-export default function Contact({
-  heading,
-  text,
-  type,
-  language,
-}: {
-  heading: string
-  text: string
-  type: string
-  language: ELanguages
-}) {
-  const { t } = useLanguageContext()
-
+export default function Contact({ type }: { type: string }) {
   return (
     <>
       {/* <Helmet prioritizeSeoTags={true}>
@@ -41,7 +26,7 @@ export default function Contact({
             style={{ position: 'relative', zIndex: '2' }}
           >
             <div>
-              <FormMulti language={language} />
+              <FormMulti />
             </div>
           </section>
         </div>

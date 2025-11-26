@@ -1,4 +1,4 @@
-import { useMemo, useContext } from 'react'
+import { useMemo } from 'react'
 import { useTheme } from '../hooks/useTheme'
 import { Link } from 'react-router-dom'
 import styles from './css/about.module.css'
@@ -7,61 +7,50 @@ import { ELanguages } from '../types'
 import { useLanguageContext } from '../contexts/LanguageContext'
 import ColorComponent from '../components/About/ColorComponent'
 
-export type colorProps = {
+export interface colorProps {
   i: number
   e: number
   background: string
 }
 
-export default function About({
-  heading,
-  text,
-  type,
-  language,
-}: {
-  heading: string
-  text: string
-  type: string
-  language: ELanguages
-}) {
-  const { t } = useLanguageContext()
+export default function About({ type }: { type: string }) {
+  const { t, language } = useLanguageContext()
 
   const lightTheme = useTheme()
 
-  const colorsArray: colorProps[] = []
-
-  const setupColorblocks: colorProps[] = useMemo(() => {
-    for (let i: number = 1; i <= 20; i++) {
+  const colorsArray: colorProps[] = useMemo(() => {
+    const array: colorProps[] = []
+    for (let i = 1; i <= 20; i++) {
       const item: colorProps = {
         i: i,
         e: 51 - i,
         background: `var(--color-primary-${i})`,
       }
-      colorsArray.push(item)
+      array.push(item)
     }
 
-    for (let i: number = 1; i <= 20; i++) {
+    for (let i = 1; i <= 20; i++) {
       const item: colorProps = {
         i: 20 + i,
         e: 31 - i,
         background: `var(--color-secondary-${i})`,
       }
-      colorsArray.push(item)
+      array.push(item)
     }
 
-    for (let i: number = 1; i <= 10; i++) {
+    for (let i = 1; i <= 10; i++) {
       const item: colorProps = {
         i: 40 + i,
         e: 11 - i,
         background: `var(--color-gray-${i})`,
       }
-      colorsArray.push(item)
+      array.push(item)
     }
     const visitedItem = { i: 51, e: 0, background: 'var(--color-visited)' }
 
-    colorsArray.push(visitedItem)
+    array.push(visitedItem)
 
-    return colorsArray
+    return array
   }, [])
 
   return (
@@ -264,7 +253,7 @@ export default function About({
                 </div>
               </div>
             </div>
-            <ColorComponent array={setupColorblocks} />
+            <ColorComponent array={colorsArray} />
           </section>
         </div>
       </div>

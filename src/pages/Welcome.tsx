@@ -11,21 +11,13 @@ import { useLanguageContext } from '../contexts/LanguageContext'
 import Newest from '../components/Newest/Newest'
 
 export default function Home({
-  heading,
-  text,
   type,
-  language,
-  setLanguage,
   options,
 }: {
-  heading: string
-  text: string
   type: string
-  language: ELanguages
-  setLanguage: (language: ELanguages) => void
   options: (enumObj: typeof ELanguagesLong) => SelectOption[]
 }) {
-  const { t } = useLanguageContext()
+  const { t, language, setLanguage } = useLanguageContext()
 
   const lightTheme = useTheme()
 
@@ -99,7 +91,7 @@ export default function Home({
                   </Link>
                 </li>
               </ul>
-              <Newest language={language} />
+              <Newest />
             </div>
           </section>
         </div>

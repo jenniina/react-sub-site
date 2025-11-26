@@ -1,8 +1,8 @@
-export type FormData = {
+export interface FormData {
   firstName: string
   lastName: string
   encouragement: string
-  color: HEX | string
+  color: HEX
   dark: string
   light: string
   email: string
@@ -31,4 +31,4 @@ export const INITIAL_DATA: FormData = {
 export type RGB = `rgb(${number}, ${number}, ${number})`
 export type RGBA = `rgba(${number}, ${number}, ${number}, ${number})`
 export type HEX = `#${string}`
-export type Color = RGB | RGBA | HEX | string
+export type Color = RGB | RGBA | HEX

@@ -1,5 +1,3 @@
-import { useContext } from 'react'
-import { ELanguages } from '../../types'
 import '../../components/Blob/css/blob.css'
 import Accordion from '../../components/Accordion/Accordion'
 import Blobs from '../../components/Blob/Blobs'
@@ -9,21 +7,10 @@ import bubbly from '../../assets/bubbly-fish.png'
 import dog from '../../assets/blob-dog.png'
 import { CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
-import { LanguageContext } from '../../contexts/LanguageContext'
+import { useLanguageContext } from '../../contexts/LanguageContext'
 
-export default function BlobPage({
-  heading,
-  text,
-  type,
-  language,
-}: {
-  heading: string
-  text: string
-  type: string
-  language: ELanguages
-}) {
-  const languageContext = useContext(LanguageContext)
-  const t = languageContext?.t || ((key: string) => key)
+export default function BlobPage({ type }: { type: string }) {
+  const { t } = useLanguageContext()
 
   const blobStyle: CSSProperties = {
     width: '100%',
@@ -65,7 +52,6 @@ export default function BlobPage({
               <div>
                 <div className="flex column gap">
                   <Accordion
-                    language={language}
                     text={t('ClickHereToSeeFeatures')}
                     className="features-blobs"
                     wrapperClass="features-blobs-wrap"
@@ -239,7 +225,6 @@ export default function BlobPage({
                     </div>
                   </Accordion>
                   <Accordion
-                    language={language}
                     text={t('SeeSampleArtworkCreatedWithTheApp')}
                     className="sample-img"
                     wrapperClass="sample-img-wrap"
@@ -285,7 +270,6 @@ export default function BlobPage({
                     </>
                   </Accordion>
                   <Accordion
-                    language={language}
                     text={t('TipsAndTricks')}
                     className="blob-tips-and-tricks"
                     wrapperClass="blob-tips-and-tricks-wrap"
@@ -338,7 +322,7 @@ export default function BlobPage({
               </div>
             </div>
           </section>
-          <Blobs language={language} />
+          <Blobs />
         </div>
       </div>
     </>

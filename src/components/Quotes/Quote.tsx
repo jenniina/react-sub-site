@@ -1,16 +1,14 @@
-import { FC, ReactNode, useContext, useRef, useState } from 'react'
+import { FC, ReactNode, useRef, useState } from 'react'
 import { QuoteItem } from './services/quotes'
-import { ELanguages } from '../../types'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 
 interface QuoteProps {
   quote: QuoteItem
-  language: ELanguages
   url?: string
   title?: ReactNode
 }
 
-const Quote: FC<QuoteProps> = ({ quote, language, url, title }) => {
+const Quote: FC<QuoteProps> = ({ quote, url, title }) => {
   const { t } = useLanguageContext()
 
   const [copied, setCopied] = useState(false)
@@ -19,8 +17,9 @@ const Quote: FC<QuoteProps> = ({ quote, language, url, title }) => {
   const copyToClipboard = () => {
     const textToCopy = `"${quote.content}" - ${quote.originator.name}`
 
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(textToCopy).then(
+    navigator?.clipboard
+      ?.writeText?.(textToCopy)
+      .then(
         () => {
           setCopied(true)
           setTimeout(() => setCopied(false), 3000)
@@ -29,22 +28,23 @@ const Quote: FC<QuoteProps> = ({ quote, language, url, title }) => {
           console.error('Failed to copy:', error)
         }
       )
-    } else {
-      // Fallback method for older browsers
-      const textArea = document?.createElement('textarea')
-      textArea.value = textToCopy
-      ref.current?.appendChild(textArea)
-      textArea.focus()
-      textArea.select()
-      try {
-        document?.execCommand('copy')
-        setCopied(true)
-        setTimeout(() => setCopied(false), 3000)
-      } catch (error: any) {
-        console.error('Failed to copy:', error)
-      }
-      ref.current?.removeChild(textArea)
-    }
+      .catch(() => {
+        // Fallback method for older browsers
+        const textArea = document?.createElement('textarea')
+        textArea.value = textToCopy
+        ref.current?.appendChild(textArea)
+        textArea.focus()
+        textArea.select()
+        try {
+          document?.execCommand('copy')
+          setCopied(true)
+          setTimeout(() => setCopied(false), 3000)
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+          console.error('Failed to copy:', error)
+        }
+        ref.current?.removeChild(textArea)
+      })
   }
 
   if (quote.content === '') return <></>
@@ -54,7 +54,7 @@ const Quote: FC<QuoteProps> = ({ quote, language, url, title }) => {
       <p ref={ref}>
         <i>
           <big style={{ display: 'inline-block', margin: '0 0 0.5em' }}>
-            "{quote.content}"
+            &quot;{quote.content}&quot;
           </big>
           &mdash;&nbsp;{quote.originator.name}
         </i>

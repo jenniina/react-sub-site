@@ -1,13 +1,21 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export function useIsClient() {
   const [isClient, setIsClient] = useState(() => {
     return typeof window !== 'undefined'
   })
 
-  useEffect(() => {
-    setIsClient(true)
+  const handleIsClient = useCallback(() => {
+    if (typeof window === 'undefined') {
+      return
+    }
+    const t = window.setTimeout(() => setIsClient(true), 0)
+    return () => clearTimeout(t)
   }, [])
+
+  useEffect(() => {
+    return handleIsClient()
+  }, [handleIsClient])
 
   return isClient
 }
@@ -17,11 +25,17 @@ export function useWindow() {
     return typeof window !== 'undefined' ? window : null
   })
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setWindowObj(window)
+  const handleSetWindowObj = useCallback(() => {
+    if (typeof window === 'undefined') {
+      return
     }
+    const t = window.setTimeout(() => setWindowObj(window), 0)
+    return () => clearTimeout(t)
   }, [])
+
+  useEffect(() => {
+    return handleSetWindowObj()
+  }, [handleSetWindowObj])
 
   return windowObj
 }

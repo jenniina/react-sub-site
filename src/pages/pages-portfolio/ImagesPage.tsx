@@ -4,18 +4,8 @@ import styles from '../../components/Images/images.module.css'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import Images from '../../components/Images/Images'
 
-const ImagesPage = ({
-  heading,
-  text,
-  type,
-  language,
-}: {
-  heading: string
-  text: string
-  type: string
-  language: ELanguages
-}) => {
-  const { t } = useLanguageContext()
+const ImagesPage = ({ type }: { type: string }) => {
+  const { t, language } = useLanguageContext()
 
   return (
     <>
@@ -57,7 +47,6 @@ const ImagesPage = ({
                 text={t('ClickHereToSeeFeatures')}
                 className=""
                 wrapperClass=""
-                language={language}
               >
                 <ul className="ul medium">
                   <li>{t('YouMaySearchForImagesFetchedFromThePixabayAPI')}</li>
@@ -87,14 +76,14 @@ const ImagesPage = ({
                     >
                       PoetryDB
                     </a>{' '}
-                    {language === 'fi' ? 'API:sta' : ''}
+                    {language === ELanguages.fi ? 'API:sta' : ''}
                   </li>
                 </ul>
               </Accordion>
             </div>
           </section>
 
-          <Images language={language} />
+          <Images />
         </div>
       </div>
     </>

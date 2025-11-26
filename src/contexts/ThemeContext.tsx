@@ -1,5 +1,4 @@
 import { createContext, useEffect, EffectCallback, ReactNode } from 'react'
-import useMediaQuery from '../hooks/useMediaQuery'
 import useLocalStorage from '../hooks/useStorage'
 import { useIsClient, useWindow } from '../hooks/useSSR'
 
@@ -15,8 +14,16 @@ interface Props {
 export function ThemeProvider({ children }: Props) {
   const isClient = useIsClient()
   const windowObj = useWindow()
+  const [prefersLight, setPrefersLight] = useLocalStorage('prefersLight', false)
 
-  const prefersLight = useMediaQuery('(prefers-color-scheme: light)')
+  useEffect(() => {
+    if (!isClient || !windowObj) return
+    const mediaQuery = windowObj.matchMedia('(prefers-color-scheme: light)')
+    setPrefersLight(mediaQuery.matches)
+    mediaQuery.addEventListener('change', (e: MediaQueryListEvent) => {
+      setPrefersLight(e.matches)
+    })
+  }, [isClient, windowObj, setPrefersLight])
 
   const [lightTheme, setLightTheme] = useLocalStorage(
     `useLightMode`,
@@ -31,7 +38,7 @@ export function ThemeProvider({ children }: Props) {
     if (lightParam !== null) {
       setLightTheme(lightParam === 'true')
     }
-  }, [setLightTheme, isClient])
+  }, [setLightTheme, isClient, windowObj])
 
   const lightEnabled = lightTheme ?? prefersLight
 

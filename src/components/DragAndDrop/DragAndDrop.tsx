@@ -4,13 +4,12 @@ import {
   FormEvent,
   useEffect,
   useRef,
-  useContext,
+  useCallback,
 } from 'react'
 import { useDragAndDrop } from '../../hooks/useDragAndDrop'
 import { Status, Data, Lightness } from './types'
 import styles from './dragAndDrop.module.css'
 import { sanitize } from '../../utils'
-import { ELanguages } from '../../types'
 import { useTheme } from '../../hooks/useTheme'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
@@ -23,11 +22,11 @@ import CardsContainer from './components/CardsContainer'
 
 const initialStatuses: string[] = ['good', 'neutral', 'bad']
 
-export const DragAndDrop = ({ language }: { language: ELanguages }) => {
+export const DragAndDrop = () => {
   const isClient = useIsClient()
   const windowObj = useWindow()
 
-  const { t } = useLanguageContext()
+  const { t, language } = useLanguageContext()
   const confirm = useConfirm()
 
   const dispatch = useAppDispatch()
@@ -66,11 +65,12 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
 
   const storedData = statuses
     .map(status => {
-      if (!isClient || !windowObj) return
+      if (!isClient || !windowObj) return undefined
       const item = windowObj.localStorage.getItem(`DnD-${status}`)
-      return item ? JSON.parse(item) : []
+      return item ? (JSON.parse(item) as unknown[]) : []
     })
     .flat()
+    .filter((item): item is Data => item !== undefined)
 
   // Generate and inject CSS styles whenever statuses change
   useEffect(() => {
@@ -129,9 +129,9 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
   }
 
   const hexToRGB = (hex: string) => {
-    let r = parseInt(hex.slice(1, 3), 16)
-    let g = parseInt(hex.slice(3, 5), 16)
-    let b = parseInt(hex.slice(5, 7), 16)
+    const r = parseInt(hex.slice(1, 3), 16)
+    const g = parseInt(hex.slice(3, 5), 16)
+    const b = parseInt(hex.slice(5, 7), 16)
     return { r, g, b }
   }
 
@@ -155,7 +155,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     if (regex.test(newStatus)) {
       const newStatusTrim = newStatus.trim().replace(/ /g, '_')
       if (newStatusTrim.length > 20) {
-        dispatch(
+        void dispatch(
           notify(
             `${t('NameTooLong')}: ${t('AMaxOf20CharactersPlease')}`,
             true,
@@ -166,19 +166,19 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
         return
       }
       if (newStatus.trim() === '') {
-        dispatch(notify(t('PleaseFillInTheFields'), true, 6))
+        void dispatch(notify(t('PleaseFillInTheFields'), true, 6))
         setSending(false)
         return
       }
       //if new status is already in the list, notify:
       if (statuses.includes(newStatusTrim)) {
-        dispatch(notify(t('TheCategoryAlreadyExists'), true, 6))
+        void dispatch(notify(t('TheCategoryAlreadyExists'), true, 6))
         setSending(false)
         return
       }
       // if already length 8, don't allow more statuses
       if (statuses.length === 8) {
-        dispatch(notify(t('CannotAddMoreCategories'), true, 8))
+        void dispatch(notify(t('CannotAddMoreCategories'), true, 8))
         setSending(false)
         return
       }
@@ -195,7 +195,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
         return [...prevStatuses, newStatusTrim]
       })
     } else {
-      dispatch(notify(t('SpecialCharactersNotAllowed'), true, 6))
+      void dispatch(notify(t('SpecialCharactersNotAllowed'), true, 6))
       setSending(false)
     }
   }
@@ -211,13 +211,13 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
 
   const updateStatus = (index: number, newStatus: string) => {
     if (!regex.test(newStatus)) {
-      dispatch(notify(t('SpecialCharactersNotAllowed'), true, 6))
+      void dispatch(notify(t('SpecialCharactersNotAllowed'), true, 6))
       return
     }
     setStatuses(prevStatuses => {
       const newStatusTrim = newStatus.trim().replace(/ /g, '_')
       if (newStatusTrim.length > 20) {
-        dispatch(
+        void dispatch(
           notify(
             `${t('NameTooLong')}: ${t('AMaxOf20CharactersPlease')}`,
             true,
@@ -227,11 +227,11 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
         return prevStatuses
       }
       if (newStatusTrim === '') {
-        dispatch(notify(t('PleaseFillInTheFields'), true, 6))
+        void dispatch(notify(t('PleaseFillInTheFields'), true, 6))
         return prevStatuses
       }
       if (prevStatuses.includes(newStatusTrim)) {
-        dispatch(notify(t('TheCategoryAlreadyExists'), true, 6))
+        void dispatch(notify(t('TheCategoryAlreadyExists'), true, 6))
         return prevStatuses
       }
 
@@ -256,11 +256,11 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
   const deleteStatus = async (status: string) => {
     //if only one status left, don't allow removal
     if (statuses.length === 1) {
-      dispatch(notify(t('CannotRemoveLastCategory'), true, 8))
+      void dispatch(notify(t('CannotRemoveLastCategory'), true, 8))
       return
     } // check if there are items with this status
     else if (data.some(d => d.status === status)) {
-      dispatch(
+      void dispatch(
         notify(
           `${t('AreYouSureYouWantToRemoveThis')} ${t('ItIsNotEmpty')}`,
           true,
@@ -279,80 +279,93 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     } else return
   }
 
-  const generateInitialData = async () => {
-    const array: Data[] = []
-    let state: Status = initialStatuses[1]
-    let lightness: Lightness
+  const generateInitialData = useCallback(
+    async () => {
+      const array: Data[] = []
+      let state: Status = initialStatuses[1]
+      let lightness: Lightness
 
-    if (
-      userColors &&
-      userColors.length > 0 &&
-      (await confirm({ message: t('DoYouWantToDeleteYourColorsText') }))
-    ) {
-      removeData()
-      setData([])
-      removeUserColors()
-      for (let i: number = 0; i < initialColors.length; i++) {
-        const color = initialColors[i].color || 'lightgray'
-        const content = initialColors[i].content || 'lightgray'
-        lightness = determineBackgroundLightness(color)
+      if (
+        userColors &&
+        userColors.length > 0 &&
+        (await confirm({ message: t('DoYouWantToDeleteYourColorsText') }))
+      ) {
+        removeData()
+        setData([])
+        removeUserColors()
+        for (let i = 0; i < initialColors.length; i++) {
+          const color = initialColors[i].color ?? 'lightgray'
+          const content = initialColors[i].content ?? 'lightgray'
+          lightness = determineBackgroundLightness(color)
 
-        // Randomize the item status
-        const randomIndex = Math.floor(Math.random() * statuses.length)
-        state = statuses[randomIndex]
+          // Randomize the item status
+          const randomIndex = Math.floor(Math.random() * statuses.length)
+          state = statuses[randomIndex]
 
-        const item: Data = {
-          id: i,
-          content: content,
-          color: color,
-          status: state,
-          lightness: lightness,
+          const item: Data = {
+            id: i,
+            content: content,
+            color: color,
+            status: state,
+            lightness: lightness,
+          }
+          array.push(item)
         }
-        array.push(item)
-      }
-      return array
-    } else {
-      removeData()
-      setData([])
-      for (let i: number = 0; i < userColors.length; i++) {
-        const color = userColors[i].color || 'lightgray' // Use user-defined colors or default to 'lightgray'
-        const content = userColors[i].content || 'lightgray' // Use user-defined colors or default to 'lightgray'
-        lightness = determineBackgroundLightness(color)
+        return array
+      } else {
+        removeData()
+        setData([])
+        for (let i = 0; i < userColors.length; i++) {
+          const color = userColors[i].color ?? 'lightgray' // Use user-defined colors or default to 'lightgray'
+          const content = userColors[i].content ?? 'lightgray' // Use user-defined colors or default to 'lightgray'
+          lightness = determineBackgroundLightness(color)
 
-        // Randomize the item status
-        const randomIndex = Math.floor(Math.random() * statuses.length)
-        state = statuses[randomIndex]
+          // Randomize the item status
+          const randomIndex = Math.floor(Math.random() * statuses.length)
+          state = statuses[randomIndex]
 
-        const item: Data = {
-          id: i,
-          content: content,
-          color: color,
-          status: state,
-          lightness: lightness,
+          const item: Data = {
+            id: i,
+            content: content,
+            color: color,
+            status: state,
+            lightness: lightness,
+          }
+          array.push(item)
         }
-        array.push(item)
-      }
-      for (let i: number = userColors.length; i < initialColors.length; i++) {
-        const color = initialColors[i].color || 'lightgray'
-        const content = initialColors[i].content || 'lightgray'
-        lightness = determineBackgroundLightness(color)
+        for (let i: number = userColors.length; i < initialColors.length; i++) {
+          const color = initialColors[i].color ?? 'lightgray'
+          const content = initialColors[i].content ?? 'lightgray'
+          lightness = determineBackgroundLightness(color)
 
-        // Randomize the item status
-        const randomIndex = Math.floor(Math.random() * statuses.length)
-        state = statuses[randomIndex]
+          // Randomize the item status
+          const randomIndex = Math.floor(Math.random() * statuses.length)
+          state = statuses[randomIndex]
 
-        const item: Data = {
-          id: i,
-          content: content,
-          color: color,
-          status: state,
-          lightness: lightness,
+          const item: Data = {
+            id: i,
+            content: content,
+            color: color,
+            status: state,
+            lightness: lightness,
+          }
+          array.push(item)
         }
-        array.push(item)
+        return array
       }
-      return array
-    }
-  }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      data,
+      removeData,
+      setData,
+      removeUserColors,
+      statuses,
+      t,
+      userColors,
+      initialColors,
+    ]
+  )
 
   const startAgain = async () => {
     if (await confirm({ message: t('AreYouSureYouWantToDeleteThisVersion') })) {
@@ -387,8 +400,8 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
         setData([])
         setData(
           userColors.map((item, index) => {
-            const color = item.color || 'lightgray'
-            const content = item.content || 'lightgray'
+            const color = item.color ?? 'lightgray'
+            const content = item.content ?? 'lightgray'
             const lightness = determineBackgroundLightness(color)
             const state = statuses[Math.floor(Math.random() * statuses.length)]
             return {
@@ -410,18 +423,24 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
       return storedData
     }
     return null
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (setTheData && Array.isArray(setTheData)) {
       setData(setTheData)
     } else {
-      ;(async () => {
+      void (async () => {
         const initialData = await generateInitialData()
+          .then(data => {
+            return data
+          })
+          .catch(() => {
+            return []
+          })
         setData(initialData)
       })()
     }
-  }, [setTheData])
+  }, [setTheData, generateInitialData, setData])
 
   const [newColor, setNewColor] = useState<string>('')
   const [newStatusForItem, setNewStatusForItem] = useState<SelectOption>({
@@ -437,7 +456,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
     e.preventDefault()
     setSending(true)
     if (newColor.trim() === '') {
-      dispatch(notify(t('PleaseFillInTheFields'), true, 6))
+      void dispatch(notify(t('PleaseFillInTheFields'), true, 6))
       setSending(false)
       return
     }
@@ -549,9 +568,8 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
         }`}
         ref={containerRef}
       >
-        {statuses.map((container, index) => (
+        {statuses.map(container => (
           <CardsContainer
-            language={language}
             itemsByStatus={listItemsByStatus[container]?.items}
             status={container}
             statuses={statuses}
@@ -569,21 +587,21 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
         ))}
       </div>
       <div className="flex center gap max-content margin0auto">
-        <button onClick={startAgain}>{t('Reset')}</button>
-        <button onClick={startAgainEmpty}>{t('Clear')}</button>
+        <button onClick={() => void startAgain()}>{t('Reset')}</button>
+        <button onClick={() => void startAgainEmpty()}>{t('Clear')}</button>
       </div>
 
       <div className={styles['add-color']}>
         <h2>{t('AddAColor')}</h2>
         <p>
-          {t('ForExample')} "darkblue" {t('Or')} "slategray".{' '}
-          {t('YouMayAlsoAddOtherWordsForGenericUse')}.{' '}
+          {t('ForExample')} &quot;darkblue&quot; {t('Or')}{' '}
+          &quot;slategray&quot;. {t('YouMayAlsoAddOtherWordsForGenericUse')}.{' '}
           {t('TipIfYouAddAGenericWordYouCanColorTheCard')}.{' '}
           {t('ThisWillResultInAPinkCardWithAppleWrittenOnIt')}.
         </p>
         <form
           onSubmit={e =>
-            handleAddColor(e, newColor, newStatusForItem.label as Status)
+            void handleAddColor(e, newColor, newStatusForItem.label)
           }
         >
           <div className={`input-wrap ${styles['input-wrap']}`}>
@@ -611,7 +629,7 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
             value={newStatusForItem}
             onChange={o =>
               setNewStatusForItem(
-                o || {
+                o ?? {
                   label: statuses[0],
                   value: statuses[0],
                 }
@@ -624,7 +642,11 @@ export const DragAndDrop = ({ language }: { language: ELanguages }) => {
         </form>
         <p className="textcenter">
           <span>{t('NeedHelp')} </span>{' '}
-          <a href="https://htmlcolorcodes.com/color-names/" target="_blank">
+          <a
+            href="https://htmlcolorcodes.com/color-names/"
+            target="_blank"
+            rel="noreferrer"
+          >
             {t('ColorNames')}
           </a>
         </p>

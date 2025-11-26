@@ -2,7 +2,6 @@ import {
   useRef,
   useEffect,
   useState,
-  useContext,
   CSSProperties,
   PointerEvent as PointerEventReact,
   MouseEvent as MouseEventReact,
@@ -11,20 +10,21 @@ import {
   ChangeEvent,
   Dispatch as DispatchReact,
   SetStateAction,
+  useContext,
+  useCallback,
+  useMemo,
 } from 'react'
-import domtoimage from 'dom-to-image-more'
 import { getRandomMinMax, hslToHex, sanitize } from '../../../utils'
 import {
   Draggable,
-  BackgroundColor,
   RefObject,
   focusedBlob,
   ColorPair,
   SavedBlobs,
   Modes,
 } from '../types'
-import { BlobContext, Props } from './BlobProvider'
-import { ELanguages, ReducerProps } from '../../../types'
+import { BlobContext } from './BlobProvider'
+import { ReducerProps } from '../../../types'
 import {
   BiChevronDown,
   BiChevronsDown,
@@ -37,7 +37,6 @@ import {
 import { ImEnlarge2, ImShrink2, ImCamera } from 'react-icons/im'
 import { FaPlus, FaRegClone, FaSave } from 'react-icons/fa'
 import useWindowSize from '../../../hooks/useWindowSize'
-import { IUser } from '../../../types'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import Accordion from '../../Accordion/Accordion'
@@ -52,6 +51,7 @@ import { useIsClient, useWindow } from '../../../hooks/useSSR'
 import ColorBlocks from './ColorBlocks'
 import Sliders from './Sliders'
 import DragLayers from './DragLayers'
+import { getErrorMessage } from '../../../utils'
 
 // Should be in the same order as colorBlockProps
 const colorPairs: ColorPair[] = [
@@ -89,8 +89,7 @@ const colorPairs3: ColorPair[] = [
 
 const colorPairsCombo: ColorPair[][] = [colorPairs, colorPairs2, colorPairs3]
 
-let angle = '90deg'
-let color = 'cyan'
+const angle = '90deg'
 
 const defaultLayerAmount = 3
 
@@ -99,16 +98,12 @@ const preventDefault = (e: Event) => {
 }
 
 export default function DragContainer({
-  language,
   d,
-  ds,
   dragWrapOuter,
   scroll,
   setScroll,
 }: {
-  language: ELanguages
   d: number
-  ds: number
   dragWrapOuter: RefObject<HTMLDivElement>
   scroll: boolean
   setScroll: DispatchReact<SetStateAction<boolean>>
@@ -116,29 +111,26 @@ export default function DragContainer({
   const isClient = useIsClient()
   const windowObj = useWindow()
 
-  const { t } = useLanguageContext()
+  const { t, language } = useLanguageContext()
   const confirm = useConfirm()
 
   const defaultHue = '214'
   const defaultSaturation = d === 0 ? '80' : d === 2 ? '50' : '45'
   const defaultLightness = d === 0 ? '30' : d === 2 ? '5' : '25'
 
-  const { state, dispatch } = useContext(BlobContext) as Props
+  const { state, dispatch } = useContext(BlobContext)!
   const dispatch2 = useAppDispatch()
-  const user = useSelector((state: ReducerProps) => state.auth?.user) as IUser
-  const users = useSelector((state: ReducerProps) => state.users) as IUser[]
+  const user = useSelector((state: ReducerProps) => state.auth?.user)
+  const users = useSelector((state: ReducerProps) => state.users)
 
-  //const dragWrapOuter = useRef(null) as RefObject<HTMLDivElement>
   const dragWrap = useRef(null) as RefObject<HTMLDivElement>
   const dragWrapOutest = useRef(null) as RefObject<HTMLDivElement>
 
-  const selectedvalue0 = useRef(null) as RefObject<HTMLSpanElement>
+  const [selectedvalue0, setSelectedvalue0] = useState<string | null>(null)
 
   const stopBlobs = useRef(null) as RefObject<HTMLButtonElement>
   const disableScrollButton = useRef(null) as RefObject<HTMLButtonElement>
   const resetBlobs = useRef(null) as RefObject<HTMLButtonElement>
-  const blobScreenshot = useRef(null) as RefObject<HTMLDivElement>
-  const screenshotImg = useRef(null) as RefObject<HTMLImageElement>
   const [loading, setLoading] = useState(false)
 
   const exitApp = useRef(null) as RefObject<HTMLDivElement>
@@ -158,15 +150,21 @@ export default function DragContainer({
   const sliderSaturationInput = useRef(null) as RefObject<HTMLInputElement>
   const sliderHueInput = useRef(null) as RefObject<HTMLInputElement>
 
-  const localStorageLayerAmount = `BlobLayerAmount${[d]}`
-  const localStorageBackground = `BackgroundColor${[d]}`
-  const localStorageDraggables = `Draggables${[d]}`
+  const localStorageLayerAmount = useMemo(() => {
+    return `BlobLayerAmount${d.toString()}`
+  }, [d])
+  const localStorageBackground = useMemo(() => {
+    return `BackgroundColor${d.toString()}`
+  }, [d])
+  const localStorageDraggables = useMemo(() => {
+    return `Draggables${d.toString()}`
+  }, [d])
 
-  const backgroundColor = state.backgroundColor as BackgroundColor[][]
+  const backgroundColor = state.backgroundColor
 
   //loadBackground()
 
-  const draggables = state.draggables as Draggable[][]
+  const draggables = state.draggables
 
   const { windowHeight, windowWidth } = useWindowSize()
 
@@ -187,6 +185,21 @@ export default function DragContainer({
   const [paused, setPaused] = useState<boolean>(false)
   const [prefersReducedMotion, setPrefersReducedMotion] =
     useState<boolean>(false)
+
+  const draggablesD = draggables[d]
+
+  const [name, setName] = useState<string>(t('BlobArt'))
+  const [newName, setNewName] = useState(name)
+  const [editName, setEditName] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
+  const [hasSavedFiles, setHasSavedFiles] = useState(false)
+
+  const [trackSaving, setTrackSaving] = useState(false)
+  const [savedDraggablesbyD, setSavedDraggablesByD] = useState<
+    Record<number, Record<string, SavedBlobs>>
+  >({})
+
+  const [layerAmount, setLayerAmount] = useState<number>(0)
 
   const colorBlockOrange = useRef(null) as RefObject<HTMLButtonElement>
   const colorBlockRed = useRef(null) as RefObject<HTMLButtonElement>
@@ -217,50 +230,18 @@ export default function DragContainer({
   const colorBlockPurplishBlue = useRef(null) as RefObject<HTMLButtonElement>
 
   // Create a mapping between the ref objects and their names
-  const refNameMapping = new Map<RefObject<HTMLButtonElement>, string>([
-    [colorBlockOrange, 'colorBlockOrange'],
-    [colorBlockRed, 'colorBlockRed'],
-    [colorBlockPurple, 'colorBlockPurple'],
-    [colorBlockBlue, 'colorBlockBlue'],
-    [colorBlockYellowLime, 'colorBlockYellowLime'],
-    [colorBlockCyanYellow, 'colorBlockCyanYellow'],
-    [colorBlockCyanPink, 'colorBlockCyanPink'],
-    [colorBlockPinkYellow, 'colorBlockPinkYellow'],
-  ])
-
-  const refNameMapping2 = new Map<RefObject<HTMLButtonElement>, string>([
-    [colorBlockReddish, 'colorBlockReddish'],
-    [colorBlockBrown, 'colorBlockBrown'],
-    [colorBlockTan, 'colorBlockTan'],
-    [colorBlockKhaki, 'colorBlockKhaki'],
-    [colorBlockPurplish, 'colorBlockPurplish'],
-    [colorBlockBluish, 'colorBlockBluish'],
-    [colorBlockGreenish, 'colorBlockGreenish'],
-    [colorBlockGray, 'colorBlockGray'],
-  ])
-
-  const refNameMapping3 = new Map<RefObject<HTMLButtonElement>, string>([
-    [colorBlockDarkPurple, 'colorBlockDarkPurple'],
-    [colorBlockDarkPink, 'colorBlockDarkPink'],
-    [colorBlockDarkRed, 'colorBlockDarkRed'],
-    [colorBlockDarkOrange, 'colorBlockDarkOrange'],
-    [colorBlockDarkGreen, 'colorBlockDarkGreen'],
-    [colorBlockGreenishBlue, 'colorBlockGreenishBlue'],
-    [colorBlockDarkBlue, 'colorBlockDarkBlue'],
-    [colorBlockPurplishBlue, 'colorBlockPurplishBlue'],
-  ])
-
-  const refNameMappingCombo = [refNameMapping, refNameMapping2, refNameMapping3]
-
-  const getRefName = (
-    refNameMapping: Map<RefObject<HTMLButtonElement>, string>,
-    ref: RefObject<HTMLButtonElement>
-  ): string | undefined => {
-    return refNameMapping.get(ref)
-  }
-
-  // Should be in the same order as colorPairs:
-  const colorBlockProps = [
+  const refNameMapping = useMemo(() => {
+    return new Map<RefObject<HTMLButtonElement>, string>([
+      [colorBlockOrange, 'colorBlockOrange'],
+      [colorBlockRed, 'colorBlockRed'],
+      [colorBlockPurple, 'colorBlockPurple'],
+      [colorBlockBlue, 'colorBlockBlue'],
+      [colorBlockYellowLime, 'colorBlockYellowLime'],
+      [colorBlockCyanYellow, 'colorBlockCyanYellow'],
+      [colorBlockCyanPink, 'colorBlockCyanPink'],
+      [colorBlockPinkYellow, 'colorBlockPinkYellow'],
+    ])
+  }, [
     colorBlockOrange,
     colorBlockRed,
     colorBlockPurple,
@@ -269,8 +250,20 @@ export default function DragContainer({
     colorBlockCyanYellow,
     colorBlockCyanPink,
     colorBlockPinkYellow,
-  ]
-  const colorBlockProps2 = [
+  ])
+
+  const refNameMapping2 = useMemo(() => {
+    return new Map<RefObject<HTMLButtonElement>, string>([
+      [colorBlockReddish, 'colorBlockReddish'],
+      [colorBlockBrown, 'colorBlockBrown'],
+      [colorBlockTan, 'colorBlockTan'],
+      [colorBlockKhaki, 'colorBlockKhaki'],
+      [colorBlockPurplish, 'colorBlockPurplish'],
+      [colorBlockBluish, 'colorBlockBluish'],
+      [colorBlockGreenish, 'colorBlockGreenish'],
+      [colorBlockGray, 'colorBlockGray'],
+    ])
+  }, [
     colorBlockReddish,
     colorBlockBrown,
     colorBlockTan,
@@ -279,8 +272,20 @@ export default function DragContainer({
     colorBlockBluish,
     colorBlockGreenish,
     colorBlockGray,
-  ]
-  const colorBlockProps3 = [
+  ])
+
+  const refNameMapping3 = useMemo(() => {
+    return new Map<RefObject<HTMLButtonElement>, string>([
+      [colorBlockDarkPurple, 'colorBlockDarkPurple'],
+      [colorBlockDarkPink, 'colorBlockDarkPink'],
+      [colorBlockDarkRed, 'colorBlockDarkRed'],
+      [colorBlockDarkOrange, 'colorBlockDarkOrange'],
+      [colorBlockDarkGreen, 'colorBlockDarkGreen'],
+      [colorBlockGreenishBlue, 'colorBlockGreenishBlue'],
+      [colorBlockDarkBlue, 'colorBlockDarkBlue'],
+      [colorBlockPurplishBlue, 'colorBlockPurplishBlue'],
+    ])
+  }, [
     colorBlockDarkPurple,
     colorBlockDarkPink,
     colorBlockDarkRed,
@@ -289,42 +294,127 @@ export default function DragContainer({
     colorBlockGreenishBlue,
     colorBlockDarkBlue,
     colorBlockPurplishBlue,
-  ]
+  ])
 
-  const colorBlockPropsCombo = [
-    colorBlockProps,
-    colorBlockProps2,
-    colorBlockProps3,
-  ]
+  const refNameMappingCombo = useMemo(() => {
+    return [refNameMapping, refNameMapping2, refNameMapping3]
+  }, [refNameMapping, refNameMapping2, refNameMapping3])
+
+  const getRefName = useCallback(
+    (
+      refNameMapping: Map<RefObject<HTMLButtonElement>, string>,
+      ref: RefObject<HTMLButtonElement>
+    ): string | undefined => {
+      return refNameMapping.get(ref)
+    },
+    []
+  )
+
+  // Should be in the same order as colorPairs:
+  const colorBlockProps = useMemo(() => {
+    return [
+      colorBlockOrange,
+      colorBlockRed,
+      colorBlockPurple,
+      colorBlockBlue,
+      colorBlockYellowLime,
+      colorBlockCyanYellow,
+      colorBlockCyanPink,
+      colorBlockPinkYellow,
+    ]
+  }, [
+    colorBlockOrange,
+    colorBlockRed,
+    colorBlockPurple,
+    colorBlockBlue,
+    colorBlockYellowLime,
+    colorBlockCyanYellow,
+    colorBlockCyanPink,
+    colorBlockPinkYellow,
+  ])
+
+  const colorBlockProps2 = useMemo(() => {
+    return [
+      colorBlockReddish,
+      colorBlockBrown,
+      colorBlockTan,
+      colorBlockKhaki,
+      colorBlockPurplish,
+      colorBlockBluish,
+      colorBlockGreenish,
+      colorBlockGray,
+    ]
+  }, [
+    colorBlockReddish,
+    colorBlockBrown,
+    colorBlockTan,
+    colorBlockKhaki,
+    colorBlockPurplish,
+    colorBlockBluish,
+    colorBlockGreenish,
+    colorBlockGray,
+  ])
+
+  const colorBlockProps3 = useMemo(() => {
+    return [
+      colorBlockDarkPurple,
+      colorBlockDarkPink,
+      colorBlockDarkRed,
+      colorBlockDarkOrange,
+      colorBlockDarkGreen,
+      colorBlockGreenishBlue,
+      colorBlockDarkBlue,
+      colorBlockPurplishBlue,
+    ]
+  }, [
+    colorBlockDarkPurple,
+    colorBlockDarkPink,
+    colorBlockDarkRed,
+    colorBlockDarkOrange,
+    colorBlockDarkGreen,
+    colorBlockGreenishBlue,
+    colorBlockDarkBlue,
+    colorBlockPurplishBlue,
+  ])
+
+  const colorBlockPropsCombo = useMemo(() => {
+    return [colorBlockProps, colorBlockProps2, colorBlockProps3]
+  }, [colorBlockProps, colorBlockProps2, colorBlockProps3])
 
   const [selectedColor, setSelectedColor] = useState<string>('')
 
-  const changeColor = (id: string) => {
-    if (!selectedColor) {
-      return
-    }
-    dispatch({
-      type: 'partialUpdate',
-      payload: {
-        d: d,
-        id: id,
-        update: {
-          background: selectedColor,
+  const changeColor = useCallback(
+    (id: string) => {
+      if (!selectedColor) {
+        return
+      }
+      void dispatch({
+        type: 'partialUpdate',
+        payload: {
+          d: d,
+          id: id,
+          update: {
+            background: selectedColor,
+          },
         },
-      },
-    })
-  }
+      })
+    },
+    [d, dispatch, selectedColor]
+  )
 
-  const changeBlobLayer = (draggable: Draggable, layer: number) => {
-    const z = highestZIndex[layer] + 1
-    dispatch({
-      type: 'partialUpdate',
-      payload: { d, id: draggable.id, update: { layer, z } },
-    })
-    setActiveLayer(layer)
-  }
+  const changeBlobLayer = useCallback(
+    (draggable: Draggable, layer: number) => {
+      const z = highestZIndex[layer] + 1
+      void dispatch({
+        type: 'partialUpdate',
+        payload: { d, id: draggable.id, update: { layer, z } },
+      })
+      setActiveLayer(layer)
+    },
+    [d, dispatch, highestZIndex]
+  )
 
-  const toggleLayerVisibility = (layer: number) => {
+  const toggleLayerVisibility = useCallback((layer: number) => {
     setHiddenLayers(prevHiddenLayers => {
       const newHiddenLayers = new Set(prevHiddenLayers)
       if (newHiddenLayers.has(layer)) {
@@ -336,7 +426,7 @@ export default function DragContainer({
       }
       return newHiddenLayers
     })
-  }
+  }, [])
 
   //Check for keyboard use for the focusedBlob marker
   useEffect(() => {
@@ -358,9 +448,9 @@ export default function DragContainer({
       windowObj.removeEventListener('mousedown', mousedownListener)
       windowObj.removeEventListener('mouseup', handleMouseUp)
     }
-  }, [isClient])
+  }, [isClient, windowObj])
 
-  function loadDraggables(): Promise<Draggable[] | null> {
+  const loadDraggables = useCallback(() => {
     return new Promise(resolve => {
       setTimeout(() => {
         if (typeof window === 'undefined') {
@@ -375,7 +465,9 @@ export default function DragContainer({
         ) {
           resolve(null)
         } else {
-          const draggables: Draggable[] = JSON.parse(draggablesJSON)
+          const draggables: Draggable[] = JSON.parse(
+            draggablesJSON
+          ) as unknown as Draggable[]
           // Ensure each draggable has a layer property
           resolve(
             draggables.map(draggable => ({
@@ -386,7 +478,7 @@ export default function DragContainer({
         }
       }, 300)
     })
-  }
+  }, [localStorageDraggables]) as () => Promise<Draggable[] | null>
 
   function loadLayerAmount(): Promise<number | null> {
     // First check the local storage value, then check if draggables[d] has blobs, finally return the default value if both are null
@@ -416,7 +508,7 @@ export default function DragContainer({
   //   else return parseInt(layerAmount)
   // }
 
-  function loadBackground(): Promise<BackgroundColor[] | null> {
+  function loadBackground(): Promise<string[] | null> {
     return new Promise(resolve => {
       setTimeout(() => {
         if (typeof window === 'undefined') {
@@ -431,49 +523,49 @@ export default function DragContainer({
         ) {
           resolve(null)
         } else {
-          resolve(JSON.parse(backgroundColorJSON))
+          resolve(JSON.parse(backgroundColorJSON) as string[])
         }
       }, 300)
     })
   }
 
-  function saveLayerAmount(amount: number = layerAmount) {
-    if (typeof window === 'undefined') return
-    localStorage.setItem(localStorageLayerAmount, JSON.stringify(amount))
-  }
-  function saveBackground(bg: BackgroundColor[] = backgroundColor[d]) {
-    if (typeof window === 'undefined') return
-    localStorage.setItem(localStorageBackground, JSON.stringify(bg))
-  }
-  function saveDraggables(blob: Draggable[] = draggables[d]) {
-    if (typeof window === 'undefined') return
-    localStorage.setItem(localStorageDraggables, JSON.stringify(blob))
-  }
-  const [name, setName] = useState<string>(t('BlobArt'))
-  const [newName, setNewName] = useState(name)
-  const [editName, setEditName] = useState('')
-  const [isLoading, setIsLoading] = useState(true)
-  const [hasSavedFiles, setHasSavedFiles] = useState(false)
+  const saveLayerAmount = useCallback(
+    (amount: number = layerAmount) => {
+      if (typeof window === 'undefined') return
+      localStorage.setItem(localStorageLayerAmount, JSON.stringify(amount))
+    },
+    [layerAmount, localStorageLayerAmount]
+  )
 
-  const [trackSaving, setTrackSaving] = useState(false)
-  const [savedDraggablesbyD, setSavedDraggablesByD] = useState<{
-    [key: number]: { [versionName: string]: SavedBlobs }
-  }>({})
+  const saveBackground = useCallback(
+    (bg: string[] = backgroundColor[d]) => {
+      if (typeof window === 'undefined') return
+      localStorage.setItem(localStorageBackground, JSON.stringify(bg))
+    },
+    [backgroundColor, d, localStorageBackground]
+  )
 
-  const [layerAmount, setLayerAmount] = useState<number>(0)
+  const saveDraggables = useCallback(
+    (blob: Draggable[] = draggables[d]) => {
+      if (typeof window === 'undefined') return
+      localStorage.setItem(localStorageDraggables, JSON.stringify(blob))
+    },
+    [d, draggables, localStorageDraggables]
+  )
 
-  const getBlobsFromServer = async () => {
+  const getBlobsFromServer = useCallback(async () => {
     setIsLoading(true)
     try {
       if (user?._id) {
-        blobService
+        await blobService
           .getAllBlobsByUser(user?._id, d, language)
-          .then(response => {
+          .then((response: SavedBlobs[]) => {
             if (response) {
               // Initialize an empty object for sortedDraggables
-              const sortedDraggables: {
-                [key: number]: { [versionName: string]: SavedBlobs }
-              } = {}
+              const sortedDraggables: Record<
+                number,
+                Record<string, SavedBlobs>
+              > = {}
 
               // Iterate through the response and sort draggables by d
               response.forEach((item: SavedBlobs) => {
@@ -506,20 +598,18 @@ export default function DragContainer({
               setIsLoading(false)
             }
           })
-          .catch(error => {
-            if (error.response?.data?.message)
-              dispatch(notify(error.response.data.message, true, 8))
-            else dispatch2(notify(`${t('Error')}: ${error.message}`, true, 8))
+          .catch((err: unknown) => {
+            const message = getErrorMessage(err, t('Error'))
+            void dispatch2(notify(message, true, 8))
             setIsLoading(false)
           })
       }
-    } catch (error: any) {
-      if (error.response?.data?.message)
-        dispatch(notify(error.response.data.message, true, 8))
-      else dispatch2(notify(t('Error'), true, 8))
+    } catch (err: unknown) {
+      const message = getErrorMessage(err, t('Error'))
+      void dispatch2(notify(message, true, 8))
       setIsLoading(false)
     }
-  }
+  }, [d, dispatch2, language, t, user?._id])
 
   const checkDuplicateVersionName = (versionName: string): boolean => {
     for (const dKey in savedDraggablesbyD) {
@@ -537,7 +627,7 @@ export default function DragContainer({
     if (regex.test(value)) {
       setName(value)
     } else {
-      dispatch2(notify(t('SpecialCharactersNotAllowed'), true, 8))
+      void dispatch2(notify(t('SpecialCharactersNotAllowed'), true, 8))
     }
   }
 
@@ -546,7 +636,7 @@ export default function DragContainer({
     if (regex.test(value)) {
       setNewName(value)
     } else {
-      dispatch2(notify(t('SpecialCharactersNotAllowed'), true, 8))
+      void dispatch2(notify(t('SpecialCharactersNotAllowed'), true, 8))
     }
   }
 
@@ -555,12 +645,12 @@ export default function DragContainer({
     e.preventDefault()
     try {
       if (name.trim() === '') {
-        dispatch2(notify(t('NameYourArtwork'), true, 8))
+        void dispatch2(notify(t('NameYourArtwork'), true, 8))
         setLoading(false)
         return
       } else if (name.trim().length > 30) {
         setLoading(false)
-        dispatch2(
+        void dispatch2(
           notify(
             `${t('NameTooLong')}. ${t('AMaxOf30CharactersPlease')}`,
             true,
@@ -571,37 +661,35 @@ export default function DragContainer({
       } else if (user?._id) {
         const versionName = name.trim()
         if (checkDuplicateVersionName(versionName)) {
-          if (!confirm({ message: t('AVersionAlreadyExistsOverwrite') })) {
-            return
+          if (await confirm({ message: t('AVersionAlreadyExistsOverwrite') })) {
+            // Proceed with saving, overwriting existing version
+            await blobService
+              .saveBlobsByUser(
+                user?._id,
+                d,
+                draggables[d],
+                name,
+                backgroundColor[d],
+                language
+              )
+              .then(() => {
+                setTrackSaving(!trackSaving)
+                setLoading(false)
+                void dispatch2(notify(t('SavingSuccessful'), false, 8))
+              })
+              .catch((err: unknown) => {
+                const message = getErrorMessage(err, t('Error'))
+                void dispatch2(notify(message, true, 8))
+              })
           }
         }
-        blobService
-          .saveBlobsByUser(
-            user?._id,
-            d,
-            draggables[d],
-            name,
-            backgroundColor[d],
-            language
-          )
-          .then(() => {
-            setTrackSaving(!trackSaving)
-            setLoading(false)
-            dispatch2(notify(t('SavingSuccessful'), false, 8))
-          })
-          .catch(error => {
-            if (error.response?.data?.message)
-              dispatch(notify(error.response.data.message, true, 8))
-            else dispatch2(notify(`${t('Error')}: ${error.message}`, true, 8))
-          })
       } else {
-        dispatch2(notify(t('LoginToSaveBlobs'), true, 8))
+        void dispatch2(notify(t('LoginToSaveBlobs'), true, 8))
         setLoading(false)
       }
-    } catch (error: any) {
-      if (error.response?.data?.message)
-        dispatch(notify(error.response.data.message, true, 8))
-      else dispatch2(notify(t('Error'), true, 8))
+    } catch (err: unknown) {
+      const message = getErrorMessage(err, t('Error'))
+      void dispatch2(notify(message, true, 8))
       setLoading(false)
     }
   }
@@ -612,17 +700,17 @@ export default function DragContainer({
   ) => {
     const newVersion = newVersionName.trim()
     if (newVersionName.trim() === '') {
-      dispatch2(notify(t('NameYourArtwork'), true, 8))
+      void dispatch2(notify(t('NameYourArtwork'), true, 8))
       return
     } else if (newVersionName.trim().length > 30) {
-      dispatch2(
+      void dispatch2(
         notify(`${t('NameTooLong')}. ${t('AMaxOf30CharactersPlease')}`, true, 8)
       )
       return
     } else {
       try {
         if (user?._id) {
-          blobService
+          await blobService
             .editBlobsByUser(
               user?._id,
               d,
@@ -634,20 +722,18 @@ export default function DragContainer({
             )
             .then(() => {
               setTrackSaving(!trackSaving)
-              dispatch2(notify(t('SavingSuccessful'), false, 8))
+              void dispatch2(notify(t('SavingSuccessful'), false, 8))
             })
-            .catch(error => {
-              if (error.response?.data?.message)
-                dispatch(notify(error.response.data.message, true, 8))
-              else dispatch2(notify(`${t('Error')}: ${error.message}`, true, 8))
+            .catch((err: unknown) => {
+              const message = getErrorMessage(err, t('Error'))
+              void dispatch2(notify(message, true, 8))
             })
         } else {
-          dispatch2(notify(t('LoginToSaveBlobs'), true, 8))
+          void dispatch2(notify(t('LoginToSaveBlobs'), true, 8))
         }
-      } catch (error: any) {
-        if (error.response?.data?.message)
-          dispatch(notify(error.response.data.message, true, 8))
-        else dispatch2(notify(t('Error'), true, 8))
+      } catch (err: unknown) {
+        const message = getErrorMessage(err, t('Error'))
+        void dispatch2(notify(message, true, 8))
       }
     }
   }
@@ -656,7 +742,7 @@ export default function DragContainer({
     const newVersion = versionName.trim()
     if (user?._id) {
       if (await confirm({ message: t('NoteThatUnsavedChangesWillBeLost') })) {
-        blobService
+        await blobService
           .getBlobsVersionByUser(user?._id, d, newVersion, language)
           .then((response: SavedBlobs) => {
             const highestLayerInDraggables = Math.max(
@@ -668,11 +754,11 @@ export default function DragContainer({
             setTimeout(() => {
               saveLayerAmount(highestLayerInDraggables + 1)
             }, 300)
-            dispatch({
+            void dispatch({
               type: 'setDraggablesAtD',
               payload: { d, draggables: response.draggables },
             })
-            dispatch({
+            void dispatch({
               type: 'setBackgroundColor',
               payload: { d, backgroundColor: response.backgroundColor },
             })
@@ -681,13 +767,13 @@ export default function DragContainer({
             setSliderSatVal(response.backgroundColor[1])
             setSliderLightVal(response.backgroundColor[2])
             setDragWrapOuterHue({
-              [`--hue${d}` as string]: `${response.backgroundColor[0]}`,
+              [`--hue${d}`]: `${response.backgroundColor[0]}`,
             })
             setDragWrapOuterSaturation({
-              [`--saturation${d}` as string]: `${response.backgroundColor[1]}`,
+              [`--saturation${d}`]: `${response.backgroundColor[1]}`,
             })
             setDragWrapOuterLightness({
-              [`--lightness${d}` as string]: `${response.backgroundColor[2]}`,
+              [`--lightness${d}`]: `${response.backgroundColor[2]}`,
             })
           })
           .then(() => {
@@ -698,10 +784,9 @@ export default function DragContainer({
               widthResize()
             }, 300)
           })
-          .catch(error => {
-            if (error.response?.data?.message)
-              dispatch(notify(error.response.data.message, true, 8))
-            else dispatch2(notify(`${t('Error')}: ${error.message}`, true, 8))
+          .catch((err: unknown) => {
+            const message = getErrorMessage(err, t('Error'))
+            void dispatch2(notify(message, true, 8))
           })
       }
     }
@@ -715,16 +800,15 @@ export default function DragContainer({
       if (
         await confirm({ message: t('AreYouSureYouWantToDeleteThisVersion') })
       ) {
-        blobService
+        await blobService
           .deleteBlobsVersionByUser(user._id, d, versionName, language)
           .then(() => {
-            dispatch2(notify(t('DeletedArt'), false, 8))
+            void dispatch2(notify(t('DeletedArt'), false, 8))
             setTrackSaving(!trackSaving)
           })
-          .catch(error => {
-            if (error.response?.data?.message)
-              dispatch(notify(error.response.data.message, true, 8))
-            else dispatch2(notify(`${t('Error')}: ${error.message}`, true, 8))
+          .catch((err: unknown) => {
+            const message = getErrorMessage(err, t('Error'))
+            void dispatch2(notify(message, true, 8))
           })
       }
     }
@@ -735,14 +819,14 @@ export default function DragContainer({
       await dispatch2(initializeUsers())
       await dispatch2(initializeUser())
     }
-    fetchData()
+    void fetchData()
   }, [dispatch2])
 
   useEffect(() => {
     if (user) {
-      getBlobsFromServer()
+      void getBlobsFromServer()
     }
-  }, [user, trackSaving])
+  }, [user, trackSaving, getBlobsFromServer])
 
   function getHighestZIndex(draggables: Draggable[]): Record<number, number> {
     return draggables.reduce(
@@ -758,121 +842,137 @@ export default function DragContainer({
     )
   }
 
+  useEffect(
+    () => {
+      const load = async () => {
+        const loadedDraggables = await loadDraggables()
+        const loadedBackgroundColor = await loadBackground()
+        const delay = void setTimeout(() => {
+          void (async () => {
+            const loadedLayerAmount = await loadLayerAmount()
+            if (loadedBackgroundColor?.length === 3) {
+              void dispatch({
+                type: 'setBackgroundColor',
+                payload: { d, backgroundColor: loadedBackgroundColor },
+              })
+              saveBackground(loadedBackgroundColor)
+
+              setSliderHueVal(loadedBackgroundColor[0])
+              setSliderSatVal(loadedBackgroundColor[1])
+              setSliderLightVal(loadedBackgroundColor[2])
+
+              dragWrapOuter.current?.style.setProperty(
+                `--hue${d}`,
+                `${loadedBackgroundColor[0]}`
+              )
+              dragWrapOuter.current?.style.setProperty(
+                `--saturation${d}`,
+                `${loadedBackgroundColor[1]}`
+              )
+              dragWrapOuter.current?.style.setProperty(
+                `--lightness${d}`,
+                `${loadedBackgroundColor[2]}`
+              )
+            } else {
+              void dispatch({
+                type: 'setBackgroundColor',
+                payload: {
+                  d,
+                  backgroundColor: [
+                    defaultHue,
+                    defaultSaturation,
+                    defaultLightness,
+                  ],
+                },
+              })
+              saveBackground([defaultHue, defaultSaturation, defaultLightness])
+            }
+            if (loadedLayerAmount) {
+              setLayerAmount(loadedLayerAmount)
+            } else if (loadedDraggables && loadedDraggables.length > 0) {
+              setLayerAmount(
+                Math.max(...loadedDraggables.map(d => d.layer)) + 1
+              )
+            }
+            if (loadedDraggables && loadedDraggables.length > 0) {
+              if (loadedDraggables && loadedDraggables.length > 0) {
+                makeFromStorage(loadedDraggables)
+              }
+              setHasBeenMade(true)
+            } else if (
+              (loadedDraggables === null || loadedDraggables === undefined) &&
+              !hasBeenMade
+            ) {
+              makeAnew(amountOfBlobs, d)
+              setHasBeenMade(true)
+            }
+          })()
+        }, 300) // 300ms delay
+        return () => clearTimeout(delay)
+      }
+      void load()
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      d,
+      hasBeenMade,
+      dispatch,
+      dragWrapOuter,
+      defaultHue,
+      defaultLightness,
+      defaultSaturation,
+    ]
+  )
+
   useEffect(() => {
-    const load = async () => {
-      const loadedDraggables = await loadDraggables()
-      const loadedBackgroundColor = await loadBackground()
-      const delay = setTimeout(async () => {
-        const loadedLayerAmount = await loadLayerAmount()
-        if (loadedBackgroundColor && loadedBackgroundColor.length === 3) {
-          dispatch({
-            type: 'setBackgroundColor',
-            payload: { d, backgroundColor: loadedBackgroundColor },
-          })
-          saveBackground(loadedBackgroundColor)
-
-          setSliderHueVal(loadedBackgroundColor[0])
-          setSliderSatVal(loadedBackgroundColor[1])
-          setSliderLightVal(loadedBackgroundColor[2])
-
-          dragWrapOuter.current?.style.setProperty(
-            `--hue${d}`,
-            `${loadedBackgroundColor[0]}`
-          )
-          dragWrapOuter.current?.style.setProperty(
-            `--saturation${d}`,
-            `${loadedBackgroundColor[1]}`
-          )
-          dragWrapOuter.current?.style.setProperty(
-            `--lightness${d}`,
-            `${loadedBackgroundColor[2]}`
-          )
-        } else {
-          dispatch({
-            type: 'setBackgroundColor',
-            payload: {
-              d,
-              backgroundColor: [
-                defaultHue,
-                defaultSaturation,
-                defaultLightness,
-              ],
-            },
-          })
-          saveBackground([defaultHue, defaultSaturation, defaultLightness])
-        }
-        if (loadedLayerAmount) {
-          setLayerAmount(loadedLayerAmount)
-        } else if (loadedDraggables && loadedDraggables.length > 0) {
-          setLayerAmount(Math.max(...loadedDraggables.map(d => d.layer)) + 1)
-        }
-        if (loadedDraggables && loadedDraggables.length > 0) {
-          if (loadedDraggables && loadedDraggables.length > 0) {
-            makeFromStorage(loadedDraggables)
-          }
-          setHasBeenMade(true)
-        } else if (
-          (loadedDraggables === null || loadedDraggables === undefined) &&
-          !hasBeenMade
-        ) {
-          makeAnew(amountOfBlobs, d)
-          setHasBeenMade(true)
-        }
-      }, 300) // 300ms delay
-      return () => clearTimeout(delay)
-    }
-    load()
-  }, [d, hasBeenMade, dispatch])
-
-  useEffect(() => {
-    if (draggables[d] !== undefined && draggables[d]?.length > 0) {
+    if (draggablesD !== undefined && draggablesD?.length > 0) {
       saveDraggables()
-      const highestZ = getHighestZIndex(draggables[d])
+      const highestZ = getHighestZIndex(draggablesD)
       setHighestZIndex(highestZ)
     }
-  }, [draggables[d]])
+  }, [draggablesD, saveDraggables])
 
-  function isValidDraggable(draggable: any): draggable is Draggable {
-    return (
-      typeof draggable === 'object' &&
-      draggable !== null &&
-      typeof draggable.layer === 'number' &&
-      typeof draggable.id === 'string' &&
-      typeof draggable.number === 'number' &&
-      typeof draggable.i === 'number' &&
-      typeof draggable.x === 'string' &&
-      typeof draggable.y === 'string' &&
-      typeof draggable.z === 'string' &&
-      !isNaN(Number(draggable.z)) &&
-      typeof draggable.background === 'string'
-    )
-  }
+  // function isValidDraggable(draggable: any): draggable is Draggable {
+  //   return (
+  //     typeof draggable === 'object' &&
+  //     draggable !== null &&
+  //     typeof draggable.layer === 'number' &&
+  //     typeof draggable.id === 'string' &&
+  //     typeof draggable.number === 'number' &&
+  //     typeof draggable.i === 'number' &&
+  //     typeof draggable.x === 'string' &&
+  //     typeof draggable.y === 'string' &&
+  //     typeof draggable.z === 'string' &&
+  //     !isNaN(Number(draggable.z)) &&
+  //     typeof draggable.background === 'string'
+  //   )
+  // }
 
-  function correctDraggable(draggable: any): Draggable {
-    return {
-      layer: typeof draggable.layer === 'number' ? draggable.layer : 0,
-      id: typeof draggable.id === 'string' ? draggable.id : `blob${Date.now()}`,
-      number: typeof draggable.number === 'number' ? draggable.number : 0,
-      i: typeof draggable.i === 'number' ? draggable.i : 0,
-      x: typeof draggable.x === 'string' ? draggable.x : '0px',
-      y: typeof draggable.y === 'string' ? draggable.y : '0px',
-      z: !isNaN(Number(draggable.z)) ? draggable.z : '1',
-      background:
-        typeof draggable.background === 'string'
-          ? draggable.background
-          : 'linear-gradient(90deg, cyan, greenyellow)',
-    }
-  }
+  // function correctDraggable(draggable: any): Draggable {
+  //   return {
+  //     layer: typeof draggable.layer === 'number' ? draggable.layer : 0,
+  //     id: typeof draggable.id === 'string' ? draggable.id : `blob${Date.now()}`,
+  //     number: typeof draggable.number === 'number' ? draggable.number : 0,
+  //     i: typeof draggable.i === 'number' ? draggable.i : 0,
+  //     x: typeof draggable.x === 'string' ? draggable.x : '0px',
+  //     y: typeof draggable.y === 'string' ? draggable.y : '0px',
+  //     z: !isNaN(Number(draggable.z)) ? draggable.z : '1',
+  //     background:
+  //       typeof draggable.background === 'string'
+  //         ? draggable.background
+  //         : 'linear-gradient(90deg, cyan, greenyellow)',
+  //   }
+  // }
 
-  function updateInvalidDraggables() {
-    const correctedDraggables = draggables[d].map(draggable =>
-      isValidDraggable(draggable) ? draggable : correctDraggable(draggable)
-    )
-    dispatch({
-      type: 'setDraggablesAtD',
-      payload: { d, draggables: correctedDraggables },
-    })
-  }
+  // function updateInvalidDraggables() {
+  //   const correctedDraggables = draggables[d].map(draggable =>
+  //     isValidDraggable(draggable) ? draggable : correctDraggable(draggable)
+  //   )
+  //   void dispatch({
+  //     type: 'setDraggablesAtD',
+  //     payload: { d, draggables: correctedDraggables },
+  //   })
+  // }
 
   // useEffect(() => {
   //   updateInvalidDraggables() // temporary
@@ -881,7 +981,7 @@ export default function DragContainer({
   function makeFromStorage(blobs: Draggable[]) {
     if (!hasBeenMade && blobs && blobs?.length > 0) {
       //dispatch({ type: 'resetDraggables', payload: {} })
-      for (let i: number = 0; i < blobs?.length; i++) {
+      for (let i = 0; i < blobs?.length; i++) {
         if (blobs[i] !== null && blobs[i] !== undefined) {
           const newDraggable = {
             layer: blobs[i].layer,
@@ -895,7 +995,7 @@ export default function DragContainer({
               blobs[i].background ?? 'linear-gradient(90deg, cyan, greenyellow)'
             }`,
           }
-          dispatch({
+          void dispatch({
             type: 'addDraggable',
             payload: { d, draggable: newDraggable },
           })
@@ -908,16 +1008,16 @@ export default function DragContainer({
   }
 
   const handleMoveLeft = () => {
-    dispatch({ type: 'moveDraggablesLeft', payload: { d } })
+    void dispatch({ type: 'moveDraggablesLeft', payload: { d } })
   }
   const handleMoveRight = () => {
-    dispatch({ type: 'moveDraggablesRight', payload: { d } })
+    void dispatch({ type: 'moveDraggablesRight', payload: { d } })
   }
   const handleMoveUp = () => {
-    dispatch({ type: 'moveDraggablesUp', payload: { d } })
+    void dispatch({ type: 'moveDraggablesUp', payload: { d } })
   }
   const handleMoveDown = () => {
-    dispatch({ type: 'moveDraggablesDown', payload: { d } })
+    void dispatch({ type: 'moveDraggablesDown', payload: { d } })
   }
 
   function stopSway(
@@ -962,29 +1062,33 @@ export default function DragContainer({
     return () => {
       mediaQuery.removeEventListener('change', listener)
     }
-  }, [])
+  }, [isClient, windowObj])
 
   const amountOfBlobs = windowWidth > 700 ? 10 : 6 // Initial amount of blobs
 
-  const escape = (e: KeyboardEvent) => {
-    switch (e.key) {
-      case 'Escape':
-        setScroll(true)
+  const escape = useCallback(
+    (e: KeyboardEvent) => {
+      switch (e.key) {
+        case 'Escape':
+          setScroll(true)
 
-        if (document !== null) {
-          document.body.style.overflowY = 'auto'
-          document.body.style.overflowX = 'hidden'
-        }
-        break
-    }
-  }
+          if (document !== null) {
+            document.body.style.overflowY = 'auto'
+            document.body.style.overflowX = 'hidden'
+          }
+          break
+      }
+    },
+    [setScroll]
+  )
+
   useEffect(() => {
     if (!isClient || !windowObj) return
     windowObj.addEventListener('keyup', escape)
     return () => {
       windowObj.removeEventListener('keyup', escape)
     }
-  }, [])
+  }, [isClient, windowObj, escape])
 
   // Change every blob's layer by plus or minus one, unless any blob is already on the highest or lowest layer
   const changeEveryLayer = (amount: number) => {
@@ -996,14 +1100,14 @@ export default function DragContainer({
     )
 
     if (isAnyOnLowestLayer) {
-      dispatch2(
+      void dispatch2(
         notify(t('CannotLowerEveryBlobFurtherSomeBlobsAlreadyLowest'), true, 8)
       )
       return
     }
 
     if (isAnyOnHighestLayer) {
-      dispatch2(notify(t('CannotRaiseEveryBlobFurther'), true, 8))
+      void dispatch2(notify(t('CannotRaiseEveryBlobFurther'), true, 8))
       return
     }
 
@@ -1016,7 +1120,7 @@ export default function DragContainer({
       }
     })
 
-    dispatch({
+    void dispatch({
       type: 'setDraggablesAtD',
       payload: { d, draggables: newDraggables },
     })
@@ -1031,8 +1135,11 @@ export default function DragContainer({
 
       windowObj.localStorage.removeItem(localStorageDraggables)
 
-      dispatch({ type: 'resetDraggables', payload: { d } })
-      dispatch({ type: 'setDraggablesAtD', payload: { d, draggables: [] } })
+      void dispatch({ type: 'resetDraggables', payload: { d } })
+      void dispatch({
+        type: 'setDraggablesAtD',
+        payload: { d, draggables: [] },
+      })
       makeAnew(amountOfBlobs, d)
       setTimeout(() => {
         widthResize()
@@ -1043,7 +1150,7 @@ export default function DragContainer({
 
   const makeAnew = (amount: number, d: number) => {
     setActiveLayer(0)
-    for (let i: number = 0; i < amount; i++) {
+    for (let i = 0; i < amount; i++) {
       const colorswitch = () => {
         const colorArray = colorPairsCombo[d]
         const randomIndex = Math.floor(Math.random() * colorArray.length)
@@ -1069,7 +1176,7 @@ export default function DragContainer({
           colorFirst ?? 'cyan'
         },${colorSecond ?? 'greenyellow'})`,
       }
-      dispatch({
+      void dispatch({
         type: 'addDraggable',
         payload: { d, draggable: newDraggable },
       })
@@ -1129,12 +1236,8 @@ export default function DragContainer({
   }, [state.draggables])
 
   const addRandomDraggable = (
-    x_pos: string = `${
-      (windowWidth / 100) * Math.round(getRandomMinMax(25, 55))
-    }px`,
-    y_pos: string = `${
-      (windowHeight / 100) * Math.round(getRandomMinMax(2, 10))
-    }px`,
+    x_pos = `${(windowWidth / 100) * Math.round(getRandomMinMax(25, 55))}px`,
+    y_pos = `${(windowHeight / 100) * Math.round(getRandomMinMax(2, 10))}px`,
     layer: number = activeLayer
   ) => {
     if (
@@ -1146,7 +1249,7 @@ export default function DragContainer({
       document.activeElement.blur() // Unfocus the button after clicking, as the tooltip will otherwise stay visible and be in the way
 
     if (hiddenLayers.has(activeLayer)) {
-      dispatch2(notify(t('LayerHidden'), true, 8))
+      void dispatch2(notify(t('LayerHidden'), true, 8))
       return
     }
 
@@ -1174,7 +1277,7 @@ export default function DragContainer({
         colorFirst ?? 'cyan'
       },${colorSecond ?? 'greenyellow'})`,
     }
-    dispatch({
+    void dispatch({
       type: 'duplicateDraggable',
       payload: { d, draggable: newDraggable },
     })
@@ -1219,34 +1322,36 @@ export default function DragContainer({
       background: blobColor1 ?? 'linear-gradient(90deg, cyan, greenyellow)',
     }
 
-    dispatch({
+    void dispatch({
       type: 'updateDraggable',
       payload: { d, draggable: blobDraggable },
     })
   }
 
   useEffect(() => {
+    const dragWrapCurrent = dragWrapOuter.current
+
     if (!scroll && document !== null) {
       document.addEventListener('touchmove', preventDefault, {
         passive: false,
       })
       if (document !== null) document.body.style.overflow = 'hidden'
-      dragWrapOuter.current?.addEventListener('touchmove', preventDefault, {
+      dragWrapCurrent?.addEventListener('touchmove', preventDefault, {
         passive: false,
       })
-      if (dragWrapOuter.current) dragWrapOuter.current.style.overflow = 'hidden'
+      if (dragWrapCurrent) dragWrapCurrent.style.overflow = 'hidden'
     } else if (scroll && document !== null) {
       document.body.style.overflowY = 'auto'
       document.body.style.overflowX = 'hidden'
       document.removeEventListener('touchmove', preventDefault)
-      if (dragWrapOuter.current) dragWrapOuter.current.style.overflow = 'auto'
-      dragWrapOuter.current?.removeEventListener('touchmove', preventDefault)
+      if (dragWrapCurrent) dragWrapCurrent.style.overflow = 'auto'
+      dragWrapCurrent?.removeEventListener('touchmove', preventDefault)
     }
     return () => {
       document?.removeEventListener('touchmove', preventDefault)
-      dragWrapOuter.current?.removeEventListener('touchmove', preventDefault)
+      dragWrapCurrent?.removeEventListener('touchmove', preventDefault)
     }
-  }, [scroll])
+  }, [scroll, dragWrapOuter])
 
   function disableScroll() {
     setScroll(!scroll)
@@ -1257,20 +1362,26 @@ export default function DragContainer({
   const [sliderHueVal, setSliderHueVal] = useState(() => {
     if (typeof window === 'undefined') return defaultHue
     const savedBackground = localStorage.getItem(localStorageBackground)
-    const backgroundColor = savedBackground ? JSON.parse(savedBackground) : null
+    const backgroundColor = savedBackground
+      ? (JSON.parse(savedBackground) as string[])
+      : null
     return backgroundColor?.[0] ?? defaultHue
   })
   const [sliderSatVal, setSliderSatVal] = useState(() => {
     if (typeof window === 'undefined') return defaultSaturation
     const savedBackground = localStorage.getItem(localStorageBackground)
-    const backgroundColor = savedBackground ? JSON.parse(savedBackground) : null
+    const backgroundColor = savedBackground
+      ? (JSON.parse(savedBackground) as string[])
+      : null
     return backgroundColor?.[1] ?? defaultSaturation
   })
 
   const [sliderLightVal, setSliderLightVal] = useState(() => {
     if (typeof window === 'undefined') return defaultLightness
     const savedBackground = localStorage.getItem(localStorageBackground)
-    const backgroundColor = savedBackground ? JSON.parse(savedBackground) : null
+    const backgroundColor = savedBackground
+      ? (JSON.parse(savedBackground) as string[])
+      : null
     return backgroundColor?.[2] ?? defaultLightness
   })
 
@@ -1280,39 +1391,41 @@ export default function DragContainer({
   const [dragWrapOuterHue, setDragWrapOuterHue] = useState<CSSProperties>(
     sliderHueInput.current
       ? {
-          [`--hue${d}` as string]: `${sliderHueInput.current.value}`,
+          [`--hue${d}`]: `${sliderHueInput.current.value}`,
         }
       : {
-          [`--hue${d}` as string]: `${sliderHueVal}`,
+          [`--hue${d}`]: `${sliderHueVal}`,
         }
   )
   const [dragWrapOuterSaturation, setDragWrapOuterSaturation] =
     useState<CSSProperties>(
       sliderSaturationInput.current
         ? {
-            [`--saturation${d}` as string]: `${sliderSaturationInput.current.value}`,
+            [`--saturation${d}`]: `${sliderSaturationInput.current.value}`,
           }
         : {
-            [`--saturation${d}` as string]: `${sliderSatVal}`,
+            [`--saturation${d}`]: `${sliderSatVal}`,
           }
     )
   const [dragWrapOuterLightness, setDragWrapOuterLightness] =
     useState<CSSProperties>(
       sliderLightnessInput.current
         ? {
-            [`--lightness${d}` as string]: `${sliderLightnessInput.current.value}`,
+            [`--lightness${d}`]: `${sliderLightnessInput.current.value}`,
           }
         : {
-            [`--lightness${d}` as string]: `${sliderLightVal}`,
+            [`--lightness${d}`]: `${sliderLightVal}`,
           }
     )
 
   function sliderHue() {
     if (dragWrapOuter.current) {
-      setDragWrapOuterHue({ [`--hue${d}` as string]: `${sliderHueVal}` })
-      const updatedBackgroundColor = JSON.parse(JSON.stringify(backgroundColor))
+      setDragWrapOuterHue({ [`--hue${d}`]: `${sliderHueVal}` })
+      const updatedBackgroundColor: string[][] = JSON.parse(
+        JSON.stringify(backgroundColor)
+      ) as unknown as string[][]
       updatedBackgroundColor[d][0] = sliderHueVal
-      dispatch({
+      void dispatch({
         type: 'setBackgroundColor',
         payload: { d, backgroundColor: updatedBackgroundColor[d] },
       })
@@ -1323,11 +1436,13 @@ export default function DragContainer({
   function sliderSaturation() {
     if (dragWrapOuter.current) {
       setDragWrapOuterSaturation({
-        [`--saturation${d}` as string]: `${sliderSatVal}`,
+        [`--saturation${d}`]: `${sliderSatVal}`,
       })
-      const updatedBackgroundColor = JSON.parse(JSON.stringify(backgroundColor))
+      const updatedBackgroundColor: string[][] = JSON.parse(
+        JSON.stringify(backgroundColor)
+      ) as unknown as string[][]
       updatedBackgroundColor[d][1] = sliderSatVal
-      dispatch({
+      void dispatch({
         type: 'setBackgroundColor',
         payload: { d, backgroundColor: updatedBackgroundColor[d] },
       })
@@ -1338,12 +1453,14 @@ export default function DragContainer({
   function sliderLightness() {
     if (dragWrapOuter.current) {
       setDragWrapOuterLightness({
-        [`--lightness${d}` as string]: `${sliderLightVal}`,
+        [`--lightness${d}`]: `${sliderLightVal}`,
       })
 
-      const updatedBackgroundColor = JSON.parse(JSON.stringify(backgroundColor))
+      const updatedBackgroundColor: string[][] = JSON.parse(
+        JSON.stringify(backgroundColor)
+      ) as unknown as string[][]
       updatedBackgroundColor[d][2] = sliderLightVal
-      dispatch({
+      void dispatch({
         type: 'setBackgroundColor',
         payload: { d, backgroundColor: updatedBackgroundColor[d] },
       })
@@ -1368,15 +1485,17 @@ export default function DragContainer({
 
   function sliderLightnessReset() {
     setDragWrapOuterLightness({
-      [`--lightness${d}` as string]: `${defaultLightness}`,
+      [`--lightness${d}`]: `${defaultLightness}`,
     })
     if (sliderLightnessInput.current)
       sliderLightnessInput.current.value = defaultLightness
     setSliderLightVal(defaultLightness)
-    const updatedBackgroundColor = JSON.parse(JSON.stringify(backgroundColor))
+    const updatedBackgroundColor: string[][] = JSON.parse(
+      JSON.stringify(backgroundColor)
+    ) as unknown as string[][]
     updatedBackgroundColor[d][2] = defaultLightness
     saveBackground(updatedBackgroundColor[d])
-    dispatch({
+    void dispatch({
       type: 'setBackgroundColor',
       payload: { d, backgroundColor: updatedBackgroundColor[d] },
     })
@@ -1384,28 +1503,32 @@ export default function DragContainer({
 
   function sliderSaturationReset() {
     setDragWrapOuterSaturation({
-      [`--saturation${d}` as string]: `${defaultSaturation}`,
+      [`--saturation${d}`]: `${defaultSaturation}`,
     })
     if (sliderSaturationInput.current)
       sliderSaturationInput.current.value = defaultSaturation
     setSliderSatVal(defaultSaturation)
-    const updatedBackgroundColor = JSON.parse(JSON.stringify(backgroundColor))
+    const updatedBackgroundColor: string[][] = JSON.parse(
+      JSON.stringify(backgroundColor)
+    ) as unknown as string[][]
     updatedBackgroundColor[d][1] = defaultSaturation
     saveBackground(updatedBackgroundColor[d])
-    dispatch({
+    void dispatch({
       type: 'setBackgroundColor',
       payload: { d, backgroundColor: updatedBackgroundColor[d] },
     })
   }
 
   function sliderHueReset() {
-    setDragWrapOuterHue({ [`--hue${d}` as string]: `${defaultHue}` })
+    setDragWrapOuterHue({ [`--hue${d}`]: `${defaultHue}` })
     if (sliderHueInput.current) sliderHueInput.current.value = defaultHue
     setSliderHueVal(defaultHue)
-    const updatedBackgroundColor = JSON.parse(JSON.stringify(backgroundColor))
+    const updatedBackgroundColor: string[][] = JSON.parse(
+      JSON.stringify(backgroundColor)
+    ) as unknown as string[][]
     updatedBackgroundColor[d][0] = defaultHue
     saveBackground(updatedBackgroundColor[d])
-    dispatch({
+    void dispatch({
       type: 'setBackgroundColor',
       payload: { d, backgroundColor: updatedBackgroundColor[d] },
     })
@@ -1413,155 +1536,164 @@ export default function DragContainer({
 
   //END SLIDERS
 
+  const widthResize = useCallback(
+    () => {
+      const breakpointSmallest = 250
+      const breakpointSmall = 300
+      const y_pos = [12, 34, 56, 78] // color block y positions
+      //place these items every time the window is resized:
+      if (
+        makeMore0.current &&
+        dragWrap.current &&
+        windowWidth < breakpointSmallest
+      )
+        place(makeMore0.current, 15, 0)
+      else if (makeMore0.current && dragWrap.current)
+        place(makeMore0.current, 23, 0)
+      if (makeRandom0.current && dragWrap.current)
+        place(
+          makeRandom0.current,
+          50 -
+            (makeRandom0.current.offsetWidth / dragWrap.current.offsetWidth) *
+              50,
+          0
+        )
+      if (
+        makeSmaller0.current &&
+        dragWrap.current &&
+        windowWidth < breakpointSmallest
+      )
+        place(
+          makeSmaller0.current,
+          85 -
+            (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) *
+              100,
+          0.3
+        )
+      else if (makeSmaller0.current && dragWrap.current)
+        place(
+          makeSmaller0.current,
+          77 -
+            (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) *
+              100,
+          0.3
+        )
+      if (
+        layerDecrease.current &&
+        dragWrap.current &&
+        windowWidth < breakpointSmall
+      )
+        place(
+          layerDecrease.current,
+          27,
+          100 -
+            (layerDecrease.current.offsetHeight /
+              dragWrap.current.offsetHeight) *
+              100
+        )
+      else if (layerDecrease.current && dragWrap.current)
+        place(
+          layerDecrease.current,
+          32,
+          100 -
+            (layerDecrease.current.offsetHeight /
+              dragWrap.current.offsetHeight) *
+              100
+        )
+      if (
+        layerIncrease.current &&
+        dragWrap.current &&
+        windowWidth < breakpointSmall
+      )
+        place(
+          layerIncrease.current,
+          73 -
+            (layerIncrease.current.offsetWidth / dragWrap.current.offsetWidth) *
+              100,
+          100 -
+            (layerIncrease.current.offsetHeight /
+              dragWrap.current.offsetHeight) *
+              100
+        )
+      else if (layerIncrease.current && dragWrap.current)
+        place(
+          layerIncrease.current,
+          68 -
+            (layerIncrease.current.offsetWidth / dragWrap.current.offsetWidth) *
+              100,
+          100 -
+            (layerIncrease.current.offsetHeight /
+              dragWrap.current.offsetHeight) *
+              100
+        )
+      if (
+        deleteBlob0.current &&
+        dragWrap.current &&
+        windowWidth < breakpointSmall
+      )
+        place(
+          deleteBlob0.current,
+          2,
+          100 -
+            (deleteBlob0.current.offsetHeight / dragWrap.current.offsetHeight) *
+              100
+        )
+      else if (deleteBlob0.current && dragWrap.current)
+        place(
+          deleteBlob0.current,
+          10,
+          100 -
+            (deleteBlob0.current.offsetHeight / dragWrap.current.offsetHeight) *
+              100
+        )
+      if (
+        makeLarger0.current &&
+        dragWrap.current &&
+        windowWidth < breakpointSmall
+      )
+        place(
+          makeLarger0.current,
+          98 -
+            (makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) *
+              100,
+          100 -
+            (makeLarger0.current.offsetHeight / dragWrap.current.offsetHeight) *
+              100
+        )
+      else if (makeLarger0.current && dragWrap.current)
+        place(
+          makeLarger0.current,
+          90 -
+            (makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) *
+              100,
+          100 -
+            (makeLarger0.current.offsetHeight / dragWrap.current.offsetHeight) *
+              100
+        )
+      // place color blocks:
+      colorBlockPropsCombo.forEach(colorBlockArray => {
+        colorBlockArray.forEach((colorBlock, index) => {
+          if (colorBlock.current && dragWrapOutest.current) {
+            const x =
+              index < 4
+                ? 0
+                : 100 -
+                  (colorBlock.current.offsetWidth /
+                    dragWrapOutest.current.offsetWidth) *
+                    100
+            const y = y_pos[index % 4]
+            place(colorBlock.current, x, y)
+          }
+        })
+      })
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [windowWidth, windowHeight, dragWrap, dragWrapOutest, colorBlockPropsCombo]
+  )
+
   useEffect(() => {
     widthResize()
-  }, [windowWidth, windowHeight, scroll])
-
-  const widthResize = () => {
-    const breakpointSmallest = 250
-    const breakpointSmall = 300
-    const y_pos = [12, 34, 56, 78] // color block y positions
-    //place these items every time the window is resized:
-    if (
-      makeMore0.current &&
-      dragWrap.current &&
-      windowWidth < breakpointSmallest
-    )
-      place(makeMore0.current, 15, 0)
-    else if (makeMore0.current && dragWrap.current)
-      place(makeMore0.current, 23, 0)
-    if (makeRandom0.current && dragWrap.current)
-      place(
-        makeRandom0.current,
-        50 -
-          (makeRandom0.current.offsetWidth / dragWrap.current.offsetWidth) * 50,
-        0
-      )
-    if (
-      makeSmaller0.current &&
-      dragWrap.current &&
-      windowWidth < breakpointSmallest
-    )
-      place(
-        makeSmaller0.current,
-        85 -
-          (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) *
-            100,
-        0.3
-      )
-    else if (makeSmaller0.current && dragWrap.current)
-      place(
-        makeSmaller0.current,
-        77 -
-          (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) *
-            100,
-        0.3
-      )
-    if (
-      layerDecrease.current &&
-      dragWrap.current &&
-      windowWidth < breakpointSmall
-    )
-      place(
-        layerDecrease.current,
-        27,
-        100 -
-          (layerDecrease.current.offsetHeight / dragWrap.current.offsetHeight) *
-            100
-      )
-    else if (layerDecrease.current && dragWrap.current)
-      place(
-        layerDecrease.current,
-        32,
-        100 -
-          (layerDecrease.current.offsetHeight / dragWrap.current.offsetHeight) *
-            100
-      )
-    if (
-      layerIncrease.current &&
-      dragWrap.current &&
-      windowWidth < breakpointSmall
-    )
-      place(
-        layerIncrease.current,
-        73 -
-          (layerIncrease.current.offsetWidth / dragWrap.current.offsetWidth) *
-            100,
-        100 -
-          (layerIncrease.current.offsetHeight / dragWrap.current.offsetHeight) *
-            100
-      )
-    else if (layerIncrease.current && dragWrap.current)
-      place(
-        layerIncrease.current,
-        68 -
-          (layerIncrease.current.offsetWidth / dragWrap.current.offsetWidth) *
-            100,
-        100 -
-          (layerIncrease.current.offsetHeight / dragWrap.current.offsetHeight) *
-            100
-      )
-    if (
-      deleteBlob0.current &&
-      dragWrap.current &&
-      windowWidth < breakpointSmall
-    )
-      place(
-        deleteBlob0.current,
-        2,
-        100 -
-          (deleteBlob0.current.offsetHeight / dragWrap.current.offsetHeight) *
-            100
-      )
-    else if (deleteBlob0.current && dragWrap.current)
-      place(
-        deleteBlob0.current,
-        10,
-        100 -
-          (deleteBlob0.current.offsetHeight / dragWrap.current.offsetHeight) *
-            100
-      )
-    if (
-      makeLarger0.current &&
-      dragWrap.current &&
-      windowWidth < breakpointSmall
-    )
-      place(
-        makeLarger0.current,
-        98 -
-          (makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) *
-            100,
-        100 -
-          (makeLarger0.current.offsetHeight / dragWrap.current.offsetHeight) *
-            100
-      )
-    else if (makeLarger0.current && dragWrap.current)
-      place(
-        makeLarger0.current,
-        90 -
-          (makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) *
-            100,
-        100 -
-          (makeLarger0.current.offsetHeight / dragWrap.current.offsetHeight) *
-            100
-      )
-    // place color blocks:
-    colorBlockPropsCombo.forEach(colorBlockArray => {
-      colorBlockArray.forEach((colorBlock, index) => {
-        if (colorBlock.current && dragWrapOutest.current) {
-          const x =
-            index < 4
-              ? 0
-              : 100 -
-                (colorBlock.current.offsetWidth /
-                  dragWrapOutest.current.offsetWidth) *
-                  100
-          const y = y_pos[index % 4]
-          place(colorBlock.current, x, y)
-        }
-      })
-    })
-  }
+  }, [windowWidth, windowHeight, scroll, widthResize])
 
   function place(element: HTMLElement, x_pos: number, y_pos: number) {
     if (element && dragWrap.current) {
@@ -1608,16 +1740,26 @@ export default function DragContainer({
   //   if (layerButton) layerButton.focus()
   // }, [activeLayer])
 
-  const imgStyle: CSSProperties = {
-    width: '100%',
-    height: 'auto',
-    margin: '0 auto',
-  }
+  // const imgStyle: CSSProperties = {
+  //   width: '100%',
+  //   height: 'auto',
+  //   margin: '0 auto',
+  // }
 
   const takeScreenshot = async () => {
-    if (!dragWrap.current) return
+    if (!dragWrap.current || typeof window === 'undefined') return
     setLoading(true)
     try {
+      // Dynamic import to avoid SSR issues
+      const domtoimage = (await import('dom-to-image-more')) as unknown as {
+        default: {
+          toPng: (
+            node: HTMLElement,
+            options: DomToImageOptions
+          ) => Promise<string>
+        }
+      }
+
       const getBackgroundColor = hslToHex(
         Number(backgroundColor[d][0]),
         Number(backgroundColor[d][1]),
@@ -1636,7 +1778,7 @@ export default function DragContainer({
 
       const svgFilter = d === 0 ? 0 : 1
 
-      const dataUrl: string = await domtoimage.toPng(dragWrap.current, {
+      const dataUrl = (await domtoimage.default.toPng(dragWrap.current, {
         scale: 2,
         useCORS: true,
         allowTaint: false,
@@ -1655,7 +1797,7 @@ export default function DragContainer({
             clonedNode.appendChild(clonedSvg)
           }
         },
-      } as DomToImageOptions)
+      } as DomToImageOptions)) as unknown as string
 
       if (dataUrl) {
         const link = document?.createElement('a')
@@ -1666,22 +1808,22 @@ export default function DragContainer({
           link.click()
           document?.body.removeChild(link)
 
-          dispatch(notify(t('ArtSaved'), false, 8))
+          void dispatch2(notify(t('ArtSaved'), false, 8))
         }
       } else {
-        dispatch(notify(t('Error'), true, 8))
+        void dispatch2(notify(t('Error'), true, 8))
       }
     } catch (err) {
       console.error('Screenshot Error:', err)
-      dispatch(notify(t('Error'), true, 8))
+      void dispatch2(notify(t('Error'), true, 8))
     } finally {
       setLoading(false)
     }
   }
 
   useEffect(() => {
-    if (loading) dispatch2(notify(`${t('Loading')}...`, false, 20))
-  }, [loading])
+    if (loading) void dispatch2(notify(`${t('Loading')}...`, false, 20))
+  }, [loading, dispatch2, t])
 
   const [itemsPerPage, setItemsPerPage] = useState(5)
 
@@ -1702,7 +1844,9 @@ export default function DragContainer({
   const deleteHiddenLayers = async () => {
     // Check if there are any hidden layers
     if (hiddenLayers.size === 0) {
-      dispatch2(notify('Please hide the layers you want to delete.', true, 8))
+      void dispatch2(
+        notify('Please hide the layers you want to delete.', true, 8)
+      )
       return
     }
 
@@ -1728,7 +1872,7 @@ export default function DragContainer({
     const newLayerAmount = layerAmount - hiddenLayers.size
 
     if (newLayerAmount < 1) {
-      dispatch2(notify(t('MustHaveAtLeastOneLayer'), true, 8))
+      void dispatch2(notify(t('MustHaveAtLeastOneLayer'), true, 8))
       return
     }
 
@@ -1744,7 +1888,7 @@ export default function DragContainer({
       return { ...draggable, layer: newLayer }
     })
 
-    dispatch({
+    void dispatch({
       type: 'setDraggablesAtD',
       payload: { d, draggables: updatedDraggables },
     })
@@ -1761,7 +1905,7 @@ export default function DragContainer({
     const newLayerAmount = layerAmount + byAmount
 
     if (newLayerAmount > 9) {
-      dispatch2(notify(t('MaximumLayerAmountReached'), true, 8))
+      void dispatch2(notify(t('MaximumLayerAmountReached'), true, 8))
       return
     }
 
@@ -1774,7 +1918,7 @@ export default function DragContainer({
       return { ...draggable, layer }
     })
 
-    dispatch({
+    void dispatch({
       type: 'setDraggablesAtD',
       payload: { d, draggables: updatedDraggables },
     })
@@ -1803,13 +1947,15 @@ export default function DragContainer({
   //Remove blob
   function removeBlob(draggable: Draggable) {
     setDeleteId(draggable.id)
-    if (selectedvalue0.current)
-      selectedvalue0.current.textContent = `${t('SelectedBlobNone')}`
+    setSelectedvalue0(`${t('SelectedBlobNone')}`)
   }
 
   useEffect(() => {
     if (deleteId) {
-      dispatch({ type: 'removeDraggable', payload: { d: d, id: deleteId } })
+      void dispatch({
+        type: 'removeDraggable',
+        payload: { d: d, id: deleteId },
+      })
       setDeleteId('')
     }
   }, [deleteId, d, dispatch])
@@ -1890,13 +2036,13 @@ export default function DragContainer({
     )
   }
 
-  // scroll to #drag-container:
-  const goToArt1 = (number: number) => {
-    const dragContainer = document?.getElementById(`drag-container${number}`)
-    if (dragContainer) {
-      dragContainer.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
-  }
+  // // scroll to #drag-container:
+  // const goToArt1 = (number: number) => {
+  //   const dragContainer = document?.getElementById(`drag-container${number}`)
+  //   if (dragContainer) {
+  //     dragContainer.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  //   }
+  // }
 
   return (
     <>
@@ -1933,12 +2079,8 @@ export default function DragContainer({
               <span>
                 [{t('Layer')}: {activeLayer + 1}]{' '}
               </span>
-              <span
-                ref={selectedvalue0}
-                id={`selectedvalue${d}`}
-                className="selectedvalue"
-              >
-                {t('SelectedBlobNone')}
+              <span id={`selectedvalue${d}`} className="selectedvalue">
+                {selectedvalue0 ?? t('SelectedBlobNone')}
               </span>
             </div>
             <div id={`button-container${d}`} className={'button-container'}>
@@ -1964,7 +2106,7 @@ export default function DragContainer({
                 aria-labelledby={`reset-blobs${d}-span`}
                 className="reset-blobs tooltip-wrap"
                 onClick={e => {
-                  resetBlobsFunction(e)
+                  void resetBlobsFunction(e)
                 }}
               >
                 <span id={`reset-blobs${d}-span`} className="tooltip above">
@@ -2029,7 +2171,7 @@ export default function DragContainer({
                 id={`take-screenshot${d}`}
                 aria-labelledby={`take-screenshot${d}-span`}
                 disabled={loading}
-                onClick={takeScreenshot}
+                onClick={() => void takeScreenshot()}
                 className="screenshot tooltip-wrap"
               >
                 <ImCamera />
@@ -2247,22 +2389,14 @@ export default function DragContainer({
                     changeBlobLayer={changeBlobLayer}
                     setActiveLayer={setActiveLayer}
                     highestZIndex={highestZIndex}
-                    language={language}
                     dispatch={dispatch}
                     d={d}
                     items={draggables[d] ?? []}
-                    saveDraggables={saveDraggables}
                     getPosition={getPosition}
-                    colorBlockProps={colorBlockPropsCombo}
-                    makeLarger0={makeLarger0}
-                    makeSmaller0={makeSmaller0}
-                    makeMore0={makeMore0}
                     removeBlob={removeBlob}
-                    layerIncrease={layerIncrease}
-                    layerDecrease={layerDecrease}
                     dragWrap={dragWrap}
                     exitApp={exitApp}
-                    selectedvalue0={selectedvalue0}
+                    setSelectedvalue0={setSelectedvalue0}
                     setFocusedBlob={setFocusedBlob}
                     colorIndex={colorIndex}
                     setColorIndex={setColorIndex}
@@ -2279,7 +2413,6 @@ export default function DragContainer({
               </div>
               <ColorBlocks
                 d={d}
-                language={language}
                 getRefName={getRefName}
                 map={refNameMappingCombo}
                 colorBlockProps={colorBlockPropsCombo}
@@ -2324,7 +2457,7 @@ export default function DragContainer({
                   id={`decrease-layer-amount${d}`}
                   aria-labelledby={`decrease-layer-amount${d}-span`}
                   className="layer-tool layer-amount decrease-layer-amount tooltip-wrap narrow2 danger"
-                  onClick={deleteHiddenLayers}
+                  onClick={() => void deleteHiddenLayers()}
                 >
                   <span
                     id={`decrease-layer-amount${d}-span`}
@@ -2447,7 +2580,6 @@ export default function DragContainer({
               setSliderHueVal={setSliderHueVal}
               setSliderSatVal={setSliderSatVal}
               setSliderLightVal={setSliderLightVal}
-              language={language}
               sliderLightness={sliderLightness}
               sliderSaturation={sliderSaturation}
               sliderHue={sliderHue}
@@ -2466,7 +2598,7 @@ export default function DragContainer({
             {user ? (
               <div className="blob-handling">
                 <div className="full wide flex column center gap">
-                  <form onSubmit={e => saveBlobsToServer(e)}>
+                  <form onSubmit={e => void saveBlobsToServer(e)}>
                     <div className="input-wrap">
                       <label htmlFor={`blobname${d}`}>
                         <input
@@ -2523,7 +2655,7 @@ export default function DragContainer({
                               <div className="button-wrap">
                                 <button
                                   onClick={() =>
-                                    loadBlobsFromServer(
+                                    void loadBlobsFromServer(
                                       Number(dKey),
                                       versionName
                                     )
@@ -2534,7 +2666,7 @@ export default function DragContainer({
                                 </button>
                                 <button
                                   onClick={() =>
-                                    deleteBlobsVersionFromServer(
+                                    void deleteBlobsVersionFromServer(
                                       Number(dKey),
                                       versionName
                                     )
@@ -2544,7 +2676,6 @@ export default function DragContainer({
                                   <span className="scr">{versionName}</span>
                                 </button>
                                 <Accordion
-                                  language={language}
                                   id={`accordion-blobnewname-${sanitize(
                                     versionName
                                   )}`}
@@ -2584,9 +2715,12 @@ export default function DragContainer({
                                     <button
                                       onClick={() => {
                                         if (versionName !== newName) {
-                                          editBlobsByUser(versionName, newName)
+                                          void editBlobsByUser(
+                                            versionName,
+                                            newName
+                                          )
                                         } else
-                                          dispatch2(
+                                          void dispatch2(
                                             notify(
                                               `${t('Error')}: ${t(
                                                 'RenameYourArtwork'

@@ -1,20 +1,9 @@
 import Accordion from '../../components/Accordion/Accordion'
-import { ELanguages } from '../../types'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import AccessibleColors from '../../components/AccessibleColors/AccessibleColors'
 import styles from '../css//portfolio.module.css'
 
-const ColorsPage = ({
-  heading,
-  text,
-  type,
-  language,
-}: {
-  heading: string
-  text: string
-  type: string
-  language: ELanguages
-}) => {
+const ColorsPage = ({ type }: { type: string }) => {
   const { t } = useLanguageContext()
 
   return (
@@ -59,7 +48,7 @@ const ColorsPage = ({
             {' '}
             <div className={styles['btn-wrap']}>
               <button
-                className={`gray small ${styles['column']} ${styles['flat-top']}`}
+                className={`gray small ${styles.column} ${styles['flat-top']}`}
                 type="button"
                 //scroll to #colorpicker
                 onClick={() => {
@@ -69,9 +58,7 @@ const ColorsPage = ({
                 }}
               >
                 {t('SkipToMainContent')}
-                <span
-                  className={`${styles['rotate90']} ${styles['skip-arrow']}`}
-                >
+                <span className={`${styles.rotate90} ${styles['skip-arrow']}`}>
                   &raquo;
                 </span>
               </button>
@@ -80,7 +67,6 @@ const ColorsPage = ({
               text={t('ClickHereToSeeFeatures')}
               className="gray"
               wrapperClass=""
-              language={language}
             >
               <ul className="ul medium">
                 <li>{t('TestColorCombinations')}</li>
@@ -121,7 +107,7 @@ const ColorsPage = ({
                 </li>
               </ul>
             </Accordion>
-            <AccessibleColors language={language} />
+            <AccessibleColors />
           </section>
         </div>
       </div>

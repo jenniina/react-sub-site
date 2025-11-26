@@ -1,27 +1,12 @@
 import { Link } from 'react-router-dom'
 import styles from '../../pages/css/welcome.module.css'
 import { BiSolidColorFill } from 'react-icons/bi'
-import { BsCart2, BsPerson } from 'react-icons/bs'
-import { IoMdImages } from 'react-icons/io'
-import { GiAbstract019, GiNewShoot } from 'react-icons/gi'
-import { PiWrench } from 'react-icons/pi'
-import { MdOutlineQuiz } from 'react-icons/md'
-import { RiDragDropLine, RiTodoLine, RiFileList3Line } from 'react-icons/ri'
-import { GiComb } from 'react-icons/gi'
-import { FaStoreAlt } from 'react-icons/fa'
-import { TbTriangleInverted, TbBlob } from 'react-icons/tb'
-import { LuArrowRightToLine } from 'react-icons/lu'
+import { RiFileList3Line } from 'react-icons/ri'
 import { LiaNewspaperSolid } from 'react-icons/lia'
-import { BsMusicNoteBeamed } from 'react-icons/bs'
-import { firstToLowerCase, firstToUpperCase } from '../../utils'
-import { ELanguages } from '../../types'
-import { GrGraphQl } from 'react-icons/gr'
-import Accordion from '../Accordion/Accordion'
-import MemorySVG from '../Memory/components/MemorySVG'
-import { useContext } from 'react'
+
 import { useLanguageContext } from '../../contexts/LanguageContext'
 
-export default function Newest({ language }: { language: ELanguages }) {
+export default function Newest() {
   const { t } = useLanguageContext()
 
   return (
@@ -46,10 +31,10 @@ export default function Newest({ language }: { language: ELanguages }) {
                   </i>
                 </li>
                 <li>
-                  <a className="disabled">
+                  <span className="disabled">
                     <RiFileList3Line />
                     SEO:
-                  </a>
+                  </span>
                   <i>{t('Edited')}</i>
                 </li>
               </ul>

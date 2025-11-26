@@ -12,12 +12,10 @@ import { LanguageProvider } from '../contexts/LanguageContext'
 import { BlobProvider } from '../components/Blob/components/BlobProvider'
 import App from '../App'
 
-async function onRenderHtml(pageContext: any) {
-  const { Page } = pageContext
-
+function onRenderHtml(pageContext: { urlPathname?: string }) {
   const pageHtml = renderToString(
     <React.StrictMode>
-      <StaticRouter location={pageContext.urlPathname || '/'}>
+      <StaticRouter location={pageContext.urlPathname ?? '/'}>
         <LanguageProvider>
           <BlobProvider>
             <ThemeProvider>
@@ -45,6 +43,7 @@ async function onRenderHtml(pageContext: any) {
       </head>
       <body>
         <div id="root">${dangerouslySkipEscape(pageHtml)}</div>
+         <div id="modal-root"></div>
       </body>
     </html>`
 

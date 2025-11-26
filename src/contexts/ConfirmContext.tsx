@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  useCallback,
-  ReactNode,
-} from 'react'
+import { createContext, useState, useCallback, ReactNode, useContext } from 'react'
 import Confirm from '../components/Confirm/Confirm'
 
 interface ConfirmOptions {

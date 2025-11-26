@@ -38,8 +38,13 @@ export enum EGameMode {
   duet = 'duet',
 }
 
-export type HighScores = {
-  [mode: string]: {
-    [levelKey: string]: IHighScore[]
-  }
-}
+// export interface HighScores {
+//   [mode: string]: {
+//     [levelKey: string]: IHighScore[]
+//   }
+// }
+
+export type HighScores<
+  M extends string = string,
+  L extends string = string,
+> = Record<M, Record<L, IHighScore[]>>

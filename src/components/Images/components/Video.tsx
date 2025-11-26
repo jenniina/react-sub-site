@@ -1,7 +1,6 @@
-import { FC, useContext } from 'react'
+import { FC } from 'react'
 import styles from '../images.module.css'
 import { VideoHit } from '../services/images'
-import { ELanguages } from '../../../types'
 import VideoModal from './VideoModal'
 import { ModalProps } from '../../../types'
 import { TTextType } from '../Images'
@@ -11,19 +10,12 @@ import { useIsClient, useWindow } from '../../../hooks/useSSR'
 
 interface VideoProps {
   video: VideoHit
-  language: ELanguages
   show: ({ children, className }: ModalProps) => void
   searchTerm: string
   textType: TTextType
 }
 
-const Video: FC<VideoProps> = ({
-  video,
-  language,
-  show,
-  searchTerm,
-  textType,
-}) => {
+const Video: FC<VideoProps> = ({ video, show, searchTerm, textType }) => {
   const isClient = useIsClient()
   const windowObj = useWindow()
 
@@ -45,8 +37,8 @@ const Video: FC<VideoProps> = ({
       const url = URL.createObjectURL(blob)
 
       const fileExtensionMatch = video.videos.large.url
-        ? video.videos.large.url.match(/\.(mp4)$/i)
-        : video.videos.medium.url.match(/\.(mp4)$/i)
+        ? /\.(mp4)$/i.exec(video.videos.large.url)
+        : /\.(mp4)$/i.exec(video.videos.medium.url)
       const extension = fileExtensionMatch
         ? fileExtensionMatch[1].toLowerCase()
         : 'mp4'
@@ -69,10 +61,9 @@ const Video: FC<VideoProps> = ({
       children: (
         <VideoModal
           video={video}
-          language={language}
           searchTerm={searchTerm}
           textType={textType}
-          handleDownload={handleDownload}
+          handleDownload={() => void handleDownload()}
         />
       ),
     })

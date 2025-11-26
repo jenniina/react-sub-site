@@ -1,7 +1,6 @@
-import { FC, ReactNode, useContext } from 'react'
+import { FC } from 'react'
 import styles from '../images.module.css'
 import { ImageHit } from '../services/images'
-import { ELanguages } from '../../../types'
 import ImageModal from './ImageModal'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { notify } from '../../../reducers/notificationReducer'
@@ -14,19 +13,12 @@ import { useIsClient, useWindow } from '../../../hooks/useSSR'
 
 interface ImageProps {
   image: ImageHit
-  language: ELanguages
   show: ({ children, className }: ModalProps) => void
   searchTerm: string
   textType: TTextType
 }
 
-const Image: FC<ImageProps> = ({
-  image,
-  language,
-  show,
-  searchTerm,
-  textType,
-}) => {
+const Image: FC<ImageProps> = ({ image, show, searchTerm, textType }) => {
   const isClient = useIsClient()
   const windowObj = useWindow()
 
@@ -49,8 +41,8 @@ const Image: FC<ImageProps> = ({
 
         const url = URL.createObjectURL(blob)
 
-        const fileExtensionMatch = image.largeImageURL.match(
-          /\.(jpg|jpeg|png|gif|bmp|webp)$/i
+        const fileExtensionMatch = /\.(jpg|jpeg|png|gif|bmp|webp)$/i.exec(
+          image.largeImageURL
         )
         const extension = fileExtensionMatch
           ? fileExtensionMatch[1].toLowerCase()
@@ -69,7 +61,8 @@ const Image: FC<ImageProps> = ({
         URL.revokeObjectURL(url)
       } catch (error) {
         console.error('Download failed:', error)
-        dispatch(notify(`${t('Error')}: ${error}`, true, 5))
+        const errorMessage = error instanceof Error ? error.message : String(error)
+        void dispatch(notify(`${t('Error')}: ${errorMessage}`, true, 5))
       }
     }
   }
@@ -81,8 +74,7 @@ const Image: FC<ImageProps> = ({
       children: (
         <ImageModal
           image={image}
-          language={language}
-          handleDownload={handleDownload}
+          handleDownload={() => void handleDownload()}
           searchTerm={searchTerm}
           textType={textType}
         />
@@ -116,18 +108,11 @@ const Image: FC<ImageProps> = ({
           title={image.tags}
           loading="lazy"
           className={`${styles['image-small']}`}
-          tabIndex={0}
           style={{
             width: '100%',
             height: 'auto',
             borderRadius: '8px',
             cursor: 'pointer',
-          }}
-          onClick={handleShowModal}
-          onKeyDown={e => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              handleShowModal()
-            }
           }}
         />
       </button>

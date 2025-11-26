@@ -2,7 +2,7 @@ import axios from 'axios'
 import { ELanguages, IUser } from '../../../types'
 import { IHighScore, IHighScoreResponse, IPlayer } from '../../../types/memory'
 
-const url = import.meta.env.VITE_BASE_URI ?? 'https://react.jenniina.fi'
+const url = 'https://react.jenniina.fi'
 const baseUrl = `${url}/api/highscores`
 
 const addHighScore = async (

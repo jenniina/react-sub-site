@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import userService from '../services/users'
 import {
   IUser,
@@ -6,47 +6,47 @@ import {
   IBlacklistedJoke,
   translations as t,
 } from '../types'
-import AppThunk from '../store'
-import { AxiosResponse } from 'axios'
 import { IJoke } from '../components/Jokes/types'
+import { sleep } from '../utils'
+import { IContent } from '../types'
 
 const usersSlice = createSlice({
   name: 'users',
   initialState: [] as IUser[],
   reducers: {
-    register(state, action) {
+    register(state, action: PayloadAction<IUser>) {
       //state.push(action.payload);
       return [...state, action.payload]
       //   const updatedUser = action.payload
       //   return state.map((user) => (user._id !== updatedUser._id ? user : updatedUser))
     },
-    setUsers(_state, action) {
+    setUsers(_state, action: PayloadAction<IUser[]>) {
       return action.payload
     },
-    remove(state, action) {
+    remove(state, action: PayloadAction<IUser['_id']>) {
       const id = action.payload
       return state.filter(user => user?._id !== id)
     },
-    update(state, action) {
+    update(state, action: PayloadAction<IUser>) {
       const id = action.payload._id
       const updatedUser = action.payload
       return state.map(user => (user?._id !== id ? user : updatedUser))
     },
-    searchUsername(state, action) {
+    searchUsername(state, action: PayloadAction<{ username: string }>) {
       const username = action.payload.username
-      return state.filter(user => user?.username === username) as IUser[]
+      return state.filter(user => user?.username === username)
     },
-    searchId(state, action) {
+    searchId(state, action: PayloadAction<IUser>) {
       const id = action.payload._id
-      return state.filter(user => user?._id === id) as IUser[]
+      return state.filter(user => user?._id === id)
     },
-    updateToken(state, action) {
-      const id = action.payload._id
-      const updatedUser = action.payload
+    updateToken(state, action: PayloadAction<IContent>) {
+      const id = action.payload.user._id
+      const updatedUser = action.payload.user
       return state.map(user => (user?._id !== id ? user : updatedUser))
     },
-    forgotPassword(state, action) {
-      return action.payload
+    forgotPassword(state, action: PayloadAction<IContent>) {
+      return action.payload.user ? [action.payload.user] : state
       // const id = action.payload._id
       // const updatedUser = action.payload
       // return state.map((user) => (user?._id !== id ? user : updatedUser))
@@ -56,43 +56,39 @@ const usersSlice = createSlice({
 
 export const findUserById = (id: string) => {
   return async (
-    dispatch: (arg0: { payload: any; type: 'users/searchId' }) => IUser
+    dispatch: (arg0: { payload: IUser; type: 'users/searchId' }) => void
   ) => {
     const user = await userService.searchId(id)
-    dispatch({ type: 'users/searchId', payload: user })
-    const token = window ? window.localStorage.getItem('JokeApptoken') : null
-    window
-      ? window.localStorage.setItem(
-          'loggedJokeAppUser',
-          JSON.stringify({ user, token })
-        )
-      : null
+    void dispatch({ type: 'users/searchId', payload: user })
+    if (window) {
+      const token = window.localStorage.getItem('JokeApptoken')
+      window.localStorage.setItem(
+        'loggedJokeAppUser',
+        JSON.stringify({ user, token })
+      )
+    }
+    await sleep(10)
     return user
   }
 }
 
 export const initializeUsers = () => {
   return async (
-    dispatch: (arg0: { payload: any; type: 'users/setUsers' }) => void
+    dispatch: (arg0: { payload: IUser[]; type: 'users/setUsers' }) => void
   ) => {
-    const users = await userService.getAll()
-    dispatch({ type: 'users/setUsers', payload: users })
+    const users = (await userService.getAll()) as unknown as IUser[]
+    void dispatch({ type: 'users/setUsers', payload: users })
   }
 }
-interface IContent {
-  success: boolean
-  user: IUser
-  message: string
-}
+
 export const createUser = (newUser: IUser) => {
   return async (
     dispatch: (arg0: { payload: IUser; type: 'users/register' }) => IContent
   ) => {
-    const response = (await userService.createNewUser(
-      newUser
-    )) as AxiosResponse<IContent>
-    dispatch(register(response.data))
-    return response.data
+    const response = await userService.createNewUser(newUser)
+    const data = response.data as IContent
+    void dispatch(register(data.user))
+    return data
   }
 }
 
@@ -100,8 +96,8 @@ export const removeUser = (id: IUser['_id'], deleteJokes: boolean) => {
   return async (
     dispatch: (arg0: { payload: IUser['_id']; type: 'users/remove' }) => void
   ) => {
-    const deletedUser = await userService.deleteUser(id, deleteJokes)
-    dispatch(remove(deletedUser))
+    await userService.deleteUser(id, deleteJokes)
+    void dispatch(remove(id))
   }
 }
 
@@ -111,8 +107,8 @@ export const updateUser = (
   return async (
     dispatch: (arg0: { payload: IUser; type: 'users/update' }) => IUser
   ) => {
-    const content: IContent = await userService.updateUser(user)
-    dispatch(update(content.user))
+    const content = (await userService.updateUser(user)) as IContent
+    void dispatch(update(content.user))
     return content
   }
 }
@@ -125,13 +121,13 @@ export const addToBlacklistedJokes = (
   return async (
     dispatch: (arg0: { payload: IUser; type: 'users/update' }) => IUser
   ) => {
-    const content: IContent = await userService.addToBlacklistedJokes(
+    const content = (await userService.addToBlacklistedJokes(
       userId,
       jokeId,
       language,
       value
-    )
-    dispatch(update(content.user))
+    )) as IContent
+    void dispatch(update(content.user))
     return content
   }
 }
@@ -144,12 +140,12 @@ export const removeJokeFromBlacklisted = (
   return async (
     dispatch: (arg0: { payload: IUser; type: 'users/update' }) => IUser
   ) => {
-    const content: IContent = await userService.removeJokeFromBlacklisted(
+    const content = (await userService.removeJokeFromBlacklisted(
       userId,
       joke_id,
       language
-    )
-    dispatch(update(content.user))
+    )) as IContent
+    void dispatch(update(content.user))
     return content
   }
 }
@@ -158,7 +154,7 @@ export const updateUsername = (
   user: Pick<IUser, '_id' | 'language' | 'username' | 'passwordOld'>
 ) => {
   return async () => {
-    const content: IContent = await userService.updateUsername(user)
+    const content = (await userService.updateUsername(user)) as IContent
     return content
   }
 }
@@ -169,18 +165,18 @@ export const updatePassword = (
   return async (
     dispatch: (arg0: { payload: IUser; type: 'users/update' }) => IUser
   ) => {
-    const content: IContent = await userService.updatePassword(user)
-    dispatch(update(content.user))
+    const content = (await userService.updatePassword(user)) as IContent
+    void dispatch(update(content.user))
     return content
   }
 }
 
 export const updateUserToken = (user: Pick<IUser, 'username' | 'language'>) => {
   return async (
-    dispatch: (arg0: { payload: any; type: 'users/updateToken' }) => void
+    dispatch: (arg0: { payload: IContent; type: 'users/updateToken' }) => void
   ) => {
-    const updated: IContent = await userService.updateToken(user)
-    dispatch(updateToken(updated))
+    const updated = (await userService.updateToken(user)) as IContent
+    void dispatch(updateToken(updated))
     //dispatch({ type: 'users/updateToken', payload: updated })
   }
 }
@@ -190,19 +186,20 @@ export const forgot = (
   language: string | ELanguages
 ) => {
   return async (
-    dispatch: (arg0: { payload: any; type: 'users/forgotPassword' }) => void
+    dispatch: (arg0: {
+      payload: IContent
+      type: 'users/forgotPassword'
+    }) => void
   ) => {
     if (username) {
-      const updated: IContent = await userService.forgot(username, language)
-      dispatch(forgotPassword(updated))
+      const updated = (await userService.forgot(username, language)) as IContent
+      void dispatch(forgotPassword(updated))
       //dispatch({ type: 'users/updateToken', payload: updated })
       return updated
     } else {
       return {
         success: false,
-        message: `${
-          t['PleaseGiveValidEmail'][(language as ELanguages) || 'en']
-        }`,
+        message: t.PleaseGiveValidEmail[(language as ELanguages) ?? 'en'],
       }
     }
   }

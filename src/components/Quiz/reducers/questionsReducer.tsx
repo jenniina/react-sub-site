@@ -3,7 +3,7 @@ import { returnMode } from './difficultyReducer'
 import { IQuestion } from '../types'
 import { ReducerProps } from '../../../types'
 
-function shuffleArray(array: any[]) {
+function shuffleArray<T>(array: T[]): T[] {
   const newArray = [...array]
   for (let i = newArray.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
@@ -30,14 +30,17 @@ const initialState: ReducerProps['questions'] = {
 
 export const getQuestions = createAsyncThunk(
   'questions/getQuestions',
-  async (difficulty: string) => {
+  async (difficulty: string): Promise<IQuestion[]> => {
     try {
       const resp = await fetch(
         `https://the-trivia-api.com/v2/questions?limit=15&difficulties=${difficulty}`
       )
-      return resp.json()
+      // Cast response to the expected IQuestion[] shape
+      const data = (await resp.json()) as IQuestion[]
+      return data
     } catch (error) {
       console.error(error)
+      return []
     }
   }
 )
@@ -46,7 +49,10 @@ const questionsSlice = createSlice({
   name: 'questions',
   initialState,
   reducers: {
-    addQuiz: (state, { payload }) => {
+    addQuiz: (
+      _state,
+      { payload }: PayloadAction<ReducerProps['questions']>
+    ) => {
       return payload
     },
     resetTimer: state => {
@@ -67,8 +73,9 @@ const questionsSlice = createSlice({
             : state.points
     },
     nextQuestion: state => {
-      let temp: IQuestion = state.questionsRedux[state.index + 1]
-      let newArray = {
+      const temp: IQuestion | undefined = state.questionsRedux[state.index + 1]
+      if (!temp) return state
+      const newArray = {
         id: temp.id,
         correctAnswer: temp.correctAnswer,
         question: temp.question.text,
@@ -104,21 +111,36 @@ const questionsSlice = createSlice({
       .addCase(getQuestions.pending, state => {
         state.status = 'loading'
       })
-      .addCase(getQuestions.fulfilled, (state, { payload }) => {
-        let temp = payload[0]
-        let newArray = {
-          id: temp.id,
-          correctAnswer: temp.correctAnswer,
-          question: temp.question.text,
-          options: shuffleArray([...temp.incorrectAnswers, temp.correctAnswer]),
+      .addCase(
+        getQuestions.fulfilled,
+        (state, { payload }: PayloadAction<IQuestion[]>) => {
+          if (!payload || payload.length === 0) {
+            state.status = 'ready'
+            state.questionsRedux = []
+            state.currentQuestion = {}
+            state.index = 0
+            state.points = 0
+            state.answer = null
+            return
+          }
+          const temp = payload[0]
+          const newArray = {
+            id: temp.id,
+            correctAnswer: temp.correctAnswer,
+            question: temp.question.text,
+            options: shuffleArray([
+              ...temp.incorrectAnswers,
+              temp.correctAnswer,
+            ]),
+          }
+          state.status = 'ready'
+          state.questionsRedux = payload
+          state.currentQuestion = newArray
+          state.index = 0
+          state.points = 0
+          state.answer = null
         }
-        state.status = 'ready'
-        state.questionsRedux = payload
-        state.currentQuestion = newArray
-        state.index = 0
-        state.points = 0
-        state.answer = null
-      })
+      )
       .addCase(getQuestions.rejected, state => {
         state.status = 'error'
       })

@@ -11,6 +11,9 @@ export enum EQuizType {
   medium = 'medium',
   hard = 'hard',
 }
+
+export type TQuizModes = 'easy' | 'medium' | 'hard'
+
 export interface IQuizHighscore {
   highscores: IHighscore
   user: IUser['_id']
@@ -27,6 +30,6 @@ export interface IQuestion {
   question: {
     text: string
   }
-  correctAnswer: boolean
-  incorrectAnswers: boolean[]
+  correctAnswer: string
+  incorrectAnswers: string[]
 }

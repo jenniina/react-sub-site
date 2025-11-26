@@ -6,22 +6,18 @@ import {
   TouchEvent as TouchEventReact,
   MouseEvent as MouseEventReact,
   PointerEvent as PointerEventReact,
-  useContext,
 } from 'react'
 import { Draggable, focusedBlob, Modes } from '../types'
 import Blob from './Blob'
-import { ELanguages } from '../../../types'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 interface DragLayerProps {
   layer_: number
   className: string
-  language: ELanguages
   d: number
   items: Draggable[]
-  saveDraggables: () => void
   dragUlRef: RefObject<HTMLUListElement>
-  selectedvalue0: RefObject<HTMLSpanElement>
+  setSelectedvalue0: Dispatch<SetStateAction<string | null>>
   setFocusedBlob: Dispatch<SetStateAction<focusedBlob | null>>
   start: (
     e:
@@ -70,12 +66,10 @@ interface DragLayerProps {
 const DragLayer = ({
   layer_,
   className,
-  language,
   d,
   items,
-  saveDraggables,
   dragUlRef,
-  selectedvalue0,
+  setSelectedvalue0,
   setFocusedBlob,
   start,
   movement,
@@ -121,7 +115,6 @@ const DragLayer = ({
         id={`listbox${d}-layer${layer_}`}
         className={`drag-container-layer drag-container${d}-layer drag-container${d}-layer${layer_} ${className}`}
         aria-labelledby={`listbox${d}-layer${layer_}-label`}
-        aria-activedescendant=""
         style={layerStyle}
       >
         {items?.map((item: Draggable, index: number) => {
@@ -131,7 +124,6 @@ const DragLayer = ({
                 layer={layer_}
                 key={index}
                 d={d}
-                language={language}
                 item={item}
                 index={index}
                 start={start}
@@ -141,7 +133,7 @@ const DragLayer = ({
                 wheel={wheel}
                 focused={focused}
                 blurred={blurred}
-                selectedvalue0={selectedvalue0}
+                setSelectedvalue0={setSelectedvalue0}
                 setFocusedBlob={setFocusedBlob}
                 dragUlRef={dragUlRef}
                 removeBlob={removeBlob}

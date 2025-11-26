@@ -1,20 +1,22 @@
-import { FC, ReactNode, useContext, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import styles from './modal.module.css'
 import { useModal } from '../../hooks/useModal'
-import { ELanguages } from '../../types'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 
-interface Props {
-  language: ELanguages
-}
-
-const Modal: FC<Props> = ({ language }) => {
+const Modal = () => {
   const { modal, closeModal } = useModal()
 
   const { t } = useLanguageContext()
 
   const closeButtonRef = useRef<HTMLButtonElement>(null)
   const previouslyFocusedElement = useRef<HTMLElement | null>(null)
+
+  const handleClose = useCallback(() => {
+    closeModal()
+    if (previouslyFocusedElement.current)
+      previouslyFocusedElement.current.focus()
+    else document?.body.focus()
+  }, [closeModal])
 
   useEffect(() => {
     if (modal) {
@@ -64,24 +66,30 @@ const Modal: FC<Props> = ({ language }) => {
         else document?.body.focus()
       }
     }
-  }, [modal, closeButtonRef.current])
+  }, [modal, handleClose])
 
-  const handleClose = () => {
-    closeModal()
-    if (previouslyFocusedElement.current)
-      previouslyFocusedElement.current.focus()
-    else document?.body.focus()
-  }
-
-  if (modal === null || modal === undefined || !modal.children) {
+  if (!modal?.children) {
     return null
   }
 
   return (
-    <div className={`${styles['modal-overlay']}`} onClick={handleClose}>
+    <div
+      className={`${styles['modal-overlay']}`}
+      onClick={handleClose}
+      onKeyDown={e => {
+        if (e.key === 'Enter' || e.key === ' ') handleClose()
+      }}
+      tabIndex={0}
+      role="button"
+      aria-label="Close modal"
+    >
+      {/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */}
       <div
         className={`${styles['modal-content']} ${modal.className ?? ''}`}
         onClick={e => e.stopPropagation()}
+        onKeyDown={e => {
+          if (e.key === 'Enter' || e.key === ' ') e.stopPropagation()
+        }}
         role="dialog"
         aria-modal="true"
         aria-label={modal.title}

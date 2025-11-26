@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState, useCallback } from 'react'
 import { ELanguages } from '../../../types'
 import { VideoHit } from '../services/images'
 import useTooltip from '../../../hooks/useTooltip'
@@ -13,7 +13,6 @@ import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 interface ModalVideoProps {
   video: VideoHit
-  language: ELanguages
   searchTerm: string
   textType: TTextType
   handleDownload: () => void
@@ -21,72 +20,70 @@ interface ModalVideoProps {
 
 const VideoModal: FC<ModalVideoProps> = ({
   video,
-  language,
   searchTerm,
   textType,
   handleDownload,
 }) => {
-  const { t } = useLanguageContext()
+  const { t, language } = useLanguageContext()
 
   const dispatch = useAppDispatch()
 
   const { tooltip, handleMouseMove, handleMouseLeave } = useTooltip()
 
-  const [quote, setQuote] = useState<QuoteItem>({
-    id: 0,
-    content: '',
-    originator: {
-      name: '',
-      id: 0,
-      description: '',
-      language_code: 'en',
-      master_id: 0,
-      url: '',
+  const [txt, setTxt] = useState<PoemItem | QuoteItem | null>(null)
+
+  const isPoem = textType === 'poem'
+  const isQuote = textType === 'quote'
+
+  const fetchPoem = useCallback(
+    async (linecount: number): Promise<PoemItem | null> => {
+      const poem = await getPoem(language, linecount)
+      return poem[0] || null
     },
-    tags: [''],
-    url: '',
-    language_code: 'en',
-  })
+    [language]
+  )
 
-  const [poem, setPoem] = useState<PoemItem>({
-    title: '',
-    author: '',
-    lines: [],
-    linecount: '0',
-  })
-
-  const fetchPoem = async (linecount: number) => {
-    const poem = await getPoem(language, linecount)
-    setPoem(poem[0])
-  }
-
-  const fetchQuote = async () => {
-    if ((language = ELanguages.fi)) {
+  const fetchQuote = useCallback(async (): Promise<QuoteItem | null> => {
+    if (language === ELanguages.fi) {
       const response = await getQuote(ELanguages.en, searchTerm)
-      if (response.quote) setQuote(response.quote)
-      else dispatch(notify(response.message ?? t('Error'), true, 8))
+      if (response.quote) return response.quote
+      else {
+        void dispatch(notify(response.message ?? t('Error'), true, 8))
+        return null
+      }
     } else {
       const response = await getQuote(language, searchTerm)
-      if (response.quote) setQuote(response.quote)
-      else dispatch(notify(response.message ?? t('Error'), true, 8))
-    }
-  }
-
-  useEffect(() => {
-    const linecount = Math.floor(Math.random() * 5) + 2
-    if (textType === 'poem') {
-      fetchPoem(linecount)
-    } else if (textType === 'quote') {
-      fetchQuote()
-    } else {
-      const randomOneOrTwo = Math.floor(Math.random() * 2) + 1
-      if (randomOneOrTwo === 1) {
-        fetchPoem(linecount)
-      } else {
-        fetchQuote()
+      if (response.quote) return response.quote
+      else {
+        void dispatch(notify(response.message ?? t('Error'), true, 8))
+        return null
       }
     }
-  }, [language, searchTerm, textType])
+  }, [language, searchTerm, dispatch, t])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const linecount = Math.floor(Math.random() * 5) + 2
+      let data: PoemItem | QuoteItem | null = null
+
+      if (isPoem) {
+        data = await fetchPoem(linecount)
+      } else if (textType === 'quote') {
+        data = await fetchQuote()
+      } else {
+        const randomOneOrTwo = Math.floor(Math.random() * 2) + 1
+        if (randomOneOrTwo === 1) {
+          data = await fetchPoem(linecount)
+        } else {
+          data = await fetchQuote()
+        }
+      }
+
+      setTxt(data)
+    }
+
+    void fetchData()
+  }, [textType, fetchPoem, fetchQuote, isPoem])
 
   const onMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -124,7 +121,9 @@ const VideoModal: FC<ModalVideoProps> = ({
             }
           }}
           controls
-        />
+        >
+          <track kind="captions" srcLang="en" label="No captions available" />
+        </video>
         {tooltip.visible && (
           <span
             className={`tooltip center narrow`}
@@ -134,10 +133,9 @@ const VideoModal: FC<ModalVideoProps> = ({
           </span>
         )}
       </div>
-      {textType === 'quote' ? (
+      {isQuote ? (
         <Quote
-          quote={quote}
-          language={language}
+          quote={txt as QuoteItem}
           url={video.pageURL}
           title={
             <>
@@ -146,7 +144,7 @@ const VideoModal: FC<ModalVideoProps> = ({
           }
         />
       ) : (
-        <Poem poem={poem} language={language} />
+        <Poem poem={txt as PoemItem} />
       )}
     </>
   )

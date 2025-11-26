@@ -1,18 +1,8 @@
 import { useState } from 'react'
 import Accordion from '../../components/Accordion/Accordion'
-import { ELanguages } from '../../types'
 import { useLanguageContext } from '../../contexts/LanguageContext'
-export default function ComposerPage({
-  heading,
-  text,
-  type,
-  language,
-}: {
-  heading: string
-  text: string
-  type: string
-  language: ELanguages
-}) {
+
+export default function ComposerPage({ type }: { type: string }) {
   const { t } = useLanguageContext()
 
   const [isFormOpen, setIsFormOpen] = useState(false)
@@ -57,7 +47,6 @@ export default function ComposerPage({
                 </p>
                 <div className="medium">
                   <Accordion
-                    language={language}
                     text={t('ClickHereToSeeFeatures')}
                     className="composer-features"
                     wrapperClass="mb3"

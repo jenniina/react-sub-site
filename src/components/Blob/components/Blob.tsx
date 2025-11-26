@@ -5,63 +5,37 @@ import React, {
   CSSProperties,
   SetStateAction,
   Dispatch,
-  TouchEvent as TouchEventReact,
-  MouseEvent as MouseEventReact,
-  PointerEvent as PointerEventReact,
   useContext,
 } from 'react'
 import { Draggable, focusedBlob, Modes } from '../types'
-import { ELanguages } from '../../../types'
 import { clampValue } from '../../../utils'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
-import { BlobContext, Props } from './BlobProvider'
+import { BlobContext } from './BlobProvider'
 import { notify } from '../../../reducers/notificationReducer'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 interface BlobProps {
   d: number
   layer: number
-  language: ELanguages
   item: Draggable
   index: number
   start: (
-    e:
-      | TouchEvent
-      | MouseEvent
-      | PointerEvent
-      | TouchEventReact
-      | MouseEventReact
-      | PointerEventReact,
+    e: TouchEvent | MouseEvent | PointerEvent,
     target: HTMLElement
   ) => void
   movement: (
-    e:
-      | TouchEvent
-      | MouseEvent
-      | PointerEvent
-      | TouchEventReact
-      | MouseEventReact
-      | PointerEventReact,
+    e: TouchEvent | MouseEvent | PointerEvent,
     target: HTMLElement
   ) => void
   stopMovementCheck: (
-    e:
-      | TouchEvent
-      | MouseEvent
-      | PointerEvent
-      | TouchEventReact
-      | MouseEventReact
-      | PointerEventReact,
+    e: TouchEvent | MouseEvent | PointerEvent,
     target: HTMLElement
   ) => void
-  stopMoving: (
-    e: MouseEvent | MouseEventReact | PointerEvent | PointerEventReact,
-    target: HTMLElement
-  ) => void
+  stopMoving: (e: MouseEvent | PointerEvent, target: HTMLElement) => void
   wheel: (target: HTMLElement) => void
   focused: (e: HTMLElement) => void
   blurred: (e: HTMLElement) => void
-  selectedvalue0: RefObject<HTMLSpanElement>
+  setSelectedvalue0: Dispatch<SetStateAction<string | null>>
   setFocusedBlob: Dispatch<SetStateAction<focusedBlob | null>>
   dragUlRef: RefObject<HTMLUListElement>
   removeBlob: (draggable: Draggable) => void
@@ -74,7 +48,6 @@ interface BlobProps {
 const Blob = ({
   d,
   layer,
-  language,
   item,
   index,
   start,
@@ -84,7 +57,7 @@ const Blob = ({
   wheel,
   focused,
   blurred,
-  selectedvalue0,
+  setSelectedvalue0,
   setFocusedBlob,
   dragUlRef,
   removeBlob,
@@ -96,7 +69,7 @@ const Blob = ({
   const { t } = useLanguageContext()
 
   const blur = d === 0 ? 33 : clampValue(22, item.i * 2.6, 50)
-  const { dispatch } = useContext(BlobContext) as Props
+  const { dispatch } = useContext(BlobContext)!
   const dispatch2 = useAppDispatch()
 
   const blobStyle: CSSProperties = {
@@ -124,20 +97,23 @@ const Blob = ({
         ]
       : ['5.1px', '5.4px', '6.5px', '7px', '7.8px', '8.4px', '8.6px'] // breakpoints for hitbox size due to varying levels of blur between the containers and blob sizes
 
-  const handleClick = (e: React.MouseEvent) => {
+  const handleClick = () => {
     if (mode === 'change-color') {
       changeColor(item.id)
     } else if (mode === 'delete') {
       removeBlob(item)
     } else if (mode === 'clone') {
-      dispatch({ type: 'duplicateDraggable', payload: { d, draggable: item } })
+      void dispatch({
+        type: 'duplicateDraggable',
+        payload: { d, draggable: item },
+      })
     } else if (mode === 'layer-up') {
       let layer = item.layer
       if (layer < layerAmount - 1) {
         layer += 1
         changeBlobLayer(item, layer)
       } else {
-        dispatch2(notify(t('CannotRaiseBlobFurther'), true, 4))
+        void dispatch2(notify(t('CannotRaiseBlobFurther'), true, 4))
       }
     } else if (mode === 'layer-down') {
       let layer = item.layer
@@ -145,14 +121,14 @@ const Blob = ({
         layer -= 1
         changeBlobLayer(item, layer)
       } else {
-        dispatch2(notify(t('CannotLowerBlobFurther'), true, 4))
+        void dispatch2(notify(t('CannotLowerBlobFurther'), true, 4))
       }
     } else if (mode === 'scale-down') {
       let scale = item.i
       scale = isNaN(scale) ? 10 : scale
       scale -= 0.4
       scale = Math.min(Math.max(7, scale), 36)
-      dispatch({
+      void dispatch({
         type: 'partialUpdate',
         payload: {
           d: d,
@@ -167,7 +143,7 @@ const Blob = ({
       scale = isNaN(scale) ? 10 : scale
       scale += 0.4
       scale = Math.min(Math.max(7, scale), 36)
-      dispatch({
+      void dispatch({
         type: 'partialUpdate',
         payload: {
           d: d,
@@ -183,13 +159,12 @@ const Blob = ({
   return (
     <li
       onFocus={e => {
-        if (dragUlRef && dragUlRef.current)
-          dragUlRef.current?.setAttribute(
-            'aria-activedescendant',
-            `${(e.target as HTMLElement).id}`
-          )
+        dragUlRef?.current?.setAttribute(
+          'aria-activedescendant',
+          `${e.target.id}`
+        )
 
-        const blob = e.target as HTMLElement
+        const blob = e.target
 
         setTimeout(() => {
           // Calculate the position of the blob after scrolling
@@ -198,9 +173,9 @@ const Blob = ({
           const parentRect = (
             blob.parentNode as HTMLUListElement
           )?.getBoundingClientRect()
-          const container = blob.closest('.drag-wrap-outer') as HTMLElement
-          const scrollLeft = (container as HTMLElement)?.scrollLeft
-          const scrollTop = (container as HTMLElement)?.scrollTop
+          const container = blob.closest('.drag-wrap-outer')!
+          const scrollLeft = container?.scrollLeft
+          const scrollTop = container?.scrollTop
 
           setFocusedBlob({
             top: blobRect.top - parentRect.top - scrollTop,
@@ -209,32 +184,37 @@ const Blob = ({
             height: blobRect.height,
           })
 
-          if (selectedvalue0.current) {
-            selectedvalue0.current.textContent = `${t('SelectedBlob')}: ${
-              blob.querySelector('span')?.textContent
-            }`
+          {
+            setSelectedvalue0(
+              `${t('SelectedBlob')}: ${blob.querySelector('span')?.textContent}?`
+            )
           }
         }, 500) // Adjust the timeout duration as needed
         focused(blob)
       }}
       onBlur={e => {
         setFocusedBlob(null)
-        blurred(e.target as HTMLElement)
-        if (dragUlRef && dragUlRef.current)
-          dragUlRef.current?.removeAttribute('aria-activedescendant')
+        blurred(e.target)
+        dragUlRef?.current?.removeAttribute('aria-activedescendant')
 
-        if (selectedvalue0.current)
-          selectedvalue0.current.textContent = `${t('SelectedBlobNone')}`
+        setSelectedvalue0(`${t('SelectedBlobNone')}`)
       }}
       key={index}
       className={`dragzone animation ${mode}`}
       id={item.id}
       role={'option'}
+      aria-selected={false}
       tabIndex={0}
       style={blobStyle}
       onClick={handleClick}
+      onKeyDown={e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          handleClick()
+        }
+      }}
     >
-      <div
+      <button
         className="draggable-overlay"
         style={
           Number(item.i) < 8
@@ -281,89 +261,85 @@ const Blob = ({
         }
         onMouseDown={e => {
           e.stopPropagation()
-          const liElement = e.currentTarget.parentElement as HTMLElement
+          const liElement = e.currentTarget.parentElement!
           liElement.draggable = true
-          if (selectedvalue0.current)
-            selectedvalue0.current.textContent = `${t('SelectedBlob')}: ${
-              (liElement as HTMLElement)?.querySelector('span')?.textContent
-            }`
-          if (dragUlRef && dragUlRef.current)
-            dragUlRef.current?.setAttribute(
-              'aria-activedescendant',
-              `${(liElement as HTMLElement).id}`
-            )
+
+          setSelectedvalue0(
+            `${t('SelectedBlob')}: ${liElement?.querySelector('span')?.textContent}?`
+          )
+
+          dragUlRef?.current?.setAttribute(
+            'aria-activedescendant',
+            `${liElement.id}`
+          )
 
           start(e, liElement)
         }}
         onMouseMove={e => {
           if (e.buttons === 1) {
             e.stopPropagation()
-            const liElement = e.currentTarget.parentElement as HTMLElement
+            const liElement = e.currentTarget.parentElement!
             liElement.draggable = true
             movement(e, liElement)
 
-            if (selectedvalue0.current)
-              selectedvalue0.current.textContent = `${t('SelectedBlob')}: ${
-                (liElement as HTMLElement)?.querySelector('span')?.textContent
-              }`
+            setSelectedvalue0(
+              `${t('SelectedBlob')}: ${
+                liElement?.querySelector('span')?.textContent
+              }?`
+            )
           }
         }}
         onMouseLeave={e => {
           e.stopPropagation()
-          const liElement = e.currentTarget.parentElement as HTMLElement
+          const liElement = e.currentTarget.parentElement!
           liElement.draggable = false
-          if (dragUlRef && dragUlRef.current)
-            dragUlRef.current?.removeAttribute('aria-activedescendant')
+          dragUlRef?.current?.removeAttribute('aria-activedescendant')
           stopMoving(e, liElement)
-          if (selectedvalue0.current)
-            selectedvalue0.current.textContent = `${t('SelectedBlobNone')}`
+          setSelectedvalue0(`${t('SelectedBlobNone')}`)
         }}
         onMouseUp={e => {
-          const liElement = e.currentTarget.parentElement as HTMLElement
+          const liElement = e.currentTarget.parentElement!
           liElement.draggable = false
           stopMovementCheck(e, liElement)
-          if (dragUlRef && dragUlRef.current)
-            dragUlRef.current?.removeAttribute('aria-activedescendant')
-          if (selectedvalue0.current)
-            selectedvalue0.current.textContent = `${t('SelectedBlobNone')}`
+          dragUlRef?.current?.removeAttribute('aria-activedescendant')
+          setSelectedvalue0(`${t('SelectedBlobNone')}`)
         }}
         onTouchStart={e => {
           e.preventDefault()
           e.stopPropagation()
-          const liElement = e.currentTarget.parentElement as HTMLElement
+          const liElement = e.currentTarget.parentElement!
           liElement.draggable = true
-          if (dragUlRef && dragUlRef.current)
-            dragUlRef.current?.setAttribute(
-              'aria-activedescendant',
-              `${(liElement as HTMLElement).id}`
-            )
+          dragUlRef?.current?.setAttribute(
+            'aria-activedescendant',
+            `${liElement.id}`
+          )
           start(e, liElement)
-          if (selectedvalue0.current)
-            selectedvalue0.current.textContent = `${t('SelectedBlob')}: ${
-              (liElement as HTMLElement)?.querySelector('span')?.textContent
+
+          setSelectedvalue0(
+            `${t('SelectedBlob')}: ${
+              liElement?.querySelector('span')?.textContent ?? ''
             }`
+          )
         }}
         onTouchMove={e => {
           e.preventDefault()
           e.stopPropagation()
-          const liElement = e.currentTarget.parentElement as HTMLElement
+          const liElement = e.currentTarget.parentElement!
           liElement.draggable = true
           movement(e, liElement)
         }}
         onTouchEnd={e => {
-          const liElement = e.currentTarget.parentElement as HTMLElement
+          const liElement = e.currentTarget.parentElement!
           liElement.draggable = false
-          if (dragUlRef && dragUlRef.current)
-            dragUlRef.current?.removeAttribute('aria-activedescendant')
+          dragUlRef?.current?.removeAttribute('aria-activedescendant')
           stopMovementCheck(e, liElement)
-          if (selectedvalue0.current)
-            selectedvalue0.current.textContent = `${t('SelectedBlobNone')}`
+          setSelectedvalue0(`${t('SelectedBlobNone')}`)
         }}
         onWheel={e => {
-          const liElement = e.currentTarget.parentElement as HTMLElement
+          const liElement = e.currentTarget.parentElement!
           wheel(liElement)
         }}
-      ></div>
+      ></button>
       <span className="scr">
         {t('Blob')} {item.number}
       </span>

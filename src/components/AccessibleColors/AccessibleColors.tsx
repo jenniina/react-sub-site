@@ -2,7 +2,6 @@ import React, { useState, useEffect, FC, useRef, useMemo } from 'react'
 import styles from './accessiblecolors.module.css'
 import { notify } from '../../reducers/notificationReducer'
 import useLocalStorage from '../../hooks/useStorage'
-import { ELanguages } from '../../types'
 import { useDragAndDrop } from './hooks/useColorDragAndDrop'
 import { useTheme, useThemeUpdate } from '../../hooks/useTheme'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
@@ -14,7 +13,6 @@ import { RiDeleteBin2Line } from 'react-icons/ri'
 import { LuCirclePlus } from 'react-icons/lu'
 import { LiaUndoAltSolid } from 'react-icons/lia'
 import {
-  clampValue,
   getRandomString,
   hexToRGB,
   hslToRGB,
@@ -76,11 +74,13 @@ export enum ComplianceLevel {
 //
 ////
 
-interface Props {
-  language: ELanguages
+interface DragData {
+  type: 'item'
+  id: string
 }
+
 const status = 'colors'
-const AccessibleColors: FC<Props> = ({ language }) => {
+const AccessibleColors: FC = () => {
   const {
     colors,
     setColors,
@@ -110,8 +110,8 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     name: 'true',
     mode: 'analogous',
   })
-  const show = (searchParams.get('show') || 'true') === 'true'
-  const name = (searchParams.get('name') || 'true') === 'true'
+  const show = (searchParams.get('show') ?? 'true') === 'true'
+  const name = (searchParams.get('name') ?? 'true') === 'true'
 
   const { isDragging, listItemsByStatus, handleDragging, handleUpdate } =
     useDragAndDrop(colors, statuses)
@@ -144,12 +144,12 @@ const AccessibleColors: FC<Props> = ({ language }) => {
 
   const random: number = Math.floor(Math.random() * colorModeOptions.length)
 
-  const colorMode = (searchParams.get('mode') ||
+  const colorMode = (searchParams.get('mode') ??
     colorModeOptions[random]) as TColorMode
 
   useEffect(() => {
-    setMode(colorMode as TColorMode)
-  }, [colorMode])
+    setMode(colorMode)
+  }, [colorMode, setMode])
 
   const resetAndMake = () => {
     listItemsByStatus[status].removeItems()
@@ -157,52 +157,52 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     clearColors()
   }
 
-  const parseColor = (color: string, format: string): string => {
-    if (format === 'hex') {
-      // Validate HEX format
-      const hexRegex = /^#([A-Fa-f0-9]{6})$/
-      if (hexRegex.test(color)) {
-        return color.toUpperCase()
-      } else {
-        throw new Error(`Invalid HEX color format: ${color}`)
-      }
-    } else if (format === 'rgb') {
-      const rgbMatch = color.match(
-        /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i
-      )
-      if (rgbMatch) {
-        const r = Number(rgbMatch[1])
-        const g = Number(rgbMatch[2])
-        const b = Number(rgbMatch[3])
-        if ([r, g, b].every(val => val >= 0 && val <= 255)) {
-          return rgbToHex(r, g, b)
-        } else {
-          throw new Error(`RGB values out of range in color: ${color}`)
-        }
-      } else {
-        throw new Error(`Invalid RGB color format: ${color}`)
-      }
-    } else if (format === 'hsl') {
-      const hslMatch = color.match(
-        /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i
-      )
-      if (hslMatch) {
-        let h = clampValue(0, Number(hslMatch[1]), 360)
-        let s = clampValue(0, Number(hslMatch[2]), 100)
-        let l = clampValue(0, Number(hslMatch[3]), 100)
+  // const parseColor = (color: string, format: string): string => {
+  //   if (format === 'hex') {
+  //     // Validate HEX format
+  //     const hexRegex = /^#([A-Fa-f0-9]{6})$/
+  //     if (hexRegex.test(color)) {
+  //       return color.toUpperCase()
+  //     } else {
+  //       throw new Error(`Invalid HEX color format: ${color}`)
+  //     }
+  //   } else if (format === 'rgb') {
+  //     const rgbMatch = color.match(
+  //       /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i
+  //     )
+  //     if (rgbMatch) {
+  //       const r = Number(rgbMatch[1])
+  //       const g = Number(rgbMatch[2])
+  //       const b = Number(rgbMatch[3])
+  //       if ([r, g, b].every(val => val >= 0 && val <= 255)) {
+  //         return rgbToHex(r, g, b)
+  //       } else {
+  //         throw new Error(`RGB values out of range in color: ${color}`)
+  //       }
+  //     } else {
+  //       throw new Error(`Invalid RGB color format: ${color}`)
+  //     }
+  //   } else if (format === 'hsl') {
+  //     const hslMatch = color.match(
+  //       /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i
+  //     )
+  //     if (hslMatch) {
+  //       let h = clampValue(0, Number(hslMatch[1]), 360)
+  //       let s = clampValue(0, Number(hslMatch[2]), 100)
+  //       let l = clampValue(0, Number(hslMatch[3]), 100)
 
-        h = (h + 360) % 360
-        s = clampValue(0, s, 100)
-        l = clampValue(0, l, 100)
+  //       h = (h + 360) % 360
+  //       s = clampValue(0, s, 100)
+  //       l = clampValue(0, l, 100)
 
-        return `hsl(${h}, ${s}%, ${l}%)`
-      } else {
-        throw new Error(`Invalid HSL color format: ${color}`)
-      }
-    } else {
-      throw new Error(`Unsupported color format: ${format}`)
-    }
-  }
+  //       return `hsl(${h}, ${s}%, ${l}%)`
+  //     } else {
+  //       throw new Error(`Invalid HSL color format: ${color}`)
+  //     }
+  //   } else {
+  //     throw new Error(`Unsupported color format: ${format}`)
+  //   }
+  // }
 
   const ComplianceShapes: Record<
     | ComplianceLevel.AA_RegularText
@@ -225,8 +225,8 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       if (colorFormatBlock === 'hex') {
         blockHex = blockColor
       } else if (colorFormatBlock === 'rgb') {
-        const rgbMatch = blockColor.match(
-          /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i
+        const rgbMatch = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.exec(
+          blockColor
         )
         blockHex = rgbMatch
           ? rgbToHex(
@@ -236,8 +236,8 @@ const AccessibleColors: FC<Props> = ({ language }) => {
             )
           : '#000000'
       } else if (colorFormatBlock === 'hsl') {
-        const hslMatch = blockColor.match(
-          /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i
+        const hslMatch = /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i.exec(
+          blockColor
         )
         if (hslMatch) {
           const rgb = hslToRGB(
@@ -255,8 +255,8 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       if (colorFormatOther === 'hex') {
         otherHex = otherColor
       } else if (colorFormatOther === 'rgb') {
-        const rgbMatch = otherColor.match(
-          /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i
+        const rgbMatch = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.exec(
+          otherColor
         )
         otherHex = rgbMatch
           ? rgbToHex(
@@ -266,8 +266,8 @@ const AccessibleColors: FC<Props> = ({ language }) => {
             )
           : '#000000'
       } else if (colorFormatOther === 'hsl') {
-        const hslMatch = otherColor.match(
-          /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i
+        const hslMatch = /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i.exec(
+          otherColor
         )
         if (hslMatch) {
           const rgb = hslToRGB(
@@ -307,8 +307,8 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       if (colorFormatBlock === 'hex') {
         blockHex = blockColor
       } else if (colorFormatBlock === 'rgb') {
-        const rgbMatch = blockColor.match(
-          /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i
+        const rgbMatch = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.exec(
+          blockColor
         )
         blockHex = rgbMatch
           ? rgbToHex(
@@ -318,8 +318,8 @@ const AccessibleColors: FC<Props> = ({ language }) => {
             )
           : '#000000'
       } else if (colorFormatBlock === 'hsl') {
-        const hslMatch = blockColor.match(
-          /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i
+        const hslMatch = /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i.exec(
+          blockColor
         )
         if (hslMatch) {
           const rgb = hslToRGB(
@@ -337,8 +337,8 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       if (colorFormatOther === 'hex') {
         otherHex = otherColor
       } else if (colorFormatOther === 'rgb') {
-        const rgbMatch = otherColor.match(
-          /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i
+        const rgbMatch = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.exec(
+          otherColor
         )
         otherHex = rgbMatch
           ? rgbToHex(
@@ -348,8 +348,8 @@ const AccessibleColors: FC<Props> = ({ language }) => {
             )
           : '#000000'
       } else if (colorFormatOther === 'hsl') {
-        const hslMatch = otherColor.match(
-          /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i
+        const hslMatch = /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i.exec(
+          otherColor
         )
         if (hslMatch) {
           const rgb = hslToRGB(
@@ -382,16 +382,14 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       blockWidth,
       indicatorSize,
       otherColor,
-      blockColor,
-      colorFormatBlock,
       colorFormatOther,
     }) => {
       let otherHex
       if (colorFormatOther === 'hex') {
         otherHex = otherColor
       } else if (colorFormatOther === 'rgb') {
-        const rgbMatch = otherColor.match(
-          /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i
+        const rgbMatch = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.exec(
+          otherColor
         )
         otherHex = rgbMatch
           ? rgbToHex(
@@ -401,8 +399,8 @@ const AccessibleColors: FC<Props> = ({ language }) => {
             )
           : '#000000'
       } else if (colorFormatOther === 'hsl') {
-        const hslMatch = otherColor.match(
-          /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i
+        const hslMatch = /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i.exec(
+          otherColor
         )
         if (hslMatch) {
           const rgb = hslToRGB(
@@ -441,7 +439,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     const padding = width / 4
     const lineHeight = indicatorSize / 20
     const fontSize = blockWidth / 10
-    const items = listItemsByStatus[status]?.items || []
+    const items = listItemsByStatus[status]?.items ?? []
 
     const totalIndicators = items?.length
     const blockHeight =
@@ -463,8 +461,8 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           if (block.colorFormat === 'hex') {
             hexColor = block.color
           } else if (block.colorFormat === 'rgb') {
-            const rgbMatch = block.color.match(
-              /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i
+            const rgbMatch = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.exec(
+              block.color
             )
             if (rgbMatch) {
               hexColor = rgbToHex(
@@ -476,8 +474,8 @@ const AccessibleColors: FC<Props> = ({ language }) => {
               throw new Error('Invalid RGB format')
             }
           } else if (block.colorFormat === 'hsl') {
-            const hslMatch = block.color.match(
-              /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i
+            const hslMatch = /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i.exec(
+              block.color
             )
             if (hslMatch) {
               const rgb = hslToRGB(
@@ -494,7 +492,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           }
         } catch (error) {
           console.error(error)
-          dispatch(
+          void dispatch(
             notify(`${t('Error')}: ${(error as Error).message}`, true, 4)
           )
           hexColor = '#000000' // Default to black on error
@@ -560,8 +558,8 @@ const AccessibleColors: FC<Props> = ({ language }) => {
         if (colorItem.colorFormat === 'hex') {
           lineHex = colorItem.color
         } else if (colorItem.colorFormat === 'rgb') {
-          const rgbMatch = colorItem.color.match(
-            /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i
+          const rgbMatch = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.exec(
+            colorItem.color
           )
           lineHex = rgbMatch
             ? rgbToHex(
@@ -571,8 +569,8 @@ const AccessibleColors: FC<Props> = ({ language }) => {
               )
             : '#000000'
         } else if (colorItem.colorFormat === 'hsl') {
-          const hslMatch = colorItem.color.match(
-            /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i
+          const hslMatch = /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i.exec(
+            colorItem.color
           )
           if (hslMatch) {
             const rgb = hslToRGB(
@@ -739,7 +737,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     link.click()
     document?.body.removeChild(link)
     URL.revokeObjectURL(url)
-    dispatch(notify(t('ArtSaved'), false, 5))
+    void dispatch(notify(t('ArtSaved'), false, 5))
   }
 
   const saveAsPNG = () => {
@@ -774,13 +772,13 @@ const AccessibleColors: FC<Props> = ({ language }) => {
       document?.body.removeChild(link)
 
       URL.revokeObjectURL(url)
-      dispatch(notify(t('ArtSaved'), false, 5))
+      void dispatch(notify(t('ArtSaved'), false, 5))
     }
 
     img.onerror = err => {
       console.error('Error loading SVG into image for PNG conversion:', err)
       URL.revokeObjectURL(url)
-      dispatch(notify(t('Error'), true, 4))
+      void dispatch(notify(t('Error'), true, 4))
     }
 
     img.src = url
@@ -811,9 +809,9 @@ const AccessibleColors: FC<Props> = ({ language }) => {
   }
 
   const handleDrop = (e: React.DragEvent<HTMLUListElement>) => {
-    const data = JSON.parse(e.dataTransfer.getData('text/plain'))
+    const data = JSON.parse(e.dataTransfer.getData('text/plain')) as DragData
     if (data.type === 'item') {
-      handleUpdate(data.id, status, theTarget)
+      handleUpdate(parseInt(data.id), status, theTarget)
       setTimeout(() => {
         setColors(listItemsByStatus[status]?.items)
       }, 200)
@@ -821,14 +819,15 @@ const AccessibleColors: FC<Props> = ({ language }) => {
     }
   }
 
+  const listItemsByStatusItems = useMemo(() => {
+    return listItemsByStatus[status]?.items ?? []
+  }, [listItemsByStatus])
+
   useEffect(() => {
-    if (
-      !listItemsByStatus[status]?.items ||
-      listItemsByStatus[status]?.items.length < 1
-    ) {
+    if (!listItemsByStatusItems || listItemsByStatusItems.length < 1) {
       resetColors()
     }
-  }, [])
+  }, [listItemsByStatusItems, resetColors])
 
   const times = 0.04
 
@@ -949,7 +948,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                 prev => {
                   prev.set(
                     'mode',
-                    (o?.value || colorModeOptions[random].value) as string
+                    (o?.value ?? colorModeOptions[random].value) as string
                   )
                   return prev
                 },
@@ -981,12 +980,12 @@ const AccessibleColors: FC<Props> = ({ language }) => {
           <button
             className="gray small"
             type="button"
-            onClick={async () => {
+            onClick={() => {
               if (
                 haveCleared === true ||
-                (await confirm({
-                  message: t('AreYouSureYouWantToClearAllColors') || '',
-                }))
+                void confirm({
+                  message: t('AreYouSureYouWantToClearAllColors') ?? '',
+                })
               )
                 resetAndMake()
               setHaveCleared(true)
@@ -1082,10 +1081,9 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                           complianceLevel === ComplianceLevel.AAA_RegularText
                         ) {
                           return (
-                            <div
+                            <button
                               key={`aaa-${otherColor.color}-${otherColor.id}`}
-                              tabIndex={0}
-                              className={`${styles['indicator-aaa']} ${styles.indicator} tooltip-wrap`}
+                              className={`reset ${styles['indicator-aaa']} ${styles.indicator} tooltip-wrap`}
                               style={{
                                 ['--color' as string]: otherColor.color,
                                 backgroundColor: otherColor.color,
@@ -1093,10 +1091,17 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                                 width: `calc(${width} / 3)`,
                                 height: `calc(${width} / 3)`,
                               }}
+                              onClick={() => {
+                                const text = `${otherColor.color} is AAA compliant with ${block.color}`
+                                void navigator.clipboard.writeText(text)
+                                void dispatch(
+                                  notify(t('CopiedToClipboard'), false, 5)
+                                )
+                              }}
                             >
                               <span
                                 id={`span-${otherColor.id}-${block.id}-${randomString}`}
-                                className={`tooltip below narrow3 ${styles['tooltip']}`}
+                                className={`tooltip below narrow3 ${styles.tooltip}`}
                                 style={{
                                   fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 0.9rem)`,
                                   ['--tooltip-max-width' as string]: width,
@@ -1104,16 +1109,15 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                               >{`${t('AAACompliantWithID')}: ${
                                 otherColor.id
                               }`}</span>
-                            </div>
+                            </button>
                           )
                         } else if (
                           complianceLevel === ComplianceLevel.AA_RegularText
                         ) {
                           return (
-                            <div
+                            <button
                               key={`aa-${otherColor.color}-${otherColor.id}`}
-                              tabIndex={0}
-                              className={`${styles['indicator-aa']} ${styles.indicator} tooltip-wrap`}
+                              className={`reset ${styles['indicator-aa']} ${styles.indicator} tooltip-wrap`}
                               style={{
                                 ['--color' as string]: otherColor.color,
                                 backgroundColor: block.color,
@@ -1127,6 +1131,13 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                                 margin: `calc(${width} / 15)`,
                                 borderRadius: '50%',
                               }}
+                              onClick={() => {
+                                const text = `${otherColor.color} is AA compliant with ${block.color}`
+                                void navigator.clipboard.writeText(text)
+                                void dispatch(
+                                  notify(t('CopiedToClipboard'), false, 5)
+                                )
+                              }}
                             >
                               <span
                                 id={`span-${otherColor.id}-${block.id}-${randomString}`}
@@ -1138,16 +1149,15 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                               >{`${t('AACompliantWithID')}: ${
                                 otherColor.id
                               }`}</span>
-                            </div>
+                            </button>
                           )
                         } else if (
                           complianceLevel === ComplianceLevel.AA_UIComponents
                         ) {
                           return (
-                            <div
+                            <button
                               key={`aa-ui-${otherColor.color}-${otherColor.id}`}
-                              tabIndex={0}
-                              className={`${styles['indicator-aa-ui']} ${styles.indicator} tooltip-wrap`}
+                              className={`reset ${styles['indicator-aa-ui']} ${styles.indicator} tooltip-wrap`}
                               style={{
                                 ['--color' as string]: otherColor.color,
                                 ['--left' as string]: `calc(calc(${width} / 7) * -3)`,
@@ -1158,10 +1168,17 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                                 height: `calc(${width} / 7)`,
                                 margin: `calc(${width} / 10.5)`,
                               }}
+                              onClick={() => {
+                                const text = `${otherColor.color} is AA UI compliant with ${block.color}`
+                                void navigator.clipboard.writeText(text)
+                                void dispatch(
+                                  notify(t('CopiedToClipboard'), false, 5)
+                                )
+                              }}
                             >
                               <span
                                 id={`span-ui-${otherColor.id}-${block.id}-${randomString}`}
-                                className={`tooltip below narrow3 ${styles['tooltip']}`}
+                                className={`tooltip below narrow3 ${styles.tooltip}`}
                                 style={{
                                   fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 0.9rem)`,
                                   ['--tooltip-max-width' as string]: width,
@@ -1169,7 +1186,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                               >{`${t('AAGraphicElementCompliantWithID')}: ${
                                 otherColor.id
                               }`}</span>
-                            </div>
+                            </button>
                           )
                         }
 
@@ -1219,7 +1236,6 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                   <>
                     <div className={styles['color-edit-container']}>
                       <ColorsInput
-                        language={language}
                         block={block}
                         updateColor={updateColor}
                         width={width}
@@ -1259,6 +1275,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                   type="button"
                   aria-hidden="true"
                   title={t('Reset')}
+                  // eslint-disable-next-line @typescript-eslint/no-misused-promises
                   onClick={async () => {
                     if (
                       colors.length === 0 ||
@@ -1266,7 +1283,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                         message: t('AreYouSureYouWantToResetAllColors'),
                       }))
                     ) {
-                      resetColors()
+                      void resetColors()
                     }
                   }}
                   className="reset p1"
@@ -1276,6 +1293,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                 <button
                   className="gray small"
                   type="button"
+                  // eslint-disable-next-line @typescript-eslint/no-misused-promises
                   onClick={async () => {
                     if (
                       colors.length === 0 ||
@@ -1283,7 +1301,7 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                         message: t('AreYouSureYouWantToResetAllColors'),
                       }))
                     ) {
-                      resetColors()
+                      void resetColors()
                     }
                   }}
                 >
@@ -1296,14 +1314,15 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                   type="button"
                   aria-hidden="true"
                   title={t('Clear')}
+                  // eslint-disable-next-line @typescript-eslint/no-misused-promises
                   onClick={async () => {
                     if (
                       await confirm({
-                        message: t('AreYouSureYouWantToClearAllColors') || '',
+                        message: t('AreYouSureYouWantToClearAllColors') ?? '',
                       })
                     ) {
                       listItemsByStatus[status].removeItems()
-                      clearColors()
+                      void clearColors()
                     }
                   }}
                   className="reset p1"
@@ -1313,14 +1332,15 @@ const AccessibleColors: FC<Props> = ({ language }) => {
                 <button
                   className="gray small"
                   type="button"
+                  // eslint-disable-next-line @typescript-eslint/no-misused-promises
                   onClick={async () => {
                     if (
                       await confirm({
-                        message: t('AreYouSureYouWantToClearAllColors') || '',
+                        message: t('AreYouSureYouWantToClearAllColors') ?? '',
                       })
                     ) {
                       listItemsByStatus[status].removeItems()
-                      clearColors()
+                      void clearColors()
                     }
                   }}
                 >

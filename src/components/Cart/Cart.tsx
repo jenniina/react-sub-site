@@ -1,4 +1,4 @@
-import { useEffect, FC, useState, useContext } from 'react'
+import { useEffect, FC, useState } from 'react'
 import styles from './cart.module.css'
 import AdditionalInfo from '../Store/components/AdditionalInfo'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
@@ -10,7 +10,7 @@ import { useTheme } from '../../hooks/useTheme'
 import cartService from '../../services/cart'
 import { notify } from '../../reducers/notificationReducer'
 import { Link } from 'react-router-dom'
-import { getRandomLetters, getRandomMinMax, splitToLines } from '../../utils'
+import { getRandomLetters, getRandomMinMax, splitToLines, getErrorMessage } from '../../utils'
 import ButtonToggle from '../ButtonToggle/ButtonToggle'
 import { FaHourglassStart, FaStoreAlt } from 'react-icons/fa'
 import { RiMailSendLine } from 'react-icons/ri'
@@ -19,7 +19,6 @@ import { useLanguageContext } from '../../contexts/LanguageContext'
 import { useConfirm } from '../../contexts/ConfirmContext'
 
 interface Props {
-  language: ELanguages
   cart: ICartItem[]
   addToCart: (item: ICartItem | undefined) => void
   removeFromCart: (itemId: string) => void
@@ -28,14 +27,13 @@ interface Props {
 }
 
 const Cart: FC<Props> = ({
-  language,
   cart,
   addToCart,
   removeFromCart,
   editDetails,
   removeCart,
 }) => {
-  const { t } = useLanguageContext()
+  const { t, language } = useLanguageContext()
   const confirm = useConfirm()
 
   const lightTheme = useTheme()
@@ -113,7 +111,18 @@ const Cart: FC<Props> = ({
       country,
       phone,
     })
-  }, [name, companyName, email, businessID, zip, city, address, country, phone])
+  }, [
+    name,
+    companyName,
+    email,
+    businessID,
+    zip,
+    city,
+    address,
+    country,
+    phone,
+    setInfo,
+  ])
 
   const handleQuantityChange = (
     item: ICartItem | undefined,
@@ -136,7 +145,7 @@ const Cart: FC<Props> = ({
         return acc + item.price * item.quantity
       }, 0)
     )
-  }, [cart])
+  }, [cart, setTotal])
 
   return (
     <div className={`${styles['cart-wrap']} ${lightTheme ? styles.light : ''}`}>
@@ -156,14 +165,16 @@ const Cart: FC<Props> = ({
           e.preventDefault()
           setSending(true)
           if (cart.length < 1) {
-            dispatch(notify(t('PleaseChooseAProduct'), true, 8))
+            void dispatch(notify(t('PleaseChooseAProduct'), true, 8))
             setSending(false)
           }
           if (!GDPR) {
-            dispatch(notify(`${t('Remember')}: ${t('GDPRConsent')}`, true, 8))
+            void dispatch(
+              notify(`${t('Remember')}: ${t('GDPRConsent')}`, true, 8)
+            )
             setSending(false)
           } else if (!terms) {
-            dispatch(
+            void dispatch(
               notify(`${t('Remember')}: ${t('TermsOfService')}`, true, 8)
             )
             setSending(false)
@@ -211,27 +222,22 @@ const Cart: FC<Props> = ({
               })
               .then(res => {
                 if (res.success) {
-                  dispatch(notify(res.message, false, 10))
+                  void dispatch(notify(res.message, false, 10))
                   removeCart()
                   setTotal(0)
                   setSending(false)
                 } else {
-                  dispatch(notify(res.message, false, 10))
+                  void dispatch(notify(res.message, false, 10))
                   setSending(false)
                 }
               })
-              .catch(err => {
-                if (
-                  err.response &&
-                  err.response.data &&
-                  err.response.data.message
-                )
-                  dispatch(notify(err.response.data.message, true, 8))
-                else dispatch(notify(err.message, true, 8))
+              .catch((err: unknown) => {
+                const message = getErrorMessage(err, t('Error'))
+                void dispatch(notify(message, true, 8))
                 setSending(false)
               })
           } else {
-            dispatch(notify(t('PleaseFillInTheFields'), true, 8))
+            void dispatch(notify(t('PleaseFillInTheFields'), true, 8))
             setSending(false)
           }
         }}
@@ -245,34 +251,28 @@ const Cart: FC<Props> = ({
                 <span>{item.name}</span>
               </h2>
               <p>{splitToLines(item.description)}</p>
-              <AdditionalInfo
-                type={item.id}
-                language={language}
-                styles={styles}
-                isOpen={true}
-                setIsFormOpen={() => {}}
-                classNameWrap={styles['additional-info-wrap']}
-                text={t('Includes')}
-              />
-              <div className={`${styles['quantity']}`}>
+              <AdditionalInfo type={item.id} styles={styles} />
+              <div className={`${styles.quantity}`}>
                 {item.id !== 'misc-quote' ? (
                   <>
                     <button
                       type="button"
-                      onClick={async () => {
-                        if (item.quantity - 1 < 1) {
-                          if (
-                            await confirm({
-                              message: `${t('Remove')}: ${item.name}?`,
-                            })
-                          ) {
-                            //remove item from cart
-                            removeFromCart(item.id)
-                            return
-                          } else return
-                        }
-                        handleQuantityChange(item, -1)
-                      }}
+                      onClick={() =>
+                        void (async () => {
+                          if (item.quantity - 1 < 1) {
+                            if (
+                              await confirm({
+                                message: `${t('Remove')}: ${item.name}?`,
+                              })
+                            ) {
+                              //remove item from cart
+                              removeFromCart(item.id)
+                              return
+                            } else return
+                          }
+                          handleQuantityChange(item, -1)
+                        })()
+                      }
                       className={`tooltip-wrap ${styles['quantity-btn']}`}
                     >
                       <span className="tooltip above space right narrow2">
@@ -301,19 +301,21 @@ const Cart: FC<Props> = ({
                 ) : (
                   <button
                     type="button"
-                    onClick={async () => {
-                      if (item.quantity - 1 < 1) {
-                        if (
-                          await confirm({
-                            message: `${t('Remove')}: ${item.name}?`,
-                          })
-                        ) {
-                          removeFromCart(item.id)
-                          return
-                        } else return
-                      }
-                      handleQuantityChange(item, -1)
-                    }}
+                    onClick={() =>
+                      void (async () => {
+                        if (item.quantity - 1 < 1) {
+                          if (
+                            await confirm({
+                              message: `${t('Remove')}: ${item.name}?`,
+                            })
+                          ) {
+                            removeFromCart(item.id)
+                            return
+                          } else return
+                        }
+                        handleQuantityChange(item, -1)
+                      })()
+                    }
                   >
                     <span>{t('Remove')}</span>
                   </button>
@@ -412,7 +414,7 @@ const Cart: FC<Props> = ({
                   off={t('No')}
                   equal
                   isChecked={business}
-                  handleToggleChange={() => setBusiness(!business)}
+                  onChange={() => setBusiness(!business)}
                   label={`${t('CompanyOrAssociation')}: `}
                 />
               </div>
@@ -773,7 +775,6 @@ const Cart: FC<Props> = ({
               <Accordion
                 className="cart-accordion grayer"
                 text={t('TermsRelatedToProducts')}
-                language={language}
                 wrapperClass={styles['more-info-wrap']}
               >
                 <TermsProducts language={language} />
@@ -782,16 +783,18 @@ const Cart: FC<Props> = ({
             <div className={`${styles['clear-btn-wrap']} flex center`}>
               <button
                 type="button"
-                onClick={async () => {
-                  if (
-                    await confirm({
-                      message: `${t('Remove')}: ${t('Cart')}?`,
-                    })
-                  ) {
-                    removeCart()
-                    setTotal(0)
-                  }
-                }}
+                onClick={() =>
+                  void (async () => {
+                    if (
+                      await confirm({
+                        message: `${t('Remove')}: ${t('Cart')}?`,
+                      })
+                    ) {
+                      removeCart()
+                      setTotal(0)
+                    }
+                  })()
+                }
                 className="danger delete"
               >
                 {t('ClearCart')}

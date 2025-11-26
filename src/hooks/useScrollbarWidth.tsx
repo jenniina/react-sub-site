@@ -1,13 +1,12 @@
-import { useRef } from 'react'
 import { useIsClient } from './useSSR'
 
 export const useScrollbarWidth = () => {
   const isClient = useIsClient()
-  const didCompute = useRef(false)
-  const widthRef = useRef(0)
+  // const didCompute = useRef(false)
+  // const widthRef = useRef(0)
 
   if (!isClient) return 0
-  if (didCompute.current) return widthRef.current
+  // if (didCompute.current) return widthRef.current
 
   // Creating invisible container
   const outer = document ? document?.createElement('div') : null
@@ -19,7 +18,7 @@ export const useScrollbarWidth = () => {
 
   if (typeof document === 'undefined') return 0
 
-  document ? document.body.appendChild(outer) : null
+  if (document) document.body.appendChild(outer)
 
   // Creating inner element and placing it in the container
   const inner = document ? document.createElement('div') : null
@@ -32,8 +31,8 @@ export const useScrollbarWidth = () => {
   // Removing temporary elements from the DOM
   outer.parentNode?.removeChild(outer)
 
-  didCompute.current = true
-  widthRef.current = scrollbarWidth
+  // didCompute.current = true
+  // widthRef.current = scrollbarWidth
 
   return scrollbarWidth
 }

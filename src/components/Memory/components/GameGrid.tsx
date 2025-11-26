@@ -1,15 +1,8 @@
-import React, { FC, CSSProperties, memo, useContext } from 'react'
+import React, { FC, CSSProperties, memo } from 'react'
 import styles from '../memory.module.css'
 import { CardType } from '../../../types/memory'
 import useWindowSize from '../../../hooks/useWindowSize'
-import { ELanguages } from '../../../types'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
-
-interface Player {
-  id: number
-  name: string
-  score: number
-}
 
 interface Card {
   id: number
@@ -18,7 +11,6 @@ interface Card {
 
 interface GameGridProps {
   setGameStarted: (value: boolean) => void
-  language: ELanguages
   gridSize: number
   cards: Card[]
   flippedCards: number[]
@@ -28,12 +20,11 @@ interface GameGridProps {
     value: string
   }
   handleCardClick: (index: number) => void
-  renderCardContent: (card: Card) => React.ReactNode
+  renderCardContent: (card: Card) => Card['value']
 }
 
 const GameGrid: FC<GameGridProps> = ({
   setGameStarted,
-  language,
   gridSize,
   cards,
   flippedCards,
@@ -65,7 +56,7 @@ const GameGrid: FC<GameGridProps> = ({
         >
           {cards.map((card, index) => {
             const fontSize =
-              cardType.value === CardType.icons
+              cardType.value === (CardType.icons as string)
                 ? windowHeight > windowWidth
                   ? `${50 / gridSize}vw`
                   : `${50 / gridSize}vh`
@@ -89,6 +80,13 @@ const GameGrid: FC<GameGridProps> = ({
                   flippedOverCards.includes(index) ? styles['flipped-over'] : ''
                 }`}
                 onClick={() => handleCardClick(index)}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    handleCardClick(index)
+                  }
+                }}
+                role="button"
+                tabIndex={0}
               >
                 <div className={styles.front}>{renderCardContent(card)}</div>
                 <div className={styles.back}></div>

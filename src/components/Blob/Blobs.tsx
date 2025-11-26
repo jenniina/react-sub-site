@@ -1,22 +1,9 @@
-import {
-  createRef,
-  FC,
-  Fragment,
-  useRef,
-  useState,
-  useEffect,
-  useContext,
-  useMemo,
-} from 'react'
-import { ELanguages, RefObject } from '../../types'
-import { useSearchParams } from 'react-router-dom'
+import { createRef, FC, Fragment, useState, useMemo } from 'react'
+import { RefObject } from '../../types'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import DragContainer from './components/DragContainer'
-interface BlobsProps {
-  language: ELanguages
-}
 
-const Blobs: FC<BlobsProps> = ({ language }) => {
+const Blobs: FC = () => {
   const { t } = useLanguageContext()
 
   const containers = Array.from({ length: 3 }, (_, i) => i) // add to length if in need of more blob containers
@@ -78,9 +65,7 @@ const Blobs: FC<BlobsProps> = ({ language }) => {
         <Fragment key={container}>
           {buttons(i)}
           <DragContainer
-            language={language}
             d={container}
-            ds={containers?.length}
             dragWrapOuter={containerRefs?.[container]}
             scroll={scroll}
             setScroll={setScroll}

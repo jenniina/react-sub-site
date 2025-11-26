@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://react.jenniina.fi/sitemap.xml

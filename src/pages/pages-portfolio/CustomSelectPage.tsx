@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect, useContext } from 'react'
+import { useState, useRef, useEffect, FormEvent as ReactFormEvent } from 'react'
 import { Select, SelectOption } from '../../components/Select/Select'
 import FormWrapper from '../../components/FormWrapper/FormWrapper'
 import selectStyles from '../../components/Select/select.module.css'
-import { ELanguages, RefObject } from '../../types'
+import { RefObject } from '../../types'
 import { sendEmail, SelectData } from './services/email'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
@@ -10,7 +10,7 @@ import Accordion from '../../components/Accordion/Accordion'
 import { RiMailSendLine } from 'react-icons/ri'
 import { createSelectOptionsFromT } from '../../utils'
 import { useLanguageContext } from '../../contexts/LanguageContext'
-import { useIsClient, useWindow } from '../../hooks/useSSR'
+import { useWindow } from '../../hooks/useSSR'
 
 const issuesArray = [
   'NoIssues',
@@ -48,21 +48,10 @@ const selectOptions = [
   'MusicNotes',
 ]
 
-export default function CustomSelectPage({
-  heading,
-  text,
-  type,
-  language,
-}: {
-  heading: string
-  text: string
-  type: string
-  language: ELanguages
-}) {
-  const isClient = useIsClient()
+export default function CustomSelectPage({ type }: { type: string }) {
   const windowObj = useWindow()
 
-  const { t } = useLanguageContext()
+  const { t, language } = useLanguageContext()
 
   const options1 = createSelectOptionsFromT(issuesArray, language)
 
@@ -72,7 +61,6 @@ export default function CustomSelectPage({
   const [value2, setValue2] = useState<SelectOption | undefined>(options2[0])
   const [input, setInput] = useState<string>('')
   const [email, setEmail] = useState<string>('')
-  const [oldLanguage, setOldLanguage] = useState<ELanguages>(language)
 
   const [data, setData] = useState<SelectData>({
     language: language,
@@ -93,7 +81,7 @@ export default function CustomSelectPage({
 
   const form = useRef() as RefObject<HTMLFormElement>
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: ReactFormEvent<HTMLFormElement>) {
     e.preventDefault()
     setSending(true)
     if (
@@ -103,12 +91,12 @@ export default function CustomSelectPage({
       data.issues == undefined
     ) {
       setHasClickedSubmit(true)
-      dispatch(notify(t('PleaseSelectAnOption'), true, 5))
+      void dispatch(notify(t('PleaseSelectAnOption'), true, 5))
       setSending(false)
     } else {
       if (form.current) {
-        try {
-          await sendEmail(data as SelectData).then(() => {
+        await sendEmail(data)
+          .then(() => {
             setValue1([])
             setValue2(options2[0])
             setInput('')
@@ -125,25 +113,28 @@ export default function CustomSelectPage({
               clarification: '',
               email: '',
             })
-            dispatch(notify(t('ThankYouForYourMessage'), false, 8))
+            void dispatch(notify(t('ThankYouForYourMessage'), false, 8))
           })
-        } catch (err: any) {
-          setSending(false)
-          setError((err as Error).message)
-          setShowMessage(true)
-          setTimeout(() => {
-            setShowMessage(false)
-            setError(null)
-          }, 10000)
-          console.error('error', error, err)
-          const message = error
-            ? `${t('ThereWasAnErrorSendingTheMessage')}: ${error}`
-            : t('ThereWasAnErrorSendingTheMessage')
-          if (err.response?.data?.message)
-            dispatch(notify(err.response.data.message, true, 8))
-          else dispatch(notify(message, true, 12))
-          setSending(false)
-        }
+          .catch((error: Error) => {
+            setSending(false)
+            setError(error.message)
+            setShowMessage(true)
+            void setTimeout(() => {
+              setShowMessage(false)
+              setError(null)
+            }, 10000)
+            console.error('error', error)
+            if (error.message)
+              void dispatch(
+                notify(
+                  `${t('ThereWasAnErrorSendingTheMessage')}: ${error.message}`,
+                  true,
+                  12
+                )
+              )
+            else void dispatch(notify(error.message, true, 12))
+            setSending(false)
+          })
       }
     }
   }
@@ -164,7 +155,7 @@ export default function CustomSelectPage({
         }
       }
     }, 1000)
-  }, [])
+  }, [windowObj])
 
   return (
     <>
@@ -198,7 +189,6 @@ export default function CustomSelectPage({
             <div>
               <div className="medium flex column gap">
                 <Accordion
-                  language={language}
                   text={t('ClickHereToSeeFeatures')}
                   className="features"
                   wrapperClass="features-wrap"
@@ -247,7 +237,10 @@ export default function CustomSelectPage({
                   >
                     <form
                       ref={form}
-                      onSubmit={handleSubmit}
+                      onSubmit={e => {
+                        e.preventDefault()
+                        void handleSubmit(e)
+                      }}
                       id="survey"
                       className="survey-form"
                     >
@@ -393,7 +386,7 @@ export default function CustomSelectPage({
                             letterSpacing: '0.04em',
                           }}
                         >
-                          {error ? error : t('ThankYouForYourMessage')}
+                          {error ?? t('ThankYouForYourMessage')}
                         </div>
                       )}
                     </form>

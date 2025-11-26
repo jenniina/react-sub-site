@@ -5,25 +5,15 @@ import { useSelector } from 'react-redux'
 import styles from './css/quiz.module.css'
 import { useEffect, useState } from 'react'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
-import { IHighscore } from './types'
-import { ELanguages, ReducerProps } from '../../types'
+import { IHighscore, IQuizHighscore } from './types'
+import { ReducerProps } from '../../types'
 import { initializeUser } from '../../reducers/authReducer'
 import { FaStar } from 'react-icons/fa'
 import { getUserQuiz } from './reducers/quizReducer'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import LoginRegisterCombo from './components/LoginRegisterCombo'
 
-const QuizStart = ({
-  heading,
-  text,
-  type,
-  language,
-}: {
-  heading: string
-  text: string
-  type: string
-  language: ELanguages
-}) => {
+const QuizStart = () => {
   const { t } = useLanguageContext()
 
   const navigate = useNavigate()
@@ -39,26 +29,28 @@ const QuizStart = ({
   })
 
   useEffect(() => {
-    dispatch(initializeUser())
-  }, [])
+    void dispatch(initializeUser())
+  }, [dispatch])
 
   useEffect(() => {
     if (user?._id && points !== 0 && finalSeconds !== 0) {
-      dispatch(getUserQuiz(user._id)).then(r => {
+      void dispatch(getUserQuiz(user._id)).then((r: IQuizHighscore | null) => {
         if (r !== null) {
           setHighscores(r.highscores)
         } else if (r === null && localStorage.getItem(`quiz-highscores`)) {
           const highscoresLocal = JSON.parse(
-            localStorage.getItem(`quiz-highscores`) as string
+            localStorage.getItem(`quiz-highscores`)!
+          ) as IHighscore
+          void dispatch(
+            addQuiz({ highscores: highscoresLocal, user: user._id })
           )
-          dispatch(addQuiz({ highscores: highscoresLocal, user: user._id }))
         }
       })
     }
-  }, [user])
+  }, [user, points, finalSeconds, dispatch])
 
   const handleClick = (value: string) => {
-    dispatch(selectMode(value))
+    void dispatch(selectMode(value))
     navigate(`/portfolio/quiz/difficulty/${value}`)
   }
 
@@ -71,7 +63,9 @@ const QuizStart = ({
             <ul className="ul">
               <li>
                 {t('QuizQuestions15AreFetchedFrom')}{' '}
-                <a href="https://the-trivia-api.com">"the Trivia Api"</a>
+                <a href="https://the-trivia-api.com">
+                  &quot;the Trivia Api&quot;
+                </a>
               </li>
               <li>
                 {t('Note')} {t('QuestionsAreInEnglish')}
@@ -111,7 +105,6 @@ const QuizStart = ({
             </div>
           </div>
           <LoginRegisterCombo
-            language={language}
             user={user}
             highscoresLocal={highscoresLocal}
             text="quizstart"

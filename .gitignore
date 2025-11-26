@@ -12,6 +12,8 @@ node_modules
 nodemon.json
 dist-ssr
 *.local
+dist
+temp*
 
 # Editor directories and files
 .vscode/*
@@ -25,4 +27,5 @@ dist-ssr
 *.sw?
 .env
 .git
+
  

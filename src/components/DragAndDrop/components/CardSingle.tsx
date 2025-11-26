@@ -7,7 +7,6 @@ import React, {
   SetStateAction,
   CSSProperties,
   useEffect,
-  useContext,
 } from 'react'
 import { Data, Status } from '../types'
 import styles from '../dragAndDrop.module.css'
@@ -17,14 +16,13 @@ import {
   MdOutlineDragIndicator,
 } from 'react-icons/md'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
-import { ELanguages } from '../../../types'
 import { notify } from '../../../reducers/notificationReducer'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { sanitize } from '../../../utils'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
+import { getErrorMessage } from '../../../utils'
 
 interface Props {
-  language: ELanguages
   status: Status
   statuses: Status[]
   id: number
@@ -32,7 +30,7 @@ interface Props {
   index: number
   handleDragging: (dragging: boolean) => void
   handleUpdate: (id: number, status: Status, target?: number) => void
-  handleRemoveColor: (color: Data['content']) => void
+  handleRemoveColor: (color: Data['content']) => Promise<void>
   setTheTarget: Dispatch<SetStateAction<number>>
   focusedCard: number | null
   setFocusedCard: Dispatch<SetStateAction<number | null>>
@@ -40,8 +38,7 @@ interface Props {
 }
 
 function CardSingle({
-  language,
-  status,
+  status: currentStatus,
   statuses,
   id,
   index,
@@ -114,49 +111,43 @@ function CardSingle({
     e.preventDefault()
   }
 
-  const handleDragStart = (
-    e: React.DragEvent<HTMLLIElement>,
-    position: number
-  ) => {
+  const handleDragStart = (e: React.DragEvent<HTMLLIElement>) => {
     e.dataTransfer.setData(
       'text/plain',
       JSON.stringify({ type: 'item', id: data?.id })
     )
+    cardRef.current?.setAttribute('aria-selected', 'true')
   }
 
-  function containerUpdate(
-    e: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>
-  ) {
-    const anchorElement = (e.target as HTMLElement).closest(
-      'a[data-status]'
-    ) as HTMLAnchorElement
-    const status = anchorElement?.dataset.status
-    if (data && status) handleUpdate(data.id, status as Status)
+  function containerUpdate(e: MouseEvent<HTMLButtonElement>) {
+    const btn = (e.target as HTMLButtonElement).closest('button[data-status]')
+    const status = btn?.getAttribute('data-status') ?? undefined
+    if (data && status) handleUpdate(data.id, status)
   }
 
-  function keyListen(e: KeyboardEvent<HTMLAnchorElement>) {
-    switch (e.code) {
-      case 'Enter':
-      case 'Space':
-        e.stopPropagation()
-        e.preventDefault()
-        const anchorElement = (e.target as HTMLElement).closest(
-          'a[data-status]'
-        ) as HTMLAnchorElement
-        const stat = anchorElement?.dataset.status ?? status
-        if (data) handleUpdate(data.id, stat)
-        setIsOpen(prev => !prev)
-        break
-      case 'Escape':
-        e.stopPropagation()
-        e.preventDefault()
-        setIsOpen(false)
-        break
-    }
-  }
+  // function keyListen(e: KeyboardEvent<HTMLAnchorElement>) {
+  //   switch (e.code) {
+  //     case 'Enter':
+  //     case 'Space':
+  //       e.stopPropagation()
+  //       e.preventDefault()
+  //       const anchorElement = (e.target as HTMLElement).closest(
+  //         'a[data-status]'
+  //       )! as HTMLElement
+  //       const stat = anchorElement?.dataset.status ?? status
+  //       if (data) handleUpdate(data.id, stat)
+  //       setIsOpen(prev => !prev)
+  //       break
+  //     case 'Escape':
+  //       e.stopPropagation()
+  //       e.preventDefault()
+  //       setIsOpen(false)
+  //       break
+  //   }
+  // }
 
   const handleUpAndDown = (e: KeyboardEvent<HTMLElement>, position: number) => {
-    const parentLi = (e.target as HTMLElement).closest('li') as HTMLLIElement
+    const parentLi = (e.target as HTMLElement).closest('li')!
     let li: HTMLLIElement | null
     if (parentLi) {
       li = parentLi
@@ -164,21 +155,21 @@ function CardSingle({
       li = e.target as HTMLLIElement
     }
     const previous = Number(
-      (li?.previousElementSibling as HTMLLIElement)?.dataset.identity
+      (li?.previousElementSibling as HTMLElement)?.dataset?.identity
     )
     const next = Number(
-      (li?.nextElementSibling as HTMLLIElement)?.dataset.identity
+      (li?.nextElementSibling as HTMLElement)?.dataset?.identity
     )
     switch (e.key) {
       case 'ArrowUp':
-        if (data && previous !== null) {
+        if (data && !Number.isNaN(previous)) {
           e.preventDefault()
           handleUpdate(position, data.status, previous)
           setFocusedCard(position)
         }
         break
       case 'ArrowDown':
-        if (data && next !== null) {
+        if (data && !Number.isNaN(next)) {
           e.preventDefault()
           handleUpdate(position, data.status, next)
           setFocusedCard(position)
@@ -198,52 +189,55 @@ function CardSingle({
     }
   }, [focusedCard, id])
 
-  const handleCopyToClipboard = (text: string) => {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(
-        () => {
-          dispatch(notify(t('CopiedToClipboard'), false, 3))
-        },
-        err => {
-          dispatch(notify(`${t('FailedToCopy')}`, true, 3))
-        }
-      )
+  const handleCopyToClipboard = async (text: string) => {
+    if (navigator?.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(text)
+        void dispatch(notify(t('CopiedToClipboard'), false, 3))
+      } catch {
+        void dispatch(notify(`${t('FailedToCopy')}`, true, 3))
+      }
     } else {
       // Fallback method for older browsers
-      const textArea = document?.createElement('textarea')
+      const textArea = document.createElement('textarea')
       textArea.value = text
-      cardRef.current?.appendChild(textArea)
+      // append to body so selection and removal are reliable
+      document.body.appendChild(textArea)
       textArea.focus()
       textArea.select()
       try {
-        document?.execCommand('copy')
-        dispatch(notify(t('CopiedToClipboard'), false, 3))
-      } catch (err: any) {
-        if (err.response?.data?.message)
-          dispatch(notify(err.response.data.message, true, 8))
-        else dispatch(notify(`${t('FailedToCopy')}`, true, 3))
+  document.execCommand('copy')
+  void dispatch(notify(t('CopiedToClipboard'), false, 3))
+      } catch (err: unknown) {
+        const message = getErrorMessage(err, t('FailedToCopy'))
+        void dispatch(notify(message, true, 3))
       }
-      document?.body.removeChild(textArea)
+      document.body.removeChild(textArea)
     }
   }
 
   return (
     <li
       ref={cardRef}
+      role="option"
+      aria-selected={false}
       draggable={'true'}
-      onDragStart={e => handleDragStart(e, id)}
+      onDragStart={e => handleDragStart(e)}
       onDragEnter={e => handleDragEnter(e, id)}
       onDragOver={e => handleDragOver(e)}
-      onDragEnd={() => handleDragging(false)}
-      role={'listitem'}
+      onDragEnd={() => {
+        handleDragging(false)
+        cardRef.current?.setAttribute('aria-selected', 'false')
+      }}
       tabIndex={0}
+      aria-label={t('Draggable')}
       onKeyDown={e => handleUpAndDown(e, id)}
       data-identity={id}
     >
-      <div style={styleCard} className={`${styles['card']}`}>
+      <div style={styleCard} className={`${styles.card}`}>
         <span className={styles.text}>{data?.content}</span>
         <b>
-          <button onClick={() => handleRemoveColor(data.content)}>
+          <button onClick={() => void handleRemoveColor(data.content)}>
             &times;
           </button>
           <button aria-haspopup="true" onClick={toggleOpen}>
@@ -261,41 +255,41 @@ function CardSingle({
         >
           <span style={styleTitle}>{t('Move')}:</span>
           <ul
-            role="listbox"
             aria-describedby={`instructions${id}`}
             aria-expanded={isOpen ? 'true' : 'false'}
-            className={sanitize(status)}
+            role="listbox"
+            className={sanitize(currentStatus)}
           >
-            <li role="option" className={styles.copy}>
-              <a
+            <li className={styles.copy}>
+              <button
+                type="button"
                 className={styles.copy}
-                onClick={() => handleCopyToClipboard(data.content)}
-                tabIndex={0}
+                onClick={() => void handleCopyToClipboard(data.content)}
                 title={t('CopyToClipboard')}
               >
                 <MdContentCopy />
                 <i>{t('CopyText')}</i>
-              </a>
+              </button>
             </li>
-            {statuses.map((status, i) => (
+            {statuses.map((targetStatus, i) => (
               <li
-                key={`${sanitize(status)}-${i}-${index}`}
+                key={`${sanitize(targetStatus)}-${i}-${index}`}
                 role="option"
-                className={sanitize(status)}
+                className={sanitize(targetStatus)}
+                aria-selected={targetStatus === currentStatus}
               >
-                <a
-                  className={sanitize(status)}
-                  data-status={status}
+                <button
+                  type="button"
+                  className={sanitize(targetStatus)}
+                  data-status={targetStatus}
                   onClick={e => containerUpdate(e)}
-                  onKeyDown={e => keyListen(e)}
-                  tabIndex={0}
                   title={`${t('ToTarget')}: ${translateStatus(
-                    status
+                    targetStatus
                   ).toLowerCase()}`}
                 >
                   <MdLocationOn />
-                  <i>{translateStatus(status)}</i>
-                </a>
+                  <i>{translateStatus(targetStatus)}</i>
+                </button>
               </li>
             ))}
           </ul>

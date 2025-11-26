@@ -80,13 +80,13 @@ function useStorage<T>(
     if (!storageObject) return defaultValue
 
     const jsonValue = storageObject.getItem(key)
-    if (jsonValue != null) return JSON.parse(jsonValue)
+    if (jsonValue != null) return JSON.parse(jsonValue) as T
 
-    if (typeof defaultValue === 'function') {
-      return defaultValue()
-    } else {
-      return defaultValue
-    }
+    // if (typeof defaultValue === 'function') {
+    //   return defaultValue()
+    // } else {
+    return defaultValue
+    // }
   })
 
   useEffect(() => {
@@ -101,7 +101,7 @@ function useStorage<T>(
     setValue(defaultValue)
     // Only remove from storage if available
     if (storageObject) {
-      return storageObject.removeItem(key)
+      storageObject.removeItem(key)
     }
   }
 

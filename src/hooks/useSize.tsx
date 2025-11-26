@@ -10,7 +10,7 @@ export default function useSize(
     const observer = new ResizeObserver(([entry]) => setSize(entry.contentRect))
     observer.observe(ref.current)
     return () => observer.disconnect()
-  }, [])
+  }, [ref])
 
   return size
 }

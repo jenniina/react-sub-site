@@ -1,22 +1,8 @@
 import { useTheme } from '../hooks/useTheme'
-import { ELanguages } from '../types'
 import styles from './css/portfolio.module.css'
-import { useLanguageContext } from '../contexts/LanguageContext'
 import PortfolioInfo from '../components/PortfolioInfo/PortfolioInfo'
 
-export default function Portfolio({
-  heading,
-  text,
-  type,
-  language,
-}: {
-  heading: string
-  text: string
-  type: string
-  language: ELanguages
-}) {
-  const { t } = useLanguageContext()
-
+export default function Portfolio({ type }: { type: string }) {
   const lightTheme = useTheme()
 
   return (
@@ -46,7 +32,7 @@ export default function Portfolio({
         }`}
       >
         <div className="inner-wrap">
-          <PortfolioInfo language={language} />
+          <PortfolioInfo />
         </div>
       </div>
     </>

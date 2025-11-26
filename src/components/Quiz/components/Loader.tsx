@@ -1,9 +1,7 @@
-import { useContext } from 'react'
-import { ELanguages } from '../../../types'
 import styles from '../css/quiz.module.css'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 
-const Loader = ({ language }: { language: ELanguages }) => {
+const Loader = () => {
   const { t } = useLanguageContext()
 
   return (
