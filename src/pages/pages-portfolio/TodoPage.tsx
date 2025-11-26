@@ -1,21 +1,10 @@
 import styles from '../../components/Todo/css/todo.module.css'
-import { ELanguages } from '../../types'
 import Accordion from '../../components/Accordion/Accordion'
 import { useTheme } from '../../hooks/useTheme'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import TodoApp from '../../components/Todo/TodoApp'
 
-export default function TodoPage({
-  heading,
-  text,
-  type,
-  language,
-}: {
-  heading: string
-  text: string
-  type: string
-  language: ELanguages
-}) {
+export default function TodoPage({ type }: { type: string }) {
   const { t } = useLanguageContext()
 
   const lightMode = useTheme()
@@ -51,7 +40,6 @@ export default function TodoPage({
             <div>
               <div className="medium flex column gap">
                 <Accordion
-                  language={language}
                   text={t('ClickHereToSeeFeatures')}
                   className="features"
                   wrapperClass="features-wrap"
@@ -87,7 +75,7 @@ export default function TodoPage({
             <div>
               <div className="flex column gap">
                 <h2>{t('TodoApp')}</h2>
-                <TodoApp language={language} />
+                <TodoApp />
               </div>
             </div>
           </section>

@@ -1,5 +1,4 @@
-import { FC, FormEvent, useContext } from 'react'
-import { ELanguages } from '../../types'
+import { FC, FormEvent } from 'react'
 import Accordion from '../Accordion/Accordion'
 import styles from './poems.module.css'
 import useLocalStorage from '../../hooks/useStorage'
@@ -7,12 +6,8 @@ import { getPoem, PoemItem } from './services/poems'
 import Poem from './Poem'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 
-interface Props {
-  language: ELanguages
-}
-
-const Poems: FC<Props> = ({ language }) => {
-  const { t } = useLanguageContext()
+const Poems: FC = () => {
+  const { t, language } = useLanguageContext()
 
   const [poem, setPoem] = useLocalStorage<PoemItem>('Stored-Poem', {
     title: '',
@@ -32,7 +27,6 @@ const Poems: FC<Props> = ({ language }) => {
     <section className={`card ${styles['poem-section']}`}>
       <div>
         <Accordion
-          language={language}
           id="search-poem"
           className="poem-accordion"
           wrapperClass={styles.accordion}
@@ -44,13 +38,12 @@ const Poems: FC<Props> = ({ language }) => {
             <p className="textcenter">
               ({t('Note')} {t('InEnglish')})
             </p>
-            <form onSubmit={fetchPoem}>
+            <form onSubmit={e => void fetchPoem(e)}>
               <button className={styles['accordion-submit']} type="submit">
                 {t('Search')}
               </button>
             </form>
-            {!poem ||
-              !poem.lines ||
+            {!poem?.lines ||
               (poem.lines.length < 1 && (
                 <div
                   className={styles['accordion-paragraph-wrap']}
@@ -61,7 +54,7 @@ const Poems: FC<Props> = ({ language }) => {
                     margin: '2em auto 0',
                   }}
                 >
-                  <Poem poem={poem} language={language} />
+                  <Poem poem={poem} />
                 </div>
               ))}
           </>

@@ -1,4 +1,5 @@
-import React, { useRef, useEffect, useState, useContext } from 'react'
+import React, { useRef, useEffect, useState, useCallback } from 'react'
+import { getErrorMessage } from '../../utils'
 import { ITaskDraggable } from './components/TodoList'
 import { v4 as uuidv4 } from 'uuid'
 import { generateOptions, ITask, TCategory, TPriority } from './types'
@@ -23,7 +24,7 @@ import { notify } from '../../reducers/notificationReducer'
 import { useSelector } from 'react-redux'
 import { initializeUser } from '../../reducers/authReducer'
 import { RootState } from '../../store'
-import { ELanguages, ReducerProps } from '../../types'
+import { ReducerProps } from '../../types'
 import { Select } from '../Select/Select'
 import { IoMdAdd } from 'react-icons/io'
 import { useLanguageContext } from '../../contexts/LanguageContext'
@@ -33,14 +34,11 @@ import TodoList from './components/TodoList'
 
 const maxCharacters = 300
 
-interface Props {
-  language: ELanguages
-}
-export default function TodoApp({ language }: Props) {
+export default function TodoApp() {
   const isClient = useIsClient()
   const windowObj = useWindow()
 
-  const { t } = useLanguageContext()
+  const { t, language } = useLanguageContext()
   const confirm = useConfirm()
 
   const dispatch = useAppDispatch()
@@ -49,16 +47,19 @@ export default function TodoApp({ language }: Props) {
     return state.auth?.user
   })
 
-  useEffect(() => {
-    dispatch(initializeUser())
-  }, [])
+  const initialize = useCallback(async () => {
+    await dispatch(initializeUser())
+  }, [dispatch])
 
-  const todos = useSelector((state: RootState) => state.todos.todos) as ITask[]
+  useEffect(() => {
+    void initialize()
+  }, [initialize])
+
+  const todos = useSelector((state: RootState) => state.todos.todos)
   const status = useSelector((state: RootState) => state.todos.status)
   const error = useSelector((state: RootState) => state.todos.error)
 
   const [priority, setPriority] = useState<TPriority>('low')
-  const [deadline, setDeadline] = useState<string>('')
   const [category, setCategory] = useState<TCategory>('other')
 
   const [filterPriority, setFilterPriority] = useState<TPriority>('all')
@@ -71,23 +72,26 @@ export default function TodoApp({ language }: Props) {
   useEffect(() => {
     if (!isClient || !windowObj) return
     if (todos.length === 0 && !user) {
-      const storedTodos = JSON.parse(
-        windowObj.localStorage.getItem(localName) || '[]'
-      )
+      const storedTodosUnknown = JSON.parse(
+        windowObj.localStorage.getItem(localName) ?? '[]'
+      ) as unknown
+      let storedTodos: ITask[] = []
+      if (Array.isArray(storedTodosUnknown))
+        storedTodos = storedTodosUnknown as ITask[]
       const existingTodoKeys = new Set(todos.map(todo => todo.key))
-      storedTodos.forEach((todo: any) => {
+      storedTodos.forEach((todo: ITask) => {
         if (!existingTodoKeys.has(todo.key)) {
-          dispatch(addTodo(todo))
+          void dispatch(addTodo(todo))
         }
       })
     }
-  }, [dispatch, todos, user, isClient])
+  }, [dispatch, todos, user, isClient, windowObj])
 
   useEffect(() => {
     if (!isClient || !windowObj) return
     // Save todos to local storage whenever they change
     windowObj.localStorage.setItem(localName, JSON.stringify(todos))
-  }, [todos, isClient])
+  }, [todos, isClient, windowObj])
 
   const findDuplicates = (todos: ITask[]) => {
     const seenKeys = new Set()
@@ -102,20 +106,23 @@ export default function TodoApp({ language }: Props) {
     return duplicates
   }
 
-  const deleteTodoHandler = (key: ITask['key']) => {
-    if (!key) {
-      dispatch(notify(`Error: no key`, true, 8))
-      return
-    }
-    if (user?._id) {
-      dispatch(deleteTodoAsync(user._id, key))
-    } else {
-      dispatch(deleteTodoFromState(key))
-      const updatedTodos = todos.filter(todo => todo.key !== key)
-      if (!isClient || !windowObj) return
-      windowObj.localStorage.setItem(localName, JSON.stringify(updatedTodos))
-    }
-  }
+  const deleteTodoHandler = useCallback(
+    (key: ITask['key']) => {
+      if (!key) {
+        void dispatch(notify(`Error: no key`, true, 8))
+        return
+      }
+      if (user?._id) {
+        void dispatch(deleteTodoAsync(user._id, key))
+      } else {
+        void dispatch(deleteTodoFromState(key))
+        const updatedTodos = todos.filter(todo => todo.key !== key)
+        if (!isClient || !windowObj) return
+        windowObj.localStorage.setItem(localName, JSON.stringify(updatedTodos))
+      }
+    },
+    [dispatch, user?._id, todos, isClient, windowObj]
+  )
 
   useEffect(() => {
     const duplicates = findDuplicates(todos)
@@ -126,7 +133,7 @@ export default function TodoApp({ language }: Props) {
         uniqueKeys.add(duplicate.key)
       }
     })
-  }, [todos])
+  }, [todos, dispatch]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [todosWithIdAndStatus, setTodosWithIdAndStatus] = useState<
     ITaskDraggable[]
@@ -149,7 +156,7 @@ export default function TodoApp({ language }: Props) {
       }) as ITaskDraggable[]
 
     setTodosWithIdAndStatus(newTodosWithIdAndStatus)
-  }, [todos, filterPriority, filterCategory])
+  }, [todos, filterPriority, filterCategory, filteredTodos])
 
   const filterPriorityTypes: TPriority[] = ['all', 'low', 'medium', 'high']
   const filterCategoryTypes: TCategory[] = [
@@ -173,7 +180,7 @@ export default function TodoApp({ language }: Props) {
 
   useEffect(() => {
     if (status === 'failed') {
-      dispatch(notify(`There was an error: ${error}`, true, 8))
+      void dispatch(notify(`There was an error: ${error}`, true, 8))
     }
   }, [status, error, dispatch])
 
@@ -181,32 +188,31 @@ export default function TodoApp({ language }: Props) {
 
   useEffect(() => {
     if (user?._id) {
-      dispatch(syncTodos(user._id))
+      void dispatch(syncTodos(user._id))
         .then(() => {
-          dispatch(fetchTodos(user._id))
+          void dispatch(fetchTodos(user._id))
         })
-        .catch(e => {
-          console.error(e)
-          if (e.response?.data?.message)
-            dispatch(notify(e.response.data.message, true, 8))
-          else dispatch(notify(`${e.message}`, true, 8))
+        .catch((err: unknown) => {
+          console.error(err)
+          const message = getErrorMessage(err, t('Error'))
+          void dispatch(notify(message, true, 8))
         })
     }
-  }, [user?._id])
+  }, [user?._id, dispatch, t])
 
   function toggleTodo(key: string | undefined) {
     const todo = todos.find(todo => todo.key === key)
     if (todo) {
       const updatedTodo = { ...todo, complete: !todo.complete }
       if (user) {
-        dispatch(editTodoAsync(user._id, key as ITask['key'], updatedTodo))
+        void dispatch(editTodoAsync(user._id, key!, updatedTodo))
       } else {
-        dispatch(editTodo(updatedTodo))
+        void dispatch(editTodo(updatedTodo))
       }
     }
   }
 
-  const modifyTodo = async (
+  const modifyTodo = (
     key: string | undefined,
     name: string | undefined,
     priority: TPriority,
@@ -215,7 +221,7 @@ export default function TodoApp({ language }: Props) {
   ) => {
     setSending(true)
     if (!key) {
-      dispatch(notify(`Error: no key`, true, 8))
+      void dispatch(notify(`Error: no key`, true, 8))
       setSending(false)
       return
     }
@@ -223,20 +229,19 @@ export default function TodoApp({ language }: Props) {
     if (todo) {
       const updatedTodo = { ...todo, name: name, priority, deadline, category }
       if (user) {
-        await dispatch(editTodoAsync(user._id, key, updatedTodo as ITask))
+        void dispatch(editTodoAsync(user._id, key, updatedTodo as ITask))
           .then(() => {
-            dispatch(notify(`${t('Updated')}`, false, 3))
+            void dispatch(notify(`${t('Updated')}`, false, 3))
             setSending(false)
           })
-          .catch(e => {
-            console.error(e)
-            if (e.response?.data?.message)
-              dispatch(notify(e.response.data.message, true, 8))
-            else dispatch(notify(`${e}`, true, 8))
+          .catch((err: unknown) => {
+            console.error(err)
+            const message = getErrorMessage(err, t('Error'))
+            void dispatch(notify(message, true, 8))
             setSending(false)
           })
       } else {
-        dispatch(editTodo(updatedTodo as ITask))
+        void dispatch(editTodo(updatedTodo as ITask))
         const updatedTodos = todos.map(todo =>
           todo.key === key ? updatedTodo : todo
         )
@@ -251,26 +256,24 @@ export default function TodoApp({ language }: Props) {
     order: { key: ITask['key']; order: ITask['order'] }[]
   ) => {
     if (user) {
-      dispatch(async dispatch => {
-        try {
-          await editTodoOrder(user._id, order).then(() => {
-            dispatch(fetchTodos(user._id))
+      void dispatch(async dispatch => {
+        await editTodoOrder(user._id, order)
+          .then(() => {
+            void dispatch(fetchTodos(user._id))
           })
-        } catch (e: any) {
-          console.error(e)
-          if (e.response?.data?.message)
-            dispatch(notify(e.response.data.message, true, 8))
-          else dispatch(notify(`${e}`, true, 8))
-        }
+          .catch((err: unknown) => {
+            console.error(err)
+            const message = getErrorMessage(err, t('Error'))
+            void dispatch(notify(message, true, 8))
+          })
       })
     } else {
       try {
-        dispatch(changeTodoOrder(order))
-      } catch (e: any) {
-        console.error(e)
-        if (e.response?.data?.message)
-          dispatch(notify(e.response.data.message, true, 8))
-        else dispatch(notify(`${e}`, true, 8))
+        void dispatch(changeTodoOrder(order))
+      } catch (err: unknown) {
+        console.error(err)
+        const message = getErrorMessage(err, t('Error'))
+        void dispatch(notify(message, true, 8))
       } finally {
         if (!isClient || !windowObj) return
         windowObj.localStorage.setItem(localName, JSON.stringify(todos))
@@ -285,14 +288,15 @@ export default function TodoApp({ language }: Props) {
     e.preventDefault()
     setSending(true)
     // const name = todoNameRef.current?.value ?? ''
-    if (name === '') {
+    if (name.trim() === '') {
       setSending(false)
-      dispatch(notify(t('AddTask'), true, 3))
+      void dispatch(notify(t('AddTask'), true, 3))
       return
-    }
-    if (name.length > maxCharacters) {
+    } else if (name.length > maxCharacters) {
       setSending(false)
-      dispatch(notify(`${t('NameTooLong')} (${maxCharacters} max)`, true, 8))
+      void dispatch(
+        notify(`${t('NameTooLong')} (${maxCharacters} max)`, true, 8)
+      )
       return
     }
     const key = uuidv4()
@@ -313,7 +317,7 @@ export default function TodoApp({ language }: Props) {
         complete: false,
         order: minOrder - 1,
         priority,
-        deadline,
+        deadline: '',
         category,
       }
     } else
@@ -323,12 +327,13 @@ export default function TodoApp({ language }: Props) {
         complete: false,
         order: maxOrder + 1,
         priority,
-        deadline,
+        deadline: '',
         category,
       }
     if (user) {
-      dispatch(addTodoAsync(user._id, newTodo))
+      void dispatch(addTodoAsync(user._id, newTodo))
       setSending(false)
+      setName('')
     } else {
       const updatedTodos = [...todos, newTodo]
         .sort((a, b) => a.order - b.order)
@@ -336,13 +341,13 @@ export default function TodoApp({ language }: Props) {
           ...todo,
           order: index,
         }))
-      dispatch(setAllTodos(updatedTodos))
+      void dispatch(setAllTodos(updatedTodos))
       setAllTodos(updatedTodos)
       setSending(false)
       if (!isClient || !windowObj) return
       windowObj.localStorage.setItem(localName, JSON.stringify(updatedTodos))
+      setName('')
     }
-    if (todoNameRef.current) todoNameRef.current.value = ''
   }
 
   async function handleClearTodos(
@@ -355,7 +360,7 @@ export default function TodoApp({ language }: Props) {
       if (user) {
         await dispatch(clearCompletedTodosAsync(user._id))
       } else {
-        dispatch(clearCompletedTodos())
+        void dispatch(clearCompletedTodos())
         const updatedTodos = todos.filter(todo => !todo.complete)
         if (!isClient || !windowObj) return
         windowObj.localStorage.setItem(localName, JSON.stringify(updatedTodos))
@@ -364,20 +369,20 @@ export default function TodoApp({ language }: Props) {
   }
   function deleteTodo(key: string | undefined) {
     if (!key) {
-      dispatch(notify(`Error: no key`, true, 8))
+      void dispatch(notify(`Error: no key`, true, 8))
       return
     }
     if (user?._id) {
-      dispatch(deleteTodoAsync(user._id, key))
+      void dispatch(deleteTodoAsync(user._id, key))
     } else {
-      dispatch(deleteTodoFromState(key))
+      void dispatch(deleteTodoFromState(key))
       let updatedTodos = todos.filter(todo => todo.key !== key)
       // Reassign order to ensure there are no gaps
       updatedTodos = updatedTodos.map((todo, index) => ({
         ...todo,
         order: index + 1,
       }))
-      dispatch(setAllTodos(updatedTodos))
+      void dispatch(setAllTodos(updatedTodos))
       if (!isClient || !windowObj) return
       windowObj.localStorage.setItem(localName, JSON.stringify(updatedTodos))
     }
@@ -385,7 +390,7 @@ export default function TodoApp({ language }: Props) {
 
   return (
     <>
-      <form onSubmit={handleAddTodo} className={styles['form']}>
+      <form onSubmit={handleAddTodo} className={styles.form}>
         <fieldset>
           <legend className="scr">{t('AddTaskToTheTaskList')}</legend>
           <div className={styles['todo-input-area']}>
@@ -413,11 +418,11 @@ export default function TodoApp({ language }: Props) {
             <Select
               z={todosWithIdAndStatus.length + 5}
               id="category"
-              className={`${styles['select']} ${styles['category-select']}`}
+              className={`${styles.select} ${styles['category-select']}`}
               hideDelete
               instructions={t('SelectCategory')}
               value={
-                categoryOptions.find(o => o.value === category) ||
+                categoryOptions.find(o => o.value === category) ??
                 categoryOptions[0]
               }
               onChange={o => setCategory(o?.value as TCategory)}
@@ -426,11 +431,11 @@ export default function TodoApp({ language }: Props) {
             />
             <Select
               id="priority"
-              className={styles['select']}
+              className={styles.select}
               hideDelete
               instructions={t('SelectPriority')}
               value={
-                priorityOptions.find(o => o.value === priority) ||
+                priorityOptions.find(o => o.value === priority) ??
                 priorityOptions[0]
               }
               onChange={o => setPriority(o?.value as TPriority)}
@@ -453,11 +458,11 @@ export default function TodoApp({ language }: Props) {
       <div className={styles['controls-wrap']}>
         <Select
           id="category-filter"
-          className={`${styles['select']} ${styles['category-select']}`}
+          className={`${styles.select} ${styles['category-select']}`}
           hideDelete
           instructions={t('FilterByCategory')}
           value={
-            filterCategoryOptions.find(o => o.value === filterCategory) ||
+            filterCategoryOptions.find(o => o.value === filterCategory) ??
             filterCategoryOptions[0]
           }
           onChange={o => setFilterCategory(o?.value as string)}
@@ -467,11 +472,11 @@ export default function TodoApp({ language }: Props) {
         />
         <Select
           id="priority-filter"
-          className={styles['select']}
+          className={styles.select}
           hideDelete
           instructions={t('FilterByPriority')}
           value={
-            filterPriorityOptions.find(o => o.value === filterPriority) ||
+            filterPriorityOptions.find(o => o.value === filterPriority) ??
             filterPriorityOptions[0]
           }
           onChange={o => setFilterPriority(o?.value as TPriority)}
@@ -484,7 +489,7 @@ export default function TodoApp({ language }: Props) {
           className={`danger ${styles['clear-completed']}`}
           disabled={!hasCompletedTasks}
           onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
-            handleClearTodos(e)
+            void handleClearTodos(e)
           }
         >
           {t('ClearCompleted')}
@@ -507,7 +512,6 @@ export default function TodoApp({ language }: Props) {
           todosWithIdAndStatus={todosWithIdAndStatus}
           toggleTodo={toggleTodo}
           deleteTodo={deleteTodo}
-          language={language}
           modifyTodo={modifyTodo}
           modifyTodoOrder={modifyTodoOrder}
           priorityOptions={priorityOptions}

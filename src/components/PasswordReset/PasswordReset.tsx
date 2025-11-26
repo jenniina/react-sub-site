@@ -1,18 +1,16 @@
-import { useState, FormEvent, useContext } from 'react'
+import { useState, FormEvent } from 'react'
 import { RiMailSendLine } from 'react-icons/ri'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import { forgot } from '../../reducers/usersReducer'
-import { ELanguages } from '../../types'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 
 interface Props {
-  language: ELanguages
   text?: string
 }
 
-const PasswordReset = ({ language, text }: Props) => {
-  const { t } = useLanguageContext()
+const PasswordReset = ({ text }: Props) => {
+  const { t, language } = useLanguageContext()
 
   const dispatch = useAppDispatch()
 
@@ -22,28 +20,25 @@ const PasswordReset = ({ language, text }: Props) => {
   const handleForgot = async (event: FormEvent) => {
     event.preventDefault()
     setSending(true)
-    dispatch(notify(`${t('SendingEmail')}`, false, 2))
+    void dispatch(notify(`${t('SendingEmail')}`, false, 2))
 
     if (username) {
       await dispatch(forgot(username, language))
         .then(r => {
-          dispatch(notify(r.message || t('EmailSent'), false, 3))
+          void dispatch(notify(r.message ?? t('EmailSent'), false, 3))
           setSending(false)
         })
-        .catch(e => {
-          dispatch(notify(t('EmailSent'), false, 3))
+        .catch(() => {
+          void dispatch(notify(t('EmailSent'), false, 3))
           setSending(false)
-          // console.error(e)
-          // if (e.code === 'ERR_NETWORK') {
-          //   dispatch(notify(`${t('Error')}: ${e.message}`, true, 8))
-          // } else if (e.code === 'ERR_BAD_REQUEST')
-          //   dispatch(notify(`${t('Error')}: ${e.response.data.message}`, true, 8))
           // else {
-          //   dispatch(notify(`${t('Error')}: ${e.message}`, true, 8))
+          //  void dispatch(notify(`${t('Error')}: ${e.message}`, true, 8))
           // }
         })
     } else {
-      dispatch(notify(`${t('Error')}: ${t('Email')} ${t('Password')}`, true, 8))
+      void dispatch(
+        notify(`${t('Error')}: ${t('Email')} ${t('Password')}`, true, 8)
+      )
       setSending(false)
     }
   }
@@ -52,7 +47,7 @@ const PasswordReset = ({ language, text }: Props) => {
     <>
       <h2>{t('ForgotPassword')}</h2>
 
-      <form onSubmit={handleForgot} className="forgot">
+      <form onSubmit={e => void handleForgot(e)} className="forgot">
         <div className="input-wrap">
           <label>
             <input

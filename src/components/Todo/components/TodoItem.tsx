@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { ELanguages } from '../../../types'
+import React, { useEffect, useState } from 'react'
 import styles from '../css/todo.module.css'
 import { ITaskDraggable } from './TodoList'
 import { TCategory, TPriority } from '../types'
@@ -18,15 +17,14 @@ import { notify } from '../../../reducers/notificationReducer'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 import { useConfirm } from '../../../contexts/ConfirmContext'
 import { useIsClient, useWindow } from '../../../hooks/useSSR'
+import ButtonToggle from '../../ButtonToggle/ButtonToggle'
 
 export default function Todo({
   todo,
   toggleTodo,
   deleteTodo,
-  language,
   modifyTodo,
   isDragging,
-  handleUpdate,
   handleDragging,
   sending,
   priorityOptions,
@@ -37,7 +35,6 @@ export default function Todo({
   todo: ITaskDraggable | undefined
   toggleTodo: (key: string | undefined) => void
   deleteTodo: (key: string | undefined) => void
-  language: ELanguages
   modifyTodo: (
     key: string | undefined,
     name: string | undefined,
@@ -46,7 +43,6 @@ export default function Todo({
     category: string
   ) => void
   isDragging: boolean
-  handleUpdate: (id: number, status: string, target?: number) => void
   handleDragging: (dragging: boolean) => void
   sending: boolean
   priorityOptions: SelectOption[]
@@ -57,14 +53,14 @@ export default function Todo({
   const isClient = useIsClient()
   const windowObj = useWindow()
 
-  const { t } = useLanguageContext()
+  const { t, language } = useLanguageContext()
   const confirm = useConfirm()
 
   const dispatch = useAppDispatch()
   const [newName, setNewName] = useState(todo?.name ?? '')
   const [showDeadline, setShowDeadline] = useState(false)
   const [newPriority, setNewPriority] = useState<TPriority>(
-    todo?.priority || 'low'
+    todo?.priority ?? 'low'
   )
   const [newDay, setNewDay] = useState<string>(
     todo?.deadline
@@ -83,7 +79,7 @@ export default function Todo({
     newDay && newMonth && newYear ? `${newYear}-${newMonth}-${newDay}` : ''
 
   const [newCategory, setNewCategory] = useState<TCategory>(
-    todo?.category || 'other'
+    todo?.category ?? 'other'
   )
   const [isOpen, setIsOpen] = useState(false)
 
@@ -97,46 +93,56 @@ export default function Todo({
       })
     ) {
       setNewName('')
-      deleteTodo(todo?.key)
+      // deleteTodo is a synchronous prop (dispatches actions). Call it and
+      // close modal immediately rather than awaiting a non-Promise.
+      void deleteTodo(todo?.key)
       setIsOpen(false)
     }
   }
   const handleModify = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (newName === '') {
-      dispatch(notify(t('AddTask'), true, 5))
+      void dispatch(notify(t('AddTask'), true, 5))
       return
     }
     if (newName.length > maxCharacters) {
-      dispatch(notify(t('NameTooLong'), true, 5))
+      void dispatch(notify(t('NameTooLong'), true, 5))
       return
     }
-    modifyTodo(todo?.key, newName, newPriority, combinedDeadline, newCategory)
+    // modifyTodo is a synchronous prop (dispatches actions). Call it directly
+    // instead of awaiting a non-Promise value.
+    void modifyTodo(
+      todo?.key,
+      newName,
+      newPriority,
+      combinedDeadline,
+      newCategory
+    )
     setIsOpen(false)
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setNewName(e.target.value)
-  }
+  // input change is handled via controlled props passed to the modal; no local handler needed
 
   useEffect(() => {
-    if (todo?.deadline) {
-      setShowDeadline(true)
-    }
-  }, [todo])
+    if (!todo?.deadline) return
+    const t = window.setTimeout(() => setShowDeadline(true), 0)
+    return () => clearTimeout(t)
+  }, [todo?.deadline])
 
   useEffect(() => {
-    // Ensure input values are always synchronized with todo props
-    if (todo?.name !== newName) {
-      setNewName(todo?.name || '')
-    }
-    if (todo?.deadline) {
-      const deadlineDate = new Date(todo.deadline)
-      setNewDay(deadlineDate.getDate().toString().padStart(2, '0'))
-      setNewMonth((deadlineDate.getMonth() + 1).toString().padStart(2, '0'))
-      setNewYear(deadlineDate.getFullYear().toString())
-    }
-  }, [todo])
+    // Don't overwrite local edits while the modal is open.
+    if (!todo || isOpen) return
+    const t = window.setTimeout(() => {
+      setNewName(todo?.name ?? '')
+      if (todo?.deadline) {
+        const deadlineDate = new Date(todo.deadline)
+        setNewDay(deadlineDate.getDate().toString().padStart(2, '0'))
+        setNewMonth((deadlineDate.getMonth() + 1).toString().padStart(2, '0'))
+        setNewYear(deadlineDate.getFullYear().toString())
+      }
+    }, 0)
+    return () => clearTimeout(t)
+  }, [todo, isOpen])
 
   const [allowDrag, setAllowDrag] = useState(true)
   const [isSelectingText, setIsSelectingText] = useState(false)
@@ -166,7 +172,11 @@ export default function Todo({
     }
   }
 
-  const handleLabelClick = (e: React.MouseEvent<HTMLLabelElement>) => {
+  const handleLabelClick = (
+    e:
+      | React.MouseEvent<HTMLLabelElement>
+      | React.KeyboardEvent<HTMLLabelElement>
+  ) => {
     if (isSelectingText) {
       e.preventDefault()
     }
@@ -184,7 +194,7 @@ export default function Todo({
           if (allowDrag) {
             e.dataTransfer.setData(
               'application/my-app',
-              todo?.order?.toString() as string
+              String(todo?.order ?? '')
             )
             handleDragging(true)
           } else {
@@ -193,25 +203,73 @@ export default function Todo({
         }}
         onDragEnd={() => handleDragging(false)}
       >
-        <span
+        <button
+          type="button"
           onMouseOver={handleMouseOverHandle}
+          onFocus={handleMouseOverHandle}
           onMouseDown={handleMouseDown}
           className={`${styles['drag-handle']} tooltip-wrap`}
+          aria-label={t('Draggable')}
         >
           <MdDragIndicator />
           <span className="tooltip narrow2 below right">{t('Draggable')}</span>
-        </span>
-        <label onClick={handleLabelClick}>
-          <input
-            type="checkbox"
-            id={`check_${sanitize(todo?.name)}`}
-            checked={todo?.complete ?? false}
-            onChange={handleTodoClick}
-          />
+        </button>
+        {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
+        <label
+          className={`${styles.label}`}
+          onClick={handleLabelClick}
+          onKeyDown={e => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              handleLabelClick(e)
+            }
+          }}
+        >
+          <div className={`tooltip-wrap ${styles['toggle-wrap']}`}>
+            <ButtonToggle
+              equal={true}
+              name="complete"
+              wrapperClass={styles['rotate-toggle']}
+              onChange={handleTodoClick}
+              id={`check_${sanitize(todo?.name)}`}
+              isChecked={todo?.complete ?? false}
+              label={`${t('MarkCompleted')}: `}
+              on={t('Complete')}
+              off={t('Incomplete')}
+              hideLabel={true}
+              hideOnOff={true}
+            />
+            {/* <input
+              type="checkbox"
+              id={`check_${sanitize(todo?.name)}`}
+              checked={todo?.complete ?? false}
+              onChange={handleTodoClick}
+            /> */}
+            <span className="tooltip narrow2 below right">
+              {t('MarkCompleted')}
+            </span>
+          </div>
           <span
+            role="button"
+            tabIndex={0}
             onMouseOver={handleMouseOverSpan}
+            onFocus={handleMouseOverSpan}
             onMouseDown={handleMouseDownSpan}
             onMouseUp={handleMouseUpSpan}
+            onKeyDown={e => {
+              // Support keyboard users for the selection/dragging affordance
+              if (e.key === ' ' || e.key === 'Enter') {
+                e.preventDefault()
+                setAllowDrag(false)
+                setIsSelectingText(true)
+              }
+            }}
+            onKeyUp={e => {
+              if (e.key === ' ' || e.key === 'Enter') {
+                setAllowDrag(true)
+                setIsSelectingText(false)
+              }
+            }}
           >
             {todo?.name}
           </span>
@@ -230,9 +288,9 @@ export default function Todo({
 
                 return (
                   <span
-                    className={`${styles['deadline']} ${
-                      isOverdue ? styles['overdue'] : ''
-                    } ${isToday ? styles['today'] : ''}`}
+                    className={`${styles.deadline} ${
+                      isOverdue ? styles.overdue : ''
+                    } ${isToday ? styles.today : ''}`}
                   >
                     {t('Deadline')}:{' '}
                     {isToday
@@ -246,57 +304,6 @@ export default function Todo({
                 )
               })()}
           </div>
-          {/* <div className={`${styles['more-info-wrap']}`}>
-            {todo?.category && (
-              <span>
-                {t('Category')}:{' '}
-                {translate(translationMap, todo?.category, language)}
-              </span>
-            )}
-
-            {todo?.priority && todo?.category && <span aria-hidden='true'> | </span>}
-
-            {todo?.priority && (
-              <span>
-                {t('Priority')}:{' '}
-                {translate(translationMap, todo?.priority, language)}
-              </span>
-            )}
-
-            {todo?.deadline && todo?.deadline !== '' && todo?.priority && (
-              <span aria-hidden='true'> | </span>
-            )}
-
-            {todo?.deadline &&
-              todo?.deadline !== '' &&
-              (() => {
-                const deadlineDate = new Date(todo.deadline)
-                const today = new Date()
-
-                deadlineDate.setHours(0, 0, 0, 0)
-                today.setHours(0, 0, 0, 0)
-
-                const isOverdue = deadlineDate < today
-                const isToday = deadlineDate.getTime() === today.getTime()
-
-                return (
-                  <span
-                    className={`${styles['deadline']} ${
-                      isOverdue ? styles['overdue'] : ''
-                    } ${isToday ? styles['today'] : ''}`}
-                  >
-                    {t('Deadline')}:{' '}
-                    {isToday
-                      ? t('Today')
-                      : new Date(todo.deadline).toLocaleDateString(language, {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                        })}
-                  </span>
-                )
-              })()}
-          </div> */}
         </label>
 
         <div className={`${styles['btn-wrap']}`}>
@@ -378,7 +385,7 @@ export default function Todo({
 
           <button
             onClick={() => setIsOpen(true)}
-            className={`${styles['edit']} tooltip-wrap`}
+            className={`${styles.edit} tooltip-wrap`}
             disabled={todo?.complete ?? false}
           >
             <AiOutlineEdit />
@@ -388,8 +395,10 @@ export default function Todo({
             </span>
           </button>
           <button
-            className={`${styles['delete']} tooltip-wrap`}
-            onClick={isOpen ? () => setIsOpen(false) : handleDelete}
+            className={`${styles.delete} tooltip-wrap`}
+            onClick={
+              isOpen ? () => setIsOpen(false) : () => void handleDelete()
+            }
           >
             <span className={styles['delete-inner']} aria-hidden="true">
               &times;
@@ -404,7 +413,6 @@ export default function Todo({
         {isOpen && (
           <TodoItemModal
             title={todo?.name}
-            language={language}
             handleModify={handleModify}
             newName={newName}
             setNewName={setNewName}

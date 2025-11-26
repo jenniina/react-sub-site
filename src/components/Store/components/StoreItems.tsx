@@ -1,4 +1,4 @@
-import { FC, ReactNode, useContext } from 'react'
+import { FC, ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import styles from '../store.module.css'
 import { FaWordpress, FaReact, FaNodeJs } from 'react-icons/fa'
@@ -15,7 +15,6 @@ import { useLanguageContext } from '../../../contexts/LanguageContext'
 import { useConfirm } from '../../../contexts/ConfirmContext'
 
 interface Props {
-  language: ELanguages
   items: ICartItem[]
   name: string
   id: string
@@ -27,7 +26,6 @@ interface Props {
 }
 
 const StoreItems: FC<Props> = ({
-  language,
   items,
   name,
   id,
@@ -37,7 +35,7 @@ const StoreItems: FC<Props> = ({
   intro,
   link,
 }) => {
-  const { t } = useLanguageContext()
+  const { t, language } = useLanguageContext()
   const confirm = useConfirm()
 
   const dispatch = useAppDispatch()
@@ -85,21 +83,14 @@ const StoreItems: FC<Props> = ({
             )}
             {link && (
               <div
-                className={styles['links']}
+                className={styles.links}
                 style={{ marginTop: 0, minWidth: '100%' }}
               >
                 {link}
               </div>
             )}
 
-            <AdditionalInfo
-              type={id}
-              language={language}
-              styles={styles}
-              classNameWrap={styles['additional-information']}
-              isOpen={true}
-              setIsFormOpen={() => {}}
-            />
+            <AdditionalInfo type={id} styles={styles} />
 
             {items.map(item => (
               <div
@@ -131,15 +122,17 @@ const StoreItems: FC<Props> = ({
                         <span>{t('AddedToCart')}</span>{' '}
                         <button
                           className={`${styles['remove-from-cart']} danger delete`}
-                          onClick={async () => {
-                            if (
-                              await confirm({
-                                message: `${t('Remove')} ${item.name} ${t(
-                                  'Cart'
-                                )}?`,
-                              })
-                            )
-                              removeFromCart(item.id)
+                          onClick={() => {
+                            void (async () => {
+                              if (
+                                await confirm({
+                                  message: `${t('Remove')} ${item.name} ${t(
+                                    'Cart'
+                                  )}?`,
+                                })
+                              )
+                                removeFromCart(item.id)
+                            })()
                           }}
                         >
                           {t('Remove')}
@@ -159,10 +152,14 @@ const StoreItems: FC<Props> = ({
                             ...item,
                             quantity: existingItemInCart.quantity + 1,
                           })
-                          dispatch(notify(`${t('SavingSuccessful')}`, false, 3))
+                          void dispatch(
+                            notify(`${t('SavingSuccessful')}`, false, 3)
+                          )
                         } else {
                           addToCart({ ...item, quantity: 1 })
-                          dispatch(notify(`${t('SavingSuccessful')}`, false, 3))
+                          void dispatch(
+                            notify(`${t('SavingSuccessful')}`, false, 3)
+                          )
                         }
                       }}
                     >

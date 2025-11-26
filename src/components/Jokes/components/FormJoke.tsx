@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 //import Joke from './Joke'
 import { Select } from '../../Select/Select'
 import { SelectOption } from '../../Select/Select'
@@ -21,14 +21,12 @@ interface Props {
   jokeCategory: ECategories | null
   setJokeCategory: (jokeCategory: ECategories) => void
   setQueryValue: (queryValue: string) => void
-  setLanguage: (language: ELanguages) => void
   optionsCategory: (enumObj: TCategoryByLanguages) => SelectOption[]
   setQuery: (query: string) => void
   categoryByLanguages: TCategoryByLanguages
   categoryValues: SelectOption[]
   setCategoryValues: (categoryValues: SelectOption[]) => void
   query: string
-  language: ELanguages
   joke: string
   delivery?: string
   jokeId: IJoke['jokeId']
@@ -42,7 +40,7 @@ interface Props {
   setVisibleJoke: (visibleJoke: boolean) => void
   handleToggleChangeSafemode: () => void
   handleToggleChangeEJokeType: () => void
-  handleJokeSave: (e: React.FormEvent<HTMLFormElement>) => void
+  handleJokeSave: (e: React.FormEvent<HTMLFormElement>) => Promise<void>
   options: (enumObj: typeof ELanguagesLong) => SelectOption[]
   getKeyByValue: (
     enumObj:
@@ -67,7 +65,7 @@ interface Props {
     jokeId: IJoke['jokeId'],
     language: ELanguages,
     value: string | undefined
-  ) => void
+  ) => Promise<void>
   sending: boolean
 }
 const Form = ({
@@ -77,11 +75,8 @@ const Form = ({
   setCategoryValues,
   setJokeCategory,
   setQueryValue,
-  getKeyByValue,
-  setLanguage,
   setQuery,
   joke,
-  language,
   query,
   delivery,
   jokeId,
@@ -108,21 +103,19 @@ const Form = ({
   handleBlacklistUpdate,
   sending,
 }: Props) => {
-  const { t } = useLanguageContext()
+  const { t, language, setLanguage } = useLanguageContext()
 
   useEffect(() => {
     setTimeout(() => {
       // Set z-index of select containers so that they do not open behind the next select container
       const selectContainers = document
-        ? (document.querySelectorAll(
-            '.select-container'
-          ) as NodeListOf<HTMLDivElement>)
+        ? document.querySelectorAll('.select-container')
         : null
-      const totalContainers = (selectContainers?.length || 0) + 2
+      const totalContainers = (selectContainers?.length ?? 0) + 2
 
       selectContainers?.forEach((container, index) => {
         const zIndex = totalContainers - index
-        container.style.zIndex = `${zIndex}`
+        ;(container as HTMLDivElement).style.zIndex = `${zIndex}`
       })
     }, 500)
   }, [])
@@ -171,7 +164,7 @@ const Form = ({
               label={`${t('SafemodeTitle')}: `}
               on={t('SafeTitle')}
               off={t('UnsafeTitle')}
-              handleToggleChange={handleToggleChangeSafemode}
+              onChange={handleToggleChangeSafemode}
             />
 
             <ButtonToggle
@@ -182,7 +175,7 @@ const Form = ({
               label={`${t('JokeTypeTitle')}: `}
               on={t('TwoPart')}
               off={t('Single')}
-              handleToggleChange={handleToggleChangeEJokeType}
+              onChange={handleToggleChangeEJokeType}
               equal={true}
             />
           </div>
@@ -197,7 +190,7 @@ const Form = ({
             instructions={`${t('SelectACategory')}:`}
             selectAnOption={t('Any')}
             value={categoryValues}
-            options={optionsCategory(categoryByLanguages as any)}
+            options={optionsCategory(categoryByLanguages)}
             onChange={(o: SelectOption[]) => {
               setCategoryValues(o)
               setJokeCategory(o?.map(s => s.value).join(',') as ECategories)
@@ -216,7 +209,7 @@ const Form = ({
           value={selectedNorrisCategory}
           options={norrisCategories}
           onChange={o => {
-            setSelectedNorrisCategory(o as SelectOption)
+            setSelectedNorrisCategory(o)
           }}
         />
 
@@ -259,7 +252,6 @@ const Form = ({
         jokeCategory={jokeCategory}
         setReveal={setReveal}
         handleJokeSave={handleJokeSave}
-        language={language}
         visibleJoke={visibleJoke}
         getCategoryInLanguage={getCategoryInLanguage}
         subCategoryResults={subCategoryResults}

@@ -1,14 +1,9 @@
 import React from 'react'
-import { ELanguages } from '../types'
 import { ICartItem } from '../types/store'
-import { useLanguageContext } from '../contexts/LanguageContext'
 import Cart from '../components/Cart/Cart'
 
 interface CartProps {
-  heading: string
-  text: string
   type: string
-  language: ELanguages
   cart: ICartItem[]
   addToCart: (item: ICartItem | undefined) => void
   editDetails: (itemId: string, details: string) => void
@@ -17,18 +12,13 @@ interface CartProps {
 }
 
 const CartPage: React.FC<CartProps> = ({
-  heading,
-  text,
   type,
-  language,
   cart,
   addToCart,
   removeFromCart,
   editDetails,
   removeCart,
 }) => {
-  const { t } = useLanguageContext()
-
   return (
     <>
       {/* <Helmet prioritizeSeoTags={true}>
@@ -52,7 +42,6 @@ const CartPage: React.FC<CartProps> = ({
           <section className="card" style={{ position: 'relative', zIndex: 2 }}>
             <div>
               <Cart
-                language={language}
                 cart={cart}
                 addToCart={addToCart}
                 removeFromCart={removeFromCart}

@@ -62,7 +62,7 @@ export enum EFlags_fi {
   sexist = 'seksistinen',
   explicit = 'sopimaton',
 }
-export type TFlagsLanguages = {
+export interface TFlagsLanguages {
   en: EFlags_en
   es: EFlags_es
   fr: EFlags_fr
@@ -230,7 +230,7 @@ export const CategoryByLanguagesConst = {
   cs: ECategory_cs,
   fi: ECategory_fi,
 }
-export type CategoryByLanguages = {
+export interface CategoryByLanguages {
   en: ECategory_en
   es: ECategory_es
   fr: ECategory_fr
@@ -291,6 +291,7 @@ export enum EQueryKey {
 
 export interface IJokeCommonFields {
   _id?: string
+  id?: string | undefined
   jokeId: string
   type: EJokeType
   category: ECategories
@@ -326,6 +327,20 @@ export interface IJokeTwoPart extends IJokeCommonFields {
 }
 
 export type IJoke = IJokeSingle | IJokeTwoPart
+
+export interface INorrisJoke {
+  categories: string[]
+  icon_url: string
+  id: string
+  url: string
+  value: string
+}
+
+export interface IDadJoke {
+  id: string
+  joke: string
+  status: number
+}
 
 export interface IJokeType {
   _id?: string
@@ -673,4 +688,23 @@ export enum EJokeDelivery {
   pt = 'Punchline',
   cs = 'Pointe',
   fi = 'Huipennus',
+}
+
+export interface IJokeContent {
+  success: boolean
+  message: string
+  joke: IJoke
+}
+
+export interface IJokeContentError {
+  success: boolean
+  message: string
+  error: unknown
+}
+
+export interface IJokeResponse {
+  success: boolean
+  message: string
+  joke: IJoke | null
+  error?: unknown
 }

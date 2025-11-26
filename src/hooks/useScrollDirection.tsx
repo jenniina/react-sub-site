@@ -26,7 +26,7 @@ export default function useScrollDirection() {
     return () => {
       windowObj.removeEventListener('scroll', updateScrollDirection)
     }
-  }, [scrollDirection, isClient])
+  }, [scrollDirection, isClient, windowObj])
 
   return scrollDirection
 }

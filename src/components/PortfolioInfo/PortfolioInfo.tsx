@@ -1,6 +1,4 @@
-import { useTheme } from '../../hooks/useTheme'
 import { firstToUpperCase } from '../../utils'
-import { ELanguages } from '../../types'
 import styles from '../../pages/css/portfolio.module.css'
 import { Link } from 'react-router-dom'
 import { AiOutlineForm } from 'react-icons/ai'
@@ -13,13 +11,11 @@ import { GrGraphQl } from 'react-icons/gr'
 import { BsMusicNoteBeamed } from 'react-icons/bs'
 import Accordion from '../Accordion/Accordion'
 import MemorySVG from '../Memory/components/MemorySVG'
-import { useContext } from 'react'
+
 import { useLanguageContext } from '../../contexts/LanguageContext'
 
-export default function Portfolio({ language }: { language: ELanguages }) {
+export default function Portfolio() {
   const { t } = useLanguageContext()
-
-  const lightTheme = useTheme()
 
   return (
     <section className={`card ${styles.card}`}>
@@ -39,7 +35,6 @@ export default function Portfolio({ language }: { language: ELanguages }) {
 
           <p>{t('ReactSpecificAppsMadeWithViteAndTypescript')}</p>
           <Accordion
-            language={language}
             text={t('Dependencies')}
             className="dependencies"
             wrapperClass="dependencies-wrap"

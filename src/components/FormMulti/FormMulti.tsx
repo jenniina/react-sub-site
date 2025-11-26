@@ -1,4 +1,4 @@
-import { FormEvent, useState, useRef, useEffect, useContext } from 'react'
+import { FormEvent, useState, useRef, useEffect } from 'react'
 import { RiMailSendLine } from 'react-icons/ri'
 import { useMultistepForm } from './hooks/useMultistepForm'
 import { ELanguages, RefObject } from '../../types'
@@ -12,8 +12,8 @@ import MessageForm from './components/MessageForm'
 import ExtrasForm from './components/ExtrasForm'
 import InitialForm from './components/InitialForm'
 
-function FormMulti({ language }: { language: ELanguages }) {
-  const { t } = useLanguageContext()
+function FormMulti() {
+  const { t, language } = useLanguageContext()
 
   const form = useRef() as RefObject<HTMLFormElement>
 
@@ -37,24 +37,9 @@ function FormMulti({ language }: { language: ELanguages }) {
     next,
     goTo,
   } = useMultistepForm([
-    <InitialForm
-      {...data}
-      updateFields={updateFields}
-      key={`InitialForm`}
-      language={language}
-    />,
-    <MessageForm
-      {...data}
-      updateFields={updateFields}
-      key={`MessageForm`}
-      language={language}
-    />,
-    <ExtrasForm
-      {...data}
-      updateFields={updateFields}
-      key={`ExtrasForm`}
-      language={language}
-    />,
+    <InitialForm {...data} updateFields={updateFields} key={`InitialForm`} />,
+    <MessageForm {...data} updateFields={updateFields} key={`MessageForm`} />,
+    <ExtrasForm {...data} updateFields={updateFields} key={`ExtrasForm`} />,
   ])
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -73,7 +58,7 @@ function FormMulti({ language }: { language: ELanguages }) {
           setTimeout(() => {
             setShowMessage(false)
           }, 100000)
-          dispatch(notify(t('ThankYouForYourMessage'), false, 8))
+          void dispatch(notify(t('ThankYouForYourMessage'), false, 8))
         })
       } catch (error) {
         console.error('error', error)
@@ -119,7 +104,6 @@ function FormMulti({ language }: { language: ELanguages }) {
   useEffect(() => {
     if (popup.current == null || nextButton.current == null) return
     popup.current.style.top = `-2em`
-    return () => {}
   }, [showError])
 
   return (
@@ -131,7 +115,11 @@ function FormMulti({ language }: { language: ELanguages }) {
           )}
         </p>
       )}
-      <form ref={form} onSubmit={handleSubmit} aria-labelledby="steps">
+      <form
+        ref={form}
+        onSubmit={e => void handleSubmit(e)}
+        aria-labelledby="steps"
+      >
         <span id="steps" className={styles.steps}>
           {t('ContactForm')} {t('Part')}&nbsp;
           <span>
@@ -145,13 +133,11 @@ function FormMulti({ language }: { language: ELanguages }) {
               <InitialForm
                 {...data}
                 updateFields={updateFields}
-                language={language}
                 key={`InitialForm2`}
               />
               <MessageForm
                 {...data}
                 updateFields={updateFields}
-                language={language}
                 key={`MessageForm2`}
               />
             </>

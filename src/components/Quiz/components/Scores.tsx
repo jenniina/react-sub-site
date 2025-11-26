@@ -1,24 +1,23 @@
 import { IHighscore } from '../types'
 import styles from '../css/quiz.module.css'
-import { ELanguages } from '../../../types'
 import useWindowSize from '../../../hooks/useWindowSize'
 import { breakpointSmall } from '../../../types'
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 interface Props {
   easy: IHighscore['easy']
   medium: IHighscore['medium']
   hard: IHighscore['hard']
-  language: ELanguages
 }
-const Scores = ({ easy, medium, hard, language }: Props) => {
+const Scores = ({ easy, medium, hard }: Props) => {
   const { t } = useLanguageContext()
 
   const { windowWidth } = useWindowSize()
   const [show, setShow] = useState(true)
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (windowWidth < breakpointSmall) setShow(false)
     else setShow(true)
   }, [windowWidth])

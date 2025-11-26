@@ -3,14 +3,11 @@ import {
   useImperativeHandle,
   forwardRef,
   Ref,
-  JSXElementConstructor,
   ReactElement,
   ReactPortal,
   useEffect,
   ReactNode,
-  useContext,
 } from 'react'
-import { ELanguages } from '../../types'
 import { FaAnglesUp } from 'react-icons/fa6'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 
@@ -20,15 +17,13 @@ interface accordionProps {
   children?:
     | string
     | number
-    | boolean
-    | ReactElement<any, string | JSXElementConstructor<any>>
+    | ReactElement
     | ReactPortal
     | ReactNode
     | null
     | undefined
   isOpen?: boolean
   setIsFormOpen?: (isFormOpen: boolean) => void
-  language: ELanguages
   onClick?: () => void
   id?: string
   hideBrackets?: boolean
@@ -48,15 +43,16 @@ const Accordion = forwardRef(
     const [isAnimating, setIsAnimating] = useState(false)
 
     useEffect(() => {
-      setVisible(props.isOpen || false)
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setVisible(props.isOpen ?? false)
       if (props.setIsFormOpen) {
-        props.setIsFormOpen(props.isOpen || false)
+        props.setIsFormOpen(props.isOpen ?? false)
       }
-    }, [props.isOpen])
+    }, [props])
 
     useEffect(() => {
-      if (visible) props.onClick && props.onClick()
-    }, [visible])
+      if (visible) props.onClick?.()
+    }, [visible, props])
 
     const toggleVisibility = () => {
       if (visible) {

@@ -1,25 +1,27 @@
 import axios from 'axios'
 import { IQuizHighscore } from '../types'
 
-const url = import.meta.env.VITE_BASE_URI ?? 'https://react.jenniina.fi'
+const url = 'https://react.jenniina.fi'
 const baseUrl = `${url}/api/quiz`
 
-const getQuizzes = async () => {
-  const response = await axios.get(baseUrl)
+const getQuizzes = async (): Promise<IQuizHighscore[]> => {
+  const response = await axios.get<IQuizHighscore[]>(baseUrl)
   return response.data
 }
-const getUserQuiz = async (id: string) => {
-  const response = await axios.get(`${baseUrl}/${id}`)
-  return response.data
-}
-
-const addQuiz = async (newQuiz: IQuizHighscore) => {
-  const response = await axios.post(baseUrl, newQuiz)
+const getUserQuiz = async (id: string): Promise<IQuizHighscore | null> => {
+  const response = await axios.get<IQuizHighscore | null>(`${baseUrl}/${id}`)
   return response.data
 }
 
-const deleteDuplicates = async (user: IQuizHighscore['user']) => {
-  const response = await axios.delete(`${baseUrl}/remove/${user}`)
+const addQuiz = async (newQuiz: IQuizHighscore): Promise<IQuizHighscore> => {
+  const response = await axios.post<IQuizHighscore>(baseUrl, newQuiz)
+  return response.data
+}
+
+const deleteDuplicates = async (
+  user: IQuizHighscore['user']
+): Promise<boolean> => {
+  const response = await axios.delete<boolean>(`${baseUrl}/remove/${user}`)
   return response.data
 }
 

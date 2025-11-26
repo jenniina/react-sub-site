@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-type FormWrapperProps = {
+interface FormWrapperProps {
   title: string
   description?: string
   className: string

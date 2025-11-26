@@ -1,29 +1,25 @@
-import { useState, useContext } from 'react'
+import { useState } from 'react'
 import FormWrapper from './FormWrapper'
 import styles from '../form.module.css'
 import { Select, SelectOption } from '../../Select/Select'
-import { ELanguages } from '../../../types'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 
-type MessageData = {
+interface MessageData {
   email: string
   message: string
-  select: string
+  select?: string
 }
 
 type MessageFormProps = MessageData & {
   updateFields: (fields: Partial<MessageData>) => void
-  language: ELanguages
 }
 
 export default function MessageForm({
   email,
   message,
-  select,
   updateFields,
-  language,
 }: MessageFormProps) {
-  const { t } = useLanguageContext()
+  const { t, language } = useLanguageContext()
 
   const options: SelectOption[] = [
     {
@@ -55,7 +51,6 @@ export default function MessageForm({
           <label>
             <input
               id="form-email"
-              autoFocus
               required
               type="email"
               name="email"

@@ -1,10 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import './css/quiz.css'
-import { useLanguageContext } from '../../contexts/LanguageContext'
 
 export default function QuizPage() {
-  const { t } = useLanguageContext()
-
   return (
     <>
       {/*  <Helmet prioritizeSeoTags={true}>

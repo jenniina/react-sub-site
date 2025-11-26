@@ -24,8 +24,8 @@
 
     "declaration": false
   },
-  "include": ["src", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "dist"],
+  "include": ["src", "env.d.ts"],
+  "exclude": ["node_modules", "dist", "build", "vite.config.ts, temp.txt"],
   "references": [
     {
       "path": "./tsconfig.node.json"

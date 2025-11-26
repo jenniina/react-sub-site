@@ -1,17 +1,14 @@
-import { FC, useContext } from 'react'
+import { FC } from 'react'
 import styles from '../memory.module.css'
-import { ELanguages } from '../../../types'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 interface PlayerAmountButtonProps {
-  language: ELanguages
   value: number
   isActive: boolean
   onClick: () => void
 }
 
 const PlayerAmountButton: FC<PlayerAmountButtonProps> = ({
-  language,
   value,
   isActive,
   onClick,

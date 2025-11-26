@@ -1,14 +1,13 @@
-import { FormEvent, useContext, useEffect, useRef } from 'react'
+import { FormEvent, useEffect, useRef } from 'react'
 import Accordion from '../Accordion/Accordion'
 import { useSelector } from 'react-redux'
-import { ELanguages, ReducerProps } from '../../types'
+import { ReducerProps } from '../../types'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { initializeUser } from '../../reducers/authReducer'
 import { Link } from 'react-router-dom'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 
 interface Props {
-  language: ELanguages
   handleRegister: (e: FormEvent<HTMLFormElement>) => void
   username: string
   setUsername: (username: string) => void
@@ -24,7 +23,6 @@ interface Props {
   sending: boolean
 }
 const Register = ({
-  language,
   handleRegister,
   username,
   setUsername,
@@ -50,15 +48,14 @@ const Register = ({
   })
 
   useEffect(() => {
-    dispatch(initializeUser())
-  }, [])
+    void dispatch(initializeUser())
+  }, [dispatch])
 
   return (
     <div className="register-wrap">
       {!user ? (
         <>
           <Accordion
-            language={language}
             className={`accordion-register register`}
             wrapperClass="register-wrap"
             text={t('Register')}

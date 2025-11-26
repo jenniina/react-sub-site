@@ -1,10 +1,4 @@
-import {
-  FC,
-  useEffect,
-  useState,
-  MouseEvent as ReactMouseEvent,
-  useContext,
-} from 'react'
+import { FC, useEffect, useState, MouseEvent as ReactMouseEvent } from 'react'
 import styles from '../images.module.css'
 import { ELanguages } from '../../../types'
 import { ImageHit } from '../services/images'
@@ -21,7 +15,6 @@ import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 interface ModalImageProps {
   image: ImageHit
-  language: ELanguages
   handleDownload: () => void
   searchTerm: string
   textType: TTextType
@@ -29,12 +22,11 @@ interface ModalImageProps {
 
 const ImageModal: FC<ModalImageProps> = ({
   image,
-  language,
   handleDownload,
   searchTerm,
   textType,
 }) => {
-  const { t } = useLanguageContext()
+  const { t, language } = useLanguageContext()
 
   const dispatch = useAppDispatch()
   const { tooltip, handleMouseMove, handleMouseLeave } = useTooltip()
@@ -75,20 +67,20 @@ const ImageModal: FC<ModalImageProps> = ({
         const poem = await getPoem(language, linecount)
         setPoem(poem[0])
       }
-      fetchPoem()
+      void fetchPoem()
     } else if (textType === 'quote') {
       const fetchQuote = async () => {
-        if ((language = ELanguages.fi)) {
+        if (language === ELanguages.fi) {
           const response = await getQuote(ELanguages.en, searchTerm)
           if (response.quote) setQuote(response.quote)
-          else dispatch(notify(response.message ?? t('Error'), true, 8))
+          else void dispatch(notify(response.message ?? t('Error'), true, 8))
         } else {
           const response = await getQuote(language, searchTerm)
           if (response.quote) setQuote(response.quote)
-          else dispatch(notify(response.message ?? t('Error'), true, 8))
+          else void dispatch(notify(response.message ?? t('Error'), true, 8))
         }
       }
-      fetchQuote()
+      void fetchQuote()
     } else {
       const randomOneOrTwo = Math.floor(Math.random() * 2) + 1
       if (randomOneOrTwo === 1) {
@@ -97,17 +89,17 @@ const ImageModal: FC<ModalImageProps> = ({
           const poem = await getPoem(language, linecount)
           setPoem(poem[0])
         }
-        fetchPoem()
+        void fetchPoem()
       } else {
         const fetchQuote = async () => {
           const response = await getQuote(language, searchTerm)
           if (response.quote) setQuote(response.quote)
-          else dispatch(notify(response.message ?? t('Error'), true, 8))
+          else void dispatch(notify(response.message ?? t('Error'), true, 8))
         }
-        fetchQuote()
+        void fetchQuote()
       }
     }
-  }, [language, searchTerm, textType])
+  }, [language, searchTerm, textType, dispatch, t])
 
   return (
     <div onMouseMove={onMouseMove} onMouseLeave={handleMouseLeave}>
@@ -137,11 +129,7 @@ const ImageModal: FC<ModalImageProps> = ({
           </span>
         )}
       </div>
-      {textType === 'quote' ? (
-        <Quote quote={quote} language={language} />
-      ) : (
-        <Poem poem={poem} language={language} />
-      )}
+      {textType === 'quote' ? <Quote quote={quote} /> : <Poem poem={poem} />}
     </div>
   )
 }

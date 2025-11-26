@@ -1,7 +1,6 @@
-import { useContext, useEffect, useRef, useState, createRef } from 'react'
+import { useEffect, useRef, useLayoutEffect, useCallback } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { BiChevronsUp } from 'react-icons/bi'
-import { ELanguages, RefObject } from '../../types'
 import useIsOnScreen from '../../hooks/useIsOnScreen'
 import useWindowSize from '../../hooks/useWindowSize'
 import { breakpointSmall } from '../../types'
@@ -14,28 +13,36 @@ interface NavItem {
   special?: 'first' | 'last'
 }
 
-function NavPortfolio({ language }: { language: ELanguages }) {
+function NavPortfolio() {
   const { t } = useLanguageContext()
 
   const { windowWidth } = useWindowSize()
 
   const location = useLocation()
 
-  const scrollHorizontal = useSideScroll() as RefObject<HTMLUListElement>
+  const {
+    ref: scrollHorizontal,
+    scrollLeft,
+    scrollRight,
+    setScrollLeft,
+    setRef,
+  } = useSideScroll('portfolio-nav-scroll')
 
   const scrollAmount = 60
 
   function leftScroll() {
-    if (scrollHorizontal.current && windowWidth > breakpointSmall)
-      scrollHorizontal.current.scrollLeft -= 200
-    else if (scrollHorizontal.current)
-      scrollHorizontal.current.scrollLeft -= scrollAmount
+    if (windowWidth > breakpointSmall) {
+      scrollLeft(200)
+    } else {
+      scrollLeft(scrollAmount)
+    }
   }
   function rightScroll() {
-    if (scrollHorizontal.current && windowWidth > breakpointSmall)
-      scrollHorizontal.current.scrollLeft += 200
-    else if (scrollHorizontal.current)
-      scrollHorizontal.current.scrollLeft += scrollAmount
+    if (windowWidth > breakpointSmall) {
+      scrollRight(200)
+    } else {
+      scrollRight(scrollAmount)
+    }
   }
 
   const navItems: NavItem[] = [
@@ -55,89 +62,144 @@ function NavPortfolio({ language }: { language: ELanguages }) {
     { url: '/portfolio/todo', name: t('ToDo'), special: 'last' },
   ]
 
-  const itemRefs = useRef(navItems.map(() => createRef<HTMLLIElement>()))
+  const firstRef = useRef<HTMLLIElement | null>(null)
+  const lastRef = useRef<HTMLLIElement | null>(null)
 
-  const [firstVisibleRef, setFirstVisibleRef] = useState(itemRefs.current[0])
+  const firstVisible = useIsOnScreen(firstRef, '-20px', 1)
+  const lastVisible = useIsOnScreen(lastRef, '-40px', 1)
 
-  const firstVisible = useIsOnScreen(firstVisibleRef, '-20px', 1)
-  const lastVisible = useIsOnScreen(
-    itemRefs.current[itemRefs.current.length - 1],
-    '-40px',
-    1
+  useEffect(() => {
+    const root = scrollHorizontal.current
+    if (!root) return
+
+    firstRef.current =
+      root.querySelector(
+        location.pathname === '/portfolio'
+          ? '#firstportfolioitem'
+          : '#portfolio-current-first'
+      ) ?? null
+
+    lastRef.current = root.querySelector('#lastportfolioitem') ?? null
+  }, [location.pathname, scrollHorizontal])
+
+  const setScrollerRef = useCallback(
+    (node: HTMLUListElement | null) => {
+      setRef(node)
+    },
+    [setRef]
   )
 
-  useEffect(() => {
-    if (firstVisible && scrollHorizontal.current)
-      scrollHorizontal.current.scrollLeft = 0
-  }, [firstVisible, scrollHorizontal])
+  const suppressFocusScroll = useRef(false)
 
-  useEffect(() => {
-    if (location.pathname === '/portfolio') {
-      setFirstVisibleRef(itemRefs.current[1])
-    } else {
-      setFirstVisibleRef(itemRefs.current[0])
-    }
-  }, [location.pathname])
+  const rememberScroll = () => {
+    // Scroll position is now automatically saved by useSideScroll hook
 
-  useEffect(() => {
-    const activeIndex = navItems.findIndex(
-      item => item.url === location.pathname
-    )
-    if (activeIndex !== -1 && itemRefs.current[activeIndex].current) {
-      itemRefs.current?.[activeIndex]?.current?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'center',
+    // prevent focus-triggered auto scroll on the next page
+    const active = document?.activeElement as HTMLElement | null
+    if (active?.blur) active.blur()
+
+    // also suppress our own onFocus handler briefly
+    suppressFocusScroll.current = true
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        suppressFocusScroll.current = false
       })
+    })
+  }
+
+  const slug = (str: string) =>
+    str
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '')
+
+  useLayoutEffect(() => {
+    const scroller = scrollHorizontal.current
+    if (!scroller) return
+
+    // Check if we have a meaningful saved scroll position
+    const savedScroll = localStorage.getItem('portfolio-nav-scroll')
+    const hasSavedScroll = savedScroll && parseInt(savedScroll, 10) > 10 // Only consider saved if > 10px
+
+    // If we have a saved scroll position, don't nudge - respect user's scroll position
+    if (hasSavedScroll) return
+
+    // Ensure active item is visible after new route renders
+    const nudge = () => {
+      const activeLi = scroller
+        .querySelector('a.active')
+        ?.closest('li') as HTMLElement | null
+      if (!activeLi) return
+
+      const margin = 100
+      const left = activeLi.offsetLeft
+      const right = left + activeLi.offsetWidth
+      const viewLeft = scroller.scrollLeft + margin
+      const viewRight = scroller.scrollLeft + scroller.clientWidth - margin
+
+      // Only scroll if the active item is not already visible
+      if (left < viewLeft || right > viewRight) {
+        if (left < viewLeft) scroller.scrollLeft = left - margin
+        else if (right > viewRight)
+          scroller.scrollLeft = right - scroller.clientWidth + margin
+      }
     }
-  }, [location.pathname])
+
+    // run after styles & sizes are applied
+    requestAnimationFrame(() => {
+      requestAnimationFrame(nudge)
+    })
+  }, [location.pathname, scrollHorizontal])
 
   const renderNavItems = (items: NavItem[]) => {
-    return items.map((item, index) => {
+    return items.map(item => {
       const isFirst = item.special === 'first'
       const isLast = item.special === 'last'
       const isCurrentPath = location.pathname === item.url
+
+      const key = slug(item.url)
+
+      const id = isFirst
+        ? isCurrentPath
+          ? `portfolio-current-first`
+          : 'firstportfolioitem'
+        : isLast
+          ? 'lastportfolioitem'
+          : `portfolio-${key}`
+
+      const ref = isFirst ? firstRef : isLast ? lastRef : undefined
+
       return (
         <li
-          key={index}
-          ref={itemRefs.current[index]}
-          id={
-            isFirst
-              ? isCurrentPath
-                ? `portfolio-${index}`
-                : 'firstportfolioitem'
-              : isLast
-                ? 'lastportfolioitem'
-                : `portfolio-${index}`
-          }
+          key={key}
+          ref={ref}
+          id={id}
           className={
             isFirst && isCurrentPath ? 'hide' : isFirst ? 'return' : ''
           }
-          onFocus={() => {
-            if (
-              itemRefs.current[index] &&
-              itemRefs.current[index].current &&
-              scrollHorizontal.current
-            ) {
-              const itemLeft = itemRefs.current[index].current?.offsetLeft ?? 0
-              const itemRight =
-                itemLeft + (itemRefs.current[index].current?.offsetWidth ?? 0)
-              const scrollLeft = scrollHorizontal.current.scrollLeft
-              const scrollRight =
-                scrollLeft + scrollHorizontal.current.clientWidth
-              const amount = 100
+          onFocus={e => {
+            if (suppressFocusScroll.current) return
+            const li = e.currentTarget
+            const scroller = scrollHorizontal.current
+            if (!li || !scroller) return
 
-              // Scroll into view with an additional offset of 40px
-              if (itemLeft < scrollLeft + amount) {
-                scrollHorizontal.current.scrollLeft = itemLeft - amount
-              } else if (itemRight > scrollRight - amount) {
-                scrollHorizontal.current.scrollLeft =
-                  itemRight - scrollHorizontal.current.clientWidth + amount
-              }
+            // Ensure the focused item is inside the viewport with a margin
+            const margin = 100
+            const itemLeft = li.offsetLeft
+            const itemRight = itemLeft + li.offsetWidth
+
+            const viewLeft = scroller.scrollLeft + margin
+            const viewRight =
+              scroller.scrollLeft + scroller.clientWidth - margin
+
+            if (itemLeft < viewLeft) {
+              setScrollLeft(itemLeft - margin)
+            } else if (itemRight > viewRight) {
+              setScrollLeft(itemRight - scroller.clientWidth + margin)
             }
           }}
         >
-          <NavLink to={item.url}>
+          <NavLink to={item.url} onClick={rememberScroll}>
             {isFirst ? <span aria-hidden="true">&laquo;&nbsp;</span> : ''}
             {item.name}
           </NavLink>
@@ -159,7 +221,7 @@ function NavPortfolio({ language }: { language: ELanguages }) {
           <span className="scr">{t('ScrollToTheLeft')}</span>
         </button>
 
-        <ul ref={scrollHorizontal}>{renderNavItems(navItems)}</ul>
+        <ul ref={setScrollerRef}>{renderNavItems(navItems)}</ul>
 
         <button
           onClick={rightScroll}

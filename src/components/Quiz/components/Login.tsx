@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState, FormEvent, useContext } from 'react'
-import { IHighscore } from '../types'
-import { ELanguages, ReducerProps } from '../../../types'
+import { useEffect, useRef, useState, FormEvent } from 'react'
+import { IHighscore, IQuizHighscore } from '../types'
+import { ReducerProps } from '../../../types'
 import Accordion from '../../Accordion/Accordion'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { notify } from '../../../reducers/notificationReducer'
@@ -11,15 +11,15 @@ import Scores from './Scores'
 import styles from '../css/quiz.module.css'
 import { Link } from 'react-router-dom'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
+import { getErrorMessage } from '../../../utils'
 
 interface Props {
   easy: IHighscore['easy']
   medium: IHighscore['medium']
   hard: IHighscore['hard']
-  language: ELanguages
   setIsFormOpen?: (isFormOpen: boolean) => void
 }
-const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
+const FormLogin = ({ easy, medium, hard, setIsFormOpen }: Props) => {
   const { t } = useLanguageContext()
 
   const dispatch = useAppDispatch()
@@ -43,26 +43,26 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
 
   useEffect(() => {
     if (user?._id) {
-      dispatch(getUserQuiz(user._id)).then(r => {
+      void dispatch(getUserQuiz(user._id)).then((r: IQuizHighscore | null) => {
         if (r !== null) {
           setHighscores(r.highscores)
         }
       })
     }
-  }, [user?._id])
+  }, [user?._id, dispatch])
 
   useEffect(() => {
-    dispatch(initializeUser())
-  }, [])
+    void dispatch(initializeUser())
+  }, [dispatch])
 
   const handleLogout = () => {
-    dispatch(logout())
+    void dispatch(logout())
   }
 
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault()
     setSending(true)
-    dispatch(notify(t('LoggingIn'), false, 8))
+    void dispatch(notify(t('LoggingIn'), false, 8))
 
     await dispatch(login(username, password, 'en'))
       .then(() => {
@@ -70,14 +70,9 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
         setPassword('')
         setSending(false)
       })
-      .catch(e => {
-        if (e.response?.data?.message)
-          dispatch(notify(e.response.data.message, true, 8))
-        else if (e.code === 'ERR_BAD_REQUEST')
-          dispatch(notify(`${t('Error')}: ${e.response.data.message}`, true, 8))
-        else if (e.code === 'ERR_NETWORK') {
-          dispatch(notify(`${t('Error')}: ${e.message}`, true, 8))
-        }
+      .catch((err: unknown) => {
+        const message = getErrorMessage(err, t('Error'))
+        void dispatch(notify(message, true, 8))
         setSending(false)
       })
   }
@@ -87,7 +82,7 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
         <>
           <p>
             <span>
-              {t('LoggedInAs')} {user?.name ? user?.name : user.username}{' '}
+              {t('LoggedInAs')} {user?.name ?? user.username}{' '}
             </span>
             <Link to="/edit">{`${t('Edit')}`}</Link>
             <button
@@ -104,7 +99,6 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
           >{`${showHighscores ? 'hide' : 'show'} highscores`}</button>
           {showHighscores && (
             <Scores
-              language={language}
               easy={highscoresLocal.easy}
               medium={highscoresLocal.medium}
               hard={highscoresLocal.hard}
@@ -114,7 +108,6 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
       ) : (
         <>
           <Accordion
-            language={language}
             className={`accordion-login login-to-save`}
             wrapperClass="login-to-save-wrap"
             text={t('LogInToSaveScore')}
@@ -124,7 +117,10 @@ const FormLogin = ({ easy, medium, hard, language, setIsFormOpen }: Props) => {
           >
             <h2>{t('LogInToSaveScore')}</h2>
 
-            <form onSubmit={handleLogin} className={`login ${styles.login}`}>
+            <form
+              onSubmit={e => void handleLogin(e)}
+              className={`login ${styles.login}`}
+            >
               <div className="input-wrap">
                 <label htmlFor="quiz-username">
                   <input

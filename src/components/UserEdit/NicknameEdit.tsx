@@ -1,82 +1,61 @@
-import React, { useContext, useState } from 'react'
-import { IUser, ELanguages } from '../../types'
+import React, { useState } from 'react'
+import { IUser } from '../../types'
 import { initializeUser, refreshUser } from '../../reducers/authReducer'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
-import { findUserById, updateUser } from '../../reducers/usersReducer'
-import { AxiosError } from 'axios'
+import { findUserById, updateUser } from '../../reducers/usersReducer' 
+import { getErrorMessage } from '../../utils'
 import styles from './css/edit.module.css'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 
 interface Props {
-  language: ELanguages
   user: IUser
 }
-const NicknameEdit = ({ user, language }: Props) => {
-  const { t } = useLanguageContext()
+const NicknameEdit = ({ user }: Props) => {
+  const { t, language } = useLanguageContext()
 
   const dispatch = useAppDispatch()
 
-  const [name, setName] = useState<IUser['name'] | ''>(user?.name || '')
-  const [passwordOld, setPasswordOld] = useState<IUser['password'] | ''>('')
+  const [name, setName] = useState<IUser['name']>(user?.name ?? '')
+  const [passwordOld, setPasswordOld] = useState<IUser['password']>('')
   const [sending, setSending] = useState(false)
 
   const handleUserSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setSending(true)
-    try {
-      const _id = user._id
-      const editedUser = {
-        _id,
-        name,
-        passwordOld,
-        language,
-      }
+    const _id = user._id
+    const editedUser = {
+      _id,
+      name,
+      passwordOld,
+      language,
+    }
 
-      if (user) {
-        dispatch(updateUser(editedUser))
-          .then(res => {
-            if (res) {
-              if (res.success === false) {
-                dispatch(notify(`${t('Error')}: ${res.message}`, true, 5))
-              } else {
-                dispatch(notify(`${res.message ?? t('UserUpdated')}`, false, 5))
-                dispatch(refreshUser(res.user)).then(() => {
-                  dispatch(findUserById(user?._id as string)).then(() =>
-                    dispatch(initializeUser())
-                  )
-                })
-                setPasswordOld('')
-              }
-            }
-            setSending(false)
-          })
-          .catch((error: AxiosError<{ message?: string }>) => {
-            console.error(error)
-            if (error.response?.data?.message)
-              dispatch(notify(error.response.data.message, true, 8))
-            else if (
-              error.code === 'ERR_BAD_REQUEST' &&
-              error.response?.data?.message
-            ) {
-              dispatch(
-                notify(`${t('Error')}: ${error.response.data.message}`, true, 5)
-              )
+    if (user) {
+      await dispatch(updateUser(editedUser))
+        .then(async res => {
+          if (res) {
+            if (res.success === false) {
+              void dispatch(notify(`${t('Error')}: ${res.message}`, true, 5))
             } else {
-              setTimeout(() => {
-                dispatch(notify(t('UserNotUpdated'), true, 5))
-              }, 2000)
-            }
-            setSending(false)
-          })
-      }
+              void dispatch(
+                notify(`${res.message ?? t('UserUpdated')}`, false, 5)
+              )
+              void dispatch(refreshUser(res.user))
+              await dispatch(findUserById(user?._id ?? ''))
+              void dispatch(initializeUser())
 
-      //const language = e.currentTarget.language.value
-    } catch (error: any) {
-      if (error.response?.data?.message)
-        dispatch(notify(error.response.data.message, true, 8))
-      else console.error('error', error)
-      setSending(false)
+              setPasswordOld('')
+            }
+          }
+          setSending(false)
+        })
+        .catch((err: unknown) => {
+          console.error(err)
+          const message = getErrorMessage(err, t('UserNotUpdated'))
+          void dispatch(notify(message, true, 8))
+          setSending(false)
+        })
     }
   }
 
@@ -92,7 +71,10 @@ const NicknameEdit = ({ user, language }: Props) => {
             {t('PleaseUseGoodTasteWhenChoosingYourNickname')}
           </p>
 
-          <form onSubmit={handleUserSubmit} className={styles['edit-user']}>
+          <form
+            onSubmit={e => void handleUserSubmit(e)}
+            className={styles['edit-user']}
+          >
             <div className="input-wrap">
               <label>
                 <input

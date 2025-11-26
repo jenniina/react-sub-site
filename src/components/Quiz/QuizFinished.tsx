@@ -1,22 +1,17 @@
-import { useEffect, useState, FormEvent } from 'react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { IQuizHighscore } from './types'
-import { ELanguages, ReducerProps } from '../../types'
+import { IQuizHighscore, EQuizType } from './types'
+import { ReducerProps } from '../../types'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { addQuiz, getUserQuiz, deleteDuplicates } from './reducers/quizReducer'
 import { initializeUser } from '../../reducers/authReducer'
-import { createUser } from '../../reducers/usersReducer'
 import { notify } from '../../reducers/notificationReducer'
 import styles from '../../components/Quiz/css/quiz.module.css'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import LoginRegisterCombo from './components/LoginRegisterCombo'
 
-interface Props {
-  language: ELanguages
-}
-
-const QuizFinished = ({ language }: Props) => {
+const QuizFinished = () => {
   const { t } = useLanguageContext()
 
   const { points, highscores, finalSeconds } = useSelector(
@@ -26,13 +21,6 @@ const QuizFinished = ({ language }: Props) => {
 
   const percentage = +((points * 100) / 300).toFixed(1)
   const navigate = useNavigate()
-
-  const [loginOpen, setLoginOpen] = useState(false)
-  const [registerOpen, setRegisterOpen] = useState(false)
-  const [username, setUsername] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
-  const [confirmPassword, setConfirmPassword] = useState<string>('')
-  const [name, setName] = useState<string>('')
 
   const sec = finalSeconds % 60
   const mins = Math.floor(finalSeconds / 60)
@@ -44,14 +32,14 @@ const QuizFinished = ({ language }: Props) => {
   })
 
   useEffect(() => {
-    dispatch(initializeUser())
-  }, [])
+    void dispatch(initializeUser())
+  }, [dispatch])
 
   useEffect(() => {
     if (finalSeconds === 0) {
       navigate('/portfolio/quiz')
     }
-  }, [])
+  }, [navigate, finalSeconds])
 
   useEffect(() => {
     if (
@@ -63,7 +51,7 @@ const QuizFinished = ({ language }: Props) => {
       (user?._id && points !== 0 && finalSeconds !== 0) ||
       (user?._id && finalSeconds !== undefined)
     ) {
-      dispatch(getUserQuiz(user._id)).then(r => {
+      void dispatch(getUserQuiz(user._id)).then((r: IQuizHighscore | null) => {
         if (r === null) {
           const quizScore: IQuizHighscore = {
             highscores: {
@@ -72,11 +60,11 @@ const QuizFinished = ({ language }: Props) => {
             },
             user: user._id,
           }
-          dispatch(notify(t('NewHighscore'), false, 3))
+          void dispatch(notify(t('NewHighscore'), false, 3))
 
-          dispatch(addQuiz(quizScore)).then(r => {
+          void dispatch(addQuiz(quizScore)).then(() => {
             //console.log('r1: ', r)
-            dispatch(deleteDuplicates(user._id)).then(r => {
+            void dispatch(deleteDuplicates(user._id)).then(() => {
               //console.log('r5: ', r)
             })
           })
@@ -90,41 +78,23 @@ const QuizFinished = ({ language }: Props) => {
           }
 
           if (r.highscores[mode].score < points) {
-            dispatch(notify(t('NewHighscore'), false, 3))
+            void dispatch(notify(t('NewHighscore'), false, 3))
             quizScore.highscores[mode].time = finalSeconds // Update time if new score is higher
           } else if (
             r.highscores[mode].score === points &&
             r.highscores[mode].time > finalSeconds
           ) {
-            dispatch(notify(t('FasterThanBefore'), false, 3))
+            void dispatch(notify(t('FasterThanBefore'), false, 3))
             quizScore.highscores[mode].time = finalSeconds // Update time if score is equal and time is faster
           }
 
-          dispatch(addQuiz(quizScore)).then(r => {
+          void dispatch(addQuiz(quizScore)).then(() => {
             //console.log('r2: ', r)
           })
         }
       })
     }
-  }, [])
-
-  const handleRegister = (e: FormEvent<HTMLFormElement>): void => {
-    e.preventDefault()
-    if (password !== confirmPassword) {
-      dispatch(notify(t('PasswordsDoNotMatch'), true, 8))
-      return
-    }
-    dispatch(createUser({ name, username, password, language: 'en' }))
-      .then(async () => {
-        dispatch(notify(t('RegistrationSuccesful'), false, 8))
-      })
-      .catch(err => {
-        console.error(err)
-        if (err.response?.data?.message)
-          dispatch(notify(err.response.data.message, true, 8))
-        else dispatch(notify(`${t('Error')}: ${err.message}`, true, 8))
-      })
-  }
+  }, [dispatch, user, points, finalSeconds, highscores, mode, t])
 
   let congrats
 
@@ -145,40 +115,6 @@ const QuizFinished = ({ language }: Props) => {
       congrats = ''
   }
 
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-
-    const loginWrapOpen = document?.querySelector(
-      '.login-wrap .open'
-    ) as HTMLButtonElement
-    const loginWrapClose = document?.querySelector(
-      '.login-wrap .close'
-    ) as HTMLButtonElement
-    const registerWrapOpen = document?.querySelector(
-      '.register-wrap .open'
-    ) as HTMLButtonElement
-    const registerWrapClose = document?.querySelector(
-      '.register-wrap .close'
-    ) as HTMLButtonElement
-
-    const handleLoginOpen = () => setLoginOpen(true)
-    const handleLoginClose = () => setLoginOpen(false)
-    const handleRegisterOpen = () => setRegisterOpen(true)
-    const handleRegisterClose = () => setRegisterOpen(false)
-
-    loginWrapOpen?.addEventListener('click', handleLoginOpen)
-    loginWrapClose?.addEventListener('click', handleLoginClose)
-    registerWrapOpen?.addEventListener('click', handleRegisterOpen)
-    registerWrapClose?.addEventListener('click', handleRegisterClose)
-
-    return () => {
-      loginWrapOpen?.removeEventListener('click', handleLoginOpen)
-      loginWrapClose?.removeEventListener('click', handleLoginClose)
-      registerWrapOpen?.removeEventListener('click', handleRegisterOpen)
-      registerWrapClose?.removeEventListener('click', handleRegisterClose)
-    }
-  }, [])
-
   const goToMainPage = () => {
     navigate('/portfolio/quiz')
   }
@@ -191,9 +127,9 @@ const QuizFinished = ({ language }: Props) => {
             <div>
               <div className={`${styles.quiz}`}>
                 <h1 className={styles.h1}>
-                  <a href="#" onClick={goToMainPage}>
+                  <button onClick={goToMainPage}>
                     &laquo;&nbsp;{t('QuizApp')}
-                  </a>
+                  </button>
                 </h1>
                 <h2>{congrats}</h2>
                 <p className="result">
@@ -204,11 +140,11 @@ const QuizFinished = ({ language }: Props) => {
                   {t('Difficulty')}:{' '}
                   {(() => {
                     switch (mode) {
-                      case 'easy':
+                      case EQuizType.easy:
                         return t('Easy')
-                      case 'medium':
+                      case EQuizType.medium:
                         return t('Medium')
-                      case 'hard':
+                      case EQuizType.hard:
                         return t('Hard')
                       default:
                         return mode
@@ -249,7 +185,6 @@ const QuizFinished = ({ language }: Props) => {
                 </div>
               </div>
               <LoginRegisterCombo
-                language={language}
                 user={user}
                 highscoresLocal={highscores}
                 text="quizfinish"

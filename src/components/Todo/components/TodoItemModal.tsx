@@ -1,12 +1,23 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
-import ReactDOM from 'react-dom'
+import {
+  useEffect,
+  useRef,
+  useState,
+  MouseEvent as ReactMouseEvent,
+  FormEvent as ReactFormEvent,
+  SetStateAction as ReactSetStateAction,
+  Dispatch as ReactDispatch,
+  FC,
+  ChangeEvent as ReactChangeEvent,
+  useCallback,
+} from 'react'
+import { createPortal } from 'react-dom'
 import { Select, SelectOption } from '../../Select/Select'
 import styles from '../css/todo.module.css'
 import stylesModal from '../../Modal/modal.module.css'
 import { TbCancel } from 'react-icons/tb'
 import { sanitize, first3Words, getRandomString } from '../../../utils'
-import { ELanguages } from '../../../types'
 import { TCategory, TPriority } from '../types'
+import { ITaskDraggable } from './TodoList'
 import { FaRegCheckCircle } from 'react-icons/fa'
 import { useTheme } from '../../../hooks/useTheme'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
@@ -14,34 +25,32 @@ import { useLanguageContext } from '../../../contexts/LanguageContext'
 const randomString = getRandomString(6)
 
 interface TodoItemModalProps {
-  todo: any
-  language: ELanguages
+  todo: ITaskDraggable | undefined
   priorityOptions: SelectOption[]
   categoryOptions: SelectOption[]
-  handleModify: (e: React.FormEvent<HTMLFormElement>) => void
+  handleModify: (e: ReactFormEvent<HTMLFormElement>) => void
   sending: boolean
   showDeadline: boolean
-  setShowDeadline: React.Dispatch<React.SetStateAction<boolean>>
+  setShowDeadline: ReactDispatch<ReactSetStateAction<boolean>>
   newCategory: TCategory
   newPriority: TPriority
-  setNewPriority: React.Dispatch<React.SetStateAction<TPriority>>
-  setNewCategory: React.Dispatch<React.SetStateAction<TCategory>>
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setNewPriority: ReactDispatch<ReactSetStateAction<TPriority>>
+  setNewCategory: ReactDispatch<ReactSetStateAction<TCategory>>
+  setIsOpen: ReactDispatch<ReactSetStateAction<boolean>>
   title: string | undefined
   newName: string
-  setNewName: React.Dispatch<React.SetStateAction<string>>
+  setNewName: ReactDispatch<ReactSetStateAction<string>>
   newDay: string
-  setNewDay: React.Dispatch<React.SetStateAction<string>>
+  setNewDay: ReactDispatch<ReactSetStateAction<string>>
   newMonth: string
-  setNewMonth: React.Dispatch<React.SetStateAction<string>>
+  setNewMonth: ReactDispatch<ReactSetStateAction<string>>
   newYear: string
-  setNewYear: React.Dispatch<React.SetStateAction<string>>
+  setNewYear: ReactDispatch<ReactSetStateAction<string>>
   maxCharacters: number
 }
 
-const TodoItemModal: React.FC<TodoItemModalProps> = ({
+const TodoItemModal: FC<TodoItemModalProps> = ({
   todo,
-  language,
   priorityOptions,
   categoryOptions,
   handleModify,
@@ -64,11 +73,11 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
   setIsOpen,
   maxCharacters,
 }) => {
-  const { t } = useLanguageContext()
+  const { t, language } = useLanguageContext()
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChange = (e: ReactChangeEvent<HTMLTextAreaElement>) => {
     setNewName(e.target.value)
   }
 
@@ -90,7 +99,7 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
     }
   }
 
-  const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleYearChange = (e: ReactChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     if (
       Number(value) <= Number(new Date().getFullYear()) + 10 &&
@@ -105,20 +114,24 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
 
   useEffect(() => {
     if (newDay && newMonth && newYear) {
-      const selectedDate = new Date(
-        Number(newYear),
-        Number(newMonth) - 1,
-        Number(newDay)
-      )
-      const today = new Date()
-      today.setHours(0, 0, 0, 0)
+      const timer = window.setTimeout(() => {
+        const selectedDate = new Date(
+          Number(newYear),
+          Number(newMonth) - 1,
+          Number(newDay)
+        )
+        const today = new Date()
+        today.setHours(0, 0, 0, 0)
 
-      setErrorMessage(null)
-      if (selectedDate < today) {
-        setErrorMessage(t('TheDateIsInThePast'))
-      }
+        setErrorMessage(null)
+        if (selectedDate < today) {
+          setErrorMessage(t('TheDateIsInThePast'))
+        }
+      }, 0)
+
+      return () => clearTimeout(timer)
     }
-  }, [newDay, newMonth, newYear, language])
+  }, [newDay, newMonth, newYear, language, t])
 
   useEffect(() => {
     if (showDeadline) {
@@ -132,10 +145,36 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
       setNewMonth('')
       setNewYear('')
     }
-  }, [showDeadline])
+  }, [
+    showDeadline,
+    newDay,
+    newMonth,
+    newYear,
+    setNewDay,
+    setNewMonth,
+    setNewYear,
+  ])
 
   const closeButtonRef = useRef<HTMLButtonElement>(null)
+  const closeRef = useRef<HTMLDivElement>(null)
   const previouslyFocusedElement = useRef<HTMLElement | null>(null)
+
+  const handleOutsideClick = (e: ReactMouseEvent<HTMLDivElement>) => {
+    if (closeRef.current && !closeRef.current.contains(e.target as Node)) {
+      handleClose()
+    }
+  }
+
+  const handleClose = useCallback(
+    () => {
+      setIsOpen(false)
+      if (previouslyFocusedElement.current)
+        previouslyFocusedElement.current.focus()
+      else document?.body.focus()
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
 
   useEffect(() => {
     previouslyFocusedElement.current = document?.activeElement as HTMLElement
@@ -183,27 +222,34 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
         previouslyFocusedElement.current.focus()
       else document?.body.focus()
     }
-  }, [closeButtonRef.current])
-
-  const handleClose = () => {
-    setIsOpen(false)
-    if (previouslyFocusedElement.current)
-      previouslyFocusedElement.current.focus()
-    else document?.body.focus()
-  }
+  }, [closeButtonRef, handleClose])
 
   const lightTheme = useTheme()
 
-  return ReactDOM.createPortal(
+  if (typeof document === 'undefined') return null
+  let modalRoot = document.getElementById('modal-root')
+  if (!modalRoot && typeof document !== 'undefined') {
+    modalRoot = document.createElement('div')
+    modalRoot.setAttribute('id', 'modal-root')
+    document.body.appendChild(modalRoot)
+  }
+
+  const modalContent = (
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div
       className={`${stylesModal['modal-overlay']} ${
         lightTheme ? styles.light : ''
       }`}
-      onClick={handleClose}
+      ref={closeRef}
+      onClick={e => {
+        handleOutsideClick(e)
+      }}
+      onKeyDown={e => {
+        if (e.key === 'Escape') handleClose()
+      }}
     >
       <div
         className={`${stylesModal['modal-content']} ${styles['todo-modal']}`}
-        onClick={e => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-label={title ?? 'Task'}
@@ -247,9 +293,7 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
             hideDelete
             z={2}
           />
-          <fieldset
-            className={`${styles['fieldset']} ${styles['deadline-wrap']}`}
-          >
+          <fieldset className={`${styles.fieldset} ${styles['deadline-wrap']}`}>
             <legend>
               <label>
                 {t('Deadline')}{' '}
@@ -264,7 +308,7 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
             {showDeadline && (
               <>
                 <div className={styles['deadline-inputs']}>
-                  <div className={styles['input']}>
+                  <div className={styles.input}>
                     <label
                       className="scr"
                       htmlFor={`day_${sanitize(
@@ -275,7 +319,7 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
                     </label>
                     <input
                       type="number"
-                      id={`day_${sanitize(todo?.name || 'Task')}`}
+                      id={`day_${sanitize(todo?.name ?? 'Task')}`}
                       name="day"
                       min={1}
                       max={31}
@@ -287,10 +331,10 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
                     />
                   </div>
 
-                  <div className={styles['input']}>
+                  <div className={styles.input}>
                     <label
                       className="scr"
-                      htmlFor={`month_${sanitize(todo?.name || 'Task')}`}
+                      htmlFor={`month_${sanitize(todo?.name ?? 'Task')}`}
                     >
                       {t('Month')}
                     </label>
@@ -310,10 +354,10 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
                     />
                   </div>
 
-                  <div className={styles['input']}>
+                  <div className={styles.input}>
                     <label
                       className="scr"
-                      htmlFor={`year_${sanitize(todo?.name || 'Task')}`}
+                      htmlFor={`year_${sanitize(todo?.name ?? 'Task')}`}
                     >
                       {t('Year')}
                     </label>
@@ -337,7 +381,7 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
               </>
             )}
           </fieldset>
-          <fieldset className={`${styles['fieldset']} ${styles.textarea}`}>
+          <fieldset className={`${styles.fieldset} ${styles.textarea}`}>
             <legend>{t('Task')}</legend>
             <label>
               <textarea
@@ -365,16 +409,19 @@ const TodoItemModal: React.FC<TodoItemModalProps> = ({
           </button>
           <button
             onClick={handleClose}
-            className={`reset ${styles['cancel']}`}
+            className={`reset ${styles.cancel}`}
             type="button"
           >
             {t('Cancel')} <TbCancel />
           </button>
         </form>
       </div>
-    </div>,
-    document?.getElementById('modal-root') as HTMLElement
+    </div>
   )
+
+  if (modalRoot) return createPortal(modalContent, modalRoot)
+  // If there is no portal root, render inline as a fallback
+  return modalContent
 }
 
 export default TodoItemModal

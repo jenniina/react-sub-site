@@ -10,21 +10,23 @@ import {
   EJokeSetup,
 } from '../types'
 import { ELanguages, ELanguagesLong, IUser } from '../../../types'
-import React, { ChangeEvent, useContext, useEffect, useState } from 'react'
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
 import Accordion from '../../Accordion/Accordion'
 import { Select, SelectOption } from '../../Select/Select'
 import { createJoke, initializeJokes } from '../reducers/jokeReducer'
+import axios, { AxiosError } from 'axios'
+import { getErrorMessage } from '../../../utils'
 import { notify } from '../../../reducers/notificationReducer'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { v4 as uuidv4 } from 'uuid'
 import { initializeUser } from '../../../reducers/authReducer'
 import { findUserById } from '../../../reducers/usersReducer'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
+import { IJokeResponse } from '../types'
 
 interface Props {
   userId: IUser['_id']
-  language: ELanguages
   optionsCategory: (enumObj: TCategoryByLanguages) => SelectOption[]
   categoryByLanguages: TCategoryByLanguages
   jokeCategoryByLanguage: IJokeCategoryByLanguage
@@ -37,15 +39,41 @@ interface Props {
 }
 const JokeSubmit = ({
   userId,
-  language,
   optionsCategory,
   categoryByLanguages,
   jokeCategoryByLanguage,
   options,
-  getKeyByValue,
   norrisCategories,
 }: Props) => {
-  const { t } = useLanguageContext()
+  const { t, language } = useLanguageContext()
+
+  const coerceToECategories = (v: unknown): ECategories => {
+    if (
+      typeof v === 'string' &&
+      Object.values(ECategories).includes(v as ECategories)
+    )
+      return v as ECategories
+    if (typeof v === 'number') {
+      const s = String(v)
+      if (Object.values(ECategories).includes(s as ECategories))
+        return s as ECategories
+    }
+    return ECategories.Misc
+  }
+
+  const coerceToELanguages = (v: unknown): ELanguages => {
+    if (
+      typeof v === 'string' &&
+      Object.values(ELanguages).includes(v as ELanguages)
+    )
+      return v as ELanguages
+    if (typeof v === 'number') {
+      const s = String(v)
+      if (Object.values(ELanguages).includes(s as ELanguages))
+        return s as ELanguages
+    }
+    return ELanguages.en
+  }
 
   const [languageSubmit, setLanguageSubmit] = useState<ELanguages>(
     ELanguages[language]
@@ -73,35 +101,45 @@ const JokeSubmit = ({
   const [hasNorris, setHasNorris] = useState(false)
   const [saving, setSaving] = useState(false)
 
-  useEffect(() => {
-    const norrisExists = selectedCategory === ECategories.ChuckNorris
-    setHasNorris(norrisExists)
+  const norrisExists = useCallback(() => {
+    if (selectedCategory === ECategories.ChuckNorris) {
+      setHasNorris(true)
+    } else {
+      setHasNorris(false)
+    }
   }, [selectedCategory])
-  const dispatch = useAppDispatch()
 
-  const [flags, setFlags] = useState({
-    nsfw: false,
-    religious: false,
-    political: false,
-    racist: false,
-    sexist: false,
-    explicit: false,
-  })
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    norrisExists()
+  }, [selectedCategory, norrisExists])
+
+  const dispatch = useAppDispatch()
 
   const handleNewJokeSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setSaving(true)
-    const isAnyFlagChecked = Object.values(flags).some(flag => flag)
+    const formData = new FormData(e.currentTarget as HTMLFormElement)
+    const isAnyFlagChecked =
+      !!formData.get('nsfw') ||
+      !!formData.get('religious') ||
+      !!formData.get('political') ||
+      !!formData.get('racist') ||
+      !!formData.get('sexist') ||
+      !!formData.get('explicit')
 
-    let jokeObject
+    let jokeObject: Partial<IJoke> = {}
 
     jokeObject = {
       jokeId: uuidv4(),
-      category: (jokeCategory?.value as ECategories) ?? ECategories.Misc,
-      subCategories:
-        (jokeCategory?.label as ECategories) === ECategories.ChuckNorris
-          ? [selectedNorrisCategory?.value as string]
-          : [],
+      category: coerceToECategories(jokeCategory?.value),
+      subCategories: (() => {
+        const isChuckNorris =
+          jokeCategory?.label === jokeCategoryByLanguage[language].ChuckNorris
+        return isChuckNorris && selectedNorrisCategory?.value
+          ? [String(selectedNorrisCategory.value)]
+          : undefined
+      })(),
       language: languageSubmit,
       type: EJokeType.single,
       user: [userId],
@@ -114,12 +152,12 @@ const JokeSubmit = ({
           ? false
           : true,
       flags: {
-        nsfw: e.currentTarget.nsfw.checked,
-        religious: e.currentTarget.religious.checked,
-        political: e.currentTarget.political.checked,
-        racist: e.currentTarget.racist.checked,
-        sexist: e.currentTarget.sexist.checked,
-        explicit: e.currentTarget.explicit.checked,
+        nsfw: !!formData.get('nsfw'),
+        religious: !!formData.get('religious'),
+        political: !!formData.get('political'),
+        racist: !!formData.get('racist'),
+        sexist: !!formData.get('sexist'),
+        explicit: !!formData.get('explicit'),
       },
     }
 
@@ -138,53 +176,52 @@ const JokeSubmit = ({
       } as IJoke
     }
 
-    dispatch(createJoke(jokeObject))
-      .then(r => {
-        dispatch(findUserById(userId as string))
-          .then(() => dispatch(initializeUser()))
-          .then(() => {
-            dispatch(initializeJokes())
-            setJoke('')
-            setSetup('')
-            setDelivery('')
-            setSaving(false)
-          })
-        dispatch(notify(`${t('SavedJoke')}. ${r.message ?? ''}`, false, 8))
+    void dispatch(createJoke(jokeObject as IJoke))
+      .then((r: IJokeResponse) => {
+        if (userId)
+          void dispatch(findUserById(userId))
+            .then(() => dispatch(initializeUser()))
+            .then(() => {
+              void dispatch(initializeJokes())
+              setJoke('')
+              setSetup('')
+              setDelivery('')
+              setSaving(false)
+            })
+        void dispatch(notify(`${t('SavedJoke')}. ${r.message ?? ''}`, false, 8))
       })
-      .catch(e => {
-        console.error(e)
+      .catch((errorUnknown: unknown) => {
+        console.error(errorUnknown)
         setSaving(false)
-        if (e.code === 'ERR_BAD_RESPONSE') {
-          dispatch(
-            notify(
-              `${t('Error')}: ${e.response.data.message}. ${t(
-                'ReportErrorToAdmin'
-              )}`,
-              true,
-              8
+        if (axios.isAxiosError(errorUnknown)) {
+          const e = errorUnknown as AxiosError<{ message?: string }>
+          const message = getErrorMessage(e, t('Error'))
+          if (e.code === 'ERR_BAD_RESPONSE') {
+            void dispatch(
+              notify(`${t('Error')}: ${message}. ${t('ReportErrorToAdmin')}`, true, 8)
             )
-          )
+          } else {
+            void dispatch(notify(message, true, 8))
+          }
         } else {
-          setSaving(false)
-          if (e.response?.data?.message)
-            dispatch(notify(e.response.data.message, true, 8))
-          else
-            dispatch(
-              notify(
-                `${t('Error')}: ${e.message}. ${t('ReportErrorToAdmin')}`,
-                true,
-                8
-              )
-            )
+          const message = getErrorMessage(errorUnknown, t('ReportErrorToAdmin'))
+          void dispatch(notify(`${t('Error')}: ${message}`, true, 8))
         }
       })
   }
 
-  useEffect(() => {
-    isCheckedJokeType
-      ? setJokeType(EJokeType.twopart)
-      : setJokeType(EJokeType.single)
+  const isCheckedJoketypeCallback = useCallback(() => {
+    if (isCheckedJokeType) {
+      setJokeType(EJokeType.twopart)
+    } else {
+      setJokeType(EJokeType.single)
+    }
   }, [isCheckedJokeType])
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    isCheckedJoketypeCallback()
+  }, [isCheckedJokeType, isCheckedJoketypeCallback])
 
   const handleToggleChangeJokeType = () => {
     setIsCheckedJokeType(!isCheckedJokeType)
@@ -198,29 +235,35 @@ const JokeSubmit = ({
     setIsCheckedAnonymous(!isCheckedAnonymous)
   }
 
-  useEffect(() => {
+  const setupTitles = useCallback(() => {
     setSetupTitle(EJokeSetup[language])
     setDeliveryTitle(EJokeDelivery[language])
   }, [language])
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setupTitles()
+  }, [language, setupTitles])
+
+  const setSelectContainersZIndex = useCallback(() => {
     setTimeout(() => {
       // Set z-index of select containers so that they do not open behind the next select container
-      const selectContainers = document?.querySelectorAll(
-        '.select-container'
-      ) as NodeListOf<HTMLDivElement>
+      const selectContainers = document?.querySelectorAll('.select-container')
       const totalContainers = selectContainers?.length + 2
 
       selectContainers?.forEach((container, index) => {
         const zIndex = totalContainers - index
-        container.style.zIndex = `${zIndex}`
+        ;(container as HTMLDivElement).style.zIndex = `${zIndex}`
       })
     }, 500)
   }, [])
 
+  useEffect(() => {
+    setSelectContainersZIndex()
+  }, [setSelectContainersZIndex])
+
   return (
     <Accordion
-      language={language}
       text={t('ClickHereToWriteYourOwnJoke')}
       className="submit"
       wrapperClass="submit-wrap"
@@ -242,7 +285,7 @@ const JokeSubmit = ({
               className={`${language} submit joketype`}
               on={t('TwoPart')}
               off={t('Single')}
-              handleToggleChange={handleToggleChangeJokeType}
+              onChange={handleToggleChangeJokeType}
               equal={true}
             />
             <ButtonToggle
@@ -254,7 +297,7 @@ const JokeSubmit = ({
               className={`${language} submit private`}
               on={t('Private')}
               off={t('Public')}
-              handleToggleChange={handleToggleChangePublic}
+              onChange={handleToggleChangePublic}
               equal={false}
             />
             <ButtonToggle
@@ -266,7 +309,7 @@ const JokeSubmit = ({
               className={`${language} submit anonymous`}
               on={t('Anonymous')}
               off={t('Nickname')}
-              handleToggleChange={handleToggleChangeAnonymous}
+              onChange={handleToggleChangeAnonymous}
               equal={false}
             />
           </div>
@@ -329,10 +372,10 @@ const JokeSubmit = ({
                 instructions={`${t('CategoryTitle')}:`}
                 selectAnOption={selectAnOption}
                 value={jokeCategory}
-                options={optionsCategory(categoryByLanguages as any)}
+                options={optionsCategory(categoryByLanguages)}
                 onChange={(o: SelectOption | undefined) => {
                   setJokeCategory(o)
-                  setSelectedCategory(o?.label as ECategories)
+                  setSelectedCategory(coerceToECategories(o?.value))
                 }}
               />
               <Select
@@ -346,7 +389,7 @@ const JokeSubmit = ({
                 value={selectedNorrisCategory}
                 options={norrisCategories}
                 onChange={o => {
-                  setSelectedNorrisCategory(o as SelectOption)
+                  setSelectedNorrisCategory(o)
                 }}
               />
             </>
@@ -368,7 +411,7 @@ const JokeSubmit = ({
                 : undefined
             }
             onChange={o => {
-              setLanguageSubmit(o?.value as ELanguages)
+              setLanguageSubmit(coerceToELanguages(o?.value))
             }}
           />
 

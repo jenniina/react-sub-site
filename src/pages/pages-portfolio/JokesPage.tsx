@@ -1,4 +1,3 @@
-import { useContext } from 'react'
 import { BiChevronsDown } from 'react-icons/bi'
 import {
   jokeCategoryByLanguage,
@@ -6,32 +5,15 @@ import {
 } from '../../components/Jokes/types'
 import Accordion from '../../components/Accordion/Accordion'
 import { ELanguages, ELanguagesLong, LanguageOfLanguage } from '../../types'
-import { SyntheticEvent, useEffect } from 'react'
+import { SyntheticEvent } from 'react'
 import { Select, SelectOption } from '../../components/Select/Select'
 import { options } from '../../utils'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import Jokes from '../../components/Jokes/Jokes'
-import { useIsClient, useWindow } from '../../hooks/useSSR'
 
-export default function JokesPage({
-  heading,
-  text,
-  type,
-  language,
-  setLanguage,
-}: {
-  heading: string
-  text: string
-  type: string
-  language: ELanguages
-  setLanguage: (language: ELanguages) => void
-}) {
-  const isClient = useIsClient()
-  const windowObj = useWindow()
+export default function JokesPage({ type }: { type: string }) {
+  const { t, language, setLanguage } = useLanguageContext()
 
-  const { t } = useLanguageContext()
-
-  const title = t('TheComediansCompanion')
   const titleLanguage = t('LanguageTitle')
 
   const handleSkipToJokes = (e: SyntheticEvent) => {
@@ -78,14 +60,13 @@ export default function JokesPage({
                     <span>{t('SkipToJokeSearch')}</span>
                     <BiChevronsDown className="down" />
                   </a>
-                  <a
-                    href="#"
-                    className="svg-wrap newline"
+                  <button
+                    className="reset svg-wrap newline"
                     onClick={e => handleSkipToJokes(e)}
                   >
                     <span>{t('SkipToSavedJokes')}</span>
                     <BiChevronsDown className="down" />
-                  </a>
+                  </button>
                 </div>
                 <div>
                   <Select
@@ -108,7 +89,6 @@ export default function JokesPage({
                   />
                 </div>
                 <Accordion
-                  language={language}
                   text={t('ClickHereToSeeFeatures')}
                   className="features"
                   wrapperClass="features-wrap"
@@ -152,7 +132,7 @@ export default function JokesPage({
                               <li>{jokeCategoryAny[language]}</li>
                               {Object.values(
                                 jokeCategoryByLanguage[language]
-                              ).map(c => {
+                              ).map((c: string) => {
                                 return <li key={c}>{c}</li>
                               })}
                             </ul>
@@ -176,7 +156,7 @@ export default function JokesPage({
               </div>
             </div>
           </section>
-          <Jokes language={language} setLanguage={setLanguage} />
+          <Jokes />
         </div>
       </div>
     </>

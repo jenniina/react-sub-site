@@ -27,13 +27,13 @@ button.submit-todo {
   margin-left: auto;
 }
 button.clear-completed {
-  margin: 1em 0 0;
+  margin: 0;
 }
 button.clear-completed,
 button.submit-todo {
   padding: 0.4rem 1rem;
   gap: 0.3em;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
 }
 .todo-ul .btn-wrap button.edit {
   border-radius: 1em;
@@ -72,47 +72,60 @@ button.cancel svg {
   padding: 0;
 }
 .todo-ul > li {
-  margin-bottom: calc(var(--width) / 2);
+  margin-bottom: calc(var(--width));
   position: relative;
   border-bottom: solid 1px var(--color-primary-10);
   padding-bottom: calc(var(--width) / 2);
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: row wrap;
+
   align-items: flex-start;
   justify-content: flex-start;
   gap: 0.6em 0.8em;
 }
-.todo-ul > li span.drag-handle {
+.todo-ul > li .drag-handle {
   cursor: move;
   flex: 0 1 1rem;
   font-size: 1.5em;
   display: inline-block;
-  padding: 0.1rem 0.2rem 0.1rem 0.2rem;
+  padding: 0.2em 0 0.1em;
   border: 2px solid transparent;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.todo-ul > li span.drag-handle:hover,
-.todo-ul > li span.drag-handle:focus,
-.todo-ul > li span.drag-handle:focus-visible {
+.todo-ul > li .drag-handle:hover,
+.todo-ul > li .drag-handle:focus,
+.todo-ul > li .drag-handle:focus-visible {
   border: 2px solid var(--color-primary-10);
   border-radius: var(--radius-small);
 }
 .todo-ul > li > label {
+  --margintop: 0.45em;
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: row wrap;
   align-items: flex-start;
   justify-content: flex-start;
   gap: 0.6em;
+  min-width: calc(100%);
+  max-width: calc(100%);
+  margin-top: calc(var(--margintop) * 0.6);
+  margin-left: 0;
 }
 .todo-ul > li > label > span {
-  margin-top: 0.2rem;
+  display: inline-block;
+  margin-top: 0;
   cursor: text;
+  min-width: 100%;
+  max-width: 100%;
 }
-.todo-ul > li > label input[type='checkbox' i] {
-  margin: 0 auto 0 0.6em;
+.todo-ul > li > label .checkbox-wrap {
+  align-self: flex-start;
+  margin-left: 0;
+  margin-right: 0.6em;
+  margin-top: calc(var(--margintop) * 0.4);
 }
+
 .todo-ul > li .btn-wrap {
   display: flex;
   flex-flow: row wrap;
@@ -204,13 +217,6 @@ button.cancel svg {
   /* background-color: darkslategray; */
   background-color: saddlebrown;
 }
-.light .btn-wrap > b:not(.cat) svg {
-  /* filter: drop-shadow(0 0.05em 0.02em black); */
-}
-/* .light .todo-ul > li .btn-wrap > b.cat.bg {
-  background-color: var(--color-primary-13);
-  border-color: var(--color-primary-13);
-} */
 .todo-ul > li:has(input:checked) .btn-wrap > b > svg,
 .todo-ul > li:has(input:checked) .btn-wrap > b::before,
 .todo-ul > li:has(input:checked) .btn-wrap button {
@@ -289,16 +295,14 @@ button.cancel svg {
 .todo-ul input[type='text' i] {
   width: 100%;
 }
-.todo-ul > li input[type='checkbox' i] {
-  margin-right: 0;
+/* .todo-ul > li label .checkbox-wrap input[type='checkbox' i] {
+  width: 1.8em;
+  height: 1.8em;
   margin-left: 0;
-  margin-bottom: auto;
-  margin-top: 0.4em;
-  width: 1.2em;
-  height: 1.2em;
-  border-radius: var(--radius-small);
+  margin-right: 0;
+  border-radius: 0.1rem;
   cursor: pointer;
-}
+} */
 .todo-ul > li:has(input:checked) * {
   color: var(--color-gray-6);
   text-decoration: line-through 1px;
@@ -312,11 +316,11 @@ button.cancel svg {
   fill: white;
 }
 
-.todo-ul > li input[type='checkbox' i]:checked {
+/* .todo-ul > li .checkbox-wrap input[type='checkbox' i]:checked {
   accent-color: var(--color-gray-2);
-}
-.todo-ul > li input[type='checkbox' i]:hover,
-.todo-ul > li input[type='checkbox' i]:focus {
+} */
+.todo-ul > li .checkbox-wrap input[type='checkbox' i]:hover,
+.todo-ul > li .checkbox-wrap input[type='checkbox' i]:focus {
   /* outline: -webkit-focus-ring-color auto 3px; */
   outline-color: currentColor;
   outline-style: solid;
@@ -458,11 +462,18 @@ form.modify .fieldset {
   margin-bottom: 1rem;
 }
 
+.todo-ul > li > .label .toggle-wrap .rotate-toggle {
+  transform: translateY(55%) rotate(90deg);
+  transform-origin: center;
+  width: calc(var(--height) * 1.4);
+}
+
 @media (min-width: 300px) {
   .left-to-do {
     font-size: 0.8em;
   }
 } /*END media*/
+
 @media (min-width: 400px) {
   form.modify {
     flex-flow: row wrap;
@@ -476,7 +487,6 @@ form.modify .fieldset {
   form.modify .textarea textarea {
     width: 100%;
   }
-
   .select {
     font-size: 1em;
   }
@@ -504,18 +514,14 @@ form.modify .fieldset {
     gap: 0.2em;
   }
   .todo-ul > li > label {
-    flex-flow: row wrap;
-    align-items: flex-start;
+    margin-left: 0.6em;
+    min-width: calc(100% - 3em);
+    max-width: calc(100% - 3em);
   }
   .todo-ul > li > label > span {
-    max-width: 90%;
-  }
-  .todo-ul > li > label {
-    min-width: calc(100% - 4rem);
-    max-width: calc(100% - 4rem);
-  }
-  .todo-ul > li > label input[type='checkbox' i] {
-    margin: 0.6em 0 auto 0;
+    margin-left: 0;
+    min-width: calc(100% - 3em);
+    max-width: calc(100% - 3em);
   }
 }
 @media (min-width: 600px) {
@@ -523,19 +529,10 @@ form.modify .fieldset {
     margin-left: 1.3rem;
   }
   .todo-ul > li {
-    flex-flow: row wrap;
     gap: 0.2em;
   }
   .todo-ul > li > label {
-    flex-flow: row wrap;
-    align-items: flex-start;
-  }
-  .todo-ul > li > label > span {
-    max-width: 90%;
-  }
-  .todo-ul > li > label {
-    min-width: calc(100% - 4rem);
-    max-width: calc(100% - 4rem);
+    margin-left: 0.5em;
   }
 } /*END media*/
 
@@ -551,21 +548,33 @@ form.modify .fieldset {
   .more-info-wrap {
     margin-left: 1.4rem;
   }
-  .todo-ul > li > label input[type='checkbox' i] {
-    margin-top: 0.8em;
+  .todo-ul > li > label {
+    margin-top: calc(var(--margintop) * 0.6);
+    min-width: calc(100% - 3em);
+    max-width: calc(100% - 3em);
+    flex: 0 1 calc(100% - 3em);
+  }
+  .todo-ul > li > label .checkbox-wrap {
+    margin-top: calc(var(--margintop) * 0.4);
+    margin-bottom: auto;
   }
 }
 @media (min-width: 1000px) {
   .todo-ul > li {
-    --btn-wrap-width: 14rem;
+    --btn-wrap-width: 10.2em;
     flex-flow: row nowrap;
     justify-content: space-between;
     gap: 0.2em;
   }
   .todo-ul > li > label {
-    min-width: calc(100% - var(--btn-wrap-width) - 4rem);
-    max-width: calc(100% - var(--btn-wrap-width) - 4rem);
-    flex: 0 1 calc(100% - var(--btn-wrap-width) - 4rem);
+    --margintop: 0.5em;
+    margin-top: calc(var(--margintop) * 0.6);
+    min-width: calc(100% - var(--btn-wrap-width) - 3em);
+    max-width: calc(100% - var(--btn-wrap-width) - 3em);
+    flex: 0 1 calc(100% - var(--btn-wrap-width) - 3em);
+  }
+  .todo-ul > li > label .checkbox-wrap {
+    margin-top: calc(var(--margintop) * 0.4);
   }
   .todo-ul > li .btn-wrap {
     min-width: var(--btn-wrap-width);

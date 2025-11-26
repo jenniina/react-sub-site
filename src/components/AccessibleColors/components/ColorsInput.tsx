@@ -1,14 +1,14 @@
-import React, { FC, useEffect, useState } from 'react'
-import { ELanguages } from '../../../types'
+import React, { FC, useEffect, useState, useMemo } from 'react'
 import styles from '../accessiblecolors.module.css'
 import { Select, SelectOption } from '../../Select/Select'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { notify } from '../../../reducers/notificationReducer'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
+import { getErrorMessage } from '../../../utils'
+import { ColorBlock } from '../AccessibleColors'
 
 interface Props {
-  language: ELanguages
-  block: any
+  block: ColorBlock
   updateColor: (
     id: number,
     color: string,
@@ -30,8 +30,11 @@ interface Props {
   rgbToHex: (r: number, g: number, b: number) => string
 }
 
+const hslRegex = /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i
+const rgbRegex = /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i
+const hexRegex = /^#([0-9A-F]{3}){1,2}$/i
+
 const ColorsInput: FC<Props> = ({
-  language,
   block,
   fontSize,
   updateColor,
@@ -41,21 +44,20 @@ const ColorsInput: FC<Props> = ({
   rgbToHex,
   rgbToHSL,
 }) => {
-  const { t } = useLanguageContext()
+  const { t, language } = useLanguageContext()
 
   const dispatch = useAppDispatch()
 
-  const hslRegex = /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i
-  const rgbRegex = /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i
-  const hexRegex = /^#([0-9A-F]{3}){1,2}$/i
+  const colorFormatOptions: SelectOption[] = useMemo(() => {
+    return [
+      { value: 'hsl', label: 'HSL' },
+      { value: 'rgb', label: 'RGB' },
+      { value: 'hex', label: 'Hex' },
+    ]
+  }, [])
 
-  const colorFormatOptions: SelectOption[] = [
-    { value: 'hsl', label: 'HSL' },
-    { value: 'rgb', label: 'RGB' },
-    { value: 'hex', label: 'Hex' },
-  ]
   const [selected, setSelected] = useState<SelectOption | undefined>(
-    colorFormatOptions.find(option => option.value === block.colorFormat) ||
+    colorFormatOptions.find(option => option.value === block.colorFormat) ??
       colorFormatOptions[0]
   )
 
@@ -92,7 +94,7 @@ const ColorsInput: FC<Props> = ({
         break
       }
       case 'rgb': {
-        const rgbMatch = block.color.match(rgbRegex)
+        const rgbMatch = rgbRegex.exec(block.color)
         if (rgbMatch) {
           const rVal = Number(rgbMatch[1])
           const gVal = Number(rgbMatch[2])
@@ -108,7 +110,7 @@ const ColorsInput: FC<Props> = ({
         break
       }
       case 'hsl': {
-        const hslMatch = block.color.match(hslRegex)
+        const hslMatch = hslRegex.exec(block.color)
         if (hslMatch) {
           const hVal = Number(hslMatch[1])
           const sVal = Number(hslMatch[2])
@@ -178,9 +180,10 @@ const ColorsInput: FC<Props> = ({
       } else {
         throw new Error('Unsupported color format.')
       }
-    } catch (error: any) {
-      console.error(error.message)
-      dispatch(notify(t('Error') + ' ' + error.message, true, 4))
+    } catch (err: unknown) {
+      const message = getErrorMessage(err, t('Error'))
+      console.error(message)
+      void dispatch(notify(message, true, 4))
     }
   }
 

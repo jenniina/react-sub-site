@@ -306,11 +306,11 @@
 .herocontent li.jewel {
   opacity: 0.77;
   pointer-events: all;
-  -webkit-transform: rotate(var(--rotate)) scale(1);
-  -moz-transform: rotate(var(--rotate)) scale(1);
-  -ms-transform: rotate(var(--rotate)) scale(1);
-  -o-transform: rotate(var(--rotate)) scale(1);
-  transform: rotate(var(--rotate)) scale(1);
+  -webkit-transform: rotate(var(--rotate2)) scale(1);
+  -moz-transform: rotate(var(--rotate2)) scale(1);
+  -ms-transform: rotate(var(--rotate2)) scale(1);
+  -o-transform: rotate(var(--rotate2)) scale(1);
+  transform: rotate(var(--rotate2)) scale(1);
   -webkit-animation: rotate-jewel 4000ms linear infinite;
   -o-animation: rotate-jewel 4000ms linear infinite;
   -ms-animation: rotate-jewel 4000ms linear infinite;
@@ -324,42 +324,39 @@
 }
 
 .herocontent li.jewel::before {
-  box-shadow:
-    0 0 30px -2px hsl(var(--hue), 100%, 60%),
-    0 0 50px -10px hsl(var(--hue), 100%, 60%);
   position: absolute;
   content: '';
-  top: 5%;
-  left: 5%;
-  width: 90%;
-  height: 90%;
+  width: 60%;
+  height: 60%;
+  top: 20%;
+  left: 20%;
   border-radius: 50%;
   z-index: -1;
   background-color: transparent;
   pointer-events: none;
 }
+
 .herocontent li.jewel1::before {
-  width: 80%;
-  height: 80%;
-  top: 10%;
-  left: 10%;
-  border-radius: 6%;
+  box-shadow:
+    0 0 70px 0 hsl(var(--hue), 100%, 60%),
+    0 0 100px 0 hsl(var(--hue), 100%, 60%);
 }
+
 .herocontent li.jewel2::before {
   box-shadow:
-    0 0 20px -4px hsl(var(--hue), 100%, 60%),
-    0 0 60px -10px hsl(var(--hue), 100%, 60%);
+    0 0 70px 0 hsl(var(--hue), 100%, 60%),
+    0 0 100px 0 hsl(var(--hue), 100%, 60%);
 }
 
 .light .herocontent li.jewel::before {
   box-shadow:
-    0 0 10px 2px white,
-    0 0 40px 2px white;
+    0 0 60px 2px white,
+    0 0 90px 2px white;
 }
 .light .herocontent li.jewel1::before {
   box-shadow:
-    0 0 40px 2px white,
-    0 0 60px 2px white;
+    0 0 60px 2px white,
+    0 0 90px 2px white;
 }
 
 .herocontent li.jewel > div,
@@ -1224,18 +1221,18 @@
 
 @keyframes rotate-jewel {
   0% {
-    -webkit-transform: rotate(var(--rotate)) scale(1);
-    -moz-transform: rotate(var(--rotate)) scale(1);
-    -ms-transform: rotate(var(--rotate)) scale(1);
-    -o-transform: rotate(var(--rotate)) scale(1);
-    transform: rotate(var(--rotate)) scale(1);
+    -webkit-transform: rotate(var(--rotate2)) scale(1);
+    -moz-transform: rotate(var(--rotate2)) scale(1);
+    -ms-transform: rotate(var(--rotate2)) scale(1);
+    -o-transform: rotate(var(--rotate2)) scale(1);
+    transform: rotate(var(--rotate2)) scale(1);
   }
   100% {
-    -webkit-transform: rotate(calc(360deg + var(--rotate))) scale(1);
-    -moz-transform: rotate(calc(360deg + var(--rotate))) scale(1);
-    -ms-transform: rotate(calc(360deg + var(--rotate))) scale(1);
-    -o-transform: rotate(calc(360deg + var(--rotate))) scale(1);
-    transform: rotate(calc(360deg + var(--rotate))) scale(1);
+    -webkit-transform: rotate(calc(360deg + var(--rotate2))) scale(1);
+    -moz-transform: rotate(calc(360deg + var(--rotate2))) scale(1);
+    -ms-transform: rotate(calc(360deg + var(--rotate2))) scale(1);
+    -o-transform: rotate(calc(360deg + var(--rotate2))) scale(1);
+    transform: rotate(calc(360deg + var(--rotate2))) scale(1);
   }
 }
 
@@ -1589,6 +1586,7 @@
     transparent 0%,
     var(--color-primary-1) 10%
   );
+  pointer-events: none;
 }
 .hero .bottom button:hover span:first-of-type::after {
   opacity: 1;

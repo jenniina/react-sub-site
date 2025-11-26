@@ -1,33 +1,34 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { IJoke } from '../types'
 import jokeService from '../services/jokes'
+import { sleep } from '../../../utils'
+import { IJokeResponse } from '../types'
 
 const jokeSlice = createSlice({
   name: 'joke',
   initialState: { jokes: [] as IJoke[], joke: null as IJoke | null },
   reducers: {
-    create(state, action) {
-      const newJoke = action.payload
+    create(state, action: PayloadAction<IJokeResponse>) {
+      const newJoke: IJoke = action.payload.joke!
       state.jokes?.push(newJoke)
     },
-    setJokes(state, action) {
+    setJokes(state, action: PayloadAction<IJoke[]>) {
       state.jokes = action.payload
     },
-    remove(state, action) {
-      const id = action.payload
-      state.jokes?.filter(joke => joke?.jokeId !== id)
+    remove(state, action: PayloadAction<IJoke>) {
+      const id = action.payload._id
+      state.jokes = state.jokes?.filter(joke => joke?._id !== id) ?? []
     },
-    search(state, action) {
-      const id = action.payload.jokeId
-      state.jokes?.filter(joke => joke?.jokeId === id) as IJoke[]
+    search(state, action: PayloadAction<IJoke>) {
+      state.joke = action.payload
     },
-    editJoke(state, action) {
+    editJoke(state, action: PayloadAction<IJoke>) {
       const id = action.payload._id
       const updatedJoke = action.payload
       state.jokes?.map(joke => (joke?._id !== id ? joke : updatedJoke))
     },
-    deleteUser(state, action) {
-      return action.payload
+    deleteUser(state, action: PayloadAction<IJoke[]>) {
+      state.jokes = action.payload
     },
     save(state, action: PayloadAction<IJoke>) {
       const newJoke = action.payload
@@ -54,47 +55,48 @@ const jokeSlice = createSlice({
 
 export const saveMostRecentJoke = (joke: IJoke) => {
   return async (
-    dispatch: (arg0: { payload: any; type: 'joke/setJoke' }) => void
+    dispatch: (arg0: { payload: unknown; type: 'joke/setJoke' }) => void
   ) => {
-    dispatch(setJoke(joke))
+    await sleep(10)
+    void dispatch(setJoke(joke))
   }
 }
 
 export const initializeJokes = () => {
   return async (
-    dispatch: (arg0: { payload: any; type: 'joke/setJokes' }) => void
+    dispatch: (arg0: { payload: unknown; type: 'joke/setJokes' }) => void
   ) => {
     const jokes = await jokeService.getAll()
-    dispatch(setJokes(jokes))
+    void dispatch(setJokes(jokes))
   }
 }
 
 export const getJokesByUserId = (userId: string | undefined) => {
   return async (
-    dispatch: (arg0: { payload: any; type: 'joke/setJokes' }) => void
+    dispatch: (arg0: { payload: unknown; type: 'joke/setJokes' }) => void
   ) => {
     const jokes = await jokeService.getJokesByUserId(userId)
-    dispatch(setJokes(jokes))
+    void dispatch(setJokes(jokes))
     return jokes
   }
 }
 
 export const createJoke = (joke: IJoke) => {
   return async (
-    dispatch: (arg0: { payload: any; type: 'joke/create' }) => void
+    dispatch: (arg0: { payload: unknown; type: 'joke/create' }) => void
   ) => {
     const newJoke = await jokeService.create(joke)
-    dispatch(create(newJoke))
+    void dispatch(create(newJoke))
     return newJoke
   }
 }
 
 export const removeJoke = (id: string | undefined) => {
   return async (
-    dispatch: (arg0: { payload: any; type: 'joke/remove' }) => void
+    dispatch: (arg0: { payload: unknown; type: 'joke/remove' }) => void
   ) => {
     const deletedJoke = await jokeService.remove(id)
-    dispatch(remove(deletedJoke))
+    void dispatch(remove(deletedJoke))
   }
 }
 
@@ -105,42 +107,44 @@ export const findJoke = (
   type: string
 ) => {
   return async (
-    dispatch: (arg0: { payload: any; type: 'joke/search' }) => IJoke
+    dispatch: (arg0: { payload: unknown; type: 'joke/search' }) => IJoke
   ) => {
     const joke = await jokeService.search(jokeId, language, category, type)
-    dispatch({ type: 'joke/search', payload: joke })
+    void dispatch({ type: 'joke/search', payload: joke })
     return joke
   }
 }
 
 export const updateJoke = (joke: IJoke) => {
   return async (
-    dispatch: (arg0: { payload: any; type: 'joke/editJoke' }) => void
+    dispatch: (arg0: { payload: unknown; type: 'joke/editJoke' }) => void
   ) => {
     const updatedJoke = await jokeService.update(joke)
-    dispatch({ type: 'joke/editJoke', payload: updatedJoke })
+    void dispatch({ type: 'joke/editJoke', payload: updatedJoke })
     return updatedJoke
   }
 }
 
 export const deleteUserFromJoke = (id: string, userId: string) => {
   return async (
-    dispatch: (arg0: { payload: any; type: 'joke/deleteUser' }) => void
+    dispatch: (arg0: { payload: unknown; type: 'joke/deleteUser' }) => void
   ) => {
     const deletedUser = await jokeService.deleteUser(id, userId)
-    dispatch({ type: 'joke/deleteUser', payload: deletedUser })
+    void dispatch({ type: 'joke/deleteUser', payload: deletedUser })
   }
 }
 
 export const removeDuplicateJoke = (jokes: IJoke[]) => {
   return async (
-    dispatch: (arg0: { payload: any; type: 'joke/setJokes' }) => void
+    dispatch: (arg0: { payload: unknown; type: 'joke/setJokes' }) => void
   ) => {
     const uniqueJokes = jokes?.filter(
       (joke, index, self) =>
         index === self.findIndex(t => t.jokeId === joke.jokeId)
     )
-    dispatch(setJokes(uniqueJokes))
+    void dispatch(setJokes(uniqueJokes))
+    await sleep(10)
+    return uniqueJokes
   }
 }
 

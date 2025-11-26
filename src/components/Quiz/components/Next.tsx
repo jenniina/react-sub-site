@@ -6,12 +6,12 @@ import {
   gameFinished,
   finalSeconds,
 } from '../reducers/questionsReducer'
-import { ELanguages, ReducerProps } from '../../../types'
+import { ReducerProps } from '../../../types'
 import styles from '../css/quiz.module.css'
-import { useContext } from 'react'
+
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 
-const Next = ({ language }: { language: ELanguages }) => {
+const Next = () => {
   const { t } = useLanguageContext()
 
   const { index } = useSelector((state: ReducerProps) => state.questions)
@@ -20,8 +20,8 @@ const Next = ({ language }: { language: ELanguages }) => {
   const navigate = useNavigate()
 
   const handleFinish = () => {
-    dispatch(finalSeconds())
-    dispatch(gameFinished())
+    void dispatch(finalSeconds())
+    void dispatch(gameFinished())
     navigate('/portfolio/quiz/results')
   }
 

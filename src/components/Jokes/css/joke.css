@@ -1181,7 +1181,7 @@ button.blocked-btn.active {
   gap: 0;
 }
 
-@-webkit-keyframes bounce {
+@keyframes bounce {
   0% {
     -webkit-transform: translateY(0.1em) scale(1);
     -ms-transform: translateY(0.1em) scale(1);
@@ -1208,11 +1208,12 @@ button.blocked-btn.active {
 .joke-container .accordion-container .accordion-btn.open {
   max-width: 100%;
 }
+
 .joke-container .saved button.save {
   margin-left: auto;
 }
 
-@-webkit-keyframes fadeInDown {
+@keyframes fadeInDown {
   0% {
     opacity: 0;
     -webkit-transform: translateY(-0.5em);

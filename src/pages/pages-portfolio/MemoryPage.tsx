@@ -1,20 +1,6 @@
-import { ELanguages } from '../../types'
-import { useLanguageContext } from '../../contexts/LanguageContext'
 import Memory from '../../components/Memory/Memory'
 
-export default function MemoryPage({
-  heading,
-  text,
-  type,
-  language,
-}: {
-  heading: string
-  text: string
-  type: string
-  language: ELanguages
-}) {
-  const { t } = useLanguageContext()
-
+export default function MemoryPage({ type }: { type: string }) {
   return (
     <>
       {/*  <Helmet prioritizeSeoTags={true}>
@@ -43,7 +29,7 @@ export default function MemoryPage({
       </Helmet> */}
       <div className={`memory ${type}`}>
         <div className="inner-wrap">
-          <Memory language={language} />
+          <Memory />
         </div>
       </div>
     </>

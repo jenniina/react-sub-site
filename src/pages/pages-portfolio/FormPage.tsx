@@ -1,19 +1,8 @@
-import { ELanguages } from '../../types'
 import Accordion from '../../components/Accordion/Accordion'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import FormMulti from '../../components/FormMulti/FormMulti'
 
-export default function FormPage({
-  heading,
-  text,
-  type,
-  language,
-}: {
-  heading: string
-  text: string
-  type: string
-  language: ELanguages
-}) {
+export default function FormPage({ type }: { type: string }) {
   const { t } = useLanguageContext()
 
   return (
@@ -55,7 +44,6 @@ export default function FormPage({
             <div>
               <div className="medium flex column gap">
                 <Accordion
-                  language={language}
                   text={t('ClickHereToSeeFeatures')}
                   className="features"
                   wrapperClass="features-wrap"
@@ -97,7 +85,7 @@ export default function FormPage({
           <section className="card">
             <div>
               <h2>{t('ContactForm')}</h2>
-              <FormMulti language={language} />
+              <FormMulti />
             </div>
           </section>
         </div>

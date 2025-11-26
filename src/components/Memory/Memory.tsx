@@ -6,7 +6,7 @@ import React, {
   useEffect,
   ChangeEvent,
   Fragment,
-  useContext,
+  useCallback,
 } from 'react'
 import {
   FaAppleAlt,
@@ -55,7 +55,7 @@ import {
   FaUser,
   FaTimes,
 } from 'react-icons/fa'
-import { ELanguages, ReducerProps, IUser } from '../../types'
+import { ReducerProps } from '../../types'
 import { CardTypeOptions, GameMode, EGameMode } from '../../types/memory'
 import { Md123, MdAbc, MdInsertEmoticon } from 'react-icons/md'
 import { HiMiniSparkles } from 'react-icons/hi2'
@@ -90,81 +90,79 @@ import CardTypeButton from './components/CardTypeButton'
 import GridSizeButton from './components/GridSizeButton'
 import PlayerAmountButton from './components/PlayerAmountButton'
 import GameGrid from './components/GameGrid'
+import { getErrorMessage } from '../../utils'
 
-type Player = {
+interface Player {
   id: number
   name: string
   score: number
 }
 
 const iconSet: React.JSX.Element[] = [
-  <FaAnchor />,
-  <FaAppleAlt />,
-  <FaBicycle />,
-  <FaBolt />,
-  <FaCat />,
-  <FaDog />,
-  <FaFish />,
-  <FaBell />,
-  <FaCar />,
-  <FaDice />,
-  <FaDove />,
-  <FaEdit />,
-  <FaEnvelope />,
-  <FaFan />,
-  <FaFeather />,
-  <FaGears />,
-  <FaHammer />,
-  <FaHandshake />,
-  <FaHatWizard />,
-  <FaHatCowboy />,
-  <FaHeadphones />,
-  <FaHeart />,
-  <FaHouse />,
-  <FaHorse />,
-  <FaIceCream />,
-  <MdInsertEmoticon />,
-  <FaKey />,
-  <FaKeyboard />,
-  <FaLandmark />,
-  <FaLightbulb />,
-  <FaLeaf />,
-  <FaMountain />,
-  <FaMagnifyingGlass />,
-  <FaMoon />,
-  <FaMusic />,
-  <FaPalette />,
-  <FaPaperPlane />,
-  <FaPaperclip />,
-  <FaPencil />,
-  <FaPizzaSlice />,
-  <FaPlane />,
-  <FaPlusCircle />,
-  <FaRegHourglass />,
-  <FaRocket />,
-  <FaRobot />,
-  <FaSnowman />,
-  <FaSun />,
-  <FaSeedling />,
-  <FaStar />,
-  <FaUmbrellaBeach />,
-  <FaUser />,
+  <FaAnchor key="anchor" />,
+  <FaAppleAlt key="apple" />,
+  <FaBicycle key="bicycle" />,
+  <FaBolt key="bolt" />,
+  <FaCat key="cat" />,
+  <FaDog key="dog" />,
+  <FaFish key="fish" />,
+  <FaBell key="bell" />,
+  <FaCar key="car" />,
+  <FaDice key="dice" />,
+  <FaDove key="dove" />,
+  <FaEdit key="edit" />,
+  <FaEnvelope key="envelope" />,
+  <FaFan key="fan" />,
+  <FaFeather key="feather" />,
+  <FaGears key="gears" />,
+  <FaHammer key="hammer" />,
+  <FaHandshake key="handshake" />,
+  <FaHatWizard key="hat-wizard" />,
+  <FaHatCowboy key="hat-cowboy" />,
+  <FaHeadphones key="headphones" />,
+  <FaHeart key="heart" />,
+  <FaHouse key="house" />,
+  <FaHorse key="horse" />,
+  <FaIceCream key="ice-cream" />,
+  <MdInsertEmoticon key="emoticon" />,
+  <FaKey key="key" />,
+  <FaKeyboard key="keyboard" />,
+  <FaLandmark key="landmark" />,
+  <FaLightbulb key="lightbulb" />,
+  <FaLeaf key="leaf" />,
+  <FaMountain key="mountain" />,
+  <FaMagnifyingGlass key="magnifying-glass" />,
+  <FaMoon key="moon" />,
+  <FaMusic key="music" />,
+  <FaPalette key="palette" />,
+  <FaPaperPlane key="paper-plane" />,
+  <FaPaperclip key="paperclip" />,
+  <FaPencil key="pencil" />,
+  <FaPizzaSlice key="pizza-slice" />,
+  <FaPlane key="plane" />,
+  <FaPlusCircle key="plus-circle" />,
+  <FaRegHourglass key="hourglass" />,
+  <FaRocket key="rocket" />,
+  <FaRobot key="robot" />,
+  <FaSnowman key="snowman" />,
+  <FaSun key="sun" />,
+  <FaSeedling key="seedling" />,
+  <FaStar key="star" />,
+  <FaUmbrellaBeach key="umbrella-beach" />,
+  <FaUser key="user" />,
 ]
-type Card = {
+interface Card {
   id: number
   value: string | ReactElement
 }
-interface Props {
-  language: ELanguages
-}
-const modesOrder: Array<'solo' | 'duet'> = ['solo', 'duet']
+const modesOrder: ('solo' | 'duet')[] = ['solo', 'duet']
 
-const Memory: FC<Props> = ({ language }) => {
+const Memory: FC = () => {
   const { t } = useLanguageContext()
   const confirm = useConfirm()
 
   const dispatch = useAppDispatch()
-  const user = useSelector((state: ReducerProps) => state.auth?.user) as IUser
+  const user = useSelector((state: ReducerProps) => state.auth?.user)
   const { show } = useModal()
   const lightTheme = useTheme()
 
@@ -207,7 +205,6 @@ const Memory: FC<Props> = ({ language }) => {
     highScores,
     addHighScore,
     deleteHighScore,
-    updateHighScore,
     deleteHighScoresByPlayerName,
     changePlayerName,
     loading,
@@ -275,7 +272,7 @@ const Memory: FC<Props> = ({ language }) => {
     return `${mode}_${gridSize}x${gridSize}_${cardType}`
   }
 
-  const handleGameEnd = async () => {
+  const handleGameEnd = useCallback(async () => {
     setHasRecordedHighScore(true)
     setGameStarted(false)
     const mode: 'solo' | 'duet' = players.length === 1 ? 'solo' : 'duet'
@@ -292,24 +289,54 @@ const Memory: FC<Props> = ({ language }) => {
     const addedHighScore = await addHighScore(newEntry)
 
     if (addedHighScore) {
-      setLatestHighScoreId(addedHighScore._id || null)
+      setLatestHighScoreId(addedHighScore._id ?? null)
       setShowModal(true)
     }
     setFlippedOverCards([])
-  }
+  }, [players, gridSize, cardType, timer, addHighScore])
+
+  const extractParts = useCallback(
+    (levelKey: string): ReactElement => {
+      const parts = levelKey.split('_')
+      let partName = ''
+      let partIcon = <></>
+
+      if (parts[1] === (CardType.numbers as string)) {
+        partIcon = (
+          <span className={styles['title-svg']}>
+            <Md123 aria-hidden="true" />
+          </span>
+        )
+        partName = t('Numbers')
+      } else if (parts[1] === (CardType.letters as string)) {
+        partIcon = (
+          <span className={styles['title-svg']}>
+            <MdAbc aria-hidden="true" />
+          </span>
+        )
+        partName = t('Letters')
+      } else if (parts[1] === (CardType.icons as string)) {
+        partIcon = (
+          <span className={styles['title-icon']}>
+            <MdInsertEmoticon aria-hidden="true" />
+          </span>
+        )
+        partName = t('Icons')
+      }
+
+      return (
+        <>
+          {parts[0]} {partIcon} <br />
+          {partName}
+        </>
+      )
+    },
+    [t]
+  )
 
   useEffect(() => {
     if (showModal) {
-      const mode: 'solo' | 'duet' = players.length === 1 ? 'solo' : 'duet'
-      const latestLevelKey = getLevelKey(
-        Number(gridSize.value),
-        cardType.value,
-        mode
-      )
       setTimeout(() => {
-        const [mode, ...rest] = latestLevelKey.split('_')
-        const levelKey = rest.join('_')
-
         show({
           title: t('YouMadeItToTheHighScores'),
           className: '',
@@ -353,7 +380,7 @@ const Memory: FC<Props> = ({ language }) => {
                                   (entry, idx) => (
                                     <li
                                       key={
-                                        entry._id ||
+                                        entry._id ??
                                         `${idx}-${entry.time.toFixed(1)}`
                                       }
                                       className={
@@ -392,7 +419,18 @@ const Memory: FC<Props> = ({ language }) => {
     } else if (!showModal) {
       notify(t('GoodJob'), false, 5)
     }
-  }, [highScores, showModal, latestHighScoreId, loading, error])
+  }, [
+    highScores,
+    showModal,
+    latestHighScoreId,
+    loading,
+    error,
+    lightTheme,
+    t,
+    players.length,
+    show,
+    extractParts,
+  ])
 
   const handleCardClick = (index: number) => {
     if (
@@ -451,14 +489,22 @@ const Memory: FC<Props> = ({ language }) => {
       cards.length > 0 &&
       !hasRecordedHighScore
     ) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTimerOn(false)
       setTimeout(() => {
-        handleGameEnd()
+        void handleGameEnd()
       }, 1000)
     }
-  }, [gameStarted, matchedCards, cards])
+  }, [
+    gameStarted,
+    matchedCards,
+    cards,
+    hasRecordedHighScore,
+    showModal,
+    handleGameEnd,
+  ])
 
-  const renderCardContent = (card: any) => {
+  const renderCardContent = (card: Card) => {
     if (cardType?.value === CardType.icons) {
       return card.value
     }
@@ -471,7 +517,7 @@ const Memory: FC<Props> = ({ language }) => {
     const hasInvalidChars = allowedCharsRegex.test(name)
 
     if (hasInvalidChars) {
-      dispatch(notify(t('SpecialCharactersNotAllowed'), true, 5))
+      void dispatch(notify(t('SpecialCharactersNotAllowed'), true, 5))
       return
     }
 
@@ -501,9 +547,12 @@ const Memory: FC<Props> = ({ language }) => {
 
   // Check for duplicate icons for debugging
   useEffect(() => {
-    const iconNames = iconSet.map(
-      Icon => Icon.type.displayName || Icon.type.name
-    )
+    const iconNames = iconSet.map(Icon => {
+      const type = Icon.type as
+        | { displayName?: string; name?: string }
+        | undefined
+      return type?.displayName ?? type?.name ?? ''
+    })
     const duplicates = iconNames.filter(
       (name, index) => iconNames.indexOf(name) !== index
     )
@@ -511,42 +560,6 @@ const Memory: FC<Props> = ({ language }) => {
       console.log('Duplicate Icons Found:', duplicates)
     }
   }, [])
-
-  const extractParts = (levelKey: string): ReactElement => {
-    const parts = levelKey.split('_')
-    let partName = ''
-    let partIcon = <></>
-
-    if (parts[1] === CardType.numbers) {
-      partIcon = (
-        <span className={styles['title-svg']}>
-          <Md123 aria-hidden="true" />
-        </span>
-      )
-      partName = t('Numbers')
-    } else if (parts[1] === CardType.letters) {
-      partIcon = (
-        <span className={styles['title-svg']}>
-          <MdAbc aria-hidden="true" />
-        </span>
-      )
-      partName = t('Letters')
-    } else if (parts[1] === CardType.icons) {
-      partIcon = (
-        <span className={styles['title-icon']}>
-          <MdInsertEmoticon aria-hidden="true" />
-        </span>
-      )
-      partName = t('Icons')
-    }
-
-    return (
-      <>
-        {parts[0]} {partIcon} <br />
-        {partName}
-      </>
-    )
-  }
 
   useEffect(() => {
     if (gameStarted) {
@@ -594,7 +607,7 @@ const Memory: FC<Props> = ({ language }) => {
                 <div>
                   <h3>{t('CardType')}</h3>
                   <div className={styles['set-card-type']}>
-                    {optionsType.map((option, index) => (
+                    {optionsType.map(option => (
                       <CardTypeButton
                         key={option.value}
                         option={option}
@@ -607,7 +620,7 @@ const Memory: FC<Props> = ({ language }) => {
                 <div>
                   <h3>{t('GridSize')}</h3>
                   <div className={styles['set-grid']}>
-                    {optionsSize.map((option, index) => (
+                    {optionsSize.map(option => (
                       <GridSizeButton
                         key={option.value}
                         option={option}
@@ -622,9 +635,8 @@ const Memory: FC<Props> = ({ language }) => {
                   <div className={styles['set-players']}>
                     {
                       <>
-                        {playerOptions.map((count, index) => (
+                        {playerOptions.map(count => (
                           <PlayerAmountButton
-                            language={language}
                             key={count}
                             value={count}
                             isActive={players.length === count}
@@ -664,7 +676,7 @@ const Memory: FC<Props> = ({ language }) => {
                   </div>
                 </div>
               </div>
-              <button className={styles['big']} onClick={initializeCards}>
+              <button className={styles.big} onClick={initializeCards}>
                 {t('StartGame')}
               </button>
             </div>
@@ -701,9 +713,9 @@ const Memory: FC<Props> = ({ language }) => {
               <div className={styles['high-scores']}>
                 {modesOrder.map(mode => {
                   let modePart = ''
-                  if (mode === EGameMode.solo) {
+                  if (mode === (EGameMode.solo as string)) {
                     modePart = t('Solo')
-                  } else if (mode === EGameMode.duet) {
+                  } else if (mode === (EGameMode.duet as string)) {
                     modePart = t('Duet')
                   }
                   return (
@@ -751,64 +763,59 @@ const Memory: FC<Props> = ({ language }) => {
                                         <span>
                                           {entry.players.map(player => (
                                             <Fragment key={player.id}>
-                                              <span>
-                                                {player.name}{' '}
-                                                {entry.players.length > 1
-                                                  ? `: ${player.score}`
-                                                  : ''}{' '}
-                                              </span>
-                                              {user &&
-                                                user.role &&
-                                                user.role > 1 && (
-                                                  <Accordion
-                                                    hideBrackets
-                                                    language={language}
-                                                    id={`edit-${entry._id}`}
-                                                    className="edit"
-                                                    wrapperClass={`${styles['edit-wrap']}`}
-                                                    text={
-                                                      <>
-                                                        <AiFillEdit aria-hidden="true" />
-                                                      </>
-                                                    }
-                                                    isOpen={false}
-                                                    closeClass={styles['close']}
-                                                    setIsFormOpen={() => {}}
-                                                    tooltip={t('Edit')}
-                                                    y="above"
-                                                  >
-                                                    <form
-                                                      onSubmit={event => {
-                                                        event.preventDefault()
+                                              {entry.players.length > 1
+                                                ? `: ${player.score}`
+                                                : ''}{' '}
+                                              {user?.role && user.role > 1 && (
+                                                <Accordion
+                                                  hideBrackets
+                                                  id={`edit-${entry._id}`}
+                                                  className="edit"
+                                                  wrapperClass={`${styles['edit-wrap']}`}
+                                                  text={
+                                                    <>
+                                                      <AiFillEdit aria-hidden="true" />
+                                                    </>
+                                                  }
+                                                  isOpen={false}
+                                                  closeClass={styles.close}
+                                                  // eslint-disable-next-line @typescript-eslint/no-empty-function
+                                                  setIsFormOpen={() => {}}
+                                                  tooltip={t('Edit')}
+                                                  y="above"
+                                                >
+                                                  <form
+                                                    onSubmit={event => {
+                                                      event.preventDefault()
 
-                                                        const oldName =
-                                                          player.name
-                                                        const newName = (
-                                                          event.target as HTMLFormElement
-                                                        ).name
-                                                        changePlayerName(
-                                                          oldName,
-                                                          newName,
-                                                          user?._id
-                                                        )
-                                                      }}
-                                                    >
-                                                      <div className="input-wrap">
-                                                        <label>
-                                                          <input
-                                                            type="text"
-                                                            name="name"
-                                                            required
-                                                          />
-                                                          <span>
-                                                            {t('NewName')} (
-                                                            {player.name}):
-                                                          </span>
-                                                        </label>
-                                                      </div>
-                                                    </form>
-                                                  </Accordion>
-                                                )}
+                                                      const oldName =
+                                                        player.name
+                                                      const newName = (
+                                                        event.target as HTMLFormElement
+                                                      ).name
+                                                      void changePlayerName(
+                                                        oldName,
+                                                        newName,
+                                                        user?._id
+                                                      )
+                                                    }}
+                                                  >
+                                                    <div className="input-wrap">
+                                                      <label>
+                                                        <input
+                                                          type="text"
+                                                          name="name"
+                                                          required
+                                                        />
+                                                        <span>
+                                                          {t('NewName')} (
+                                                          {player.name}):
+                                                        </span>
+                                                      </label>
+                                                    </div>
+                                                  </form>
+                                                </Accordion>
+                                              )}
                                             </Fragment>
                                           ))}
                                         </span>
@@ -818,58 +825,52 @@ const Memory: FC<Props> = ({ language }) => {
                                           <i className={styles.time}>
                                             {entry.time.toFixed(1)}s
                                           </i>
-                                          {user &&
-                                            user.role &&
-                                            user.role > 1 && (
-                                              <>
-                                                <button
-                                                  type="button"
-                                                  className={`danger small tooltip-wrap ${styles['delete-btn']}`}
-                                                  onClick={async () => {
+                                          {user?.role && user.role > 1 && (
+                                            <>
+                                              <button
+                                                type="button"
+                                                className={`danger small tooltip-wrap ${styles['delete-btn']}`}
+                                                onClick={() => {
+                                                  void confirm({
+                                                    message:
+                                                      t('DeleteHighScore'),
+                                                  }).then(confirmed => {
                                                     if (
                                                       entry._id &&
-                                                      (await confirm({
-                                                        message:
-                                                          t('DeleteHighScore'),
-                                                      }))
+                                                      confirmed
                                                     ) {
-                                                      deleteHighScore(
+                                                      void deleteHighScore(
                                                         entry._id
-                                                      ).catch(error => {
-                                                        console.error(error)
-                                                        if (
-                                                          error.response?.data
-                                                            ?.message
-                                                        )
-                                                          dispatch(
+                                                      ).catch(
+                                                        (err: unknown) => {
+                                                          const message =
+                                                            getErrorMessage(
+                                                              err,
+                                                              t('Error')
+                                                            )
+                                                          console.error(err)
+                                                          void dispatch(
                                                             notify(
-                                                              error.response
-                                                                .data.message,
+                                                              message,
                                                               true,
                                                               8
                                                             )
                                                           )
-                                                        else
-                                                          dispatch(
-                                                            notify(
-                                                              error.message,
-                                                              true,
-                                                              5
-                                                            )
-                                                          )
-                                                      })
+                                                        }
+                                                      )
                                                     }
-                                                  }}
-                                                >
-                                                  <span aria-hidden="true">
-                                                    <FaTimes aria-hidden="true" />
-                                                  </span>
-                                                  <span className="tooltip above narrow2">
-                                                    {t('Delete')}
-                                                  </span>
-                                                </button>
-                                              </>
-                                            )}
+                                                  })
+                                                }}
+                                              >
+                                                <span aria-hidden="true">
+                                                  <FaTimes aria-hidden="true" />
+                                                </span>
+                                                <span className="tooltip above narrow2">
+                                                  {t('Delete')}
+                                                </span>
+                                              </button>
+                                            </>
+                                          )}
                                         </span>
                                       </div>
                                     </li>
@@ -883,27 +884,26 @@ const Memory: FC<Props> = ({ language }) => {
                   )
                 })}
               </div>
-              {user && user.role && user.role > 1 && (
+              {user?.role && user.role > 1 && (
                 <form
                   className={`${styles['delete-name-form']}`}
-                  onSubmit={async event => {
-                    event.preventDefault()
-                    if (
-                      await confirm({ message: t('DeletePlayersHighScores') })
-                    )
-                      deleteHighScoresByPlayerName(name, user?._id)
-                        .then(() => {
-                          setName('')
-                        })
-                        .catch(error => {
-                          console.error(error)
-                          if (error.response?.data?.message)
-                            dispatch(
-                              notify(error.response.data.message, true, 8)
-                            )
-                          else dispatch(notify(error.message, true, 5))
-                        })
-                  }}
+                  onSubmit={e =>
+                    void (async () => {
+                      e.preventDefault()
+                      if (
+                        await confirm({ message: t('DeletePlayersHighScores') })
+                      )
+                        deleteHighScoresByPlayerName(name, user?._id)
+                          .then(() => {
+                            setName('')
+                          })
+                          .catch((err: unknown) => {
+                            const message = getErrorMessage(err, t('Error'))
+                            console.error(err)
+                            void dispatch(notify(message, true, 8))
+                          })
+                    })()
+                  }
                 >
                   <div className={`input-wrap`}>
                     <label>
@@ -943,7 +943,6 @@ const Memory: FC<Props> = ({ language }) => {
                 </div>
               </div>
               <GameGrid
-                language={language}
                 setGameStarted={setGameStarted}
                 gridSize={gridSize.value}
                 cards={cards}

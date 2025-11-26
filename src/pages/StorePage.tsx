@@ -1,15 +1,9 @@
 import React from 'react'
-import { ELanguages } from '../types'
-import Hero from '../components/Hero/Hero'
 import { ICartItem } from '../types/store'
 import styles from '../components/Store/store.module.css'
-import { useLanguageContext } from '../contexts/LanguageContext'
 import Store from '../components/Store/Store'
 
 interface StoreProps {
-  language: ELanguages
-  heading: string
-  text: string
   type: string
   cart: ICartItem[]
   addToCart: (item: ICartItem) => void
@@ -17,16 +11,11 @@ interface StoreProps {
 }
 
 const StorePage: React.FC<StoreProps> = ({
-  language,
-  heading,
-  text,
   type,
   cart,
   addToCart,
   removeFromCart,
 }) => {
-  const { t } = useLanguageContext()
-
   return (
     <>
       {/*  <Helmet prioritizeSeoTags={true}>
@@ -54,7 +43,6 @@ const StorePage: React.FC<StoreProps> = ({
       <div className={`store ${type} ${styles.store}`}>
         <div className={`inner-wrap ${styles['inner-wrap']}`}>
           <Store
-            language={language}
             cart={cart}
             addToCart={addToCart}
             removeFromCart={removeFromCart}

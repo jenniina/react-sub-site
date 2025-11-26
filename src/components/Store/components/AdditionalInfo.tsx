@@ -1,4 +1,4 @@
-import { FC, Dispatch, SetStateAction, useContext } from 'react'
+import { FC } from 'react'
 import { ELanguages } from '../../../types'
 import { ICartItem } from '../../../types/store'
 import { scrollIntoView } from '../../../utils'
@@ -6,24 +6,11 @@ import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 export interface AccProps {
   type: ICartItem['id']
-  language: ELanguages
   styles: CSSModuleClasses
-  classNameWrap: string
-  isOpen: boolean
-  setIsFormOpen: Dispatch<SetStateAction<boolean>>
-  text?: string
 }
 
-const AdditionalInfo: FC<AccProps> = ({
-  language,
-  type,
-  styles,
-  classNameWrap,
-  isOpen,
-  setIsFormOpen,
-  text,
-}) => {
-  const { t } = useLanguageContext()
+const AdditionalInfo: FC<AccProps> = ({ type, styles }) => {
+  const { t, language } = useLanguageContext()
 
   return (
     <div className={styles['addition-wrap']}>

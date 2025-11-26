@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export default function useArray<T extends {}>(defaultValue: T[]) {
   //NOTE: Typechecking only works for arrays with content of the same type
 

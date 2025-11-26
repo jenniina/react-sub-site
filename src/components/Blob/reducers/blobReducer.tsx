@@ -1,22 +1,22 @@
-import { BackgroundColor, Draggable } from '../types'
+import { Draggable } from '../types'
 import { ReducerProps } from '../types'
 
 const initialState: ReducerProps['blob'] = {
   draggables: [] as Draggable[][],
-  backgroundColor: [['214', '33', '40']] as BackgroundColor[][],
+  backgroundColor: [['214', '33', '40']] as string[][],
 }
 
 function blobReducer(
   state = initialState,
   action: {
-    type: any
+    type: unknown
     payload: {
       d: number
       draggables?: Draggable[][]
       draggable?: Draggable | null
       update?: Partial<Draggable>
       id?: string
-      backgroundColor?: BackgroundColor[]
+      backgroundColor?: string[]
     }
   }
 ) {

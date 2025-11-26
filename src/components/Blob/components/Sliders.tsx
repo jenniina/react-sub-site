@@ -1,9 +1,7 @@
-import React, { FC, useContext } from 'react'
-import { ELanguages } from '../../../types'
+import React, { FC } from 'react'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 interface SlidersProps {
-  language: ELanguages
   d: number
   sliderLightnessInput: React.RefObject<HTMLInputElement>
   setSliderLightVal: (val: string) => void
@@ -27,7 +25,6 @@ interface SlidersProps {
 
 const Sliders: FC<SlidersProps> = ({
   d,
-  language,
   sliderLightnessInput,
   setSliderLightVal,
   sliderLightness,

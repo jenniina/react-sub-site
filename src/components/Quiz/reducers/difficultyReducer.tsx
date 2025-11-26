@@ -1,24 +1,27 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ReducerProps } from '../../../types'
+import { EQuizType } from '../types'
 
 const difficultySlice = createSlice({
   name: 'difficulty',
   initialState: {
-    mode: 'easy',
+    mode: EQuizType.easy,
   },
   reducers: {
-    selectMode: (state, { payload }) => {
+    selectMode: (state, { payload }: PayloadAction<string>) => {
       localStorage.setItem('quizMode', payload)
-      state.mode = payload
+      state.mode = payload as ReducerProps['difficulty']['mode']
     },
   },
 })
 
 export const modeSelector = (state: ReducerProps) => state.difficulty.mode
 
-export const returnMode = () => {
+export const returnMode = (): string => {
   const mode = localStorage.getItem('quizMode')
-  return mode ? mode : localStorage.setItem('quizMode', 'easy')
+  if (mode) return mode
+  localStorage.setItem('quizMode', 'easy')
+  return 'easy'
 }
 
 export const { selectMode } = difficultySlice.actions

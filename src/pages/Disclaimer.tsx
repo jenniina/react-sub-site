@@ -1,20 +1,9 @@
-import { ELanguages } from '../types'
 import { useTheme } from '../hooks/useTheme'
 import { Link } from 'react-router-dom'
 import styles from './css/disclaimer.module.css'
-import { useContext } from 'react'
+
 import { useLanguageContext } from '../contexts/LanguageContext'
-export default function Disclaimer({
-  heading,
-  text,
-  type,
-  language,
-}: {
-  heading: string
-  text: string
-  type: string
-  language: ELanguages
-}) {
+export default function Disclaimer({ type }: { type: string }) {
   const { t } = useLanguageContext()
 
   const lightTheme = useTheme()

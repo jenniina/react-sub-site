@@ -1,22 +1,22 @@
-import { useEffect, useRef, useState, FormEvent, useContext } from 'react'
+import { useEffect, useRef, useState, FormEvent } from 'react'
 import Accordion from '../Accordion/Accordion'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import { initializeUser, login, logout } from '../../reducers/authReducer'
 import { useSelector } from 'react-redux'
-import { ELanguages, ReducerProps } from '../../types'
+import { ReducerProps } from '../../types'
 import { Link } from 'react-router-dom'
 import { useLanguageContext } from '../../contexts/LanguageContext'
+import { getErrorMessage } from '../../utils'
 
 interface LoginProps {
-  language: ELanguages
   setIsFormOpen?: (isFormOpen: boolean) => void
   isOpen?: boolean
   text?: string
 }
 
-const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
-  const { t } = useLanguageContext()
+const FormLogin = ({ setIsFormOpen, isOpen, text }: LoginProps) => {
+  const { t, language } = useLanguageContext()
 
   const dispatch = useAppDispatch()
 
@@ -31,41 +31,37 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
   })
 
   useEffect(() => {
-    dispatch(initializeUser())
-  }, [])
+    void dispatch(initializeUser())
+  }, [dispatch])
 
   const handleLogout = () => {
-    dispatch(logout())
+    void dispatch(logout())
       .then(() => {
-        dispatch(notify(`${t('LoggedOut')}`, false, 4))
+        void dispatch(notify(`${t('LoggedOut')}`, false, 4))
       })
-      .catch(e => {
-        console.error(e)
-        dispatch(notify(`${t('Error')}: ${e.message}`, true, 8))
+      .catch((err: unknown) => {
+        const message = getErrorMessage(err, t('Error'))
+        console.error(err)
+        void dispatch(notify(`${t('Error')}: ${message}`, true, 8))
       })
   }
 
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault()
-    dispatch(notify(`${t('LoggingIn')}`, false, 3))
+    void dispatch(notify(`${t('LoggingIn')}`, false, 3))
     setLoggingIn(true)
     await dispatch(login(username, password, language))
       .then(() => {
         setLoggingIn(false)
         setUsername('')
         setPassword('')
-        setIsFormOpen && setIsFormOpen(false)
+        setIsFormOpen?.(false)
       })
-      .catch(e => {
+      .catch((err: unknown) => {
         setLoggingIn(false)
-        console.error(e)
-        if (e.response?.data?.message)
-          dispatch(notify(e.response.data.message, true, 8))
-        else if (e.code === 'ERR_BAD_REQUEST')
-          dispatch(notify(`${t('Error')}: ${e.response.data.message}`, true, 8))
-        else if (e.code === 'ERR_NETWORK') {
-          dispatch(notify(`${t('Error')}: ${e.message}`, true, 8))
-        }
+        console.error(err)
+        const message = getErrorMessage(err, t('Error'))
+        void dispatch(notify(message, true, 8))
       })
   }
 
@@ -74,7 +70,7 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
       {user ? (
         <div className="logout-wrap">
           <span>
-            {t('LoggedInAs')} {user?.name ? user?.name : user.username}{' '}
+            {t('LoggedInAs')} {user?.name ?? user.username}{' '}
           </span>
           <Link to="/edit">{t('Edit')}</Link>
           <button
@@ -88,7 +84,6 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
       ) : (
         <>
           <Accordion
-            language={language}
             className="login"
             wrapperClass="login-wrap"
             text={t('Login')}
@@ -100,7 +95,10 @@ const FormLogin = ({ language, setIsFormOpen, isOpen, text }: LoginProps) => {
             <>
               <h2>{t('Login')}</h2>
 
-              <form onSubmit={handleLogin} className="login">
+              <form
+                onSubmit={event => void handleLogin(event)}
+                className="login"
+              >
                 <div className="input-wrap">
                   <label>
                     <input

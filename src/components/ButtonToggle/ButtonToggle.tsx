@@ -1,4 +1,8 @@
-import { ChangeEventHandler, MouseEventHandler } from 'react'
+import {
+  ChangeEventHandler,
+  MouseEventHandler,
+  KeyboardEventHandler,
+} from 'react'
 import { useTheme } from '../../hooks/useTheme'
 import styles from './buttonToggle.module.css'
 
@@ -8,14 +12,17 @@ interface Props {
   off: string
   name: string
   className?: string
-  handleToggleChange:
+  wrapperClass?: string
+  onChange:
     | ChangeEventHandler<HTMLInputElement>
     | MouseEventHandler<HTMLInputElement>
-    | undefined
+    | MouseEventHandler<HTMLButtonElement>
+    | KeyboardEventHandler<HTMLButtonElement>
   isChecked: boolean
   equal?: boolean
   label: string
   hideLabel?: boolean
+  hideOnOff?: boolean
 }
 const ButtonToggle = ({
   id,
@@ -23,44 +30,58 @@ const ButtonToggle = ({
   off,
   name,
   className,
+  wrapperClass,
   isChecked,
-  handleToggleChange,
+  onChange,
   equal,
   label,
   hideLabel,
+  hideOnOff,
 }: Props) => {
   const lightTheme = useTheme()
+  const labelId = `toggle-label-${id}`
+  const toggleId = `toggle-${id}`
+  const stateId = `toggle-state-${id}`
 
   return (
     <div
-      className={`${styles['toggle-container']} toggle-container ${className}-container`}
+      className={`${styles['toggle-container']} toggle-container ${className}-container ${wrapperClass} ${hideOnOff ? styles.small : ''}`}
+      aria-labelledby={labelId}
+      role="group"
     >
       <span
+        id={labelId}
         className={`label ${hideLabel ? 'scr' : ''}`}
         aria-live="polite"
-        onClick={handleToggleChange as MouseEventHandler<HTMLSpanElement>}
       >
         {label}
       </span>
       <label
-        htmlFor={`toggle-${id}`}
+        htmlFor={toggleId}
         className={`${styles.toggle} toggle ${className} focus-within ${
           lightTheme ? styles.light : ''
         } ${equal ? styles.equal : ''}`}
       >
+        <span id={stateId} className="scr">
+          {isChecked ? on : off}
+        </span>
         <input
+          id={toggleId}
           type="checkbox"
           name={name}
-          id={`toggle-${id}`}
           checked={isChecked}
-          onChange={handleToggleChange as ChangeEventHandler<HTMLInputElement>}
+          onChange={onChange as ChangeEventHandler<HTMLInputElement>}
           className="scr"
+          role="switch"
+          aria-labelledby={labelId}
+          aria-describedby={stateId}
         />
-        <span className={`${styles.slider} slider`}></span>
+        <span className={`${styles.slider} slider`} aria-hidden="true"></span>
         <span
-          className={`${styles.labels} labels`}
+          className={`${styles.labels} labels ${hideOnOff ? styles['hide-on-off'] : ''}`}
           data-on={on}
           data-off={off}
+          aria-hidden="true"
         ></span>
       </label>
     </div>

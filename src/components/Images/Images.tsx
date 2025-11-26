@@ -6,6 +6,7 @@ import {
   Fragment,
   useRef,
   MouseEvent as ReactMouseEvent,
+  useMemo,
 } from 'react'
 import useDebounce from '../../hooks/useDebounce'
 import styles from './images.module.css'
@@ -44,10 +45,6 @@ import { useLanguageContext } from '../../contexts/LanguageContext'
 import WordCloud from '../WordCloud/WordCloud'
 import Image from './components/Image'
 import Video from './components/Video'
-
-interface Props {
-  language: ELanguages
-}
 
 const imageTypes: TImageTypes[] = [
   'all',
@@ -114,8 +111,10 @@ const toLanguages = (language: ELanguages) => {
   }))
 }
 
-const Images: FC<Props> = ({ language }) => {
-  const { t } = useLanguageContext()
+type TBreakpoints = 'small' | 'medium' | 'large'
+
+const Images: FC = () => {
+  const { t, language } = useLanguageContext()
 
   const dispatch = useAppDispatch()
   const { show } = useModal()
@@ -184,18 +183,16 @@ const Images: FC<Props> = ({ language }) => {
   const { windowWidth } = useWindowSize()
   const debouncedWindowWidth = useDebounce(windowWidth, 200)
 
-  const [breakpoint, setBreakpoint] = useState<'large' | 'medium' | 'small'>(
-    () => {
-      if (windowWidth > 700) return 'large'
-      if (windowWidth > 500) return 'medium'
-      return 'small'
-    }
-  )
+  const [breakpoint, setBreakpoint] = useState<TBreakpoints>(() => {
+    if (windowWidth > 700) return 'large'
+    if (windowWidth > 500) return 'medium'
+    return 'small'
+  })
 
   const [words, setWords] = useState<{ text: string; weight: number }[]>([])
 
   useEffect(() => {
-    let newBreakpoint: 'large' | 'medium' | 'small'
+    let newBreakpoint: TBreakpoints
     if (debouncedWindowWidth > 700) newBreakpoint = 'large'
     else if (debouncedWindowWidth > 500) newBreakpoint = 'medium'
     else newBreakpoint = 'small'
@@ -203,15 +200,19 @@ const Images: FC<Props> = ({ language }) => {
     setBreakpoint(prev => (prev !== newBreakpoint ? newBreakpoint : prev))
   }, [debouncedWindowWidth])
 
-  useEffect(() => {
+  const weightedCategories = useMemo(() => {
     if (breakpoint === 'large') {
-      setWords(categoriesWithWeights)
+      return categoriesWithWeights
     } else if (breakpoint === 'medium') {
-      setWords(categoriesWithWeightsSmaller)
+      return categoriesWithWeightsSmaller
     } else {
-      setWords(categoriesWithWeightsSmallest)
+      return categoriesWithWeightsSmallest
     }
-  }, [language, breakpoint])
+  }, [breakpoint])
+
+  useEffect(() => {
+    setWords(weightedCategories)
+  }, [weightedCategories])
 
   useEffect(() => {
     toLanguages(language)
@@ -242,21 +243,21 @@ const Images: FC<Props> = ({ language }) => {
       )
       scrollIntoView('image-container')
     } else {
-      dispatch(notify(result.message || 'Error fetching images.', true, 6))
-      setError(result.message || 'Error fetching images.')
+      void dispatch(notify(result.message ?? 'Error fetching images.', true, 6))
+      setError(result.message ?? 'Error fetching images.')
     }
     setLoading(false)
   }
 
   useEffect(() => {
     const array = colors?.map(color => color.value)
-    setColorList(array as Color[])
+    void setColorList(array as Color[])
   }, [colors])
 
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (searchTerm.trim() === '') {
-      dispatch(notify(t('PleaseEnterASearchTerm'), true, 6))
+      void dispatch(notify(t('PleaseEnterASearchTerm'), true, 6))
       setError(t('PleaseEnterASearchTerm'))
       return
     }
@@ -276,7 +277,7 @@ const Images: FC<Props> = ({ language }) => {
       page: fetchPage,
     }
 
-    fetchMedia(options)
+    void fetchMedia(options)
   }
 
   useEffect(() => {
@@ -288,8 +289,8 @@ const Images: FC<Props> = ({ language }) => {
     if (!hasSearched) return
 
     if (searchTerm.trim() === '') {
-      dispatch(notify(t('PleaseEnterASearchTerm'), true, 6))
-      setError(t('PleaseEnterASearchTerm'))
+      void dispatch(notify(t('PleaseEnterASearchTerm'), true, 6))
+      void setError(t('PleaseEnterASearchTerm'))
       return
     }
 
@@ -309,11 +310,11 @@ const Images: FC<Props> = ({ language }) => {
       per_page: perFetch,
       page: fetchPage,
     }
-    fetchMedia(defaultOptions)
-  }, [fetchPage])
+    void fetchMedia(defaultOptions)
+  }, [fetchPage]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    setTotalSubPages(
+    void setTotalSubPages(
       Math.ceil(media.length < perSubPage ? 1 : media.length / perSubPage)
     )
   }, [media, perSubPage])
@@ -440,7 +441,7 @@ const Images: FC<Props> = ({ language }) => {
   const handleSetSearchTerm = (term: string) => {
     setSearchTerm(term)
     scrollIntoView('search-wrap', 'start')
-    dispatch(
+    void dispatch(
       notify(`${t('Updated')}: ${t('SearchParameters')}: ${term}`, false, 4)
     )
   }
@@ -455,7 +456,6 @@ const Images: FC<Props> = ({ language }) => {
             onMouseLeave={handleMouseLeave}
           >
             <WordCloud
-              language={language}
               title={t('QuoteCategories')}
               onClick={handleSetSearchTerm}
               words={words}
@@ -486,7 +486,7 @@ const Images: FC<Props> = ({ language }) => {
           <form onSubmit={handleSearch}>
             <div id="search-wrap" className={styles['search-wrap']}>
               <h2>{t('SearchForMedia')}</h2>
-              <div className={styles['column']}>
+              <div className={styles.column}>
                 <div className={`input-wrap ${styles['input-wrap']}`}>
                   <label>
                     <input
@@ -505,7 +505,7 @@ const Images: FC<Props> = ({ language }) => {
                   <Select
                     z={8}
                     id="colors"
-                    className={`${styles.select} ${styles['colors']}`}
+                    className={`${styles.select} ${styles.colors}`}
                     multiple
                     instructions={t('Colors')}
                     value={colors}
@@ -523,7 +523,7 @@ const Images: FC<Props> = ({ language }) => {
                   hideDelete
                   instructions={t('Type')}
                   value={
-                    optionsImageTypes.find(o => o.value === type) || {
+                    optionsImageTypes.find(o => o.value === type) ?? {
                       label: t('All'),
                       value: 'all',
                     }
@@ -540,7 +540,7 @@ const Images: FC<Props> = ({ language }) => {
                     hideDelete
                     instructions={t('VideoTypes')}
                     value={
-                      optionsVideoTypes.find(o => o.value === videoType) || {
+                      optionsVideoTypes.find(o => o.value === videoType) ?? {
                         label: t('All'),
                         value: 'all',
                       }
@@ -553,13 +553,13 @@ const Images: FC<Props> = ({ language }) => {
                   <Select
                     z={5}
                     id="orientation"
-                    className={`${styles.select} ${styles['orientation']}`}
+                    className={`${styles.select} ${styles.orientation}`}
                     instructions={t('Orientation')}
                     hideDelete
                     value={
                       optionsOrientations.find(
                         o => o.value === orientation
-                      ) || {
+                      ) ?? {
                         label: t('All'),
                         value: 'all',
                       }
@@ -573,11 +573,11 @@ const Images: FC<Props> = ({ language }) => {
                 <Select
                   z={4}
                   id="category"
-                  className={`${styles.select} ${styles['category']}`}
+                  className={`${styles.select} ${styles.category}`}
                   hideDelete
                   instructions={t('CategoryTitle')}
                   value={
-                    optionsCategories.find(o => o.value === category) || {
+                    optionsCategories.find(o => o.value === category) ?? {
                       label: t('All'),
                       value: '', // does not accept 'all' as a value
                     }
@@ -594,7 +594,7 @@ const Images: FC<Props> = ({ language }) => {
                   hideDelete
                   instructions={t('OrderBy')}
                   value={
-                    optionsOrderBy.find(o => o.value === order) || {
+                    optionsOrderBy.find(o => o.value === order) ?? {
                       label: 'Popular',
                       value: 'popular',
                     }
@@ -634,7 +634,7 @@ const Images: FC<Props> = ({ language }) => {
                 hideDelete
                 instructions={t('TextType')}
                 value={
-                  optionsTextTypes.find(o => o.value === textType) || {
+                  optionsTextTypes.find(o => o.value === textType) ?? {
                     label: t('All'),
                     value: '',
                   }
@@ -650,7 +650,7 @@ const Images: FC<Props> = ({ language }) => {
                 hideDelete
                 instructions={t('MediaPerPage')}
                 value={
-                  subPageOptions.find(o => o.value === perSubPage) || {
+                  subPageOptions.find(o => o.value === perSubPage) ?? {
                     label: '20',
                     value: 20,
                   }
@@ -693,8 +693,7 @@ const Images: FC<Props> = ({ language }) => {
                   {'videos' in item ? (
                     <Video
                       key={item.id}
-                      video={item as any}
-                      language={language}
+                      video={item}
                       show={show}
                       searchTerm={searchTerm}
                       textType={textType}
@@ -702,8 +701,7 @@ const Images: FC<Props> = ({ language }) => {
                   ) : (
                     <Image
                       key={item.id}
-                      image={item as any}
-                      language={language}
+                      image={item}
                       show={show}
                       searchTerm={searchTerm}
                       textType={textType}

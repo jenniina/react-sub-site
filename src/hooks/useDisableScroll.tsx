@@ -12,16 +12,16 @@ function useDisableScroll() {
       document?.addEventListener('touchmove', preventDefault, {
         passive: false,
       })
-      document ? (document.body.style.overflow = 'hidden') : null
+      if (document) document.body.style.overflow = 'hidden'
     } else {
-      document ? (document.body.style.overflowY = 'auto') : null
-      document ? (document.body.style.overflowX = 'hidden') : null
+      if (document) document.body.style.overflowY = 'auto'
+      if (document) document.body.style.overflowX = 'hidden'
       document?.removeEventListener('touchmove', preventDefault)
     }
 
     return () => {
-      document ? (document.body.style.overflowY = 'auto') : null
-      document ? (document.body.style.overflowX = 'hidden') : null
+      if (document) document.body.style.overflowY = 'auto'
+      if (document) document.body.style.overflowX = 'hidden'
       document?.removeEventListener('touchmove', preventDefault)
     }
   }, [scrollDisabled])

@@ -8,7 +8,7 @@ export interface ICartResponse {
   cart?: ICart
 }
 
-const url = import.meta.env.VITE_BASE_URI ?? 'https://react.jenniina.fi'
+const url = 'https://react.jenniina.fi'
 const baseUrl = `${url}/api/cart`
 
 const newOrder = async (

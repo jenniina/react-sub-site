@@ -1,31 +1,30 @@
-import React, { FC, useContext, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState, useCallback } from 'react'
 import cartService from '../../../services/cart'
 import styles from '../store.module.css'
 import selectStyles from '../../Select/select.module.css'
 import { status, paid } from '../../../types/store'
 import { ICart, IInfo } from '../../../types/store'
-import { ELanguages, IUser } from '../../../types'
+import { IUser } from '../../../types'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { notify } from '../../../reducers/notificationReducer'
 import Accordion from '../../Accordion/Accordion'
 import { Select, SelectOption } from '../../Select/Select'
 import { useTheme } from '../../../hooks/useTheme'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
+import { getErrorMessage } from '../../../utils'
 import { useConfirm } from '../../../contexts/ConfirmContext'
 
 interface Props {
-  language: ELanguages
   user: IUser
   statusOptions: SelectOption[]
   paidOptions: SelectOption[]
   splitToLines: (details: string) => React.JSX.Element[]
-  paidStatus: { [key in paid]: string }
+  paidStatus: Record<paid, string>
   itemStatus: (status: status) => string
   info: (key: keyof IInfo) => string
 }
 
 const Orders: FC<Props> = ({
-  language,
   user,
   statusOptions,
   paidOptions,
@@ -34,7 +33,7 @@ const Orders: FC<Props> = ({
   itemStatus,
   info,
 }) => {
-  const { t } = useLanguageContext()
+  const { t, language } = useLanguageContext()
   const confirm = useConfirm()
 
   const dispatch = useAppDispatch()
@@ -44,7 +43,7 @@ const Orders: FC<Props> = ({
   const [priceChanged, setPriceChanged] = useState<boolean>(false)
   const [sending, setSending] = useState<boolean>(false)
 
-  const fetchAllOrders = async () => {
+  const fetchAllOrders = useCallback(async () => {
     try {
       const orders = await cartService.getAllOrders(language, user._id)
       // Convert createdAt and updatedAt to Date objects
@@ -62,62 +61,62 @@ const Orders: FC<Props> = ({
           return b.createdAt.getTime() - a.createdAt.getTime()
         })
       setOrders(ordersWithDates)
-    } catch (error: any) {
-      if (error.response?.data?.message)
-        dispatch(notify(error.response.data.message, true, 8))
-      else dispatch(notify((error as Error).message, true, 8))
+      
+    } catch (err: unknown) {
+      const message = getErrorMessage(err, t('Error'))
+      void dispatch(notify(message, true, 8))
     }
-  }
+  }, [language, user._id, dispatch, t])
 
   useEffect(() => {
-    if (user && user?.role && user?.role > 1) {
-      fetchAllOrders()
+    if (user?.role && user?.role > 1) {
+      void fetchAllOrders()
     }
-  }, [user])
+  }, [user, fetchAllOrders])
 
   useEffect(() => {
     // Recalculate total price when price has changed
     if (orders) {
-      setOrders(
-        orders.map(order => ({
-          ...order,
-          total: order.items
-            .map(item => item.price * item.quantity)
-            .reduce((a, b) => a + b, 0),
-        }))
-      )
+      const newOrders = orders.map(order => ({
+        ...order,
+        total: order.items
+          .map(item => item.price * item.quantity)
+          .reduce((a, b) => a + b, 0),
+      }))
+
+      const timer = window.setTimeout(() => {
+        setOrders(newOrders)
+      }, 0)
+
+      return () => clearTimeout(timer)
     }
-  }, [priceChanged])
+  }, [priceChanged, orders])
 
   const deleteOrder = async (orderID: ICart['orderID']) => {
-    cartService
-      .deleteOrder(language, orderID, user._id)
-      .then(() => {
-        dispatch(notify(`${t('Deleted')} ${orderID}`, false, 5))
-        fetchAllOrders()
-      })
-      .catch(error => {
-        if (error.response?.data?.message) {
-          dispatch(notify(error.response.data.message, true, 8))
-        } else dispatch(notify((error as Error).message, true, 8))
-      })
+    try {
+      await cartService.deleteOrder(language, orderID, user._id)
+      void dispatch(notify(`${t('Deleted')} ${orderID}`, false, 5))
+      await fetchAllOrders()
+      
+    } catch (err: unknown) {
+      const message = getErrorMessage(err, t('Error'))
+      void dispatch(notify(message, true, 8))
+    }
   }
 
   const updateOrder = async (order: ICart) => {
     setSending(true)
-    cartService
-      .updateOrder(language, order, user._id)
-      .then(r => {
-        if (r.success) dispatch(notify(`${r.message}`, false, 5))
-        fetchAllOrders()
-        setSending(false)
-      })
-      .catch(error => {
-        if (error.response?.data?.message) {
-          dispatch(notify(error.response.data.message, true, 8))
-        } else dispatch(notify((error as Error).message, true, 8))
-        setSending(false)
-      })
+    try {
+      const r = await cartService.updateOrder(language, order, user._id)
+      if (r?.success) void dispatch(notify(`${r.message}`, false, 5))
+      await fetchAllOrders()
+      
+    } catch (err: unknown) {
+      const message = getErrorMessage(err, t('Error'))
+      void dispatch(notify(message, true, 8))
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -127,18 +126,17 @@ const Orders: FC<Props> = ({
           key={`${order.orderID}-${index}`}
           className={`${styles.order} ${
             order.status === 'completed'
-              ? styles['completed']
+              ? styles.completed
               : order.status === 'cancelled'
-                ? styles['cancelled']
+                ? styles.cancelled
                 : order.status === 'pending'
-                  ? styles['pending']
+                  ? styles.pending
                   : order.status === 'in progress'
                     ? styles['in-progress']
                     : ''
           }`}
         >
           <Accordion
-            language={language}
             text={`${
               order.status === 'completed'
                 ? '[ ' + t('OrderCompleted') + ' ] '
@@ -213,7 +211,6 @@ const Orders: FC<Props> = ({
               </div>
 
               <Accordion
-                language={language}
                 text={`${t('Edit')} (${t('Status')})`}
                 hideBrackets
                 className={`narrow2 change-status`}
@@ -224,9 +221,7 @@ const Orders: FC<Props> = ({
                     className={styles['change-status-form']}
                     onSubmit={e => {
                       e.preventDefault()
-                      updateOrder(
-                        orders?.find(o => o.orderID === order.orderID) as ICart
-                      )
+                      void updateOrder(order)
                     }}
                   >
                     <Select
@@ -285,7 +280,6 @@ const Orders: FC<Props> = ({
                   )}
 
                   <Accordion
-                    language={language}
                     text={`${t('Edit')}`}
                     hideBrackets
                     className={`narrow2 change-status`}
@@ -296,11 +290,7 @@ const Orders: FC<Props> = ({
                         className={styles['change-status-form']}
                         onSubmit={e => {
                           e.preventDefault()
-                          updateOrder(
-                            orders?.find(
-                              o => o.orderID === order.orderID
-                            ) as ICart
-                          )
+                          void updateOrder(order)
                         }}
                       >
                         <label>
@@ -481,7 +471,6 @@ const Orders: FC<Props> = ({
                 )}
 
                 <Accordion
-                  language={language}
                   text={`${t('Edit')} (${t('Info')})`}
                   hideBrackets
                   className={`narrow2 change-status`}
@@ -492,11 +481,7 @@ const Orders: FC<Props> = ({
                       className={styles['change-status-form']}
                       onSubmit={e => {
                         e.preventDefault()
-                        updateOrder(
-                          orders?.find(
-                            o => o.orderID === order.orderID
-                          ) as ICart
-                        )
+                        void updateOrder(order)
                       }}
                     >
                       {Object.keys(order.info).map((item, index) => {
@@ -555,19 +540,16 @@ const Orders: FC<Props> = ({
                         <button
                           key={order.updatedAt.toString()}
                           onClick={() => {
-                            // order.status = 'completed'
+                            const updatedOrder: ICart = {
+                              ...order,
+                              status: 'completed' as status,
+                            }
                             setOrders(
                               orders?.map(o =>
-                                o.orderID === order.orderID
-                                  ? { ...o, status: 'completed' }
-                                  : o
+                                o.orderID === order.orderID ? updatedOrder : o
                               )
                             )
-                            updateOrder(
-                              orders?.find(
-                                o => o.orderID === order.orderID
-                              ) as ICart
-                            )
+                            void updateOrder(updatedOrder)
                           }}
                         >
                           {t('OrderCompleted')}
@@ -596,21 +578,21 @@ const Orders: FC<Props> = ({
                     </form>
                   </>
                 </Accordion>
-                {user && user.role && user.role > 2 && (
+                {user?.role && user.role > 2 && (
                   <div className={`${styles['delete-order']}`}>
                     <button
                       key={order.createdAt.toString()}
                       className={`danger delete`}
-                      onClick={async () => {
-                        if (
-                          await confirm({
-                            message: `${t('AreYouSureYouWantToDelete')} ${
-                              order.orderID
-                            }?`,
-                          })
-                        )
-                          deleteOrder(order.orderID)
-                      }}
+                      onClick={() =>
+                        void (async () => {
+                          if (
+                            await confirm({
+                              message: `${t('AreYouSureYouWantToDelete')} ${order.orderID}?`,
+                            })
+                          )
+                            await deleteOrder(order.orderID)
+                        })()
+                      }
                     >
                       {t('Delete')}: {order.orderID}
                     </button>

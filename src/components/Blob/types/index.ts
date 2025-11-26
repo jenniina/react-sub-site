@@ -1,8 +1,6 @@
 import { IUser } from '../../../types'
 
-export type BackgroundColor = string
-
-export type Draggable = {
+export interface Draggable {
   layer: number
   id: string
   number: number
@@ -11,14 +9,13 @@ export type Draggable = {
   y: string
   z: string
   background: string
-  function?: Function
 }
 
 export interface SavedBlobs {
   user: IUser['_id']
   d: number
   draggables: Draggable[]
-  backgroundColor: BackgroundColor[]
+  backgroundColor: string[]
   versionName: string
 }
 
@@ -29,7 +26,7 @@ export interface RefObject<T> {
 export interface ReducerProps {
   blob: {
     draggables: Draggable[][]
-    backgroundColor: BackgroundColor[][]
+    backgroundColor: string[][]
   }
 }
 

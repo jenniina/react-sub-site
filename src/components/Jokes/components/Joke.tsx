@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { ELanguages } from '../../../types'
 import { ECategories, IJoke } from '../types'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
@@ -11,8 +11,7 @@ interface Props {
   reveal: boolean
   visibleJoke: boolean
   setReveal: (reveal: boolean) => void
-  handleJokeSave: (e: React.FormEvent<HTMLFormElement>) => void
-  language: ELanguages
+  handleJokeSave: (e: React.FormEvent<HTMLFormElement>) => Promise<void>
   getCategoryInLanguage: (
     category: ECategories | null,
     language: ELanguages
@@ -23,7 +22,7 @@ interface Props {
     jokeId: IJoke['jokeId'],
     language: ELanguages,
     value: string | undefined
-  ) => void
+  ) => Promise<void>
   sending: boolean
 }
 const Joke = ({
@@ -35,18 +34,21 @@ const Joke = ({
   setReveal,
   handleJokeSave,
   sending,
-  language,
   visibleJoke,
   getCategoryInLanguage,
   subCategoryResults,
   jokeId,
   handleBlacklistUpdate,
 }: Props) => {
-  const { t } = useLanguageContext()
+  const { t, language } = useLanguageContext()
 
   return (
     <form
-      onSubmit={handleJokeSave}
+      onSubmit={e => {
+        e.preventDefault()
+        void handleJokeSave(e)
+      }}
+      id="joke-form"
       className={`joke-form-save ${joke && visibleJoke ? 'fadeIn' : ''}`}
     >
       <article
@@ -131,12 +133,12 @@ const Joke = ({
             type="button"
             className={`delete danger narrow ${visibleJoke ? 'fadeIn' : ''}`}
             onClick={() =>
-              handleBlacklistUpdate(
-                jokeId as IJoke['jokeId'],
+              void handleBlacklistUpdate(
+                jokeId,
                 language,
                 jokeCategory === ECategories.ChuckNorris &&
                   language === ELanguages.en
-                  ? (joke as string)
+                  ? joke
                   : undefined
               )
             }

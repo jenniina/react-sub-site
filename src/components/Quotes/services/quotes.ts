@@ -123,6 +123,7 @@ const randomCategory = (): string => {
 const translationToCategoryMap: Record<string, string[]> = {}
 
 for (const [category, translations] of Object.entries(translationMapQuotes)) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   for (const [language, translation] of Object.entries(translations)) {
     const lowerCaseTranslation = translation.toLowerCase()
     if (!translationToCategoryMap[lowerCaseTranslation]) {
@@ -156,7 +157,7 @@ export interface QuotesResponse {
   message?: string
 }
 
-const url = import.meta.env.VITE_BASE_URI ?? 'https://react.jenniina.fi'
+const url = 'https://react.jenniina.fi'
 const baseUrl = `${url}/api/quotes`
 
 const extractCategory = (searchTerms: string): string => {

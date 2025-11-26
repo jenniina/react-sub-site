@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 
 interface Props {
   ref: React.RefObject<HTMLElement>
@@ -45,12 +45,22 @@ export function useOutsideClick({
     [allowAnyKey, triggerKeys, onOutsideClick]
   )
 
+  // const clickOrTouchListener = useCallback(
+  //   (e: MouseEvent | TouchEvent) => {
+  //     if (ref && ref.current) {
+  //       if (!(ref.current! as HTMLElement).contains(e.target as HTMLElement)) {
+  //         onOutsideClick?.(e)
+  //       }
+  //     }
+  //   },
+  //   [ref, onOutsideClick]
+  // )
+
   const clickOrTouchListener = useCallback(
     (e: MouseEvent | TouchEvent) => {
-      if (ref && ref.current) {
-        if (!(ref.current! as HTMLElement).contains(e.target as HTMLElement)) {
-          onOutsideClick?.(e)
-        }
+      //change to optional chaining
+      if (ref?.current && !ref.current.contains(e.target as HTMLElement)) {
+        onOutsideClick?.(e)
       }
     },
     [ref, onOutsideClick]

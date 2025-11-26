@@ -1,22 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import styles from './select.module.css'
 import { ELanguages, translations as t } from '../../types'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
 import { sanitize } from '../../utils'
 // import { v4 as uuidv4 } from 'uuid'
 
-export type SelectOption = {
+export interface SelectOption {
   label: string
   value: string | number
 }
 
-type MultipleSelectProps = {
+interface MultipleSelectProps {
   multiple: true
   value: SelectOption[]
   onChange: (value: SelectOption[]) => void
 }
 
-type SingleSelectProps = {
+interface SingleSelectProps {
   multiple?: false
   value?: SelectOption | null
   onChange: (value: SelectOption | undefined) => void
@@ -59,11 +59,10 @@ export function Select({
   onChange,
   options,
   language = ELanguages.en,
-  requiredMessage = t['ThisFieldIsRequired'][language] ??
-    'This field is required',
-  remove = t['Remove'][language] ?? 'remove',
-  clear = t['Clear'][language] ?? 'clear',
-  selectAnOption = t['PleaseSelectAnOption'][language] ?? 'Select an option',
+  requiredMessage = t.ThisFieldIsRequired[language] ?? 'This field is required',
+  remove = t.Remove[language] ?? 'remove',
+  clear = t.Clear[language] ?? 'clear',
+  selectAnOption = t.PleaseSelectAnOption[language] ?? 'Select an option',
   tooltip,
   y,
   x,
@@ -74,7 +73,7 @@ export function Select({
 
   const [highlightedIndex, setHighlightedIndex] = useState(0)
 
-  const handleOutsideClick = (e: Event) => {
+  const handleOutsideClick = () => {
     setIsOpen(false)
   }
   const containerRef = useRef<HTMLDivElement>(null)
@@ -86,29 +85,31 @@ export function Select({
 
   const ariaLive = useRef<HTMLLabelElement>(null)
 
-  function clearOptions(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    e.preventDefault()
+  function clearOptions() {
     return multiple ? onChange([]) : onChange(options[0])
   }
 
-  function selectOption(option: SelectOption) {
-    let reset: boolean = true
-    const cooldown = () => {
-      reset = true
-    }
-    if (multiple) {
-      if (value?.some(o => o.label === option.label) && reset) {
-        reset = false
-        onChange(value?.filter(o => o.label !== option.label))
-        setTimeout(cooldown, 200)
-      } else if (reset) {
-        reset = false
-        onChange([...value, option])
+  const selectOption = useCallback(
+    (option: SelectOption) => {
+      let reset = true
+      const cooldown = () => {
+        reset = true
       }
-    } else {
-      if (option !== value) onChange(option)
-    }
-  }
+      if (multiple) {
+        if (value?.some(o => o.label === option.label) && reset) {
+          reset = false
+          onChange(value?.filter(o => o.label !== option.label))
+          setTimeout(cooldown, 200)
+        } else if (reset) {
+          reset = false
+          onChange([...value, option])
+        }
+      } else {
+        if (option !== value) onChange(option)
+      }
+    },
+    [multiple, value, onChange]
+  )
 
   function isOptionSelected(option: SelectOption) {
     if (multiple) {
@@ -121,15 +122,10 @@ export function Select({
   }
 
   useEffect(() => {
-    if (isOpen) setHighlightedIndex(0)
-  }, [isOpen])
-
-  useEffect(() => {
     if (
       value &&
       Array.isArray(value) &&
-      value[0] &&
-      value[0].value === '' &&
+      value[0]?.value === '' &&
       value?.length > 1
     ) {
       const newValue = [...value]
@@ -139,6 +135,9 @@ export function Select({
   }, [value, onChange])
 
   useEffect(() => {
+    const contRef = containerRef.current
+    if (!contRef) return
+
     const keyHandler = (e: KeyboardEvent) => {
       if (e.target !== containerRef.current) return
       switch (e.code) {
@@ -185,12 +184,12 @@ export function Select({
           }
       }
     }
-    containerRef.current?.addEventListener('keydown', keyHandler)
+    contRef?.addEventListener('keydown', keyHandler)
 
     return () => {
-      containerRef.current?.removeEventListener('keydown', keyHandler)
+      contRef?.removeEventListener('keydown', keyHandler)
     }
-  }, [isOpen, highlightedIndex, options])
+  }, [isOpen, highlightedIndex, options, selectOption])
 
   return (
     <div
@@ -221,7 +220,17 @@ export function Select({
         aria-activedescendant={`${id}-${highlightedIndex}`}
         ref={containerRef}
         //onBlur={() => setIsOpen(false)}
-        onClick={() => setIsOpen(prev => !prev)}
+        onClick={() => {
+          if (!isOpen) setHighlightedIndex(0)
+          setIsOpen(prev => !prev)
+        }}
+        onKeyDown={e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            if (!isOpen) setHighlightedIndex(0)
+            setIsOpen(prev => !prev)
+          }
+        }}
         tabIndex={0}
         className={
           multiple
@@ -301,7 +310,7 @@ export function Select({
           <button
             onClick={e => {
               e.stopPropagation()
-              clearOptions(e)
+              clearOptions()
             }}
             className={`${styles['clear-btn']} clear-btn`}
           >

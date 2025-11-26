@@ -4,7 +4,7 @@ import { useLanguageContext } from '../../contexts/LanguageContext'
 import { CgUndo } from 'react-icons/cg'
 import { IoMdCheckmarkCircleOutline } from 'react-icons/io'
 
-type ConfirmProps = {
+interface ConfirmProps {
   message: string
   confirmText?: string
   cancelText?: string
@@ -34,11 +34,11 @@ const Confirm: React.FC<ConfirmProps> = ({
         </p>
         <div className={styles.buttons}>
           <button className={styles['confirm-btn']} onClick={onConfirm}>
-            {confirmText ? confirmText : t('Confirm')}&nbsp;&nbsp;
+            {confirmText ?? t('Confirm')}&nbsp;&nbsp;
             <IoMdCheckmarkCircleOutline />
           </button>
           <button className={styles['cancel-btn']} onClick={onCancel}>
-            {cancelText ? cancelText : t('Cancel')}&nbsp;&nbsp;
+            {cancelText ?? t('Cancel')}&nbsp;&nbsp;
             <CgUndo />
           </button>
         </div>

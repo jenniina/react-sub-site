@@ -1,23 +1,19 @@
-import { useContext } from 'react'
-import { ELanguages } from '../../../types'
 import FormWrapper from './FormWrapper'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 
-type UserData = {
+interface UserData {
   firstName: string
   lastName: string
 }
 
 type UserFormProps = UserData & {
   updateFields: (fields: Partial<UserData>) => void
-  language: ELanguages
 }
 
 export default function InitialForm({
   firstName,
   lastName,
   updateFields,
-  language,
 }: UserFormProps) {
   const { t } = useLanguageContext()
 

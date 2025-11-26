@@ -6,7 +6,8 @@ import React, {
   Ref,
   useImperativeHandle,
   useRef,
-  useContext,
+  useCallback,
+  useMemo,
 } from 'react'
 import { useIsClient, useWindow } from '../../hooks/useSSR'
 import { BiChat } from 'react-icons/bi'
@@ -29,6 +30,7 @@ import {
   breakpointSmall,
   ELanguages,
   ELanguagesLong,
+  TranslationKey,
 } from '../../types'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
 import logo from '../../assets/JLA_Jenniina-light-3-480x198.png'
@@ -47,22 +49,124 @@ import { FaStoreAlt } from 'react-icons/fa'
 import useCart from '../../hooks/useCart'
 import { options } from '../../utils'
 import { useLanguageContext } from '../../contexts/LanguageContext'
+import { getErrorMessage } from '../../utils'
 import { isTouchDevice } from '../../hooks/useDraggable'
 import useLocalStorage from '../../hooks/useStorage'
+import useExitVisibility from '../../hooks/useExitVisibility'
+import useNoTransition from '../../hooks/useNoTransition'
 
-type Link = {
+type Form = 'login' | 'register' | 'reset' | null
+
+interface Link {
   label: string
   href: string
 }
 
 interface NavProps {
   setStyleMenu: (style: boolean) => void
-  language: ELanguages
-  setLanguage: (language: ELanguages) => void
+}
+
+interface LinkComponentProps {
+  links: Link[]
+  windowWidth: number
+  breakpointSmall: number
+  menuStyleAlt: boolean
+  lightTheme: boolean
+  logoDark: string
+  logo: string
+  t: (key: TranslationKey) => string
+  icons: (label: string) => JSX.Element | undefined
+  styles: CSSModuleClasses
+}
+
+interface SkipLinkProps {
+  skipLinks: Link[]
+  styles: CSSModuleClasses
+}
+
+const LinkComponent: FC<LinkComponentProps> = ({
+  links,
+  windowWidth,
+  breakpointSmall,
+  menuStyleAlt,
+  lightTheme,
+  logoDark,
+  logo,
+  t,
+  icons,
+  styles,
+}) => {
+  return (
+    <ul>
+      {windowWidth < breakpointSmall && !menuStyleAlt ? (
+        <li className={`tooltip-wrap ${styles.jenniina}`}>
+          <a href="https://jenniina.fi">
+            <img
+              src={lightTheme ? logoDark : logo}
+              width="96px"
+              height="39.6px"
+              alt="Jenniina logo"
+            />
+            <span className="tooltip below right narrow">
+              « {t('ExitToMainSite')}
+            </span>
+          </a>
+        </li>
+      ) : (
+        ''
+      )}
+
+      {links.map((link: Link, index: number) => {
+        return (
+          <li key={`${link.label}${index}`} className={`${styles[link.label]}`}>
+            <NavLink
+              to={link.href}
+              className={({ isActive }) =>
+                isActive
+                  ? `active ${styles.active} ${styles.link} tooltip-wrap pointer`
+                  : `${styles.link} tooltip-wrap`
+              }
+            >
+              {icons(link.label)}
+              <span>{link.label}</span>
+              <b
+                className={`${
+                  menuStyleAlt && windowWidth < breakpointSmall
+                    ? `tooltip space narrow2 above ${
+                        index < 2 ? 'right' : 'left'
+                      }`
+                    : 'scr'
+                }`}
+                aria-hidden={true}
+              >
+                {link.label}
+              </b>
+            </NavLink>
+          </li>
+        )
+      })}
+    </ul>
+  )
+}
+
+const SkipLink: FC<SkipLinkProps> = ({ skipLinks, styles }) => {
+  return (
+    <ul>
+      {skipLinks.map((link: Link) => {
+        return (
+          <li key={link.href}>
+            <NavLink to={link.href} className={`${styles['skip-link']}`}>
+              {link.label}
+            </NavLink>
+          </li>
+        )
+      })}
+    </ul>
+  )
 }
 
 const Nav = (
-  { setStyleMenu, language, setLanguage }: NavProps,
+  { setStyleMenu }: NavProps,
   ref: Ref<{ getStyle: () => boolean }>
 ) => {
   const isClient = useIsClient()
@@ -70,7 +174,9 @@ const Nav = (
 
   const { cart } = useCart()
 
-  const { t } = useLanguageContext()
+  const { t, language, setLanguage } = useLanguageContext()
+
+  const scrollDirection = useScrollDirection()
 
   const user = useSelector((state: ReducerProps) => {
     return state.auth?.user
@@ -78,245 +184,101 @@ const Nav = (
 
   const { windowHeight, windowWidth } = useWindowSize()
 
-  const links = [
-    {
-      label: t('Welcome'),
-      href: '/',
-    },
-    {
-      label: t('About'),
-      href: '/about',
-    },
-    {
-      label: t('Portfolio'),
-      href: '/portfolio',
-    },
-    {
-      label: t('Contact'),
-      href: '/contact',
-    },
-  ]
+  const mainMenu = useExitVisibility(false)
+  const toolbar = useExitVisibility(false)
 
-  const skipLinks = [
-    {
-      label: t('SkipToMainNavigation'),
-      href: '#site-navigation',
-    },
-    {
-      label: t('SkipToMainContent'),
-      href: '#main-content',
-    },
-    {
-      label: t('SkipToFooter'),
-      href: '#main-footer',
-    },
-  ]
+  const [openForm, setOpenForm] = useState<Form>(null)
 
-  const icons = (label: string) => {
-    if (label === t('Welcome'))
-      return (
-        <RiHomeSmileLine
-          className={windowWidth < breakpoint ? styles.smallnav : ''}
-        />
-      )
-    else if (label === t('About'))
-      return (
-        <BsPerson className={windowWidth < breakpoint ? styles.smallnav : ''} />
-      )
-    //MdOutlinePerson
-    else if (label === t('Portfolio'))
-      return (
-        <IoMdImages
-          className={windowWidth < breakpoint ? styles.smallnav : ''}
-        />
-      )
-    //BiImage IoImagesOutline BiImages FaRegImages  MdImportContacts
-    else if (label === t('Contact'))
-      return (
-        <BiChat className={windowWidth < breakpoint ? styles.smallnav : ''} />
-      )
+  const isLoginFormOpen = openForm === 'login'
+  const isRegisterFormOpen = openForm === 'register'
+  const isResetFormOpen = openForm === 'reset'
+
+  const bindForm = useCallback(
+    (form: Exclude<Form, null>) => (next: boolean) => {
+      setOpenForm(next ? form : null)
+    },
+    []
+  )
+
+  const [menuStyleAlt, setMenuStyleAlt] = useLocalStorage('alt', false)
+
+  const { noTransition, arm } = useNoTransition()
+
+  function menuStyleAltToggle(next?: boolean) {
+    const target = next ?? !menuStyleAlt
+    // keep menu open; flip style with transitions suppressed
+    arm()
+    setMenuStyleAlt(target)
   }
 
-  const LinkComponent: FC<{ links: Link[] }> = ({ links }) => {
-    return (
-      <ul>
-        {windowWidth < breakpointSmall && !menuStyleAlt ? (
-          <li className={`tooltip-wrap ${styles.jenniina}`}>
-            <a href="https://jenniina.fi">
-              <img
-                src={lightTheme ? logoDark : logo}
-                width="96px"
-                height="39.6px"
-              />
-              <span className="tooltip below right narrow">
-                « {t('ExitToMainSite')}
-              </span>
-            </a>
-          </li>
-        ) : (
-          ''
-        )}
-
-        {links.map((link: Link, index: number) => {
-          return (
-            <li
-              key={`${link.label}${index}`}
-              className={`${styles[link.label]}`}
-            >
-              <NavLink
-                to={link.href}
-                className={({ isActive }) =>
-                  isActive
-                    ? `active ${styles.active} ${styles.link} tooltip-wrap pointer`
-                    : `${styles.link} tooltip-wrap`
-                }
-              >
-                {icons(link.label)}
-                <span>{link.label}</span>
-                <b
-                  className={`${
-                    menuStyleAlt && windowWidth < breakpointSmall
-                      ? `tooltip space narrow2 above ${
-                          index < 2 ? 'right' : 'left'
-                        }`
-                      : 'scr'
-                  }`}
-                  aria-hidden={true}
-                >
-                  {link.label}
-                </b>
-              </NavLink>
-            </li>
-          )
-        })}
-      </ul>
-    )
-  }
-  const SkipLink: FC<{ skipLinks: Link[] }> = ({ skipLinks }) => {
-    return (
-      <ul>
-        {skipLinks.map((link: Link) => {
-          return (
-            <li key={link.href}>
-              <NavLink to={link.href} className={`${styles['skip-link']}`}>
-                {link.label}
-              </NavLink>
-            </li>
-          )
-        })}
-      </ul>
-    )
-  }
+  const location = useLocation()
 
   const touchDevice = isTouchDevice()
   const lightTheme = useTheme()
   const toggleTheme = useThemeUpdate()
   const navigate = useNavigate()
 
+  const toggleMainMenu = useCallback(
+    (windowWidth: number) => {
+      if (!mainMenu.open) {
+        mainMenu.show()
+        // if you want mutual exclusivity on small screens
+        if (toolbar.open && windowWidth < breakpoint) toolbar.hide()
+      } else {
+        mainMenu.hide()
+      }
+    },
+    [mainMenu, toolbar]
+  )
+
+  const toggleToolbar = useCallback(
+    (windowWidth: number) => {
+      if (!toolbar.open) {
+        toolbar.show()
+        if (mainMenu.open && windowWidth < breakpoint) mainMenu.hide()
+      } else {
+        toolbar.hide()
+      }
+    },
+    [toolbar, mainMenu]
+  )
+
+  // Close everything, respecting exit animations
+  const closeAll = useCallback(() => {
+    mainMenu.hide()
+    toolbar.hide()
+  }, [toolbar, mainMenu])
+
+  const dispatch = useAppDispatch()
+
+  const handleLogout = useCallback(() => {
+    void dispatch(logout())
+  }, [dispatch])
+
+  // From URL params
   useEffect(() => {
-    if (isClient) {
-      closingAllMenus()
+    if (!isClient || !windowObj) return
+    const params = new URLSearchParams(windowObj.location.search)
+    if (params.get('login')) {
+      toolbar.show()
+      bindForm('login')(true)
+    } else if (params.get('register')) {
+      toolbar.show()
+      bindForm('register')(true)
     }
-  }, [isClient && windowObj?.location.pathname])
+  }, [location, isClient, windowObj, bindForm, toolbar])
 
   const clickOutsideRef = useRef<HTMLDivElement>(null)
 
   useOutsideClick({
     ref: clickOutsideRef,
-    onOutsideClick: closingAllMenus,
+    onOutsideClick: closeAll,
   })
 
-  const scrollDirection = useScrollDirection()
-
-  const [isMainMenuOpen, setIsMainMenuOpen] = useState(true)
-  const [isMainMenuHidden, setIsMainMenuHidden] = useState(false)
-
-  const [isToolbarOpen, setIsToolbarOpen] = useState(false)
-  const [isToolbarHidden, setIsToolbarHidden] = useState(true)
-
-  //set delay for visibility: hidden (.hidden class) in order to allow time for exit animation to play
-  const mainMenuHideDelay = () => {
-    setTimeout(() => {
-      setIsMainMenuHidden(true)
-    }, 300)
-  }
-  const toolbarHideDelay = () => {
-    setTimeout(() => {
-      setIsToolbarHidden(true)
-    }, 300)
-  }
-
-  function toggleMainMenu() {
-    if (!isMainMenuOpen) {
-      setIsMainMenuOpen(true)
-      setIsMainMenuHidden(false)
-    } else {
-      setIsMainMenuOpen(false)
-      mainMenuHideDelay()
-    }
-    if (isToolbarOpen) {
-      setIsToolbarOpen(false)
-      toolbarHideDelay()
-    }
-  }
-  function toggleToolbar() {
-    if (isToolbarOpen) {
-      setIsToolbarOpen(false)
-      toolbarHideDelay()
-    } else {
-      setIsToolbarOpen(true)
-      setIsToolbarHidden(false)
-    }
-    if (isMainMenuOpen && windowWidth < breakpoint) {
-      setIsMainMenuOpen(false)
-      mainMenuHideDelay()
-    }
-  }
-
-  function closingAllMenus() {
-    isMainMenuOpen ? setIsMainMenuHidden(false) : mainMenuHideDelay()
-    if (isMainMenuOpen) {
-      setIsMainMenuOpen(false)
-      mainMenuHideDelay()
-    }
-    isToolbarOpen ? setIsToolbarHidden(false) : toolbarHideDelay()
-    if (isToolbarOpen) {
-      setIsToolbarOpen(false)
-      toolbarHideDelay()
-    }
-  }
-
-  const [menuStyleAlt, setMenuStyleAlt] = useLocalStorage('alt', false)
-  const [menuStyleTransform, setMenuStyleTransform] = useState(true)
-
-  function menuStyleAltToggle() {
-    if (menuStyleAlt && isMainMenuOpen) {
-      setIsMainMenuOpen(false)
-      mainMenuHideDelay()
-      setTimeout(() => {
-        setMenuStyleAlt(false)
-      }, 300)
-    } else if (!isMainMenuOpen) {
-      setIsMainMenuOpen(true)
-      setIsMainMenuHidden(false)
-      setMenuStyleAlt(true)
-    } else {
-      setMenuStyleAlt(prev => !prev)
-      //to avoid ugly transformations between the two states, set delay before transforms are set:
-      setMenuStyleTransform(false)
-      setTimeout(() => {
-        setMenuStyleTransform(true)
-      }, 200)
-    }
-  }
-
   useEffect(() => {
-    //to avoid ugly transformations between the two states, set delay before transforms are set:
-    setMenuStyleTransform(false)
-    setTimeout(() => {
-      setMenuStyleTransform(true)
-    }, 200)
-  }, [lightTheme])
+    //to avoid ugly transformations between the two states, set delay before transforms are se
+    arm()
+  }, [lightTheme, arm])
 
   //Main menu always visible at larger screensizes and when the altnav is seen:
   useEffect(() => {
@@ -324,8 +286,8 @@ const Nav = (
       (menuStyleAlt && windowHeight > windowWidth) ||
       windowWidth > breakpoint
     )
-      setIsMainMenuOpen(true)
-  }, [menuStyleAlt, windowWidth, windowHeight])
+      toggleMainMenu(windowWidth)
+  }, [menuStyleAlt, windowWidth, windowHeight, toggleMainMenu])
 
   useImperativeHandle(
     ref,
@@ -340,9 +302,18 @@ const Nav = (
   //Send menuStyleAlt status to App.tsx
   useEffect(() => {
     setStyleMenu(menuStyleAlt)
-  }, [menuStyleAlt])
+  }, [menuStyleAlt, setStyleMenu])
 
   const [scrolled, setScrolled] = useState(false) //when false, keeps header visible
+
+  const scrolling = useCallback(() => {
+    if (!windowObj) return
+    if (windowObj.scrollY > 100) {
+      setScrolled(true)
+    } else {
+      setScrolled(false)
+    }
+  }, [windowObj])
 
   useEffect(() => {
     if (!isClient || !windowObj) return
@@ -350,62 +321,7 @@ const Nav = (
     return () => {
       windowObj.removeEventListener('scroll', scrolling)
     }
-  }, [isClient, windowObj])
-
-  const scrolling = () => {
-    if (!windowObj) return
-    windowObj.scrollY > 100 ? setScrolled(true) : setScrolled(false)
-  }
-
-  const dispatch = useAppDispatch()
-
-  const handleLogout = () => {
-    dispatch(logout())
-  }
-
-  const [isLoginFormOpen, setIsLoginFormOpen] = useState(false)
-  const [isRegisterFormOpen, setIsRegisterFormOpen] = useState(false)
-  const [isResetFormOpen, setIsResetFormOpen] = useState(false)
-
-  useEffect(() => {
-    if (isResetFormOpen) {
-      setIsLoginFormOpen(false)
-      setIsRegisterFormOpen(false)
-    }
-  }, [isResetFormOpen])
-
-  useEffect(() => {
-    if (isLoginFormOpen) {
-      setIsRegisterFormOpen(false)
-      setIsResetFormOpen(false)
-    }
-  }, [isLoginFormOpen])
-
-  useEffect(() => {
-    if (isRegisterFormOpen) {
-      setIsLoginFormOpen(false)
-      setIsResetFormOpen(false)
-    }
-  }, [isRegisterFormOpen])
-
-  const location = useLocation()
-
-  useEffect(() => {
-    if (!isClient || !windowObj) return
-    const params = new URLSearchParams(windowObj.location.search)
-    if (params.get('login')) {
-      setIsToolbarOpen(true)
-      setIsToolbarHidden(false)
-      setIsLoginFormOpen(true)
-      setIsRegisterFormOpen(false)
-    }
-    if (params.get('register')) {
-      setIsToolbarOpen(true)
-      setIsToolbarHidden(false)
-      setIsRegisterFormOpen(true)
-      setIsLoginFormOpen(false)
-    }
-  }, [location, isClient, windowObj])
+  }, [isClient, windowObj, scrolling])
 
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -417,15 +333,15 @@ const Nav = (
     e.preventDefault()
     setSending(true)
     if (password.trim() !== confirmPassword.trim()) {
-      dispatch(notify(`${t('PasswordsDoNotMatch')}`, true, 8))
+      void dispatch(notify(`${t('PasswordsDoNotMatch')}`, true, 8))
       setSending(false)
       return
     }
-    dispatch(
+    void dispatch(
       createUser({ name, username, password, language, verified: false })
     )
-      .then(async () => {
-        dispatch(
+      .then(() => {
+        void dispatch(
           notify(
             `${t('RegistrationSuccesful')} - ${t(
               'PleaseCheckYourEmailForYourVerificationLink'
@@ -440,18 +356,104 @@ const Nav = (
         setName('')
         setSending(false)
       })
-      .catch(err => {
+      .catch((err: unknown) => {
         console.error(err)
-        if (err.response?.data?.message)
-          dispatch(notify(err.response.data.message, true, 8))
-        else if (err.code === 'ERR_BAD_REQUEST') {
-          dispatch(notify(`Error: ${err.response?.data?.message}`, true, 8))
-          return
-        }
-        dispatch(notify(`Error: ${err.message}`, true, 8))
+        const message = getErrorMessage(err, t('Error'))
+        void dispatch(notify(message, true, 8))
         setSending(false)
       })
   }
+
+  const links = useMemo(() => {
+    return [
+      {
+        label: t('Welcome'),
+        href: '/',
+      },
+      {
+        label: t('About'),
+        href: '/about',
+      },
+      {
+        label: t('Portfolio'),
+        href: '/portfolio',
+      },
+      {
+        label: t('Contact'),
+        href: '/contact',
+      },
+    ]
+  }, [t])
+
+  const skipLinks = useMemo(() => {
+    return [
+      {
+        label: t('SkipToMainNavigation'),
+        href: '#site-navigation',
+      },
+      {
+        label: t('SkipToMainContent'),
+        href: '#main-content',
+      },
+      {
+        label: t('SkipToFooter'),
+        href: '#main-footer',
+      },
+    ]
+  }, [t])
+
+  const [triggerAtBreakpoint, setTriggerAtBreakpoint] = useState<boolean>(false)
+
+  useEffect(() => {
+    // when crossing the breakpoint to either direction, set triggerAtBreakpoint to true
+    if (!triggerAtBreakpoint && windowWidth >= breakpoint) {
+      setTriggerAtBreakpoint(true)
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          // frame #3:
+          setTriggerAtBreakpoint(false)
+        })
+      })
+    } else if (!triggerAtBreakpoint && windowWidth < breakpoint) {
+      setTriggerAtBreakpoint(true)
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          // frame #3:
+          setTriggerAtBreakpoint(false)
+        })
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [windowWidth, breakpoint])
+
+  const icons = useCallback(
+    (label: string) => {
+      if (label === t('Welcome'))
+        return (
+          <RiHomeSmileLine
+            className={windowWidth < breakpoint ? styles.smallnav : ''}
+          />
+        )
+      else if (label === t('About'))
+        return (
+          <BsPerson
+            className={windowWidth < breakpoint ? styles.smallnav : ''}
+          />
+        )
+      else if (label === t('Portfolio'))
+        return (
+          <IoMdImages
+            className={windowWidth < breakpoint ? styles.smallnav : ''}
+          />
+        )
+      else if (label === t('Contact'))
+        return (
+          <BiChat className={windowWidth < breakpoint ? styles.smallnav : ''} />
+        )
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [t, triggerAtBreakpoint]
+  )
 
   return (
     <>
@@ -473,12 +475,12 @@ const Nav = (
                 ${
                   windowHeight > windowWidth && touchDevice ? styles.mobile : ''
                 } 
-                ${menuStyleTransform ? `${styles.transformations}` : ''} 
+                ${!noTransition ? `${styles.transformations}` : ''} 
                 ${styles[`${language}`]}
                 `}
       >
         <nav className={styles['skip-links']}>
-          <SkipLink skipLinks={skipLinks} />
+          <SkipLink skipLinks={skipLinks} styles={styles} />
         </nav>
         <div className={styles['header-inner-wrap']}>
           <div
@@ -495,8 +497,8 @@ const Nav = (
           </div>
           <button
             aria-haspopup="true"
-            aria-expanded={isMainMenuOpen}
-            onClick={toggleMainMenu}
+            aria-expanded={mainMenu.open ? 'true' : 'false'}
+            onClick={() => toggleMainMenu(windowWidth)}
             className={`${
               windowHeight < windowWidth && windowWidth < breakpoint
                 ? `${styles.togglemenuexception} ${styles.togglemenu}`
@@ -531,13 +533,14 @@ const Nav = (
           </button>
           <nav
             id={'site-navigation'}
+            onTransitionEnd={mainMenu.onTransitionEnd}
             className={`site-navigation 
                         ${styles['menu-container']} 
                             ${
-                              isMainMenuOpen
-                                ? ` ${styles['show']}`
+                              mainMenu.open
+                                ? ` ${styles.show}`
                                 : `${
-                                    isMainMenuHidden && windowWidth < breakpoint
+                                    mainMenu.hidden && windowWidth < breakpoint
                                       ? styles.hidden
                                       : ''
                                   }
@@ -557,11 +560,21 @@ const Nav = (
                                         : ''
                                     }
                                     `}
-            aria-expanded={isMainMenuOpen}
           >
-            <LinkComponent links={links} />
+            <LinkComponent
+              links={links}
+              windowWidth={windowWidth}
+              breakpointSmall={breakpointSmall}
+              menuStyleAlt={menuStyleAlt}
+              lightTheme={lightTheme}
+              logoDark={logoDark}
+              logo={logo}
+              t={t}
+              icons={icons}
+              styles={styles}
+            />
           </nav>
-          <button className={styles.search} role="search" aria-label="search">
+          <button className={styles.search} aria-label="search">
             <CgSearch
               style={
                 windowWidth < breakpointSmall
@@ -576,11 +589,8 @@ const Nav = (
               {t('Search')}
             </span>
           </button>
-          {(isClient && windowObj?.location.pathname === '/store') ||
-          (cart &&
-            cart.length > 0 &&
-            windowObj &&
-            windowObj.location.pathname !== '/cart') ? (
+          {(isClient && location?.pathname === '/store') ||
+          (cart && cart.length > 0 && location?.pathname !== '/cart') ? (
             <button
               className={`${styles.settings} ${styles.cart}`}
               aria-label="cart"
@@ -629,7 +639,10 @@ const Nav = (
               </span>
             </button>
           )}
-          <button className={styles.settings} onClick={toggleToolbar}>
+          <button
+            className={styles.settings}
+            onClick={() => toggleToolbar(windowWidth)}
+          >
             <IoSettingsSharp
               style={
                 windowWidth < breakpointSmall
@@ -647,15 +660,11 @@ const Nav = (
           </button>
           <nav
             id="settings-toolbar"
-            className={`${styles.toolbar} 
-                           ${
-                             isToolbarOpen
-                               ? `${styles['show']}`
-                               : `${isToolbarHidden ? styles.hidden : ''}`
-                           }
-                            `}
+            onTransitionEnd={toolbar.onTransitionEnd}
+            className={`${styles.toolbar} ${
+              toolbar.open ? styles.show : toolbar.hidden ? styles.hidden : ''
+            }`}
             aria-labelledby="settings"
-            aria-expanded={isToolbarOpen}
           >
             <Select
               language={language}
@@ -685,7 +694,7 @@ const Nav = (
                 className={
                   lightTheme
                     ? `${styles['dlt-btn']}`
-                    : `${styles['active']} ${styles['dlt-btn']} ${styles['toolbar-btn']}`
+                    : `${styles.active} ${styles['dlt-btn']} ${styles['toolbar-btn']}`
                 }
                 onClick={toggleTheme}
               >
@@ -705,7 +714,7 @@ const Nav = (
               <label htmlFor="navbar-style">{t('NavStyle')}</label>
               <button
                 id="navbar-style"
-                onClick={menuStyleAltToggle}
+                onClick={() => menuStyleAltToggle()}
                 className={`${styles.navstyle} ${styles['toolbar-btn']}`}
               >
                 {windowWidth < breakpoint ? (
@@ -732,20 +741,16 @@ const Nav = (
                 <>
                   <div
                     className={`${styles.loginregisterwrap} ${
-                      !isRegisterFormOpen && !isLoginFormOpen
-                        ? styles.closed
-                        : ''
+                      openForm === null ? styles.closed : ''
                     }`}
                   >
                     <FormLogin
-                      setIsFormOpen={setIsLoginFormOpen}
+                      setIsFormOpen={bindForm('login')}
                       isOpen={isLoginFormOpen}
-                      language={language}
                       text="nav"
                     />
                     <Register
-                      language={language}
-                      setIsFormOpen={setIsRegisterFormOpen}
+                      setIsFormOpen={bindForm('register')}
                       isOpen={isRegisterFormOpen}
                       handleRegister={handleRegister}
                       username={username}
@@ -786,15 +791,14 @@ const Nav = (
             {!user && (
               <div className="password-reset-wrap">
                 <Accordion
-                  language={language}
                   className="password-reset"
                   wrapperClass="password-reset-wrap"
                   text={`${t('ForgotPassword')}`}
                   isOpen={isResetFormOpen}
-                  setIsFormOpen={setIsResetFormOpen}
+                  setIsFormOpen={bindForm('reset')}
                   hideBrackets={true}
                 >
-                  <PasswordReset language={language} text="login" />
+                  <PasswordReset text="login" />
                 </Accordion>
               </div>
             )}

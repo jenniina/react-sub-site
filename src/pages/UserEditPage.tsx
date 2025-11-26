@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { TiDeleteOutline } from 'react-icons/ti'
 import { useNavigate } from 'react-router-dom'
 import { useTheme } from '../hooks/useTheme'
-import { ELanguages, ELanguagesLong } from '../types'
+import { ELanguagesLong } from '../types'
 import styles from './css/useredit.module.css'
 import { SelectOption } from '../components/Select/Select'
 import { useSelector } from 'react-redux'
@@ -19,22 +19,11 @@ import LanguageEdit from '../components/UserEdit/LanguageEdit'
 import NicknameEdit from '../components/UserEdit/NicknameEdit'
 
 interface Props {
-  language: ELanguages
-  setLanguage: (language: ELanguages) => void
-  heading: string
-  text: string
   type: string
   options: (enumObj: typeof ELanguagesLong) => SelectOption[]
 }
 
-const UserEditPage = ({
-  language,
-  setLanguage,
-  heading,
-  text,
-  type,
-  options,
-}: Props) => {
+const UserEditPage = ({ type, options }: Props) => {
   const { t } = useLanguageContext()
   const confirm = useConfirm()
 
@@ -48,8 +37,8 @@ const UserEditPage = ({
   })
 
   useEffect(() => {
-    dispatch(initializeUser())
-  }, [])
+    void dispatch(initializeUser()).catch(console.error)
+  }, [dispatch])
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -59,7 +48,7 @@ const UserEditPage = ({
     }, 2000)
 
     return () => clearTimeout(timer)
-  }, [user])
+  }, [user, navigate])
 
   const handleUserRemove = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -80,17 +69,17 @@ const UserEditPage = ({
               message: t('DoYouWishToRemoveAnyJokesYouveAuthored'),
             })
           ) {
-            dispatch(removeUser(user._id, true)).then(() => {
-              dispatch(logout())
+            await dispatch(removeUser(user._id, true)).then(async () => {
+              await dispatch(logout())
               navigate('/')
-              dispatch(notify(t('AccountDeleted'), false, 8))
+              void dispatch(notify(t('AccountDeleted'), false, 8))
             })
             setSending(false)
           } else {
-            dispatch(removeUser(user._id, false)).then(() => {
-              dispatch(logout())
+            await dispatch(removeUser(user._id, false)).then(async () => {
+              await dispatch(logout())
               navigate('/')
-              dispatch(notify(t('AccountDeleted'), false, 8))
+              void dispatch(notify(t('AccountDeleted'), false, 8))
               setSending(false)
             })
           }
@@ -137,24 +126,25 @@ const UserEditPage = ({
           <section className={`card`}>
             <div>
               <div className={styles.editform}>
-                <NicknameEdit user={user} language={language} />
+                <NicknameEdit user={user} />
               </div>
               <div className={styles.editform}>
-                <UsernameEdit user={user} language={language} />
+                <UsernameEdit user={user} />
               </div>
               <div className={styles.editform}>
-                <LanguageEdit
-                  user={user}
-                  language={language}
-                  setLanguage={setLanguage}
-                  options={options}
-                />
+                <LanguageEdit user={user} options={options} />
               </div>
               <div className={styles.editform}>
-                <PasswordEdit user={user} language={language} />
+                <PasswordEdit user={user} />
               </div>
               {user ? (
-                <form onSubmit={handleUserRemove} className="flex center">
+                <form
+                  onSubmit={e => {
+                    e.preventDefault()
+                    void handleUserRemove(e)
+                  }}
+                  className="flex center"
+                >
                   <button
                     type="submit"
                     disabled={sending}

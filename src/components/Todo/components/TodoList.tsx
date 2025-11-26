@@ -1,10 +1,7 @@
-import { useContext } from 'react'
 import { ITask, TPriority } from '../types'
 import style from '../css/todo.module.css'
-import { ELanguages } from '../../../types'
 import { IClosestItem, useDragAndDrop } from '../../../hooks/useDragAndDrop'
 import { SelectOption } from '../../Select/Select'
-import { useLanguageContext } from '../../../contexts/LanguageContext'
 import Todo from './TodoItem'
 
 export interface ITaskDraggable extends ITask {
@@ -15,7 +12,6 @@ export interface ITaskDraggable extends ITask {
 export default function TodoList({
   toggleTodo,
   deleteTodo,
-  language,
   modifyTodo,
   modifyTodoOrder,
   todosWithIdAndStatus,
@@ -26,7 +22,6 @@ export default function TodoList({
 }: {
   toggleTodo: (key: string | undefined) => void
   deleteTodo: (key: string | undefined) => void
-  language: ELanguages
   modifyTodo: (
     key: string | undefined,
     name: string | undefined,
@@ -52,8 +47,6 @@ export default function TodoList({
   //   .map((todo, index) => {
   //     return { ...todo, id: index, status: 'todos' }
   //   }) as ITaskDraggable[]
-
-  const { t } = useLanguageContext()
 
   const { isDragging, listItemsByStatus, handleUpdate, handleDragging } =
     useDragAndDrop<ITaskDraggable, string>(todosWithIdAndStatus, ['todos'])
@@ -84,7 +77,7 @@ export default function TodoList({
         // Use the index of the closest item as the new target index
         const newTargetIndex = Array.from(
           e.currentTarget.querySelectorAll('.todo-ul > li')
-        ).indexOf(closestItem.element as HTMLElement)
+        ).indexOf(closestItem.element!)
 
         // If the draggedId and newTargetIndex are the same, do nothing
         if (Number(draggedId) === newTargetIndex) {
@@ -108,7 +101,7 @@ export default function TodoList({
         handleDragging(false)
       }}
     >
-      {listItemsByStatus['todos']?.items
+      {listItemsByStatus.todos?.items
         ?.slice()
         .sort((a, b) => ((a.order ?? 0 > (b.order ?? 0)) ? 1 : -1))
         .sort((a, b) => (a.complete === b.complete ? 0 : a.complete ? 1 : -1))
@@ -120,14 +113,12 @@ export default function TodoList({
               toggleTodo={toggleTodo}
               deleteTodo={deleteTodo}
               todo={todosWithIdAndStatus?.find(t => t.key === todo.key)}
-              language={language}
               modifyTodo={modifyTodo}
               isDragging={isDragging}
-              handleUpdate={handleUpdate}
               handleDragging={handleDragging}
               priorityOptions={priorityOptions}
               categoryOptions={categoryOptions}
-              zin={listItemsByStatus['todos']?.items.length}
+              zin={listItemsByStatus.todos?.items.length}
               maxCharacters={maxCharacters}
             />
           )

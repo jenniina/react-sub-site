@@ -1,14 +1,12 @@
-import { FC, Fragment, ReactNode, useContext, useRef, useState } from 'react'
+import { FC, Fragment, useRef, useState } from 'react'
 import { PoemItem } from './services/poems'
-import { ELanguages } from '../../types'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 
 interface PoemProps {
   poem: PoemItem
-  language: ELanguages
 }
 
-const Poem: FC<PoemProps> = ({ poem, language }) => {
+const Poem: FC<PoemProps> = ({ poem }) => {
   const { t } = useLanguageContext()
 
   const [copied, setCopied] = useState(false)
@@ -19,7 +17,7 @@ const Poem: FC<PoemProps> = ({ poem, language }) => {
       poem.author
     }`
 
-    if (navigator.clipboard && navigator.clipboard.writeText) {
+    if (navigator.clipboard?.writeText) {
       navigator.clipboard.writeText(textToCopy).then(
         () => {
           setCopied(true)
@@ -40,6 +38,7 @@ const Poem: FC<PoemProps> = ({ poem, language }) => {
         document?.execCommand('copy')
         setCopied(true)
         setTimeout(() => setCopied(false), 3000)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         console.error('Failed to copy:', error)
       }
@@ -47,7 +46,7 @@ const Poem: FC<PoemProps> = ({ poem, language }) => {
     }
   }
 
-  if (!poem || !poem.lines || poem.lines.length < 1) return <></>
+  if (!poem?.lines || poem.lines.length < 1) return <></>
 
   return (
     <>

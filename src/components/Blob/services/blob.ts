@@ -1,8 +1,8 @@
-import axios, { AxiosRequestConfig } from 'axios'
-import { Draggable, BackgroundColor } from '../types'
+import axios from 'axios'
+import { Draggable, SavedBlobs } from '../types'
 import { ELanguages } from '../../../types'
 
-const url = import.meta.env.VITE_BASE_URI ?? 'https://react.jenniina.fi'
+const url = 'https://react.jenniina.fi'
 const baseUrl = `${url}/api/blobs`
 
 // router.get('/api/blobs/:user/:language', getAllBlobsByUser)
@@ -14,11 +14,11 @@ const getAllBlobsByUser = async (
   user: string,
   d: number,
   language: ELanguages
-) => {
+): Promise<SavedBlobs[]> => {
   const response = await axios.get(`${baseUrl}/${user}/${d}`, {
     params: { language },
   })
-  return response.data
+  return response.data as SavedBlobs[]
 }
 
 const getBlobsVersionByUser = async (
@@ -26,11 +26,11 @@ const getBlobsVersionByUser = async (
   d: number,
   versionName: string,
   language: ELanguages
-) => {
+): Promise<SavedBlobs> => {
   const response = await axios.get(
     `${baseUrl}/${user}/${d}/${versionName}/${language}`
   )
-  return response.data
+  return response.data as SavedBlobs
 }
 
 const saveBlobsByUser = async (
@@ -38,9 +38,9 @@ const saveBlobsByUser = async (
   d: number,
   draggables: Draggable[],
   versionName: string,
-  backgroundColor: BackgroundColor[],
+  backgroundColor: string[],
   language: ELanguages
-) => {
+): Promise<{ success: boolean; message: string }> => {
   const response = await axios.post(
     `${baseUrl}/${user}/${d}/${versionName}/${language}`,
     {
@@ -48,7 +48,7 @@ const saveBlobsByUser = async (
       backgroundColor,
     }
   )
-  return response.data
+  return response.data as { success: boolean; message: string }
 }
 
 const editBlobsByUser = async (
@@ -56,10 +56,10 @@ const editBlobsByUser = async (
   d: number,
   draggables: Draggable[],
   versionName: string,
-  backgroundColor: BackgroundColor[],
+  backgroundColor: string[],
   language: ELanguages,
   newVersionName: string
-) => {
+): Promise<{ success: boolean; message: string }> => {
   const response = await axios.put(
     `${baseUrl}/${user}/${d}/${versionName}/${language}`,
     {
@@ -70,7 +70,7 @@ const editBlobsByUser = async (
       newVersionName,
     }
   )
-  return response.data
+  return response.data as { success: boolean; message: string }
 }
 
 const deleteBlobsVersionByUser = async (
@@ -78,11 +78,11 @@ const deleteBlobsVersionByUser = async (
   d: number,
   versionName: string,
   language: ELanguages
-) => {
+): Promise<{ success: boolean; message: string }> => {
   const response = await axios.delete(
     `${baseUrl}/${user}/${d}/${versionName}/${language}`
   )
-  return response.data
+  return response.data as { success: boolean; message: string }
 }
 
 export default {

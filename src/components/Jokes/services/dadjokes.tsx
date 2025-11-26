@@ -6,13 +6,17 @@
 //   }
 
 import axios from 'axios'
+import { IDadJoke } from '../types'
 
 const DADJOKE_URI = 'https://icanhazdadjoke.com/'
 
 const getRandomDadJoke = async () => {
-  const response = await axios.get(DADJOKE_URI, {
+  const response = await axios.get<IDadJoke>(DADJOKE_URI, {
     headers: { Accept: 'application/json' },
   })
+  if (!response.data) {
+    return
+  }
   return response.data
 }
 
@@ -54,7 +58,7 @@ const getRandomDadJoke = async () => {
 // }
 
 const searchDadJokes = async (searchTerm: string) => {
-  const response = await axios.get(
+  const response = await axios.get<{ results: IDadJoke[] }>(
     `${DADJOKE_URI}/search?term=${searchTerm}&limit=100`,
     {
       headers: { Accept: 'application/json' },
@@ -69,9 +73,12 @@ const searchDadJokes = async (searchTerm: string) => {
 //https://icanhazdadjoke.com/j/5YQwUqCJyEd
 
 const getDadJokeById = async (id: string) => {
-  const response = await axios.get(`${DADJOKE_URI}/j/${id}`, {
+  const response = await axios.get<IDadJoke>(`${DADJOKE_URI}/j/${id}`, {
     headers: { Accept: 'application/json' },
   })
+  if (!response.data) {
+    return
+  }
   return response.data
 }
 

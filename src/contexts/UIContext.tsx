@@ -6,11 +6,13 @@ import React, {
   Dispatch,
   SetStateAction,
   ReactNode,
+  useCallback,
 } from 'react'
 import { isTouchDevice } from '../hooks/useDraggable'
 import { useTheme } from '../hooks/useTheme'
 import { useScrollbarWidth } from '../hooks/useScrollbarWidth'
-import { ELanguages, RefObject } from '../types'
+import { RefObject } from '../types'
+import { useLanguageContext } from './LanguageContext'
 
 interface UIContextProps {
   menuStyleAltTransform: boolean
@@ -22,10 +24,11 @@ interface UIContextProps {
 export const UIContext = createContext<UIContextProps | undefined>(undefined)
 
 export const UIProvider: FC<{
-  language: ELanguages
   menuStyle: RefObject<{ getStyle: () => boolean }>
   children: ReactNode
-}> = ({ language, menuStyle, children }) => {
+}> = ({ menuStyle, children }) => {
+  const { language } = useLanguageContext()
+
   const [menuStyleAltTransform, setMenuStyleAltTransform] = useState(false)
   const touchDevice = isTouchDevice()
   const lightTheme = useTheme()
@@ -35,21 +38,36 @@ export const UIProvider: FC<{
   }
 
   // Update menuStyleAltTransform when lightTheme changes
+  const handleLightThemeChange = useCallback(() => {
+    // Schedule state updates asynchronously to avoid synchronous setState in an effect
+    const t1 = window.setTimeout(() => setMenuStyleAltTransform(false), 0)
+    const t2 = window.setTimeout(() => setMenuStyleAltTransform(true), 300)
+    return () => {
+      clearTimeout(t1)
+      clearTimeout(t2)
+    }
+  }, [])
+
   useEffect(() => {
-    setMenuStyleAltTransform(false)
-    const timer = setTimeout(() => {
-      setMenuStyleAltTransform(true)
-    }, 300)
-    return () => clearTimeout(timer)
-  }, [lightTheme])
+    // Call the callback and return its cleanup so timers are cleared on unmount / deps change
+    return handleLightThemeChange()
+  }, [lightTheme, handleLightThemeChange])
 
   //So transformations don't take place when changing menu style or toggling light/dark mode:
+  const handleMenuStyleChange = useCallback(() => {
+    // Schedule the two state changes so they're not synchronous inside the effect
+    const t1 = window.setTimeout(() => setMenuStyleAltTransform(false), 0)
+    const t2 = window.setTimeout(() => setMenuStyleAltTransform(true), 300)
+    return () => {
+      clearTimeout(t1)
+      clearTimeout(t2)
+    }
+  }, [menuStyle.current]) // eslint-disable-line react-hooks/exhaustive-deps
+
   useEffect(() => {
-    setMenuStyleAltTransform(false)
-    setTimeout(() => {
-      setMenuStyleAltTransform(true)
-    }, 300)
-  }, [lightTheme, menuStyle.current])
+    // Ensure the returned cleanup from the callback is registered with the effect
+    return handleMenuStyleChange()
+  }, [handleMenuStyleChange])
 
   return (
     <UIContext.Provider

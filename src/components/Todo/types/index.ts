@@ -195,5 +195,5 @@ export const translate = <T extends string | number | symbol>(
   key: T,
   language: ELanguages
 ): string => {
-  return translationMap[key]?.[language] || (key as string)
+  return translationMap[key]?.[language] ?? (key as string)
 }

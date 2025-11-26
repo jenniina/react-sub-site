@@ -29,7 +29,7 @@ export const useDragAndDrop = <T extends Item, S extends string>(
     if (typeof window === 'undefined') return []
     try {
       const storedItems = localStorage.getItem(key)
-      return storedItems ? JSON.parse(storedItems) : []
+      return storedItems ? (JSON.parse(storedItems) as T[]) : []
     } catch (error) {
       console.error(`Error reading localStorage key "${key}":`, error)
       return []
@@ -65,23 +65,23 @@ export const useDragAndDrop = <T extends Item, S extends string>(
               : initialState.filter(item => item.status === status),
           setItems: (items: T[]) => {
             setStoredItems(storageKeys[index], items)
-            setListItemsByStatus(prev => ({
-              ...prev,
-              [status]: {
-                ...prev[status],
-                items,
-              },
-            }))
+            // setListItemsByStatus(prev => ({
+            //   ...prev,
+            //   [status]: {
+            //     ...prev[status],
+            //     items,
+            //   },
+            // }))
           },
           removeItems: () => {
             removeStoredItems(storageKeys[index])
-            setListItemsByStatus(prev => ({
-              ...prev,
-              [status]: {
-                ...prev[status],
-                items: [],
-              },
-            }))
+            // setListItemsByStatus(prev => ({
+            //   ...prev,
+            //   [status]: {
+            //     ...prev[status],
+            //     items: [],
+            //   },
+            // }))
           },
         }
         return acc
@@ -100,9 +100,9 @@ export const useDragAndDrop = <T extends Item, S extends string>(
     removeStoredItems,
   ])
 
-  const deepEqual = (a: T[] | S[], b: T[] | S[]) => {
+  const deepEqual = useCallback((a: T[] | S[], b: T[] | S[]) => {
     return JSON.stringify(a) === JSON.stringify(b)
-  }
+  }, [])
 
   const [listItemsByStatus, setListItemsByStatus] = useState(
     initializeListItemsByStatus
@@ -111,7 +111,7 @@ export const useDragAndDrop = <T extends Item, S extends string>(
   const prevUpdatedItemsRef = useRef(updatedItems)
   const prevStatusesRef = useRef(statuses)
 
-  useEffect(() => {
+  const handleUpdating = useCallback(() => {
     const prevUpdatedItems = prevUpdatedItemsRef.current
     const prevStatuses = prevStatusesRef.current
 
@@ -168,14 +168,37 @@ export const useDragAndDrop = <T extends Item, S extends string>(
       prevUpdatedItemsRef.current = updatedItems
       prevStatusesRef.current = statuses
     }
-  }, [updatedItems, statuses, storageKeys, setStoredItems, removeStoredItems])
+  }, [
+    updatedItems,
+    statuses,
+    storageKeys,
+    setStoredItems,
+    removeStoredItems,
+    listItemsByStatus,
+    deepEqual,
+  ])
 
   useEffect(() => {
+    handleUpdating()
+  }, [
+    updatedItems,
+    statuses,
+    storageKeys,
+    setStoredItems,
+    removeStoredItems,
+    handleUpdating,
+  ])
+
+  const handleStoredItems = useCallback(() => {
     statuses?.forEach((status, index) => {
       const items = updatedItems?.filter(item => item.status === status)
       setStoredItems(storageKeys[index], items)
     })
   }, [updatedItems, statuses, storageKeys, setStoredItems])
+
+  useEffect(() => {
+    handleStoredItems()
+  }, [updatedItems, statuses, storageKeys, handleStoredItems])
 
   const handleUpdate = useCallback(
     (id: number, newStatus: S, target?: number) => {
@@ -185,7 +208,7 @@ export const useDragAndDrop = <T extends Item, S extends string>(
 
       if (!oldStatus) return
 
-      const card = listItemsByStatus?.[oldStatus as S]?.items?.find(
+      const card = listItemsByStatus?.[oldStatus]?.items?.find(
         item => item?.id === id
       )
       const targetIndex = listItemsByStatus?.[newStatus]?.items?.findIndex(
@@ -198,10 +221,10 @@ export const useDragAndDrop = <T extends Item, S extends string>(
       card.status = newStatus
 
       // Remove card from old status list
-      const oldStatusItems = listItemsByStatus?.[oldStatus as S]?.items?.filter(
+      const oldStatusItems = listItemsByStatus?.[oldStatus]?.items?.filter(
         (item: T) => item.id !== id
       )
-      listItemsByStatus?.[oldStatus as S]?.setItems(oldStatusItems)
+      listItemsByStatus?.[oldStatus]?.setItems(oldStatusItems)
 
       // Create a copy of the new status list
       let newStatusItems = [...listItemsByStatus?.[newStatus]?.items]

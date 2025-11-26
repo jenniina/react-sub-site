@@ -1,11 +1,4 @@
-import {
-  createContext,
-  FC,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from 'react'
+import { createContext, ReactNode, useContext } from 'react'
 import useLocalStorage from '../hooks/useStorage'
 import {
   ELanguages,
@@ -13,6 +6,7 @@ import {
   TranslationLang,
   translations,
 } from '../types'
+import { useIsClient } from '../hooks/useSSR'
 
 interface LanguageContextProps {
   language: ELanguages
@@ -27,15 +21,11 @@ interface LanguageProviderProps {
 }
 
 export function LanguageProvider({ children }: LanguageProviderProps) {
-  const [isClient, setIsClient] = useState(false)
+  const isClient = useIsClient()
   const [language, setLanguageRaw] = useLocalStorage<ELanguages>(
     'AppLanguage',
     ELanguages.en
   )
-
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
 
   // Remove only the 'lang' query param when present, keep others
   const setLanguage = (lang: ELanguages) => {
@@ -65,8 +55,8 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
       console.error(
         `Translation value "${key}" not found in language "${language}"`
       )
-      if (translations[key]['en']) {
-        return translations[key]['en']
+      if (translations[key].en) {
+        return translations[key].en
       } else return key
     } else {
       return translations[key][language as TranslationLang]
@@ -87,6 +77,7 @@ export function useLanguageContext() {
     // During SSR or if provider is missing, return safe defaults
     return {
       language: ELanguages.en,
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       setLanguage: () => {},
       t: (key: TranslationKey) => key, // Return key as fallback
     }

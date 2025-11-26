@@ -1,12 +1,9 @@
-import React, { FC, useContext, useState } from 'react'
+import React, { FC } from 'react'
 import { ColorPair, Modes, RefObject } from '../types'
-import { ELanguages } from '../../../types'
-import { useOutsideClick } from '../../../hooks/useOutsideClick'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 interface ColorBlockProps {
   d: number
-  language: ELanguages
   controlsVisible: boolean
   colorBlockProps: RefObject<HTMLButtonElement>[][]
   colorPairs: ColorPair[][]
@@ -22,7 +19,6 @@ interface ColorBlockProps {
 
 const ColorBlocks: FC<ColorBlockProps> = ({
   d,
-  language,
   controlsVisible,
   colorBlockProps,
   colorPairs,
@@ -51,7 +47,7 @@ const ColorBlocks: FC<ColorBlockProps> = ({
         const isActive = selectedColor === color
         return (
           <button
-            ref={colorBlock}
+            // ref={colorBlock}
             key={`${colorPairs[d][index].color1}${index}-${d}`}
             onClick={() => handleClick(color)}
             className={`colorblock ${getRefName(

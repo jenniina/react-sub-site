@@ -18,7 +18,20 @@ export interface RefObject<T> {
 export const breakpoint = 700
 export const breakpointSmall = 400
 
-export type credentials = {
+export interface AppProps {
+  // pageContext is provided during server render by +onRenderHtml
+  pageContext: {
+    urlPathname?: string | undefined
+  }
+}
+
+export interface IContent {
+  success: boolean
+  user: IUser
+  message: string
+}
+
+export interface credentials {
   username: string
   password: string
   language: string
@@ -69,11 +82,12 @@ export interface ReducerProps {
     currentQuestion: {
       id?: string
       question?: string
-      options?: any[]
-      correctAnswer?: boolean
+      options?: string[]
+      // correctAnswer can be either the answer string (multiple choice) or a boolean for true/false questions
+      correctAnswer?: string | boolean
       temp?: {
-        correctAnswer: boolean
-        incorrectAnswers: boolean[]
+        correctAnswer?: boolean
+        incorrectAnswers?: boolean[]
       }
     }
     answer: string | null
@@ -134,7 +148,7 @@ export type EGeneric<T> = {
   [key in keyof T]: T[key]
 }
 
-export const LanguageOfLanguage: TLanguageOfLanguage = {
+export const LanguageOfLanguage: ILanguageOfLanguage = {
   en: {
     English: 'English',
     Español: 'Spanish',
@@ -200,7 +214,7 @@ export const LanguageOfLanguage: TLanguageOfLanguage = {
   },
 }
 
-export type TLanguageOfLanguage = {
+export interface ILanguageOfLanguage {
   en: {
     English: 'English'
     Español: 'Spanish'
@@ -329,7 +343,7 @@ export enum ELanguageOfLanguage_fi {
   Čeština = 'Tšekki',
   Suomi = 'Suomi',
 }
-export type ELanguageOfLanguage = {
+export interface ELanguageOfLanguage {
   en: ELanguageOfLanguage_en
   es: ELanguageOfLanguage_es
   fr: ELanguageOfLanguage_fr
@@ -9741,6 +9755,42 @@ export const translations = {
     cs: 'Smazat účet',
     fi: 'Poista tili',
   },
+  Completed: {
+    en: 'Completed',
+    es: 'Completado',
+    fr: 'Terminé',
+    de: 'Abgeschlossen',
+    pt: 'Concluído',
+    cs: 'Dokončeno',
+    fi: 'Valmis',
+  },
+  Complete: {
+    en: 'Complete',
+    es: 'Completo',
+    fr: 'Terminé',
+    de: 'Abgeschlossen',
+    pt: 'Completo',
+    cs: 'Dokončeno',
+    fi: 'Valmis',
+  },
+  Incomplete: {
+    en: 'Incomplete',
+    es: 'Incompleto',
+    fr: 'Incomplet',
+    de: 'Unvollständig',
+    pt: 'Incompleto',
+    cs: 'Nedokončeno',
+    fi: 'Kesken',
+  },
+  MarkCompleted: {
+    en: 'Mark as completed',
+    es: 'Marcar como completado',
+    fr: 'Marquer comme terminé',
+    de: 'Als abgeschlossen markieren',
+    pt: 'Marcar como concluído',
+    cs: 'Označit jako dokončené',
+    fi: 'Merkitse tehdyksi',
+  },
   ClearCompleted: {
     en: 'Clear Completed Tasks',
     es: 'Borrar Tareas Completadas',
@@ -10610,7 +10660,7 @@ export const generateOptionsFromT = (
     label:
       translations[firstToUpperCase(value) as TranslationKey]?.[
         language as TranslationLang
-      ] || firstToUpperCase(value),
+      ] ?? firstToUpperCase(value),
     value: value,
   }))
 }

@@ -1,8 +1,23 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import quizService from '../services/quiz'
-import { IQuizHighscore } from '../types'
+import { IQuizHighscore, IQuestion } from '../types'
 
-const initialState = {
+interface IQuizOptions {
+  loading: boolean
+  category: string
+  difficulty: string
+  type: string
+  amount_of_questions: number
+}
+
+interface IQuizState {
+  options: IQuizOptions
+  questions: IQuestion[]
+  index: number
+  score: number
+}
+
+const initialState: IQuizState = {
   options: {
     loading: false,
     category: '',
@@ -19,28 +34,28 @@ const quizSlice = createSlice({
   name: 'quiz',
   initialState,
   reducers: {
-    changeLoading(state, action) {
+    changeLoading(state, action: PayloadAction<boolean>) {
       state.options.loading = action.payload
     },
-    changeDifficulty(state, action) {
+    changeDifficulty(state, action: PayloadAction<string>) {
       state.options.difficulty = action.payload
     },
-    changeCategory(state, action) {
+    changeCategory(state, action: PayloadAction<string>) {
       state.options.category = action.payload
     },
-    changeType(state, action) {
+    changeType(state, action: PayloadAction<string>) {
       state.options.type = action.payload
     },
-    changeAmount(state, action) {
+    changeAmount(state, action: PayloadAction<number>) {
       state.options.amount_of_questions = action.payload
     },
-    setQuestions(state, action) {
+    setQuestions(state, action: PayloadAction<IQuestion[]>) {
       state.questions = action.payload
     },
-    setScore(state, action) {
+    setScore(state, action: PayloadAction<number>) {
       state.score = action.payload
     },
-    setIndex(state, action) {
+    setIndex(state, action: PayloadAction<number>) {
       state.index = action.payload
     },
   },

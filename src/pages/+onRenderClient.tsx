@@ -1,59 +1,49 @@
-// export { onRenderClient };
-
-// import React from "react";
-// import { createRoot, hydrateRoot } from "react-dom/client";
-
-// async function onRenderClient(pageContext: any) {
-//   const { Page } = pageContext;
-
-//   // Check if Page exists
-//   if (!Page) {
-//     throw new Error("Page component is undefined");
-//   }
-
-//   const container = document.getElementById("root");
-//   if (!container) throw new Error("DOM element #root not found");
-
-//   const page = React.createElement(Page, { pageContext });
-
-//   // Check if SSR failed or if we have SSR content
-//   const hasSSRContent = container.innerHTML.trim() !== "";
-//   const ssrFailed = (window as any).__SSR_FAILED__;
-
-//   if (hasSSRContent && !ssrFailed) {
-//     try {
-//       // Try to hydrate if SSR worked
-//       hydrateRoot(container, page);
-//     } catch (error) {
-//       console.warn("Hydration failed, falling back to client render:", error);
-//       const root = createRoot(container);
-//       root.render(page);
-//     }
-//   } else {
-//     // No SSR content or SSR failed, use client-side rendering
-//     const root = createRoot(container);
-//     root.render(page);
-//   }
-// }
-
 export { onRenderClient }
 
 import React from 'react'
 import { createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import store from '../store'
+import { ThemeProvider } from '../contexts/ThemeContext'
+import { ModalProvider } from '../hooks/useModal'
+import { LanguageProvider } from '../contexts/LanguageContext'
+import { BlobProvider } from '../components/Blob/components/BlobProvider'
+import App from '../App'
 
-async function onRenderClient(pageContext: any) {
-  const { Page } = pageContext
-
-  if (!Page) {
-    throw new Error('Page component is undefined')
-  }
-
+function onRenderClient() {
   const container = document.getElementById('root')
   if (!container) throw new Error('DOM element #root not found')
 
-  const page = React.createElement(Page, { pageContext })
+  // Ensure a portal root exists for modals. Some environments (pre-rendering,
+  // testing or custom host documents) may not include the expected
+  // #modal-root; create a fallback at runtime to avoid runtime errors in
+  // components that create portals.
+  if (typeof document !== 'undefined') {
+    const modalRoot = document.getElementById('modal-root')
+    if (!modalRoot) {
+      const mr = document.createElement('div')
+      mr.id = 'modal-root'
+      document.body.appendChild(mr)
+    }
+  }
 
-  // Client-side only rendering
   const root = createRoot(container)
-  root.render(page)
+  root.render(
+    <React.StrictMode>
+      <BrowserRouter>
+        <LanguageProvider>
+          <BlobProvider>
+            <ThemeProvider>
+              <Provider store={store}>
+                <ModalProvider>
+                  <App />
+                </ModalProvider>
+              </Provider>
+            </ThemeProvider>
+          </BlobProvider>
+        </LanguageProvider>
+      </BrowserRouter>
+    </React.StrictMode>
+  )
 }

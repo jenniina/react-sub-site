@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState, useCallback } from 'react'
 import styles from '../store.module.css'
 import cartService from '../../../services/cart'
 import { ICart, IInfo } from '../../../types/store'
@@ -8,11 +8,12 @@ import { notify } from '../../../reducers/notificationReducer'
 import { useTheme } from '../../../hooks/useTheme'
 import { paid, status } from '../../../types/store'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
+import { getErrorMessage } from '../../../utils'
 import { useIsClient, useWindow } from '../../../hooks/useSSR'
 
 interface Props {
   language: ELanguages
-  paidStatus: { [key in paid]: string }
+  paidStatus: Record<paid, string>
   itemStatus: (status: status) => string
   splitToLines: (details: string) => React.JSX.Element[]
   info: (key: keyof IInfo) => string
@@ -37,24 +38,27 @@ const Order: FC<Props> = ({
   const [orderID, setOrderID] = useState<ICart['orderID']>('')
   const [sending, setSending] = useState(false)
 
-  const fetchOrder = async (ID: ICart['orderID'] = orderID) => {
-    setSending(true)
-    try {
-      const order = await cartService.getOrderByOrderID(language, ID)
-      const ordersWithDates = {
-        ...order,
-        createdAt: new Date(order.createdAt),
-        updatedAt: new Date(order.updatedAt),
+  const fetchOrder = useCallback(
+    async (ID: ICart['orderID'] = orderID) => {
+      setSending(true)
+      try {
+        const order = await cartService.getOrderByOrderID(language, ID)
+        const ordersWithDates = {
+          ...order,
+          createdAt: new Date(order.createdAt),
+          updatedAt: new Date(order.updatedAt),
+        }
+        setOrder(ordersWithDates)
+        setSending(false)
+        
+      } catch (err: unknown) {
+        const message = getErrorMessage(err, t('Error'))
+        void dispatch(notify(message, true, 8))
+        setSending(false)
       }
-      setOrder(ordersWithDates)
-      setSending(false)
-    } catch (error: any) {
-      if (error.response?.data?.message)
-        dispatch(notify(error.response.data.message, true, 8))
-      else dispatch(notify((error as Error).message, true, 8))
-      setSending(false)
-    }
-  }
+    },
+  [dispatch, language, orderID, t]
+  )
 
   // if the address has ?orderID=123456-AB, fetch the order
   useEffect(() => {
@@ -62,10 +66,11 @@ const Order: FC<Props> = ({
     const urlParams = new URLSearchParams(windowObj.location.search)
     const ID = urlParams.get('orderID')
     if (ID) {
-      setOrderID(ID as ICart['orderID'])
-      fetchOrder(ID)
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setOrderID(ID)
+      void fetchOrder(ID)
     }
-  }, [isClient])
+  }, [isClient, windowObj, fetchOrder])
 
   return (
     <div
@@ -74,7 +79,7 @@ const Order: FC<Props> = ({
       <form
         onSubmit={e => {
           e.preventDefault()
-          fetchOrder()
+          void fetchOrder()
         }}
       >
         <div className="input-wrap">
@@ -84,7 +89,7 @@ const Order: FC<Props> = ({
               required
               name="orderID"
               value={orderID}
-              onChange={e => setOrderID(e.target.value as ICart['orderID'])}
+              onChange={e => setOrderID(e.target.value)}
             />
             <span className="label">{t('OrderID')}</span>
           </label>
