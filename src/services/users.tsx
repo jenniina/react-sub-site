@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import { IUser as user, ELanguages, IBlacklistedJoke } from '../types'
-import { IContent, IResponse } from '../types'
+import { IContent, IResponse, IToken } from '../types'
 
 const url = 'https://react.jenniina.fi'
 const baseUrl = `${url}/api/users`
@@ -97,13 +97,9 @@ const updatePassword = async (
 
 const updateToken = async (
   user: Pick<user, 'username' | 'language'>
-): Promise<{ success: boolean; message: string; token?: string }> => {
+): Promise<IToken> => {
   const response = await axios.put(`${baseUrl}/request-new-token`, user)
-  return response.data as {
-    success: boolean
-    message: string
-    token?: string
-  }
+  return response.data as IToken
 }
 
 const searchUsername = async (username: string): Promise<IResponse> => {

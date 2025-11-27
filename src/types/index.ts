@@ -31,6 +31,15 @@ export interface IContent {
   message: string
 }
 
+export interface IResponse {
+  success: boolean
+  message: string
+}
+
+export interface IToken extends IResponse {
+  token?: string
+}
+
 export interface credentials {
   username: string
   password: string
@@ -10663,9 +10672,4 @@ export const generateOptionsFromT = (
       ] ?? firstToUpperCase(value),
     value: value,
   }))
-}
-
-export interface IResponse {
-  success: boolean
-  message: string
 }
