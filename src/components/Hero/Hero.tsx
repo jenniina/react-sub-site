@@ -53,11 +53,46 @@ export default function Hero({
   const location = useLocation()
 
   const [values, setValues] = useSessionStorage<itemProps[]>('Hero', [])
+  const [itemsVisible, setItemsVisible] = useState(true)
+  const [currentPage, setCurrentPage] = useState('')
+  const isAnimatingRef = useRef(false)
+  const itemsVisibleRef = useRef(itemsVisible)
+  const [theHeading, setTheHeading] = useState(heading)
+  const [theText, setTheText] = useState(text)
 
   // remove the last trailing / then get the last part of the pathname:
   const page = useMemo(() => {
     return location.pathname?.replace(/\/$/, '').split('/').pop() ?? ''
   }, [location])
+
+  // Handle page transition for hero items
+  useEffect(() => {
+    if (page !== currentPage && currentPage !== '') {
+      // Fade out items when page changes
+      setItemsVisible(false)
+
+      // Wait for fade out to complete, then update page and fade in
+      const timer = setTimeout(() => {
+        setCurrentPage(page)
+        setItemsVisible(true)
+      }, 500)
+
+      const timer2 = setTimeout(() => {
+        setTheHeading(heading)
+        setTheText(text)
+      }, 800)
+
+      return () => {
+        clearTimeout(timer)
+        clearTimeout(timer2)
+      }
+    } else if (currentPage === '') {
+      // Initial load
+      setCurrentPage(page)
+      setItemsVisible(true)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, currentPage])
 
   // Clear eye transforms when navigating away from contact/form pages
   useEffect(() => {
@@ -85,6 +120,10 @@ export default function Hero({
     e.preventDefault()
     setReinitialize(!reinitialize)
   }
+
+  useEffect(() => {
+    itemsVisibleRef.current = itemsVisible
+  }, [itemsVisible])
 
   useEffect(() => {
     if (!isClient || !windowObj) return
@@ -344,10 +383,28 @@ export default function Hero({
 
     if (prefersReducedMotion) return // Don't move items if user prefers reduced motion
 
+    const MOVE_TRANSITION_MS = 900 // allow CSS transition to finish (approx 800ms), buffer a bit
+
     const moveItem = () => {
       // Clear the timeout ref since we're executing now
       movementTimeoutRef.current = null
 
+      // don't move items if they are hidden or already animating
+      if (!itemsVisibleRef.current) {
+        movementTimeoutRef.current ??= setTimeout(
+          moveItem,
+          Math.round(getRandomMinMax(1000, 2000))
+        )
+        return
+      }
+
+      if (isAnimatingRef.current) {
+        movementTimeoutRef.current ??= setTimeout(
+          moveItem,
+          Math.round(getRandomMinMax(1000, 2000))
+        )
+        return
+      }
       // Get current items from DOM instead of relying on state
       const items = document?.querySelectorAll<HTMLElement>('[id^="shape"]')
       if (!items || items.length === 0) {
@@ -359,6 +416,8 @@ export default function Hero({
       const item = items[randomIndex]
 
       if (item) {
+        // mark as animating so no other move happens until transition ends
+        isAnimatingRef.current = true
         const currentTop = parseFloat(
           windowObj.getComputedStyle(item).getPropertyValue('top')
         )
@@ -418,13 +477,18 @@ export default function Hero({
         ) {
           item.style.top = `${newTop}px`
           item.style.left = `${newLeft}px`
+          // Clear animating flag roughly when CSS transition completes
+          setTimeout(() => {
+            isAnimatingRef.current = false
+          }, MOVE_TRANSITION_MS)
         }
       }
 
       // Schedule next movement with random delay, but only if no timeout is already scheduled
+      // schedule next move after transition + random delay
       movementTimeoutRef.current ??= setTimeout(
         moveItem,
-        Math.round(getRandomMinMax(3000, 6000))
+        Math.round(getRandomMinMax(3000, 6000)) + MOVE_TRANSITION_MS
       )
     }
 
@@ -457,15 +521,15 @@ export default function Hero({
       className={`
         ${lightTheme ? styles.light : ''} 
         ${touchDevice ? styles.touch : ''} 
-        hero fullwidth ${styles.hero} ${styles[address]}`}
+        hero fullwidth ${styles.hero} ${styles[address]} ${itemsVisible ? styles['header-visible'] : styles['header-hidden']}`}
     >
       {/* Always render during SSR, conditionally render on client */}
       {isClient && (
         <h1>
-          <span data-text={heading}>{heading}</span>
+          <span data-text={theHeading}>{theHeading}</span>
         </h1>
       )}
-      {isClient && <p>{text}</p>}
+      {isClient && <p>{theText}</p>}
       <span id="description" className="scr">
         {t('HeroSection')}: {t('InteractiveElements')}
       </span>
@@ -499,7 +563,7 @@ export default function Hero({
         <ItemComponent
           ref={ulRef}
           array={values}
-          location={page}
+          location={currentPage}
           windowWidth={windowWidth}
           windowHeight={windowHeight}
           spanArray={spanArray}
@@ -509,6 +573,7 @@ export default function Hero({
           removeItem={removeItem}
           escapeFunction={escapeFunction}
           windowObj={windowObj}
+          itemsVisible={itemsVisible}
         />
       )}
 

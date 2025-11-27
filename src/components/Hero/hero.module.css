@@ -1807,3 +1807,24 @@
     opacity: 1;
   }
 }
+
+/* Hero visibility transitions for page changes */
+.header-visible,
+.herocontent.items-visible {
+  opacity: 1;
+  transition: opacity 400ms ease-in-out;
+}
+
+.header-hidden,
+.herocontent.items-hidden {
+  opacity: 0;
+  transition: opacity 400ms ease-in-out;
+}
+
+.herocontent.items-visible li {
+  opacity: inherit;
+}
+
+.herocontent.items-hidden li {
+  opacity: 0;
+}
