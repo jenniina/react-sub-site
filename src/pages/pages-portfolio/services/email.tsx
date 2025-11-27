@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { ELanguages } from '../../../types'
+import { ELanguages, IResponse } from '../../../types'
 
 export interface SelectData {
   language: ELanguages
@@ -12,9 +12,7 @@ export interface SelectData {
 const url = 'https://react.jenniina.fi'
 const baseUrl = `${url}/api`
 
-export const sendEmail = async (
-  data: SelectData
-): Promise<{ success: boolean; message: string }> => {
+export const sendEmail = async (data: SelectData): Promise<IResponse> => {
   const response = await axios.post(`${baseUrl}/send-email-select`, data)
-  return response.data as { success: boolean; message: string }
+  return response.data as IResponse
 }

@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import { IUser as user, ELanguages, IBlacklistedJoke } from '../types'
-import { IContent } from '../types'
+import { IContent, IResponse } from '../types'
 
 const url = 'https://react.jenniina.fi'
 const baseUrl = `${url}/api/users`
@@ -26,12 +26,12 @@ const deleteUser = async (id: user['_id'], deleteJokes: boolean) => {
     `${baseUrl}/${id}/${deleteJokes}`,
     getConfig()
   )
-  return response.data as AxiosResponse<{ success: boolean; message: string }>
+  return response.data as AxiosResponse<IResponse>
 }
 
 const updateUser = async (
   user: Pick<user, '_id' | 'language' | 'name' | 'passwordOld'>
-): Promise<{ success: boolean; message: string }> => {
+): Promise<IResponse> => {
   const newUserSettings = {
     _id: user._id,
     name: user.name,
@@ -39,14 +39,14 @@ const updateUser = async (
     passwordOld: user.passwordOld,
   }
   const response = await axios.put(`${baseUrl}/${user._id}`, newUserSettings)
-  return response.data as { success: boolean; message: string }
+  return response.data as IResponse
 }
 const addToBlacklistedJokes = async (
   id: user['_id'],
   jokeId: string,
   language: string,
   value: string | undefined
-): Promise<{ success: boolean; message: string }> => {
+): Promise<IResponse> => {
   const valueObject = {
     value,
   }
@@ -54,7 +54,7 @@ const addToBlacklistedJokes = async (
     `${baseUrl}/${id}/${jokeId}/${language}`,
     valueObject
   )
-  return response.data as { success: boolean; message: string }
+  return response.data as IResponse
 }
 
 // router.delete('/api/users/:id/:jokeId/:language', removeJokeFromBlacklisted)
@@ -62,17 +62,17 @@ const removeJokeFromBlacklisted = async (
   id: user['_id'] | undefined,
   joke_id: IBlacklistedJoke['_id'] | undefined,
   language: ELanguages
-): Promise<{ success: boolean; message: string }> => {
+): Promise<IResponse> => {
   const response = await axios.delete(
     `${baseUrl}/${id}/${joke_id}/${language}`,
     getConfig()
   )
-  return response.data as { success: boolean; message: string }
+  return response.data as IResponse
 }
 
 const updateUsername = async (
   user: Pick<user, '_id' | 'language' | 'username' | 'passwordOld'>
-): Promise<{ success: boolean; message: string }> => {
+): Promise<IResponse> => {
   const newUserSettings = {
     _id: user._id,
     username: user.username,
@@ -80,11 +80,11 @@ const updateUsername = async (
     passwordOld: user.passwordOld,
   }
   const response = await axios.put(`${baseUrl}`, newUserSettings)
-  return response.data as { success: boolean; message: string }
+  return response.data as IResponse
 }
 const updatePassword = async (
   user: Pick<user, '_id' | 'language' | 'password' | 'passwordOld'>
-): Promise<{ success: boolean; message: string }> => {
+): Promise<IResponse> => {
   const newUserSettings = {
     _id: user._id,
     language: user.language,
@@ -92,7 +92,7 @@ const updatePassword = async (
     passwordOld: user.passwordOld,
   }
   const response = await axios.put(`${baseUrl}/${user._id}`, newUserSettings)
-  return response.data as { success: boolean; message: string }
+  return response.data as IResponse
 }
 
 const updateToken = async (
@@ -106,11 +106,9 @@ const updateToken = async (
   }
 }
 
-const searchUsername = async (
-  username: string
-): Promise<{ success: boolean; message: string }> => {
+const searchUsername = async (username: string): Promise<IResponse> => {
   const response = await axios.get(`${baseUrl}/username/${username}`)
-  return response.data as { success: boolean; message: string }
+  return response.data as IResponse
 }
 
 const searchId = async (id: string | undefined) => {
@@ -121,12 +119,12 @@ const searchId = async (id: string | undefined) => {
 const forgot = async (
   username: string | undefined,
   language: string | ELanguages
-): Promise<{ success: boolean; message: string }> => {
+): Promise<IResponse> => {
   const response = await axios.post(`${baseUrl}/forgot`, {
     username,
     language,
   })
-  return response.data as { success: boolean; message: string }
+  return response.data as IResponse
 }
 
 export default {

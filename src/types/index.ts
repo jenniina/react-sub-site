@@ -10664,3 +10664,8 @@ export const generateOptionsFromT = (
     value: value,
   }))
 }
+
+export interface IResponse {
+  success: boolean
+  message: string
+}
