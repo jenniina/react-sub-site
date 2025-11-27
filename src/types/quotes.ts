@@ -1,6 +1,6 @@
 import { ELanguages } from '.'
 
-export enum EAge {
+enum EAge {
   en = 'Age',
   es = 'Edad',
   fr = 'Âge',
@@ -10,7 +10,7 @@ export enum EAge {
   fi = 'Ikä',
 }
 
-export enum EAlone {
+enum EAlone {
   en = 'Alone',
   es = 'Solo',
   fr = 'Seul',
@@ -20,7 +20,7 @@ export enum EAlone {
   fi = 'Yksin',
 }
 
-export enum EAmazing {
+enum EAmazing {
   en = 'Amazing',
   es = 'Asombroso',
   fr = 'Incroyable',
@@ -30,7 +30,7 @@ export enum EAmazing {
   fi = 'Uskomaton',
 }
 
-export enum EAnger {
+enum EAnger {
   en = 'Anger',
   es = 'Ira',
   fr = 'Colère',
@@ -40,7 +40,7 @@ export enum EAnger {
   fi = 'Viha',
 }
 
-export enum EArchitecture {
+enum EArchitecture {
   en = 'Architecture',
   es = 'Arquitectura',
   fr = 'Architecture',
@@ -50,7 +50,7 @@ export enum EArchitecture {
   fi = 'Arkkitehtuuri',
 }
 
-export enum EArt {
+enum EArt {
   en = 'Art',
   es = 'Arte',
   fr = 'Art',
@@ -60,7 +60,7 @@ export enum EArt {
   fi = 'Taide',
 }
 
-export enum EAttitude {
+enum EAttitude {
   en = 'Attitude',
   es = 'Actitud',
   fr = 'Attitude',
@@ -70,7 +70,7 @@ export enum EAttitude {
   fi = 'Asenne',
 }
 
-export enum EBeauty {
+enum EBeauty {
   en = 'Beauty',
   es = 'Belleza',
   fr = 'Beauté',
@@ -80,7 +80,7 @@ export enum EBeauty {
   fi = 'Kauneus',
 }
 
-export enum EBest {
+enum EBest {
   en = 'Best',
   es = 'Mejor',
   fr = 'Meilleur',
@@ -90,7 +90,7 @@ export enum EBest {
   fi = 'Paras',
 }
 
-export enum EBirthday {
+enum EBirthday {
   en = 'Birthday',
   es = 'Cumpleaños',
   fr = 'Anniversaire',
@@ -100,7 +100,7 @@ export enum EBirthday {
   fi = 'Syntymäpäivä',
 }
 
-export enum ECar {
+enum ECar {
   en = 'Car',
   es = 'Coche',
   fr = 'Voiture',
@@ -110,7 +110,7 @@ export enum ECar {
   fi = 'Auto',
 }
 
-export enum EChange {
+enum EChange {
   en = 'Change',
   es = 'Cambio',
   fr = 'Changement',
@@ -120,7 +120,7 @@ export enum EChange {
   fi = 'Muutos',
 }
 
-export enum ECommunication {
+enum ECommunication {
   en = 'Communication',
   es = 'Comunicación',
   fr = 'Communication',
@@ -130,7 +130,7 @@ export enum ECommunication {
   fi = 'Viestintä',
 }
 
-export enum EComputers {
+enum EComputers {
   en = 'Computers',
   es = 'Computadoras',
   fr = 'Ordinateurs',
@@ -140,7 +140,7 @@ export enum EComputers {
   fi = 'Tietokoneet',
 }
 
-export enum ECool {
+enum ECool {
   en = 'Cool',
   es = 'Genial',
   fr = 'Cool',
@@ -150,7 +150,7 @@ export enum ECool {
   fi = 'Siisti',
 }
 
-export enum ECourage {
+enum ECourage {
   en = 'Courage',
   es = 'Coraje',
   fr = 'Courage',
@@ -160,7 +160,7 @@ export enum ECourage {
   fi = 'Rohkeus',
 }
 
-export enum EDad {
+enum EDad {
   en = 'Dad',
   es = 'Papá',
   fr = 'Papa',
@@ -170,7 +170,7 @@ export enum EDad {
   fi = 'Isä',
 }
 
-export enum EDating {
+enum EDating {
   en = 'Dating',
   es = 'Citas',
   fr = 'Rencontres',
@@ -180,7 +180,7 @@ export enum EDating {
   fi = 'Treffit',
 }
 
-export enum EDeath {
+enum EDeath {
   en = 'Death',
   es = 'Muerte',
   fr = 'Mort',
@@ -190,7 +190,7 @@ export enum EDeath {
   fi = 'Kuolema',
 }
 
-export enum EDesign {
+enum EDesign {
   en = 'Design',
   es = 'Diseño',
   fr = 'Design',
@@ -200,7 +200,7 @@ export enum EDesign {
   fi = 'Suunnittelu',
 }
 
-export enum EDreams {
+enum EDreams {
   en = 'Dreams',
   es = 'Sueños',
   fr = 'Rêves',
@@ -210,7 +210,7 @@ export enum EDreams {
   fi = 'Unelmat',
 }
 
-export enum EEnvironmental {
+enum EEnvironmental {
   en = 'Environmental',
   es = 'Ambiental',
   fr = 'Environnemental',
@@ -220,7 +220,7 @@ export enum EEnvironmental {
   fi = 'Ympäristö',
 }
 
-export enum EEquality {
+enum EEquality {
   en = 'Equality',
   es = 'Igualdad',
   fr = 'Égalité',
@@ -230,7 +230,7 @@ export enum EEquality {
   fi = 'Tasa-arvo',
 }
 
-export enum EExperience {
+enum EExperience {
   en = 'Experience',
   es = 'Experiencia',
   fr = 'Expérience',
@@ -240,7 +240,7 @@ export enum EExperience {
   fi = 'Kokemus',
 }
 
-export enum EFailure {
+enum EFailure {
   en = 'Failure',
   es = 'Fracaso',
   fr = 'Échec',
@@ -250,7 +250,7 @@ export enum EFailure {
   fi = 'Epäonnistuminen',
 }
 
-export enum EFaith {
+enum EFaith {
   en = 'Faith',
   es = 'Fe',
   fr = 'Foi',
@@ -260,7 +260,7 @@ export enum EFaith {
   fi = 'Usko',
 }
 
-export enum EFamily {
+enum EFamily {
   en = 'Family',
   es = 'Familia',
   fr = 'Famille',
@@ -270,7 +270,7 @@ export enum EFamily {
   fi = 'Perhe',
 }
 
-export enum EFamous {
+enum EFamous {
   en = 'Famous',
   es = 'Famoso',
   fr = 'Célèbre',
@@ -280,7 +280,7 @@ export enum EFamous {
   fi = 'Kuuluisa',
 }
 
-export enum EFear {
+enum EFear {
   en = 'Fear',
   es = 'Miedo',
   fr = 'Peur',
@@ -290,7 +290,7 @@ export enum EFear {
   fi = 'Pelko',
 }
 
-export enum EFitness {
+enum EFitness {
   en = 'Fitness',
   es = 'Aptitud',
   fr = 'Fitness',
@@ -300,7 +300,7 @@ export enum EFitness {
   fi = 'Kunto',
 }
 
-export enum EForgiveness {
+enum EForgiveness {
   en = 'Forgiveness',
   es = 'Perdón',
   fr = 'Pardon',
@@ -310,7 +310,7 @@ export enum EForgiveness {
   fi = 'Anteeksianto',
 }
 
-export enum EFreedom {
+enum EFreedom {
   en = 'Freedom',
   es = 'Libertad',
   fr = 'Liberté',
@@ -320,7 +320,7 @@ export enum EFreedom {
   fi = 'Vapaus',
 }
 
-export enum EFriendship {
+enum EFriendship {
   en = 'Friendship',
   es = 'Amistad',
   fr = 'Amitié',
@@ -330,7 +330,7 @@ export enum EFriendship {
   fi = 'Ystävyys',
 }
 
-export enum EFunny {
+enum EFunny {
   en = 'Funny',
   es = 'Divertido',
   fr = 'Drôle',
@@ -340,7 +340,7 @@ export enum EFunny {
   fi = 'Hauska',
 }
 
-export enum EFuture {
+enum EFuture {
   en = 'Future',
   es = 'Futuro',
   fr = 'Futur',
@@ -350,7 +350,7 @@ export enum EFuture {
   fi = 'Tulevaisuus',
 }
 
-export enum EGod {
+enum EGod {
   en = 'God',
   es = 'Dios',
   fr = 'Dieu',
@@ -360,7 +360,7 @@ export enum EGod {
   fi = 'Jumala',
 }
 
-export enum EGood {
+enum EGood {
   en = 'Good',
   es = 'Bueno',
   fr = 'Bon',
@@ -370,7 +370,7 @@ export enum EGood {
   fi = 'Hyvä',
 }
 
-export enum EGovernment {
+enum EGovernment {
   en = 'Government',
   es = 'Gobierno',
   fr = 'Gouvernement',
@@ -380,7 +380,7 @@ export enum EGovernment {
   fi = 'Hallitus',
 }
 
-export enum EGraduation {
+enum EGraduation {
   en = 'Graduation',
   es = 'Graduación',
   fr = 'Remise des diplômes',
@@ -390,7 +390,7 @@ export enum EGraduation {
   fi = 'Valmistuminen',
 }
 
-export enum EGreat {
+enum EGreat {
   en = 'Great',
   es = 'Genial',
   fr = 'Génial',
@@ -400,7 +400,7 @@ export enum EGreat {
   fi = 'Upea',
 }
 
-export enum EHappiness {
+enum EHappiness {
   en = 'Happiness',
   es = 'Felicidad',
   fr = 'Bonheur',
@@ -410,7 +410,7 @@ export enum EHappiness {
   fi = 'Onni',
 }
 
-export enum EHistory {
+enum EHistory {
   en = 'History',
   es = 'Historia',
   fr = 'Histoire',
@@ -420,7 +420,7 @@ export enum EHistory {
   fi = 'Historia',
 }
 
-export enum EHome {
+enum EHome {
   en = 'Home',
   es = 'Hogar',
   fr = 'Domicile',
@@ -430,7 +430,7 @@ export enum EHome {
   fi = 'Koti',
 }
 
-export enum EHope {
+enum EHope {
   en = 'Hope',
   es = 'Esperanza',
   fr = 'Espoir',
@@ -440,7 +440,7 @@ export enum EHope {
   fi = 'Toivo',
 }
 
-export enum EHumor {
+enum EHumor {
   en = 'Humor',
   es = 'Humor',
   fr = 'Humour',
@@ -450,7 +450,7 @@ export enum EHumor {
   fi = 'Huumori',
 }
 
-export enum EImagination {
+enum EImagination {
   en = 'Imagination',
   es = 'Imaginación',
   fr = 'Imagination',
@@ -460,7 +460,7 @@ export enum EImagination {
   fi = 'Mielikuvitus',
 }
 
-export enum EInspirational {
+enum EInspirational {
   en = 'Inspirational',
   es = 'Inspirador',
   fr = 'Inspirationnel',
@@ -470,7 +470,7 @@ export enum EInspirational {
   fi = 'Inspiroiva',
 }
 
-export enum EIntelligence {
+enum EIntelligence {
   en = 'Intelligence',
   es = 'Inteligencia',
   fr = 'Intelligence',
@@ -480,7 +480,7 @@ export enum EIntelligence {
   fi = 'Älykkyys',
 }
 
-export enum EJealousy {
+enum EJealousy {
   en = 'Jealousy',
   es = 'Celos',
   fr = 'Jalousie',
@@ -490,7 +490,7 @@ export enum EJealousy {
   fi = 'Mustasukkaisuus',
 }
 
-export enum EKnowledge {
+enum EKnowledge {
   en = 'Knowledge',
   es = 'Conocimiento',
   fr = 'Connaissance',
@@ -500,7 +500,7 @@ export enum EKnowledge {
   fi = 'Tietämys',
 }
 
-export enum ELeadership {
+enum ELeadership {
   en = 'Leadership',
   es = 'Liderazgo',
   fr = 'Leadership',
@@ -510,7 +510,7 @@ export enum ELeadership {
   fi = 'Johtajuus',
 }
 
-export enum ELearning {
+enum ELearning {
   en = 'Learning',
   es = 'Aprendizaje',
   fr = 'Apprentissage',
@@ -520,7 +520,7 @@ export enum ELearning {
   fi = 'Oppiminen',
 }
 
-export enum ELegal {
+enum ELegal {
   en = 'Legal',
   es = 'Legal',
   fr = 'Légal',
@@ -530,7 +530,7 @@ export enum ELegal {
   fi = 'Oikeudellinen',
 }
 
-export enum ELife {
+enum ELife {
   en = 'Life',
   es = 'Vida',
   fr = 'Vie',
@@ -540,7 +540,7 @@ export enum ELife {
   fi = 'Elämä',
 }
 
-export enum ELove {
+enum ELove {
   en = 'Love',
   es = 'Amor',
   fr = 'Amour',
@@ -550,7 +550,7 @@ export enum ELove {
   fi = 'Rakkaus',
 }
 
-export enum EMarriage {
+enum EMarriage {
   en = 'Marriage',
   es = 'Matrimonio',
   fr = 'Mariage',
@@ -560,7 +560,7 @@ export enum EMarriage {
   fi = 'Avioliitto',
 }
 
-export enum EMedical {
+enum EMedical {
   en = 'Medical',
   es = 'Médico',
   fr = 'Médical',
@@ -570,7 +570,7 @@ export enum EMedical {
   fi = 'Lääketieteellinen',
 }
 
-export enum EMen {
+enum EMen {
   en = 'Men',
   es = 'Hombres',
   fr = 'Hommes',
@@ -580,7 +580,7 @@ export enum EMen {
   fi = 'Miehet',
 }
 
-export enum EMom {
+enum EMom {
   en = 'Mom',
   es = 'Mamá',
   fr = 'Maman',
@@ -590,7 +590,7 @@ export enum EMom {
   fi = 'Äiti',
 }
 
-export enum EMoney {
+enum EMoney {
   en = 'Money',
   es = 'Dinero',
   fr = 'Argent',
@@ -600,7 +600,7 @@ export enum EMoney {
   fi = 'Rahat',
 }
 
-export enum EMorning {
+enum EMorning {
   en = 'Morning',
   es = 'Mañana',
   fr = 'Matin',
@@ -610,7 +610,7 @@ export enum EMorning {
   fi = 'Aamu',
 }
 
-export enum EMovies {
+enum EMovies {
   en = 'Movies',
   es = 'Películas',
   fr = 'Films',
@@ -620,7 +620,7 @@ export enum EMovies {
   fi = 'Elokuvat',
 }
 
-export enum ESuccess {
+enum ESuccess {
   en = 'Success',
   es = 'Éxito',
   fr = 'Succès',

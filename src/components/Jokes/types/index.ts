@@ -1,7 +1,7 @@
 import { ELanguages, ELanguageTitle } from '../../../types'
 import { IUser } from '../../../types'
 
-export enum EFlags_en {
+enum EFlags_en {
   nsfw = 'NSFW',
   religious = 'religious',
   political = 'political',
@@ -10,7 +10,7 @@ export enum EFlags_en {
   explicit = 'explicit',
 }
 
-export enum EFlags_es {
+enum EFlags_es {
   nsfw = 'NSFW',
   religious = 'religioso',
   political = 'político',
@@ -19,7 +19,7 @@ export enum EFlags_es {
   explicit = 'explícito',
 }
 
-export enum EFlags_fr {
+enum EFlags_fr {
   nsfw = 'NSFW',
   religious = 'religieux',
   political = 'politique',
@@ -28,7 +28,7 @@ export enum EFlags_fr {
   explicit = 'explicite',
 }
 
-export enum EFlags_de {
+enum EFlags_de {
   nsfw = 'NSFW',
   religious = 'religiös',
   political = 'politisch',
@@ -37,7 +37,7 @@ export enum EFlags_de {
   explicit = 'explizit',
 }
 
-export enum EFlags_pt {
+enum EFlags_pt {
   nsfw = 'NSFW',
   religious = 'religioso',
   political = 'político',
@@ -46,7 +46,7 @@ export enum EFlags_pt {
   explicit = 'explícito',
 }
 
-export enum EFlags_cs {
+enum EFlags_cs {
   nsfw = 'NSFW',
   religious = 'náboženský',
   political = 'politický',
@@ -54,7 +54,7 @@ export enum EFlags_cs {
   sexist = 'sexistický',
   explicit = 'explicitní',
 }
-export enum EFlags_fi {
+enum EFlags_fi {
   nsfw = 'NSFW',
   religious = 'uskonnollinen',
   political = 'poliittinen',
@@ -388,7 +388,7 @@ export enum EExtraCategories {
   DadJokes = 'Dad Jokes',
 }
 
-export enum EAuthor {
+enum EAuthor {
   en = 'Author',
   es = 'Autor',
   fr = 'Auteur',
@@ -398,7 +398,7 @@ export enum EAuthor {
   fi = 'Tekijä',
 }
 
-export enum EAge {
+enum EAge {
   en = 'Age',
   es = 'Edad',
   fr = 'Âge',
@@ -408,7 +408,7 @@ export enum EAge {
   fi = 'Ikä',
 }
 
-export enum EPopularity {
+enum EPopularity {
   en = 'Popularity',
   es = 'Popularidad',
   fr = 'Popularité',
@@ -417,7 +417,7 @@ export enum EPopularity {
   cs = 'Oblíbenost',
   fi = 'Suosio',
 }
-export enum ECategoryTitle {
+enum ECategoryTitle {
   en = 'Category',
   es = 'Categoría',
   fr = 'Catégorie',
