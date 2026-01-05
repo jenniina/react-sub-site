@@ -73,7 +73,7 @@ function Jokes() {
     return state.jokes?.joke
   })
   const users = useSelector((state: ReducerProps) => {
-    return state.users
+    return state.users ?? []
   })
   const user = useSelector((state: ReducerProps) => {
     return state.auth?.user

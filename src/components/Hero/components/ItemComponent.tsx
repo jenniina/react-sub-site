@@ -55,6 +55,7 @@ interface ItemComponentProps {
   ) => void
   escapeFunction: () => void
   windowObj: Window | null
+  itemsVisible: boolean
 }
 
 const ItemComponent = forwardRef<
@@ -74,6 +75,7 @@ const ItemComponent = forwardRef<
       removeItem,
       escapeFunction,
       windowObj,
+      itemsVisible,
     },
     ref
   ) => {
@@ -100,7 +102,7 @@ const ItemComponent = forwardRef<
             location === LOCATION.DND
               ? styles.blob
               : ''
-          }`}
+          } ${itemsVisible ? styles['items-visible'] : styles['items-hidden']} `}
           style={
             //In the case of using the blob feature for a page, add it here as well:
             location === LOCATION.PORTFOLIO ||

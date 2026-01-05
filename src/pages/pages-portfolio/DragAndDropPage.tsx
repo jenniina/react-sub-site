@@ -1,5 +1,5 @@
 import { DragAndDrop } from '../../components/DragAndDrop/components'
-import { MdOutlineDragIndicator } from 'react-icons/md'
+import Icon from '../../components/Icon/Icon'
 import Accordion from '../../components/Accordion/Accordion'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 
@@ -64,7 +64,9 @@ export default function DragAndDropPage({ type }: { type: string }) {
                     </li>
                     <li>
                       {t('YouMayAlsoUseTheItemMenuToChooseADestination')}:{' '}
-                      <MdOutlineDragIndicator
+                      <Icon
+                        lib="md"
+                        name="MdOutlineDragIndicator"
                         aria-hidden="true"
                         style={{
                           display: 'inline-block',
@@ -83,17 +85,19 @@ export default function DragAndDropPage({ type }: { type: string }) {
                     <li>
                       {t('ToMoveItemsToAnotherContainer')}
                       <ul>
-                        <li>
-                          {t('UseTabKeyToNavigateToDragButton')}{' '}
-                          <MdOutlineDragIndicator
-                            aria-hidden="true"
-                            style={{
-                              display: 'inline-block',
-                              marginBottom: '-0.15em',
-                            }}
-                          />{' '}
-                          {t('AndPressEnterKeyToOpenMenu')}
-                        </li>
+                            <li>
+                              {t('UseTabKeyToNavigateToDragButton')}{' '}
+                              <Icon
+                                lib="md"
+                                name="MdOutlineDragIndicator"
+                                aria-hidden="true"
+                                style={{
+                                  display: 'inline-block',
+                                  marginBottom: '-0.15em',
+                                }}
+                              />{' '}
+                              {t('AndPressEnterKeyToOpenMenu')}
+                            </li>
                         <li>{t('WithTheMenuOpenUseTabKeyToNavigateAnd')}</li>
                       </ul>
                     </li>

@@ -6,7 +6,9 @@ import { useLanguageContext } from '../../contexts/LanguageContext'
 const Notification = () => {
   const { t } = useLanguageContext()
 
-  const notification = useSelector((state: ReducerProps) => state.notification)
+  const notification = useSelector(
+    (state: ReducerProps) => state.notification ?? null
+  )
   const [closed, setClosed] = useState(false)
 
   useEffect(() => {

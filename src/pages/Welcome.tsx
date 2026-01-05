@@ -1,10 +1,7 @@
 import { useTheme } from '../hooks/useTheme'
 import { Link } from 'react-router-dom'
 import styles from './css/welcome.module.css'
-import { BiChat } from 'react-icons/bi'
-import { BsPerson } from 'react-icons/bs'
-import { IoMdImages } from 'react-icons/io'
-import { FaStoreAlt } from 'react-icons/fa'
+import Icon from '../components/Icon/Icon'
 import { ELanguages, ELanguagesLong } from '../types'
 import { Select, SelectOption } from '../components/Select/Select'
 import { useLanguageContext } from '../contexts/LanguageContext'
@@ -72,22 +69,24 @@ export default function Home({
               <ul className={styles.list}>
                 <li className={styles['li-about']}>
                   <Link to="/about">
-                    <BsPerson /> <span>{t('About')}</span>
+                    <Icon lib="bs" name="BsPerson" /> <span>{t('About')}</span>
                   </Link>
                 </li>
                 <li>
                   <Link to="/portfolio">
-                    <IoMdImages /> <span>{t('Portfolio')}</span>
+                    <Icon lib="io" name="IoMdImages" />{' '}
+                    <span>{t('Portfolio')}</span>
                   </Link>
                 </li>
                 <li>
                   <Link to="/contact">
-                    <BiChat /> <span>{t('Contact')}</span>
+                    <Icon lib="bi" name="BiChat" /> <span>{t('Contact')}</span>
                   </Link>
                 </li>
                 <li>
                   <Link to="/store">
-                    <FaStoreAlt /> <span>{t('Store')}</span>
+                    <Icon lib="fa" name="FaStoreAlt" />{' '}
+                    <span>{t('Store')}</span>
                   </Link>
                 </li>
               </ul>

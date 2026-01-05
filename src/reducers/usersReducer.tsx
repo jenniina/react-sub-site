@@ -1,11 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import userService from '../services/users'
-import {
-  IUser,
-  ELanguages,
-  IBlacklistedJoke,
-  translations as t,
-} from '../types'
+import { IUser, ELanguages, IBlacklistedJoke } from '../types'
+import { translations as t } from '../i18n/translations'
 import { IJoke } from '../components/Jokes/types'
 import { sleep } from '../utils'
 import { IContent } from '../types'

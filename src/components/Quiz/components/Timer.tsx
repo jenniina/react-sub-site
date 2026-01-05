@@ -13,7 +13,7 @@ import styles from '../css/quiz.module.css'
 
 const Timer = () => {
   const { secondsRemaining } = useSelector(
-    (state: ReducerProps) => state.questions
+    (state: ReducerProps) => state.questions ?? {}
   )
   const sec = secondsRemaining % 60
   const mins = Math.floor(secondsRemaining / 60)

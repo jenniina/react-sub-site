@@ -10,10 +10,14 @@ import { useTheme } from '../../hooks/useTheme'
 import cartService from '../../services/cart'
 import { notify } from '../../reducers/notificationReducer'
 import { Link } from 'react-router-dom'
-import { getRandomLetters, getRandomMinMax, splitToLines, getErrorMessage } from '../../utils'
+import {
+  getRandomLetters,
+  getRandomMinMax,
+  splitToLines,
+  getErrorMessage,
+} from '../../utils'
 import ButtonToggle from '../ButtonToggle/ButtonToggle'
-import { FaHourglassStart, FaStoreAlt } from 'react-icons/fa'
-import { RiMailSendLine } from 'react-icons/ri'
+import Icon from '../Icon/Icon'
 import { TermsProducts } from '../../pages/TermsOfService'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import { useConfirm } from '../../contexts/ConfirmContext'
@@ -150,8 +154,8 @@ const Cart: FC<Props> = ({
   return (
     <div className={`${styles['cart-wrap']} ${lightTheme ? styles.light : ''}`}>
       <Link to="/store" className={styles['back-to-store']}>
-        <span aria-hidden={true}>&laquo;</span> <FaStoreAlt />{' '}
-        <strong>{t('BackToStore')}</strong>
+        <span aria-hidden={true}>&laquo;</span>{' '}
+        <Icon lib="fa" name="FaStoreAlt" /> <strong>{t('BackToStore')}</strong>
       </Link>
       {language !== ELanguages.fi && language !== ELanguages.en && (
         <p>
@@ -349,7 +353,8 @@ const Cart: FC<Props> = ({
                 item.quantity >= freeHoursBreakpoint1 && (
                   <p>
                     <big>
-                      <FaHourglassStart /> <span>{t('FreeHourUnlocked')}</span>{' '}
+                      <Icon lib="fa" name="FaHourglassStart" />{' '}
+                      <span>{t('FreeHourUnlocked')}</span>{' '}
                       {item.quantity >= freeHoursBreakpoint2 ? (
                         <>
                           <strong> &times; {freeAmount2} </strong>
@@ -770,7 +775,8 @@ const Cart: FC<Props> = ({
                 type="submit"
                 disabled={sending}
               >
-                <span>{t('SubmitOrder')}</span> <RiMailSendLine />
+                <span>{t('SubmitOrder')}</span>{' '}
+                <Icon lib="ri" name="RiMailSendLine" />
               </button>
               <Accordion
                 className="cart-accordion grayer"

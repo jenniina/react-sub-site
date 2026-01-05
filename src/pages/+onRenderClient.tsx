@@ -4,7 +4,7 @@ import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import store from '../store'
+import store from '../store.client'
 import { ThemeProvider } from '../contexts/ThemeContext'
 import { ModalProvider } from '../hooks/useModal'
 import { LanguageProvider } from '../contexts/LanguageContext'
@@ -15,10 +15,7 @@ function onRenderClient() {
   const container = document.getElementById('root')
   if (!container) throw new Error('DOM element #root not found')
 
-  // Ensure a portal root exists for modals. Some environments (pre-rendering,
-  // testing or custom host documents) may not include the expected
-  // #modal-root; create a fallback at runtime to avoid runtime errors in
-  // components that create portals.
+  // Ensure a portal root exists for modals
   if (typeof document !== 'undefined') {
     const modalRoot = document.getElementById('modal-root')
     if (!modalRoot) {

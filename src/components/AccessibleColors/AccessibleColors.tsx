@@ -5,13 +5,7 @@ import useLocalStorage from '../../hooks/useStorage'
 import { useDragAndDrop } from './hooks/useColorDragAndDrop'
 import { useTheme, useThemeUpdate } from '../../hooks/useTheme'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
-import { MdDarkMode, MdLightMode } from 'react-icons/md'
-import { PiDownloadSimpleFill, PiImage } from 'react-icons/pi'
-import { SiSvgtrace } from 'react-icons/si'
-import { BiReset } from 'react-icons/bi'
-import { RiDeleteBin2Line } from 'react-icons/ri'
-import { LuCirclePlus } from 'react-icons/lu'
-import { LiaUndoAltSolid } from 'react-icons/lia'
+import Icon from '../Icon/Icon'
 import {
   getRandomString,
   hexToRGB,
@@ -461,9 +455,8 @@ const AccessibleColors: FC = () => {
           if (block.colorFormat === 'hex') {
             hexColor = block.color
           } else if (block.colorFormat === 'rgb') {
-            const rgbMatch = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.exec(
-              block.color
-            )
+            const rgbMatch =
+              /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.exec(block.color)
             if (rgbMatch) {
               hexColor = rgbToHex(
                 Number(rgbMatch[1]),
@@ -474,9 +467,10 @@ const AccessibleColors: FC = () => {
               throw new Error('Invalid RGB format')
             }
           } else if (block.colorFormat === 'hsl') {
-            const hslMatch = /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i.exec(
-              block.color
-            )
+            const hslMatch =
+              /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i.exec(
+                block.color
+              )
             if (hslMatch) {
               const rgb = hslToRGB(
                 Number(hslMatch[1]),
@@ -569,9 +563,10 @@ const AccessibleColors: FC = () => {
               )
             : '#000000'
         } else if (colorItem.colorFormat === 'hsl') {
-          const hslMatch = /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i.exec(
-            colorItem.color
-          )
+          const hslMatch =
+            /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i.exec(
+              colorItem.color
+            )
           if (hslMatch) {
             const rgb = hslToRGB(
               Number(hslMatch[1]),
@@ -901,12 +896,12 @@ const AccessibleColors: FC = () => {
           {lightTheme ? (
             <>
               <span className="scr">{t('DarkMode')}</span>
-              <MdDarkMode />
+              <Icon lib="md" name="MdDarkMode" />
             </>
           ) : (
             <>
               <span className="scr">{t('LightMode')}</span>
-              <MdLightMode />{' '}
+              <Icon lib="md" name="MdLightMode" />{' '}
             </>
           )}
         </button>
@@ -927,7 +922,7 @@ const AccessibleColors: FC = () => {
         <button className="gray" type="button" onClick={addColor}>
           <span className={`transf ${styles['circle-left-edge']}`}>&nbsp;</span>
           {t('AddAColor')}&nbsp;&nbsp;
-          <LuCirclePlus />
+          <Icon lib="lu" name="LuCirclePlus" />
         </button>
       </div>
 
@@ -972,7 +967,7 @@ const AccessibleColors: FC = () => {
             onClick={makeColorPalette}
           >
             {t('AddToColors')}&nbsp;&nbsp;
-            <LuCirclePlus />
+            <Icon lib="lu" name="LuCirclePlus" />
             <span className="tooltip above narrow2">
               {t('GeneratesColorsBasedOnLastColor')}
             </span>
@@ -992,7 +987,7 @@ const AccessibleColors: FC = () => {
             }}
           >
             {t('ClearAndGenerateNew')}&nbsp;&nbsp;
-            <LiaUndoAltSolid />
+            <Icon lib="lia" name="LiaUndoAltSolid" />
           </button>
         </div>
       </div>
@@ -1288,7 +1283,7 @@ const AccessibleColors: FC = () => {
                   }}
                   className="reset p1"
                 >
-                  <BiReset fontSize={'1.8em'} />
+                  <Icon lib="bi" name="BiReset" style={{ fontSize: '1.8em' }} />
                 </button>
                 <button
                   className="gray small"
@@ -1306,7 +1301,7 @@ const AccessibleColors: FC = () => {
                   }}
                 >
                   {t('Reset')}&nbsp;&nbsp;
-                  <BiReset />
+                  <Icon lib="bi" name="BiReset" />
                 </button>
               </div>
               <div>
@@ -1327,7 +1322,11 @@ const AccessibleColors: FC = () => {
                   }}
                   className="reset p1"
                 >
-                  <RiDeleteBin2Line fontSize={'1.8em'} />
+                  <Icon
+                    lib="ri"
+                    name="RiDeleteBin2Line"
+                    style={{ fontSize: '1.8em' }}
+                  />
                 </button>
                 <button
                   className="gray small"
@@ -1345,7 +1344,7 @@ const AccessibleColors: FC = () => {
                   }}
                 >
                   {t('Clear')}&nbsp;&nbsp;
-                  <RiDeleteBin2Line />
+                  <Icon lib="ri" name="RiDeleteBin2Line" />
                 </button>
               </div>
             </div>
@@ -1358,7 +1357,7 @@ const AccessibleColors: FC = () => {
                   onClick={saveAsPNG}
                   className="reset p1"
                 >
-                  <PiImage fontSize={'1.8em'} />
+                  <Icon lib="pi" name="PiImage" style={{ fontSize: '1.8em' }} />
                 </button>
                 <button
                   type="button"
@@ -1366,7 +1365,7 @@ const AccessibleColors: FC = () => {
                   className="gray small"
                 >
                   {t('SaveAsPNG')}
-                  <PiDownloadSimpleFill />
+                  <Icon lib="pi" name="PiDownloadSimpleFill" />
                 </button>
               </div>
               <div>
@@ -1377,7 +1376,11 @@ const AccessibleColors: FC = () => {
                   onClick={saveAsSVG}
                   className="reset p1"
                 >
-                  <SiSvgtrace fontSize={'1.6em'} />
+                  <Icon
+                    lib="si"
+                    name="SiSvgtrace"
+                    style={{ fontSize: '1.6em' }}
+                  />
                 </button>
                 <button
                   type="button"
@@ -1385,7 +1388,8 @@ const AccessibleColors: FC = () => {
                   className="gray small"
                 >
                   {t('SaveAsSVG')}
-                  <PiDownloadSimpleFill />
+
+                  <Icon lib="pi" name="PiDownloadSimpleFill" />
                 </button>
               </div>
             </div>

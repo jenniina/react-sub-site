@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { useTheme } from '../hooks/useTheme'
 import { Link } from 'react-router-dom'
 import styles from './css/about.module.css'
-import { IoSettingsSharp } from 'react-icons/io5'
+import Icon from '../components/Icon/Icon'
 import { ELanguages } from '../types'
 import { useLanguageContext } from '../contexts/LanguageContext'
 import ColorComponent from '../components/About/ColorComponent'
@@ -111,7 +111,9 @@ export default function About({ type }: { type: string }) {
                 </h3>
                 <big>
                   {t('SeeSettingsAtMenuBar')}{' '}
-                  <IoSettingsSharp
+                  <Icon
+                    lib="io5"
+                    name="IoSettingsSharp"
                     style={{ display: 'inline-block', marginBottom: '-0.15em' }}
                   />{' '}
                   <span className="scr">{t('Settings')}</span> -

@@ -26,7 +26,7 @@ import { initializeUser } from '../../reducers/authReducer'
 import { RootState } from '../../store'
 import { ReducerProps } from '../../types'
 import { Select } from '../Select/Select'
-import { IoMdAdd } from 'react-icons/io'
+import Icon from '../Icon/Icon'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import { useConfirm } from '../../contexts/ConfirmContext'
 import { useIsClient, useWindow } from '../../hooks/useSSR'
@@ -55,9 +55,9 @@ export default function TodoApp() {
     void initialize()
   }, [initialize])
 
-  const todos = useSelector((state: RootState) => state.todos.todos)
-  const status = useSelector((state: RootState) => state.todos.status)
-  const error = useSelector((state: RootState) => state.todos.error)
+  const todos = useSelector((state: RootState) => state.todos?.todos ?? [])
+  const status = useSelector((state: RootState) => state.todos?.status ?? 'idle')
+  const error = useSelector((state: RootState) => state.todos?.error ?? null)
 
   const [priority, setPriority] = useState<TPriority>('low')
   const [category, setCategory] = useState<TCategory>('other')
@@ -67,7 +67,7 @@ export default function TodoApp() {
 
   const localName = 'ReactTodos'
 
-  const hasCompletedTasks: boolean = todos?.some(todo => todo.complete)
+  const hasCompletedTasks: boolean = todos?.some(todo => todo.complete) ?? false
 
   useEffect(() => {
     if (!isClient || !windowObj) return
@@ -449,7 +449,7 @@ export default function TodoApp() {
               type="submit"
               disabled={sending}
             >
-              {t('AddTask')} <IoMdAdd />
+              {t('AddTask')} <Icon lib="io" name="IoMdAdd" />
             </button>
           </div>
         </fieldset>

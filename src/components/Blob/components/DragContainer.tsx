@@ -121,7 +121,7 @@ export default function DragContainer({
   const { state, dispatch } = useContext(BlobContext)!
   const dispatch2 = useAppDispatch()
   const user = useSelector((state: ReducerProps) => state.auth?.user)
-  const users = useSelector((state: ReducerProps) => state.users)
+  const users = useSelector((state: ReducerProps) => state.users ?? [])
 
   const dragWrap = useRef(null) as RefObject<HTMLDivElement>
   const dragWrapOutest = useRef(null) as RefObject<HTMLDivElement>

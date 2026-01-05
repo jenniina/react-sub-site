@@ -2,16 +2,11 @@ import React, { useEffect, useState } from 'react'
 import styles from '../css/todo.module.css'
 import { ITaskDraggable } from './TodoList'
 import { TCategory, TPriority } from '../types'
-import { MdDragIndicator, MdWork } from 'react-icons/md'
-import { sanitize } from '../../../utils'
-import { FaTriangleExclamation } from 'react-icons/fa6'
+import Icon from '../../Icon/Icon'
+import { sanitize } from '../../../utils' 
 import { SelectOption } from '../../Select/Select'
 import TodoItemModal from './TodoItemModal'
-import { IoPersonCircleSharp } from 'react-icons/io5'
-import { HiDotsCircleHorizontal, HiDotsHorizontal } from 'react-icons/hi'
-import { TiShoppingCart } from 'react-icons/ti'
-import { AiOutlineEdit } from 'react-icons/ai'
-import { BsArrowDownCircleFill } from 'react-icons/bs'
+// icons: IoPersonCircleSharp, HiDots*, TiShoppingCart, AiOutlineEdit, BsArrowDown
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { notify } from '../../../reducers/notificationReducer'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
@@ -211,7 +206,7 @@ export default function Todo({
           className={`${styles['drag-handle']} tooltip-wrap`}
           aria-label={t('Draggable')}
         >
-          <MdDragIndicator />
+          <Icon lib="md" name="MdDragIndicator" />
           <span className="tooltip narrow2 below right">{t('Draggable')}</span>
         </button>
         {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
@@ -309,7 +304,7 @@ export default function Todo({
         <div className={`${styles['btn-wrap']}`}>
           {todo?.priority === 'high' ? (
             <b className={`tooltip-wrap ${styles.high}`}>
-              <FaTriangleExclamation />
+              <Icon lib="fa6" name="FaTriangleExclamation" />
               <span className="scr">
                 {t('Priority')}: {t('High')}
               </span>
@@ -319,7 +314,7 @@ export default function Todo({
             </b>
           ) : todo?.priority === 'medium' ? (
             <b className={`tooltip-wrap ${styles.medium}`}>
-              <HiDotsHorizontal />
+              <Icon lib="hi" name="HiDotsHorizontal" />
               <span className="scr">
                 {t('Priority')}: {t('Medium')}
               </span>
@@ -329,7 +324,7 @@ export default function Todo({
             </b>
           ) : todo?.priority === 'low' ? (
             <b className={`tooltip-wrap ${styles.low}`}>
-              <BsArrowDownCircleFill viewBox="0 0 17 17" />
+              <Icon lib="bs" name="BsArrowDownCircleFill" />
               <span className="scr">
                 {t('Priority')}: {t('Low')}
               </span>
@@ -343,7 +338,7 @@ export default function Todo({
 
           {todo?.category === 'personal' ? (
             <b className={`tooltip-wrap ${styles.cat}`}>
-              <IoPersonCircleSharp />
+              <Icon lib="io5" name="IoPersonCircleSharp" />
               <span className="scr">
                 {t('CategoryTitle')}: {t('Personal')}
               </span>
@@ -353,7 +348,7 @@ export default function Todo({
             </b>
           ) : todo?.category === 'work' ? (
             <b className={`tooltip-wrap ${styles.cat} ${styles.bg}`}>
-              <MdWork />
+              <Icon lib="md" name="MdWork" />
               <span className="scr">
                 {t('CategoryTitle')}: {t('Work')}
               </span>
@@ -363,7 +358,7 @@ export default function Todo({
             </b>
           ) : todo?.category === 'shopping' ? (
             <b className={`tooltip-wrap ${styles.cat} ${styles.bg}`}>
-              <TiShoppingCart />
+              <Icon lib="ti" name="TiShoppingCart" />
               <span className="scr">
                 {t('CategoryTitle')}: {t('Shopping')}
               </span>
@@ -373,7 +368,7 @@ export default function Todo({
             </b>
           ) : (
             <b className={`tooltip-wrap ${styles.cat}`}>
-              <HiDotsCircleHorizontal />
+              <Icon lib="hi" name="HiDotsCircleHorizontal" />
               <span className="scr">
                 {t('CategoryTitle')}: {t('Other')}
               </span>
@@ -388,7 +383,7 @@ export default function Todo({
             className={`${styles.edit} tooltip-wrap`}
             disabled={todo?.complete ?? false}
           >
-            <AiOutlineEdit />
+            <Icon lib="ai" name="AiOutlineEdit" />
             <span className="scr">{t('Edit')}</span>
             <span className="tooltip narrow2 below left" aria-hidden="true">
               {t('Edit')}

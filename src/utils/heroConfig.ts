@@ -1,4 +1,5 @@
-import { ELanguages, translations as t } from '../types'
+import { ELanguages } from '../types'
+import { translations as t } from '../i18n/translations'
 
 export interface HeroProps {
   heading: string
@@ -11,8 +12,8 @@ export interface HeroProps {
 
 const heroConfig: Record<string, (language: ELanguages) => HeroProps> = {
   '/': language => ({
-    heading: t.Welcome[language],
-    text: t.ToTheReactSiteOfJenniinaFi[language],
+  heading: t.Welcome[language],
+  text: t.ToTheReactSiteOfJenniinaFi[language],
     address: '',
     language,
   }),

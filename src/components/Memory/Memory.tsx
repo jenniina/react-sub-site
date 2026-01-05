@@ -8,65 +8,8 @@ import React, {
   Fragment,
   useCallback,
 } from 'react'
-import {
-  FaAppleAlt,
-  FaAnchor,
-  FaBicycle,
-  FaBolt,
-  FaCat,
-  FaDog,
-  FaFish,
-  FaHeart,
-  FaBell,
-  FaDice,
-  FaDove,
-  FaEdit,
-  FaEnvelope,
-  FaFan,
-  FaFeather,
-  FaHammer,
-  FaHandshake,
-  FaHatWizard,
-  FaHatCowboy,
-  FaHeadphones,
-  FaHorse,
-  FaIceCream,
-  FaKey,
-  FaKeyboard,
-  FaLandmark,
-  FaLeaf,
-  FaMountain,
-  FaMoon,
-  FaMusic,
-  FaPalette,
-  FaPaperPlane,
-  FaPaperclip,
-  FaPizzaSlice,
-  FaPlane,
-  FaPlusCircle,
-  FaRegHourglass,
-  FaRocket,
-  FaRobot,
-  FaSnowman,
-  FaSun,
-  FaSeedling,
-  FaStar,
-  FaUmbrellaBeach,
-  FaUser,
-  FaTimes,
-} from 'react-icons/fa'
 import { ReducerProps } from '../../types'
 import { CardTypeOptions, GameMode, EGameMode } from '../../types/memory'
-import { Md123, MdAbc, MdInsertEmoticon } from 'react-icons/md'
-import { HiMiniSparkles } from 'react-icons/hi2'
-import {
-  FaCar,
-  FaGears,
-  FaHouse,
-  FaLightbulb,
-  FaMagnifyingGlass,
-  FaPencil,
-} from 'react-icons/fa6'
 import { CardType } from '../../types/memory'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
@@ -81,7 +24,7 @@ import { useSelector } from 'react-redux'
 import { initializeUser } from '../../reducers/authReducer'
 import { scrollIntoView } from '../../utils'
 import Accordion from '../Accordion/Accordion'
-import { AiFillEdit } from 'react-icons/ai'
+import Icon from '../Icon/Icon'
 import useWindowSize from '../../hooks/useWindowSize'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import { useConfirm } from '../../contexts/ConfirmContext'
@@ -98,58 +41,59 @@ interface Player {
   score: number
 }
 
-const iconSet: React.JSX.Element[] = [
-  <FaAnchor key="anchor" />,
-  <FaAppleAlt key="apple" />,
-  <FaBicycle key="bicycle" />,
-  <FaBolt key="bolt" />,
-  <FaCat key="cat" />,
-  <FaDog key="dog" />,
-  <FaFish key="fish" />,
-  <FaBell key="bell" />,
-  <FaCar key="car" />,
-  <FaDice key="dice" />,
-  <FaDove key="dove" />,
-  <FaEdit key="edit" />,
-  <FaEnvelope key="envelope" />,
-  <FaFan key="fan" />,
-  <FaFeather key="feather" />,
-  <FaGears key="gears" />,
-  <FaHammer key="hammer" />,
-  <FaHandshake key="handshake" />,
-  <FaHatWizard key="hat-wizard" />,
-  <FaHatCowboy key="hat-cowboy" />,
-  <FaHeadphones key="headphones" />,
-  <FaHeart key="heart" />,
-  <FaHouse key="house" />,
-  <FaHorse key="horse" />,
-  <FaIceCream key="ice-cream" />,
-  <MdInsertEmoticon key="emoticon" />,
-  <FaKey key="key" />,
-  <FaKeyboard key="keyboard" />,
-  <FaLandmark key="landmark" />,
-  <FaLightbulb key="lightbulb" />,
-  <FaLeaf key="leaf" />,
-  <FaMountain key="mountain" />,
-  <FaMagnifyingGlass key="magnifying-glass" />,
-  <FaMoon key="moon" />,
-  <FaMusic key="music" />,
-  <FaPalette key="palette" />,
-  <FaPaperPlane key="paper-plane" />,
-  <FaPaperclip key="paperclip" />,
-  <FaPencil key="pencil" />,
-  <FaPizzaSlice key="pizza-slice" />,
-  <FaPlane key="plane" />,
-  <FaPlusCircle key="plus-circle" />,
-  <FaRegHourglass key="hourglass" />,
-  <FaRocket key="rocket" />,
-  <FaRobot key="robot" />,
-  <FaSnowman key="snowman" />,
-  <FaSun key="sun" />,
-  <FaSeedling key="seedling" />,
-  <FaStar key="star" />,
-  <FaUmbrellaBeach key="umbrella-beach" />,
-  <FaUser key="user" />,
+// Use string descriptors for icons (lib:name) and render with dynamic Icon to avoid bundling
+const iconSet: string[] = [
+  'fa:FaAnchor',
+  'fa:FaAppleAlt',
+  'fa:FaBicycle',
+  'fa:FaBolt',
+  'fa:FaCat',
+  'fa:FaDog',
+  'fa:FaFish',
+  'fa:FaBell',
+  'fa6:FaCar',
+  'fa:FaDice',
+  'fa:FaDove',
+  'fa:FaEdit',
+  'fa:FaEnvelope',
+  'fa:FaFan',
+  'fa:FaFeather',
+  'fa6:FaGears',
+  'fa:FaHammer',
+  'fa:FaHandshake',
+  'fa:FaHatWizard',
+  'fa:FaHatCowboy',
+  'fa:FaHeadphones',
+  'fa:FaHeart',
+  'fa6:FaHouse',
+  'fa:FaHorse',
+  'fa:FaIceCream',
+  'md:MdInsertEmoticon',
+  'fa:FaKey',
+  'fa:FaKeyboard',
+  'fa:FaLandmark',
+  'fa6:FaLightbulb',
+  'fa:FaLeaf',
+  'fa:FaMountain',
+  'fa6:FaMagnifyingGlass',
+  'fa:FaMoon',
+  'fa:FaMusic',
+  'fa:FaPalette',
+  'fa:FaPaperPlane',
+  'fa:FaPaperclip',
+  'fa6:FaPencil',
+  'fa:FaPizzaSlice',
+  'fa:FaPlane',
+  'fa:FaPlusCircle',
+  'fa:FaRegHourglass',
+  'fa:FaRocket',
+  'fa:FaRobot',
+  'fa:FaSnowman',
+  'fa:FaSun',
+  'fa:FaSeedling',
+  'fa:FaStar',
+  'fa:FaUmbrellaBeach',
+  'fa:FaUser',
 ]
 interface Card {
   id: number
@@ -304,21 +248,21 @@ const Memory: FC = () => {
       if (parts[1] === (CardType.numbers as string)) {
         partIcon = (
           <span className={styles['title-svg']}>
-            <Md123 aria-hidden="true" />
+            <Icon lib="md" name="Md123" aria-hidden="true" />
           </span>
         )
         partName = t('Numbers')
       } else if (parts[1] === (CardType.letters as string)) {
         partIcon = (
           <span className={styles['title-svg']}>
-            <MdAbc aria-hidden="true" />
+            <Icon lib="md" name="MdAbc" aria-hidden="true" />
           </span>
         )
         partName = t('Letters')
       } else if (parts[1] === (CardType.icons as string)) {
         partIcon = (
           <span className={styles['title-icon']}>
-            <MdInsertEmoticon aria-hidden="true" />
+            <Icon lib="md" name="MdInsertEmoticon" aria-hidden="true" />
           </span>
         )
         partName = t('Icons')
@@ -506,7 +450,11 @@ const Memory: FC = () => {
 
   const renderCardContent = (card: Card) => {
     if (cardType?.value === CardType.icons) {
-      return card.value
+      if (typeof card.value === 'string' && card.value.includes(':')) {
+        const [lib, name] = card.value.split(':')
+        return <Icon lib={lib} name={name} />
+      }
+      return <span>{card.value}</span>
     }
     return <span>{card.value}</span>
   }
@@ -547,12 +495,7 @@ const Memory: FC = () => {
 
   // Check for duplicate icons for debugging
   useEffect(() => {
-    const iconNames = iconSet.map(Icon => {
-      const type = Icon.type as
-        | { displayName?: string; name?: string }
-        | undefined
-      return type?.displayName ?? type?.name ?? ''
-    })
+    const iconNames = iconSet.map(icon => icon.split(':')[1] ?? '')
     const duplicates = iconNames.filter(
       (name, index) => iconNames.indexOf(name) !== index
     )
@@ -692,14 +635,18 @@ const Memory: FC = () => {
             <div id="high-scores">
               <h2>
                 {windowWidth > 400 && (
-                  <HiMiniSparkles
+                  <Icon
+                    lib="hi2"
+                    name="HiMiniSparkles"
                     aria-hidden="true"
                     style={{ transform: 'scale(0.8, 0.8)' }}
                   />
                 )}
                 {t('HighScores')}{' '}
                 {windowWidth > 400 && (
-                  <HiMiniSparkles
+                  <Icon
+                    lib="hi2"
+                    name="HiMiniSparkles"
                     aria-hidden="true"
                     style={{ transform: 'scale(-0.8, 0.8)' }}
                   />
@@ -722,14 +669,18 @@ const Memory: FC = () => {
                     <Fragment key={mode}>
                       <h3>
                         {windowWidth > 200 && (
-                          <HiMiniSparkles
+                          <Icon
+                            lib="hi2"
+                            name="HiMiniSparkles"
                             aria-hidden="true"
                             style={{ transform: 'scale(0.8)' }}
                           />
                         )}
                         {modePart}
                         {windowWidth > 200 && (
-                          <HiMiniSparkles
+                          <Icon
+                            lib="hi2"
+                            name="HiMiniSparkles"
                             aria-hidden="true"
                             style={{ transform: 'scale(-0.8)' }}
                           />
@@ -774,7 +725,11 @@ const Memory: FC = () => {
                                                   wrapperClass={`${styles['edit-wrap']}`}
                                                   text={
                                                     <>
-                                                      <AiFillEdit aria-hidden="true" />
+                                                      <Icon
+                                                        lib="ai"
+                                                        name="AiFillEdit"
+                                                        aria-hidden="true"
+                                                      />
                                                     </>
                                                   }
                                                   isOpen={false}
@@ -863,7 +818,11 @@ const Memory: FC = () => {
                                                 }}
                                               >
                                                 <span aria-hidden="true">
-                                                  <FaTimes aria-hidden="true" />
+                                                  <Icon
+                                                    lib="fa"
+                                                    name="FaTimes"
+                                                    aria-hidden="true"
+                                                  />
                                                 </span>
                                                 <span className="tooltip above narrow2">
                                                   {t('Delete')}

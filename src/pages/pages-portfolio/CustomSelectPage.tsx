@@ -7,8 +7,8 @@ import { sendEmail, SelectData } from './services/email'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import Accordion from '../../components/Accordion/Accordion'
-import { RiMailSendLine } from 'react-icons/ri'
-import { createSelectOptionsFromT } from '../../utils'
+import Icon from '../../components/Icon/Icon'
+import { createSelectOptionsFromT } from '../../utils/translations'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import { useWindow } from '../../hooks/useSSR'
 
@@ -375,7 +375,7 @@ export default function CustomSelectPage({ type }: { type: string }) {
                         className={`${selectStyles.half} `}
                       >
                         <span>{sending ? t('SendingEmail') : t('Send')}</span>{' '}
-                        <RiMailSendLine />
+                        <Icon lib="ri" name="RiMailSendLine" />
                       </button>
                       {showMessage && (
                         <div

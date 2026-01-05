@@ -1,5 +1,5 @@
 import { FormEvent, useState, useRef, useEffect } from 'react'
-import { RiMailSendLine } from 'react-icons/ri'
+import Icon from '../Icon/Icon'
 import { useMultistepForm } from './hooks/useMultistepForm'
 import { ELanguages, RefObject } from '../../types'
 import { FormData, INITIAL_DATA } from './types'
@@ -171,7 +171,8 @@ function FormMulti() {
               type="submit"
               disabled={sending}
             >
-              {sending ? t('SendingEmail') : t('Send')} <RiMailSendLine />
+              {sending ? t('SendingEmail') : t('Send')}{' '}
+              <Icon lib="ri" name="RiMailSendLine" />
             </button>
           )}
           {showError && (

@@ -1,11 +1,5 @@
 import { Fragment } from 'react'
-import {
-  ELanguages,
-  ELanguagesLong,
-  translations as t,
-  TranslationKey,
-  TranslationLang,
-} from '../types'
+import { ELanguages, ELanguagesLong } from '../types'
 import { SelectOption } from '../components/Select/Select'
 import {
   ColorBlock,
@@ -45,12 +39,7 @@ export const sanitize = (name: string = getRandomString(9)): string => {
   return name.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '-')
 }
 
-export const first3Words = (name: string, language: ELanguages): string => {
-  // if name is less than 5 words, return the name
-  if (name.split(' ').length <= 4) return name
-  // else return the first 3 words
-  else return name.split(' ').slice(0, 3).join(' ') + ' ' + t.Etc[language]
-}
+// Note: first3Words moved to utils/translations.tsx (client-only, uses translations)
 
 export const options = (enumObj: typeof ELanguagesLong) => {
   return Object.keys(enumObj).map(key => ({
@@ -258,9 +247,10 @@ export const buildColors = (
         const rgb = hexToRGB(baseColor.color)
         baseHSL = rgbToHSL(rgb.r, rgb.g, rgb.b)
       } else if (baseColor.colorFormat === 'rgb') {
-        const rgbMatch = /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i.exec(
-          baseColor.color
-        )
+        const rgbMatch =
+          /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i.exec(
+            baseColor.color
+          )
         if (rgbMatch) {
           const r = Number(rgbMatch[1])
           const g = Number(rgbMatch[2])
@@ -270,9 +260,10 @@ export const buildColors = (
           throw new Error('Invalid RGB format')
         }
       } else if (baseColor.colorFormat === 'hsl') {
-        const hslMatch = /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i.exec(
-          baseColor.color
-        )
+        const hslMatch =
+          /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i.exec(
+            baseColor.color
+          )
         if (hslMatch) {
           const h = Number(hslMatch[1])
           const s = Number(hslMatch[2])
@@ -319,17 +310,7 @@ export function createSelectOptions(
   })
 }
 
-export function createSelectOptionsFromT(
-  array: string[],
-  language: ELanguages
-): SelectOption[] {
-  return array.map(key => ({
-    value: key,
-    label: t[key as TranslationKey]
-      ? t[key as TranslationKey][language as TranslationLang]
-      : key,
-  }))
-}
+// Note: createSelectOptionsFromT moved to utils/translations.tsx (client-only, uses translations)
 
 export const hexToRGB = (hex: string) => {
   const r = parseInt(hex.slice(1, 3), 16)
@@ -498,9 +479,10 @@ export const determineAccessibility = (
     if (color.colorFormat === 'hex') {
       ;({ r, g, b } = hexToRGB(color.color))
     } else if (color.colorFormat === 'rgb') {
-      const rgbMatch = /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i.exec(
-        color.color
-      )
+      const rgbMatch =
+        /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i.exec(
+          color.color
+        )
       if (rgbMatch) {
         r = Number(rgbMatch[1])
         g = Number(rgbMatch[2])
@@ -509,9 +491,10 @@ export const determineAccessibility = (
         throw new Error('Invalid RGB format')
       }
     } else if (color.colorFormat === 'hsl') {
-      const hslMatch = /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i.exec(
-        color.color
-      )
+      const hslMatch =
+        /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i.exec(
+          color.color
+        )
       if (hslMatch) {
         const h = Number(hslMatch[1])
         const s = Number(hslMatch[2])
@@ -599,9 +582,7 @@ export const getHexFromColor = (color: string, type: string) => {
     }
   }
   if (type === 'rgb') {
-    const rgbMatch = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.exec(
-      color
-    )
+    const rgbMatch = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.exec(color)
     if (rgbMatch) {
       const r = Number(rgbMatch[1])
       const g = Number(rgbMatch[2])

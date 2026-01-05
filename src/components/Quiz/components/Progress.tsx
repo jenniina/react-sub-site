@@ -8,7 +8,7 @@ const Progress = () => {
   const { t } = useLanguageContext()
 
   const { answer, index, points } = useSelector(
-    (state: ReducerProps) => state.questions
+    (state: ReducerProps) => state.questions ?? {}
   )
 
   return (

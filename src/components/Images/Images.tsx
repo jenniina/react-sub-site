@@ -19,13 +19,9 @@ import {
   Color,
   OrderBy,
 } from '../../types/images'
-import {
-  ELanguages,
-  generateOptionsFromT,
-  TranslationKey,
-  TranslationLang,
-  translations,
-} from '../../types'
+import { ELanguages } from '../../types'
+import { TranslationKey } from '../../i18n/translations'
+import { createSelectOptionsFromT } from '../../utils/translations'
 import { Select, SelectOption } from '../Select/Select'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
@@ -67,11 +63,12 @@ let categoriesWithWeights: { text: string; weight: number }[] = []
 let categoriesWithWeightsSmaller: { text: string; weight: number }[] = []
 let categoriesWithWeightsSmallest: { text: string; weight: number }[] = []
 
-const toLanguages = (language: ELanguages) => {
+const toLanguages = (
+  language: ELanguages,
+  tFn: (key: TranslationKey) => string
+) => {
   categoriesWithWeights = VALID_CATEGORIES.map(category => ({
-    text: translations[firstToUpperCase(category) as TranslationKey][
-      language as TranslationLang
-    ],
+    text: tFn(firstToUpperCase(category) as TranslationKey),
     weight:
       category === 'design'
         ? 50
@@ -83,9 +80,7 @@ const toLanguages = (language: ELanguages) => {
   }))
 
   categoriesWithWeightsSmaller = VALID_CATEGORIES.map(category => ({
-    text: translations[firstToUpperCase(category) as TranslationKey][
-      language as TranslationLang
-    ],
+    text: tFn(firstToUpperCase(category) as TranslationKey),
     weight:
       category === 'design'
         ? 33
@@ -97,9 +92,7 @@ const toLanguages = (language: ELanguages) => {
   }))
 
   categoriesWithWeightsSmallest = VALID_CATEGORIES.map(category => ({
-    text: translations[firstToUpperCase(category) as TranslationKey][
-      language as TranslationLang
-    ],
+    text: tFn(firstToUpperCase(category) as TranslationKey),
     weight:
       category === 'design'
         ? 28
@@ -128,31 +121,31 @@ const Images: FC = () => {
   const [orientation, setOrientation] = useState<Orientation>(Orientation.all)
   const [textType, setTextType] = useState<TTextType>('poem')
 
-  const optionsImageTypes: SelectOption[] = generateOptionsFromT(
+  const optionsImageTypes: SelectOption[] = createSelectOptionsFromT(
     imageTypes,
     language
   )
-  const optionsVideoTypes: SelectOption[] = generateOptionsFromT(
+  const optionsVideoTypes: SelectOption[] = createSelectOptionsFromT(
     videoTypes,
     language
   )
-  const optionsTextTypes: SelectOption[] = generateOptionsFromT(
+  const optionsTextTypes: SelectOption[] = createSelectOptionsFromT(
     textTypes,
     language
   )
-  const optionsColors: SelectOption[] = generateOptionsFromT(
+  const optionsColors: SelectOption[] = createSelectOptionsFromT(
     colorTypes,
     language
   )
-  const optionsOrderBy: SelectOption[] = generateOptionsFromT(
+  const optionsOrderBy: SelectOption[] = createSelectOptionsFromT(
     orderByTypes,
     language
   )
-  const optionsOrientations: SelectOption[] = generateOptionsFromT(
+  const optionsOrientations: SelectOption[] = createSelectOptionsFromT(
     orientationTypes,
     language
   )
-  const optionsCategories: SelectOption[] = generateOptionsFromT(
+  const optionsCategories: SelectOption[] = createSelectOptionsFromT(
     categoryTypes,
     language
   )
@@ -215,8 +208,8 @@ const Images: FC = () => {
   }, [weightedCategories])
 
   useEffect(() => {
-    toLanguages(language)
-  }, [language])
+    toLanguages(language, t)
+  }, [language, t])
 
   const onMouseMove = (e: ReactMouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = e.currentTarget.getBoundingClientRect()

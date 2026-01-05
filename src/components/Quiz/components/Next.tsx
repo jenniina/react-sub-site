@@ -14,7 +14,9 @@ import { useLanguageContext } from '../../../contexts/LanguageContext'
 const Next = () => {
   const { t } = useLanguageContext()
 
-  const { index } = useSelector((state: ReducerProps) => state.questions)
+  const { index = 0 } = useSelector(
+    (state: ReducerProps) => state.questions ?? {}
+  )
 
   const dispatch = useAppDispatch()
   const navigate = useNavigate()

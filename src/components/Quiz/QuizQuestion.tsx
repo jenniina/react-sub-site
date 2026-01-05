@@ -18,7 +18,7 @@ const QuizQuestion = () => {
   const { difficulty } = useParams()
   const { mode } = useSelector((state: ReducerProps) => state.difficulty)
   const { currentQuestion, answer, status } = useSelector(
-    (state: ReducerProps) => state.questions
+    (state: ReducerProps) => state.questions ?? {}
   )
 
   const dispatch = useAppDispatch()

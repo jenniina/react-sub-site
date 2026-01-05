@@ -1,5 +1,5 @@
 import { useState, FormEvent } from 'react'
-import { RiMailSendLine } from 'react-icons/ri'
+import Icon from '../Icon/Icon'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import { forgot } from '../../reducers/usersReducer'
@@ -67,7 +67,8 @@ const PasswordReset = ({ text }: Props) => {
           id={`forgot-${text}`}
           className="forgot-btn restore"
         >
-          <span>{t('SendResetLink')}</span> <RiMailSendLine />
+          <span>{t('SendResetLink')}</span>{' '}
+          <Icon lib="ri" name="RiMailSendLine" />
         </button>
       </form>
     </>

@@ -1,16 +1,17 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 export default function useExitVisibility(initial = false) {
   const [open, setOpen] = useState(initial)
   const [hidden, setHidden] = useState(!initial)
 
-  const show = () => {
+  const show = useCallback(() => {
     setHidden(false)
     setOpen(true)
-  }
-  const hide = () => {
+  }, [])
+
+  const hide = useCallback(() => {
     setOpen(false) /* hidden will flip after transition end */
-  }
+  }, [])
 
   // Attach this to the animated container
   const onTransitionEnd = useCallback<
@@ -23,5 +24,8 @@ export default function useExitVisibility(initial = false) {
     [open]
   )
 
-  return { open, hidden, show, hide, onTransitionEnd }
+  return useMemo(
+    () => ({ open, hidden, show, hide, onTransitionEnd }),
+    [open, hidden, show, hide, onTransitionEnd]
+  )
 }
