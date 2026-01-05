@@ -239,8 +239,8 @@ const ItemComponent = forwardRef<
                   item.e / 1.5
                 })), calc(80vh - ${itemSize}vh))`,
                 left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})), 95vw - ${item.size}vw)`,
-                width: `${itemSize}vw`,
-                height: `${itemSize}vw`,
+                width: `clamp(44px, ${itemSize}vw, 150px)`,
+                height: `clamp(44px, ${itemSize}vw, 150px)`,
                 transitionDuration: '600ms',
                 opacity: `0.7`,
               }
