@@ -474,11 +474,11 @@
   box-shadow: var(--box);
 }
 .herocontent .bubbles {
-  -webkit-animation: skewWobble 200ms ease-in-out infinite;
-  -o-animation: skewWobble 200ms ease-in-out infinite;
-  -ms-animation: skewWobble 200ms ease-in-out infinite;
-  -moz-animation: skewWobble 200ms ease-in-out infinite;
-  animation: skewWobble 200ms ease-in-out infinite;
+  -webkit-animation: skewWobble 210ms ease-in-out infinite;
+  -o-animation: skewWobble 210ms ease-in-out infinite;
+  -ms-animation: skewWobble 210ms ease-in-out infinite;
+  -moz-animation: skewWobble 210ms ease-in-out infinite;
+  animation: skewWobble 210ms ease-in-out infinite;
   -webkit-animation-play-state: paused;
   -moz-animation-play-state: paused;
   -o-animation-play-state: paused;
@@ -574,12 +574,6 @@
 .herocontent .geometric:focus {
   cursor: pointer;
 }
-
-.herocontent .note {
-  min-width: 44px;
-  min-height: 44px;
-}
-
 .herocontent .note div {
   --time: 1000ms;
   -webkit-animation: note-hover 2000ms ease-in-out infinite;
@@ -1422,18 +1416,18 @@
     transform: skewX(0deg);
   }
   25% {
-    -webkit-transform: skewX(2deg);
-    -o-transform: skewX(2deg);
-    -ms-transform: skewX(2deg);
-    -moz-transform: skewX(2deg);
-    transform: skewX(2deg);
+    -webkit-transform: skewX(3deg);
+    -o-transform: skewX(3deg);
+    -ms-transform: skewX(3deg);
+    -moz-transform: skewX(3deg);
+    transform: skewX(3deg);
   }
   75% {
-    -webkit-transform: skewX(-2deg);
-    -o-transform: skewX(-2deg);
-    -ms-transform: skewX(-2deg);
-    -moz-transform: skewX(-2deg);
-    transform: skewX(-2deg);
+    -webkit-transform: skewX(-3deg);
+    -o-transform: skewX(-3deg);
+    -ms-transform: skewX(-3deg);
+    -moz-transform: skewX(-3deg);
+    transform: skewX(-3deg);
   }
 }
 @keyframes updown {
