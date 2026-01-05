@@ -1400,18 +1400,18 @@
     transform: skewX(0deg);
   }
   25% {
-    -webkit-transform: skewX(3deg);
-    -o-transform: skewX(3deg);
-    -ms-transform: skewX(3deg);
-    -moz-transform: skewX(3deg);
-    transform: skewX(3deg);
+    -webkit-transform: skewX(2.4deg);
+    -o-transform: skewX(2.4deg);
+    -ms-transform: skewX(2.4deg);
+    -moz-transform: skewX(2.4deg);
+    transform: skewX(2.4deg);
   }
   75% {
-    -webkit-transform: skewX(-3deg);
-    -o-transform: skewX(-3deg);
-    -ms-transform: skewX(-3deg);
-    -moz-transform: skewX(-3deg);
-    transform: skewX(-3deg);
+    -webkit-transform: skewX(-2.4deg);
+    -o-transform: skewX(-2.4deg);
+    -ms-transform: skewX(-2.4deg);
+    -moz-transform: skewX(-2.4deg);
+    transform: skewX(-2.4deg);
   }
 }
 @keyframes updown {
