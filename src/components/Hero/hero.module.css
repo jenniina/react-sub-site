@@ -446,11 +446,11 @@
   animation-play-state: running;
 }
 .herocontent .eyes {
-  -webkit-animation: jiggle 250ms ease-in-out infinite;
-  -o-animation: jiggle 250ms ease-in-out infinite;
-  -ms-animation: jiggle 250ms ease-in-out infinite;
-  -moz-animation: jiggle 250ms ease-in-out infinite;
-  animation: jiggle 250ms ease-in-out infinite;
+  -webkit-animation: skewWobble 200ms ease-in-out infinite;
+  -o-animation: skewWobble 200ms ease-in-out infinite;
+  -ms-animation: skewWobble 200ms ease-in-out infinite;
+  -moz-animation: skewWobble 200ms ease-in-out infinite;
+  animation: skewWobble 200ms ease-in-out infinite;
   -webkit-animation-play-state: paused;
   -moz-animation-play-state: paused;
   -o-animation-play-state: paused;
@@ -1275,23 +1275,7 @@
     opacity: 0;
   }
 }
-@keyframes jiggle {
-  0%,
-  100% {
-    -webkit-transform: translate(0);
-    -o-transform: translate(0);
-    -ms-transform: translate(0);
-    -moz-transform: translate(0);
-    transform: translate(0);
-  }
-  50% {
-    -webkit-transform: translate(1px);
-    -o-transform: translate(1px);
-    -ms-transform: translate(1px);
-    -moz-transform: translate(1px);
-    transform: translate(1px);
-  }
-}
+
 @keyframes rotate {
   0% {
     -webkit-transform: rotate(45deg);
