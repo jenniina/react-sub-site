@@ -1,6 +1,6 @@
 import { useState, useEffect, FC, useCallback } from 'react'
 import styles from './scrolltotop.module.css'
-import { BiChevronsUp } from 'react-icons/bi'
+import Icon from '../Icon/Icon'
 import { useLocation } from 'react-router-dom'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import { useIsClient, useWindow } from '../../hooks/useSSR'
@@ -57,7 +57,7 @@ const ScrollToTop: FC<{
       } ${styleMenu ? styles.alt : ''}`}
       onClick={goToTop}
     >
-      <BiChevronsUp className={styles.icon} />
+      <Icon lib="bi" name="BiChevronsUp" className={styles.icon} />
       <span className="scr">{t('ScrollToTheTop')}</span>
     </button>
   )

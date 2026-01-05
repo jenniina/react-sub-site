@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import styles from '../memory.module.css'
 import { CardType, CardTypeOptions } from '../../../types/memory'
-import { Md123, MdAbc, MdInsertEmoticon } from 'react-icons/md'
+import Icon from '../../Icon/Icon'
 
 interface CardTypeButtonProps {
   option: CardTypeOptions
@@ -17,11 +17,11 @@ const CardTypeButton: FC<CardTypeButtonProps> = ({
   const getCardTypeIcon = (value: CardType) => {
     switch (value) {
       case CardType.icons:
-        return <MdInsertEmoticon />
+        return <Icon lib="md" name="MdInsertEmoticon" />
       case CardType.numbers:
-        return <Md123 />
+        return <Icon lib="md" name="Md123" />
       case CardType.letters:
-        return <MdAbc />
+        return <Icon lib="md" name="MdAbc" />
       default:
         return null
     }

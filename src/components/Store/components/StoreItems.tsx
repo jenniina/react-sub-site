@@ -1,9 +1,7 @@
 import { FC, ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import styles from '../store.module.css'
-import { FaWordpress, FaReact, FaNodeJs } from 'react-icons/fa'
-import { ImImages } from 'react-icons/im'
-import { BsCart2 } from 'react-icons/bs'
+import Icon from '../../Icon/Icon'
 import { ELanguages } from '../../../types'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { ICartItem } from '../../../types/store'
@@ -55,15 +53,15 @@ const StoreItems: FC<Props> = ({
               <h2 id={id}>
                 {id === 'wordpress' ? (
                   <>
-                    <FaWordpress />
+                    <Icon lib="fa" name="FaWordpress" />
                   </>
                 ) : id === 'react' ? (
                   <>
-                    <FaReact />
+                    <Icon lib="fa" name="FaReact" />
                   </>
                 ) : id === 'graphic' ? (
                   <>
-                    <ImImages />
+                    <Icon lib="im" name="ImImages" />
                   </>
                 ) : (
                   ''
@@ -71,7 +69,7 @@ const StoreItems: FC<Props> = ({
                 <span>{name}</span>
                 {id === 'react' ? (
                   <>
-                    <FaNodeJs />
+                    <Icon lib="fa" name="FaNodeJs" />
                   </>
                 ) : (
                   ''
@@ -163,7 +161,11 @@ const StoreItems: FC<Props> = ({
                         }
                       }}
                     >
-                      <BsCart2 style={{ fontSize: '1.3em' }} />{' '}
+                      <Icon
+                        lib="bs"
+                        name="BsCart2"
+                        style={{ fontSize: '1.3em' }}
+                      />{' '}
                       <span>{t('AddToCart')}</span>
                     </button>
                   )
@@ -178,7 +180,11 @@ const StoreItems: FC<Props> = ({
                         to="/cart"
                         className={styles['cart-link']}
                       >
-                        <BsCart2 style={{ fontSize: '1.3em' }} />{' '}
+                        <Icon
+                          lib="bs"
+                          name="BsCart2"
+                          style={{ fontSize: '1.3em' }}
+                        />{' '}
                         <big>{t('GoToCart')} &raquo;</big>
                       </Link>
                     )

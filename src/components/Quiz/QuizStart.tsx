@@ -8,7 +8,7 @@ import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { IHighscore, IQuizHighscore } from './types'
 import { ReducerProps } from '../../types'
 import { initializeUser } from '../../reducers/authReducer'
-import { FaStar } from 'react-icons/fa'
+import Icon from '../Icon/Icon'
 import { getUserQuiz } from './reducers/quizReducer'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import LoginRegisterCombo from './components/LoginRegisterCombo'
@@ -17,9 +17,11 @@ const QuizStart = () => {
   const { t } = useLanguageContext()
 
   const navigate = useNavigate()
-  const { points, highscores, finalSeconds } = useSelector(
-    (state: ReducerProps) => state.questions
-  )
+  const {
+    points = 0,
+    highscores = {} as IHighscore,
+    finalSeconds = 0,
+  } = useSelector((state: ReducerProps) => state.questions ?? {})
   const [highscoresLocal, setHighscores] = useState<IHighscore>(highscores)
 
   const dispatch = useAppDispatch()
@@ -85,22 +87,22 @@ const QuizStart = () => {
                 className={`${styles.mode} ${styles.easy}`}
                 onClick={() => handleClick('easy')}
               >
-                {t('Easy')} <FaStar />
+                {t('Easy')} <Icon lib="fa" name="FaStar" />
               </button>
               <button
                 className={`${styles.mode} ${styles.medium}`}
                 onClick={() => handleClick('medium')}
               >
-                {t('Medium')} <FaStar />
-                <FaStar />
+                {t('Medium')} <Icon lib="fa" name="FaStar" />
+                <Icon lib="fa" name="FaStar" />
               </button>
               <button
                 className={`${styles.mode} ${styles.hard}`}
                 onClick={() => handleClick('hard')}
               >
-                {t('Hard')} <FaStar />
-                <FaStar />
-                <FaStar />
+                {t('Hard')} <Icon lib="fa" name="FaStar" />
+                <Icon lib="fa" name="FaStar" />
+                <Icon lib="fa" name="FaStar" />
               </button>
             </div>
           </div>

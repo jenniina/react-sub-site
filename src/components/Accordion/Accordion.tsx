@@ -8,7 +8,7 @@ import {
   useEffect,
   ReactNode,
 } from 'react'
-import { FaAnglesUp } from 'react-icons/fa6'
+import Icon from '../Icon/Icon'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 
 interface accordionProps {
@@ -43,16 +43,13 @@ const Accordion = forwardRef(
     const [isAnimating, setIsAnimating] = useState(false)
 
     useEffect(() => {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setVisible(props.isOpen ?? false)
-      if (props.setIsFormOpen) {
-        props.setIsFormOpen(props.isOpen ?? false)
-      }
-    }, [props])
+      if (typeof props.isOpen !== 'boolean') return
+      setVisible(props.isOpen)
+    }, [props.isOpen])
 
     useEffect(() => {
       if (visible) props.onClick?.()
-    }, [visible, props])
+    }, [visible, props.onClick])
 
     const toggleVisibility = () => {
       if (visible) {
@@ -157,7 +154,7 @@ const Accordion = forwardRef(
             className={`accordion-btn close`}
             onClick={toggleVisibility}
           >
-            <FaAnglesUp />
+            <Icon lib="fa6" name="FaAnglesUp" />
             {t('Close')}
           </button>
 
@@ -169,7 +166,7 @@ const Accordion = forwardRef(
               className={`accordion-btn close`}
               onClick={scrollToOpenBtn}
             >
-              <FaAnglesUp />
+              <Icon lib="fa6" name="FaAnglesUp" />
               {t('Close')}
             </button>
           )}

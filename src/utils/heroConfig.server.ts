@@ -1,4 +1,4 @@
-import { ELanguages, translations as t } from '../types'
+import { ELanguages } from '../types'
 
 export interface HeroProps {
   heading: string
@@ -9,148 +9,152 @@ export interface HeroProps {
   language: ELanguages
 }
 
-const heroConfig: Record<string, (language: ELanguages) => HeroProps> = {
+// Server-side minimal hero config that doesn't import translations
+// This prevents bundling the 10k-line translations object into server chunks
+// Actual translated text will be hydrated client-side
+
+const serverHeroConfig: Record<string, (language: ELanguages) => HeroProps> = {
   '/': language => ({
-    heading: t.Welcome[language],
-    text: t.ToTheReactSiteOfJenniinaFi[language],
+    heading: 'Welcome',
+    text: 'React Site',
     address: '',
     language,
   }),
   '/portfolio': language => ({
-    heading: t.Portfolio[language],
+    heading: 'Portfolio',
     text: 'ReactJS',
     address: 'portfolio',
     language,
-    instructions: t.TryDraggingTheBlobs[language],
+    instructions: 'Try dragging the blobs',
   }),
   '/portfolio/salon': language => ({
-    heading: t.HairSalonWebsite[language],
+    heading: 'Hair Salon Website',
     text: 'React, Node.js, Express, MySQL, Sequelize',
     address: 'salon',
     language,
   }),
   '/portfolio/composer': language => ({
-    heading: t.ComposerOlliSanta[language],
+    heading: 'Composer Olli Santa',
     text: 'React, Node.js, Express, MongoDB',
     address: 'composer',
     language,
   }),
   '/portfolio/graphql': language => ({
     heading: 'GraphQL',
-    text: t.GraphQLSite[language],
+    text: 'GraphQL Site',
     address: 'graphql',
     language,
   }),
   '/portfolio/blob': language => ({
-    heading: t.Blobs[language],
-    text: t.BlobAppSlogan[language],
+    heading: 'Blobs',
+    text: 'Blob App',
     address: 'blob',
     language,
-    instructions: t.TryDraggingTheBlobs[language],
+    instructions: 'Try dragging the blobs',
   }),
   '/portfolio/draganddrop': language => ({
-    heading: t.DragAndDrop[language],
+    heading: 'Drag and Drop',
     text: '',
     address: 'draganddrop',
     language,
-    instructions: t.TryDraggingTheBlobs[language],
+    instructions: 'Try dragging the blobs',
   }),
   '/portfolio/todo': language => ({
-    heading: t.TodoApp[language],
-    text: t.GetOrganizedOneTaskAtATime[language],
+    heading: 'Todo App',
+    text: 'Get organized, one task at a time',
     address: 'todo',
     language,
   }),
   '/portfolio/select': language => ({
-    heading: t.CustomSelect[language],
+    heading: 'Custom Select',
     text: '',
     address: 'select',
     language,
   }),
   '/portfolio/form': language => ({
-    heading: t.MultistepForm[language],
+    heading: 'Multistep Form',
     text: '',
     address: 'form',
     language,
   }),
   '/portfolio/jokes': language => ({
-    heading: t.TheComediansCompanion[language],
-    text: t.AJokeGeneratorForTheComicallyInclined[language],
+    heading: "The Comedian's Companion",
+    text: 'A joke generator for the comically inclined',
     address: 'jokes',
     language,
-    reset: t.Reset[language],
-    instructions: t.TryTappingTheShapes[language],
+    reset: 'Reset',
+    instructions: 'Try tapping the shapes',
   }),
   '/portfolio/quiz': language => ({
-    heading: t.QuizApp[language],
-    text: t.TestYourKnowledge[language],
+    heading: 'Quiz App',
+    text: 'Test your knowledge',
     address: 'quiz',
     language,
-    instructions: t.TryTappingTheShapes[language],
+    instructions: 'Try tapping the shapes',
   }),
   '/portfolio/colors': language => ({
-    heading: t.ColorAccessibility[language],
-    text: t.WCAGTool[language],
+    heading: 'Color Accessibility',
+    text: 'WCAG Contrast Checker Tool',
     address: 'colors',
     language,
   }),
   '/portfolio/memory': language => ({
-    heading: t.MemoryGame[language],
-    text: t.MemoryGameIntro[language],
+    heading: 'Memory Game',
+    text: 'Memory game intro',
     address: 'memory',
     language,
   }),
   '/portfolio/media': language => ({
-    heading: t.Media[language],
-    text: t.MediaWithQuotesOrPoems[language],
+    heading: 'Media',
+    text: 'Media with quotes or poems',
     address: 'media',
     language,
   }),
   '/about': language => ({
-    heading: t.About[language],
-    text: t.ThisSite[language],
+    heading: 'About',
+    text: 'This site',
     address: 'about',
     language,
   }),
   '/contact': language => ({
-    heading: t.Contact[language],
-    text: t.LetsCollaborate[language],
+    heading: 'Contact',
+    text: "Let's collaborate",
     address: 'contact',
     language,
   }),
   '/cart': language => ({
-    heading: t.ShoppingCart[language],
+    heading: 'Shopping Cart',
     text: '',
     address: 'cart',
     language,
   }),
   '/store': language => ({
-    heading: t.Store[language],
-    text: t.WebpagesAndGraphicDesign[language],
+    heading: 'Store',
+    text: 'Webpages and graphic design',
     address: 'store',
     language,
   }),
   '/disclaimer': language => ({
-    heading: t.PrivacyAndSecurityDisclaimer[language],
-    text: `${t.LastUpdated[language]}: 2024/10/20`,
+    heading: 'Privacy and Security Disclaimer',
+    text: 'Last updated: 2024/10/20',
     address: 'disclaimer',
     language,
   }),
   '/terms': language => ({
-    heading: t.TermsOfService[language],
-    text: `${t.LastUpdated[language]}: 2024/10/20`,
+    heading: 'Terms of Service',
+    text: 'Last updated: 2024/10/20',
     address: 'terms',
     language,
   }),
   '/orders': language => ({
-    heading: t.Orders[language],
+    heading: 'Orders',
     text: '',
     address: 'orders',
     language,
   }),
   '/edit': language => ({
-    heading: t.UserEdit[language],
-    text: t.EditUserSettings[language],
+    heading: 'User Edit',
+    text: 'Edit user settings',
     address: 'edit',
     language,
   }),
@@ -176,12 +180,12 @@ export function getHeroProps(
   const normPath = normalize(pathname)
   const normDisplay = normalize(displayPath)
 
-  const tryExact = (p: string) => heroConfig[p]
+  const tryExact = (p: string) => serverHeroConfig[p]
 
   let configFn = tryExact(normDisplay) ?? tryExact(normPath)
 
   if (!configFn) {
-    const keys = Object.keys(heroConfig).sort((a, b) => b.length - a.length)
+    const keys = Object.keys(serverHeroConfig).sort((a, b) => b.length - a.length)
     const match = keys.find(k => {
       if (k === '/') return false
       return (
@@ -191,10 +195,8 @@ export function getHeroProps(
         normDisplay.startsWith(k + '/')
       )
     })
-    configFn = match ? heroConfig[match] : heroConfig['/']
+    configFn = match ? serverHeroConfig[match] : serverHeroConfig['/']
   }
 
   return configFn(language)
 }
-
-export default heroConfig

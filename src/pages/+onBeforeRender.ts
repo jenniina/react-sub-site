@@ -1,4 +1,4 @@
-import { getHeroProps } from '../utils/heroConfig'
+import { getHeroProps } from '../utils/heroConfig.server'
 import { ELanguages } from '../types'
 
 export { onBeforeRender }

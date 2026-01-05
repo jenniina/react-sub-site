@@ -148,7 +148,7 @@ const UserJokes = ({
 }: Props) => {
   const { t, language } = useLanguageContext()
 
-  const users = useSelector((state: RootState) => state.users)
+  const users = useSelector((state: RootState) => state.users ?? [])
   const userId = user?._id
   const jokes = useSelector((state: RootState) => state.jokes?.jokes)
 

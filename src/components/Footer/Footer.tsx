@@ -1,5 +1,5 @@
 import { useState, useEffect, FC, useCallback } from 'react'
-import { BiChevronsUp } from 'react-icons/bi'
+import Icon from '../Icon/Icon'
 import { Link } from 'react-router-dom'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import { useIsClient, useWindow } from '../../hooks/useSSR'
@@ -58,7 +58,9 @@ const Footer: FC<{ styleMenu: boolean | undefined }> = ({ styleMenu }) => {
           onClick={toTop}
         >
           {t('ScrollToTheTop')}
-          <BiChevronsUp
+          <Icon
+            lib="bi"
+            name="BiChevronsUp"
             style={{ display: 'inline-block', marginBottom: '-0.15em' }}
           />
         </button>

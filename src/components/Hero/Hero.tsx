@@ -523,13 +523,11 @@ export default function Hero({
         ${touchDevice ? styles.touch : ''} 
         hero fullwidth ${styles.hero} ${styles[address]} ${itemsVisible ? styles['header-visible'] : styles['header-hidden']}`}
     >
-      {/* Always render during SSR, conditionally render on client */}
-      {isClient && (
-        <h1>
-          <span data-text={theHeading}>{theHeading}</span>
-        </h1>
-      )}
-      {isClient && <p>{theText}</p>}
+      {/* Always render heading and text for SSR, then on client */}
+      <h1>
+        <span data-text={theHeading}>{theHeading}</span>
+      </h1>
+      <p>{theText}</p>
       <span id="description" className="scr">
         {t('HeroSection')}: {t('InteractiveElements')}
       </span>
@@ -559,23 +557,21 @@ export default function Hero({
         </defs>
       </svg>
 
-      {isClient && (
-        <ItemComponent
-          ref={ulRef}
-          array={values}
-          location={currentPage}
-          windowWidth={windowWidth}
-          windowHeight={windowHeight}
-          spanArray={spanArray}
-          divArrayJewel1={divArrayJewel1}
-          divArrayJewel2={divArrayJewel2}
-          movingItem={movingItem}
-          removeItem={removeItem}
-          escapeFunction={escapeFunction}
-          windowObj={windowObj}
-          itemsVisible={itemsVisible}
-        />
-      )}
+      <ItemComponent
+        ref={ulRef}
+        array={values}
+        location={currentPage}
+        windowWidth={windowWidth}
+        windowHeight={windowHeight}
+        spanArray={spanArray}
+        divArrayJewel1={divArrayJewel1}
+        divArrayJewel2={divArrayJewel2}
+        movingItem={movingItem}
+        removeItem={removeItem}
+        escapeFunction={escapeFunction}
+        windowObj={windowObj}
+        itemsVisible={itemsVisible}
+      />
 
       <div className={styles.bottom}>
         <button

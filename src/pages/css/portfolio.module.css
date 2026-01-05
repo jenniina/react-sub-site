@@ -16,6 +16,7 @@
 .portfolio .card .list li a span {
   border-radius: 0 0 0.5em 0.5em;
   padding-bottom: 0.3em;
+  text-wrap: balance;
 }
 .portfolio .card .list li a,
 .portfolio .card .list li a > * {

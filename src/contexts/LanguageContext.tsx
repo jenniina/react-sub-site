@@ -1,11 +1,11 @@
 import { createContext, ReactNode, useContext } from 'react'
 import useLocalStorage from '../hooks/useStorage'
+import { ELanguages } from '../types'
 import {
-  ELanguages,
+  translations,
   TranslationKey,
   TranslationLang,
-  translations,
-} from '../types'
+} from '../i18n/translations'
 import { useIsClient } from '../hooks/useSSR'
 
 interface LanguageContextProps {

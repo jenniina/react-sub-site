@@ -10,15 +10,7 @@ import React, {
   useMemo,
 } from 'react'
 import { useIsClient, useWindow } from '../../hooks/useSSR'
-import { BiChat } from 'react-icons/bi'
-import { BsCart2, BsPerson } from 'react-icons/bs'
-import { CgSearch } from 'react-icons/cg'
-import { HiOutlineDotsHorizontal } from 'react-icons/hi'
-import { IoMdImages } from 'react-icons/io'
-import { IoSettingsSharp } from 'react-icons/io5'
-import { RiHomeSmileLine } from 'react-icons/ri'
-import { TbLayoutNavbar } from 'react-icons/tb'
-import { TfiLineDashed } from 'react-icons/tfi'
+import Icon from '../Icon/Icon'
 import styles from './nav.module.css'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useTheme, useThemeUpdate } from '../../hooks/useTheme'
@@ -30,8 +22,8 @@ import {
   breakpointSmall,
   ELanguages,
   ELanguagesLong,
-  TranslationKey,
 } from '../../types'
+import { TranslationKey } from '../../i18n/translations'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
 import logo from '../../assets/JLA_Jenniina-light-3-480x198.png'
 import logoDark from '../../assets/JLA_Jenniina-3-480x198.png'
@@ -45,7 +37,7 @@ import { createUser } from '../../reducers/usersReducer'
 import { Select, SelectOption } from '../Select/Select'
 import PasswordReset from '../PasswordReset/PasswordReset'
 import Accordion from '../Accordion/Accordion'
-import { FaStoreAlt } from 'react-icons/fa'
+// Removed FaStoreAlt import; Icon loader is used to dynamically import icons.
 import useCart from '../../hooks/useCart'
 import { options } from '../../utils'
 import { useLanguageContext } from '../../contexts/LanguageContext'
@@ -282,12 +274,12 @@ const Nav = (
 
   //Main menu always visible at larger screensizes and when the altnav is seen:
   useEffect(() => {
-    if (
-      (menuStyleAlt && windowHeight > windowWidth) ||
-      windowWidth > breakpoint
-    )
-      toggleMainMenu(windowWidth)
-  }, [menuStyleAlt, windowWidth, windowHeight, toggleMainMenu])
+    const shouldForceOpen =
+      (menuStyleAlt && windowHeight > windowWidth) || windowWidth > breakpoint
+    if (shouldForceOpen && !mainMenu.open) {
+      mainMenu.show()
+    }
+  }, [menuStyleAlt, windowWidth, windowHeight, mainMenu])
 
   useImperativeHandle(
     ref,
@@ -430,25 +422,35 @@ const Nav = (
     (label: string) => {
       if (label === t('Welcome'))
         return (
-          <RiHomeSmileLine
+          <Icon
+            lib="ri"
+            name="RiHomeSmileLine"
             className={windowWidth < breakpoint ? styles.smallnav : ''}
           />
         )
       else if (label === t('About'))
         return (
-          <BsPerson
+          <Icon
+            lib="bs"
+            name="BsPerson"
             className={windowWidth < breakpoint ? styles.smallnav : ''}
           />
         )
       else if (label === t('Portfolio'))
         return (
-          <IoMdImages
+          <Icon
+            lib="io"
+            name="IoMdImages"
             className={windowWidth < breakpoint ? styles.smallnav : ''}
           />
         )
       else if (label === t('Contact'))
         return (
-          <BiChat className={windowWidth < breakpoint ? styles.smallnav : ''} />
+          <Icon
+            lib="bi"
+            name="BiChat"
+            className={windowWidth < breakpoint ? styles.smallnav : ''}
+          />
         )
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -575,7 +577,9 @@ const Nav = (
             />
           </nav>
           <button className={styles.search} aria-label="search">
-            <CgSearch
+            <Icon
+              lib="cg"
+              name="CgSearch"
               style={
                 windowWidth < breakpointSmall
                   ? { fontSize: '1em' }
@@ -598,7 +602,9 @@ const Nav = (
                 navigate('/cart')
               }}
             >
-              <BsCart2
+              <Icon
+                lib="bs"
+                name="BsCart2"
                 style={
                   windowWidth < breakpointSmall
                     ? { fontSize: '1.1em' }
@@ -622,7 +628,9 @@ const Nav = (
                 navigate('/store')
               }}
             >
-              <FaStoreAlt
+              <Icon
+                lib="fa"
+                name="FaStoreAlt"
                 style={
                   windowWidth < breakpointSmall
                     ? { fontSize: '1.1em' }
@@ -643,7 +651,9 @@ const Nav = (
             className={styles.settings}
             onClick={() => toggleToolbar(windowWidth)}
           >
-            <IoSettingsSharp
+            <Icon
+              lib="io5"
+              name="IoSettingsSharp"
               style={
                 windowWidth < breakpointSmall
                   ? { fontSize: '0.9em' }
@@ -718,18 +728,27 @@ const Nav = (
                 className={`${styles.navstyle} ${styles['toolbar-btn']}`}
               >
                 {windowWidth < breakpoint ? (
-                  <TbLayoutNavbar aria-hidden={true} fontSize="1.5em" />
+                  <Icon
+                    lib="tb"
+                    name="TbLayoutNavbar"
+                    aria-hidden={true}
+                    style={{ fontSize: '1.5em' }}
+                  />
                 ) : (
                   <>
-                    <HiOutlineDotsHorizontal
+                    <Icon
+                      lib="hi"
+                      name="HiOutlineDotsHorizontal"
                       className={styles.dots}
                       aria-hidden={true}
-                      fontSize="1.8em"
+                      style={{ fontSize: '1.8em' }}
                     />
-                    <TfiLineDashed
+                    <Icon
+                      lib="tfi"
+                      name="TfiLineDashed"
                       className={styles.dashes}
                       aria-hidden={true}
-                      fontSize="1.8em"
+                      style={{ fontSize: '1.8em' }}
                     />
                   </>
                 )}

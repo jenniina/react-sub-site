@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import styles from './select.module.css'
-import { ELanguages, translations as t } from '../../types'
+import { ELanguages } from '../../types'
+import { translations as t } from '../../i18n/translations'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
 import { sanitize } from '../../utils'
 // import { v4 as uuidv4 } from 'uuid'

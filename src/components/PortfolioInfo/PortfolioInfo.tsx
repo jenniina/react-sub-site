@@ -1,14 +1,7 @@
 import { firstToUpperCase } from '../../utils'
 import styles from '../../pages/css/portfolio.module.css'
 import { Link } from 'react-router-dom'
-import { AiOutlineForm } from 'react-icons/ai'
-import { BiSelectMultiple, BiSolidColorFill } from 'react-icons/bi'
-import { RiTodoLine, RiDragDropLine, RiDragMove2Fill } from 'react-icons/ri'
-import { IoMdImages } from 'react-icons/io'
-import { GiAbstract019, GiComb } from 'react-icons/gi'
-import { MdOutlineQuiz } from 'react-icons/md'
-import { GrGraphQl } from 'react-icons/gr'
-import { BsMusicNoteBeamed } from 'react-icons/bs'
+import Icon from '../Icon/Icon'
 import Accordion from '../Accordion/Accordion'
 import MemorySVG from '../Memory/components/MemorySVG'
 
@@ -69,14 +62,14 @@ export default function Portfolio() {
         <ul className={`${styles.list}`}>
           <li>
             <Link to="/portfolio/media">
-              <IoMdImages />
+              <Icon lib="io" name="IoMdImages" />
               <span>{t('Media')}</span>
             </Link>
             <p>{t('MediaWithQuotesOrPoems')}</p>
           </li>
           <li>
             <Link to="/portfolio/colors">
-              <BiSolidColorFill />
+              <Icon lib="bi" name="BiSolidColorFill" />
               <span>{t('ColorAccessibility')}</span>
             </Link>
             <p>{t('WCAGTool')}</p>
@@ -90,7 +83,7 @@ export default function Portfolio() {
           </li>
           <li>
             <Link to="/portfolio/composer">
-              <BsMusicNoteBeamed />
+              <Icon lib="bs" name="BsMusicNoteBeamed" />
               <span>
                 {t('ComposerOlliSanta')} ({t('Website')})
               </span>
@@ -101,7 +94,7 @@ export default function Portfolio() {
           </li>
           <li>
             <Link to="/portfolio/blob">
-              <RiDragMove2Fill />
+              <Icon lib="ri" name="RiDragMove2Fill" />
               <span>{t('BlobArtApp')}</span>
             </Link>
             <p>
@@ -110,7 +103,7 @@ export default function Portfolio() {
           </li>
           <li>
             <Link to="/portfolio/jokes">
-              <GiAbstract019 />
+              <Icon lib="gi" name="GiAbstract019" />
               <span>{t('TheComediansCompanion')}</span>
             </Link>
             <p>
@@ -121,49 +114,49 @@ export default function Portfolio() {
           </li>
           <li>
             <Link to="/portfolio/quiz">
-              <MdOutlineQuiz />
+              <Icon lib="md" name="MdOutlineQuiz" />
               <span>{t('QuizApp')}</span>
             </Link>
             <p>{t('QuizAppIntro')}</p>
           </li>
           <li>
             <Link to="/portfolio/select">
-              <BiSelectMultiple />
+              <Icon lib="bi" name="BiSelectMultiple" />
               <span>{t('CustomSelect')}</span>
             </Link>
             <p>{t('CustomSelectIntro')}</p>
           </li>
           <li>
             <Link to="/portfolio/graphql">
-              <GrGraphQl />
+              <Icon lib="gr" name="GrGraphQl" />
               <span>GraphQL</span>
             </Link>
             <p>{t('GraphQLSite')}</p>
           </li>
           <li>
             <Link to="/portfolio/salon">
-              <GiComb />
+              <Icon lib="gi" name="GiComb" />
               <span>{t('HairSalonWebsite')}</span>
             </Link>
             <p>{t('Website')}: Parturi Kampaamo Hannastiina</p>
           </li>
           <li>
             <Link to="/portfolio/draganddrop">
-              <RiDragDropLine />
+              <Icon lib="ri" name="RiDragDropLine" />
               <span>{t('DragAndDrop')}</span>
             </Link>
             <p>{t('DragAndDropAppIntro')}</p>
           </li>
           <li>
             <Link to="/portfolio/todo">
-              <RiTodoLine />
+              <Icon lib="ri" name="RiTodoLine" />
               <span>{t('TodoApp')}</span>
             </Link>
             <p>{t('TodoAppIntro')}</p>
           </li>
           <li className={styles.multistep}>
             <Link to="/portfolio/form">
-              <AiOutlineForm />
+              <Icon lib="ai" name="AiOutlineForm" />
               <span>{t('MultistepForm')}</span>
             </Link>
             <p>{t('MultistepFormIntro')}</p>

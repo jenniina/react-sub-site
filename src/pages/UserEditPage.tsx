@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { TiDeleteOutline } from 'react-icons/ti'
+import Icon from '../components/Icon/Icon'
 import { useNavigate } from 'react-router-dom'
 import { useTheme } from '../hooks/useTheme'
 import { ELanguagesLong } from '../types'
@@ -150,7 +150,8 @@ const UserEditPage = ({ type, options }: Props) => {
                     disabled={sending}
                     className={`submit danger ${styles['delete-account']} ${styles.submit}`}
                   >
-                    <TiDeleteOutline /> {t('DeleteAccount')}
+                    <Icon lib="ti" name="TiDeleteOutline" />{' '}
+                    {t('DeleteAccount')}
                   </button>
                 </form>
               ) : (

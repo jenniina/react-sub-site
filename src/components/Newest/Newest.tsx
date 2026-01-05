@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom'
 import styles from '../../pages/css/welcome.module.css'
-import { BiSolidColorFill } from 'react-icons/bi'
-import { RiFileList3Line } from 'react-icons/ri'
-import { LiaNewspaperSolid } from 'react-icons/lia'
+import Icon from '../Icon/Icon'
 
 import { useLanguageContext } from '../../contexts/LanguageContext'
 
@@ -12,7 +10,7 @@ export default function Newest() {
   return (
     <div className={`${styles.newest}`}>
       <h2 className={`${styles.subheading}`}>
-        <LiaNewspaperSolid /> {t('ChangeLog')}
+        <Icon lib="lia" name="LiaNewspaperSolid" /> {t('ChangeLog')}
       </h2>
       <ul className={`${styles.extras}`}>
         <li className={styles.first}>
@@ -23,7 +21,7 @@ export default function Newest() {
               <ul>
                 <li>
                   <Link to="/portfolio/colors">
-                    <BiSolidColorFill />
+                    <Icon lib="bi" name="BiSolidColorFill" />
                     {t('ColorAccessibility')}:
                   </Link>
                   <i>
@@ -32,7 +30,7 @@ export default function Newest() {
                 </li>
                 <li>
                   <span className="disabled">
-                    <RiFileList3Line />
+                    <Icon lib="ri" name="RiFileList3Line" />
                     SEO:
                   </span>
                   <i>{t('Edited')}</i>

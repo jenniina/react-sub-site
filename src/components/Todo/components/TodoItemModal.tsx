@@ -14,11 +14,12 @@ import { createPortal } from 'react-dom'
 import { Select, SelectOption } from '../../Select/Select'
 import styles from '../css/todo.module.css'
 import stylesModal from '../../Modal/modal.module.css'
-import { TbCancel } from 'react-icons/tb'
-import { sanitize, first3Words, getRandomString } from '../../../utils'
+import Icon from '../../Icon/Icon'
+import { sanitize, getRandomString } from '../../../utils'
+import { first3Words } from '../../../utils/translations'
 import { TCategory, TPriority } from '../types'
 import { ITaskDraggable } from './TodoList'
-import { FaRegCheckCircle } from 'react-icons/fa'
+// FaRegCheckCircle icon replaced with dynamic Icon loader
 import { useTheme } from '../../../hooks/useTheme'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 
@@ -405,14 +406,19 @@ const TodoItemModal: FC<TodoItemModalProps> = ({
             </label>
           </fieldset>
           <button type="submit" disabled={sending} className="modify">
-            {t('Confirm')} <FaRegCheckCircle />
+            <span>{sending ? t('Saving') : t('Save')}</span>
+            {sending ? (
+              <img src="/assets/clock.svg" alt="Loading" />
+            ) : (
+              <Icon lib="fa" name="FaRegCheckCircle" />
+            )}
           </button>
           <button
             onClick={handleClose}
             className={`reset ${styles.cancel}`}
             type="button"
           >
-            {t('Cancel')} <TbCancel />
+            <Icon lib="tb" name="TbCancel" /> {t('Cancel')}
           </button>
         </form>
       </div>

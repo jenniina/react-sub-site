@@ -574,6 +574,12 @@
 .herocontent .geometric:focus {
   cursor: pointer;
 }
+
+.herocontent .note {
+  min-width: 44px;
+  min-height: 44px;
+}
+
 .herocontent .note div {
   --time: 1000ms;
   -webkit-animation: note-hover 2000ms ease-in-out infinite;

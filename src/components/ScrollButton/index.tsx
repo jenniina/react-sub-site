@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { GoTriangleUp, GoTriangleDown } from 'react-icons/go'
+import Icon from '../Icon/Icon'
 
 const ScrollButton: FC<{
   styles: CSSModuleClasses
@@ -16,10 +16,12 @@ const ScrollButton: FC<{
     >
       {direction === 'above' && (
         <>
-          <GoTriangleUp
+          <Icon
             height="1.3rem"
             width="1.3rem"
             style={{ margin: '-0.4rem 0 -0.1rem' }}
+            lib="go"
+            name="GoTriangleUp"
           />
           <span>{name}</span>
         </>
@@ -28,10 +30,12 @@ const ScrollButton: FC<{
       {direction === 'below' && (
         <>
           <span>{name}</span>{' '}
-          <GoTriangleDown
+          <Icon
             height="1.3rem"
             width="1.3rem"
             style={{ margin: '-0.1rem 0 -0.4rem' }}
+            lib="go"
+            name="GoTriangleDown"
           />
         </>
       )}

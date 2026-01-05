@@ -54,7 +54,7 @@
 //   return [storedValue, setValue];
 // }
 
-import { useState, useEffect } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 type ReturnType<T> = [T, (value: T | ((val: T) => T)) => void, () => void]
 
@@ -97,21 +97,24 @@ function useStorage<T>(
     storageObject.setItem(key, JSON.stringify(value))
   }, [key, value, storageObject])
 
-  const remove = () => {
+  const remove = useCallback(() => {
     setValue(defaultValue)
     // Only remove from storage if available
     if (storageObject) {
       storageObject.removeItem(key)
     }
-  }
+  }, [defaultValue, key, storageObject])
 
-  const setValueWithFunction = (value: T | ((val: T) => T)) => {
-    if (typeof value === 'function') {
-      setValue(currentValue => (value as (val: T) => T)(currentValue))
+  const setValueWithFunction = useCallback((nextValue: T | ((val: T) => T)) => {
+    if (typeof nextValue === 'function') {
+      setValue(currentValue => (nextValue as (val: T) => T)(currentValue))
     } else {
-      setValue(value)
+      setValue(nextValue)
     }
-  }
+  }, [])
 
-  return [value, setValueWithFunction, remove]
+  return useMemo(
+    () => [value, setValueWithFunction, remove],
+    [value, setValueWithFunction, remove]
+  )
 }

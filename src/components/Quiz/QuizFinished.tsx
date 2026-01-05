@@ -15,7 +15,7 @@ const QuizFinished = () => {
   const { t } = useLanguageContext()
 
   const { points, highscores, finalSeconds } = useSelector(
-    (state: ReducerProps) => state.questions
+    (state: ReducerProps) => state.questions ?? {}
   )
   const { mode } = useSelector((state: ReducerProps) => state.difficulty)
 

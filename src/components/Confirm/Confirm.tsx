@@ -1,8 +1,7 @@
 import React from 'react'
 import styles from './css/confirm.module.css'
 import { useLanguageContext } from '../../contexts/LanguageContext'
-import { CgUndo } from 'react-icons/cg'
-import { IoMdCheckmarkCircleOutline } from 'react-icons/io'
+import Icon from '../Icon/Icon'
 
 interface ConfirmProps {
   message: string
@@ -35,11 +34,11 @@ const Confirm: React.FC<ConfirmProps> = ({
         <div className={styles.buttons}>
           <button className={styles['confirm-btn']} onClick={onConfirm}>
             {confirmText ?? t('Confirm')}&nbsp;&nbsp;
-            <IoMdCheckmarkCircleOutline />
+            <Icon lib="io" name="IoMdCheckmarkCircleOutline" />
           </button>
           <button className={styles['cancel-btn']} onClick={onCancel}>
             {cancelText ?? t('Cancel')}&nbsp;&nbsp;
-            <CgUndo />
+            <Icon lib="cg" name="CgUndo" />
           </button>
         </div>
       </div>

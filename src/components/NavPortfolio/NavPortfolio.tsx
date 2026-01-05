@@ -1,6 +1,6 @@
 import { useEffect, useRef, useLayoutEffect, useCallback } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
-import { BiChevronsUp } from 'react-icons/bi'
+import Icon from '../Icon/Icon'
 import useIsOnScreen from '../../hooks/useIsOnScreen'
 import useWindowSize from '../../hooks/useWindowSize'
 import { breakpointSmall } from '../../types'
@@ -217,7 +217,7 @@ function NavPortfolio() {
           onClick={leftScroll}
         >
           {' '}
-          <BiChevronsUp />
+          <Icon lib="bi" name="BiChevronsUp" />
           <span className="scr">{t('ScrollToTheLeft')}</span>
         </button>
 
@@ -229,7 +229,7 @@ function NavPortfolio() {
                 ${lastVisible ? 'disable' : ''}`}
         >
           {' '}
-          <BiChevronsUp />
+          <Icon lib="bi" name="BiChevronsUp" />
           <span className="scr">{t('ScrollToTheRight')}</span>
         </button>
       </nav>

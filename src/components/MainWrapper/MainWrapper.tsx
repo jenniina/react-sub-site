@@ -6,29 +6,32 @@ import {
 } from 'react-router-dom'
 import { options } from '../../utils'
 import { useEffect, useState } from 'react'
-import Portfolio from '../../pages/Portfolio'
 import About from '../../pages/About'
-import CartPage from '../../pages/CartPage'
 import Contact from '../../pages/Contact'
 import Disclaimer from '../../pages/Disclaimer'
 import OrderPage from '../../pages/OrderPage'
-import BlobPage from '../../pages/pages-portfolio/BlobPage'
-import ColorsPage from '../../pages/pages-portfolio/ColorsPage'
-import ComposerPage from '../../pages/pages-portfolio/ComposerPage'
-import CustomSelectPage from '../../pages/pages-portfolio/CustomSelectPage'
-import DragAndDropPage from '../../pages/pages-portfolio/DragAndDropPage'
-import FormPage from '../../pages/pages-portfolio/FormPage'
-import GraphQLPage from '../../pages/pages-portfolio/GraphQLPage'
-import HairSalonPage from '../../pages/pages-portfolio/HairSalonPage'
-import ImagesPage from '../../pages/pages-portfolio/ImagesPage'
-import JokesPage from '../../pages/pages-portfolio/JokesPage'
-import MemoryPage from '../../pages/pages-portfolio/MemoryPage'
-import QuizPage from '../../pages/pages-portfolio/QuizPage'
-import TodoPage from '../../pages/pages-portfolio/TodoPage'
-import StorePage from '../../pages/StorePage'
 import TermsOfService from '../../pages/TermsOfService'
 import UserEditPage from '../../pages/UserEditPage'
 import Welcome from '../../pages/Welcome'
+import Portfolio from '../../pages/Portfolio'
+
+// Import all components synchronously for better AI readability
+import GraphQLPageSync from '../../pages/pages-portfolio/GraphQLPage'
+import BlobPageSync from '../../pages/pages-portfolio/BlobPage'
+import JokesPageSync from '../../pages/pages-portfolio/JokesPage'
+import MemoryPageSync from '../../pages/pages-portfolio/MemoryPage'
+import ImagesPageSync from '../../pages/pages-portfolio/ImagesPage'
+import QuizPageSync from '../../pages/pages-portfolio/QuizPage'
+import ColorsPageSync from '../../pages/pages-portfolio/ColorsPage'
+import ComposerPageSync from '../../pages/pages-portfolio/ComposerPage'
+import CustomSelectPageSync from '../../pages/pages-portfolio/CustomSelectPage'
+import DragAndDropPageSync from '../../pages/pages-portfolio/DragAndDropPage'
+import FormPageSync from '../../pages/pages-portfolio/FormPage'
+import HairSalonPageSync from '../../pages/pages-portfolio/HairSalonPage'
+import TodoPageSync from '../../pages/pages-portfolio/TodoPage'
+import StorePageSync from '../../pages/StorePage'
+import CartPageSync from '../../pages/CartPage'
+
 import { ELanguages } from '../../types'
 import { useHeroProps } from '../../hooks/useHeroProps'
 import { useDocumentTitleAndLanguage } from '../../hooks/useDocumentTitleAndLanguage'
@@ -123,9 +126,9 @@ const MainWrapper = () => {
   return (
     <main id={`main-content`} className={`${transitionPage} main-content z`}>
       <Hero
-        address={heroProps.address ?? ''}
-        heading={heroProps.heading ?? ''}
-        text={heroProps.text ?? ''}
+        address={heroProps.address}
+        heading={heroProps.heading}
+        text={heroProps.text}
       />
 
       <Routes location={displayLocation}>
@@ -141,33 +144,33 @@ const MainWrapper = () => {
           <Route index element={<Portfolio type="page" />} />
           <Route
             path="/portfolio/graphql"
-            element={<GraphQLPage type="page subpage" />}
+            element={<GraphQLPageSync type="page subpage" />}
           />
           <Route
             path="/portfolio/blob"
-            element={<BlobPage type="page subpage" />}
+            element={<BlobPageSync type="page subpage" />}
           />
           <Route
             path="/portfolio/draganddrop"
-            element={<DragAndDropPage type="page subpage" />}
+            element={<DragAndDropPageSync type="page subpage" />}
           />
           <Route
             path="/portfolio/todo"
-            element={<TodoPage type="page subpage" />}
+            element={<TodoPageSync type="page subpage" />}
           />
           <Route
             path="/portfolio/select"
-            element={<CustomSelectPage type="page subpage" />}
+            element={<CustomSelectPageSync type="page subpage" />}
           />
           <Route
             path="/portfolio/form"
-            element={<FormPage type="page subpage" />}
+            element={<FormPageSync type="page subpage" />}
           />
           <Route
             path="/portfolio/jokes/*"
-            element={<JokesPage type="page subpage" />}
+            element={<JokesPageSync type="page subpage" />}
           />
-          <Route path="/portfolio/quiz/" element={<QuizPage />}>
+          <Route path="/portfolio/quiz/" element={<QuizPageSync />}>
             <Route index element={<QuizStart />} />
             <Route
               path="/portfolio/quiz/difficulty/:difficulty"
@@ -177,23 +180,23 @@ const MainWrapper = () => {
           </Route>
           <Route
             path="/portfolio/salon"
-            element={<HairSalonPage type="page subpage" />}
+            element={<HairSalonPageSync type="page subpage" />}
           />
           <Route
             path="/portfolio/composer"
-            element={<ComposerPage type="page subpage" />}
+            element={<ComposerPageSync type="page subpage" />}
           />
           <Route
             path="/portfolio/colors"
-            element={<ColorsPage type="page subpage" />}
+            element={<ColorsPageSync type="page subpage" />}
           />
           <Route
             path="/portfolio/memory"
-            element={<MemoryPage type="page subpage" />}
+            element={<MemoryPageSync type="page subpage" />}
           />
           <Route
             path="/portfolio/media"
-            element={<ImagesPage type="page subpage" />}
+            element={<ImagesPageSync type="page subpage" />}
           />
         </Route>
 
@@ -201,7 +204,7 @@ const MainWrapper = () => {
         <Route
           path="/cart"
           element={
-            <CartPage
+            <CartPageSync
               type="page"
               cart={cart}
               addToCart={addToCart}
@@ -214,7 +217,7 @@ const MainWrapper = () => {
         <Route
           path="/store"
           element={
-            <StorePage
+            <StorePageSync
               type="page"
               cart={cart}
               addToCart={addToCart}
