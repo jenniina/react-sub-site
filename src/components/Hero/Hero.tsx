@@ -145,6 +145,7 @@ export default function Hero({
     (e: ReactPointerEvent<HTMLElement>) => {
       if (!isClient || !windowObj) return
 
+      const amount = page === 'composer' ? 20 : 10
       const target = e.target as HTMLElement
       const targetLeft = windowObj
         .getComputedStyle(target)
@@ -155,16 +156,16 @@ export default function Hero({
       const from = calculateDirection(e)
       switch (from) {
         case 'top':
-          target.style.top = `${parseFloat(targetTop) + 10}px`
+          target.style.top = `${parseFloat(targetTop) + amount}px`
           break
         case 'right':
-          target.style.left = `${parseFloat(targetLeft) - 10}px`
+          target.style.left = `${parseFloat(targetLeft) - amount}px`
           break
         case 'bottom':
-          target.style.top = `${parseFloat(targetTop) - 10}px`
+          target.style.top = `${parseFloat(targetTop) - amount}px`
           break
         case 'left':
-          target.style.left = `${parseFloat(targetLeft) + 10}px`
+          target.style.left = `${parseFloat(targetLeft) + amount}px`
           break
         default:
           break
@@ -431,8 +432,8 @@ export default function Hero({
 
         // Choose a random direction
         const direction = Math.floor(Math.random() * 8)
-        const change = 10
-        const changeBigger = 16
+        const change = page === 'composer' ? 20 : 10
+        const changeBigger = page === 'composer' ? 40 : 16
 
         let newTop = currentTop
         let newLeft = currentLeft
