@@ -116,7 +116,7 @@ const ItemComponent = forwardRef<
                 ? {
                     WebkitFilter: 'url(#svgfilterHero)',
                     filter: 'url(#svgfilterHero)',
-                    opacity: 0.8,
+                    opacity: 0.7,
                   }
                 : { WebkitFilter: 'none', filter: 'none' }
 
@@ -142,7 +142,7 @@ const ItemComponent = forwardRef<
 
               const style: CSSProperties = {
                 position: 'absolute',
-                top: `clamp(60px, calc(-5vh + calc(1.3vh * ${item.e} * ${
+                top: `clamp(100px, calc(-5vh + calc(1.3vh * ${item.e} * ${
                   item.e / 1.5
                 })), calc(80vh - 50px - ${item.size / dividedBy}vh))`,
                 left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})), calc(95vw - ${item.size}vw))`,
@@ -172,7 +172,7 @@ const ItemComponent = forwardRef<
                 maxHeight: `150px`,
                 borderRadius: '3px',
                 opacity: `${
-                  item.size > 6 ? `0.9` : `0.${Math.ceil(item.size + 3)}`
+                  item.size > 6 ? `0.7` : `0.${Math.ceil(item.size + 2)}`
                 }`,
               }
 
@@ -362,7 +362,7 @@ const ItemComponent = forwardRef<
 
               const style: CSSProperties = {
                 position: 'absolute',
-                top: `clamp(60px, calc(-5vh + calc(1.3vh * ${item.e} * ${
+                top: `clamp(100px, calc(-5vh + calc(1.3vh * ${item.e} * ${
                   item.e / 1.5
                 })), calc(80vh - 50px - ${item.size / dividedBy}vh))`,
                 left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})), calc(95vw - ${item.size}vw))`,
@@ -529,7 +529,7 @@ const ItemComponent = forwardRef<
 
               const style: CSSProperties = {
                 position: 'absolute',
-                top: `clamp(60px, calc(-5vh + calc(1.1vh * ${item.e} * ${
+                top: `clamp(100px, calc(-5vh + calc(1.1vh * ${item.e} * ${
                   item.e / 1.5
                 })), calc(80vh - 50px - ${item.size / dividedBy}vh))`,
                 left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})), calc(95vw - ${item.size}vw))`,
@@ -681,7 +681,7 @@ const ItemComponent = forwardRef<
             ) {
               const style: CSSProperties = {
                 position: 'absolute',
-                top: `clamp(60px, calc(-20vh + 1.2vh * ${item.e * 3} * ${
+                top: `clamp(100px, calc(-20vh + 1.2vh * ${item.e * 3} * ${
                   item.size / 6
                 }), calc(80vh - 50px - calc(var(--size, 200px) * 0.8vh)))`,
                 left: `clamp(1vw, calc(-5vh + ${item.i} * 1.4vw * ${item.e}), 96vw - ${item.size}vw)`,
@@ -707,7 +707,7 @@ const ItemComponent = forwardRef<
                 minHeight: '44px',
                 minWidth: '44px',
                 borderRadius: '65% 65% 70% 60% / 60% 70% 60% 65%',
-                opacity: `0.${item.size > 8 ? 8 : Math.ceil(item.size)}`,
+                opacity: `0.${item.size > 7 ? 7 : Math.ceil(item.size)}`,
               }
 
               return (
@@ -787,7 +787,7 @@ const ItemComponent = forwardRef<
               const number = Math.floor(getRandomMinMax(0.001, 3.999))
               const style: CSSProperties = {
                 position: 'absolute',
-                top: `clamp(60px, calc(-20% + ${item.e} * 1.4vh * ${
+                top: `clamp(100px, calc(-20% + ${item.e} * 1.4vh * ${
                   item.size / 2
                 }), calc(80vh - 50px - calc(var(--size, 200px) * 0.8vh)))`,
                 left: `clamp(1vw, calc(-10% + ${
@@ -823,7 +823,7 @@ const ItemComponent = forwardRef<
                 maxHeight: `200px`,
                 borderRadius: `${blobRadius[number]}`,
                 transform: 'rotate(' + item.rotation + 'deg)',
-                opacity: `0.9`,
+                opacity: `0.7`,
                 WebkitFilter: filter,
                 filter: filter,
                 transitionProperty:
@@ -917,7 +917,7 @@ const ItemComponent = forwardRef<
               const mod = 0.6
               const style: CSSProperties = {
                 position: 'absolute',
-                top: `clamp(60px, calc(-5vh + calc(1.5vh * ${item.e} * ${
+                top: `clamp(100px, calc(-5vh + calc(1.5vh * ${item.e} * ${
                   item.e / 1.9
                 })), calc(80vh - 50px - calc(var(--size, 120px) * ${mod}vh)))`,
                 left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})),90vw)`,
@@ -943,7 +943,7 @@ const ItemComponent = forwardRef<
                 maxHeight: '120px',
                 maxWidth: '120px',
                 borderRadius: '50%',
-                opacity: `0.${item.size > 7 ? 8 : Math.ceil(item.size)}`,
+                opacity: `0.${item.size > 7 ? 7 : Math.ceil(item.size)}`,
               }
               const styleInner: CSSProperties = {
                 position: 'absolute',
@@ -951,7 +951,7 @@ const ItemComponent = forwardRef<
                 width: '100%',
                 height: '100%',
                 borderRadius: '50%',
-                opacity: `0.${item.size > 8 ? 8 : Math.ceil(item.size)}`,
+                opacity: `0.${item.size > 7 ? 7 : Math.ceil(item.size)}`,
               }
 
               return (
@@ -1027,7 +1027,7 @@ const ItemComponent = forwardRef<
                 ['--border' as string]: border,
                 borderWidth: border,
                 position: 'absolute',
-                top: `clamp(60px, calc(-5vh + calc(1.2vh * ${item.e} * ${
+                top: `clamp(100px, calc(-5vh + calc(1.2vh * ${item.e} * ${
                   item.e / 1.3
                 })), calc(80vh - 50px - ${item.size / 1.3}vh))`,
                 left: `clamp(1vw, calc(-10vw + ${item.i} * 1.3vw * ${item.e}), calc(95vw - ${item.size}vw))`,

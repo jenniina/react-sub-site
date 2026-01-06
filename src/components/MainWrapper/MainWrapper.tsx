@@ -48,7 +48,7 @@ const MainWrapper = () => {
   const isClient = useIsClient()
   const windowObj = useWindow()
 
-  const { language, setLanguage } = useLanguageContext()
+  const { t, language, setLanguage } = useLanguageContext()
 
   const { cart, addToCart, removeFromCart, editDetails, clearCart } = useCart()
 
@@ -129,6 +129,7 @@ const MainWrapper = () => {
         address={heroProps.address}
         heading={heroProps.heading}
         text={heroProps.text}
+        instructions={heroProps.instructions ?? t('TryTappingTheShapes')}
       />
 
       <Routes location={displayLocation}>
