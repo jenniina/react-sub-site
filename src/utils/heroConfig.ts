@@ -12,8 +12,8 @@ export interface HeroProps {
 
 const heroConfig: Record<string, (language: ELanguages) => HeroProps> = {
   '/': language => ({
-  heading: t.Welcome[language],
-  text: t.ToTheReactSiteOfJenniinaFi[language],
+    heading: t.Welcome[language],
+    text: t.ToTheReactSiteOfJenniinaFi[language],
     address: '',
     language,
   }),
@@ -105,12 +105,6 @@ const heroConfig: Record<string, (language: ELanguages) => HeroProps> = {
     heading: t.Media[language],
     text: t.MediaWithQuotesOrPoems[language],
     address: 'media',
-    language,
-  }),
-  '/about': language => ({
-    heading: t.About[language],
-    text: t.ThisSite[language],
-    address: 'about',
     language,
   }),
   '/contact': language => ({

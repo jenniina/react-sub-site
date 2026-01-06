@@ -9,7 +9,6 @@ import {
   MouseEvent as ReactMouseEvent,
   TouchEvent as ReactTouchEvent,
 } from 'react'
-import { useLocation } from 'react-router-dom'
 import styles from './hero.module.css'
 import useWindowSize from '../../hooks/useWindowSize'
 import { getRandomMinMax } from '../../utils'
@@ -37,20 +36,20 @@ export default function Hero({
   text,
   reset,
   instructions,
+  pathname,
 }: {
   heading: string
   address: string
   text: string
   reset?: string
   instructions?: string
+  pathname: string
 }) {
   const { calculateDirection } = useEnterDirection()
   const isClient = useIsClient()
   const windowObj = useWindow()
 
   const { t } = useLanguageContext()
-
-  const location = useLocation()
 
   const [values, setValues] = useSessionStorage<itemProps[]>('Hero', [])
   const [itemsVisible, setItemsVisible] = useState(true)
@@ -62,8 +61,8 @@ export default function Hero({
 
   // remove the last trailing / then get the last part of the pathname:
   const page = useMemo(() => {
-    return location.pathname?.replace(/\/$/, '').split('/').pop() ?? ''
-  }, [location])
+    return pathname?.replace(/\/$/, '').split('/').pop() ?? ''
+  }, [pathname])
 
   // Handle page transition for hero items
   useEffect(() => {

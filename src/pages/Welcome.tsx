@@ -6,6 +6,7 @@ import { ELanguages, ELanguagesLong } from '../types'
 import { Select, SelectOption } from '../components/Select/Select'
 import { useLanguageContext } from '../contexts/LanguageContext'
 import Newest from '../components/Newest/Newest'
+import About from './About'
 
 export default function Home({
   type,
@@ -67,11 +68,6 @@ export default function Home({
           <section className={`card ${styles.welcome}`}>
             <div>
               <ul className={styles.list}>
-                <li className={styles['li-about']}>
-                  <Link to="/about">
-                    <Icon lib="bs" name="BsPerson" /> <span>{t('About')}</span>
-                  </Link>
-                </li>
                 <li>
                   <Link to="/portfolio">
                     <Icon lib="io" name="IoMdImages" />{' '}
@@ -90,9 +86,10 @@ export default function Home({
                   </Link>
                 </li>
               </ul>
-              <Newest />
+              {/* <Newest /> */}
             </div>
           </section>
+          <About type="page" />
         </div>
       </div>
     </>

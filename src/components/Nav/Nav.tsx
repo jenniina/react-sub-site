@@ -363,10 +363,6 @@ const Nav = (
         href: '/',
       },
       {
-        label: t('About'),
-        href: '/about',
-      },
-      {
         label: t('Portfolio'),
         href: '/portfolio',
       },

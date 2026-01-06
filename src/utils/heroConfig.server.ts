@@ -110,12 +110,6 @@ const serverHeroConfig: Record<string, (language: ELanguages) => HeroProps> = {
     address: 'media',
     language,
   }),
-  '/about': language => ({
-    heading: 'About',
-    text: 'This site',
-    address: 'about',
-    language,
-  }),
   '/contact': language => ({
     heading: 'Contact',
     text: "Let's collaborate",
@@ -185,7 +179,9 @@ export function getHeroProps(
   let configFn = tryExact(normDisplay) ?? tryExact(normPath)
 
   if (!configFn) {
-    const keys = Object.keys(serverHeroConfig).sort((a, b) => b.length - a.length)
+    const keys = Object.keys(serverHeroConfig).sort(
+      (a, b) => b.length - a.length
+    )
     const match = keys.find(k => {
       if (k === '/') return false
       return (

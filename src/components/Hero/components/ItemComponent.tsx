@@ -677,7 +677,8 @@ const ItemComponent = forwardRef<
               location == LOCATION.HOME ||
               location == LOCATION.JOKES ||
               location == LOCATION.SALON ||
-              location == LOCATION.QUIZ
+              location == LOCATION.QUIZ ||
+              location == LOCATION.ABOUT
             ) {
               const style: CSSProperties = {
                 position: 'absolute',
@@ -711,7 +712,7 @@ const ItemComponent = forwardRef<
               }
 
               return (
-                //HOME // JOKES // SALON // QUIZ
+                //HOME // JOKES // SALON // QUIZ // ABOUT
                 <li
                   key={`${item.color}${item.size}${item.e}${index}`}
                   className={`${styles.item} ${styles.about} ${styles.bubbles} ${
