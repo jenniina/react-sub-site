@@ -135,8 +135,7 @@ const ItemComponent = forwardRef<
               location == LOCATION.SELECT ||
               location == LOCATION.TODO ||
               location == LOCATION.GRAPHQL ||
-              location == LOCATION.MEMORY ||
-              location == LOCATION.MEDIA
+              location == LOCATION.MEMORY
             ) {
               const dividedBy = 2.5
 
@@ -177,7 +176,7 @@ const ItemComponent = forwardRef<
               }
 
               return (
-                // SELECT // TODO // GRAPHQL // MEMORY // MEDIA
+                // SELECT // TODO // GRAPHQL // MEMORY
 
                 <li
                   key={`${item.color}${item.size}${item.e}${index}`}
@@ -229,6 +228,112 @@ const ItemComponent = forwardRef<
                       const style: CSSProperties = {
                         position: 'absolute',
                         borderRadius: '3px',
+                        color: `${item.color}`,
+                        ['--color' as string]: `${span.color}`,
+                        ['--number' as string]: `${index}`,
+                      }
+                      return (
+                        <span key={`${item.i}-${index}`} style={style}>
+                          <span className="scr">
+                            {t('Shape')} {index + 1}
+                          </span>
+                        </span>
+                      )
+                    })}
+                  </div>
+                </li>
+              )
+            } else if (location == LOCATION.MEDIA) {
+              const dividedBy = 2
+
+              const style: CSSProperties = {
+                position: 'absolute',
+                top: `clamp(100px, calc(-5vh + calc(1.3vh * ${item.e} * ${
+                  item.e / 1.5
+                })), calc(80vh - 50px - ${item.size / dividedBy}vh))`,
+                left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})), calc(95vw - ${item.size}vw))`,
+                width:
+                  windowWidth < windowHeight
+                    ? `${item.size / dividedBy}vh`
+                    : `${item.size / dividedBy}vw`,
+                height:
+                  windowWidth < windowHeight
+                    ? `${item.size / dividedBy}vh`
+                    : `${item.size / dividedBy}vw`,
+                transitionDuration: '600ms',
+                ['--idx' as string]: `${item.i}`,
+              }
+              const inner: CSSProperties = {
+                color: `${item.color}`,
+                ['--i' as string]: `${item.i}`,
+                ['--e' as string]: `${item.e}`,
+                ['--s' as string]:
+                  windowWidth < windowHeight
+                    ? `${item.size}vh`
+                    : `${item.size}vw`,
+                width: '100%',
+                height: '100%',
+                minWidth: `44px`,
+                minHeight: `44px`,
+                maxWidth: `150px`,
+                maxHeight: `150px`,
+                opacity: `${
+                  item.size > 6 ? `0.7` : `0.${Math.ceil(item.size + 2)}`
+                }`,
+              }
+
+              return (
+                // MEDIA
+
+                <li
+                  key={`${item.color}${item.size}${item.e}${index}`}
+                  id={`shape${item.i}`}
+                  className={`${styles.item} ${styles[location]} ${
+                    styles.circles
+                  } 
+                                ${
+                                  windowHeight < windowWidth
+                                    ? styles.wide
+                                    : styles.tall
+                                }`}
+                  style={style}
+                  role={'option'}
+                  tabIndex={0}
+                  aria-selected={`shape${item.i}` === activeDescendant}
+                  onFocus={e => {
+                    setActiveDescendant(e.target.id)
+                  }}
+                  onBlurCapture={() => {
+                    setActiveDescendant(null)
+                  }}
+                  onPointerEnter={e => {
+                    movingItem(e)
+                  }}
+                  onMouseDown={e => {
+                    removeItem(e)
+                  }}
+                  onTouchStart={e => {
+                    removeItem(e)
+                  }}
+                  onPointerDown={e => {
+                    removeItem(e)
+                  }}
+                  onKeyDown={e => {
+                    Draggable.keyDown(
+                      e,
+                      e.target as HTMLElement,
+                      windowObj,
+                      () => escapeFunction(),
+                      () => removeItem(e),
+                      () => removeItem(e),
+                      null
+                    )
+                  }}
+                >
+                  <div style={inner}>
+                    {spanArray.map((span, index) => {
+                      const style: CSSProperties = {
+                        position: 'absolute',
                         color: `${item.color}`,
                         ['--color' as string]: `${span.color}`,
                         ['--number' as string]: `${index}`,
