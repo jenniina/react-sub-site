@@ -1,4 +1,11 @@
-import React, { useState, useEffect, FC, useRef, useMemo } from 'react'
+import React, {
+  useState,
+  useEffect,
+  FC,
+  useRef,
+  useMemo,
+  useCallback,
+} from 'react'
 import styles from './accessiblecolors.module.css'
 import { notify } from '../../reducers/notificationReducer'
 import useLocalStorage from '../../hooks/useStorage'
@@ -99,6 +106,43 @@ const AccessibleColors: FC = () => {
   const dispatch = useAppDispatch()
   const lightTheme = useTheme()
   const toggleTheme = useThemeUpdate()
+
+  const copyToClipboard = useCallback(
+    async (text: string) => {
+      if (typeof window === 'undefined') return
+
+      try {
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(text)
+          void dispatch(notify(t('CopiedToClipboard'), false, 5))
+          return
+        }
+
+        // Fallback for older browsers / insecure contexts
+        const textArea = document.createElement('textarea')
+        textArea.value = text
+        textArea.style.position = 'fixed'
+        textArea.style.left = '-9999px'
+        textArea.style.top = '0'
+        document.body.appendChild(textArea)
+        textArea.focus()
+        textArea.select()
+
+        const ok = document.execCommand('copy')
+        document.body.removeChild(textArea)
+
+        if (ok) {
+          void dispatch(notify(t('CopiedToClipboard'), false, 5))
+        } else {
+          void dispatch(notify(`${t('FailedToCopy')}`, true, 5))
+        }
+      } catch (error) {
+        console.error('Failed to copy:', error)
+        void dispatch(notify(`${t('FailedToCopy')}`, true, 5))
+      }
+    },
+    [dispatch, t]
+  )
   const [searchParams, setSearchParams] = useSearchParams({
     show: 'true',
     name: 'true',
@@ -1078,6 +1122,7 @@ const AccessibleColors: FC = () => {
                           return (
                             <button
                               key={`aaa-${otherColor.color}-${otherColor.id}`}
+                              type="button"
                               className={`reset ${styles['indicator-aaa']} ${styles.indicator} tooltip-wrap`}
                               style={{
                                 ['--color' as string]: otherColor.color,
@@ -1088,10 +1133,7 @@ const AccessibleColors: FC = () => {
                               }}
                               onClick={() => {
                                 const text = `${otherColor.color} is AAA compliant with ${block.color}`
-                                void navigator.clipboard.writeText(text)
-                                void dispatch(
-                                  notify(t('CopiedToClipboard'), false, 5)
-                                )
+                                void copyToClipboard(text)
                               }}
                             >
                               <span
@@ -1112,6 +1154,7 @@ const AccessibleColors: FC = () => {
                           return (
                             <button
                               key={`aa-${otherColor.color}-${otherColor.id}`}
+                              type="button"
                               className={`reset ${styles['indicator-aa']} ${styles.indicator} tooltip-wrap`}
                               style={{
                                 ['--color' as string]: otherColor.color,
@@ -1128,10 +1171,7 @@ const AccessibleColors: FC = () => {
                               }}
                               onClick={() => {
                                 const text = `${otherColor.color} is AA compliant with ${block.color}`
-                                void navigator.clipboard.writeText(text)
-                                void dispatch(
-                                  notify(t('CopiedToClipboard'), false, 5)
-                                )
+                                void copyToClipboard(text)
                               }}
                             >
                               <span
@@ -1152,6 +1192,7 @@ const AccessibleColors: FC = () => {
                           return (
                             <button
                               key={`aa-ui-${otherColor.color}-${otherColor.id}`}
+                              type="button"
                               className={`reset ${styles['indicator-aa-ui']} ${styles.indicator} tooltip-wrap`}
                               style={{
                                 ['--color' as string]: otherColor.color,
@@ -1165,10 +1206,7 @@ const AccessibleColors: FC = () => {
                               }}
                               onClick={() => {
                                 const text = `${otherColor.color} is AA UI compliant with ${block.color}`
-                                void navigator.clipboard.writeText(text)
-                                void dispatch(
-                                  notify(t('CopiedToClipboard'), false, 5)
-                                )
+                                void copyToClipboard(text)
                               }}
                             >
                               <span
