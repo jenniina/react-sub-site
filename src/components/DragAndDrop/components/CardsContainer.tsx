@@ -138,7 +138,7 @@ const CardsContainer = ({
       className={`${styles['cards-container']} ${
         isDragging ? styles['area-dragging'] : ''
       } ${lightTheme ? styles.light : ''}`}
-  onDrop={e => void handleContainerDrop(e, statuses.indexOf(status))}
+      onDrop={e => void handleContainerDrop(e, statuses.indexOf(status))}
       onDragEnd={() => handleDragging(false)}
     >
       <span
@@ -204,7 +204,7 @@ const CardsContainer = ({
         role="listbox"
         id={sanitize(status)}
         className={sanitize(status)}
-  onDrop={(e) => void handleDrop(e)}
+        onDrop={e => void handleDrop(e)}
         onDragOver={handleDragOver}
       >
         {itemsByStatus?.map((item, index) => (

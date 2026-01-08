@@ -57,6 +57,7 @@ export const DragAndDrop = () => {
     `DnD-statuses`,
     initialStatuses
   )
+
   const [newStatus, setNewStatus] = useState<string>('')
 
   const containerRef = useRef<HTMLDivElement>(null)
@@ -259,14 +260,12 @@ export const DragAndDrop = () => {
       void dispatch(notify(t('CannotRemoveLastCategory'), true, 8))
       return
     } // check if there are items with this status
-    else if (data.some(d => d.status === status)) {
-      void dispatch(
-        notify(
-          `${t('AreYouSureYouWantToRemoveThis')} ${t('ItIsNotEmpty')}`,
-          true,
-          8
-        )
-      )
+    else if (
+      data.some(d => d.status === status) &&
+      (await confirm({
+        message: `${t('AreYouSureYouWantToRemoveThis')} ${t('ItIsNotEmpty')}`,
+      }))
+    ) {
       setStatuses(prevStatuses => prevStatuses.filter(s => s !== status))
       setData(prevData => prevData.filter(d => d.status !== status))
     } else if (
@@ -293,6 +292,7 @@ export const DragAndDrop = () => {
         removeData()
         setData([])
         removeUserColors()
+        console.log('Generating initial data')
         for (let i = 0; i < initialColors.length; i++) {
           const color = initialColors[i].color ?? 'lightgray'
           const content = initialColors[i].content ?? 'lightgray'
@@ -311,10 +311,12 @@ export const DragAndDrop = () => {
           }
           array.push(item)
         }
+        console.log('Generated data:', array)
         return array
-      } else {
+      } else if (userColors && userColors.length > 0) {
         removeData()
         setData([])
+        console.log('Generating initial data with user colors')
         for (let i = 0; i < userColors.length; i++) {
           const color = userColors[i].color ?? 'lightgray' // Use user-defined colors or default to 'lightgray'
           const content = userColors[i].content ?? 'lightgray' // Use user-defined colors or default to 'lightgray'
@@ -351,20 +353,34 @@ export const DragAndDrop = () => {
           }
           array.push(item)
         }
+        console.log('Generated data:', array)
+        return array
+      } else {
+        removeData()
+        setData([])
+        console.log('Generating initial data without user colors')
+        for (let i = 0; i < initialColors.length; i++) {
+          const color = initialColors[i].color ?? 'lightgray'
+          const content = initialColors[i].content ?? 'lightgray'
+          lightness = determineBackgroundLightness(color)
+          // Randomize the item status
+          const randomIndex = Math.floor(Math.random() * statuses.length)
+          state = statuses[randomIndex]
+          const item: Data = {
+            id: i,
+            content: content,
+            color: color,
+            status: state,
+            lightness: lightness,
+          }
+          array.push(item)
+        }
+        console.log('Generated data:', array)
         return array
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [
-      data,
-      removeData,
-      setData,
-      removeUserColors,
-      statuses,
-      t,
-      userColors,
-      initialColors,
-    ]
+    []
   )
 
   const startAgain = async () => {
@@ -381,7 +397,12 @@ export const DragAndDrop = () => {
         message: `${t('AreYouSureYouWantToDeleteThisVersion')} (${t('Clear')})`,
       })
     ) {
-      if (
+      if (!userColors || userColors.length === 0) {
+        removeStatuses()
+        removeData()
+        setStatuses(initialStatuses)
+        setData([])
+      } else if (
         userColors &&
         userColors.length > 0 &&
         (await confirm({ message: t('DoYouWantToDeleteYourColorsText') }))
@@ -390,13 +411,13 @@ export const DragAndDrop = () => {
           listItemsByStatus[status].removeItems()
         })
         removeStatuses()
-        setStatuses(initialStatuses)
         removeData()
+        setStatuses(initialStatuses)
         setData([])
       } else {
         removeStatuses()
-        setStatuses(initialStatuses)
         removeData()
+        setStatuses(initialStatuses)
         setData([])
         setData(
           userColors.map((item, index) => {
@@ -657,6 +678,9 @@ export const DragAndDrop = () => {
           onSubmit={e => {
             e.preventDefault()
             addStatus(newStatus)
+            const scrollTarget = containerRef.current
+            scrollTarget?.scrollIntoView({ behavior: 'smooth' })
+            setNewStatus('')
           }}
         >
           <div className="input-wrap">
