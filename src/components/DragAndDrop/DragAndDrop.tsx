@@ -34,19 +34,31 @@ export const DragAndDrop = () => {
   const [data, setData, removeData] = useLocalStorage<Data[]>('DnD-data', [])
 
   const initialColors = [
-    { content: 'orchid', color: 'orchid' },
-    { content: 'lightgreen', color: 'lightgreen' },
-    { content: 'lightsalmon', color: 'lightsalmon' },
-    { content: 'lightblue', color: 'lightblue' },
-    { content: 'pink', color: 'pink' },
-    { content: 'turquoise', color: 'turquoise' },
-    { content: 'blue', color: 'blue' },
-    { content: 'crimson', color: 'crimson' },
-    { content: 'yellow', color: 'yellow' },
-    { content: t('WithPurpleWrittenLast'), color: 'purple' },
-    { content: t('WithOrangeWrittenLast'), color: 'orange' },
-    { content: t('LongTextWithoutColorNameAtTheEnd'), color: 'lightgray' },
-    { content: t('SomeTextNoColorName'), color: 'lightgray' },
+    { content: 'orchid', color: 'orchid', lightness: 'light' },
+    { content: 'lightgreen', color: 'lightgreen', lightness: 'light' },
+    { content: 'lightsalmon', color: 'lightsalmon', lightness: 'light' },
+    { content: 'lightblue', color: 'lightblue', lightness: 'light' },
+    { content: 'pink', color: 'pink', lightness: 'light' },
+    { content: 'turquoise', color: 'turquoise', lightness: 'light' },
+    { content: 'blue', color: 'blue', lightness: 'dark' },
+    { content: 'crimson', color: 'crimson', lightness: 'dark' },
+    { content: 'yellow', color: 'yellow', lightness: 'light' },
+    { content: t('WithPurpleWrittenLast'), color: 'purple', lightness: 'dark' },
+    {
+      content: t('WithOrangeWrittenLast'),
+      color: 'orange',
+      lightness: 'light',
+    },
+    {
+      content: t('LongTextWithoutColorNameAtTheEnd'),
+      color: 'lightgray',
+      lightness: 'light',
+    },
+    {
+      content: t('SomeTextNoColorName'),
+      color: 'lightgray',
+      lightness: 'light',
+    },
   ]
 
   const [userColors, setUserColors, removeUserColors] = useLocalStorage<
@@ -121,18 +133,46 @@ export const DragAndDrop = () => {
   }, [statuses])
 
   const colorNameToHex = (color: string) => {
-    const ctx = document?.createElement('canvas').getContext('2d')
+    const ctx = document.createElement('canvas').getContext('2d')
     if (!ctx) {
       throw new Error('Canvas context not available')
     }
+
+    // Validate by using a sentinel first
+    const sentinel = 'rgb(1, 2, 3)'
+    ctx.fillStyle = sentinel
     ctx.fillStyle = color
-    return ctx.fillStyle
+
+    // If invalid, fillStyle stays at sentinel
+    if (ctx.fillStyle === sentinel) {
+      throw new Error(`Invalid color: ${color}`)
+    }
+
+    return ctx.fillStyle // can be "#rrggbb" or "rgb(r, g, b)"
   }
 
-  const hexToRGB = (hex: string) => {
-    const r = parseInt(hex.slice(1, 3), 16)
-    const g = parseInt(hex.slice(3, 5), 16)
-    const b = parseInt(hex.slice(5, 7), 16)
+  const hexToRGB = (value: string) => {
+    if (value.startsWith('rgb(')) {
+      const m = value.match(/^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/)
+      if (!m) throw new Error(`Unsupported rgb format: ${value}`)
+      return { r: Number(m[1]), g: Number(m[2]), b: Number(m[3]) }
+    }
+
+    // Handle hex formats, including #ccc
+    if (!value.startsWith('#'))
+      throw new Error(`Unsupported color format: ${value}`)
+
+    let hex = value.slice(1)
+    if (hex.length === 3)
+      hex = hex
+        .split('')
+        .map(ch => ch + ch)
+        .join('')
+    if (hex.length !== 6) throw new Error(`Unsupported hex length: ${value}`)
+
+    const r = parseInt(hex.slice(0, 2), 16)
+    const g = parseInt(hex.slice(2, 4), 16)
+    const b = parseInt(hex.slice(4, 6), 16)
     return { r, g, b }
   }
 
@@ -145,9 +185,9 @@ export const DragAndDrop = () => {
   }
 
   const determineBackgroundLightness = (color: string) => {
-    const hexColor = color.startsWith('#') ? color : colorNameToHex(color)
-    const { r, g, b } = hexToRGB(hexColor)
-    const luminance = calculateLuminance(r, g, b)
+    const normalized = color.startsWith('#') ? color : colorNameToHex(color)
+    const rgb = hexToRGB(normalized)
+    const luminance = calculateLuminance(rgb.r, rgb.g, rgb.b)
     return luminance > 0.179 ? 'light' : 'dark'
   }
 
@@ -282,7 +322,6 @@ export const DragAndDrop = () => {
     async () => {
       const array: Data[] = []
       let state: Status = initialStatuses[1]
-      let lightness: Lightness
 
       if (
         userColors &&
@@ -296,7 +335,9 @@ export const DragAndDrop = () => {
         for (let i = 0; i < initialColors.length; i++) {
           const color = initialColors[i].color ?? 'lightgray'
           const content = initialColors[i].content ?? 'lightgray'
-          lightness = determineBackgroundLightness(color)
+          const lightness =
+            (initialColors[i].lightness as Lightness) ??
+            determineBackgroundLightness(color)
 
           // Randomize the item status
           const randomIndex = Math.floor(Math.random() * statuses.length)
@@ -320,7 +361,7 @@ export const DragAndDrop = () => {
         for (let i = 0; i < userColors.length; i++) {
           const color = userColors[i].color ?? 'lightgray' // Use user-defined colors or default to 'lightgray'
           const content = userColors[i].content ?? 'lightgray' // Use user-defined colors or default to 'lightgray'
-          lightness = determineBackgroundLightness(color)
+          const lightness = determineBackgroundLightness(color)
 
           // Randomize the item status
           const randomIndex = Math.floor(Math.random() * statuses.length)
@@ -338,7 +379,9 @@ export const DragAndDrop = () => {
         for (let i: number = userColors.length; i < initialColors.length; i++) {
           const color = initialColors[i].color ?? 'lightgray'
           const content = initialColors[i].content ?? 'lightgray'
-          lightness = determineBackgroundLightness(color)
+          const lightness =
+            (initialColors[i].lightness as Lightness) ??
+            determineBackgroundLightness(color)
 
           // Randomize the item status
           const randomIndex = Math.floor(Math.random() * statuses.length)
@@ -362,7 +405,9 @@ export const DragAndDrop = () => {
         for (let i = 0; i < initialColors.length; i++) {
           const color = initialColors[i].color ?? 'lightgray'
           const content = initialColors[i].content ?? 'lightgray'
-          lightness = determineBackgroundLightness(color)
+          const lightness =
+            (initialColors[i].lightness as Lightness) ??
+            determineBackgroundLightness(color)
           // Randomize the item status
           const randomIndex = Math.floor(Math.random() * statuses.length)
           state = statuses[randomIndex]
@@ -498,7 +543,7 @@ export const DragAndDrop = () => {
         content: allButLastWord,
         color: lastWord,
         status: statusForItem,
-        lightness: determineBackgroundLightness(newColor),
+        lightness: determineBackgroundLightness(lastWord),
       }
       setData(prevData => [...prevData, newItem])
       setUserColors(prevColors => {
@@ -512,55 +557,46 @@ export const DragAndDrop = () => {
       containerRef.current?.scrollIntoView({ behavior: 'smooth' })
       setSending(false)
     } else {
-      if (
-        await confirm({
-          message: `${t('InvalidColorName')}: ${t(
-            'AreYouSureYouWantToProceed'
-          )}`,
-        })
-      ) {
-        // If the user confirms, add the color anyway with the color lightgray and lightness light. This is to enable users to add sortable items for general use
-        setUserColors(prevColors => {
-          const updatedColors = [
-            ...prevColors,
-            { content: newColor, color: 'lightgray' },
-          ]
-          const newItem: Data = {
-            id: updatedColors.length - 1,
-            content: newColor,
-            color: 'lightgray',
-            status: statusForItem,
-            lightness: 'light',
-          }
-          setData(prevData => [...prevData, newItem])
-          return updatedColors
-        })
-        containerRef.current?.scrollIntoView({ behavior: 'smooth' })
-        setSending(false)
-      }
+      // Add the color anyway with the color lightgray and lightness light. This is to enable users to add sortable items for general use
+      setUserColors(prevColors => {
+        const updatedColors = [
+          ...prevColors,
+          { content: newColor, color: 'lightgray' },
+        ]
+        const newItem: Data = {
+          id: updatedColors.length,
+          content: newColor,
+          color: 'lightgray',
+          status: statusForItem,
+          lightness: 'light',
+        }
+        setData(prevData => [...prevData, newItem])
+        return updatedColors
+      })
+      containerRef.current?.scrollIntoView({ behavior: 'smooth' })
+      setSending(false)
     }
   }
-  const handleRemoveColor = async (content: Data['content']) => {
+
+  const handleRemoveColor = async (data: Data) => {
     if (
       await confirm({
-        message: `${t('AreYouSureYouWantToRemoveThis')} (${content})`,
+        message: `${t('AreYouSureYouWantToRemoveThis')} (${data.content})`,
       })
     ) {
-      setData(prevData => prevData.filter(d => d.content !== content))
+      setData(prevData => prevData.filter(d => d !== data))
       setUserColors(prevColors => {
-        const updatedColors = prevColors.filter(c => c.content !== content)
+        const updatedColors = prevColors.filter(c => c !== data)
         return updatedColors
       })
     } else return
   }
 
   const isValidColor = (color: string) => {
-    const ctx = document?.createElement('canvas').getContext('2d')
-    if (!ctx) {
-      throw new Error('Canvas context not available')
+    if (typeof CSS !== 'undefined' && typeof CSS.supports === 'function') {
+      return CSS.supports('color', color)
     }
-    ctx.fillStyle = color
-    return ctx.fillStyle !== '#000000' || color.toLowerCase() === 'black' // Check if the color is recognized
+    return false
   }
 
   const lightTheme = useTheme()

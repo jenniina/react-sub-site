@@ -20,7 +20,7 @@ interface Props {
   statuses: Status[]
   isDragging: boolean
   handleUpdate: (id: number, status: Status, target?: number) => void
-  handleRemoveColor: (color: Data['content']) => Promise<void>
+  handleRemoveColor: (data: Data) => Promise<void>
   handleDragging: (dragging: boolean) => void
   lightTheme: boolean
   updateStatus: (index: number, status: Status) => void
