@@ -4,7 +4,6 @@ function onBeforePrerenderStart() {
   // Return all the URLs you want to prerender
   const urls = [
     '/',
-    '/about',
     '/portfolio',
     '/portfolio/memory',
     '/portfolio/graphql',

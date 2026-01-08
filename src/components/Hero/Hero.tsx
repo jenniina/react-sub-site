@@ -9,7 +9,6 @@ import {
   MouseEvent as ReactMouseEvent,
   TouchEvent as ReactTouchEvent,
 } from 'react'
-import { useLocation } from 'react-router-dom'
 import styles from './hero.module.css'
 import useWindowSize from '../../hooks/useWindowSize'
 import { getRandomMinMax } from '../../utils'
@@ -37,20 +36,20 @@ export default function Hero({
   text,
   reset,
   instructions,
+  pathname,
 }: {
   heading: string
   address: string
   text: string
   reset?: string
   instructions?: string
+  pathname: string
 }) {
   const { calculateDirection } = useEnterDirection()
   const isClient = useIsClient()
   const windowObj = useWindow()
 
   const { t } = useLanguageContext()
-
-  const location = useLocation()
 
   const [values, setValues] = useSessionStorage<itemProps[]>('Hero', [])
   const [itemsVisible, setItemsVisible] = useState(true)
@@ -62,8 +61,8 @@ export default function Hero({
 
   // remove the last trailing / then get the last part of the pathname:
   const page = useMemo(() => {
-    return location.pathname?.replace(/\/$/, '').split('/').pop() ?? ''
-  }, [location])
+    return pathname?.replace(/\/$/, '').split('/').pop() ?? ''
+  }, [pathname])
 
   // Handle page transition for hero items
   useEffect(() => {
@@ -75,7 +74,7 @@ export default function Hero({
       const timer = setTimeout(() => {
         setCurrentPage(page)
         setItemsVisible(true)
-      }, 500)
+      }, 400)
 
       const timer2 = setTimeout(() => {
         setTheHeading(heading)
@@ -145,6 +144,7 @@ export default function Hero({
     (e: ReactPointerEvent<HTMLElement>) => {
       if (!isClient || !windowObj) return
 
+      const amount = page === 'composer' ? 20 : 10
       const target = e.target as HTMLElement
       const targetLeft = windowObj
         .getComputedStyle(target)
@@ -155,16 +155,16 @@ export default function Hero({
       const from = calculateDirection(e)
       switch (from) {
         case 'top':
-          target.style.top = `${parseFloat(targetTop) + 10}px`
+          target.style.top = `${parseFloat(targetTop) + amount}px`
           break
         case 'right':
-          target.style.left = `${parseFloat(targetLeft) - 10}px`
+          target.style.left = `${parseFloat(targetLeft) - amount}px`
           break
         case 'bottom':
-          target.style.top = `${parseFloat(targetTop) - 10}px`
+          target.style.top = `${parseFloat(targetTop) - amount}px`
           break
         case 'left':
-          target.style.left = `${parseFloat(targetLeft) + 10}px`
+          target.style.left = `${parseFloat(targetLeft) + amount}px`
           break
         default:
           break
@@ -431,8 +431,8 @@ export default function Hero({
 
         // Choose a random direction
         const direction = Math.floor(Math.random() * 8)
-        const change = 10
-        const changeBigger = 16
+        const change = page === 'composer' ? 20 : 10
+        const changeBigger = page === 'composer' ? 40 : 16
 
         let newTop = currentTop
         let newLeft = currentLeft

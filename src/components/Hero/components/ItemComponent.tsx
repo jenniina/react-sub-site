@@ -86,6 +86,11 @@ const ItemComponent = forwardRef<
       null
     )
 
+    const isComposer = location === LOCATION.COMPOSER
+    const composerStaffWidth = 200
+    const composerStaffMidY = 'clamp(100px, 44vh, 1000px)'
+    const composerStaffHalfStep = `calc(60px * (${composerStaffWidth} / 640))`
+
     return (
       <>
         <ul
@@ -103,35 +108,43 @@ const ItemComponent = forwardRef<
               ? styles.blob
               : ''
           } ${itemsVisible ? styles['items-visible'] : styles['items-hidden']} `}
-          style={
-            //In the case of using the blob feature for a page, add it here as well:
-            location === LOCATION.PORTFOLIO ||
-            location === LOCATION.BLOBAPP ||
-            location === LOCATION.DND
-              ? {
-                  WebkitFilter: 'url(#svgfilterHero)',
-                  filter: 'url(#svgfilterHero)',
-                  opacity: 0.8,
-                }
-              : { WebkitFilter: 'none', filter: 'none' }
-          }
+          style={(() => {
+            const baseStyle: CSSProperties =
+              location === LOCATION.PORTFOLIO ||
+              location === LOCATION.BLOBAPP ||
+              location === LOCATION.DND
+                ? {
+                    WebkitFilter: 'url(#svgfilterHero)',
+                    filter: 'url(#svgfilterHero)',
+                    opacity: 0.7,
+                  }
+                : { WebkitFilter: 'none', filter: 'none' }
+
+            if (!isComposer) return baseStyle
+
+            return {
+              ...baseStyle,
+              ['--staff-width' as string]: `${composerStaffWidth}px`,
+              ['--staff-mid-y' as string]: composerStaffMidY,
+              ['--staff-half-step' as string]: composerStaffHalfStep,
+            }
+          })()}
         >
           {array.map((item, index) => {
             if (
               location == LOCATION.SELECT ||
               location == LOCATION.TODO ||
               location == LOCATION.GRAPHQL ||
-              location == LOCATION.MEMORY ||
-              location == LOCATION.MEDIA
+              location == LOCATION.MEMORY
             ) {
               const dividedBy = 2.5
 
               const style: CSSProperties = {
                 position: 'absolute',
-                top: `clamp(60px, calc(-5vh + calc(1.3vh * ${item.e} * ${
+                top: `clamp(100px, calc(-5vh + calc(1.3vh * ${item.e} * ${
                   item.e / 1.5
                 })), calc(80vh - 50px - ${item.size / dividedBy}vh))`,
-                left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})), 95vw - ${item.size}vw)`,
+                left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})), calc(95vw - ${item.size}vw))`,
                 width:
                   windowWidth < windowHeight
                     ? `${item.size / dividedBy}vh`
@@ -158,12 +171,12 @@ const ItemComponent = forwardRef<
                 maxHeight: `150px`,
                 borderRadius: '3px',
                 opacity: `${
-                  item.size > 6 ? `0.9` : `0.${Math.ceil(item.size + 3)}`
+                  item.size > 6 ? `0.7` : `0.${Math.ceil(item.size + 2)}`
                 }`,
               }
 
               return (
-                // SELECT // TODO // GRAPHQL // MEMORY // MEDIA
+                // SELECT // TODO // GRAPHQL // MEMORY
 
                 <li
                   key={`${item.color}${item.size}${item.e}${index}`}
@@ -230,17 +243,123 @@ const ItemComponent = forwardRef<
                   </div>
                 </li>
               )
-            } else if (location == LOCATION.COMPOSER) {
-              const itemSize = 3.4
+            } else if (location == LOCATION.MEDIA) {
+              const dividedBy = 2
 
               const style: CSSProperties = {
                 position: 'absolute',
-                top: `clamp(200px, calc(-1vh + calc(1.1vh * ${item.e} * ${
+                top: `clamp(100px, calc(-5vh + calc(1.3vh * ${item.e} * ${
                   item.e / 1.5
-                })), calc(80vh - ${itemSize}vh))`,
-                left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})), 95vw - ${item.size}vw)`,
-                width: `${itemSize}vw`,
-                height: `${itemSize}vw`,
+                })), calc(80vh - 50px - ${item.size / dividedBy}vh))`,
+                left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})), calc(95vw - ${item.size}vw))`,
+                width:
+                  windowWidth < windowHeight
+                    ? `${item.size / dividedBy}vh`
+                    : `${item.size / dividedBy}vw`,
+                height:
+                  windowWidth < windowHeight
+                    ? `${item.size / dividedBy}vh`
+                    : `${item.size / dividedBy}vw`,
+                transitionDuration: '600ms',
+                ['--idx' as string]: `${item.i}`,
+              }
+              const inner: CSSProperties = {
+                color: `${item.color}`,
+                ['--i' as string]: `${item.i}`,
+                ['--e' as string]: `${item.e}`,
+                ['--s' as string]:
+                  windowWidth < windowHeight
+                    ? `${item.size}vh`
+                    : `${item.size}vw`,
+                width: '100%',
+                height: '100%',
+                minWidth: `44px`,
+                minHeight: `44px`,
+                maxWidth: `150px`,
+                maxHeight: `150px`,
+                opacity: `${
+                  item.size > 6 ? `0.7` : `0.${Math.ceil(item.size + 2)}`
+                }`,
+              }
+
+              return (
+                // MEDIA
+
+                <li
+                  key={`${item.color}${item.size}${item.e}${index}`}
+                  id={`shape${item.i}`}
+                  className={`${styles.item} ${styles[location]} ${
+                    styles.circles
+                  } 
+                                ${
+                                  windowHeight < windowWidth
+                                    ? styles.wide
+                                    : styles.tall
+                                }`}
+                  style={style}
+                  role={'option'}
+                  tabIndex={0}
+                  aria-selected={`shape${item.i}` === activeDescendant}
+                  onFocus={e => {
+                    setActiveDescendant(e.target.id)
+                  }}
+                  onBlurCapture={() => {
+                    setActiveDescendant(null)
+                  }}
+                  onPointerEnter={e => {
+                    movingItem(e)
+                  }}
+                  onMouseDown={e => {
+                    removeItem(e)
+                  }}
+                  onTouchStart={e => {
+                    removeItem(e)
+                  }}
+                  onPointerDown={e => {
+                    removeItem(e)
+                  }}
+                  onKeyDown={e => {
+                    Draggable.keyDown(
+                      e,
+                      e.target as HTMLElement,
+                      windowObj,
+                      () => escapeFunction(),
+                      () => removeItem(e),
+                      () => removeItem(e),
+                      null
+                    )
+                  }}
+                >
+                  <div style={inner}>
+                    {spanArray.map((span, index) => {
+                      const style: CSSProperties = {
+                        position: 'absolute',
+                        color: `${item.color}`,
+                        ['--color' as string]: `${span.color}`,
+                        ['--number' as string]: `${index}`,
+                      }
+                      return (
+                        <span key={`${item.i}-${index}`} style={style}>
+                          <span className="scr">
+                            {t('Shape')} {index + 1}
+                          </span>
+                        </span>
+                      )
+                    })}
+                  </div>
+                </li>
+              )
+            } else if (location == LOCATION.COMPOSER) {
+              const itemSize = 3.4
+              const noteStep = (item.i + item.e) % 11
+              const colStep = `clamp(50px, calc((99vw - 50px) / 10), 99999px)`
+              const noteHead = `40px`
+              const style: CSSProperties = {
+                position: 'absolute',
+                ['--size' as string]: `${itemSize}`,
+                ['--note-head' as string]: `${noteHead}`,
+                top: `calc(clamp(100px, 44vh, 1000px) + (${noteStep} * (60px * 200 / 640)) - ${noteHead})`,
+                left: `calc(${item.i} * ${colStep} - ${noteHead})`,
                 transitionDuration: '600ms',
                 opacity: `0.7`,
               }
@@ -248,8 +367,8 @@ const ItemComponent = forwardRef<
                 color: `${item.color}`,
                 width: '100%',
                 height: '100%',
-                minWidth: `44px`,
-                minHeight: `44px`,
+                minWidth: `40px`,
+                minHeight: `40px`,
                 maxWidth: `150px`,
                 maxHeight: `150px`,
                 borderRadius: '80% 50% 80% 50%',
@@ -263,7 +382,7 @@ const ItemComponent = forwardRef<
                   id={`shape${item.i}`}
                   className={`${styles.item} ${styles[location]} ${
                     styles.note
-                  } ${item.e > 7 ? styles.above : styles.below} ${item.e} 
+                  } ${noteStep > 5 ? styles.above : styles.below} ${item.e} 
                                 ${
                                   windowHeight < windowWidth
                                     ? styles.wide
@@ -348,10 +467,10 @@ const ItemComponent = forwardRef<
 
               const style: CSSProperties = {
                 position: 'absolute',
-                top: `clamp(60px, calc(-5vh + calc(1.3vh * ${item.e} * ${
+                top: `clamp(100px, calc(-5vh + calc(1.3vh * ${item.e} * ${
                   item.e / 1.5
                 })), calc(80vh - 50px - ${item.size / dividedBy}vh))`,
-                left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})), 95vw - ${item.size}vw)`,
+                left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})), calc(95vw - ${item.size}vw))`,
                 width:
                   windowWidth < windowHeight
                     ? `${item.size / dividedBy}vh`
@@ -515,10 +634,10 @@ const ItemComponent = forwardRef<
 
               const style: CSSProperties = {
                 position: 'absolute',
-                top: `clamp(60px, calc(-5vh + calc(1.1vh * ${item.e} * ${
+                top: `clamp(100px, calc(-5vh + calc(1.1vh * ${item.e} * ${
                   item.e / 1.5
                 })), calc(80vh - 50px - ${item.size / dividedBy}vh))`,
-                left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})), 95vw - ${item.size}vw)`,
+                left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})), calc(95vw - ${item.size}vw))`,
                 width:
                   windowWidth < windowHeight
                     ? `${item.size / dividedBy}vh`
@@ -663,11 +782,12 @@ const ItemComponent = forwardRef<
               location == LOCATION.HOME ||
               location == LOCATION.JOKES ||
               location == LOCATION.SALON ||
-              location == LOCATION.QUIZ
+              location == LOCATION.QUIZ ||
+              location == LOCATION.ABOUT
             ) {
               const style: CSSProperties = {
                 position: 'absolute',
-                top: `clamp(60px, calc(-20vh + 1.2vh * ${item.e * 3} * ${
+                top: `clamp(100px, calc(-20vh + 1.2vh * ${item.e * 3} * ${
                   item.size / 6
                 }), calc(80vh - 50px - calc(var(--size, 200px) * 0.8vh)))`,
                 left: `clamp(1vw, calc(-5vh + ${item.i} * 1.4vw * ${item.e}), 96vw - ${item.size}vw)`,
@@ -693,11 +813,11 @@ const ItemComponent = forwardRef<
                 minHeight: '44px',
                 minWidth: '44px',
                 borderRadius: '65% 65% 70% 60% / 60% 70% 60% 65%',
-                opacity: `0.${item.size > 8 ? 8 : Math.ceil(item.size)}`,
+                opacity: `0.${item.size > 7 ? 7 : Math.ceil(item.size)}`,
               }
 
               return (
-                //HOME // JOKES // SALON // QUIZ
+                //HOME // JOKES // SALON // QUIZ // ABOUT
                 <li
                   key={`${item.color}${item.size}${item.e}${index}`}
                   className={`${styles.item} ${styles.about} ${styles.bubbles} ${
@@ -773,7 +893,7 @@ const ItemComponent = forwardRef<
               const number = Math.floor(getRandomMinMax(0.001, 3.999))
               const style: CSSProperties = {
                 position: 'absolute',
-                top: `clamp(60px, calc(-20% + ${item.e} * 1.4vh * ${
+                top: `clamp(100px, calc(-20% + ${item.e} * 1.4vh * ${
                   item.size / 2
                 }), calc(80vh - 50px - calc(var(--size, 200px) * 0.8vh)))`,
                 left: `clamp(1vw, calc(-10% + ${
@@ -809,7 +929,7 @@ const ItemComponent = forwardRef<
                 maxHeight: `200px`,
                 borderRadius: `${blobRadius[number]}`,
                 transform: 'rotate(' + item.rotation + 'deg)',
-                opacity: `0.9`,
+                opacity: `0.7`,
                 WebkitFilter: filter,
                 filter: filter,
                 transitionProperty:
@@ -903,7 +1023,7 @@ const ItemComponent = forwardRef<
               const mod = 0.6
               const style: CSSProperties = {
                 position: 'absolute',
-                top: `clamp(60px, calc(-5vh + calc(1.5vh * ${item.e} * ${
+                top: `clamp(100px, calc(-5vh + calc(1.5vh * ${item.e} * ${
                   item.e / 1.9
                 })), calc(80vh - 50px - calc(var(--size, 120px) * ${mod}vh)))`,
                 left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})),90vw)`,
@@ -929,7 +1049,7 @@ const ItemComponent = forwardRef<
                 maxHeight: '120px',
                 maxWidth: '120px',
                 borderRadius: '50%',
-                opacity: `0.${item.size > 7 ? 8 : Math.ceil(item.size)}`,
+                opacity: `0.${item.size > 7 ? 7 : Math.ceil(item.size)}`,
               }
               const styleInner: CSSProperties = {
                 position: 'absolute',
@@ -937,7 +1057,7 @@ const ItemComponent = forwardRef<
                 width: '100%',
                 height: '100%',
                 borderRadius: '50%',
-                opacity: `0.${item.size > 8 ? 8 : Math.ceil(item.size)}`,
+                opacity: `0.${item.size > 7 ? 7 : Math.ceil(item.size)}`,
               }
 
               return (
@@ -1013,10 +1133,10 @@ const ItemComponent = forwardRef<
                 ['--border' as string]: border,
                 borderWidth: border,
                 position: 'absolute',
-                top: `clamp(60px, calc(-5vh + calc(1.2vh * ${item.e} * ${
+                top: `clamp(100px, calc(-5vh + calc(1.2vh * ${item.e} * ${
                   item.e / 1.3
                 })), calc(80vh - 50px - ${item.size / 1.3}vh))`,
-                left: `clamp(1vw, calc(-10vw + ${item.i} * 1.3vw * ${item.e}), 95vw - ${item.size}vw)`,
+                left: `clamp(1vw, calc(-10vw + ${item.i} * 1.3vw * ${item.e}), calc(95vw - ${item.size}vw))`,
                 width: 0,
                 height: 0,
                 opacity: `0.${item.size > 5 ? 5 : Math.ceil(item.size)}`,

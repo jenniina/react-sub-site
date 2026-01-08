@@ -3,6 +3,7 @@ import {
   Route,
   Location as RouterLocation,
   useLocation,
+  Navigate,
 } from 'react-router-dom'
 import { options } from '../../utils'
 import { useEffect, useState } from 'react'
@@ -48,7 +49,7 @@ const MainWrapper = () => {
   const isClient = useIsClient()
   const windowObj = useWindow()
 
-  const { language, setLanguage } = useLanguageContext()
+  const { t, language, setLanguage } = useLanguageContext()
 
   const { cart, addToCart, removeFromCart, editDetails, clearCart } = useCart()
 
@@ -129,11 +130,13 @@ const MainWrapper = () => {
         address={heroProps.address}
         heading={heroProps.heading}
         text={heroProps.text}
+        instructions={heroProps.instructions ?? t('TryTappingTheShapes')}
+        pathname={displayLocation.pathname}
       />
 
       <Routes location={displayLocation}>
         <Route path="*" element={<Welcome type="page" options={options} />} />
-        <Route path="/about" element={<About type="page" />} />
+        <Route path="/about" element={<Navigate to="/" replace />} />
 
         <Route
           path="/edit"

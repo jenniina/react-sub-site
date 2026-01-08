@@ -367,8 +367,6 @@ ul {
 .menu-container li.Welcome a {
   flex-flow: row wrap;
 }
-.menu-container li .jenniina {
-}
 .menu-container li a,
 .main-header button {
   display: flex;

@@ -11,20 +11,24 @@
 }
 .herocontent.composer {
   background-image: url('../../assets/staff.svg');
-  background-size: clamp(200px, 20%, 600px);
-  background-position: center 52%;
+  background-size: 200px;
+  background-position: center clamp(100px, 44vh, 1000px);
   background-repeat: repeat-x;
 }
-
 .hero h1,
 .hero p {
   overflow: visible;
   text-align: center;
 }
 .hero h1 {
-  margin-top: 0;
+  margin-top: 1em;
   margin-bottom: 0;
-  z-index: 9;
+  z-index: 1;
+}
+@media (min-height: 400px) {
+  .hero h1 {
+    margin-top: 0;
+  }
 }
 
 .hero p {
@@ -127,7 +131,8 @@
 .herocontent .eyes,
 .herocontent .geometric,
 .herocontent .triangle,
-.herocontent .note {
+.herocontent .note,
+.herocontent .circles {
   transition-property:
     top, right, bottom, left, transform, filter, box-shadow, outline, border,
     width, height, opacity;
@@ -567,12 +572,105 @@
   background-color: hsla(0, 0%, 100%, 0.7);
   pointer-events: none; /*Otherwise exitItem targets the wrong item*/
 }
-.herocontent .geometric span {
+.herocontent .geometric div > span::before,
+.herocontent .geometric div > span::after {
+  --dot-step-angle: 90deg;
+  content: '';
+  position: absolute;
+  width: 20%;
+  height: 20%;
+  border-radius: 50%;
+  background-color: var(--color);
+  top: calc(50% + (sin(45deg + var(--angle)) * var(--radius)) * 0.6);
+  left: calc(50% + (cos(45deg + var(--angle)) * var(--radius)) * 0.6);
+  transform: translate(-50%, -50%);
+}
+.light .herocontent .geometric div > span::before,
+.light .herocontent .geometric div > span::after {
+  background-color: currentColor;
+}
+.herocontent .geometric div > span::before {
+  --angle: calc(var(--number, 0) * var(--dot-step-angle));
+  --radius: calc(50% + 40%);
+}
+.herocontent .geometric div > span::after {
+  --angle: calc(var(--number, 0) * var(--dot-step-angle) - 180deg);
+  --radius: calc(50% + 25%);
+}
+
+.herocontent .circles div {
+  --time: 2000ms;
+  --deg1: calc(var(--idx, 3) * 3deg - 0deg);
+  --deg2: calc(var(--idx, 3) * 3deg - 360deg);
+  -webkit-animation: circles-hover 11000ms linear infinite reverse;
+  -o-animation: circles-hover 11000ms linear infinite reverse;
+  -ms-animation: circles-hover 11000ms linear infinite reverse;
+  -moz-animation: circles-hover 11000ms linear infinite reverse;
+  animation: circles-hover 11000ms linear infinite reverse;
+  -webkit-animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  -o-animation-play-state: paused;
+  -ms-animation-play-state: paused;
+  animation-play-state: paused;
+  animation-delay: calc(calc(1 + var(--idx, 0)) * -1000ms);
+  --box: 0 0 4px 0 currentColor, 0 0 40px 4px currentColor;
+  -webkit-box-shadow: var(--box);
+  -o-box-shadow: var(--box);
+  -ms-box-shadow: var(--box);
+  -moz-box-shadow: var(--box);
+  box-shadow: var(--box);
+  background-color: hsla(0, 0%, 100%, 0.7);
+  pointer-events: none; /*Otherwise exitItem targets the wrong item*/
+}
+.herocontent .circles,
+.herocontent .circles div,
+.herocontent .circles div > span {
+  border-radius: 50%;
+}
+.herocontent .circles div > span {
+  --dot-size: 20%;
+  --dot-step-angle: 30deg;
+  /* index is provided inline via var(--number) (0..3) */
+  --dot-base-angle: calc(var(--number, 0) * var(--dot-step-angle));
+  /* keep dots positioned outside the span edge */
+  --dot-radius: calc(50% + (var(--dot-size) * 2));
+}
+.herocontent .circles div > span::before,
+.herocontent .circles div > span::after {
+  content: '';
+  position: absolute;
+  width: var(--dot-size);
+  height: var(--dot-size);
+  border-radius: 50%;
+  background-color: var(--color);
+  top: calc(50% + (sin(var(--dot-angle)) * var(--dot-radius)) * 2);
+  left: calc(50% + (cos(var(--dot-angle)) * var(--dot-radius)) * 2);
+  transform: translate(-50%, -50%);
+}
+.light .herocontent .circles div > span::before,
+.light .herocontent .circles div > span::after {
+  background-color: currentColor;
+}
+.herocontent .circles div > span::before {
+  --dot-angle: var(--dot-base-angle);
+}
+.herocontent .circles div > span::after {
+  --dot-angle: calc(var(--dot-base-angle) - 115deg);
+}
+
+.herocontent .geometric span,
+.herocontent .circles div > span {
   background-color: currentColor;
 }
 .herocontent .geometric:hover,
-.herocontent .geometric:focus {
+.herocontent .geometric:focus,
+.herocontent .circles:hover,
+.herocontent .circles:focus {
   cursor: pointer;
+}
+.herocontent .note {
+  width: var(--note-head, 40px);
+  height: var(--note-head, 40px);
 }
 .herocontent .note div {
   --time: 1000ms;
@@ -631,6 +729,9 @@
 .herocontent .geometric:hover div,
 .herocontent .geometric:focus div,
 .herocontent .geometric.active div,
+.herocontent .circles:hover div,
+.herocontent .circles:focus div,
+.herocontent .circles.active div,
 .herocontent .bubbles:hover,
 .herocontent .bubbles:focus,
 .herocontent .item.active,
@@ -649,7 +750,8 @@
 .herocontent .jewel:focus-visible {
   outline: none;
 }
-.light .herocontent .geometric div {
+.light .herocontent .geometric div,
+.light .herocontent .circles div {
   --box: 0 0 30px 2px white;
   -webkit-box-shadow: var(--box);
   -ms-box-shadow: var(--box);
@@ -657,7 +759,8 @@
   box-shadow: var(--box);
   background-color: currentColor;
 }
-.light .herocontent .geometric span {
+.light .herocontent .geometric span,
+.light .herocontent .circles div > span {
   background-color: var(--color);
 }
 .light .herocontent .note div {
@@ -992,6 +1095,7 @@
 }
 
 .herocontent .geometric span,
+.herocontent .circles div > span,
 .herocontent .note span {
   pointer-events: none;
   position: absolute;
@@ -1067,6 +1171,8 @@
 }
 .herocontent .geometric:hover span,
 .herocontent .geometric:focus span,
+.herocontent .circles:hover span,
+.herocontent .circles:focus span,
 .herocontent .triangle:hover span,
 .herocontent .triangle:focus span,
 .herocontent .note:hover span,
@@ -1127,6 +1233,7 @@
   pointer-events: none;
 }
 
+.circles.exitItem,
 .bubbles.exitItem,
 .eyes.exitItem {
   -webkit-animation: hide-grow 100ms ease-in forwards;
@@ -1373,6 +1480,22 @@
     transform: rotate(45deg) scale(1.2);
   }
 }
+@keyframes circles-hover {
+  0% {
+    -webkit-transform: rotate(var(--deg1));
+    -o-transform: rotate(var(--deg1));
+    -ms-transform: rotate(var(--deg1));
+    -moz-transform: rotate(var(--deg1));
+    transform: rotate(var(--deg1));
+  }
+  100% {
+    -webkit-transform: rotate(var(--deg2));
+    -o-transform: rotate(var(--deg2));
+    -ms-transform: rotate(var(--deg2));
+    -moz-transform: rotate(var(--deg2));
+    transform: rotate(var(--deg2));
+  }
+}
 @keyframes note-hover {
   0%,
   100% {
@@ -1400,18 +1523,18 @@
     transform: skewX(0deg);
   }
   25% {
-    -webkit-transform: skewX(3deg);
-    -o-transform: skewX(3deg);
-    -ms-transform: skewX(3deg);
-    -moz-transform: skewX(3deg);
-    transform: skewX(3deg);
+    -webkit-transform: skewX(2.4deg);
+    -o-transform: skewX(2.4deg);
+    -ms-transform: skewX(2.4deg);
+    -moz-transform: skewX(2.4deg);
+    transform: skewX(2.4deg);
   }
   75% {
-    -webkit-transform: skewX(-3deg);
-    -o-transform: skewX(-3deg);
-    -ms-transform: skewX(-3deg);
-    -moz-transform: skewX(-3deg);
-    transform: skewX(-3deg);
+    -webkit-transform: skewX(-2.4deg);
+    -o-transform: skewX(-2.4deg);
+    -ms-transform: skewX(-2.4deg);
+    -moz-transform: skewX(-2.4deg);
+    transform: skewX(-2.4deg);
   }
 }
 @keyframes updown {
@@ -1760,7 +1883,8 @@
   -webkit-filter: brightness(130%) contrast(150%);
   filter: brightness(130%) contrast(150%);
 }
-.herocontent > .geometric:focus-visible {
+.herocontent > .geometric:focus-visible,
+.herocontent > .circles:focus-visible {
   outline: none;
   -webkit-filter: brightness(130%) contrast(150%);
   filter: brightness(130%) contrast(150%);
