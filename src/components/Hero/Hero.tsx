@@ -74,7 +74,7 @@ export default function Hero({
       const timer = setTimeout(() => {
         setCurrentPage(page)
         setItemsVisible(true)
-      }, 500)
+      }, 400)
 
       const timer2 = setTimeout(() => {
         setTheHeading(heading)
