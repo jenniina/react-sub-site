@@ -572,6 +572,32 @@
   background-color: hsla(0, 0%, 100%, 0.7);
   pointer-events: none; /*Otherwise exitItem targets the wrong item*/
 }
+.herocontent .geometric div > span::before,
+.herocontent .geometric div > span::after {
+  --dot-step-angle: 90deg;
+  content: '';
+  position: absolute;
+  width: 20%;
+  height: 20%;
+  border-radius: 50%;
+  background-color: var(--color);
+  top: calc(50% + (sin(45deg + var(--angle)) * var(--radius)) * 0.6);
+  left: calc(50% + (cos(45deg + var(--angle)) * var(--radius)) * 0.6);
+  transform: translate(-50%, -50%);
+}
+.light .herocontent .geometric div > span::before,
+.light .herocontent .geometric div > span::after {
+  background-color: currentColor;
+}
+.herocontent .geometric div > span::before {
+  --angle: calc(var(--number, 0) * var(--dot-step-angle));
+  --radius: calc(50% + 40%);
+}
+.herocontent .geometric div > span::after {
+  --angle: calc(var(--number, 0) * var(--dot-step-angle) - 180deg);
+  --radius: calc(50% + 25%);
+}
+
 .herocontent .circles div {
   --time: 2000ms;
   --deg1: calc(var(--idx, 3) * 3deg - 0deg);
