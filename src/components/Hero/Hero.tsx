@@ -93,6 +93,14 @@ export default function Hero({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, currentPage])
 
+  // Update heading and text when language changes (on same page)
+  useEffect(() => {
+    if (page === currentPage && currentPage !== '') {
+      setTheHeading(heading)
+      setTheText(text)
+    }
+  }, [heading, text, page, currentPage])
+
   // Clear eye transforms when navigating away from contact/form pages
   useEffect(() => {
     if (isClient && page !== 'contact' && page !== 'form') {
