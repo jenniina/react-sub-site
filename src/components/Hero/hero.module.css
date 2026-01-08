@@ -602,11 +602,11 @@
   --time: 2000ms;
   --deg1: calc(var(--idx, 3) * 3deg - 0deg);
   --deg2: calc(var(--idx, 3) * 3deg - 360deg);
-  -webkit-animation: circles-hover 12000ms linear infinite reverse;
-  -o-animation: circles-hover 12000ms linear infinite reverse;
-  -ms-animation: circles-hover 12000ms linear infinite reverse;
-  -moz-animation: circles-hover 12000ms linear infinite reverse;
-  animation: circles-hover 12000ms linear infinite reverse;
+  -webkit-animation: circles-hover 11000ms linear infinite reverse;
+  -o-animation: circles-hover 11000ms linear infinite reverse;
+  -ms-animation: circles-hover 11000ms linear infinite reverse;
+  -moz-animation: circles-hover 11000ms linear infinite reverse;
+  animation: circles-hover 11000ms linear infinite reverse;
   -webkit-animation-play-state: paused;
   -moz-animation-play-state: paused;
   -o-animation-play-state: paused;
@@ -629,7 +629,7 @@
 }
 .herocontent .circles div > span {
   --dot-size: 20%;
-  --dot-step-angle: 22.5deg;
+  --dot-step-angle: 30deg;
   /* index is provided inline via var(--number) (0..3) */
   --dot-base-angle: calc(var(--number, 0) * var(--dot-step-angle));
   /* keep dots positioned outside the span edge */
@@ -655,7 +655,7 @@
   --dot-angle: var(--dot-base-angle);
 }
 .herocontent .circles div > span::after {
-  --dot-angle: calc(var(--dot-base-angle) - 180deg);
+  --dot-angle: calc(var(--dot-base-angle) - 115deg);
 }
 
 .herocontent .geometric span,
@@ -1184,7 +1184,6 @@
   animation-play-state: running;
 }
 .geometric.exitItem,
-.circles.exitItem,
 .note.exitItem {
   -webkit-animation: geometric-hide 400ms ease-in forwards;
   -o-animation: geometric-hide 400ms ease-in forwards;
@@ -1234,6 +1233,7 @@
   pointer-events: none;
 }
 
+.circles.exitItem,
 .bubbles.exitItem,
 .eyes.exitItem {
   -webkit-animation: hide-grow 100ms ease-in forwards;
