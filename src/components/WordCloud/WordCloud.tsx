@@ -51,14 +51,14 @@ const WordCloud: FC<WordCloudProps> = ({
     return { width: 0, height: 0, ascent: 0, descent: 0 }
   }
 
-  const calculateBoundingBox = (word: Word, fontSize: number) => {
+  const calculateBoundingBox = useCallback((word: Word, fontSize: number) => {
     const {
       width: textWidth,
       height: textHeight,
       ascent,
     } = calculateTextSize(word.text, fontSize)
     return { width: textWidth, height: textHeight, ascent }
-  }
+  }, [])
 
   const generateAdjacentPositions = useCallback(
     (
@@ -382,7 +382,18 @@ const WordCloud: FC<WordCloudProps> = ({
     })
 
     setPlacedWords(newPlacedWords)
-  }, [words, width, height, lightMode, title, t])
+  }, [
+    words,
+    width,
+    height,
+    lightMode,
+    title,
+    t,
+    calculateBoundingBox,
+    generateAdjacentPositions,
+    handleWordClick,
+    isOverlapping,
+  ])
 
   useEffect(() => {
     setTimeout(() => handleSort(), 0)

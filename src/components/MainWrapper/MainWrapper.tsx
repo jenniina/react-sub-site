@@ -7,7 +7,6 @@ import {
 } from 'react-router-dom'
 import { options } from '../../utils'
 import { useEffect, useState } from 'react'
-import About from '../../pages/About'
 import Contact from '../../pages/Contact'
 import Disclaimer from '../../pages/Disclaimer'
 import OrderPage from '../../pages/OrderPage'

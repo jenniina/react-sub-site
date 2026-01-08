@@ -178,7 +178,7 @@ export default function Hero({
           break
       }
     },
-    [isClient, calculateDirection, windowObj]
+    [isClient, calculateDirection, windowObj, page]
   )
 
   function radianToAngle(cx: number, cy: number, ex: number, ey: number) {
@@ -522,7 +522,7 @@ export default function Hero({
       isMovingRef.current = false
       movementCycleStartedRef.current = false
     }
-  }, [prefersReducedMotion, isClient, windowObj])
+  }, [prefersReducedMotion, isClient, windowObj, page])
 
   return (
     <div

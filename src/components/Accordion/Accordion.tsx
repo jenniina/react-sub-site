@@ -39,23 +39,23 @@ const Accordion = forwardRef(
   (props: accordionProps, ref: Ref<unknown> | undefined) => {
     const { t } = useLanguageContext()
 
-    const [visible, setVisible] = useState(false)
+    const { isOpen, onClick } = props
+    // Determine if this is a controlled component
+    const isControlled = typeof isOpen === 'boolean'
+    // For controlled components, use the prop directly; for uncontrolled, use state
+    const [internalVisible, setInternalVisible] = useState(false)
+    const visible = isControlled ? isOpen : internalVisible
     const [isAnimating, setIsAnimating] = useState(false)
 
     useEffect(() => {
-      if (typeof props.isOpen !== 'boolean') return
-      setVisible(props.isOpen)
-    }, [props.isOpen])
-
-    useEffect(() => {
-      if (visible) props.onClick?.()
-    }, [visible, props.onClick])
+      if (visible) onClick?.()
+    }, [visible, onClick])
 
     const toggleVisibility = () => {
       if (visible) {
         setIsAnimating(true)
         setTimeout(() => {
-          setVisible(false)
+          if (!isControlled) setInternalVisible(false)
           setIsAnimating(false)
           if (props.setIsFormOpen) {
             props.setIsFormOpen(false)
@@ -63,7 +63,7 @@ const Accordion = forwardRef(
         }, 300)
       } else {
         setIsAnimating(true)
-        setVisible(true)
+        if (!isControlled) setInternalVisible(true)
         setTimeout(() => {
           setIsAnimating(false)
         })
