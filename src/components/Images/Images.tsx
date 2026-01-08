@@ -19,7 +19,6 @@ import {
   Color,
   OrderBy,
 } from '../../types/images'
-import { ELanguages } from '../../types'
 import { TranslationKey } from '../../i18n/translations'
 import { createSelectOptionsFromT } from '../../utils/translations'
 import { Select, SelectOption } from '../Select/Select'
