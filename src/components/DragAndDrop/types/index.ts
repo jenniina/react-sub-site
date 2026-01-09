@@ -6,6 +6,7 @@ export interface Data {
   color: string
   status: Status
   lightness: Lightness
+  isUser: boolean
 }
 
 export interface RefObject<T> {

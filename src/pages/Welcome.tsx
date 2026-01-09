@@ -5,7 +5,7 @@ import Icon from '../components/Icon/Icon'
 import { ELanguages, ELanguagesLong } from '../types'
 import { Select, SelectOption } from '../components/Select/Select'
 import { useLanguageContext } from '../contexts/LanguageContext'
-import Newest from '../components/Newest/Newest'
+// import Newest from '../components/Newest/Newest'
 import About from './About'
 
 export default function Home({

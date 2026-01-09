@@ -19,7 +19,6 @@ import {
   Color,
   OrderBy,
 } from '../../types/images'
-import { ELanguages } from '../../types'
 import { TranslationKey } from '../../i18n/translations'
 import { createSelectOptionsFromT } from '../../utils/translations'
 import { Select, SelectOption } from '../Select/Select'
@@ -59,51 +58,6 @@ const orderByTypes: OrderBy[] = Object.values(OrderBy)
 const orientationTypes: Orientation[] = Object.values(Orientation)
 const categoryTypes: Category[] = Object.values(Category)
 
-let categoriesWithWeights: { text: string; weight: number }[] = []
-let categoriesWithWeightsSmaller: { text: string; weight: number }[] = []
-let categoriesWithWeightsSmallest: { text: string; weight: number }[] = []
-
-const toLanguages = (
-  language: ELanguages,
-  tFn: (key: TranslationKey) => string
-) => {
-  categoriesWithWeights = VALID_CATEGORIES.map(category => ({
-    text: tFn(firstToUpperCase(category) as TranslationKey),
-    weight:
-      category === 'design'
-        ? 50
-        : WEIGHTED.includes(category)
-          ? Math.floor(Math.random() * 10) + 30
-          : SMALLER_CATEGORIES.includes(category)
-            ? Math.floor(Math.random() * 5) + 15
-            : Math.floor(Math.random() * 10) + 15,
-  }))
-
-  categoriesWithWeightsSmaller = VALID_CATEGORIES.map(category => ({
-    text: tFn(firstToUpperCase(category) as TranslationKey),
-    weight:
-      category === 'design'
-        ? 33
-        : WEIGHTED.includes(category)
-          ? Math.floor(Math.random() * 10) + 16
-          : SMALLER_CATEGORIES.includes(category)
-            ? Math.floor(Math.random() * 5) + 14
-            : Math.floor(Math.random() * 6) + 15,
-  }))
-
-  categoriesWithWeightsSmallest = VALID_CATEGORIES.map(category => ({
-    text: tFn(firstToUpperCase(category) as TranslationKey),
-    weight:
-      category === 'design'
-        ? 28
-        : WEIGHTED.includes(category)
-          ? Math.floor(Math.random() * 10) + 13
-          : SMALLER_CATEGORIES.includes(category)
-            ? Math.floor(Math.random() * 5) + 14
-            : Math.floor(Math.random() * 5) + 15,
-  }))
-}
-
 type TBreakpoints = 'small' | 'medium' | 'large'
 
 const Images: FC = () => {
@@ -111,6 +65,52 @@ const Images: FC = () => {
 
   const dispatch = useAppDispatch()
   const { show } = useModal()
+
+  const categoriesWithWeights: { text: string; weight: number }[] =
+    useMemo(() => {
+      const getWeight = (category: string) => {
+        const baseRandom = category.charCodeAt(0) % 10
+        if (category === 'design') return 50
+        if (WEIGHTED.includes(category)) return baseRandom + 30
+        if (SMALLER_CATEGORIES.includes(category)) return (baseRandom % 5) + 15
+        return baseRandom + 15
+      }
+      return VALID_CATEGORIES.map(category => ({
+        text: t(firstToUpperCase(category) as TranslationKey),
+        weight: getWeight(category),
+      }))
+    }, [t])
+
+  const categoriesWithWeightsSmaller: { text: string; weight: number }[] =
+    useMemo(() => {
+      const getWeight = (category: string) => {
+        const baseRandom = category.charCodeAt(0) % 10
+        if (category === 'design') return 33
+        if (WEIGHTED.includes(category)) return baseRandom + 16
+        if (SMALLER_CATEGORIES.includes(category)) return (baseRandom % 5) + 14
+        return (baseRandom % 6) + 15
+      }
+      return VALID_CATEGORIES.map(category => ({
+        text: t(firstToUpperCase(category) as TranslationKey),
+        weight: getWeight(category),
+      }))
+    }, [t])
+
+  const categoriesWithWeightsSmallest: { text: string; weight: number }[] =
+    useMemo(() => {
+      const getWeight = (category: string) => {
+        const baseRandom = category.charCodeAt(0) % 10
+        if (category === 'design') return 28
+        if (WEIGHTED.includes(category)) return baseRandom + 13
+        if (SMALLER_CATEGORIES.includes(category)) return (baseRandom % 5) + 14
+        return (baseRandom % 5) + 15
+      }
+      return VALID_CATEGORIES.map(category => ({
+        text: t(firstToUpperCase(category) as TranslationKey),
+        weight: getWeight(category),
+      }))
+    }, [t])
+
   const [media, setMedia] = useState<Hit[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
@@ -182,8 +182,6 @@ const Images: FC = () => {
     return 'small'
   })
 
-  const [words, setWords] = useState<{ text: string; weight: number }[]>([])
-
   useEffect(() => {
     let newBreakpoint: TBreakpoints
     if (debouncedWindowWidth > 700) newBreakpoint = 'large'
@@ -201,15 +199,19 @@ const Images: FC = () => {
     } else {
       return categoriesWithWeightsSmallest
     }
-  }, [breakpoint])
+  }, [
+    breakpoint,
+    categoriesWithWeights,
+    categoriesWithWeightsSmaller,
+    categoriesWithWeightsSmallest,
+  ])
+
+  const [words, setWords] =
+    useState<{ text: string; weight: number }[]>(weightedCategories)
 
   useEffect(() => {
     setWords(weightedCategories)
   }, [weightedCategories])
-
-  useEffect(() => {
-    toLanguages(language, t)
-  }, [language, t])
 
   const onMouseMove = (e: ReactMouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = e.currentTarget.getBoundingClientRect()

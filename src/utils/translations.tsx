@@ -2,6 +2,7 @@
 // These are separated to prevent bundling translations in server chunks
 
 import { ELanguages } from '../types'
+import { firstToUpperCase } from './'
 import {
   translations as t,
   TranslationKey,
@@ -20,10 +21,13 @@ export function createSelectOptionsFromT(
   array: string[],
   language: ELanguages
 ): SelectOption[] {
-  return array.map(key => ({
-    value: key,
-    label: t[key as TranslationKey]
-      ? t[key as TranslationKey][language as TranslationLang]
-      : key,
-  }))
+  return array.map(key => {
+    const formattedKey = firstToUpperCase(key)
+    return {
+      value: key,
+      label: t[formattedKey as TranslationKey]
+        ? t[formattedKey as TranslationKey][language as TranslationLang]
+        : key,
+    }
+  })
 }

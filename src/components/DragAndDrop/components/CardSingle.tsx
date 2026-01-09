@@ -30,7 +30,7 @@ interface Props {
   index: number
   handleDragging: (dragging: boolean) => void
   handleUpdate: (id: number, status: Status, target?: number) => void
-  handleRemoveColor: (color: Data['content']) => Promise<void>
+  handleRemoveColor: (data: Data) => Promise<void>
   setTheTarget: Dispatch<SetStateAction<number>>
   focusedCard: number | null
   setFocusedCard: Dispatch<SetStateAction<number | null>>
@@ -206,8 +206,8 @@ function CardSingle({
       textArea.focus()
       textArea.select()
       try {
-  document.execCommand('copy')
-  void dispatch(notify(t('CopiedToClipboard'), false, 3))
+        document.execCommand('copy')
+        void dispatch(notify(t('CopiedToClipboard'), false, 3))
       } catch (err: unknown) {
         const message = getErrorMessage(err, t('FailedToCopy'))
         void dispatch(notify(message, true, 3))
@@ -237,9 +237,7 @@ function CardSingle({
       <div style={styleCard} className={`${styles.card}`}>
         <span className={styles.text}>{data?.content}</span>
         <b>
-          <button onClick={() => void handleRemoveColor(data.content)}>
-            &times;
-          </button>
+          <button onClick={() => void handleRemoveColor(data)}>&times;</button>
           <button aria-haspopup="true" onClick={toggleOpen}>
             <MdOutlineDragIndicator aria-hidden="true" />
             <span className="scr" id={`instructions${id}`}>

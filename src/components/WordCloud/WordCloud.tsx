@@ -51,14 +51,14 @@ const WordCloud: FC<WordCloudProps> = ({
     return { width: 0, height: 0, ascent: 0, descent: 0 }
   }
 
-  const calculateBoundingBox = (word: Word, fontSize: number) => {
+  const calculateBoundingBox = useCallback((word: Word, fontSize: number) => {
     const {
       width: textWidth,
       height: textHeight,
       ascent,
     } = calculateTextSize(word.text, fontSize)
     return { width: textWidth, height: textHeight, ascent }
-  }
+  }, [])
 
   const generateAdjacentPositions = useCallback(
     (
@@ -186,8 +186,11 @@ const WordCloud: FC<WordCloudProps> = ({
     []
   )
 
-  const handleWordClick = useCallback(
-    (text: string) => {
+  const handleWordClickRef = useRef<(text: string) => void>()
+
+  // Update the click handler when dependencies change, but keep a stable reference
+  useEffect(() => {
+    handleWordClickRef.current = (text: string) => {
       const textToCopy = text
 
       if (onClick) {
@@ -224,162 +227,173 @@ const WordCloud: FC<WordCloudProps> = ({
         }
         ref.current?.removeChild(textArea)
       }
-    },
-    [onClick, dispatch, t]
-  )
+    }
+  }, [onClick, dispatch, t])
 
-  const handleSort = useCallback(
-    () => {
-      if (window && words.length === 0)
-        window?.setTimeout(() => setPlacedWords([]), 0)
+  // Stable click handler
+  const handleWordClick = useCallback((text: string) => {
+    handleWordClickRef.current?.(text)
+  }, [])
 
-      const sortedWords = [...words].sort((a, b) => {
-        if (b.weight !== a.weight) {
-          return b.weight - a.weight
-        } else {
-          return a.text.length - b.text.length
-        }
-      })
-      const newPositions: {
-        x: number
-        y: number
-        width: number
-        height: number
-      }[] = []
-      const newPlacedWords: React.JSX.Element[] = []
+  const handleSort = useCallback(() => {
+    if (words.length === 0) {
+      setPlacedWords([])
+      return
+    }
 
-      sortedWords.forEach((word, index) => {
-        const fontSize = word.weight
-        const {
-          width: textWidth,
-          height: textHeight,
-          ascent,
-        } = calculateBoundingBox(word, fontSize)
+    const sortedWords = [...words].sort((a, b) => {
+      if (b.weight !== a.weight) {
+        return b.weight - a.weight
+      } else {
+        return a.text.length - b.text.length
+      }
+    })
+    const newPositions: {
+      x: number
+      y: number
+      width: number
+      height: number
+    }[] = []
+    const newPlacedWords: React.JSX.Element[] = []
 
-        let placed = false
-        const maxAttempts = 30
-        let attempts = 0
+    sortedWords.forEach((word, index) => {
+      const fontSize = word.weight
+      const {
+        width: textWidth,
+        height: textHeight,
+        ascent,
+      } = calculateBoundingBox(word, fontSize)
 
-        // For the first word, place it at the center
-        if (index === 0) {
-          const x = (width - textWidth) / 2
-          const y = (height + ascent - textHeight) / 2
-          newPositions.push({ x, y, width: textWidth, height: textHeight })
-          newPlacedWords.push(
-            <text
-              key={`${word.text}-${index}`}
-              x={x}
-              y={y + ascent}
-              fontSize={fontSize}
-              fontFamily="Arial, sans-serif"
-              fill={`hsl(${(index * 110) % 360}, 100%, ${
-                lightMode ? '20' : '70'
-              }%)`}
-              className={styles.word}
-              style={{ cursor: 'pointer' }}
-              onClick={() => {
+      let placed = false
+      const maxAttempts = 30
+      let attempts = 0
+
+      // For the first word, place it at the center
+      if (index === 0) {
+        const x = (width - textWidth) / 2
+        const y = (height + ascent - textHeight) / 2
+        newPositions.push({ x, y, width: textWidth, height: textHeight })
+        newPlacedWords.push(
+          <text
+            key={`${word.text}-${index}`}
+            x={x}
+            y={y + ascent}
+            fontSize={fontSize}
+            fontFamily="Arial, sans-serif"
+            fill={`hsl(${(index * 110) % 360}, 100%, ${
+              lightMode ? '20' : '70'
+            }%)`}
+            className={styles.word}
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              handleWordClick(word.text)
+            }}
+            tabIndex={0}
+            onKeyDown={e => {
+              if (e.key === 'Enter' || e.key === ' ') {
                 handleWordClick(word.text)
-              }}
-              tabIndex={0}
-              onKeyDown={e => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  handleWordClick(word.text)
-                }
-              }}
-              aria-label={title ?? `${t('CopyToClipboard')}: ${word.text}`}
-            >
-              {word.text}
-            </text>
-          )
-          placed = true
-        }
+              }
+            }}
+            aria-label={title ?? `${t('CopyToClipboard')}: ${word.text}`}
+          >
+            {word.text}
+          </text>
+        )
+        placed = true
+      }
 
-        while (!placed && attempts < maxAttempts) {
-          // Iterate through placed words to find adjacent positions
-          for (let i = 0; i < newPositions.length && !placed; i++) {
-            const placedWordPos = newPositions[i]
-            const adjacentPositions = generateAdjacentPositions(placedWordPos, {
+      while (!placed && attempts < maxAttempts) {
+        // Iterate through placed words to find adjacent positions
+        for (let i = 0; i < newPositions.length && !placed; i++) {
+          const placedWordPos = newPositions[i]
+          const adjacentPositions = generateAdjacentPositions(placedWordPos, {
+            width: textWidth,
+            height: textHeight,
+          })
+
+          for (const pos of adjacentPositions) {
+            const candidatePos = {
+              x: pos.x,
+              y: pos.y,
               width: textWidth,
               height: textHeight,
-            })
+            }
 
-            for (const pos of adjacentPositions) {
-              const candidatePos = {
-                x: pos.x,
-                y: pos.y,
-                width: textWidth,
-                height: textHeight,
-              }
+            // Check boundaries
+            if (
+              candidatePos.x < 0 ||
+              candidatePos.y < 0 ||
+              candidatePos.x + candidatePos.width > width ||
+              candidatePos.y + candidatePos.height > height
+            ) {
+              continue
+            }
 
-              // Check boundaries
-              if (
-                candidatePos.x < 0 ||
-                candidatePos.y < 0 ||
-                candidatePos.x + candidatePos.width > width ||
-                candidatePos.y + candidatePos.height > height
-              ) {
-                continue
-              }
-
-              // Check for overlaps
-              if (
-                !isOverlapping(
-                  candidatePos.x,
-                  candidatePos.y,
-                  candidatePos.width,
-                  candidatePos.height,
-                  newPositions
-                )
-              ) {
-                // Position is valid
-                newPositions.push(candidatePos)
-                newPlacedWords.push(
-                  <text
-                    key={`${word.text}-${index}`}
-                    x={candidatePos.x}
-                    y={candidatePos.y + ascent}
-                    fontSize={fontSize}
-                    fontFamily="Arial, sans-serif"
-                    fill={`hsl(${(index * 110) % 360}, 100%, ${
-                      lightMode ? '20' : '70'
-                    }%)`}
-                    style={{ cursor: 'pointer' }}
-                    className={styles.word}
-                    onClick={() => handleWordClick(word.text)}
-                    tabIndex={0}
-                    onKeyDown={e => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        handleWordClick(word.text)
-                      }
-                    }}
-                    aria-label={
-                      title ?? `${t('CopyToClipboard')}: ${word.text}`
+            // Check for overlaps
+            if (
+              !isOverlapping(
+                candidatePos.x,
+                candidatePos.y,
+                candidatePos.width,
+                candidatePos.height,
+                newPositions
+              )
+            ) {
+              // Position is valid
+              newPositions.push(candidatePos)
+              newPlacedWords.push(
+                <text
+                  key={`${word.text}-${index}`}
+                  x={candidatePos.x}
+                  y={candidatePos.y + ascent}
+                  fontSize={fontSize}
+                  fontFamily="Arial, sans-serif"
+                  fill={`hsl(${(index * 110) % 360}, 100%, ${
+                    lightMode ? '20' : '70'
+                  }%)`}
+                  style={{ cursor: 'pointer' }}
+                  className={styles.word}
+                  onClick={() => handleWordClick(word.text)}
+                  tabIndex={0}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      handleWordClick(word.text)
                     }
-                  >
-                    {word.text}
-                  </text>
-                )
-                placed = true
-                break
-              }
+                  }}
+                  aria-label={title ?? `${t('CopyToClipboard')}: ${word.text}`}
+                >
+                  {word.text}
+                </text>
+              )
+              placed = true
+              break
             }
           }
-          attempts++
         }
+        attempts++
+      }
 
-        // Optional: Handle words that couldn't be placed
-        if (!placed) {
-          console.warn(
-            `Could not place word after ${attempts} attempts:: ${word.text}`
-          )
-        }
-      })
+      // Optional: Handle words that couldn't be placed
+      if (!placed) {
+        console.warn(
+          `Could not place word after ${attempts} attempts:: ${word.text}`
+        )
+      }
+    })
 
-      setPlacedWords(newPlacedWords)
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [words, width, height, lightMode, title, t]
-  )
+    setPlacedWords(newPlacedWords)
+  }, [
+    words,
+    width,
+    height,
+    lightMode,
+    title,
+    t,
+    calculateBoundingBox,
+    generateAdjacentPositions,
+    handleWordClick,
+    isOverlapping,
+  ])
 
   useEffect(() => {
     setTimeout(() => handleSort(), 0)

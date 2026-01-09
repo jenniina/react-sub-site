@@ -93,6 +93,14 @@ export default function Hero({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, currentPage])
 
+  // Update heading and text when language changes (on same page)
+  useEffect(() => {
+    if (page === currentPage && currentPage !== '') {
+      setTheHeading(heading)
+      setTheText(text)
+    }
+  }, [heading, text, page, currentPage])
+
   // Clear eye transforms when navigating away from contact/form pages
   useEffect(() => {
     if (isClient && page !== 'contact' && page !== 'form') {
@@ -170,7 +178,7 @@ export default function Hero({
           break
       }
     },
-    [isClient, calculateDirection, windowObj]
+    [isClient, calculateDirection, windowObj, page]
   )
 
   function radianToAngle(cx: number, cy: number, ex: number, ey: number) {
@@ -514,7 +522,7 @@ export default function Hero({
       isMovingRef.current = false
       movementCycleStartedRef.current = false
     }
-  }, [prefersReducedMotion, isClient, windowObj])
+  }, [prefersReducedMotion, isClient, windowObj, page])
 
   return (
     <div

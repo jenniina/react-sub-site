@@ -15,7 +15,7 @@ import { BlobProvider } from '../components/Blob/components/BlobProvider'
 import App from '../App'
 
 function onRenderHtml(pageContext: { urlPathname?: string }) {
-  const helmetContext = {}
+  // const helmetContext = {}
   const pageHtml = renderToString(
     <React.StrictMode>
       <StaticRouter location={pageContext.urlPathname ?? '/'}>

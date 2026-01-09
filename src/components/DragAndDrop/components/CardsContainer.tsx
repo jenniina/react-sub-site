@@ -20,7 +20,7 @@ interface Props {
   statuses: Status[]
   isDragging: boolean
   handleUpdate: (id: number, status: Status, target?: number) => void
-  handleRemoveColor: (color: Data['content']) => Promise<void>
+  handleRemoveColor: (data: Data) => Promise<void>
   handleDragging: (dragging: boolean) => void
   lightTheme: boolean
   updateStatus: (index: number, status: Status) => void
@@ -73,7 +73,6 @@ const CardsContainer = ({
 
   const handleDrop = (e: React.DragEvent<HTMLUListElement>) => {
     const data = JSON.parse(e.dataTransfer.getData('text/plain')) as DragData
-
     if (data.type === 'item') {
       handleUpdate(parseInt(data.id), status, theTarget)
       handleDragging(false)
@@ -97,6 +96,7 @@ const CardsContainer = ({
     e.stopPropagation()
     e.preventDefault()
   }
+
   const handleContainerDrop = (
     e: React.DragEvent<HTMLSpanElement>,
     dropIndex: number
@@ -138,7 +138,7 @@ const CardsContainer = ({
       className={`${styles['cards-container']} ${
         isDragging ? styles['area-dragging'] : ''
       } ${lightTheme ? styles.light : ''}`}
-  onDrop={e => void handleContainerDrop(e, statuses.indexOf(status))}
+      onDrop={e => void handleContainerDrop(e, statuses.indexOf(status))}
       onDragEnd={() => handleDragging(false)}
     >
       <span
@@ -204,7 +204,7 @@ const CardsContainer = ({
         role="listbox"
         id={sanitize(status)}
         className={sanitize(status)}
-  onDrop={(e) => void handleDrop(e)}
+        onDrop={e => void handleDrop(e)}
         onDragOver={handleDragOver}
       >
         {itemsByStatus?.map((item, index) => (

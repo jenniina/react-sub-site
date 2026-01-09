@@ -162,14 +162,28 @@
   background: none;
   border: 0;
   outline: 0;
-  padding: 0.1em 0.2em 0.3em 0.2em;
+  padding: 0;
   margin: 0;
   color: currentColor;
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
   align-items: center;
+  width: auto;
 }
+.card .text + b {
+  justify-content: right;
+}
+.card .text + b button {
+  flex: 0 1 auto;
+  min-width: 1.6em;
+  min-height: 1.6em;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+}
+
 .card button:hover,
 .card button:focus {
   color: currentColor;
