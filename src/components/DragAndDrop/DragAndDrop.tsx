@@ -443,9 +443,7 @@ export const DragAndDrop = () => {
       })
     ) {
       if (!userAddedItems || userAddedItems.length === 0) {
-        removeStatuses()
         removeData()
-        setStatuses(initialStatuses)
         setData([])
       } else if (
         userAddedItems &&
