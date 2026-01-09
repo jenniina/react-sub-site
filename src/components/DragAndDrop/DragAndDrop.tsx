@@ -443,9 +443,7 @@ export const DragAndDrop = () => {
       })
     ) {
       if (!userAddedItems || userAddedItems.length === 0) {
-        removeStatuses()
         removeData()
-        setStatuses(initialStatuses)
         setData([])
       } else if (
         userAddedItems &&
@@ -455,9 +453,7 @@ export const DragAndDrop = () => {
         statuses.forEach(status => {
           listItemsByStatus[status].removeItems()
         })
-        removeStatuses()
         removeData()
-        setStatuses(initialStatuses)
         setData([])
       } else {
         removeData()
