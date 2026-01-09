@@ -455,9 +455,7 @@ export const DragAndDrop = () => {
         statuses.forEach(status => {
           listItemsByStatus[status].removeItems()
         })
-        removeStatuses()
         removeData()
-        setStatuses(initialStatuses)
         setData([])
       } else {
         removeData()

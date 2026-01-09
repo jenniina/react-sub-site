@@ -248,7 +248,14 @@
 }
 .cards-container > span {
   position: relative;
+  cursor: -webkit-grab;
+  cursor: grab;
 }
+.cards-container:active > span {
+  cursor: -webkit-grabbing;
+  cursor: grabbing;
+}
+
 .cards-container > span > .change-status {
   display: flex;
   flex-flow: row wrap;
