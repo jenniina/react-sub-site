@@ -73,7 +73,6 @@ const CardsContainer = ({
 
   const handleDrop = (e: React.DragEvent<HTMLUListElement>) => {
     const data = JSON.parse(e.dataTransfer.getData('text/plain')) as DragData
-
     if (data.type === 'item') {
       handleUpdate(parseInt(data.id), status, theTarget)
       handleDragging(false)
@@ -97,6 +96,7 @@ const CardsContainer = ({
     e.stopPropagation()
     e.preventDefault()
   }
+
   const handleContainerDrop = (
     e: React.DragEvent<HTMLSpanElement>,
     dropIndex: number

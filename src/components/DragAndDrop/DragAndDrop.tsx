@@ -61,9 +61,6 @@ export const DragAndDrop = () => {
     },
   ]
 
-  const [userColors, setUserColors, removeUserColors] = useLocalStorage<
-    Partial<Data>[]
-  >('DnD-userColors', [])
   const [sending, setSending] = useState<boolean>(false)
   const [statuses, setStatuses, removeStatuses] = useLocalStorage(
     `DnD-statuses`,
@@ -322,16 +319,15 @@ export const DragAndDrop = () => {
     async () => {
       const array: Data[] = []
       let state: Status = initialStatuses[1]
+      const userAddedItems = data.filter(d => d.isUser)
 
       if (
-        userColors &&
-        userColors.length > 0 &&
+        userAddedItems &&
+        userAddedItems.length > 0 &&
         (await confirm({ message: t('DoYouWantToDeleteYourColorsText') }))
       ) {
         removeData()
         setData([])
-        removeUserColors()
-        console.log('Generating initial data')
         for (let i = 0; i < initialColors.length; i++) {
           const color = initialColors[i].color ?? 'lightgray'
           const content = initialColors[i].content ?? 'lightgray'
@@ -349,18 +345,17 @@ export const DragAndDrop = () => {
             color: color,
             status: state,
             lightness: lightness,
+            isUser: false,
           }
           array.push(item)
         }
-        console.log('Generated data:', array)
         return array
-      } else if (userColors && userColors.length > 0) {
+      } else if (userAddedItems && userAddedItems.length > 0) {
         removeData()
         setData([])
-        console.log('Generating initial data with user colors')
-        for (let i = 0; i < userColors.length; i++) {
-          const color = userColors[i].color ?? 'lightgray' // Use user-defined colors or default to 'lightgray'
-          const content = userColors[i].content ?? 'lightgray' // Use user-defined colors or default to 'lightgray'
+        for (let i = 0; i < userAddedItems.length; i++) {
+          const color = userAddedItems[i].color ?? 'lightgray'
+          const content = userAddedItems[i].content ?? 'lightgray'
           const lightness = determineBackgroundLightness(color)
 
           // Randomize the item status
@@ -373,10 +368,15 @@ export const DragAndDrop = () => {
             color: color,
             status: state,
             lightness: lightness,
+            isUser: true,
           }
           array.push(item)
         }
-        for (let i: number = userColors.length; i < initialColors.length; i++) {
+        for (
+          let i: number = userAddedItems.length;
+          i < initialColors.length;
+          i++
+        ) {
           const color = initialColors[i].color ?? 'lightgray'
           const content = initialColors[i].content ?? 'lightgray'
           const lightness =
@@ -393,15 +393,14 @@ export const DragAndDrop = () => {
             color: color,
             status: state,
             lightness: lightness,
+            isUser: false,
           }
           array.push(item)
         }
-        console.log('Generated data:', array)
         return array
       } else {
         removeData()
         setData([])
-        console.log('Generating initial data without user colors')
         for (let i = 0; i < initialColors.length; i++) {
           const color = initialColors[i].color ?? 'lightgray'
           const content = initialColors[i].content ?? 'lightgray'
@@ -417,10 +416,10 @@ export const DragAndDrop = () => {
             color: color,
             status: state,
             lightness: lightness,
+            isUser: false,
           }
           array.push(item)
         }
-        console.log('Generated data:', array)
         return array
       }
     },
@@ -433,23 +432,24 @@ export const DragAndDrop = () => {
       removeStatuses()
       setStatuses(initialStatuses)
       setData(await generateInitialData())
-    }
+    } else return
   }
 
   const startAgainEmpty = async () => {
+    const userAddedItems = data.filter(d => d.isUser)
     if (
       await confirm({
         message: `${t('AreYouSureYouWantToDeleteThisVersion')} (${t('Clear')})`,
       })
     ) {
-      if (!userColors || userColors.length === 0) {
+      if (!userAddedItems || userAddedItems.length === 0) {
         removeStatuses()
         removeData()
         setStatuses(initialStatuses)
         setData([])
       } else if (
-        userColors &&
-        userColors.length > 0 &&
+        userAddedItems &&
+        userAddedItems.length > 0 &&
         (await confirm({ message: t('DoYouWantToDeleteYourColorsText') }))
       ) {
         statuses.forEach(status => {
@@ -460,22 +460,20 @@ export const DragAndDrop = () => {
         setStatuses(initialStatuses)
         setData([])
       } else {
-        removeStatuses()
         removeData()
-        setStatuses(initialStatuses)
-        setData([])
         setData(
-          userColors.map((item, index) => {
+          userAddedItems.map((item, index) => {
             const color = item.color ?? 'lightgray'
             const content = item.content ?? 'lightgray'
-            const lightness = determineBackgroundLightness(color)
-            const state = statuses[Math.floor(Math.random() * statuses.length)]
+            const lightness =
+              item.lightness ?? determineBackgroundLightness(color)
             return {
               id: index,
               content: content,
               color: color,
-              status: state,
+              status: item.status ?? initialStatuses[1],
               lightness: lightness,
+              isUser: true,
             }
           })
         )
@@ -544,35 +542,27 @@ export const DragAndDrop = () => {
         color: lastWord,
         status: statusForItem,
         lightness: determineBackgroundLightness(lastWord),
+        isUser: true,
       }
       setData(prevData => [...prevData, newItem])
-      setUserColors(prevColors => {
-        const updatedColors = [
-          ...prevColors,
-          { content: allButLastWord, color: lastWord },
-        ]
-        return updatedColors
-      })
 
       containerRef.current?.scrollIntoView({ behavior: 'smooth' })
       setSending(false)
     } else {
       // Add the color anyway with the color lightgray and lightness light. This is to enable users to add sortable items for general use
-      setUserColors(prevColors => {
-        const updatedColors = [
-          ...prevColors,
-          { content: newColor, color: 'lightgray' },
-        ]
-        const newItem: Data = {
-          id: updatedColors.length,
-          content: newColor,
-          color: 'lightgray',
-          status: statusForItem,
-          lightness: 'light',
-        }
-        setData(prevData => [...prevData, newItem])
-        return updatedColors
-      })
+      const highestIdInData = data.reduce(
+        (acc, item) => (item.id > acc ? item.id : acc),
+        0
+      )
+      const newItem: Data = {
+        id: highestIdInData + 1,
+        content: newColor,
+        color: 'lightgray',
+        status: statusForItem,
+        lightness: 'light',
+        isUser: true,
+      }
+      setData(prevData => [...prevData, newItem])
       containerRef.current?.scrollIntoView({ behavior: 'smooth' })
       setSending(false)
     }
@@ -584,11 +574,7 @@ export const DragAndDrop = () => {
         message: `${t('AreYouSureYouWantToRemoveThis')} (${data.content})`,
       })
     ) {
-      setData(prevData => prevData.filter(d => d !== data))
-      setUserColors(prevColors => {
-        const updatedColors = prevColors.filter(c => c !== data)
-        return updatedColors
-      })
+      setData(prevData => prevData.filter(d => d.id !== data.id))
     } else return
   }
 
@@ -608,6 +594,24 @@ export const DragAndDrop = () => {
     handleRenameStatus,
     handleUpdate,
   } = useDragAndDrop(data, statuses)
+
+  const handleUpdateHandler = useCallback(
+    (id: number, status: Status, target?: number) => {
+      handleUpdate(id, status, target)
+
+      if (data && data.length > 0)
+        setData(prevData => {
+          const updatedData = prevData.map(item => {
+            if (item.id === id) {
+              return { ...item, status: status }
+            }
+            return item
+          })
+          return updatedData
+        })
+    },
+    [handleUpdate, data, setData]
+  )
 
   return (
     <>
@@ -633,7 +637,7 @@ export const DragAndDrop = () => {
             key={container}
             isDragging={isDragging}
             handleDragging={handleDragging}
-            handleUpdate={handleUpdate}
+            handleUpdate={handleUpdateHandler}
             handleRemoveColor={handleRemoveColor}
             lightTheme={lightTheme}
             updateStatus={updateStatus}
