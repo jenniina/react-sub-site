@@ -44,7 +44,7 @@ export default function DragAndDropPage({ type }: { type: string }) {
                 >
                   <h2>{t('Features')}</h2>
                   <ul className="ul">
-                    <li>{t('DraggableWithAnyPointer')}</li>
+                    <li>{t('DraggableWithAPointer')}</li>
                     <li>{t('KeyboardUseWithADropdownList')}</li>
                     <li>{t('CanRearrangeWithinTheirContainer')}</li>
                     <li>{t('StateSavedInLocalStorage')}</li>
@@ -53,6 +53,14 @@ export default function DragAndDropPage({ type }: { type: string }) {
                     <li>
                       {t('YouMayAlsoAddOtherWordsForGenericUse')}.{' '}
                       {t('TipIfYouAddAGenericWordYouCanColorTheCard')}
+                    </li>
+                    <li>
+                      <strong>{t('New')}: </strong>{' '}
+                      {t('AlsoWorksWithHexColors')}
+                    </li>
+                    <li>
+                      <strong>{t('New')}: </strong>{' '}
+                      {t('YouMayEditTheColorLater')}
                     </li>
                   </ul>
                   <h3>{t('Instructions')}</h3>
@@ -85,19 +93,19 @@ export default function DragAndDropPage({ type }: { type: string }) {
                     <li>
                       {t('ToMoveItemsToAnotherContainer')}
                       <ul>
-                            <li>
-                              {t('UseTabKeyToNavigateToDragButton')}{' '}
-                              <Icon
-                                lib="md"
-                                name="MdOutlineDragIndicator"
-                                aria-hidden="true"
-                                style={{
-                                  display: 'inline-block',
-                                  marginBottom: '-0.15em',
-                                }}
-                              />{' '}
-                              {t('AndPressEnterKeyToOpenMenu')}
-                            </li>
+                        <li>
+                          {t('UseTabKeyToNavigateToDragButton')}{' '}
+                          <Icon
+                            lib="md"
+                            name="MdOutlineDragIndicator"
+                            aria-hidden="true"
+                            style={{
+                              display: 'inline-block',
+                              marginBottom: '-0.15em',
+                            }}
+                          />{' '}
+                          {t('AndPressEnterKeyToOpenMenu')}
+                        </li>
                         <li>{t('WithTheMenuOpenUseTabKeyToNavigateAnd')}</li>
                       </ul>
                     </li>
