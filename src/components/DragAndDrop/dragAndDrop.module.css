@@ -2,7 +2,7 @@
   --radius: 5px;
   --height: 4rem;
 
-  margin: 0 calc(calc(var(--padd) + calc(var(--page-padding)) / 2) * -1) 3rem;
+  margin: 0 calc(calc(var(--padd) + calc(var(--page-padding)) / 2) * -1) 1rem;
   padding: 0;
   box-sizing: border-box;
   font-weight: normal;
@@ -29,7 +29,7 @@
 
 .cards-container {
   --min: 250px;
-  --max: 40vh;
+  --max: 44vh;
   min-height: var(--min);
   max-height: var(--max);
   overflow: hidden;

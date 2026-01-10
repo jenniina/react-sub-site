@@ -6263,14 +6263,14 @@ export const translations = {
     cs: 's hsl(300,100%,33%) napsáno na konci, bez mezer ve barvě',
     fi: 'hsl(300,100%,33%) kirjoitettu viimeiseksi ilman välilyöntejä värissä',
   },
-  WithOrangeWrittenLast: {
-    en: 'with orange written last',
-    es: 'con orange escrito al final',
-    fr: 'avec orange écrit en dernier',
-    de: 'mit orange zuletzt geschrieben',
-    pt: 'com orange escrito por último',
-    cs: 's orange napsáno na konci',
-    fi: 'orange kirjoitettu viimeiseksi',
+  WithGoldWrittenLast: {
+    en: 'with gold written last',
+    es: 'con gold escrito al final',
+    fr: 'avec gold écrit en dernier',
+    de: 'mit gold zuletzt geschrieben',
+    pt: 'com gold escrito por último',
+    cs: 's gold napsáno na konci',
+    fi: 'gold kirjoitettu viimeiseksi',
   },
   LongTextWithoutColorNameAtTheEnd: {
     en: 'long text without color name at the end',
