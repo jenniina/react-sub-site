@@ -16,6 +16,7 @@ interface DragData {
 
 interface Props {
   itemsByStatus: Data[]
+  setData: React.Dispatch<React.SetStateAction<Data[]>>
   status: Status
   statuses: Status[]
   isDragging: boolean
@@ -30,6 +31,7 @@ interface Props {
 }
 
 const CardsContainer = ({
+  setData,
   status,
   statuses,
   isDragging,
@@ -122,12 +124,12 @@ const CardsContainer = ({
   const translateStatus = (status: string) => {
     const statusLowerCase = status.toLowerCase()
     switch (statusLowerCase) {
-      case 'good':
-        return t('Good')
-      case 'bad':
-        return t('Bad')
-      case 'neutral':
-        return t('Neutral')
+      case 'do':
+        return t('Do')
+      case 'doing':
+        return t('Doing')
+      case 'done':
+        return t('Done')
       default:
         return status.replace(/_/g, ' ')
     }
@@ -212,6 +214,7 @@ const CardsContainer = ({
             id={item.id}
             index={index}
             data={item}
+            setData={setData}
             status={status}
             statuses={statuses}
             key={`${sanitize(status)}-item-${item.id}-${index}`}

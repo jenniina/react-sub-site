@@ -9,7 +9,7 @@ import {
 import { useDragAndDrop } from '../../hooks/useDragAndDrop'
 import { Status, Data, Lightness } from './types'
 import styles from './dragAndDrop.module.css'
-import { sanitize } from '../../utils'
+import { determineBackgroundLightness, sanitize } from '../../utils'
 import { useTheme } from '../../hooks/useTheme'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
@@ -20,7 +20,7 @@ import { useConfirm } from '../../contexts/ConfirmContext'
 import { useIsClient, useWindow } from '../../hooks/useSSR'
 import CardsContainer from './components/CardsContainer'
 
-const initialStatuses: string[] = ['good', 'neutral', 'bad']
+const initialStatuses: string[] = ['do', 'doing', 'done']
 
 export const DragAndDrop = () => {
   const isClient = useIsClient()
@@ -38,12 +38,20 @@ export const DragAndDrop = () => {
     { content: 'lightgreen', color: 'lightgreen', lightness: 'light' },
     { content: 'lightsalmon', color: 'lightsalmon', lightness: 'light' },
     { content: 'lightblue', color: 'lightblue', lightness: 'light' },
-    { content: 'pink', color: 'pink', lightness: 'light' },
     { content: 'turquoise', color: 'turquoise', lightness: 'light' },
-    { content: 'blue', color: 'blue', lightness: 'dark' },
     { content: 'crimson', color: 'crimson', lightness: 'dark' },
-    { content: 'yellow', color: 'yellow', lightness: 'light' },
-    { content: t('WithPurpleWrittenLast'), color: 'purple', lightness: 'dark' },
+    { content: '#007', color: '#007', lightness: 'dark' },
+    { content: 'rgb(0,100,200)', color: 'rgb(0,100,200)', lightness: 'dark' },
+    {
+      content: 'hsl(200,100%,50%)',
+      color: 'hsl(200,100%,50%)',
+      lightness: 'light',
+    },
+    {
+      content: t('WithPurpleWrittenLast'),
+      color: 'hsl(300,100%,33%)',
+      lightness: 'dark',
+    },
     {
       content: t('WithOrangeWrittenLast'),
       color: 'orange',
@@ -128,65 +136,6 @@ export const DragAndDrop = () => {
       document?.head.removeChild(styleElement)
     }
   }, [statuses])
-
-  const colorNameToHex = (color: string) => {
-    const ctx = document.createElement('canvas').getContext('2d')
-    if (!ctx) {
-      throw new Error('Canvas context not available')
-    }
-
-    // Validate by using a sentinel first
-    const sentinel = 'rgb(1, 2, 3)'
-    ctx.fillStyle = sentinel
-    ctx.fillStyle = color
-
-    // If invalid, fillStyle stays at sentinel
-    if (ctx.fillStyle === sentinel) {
-      throw new Error(`Invalid color: ${color}`)
-    }
-
-    return ctx.fillStyle // can be "#rrggbb" or "rgb(r, g, b)"
-  }
-
-  const hexToRGB = (value: string) => {
-    if (value.startsWith('rgb(')) {
-      const m = value.match(/^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/)
-      if (!m) throw new Error(`Unsupported rgb format: ${value}`)
-      return { r: Number(m[1]), g: Number(m[2]), b: Number(m[3]) }
-    }
-
-    // Handle hex formats, including #ccc
-    if (!value.startsWith('#'))
-      throw new Error(`Unsupported color format: ${value}`)
-
-    let hex = value.slice(1)
-    if (hex.length === 3)
-      hex = hex
-        .split('')
-        .map(ch => ch + ch)
-        .join('')
-    if (hex.length !== 6) throw new Error(`Unsupported hex length: ${value}`)
-
-    const r = parseInt(hex.slice(0, 2), 16)
-    const g = parseInt(hex.slice(2, 4), 16)
-    const b = parseInt(hex.slice(4, 6), 16)
-    return { r, g, b }
-  }
-
-  const calculateLuminance = (r: number, g: number, b: number) => {
-    const a = [r, g, b].map(v => {
-      v /= 255
-      return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)
-    })
-    return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722
-  }
-
-  const determineBackgroundLightness = (color: string) => {
-    const normalized = color.startsWith('#') ? color : colorNameToHex(color)
-    const rgb = hexToRGB(normalized)
-    const luminance = calculateLuminance(rgb.r, rgb.g, rgb.b)
-    return luminance > 0.179 ? 'light' : 'dark'
-  }
 
   const addStatus = (newStatus: string) => {
     setSending(true)
@@ -300,32 +249,28 @@ export const DragAndDrop = () => {
     else if (
       data.some(d => d.status === status) &&
       (await confirm({
-        message: `${t('AreYouSureYouWantToRemoveThis')} ${t('ItIsNotEmpty')}`,
+        message: `${t('AreYouSureYouWantToRemoveThis')} (${status}) ${t('ItIsNotEmpty')}`,
       }))
     ) {
       setStatuses(prevStatuses => prevStatuses.filter(s => s !== status))
       setData(prevData => prevData.filter(d => d.status !== status))
-    } else if (
-      await confirm({
-        message: `${t('AreYouSureYouWantToRemoveThis')} (${status})`,
-      })
-    ) {
+    } else if (data.every(d => d.status !== status)) {
       setStatuses(prevStatuses => prevStatuses.filter(s => s !== status))
-      setData(prevData => prevData.filter(d => d.status !== status))
     } else return
   }
 
   const generateInitialData = useCallback(
-    async () => {
+    async (userAddedItems: Data[]) => {
       const array: Data[] = []
       let state: Status = initialStatuses[1]
-      const userAddedItems = data.filter(d => d.isUser)
 
       if (
         userAddedItems &&
         userAddedItems.length > 0 &&
         (await confirm({ message: t('DoYouWantToDeleteYourColorsText') }))
       ) {
+        removeStatuses()
+        setStatuses(initialStatuses)
         removeData()
         setData([])
         for (let i = 0; i < initialColors.length; i++) {
@@ -350,9 +295,8 @@ export const DragAndDrop = () => {
           array.push(item)
         }
         return array
-      } else if (userAddedItems && userAddedItems.length > 0) {
-        removeData()
-        setData([])
+      }
+      if (userAddedItems.length > 0) {
         for (let i = 0; i < userAddedItems.length; i++) {
           const color = userAddedItems[i].color ?? 'lightgray'
           const content = userAddedItems[i].content ?? 'lightgray'
@@ -366,7 +310,7 @@ export const DragAndDrop = () => {
             id: i,
             content: content,
             color: color,
-            status: state,
+            status: userAddedItems[i].status,
             lightness: lightness,
             isUser: true,
           }
@@ -374,13 +318,15 @@ export const DragAndDrop = () => {
         }
         for (
           let i: number = userAddedItems.length;
-          i < initialColors.length;
+          i < initialColors.length + userAddedItems.length;
           i++
         ) {
-          const color = initialColors[i].color ?? 'lightgray'
-          const content = initialColors[i].content ?? 'lightgray'
+          const color =
+            initialColors[i - userAddedItems.length].color ?? 'lightgray'
+          const content =
+            initialColors[i - userAddedItems.length].content ?? 'lightgray'
           const lightness =
-            (initialColors[i].lightness as Lightness) ??
+            (initialColors[i - userAddedItems.length].lightness as Lightness) ??
             determineBackgroundLightness(color)
 
           // Randomize the item status
@@ -399,6 +345,8 @@ export const DragAndDrop = () => {
         }
         return array
       } else {
+        removeStatuses()
+        setStatuses(initialStatuses)
         removeData()
         setData([])
         for (let i = 0; i < initialColors.length; i++) {
@@ -429,9 +377,8 @@ export const DragAndDrop = () => {
 
   const startAgain = async () => {
     if (await confirm({ message: t('AreYouSureYouWantToDeleteThisVersion') })) {
-      removeStatuses()
-      setStatuses(initialStatuses)
-      setData(await generateInitialData())
+      const userAddedItems = data.filter(d => d.isUser)
+      setData(await generateInitialData(userAddedItems))
     } else return
   }
 
@@ -490,13 +437,7 @@ export const DragAndDrop = () => {
       setData(setTheData)
     } else {
       void (async () => {
-        const initialData = await generateInitialData()
-          .then(data => {
-            return data
-          })
-          .catch(() => {
-            return []
-          })
+        const initialData = await generateInitialData([])
         setData(initialData)
       })()
     }
@@ -525,9 +466,27 @@ export const DragAndDrop = () => {
     const allButLastWord =
       words.length === 1 ? newColor : words.slice(0, -1).join(' ')
     const lastWord = words.length === 1 ? newColor : words[words.length - 1]
+    const isWholeWordValidColor = isValidColor(newColor) // for when there are spaces in the color name
     const isLastWordValidColor = isValidColor(lastWord)
 
-    if (isLastWordValidColor) {
+    if (isWholeWordValidColor) {
+      const highestIdInData = data.reduce(
+        (acc, item) => (item.id > acc ? item.id : acc),
+        0
+      )
+      const newItem: Data = {
+        id: highestIdInData + 1,
+        content: newColor,
+        color: newColor,
+        status: statusForItem,
+        lightness: determineBackgroundLightness(newColor),
+        isUser: true,
+      }
+      setData(prevData => [...prevData, newItem])
+
+      containerRef.current?.scrollIntoView({ behavior: 'smooth' })
+      setSending(false)
+    } else if (isLastWordValidColor) {
       const highestIdInData = data.reduce(
         (acc, item) => (item.id > acc ? item.id : acc),
         0
@@ -628,6 +587,7 @@ export const DragAndDrop = () => {
         {statuses.map(container => (
           <CardsContainer
             itemsByStatus={listItemsByStatus[container]?.items}
+            setData={setData}
             status={container}
             statuses={statuses}
             key={container}
@@ -649,12 +609,11 @@ export const DragAndDrop = () => {
       </div>
 
       <div className={styles['add-color']}>
-        <h2>{t('AddAColor')}</h2>
+        <h2>{t('AddTextOrColor')}</h2>
         <p>
           {t('ForExample')} &quot;darkblue&quot; {t('Or')}{' '}
           &quot;slategray&quot;. {t('YouMayAlsoAddOtherWordsForGenericUse')}.{' '}
-          {t('TipIfYouAddAGenericWordYouCanColorTheCard')}.{' '}
-          {t('ThisWillResultInAPinkCardWithAppleWrittenOnIt')}.
+          {t('TipIfYouAddAGenericWordYouCanColorTheCard')}
         </p>
         <form
           onSubmit={e =>
@@ -670,7 +629,7 @@ export const DragAndDrop = () => {
                 value={newColor}
                 onChange={e => setNewColor(e.target.value)}
               />
-              <span>{t('AddAColor')}</span>
+              <span>{t('AddTextOrColor')}</span>
             </label>
           </div>
           <Select
@@ -694,7 +653,7 @@ export const DragAndDrop = () => {
             }
           />
           <button type="submit" disabled={sending}>
-            {t('AddAColor')}
+            {t('AddTextOrColor')}
           </button>
         </form>
         <p className="textcenter">

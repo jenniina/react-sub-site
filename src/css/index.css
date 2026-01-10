@@ -325,7 +325,7 @@ main a.disabled > *,
   padding-inline-start: 10px;
 }
 .ul ul ul {
-  list-style: '///  '; /*square; circle;*/
+  list-style: '/*  '; /*square; circle;*/
 }
 /* li:has(big) {
   margin-top: 1em;
@@ -748,6 +748,10 @@ h6 {
 p {
   margin-block-start: 0;
   margin-block-end: 1em;
+}
+strong {
+  font-weight: 800;
+  color: var(--color-secondary-1);
 }
 
 button,

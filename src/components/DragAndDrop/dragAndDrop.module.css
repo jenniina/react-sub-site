@@ -10,7 +10,7 @@
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
-  gap: 1em 1%;
+  gap: 0.6em 1%;
   width: calc(100% + var(--padd * 2) + var(--page-padding));
   word-break: break-all;
 }
@@ -21,10 +21,10 @@
 
 .cards-container {
   padding: 0;
-  border: 2px solid var(--color-gray-5);
+  border: 2px solid var(--color-gray-3);
   border-radius: var(--radius);
   transition: all 0.3s linear;
-  background-color: var(--color-gray-2);
+  background-color: var(--color-gray-1);
 }
 
 .cards-container {
@@ -44,7 +44,7 @@
   max-height: calc(var(--max) - var(--height));
 }
 .cards-container > ul > li {
-  padding: 0.6rem 4% 0 4%;
+  padding: 0.5rem 4% 0;
 }
 .cards-container > ul > li:focus-visible {
   outline: none;
@@ -56,9 +56,6 @@
 .cards-container > ul > li:last-of-type {
   padding-bottom: 1rem;
 }
-.cards-container li:last-of-type:has(ul[aria-expanded='true']) {
-  padding-bottom: 8rem;
-}
 .cards-container > span {
   height: var(--height);
   margin: 0;
@@ -68,12 +65,11 @@
   align-items: center;
   gap: 0.2em;
   border-radius: var(--radius) var(--radius) 0 0;
-  background-color: var(--color-gray-1);
+  background-color: black;
   color: var(--color-gray-10);
   text-align: center;
   padding: 0.2rem 0;
   font-weight: bold;
-  text-transform: capitalize;
 }
 
 .cards-container > span > b {
@@ -83,7 +79,11 @@
   padding-left: 0.2rem;
 }
 .light.cards-container > span {
-  background-color: var(--color-gray-3);
+  background-color: var(--color-gray-2);
+}
+.cards-container button > b {
+  display: block;
+  margin: -0.06em 0 0.06em;
 }
 .cards-container > span form {
   display: flex;
@@ -105,6 +105,8 @@
 .cards-container > span > .change-status > button.change-status {
   padding: 0.3rem 0.5rem 0 0.4rem;
   font-size: 1.5em;
+  height: 1.2em;
+  width: 1.2em;
   margin: 0;
   border: none;
   border-radius: 50%;
@@ -124,7 +126,34 @@
   border: 2px dashed #ffffff8c;
 }
 
-/* SINGLE CARD */
+.color-picker {
+  --size: 4em;
+  flex: 1 0 100%;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4em;
+  margin-bottom: 2em;
+}
+.color-picker > label {
+  margin-right: 1em;
+}
+.color-picker > input[type='color' i] {
+  width: calc(var(--size) * 1.3);
+  max-width: calc(var(--size) * 1.3);
+  height: calc(var(--size) * 0.5);
+  max-height: calc(var(--size) * 0.5);
+  outline: 8px solid white;
+  outline-offset: -6px;
+  border-radius: 5px;
+  margin-left: 3px;
+  z-index: 2;
+}
+.light .color-picker > input[type='color' i] {
+  outline: 10px solid black;
+}
+
 .card {
   position: relative;
   border-radius: var(--radius);
@@ -157,8 +186,10 @@
   margin: 0;
   flex: 1 1 auto;
 }
-.card button {
-  flex: 0 1 0;
+.card .text + b > button,
+nav.open li > button,
+nav.open li > div > button {
+  flex: 0 1 auto;
   background: none;
   border: 0;
   outline: 0;
@@ -174,21 +205,27 @@
 .card .text + b {
   justify-content: right;
 }
-.card .text + b button {
+.card .text + b > button {
   flex: 0 1 auto;
-  min-width: 1.6em;
-  min-height: 1.6em;
+  min-width: 1.2em;
+  min-height: 1.2em;
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
   align-items: center;
 }
 
-.card button:hover,
-.card button:focus {
+.card .text + b > button:hover,
+.card .text + b > button:focus,
+nav.open li > button:hover,
+nav.open li > div > button:hover,
+nav.open li > button:focus,
+nav.open li > div > button:focus {
   color: currentColor;
+  outline: solid 2px currentColor;
+  outline-offset: 0px;
 }
-.card button:focus-visible {
+.card .text + b > button:focus-visible {
   outline: solid 2px currentColor;
   outline-offset: 2px;
   -webkit-box-shadow: 0 0 0.6em 0.2em currentColor;
@@ -204,9 +241,9 @@
   display: block;
   position: absolute;
   height: auto;
-  width: calc(100% - 4px);
-  right: 2px;
-  top: 2px;
+  width: calc(100% - 10px);
+  right: 0px;
+  top: 8px;
   padding: 0.5em 0;
   z-index: 999;
   background-color: var(--color-primary-1);
@@ -334,6 +371,28 @@ div.change-status > div.change-status > i {
 .color-select ~ button {
   padding-top: 0.45em;
   padding-bottom: 0.45em;
+}
+.open .edit-wrap,
+.open .edit-wrap > button {
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0;
+  text-align: left;
+}
+.open .edit,
+.open li {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.2em;
+}
+.open .edit > *,
+.open li > * {
+  flex: 0 1 auto;
+  width: max-content;
+  max-width: calc(100% - 1.4em);
+  font-size: 0.9em;
 }
 
 @media (min-width: 500px) {

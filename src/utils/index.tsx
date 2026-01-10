@@ -312,13 +312,6 @@ export function createSelectOptions(
 
 // Note: createSelectOptionsFromT moved to utils/translations.tsx (client-only, uses translations)
 
-export const hexToRGB = (hex: string) => {
-  const r = parseInt(hex.slice(1, 3), 16)
-  const g = parseInt(hex.slice(3, 5), 16)
-  const b = parseInt(hex.slice(5, 7), 16)
-  return { r, g, b }
-}
-
 export const rgbToHex = (r: number, g: number, b: number) => {
   return `#${((1 << 24) + (r << 16) + (g << 8) + b)
     .toString(16)
@@ -453,16 +446,6 @@ export const hslToHex = (h: number, s: number, l: number): string => {
   )
 }
 
-export const calculateLuminance = (r: number, g: number, b: number): number => {
-  const [R, G, B] = [r, g, b].map(v => {
-    const normalized = v / 255
-    return normalized <= 0.03928
-      ? normalized / 12.92
-      : Math.pow((normalized + 0.055) / 1.055, 2.4)
-  })
-  return R * 0.2126 + G * 0.7152 + B * 0.0722
-}
-
 export const getContrastRatio = (lum1: number, lum2: number) => {
   const lighter = Math.max(lum1, lum2)
   const darker = Math.min(lum1, lum2)
@@ -595,3 +578,62 @@ export const getHexFromColor = (color: string, type: string) => {
 
 export const sleep = (ms: number) =>
   new Promise<void>(res => setTimeout(res, ms))
+
+export const colorNameToHex = (color: string) => {
+  const ctx = document.createElement('canvas').getContext('2d')
+  if (!ctx) {
+    throw new Error('Canvas context not available')
+  }
+
+  // Validate by using a sentinel first
+  const sentinel = 'rgb(1, 2, 3)'
+  ctx.fillStyle = sentinel
+  ctx.fillStyle = color
+
+  // If invalid, fillStyle stays at sentinel
+  if (ctx.fillStyle === sentinel) {
+    throw new Error(`Invalid color: ${color}`)
+  }
+
+  return ctx.fillStyle // can be "#rrggbb" or "rgb(r, g, b)"
+}
+
+export const hexToRGB = (value: string) => {
+  if (value.startsWith('rgb(')) {
+    const m = value.match(/^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/)
+    if (!m) throw new Error(`Unsupported rgb format: ${value}`)
+    return { r: Number(m[1]), g: Number(m[2]), b: Number(m[3]) }
+  }
+
+  // Handle hex formats, including #ccc
+  if (!value.startsWith('#'))
+    throw new Error(`Unsupported color format: ${value}`)
+
+  let hex = value.slice(1)
+  if (hex.length === 3)
+    hex = hex
+      .split('')
+      .map(ch => ch + ch)
+      .join('')
+  if (hex.length !== 6) throw new Error(`Unsupported hex length: ${value}`)
+
+  const r = parseInt(hex.slice(0, 2), 16)
+  const g = parseInt(hex.slice(2, 4), 16)
+  const b = parseInt(hex.slice(4, 6), 16)
+  return { r, g, b }
+}
+
+export const calculateLuminance = (r: number, g: number, b: number) => {
+  const a = [r, g, b].map(v => {
+    v /= 255
+    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)
+  })
+  return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722
+}
+
+export const determineBackgroundLightness = (color: string) => {
+  const normalized = color.startsWith('#') ? color : colorNameToHex(color)
+  const rgb = hexToRGB(normalized)
+  const luminance = calculateLuminance(rgb.r, rgb.g, rgb.b)
+  return luminance > 0.179 ? 'light' : 'dark'
+}
