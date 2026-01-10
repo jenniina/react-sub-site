@@ -34,27 +34,14 @@ export const DragAndDrop = () => {
   const [data, setData, removeData] = useLocalStorage<Data[]>('DnD-data', [])
 
   const initialColors = [
-    { content: 'orchid', color: 'orchid', lightness: 'light' },
-    { content: 'lightgreen', color: 'lightgreen', lightness: 'light' },
-    { content: 'lightsalmon', color: 'lightsalmon', lightness: 'light' },
-    { content: 'turquoise', color: 'turquoise', lightness: 'light' },
-    { content: '#007', color: '#007', lightness: 'dark' },
-    { content: 'rgb(0,100,200)', color: 'rgb(0,100,200)', lightness: 'dark' },
+    { content: 'powderblue', color: 'powderblue', lightness: 'light' },
     {
       content: 'hsl(200,100%,50%)',
       color: 'hsl(200,100%,50%)',
       lightness: 'light',
     },
-    {
-      content: t('WithPurpleWrittenLast'),
-      color: 'hsl(300,100%,33%)',
-      lightness: 'dark',
-    },
-    {
-      content: t('WithGoldWrittenLast'),
-      color: 'gold',
-      lightness: 'light',
-    },
+    { content: 'rgb(0,100,200)', color: 'rgb(0,100,200)', lightness: 'dark' },
+    { content: '#007', color: '#007', lightness: 'dark' },
     {
       content: t('LongTextWithoutColorNameAtTheEnd'),
       color: 'lightgray',
@@ -63,6 +50,17 @@ export const DragAndDrop = () => {
     {
       content: t('SomeTextNoColorName'),
       color: 'lightgray',
+      lightness: 'light',
+    },
+    { content: 'darkOrange', color: 'darkorange', lightness: 'light' },
+    {
+      content: t('WithHSLWrittenLast'),
+      color: 'hsl(50,50%,50%)',
+      lightness: 'light',
+    },
+    {
+      content: t('WithKhakiWrittenLast'),
+      color: 'khaki',
       lightness: 'light',
     },
   ]
@@ -253,14 +251,16 @@ export const DragAndDrop = () => {
       setStatuses(prevStatuses => prevStatuses.filter(s => s !== status))
       setData(prevData => prevData.filter(d => d.status !== status))
     } else if (data.every(d => d.status !== status)) {
-      setStatuses(prevStatuses => prevStatuses.filter(s => s !== status))
+      if (await confirm({ message: t('AreYouSureYouWantToRemoveThis') })) {
+        setStatuses(prevStatuses => prevStatuses.filter(s => s !== status))
+      } else return
     } else return
   }
 
   const generateInitialData = useCallback(
     async (userAddedItems: Data[]) => {
       const array: Data[] = []
-      let state: Status = initialStatuses[1]
+      // let state: Status = initialStatuses[1]
 
       if (
         userAddedItems &&
@@ -278,15 +278,20 @@ export const DragAndDrop = () => {
             (initialColors[i].lightness as Lightness) ??
             determineBackgroundLightness(color)
 
-          // Randomize the item status
-          const randomIndex = Math.floor(Math.random() * statuses.length)
-          state = statuses[randomIndex]
+          // // Randomize the item status
+          // const randomIndex = Math.floor(Math.random() * statuses.length)
+          // state = statuses[randomIndex]
 
           const item: Data = {
             id: i,
             content: content,
             color: color,
-            status: state,
+            status:
+              i < 4
+                ? initialStatuses[0]
+                : i < 6
+                  ? initialStatuses[1]
+                  : initialStatuses[2],
             lightness: lightness,
             isUser: false,
           }
@@ -300,9 +305,9 @@ export const DragAndDrop = () => {
           const content = userAddedItems[i].content ?? 'lightgray'
           const lightness = determineBackgroundLightness(color)
 
-          // Randomize the item status
-          const randomIndex = Math.floor(Math.random() * statuses.length)
-          state = statuses[randomIndex]
+          // // Randomize the item status
+          // const randomIndex = Math.floor(Math.random() * statuses.length)
+          // state = statuses[randomIndex]
 
           const item: Data = {
             id: i,
@@ -327,15 +332,20 @@ export const DragAndDrop = () => {
             (initialColors[i - userAddedItems.length].lightness as Lightness) ??
             determineBackgroundLightness(color)
 
-          // Randomize the item status
-          const randomIndex = Math.floor(Math.random() * statuses.length)
-          state = statuses[randomIndex]
+          // // Randomize the item status
+          // const randomIndex = Math.floor(Math.random() * statuses.length)
+          // state = statuses[randomIndex]
 
           const item: Data = {
             id: i,
             content: content,
             color: color,
-            status: state,
+            status:
+              i < 4
+                ? initialStatuses[0]
+                : i < 6
+                  ? initialStatuses[1]
+                  : initialStatuses[2],
             lightness: lightness,
             isUser: false,
           }
@@ -353,14 +363,21 @@ export const DragAndDrop = () => {
           const lightness =
             (initialColors[i].lightness as Lightness) ??
             determineBackgroundLightness(color)
-          // Randomize the item status
-          const randomIndex = Math.floor(Math.random() * statuses.length)
-          state = statuses[randomIndex]
+
+          // // Randomize the item status
+          // const randomIndex = Math.floor(Math.random() * statuses.length)
+          // state = statuses[randomIndex]
+
           const item: Data = {
             id: i,
             content: content,
             color: color,
-            status: state,
+            status:
+              i < 4
+                ? initialStatuses[0]
+                : i < 6
+                  ? initialStatuses[1]
+                  : initialStatuses[2],
             lightness: lightness,
             isUser: false,
           }
