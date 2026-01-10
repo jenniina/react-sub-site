@@ -395,12 +395,12 @@ div.change-status > div.change-status > i {
   font-size: 0.9em;
 }
 
-@media (min-width: 500px) {
+@media (min-width: 600px) {
   .grid {
     grid-template-columns: 1fr 1fr;
   }
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 700px) {
   .grid {
     grid-template-columns: 1fr 1fr 1fr;
   }

@@ -2656,12 +2656,12 @@ export const translations = {
   },
   Do: {
     en: 'Do',
-    es: 'Hacer',
-    fr: 'Faire',
-    de: 'Tun',
-    pt: 'Fazer',
-    cs: 'Dělat',
-    fi: 'Tee',
+    es: 'Por Hacer',
+    fr: 'À Faire',
+    de: 'Zu Tun',
+    pt: 'A Fazer',
+    cs: 'Udělati',
+    fi: 'Tehtävä',
   },
   Doing: {
     en: 'Doing',

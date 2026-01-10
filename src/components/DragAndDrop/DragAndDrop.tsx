@@ -37,9 +37,7 @@ export const DragAndDrop = () => {
     { content: 'orchid', color: 'orchid', lightness: 'light' },
     { content: 'lightgreen', color: 'lightgreen', lightness: 'light' },
     { content: 'lightsalmon', color: 'lightsalmon', lightness: 'light' },
-    { content: 'burlywood', color: 'burlywood', lightness: 'light' },
     { content: 'turquoise', color: 'turquoise', lightness: 'light' },
-    { content: 'crimson', color: 'crimson', lightness: 'dark' },
     { content: '#007', color: '#007', lightness: 'dark' },
     { content: 'rgb(0,100,200)', color: 'rgb(0,100,200)', lightness: 'dark' },
     {
