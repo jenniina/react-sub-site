@@ -12,3 +12,10 @@ export interface Data {
 export interface RefObject<T> {
   readonly current: T | null
 }
+
+export interface IContainerColors {
+  name: string
+  body: string
+  top: string
+  lightness: Lightness
+}

@@ -529,18 +529,13 @@ main.main-content .fullwidth1 {
 body .z {
   z-index: 2;
 }
-/********************************************************************/
-@media (min-width: 300px) {
-  .card {
-  }
-} /*************************************************** END media */
-/********************************************************************/
+
 @media (min-width: 600px) {
   .card > div {
     --padd: 8%;
     padding: 2em var(--padd) 2em;
   }
-} /*************************************************** END media */
+}
 .flex {
   display: flex;
   flex-flow: row wrap;
@@ -1105,4 +1100,22 @@ big > i {
 }
 #root .m1 {
   margin: 1em;
+}
+#root .mt0 {
+  margin-top: 0;
+}
+#root .mb0 {
+  margin-bottom: 0;
+}
+#root .mt1 {
+  margin-top: 1em;
+}
+#root .mb1 {
+  margin-bottom: 1em;
+}
+#root .mt2 {
+  margin-top: 2em;
+}
+#root .mb2 {
+  margin-bottom: 2em;
 }

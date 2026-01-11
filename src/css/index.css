@@ -946,6 +946,9 @@ button.close,
   border-color: transparent;
   color: inherit;
 }
+button.delete.outline {
+  border-color: red;
+}
 button.close {
   display: flex;
   flex-flow: column nowrap;
@@ -986,7 +989,9 @@ button.delete:hover {
   text-shadow: none;
   background-color: var(--color-primary-1);
 }
-
+#root button.danger.outline:hover {
+  outline-offset: -6px;
+}
 .register-login-wrap {
   display: flex;
   flex-flow: row wrap;
