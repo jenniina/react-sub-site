@@ -1,13 +1,14 @@
 import React, { useRef, useState } from 'react'
-import { Data, Status } from '../types'
+import { Data, IContainerColors, Status } from '../types'
 import CardSingle from './CardSingle'
-import { sanitize } from '../../../utils'
+import { determineBackgroundLightness, sanitize } from '../../../utils'
 import styles from '../dragAndDrop.module.css'
 import Accordion from '../../Accordion/Accordion'
 import { notify } from '../../../reducers/notificationReducer'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
+import { HiMenu } from 'react-icons/hi'
 
 interface DragData {
   type: 'item' | 'span'
@@ -19,6 +20,10 @@ interface Props {
   setData: React.Dispatch<React.SetStateAction<Data[]>>
   status: Status
   statuses: Status[]
+  statusesColors: IContainerColors[]
+  setStatusesColors: React.Dispatch<React.SetStateAction<IContainerColors[]>>
+  defaultTopColor: string
+  defaultBodyColor: string
   isDragging: boolean
   handleUpdate: (id: number, status: Status, target?: number) => void
   handleRemoveColor: (data: Data) => Promise<void>
@@ -34,6 +39,10 @@ const CardsContainer = ({
   setData,
   status,
   statuses,
+  statusesColors,
+  setStatusesColors,
+  defaultTopColor,
+  defaultBodyColor,
   isDragging,
   handleDragging,
   handleUpdate,
@@ -135,6 +144,23 @@ const CardsContainer = ({
     }
   }
 
+  const statusColorConfig = statusesColors.find(sc => sc.name === status)
+
+  const topStyle = statusColorConfig
+    ? {
+        ['--status-bg-name' as string]: statusColorConfig.top,
+        backgroundColor: statusColorConfig.top,
+        color: statusColorConfig.lightness === 'dark' ? 'white' : 'black',
+      }
+    : {}
+
+  const bodyStyle = statusColorConfig
+    ? {
+        ['--status-bg' as string]: statusColorConfig.body,
+        backgroundColor: statusColorConfig.body,
+      }
+    : {}
+
   return (
     <div
       className={`${styles['cards-container']} ${
@@ -142,24 +168,27 @@ const CardsContainer = ({
       } ${lightTheme ? styles.light : ''}`}
       onDrop={e => void handleContainerDrop(e, statuses.indexOf(status))}
       onDragEnd={() => handleDragging(false)}
+      style={bodyStyle}
     >
       <span
+        // this is the top bar needing a color based on statusesColors
         ref={outsideClickRef}
         id={`label-${sanitize(status)}`}
         className={styles['status-label']}
         draggable
         onDragStart={e => handleContainerDragStart(e, statuses.indexOf(status))}
         onDragOver={handleContainerDragOver}
+        style={topStyle}
       >
         <b>{translateStatus(status)}</b>
         <Accordion
           isOpen={isOpen}
           setIsFormOpen={setIsOpen}
-          text={`*`}
+          text={<HiMenu />}
           hideBrackets
           onClick={() => setNewStatus(status)}
           className={`narrow2 ${styles['change-status']} change-status`}
-          wrapperClass="change-status-wrap"
+          wrapperClass={`${styles['change-status-wrap']} ${isOpen ? styles.open : ''} change-status-wrap`}
           tooltip={t('Edit')}
           x="left"
           y="below"
@@ -188,9 +217,73 @@ const CardsContainer = ({
               <button type="submit" disabled={sending}>
                 {t('Change')}
               </button>
+              <div className={`mt1 ${styles['edit-color-wrap']}`}>
+                <div className={styles['color-picker']}>
+                  <label htmlFor={`${sanitize(status)}-top-color-picker`}>
+                    <span>
+                      <b>{t('ColorPicker')}</b> <i>({t('Name')}):</i>
+                    </span>
+                  </label>
+                  <input
+                    type="color"
+                    id={`${sanitize(status)}-top-color-picker`}
+                    name={`${sanitize(status)}-top-color-picker`}
+                    className={styles['color-picker-input']}
+                    defaultValue={
+                      statusColorConfig
+                        ? statusColorConfig.top
+                        : defaultTopColor
+                    }
+                    onChange={e => {
+                      const newTopColor = e.target.value
+                      setStatusesColors(prevColors =>
+                        prevColors.map(colorConfig =>
+                          colorConfig.name === status
+                            ? {
+                                ...colorConfig,
+                                top: newTopColor,
+                                lightness:
+                                  determineBackgroundLightness(newTopColor),
+                              }
+                            : colorConfig
+                        )
+                      )
+                    }}
+                  />
+                </div>
+                <div className={styles['color-picker']}>
+                  <label htmlFor={`${sanitize(status)}-body-color-picker`}>
+                    <span>
+                      <b>{t('ColorPicker')}</b> <i>({t('Content')}):</i>{' '}
+                    </span>
+                  </label>
+                  <input
+                    type="color"
+                    id={`${sanitize(status)}-body-color-picker`}
+                    name={`${sanitize(status)}-body-color-picker`}
+                    className={styles['color-picker-input']}
+                    defaultValue={
+                      statusColorConfig
+                        ? statusColorConfig.body
+                        : defaultBodyColor
+                    }
+                    onChange={e => {
+                      const newBodyColor = e.target.value
+                      setStatusesColors(prevColors =>
+                        prevColors.map(colorConfig =>
+                          colorConfig.name === status
+                            ? { ...colorConfig, body: newBodyColor }
+                            : colorConfig
+                        )
+                      )
+                    }}
+                  />
+                </div>
+              </div>
+
               <button
                 type="button"
-                className="danger delete"
+                className="danger delete outline"
                 onClick={() => {
                   void deleteStatus(status)
                 }}
@@ -202,12 +295,14 @@ const CardsContainer = ({
         </Accordion>
       </span>
       <ul
+        // this is the body needing a color based on statusesColors
         aria-labelledby={`label-${sanitize(status)}`}
         role="listbox"
         id={sanitize(status)}
         className={sanitize(status)}
         onDrop={e => void handleDrop(e)}
         onDragOver={handleDragOver}
+        style={bodyStyle}
       >
         {itemsByStatus?.map((item, index) => (
           <CardSingle

@@ -7,7 +7,7 @@ import {
   useCallback,
 } from 'react'
 import { useDragAndDrop } from '../../hooks/useDragAndDrop'
-import { Status, Data, Lightness } from './types'
+import { Status, Data, Lightness, IContainerColors } from './types'
 import styles from './dragAndDrop.module.css'
 import { determineBackgroundLightness, sanitize } from '../../utils'
 import { useTheme } from '../../hooks/useTheme'
@@ -22,6 +22,11 @@ import CardsContainer from './components/CardsContainer'
 
 const initialStatuses: string[] = ['do', 'doing', 'done']
 
+const lightTopDefault = '#bbb'
+const lightBodyDefault = '#ddd'
+const darkTopDefault = '#111'
+const darkBodyDefault = '#333'
+
 export const DragAndDrop = () => {
   const isClient = useIsClient()
   const windowObj = useWindow()
@@ -34,29 +39,14 @@ export const DragAndDrop = () => {
   const [data, setData, removeData] = useLocalStorage<Data[]>('DnD-data', [])
 
   const initialColors = [
-    { content: 'orchid', color: 'orchid', lightness: 'light' },
-    { content: 'lightgreen', color: 'lightgreen', lightness: 'light' },
-    { content: 'lightsalmon', color: 'lightsalmon', lightness: 'light' },
-    { content: 'lightblue', color: 'lightblue', lightness: 'light' },
-    { content: 'turquoise', color: 'turquoise', lightness: 'light' },
-    { content: 'crimson', color: 'crimson', lightness: 'dark' },
-    { content: '#007', color: '#007', lightness: 'dark' },
-    { content: 'rgb(0,100,200)', color: 'rgb(0,100,200)', lightness: 'dark' },
+    { content: 'powderblue', color: 'powderblue', lightness: 'light' },
     {
       content: 'hsl(200,100%,50%)',
       color: 'hsl(200,100%,50%)',
       lightness: 'light',
     },
-    {
-      content: t('WithPurpleWrittenLast'),
-      color: 'hsl(300,100%,33%)',
-      lightness: 'dark',
-    },
-    {
-      content: t('WithOrangeWrittenLast'),
-      color: 'orange',
-      lightness: 'light',
-    },
+    { content: 'rgb(0,100,200)', color: 'rgb(0,100,200)', lightness: 'dark' },
+    { content: '#007', color: '#007', lightness: 'dark' },
     {
       content: t('LongTextWithoutColorNameAtTheEnd'),
       color: 'lightgray',
@@ -67,6 +57,49 @@ export const DragAndDrop = () => {
       color: 'lightgray',
       lightness: 'light',
     },
+    { content: 'darkOrange', color: 'darkorange', lightness: 'light' },
+    {
+      content: t('WithHSLWrittenLast'),
+      color: 'hsl(50,50%,50%)',
+      lightness: 'light',
+    },
+    {
+      content: t('WithKhakiWrittenLast'),
+      color: 'khaki',
+      lightness: 'light',
+    },
+  ]
+
+  const lightTheme = useTheme()
+
+  const defaultTopColor = useMemo<string>(
+    () => (lightTheme ? lightTopDefault : darkTopDefault),
+    [lightTheme]
+  )
+  const defaultBodyColor = useMemo<string>(
+    () => (lightTheme ? lightBodyDefault : darkBodyDefault),
+    [lightTheme]
+  )
+
+  const initialBGColors: IContainerColors[] = [
+    {
+      name: initialStatuses[0],
+      top: defaultTopColor,
+      body: defaultBodyColor,
+      lightness: determineBackgroundLightness(defaultTopColor),
+    },
+    {
+      name: initialStatuses[1],
+      top: defaultTopColor,
+      body: defaultBodyColor,
+      lightness: determineBackgroundLightness(defaultTopColor),
+    },
+    {
+      name: initialStatuses[2],
+      top: defaultTopColor,
+      body: defaultBodyColor,
+      lightness: determineBackgroundLightness(defaultTopColor),
+    },
   ]
 
   const [sending, setSending] = useState<boolean>(false)
@@ -74,8 +107,16 @@ export const DragAndDrop = () => {
     `DnD-statuses`,
     initialStatuses
   )
-
   const [newStatus, setNewStatus] = useState<string>('')
+  const [statusesColors, setStatusesColors] = useLocalStorage<
+    IContainerColors[]
+  >('status-background', initialBGColors)
+  const [backgroundIsModified, setBackgroundIsModified] =
+    useState<boolean>(false)
+  const [singleColorTop, setSingleColorTop, deleteSingleColorTop] =
+    useLocalStorage<string>('DnD_titleColor', defaultTopColor)
+  const [singleColorBody, setSingleColorBody, deleteSingleColorBody] =
+    useLocalStorage<string>('DnD_bodyColor', defaultBodyColor)
 
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -89,6 +130,28 @@ export const DragAndDrop = () => {
     })
     .flat()
     .filter((item): item is Data => item !== undefined)
+
+  useEffect(() => {
+    if (lightTheme && !backgroundIsModified) {
+      setStatusesColors(prevColors =>
+        prevColors.map(statusColor => ({
+          ...statusColor,
+          top: lightTopDefault,
+          body: lightBodyDefault,
+          lightness: 'light',
+        }))
+      )
+    } else if (!lightTheme && !backgroundIsModified) {
+      setStatusesColors(prevColors =>
+        prevColors.map(statusColor => ({
+          ...statusColor,
+          top: darkTopDefault,
+          body: darkBodyDefault,
+          lightness: 'dark',
+        }))
+      )
+    } else return
+  }, [lightTheme, backgroundIsModified])
 
   // Generate and inject CSS styles whenever statuses change
   useEffect(() => {
@@ -169,18 +232,17 @@ export const DragAndDrop = () => {
         setSending(false)
         return
       }
-      setStatuses(prevStatuses => {
-        if (newStatusTrim === '') {
-          setSending(false)
-          return prevStatuses
-        }
-        if (prevStatuses.includes(newStatusTrim)) {
-          setSending(false)
-          return prevStatuses
-        }
-        setSending(false)
-        return [...prevStatuses, newStatusTrim]
-      })
+      setStatuses(prevStatuses => [...prevStatuses, newStatusTrim])
+      setStatusesColors(prevColors => [
+        ...prevColors,
+        {
+          name: newStatusTrim,
+          top: defaultTopColor,
+          body: defaultBodyColor,
+          lightness: determineBackgroundLightness(defaultTopColor),
+        },
+      ])
+      setSending(false)
     } else {
       void dispatch(notify(t('SpecialCharactersNotAllowed'), true, 6))
       setSending(false)
@@ -254,15 +316,83 @@ export const DragAndDrop = () => {
     ) {
       setStatuses(prevStatuses => prevStatuses.filter(s => s !== status))
       setData(prevData => prevData.filter(d => d.status !== status))
+      setStatusesColors(prevColors => prevColors.filter(c => c.name !== status))
     } else if (data.every(d => d.status !== status)) {
-      setStatuses(prevStatuses => prevStatuses.filter(s => s !== status))
+      if (await confirm({ message: t('AreYouSureYouWantToRemoveThis') })) {
+        setStatuses(prevStatuses => prevStatuses.filter(s => s !== status))
+        setStatusesColors(prevColors =>
+          prevColors.filter(c => c.name !== status)
+        )
+      } else return
     } else return
   }
+
+  const handleChangeBackgroundColors = (
+    mode: 'reset' | 'custom',
+    customBodyColor: string | null,
+    customTopColor: string | null
+  ) => {
+    if (mode === 'reset') {
+      const titleLightness = determineBackgroundLightness(defaultTopColor)
+      // Reset all to default colors
+      setStatusesColors(prevColors =>
+        prevColors.map(statusColor => ({
+          ...statusColor,
+          top: defaultTopColor,
+          body: defaultBodyColor,
+          lightness: titleLightness,
+        }))
+      )
+      setBackgroundIsModified(false)
+    } else if (mode === 'custom' && customTopColor) {
+      // Set all to custom colors
+      const titleLightness = determineBackgroundLightness(customTopColor)
+      setStatusesColors(prevColors =>
+        prevColors.map(statusColor => ({
+          ...statusColor,
+          top: customTopColor,
+          lightness: titleLightness,
+        }))
+      )
+      setBackgroundIsModified(true)
+    } else if (mode === 'custom' && customBodyColor) {
+      setStatusesColors(prevColors =>
+        prevColors.map(statusColor => ({
+          ...statusColor,
+          body: customBodyColor,
+        }))
+      )
+      setBackgroundIsModified(true)
+    }
+  }
+
+  const generateInitialBGColors = useCallback(() => {
+    return [
+      {
+        name: initialStatuses[0],
+        top: lightTheme ? lightTopDefault : darkTopDefault,
+        body: lightTheme ? lightBodyDefault : darkBodyDefault,
+        lightness: lightTheme ? 'light' : 'dark',
+      },
+      {
+        name: initialStatuses[1],
+        top: lightTheme ? lightTopDefault : darkTopDefault,
+        body: lightTheme ? lightBodyDefault : darkBodyDefault,
+        lightness: lightTheme ? 'light' : 'dark',
+      },
+      {
+        name: initialStatuses[2],
+        top: lightTheme ? lightTopDefault : darkTopDefault,
+        body: lightTheme ? lightBodyDefault : darkBodyDefault,
+        lightness: lightTheme ? 'light' : 'dark',
+      },
+    ] as IContainerColors[]
+  }, [lightTheme])
 
   const generateInitialData = useCallback(
     async (userAddedItems: Data[]) => {
       const array: Data[] = []
-      let state: Status = initialStatuses[1]
+      // let state: Status = initialStatuses[1]
 
       if (
         userAddedItems &&
@@ -271,6 +401,7 @@ export const DragAndDrop = () => {
       ) {
         removeStatuses()
         setStatuses(initialStatuses)
+        setStatusesColors(generateInitialBGColors())
         removeData()
         setData([])
         for (let i = 0; i < initialColors.length; i++) {
@@ -280,15 +411,20 @@ export const DragAndDrop = () => {
             (initialColors[i].lightness as Lightness) ??
             determineBackgroundLightness(color)
 
-          // Randomize the item status
-          const randomIndex = Math.floor(Math.random() * statuses.length)
-          state = statuses[randomIndex]
+          // // Randomize the item status
+          // const randomIndex = Math.floor(Math.random() * statuses.length)
+          // state = statuses[randomIndex]
 
           const item: Data = {
             id: i,
             content: content,
             color: color,
-            status: state,
+            status:
+              i < 4
+                ? initialStatuses[0]
+                : i < 6
+                  ? initialStatuses[1]
+                  : initialStatuses[2],
             lightness: lightness,
             isUser: false,
           }
@@ -302,9 +438,9 @@ export const DragAndDrop = () => {
           const content = userAddedItems[i].content ?? 'lightgray'
           const lightness = determineBackgroundLightness(color)
 
-          // Randomize the item status
-          const randomIndex = Math.floor(Math.random() * statuses.length)
-          state = statuses[randomIndex]
+          // // Randomize the item status
+          // const randomIndex = Math.floor(Math.random() * statuses.length)
+          // state = statuses[randomIndex]
 
           const item: Data = {
             id: i,
@@ -329,15 +465,20 @@ export const DragAndDrop = () => {
             (initialColors[i - userAddedItems.length].lightness as Lightness) ??
             determineBackgroundLightness(color)
 
-          // Randomize the item status
-          const randomIndex = Math.floor(Math.random() * statuses.length)
-          state = statuses[randomIndex]
+          // // Randomize the item status
+          // const randomIndex = Math.floor(Math.random() * statuses.length)
+          // state = statuses[randomIndex]
 
           const item: Data = {
             id: i,
             content: content,
             color: color,
-            status: state,
+            status:
+              i < 4
+                ? initialStatuses[0]
+                : i < 6
+                  ? initialStatuses[1]
+                  : initialStatuses[2],
             lightness: lightness,
             isUser: false,
           }
@@ -347,6 +488,8 @@ export const DragAndDrop = () => {
       } else {
         removeStatuses()
         setStatuses(initialStatuses)
+
+        setStatusesColors(generateInitialBGColors())
         removeData()
         setData([])
         for (let i = 0; i < initialColors.length; i++) {
@@ -355,14 +498,21 @@ export const DragAndDrop = () => {
           const lightness =
             (initialColors[i].lightness as Lightness) ??
             determineBackgroundLightness(color)
-          // Randomize the item status
-          const randomIndex = Math.floor(Math.random() * statuses.length)
-          state = statuses[randomIndex]
+
+          // // Randomize the item status
+          // const randomIndex = Math.floor(Math.random() * statuses.length)
+          // state = statuses[randomIndex]
+
           const item: Data = {
             id: i,
             content: content,
             color: color,
-            status: state,
+            status:
+              i < 4
+                ? initialStatuses[0]
+                : i < 6
+                  ? initialStatuses[1]
+                  : initialStatuses[2],
             lightness: lightness,
             isUser: false,
           }
@@ -379,6 +529,7 @@ export const DragAndDrop = () => {
     if (await confirm({ message: t('AreYouSureYouWantToDeleteThisVersion') })) {
       const userAddedItems = data.filter(d => d.isUser)
       setData(await generateInitialData(userAddedItems))
+      setStatusesColors(generateInitialBGColors())
     } else return
   }
 
@@ -431,6 +582,20 @@ export const DragAndDrop = () => {
     }
     return null
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const setTheBGColors = useMemo(() => {
+    // If background colors are already in localStorage, use that
+    if (statusesColors.length > 0) {
+      return statusesColors
+    }
+    return null
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (setTheBGColors && Array.isArray(setTheBGColors)) {
+      setStatusesColors(setTheBGColors)
+    }
+  }, [setTheBGColors, setStatusesColors])
 
   useEffect(() => {
     if (setTheData && Array.isArray(setTheData)) {
@@ -540,8 +705,6 @@ export const DragAndDrop = () => {
     return false
   }
 
-  const lightTheme = useTheme()
-
   const {
     isDragging,
     listItemsByStatus,
@@ -570,131 +733,229 @@ export const DragAndDrop = () => {
 
   return (
     <>
-      <div
-        className={`${styles.grid} ${
-          statuses.length < 2
-            ? styles.one
-            : statuses.length < 3
-              ? styles.two
-              : statuses?.length < 4 ||
-                  statuses?.length === 5 ||
-                  statuses?.length === 6
-                ? styles.three
-                : styles.four
-        }`}
-        ref={containerRef}
-      >
-        {statuses.map(container => (
-          <CardsContainer
-            itemsByStatus={listItemsByStatus[container]?.items}
-            setData={setData}
-            status={container}
-            statuses={statuses}
-            key={container}
-            isDragging={isDragging}
-            handleDragging={handleDragging}
-            handleUpdate={handleUpdateHandler}
-            handleRemoveColor={handleRemoveColor}
-            lightTheme={lightTheme}
-            updateStatus={updateStatus}
-            reorderStatuses={reorderStatuses}
-            deleteStatus={deleteStatus}
-            regex={regex}
-          />
-        ))}
-      </div>
-      <div className="flex center gap max-content margin0auto">
-        <button onClick={() => void startAgain()}>{t('Reset')}</button>
-        <button onClick={() => void startAgainEmpty()}>{t('Clear')}</button>
-      </div>
-
-      <div className={styles['add-color']}>
-        <h2>{t('AddTextOrColor')}</h2>
-        <p>
-          {t('ForExample')} &quot;darkblue&quot; {t('Or')}{' '}
-          &quot;slategray&quot;. {t('YouMayAlsoAddOtherWordsForGenericUse')}.{' '}
-          {t('TipIfYouAddAGenericWordYouCanColorTheCard')}
-        </p>
-        <form
-          onSubmit={e =>
-            void handleAddColor(e, newColor, newStatusForItem.label)
-          }
-        >
-          <div className={`input-wrap ${styles['input-wrap']}`}>
-            <label htmlFor="dnd-color-add">
-              <input
-                required
-                type="text"
-                id="dnd-color-add"
-                value={newColor}
-                onChange={e => setNewColor(e.target.value)}
-              />
-              <span>{t('AddTextOrColor')}</span>
-            </label>
-          </div>
-          <Select
-            language={language}
-            id="dnd-color-status"
-            className={`${styles['color-select']} color`}
-            instructions={t('SelectCategory')}
-            hide
-            options={statuses.map(status => ({
-              label: status,
-              value: status,
-            }))}
-            value={newStatusForItem}
-            onChange={o =>
-              setNewStatusForItem(
-                o ?? {
-                  label: statuses[0],
-                  value: statuses[0],
-                }
-              )
-            }
-          />
-          <button type="submit" disabled={sending}>
-            {t('AddTextOrColor')}
-          </button>
-        </form>
-        <p className="textcenter">
-          <span>{t('NeedHelp')} </span>{' '}
-          <a
-            href="https://htmlcolorcodes.com/color-names/"
-            target="_blank"
-            rel="noreferrer"
+      <section className="card">
+        <div>
+          <div
+            className={`${lightTheme ? styles.light : ''} ${styles.grid} ${
+              statuses.length < 2
+                ? styles.one
+                : statuses.length < 3
+                  ? styles.two
+                  : statuses?.length < 4 ||
+                      statuses?.length === 5 ||
+                      statuses?.length === 6
+                    ? styles.three
+                    : styles.four
+            }`}
+            ref={containerRef}
           >
-            {t('ColorNames')}
-          </a>
-        </p>
-      </div>
-      <div className={styles['add-status']}>
-        <h2>{t('AddANewCategory')}</h2>
-        <form
-          onSubmit={e => {
-            e.preventDefault()
-            addStatus(newStatus)
-            const scrollTarget = containerRef.current
-            scrollTarget?.scrollIntoView({ behavior: 'smooth' })
-            setNewStatus('')
-          }}
-        >
-          <div className="input-wrap">
-            <label htmlFor="dnd-status-add">
-              <input
-                required
-                type="text"
-                id="dnd-status-add"
-                value={newStatus}
-                onChange={e => setNewStatus(e.target.value)}
+            {statuses.map(container => (
+              <CardsContainer
+                itemsByStatus={listItemsByStatus[container]?.items}
+                setData={setData}
+                statusesColors={statusesColors}
+                setStatusesColors={setStatusesColors}
+                defaultTopColor={defaultTopColor}
+                defaultBodyColor={defaultBodyColor}
+                status={container}
+                statuses={statuses}
+                key={container}
+                isDragging={isDragging}
+                handleDragging={handleDragging}
+                handleUpdate={handleUpdateHandler}
+                handleRemoveColor={handleRemoveColor}
+                lightTheme={lightTheme}
+                updateStatus={updateStatus}
+                reorderStatuses={reorderStatuses}
+                deleteStatus={deleteStatus}
+                regex={regex}
               />
-              <span>{t('AddANewCategory')}</span>
-            </label>
+            ))}
           </div>
-          <button type="submit" disabled={sending}>
-            {t('Submit')}
-          </button>
-        </form>
-      </div>
+          <div className="flex center gap max-content margin0auto">
+            <button onClick={() => void startAgain()}>{t('Reset')}</button>
+            <button onClick={() => void startAgainEmpty()}>{t('Clear')}</button>
+            <button
+              onClick={() =>
+                void handleChangeBackgroundColors('reset', null, null)
+              }
+            >
+              {t('ResetBackgroundColors')}
+            </button>
+          </div>
+        </div>
+      </section>
+      <section className="card">
+        <div>
+          <div
+            className={`${lightTheme ? styles.light : ''} ${styles.wrapper} ${styles['color-picker-wrap']}`}
+          >
+            <h3> {t('SetCustomBackgroundColors')}</h3>
+            <p>
+              {t('Tip')}: {t('YouMayEditTheBackgroundColorBy')}
+            </p>
+            <div>
+              <label htmlFor="top-color-picker">
+                {t('Name')}:
+                <input
+                  type="color"
+                  id="top-color-picker"
+                  name="top-color-picker"
+                  className={styles['color-picker-input']}
+                  value={singleColorTop}
+                  onChange={e => setSingleColorTop(e.target.value)}
+                />
+              </label>
+
+              <button
+                className="small"
+                onClick={() =>
+                  void handleChangeBackgroundColors(
+                    'custom',
+                    null,
+                    singleColorTop
+                  )
+                }
+              >
+                {t('Set')}
+              </button>
+            </div>
+            <div>
+              <label htmlFor="body-color-picker">
+                {t('Content')}:
+                <input
+                  type="color"
+                  id="body-color-picker"
+                  name="body-color-picker"
+                  className={styles['color-picker-input']}
+                  value={singleColorBody}
+                  onChange={e => setSingleColorBody(e.target.value)}
+                />
+              </label>
+              <button
+                className="small"
+                onClick={() =>
+                  void handleChangeBackgroundColors(
+                    'custom',
+                    singleColorBody,
+                    null
+                  )
+                }
+              >
+                {t('Set')}
+              </button>
+            </div>
+            <div className={styles['reset-both-wrap']}>
+              <button //reset both
+                className="small"
+                onClick={() => {
+                  setSingleColorTop(defaultTopColor)
+                  setSingleColorBody(defaultBodyColor)
+                }}
+              >
+                {t('Reset')}
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="card">
+        <div>
+          <div className={`${styles['add-color']} ${styles.wrapper}`}>
+            <h3>{t('AddTextOrColor')}</h3>
+            <p>
+              {t('ForExample')} &quot;darkblue&quot; {t('Or')}{' '}
+              &quot;slategray&quot;. {t('YouMayAlsoAddOtherWordsForGenericUse')}
+              . {t('TipIfYouAddAGenericWordYouCanColorTheCard')}
+            </p>
+            <form
+              onSubmit={e =>
+                void handleAddColor(e, newColor, newStatusForItem.label)
+              }
+            >
+              <div className={`input-wrap ${styles['input-wrap']}`}>
+                <label htmlFor="dnd-color-add">
+                  <input
+                    required
+                    type="text"
+                    id="dnd-color-add"
+                    value={newColor}
+                    onChange={e => setNewColor(e.target.value)}
+                  />
+                  <span>{t('AddTextOrColor')}</span>
+                </label>
+              </div>
+              <Select
+                language={language}
+                id="dnd-color-status"
+                className={`${styles['color-select']} color`}
+                instructions={t('SelectCategory')}
+                hide
+                options={statuses.map(status => ({
+                  label: status,
+                  value: status,
+                }))}
+                value={newStatusForItem}
+                onChange={o =>
+                  setNewStatusForItem(
+                    o ?? {
+                      label: statuses[0],
+                      value: statuses[0],
+                    }
+                  )
+                }
+              />
+              <button type="submit" disabled={sending}>
+                {t('AddTextOrColor')}
+              </button>
+            </form>
+            <p className="textcenter">
+              <span>{t('NeedHelp')} </span>{' '}
+              <a
+                href="https://htmlcolorcodes.com/color-names/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {t('ColorNames')}
+              </a>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="card">
+        <div>
+          <div className={`${styles['add-status']} ${styles.wrapper}`}>
+            <h3>{t('AddANewCategory')}</h3>
+            <form
+              onSubmit={e => {
+                e.preventDefault()
+                addStatus(newStatus)
+                const scrollTarget = containerRef.current
+                scrollTarget?.scrollIntoView({ behavior: 'smooth' })
+                setNewStatus('')
+              }}
+            >
+              <div className="input-wrap">
+                <label htmlFor="dnd-status-add">
+                  <input
+                    required
+                    type="text"
+                    id="dnd-status-add"
+                    value={newStatus}
+                    onChange={e => setNewStatus(e.target.value)}
+                  />
+                  <span>{t('AddANewCategory')}</span>
+                </label>
+              </div>
+              <button type="submit" disabled={sending}>
+                {t('Submit')}
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
     </>
   )
 }

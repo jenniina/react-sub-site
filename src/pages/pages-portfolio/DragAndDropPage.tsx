@@ -61,6 +61,14 @@ export default function DragAndDropPage({ type }: { type: string }) {
                     <li>
                       <strong>{t('New')}: </strong>{' '}
                       {t('YouMayEditTheColorLater')}
+                    </li>{' '}
+                    <li>
+                      <strong>{t('New')}: </strong>{' '}
+                      {t('SetCustomBackgroundColors')}
+                    </li>
+                    <li>
+                      <strong>{t('New')}: </strong>{' '}
+                      {t('YouMayEditTheBackgroundColorBy')}
                     </li>
                   </ul>
                   <h3>{t('Instructions')}</h3>
@@ -119,9 +127,9 @@ export default function DragAndDropPage({ type }: { type: string }) {
               <p className="textcenter">
                 {t('SortTheColorsToADifferentContainerOr')}
               </p>
-              <DragAndDrop />
             </div>
           </section>
+          <DragAndDrop />
         </div>
       </div>
     </>
