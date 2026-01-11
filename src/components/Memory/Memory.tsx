@@ -715,8 +715,8 @@ const Memory: FC = () => {
                                           {entry.players.map(player => (
                                             <Fragment key={player.id}>
                                               {entry.players.length > 1
-                                                ? `: ${player.score}`
-                                                : ''}{' '}
+                                                ? `${player.name}: ${player.score}`
+                                                : `${player.name}`}{' '}
                                               {user?.role && user.role > 1 && (
                                                 <Accordion
                                                   hideBrackets

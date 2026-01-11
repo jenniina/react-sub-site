@@ -1,7 +1,9 @@
 import axios from 'axios'
 import { IJoke, IJokeResponse } from '../types'
 
-const url = 'https://react.jenniina.fi'
+const url = import.meta.env.DEV
+  ? 'http://localhost:4000'
+  : 'https://react.jenniina.fi'
 const baseUrl = `${url}/api/jokes`
 
 const getAll = async (): Promise<IJoke[]> => {

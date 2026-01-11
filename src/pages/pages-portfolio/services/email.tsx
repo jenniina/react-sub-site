@@ -9,7 +9,9 @@ export interface SelectData {
   email: string | undefined
 }
 
-const url = 'https://react.jenniina.fi'
+const url = import.meta.env.DEV
+  ? 'http://localhost:4000'
+  : 'https://react.jenniina.fi'
 const baseUrl = `${url}/api`
 
 export const sendEmail = async (data: SelectData): Promise<IResponse> => {

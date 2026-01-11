@@ -8,7 +8,9 @@ export interface ICartResponse {
   cart?: ICart
 }
 
-const url = 'https://react.jenniina.fi'
+const url = import.meta.env.DEV
+  ? 'http://localhost:4000'
+  : 'https://react.jenniina.fi'
 const baseUrl = `${url}/api/cart`
 
 const newOrder = async (

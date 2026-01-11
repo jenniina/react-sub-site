@@ -2,7 +2,9 @@ import axios, { AxiosResponse } from 'axios'
 import { IUser as user, ELanguages, IBlacklistedJoke } from '../types'
 import { IContent, IResponse, IToken } from '../types'
 
-const url = 'https://react.jenniina.fi'
+const url = import.meta.env.DEV
+  ? 'http://localhost:4000'
+  : 'https://react.jenniina.fi'
 const baseUrl = `${url}/api/users`
 
 const getConfig = () => ({

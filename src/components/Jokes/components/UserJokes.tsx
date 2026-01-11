@@ -249,24 +249,15 @@ const UserJokes = ({
 
   useEffect(() => {
     handleUserJokes()
-  }, [
-    jokes,
-    users,
-    language,
-    isCheckedSafemode,
-    sortBy,
-    sortByAge,
-    isCheckedNewest,
-    handleUserJokes,
-  ])
+  }, [handleUserJokes]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleSortByAge = useCallback(() => {
+  const handleSortByAge = () => {
     setSortByAge(isCheckedNewest ? EOrderByAge.newest : EOrderByAge.oldest)
-  }, [isCheckedNewest])
+  }
 
   useEffect(() => {
     handleSortByAge()
-  }, [isCheckedNewest, handleSortByAge])
+  }, [isCheckedNewest]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleToggleChangeNewest = () => {
     setIsCheckedNewest(prev => !prev)
@@ -285,7 +276,7 @@ const UserJokes = ({
   const handleHasNorris = useCallback(() => {
     const norrisExists = selectedCategory === ECategories.ChuckNorris
     setHasNorris(norrisExists)
-  }, [selectedCategory])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     handleHasNorris()
@@ -335,7 +326,7 @@ const UserJokes = ({
     } else {
       setLocalJokes(false)
     }
-  }, [userId])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     handleLocalJokes()
@@ -478,28 +469,13 @@ const UserJokes = ({
       sortBy,
       latest,
       latestNumber,
-      user?.blacklistedJokes,
-      userId,
+      ,
     ]
   )
 
   useEffect(() => {
     handleFilterJokes()
-  }, [
-    localJokes,
-    userJokes,
-    selectedCategory,
-    selectedLanguage,
-    selectedNorrisCategory,
-    searchTerm,
-    isRandom,
-    randomTrigger,
-    sortByAge,
-    sortBy,
-    latest,
-    latestNumber,
-    handleFilterJokes,
-  ])
+  }, [handleFilterJokes])
 
   const handleCategoryChange = (category: string) => {
     let modifiedCategory: ECategories | '' = category as ECategories | ''
@@ -566,7 +542,7 @@ const UserJokes = ({
   const handleSelectedNorrisCategory = useCallback(() => {
     setSelectedNorrisCategory(norrisOptions[0])
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [language, norrisOptions])
+  }, [])
 
   useEffect(() => {
     handleSelectedNorrisCategory()
