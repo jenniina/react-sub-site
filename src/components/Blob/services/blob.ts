@@ -2,7 +2,9 @@ import axios from 'axios'
 import { Draggable, SavedBlobs } from '../types'
 import { ELanguages, IResponse } from '../../../types'
 
-const url = 'https://react.jenniina.fi'
+const url = import.meta.env.DEV
+  ? 'http://localhost:4000'
+  : 'https://react.jenniina.fi'
 const baseUrl = `${url}/api/blobs`
 
 // router.get('/api/blobs/:user/:language', getAllBlobsByUser)

@@ -157,7 +157,9 @@ export interface QuotesResponse {
   message?: string
 }
 
-const url = 'https://react.jenniina.fi'
+const url = import.meta.env.DEV
+  ? 'http://localhost:4000'
+  : 'https://react.jenniina.fi'
 const baseUrl = `${url}/api/quotes`
 
 const extractCategory = (searchTerms: string): string => {

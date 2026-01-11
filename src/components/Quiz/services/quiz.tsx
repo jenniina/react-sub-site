@@ -1,7 +1,9 @@
 import axios from 'axios'
 import { IQuizHighscore } from '../types'
 
-const url = 'https://react.jenniina.fi'
+const url = import.meta.env.DEV
+  ? 'http://localhost:4000'
+  : 'https://react.jenniina.fi'
 const baseUrl = `${url}/api/quiz`
 
 const getQuizzes = async (): Promise<IQuizHighscore[]> => {

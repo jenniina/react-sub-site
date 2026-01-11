@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useContext } from 'react'
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useMemo,
+  useCallback,
+} from 'react'
 import useLocalStorage from '../hooks/useStorage'
 import { ELanguages } from '../types'
 import {
@@ -28,43 +34,54 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
   )
 
   // Remove only the 'lang' query param when present, keep others
-  const setLanguage = (lang: ELanguages) => {
-    setLanguageRaw(lang)
+  const setLanguage = useCallback(
+    (lang: ELanguages) => {
+      setLanguageRaw(lang)
 
-    if (isClient && typeof window !== 'undefined') {
-      try {
-        const url = new URL(window.location.href)
-        if (url.searchParams.has('lang')) {
-          url.searchParams.delete('lang')
-          const newSearch = url.searchParams.toString()
-          const newUrl =
-            url.pathname + (newSearch ? `?${newSearch}` : '') + url.hash
-          window.history.replaceState({}, '', newUrl)
+      if (isClient && typeof window !== 'undefined') {
+        try {
+          const url = new URL(window.location.href)
+          if (url.searchParams.has('lang')) {
+            url.searchParams.delete('lang')
+            const newSearch = url.searchParams.toString()
+            const newUrl =
+              url.pathname + (newSearch ? `?${newSearch}` : '') + url.hash
+            window.history.replaceState({}, '', newUrl)
+          }
+        } catch (error) {
+          console.warn('Failed to update URL:', error)
         }
-      } catch (error) {
-        console.warn('Failed to update URL:', error)
       }
-    }
-  }
+    },
+    [setLanguageRaw, isClient]
+  )
 
-  const t = (key: TranslationKey) => {
-    if (!translations[key]) {
-      console.error(`Translation value "${key}" not found`)
-      return key
-    } else if (!translations[key][language as TranslationLang]) {
-      console.error(
-        `Translation value "${key}" not found in language "${language}"`
-      )
-      if (translations[key].en) {
-        return translations[key].en
-      } else return key
-    } else {
-      return translations[key][language as TranslationLang]
-    }
-  }
+  const t = useCallback(
+    (key: TranslationKey) => {
+      if (!translations[key]) {
+        console.error(`Translation value "${key}" not found`)
+        return key
+      } else if (!translations[key][language as TranslationLang]) {
+        console.error(
+          `Translation value "${key}" not found in language "${language}"`
+        )
+        if (translations[key].en) {
+          return translations[key].en
+        } else return key
+      } else {
+        return translations[key][language as TranslationLang]
+      }
+    },
+    [language]
+  )
+
+  const value = useMemo(
+    () => ({ language, setLanguage, t }),
+    [language, setLanguage, t]
+  )
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={value}>
       {children}
     </LanguageContext.Provider>
   )

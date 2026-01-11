@@ -87,7 +87,9 @@ export interface ImagesResponse {
   hits: Hit[]
 }
 
-const url = 'https://react.jenniina.fi'
+const url = import.meta.env.DEV
+  ? 'http://localhost:4000'
+  : 'https://react.jenniina.fi'
 const baseUrl = `${url}/api/images`
 
 const searchMedia = async (

@@ -98,8 +98,6 @@ function Jokes() {
   const [joke, setJoke] = useState<string>('')
   const [delivery, setDelivery] = useState<string>('')
   const [author, setAuthor] = useState<string>('')
-  const [categoryByLanguages, setCategoryByLanguages] =
-    useState<TCategoryByLanguages>(categoryByLanguagesConst.en)
   const [jokeLanguage, setJokeLanguage] = useState<ELanguages>(language)
   const [jokeCategory, setJokeCategory] = useState<ECategories | null>(
     ECategories.Misc
@@ -112,11 +110,8 @@ function Jokes() {
     SelectOption | undefined
   >(norrisCategories[0])
   const [subCategoryResults, setSubCategoryResults] = useState<string[]>([])
-  const [jokeType, setEJokeType] = useState<EJokeType>(EJokeType.twopart)
   const [isCheckedJokeType, setIsCheckedJokeType] = useState<boolean>(false)
-  const [safemode, setSafemode] = useState<ESafemode>(ESafemode.Safe)
   const [isCheckedSafemode, setIsCheckedSafemode] = useState<boolean>(true)
-  const [queryKey, setQueryKey] = useState<EQueryKey>(EQueryKey.None)
   const [queryValue, setQueryValue] = useState<string>('')
   const [query, setQuery] = useState<string>('')
   const [submitted, setSubmitted] = useState<boolean>(false)
@@ -125,7 +120,6 @@ function Jokes() {
   const [loginOpen, setLoginOpen] = useState<boolean>(false)
   const [registerOpen, setRegisterOpen] = useState<boolean>(false)
   const [visibleJoke, setVisibleJoke] = useState<boolean>(false)
-  const [hasNorris, setHasNorris] = useState<boolean>(false)
   const [editId, setEditId] = useState<IJoke['_id'] | null>(null)
   const [lastJokes, setLastJokes] = useState<
     { jokeId: string | undefined; language: ELanguages }[]
@@ -145,16 +139,12 @@ function Jokes() {
 
   const dispatch = useAppDispatch()
 
-  useEffect(() => {
+  const hasNorris = useMemo(() => {
     const norrisExists = categoryValues?.find(v => v.value === 'ChuckNorris')
       ? true
       : false
-    if (queryValue === '') {
-      setHasNorris(norrisExists)
-    } else {
-      setHasNorris(false)
-    }
-  }, [queryValue, categoryValues, hasNorris])
+    return queryValue === '' ? norrisExists : false
+  }, [queryValue, categoryValues])
 
   useEffect(() => {
     void dispatch(initializeUsers())
@@ -172,24 +162,28 @@ function Jokes() {
       const message = getErrorMessage(err, t('Error'))
       void dispatch(notify(`${t('Error')}: ${message}`, true, 8))
     }
-  }, [dispatch, t])
+  }, [dispatch]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     void initializeJokesData()
   }, [initializeJokesData])
 
-  useEffect(() => {
-    setCategoryByLanguages(categoryByLanguagesConst[language])
-    setCategoryValues(
+  const derivedCategoryByLanguages = useMemo(
+    () => categoryByLanguagesConst[language],
+    [language, categoryByLanguagesConst]
+  )
+
+  const derivedCategoryValues = useMemo(
+    () =>
       categoryValues.map(option => ({
         ...option,
         label:
           categoryByLanguagesConst[language][
             option.value as keyof (typeof categoryByLanguagesConst)[typeof language]
           ],
-      }))
-    )
-  }, [language, categoryValues, categoryByLanguagesConst])
+      })),
+    [language, categoryValues, categoryByLanguagesConst]
+  )
 
   const handleToggleChangeSafemode = () => {
     setIsCheckedSafemode(!isCheckedSafemode)
@@ -197,21 +191,9 @@ function Jokes() {
   const handleToggleChangeEJokeType = () => {
     setIsCheckedJokeType(!isCheckedJokeType)
   }
-  useEffect(() => {
-    if (isCheckedSafemode) {
-      setSafemode(ESafemode.Safe)
-    } else {
-      setSafemode(ESafemode.Unsafe)
-    }
-  }, [isCheckedSafemode])
 
-  useEffect(() => {
-    if (isCheckedJokeType) {
-      setEJokeType(EJokeType.twopart)
-    } else {
-      setEJokeType(EJokeType.single)
-    }
-  }, [isCheckedJokeType])
+  const safemode = isCheckedSafemode ? ESafemode.Safe : ESafemode.Unsafe
+  const jokeType = isCheckedJokeType ? EJokeType.twopart : EJokeType.single
 
   // Handle form submit
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
@@ -1273,7 +1255,7 @@ function Jokes() {
         })
       return options
     },
-    [language, t]
+    [language] // eslint-disable-line react-hooks/exhaustive-deps
   )
 
   const fetchNorrisCategories = useCallback(async () => {
@@ -1323,12 +1305,15 @@ function Jokes() {
     void fetchNorrisCategories()
   }, [fetchNorrisCategories])
 
+  const queryKey = useMemo(
+    () =>
+      queryValue.trim() === '' || queryValue === '&'
+        ? EQueryKey.None
+        : EQueryKey.Contains,
+    [queryValue]
+  )
+
   useEffect(() => {
-    if (queryValue.trim() === '' || queryValue === '&') {
-      setQueryKey(EQueryKey.None)
-    } else {
-      setQueryKey(EQueryKey.Contains)
-    }
     if (queryValue === '&') {
       setQueryValue('')
     }
@@ -1556,7 +1541,7 @@ function Jokes() {
               setReveal={setReveal}
               handleJokeSave={handleJokeSave}
               optionsCategory={optionsCategory}
-              categoryByLanguages={categoryByLanguages}
+              categoryByLanguages={derivedCategoryByLanguages}
               visibleJoke={visibleJoke}
               setVisibleJoke={setVisibleJoke}
               norrisCategories={norrisCategories}
@@ -1586,7 +1571,7 @@ function Jokes() {
           {user && (
             <JokeSubmit
               userId={user?._id}
-              categoryByLanguages={categoryByLanguages}
+              categoryByLanguages={derivedCategoryByLanguages}
               getKeyByValue={getKeyByValue}
               options={options}
               optionsCategory={optionsCategory}
