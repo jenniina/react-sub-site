@@ -824,8 +824,10 @@ body .z {
   opacity: 0;
 }
 .accordion-container button.open {
-  margin: 0 auto;
   flex: 1 0 auto;
+}
+.accordion-container > button {
+  margin: 0 auto;
 }
 
 nav .open.password-reset-container {

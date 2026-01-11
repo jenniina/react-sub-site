@@ -343,7 +343,7 @@ function CardSingle({
                 isOpen={isEditContentOpen}
                 setIsFormOpen={setIsEditContentOpen}
                 text={t('EditText')}
-                className="edit-content"
+                className={`${styles['edit-content']}`}
                 wrapperClass={styles['edit-wrap']}
                 hideBrackets
               >

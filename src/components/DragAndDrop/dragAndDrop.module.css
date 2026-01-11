@@ -92,6 +92,9 @@
   padding: 0 0 0.5em 0;
   font-weight: normal;
 }
+.change-status-wrap.open {
+  color: var(--color-primary-20);
+}
 .cards-container .change-status-wrap.open > div {
   width: 90%;
   margin-left: 10%;
@@ -178,7 +181,9 @@
   align-items: center;
   justify-content: center;
 }
-
+.blur.open .edit .edit-wrap button.edit-content {
+  margin: 0;
+}
 .color-picker-wrap input[type='color' i] {
   --size: 3.3em;
   width: var(--size);
