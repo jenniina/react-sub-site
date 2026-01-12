@@ -18,6 +18,7 @@ import { IoMdImages, IoMdAdd, IoMdCheckmarkCircleOutline } from 'react-icons/io'
 import {
   BiChat,
   BiChevronsUp,
+  BiChevronsDown,
   BiReset,
   BiSelectMultiple,
   BiSolidColorFill,
@@ -88,6 +89,7 @@ export const iconLibraries: Record<
   bi: {
     BiChat,
     BiChevronsUp,
+    BiChevronsDown,
     BiReset,
     BiSelectMultiple,
     BiSolidColorFill,

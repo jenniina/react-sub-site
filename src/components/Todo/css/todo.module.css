@@ -78,48 +78,107 @@ button.cancel svg {
   padding-bottom: calc(var(--width) / 2);
   display: flex;
   flex-flow: row wrap;
-
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 0.6em 0.8em;
+  gap: 0.4em;
 }
 .todo-ul > li .drag-handle {
-  cursor: move;
+  cursor: grab;
   flex: 0 1 1rem;
-  font-size: 1.5em;
+  font-size: 1.8em;
   display: inline-block;
-  padding: 0.2em 0 0.1em;
+  padding: 0.2em 0.1em;
   border: 2px solid transparent;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  background: none;
+  color: var(--color-primary-20);
+  margin: -0.15em 0 0.15em;
+}
+.todo-ul > li .drag-handle:active {
+  cursor: grabbing;
 }
 .todo-ul > li .drag-handle:hover,
 .todo-ul > li .drag-handle:focus,
 .todo-ul > li .drag-handle:focus-visible {
   border: 2px solid var(--color-primary-10);
   border-radius: var(--radius-small);
+  color: var(--color-primary-20);
 }
-.todo-ul > li > label {
-  --margintop: 0.45em;
+
+.move-menu {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  z-index: 1000;
+  background: var(--color-primary-1);
+  border: 2px solid var(--color-primary-10);
+  border-radius: var(--radius-small);
+  padding: 0.5em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  min-width: 150px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.move-button {
+  display: flex;
+  align-items: center;
+  gap: 0.1em;
+  padding: 0.5em;
+  background: transparent;
+  border: 1px solid var(--color-primary-10);
+  border-radius: var(--radius-small);
+  cursor: pointer;
+  text-align: center;
+  width: 100%;
+}
+.move-button svg {
+  font-size: 1.5em;
+}
+.move-button.move-up svg {
+  margin-bottom: -0.1em;
+}
+.move-button.move-down svg {
+  margin-top: -0.1em;
+}
+.move-button span {
+  flex: 1 0 100%;
+}
+
+.move-button:hover:not(:disabled),
+.move-button:focus:not(:disabled) {
+  background: var(--color-primary-10);
+  color: var(--color-bg);
+}
+
+.move-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.todo-ul > li > .label {
+  --margintop: 0.8em;
   display: flex;
   flex-flow: row wrap;
   align-items: flex-start;
   justify-content: flex-start;
+  text-align: left;
   gap: 0.6em;
-  min-width: calc(100%);
   max-width: calc(100%);
   margin-top: calc(var(--margintop) * 0.6);
   margin-left: 0;
 }
-.todo-ul > li > label > span {
+.todo-ul > li > .label > span {
   display: inline-block;
   margin-top: 0;
   cursor: text;
   min-width: 100%;
   max-width: 100%;
 }
-.todo-ul > li > label .checkbox-wrap {
+.todo-ul > li > .label .checkbox-wrap {
   align-self: flex-start;
   margin-left: 0;
   margin-right: 0.6em;
@@ -154,7 +213,7 @@ button.cancel svg {
   font-size: 2em;
   margin: 0;
 }
-.todo-ul > li .btn-wrap > b.cat.bg {
+.todo-ul .btn-wrap > b.cat.bg {
   color: var(--color-primary-1);
   background-color: var(--color-gray-9);
   border: solid 2px var(--color-gray-9);
@@ -163,7 +222,7 @@ button.cancel svg {
   border-radius: 50%;
   padding: 0.1em;
 }
-.light .todo-ul > li .btn-wrap > b.cat.bg {
+.light .todo-ul b.cat.bg {
   color: var(--color-primary-4);
 }
 .todo-ul > li .btn-wrap > b.cat.bg svg {
@@ -217,11 +276,36 @@ button.cancel svg {
   /* background-color: darkslategray; */
   background-color: saddlebrown;
 }
-.todo-ul > li:has(input:checked) .btn-wrap > b > svg,
+.todo-ul > li .complete,
+.todo-ul > li .complete + .more-info-wrap span {
+  color: var(--color-gray-6);
+  text-decoration: line-through 1px;
+  background-color: transparent;
+  outline: none;
+  border: none;
+}
+.todo-ul > li:has(input:checked) .btn-wrap > b,
+.todo-ul > li:has(input:checked) .btn-wrap > b.cat.bg,
 .todo-ul > li:has(input:checked) .btn-wrap > b::before,
+.todo-ul > li:has(input:checked) .btn-wrap > b.cat.bg::before,
 .todo-ul > li:has(input:checked) .btn-wrap button {
   filter: grayscale(100%);
   opacity: 0.4;
+}
+.todo-ul > li:has(input:checked) .btn-wrap b.medium svg {
+  fill: black;
+}
+
+.light .todo-ul > li:has(input:checked) .btn-wrap b.medium svg {
+  fill: white;
+}
+.todo-ul > li:has(input:checked) .btn-wrap > b.cat.bg {
+  border-color: var(--color-gray-5);
+  background-color: var(--color-gray-5);
+  color: black;
+}
+.todo-ul > li:has(input:checked) .btn-wrap > b.cat.bg > svg {
+  fill: black;
 }
 
 .todo-ul > li .btn-wrap > .modify-todo:not(.closed) {
@@ -294,26 +378,6 @@ button.cancel svg {
 }
 .todo-ul input[type='text' i] {
   width: 100%;
-}
-/* .todo-ul > li label .checkbox-wrap input[type='checkbox' i] {
-  width: 1.8em;
-  height: 1.8em;
-  margin-left: 0;
-  margin-right: 0;
-  border-radius: 0.1rem;
-  cursor: pointer;
-} */
-.todo-ul > li:has(input:checked) * {
-  color: var(--color-gray-6);
-  text-decoration: line-through 1px;
-  background-color: transparent;
-}
-.todo-ul > li:has(input:checked) .btn-wrap b.medium svg {
-  fill: black;
-}
-
-.light .todo-ul > li:has(input:checked) .btn-wrap b.medium svg {
-  fill: white;
 }
 
 /* .todo-ul > li .checkbox-wrap input[type='checkbox' i]:checked {
@@ -419,20 +483,21 @@ form.modify .fieldset {
   outline: solid 2px var(--color-primary-20);
   outline-offset: -1px;
   border-radius: 3px;
-  padding: 0 0.2em;
+  padding: 0.22em 0.2em 0.1em;
 }
 .deadline.overdue,
 .warning {
-  padding: 0 0.3em;
+  display: inline-flex;
+  padding: 0.3em 0.2em 0.15em;
   font-weight: bold;
-  color: red;
+  color: tomato;
   background-color: black;
 }
 .light .deadline.overdue,
 .light .warning {
   color: darkred;
   background-color: white;
-  outline: red solid 2px;
+  outline: tomato solid 2px;
   border-radius: 3px;
 }
 .filter-notification {
@@ -462,17 +527,33 @@ form.modify .fieldset {
   margin-bottom: 1rem;
 }
 
-.todo-ul > li > .label .toggle-wrap .rotate-toggle {
-  transform: translateY(55%) rotate(-90deg);
-  transform-origin: center;
-  width: calc(var(--height) * 1.4);
+.todo-ul > li .toggle-wrap .toggle {
+  margin-top: 0.44em;
+  margin-left: 0.3rem;
+  margin-right: 0.3rem;
 }
-
+.todo-ul > li .toggle-wrap .toggle,
+.todo-ul > li .toggle-wrap .toggle * {
+  --height: 2.2em;
+  --width: calc(var(--height) * 1.6);
+}
+@media (min-width: 200px) {
+  .todo-ul > li .toggle-wrap .toggle {
+    margin-top: 0.44em;
+    margin-left: 0.2rem;
+    margin-right: 0.4rem;
+  }
+  .todo-ul > li .toggle-wrap .toggle,
+  .todo-ul > li .toggle-wrap .toggle * {
+    --height: calc(2.2em * var(--responsive_scale, 1));
+    --width: calc(var(--height) * 2 * var(--responsive_scale, 1));
+  }
+}
 @media (min-width: 300px) {
   .left-to-do {
     font-size: 0.8em;
   }
-} /*END media*/
+}
 
 @media (min-width: 400px) {
   form.modify {
@@ -513,25 +594,20 @@ form.modify .fieldset {
     flex-flow: row wrap;
     gap: 0.2em;
   }
-  .todo-ul > li > label {
+  .todo-ul > li > .label {
     margin-left: 0.6em;
-    min-width: calc(100% - 3em);
-    max-width: calc(100% - 3em);
+    max-width: calc(100% - 7em);
   }
-  .todo-ul > li > label > span {
+  .todo-ul > li > .label > span {
     margin-left: 0;
-    min-width: calc(100% - 3em);
-    max-width: calc(100% - 3em);
+    max-width: calc(100% - 7em);
   }
 }
 @media (min-width: 600px) {
-  .more-info-wrap {
-    margin-left: 1.3rem;
-  }
   .todo-ul > li {
     gap: 0.2em;
   }
-  .todo-ul > li > label {
+  .todo-ul > li > .label {
     margin-left: 0.5em;
   }
 } /*END media*/
@@ -545,18 +621,19 @@ form.modify .fieldset {
   padding-bottom: 0.6em;
 }
 @media (min-width: 700px) {
-  .more-info-wrap {
-    margin-left: 1.4rem;
-  }
-  .todo-ul > li > label {
+  .todo-ul > li > .label {
     margin-top: calc(var(--margintop) * 0.6);
-    min-width: calc(100% - 3em);
-    max-width: calc(100% - 3em);
-    flex: 0 1 calc(100% - 3em);
+    max-width: 100%;
+    flex: 0 1 100%;
   }
-  .todo-ul > li > label .checkbox-wrap {
+  .todo-ul > li > .label .checkbox-wrap {
     margin-top: calc(var(--margintop) * 0.4);
     margin-bottom: auto;
+  }
+  .todo-ul > li .toggle-wrap .toggle,
+  .todo-ul > li .toggle-wrap .toggle * {
+    --height: 1.8em;
+    --width: calc(var(--height) * 1.6);
   }
 }
 @media (min-width: 1000px) {
@@ -566,14 +643,14 @@ form.modify .fieldset {
     justify-content: space-between;
     gap: 0.2em;
   }
-  .todo-ul > li > label {
+  .todo-ul > li > .label {
     --margintop: 0.5em;
     margin-top: calc(var(--margintop) * 0.6);
     min-width: calc(100% - var(--btn-wrap-width) - 3em);
     max-width: calc(100% - var(--btn-wrap-width) - 3em);
     flex: 0 1 calc(100% - var(--btn-wrap-width) - 3em);
   }
-  .todo-ul > li > label .checkbox-wrap {
+  .todo-ul > li > .label .checkbox-wrap {
     margin-top: calc(var(--margintop) * 0.4);
   }
   .todo-ul > li .btn-wrap {
