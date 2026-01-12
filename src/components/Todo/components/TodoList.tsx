@@ -38,16 +38,6 @@ export default function TodoList({
   categoryOptions: SelectOption[]
   maxCharacters: number
 }) {
-  // const todosWithIdAndStatus = todos
-  //   ?.slice()
-  //   .sort(
-  //     (a, b) =>
-  //       new Date(a.createdAt ?? '').getTime() - new Date(b.createdAt ?? '').getTime()
-  //   )
-  //   .map((todo, index) => {
-  //     return { ...todo, id: index, status: 'todos' }
-  //   }) as ITaskDraggable[]
-
   const { isDragging, listItemsByStatus, handleUpdate, handleDragging } =
     useDragAndDrop<ITaskDraggable, string>(todosWithIdAndStatus, ['todos'])
 
@@ -103,8 +93,8 @@ export default function TodoList({
     >
       {listItemsByStatus.todos?.items
         ?.slice()
-        .sort((a, b) => ((a.order ?? 0 > (b.order ?? 0)) ? 1 : -1))
-        .sort((a, b) => (a.complete === b.complete ? 0 : a.complete ? 1 : -1))
+        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+        // .sort((a, b) => (a.complete === b.complete ? 0 : a.complete ? 1 : -1))
         .map(todo => {
           return (
             <Todo
@@ -114,6 +104,9 @@ export default function TodoList({
               deleteTodo={deleteTodo}
               todo={todosWithIdAndStatus?.find(t => t.key === todo.key)}
               modifyTodo={modifyTodo}
+              modifyTodoOrder={modifyTodoOrder}
+              handleUpdate={handleUpdate}
+              todosWithIdAndStatus={todosWithIdAndStatus}
               isDragging={isDragging}
               handleDragging={handleDragging}
               priorityOptions={priorityOptions}

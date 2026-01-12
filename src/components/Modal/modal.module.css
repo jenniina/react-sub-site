@@ -17,7 +17,7 @@
   border: 1px solid var(--color-primary-4);
   border-bottom-width: 3px;
   color: var(--color-primary-20);
-  padding: 2rem 1em 0; /* Give space for the close button */
+  padding: 2rem 0.8em 0.5em; /* Give space at the top for the close button */
   border-radius: 8px;
   position: relative;
   max-height: var(--height);

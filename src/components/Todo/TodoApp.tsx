@@ -56,7 +56,9 @@ export default function TodoApp() {
   }, [initialize])
 
   const todos = useSelector((state: RootState) => state.todos?.todos ?? [])
-  const status = useSelector((state: RootState) => state.todos?.status ?? 'idle')
+  const status = useSelector(
+    (state: RootState) => state.todos?.status ?? 'idle'
+  )
   const error = useSelector((state: RootState) => state.todos?.error ?? null)
 
   const [priority, setPriority] = useState<TPriority>('low')
@@ -155,8 +157,28 @@ export default function TodoApp() {
         return { ...todo, id: todo.order, status: 'todos' }
       }) as ITaskDraggable[]
 
-    setTodosWithIdAndStatus(newTodosWithIdAndStatus)
-  }, [todos, filterPriority, filterCategory, filteredTodos])
+    setTodosWithIdAndStatus(prev => {
+      // If identical by length and keys/orders/complete, keep previous reference to avoid re-renders
+      if (
+        prev.length === newTodosWithIdAndStatus.length &&
+        prev.every((p, idx) => {
+          const n = newTodosWithIdAndStatus[idx]
+          return (
+            p.key === n.key &&
+            p.order === n.order &&
+            p.complete === n.complete &&
+            p.priority === n.priority &&
+            p.category === n.category &&
+            (p.deadline ?? '') === (n.deadline ?? '') &&
+            p.name === n.name
+          )
+        })
+      ) {
+        return prev
+      }
+      return newTodosWithIdAndStatus
+    })
+  }, [todos, filterPriority, filterCategory])
 
   const filterPriorityTypes: TPriority[] = ['all', 'low', 'medium', 'high']
   const filterCategoryTypes: TCategory[] = [
@@ -232,6 +254,8 @@ export default function TodoApp() {
         void dispatch(editTodoAsync(user._id, key, updatedTodo as ITask))
           .then(() => {
             void dispatch(notify(`${t('Updated')}`, false, 3))
+            // Ensure local state is refreshed from server data
+            void dispatch(fetchTodos(user._id))
             setSending(false)
           })
           .catch((err: unknown) => {
@@ -270,13 +294,20 @@ export default function TodoApp() {
     } else {
       try {
         void dispatch(changeTodoOrder(order))
+        // Update local storage with the new ordering immediately
+        const updatedTodos = todos
+          .map(todo => {
+            const found = order.find(o => o.key === todo.key)
+            return found ? { ...todo, order: found.order } : todo
+          })
+          .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+        void dispatch(setAllTodos(updatedTodos))
+        if (!isClient || !windowObj) return
+        windowObj.localStorage.setItem(localName, JSON.stringify(updatedTodos))
       } catch (err: unknown) {
         console.error(err)
         const message = getErrorMessage(err, t('Error'))
         void dispatch(notify(message, true, 8))
-      } finally {
-        if (!isClient || !windowObj) return
-        windowObj.localStorage.setItem(localName, JSON.stringify(todos))
       }
     }
   }
@@ -332,6 +363,11 @@ export default function TodoApp() {
       }
     if (user) {
       void dispatch(addTodoAsync(user._id, newTodo))
+      // scroll to #todo-list-wrap
+      const element = document.getElementById('todo-list-wrap')
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
       setSending(false)
       setName('')
     } else {
@@ -343,6 +379,11 @@ export default function TodoApp() {
         }))
       void dispatch(setAllTodos(updatedTodos))
       setAllTodos(updatedTodos)
+      // scroll to #todo-list-wrap
+      const element = document.getElementById('todo-list-wrap')
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
       setSending(false)
       if (!isClient || !windowObj) return
       windowObj.localStorage.setItem(localName, JSON.stringify(updatedTodos))
@@ -494,9 +535,39 @@ export default function TodoApp() {
         >
           {t('ClearCompleted')}
         </button>
+        <button
+          className={styles['move-completed-to-bottom']}
+          disabled={!hasCompletedTasks || todos.length === 0}
+          onClick={e => {
+            e.preventDefault()
+            const incompleteTodos = todos
+              .filter(todo => !todo.complete)
+              .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+              .map((todo, index) => ({
+                ...todo,
+                order: index,
+              }))
+            const completedTodos = todos
+              .filter(todo => todo.complete)
+              .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+              .map((todo, index) => ({
+                ...todo,
+                order: index + incompleteTodos.length,
+              }))
+            const newTodos = [...incompleteTodos, ...completedTodos]
+            const order = newTodos.map((item, index) => ({
+              key: item.key,
+              order: index,
+            }))
+            // use existing flow to update order so server and local user flows behave the same
+            modifyTodoOrder(order)
+          }}
+        >
+          {t('MoveCompletedToBottom')}
+        </button>
       </div>
 
-      <div className={styles['list-wrap']}>
+      <div id="todo-list-wrap" className={styles['list-wrap']}>
         <p className={styles['left-to-do']}>
           {todos?.filter(todo => !todo?.complete).length} {t('LeftToDo')}
         </p>

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
 import styles from '../css/todo.module.css'
 import { ITaskDraggable } from './TodoList'
-import { TCategory, TPriority } from '../types'
+import { ITask, TCategory, TPriority } from '../types'
 import Icon from '../../Icon/Icon'
-import { sanitize } from '../../../utils' 
+import { sanitize } from '../../../utils'
 import { SelectOption } from '../../Select/Select'
 import TodoItemModal from './TodoItemModal'
 // icons: IoPersonCircleSharp, HiDots*, TiShoppingCart, AiOutlineEdit, BsArrowDown
@@ -13,12 +13,17 @@ import { useLanguageContext } from '../../../contexts/LanguageContext'
 import { useConfirm } from '../../../contexts/ConfirmContext'
 import { useIsClient, useWindow } from '../../../hooks/useSSR'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
+import { useOutsideClick } from '../../../hooks/useOutsideClick'
+import { BiChevronsDown, BiChevronsUp } from 'react-icons/bi'
 
 export default function Todo({
   todo,
   toggleTodo,
   deleteTodo,
   modifyTodo,
+  modifyTodoOrder,
+  handleUpdate,
+  todosWithIdAndStatus,
   isDragging,
   handleDragging,
   sending,
@@ -37,6 +42,11 @@ export default function Todo({
     deadline: string,
     category: string
   ) => void
+  modifyTodoOrder: (
+    order: { key: ITaskDraggable['key']; order: ITaskDraggable['order'] }[]
+  ) => void
+  handleUpdate: (order: number, status: string, newTargetIndex?: number) => void
+  todosWithIdAndStatus: ITaskDraggable[]
   isDragging: boolean
   handleDragging: (dragging: boolean) => void
   sending: boolean
@@ -77,6 +87,14 @@ export default function Todo({
     todo?.category ?? 'other'
   )
   const [isOpen, setIsOpen] = useState(false)
+  const [showMoveMenu, setShowMoveMenu] = useState(false)
+
+  const moveMenuRef = useRef<HTMLDivElement>(null)
+
+  useOutsideClick({
+    ref: moveMenuRef,
+    onOutsideClick: () => setShowMoveMenu(false),
+  })
 
   function handleTodoClick() {
     toggleTodo(todo?.key)
@@ -129,6 +147,8 @@ export default function Todo({
     if (!todo || isOpen) return
     const t = window.setTimeout(() => {
       setNewName(todo?.name ?? '')
+      setNewPriority(todo?.priority ?? 'low')
+      setNewCategory((todo?.category as TCategory) ?? 'other')
       if (todo?.deadline) {
         const deadlineDate = new Date(todo.deadline)
         setNewDay(deadlineDate.getDate().toString().padStart(2, '0'))
@@ -141,6 +161,10 @@ export default function Todo({
 
   const [allowDrag, setAllowDrag] = useState(true)
   const [isSelectingText, setIsSelectingText] = useState(false)
+  const completedText = useCallback(
+    () => (todo?.complete ? t('MarkIncomplete') : t('MarkCompleted')),
+    [todo?.complete, t]
+  )
 
   const handleMouseDown = () => {
     setAllowDrag(true)
@@ -167,15 +191,55 @@ export default function Todo({
     }
   }
 
-  const handleLabelClick = (
-    e:
-      | React.MouseEvent<HTMLLabelElement>
-      | React.KeyboardEvent<HTMLLabelElement>
-  ) => {
+  const handleLabelClick = (e: React.SyntheticEvent) => {
+    // If the user is selecting text, prevent any action (like toggling)
     if (isSelectingText) {
       e.preventDefault()
+      e.stopPropagation()
     }
   }
+
+  const handleMoveUp = () => {
+    if (!todo) return
+    const currentIndex = todosWithIdAndStatus.findIndex(t => t.key === todo.key)
+    if (currentIndex <= 0) return // Can't move up if already at top
+
+    const order = handleUpdate(Number(currentIndex), 'todos', currentIndex - 1)
+
+    if (Array.isArray(order)) {
+      const newOrder = order.map((item, index) => ({
+        key: item.key,
+        order: index,
+      }))
+
+      modifyTodoOrder(
+        newOrder as { key: ITask['key']; order: ITask['order'] }[]
+      )
+    }
+  }
+
+  const handleMoveDown = () => {
+    if (!todo) return
+    const currentIndex = todosWithIdAndStatus.findIndex(t => t.key === todo.key)
+    if (currentIndex >= todosWithIdAndStatus.length - 1) return // Can't move down if already at bottom
+
+    const order = handleUpdate(Number(currentIndex), 'todos', currentIndex + 1)
+
+    if (Array.isArray(order)) {
+      const newOrder = order.map((item, index) => ({
+        key: item.key,
+        order: index,
+      }))
+
+      modifyTodoOrder(
+        newOrder as { key: ITask['key']; order: ITask['order'] }[]
+      )
+    }
+  }
+
+  const currentIndex = todosWithIdAndStatus.findIndex(t => t?.key === todo?.key)
+  const canMoveUp = currentIndex > 0
+  const canMoveDown = currentIndex < todosWithIdAndStatus.length - 1
 
   return (
     <>
@@ -198,19 +262,74 @@ export default function Todo({
         }}
         onDragEnd={() => handleDragging(false)}
       >
-        <button
-          type="button"
-          onMouseOver={handleMouseOverHandle}
-          onFocus={handleMouseOverHandle}
-          onMouseDown={handleMouseDown}
-          className={`${styles['drag-handle']} tooltip-wrap`}
-          aria-label={t('Draggable')}
-        >
-          <Icon lib="md" name="MdDragIndicator" />
-          <span className="tooltip narrow2 below right">{t('Draggable')}</span>
-        </button>
+        <div ref={moveMenuRef}>
+          <button
+            type="button"
+            onClick={() => setShowMoveMenu(prev => !prev)}
+            onMouseOver={handleMouseOverHandle}
+            onFocus={handleMouseOverHandle}
+            onMouseDown={handleMouseDown}
+            className={`${styles['drag-handle']} tooltip-wrap`}
+            aria-label={t('Draggable')}
+            aria-expanded={showMoveMenu}
+            aria-haspopup="menu"
+          >
+            <Icon lib="md" name="MdDragIndicator" />
+            <span className="tooltip narrow2 below right">
+              {t('Draggable')}
+            </span>
+          </button>
+          {showMoveMenu && (
+            <div className={styles['move-menu']} role="menu">
+              <button
+                type="button"
+                onClick={handleMoveUp}
+                disabled={!canMoveUp}
+                role="menuitem"
+                className={`${styles['move-button']} ${styles['move-up']}`}
+              >
+                <Icon lib="bi" name="BiChevronsUp" />
+                <span>{t('MoveUp')}</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleMoveDown}
+                disabled={!canMoveDown}
+                role="menuitem"
+                className={`${styles['move-button']} ${styles['move-down']}`}
+              >
+                <span>{t('MoveDown')}</span>
+                <Icon lib="bi" name="BiChevronsDown" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowMoveMenu(false)}
+                role="menuitem"
+                className={styles['move-button']}
+              >
+                {t('Close')}
+              </button>
+            </div>
+          )}
+        </div>
         {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
-        <label
+        <div className={`tooltip-wrap ${styles['toggle-wrap']}`}>
+          <ButtonToggle
+            equal={true}
+            name="complete"
+            wrapperClass={styles['toggle']}
+            onChange={handleTodoClick}
+            id={`check_${sanitize(todo?.name)}`}
+            isChecked={todo?.complete ?? false}
+            label={completedText()}
+            on={t('Complete')}
+            off={t('Incomplete')}
+            hideLabel={true}
+            hideOnOff={true}
+          />
+          <span className="tooltip narrow2 below right">{completedText()}</span>
+        </div>
+        <div
           className={`${styles.label}`}
           onClick={handleLabelClick}
           onKeyDown={e => {
@@ -220,32 +339,8 @@ export default function Todo({
             }
           }}
         >
-          <div className={`tooltip-wrap ${styles['toggle-wrap']}`}>
-            <ButtonToggle
-              equal={true}
-              name="complete"
-              wrapperClass={styles['rotate-toggle']}
-              onChange={handleTodoClick}
-              id={`check_${sanitize(todo?.name)}`}
-              isChecked={todo?.complete ?? false}
-              label={`${t('MarkCompleted')}: `}
-              on={t('Complete')}
-              off={t('Incomplete')}
-              hideLabel={true}
-              hideOnOff={true}
-            />
-            {/* <input
-              type="checkbox"
-              id={`check_${sanitize(todo?.name)}`}
-              checked={todo?.complete ?? false}
-              onChange={handleTodoClick}
-            /> */}
-            <span className="tooltip narrow2 below right">
-              {t('MarkCompleted')}
-            </span>
-          </div>
           <span
-            role="button"
+            className={`${todo?.complete ? styles.complete : ''} ${styles['todo-name']}`}
             tabIndex={0}
             onMouseOver={handleMouseOverSpan}
             onFocus={handleMouseOverSpan}
@@ -299,7 +394,7 @@ export default function Todo({
                 )
               })()}
           </div>
-        </label>
+        </div>
 
         <div className={`${styles['btn-wrap']}`}>
           {todo?.priority === 'high' ? (

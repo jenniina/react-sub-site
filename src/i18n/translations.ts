@@ -9574,6 +9574,15 @@ export const translations = {
     cs: 'Označit jako dokončené',
     fi: 'Merkitse tehdyksi',
   },
+  MarkIncomplete: {
+    en: 'Mark as incomplete',
+    es: 'Marcar como incompleto',
+    fr: 'Marquer comme incomplet',
+    de: 'Als unvollständig markieren',
+    pt: 'Marcar como incompleto',
+    cs: 'Označit jako nedokončené',
+    fi: 'Merkitse keskeneräiseksi',
+  },
   ClearCompleted: {
     en: 'Clear Completed Tasks',
     es: 'Borrar Tareas Completadas',
@@ -9582,6 +9591,15 @@ export const translations = {
     pt: 'Limpar Tarefas Completas',
     cs: 'Vymazat Dokončené Úkoly',
     fi: 'Poista valmiit tehtävät',
+  },
+  MoveCompletedToBottom: {
+    en: 'Move completed down',
+    es: 'Mover completados hacia abajo',
+    fr: 'Déplacer les terminés vers le bas',
+    de: 'Abgeschlossene nach unten verschieben',
+    pt: 'Mover concluídos para baixo',
+    cs: 'Přesunout dokončené dolů',
+    fi: 'Siirrä valmiit alas',
   },
   AddTask: {
     en: 'Add Task',
