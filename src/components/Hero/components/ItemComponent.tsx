@@ -7,34 +7,35 @@ import {
   MouseEvent as ReactMouseEvent,
   TouchEvent as ReactTouchEvent,
   useState,
-} from 'react'
-import { useLanguageContext } from '../../../contexts/LanguageContext'
+  useEffect,
+} from "react"
+import { useLanguageContext } from "../../../contexts/LanguageContext"
 
-import { getRandomMinMax } from '../../../utils'
-import * as Draggable from '../../../hooks/useDraggable'
-import styles from '../Hero.module.css'
-import { itemProps } from '../Hero'
+import { getRandomMinMax } from "../../../utils"
+import * as Draggable from "../../../hooks/useDraggable"
+import styles from "../Hero.module.css"
+import { itemProps } from "../Hero"
 
 //Change these, if the addresses change, or add more as needed:
 const LOCATION = {
-  HOME: '',
-  ABOUT: 'about',
-  PORTFOLIO: 'portfolio',
-  CONTACT: 'contact',
-  FORM: 'form',
-  BLOBAPP: 'blob',
-  DND: 'draganddrop',
-  JOKES: 'jokes',
-  SELECT: 'select',
-  SALON: 'salon',
-  COMPOSER: 'composer',
-  TODO: 'todo',
-  GRAPHQL: 'graphql',
-  STORE: 'store',
-  CART: 'cart',
-  MEMORY: 'memory',
-  MEDIA: 'media',
-  QUIZ: 'quiz',
+  HOME: "",
+  ABOUT: "about",
+  PORTFOLIO: "portfolio",
+  CONTACT: "contact",
+  FORM: "form",
+  BLOBAPP: "blob",
+  DND: "draganddrop",
+  JOKES: "jokes",
+  SELECT: "select",
+  SALON: "salon",
+  COMPOSER: "composer",
+  TODO: "todo",
+  GRAPHQL: "graphql",
+  STORE: "store",
+  CART: "cart",
+  MEMORY: "memory",
+  MEDIA: "media",
+  QUIZ: "quiz",
 }
 
 interface ItemComponentProps {
@@ -60,7 +61,7 @@ interface ItemComponentProps {
 
 const ItemComponent = forwardRef<
   HTMLUListElement,
-  Omit<ItemComponentProps, 'ulRef'>
+  Omit<ItemComponentProps, "ulRef">
 >(
   (
     {
@@ -88,8 +89,26 @@ const ItemComponent = forwardRef<
 
     const isComposer = location === LOCATION.COMPOSER
     const composerStaffWidth = 200
-    const composerStaffMidY = 'clamp(100px, 44vh, 1000px)'
+    const composerStaffMidY = "clamp(100px, 44vh, 1000px)"
     const composerStaffHalfStep = `calc(60px * (${composerStaffWidth} / 640))`
+
+    // Capture each item's original responsive positioning formula exactly once.
+    // This lets Hero's random movement add pixel offsets while still allowing
+    // the base position (clamp/vh/vw/calc) to respond to window resizes.
+    useEffect(() => {
+      const root = ulRef?.current
+      if (!root) return
+
+      const items = root.querySelectorAll<HTMLElement>('li[id^="shape"]')
+      items.forEach((el) => {
+        if (!el.dataset.baseTop && el.style.top)
+          el.dataset.baseTop = el.style.top
+        if (!el.dataset.baseLeft && el.style.left)
+          el.dataset.baseLeft = el.style.left
+        if (!el.dataset.moveDy) el.dataset.moveDy = "0"
+        if (!el.dataset.moveDx) el.dataset.moveDx = "0"
+      })
+    }, [ulRef, array, location])
 
     return (
       <>
@@ -100,33 +119,33 @@ const ItemComponent = forwardRef<
           aria-labelledby={`description`}
           aria-activedescendant={activeDescendant ?? undefined}
           tabIndex={0}
-          className={`${styles.herocontent} ${styles[location] ?? ''} ${
+          className={`${styles.herocontent} ${styles[location] ?? ""} ${
             //In the case of using the blob feature for a page, add it here:
             location === LOCATION.PORTFOLIO ||
             location === LOCATION.BLOBAPP ||
             location === LOCATION.DND
               ? styles.blob
-              : ''
-          } ${itemsVisible ? styles['items-visible'] : styles['items-hidden']} `}
+              : ""
+          } ${itemsVisible ? styles["items-visible"] : styles["items-hidden"]} `}
           style={(() => {
             const baseStyle: CSSProperties =
               location === LOCATION.PORTFOLIO ||
               location === LOCATION.BLOBAPP ||
               location === LOCATION.DND
                 ? {
-                    WebkitFilter: 'url(#svgfilterHero)',
-                    filter: 'url(#svgfilterHero)',
+                    WebkitFilter: "url(#svgfilterHero)",
+                    filter: "url(#svgfilterHero)",
                     opacity: 0.7,
                   }
-                : { WebkitFilter: 'none', filter: 'none' }
+                : { WebkitFilter: "none", filter: "none" }
 
             if (!isComposer) return baseStyle
 
             return {
               ...baseStyle,
-              ['--staff-width' as string]: `${composerStaffWidth}px`,
-              ['--staff-mid-y' as string]: composerStaffMidY,
-              ['--staff-half-step' as string]: composerStaffHalfStep,
+              ["--staff-width" as string]: `${composerStaffWidth}px`,
+              ["--staff-mid-y" as string]: composerStaffMidY,
+              ["--staff-half-step" as string]: composerStaffHalfStep,
             }
           })()}
         >
@@ -140,7 +159,7 @@ const ItemComponent = forwardRef<
               const dividedBy = 2.5
 
               const style: CSSProperties = {
-                position: 'absolute',
+                position: "absolute",
                 top: `clamp(100px, calc(-5vh + calc(1.3vh * ${item.e} * ${
                   item.e / 1.5
                 })), calc(80vh - 50px - ${item.size / dividedBy}vh))`,
@@ -153,23 +172,23 @@ const ItemComponent = forwardRef<
                   windowWidth < windowHeight
                     ? `${item.size / dividedBy}vh`
                     : `${item.size / dividedBy}vw`,
-                transitionDuration: '600ms',
+                transitionDuration: "600ms",
               }
               const inner: CSSProperties = {
                 color: `${item.color}`,
-                ['--i' as string]: `${item.i}`,
-                ['--e' as string]: `${item.e}`,
-                ['--s' as string]:
+                ["--i" as string]: `${item.i}`,
+                ["--e" as string]: `${item.e}`,
+                ["--s" as string]:
                   windowWidth < windowHeight
                     ? `${item.size}vh`
                     : `${item.size}vw`,
-                width: '100%',
-                height: '100%',
+                width: "100%",
+                height: "100%",
                 minWidth: `44px`,
                 minHeight: `44px`,
                 maxWidth: `150px`,
                 maxHeight: `150px`,
-                borderRadius: '3px',
+                borderRadius: "3px",
                 opacity: `${
                   item.size > 6 ? `0.7` : `0.${Math.ceil(item.size + 2)}`
                 }`,
@@ -190,28 +209,28 @@ const ItemComponent = forwardRef<
                                     : styles.tall
                                 }`}
                   style={style}
-                  role={'option'}
+                  role={"option"}
                   tabIndex={0}
                   aria-selected={`shape${item.i}` === activeDescendant}
-                  onFocus={e => {
+                  onFocus={(e) => {
                     setActiveDescendant(e.target.id)
                   }}
                   onBlurCapture={() => {
                     setActiveDescendant(null)
                   }}
-                  onPointerEnter={e => {
+                  onPointerEnter={(e) => {
                     movingItem(e)
                   }}
-                  onMouseDown={e => {
+                  onMouseDown={(e) => {
                     removeItem(e)
                   }}
-                  onTouchStart={e => {
+                  onTouchStart={(e) => {
                     removeItem(e)
                   }}
-                  onPointerDown={e => {
+                  onPointerDown={(e) => {
                     removeItem(e)
                   }}
-                  onKeyDown={e => {
+                  onKeyDown={(e) => {
                     Draggable.keyDown(
                       e,
                       e.target as HTMLElement,
@@ -226,16 +245,16 @@ const ItemComponent = forwardRef<
                   <div style={inner}>
                     {spanArray.map((span, index) => {
                       const style: CSSProperties = {
-                        position: 'absolute',
-                        borderRadius: '3px',
+                        position: "absolute",
+                        borderRadius: "3px",
                         color: `${item.color}`,
-                        ['--color' as string]: `${span.color}`,
-                        ['--number' as string]: `${index}`,
+                        ["--color" as string]: `${span.color}`,
+                        ["--number" as string]: `${index}`,
                       }
                       return (
                         <span key={`${item.i}-${index}`} style={style}>
                           <span className="scr">
-                            {t('Shape')} {index + 1}
+                            {t("Shape")} {index + 1}
                           </span>
                         </span>
                       )
@@ -247,7 +266,7 @@ const ItemComponent = forwardRef<
               const dividedBy = 2
 
               const style: CSSProperties = {
-                position: 'absolute',
+                position: "absolute",
                 top: `clamp(100px, calc(-5vh + calc(1.3vh * ${item.e} * ${
                   item.e / 1.5
                 })), calc(80vh - 50px - ${item.size / dividedBy}vh))`,
@@ -260,19 +279,19 @@ const ItemComponent = forwardRef<
                   windowWidth < windowHeight
                     ? `${item.size / dividedBy}vh`
                     : `${item.size / dividedBy}vw`,
-                transitionDuration: '600ms',
-                ['--idx' as string]: `${item.i}`,
+                transitionDuration: "600ms",
+                ["--idx" as string]: `${item.i}`,
               }
               const inner: CSSProperties = {
                 color: `${item.color}`,
-                ['--i' as string]: `${item.i}`,
-                ['--e' as string]: `${item.e}`,
-                ['--s' as string]:
+                ["--i" as string]: `${item.i}`,
+                ["--e" as string]: `${item.e}`,
+                ["--s" as string]:
                   windowWidth < windowHeight
                     ? `${item.size}vh`
                     : `${item.size}vw`,
-                width: '100%',
-                height: '100%',
+                width: "100%",
+                height: "100%",
                 minWidth: `44px`,
                 minHeight: `44px`,
                 maxWidth: `150px`,
@@ -297,28 +316,28 @@ const ItemComponent = forwardRef<
                                     : styles.tall
                                 }`}
                   style={style}
-                  role={'option'}
+                  role={"option"}
                   tabIndex={0}
                   aria-selected={`shape${item.i}` === activeDescendant}
-                  onFocus={e => {
+                  onFocus={(e) => {
                     setActiveDescendant(e.target.id)
                   }}
                   onBlurCapture={() => {
                     setActiveDescendant(null)
                   }}
-                  onPointerEnter={e => {
+                  onPointerEnter={(e) => {
                     movingItem(e)
                   }}
-                  onMouseDown={e => {
+                  onMouseDown={(e) => {
                     removeItem(e)
                   }}
-                  onTouchStart={e => {
+                  onTouchStart={(e) => {
                     removeItem(e)
                   }}
-                  onPointerDown={e => {
+                  onPointerDown={(e) => {
                     removeItem(e)
                   }}
-                  onKeyDown={e => {
+                  onKeyDown={(e) => {
                     Draggable.keyDown(
                       e,
                       e.target as HTMLElement,
@@ -333,15 +352,15 @@ const ItemComponent = forwardRef<
                   <div style={inner}>
                     {spanArray.map((span, index) => {
                       const style: CSSProperties = {
-                        position: 'absolute',
+                        position: "absolute",
                         color: `${item.color}`,
-                        ['--color' as string]: `${span.color}`,
-                        ['--number' as string]: `${index}`,
+                        ["--color" as string]: `${span.color}`,
+                        ["--number" as string]: `${index}`,
                       }
                       return (
                         <span key={`${item.i}-${index}`} style={style}>
                           <span className="scr">
-                            {t('Shape')} {index + 1}
+                            {t("Shape")} {index + 1}
                           </span>
                         </span>
                       )
@@ -355,23 +374,26 @@ const ItemComponent = forwardRef<
               const colStep = `clamp(50px, calc((99vw - 50px) / 10), 99999px)`
               const noteHead = `40px`
               const style: CSSProperties = {
-                position: 'absolute',
-                ['--size' as string]: `${itemSize}`,
-                ['--note-head' as string]: `${noteHead}`,
+                position: "absolute",
+                ["--size" as string]: `${itemSize}`,
+                ["--note-head" as string]: `${noteHead}`,
                 top: `calc(clamp(100px, 44vh, 1000px) + (${noteStep} * (60px * 200 / 640)) - ${noteHead})`,
                 left: `calc(${item.i} * ${colStep} - ${noteHead})`,
-                transitionDuration: '600ms',
+                ["--highest-allowed" as string]: `calc(clamp(100px, 44vh, 1000px) + (60px * 200 / 640) - 40px)`,
+                ["--lowest-allowed" as string]: `calc(clamp(100px, 44vh, 1000px) + (11 * (60px * 200 / 640)) - 40px)`,
+
+                transitionDuration: "600ms",
                 opacity: `0.7`,
               }
               const inner: CSSProperties = {
                 color: `${item.color}`,
-                width: '100%',
-                height: '100%',
+                width: "100%",
+                height: "100%",
                 minWidth: `40px`,
                 minHeight: `40px`,
                 maxWidth: `150px`,
                 maxHeight: `150px`,
-                borderRadius: '80% 50% 80% 50%',
+                borderRadius: "80% 50% 80% 50%",
               }
 
               return (
@@ -389,28 +411,28 @@ const ItemComponent = forwardRef<
                                     : styles.tall
                                 }`}
                   style={style}
-                  role={'option'}
+                  role={"option"}
                   aria-selected={`shape${item.i}` === activeDescendant}
                   tabIndex={0}
-                  onFocus={e => {
+                  onFocus={(e) => {
                     setActiveDescendant(e.target.id)
                   }}
                   onBlurCapture={() => {
                     setActiveDescendant(null)
                   }}
-                  onPointerEnter={e => {
+                  onPointerEnter={(e) => {
                     movingItem(e)
                   }}
-                  onMouseDown={e => {
+                  onMouseDown={(e) => {
                     removeItem(e)
                   }}
-                  onTouchStart={e => {
+                  onTouchStart={(e) => {
                     removeItem(e)
                   }}
-                  onPointerDown={e => {
+                  onPointerDown={(e) => {
                     removeItem(e)
                   }}
-                  onKeyDown={e => {
+                  onKeyDown={(e) => {
                     Draggable.keyDown(
                       e,
                       e.target as HTMLElement,
@@ -425,16 +447,16 @@ const ItemComponent = forwardRef<
                   <div style={inner}>
                     {spanArray.map((span, index) => {
                       const style: CSSProperties = {
-                        position: 'absolute',
-                        borderRadius: '80% 50% 80% 50%',
+                        position: "absolute",
+                        borderRadius: "80% 50% 80% 50%",
                         color: `${item.color}`,
-                        ['--color' as string]: `${span.color}`,
-                        ['--number' as string]: `${index}`,
+                        ["--color" as string]: `${span.color}`,
+                        ["--number" as string]: `${index}`,
                       }
                       return (
                         <span key={`${item.i}-${index}`} style={style}>
                           <span className="scr">
-                            {t('Shape')} {index + 1}
+                            {t("Shape")} {index + 1}
                           </span>
                         </span>
                       )
@@ -446,14 +468,14 @@ const ItemComponent = forwardRef<
               const dividedBy = 2.2
 
               const colorJewel = [
-                'var(--color-primary-9)',
-                'var(--color-primary-10)',
-                'var(--color-primary-12)',
+                "var(--color-primary-9)",
+                "var(--color-primary-10)",
+                "var(--color-primary-12)",
               ]
               const colorJewel2 = [
-                'var(--color-secondary-8)',
-                'var(--color-secondary-10)',
-                'var(--color-secondary-11)',
+                "var(--color-secondary-8)",
+                "var(--color-secondary-10)",
+                "var(--color-secondary-11)",
               ]
               const hueArray = [214, 39]
               const randomOfThree = Math.round(getRandomMinMax(0, 2))
@@ -466,7 +488,7 @@ const ItemComponent = forwardRef<
               const hue = hueArray[randomOfTwo]
 
               const style: CSSProperties = {
-                position: 'absolute',
+                position: "absolute",
                 top: `clamp(100px, calc(-5vh + calc(1.3vh * ${item.e} * ${
                   item.e / 1.5
                 })), calc(80vh - 50px - ${item.size / dividedBy}vh))`,
@@ -479,24 +501,24 @@ const ItemComponent = forwardRef<
                   windowWidth < windowHeight
                     ? `${item.size / dividedBy}vh`
                     : `${item.size / dividedBy}vw`,
-                ['--rotate2' as string]: `-45deg`, //  `${Math.round(getRandomMinMax(-65, -25))}deg`,
-                ['--color' as string]: `${randomBG}`,
-                ['--hue' as string]: `${hue}`,
+                ["--rotate2" as string]: `-45deg`, //  `${Math.round(getRandomMinMax(-65, -25))}deg`,
+                ["--color" as string]: `${randomBG}`,
+                ["--hue" as string]: `${hue}`,
                 transform: `rotate(-45deg)`,
               }
 
               const clipArrayJewel = [
-                'polygon(15% 0%, 50% 50%, 85% 0%)',
-                'polygon(85% 0%, 50% 50%, 100% 15%)',
-                'polygon(100% 15%, 50% 50%, 100% 85%)',
-                'polygon(100% 85%, 50% 50%, 85% 100%)',
-                'polygon(85% 100%, 50% 50%, 15% 100%)',
-                'polygon(15% 100%, 50% 50%, 0% 85%)',
-                'polygon(0% 85%, 50% 50%, 0% 15%)',
-                'polygon(0% 15%, 50% 50%, 15% 0%)',
-                'polygon(85% 100%, 100% 85%, 100% 15%, 85% 0%, 15% 0%, 0% 15%, 0% 85%, 15% 100%)',
-                'polygon(85% 100%, 100% 85%, 100% 15%, 85% 0%, 15% 0%, 0% 15%, 0% 85%, 15% 100%)',
-                'polygon(85% 100%, 100% 85%, 100% 15%, 85% 0%, 15% 0%, 0% 15%, 0% 85%, 15% 100%, 17% 96%, 4% 83%, 4% 17%, 17% 4%, 83% 4%, 96% 17%, 96% 83%, 83% 96%, 18% 96%, 16% 100%)',
+                "polygon(15% 0%, 50% 50%, 85% 0%)",
+                "polygon(85% 0%, 50% 50%, 100% 15%)",
+                "polygon(100% 15%, 50% 50%, 100% 85%)",
+                "polygon(100% 85%, 50% 50%, 85% 100%)",
+                "polygon(85% 100%, 50% 50%, 15% 100%)",
+                "polygon(15% 100%, 50% 50%, 0% 85%)",
+                "polygon(0% 85%, 50% 50%, 0% 15%)",
+                "polygon(0% 15%, 50% 50%, 15% 0%)",
+                "polygon(85% 100%, 100% 85%, 100% 15%, 85% 0%, 15% 0%, 0% 15%, 0% 85%, 15% 100%)",
+                "polygon(85% 100%, 100% 85%, 100% 15%, 85% 0%, 15% 0%, 0% 15%, 0% 85%, 15% 100%)",
+                "polygon(85% 100%, 100% 85%, 100% 15%, 85% 0%, 15% 0%, 0% 15%, 0% 85%, 15% 100%, 17% 96%, 4% 83%, 4% 17%, 17% 4%, 83% 4%, 96% 17%, 96% 83%, 83% 96%, 18% 96%, 16% 100%)",
               ]
 
               return (
@@ -511,28 +533,28 @@ const ItemComponent = forwardRef<
                     randomOfTwo === 0 ? styles.blue : styles.orange
                   } ${windowHeight < windowWidth ? styles.wide : styles.tall}`}
                   style={style}
-                  role={'option'}
+                  role={"option"}
                   tabIndex={0}
                   aria-selected={`shape${item.i}` === activeDescendant}
-                  onFocus={e => {
+                  onFocus={(e) => {
                     setActiveDescendant(e.target.id)
                   }}
                   onBlurCapture={() => {
                     setActiveDescendant(null)
                   }}
-                  onPointerEnter={e => {
+                  onPointerEnter={(e) => {
                     movingItem(e)
                   }}
-                  onMouseDown={e => {
+                  onMouseDown={(e) => {
                     removeItem(e)
                   }}
-                  onTouchStart={e => {
+                  onTouchStart={(e) => {
                     removeItem(e)
                   }}
-                  onPointerDown={e => {
+                  onPointerDown={(e) => {
                     removeItem(e)
                   }}
-                  onKeyDown={e => {
+                  onKeyDown={(e) => {
                     Draggable.keyDown(
                       e,
                       e.target as HTMLElement,
@@ -546,20 +568,20 @@ const ItemComponent = forwardRef<
                 >
                   <div
                     style={{
-                      width: '100%',
-                      height: '100%',
+                      width: "100%",
+                      height: "100%",
                       clipPath:
-                        'polygon(85% 100%, 100% 85%, 100% 15%, 85% 0%, 15% 0%, 0% 15%, 0% 85%, 15% 100%)',
+                        "polygon(85% 100%, 100% 85%, 100% 15%, 85% 0%, 15% 0%, 0% 15%, 0% 85%, 15% 100%)",
                     }}
                   >
                     {divArrayJewel1.map((span, index) => {
                       const style: CSSProperties = {
-                        position: 'absolute',
+                        position: "absolute",
                         left: `calc(50% - ${span.size / 2}%)`,
                         top: `calc(50% - ${span.size / 2}%)`,
-                        borderRadius: '0',
-                        ['--number' as string]: `${index + 1}`,
-                        ['--i' as string]: `${item.i}`,
+                        borderRadius: "0",
+                        ["--number" as string]: `${index + 1}`,
+                        ["--i" as string]: `${item.i}`,
                         width: `${span.size}%`,
                         height: `${span.size}%`,
                         minWidth: `${span.size}%`,
@@ -568,18 +590,18 @@ const ItemComponent = forwardRef<
                         maxHeight: `${span.size}%`,
                         opacity: `${
                           index === 8 && randomOfTwo === 0
-                            ? '0.6'
+                            ? "0.6"
                             : index === 8
-                              ? '0.7'
+                              ? "0.7"
                               : index === 9 && randomOfTwo === 0
-                                ? '0.4'
+                                ? "0.4"
                                 : index === 9
-                                  ? '0.3'
+                                  ? "0.3"
                                   : index === 10 && randomOfTwo === 0
-                                    ? '0.4'
+                                    ? "0.4"
                                     : index === 10
-                                      ? '0.5'
-                                      : '1'
+                                      ? "0.5"
+                                      : "1"
                         }`,
                         clipPath: `${clipArrayJewel[index]}`,
                       }
@@ -592,17 +614,17 @@ const ItemComponent = forwardRef<
                                 ? styles.cover
                                 : index === 10
                                   ? styles.frame
-                                  : ''
+                                  : ""
                           }
                           key={`${item.i}-${index}`}
                           style={style}
                         ></div>
                       )
-                    })}{' '}
+                    })}{" "}
                   </div>
                   <span style={style}>
                     <span className="scr">
-                      {t('Shape')} {index + 1}
+                      {t("Shape")} {index + 1}
                     </span>
                   </span>
                 </li>
@@ -612,14 +634,14 @@ const ItemComponent = forwardRef<
               const times = 1.08
 
               const colorJewel = [
-                'var(--color-primary-6)',
-                'var(--color-primary-9)',
-                'var(--color-primary-12)',
+                "var(--color-primary-6)",
+                "var(--color-primary-9)",
+                "var(--color-primary-12)",
               ]
               const colorJewel2 = [
-                'var(--color-secondary-9)',
-                'var(--color-secondary-11)',
-                'var(--color-secondary-14)',
+                "var(--color-secondary-9)",
+                "var(--color-secondary-11)",
+                "var(--color-secondary-14)",
               ]
 
               const randomOfThree = Math.round(getRandomMinMax(0, 2))
@@ -633,7 +655,7 @@ const ItemComponent = forwardRef<
               const hue = hues[randomOfTwo]
 
               const style: CSSProperties = {
-                position: 'absolute',
+                position: "absolute",
                 top: `clamp(100px, calc(-5vh + calc(1.1vh * ${item.e} * ${
                   item.e / 1.5
                 })), calc(80vh - 50px - ${item.size / dividedBy}vh))`,
@@ -646,23 +668,23 @@ const ItemComponent = forwardRef<
                   windowWidth < windowHeight
                     ? `${item.size / dividedBy}vh`
                     : `${item.size / dividedBy}vw`,
-                ['--rotate2' as string]: `-23deg`,
-                ['--color' as string]: `${randomBG}`,
-                ['--hue' as string]: `${hue}`,
+                ["--rotate2" as string]: `-23deg`,
+                ["--color" as string]: `${randomBG}`,
+                ["--hue" as string]: `${hue}`,
               }
 
               const clipArrayJewel2 = [
-                'polygon(50% 50%, 70.71% 0%, 29.29% 0%',
-                'polygon(100% 29.29%, 50% 50%, 70.71% 0%',
-                'polygon(50% 50%, 100% 70.71%, 100% 29.29%',
-                'polygon(70.71% 100%, 50% 50%, 100% 70.71%',
-                'polygon(70.71% 100%, 50% 50%, 29.29% 100%)',
-                'polygon(0% 70.71%, 50% 50%, 29.29% 100%)',
-                'polygon(0% 29.29%, 0% 70.71%, 50% 50%)',
-                'polygon(29.29% 0%, 50% 50%, 0% 29.29%)',
-                'polygon(70.71% 100%, 100% 70.71%, 100% 29.29%, 70.71% 0%, 29.29% 0%, 0% 29.29%, 0% 70.71%, 29.29% 100%)',
-                'polygon(70.71% 100%, 100% 70.71%, 100% 29.29%, 70.71% 0%, 29.29% 0%, 0% 29.29%, 0% 70.71%, 29.29% 100%)',
-                'polygon(70.71% 100%, 100% 70.71%, 100% 29.29%, 70.71% 0%, 29.29% 0%, 0% 29.29%, 0% 70.71%, 29.29% 100%, 32% 96%, 5% 69%, 5% 31%, 32% 5%, 68% 5%, 95% 31%, 95% 69%, 68% 96%, 34% 96%, 32% 100%)',
+                "polygon(50% 50%, 70.71% 0%, 29.29% 0%",
+                "polygon(100% 29.29%, 50% 50%, 70.71% 0%",
+                "polygon(50% 50%, 100% 70.71%, 100% 29.29%",
+                "polygon(70.71% 100%, 50% 50%, 100% 70.71%",
+                "polygon(70.71% 100%, 50% 50%, 29.29% 100%)",
+                "polygon(0% 70.71%, 50% 50%, 29.29% 100%)",
+                "polygon(0% 29.29%, 0% 70.71%, 50% 50%)",
+                "polygon(29.29% 0%, 50% 50%, 0% 29.29%)",
+                "polygon(70.71% 100%, 100% 70.71%, 100% 29.29%, 70.71% 0%, 29.29% 0%, 0% 29.29%, 0% 70.71%, 29.29% 100%)",
+                "polygon(70.71% 100%, 100% 70.71%, 100% 29.29%, 70.71% 0%, 29.29% 0%, 0% 29.29%, 0% 70.71%, 29.29% 100%)",
+                "polygon(70.71% 100%, 100% 70.71%, 100% 29.29%, 70.71% 0%, 29.29% 0%, 0% 29.29%, 0% 70.71%, 29.29% 100%, 32% 96%, 5% 69%, 5% 31%, 32% 5%, 68% 5%, 95% 31%, 95% 69%, 68% 96%, 34% 96%, 32% 100%)",
               ]
 
               return (
@@ -682,28 +704,28 @@ const ItemComponent = forwardRef<
                                     : styles.tall
                                 }`}
                   style={style}
-                  role={'option'}
+                  role={"option"}
                   tabIndex={0}
                   aria-selected={`shape${item.i}` === activeDescendant}
-                  onFocus={e => {
+                  onFocus={(e) => {
                     setActiveDescendant(e.target.id)
                   }}
                   onBlurCapture={() => {
                     setActiveDescendant(null)
                   }}
-                  onPointerEnter={e => {
+                  onPointerEnter={(e) => {
                     movingItem(e)
                   }}
-                  onMouseDown={e => {
+                  onMouseDown={(e) => {
                     removeItem(e)
                   }}
-                  onTouchStart={e => {
+                  onTouchStart={(e) => {
                     removeItem(e)
                   }}
-                  onPointerDown={e => {
+                  onPointerDown={(e) => {
                     removeItem(e)
                   }}
-                  onKeyDown={e => {
+                  onKeyDown={(e) => {
                     Draggable.keyDown(
                       e,
                       e.target as HTMLElement,
@@ -717,20 +739,20 @@ const ItemComponent = forwardRef<
                 >
                   <div
                     style={{
-                      width: '100%',
-                      height: '100%',
+                      width: "100%",
+                      height: "100%",
                       clipPath:
-                        'polygon(70.71% 100%, 100% 70.71%, 100% 29.29%, 70.71% 0%, 29.29% 0%, 0% 29.29%, 0% 70.71%, 29.29% 100%)',
+                        "polygon(70.71% 100%, 100% 70.71%, 100% 29.29%, 70.71% 0%, 29.29% 0%, 0% 29.29%, 0% 70.71%, 29.29% 100%)",
                     }}
                   >
                     {divArrayJewel2.map((span, index) => {
                       const style: CSSProperties = {
-                        position: 'absolute',
+                        position: "absolute",
                         left: `calc(50% - ${(span.size * times) / 2}%)`,
                         top: `calc(50% - ${(span.size * times) / 2}%)`,
-                        borderRadius: '0',
-                        ['--number' as string]: `${index}`,
-                        ['--i' as string]: `${item.i}`,
+                        borderRadius: "0",
+                        ["--number" as string]: `${index}`,
+                        ["--i" as string]: `${item.i}`,
                         width: `${span.size * times}%`,
                         height: `${span.size * times}%`,
                         minWidth: `${span.size * times}%`,
@@ -739,18 +761,18 @@ const ItemComponent = forwardRef<
                         maxHeight: `${span.size * times}%`,
                         opacity: `${
                           index === 8 && randomOfTwo === 0
-                            ? '0.4'
+                            ? "0.4"
                             : index === 8
-                              ? '0.6'
+                              ? "0.6"
                               : index === 9 && randomOfTwo === 0
-                                ? '0.2'
+                                ? "0.2"
                                 : index === 9
-                                  ? '0.3'
+                                  ? "0.3"
                                   : index === 10 && randomOfTwo === 0
-                                    ? '0.24'
+                                    ? "0.24"
                                     : index === 10
-                                      ? '0.4'
-                                      : '1'
+                                      ? "0.4"
+                                      : "1"
                         }`,
                         clipPath: `${clipArrayJewel2[index]}`,
                       }
@@ -763,7 +785,7 @@ const ItemComponent = forwardRef<
                                 ? styles.cover
                                 : index === 10
                                   ? styles.frame
-                                  : ''
+                                  : ""
                           }
                           key={`${item.i}-${index}`}
                           style={style}
@@ -772,7 +794,7 @@ const ItemComponent = forwardRef<
                     })}
                     <span style={style}>
                       <span className="scr">
-                        {t('Shape')} {index + 1}
+                        {t("Shape")} {index + 1}
                       </span>
                     </span>
                   </div>
@@ -786,17 +808,17 @@ const ItemComponent = forwardRef<
               location == LOCATION.ABOUT
             ) {
               const style: CSSProperties = {
-                position: 'absolute',
+                position: "absolute",
                 top: `clamp(100px, calc(-20vh + 1.2vh * ${item.e * 3} * ${
                   item.size / 6
                 }), calc(80vh - 50px - calc(var(--size, 200px) * 0.8vh)))`,
                 left: `clamp(1vw, calc(-5vh + ${item.i} * 1.4vw * ${item.e}), 96vw - ${item.size}vw)`,
                 backgroundColor: `transparent`,
                 color: `${item.color}`,
-                ['--i' as string]: `${item.i}`,
-                ['--e' as string]: `${item.e}`,
-                ['--size' as string]: `${item.size}`,
-                ['--s' as string]:
+                ["--i" as string]: `${item.i}`,
+                ["--e" as string]: `${item.e}`,
+                ["--size" as string]: `${item.size}`,
+                ["--s" as string]:
                   windowWidth < windowHeight
                     ? `${item.size}vh`
                     : `${item.size}vw`,
@@ -808,11 +830,11 @@ const ItemComponent = forwardRef<
                   windowWidth < windowHeight
                     ? `calc(var(--size) * 0.8vh)`
                     : `calc(var(--size) * 0.8vw)`,
-                maxHeight: '200px',
-                maxWidth: '200px',
-                minHeight: '44px',
-                minWidth: '44px',
-                borderRadius: '65% 65% 70% 60% / 60% 70% 60% 65%',
+                maxHeight: "200px",
+                maxWidth: "200px",
+                minHeight: "44px",
+                minWidth: "44px",
+                borderRadius: "65% 65% 70% 60% / 60% 70% 60% 65%",
                 opacity: `0.${item.size > 7 ? 7 : Math.ceil(item.size)}`,
               }
 
@@ -825,28 +847,28 @@ const ItemComponent = forwardRef<
                   }`}
                   style={style}
                   id={`shape${item.i}`}
-                  role={'option'}
+                  role={"option"}
                   tabIndex={0}
-                  onFocus={e => {
+                  onFocus={(e) => {
                     setActiveDescendant(e.target.id)
                   }}
                   aria-selected={`shape${item.i}` === activeDescendant}
                   onBlurCapture={() => {
                     setActiveDescendant(null)
                   }}
-                  onPointerEnter={e => {
+                  onPointerEnter={(e) => {
                     movingItem(e)
                   }}
-                  onMouseDown={e => {
+                  onMouseDown={(e) => {
                     removeItem(e)
                   }}
-                  onTouchStart={e => {
+                  onTouchStart={(e) => {
                     removeItem(e)
                   }}
-                  onPointerDown={e => {
+                  onPointerDown={(e) => {
                     removeItem(e)
                   }}
-                  onKeyDown={e => {
+                  onKeyDown={(e) => {
                     Draggable.keyDown(
                       e,
                       e.target as HTMLElement,
@@ -860,7 +882,7 @@ const ItemComponent = forwardRef<
                 >
                   <span>
                     <span className="scr">
-                      {t('Bubble')} {index + 1}
+                      {t("Bubble")} {index + 1}
                     </span>
                   </span>
                 </li>
@@ -877,10 +899,10 @@ const ItemComponent = forwardRef<
               const div = 1
               //an array of blob radiuses:
               const blobRadius = [
-                '30% 70% 70% 30% / 30% 36% 64% 70%',
-                '70% 30% 30% 70% / 36% 50% 36% 50%',
-                '48% 52% 41% 59% / 48% 58% 42% 52%',
-                '70% 30% 30% 70% / 36% 50% 36% 50%',
+                "30% 70% 70% 30% / 30% 36% 64% 70%",
+                "70% 30% 30% 70% / 36% 50% 36% 50%",
+                "48% 52% 41% 59% / 48% 58% 42% 52%",
+                "70% 30% 30% 70% / 36% 50% 36% 50%",
               ]
               const filter =
                 windowWidth < breakpoint && windowWidth < windowHeight
@@ -892,7 +914,7 @@ const ItemComponent = forwardRef<
                       : `blur(calc(var(--blur) * 1.2vw))`
               const number = Math.floor(getRandomMinMax(0.001, 3.999))
               const style: CSSProperties = {
-                position: 'absolute',
+                position: "absolute",
                 top: `clamp(100px, calc(-20% + ${item.e} * 1.4vh * ${
                   item.size / 2
                 }), calc(80vh - 50px - calc(var(--size, 200px) * 0.8vh)))`,
@@ -901,10 +923,10 @@ const ItemComponent = forwardRef<
                 } * 1.2vw ), calc(100vw - 200px))`,
                 backgroundColor: `${item.color}`,
                 color: `${item.color}`, //for currentColor
-                ['--i' as string]: `${item.i}`,
-                ['--e' as string]: `${item.e}`,
-                ['--size' as string]: `${item.size}`,
-                ['--blur' as string]: `clamp(2.4, calc(var(--size) * 0.2), 7)`,
+                ["--i" as string]: `${item.i}`,
+                ["--e" as string]: `${item.e}`,
+                ["--size" as string]: `${item.size}`,
+                ["--blur" as string]: `clamp(2.4, calc(var(--size) * 0.2), 7)`,
                 //needs to have var(--size) not ${item.size} to work with the resize keys and wheel function:
                 width:
                   windowWidth < breakpoint && windowWidth < windowHeight
@@ -928,14 +950,14 @@ const ItemComponent = forwardRef<
                 maxWidth: `200px`,
                 maxHeight: `200px`,
                 borderRadius: `${blobRadius[number]}`,
-                transform: 'rotate(' + item.rotation + 'deg)',
+                transform: "rotate(" + item.rotation + "deg)",
                 opacity: `0.7`,
                 WebkitFilter: filter,
                 filter: filter,
                 transitionProperty:
-                  'top, left, bottom, right, transform, width, height, border-radius',
-                transitionTimingFunction: 'ease-in-out',
-                transitionDuration: '600ms',
+                  "top, left, bottom, right, transform, width, height, border-radius",
+                transitionTimingFunction: "ease-in-out",
+                transitionDuration: "600ms",
               }
 
               return (
@@ -955,48 +977,48 @@ const ItemComponent = forwardRef<
                   style={style}
                   draggable={true}
                   tabIndex={0}
-                  role={'option'}
-                  onMouseDown={e => {
+                  role={"option"}
+                  onMouseDown={(e) => {
                     Draggable.start(e)
                     ;(e.target as HTMLLIElement).classList.add(styles.drag)
                     ;(e.target as HTMLLIElement).style.transitionProperty =
-                      'transform, width, height, border-radius'
+                      "transform, width, height, border-radius"
                   }}
-                  onMouseMove={e => {
+                  onMouseMove={(e) => {
                     Draggable.movement(e)
                   }}
-                  onMouseUp={e => {
+                  onMouseUp={(e) => {
                     Draggable.stopMovementCheck(e)
                     ;(e.target as HTMLLIElement).classList.remove(styles.drag)
                     ;(e.target as HTMLLIElement).style.transitionProperty =
-                      'top, left, bottom, right, transform, width, height, border-radius'
+                      "top, left, bottom, right, transform, width, height, border-radius"
                   }}
-                  onMouseLeave={e => {
+                  onMouseLeave={(e) => {
                     Draggable.stopMoving(e)
                     ;(e.target as HTMLLIElement).classList.remove(styles.drag)
                   }}
-                  onTouchStart={e => {
+                  onTouchStart={(e) => {
                     Draggable.start(e)
                   }}
-                  onTouchMove={e => {
+                  onTouchMove={(e) => {
                     Draggable.movement(e)
                   }}
-                  onTouchEnd={e => {
+                  onTouchEnd={(e) => {
                     Draggable.stopMovementCheck(e)
                   }}
-                  onWheel={e => {
+                  onWheel={(e) => {
                     Draggable.wheel(e.target as HTMLElement)
                   }}
-                  onFocus={e => {
+                  onFocus={(e) => {
                     Draggable.focused(e.target)
                     setActiveDescendant(e.target.id)
                   }}
                   aria-selected={`shape${item.i}` === activeDescendant}
-                  onBlurCapture={e => {
+                  onBlurCapture={(e) => {
                     Draggable.blurred(e.target)
                     setActiveDescendant(null)
                   }}
-                  onKeyDown={e => {
+                  onKeyDown={(e) => {
                     Draggable.keyDown(
                       e,
                       e.target as HTMLElement,
@@ -1010,7 +1032,7 @@ const ItemComponent = forwardRef<
                 >
                   <span>
                     <span className="scr">
-                      {t('Blob')} {index + 1}
+                      {t("Blob")} {index + 1}
                     </span>
                   </span>
                 </li>
@@ -1022,17 +1044,17 @@ const ItemComponent = forwardRef<
               // CONTACT  // FORM
               const mod = 0.6
               const style: CSSProperties = {
-                position: 'absolute',
+                position: "absolute",
                 top: `clamp(100px, calc(-5vh + calc(1.5vh * ${item.e} * ${
                   item.e / 1.9
                 })), calc(80vh - 50px - calc(var(--size, 120px) * ${mod}vh)))`,
                 left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})),90vw)`,
                 backgroundColor: `transparent`,
                 color: `${item.color}`,
-                ['--i' as string]: `${item.i}`,
-                ['--e' as string]: `${item.e}`,
-                ['--size' as string]: `${item.size}`,
-                ['--s' as string]:
+                ["--i" as string]: `${item.i}`,
+                ["--e" as string]: `${item.e}`,
+                ["--size" as string]: `${item.size}`,
+                ["--s" as string]:
                   windowWidth < windowHeight
                     ? `${item.size}vh`
                     : `${item.size}vw`,
@@ -1044,19 +1066,19 @@ const ItemComponent = forwardRef<
                   windowWidth < windowHeight
                     ? `calc(var(--size, 120px) * ${mod}vh)`
                     : `calc(var(--size, 120px) * ${mod}vw)`,
-                minHeight: '44px',
-                minWidth: '44px',
-                maxHeight: '120px',
-                maxWidth: '120px',
-                borderRadius: '50%',
+                minHeight: "44px",
+                minWidth: "44px",
+                maxHeight: "120px",
+                maxWidth: "120px",
+                borderRadius: "50%",
                 opacity: `0.${item.size > 7 ? 7 : Math.ceil(item.size)}`,
               }
               const styleInner: CSSProperties = {
-                position: 'absolute',
+                position: "absolute",
                 backgroundColor: `transparent`,
-                width: '100%',
-                height: '100%',
-                borderRadius: '50%',
+                width: "100%",
+                height: "100%",
+                borderRadius: "50%",
                 opacity: `0.${item.size > 7 ? 7 : Math.ceil(item.size)}`,
               }
 
@@ -1073,9 +1095,9 @@ const ItemComponent = forwardRef<
                                     : styles.tall
                                 }`}
                   style={style}
-                  role={'option'}
+                  role={"option"}
                   tabIndex={0}
-                  onFocus={e => {
+                  onFocus={(e) => {
                     setActiveDescendant(e.target.id)
                   }}
                   aria-selected={`shape${item.i}` === activeDescendant}
@@ -1084,19 +1106,19 @@ const ItemComponent = forwardRef<
                   }}
                   // onPointerEnter={e => movingItem(e)}
                   // onPointerEnter={e => addDirectionClass(e)}
-                  onPointerCancel={e => {
+                  onPointerCancel={(e) => {
                     removeItem(e)
                   }}
-                  onMouseDown={e => {
+                  onMouseDown={(e) => {
                     removeItem(e)
                   }}
-                  onTouchStart={e => {
+                  onTouchStart={(e) => {
                     removeItem(e)
                   }}
-                  onPointerDown={e => {
+                  onPointerDown={(e) => {
                     removeItem(e)
                   }}
-                  onKeyDown={e => {
+                  onKeyDown={(e) => {
                     Draggable.keyDown(
                       e,
                       e.target as HTMLElement,
@@ -1111,7 +1133,7 @@ const ItemComponent = forwardRef<
                   <div style={styleInner} className={`inner ${styles.inner}`}>
                     <span className="else-eye">
                       <span className="scr">
-                        {t('Eye')} {index + 1}
+                        {t("Eye")} {index + 1}
                       </span>
                     </span>
                   </div>
@@ -1123,16 +1145,16 @@ const ItemComponent = forwardRef<
               const border = `clamp(40px, calc(0.6vw * var(--size)), 200px)`
 
               const style: CSSProperties = {
-                ['--rotate' as string]: `${
+                ["--rotate" as string]: `${
                   item.rotation ?? `${Math.round(getRandomMinMax(165, 195))}`
                 }deg`,
-                ['--color' as string]: `${item.color}`,
-                ['--color2' as string]: 'hsla(0, 0%, 100%, 0.7)',
-                ['--s' as string]: `${item.size}`,
-                ['--size' as string]: `${item.size}`,
-                ['--border' as string]: border,
+                ["--color" as string]: `${item.color}`,
+                ["--color2" as string]: "hsla(0, 0%, 100%, 0.7)",
+                ["--s" as string]: `${item.size}`,
+                ["--size" as string]: `${item.size}`,
+                ["--border" as string]: border,
                 borderWidth: border,
-                position: 'absolute',
+                position: "absolute",
                 top: `clamp(100px, calc(-5vh + calc(1.2vh * ${item.e} * ${
                   item.e / 1.3
                 })), calc(80vh - 50px - ${item.size / 1.3}vh))`,
@@ -1154,28 +1176,28 @@ const ItemComponent = forwardRef<
                                     : styles.tall
                                 }`}
                   style={style}
-                  role={'option'}
+                  role={"option"}
                   aria-selected={`shape${item.i}` === activeDescendant}
                   tabIndex={0}
-                  onFocus={e => {
+                  onFocus={(e) => {
                     setActiveDescendant(e.target.id)
                   }}
                   onBlurCapture={() => {
                     setActiveDescendant(null)
                   }}
-                  onMouseDown={e => {
+                  onMouseDown={(e) => {
                     removeItem(e)
                   }}
-                  onTouchStart={e => {
+                  onTouchStart={(e) => {
                     removeItem(e)
                   }}
-                  onPointerDown={e => {
+                  onPointerDown={(e) => {
                     removeItem(e)
                   }}
-                  onPointerEnter={e => {
+                  onPointerEnter={(e) => {
                     movingItem(e)
                   }}
-                  onKeyDown={e => {
+                  onKeyDown={(e) => {
                     Draggable.keyDown(
                       e,
                       e.target as HTMLElement,
@@ -1189,16 +1211,16 @@ const ItemComponent = forwardRef<
                 >
                   {spanArray.map((span, index) => {
                     const style: CSSProperties = {
-                      position: 'absolute',
+                      position: "absolute",
                       top: `calc(${border} * -1.1)`,
                       left: `calc(${border} * -1)`,
                       color: `${item.color}`,
-                      ['--color' as string]: `${span.color}`,
-                      ['--color2' as string]: `${item.color}`,
-                      ['--i' as string]: `${item.i}`,
-                      ['--e' as string]: `${item.e}`,
-                      ['--s' as string]: `${item.size}`,
-                      ['--number' as string]: `${index}`,
+                      ["--color" as string]: `${span.color}`,
+                      ["--color2" as string]: `${item.color}`,
+                      ["--i" as string]: `${item.i}`,
+                      ["--e" as string]: `${item.e}`,
+                      ["--s" as string]: `${item.size}`,
+                      ["--number" as string]: `${index}`,
                       width: 0,
                       height: 0,
                       borderWidth: border,
@@ -1206,7 +1228,7 @@ const ItemComponent = forwardRef<
                     return (
                       <span key={`${item.i}-${index}`} style={style}>
                         <span className="scr">
-                          {t('Shape')} {index + 1}
+                          {t("Shape")} {index + 1}
                         </span>
                       </span>
                     )
@@ -1235,6 +1257,6 @@ const ItemComponent = forwardRef<
   }
 )
 
-ItemComponent.displayName = 'ItemComponent'
+ItemComponent.displayName = "ItemComponent"
 
 export default ItemComponent
