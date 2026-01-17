@@ -1,10 +1,10 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react'
-import { getErrorMessage } from '../../utils'
-import { ITaskDraggable } from './components/TodoList'
-import { v4 as uuidv4 } from 'uuid'
-import { generateOptions, ITask, TCategory, TPriority } from './types'
-import styles from './css/todo.module.css'
-import { useAppDispatch } from '../../hooks/useAppDispatch'
+import React, { useRef, useEffect, useState, useCallback } from "react"
+import { getErrorMessage } from "../../utils"
+import { ITaskDraggable } from "./components/TodoList"
+import { v4 as uuidv4 } from "uuid"
+import { generateOptions, ITask, TCategory, TPriority } from "./types"
+import styles from "./css/todo.module.css"
+import { useAppDispatch } from "../../hooks/useAppDispatch"
 import {
   addTodo,
   addTodoAsync,
@@ -19,18 +19,18 @@ import {
   fetchTodos,
   changeTodoOrder,
   setAllTodos,
-} from './reducers/todoReducer'
-import { notify } from '../../reducers/notificationReducer'
-import { useSelector } from 'react-redux'
-import { initializeUser } from '../../reducers/authReducer'
-import { RootState } from '../../store'
-import { ReducerProps } from '../../types'
-import { Select } from '../Select/Select'
-import Icon from '../Icon/Icon'
-import { useLanguageContext } from '../../contexts/LanguageContext'
-import { useConfirm } from '../../contexts/ConfirmContext'
-import { useIsClient, useWindow } from '../../hooks/useSSR'
-import TodoList from './components/TodoList'
+} from "./reducers/todoReducer"
+import { notify } from "../../reducers/notificationReducer"
+import { useSelector } from "react-redux"
+import { initializeUser } from "../../reducers/authReducer"
+import { RootState } from "../../store"
+import { ReducerProps } from "../../types"
+import { Select } from "../Select/Select"
+import Icon from "../Icon/Icon"
+import { useLanguageContext } from "../../contexts/LanguageContext"
+import { useConfirm } from "../../contexts/ConfirmContext"
+import { useIsClient, useWindow } from "../../hooks/useSSR"
+import TodoList from "./components/TodoList"
 
 const maxCharacters = 300
 
@@ -57,30 +57,31 @@ export default function TodoApp() {
 
   const todos = useSelector((state: RootState) => state.todos?.todos ?? [])
   const status = useSelector(
-    (state: RootState) => state.todos?.status ?? 'idle'
+    (state: RootState) => state.todos?.status ?? "idle"
   )
   const error = useSelector((state: RootState) => state.todos?.error ?? null)
 
-  const [priority, setPriority] = useState<TPriority>('low')
-  const [category, setCategory] = useState<TCategory>('other')
+  const [priority, setPriority] = useState<TPriority>("low")
+  const [category, setCategory] = useState<TCategory>("other")
 
-  const [filterPriority, setFilterPriority] = useState<TPriority>('all')
-  const [filterCategory, setFilterCategory] = useState<string>('all')
+  const [filterPriority, setFilterPriority] = useState<TPriority>("all")
+  const [filterCategory, setFilterCategory] = useState<string>("all")
 
-  const localName = 'ReactTodos'
+  const localName = "ReactTodos"
 
-  const hasCompletedTasks: boolean = todos?.some(todo => todo.complete) ?? false
+  const hasCompletedTasks: boolean =
+    todos?.some((todo) => todo.complete) ?? false
 
   useEffect(() => {
     if (!isClient || !windowObj) return
     if (todos.length === 0 && !user) {
       const storedTodosUnknown = JSON.parse(
-        windowObj.localStorage.getItem(localName) ?? '[]'
+        windowObj.localStorage.getItem(localName) ?? "[]"
       ) as unknown
       let storedTodos: ITask[] = []
       if (Array.isArray(storedTodosUnknown))
         storedTodos = storedTodosUnknown as ITask[]
-      const existingTodoKeys = new Set(todos.map(todo => todo.key))
+      const existingTodoKeys = new Set(todos.map((todo) => todo.key))
       storedTodos.forEach((todo: ITask) => {
         if (!existingTodoKeys.has(todo.key)) {
           void dispatch(addTodo(todo))
@@ -98,7 +99,7 @@ export default function TodoApp() {
   const findDuplicates = (todos: ITask[]) => {
     const seenKeys = new Set()
     const duplicates: ITask[] = []
-    todos.forEach(todo => {
+    todos.forEach((todo) => {
       if (seenKeys.has(todo.key)) {
         duplicates.push(todo)
       } else {
@@ -109,7 +110,7 @@ export default function TodoApp() {
   }
 
   const deleteTodoHandler = useCallback(
-    (key: ITask['key']) => {
+    (key: ITask["key"]) => {
       if (!key) {
         void dispatch(notify(`Error: no key`, true, 8))
         return
@@ -118,7 +119,7 @@ export default function TodoApp() {
         void dispatch(deleteTodoAsync(user._id, key))
       } else {
         void dispatch(deleteTodoFromState(key))
-        const updatedTodos = todos.filter(todo => todo.key !== key)
+        const updatedTodos = todos.filter((todo) => todo.key !== key)
         if (!isClient || !windowObj) return
         windowObj.localStorage.setItem(localName, JSON.stringify(updatedTodos))
       }
@@ -129,7 +130,7 @@ export default function TodoApp() {
   useEffect(() => {
     const duplicates = findDuplicates(todos)
     const uniqueKeys = new Set()
-    duplicates.forEach(duplicate => {
+    duplicates.forEach((duplicate) => {
       if (!uniqueKeys.has(duplicate.key)) {
         deleteTodoHandler(duplicate.key)
         uniqueKeys.add(duplicate.key)
@@ -141,11 +142,11 @@ export default function TodoApp() {
     ITaskDraggable[]
   >([])
 
-  const filteredTodos = todos.filter(todo => {
+  const filteredTodos = todos.filter((todo) => {
     const priorityMatch =
-      filterPriority === 'all' || todo.priority === filterPriority
+      filterPriority === "all" || todo.priority === filterPriority
     const categoryMatch =
-      filterCategory === 'all' || todo.category === filterCategory
+      filterCategory === "all" || todo.category === filterCategory
     return priorityMatch && categoryMatch
   })
 
@@ -153,11 +154,11 @@ export default function TodoApp() {
     const newTodosWithIdAndStatus = filteredTodos
       ?.slice()
       .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-      .map(todo => {
-        return { ...todo, id: todo.order, status: 'todos' }
+      .map((todo) => {
+        return { ...todo, id: todo.order, status: "todos" }
       }) as ITaskDraggable[]
 
-    setTodosWithIdAndStatus(prev => {
+    setTodosWithIdAndStatus((prev) => {
       // If identical by length and keys/orders/complete, keep previous reference to avoid re-renders
       if (
         prev.length === newTodosWithIdAndStatus.length &&
@@ -169,7 +170,7 @@ export default function TodoApp() {
             p.complete === n.complete &&
             p.priority === n.priority &&
             p.category === n.category &&
-            (p.deadline ?? '') === (n.deadline ?? '') &&
+            (p.deadline ?? "") === (n.deadline ?? "") &&
             p.name === n.name
           )
         })
@@ -180,17 +181,17 @@ export default function TodoApp() {
     })
   }, [todos, filterPriority, filterCategory])
 
-  const filterPriorityTypes: TPriority[] = ['all', 'low', 'medium', 'high']
+  const filterPriorityTypes: TPriority[] = ["all", "low", "medium", "high"]
   const filterCategoryTypes: TCategory[] = [
-    'all',
-    'work',
-    'personal',
-    'shopping',
-    'other',
+    "all",
+    "work",
+    "personal",
+    "shopping",
+    "other",
   ]
 
-  const priorityTypes = ['low', 'medium', 'high']
-  const categoryTypes = ['work', 'personal', 'shopping', 'other']
+  const priorityTypes = ["low", "medium", "high"]
+  const categoryTypes = ["work", "personal", "shopping", "other"]
 
   const filterPriorityOptions = generateOptions(filterPriorityTypes, language)
 
@@ -201,7 +202,7 @@ export default function TodoApp() {
   const categoryOptions = generateOptions(categoryTypes, language)
 
   useEffect(() => {
-    if (status === 'failed') {
+    if (status === "failed") {
       void dispatch(notify(`There was an error: ${error}`, true, 8))
     }
   }, [status, error, dispatch])
@@ -216,14 +217,14 @@ export default function TodoApp() {
         })
         .catch((err: unknown) => {
           console.error(err)
-          const message = getErrorMessage(err, t('Error'))
+          const message = getErrorMessage(err, t("Error"))
           void dispatch(notify(message, true, 8))
         })
     }
   }, [user?._id, dispatch, t])
 
   function toggleTodo(key: string | undefined) {
-    const todo = todos.find(todo => todo.key === key)
+    const todo = todos.find((todo) => todo.key === key)
     if (todo) {
       const updatedTodo = { ...todo, complete: !todo.complete }
       if (user) {
@@ -247,26 +248,26 @@ export default function TodoApp() {
       setSending(false)
       return
     }
-    const todo = todos.find(todo => todo.key === key)
+    const todo = todos.find((todo) => todo.key === key)
     if (todo) {
       const updatedTodo = { ...todo, name: name, priority, deadline, category }
       if (user) {
         void dispatch(editTodoAsync(user._id, key, updatedTodo as ITask))
           .then(() => {
-            void dispatch(notify(`${t('Updated')}`, false, 3))
+            void dispatch(notify(`${t("Updated")}`, false, 3))
             // Ensure local state is refreshed from server data
             void dispatch(fetchTodos(user._id))
             setSending(false)
           })
           .catch((err: unknown) => {
             console.error(err)
-            const message = getErrorMessage(err, t('Error'))
+            const message = getErrorMessage(err, t("Error"))
             void dispatch(notify(message, true, 8))
             setSending(false)
           })
       } else {
         void dispatch(editTodo(updatedTodo as ITask))
-        const updatedTodos = todos.map(todo =>
+        const updatedTodos = todos.map((todo) =>
           todo.key === key ? updatedTodo : todo
         )
         setSending(false)
@@ -277,17 +278,17 @@ export default function TodoApp() {
   }
 
   const modifyTodoOrder = (
-    order: { key: ITask['key']; order: ITask['order'] }[]
+    order: { key: ITask["key"]; order: ITask["order"] }[]
   ) => {
     if (user) {
-      void dispatch(async dispatch => {
+      void dispatch(async (dispatch) => {
         await editTodoOrder(user._id, order)
           .then(() => {
             void dispatch(fetchTodos(user._id))
           })
           .catch((err: unknown) => {
             console.error(err)
-            const message = getErrorMessage(err, t('Error'))
+            const message = getErrorMessage(err, t("Error"))
             void dispatch(notify(message, true, 8))
           })
       })
@@ -296,8 +297,8 @@ export default function TodoApp() {
         void dispatch(changeTodoOrder(order))
         // Update local storage with the new ordering immediately
         const updatedTodos = todos
-          .map(todo => {
-            const found = order.find(o => o.key === todo.key)
+          .map((todo) => {
+            const found = order.find((o) => o.key === todo.key)
             return found ? { ...todo, order: found.order } : todo
           })
           .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
@@ -306,27 +307,27 @@ export default function TodoApp() {
         windowObj.localStorage.setItem(localName, JSON.stringify(updatedTodos))
       } catch (err: unknown) {
         console.error(err)
-        const message = getErrorMessage(err, t('Error'))
+        const message = getErrorMessage(err, t("Error"))
         void dispatch(notify(message, true, 8))
       }
     }
   }
 
   const todoNameRef = useRef<HTMLTextAreaElement>(null)
-  const [name, setName] = useState<string>('')
+  const [name, setName] = useState<string>("")
 
   const handleAddTodo = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setSending(true)
     // const name = todoNameRef.current?.value ?? ''
-    if (name.trim() === '') {
+    if (name.trim() === "") {
       setSending(false)
-      void dispatch(notify(t('AddTask'), true, 3))
+      void dispatch(notify(t("AddTask"), true, 3))
       return
     } else if (name.length > maxCharacters) {
       setSending(false)
       void dispatch(
-        notify(`${t('NameTooLong')} (${maxCharacters} max)`, true, 8)
+        notify(`${t("NameTooLong")} (${maxCharacters} max)`, true, 8)
       )
       return
     }
@@ -341,14 +342,14 @@ export default function TodoApp() {
     )
 
     let newTodo: ITask
-    if (priority === 'high') {
+    if (priority === "high") {
       newTodo = {
         key,
         name: name,
         complete: false,
         order: minOrder - 1,
         priority,
-        deadline: '',
+        deadline: "",
         category,
       }
     } else
@@ -358,18 +359,18 @@ export default function TodoApp() {
         complete: false,
         order: maxOrder + 1,
         priority,
-        deadline: '',
+        deadline: "",
         category,
       }
     if (user) {
       void dispatch(addTodoAsync(user._id, newTodo))
       // scroll to #todo-list-wrap
-      const element = document.getElementById('todo-list-wrap')
+      const element = document.getElementById("todo-list-wrap")
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth' })
+        element.scrollIntoView({ behavior: "smooth" })
       }
       setSending(false)
-      setName('')
+      setName("")
     } else {
       const updatedTodos = [...todos, newTodo]
         .sort((a, b) => a.order - b.order)
@@ -380,14 +381,14 @@ export default function TodoApp() {
       void dispatch(setAllTodos(updatedTodos))
       setAllTodos(updatedTodos)
       // scroll to #todo-list-wrap
-      const element = document.getElementById('todo-list-wrap')
+      const element = document.getElementById("todo-list-wrap")
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth' })
+        element.scrollIntoView({ behavior: "smooth" })
       }
       setSending(false)
       if (!isClient || !windowObj) return
       windowObj.localStorage.setItem(localName, JSON.stringify(updatedTodos))
-      setName('')
+      setName("")
     }
   }
 
@@ -396,13 +397,13 @@ export default function TodoApp() {
   ) {
     e.preventDefault()
     if (
-      await confirm({ message: t('AreYouSureYouWantToClearAllCompletedTasks') })
+      await confirm({ message: t("AreYouSureYouWantToClearAllCompletedTasks") })
     ) {
       if (user) {
         await dispatch(clearCompletedTodosAsync(user._id))
       } else {
         void dispatch(clearCompletedTodos())
-        const updatedTodos = todos.filter(todo => !todo.complete)
+        const updatedTodos = todos.filter((todo) => !todo.complete)
         if (!isClient || !windowObj) return
         windowObj.localStorage.setItem(localName, JSON.stringify(updatedTodos))
       }
@@ -417,7 +418,7 @@ export default function TodoApp() {
       void dispatch(deleteTodoAsync(user._id, key))
     } else {
       void dispatch(deleteTodoFromState(key))
-      let updatedTodos = todos.filter(todo => todo.key !== key)
+      let updatedTodos = todos.filter((todo) => todo.key !== key)
       // Reassign order to ensure there are no gaps
       updatedTodos = updatedTodos.map((todo, index) => ({
         ...todo,
@@ -433,9 +434,9 @@ export default function TodoApp() {
     <>
       <form onSubmit={handleAddTodo} className={styles.form}>
         <fieldset>
-          <legend className="scr">{t('AddTaskToTheTaskList')}</legend>
-          <div className={styles['todo-input-area']}>
-            <label htmlFor="taskinput">{t('AddTask')}</label>
+          <legend className="scr">{t("AddTaskToTheTaskList")}</legend>
+          <div className={styles["todo-input-area"]}>
+            <label htmlFor="taskinput">{t("AddTask")}</label>
             <textarea
               ref={todoNameRef}
               id="taskinput"
@@ -443,30 +444,30 @@ export default function TodoApp() {
               rows={3}
               name="task"
               value={name}
-              onChange={e => setName(e.target.value)}
+              onChange={(e) => setName(e.target.value)}
               required
               autoComplete="off"
-              placeholder={`${t('Task')}...`}
+              placeholder={`${t("Task")}...`}
             />
             <p className={styles.small}>
-              {maxCharacters - name.length} {t('CharactersLeft')} ({t('Max')}:{' '}
-              {maxCharacters}){' '}
+              {maxCharacters - name.length} {t("CharactersLeft")} ({t("Max")}:{" "}
+              {maxCharacters}){" "}
               {name.length > maxCharacters && (
-                <span className={styles.warning}>{t('NameTooLong')}</span>
+                <span className={styles.warning}>{t("NameTooLong")}</span>
               )}
             </p>
 
             <Select
               z={todosWithIdAndStatus.length + 5}
               id="category"
-              className={`${styles.select} ${styles['category-select']}`}
+              className={`${styles.select} ${styles["category-select"]}`}
               hideDelete
-              instructions={t('SelectCategory')}
+              instructions={t("SelectCategory")}
               value={
-                categoryOptions.find(o => o.value === category) ??
+                categoryOptions.find((o) => o.value === category) ??
                 categoryOptions[0]
               }
-              onChange={o => setCategory(o?.value as TCategory)}
+              onChange={(o) => setCategory(o?.value as TCategory)}
               options={categoryOptions}
               language={language}
             />
@@ -474,39 +475,39 @@ export default function TodoApp() {
               id="priority"
               className={styles.select}
               hideDelete
-              instructions={t('SelectPriority')}
+              instructions={t("SelectPriority")}
               value={
-                priorityOptions.find(o => o.value === priority) ??
+                priorityOptions.find((o) => o.value === priority) ??
                 priorityOptions[0]
               }
-              onChange={o => setPriority(o?.value as TPriority)}
+              onChange={(o) => setPriority(o?.value as TPriority)}
               options={priorityOptions}
               language={language}
               z={todosWithIdAndStatus.length + 4}
             />
             <button
-              id={styles['submit-todo']}
-              className={styles['submit-todo']}
+              id={styles["submit-todo"]}
+              className={styles["submit-todo"]}
               type="submit"
               disabled={sending}
             >
-              {t('AddTask')} <Icon lib="io" name="IoMdAdd" />
+              {t("AddTask")} <Icon lib="io" name="IoMdAdd" />
             </button>
           </div>
         </fieldset>
       </form>
 
-      <div className={styles['controls-wrap']}>
+      <div className={styles["controls-wrap"]}>
         <Select
           id="category-filter"
-          className={`${styles.select} ${styles['category-select']}`}
+          className={`${styles.select} ${styles["category-select"]}`}
           hideDelete
-          instructions={t('FilterByCategory')}
+          instructions={t("FilterByCategory")}
           value={
-            filterCategoryOptions.find(o => o.value === filterCategory) ??
+            filterCategoryOptions.find((o) => o.value === filterCategory) ??
             filterCategoryOptions[0]
           }
-          onChange={o => setFilterCategory(o?.value as string)}
+          onChange={(o) => setFilterCategory(o?.value as string)}
           options={filterCategoryOptions}
           language={language}
           z={todosWithIdAndStatus.length + 3}
@@ -515,40 +516,40 @@ export default function TodoApp() {
           id="priority-filter"
           className={styles.select}
           hideDelete
-          instructions={t('FilterByPriority')}
+          instructions={t("FilterByPriority")}
           value={
-            filterPriorityOptions.find(o => o.value === filterPriority) ??
+            filterPriorityOptions.find((o) => o.value === filterPriority) ??
             filterPriorityOptions[0]
           }
-          onChange={o => setFilterPriority(o?.value as TPriority)}
+          onChange={(o) => setFilterPriority(o?.value as TPriority)}
           options={filterPriorityOptions}
           language={language}
           z={todosWithIdAndStatus.length + 2}
         />
 
         <button
-          className={`danger ${styles['clear-completed']}`}
+          className={`danger ${styles["clear-completed"]}`}
           disabled={!hasCompletedTasks}
           onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
             void handleClearTodos(e)
           }
         >
-          {t('ClearCompleted')}
+          {t("ClearCompleted")}
         </button>
         <button
-          className={styles['move-completed-to-bottom']}
+          className={styles["move-all-down"]}
           disabled={!hasCompletedTasks || todos.length === 0}
-          onClick={e => {
+          onClick={(e) => {
             e.preventDefault()
             const incompleteTodos = todos
-              .filter(todo => !todo.complete)
+              .filter((todo) => !todo.complete)
               .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
               .map((todo, index) => ({
                 ...todo,
                 order: index,
               }))
             const completedTodos = todos
-              .filter(todo => todo.complete)
+              .filter((todo) => todo.complete)
               .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
               .map((todo, index) => ({
                 ...todo,
@@ -563,18 +564,18 @@ export default function TodoApp() {
             modifyTodoOrder(order)
           }}
         >
-          {t('MoveCompletedToBottom')}
+          {t("MoveCompletedToBottom")}
         </button>
       </div>
 
-      <div id="todo-list-wrap" className={styles['list-wrap']}>
-        <p className={styles['left-to-do']}>
-          {todos?.filter(todo => !todo?.complete).length} {t('LeftToDo')}
+      <div id="todo-list-wrap" className={styles["list-wrap"]}>
+        <p className={styles["left-to-do"]}>
+          {todos?.filter((todo) => !todo?.complete).length} {t("LeftToDo")}
         </p>
 
-        {(filterPriority !== 'all' || filterCategory !== 'all') && (
-          <p className={styles['filter-notification']}>
-            {t('Note')} {t('Filtered')}
+        {(filterPriority !== "all" || filterCategory !== "all") && (
+          <p className={styles["filter-notification"]}>
+            {t("Note")} {t("Filtered")}
           </p>
         )}
 
@@ -589,9 +590,9 @@ export default function TodoApp() {
           categoryOptions={categoryOptions}
           maxCharacters={maxCharacters}
         />
-        {status === 'loading' && (
+        {status === "loading" && (
           <p className="flex center margin0auto textcenter">
-            {t('Loading')}...
+            {t("Loading")}...
           </p>
         )}
       </div>
