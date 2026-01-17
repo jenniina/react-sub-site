@@ -8,19 +8,19 @@ import {
   KeyboardEvent as ReactKeyboardEvent,
   MouseEvent as ReactMouseEvent,
   TouchEvent as ReactTouchEvent,
-} from 'react'
-import styles from './hero.module.css'
-import useWindowSize from '../../hooks/useWindowSize'
-import { getRandomMinMax } from '../../utils'
-import * as Draggable from '../../hooks/useDraggable'
-import { useTheme } from '../../hooks/useTheme'
-import useEnterDirection from '../../hooks/useEnterDirection'
-import { RefObject } from '../../types'
-import useSessionStorage from '../../hooks/useStorage'
-import useLocalStorage from '../../hooks/useStorage'
-import { useLanguageContext } from '../../contexts/LanguageContext'
-import { useIsClient, useWindow } from '../../hooks/useSSR'
-import ItemComponent from './components/ItemComponent'
+} from "react"
+import styles from "./hero.module.css"
+import useWindowSize from "../../hooks/useWindowSize"
+import { getRandomMinMax } from "../../utils"
+import * as Draggable from "../../hooks/useDraggable"
+import { useTheme } from "../../hooks/useTheme"
+import useEnterDirection from "../../hooks/useEnterDirection"
+import { RefObject } from "../../types"
+import useSessionStorage from "../../hooks/useStorage"
+import useLocalStorage from "../../hooks/useStorage"
+import { useLanguageContext } from "../../contexts/LanguageContext"
+import { useIsClient, useWindow } from "../../hooks/useSSR"
+import ItemComponent from "./components/ItemComponent"
 
 export interface itemProps {
   i: number
@@ -51,9 +51,9 @@ export default function Hero({
 
   const { t } = useLanguageContext()
 
-  const [values, setValues] = useSessionStorage<itemProps[]>('Hero', [])
+  const [values, setValues] = useSessionStorage<itemProps[]>("Hero", [])
   const [itemsVisible, setItemsVisible] = useState(true)
-  const [currentPage, setCurrentPage] = useState('')
+  const [currentPage, setCurrentPage] = useState("")
   const isAnimatingRef = useRef(false)
   const itemsVisibleRef = useRef(itemsVisible)
   const [theHeading, setTheHeading] = useState(heading)
@@ -61,12 +61,12 @@ export default function Hero({
 
   // remove the last trailing / then get the last part of the pathname:
   const page = useMemo(() => {
-    return pathname?.replace(/\/$/, '').split('/').pop() ?? ''
+    return pathname?.replace(/\/$/, "").split("/").pop() ?? ""
   }, [pathname])
 
   // Handle page transition for hero items
   useEffect(() => {
-    if (page !== currentPage && currentPage !== '') {
+    if (page !== currentPage && currentPage !== "") {
       // Fade out items when page changes
       setItemsVisible(false)
 
@@ -85,7 +85,7 @@ export default function Hero({
         clearTimeout(timer)
         clearTimeout(timer2)
       }
-    } else if (currentPage === '') {
+    } else if (currentPage === "") {
       // Initial load
       setCurrentPage(page)
       setItemsVisible(true)
@@ -95,7 +95,7 @@ export default function Hero({
 
   // Update heading and text when language changes (on same page)
   useEffect(() => {
-    if (page === currentPage && currentPage !== '') {
+    if (page === currentPage && currentPage !== "") {
       setTheHeading(heading)
       setTheText(text)
     }
@@ -103,10 +103,10 @@ export default function Hero({
 
   // Clear eye transforms when navigating away from contact/form pages
   useEffect(() => {
-    if (isClient && page !== 'contact' && page !== 'form') {
-      const eyes = document.querySelectorAll<HTMLSpanElement>('.eye .inner')
-      eyes.forEach(eye => {
-        eye.style.transform = ''
+    if (isClient && page !== "contact" && page !== "form") {
+      const eyes = document.querySelectorAll<HTMLSpanElement>(".eye .inner")
+      eyes.forEach((eye) => {
+        eye.style.transform = ""
       })
     }
   }, [page, isClient])
@@ -114,9 +114,10 @@ export default function Hero({
   const resetButton = useRef() as RefObject<HTMLButtonElement>
   const ulRef = useRef<HTMLUListElement>(null)
   const [prefersReducedMotion, setPrefersReducedMotion] =
-    useLocalStorage<boolean>('prefersReducedMotion-Hero', false)
+    useLocalStorage<boolean>("prefersReducedMotion-Hero", false)
   const isMovingRef = useRef(false)
   const movementTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const animatingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const movementCycleStartedRef = useRef(false)
 
   const escapeFunction = () => {
@@ -134,17 +135,17 @@ export default function Hero({
 
   useEffect(() => {
     if (!isClient || !windowObj) return
-    const mediaQuery = windowObj.matchMedia('(prefers-reduced-motion: reduce)')
+    const mediaQuery = windowObj.matchMedia("(prefers-reduced-motion: reduce)")
 
     // Only set the state from the media query if there is no value in localStorage
-    if (localStorage.getItem('prefersReducedMotion-Hero') === null) {
+    if (localStorage.getItem("prefersReducedMotion-Hero") === null) {
       setPrefersReducedMotion(mediaQuery.matches)
     }
 
     const handler = (e: MediaQueryListEvent) =>
       setPrefersReducedMotion(e.matches)
-    mediaQuery.addEventListener('change', handler)
-    return () => mediaQuery.removeEventListener('change', handler)
+    mediaQuery.addEventListener("change", handler)
+    return () => mediaQuery.removeEventListener("change", handler)
   }, [isClient, setPrefersReducedMotion, windowObj])
 
   //Move items up, down, left or left, depending on the direction they're approached from:
@@ -152,26 +153,26 @@ export default function Hero({
     (e: ReactPointerEvent<HTMLElement>) => {
       if (!isClient || !windowObj) return
 
-      const amount = page === 'composer' ? 20 : 10
+      const amount = page === "composer" ? 20 : 10
       const target = e.target as HTMLElement
       const targetLeft = windowObj
         .getComputedStyle(target)
-        .getPropertyValue('left')
+        .getPropertyValue("left")
       const targetTop = windowObj
         .getComputedStyle(target)
-        .getPropertyValue('top')
+        .getPropertyValue("top")
       const from = calculateDirection(e)
       switch (from) {
-        case 'top':
+        case "top":
           target.style.top = `${parseFloat(targetTop) + amount}px`
           break
-        case 'right':
+        case "right":
           target.style.left = `${parseFloat(targetLeft) - amount}px`
           break
-        case 'bottom':
+        case "bottom":
           target.style.top = `${parseFloat(targetTop) - amount}px`
           break
-        case 'left':
+        case "left":
           target.style.left = `${parseFloat(targetLeft) + amount}px`
           break
         default:
@@ -193,11 +194,11 @@ export default function Hero({
   const follow = useCallback(
     (e: Event) => {
       const eyes = [
-        ...document?.querySelectorAll<HTMLSpanElement>('.eye .inner'),
+        ...document?.querySelectorAll<HTMLSpanElement>(".eye .inner"),
       ]
       if (eyes.length > 0) {
-        eyes.forEach(eye => {
-          if (page === 'contact' || page === 'form') {
+        eyes.forEach((eye) => {
+          if (page === "contact" || page === "form") {
             const rect = eye.getBoundingClientRect()
             const x = rect.left + rect.width / 2
             const y = rect.top + rect.height / 2
@@ -209,7 +210,7 @@ export default function Hero({
             )
             eye.style.transform = `rotate(${rotation}deg)`
           } else {
-            eye.style.transform = ''
+            eye.style.transform = ""
           }
         })
       }
@@ -219,11 +220,11 @@ export default function Hero({
 
   useEffect(() => {
     if (isClient) {
-      window?.addEventListener('mousemove', follow)
+      window?.addEventListener("mousemove", follow)
     }
     return () => {
       if (isClient) {
-        window?.removeEventListener('mousemove', follow)
+        window?.removeEventListener("mousemove", follow)
       }
     }
   }, [isClient, follow])
@@ -243,7 +244,7 @@ export default function Hero({
       | ReactMouseEvent<HTMLLIElement, MouseEvent>
       | ReactTouchEvent<HTMLLIElement>
   ) => {
-    const element = (e.target as HTMLElement).closest('li')
+    const element = (e.target as HTMLElement).closest("li")
     if (!element) return
     //get element id
     const id = element.id
@@ -252,8 +253,8 @@ export default function Hero({
       // if not a touch device, add exit animation then remove from state
       element.classList.add(styles.exitItem)
       setTimeout(() => {
-        setValues(prevValues =>
-          prevValues.filter(item => `shape${item.i}` !== id)
+        setValues((prevValues) =>
+          prevValues.filter((item) => `shape${item.i}` !== id)
         )
       }, 400)
     } else {
@@ -261,25 +262,25 @@ export default function Hero({
       element.classList.add(styles.active)
       const handleBlur = () => {
         element.classList.remove(styles.active)
-        element.removeEventListener('blur', handleBlur)
+        element.removeEventListener("blur", handleBlur)
       }
-      element.addEventListener('blur', handleBlur)
+      element.addEventListener("blur", handleBlur)
       setTimeout(() => {
-        element.addEventListener('touchend', removeWithTouch)
+        element.addEventListener("touchend", removeWithTouch)
       }, 100)
     }
   }
 
   const removeWithTouch = (e: TouchEvent) => {
     e.preventDefault()
-    const el = (e.target as HTMLElement).closest('li')
+    const el = (e.target as HTMLElement).closest("li")
     if (!el) return
     const id = el.id
     el.classList.add(styles.exitItem)
 
     setTimeout(() => {
-      setValues(prevValues =>
-        prevValues.filter(item => `shape${item.i}` !== id)
+      setValues((prevValues) =>
+        prevValues.filter((item) => `shape${item.i}` !== id)
       )
     }, 400)
   }
@@ -291,7 +292,7 @@ export default function Hero({
         i: i + 1,
         e: Math.round(getRandomMinMax(5, 9)),
         size: i,
-        color: 'hsla(0, 0%, 100%, 0.7)',
+        color: "hsla(0, 0%, 100%, 0.7)",
       }
       array.push(span)
     }
@@ -305,7 +306,7 @@ export default function Hero({
         i: i + 1,
         e: Math.round(getRandomMinMax(5, 9)),
         size: i >= 9 ? 82 : 100,
-        color: 'white',
+        color: "white",
       }
       array.push(div)
     }
@@ -319,7 +320,7 @@ export default function Hero({
         i: i + 1,
         e: Math.round(getRandomMinMax(5, 9)),
         size: i >= 9 ? 77 : 100,
-        color: 'white',
+        color: "white",
       }
       array.push(div)
     }
@@ -385,6 +386,28 @@ export default function Hero({
     setValues(items)
   }, [amount, reinitialize, thresholdCrossed]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Convert a CSS variable (including calc, vh, vw, etc.) to pixels in a
+  // client-only, SSR-safe way. Returns 0 during server-side rendering.
+  function cssVarToPx(varName: string, contextEl?: Element | null) {
+    // Guard for SSR: window/document are not available on the server
+    if (typeof window === "undefined" || typeof document === "undefined")
+      return 0
+
+    const el = contextEl ?? document.documentElement
+    const val = window.getComputedStyle(el).getPropertyValue(varName).trim()
+    if (!val) return 0
+    if (val.endsWith("px")) return parseFloat(val)
+
+    const tmp = document.createElement("div")
+    tmp.style.position = "absolute"
+    tmp.style.visibility = "hidden"
+    tmp.style.top = val // could be 'calc(...)' or 'var(--...)'
+    document.body.appendChild(tmp)
+    const px = parseFloat(window.getComputedStyle(tmp).top) || 0
+    document.body.removeChild(tmp)
+    return px
+  }
+
   // Move an item randomly
   useEffect(() => {
     if (!isClient || !windowObj) return
@@ -393,24 +416,25 @@ export default function Hero({
 
     const MOVE_TRANSITION_MS = 900 // allow CSS transition to finish (approx 800ms), buffer a bit
 
+    const scheduleNext = (delayMs: number) => {
+      if (movementTimeoutRef.current) {
+        clearTimeout(movementTimeoutRef.current)
+      }
+      movementTimeoutRef.current = setTimeout(moveItem, delayMs)
+    }
+
     const moveItem = () => {
       // Clear the timeout ref since we're executing now
       movementTimeoutRef.current = null
 
       // don't move items if they are hidden or already animating
       if (!itemsVisibleRef.current) {
-        movementTimeoutRef.current ??= setTimeout(
-          moveItem,
-          Math.round(getRandomMinMax(1000, 2000))
-        )
+        scheduleNext(Math.round(getRandomMinMax(1000, 2000)))
         return
       }
 
       if (isAnimatingRef.current) {
-        movementTimeoutRef.current ??= setTimeout(
-          moveItem,
-          Math.round(getRandomMinMax(1000, 2000))
-        )
+        scheduleNext(Math.round(getRandomMinMax(1000, 2000)))
         return
       }
       // Get current items from DOM instead of relying on state
@@ -424,13 +448,16 @@ export default function Hero({
       const item = items[randomIndex]
 
       if (item) {
-        // mark as animating so no other move happens until transition ends
-        isAnimatingRef.current = true
+        const baseTop = item.dataset.baseTop
+        const baseLeft = item.dataset.baseLeft
+        const prevDy = Number.parseFloat(item.dataset.moveDy ?? "0") || 0
+        const prevDx = Number.parseFloat(item.dataset.moveDx ?? "0") || 0
+
         const currentTop = parseFloat(
-          windowObj.getComputedStyle(item).getPropertyValue('top')
+          windowObj.getComputedStyle(item).getPropertyValue("top")
         )
         const currentLeft = parseFloat(
-          windowObj.getComputedStyle(item).getPropertyValue('left')
+          windowObj.getComputedStyle(item).getPropertyValue("left")
         )
         const itemWidth = item.offsetWidth
         const itemHeight = item.offsetHeight
@@ -439,9 +466,8 @@ export default function Hero({
 
         // Choose a random direction
         const direction = Math.floor(Math.random() * 8)
-        const change = page === 'composer' ? 20 : 10
-        const changeBigger = page === 'composer' ? 40 : 16
-
+        const change = page === "composer" ? 38 : 10
+        const changeBigger = page === "composer" ? 38 : 16
         let newTop = currentTop
         let newLeft = currentLeft
 
@@ -476,28 +502,72 @@ export default function Hero({
             break
         }
 
+        let didMove = false
+        const deltaTop = newTop - currentTop
+        const deltaLeft = newLeft - currentLeft
+        // Check if the page is composer and limit movement to how high the highest item is placed and the lowest the items can be placed
+        if (page === "composer") {
+          // The CSS variables are set on the item elements in the composer layout
+          // (see ItemComponent), so resolve them against the moved `item`.
+          const highestAllowedPx = cssVarToPx("--highest-allowed", item)
+          const lowestAllowedPx = cssVarToPx("--lowest-allowed", item)
+
+          if (
+            newTop >= highestAllowedPx &&
+            newTop + itemHeight <= lowestAllowedPx &&
+            newLeft >= 0 &&
+            newLeft + itemWidth <= windowWidth
+          ) {
+            const nextDy = prevDy + deltaTop
+            const nextDx = prevDx + deltaLeft
+            item.dataset.moveDy = String(nextDy)
+            item.dataset.moveDx = String(nextDx)
+            item.style.top = baseTop
+              ? `calc(${baseTop} + ${nextDy}px)`
+              : `${newTop}px`
+            item.style.left = baseLeft
+              ? `calc(${baseLeft} + ${nextDx}px)`
+              : `${newLeft}px`
+            didMove = true
+          }
+        }
+
         // Check if the new position is within the allowed boundaries
-        if (
+        else if (
           newTop >= 100 &&
           newTop + itemHeight <= windowHeight * 0.6 &&
           newLeft >= 0 &&
           newLeft + itemWidth <= windowWidth
         ) {
-          item.style.top = `${newTop}px`
-          item.style.left = `${newLeft}px`
-          // Clear animating flag roughly when CSS transition completes
-          setTimeout(() => {
+          const nextDy = prevDy + deltaTop
+          const nextDx = prevDx + deltaLeft
+          item.dataset.moveDy = String(nextDy)
+          item.dataset.moveDx = String(nextDx)
+          item.style.top = baseTop
+            ? `calc(${baseTop} + ${nextDy}px)`
+            : `${newTop}px`
+          item.style.left = baseLeft
+            ? `calc(${baseLeft} + ${nextDx}px)`
+            : `${newLeft}px`
+          didMove = true
+        }
+
+        // Only mark as animating when we actually applied a move.
+        if (didMove) {
+          isAnimatingRef.current = true
+          if (animatingTimeoutRef.current) {
+            clearTimeout(animatingTimeoutRef.current)
+          }
+          animatingTimeoutRef.current = setTimeout(() => {
             isAnimatingRef.current = false
+            animatingTimeoutRef.current = null
           }, MOVE_TRANSITION_MS)
         }
       }
 
-      // Schedule next movement with random delay, but only if no timeout is already scheduled
+      // Schedule next movement with random delay
       // schedule next move after transition + random delay
-      movementTimeoutRef.current ??= setTimeout(
-        moveItem,
-        Math.round(getRandomMinMax(3000, 6000)) + MOVE_TRANSITION_MS
-      )
+      scheduleNext(Math.round(getRandomMinMax(3000, 6000)) + MOVE_TRANSITION_MS)
     }
 
     // Only start the movement cycle if it's not already running
@@ -519,6 +589,12 @@ export default function Hero({
         clearTimeout(movementTimeoutRef.current)
         movementTimeoutRef.current = null
       }
+
+      if (animatingTimeoutRef.current) {
+        clearTimeout(animatingTimeoutRef.current)
+        animatingTimeoutRef.current = null
+      }
+
       isMovingRef.current = false
       movementCycleStartedRef.current = false
     }
@@ -527,9 +603,9 @@ export default function Hero({
   return (
     <div
       className={`
-        ${lightTheme ? styles.light : ''} 
-        ${touchDevice ? styles.touch : ''} 
-        hero fullwidth ${styles.hero} ${styles[address]} ${itemsVisible ? styles['header-visible'] : styles['header-hidden']}`}
+        ${lightTheme ? styles.light : ""} 
+        ${touchDevice ? styles.touch : ""} 
+        hero fullwidth ${styles.hero} ${styles[address]} ${itemsVisible ? styles["header-visible"] : styles["header-hidden"]}`}
     >
       {/* Always render heading and text for SSR, then on client */}
       <h1>
@@ -537,10 +613,10 @@ export default function Hero({
       </h1>
       <p>{theText}</p>
       <span id="description" className="scr">
-        {t('HeroSection')}: {t('InteractiveElements')}
+        {t("HeroSection")}: {t("InteractiveElements")}
       </span>
 
-      <svg style={{ position: 'absolute', width: 0, height: 0 }}>
+      <svg style={{ position: "absolute", width: 0, height: 0 }}>
         <defs>
           <clipPath
             id="clipHole1"
@@ -588,8 +664,8 @@ export default function Hero({
           type="button"
           onClick={handleReset}
         >
-          <span data-instructions={instructions ?? t('TryTappingTheShapes')}>
-            {reset ?? t('Reset')}
+          <span data-instructions={instructions ?? t("TryTappingTheShapes")}>
+            {reset ?? t("Reset")}
           </span>
           <span> </span>
         </button>
@@ -603,11 +679,11 @@ export default function Hero({
           <span
             data-instructions={
               prefersReducedMotion
-                ? t('TurnRandomMovementOn')
-                : t('TurnRandomMovementOff')
+                ? t("TurnRandomMovementOn")
+                : t("TurnRandomMovementOff")
             }
           >
-            {prefersReducedMotion ? t('Off') : t('On')}
+            {prefersReducedMotion ? t("Off") : t("On")}
           </span>
           <span> </span>
         </button>
