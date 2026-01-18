@@ -153,7 +153,7 @@ export default function Hero({
     (e: ReactPointerEvent<HTMLElement>) => {
       if (!isClient || !windowObj) return
 
-      const amount = page === "composer" ? 20 : 10
+      const amount = page === "composer" ? 19 : 10
       const target = e.target as HTMLElement
 
       // Prefer moving via base (responsive) + offset so resizing the window
