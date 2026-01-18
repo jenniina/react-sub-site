@@ -379,9 +379,8 @@ const ItemComponent = forwardRef<
                 ["--note-head" as string]: `${noteHead}`,
                 top: `calc(clamp(100px, 44vh, 1000px) + (${noteStep} * (60px * 200 / 640)) - ${noteHead})`,
                 left: `calc(${item.i} * ${colStep} - ${noteHead})`,
-                ["--highest-allowed" as string]: `calc(clamp(100px, 44vh, 1000px) + (60px * 200 / 640) - 40px)`,
-                ["--lowest-allowed" as string]: `calc(clamp(100px, 44vh, 1000px) + (11 * (60px * 200 / 640)) - 40px)`,
-
+                ["--highest-allowed" as string]: `calc(clamp(100px, 44vh, 1000px) + (60px * 200 / 640) - 70px)`,
+                ["--lowest-allowed" as string]: `calc(clamp(100px, 44vh, 1000px) + (11 * (60px * 200 / 640)) - 50px)`,
                 transitionDuration: "600ms",
                 opacity: `0.7`,
               }
