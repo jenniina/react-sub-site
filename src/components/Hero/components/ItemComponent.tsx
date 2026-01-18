@@ -13,7 +13,7 @@ import { useLanguageContext } from "../../../contexts/LanguageContext"
 
 import { getRandomMinMax } from "../../../utils"
 import * as Draggable from "../../../hooks/useDraggable"
-import styles from "../Hero.module.css"
+import styles from "../hero.module.css"
 import { itemProps } from "../Hero"
 
 //Change these, if the addresses change, or add more as needed:
@@ -92,12 +92,56 @@ const ItemComponent = forwardRef<
     const composerStaffMidY = "clamp(100px, 44vh, 1000px)"
     const composerStaffHalfStep = `calc(60px * (${composerStaffWidth} / 640))`
 
-    // Capture each item's original responsive positioning formula exactly once.
-    // This lets Hero's random movement add pixel offsets while still allowing
-    // the base position (clamp/vh/vw/calc) to respond to window resizes.
+    // 1) Capture each item's original responsive positioning formula exactly once.
+    // 2) Re-apply stored pixel offsets after rerenders/resizes (React may re-set
+    //    inline styles back to the base formula).
+    // 3) For composer, toggle above/below classes based on the staff midline.
     useEffect(() => {
       const root = ulRef?.current
-      if (!root) return
+      if (!root || !windowObj) return
+
+      const resolveCssVarToPx = (varName: string, contextEl: Element) => {
+        const val = windowObj
+          .getComputedStyle(contextEl)
+          .getPropertyValue(varName)
+          .trim()
+        if (!val) return 0
+        if (val.endsWith("px")) return Number.parseFloat(val) || 0
+
+        const tmp = document.createElement("div")
+        tmp.style.position = "absolute"
+        tmp.style.visibility = "hidden"
+        tmp.style.top = val
+        document.body.appendChild(tmp)
+        const px = Number.parseFloat(windowObj.getComputedStyle(tmp).top) || 0
+        document.body.removeChild(tmp)
+        return px
+      }
+
+      const resolveExprToPx = (expr: string) => {
+        if (!expr) return 0
+        if (expr.endsWith("px")) return Number.parseFloat(expr) || 0
+
+        const tmp = document.createElement("div")
+        tmp.style.position = "absolute"
+        tmp.style.visibility = "hidden"
+        tmp.style.top = expr
+        document.body.appendChild(tmp)
+        const px = Number.parseFloat(windowObj.getComputedStyle(tmp).top) || 0
+        document.body.removeChild(tmp)
+        return px
+      }
+
+      const staffBaseYPx = isComposer
+        ? resolveCssVarToPx("--staff-mid-y", root)
+        : null
+      const staffHalfStepPx = isComposer
+        ? resolveCssVarToPx("--staff-half-step", root)
+        : null
+      const midMarkPx =
+        isComposer && staffBaseYPx !== null && staffHalfStepPx !== null
+          ? staffBaseYPx + 5.5 * staffHalfStepPx
+          : null
 
       const items = root.querySelectorAll<HTMLElement>('li[id^="shape"]')
       items.forEach((el) => {
@@ -107,8 +151,45 @@ const ItemComponent = forwardRef<
           el.dataset.baseLeft = el.style.left
         if (!el.dataset.moveDy) el.dataset.moveDy = "0"
         if (!el.dataset.moveDx) el.dataset.moveDx = "0"
+
+        const baseTop = el.dataset.baseTop
+        const baseLeft = el.dataset.baseLeft
+        const dy = Number.parseFloat(el.dataset.moveDy ?? "0") || 0
+        const dx = Number.parseFloat(el.dataset.moveDx ?? "0") || 0
+
+        if (baseTop && dy !== 0) el.style.top = `calc(${baseTop} + ${dy}px)`
+        if (baseLeft && dx !== 0) el.style.left = `calc(${baseLeft} + ${dx}px)`
+
+        if (isComposer && midMarkPx !== null) {
+          const dyForTop = Number.parseFloat(el.dataset.moveDy ?? "0") || 0
+          const topPx = baseTop
+            ? resolveExprToPx(baseTop) + dyForTop
+            : Number.parseFloat(
+                windowObj.getComputedStyle(el).getPropertyValue("top")
+              )
+          if (Number.isFinite(topPx)) {
+            // Notes are positioned with `top = staffBaseY + step*halfStep - noteHead`.
+            // So the staff anchor is the bottom of the note head.
+            const noteHeadPx = resolveCssVarToPx("--note-head", el) || 0
+            const anchorYPx = topPx + noteHeadPx
+            // Cut line is slightly above the true midpoint to compensate for the
+            // lower note visually overflowing upward.
+            const isAbove = anchorYPx <= midMarkPx - 5
+            el.classList.toggle(styles.above, isAbove)
+            el.classList.toggle(styles.below, !isAbove)
+          }
+        }
       })
-    }, [ulRef, array, location])
+    }, [
+      ulRef,
+      array,
+      location,
+      windowWidth,
+      windowHeight,
+      itemsVisible,
+      isComposer,
+      windowObj,
+    ])
 
     return (
       <>
@@ -401,9 +482,9 @@ const ItemComponent = forwardRef<
                 <li
                   key={`${item.color}${item.size}${item.e}${index}`}
                   id={`shape${item.i}`}
-                  className={`${styles.item} ${styles[location]} ${
-                    styles.note
-                  } ${noteStep > 5 ? styles.above : styles.below} ${item.e} 
+                  className={`${
+                    noteStep <= 6 ? styles.above : styles.below
+                  } ${styles.item} ${styles[location]} ${styles.note} 
                                 ${
                                   windowHeight < windowWidth
                                     ? styles.wide
