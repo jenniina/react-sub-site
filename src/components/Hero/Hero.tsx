@@ -155,25 +155,53 @@ export default function Hero({
 
       const amount = page === "composer" ? 20 : 10
       const target = e.target as HTMLElement
+
+      // Prefer moving via base (responsive) + offset so resizing the window
+      // continues to reflow shapes according to their original clamp/vh/vw rules.
+      if (!target.dataset.baseTop && target.style.top)
+        target.dataset.baseTop = target.style.top
+      if (!target.dataset.baseLeft && target.style.left)
+        target.dataset.baseLeft = target.style.left
+
+      const baseTop = target.dataset.baseTop
+      const baseLeft = target.dataset.baseLeft
+      const prevDy = Number.parseFloat(target.dataset.moveDy ?? "0") || 0
+      const prevDx = Number.parseFloat(target.dataset.moveDx ?? "0") || 0
+
       const targetLeft = windowObj
         .getComputedStyle(target)
         .getPropertyValue("left")
       const targetTop = windowObj
         .getComputedStyle(target)
         .getPropertyValue("top")
+
+      const currentTopPx = Number.parseFloat(targetTop) || 0
+      const currentLeftPx = Number.parseFloat(targetLeft) || 0
+
+      const applyOffsets = (nextDy: number, nextDx: number) => {
+        target.dataset.moveDy = String(nextDy)
+        target.dataset.moveDx = String(nextDx)
+
+        if (baseTop) target.style.top = `calc(${baseTop} + ${nextDy}px)`
+        else target.style.top = `${currentTopPx + (nextDy - prevDy)}px`
+
+        if (baseLeft) target.style.left = `calc(${baseLeft} + ${nextDx}px)`
+        else target.style.left = `${currentLeftPx + (nextDx - prevDx)}px`
+      }
+
       const from = calculateDirection(e)
       switch (from) {
         case "top":
-          target.style.top = `${parseFloat(targetTop) + amount}px`
+          applyOffsets(prevDy + amount, prevDx)
           break
         case "right":
-          target.style.left = `${parseFloat(targetLeft) - amount}px`
+          applyOffsets(prevDy, prevDx - amount)
           break
         case "bottom":
-          target.style.top = `${parseFloat(targetTop) - amount}px`
+          applyOffsets(prevDy - amount, prevDx)
           break
         case "left":
-          target.style.left = `${parseFloat(targetLeft) + amount}px`
+          applyOffsets(prevDy, prevDx + amount)
           break
         default:
           break
