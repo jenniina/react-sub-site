@@ -177,19 +177,13 @@
   align-items: center;
   gap: calc(var(--gap) * 2);
   min-width: 100%;
-  width: clamp(
-    100px,
-    calc(var(--width) * 2 + var(--gap)),
-    calc(100vw - calc(var(--padd) + var(--page-padding)) * 2)
-  );
+  width: clamp(100px, calc(var(--width) * 2 + var(--gap)), calc(100vw - calc(var(--padd) + var(--page-padding)) * 2));
   max-width: 100%;
 }
 .search-wrap .column > .select.colors,
 .search-wrap .column > .input-wrap {
   min-width: 100px;
-  max-width: calc(
-    100vw - calc(var(--padd) + var(--page-padding)) * 2 - var(--scrollbar_width)
-  );
+  max-width: calc(100vw - calc(var(--padd) + var(--page-padding)) * 2 - var(--scrollbar_width));
   margin: 0 auto;
 }
 .select.colors > div > button {
@@ -242,7 +236,7 @@
   outline-offset: -3px;
 }
 .fetch-page-buttons-wrap button.active::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 100%;
   left: 50%;
@@ -270,9 +264,6 @@
 #fetch-btn-wrap .fetch-more-btn {
   margin: 0;
   padding: 0.3em 0.6em;
-}
-.image-modal,
-.video-modal {
 }
 .images-wrap .inner-wrap {
   gap: 1em;
