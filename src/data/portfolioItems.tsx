@@ -68,7 +68,24 @@ export const portfolioItems: PortfolioItemDef[] = [
     icon: { kind: "icon", lib: "ri", name: "RiDragMove2Fill" },
     title: { kind: "t", key: "BlobArtApp" },
     navLabel: { kind: "t", key: "Blob" },
-    description: (t) => `${t("BlobAppSlogan")}. ${t("BlobAppIntro")}`,
+    description: (t) =>
+      `${t("BlobAppSlogan")}. ${t("BlobAppIntro")} ${t("SupportsLayers")}. ${t("SaveOrDownloadArt")}.`,
+  },
+  {
+    id: "composer",
+    url: "/portfolio/composer",
+    icon: { kind: "icon", lib: "bs", name: "BsMusicNoteBeamed" },
+    title: { kind: "t", key: "ComposerOlliSanta" },
+    navLabel: { kind: "t", key: "ComposerOlliSanta" },
+    description: (t) => `${t("ComposerIntro1")}`,
+  },
+  {
+    id: "salon",
+    url: "/portfolio/salon",
+    icon: { kind: "icon", lib: "gi", name: "GiComb" },
+    title: { kind: "t", key: "HairSalonWebsite" },
+    navLabel: { kind: "t", key: "HairSalon" },
+    description: (t) => `${t("Website")}: Parturi Kampaamo Hannastiina`,
   },
   {
     id: "media",
@@ -106,22 +123,6 @@ export const portfolioItems: PortfolioItemDef[] = [
     navLabel: { kind: "t", key: "CustomSelect" },
     description: (t) =>
       `${t("CustomSelectIntro")} ${t("PleaseFillInTheSurvey")}`,
-  },
-  {
-    id: "composer",
-    url: "/portfolio/composer",
-    icon: { kind: "icon", lib: "bs", name: "BsMusicNoteBeamed" },
-    title: { kind: "t", key: "ComposerOlliSanta" },
-    navLabel: { kind: "t", key: "ComposerOlliSanta" },
-    description: (t) => `${t("ComposerIntro1")}`,
-  },
-  {
-    id: "salon",
-    url: "/portfolio/salon",
-    icon: { kind: "icon", lib: "gi", name: "GiComb" },
-    title: { kind: "t", key: "HairSalonWebsite" },
-    navLabel: { kind: "t", key: "HairSalon" },
-    description: (t) => `${t("Website")}: Parturi Kampaamo Hannastiina`,
   },
   {
     id: "quiz",
