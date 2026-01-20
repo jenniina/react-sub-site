@@ -17,9 +17,7 @@
   transition-duration: 500ms;
 }
 .main-header.hide {
-  top: calc(
-    -1 * var(--height)
-  ); /* old -110%; Using transform will mess up the position:fixed*/
+  top: calc(-1 * var(--height)); /* old -110%; Using transform will mess up the position:fixed*/
 }
 .main-header.show,
 .main-header:focus-within,
@@ -59,7 +57,7 @@
   transform: translateX(-60%) scale(1);
 }
 .main-header::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -67,11 +65,7 @@
   bottom: 0;
   z-index: -1;
   background-color: var(--color-primary-2);
-  background: linear-gradient(
-    180deg,
-    var(--color-primary-3) 0%,
-    var(--color-primary-2) 100%
-  );
+  background: linear-gradient(180deg, var(--color-primary-3) 0%, var(--color-primary-2) 100%);
   opacity: 0.8;
   border-bottom: solid 1px black;
   -webkit-box-shadow:
@@ -91,11 +85,7 @@
     0 0.5rem 2rem -1.5rem black;
 }
 .light.main-header::after {
-  background: linear-gradient(
-    180deg,
-    var(--color-primary-3) 0%,
-    var(--color-primary-5) 100%
-  );
+  background: linear-gradient(180deg, var(--color-primary-3) 0%, var(--color-primary-5) 100%);
   border-bottom: solid 1px var(--color-primary-7);
   opacity: 0.8;
 }
@@ -181,7 +171,7 @@ button.togglemenu .menupath {
   transition-timing-function: ease-in-out;
   transition-duration: 600ms;
 }
-button.togglemenu[aria-expanded='true'] .menupath {
+button.togglemenu[aria-expanded="true"] .menupath {
   stroke-dasharray: 0 115 58 0 58 142 0 222 116 1000;
   stroke-dashoffset: 116;
 }
@@ -219,11 +209,7 @@ button.togglemenu[aria-expanded='true'] .menupath {
   align-items: center;
   gap: 0.7em;
   opacity: 0;
-  background: linear-gradient(
-    180deg,
-    hsla(var(--hue-primary), var(--sat), 8%, 0.9) 0%,
-    hsla(var(--hue-primary), var(--sat), 3%, 0.96) 100%
-  );
+  background: linear-gradient(180deg, hsla(var(--hue-primary), var(--sat), 8%, 0.9) 0%, hsla(var(--hue-primary), var(--sat), 3%, 0.96) 100%);
   border-left: 1px solid black;
   border-top: 0;
   -webkit-transform: translateX(110%);
@@ -239,11 +225,7 @@ button.togglemenu[aria-expanded='true'] .menupath {
 }
 .light .toolbar {
   border-left: 1px solid var(--color-primary-6);
-  background: linear-gradient(
-    180deg,
-    hsla(var(--hue-primary), var(--sat), 88%, 0.86) 0%,
-    hsla(var(--hue-primary), var(--sat), 97%, 0.9) 100%
-  );
+  background: linear-gradient(180deg, hsla(var(--hue-primary), var(--sat), 88%, 0.86) 0%, hsla(var(--hue-primary), var(--sat), 97%, 0.9) 100%);
 }
 .toolbar.show {
   right: 0;
@@ -310,18 +292,99 @@ button.togglemenu[aria-expanded='true'] .menupath {
   margin: var(--marg) auto 0;
 }
 
-.logo-container a {
+.logo-container a,
+.logo-container > .logo-btn {
   display: inline-block;
   position: relative;
   width: 6em;
   height: 2em;
-  background-image: url('../../assets/JLA_Jenniina-light-3-480x198.png');
   background-size: contain;
   background-repeat: no-repeat;
   padding-bottom: 0.5em;
   box-sizing: content-box;
   margin: 0.5em 0.5em -0.5em;
   z-index: 1;
+  background-color: transparent;
+  border: 0;
+}
+
+.logo-container > .logo-btn {
+  cursor: pointer;
+  background-size: 100%;
+  background-position: center top;
+}
+.logo-container > .logo-btn:hover,
+.logo-container > .logo-btn:focus,
+.logo-container > .logo-btn:focus-visible {
+  background-size: 100%;
+  background-position: center top;
+  transform: scale(1.05);
+}
+
+.logo-menu {
+  position: absolute;
+  top: 2em;
+  z-index: 30;
+  min-width: max-content;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0;
+  border-radius: 6px;
+  background: linear-gradient(180deg, var(--color-primary-3), var(--color-primary-2));
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transform: scaleY(0);
+  transition-property: opacity, transform;
+  transition-duration: 200ms;
+  transition-timing-function: ease-in-out;
+}
+.menu-container .logo-menu {
+  top: 3.3em;
+}
+.left-edge .logo-menu {
+  left: 0;
+  transform-origin: top left;
+}
+.right-edge .logo-menu {
+  right: calc(-1px * var(--scrollbar_width));
+  transform-origin: top right;
+}
+ul.logo-menu li {
+  list-style: none;
+}
+.left-edge .logo-menu li a {
+  text-align: left;
+  padding: 0.3em 1em 0.3em 0.1em;
+}
+.right-edge .logo-menu li a {
+  text-align: right;
+  padding: 0.3em 0.1em 0.3em 1em;
+}
+
+.logo-container ul.logo-menu li a {
+  display: block;
+  min-width: max-content;
+  width: auto;
+  max-width: 99%;
+  white-space: nowrap;
+  color: var(--color-primary-20);
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.logo-container ul.logo-menu li a:hover,
+.logo-container ul.logo-menu li a:focus {
+  background: rgba(255, 255, 255, 0.06);
+  outline: none;
+}
+
+.logo-menu.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scaleY(1);
 }
 .logo-container a:focus,
 .logo-container a:focus-visible,
@@ -336,11 +399,11 @@ button.togglemenu[aria-expanded='true'] .menupath {
   outline-offset: -4px;
 }
 .light .logo-container a {
-  background-image: url('../../assets/JLA_Jenniina-3-480x198.png');
+  background-image: url("../../assets/JLA_Jenniina-3-480x198.png");
 }
 .logo-container a:hover::before,
 .logo-container a:focus::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -2em;
   right: 2em;
@@ -402,7 +465,7 @@ a.link:visited:not(.active) > *,
 .link::before,
 .link::before,
 .main-header button::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   bottom: 0;
@@ -873,22 +936,14 @@ a.link:visited:not(.active):focus > *,
   header:not(.menualt) .menu-container ul li a span,
   header:not(.menualt).main-header button.search span,
   header:not(.menualt).main-header button.settings span {
-    background-image: linear-gradient(
-      180deg,
-      transparent 50%,
-      var(--color-primary-3) 95%
-    );
+    background-image: linear-gradient(180deg, transparent 50%, var(--color-primary-3) 95%);
     background-size: 100% 200%;
     background-position: 50% 3%;
   }
   header:not(.menualt).light .menu-container ul li a span,
   header:not(.menualt).main-header.light button.search span,
   header:not(.menualt).main-header.light button.settings span {
-    background-image: linear-gradient(
-      180deg,
-      transparent 50%,
-      var(--color-primary-4) 95%
-    );
+    background-image: linear-gradient(180deg, transparent 50%, var(--color-primary-4) 95%);
   }
   header:not(.menualt) .menu-container ul li a:hover span,
   header:not(.menualt) .menu-container ul li a:focus span,
@@ -929,8 +984,7 @@ a.link:visited:not(.active):focus > *,
   .transformations .menu-container ul li a span,
   .transformations.main-header button.search span,
   .transformations.main-header button.settings span {
-    transition-property:
-      transform, opacity, color, background-color, background-position;
+    transition-property: transform, opacity, color, background-color, background-position;
     transition-duration: 0.3s;
     transition-delay: 0s;
     transition-timing-function: ease-in-out;
@@ -1025,12 +1079,11 @@ button.dlt-btn:focus {
   outline: none;
   transition-duration: 0.4s;
   transition-timing-function: ease-in-out;
-  transition-property:
-    transform, box-shadow, background-color, margin, border, outline, right;
+  transition-property: transform, box-shadow, background-color, margin, border, outline, right;
 }
 .dlt-btn .dlt-btn-inner-left::before {
   /*Sun in light mode*/
-  content: '';
+  content: "";
   display: block;
   position: absolute;
   z-index: 1;
@@ -1082,7 +1135,7 @@ button.dlt-btn:focus {
   transform: translateX(-0.7em) rotate(-45deg);
 }
 .dlt-btn .dlt-btn-inner-left::after {
-  content: '';
+  content: "";
   display: inline-block;
   width: 2.5em;
   height: 1.5em;

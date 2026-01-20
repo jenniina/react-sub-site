@@ -10,7 +10,7 @@
   overflow: hidden;
 }
 .herocontent.composer {
-  background-image: url('../../assets/staff.svg');
+  background-image: url("../../assets/staff.svg");
   background-size: 200px;
   background-position: center clamp(100px, 44vh, 1000px);
   background-repeat: repeat-x;
@@ -133,9 +133,7 @@
 .herocontent .triangle,
 .herocontent .note,
 .herocontent .circles {
-  transition-property:
-    top, right, bottom, left, transform, filter, box-shadow, outline, border,
-    width, height, opacity;
+  transition-property: top, right, bottom, left, transform, filter, box-shadow, outline, border, width, height, opacity;
   transition-timing-function: ease-in-out;
   transition-duration: 600ms;
   -webkit-tap-highlight-color: transparent;
@@ -143,8 +141,7 @@
 }
 .herocontent .jewel,
 .herocontent .jewel::before {
-  transition-property:
-    top, left, transform, opacity, filter; /* Removed box-shadow for dark-light transformation smoothness */
+  transition-property: top, left, transform, opacity, filter; /* Removed box-shadow for dark-light transformation smoothness */
   transition-timing-function: ease-in-out;
   transition-duration: 800ms;
   -webkit-tap-highlight-color: transparent;
@@ -152,49 +149,24 @@
 }
 
 .herocontent .jewel1 > div > div.none {
-  background: radial-gradient(
-    circle at center,
-    hsl(var(--hue), 100%, 80%) 0%,
-    var(--color) 100%
-  );
+  background: radial-gradient(circle at center, hsl(var(--hue), 100%, 80%) 0%, var(--color) 100%);
   mix-blend-mode: hard-light;
 }
 
 .herocontent .jewel2 > div > div.none {
-  background: radial-gradient(
-    circle at center,
-    hsl(var(--hue), 100%, 75%) 0%,
-    var(--color) 100%
-  );
+  background: radial-gradient(circle at center, hsl(var(--hue), 100%, 75%) 0%, var(--color) 100%);
   mix-blend-mode: hard-light;
 }
 .herocontent .jewel1 > div > div.cover {
-  background: radial-gradient(
-    circle at center,
-    hsl(var(--hue), 100%, 80%) 0%,
-    var(--color) 100%
-  );
+  background: radial-gradient(circle at center, hsl(var(--hue), 100%, 80%) 0%, var(--color) 100%);
   mix-blend-mode: darken;
 }
 .herocontent .jewel2 > div > div.cover {
-  background: radial-gradient(
-    circle at center,
-    hsl(var(--hue), 100%, 80%) 0%,
-    var(--color) 100%
-  );
+  background: radial-gradient(circle at center, hsl(var(--hue), 100%, 80%) 0%, var(--color) 100%);
   mix-blend-mode: luminosity;
 }
 .herocontent .jewel > div > div.frame {
-  background: linear-gradient(
-    45deg,
-    hsl(var(--hue), 100%, 80%) 10%,
-    hsl(var(--hue), 100%, 40%) 20%,
-    hsl(var(--hue), 100%, 40%) 35%,
-    hsl(var(--hue), 100%, 80%) 50%,
-    hsl(var(--hue), 100%, 40%) 65%,
-    hsl(var(--hue), 100%, 40%) 85%,
-    hsl(var(--hue), 100%, 80%) 90%
-  );
+  background: linear-gradient(45deg, hsl(var(--hue), 100%, 80%) 10%, hsl(var(--hue), 100%, 40%) 20%, hsl(var(--hue), 100%, 40%) 35%, hsl(var(--hue), 100%, 80%) 50%, hsl(var(--hue), 100%, 40%) 65%, hsl(var(--hue), 100%, 40%) 85%, hsl(var(--hue), 100%, 80%) 90%);
 }
 .herocontent .jewel.blue > div > div.frame {
   mix-blend-mode: color-dodge;
@@ -207,18 +179,7 @@
   animation: rotate-colors 4000ms linear infinite;
   animation-play-state: paused;
   animation-delay: calc(var(--number) * -500ms - 2500ms);
-  background-image: radial-gradient(
-    circle at top left,
-    hsl(var(--hue), 100%, 40%) 34%,
-    hsl(var(--hue), 100%, 80%) 37%,
-    hsl(var(--hue), 100%, 40%) 40%,
-    hsl(var(--hue), 100%, 40%) 57%,
-    hsl(var(--hue), 100%, 80%) 50%,
-    hsl(var(--hue), 100%, 40%) 53%,
-    hsl(var(--hue), 100%, 40%) 60%,
-    hsl(var(--hue), 100%, 80%) 63%,
-    hsl(var(--hue), 100%, 40%) 66%
-  );
+  background-image: radial-gradient(circle at top left, hsl(var(--hue), 100%, 40%) 34%, hsl(var(--hue), 100%, 80%) 37%, hsl(var(--hue), 100%, 40%) 40%, hsl(var(--hue), 100%, 40%) 57%, hsl(var(--hue), 100%, 80%) 50%, hsl(var(--hue), 100%, 40%) 53%, hsl(var(--hue), 100%, 40%) 60%, hsl(var(--hue), 100%, 80%) 63%, hsl(var(--hue), 100%, 40%) 66%);
   background-size: 450% 450%;
   background-position: 0 0;
   background-repeat: no-repeat;
@@ -227,24 +188,7 @@
   animation: rotate-colors2 4000ms linear infinite;
   animation-play-state: paused;
   animation-delay: calc(var(--number) * -500ms - 1500ms);
-  background-image: linear-gradient(
-    0deg,
-    hsl(var(--hue), 100%, 40%) 20%,
-    hsl(var(--hue), 100%, 80%) 23%,
-    hsl(var(--hue), 100%, 40%) 26%,
-    hsl(var(--hue), 100%, 40%) 40%,
-    hsl(var(--hue), 100%, 80%) 43%,
-    hsl(var(--hue), 100%, 40%) 46%,
-    hsl(var(--hue), 100%, 40%) 50%,
-    hsl(var(--hue), 100%, 80%) 53%,
-    hsl(var(--hue), 100%, 40%) 56%,
-    hsl(var(--hue), 100%, 40%) 60%,
-    hsl(var(--hue), 100%, 80%) 63%,
-    hsl(var(--hue), 100%, 40%) 66%,
-    hsl(var(--hue), 100%, 40%) 74%,
-    hsl(var(--hue), 100%, 80%) 77%,
-    hsl(var(--hue), 100%, 40%) 80%
-  );
+  background-image: linear-gradient(0deg, hsl(var(--hue), 100%, 40%) 20%, hsl(var(--hue), 100%, 80%) 23%, hsl(var(--hue), 100%, 40%) 26%, hsl(var(--hue), 100%, 40%) 40%, hsl(var(--hue), 100%, 80%) 43%, hsl(var(--hue), 100%, 40%) 46%, hsl(var(--hue), 100%, 40%) 50%, hsl(var(--hue), 100%, 80%) 53%, hsl(var(--hue), 100%, 40%) 56%, hsl(var(--hue), 100%, 40%) 60%, hsl(var(--hue), 100%, 80%) 63%, hsl(var(--hue), 100%, 40%) 66%, hsl(var(--hue), 100%, 40%) 74%, hsl(var(--hue), 100%, 80%) 77%, hsl(var(--hue), 100%, 40%) 80%);
   background-size: 100% 600%;
   background-position: 0 0;
   background-repeat: no-repeat;
@@ -297,16 +241,11 @@
   border-style: solid;
   border-color: transparent;
   border-bottom-color: var(--color);
-  -webkit-box-shadow: 0 calc(0.3vw * var(--s)) calc(0.3vw * var(--s))
-    calc(-0.33vw * var(--s)) var(--color);
-  -moz-box-shadow: 0 calc(0.3vw * var(--s)) calc(0.3vw * var(--s))
-    calc(-0.33vw * var(--s)) var(--color);
-  -ms-box-shadow: 0 calc(0.3vw * var(--s)) calc(0.3vw * var(--s))
-    calc(-0.33vw * var(--s)) var(--color);
-  -o-box-shadow: 0 calc(0.3vw * var(--s)) calc(0.3vw * var(--s))
-    calc(-0.33vw * var(--s)) var(--color);
-  box-shadow: 0 calc(0.3vw * var(--s)) calc(0.3vw * var(--s))
-    calc(-0.33vw * var(--s)) var(--color);
+  -webkit-box-shadow: 0 calc(0.3vw * var(--s)) calc(0.3vw * var(--s)) calc(-0.33vw * var(--s)) var(--color);
+  -moz-box-shadow: 0 calc(0.3vw * var(--s)) calc(0.3vw * var(--s)) calc(-0.33vw * var(--s)) var(--color);
+  -ms-box-shadow: 0 calc(0.3vw * var(--s)) calc(0.3vw * var(--s)) calc(-0.33vw * var(--s)) var(--color);
+  -o-box-shadow: 0 calc(0.3vw * var(--s)) calc(0.3vw * var(--s)) calc(-0.33vw * var(--s)) var(--color);
+  box-shadow: 0 calc(0.3vw * var(--s)) calc(0.3vw * var(--s)) calc(-0.33vw * var(--s)) var(--color);
 }
 .herocontent li.jewel {
   opacity: 0.77;
@@ -330,7 +269,7 @@
 
 .herocontent li.jewel::before {
   position: absolute;
-  content: '';
+  content: "";
   width: 60%;
   height: 60%;
   top: 20%;
@@ -375,7 +314,7 @@
 }
 .herocontent .triangle::after,
 .herocontent .triangle::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: calc(var(--border) * -1);
@@ -464,14 +403,7 @@
   pointer-events: all;
 }
 .light .herocontent .bubbles {
-  --box:
-    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -3 * 1px)
-      currentColor,
-    inset calc(var(--size) * -1px) calc(var(--size) * -1px)
-      calc(var(--size) * 2 * 1px) calc(var(--size) * -1.5 * 1px) lime,
-    inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px)
-      calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
-    0 0 10px -5px white, 0 0 5px -1px currentColor;
+  --box: inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -3 * 1px) currentColor, inset calc(var(--size) * -1px) calc(var(--size) * -1px) calc(var(--size) * 2 * 1px) calc(var(--size) * -1.5 * 1px) lime, inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink, 0 0 10px -5px white, 0 0 5px -1px currentColor;
   -webkit-box-shadow: var(--box);
   -moz-box-shadow: var(--box);
   -ms-box-shadow: var(--box);
@@ -490,62 +422,42 @@
   -ms-animation-play-state: paused;
   animation-play-state: paused;
   -webkit-box-shadow:
-    inset 0 calc(var(--size) * -6 * 1px) calc(var(--size) * 6 * 1px)
-      calc(var(--size) * -8 * 1px) currentColor,
-    inset calc(var(--size) * -3 * 1px) calc(var(--size) * -3 * 1px)
-      calc(var(--size) * 2 * 1px) calc(var(--size) * -4 * 1px) green,
-    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px)
-      currentColor,
-    inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px)
-      calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
+    inset 0 calc(var(--size) * -6 * 1px) calc(var(--size) * 6 * 1px) calc(var(--size) * -8 * 1px) currentColor,
+    inset calc(var(--size) * -3 * 1px) calc(var(--size) * -3 * 1px) calc(var(--size) * 2 * 1px) calc(var(--size) * -4 * 1px) green,
+    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px) currentColor,
+    inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
     0 0 10px -5px white,
     0 0 12px -3px currentColor,
     0 0 30px -10px currentColor;
   -o-box-shadow:
-    inset 0 calc(var(--size) * -6 * 1px) calc(var(--size) * 6 * 1px)
-      calc(var(--size) * -8 * 1px) currentColor,
-    inset calc(var(--size) * -3 * 1px) calc(var(--size) * -3 * 1px)
-      calc(var(--size) * 2 * 1px) calc(var(--size) * -4 * 1px) green,
-    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px)
-      currentColor,
-    inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px)
-      calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
+    inset 0 calc(var(--size) * -6 * 1px) calc(var(--size) * 6 * 1px) calc(var(--size) * -8 * 1px) currentColor,
+    inset calc(var(--size) * -3 * 1px) calc(var(--size) * -3 * 1px) calc(var(--size) * 2 * 1px) calc(var(--size) * -4 * 1px) green,
+    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px) currentColor,
+    inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
     0 0 10px -5px white,
     0 0 12px -3px currentColor,
     0 0 30px -10px currentColor;
   -ms-box-shadow:
-    inset 0 calc(var(--size) * -6 * 1px) calc(var(--size) * 6 * 1px)
-      calc(var(--size) * -8 * 1px) currentColor,
-    inset calc(var(--size) * -3 * 1px) calc(var(--size) * -3 * 1px)
-      calc(var(--size) * 2 * 1px) calc(var(--size) * -4 * 1px) green,
-    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px)
-      currentColor,
-    inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px)
-      calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
+    inset 0 calc(var(--size) * -6 * 1px) calc(var(--size) * 6 * 1px) calc(var(--size) * -8 * 1px) currentColor,
+    inset calc(var(--size) * -3 * 1px) calc(var(--size) * -3 * 1px) calc(var(--size) * 2 * 1px) calc(var(--size) * -4 * 1px) green,
+    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px) currentColor,
+    inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
     0 0 10px -5px white,
     0 0 12px -3px currentColor,
     0 0 30px -10px currentColor;
   -moz-box-shadow:
-    inset 0 calc(var(--size) * -6 * 1px) calc(var(--size) * 6 * 1px)
-      calc(var(--size) * -8 * 1px) currentColor,
-    inset calc(var(--size) * -3 * 1px) calc(var(--size) * -3 * 1px)
-      calc(var(--size) * 2 * 1px) calc(var(--size) * -4 * 1px) green,
-    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px)
-      currentColor,
-    inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px)
-      calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
+    inset 0 calc(var(--size) * -6 * 1px) calc(var(--size) * 6 * 1px) calc(var(--size) * -8 * 1px) currentColor,
+    inset calc(var(--size) * -3 * 1px) calc(var(--size) * -3 * 1px) calc(var(--size) * 2 * 1px) calc(var(--size) * -4 * 1px) green,
+    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px) currentColor,
+    inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
     0 0 10px -5px white,
     0 0 12px -3px currentColor,
     0 0 30px -10px currentColor;
   box-shadow:
-    inset 0 calc(var(--size) * -6 * 1px) calc(var(--size) * 6 * 1px)
-      calc(var(--size) * -8 * 1px) currentColor,
-    inset calc(var(--size) * -3 * 1px) calc(var(--size) * -3 * 1px)
-      calc(var(--size) * 2 * 1px) calc(var(--size) * -4 * 1px) green,
-    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px)
-      currentColor,
-    inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px)
-      calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
+    inset 0 calc(var(--size) * -6 * 1px) calc(var(--size) * 6 * 1px) calc(var(--size) * -8 * 1px) currentColor,
+    inset calc(var(--size) * -3 * 1px) calc(var(--size) * -3 * 1px) calc(var(--size) * 2 * 1px) calc(var(--size) * -4 * 1px) green,
+    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px) currentColor,
+    inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
     0 0 10px -5px white,
     0 0 12px -3px currentColor,
     0 0 30px -10px currentColor;
@@ -575,7 +487,7 @@
 .herocontent .geometric div > span::before,
 .herocontent .geometric div > span::after {
   --dot-step-angle: 90deg;
-  content: '';
+  content: "";
   position: absolute;
   width: 20%;
   height: 20%;
@@ -596,6 +508,18 @@
 .herocontent .geometric div > span::after {
   --angle: calc(var(--number, 0) * var(--dot-step-angle) - 180deg);
   --radius: calc(50% + 25%);
+}
+.herocontent .circles {
+  height: var(--height);
+  width: var(--width);
+  animation: circles-shrink-into-nothing 12000ms ease-in-out forwards;
+  animation-delay: 0ms;
+  animation-play-state: paused;
+}
+.herocontent .circles:hover,
+.herocontent .circles:focus,
+.herocontent .circles:focus-visible {
+  animation-play-state: running;
 }
 
 .herocontent .circles div {
@@ -637,7 +561,7 @@
 }
 .herocontent .circles div > span::before,
 .herocontent .circles div > span::after {
-  content: '';
+  content: "";
   position: absolute;
   width: var(--dot-size);
   height: var(--dot-size);
@@ -695,35 +619,35 @@
 }
 .herocontent .note div::before {
   position: absolute;
-  content: '';
-  height: 190%;
+  content: "";
   width: 12%;
   z-index: -1;
   opacity: 0.3;
+  height: 240%;
+  background-image: linear-gradient(0deg, transparent 0%, white 20%, white 80%, transparent 100%);
+  transition-property: border-radius, bottom, background-position, left;
+  transition-duration: 200ms;
+  transition-timing-function: ease-in-out;
 }
 .herocontent .note.above div::before {
-  border-radius: 3px 3px 0 200%;
-  background: linear-gradient(to bottom, white 80%, transparent 98%);
-  bottom: 60%;
-  right: 0;
-  left: unset;
+  border-radius: 0 200% 3px 3px;
+  bottom: -180%;
+  left: 0;
 }
 .herocontent .note.below div::before {
-  border-radius: 0 200% 3px 3px;
-  background: linear-gradient(to top, white 80%, transparent 98%);
-  top: 60%;
-  left: 0;
-  right: unset;
+  border-radius: 3px 3px 0 200%;
+  bottom: 40%;
+  left: calc(100% - 6px);
 }
 .light .herocontent .note div::before {
   opacity: 0.5;
-  background: linear-gradient(to bottom, currentColor 80%, transparent 98%);
+  background-image: linear-gradient(0deg, transparent 0%, currentColor 20%, currentColor 80%, transparent 100%);
 }
 .herocontent .note span {
   background: currentColor;
   transform-origin: 100% 30%;
 }
-.herocontent .note.below span {
+.herocontent .note.above span {
   transform-origin: 0 70%;
 }
 .herocontent .geometric:hover div,
@@ -803,10 +727,8 @@
   transform: rotate(-80deg);
   pointer-events: none;
   -webkit-box-shadow:
-    inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) hotpink,
-    inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 9 * -1px) lime,
+    inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) hotpink,
+    inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 9 * -1px) lime,
     0 0 4px 0 currentColor,
     0 0 9px -5px white,
     0 0 40px -10px currentColor,
@@ -814,10 +736,8 @@
     inset calc(var(--size) * -1px) 0 calc(var(--size) * 3 * 1px) 0 white,
     0 0 10px -5px white;
   -o-box-shadow:
-    inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) hotpink,
-    inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 9 * -1px) lime,
+    inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) hotpink,
+    inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 9 * -1px) lime,
     0 0 4px 0 currentColor,
     0 0 9px -5px white,
     0 0 40px -10px currentColor,
@@ -825,10 +745,8 @@
     inset calc(var(--size) * -1px) 0 calc(var(--size) * 3 * 1px) 0 white,
     0 0 10px -5px white;
   -ms-box-shadow:
-    inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) hotpink,
-    inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 9 * -1px) lime,
+    inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) hotpink,
+    inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 9 * -1px) lime,
     0 0 4px 0 currentColor,
     0 0 9px -5px white,
     0 0 40px -10px currentColor,
@@ -836,10 +754,8 @@
     inset calc(var(--size) * -1px) 0 calc(var(--size) * 3 * 1px) 0 white,
     0 0 10px -5px white;
   -moz-box-shadow:
-    inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) hotpink,
-    inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 9 * -1px) lime,
+    inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) hotpink,
+    inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 9 * -1px) lime,
     0 0 4px 0 currentColor,
     0 0 9px -5px white,
     0 0 40px -10px currentColor,
@@ -847,10 +763,8 @@
     inset calc(var(--size) * -1px) 0 calc(var(--size) * 3 * 1px) 0 white,
     0 0 10px -5px white;
   box-shadow:
-    inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) hotpink,
-    inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 9 * -1px) lime,
+    inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) hotpink,
+    inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 9 * -1px) lime,
     0 0 4px 0 currentColor,
     0 0 9px -5px white,
     0 0 40px -10px currentColor,
@@ -860,50 +774,40 @@
 }
 .light .herocontent .eyes .inner {
   -webkit-box-shadow:
-    inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 7 * -1px) hotpink,
-    inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) lawngreen,
+    inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 7 * -1px) hotpink,
+    inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) lawngreen,
     0 0 10px 0 var(--color-primary-4),
     0 0 20px -10px white,
     inset calc(var(--size) * 1px) 0 calc(var(--size) * 3 * 1px) 0 currentColor,
     inset calc(var(--size) * -1px) 0 calc(var(--size) * 3 * 1px) -1px white,
     0 0 10px -5px white;
   -ms-box-shadow:
-    inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 7 * -1px) hotpink,
-    inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) lawngreen,
+    inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 7 * -1px) hotpink,
+    inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) lawngreen,
     0 0 10px 0 var(--color-primary-4),
     0 0 20px -10px white,
     inset calc(var(--size) * 1px) 0 calc(var(--size) * 3 * 1px) 0 currentColor,
     inset calc(var(--size) * -1px) 0 calc(var(--size) * 3 * 1px) -1px white,
     0 0 10px -5px white;
   -moz-box-shadow:
-    inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 7 * -1px) hotpink,
-    inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) lawngreen,
+    inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 7 * -1px) hotpink,
+    inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) lawngreen,
     0 0 10px 0 var(--color-primary-4),
     0 0 20px -10px white,
     inset calc(var(--size) * 1px) 0 calc(var(--size) * 3 * 1px) 0 currentColor,
     inset calc(var(--size) * -1px) 0 calc(var(--size) * 3 * 1px) -1px white,
     0 0 10px -5px white;
   -o-box-shadow:
-    inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 7 * -1px) hotpink,
-    inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) lawngreen,
+    inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 7 * -1px) hotpink,
+    inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) lawngreen,
     0 0 10px 0 var(--color-primary-4),
     0 0 20px -10px white,
     inset calc(var(--size) * 1px) 0 calc(var(--size) * 3 * 1px) 0 currentColor,
     inset calc(var(--size) * -1px) 0 calc(var(--size) * 3 * 1px) -1px white,
     0 0 10px -5px white;
   box-shadow:
-    inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 7 * -1px) hotpink,
-    inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px)
-      calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) lawngreen,
+    inset calc(var(--size) * 8 * 1px) calc(var(--size) / 4 * -1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 7 * -1px) hotpink,
+    inset calc(var(--size) * 8 * -1px) calc(var(--size) / 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * -1px) lawngreen,
     0 0 10px 0 var(--color-primary-4),
     0 0 20px -10px white,
     inset calc(var(--size) * 1px) 0 calc(var(--size) * 3 * 1px) 0 currentColor,
@@ -911,7 +815,7 @@
     0 0 10px -5px white;
 }
 .herocontent .eyes .inner::before {
-  content: '';
+  content: "";
   position: absolute;
   width: 60%;
   height: 60%;
@@ -934,7 +838,7 @@
   box-shadow: var(--box);
 }
 .herocontent .eyes .inner::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 5%;
   height: 5%;
@@ -968,7 +872,7 @@
 .herocontent .bubbles span::before,
 .herocontent .bubbles span::after,
 .herocontent .eyes span::before {
-  content: '';
+  content: "";
   position: absolute;
   background-color: white;
   opacity: 0.2;
@@ -1038,7 +942,7 @@
 }
 .herocontent .eyes span::after {
   --color: black;
-  content: '';
+  content: "";
   position: absolute;
   background-color: transparent;
   top: 22%;
@@ -1054,10 +958,7 @@
   z-index: -1;
   opacity: 0.2;
   border-radius: 80% 50%;
-  --box:
-    0 0 6px 0 var(--color), 0 0 6px -3px var(--color),
-    inset 6px 8px 8px -5px black, -3px -4px 4px -2px black,
-    -2px -3px 10px 2px white;
+  --box: 0 0 6px 0 var(--color), 0 0 6px -3px var(--color), inset 6px 8px 8px -5px black, -3px -4px 4px -2px black, -2px -3px 10px 2px white;
   -webkit-box-shadow: var(--box);
   -o-box-shadow: var(--box);
   -ms-box-shadow: var(--box);
@@ -1086,8 +987,7 @@
 }
 .herocontent .eyes:hover span::after,
 .herocontent .eyes:focus span::after {
-  -webkit-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg)
-    scale(1, 0.01);
+  -webkit-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
   -o-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
   -ms-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
   -moz-transform: rotate(90deg) translate(-9%, -0%) skewX(-70deg) scale(1, 0.01);
@@ -1120,9 +1020,7 @@
   animation:
     scale var(--time) linear infinite,
     hide-opacity var(--time) cubic-bezier(0.28, 0.37, 0.88, 0.5) infinite;
-  -webkit-animation-delay: calc(
-    calc(var(--number) + 1) * calc(var(--time) / -3.9)
-  );
+  -webkit-animation-delay: calc(calc(var(--number) + 1) * calc(var(--time) / -3.9));
   animation-delay: calc(calc(var(--number) + 1) * calc(var(--time) / -3.9));
   -webkit-animation-play-state: paused;
   -moz-animation-play-state: paused;
@@ -1151,14 +1049,10 @@
   animation:
     scale-over var(--time) linear infinite,
     hide-opacity var(--time) linear infinite;
-  -webkit-animation-delay: calc(
-    calc(var(--number) + 1) * calc(var(--time) / -3.9)
-  );
+  -webkit-animation-delay: calc(calc(var(--number) + 1) * calc(var(--time) / -3.9));
   -o-animation-delay: calc(calc(var(--number) + 1) * calc(var(--time) / -3.9));
   -ms-animation-delay: calc(calc(var(--number) + 1) * calc(var(--time) / -3.9));
-  -moz-animation-delay: calc(
-    calc(var(--number) + 1) * calc(var(--time) / -3.9)
-  );
+  -moz-animation-delay: calc(calc(var(--number) + 1) * calc(var(--time) / -3.9));
   animation-delay: calc(calc(var(--number) + 1) * calc(var(--time) / -4));
   -webkit-animation-play-state: paused;
   -moz-animation-play-state: paused;
@@ -1247,16 +1141,11 @@
 @keyframes box-shadow {
   0% {
     opacity: 0;
-    -webkit-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
-      calc(-0.1vw * var(--s)) var(--color);
-    -o-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
-      calc(-0.1vw * var(--s)) var(--color);
-    -ms-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
-      calc(-0.1vw * var(--s)) var(--color);
-    -moz-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
-      calc(-0.1vw * var(--s)) var(--color);
-    box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
-      calc(-0.1vw * var(--s)) var(--color);
+    -webkit-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s)) calc(-0.1vw * var(--s)) var(--color);
+    -o-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s)) calc(-0.1vw * var(--s)) var(--color);
+    -ms-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s)) calc(-0.1vw * var(--s)) var(--color);
+    -moz-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s)) calc(-0.1vw * var(--s)) var(--color);
+    box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s)) calc(-0.1vw * var(--s)) var(--color);
   }
   10% {
     opacity: 0.5;
@@ -1266,31 +1155,21 @@
   }
   100% {
     opacity: 0;
-    -webkit-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
-      calc(-0.9vw * var(--s)) var(--color);
-    -o-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
-      calc(-0.9vw * var(--s)) var(--color);
-    -ms-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
-      calc(-0.9vw * var(--s)) var(--color);
-    -moz-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
-      calc(-0.9vw * var(--s)) var(--color);
-    box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
-      calc(-0.9vw * var(--s)) var(--color);
+    -webkit-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s)) calc(-0.9vw * var(--s)) var(--color);
+    -o-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s)) calc(-0.9vw * var(--s)) var(--color);
+    -ms-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s)) calc(-0.9vw * var(--s)) var(--color);
+    -moz-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s)) calc(-0.9vw * var(--s)) var(--color);
+    box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s)) calc(-0.9vw * var(--s)) var(--color);
   }
 }
 @keyframes box-shadow-light {
   0% {
     opacity: 0;
-    -webkit-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
-      calc(-0.1vw * var(--s)) var(--color2);
-    -o-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
-      calc(-0.1vw * var(--s)) var(--color2);
-    -ms-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
-      calc(-0.1vw * var(--s)) var(--color2);
-    -moz-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
-      calc(-0.1vw * var(--s)) var(--color2);
-    box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s))
-      calc(-0.1vw * var(--s)) var(--color2);
+    -webkit-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s)) calc(-0.1vw * var(--s)) var(--color2);
+    -o-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s)) calc(-0.1vw * var(--s)) var(--color2);
+    -ms-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s)) calc(-0.1vw * var(--s)) var(--color2);
+    -moz-box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s)) calc(-0.1vw * var(--s)) var(--color2);
+    box-shadow: 0 calc(0.2vw * var(--s)) calc(0.1vw * var(--s)) calc(-0.1vw * var(--s)) var(--color2);
   }
   10% {
     opacity: 0.9;
@@ -1300,16 +1179,11 @@
   }
   100% {
     opacity: 0;
-    -webkit-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
-      calc(-0.9vw * var(--s)) var(--color2);
-    -o-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
-      calc(-0.9vw * var(--s)) var(--color2);
-    -ms-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
-      calc(-0.9vw * var(--s)) var(--color2);
-    -moz-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
-      calc(-0.9vw * var(--s)) var(--color2);
-    box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s))
-      calc(-0.9vw * var(--s)) var(--color2);
+    -webkit-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s)) calc(-0.9vw * var(--s)) var(--color2);
+    -o-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s)) calc(-0.9vw * var(--s)) var(--color2);
+    -ms-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s)) calc(-0.9vw * var(--s)) var(--color2);
+    -moz-box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s)) calc(-0.9vw * var(--s)) var(--color2);
+    box-shadow: 0 calc(1.6vw * var(--s)) calc(1.3vw * var(--s)) calc(-0.9vw * var(--s)) var(--color2);
   }
 }
 @keyframes hide-triangle {
@@ -1494,6 +1368,23 @@
     -ms-transform: rotate(var(--deg2));
     -moz-transform: rotate(var(--deg2));
     transform: rotate(var(--deg2));
+  }
+}
+@keyframes circles-shrink-into-nothing {
+  0% {
+    -webkit-transform: scale(1);
+    -o-transform: scale(1);
+    -ms-transform: scale(1);
+    -moz-transform: scale(1);
+    transform: scale(1);
+  }
+  100% {
+    -webkit-transform: scale(0);
+    -o-transform: scale(0);
+    -ms-transform: scale(0);
+    -moz-transform: scale(0);
+    transform: scale(0);
+    display: none;
   }
 }
 @keyframes note-hover {
@@ -1688,11 +1579,7 @@
   transition-delay: 0s;
   z-index: 6;
   padding: 0.4em 0.6em 0.4em;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--color-primary-1) 10%
-  );
+  background: linear-gradient(90deg, transparent 0%, var(--color-primary-1) 10%);
   pointer-events: none;
 }
 .hero .bottom button:hover span:first-of-type::after {
@@ -1717,13 +1604,7 @@
 }
 @media (min-width: 400px) {
   .bottom button span:first-of-type::after {
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      var(--color-primary-1) 70%,
-      var(--color-primary-1) 98%,
-      transparent
-    );
+    background: linear-gradient(90deg, transparent 0%, var(--color-primary-1) 70%, var(--color-primary-1) 98%, transparent);
   }
 }
 /* .portfolio .bottom::after,
@@ -1780,7 +1661,7 @@
 .bottom button span:last-of-type:before,
 .bottom button span:last-of-type::after {
   --time: 500ms;
-  content: '';
+  content: "";
   position: absolute;
   background-color: currentColor;
   transition-property: transform;

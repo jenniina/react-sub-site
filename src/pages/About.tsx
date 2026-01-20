@@ -1,11 +1,11 @@
-import { useMemo } from 'react'
-import { useTheme } from '../hooks/useTheme'
-import { Link } from 'react-router-dom'
-import styles from './css/about.module.css'
-import Icon from '../components/Icon/Icon'
-import { ELanguages } from '../types'
-import { useLanguageContext } from '../contexts/LanguageContext'
-import ColorComponent from '../components/About/ColorComponent'
+import { useMemo } from "react"
+import { useTheme } from "../hooks/useTheme"
+import { Link } from "react-router-dom"
+import styles from "./css/about.module.css"
+import Icon from "../components/Icon/Icon"
+import { ELanguages } from "../types"
+import { useLanguageContext } from "../contexts/LanguageContext"
+import ColorComponent from "../components/About/ColorComponent"
 
 export interface colorProps {
   i: number
@@ -46,7 +46,7 @@ export default function About({ type }: { type: string }) {
       }
       array.push(item)
     }
-    const visitedItem = { i: 51, e: 0, background: 'var(--color-visited)' }
+    const visitedItem = { i: 51, e: 0, background: "var(--color-visited)" }
 
     array.push(visitedItem)
 
@@ -77,157 +77,159 @@ export default function About({ type }: { type: string }) {
         <meta property="og:url" content={`https://react.jenniina.fi/about`} />
         <meta property="og:type" content="website" />
       </Helmet> **/}
-      <div className={`about ${type} ${lightTheme ? styles.light : ''}`}>
+      <div className={`about ${type} ${lightTheme ? styles.light : ""}`}>
         <div>
           <section className={`card ${styles.section}`}>
             <div>
               <div className="wide">
-                <p>{t('AboutThisSite')}</p>
+                <p>{t("AboutThisSite")}</p>
                 <p>
-                  <a href="https://jenniina.fi">{t('MainSite')}</a>
+                  <a href="https://jenniina.fi">{t("MainSite")}</a>
                 </p>
                 <p>
                   <a href="https://github.com/jenniina/react-sub-site">
-                    {t('ReactGithubRepository')}
+                    {t("ReactGithubRepository")}
                   </a>
                 </p>
                 <p>
-                  <a href="https://github.com/jenniina/react-bg">
-                    {t('NodeGithubRepository')}
+                  <a href="https://github.com/jenniina/node-backend">
+                    {t("NodeGithubRepository")}
                   </a>
                 </p>
-                <p>{t('TheSiteIsTranslatedToSixLanguagesWhichWere')}</p>
+                <p>{t("TheSiteIsTranslatedToSixLanguagesWhichWere")}</p>
                 <p>
-                  {t('PleaseReportAnyIssuesWithTheSiteToJenniina')}:{' '}
+                  {t("PleaseReportAnyIssuesWithTheSiteToJenniina")}:{" "}
                   <Link to="/portfolio/select?survey=true">
-                    {t('Survey').toLowerCase()}
-                  </Link>{' '}
+                    {t("Survey").toLowerCase()}
+                  </Link>{" "}
                 </p>
 
-                <h2 id="site-features">{t('FeaturesOfThisSite')}</h2>
+                <h2 id="site-features">{t("FeaturesOfThisSite")}</h2>
 
                 <h3 id="settings" className="left">
-                  {t('SiteSettings')}
+                  {t("SiteSettings")}
                 </h3>
                 <big>
-                  {t('SeeSettingsAtMenuBar')}{' '}
+                  {t("SeeSettingsAtMenuBar")}{" "}
                   <Icon
                     lib="io5"
                     name="IoSettingsSharp"
-                    style={{ display: 'inline-block', marginBottom: '-0.15em' }}
-                  />{' '}
-                  <span className="scr">{t('Settings')}</span> -
-                  {t('Icon').toLowerCase()}
+                    style={{ display: "inline-block", marginBottom: "-0.15em" }}
+                  />{" "}
+                  <span className="scr">{t("Settings")}</span> -
+                  {t("Icon").toLowerCase()}
                 </big>
                 <ul className="ul">
                   <li>
-                    {t('LanguageSelect')}
+                    {t("LanguageSelect")}
                     <ul>
                       <li>
                         {t(
-                          'TheTranslationsAreDoneWithTheHelpOfGithubCopilotSo'
+                          "TheTranslationsAreDoneWithTheHelpOfGithubCopilotSo"
                         )}
                       </li>
                       {language !== ELanguages.fi &&
                         language !== ELanguages.en && (
                           <li>
                             {t(
-                              'PleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo'
+                              "PleaseNoteThatTheAuthorJenniinaLaineSpeaksOnlyEnglishAndFinnishSo"
                             )}
                           </li>
                         )}
                     </ul>
                   </li>
-                  <li>{t('LightDarkModeButton')}</li>
+                  <li>{t("LightDarkModeButton")}</li>
                   <li>
-                    {t('ButtonToToggleBetweenNavigationStyles')}
+                    {t("ButtonToToggleBetweenNavigationStyles")}
                     <ul>
                       <li>
-                        {t('TwoStylesAtSmallScreenSizeAndTwoAtLargeScreenSize')}
+                        {t("TwoStylesAtSmallScreenSizeAndTwoAtLargeScreenSize")}
                       </li>
                     </ul>
                   </li>
                   <li>
-                    {t('LogInAndRegisterButtons')}.{' '}
-                    {t('ReplacedByUserEditAndLogoutButtonsWhenLoggedIn')}
+                    {t("LogInAndRegisterButtons")}.{" "}
+                    {t("ReplacedByUserEditAndLogoutButtonsWhenLoggedIn")}
                   </li>
                 </ul>
 
                 <h3 id="hero" className="left">
-                  {t('HeroSection')}
+                  {t("HeroSection")}
                 </h3>
-                <big>{t('InteractiveElements')}</big>
+                <big>{t("InteractiveElements")}</big>
                 <ul className="ul">
-                  <li>{t('HoverFocusAnimation')}</li>
-                  <li>{t('MovementAccordingToPointerEnterDirection')}</li>
-                  <li>{t('RemoveWithClickOrEnterWhenFocused')}</li>
+                  <li>{t("HoverFocusAnimation")}</li>
+                  <li>{t("MovementAccordingToPointerEnterDirection")}</li>
+                  <li>{t("RemoveWithClickOrEnterWhenFocused")}</li>
                   <li>
                     {t(
-                      'ResetButtonOnTheLowerRightCornerResetsTheInteractiveElements'
+                      "ResetButtonOnTheLowerRightCornerResetsTheInteractiveElements"
                     )}
                   </li>
-                  <li>{t('PressEscapeToSkipToResetButton')}</li>
-                  <li>{t('KeyboardFocusMoveItemsWithArrowKeys')}</li>
+                  <li>{t("PressEscapeToSkipToResetButton")}</li>
+                  <li>{t("KeyboardFocusMoveItemsWithArrowKeys")}</li>
                   <li>
-                    {t('Elements')}
+                    {t("Elements")}
                     <ul>
                       <li>
-                        {t('Bubbles')} ({t('SeeTheTopOfTheCurrentPage')})
+                        {t("Bubbles")} ({t("SeeTheTopOfTheCurrentPage")})
                       </li>
                       <li>
-                        {t('MusicNotes')}{' '}
+                        {t("MusicNotesPlacedWithinAStaff")}{" "}
                         <Link to="/portfolio/composer">
-                          ({t('ComposerPage')})
+                          ({t("ComposerPage")})
                         </Link>
                       </li>
                       <li>
-                        {t('FourSidedJewels')}{' '}
-                        <Link to="/store">({t('Store')})</Link>
+                        {t("FourSidedJewels")}{" "}
+                        <Link to="/store">({t("Store")})</Link>
                       </li>
                       <li>
-                        {t('EightSidedJewels')}{' '}
-                        <Link to="/cart">({t('Cart')})</Link>
+                        {t("EightSidedJewels")}{" "}
+                        <Link to="/cart">({t("Cart")})</Link>
                       </li>
                       <li>
-                        {t('DraggableBlobs')}{' '}
-                        <Link to="/portfolio">({t('Portfolio')})</Link>
+                        {t("DraggableBlobs")}{" "}
+                        <Link to="/portfolio">({t("Portfolio")})</Link>
                       </li>
                       <li>
-                        {t('SquaresStandingOnTheirCorner')}{' '}
-                        <Link to="/portfolio/todo">({t('TodoApp')})</Link>
+                        {t("SquaresStandingOnTheirCorner")}{" "}
+                        <Link to="/portfolio/todo">({t("TodoApp")})</Link>
                       </li>
                       <li>
-                        {t('InvertedTriangles')}{' '}
-                        <Link to="/portfolio/quiz">({t('QuizApp')})</Link>
+                        {t("InvertedTriangles")}{" "}
+                        <Link to="/portfolio/quiz">({t("QuizApp")})</Link>
                       </li>
                       <li>
-                        {t('AlienEyes')}{' '}
-                        <Link to="/contact">({t('Contact')})</Link>
-                        <ul>
-                          <li>{t('ElementsRotateToFaceCursor')}</li>
-                        </ul>
+                        {t("AlienEyes")} : {t("ElementsRotateToFaceCursor")}{" "}
+                        <Link to="/contact">({t("Contact")})</Link>
+                      </li>
+                      <li>
+                        <strong>{t("New")}:</strong> {t("Cells")},{" "}
+                        {t("RadiatingConcentricRingsThat")}{" "}
+                        <Link to="/portfolio/media">({t("Media")})</Link>
                       </li>
                     </ul>
                   </li>
                 </ul>
 
                 <h3 id="react" className="left">
-                  {t('ReactApps')}
+                  {t("ReactApps")}
                 </h3>
                 <big>
-                  <Link to="/portfolio">{t('InThePortfolioSection')}</Link>
+                  <Link to="/portfolio">{t("InThePortfolioSection")}</Link>
                 </big>
 
                 <h3 id="other" className="left">
-                  {t('OtherFeatures')}
+                  {t("OtherFeatures")}
                 </h3>
                 <ul className="ul">
-                  <li>{t('PageTransitionAnimation')}</li>
-                  <li>{t('WaveAnimationAtTheMainHeading')}</li>
+                  <li>{t("PageTransitionAnimation")}</li>
+                  <li>{t("WaveAnimationAtTheMainHeading")}</li>
                   <li>
-                    {t('BackToTopButtonAtTheLowerRightCornerAndAtTheFooter')}
+                    {t("BackToTopButtonAtTheLowerRightCornerAndAtTheFooter")}
                   </li>
-                  <li>{t('ExitLinksAtTheTopAndBottomOfThePages')}</li>
+                  <li>{t("ExitLinksAtTheTopAndBottomOfThePages")}</li>
                 </ul>
               </div>
             </div>
@@ -240,16 +242,16 @@ export default function About({ type }: { type: string }) {
               <div>
                 <div className="wide">
                   <h3 id="color" className="left" style={{ marginTop: 0 }}>
-                    {t('SiteColors')}
+                    {t("SiteColors")}
                   </h3>
                   <p>
-                    {t('TheSiteColorsLightnessesSwitchInLightMode1')}{' '}
-                    <code>var(--color-primary-1)</code>{' '}
-                    {t('TheSiteColorsLightnessesSwitchInLightMode2')}
+                    {t("TheSiteColorsLightnessesSwitchInLightMode1")}{" "}
+                    <code>var(--color-primary-1)</code>{" "}
+                    {t("TheSiteColorsLightnessesSwitchInLightMode2")}
                   </p>
                   <p>
                     {t(
-                      'AnimatedClipPathsAndTextRotationOnHoverWithDynamicDelay'
+                      "AnimatedClipPathsAndTextRotationOnHoverWithDynamicDelay"
                     )}
                   </p>
                 </div>

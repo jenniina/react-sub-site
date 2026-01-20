@@ -154,7 +154,10 @@ export default function Hero({
       if (!isClient || !windowObj) return
 
       const amount = page === "composer" ? 19 : 10
-      const target = e.target as HTMLElement
+      const target = (e.target as HTMLElement).closest(
+        "li"
+      ) as HTMLElement | null
+      if (!target) return
 
       // Prefer moving via base (responsive) + offset so resizing the window
       // continues to reflow shapes according to their original clamp/vh/vw rules.
@@ -187,6 +190,8 @@ export default function Hero({
 
         if (baseLeft) target.style.left = `calc(${baseLeft} + ${nextDx}px)`
         else target.style.left = `${currentLeftPx + (nextDx - prevDx)}px`
+
+        if (page === "composer") updateComposerAboveBelow(target)
       }
 
       const from = calculateDirection(e)
@@ -436,6 +441,59 @@ export default function Hero({
     return px
   }
 
+  // Resolve a raw CSS length/expression (px, calc(), clamp(), etc.) to pixels.
+  // Returns 0 during SSR.
+  function cssExprToPx(expr: string) {
+    if (typeof window === "undefined" || typeof document === "undefined")
+      return 0
+    if (!expr) return 0
+    if (expr.endsWith("px")) return parseFloat(expr) || 0
+
+    const tmp = document.createElement("div")
+    tmp.style.position = "absolute"
+    tmp.style.visibility = "hidden"
+    tmp.style.top = expr
+    document.body.appendChild(tmp)
+    const px = parseFloat(window.getComputedStyle(tmp).top) || 0
+    document.body.removeChild(tmp)
+    return px
+  }
+
+  const updateComposerAboveBelow = (el: HTMLElement) => {
+    if (!windowObj) return
+    const ul = ulRef.current
+    if (!ul) return
+
+    // In this layout, `--staff-mid-y` is the base Y used to position the staff
+    // background. The musical midpoint between the 11 note steps is at 5.5 steps.
+    const staffBaseYPx = cssVarToPx("--staff-mid-y", ul)
+    const staffHalfStepPx = cssVarToPx("--staff-half-step", ul)
+    const midMarkPx = staffBaseYPx + 5.5 * staffHalfStepPx
+
+    // Use the intended (base + offset) position so the class flips immediately,
+    // even while a CSS transition is animating from the previous value.
+    const dy = Number.parseFloat(el.dataset.moveDy ?? "0") || 0
+    const baseTopExpr = el.dataset.baseTop
+    const topPx = baseTopExpr
+      ? cssExprToPx(baseTopExpr) + dy
+      : Number.parseFloat(
+          windowObj.getComputedStyle(el).getPropertyValue("top")
+        )
+    if (!Number.isFinite(topPx)) return
+
+    // Notes are positioned with `top = staffBaseY + step*halfStep - noteHead`.
+    // That means the *staff anchor* for the note is the bottom of the note head.
+    // Comparing that anchor avoids bias from the negative note-head offset.
+    const noteHeadPx = cssVarToPx("--note-head", el) || 0
+    const anchorYPx = topPx + noteHeadPx
+
+    // Cut line is slightly above the true midpoint to compensate for the
+    // lower note visually overflowing upward.
+    const isAbove = anchorYPx <= midMarkPx - 5
+    el.classList.toggle(styles.above, isAbove)
+    el.classList.toggle(styles.below, !isAbove)
+  }
+
   // Move an item randomly
   useEffect(() => {
     if (!isClient || !windowObj) return
@@ -557,6 +615,7 @@ export default function Hero({
               ? `calc(${baseLeft} + ${nextDx}px)`
               : `${newLeft}px`
             didMove = true
+            updateComposerAboveBelow(item)
           }
         }
 
