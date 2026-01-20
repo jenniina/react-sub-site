@@ -7,14 +7,14 @@ import {
   RiDragDropLine,
   RiTodoLine,
   RiFileList3Line,
-} from 'react-icons/ri'
+} from "react-icons/ri"
 import {
   BsPerson,
   BsCart2,
   BsMusicNoteBeamed,
   BsArrowDownCircleFill,
-} from 'react-icons/bs'
-import { IoMdImages, IoMdAdd, IoMdCheckmarkCircleOutline } from 'react-icons/io'
+} from "react-icons/bs"
+import { IoMdImages, IoMdAdd, IoMdCheckmarkCircleOutline } from "react-icons/io"
 import {
   BiChat,
   BiChevronsUp,
@@ -22,16 +22,21 @@ import {
   BiReset,
   BiSelectMultiple,
   BiSolidColorFill,
-} from 'react-icons/bi'
-import { CgSearch, CgUndo } from 'react-icons/cg'
-import { IoSettingsSharp, IoPersonCircleSharp } from 'react-icons/io5'
+} from "react-icons/bi"
+import { CgSearch, CgUndo } from "react-icons/cg"
+import { IoSettingsSharp, IoPersonCircleSharp } from "react-icons/io5"
 import {
   HiOutlineDotsHorizontal,
   HiDotsHorizontal,
   HiDotsCircleHorizontal,
-} from 'react-icons/hi'
-import { TfiLineDashed } from 'react-icons/tfi'
-import { FaAnglesUp, FaTriangleExclamation } from 'react-icons/fa6'
+} from "react-icons/hi"
+import { TfiLineDashed } from "react-icons/tfi"
+import {
+  FaAnglesUp,
+  FaTriangleExclamation,
+  FaAnglesLeft,
+  FaAnglesRight,
+} from "react-icons/fa6"
 import {
   MdLightMode,
   MdDarkMode,
@@ -41,10 +46,10 @@ import {
   MdDragIndicator,
   MdWork,
   MdOutlineQuiz,
-} from 'react-icons/md'
-import { LuCirclePlus } from 'react-icons/lu'
-import { LiaUndoAltSolid, LiaNewspaperSolid } from 'react-icons/lia'
-import { PiImage, PiDownloadSimpleFill } from 'react-icons/pi'
+} from "react-icons/md"
+import { LuCirclePlus } from "react-icons/lu"
+import { LiaUndoAltSolid, LiaNewspaperSolid } from "react-icons/lia"
+import { PiImage, PiDownloadSimpleFill } from "react-icons/pi"
 import {
   FaStar,
   FaStoreAlt,
@@ -53,14 +58,15 @@ import {
   FaNodeJs,
   FaRegCheckCircle,
   FaHourglassStart,
-} from 'react-icons/fa'
-import { TiDeleteOutline, TiShoppingCart } from 'react-icons/ti'
-import { AiOutlineEdit, AiOutlineForm } from 'react-icons/ai'
-import { TbCancel } from 'react-icons/tb'
-import { ImImages } from 'react-icons/im'
-import { GrGraphQl } from 'react-icons/gr'
-import { GiAbstract019, GiComb } from 'react-icons/gi'
-import { SiSvgtrace } from 'react-icons/si'
+} from "react-icons/fa"
+import { TiDeleteOutline, TiShoppingCart } from "react-icons/ti"
+import { AiOutlineEdit, AiOutlineForm } from "react-icons/ai"
+import { TbCancel } from "react-icons/tb"
+import { ImImages } from "react-icons/im"
+import { GrGraphQl } from "react-icons/gr"
+import { GiAbstract019, GiComb } from "react-icons/gi"
+import { SiSvgtrace } from "react-icons/si"
+import { GoTriangleLeft, GoTriangleRight } from "react-icons/go"
 
 export const iconLibraries: Record<
   string,
@@ -113,6 +119,8 @@ export const iconLibraries: Record<
   fa6: {
     FaAnglesUp,
     FaTriangleExclamation,
+    FaAnglesLeft,
+    FaAnglesRight,
   } as Record<string, React.ComponentType<Record<string, unknown>>>,
   md: {
     MdLightMode,

@@ -1,12 +1,13 @@
-import { useTheme } from '../hooks/useTheme'
-import { Link } from 'react-router-dom'
-import styles from './css/welcome.module.css'
-import Icon from '../components/Icon/Icon'
-import { ELanguages, ELanguagesLong } from '../types'
-import { Select, SelectOption } from '../components/Select/Select'
-import { useLanguageContext } from '../contexts/LanguageContext'
+import { useTheme } from "../hooks/useTheme"
+import { Link } from "react-router-dom"
+import styles from "./css/welcome.module.css"
+import Icon from "../components/Icon/Icon"
+import { ELanguages, ELanguagesLong } from "../types"
+import { Select, SelectOption } from "../components/Select/Select"
+import { useLanguageContext } from "../contexts/LanguageContext"
 // import Newest from '../components/Newest/Newest'
-import About from './About'
+import About from "./About"
+import Featured from "../components/Featured/Featured"
 
 export default function Home({
   type,
@@ -45,12 +46,12 @@ export default function Home({
         <meta property="og:url" content={`https://react.jenniina.fi/`} />
         <meta property="og:type" content="website" />
       </Helmet> */}
-      <div className={`welcome ${type} ${lightTheme ? styles.light : ''}`}>
+      <div className={`welcome ${type} ${lightTheme ? styles.light : ""}`}>
         <Select
           language={language}
           id="language-welcome"
-          className={`${styles['language-welcome']} ${styles.language} language`}
-          instructions={`${t('ChangeLanguage')}:`}
+          className={`${styles["language-welcome"]} ${styles.language} language`}
+          instructions={`${t("ChangeLanguage")}:`}
           options={options(ELanguagesLong)}
           value={
             language
@@ -60,7 +61,7 @@ export default function Home({
                 } as SelectOption)
               : undefined
           }
-          onChange={o => {
+          onChange={(o) => {
             setLanguage(o?.value as ELanguages)
           }}
         />
@@ -70,25 +71,26 @@ export default function Home({
               <ul className={styles.list}>
                 <li>
                   <Link to="/portfolio">
-                    <Icon lib="io" name="IoMdImages" />{' '}
-                    <span>{t('Portfolio')}</span>
+                    <Icon lib="io" name="IoMdImages" />{" "}
+                    <span>{t("Portfolio")}</span>
                   </Link>
                 </li>
                 <li>
                   <Link to="/contact">
-                    <Icon lib="bi" name="BiChat" /> <span>{t('Contact')}</span>
+                    <Icon lib="bi" name="BiChat" /> <span>{t("Contact")}</span>
                   </Link>
                 </li>
                 <li>
                   <Link to="/store">
-                    <Icon lib="fa" name="FaStoreAlt" />{' '}
-                    <span>{t('Store')}</span>
+                    <Icon lib="fa" name="FaStoreAlt" />{" "}
+                    <span>{t("Store")}</span>
                   </Link>
                 </li>
               </ul>
               {/* <Newest /> */}
             </div>
           </section>
+          <Featured />
           <About type="page" />
         </div>
       </div>

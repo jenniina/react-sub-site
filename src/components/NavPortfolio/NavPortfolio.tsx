@@ -1,16 +1,17 @@
-import { useEffect, useRef, useLayoutEffect, useCallback } from 'react'
-import { NavLink, Outlet, useLocation } from 'react-router-dom'
-import Icon from '../Icon/Icon'
-import useIsOnScreen from '../../hooks/useIsOnScreen'
-import useWindowSize from '../../hooks/useWindowSize'
-import { breakpointSmall } from '../../types'
-import useSideScroll from '../../hooks/useSideScroll'
-import { useLanguageContext } from '../../contexts/LanguageContext'
+import { useEffect, useRef, useLayoutEffect, useCallback } from "react"
+import { NavLink, Outlet, useLocation } from "react-router-dom"
+import Icon from "../Icon/Icon"
+import useIsOnScreen from "../../hooks/useIsOnScreen"
+import useWindowSize from "../../hooks/useWindowSize"
+import { breakpointSmall } from "../../types"
+import useSideScroll from "../../hooks/useSideScroll"
+import { useLanguageContext } from "../../contexts/LanguageContext"
+import { getPortfolioNavLabel, portfolioItems } from "../../data/portfolioItems"
 
 interface NavItem {
   url: string
   name: string
-  special?: 'first' | 'last'
+  special?: "first" | "last"
 }
 
 function NavPortfolio() {
@@ -26,7 +27,7 @@ function NavPortfolio() {
     scrollRight,
     setScrollLeft,
     setRef,
-  } = useSideScroll('portfolio-nav-scroll')
+  } = useSideScroll("portfolio-nav-scroll")
 
   const scrollAmount = 60
 
@@ -46,27 +47,18 @@ function NavPortfolio() {
   }
 
   const navItems: NavItem[] = [
-    { url: '/portfolio', name: `${t('Portfolio')}`, special: 'first' },
-    { url: '/portfolio/media', name: t('Media') },
-    { url: '/portfolio/memory', name: t('MemoryGame') },
-    { url: '/portfolio/colors', name: t('ColorAccessibility') },
-    { url: '/portfolio/composer', name: t('ComposerOlliSanta') },
-    { url: '/portfolio/blob', name: t('Blob') },
-    { url: '/portfolio/jokes', name: t('Jokes') },
-    { url: '/portfolio/quiz', name: t('Quiz') },
-    { url: '/portfolio/select', name: t('CustomSelect') },
-    { url: '/portfolio/salon', name: t('HairSalon') },
-    { url: '/portfolio/draganddrop', name: t('DragAndDrop') },
-    { url: '/portfolio/graphql', name: 'GraphQL' },
-    { url: '/portfolio/form', name: t('MultistepForm') },
-    { url: '/portfolio/todo', name: t('ToDo'), special: 'last' },
+    { url: "/portfolio", name: `${t("Portfolio")}`, special: "first" },
+    ...portfolioItems.map((item) => ({
+      url: item.url,
+      name: getPortfolioNavLabel(item, t),
+    })),
   ]
 
   const firstRef = useRef<HTMLLIElement | null>(null)
   const lastRef = useRef<HTMLLIElement | null>(null)
 
-  const firstVisible = useIsOnScreen(firstRef, '-20px', 1)
-  const lastVisible = useIsOnScreen(lastRef, '-40px', 1)
+  const firstVisible = useIsOnScreen(firstRef, "-20px", 1)
+  const lastVisible = useIsOnScreen(lastRef, "-40px", 1)
 
   useEffect(() => {
     const root = scrollHorizontal.current
@@ -74,12 +66,12 @@ function NavPortfolio() {
 
     firstRef.current =
       root.querySelector(
-        location.pathname === '/portfolio'
-          ? '#firstportfolioitem'
-          : '#portfolio-current-first'
+        location.pathname === "/portfolio"
+          ? "#firstportfolioitem"
+          : "#portfolio-current-first"
       ) ?? null
 
-    lastRef.current = root.querySelector('#lastportfolioitem') ?? null
+    lastRef.current = root.querySelector("#lastportfolioitem") ?? null
   }, [location.pathname, scrollHorizontal])
 
   const setScrollerRef = useCallback(
@@ -110,15 +102,15 @@ function NavPortfolio() {
   const slug = (str: string) =>
     str
       .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '')
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "")
 
   useLayoutEffect(() => {
     const scroller = scrollHorizontal.current
     if (!scroller) return
 
     // Check if we have a meaningful saved scroll position
-    const savedScroll = localStorage.getItem('portfolio-nav-scroll')
+    const savedScroll = localStorage.getItem("portfolio-nav-scroll")
     const hasSavedScroll = savedScroll && parseInt(savedScroll, 10) > 10 // Only consider saved if > 10px
 
     // If we have a saved scroll position, don't nudge - respect user's scroll position
@@ -127,8 +119,8 @@ function NavPortfolio() {
     // Ensure active item is visible after new route renders
     const nudge = () => {
       const activeLi = scroller
-        .querySelector('a.active')
-        ?.closest('li') as HTMLElement | null
+        .querySelector("a.active")
+        ?.closest("li") as HTMLElement | null
       if (!activeLi) return
 
       const margin = 100
@@ -152,9 +144,9 @@ function NavPortfolio() {
   }, [location.pathname, scrollHorizontal])
 
   const renderNavItems = (items: NavItem[]) => {
-    return items.map(item => {
-      const isFirst = item.special === 'first'
-      const isLast = item.special === 'last'
+    return items.map((item) => {
+      const isFirst = item.special === "first"
+      const isLast = item.special === "last"
       const isCurrentPath = location.pathname === item.url
 
       const key = slug(item.url)
@@ -162,9 +154,9 @@ function NavPortfolio() {
       const id = isFirst
         ? isCurrentPath
           ? `portfolio-current-first`
-          : 'firstportfolioitem'
+          : "firstportfolioitem"
         : isLast
-          ? 'lastportfolioitem'
+          ? "lastportfolioitem"
           : `portfolio-${key}`
 
       const ref = isFirst ? firstRef : isLast ? lastRef : undefined
@@ -175,9 +167,9 @@ function NavPortfolio() {
           ref={ref}
           id={id}
           className={
-            isFirst && isCurrentPath ? 'hide' : isFirst ? 'return' : ''
+            isFirst && isCurrentPath ? "hide" : isFirst ? "return" : ""
           }
-          onFocus={e => {
+          onFocus={(e) => {
             if (suppressFocusScroll.current) return
             const li = e.currentTarget
             const scroller = scrollHorizontal.current
@@ -200,7 +192,7 @@ function NavPortfolio() {
           }}
         >
           <NavLink to={item.url} onClick={rememberScroll}>
-            {isFirst ? <span aria-hidden="true">&laquo;&nbsp;</span> : ''}
+            {isFirst ? <span aria-hidden="true">&laquo;&nbsp;</span> : ""}
             {item.name}
           </NavLink>
         </li>
@@ -213,12 +205,12 @@ function NavPortfolio() {
       <nav className={`nav-sub`}>
         <button
           className={`horizonal-scroll goleft 
-                ${firstVisible ? 'disable' : ''}`}
+                ${firstVisible ? "disable" : ""}`}
           onClick={leftScroll}
         >
-          {' '}
+          {" "}
           <Icon lib="bi" name="BiChevronsUp" />
-          <span className="scr">{t('ScrollToTheLeft')}</span>
+          <span className="scr">{t("ScrollToTheLeft")}</span>
         </button>
 
         <ul ref={setScrollerRef}>{renderNavItems(navItems)}</ul>
@@ -226,11 +218,11 @@ function NavPortfolio() {
         <button
           onClick={rightScroll}
           className={`horizonal-scroll goright 
-                ${lastVisible ? 'disable' : ''}`}
+                ${lastVisible ? "disable" : ""}`}
         >
-          {' '}
+          {" "}
           <Icon lib="bi" name="BiChevronsUp" />
-          <span className="scr">{t('ScrollToTheRight')}</span>
+          <span className="scr">{t("ScrollToTheRight")}</span>
         </button>
       </nav>
       <Outlet />

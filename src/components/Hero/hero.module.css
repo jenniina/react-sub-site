@@ -509,6 +509,18 @@
   --angle: calc(var(--number, 0) * var(--dot-step-angle) - 180deg);
   --radius: calc(50% + 25%);
 }
+.herocontent .circles {
+  height: var(--height);
+  width: var(--width);
+  animation: circles-shrink-into-nothing 12000ms ease-in-out forwards;
+  animation-delay: 0ms;
+  animation-play-state: paused;
+}
+.herocontent .circles:hover,
+.herocontent .circles:focus,
+.herocontent .circles:focus-visible {
+  animation-play-state: running;
+}
 
 .herocontent .circles div {
   --time: 2000ms;
@@ -1356,6 +1368,23 @@
     -ms-transform: rotate(var(--deg2));
     -moz-transform: rotate(var(--deg2));
     transform: rotate(var(--deg2));
+  }
+}
+@keyframes circles-shrink-into-nothing {
+  0% {
+    -webkit-transform: scale(1);
+    -o-transform: scale(1);
+    -ms-transform: scale(1);
+    -moz-transform: scale(1);
+    transform: scale(1);
+  }
+  100% {
+    -webkit-transform: scale(0);
+    -o-transform: scale(0);
+    -ms-transform: scale(0);
+    -moz-transform: scale(0);
+    transform: scale(0);
+    display: none;
   }
 }
 @keyframes note-hover {

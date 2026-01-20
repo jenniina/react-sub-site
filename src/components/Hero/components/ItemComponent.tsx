@@ -352,11 +352,11 @@ const ItemComponent = forwardRef<
                   item.e / 1.5
                 })), calc(80vh - 50px - ${item.size / dividedBy}vh))`,
                 left: `clamp(1vw, calc(-10% + calc(${item.i} * 1.4vw * ${item.e})), calc(95vw - ${item.size}vw))`,
-                width:
+                ["--width" as string]:
                   windowWidth < windowHeight
                     ? `${item.size / dividedBy}vh`
                     : `${item.size / dividedBy}vw`,
-                height:
+                ["--height" as string]:
                   windowWidth < windowHeight
                     ? `${item.size / dividedBy}vh`
                     : `${item.size / dividedBy}vw`,
@@ -367,6 +367,7 @@ const ItemComponent = forwardRef<
                 color: `${item.color}`,
                 ["--i" as string]: `${item.i}`,
                 ["--e" as string]: `${item.e}`,
+                ["--size-number" as string]: item.size,
                 ["--s" as string]:
                   windowWidth < windowHeight
                     ? `${item.size}vh`

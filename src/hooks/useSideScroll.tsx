@@ -1,7 +1,7 @@
-import { useRef, useEffect, useLayoutEffect, useCallback } from 'react'
-import { RefObject } from '../types'
+import { useRef, useEffect, useLayoutEffect, useCallback } from "react"
+import { RefObject } from "../types"
 
-export default function useSideScroll(scrollKey = 'sideScroll') {
+export default function useSideScroll(scrollKey = "sideScroll") {
   const ref = useRef() as RefObject<HTMLElement>
   const hasInitialized = useRef(false)
 
@@ -62,8 +62,8 @@ export default function useSideScroll(scrollKey = 'sideScroll') {
         if (e.deltaY == 0) return
         e.preventDefault()
         element.scrollTo({
-          left: element.scrollLeft + e.deltaY,
-          behavior: 'smooth',
+          left: element.scrollLeft + e.deltaY * 2,
+          behavior: "smooth",
         })
         // Save position after smooth scroll completes
         setTimeout(() => saveScrollPosition(element.scrollLeft), 300)
@@ -73,11 +73,11 @@ export default function useSideScroll(scrollKey = 'sideScroll') {
         saveScrollPosition(element.scrollLeft)
       }
 
-      element.addEventListener('wheel', onWheel)
-      element.addEventListener('scroll', onScroll)
+      element.addEventListener("wheel", onWheel)
+      element.addEventListener("scroll", onScroll)
       return () => {
-        element.removeEventListener('wheel', onWheel)
-        element.removeEventListener('scroll', onScroll)
+        element.removeEventListener("wheel", onWheel)
+        element.removeEventListener("scroll", onScroll)
       }
     }
   }, [saveScrollPosition])
