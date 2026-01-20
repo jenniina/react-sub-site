@@ -116,14 +116,6 @@ export const portfolioItems: PortfolioItemDef[] = [
     description: (t) => `${t("ComposerIntro1")}`,
   },
   {
-    id: "quiz",
-    url: "/portfolio/quiz",
-    icon: { kind: "icon", lib: "md", name: "MdOutlineQuiz" },
-    title: { kind: "t", key: "QuizApp" },
-    navLabel: { kind: "t", key: "Quiz" },
-    description: (t) => t("QuizAppIntro"),
-  },
-  {
     id: "salon",
     url: "/portfolio/salon",
     icon: { kind: "icon", lib: "gi", name: "GiComb" },
@@ -132,12 +124,12 @@ export const portfolioItems: PortfolioItemDef[] = [
     description: (t) => `${t("Website")}: Parturi Kampaamo Hannastiina`,
   },
   {
-    id: "todo",
-    url: "/portfolio/todo",
-    icon: { kind: "icon", lib: "ri", name: "RiTodoLine" },
-    title: { kind: "t", key: "TodoApp" },
-    navLabel: { kind: "t", key: "ToDo" },
-    description: (t) => t("TodoAppIntro"),
+    id: "quiz",
+    url: "/portfolio/quiz",
+    icon: { kind: "icon", lib: "md", name: "MdOutlineQuiz" },
+    title: { kind: "t", key: "QuizApp" },
+    navLabel: { kind: "t", key: "Quiz" },
+    description: (t) => t("QuizAppIntro"),
   },
   {
     id: "form",
@@ -147,6 +139,14 @@ export const portfolioItems: PortfolioItemDef[] = [
     navLabel: { kind: "t", key: "MultistepForm" },
     description: (t) => t("MultistepFormIntro"),
     listClassName: "multistep",
+  },
+  {
+    id: "todo",
+    url: "/portfolio/todo",
+    icon: { kind: "icon", lib: "ri", name: "RiTodoLine" },
+    title: { kind: "t", key: "TodoApp" },
+    navLabel: { kind: "t", key: "ToDo" },
+    description: (t) => t("TodoAppIntro"),
   },
   {
     id: "graphql",
