@@ -89,6 +89,9 @@
   max-width: calc(100% - 4em);
   min-width: calc(100% - 4em);
   scrollbar-width: none;
+  /* fade 2em at left and right */
+  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 1) 2em, rgba(0, 0, 0, 1) calc(100% - 2em), rgba(0, 0, 0, 0) 100%);
+  mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 1) 2em, rgba(0, 0, 0, 1) calc(100% - 2em), rgba(0, 0, 0, 0) 100%);
   -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 96%, 0% 96%);
   -moz-clip-path: polygon(0% 0%, 100% 0%, 100% 96%, 0% 96%);
   -ms-clip-path: polygon(0% 0%, 100% 0%, 100% 96%, 0% 96%);
