@@ -13,6 +13,8 @@ import {
   BsCart2,
   BsMusicNoteBeamed,
   BsArrowDownCircleFill,
+  BsArrowBarRight,
+  BsArrowBarLeft,
 } from "react-icons/bs"
 import { IoMdImages, IoMdAdd, IoMdCheckmarkCircleOutline } from "react-icons/io"
 import {
@@ -46,8 +48,14 @@ import {
   MdDragIndicator,
   MdWork,
   MdOutlineQuiz,
+  MdMoveUp,
+  MdMoveDown,
 } from "react-icons/md"
-import { LuCirclePlus } from "react-icons/lu"
+import {
+  LuCirclePlus,
+  LuArrowRightFromLine,
+  LuArrowLeftFromLine,
+} from "react-icons/lu"
 import { LiaUndoAltSolid, LiaNewspaperSolid } from "react-icons/lia"
 import { PiImage, PiDownloadSimpleFill } from "react-icons/pi"
 import {
@@ -58,6 +66,8 @@ import {
   FaNodeJs,
   FaRegCheckCircle,
   FaHourglassStart,
+  FaArrowLeft,
+  FaArrowRight,
 } from "react-icons/fa"
 import { TiDeleteOutline, TiShoppingCart } from "react-icons/ti"
 import { AiOutlineEdit, AiOutlineForm } from "react-icons/ai"
@@ -66,7 +76,7 @@ import { ImImages } from "react-icons/im"
 import { GrGraphQl } from "react-icons/gr"
 import { GiAbstract019, GiComb } from "react-icons/gi"
 import { SiSvgtrace } from "react-icons/si"
-import { GoTriangleLeft, GoTriangleRight } from "react-icons/go"
+import { GoArrowLeft, GoArrowRight } from "react-icons/go"
 
 export const iconLibraries: Record<
   string,
@@ -86,6 +96,8 @@ export const iconLibraries: Record<
     BsCart2,
     BsMusicNoteBeamed,
     BsArrowDownCircleFill,
+    BsArrowBarRight,
+    BsArrowBarLeft,
   } as Record<string, React.ComponentType<Record<string, unknown>>>,
   io: {
     IoMdImages,
@@ -131,9 +143,13 @@ export const iconLibraries: Record<
     MdDragIndicator,
     MdWork,
     MdOutlineQuiz,
+    MdMoveUp,
+    MdMoveDown,
   } as Record<string, React.ComponentType<Record<string, unknown>>>,
   lu: {
     LuCirclePlus,
+    LuArrowRightFromLine,
+    LuArrowLeftFromLine,
   } as Record<string, React.ComponentType<Record<string, unknown>>>,
   lia: {
     LiaUndoAltSolid,
@@ -151,6 +167,8 @@ export const iconLibraries: Record<
     FaNodeJs,
     FaRegCheckCircle,
     FaHourglassStart,
+    FaArrowLeft,
+    FaArrowRight,
   } as Record<string, React.ComponentType<Record<string, unknown>>>,
   ti: {
     TiDeleteOutline,
@@ -175,5 +193,9 @@ export const iconLibraries: Record<
   } as Record<string, React.ComponentType<Record<string, unknown>>>,
   si: {
     SiSvgtrace,
+  } as Record<string, React.ComponentType<Record<string, unknown>>>,
+  go: {
+    GoArrowLeft,
+    GoArrowRight,
   } as Record<string, React.ComponentType<Record<string, unknown>>>,
 }
