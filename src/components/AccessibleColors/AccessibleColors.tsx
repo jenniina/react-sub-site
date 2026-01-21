@@ -862,6 +862,19 @@ const AccessibleColors: FC = () => {
     return listItemsByStatus[status]?.items ?? []
   }, [listItemsByStatus])
 
+  const focusColorBlock = useCallback((targetId: number) => {
+    const el = document.getElementById(
+      `color-block-${targetId}`
+    ) as HTMLElement | null
+    if (!el) return
+    el.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "nearest",
+    })
+    el.focus()
+  }, [])
+
   const moveColor = useCallback(
     (id: number, direction: "left" | "right") => {
       const items = listItemsByStatus[status]?.items ?? []
@@ -1067,12 +1080,16 @@ const AccessibleColors: FC = () => {
         {blocks.map((block, index) => {
           const isFirst = index === 0
           const isLast = index === blocks.length - 1
+          const prevId = blocks[index - 1]?.id
+          const nextId = blocks[index + 1]?.id
 
           return (
             <ul
               key={`${block.id}`}
               className={styles["block-wrap"]}
               onDrop={handleDrop}
+              id={`color-block-${block.id}`}
+              tabIndex={-1}
             >
               <li
                 className={styles["color-wrap"]}
@@ -1094,6 +1111,35 @@ const AccessibleColors: FC = () => {
                           <span className="scr">{t("MoveLeft")}</span>
                         </button>
                       )}
+
+                      <div className={styles["skip-links"]}>
+                        {!isFirst && prevId != null && (
+                          <a
+                            href={`#color-block-${prevId}`}
+                            className={`${styles["skip-link"]} gray small`}
+                            onClick={(e) => {
+                              e.preventDefault()
+                              focusColorBlock(prevId)
+                            }}
+                          >
+                            <span>&laquo; {t("SkipToPreviousColor")}</span>
+                          </a>
+                        )}
+
+                        {!isLast && nextId != null && (
+                          <a
+                            href={`#color-block-${nextId}`}
+                            className={`${styles["skip-link"]} gray small`}
+                            onClick={(e) => {
+                              e.preventDefault()
+                              focusColorBlock(nextId)
+                            }}
+                          >
+                            <span> {t("SkipToNextColor")} &raquo;</span>
+                          </a>
+                        )}
+                      </div>
+
                       {!isLast && (
                         <button
                           type="button"
