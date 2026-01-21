@@ -85,22 +85,19 @@
   overflow-x: auto;
   scroll-behavior: smooth;
   justify-content: flex-start;
-  margin-left: 2em;
-  max-width: calc(100% - 4em);
-  min-width: calc(100% - 4em);
+  margin-left: 0;
+  max-width: 100%;
+  min-width: 100%;
   scrollbar-width: none;
-  /* fade 2em at left and right */
-  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 1) 2em, rgba(0, 0, 0, 1) calc(100% - 2em), rgba(0, 0, 0, 0) 100%);
-  mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 1) 2em, rgba(0, 0, 0, 1) calc(100% - 2em), rgba(0, 0, 0, 0) 100%);
   -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 96%, 0% 96%);
   -moz-clip-path: polygon(0% 0%, 100% 0%, 100% 96%, 0% 96%);
   -ms-clip-path: polygon(0% 0%, 100% 0%, 100% 96%, 0% 96%);
   -o-clip-path: polygon(0% 0%, 100% 0%, 100% 96%, 0% 96%);
   clip-path: polygon(0% 0%, 100% 0%, 100% 96%, 0% 96%);
 }
-
 .featured > ul.list li {
   flex: 0 0 100%;
+  max-width: 100%;
 }
 .featured > ul.list li svg {
   margin-top: 0.2em;
@@ -119,26 +116,32 @@
 }
 .featured > button.horizontal-scroll {
   position: absolute;
-  top: 5%;
-  height: 86%;
+  width: auto;
   align-self: center;
-  padding: 3em 0.6em;
   z-index: 2;
+  transition-duration: 300ms;
+}
+.featured > button.horizontal-scroll:hover,
+.featured > button.horizontal-scroll:focus,
+.featured > button.horizontal-scroll:focus-visible {
+  outline-offset: 10px;
 }
 .featured > button.horizontal-scroll.left svg,
 .featured > button.horizontal-scroll.right svg {
   transition-property: margin-left, margin-right;
   transition-timing-function: ease-in-out;
-  transition-duration: 200ms;
+  transition-duration: 300ms;
 }
 .featured > button.horizontal-scroll.left {
-  left: -0.1em;
-  padding-right: 0.2em;
+  left: 0%;
+  top: -20%;
+  padding: 1em 0.9em 1em 2em;
   clip-path: polygon(100% 0%, 90% 1%, 10% 50%, 90% 99%, 100% 100%);
 }
 .featured > button.horizontal-scroll.right {
-  right: -0.1em;
-  padding-left: 0.2em;
+  bottom: -16%;
+  right: 0%;
+  padding: 1em 2em 1em 0.9em;
   clip-path: polygon(0% 0%, 10% 1%, 90% 50%, 10% 99%, 0% 100%);
 }
 .featured > button.horizontal-scroll::before {
@@ -148,14 +151,26 @@
   left: -2px;
   right: -2px;
   bottom: -2px;
-  background-color: var(--color-primary-8);
+  background-color: var(--color-primary-6);
+  background-image: radial-gradient(circle, var(--color-primary-18) 0%, var(--color-primary-7) 50%, var(--color-primary-5) 100%);
+  background-size: 400% 100%;
+  background-position: center;
   pointer-events: none;
+  transition-property: background-color, background-size;
+  transition-timing-function: ease-in-out;
+  transition-duration: 300ms;
+}
+.featured > button.horizontal-scroll:hover::before,
+.featured > button.horizontal-scroll:focus::before,
+.featured > button.horizontal-scroll:focus-visible::before {
+  background-color: var(--color-primary-18);
+  background-size: 400% 200%;
 }
 .featured > button.horizontal-scroll.left::before {
-  clip-path: polygon(100% 0%, 90% 1%, 0% 50%, 90% 99%, 100% 100%, 90% 95%, 23% 50%, 90% 5%, 90% 94%, 100% 100%);
+  clip-path: polygon(100% 0%, 0% 0%, 0% 100%, 100% 100%, 90% 96%, 20% 50%, 90% 4%, 90% 96%, 100% 100%);
 }
 .featured > button.horizontal-scroll.right::before {
-  clip-path: polygon(0% 0%, 10% 1%, 100% 50%, 10% 99%, 0% 100%, 10% 92%, 77% 50%, 10% 5%, 10% 95%, 0% 100%);
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 10% 98%, 80% 50%, 10% 4%, 10% 98%, 0% 100%);
 }
 .featured > button.horizontal-scroll.left:hover svg,
 .featured > button.horizontal-scroll.left:focus svg,
@@ -176,6 +191,7 @@
 }
 .featured > button.horizontal-scroll:disabled::before {
   background-color: var(--color-primary-1);
+  background-size: 400% 100%;
 }
 
 .notes > * {
@@ -232,6 +248,59 @@
   gap: 0;
 }
 
+@media (min-width: 300px) {
+  .featured {
+    margin-left: 1.5em;
+    max-width: calc(100% - 3em);
+    min-width: calc(100% - 3em);
+  }
+  .featured > ul.list {
+    gap: 0;
+  }
+  .featured > ul.list li {
+    padding: 0 0.5em;
+  }
+  .featured > button.horizontal-scroll {
+    position: absolute;
+    align-self: center;
+    z-index: 2;
+  }
+  .featured > button.horizontal-scroll.left {
+    left: -2em;
+    top: 5%;
+    height: 86%;
+    width: auto;
+    padding: 0 0.2em 0 0.6em;
+    clip-path: polygon(100% 0%, 90% 1%, 10% 50%, 90% 99%, 100% 100%);
+  }
+  .featured > button.horizontal-scroll.right {
+    right: -2em;
+    left: unset;
+    top: 5%;
+    bottom: unset;
+    height: 86%;
+    width: auto;
+    padding: 0 0.6em 0 0.2em;
+    clip-path: polygon(0% 0%, 10% 1%, 90% 50%, 10% 99%, 0% 100%);
+  }
+  .featured > button.horizontal-scroll::before {
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+  }
+}
+
+@media (min-width: 400px) {
+  .featured > ul.list {
+    /* fade 2em at left and right */
+    -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 1) 2em, rgba(0, 0, 0, 1) calc(100% - 2em), rgba(0, 0, 0, 0) 100%);
+    mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 1) 2em, rgba(0, 0, 0, 1) calc(100% - 2em), rgba(0, 0, 0, 0) 100%);
+  }
+  .featured > ul.list li {
+    flex: 0 0 46%;
+  }
+}
 @media (min-width: 600px) {
   .notes ul {
     max-width: max-content;

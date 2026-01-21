@@ -62,7 +62,7 @@ export default function useSideScroll(scrollKey = "sideScroll") {
         if (e.deltaY == 0) return
         e.preventDefault()
         element.scrollTo({
-          left: element.scrollLeft + e.deltaY * 2,
+          left: element.scrollLeft + e.deltaY * 1.2,
           behavior: "smooth",
         })
         // Save position after smooth scroll completes
