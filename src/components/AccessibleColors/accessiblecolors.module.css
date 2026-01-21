@@ -1,12 +1,6 @@
 .color-container {
   overflow: visible;
-  background: linear-gradient(
-    0deg,
-    transparent 0%,
-    black 5%,
-    black 92%,
-    transparent 100%
-  );
+  background: linear-gradient(0deg, transparent 0%, black 5%, black 92%, transparent 100%);
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
@@ -16,13 +10,7 @@
   min-height: 120vh;
 }
 .light.color-container {
-  background: linear-gradient(
-    0deg,
-    transparent 0%,
-    white 8%,
-    white 92%,
-    transparent 100%
-  );
+  background: linear-gradient(0deg, transparent 0%, white 8%, white 92%, transparent 100%);
 }
 .color-picker {
   --size: 4em;
@@ -37,7 +25,7 @@
 .color-picker > label {
   margin-right: 1em;
 }
-.color-picker > input[type='color' i] {
+.color-picker > input[type="color" i] {
   --clamp: clamp(30px, 10vw, var(--size));
   min-width: var(--clamp);
   width: var(--clamp);
@@ -50,7 +38,7 @@
   border-radius: 50%;
   z-index: 2;
 }
-.light .color-picker > input[type='color' i] {
+.light .color-picker > input[type="color" i] {
   outline: 10px solid black;
 }
 .color-picker > button {
@@ -272,7 +260,7 @@
   top: calc(100% + var(--tooltip-offset) * 0.5) !important;
 }
 .indicator::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: var(--left);
@@ -373,6 +361,44 @@
 }
 #color-container .color-wrap button.remove {
   outline: gray solid 1px;
+}
+
+.move-buttons {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4em;
+  width: calc(100% - 4px);
+  margin: 0 auto 0.4em;
+}
+
+#color-container .block-wrap .color-wrap .move-buttons button {
+  font-size: 1.5em;
+  flex: 0 1 30%;
+  width: 100%;
+  padding: 0.1em 0.1em;
+  line-height: 1;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+#color-container .block-wrap .color-wrap .move-buttons button b {
+  display: inline-block;
+  line-height: 1;
+  margin-top: -0.1em;
+  margin-bottom: 0.1em;
+}
+.move-buttons button.left {
+  margin-right: auto;
+  margin-left: 0.1em;
+  border-radius: 50% 0 0 50%;
+}
+.move-buttons button.right {
+  margin-left: auto;
+  margin-right: 0.1em;
+  border-radius: 0 50% 50% 0;
 }
 .color-name > span {
   display: flex;

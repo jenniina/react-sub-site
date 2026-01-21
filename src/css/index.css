@@ -445,6 +445,7 @@ h1:hover span:after {
     clip-path: polygon(-10% 120%, -10% 51%, 16% 53%, 33% 51%, 50% 46%, 67% 37%, 84% 33%, 110% 31%, 110% 120%);
   }
 }
+
 @keyframes wave2 {
   0%,
   100% {
@@ -616,6 +617,7 @@ body .focus-within:focus-within {
   }
 } /*END media*/
 
+/* Screen-reader text, visually hidden */
 .scr {
   clip: rect(1px, 1px, 1px, 1px);
   -webkit-clip-path: inset(50%);
@@ -623,15 +625,16 @@ body .focus-within:focus-within {
   -ms-clip-path: inset(50%);
   -o-clip-path: inset(50%);
   clip-path: inset(50%);
-  position: absolute;
-  width: 1px;
-  height: 1px;
   line-height: 1px;
-  overflow: hidden;
-  word-wrap: normal;
-  padding: 0;
-  margin: -1px;
-  border: 0;
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }
 .scr:focus-visible {
   clip: auto;

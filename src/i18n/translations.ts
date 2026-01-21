@@ -3114,6 +3114,15 @@ export const translations = {
     cs: "Předchozí",
     fi: "Edellinen",
   },
+  Before: {
+    en: "Before",
+    es: "Antes",
+    fr: "Avant",
+    de: "Davor",
+    pt: "Antes",
+    cs: "Před",
+    fi: "Ennen",
+  },
   Next: {
     en: "Next",
     es: "Siguiente",
@@ -3122,6 +3131,15 @@ export const translations = {
     pt: "Próximo",
     cs: "Další",
     fi: "Seuraava",
+  },
+  After: {
+    en: "After",
+    es: "Después",
+    fr: "Après",
+    de: "Danach",
+    pt: "Depois",
+    cs: "Poté",
+    fi: "Jälkeen",
   },
   Page: {
     en: "Page",
