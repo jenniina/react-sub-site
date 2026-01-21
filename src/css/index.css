@@ -568,7 +568,7 @@ button.gray {
 .transformations button.restore,
 #modal-root button,
 #modal-root button.restore {
-  transition-property: border-color, color, background-color, background-position, outline, outline-offset, opacity, transform, border-radius;
+  transition-property: border-color, border-width, color, background-color, background-position, outline, outline-offset, opacity, transform, border-radius;
   transition-duration: 0.4s;
   transition-timing-function: ease-in-out;
   transition-delay: 0s;

@@ -858,10 +858,6 @@ const AccessibleColors: FC = () => {
     }
   }
 
-  const listItemsByStatusItems = useMemo(() => {
-    return listItemsByStatus[status]?.items ?? []
-  }, [listItemsByStatus])
-
   const focusColorBlock = useCallback((targetId: number) => {
     const el = document.getElementById(
       `color-block-${targetId}`
@@ -895,12 +891,6 @@ const AccessibleColors: FC = () => {
     },
     [listItemsByStatus, setColors]
   )
-
-  useEffect(() => {
-    if (!listItemsByStatusItems || listItemsByStatusItems.length < 1) {
-      resetColors()
-    }
-  }, [listItemsByStatusItems, resetColors])
 
   const times = 0.04
 
@@ -1099,6 +1089,40 @@ const AccessibleColors: FC = () => {
               >
                 {show && (
                   <>
+                    <div className={styles["skip-links"]}>
+                      {!isFirst && prevId != null && (
+                        <a
+                          href={`#color-block-${prevId}`}
+                          className={`${styles["skip-link"]} gray small`}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            focusColorBlock(prevId)
+                          }}
+                        >
+                          <span>
+                            <Icon lib="fa" name="FaArrowLeft" />{" "}
+                            {t("SkipToPreviousColor")}
+                          </span>
+                        </a>
+                      )}
+
+                      {!isLast && nextId != null && (
+                        <a
+                          href={`#color-block-${nextId}`}
+                          className={`${styles["skip-link"]} gray small`}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            focusColorBlock(nextId)
+                          }}
+                        >
+                          <span>
+                            {" "}
+                            {t("SkipToNextColor")}{" "}
+                            <Icon lib="fa" name="FaArrowRight" />
+                          </span>
+                        </a>
+                      )}
+                    </div>
                     <div className={styles["move-buttons"]}>
                       {!isFirst && (
                         <button
@@ -1107,38 +1131,12 @@ const AccessibleColors: FC = () => {
                           className={`gray ${styles["left"]}`}
                           onClick={() => moveColor(block.id, "left")}
                         >
-                          <b aria-hidden="true">&laquo;</b>
+                          <b aria-hidden="true">
+                            <Icon lib="go" name="GoArrowLeft" />
+                          </b>
                           <span className="scr">{t("MoveLeft")}</span>
                         </button>
                       )}
-
-                      <div className={styles["skip-links"]}>
-                        {!isFirst && prevId != null && (
-                          <a
-                            href={`#color-block-${prevId}`}
-                            className={`${styles["skip-link"]} gray small`}
-                            onClick={(e) => {
-                              e.preventDefault()
-                              focusColorBlock(prevId)
-                            }}
-                          >
-                            <span>&laquo; {t("SkipToPreviousColor")}</span>
-                          </a>
-                        )}
-
-                        {!isLast && nextId != null && (
-                          <a
-                            href={`#color-block-${nextId}`}
-                            className={`${styles["skip-link"]} gray small`}
-                            onClick={(e) => {
-                              e.preventDefault()
-                              focusColorBlock(nextId)
-                            }}
-                          >
-                            <span> {t("SkipToNextColor")} &raquo;</span>
-                          </a>
-                        )}
-                      </div>
 
                       {!isLast && (
                         <button
@@ -1147,7 +1145,9 @@ const AccessibleColors: FC = () => {
                           className={`gray ${styles["right"]}`}
                           onClick={() => moveColor(block.id, "right")}
                         >
-                          <b aria-hidden="true">&raquo;</b>
+                          <b aria-hidden="true">
+                            <Icon lib="go" name="GoArrowRight" />
+                          </b>
                           <span className="scr">{t("MoveRight")}</span>
                         </button>
                       )}

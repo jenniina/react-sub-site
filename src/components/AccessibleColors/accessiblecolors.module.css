@@ -375,31 +375,47 @@
 }
 
 #color-container .block-wrap .color-wrap .move-buttons button {
-  font-size: 1.5em;
-  flex: 0 1 30%;
+  font-size: 1.3em;
+  flex: 0 1 0;
   width: 100%;
-  padding: 0.1em 0.1em;
   line-height: 1;
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
+  border: none;
+  outline-width: 0;
+  padding: 0;
 }
 #color-container .block-wrap .color-wrap .move-buttons button b {
   display: inline-block;
+  font-size: 0.9em;
   line-height: 1;
-  margin-top: -0.1em;
-  margin-bottom: 0.1em;
+  margin-top: 0.1em;
+  margin-bottom: -0.1em;
 }
-.move-buttons button.left {
-  margin-right: auto;
-  margin-left: 0.1em;
+#color-container .block-wrap .color-wrap .move-buttons button.left {
   border-radius: 50% 0 0 50%;
+  margin: 0 auto 0 0.6em;
+  border-right: 0.1em double var(--color-primary-20);
 }
-.move-buttons button.right {
-  margin-left: auto;
-  margin-right: 0.1em;
+#color-container .block-wrap .color-wrap .move-buttons button.right {
   border-radius: 0 50% 50% 0;
+  margin: 0 0.6em 0 auto;
+  border-left: 0.1em double var(--color-primary-20);
+}
+#color-container .block-wrap .color-wrap .move-buttons button.left b {
+  padding: 0.2em 0.2em 0.2em 0.4em;
+}
+#color-container .block-wrap .color-wrap .move-buttons button.right b {
+  padding: 0.2em 0.4em 0.2em 0.2em;
+}
+#color-container .block-wrap .color-wrap .move-buttons button:hover,
+#color-container .block-wrap .color-wrap .move-buttons button:focus,
+#color-container .block-wrap .color-wrap .move-buttons button:focus-visible {
+  outline-width: 0;
+  border-color: var(--color-primary-1);
+  border-width: 0.2em;
 }
 
 /* Skip links: hidden visually, shown only on focus-visible (keyboard navigation) */
@@ -452,6 +468,7 @@
   line-height: 1;
   font-size: 0.82rem;
 }
+
 .color-name > span {
   display: flex;
   flex-flow: row nowrap;
