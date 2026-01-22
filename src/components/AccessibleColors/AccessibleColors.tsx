@@ -824,7 +824,7 @@ const AccessibleColors: FC = () => {
   }
 
   const handleDragStart = (
-    e: React.DragEvent<HTMLLIElement>,
+    e: React.DragEvent<HTMLElement>,
     position: number
   ) => {
     e.dataTransfer.setData(
@@ -834,7 +834,7 @@ const AccessibleColors: FC = () => {
   }
 
   const handleDragEnter = (
-    e: React.DragEvent<HTMLLIElement>,
+    e: React.DragEvent<HTMLElement>,
     position: number
   ) => {
     e.preventDefault()
@@ -842,7 +842,7 @@ const AccessibleColors: FC = () => {
     dragOverItem.current = position
   }
 
-  const handleDragOver = (e: React.DragEvent<HTMLLIElement>) => {
+  const handleDragOver = (e: React.DragEvent<HTMLElement>) => {
     e.preventDefault()
     handleDragging(true)
   }
@@ -1043,7 +1043,7 @@ const AccessibleColors: FC = () => {
             </span>
           </button>
           <button
-            className="gray small"
+            className={` gray small  ${styles["empty-generate"]}`}
             type="button"
             onClick={() => {
               if (
@@ -1137,6 +1137,18 @@ const AccessibleColors: FC = () => {
                           <span className="scr">{t("MoveLeft")}</span>
                         </button>
                       )}
+
+                      <small
+                        draggable={"true"}
+                        onDragStart={(e) => handleDragStart(e, block.id)}
+                        onDragEnter={(e) => handleDragEnter(e, block.id)}
+                        onDragOver={(e) => handleDragOver(e)}
+                        onDragEnd={() => handleDragging(false)}
+                        data-identity={block.id}
+                        className={`${styles["drag-handle"]} ${isFirst ? styles.left : isLast ? styles.right : ""}`}
+                      >
+                        {t("Move")}
+                      </small>
 
                       {!isLast && (
                         <button
