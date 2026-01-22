@@ -484,7 +484,7 @@ const AccessibleColors: FC = () => {
       totalIndicators * (indicatorSize + indicatorSpacing) -
       indicatorSpacing +
       padding * 2
-    const textBlockHeight = name ? fontSize + padding : 0
+    const textBlockHeight = name ? fontSize + padding * 0.7 : 0
 
     const svgWidth = items.length * blockWidth
     const svgHeight = blockHeight + textBlockHeight * 1.6
@@ -554,7 +554,7 @@ const AccessibleColors: FC = () => {
         <!-- Text Background -->
         <rect
           x="${xPosition}"
-          y="${blockHeight - 0.5}"
+          y="${blockHeight - 0.8}"
           width="${blockWidth}"
           height="${textBlockHeight}"
           fill="${hexColor}"
@@ -687,7 +687,7 @@ const AccessibleColors: FC = () => {
       })
       .join("")
 
-    const linkMargin = 10
+    const linkMargin = 7
     const linkX = svgWidth - linkMargin
     const linkY = svgHeight - linkMargin * 1.5
     const linkURL = "https://colors.jenniina.fi"
@@ -1372,7 +1372,7 @@ const AccessibleColors: FC = () => {
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
-                      padding: "0.5em 0.1em ",
+                      padding: "0 0.1em 0.5em",
                     }}
                     className={styles["color-name"]}
                   >

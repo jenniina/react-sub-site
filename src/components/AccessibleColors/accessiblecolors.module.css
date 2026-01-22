@@ -506,7 +506,6 @@
   flex-flow: row nowrap;
   justify-content: center;
   align-items: flex-end;
-  min-height: 2em;
   line-height: 1;
 }
 .inputs > label {
