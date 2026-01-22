@@ -5895,6 +5895,15 @@ export const translations = {
     cs: "Nebo konstruktivní zpětná vazba?",
     fi: "Tai rakentavaa palautetta?",
   },
+  Like: {
+    en: "Like",
+    es: "Me gusta",
+    fr: "Aimer",
+    de: "Gefällt mir",
+    pt: "Curtir",
+    cs: "Líbí se mi to",
+    fi: "Tykkää",
+  },
   AColorYouLike: {
     en: "A color you like?",
     es: "¿Un color que te gusta?",

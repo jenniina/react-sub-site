@@ -497,6 +497,10 @@ const UserJokes = ({
   }
 
   const handleJokeSave = (_id: IJoke["_id"]) => {
+    if (!userId) {
+      void dispatch(notify(`${t("LoginOrRegisterToSave")}`, false, 8))
+      return
+    }
     const findJoke = jokes?.find((j: IJoke) => j._id === _id)
     if (!findJoke) {
       void dispatch(notify(`${t("NoJokeFound")}`, true, 8))
@@ -508,11 +512,19 @@ const UserJokes = ({
         return
       }
       void dispatch(
-        updateJoke({ ...findJoke, user: [...findJoke.user, userId] })
-      ).then(() => {
-        void dispatch(initializeJokes())
-        void dispatch(notify(`${t("SavedJoke")}`, false, 8))
-      })
+        updateJoke({
+          ...findJoke,
+          user: [...(findJoke.user ?? []), userId],
+        })
+      )
+        .then(() => {
+          void dispatch(initializeJokes())
+          void dispatch(notify(`${t("SavedJoke")}`, false, 8))
+        })
+        .catch((err: unknown) => {
+          const message = getErrorMessage(err, t("Error"))
+          void dispatch(notify(`${t("Error")}: ${message}`, true, 8))
+        })
     }
   }
 

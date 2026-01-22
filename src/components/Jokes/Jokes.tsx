@@ -426,26 +426,34 @@ function Jokes() {
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault()
-    if (!user) {
+    const userId = user?._id
+    if (!userId) {
       void dispatch(notify(`${t("LoginOrRegisterToSave")}`, false, 8))
       return
-    } else {
-      if (foundJoke) {
-        if (foundJoke.user.includes(user?._id?.toString())) {
-          void dispatch(notify(`${t("JokeAlreadySaved")}`, false, 8))
-          return
-        }
-        void dispatch(
-          updateJoke({ ...foundJoke, user: [...foundJoke.user, user?._id] })
+    }
+
+    let didSave = false
+
+    if (foundJoke) {
+      if (foundJoke.user.includes(userId.toString())) {
+        void dispatch(notify(`${t("JokeAlreadySaved")}`, false, 8))
+        return
+      }
+      try {
+        await dispatch(
+          updateJoke({ ...foundJoke, user: [...foundJoke.user, userId] })
         )
-          .then(() => initializeJokes())
-          .catch((err: unknown) => {
-            const message = getErrorMessage(err, t("Error"))
-            void dispatch(notify(`${t("Error")}:: ${message}`, true, 8))
-          })
-      } else {
-        if (recentJoke && recentJoke?.type === EJokeType.single) {
-          void dispatch(
+        await dispatch(initializeJokes())
+        didSave = true
+      } catch (err: unknown) {
+        const message = getErrorMessage(err, t("Error"))
+        void dispatch(notify(`${t("Error")}:: ${message}`, true, 8))
+        return
+      }
+    } else {
+      if (recentJoke && recentJoke?.type === EJokeType.single) {
+        try {
+          await dispatch(
             createJoke({
               jokeId: recentJoke?.jokeId.toString() ?? jokeId.toString(),
               joke: joke,
@@ -458,7 +466,7 @@ function Jokes() {
                   : undefined,
               language: recentJoke?.language ?? jokeLanguage,
               safe: !Object.values(flags)?.some((value) => value),
-              user: [user._id],
+              user: [userId],
 
               flags: {
                 nsfw: recentJoke?.flags.nsfw,
@@ -470,15 +478,16 @@ function Jokes() {
               },
             })
           )
-            .then(() => {
-              void dispatch(initializeJokes())
-            })
-            .catch((err: unknown) => {
-              const message = getErrorMessage(err, t("Error"))
-              void dispatch(notify(`${t("Error")}*: ${message}`, true, 8))
-            })
-        } else if (recentJoke && recentJoke?.type === EJokeType.twopart) {
-          void dispatch(
+          await dispatch(initializeJokes())
+          didSave = true
+        } catch (err: unknown) {
+          const message = getErrorMessage(err, t("Error"))
+          void dispatch(notify(`${t("Error")}*: ${message}`, true, 8))
+          return
+        }
+      } else if (recentJoke && recentJoke?.type === EJokeType.twopart) {
+        try {
+          await dispatch(
             createJoke({
               jokeId: recentJoke?.jokeId.toString() ?? jokeId.toString(),
               setup: joke,
@@ -490,7 +499,7 @@ function Jokes() {
                 subCategoryResults?.length > 0 ? subCategoryResults : undefined,
               language: recentJoke?.language ?? jokeLanguage,
               safe: !Object.values(recentJoke?.flags)?.some((value) => value),
-              user: [user._id],
+              user: [userId],
 
               flags: {
                 nsfw: recentJoke?.flags.nsfw,
@@ -502,15 +511,17 @@ function Jokes() {
               },
             })
           )
-            .then(() => {
-              void dispatch(initializeJokes())
-            })
-            .catch(async (err: unknown) => {
-              const message = getErrorMessage(err, t("Error"))
-              await dispatch(notify(`${t("Error")}: ${message}`, true, 8))
-            })
+          await dispatch(initializeJokes())
+          didSave = true
+        } catch (err: unknown) {
+          const message = getErrorMessage(err, t("Error"))
+          void dispatch(notify(`${t("Error")}: ${message}`, true, 8))
+          return
         }
       }
+    }
+
+    if (didSave) {
       await dispatch(notify(`${t("SavedJoke")}`, false, 8))
     }
   }
