@@ -1,23 +1,25 @@
-import React from 'react'
+import React from "react"
 //import Joke from './Joke'
-import { Select } from '../../Select/Select'
-import { SelectOption } from '../../Select/Select'
-import { useEffect } from 'react'
-import ButtonToggle from '../../ButtonToggle/ButtonToggle'
+import { Select } from "../../Select/Select"
+import { SelectOption } from "../../Select/Select"
+import { useEffect } from "react"
+import ButtonToggle from "../../ButtonToggle/ButtonToggle"
 import {
   EJokeType,
   ESafemode,
   ECategories,
   TCategoryByLanguages,
   IJoke,
-} from '../types'
-import { ELanguages, ELanguagesLong } from '../../../types'
-import { FaAnglesDown } from 'react-icons/fa6'
-import { useLanguageContext } from '../../../contexts/LanguageContext'
-import Joke from './Joke'
+} from "../types"
+import { ELanguages, ELanguagesLong } from "../../../types"
+import { FaAnglesDown } from "react-icons/fa6"
+import { useLanguageContext } from "../../../contexts/LanguageContext"
+import Joke from "./Joke"
 
 interface Props {
   handleFormSubmit: (e: React.FormEvent<HTMLFormElement>) => void
+  jokeLanguage: ELanguages
+  setJokeLanguage: (jokeLanguage: ELanguages) => void
   jokeCategory: ECategories | null
   setJokeCategory: (jokeCategory: ECategories) => void
   setQueryValue: (queryValue: string) => void
@@ -29,7 +31,7 @@ interface Props {
   query: string
   joke: string
   delivery?: string
-  jokeId: IJoke['jokeId']
+  jokeId: IJoke["jokeId"]
   author: string
   submitted: boolean
   reveal: boolean
@@ -49,7 +51,7 @@ interface Props {
       | typeof ESafemode
       | typeof ELanguages,
     value: ECategories | EJokeType | ESafemode | ELanguages
-  ) => undefined | SelectOption['label']
+  ) => undefined | SelectOption["label"]
   norrisCategories: SelectOption[]
   selectedNorrisCategory: SelectOption | undefined
   setSelectedNorrisCategory: (
@@ -62,7 +64,7 @@ interface Props {
   ) => string | undefined
   subCategoryResults: string[]
   handleBlacklistUpdate: (
-    jokeId: IJoke['jokeId'],
+    jokeId: IJoke["jokeId"],
     language: ELanguages,
     value: string | undefined
   ) => Promise<void>
@@ -70,6 +72,8 @@ interface Props {
 }
 const Form = ({
   handleFormSubmit,
+  jokeLanguage,
+  setJokeLanguage,
   jokeCategory,
   categoryValues,
   setCategoryValues,
@@ -103,13 +107,13 @@ const Form = ({
   handleBlacklistUpdate,
   sending,
 }: Props) => {
-  const { t, language, setLanguage } = useLanguageContext()
+  const { t, language: uiLanguage } = useLanguageContext()
 
   useEffect(() => {
     setTimeout(() => {
       // Set z-index of select containers so that they do not open behind the next select container
       const selectContainers = document
-        ? document.querySelectorAll('.select-container')
+        ? document.querySelectorAll(".select-container")
         : null
       const totalContainers = (selectContainers?.length ?? 0) + 2
 
@@ -123,7 +127,7 @@ const Form = ({
   return (
     <>
       <form
-        onSubmit={e => {
+        onSubmit={(e) => {
           e.preventDefault()
           setVisibleJoke(false)
           setTimeout(() => {
@@ -134,21 +138,21 @@ const Form = ({
       >
         <div className="controls-wrap">
           <Select
-            language={language}
+            language={uiLanguage}
             id="language-joke"
             className="language full"
-            instructions={`${t('SelectALanguage')}:`}
+            instructions={`${t("SelectALanguage")}:`}
             options={options(ELanguagesLong)}
             value={
-              language
+              jokeLanguage
                 ? ({
-                    value: language,
-                    label: ELanguagesLong[language],
+                    value: jokeLanguage,
+                    label: ELanguagesLong[jokeLanguage],
                   } as SelectOption)
                 : undefined
             }
-            onChange={o => {
-              setLanguage(o?.value as ELanguages)
+            onChange={(o) => {
+              setJokeLanguage(o?.value as ELanguages)
               setJokeCategory(ECategories.Misc)
             }}
           />
@@ -158,12 +162,12 @@ const Form = ({
               isChecked={isCheckedSafemode}
               name="safemode"
               id="safemode"
-              className={`${language} ${
-                !isCheckedSafemode ? 'unsafe' : ''
+              className={`${uiLanguage} ${
+                !isCheckedSafemode ? "unsafe" : ""
               } safemode`}
-              label={`${t('SafemodeTitle')}: `}
-              on={t('SafeTitle')}
-              off={t('UnsafeTitle')}
+              label={`${t("SafemodeTitle")}: `}
+              on={t("SafeTitle")}
+              off={t("UnsafeTitle")}
               onChange={handleToggleChangeSafemode}
             />
 
@@ -171,10 +175,10 @@ const Form = ({
               isChecked={isCheckedJokeType}
               name="joketype"
               id="joketype"
-              className={`${language} joketype`}
-              label={`${t('JokeTypeTitle')}: `}
-              on={t('TwoPart')}
-              off={t('Single')}
+              className={`${uiLanguage} joketype`}
+              label={`${t("JokeTypeTitle")}: `}
+              on={t("TwoPart")}
+              off={t("Single")}
               onChange={handleToggleChangeEJokeType}
               equal={true}
             />
@@ -183,32 +187,32 @@ const Form = ({
 
         {categoryByLanguages ? (
           <Select
-            language={language}
+            language={uiLanguage}
             multiple
             id="jokeCategory"
             className={`category`}
-            instructions={`${t('SelectACategory')}:`}
-            selectAnOption={t('Any')}
+            instructions={`${t("SelectACategory")}:`}
+            selectAnOption={t("Any")}
             value={categoryValues}
             options={optionsCategory(categoryByLanguages)}
             onChange={(o: SelectOption[]) => {
               setCategoryValues(o)
-              setJokeCategory(o?.map(s => s.value).join(',') as ECategories)
+              setJokeCategory(o?.map((s) => s.value).join(",") as ECategories)
             }}
           />
         ) : (
-          ''
+          ""
         )}
 
         <Select
-          language={language}
+          language={uiLanguage}
           id="jokeCategoryNorrisCategories"
-          className={`category extras ${hasNorris ? '' : 'hidden'}`}
-          instructions={`${t('ChuckNorrisCategory')}:`}
-          selectAnOption={t('Any')}
+          className={`category extras ${hasNorris ? "" : "hidden"}`}
+          instructions={`${t("ChuckNorrisCategory")}:`}
+          selectAnOption={t("Any")}
           value={selectedNorrisCategory}
           options={norrisCategories}
-          onChange={o => {
+          onChange={(o) => {
             setSelectedNorrisCategory(o)
           }}
         />
@@ -221,25 +225,25 @@ const Form = ({
                 id="queryValue"
                 name="queryValue"
                 value={query}
-                onChange={e => {
+                onChange={(e) => {
                   setQuery((e.target as HTMLInputElement).value)
                   setQueryValue(
                     encodeURIComponent((e.target as HTMLInputElement).value) +
-                      '&'
+                      "&"
                   )
                 }}
               />
-              <span>{t('SearchByKeyword')}</span>
+              <span>{t("SearchByKeyword")}</span>
             </label>
           </div>
 
           <button id="generate-joke" type="submit" disabled={sending}>
-            {t('FindAJoke')}
+            {t("FindAJoke")}
           </button>
         </div>
       </form>
 
-      <div className={`downwards-arrow ${submitted ? 'play' : ''}`}>
+      <div className={`downwards-arrow ${submitted ? "play" : ""}`}>
         <FaAnglesDown />
       </div>
       <Joke
@@ -248,6 +252,7 @@ const Form = ({
         delivery={delivery}
         author={author}
         jokeId={jokeId}
+        jokeLanguage={jokeLanguage}
         reveal={reveal}
         jokeCategory={jokeCategory}
         setReveal={setReveal}
