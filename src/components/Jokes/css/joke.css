@@ -744,6 +744,7 @@ form.joke > *:not(.toggle) {
   background-image: none;
   color: var(--color-primary-20);
   pointer-events: none;
+  border-color: var(--color-primary-18);
 }
 .pagination input[type="number" i] {
   max-width: 3rem;
