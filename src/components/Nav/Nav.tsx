@@ -283,11 +283,33 @@ const Nav = (
     [toolbar, mainMenu]
   )
 
+  const clearAuthQueryParams = useCallback(() => {
+    // If URL opens login/register form, allow outside click to close it permanently
+    // by removing the query params (otherwise the effect below will reopen it).
+    const params = new URLSearchParams(location.search)
+    const hadAuthParams = params.has("login") || params.has("register")
+    if (!hadAuthParams) return
+
+    params.delete("login")
+    params.delete("register")
+
+    const nextSearch = params.toString()
+    navigate(
+      {
+        pathname: location.pathname,
+        search: nextSearch ? `?${nextSearch}` : "",
+      },
+      { replace: true }
+    )
+  }, [location.pathname, location.search, navigate])
+
   // Close everything, respecting exit animations
   const closeAll = useCallback(() => {
     mainMenu.hide()
     toolbar.hide()
-  }, [toolbar, mainMenu])
+    setOpenForm(null)
+    clearAuthQueryParams()
+  }, [toolbar, mainMenu, clearAuthQueryParams])
 
   const dispatch = useAppDispatch()
 
