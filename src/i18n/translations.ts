@@ -7477,7 +7477,7 @@ export const translations = {
     de: "Nach links bewegen",
     pt: "Mover para a esquerda",
     cs: "Pohnout doleva",
-    fi: "Siirry vasemmalle",
+    fi: "Siirrä vasemmalle",
   },
   MoveRight: {
     en: "Move right",
@@ -7486,7 +7486,7 @@ export const translations = {
     de: "Nach rechts bewegen",
     pt: "Mover para a direita",
     cs: "Pohnout doprava",
-    fi: "Siirry oikealle",
+    fi: "Siirrä oikealle",
   },
   MoveUp: {
     en: "Move up",
@@ -7495,7 +7495,7 @@ export const translations = {
     de: "Nach oben bewegen",
     pt: "Mover para cima",
     cs: "Pohnout nahoru",
-    fi: "Siirry ylös",
+    fi: "Siirrä ylös",
   },
   MoveDown: {
     en: "Move down",
@@ -7504,7 +7504,7 @@ export const translations = {
     de: "Nach unten bewegen",
     pt: "Mover para baixo",
     cs: "Pohnout dolů",
-    fi: "Siirry alas",
+    fi: "Siirrä alas",
   },
   MoveViewUp: {
     en: "Move view up",
