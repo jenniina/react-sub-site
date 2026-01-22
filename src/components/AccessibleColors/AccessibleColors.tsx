@@ -1128,8 +1128,13 @@ const AccessibleColors: FC = () => {
                         <button
                           type="button"
                           title={t("MoveLeft")}
-                          className={`gray ${styles["left"]}`}
+                          className={` ${styles["left"]}`}
                           onClick={() => moveColor(block.id, "left")}
+                          style={{
+                            color: block.luminance < 0.179 ? "white" : "black",
+                            backgroundColor: block.color,
+                            backgroundImage: "none",
+                          }}
                         >
                           <b aria-hidden="true">
                             <Icon lib="go" name="GoArrowLeft" />
@@ -1154,8 +1159,13 @@ const AccessibleColors: FC = () => {
                         <button
                           type="button"
                           title={t("MoveRight")}
-                          className={`gray ${styles["right"]}`}
+                          className={` ${styles["right"]}`}
                           onClick={() => moveColor(block.id, "right")}
+                          style={{
+                            color: block.luminance < 0.179 ? "white" : "black",
+                            backgroundColor: block.color,
+                            backgroundImage: "none",
+                          }}
                         >
                           <b aria-hidden="true">
                             <Icon lib="go" name="GoArrowRight" />

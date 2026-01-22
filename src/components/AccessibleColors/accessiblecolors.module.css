@@ -446,7 +446,7 @@
 #color-container .block-wrap .color-wrap .move-buttons button:focus,
 #color-container .block-wrap .color-wrap .move-buttons button:focus-visible {
   outline-width: 0;
-  border-color: var(--color-primary-1);
+  border-color: currentColor;
   border-width: 0.2em;
 }
 
