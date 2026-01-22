@@ -7695,6 +7695,15 @@ export const translations = {
     cs: "Přihlaste se pro uložení blobů na server",
     fi: "Kirjaudu sisään tallentaaksesi mollukat palvelimelle",
   },
+  PleaseLogin: {
+    en: "Please login",
+    es: "Por favor inicie sesión",
+    fr: "Veuillez vous connecter",
+    de: "Bitte melden Sie sich an",
+    pt: "Por favor, faça login",
+    cs: "Prosím přihlaste se",
+    fi: "Pyydämme kirjautumaan sisään",
+  },
   ManyVersions: {
     en: "Many versions",
     es: "Muchas versiones",

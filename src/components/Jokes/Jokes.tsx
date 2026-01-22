@@ -1405,7 +1405,13 @@ function Jokes() {
     language: ELanguages,
     value: string | undefined
   ) => {
-    if (await confirm({ message: `${t("AreYouSureYouWantToHideThisJoke")}` })) {
+    if (!user) {
+      void dispatch(notify(t("PleaseLogin"), true, 5))
+      navigateToLogin()
+      return
+    } else if (
+      await confirm({ message: `${t("AreYouSureYouWantToHideThisJoke")}` })
+    ) {
       const isAlreadyBlacklisted = user?.blacklistedJokes?.some(
         (blacklistedJoke) =>
           blacklistedJoke.jokeId === jokeId &&
