@@ -136,12 +136,20 @@
   left: 0%;
   top: -20%;
   padding: 1em 0.9em 1em 2em;
+  -webkit-clip-path: polygon(100% 0%, 90% 1%, 10% 50%, 90% 99%, 100% 100%);
+  -moz-clip-path: polygon(100% 0%, 90% 1%, 10% 50%, 90% 99%, 100% 100%);
+  -ms-clip-path: polygon(100% 0%, 90% 1%, 10% 50%, 90% 99%, 100% 100%);
+  -o-clip-path: polygon(100% 0%, 90% 1%, 10% 50%, 90% 99%, 100% 100%);
   clip-path: polygon(100% 0%, 90% 1%, 10% 50%, 90% 99%, 100% 100%);
 }
 .featured > button.horizontal-scroll.right {
   bottom: -16%;
   right: 0%;
   padding: 1em 2em 1em 0.9em;
+  -webkit-clip-path: polygon(0% 0%, 10% 1%, 90% 50%, 10% 99%, 0% 100%);
+  -moz-clip-path: polygon(0% 0%, 10% 1%, 90% 50%, 10% 99%, 0% 100%);
+  -ms-clip-path: polygon(0% 0%, 10% 1%, 90% 50%, 10% 99%, 0% 100%);
+  -o-clip-path: polygon(0% 0%, 10% 1%, 90% 50%, 10% 99%, 0% 100%);
   clip-path: polygon(0% 0%, 10% 1%, 90% 50%, 10% 99%, 0% 100%);
 }
 .featured > button.horizontal-scroll::before {

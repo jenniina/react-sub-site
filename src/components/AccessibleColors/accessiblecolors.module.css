@@ -138,6 +138,9 @@
   border-radius: 0 999px 999px 0;
   padding: 0.2em 0.25em 0.2em 0.6em;
 }
+#color-container .btn-wrap button.empty-generate {
+  padding: 0.2em 0.25em 0.2em 0.8em;
+}
 .btn-wrap svg {
   width: 2em;
   height: 2em;
@@ -369,11 +372,30 @@
   flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
-  gap: 0.4em;
+  gap: 0;
   width: calc(100% - 4px);
   margin: 0 auto 0.4em;
 }
-
+.move-buttons small {
+  display: inline-block;
+  padding: 0.6em 0;
+  font-size: 13px;
+  cursor: grab;
+  flex-grow: 1;
+  text-align: center;
+}
+.color-blocks.drag .move-buttons,
+.color-blocks .move-buttons small:active {
+  cursor: grabbing;
+}
+.move-buttons small.left {
+  text-align: right;
+  padding-right: 1em;
+}
+.move-buttons small.right {
+  text-align: left;
+  padding-left: 1em;
+}
 #color-container .block-wrap .color-wrap .move-buttons button {
   font-size: 1.3em;
   flex: 0 1 0;
@@ -391,30 +413,40 @@
   display: inline-block;
   font-size: 0.9em;
   line-height: 1;
-  margin-top: 0.1em;
-  margin-bottom: -0.1em;
+  margin-top: 0.05em;
+  margin-bottom: -0.05em;
 }
 #color-container .block-wrap .color-wrap .move-buttons button.left {
   border-radius: 50% 0 0 50%;
-  margin: 0 auto 0 0.6em;
+  margin: 0 auto 0 0;
   border-right: 0.1em double var(--color-primary-20);
+  -webkit-clip-path: polygon(100% 0%, 50% 0%, 10% 50%, 50% 100%, 100% 100%);
+  -moz-clip-path: polygon(100% 0%, 50% 0%, 10% 50%, 50% 100%, 100% 100%);
+  -ms-clip-path: polygon(100% 0%, 50% 0%, 10% 50%, 50% 100%, 100% 100%);
+  -o-clip-path: polygon(100% 0%, 50% 0%, 10% 50%, 50% 100%, 100% 100%);
+  clip-path: polygon(100% 0%, 50% 0%, 10% 50%, 50% 100%, 100% 100%);
 }
 #color-container .block-wrap .color-wrap .move-buttons button.right {
   border-radius: 0 50% 50% 0;
-  margin: 0 0.6em 0 auto;
+  margin: 0 0 0 auto;
   border-left: 0.1em double var(--color-primary-20);
+  -webkit-clip-path: polygon(0% 0%, 50% 0%, 90% 50%, 50% 100%, 0% 100%);
+  -moz-clip-path: polygon(0% 0%, 50% 0%, 90% 50%, 50% 100%, 0% 100%);
+  -ms-clip-path: polygon(0% 0%, 50% 0%, 90% 50%, 50% 100%, 0% 100%);
+  -o-clip-path: polygon(0% 0%, 50% 0%, 90% 50%, 50% 100%, 0% 100%);
+  clip-path: polygon(0% 0%, 50% 0%, 90% 50%, 50% 100%, 0% 100%);
 }
 #color-container .block-wrap .color-wrap .move-buttons button.left b {
-  padding: 0.2em 0.2em 0.2em 0.4em;
+  padding: 0.2em 0.1em 0.2em 0.5em;
 }
 #color-container .block-wrap .color-wrap .move-buttons button.right b {
-  padding: 0.2em 0.4em 0.2em 0.2em;
+  padding: 0.2em 0.5em 0.2em 0.1em;
 }
 #color-container .block-wrap .color-wrap .move-buttons button:hover,
 #color-container .block-wrap .color-wrap .move-buttons button:focus,
 #color-container .block-wrap .color-wrap .move-buttons button:focus-visible {
   outline-width: 0;
-  border-color: var(--color-primary-1);
+  border-color: currentColor;
   border-width: 0.2em;
 }
 

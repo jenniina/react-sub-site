@@ -824,7 +824,7 @@ const AccessibleColors: FC = () => {
   }
 
   const handleDragStart = (
-    e: React.DragEvent<HTMLLIElement>,
+    e: React.DragEvent<HTMLElement>,
     position: number
   ) => {
     e.dataTransfer.setData(
@@ -834,7 +834,7 @@ const AccessibleColors: FC = () => {
   }
 
   const handleDragEnter = (
-    e: React.DragEvent<HTMLLIElement>,
+    e: React.DragEvent<HTMLElement>,
     position: number
   ) => {
     e.preventDefault()
@@ -842,7 +842,7 @@ const AccessibleColors: FC = () => {
     dragOverItem.current = position
   }
 
-  const handleDragOver = (e: React.DragEvent<HTMLLIElement>) => {
+  const handleDragOver = (e: React.DragEvent<HTMLElement>) => {
     e.preventDefault()
     handleDragging(true)
   }
@@ -1043,7 +1043,7 @@ const AccessibleColors: FC = () => {
             </span>
           </button>
           <button
-            className="gray small"
+            className={` gray small  ${styles["empty-generate"]}`}
             type="button"
             onClick={() => {
               if (
@@ -1128,8 +1128,13 @@ const AccessibleColors: FC = () => {
                         <button
                           type="button"
                           title={t("MoveLeft")}
-                          className={`gray ${styles["left"]}`}
+                          className={` ${styles["left"]}`}
                           onClick={() => moveColor(block.id, "left")}
+                          style={{
+                            color: block.luminance < 0.179 ? "white" : "black",
+                            backgroundColor: block.color,
+                            backgroundImage: "none",
+                          }}
                         >
                           <b aria-hidden="true">
                             <Icon lib="go" name="GoArrowLeft" />
@@ -1138,12 +1143,29 @@ const AccessibleColors: FC = () => {
                         </button>
                       )}
 
+                      <small
+                        draggable={"true"}
+                        onDragStart={(e) => handleDragStart(e, block.id)}
+                        onDragEnter={(e) => handleDragEnter(e, block.id)}
+                        onDragOver={(e) => handleDragOver(e)}
+                        onDragEnd={() => handleDragging(false)}
+                        data-identity={block.id}
+                        className={`${styles["drag-handle"]} ${isFirst ? styles.left : isLast ? styles.right : ""}`}
+                      >
+                        {t("Move")}
+                      </small>
+
                       {!isLast && (
                         <button
                           type="button"
                           title={t("MoveRight")}
-                          className={`gray ${styles["right"]}`}
+                          className={` ${styles["right"]}`}
                           onClick={() => moveColor(block.id, "right")}
+                          style={{
+                            color: block.luminance < 0.179 ? "white" : "black",
+                            backgroundColor: block.color,
+                            backgroundImage: "none",
+                          }}
                         >
                           <b aria-hidden="true">
                             <Icon lib="go" name="GoArrowRight" />
