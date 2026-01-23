@@ -205,6 +205,7 @@ const UserJokes = ({
   const [isCheckedNewest, setIsCheckedNewest] = useState<boolean>(true)
   const [latestNumber, setLatestNumber] = useState<number>(3)
   const [latest, setLatest] = useState<boolean>(false)
+  const localStart = React.useRef<HTMLDivElement>(null)
 
   const dispatch = useAppDispatch()
 
@@ -217,14 +218,16 @@ const UserJokes = ({
         users?.length > 0
       ) {
         let updatedJokes = jokes?.map((joke) => {
-          const author = user?.name
+          const authorName = joke.author
+            ? users.find((u: IUser) => u._id === joke.author)?.name
+            : ""
           const jokesLanguage = getLanguageLabel(joke.language)
 
           return {
             ...joke,
             visible: false,
             translatedLanguage: jokesLanguage ?? joke.language,
-            name: joke.anonymous ? "ÖÖÖ_Anonymous" : (author ?? ""),
+            name: joke.anonymous ? "" : (authorName ?? ""),
           }
         })
         updatedJokes = !isCheckedSafemode
@@ -252,7 +255,7 @@ const UserJokes = ({
       sortBy,
       sortByAge,
       isCheckedNewest,
-      user?.name,
+      getLanguageLabel,
     ]
   )
 
@@ -756,6 +759,16 @@ const UserJokes = ({
         setLeftPage(pageNumber - 1)
         setRightPage(pageNumber + 1)
       }
+      if (localStart.current) {
+        requestAnimationFrame(() => {
+          if (!localStart.current) return
+          const top =
+            localStart.current.getBoundingClientRect().top +
+            window.scrollY -
+            260
+          window.scrollTo({ top, behavior: "smooth" })
+        })
+      }
     },
     [pagehumbersLength]
   )
@@ -1175,6 +1188,9 @@ const UserJokes = ({
           </div>
 
           {!isRandom && !showBlacklistedJokes && pagination(1)}
+
+          {/* Pagination scroll anchor (always present) */}
+          <div ref={localStart} />
 
           {user && showBlacklistedJokes && filteredFetchedJokes?.length > 0 ? (
             <div className="blocked-controls-wrap">
