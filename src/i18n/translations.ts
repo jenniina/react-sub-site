@@ -5895,6 +5895,15 @@ export const translations = {
     cs: "Nebo konstruktivní zpětná vazba?",
     fi: "Tai rakentavaa palautetta?",
   },
+  Like: {
+    en: "Like",
+    es: "Me gusta",
+    fr: "Aimer",
+    de: "Gefällt mir",
+    pt: "Curtir",
+    cs: "Líbí se mi to",
+    fi: "Tykkää",
+  },
   AColorYouLike: {
     en: "A color you like?",
     es: "¿Un color que te gusta?",
@@ -7685,6 +7694,15 @@ export const translations = {
     pt: "Faça login para salvar blobs no servidor",
     cs: "Přihlaste se pro uložení blobů na server",
     fi: "Kirjaudu sisään tallentaaksesi mollukat palvelimelle",
+  },
+  PleaseLogin: {
+    en: "Please login",
+    es: "Por favor inicie sesión",
+    fr: "Veuillez vous connecter",
+    de: "Bitte melden Sie sich an",
+    pt: "Por favor, faça login",
+    cs: "Prosím přihlaste se",
+    fi: "Pyydämme kirjautumaan sisään",
   },
   ManyVersions: {
     en: "Many versions",
