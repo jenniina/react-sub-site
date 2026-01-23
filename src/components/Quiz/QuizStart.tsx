@@ -1,17 +1,17 @@
-import { useNavigate } from 'react-router-dom'
-import { selectMode } from './reducers/difficultyReducer'
-import { addQuiz } from './reducers/quizReducer'
-import { useSelector } from 'react-redux'
-import styles from './css/quiz.module.css'
-import { useEffect, useState } from 'react'
-import { useAppDispatch } from '../../hooks/useAppDispatch'
-import { IHighscore, IQuizHighscore } from './types'
-import { ReducerProps } from '../../types'
-import { initializeUser } from '../../reducers/authReducer'
-import Icon from '../Icon/Icon'
-import { getUserQuiz } from './reducers/quizReducer'
-import { useLanguageContext } from '../../contexts/LanguageContext'
-import LoginRegisterCombo from './components/LoginRegisterCombo'
+import { useNavigate } from "react-router-dom"
+import { selectMode } from "./reducers/difficultyReducer"
+import { addQuiz } from "./reducers/quizReducer"
+import { useSelector } from "react-redux"
+import styles from "./css/quiz.module.css"
+import { useEffect, useState } from "react"
+import { useAppDispatch } from "../../hooks/useAppDispatch"
+import { IHighscore, IQuizHighscore } from "./types"
+import { ReducerProps } from "../../types"
+import { initializeUser } from "../../reducers/authReducer"
+import Icon from "../Icon/Icon"
+import { getUserQuiz } from "./reducers/quizReducer"
+import { useLanguageContext } from "../../contexts/LanguageContext"
+import LoginRegisterCombo from "./components/LoginRegisterCombo"
 
 const QuizStart = () => {
   const { t } = useLanguageContext()
@@ -53,7 +53,7 @@ const QuizStart = () => {
 
   const handleClick = (value: string) => {
     void dispatch(selectMode(value))
-    navigate(`/portfolio/quiz/difficulty/${value}`)
+    navigate(`/portfolio/quiz/difficulty/${value}#quiz`)
   }
 
   return (
@@ -64,43 +64,43 @@ const QuizStart = () => {
             <h2>Features</h2>
             <ul className="ul">
               <li>
-                {t('QuizQuestions15AreFetchedFrom')}{' '}
+                {t("QuizQuestions15AreFetchedFrom")}{" "}
                 <a href="https://the-trivia-api.com">
                   &quot;the Trivia Api&quot;
                 </a>
               </li>
               <li>
-                {t('Note')} {t('QuestionsAreInEnglish')}
+                {t("Note")} {t("QuestionsAreInEnglish")}
               </li>
-              <li>{t('UserCanChooseTheDifficultyLevel')}</li>
-              <li>{t('UserCanRegisterAndLoginToSaveHighscores')}</li>
+              <li>{t("UserCanChooseTheDifficultyLevel")}</li>
+              <li>{t("UserCanRegisterAndLoginToSaveHighscores")}</li>
             </ul>
             <a href="https://github.com/jenniina/react-sub-site/tree/main/src/components/Quiz">
               Github
             </a>
           </div>
           <div className={`start-screen ${styles.quiz}`}>
-            <h2>{t('TestYourGeneralKnowledgeWithThese15Questions')}</h2>
-            <p>{t('ChooseDifficulty')}:</p>
+            <h2>{t("TestYourGeneralKnowledgeWithThese15Questions")}</h2>
+            <p>{t("ChooseDifficulty")}:</p>
             <div className={`${styles.difficulty}`}>
               <button
                 className={`${styles.mode} ${styles.easy}`}
-                onClick={() => handleClick('easy')}
+                onClick={() => handleClick("easy")}
               >
-                {t('Easy')} <Icon lib="fa" name="FaStar" />
+                {t("Easy")} <Icon lib="fa" name="FaStar" />
               </button>
               <button
                 className={`${styles.mode} ${styles.medium}`}
-                onClick={() => handleClick('medium')}
+                onClick={() => handleClick("medium")}
               >
-                {t('Medium')} <Icon lib="fa" name="FaStar" />
+                {t("Medium")} <Icon lib="fa" name="FaStar" />
                 <Icon lib="fa" name="FaStar" />
               </button>
               <button
                 className={`${styles.mode} ${styles.hard}`}
-                onClick={() => handleClick('hard')}
+                onClick={() => handleClick("hard")}
               >
-                {t('Hard')} <Icon lib="fa" name="FaStar" />
+                {t("Hard")} <Icon lib="fa" name="FaStar" />
                 <Icon lib="fa" name="FaStar" />
                 <Icon lib="fa" name="FaStar" />
               </button>
