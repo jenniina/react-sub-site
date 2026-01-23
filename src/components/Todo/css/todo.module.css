@@ -443,7 +443,8 @@ form.modify > .select .controls-wrap > .select,
 /* .todo-ul > li > .btn-wrap .select:first-of-type {
   margin-left: auto;
 } */
-form.modify .fieldset {
+form.modify .fieldset,
+.fieldset.deadline-wrap {
   padding: 0;
   border: 0;
 }
@@ -486,6 +487,10 @@ form.modify .fieldset {
   outline-offset: -1px;
   border-radius: 3px;
   padding: 0.22em 0.2em 0.1em;
+}
+.deadline.tomorrow {
+  font-weight: bold;
+  border-bottom: 2px solid var(--color-primary-20);
 }
 .deadline.overdue,
 .warning {

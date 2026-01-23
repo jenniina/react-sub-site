@@ -359,6 +359,15 @@ export const translations = {
     cs: "Dnes",
     fi: "Tänään",
   },
+  Tomorrow: {
+    en: "Tomorrow",
+    es: "Mañana",
+    fr: "Demain",
+    de: "Morgen",
+    pt: "Amanhã",
+    cs: "Zítra",
+    fi: "Huomenna",
+  },
   CharactersLeft: {
     en: "characters left",
     es: "caracteres restantes",

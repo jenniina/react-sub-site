@@ -316,6 +316,83 @@ export default function TodoApp() {
   const todoNameRef = useRef<HTMLTextAreaElement>(null)
   const [name, setName] = useState<string>("")
 
+  const [showDeadline, setShowDeadline] = useState(false)
+  const [newDay, setNewDay] = useState<string>("")
+  const [newMonth, setNewMonth] = useState<string>("")
+  const [newYear, setNewYear] = useState<string>("")
+  const combinedDeadline =
+    newDay && newMonth && newYear ? `${newYear}-${newMonth}-${newDay}` : ""
+  const [deadlineErrorMessage, setDeadlineErrorMessage] = useState<string | null>(
+    null
+  )
+
+  const handleDayChange = (value: string) => {
+    if (Number(value) <= 31 && value.length <= 2) {
+      setNewDay(value)
+      setDeadlineErrorMessage(null)
+    } else {
+      setDeadlineErrorMessage(`${t("Set")}: ${t("Day")}`)
+    }
+  }
+
+  const handleMonthChange = (value: string) => {
+    if (Number(value) <= 12 && value.length <= 2) {
+      setNewMonth(value)
+      setDeadlineErrorMessage(null)
+    } else {
+      setDeadlineErrorMessage(`${t("Set")}: ${t("Month")}`)
+    }
+  }
+
+  const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    if (
+      Number(value) <= Number(new Date().getFullYear()) + 10 &&
+      value.length <= 4
+    ) {
+      setNewYear(value)
+      setDeadlineErrorMessage(null)
+    } else {
+      setDeadlineErrorMessage(t("YearMustBeBetweenCurrentYearAnd10YearsFromNow"))
+    }
+  }
+
+  useEffect(() => {
+    if (newDay && newMonth && newYear) {
+      const timer = window.setTimeout(() => {
+        const selectedDate = new Date(
+          Number(newYear),
+          Number(newMonth) - 1,
+          Number(newDay)
+        )
+        const today = new Date()
+        today.setHours(0, 0, 0, 0)
+
+        setDeadlineErrorMessage(null)
+        if (selectedDate < today) {
+          setDeadlineErrorMessage(t("TheDateIsInThePast"))
+        }
+      }, 0)
+
+      return () => clearTimeout(timer)
+    }
+  }, [newDay, newMonth, newYear, language, t])
+
+  useEffect(() => {
+    if (showDeadline) {
+      if (!newDay)
+        setNewDay((new Date().getDate() + 1).toString().padStart(2, "0"))
+      if (!newMonth)
+        setNewMonth((new Date().getMonth() + 1).toString().padStart(2, "0"))
+      if (!newYear) setNewYear(new Date().getFullYear().toString())
+    } else {
+      setNewDay("")
+      setNewMonth("")
+      setNewYear("")
+      setDeadlineErrorMessage(null)
+    }
+  }, [showDeadline, newDay, newMonth, newYear])
+
   const handleAddTodo = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setSending(true)
@@ -331,6 +408,20 @@ export default function TodoApp() {
       )
       return
     }
+
+    if (showDeadline) {
+      if (!combinedDeadline) {
+        setSending(false)
+        void dispatch(notify(`${t("Set")}: ${t("Deadline")}`, true, 6))
+        return
+      }
+      if (deadlineErrorMessage) {
+        setSending(false)
+        void dispatch(notify(deadlineErrorMessage, true, 6))
+        return
+      }
+    }
+
     const key = uuidv4()
     const maxOrder = todos.reduce(
       (max, todo) => (todo.order > max ? todo.order : max),
@@ -349,7 +440,7 @@ export default function TodoApp() {
         complete: false,
         order: minOrder - 1,
         priority,
-        deadline: "",
+        deadline: showDeadline ? combinedDeadline : "",
         category,
       }
     } else
@@ -359,7 +450,7 @@ export default function TodoApp() {
         complete: false,
         order: maxOrder + 1,
         priority,
-        deadline: "",
+        deadline: showDeadline ? combinedDeadline : "",
         category,
       }
     if (user) {
@@ -371,6 +462,7 @@ export default function TodoApp() {
       }
       setSending(false)
       setName("")
+      setShowDeadline(false)
     } else {
       const updatedTodos = [...todos, newTodo]
         .sort((a, b) => a.order - b.order)
@@ -389,6 +481,7 @@ export default function TodoApp() {
       if (!isClient || !windowObj) return
       windowObj.localStorage.setItem(localName, JSON.stringify(updatedTodos))
       setName("")
+      setShowDeadline(false)
     }
   }
 
@@ -485,6 +578,82 @@ export default function TodoApp() {
               language={language}
               z={todosWithIdAndStatus.length + 4}
             />
+
+            <fieldset className={`${styles.fieldset} ${styles["deadline-wrap"]}`}>
+              <legend>
+                <label>
+                  {t("Deadline")} {" "}
+                  <input
+                    style={{ marginLeft: "0.5em" }}
+                    type="checkbox"
+                    checked={showDeadline}
+                    onChange={() => setShowDeadline(!showDeadline)}
+                  />
+                </label>
+              </legend>
+              {showDeadline && (
+                <>
+                  <div className={styles["deadline-inputs"]}>
+                    <div className={styles.input}>
+                      <label className="scr" htmlFor="day_addTodo">
+                        {t("Day")}
+                      </label>
+                      <input
+                        type="number"
+                        id="day_addTodo"
+                        name="day"
+                        min={1}
+                        max={31}
+                        value={newDay}
+                        placeholder="DD"
+                        onChange={(e) => handleDayChange(e.target.value)}
+                        required
+                        className="bg"
+                      />
+                    </div>
+
+                    <div className={styles.input}>
+                      <label className="scr" htmlFor="month_addTodo">
+                        {t("Month")}
+                      </label>
+                      <input
+                        type="number"
+                        id="month_addTodo"
+                        name="month"
+                        min={1}
+                        max={12}
+                        value={newMonth}
+                        placeholder="MM"
+                        onChange={(e) => handleMonthChange(e.target.value)}
+                        required
+                        className="bg"
+                      />
+                    </div>
+
+                    <div className={styles.input}>
+                      <label className="scr" htmlFor="year_addTodo">
+                        {t("Year")}
+                      </label>
+                      <input
+                        type="number"
+                        id="year_addTodo"
+                        name="year"
+                        min={new Date().getFullYear()}
+                        max={new Date().getFullYear() + 10}
+                        value={newYear}
+                        placeholder="YYYY"
+                        onChange={(e) => handleYearChange(e)}
+                        required
+                        className="bg"
+                      />
+                    </div>
+                  </div>
+                  {deadlineErrorMessage && (
+                    <p className={styles.error}>{deadlineErrorMessage}</p>
+                  )}
+                </>
+              )}
+            </fieldset>
             <button
               id={styles["submit-todo"]}
               className={styles["submit-todo"]}

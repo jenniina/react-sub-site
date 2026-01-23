@@ -380,21 +380,30 @@ export default function Todo({
 
                 const isOverdue = deadlineDate < today
                 const isToday = deadlineDate.getTime() === today.getTime()
+                const isTomorrow =
+                  deadlineDate.getTime() ===
+                  new Date(
+                    today.getFullYear(),
+                    today.getMonth(),
+                    today.getDate() + 1
+                  ).getTime()
 
                 return (
                   <span
                     className={`${styles.deadline} ${
                       isOverdue ? styles.overdue : ""
-                    } ${isToday ? styles.today : ""}`}
+                    } ${isToday ? styles.today : isTomorrow ? styles.tomorrow : ""}`}
                   >
                     {t("Deadline")}:{" "}
                     {isToday
                       ? t("Today")
-                      : new Date(todo.deadline).toLocaleDateString(language, {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
+                      : isTomorrow
+                        ? t("Tomorrow")
+                        : new Date(todo.deadline).toLocaleDateString(language, {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })}
                   </span>
                 )
               })()}
