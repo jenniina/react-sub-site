@@ -77,8 +77,9 @@ function Jokes() {
     return state.users ?? []
   })
   const user = useSelector((state: ReducerProps) => {
-    return state.auth?.user
+    return state.auth?.user ?? undefined
   })
+
   // const user = localUser
   //   ? users?.find((user: IUser) => user._id === localUser.user._id)
   //   : undefined

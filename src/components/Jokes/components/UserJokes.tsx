@@ -54,6 +54,7 @@ import dadjokeService from "../services/dadjokes"
 import { initializeUsers } from "../../../reducers/usersReducer"
 import { useLanguageContext } from "../../../contexts/LanguageContext"
 import { RootState } from "../../../store"
+import { useNavigate } from "react-router-dom"
 
 interface Props {
   user: IUser | undefined
@@ -147,6 +148,7 @@ const UserJokes = ({
   sending,
 }: Props) => {
   const { t, language } = useLanguageContext()
+  const navigate = useNavigate()
 
   const getLanguageLabel = useCallback(
     (langCode: ELanguages) => {
@@ -164,7 +166,7 @@ const UserJokes = ({
   )
 
   const users = useSelector((state: RootState) => state.users ?? [])
-  const userId = user?._id
+  const userId = user?._id ?? undefined
   const jokes = useSelector((state: RootState) => state.jokes?.jokes)
 
   type IJokeVisible = IJoke & {
@@ -206,6 +208,8 @@ const UserJokes = ({
   const [latestNumber, setLatestNumber] = useState<number>(3)
   const [latest, setLatest] = useState<boolean>(false)
   const localStart = React.useRef<HTMLDivElement>(null)
+
+  const [hasLoadedJokes, setHasLoadedJokes] = useState(false)
 
   const dispatch = useAppDispatch()
 
@@ -276,9 +280,14 @@ const UserJokes = ({
   }
 
   const handleInitialize = useCallback(async () => {
-    await dispatch(initializeUser())
-    await dispatch(initializeUsers())
-    await dispatch(initializeJokes())
+    setHasLoadedJokes(false)
+    try {
+      await dispatch(initializeUser())
+      await dispatch(initializeUsers())
+      await dispatch(initializeJokes())
+    } finally {
+      setHasLoadedJokes(true)
+    }
   }, [dispatch])
 
   useEffect(() => {
@@ -502,6 +511,7 @@ const UserJokes = ({
   const handleJokeSave = (_id: IJoke["_id"]) => {
     if (!userId) {
       void dispatch(notify(`${t("LoginOrRegisterToSave")}`, false, 8))
+      navigate("/portfolio/jokes?login=login")
       return
     }
     const findJoke = jokes?.find((j: IJoke) => j._id === _id)
@@ -747,7 +757,7 @@ const UserJokes = ({
   const pagehumbersLength = pageNumbers?.length
 
   const handlePageChange = useCallback(
-    (pageNumber: number) => {
+    (pageNumber: number, scroll: boolean) => {
       setCurrentPage(pageNumber)
       if (pageNumber <= 2) {
         setLeftPage(1)
@@ -759,7 +769,7 @@ const UserJokes = ({
         setLeftPage(pageNumber - 1)
         setRightPage(pageNumber + 1)
       }
-      if (localStart.current) {
+      if (localStart.current && scroll) {
         requestAnimationFrame(() => {
           if (!localStart.current) return
           const top =
@@ -780,7 +790,7 @@ const UserJokes = ({
   }, [pageNumbers, currentPage])
 
   useEffect(() => {
-    handlePageChange(1)
+    handlePageChange(1, false)
     setShowBlacklistedJokes(false)
   }, [localJokes, handlePageChange])
 
@@ -811,7 +821,7 @@ const UserJokes = ({
               currentPage === 1 ? "disabled" : ""
             } ${pageNumbers?.length <= 3 ? "hidden" : ""}`}
             disabled={currentPage === 1}
-            onClick={() => handlePageChange(1)}
+            onClick={() => handlePageChange(1, true)}
           >
             <BiChevronsLeft />{" "}
             <span className="tooltip narrow2 below right">
@@ -823,7 +833,7 @@ const UserJokes = ({
               currentPage === 1 ? "disabled" : ""
             } ${pageNumbers?.length <= 3 ? "hidden" : ""}`}
             disabled={currentPage === 1}
-            onClick={() => handlePageChange(currentPage - 1)}
+            onClick={() => handlePageChange(currentPage - 1, true)}
           >
             <BiChevronLeft />{" "}
             <span className="tooltip narrow2 below right">{t("Back")}</span>
@@ -842,7 +852,7 @@ const UserJokes = ({
                       ? "over999"
                       : ""
               } ${number === currentPage ? "active" : ""}`}
-              onClick={() => handlePageChange(number)}
+              onClick={() => handlePageChange(number, true)}
             >
               <span>{number}</span>
             </button>
@@ -854,7 +864,7 @@ const UserJokes = ({
               currentPage === pageNumbers?.length ? "disabled" : ""
             } ${pageNumbers?.length <= 3 ? "hidden" : ""}`}
             disabled={currentPage === pageNumbers?.length}
-            onClick={() => handlePageChange(currentPage + 1)}
+            onClick={() => handlePageChange(currentPage + 1, true)}
           >
             <BiChevronRight />{" "}
             <span className="tooltip narrow2 below left">{t("Next")}</span>
@@ -864,7 +874,7 @@ const UserJokes = ({
               currentPage === pageNumbers?.length ? "disabled" : ""
             } ${pageNumbers?.length <= 3 ? "hidden" : ""}`}
             disabled={currentPage === pageNumbers?.length}
-            onClick={() => handlePageChange(pageNumbers?.length)}
+            onClick={() => handlePageChange(pageNumbers?.length, true)}
           >
             <BiChevronsRight />
             <span className="tooltip narrow2 left below">
@@ -1370,7 +1380,8 @@ const UserJokes = ({
                             </button>
                           </form>
                         )}
-                        {joke.author !== userId &&
+                        {userId &&
+                          joke.author !== userId &&
                           !joke.user?.includes(userId) && (
                             <button
                               onClick={() =>
@@ -1751,6 +1762,8 @@ const UserJokes = ({
                   </li>
                 )
               })
+            ) : hasLoadedJokes ? (
+              <li className="margin0auto max-content">{t("NoJokesYet")}</li>
             ) : (
               <li className="margin0auto max-content">
                 {t("LoadingJokes")}

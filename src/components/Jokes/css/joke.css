@@ -463,6 +463,9 @@ section.joke-container > div::after {
   align-items: center;
   font-size: 0.8em;
 }
+.userjokeslist li .secondary-wrap button.save {
+  margin-left: auto;
+}
 .userjokeslist li .secondary-wrap .button-wrap > button,
 .userjokeslist li .secondary-wrap .delete.danger {
   padding: 0.6em 1.2em;
@@ -476,6 +479,7 @@ section.joke-container > div::after {
 }
 .userjokeslist li .secondary-wrap .delete.danger {
   padding: 0.5em 1.2em;
+  margin-left: auto;
 }
 .userjokeslist li .secondary-wrap .delete.danger::after {
   bottom: 0;
