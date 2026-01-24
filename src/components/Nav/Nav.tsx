@@ -49,9 +49,10 @@ import useNoTransition from "../../hooks/useNoTransition"
 
 type Form = "login" | "register" | "reset" | null
 
-interface Link {
+export interface Link {
   label: string
   href: string
+  name: string
 }
 
 interface NavProps {
@@ -148,7 +149,7 @@ const LinkComponent: FC<LinkComponentProps> = ({
 
       {links.map((link: Link, index: number) => {
         return (
-          <li key={`${link.label}${index}`} className={`${styles[link.label]}`}>
+          <li key={`${link.label}${index}`} className={`${styles[link.name]}`}>
             <NavLink
               to={link.href}
               className={({ isActive }) =>
@@ -185,7 +186,10 @@ const SkipLink: FC<SkipLinkProps> = ({ skipLinks, styles }) => {
       {skipLinks.map((link: Link) => {
         return (
           <li key={link.href}>
-            <NavLink to={link.href} className={`${styles["skip-link"]}`}>
+            <NavLink
+              to={link.href}
+              className={`${styles["skip-link"]} ${styles[link.name]}`}
+            >
               {link.label}
             </NavLink>
           </li>
@@ -431,14 +435,17 @@ const Nav = (
       {
         label: t("Welcome"),
         href: "/",
+        name: "home",
       },
       {
         label: t("Portfolio"),
         href: "/portfolio",
+        name: "portfolio",
       },
       {
         label: t("Contact"),
         href: "/contact",
+        name: "contact",
       },
     ]
   }, [t])
@@ -448,14 +455,17 @@ const Nav = (
       {
         label: t("SkipToMainNavigation"),
         href: "#site-navigation",
+        name: "navigation",
       },
       {
         label: t("SkipToMainContent"),
         href: "#main-content",
+        name: "content",
       },
       {
         label: t("SkipToFooter"),
         href: "#main-footer",
+        name: "footer",
       },
     ]
   }, [t])

@@ -490,6 +490,10 @@ a.link:visited:not(.active):focus > *,
 .link.active {
   pointer-events: none;
 }
+.portfolio .link.active {
+  pointer-events: all;
+  cursor: pointer;
+}
 
 .link.active:hover {
   text-decoration: none;
