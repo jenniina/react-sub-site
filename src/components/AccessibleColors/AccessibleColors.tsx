@@ -5,27 +5,27 @@ import React, {
   useRef,
   useMemo,
   useCallback,
-} from "react"
-import styles from "./accessiblecolors.module.css"
-import { notify } from "../../reducers/notificationReducer"
-import useLocalStorage from "../../hooks/useStorage"
-import { useDragAndDrop } from "./hooks/useColorDragAndDrop"
-import { useTheme, useThemeUpdate } from "../../hooks/useTheme"
-import { useAppDispatch } from "../../hooks/useAppDispatch"
-import Icon from "../Icon/Icon"
+} from 'react'
+import styles from './accessiblecolors.module.css'
+import { notify } from '../../reducers/notificationReducer'
+import useLocalStorage from '../../hooks/useStorage'
+import { useDragAndDrop } from './hooks/useColorDragAndDrop'
+import { useTheme, useThemeUpdate } from '../../hooks/useTheme'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import Icon from '../Icon/Icon'
 import {
   getRandomString,
   hexToRGB,
   hslToRGB,
   rgbToHex,
   rgbToHSL,
-} from "../../utils"
-import { Select, SelectOption } from "../Select/Select"
-import useAccessibleColors from "./hooks/useAccessibleColors"
-import { useSearchParams } from "react-router-dom"
-import { useConfirm } from "../../contexts/ConfirmContext"
-import { useLanguageContext } from "../../contexts/LanguageContext"
-import ColorsInput from "./components/ColorsInput"
+} from '../../utils'
+import { Select, SelectOption } from '../Select/Select'
+import useAccessibleColors from './hooks/useAccessibleColors'
+import { useSearchParams } from 'react-router-dom'
+import { useConfirm } from '../../contexts/ConfirmContext'
+import { useLanguageContext } from '../../contexts/LanguageContext'
+import ColorsInput from './components/ColorsInput'
 
 const randomString = getRandomString(5)
 
@@ -40,7 +40,7 @@ export interface ColorBlock {
   color: string
   luminance: number
   status: string
-  colorFormat: "hex" | "rgb" | "hsl"
+  colorFormat: 'hex' | 'rgb' | 'hsl'
   compliantColors: {
     AA_RegularText: number[]
     AAA_RegularText: number[]
@@ -49,11 +49,11 @@ export interface ColorBlock {
 }
 
 export type TColorMode =
-  | "analogous"
-  | "complementary"
-  | "triad"
-  | "tetrad"
-  | "monochromatic"
+  | 'analogous'
+  | 'complementary'
+  | 'triad'
+  | 'tetrad'
+  | 'monochromatic'
 
 export interface HSLColor {
   h: number
@@ -62,9 +62,9 @@ export interface HSLColor {
 }
 
 export enum ComplianceLevel {
-  AA_RegularText = "AA_RegularText",
-  AAA_RegularText = "AAA_RegularText",
-  AA_UIComponents = "AA_UIComponents",
+  AA_RegularText = 'AA_RegularText',
+  AAA_RegularText = 'AAA_RegularText',
+  AA_UIComponents = 'AA_UIComponents',
 }
 
 ////
@@ -76,11 +76,11 @@ export enum ComplianceLevel {
 ////
 
 interface DragData {
-  type: "item"
+  type: 'item'
   id: string
 }
 
-const status = "colors"
+const status = 'colors'
 const AccessibleColors: FC = () => {
   const {
     colors,
@@ -96,7 +96,7 @@ const AccessibleColors: FC = () => {
     setMode,
     makeColorPalette,
     setColorsReset,
-  } = useAccessibleColors("analogous")
+  } = useAccessibleColors('analogous')
 
   const { t } = useLanguageContext()
   const confirm = useConfirm()
@@ -109,47 +109,47 @@ const AccessibleColors: FC = () => {
 
   const copyToClipboard = useCallback(
     async (text: string) => {
-      if (typeof window === "undefined") return
+      if (typeof window === 'undefined') return
 
       try {
         if (navigator.clipboard?.writeText) {
           await navigator.clipboard.writeText(text)
-          void dispatch(notify(t("CopiedToClipboard"), false, 5))
+          void dispatch(notify(t('CopiedToClipboard'), false, 5))
           return
         }
 
         // Fallback for older browsers / insecure contexts
-        const textArea = document.createElement("textarea")
+        const textArea = document.createElement('textarea')
         textArea.value = text
-        textArea.style.position = "fixed"
-        textArea.style.left = "-9999px"
-        textArea.style.top = "0"
+        textArea.style.position = 'fixed'
+        textArea.style.left = '-9999px'
+        textArea.style.top = '0'
         document.body.appendChild(textArea)
         textArea.focus()
         textArea.select()
 
-        const ok = document.execCommand("copy")
+        const ok = document.execCommand('copy')
         document.body.removeChild(textArea)
 
         if (ok) {
-          void dispatch(notify(t("CopiedToClipboard"), false, 5))
+          void dispatch(notify(t('CopiedToClipboard'), false, 5))
         } else {
-          void dispatch(notify(`${t("FailedToCopy")}`, true, 5))
+          void dispatch(notify(`${t('FailedToCopy')}`, true, 5))
         }
       } catch (error) {
-        console.error("Failed to copy:", error)
-        void dispatch(notify(`${t("FailedToCopy")}`, true, 5))
+        console.error('Failed to copy:', error)
+        void dispatch(notify(`${t('FailedToCopy')}`, true, 5))
       }
     },
     [dispatch, t]
   )
   const [searchParams, setSearchParams] = useSearchParams({
-    show: "true",
-    name: "true",
-    mode: "analogous",
+    show: 'true',
+    name: 'true',
+    mode: 'analogous',
   })
-  const show = (searchParams.get("show") ?? "true") === "true"
-  const name = (searchParams.get("name") ?? "true") === "true"
+  const show = (searchParams.get('show') ?? 'true') === 'true'
+  const name = (searchParams.get('name') ?? 'true') === 'true'
 
   const { isDragging, listItemsByStatus, handleDragging, handleUpdate } =
     useDragAndDrop(colors, statuses)
@@ -160,7 +160,7 @@ const AccessibleColors: FC = () => {
 
   const baseWidth = 8
   const [widthNumber, setWidth] = useLocalStorage(
-    "Jenniina-color-block-width",
+    'Jenniina-color-block-width',
     baseWidth
   )
   const width = `${widthNumber}em`
@@ -173,16 +173,16 @@ const AccessibleColors: FC = () => {
   }
 
   const colorModeOptions: SelectOption[] = [
-    { value: "analogous", label: t("Analogous") },
-    { value: "complementary", label: t("Complementary") },
-    { value: "monochromatic", label: t("Monochromatic") },
-    { value: "triad", label: t("Triad") },
-    { value: "tetrad", label: t("Tetrad") },
+    { value: 'analogous', label: t('Analogous') },
+    { value: 'complementary', label: t('Complementary') },
+    { value: 'monochromatic', label: t('Monochromatic') },
+    { value: 'triad', label: t('Triad') },
+    { value: 'tetrad', label: t('Tetrad') },
   ]
 
   const random: number = Math.floor(Math.random() * colorModeOptions.length)
 
-  const colorMode = (searchParams.get("mode") ??
+  const colorMode = (searchParams.get('mode') ??
     colorModeOptions[random]) as TColorMode
 
   useEffect(() => {
@@ -260,9 +260,9 @@ const AccessibleColors: FC = () => {
     }) => {
       // Always use hex for block and other color
       let blockHex, otherHex
-      if (colorFormatBlock === "hex") {
+      if (colorFormatBlock === 'hex') {
         blockHex = blockColor
-      } else if (colorFormatBlock === "rgb") {
+      } else if (colorFormatBlock === 'rgb') {
         const rgbMatch = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.exec(
           blockColor
         )
@@ -272,8 +272,8 @@ const AccessibleColors: FC = () => {
               Number(rgbMatch[2]),
               Number(rgbMatch[3])
             )
-          : "#000000"
-      } else if (colorFormatBlock === "hsl") {
+          : '#000000'
+      } else if (colorFormatBlock === 'hsl') {
         const hslMatch = /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i.exec(
           blockColor
         )
@@ -285,14 +285,14 @@ const AccessibleColors: FC = () => {
           )
           blockHex = rgbToHex(rgb.r, rgb.g, rgb.b)
         } else {
-          blockHex = "#000000"
+          blockHex = '#000000'
         }
       } else {
-        blockHex = "#000000"
+        blockHex = '#000000'
       }
-      if (colorFormatOther === "hex") {
+      if (colorFormatOther === 'hex') {
         otherHex = otherColor
-      } else if (colorFormatOther === "rgb") {
+      } else if (colorFormatOther === 'rgb') {
         const rgbMatch = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.exec(
           otherColor
         )
@@ -302,8 +302,8 @@ const AccessibleColors: FC = () => {
               Number(rgbMatch[2]),
               Number(rgbMatch[3])
             )
-          : "#000000"
-      } else if (colorFormatOther === "hsl") {
+          : '#000000'
+      } else if (colorFormatOther === 'hsl') {
         const hslMatch = /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i.exec(
           otherColor
         )
@@ -315,10 +315,10 @@ const AccessibleColors: FC = () => {
           )
           otherHex = rgbToHex(rgb.r, rgb.g, rgb.b)
         } else {
-          otherHex = "#000000"
+          otherHex = '#000000'
         }
       } else {
-        otherHex = "#000000"
+        otherHex = '#000000'
       }
       return `
  <circle
@@ -342,9 +342,9 @@ const AccessibleColors: FC = () => {
       colorFormatOther,
     }) => {
       let blockHex, otherHex
-      if (colorFormatBlock === "hex") {
+      if (colorFormatBlock === 'hex') {
         blockHex = blockColor
-      } else if (colorFormatBlock === "rgb") {
+      } else if (colorFormatBlock === 'rgb') {
         const rgbMatch = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.exec(
           blockColor
         )
@@ -354,8 +354,8 @@ const AccessibleColors: FC = () => {
               Number(rgbMatch[2]),
               Number(rgbMatch[3])
             )
-          : "#000000"
-      } else if (colorFormatBlock === "hsl") {
+          : '#000000'
+      } else if (colorFormatBlock === 'hsl') {
         const hslMatch = /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i.exec(
           blockColor
         )
@@ -367,14 +367,14 @@ const AccessibleColors: FC = () => {
           )
           blockHex = rgbToHex(rgb.r, rgb.g, rgb.b)
         } else {
-          blockHex = "#000000"
+          blockHex = '#000000'
         }
       } else {
-        blockHex = "#000000"
+        blockHex = '#000000'
       }
-      if (colorFormatOther === "hex") {
+      if (colorFormatOther === 'hex') {
         otherHex = otherColor
-      } else if (colorFormatOther === "rgb") {
+      } else if (colorFormatOther === 'rgb') {
         const rgbMatch = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.exec(
           otherColor
         )
@@ -384,8 +384,8 @@ const AccessibleColors: FC = () => {
               Number(rgbMatch[2]),
               Number(rgbMatch[3])
             )
-          : "#000000"
-      } else if (colorFormatOther === "hsl") {
+          : '#000000'
+      } else if (colorFormatOther === 'hsl') {
         const hslMatch = /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i.exec(
           otherColor
         )
@@ -397,10 +397,10 @@ const AccessibleColors: FC = () => {
           )
           otherHex = rgbToHex(rgb.r, rgb.g, rgb.b)
         } else {
-          otherHex = "#000000"
+          otherHex = '#000000'
         }
       } else {
-        otherHex = "#000000"
+        otherHex = '#000000'
       }
       return `
     <rect
@@ -423,9 +423,9 @@ const AccessibleColors: FC = () => {
       colorFormatOther,
     }) => {
       let otherHex
-      if (colorFormatOther === "hex") {
+      if (colorFormatOther === 'hex') {
         otherHex = otherColor
-      } else if (colorFormatOther === "rgb") {
+      } else if (colorFormatOther === 'rgb') {
         const rgbMatch = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.exec(
           otherColor
         )
@@ -435,8 +435,8 @@ const AccessibleColors: FC = () => {
               Number(rgbMatch[2]),
               Number(rgbMatch[3])
             )
-          : "#000000"
-      } else if (colorFormatOther === "hsl") {
+          : '#000000'
+      } else if (colorFormatOther === 'hsl') {
         const hslMatch = /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i.exec(
           otherColor
         )
@@ -448,10 +448,10 @@ const AccessibleColors: FC = () => {
           )
           otherHex = rgbToHex(rgb.r, rgb.g, rgb.b)
         } else {
-          otherHex = "#000000"
+          otherHex = '#000000'
         }
       } else {
-        otherHex = "#000000"
+        otherHex = '#000000'
       }
       return `
 <circle
@@ -496,9 +496,9 @@ const AccessibleColors: FC = () => {
         // Always use hex for block color
         let hexColor: string
         try {
-          if (block.colorFormat === "hex") {
+          if (block.colorFormat === 'hex') {
             hexColor = block.color
-          } else if (block.colorFormat === "rgb") {
+          } else if (block.colorFormat === 'rgb') {
             const rgbMatch =
               /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.exec(block.color)
             if (rgbMatch) {
@@ -508,9 +508,9 @@ const AccessibleColors: FC = () => {
                 Number(rgbMatch[3])
               )
             } else {
-              throw new Error("Invalid RGB format")
+              throw new Error('Invalid RGB format')
             }
-          } else if (block.colorFormat === "hsl") {
+          } else if (block.colorFormat === 'hsl') {
             const hslMatch =
               /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i.exec(
                 block.color
@@ -523,17 +523,17 @@ const AccessibleColors: FC = () => {
               )
               hexColor = rgbToHex(rgb.r, rgb.g, rgb.b)
             } else {
-              throw new Error("Invalid HSL format")
+              throw new Error('Invalid HSL format')
             }
           } else {
-            hexColor = "#000000"
+            hexColor = '#000000'
           }
         } catch (error) {
           console.error(error)
           void dispatch(
-            notify(`${t("Error")}: ${(error as Error).message}`, true, 4)
+            notify(`${t('Error')}: ${(error as Error).message}`, true, 4)
           )
-          hexColor = "#000000" // Default to black on error
+          hexColor = '#000000' // Default to black on error
         }
 
         // Color block rectangle
@@ -568,13 +568,13 @@ const AccessibleColors: FC = () => {
           font-family="Arial"
           text-anchor="middle"
           dominant-baseline="middle"
-          fill="${block.luminance > 0.179 ? "#000000" : "#FFFFFF"}"
+          fill="${block.luminance > 0.179 ? '#000000' : '#FFFFFF'}"
           stroke="none"
         >
           ${block.color}
         </text>
       `
-          : ""
+          : ''
 
         return `
         <g>
@@ -585,7 +585,7 @@ const AccessibleColors: FC = () => {
         </g>
       `
       })
-      .join("")
+      .join('')
 
     const linesGroup = items
       ?.map((colorItem, idx) => {
@@ -593,9 +593,9 @@ const AccessibleColors: FC = () => {
         const yLine = yIndicator + (indicatorSize - lineHeight) / 2
         // Always use hex for line color
         let lineHex
-        if (colorItem.colorFormat === "hex") {
+        if (colorItem.colorFormat === 'hex') {
           lineHex = colorItem.color
-        } else if (colorItem.colorFormat === "rgb") {
+        } else if (colorItem.colorFormat === 'rgb') {
           const rgbMatch = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.exec(
             colorItem.color
           )
@@ -605,8 +605,8 @@ const AccessibleColors: FC = () => {
                 Number(rgbMatch[2]),
                 Number(rgbMatch[3])
               )
-            : "#000000"
-        } else if (colorItem.colorFormat === "hsl") {
+            : '#000000'
+        } else if (colorItem.colorFormat === 'hsl') {
           const hslMatch =
             /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i.exec(
               colorItem.color
@@ -619,10 +619,10 @@ const AccessibleColors: FC = () => {
             )
             lineHex = rgbToHex(rgb.r, rgb.g, rgb.b)
           } else {
-            lineHex = "#000000"
+            lineHex = '#000000'
           }
         } else {
-          lineHex = "#000000"
+          lineHex = '#000000'
         }
 
         return `
@@ -636,7 +636,7 @@ const AccessibleColors: FC = () => {
         />
       `
       })
-      .join("")
+      .join('')
 
     const indicatorsGroup = items
       ?.map((block, index) => {
@@ -660,7 +660,7 @@ const AccessibleColors: FC = () => {
           ?.filter((_, otherIdx) => otherIdx !== index)
           .map((other) => {
             const complianceLevel = highestCompliance(other.id)
-            if (!complianceLevel) return ""
+            if (!complianceLevel) return ''
 
             return ComplianceShapes[complianceLevel]({
               xPosition,
@@ -676,7 +676,7 @@ const AccessibleColors: FC = () => {
               colorFormatOther: other.colorFormat,
             })
           })
-          .join("")
+          .join('')
 
         return `
         <g>
@@ -685,12 +685,12 @@ const AccessibleColors: FC = () => {
         </g>
       `
       })
-      .join("")
+      .join('')
 
     const linkMargin = 7
     const linkX = svgWidth - linkMargin
     const linkY = svgHeight - linkMargin * 1.5
-    const linkURL = "https://colors.jenniina.fi"
+    const linkURL = 'https://colors.jenniina.fi'
 
     const linkElement = `
       <a href="${linkURL}" target="_blank" rel="noopener noreferrer">
@@ -766,17 +766,17 @@ const AccessibleColors: FC = () => {
   const saveAsSVG = () => {
     const { svgContent } = generateSVG()
     const blob = new Blob([svgContent], {
-      type: "image/svg+xml;charset=utf-8",
+      type: 'image/svg+xml;charset=utf-8',
     })
     const url = URL.createObjectURL(blob)
-    const link = document?.createElement("a")
+    const link = document?.createElement('a')
     link.href = url
-    link.download = "color-blocks.svg"
+    link.download = 'color-blocks.svg'
     document?.body.appendChild(link)
     link.click()
     document?.body.removeChild(link)
     URL.revokeObjectURL(url)
-    void dispatch(notify(t("ArtSaved"), false, 5))
+    void dispatch(notify(t('ArtSaved'), false, 5))
   }
 
   const saveAsPNG = () => {
@@ -787,37 +787,37 @@ const AccessibleColors: FC = () => {
     img.height = svgHeight
 
     const svgBlob = new Blob([svgContent], {
-      type: "image/svg+xml;charset=utf-8",
+      type: 'image/svg+xml;charset=utf-8',
     })
     const url = URL.createObjectURL(svgBlob)
 
     img.onload = () => {
-      const canvas = document?.createElement("canvas")
+      const canvas = document?.createElement('canvas')
       canvas.width = svgWidth
       canvas.height = svgHeight
-      const context = canvas.getContext("2d")
+      const context = canvas.getContext('2d')
 
       context?.drawImage(img, 0, 0)
 
-      const pngDataUrl = canvas.toDataURL("image/png")
+      const pngDataUrl = canvas.toDataURL('image/png')
 
-      const link = document?.createElement("a")
+      const link = document?.createElement('a')
       link.href = pngDataUrl
-      link.download = "color-blocks.png"
-      link.target = "_blank"
-      link.rel = "noreferrer"
+      link.download = 'color-blocks.png'
+      link.target = '_blank'
+      link.rel = 'noreferrer'
       document?.body.appendChild(link)
       link.click()
       document?.body.removeChild(link)
 
       URL.revokeObjectURL(url)
-      void dispatch(notify(t("ArtSaved"), false, 5))
+      void dispatch(notify(t('ArtSaved'), false, 5))
     }
 
     img.onerror = (err) => {
-      console.error("Error loading SVG into image for PNG conversion:", err)
+      console.error('Error loading SVG into image for PNG conversion:', err)
       URL.revokeObjectURL(url)
-      void dispatch(notify(t("Error"), true, 4))
+      void dispatch(notify(t('Error'), true, 4))
     }
 
     img.src = url
@@ -828,8 +828,8 @@ const AccessibleColors: FC = () => {
     position: number
   ) => {
     e.dataTransfer.setData(
-      "text/plain",
-      JSON.stringify({ type: "item", id: position })
+      'text/plain',
+      JSON.stringify({ type: 'item', id: position })
     )
   }
 
@@ -848,8 +848,8 @@ const AccessibleColors: FC = () => {
   }
 
   const handleDrop = (e: React.DragEvent<HTMLUListElement>) => {
-    const data = JSON.parse(e.dataTransfer.getData("text/plain")) as DragData
-    if (data.type === "item") {
+    const data = JSON.parse(e.dataTransfer.getData('text/plain')) as DragData
+    if (data.type === 'item') {
       handleUpdate(parseInt(data.id), status, theTarget)
       setTimeout(() => {
         setColors(listItemsByStatus[status]?.items)
@@ -859,25 +859,23 @@ const AccessibleColors: FC = () => {
   }
 
   const focusColorBlock = useCallback((targetId: number) => {
-    const el = document.getElementById(
-      `color-block-${targetId}`
-    ) as HTMLElement | null
+    const el = document.getElementById(`color-block-${targetId}`)
     if (!el) return
     el.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest",
-      inline: "nearest",
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'nearest',
     })
     el.focus()
   }, [])
 
   const moveColor = useCallback(
-    (id: number, direction: "left" | "right") => {
+    (id: number, direction: 'left' | 'right') => {
       const items = listItemsByStatus[status]?.items ?? []
       const fromIndex = items.findIndex((item) => item.id === id)
       if (fromIndex === -1) return
 
-      const toIndex = direction === "left" ? fromIndex - 1 : fromIndex + 1
+      const toIndex = direction === 'left' ? fromIndex - 1 : fromIndex + 1
       if (toIndex < 0 || toIndex >= items.length) return
 
       const nextItems = [...items]
@@ -898,88 +896,88 @@ const AccessibleColors: FC = () => {
 
   return (
     <div
-      id={styles["color-container"]}
-      className={`fullwidth ${styles["color-container"]} ${
-        lightTheme ? styles.light : ""
+      id={styles['color-container']}
+      className={`fullwidth ${styles['color-container']} ${
+        lightTheme ? styles.light : ''
       }`}
-      style={{ ["--font-size" as string]: dynamicFontSize.input }}
+      style={{ ['--font-size' as string]: dynamicFontSize.input }}
     >
-      <div id="info" className={styles["info-wrap"]}>
-        <h2>{t("SymbolMeanings")}</h2>
+      <div id="info" className={styles['info-wrap']}>
+        <h2>{t('SymbolMeanings')}</h2>
         <ul>
           <li>
             <div
               style={{
-                display: "inline-block",
-                backgroundColor: "var(--color-primary-20)",
-                borderRadius: "50%",
+                display: 'inline-block',
+                backgroundColor: 'var(--color-primary-20)',
+                borderRadius: '50%',
                 width: `2em`,
                 height: `2em`,
               }}
             ></div>
-            <span>{t("HighestAAAComplianceWithRegularText")}</span>
+            <span>{t('HighestAAAComplianceWithRegularText')}</span>
           </li>
           <li>
             <div
               style={{
-                display: "inline-block",
-                backgroundColor: "transparent",
+                display: 'inline-block',
+                backgroundColor: 'transparent',
                 outline: `0.3em solid var(--color-primary-20)`,
                 outlineOffset: `-0.3em`,
-                borderRadius: "50%",
+                borderRadius: '50%',
                 width: `1.7em`,
                 height: `1.7em`,
-                margin: "0 0.2em 0 0.2em ",
+                margin: '0 0.2em 0 0.2em ',
               }}
             ></div>
-            <span>{t("MinimumAAComplianceWithRegularText")}</span>
+            <span>{t('MinimumAAComplianceWithRegularText')}</span>
           </li>
           <li>
             <div
               style={{
-                display: "inline-block",
-                backgroundColor: "transparent",
+                display: 'inline-block',
+                backgroundColor: 'transparent',
                 outline: `0.3em solid var(--color-primary-20)`,
                 outlineOffset: `-0.26em`,
-                borderRadius: "0",
+                borderRadius: '0',
                 width: `0.9em`,
                 height: `0.9em`,
-                margin: "0 0.65em 0 0.65em",
+                margin: '0 0.65em 0 0.65em',
               }}
             ></div>
-            <span>{t("AAACompliantWithUI")}</span>
+            <span>{t('AAACompliantWithUI')}</span>
           </li>
         </ul>
       </div>
 
-      <div className={styles["btn-wrap"]}>
+      <div className={styles['btn-wrap']}>
         {lightTheme ? (
           <>
-            <span>{t("DarkMode")}:</span>
+            <span>{t('DarkMode')}:</span>
           </>
         ) : (
           <>
-            <span>{t("LightMode")}:</span>
+            <span>{t('LightMode')}:</span>
           </>
         )}
-        <button onClick={toggleTheme} className={`gray ${styles["mode-btn"]}`}>
+        <button onClick={toggleTheme} className={`gray ${styles['mode-btn']}`}>
           {lightTheme ? (
             <>
-              <span className="scr">{t("DarkMode")}</span>
+              <span className="scr">{t('DarkMode')}</span>
               <Icon lib="md" name="MdDarkMode" />
             </>
           ) : (
             <>
-              <span className="scr">{t("LightMode")}</span>
-              <Icon lib="md" name="MdLightMode" />{" "}
+              <span className="scr">{t('LightMode')}</span>
+              <Icon lib="md" name="MdLightMode" />{' '}
             </>
           )}
         </button>
       </div>
 
-      <div id="colorpicker" className={styles["color-picker"]}>
+      <div id="colorpicker" className={styles['color-picker']}>
         <label htmlFor="color-input" className=" ">
-          {t("ColorPicker")}:
+          {t('ColorPicker')}:
         </label>
         <input
           id="color-input"
@@ -990,15 +988,15 @@ const AccessibleColors: FC = () => {
           }}
         />
         <button className="gray" type="button" onClick={addColor}>
-          <span className={`transf ${styles["circle-left-edge"]}`}>&nbsp;</span>
-          {t("AddAColor")}&nbsp;&nbsp;
+          <span className={`transf ${styles['circle-left-edge']}`}>&nbsp;</span>
+          {t('AddAColor')}&nbsp;&nbsp;
           <Icon lib="lu" name="LuCirclePlus" />
         </button>
       </div>
 
-      <div className={styles["btn-wrap"]}>
+      <div className={styles['btn-wrap']}>
         <div
-          className={`${styles["color-edit-container"]} ${styles["mode-container"]}`}
+          className={`${styles['color-edit-container']} ${styles['mode-container']}`}
         >
           <Select
             options={colorModeOptions}
@@ -1012,7 +1010,7 @@ const AccessibleColors: FC = () => {
               setSearchParams(
                 (prev) => {
                   prev.set(
-                    "mode",
+                    'mode',
                     (o?.value ?? colorModeOptions[random].value) as string
                   )
                   return prev
@@ -1024,48 +1022,48 @@ const AccessibleColors: FC = () => {
               )
             }
             id="color-mode"
-            instructions={t("SelectColorModeForNewColors")}
-            className={`${styles["color-select"]}`}
+            instructions={t('SelectColorModeForNewColors')}
+            className={`${styles['color-select']}`}
             hideDelete
             tooltip={true}
             y="above narrow2"
             z={3}
           />
           <button
-            className={`gray small tooltip-wrap ${styles["flat-left"]}`}
+            className={`gray small tooltip-wrap ${styles['flat-left']}`}
             type="button"
             onClick={makeColorPalette}
           >
-            {t("AddToColors")}&nbsp;&nbsp;
+            {t('AddToColors')}&nbsp;&nbsp;
             <Icon lib="lu" name="LuCirclePlus" />
             <span className="tooltip above narrow2">
-              {t("GeneratesColorsBasedOnLastColor")}
+              {t('GeneratesColorsBasedOnLastColor')}
             </span>
           </button>
           <button
-            className={` gray small  ${styles["empty-generate"]}`}
+            className={` gray small  ${styles['empty-generate']}`}
             type="button"
             onClick={() => {
               if (
                 haveCleared === true ||
                 void confirm({
-                  message: t("AreYouSureYouWantToClearAllColors") ?? "",
+                  message: t('AreYouSureYouWantToClearAllColors') ?? '',
                 })
               )
                 resetAndMake()
               setHaveCleared(true)
             }}
           >
-            {t("ClearAndGenerateNew")}&nbsp;&nbsp;
+            {t('ClearAndGenerateNew')}&nbsp;&nbsp;
             <Icon lib="lia" name="LiaUndoAltSolid" />
           </button>
         </div>
       </div>
       <div
         id="color-blocks"
-        className={`${styles["color-blocks"]} ${
-          !name || !show ? styles.overflow : ""
-        } ${isDragging ? styles.drag : ""}`}
+        className={`${styles['color-blocks']} ${
+          !name || !show ? styles.overflow : ''
+        } ${isDragging ? styles.drag : ''}`}
       >
         {blocks.map((block, index) => {
           const isFirst = index === 0
@@ -1076,32 +1074,32 @@ const AccessibleColors: FC = () => {
           return (
             <ul
               key={`${block.id}`}
-              className={styles["block-wrap"]}
+              className={styles['block-wrap']}
               onDrop={handleDrop}
               id={`color-block-${block.id}`}
               tabIndex={-1}
             >
               <li
-                className={styles["color-wrap"]}
+                className={styles['color-wrap']}
                 title={`ID: ${block.id}`}
                 aria-label={`ID: ${block.id}`}
                 style={{ width: `${width}`, maxWidth: `${width}` }}
               >
                 {show && (
                   <>
-                    <div className={styles["skip-links"]}>
+                    <div className={styles['skip-links']}>
                       {!isFirst && prevId != null && (
                         <a
                           href={`#color-block-${prevId}`}
-                          className={`${styles["skip-link"]} gray small`}
+                          className={`${styles['skip-link']} gray small`}
                           onClick={(e) => {
                             e.preventDefault()
                             focusColorBlock(prevId)
                           }}
                         >
                           <span>
-                            <Icon lib="fa" name="FaArrowLeft" />{" "}
-                            {t("SkipToPreviousColor")}
+                            <Icon lib="fa" name="FaArrowLeft" />{' '}
+                            {t('SkipToPreviousColor')}
                           </span>
                         </a>
                       )}
@@ -1109,68 +1107,68 @@ const AccessibleColors: FC = () => {
                       {!isLast && nextId != null && (
                         <a
                           href={`#color-block-${nextId}`}
-                          className={`${styles["skip-link"]} gray small`}
+                          className={`${styles['skip-link']} gray small`}
                           onClick={(e) => {
                             e.preventDefault()
                             focusColorBlock(nextId)
                           }}
                         >
                           <span>
-                            {" "}
-                            {t("SkipToNextColor")}{" "}
+                            {' '}
+                            {t('SkipToNextColor')}{' '}
                             <Icon lib="fa" name="FaArrowRight" />
                           </span>
                         </a>
                       )}
                     </div>
-                    <div className={styles["move-buttons"]}>
+                    <div className={styles['move-buttons']}>
                       {!isFirst && (
                         <button
                           type="button"
-                          title={t("MoveLeft")}
-                          className={` ${styles["left"]}`}
-                          onClick={() => moveColor(block.id, "left")}
+                          title={t('MoveLeft')}
+                          className={` ${styles.left}`}
+                          onClick={() => moveColor(block.id, 'left')}
                           style={{
-                            color: block.luminance < 0.179 ? "white" : "black",
+                            color: block.luminance < 0.179 ? 'white' : 'black',
                             backgroundColor: block.color,
-                            backgroundImage: "none",
+                            backgroundImage: 'none',
                           }}
                         >
                           <b aria-hidden="true">
                             <Icon lib="go" name="GoArrowLeft" />
                           </b>
-                          <span className="scr">{t("MoveLeft")}</span>
+                          <span className="scr">{t('MoveLeft')}</span>
                         </button>
                       )}
 
                       <small
-                        draggable={"true"}
+                        draggable={'true'}
                         onDragStart={(e) => handleDragStart(e, block.id)}
                         onDragEnter={(e) => handleDragEnter(e, block.id)}
                         onDragOver={(e) => handleDragOver(e)}
                         onDragEnd={() => handleDragging(false)}
                         data-identity={block.id}
-                        className={`${styles["drag-handle"]} ${isFirst ? styles.left : isLast ? styles.right : ""}`}
+                        className={`${styles['drag-handle']} ${isFirst ? styles.left : isLast ? styles.right : ''}`}
                       >
-                        {t("Move")}
+                        {t('Move')}
                       </small>
 
                       {!isLast && (
                         <button
                           type="button"
-                          title={t("MoveRight")}
-                          className={` ${styles["right"]}`}
-                          onClick={() => moveColor(block.id, "right")}
+                          title={t('MoveRight')}
+                          className={` ${styles.right}`}
+                          onClick={() => moveColor(block.id, 'right')}
                           style={{
-                            color: block.luminance < 0.179 ? "white" : "black",
+                            color: block.luminance < 0.179 ? 'white' : 'black',
                             backgroundColor: block.color,
-                            backgroundImage: "none",
+                            backgroundImage: 'none',
                           }}
                         >
                           <b aria-hidden="true">
                             <Icon lib="go" name="GoArrowRight" />
                           </b>
-                          <span className="scr">{t("MoveRight")}</span>
+                          <span className="scr">{t('MoveRight')}</span>
                         </button>
                       )}
                     </div>
@@ -1178,15 +1176,15 @@ const AccessibleColors: FC = () => {
                 )}
                 <ul>
                   <li
-                    draggable={"true"}
+                    draggable={'true'}
                     onDragStart={(e) => handleDragStart(e, block.id)}
                     onDragEnter={(e) => handleDragEnter(e, block.id)}
                     onDragOver={(e) => handleDragOver(e)}
                     onDragEnd={() => handleDragging(false)}
                     data-identity={block.id}
-                    className={styles["color-block"]}
+                    className={styles['color-block']}
                     style={{
-                      ["--color" as string]: block.color,
+                      ['--color' as string]: block.color,
                       backgroundColor: block.color,
                       width: `${width}`,
                       maxWidth: `${width}`,
@@ -1194,10 +1192,10 @@ const AccessibleColors: FC = () => {
                     }}
                   >
                     <div
-                      className={styles["compliance-indicators"]}
+                      className={styles['compliance-indicators']}
                       style={{
                         gap: `calc(${width} / 4)`,
-                        ["--width-full" as string]: `${width}`,
+                        ['--width-full' as string]: `${width}`,
                       }}
                     >
                       {blocks.map((otherColor) => {
@@ -1205,12 +1203,12 @@ const AccessibleColors: FC = () => {
                           return (
                             <div
                               key={`none-${otherColor.color}-${otherColor.id}`}
-                              className={`${styles["indicator-null"]} ${styles.indicator}`}
+                              className={`${styles['indicator-null']} ${styles.indicator}`}
                               style={{
-                                ["--color" as string]: otherColor.color,
-                                ["--width" as string]: `calc(${width} / 3)`,
-                                ["--left" as string]: `calc(calc(${width} / 3) * -1)`,
-                                backgroundColor: "transparent",
+                                ['--color' as string]: otherColor.color,
+                                ['--width' as string]: `calc(${width} / 3)`,
+                                ['--left' as string]: `calc(calc(${width} / 3) * -1)`,
+                                backgroundColor: 'transparent',
                                 width: `calc(${width} / 3)`,
                                 height: `calc(${width} / 3)`,
                               }}
@@ -1245,11 +1243,11 @@ const AccessibleColors: FC = () => {
                             <button
                               key={`aaa-${otherColor.color}-${otherColor.id}`}
                               type="button"
-                              className={`reset ${styles["indicator-aaa"]} ${styles.indicator} tooltip-wrap`}
+                              className={`reset ${styles['indicator-aaa']} ${styles.indicator} tooltip-wrap`}
                               style={{
-                                ["--color" as string]: otherColor.color,
+                                ['--color' as string]: otherColor.color,
                                 backgroundColor: otherColor.color,
-                                ["--left" as string]: `calc(calc(${width} / 3) * -1)`,
+                                ['--left' as string]: `calc(calc(${width} / 3) * -1)`,
                                 width: `calc(${width} / 3)`,
                                 height: `calc(${width} / 3)`,
                               }}
@@ -1263,9 +1261,9 @@ const AccessibleColors: FC = () => {
                                 className={`tooltip below narrow3 ${styles.tooltip}`}
                                 style={{
                                   fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 0.9rem)`,
-                                  ["--tooltip-max-width" as string]: width,
+                                  ['--tooltip-max-width' as string]: width,
                                 }}
-                              >{`${t("AAACompliantWithID")}: ${
+                              >{`${t('AAACompliantWithID')}: ${
                                 otherColor.id
                               }`}</span>
                             </button>
@@ -1277,19 +1275,19 @@ const AccessibleColors: FC = () => {
                             <button
                               key={`aa-${otherColor.color}-${otherColor.id}`}
                               type="button"
-                              className={`reset ${styles["indicator-aa"]} ${styles.indicator} tooltip-wrap`}
+                              className={`reset ${styles['indicator-aa']} ${styles.indicator} tooltip-wrap`}
                               style={{
-                                ["--color" as string]: otherColor.color,
+                                ['--color' as string]: otherColor.color,
                                 backgroundColor: block.color,
                                 outline: `calc(${width} * ${
                                   times * 1.1
                                 }) solid ${otherColor.color}`,
                                 outlineOffset: `calc(${width} * -0.013)`,
-                                ["--left" as string]: `calc(calc(${width} / 5) * -2)`,
+                                ['--left' as string]: `calc(calc(${width} / 5) * -2)`,
                                 width: `calc(${width} / 5)`,
                                 height: `calc(${width} / 5)`,
                                 margin: `calc(${width} / 15)`,
-                                borderRadius: "50%",
+                                borderRadius: '50%',
                               }}
                               onClick={() => {
                                 const text = `${otherColor.color} is AA compliant with ${block.color}`
@@ -1301,9 +1299,9 @@ const AccessibleColors: FC = () => {
                                 className="tooltip below narrow3"
                                 style={{
                                   fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 0.9rem)`,
-                                  ["--tooltip-max-width" as string]: width,
+                                  ['--tooltip-max-width' as string]: width,
                                 }}
-                              >{`${t("AACompliantWithID")}: ${
+                              >{`${t('AACompliantWithID')}: ${
                                 otherColor.id
                               }`}</span>
                             </button>
@@ -1315,10 +1313,10 @@ const AccessibleColors: FC = () => {
                             <button
                               key={`aa-ui-${otherColor.color}-${otherColor.id}`}
                               type="button"
-                              className={`reset ${styles["indicator-aa-ui"]} ${styles.indicator} tooltip-wrap`}
+                              className={`reset ${styles['indicator-aa-ui']} ${styles.indicator} tooltip-wrap`}
                               style={{
-                                ["--color" as string]: otherColor.color,
-                                ["--left" as string]: `calc(calc(${width} / 7) * -3)`,
+                                ['--color' as string]: otherColor.color,
+                                ['--left' as string]: `calc(calc(${width} / 7) * -3)`,
                                 backgroundColor: block.color,
                                 outline: `calc(${width} * ${times}) solid ${otherColor.color}`,
                                 outlineOffset: `calc(${width} * ${times} * -1)`,
@@ -1336,9 +1334,9 @@ const AccessibleColors: FC = () => {
                                 className={`tooltip below narrow3 ${styles.tooltip}`}
                                 style={{
                                   fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 0.9rem)`,
-                                  ["--tooltip-max-width" as string]: width,
+                                  ['--tooltip-max-width' as string]: width,
                                 }}
-                              >{`${t("AAGraphicElementCompliantWithID")}: ${
+                              >{`${t('AAGraphicElementCompliantWithID')}: ${
                                 otherColor.id
                               }`}</span>
                             </button>
@@ -1349,11 +1347,11 @@ const AccessibleColors: FC = () => {
                           <div
                             aria-hidden="true"
                             key={`null-${otherColor.color}-${otherColor.id}`}
-                            className={`${styles["indicator-null"]} ${styles.indicator}`}
+                            className={`${styles['indicator-null']} ${styles.indicator}`}
                             style={{
-                              ["--color" as string]: otherColor.color,
-                              backgroundColor: "transparent",
-                              ["--left" as string]: `calc(calc(${width} / 3) * -1)`,
+                              ['--color' as string]: otherColor.color,
+                              backgroundColor: 'transparent',
+                              ['--left' as string]: `calc(calc(${width} / 3) * -1)`,
                               width: `calc(${width} / 3)`,
                               height: `calc(${width} / 3)`,
                             }}
@@ -1369,18 +1367,18 @@ const AccessibleColors: FC = () => {
                       backgroundColor: block.color,
                       width: `${width}`,
                       maxWidth: `${width}`,
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      padding: "0 0.1em 0.5em",
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: '0 0.1em 0.5em',
                     }}
-                    className={styles["color-name"]}
+                    className={styles['color-name']}
                   >
                     <span
                       style={{
-                        color: block.luminance < 0.179 ? "white" : "black",
+                        color: block.luminance < 0.179 ? 'white' : 'black',
                         fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 1.2rem)`,
-                        textAlign: "center",
+                        textAlign: 'center',
                       }}
                     >
                       {block.color}
@@ -1389,7 +1387,7 @@ const AccessibleColors: FC = () => {
                 )}
                 {show && (
                   <>
-                    <div className={styles["color-edit-container"]}>
+                    <div className={styles['color-edit-container']}>
                       <ColorsInput
                         block={block}
                         updateColor={updateColor}
@@ -1405,13 +1403,13 @@ const AccessibleColors: FC = () => {
                       className={`tooltip-wrap small delete danger gray ${styles.remove}`}
                       onClick={() => removeColor(block.id)}
                       style={{
-                        margin: "0.8em auto",
+                        margin: '0.8em auto',
                         width: `calc(100% - 4px)`,
                         minWidth: `calc(100% - 4px)`,
                         fontSize: `clamp(0.75rem, ${dynamicFontSize.input}, 2rem)`,
                       }}
                     >
-                      {t("Remove")}
+                      {t('Remove')}
                     </button>
                   </>
                 )}
@@ -1421,7 +1419,7 @@ const AccessibleColors: FC = () => {
         })}
       </div>
 
-      <div className={`${styles["btn-wrap"]} ${styles["export-wrap"]}`}>
+      <div className={`${styles['btn-wrap']} ${styles['export-wrap']}`}>
         {listItemsByStatus[status]?.items?.length > 0 && (
           <>
             <div>
@@ -1429,13 +1427,13 @@ const AccessibleColors: FC = () => {
                 <button
                   type="button"
                   aria-hidden="true"
-                  title={t("Reset")}
+                  title={t('Reset')}
                   // eslint-disable-next-line @typescript-eslint/no-misused-promises
                   onClick={async () => {
                     if (
                       colors.length === 0 ||
                       (await confirm({
-                        message: t("AreYouSureYouWantToResetAllColors"),
+                        message: t('AreYouSureYouWantToResetAllColors'),
                       }))
                     ) {
                       void resetColors()
@@ -1443,7 +1441,7 @@ const AccessibleColors: FC = () => {
                   }}
                   className="reset p1"
                 >
-                  <Icon lib="bi" name="BiReset" style={{ fontSize: "1.8em" }} />
+                  <Icon lib="bi" name="BiReset" style={{ fontSize: '1.8em' }} />
                 </button>
                 <button
                   className="gray small"
@@ -1453,14 +1451,14 @@ const AccessibleColors: FC = () => {
                     if (
                       colors.length === 0 ||
                       (await confirm({
-                        message: t("AreYouSureYouWantToResetAllColors"),
+                        message: t('AreYouSureYouWantToResetAllColors'),
                       }))
                     ) {
                       void resetColors()
                     }
                   }}
                 >
-                  {t("Reset")}&nbsp;&nbsp;
+                  {t('Reset')}&nbsp;&nbsp;
                   <Icon lib="bi" name="BiReset" />
                 </button>
               </div>
@@ -1468,12 +1466,12 @@ const AccessibleColors: FC = () => {
                 <button
                   type="button"
                   aria-hidden="true"
-                  title={t("Clear")}
+                  title={t('Clear')}
                   // eslint-disable-next-line @typescript-eslint/no-misused-promises
                   onClick={async () => {
                     if (
                       await confirm({
-                        message: t("AreYouSureYouWantToClearAllColors") ?? "",
+                        message: t('AreYouSureYouWantToClearAllColors') ?? '',
                       })
                     ) {
                       listItemsByStatus[status].removeItems()
@@ -1485,7 +1483,7 @@ const AccessibleColors: FC = () => {
                   <Icon
                     lib="ri"
                     name="RiDeleteBin2Line"
-                    style={{ fontSize: "1.8em" }}
+                    style={{ fontSize: '1.8em' }}
                   />
                 </button>
                 <button
@@ -1495,7 +1493,7 @@ const AccessibleColors: FC = () => {
                   onClick={async () => {
                     if (
                       await confirm({
-                        message: t("AreYouSureYouWantToClearAllColors") ?? "",
+                        message: t('AreYouSureYouWantToClearAllColors') ?? '',
                       })
                     ) {
                       listItemsByStatus[status].removeItems()
@@ -1503,7 +1501,7 @@ const AccessibleColors: FC = () => {
                     }
                   }}
                 >
-                  {t("Clear")}&nbsp;&nbsp;
+                  {t('Clear')}&nbsp;&nbsp;
                   <Icon lib="ri" name="RiDeleteBin2Line" />
                 </button>
               </div>
@@ -1513,18 +1511,18 @@ const AccessibleColors: FC = () => {
                 <button
                   type="button"
                   aria-hidden="true"
-                  title={t("SaveAsPNG")}
+                  title={t('SaveAsPNG')}
                   onClick={saveAsPNG}
                   className="reset p1"
                 >
-                  <Icon lib="pi" name="PiImage" style={{ fontSize: "1.8em" }} />
+                  <Icon lib="pi" name="PiImage" style={{ fontSize: '1.8em' }} />
                 </button>
                 <button
                   type="button"
                   onClick={saveAsPNG}
                   className="gray small"
                 >
-                  {t("SaveAsPNG")}
+                  {t('SaveAsPNG')}
                   <Icon lib="pi" name="PiDownloadSimpleFill" />
                 </button>
               </div>
@@ -1532,14 +1530,14 @@ const AccessibleColors: FC = () => {
                 <button
                   type="button"
                   aria-hidden="true"
-                  title={t("SaveAsSVG")}
+                  title={t('SaveAsSVG')}
                   onClick={saveAsSVG}
                   className="reset p1"
                 >
                   <Icon
                     lib="si"
                     name="SiSvgtrace"
-                    style={{ fontSize: "1.6em" }}
+                    style={{ fontSize: '1.6em' }}
                   />
                 </button>
                 <button
@@ -1547,7 +1545,7 @@ const AccessibleColors: FC = () => {
                   onClick={saveAsSVG}
                   className="gray small"
                 >
-                  {t("SaveAsSVG")}
+                  {t('SaveAsSVG')}
 
                   <Icon lib="pi" name="PiDownloadSimpleFill" />
                 </button>
@@ -1559,8 +1557,8 @@ const AccessibleColors: FC = () => {
 
       {listItemsByStatus[status]?.items?.length > 0 && (
         <>
-          <div className={styles["width-wrap"]}>
-            <label htmlFor="color-block-width">{t("EditSize")}</label>
+          <div className={styles['width-wrap']}>
+            <label htmlFor="color-block-width">{t('EditSize')}</label>
             <input
               id="color-block-width"
               type="range"
@@ -1571,16 +1569,16 @@ const AccessibleColors: FC = () => {
               onChange={(e) => setWidth(Number(e.target.value))}
             />
           </div>
-          <div className={`${styles["toggle-controls"]}`}>
+          <div className={`${styles['toggle-controls']}`}>
             <div>
-              <strong>{t("ToggleControlVisibility")}</strong>
+              <strong>{t('ToggleControlVisibility')}</strong>
               <button
                 id="toggle-controls"
                 type="button"
                 onClick={() =>
                   setSearchParams(
                     (prev) => {
-                      prev.set("show", show ? "false" : "true")
+                      prev.set('show', show ? 'false' : 'true')
                       return prev
                     },
                     {
@@ -1591,17 +1589,17 @@ const AccessibleColors: FC = () => {
                 }
                 className="gray small"
               >
-                {show ? t("HideControls") : t("ShowControls")}
+                {show ? t('HideControls') : t('ShowControls')}
               </button>
             </div>
             <div>
-              <strong>{t("ToggleColorNameVisibility")}</strong>
+              <strong>{t('ToggleColorNameVisibility')}</strong>
               <button
                 type="button"
                 onClick={() =>
                   setSearchParams(
                     (prev) => {
-                      prev.set("name", name ? "false" : "true")
+                      prev.set('name', name ? 'false' : 'true')
                       return prev
                     },
                     {
@@ -1612,7 +1610,7 @@ const AccessibleColors: FC = () => {
                 }
                 className="gray small"
               >
-                {name ? t("HideColorName") : t("ShowColorName")}
+                {name ? t('HideColorName') : t('ShowColorName')}
               </button>
             </div>
           </div>

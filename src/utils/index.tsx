@@ -415,7 +415,7 @@ export const colorNameToHex = (color: string) => {
 
 export const hexToRGB = (value: string) => {
   if (value.startsWith('rgb(')) {
-    const m = value.match(/^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/)
+    const m = /^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/.exec(value)
     if (!m) throw new Error(`Unsupported rgb format: ${value}`)
     return { r: Number(m[1]), g: Number(m[2]), b: Number(m[3]) }
   }

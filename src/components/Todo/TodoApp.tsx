@@ -1,10 +1,10 @@
-import React, { useRef, useEffect, useState, useCallback } from "react"
-import { getErrorMessage } from "../../utils"
-import { ITaskDraggable } from "./components/TodoList"
-import { v4 as uuidv4 } from "uuid"
-import { generateOptions, ITask, TCategory, TPriority } from "./types"
-import styles from "./css/todo.module.css"
-import { useAppDispatch } from "../../hooks/useAppDispatch"
+import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react'
+import { getErrorMessage } from '../../utils'
+import { ITaskDraggable } from './components/TodoList'
+import { v4 as uuidv4 } from 'uuid'
+import { generateOptions, ITask, TCategory, TPriority } from './types'
+import styles from './css/todo.module.css'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
 import {
   addTodo,
   addTodoAsync,
@@ -19,18 +19,18 @@ import {
   fetchTodos,
   changeTodoOrder,
   setAllTodos,
-} from "./reducers/todoReducer"
-import { notify } from "../../reducers/notificationReducer"
-import { useSelector } from "react-redux"
-import { initializeUser } from "../../reducers/authReducer"
-import { RootState } from "../../store"
-import { ReducerProps } from "../../types"
-import { Select } from "../Select/Select"
-import Icon from "../Icon/Icon"
-import { useLanguageContext } from "../../contexts/LanguageContext"
-import { useConfirm } from "../../contexts/ConfirmContext"
-import { useIsClient, useWindow } from "../../hooks/useSSR"
-import TodoList from "./components/TodoList"
+} from './reducers/todoReducer'
+import { notify } from '../../reducers/notificationReducer'
+import { useSelector } from 'react-redux'
+import { initializeUser } from '../../reducers/authReducer'
+import { RootState } from '../../store'
+import { ReducerProps } from '../../types'
+import { Select } from '../Select/Select'
+import Icon from '../Icon/Icon'
+import { useLanguageContext } from '../../contexts/LanguageContext'
+import { useConfirm } from '../../contexts/ConfirmContext'
+import { useIsClient, useWindow } from '../../hooks/useSSR'
+import TodoList from './components/TodoList'
 
 const maxCharacters = 300
 
@@ -57,17 +57,17 @@ export default function TodoApp() {
 
   const todos = useSelector((state: RootState) => state.todos?.todos ?? [])
   const status = useSelector(
-    (state: RootState) => state.todos?.status ?? "idle"
+    (state: RootState) => state.todos?.status ?? 'idle'
   )
   const error = useSelector((state: RootState) => state.todos?.error ?? null)
 
-  const [priority, setPriority] = useState<TPriority>("low")
-  const [category, setCategory] = useState<TCategory>("other")
+  const [priority, setPriority] = useState<TPriority>('low')
+  const [category, setCategory] = useState<TCategory>('other')
 
-  const [filterPriority, setFilterPriority] = useState<TPriority>("all")
-  const [filterCategory, setFilterCategory] = useState<string>("all")
+  const [filterPriority, setFilterPriority] = useState<TPriority>('all')
+  const [filterCategory, setFilterCategory] = useState<string>('all')
 
-  const localName = "ReactTodos"
+  const localName = 'ReactTodos'
 
   const hasCompletedTasks: boolean =
     todos?.some((todo) => todo.complete) ?? false
@@ -76,7 +76,7 @@ export default function TodoApp() {
     if (!isClient || !windowObj) return
     if (todos.length === 0 && !user) {
       const storedTodosUnknown = JSON.parse(
-        windowObj.localStorage.getItem(localName) ?? "[]"
+        windowObj.localStorage.getItem(localName) ?? '[]'
       ) as unknown
       let storedTodos: ITask[] = []
       if (Array.isArray(storedTodosUnknown))
@@ -109,23 +109,20 @@ export default function TodoApp() {
     return duplicates
   }
 
-  const deleteTodoHandler = useCallback(
-    (key: ITask["key"]) => {
-      if (!key) {
-        void dispatch(notify(`Error: no key`, true, 8))
-        return
-      }
-      if (user?._id) {
-        void dispatch(deleteTodoAsync(user._id, key))
-      } else {
-        void dispatch(deleteTodoFromState(key))
-        const updatedTodos = todos.filter((todo) => todo.key !== key)
-        if (!isClient || !windowObj) return
-        windowObj.localStorage.setItem(localName, JSON.stringify(updatedTodos))
-      }
-    },
-    [dispatch, user?._id, todos, isClient, windowObj]
-  )
+  const deleteTodoHandler = (key: ITask['key']) => {
+    if (!key) {
+      void dispatch(notify(`Error: no key`, true, 8))
+      return
+    }
+    if (user?._id) {
+      void dispatch(deleteTodoAsync(user._id, key))
+    } else {
+      void dispatch(deleteTodoFromState(key))
+      const updatedTodos = todos.filter((todo) => todo.key !== key)
+      if (!isClient || !windowObj) return
+      windowObj.localStorage.setItem(localName, JSON.stringify(updatedTodos))
+    }
+  }
 
   useEffect(() => {
     const duplicates = findDuplicates(todos)
@@ -136,62 +133,43 @@ export default function TodoApp() {
         uniqueKeys.add(duplicate.key)
       }
     })
-  }, [todos, dispatch]) // eslint-disable-line react-hooks/exhaustive-deps
+    // Intentionally omit deleteTodoHandler from deps; it is derived from the
+    // latest state/props and is only used to clean up duplicate keys.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [todos, dispatch, user?._id, isClient, windowObj])
 
-  const [todosWithIdAndStatus, setTodosWithIdAndStatus] = useState<
-    ITaskDraggable[]
-  >([])
-
-  const filteredTodos = todos.filter((todo) => {
-    const priorityMatch =
-      filterPriority === "all" || todo.priority === filterPriority
-    const categoryMatch =
-      filterCategory === "all" || todo.category === filterCategory
-    return priorityMatch && categoryMatch
-  })
-
-  useEffect(() => {
-    const newTodosWithIdAndStatus = filteredTodos
-      ?.slice()
-      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-      .map((todo) => {
-        return { ...todo, id: todo.order, status: "todos" }
-      }) as ITaskDraggable[]
-
-    setTodosWithIdAndStatus((prev) => {
-      // If identical by length and keys/orders/complete, keep previous reference to avoid re-renders
-      if (
-        prev.length === newTodosWithIdAndStatus.length &&
-        prev.every((p, idx) => {
-          const n = newTodosWithIdAndStatus[idx]
-          return (
-            p.key === n.key &&
-            p.order === n.order &&
-            p.complete === n.complete &&
-            p.priority === n.priority &&
-            p.category === n.category &&
-            (p.deadline ?? "") === (n.deadline ?? "") &&
-            p.name === n.name
-          )
-        })
-      ) {
-        return prev
-      }
-      return newTodosWithIdAndStatus
+  const filteredTodos = useMemo(() => {
+    return todos.filter((todo) => {
+      const priorityMatch =
+        filterPriority === 'all' || todo.priority === filterPriority
+      const categoryMatch =
+        filterCategory === 'all' || todo.category === filterCategory
+      return priorityMatch && categoryMatch
     })
   }, [todos, filterPriority, filterCategory])
 
-  const filterPriorityTypes: TPriority[] = ["all", "low", "medium", "high"]
+  const todosWithIdAndStatus = useMemo(() => {
+    return filteredTodos
+      .slice()
+      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+      .map((todo) => ({
+        ...todo,
+        id: todo.order,
+        status: 'todos',
+      })) as ITaskDraggable[]
+  }, [filteredTodos])
+
+  const filterPriorityTypes: TPriority[] = ['all', 'low', 'medium', 'high']
   const filterCategoryTypes: TCategory[] = [
-    "all",
-    "work",
-    "personal",
-    "shopping",
-    "other",
+    'all',
+    'work',
+    'personal',
+    'shopping',
+    'other',
   ]
 
-  const priorityTypes = ["low", "medium", "high"]
-  const categoryTypes = ["work", "personal", "shopping", "other"]
+  const priorityTypes = ['low', 'medium', 'high']
+  const categoryTypes = ['work', 'personal', 'shopping', 'other']
 
   const filterPriorityOptions = generateOptions(filterPriorityTypes, language)
 
@@ -202,7 +180,7 @@ export default function TodoApp() {
   const categoryOptions = generateOptions(categoryTypes, language)
 
   useEffect(() => {
-    if (status === "failed") {
+    if (status === 'failed') {
       void dispatch(notify(`There was an error: ${error}`, true, 8))
     }
   }, [status, error, dispatch])
@@ -217,7 +195,7 @@ export default function TodoApp() {
         })
         .catch((err: unknown) => {
           console.error(err)
-          const message = getErrorMessage(err, t("Error"))
+          const message = getErrorMessage(err, t('Error'))
           void dispatch(notify(message, true, 8))
         })
     }
@@ -254,14 +232,14 @@ export default function TodoApp() {
       if (user) {
         void dispatch(editTodoAsync(user._id, key, updatedTodo as ITask))
           .then(() => {
-            void dispatch(notify(`${t("Updated")}`, false, 3))
+            void dispatch(notify(`${t('Updated')}`, false, 3))
             // Ensure local state is refreshed from server data
             void dispatch(fetchTodos(user._id))
             setSending(false)
           })
           .catch((err: unknown) => {
             console.error(err)
-            const message = getErrorMessage(err, t("Error"))
+            const message = getErrorMessage(err, t('Error'))
             void dispatch(notify(message, true, 8))
             setSending(false)
           })
@@ -278,7 +256,7 @@ export default function TodoApp() {
   }
 
   const modifyTodoOrder = (
-    order: { key: ITask["key"]; order: ITask["order"] }[]
+    order: { key: ITask['key']; order: ITask['order'] }[]
   ) => {
     if (user) {
       void dispatch(async (dispatch) => {
@@ -288,7 +266,7 @@ export default function TodoApp() {
           })
           .catch((err: unknown) => {
             console.error(err)
-            const message = getErrorMessage(err, t("Error"))
+            const message = getErrorMessage(err, t('Error'))
             void dispatch(notify(message, true, 8))
           })
       })
@@ -307,31 +285,31 @@ export default function TodoApp() {
         windowObj.localStorage.setItem(localName, JSON.stringify(updatedTodos))
       } catch (err: unknown) {
         console.error(err)
-        const message = getErrorMessage(err, t("Error"))
+        const message = getErrorMessage(err, t('Error'))
         void dispatch(notify(message, true, 8))
       }
     }
   }
 
   const todoNameRef = useRef<HTMLTextAreaElement>(null)
-  const [name, setName] = useState<string>("")
+  const [name, setName] = useState<string>('')
 
   const [showDeadline, setShowDeadline] = useState(false)
-  const [newDay, setNewDay] = useState<string>("")
-  const [newMonth, setNewMonth] = useState<string>("")
-  const [newYear, setNewYear] = useState<string>("")
+  const [newDay, setNewDay] = useState<string>('')
+  const [newMonth, setNewMonth] = useState<string>('')
+  const [newYear, setNewYear] = useState<string>('')
   const combinedDeadline =
-    newDay && newMonth && newYear ? `${newYear}-${newMonth}-${newDay}` : ""
-  const [deadlineErrorMessage, setDeadlineErrorMessage] = useState<string | null>(
-    null
-  )
+    newDay && newMonth && newYear ? `${newYear}-${newMonth}-${newDay}` : ''
+  const [deadlineErrorMessage, setDeadlineErrorMessage] = useState<
+    string | null
+  >(null)
 
   const handleDayChange = (value: string) => {
     if (Number(value) <= 31 && value.length <= 2) {
       setNewDay(value)
       setDeadlineErrorMessage(null)
     } else {
-      setDeadlineErrorMessage(`${t("Set")}: ${t("Day")}`)
+      setDeadlineErrorMessage(`${t('Set')}: ${t('Day')}`)
     }
   }
 
@@ -340,7 +318,7 @@ export default function TodoApp() {
       setNewMonth(value)
       setDeadlineErrorMessage(null)
     } else {
-      setDeadlineErrorMessage(`${t("Set")}: ${t("Month")}`)
+      setDeadlineErrorMessage(`${t('Set')}: ${t('Month')}`)
     }
   }
 
@@ -353,7 +331,9 @@ export default function TodoApp() {
       setNewYear(value)
       setDeadlineErrorMessage(null)
     } else {
-      setDeadlineErrorMessage(t("YearMustBeBetweenCurrentYearAnd10YearsFromNow"))
+      setDeadlineErrorMessage(
+        t('YearMustBeBetweenCurrentYearAnd10YearsFromNow')
+      )
     }
   }
 
@@ -370,7 +350,7 @@ export default function TodoApp() {
 
         setDeadlineErrorMessage(null)
         if (selectedDate < today) {
-          setDeadlineErrorMessage(t("TheDateIsInThePast"))
+          setDeadlineErrorMessage(t('TheDateIsInThePast'))
         }
       }, 0)
 
@@ -378,33 +358,41 @@ export default function TodoApp() {
     }
   }, [newDay, newMonth, newYear, language, t])
 
-  useEffect(() => {
-    if (showDeadline) {
-      if (!newDay)
-        setNewDay((new Date().getDate() + 1).toString().padStart(2, "0"))
-      if (!newMonth)
-        setNewMonth((new Date().getMonth() + 1).toString().padStart(2, "0"))
-      if (!newYear) setNewYear(new Date().getFullYear().toString())
+  const handleShowDeadlineChange = () => {
+    const next = !showDeadline
+    setShowDeadline(next)
+
+    if (next) {
+      const tomorrow = new Date()
+      tomorrow.setDate(tomorrow.getDate() + 1)
+      setNewDay(
+        (prev) => prev || tomorrow.getDate().toString().padStart(2, '0')
+      )
+      setNewMonth(
+        (prev) => prev || (tomorrow.getMonth() + 1).toString().padStart(2, '0')
+      )
+      setNewYear((prev) => prev || tomorrow.getFullYear().toString())
+      setDeadlineErrorMessage(null)
     } else {
-      setNewDay("")
-      setNewMonth("")
-      setNewYear("")
+      setNewDay('')
+      setNewMonth('')
+      setNewYear('')
       setDeadlineErrorMessage(null)
     }
-  }, [showDeadline, newDay, newMonth, newYear])
+  }
 
   const handleAddTodo = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setSending(true)
     // const name = todoNameRef.current?.value ?? ''
-    if (name.trim() === "") {
+    if (name.trim() === '') {
       setSending(false)
-      void dispatch(notify(t("AddTask"), true, 3))
+      void dispatch(notify(t('AddTask'), true, 3))
       return
     } else if (name.length > maxCharacters) {
       setSending(false)
       void dispatch(
-        notify(`${t("NameTooLong")} (${maxCharacters} max)`, true, 8)
+        notify(`${t('NameTooLong')} (${maxCharacters} max)`, true, 8)
       )
       return
     }
@@ -412,7 +400,7 @@ export default function TodoApp() {
     if (showDeadline) {
       if (!combinedDeadline) {
         setSending(false)
-        void dispatch(notify(`${t("Set")}: ${t("Deadline")}`, true, 6))
+        void dispatch(notify(`${t('Set')}: ${t('Deadline')}`, true, 6))
         return
       }
       if (deadlineErrorMessage) {
@@ -433,14 +421,14 @@ export default function TodoApp() {
     )
 
     let newTodo: ITask
-    if (priority === "high") {
+    if (priority === 'high') {
       newTodo = {
         key,
         name: name,
         complete: false,
         order: minOrder - 1,
         priority,
-        deadline: showDeadline ? combinedDeadline : "",
+        deadline: showDeadline ? combinedDeadline : '',
         category,
       }
     } else
@@ -450,18 +438,18 @@ export default function TodoApp() {
         complete: false,
         order: maxOrder + 1,
         priority,
-        deadline: showDeadline ? combinedDeadline : "",
+        deadline: showDeadline ? combinedDeadline : '',
         category,
       }
     if (user) {
       void dispatch(addTodoAsync(user._id, newTodo))
       // scroll to #todo-list-wrap
-      const element = document.getElementById("todo-list-wrap")
+      const element = document.getElementById('todo-list-wrap')
       if (element) {
-        element.scrollIntoView({ behavior: "smooth" })
+        element.scrollIntoView({ behavior: 'smooth' })
       }
       setSending(false)
-      setName("")
+      setName('')
       setShowDeadline(false)
     } else {
       const updatedTodos = [...todos, newTodo]
@@ -473,14 +461,14 @@ export default function TodoApp() {
       void dispatch(setAllTodos(updatedTodos))
       setAllTodos(updatedTodos)
       // scroll to #todo-list-wrap
-      const element = document.getElementById("todo-list-wrap")
+      const element = document.getElementById('todo-list-wrap')
       if (element) {
-        element.scrollIntoView({ behavior: "smooth" })
+        element.scrollIntoView({ behavior: 'smooth' })
       }
       setSending(false)
       if (!isClient || !windowObj) return
       windowObj.localStorage.setItem(localName, JSON.stringify(updatedTodos))
-      setName("")
+      setName('')
       setShowDeadline(false)
     }
   }
@@ -490,7 +478,7 @@ export default function TodoApp() {
   ) {
     e.preventDefault()
     if (
-      await confirm({ message: t("AreYouSureYouWantToClearAllCompletedTasks") })
+      await confirm({ message: t('AreYouSureYouWantToClearAllCompletedTasks') })
     ) {
       if (user) {
         await dispatch(clearCompletedTodosAsync(user._id))
@@ -527,9 +515,9 @@ export default function TodoApp() {
     <>
       <form onSubmit={handleAddTodo} className={styles.form}>
         <fieldset>
-          <legend className="scr">{t("AddTaskToTheTaskList")}</legend>
-          <div className={styles["todo-input-area"]}>
-            <label htmlFor="taskinput">{t("AddTask")}</label>
+          <legend className="scr">{t('AddTaskToTheTaskList')}</legend>
+          <div className={styles['todo-input-area']}>
+            <label htmlFor="taskinput">{t('AddTask')}</label>
             <textarea
               ref={todoNameRef}
               id="taskinput"
@@ -540,22 +528,22 @@ export default function TodoApp() {
               onChange={(e) => setName(e.target.value)}
               required
               autoComplete="off"
-              placeholder={`${t("Task")}...`}
+              placeholder={`${t('Task')}...`}
             />
             <p className={styles.small}>
-              {maxCharacters - name.length} {t("CharactersLeft")} ({t("Max")}:{" "}
-              {maxCharacters}){" "}
+              {maxCharacters - name.length} {t('CharactersLeft')} ({t('Max')}:{' '}
+              {maxCharacters}){' '}
               {name.length > maxCharacters && (
-                <span className={styles.warning}>{t("NameTooLong")}</span>
+                <span className={styles.warning}>{t('NameTooLong')}</span>
               )}
             </p>
 
             <Select
               z={todosWithIdAndStatus.length + 5}
               id="category"
-              className={`${styles.select} ${styles["category-select"]}`}
+              className={`${styles.select} ${styles['category-select']}`}
               hideDelete
-              instructions={t("SelectCategory")}
+              instructions={t('SelectCategory')}
               value={
                 categoryOptions.find((o) => o.value === category) ??
                 categoryOptions[0]
@@ -568,7 +556,7 @@ export default function TodoApp() {
               id="priority"
               className={styles.select}
               hideDelete
-              instructions={t("SelectPriority")}
+              instructions={t('SelectPriority')}
               value={
                 priorityOptions.find((o) => o.value === priority) ??
                 priorityOptions[0]
@@ -579,24 +567,26 @@ export default function TodoApp() {
               z={todosWithIdAndStatus.length + 4}
             />
 
-            <fieldset className={`${styles.fieldset} ${styles["deadline-wrap"]}`}>
+            <fieldset
+              className={`${styles.fieldset} ${styles['deadline-wrap']}`}
+            >
               <legend>
                 <label>
-                  {t("Deadline")} {" "}
+                  {t('Deadline')}{' '}
                   <input
-                    style={{ marginLeft: "0.5em" }}
+                    style={{ marginLeft: '0.5em' }}
                     type="checkbox"
                     checked={showDeadline}
-                    onChange={() => setShowDeadline(!showDeadline)}
+                    onChange={handleShowDeadlineChange}
                   />
                 </label>
               </legend>
               {showDeadline && (
                 <>
-                  <div className={styles["deadline-inputs"]}>
+                  <div className={styles['deadline-inputs']}>
                     <div className={styles.input}>
                       <label className="scr" htmlFor="day_addTodo">
-                        {t("Day")}
+                        {t('Day')}
                       </label>
                       <input
                         type="number"
@@ -614,7 +604,7 @@ export default function TodoApp() {
 
                     <div className={styles.input}>
                       <label className="scr" htmlFor="month_addTodo">
-                        {t("Month")}
+                        {t('Month')}
                       </label>
                       <input
                         type="number"
@@ -632,7 +622,7 @@ export default function TodoApp() {
 
                     <div className={styles.input}>
                       <label className="scr" htmlFor="year_addTodo">
-                        {t("Year")}
+                        {t('Year')}
                       </label>
                       <input
                         type="number"
@@ -655,23 +645,23 @@ export default function TodoApp() {
               )}
             </fieldset>
             <button
-              id={styles["submit-todo"]}
-              className={styles["submit-todo"]}
+              id={styles['submit-todo']}
+              className={styles['submit-todo']}
               type="submit"
               disabled={sending}
             >
-              {t("AddTask")} <Icon lib="io" name="IoMdAdd" />
+              {t('AddTask')} <Icon lib="io" name="IoMdAdd" />
             </button>
           </div>
         </fieldset>
       </form>
 
-      <div className={styles["controls-wrap"]}>
+      <div className={styles['controls-wrap']}>
         <Select
           id="category-filter"
-          className={`${styles.select} ${styles["category-select"]}`}
+          className={`${styles.select} ${styles['category-select']}`}
           hideDelete
-          instructions={t("FilterByCategory")}
+          instructions={t('FilterByCategory')}
           value={
             filterCategoryOptions.find((o) => o.value === filterCategory) ??
             filterCategoryOptions[0]
@@ -685,7 +675,7 @@ export default function TodoApp() {
           id="priority-filter"
           className={styles.select}
           hideDelete
-          instructions={t("FilterByPriority")}
+          instructions={t('FilterByPriority')}
           value={
             filterPriorityOptions.find((o) => o.value === filterPriority) ??
             filterPriorityOptions[0]
@@ -697,16 +687,16 @@ export default function TodoApp() {
         />
 
         <button
-          className={`danger ${styles["clear-completed"]}`}
+          className={`danger ${styles['clear-completed']}`}
           disabled={!hasCompletedTasks}
           onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
             void handleClearTodos(e)
           }
         >
-          {t("ClearCompleted")}
+          {t('ClearCompleted')}
         </button>
         <button
-          className={styles["move-all-down"]}
+          className={styles['move-all-down']}
           disabled={!hasCompletedTasks || todos.length === 0}
           onClick={(e) => {
             e.preventDefault()
@@ -733,18 +723,18 @@ export default function TodoApp() {
             modifyTodoOrder(order)
           }}
         >
-          {t("MoveCompletedToBottom")}
+          {t('MoveCompletedToBottom')}
         </button>
       </div>
 
-      <div id="todo-list-wrap" className={styles["list-wrap"]}>
-        <p className={styles["left-to-do"]}>
-          {todos?.filter((todo) => !todo?.complete).length} {t("LeftToDo")}
+      <div id="todo-list-wrap" className={styles['list-wrap']}>
+        <p className={styles['left-to-do']}>
+          {todos?.filter((todo) => !todo?.complete).length} {t('LeftToDo')}
         </p>
 
-        {(filterPriority !== "all" || filterCategory !== "all") && (
-          <p className={styles["filter-notification"]}>
-            {t("Note")} {t("Filtered")}
+        {(filterPriority !== 'all' || filterCategory !== 'all') && (
+          <p className={styles['filter-notification']}>
+            {t('Note')} {t('Filtered')}
           </p>
         )}
 
@@ -759,9 +749,9 @@ export default function TodoApp() {
           categoryOptions={categoryOptions}
           maxCharacters={maxCharacters}
         />
-        {status === "loading" && (
+        {status === 'loading' && (
           <p className="flex center margin0auto textcenter">
-            {t("Loading")}...
+            {t('Loading')}...
           </p>
         )}
       </div>

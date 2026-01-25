@@ -153,7 +153,7 @@ export const DragAndDrop = () => {
         }))
       )
     } else return
-  }, [lightTheme, backgroundIsModified])
+  }, [lightTheme, backgroundIsModified, setStatusesColors])
 
   // Generate and inject CSS styles whenever statuses change
   useEffect(() => {

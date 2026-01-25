@@ -8,19 +8,19 @@ import {
   KeyboardEvent as ReactKeyboardEvent,
   MouseEvent as ReactMouseEvent,
   TouchEvent as ReactTouchEvent,
-} from "react"
-import styles from "./hero.module.css"
-import useWindowSize from "../../hooks/useWindowSize"
-import { getRandomMinMax } from "../../utils"
-import * as Draggable from "../../hooks/useDraggable"
-import { useTheme } from "../../hooks/useTheme"
-import useEnterDirection from "../../hooks/useEnterDirection"
-import { RefObject } from "../../types"
-import useSessionStorage from "../../hooks/useStorage"
-import useLocalStorage from "../../hooks/useStorage"
-import { useLanguageContext } from "../../contexts/LanguageContext"
-import { useIsClient, useWindow } from "../../hooks/useSSR"
-import ItemComponent from "./components/ItemComponent"
+} from 'react'
+import styles from './hero.module.css'
+import useWindowSize from '../../hooks/useWindowSize'
+import { getRandomMinMax } from '../../utils'
+import * as Draggable from '../../hooks/useDraggable'
+import { useTheme } from '../../hooks/useTheme'
+import useEnterDirection from '../../hooks/useEnterDirection'
+import { RefObject } from '../../types'
+import useSessionStorage from '../../hooks/useStorage'
+import useLocalStorage from '../../hooks/useStorage'
+import { useLanguageContext } from '../../contexts/LanguageContext'
+import { useIsClient, useWindow } from '../../hooks/useSSR'
+import ItemComponent from './components/ItemComponent'
 
 export interface itemProps {
   i: number
@@ -51,9 +51,9 @@ export default function Hero({
 
   const { t } = useLanguageContext()
 
-  const [values, setValues] = useSessionStorage<itemProps[]>("Hero", [])
+  const [values, setValues] = useSessionStorage<itemProps[]>('Hero', [])
   const [itemsVisible, setItemsVisible] = useState(true)
-  const [currentPage, setCurrentPage] = useState("")
+  const [currentPage, setCurrentPage] = useState('')
   const isAnimatingRef = useRef(false)
   const itemsVisibleRef = useRef(itemsVisible)
   const [theHeading, setTheHeading] = useState(heading)
@@ -61,12 +61,12 @@ export default function Hero({
 
   // remove the last trailing / then get the last part of the pathname:
   const page = useMemo(() => {
-    return pathname?.replace(/\/$/, "").split("/").pop() ?? ""
+    return pathname?.replace(/\/$/, '').split('/').pop() ?? ''
   }, [pathname])
 
   // Handle page transition for hero items
   useEffect(() => {
-    if (page !== currentPage && currentPage !== "") {
+    if (page !== currentPage && currentPage !== '') {
       // Fade out items when page changes
       setItemsVisible(false)
 
@@ -85,7 +85,7 @@ export default function Hero({
         clearTimeout(timer)
         clearTimeout(timer2)
       }
-    } else if (currentPage === "") {
+    } else if (currentPage === '') {
       // Initial load
       setCurrentPage(page)
       setItemsVisible(true)
@@ -95,7 +95,7 @@ export default function Hero({
 
   // Update heading and text when language changes (on same page)
   useEffect(() => {
-    if (page === currentPage && currentPage !== "") {
+    if (page === currentPage && currentPage !== '') {
       setTheHeading(heading)
       setTheText(text)
     }
@@ -103,10 +103,10 @@ export default function Hero({
 
   // Clear eye transforms when navigating away from contact/form pages
   useEffect(() => {
-    if (isClient && page !== "contact" && page !== "form") {
-      const eyes = document.querySelectorAll<HTMLSpanElement>(".eye .inner")
+    if (isClient && page !== 'contact' && page !== 'form') {
+      const eyes = document.querySelectorAll<HTMLSpanElement>('.eye .inner')
       eyes.forEach((eye) => {
-        eye.style.transform = ""
+        eye.style.transform = ''
       })
     }
   }, [page, isClient])
@@ -114,7 +114,7 @@ export default function Hero({
   const resetButton = useRef() as RefObject<HTMLButtonElement>
   const ulRef = useRef<HTMLUListElement>(null)
   const [prefersReducedMotion, setPrefersReducedMotion] =
-    useLocalStorage<boolean>("prefersReducedMotion-Hero", false)
+    useLocalStorage<boolean>('prefersReducedMotion-Hero', false)
   const isMovingRef = useRef(false)
   const movementTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const animatingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -135,364 +135,56 @@ export default function Hero({
 
   useEffect(() => {
     if (!isClient || !windowObj) return
-    const mediaQuery = windowObj.matchMedia("(prefers-reduced-motion: reduce)")
+    const mediaQuery = windowObj.matchMedia('(prefers-reduced-motion: reduce)')
 
     // Only set the state from the media query if there is no value in localStorage
-    if (localStorage.getItem("prefersReducedMotion-Hero") === null) {
+    if (localStorage.getItem('prefersReducedMotion-Hero') === null) {
       setPrefersReducedMotion(mediaQuery.matches)
     }
 
     const handler = (e: MediaQueryListEvent) =>
       setPrefersReducedMotion(e.matches)
-    mediaQuery.addEventListener("change", handler)
-    return () => mediaQuery.removeEventListener("change", handler)
+    mediaQuery.addEventListener('change', handler)
+    return () => mediaQuery.removeEventListener('change', handler)
   }, [isClient, setPrefersReducedMotion, windowObj])
 
-  //Move items up, down, left or left, depending on the direction they're approached from:
-  const movingItem = useCallback(
-    (e: ReactPointerEvent<HTMLElement>) => {
-      if (!isClient || !windowObj) return
-
-      const amount = page === "composer" ? 19 : 10
-      const target = (e.target as HTMLElement).closest(
-        "li"
-      ) as HTMLElement | null
-      if (!target) return
-
-      // Prefer moving via base (responsive) + offset so resizing the window
-      // continues to reflow shapes according to their original clamp/vh/vw rules.
-      if (!target.dataset.baseTop && target.style.top)
-        target.dataset.baseTop = target.style.top
-      if (!target.dataset.baseLeft && target.style.left)
-        target.dataset.baseLeft = target.style.left
-
-      const baseTop = target.dataset.baseTop
-      const baseLeft = target.dataset.baseLeft
-      const prevDy = Number.parseFloat(target.dataset.moveDy ?? "0") || 0
-      const prevDx = Number.parseFloat(target.dataset.moveDx ?? "0") || 0
-
-      const targetLeft = windowObj
-        .getComputedStyle(target)
-        .getPropertyValue("left")
-      const targetTop = windowObj
-        .getComputedStyle(target)
-        .getPropertyValue("top")
-
-      const currentTopPx = Number.parseFloat(targetTop) || 0
-      const currentLeftPx = Number.parseFloat(targetLeft) || 0
-
-      const applyOffsets = (nextDy: number, nextDx: number) => {
-        target.dataset.moveDy = String(nextDy)
-        target.dataset.moveDx = String(nextDx)
-
-        if (baseTop) target.style.top = `calc(${baseTop} + ${nextDy}px)`
-        else target.style.top = `${currentTopPx + (nextDy - prevDy)}px`
-
-        if (baseLeft) target.style.left = `calc(${baseLeft} + ${nextDx}px)`
-        else target.style.left = `${currentLeftPx + (nextDx - prevDx)}px`
-
-        if (page === "composer") updateComposerAboveBelow(target)
-      }
-
-      const from = calculateDirection(e)
-      switch (from) {
-        case "top":
-          applyOffsets(prevDy + amount, prevDx)
-          break
-        case "right":
-          applyOffsets(prevDy, prevDx - amount)
-          break
-        case "bottom":
-          applyOffsets(prevDy - amount, prevDx)
-          break
-        case "left":
-          applyOffsets(prevDy, prevDx + amount)
-          break
-        default:
-          break
-      }
-    },
-    [isClient, calculateDirection, windowObj, page]
-  )
-
-  function radianToAngle(cx: number, cy: number, ex: number, ey: number) {
-    const dy = ey - cy,
-      dx = ex - cx,
-      rad = Math.atan2(dy, dx),
-      deg = (rad * 180) / Math.PI
-    return deg
-  }
-
-  //Make eyes follow the mouse:
-  const follow = useCallback(
-    (e: Event) => {
-      const eyes = [
-        ...document?.querySelectorAll<HTMLSpanElement>(".eye .inner"),
-      ]
-      if (eyes.length > 0) {
-        eyes.forEach((eye) => {
-          if (page === "contact" || page === "form") {
-            const rect = eye.getBoundingClientRect()
-            const x = rect.left + rect.width / 2
-            const y = rect.top + rect.height / 2
-            const rotation = radianToAngle(
-              (e as PointerEvent).clientX,
-              (e as PointerEvent).clientY,
-              x,
-              y
-            )
-            eye.style.transform = `rotate(${rotation}deg)`
-          } else {
-            eye.style.transform = ""
-          }
-        })
-      }
-    },
-    [page]
-  )
-
-  useEffect(() => {
-    if (isClient) {
-      window?.addEventListener("mousemove", follow)
-    }
-    return () => {
-      if (isClient) {
-        window?.removeEventListener("mousemove", follow)
-      }
-    }
-  }, [isClient, follow])
-
-  const lightTheme = useTheme()
-
-  Draggable.isTouchDevice()
-
-  const touchDevice = Draggable.isTouchDevice()
-
-  const { windowHeight, windowWidth } = useWindowSize()
-
-  const removeItem = (
-    e:
-      | ReactPointerEvent<HTMLElement>
-      | ReactKeyboardEvent<HTMLElement>
-      | ReactMouseEvent<HTMLLIElement, MouseEvent>
-      | ReactTouchEvent<HTMLLIElement>
-  ) => {
-    const element = (e.target as HTMLElement).closest("li")
-    if (!element) return
-    //get element id
-    const id = element.id
-
-    if (!touchDevice) {
-      // if not a touch device, add exit animation then remove from state
-      element.classList.add(styles.exitItem)
-      setTimeout(() => {
-        setValues((prevValues) =>
-          prevValues.filter((item) => `shape${item.i}` !== id)
-        )
-      }, 400)
-    } else {
-      // if a touch device, activate animation on tap; then on second tap remove
-      element.classList.add(styles.active)
-      const handleBlur = () => {
-        element.classList.remove(styles.active)
-        element.removeEventListener("blur", handleBlur)
-      }
-      element.addEventListener("blur", handleBlur)
-      setTimeout(() => {
-        element.addEventListener("touchend", removeWithTouch)
-      }, 100)
-    }
-  }
-
-  const removeWithTouch = (e: TouchEvent) => {
-    e.preventDefault()
-    const el = (e.target as HTMLElement).closest("li")
-    if (!el) return
-    const id = el.id
-    el.classList.add(styles.exitItem)
-
-    setTimeout(() => {
-      setValues((prevValues) =>
-        prevValues.filter((item) => `shape${item.i}` !== id)
-      )
-    }, 400)
-  }
-
-  const spanArray: itemProps[] = useMemo(() => {
-    const array: itemProps[] = []
-    for (let i = 1; i <= 4; i++) {
-      const span: itemProps = {
-        i: i + 1,
-        e: Math.round(getRandomMinMax(5, 9)),
-        size: i,
-        color: "hsla(0, 0%, 100%, 0.7)",
-      }
-      array.push(span)
-    }
-    return array
-  }, [values]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  const divArrayJewel1: itemProps[] = useMemo(() => {
-    const array: itemProps[] = []
-    for (let i = 1; i <= 11; i++) {
-      const div: itemProps = {
-        i: i + 1,
-        e: Math.round(getRandomMinMax(5, 9)),
-        size: i >= 9 ? 82 : 100,
-        color: "white",
-      }
-      array.push(div)
-    }
-    return array
-  }, [values]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  const divArrayJewel2: itemProps[] = useMemo(() => {
-    const array: itemProps[] = []
-    for (let i = 1; i <= 11; i++) {
-      const div: itemProps = {
-        i: i + 1,
-        e: Math.round(getRandomMinMax(5, 9)),
-        size: i >= 9 ? 77 : 100,
-        color: "white",
-      }
-      array.push(div)
-    }
-    return array
-  }, [values]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  const [reinitialize, setReinitialize] = useState<boolean>(false)
-
-  const thresholdCrossed = useMemo(() => windowWidth < 400, [windowWidth])
-
-  const amount = useMemo(() => {
-    if (windowWidth < 400) return 6
-    else return 9
-  }, [windowWidth])
-
-  useEffect(() => {
-    const items: itemProps[] = []
-    const specialSizesCount = Math.ceil(getRandomMinMax(1.1, 3))
-    const specialIndices = new Set<number>()
-
-    // Generate unique random indices for special sizes
-    while (specialIndices.size < specialSizesCount) {
-      specialIndices.add(Math.floor(getRandomMinMax(0, amount)))
-    }
-
-    for (let i = 0; i <= amount; i++) {
-      const number = Math.ceil(getRandomMinMax(0.3, 2))
-      let colorSwitch: string
-      switch (number) {
-        case 1:
-          colorSwitch = `var(--color-secondary-${Math.round(
-            getRandomMinMax(10, 13)
-          )})`
-          break
-        case 2:
-          colorSwitch = `var(--color-primary-${Math.round(
-            getRandomMinMax(9, 12)
-          )})`
-          break
-        default:
-          colorSwitch = `var(--color-primary-${Math.round(
-            getRandomMinMax(9, 12)
-          )})`
-      }
-
-      const size = specialIndices.has(i)
-        ? Math.round(getRandomMinMax(12, 15))
-        : Math.round(getRandomMinMax(8, 15))
-
-      const e = specialIndices.has(i)
-        ? Math.round(getRandomMinMax(7, 9))
-        : Math.round(getRandomMinMax(4, 9))
-
-      const item: itemProps = {
-        i: i + 1,
-        e: e,
-        size: size,
-        rotation: Math.round(getRandomMinMax(165, 195)),
-        color: colorSwitch,
-      }
-      items.push(item)
-    }
-    setValues(items)
-  }, [amount, reinitialize, thresholdCrossed]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Convert a CSS variable (including calc, vh, vw, etc.) to pixels in a
-  // client-only, SSR-safe way. Returns 0 during server-side rendering.
-  function cssVarToPx(varName: string, contextEl?: Element | null) {
-    // Guard for SSR: window/document are not available on the server
-    if (typeof window === "undefined" || typeof document === "undefined")
-      return 0
-
-    const el = contextEl ?? document.documentElement
-    const val = window.getComputedStyle(el).getPropertyValue(varName).trim()
-    if (!val) return 0
-    if (val.endsWith("px")) return parseFloat(val)
-
-    const tmp = document.createElement("div")
-    tmp.style.position = "absolute"
-    tmp.style.visibility = "hidden"
-    tmp.style.top = val // could be 'calc(...)' or 'var(--...)'
-    document.body.appendChild(tmp)
-    const px = parseFloat(window.getComputedStyle(tmp).top) || 0
-    document.body.removeChild(tmp)
-    return px
-  }
-
-  // Resolve a raw CSS length/expression (px, calc(), clamp(), etc.) to pixels.
-  // Returns 0 during SSR.
-  function cssExprToPx(expr: string) {
-    if (typeof window === "undefined" || typeof document === "undefined")
-      return 0
-    if (!expr) return 0
-    if (expr.endsWith("px")) return parseFloat(expr) || 0
-
-    const tmp = document.createElement("div")
-    tmp.style.position = "absolute"
-    tmp.style.visibility = "hidden"
-    tmp.style.top = expr
-    document.body.appendChild(tmp)
-    const px = parseFloat(window.getComputedStyle(tmp).top) || 0
-    document.body.removeChild(tmp)
-    return px
-  }
-
-  const updateComposerAboveBelow = (el: HTMLElement) => {
-    if (!windowObj) return
-    const ul = ulRef.current
-    if (!ul) return
+  const updateComposerAboveBelow = useCallback(
+    (el: HTMLElement) => {
+      if (!windowObj) return
+      const ul = ulRef.current
+      if (!ul) return
 
     // In this layout, `--staff-mid-y` is the base Y used to position the staff
     // background. The musical midpoint between the 11 note steps is at 5.5 steps.
-    const staffBaseYPx = cssVarToPx("--staff-mid-y", ul)
-    const staffHalfStepPx = cssVarToPx("--staff-half-step", ul)
+    const staffBaseYPx = cssVarToPx('--staff-mid-y', ul)
+    const staffHalfStepPx = cssVarToPx('--staff-half-step', ul)
     const midMarkPx = staffBaseYPx + 5.5 * staffHalfStepPx
 
     // Use the intended (base + offset) position so the class flips immediately,
     // even while a CSS transition is animating from the previous value.
-    const dy = Number.parseFloat(el.dataset.moveDy ?? "0") || 0
+    const dy = Number.parseFloat(el.dataset.moveDy ?? '0') || 0
     const baseTopExpr = el.dataset.baseTop
     const topPx = baseTopExpr
       ? cssExprToPx(baseTopExpr) + dy
       : Number.parseFloat(
-          windowObj.getComputedStyle(el).getPropertyValue("top")
+          windowObj.getComputedStyle(el).getPropertyValue('top')
         )
     if (!Number.isFinite(topPx)) return
 
     // Notes are positioned with `top = staffBaseY + step*halfStep - noteHead`.
     // That means the *staff anchor* for the note is the bottom of the note head.
     // Comparing that anchor avoids bias from the negative note-head offset.
-    const noteHeadPx = cssVarToPx("--note-head", el) || 0
+    const noteHeadPx = cssVarToPx('--note-head', el) || 0
     const anchorYPx = topPx + noteHeadPx
 
     // Cut line is slightly above the true midpoint to compensate for the
     // lower note visually overflowing upward.
-    const isAbove = anchorYPx <= midMarkPx - 5
-    el.classList.toggle(styles.above, isAbove)
-    el.classList.toggle(styles.below, !isAbove)
-  }
+      const isAbove = anchorYPx <= midMarkPx - 5
+      el.classList.toggle(styles.above, isAbove)
+      el.classList.toggle(styles.below, !isAbove)
+    },
+    [windowObj]
+  )
 
   // Move an item randomly
   useEffect(() => {
@@ -536,14 +228,14 @@ export default function Hero({
       if (item) {
         const baseTop = item.dataset.baseTop
         const baseLeft = item.dataset.baseLeft
-        const prevDy = Number.parseFloat(item.dataset.moveDy ?? "0") || 0
-        const prevDx = Number.parseFloat(item.dataset.moveDx ?? "0") || 0
+        const prevDy = Number.parseFloat(item.dataset.moveDy ?? '0') || 0
+        const prevDx = Number.parseFloat(item.dataset.moveDx ?? '0') || 0
 
         const currentTop = parseFloat(
-          windowObj.getComputedStyle(item).getPropertyValue("top")
+          windowObj.getComputedStyle(item).getPropertyValue('top')
         )
         const currentLeft = parseFloat(
-          windowObj.getComputedStyle(item).getPropertyValue("left")
+          windowObj.getComputedStyle(item).getPropertyValue('left')
         )
         const itemWidth = item.offsetWidth
         const itemHeight = item.offsetHeight
@@ -552,8 +244,8 @@ export default function Hero({
 
         // Choose a random direction
         const direction = Math.floor(Math.random() * 8)
-        const change = page === "composer" ? 38 : 10
-        const changeBigger = page === "composer" ? 38 : 16
+        const change = page === 'composer' ? 38 : 10
+        const changeBigger = page === 'composer' ? 38 : 16
         let newTop = currentTop
         let newLeft = currentLeft
 
@@ -592,11 +284,11 @@ export default function Hero({
         const deltaTop = newTop - currentTop
         const deltaLeft = newLeft - currentLeft
         // Check if the page is composer and limit movement to how high the highest item is placed and the lowest the items can be placed
-        if (page === "composer") {
+        if (page === 'composer') {
           // The CSS variables are set on the item elements in the composer layout
           // (see ItemComponent), so resolve them against the moved `item`.
-          const highestAllowedPx = cssVarToPx("--highest-allowed", item)
-          const lowestAllowedPx = cssVarToPx("--lowest-allowed", item)
+          const highestAllowedPx = cssVarToPx('--highest-allowed', item)
+          const lowestAllowedPx = cssVarToPx('--lowest-allowed', item)
 
           if (
             newTop >= highestAllowedPx &&
@@ -685,14 +377,325 @@ export default function Hero({
       isMovingRef.current = false
       movementCycleStartedRef.current = false
     }
-  }, [prefersReducedMotion, isClient, windowObj, page])
+  }, [prefersReducedMotion, isClient, windowObj, page]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  //Move items up, down, left or left, depending on the direction they're approached from:
+  const movingItem = useCallback(
+    (e: ReactPointerEvent<HTMLElement>) => {
+      if (!isClient || !windowObj) return
+
+      const amount = page === 'composer' ? 19 : 10
+      const target = (e.target as HTMLElement).closest(
+        'li'
+      ) as HTMLElement | null
+      if (!target) return
+
+      // Prefer moving via base (responsive) + offset so resizing the window
+      // continues to reflow shapes according to their original clamp/vh/vw rules.
+      if (!target.dataset.baseTop && target.style.top)
+        target.dataset.baseTop = target.style.top
+      if (!target.dataset.baseLeft && target.style.left)
+        target.dataset.baseLeft = target.style.left
+
+      const baseTop = target.dataset.baseTop
+      const baseLeft = target.dataset.baseLeft
+      const prevDy = Number.parseFloat(target.dataset.moveDy ?? '0') || 0
+      const prevDx = Number.parseFloat(target.dataset.moveDx ?? '0') || 0
+
+      const targetLeft = windowObj
+        .getComputedStyle(target)
+        .getPropertyValue('left')
+      const targetTop = windowObj
+        .getComputedStyle(target)
+        .getPropertyValue('top')
+
+      const currentTopPx = Number.parseFloat(targetTop) || 0
+      const currentLeftPx = Number.parseFloat(targetLeft) || 0
+
+      const applyOffsets = (nextDy: number, nextDx: number) => {
+        target.dataset.moveDy = String(nextDy)
+        target.dataset.moveDx = String(nextDx)
+
+        if (baseTop) target.style.top = `calc(${baseTop} + ${nextDy}px)`
+        else target.style.top = `${currentTopPx + (nextDy - prevDy)}px`
+
+        if (baseLeft) target.style.left = `calc(${baseLeft} + ${nextDx}px)`
+        else target.style.left = `${currentLeftPx + (nextDx - prevDx)}px`
+
+        if (page === 'composer') updateComposerAboveBelow(target)
+      }
+
+      const from = calculateDirection(e)
+      switch (from) {
+        case 'top':
+          applyOffsets(prevDy + amount, prevDx)
+          break
+        case 'right':
+          applyOffsets(prevDy, prevDx - amount)
+          break
+        case 'bottom':
+          applyOffsets(prevDy - amount, prevDx)
+          break
+        case 'left':
+          applyOffsets(prevDy, prevDx + amount)
+          break
+        default:
+          break
+      }
+    },
+    [isClient, calculateDirection, windowObj, page, updateComposerAboveBelow]
+  )
+
+  function radianToAngle(cx: number, cy: number, ex: number, ey: number) {
+    const dy = ey - cy,
+      dx = ex - cx,
+      rad = Math.atan2(dy, dx),
+      deg = (rad * 180) / Math.PI
+    return deg
+  }
+
+  //Make eyes follow the mouse:
+  const follow = useCallback(
+    (e: Event) => {
+      const eyes = [
+        ...document?.querySelectorAll<HTMLSpanElement>('.eye .inner'),
+      ]
+      if (eyes.length > 0) {
+        eyes.forEach((eye) => {
+          if (page === 'contact' || page === 'form') {
+            const rect = eye.getBoundingClientRect()
+            const x = rect.left + rect.width / 2
+            const y = rect.top + rect.height / 2
+            const rotation = radianToAngle(
+              (e as PointerEvent).clientX,
+              (e as PointerEvent).clientY,
+              x,
+              y
+            )
+            eye.style.transform = `rotate(${rotation}deg)`
+          } else {
+            eye.style.transform = ''
+          }
+        })
+      }
+    },
+    [page]
+  )
+
+  useEffect(() => {
+    if (isClient) {
+      window?.addEventListener('mousemove', follow)
+    }
+    return () => {
+      if (isClient) {
+        window?.removeEventListener('mousemove', follow)
+      }
+    }
+  }, [isClient, follow])
+
+  const lightTheme = useTheme()
+
+  Draggable.isTouchDevice()
+
+  const touchDevice = Draggable.isTouchDevice()
+
+  const { windowHeight, windowWidth } = useWindowSize()
+
+  const removeItem = (
+    e:
+      | ReactPointerEvent<HTMLElement>
+      | ReactKeyboardEvent<HTMLElement>
+      | ReactMouseEvent<HTMLLIElement, MouseEvent>
+      | ReactTouchEvent<HTMLLIElement>
+  ) => {
+    const element = (e.target as HTMLElement).closest('li')
+    if (!element) return
+    //get element id
+    const id = element.id
+
+    if (!touchDevice) {
+      // if not a touch device, add exit animation then remove from state
+      element.classList.add(styles.exitItem)
+      setTimeout(() => {
+        setValues((prevValues) =>
+          prevValues.filter((item) => `shape${item.i}` !== id)
+        )
+      }, 400)
+    } else {
+      // if a touch device, activate animation on tap; then on second tap remove
+      element.classList.add(styles.active)
+      const handleBlur = () => {
+        element.classList.remove(styles.active)
+        element.removeEventListener('blur', handleBlur)
+      }
+      element.addEventListener('blur', handleBlur)
+      setTimeout(() => {
+        element.addEventListener('touchend', removeWithTouch)
+      }, 100)
+    }
+  }
+
+  const removeWithTouch = (e: TouchEvent) => {
+    e.preventDefault()
+    const el = (e.target as HTMLElement).closest('li')
+    if (!el) return
+    const id = el.id
+    el.classList.add(styles.exitItem)
+
+    setTimeout(() => {
+      setValues((prevValues) =>
+        prevValues.filter((item) => `shape${item.i}` !== id)
+      )
+    }, 400)
+  }
+
+  const spanArray: itemProps[] = useMemo(() => {
+    const array: itemProps[] = []
+    for (let i = 1; i <= 4; i++) {
+      const span: itemProps = {
+        i: i + 1,
+        e: Math.round(getRandomMinMax(5, 9)),
+        size: i,
+        color: 'hsla(0, 0%, 100%, 0.7)',
+      }
+      array.push(span)
+    }
+    return array
+  }, [values]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const divArrayJewel1: itemProps[] = useMemo(() => {
+    const array: itemProps[] = []
+    for (let i = 1; i <= 11; i++) {
+      const div: itemProps = {
+        i: i + 1,
+        e: Math.round(getRandomMinMax(5, 9)),
+        size: i >= 9 ? 82 : 100,
+        color: 'white',
+      }
+      array.push(div)
+    }
+    return array
+  }, [values]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const divArrayJewel2: itemProps[] = useMemo(() => {
+    const array: itemProps[] = []
+    for (let i = 1; i <= 11; i++) {
+      const div: itemProps = {
+        i: i + 1,
+        e: Math.round(getRandomMinMax(5, 9)),
+        size: i >= 9 ? 77 : 100,
+        color: 'white',
+      }
+      array.push(div)
+    }
+    return array
+  }, [values]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const [reinitialize, setReinitialize] = useState<boolean>(false)
+
+  const thresholdCrossed = useMemo(() => windowWidth < 400, [windowWidth])
+
+  const amount = useMemo(() => {
+    if (windowWidth < 400) return 6
+    else return 9
+  }, [windowWidth])
+
+  useEffect(() => {
+    const items: itemProps[] = []
+    const specialSizesCount = Math.ceil(getRandomMinMax(1.1, 3))
+    const specialIndices = new Set<number>()
+
+    // Generate unique random indices for special sizes
+    while (specialIndices.size < specialSizesCount) {
+      specialIndices.add(Math.floor(getRandomMinMax(0, amount)))
+    }
+
+    for (let i = 0; i <= amount; i++) {
+      const number = Math.ceil(getRandomMinMax(0.3, 2))
+      let colorSwitch: string
+      switch (number) {
+        case 1:
+          colorSwitch = `var(--color-secondary-${Math.round(
+            getRandomMinMax(10, 13)
+          )})`
+          break
+        case 2:
+          colorSwitch = `var(--color-primary-${Math.round(
+            getRandomMinMax(9, 12)
+          )})`
+          break
+        default:
+          colorSwitch = `var(--color-primary-${Math.round(
+            getRandomMinMax(9, 12)
+          )})`
+      }
+
+      const size = specialIndices.has(i)
+        ? Math.round(getRandomMinMax(12, 15))
+        : Math.round(getRandomMinMax(8, 15))
+
+      const e = specialIndices.has(i)
+        ? Math.round(getRandomMinMax(7, 9))
+        : Math.round(getRandomMinMax(4, 9))
+
+      const item: itemProps = {
+        i: i + 1,
+        e: e,
+        size: size,
+        rotation: Math.round(getRandomMinMax(165, 195)),
+        color: colorSwitch,
+      }
+      items.push(item)
+    }
+    setValues(items)
+  }, [amount, reinitialize, thresholdCrossed]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Convert a CSS variable (including calc, vh, vw, etc.) to pixels in a
+  // client-only, SSR-safe way. Returns 0 during server-side rendering.
+  function cssVarToPx(varName: string, contextEl?: Element | null) {
+    // Guard for SSR: window/document are not available on the server
+    if (typeof window === 'undefined' || typeof document === 'undefined')
+      return 0
+
+    const el = contextEl ?? document.documentElement
+    const val = window.getComputedStyle(el).getPropertyValue(varName).trim()
+    if (!val) return 0
+    if (val.endsWith('px')) return parseFloat(val)
+
+    const tmp = document.createElement('div')
+    tmp.style.position = 'absolute'
+    tmp.style.visibility = 'hidden'
+    tmp.style.top = val // could be 'calc(...)' or 'var(--...)'
+    document.body.appendChild(tmp)
+    const px = parseFloat(window.getComputedStyle(tmp).top) || 0
+    document.body.removeChild(tmp)
+    return px
+  }
+
+  // Resolve a raw CSS length/expression (px, calc(), clamp(), etc.) to pixels.
+  // Returns 0 during SSR.
+  function cssExprToPx(expr: string) {
+    if (typeof window === 'undefined' || typeof document === 'undefined')
+      return 0
+    if (!expr) return 0
+    if (expr.endsWith('px')) return parseFloat(expr) || 0
+
+    const tmp = document.createElement('div')
+    tmp.style.position = 'absolute'
+    tmp.style.visibility = 'hidden'
+    tmp.style.top = expr
+    document.body.appendChild(tmp)
+    const px = parseFloat(window.getComputedStyle(tmp).top) || 0
+    document.body.removeChild(tmp)
+    return px
+  }
 
   return (
     <div
       className={`
-        ${lightTheme ? styles.light : ""} 
-        ${touchDevice ? styles.touch : ""} 
-        hero fullwidth ${styles.hero} ${styles[address]} ${itemsVisible ? styles["header-visible"] : styles["header-hidden"]}`}
+        ${lightTheme ? styles.light : ''} 
+        ${touchDevice ? styles.touch : ''} 
+        hero fullwidth ${styles.hero} ${styles[address]} ${itemsVisible ? styles['header-visible'] : styles['header-hidden']}`}
     >
       {/* Always render heading and text for SSR, then on client */}
       <h1>
@@ -700,10 +703,10 @@ export default function Hero({
       </h1>
       <p>{theText}</p>
       <span id="description" className="scr">
-        {t("HeroSection")}: {t("InteractiveElements")}
+        {t('HeroSection')}: {t('InteractiveElements')}
       </span>
 
-      <svg style={{ position: "absolute", width: 0, height: 0 }}>
+      <svg style={{ position: 'absolute', width: 0, height: 0 }}>
         <defs>
           <clipPath
             id="clipHole1"
@@ -751,8 +754,8 @@ export default function Hero({
           type="button"
           onClick={handleReset}
         >
-          <span data-instructions={instructions ?? t("TryTappingTheShapes")}>
-            {reset ?? t("Reset")}
+          <span data-instructions={instructions ?? t('TryTappingTheShapes')}>
+            {reset ?? t('Reset')}
           </span>
           <span> </span>
         </button>
@@ -766,11 +769,11 @@ export default function Hero({
           <span
             data-instructions={
               prefersReducedMotion
-                ? t("TurnRandomMovementOn")
-                : t("TurnRandomMovementOff")
+                ? t('TurnRandomMovementOn')
+                : t('TurnRandomMovementOff')
             }
           >
-            {prefersReducedMotion ? t("Off") : t("On")}
+            {prefersReducedMotion ? t('Off') : t('On')}
           </span>
           <span> </span>
         </button>
