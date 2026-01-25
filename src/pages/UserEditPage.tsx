@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import Icon from '../components/Icon/Icon'
-import { useNavigate } from 'react-router-dom'
-import { useTheme } from '../hooks/useTheme'
-import { ELanguagesLong } from '../types'
-import styles from './css/useredit.module.css'
-import { SelectOption } from '../components/Select/Select'
-import { useSelector } from 'react-redux'
-import { useAppDispatch } from '../hooks/useAppDispatch'
-import { ReducerProps } from '../types'
-import { initializeUser, logout } from '../reducers/authReducer'
-import { removeUser } from '../reducers/usersReducer'
-import { notify } from '../reducers/notificationReducer'
-import { useLanguageContext } from '../contexts/LanguageContext'
-import { useConfirm } from '../contexts/ConfirmContext'
-import PasswordEdit from '../components/UserEdit/PasswordEdit'
-import UsernameEdit from '../components/UserEdit/UsernameEdit'
-import LanguageEdit from '../components/UserEdit/LanguageEdit'
-import NicknameEdit from '../components/UserEdit/NicknameEdit'
+import React, { useEffect, useState } from "react"
+import Icon from "../components/Icon/Icon"
+import { useNavigate } from "react-router-dom"
+import { useTheme } from "../hooks/useTheme"
+import { ELanguagesLong } from "../types"
+import styles from "./css/useredit.module.css"
+import { SelectOption } from "../components/Select/Select"
+import { useSelector } from "react-redux"
+import { useAppDispatch } from "../hooks/useAppDispatch"
+import { ReducerProps } from "../types"
+import { initializeUser, logout } from "../reducers/authReducer"
+import { removeUser } from "../reducers/usersReducer"
+import { notify } from "../reducers/notificationReducer"
+import { useLanguageContext } from "../contexts/LanguageContext"
+import { useConfirm } from "../contexts/ConfirmContext"
+import PasswordEdit from "../components/UserEdit/PasswordEdit"
+import UsernameEdit from "../components/UserEdit/UsernameEdit"
+import LanguageEdit from "../components/UserEdit/LanguageEdit"
+import NicknameEdit from "../components/UserEdit/NicknameEdit"
 
 interface Props {
   type: string
@@ -43,7 +43,7 @@ const UserEditPage = ({ type, options }: Props) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (!user) {
-        navigate('/')
+        navigate("/")
       }
     }, 2000)
 
@@ -56,30 +56,30 @@ const UserEditPage = ({ type, options }: Props) => {
     if (user) {
       if (
         await confirm({
-          message: `${t('AreYouSureYouWantToDelete')} ${user.username}?`,
+          message: `${t("AreYouSureYouWantToDelete")} ${user.username}?`,
         })
       ) {
         if (
           await confirm({
-            message: `${t('YouWillLoseAllTheDataAssociatedWithIt')}`,
+            message: `${t("YouWillLoseAllTheDataAssociatedWithIt")}`,
           })
         ) {
           if (
             await confirm({
-              message: t('DoYouWishToRemoveAnyJokesYouveAuthored'),
+              message: t("DoYouWishToRemoveAnyJokesYouveAuthored"),
             })
           ) {
             await dispatch(removeUser(user._id, true)).then(async () => {
               await dispatch(logout())
-              navigate('/')
-              void dispatch(notify(t('AccountDeleted'), false, 8))
+              navigate("/")
+              void dispatch(notify(t("AccountDeleted"), false, 8))
             })
             setSending(false)
           } else {
             await dispatch(removeUser(user._id, false)).then(async () => {
               await dispatch(logout())
-              navigate('/')
-              void dispatch(notify(t('AccountDeleted'), false, 8))
+              navigate("/")
+              void dispatch(notify(t("AccountDeleted"), false, 8))
               setSending(false)
             })
           }
@@ -121,7 +121,7 @@ const UserEditPage = ({ type, options }: Props) => {
         />
         <meta property="og:type" content="website" />
       </Helmet> */}
-      <div className={`edit ${type} ${lightTheme ? styles.light : ''}`}>
+      <div className={`edit ${type} ${lightTheme ? styles.light : ""}`}>
         <div className="inner-wrap">
           <section className={`card`}>
             <div>
@@ -139,7 +139,7 @@ const UserEditPage = ({ type, options }: Props) => {
               </div>
               {user ? (
                 <form
-                  onSubmit={e => {
+                  onSubmit={(e) => {
                     e.preventDefault()
                     void handleUserRemove(e)
                   }}
@@ -147,15 +147,15 @@ const UserEditPage = ({ type, options }: Props) => {
                 >
                   <button
                     type="submit"
-                    disabled={sending}
-                    className={`submit danger ${styles['delete-account']} ${styles.submit}`}
+                    disabled={sending || user.username === "temp@jenniina.fi"}
+                    className={`submit danger ${styles["delete-account"]} ${styles.submit}`}
                   >
-                    <Icon lib="ti" name="TiDeleteOutline" />{' '}
-                    {t('DeleteAccount')}
+                    <Icon lib="ti" name="TiDeleteOutline" />{" "}
+                    {t("DeleteAccount")}
                   </button>
                 </form>
               ) : (
-                ''
+                ""
               )}
             </div>
           </section>

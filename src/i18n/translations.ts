@@ -10655,6 +10655,24 @@ export const translations = {
     cs: "Úvodní stránka / výstup",
     fi: "Etusivu / poistu",
   },
+  RememberToLogOutAndLogBackInWithYourNewEmailOnceConfirmed: {
+    en: "Remember to log out and log back in with your new email once confirmed",
+    es: "Recuerda cerrar sesión y volver a iniciarla con tu nuevo correo electrónico una vez confirmado",
+    fr: "N'oubliez pas de vous déconnecter et de vous reconnecter avec votre nouvel e-mail une fois confirmé",
+    de: "Denken Sie daran, sich abzumelden und mit Ihrer neuen E-Mail erneut anzumelden, sobald diese bestätigt wurde",
+    pt: "Lembre-se de sair e entrar novamente com seu novo e-mail assim que confirmado",
+    cs: "Nezapomeňte se odhlásit a po potvrzení se znovu přihlásit pomocí nového e-mailu",
+    fi: "Muista kirjautua ulos ja takaisin sisään uudella sähköpostillasi, kun se on vahvistettu",
+  },
+  CannotBeChangedForTestUser: {
+    en: "Cannot be changed for test user",
+    es: "No se puede cambiar para el usuario de prueba",
+    fr: "Ne peut pas être modifié pour l'utilisateur de test",
+    de: "Kann für Testbenutzer nicht geändert werden",
+    pt: "Não pode ser alterado para o usuário de teste",
+    cs: "Nelze změnit pro testovacího uživatele",
+    fi: "Ei voi muuttaa testikäyttäjälle",
+  },
 } as const
 
 export type Translations = typeof translations
