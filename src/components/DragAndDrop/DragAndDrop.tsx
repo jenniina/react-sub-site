@@ -133,6 +133,20 @@ export const DragAndDrop = () => {
     .flat()
     .filter((item): item is Data => item !== undefined)
 
+  const translateStatus = (status: string) => {
+    const statusLowerCase = status.toLowerCase()
+    switch (statusLowerCase) {
+      case 'do':
+        return t('Do')
+      case 'doing':
+        return t('Doing')
+      case 'done':
+        return t('Done')
+      default:
+        return status.replace(/_/g, ' ')
+    }
+  }
+
   useEffect(() => {
     if (lightTheme && !backgroundIsModified) {
       setStatusesColors((prevColors) =>
@@ -785,6 +799,7 @@ export const DragAndDrop = () => {
                 status={container}
                 statuses={statuses}
                 key={container}
+                translateStatus={translateStatus}
                 isDragging={isDragging}
                 handleDragging={handleDragging}
                 handleUpdate={handleUpdateHandler}
@@ -918,14 +933,14 @@ export const DragAndDrop = () => {
                 instructions={t('SelectCategory')}
                 hide
                 options={statuses.map((status) => ({
-                  label: status,
+                  label: translateStatus(status),
                   value: status,
                 }))}
                 value={newStatusForItem}
                 onChange={(o) =>
                   setNewStatusForItem(
                     o ?? {
-                      label: statuses[0],
+                      label: translateStatus(statuses[0]),
                       value: statuses[0],
                     }
                   )

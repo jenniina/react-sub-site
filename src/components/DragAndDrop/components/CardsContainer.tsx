@@ -24,6 +24,7 @@ interface Props {
   setStatusesColors: React.Dispatch<React.SetStateAction<IContainerColors[]>>
   defaultTopColor: string
   defaultBodyColor: string
+  translateStatus: (status: string) => string
   isDragging: boolean
   handleUpdate: (id: number, status: Status, target?: number) => void
   handleRemoveColor: (data: Data) => Promise<void>
@@ -43,6 +44,7 @@ const CardsContainer = ({
   setStatusesColors,
   defaultTopColor,
   defaultBodyColor,
+  translateStatus,
   isDragging,
   handleDragging,
   handleUpdate,
@@ -127,20 +129,6 @@ const CardsContainer = ({
       }
 
       handleDragging(false)
-    }
-  }
-
-  const translateStatus = (status: string) => {
-    const statusLowerCase = status.toLowerCase()
-    switch (statusLowerCase) {
-      case 'do':
-        return t('Do')
-      case 'doing':
-        return t('Doing')
-      case 'done':
-        return t('Done')
-      default:
-        return status.replace(/_/g, ' ')
     }
   }
 
