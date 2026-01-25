@@ -8,6 +8,7 @@ import dog from '../../assets/blob-dog.png'
 import { CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 import { useLanguageContext } from '../../contexts/LanguageContext'
+import SEO from '../../components/SEO/SEO'
 
 export default function BlobPage({ type }: { type: string }) {
   const { t } = useLanguageContext()
@@ -21,30 +22,11 @@ export default function BlobPage({ type }: { type: string }) {
   }
   return (
     <>
-      {/*  <Helmet prioritizeSeoTags={true}>
-        <meta charSet="utf-8" />
-        <meta name="author" content="Jenniina Laine" />
-        <meta property="og:type" content="website" />
-
-        <title>
-          {t("Blobs")} | {t("BlobAppSlogan")}
-        </title>
-        <meta name="description" content={t("BlobAppIntro")} />
-        <link
-          rel="canonical"
-          href={`https://react.jenniina.fi/portfolio/blob`}
-        />
-        <meta
-          property="og:title"
-          content={`${t("Blobs")} | ${t("BlobAppSlogan")}`}
-        />
-        <meta property="og:description" content={t("BlobAppIntro")} />
-        <meta
-          property="og:url"
-          content={`https://react.jenniina.fi/portfolio/blob`}
-        />
-        <meta property="og:type" content="website" />
-      </Helmet> */}
+      <SEO
+        title={`${t('Blobs')} | ${t('BlobAppSlogan')}`}
+        description={t('BlobAppIntro')}
+        canonicalUrl="https://react.jenniina.fi/portfolio/blob"
+      />
       <div className={`blob ${type}`}>
         <div className="inner-wrap">
           <section>

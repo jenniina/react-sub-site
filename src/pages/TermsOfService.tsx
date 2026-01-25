@@ -4,6 +4,7 @@ import styles from './css/disclaimer.module.css'
 import {
   EContactMe,
   EContactMeText,
+  EETermsOfService,
   EEnFi,
   EEnFiAcceptanceOfTerms,
   EEnFiAcceptanceOfTermsText,
@@ -29,31 +30,13 @@ import {
 } from '../types/fien'
 import { Link } from 'react-router-dom'
 import { useLanguageContext } from '../contexts/LanguageContext'
+import SEO from '../components/SEO/SEO'
 
 export function TermsProducts({ language }: { language: ELanguages }) {
   const lang: EEnFi = language === ELanguages.fi ? EEnFi.fi : EEnFi.en
 
   return (
     <>
-      {/*  <Helmet prioritizeSeoTags={true}>
-        <meta charSet="utf-8" />
-        <meta name="author" content="Jenniina Laine" />
-        <meta property="og:type" content="website" />
-
-        <title>{EETermsOfService[lang]}</title>
-        <meta
-          name="description"
-          content={`${EEnFiWelcomeToTermsOfService[lang]} | ${EEnFiCustomer[lang]}`}
-        />
-        <link rel="canonical" href={`https://react.jenniina.fi/terms`} />
-        <meta property="og:title" content={EETermsOfService[lang]} />
-        <meta
-          property="og:description"
-          content={`${EEnFiWelcomeToTermsOfService[lang]} | ${EEnFiCustomer[lang]}`}
-        />
-        <meta property="og:url" content={`https://react.jenniina.fi/terms`} />
-        <meta property="og:type" content="website" />
-      </Helmet> */}
       <p>
         <strong>{EEnFiSupplier[lang]}:</strong> Jenniina Laine <br />
         <strong>{EEnFiCustomer[lang]}:</strong> {EEnFiCustomerCompany[lang]}
@@ -82,6 +65,11 @@ export default function TermsOfService({ type }: { type: string }) {
 
   return (
     <>
+      <SEO
+        title={EETermsOfService[lang]}
+        description={`${EEnFiWelcomeToTermsOfService[lang]} | ${EEnFiCustomer[lang]}`}
+        canonicalUrl={'https://react.jenniina.fi/terms'}
+      />
       <div className={`terms ${type} ${lightTheme ? styles.light : ''}`}>
         <div className="inner-wrap">
           <section className={`card`}>

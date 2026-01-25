@@ -1,25 +1,23 @@
-import { Fragment } from "react"
-import { ELanguages, ELanguagesLong } from "../types"
-import { SelectOption } from "../components/Select/Select"
+import { Fragment } from 'react'
+import { ELanguages, ELanguagesLong } from '../types'
+import { SelectOption } from '../components/Select/Select'
 import {
   ColorBlock,
   ComplianceResult,
-  HSLColor,
-  TColorMode,
-} from "../components/AccessibleColors/AccessibleColors"
+} from '../components/AccessibleColors/AccessibleColors'
 import {
   ECategories,
   EJokeType,
   ESafemode,
   TCategoryByLanguages,
-} from "../components/Jokes/types"
+} from '../components/Jokes/types'
 
 export function getRandomBetween(min: number, max: number) {
   return Math.random() * (max - min) + min
 }
 
 export const splitToLines = (details: string) => {
-  return details.split("\n").map((line: string, index: number) => (
+  return details.split('\n').map((line: string, index: number) => (
     <Fragment key={`${line}-${index}`}>
       {line}
       <br />
@@ -36,7 +34,7 @@ export const firstToUpperCase = (str: string) => {
 }
 
 export const sanitize = (name: string = getRandomString(9)): string => {
-  return name.replace(/\s+/g, "_").replace(/[^a-zA-Z0-9_]/g, "-")
+  return name.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '-')
 }
 
 // Note: first3Words moved to utils/translations.tsx (client-only, uses translations)
@@ -50,8 +48,8 @@ export const options = (enumObj: typeof ELanguagesLong) => {
 
 export const getRandomString = (length: number) => {
   const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-  let result = ""
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  let result = ''
   const charactersLength = characters.length
   for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength))
@@ -59,10 +57,10 @@ export const getRandomString = (length: number) => {
   return result
 }
 export const getRandomLetters = (length: number, capitals = false) => {
-  const lettersAll = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-  const lettersCapital = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+  const lettersAll = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+  const lettersCapital = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
   const characters = capitals ? lettersCapital : lettersAll
-  let result = ""
+  let result = ''
   const charactersLength = characters.length
   for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength))
@@ -73,16 +71,16 @@ export const getRandomMinMax = (min: number, max: number) => {
   return Math.random() * (max - min) + min
 }
 
-type ScrollLogicalPosition = "center" | "end" | "nearest" | "start"
+type ScrollLogicalPosition = 'center' | 'end' | 'nearest' | 'start'
 
 export const scrollIntoView = (
   id: string,
-  block: ScrollLogicalPosition = "start",
-  inline: ScrollLogicalPosition = "nearest"
+  block: ScrollLogicalPosition = 'start',
+  inline: ScrollLogicalPosition = 'nearest'
 ) => {
   const element = document?.getElementById(id)
   if (element) {
-    element.scrollIntoView({ behavior: "smooth", block, inline })
+    element.scrollIntoView({ behavior: 'smooth', block, inline })
   }
 }
 
@@ -98,9 +96,9 @@ export const randomUpTo90 = () => {
   const value = Math.ceil(getRandomBetween(5, 90))
   return clampValue(5, value, 90)
 }
-export const randomHSLColor = (type = "array") => {
+export const randomHSLColor = (type = 'array') => {
   const randomOneOrTwo = Math.random() < 0.5 ? 1 : 2
-  if (type === "hsl") {
+  if (type === 'hsl') {
     const h = Math.floor(Math.random() * 360)
     const s = randomUpTo100()
     const l = randomUpTo90()
@@ -209,24 +207,24 @@ export const hslToRGB = (h: number, s: number, l: number) => {
 // Prefer axios.isAxiosError to detect axios errors and then look for a
 // `response.data.message` property if present. Otherwise fall back to Error
 // messages or a string coercion.
-import { AxiosError, isAxiosError } from "axios"
+import { AxiosError, isAxiosError } from 'axios'
 export function getErrorMessage(err: unknown, fallback: string): string {
   try {
     if (isAxiosError(err)) {
       const axiosErr = err as AxiosError<unknown>
       const data = axiosErr.response?.data
-      if (data && typeof data === "object" && "message" in data) {
+      if (data && typeof data === 'object' && 'message' in data) {
         const d = data as Record<string, unknown>
-        if (typeof d.message === "string") return d.message
+        if (typeof d.message === 'string') return d.message
       }
-      return axiosErr.message ?? fallback ?? "Unknown error"
+      return axiosErr.message ?? fallback ?? 'Unknown error'
     }
     if (err instanceof Error) return err.message
-    if (typeof err === "string") return err
-    return fallback ?? "Unknown error"
+    if (typeof err === 'string') return err
+    return fallback ?? 'Unknown error'
   } catch {
     // Defensive catch: don't let a helper throw and break error handling
-    return fallback ?? "Unknown error"
+    return fallback ?? 'Unknown error'
   }
 }
 
@@ -276,9 +274,9 @@ export const determineAccessibility = (
   const parseC = (color: ColorBlock) => {
     let r: number, g: number, b: number
 
-    if (color.colorFormat === "hex") {
+    if (color.colorFormat === 'hex') {
       ;({ r, g, b } = hexToRGB(color.color))
-    } else if (color.colorFormat === "rgb") {
+    } else if (color.colorFormat === 'rgb') {
       const rgbMatch =
         /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i.exec(
           color.color
@@ -288,9 +286,9 @@ export const determineAccessibility = (
         g = Number(rgbMatch[2])
         b = Number(rgbMatch[3])
       } else {
-        throw new Error("Invalid RGB format")
+        throw new Error('Invalid RGB format')
       }
-    } else if (color.colorFormat === "hsl") {
+    } else if (color.colorFormat === 'hsl') {
       const hslMatch =
         /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i.exec(
           color.color
@@ -301,10 +299,10 @@ export const determineAccessibility = (
         const l = Number(hslMatch[3])
         ;({ r, g, b } = hslToRGB(h, s, l))
       } else {
-        throw new Error("Invalid HSL format")
+        throw new Error('Invalid HSL format')
       }
     } else {
-      throw new Error("Unsupported color format")
+      throw new Error('Unsupported color format')
     }
 
     return { r, g, b }
@@ -368,8 +366,8 @@ export function getKeyByValue(
 
 // Helper to get hex value from any color format
 export const getHexFromColor = (color: string, type: string) => {
-  if (type === "hex") return color.toUpperCase()
-  if (type === "hsl") {
+  if (type === 'hex') return color.toUpperCase()
+  if (type === 'hsl') {
     const hslMatch = /^hsl\((\d{1,3}),\s*(\d{1,3})%,\s*(\d{1,3})%\)$/i.exec(
       color
     )
@@ -381,7 +379,7 @@ export const getHexFromColor = (color: string, type: string) => {
       return rgbToHex(rgb.r, rgb.g, rgb.b)
     }
   }
-  if (type === "rgb") {
+  if (type === 'rgb') {
     const rgbMatch = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.exec(color)
     if (rgbMatch) {
       const r = Number(rgbMatch[1])
@@ -397,13 +395,13 @@ export const sleep = (ms: number) =>
   new Promise<void>((res) => setTimeout(res, ms))
 
 export const colorNameToHex = (color: string) => {
-  const ctx = document.createElement("canvas").getContext("2d")
+  const ctx = document.createElement('canvas').getContext('2d')
   if (!ctx) {
-    throw new Error("Canvas context not available")
+    throw new Error('Canvas context not available')
   }
 
   // Validate by using a sentinel first
-  const sentinel = "rgb(1, 2, 3)"
+  const sentinel = 'rgb(1, 2, 3)'
   ctx.fillStyle = sentinel
   ctx.fillStyle = color
 
@@ -416,22 +414,22 @@ export const colorNameToHex = (color: string) => {
 }
 
 export const hexToRGB = (value: string) => {
-  if (value.startsWith("rgb(")) {
+  if (value.startsWith('rgb(')) {
     const m = value.match(/^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/)
     if (!m) throw new Error(`Unsupported rgb format: ${value}`)
     return { r: Number(m[1]), g: Number(m[2]), b: Number(m[3]) }
   }
 
   // Handle hex formats, including #ccc
-  if (!value.startsWith("#"))
+  if (!value.startsWith('#'))
     throw new Error(`Unsupported color format: ${value}`)
 
   let hex = value.slice(1)
   if (hex.length === 3)
     hex = hex
-      .split("")
+      .split('')
       .map((ch) => ch + ch)
-      .join("")
+      .join('')
   if (hex.length !== 6) throw new Error(`Unsupported hex length: ${value}`)
 
   const r = parseInt(hex.slice(0, 2), 16)
@@ -449,8 +447,8 @@ export const calculateLuminance = (r: number, g: number, b: number) => {
 }
 
 export const determineBackgroundLightness = (color: string) => {
-  const normalized = color.startsWith("#") ? color : colorNameToHex(color)
+  const normalized = color.startsWith('#') ? color : colorNameToHex(color)
   const rgb = hexToRGB(normalized)
   const luminance = calculateLuminance(rgb.r, rgb.g, rgb.b)
-  return luminance > 0.179 ? "light" : "dark"
+  return luminance > 0.179 ? 'light' : 'dark'
 }

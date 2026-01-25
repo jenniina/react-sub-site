@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import styles from './css/disclaimer.module.css'
 
 import { useLanguageContext } from '../contexts/LanguageContext'
+import SEO from '../components/SEO/SEO'
 export default function Disclaimer({ type }: { type: string }) {
   const { t } = useLanguageContext()
 
@@ -10,28 +11,11 @@ export default function Disclaimer({ type }: { type: string }) {
 
   return (
     <>
-      {/* <Helmet prioritizeSeoTags={true}>
-        <meta charSet="utf-8" />
-        <meta name="author" content="Jenniina Laine" />
-        <meta property="og:type" content="website" />
-
-        <title>{t("PrivacyAndSecurityDisclaimer")} | react.jenniina.fi</title>
-        <meta name="description" content={t("PrivacyAndSecurityDisclaimer")} />
-        <link rel="canonical" href={`https://react.jenniina.fi/disclaimer`} />
-        <meta
-          property="og:title"
-          content={`${t("PrivacyAndSecurityDisclaimer")} | react.jenniina.fi`}
-        />
-        <meta
-          property="og:description"
-          content={t("PrivacyAndSecurityDisclaimer")}
-        />
-        <meta
-          property="og:url"
-          content={`https://react.jenniina.fi/disclaimer`}
-        />
-        <meta property="og:type" content="website" />
-      </Helmet> **/}
+      <SEO
+        title={`${t('PrivacyAndSecurityDisclaimer')} | react.jenniina.fi`}
+        description={t('PrivacyAndSecurityDisclaimer')}
+        canonicalUrl={'https://react.jenniina.fi/disclaimer'}
+      />
       <div className={`disclaimer ${type} ${lightTheme ? styles.light : ''}`}>
         <div className="inner-wrap">
           <section className={`card`}>

@@ -10,6 +10,7 @@ import { Select, SelectOption } from '../../components/Select/Select'
 import { options } from '../../utils'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import Jokes from '../../components/Jokes/Jokes'
+import SEO from '../../components/SEO/SEO'
 
 export default function JokesPage({ type }: { type: string }) {
   const { t, language, setLanguage } = useLanguageContext()
@@ -26,30 +27,12 @@ export default function JokesPage({ type }: { type: string }) {
 
   return (
     <>
-      {/*  <Helmet prioritizeSeoTags={true}>
-        <meta charSet="utf-8" />
-        <meta name="author" content="Jenniina Laine" />
-        <meta property="og:type" content="website" />
-
-        <title>
-          {t("Jokes")} | {t("TheComediansCompanion")}
-        </title>
-        <meta name="description" content={t("JokesAppIntro")} />
-        <link
-          rel="canonical"
-          href={`https://react.jenniina.fi/portfolio/jokes`}
-        />
-        <meta
-          property="og:title"
-          content={`${t("Jokes")} | react.jenniina.fi`}
-        />
-        <meta property="og:description" content={t("JokesAppIntro")} />
-        <meta
-          property="og:url"
-          content={`https://react.jenniina.fi/portfolio/jokes`}
-        />
-        <meta property="og:type" content="website" />
-      </Helmet> */}
+      <SEO
+        title={`${t('Jokes')} | ${t('TheComediansCompanion')}`}
+        description={t('JokesAppIntro')}
+        canonicalUrl="https://react.jenniina.fi/portfolio/jokes"
+        ogTitle={`${t('Jokes')} | react.jenniina.fi`}
+      />
       <div className={`${type} ${language}`}>
         <div className="inner-wrap">
           <section className="joke-container card introduction">
@@ -62,7 +45,7 @@ export default function JokesPage({ type }: { type: string }) {
                   </a>
                   <button
                     className="reset svg-wrap newline"
-                    onClick={e => handleSkipToJokes(e)}
+                    onClick={(e) => handleSkipToJokes(e)}
                   >
                     <span>{t('SkipToSavedJokes')}</span>
                     <BiChevronsDown className="down" />
@@ -83,7 +66,7 @@ export default function JokesPage({ type }: { type: string }) {
                           } as SelectOption)
                         : undefined
                     }
-                    onChange={o => {
+                    onChange={(o) => {
                       setLanguage(o?.value as ELanguages)
                     }}
                   />

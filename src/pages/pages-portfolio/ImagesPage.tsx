@@ -3,42 +3,19 @@ import { ELanguages } from '../../types'
 import styles from '../../components/Images/images.module.css'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import Images from '../../components/Images/Images'
+import SEO from '../../components/SEO/SEO'
 
 const ImagesPage = ({ type }: { type: string }) => {
   const { t, language } = useLanguageContext()
 
   return (
     <>
-      {/*  <Helmet prioritizeSeoTags={true}>
-        <meta charSet="utf-8" />
-        <meta name="author" content="Jenniina Laine" />
-        <meta property="og:type" content="website" />
-
-        <title>
-          {t("SearchForMedia")} | {t("SearchforVideos")}
-        </title>
-        <meta
-          name="description"
-          content={t("YouMaySearchForImagesFetchedFromThePixabayAPI")}
-        />
-        <link
-          rel="canonical"
-          href={`https://react.jenniina.fi/portfolio/media`}
-        />
-        <meta
-          property="og:title"
-          content={`${t("SearchForMedia")} | react.jenniina.fi`}
-        />
-        <meta
-          property="og:description"
-          content={t("YouMaySearchForImagesFetchedFromThePixabayAPI")}
-        />
-        <meta
-          property="og:url"
-          content={`https://react.jenniina.fi/portfolio/media`}
-        />
-        <meta property="og:type" content="website" />
-      </Helmet> */}
+      <SEO
+        title={`${t('SearchForMedia')} | ${t('SearchforVideos')}`}
+        description={t('YouMaySearchForImagesFetchedFromThePixabayAPI')}
+        canonicalUrl="https://react.jenniina.fi/portfolio/media"
+        ogTitle={`${t('SearchForMedia')} | react.jenniina.fi`}
+      />
       <div className={`media ${type} ${styles['images-wrap']}`}>
         <div className={`inner-wrap ${styles['inner-wrap']}`}>
           <section className={`card ${styles['features-card']}`}>

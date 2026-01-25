@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Accordion from '../../components/Accordion/Accordion'
 import { useLanguageContext } from '../../contexts/LanguageContext'
+import SEO from '../../components/SEO/SEO'
 
 export default function HairSalonPage({ type }: { type: string }) {
   const { t } = useLanguageContext()
@@ -8,30 +9,12 @@ export default function HairSalonPage({ type }: { type: string }) {
   const [isFormOpen, setIsFormOpen] = useState(false)
   return (
     <>
-      {/*  <Helmet prioritizeSeoTags={true}>
-        <meta charSet="utf-8" />
-        <meta name="author" content="Jenniina Laine" />
-        <meta property="og:type" content="website" />
-
-        <title>
-          {t("HairSalon")} Hannastiina | {t("HairSalonWebsite")}
-        </title>
-        <meta name="description" content={t("HairSalonWebsite")} />
-        <link
-          rel="canonical"
-          href={`https://react.jenniina.fi/portfolio/salon`}
-        />
-        <meta
-          property="og:title"
-          content={`${t("HairSalon")} Hannastiina | react.jenniina.fi`}
-        />
-        <meta property="og:description" content={t("HairSalonWebsite")} />
-        <meta
-          property="og:url"
-          content={`https://react.jenniina.fi/portfolio/salon`}
-        />
-        <meta property="og:type" content="website" />
-      </Helmet> */}
+      <SEO
+        title={`${t('HairSalon')} Hannastiina | ${t('HairSalonWebsite')}`}
+        description={t('HairSalonWebsite')}
+        canonicalUrl="https://react.jenniina.fi/portfolio/salon"
+        ogTitle={`${t('HairSalon')} Hannastiina | react.jenniina.fi`}
+      />
       <div className={`salon ${type}`}>
         <div className="inner-wrap">
           <section className="card">
