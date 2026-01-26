@@ -19,7 +19,7 @@ export default defineConfig(({ command }) => ({
         targets: [
           {
             src: 'routes.json',
-            dest: resolve(__dirname, '../node-bg/dist/frontend'),
+            dest: resolve(__dirname, '../node-backend/dist/frontend'),
           },
         ],
         hook: 'writeBundle', // run the plugin after all the files are bundled and written to disk
@@ -61,7 +61,7 @@ export default defineConfig(({ command }) => ({
     // Write to the regular outDir by default, but allow a local outDir for analysis
     outDir: process.env.ANALYZE
       ? resolve(__dirname, 'dist')
-      : resolve(__dirname, '../node-bg/dist/frontend'),
+      : resolve(__dirname, '../node-backend/dist/frontend'),
     minify: isDebug ? false : 'terser',
     sourcemap: true,
     target: 'es2015',
