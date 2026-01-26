@@ -2689,6 +2689,9 @@ export default function DragContainer({
                                   wrapperClass="blobnewname-wrap"
                                   text={t('Rename')}
                                   hideBrackets={true}
+                                  setIsFormOpen={(open) => {
+                                    setEditName(open ? versionName : '')
+                                  }}
                                   onClick={() => {
                                     setNewName(versionName)
                                     setEditName(versionName)
