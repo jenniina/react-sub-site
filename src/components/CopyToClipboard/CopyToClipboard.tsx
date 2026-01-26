@@ -44,11 +44,11 @@ export default function CopyToClipboard({
     try {
       await copyTextToClipboard(value)
       setCopied(true)
-      dispatch(notify(t('CopiedToClipboard'), false, 3))
+      void dispatch(notify(t('CopiedToClipboard'), false, 3))
       window.setTimeout(() => setCopied(false), 1500)
     } catch {
       // If copying fails (permissions, insecure context), notify
-      dispatch(notify(t('FailedToCopy'), true, 5))
+      void dispatch(notify(t('FailedToCopy'), true, 5))
     }
   }, [value, dispatch, t])
 
