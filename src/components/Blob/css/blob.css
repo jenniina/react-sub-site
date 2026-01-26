@@ -34,6 +34,11 @@ svg.filter {
     calc(calc(var(--padd) + var(--page-padding)) * -1);
   min-width: calc(100% + calc(var(--padd) + var(--page-padding)) * 2);
 }
+.drag-container [id^='drag-wrap-outer'] {
+  transition-property: background-color;
+  transition-timing-function: ease-in-out;
+  transition-duration: 300ms;
+}
 .drag-container #drag-wrap-outer0 {
   --hue0: 214;
   --saturation0: 80;

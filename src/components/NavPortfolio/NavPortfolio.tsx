@@ -1,4 +1,4 @@
-import { useEffect, useRef, useLayoutEffect, useCallback } from "react"
+import { useEffect, useRef, useCallback } from "react"
 import { NavLink, Outlet, useLocation } from "react-router-dom"
 import Icon from "../Icon/Icon"
 import useIsOnScreen from "../../hooks/useIsOnScreen"
@@ -105,7 +105,7 @@ function NavPortfolio() {
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/(^-|-$)/g, "")
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const scroller = scrollHorizontal.current
     if (!scroller) return
 
