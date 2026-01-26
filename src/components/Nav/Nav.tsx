@@ -537,9 +537,9 @@ const Nav = (
     location.pathname
       .split('/')
       .filter((part) => part.length > 0)
-      .pop() || 'home'
+      .pop() ?? 'home'
 
-  const firstPartOfPageName = location.pathname.split('/')[1] || 'home'
+  const firstPartOfPageName = location.pathname.split('/')[1] ?? 'home'
 
   const isPortfolioMainPage =
     firstPartOfPageName === 'portfolio' && pageName === 'portfolio'

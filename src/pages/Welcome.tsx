@@ -47,31 +47,28 @@ export default function Home({
             setLanguage(o?.value as ELanguages)
           }}
         />
-        <div className="inner-wrap">
-          <section className={`card ${styles.welcome}`}>
-            <div>
-              <ul className={styles.list}>
-                <li>
-                  <Link to="/portfolio">
-                    <Icon lib="io" name="IoMdImages" />{' '}
-                    <span>{t('Portfolio')}</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/contact">
-                    <Icon lib="bi" name="BiChat" /> <span>{t('Contact')}</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/store">
-                    <Icon lib="fa" name="FaStoreAlt" />{' '}
-                    <span>{t('Store')}</span>
-                  </Link>
-                </li>
-              </ul>
-              {/* <Newest /> */}
-            </div>
-          </section>
+        <div className={`${styles.welcome} mt2`}>
+          <div>
+            <ul className={styles.list}>
+              <li>
+                <Link to="/portfolio">
+                  <Icon lib="io" name="IoMdImages" />{' '}
+                  <span>{t('Portfolio')}</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact">
+                  <Icon lib="bi" name="BiChat" /> <span>{t('Contact')}</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/store">
+                  <Icon lib="fa" name="FaStoreAlt" /> <span>{t('Store')}</span>
+                </Link>
+              </li>
+            </ul>
+            {/* <Newest /> */}
+          </div>
           <Featured />
           <About type="page" />
         </div>
