@@ -8,46 +8,45 @@ import React, {
   useRef,
   useCallback,
   useMemo,
-} from "react"
-import { useIsClient, useWindow } from "../../hooks/useSSR"
-import Icon from "../Icon/Icon"
-import styles from "./nav.module.css"
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom"
-import { useTheme, useThemeUpdate } from "../../hooks/useTheme"
-import useScrollDirection from "../../hooks/useScrollDirection"
-import useWindowSize from "../../hooks/useWindowSize"
+} from 'react'
+import { useIsClient, useWindow } from '../../hooks/useSSR'
+import Icon from '../Icon/Icon'
+import styles from './nav.module.css'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { useTheme, useThemeUpdate } from '../../hooks/useTheme'
+import useScrollDirection from '../../hooks/useScrollDirection'
+import useWindowSize from '../../hooks/useWindowSize'
 import {
   ReducerProps,
   breakpoint,
   breakpointSmall,
   ELanguages,
   ELanguagesLong,
-} from "../../types"
-import { TranslationKey } from "../../i18n/translations"
-import { useOutsideClick } from "../../hooks/useOutsideClick"
-import logo from "../../assets/JLA_Jenniina-light-3-480x198.png"
-import logoDark from "../../assets/JLA_Jenniina-3-480x198.png"
-import { useSelector } from "react-redux"
-import { useAppDispatch } from "../../hooks/useAppDispatch"
-import { logout } from "../../reducers/authReducer"
-import FormLogin from "../Login/Login"
-import Register from "../Register/Register"
-import { notify } from "../../reducers/notificationReducer"
-import { createUser } from "../../reducers/usersReducer"
-import { Select, SelectOption } from "../Select/Select"
-import PasswordReset from "../PasswordReset/PasswordReset"
-import Accordion from "../Accordion/Accordion"
-// Removed FaStoreAlt import; Icon loader is used to dynamically import icons.
-import useCart from "../../hooks/useCart"
-import { options } from "../../utils"
-import { useLanguageContext } from "../../contexts/LanguageContext"
-import { getErrorMessage } from "../../utils"
-import { isTouchDevice } from "../../hooks/useDraggable"
-import useLocalStorage from "../../hooks/useStorage"
-import useExitVisibility from "../../hooks/useExitVisibility"
-import useNoTransition from "../../hooks/useNoTransition"
+} from '../../types'
+import { TranslationKey } from '../../i18n/translations'
+import { useOutsideClick } from '../../hooks/useOutsideClick'
+import logo from '../../assets/JLA_Jenniina-light-3-480x198.png'
+import logoDark from '../../assets/JLA_Jenniina-3-480x198.png'
+import { useSelector } from 'react-redux'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { logout } from '../../reducers/authReducer'
+import FormLogin from '../Login/Login'
+import Register from '../Register/Register'
+import { notify } from '../../reducers/notificationReducer'
+import { createUser } from '../../reducers/usersReducer'
+import { Select, SelectOption } from '../Select/Select'
+import PasswordReset from '../PasswordReset/PasswordReset'
+import Accordion from '../Accordion/Accordion'
+import useCart from '../../hooks/useCart'
+import { options } from '../../utils'
+import { useLanguageContext } from '../../contexts/LanguageContext'
+import { getErrorMessage } from '../../utils'
+import { isTouchDevice } from '../../hooks/useDraggable'
+import useLocalStorage from '../../hooks/useStorage'
+import useExitVisibility from '../../hooks/useExitVisibility'
+import useNoTransition from '../../hooks/useNoTransition'
 
-type Form = "login" | "register" | "reset" | null
+type Form = 'login' | 'register' | 'reset' | null
 
 export interface Link {
   label: string
@@ -106,31 +105,31 @@ const LinkComponent: FC<LinkComponentProps> = ({
       {windowWidth < breakpointSmall && !menuStyleAlt ? (
         <li
           ref={smallLogoRef}
-          className={`${styles["right-edge"]} ${
+          className={`${styles['right-edge']} ${
             lightTheme
-              ? `${styles["logo-container"]} ${styles.light}`
-              : styles["logo-container"]
+              ? `${styles['logo-container']} ${styles.light}`
+              : styles['logo-container']
           }`}
         >
           <button
             type="button"
             aria-haspopup={true}
-            aria-expanded={smallLogoOpen ? "true" : "false"}
-            aria-label={t("ExitToMainSite")}
-            className={styles["logo-btn"]}
+            aria-expanded={smallLogoOpen ? 'true' : 'false'}
+            aria-label={t('ExitToMainSite')}
+            className={styles['logo-btn']}
             style={{ backgroundImage: `url(${lightTheme ? logoDark : logo})` }}
             onClick={() => setSmallLogoOpen((s) => !s)}
           >
-            <span className="scr">{t("FrontPageOrExit")}</span>
+            <span className="scr">{t('FrontPageOrExit')}</span>
           </button>
 
           <ul
-            className={`${styles["logo-menu"]} ${smallLogoOpen ? styles.show : ""}`}
+            className={`${styles['logo-menu']} ${smallLogoOpen ? styles.show : ''}`}
             aria-hidden={!smallLogoOpen}
           >
             <li>
               <Link to="/" onClick={() => setSmallLogoOpen(false)}>
-                {t("FrontPage")}
+                {t('FrontPage')}
               </Link>
             </li>
             <li>
@@ -138,13 +137,13 @@ const LinkComponent: FC<LinkComponentProps> = ({
                 href="https://jenniina.fi/"
                 onClick={() => setSmallLogoOpen(false)}
               >
-                &times; {t("Exit")}
+                &times; {t('Exit')}
               </a>
             </li>
           </ul>
         </li>
       ) : (
-        ""
+        ''
       )}
 
       {links.map((link: Link, index: number) => {
@@ -164,9 +163,9 @@ const LinkComponent: FC<LinkComponentProps> = ({
                 className={`${
                   menuStyleAlt && windowWidth < breakpointSmall
                     ? `tooltip space narrow2 above ${
-                        index < 2 ? "right" : "left"
+                        index < 2 ? 'right' : 'left'
                       }`
-                    : "scr"
+                    : 'scr'
                 }`}
                 aria-hidden={true}
               >
@@ -188,7 +187,7 @@ const SkipLink: FC<SkipLinkProps> = ({ skipLinks, styles }) => {
           <li key={link.href}>
             <NavLink
               to={link.href}
-              className={`${styles["skip-link"]} ${styles[link.name]}`}
+              className={`${styles['skip-link']} ${styles[link.name]}`}
             >
               {link.label}
             </NavLink>
@@ -233,9 +232,9 @@ const Nav = (
 
   const [openForm, setOpenForm] = useState<Form>(null)
 
-  const isLoginFormOpen = openForm === "login"
-  const isRegisterFormOpen = openForm === "register"
-  const isResetFormOpen = openForm === "reset"
+  const isLoginFormOpen = openForm === 'login'
+  const isRegisterFormOpen = openForm === 'register'
+  const isResetFormOpen = openForm === 'reset'
 
   const bindForm = useCallback(
     (form: Exclude<Form, null>) => (next: boolean) => {
@@ -244,7 +243,7 @@ const Nav = (
     []
   )
 
-  const [menuStyleAlt, setMenuStyleAlt] = useLocalStorage("alt", false)
+  const [menuStyleAlt, setMenuStyleAlt] = useLocalStorage('alt', false)
 
   const { noTransition, arm } = useNoTransition()
 
@@ -291,17 +290,17 @@ const Nav = (
     // If URL opens login/register form, allow outside click to close it permanently
     // by removing the query params (otherwise the effect below will reopen it).
     const params = new URLSearchParams(location.search)
-    const hadAuthParams = params.has("login") || params.has("register")
+    const hadAuthParams = params.has('login') || params.has('register')
     if (!hadAuthParams) return
 
-    params.delete("login")
-    params.delete("register")
+    params.delete('login')
+    params.delete('register')
 
     const nextSearch = params.toString()
     navigate(
       {
         pathname: location.pathname,
-        search: nextSearch ? `?${nextSearch}` : "",
+        search: nextSearch ? `?${nextSearch}` : '',
       },
       { replace: true }
     )
@@ -325,12 +324,12 @@ const Nav = (
   useEffect(() => {
     if (!isClient || !windowObj) return
     const params = new URLSearchParams(windowObj.location.search)
-    if (params.get("login")) {
+    if (params.get('login')) {
       toolbar.show()
-      bindForm("login")(true)
-    } else if (params.get("register")) {
+      bindForm('login')(true)
+    } else if (params.get('register')) {
       toolbar.show()
-      bindForm("register")(true)
+      bindForm('register')(true)
     }
   }, [location, isClient, windowObj, bindForm, toolbar])
 
@@ -383,23 +382,23 @@ const Nav = (
 
   useEffect(() => {
     if (!isClient || !windowObj) return
-    windowObj.addEventListener("scroll", scrolling)
+    windowObj.addEventListener('scroll', scrolling)
     return () => {
-      windowObj.removeEventListener("scroll", scrolling)
+      windowObj.removeEventListener('scroll', scrolling)
     }
   }, [isClient, windowObj, scrolling])
 
-  const [username, setUsername] = useState<string>("")
-  const [password, setPassword] = useState<string>("")
-  const [confirmPassword, setConfirmPassword] = useState<string>("")
-  const [name, setName] = useState<string>("")
+  const [username, setUsername] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [confirmPassword, setConfirmPassword] = useState<string>('')
+  const [name, setName] = useState<string>('')
   const [sending, setSending] = useState(false)
 
   const handleRegister = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
     setSending(true)
     if (password.trim() !== confirmPassword.trim()) {
-      void dispatch(notify(`${t("PasswordsDoNotMatch")}`, true, 8))
+      void dispatch(notify(`${t('PasswordsDoNotMatch')}`, true, 8))
       setSending(false)
       return
     }
@@ -409,22 +408,22 @@ const Nav = (
       .then(() => {
         void dispatch(
           notify(
-            `${t("RegistrationSuccesful")} - ${t(
-              "PleaseCheckYourEmailForYourVerificationLink"
+            `${t('RegistrationSuccesful')} - ${t(
+              'PleaseCheckYourEmailForYourVerificationLink'
             )} `,
             false,
             8
           )
         )
-        setUsername("")
-        setPassword("")
-        setConfirmPassword("")
-        setName("")
+        setUsername('')
+        setPassword('')
+        setConfirmPassword('')
+        setName('')
         setSending(false)
       })
       .catch((err: unknown) => {
         console.error(err)
-        const message = getErrorMessage(err, t("Error"))
+        const message = getErrorMessage(err, t('Error'))
         void dispatch(notify(message, true, 8))
         setSending(false)
       })
@@ -433,19 +432,19 @@ const Nav = (
   const links = useMemo(() => {
     return [
       {
-        label: t("Welcome"),
-        href: "/",
-        name: "home",
+        label: t('Welcome'),
+        href: '/',
+        name: 'home',
       },
       {
-        label: t("Portfolio"),
-        href: "/portfolio",
-        name: "portfolio",
+        label: t('Portfolio'),
+        href: '/portfolio',
+        name: 'portfolio',
       },
       {
-        label: t("Contact"),
-        href: "/contact",
-        name: "contact",
+        label: t('Contact'),
+        href: '/contact',
+        name: 'contact',
       },
     ]
   }, [t])
@@ -453,19 +452,19 @@ const Nav = (
   const skipLinks = useMemo(() => {
     return [
       {
-        label: t("SkipToMainNavigation"),
-        href: "#site-navigation",
-        name: "navigation",
+        label: t('SkipToMainNavigation'),
+        href: '#site-navigation',
+        name: 'navigation',
       },
       {
-        label: t("SkipToMainContent"),
-        href: "#main-content",
-        name: "content",
+        label: t('SkipToMainContent'),
+        href: '#main-content',
+        name: 'content',
       },
       {
-        label: t("SkipToFooter"),
-        href: "#main-footer",
-        name: "footer",
+        label: t('SkipToFooter'),
+        href: '#main-footer',
+        name: 'footer',
       },
     ]
   }, [t])
@@ -496,36 +495,36 @@ const Nav = (
 
   const icons = useCallback(
     (label: string) => {
-      if (label === t("Welcome"))
+      if (label === t('Welcome'))
         return (
           <Icon
             lib="ri"
             name="RiHomeSmileLine"
-            className={windowWidth < breakpoint ? styles.smallnav : ""}
+            className={windowWidth < breakpoint ? styles.smallnav : ''}
           />
         )
-      else if (label === t("About"))
+      else if (label === t('About'))
         return (
           <Icon
             lib="bs"
             name="BsPerson"
-            className={windowWidth < breakpoint ? styles.smallnav : ""}
+            className={windowWidth < breakpoint ? styles.smallnav : ''}
           />
         )
-      else if (label === t("Portfolio"))
+      else if (label === t('Portfolio'))
         return (
           <Icon
             lib="io"
             name="IoMdImages"
-            className={windowWidth < breakpoint ? styles.smallnav : ""}
+            className={windowWidth < breakpoint ? styles.smallnav : ''}
           />
         )
-      else if (label === t("Contact"))
+      else if (label === t('Contact'))
         return (
           <Icon
             lib="bi"
             name="BiChat"
-            className={windowWidth < breakpoint ? styles.smallnav : ""}
+            className={windowWidth < breakpoint ? styles.smallnav : ''}
           />
         )
     },
@@ -533,62 +532,76 @@ const Nav = (
     [t, triggerAtBreakpoint]
   )
 
+  //get last part of pathname for header class
+  const pageName =
+    location.pathname
+      .split('/')
+      .filter((part) => part.length > 0)
+      .pop() || 'home'
+
+  const firstPartOfPageName = location.pathname.split('/')[1] || 'home'
+
+  const isPortfolioMainPage =
+    firstPartOfPageName === 'portfolio' && pageName === 'portfolio'
+
   return (
     <>
       <header
         ref={clickOutsideRef}
         className={`
-                ${`main-header ${styles["main-header"]}`}
+                ${`main-header ${styles['main-header']}`}
                 ${
-                  scrollDirection === "down" && scrolled
+                  scrollDirection === 'down' && scrolled
                     ? styles.hide
                     : styles.show
                 } 
-                ${lightTheme ? styles.light : ""} 
+                ${isPortfolioMainPage ? styles['portfolio-main'] : ''}
+                ${styles[pageName]}
+                ${lightTheme ? styles.light : ''} 
                 ${
                   menuStyleAlt
                     ? `${styles.menualt} menualt`
                     : `${styles.menumain} menumain`
                 } 
                 ${
-                  windowHeight > windowWidth && touchDevice ? styles.mobile : ""
+                  windowHeight > windowWidth && touchDevice ? styles.mobile : ''
                 } 
-                ${!noTransition ? `${styles.transformations}` : ""} 
+                ${!noTransition ? `${styles.transformations}` : ''} 
                 ${styles[`${language}`]}
                 `}
       >
-        <nav className={styles["skip-links"]}>
+        <nav className={styles['skip-links']}>
           <SkipLink skipLinks={skipLinks} styles={styles} />
         </nav>
-        <div className={styles["header-inner-wrap"]}>
+        <div className={styles['header-inner-wrap']}>
           <div
             ref={logoRef}
-            className={`${styles["left-edge"]} ${
+            className={`${styles['left-edge']} ${
               lightTheme
-                ? `${styles["logo-container"]} ${styles.light}`
-                : styles["logo-container"]
-            } ${windowWidth < breakpointSmall ? "scr" : ""}`}
+                ? `${styles['logo-container']} ${styles.light}`
+                : styles['logo-container']
+            } ${windowWidth < breakpointSmall ? 'scr' : ''}`}
           >
             <button
               type="button"
               aria-haspopup={true}
-              aria-expanded={logoOpen ? "true" : "false"}
-              aria-label={t("FrontPageOrExit")}
-              className={styles["logo-btn"]}
+              aria-expanded={logoOpen ? 'true' : 'false'}
+              aria-label={t('FrontPageOrExit')}
+              className={styles['logo-btn']}
               style={{
                 backgroundImage: `url(${lightTheme ? logoDark : logo})`,
               }}
               onClick={() => setLogoOpen((s) => !s)}
             >
-              <span className="scr">{t("FrontPageOrExit")}</span>
+              <span className="scr">{t('FrontPageOrExit')}</span>
             </button>
             <ul
-              className={`${styles["logo-menu"]} ${logoOpen ? styles.show : ""}`}
+              className={`${styles['logo-menu']} ${logoOpen ? styles.show : ''}`}
               aria-hidden={!logoOpen}
             >
               <li>
                 <Link to="/" onClick={() => setLogoOpen(false)}>
-                  {t("FrontPage")}
+                  {t('FrontPage')}
                 </Link>
               </li>
               <li>
@@ -596,20 +609,20 @@ const Nav = (
                   href="https://jenniina.fi/"
                   onClick={() => setLogoOpen(false)}
                 >
-                  &times; {t("Exit")}
+                  &times; {t('Exit')}
                 </a>
               </li>
             </ul>
           </div>
           <button
             aria-haspopup="true"
-            aria-expanded={mainMenu.open ? "true" : "false"}
+            aria-expanded={mainMenu.open ? 'true' : 'false'}
             onClick={() => toggleMainMenu(windowWidth)}
             className={`${
               windowHeight < windowWidth && windowWidth < breakpoint
                 ? `${styles.togglemenuexception} ${styles.togglemenu}`
                 : styles.togglemenu
-            } ${windowWidth > breakpoint ? styles.hidden : ""}`}
+            } ${windowWidth > breakpoint ? styles.hidden : ''}`}
           >
             <svg
               stroke="currentColor"
@@ -622,7 +635,7 @@ const Nav = (
               height="1em"
               width="1em"
               xmlns="http://www.w3.org/2000/svg"
-              style={{ fontSize: "1em" }}
+              style={{ fontSize: '1em' }}
             >
               <g>
                 <path
@@ -632,23 +645,23 @@ const Nav = (
               </g>
             </svg>
             <span
-              className={windowWidth > breakpoint && !touchDevice ? "" : "scr"}
+              className={windowWidth > breakpoint && !touchDevice ? '' : 'scr'}
             >
-              {t("Menu")}
+              {t('Menu')}
             </span>
           </button>
           <nav
-            id={"site-navigation"}
+            id={'site-navigation'}
             onTransitionEnd={mainMenu.onTransitionEnd}
             className={`site-navigation 
-                        ${styles["menu-container"]} 
+                        ${styles['menu-container']} 
                             ${
                               mainMenu.open
                                 ? ` ${styles.show}`
                                 : `${
                                     mainMenu.hidden && windowWidth < breakpoint
                                       ? styles.hidden
-                                      : ""
+                                      : ''
                                   }
                                     `
                             }
@@ -656,14 +669,14 @@ const Nav = (
                                       windowHeight < windowWidth &&
                                       windowWidth < breakpoint
                                         ? styles.altnav
-                                        : ""
+                                        : ''
                                     }
                                     ${
                                       menuStyleAlt &&
                                       windowHeight < windowWidth &&
                                       windowWidth > breakpointSmall
                                         ? styles.altexception
-                                        : ""
+                                        : ''
                                     }
                                     `}
           >
@@ -686,24 +699,24 @@ const Nav = (
               name="CgSearch"
               style={
                 windowWidth < breakpointSmall
-                  ? { fontSize: "1em" }
-                  : { fontSize: "1.4em" }
+                  ? { fontSize: '1em' }
+                  : { fontSize: '1.4em' }
               }
               aria-hidden={true}
             />
             <span
-              className={windowWidth > breakpoint && !touchDevice ? "" : "scr"}
+              className={windowWidth > breakpoint && !touchDevice ? '' : 'scr'}
             >
-              {t("Search")}
+              {t('Search')}
             </span>
           </button>
-          {(isClient && location?.pathname === "/store") ||
-          (cart && cart.length > 0 && location?.pathname !== "/cart") ? (
+          {(isClient && location?.pathname === '/store') ||
+          (cart && cart.length > 0 && location?.pathname !== '/cart') ? (
             <button
               className={`${styles.settings} ${styles.cart}`}
               aria-label="cart"
               onClick={() => {
-                navigate("/cart")
+                navigate('/cart')
               }}
             >
               <Icon
@@ -711,17 +724,17 @@ const Nav = (
                 name="BsCart2"
                 style={
                   windowWidth < breakpointSmall
-                    ? { fontSize: "1.1em" }
-                    : { fontSize: "1.4em" }
+                    ? { fontSize: '1.1em' }
+                    : { fontSize: '1.4em' }
                 }
                 aria-hidden={true}
               />
               <span
                 className={
-                  windowWidth > breakpoint && !touchDevice ? "" : "scr"
+                  windowWidth > breakpoint && !touchDevice ? '' : 'scr'
                 }
               >
-                {t("Cart")}
+                {t('Cart')}
               </span>
             </button>
           ) : (
@@ -729,7 +742,7 @@ const Nav = (
               className={`${styles.settings} ${styles.store}`}
               aria-label="store"
               onClick={() => {
-                navigate("/store")
+                navigate('/store')
               }}
             >
               <Icon
@@ -737,17 +750,17 @@ const Nav = (
                 name="FaStoreAlt"
                 style={
                   windowWidth < breakpointSmall
-                    ? { fontSize: "1.1em" }
-                    : { fontSize: "1.4em" }
+                    ? { fontSize: '1.1em' }
+                    : { fontSize: '1.4em' }
                 }
                 aria-hidden={true}
               />
               <span
                 className={
-                  windowWidth > breakpoint && !touchDevice ? "" : "scr"
+                  windowWidth > breakpoint && !touchDevice ? '' : 'scr'
                 }
               >
-                {t("Store")}
+                {t('Store')}
               </span>
             </button>
           )}
@@ -760,23 +773,23 @@ const Nav = (
               name="IoSettingsSharp"
               style={
                 windowWidth < breakpointSmall
-                  ? { fontSize: "0.9em" }
-                  : { fontSize: "1.1em" }
+                  ? { fontSize: '0.9em' }
+                  : { fontSize: '1.1em' }
               }
               aria-hidden={true}
             />
             <span
               id="settings"
-              className={windowWidth > breakpoint && !touchDevice ? "" : "scr"}
+              className={windowWidth > breakpoint && !touchDevice ? '' : 'scr'}
             >
-              {t("Settings")}
+              {t('Settings')}
             </span>
           </button>
           <nav
             id="settings-toolbar"
             onTransitionEnd={toolbar.onTransitionEnd}
             className={`${styles.toolbar} ${
-              toolbar.open ? styles.show : toolbar.hidden ? styles.hidden : ""
+              toolbar.open ? styles.show : toolbar.hidden ? styles.hidden : ''
             }`}
             aria-labelledby="settings"
           >
@@ -784,7 +797,7 @@ const Nav = (
               language={language}
               id="language-navbar"
               className={`language ${styles.language}`}
-              instructions={t("LanguageTitle")}
+              instructions={t('LanguageTitle')}
               hide
               options={options(ELanguagesLong)}
               value={
@@ -801,22 +814,22 @@ const Nav = (
             />
             <div className={styles.toolwrap}>
               <label htmlFor="dlt-btn">
-                {lightTheme ? t("DarkMode") : t("LightMode")}
+                {lightTheme ? t('DarkMode') : t('LightMode')}
               </label>
               <button
                 id="dlt-btn"
                 className={
                   lightTheme
-                    ? `${styles["dlt-btn"]}`
-                    : `${styles.active} ${styles["dlt-btn"]} ${styles["toolbar-btn"]}`
+                    ? `${styles['dlt-btn']}`
+                    : `${styles.active} ${styles['dlt-btn']} ${styles['toolbar-btn']}`
                 }
                 onClick={toggleTheme}
               >
-                <div className={`${styles["dlt-inner-wrapper"]}`}>
-                  <div className={`${styles["dlt-btn-inner-left"]}`}>
-                    <div className={`${styles["dlt-innermost"]}`}>
+                <div className={`${styles['dlt-inner-wrapper']}`}>
+                  <div className={`${styles['dlt-btn-inner-left']}`}>
+                    <div className={`${styles['dlt-innermost']}`}>
                       <span className="scr">
-                        {lightTheme ? t("DarkMode") : t("LightMode")}
+                        {lightTheme ? t('DarkMode') : t('LightMode')}
                       </span>
                     </div>
                   </div>
@@ -825,18 +838,18 @@ const Nav = (
             </div>
 
             <div className={styles.toolwrap}>
-              <label htmlFor="navbar-style">{t("NavStyle")}</label>
+              <label htmlFor="navbar-style">{t('NavStyle')}</label>
               <button
                 id="navbar-style"
                 onClick={() => menuStyleAltToggle()}
-                className={`${styles.navstyle} ${styles["toolbar-btn"]}`}
+                className={`${styles.navstyle} ${styles['toolbar-btn']}`}
               >
                 {windowWidth < breakpoint ? (
                   <Icon
                     lib="tb"
                     name="TbLayoutNavbar"
                     aria-hidden={true}
-                    style={{ fontSize: "1.5em" }}
+                    style={{ fontSize: '1.5em' }}
                   />
                 ) : (
                   <>
@@ -845,14 +858,14 @@ const Nav = (
                       name="HiOutlineDotsHorizontal"
                       className={styles.dots}
                       aria-hidden={true}
-                      style={{ fontSize: "1.8em" }}
+                      style={{ fontSize: '1.8em' }}
                     />
                     <Icon
                       lib="tfi"
                       name="TfiLineDashed"
                       className={styles.dashes}
                       aria-hidden={true}
-                      style={{ fontSize: "1.8em" }}
+                      style={{ fontSize: '1.8em' }}
                     />
                   </>
                 )}
@@ -864,16 +877,16 @@ const Nav = (
                 <>
                   <div
                     className={`${styles.loginregisterwrap} ${
-                      openForm === null ? styles.closed : ""
+                      openForm === null ? styles.closed : ''
                     }`}
                   >
                     <FormLogin
-                      setIsFormOpen={bindForm("login")}
+                      setIsFormOpen={bindForm('login')}
                       isOpen={isLoginFormOpen}
                       text="nav"
                     />
                     <Register
-                      setIsFormOpen={bindForm("register")}
+                      setIsFormOpen={bindForm('register')}
                       isOpen={isRegisterFormOpen}
                       handleRegister={handleRegister}
                       username={username}
@@ -899,14 +912,14 @@ const Nav = (
                         : `${styles.link}`
                     }
                   >
-                    <span>{t("Edit")}</span>
+                    <span>{t('Edit')}</span>
                   </NavLink>
                   <button
                     onClick={handleLogout}
                     id="logoutnav"
                     className={`logout danger ${styles.logout}`}
                   >
-                    {t("Logout")} &times;
+                    {t('Logout')} &times;
                   </button>
                 </>
               )}
@@ -916,9 +929,9 @@ const Nav = (
                 <Accordion
                   className="password-reset"
                   wrapperClass="password-reset-wrap"
-                  text={`${t("ForgotPassword")}`}
+                  text={`${t('ForgotPassword')}`}
                   isOpen={isResetFormOpen}
-                  setIsFormOpen={bindForm("reset")}
+                  setIsFormOpen={bindForm('reset')}
                   hideBrackets={true}
                 >
                   <PasswordReset text="login" />
