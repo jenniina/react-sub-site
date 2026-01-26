@@ -1,14 +1,14 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react"
-import { Link } from "react-router-dom"
-import Icon from "../Icon/Icon"
-import { useLanguageContext } from "../../contexts/LanguageContext"
-import useSideScroll from "../../hooks/useSideScroll"
-import styles from "../../pages/css/portfolio.module.css"
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
+import Icon from '../Icon/Icon'
+import { useLanguageContext } from '../../contexts/LanguageContext'
+import useSideScroll from '../../hooks/useSideScroll'
+import styles from '../../pages/css/portfolio.module.css'
 import {
   getPortfolioTitle,
   portfolioItems,
   renderPortfolioIcon,
-} from "../../data/portfolioItems"
+} from '../../data/portfolioItems'
 
 const Featured: React.FC = () => {
   const { t } = useLanguageContext()
@@ -16,7 +16,7 @@ const Featured: React.FC = () => {
     ref: scrollRef,
     setRef,
     setScrollLeft,
-  } = useSideScroll("featured-portfolio-scroll")
+  } = useSideScroll('featured-portfolio-scroll')
 
   // Always start from the beginning (useSideScroll restores last position from localStorage).
   // Also reset on language change so text-length changes don't land mid-item.
@@ -47,12 +47,12 @@ const Featured: React.FC = () => {
         key: item.id,
         to: item.url,
         className:
-          item.listClassName === "multistep" ? styles.multistep : undefined,
+          item.listClassName === 'multistep' ? styles.multistep : undefined,
         icon: renderPortfolioIcon(item.icon),
         title:
-          item.id === "composer" ? (
+          item.id === 'composer' ? (
             <span>
-              {getPortfolioTitle(item, t)} ({t("Website")})
+              {getPortfolioTitle(item, t)} ({t('Website')})
             </span>
           ) : (
             <span>{getPortfolioTitle(item, t)}</span>
@@ -63,10 +63,10 @@ const Featured: React.FC = () => {
   )
 
   const scrollToNext = useCallback(() => {
-    const ul = scrollRef.current as unknown as HTMLUListElement | null
+    const ul = scrollRef.current
     if (!ul) return
 
-    const lis = Array.from(ul.querySelectorAll("li")) as HTMLLIElement[]
+    const lis = Array.from(ul.querySelectorAll<HTMLLIElement>('li'))
     if (!lis.length) return
 
     const currentLeft = ul.scrollLeft
@@ -75,15 +75,15 @@ const Featured: React.FC = () => {
 
     const target = next.offsetLeft
 
-    ul.scrollTo({ left: target, behavior: "smooth" })
+    ul.scrollTo({ left: target, behavior: 'smooth' })
     window.setTimeout(() => setScrollLeft(target), 350)
   }, [scrollRef, setScrollLeft])
 
   const scrollToPrevious = useCallback(() => {
-    const ul = scrollRef.current as unknown as HTMLUListElement | null
+    const ul = scrollRef.current
     if (!ul) return
 
-    const lis = Array.from(ul.querySelectorAll("li")) as HTMLLIElement[]
+    const lis = Array.from(ul.querySelectorAll<HTMLLIElement>('li'))
     if (!lis.length) return
 
     const ulRect = ul.getBoundingClientRect()
@@ -116,7 +116,7 @@ const Featured: React.FC = () => {
       targetOffset = lis[firstVisibleIndex - 1].offsetLeft
     }
 
-    ul.scrollTo({ left: targetOffset, behavior: "smooth" })
+    ul.scrollTo({ left: targetOffset, behavior: 'smooth' })
     window.setTimeout(() => setScrollLeft(targetOffset), 350)
   }, [scrollRef, setScrollLeft])
 
@@ -130,15 +130,15 @@ const Featured: React.FC = () => {
       setAtEnd(ul.scrollLeft + ul.clientWidth >= ul.scrollWidth - 1)
     }
 
-    ul.addEventListener("scroll", update)
-    window.addEventListener("resize", update)
+    ul.addEventListener('scroll', update)
+    window.addEventListener('resize', update)
 
     // initial
     update()
 
     return () => {
-      ul.removeEventListener("scroll", update)
-      window.removeEventListener("resize", update)
+      ul.removeEventListener('scroll', update)
+      window.removeEventListener('resize', update)
     }
   }, [scrollRef, items, t])
 
@@ -148,9 +148,9 @@ const Featured: React.FC = () => {
         <div className={styles.featured}>
           <button
             type="button"
-            className={`${styles["horizontal-scroll"]} ${styles.left} horizontal-scroll left ${atStart ? "disable" : ""}`}
-            aria-label={t("Previous")}
-            title={t("Previous")}
+            className={`${styles['horizontal-scroll']} ${styles.left} horizontal-scroll left ${atStart ? 'disable' : ''}`}
+            aria-label={t('Previous')}
+            title={t('Previous')}
             onClick={scrollToPrevious}
             disabled={atStart}
             aria-disabled={atStart}
@@ -170,9 +170,9 @@ const Featured: React.FC = () => {
           </ul>
           <button
             type="button"
-            className={`${styles["horizontal-scroll"]} ${styles.right} horizontal-scroll right ${atEnd ? "disable" : ""}`}
-            aria-label={t("Next")}
-            title={t("Next")}
+            className={`${styles['horizontal-scroll']} ${styles.right} horizontal-scroll right ${atEnd ? 'disable' : ''}`}
+            aria-label={t('Next')}
+            title={t('Next')}
             onClick={scrollToNext}
             disabled={atEnd}
             aria-disabled={atEnd}

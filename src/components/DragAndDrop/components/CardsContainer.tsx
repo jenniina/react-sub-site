@@ -24,6 +24,7 @@ interface Props {
   setStatusesColors: React.Dispatch<React.SetStateAction<IContainerColors[]>>
   defaultTopColor: string
   defaultBodyColor: string
+  translateStatus: (status: string) => string
   isDragging: boolean
   handleUpdate: (id: number, status: Status, target?: number) => void
   handleRemoveColor: (data: Data) => Promise<void>
@@ -43,6 +44,7 @@ const CardsContainer = ({
   setStatusesColors,
   defaultTopColor,
   defaultBodyColor,
+  translateStatus,
   isDragging,
   handleDragging,
   handleUpdate,
@@ -130,21 +132,7 @@ const CardsContainer = ({
     }
   }
 
-  const translateStatus = (status: string) => {
-    const statusLowerCase = status.toLowerCase()
-    switch (statusLowerCase) {
-      case 'do':
-        return t('Do')
-      case 'doing':
-        return t('Doing')
-      case 'done':
-        return t('Done')
-      default:
-        return status.replace(/_/g, ' ')
-    }
-  }
-
-  const statusColorConfig = statusesColors.find(sc => sc.name === status)
+  const statusColorConfig = statusesColors.find((sc) => sc.name === status)
 
   const topStyle = statusColorConfig
     ? {
@@ -166,7 +154,7 @@ const CardsContainer = ({
       className={`${styles['cards-container']} ${
         isDragging ? styles['area-dragging'] : ''
       } ${lightTheme ? styles.light : ''}`}
-      onDrop={e => void handleContainerDrop(e, statuses.indexOf(status))}
+      onDrop={(e) => void handleContainerDrop(e, statuses.indexOf(status))}
       onDragEnd={() => handleDragging(false)}
       style={bodyStyle}
     >
@@ -176,7 +164,9 @@ const CardsContainer = ({
         id={`label-${sanitize(status)}`}
         className={styles['status-label']}
         draggable
-        onDragStart={e => handleContainerDragStart(e, statuses.indexOf(status))}
+        onDragStart={(e) =>
+          handleContainerDragStart(e, statuses.indexOf(status))
+        }
         onDragOver={handleContainerDragOver}
         style={topStyle}
       >
@@ -197,7 +187,7 @@ const CardsContainer = ({
             <i>{translateStatus(status)}</i>
             <form
               className={styles['change-status-form']}
-              onSubmit={e => {
+              onSubmit={(e) => {
                 e.preventDefault()
                 updateStatus(statuses.indexOf(status), newStatus)
               }}
@@ -209,7 +199,7 @@ const CardsContainer = ({
                     required
                     id={`${sanitize(status)}-status`}
                     value={newStatus}
-                    onChange={e => handleStatusNameChange(e)}
+                    onChange={(e) => handleStatusNameChange(e)}
                   />
                   <span>{t('Change')}:</span>
                 </label>
@@ -219,7 +209,10 @@ const CardsContainer = ({
               </button>
               <div className={`mt1 ${styles['edit-color-wrap']}`}>
                 <div className={styles['color-picker']}>
-                  <label htmlFor={`${sanitize(status)}-top-color-picker`}>
+                  <label
+                    htmlFor={`${sanitize(status)}-top-color-picker`}
+                    aria-label={`${t('ColorPicker')} (${t('Name')})`}
+                  >
                     <span>
                       <b>{t('ColorPicker')}</b> <i>({t('Name')}):</i>
                     </span>
@@ -234,10 +227,10 @@ const CardsContainer = ({
                         ? statusColorConfig.top
                         : defaultTopColor
                     }
-                    onChange={e => {
+                    onChange={(e) => {
                       const newTopColor = e.target.value
-                      setStatusesColors(prevColors =>
-                        prevColors.map(colorConfig =>
+                      setStatusesColors((prevColors) =>
+                        prevColors.map((colorConfig) =>
                           colorConfig.name === status
                             ? {
                                 ...colorConfig,
@@ -267,10 +260,10 @@ const CardsContainer = ({
                         ? statusColorConfig.body
                         : defaultBodyColor
                     }
-                    onChange={e => {
+                    onChange={(e) => {
                       const newBodyColor = e.target.value
-                      setStatusesColors(prevColors =>
-                        prevColors.map(colorConfig =>
+                      setStatusesColors((prevColors) =>
+                        prevColors.map((colorConfig) =>
                           colorConfig.name === status
                             ? { ...colorConfig, body: newBodyColor }
                             : colorConfig
@@ -300,7 +293,7 @@ const CardsContainer = ({
         role="listbox"
         id={sanitize(status)}
         className={sanitize(status)}
-        onDrop={e => void handleDrop(e)}
+        onDrop={(e) => void handleDrop(e)}
         onDragOver={handleDragOver}
         style={bodyStyle}
       >

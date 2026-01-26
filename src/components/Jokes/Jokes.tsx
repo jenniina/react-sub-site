@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react"
+import React, { useEffect, useState, useCallback, useMemo } from 'react'
 // import FormJoke from './components/FormJoke'
-import { SelectOption } from "../Select/Select"
-import "./css/joke.css"
+import { SelectOption } from '../Select/Select'
+import './css/joke.css'
 import {
   IJoke,
   EJokeType,
@@ -24,17 +24,17 @@ import {
   INorrisJoke,
   IDadJoke,
   IJokeContent,
-} from "./types"
+} from './types'
 import {
   ELanguages,
   ReducerProps,
   IUser,
   IBlacklistedJoke,
   ELanguagesLong,
-} from "../../types"
-import { useSelector } from "react-redux"
-import { useAppDispatch } from "../../hooks/useAppDispatch"
-import { notify } from "../../reducers/notificationReducer"
+} from '../../types'
+import { useSelector } from 'react-redux'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { notify } from '../../reducers/notificationReducer'
 import {
   createJoke,
   deleteUserFromJoke,
@@ -43,25 +43,25 @@ import {
   removeJoke,
   saveMostRecentJoke,
   updateJoke,
-} from "./reducers/jokeReducer"
-import { initializeUser } from "../../reducers/authReducer"
-import UserJokes from "./components/UserJokes"
-import norrisService from "./services/chucknorris"
-import dadjokeService from "./services/dadjokes"
-import { useNavigate } from "react-router-dom"
+} from './reducers/jokeReducer'
+import { initializeUser } from '../../reducers/authReducer'
+import UserJokes from './components/UserJokes'
+import norrisService from './services/chucknorris'
+import dadjokeService from './services/dadjokes'
+import { useNavigate } from 'react-router-dom'
 import {
   addToBlacklistedJokes,
   removeJokeFromBlacklisted,
   initializeUsers,
   findUserById,
-} from "../../reducers/usersReducer"
-import { AxiosError } from "axios"
-import { options, getRandomMinMax, getErrorMessage } from "../../utils"
-import { useLanguageContext } from "../../contexts/LanguageContext"
-import { useConfirm } from "../../contexts/ConfirmContext"
-import FormJoke from "./components/FormJoke"
-import JokeSubmit from "./components/JokeSubmit"
-import useLocalStorage from "../../hooks/useStorage"
+} from '../../reducers/usersReducer'
+import { AxiosError } from 'axios'
+import { options, getRandomMinMax, getErrorMessage } from '../../utils'
+import { useLanguageContext } from '../../contexts/LanguageContext'
+import { useConfirm } from '../../contexts/ConfirmContext'
+import FormJoke from './components/FormJoke'
+import JokeSubmit from './components/JokeSubmit'
+import useLocalStorage from '../../hooks/useStorage'
 
 function Jokes() {
   const { t, language } = useLanguageContext()
@@ -77,8 +77,9 @@ function Jokes() {
     return state.users ?? []
   })
   const user = useSelector((state: ReducerProps) => {
-    return state.auth?.user
+    return state.auth?.user ?? undefined
   })
+
   // const user = localUser
   //   ? users?.find((user: IUser) => user._id === localUser.user._id)
   //   : undefined
@@ -95,12 +96,12 @@ function Jokes() {
     }
   }, [])
 
-  const translateWordLanguage = t("LanguageTitle")
-  const [joke, setJoke] = useState<string>("")
-  const [delivery, setDelivery] = useState<string>("")
-  const [author, setAuthor] = useState<string>("")
+  const translateWordLanguage = t('LanguageTitle')
+  const [joke, setJoke] = useState<string>('')
+  const [delivery, setDelivery] = useState<string>('')
+  const [author, setAuthor] = useState<string>('')
   const [jokeLanguage, setJokeLanguage] = useLocalStorage<ELanguages>(
-    "jokeLanguage",
+    'jokeLanguage',
     ELanguages.en
   )
   const [jokeCategory, setJokeCategory] = useState<ECategories | null>(
@@ -108,7 +109,7 @@ function Jokes() {
   )
   const [categoryValues, setCategoryValues] = useState<SelectOption[]>([])
   const [norrisCategories, setNorrisCategories] = useState<SelectOption[]>([
-    { value: "any", label: "Any" },
+    { value: 'any', label: 'Any' },
   ])
   const [selectedNorrisCategory, setSelectedNorrisCategory] = useState<
     SelectOption | undefined
@@ -116,15 +117,15 @@ function Jokes() {
   const [subCategoryResults, setSubCategoryResults] = useState<string[]>([])
   const [isCheckedJokeType, setIsCheckedJokeType] = useState<boolean>(false)
   const [isCheckedSafemode, setIsCheckedSafemode] = useState<boolean>(true)
-  const [queryValue, setQueryValue] = useState<string>("")
-  const [query, setQuery] = useState<string>("")
+  const [queryValue, setQueryValue] = useState<string>('')
+  const [query, setQuery] = useState<string>('')
   const [submitted, setSubmitted] = useState<boolean>(false)
   const [reveal, setReveal] = useState<boolean>(true)
-  const [jokeId, setJokeId] = useState<IJoke["jokeId"]>("")
+  const [jokeId, setJokeId] = useState<IJoke['jokeId']>('')
   const [loginOpen, setLoginOpen] = useState<boolean>(false)
   const [registerOpen, setRegisterOpen] = useState<boolean>(false)
   const [visibleJoke, setVisibleJoke] = useState<boolean>(false)
-  const [editId, setEditId] = useState<IJoke["_id"] | null>(null)
+  const [editId, setEditId] = useState<IJoke['_id'] | null>(null)
   const [lastJokes, setLastJokes] = useState<
     { jokeId: string | undefined; language: ELanguages }[]
   >([])
@@ -144,10 +145,10 @@ function Jokes() {
   const dispatch = useAppDispatch()
 
   const hasNorris = useMemo(() => {
-    const norrisExists = categoryValues?.find((v) => v.value === "ChuckNorris")
+    const norrisExists = categoryValues?.find((v) => v.value === 'ChuckNorris')
       ? true
       : false
-    return queryValue === "" ? norrisExists : false
+    return queryValue === '' ? norrisExists : false
   }, [queryValue, categoryValues])
 
   useEffect(() => {
@@ -161,10 +162,10 @@ function Jokes() {
   const initializeJokesData = useCallback(async () => {
     try {
       await dispatch(initializeJokes())
-      notify(`${t("JokesLoaded")}...`, false, 3)
+      notify(`${t('JokesLoaded')}...`, false, 3)
     } catch (err: unknown) {
-      const message = getErrorMessage(err, t("Error"))
-      void dispatch(notify(`${t("Error")}: ${message}`, true, 8))
+      const message = getErrorMessage(err, t('Error'))
+      void dispatch(notify(`${t('Error')}: ${message}`, true, 8))
     }
   }, [dispatch]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -175,18 +176,6 @@ function Jokes() {
   const derivedCategoryByLanguages = useMemo(
     () => categoryByLanguagesConst[language],
     [language, categoryByLanguagesConst]
-  )
-
-  const derivedCategoryValues = useMemo(
-    () =>
-      categoryValues.map((option) => ({
-        ...option,
-        label:
-          categoryByLanguagesConst[language][
-            option.value as keyof (typeof categoryByLanguagesConst)[typeof language]
-          ],
-      })),
-    [language, categoryValues, categoryByLanguagesConst]
   )
 
   const handleToggleChangeSafemode = () => {
@@ -215,31 +204,31 @@ function Jokes() {
         setSending(false)
       }, 500)
       // Scroll to the anchor with id "generated-joke"
-      const generatedJokeAnchor = document?.querySelector("#queryValue")
+      const generatedJokeAnchor = document?.querySelector('#queryValue')
       if (generatedJokeAnchor) {
-        generatedJokeAnchor.scrollIntoView({ behavior: "smooth" })
+        generatedJokeAnchor.scrollIntoView({ behavior: 'smooth' })
       }
     }, 600)
   }
 
   const handleDelete =
-    (id: IJoke["_id"], joke: string) =>
+    (id: IJoke['_id'], joke: string) =>
     async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
       e.preventDefault()
       setSending(true)
       if (
         await confirm({
-          message: `${t("Delete")} ${t("Joke").toLowerCase()} "${joke}"?`,
+          message: `${t('Delete')} ${t('Joke').toLowerCase()} "${joke}"?`,
         })
       ) {
         try {
           // Make an API request to delete the user's ID from the joke's user array
-          void dispatch(deleteUserFromJoke(id!, user?._id ?? "")).then(() => {
+          void dispatch(deleteUserFromJoke(id!, user?._id ?? '')).then(() => {
             void dispatch(initializeJokes())
           })
           setSending(false)
         } catch (err: unknown) {
-          const message = getErrorMessage(err, t("ErrorDeletingJoke"))
+          const message = getErrorMessage(err, t('ErrorDeletingJoke'))
           void dispatch(notify(message, true, 8))
           setSending(false)
         }
@@ -247,13 +236,13 @@ function Jokes() {
     }
 
   const handleUpdate =
-    (id: IJoke["_id"], joke: IJoke) =>
+    (id: IJoke['_id'], joke: IJoke) =>
     async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
       e.preventDefault()
       setSending(true)
       const jokeObject = jokes.find((j) => j._id === id)
       if (!jokeObject) {
-        void dispatch(notify(`${t("Error")}!`, true, 8))
+        void dispatch(notify(`${t('Error')}!`, true, 8))
         setSending(false)
         return
       }
@@ -265,17 +254,17 @@ function Jokes() {
             updateJoke({ ...joke, verified: false, _id: id })
           )) as IJokeContent
           void dispatch(
-            notify(`${t("SavedJoke")}. ${r.message ?? ""}`, false, 8)
+            notify(`${t('SavedJoke')}. ${r.message ?? ''}`, false, 8)
           )
           setEditId(null)
           setSending(false)
         } catch (e) {
           console.error(e)
           const errorMessage =
-            (e as AxiosError)?.code === "ERR_BAD_RESPONSE"
-              ? ((e as AxiosError<AxiosError>)?.response?.data?.message ?? "")
-              : ((e as Error)?.message ?? "")
-          await dispatch(notify(`${t("Error")}: ${errorMessage}`, true, 8))
+            (e as AxiosError)?.code === 'ERR_BAD_RESPONSE'
+              ? ((e as AxiosError<AxiosError>)?.response?.data?.message ?? '')
+              : ((e as Error)?.message ?? '')
+          await dispatch(notify(`${t('Error')}: ${errorMessage}`, true, 8))
           setSending(false)
         }
       }
@@ -320,14 +309,14 @@ function Jokes() {
       }
       if (jokeObject.private === true && joke.private === false) {
         if (
-          await confirm({ message: t("AreYouSureYouWantToMakeThisJokePublic") })
+          await confirm({ message: t('AreYouSureYouWantToMakeThisJokePublic') })
         ) {
           void update()
         }
       } else if (jokeObject.private === false && joke.private === true) {
         if (
           await confirm({
-            message: t("AreYouSureYouWantToMakeThisJokePrivate"),
+            message: t('AreYouSureYouWantToMakeThisJokePrivate'),
           })
         ) {
           void update()
@@ -379,15 +368,6 @@ function Jokes() {
     return undefined
   }
 
-  function getKeyofEnum<T extends Record<string, string | number>>(
-    obj: T,
-    value: string | number
-  ) {
-    return Object.keys(obj).find(
-      (key) => obj[key] === value
-    ) as keyof typeof obj
-  }
-
   const [foundJoke, setFoundJoke] = useState<IJoke | undefined>(undefined)
 
   interface IJokeApiResponse {
@@ -405,7 +385,7 @@ function Jokes() {
     }
     category?: string
     error?: boolean
-    type?: "single" | "twopart"
+    type?: 'single' | 'twopart'
     jokeId?: string | number
     language?: ELanguages
   }
@@ -428,7 +408,7 @@ function Jokes() {
     e.preventDefault()
     const userId = user?._id
     if (!userId) {
-      void dispatch(notify(`${t("LoginOrRegisterToSave")}`, false, 8))
+      void dispatch(notify(`${t('LoginOrRegisterToSave')}`, false, 8))
       return
     }
 
@@ -436,7 +416,7 @@ function Jokes() {
 
     if (foundJoke) {
       if (foundJoke.user.includes(userId.toString())) {
-        void dispatch(notify(`${t("JokeAlreadySaved")}`, false, 8))
+        void dispatch(notify(`${t('JokeAlreadySaved')}`, false, 8))
         return
       }
       try {
@@ -446,8 +426,8 @@ function Jokes() {
         await dispatch(initializeJokes())
         didSave = true
       } catch (err: unknown) {
-        const message = getErrorMessage(err, t("Error"))
-        void dispatch(notify(`${t("Error")}:: ${message}`, true, 8))
+        const message = getErrorMessage(err, t('Error'))
+        void dispatch(notify(`${t('Error')}:: ${message}`, true, 8))
         return
       }
     } else {
@@ -481,8 +461,8 @@ function Jokes() {
           await dispatch(initializeJokes())
           didSave = true
         } catch (err: unknown) {
-          const message = getErrorMessage(err, t("Error"))
-          void dispatch(notify(`${t("Error")}*: ${message}`, true, 8))
+          const message = getErrorMessage(err, t('Error'))
+          void dispatch(notify(`${t('Error')}*: ${message}`, true, 8))
           return
         }
       } else if (recentJoke && recentJoke?.type === EJokeType.twopart) {
@@ -514,26 +494,26 @@ function Jokes() {
           await dispatch(initializeJokes())
           didSave = true
         } catch (err: unknown) {
-          const message = getErrorMessage(err, t("Error"))
-          void dispatch(notify(`${t("Error")}: ${message}`, true, 8))
+          const message = getErrorMessage(err, t('Error'))
+          void dispatch(notify(`${t('Error')}: ${message}`, true, 8))
           return
         }
       }
     }
 
     if (didSave) {
-      await dispatch(notify(`${t("SavedJoke")}`, false, 8))
+      await dispatch(notify(`${t('SavedJoke')}`, false, 8))
     }
   }
 
   //for ChuckNorris and DadJoke
   const setJokeData = (
     jokeData: INorrisJoke | IDadJoke,
-    type: "norris" | "dad",
+    type: 'norris' | 'dad',
     category: ECategories,
     subCategories: string[] | undefined,
     repeat: boolean,
-    userId?: IUser["_id"]
+    userId?: IUser['_id']
   ) => {
     if (isJokeBlacklisted(jokeData.id)) {
       void fetchApi()
@@ -563,7 +543,7 @@ function Jokes() {
     setSubCategoryResults(subCategories ?? [])
 
     let jokeText
-    if (type === "dad") {
+    if (type === 'dad') {
       jokeText = (jokeData as IDadJoke).joke
     } else {
       jokeText = (jokeData as INorrisJoke).value
@@ -582,36 +562,36 @@ function Jokes() {
         language: ELanguages.en,
 
         safe:
-          (jokeData as INorrisJoke)?.categories?.includes("explicit") ||
-          (jokeData as INorrisJoke)?.categories?.includes("political") ||
-          (jokeData as INorrisJoke)?.categories?.includes("religion")
+          (jokeData as INorrisJoke)?.categories?.includes('explicit') ||
+          (jokeData as INorrisJoke)?.categories?.includes('political') ||
+          (jokeData as INorrisJoke)?.categories?.includes('religion')
             ? false
             : true,
         user: userId ? [userId] : [],
         flags: {
           nsfw:
             (jokeData as INorrisJoke).categories?.some(
-              (category) => category === "nsfw"
+              (category) => category === 'nsfw'
             ) ?? false,
           religious:
             (jokeData as INorrisJoke).categories?.some(
-              (category) => category === "religion"
+              (category) => category === 'religion'
             ) ?? false,
           political:
             (jokeData as INorrisJoke).categories?.some(
-              (category) => category === "political"
+              (category) => category === 'political'
             ) ?? false,
           racist:
             (jokeData as INorrisJoke).categories?.some(
-              (category) => category === "racist"
+              (category) => category === 'racist'
             ) ?? false,
           sexist:
             (jokeData as INorrisJoke).categories?.some(
-              (category) => category === "sexist"
+              (category) => category === 'sexist'
             ) ?? false,
           explicit:
             (jokeData as INorrisJoke).categories?.some(
-              (category) => category === "explicit"
+              (category) => category === 'explicit'
             ) ?? false,
         },
       })
@@ -619,20 +599,20 @@ function Jokes() {
 
     setFlags({
       explicit:
-        (jokeData as INorrisJoke)?.categories?.includes("explicit") ?? false,
+        (jokeData as INorrisJoke)?.categories?.includes('explicit') ?? false,
       religious:
-        (jokeData as INorrisJoke)?.categories?.includes("religious") ?? false,
+        (jokeData as INorrisJoke)?.categories?.includes('religious') ?? false,
       political:
-        (jokeData as INorrisJoke)?.categories?.includes("political") ?? false,
+        (jokeData as INorrisJoke)?.categories?.includes('political') ?? false,
       racist:
-        (jokeData as INorrisJoke)?.categories?.includes("racist") ?? false,
+        (jokeData as INorrisJoke)?.categories?.includes('racist') ?? false,
       sexist:
-        (jokeData as INorrisJoke)?.categories?.includes("sexist") ?? false,
+        (jokeData as INorrisJoke)?.categories?.includes('sexist') ?? false,
       nsfw:
-        (jokeData as INorrisJoke)?.categories?.includes("explicit") ?? false,
+        (jokeData as INorrisJoke)?.categories?.includes('explicit') ?? false,
     })
     setJoke((jokeData as IDadJoke).joke ?? (jokeData as INorrisJoke).value)
-    setDelivery("")
+    setDelivery('')
     setJokeId(jokeData.id)
     setJokeLanguage(ELanguages.en)
     setJoke((jokeData as IDadJoke).joke ?? (jokeData as INorrisJoke).value)
@@ -641,13 +621,13 @@ function Jokes() {
   const getRandomNorrisCategory = () => {
     const filteredCategories =
       safemode === ESafemode.Unsafe
-        ? norrisCategories.filter((category) => category.value !== "any")
+        ? norrisCategories.filter((category) => category.value !== 'any')
         : norrisCategories.filter(
             (category) =>
-              category.value !== "any" &&
-              category.value !== "explicit" &&
-              category.value !== "religion" &&
-              category.value !== "political"
+              category.value !== 'any' &&
+              category.value !== 'explicit' &&
+              category.value !== 'religion' &&
+              category.value !== 'political'
           )
 
     const randomIndex = Math.floor(Math.random() * filteredCategories?.length)
@@ -677,8 +657,8 @@ function Jokes() {
 
           return {
             ...joke,
-            translatedLanguage: jokeLanguage ?? "",
-            name: joke.anonymous ? t("Anonymous") : (author?.name ?? ""),
+            translatedLanguage: jokeLanguage ?? '',
+            name: joke.anonymous ? t('Anonymous') : (author?.name ?? ''),
           }
         })
       }
@@ -730,12 +710,12 @@ function Jokes() {
           setJokeId(random.jokeId)
           setJokeLanguage(random.language ?? jokeLanguage)
           setJokeCategory(random.category)
-          if ("joke" in random) {
+          if ('joke' in random) {
             setJoke(random.joke)
-          } else if ("setup" in random) {
+          } else if ('setup' in random) {
             setJoke(random.setup)
           }
-          setDelivery("delivery" in random ? random?.delivery : "")
+          setDelivery('delivery' in random ? random?.delivery : '')
           if (
             (random.private === false || random.private === undefined) &&
             random.anonymous === false
@@ -743,9 +723,9 @@ function Jokes() {
             const author = users?.find(
               (user: IUser) => user._id == random.author
             )
-            setAuthor(author?.name ?? "")
+            setAuthor(author?.name ?? '')
           } else {
-            setAuthor("")
+            setAuthor('')
           }
 
           void dispatch(saveMostRecentJoke(random))
@@ -753,33 +733,33 @@ function Jokes() {
         } else {
           void dispatch(
             notify(
-              `${t("Error")}! ${t("NoJokeFoundWithThisSearchTerm")}. ${t(
-                "TryAnotherSearchTerm"
+              `${t('Error')}! ${t('NoJokeFoundWithThisSearchTerm')}. ${t(
+                'TryAnotherSearchTerm'
               )}`,
               true,
               8
             )
           )
 
-          setJoke("")
-          setDelivery("")
-          setAuthor("")
+          setJoke('')
+          setDelivery('')
+          setAuthor('')
           return
         }
       } else {
         void dispatch(
           notify(
-            `${t("Error")}! ${t("NoJokeFoundWithThisSearchTerm")}. ${t(
-              "TryAnotherSearchTerm"
+            `${t('Error')}! ${t('NoJokeFoundWithThisSearchTerm')}. ${t(
+              'TryAnotherSearchTerm'
             )}`,
             true,
             8
           )
         )
 
-        setJoke("")
-        setDelivery("")
-        setAuthor("")
+        setJoke('')
+        setDelivery('')
+        setAuthor('')
         return
       }
     }
@@ -796,33 +776,33 @@ function Jokes() {
     )
     const isEmpty = categoryValues?.length < 1
     const isChuckNorris = categoryValues?.some(
-      (category) => category.value === "ChuckNorris"
+      (category) => category.value === 'ChuckNorris'
     )
     const isDadJoke = categoryValues?.some(
-      (category) => category.value === "DadJoke"
+      (category) => category.value === 'DadJoke'
     )
-    const isQueryNotEmpty = queryValue.trim() !== "" || queryValue !== "&"
+    const isQueryNotEmpty = queryValue.trim() !== '' || queryValue !== '&'
 
     let newFilteredJokes = filteredJokes
 
     if (isQueryNotEmpty) {
       //remove &-sign from queryValue's end
-      const queryValueWithoutAnd = queryValue.replace(/&$/, "")
+      const queryValueWithoutAnd = queryValue.replace(/&$/, '')
 
       newFilteredJokes = filteredJokes?.filter((joke) => {
         if (joke) {
           const searchTermMatches =
-            ("joke" in joke
+            ('joke' in joke
               ? joke.joke
                   ?.toLowerCase()
                   .includes(queryValueWithoutAnd.toLowerCase())
               : false) ??
-            ("setup" in joke
+            ('setup' in joke
               ? joke.setup
                   ?.toLowerCase()
                   .includes(queryValueWithoutAnd.toLowerCase())
               : false) ??
-            ("delivery" in joke
+            ('delivery' in joke
               ? joke.delivery
                   ?.toLowerCase()
                   .includes(queryValueWithoutAnd.toLowerCase())
@@ -844,10 +824,10 @@ function Jokes() {
           const languageMatches = joke.language === jokeLanguage
 
           const norrisCategoryMatches =
-            selectedNorrisCategory?.value !== "" &&
-            selectedNorrisCategory?.value !== "any"
+            selectedNorrisCategory?.value !== '' &&
+            selectedNorrisCategory?.value !== 'any'
               ? joke.subCategories?.includes(
-                  String(selectedNorrisCategory?.value ?? "")
+                  String(selectedNorrisCategory?.value ?? '')
                 )
               : true
 
@@ -900,7 +880,7 @@ function Jokes() {
       return
     }
 
-    const queryValueWithoutAnd = queryValue.replace(/&$/, "")
+    const queryValueWithoutAnd = queryValue.replace(/&$/, '')
 
     if (isChuckNorris || isDadJoke) {
       // ChuckNorris and DadJoke only appear in English in the API, so for other languages, you search for a joke from the database
@@ -1031,22 +1011,22 @@ function Jokes() {
         if (
           !isCheckedSafemode &&
           (!selectedNorrisCategory?.value ||
-            selectedNorrisCategory?.value === "any")
+            selectedNorrisCategory?.value === 'any')
         ) {
           joke = await service.getFullyRandomNorrisJoke()
         } else if (
           selectedNorrisCategory?.value &&
-          selectedNorrisCategory?.value !== "any"
+          selectedNorrisCategory?.value !== 'any'
         ) {
           joke = await service.getRandomJokeFromNorrisCategory(
-            String(selectedNorrisCategory?.value ?? "")
+            String(selectedNorrisCategory?.value ?? '')
           )
         } else {
           const randomCategory = getRandomNorrisCategory()
           joke = query
             ? await service.searchNorrisJoke(query)
             : await service.getRandomJokeFromNorrisCategory(
-                String(randomCategory.value ?? "")
+                String(randomCategory.value ?? '')
               )
         }
       } else if (
@@ -1061,19 +1041,19 @@ function Jokes() {
       if (!joke) {
         void fetchFromJokeAPI()
       } else {
-        if (isJokeBlacklisted(joke.id ?? "")) {
+        if (isJokeBlacklisted(joke.id ?? '')) {
           void fetchApi()
           return
         }
         setJokeCategory(category)
-        setJokeId(joke.id ?? "")
+        setJokeId(joke.id ?? '')
 
-        const type = category === ECategories.DadJoke ? "dad" : "norris"
+        const type = category === ECategories.DadJoke ? 'dad' : 'norris'
 
         setJokeData(joke, type, category, [], isRandom, user?._id)
       }
     } catch (err: unknown) {
-      const message = getErrorMessage(err, t("Error"))
+      const message = getErrorMessage(err, t('Error'))
       void dispatch(notify(message, true, 8))
       console.error(err)
       void fetchFromJokeAPI()
@@ -1085,11 +1065,11 @@ function Jokes() {
 
   const noJoke = () => {
     void dispatch(
-      notify(`${t("Error")}! ${t("NoJokeFoundWithThisSearchTerm")}`, true, 8)
+      notify(`${t('Error')}! ${t('NoJokeFoundWithThisSearchTerm')}`, true, 8)
     )
 
-    setJoke("")
-    setDelivery("")
+    setJoke('')
+    setDelivery('')
   }
 
   useEffect(() => {
@@ -1101,10 +1081,10 @@ function Jokes() {
   const fetchFromJokeAPI = async (retryCount = 0) => {
     const categories = categoryValues.map((category) => category.value)
     const filteredCategories = categories.filter(
-      (category) => category !== "ChuckNorris" && category !== "DadJoke"
+      (category) => category !== 'ChuckNorris' && category !== 'DadJoke'
     )
     const category =
-      filteredCategories?.length > 0 ? filteredCategories.join(",") : "Any"
+      filteredCategories?.length > 0 ? filteredCategories.join(',') : 'Any'
     // console.log(
     //   `https://v2.jokeapi.dev/joke/${category}?${queryKey}${queryValue}lang=${language}&format=json${safemode}&type=${jokeType}`
     // )
@@ -1131,7 +1111,7 @@ function Jokes() {
 
         setLastJokes((prevJokes) => [
           ...prevJokes,
-          { jokeId: data.id as IJoke["jokeId"], language: jokeLanguage },
+          { jokeId: data.id as IJoke['jokeId'], language: jokeLanguage },
         ])
         if (lastJokes?.length > lastJokesLength) {
           setLastJokes((prevJokes) => prevJokes.slice(1))
@@ -1148,34 +1128,34 @@ function Jokes() {
 
         setJokeCategory(data.category as ECategories)
         if (data.error) {
-          if (category === "Any") {
+          if (category === 'Any') {
             void dispatch(
               notify(
-                `${t("Error")}! ${t("NoJokeFoundWithThisSearchTerm")}. ${t(
-                  "MaybeTryAnotherLanguage"
+                `${t('Error')}! ${t('NoJokeFoundWithThisSearchTerm')}. ${t(
+                  'MaybeTryAnotherLanguage'
                 )}`,
                 true,
                 10
               )
             )
-            setJoke("")
-            setDelivery("")
+            setJoke('')
+            setDelivery('')
 
-            setJokeId("")
+            setJokeId('')
             return
           } else {
             //console.log(data)
-            setJoke("")
-            setDelivery("")
+            setJoke('')
+            setDelivery('')
             void dispatch(
               notify(
-                `${t("Error")}! ${t("NoJokeFoundWithThisSearchTerm")}`,
+                `${t('Error')}! ${t('NoJokeFoundWithThisSearchTerm')}`,
                 true,
                 8
               )
             )
 
-            setJokeId("")
+            setJokeId('')
             return
           }
         }
@@ -1238,13 +1218,13 @@ function Jokes() {
           )
           setJokeCategory(data.category! as ECategories)
           setJoke(data.joke!)
-          setDelivery("")
+          setDelivery('')
           setJokeId(data.id!.toString())
         }
       })
       .catch((err: unknown) => {
-        const message = getErrorMessage(err, t("Error"))
-        void dispatch(notify(`${t("Error")}! ${message}`, true, 8))
+        const message = getErrorMessage(err, t('Error'))
+        void dispatch(notify(`${t('Error')}! ${message}`, true, 8))
       })
   }
 
@@ -1268,8 +1248,8 @@ function Jokes() {
       })) as SelectOption[]
       if (any)
         options.unshift({
-          value: "any",
-          label: norrisCats.any[language] ?? t("Any"),
+          value: 'any',
+          label: norrisCats.any[language] ?? t('Any'),
         })
       return options
     },
@@ -1282,9 +1262,9 @@ function Jokes() {
     const filteredNorrisCategories = isCheckedSafemode
       ? norrisCatOptions.filter(
           (category) =>
-            category.value !== "explicit" &&
-            category.value !== "religion" &&
-            category.value !== "political"
+            category.value !== 'explicit' &&
+            category.value !== 'religion' &&
+            category.value !== 'political'
         )
       : norrisCatOptions
 
@@ -1308,10 +1288,10 @@ function Jokes() {
     let modifiedCategory = category
 
     if (category === ECategories.ChuckNorris) {
-      modifiedCategory = "ChuckNorris" as ECategories
+      modifiedCategory = 'ChuckNorris' as ECategories
     }
     if (category === ECategories.DadJoke) {
-      modifiedCategory = "DadJoke" as ECategories
+      modifiedCategory = 'DadJoke' as ECategories
     }
 
     return categoryMapping[language as keyof typeof categoryMapping][
@@ -1325,15 +1305,15 @@ function Jokes() {
 
   const queryKey = useMemo(
     () =>
-      queryValue.trim() === "" || queryValue === "&"
+      queryValue.trim() === '' || queryValue === '&'
         ? EQueryKey.None
         : EQueryKey.Contains,
     [queryValue]
   )
 
   useEffect(() => {
-    if (queryValue === "&") {
-      setQueryValue("")
+    if (queryValue === '&') {
+      setQueryValue('')
     }
   }, [queryValue])
 
@@ -1342,7 +1322,7 @@ function Jokes() {
     const handleLoginOpen = () => {
       if (registerOpen) {
         const registerWrapClose = document.querySelector(
-          ".register-container.open button.close"
+          '.register-container.open button.close'
         )
         ;(registerWrapClose as HTMLElement)?.click()
       }
@@ -1353,7 +1333,7 @@ function Jokes() {
     const handleRegisterOpen = () => {
       if (loginOpen) {
         const loginWrapClose = document.querySelector(
-          ".login-container.open button.close"
+          '.login-container.open button.close'
         )
         ;(loginWrapClose as HTMLElement)?.click()
       }
@@ -1365,52 +1345,52 @@ function Jokes() {
     const handleRegisterClose = () => setRegisterOpen(false)
 
     const loginWrapOpen = document.querySelector(
-      ".login-container.closed button.open"
+      '.login-container.closed button.open'
     )
     const loginWrapClose = document.querySelector(
-      ".login-container.open button.close"
+      '.login-container.open button.close'
     )
     const registerWrapOpen = document.querySelector(
-      ".register-container.closed button.open"
+      '.register-container.closed button.open'
     )
     const registerWrapClose = document.querySelector(
-      ".register-container.open button.close"
+      '.register-container.open button.close'
     )
 
-    loginWrapOpen?.addEventListener("click", handleLoginOpen)
-    registerWrapOpen?.addEventListener("click", handleRegisterOpen)
-    loginWrapClose?.addEventListener("click", handleLoginClose)
-    registerWrapClose?.addEventListener("click", handleRegisterClose)
+    loginWrapOpen?.addEventListener('click', handleLoginOpen)
+    registerWrapOpen?.addEventListener('click', handleRegisterOpen)
+    loginWrapClose?.addEventListener('click', handleLoginClose)
+    registerWrapClose?.addEventListener('click', handleRegisterClose)
 
     return () => {
-      loginWrapOpen?.removeEventListener("click", handleLoginOpen)
-      registerWrapOpen?.removeEventListener("click", handleRegisterOpen)
-      loginWrapClose?.removeEventListener("click", handleLoginClose)
-      registerWrapClose?.removeEventListener("click", handleRegisterClose)
+      loginWrapOpen?.removeEventListener('click', handleLoginOpen)
+      registerWrapOpen?.removeEventListener('click', handleRegisterOpen)
+      loginWrapClose?.removeEventListener('click', handleLoginClose)
+      registerWrapClose?.removeEventListener('click', handleRegisterClose)
     }
   }, [loginOpen, registerOpen])
 
   const navigate = useNavigate()
 
   const navigateToRegister = () => {
-    navigate("/portfolio/jokes?register=register")
+    navigate('/portfolio/jokes?register=register')
   }
 
   const navigateToLogin = () => {
-    navigate("/portfolio/jokes?login=login")
+    navigate('/portfolio/jokes?login=login')
   }
 
   const handleBlacklistUpdate = async (
-    jokeId: IJoke["jokeId"],
+    jokeId: IJoke['jokeId'],
     language: ELanguages,
     value: string | undefined
   ) => {
     if (!user) {
-      void dispatch(notify(t("PleaseLogin"), true, 5))
+      void dispatch(notify(t('PleaseLogin'), true, 5))
       navigateToLogin()
       return
     } else if (
-      await confirm({ message: `${t("AreYouSureYouWantToHideThisJoke")}` })
+      await confirm({ message: `${t('AreYouSureYouWantToHideThisJoke')}` })
     ) {
       const isAlreadyBlacklisted = user?.blacklistedJokes?.some(
         (blacklistedJoke) =>
@@ -1418,14 +1398,14 @@ function Jokes() {
           blacklistedJoke.language === language
       )
       if (isAlreadyBlacklisted) {
-        void dispatch(notify(t("ThisJokeIsAlreadyBlacklisted"), true, 3))
-        void dispatch(findUserById(user?._id ?? "")).then(
+        void dispatch(notify(t('ThisJokeIsAlreadyBlacklisted'), true, 3))
+        void dispatch(findUserById(user?._id ?? '')).then(
           () => void dispatch(initializeUser())
         )
-        setJoke("")
-        setDelivery("")
-        setAuthor("")
-        setJokeId("")
+        setJoke('')
+        setDelivery('')
+        setAuthor('')
+        setJokeId('')
         return
       } else if (Array.isArray(users) && user) {
         //delete joke from user's array if it is there
@@ -1444,32 +1424,32 @@ function Jokes() {
           })
           .then(() => {
             void dispatch(
-              addToBlacklistedJokes(user?._id ?? "", jokeId, language, value)
+              addToBlacklistedJokes(user?._id ?? '', jokeId, language, value)
             )
               .then(() => {
-                void dispatch(notify(`${t("JokeHidden")}`, false, 3))
+                void dispatch(notify(`${t('JokeHidden')}`, false, 3))
                 void dispatch(initializeJokes())
-                  .then(() => dispatch(findUserById(user?._id ?? "")))
+                  .then(() => dispatch(findUserById(user?._id ?? '')))
                   .then(() => dispatch(initializeUser()))
                   .then(() => {
-                    setJoke("")
-                    setDelivery("")
-                    setAuthor("")
-                    setJokeId("")
+                    setJoke('')
+                    setDelivery('')
+                    setAuthor('')
+                    setJokeId('')
                   })
               })
               .catch((err: unknown) => {
-                const message = getErrorMessage(err, t("ErrorDeletingJoke"))
-                void dispatch(notify(`${t("Error")}*: ${message}`, true, 8))
+                const message = getErrorMessage(err, t('ErrorDeletingJoke'))
+                void dispatch(notify(`${t('Error')}*: ${message}`, true, 8))
 
-                setJoke("")
-                setDelivery("")
-                setAuthor("")
-                setJokeId("")
+                setJoke('')
+                setDelivery('')
+                setAuthor('')
+                setJokeId('')
               })
           })
       } else {
-        void dispatch(notify(`${t("ErrorDeletingJoke")}`, false, 3))
+        void dispatch(notify(`${t('ErrorDeletingJoke')}`, false, 3))
       }
     }
   }
@@ -1477,13 +1457,13 @@ function Jokes() {
   const handleRemoveJokeFromBlacklisted = async (
     e: React.FormEvent<HTMLFormElement>,
     joke: IJoke,
-    bjoke_id: IBlacklistedJoke["_id"]
+    bjoke_id: IBlacklistedJoke['_id']
   ) => {
     e.preventDefault()
     void dispatch(saveMostRecentJoke(joke))
     setSending(true)
     if (
-      await confirm({ message: `${t("AreYouSureYouWantToRestoreThisJoke")}` })
+      await confirm({ message: `${t('AreYouSureYouWantToRestoreThisJoke')}` })
     ) {
       if (user) {
         await dispatch(
@@ -1491,38 +1471,38 @@ function Jokes() {
         )
           .then(() => {
             void dispatch(initializeJokes())
-              .then(async () => await dispatch(findUserById(user._id ?? "")))
+              .then(async () => await dispatch(findUserById(user._id ?? '')))
               .then(() => void dispatch(initializeUser()))
               .then(
-                () => void dispatch(notify(`${t("JokeRestored")}`, false, 3))
+                () => void dispatch(notify(`${t('JokeRestored')}`, false, 3))
               )
           })
           .catch((err: unknown) => {
-            const message = getErrorMessage(err, t("ErrorDeletingJoke"))
+            const message = getErrorMessage(err, t('ErrorDeletingJoke'))
             void dispatch(notify(message, true, 8))
           })
         setSending(false)
       } else {
-        void dispatch(notify(`${t("ErrorDeletingJoke")}`, false, 3))
+        void dispatch(notify(`${t('ErrorDeletingJoke')}`, false, 3))
         setSending(false)
       }
     }
     void setTimeout(() => {
       void (async () => {
-        if (await confirm({ message: `${t("WouldYouLikeToSaveTheJoke")}` })) {
+        if (await confirm({ message: `${t('WouldYouLikeToSaveTheJoke')}` })) {
           if (user) {
             void handleJokeSave(e)
             void dispatch(initializeJokes())
-            await dispatch(findUserById(user._id ?? ""))
+            await dispatch(findUserById(user._id ?? ''))
               .then(() => void dispatch(initializeUser()))
-              .then(() => void dispatch(notify(`${t("SavedJoke")}`, false, 8)))
+              .then(() => void dispatch(notify(`${t('SavedJoke')}`, false, 8)))
               .catch((err: unknown) => {
-                const message = getErrorMessage(err, t("ErrorDeletingJoke"))
+                const message = getErrorMessage(err, t('ErrorDeletingJoke'))
                 void dispatch(notify(message, true, 8))
               })
             setSending(false)
           } else {
-            void dispatch(notify(`${t("ErrorDeletingJoke")}`, false, 3))
+            void dispatch(notify(`${t('ErrorDeletingJoke')}`, false, 3))
             setSending(false)
           }
         }
@@ -1535,9 +1515,9 @@ function Jokes() {
       <section className={`joke-container card ${language}`} id="jokeform">
         <div>
           <div className="jokes-wrap">
-            <h2>{t("TheComediansCompanion")}</h2>
+            <h2>{t('TheComediansCompanion')}</h2>
             <p className="center textcenter mb3">
-              {t("AJokeGeneratorForTheComicallyInclined")}
+              {t('AJokeGeneratorForTheComicallyInclined')}
             </p>
 
             <FormJoke
@@ -1586,12 +1566,12 @@ function Jokes() {
         <div>
           {!user ? (
             <div className={`register-login-wrap`}>
-              <button onClick={navigateToLogin}>{t("Login")}</button>
-              <button onClick={navigateToRegister}>{t("Register")}</button>
+              <button onClick={navigateToLogin}>{t('Login')}</button>
+              <button onClick={navigateToRegister}>{t('Register')}</button>
             </div>
           ) : (
             <p className="textcenter">
-              {t("LoggedInAs")} {user?.name}
+              {t('LoggedInAs')} {user?.name}
             </p>
           )}
           {user && (
@@ -1618,7 +1598,6 @@ function Jokes() {
             setIsCheckedSafemode={setIsCheckedSafemode}
             handleToggleChangeSafemode={handleToggleChangeSafemode}
             translateWordLanguage={translateWordLanguage}
-            getKeyofEnum={getKeyofEnum}
             options={options}
             optionsSortBy={optionsSortBy}
             norrisCategories={norrisCategories}

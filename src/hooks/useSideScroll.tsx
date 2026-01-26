@@ -1,6 +1,9 @@
 import { useRef, useEffect, useLayoutEffect, useCallback } from "react"
 import { RefObject } from "../types"
 
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect
+
 export default function useSideScroll(scrollKey = "sideScroll") {
   const ref = useRef() as RefObject<HTMLElement>
   const hasInitialized = useRef(false)
@@ -47,7 +50,7 @@ export default function useSideScroll(scrollKey = "sideScroll") {
     [saveScrollPosition]
   )
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const element = ref.current
     if (element && !hasInitialized.current) {
       element.scrollLeft = getSavedScrollPosition()

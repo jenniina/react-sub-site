@@ -4,8 +4,6 @@ import { SelectOption } from '../components/Select/Select'
 import {
   ColorBlock,
   ComplianceResult,
-  HSLColor,
-  TColorMode,
 } from '../components/AccessibleColors/AccessibleColors'
 import {
   ECategories,
@@ -42,7 +40,7 @@ export const sanitize = (name: string = getRandomString(9)): string => {
 // Note: first3Words moved to utils/translations.tsx (client-only, uses translations)
 
 export const options = (enumObj: typeof ELanguagesLong) => {
-  return Object.keys(enumObj).map(key => ({
+  return Object.keys(enumObj).map((key) => ({
     value: key,
     label: enumObj[key as keyof typeof enumObj],
   })) as SelectOption[]
@@ -90,7 +88,7 @@ export const RandomRGBvalue = () => {
   return Math.floor(Math.random() * 256)
 }
 
-const randomUpTo100 = () => {
+export const randomUpTo100 = () => {
   const value = Math.ceil(getRandomBetween(30, 100))
   return clampValue(30, value, 100)
 }
@@ -112,189 +110,6 @@ export const randomHSLColor = (type = 'array') => {
     return [h, s, l]
   }
 }
-export const generateColors = (
-  mode: TColorMode,
-  baseHSL: HSLColor
-): number[][] => {
-  const randomOneOrTwo = baseHSL.l < 50 ? 1 : 2
-  const adjustment = Math.round(getRandomBetween(15, 20))
-  const colorset: number[][] = []
-  switch (mode) {
-    case 'analogous':
-      for (let i = 1; i <= 4; i++) {
-        let adjustedL =
-          randomOneOrTwo === 1
-            ? (baseHSL.l + adjustment * i) % 90
-            : (baseHSL.l - adjustment * i + 90) % 90
-        adjustedL = clampValue(0, adjustedL, 90)
-        const analogousHSL: [number, number, number] = [
-          (baseHSL.h + 30 * i) % 360,
-          randomUpTo100(),
-          adjustedL,
-        ]
-        colorset.push(analogousHSL)
-      }
-      break
-    case 'complementary':
-      for (let i = 1; i <= 4; i++) {
-        let adjustedL =
-          randomOneOrTwo === 1
-            ? (baseHSL.l + adjustment * i) % 90
-            : (baseHSL.l - adjustment * i + 90) % 90
-        adjustedL = clampValue(0, adjustedL, 90)
-        const variationHSL: [number, number, number] = [
-          i % 2 === 0 ? baseHSL.h : (baseHSL.h + 180) % 360,
-          randomUpTo100(),
-          adjustedL,
-        ]
-        colorset.push(variationHSL)
-      }
-      break
-    case 'triad':
-      for (let i = 1; i <= 2; i++) {
-        let adjustedL =
-          randomOneOrTwo === 1
-            ? (baseHSL.l + adjustment * i) % 90
-            : (baseHSL.l - adjustment * i + 90) % 90
-        adjustedL = clampValue(0, adjustedL, 90)
-        const triadHSL: [number, number, number] = [
-          (baseHSL.h + 120 * i) % 360,
-          randomUpTo100(),
-          adjustedL,
-        ]
-        colorset.push(triadHSL)
-      }
-      break
-    case 'monochromatic':
-      for (let i = 1; i <= 4; i++) {
-        let adjustedL =
-          randomOneOrTwo === 1
-            ? (baseHSL.l + adjustment * i) % 90
-            : (baseHSL.l - adjustment * i + 90) % 90
-        adjustedL = clampValue(0, adjustedL, 90)
-        const adjustedHSL: [number, number, number] = [
-          baseHSL.h,
-          randomUpTo100(),
-          adjustedL,
-        ]
-        colorset.push(adjustedHSL)
-      }
-      break
-    case 'tetrad':
-      for (let i = 1; i <= 3; i++) {
-        let adjustedL =
-          randomOneOrTwo === 1
-            ? (baseHSL.l + adjustment * i) % 90
-            : (baseHSL.l - adjustment * i + 90) % 90
-        adjustedL = clampValue(0, adjustedL, 90)
-        const tetradHSL: [number, number, number] = [
-          (baseHSL.h + 90 * i) % 360,
-          randomUpTo100(),
-          adjustedL,
-        ]
-        colorset.push(tetradHSL)
-      }
-      break
-    default:
-      // Fallback to analogous
-      for (let i = 1; i <= 4; i++) {
-        let adjustedL =
-          randomOneOrTwo === 1
-            ? (baseHSL.l + adjustment * i) % 90
-            : (baseHSL.l - adjustment * i + 90) % 90
-        adjustedL = clampValue(0, adjustedL, 90)
-        const defaultHSL: [number, number, number] = [
-          (baseHSL.h + 30 * i) % 360,
-          randomUpTo100(),
-          adjustedL,
-        ]
-        colorset.push(defaultHSL)
-      }
-      break
-  }
-  return colorset
-}
-
-export const buildColors = (
-  existingColors: ColorBlock[],
-  colorMode: string | undefined,
-  colorsReset: boolean
-): number[][] => {
-  const newColors: number[][] = []
-
-  if (existingColors.length === 0 || colorsReset) {
-    const baseColor = randomHSLColor('array')
-    if (Array.isArray(baseColor)) {
-      newColors.push(baseColor)
-    }
-
-    // Generate additional colors based on the selected colorMode
-    const generated = generateColors(colorMode as TColorMode, {
-      h: baseColor[0] as number,
-      s: baseColor[1] as number,
-      l: baseColor[2] as number,
-    })
-    newColors.push(...generated)
-
-    return newColors
-  } else {
-    // Generate two new colors based on the last existing color
-    const baseColor = existingColors[existingColors.length - 1]
-    let baseHSL: HSLColor
-
-    try {
-      if (baseColor.colorFormat === 'hex') {
-        const rgb = hexToRGB(baseColor.color)
-        baseHSL = rgbToHSL(rgb.r, rgb.g, rgb.b)
-      } else if (baseColor.colorFormat === 'rgb') {
-        const rgbMatch =
-          /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i.exec(
-            baseColor.color
-          )
-        if (rgbMatch) {
-          const r = Number(rgbMatch[1])
-          const g = Number(rgbMatch[2])
-          const b = Number(rgbMatch[3])
-          baseHSL = rgbToHSL(r, g, b)
-        } else {
-          throw new Error('Invalid RGB format')
-        }
-      } else if (baseColor.colorFormat === 'hsl') {
-        const hslMatch =
-          /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i.exec(
-            baseColor.color
-          )
-        if (hslMatch) {
-          const h = Number(hslMatch[1])
-          const s = Number(hslMatch[2])
-          const l = Number(hslMatch[3])
-          baseHSL = { h, s, l }
-        } else {
-          throw new Error('Invalid HSL format')
-        }
-      } else {
-        throw new Error('Unsupported color format')
-      }
-
-      const generated = generateColors(colorMode as TColorMode, baseHSL)
-      if (colorMode === 'tetrad') newColors.push(...generated.slice(0, 3))
-      else newColors.push(...generated.slice(0, 3))
-    } catch (error) {
-      console.error('Error generating new colors:', error)
-      // Fallback to generating three random colors
-      for (let i = 0; i < 3; i++) {
-        const randomColor = randomHSLColor('array')
-        if (Array.isArray(randomColor)) {
-          newColors.push(randomColor)
-        }
-      }
-    }
-  }
-  if (!colorsReset && existingColors.length > 0) {
-    return newColors
-  }
-  return newColors
-}
 
 export function clampValue(min: number, val: number, max: number) {
   return Math.min(Math.max(val, min), max)
@@ -304,7 +119,7 @@ export function createSelectOptions(
   enums: Record<ELanguages, string>[],
   language: ELanguages
 ): SelectOption[] {
-  return enums.map(enumObj => {
+  return enums.map((enumObj) => {
     const label = enumObj[language]
     return { label, value: label }
   })
@@ -577,7 +392,7 @@ export const getHexFromColor = (color: string, type: string) => {
 }
 
 export const sleep = (ms: number) =>
-  new Promise<void>(res => setTimeout(res, ms))
+  new Promise<void>((res) => setTimeout(res, ms))
 
 export const colorNameToHex = (color: string) => {
   const ctx = document.createElement('canvas').getContext('2d')
@@ -600,7 +415,7 @@ export const colorNameToHex = (color: string) => {
 
 export const hexToRGB = (value: string) => {
   if (value.startsWith('rgb(')) {
-    const m = value.match(/^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/)
+    const m = /^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/.exec(value)
     if (!m) throw new Error(`Unsupported rgb format: ${value}`)
     return { r: Number(m[1]), g: Number(m[2]), b: Number(m[3]) }
   }
@@ -613,7 +428,7 @@ export const hexToRGB = (value: string) => {
   if (hex.length === 3)
     hex = hex
       .split('')
-      .map(ch => ch + ch)
+      .map((ch) => ch + ch)
       .join('')
   if (hex.length !== 6) throw new Error(`Unsupported hex length: ${value}`)
 
@@ -624,7 +439,7 @@ export const hexToRGB = (value: string) => {
 }
 
 export const calculateLuminance = (r: number, g: number, b: number) => {
-  const a = [r, g, b].map(v => {
+  const a = [r, g, b].map((v) => {
     v /= 255
     return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)
   })

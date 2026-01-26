@@ -55,11 +55,11 @@ const OrderPage: React.FC<OrderPageProps> = ({ type }) => {
     full: t('Full'),
   }
 
-  const statusOptions: SelectOption[] = statusesList.map(status => ({
+  const statusOptions: SelectOption[] = statusesList.map((status) => ({
     value: status,
     label: itemStatus(status),
   }))
-  const paidOptions: SelectOption[] = paidList.map(paid => ({
+  const paidOptions: SelectOption[] = paidList.map((paid) => ({
     value: paid,
     label: paidStatus[paid],
   }))
@@ -91,22 +91,6 @@ const OrderPage: React.FC<OrderPageProps> = ({ type }) => {
 
   return (
     <>
-      {/* <Helmet prioritizeSeoTags={true}>
-        <meta charSet="utf-8" />
-        <meta name="author" content="Jenniina Laine" />
-        <meta property="og:type" content="website" />
-
-        <title>{t("Orders")} | react.jenniina.fi</title>
-        <meta name="description" content={t("Orders")} />
-        <link rel="canonical" href={`https://react.jenniina.fi/orders`} />
-        <meta
-          property="og:title"
-          content={`${t("Orders")} | react.jenniina.fi`}
-        />
-        <meta property="og:description" content={t("Orders")} />
-        <meta property="og:url" content={`https://react.jenniina.fi/orders`} />
-        <meta property="og:type" content="website" />
-      </Helmet> **/}
       <div className={`order ${type} ${styles['orders-page']}`}>
         <div className="inner-wrap">
           <section className="card" style={{ position: 'relative', zIndex: 2 }}>

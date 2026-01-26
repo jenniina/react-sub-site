@@ -1,6 +1,8 @@
 import React from 'react'
 import { ICartItem } from '../types/store'
 import Cart from '../components/Cart/Cart'
+import { useLanguageContext } from '../contexts/LanguageContext'
+import SEO from '../components/SEO/SEO'
 
 interface CartProps {
   type: string
@@ -19,24 +21,15 @@ const CartPage: React.FC<CartProps> = ({
   editDetails,
   removeCart,
 }) => {
+  const { t } = useLanguageContext()
+
   return (
     <>
-      {/* <Helmet prioritizeSeoTags={true}>
-        <meta charSet="utf-8" />
-        <meta name="author" content="Jenniina Laine" />
-        <meta property="og:type" content="website" />
-
-        <title>{t("Cart")} | react.jenniina.fi</title>
-        <meta name="description" content={t("Cart")} />
-        <link rel="canonical" href={`https://react.jenniina.fi/cart`} />
-        <meta
-          property="og:title"
-          content={`${t("Cart")} | react.jenniina.fi`}
-        />
-        <meta property="og:description" content={t("Cart")} />
-        <meta property="og:url" content={`https://react.jenniina.fi/cart`} />
-        <meta property="og:type" content="website" />
-      </Helmet> **/}
+      <SEO
+        title={`${t('Cart')} | react.jenniina.fi`}
+        description={t('Cart')}
+        canonicalUrl={'https://react.jenniina.fi/cart'}
+      />
       <div className={`cart ${type}`}>
         <div className="inner-wrap">
           <section className="card" style={{ position: 'relative', zIndex: 2 }}>

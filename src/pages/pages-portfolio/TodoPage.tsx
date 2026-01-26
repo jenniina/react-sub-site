@@ -3,6 +3,7 @@ import Accordion from '../../components/Accordion/Accordion'
 import { useTheme } from '../../hooks/useTheme'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import TodoApp from '../../components/Todo/TodoApp'
+import SEO from '../../components/SEO/SEO'
 
 export default function TodoPage({ type }: { type: string }) {
   const { t } = useLanguageContext()
@@ -10,30 +11,12 @@ export default function TodoPage({ type }: { type: string }) {
   const lightMode = useTheme()
   return (
     <>
-      {/*  <Helmet prioritizeSeoTags={true}>
-        <meta charSet="utf-8" />
-        <meta name="author" content="Jenniina Laine" />
-        <meta property="og:type" content="website" />
-
-        <title>
-          {t("TodoApp")} | {t("GetOrganizedOneTaskAtATime")}
-        </title>
-        <meta name="description" content={t("TodoAppIntro")} />
-        <link
-          rel="canonical"
-          href={`https://react.jenniina.fi/portfolio/todo`}
-        />
-        <meta
-          property="og:title"
-          content={`${t("TodoApp")} | react.jenniina.fi`}
-        />
-        <meta property="og:description" content={t("TodoAppIntro")} />
-        <meta
-          property="og:url"
-          content={`https://react.jenniina.fi/portfolio/todo`}
-        />
-        <meta property="og:type" content="website" />
-      </Helmet> */}
+      <SEO
+        title={`${t('TodoApp')} | ${t('GetOrganizedOneTaskAtATime')}`}
+        description={t('TodoAppIntro')}
+        canonicalUrl="https://react.jenniina.fi/portfolio/todo"
+        ogTitle={`${t('TodoApp')} | react.jenniina.fi`}
+      />
       <div className={`todo ${type} ${lightMode ? styles.light : ''}`}>
         <div className="inner-wrap">
           <section className="card">

@@ -36,7 +36,10 @@ export const DragAndDrop = () => {
 
   const dispatch = useAppDispatch()
 
-  const [data, setData, removeData] = useLocalStorage<Data[]>('DnD-data', [])
+  const [data, setData, removeData] = useLocalStorage<Data[]>(
+    'DnD-set-data',
+    []
+  )
 
   const initialColors = [
     { content: 'powderblue', color: 'powderblue', lightness: 'light' },
@@ -104,13 +107,12 @@ export const DragAndDrop = () => {
 
   const [sending, setSending] = useState<boolean>(false)
   const [statuses, setStatuses, removeStatuses] = useLocalStorage(
-    `DnD-statuses`,
+    `DnD-stats`,
     initialStatuses
   )
   const [newStatus, setNewStatus] = useState<string>('')
-  const [statusesColors, setStatusesColors] = useLocalStorage<
-    IContainerColors[]
-  >('status-background', initialBGColors)
+  const [statusesColors, setStatusesColors, deleteStatusesColors] =
+    useLocalStorage<IContainerColors[]>('status-background', initialBGColors)
   const [backgroundIsModified, setBackgroundIsModified] =
     useState<boolean>(false)
   const [singleColorTop, setSingleColorTop, deleteSingleColorTop] =
@@ -123,7 +125,7 @@ export const DragAndDrop = () => {
   const regex = /^[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF- ]*$/
 
   const storedData = statuses
-    .map(status => {
+    .map((status) => {
       if (!isClient || !windowObj) return undefined
       const item = windowObj.localStorage.getItem(`DnD-${status}`)
       return item ? (JSON.parse(item) as unknown[]) : []
@@ -131,10 +133,24 @@ export const DragAndDrop = () => {
     .flat()
     .filter((item): item is Data => item !== undefined)
 
+  const translateStatus = (status: string) => {
+    const statusLowerCase = status.toLowerCase()
+    switch (statusLowerCase) {
+      case 'do':
+        return t('Do')
+      case 'doing':
+        return t('Doing')
+      case 'done':
+        return t('Done')
+      default:
+        return status.replace(/_/g, ' ')
+    }
+  }
+
   useEffect(() => {
     if (lightTheme && !backgroundIsModified) {
-      setStatusesColors(prevColors =>
-        prevColors.map(statusColor => ({
+      setStatusesColors((prevColors) =>
+        prevColors.map((statusColor) => ({
           ...statusColor,
           top: lightTopDefault,
           body: lightBodyDefault,
@@ -142,8 +158,8 @@ export const DragAndDrop = () => {
         }))
       )
     } else if (!lightTheme && !backgroundIsModified) {
-      setStatusesColors(prevColors =>
-        prevColors.map(statusColor => ({
+      setStatusesColors((prevColors) =>
+        prevColors.map((statusColor) => ({
           ...statusColor,
           top: darkTopDefault,
           body: darkBodyDefault,
@@ -151,7 +167,7 @@ export const DragAndDrop = () => {
         }))
       )
     } else return
-  }, [lightTheme, backgroundIsModified])
+  }, [lightTheme, backgroundIsModified, setStatusesColors])
 
   // Generate and inject CSS styles whenever statuses change
   useEffect(() => {
@@ -162,7 +178,7 @@ export const DragAndDrop = () => {
     // Disable the link for the current status:
     const generateStyles = (statuses: Status[]) => {
       return statuses
-        .map(status => {
+        .map((status) => {
           const safeStatus = sanitize(status)
           return `
           ul.${safeStatus} li.${safeStatus} a.${safeStatus}, 
@@ -232,8 +248,8 @@ export const DragAndDrop = () => {
         setSending(false)
         return
       }
-      setStatuses(prevStatuses => [...prevStatuses, newStatusTrim])
-      setStatusesColors(prevColors => [
+      setStatuses((prevStatuses) => [...prevStatuses, newStatusTrim])
+      setStatusesColors((prevColors) => [
         ...prevColors,
         {
           name: newStatusTrim,
@@ -250,7 +266,7 @@ export const DragAndDrop = () => {
   }
 
   const reorderStatuses = (oldIndex: number, newIndex: number) => {
-    setStatuses(prevStatuses => {
+    setStatuses((prevStatuses) => {
       const updatedStatuses = [...prevStatuses]
       const [removed] = updatedStatuses.splice(oldIndex, 1)
       updatedStatuses.splice(newIndex, 0, removed)
@@ -263,7 +279,7 @@ export const DragAndDrop = () => {
       void dispatch(notify(t('SpecialCharactersNotAllowed'), true, 6))
       return
     }
-    setStatuses(prevStatuses => {
+    setStatuses((prevStatuses) => {
       const newStatusTrim = newStatus.trim().replace(/ /g, '_')
       if (newStatusTrim.length > 20) {
         void dispatch(
@@ -288,9 +304,18 @@ export const DragAndDrop = () => {
       const oldStatus = updatedStatuses[index]
       updatedStatuses[index] = newStatusTrim
 
+      // Keep background color configs in sync with renamed status
+      setStatusesColors((prevColors) =>
+        prevColors.map((colorConfig) =>
+          colorConfig.name === oldStatus
+            ? { ...colorConfig, name: newStatusTrim }
+            : colorConfig
+        )
+      )
+
       // Update the data array to reflect the new status name
-      setData(prevData =>
-        prevData.map(item =>
+      setData((prevData) =>
+        prevData.map((item) =>
           item.status === oldStatus ? { ...item, status: newStatusTrim } : item
         )
       )
@@ -309,19 +334,21 @@ export const DragAndDrop = () => {
       return
     } // check if there are items with this status
     else if (
-      data.some(d => d.status === status) &&
+      data.some((d) => d.status === status) &&
       (await confirm({
         message: `${t('AreYouSureYouWantToRemoveThis')} (${status}) ${t('ItIsNotEmpty')}`,
       }))
     ) {
-      setStatuses(prevStatuses => prevStatuses.filter(s => s !== status))
-      setData(prevData => prevData.filter(d => d.status !== status))
-      setStatusesColors(prevColors => prevColors.filter(c => c.name !== status))
-    } else if (data.every(d => d.status !== status)) {
+      setStatuses((prevStatuses) => prevStatuses.filter((s) => s !== status))
+      setData((prevData) => prevData.filter((d) => d.status !== status))
+      setStatusesColors((prevColors) =>
+        prevColors.filter((c) => c.name !== status)
+      )
+    } else if (data.every((d) => d.status !== status)) {
       if (await confirm({ message: t('AreYouSureYouWantToRemoveThis') })) {
-        setStatuses(prevStatuses => prevStatuses.filter(s => s !== status))
-        setStatusesColors(prevColors =>
-          prevColors.filter(c => c.name !== status)
+        setStatuses((prevStatuses) => prevStatuses.filter((s) => s !== status))
+        setStatusesColors((prevColors) =>
+          prevColors.filter((c) => c.name !== status)
         )
       } else return
     } else return
@@ -335,8 +362,8 @@ export const DragAndDrop = () => {
     if (mode === 'reset') {
       const titleLightness = determineBackgroundLightness(defaultTopColor)
       // Reset all to default colors
-      setStatusesColors(prevColors =>
-        prevColors.map(statusColor => ({
+      setStatusesColors((prevColors) =>
+        prevColors.map((statusColor) => ({
           ...statusColor,
           top: defaultTopColor,
           body: defaultBodyColor,
@@ -347,8 +374,8 @@ export const DragAndDrop = () => {
     } else if (mode === 'custom' && customTopColor) {
       // Set all to custom colors
       const titleLightness = determineBackgroundLightness(customTopColor)
-      setStatusesColors(prevColors =>
-        prevColors.map(statusColor => ({
+      setStatusesColors((prevColors) =>
+        prevColors.map((statusColor) => ({
           ...statusColor,
           top: customTopColor,
           lightness: titleLightness,
@@ -356,8 +383,8 @@ export const DragAndDrop = () => {
       )
       setBackgroundIsModified(true)
     } else if (mode === 'custom' && customBodyColor) {
-      setStatusesColors(prevColors =>
-        prevColors.map(statusColor => ({
+      setStatusesColors((prevColors) =>
+        prevColors.map((statusColor) => ({
           ...statusColor,
           body: customBodyColor,
         }))
@@ -527,20 +554,26 @@ export const DragAndDrop = () => {
 
   const startAgain = async () => {
     if (await confirm({ message: t('AreYouSureYouWantToDeleteThisVersion') })) {
-      const userAddedItems = data.filter(d => d.isUser)
+      const userAddedItems = data.filter((d) => d.isUser)
+      deleteStatusesColors()
+      deleteSingleColorTop()
+      deleteSingleColorBody()
       setData(await generateInitialData(userAddedItems))
       setStatusesColors(generateInitialBGColors())
     } else return
   }
 
   const startAgainEmpty = async () => {
-    const userAddedItems = data.filter(d => d.isUser)
+    const userAddedItems = data.filter((d) => d.isUser)
     if (
       await confirm({
         message: `${t('AreYouSureYouWantToDeleteThisVersion')} (${t('Clear')})`,
       })
     ) {
       if (!userAddedItems || userAddedItems.length === 0) {
+        deleteStatusesColors()
+        deleteSingleColorTop()
+        deleteSingleColorBody()
         removeData()
         setData([])
       } else if (
@@ -548,12 +581,18 @@ export const DragAndDrop = () => {
         userAddedItems.length > 0 &&
         (await confirm({ message: t('DoYouWantToDeleteYourColorsText') }))
       ) {
-        statuses.forEach(status => {
+        statuses.forEach((status) => {
           listItemsByStatus[status].removeItems()
         })
+        deleteStatusesColors()
+        deleteSingleColorTop()
+        deleteSingleColorBody()
         removeData()
         setData([])
       } else {
+        deleteStatusesColors()
+        deleteSingleColorTop()
+        deleteSingleColorBody()
         removeData()
         setData(
           userAddedItems.map((item, index) => {
@@ -614,7 +653,7 @@ export const DragAndDrop = () => {
     value: statuses[0],
   })
 
-  const handleAddColor = async (
+  const handleAddColor = (
     e: FormEvent,
     newColor: string,
     statusForItem: Data['status']
@@ -647,7 +686,7 @@ export const DragAndDrop = () => {
         lightness: determineBackgroundLightness(newColor),
         isUser: true,
       }
-      setData(prevData => [...prevData, newItem])
+      setData((prevData) => [...prevData, newItem])
 
       containerRef.current?.scrollIntoView({ behavior: 'smooth' })
       setSending(false)
@@ -664,7 +703,7 @@ export const DragAndDrop = () => {
         lightness: determineBackgroundLightness(lastWord),
         isUser: true,
       }
-      setData(prevData => [...prevData, newItem])
+      setData((prevData) => [...prevData, newItem])
 
       containerRef.current?.scrollIntoView({ behavior: 'smooth' })
       setSending(false)
@@ -682,7 +721,7 @@ export const DragAndDrop = () => {
         lightness: 'light',
         isUser: true,
       }
-      setData(prevData => [...prevData, newItem])
+      setData((prevData) => [...prevData, newItem])
       containerRef.current?.scrollIntoView({ behavior: 'smooth' })
       setSending(false)
     }
@@ -694,7 +733,7 @@ export const DragAndDrop = () => {
         message: `${t('AreYouSureYouWantToRemoveThis')} (${data.content})`,
       })
     ) {
-      setData(prevData => prevData.filter(d => d.id !== data.id))
+      setData((prevData) => prevData.filter((d) => d.id !== data.id))
     } else return
   }
 
@@ -718,8 +757,8 @@ export const DragAndDrop = () => {
       handleUpdate(id, status, target)
 
       if (data && data.length > 0)
-        setData(prevData => {
-          const updatedData = prevData.map(item => {
+        setData((prevData) => {
+          const updatedData = prevData.map((item) => {
             if (item.id === id) {
               return { ...item, status: status }
             }
@@ -749,7 +788,7 @@ export const DragAndDrop = () => {
             }`}
             ref={containerRef}
           >
-            {statuses.map(container => (
+            {statuses.map((container) => (
               <CardsContainer
                 itemsByStatus={listItemsByStatus[container]?.items}
                 setData={setData}
@@ -760,6 +799,7 @@ export const DragAndDrop = () => {
                 status={container}
                 statuses={statuses}
                 key={container}
+                translateStatus={translateStatus}
                 isDragging={isDragging}
                 handleDragging={handleDragging}
                 handleUpdate={handleUpdateHandler}
@@ -803,7 +843,7 @@ export const DragAndDrop = () => {
                   name="top-color-picker"
                   className={styles['color-picker-input']}
                   value={singleColorTop}
-                  onChange={e => setSingleColorTop(e.target.value)}
+                  onChange={(e) => setSingleColorTop(e.target.value)}
                 />
               </label>
 
@@ -829,7 +869,7 @@ export const DragAndDrop = () => {
                   name="body-color-picker"
                   className={styles['color-picker-input']}
                   value={singleColorBody}
-                  onChange={e => setSingleColorBody(e.target.value)}
+                  onChange={(e) => setSingleColorBody(e.target.value)}
                 />
               </label>
               <button
@@ -870,8 +910,8 @@ export const DragAndDrop = () => {
               . {t('TipIfYouAddAGenericWordYouCanColorTheCard')}
             </p>
             <form
-              onSubmit={e =>
-                void handleAddColor(e, newColor, newStatusForItem.label)
+              onSubmit={(e) =>
+                handleAddColor(e, newColor, newStatusForItem.label)
               }
             >
               <div className={`input-wrap ${styles['input-wrap']}`}>
@@ -881,7 +921,7 @@ export const DragAndDrop = () => {
                     type="text"
                     id="dnd-color-add"
                     value={newColor}
-                    onChange={e => setNewColor(e.target.value)}
+                    onChange={(e) => setNewColor(e.target.value)}
                   />
                   <span>{t('AddTextOrColor')}</span>
                 </label>
@@ -892,15 +932,15 @@ export const DragAndDrop = () => {
                 className={`${styles['color-select']} color`}
                 instructions={t('SelectCategory')}
                 hide
-                options={statuses.map(status => ({
-                  label: status,
+                options={statuses.map((status) => ({
+                  label: translateStatus(status),
                   value: status,
                 }))}
                 value={newStatusForItem}
-                onChange={o =>
+                onChange={(o) =>
                   setNewStatusForItem(
                     o ?? {
-                      label: statuses[0],
+                      label: translateStatus(statuses[0]),
                       value: statuses[0],
                     }
                   )
@@ -929,7 +969,7 @@ export const DragAndDrop = () => {
           <div className={`${styles['add-status']} ${styles.wrapper}`}>
             <h3>{t('AddANewCategory')}</h3>
             <form
-              onSubmit={e => {
+              onSubmit={(e) => {
                 e.preventDefault()
                 addStatus(newStatus)
                 const scrollTarget = containerRef.current
@@ -944,7 +984,7 @@ export const DragAndDrop = () => {
                     type="text"
                     id="dnd-status-add"
                     value={newStatus}
-                    onChange={e => setNewStatus(e.target.value)}
+                    onChange={(e) => setNewStatus(e.target.value)}
                   />
                   <span>{t('AddANewCategory')}</span>
                 </label>

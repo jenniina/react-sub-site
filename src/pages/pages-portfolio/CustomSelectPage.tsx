@@ -11,6 +11,7 @@ import Icon from '../../components/Icon/Icon'
 import { createSelectOptionsFromT } from '../../utils/translations'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import { useWindow } from '../../hooks/useSSR'
+import SEO from '../../components/SEO/SEO'
 
 const issuesArray = [
   'NoIssues',
@@ -159,30 +160,11 @@ export default function CustomSelectPage({ type }: { type: string }) {
 
   return (
     <>
-      {/*  <Helmet prioritizeSeoTags={true}>
-        <meta charSet="utf-8" />
-        <meta name="author" content="Jenniina Laine" />
-        <meta property="og:type" content="website" />
-
-        <title>
-          {t("CustomSelect")} | {t("CustomSelectIntro")}
-        </title>
-        <meta name="description" content={t("CustomSelectIntro")} />
-        <link
-          rel="canonical"
-          href={`https://react.jenniina.fi/portfolio/select`}
-        />
-        <meta
-          property="og:title"
-          content={`${t("CustomSelect")} | ${t("CustomSelectIntro")}`}
-        />
-        <meta property="og:description" content={t("CustomSelectIntro")} />
-        <meta
-          property="og:url"
-          content={`https://react.jenniina.fi/portfolio/select`}
-        />
-        <meta property="og:type" content="website" />
-      </Helmet> */}
+      <SEO
+        title={`${t('CustomSelect')} | ${t('CustomSelectIntro')}`}
+        description={t('CustomSelectIntro')}
+        canonicalUrl="https://react.jenniina.fi/portfolio/select"
+      />
       <div className={`select ${type}`}>
         <div className="inner-wrap">
           <section className="card">
@@ -237,7 +219,7 @@ export default function CustomSelectPage({ type }: { type: string }) {
                   >
                     <form
                       ref={form}
-                      onSubmit={e => {
+                      onSubmit={(e) => {
                         e.preventDefault()
                         void handleSubmit(e)
                       }}
@@ -294,9 +276,9 @@ export default function CustomSelectPage({ type }: { type: string }) {
                         hide
                         options={options2}
                         value={value2}
-                        onChange={o => {
+                        onChange={(o) => {
                           setValue2(o)
-                          setData(prevData => ({
+                          setData((prevData) => ({
                             ...prevData,
                             favoriteHero: o?.label,
                           }))
@@ -313,9 +295,9 @@ export default function CustomSelectPage({ type }: { type: string }) {
                             type="text"
                             name="clarification"
                             value={input}
-                            onChange={e => {
+                            onChange={(e) => {
                               setInput(e.target.value)
-                              setData(prevData => ({
+                              setData((prevData) => ({
                                 ...prevData,
                                 clarification: e.target.value,
                               }))
@@ -339,9 +321,9 @@ export default function CustomSelectPage({ type }: { type: string }) {
                             type="email"
                             name="email"
                             value={email}
-                            onChange={e => {
+                            onChange={(e) => {
                               setEmail(e.target.value)
-                              setData(prevData => ({
+                              setData((prevData) => ({
                                 ...prevData,
                                 email: e.target.value.trim(),
                               }))

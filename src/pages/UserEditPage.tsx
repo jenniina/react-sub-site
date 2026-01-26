@@ -96,31 +96,6 @@ const UserEditPage = ({ type, options }: Props) => {
 
   return (
     <>
-      {/*  <Helmet prioritizeSeoTags={true}>
-        <meta charSet="utf-8" />
-        <meta name="author" content="Jenniina Laine" />
-        <meta property="og:type" content="website" />
-
-        <title>{t("UserEdit")} | react.jenniina.fi</title>
-        <meta
-          name="description"
-          content={`${t("UserEdit")} | react.jenniina.fi`}
-        />
-        <link rel="canonical" href={`https://react.jenniina.fi/user/edit`} />
-        <meta
-          property="og:title"
-          content={`${t("UserEdit")} | react.jenniina.fi`}
-        />
-        <meta
-          property="og:description"
-          content={`${t("UserEdit")} | react.jenniina.fi`}
-        />
-        <meta
-          property="og:url"
-          content={`https://react.jenniina.fi/user/edit`}
-        />
-        <meta property="og:type" content="website" />
-      </Helmet> */}
       <div className={`edit ${type} ${lightTheme ? styles.light : ''}`}>
         <div className="inner-wrap">
           <section className={`card`}>
@@ -139,7 +114,7 @@ const UserEditPage = ({ type, options }: Props) => {
               </div>
               {user ? (
                 <form
-                  onSubmit={e => {
+                  onSubmit={(e) => {
                     e.preventDefault()
                     void handleUserRemove(e)
                   }}
@@ -147,7 +122,7 @@ const UserEditPage = ({ type, options }: Props) => {
                 >
                   <button
                     type="submit"
-                    disabled={sending}
+                    disabled={sending || user.username === 'temp@jenniina.fi'}
                     className={`submit danger ${styles['delete-account']} ${styles.submit}`}
                   >
                     <Icon lib="ti" name="TiDeleteOutline" />{' '}

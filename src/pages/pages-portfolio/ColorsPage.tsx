@@ -2,46 +2,18 @@ import Accordion from '../../components/Accordion/Accordion'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import AccessibleColors from '../../components/AccessibleColors/AccessibleColors'
 import styles from '../css//portfolio.module.css'
+import SEO from '../../components/SEO/SEO'
 
 const ColorsPage = ({ type }: { type: string }) => {
   const { t } = useLanguageContext()
 
   return (
     <>
-      {/*  <Helmet prioritizeSeoTags={true}>
-        <meta charSet="utf-8" />
-        <meta name="author" content="Jenniina Laine" />
-        <meta property="og:type" content="website" />
-
-        <title>
-          {t("ColorAccessibility")} | {t("WCAGTool")}
-        </title>
-        <meta
-          name="description"
-          content={`${t("ColorAccessibility")} - ${t("WCAGTool")} - ${t(
-            "TestColorCombinations"
-          )}`}
-        />
-        <link
-          rel="canonical"
-          href={`https://react.jenniina.fi/portfolio/colors`}
-        />
-        <meta
-          property="og:title"
-          content={`${t("ColorAccessibility")} | ${t("WCAGTool")}`}
-        />
-        <meta
-          property="og:description"
-          content={`${t("ColorAccessibility")} - ${t("WCAGTool")} - ${t(
-            "TestColorCombinations"
-          )}`}
-        />
-        <meta
-          property="og:url"
-          content={`https://react.jenniina.fi/portfolio/colors`}
-        />
-        <meta property="og:type" content="website" />
-      </Helmet> */}
+      <SEO
+        title={`${t('WCAGTool')} | ${t('ColorAccessibility')}`}
+        description={`${t('WCAGTool')} - ${t('TestColorCombinations')}`}
+        canonicalUrl="https://react.jenniina.fi/portfolio/colors"
+      />
       <div id={`${styles['color-page']}`} className={`colors ${type}`}>
         <div className="inner-wrap">
           <section>

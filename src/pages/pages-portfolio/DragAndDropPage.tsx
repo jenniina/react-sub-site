@@ -2,36 +2,19 @@ import { DragAndDrop } from '../../components/DragAndDrop/components'
 import Icon from '../../components/Icon/Icon'
 import Accordion from '../../components/Accordion/Accordion'
 import { useLanguageContext } from '../../contexts/LanguageContext'
+import SEO from '../../components/SEO/SEO'
 
 export default function DragAndDropPage({ type }: { type: string }) {
   const { t } = useLanguageContext()
 
   return (
     <>
-      {/*  <Helmet prioritizeSeoTags={true}>
-        <meta charSet="utf-8" />
-        <meta name="author" content="Jenniina Laine" />
-        <meta property="og:type" content="website" />
-
-        <title>
-          {t("DragAndDrop")} | {t("DragAndDropAppIntro")}
-        </title>
-        <meta name="description" content={t("DragAndDropAppIntro")} />
-        <link
-          rel="canonical"
-          href={`https://react.jenniina.fi/portfolio/draganddrop`}
-        />
-        <meta
-          property="og:title"
-          content={`${t("DragAndDrop")} | react.jenniina.fi`}
-        />
-        <meta property="og:description" content={t("DragAndDropAppIntro")} />
-        <meta
-          property="og:url"
-          content={`https://react.jenniina.fi/portfolio/draganddrop`}
-        />
-        <meta property="og:type" content="website" />
-      </Helmet> */}
+      <SEO
+        title={`${t('DragAndDrop')} | ${t('DragAndDropAppIntro')}`}
+        description={t('DragAndDropAppIntro')}
+        canonicalUrl="https://react.jenniina.fi/portfolio/draganddrop"
+        ogTitle={`${t('DragAndDrop')} | react.jenniina.fi`}
+      />
       <div className={`draganddrop ${type}`}>
         <div className="inner-wrap">
           <section className="card">

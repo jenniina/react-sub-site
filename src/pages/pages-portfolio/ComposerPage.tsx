@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Accordion from '../../components/Accordion/Accordion'
 import { useLanguageContext } from '../../contexts/LanguageContext'
+import SEO from '../../components/SEO/SEO'
 
 export default function ComposerPage({ type }: { type: string }) {
   const { t } = useLanguageContext()
@@ -8,32 +9,11 @@ export default function ComposerPage({ type }: { type: string }) {
   const [isFormOpen, setIsFormOpen] = useState(false)
   return (
     <>
-      {/*  <Helmet prioritizeSeoTags={true}>
-        <meta charSet="utf-8" />
-        <meta name="author" content="Jenniina Laine" />
-        <meta property="og:type" content="website" />
-
-        <title>
-          {t("ComposerOlliSanta")} | React, Node.js, Express, MongoDB
-        </title>
-        <meta name="description" content={t("ComposerIntro1")} />
-        <link
-          rel="canonical"
-          href={`https://react.jenniina.fi/portfolio/composer`}
-        />
-        <meta
-          property="og:title"
-          content={`${t(
-            "ComposerOlliSanta"
-          )} | React, Node.js, Express, MongoDB`}
-        />
-        <meta property="og:description" content={t("ComposerIntro1")} />
-        <meta
-          property="og:url"
-          content={`https://react.jenniina.fi/portfolio/composer`}
-        />
-        <meta property="og:type" content="website" />
-      </Helmet> */}
+      <SEO
+        title={`${t('ComposerOlliSanta')} | React, Node.js, Express, MongoDB`}
+        description={t('ComposerIntro1')}
+        canonicalUrl="https://react.jenniina.fi/portfolio/composer"
+      />
       <div className={`composer ${type}`}>
         <div className="inner-wrap">
           <section className="card">

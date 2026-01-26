@@ -1,43 +1,21 @@
 import Accordion from '../../components/Accordion/Accordion'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import FormMulti from '../../components/FormMulti/FormMulti'
+import SEO from '../../components/SEO/SEO'
 
 export default function FormPage({ type }: { type: string }) {
   const { t } = useLanguageContext()
 
   return (
     <>
-      {/*  <Helmet prioritizeSeoTags={true}>
-        <meta charSet="utf-8" />
-        <meta name="author" content="Jenniina Laine" />
-        <meta property="og:type" content="website" />
-
-        <title>
-          {t("MultiStepContactForm")} |{" "}
-          {t("ThreeStepFullyFunctionalContactForm")}
-        </title>
-        <meta
-          name="description"
-          content={t("ThreeStepFullyFunctionalContactForm")}
-        />
-        <link
-          rel="canonical"
-          href={`https://react.jenniina.fi/portfolio/form`}
-        />
-        <meta
-          property="og:title"
-          content={`${t("MultiStepContactForm")} | react.jenniina.fi`}
-        />
-        <meta
-          property="og:description"
-          content={t("ThreeStepFullyFunctionalContactForm")}
-        />
-        <meta
-          property="og:url"
-          content={`https://react.jenniina.fi/portfolio/form`}
-        />
-        <meta property="og:type" content="website" />
-      </Helmet> */}
+      <SEO
+        title={`${t('MultiStepContactForm')} | ${t(
+          'ThreeStepFullyFunctionalContactForm'
+        )}`}
+        description={t('ThreeStepFullyFunctionalContactForm')}
+        canonicalUrl="https://react.jenniina.fi/portfolio/form"
+        ogTitle={`${t('MultiStepContactForm')} | react.jenniina.fi`}
+      />
       <div className={`form ${type}`}>
         <div className="inner-wrap">
           <section className="card">

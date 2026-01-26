@@ -9,6 +9,7 @@ import { ThemeProvider } from '../contexts/ThemeContext'
 import { ModalProvider } from '../hooks/useModal'
 import { LanguageProvider } from '../contexts/LanguageContext'
 import { BlobProvider } from '../components/Blob/components/BlobProvider'
+import { HelmetProvider } from 'react-helmet-async'
 import App from '../App'
 
 function onRenderClient() {
@@ -33,9 +34,11 @@ function onRenderClient() {
           <BlobProvider>
             <ThemeProvider>
               <Provider store={store}>
-                <ModalProvider>
-                  <App />
-                </ModalProvider>
+                <HelmetProvider>
+                  <ModalProvider>
+                    <App />
+                  </ModalProvider>
+                </HelmetProvider>
               </Provider>
             </ThemeProvider>
           </BlobProvider>
