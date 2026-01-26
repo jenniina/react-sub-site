@@ -1,3 +1,9 @@
+.dependencies h3 {
+  font-size: clamp(var(--title-S), 3vw, var(--title-M));
+  max-width: 600px;
+  text-align: left;
+  margin: 1em auto 0.5em;
+}
 .list {
   text-align: center;
   padding: 0;
@@ -153,7 +159,7 @@
   clip-path: polygon(0% 0%, 10% 1%, 90% 50%, 10% 99%, 0% 100%);
 }
 .featured > button.horizontal-scroll::before {
-  content: "";
+  content: '';
   position: absolute;
   top: -2px;
   left: -2px;
@@ -201,10 +207,12 @@
   background-color: var(--color-primary-1);
   background-size: 400% 100%;
 }
-
+.notes {
+  max-width: 600px;
+  margin: 0 auto;
+}
 .notes > * {
   display: block;
-  text-align: center;
   margin-bottom: 1em;
 }
 .notes ul,
@@ -218,9 +226,11 @@
 }
 .notes ul {
   text-align: left;
+  list-style: square;
   list-style-type: square;
-  padding: 0;
-  width: max-content;
+  padding: 0 0 0 1em;
+  width: 100%;
+  max-width: 500px;
 }
 .notes li {
   line-height: 1.8;
@@ -310,11 +320,7 @@
   }
 }
 @media (min-width: 600px) {
-  .notes ul {
-    max-width: max-content;
-  }
   .notes > * {
-    width: 60%;
     margin: 0 auto 1em;
   }
   ul.list {

@@ -39,12 +39,29 @@ export default function ComposerPage({ type }: { type: string }) {
                         <li>
                           {t('Dependencies')}: React
                           <ul>
+                            <li>axios</li>
                             <li>react</li>
                             <li>react-dom</li>
-                            <li>react-router-dom</li>
+                            <li>react-helmet-async</li>
                             <li>react-icons</li>
-                            <li>react redux</li>
-                            <li>axios</li>
+                            <li>react-router-dom</li>
+                            <li>vike</li>
+                          </ul>
+                        </li>
+                        <li>
+                          {t('Dependencies')} (dev): React
+                          <ul>
+                            <li>@eslint/js</li>
+                            <li>@types/react</li>
+                            <li>@types/react-dom</li>
+                            <li>@vitejs/plugin-react</li>
+                            <li>@vitejs/plugin-react-swc</li>
+                            <li>eslint-plugin-react-hooks</li>
+                            <li>eslint-plugin-react-refresh</li>
+                            <li>globals</li>
+                            <li>typescript</li>
+                            <li>typescript-eslint</li>
+                            <li>vite</li>
                           </ul>
                         </li>
                         <li>
@@ -59,6 +76,23 @@ export default function ComposerPage({ type }: { type: string }) {
                             <li>nodemailer</li>
                             <li>sanitize-html</li>
                             <li>multer</li>
+                          </ul>
+                        </li>
+                        <li>
+                          {t('Dependencies')} (dev): Node.js
+                          <ul>
+                            <li>@types/bcryptjs</li>
+                            <li>@types/cors</li>
+                            <li>@types/express</li>
+                            <li>@types/jsonwebtoken</li>
+                            <li>@types/multer</li>
+                            <li>@types/node</li>
+                            <li>@typescript-eslint/eslint-plugin</li>
+                            <li>@typescript-eslint/parser</li>
+                            <li>concurrently</li>
+                            <li>eslint</li>
+                            <li>nodemon</li>
+                            <li>typescript</li>
                           </ul>
                         </li>
                       </ul>

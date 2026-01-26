@@ -97,6 +97,8 @@ const preventDefault = (e: Event) => {
   e.preventDefault()
 }
 
+const EMPTY_ARRAY: unknown[] = []
+
 export default function DragContainer({
   d,
   dragWrapOuter,
@@ -121,7 +123,10 @@ export default function DragContainer({
   const { state, dispatch } = useContext(BlobContext)!
   const dispatch2 = useAppDispatch()
   const user = useSelector((state: ReducerProps) => state.auth?.user)
-  const users = useSelector((state: ReducerProps) => state.users ?? [])
+  const users = useSelector(
+    (state: ReducerProps) =>
+      (state as unknown as { users?: unknown[] }).users ?? EMPTY_ARRAY
+  )
 
   const dragWrap = useRef(null) as RefObject<HTMLDivElement>
   const dragWrapOutest = useRef(null) as RefObject<HTMLDivElement>
@@ -415,7 +420,7 @@ export default function DragContainer({
   )
 
   const toggleLayerVisibility = useCallback((layer: number) => {
-    setHiddenLayers(prevHiddenLayers => {
+    setHiddenLayers((prevHiddenLayers) => {
       const newHiddenLayers = new Set(prevHiddenLayers)
       if (newHiddenLayers.has(layer)) {
         newHiddenLayers.delete(layer)
@@ -451,7 +456,7 @@ export default function DragContainer({
   }, [isClient, windowObj])
 
   const loadDraggables = useCallback(() => {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         if (typeof window === 'undefined') {
           resolve(null)
@@ -470,7 +475,7 @@ export default function DragContainer({
           ) as unknown as Draggable[]
           // Ensure each draggable has a layer property
           resolve(
-            draggables.map(draggable => ({
+            draggables.map((draggable) => ({
               ...draggable,
               layer: draggable.layer ?? 0,
             }))
@@ -482,7 +487,7 @@ export default function DragContainer({
 
   function loadLayerAmount(): Promise<number | null> {
     // First check the local storage value, then check if draggables[d] has blobs, finally return the default value if both are null
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         if (typeof window === 'undefined') {
           resolve(null)
@@ -492,7 +497,7 @@ export default function DragContainer({
         if (layerAmount != null) {
           resolve(parseInt(layerAmount))
         } else if (draggables[d]?.length > 0) {
-          resolve(Math.max(...draggables[d].map(d => d.layer)) + 1)
+          resolve(Math.max(...draggables[d].map((d) => d.layer)) + 1)
         } else {
           resolve(defaultLayerAmount)
         }
@@ -509,7 +514,7 @@ export default function DragContainer({
   // }
 
   function loadBackground(): Promise<string[] | null> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         if (typeof window === 'undefined') {
           resolve(null)
@@ -641,15 +646,18 @@ export default function DragContainer({
   }
 
   const saveBlobsToServer = async (e: FormEvent) => {
-    setLoading(true)
     e.preventDefault()
+    setLoading(true)
+
     try {
-      if (name.trim() === '') {
+      const versionName = name.trim()
+
+      if (versionName === '') {
         void dispatch2(notify(t('NameYourArtwork'), true, 8))
-        setLoading(false)
         return
-      } else if (name.trim().length > 30) {
-        setLoading(false)
+      }
+
+      if (versionName.length > 30) {
         void dispatch2(
           notify(
             `${t('NameTooLong')}. ${t('AMaxOf30CharactersPlease')}`,
@@ -658,38 +666,36 @@ export default function DragContainer({
           )
         )
         return
-      } else if (user?._id) {
-        const versionName = name.trim()
-        if (checkDuplicateVersionName(versionName)) {
-          if (await confirm({ message: t('AVersionAlreadyExistsOverwrite') })) {
-            // Proceed with saving, overwriting existing version
-            await blobService
-              .saveBlobsByUser(
-                user?._id,
-                d,
-                draggables[d],
-                name,
-                backgroundColor[d],
-                language
-              )
-              .then(() => {
-                setTrackSaving(!trackSaving)
-                setLoading(false)
-                void dispatch2(notify(t('SavingSuccessful'), false, 8))
-              })
-              .catch((err: unknown) => {
-                const message = getErrorMessage(err, t('Error'))
-                void dispatch2(notify(message, true, 8))
-              })
-          }
-        }
-      } else {
-        void dispatch2(notify(t('LoginToSaveBlobs'), true, 8))
-        setLoading(false)
       }
+
+      if (!user?._id) {
+        void dispatch2(notify(t('LoginToSaveBlobs'), true, 8))
+        return
+      }
+
+      const isDuplicate = checkDuplicateVersionName(versionName)
+      if (isDuplicate) {
+        const shouldOverwrite = await confirm({
+          message: t('AVersionAlreadyExistsOverwrite'),
+        })
+        if (!shouldOverwrite) return
+      }
+
+      await blobService.saveBlobsByUser(
+        user._id,
+        d,
+        draggables[d],
+        versionName,
+        backgroundColor[d],
+        language
+      )
+
+      setTrackSaving((prev) => !prev)
+      void dispatch2(notify(t('SavingSuccessful'), false, 8))
     } catch (err: unknown) {
       const message = getErrorMessage(err, t('Error'))
       void dispatch2(notify(message, true, 8))
+    } finally {
       setLoading(false)
     }
   }
@@ -891,7 +897,7 @@ export default function DragContainer({
               setLayerAmount(loadedLayerAmount)
             } else if (loadedDraggables && loadedDraggables.length > 0) {
               setLayerAmount(
-                Math.max(...loadedDraggables.map(d => d.layer)) + 1
+                Math.max(...loadedDraggables.map((d) => d.layer)) + 1
               )
             }
             if (loadedDraggables && loadedDraggables.length > 0) {
@@ -1028,14 +1034,14 @@ export default function DragContainer({
     e.preventDefault()
     const draggables = dragWrapOuter.current?.querySelectorAll('.dragzone')
     if (draggables && !paused) {
-      draggables.forEach(draggable => {
+      draggables.forEach((draggable) => {
         draggable.classList.remove('animation')
         // Trigger a reflow to ensure the class removal is processed:
         void (draggable as HTMLElement).offsetWidth
       })
       setPaused(true)
     } else if (draggables) {
-      draggables.forEach(draggable => {
+      draggables.forEach((draggable) => {
         draggable.classList.add('animation')
         // Trigger a reflow to ensure the class addition is processed:
         void (draggable as HTMLElement).offsetWidth
@@ -1093,10 +1099,10 @@ export default function DragContainer({
   // Change every blob's layer by plus or minus one, unless any blob is already on the highest or lowest layer
   const changeEveryLayer = (amount: number) => {
     const isAnyOnLowestLayer = draggables[d].some(
-      draggable => draggable.layer === 0 && amount < 0
+      (draggable) => draggable.layer === 0 && amount < 0
     )
     const isAnyOnHighestLayer = draggables[d].some(
-      draggable => draggable.layer === layerAmount - 1 && amount > 0
+      (draggable) => draggable.layer === layerAmount - 1 && amount > 0
     )
 
     if (isAnyOnLowestLayer) {
@@ -1111,7 +1117,7 @@ export default function DragContainer({
       return
     }
 
-    const newDraggables = draggables[d].map(draggable => {
+    const newDraggables = draggables[d].map((draggable) => {
       const layer = draggable.layer + amount
       if (layer >= 0 && layer < layerAmount) {
         return { ...draggable, layer }
@@ -1671,7 +1677,7 @@ export default function DragContainer({
               100
         )
       // place color blocks:
-      colorBlockPropsCombo.forEach(colorBlockArray => {
+      colorBlockPropsCombo.forEach((colorBlockArray) => {
         colorBlockArray.forEach((colorBlock, index) => {
           if (colorBlock.current && dragWrapOutest.current) {
             const x =
@@ -1833,7 +1839,7 @@ export default function DragContainer({
 
   // Function to handle page change
   const handlePageChange = (dKey: number, newPage: number) => {
-    setCurrentPage(prev => ({ ...prev, [dKey]: newPage }))
+    setCurrentPage((prev) => ({ ...prev, [dKey]: newPage }))
   }
 
   // //save layer amount to local storage
@@ -1851,8 +1857,8 @@ export default function DragContainer({
     }
 
     // Check if any hidden layers are not empty
-    const nonEmptyHiddenLayers = Array.from(hiddenLayers).filter(layer =>
-      draggables[d].some(draggable => draggable.layer === layer)
+    const nonEmptyHiddenLayers = Array.from(hiddenLayers).filter((layer) =>
+      draggables[d].some((draggable) => draggable.layer === layer)
     )
 
     if (nonEmptyHiddenLayers.length > 0) {
@@ -1866,7 +1872,7 @@ export default function DragContainer({
 
     // Remove hidden layers
     const newDraggables = draggables[d].filter(
-      draggable => !hiddenLayers.has(draggable.layer)
+      (draggable) => !hiddenLayers.has(draggable.layer)
     )
 
     const newLayerAmount = layerAmount - hiddenLayers.size
@@ -1877,10 +1883,10 @@ export default function DragContainer({
     }
 
     // Adjust layers of remaining draggables
-    const updatedDraggables = newDraggables.map(draggable => {
+    const updatedDraggables = newDraggables.map((draggable) => {
       const layer = draggable.layer
       let newLayer = layer
-      hiddenLayers.forEach(hiddenLayer => {
+      hiddenLayers.forEach((hiddenLayer) => {
         if (layer > hiddenLayer) {
           newLayer -= 1
         }
@@ -1910,7 +1916,7 @@ export default function DragContainer({
     }
 
     // Adjust layers of remaining draggables
-    const updatedDraggables = draggables[d].map(draggable => {
+    const updatedDraggables = draggables[d].map((draggable) => {
       const layer =
         draggable.layer > activeLayer
           ? draggable.layer + byAmount
@@ -1935,7 +1941,7 @@ export default function DragContainer({
   const [mode, setMode] = useState<Modes>('none')
 
   const toggleMode = (selectedMode: Modes) => {
-    setMode(prevMode => {
+    setMode((prevMode) => {
       const newMode = prevMode === selectedMode ? 'none' : selectedMode
       if (newMode !== selectedMode) {
         setDeleteId('')
@@ -2025,7 +2031,7 @@ export default function DragContainer({
               placeholder={itemsPerPage.toString()}
               min={1}
               max={100}
-              onChange={e => setItemsPerPage(Number(e.target.value))}
+              onChange={(e) => setItemsPerPage(Number(e.target.value))}
             />
             <span>{t('PerPage')}</span>
           </label>
@@ -2088,7 +2094,7 @@ export default function DragContainer({
                 ref={stopBlobs}
                 id={`stop-blobs${d}`}
                 className="stop-blobs tooltip-wrap "
-                onClick={e => {
+                onClick={(e) => {
                   stopSway(e)
                 }}
                 aria-labelledby={`stop-blobs${d}-span`}
@@ -2105,7 +2111,7 @@ export default function DragContainer({
                 id={`reset-blobs${d}`}
                 aria-labelledby={`reset-blobs${d}-span`}
                 className="reset-blobs tooltip-wrap"
-                onClick={e => {
+                onClick={(e) => {
                   void resetBlobsFunction(e)
                 }}
               >
@@ -2598,7 +2604,7 @@ export default function DragContainer({
             {user ? (
               <div className="blob-handling">
                 <div className="full wide flex column center gap">
-                  <form onSubmit={e => void saveBlobsToServer(e)}>
+                  <form onSubmit={(e) => void saveBlobsToServer(e)}>
                     <div className="input-wrap">
                       <label htmlFor={`blobname${d}`}>
                         <input

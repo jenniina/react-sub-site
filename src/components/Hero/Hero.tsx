@@ -154,31 +154,31 @@ export default function Hero({
       const ul = ulRef.current
       if (!ul) return
 
-    // In this layout, `--staff-mid-y` is the base Y used to position the staff
-    // background. The musical midpoint between the 11 note steps is at 5.5 steps.
-    const staffBaseYPx = cssVarToPx('--staff-mid-y', ul)
-    const staffHalfStepPx = cssVarToPx('--staff-half-step', ul)
-    const midMarkPx = staffBaseYPx + 5.5 * staffHalfStepPx
+      // In this layout, `--staff-mid-y` is the base Y used to position the staff
+      // background. The musical midpoint between the 11 note steps is at 5.5 steps.
+      const staffBaseYPx = cssVarToPx('--staff-mid-y', ul)
+      const staffHalfStepPx = cssVarToPx('--staff-half-step', ul)
+      const midMarkPx = staffBaseYPx + 5.5 * staffHalfStepPx
 
-    // Use the intended (base + offset) position so the class flips immediately,
-    // even while a CSS transition is animating from the previous value.
-    const dy = Number.parseFloat(el.dataset.moveDy ?? '0') || 0
-    const baseTopExpr = el.dataset.baseTop
-    const topPx = baseTopExpr
-      ? cssExprToPx(baseTopExpr) + dy
-      : Number.parseFloat(
-          windowObj.getComputedStyle(el).getPropertyValue('top')
-        )
-    if (!Number.isFinite(topPx)) return
+      // Use the intended (base + offset) position so the class flips immediately,
+      // even while a CSS transition is animating from the previous value.
+      const dy = Number.parseFloat(el.dataset.moveDy ?? '0') || 0
+      const baseTopExpr = el.dataset.baseTop
+      const topPx = baseTopExpr
+        ? cssExprToPx(`calc(${baseTopExpr})`) + dy
+        : Number.parseFloat(
+            windowObj.getComputedStyle(el).getPropertyValue('top')
+          )
+      if (!Number.isFinite(topPx)) return
 
-    // Notes are positioned with `top = staffBaseY + step*halfStep - noteHead`.
-    // That means the *staff anchor* for the note is the bottom of the note head.
-    // Comparing that anchor avoids bias from the negative note-head offset.
-    const noteHeadPx = cssVarToPx('--note-head', el) || 0
-    const anchorYPx = topPx + noteHeadPx
+      // Notes are positioned with `top = staffBaseY + step*halfStep - noteHead`.
+      // That means the *staff anchor* for the note is the bottom of the note head.
+      // Comparing that anchor avoids bias from the negative note-head offset.
+      const noteHeadPx = cssVarToPx('--note-head', el) || 0
+      const anchorYPx = topPx + noteHeadPx
 
-    // Cut line is slightly above the true midpoint to compensate for the
-    // lower note visually overflowing upward.
+      // Cut line is slightly above the true midpoint to compensate for the
+      // lower note visually overflowing upward.
       const isAbove = anchorYPx <= midMarkPx - 5
       el.classList.toggle(styles.above, isAbove)
       el.classList.toggle(styles.below, !isAbove)
@@ -226,17 +226,43 @@ export default function Hero({
       const item = items[randomIndex]
 
       if (item) {
+        const stripOuterCalc = (expr: string) => {
+          const trimmed = expr.trim()
+          if (trimmed.startsWith('calc(') && trimmed.endsWith(')')) {
+            return trimmed.slice(5, -1).trim()
+          }
+          return trimmed
+        }
+
+        // Capture the base (responsive) expressions once, then apply pixel
+        // offsets on top. This keeps movement increments consistent even while
+        // CSS transitions are in-flight.
+        if (!item.dataset.baseTop && item.style.top)
+          item.dataset.baseTop = stripOuterCalc(item.style.top)
+        if (!item.dataset.baseLeft && item.style.left)
+          item.dataset.baseLeft = stripOuterCalc(item.style.left)
+
         const baseTop = item.dataset.baseTop
         const baseLeft = item.dataset.baseLeft
         const prevDy = Number.parseFloat(item.dataset.moveDy ?? '0') || 0
         const prevDx = Number.parseFloat(item.dataset.moveDx ?? '0') || 0
 
-        const currentTop = parseFloat(
+        const computedTopPx = parseFloat(
           windowObj.getComputedStyle(item).getPropertyValue('top')
         )
-        const currentLeft = parseFloat(
+        const computedLeftPx = parseFloat(
           windowObj.getComputedStyle(item).getPropertyValue('left')
         )
+        const currentTopPx = baseTop
+          ? cssExprToPx(`calc(${baseTop})`) + prevDy
+          : Number.isFinite(computedTopPx)
+            ? computedTopPx
+            : 0
+        const currentLeftPx = baseLeft
+          ? cssExprToPx(`calc(${baseLeft})`) + prevDx
+          : Number.isFinite(computedLeftPx)
+            ? computedLeftPx
+            : 0
         const itemWidth = item.offsetWidth
         const itemHeight = item.offsetHeight
         const windowWidth = windowObj.innerWidth
@@ -246,43 +272,45 @@ export default function Hero({
         const direction = Math.floor(Math.random() * 8)
         const change = page === 'composer' ? 38 : 10
         const changeBigger = page === 'composer' ? 38 : 16
-        let newTop = currentTop
-        let newLeft = currentLeft
+        let deltaDy = 0
+        let deltaDx = 0
 
         switch (direction) {
           case 0: // up
-            newTop = currentTop + changeBigger
+            deltaDy = changeBigger
             break
           case 1: // down
-            newTop = currentTop - changeBigger
+            deltaDy = -changeBigger
             break
           case 2: // left
-            newLeft = currentLeft + changeBigger
+            deltaDx = changeBigger
             break
           case 3: // right
-            newLeft = currentLeft - changeBigger
+            deltaDx = -changeBigger
             break
           case 4: // top-left
-            newTop = currentTop + change
-            newLeft = currentLeft + change
+            deltaDy = change
+            deltaDx = change
             break
           case 5: // top-right
-            newTop = currentTop + change
-            newLeft = currentLeft - change
+            deltaDy = change
+            deltaDx = -change
             break
           case 6: // bottom-left
-            newTop = currentTop - change
-            newLeft = currentLeft + change
+            deltaDy = -change
+            deltaDx = change
             break
           case 7: // bottom-right
-            newTop = currentTop - change
-            newLeft = currentLeft - change
+            deltaDy = -change
+            deltaDx = -change
             break
         }
 
         let didMove = false
-        const deltaTop = newTop - currentTop
-        const deltaLeft = newLeft - currentLeft
+        const nextDy = prevDy + deltaDy
+        const nextDx = prevDx + deltaDx
+        const newTopPx = currentTopPx + deltaDy
+        const newLeftPx = currentLeftPx + deltaDx
         // Check if the page is composer and limit movement to how high the highest item is placed and the lowest the items can be placed
         if (page === 'composer') {
           // The CSS variables are set on the item elements in the composer layout
@@ -291,21 +319,19 @@ export default function Hero({
           const lowestAllowedPx = cssVarToPx('--lowest-allowed', item)
 
           if (
-            newTop >= highestAllowedPx &&
-            newTop + itemHeight <= lowestAllowedPx &&
-            newLeft >= 0 &&
-            newLeft + itemWidth <= windowWidth
+            newTopPx >= highestAllowedPx &&
+            newTopPx + itemHeight <= lowestAllowedPx &&
+            newLeftPx >= 0 &&
+            newLeftPx + itemWidth <= windowWidth
           ) {
-            const nextDy = prevDy + deltaTop
-            const nextDx = prevDx + deltaLeft
             item.dataset.moveDy = String(nextDy)
             item.dataset.moveDx = String(nextDx)
             item.style.top = baseTop
               ? `calc(${baseTop} + ${nextDy}px)`
-              : `${newTop}px`
+              : `${newTopPx}px`
             item.style.left = baseLeft
               ? `calc(${baseLeft} + ${nextDx}px)`
-              : `${newLeft}px`
+              : `${newLeftPx}px`
             didMove = true
             updateComposerAboveBelow(item)
           }
@@ -313,21 +339,19 @@ export default function Hero({
 
         // Check if the new position is within the allowed boundaries
         else if (
-          newTop >= 100 &&
-          newTop + itemHeight <= windowHeight * 0.6 &&
-          newLeft >= 0 &&
-          newLeft + itemWidth <= windowWidth
+          newTopPx >= 100 &&
+          newTopPx + itemHeight <= windowHeight * 0.6 &&
+          newLeftPx >= 0 &&
+          newLeftPx + itemWidth <= windowWidth
         ) {
-          const nextDy = prevDy + deltaTop
-          const nextDx = prevDx + deltaLeft
           item.dataset.moveDy = String(nextDy)
           item.dataset.moveDx = String(nextDx)
           item.style.top = baseTop
             ? `calc(${baseTop} + ${nextDy}px)`
-            : `${newTop}px`
+            : `${newTopPx}px`
           item.style.left = baseLeft
             ? `calc(${baseLeft} + ${nextDx}px)`
-            : `${newLeft}px`
+            : `${newLeftPx}px`
           didMove = true
         }
 

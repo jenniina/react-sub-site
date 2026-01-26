@@ -1347,7 +1347,7 @@ export const translations = {
     de: 'Strahlende konzentrische Ringe, die sich in einer Schleife ausdehnen und winzige Partikel in einem Bogen abwerfen, die schließlich zu nichts schrumpfen',
     pt: 'Anéis concêntricos radiantes que se expandem em um loop, liberando pequenas partículas em um arco, eventualmente encolhendo até desaparecer',
     cs: 'Zářící soustředné kruhy, které se rozšiřují v smyčce, uvolňují malé částice v oblouku a nakonec se zmenšují do nicoty',
-    fi: 'Säteilevät renkaat, jotka sylkevät pieniä hiukkasia kaaressa, lopulle kutistuen olemattomiin',
+    fi: 'Säteilevät renkaat, jotka sylkevät pieniä hiukkasia kaaressa, lopulta kutistuen olemattomiin',
   },
   Note: {
     en: 'Note!',
@@ -10681,6 +10681,15 @@ export const translations = {
     pt: 'Entre em contato',
     cs: 'Kontaktujte nás',
     fi: 'Ota yhteyttä',
+  },
+  IfYouDontWantToRegister: {
+    en: 'If you do not want to register, you can try logging in with the test user account:',
+    es: 'Si no deseas registrarte, puedes intentar iniciar sesión con la cuenta de usuario de prueba:',
+    fr: 'Si vous ne souhaitez pas vous inscrire, vous pouvez essayer de vous connecter avec le compte utilisateur de test:',
+    de: 'Wenn Sie sich nicht registrieren möchten, können Sie versuchen, sich mit dem Testbenutzerkonto anzumelden:',
+    pt: 'Se você não quiser se registrar, pode tentar fazer login com a conta de usuário de teste:',
+    cs: 'Pokud se nechcete registrovat, můžete zkusit přihlásit se pomocí testovacího uživatelského účtu:',
+    fi: 'Jos et halua rekisteröityä, voit kokeilla kirjautumista testikäyttäjän tilillä:',
   },
 } as const
 

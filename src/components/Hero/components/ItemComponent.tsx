@@ -89,8 +89,18 @@ const ItemComponent = forwardRef<
 
     const isComposer = location === LOCATION.COMPOSER
     const composerStaffWidth = 200
-    const composerStaffMidY = 'clamp(100px, 44vh, 1000px)'
-    const composerStaffHalfStep = `calc(60px * (${composerStaffWidth} / 640))`
+    // Use the same numeric value everywhere (CSS + JS) to avoid disagreement
+    // when evaluating clamp()/calc() expressions.
+    const composerStaffMidYPx = Math.min(
+      1000,
+      Math.max(100, windowHeight * 0.44)
+    )
+    const composerStaffMidY = `${composerStaffMidYPx}px`
+    // Keep this as a concrete px value so JS/CSS parsing stays consistent.
+    // (Some browsers are picky about multiplication inside CSS calc() when we
+    // try to evaluate it via a temporary element.)
+    const composerStaffHalfStepPx = (60 * composerStaffWidth) / 640
+    const composerStaffHalfStep = `${composerStaffHalfStepPx}px`
 
     // 1) Capture each item's original responsive positioning formula exactly once.
     // 2) Re-apply stored pixel offsets after rerenders/resizes (React may re-set
@@ -99,6 +109,14 @@ const ItemComponent = forwardRef<
     useEffect(() => {
       const root = ulRef?.current
       if (!root || !windowObj) return
+
+      const stripOuterCalc = (expr: string) => {
+        const trimmed = expr.trim()
+        if (trimmed.startsWith('calc(') && trimmed.endsWith(')')) {
+          return trimmed.slice(5, -1).trim()
+        }
+        return trimmed
+      }
 
       const resolveCssVarToPx = (varName: string, contextEl: Element) => {
         const val = windowObj
@@ -145,8 +163,8 @@ const ItemComponent = forwardRef<
 
       const items = root.querySelectorAll<HTMLElement>('li[id^="shape"]')
       items.forEach((el) => {
-        if (el.style.top) el.dataset.baseTop ??= el.style.top
-        if (el.style.left) el.dataset.baseLeft ??= el.style.left
+        if (el.style.top) el.dataset.baseTop ??= stripOuterCalc(el.style.top)
+        if (el.style.left) el.dataset.baseLeft ??= stripOuterCalc(el.style.left)
         el.dataset.moveDy ??= '0'
         el.dataset.moveDx ??= '0'
 
@@ -161,7 +179,7 @@ const ItemComponent = forwardRef<
         if (isComposer && midMarkPx !== null) {
           const dyForTop = Number.parseFloat(el.dataset.moveDy ?? '0') || 0
           const topPx = baseTop
-            ? resolveExprToPx(baseTop) + dyForTop
+            ? resolveExprToPx(`calc(${baseTop})`) + dyForTop
             : Number.parseFloat(
                 windowObj.getComputedStyle(el).getPropertyValue('top')
               )
@@ -453,14 +471,15 @@ const ItemComponent = forwardRef<
               const noteStep = (item.i + item.e) % 11
               const colStep = `clamp(50px, calc((99vw - 50px) / 10), 99999px)`
               const noteHead = `40px`
+              const noteOffsetPx = noteStep * composerStaffHalfStepPx
               const style: CSSProperties = {
                 position: 'absolute',
                 ['--size' as string]: `${itemSize}`,
                 ['--note-head' as string]: `${noteHead}`,
-                top: `calc(clamp(100px, 44vh, 1000px) + (${noteStep} * (60px * 200 / 640)) - ${noteHead})`,
+                top: `calc(${composerStaffMidYPx}px + ${noteOffsetPx}px - ${noteHead})`,
                 left: `calc(${item.i} * ${colStep} - ${noteHead})`,
-                ['--highest-allowed' as string]: `calc(clamp(100px, 44vh, 1000px) + (60px * 200 / 640) - 70px)`,
-                ['--lowest-allowed' as string]: `calc(clamp(100px, 44vh, 1000px) + (11 * (60px * 200 / 640)) - 50px)`,
+                ['--highest-allowed' as string]: `calc(${composerStaffMidYPx}px + ${composerStaffHalfStepPx}px - 70px)`,
+                ['--lowest-allowed' as string]: `calc(${composerStaffMidYPx}px + ${11 * composerStaffHalfStepPx}px - 50px)`,
                 transitionDuration: '600ms',
                 opacity: `0.7`,
               }

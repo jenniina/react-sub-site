@@ -143,7 +143,7 @@ const Featured: React.FC = () => {
   }, [scrollRef, items, t])
 
   return (
-    <section className="card">
+    <section className="card smallpadd">
       <div>
         <div className={styles.featured}>
           <button

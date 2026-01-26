@@ -12,7 +12,7 @@
 .herocontent.composer {
   background-image: url('../../assets/staff.svg');
   background-size: 200px;
-  background-position: center clamp(100px, 44vh, 1000px);
+  background-position: center var(--staff-mid-y, clamp(100px, 44vh, 1000px));
   background-repeat: repeat-x;
 }
 .hero h1,

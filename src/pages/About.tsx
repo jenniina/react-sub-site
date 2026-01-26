@@ -3,10 +3,12 @@ import { useTheme } from '../hooks/useTheme'
 import { Link } from 'react-router-dom'
 import styles from './css/about.module.css'
 import Icon from '../components/Icon/Icon'
-import { ELanguages } from '../types'
+import { ELanguages, ReducerProps } from '../types'
 import { useLanguageContext } from '../contexts/LanguageContext'
 import ColorComponent from '../components/About/ColorComponent'
 import SEO from '../components/SEO/SEO'
+import CopyToClipboard from '../components/CopyToClipboard/CopyToClipboard'
+import { useSelector } from 'react-redux'
 
 export interface colorProps {
   i: number
@@ -18,6 +20,8 @@ export default function About({ type }: { type: string }) {
   const { t, language } = useLanguageContext()
 
   const lightTheme = useTheme()
+
+  const user = useSelector((state: ReducerProps) => state.auth?.user)
 
   const colorsArray: colorProps[] = useMemo(() => {
     const array: colorProps[] = []
@@ -87,6 +91,27 @@ export default function About({ type }: { type: string }) {
                     {t('Survey').toLowerCase()}
                   </Link>{' '}
                 </p>
+                {!user && (
+                  <p>
+                    {t('IfYouDontWantToRegister')}{' '}
+                    <div className="flex align-center mt1 column gap-half">
+                      <CopyToClipboard
+                        value={`temp${String.fromCharCode(64)}jenniina.fi`}
+                        label="temp [at] jenniina [dot] fi"
+                        ariaLabel={t('CopyToClipboard')}
+                      />
+                      {t('Password')}:{' '}
+                      <CopyToClipboard
+                        value="TempAtJenniina"
+                        label="TempAtJenniina"
+                        ariaLabel={t('CopyToClipboard')}
+                      />
+                    </div>{' '}
+                    <div className="flex column mt1">
+                      <Link to="?login=login">{t('Login')}</Link>
+                    </div>
+                  </p>
+                )}
 
                 <h2 id="site-features">{t('FeaturesOfThisSite')}</h2>
 
