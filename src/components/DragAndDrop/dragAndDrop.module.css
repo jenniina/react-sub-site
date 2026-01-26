@@ -39,6 +39,9 @@
   min-height: calc(var(--min) - var(--height));
   height: calc(100% - var(--height));
   max-height: calc(var(--max) - var(--height));
+  transition-property: background-color;
+  transition-timing-function: ease-in-out;
+  transition-duration: 300ms;
 }
 .cards-container > ul > li {
   padding: 0.5rem 4% 0;
@@ -67,6 +70,9 @@
   text-align: center;
   padding: 0.2rem 0;
   font-weight: bold;
+  transition-property: background-color, color;
+  transition-timing-function: ease-in-out;
+  transition-duration: 300ms;
 }
 
 .cards-container > span > b {
