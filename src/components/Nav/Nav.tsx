@@ -926,7 +926,7 @@ const Nav = (
                   <button
                     disabled={user.name === 'temp'}
                     onClick={() =>
-                      user && dispatch(logoutAllDevices(user._id ?? ''))
+                      user && dispatch(logoutAllDevices(user._id ?? '', user))
                     }
                     className={`reset ${styles['logout-all']}`}
                   >

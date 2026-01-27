@@ -116,8 +116,8 @@ const forgot = async (
   })
   return response.data as IResponse
 }
-const revokeSessions = async (id: string) => {
-  const response = await api.post(`${baseUrl}/${id}/revoke-sessions`)
+const revokeSessions = async (id: string, user: user) => {
+  const response = await api.post(`${baseUrl}/${id}/revoke-sessions`, user)
   return response.data
 }
 

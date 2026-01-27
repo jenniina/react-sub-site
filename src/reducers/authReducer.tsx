@@ -3,6 +3,7 @@ import loginService from '../services/login'
 import userService from '../services/users'
 import { IUser } from '../types'
 import { sleep } from '../utils'
+import api from '../services/api'
 
 type StoredUser = IUser & { token?: string | null }
 
@@ -29,6 +30,10 @@ export const initializeUser = () => {
     const loggedUserJSON = window?.localStorage.getItem('loggedJokeAppUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON) as StoredUser
+
+      await api.get('/auth/ping', {
+        headers: { Authorization: `Bearer ${user.token}` },
+      })
 
       // set token for api interceptor
       if (user.token) localStorage.setItem('JokeApptoken', user.token)
@@ -77,6 +82,10 @@ export const refreshUser = (user: IUser) => {
     const loggedUserJSON = window?.localStorage.getItem('loggedJokeAppUser')
     if (!loggedUserJSON) return
 
+    await api.get('/auth/ping', {
+      headers: { Authorization: `Bearer ${JSON.parse(loggedUserJSON).token}` },
+    })
+
     const data = JSON.parse(loggedUserJSON) as StoredUser
     const token = data.token ?? null
 
@@ -91,12 +100,12 @@ export const refreshUser = (user: IUser) => {
   }
 }
 
-export const logoutAllDevices = (userId: string) => {
+export const logoutAllDevices = (userId: string, user: IUser) => {
   return async (
     dispatch: (arg0: { payload: IUser | null; type: string }) => void
   ) => {
     // revoke sessions on server (invalidates ALL tokens, including this one)
-    await userService.revokeSessions(userId)
+    await userService.revokeSessions(userId, user)
 
     // clear local state immediately
     if (window) {
