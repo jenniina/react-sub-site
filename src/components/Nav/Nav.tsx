@@ -99,7 +99,6 @@ const LinkComponent: FC<LinkComponentProps> = ({
     ref: smallLogoRef,
     onOutsideClick: closeLogoMenu,
   })
-
   return (
     <ul>
       {windowWidth < breakpointSmall && !menuStyleAlt ? (
@@ -904,6 +903,9 @@ const Nav = (
                 </>
               ) : (
                 <>
+                  <span>
+                    {t('LoggedInAs')} <i>{user.name ?? user.username}</i>
+                  </span>
                   <NavLink
                     to="/edit"
                     className={({ isActive }) =>
@@ -922,14 +924,13 @@ const Nav = (
                     {t('Logout')} &times;
                   </button>
                   <button
+                    disabled={user.name === 'temp'}
                     onClick={() =>
-                      user &&
-                      user.name !== 'temp' &&
-                      dispatch(logoutAllDevices(user._id ?? ''))
+                      user && dispatch(logoutAllDevices(user._id ?? ''))
                     }
-                    className={styles['logout-all']}
+                    className={`reset ${styles['logout-all']}`}
                   >
-                    {t('LogoutAllDevices')}
+                    [{t('LogoutAllDevices')}]
                   </button>
                 </>
               )}
