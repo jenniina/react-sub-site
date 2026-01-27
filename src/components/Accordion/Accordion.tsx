@@ -7,6 +7,7 @@ import {
   ReactPortal,
   useEffect,
   ReactNode,
+  useRef,
 } from 'react'
 import Icon from '../Icon/Icon'
 import { useLanguageContext } from '../../contexts/LanguageContext'
@@ -47,9 +48,20 @@ const Accordion = forwardRef(
     const visible = isControlled ? isOpen : internalVisible
     const [isAnimating, setIsAnimating] = useState(false)
 
+    const onOpenRef = useRef<(() => void) | undefined>(onClick)
     useEffect(() => {
-      if (visible) onClick?.()
-    }, [visible, onClick])
+      onOpenRef.current = onClick
+    }, [onClick])
+
+    const prevVisibleRef = useRef(visible)
+    useEffect(() => {
+      const wasVisible = prevVisibleRef.current
+      prevVisibleRef.current = visible
+
+      if (!wasVisible && visible) {
+        onOpenRef.current?.()
+      }
+    }, [visible])
 
     const toggleVisibility = () => {
       if (visible) {
@@ -87,7 +99,7 @@ const Accordion = forwardRef(
         let closestAnchor: Element | null = null
         let closestDistance = Infinity
 
-        anchors.forEach(anchor => {
+        anchors.forEach((anchor) => {
           const rect = anchor.getBoundingClientRect()
           const distance = rect.top
 

@@ -122,7 +122,7 @@ const UserEditPage = ({ type, options }: Props) => {
                 >
                   <button
                     type="submit"
-                    disabled={sending || user.username === 'temp@jenniina.fi'}
+                    disabled={sending || user.name === 'temp'}
                     className={`submit danger ${styles['delete-account']} ${styles.submit}`}
                   >
                     <Icon lib="ti" name="TiDeleteOutline" />{' '}

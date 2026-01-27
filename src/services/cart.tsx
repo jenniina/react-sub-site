@@ -1,6 +1,6 @@
-import axios from 'axios'
 import { ELanguages, IUser } from '../types'
 import { ICart, ICartItem } from '../types/store'
+import api from './api'
 
 export interface ICartResponse {
   success: boolean
@@ -8,10 +8,7 @@ export interface ICartResponse {
   cart?: ICart
 }
 
-const url = import.meta.env.DEV
-  ? 'http://localhost:4000'
-  : 'https://react.jenniina.fi'
-const baseUrl = `${url}/api/cart`
+const baseUrl = `/cart`
 
 const newOrder = async (
   language: ELanguages,
@@ -23,7 +20,7 @@ const newOrder = async (
     extra: ICart['extra']
   }
 ) => {
-  const response = await axios.post(`${baseUrl}/${language}`, order)
+  const response = await api.post(`${baseUrl}/${language}`, order)
   return response.data as ICartResponse
 }
 
@@ -31,12 +28,12 @@ const getOrderByOrderID = async (
   language: ELanguages,
   orderID: ICart['orderID']
 ) => {
-  const response = await axios.get(`${baseUrl}/${language}/${orderID}`)
+  const response = await api.get(`${baseUrl}/${language}/${orderID}`)
   return response.data as ICart
 }
 
 const getAllOrders = async (language: ELanguages, userID: IUser['_id']) => {
-  const response = await axios.get(`${baseUrl}/${language}?userID=${userID}`)
+  const response = await api.get(`${baseUrl}/${language}?userID=${userID}`)
   return response.data as ICart[]
 }
 
@@ -45,7 +42,7 @@ const deleteOrder = async (
   orderID: ICart['orderID'],
   userID: IUser['_id']
 ) => {
-  const response = await axios.delete(
+  const response = await api.delete(
     `${baseUrl}/${language}/${orderID}?userID=${userID}`
   )
   return response.data as ICartResponse
@@ -56,7 +53,7 @@ const updateOrder = async (
   order: ICart,
   userID: IUser['_id']
 ) => {
-  const response = await axios.put(
+  const response = await api.put(
     `${baseUrl}/${language}/${order.orderID}?userID=${userID}`,
     order
   )

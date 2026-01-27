@@ -584,7 +584,7 @@ a.link:visited:not(.active):focus > *,
 }
 
 .toolbar .loginregister {
-  --marg: 2rem;
+  --marg: 1rem;
   display: flex;
   flex-flow: row wrap;
   align-items: center;
@@ -592,6 +592,9 @@ a.link:visited:not(.active):focus > *,
   gap: 0.5em;
   font-size: 0.9em;
   width: 100%;
+}
+.toolbar .loginregister > span {
+  margin-top: var(--marg);
 }
 .toolbar .loginregister a.link {
   width: max-content;
@@ -608,7 +611,13 @@ a.link:visited:not(.active):focus > *,
   outline: dashed 2px red;
   outline-offset: 6px;
 }
-
+.toolbar .loginregister button.logout-all {
+  font-style: italic;
+}
+.toolbar .loginregister button.logout-all:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 .skip-links {
   z-index: 999;
   position: absolute; /*so it shows up over other elements*/

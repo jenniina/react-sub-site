@@ -1,33 +1,28 @@
-import axios, { AxiosResponse } from 'axios'
+import { AxiosResponse } from 'axios'
 import { IUser as user, ELanguages, IBlacklistedJoke } from '../types'
 import { IContent, IResponse, IToken } from '../types'
+import api from './api'
 
-const url = import.meta.env.DEV
-  ? 'http://localhost:4000'
-  : 'https://react.jenniina.fi'
-const baseUrl = `${url}/api/users`
+const baseUrl = `/users`
 
-const getConfig = () => ({
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem('JokeApptoken')}`,
-  },
-})
+// const getConfig = () => ({
+//   headers: {
+//     Authorization: `Bearer ${localStorage.getItem('JokeApptoken')}`,
+//   },
+// })
 
 const getAll = async () => {
-  const response = await axios.get(baseUrl, getConfig())
+  const response = await api.get('/users')
   return response.data as IContent
 }
 
 const createNewUser = async (newUser: user) => {
-  const response = await axios.post(baseUrl + '/register', newUser)
+  const response = await api.post(baseUrl + '/register', newUser)
   return response
 }
 
 const deleteUser = async (id: user['_id'], deleteJokes: boolean) => {
-  const response = await axios.delete(
-    `${baseUrl}/${id}/${deleteJokes}`,
-    getConfig()
-  )
+  const response = await api.delete(`${baseUrl}/${id}/${deleteJokes}`)
   return response.data as AxiosResponse<IResponse>
 }
 
@@ -40,7 +35,7 @@ const updateUser = async (
     language: user.language,
     passwordOld: user.passwordOld,
   }
-  const response = await axios.put(`${baseUrl}/${user._id}`, newUserSettings)
+  const response = await api.put(`${baseUrl}/${user._id}`, newUserSettings)
   return response.data as IResponse
 }
 const addToBlacklistedJokes = async (
@@ -52,7 +47,7 @@ const addToBlacklistedJokes = async (
   const valueObject = {
     value,
   }
-  const response = await axios.put(
+  const response = await api.put(
     `${baseUrl}/${id}/${jokeId}/${language}`,
     valueObject
   )
@@ -65,10 +60,7 @@ const removeJokeFromBlacklisted = async (
   joke_id: IBlacklistedJoke['_id'] | undefined,
   language: ELanguages
 ): Promise<IResponse> => {
-  const response = await axios.delete(
-    `${baseUrl}/${id}/${joke_id}/${language}`,
-    getConfig()
-  )
+  const response = await api.delete(`${baseUrl}/${id}/${joke_id}/${language}`)
   return response.data as IResponse
 }
 
@@ -81,7 +73,7 @@ const updateUsername = async (
     language: user.language,
     passwordOld: user.passwordOld,
   }
-  const response = await axios.put(`${baseUrl}`, newUserSettings)
+  const response = await api.put(`${baseUrl}`, newUserSettings)
   return response.data as IResponse
 }
 const updatePassword = async (
@@ -93,24 +85,24 @@ const updatePassword = async (
     password: user.password,
     passwordOld: user.passwordOld,
   }
-  const response = await axios.put(`${baseUrl}/${user._id}`, newUserSettings)
+  const response = await api.put(`${baseUrl}/${user._id}`, newUserSettings)
   return response.data as IResponse
 }
 
 const updateToken = async (
   user: Pick<user, 'username' | 'language'>
 ): Promise<IToken> => {
-  const response = await axios.put(`${baseUrl}/request-new-token`, user)
+  const response = await api.put(`${baseUrl}/request-new-token`, user)
   return response.data as IToken
 }
 
 const searchUsername = async (username: string): Promise<IResponse> => {
-  const response = await axios.get(`${baseUrl}/username/${username}`)
+  const response = await api.get(`${baseUrl}/username/${username}`)
   return response.data as IResponse
 }
 
 const searchId = async (id: string | undefined) => {
-  const response = await axios.get(`${baseUrl}/${id}`)
+  const response = await api.get(`${baseUrl}/${id}`)
   return response.data as user
 }
 
@@ -118,11 +110,15 @@ const forgot = async (
   username: string | undefined,
   language: string | ELanguages
 ): Promise<IResponse> => {
-  const response = await axios.post(`${baseUrl}/forgot`, {
+  const response = await api.post(`${baseUrl}/forgot`, {
     username,
     language,
   })
   return response.data as IResponse
+}
+const revokeSessions = async (id: string) => {
+  const response = await api.post(`${baseUrl}/${id}/revoke-sessions`)
+  return response.data
 }
 
 export default {
@@ -138,4 +134,5 @@ export default {
   forgot,
   addToBlacklistedJokes,
   removeJokeFromBlacklisted,
+  revokeSessions,
 }

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { isAxiosError } from 'axios'
 import { ELanguages } from '../../../types'
 import {
   Category,
@@ -6,6 +6,7 @@ import {
   Orientation,
   TImageTypes,
 } from '../../../types/images'
+import api from '../../../services/api'
 
 export interface SearchOptions {
   q: string
@@ -87,10 +88,7 @@ export interface ImagesResponse {
   hits: Hit[]
 }
 
-const url = import.meta.env.DEV
-  ? 'http://localhost:4000'
-  : 'https://react.jenniina.fi'
-const baseUrl = `${url}/api/images`
+const baseUrl = `/images`
 
 const searchMedia = async (
   language: ELanguages,
@@ -155,7 +153,7 @@ const searchMedia = async (
         : '200'
     )
 
-    const response = await axios.get(
+    const response = await api.get(
       `${baseUrl}/${language}?${params.toString()}`
     )
 
@@ -163,7 +161,7 @@ const searchMedia = async (
   } catch (err: unknown) {
     console.error('Error fetching images:', err)
     let message = 'Error fetching images.'
-    if (axios.isAxiosError(err)) {
+    if (isAxiosError(err)) {
       message =
         (err.response?.data as { message?: string } | undefined)?.message ??
         err.message

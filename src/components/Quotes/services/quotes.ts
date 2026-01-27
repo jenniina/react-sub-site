@@ -1,6 +1,6 @@
-import axios from 'axios'
 import { ELanguages } from '../../../types'
 import { translationMapQuotes } from '../../../types/quotes'
+import api from '../../../services/api'
 
 export const WEIGHTED = [
   'amazing',
@@ -157,10 +157,7 @@ export interface QuotesResponse {
   message?: string
 }
 
-const url = import.meta.env.DEV
-  ? 'http://localhost:4000'
-  : 'https://react.jenniina.fi'
-const baseUrl = `${url}/api/quotes`
+const baseUrl = `/quotes`
 
 const extractCategory = (searchTerms: string): string => {
   const lowerCaseTerms = searchTerms.toLowerCase()
@@ -168,12 +165,12 @@ const extractCategory = (searchTerms: string): string => {
 
   const searchWords = lowerCaseTerms.split(/\s+/)
 
-  searchWords.forEach(word => {
+  searchWords.forEach((word) => {
     Object.entries(translationToCategoryMap).forEach(
       ([translation, categories]) => {
         // Check for partial match using 'includes'
         if (translation.includes(word)) {
-          categories.forEach(category => matchedCategories.add(category))
+          categories.forEach((category) => matchedCategories.add(category))
         }
       }
     )
@@ -196,7 +193,7 @@ export const getQuote = async (
   try {
     const category = extractCategory(searchTerms)
 
-    const response = await axios.get<QuotesResponse>(
+    const response = await api.get<QuotesResponse>(
       `${baseUrl}/${language}/${category}`
     )
 

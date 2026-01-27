@@ -1,11 +1,8 @@
-import axios from 'axios'
 import { ELanguages, IUser } from '../../../types'
 import { IHighScore, IHighScoreResponse, IPlayer } from '../../../types/memory'
+import api from '../../../services/api'
 
-const url = import.meta.env.DEV
-  ? 'http://localhost:4000'
-  : 'https://react.jenniina.fi'
-const baseUrl = `${url}/api/highscores`
+const baseUrl = `/highscores`
 
 const addHighScore = async (
   language: ELanguages,
@@ -17,7 +14,7 @@ const addHighScore = async (
     players: IPlayer[]
   }
 ) => {
-  const response = await axios.post(
+  const response = await api.post(
     `${baseUrl}/${language}/key/${highScore.levelKey}`,
     highScore
   )
@@ -25,20 +22,18 @@ const addHighScore = async (
 }
 
 const getHighScoresByLevel = async (language: ELanguages, levelKey: string) => {
-  const response = await axios.get(`${baseUrl}/${language}/key/${levelKey}`)
+  const response = await api.get(`${baseUrl}/${language}/key/${levelKey}`)
   return response.data as IHighScore[]
 }
 
 const getAllHighScores = async (language: ELanguages) => {
-  const response = await axios.get(`${baseUrl}/${language}`)
+  const response = await api.get(`${baseUrl}/${language}`)
   return response.data as IHighScore[]
 }
 
 // Delete a high score by ID
 const deleteHighScore = async (language: ELanguages, highScoreId: string) => {
-  const response = await axios.delete(
-    `${baseUrl}/${language}/id/${highScoreId}`
-  )
+  const response = await api.delete(`${baseUrl}/${language}/id/${highScoreId}`)
   return response.data as IHighScoreResponse
 }
 
@@ -48,7 +43,7 @@ const updateHighScore = async (
   highScore: IHighScore,
   userID: IUser['_id']
 ) => {
-  const response = await axios.put(
+  const response = await api.put(
     `${baseUrl}/${language}/id/${highScore._id}?userID=${userID}`,
     highScore
   )
@@ -60,16 +55,14 @@ const deleteHighScoresByPlayerName = async (
   playerName: string,
   userID: IUser['_id']
 ) => {
-  const response = await axios.delete(
+  const response = await api.delete(
     `${baseUrl}/${language}/player/${playerName}?userID=${userID}`
   )
   return response.data as IHighScoreResponse
 }
 
 const cleanUpHighScores = async (language: ELanguages, levelKey: string) => {
-  const response = await axios.post(
-    `${baseUrl}/${language}/cleanup/${levelKey}`
-  )
+  const response = await api.post(`${baseUrl}/${language}/cleanup/${levelKey}`)
   return response.data as IHighScoreResponse
 }
 
@@ -79,7 +72,7 @@ const changePlayerName = async (
   newName: string,
   userID: IUser['_id']
 ) => {
-  const response = await axios.put(
+  const response = await api.put(
     `${baseUrl}/${language}/player?userID=${userID}`,
     {
       oldName,

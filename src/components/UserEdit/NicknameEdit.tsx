@@ -3,7 +3,7 @@ import { IUser } from '../../types'
 import { initializeUser, refreshUser } from '../../reducers/authReducer'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
-import { findUserById, updateUser } from '../../reducers/usersReducer' 
+import { findUserById, updateUser } from '../../reducers/usersReducer'
 import { getErrorMessage } from '../../utils'
 import styles from './css/edit.module.css'
 import { useLanguageContext } from '../../contexts/LanguageContext'
@@ -33,7 +33,7 @@ const NicknameEdit = ({ user }: Props) => {
 
     if (user) {
       await dispatch(updateUser(editedUser))
-        .then(async res => {
+        .then(async (res) => {
           if (res) {
             if (res.success === false) {
               void dispatch(notify(`${t('Error')}: ${res.message}`, true, 5))
@@ -72,7 +72,7 @@ const NicknameEdit = ({ user }: Props) => {
           </p>
 
           <form
-            onSubmit={e => void handleUserSubmit(e)}
+            onSubmit={(e) => void handleUserSubmit(e)}
             className={styles['edit-user']}
           >
             <div className="input-wrap">
@@ -101,7 +101,7 @@ const NicknameEdit = ({ user }: Props) => {
                 <span>{t('CurrentPassword')}</span>
               </label>
             </div>
-            <button type="submit" disabled={sending}>
+            <button type="submit" disabled={sending || user.name === 'temp'}>
               {t('Edit')}
             </button>
           </form>

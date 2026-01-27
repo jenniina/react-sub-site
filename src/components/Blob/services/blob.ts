@@ -1,11 +1,8 @@
-import axios from 'axios'
 import { Draggable, SavedBlobs } from '../types'
 import { ELanguages, IResponse } from '../../../types'
+import api from '../../../services/api'
 
-const url = import.meta.env.DEV
-  ? 'http://localhost:4000'
-  : 'https://react.jenniina.fi'
-const baseUrl = `${url}/api/blobs`
+const baseUrl = `/blobs`
 
 // router.get('/api/blobs/:user/:language', getAllBlobsByUser)
 // router.get('/api/blobs/:user/:versionName/:language', getBlobsVersionByUser)
@@ -17,7 +14,7 @@ const getAllBlobsByUser = async (
   d: number,
   language: ELanguages
 ): Promise<SavedBlobs[]> => {
-  const response = await axios.get(`${baseUrl}/${user}/${d}`, {
+  const response = await api.get(`${baseUrl}/${user}/${d}`, {
     params: { language },
   })
   return response.data as SavedBlobs[]
@@ -29,7 +26,7 @@ const getBlobsVersionByUser = async (
   versionName: string,
   language: ELanguages
 ): Promise<SavedBlobs> => {
-  const response = await axios.get(
+  const response = await api.get(
     `${baseUrl}/${user}/${d}/${versionName}/${language}`
   )
   return response.data as SavedBlobs
@@ -43,7 +40,7 @@ const saveBlobsByUser = async (
   backgroundColor: string[],
   language: ELanguages
 ): Promise<IResponse> => {
-  const response = await axios.post(
+  const response = await api.post(
     `${baseUrl}/${user}/${d}/${versionName}/${language}`,
     {
       draggables,
@@ -62,7 +59,7 @@ const editBlobsByUser = async (
   language: ELanguages,
   newVersionName: string
 ): Promise<IResponse> => {
-  const response = await axios.put(
+  const response = await api.put(
     `${baseUrl}/${user}/${d}/${versionName}/${language}`,
     {
       d,
@@ -81,7 +78,7 @@ const deleteBlobsVersionByUser = async (
   versionName: string,
   language: ELanguages
 ): Promise<IResponse> => {
-  const response = await axios.delete(
+  const response = await api.delete(
     `${baseUrl}/${user}/${d}/${versionName}/${language}`
   )
   return response.data as IResponse
