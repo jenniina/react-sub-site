@@ -34,7 +34,6 @@ export const initializeUser = () => {
       await api.get('/auth/ping', {
         headers: { Authorization: `Bearer ${user.token}` },
       })
-
       // set token for api interceptor
       if (user.token) localStorage.setItem('JokeApptoken', user.token)
 
@@ -100,12 +99,12 @@ export const refreshUser = (user: IUser) => {
   }
 }
 
-export const logoutAllDevices = (userId: string, user: IUser) => {
+export const logoutAllDevices = (userId: string) => {
   return async (
     dispatch: (arg0: { payload: IUser | null; type: string }) => void
   ) => {
     // revoke sessions on server (invalidates ALL tokens, including this one)
-    await userService.revokeSessions(userId, user)
+    await userService.revokeSessions(userId)
 
     // clear local state immediately
     if (window) {
