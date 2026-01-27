@@ -7,7 +7,7 @@
   align-items: center;
   position: relative;
   gap: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 .herocontent.composer {
   background-image: url('../../assets/staff.svg');
