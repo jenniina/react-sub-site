@@ -29,7 +29,7 @@ import logo from '../../assets/JLA_Jenniina-light-3-480x198.png'
 import logoDark from '../../assets/JLA_Jenniina-3-480x198.png'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
-import { logout } from '../../reducers/authReducer'
+import { logout, logoutAllDevices } from '../../reducers/authReducer'
 import FormLogin from '../Login/Login'
 import Register from '../Register/Register'
 import { notify } from '../../reducers/notificationReducer'
@@ -920,6 +920,16 @@ const Nav = (
                     className={`logout danger ${styles.logout}`}
                   >
                     {t('Logout')} &times;
+                  </button>
+                  <button
+                    onClick={() =>
+                      user &&
+                      user.name !== 'temp' &&
+                      dispatch(logoutAllDevices(user._id ?? ''))
+                    }
+                    className={styles['logout-all']}
+                  >
+                    {t('LogoutAllDevices')}
                   </button>
                 </>
               )}

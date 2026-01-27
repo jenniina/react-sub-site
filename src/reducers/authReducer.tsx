@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import loginService from '../services/login'
+import userService from '../services/users'
 import { IUser } from '../types'
 import { sleep } from '../utils'
 
@@ -23,14 +24,15 @@ const authSlice = createSlice({
 
 export const initializeUser = () => {
   return async (
-    dispatch: (arg0: { payload: IUser | null; type: 'auth/setUser' }) => void
+    dispatch: (arg0: { payload: IUser | null; type: string }) => void
   ) => {
-    const loggedUserJSON = window
-      ? window.localStorage.getItem('loggedJokeAppUser')
-      : null
+    const loggedUserJSON = window?.localStorage.getItem('loggedJokeAppUser')
     if (loggedUserJSON) {
-  const user = JSON.parse(loggedUserJSON) as StoredUser
-  loginService.setToken(user.token ?? null)
+      const user = JSON.parse(loggedUserJSON) as StoredUser
+
+      // set token for api interceptor
+      if (user.token) localStorage.setItem('JokeApptoken', user.token)
+
       await sleep(10)
       void dispatch(setUser(user))
     }
@@ -39,27 +41,30 @@ export const initializeUser = () => {
 
 export const login = (username: string, password: string, language: string) => {
   return async (
-    dispatch: (arg0: { payload: IUser | null; type: 'auth/loginUser' }) => void
+    dispatch: (arg0: { payload: IUser | null; type: string }) => void
   ) => {
     const user = (await loginService.login({
       username,
       password,
       language,
     })) as StoredUser
+
     if (window)
       window.localStorage.setItem('loggedJokeAppUser', JSON.stringify(user))
+    if (user.token) window.localStorage.setItem('JokeApptoken', user.token)
 
-  loginService.setToken(user.token ?? null)
-    const response = dispatch(loginUser(user))
-    return response
+    return dispatch(loginUser(user))
   }
 }
 
 export const logout = () => {
   return async (
-    dispatch: (arg0: { payload: IUser | null; type: 'auth/logoutUser' }) => void
+    dispatch: (arg0: { payload: IUser | null; type: string }) => void
   ) => {
-    if (window) window.localStorage.removeItem('loggedJokeAppUser')
+    if (window) {
+      window.localStorage.removeItem('loggedJokeAppUser')
+      window.localStorage.removeItem('JokeApptoken')
+    }
     await sleep(10)
     void dispatch(logoutUser(null))
   }
@@ -67,26 +72,43 @@ export const logout = () => {
 
 export const refreshUser = (user: IUser) => {
   return async (
-    dispatch: (arg0: { payload: IUser | null; type: 'auth/setUser' }) => void
+    dispatch: (arg0: { payload: IUser | null; type: string }) => void
   ) => {
-    const loggedUserJSON = window
-      ? window.localStorage.getItem('loggedJokeAppUser')
-      : null
-    if (loggedUserJSON) {
-  const data = JSON.parse(loggedUserJSON) as StoredUser
-  const token = data.token ?? null
-      if (token) {
-        loginService.setToken(token) // Set the token in the loginService
-      }
-      if (window)
-        window.localStorage.setItem(
-          'loggedJokeAppUser',
-          JSON.stringify({ user, token })
-        )
+    const loggedUserJSON = window?.localStorage.getItem('loggedJokeAppUser')
+    if (!loggedUserJSON) return
 
-      await sleep(10)
-      void dispatch(setUser(user))
+    const data = JSON.parse(loggedUserJSON) as StoredUser
+    const token = data.token ?? null
+
+    if (token) localStorage.setItem('JokeApptoken', token)
+
+    window?.localStorage.setItem(
+      'loggedJokeAppUser',
+      JSON.stringify({ ...user, token })
+    )
+    await sleep(10)
+    void dispatch(setUser(user))
+  }
+}
+
+export const logoutAllDevices = (userId: string) => {
+  return async (
+    dispatch: (arg0: { payload: IUser | null; type: string }) => void
+  ) => {
+    // revoke sessions on server (invalidates ALL tokens, including this one)
+    await userService.revokeSessions(userId)
+
+    // clear local state immediately
+    if (window) {
+      window.localStorage.removeItem('loggedJokeAppUser')
+      window.localStorage.removeItem('JokeApptoken')
     }
+
+    await sleep(10)
+    void dispatch(logoutUser(null))
+
+    // optional redirect to login
+    window.location.href = '?login=login'
   }
 }
 

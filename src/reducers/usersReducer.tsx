@@ -21,25 +21,25 @@ const usersSlice = createSlice({
     },
     remove(state, action: PayloadAction<IUser['_id']>) {
       const id = action.payload
-      return state.filter(user => user?._id !== id)
+      return state.filter((user) => user?._id !== id)
     },
     update(state, action: PayloadAction<IUser>) {
       const id = action.payload._id
       const updatedUser = action.payload
-      return state.map(user => (user?._id !== id ? user : updatedUser))
+      return state.map((user) => (user?._id !== id ? user : updatedUser))
     },
     searchUsername(state, action: PayloadAction<{ username: string }>) {
       const username = action.payload.username
-      return state.filter(user => user?.username === username)
+      return state.filter((user) => user?.username === username)
     },
     searchId(state, action: PayloadAction<IUser>) {
       const id = action.payload._id
-      return state.filter(user => user?._id === id)
+      return state.filter((user) => user?._id === id)
     },
     updateToken(state, action: PayloadAction<IContent>) {
       const id = action.payload.user._id
       const updatedUser = action.payload.user
-      return state.map(user => (user?._id !== id ? user : updatedUser))
+      return state.map((user) => (user?._id !== id ? user : updatedUser))
     },
     forgotPassword(state, action: PayloadAction<IContent>) {
       return action.payload.user ? [action.payload.user] : state
@@ -56,13 +56,7 @@ export const findUserById = (id: string) => {
   ) => {
     const user = await userService.searchId(id)
     void dispatch({ type: 'users/searchId', payload: user })
-    if (window) {
-      const token = window.localStorage.getItem('JokeApptoken')
-      window.localStorage.setItem(
-        'loggedJokeAppUser',
-        JSON.stringify({ user, token })
-      )
-    }
+
     await sleep(10)
     return user
   }

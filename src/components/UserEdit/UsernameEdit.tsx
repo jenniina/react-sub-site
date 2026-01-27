@@ -1,12 +1,12 @@
-import React, { useState } from "react"
-import { IUser } from "../../types"
-import { useAppDispatch } from "../../hooks/useAppDispatch"
-import { notify } from "../../reducers/notificationReducer"
-import { updateUsername } from "../../reducers/usersReducer"
-import { getErrorMessage } from "../../utils"
-import styles from "./css/edit.module.css"
-import { useLanguageContext } from "../../contexts/LanguageContext"
-import { login, logout } from "../../reducers/authReducer"
+import React, { useState } from 'react'
+import { IUser } from '../../types'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { notify } from '../../reducers/notificationReducer'
+import { updateUsername } from '../../reducers/usersReducer'
+import { getErrorMessage } from '../../utils'
+import styles from './css/edit.module.css'
+import { useLanguageContext } from '../../contexts/LanguageContext'
+import { login, logout } from '../../reducers/authReducer'
 
 interface Props {
   user: IUser
@@ -16,10 +16,10 @@ const UsernameEdit = ({ user }: Props) => {
 
   const dispatch = useAppDispatch()
 
-  const [username, setUsername] = useState<IUser["username"]>(
-    user?.username ?? ""
+  const [username, setUsername] = useState<IUser['username']>(
+    user?.username ?? ''
   )
-  const [passwordOld, setPasswordOld] = useState<IUser["password"]>("")
+  const [passwordOld, setPasswordOld] = useState<IUser['password']>('')
   const [sending, setSending] = useState(false)
 
   const handleUserSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -35,7 +35,7 @@ const UsernameEdit = ({ user }: Props) => {
 
     if (user) {
       if (username.trim() === user.username.trim()) {
-        void dispatch(notify(`${t("UsernameIsTheSame")}`, true, 5))
+        void dispatch(notify(`${t('UsernameIsTheSame')}`, true, 5))
         setSending(false)
         return
       }
@@ -43,30 +43,30 @@ const UsernameEdit = ({ user }: Props) => {
         .then((res) => {
           if (res) {
             if (res.success === false) {
-              void dispatch(notify(`${res.message ?? t("Error")}`, true, 5))
+              void dispatch(notify(`${res.message ?? t('Error')}`, true, 5))
             } else {
               void dispatch(
                 notify(
-                  `${res.message} --- ${t("RememberToLogOutAndLogBackInWithYourNewEmailOnceConfirmed")}`,
+                  `${res.message} --- ${t('RememberToLogOutAndLogBackInWithYourNewEmailOnceConfirmed')}`,
                   false,
                   12
                 )
               )
               void dispatch(logout())
                 .then(() => {
-                  void dispatch(notify(`${t("LoggedOut")}`, false, 4))
+                  void dispatch(notify(`${t('LoggedOut')}`, false, 4))
                 })
                 .then(async () => {
                   await dispatch(login(username, passwordOld, language)).then(
                     () => {
-                      setPasswordOld("")
+                      setPasswordOld('')
                     }
                   )
                 })
                 .catch((err: unknown) => {
-                  const message = getErrorMessage(err, t("Error"))
+                  const message = getErrorMessage(err, t('Error'))
                   console.error(err)
-                  void dispatch(notify(`${t("Error")}: ${message}`, true, 8))
+                  void dispatch(notify(`${t('Error')}: ${message}`, true, 8))
                 })
             }
           }
@@ -74,7 +74,7 @@ const UsernameEdit = ({ user }: Props) => {
         })
         .catch((err: unknown) => {
           console.error(err)
-          const message = getErrorMessage(err, t("UserNotUpdated"))
+          const message = getErrorMessage(err, t('UserNotUpdated'))
           void dispatch(notify(message, true, 8))
           setSending(false)
         })
@@ -85,12 +85,12 @@ const UsernameEdit = ({ user }: Props) => {
     <>
       {user ? (
         <>
-          <h2>{t("EditEmail")}</h2>
+          <h2>{t('EditEmail')}</h2>
           <p className={styles.p}>
-            {t("SendsAnEmailToTheNewAddressForVerification")}
+            {t('SendsAnEmailToTheNewAddressForVerification')}
           </p>
           <p className={`${styles.p} ${styles[`p-last`]}`}>
-            {t("CurrentEmail")}: <strong>{user?.username}</strong>
+            {t('CurrentEmail')}: <strong>{user?.username}</strong>
           </p>
 
           <form
@@ -98,7 +98,7 @@ const UsernameEdit = ({ user }: Props) => {
               e.preventDefault()
               void handleUserSubmit(e)
             }}
-            className={styles["edit-user"]}
+            className={styles['edit-user']}
           >
             <div className="input-wrap">
               <label>
@@ -110,7 +110,7 @@ const UsernameEdit = ({ user }: Props) => {
                   value={username}
                   onChange={({ target }) => setUsername(target.value.trim())}
                 />
-                <span>{t("Email")}</span>
+                <span>{t('Email')}</span>
               </label>
             </div>
 
@@ -124,17 +124,14 @@ const UsernameEdit = ({ user }: Props) => {
                   value={passwordOld}
                   onChange={({ target }) => setPasswordOld(target.value.trim())}
                 />
-                <span>{t("CurrentPassword")}</span>
+                <span>{t('CurrentPassword')}</span>
               </label>
             </div>
-            {user.username === "temp@jenniina.fi" && (
-              <small>({t("CannotBeChangedForTestUser")})</small>
+            {user.name === 'temp' && (
+              <small>({t('CannotBeChangedForTestUser')})</small>
             )}
-            <button
-              type="submit"
-              disabled={sending || user.username === "temp@jenniina.fi"}
-            >
-              {t("Edit")}
+            <button type="submit" disabled={sending || user.name === 'temp'}>
+              {t('Edit')}
             </button>
           </form>
         </>

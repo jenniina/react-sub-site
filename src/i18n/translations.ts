@@ -1358,6 +1358,15 @@ export const translations = {
     cs: 'Poznámka!',
     fi: 'Huom!',
   },
+  LogoutAllDevices: {
+    en: 'Logout all devices',
+    es: 'Cerrar sesión en todos los dispositivos',
+    fr: 'Déconnexion de tous les appareils',
+    de: 'Alle Geräte abmelden',
+    pt: 'Sair de todos os dispositivos',
+    cs: 'Odhlásit všechna zařízení',
+    fi: 'Kirjaudu ulos kaikista laitteista',
+  },
   UserNotUpdated: {
     en: 'User not updated',
     es: 'Usuario no actualizado',
