@@ -595,6 +595,7 @@ a.link:visited:not(.active):focus > *,
 }
 .toolbar .loginregister > span {
   margin-top: var(--marg);
+  flex: 1 0 100%;
 }
 .toolbar .loginregister a.link {
   width: max-content;
