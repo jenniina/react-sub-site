@@ -117,7 +117,7 @@ const MainWrapper = () => {
       const timer = setTimeout(() => {
         setDisplayLocation(location)
         setTransitionPage('fadeIn')
-      }, 350) // Slightly longer than CSS animation to let it complete
+      }, 500) // Match the 0.5s fadeOut animation in App.css
 
       return () => clearTimeout(timer)
     }
@@ -130,7 +130,7 @@ const MainWrapper = () => {
         heading={heroProps.heading}
         text={heroProps.text}
         instructions={heroProps.instructions ?? t('TryTappingTheShapes')}
-        pathname={displayLocation.pathname}
+        pathname={location.pathname}
       />
 
       <Routes location={displayLocation}>

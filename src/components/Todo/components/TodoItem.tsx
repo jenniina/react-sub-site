@@ -14,6 +14,7 @@ import { useConfirm } from '../../../contexts/ConfirmContext'
 import { useIsClient, useWindow } from '../../../hooks/useSSR'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
+import CopyToClipboard from '../../CopyToClipboard/CopyToClipboard'
 
 export default function Todo({
   todo,
@@ -322,17 +323,18 @@ export default function Todo({
           <span className="tooltip narrow2 below right">{completedText()}</span>
         </div>
 
-        <div className={`${styles.label}`}>
-          <button
-            type="button"
+        <div
+          className={`${styles.label}`}
+          onMouseOver={handleMouseOverSpan}
+          onFocus={handleMouseOverSpan}
+          onMouseDown={handleMouseDownSpan}
+          onMouseUp={handleMouseUpSpan}
+        >
+          <CopyToClipboard
             className={`${todo?.complete ? styles.complete : ''} ${styles['todo-name']}`}
-            onMouseOver={handleMouseOverSpan}
-            onFocus={handleMouseOverSpan}
-            onMouseDown={handleMouseDownSpan}
-            onMouseUp={handleMouseUpSpan}
-          >
-            {todo?.name}
-          </button>
+            value={todo?.name ?? ''}
+            label={todo?.name ?? ''}
+          />
           <div className={`${styles['more-info-wrap']}`}>
             {todo?.deadline &&
               todo?.deadline !== '' &&

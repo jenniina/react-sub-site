@@ -64,11 +64,11 @@ export default function CopyToClipboard({
         <strong>{label}</strong>
         <span className="tooltip right below narrow2" role="tooltip">
           {t('CopyToClipboard')}
+        </span>{' '}
+        <span id={statusId} className="scr" role="status" aria-live="polite">
+          {copied ? t('CopiedToClipboard') : ''}
         </span>
       </button>
-      <span id={statusId} className="scr" role="status" aria-live="polite">
-        {copied ? t('CopiedToClipboard') : ''}
-      </span>
     </>
   )
 }

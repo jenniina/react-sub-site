@@ -173,12 +173,27 @@ button.cancel svg {
   margin-top: calc(var(--margintop) * 0.6);
   margin-left: 0;
 }
-.todo-ul > li > .label > span {
+.todo-ul > li > .label > .todo-name {
   display: inline-block;
   margin-top: 0;
-  cursor: text;
   min-width: 100%;
   max-width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0;
+  outline: none;
+  cursor: pointer;
+  color: var(--color-primary-20);
+}
+.todo-ul > li > .label > .todo-name:hover strong,
+.todo-ul > li > .label > .todo-name:focus strong,
+.todo-ul > li > .label > .todo-name:focus-visible strong {
+  color: var(--color-secondary-1);
+}
+.todo-ul > li > .label > .todo-name strong {
+  font-weight: normal;
+  color: var(--color-primary-20);
 }
 .todo-ul > li > .label .checkbox-wrap {
   align-self: flex-start;
@@ -261,7 +276,7 @@ button.cancel svg {
   font-size: 0.75em;
 }
 .btn-wrap > b.medium::before {
-  content: "";
+  content: '';
   position: absolute;
   top: -2%;
   left: 0;
@@ -279,7 +294,9 @@ button.cancel svg {
   background-color: saddlebrown;
 }
 .todo-ul > li .complete,
-.todo-ul > li .complete + .more-info-wrap span {
+.todo-ul > li .complete + .more-info-wrap span,
+.todo-ul > li .complete + .more-info-wrap .deadline.overdue,
+.todo-ul > li > .label > .todo-name.complete strong {
   color: var(--color-gray-6);
   text-decoration: line-through 1px;
   background-color: transparent;
@@ -378,15 +395,15 @@ button.cancel svg {
 .left-to-do {
   font-size: 0.9em;
 }
-.todo-ul input[type="text" i] {
+.todo-ul input[type='text' i] {
   width: 100%;
 }
 
 /* .todo-ul > li .checkbox-wrap input[type='checkbox' i]:checked {
   accent-color: var(--color-gray-2);
 } */
-.todo-ul > li .checkbox-wrap input[type="checkbox" i]:hover,
-.todo-ul > li .checkbox-wrap input[type="checkbox" i]:focus {
+.todo-ul > li .checkbox-wrap input[type='checkbox' i]:hover,
+.todo-ul > li .checkbox-wrap input[type='checkbox' i]:focus {
   /* outline: -webkit-focus-ring-color auto 3px; */
   outline-color: currentColor;
   outline-style: solid;
@@ -518,11 +535,11 @@ form.modify .fieldset,
   font-size: 1.2em;
 }
 .filter-notification::before {
-  content: "[ [ ";
+  content: '[ [ ';
   margin-right: 0.4em;
 }
 .filter-notification::after {
-  content: " ] ]";
+  content: ' ] ]';
   margin-left: 0.4em;
 }
 .small {
@@ -605,7 +622,7 @@ form.modify .fieldset,
     margin-left: 0.6em;
     max-width: calc(100% - 7em);
   }
-  .todo-ul > li > .label > span {
+  .todo-ul > li > .label > .todo-name {
     margin-left: 0;
     max-width: calc(100% - 7em);
   }
