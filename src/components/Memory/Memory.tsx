@@ -150,7 +150,7 @@ const Memory: FC = () => {
     addHighScore,
     deleteHighScore,
     deleteHighScoresByPlayerName,
-    changePlayerName,
+    updateHighScore,
     loading,
     error,
   } = useHighScores()
@@ -163,6 +163,10 @@ const Memory: FC = () => {
   const { windowWidth } = useWindowSize()
 
   const initializeCards = () => {
+    if (name.trim().length === 0) {
+      void dispatch(notify(t('PleaseEnterAName'), true, 4))
+      return
+    }
     let content: string[] | ReactElement[] = []
     const totalPairs = gridSize
       ? (Number(gridSize.value) * Number(gridSize.value)) / 2
@@ -203,7 +207,7 @@ const Memory: FC = () => {
     setGameStarted(true)
     setTimerOn(true)
     resetTimer()
-    setPlayers(prev => prev.map(player => ({ ...player, score: 0 })))
+    setPlayers((prev) => prev.map((player) => ({ ...player, score: 0 })))
     setCurrentPlayer(0)
     setHasRecordedHighScore(false)
   }
@@ -315,7 +319,7 @@ const Memory: FC = () => {
                       )}
                       {Object.keys(highScores[mode] || {})
                         .sort()
-                        .map(levelKey => (
+                        .map((levelKey) => (
                           <div key={`${mode}-${levelKey}`}>
                             <div>
                               <h5>{extractParts(`${levelKey}`)}</h5>
@@ -335,7 +339,7 @@ const Memory: FC = () => {
                                     >
                                       <div>
                                         <span>
-                                          {entry.players.map(player => (
+                                          {entry.players.map((player) => (
                                             <span key={player.id}>
                                               {player.name}: {player.score}{' '}
                                             </span>
@@ -384,7 +388,7 @@ const Memory: FC = () => {
     )
       return
 
-    setFlippedCards(prev => [...prev, index])
+    setFlippedCards((prev) => [...prev, index])
 
     if (flippedCards.length === 1) {
       setIsChecking(true)
@@ -396,8 +400,8 @@ const Memory: FC = () => {
 
       if (firstCard.value === secondCard.value) {
         // It's a match!
-        setMatchedCards(prev => [...prev, firstCardIndex, secondCardIndex])
-        setPlayers(prev =>
+        setMatchedCards((prev) => [...prev, firstCardIndex, secondCardIndex])
+        setPlayers((prev) =>
           prev.map((player, idx) =>
             idx === currentPlayer
               ? { ...player, score: player.score + 1 }
@@ -414,13 +418,13 @@ const Memory: FC = () => {
         // Not a match - flip back after a delay
         setTimeout(() => {
           setFlippedCards([])
-          setFlippedOverCards(prev => [
+          setFlippedOverCards((prev) => [
             ...prev,
             firstCardIndex,
             secondCardIndex,
           ])
           setIsChecking(false)
-          setCurrentPlayer(prev => (prev + 1) % players.length)
+          setCurrentPlayer((prev) => (prev + 1) % players.length)
         }, 800)
       }
     }
@@ -471,17 +475,15 @@ const Memory: FC = () => {
 
     const sanitizedName = name.replace(/[^\p{L}0-9 ]/gu, '').trim()
 
-    setPlayers(prev =>
+    setPlayers((prev) =>
       prev.map((player, idx) =>
-        idx === index
-          ? { ...player, name: sanitizedName || `${t('Player')} ${idx + 1}` }
-          : player
+        idx === index ? { ...player, name: sanitizedName } : player
       )
     )
   }
 
   const handlePlayerAmountChange = (count: number) => {
-    setPlayers(prev => {
+    setPlayers((prev) => {
       const newPlayers: Player[] = Array.from({ length: count }, (_, i) => {
         const existingPlayer = prev[i]
         return existingPlayer
@@ -495,7 +497,7 @@ const Memory: FC = () => {
 
   // Check for duplicate icons for debugging
   useEffect(() => {
-    const iconNames = iconSet.map(icon => icon.split(':')[1] ?? '')
+    const iconNames = iconSet.map((icon) => icon.split(':')[1] ?? '')
     const duplicates = iconNames.filter(
       (name, index) => iconNames.indexOf(name) !== index
     )
@@ -529,7 +531,7 @@ const Memory: FC = () => {
                 </p>
                 <div>
                   <h3>{t('Scores')}:</h3>
-                  {players.map(player => (
+                  {players.map((player) => (
                     <p key={player.id}>
                       {player.name}: {player.score}
                     </p>
@@ -550,7 +552,7 @@ const Memory: FC = () => {
                 <div>
                   <h3>{t('CardType')}</h3>
                   <div className={styles['set-card-type']}>
-                    {optionsType.map(option => (
+                    {optionsType.map((option) => (
                       <CardTypeButton
                         key={option.value}
                         option={option}
@@ -563,7 +565,7 @@ const Memory: FC = () => {
                 <div>
                   <h3>{t('GridSize')}</h3>
                   <div className={styles['set-grid']}>
-                    {optionsSize.map(option => (
+                    {optionsSize.map((option) => (
                       <GridSizeButton
                         key={option.value}
                         option={option}
@@ -578,7 +580,7 @@ const Memory: FC = () => {
                   <div className={styles['set-players']}>
                     {
                       <>
-                        {playerOptions.map(count => (
+                        {playerOptions.map((count) => (
                           <PlayerAmountButton
                             key={count}
                             value={count}
@@ -605,7 +607,6 @@ const Memory: FC = () => {
                               handlePlayerNameChange(index, e.target.value)
                             }
                             maxLength={maxLength}
-                            placeholder={`${t('Player')} ${index + 1}`}
                           />
                           <span>{`${t('Player')} ${index + 1} ${t(
                             'Name'
@@ -658,7 +659,7 @@ const Memory: FC = () => {
                 {windowWidth > 200 && <span aria-hidden="true"> &mdash;</span>}
               </p>
               <div className={styles['high-scores']}>
-                {modesOrder.map(mode => {
+                {modesOrder.map((mode) => {
                   let modePart = ''
                   if (mode === (EGameMode.solo as string)) {
                     modePart = t('Solo')
@@ -698,7 +699,7 @@ const Memory: FC = () => {
                       )}
                       {Object.keys(highScores[mode] || {})
                         .sort()
-                        .map(levelKey => (
+                        .map((levelKey) => (
                           <div key={`${mode}-${levelKey}`}>
                             <div>
                               <h4>{extractParts(`${levelKey}`)}</h4>
@@ -712,67 +713,123 @@ const Memory: FC = () => {
                                     >
                                       <div>
                                         <span>
-                                          {entry.players.map(player => (
-                                            <Fragment key={player.id}>
-                                              {entry.players.length > 1
-                                                ? `${player.name}: ${player.score}`
-                                                : `${player.name}`}{' '}
-                                              {user?.role && user.role > 1 && (
-                                                <Accordion
-                                                  hideBrackets
-                                                  id={`edit-${entry._id}`}
-                                                  className="edit"
-                                                  wrapperClass={`${styles['edit-wrap']}`}
-                                                  text={
-                                                    <>
-                                                      <Icon
-                                                        lib="ai"
-                                                        name="AiFillEdit"
-                                                        aria-hidden="true"
-                                                      />
-                                                    </>
-                                                  }
-                                                  isOpen={false}
-                                                  closeClass={styles.close}
-                                                  // eslint-disable-next-line @typescript-eslint/no-empty-function
-                                                  setIsFormOpen={() => {}}
-                                                  tooltip={t('Edit')}
-                                                  y="above"
-                                                >
-                                                  <form
-                                                    onSubmit={event => {
-                                                      event.preventDefault()
+                                          {entry.players.map(
+                                            (player, playerIndex) => (
+                                              <Fragment
+                                                key={
+                                                  (player as any)?._id ??
+                                                  player._id ??
+                                                  playerIndex
+                                                }
+                                              >
+                                                {entry.players.length > 1
+                                                  ? `${player.name}: ${player.score}`
+                                                  : `${player.name}`}{' '}
+                                                {user?.role &&
+                                                  user.role > 1 && (
+                                                    <Accordion
+                                                      hideBrackets
+                                                      id={`edit-${entry._id}-${player.id ?? playerIndex}`}
+                                                      className="edit"
+                                                      wrapperClass={`${styles['edit-wrap']}`}
+                                                      text={
+                                                        <>
+                                                          <Icon
+                                                            lib="ai"
+                                                            name="AiFillEdit"
+                                                            aria-hidden="true"
+                                                          />
+                                                        </>
+                                                      }
+                                                      closeClass={styles.close}
+                                                      tooltip={t('Edit')}
+                                                      y="above"
+                                                    >
+                                                      <form
+                                                        onSubmit={(event) => {
+                                                          event.preventDefault()
+                                                          const form =
+                                                            event.currentTarget as HTMLFormElement
+                                                          const formData =
+                                                            new FormData(form)
+                                                          const newNameRaw =
+                                                            formData.get('name')
 
-                                                      const oldName =
-                                                        player.name
-                                                      const newName = (
-                                                        event.target as HTMLFormElement
-                                                      ).name
-                                                      void changePlayerName(
-                                                        oldName,
-                                                        newName,
-                                                        user?._id
-                                                      )
-                                                    }}
-                                                  >
-                                                    <div className="input-wrap">
-                                                      <label>
-                                                        <input
-                                                          type="text"
-                                                          name="name"
-                                                          required
-                                                        />
-                                                        <span>
-                                                          {t('NewName')} (
-                                                          {player.name}):
-                                                        </span>
-                                                      </label>
-                                                    </div>
-                                                  </form>
-                                                </Accordion>
-                                              )}
-                                            </Fragment>
-                                          ))}
+                                                          const newName =
+                                                            typeof newNameRaw ===
+                                                            'string'
+                                                              ? newNameRaw.trim()
+                                                              : ''
+
+                                                          if (!newName) {
+                                                            void dispatch(
+                                                              notify(
+                                                                t(
+                                                                  'PleaseEnterAName'
+                                                                ),
+                                                                true,
+                                                                4
+                                                              )
+                                                            )
+                                                            return
+                                                          }
+                                                          if (
+                                                            !entry._id ||
+                                                            !user?._id
+                                                          ) {
+                                                            void dispatch(
+                                                              notify(
+                                                                t('Error'),
+                                                                true,
+                                                                4
+                                                              )
+                                                            )
+                                                            return
+                                                          }
+
+                                                          const updatedEntry = {
+                                                            ...entry,
+                                                            players:
+                                                              entry.players.map(
+                                                                (p, idx) =>
+                                                                  idx ===
+                                                                  playerIndex
+                                                                    ? {
+                                                                        ...p,
+                                                                        name: newName,
+                                                                      }
+                                                                    : p
+                                                              ),
+                                                          }
+
+                                                          void updateHighScore(
+                                                            updatedEntry,
+                                                            user._id
+                                                          )
+                                                        }}
+                                                      >
+                                                        <div className="input-wrap">
+                                                          <label>
+                                                            <input
+                                                              type="text"
+                                                              name="name"
+                                                              required
+                                                            />
+                                                            <span>
+                                                              {t('NewName')} (
+                                                              {player.name}):
+                                                            </span>
+                                                          </label>
+                                                        </div>
+                                                        <button type="submit">
+                                                          {t('Change')}
+                                                        </button>
+                                                      </form>
+                                                    </Accordion>
+                                                  )}
+                                              </Fragment>
+                                            )
+                                          )}
                                         </span>
                                         <span
                                           className={`flex ${styles['time-wrap']}`}
@@ -789,7 +846,7 @@ const Memory: FC = () => {
                                                   void confirm({
                                                     message:
                                                       t('DeleteHighScore'),
-                                                  }).then(confirmed => {
+                                                  }).then((confirmed) => {
                                                     if (
                                                       entry._id &&
                                                       confirmed
@@ -846,7 +903,7 @@ const Memory: FC = () => {
               {user?.role && user.role > 1 && (
                 <form
                   className={`${styles['delete-name-form']}`}
-                  onSubmit={e =>
+                  onSubmit={(e) =>
                     void (async () => {
                       e.preventDefault()
                       if (
@@ -871,7 +928,7 @@ const Memory: FC = () => {
                         name="name"
                         value={name}
                         required
-                        onChange={e => setName(e.target.value)}
+                        onChange={(e) => setName(e.target.value)}
                       />
                       <span>
                         {t('Name')} ({t('Player')}):
