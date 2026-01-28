@@ -53,7 +53,8 @@ export default function Hero({
 
   const [values, setValues] = useSessionStorage<itemProps[]>('Hero', [])
   const [itemsVisible, setItemsVisible] = useState(true)
-  const [currentPage, setCurrentPage] = useState('')
+  const initialPage = pathname?.replace(/\/$/, '').split('/').pop() ?? ''
+  const [currentPage, setCurrentPage] = useState(initialPage)
   const isAnimatingRef = useRef(false)
   const itemsVisibleRef = useRef(itemsVisible)
   const [theHeading, setTheHeading] = useState(heading)
@@ -70,28 +71,22 @@ export default function Hero({
       // Fade out items when page changes
       setItemsVisible(false)
 
-      // Wait for fade out to complete, then update page and fade in
+      // Wait for fade out to complete, then atomically swap page + copy,
+      // and only then fade the new ones in.
       const timer = setTimeout(() => {
         setCurrentPage(page)
-        setItemsVisible(true)
-      }, 400)
-
-      const timer2 = setTimeout(() => {
         setTheHeading(heading)
         setTheText(text)
-      }, 800)
+
+        // Ensure the DOM has applied the new location/copy before we fade in.
+        requestAnimationFrame(() => setItemsVisible(true))
+      }, 400)
 
       return () => {
         clearTimeout(timer)
-        clearTimeout(timer2)
       }
-    } else if (currentPage === '') {
-      // Initial load
-      setCurrentPage(page)
-      setItemsVisible(true)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, currentPage])
+  }, [page, currentPage, heading, text])
 
   // Update heading and text when language changes (on same page)
   useEffect(() => {
