@@ -710,6 +710,15 @@ export const translations = {
     cs: 'na stránku',
     fi: 'sivua kohden',
   },
+  PleaseEnterAName: {
+    en: 'Please enter a name',
+    es: 'Por favor ingrese un nombre',
+    fr: 'Veuillez entrer un nom',
+    de: 'Bitte geben Sie einen Namen ein',
+    pt: 'Por favor, insira um nome',
+    cs: 'Zadejte prosím jméno',
+    fi: 'Anna nimi',
+  },
   NewName: {
     en: 'New name',
     es: 'Nuevo nombre',

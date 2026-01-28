@@ -35,8 +35,6 @@ const FormLogin = ({ easy, medium, hard, setIsFormOpen }: Props) => {
     hard: hard ?? { score: 0, time: 210 },
   })
 
-  const [showHighscores, setShowHighscores] = useState<boolean>(false)
-
   const user = useSelector((state: ReducerProps) => {
     return state.auth?.user
   })
@@ -93,17 +91,12 @@ const FormLogin = ({ easy, medium, hard, setIsFormOpen }: Props) => {
               {t('Logout')} &times;
             </button>
           </p>
-          <button
-            onClick={() => setShowHighscores(!showHighscores)}
-            className={styles.showHighscores}
-          >{`${showHighscores ? 'hide' : 'show'} highscores`}</button>
-          {showHighscores && (
-            <Scores
-              easy={highscoresLocal.easy}
-              medium={highscoresLocal.medium}
-              hard={highscoresLocal.hard}
-            />
-          )}
+
+          <Scores
+            easy={highscoresLocal.easy}
+            medium={highscoresLocal.medium}
+            hard={highscoresLocal.hard}
+          />
         </>
       ) : (
         <>
@@ -118,7 +111,7 @@ const FormLogin = ({ easy, medium, hard, setIsFormOpen }: Props) => {
             <h2>{t('LogInToSaveScore')}</h2>
 
             <form
-              onSubmit={e => void handleLogin(e)}
+              onSubmit={(e) => void handleLogin(e)}
               className={`login ${styles.login}`}
             >
               <div className="input-wrap">

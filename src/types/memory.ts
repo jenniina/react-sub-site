@@ -23,6 +23,7 @@ export interface IPlayer {
   id: number
   name: string
   score: number
+  _id?: string
 }
 
 export interface IHighScoreResponse {

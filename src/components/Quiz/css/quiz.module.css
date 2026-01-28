@@ -50,6 +50,13 @@ h1.h1 {
 button.mode {
   outline: currentColor solid 2px;
 }
+button.mode > span {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.2em;
+}
 button.mode.easy {
   outline-color: green;
   outline-width: 3px;
