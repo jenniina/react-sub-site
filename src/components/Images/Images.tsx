@@ -25,12 +25,6 @@ import { Select, SelectOption } from '../Select/Select'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import { useModal } from '../../hooks/useModal'
-import {
-  BiChevronLeft,
-  BiChevronRight,
-  BiChevronsLeft,
-  BiChevronsRight,
-} from 'react-icons/bi'
 import { SMALLER_CATEGORIES, WEIGHTED } from '../Quotes/services/quotes'
 import { VALID_CATEGORIES } from '../Quotes/services/quotes'
 import { firstToUpperCase, scrollIntoView } from '../../utils'
@@ -40,6 +34,7 @@ import { useLanguageContext } from '../../contexts/LanguageContext'
 import WordCloud from '../WordCloud/WordCloud'
 import Image from './components/Image'
 import Video from './components/Video'
+import Icon from '../Icon/Icon'
 
 const imageTypes: TImageTypes[] = [
   'all',
@@ -75,7 +70,7 @@ const Images: FC = () => {
         if (SMALLER_CATEGORIES.includes(category)) return (baseRandom % 5) + 15
         return baseRandom + 15
       }
-      return VALID_CATEGORIES.map(category => ({
+      return VALID_CATEGORIES.map((category) => ({
         text: t(firstToUpperCase(category) as TranslationKey),
         weight: getWeight(category),
       }))
@@ -90,7 +85,7 @@ const Images: FC = () => {
         if (SMALLER_CATEGORIES.includes(category)) return (baseRandom % 5) + 14
         return (baseRandom % 6) + 15
       }
-      return VALID_CATEGORIES.map(category => ({
+      return VALID_CATEGORIES.map((category) => ({
         text: t(firstToUpperCase(category) as TranslationKey),
         weight: getWeight(category),
       }))
@@ -105,7 +100,7 @@ const Images: FC = () => {
         if (SMALLER_CATEGORIES.includes(category)) return (baseRandom % 5) + 14
         return (baseRandom % 5) + 15
       }
-      return VALID_CATEGORIES.map(category => ({
+      return VALID_CATEGORIES.map((category) => ({
         text: t(firstToUpperCase(category) as TranslationKey),
         weight: getWeight(category),
       }))
@@ -188,7 +183,7 @@ const Images: FC = () => {
     else if (debouncedWindowWidth > 500) newBreakpoint = 'medium'
     else newBreakpoint = 'small'
 
-    setBreakpoint(prev => (prev !== newBreakpoint ? newBreakpoint : prev))
+    setBreakpoint((prev) => (prev !== newBreakpoint ? newBreakpoint : prev))
   }, [debouncedWindowWidth])
 
   const weightedCategories = useMemo(() => {
@@ -245,7 +240,7 @@ const Images: FC = () => {
   }
 
   useEffect(() => {
-    const array = colors?.map(color => color.value)
+    const array = colors?.map((color) => color.value)
     void setColorList(array as Color[])
   }, [colors])
 
@@ -329,7 +324,7 @@ const Images: FC = () => {
           disabled={subPage === 1}
           onClick={() => setSubPage(1)}
         >
-          <BiChevronsLeft />
+          <Icon lib="bi" name="BiChevronsLeft" aria-hidden="true" />
           <span className="scr">{t('FirstPage')}</span>
           <span aria-hidden="true" className="tooltip above narrow2">
             {t('FirstPage')}
@@ -337,10 +332,10 @@ const Images: FC = () => {
         </button>
         <button
           className={`tooltip-wrap`}
-          onClick={() => setSubPage(prev => Math.max(prev - 1, 1))}
+          onClick={() => setSubPage((prev) => Math.max(prev - 1, 1))}
           disabled={subPage === 1}
         >
-          <BiChevronLeft />
+          <Icon lib="bi" name="BiChevronLeft" aria-hidden="true" />
           <span className="scr">{t('Previous')}</span>
           <span aria-hidden="true" className="tooltip above narrow2">
             {t('Previous')}
@@ -351,10 +346,12 @@ const Images: FC = () => {
         </span>
         <button
           className={`tooltip-wrap`}
-          onClick={() => setSubPage(prev => Math.min(prev + 1, totalSubPages))}
+          onClick={() =>
+            setSubPage((prev) => Math.min(prev + 1, totalSubPages))
+          }
           disabled={subPage === totalSubPages}
         >
-          <BiChevronRight />
+          <Icon lib="bi" name="BiChevronRight" aria-hidden="true" />
           <span className="scr">{t('Next')}</span>
           <span aria-hidden="true" className="tooltip above narrow2">
             {t('Next')}
@@ -365,7 +362,7 @@ const Images: FC = () => {
           disabled={subPage === totalSubPages}
           onClick={() => setSubPage(totalSubPages)}
         >
-          <BiChevronsRight />
+          <Icon lib="bi" name="BiChevronsRight" aria-hidden="true" />
           <span className="scr">
             {t('LastPage')} ({totalSubPages})
           </span>
@@ -412,7 +409,7 @@ const Images: FC = () => {
         {fetchPage !== 1 && (
           <button
             className={`reset ${styles['fetch-more-btn']}`}
-            onClick={() => setFetchPage(prev => prev - 1)}
+            onClick={() => setFetchPage((prev) => prev - 1)}
           >
             &laquo;&nbsp;{t('Previous')}
           </button>
@@ -421,7 +418,7 @@ const Images: FC = () => {
         {fetchPage !== totalPages && (
           <button
             className={`reset ${styles['fetch-more-btn']}`}
-            onClick={() => setFetchPage(prev => prev + 1)}
+            onClick={() => setFetchPage((prev) => prev + 1)}
           >
             {t('Next')}&nbsp;&raquo;
           </button>
@@ -489,7 +486,7 @@ const Images: FC = () => {
                       type="text"
                       maxLength={100}
                       value={searchTerm}
-                      onChange={e => setSearchTerm(e.target.value)}
+                      onChange={(e) => setSearchTerm(e.target.value)}
                       placeholder={t('SearchByKeyword')}
                     />
                     <span>{t('SearchForMedia')}</span>
@@ -504,7 +501,7 @@ const Images: FC = () => {
                     multiple
                     instructions={t('Colors')}
                     value={colors}
-                    onChange={o => setColors(o)}
+                    onChange={(o) => setColors(o)}
                     options={optionsColors}
                     language={language}
                   />
@@ -518,12 +515,12 @@ const Images: FC = () => {
                   hideDelete
                   instructions={t('Type')}
                   value={
-                    optionsImageTypes.find(o => o.value === type) ?? {
+                    optionsImageTypes.find((o) => o.value === type) ?? {
                       label: t('All'),
                       value: 'all',
                     }
                   }
-                  onChange={o => setType(o?.value as TImageTypes)}
+                  onChange={(o) => setType(o?.value as TImageTypes)}
                   options={optionsImageTypes}
                   language={language}
                 />
@@ -535,12 +532,12 @@ const Images: FC = () => {
                     hideDelete
                     instructions={t('VideoTypes')}
                     value={
-                      optionsVideoTypes.find(o => o.value === videoType) ?? {
+                      optionsVideoTypes.find((o) => o.value === videoType) ?? {
                         label: t('All'),
                         value: 'all',
                       }
                     }
-                    onChange={o => setVideoType(o?.value as TVideoTypes)}
+                    onChange={(o) => setVideoType(o?.value as TVideoTypes)}
                     options={optionsVideoTypes}
                     language={language}
                   />
@@ -553,13 +550,13 @@ const Images: FC = () => {
                     hideDelete
                     value={
                       optionsOrientations.find(
-                        o => o.value === orientation
+                        (o) => o.value === orientation
                       ) ?? {
                         label: t('All'),
                         value: 'all',
                       }
                     }
-                    onChange={o => setOrientation(o?.value as Orientation)}
+                    onChange={(o) => setOrientation(o?.value as Orientation)}
                     options={optionsOrientations}
                     language={language}
                   />
@@ -572,12 +569,12 @@ const Images: FC = () => {
                   hideDelete
                   instructions={t('CategoryTitle')}
                   value={
-                    optionsCategories.find(o => o.value === category) ?? {
+                    optionsCategories.find((o) => o.value === category) ?? {
                       label: t('All'),
                       value: '', // does not accept 'all' as a value
                     }
                   }
-                  onChange={o => setCategory(o?.value as Category)}
+                  onChange={(o) => setCategory(o?.value as Category)}
                   options={optionsCategories}
                   language={language}
                 />
@@ -589,12 +586,12 @@ const Images: FC = () => {
                   hideDelete
                   instructions={t('OrderBy')}
                   value={
-                    optionsOrderBy.find(o => o.value === order) ?? {
+                    optionsOrderBy.find((o) => o.value === order) ?? {
                       label: 'Popular',
                       value: 'popular',
                     }
                   }
-                  onChange={o => setOrder(o?.value as 'popular' | 'latest')}
+                  onChange={(o) => setOrder(o?.value as 'popular' | 'latest')}
                   options={optionsOrderBy}
                   language={language}
                 />
@@ -606,7 +603,7 @@ const Images: FC = () => {
                 <input
                   type="checkbox"
                   checked={editorsChoice}
-                  onChange={e => setEditorsChoice(e.target.checked)}
+                  onChange={(e) => setEditorsChoice(e.target.checked)}
                 />
                 {t('EditorsChoice')} (Pixabay)
               </label>
@@ -615,7 +612,7 @@ const Images: FC = () => {
                 <input
                   type="checkbox"
                   checked={safeSearch}
-                  onChange={e => setSafeSearch(e.target.checked)}
+                  onChange={(e) => setSafeSearch(e.target.checked)}
                 />
                 {t('SafemodeTitle')}
               </label>
@@ -629,12 +626,12 @@ const Images: FC = () => {
                 hideDelete
                 instructions={t('TextType')}
                 value={
-                  optionsTextTypes.find(o => o.value === textType) ?? {
+                  optionsTextTypes.find((o) => o.value === textType) ?? {
                     label: t('All'),
                     value: '',
                   }
                 }
-                onChange={o => setTextType(o?.value as TTextType)}
+                onChange={(o) => setTextType(o?.value as TTextType)}
                 options={optionsTextTypes}
                 language={language}
               />
@@ -645,12 +642,12 @@ const Images: FC = () => {
                 hideDelete
                 instructions={t('MediaPerPage')}
                 value={
-                  subPageOptions.find(o => o.value === perSubPage) ?? {
+                  subPageOptions.find((o) => o.value === perSubPage) ?? {
                     label: '20',
                     value: 20,
                   }
                 }
-                onChange={o => {
+                onChange={(o) => {
                   setPerSubPage(Number(o?.value))
                 }}
                 options={subPageOptions}
@@ -683,7 +680,7 @@ const Images: FC = () => {
 
             {pagination()}
             <div id="image-container" className={styles['image-container']}>
-              {currentMedia.map(item => (
+              {currentMedia.map((item) => (
                 <Fragment key={item.id}>
                   {'videos' in item ? (
                     <Video

@@ -31,6 +31,8 @@ import {
   IUser,
   IBlacklistedJoke,
   ELanguagesLong,
+  TPublicUserNamesMap,
+  IPublicUserName,
 } from '../../types'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
@@ -52,7 +54,6 @@ import { useNavigate } from 'react-router-dom'
 import {
   addToBlacklistedJokes,
   removeJokeFromBlacklisted,
-  initializeUsers,
   findUserById,
 } from '../../reducers/usersReducer'
 import { AxiosError } from 'axios'
@@ -62,6 +63,7 @@ import { useConfirm } from '../../contexts/ConfirmContext'
 import FormJoke from './components/FormJoke'
 import JokeSubmit from './components/JokeSubmit'
 import useLocalStorage from '../../hooks/useStorage'
+import usersService from '../../services/users'
 
 function Jokes() {
   const { t, language } = useLanguageContext()
@@ -73,12 +75,46 @@ function Jokes() {
   const recentJoke = useSelector((state: ReducerProps) => {
     return state.jokes?.joke
   })
-  const users = useSelector((state: ReducerProps) => {
-    return state.users ?? []
-  })
   const user = useSelector((state: ReducerProps) => {
     return state.auth?.user ?? undefined
   })
+
+  const [publicUserNames, setPublicUserNames] = useState<TPublicUserNamesMap>(
+    {}
+  )
+
+  useEffect(() => {
+    if (!Array.isArray(jokes) || jokes.length === 0) return
+
+    const authorIds = Array.from(
+      new Set(
+        jokes
+          .map((j) => j?.author)
+          .filter((id): id is string => typeof id === 'string' && id.length > 0)
+      )
+    )
+
+    if (authorIds.length === 0) return
+
+    let cancelled = false
+    void (async () => {
+      try {
+        const names = await usersService.getPublicUserNamesByIds(authorIds)
+        if (!cancelled) {
+          setPublicUserNames((prev) => ({
+            ...prev,
+            ...names,
+          }))
+        }
+      } catch {
+        // Best-effort only; author names are optional.
+      }
+    })()
+
+    return () => {
+      cancelled = true
+    }
+  }, [jokes])
 
   // const user = localUser
   //   ? users?.find((user: IUser) => user._id === localUser.user._id)
@@ -150,10 +186,6 @@ function Jokes() {
       : false
     return queryValue === '' ? norrisExists : false
   }, [queryValue, categoryValues])
-
-  useEffect(() => {
-    void dispatch(initializeUsers())
-  }, [dispatch])
 
   useEffect(() => {
     void dispatch(initializeUser())
@@ -643,22 +675,23 @@ function Jokes() {
   const [userJokes, setUserJokes] = useState<IJokeExtra[]>([])
 
   useEffect(() => {
-    if (
-      Array.isArray(jokes) &&
-      jokes?.length > 0 &&
-      Array.isArray(users) &&
-      users?.length > 0
-    ) {
+    if (Array.isArray(jokes) && jokes?.length > 0) {
       const processJokes = () => {
         return jokes.map((joke) => {
-          const author = users.find((user: IUser) => user._id === joke.author)
+          const authorNameFromPublic =
+            typeof joke.author === 'string'
+              ? publicUserNames?.[joke.author]
+              : undefined
+
           const jokeLanguage =
             ELanguagesLong[joke.language as keyof typeof ELanguages]
 
           return {
             ...joke,
             translatedLanguage: jokeLanguage ?? '',
-            name: joke.anonymous ? t('Anonymous') : (author?.name ?? ''),
+            name: joke.anonymous
+              ? t('Anonymous')
+              : ((authorNameFromPublic ?? '') as string),
           }
         })
       }
@@ -670,7 +703,7 @@ function Jokes() {
 
       setUserJokes(filteredJokes)
     }
-  }, [jokes, users, language, isCheckedSafemode, t])
+  }, [jokes, language, isCheckedSafemode, t, publicUserNames])
 
   // Fetch joke from API or database
   const fetchApi = async (retryCount = 0) => {
@@ -681,12 +714,7 @@ function Jokes() {
     }
 
     const handleJokes = (jokes: IJoke[] | undefined) => {
-      if (
-        jokes &&
-        jokes?.length > 0 &&
-        Array.isArray(users) &&
-        users?.length > 0
-      ) {
+      if (jokes && jokes?.length > 0) {
         const random = jokes[Math.floor(Math.random() * jokes?.length)]
         if (
           lastJokes?.some(
@@ -720,10 +748,12 @@ function Jokes() {
             (random.private === false || random.private === undefined) &&
             random.anonymous === false
           ) {
-            const author = users?.find(
-              (user: IUser) => user._id == random.author
-            )
-            setAuthor(author?.name ?? '')
+            const authorNameFromPublic =
+              typeof random.author === 'string'
+                ? publicUserNames?.[random.author]
+                : undefined
+
+            setAuthor((authorNameFromPublic ?? '') as string)
           } else {
             setAuthor('')
           }
@@ -1407,7 +1437,7 @@ function Jokes() {
         setAuthor('')
         setJokeId('')
         return
-      } else if (Array.isArray(users) && user) {
+      } else if (user) {
         //delete joke from user's array if it is there
         await dispatch(getJokesByUserId(user?._id))
           .then((data) => {
@@ -1448,8 +1478,6 @@ function Jokes() {
                 setJokeId('')
               })
           })
-      } else {
-        void dispatch(notify(`${t('ErrorDeletingJoke')}`, false, 3))
       }
     }
   }

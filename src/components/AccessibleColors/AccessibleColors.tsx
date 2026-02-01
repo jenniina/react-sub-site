@@ -26,6 +26,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useConfirm } from '../../contexts/ConfirmContext'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import ColorsInput from './components/ColorsInput'
+import AccessibleColorsNamedPalettes from './components/AccessibleColorsNamedPalettes'
 
 const randomString = getRandomString(5)
 
@@ -85,6 +86,7 @@ const AccessibleColors: FC = () => {
   const {
     colors,
     setColors,
+    replaceColors,
     addColor,
     removeColor,
     updateColor,
@@ -96,6 +98,7 @@ const AccessibleColors: FC = () => {
     setMode,
     makeColorPalette,
     setColorsReset,
+    updateSearchParams,
   } = useAccessibleColors('analogous')
 
   const { t } = useLanguageContext()
@@ -180,14 +183,39 @@ const AccessibleColors: FC = () => {
     { value: 'tetrad', label: t('Tetrad') },
   ]
 
-  const random: number = Math.floor(Math.random() * colorModeOptions.length)
+  const isValidMode = (value: string | null): value is TColorMode => {
+    return (
+      value === 'analogous' ||
+      value === 'complementary' ||
+      value === 'triad' ||
+      value === 'tetrad' ||
+      value === 'monochromatic'
+    )
+  }
 
-  const colorMode = (searchParams.get('mode') ??
-    colorModeOptions[random]) as TColorMode
+  const urlMode = searchParams.get('mode')
+  const colorMode: TColorMode = isValidMode(urlMode) ? urlMode : 'analogous'
 
   useEffect(() => {
     setMode(colorMode)
   }, [colorMode, setMode])
+
+  const setModeFromServer = useCallback(
+    (nextMode: TColorMode) => {
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev)
+          next.set('mode', nextMode)
+          return next
+        },
+        {
+          replace: true,
+          preventScrollReset: true,
+        }
+      )
+    },
+    [setSearchParams]
+  )
 
   const resetAndMake = () => {
     listItemsByStatus[status].removeItems()
@@ -850,10 +878,13 @@ const AccessibleColors: FC = () => {
   const handleDrop = (e: React.DragEvent<HTMLUListElement>) => {
     const data = JSON.parse(e.dataTransfer.getData('text/plain')) as DragData
     if (data.type === 'item') {
-      handleUpdate(parseInt(data.id), status, theTarget)
-      setTimeout(() => {
-        setColors(listItemsByStatus[status]?.items)
-      }, 200)
+      const nextItems = handleUpdate(parseInt(data.id), status, theTarget)
+      const ordered = Array.isArray(nextItems)
+        ? nextItems
+        : (listItemsByStatus[status]?.items ?? [])
+
+      // Keep the saved state (and URL) in sync with the visible order.
+      replaceColors(ordered)
       handleDragging(false)
     }
   }
@@ -885,14 +916,25 @@ const AccessibleColors: FC = () => {
       ]
 
       listItemsByStatus[status].setItems(nextItems)
-      setColors(nextItems)
+      replaceColors(nextItems)
     },
-    [listItemsByStatus, setColors]
+    [listItemsByStatus, replaceColors]
   )
 
   const times = 0.04
 
   const blocks = listItemsByStatus[status]?.items ?? []
+
+  const applyLoadedColors = useCallback(
+    (nextColors: ColorBlock[]) => {
+      // DnD order is persisted in localStorage; when we load a palette we want
+      // the palette's saved order, not whatever order was previously persisted.
+      listItemsByStatus[status]?.removeItems()
+      listItemsByStatus[status]?.setItems(nextColors)
+      replaceColors(nextColors)
+    },
+    [listItemsByStatus, replaceColors]
+  )
 
   return (
     <div
@@ -1006,21 +1048,20 @@ const AccessibleColors: FC = () => {
                 label: colorModeOptions.find((o) => o.value === mode)?.label,
               } as SelectOption
             }
-            onChange={(o) =>
+            onChange={(o) => {
+              setMode(o?.value as TColorMode)
               setSearchParams(
                 (prev) => {
-                  prev.set(
-                    'mode',
-                    (o?.value ?? colorModeOptions[random].value) as string
-                  )
-                  return prev
+                  const next = new URLSearchParams(prev)
+                  next.set('mode', String(o?.value ?? mode ?? 'analogous'))
+                  return next
                 },
                 {
                   replace: true,
                   preventScrollReset: true,
                 }
               )
-            }
+            }}
             id="color-mode"
             instructions={t('SelectColorModeForNewColors')}
             className={`${styles['color-select']}`}
@@ -1043,14 +1084,19 @@ const AccessibleColors: FC = () => {
           <button
             className={` gray small  ${styles['empty-generate']}`}
             type="button"
-            onClick={() => {
-              if (
-                haveCleared === true ||
-                void confirm({
-                  message: t('AreYouSureYouWantToClearAllColors') ?? '',
-                })
-              )
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
+            onClick={async () => {
+              if (haveCleared) {
                 resetAndMake()
+                return
+              }
+
+              const ok = await confirm({
+                message: t('AreYouSureYouWantToClearAllColors') ?? '',
+              })
+
+              if (!ok) return
+              resetAndMake()
               setHaveCleared(true)
             }}
           >
@@ -1553,6 +1599,16 @@ const AccessibleColors: FC = () => {
             </div>
           </>
         )}
+
+        <AccessibleColorsNamedPalettes
+          colors={colors}
+          currentColor={currentColor}
+          mode={mode}
+          setColors={applyLoadedColors}
+          setCurrentColor={setCurrentColor}
+          setModeFromServer={setModeFromServer}
+          updateUrlColors={updateSearchParams}
+        />
       </div>
 
       {listItemsByStatus[status]?.items?.length > 0 && (

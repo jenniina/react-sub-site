@@ -1,15 +1,15 @@
 import { AxiosResponse } from 'axios'
 import { IUser as user, ELanguages, IBlacklistedJoke } from '../types'
-import { IContent, IResponse, IToken } from '../types'
+import {
+  IContent,
+  IResponse,
+  IToken,
+  IPublicUserName,
+  TPublicUserNamesMap,
+} from '../types'
 import api from './api'
 
 const baseUrl = `/users`
-
-// const getConfig = () => ({
-//   headers: {
-//     Authorization: `Bearer ${localStorage.getItem('JokeApptoken')}`,
-//   },
-// })
 
 const getAll = async () => {
   const response = await api.get('/users')
@@ -121,6 +121,24 @@ const revokeSessions = async (id: string) => {
   return response.data
 }
 
+const getPublicUserNamesByIds = async (
+  ids: string[]
+): Promise<TPublicUserNamesMap> => {
+  const uniqueIds = Array.from(new Set(ids)).filter(Boolean)
+  if (uniqueIds.length === 0) return {}
+
+  const response = await api.post('/users/public/names', { ids: uniqueIds })
+
+  const users = (response.data?.users ?? []) as IPublicUserName[]
+  const map: TPublicUserNamesMap = {}
+
+  for (const user of users) {
+    if (user?._id) map[user._id] = user?.name ?? ''
+  }
+
+  return map
+}
+
 export default {
   getAll,
   createNewUser,
@@ -135,4 +153,5 @@ export default {
   addToBlacklistedJokes,
   removeJokeFromBlacklisted,
   revokeSessions,
+  getPublicUserNamesByIds,
 }

@@ -25,13 +25,25 @@ import {
   BiReset,
   BiSelectMultiple,
   BiSolidColorFill,
+  BiChevronsLeft,
+  BiChevronsRight,
+  BiChevronLeft,
+  BiChevronRight,
+  BiChevronDown,
+  BiChevronUp,
+  BiPlus,
 } from 'react-icons/bi'
 import { CgSearch, CgUndo } from 'react-icons/cg'
-import { IoSettingsSharp, IoPersonCircleSharp } from 'react-icons/io5'
+import {
+  IoSettingsSharp,
+  IoPersonCircleSharp,
+  IoCopyOutline,
+} from 'react-icons/io5'
 import {
   HiOutlineDotsHorizontal,
   HiDotsHorizontal,
   HiDotsCircleHorizontal,
+  HiMenu,
 } from 'react-icons/hi'
 import { HiMiniSparkles } from 'react-icons/hi2'
 import { TfiLineDashed } from 'react-icons/tfi'
@@ -48,10 +60,24 @@ import {
   MdAbc,
   MdInsertEmoticon,
   MdDragIndicator,
+  MdOutlineDragIndicator,
   MdWork,
   MdOutlineQuiz,
   MdMoveUp,
   MdMoveDown,
+  MdSave,
+  MdContentCopy,
+  MdLocationOn,
+  MdOutlineFilter3,
+  MdOutlineFilter4,
+  MdOutlineFilter5,
+  MdOutlineFilter6,
+  MdOutlineFilter7,
+  MdOutlineFilter8,
+  MdOutlineFilter9,
+  MdOutlineFilter9Plus,
+  MdOutlineSettingsBackupRestore,
+  MdDriveFileRenameOutline,
 } from 'react-icons/md'
 import {
   LuCirclePlus,
@@ -71,20 +97,34 @@ import {
   FaArrowLeft,
   FaArrowRight,
   FaTimes,
+  FaRandom,
+  FaList,
+  FaPlus,
+  FaRegClone,
+  FaSave,
 } from 'react-icons/fa'
 import { TiDeleteOutline, TiShoppingCart } from 'react-icons/ti'
 import { AiOutlineEdit, AiOutlineForm, AiFillEdit } from 'react-icons/ai'
-import { TbCancel } from 'react-icons/tb'
-import { ImImages } from 'react-icons/im'
+import { TbCancel, TbLayoutNavbar } from 'react-icons/tb'
+import {
+  ImImages,
+  ImBlocked,
+  ImEyeBlocked,
+  ImEnlarge2,
+  ImShrink2,
+  ImCamera,
+} from 'react-icons/im'
 import { GrGraphQl } from 'react-icons/gr'
 import { GiAbstract019, GiComb } from 'react-icons/gi'
 import { SiSvgtrace } from 'react-icons/si'
 import { GoArrowLeft, GoArrowRight } from 'react-icons/go'
 
-export const iconLibraries: Record<
+type IconLibrariesShape = Record<
   string,
   Record<string, ComponentType<Record<string, unknown>>>
-> = {
+>
+
+export const iconLibraries = {
   ri: {
     RiHomeSmileLine,
     RiMailSendLine,
@@ -93,7 +133,7 @@ export const iconLibraries: Record<
     RiDragDropLine,
     RiTodoLine,
     RiFileList3Line,
-  } as Record<string, ComponentType<Record<string, unknown>>>,
+  },
   bs: {
     BsPerson,
     BsCart2,
@@ -101,12 +141,12 @@ export const iconLibraries: Record<
     BsArrowDownCircleFill,
     BsArrowBarRight,
     BsArrowBarLeft,
-  } as Record<string, ComponentType<Record<string, unknown>>>,
+  },
   io: {
     IoMdImages,
     IoMdAdd,
     IoMdCheckmarkCircleOutline,
-  } as Record<string, ComponentType<Record<string, unknown>>>,
+  },
   bi: {
     BiChat,
     BiChevronsUp,
@@ -114,57 +154,35 @@ export const iconLibraries: Record<
     BiReset,
     BiSelectMultiple,
     BiSolidColorFill,
-  } as Record<string, ComponentType<Record<string, unknown>>>,
+    BiChevronsLeft,
+    BiChevronsRight,
+    BiChevronLeft,
+    BiChevronRight,
+    BiChevronDown,
+    BiChevronUp,
+    BiPlus,
+  },
   cg: {
     CgSearch,
     CgUndo,
-  } as Record<string, ComponentType<Record<string, unknown>>>,
+  },
   io5: {
     IoSettingsSharp,
     IoPersonCircleSharp,
-  } as Record<string, ComponentType<Record<string, unknown>>>,
+    IoCopyOutline,
+  },
   hi: {
     HiOutlineDotsHorizontal,
     HiDotsHorizontal,
     HiDotsCircleHorizontal,
-  } as Record<string, ComponentType<Record<string, unknown>>>,
+    HiMenu,
+  },
   hi2: {
     HiMiniSparkles,
-  } as Record<string, ComponentType<Record<string, unknown>>>,
+  },
   tfi: {
     TfiLineDashed,
-  } as Record<string, ComponentType<Record<string, unknown>>>,
-  fa6: {
-    FaAnglesUp,
-    FaTriangleExclamation,
-    FaAnglesLeft,
-    FaAnglesRight,
-  } as Record<string, ComponentType<Record<string, unknown>>>,
-  md: {
-    MdLightMode,
-    MdDarkMode,
-    Md123,
-    MdAbc,
-    MdInsertEmoticon,
-    MdDragIndicator,
-    MdWork,
-    MdOutlineQuiz,
-    MdMoveUp,
-    MdMoveDown,
-  } as Record<string, ComponentType<Record<string, unknown>>>,
-  lu: {
-    LuCirclePlus,
-    LuArrowRightFromLine,
-    LuArrowLeftFromLine,
-  } as Record<string, ComponentType<Record<string, unknown>>>,
-  lia: {
-    LiaUndoAltSolid,
-    LiaNewspaperSolid,
-  } as Record<string, ComponentType<Record<string, unknown>>>,
-  pi: {
-    PiImage,
-    PiDownloadSimpleFill,
-  } as Record<string, ComponentType<Record<string, unknown>>>,
+  },
   fa: {
     FaStar,
     FaStoreAlt,
@@ -176,34 +194,90 @@ export const iconLibraries: Record<
     FaArrowLeft,
     FaArrowRight,
     FaTimes,
-  } as Record<string, ComponentType<Record<string, unknown>>>,
+    FaRandom,
+    FaList,
+    FaPlus,
+    FaRegClone,
+    FaSave,
+  },
+  fa6: {
+    FaAnglesUp,
+    FaTriangleExclamation,
+    FaAnglesLeft,
+    FaAnglesRight,
+  },
+  md: {
+    MdLightMode,
+    MdDarkMode,
+    Md123,
+    MdAbc,
+    MdInsertEmoticon,
+    MdDragIndicator,
+    MdOutlineDragIndicator,
+    MdWork,
+    MdOutlineQuiz,
+    MdMoveUp,
+    MdMoveDown,
+    MdSave,
+    MdContentCopy,
+    MdLocationOn,
+    MdOutlineFilter3,
+    MdOutlineFilter4,
+    MdOutlineFilter5,
+    MdOutlineFilter6,
+    MdOutlineFilter7,
+    MdOutlineFilter8,
+    MdOutlineFilter9,
+    MdOutlineFilter9Plus,
+    MdOutlineSettingsBackupRestore,
+    MdDriveFileRenameOutline,
+  },
+  lu: {
+    LuCirclePlus,
+    LuArrowRightFromLine,
+    LuArrowLeftFromLine,
+  },
+  lia: {
+    LiaUndoAltSolid,
+    LiaNewspaperSolid,
+  },
+  pi: {
+    PiImage,
+    PiDownloadSimpleFill,
+  },
   ti: {
     TiDeleteOutline,
     TiShoppingCart,
-  } as Record<string, ComponentType<Record<string, unknown>>>,
+  },
   ai: {
     AiOutlineEdit,
     AiOutlineForm,
     AiFillEdit,
-  } as Record<string, ComponentType<Record<string, unknown>>>,
+  },
   tb: {
     TbCancel,
-  } as Record<string, ComponentType<Record<string, unknown>>>,
+    TbLayoutNavbar,
+  },
   im: {
     ImImages,
-  } as Record<string, ComponentType<Record<string, unknown>>>,
+    ImBlocked,
+    ImEyeBlocked,
+    ImEnlarge2,
+    ImShrink2,
+    ImCamera,
+  },
   gr: {
     GrGraphQl,
-  } as Record<string, ComponentType<Record<string, unknown>>>,
+  },
   gi: {
     GiAbstract019,
     GiComb,
-  } as Record<string, ComponentType<Record<string, unknown>>>,
+  },
   si: {
     SiSvgtrace,
-  } as Record<string, ComponentType<Record<string, unknown>>>,
+  },
   go: {
     GoArrowLeft,
     GoArrowRight,
-  } as Record<string, ComponentType<Record<string, unknown>>>,
-}
+  },
+} as const satisfies IconLibrariesShape

@@ -1102,3 +1102,6 @@ big > i {
 #root .mb2 {
   margin-bottom: 2em;
 }
+#root .mt-1 {
+  margin-top: -1em;
+}

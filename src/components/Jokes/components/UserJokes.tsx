@@ -1,25 +1,4 @@
 import React, { useCallback, useEffect, useState, useMemo } from 'react'
-import { IoCopyOutline } from 'react-icons/io5'
-import { FaRandom, FaList } from 'react-icons/fa'
-import { ImBlocked, ImEyeBlocked } from 'react-icons/im'
-import { MdSave } from 'react-icons/md'
-import {
-  MdOutlineFilter3,
-  MdOutlineFilter4,
-  MdOutlineFilter5,
-  MdOutlineFilter6,
-  MdOutlineFilter7,
-  MdOutlineFilter8,
-  MdOutlineFilter9,
-  MdOutlineFilter9Plus,
-} from 'react-icons/md'
-import {
-  BiChevronsLeft,
-  BiChevronsRight,
-  BiChevronLeft,
-  BiChevronRight,
-} from 'react-icons/bi'
-import { MdOutlineSettingsBackupRestore } from 'react-icons/md'
 import {
   EJokeType,
   IJoke,
@@ -51,10 +30,12 @@ import { initializeUser } from '../../../reducers/authReducer'
 import norrisService from '../services/chucknorris'
 import { getErrorMessage } from '../../../utils'
 import dadjokeService from '../services/dadjokes'
-import { initializeUsers } from '../../../reducers/usersReducer'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 import { RootState } from '../../../store'
 import { useNavigate } from 'react-router-dom'
+import usersService from '../../../services/users'
+import { TPublicUserNamesMap } from '../../../types'
+import Icon from '../../Icon/Icon'
 
 interface Props {
   user: IUser | undefined
@@ -163,9 +144,45 @@ const UserJokes = ({
     [language]
   )
 
-  const users = useSelector((state: RootState) => state.users ?? [])
   const userId = user?._id ?? undefined
   const jokes = useSelector((state: RootState) => state.jokes?.jokes)
+
+  const [publicUserNames, setPublicUserNames] = useState<TPublicUserNamesMap>(
+    {}
+  )
+
+  useEffect(() => {
+    if (!Array.isArray(jokes) || jokes.length === 0) return
+
+    const authorIds = Array.from(
+      new Set(
+        jokes
+          .map((j) => j?.author)
+          .filter((id): id is string => typeof id === 'string' && id.length > 0)
+      )
+    )
+
+    if (authorIds.length === 0) return
+
+    let cancelled = false
+    void (async () => {
+      try {
+        const names = await usersService.getPublicUserNamesByIds(authorIds)
+        if (!cancelled) {
+          setPublicUserNames((prev) => ({
+            ...prev,
+            ...names,
+          }))
+        }
+      } catch {
+        // Best-effort only; author names are optional.
+      }
+    })()
+
+    return () => {
+      cancelled = true
+    }
+  }, [jokes])
 
   type IJokeVisible = IJoke & {
     visible: boolean
@@ -213,23 +230,20 @@ const UserJokes = ({
 
   const handleUserJokes = useCallback(
     () => {
-      if (
-        Array.isArray(jokes) &&
-        jokes.length > 0 &&
-        Array.isArray(users) &&
-        users?.length > 0
-      ) {
+      if (Array.isArray(jokes) && jokes.length > 0) {
         let updatedJokes = jokes?.map((joke) => {
-          const authorName = joke.author
-            ? users.find((u: IUser) => u._id === joke.author)?.name
-            : ''
           const jokesLanguage = getLanguageLabel(joke.language)
+
+          const authorName =
+            typeof joke.author === 'string'
+              ? (publicUserNames?.[joke.author] ?? '')
+              : ''
 
           return {
             ...joke,
             visible: false,
             translatedLanguage: jokesLanguage ?? joke.language,
-            name: joke.anonymous ? '' : (authorName ?? ''),
+            name: joke.anonymous ? '' : authorName,
           }
         })
         updatedJokes = !isCheckedSafemode
@@ -251,13 +265,13 @@ const UserJokes = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       jokes,
-      users,
       language,
       isCheckedSafemode,
       sortBy,
       sortByAge,
       isCheckedNewest,
       getLanguageLabel,
+      publicUserNames,
     ]
   )
 
@@ -281,7 +295,6 @@ const UserJokes = ({
     setHasLoadedJokes(false)
     try {
       await dispatch(initializeUser())
-      await dispatch(initializeUsers())
       await dispatch(initializeJokes())
     } finally {
       setHasLoadedJokes(true)
@@ -821,7 +834,7 @@ const UserJokes = ({
             disabled={currentPage === 1}
             onClick={() => handlePageChange(1, true)}
           >
-            <BiChevronsLeft />{' '}
+            <Icon lib="bi" name="BiChevronsLeft" />{' '}
             <span className="tooltip narrow2 below right">
               {t('FirstPage')}
             </span>
@@ -833,7 +846,7 @@ const UserJokes = ({
             disabled={currentPage === 1}
             onClick={() => handlePageChange(currentPage - 1, true)}
           >
-            <BiChevronLeft />{' '}
+            <Icon lib="bi" name="BiChevronLeft" />{' '}
             <span className="tooltip narrow2 below right">{t('Back')}</span>
           </button>
         </div>
@@ -864,7 +877,7 @@ const UserJokes = ({
             disabled={currentPage === pageNumbers?.length}
             onClick={() => handlePageChange(currentPage + 1, true)}
           >
-            <BiChevronRight />{' '}
+            <Icon lib="bi" name="BiChevronRight" />{' '}
             <span className="tooltip narrow2 below left">{t('Next')}</span>
           </button>
           <button
@@ -874,7 +887,7 @@ const UserJokes = ({
             disabled={currentPage === pageNumbers?.length}
             onClick={() => handlePageChange(pageNumbers?.length, true)}
           >
-            <BiChevronsRight />
+            <Icon lib="bi" name="BiChevronsRight" />
             <span className="tooltip narrow2 left below">
               {t('LastPage')}: {pageNumbers?.length}
             </span>
@@ -1100,7 +1113,8 @@ const UserJokes = ({
                   className="reset-btn delete danger"
                   onClick={() => resetFilters()}
                 >
-                  <MdOutlineSettingsBackupRestore /> <span>{t('Reset')}</span>
+                  <Icon lib="md" name="MdOutlineSettingsBackupRestore" />{' '}
+                  <span>{t('Reset')}</span>
                 </button>
               </div>
             </>
@@ -1118,7 +1132,7 @@ const UserJokes = ({
                     setLatest(false)
                   }}
                 >
-                  {t('Random')} <FaRandom />
+                  {t('Random')} <Icon lib="fa" name="FaRandom" />
                 </button>{' '}
                 <button
                   className={`icontext all-or-latest-btn ${
@@ -1130,7 +1144,7 @@ const UserJokes = ({
                     setLatest(false)
                   }}
                 >
-                  {t('AllJokes')} <FaList />
+                  {t('AllJokes')} <Icon lib="fa" name="FaList" />
                 </button>
                 <div className="flex center">
                   <button
@@ -1147,14 +1161,30 @@ const UserJokes = ({
                   >
                     {t('Latest')}
                     <span className="scr">{latestNumber}</span>{' '}
-                    {latestNumber === 3 && <MdOutlineFilter3 />}
-                    {latestNumber === 4 && <MdOutlineFilter4 />}
-                    {latestNumber === 5 && <MdOutlineFilter5 />}
-                    {latestNumber === 6 && <MdOutlineFilter6 />}
-                    {latestNumber === 7 && <MdOutlineFilter7 />}
-                    {latestNumber === 8 && <MdOutlineFilter8 />}
-                    {latestNumber === 9 && <MdOutlineFilter9 />}
-                    {latestNumber > 9 && <MdOutlineFilter9Plus />}
+                    {latestNumber === 3 && (
+                      <Icon lib="md" name="MdOutlineFilter3" />
+                    )}
+                    {latestNumber === 4 && (
+                      <Icon lib="md" name="MdOutlineFilter4" />
+                    )}
+                    {latestNumber === 5 && (
+                      <Icon lib="md" name="MdOutlineFilter5" />
+                    )}
+                    {latestNumber === 6 && (
+                      <Icon lib="md" name="MdOutlineFilter6" />
+                    )}
+                    {latestNumber === 7 && (
+                      <Icon lib="md" name="MdOutlineFilter7" />
+                    )}
+                    {latestNumber === 8 && (
+                      <Icon lib="md" name="MdOutlineFilter8" />
+                    )}
+                    {latestNumber === 9 && (
+                      <Icon lib="md" name="MdOutlineFilter9" />
+                    )}
+                    {latestNumber > 9 && (
+                      <Icon lib="md" name="MdOutlineFilter9Plus" />
+                    )}
                   </button>
                   <div>
                     <input
@@ -1184,11 +1214,11 @@ const UserJokes = ({
               >
                 {showBlacklistedJokes ? (
                   <>
-                    {t('HideBlockedJokes')} <ImBlocked />
+                    {t('HideBlockedJokes')} <Icon lib="im" name="ImBlocked" />
                   </>
                 ) : (
                   <>
-                    {t('Blocked')} <ImEyeBlocked />
+                    {t('Blocked')} <Icon lib="im" name="ImEyeBlocked" />
                   </>
                 )}
               </button>
@@ -1280,8 +1310,9 @@ const UserJokes = ({
                                     ? { 'aria-hidden': true }
                                     : { 'aria-hidden': false })}
                                 >
-                                  <BiChevronsRight /> {t('ClickToReveal')}{' '}
-                                  <BiChevronsLeft />
+                                  <Icon lib="bi" name="BiChevronsRight" />{' '}
+                                  {t('ClickToReveal')}{' '}
+                                  <Icon lib="bi" name="BiChevronsLeft" />
                                 </span>
                                 <p aria-live="assertive">
                                   {visibleJokes[joke.jokeId]
@@ -1403,7 +1434,7 @@ const UserJokes = ({
                             onClick={() => handleJokeSave(joke._id)}
                             className="save"
                           >
-                            {t('SaveJoke')} <MdSave />
+                            {t('SaveJoke')} <Icon lib="md" name="MdSave" />
                           </button>
                         )}
 
@@ -1416,7 +1447,7 @@ const UserJokes = ({
                             )
                           }
                         >
-                          {t('Copy')} <IoCopyOutline />
+                          {t('Copy')} <Icon lib="io5" name="IoCopyOutline" />
                         </button>
                         {userId &&
                           joke.user?.includes(userId) &&

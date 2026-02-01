@@ -326,11 +326,15 @@ const Nav = (
     if (params.get('login')) {
       toolbar.show()
       bindForm('login')(true)
+      // Treat auth params as one-shot triggers so they don't keep reopening
+      // the toolbar on unrelated query param changes (e.g. AccessibleColors mode).
+      clearAuthQueryParams()
     } else if (params.get('register')) {
       toolbar.show()
       bindForm('register')(true)
+      clearAuthQueryParams()
     }
-  }, [location, isClient, windowObj, bindForm, toolbar])
+  }, [location, isClient, windowObj, bindForm, toolbar, clearAuthQueryParams])
 
   useOutsideClick({
     ref: clickOutsideRef,
