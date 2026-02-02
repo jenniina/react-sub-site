@@ -1469,7 +1469,7 @@ const AccessibleColors: FC = () => {
         {listItemsByStatus[status]?.items?.length > 0 && (
           <>
             <div>
-              <div>
+              <div className="flex column center">
                 <button
                   type="button"
                   aria-hidden="true"
@@ -1508,7 +1508,7 @@ const AccessibleColors: FC = () => {
                   <Icon lib="bi" name="BiReset" />
                 </button>
               </div>
-              <div>
+              <div className="flex column center">
                 <button
                   type="button"
                   aria-hidden="true"
@@ -1553,11 +1553,11 @@ const AccessibleColors: FC = () => {
               </div>
             </div>
             <div>
-              <div>
+              <div className="flex column center">
                 <button
                   type="button"
                   aria-hidden="true"
-                  title={t('SaveAsPNG')}
+                  title={t('SavePNG')}
                   onClick={saveAsPNG}
                   className="reset p1"
                 >
@@ -1568,15 +1568,15 @@ const AccessibleColors: FC = () => {
                   onClick={saveAsPNG}
                   className="gray small"
                 >
-                  {t('SaveAsPNG')}
+                  {t('SavePNG')}
                   <Icon lib="pi" name="PiDownloadSimpleFill" />
                 </button>
               </div>
-              <div>
+              <div className="flex column center">
                 <button
                   type="button"
                   aria-hidden="true"
-                  title={t('SaveAsSVG')}
+                  title={t('SaveSVG')}
                   onClick={saveAsSVG}
                   className="reset p1"
                 >
@@ -1591,7 +1591,7 @@ const AccessibleColors: FC = () => {
                   onClick={saveAsSVG}
                   className="gray small"
                 >
-                  {t('SaveAsSVG')}
+                  {t('SaveSVG')}
 
                   <Icon lib="pi" name="PiDownloadSimpleFill" />
                 </button>
