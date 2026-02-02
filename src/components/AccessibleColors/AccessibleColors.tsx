@@ -27,6 +27,7 @@ import { useConfirm } from '../../contexts/ConfirmContext'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import ColorsInput from './components/ColorsInput'
 import AccessibleColorsNamedPalettes from './components/AccessibleColorsNamedPalettes'
+import useSideScroll from '../../hooks/useSideScroll'
 
 const randomString = getRandomString(5)
 
@@ -105,6 +106,9 @@ const AccessibleColors: FC = () => {
   const confirm = useConfirm()
 
   const statuses = useMemo(() => [status], [])
+  const { ref: scrollRef } = useSideScroll<HTMLDivElement>(
+    'accessible-colors-scroll'
+  )
 
   const dispatch = useAppDispatch()
   const lightTheme = useTheme()
@@ -222,53 +226,6 @@ const AccessibleColors: FC = () => {
     setColorsReset(true)
     clearColors()
   }
-
-  // const parseColor = (color: string, format: string): string => {
-  //   if (format === 'hex') {
-  //     // Validate HEX format
-  //     const hexRegex = /^#([A-Fa-f0-9]{6})$/
-  //     if (hexRegex.test(color)) {
-  //       return color.toUpperCase()
-  //     } else {
-  //       throw new Error(`Invalid HEX color format: ${color}`)
-  //     }
-  //   } else if (format === 'rgb') {
-  //     const rgbMatch = color.match(
-  //       /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i
-  //     )
-  //     if (rgbMatch) {
-  //       const r = Number(rgbMatch[1])
-  //       const g = Number(rgbMatch[2])
-  //       const b = Number(rgbMatch[3])
-  //       if ([r, g, b].every(val => val >= 0 && val <= 255)) {
-  //         return rgbToHex(r, g, b)
-  //       } else {
-  //         throw new Error(`RGB values out of range in color: ${color}`)
-  //       }
-  //     } else {
-  //       throw new Error(`Invalid RGB color format: ${color}`)
-  //     }
-  //   } else if (format === 'hsl') {
-  //     const hslMatch = color.match(
-  //       /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i
-  //     )
-  //     if (hslMatch) {
-  //       let h = clampValue(0, Number(hslMatch[1]), 360)
-  //       let s = clampValue(0, Number(hslMatch[2]), 100)
-  //       let l = clampValue(0, Number(hslMatch[3]), 100)
-
-  //       h = (h + 360) % 360
-  //       s = clampValue(0, s, 100)
-  //       l = clampValue(0, l, 100)
-
-  //       return `hsl(${h}, ${s}%, ${l}%)`
-  //     } else {
-  //       throw new Error(`Invalid HSL color format: ${color}`)
-  //     }
-  //   } else {
-  //     throw new Error(`Unsupported color format: ${format}`)
-  //   }
-  // }
 
   const ComplianceShapes: Record<
     | ComplianceLevel.AA_RegularText
@@ -501,7 +458,7 @@ const AccessibleColors: FC = () => {
     const width = widthNumber * 20
     const blockWidth = width
     const indicatorSize = blockWidth / 3
-    const indicatorSpacing = indicatorSize / 1.5
+    const indicatorSpacing = indicatorSize / 2
     const padding = width / 4
     const lineHeight = indicatorSize / 20
     const fontSize = blockWidth / 10
@@ -511,8 +468,8 @@ const AccessibleColors: FC = () => {
     const blockHeight =
       totalIndicators * (indicatorSize + indicatorSpacing) -
       indicatorSpacing +
-      padding * 2
-    const textBlockHeight = name ? fontSize + padding * 0.7 : 0
+      padding
+    const textBlockHeight = name ? fontSize + padding * 0.7 : padding * 0.4
 
     const svgWidth = items.length * blockWidth
     const svgHeight = blockHeight + textBlockHeight * 1.6
@@ -617,7 +574,8 @@ const AccessibleColors: FC = () => {
 
     const linesGroup = items
       ?.map((colorItem, idx) => {
-        const yIndicator = padding + idx * (indicatorSize + indicatorSpacing)
+        const yIndicator =
+          padding * 0.5 + idx * (indicatorSize + indicatorSpacing)
         const yLine = yIndicator + (indicatorSize - lineHeight) / 2
         // Always use hex for line color
         let lineHex
@@ -693,7 +651,7 @@ const AccessibleColors: FC = () => {
             return ComplianceShapes[complianceLevel]({
               xPosition,
               yIndicator:
-                padding +
+                padding * 0.5 +
                 items.indexOf(other) * (indicatorSize + indicatorSpacing),
               blockWidth,
               indicatorSize,
@@ -1107,6 +1065,7 @@ const AccessibleColors: FC = () => {
       </div>
       <div
         id="color-blocks"
+        ref={scrollRef}
         className={`${styles['color-blocks']} ${
           !name || !show ? styles.overflow : ''
         } ${isDragging ? styles.drag : ''}`}
@@ -1306,7 +1265,7 @@ const AccessibleColors: FC = () => {
                                 id={`span-${otherColor.id}-${block.id}-${randomString}`}
                                 className={`tooltip below narrow3 ${styles.tooltip}`}
                                 style={{
-                                  fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 0.9rem)`,
+                                  fontSize: `clamp(12px, ${dynamicFontSize.input}, 0.9rem)`,
                                   ['--tooltip-max-width' as string]: width,
                                 }}
                               >{`${t('AAACompliantWithID')}: ${
@@ -1344,7 +1303,7 @@ const AccessibleColors: FC = () => {
                                 id={`span-${otherColor.id}-${block.id}-${randomString}`}
                                 className="tooltip below narrow3"
                                 style={{
-                                  fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 0.9rem)`,
+                                  fontSize: `clamp(12px, ${dynamicFontSize.input}, 0.9rem)`,
                                   ['--tooltip-max-width' as string]: width,
                                 }}
                               >{`${t('AACompliantWithID')}: ${
@@ -1379,7 +1338,7 @@ const AccessibleColors: FC = () => {
                                 id={`span-ui-${otherColor.id}-${block.id}-${randomString}`}
                                 className={`tooltip below narrow3 ${styles.tooltip}`}
                                 style={{
-                                  fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 0.9rem)`,
+                                  fontSize: `clamp(12px, ${dynamicFontSize.input}, 0.9rem)`,
                                   ['--tooltip-max-width' as string]: width,
                                 }}
                               >{`${t('AAGraphicElementCompliantWithID')}: ${
@@ -1423,7 +1382,7 @@ const AccessibleColors: FC = () => {
                     <span
                       style={{
                         color: block.luminance < 0.179 ? 'white' : 'black',
-                        fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 1.2rem)`,
+                        fontSize: `clamp(12px, ${dynamicFontSize.input}, 1.2rem)`,
                         textAlign: 'center',
                       }}
                     >
@@ -1442,7 +1401,7 @@ const AccessibleColors: FC = () => {
                         rgbToHSL={rgbToHSL}
                         rgbToHex={rgbToHex}
                         hslToRGB={hslToRGB}
-                        fontSize={`clamp(0.75rem, ${dynamicFontSize.input}, 1rem)`}
+                        fontSize={`clamp(12px, ${dynamicFontSize.input}, 1rem)`}
                       />
                     </div>
                     <button
@@ -1452,7 +1411,7 @@ const AccessibleColors: FC = () => {
                         margin: '0.8em auto',
                         width: `calc(100% - 4px)`,
                         minWidth: `calc(100% - 4px)`,
-                        fontSize: `clamp(0.75rem, ${dynamicFontSize.input}, 2rem)`,
+                        fontSize: `clamp(12px, ${dynamicFontSize.input}, 2rem)`,
                       }}
                     >
                       {t('Remove')}
