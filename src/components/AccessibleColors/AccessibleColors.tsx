@@ -1448,7 +1448,7 @@ const AccessibleColors: FC = () => {
               <button
                 id="toggle-controls"
                 type="button"
-                onClick={() =>
+                onClick={() => {
                   setSearchParams(
                     (prev) => {
                       prev.set('show', show ? 'false' : 'true')
@@ -1459,7 +1459,12 @@ const AccessibleColors: FC = () => {
                       preventScrollReset: true,
                     }
                   )
-                }
+                  if (show && scrollRef.current)
+                    scrollRef.current.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start',
+                    })
+                }}
                 className="gray small"
               >
                 {show ? t('HideControls') : t('ShowControls')}
@@ -1512,6 +1517,10 @@ const AccessibleColors: FC = () => {
                       }))
                     ) {
                       void resetColors()
+                      scrollRef.current?.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                      })
                     }
                   }}
                   className="reset p1"
@@ -1530,6 +1539,10 @@ const AccessibleColors: FC = () => {
                       }))
                     ) {
                       void resetColors()
+                      scrollRef.current?.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                      })
                     }
                   }}
                 >
@@ -1551,6 +1564,10 @@ const AccessibleColors: FC = () => {
                     ) {
                       listItemsByStatus[status].removeItems()
                       void clearColors()
+                      scrollRef.current?.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                      })
                     }
                   }}
                   className="reset p1"
@@ -1573,6 +1590,10 @@ const AccessibleColors: FC = () => {
                     ) {
                       listItemsByStatus[status].removeItems()
                       void clearColors()
+                      scrollRef.current?.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                      })
                     }
                   }}
                 >
