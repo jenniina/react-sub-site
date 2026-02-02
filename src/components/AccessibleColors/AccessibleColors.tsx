@@ -106,6 +106,9 @@ const AccessibleColors: FC = () => {
   const confirm = useConfirm()
 
   const statuses = useMemo(() => [status], [])
+
+  const containerRef = useRef<HTMLDivElement | null>(null)
+
   const { ref: scrollRef } = useSideScroll<HTMLDivElement>(
     'accessible-colors-scroll'
   )
@@ -897,6 +900,7 @@ const AccessibleColors: FC = () => {
   return (
     <div
       id={styles['color-container']}
+      ref={containerRef}
       className={`fullwidth ${styles['color-container']} ${
         lightTheme ? styles.light : ''
       }`}
@@ -1424,11 +1428,77 @@ const AccessibleColors: FC = () => {
         })}
       </div>
 
+      {listItemsByStatus[status]?.items?.length > 0 && (
+        <>
+          <div className={styles['width-wrap']}>
+            <label htmlFor="color-block-width">{t('EditSize')}</label>
+            <input
+              id="color-block-width"
+              type="range"
+              min={6}
+              max={12}
+              step={0.5}
+              value={widthNumber}
+              onChange={(e) => setWidth(Number(e.target.value))}
+            />
+          </div>
+          <div className={`${styles['toggle-controls']}`}>
+            <div>
+              <b>{t('ToggleControlVisibility')}</b>
+              <button
+                id="toggle-controls"
+                type="button"
+                onClick={() =>
+                  setSearchParams(
+                    (prev) => {
+                      prev.set('show', show ? 'false' : 'true')
+                      return prev
+                    },
+                    {
+                      replace: true,
+                      preventScrollReset: true,
+                    }
+                  )
+                }
+                className="gray small"
+              >
+                {show ? t('HideControls') : t('ShowControls')}
+              </button>
+            </div>
+            <div>
+              <b>{t('ToggleColorNameVisibility')}</b>
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchParams(
+                    (prev) => {
+                      prev.set('name', name ? 'false' : 'true')
+                      return prev
+                    },
+                    {
+                      replace: true,
+                      preventScrollReset: true,
+                    }
+                  )
+                  scrollRef.current?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                  })
+                }}
+                className="gray small"
+              >
+                {name ? t('HideColorName') : t('ShowColorName')}
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+
       <div className={`${styles['btn-wrap']} ${styles['export-wrap']}`}>
         {listItemsByStatus[status]?.items?.length > 0 && (
           <>
             <div>
-              <div className="flex column center">
+              <div className="flex column center mt1">
                 <button
                   type="button"
                   aria-hidden="true"
@@ -1567,70 +1637,9 @@ const AccessibleColors: FC = () => {
           setCurrentColor={setCurrentColor}
           setModeFromServer={setModeFromServer}
           updateUrlColors={updateSearchParams}
+          scrollRefCurrent={scrollRef.current}
         />
       </div>
-
-      {listItemsByStatus[status]?.items?.length > 0 && (
-        <>
-          <div className={styles['width-wrap']}>
-            <label htmlFor="color-block-width">{t('EditSize')}</label>
-            <input
-              id="color-block-width"
-              type="range"
-              min={6}
-              max={12}
-              step={0.5}
-              value={widthNumber}
-              onChange={(e) => setWidth(Number(e.target.value))}
-            />
-          </div>
-          <div className={`${styles['toggle-controls']}`}>
-            <div>
-              <strong>{t('ToggleControlVisibility')}</strong>
-              <button
-                id="toggle-controls"
-                type="button"
-                onClick={() =>
-                  setSearchParams(
-                    (prev) => {
-                      prev.set('show', show ? 'false' : 'true')
-                      return prev
-                    },
-                    {
-                      replace: true,
-                      preventScrollReset: true,
-                    }
-                  )
-                }
-                className="gray small"
-              >
-                {show ? t('HideControls') : t('ShowControls')}
-              </button>
-            </div>
-            <div>
-              <strong>{t('ToggleColorNameVisibility')}</strong>
-              <button
-                type="button"
-                onClick={() =>
-                  setSearchParams(
-                    (prev) => {
-                      prev.set('name', name ? 'false' : 'true')
-                      return prev
-                    },
-                    {
-                      replace: true,
-                      preventScrollReset: true,
-                    }
-                  )
-                }
-                className="gray small"
-              >
-                {name ? t('HideColorName') : t('ShowColorName')}
-              </button>
-            </div>
-          </div>
-        </>
-      )}
     </div>
   )
 }

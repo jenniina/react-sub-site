@@ -27,6 +27,7 @@ type Props = {
   setCurrentColor: (value: string) => void
   setModeFromServer: (mode: TColorMode) => void
   updateUrlColors: (colors: ColorBlock[]) => void
+  scrollRefCurrent: HTMLDivElement | null
 }
 
 const AccessibleColorsNamedPalettes: FC<Props> = ({
@@ -37,6 +38,7 @@ const AccessibleColorsNamedPalettes: FC<Props> = ({
   setCurrentColor,
   setModeFromServer,
   updateUrlColors: _updateUrlColors,
+  scrollRefCurrent,
 }) => {
   const { language, t } = useLanguageContext()
   const confirm = useConfirm()
@@ -174,6 +176,10 @@ const AccessibleColorsNamedPalettes: FC<Props> = ({
         void dispatch(notify(t('Error') ?? 'Error', true, 5))
       } finally {
         setBusy(false)
+        scrollRefCurrent?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        })
       }
     },
     [
@@ -274,6 +280,33 @@ const AccessibleColorsNamedPalettes: FC<Props> = ({
     setCurrentPage(newPage)
   }
 
+  const itemsPerPageDiv = () => {
+    return (
+      <div
+        className={`${styles['pagination-controls']} ${styles['items-per-page-div']}`}
+      >
+        <div
+          className={`input-wrap ${styles['input-wrap']} ${styles['items-per-page']}`}
+        >
+          <label htmlFor={itemsPerPageId}>
+            <input
+              id={itemsPerPageId}
+              type="number"
+              value={itemsPerPage}
+              placeholder={itemsPerPage.toString()}
+              min={1}
+              max={100}
+              onChange={(e) => {
+                setItemsPerPage(Number(e.target.value))
+                setCurrentPage(1)
+              }}
+            />
+            <span>{t('PerPage')}</span>
+          </label>
+        </div>
+      </div>
+    )
+  }
   const pagination = (current: number, totalPages: number) => {
     return hasSavedFiles ? (
       <div className={styles['pagination-controls']}>
@@ -327,25 +360,6 @@ const AccessibleColorsNamedPalettes: FC<Props> = ({
         ) : (
           <></>
         )}
-        <div
-          className={`input-wrap ${styles['input-wrap']} ${styles['items-per-page']}`}
-        >
-          <label htmlFor={itemsPerPageId}>
-            <input
-              id={itemsPerPageId}
-              type="number"
-              value={itemsPerPage}
-              placeholder={itemsPerPage.toString()}
-              min={1}
-              max={100}
-              onChange={(e) => {
-                setItemsPerPage(Number(e.target.value))
-                setCurrentPage(1)
-              }}
-            />
-            <span>{t('PerPage')}</span>
-          </label>
-        </div>
       </div>
     ) : (
       <></>
@@ -416,6 +430,7 @@ const AccessibleColorsNamedPalettes: FC<Props> = ({
           <p>{t('NoSavedPalettesYet')}</p>
         ) : (
           <div className="full flex center margin0auto">
+            {itemsPerPageDiv()}
             {pagination(currentPage, totalPages)}
             <ul className={styles['color-versions-wrap']}>
               {currentPalettes.map((p, index) => (
@@ -527,6 +542,7 @@ const AccessibleColorsNamedPalettes: FC<Props> = ({
               ))}
             </ul>
             {pagination(currentPage, totalPages)}
+            {itemsPerPageDiv()}
           </div>
         )}
       </div>
