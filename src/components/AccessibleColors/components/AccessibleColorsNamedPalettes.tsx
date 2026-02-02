@@ -124,6 +124,7 @@ const AccessibleColorsNamedPalettes: FC<Props> = ({
       void dispatch(notify(t('Error') ?? 'Error', true, 5))
     } finally {
       setBusy(false)
+      setName('')
     }
   }, [
     colors,
