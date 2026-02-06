@@ -1105,3 +1105,7 @@ big > i {
 #root .mt-1 {
   margin-top: -1em;
 }
+#root .lower03 {
+  margin-top: 0.3rem;
+  margin-bottom: -0.3rem;
+}
