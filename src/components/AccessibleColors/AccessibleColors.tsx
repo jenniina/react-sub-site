@@ -473,8 +473,8 @@ const AccessibleColors: FC = () => {
         padding * 0.5
       : totalIndicators * (indicatorSize + indicatorSpacing) -
         indicatorSpacing +
-        padding * 0.6
-    const textBlockHeight = name ? fontSize + padding * 0.6 : padding * 0.6
+        padding * 0.7
+    const textBlockHeight = name ? fontSize + padding * 0.7 : padding * 0.7
 
     const svgWidth = items.length * blockWidth
     const svgHeight = blockHeight + textBlockHeight * 1.8
@@ -580,7 +580,7 @@ const AccessibleColors: FC = () => {
     const linesGroup = items
       ?.map((colorItem, idx) => {
         const yIndicator =
-          padding * 0.3 + idx * (indicatorSize + indicatorSpacing)
+          padding * 0.5 + idx * (indicatorSize + indicatorSpacing)
         const yLine = yIndicator + (indicatorSize - lineHeight) / 2
         // Always use hex for line color
         let lineHex
@@ -656,7 +656,7 @@ const AccessibleColors: FC = () => {
             return ComplianceShapes[complianceLevel]({
               xPosition,
               yIndicator:
-                padding * 0.3 +
+                padding * 0.5 +
                 items.indexOf(other) * (indicatorSize + indicatorSpacing),
               blockWidth,
               indicatorSize,
@@ -678,9 +678,13 @@ const AccessibleColors: FC = () => {
       })
       .join('')
 
-    const linkMargin = 7
-    const linkX = svgWidth - linkMargin
-    const linkY = svgHeight - linkMargin * 1.5
+    const linkMargin = 8
+    const linkX = svgWidth - linkMargin * 1.2
+    const linkY =
+      totalIndicators < 3
+        ? svgHeight - linkMargin * 1.5
+        : svgHeight - linkMargin
+    const size = totalIndicators < 3 ? fontSize * 0.7 : fontSize
     const linkURL = 'https://colors.jenniina.fi'
 
     const linkElement = `
@@ -688,7 +692,7 @@ const AccessibleColors: FC = () => {
         <text
           x="${linkX}"
           y="${linkY}"
-          font-size="${fontSize}"
+          font-size="${size}"
           font-family="Arial"
           text-anchor="end"
           fill="#000000"
@@ -704,7 +708,7 @@ const AccessibleColors: FC = () => {
         <text
           x="${linkMargin}"
           y="${linkY}"
-          font-size="${fontSize}"
+          font-size="${size}"
           font-family="Arial"
           text-anchor="start"
           fill="#FFFFFF"
@@ -755,6 +759,12 @@ const AccessibleColors: FC = () => {
   }) => string
 
   const saveAsSVG = () => {
+    const isOnlyOneColor = (listItemsByStatus[status]?.items ?? []).length === 1
+    if (isOnlyOneColor) {
+      dispatch(notify(t('PleaseChooseAtLeastTwoColors'), true, 5))
+      return
+    }
+
     const { svgContent } = generateSVG()
     const blob = new Blob([svgContent], {
       type: 'image/svg+xml;charset=utf-8',
@@ -771,6 +781,12 @@ const AccessibleColors: FC = () => {
   }
 
   const saveAsPNG = () => {
+    const isOnlyOneColor = (listItemsByStatus[status]?.items ?? []).length === 1
+    if (isOnlyOneColor) {
+      dispatch(notify(t('PleaseChooseAtLeastTwoColors'), true, 5))
+      return
+    }
+
     const { svgContent, svgWidth, svgHeight } = generateSVG()
 
     const img = new Image()

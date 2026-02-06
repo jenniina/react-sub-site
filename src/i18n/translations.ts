@@ -6813,6 +6813,15 @@ export const translations = {
     cs: 'Uložit PNG',
     fi: 'Tallenna PNG',
   },
+  PleaseChooseAtLeastTwoColors: {
+    en: 'Please choose at least two colors',
+    es: 'Por favor, elige al menos dos colores',
+    fr: 'Veuillez choisir au moins deux couleurs',
+    de: 'Bitte wählen Sie mindestens zwei Farben',
+    pt: 'Por favor, escolha pelo menos duas cores',
+    cs: 'Vyberte prosím alespoň dvě barvy',
+    fi: 'Valitse vähintään kaksi väriä',
+  },
   WithOrWithoutColorName: {
     en: 'With or without colorname',
     es: 'Con o sin nombre de color',
