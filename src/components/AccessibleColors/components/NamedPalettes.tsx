@@ -30,7 +30,7 @@ type Props = {
   scrollRefCurrent: HTMLDivElement | null
 }
 
-const AccessibleColorsNamedPalettes: FC<Props> = ({
+const NamedPalettes: FC<Props> = ({
   colors,
   currentColor,
   mode,
@@ -551,4 +551,4 @@ const AccessibleColorsNamedPalettes: FC<Props> = ({
   )
 }
 
-export default AccessibleColorsNamedPalettes
+export default NamedPalettes

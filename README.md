@@ -1,6 +1,8 @@
 # React SSR sub site for jenniina.fi
 
-This is a server-side rendered sub site for jenniina.fi that is built with React and Vike (formerly Vite-plugin-ssr). The application features both server-side rendering (SSR) and static site generation (SSG) capabilities, providing excellent performance and SEO optimization while maintaining the interactive React portfolio of Jenniina Laine.
+This repository contains a React and Vike based sub site for jenniina.fi, located at [react.jenniina.fi](https://react.jenniina.fi).
+
+The project is configured for pre-rendering and client-side hydration. It is suitable for static generation and can be integrated into a wider SSR setup, but this repository by itself does not include a standalone Node SSR server, which is located in [https://github.com/jenniina/node-backend](https://github.com/jenniina/node-backend)
 
 ## Architecture
 

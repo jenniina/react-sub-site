@@ -26,7 +26,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useConfirm } from '../../contexts/ConfirmContext'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import ColorsInput from './components/ColorsInput'
-import AccessibleColorsNamedPalettes from './components/AccessibleColorsNamedPalettes'
+import NamedPalettes from './components/NamedPalettes'
 import useSideScroll from '../../hooks/useSideScroll'
 
 const randomString = getRandomString(5)
@@ -1647,7 +1647,7 @@ const AccessibleColors: FC = () => {
           </>
         )}
 
-        <AccessibleColorsNamedPalettes
+        <NamedPalettes
           colors={colors}
           currentColor={currentColor}
           mode={mode}
