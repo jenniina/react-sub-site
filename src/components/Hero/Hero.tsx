@@ -661,7 +661,7 @@ export default function Hero({
       { xPercent: getRandomMinMax(7, 14), yPercent: getRandomMinMax(18, 28) },
       { xPercent: getRandomMinMax(19, 39), yPercent: getRandomMinMax(37, 50) },
       { xPercent: getRandomMinMax(40, 52), yPercent: getRandomMinMax(20, 32) },
-      { xPercent: getRandomMinMax(56, 66), yPercent: getRandomMinMax(48, 56) },
+      { xPercent: getRandomMinMax(56, 66), yPercent: getRandomMinMax(40, 55) },
       { xPercent: getRandomMinMax(80, 92), yPercent: getRandomMinMax(30, 44) },
       { xPercent: getRandomMinMax(16, 26), yPercent: getRandomMinMax(65, 79) },
       { xPercent: getRandomMinMax(74, 82), yPercent: getRandomMinMax(74, 86) },
