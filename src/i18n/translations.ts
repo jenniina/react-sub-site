@@ -7434,6 +7434,15 @@ export const translations = {
     cs: 'Zkuste přetáhnout bloby',
     fi: 'Kokeile mollukan raahaamista',
   },
+  TryDraggingTheOrbs: {
+    en: 'Try dragging the orbs',
+    es: 'Intente arrastrar las orbes',
+    fr: 'Essayez de faire glisser les orbes',
+    de: 'Versuchen Sie, die Kugeln zu ziehen',
+    pt: 'Tente arrastar as orbes',
+    cs: 'Zkuste přetáhnout koule',
+    fi: 'Kokeile pallojen raahaamista',
+  },
   SelectedBlobNone: {
     en: 'Selected blob: none',
     es: 'Blob seleccionado: ninguno',

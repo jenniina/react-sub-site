@@ -1822,3 +1822,309 @@
 .herocontent.items-hidden li {
   opacity: 0;
 }
+
+.constellation-wrap {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.constellation {
+  min-width: calc(100vw + 1px - var(--scrollbar_width));
+  height: 100%;
+}
+
+.constellation-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.constellation-line {
+  stroke-linecap: round;
+  stroke-width: 1.5;
+  opacity: 0.6;
+  transition-property: transform, left, top, opacity, stroke-width, filter;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out;
+}
+
+.constellation-line-aa {
+  stroke: color-mix(in srgb, var(--color-primary-8) 90%, white 10%);
+}
+
+.constellation-line-ui {
+  stroke: color-mix(in srgb, var(--color-gray-9) 60%, white 40%);
+  stroke-dasharray: 0.28rem 0.32rem;
+}
+
+.constellation-line-aaa {
+  stroke: color-mix(in srgb, var(--color-secondary-10) 90%, white 10%);
+}
+
+.constellation-line.highlight {
+  opacity: 0.8;
+  stroke-width: 2.6;
+  filter: drop-shadow(0 0 10px currentColor);
+}
+
+.constellation-line.dimmed {
+  opacity: 0.3;
+}
+
+.constellation-line.pulse {
+  animation: constellation-pulse 1800ms ease-in-out infinite;
+}
+
+.herocontent.constellation .constellation-node {
+  --node-shadow: 0 0 6px 2px color-mix(in srgb, var(--constellation-color) 70%, white 30%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  pointer-events: auto;
+  touch-action: none;
+  cursor: grab;
+  opacity: 0.93;
+  transform: scale(1);
+  transition-property: left, top, transform, opacity, filter, box-shadow;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out;
+}
+
+.herocontent.constellation .constellation-node.drag,
+.herocontent.constellation .constellation-node:active {
+  cursor: grabbing;
+}
+
+.herocontent.constellation .constellation-node:hover,
+.herocontent.constellation .constellation-node:focus,
+.herocontent.constellation .constellation-node:focus-visible,
+.herocontent.constellation .constellation-node.active,
+.herocontent.constellation .constellation-node.pinned {
+  opacity: 1;
+  transform: scale(1.08);
+  outline: none;
+}
+
+.herocontent.constellation .constellation-node.dimmed {
+  opacity: 0.3;
+}
+
+.herocontent.constellation .constellation-node:focus-visible {
+  outline: none;
+}
+
+.constellation-node-inner {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 50%;
+  background-color: var(--constellation-color);
+  box-shadow: var(--node-shadow);
+  outline: 3px solid var(--constellation-ring);
+  outline-offset: -5px;
+  transition-property: box-shadow, outline, outline-offset;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out;
+}
+
+.constellation-node.active .constellation-node-inner,
+.constellation-node.pinned .constellation-node-inner {
+  box-shadow:
+    0 0 0 2px var(--constellation-ring),
+    0 0 20px 0 color-mix(in srgb, var(--constellation-color) 70%, white 30%),
+    0 0 36px -10px var(--constellation-color);
+}
+
+.constellation-node-label,
+.constellation-badge,
+.constellation-legend {
+  position: absolute;
+  font-family: var(--title-family);
+  pointer-events: none;
+}
+
+.constellation-node-label {
+  font-family: var(--text-family);
+  padding: 0.2em 0.3em;
+  border-radius: 0.2em;
+  background-color: var(--color-primary-1);
+  font-weight: 300;
+  top: calc(100% + 0.5em);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8em;
+  line-height: 0.9;
+  white-space: nowrap;
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: 220ms;
+  transition-timing-function: ease-in-out;
+}
+
+.constellation-node:hover .constellation-node-label,
+.constellation-node:focus .constellation-node-label,
+.constellation-node:focus-visible .constellation-node-label,
+.constellation-node.active .constellation-node-label,
+.constellation-node.pinned .constellation-node-label {
+  opacity: 1;
+}
+
+.constellation-badge {
+  top: -1.8rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.16rem 0.45rem 0.2rem;
+  border-radius: 999px;
+  background-color: color-mix(in srgb, var(--color-primary-1) 82%, transparent 18%);
+  border: 1px solid currentColor;
+  font-size: 0.72rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.constellation-legend {
+  padding: 0.3rem 0.2rem;
+  --legend-width: clamp(100px, 90vw, 11em);
+  width: var(--legend-width);
+  max-width: calc(90vw - var(--scrollbar_width, 15px));
+  left: calc(50vw - var(--legend-width) / 2);
+  bottom: 2.2em;
+  border-radius: 0.8rem;
+  background: linear-gradient(180deg, rgba(8, 14, 29, 0.76), rgba(8, 14, 29, 0.4));
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: white;
+  pointer-events: auto;
+}
+.constellation-legend .inner {
+  width: max-content;
+  max-width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.12rem;
+}
+
+.constellation-thresholds {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  margin-top: 0.2rem;
+  pointer-events: auto;
+}
+
+.constellation-thresholds .constellation-threshold-btn {
+  padding: 0.2rem 0.2rem 0.15rem;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.01);
+  background-image: none;
+  color: inherit;
+  line-height: 1;
+  font-size: 0.8em;
+  outline-offset: 0;
+}
+.constellation-legend .constellation-thresholds .constellation-threshold-btn.btn-3 {
+  border: 2px dashed var(--color-gray-5);
+  outline-offset: 1px;
+}
+.constellation-legend .constellation-thresholds .constellation-threshold-btn.btn-4-5 {
+  border: 3px solid var(--color-primary-6);
+  outline-offset: 1px;
+}
+
+.constellation-legend .constellation-thresholds .constellation-threshold-btn.btn-7 {
+  border: 2px solid var(--color-secondary-10);
+  outline-offset: 1px;
+}
+
+.constellation-legend .constellation-thresholds .constellation-threshold-btn:hover,
+.constellation-legend .constellation-thresholds .constellation-threshold-btn:focus,
+.constellation-legend .constellation-thresholds .constellation-threshold-btn:focus-visible,
+.constellation-legend .constellation-thresholds .constellation-threshold-btn.active {
+  background-color: rgba(255, 255, 255, 0.1);
+  outline-width: 1px;
+  outline-offset: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: currentColor;
+}
+
+.light .constellation-legend {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.74));
+  border-color: rgba(11, 19, 43, 0.18);
+  color: var(--color-primary-15);
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+}
+
+.light .constellation-legend .constellation-thresholds .constellation-threshold-btn {
+  background-color: rgba(11, 19, 43, 0);
+  background-image: none;
+}
+
+.light .constellation-legend .constellation-thresholds .constellation-threshold-btn:hover,
+.light .constellation-legend .constellation-thresholds .constellation-threshold-btn:focus,
+.light .constellation-legend .constellation-thresholds .constellation-threshold-btn:focus-visible,
+.light .constellation-legend .constellation-thresholds .constellation-threshold-btn.active {
+  background-color: rgba(11, 19, 43, 0.08);
+}
+
+@keyframes constellation-pulse {
+  0%,
+  100% {
+    opacity: 0.66;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (min-width: 300px) {
+  .constellation-thresholds .constellation-threshold-btn {
+    padding: 0.3rem 0.5rem 0.25rem;
+  }
+}
+@media (min-width: 500px) {
+  .constellation-legend {
+    bottom: 0;
+    padding: 0.55rem 0.8rem;
+  }
+}
+
+@media (min-width: 800px) {
+  .constellation-legend {
+    width: max-content;
+    left: var(--page-padding);
+  }
+  .constellation-legend .inner {
+    flex-flow: row nowrap;
+    gap: 2rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .constellation-legend {
+    --legend-width: max-content;
+    left: calc(50vw - var(--legend-width) / 2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .constellation-line,
+  .constellation-node,
+  .constellation-node-inner,
+  .constellation-node-label,
+  .constellation-badge {
+    animation: none !important;
+    transition-duration: 0ms !important;
+  }
+}

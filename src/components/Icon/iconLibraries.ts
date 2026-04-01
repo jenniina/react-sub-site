@@ -124,7 +124,7 @@ import {
   GoTriangleUp,
 } from 'react-icons/go'
 
-type IconLibrariesShape = Record<
+export type IconLibrariesShape = Record<
   string,
   Record<string, ComponentType<Record<string, unknown>>>
 >

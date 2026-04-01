@@ -92,7 +92,7 @@ export default function About({ type }: { type: string }) {
                   </Link>{' '}
                 </p>
                 {!user && (
-                  <p>
+                  <div>
                     {t('IfYouDontWantToRegister')}{' '}
                     <div className="flex align-center mt1 column gap-half">
                       <CopyToClipboard
@@ -110,7 +110,7 @@ export default function About({ type }: { type: string }) {
                     <div className="flex column mt1">
                       <Link to="?login=login">{t('Login')}</Link>
                     </div>
-                  </p>
+                  </div>
                 )}
 
                 <h2 id="site-features">{t('FeaturesOfThisSite')}</h2>

@@ -8,8 +8,10 @@ import {
   TouchEvent as ReactTouchEvent,
   useState,
   useEffect,
+  useRef,
 } from 'react'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
+import ContrastConstellation from './ContrastConstellation'
 
 import { getRandomMinMax } from '../../../utils'
 import * as Draggable from '../../../hooks/useDraggable'
@@ -36,6 +38,7 @@ const LOCATION = {
   MEMORY: 'memory',
   MEDIA: 'media',
   QUIZ: 'quiz',
+  COLORS: 'colors',
 }
 
 interface ItemComponentProps {
@@ -57,6 +60,7 @@ interface ItemComponentProps {
   escapeFunction: () => void
   windowObj: Window | null
   itemsVisible: boolean
+  prefersReducedMotion: boolean
 }
 
 const ItemComponent = forwardRef<
@@ -77,6 +81,7 @@ const ItemComponent = forwardRef<
       escapeFunction,
       windowObj,
       itemsVisible,
+      prefersReducedMotion,
     },
     ref
   ) => {
@@ -86,6 +91,7 @@ const ItemComponent = forwardRef<
     const [activeDescendant, setActiveDescendant] = useState<string | null>(
       null
     )
+    const previousLocationRef = useRef(location)
 
     const isComposer = location === LOCATION.COMPOSER
     const composerStaffWidth = 200
@@ -109,6 +115,7 @@ const ItemComponent = forwardRef<
     useEffect(() => {
       const root = ulRef?.current
       if (!root || !windowObj) return
+      const locationChanged = previousLocationRef.current !== location
 
       const stripOuterCalc = (expr: string) => {
         const trimmed = expr.trim()
@@ -163,10 +170,18 @@ const ItemComponent = forwardRef<
 
       const items = root.querySelectorAll<HTMLElement>('li[id^="shape"]')
       items.forEach((el) => {
-        if (el.style.top) el.dataset.baseTop ??= stripOuterCalc(el.style.top)
-        if (el.style.left) el.dataset.baseLeft ??= stripOuterCalc(el.style.left)
-        el.dataset.moveDy ??= '0'
-        el.dataset.moveDx ??= '0'
+        if (locationChanged) {
+          if (el.style.top) el.dataset.baseTop = stripOuterCalc(el.style.top)
+          if (el.style.left) el.dataset.baseLeft = stripOuterCalc(el.style.left)
+          el.dataset.moveDy = '0'
+          el.dataset.moveDx = '0'
+        } else {
+          if (el.style.top) el.dataset.baseTop ??= stripOuterCalc(el.style.top)
+          if (el.style.left)
+            el.dataset.baseLeft ??= stripOuterCalc(el.style.left)
+          el.dataset.moveDy ??= '0'
+          el.dataset.moveDx ??= '0'
+        }
 
         const baseTop = el.dataset.baseTop
         const baseLeft = el.dataset.baseLeft
@@ -196,6 +211,8 @@ const ItemComponent = forwardRef<
           }
         }
       })
+
+      previousLocationRef.current = location
     }, [
       ulRef,
       array,
@@ -206,6 +223,19 @@ const ItemComponent = forwardRef<
       isComposer,
       windowObj,
     ])
+
+    if (location === LOCATION.COLORS) {
+      return (
+        <ContrastConstellation
+          array={array}
+          location={location}
+          ulRef={ulRef}
+          itemsVisible={itemsVisible}
+          prefersReducedMotion={prefersReducedMotion}
+          escapeFunction={escapeFunction}
+        />
+      )
+    }
 
     return (
       <>

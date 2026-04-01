@@ -1,5 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Caveat&family=Oswald:wght@500;600&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Caveat&family=Oswald:wght@500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 :root {
   --typography_ratio: 1.16;
   --responsive_scale: 0.7;
@@ -255,16 +255,16 @@ main a.disabled > *,
 }
 /*Mark regular lists with the class 'ul' */
 .ul {
-  list-style: "#  ";
+  list-style: '#  ';
   line-height: 1.7;
   padding-inline-start: 10px;
 }
 .ul ul {
-  list-style: "//  ";
+  list-style: '//  ';
   padding-inline-start: 10px;
 }
 .ul ul ul {
-  list-style: "/*  "; /*square; circle;*/
+  list-style: '/*  '; /*square; circle;*/
 }
 /* li:has(big) {
   margin-top: 1em;
@@ -360,7 +360,7 @@ h1 span {
   color: var(--color-primary-18);
   height: 100%;
 }
-h1 span:before {
+h1 span::before {
   content: attr(data-text);
   position: absolute;
   top: 0;
@@ -376,7 +376,7 @@ h1 span:before {
   animation: wave 4s infinite ease-in-out;
   animation-play-state: paused;
 }
-h1 span:after {
+h1 span::after {
   content: attr(data-text);
   position: absolute;
   top: 0;
@@ -400,8 +400,8 @@ h1 span:after {
   -ms-animation-play-state: paused;
   animation-play-state: paused;
 }
-h1:hover span:before,
-h1:hover span:after {
+h1:hover span::before,
+h1:hover span::after {
   /* clip-path: polygon(
     0% 100%,
     0 59%,
@@ -422,10 +422,10 @@ h1:hover span:after {
 .light h1 span {
   color: var(--color-primary-18);
 }
-.light h1 span:before {
+.light h1 span::before {
   color: var(--color-primary-12);
 }
-.light h1 span:after {
+.light h1 span::after {
   color: var(--color-primary-9);
 }
 @keyframes wave {
@@ -588,20 +588,20 @@ button.restore:focus-visible {
 }
 
 button:focus-visible,
-input[type="submit"]:hover,
-input[type="submit"]:focus,
-input[type="submit"]:focus-visible,
-input[type="button"]:hover,
-input[type="button"]:focus,
-input[type="button"]:focus-visible,
+input[type='submit']:hover,
+input[type='submit']:focus,
+input[type='submit']:focus-visible,
+input[type='button']:hover,
+input[type='button']:focus,
+input[type='button']:focus-visible,
 body .focus-within:focus-within,
 button.restore:focus-visible,
-input[type="submit"].restore:hover,
-input[type="submit"].restore:focus,
-input[type="submit"].restore:focus-visible,
-input[type="button"].restore:hover,
-input[type="button"].restore:focus,
-input[type="button"].restore:focus-visible {
+input[type='submit'].restore:hover,
+input[type='submit'].restore:focus,
+input[type='submit'].restore:focus-visible,
+input[type='button'].restore:hover,
+input[type='button'].restore:focus,
+input[type='button'].restore:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: -2px;
   outline-offset: -3px;
@@ -683,7 +683,7 @@ button.delete {
   padding: 0.5em 1.2em 0.8em;
 }
 button.delete::after {
-  content: " \00D7"; /* × */
+  content: ' \00D7'; /* × */
   font-size: 1.2em;
 }
 button.delete:hover {

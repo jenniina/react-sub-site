@@ -1,7 +1,7 @@
 export { onRenderClient }
 
 import React from 'react'
-import { createRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot, type Root } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import store from '../store.client'
@@ -11,6 +11,8 @@ import { LanguageProvider } from '../contexts/LanguageContext'
 import { BlobProvider } from '../components/Blob/components/BlobProvider'
 import { HelmetProvider } from 'react-helmet-async'
 import App from '../App'
+
+let root: Root | null = null
 
 function onRenderClient() {
   const container = document.getElementById('root')
@@ -26,8 +28,7 @@ function onRenderClient() {
     }
   }
 
-  const root = createRoot(container)
-  root.render(
+  const app = (
     <React.StrictMode>
       <BrowserRouter>
         <LanguageProvider>
@@ -46,4 +47,17 @@ function onRenderClient() {
       </BrowserRouter>
     </React.StrictMode>
   )
+
+  if (root) {
+    root.render(app)
+    return
+  }
+
+  if (container.hasChildNodes()) {
+    root = hydrateRoot(container, app)
+    return
+  }
+
+  root = createRoot(container)
+  root.render(app)
 }

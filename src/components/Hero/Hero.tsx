@@ -11,12 +11,17 @@ import {
 } from 'react'
 import styles from './hero.module.css'
 import useWindowSize from '../../hooks/useWindowSize'
-import { getRandomMinMax } from '../../utils'
+import {
+  calculateLuminance,
+  getContrastRatio,
+  getRandomMinMax,
+  hslToHex,
+  hexToRGB,
+} from '../../utils'
 import * as Draggable from '../../hooks/useDraggable'
 import { useTheme } from '../../hooks/useTheme'
 import useEnterDirection from '../../hooks/useEnterDirection'
 import { RefObject } from '../../types'
-import useSessionStorage from '../../hooks/useStorage'
 import useLocalStorage from '../../hooks/useStorage'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import { useIsClient, useWindow } from '../../hooks/useSSR'
@@ -28,6 +33,9 @@ export interface itemProps {
   size: number
   color: string
   rotation?: number
+  label?: string
+  xPercent?: number
+  yPercent?: number
 }
 
 export default function Hero({
@@ -51,7 +59,7 @@ export default function Hero({
 
   const { t } = useLanguageContext()
 
-  const [values, setValues] = useSessionStorage<itemProps[]>('Hero', [])
+  const [values, setValues] = useState<itemProps[]>([])
   const [itemsVisible, setItemsVisible] = useState(true)
   const initialPage = pathname?.replace(/\/$/, '').split('/').pop() ?? ''
   const [currentPage, setCurrentPage] = useState(initialPage)
@@ -619,7 +627,135 @@ export default function Hero({
     else return 9
   }, [windowWidth])
 
+  const siteHues = useMemo(
+    () => ({
+      primary: 216,
+      secondary: 36,
+    }),
+    []
+  )
+
+  const colorConstellationItems = useMemo<itemProps[]>(() => {
+    type RandomRecipe = {
+      hue: number
+      saturation: [number, number]
+      lightness: [number, number]
+    }
+
+    type FixedRecipe = {
+      hue: number
+      saturation: number
+      lightness: number
+    }
+
+    const shuffleArray = <T,>(items: T[]) => {
+      const next = [...items]
+      for (let i = next.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[next[i], next[j]] = [next[j], next[i]]
+      }
+      return next
+    }
+
+    const positions = [
+      { xPercent: getRandomMinMax(7, 14), yPercent: getRandomMinMax(18, 28) },
+      { xPercent: getRandomMinMax(19, 39), yPercent: getRandomMinMax(37, 50) },
+      { xPercent: getRandomMinMax(40, 52), yPercent: getRandomMinMax(20, 32) },
+      { xPercent: getRandomMinMax(56, 66), yPercent: getRandomMinMax(48, 56) },
+      { xPercent: getRandomMinMax(80, 92), yPercent: getRandomMinMax(30, 44) },
+      { xPercent: getRandomMinMax(16, 26), yPercent: getRandomMinMax(65, 79) },
+      { xPercent: getRandomMinMax(74, 82), yPercent: getRandomMinMax(74, 86) },
+    ]
+
+    const recipes: RandomRecipe[] = [
+      { hue: siteHues.primary, saturation: [72, 88], lightness: [9, 14] },
+      { hue: siteHues.primary, saturation: [28, 70], lightness: [78, 80] },
+      { hue: siteHues.primary, saturation: [34, 84], lightness: [22, 28] },
+      { hue: siteHues.primary, saturation: [38, 88], lightness: [36, 43] },
+      { hue: siteHues.secondary, saturation: [68, 90], lightness: [55, 61] },
+      { hue: siteHues.secondary, saturation: [76, 94], lightness: [67, 73] },
+      { hue: siteHues.secondary, saturation: [72, 98], lightness: [80, 90] },
+    ]
+
+    const fallbackRecipeValues: FixedRecipe[] = [
+      { hue: siteHues.primary, saturation: 50, lightness: 14 },
+      { hue: siteHues.primary, saturation: 38, lightness: 27 },
+      { hue: siteHues.primary, saturation: 34, lightness: 40 },
+      { hue: siteHues.secondary, saturation: 85, lightness: 58 },
+      { hue: siteHues.primary, saturation: 34, lightness: 90 },
+      { hue: siteHues.secondary, saturation: 90, lightness: 70 },
+      { hue: siteHues.secondary, saturation: 50, lightness: 88 },
+    ]
+
+    const hasAllContrastTiers = (items: itemProps[]) => {
+      let hasUI = false
+      let hasAA = false
+      let hasAAA = false
+
+      const luminances = items.map((item) => {
+        const rgb = hexToRGB(item.label ?? item.color)
+        return calculateLuminance(rgb.r, rgb.g, rgb.b)
+      })
+
+      for (let i = 0; i < luminances.length; i++) {
+        for (let j = i + 1; j < luminances.length; j++) {
+          const ratio = getContrastRatio(luminances[i], luminances[j])
+          if (ratio >= 7) hasAAA = true
+          else if (ratio >= 4.5) hasAA = true
+          else if (ratio >= 3) hasUI = true
+        }
+      }
+
+      return hasUI && hasAA && hasAAA
+    }
+
+    const buildItem = (
+      recipe: RandomRecipe | FixedRecipe,
+      index: number
+    ): itemProps => {
+      const saturation = Array.isArray(recipe.saturation)
+        ? Math.round(
+            getRandomMinMax(recipe.saturation[0], recipe.saturation[1])
+          )
+        : recipe.saturation
+      const lightness = Array.isArray(recipe.lightness)
+        ? Math.round(getRandomMinMax(recipe.lightness[0], recipe.lightness[1]))
+        : recipe.lightness
+
+      const color = `hsl(${recipe.hue}, ${saturation}%, ${lightness}%)`
+
+      return {
+        i: index + 1,
+        e: Math.round(getRandomMinMax(6, 9)),
+        size: Math.round(getRandomMinMax(1, 6)),
+        color,
+        label: hslToHex(recipe.hue, saturation, lightness),
+        xPercent: positions[index].xPercent,
+        yPercent: positions[index].yPercent,
+      }
+    }
+
+    for (let attempt = 0; attempt < 40; attempt++) {
+      const randomizedRecipes = shuffleArray(recipes)
+      const candidateItems = randomizedRecipes.map((recipe, index) =>
+        buildItem(recipe, index)
+      )
+      if (hasAllContrastTiers(candidateItems)) {
+        return candidateItems
+      }
+    }
+
+    return shuffleArray(fallbackRecipeValues).map((recipe, index) =>
+      buildItem(recipe, index)
+    )
+  }, [reinitialize, siteHues, thresholdCrossed])
+
   useEffect(() => {
+    if (page === 'colors') {
+      setValues(colorConstellationItems)
+      return
+    }
+
     const items: itemProps[] = []
     const specialSizesCount = Math.ceil(getRandomMinMax(1.1, 3))
     const specialIndices = new Set<number>()
@@ -667,7 +803,7 @@ export default function Hero({
       items.push(item)
     }
     setValues(items)
-  }, [amount, reinitialize, thresholdCrossed]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [amount, colorConstellationItems, page, reinitialize, thresholdCrossed]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Convert a CSS variable (including calc, vh, vw, etc.) to pixels in a
   // client-only, SSR-safe way. Returns 0 during server-side rendering.
@@ -764,6 +900,7 @@ export default function Hero({
         escapeFunction={escapeFunction}
         windowObj={windowObj}
         itemsVisible={itemsVisible}
+        prefersReducedMotion={prefersReducedMotion}
       />
 
       <div className={styles.bottom}>

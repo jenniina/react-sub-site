@@ -3,9 +3,11 @@ import Accordion from '../../components/Accordion/Accordion'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import SEO from '../../components/SEO/SEO'
 import styles from '../css//portfolio.module.css'
+import { useTheme } from '../../hooks/useTheme'
 
 export default function ComposerPage({ type }: { type: string }) {
   const { t } = useLanguageContext()
+  const lightTheme = useTheme()
 
   const [isFormOpen, setIsFormOpen] = useState(false)
   return (
@@ -27,9 +29,13 @@ export default function ComposerPage({ type }: { type: string }) {
                   <br />
                 </p>
                 <p>
-                  <a href="https://colors.jenniina.fi">
-                    Contrast at a Glance &raquo;
-                  </a>
+                  <big>
+                    <a
+                      href={`https://colors.jenniina.fi?theme=${lightTheme ? 'true' : 'false'}`}
+                    >
+                      Contrast at a Glance &raquo;
+                    </a>
+                  </big>
                 </p>
                 <p>
                   <a href="https://github.com/jenniina/color-accessibility-checker">
