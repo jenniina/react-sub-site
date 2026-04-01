@@ -76,6 +76,7 @@ export default function ContrastConstellation({
   escapeFunction,
 }: ContrastConstellationProps) {
   const { t } = useLanguageContext()
+  const componentRef = useRef<HTMLDivElement | null>(null)
   const wrapperRef = useRef<HTMLDivElement | null>(null)
   const itemRefs = useRef<Record<number, HTMLLIElement | null>>({})
   const dragStateRef = useRef<DragState>({
@@ -166,6 +167,8 @@ export default function ContrastConstellation({
   }, [nodes, threshold])
 
   const activeNodeId = pinnedNodeId ?? hoveredNodeId ?? focusedNodeId ?? null
+  const instructionsId = `constellation-instructions-${location.toLowerCase()}`
+  const liveRegionId = `constellation-status-${location.toLowerCase()}`
 
   const updateLayout = useCallback(() => {
     const wrapper = wrapperRef.current
@@ -223,6 +226,10 @@ export default function ContrastConstellation({
     const handlePointerDownOutside = (event: PointerEvent) => {
       const target = event.target
       if (!(target instanceof Node)) return
+
+      if (componentRef.current?.contains(target)) {
+        return
+      }
 
       const activeElement = document.activeElement
       if (!(activeElement instanceof HTMLElement)) {
@@ -449,6 +456,37 @@ export default function ContrastConstellation({
     )
   }, [activeNodeId, edges])
 
+  const activeNode = useMemo(
+    () => nodes.find((node) => node.i === activeNodeId) ?? null,
+    [activeNodeId, nodes]
+  )
+
+  const activePartnerSummaries = useMemo(() => {
+    if (activeNodeId == null) return []
+
+    return activeEdges
+      .map((edge) => {
+        const partnerId = edge.from === activeNodeId ? edge.to : edge.from
+        const partnerNode = nodes.find((node) => node.i === partnerId)
+        if (!partnerNode) return null
+
+        return `${partnerNode.hexLabel}, ${partnerNode.color}, ${edge.level ?? t('BelowThreshold')}, ${edge.ratio.toFixed(1)} to 1`
+      })
+      .filter((summary): summary is string => Boolean(summary))
+  }, [activeEdges, activeNodeId, nodes, t])
+
+  const liveRegionMessage = useMemo(() => {
+    if (!activeNode) {
+      return `${t('ColorConstellation')}. ${nodes.length} ${t('DraggableColors')}. ${t('CurrentThreshold')} ${threshold} to 1. ${t('FocusOrPinAColorToHearItsContrastMatches')}`
+    }
+
+    if (activePartnerSummaries.length === 0) {
+      return `${activeNode.hexLabel}, ${activeNode.color}. ${t('NoVisibleMatchesAtTheCurrentThreshold')} ${threshold} to 1.`
+    }
+
+    return `${activeNode.hexLabel}, ${activeNode.color}. ${activePartnerSummaries.length} ${t('VisibleMatches')}: ${activePartnerSummaries.join('; ')}.`
+  }, [activeNode, activePartnerSummaries, nodes.length, t, threshold])
+
   const getPartnerEdge = useCallback(
     (nodeId: number) => {
       if (activeNodeId == null || nodeId === activeNodeId) return null
@@ -473,7 +511,7 @@ export default function ContrastConstellation({
   )
 
   return (
-    <>
+    <div ref={componentRef}>
       <div ref={wrapperRef} className={styles['constellation-wrap']}>
         <svg
           className={styles['constellation-lines']}
@@ -522,6 +560,7 @@ export default function ContrastConstellation({
           id={`listbox-hero-${location.toLowerCase()}`}
           role="listbox"
           aria-labelledby="description"
+          aria-describedby={`${instructionsId} ${liveRegionId}`}
           aria-activedescendant={
             activeNodeId ? `shape${activeNodeId}` : undefined
           }
@@ -569,7 +608,8 @@ export default function ContrastConstellation({
                 role="option"
                 tabIndex={0}
                 aria-selected={isActive}
-                aria-label={`${node.hexLabel}: ${node.color}`}
+                aria-label={`${node.hexLabel}. ${node.color}. ${partnerEdge ? `${t('ConnectedToActiveColorWith')} ${partnerEdge.level} ${t('ContrastAt')} ${partnerEdge.ratio.toFixed(1)} to 1.` : t('NoActiveContrastConnectionAnnounced')}`}
+                aria-describedby={`${instructionsId} ${liveRegionId}`}
                 draggable={false}
                 onDragStart={(e) => {
                   e.preventDefault()
@@ -633,6 +673,19 @@ export default function ContrastConstellation({
         </ul>
       </div>
 
+      <p id={instructionsId} className="scr">
+        {t('ColorConstellationInstructions')}
+      </p>
+
+      <p
+        id={liveRegionId}
+        className="scr"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {liveRegionMessage}
+      </p>
+
       <div
         className={styles['constellation-legend']}
         role="group"
@@ -686,6 +739,8 @@ export default function ContrastConstellation({
               <button
                 key={value}
                 type="button"
+                aria-pressed={threshold === value}
+                aria-label={`${t('ShowColorLinksAtContrastAndAbove')} ${value} to 1`}
                 className={`${styles['constellation-threshold-btn']} ${styles[`btn-${sanitize(value.toString())}`]} ${
                   threshold === value ? styles.active : ''
                 }`}
@@ -697,6 +752,6 @@ export default function ContrastConstellation({
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }

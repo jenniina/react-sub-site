@@ -1991,6 +1991,7 @@
 }
 
 .constellation-legend {
+  font-weight: 300;
   padding: 0.3rem 0.2rem;
   --legend-width: clamp(100px, 90vw, 11em);
   width: var(--legend-width);
@@ -2001,6 +2002,7 @@
   background: linear-gradient(180deg, rgba(8, 14, 29, 0.76), rgba(8, 14, 29, 0.4));
   border: 1px solid rgba(255, 255, 255, 0.25);
   color: white;
+  font-weight: 300;
   pointer-events: auto;
 }
 .constellation-legend .inner {
@@ -2013,7 +2015,13 @@
   justify-content: center;
   gap: 0.12rem;
 }
-
+.constellation-legend strong {
+  font-weight: 300;
+  letter-spacing: calc(var(--letter-spacing) * 1.1);
+}
+.light .constellation-legend strong {
+  font-weight: 600;
+}
 .constellation-thresholds {
   display: flex;
   flex-flow: row wrap;
@@ -2078,6 +2086,10 @@
   background-color: rgba(11, 19, 43, 0.08);
 }
 
+.constellation-legend .copy-to-clipboard {
+  font-family: var(--text-family);
+  font-size: 0.9em;
+}
 @keyframes constellation-pulse {
   0%,
   100% {
@@ -2100,7 +2112,7 @@
   }
 }
 
-@media (min-width: 800px) {
+@media (min-width: 700px) {
   .constellation-legend {
     width: max-content;
     left: var(--page-padding);
@@ -2108,13 +2120,6 @@
   .constellation-legend .inner {
     flex-flow: row nowrap;
     gap: 2rem;
-  }
-}
-
-@media (min-width: 1200px) {
-  .constellation-legend {
-    --legend-width: max-content;
-    left: calc(50vw - var(--legend-width) / 2);
   }
 }
 
