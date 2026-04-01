@@ -303,9 +303,10 @@ main {
 .nav-sub ul::-webkit-scrollbar {
   height: 0;
 }
+
 button.horizonal-scroll {
   position: absolute;
-  top: 0.03em;
+  top: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -421,7 +422,11 @@ button.horizonal-scroll.disable {
   opacity: 0.2;
   pointer-events: none;
 }
-
+@media (min-width: 300px) {
+  button.horizonal-scroll {
+    top: 0.03em;
+  }
+}
 .page {
   padding: 0 var(--page-padding);
   margin: 0 auto;
