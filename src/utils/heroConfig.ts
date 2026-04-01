@@ -90,7 +90,7 @@ const heroConfig: Record<string, (language: ELanguages) => HeroProps> = {
     instructions: t.TryTappingTheShapes[language],
   }),
   '/portfolio/colors': (language) => ({
-    heading: t.ColorAccessibility[language],
+    heading: 'Contrast at a Glance',
     text: t.WCAGTool[language],
     address: 'colors',
     language,
