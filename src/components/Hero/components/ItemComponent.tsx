@@ -1368,13 +1368,13 @@ const ItemComponent = forwardRef<
 
           <svg className="filter">
             <filter id="svgfilterHero">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="5" />
+              <feGaussianBlur in="SourceGraphic" stdDeviation="6" />
               <feColorMatrix
                 values="
                                 1 0 0 0 0 
                                 0 1 0 0 0 
                                 0 0 1 0 0
-                                0 0 0 37 -10
+                                0 0 0 55 -12
                                 "
               ></feColorMatrix>
             </filter>
