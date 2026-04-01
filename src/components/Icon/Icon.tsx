@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import type { ComponentType, CSSProperties } from 'react'
-import ClientOnly from '../ClientOnly/ClientOnly'
 import { iconLibraries } from './iconLibraries'
 
 type IconLibraries = typeof iconLibraries
@@ -62,21 +61,18 @@ const Icon = ({
     throw new Error(missingTitle)
   }
 
+  if (isMissing) return null
+
   return (
-    // Only render icons on the client to avoid bundling react-icons in SSR
-    <ClientOnly>
-      {isMissing ? null : (
-        <IconComp
-          className={className}
-          style={style}
-          height={height}
-          width={width}
-          aria-hidden={ariaHidden}
-          aria-label={ariaLabel}
-          title={title}
-        />
-      )}
-    </ClientOnly>
+    <IconComp
+      className={className}
+      style={style}
+      height={height}
+      width={width}
+      aria-hidden={ariaHidden}
+      aria-label={ariaLabel}
+      title={title}
+    />
   )
 }
 

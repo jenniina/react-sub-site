@@ -117,7 +117,12 @@ import {
 import { GrGraphQl } from 'react-icons/gr'
 import { GiAbstract019, GiComb } from 'react-icons/gi'
 import { SiSvgtrace } from 'react-icons/si'
-import { GoArrowLeft, GoArrowRight } from 'react-icons/go'
+import {
+  GoArrowLeft,
+  GoArrowRight,
+  GoTriangleDown,
+  GoTriangleUp,
+} from 'react-icons/go'
 
 type IconLibrariesShape = Record<
   string,
@@ -279,5 +284,7 @@ export const iconLibraries = {
   go: {
     GoArrowLeft,
     GoArrowRight,
+    GoTriangleDown,
+    GoTriangleUp,
   },
 } as const satisfies IconLibrariesShape
