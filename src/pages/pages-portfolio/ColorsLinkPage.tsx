@@ -31,7 +31,7 @@ export default function ComposerPage({ type }: { type: string }) {
                 <p>
                   <big>
                     <a
-                      href={`https://colors.jenniina.fi?theme=${lightTheme ? 'true' : 'false'}`}
+                      href={`https://colors.jenniina.fi?light=${lightTheme ? 'true' : 'false'}`}
                     >
                       Contrast at a Glance &raquo;
                     </a>
