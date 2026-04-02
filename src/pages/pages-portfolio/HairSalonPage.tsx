@@ -61,19 +61,17 @@ export default function HairSalonPage({ type }: { type: string }) {
                 </Accordion>
 
                 <div
-                  style={
-                    isFormOpen
-                      ? {
-                          paddingLeft: '0.5rem',
-                          fontSize: '130%',
-                        }
-                      : { fontSize: '130%' }
-                  }
+                  style={{
+                    marginTop: '2rem',
+                    textAlign: 'center',
+                  }}
                 >
                   <p>
-                    <a href="https://hannastiina.jenniina.fi">
-                      Parturi Kampaamo Hannastiina &raquo;
-                    </a>
+                    <big>
+                      <a href="https://hannastiina.jenniina.fi">
+                        {t('Website')} Parturi Kampaamo Hannastiina &raquo;
+                      </a>
+                    </big>
                   </p>
                   <p>
                     <a href="https://github.com/jenniina/hannastiina">

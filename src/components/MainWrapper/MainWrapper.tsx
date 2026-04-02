@@ -16,7 +16,7 @@ import Welcome from '../../pages/Welcome'
 import Portfolio from '../../pages/Portfolio'
 
 // Import all components synchronously for better AI readability
-import GraphQLPageSync from '../../pages/pages-portfolio/GraphQLPage'
+// import GraphQLPageSync from '../../pages/pages-portfolio/GraphQLPage'
 import BlobPageSync from '../../pages/pages-portfolio/BlobPage'
 import JokesPageSync from '../../pages/pages-portfolio/JokesPage'
 import MemoryPageSync from '../../pages/pages-portfolio/MemoryPage'
@@ -144,10 +144,10 @@ const MainWrapper = () => {
 
         <Route path="/portfolio" element={<NavPortfolio />}>
           <Route index element={<Portfolio type="page" />} />
-          <Route
+          {/* <Route
             path="/portfolio/graphql"
             element={<GraphQLPageSync type="page subpage" />}
-          />
+          /> */}
           <Route
             path="/portfolio/blob"
             element={<BlobPageSync type="page subpage" />}
