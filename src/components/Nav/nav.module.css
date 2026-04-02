@@ -811,11 +811,6 @@ a.link:visited:not(.active):focus > *,
   }
 } /*END media*/
 
-/*
-/*
-/*
-/***************************** (min-width: 600px) *****************************/
-
 @media (min-width: 700px) {
   /*if you change the pixel amount, also change above max-width 
   and const breakpoint in Nav.tsx
@@ -827,7 +822,8 @@ a.link:visited:not(.active):focus > *,
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: flex-end;
-    max-width: calc(var(--widest) - calc(var(--page-padding) * 2));
+    /* max-width: calc(var(--widest) - calc(var(--page-padding) * 2)); */
+    max-width: calc(100vw - calc(var(--page-padding) * 2));
     height: var(--height);
   }
   header.main-header button.togglemenu.hidden {
@@ -1009,11 +1005,6 @@ a.link:visited:not(.active):focus > *,
     transition-timing-function: ease-in-out;
   }
 } /*END media*/
-
-/*
-/*
-/*
-/***************************** (min-width: 900px) *****************************/
 
 @media (min-width: 1000px) {
   .logo-container {
@@ -1198,10 +1189,6 @@ button.dlt-btn:focus {
 /******************************************************/
 /*******        Alternate Mobile Menu          *******/
 /****************************************************/
-/*
-/*
-/*
-/***************************** (max-width: 699px) *****************************/
 
 @media (max-width: 699px) {
   /*if you change the pixel amount, also change above max-width and min-width

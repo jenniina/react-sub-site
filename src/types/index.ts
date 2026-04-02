@@ -56,7 +56,21 @@ export interface IUser {
   createdAt?: string
   updatedAt?: string
   blacklistedJokes?: IBlacklistedJoke[]
+  colorAccessibility?: {
+    colors: unknown[]
+    currentColor?: string
+    mode?: string
+    updatedAt?: string
+  }
 }
+
+export interface IPublicUserName {
+  _id: string
+  name: string
+}
+
+export type TPublicUserNamesMap = Record<string, string>
+
 export interface IBlacklistedJoke {
   jokeId: IJoke['jokeId']
   language: ELanguages

@@ -25,24 +25,12 @@ import {
 } from '../types'
 import { BlobContext } from './BlobProvider'
 import { ReducerProps } from '../../../types'
-import {
-  BiChevronDown,
-  BiChevronsDown,
-  BiChevronsLeft,
-  BiChevronsRight,
-  BiChevronsUp,
-  BiChevronUp,
-  BiPlus,
-} from 'react-icons/bi'
-import { ImEnlarge2, ImShrink2, ImCamera } from 'react-icons/im'
-import { FaPlus, FaRegClone, FaSave } from 'react-icons/fa'
 import useWindowSize from '../../../hooks/useWindowSize'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import Accordion from '../../Accordion/Accordion'
 import { notify } from '../../../reducers/notificationReducer'
 import { initializeUser } from '../../../reducers/authReducer'
-import { initializeUsers } from '../../../reducers/usersReducer'
 import { useNavigate } from 'react-router-dom'
 import blobService from '../services/blob'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
@@ -52,6 +40,7 @@ import ColorBlocks from './ColorBlocks'
 import Sliders from './Sliders'
 import DragLayers from './DragLayers'
 import { getErrorMessage } from '../../../utils'
+import Icon from '../../Icon/Icon'
 
 // Should be in the same order as colorBlockProps
 const colorPairs: ColorPair[] = [
@@ -97,8 +86,6 @@ const preventDefault = (e: Event) => {
   e.preventDefault()
 }
 
-const EMPTY_ARRAY: unknown[] = []
-
 export default function DragContainer({
   d,
   dragWrapOuter,
@@ -123,10 +110,6 @@ export default function DragContainer({
   const { state, dispatch } = useContext(BlobContext)!
   const dispatch2 = useAppDispatch()
   const user = useSelector((state: ReducerProps) => state.auth?.user)
-  const users = useSelector(
-    (state: ReducerProps) =>
-      (state as unknown as { users?: unknown[] }).users ?? EMPTY_ARRAY
-  )
 
   const dragWrap = useRef(null) as RefObject<HTMLDivElement>
   const dragWrapOutest = useRef(null) as RefObject<HTMLDivElement>
@@ -198,6 +181,7 @@ export default function DragContainer({
   const [editName, setEditName] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [hasSavedFiles, setHasSavedFiles] = useState(false)
+  const [serverError, setServerError] = useState(false)
 
   const [trackSaving, setTrackSaving] = useState(false)
   const [savedDraggablesbyD, setSavedDraggablesByD] = useState<
@@ -560,6 +544,7 @@ export default function DragContainer({
 
   const getBlobsFromServer = useCallback(async () => {
     setIsLoading(true)
+    setServerError(false)
     try {
       if (user?._id) {
         await blobService
@@ -606,12 +591,14 @@ export default function DragContainer({
           .catch((err: unknown) => {
             const message = getErrorMessage(err, t('Error'))
             void dispatch2(notify(message, true, 8))
+            setServerError(true)
             setIsLoading(false)
           })
       }
     } catch (err: unknown) {
       const message = getErrorMessage(err, t('Error'))
       void dispatch2(notify(message, true, 8))
+      setServerError(true)
       setIsLoading(false)
     }
   }, [d, dispatch2, language, t, user?._id])
@@ -822,7 +809,6 @@ export default function DragContainer({
 
   useEffect(() => {
     const fetchData = async () => {
-      await dispatch2(initializeUsers())
       await dispatch2(initializeUser())
     }
     void fetchData()
@@ -1831,7 +1817,7 @@ export default function DragContainer({
     if (loading) void dispatch2(notify(`${t('Loading')}...`, false, 20))
   }, [loading, dispatch2, t])
 
-  const [itemsPerPage, setItemsPerPage] = useState(5)
+  const [itemsPerPage, setItemsPerPage] = useState(3)
 
   const [currentPage, setCurrentPage] = useState<Record<number, number>>({
     [d]: 1,
@@ -2180,7 +2166,7 @@ export default function DragContainer({
                 onClick={() => void takeScreenshot()}
                 className="screenshot tooltip-wrap"
               >
-                <ImCamera />
+                <Icon lib="im" name="ImCamera" aria-hidden="true" />
                 <span
                   id={`take-screenshot${d}-span`}
                   className="tooltip left above"
@@ -2215,7 +2201,7 @@ export default function DragContainer({
                     toggleMode('scale-down')
                   }}
                 >
-                  <ImShrink2 />
+                  <Icon lib="im" name="ImShrink2" aria-hidden="true" />
                   {mode === 'scale-down' && (
                     <span className="scale-down-alert">
                       {t('SizeDecreaseModeOn')}
@@ -2238,7 +2224,7 @@ export default function DragContainer({
                     toggleMode('scale-up')
                   }}
                 >
-                  <ImEnlarge2 />
+                  <Icon lib="im" name="ImEnlarge2" aria-hidden="true" />
                   {mode === 'scale-up' && (
                     <span className="scale-up-alert">
                       {t('SizeIncreaseModeOn')}
@@ -2262,7 +2248,7 @@ export default function DragContainer({
                     toggleMode('clone')
                   }}
                 >
-                  <FaRegClone />
+                  <Icon lib="fa" name="FaRegClone" aria-hidden="true" />
                   {mode === 'clone' && (
                     <span className="clone-alert">{t('CloneModeOn')}</span>
                   )}
@@ -2282,7 +2268,7 @@ export default function DragContainer({
                   aria-labelledby={`make-random${d}-span`}
                   onClick={() => addRandomDraggable()}
                 >
-                  <FaPlus />
+                  <Icon lib="fa" name="FaPlus" aria-hidden="true" />
                   <span
                     id={`make-random${d}-span`}
                     className="tooltip below"
@@ -2298,7 +2284,7 @@ export default function DragContainer({
                   id={`delete-blob${d}`}
                   onClick={() => toggleMode('delete')}
                 >
-                  <span style={{ fontSize: '1.2em' }}>&times;</span>
+                  <Icon lib="fa" name="FaTimes" aria-hidden="true" />
                   {mode === 'delete' && (
                     <span className="delete-alert">{t('DeleteModeOn')}</span>
                   )}
@@ -2329,7 +2315,7 @@ export default function DragContainer({
                   >{`${t('DecreaseBlobLayerBy1Instructions')} ${t(
                     'KeyboardUsePressTheCorrespondingLayerNumber'
                   )}`}</span>
-                  <BiChevronDown />
+                  <Icon lib="bi" name="BiChevronDown" aria-hidden="true" />
                 </button>
                 <button
                   ref={layerIncrease}
@@ -2350,7 +2336,7 @@ export default function DragContainer({
                   >{`${t('IncreaseBlobLayerBy1Instructions')} ${t(
                     'KeyboardUsePressTheCorrespondingLayerNumber'
                   )}`}</span>
-                  <BiChevronUp />
+                  <Icon lib="bi" name="BiChevronUp" aria-hidden="true" />
                 </button>
 
                 {markerEnabled && usingKeyboard && focusedBlob && (
@@ -2441,7 +2427,7 @@ export default function DragContainer({
                   className={`moveleft mover tooltip-wrap narrow2`}
                   onClick={handleMoveRight}
                 >
-                  <BiChevronsLeft />
+                  <Icon lib="bi" name="BiChevronsLeft" aria-hidden="true" />
                   <span id={`moveleft${d}-span`} className="tooltip above">
                     {t('MoveViewLeft')}
                   </span>
@@ -2452,7 +2438,7 @@ export default function DragContainer({
                   className={`moveright mover tooltip-wrap narrow2`}
                   onClick={handleMoveLeft}
                 >
-                  <BiChevronsRight />
+                  <Icon lib="bi" name="BiChevronsRight" aria-hidden="true" />
                   <span id={`moveright${d}-span`} className="tooltip above">
                     {t('MoveViewRight')}
                   </span>
@@ -2485,7 +2471,7 @@ export default function DragContainer({
                   >
                     {t('ClickHereToMoveDownLayer')}
                   </span>
-                  <BiChevronDown />
+                  <Icon lib="bi" name="BiChevronDown" aria-hidden="true" />
                 </button>
               </div>
               <div className="layer-btn-wrap layers">
@@ -2531,7 +2517,7 @@ export default function DragContainer({
                   >
                     {t('ClickHereToMoveUpLayer')}
                   </span>
-                  <BiChevronUp />
+                  <Icon lib="bi" name="BiChevronUp" aria-hidden="true" />
                 </button>
                 <button
                   id={`increase-layer-amount${d}`}
@@ -2546,7 +2532,7 @@ export default function DragContainer({
                   >
                     {t('GetMoreLayers')}
                   </span>
-                  <BiPlus />
+                  <Icon lib="bi" name="BiPlus" aria-hidden="true" />
                 </button>
               </div>
               <div
@@ -2560,7 +2546,7 @@ export default function DragContainer({
                   className={`moveup mover tooltip-wrap narrow2`}
                   onClick={handleMoveDown}
                 >
-                  <BiChevronsUp />
+                  <Icon lib="bi" name="BiChevronsUp" aria-hidden="true" />
                   <span id={`moveup${d}-span`} className="tooltip above">
                     {t('MoveViewUp')}
                   </span>
@@ -2571,7 +2557,7 @@ export default function DragContainer({
                   className={`movedown mover tooltip-wrap narrow2`}
                   onClick={handleMoveUp}
                 >
-                  <BiChevronsDown />
+                  <Icon lib="bi" name="BiChevronsDown" aria-hidden="true" />
                   <span id={`movedown${d}-span`} className="tooltip above">
                     {t('MoveViewDown')}
                   </span>
@@ -2627,7 +2613,7 @@ export default function DragContainer({
                 <h3>{t('Art')}</h3>
                 {isLoading ? (
                   <p>{t('LoadingSavedArtwork')}</p>
-                ) : !users || users.length < 1 ? (
+                ) : serverError ? (
                   <p>{t('ErrorConnectingToTheServer')}</p>
                 ) : !hasSavedFiles ? (
                   <p>{t('NoSavedArtworkYet')}</p>
@@ -2761,7 +2747,7 @@ export default function DragContainer({
             ) : (
               <div className="wide flex column center gap">
                 <div className="login-to-save wide flex column center gap-half">
-                  <FaSave />
+                  <Icon lib="fa" name="FaSave" aria-hidden="true" />
                   {t('InOrderToSaveTheBlobs')}
                 </div>
                 <div className={`blob-register-login-wrap`}>

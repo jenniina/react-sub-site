@@ -10,12 +10,6 @@ import React, {
 } from 'react'
 import { Data, Status } from '../types'
 import styles from '../dragAndDrop.module.css'
-import {
-  MdContentCopy,
-  MdLocationOn,
-  MdOutlineDragIndicator,
-} from 'react-icons/md'
-import { AiOutlineEdit } from 'react-icons/ai'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
 import { notify } from '../../../reducers/notificationReducer'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
@@ -23,6 +17,7 @@ import { determineBackgroundLightness, sanitize } from '../../../utils'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 import { getErrorMessage } from '../../../utils'
 import Accordion from '../../Accordion/Accordion'
+import Icon from '../../Icon/Icon'
 
 interface Props {
   status: Status
@@ -83,7 +78,7 @@ function CardSingle({
   const [sending, setSending] = useState(false)
 
   function toggleOpen() {
-    setIsOpen(prev => !prev)
+    setIsOpen((prev) => !prev)
   }
   function closing() {
     setIsOpen(false)
@@ -212,8 +207,8 @@ function CardSingle({
       return
     }
 
-    setData(prevData =>
-      prevData.map(item =>
+    setData((prevData) =>
+      prevData.map((item) =>
         item.id === data.id
           ? { ...item, content: editedContent.trim(), isUser: true }
           : item
@@ -249,8 +244,8 @@ function CardSingle({
 
     const newLightness = determineBackgroundLightness(editedColor)
 
-    setData(prevData =>
-      prevData.map(item =>
+    setData((prevData) =>
+      prevData.map((item) =>
         item.id === data.id
           ? {
               ...item,
@@ -289,16 +284,16 @@ function CardSingle({
       role="option"
       aria-selected={false}
       draggable={'true'}
-      onDragStart={e => handleDragStart(e)}
-      onDragEnter={e => handleDragEnter(e, id)}
-      onDragOver={e => handleDragOver(e)}
+      onDragStart={(e) => handleDragStart(e)}
+      onDragEnter={(e) => handleDragEnter(e, id)}
+      onDragOver={(e) => handleDragOver(e)}
       onDragEnd={() => {
         handleDragging(false)
         cardRef.current?.setAttribute('aria-selected', 'false')
       }}
       tabIndex={0}
       aria-label={t('Draggable')}
-      onKeyDown={e => handleUpAndDown(e, id)}
+      onKeyDown={(e) => handleUpAndDown(e, id)}
       data-identity={id}
     >
       <div style={styleCard} className={`${styles.card}`}>
@@ -308,7 +303,7 @@ function CardSingle({
             <b>&times;</b>
           </button>
           <button aria-haspopup="true" onClick={toggleOpen}>
-            <MdOutlineDragIndicator aria-hidden="true" />
+            <Icon lib="md" name="MdOutlineDragIndicator" aria-hidden="true" />
             <span className="scr" id={`instructions${id}`}>
               {t('ChooseDestination')}
             </span>
@@ -327,7 +322,7 @@ function CardSingle({
             className={sanitize(currentStatus)}
           >
             <li className={styles.copy}>
-              <MdContentCopy />
+              <Icon lib="md" name="MdContentCopy" />
               <button
                 type="button"
                 className={styles.copy}
@@ -338,7 +333,7 @@ function CardSingle({
               </button>
             </li>
             <li className={styles.edit}>
-              <AiOutlineEdit />
+              <Icon lib="ai" name="AiOutlineEdit" />
               <Accordion
                 isOpen={isEditContentOpen}
                 setIsFormOpen={setIsEditContentOpen}
@@ -354,7 +349,7 @@ function CardSingle({
                         type="text"
                         id={`edit-content-${id}`}
                         value={editedContent}
-                        onChange={e => setEditedContent(e.target.value)}
+                        onChange={(e) => setEditedContent(e.target.value)}
                         required
                       />
                       <span>{t('Text')}:</span>
@@ -367,7 +362,7 @@ function CardSingle({
               </Accordion>
             </li>
             <li className={styles.edit}>
-              <AiOutlineEdit />
+              <Icon lib="ai" name="AiOutlineEdit" />
               <Accordion
                 isOpen={isEditColorOpen}
                 setIsFormOpen={setIsEditColorOpen}
@@ -383,7 +378,7 @@ function CardSingle({
                         type="text"
                         id={`edit-color-${id}`}
                         value={editedColor}
-                        onChange={e => setEditedColor(e.target.value)}
+                        onChange={(e) => setEditedColor(e.target.value)}
                         required
                       />
                       <span>{t('Color')}:</span>
@@ -413,12 +408,12 @@ function CardSingle({
                 className={sanitize(targetStatus)}
                 aria-selected={targetStatus === currentStatus}
               >
-                <MdLocationOn />
+                <Icon lib="md" name="MdLocationOn" />
                 <button
                   type="button"
                   className={`tooltip-wrap ${sanitize(targetStatus)}`}
                   data-status={targetStatus}
-                  onClick={e => containerUpdate(e)}
+                  onClick={(e) => containerUpdate(e)}
                   title={`${t('ToTarget')}: ${translateStatus(
                     targetStatus
                   ).toLowerCase()}`}

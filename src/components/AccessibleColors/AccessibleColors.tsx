@@ -26,6 +26,8 @@ import { useSearchParams } from 'react-router-dom'
 import { useConfirm } from '../../contexts/ConfirmContext'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import ColorsInput from './components/ColorsInput'
+import NamedPalettes from './components/NamedPalettes'
+import useSideScroll from '../../hooks/useSideScroll'
 
 const randomString = getRandomString(5)
 
@@ -85,6 +87,7 @@ const AccessibleColors: FC = () => {
   const {
     colors,
     setColors,
+    replaceColors,
     addColor,
     removeColor,
     updateColor,
@@ -96,12 +99,19 @@ const AccessibleColors: FC = () => {
     setMode,
     makeColorPalette,
     setColorsReset,
+    updateSearchParams,
   } = useAccessibleColors('analogous')
 
   const { t } = useLanguageContext()
   const confirm = useConfirm()
 
   const statuses = useMemo(() => [status], [])
+
+  const containerRef = useRef<HTMLDivElement | null>(null)
+
+  const { ref: scrollRef } = useSideScroll<HTMLDivElement>(
+    'accessible-colors-scroll'
+  )
 
   const dispatch = useAppDispatch()
   const lightTheme = useTheme()
@@ -144,11 +154,10 @@ const AccessibleColors: FC = () => {
     [dispatch, t]
   )
   const [searchParams, setSearchParams] = useSearchParams({
-    show: 'true',
     name: 'true',
     mode: 'analogous',
   })
-  const show = (searchParams.get('show') ?? 'true') === 'true'
+
   const name = (searchParams.get('name') ?? 'true') === 'true'
 
   const { isDragging, listItemsByStatus, handleDragging, handleUpdate } =
@@ -180,67 +189,45 @@ const AccessibleColors: FC = () => {
     { value: 'tetrad', label: t('Tetrad') },
   ]
 
-  const random: number = Math.floor(Math.random() * colorModeOptions.length)
+  const isValidMode = (value: string | null): value is TColorMode => {
+    return (
+      value === 'analogous' ||
+      value === 'complementary' ||
+      value === 'triad' ||
+      value === 'tetrad' ||
+      value === 'monochromatic'
+    )
+  }
 
-  const colorMode = (searchParams.get('mode') ??
-    colorModeOptions[random]) as TColorMode
+  const urlMode = searchParams.get('mode')
+  const colorMode: TColorMode = isValidMode(urlMode) ? urlMode : 'analogous'
 
   useEffect(() => {
     setMode(colorMode)
   }, [colorMode, setMode])
+
+  const setModeFromServer = useCallback(
+    (nextMode: TColorMode) => {
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev)
+          next.set('mode', nextMode)
+          return next
+        },
+        {
+          replace: true,
+          preventScrollReset: true,
+        }
+      )
+    },
+    [setSearchParams]
+  )
 
   const resetAndMake = () => {
     listItemsByStatus[status].removeItems()
     setColorsReset(true)
     clearColors()
   }
-
-  // const parseColor = (color: string, format: string): string => {
-  //   if (format === 'hex') {
-  //     // Validate HEX format
-  //     const hexRegex = /^#([A-Fa-f0-9]{6})$/
-  //     if (hexRegex.test(color)) {
-  //       return color.toUpperCase()
-  //     } else {
-  //       throw new Error(`Invalid HEX color format: ${color}`)
-  //     }
-  //   } else if (format === 'rgb') {
-  //     const rgbMatch = color.match(
-  //       /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i
-  //     )
-  //     if (rgbMatch) {
-  //       const r = Number(rgbMatch[1])
-  //       const g = Number(rgbMatch[2])
-  //       const b = Number(rgbMatch[3])
-  //       if ([r, g, b].every(val => val >= 0 && val <= 255)) {
-  //         return rgbToHex(r, g, b)
-  //       } else {
-  //         throw new Error(`RGB values out of range in color: ${color}`)
-  //       }
-  //     } else {
-  //       throw new Error(`Invalid RGB color format: ${color}`)
-  //     }
-  //   } else if (format === 'hsl') {
-  //     const hslMatch = color.match(
-  //       /^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/i
-  //     )
-  //     if (hslMatch) {
-  //       let h = clampValue(0, Number(hslMatch[1]), 360)
-  //       let s = clampValue(0, Number(hslMatch[2]), 100)
-  //       let l = clampValue(0, Number(hslMatch[3]), 100)
-
-  //       h = (h + 360) % 360
-  //       s = clampValue(0, s, 100)
-  //       l = clampValue(0, l, 100)
-
-  //       return `hsl(${h}, ${s}%, ${l}%)`
-  //     } else {
-  //       throw new Error(`Invalid HSL color format: ${color}`)
-  //     }
-  //   } else {
-  //     throw new Error(`Unsupported color format: ${format}`)
-  //   }
-  // }
 
   const ComplianceShapes: Record<
     | ComplianceLevel.AA_RegularText
@@ -473,21 +460,24 @@ const AccessibleColors: FC = () => {
     const width = widthNumber * 20
     const blockWidth = width
     const indicatorSize = blockWidth / 3
-    const indicatorSpacing = indicatorSize / 1.5
-    const padding = width / 4
+    const indicatorSpacing = indicatorSize / 3
+    const padding = width / 6
     const lineHeight = indicatorSize / 20
     const fontSize = blockWidth / 10
     const items = listItemsByStatus[status]?.items ?? []
 
     const totalIndicators = items?.length
-    const blockHeight =
-      totalIndicators * (indicatorSize + indicatorSpacing) -
-      indicatorSpacing +
-      padding * 2
-    const textBlockHeight = name ? fontSize + padding * 0.7 : 0
+    const blockHeight = name
+      ? totalIndicators * (indicatorSize + indicatorSpacing) -
+        indicatorSpacing +
+        padding * 0.5
+      : totalIndicators * (indicatorSize + indicatorSpacing) -
+        indicatorSpacing +
+        padding * 0.7
+    const textBlockHeight = name ? fontSize + padding * 0.7 : padding * 0.7
 
     const svgWidth = items.length * blockWidth
-    const svgHeight = blockHeight + textBlockHeight * 1.6
+    const svgHeight = blockHeight + textBlockHeight * 1.8
 
     const blocksGroup = items
       ?.map((block, index) => {
@@ -589,7 +579,8 @@ const AccessibleColors: FC = () => {
 
     const linesGroup = items
       ?.map((colorItem, idx) => {
-        const yIndicator = padding + idx * (indicatorSize + indicatorSpacing)
+        const yIndicator =
+          padding * 0.5 + idx * (indicatorSize + indicatorSpacing)
         const yLine = yIndicator + (indicatorSize - lineHeight) / 2
         // Always use hex for line color
         let lineHex
@@ -665,7 +656,7 @@ const AccessibleColors: FC = () => {
             return ComplianceShapes[complianceLevel]({
               xPosition,
               yIndicator:
-                padding +
+                padding * 0.5 +
                 items.indexOf(other) * (indicatorSize + indicatorSpacing),
               blockWidth,
               indicatorSize,
@@ -687,9 +678,13 @@ const AccessibleColors: FC = () => {
       })
       .join('')
 
-    const linkMargin = 7
-    const linkX = svgWidth - linkMargin
-    const linkY = svgHeight - linkMargin * 1.5
+    const linkMargin = 8
+    const linkX = svgWidth - linkMargin * 1.2
+    const linkY =
+      totalIndicators < 3
+        ? svgHeight - linkMargin * 1.5
+        : svgHeight - linkMargin
+    const size = totalIndicators < 3 ? fontSize * 0.7 : fontSize
     const linkURL = 'https://colors.jenniina.fi'
 
     const linkElement = `
@@ -697,7 +692,7 @@ const AccessibleColors: FC = () => {
         <text
           x="${linkX}"
           y="${linkY}"
-          font-size="${fontSize}"
+          font-size="${size}"
           font-family="Arial"
           text-anchor="end"
           fill="#000000"
@@ -713,7 +708,7 @@ const AccessibleColors: FC = () => {
         <text
           x="${linkMargin}"
           y="${linkY}"
-          font-size="${fontSize}"
+          font-size="${size}"
           font-family="Arial"
           text-anchor="start"
           fill="#FFFFFF"
@@ -764,6 +759,12 @@ const AccessibleColors: FC = () => {
   }) => string
 
   const saveAsSVG = () => {
+    const isOnlyOneColor = (listItemsByStatus[status]?.items ?? []).length === 1
+    if (isOnlyOneColor) {
+      dispatch(notify(t('PleaseChooseAtLeastTwoColors'), true, 5))
+      return
+    }
+
     const { svgContent } = generateSVG()
     const blob = new Blob([svgContent], {
       type: 'image/svg+xml;charset=utf-8',
@@ -780,6 +781,12 @@ const AccessibleColors: FC = () => {
   }
 
   const saveAsPNG = () => {
+    const isOnlyOneColor = (listItemsByStatus[status]?.items ?? []).length === 1
+    if (isOnlyOneColor) {
+      dispatch(notify(t('PleaseChooseAtLeastTwoColors'), true, 5))
+      return
+    }
+
     const { svgContent, svgWidth, svgHeight } = generateSVG()
 
     const img = new Image()
@@ -850,10 +857,13 @@ const AccessibleColors: FC = () => {
   const handleDrop = (e: React.DragEvent<HTMLUListElement>) => {
     const data = JSON.parse(e.dataTransfer.getData('text/plain')) as DragData
     if (data.type === 'item') {
-      handleUpdate(parseInt(data.id), status, theTarget)
-      setTimeout(() => {
-        setColors(listItemsByStatus[status]?.items)
-      }, 200)
+      const nextItems = handleUpdate(parseInt(data.id), status, theTarget)
+      const ordered = Array.isArray(nextItems)
+        ? nextItems
+        : (listItemsByStatus[status]?.items ?? [])
+
+      // Keep the saved state (and URL) in sync with the visible order.
+      replaceColors(ordered)
       handleDragging(false)
     }
   }
@@ -885,18 +895,30 @@ const AccessibleColors: FC = () => {
       ]
 
       listItemsByStatus[status].setItems(nextItems)
-      setColors(nextItems)
+      replaceColors(nextItems)
     },
-    [listItemsByStatus, setColors]
+    [listItemsByStatus, replaceColors]
   )
 
   const times = 0.04
 
   const blocks = listItemsByStatus[status]?.items ?? []
 
+  const applyLoadedColors = useCallback(
+    (nextColors: ColorBlock[]) => {
+      // DnD order is persisted in localStorage; when we load a palette we want
+      // the palette's saved order, not whatever order was previously persisted.
+      listItemsByStatus[status]?.removeItems()
+      listItemsByStatus[status]?.setItems(nextColors)
+      replaceColors(nextColors)
+    },
+    [listItemsByStatus, replaceColors]
+  )
+
   return (
     <div
       id={styles['color-container']}
+      ref={containerRef}
       className={`fullwidth ${styles['color-container']} ${
         lightTheme ? styles.light : ''
       }`}
@@ -1006,21 +1028,20 @@ const AccessibleColors: FC = () => {
                 label: colorModeOptions.find((o) => o.value === mode)?.label,
               } as SelectOption
             }
-            onChange={(o) =>
+            onChange={(o) => {
+              setMode(o?.value as TColorMode)
               setSearchParams(
                 (prev) => {
-                  prev.set(
-                    'mode',
-                    (o?.value ?? colorModeOptions[random].value) as string
-                  )
-                  return prev
+                  const next = new URLSearchParams(prev)
+                  next.set('mode', String(o?.value ?? mode ?? 'analogous'))
+                  return next
                 },
                 {
                   replace: true,
                   preventScrollReset: true,
                 }
               )
-            }
+            }}
             id="color-mode"
             instructions={t('SelectColorModeForNewColors')}
             className={`${styles['color-select']}`}
@@ -1043,14 +1064,19 @@ const AccessibleColors: FC = () => {
           <button
             className={` gray small  ${styles['empty-generate']}`}
             type="button"
-            onClick={() => {
-              if (
-                haveCleared === true ||
-                void confirm({
-                  message: t('AreYouSureYouWantToClearAllColors') ?? '',
-                })
-              )
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
+            onClick={async () => {
+              if (haveCleared) {
                 resetAndMake()
+                return
+              }
+
+              const ok = await confirm({
+                message: t('AreYouSureYouWantToClearAllColors') ?? '',
+              })
+
+              if (!ok) return
+              resetAndMake()
               setHaveCleared(true)
             }}
           >
@@ -1061,8 +1087,9 @@ const AccessibleColors: FC = () => {
       </div>
       <div
         id="color-blocks"
+        ref={scrollRef}
         className={`${styles['color-blocks']} ${
-          !name || !show ? styles.overflow : ''
+          !name ? styles.overflow : ''
         } ${isDragging ? styles.drag : ''}`}
       >
         {blocks.map((block, index) => {
@@ -1085,95 +1112,94 @@ const AccessibleColors: FC = () => {
                 aria-label={`ID: ${block.id}`}
                 style={{ width: `${width}`, maxWidth: `${width}` }}
               >
-                {show && (
-                  <>
-                    <div className={styles['skip-links']}>
-                      {!isFirst && prevId != null && (
-                        <a
-                          href={`#color-block-${prevId}`}
-                          className={`${styles['skip-link']} gray small`}
-                          onClick={(e) => {
-                            e.preventDefault()
-                            focusColorBlock(prevId)
-                          }}
-                        >
-                          <span>
-                            <Icon lib="fa" name="FaArrowLeft" />{' '}
-                            {t('SkipToPreviousColor')}
-                          </span>
-                        </a>
-                      )}
-
-                      {!isLast && nextId != null && (
-                        <a
-                          href={`#color-block-${nextId}`}
-                          className={`${styles['skip-link']} gray small`}
-                          onClick={(e) => {
-                            e.preventDefault()
-                            focusColorBlock(nextId)
-                          }}
-                        >
-                          <span>
-                            {' '}
-                            {t('SkipToNextColor')}{' '}
-                            <Icon lib="fa" name="FaArrowRight" />
-                          </span>
-                        </a>
-                      )}
-                    </div>
-                    <div className={styles['move-buttons']}>
-                      {!isFirst && (
-                        <button
-                          type="button"
-                          title={t('MoveLeft')}
-                          className={` ${styles.left}`}
-                          onClick={() => moveColor(block.id, 'left')}
-                          style={{
-                            color: block.luminance < 0.179 ? 'white' : 'black',
-                            backgroundColor: block.color,
-                            backgroundImage: 'none',
-                          }}
-                        >
-                          <b aria-hidden="true">
-                            <Icon lib="go" name="GoArrowLeft" />
-                          </b>
-                          <span className="scr">{t('MoveLeft')}</span>
-                        </button>
-                      )}
-
-                      <small
-                        draggable={'true'}
-                        onDragStart={(e) => handleDragStart(e, block.id)}
-                        onDragEnter={(e) => handleDragEnter(e, block.id)}
-                        onDragOver={(e) => handleDragOver(e)}
-                        onDragEnd={() => handleDragging(false)}
-                        data-identity={block.id}
-                        className={`${styles['drag-handle']} ${isFirst ? styles.left : isLast ? styles.right : ''}`}
+                <>
+                  <div className={styles['skip-links']}>
+                    {!isFirst && prevId != null && (
+                      <a
+                        href={`#color-block-${prevId}`}
+                        className={`${styles['skip-link']} gray small`}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          focusColorBlock(prevId)
+                        }}
                       >
-                        {t('Move')}
-                      </small>
+                        <span>
+                          <Icon lib="fa" name="FaArrowLeft" />{' '}
+                          {t('SkipToPreviousColor')}
+                        </span>
+                      </a>
+                    )}
 
-                      {!isLast && (
-                        <button
-                          type="button"
-                          title={t('MoveRight')}
-                          className={` ${styles.right}`}
-                          onClick={() => moveColor(block.id, 'right')}
-                          style={{
-                            color: block.luminance < 0.179 ? 'white' : 'black',
-                            backgroundColor: block.color,
-                            backgroundImage: 'none',
-                          }}
-                        >
-                          <b aria-hidden="true">
-                            <Icon lib="go" name="GoArrowRight" />
-                          </b>
-                          <span className="scr">{t('MoveRight')}</span>
-                        </button>
-                      )}
-                    </div>
-                  </>
-                )}
+                    {!isLast && nextId != null && (
+                      <a
+                        href={`#color-block-${nextId}`}
+                        className={`${styles['skip-link']} gray small`}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          focusColorBlock(nextId)
+                        }}
+                      >
+                        <span>
+                          {' '}
+                          {t('SkipToNextColor')}{' '}
+                          <Icon lib="fa" name="FaArrowRight" />
+                        </span>
+                      </a>
+                    )}
+                  </div>
+                  <div className={styles['move-buttons']}>
+                    {!isFirst && (
+                      <button
+                        type="button"
+                        title={t('MoveLeft')}
+                        className={` ${styles.left}`}
+                        onClick={() => moveColor(block.id, 'left')}
+                        style={{
+                          color: block.luminance < 0.179 ? 'white' : 'black',
+                          backgroundColor: block.color,
+                          backgroundImage: 'none',
+                        }}
+                      >
+                        <b aria-hidden="true">
+                          <Icon lib="go" name="GoArrowLeft" />
+                        </b>
+                        <span className="scr">{t('MoveLeft')}</span>
+                      </button>
+                    )}
+
+                    <small
+                      draggable={'true'}
+                      onDragStart={(e) => handleDragStart(e, block.id)}
+                      onDragEnter={(e) => handleDragEnter(e, block.id)}
+                      onDragOver={(e) => handleDragOver(e)}
+                      onDragEnd={() => handleDragging(false)}
+                      data-identity={block.id}
+                      className={`${styles['drag-handle']} ${isFirst ? styles.left : isLast ? styles.right : ''}`}
+                    >
+                      {t('Move')}
+                    </small>
+
+                    {!isLast && (
+                      <button
+                        type="button"
+                        title={t('MoveRight')}
+                        className={` ${styles.right}`}
+                        onClick={() => moveColor(block.id, 'right')}
+                        style={{
+                          color: block.luminance < 0.179 ? 'white' : 'black',
+                          backgroundColor: block.color,
+                          backgroundImage: 'none',
+                        }}
+                      >
+                        <b aria-hidden="true">
+                          <Icon lib="go" name="GoArrowRight" />
+                        </b>
+                        <span className="scr">{t('MoveRight')}</span>
+                      </button>
+                    )}
+                  </div>
+                </>
+
                 <ul>
                   <li
                     draggable={'true'}
@@ -1188,13 +1214,13 @@ const AccessibleColors: FC = () => {
                       backgroundColor: block.color,
                       width: `${width}`,
                       maxWidth: `${width}`,
-                      height: `calc(calc(${width} * 0.6) * ${blocks.length})`,
+                      height: `calc(calc(${width} * 0.52) * ${blocks.length})`,
                     }}
                   >
                     <div
                       className={styles['compliance-indicators']}
                       style={{
-                        gap: `calc(${width} / 4)`,
+                        gap: `calc(${width} / 6)`,
                         ['--width-full' as string]: `${width}`,
                       }}
                     >
@@ -1260,7 +1286,7 @@ const AccessibleColors: FC = () => {
                                 id={`span-${otherColor.id}-${block.id}-${randomString}`}
                                 className={`tooltip below narrow3 ${styles.tooltip}`}
                                 style={{
-                                  fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 0.9rem)`,
+                                  fontSize: `clamp(12px, ${dynamicFontSize.input}, 0.9rem)`,
                                   ['--tooltip-max-width' as string]: width,
                                 }}
                               >{`${t('AAACompliantWithID')}: ${
@@ -1298,7 +1324,7 @@ const AccessibleColors: FC = () => {
                                 id={`span-${otherColor.id}-${block.id}-${randomString}`}
                                 className="tooltip below narrow3"
                                 style={{
-                                  fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 0.9rem)`,
+                                  fontSize: `clamp(12px, ${dynamicFontSize.input}, 0.9rem)`,
                                   ['--tooltip-max-width' as string]: width,
                                 }}
                               >{`${t('AACompliantWithID')}: ${
@@ -1333,7 +1359,7 @@ const AccessibleColors: FC = () => {
                                 id={`span-ui-${otherColor.id}-${block.id}-${randomString}`}
                                 className={`tooltip below narrow3 ${styles.tooltip}`}
                                 style={{
-                                  fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 0.9rem)`,
+                                  fontSize: `clamp(12px, ${dynamicFontSize.input}, 0.9rem)`,
                                   ['--tooltip-max-width' as string]: width,
                                 }}
                               >{`${t('AAGraphicElementCompliantWithID')}: ${
@@ -1377,7 +1403,7 @@ const AccessibleColors: FC = () => {
                     <span
                       style={{
                         color: block.luminance < 0.179 ? 'white' : 'black',
-                        fontSize: `clamp(0.7rem, ${dynamicFontSize.input}, 1.2rem)`,
+                        fontSize: `clamp(12px, ${dynamicFontSize.input}, 1.2rem)`,
                         textAlign: 'center',
                       }}
                     >
@@ -1385,45 +1411,91 @@ const AccessibleColors: FC = () => {
                     </span>
                   </div>
                 )}
-                {show && (
-                  <>
-                    <div className={styles['color-edit-container']}>
-                      <ColorsInput
-                        block={block}
-                        updateColor={updateColor}
-                        width={width}
-                        hexToRGB={hexToRGB}
-                        rgbToHSL={rgbToHSL}
-                        rgbToHex={rgbToHex}
-                        hslToRGB={hslToRGB}
-                        fontSize={`clamp(0.75rem, ${dynamicFontSize.input}, 1rem)`}
-                      />
-                    </div>
-                    <button
-                      className={`tooltip-wrap small delete danger gray ${styles.remove}`}
-                      onClick={() => removeColor(block.id)}
-                      style={{
-                        margin: '0.8em auto',
-                        width: `calc(100% - 4px)`,
-                        minWidth: `calc(100% - 4px)`,
-                        fontSize: `clamp(0.75rem, ${dynamicFontSize.input}, 2rem)`,
-                      }}
-                    >
-                      {t('Remove')}
-                    </button>
-                  </>
-                )}
+
+                <>
+                  <div className={styles['color-edit-container']}>
+                    <ColorsInput
+                      block={block}
+                      updateColor={updateColor}
+                      width={width}
+                      hexToRGB={hexToRGB}
+                      rgbToHSL={rgbToHSL}
+                      rgbToHex={rgbToHex}
+                      hslToRGB={hslToRGB}
+                      fontSize={`clamp(12px, ${dynamicFontSize.input}, 1rem)`}
+                    />
+                  </div>
+                  <button
+                    className={`tooltip-wrap small delete danger gray ${styles.remove}`}
+                    onClick={() => removeColor(block.id)}
+                    style={{
+                      margin: '0.8em auto',
+                      width: `calc(100% - 4px)`,
+                      minWidth: `calc(100% - 4px)`,
+                      fontSize: `clamp(12px, ${dynamicFontSize.input}, 2rem)`,
+                    }}
+                  >
+                    {t('Remove')}
+                  </button>
+                </>
               </li>
             </ul>
           )
         })}
       </div>
 
+      {listItemsByStatus[status]?.items?.length > 0 && (
+        <>
+          <div className={`${styles['toggle-controls']}`}>
+            <div className={styles['width-wrap']}>
+              <label htmlFor="color-block-width">
+                <b>{t('EditSize')}</b>
+              </label>
+              <input
+                id="color-block-width"
+                type="range"
+                min={6}
+                max={12}
+                step={0.5}
+                value={widthNumber}
+                onChange={(e) => setWidth(Number(e.target.value))}
+              />
+            </div>
+
+            <div className={styles['visibility-wrap']}>
+              <b>{t('ToggleColorNameVisibility')}</b>
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchParams(
+                    (prev) => {
+                      prev.set('name', name ? 'false' : 'true')
+                      return prev
+                    },
+                    {
+                      replace: true,
+                      preventScrollReset: true,
+                    }
+                  )
+                  scrollRef.current?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                  })
+                }}
+                className="gray small"
+              >
+                {name ? t('HideColorName') : t('ShowColorName')}
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+
       <div className={`${styles['btn-wrap']} ${styles['export-wrap']}`}>
         {listItemsByStatus[status]?.items?.length > 0 && (
           <>
             <div>
-              <div>
+              <div className="flex column center gap-half">
                 <button
                   type="button"
                   aria-hidden="true"
@@ -1437,6 +1509,10 @@ const AccessibleColors: FC = () => {
                       }))
                     ) {
                       void resetColors()
+                      scrollRef.current?.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                      })
                     }
                   }}
                   className="reset p1"
@@ -1455,6 +1531,10 @@ const AccessibleColors: FC = () => {
                       }))
                     ) {
                       void resetColors()
+                      scrollRef.current?.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                      })
                     }
                   }}
                 >
@@ -1462,7 +1542,7 @@ const AccessibleColors: FC = () => {
                   <Icon lib="bi" name="BiReset" />
                 </button>
               </div>
-              <div>
+              <div className="flex column center gap-half">
                 <button
                   type="button"
                   aria-hidden="true"
@@ -1476,6 +1556,10 @@ const AccessibleColors: FC = () => {
                     ) {
                       listItemsByStatus[status].removeItems()
                       void clearColors()
+                      scrollRef.current?.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                      })
                     }
                   }}
                   className="reset p1"
@@ -1498,6 +1582,10 @@ const AccessibleColors: FC = () => {
                     ) {
                       listItemsByStatus[status].removeItems()
                       void clearColors()
+                      scrollRef.current?.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                      })
                     }
                   }}
                 >
@@ -1507,30 +1595,35 @@ const AccessibleColors: FC = () => {
               </div>
             </div>
             <div>
-              <div>
+              <div className="flex column center gap-half">
                 <button
                   type="button"
                   aria-hidden="true"
-                  title={t('SaveAsPNG')}
+                  title={t('SavePNG')}
                   onClick={saveAsPNG}
-                  className="reset p1"
+                  className={`reset p1 ${styles['lower05']}`}
                 >
-                  <Icon lib="pi" name="PiImage" style={{ fontSize: '1.8em' }} />
+                  <Icon
+                    lib="pi"
+                    name="PiImage"
+                    style={{ fontSize: '1.8em' }}
+                    className="lower03"
+                  />
                 </button>
                 <button
                   type="button"
                   onClick={saveAsPNG}
                   className="gray small"
                 >
-                  {t('SaveAsPNG')}
+                  {t('SavePNG')}
                   <Icon lib="pi" name="PiDownloadSimpleFill" />
                 </button>
               </div>
-              <div>
+              <div className="flex column center gap-half">
                 <button
                   type="button"
                   aria-hidden="true"
-                  title={t('SaveAsSVG')}
+                  title={t('SaveSVG')}
                   onClick={saveAsSVG}
                   className="reset p1"
                 >
@@ -1545,7 +1638,7 @@ const AccessibleColors: FC = () => {
                   onClick={saveAsSVG}
                   className="gray small"
                 >
-                  {t('SaveAsSVG')}
+                  {t('SaveSVG')}
 
                   <Icon lib="pi" name="PiDownloadSimpleFill" />
                 </button>
@@ -1553,69 +1646,18 @@ const AccessibleColors: FC = () => {
             </div>
           </>
         )}
-      </div>
 
-      {listItemsByStatus[status]?.items?.length > 0 && (
-        <>
-          <div className={styles['width-wrap']}>
-            <label htmlFor="color-block-width">{t('EditSize')}</label>
-            <input
-              id="color-block-width"
-              type="range"
-              min={6}
-              max={12}
-              step={0.5}
-              value={widthNumber}
-              onChange={(e) => setWidth(Number(e.target.value))}
-            />
-          </div>
-          <div className={`${styles['toggle-controls']}`}>
-            <div>
-              <strong>{t('ToggleControlVisibility')}</strong>
-              <button
-                id="toggle-controls"
-                type="button"
-                onClick={() =>
-                  setSearchParams(
-                    (prev) => {
-                      prev.set('show', show ? 'false' : 'true')
-                      return prev
-                    },
-                    {
-                      replace: true,
-                      preventScrollReset: true,
-                    }
-                  )
-                }
-                className="gray small"
-              >
-                {show ? t('HideControls') : t('ShowControls')}
-              </button>
-            </div>
-            <div>
-              <strong>{t('ToggleColorNameVisibility')}</strong>
-              <button
-                type="button"
-                onClick={() =>
-                  setSearchParams(
-                    (prev) => {
-                      prev.set('name', name ? 'false' : 'true')
-                      return prev
-                    },
-                    {
-                      replace: true,
-                      preventScrollReset: true,
-                    }
-                  )
-                }
-                className="gray small"
-              >
-                {name ? t('HideColorName') : t('ShowColorName')}
-              </button>
-            </div>
-          </div>
-        </>
-      )}
+        <NamedPalettes
+          colors={colors}
+          currentColor={currentColor}
+          mode={mode}
+          setColors={applyLoadedColors}
+          setCurrentColor={setCurrentColor}
+          setModeFromServer={setModeFromServer}
+          updateUrlColors={updateSearchParams}
+          scrollRefCurrent={scrollRef.current}
+        />
+      </div>
     </div>
   )
 }

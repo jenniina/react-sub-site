@@ -1,38 +1,34 @@
-import { useIsClient } from './useSSR'
+import { useEffect, useState } from 'react'
 
 export const useScrollbarWidth = () => {
-  const isClient = useIsClient()
-  // const didCompute = useRef(false)
-  // const widthRef = useRef(0)
+  const [scrollbarWidth, setScrollbarWidth] = useState(0)
 
-  if (!isClient) return 0
-  // if (didCompute.current) return widthRef.current
+  useEffect(() => {
+    if (typeof document === 'undefined') return
 
-  // Creating invisible container
-  const outer = document ? document?.createElement('div') : null
-  if (!outer) return 0
+    const measureScrollbarWidth = () => {
+      const outer = document.createElement('div')
+      outer.style.visibility = 'hidden'
+      outer.style.overflow = 'scroll'
+      outer.style.setProperty('msOverflowStyle', 'scrollbar')
 
-  outer.style.visibility = 'hidden'
-  outer.style.overflow = 'scroll' // forcing scrollbar to appear
-  outer.style.setProperty('msOverflowStyle', 'scrollbar') // needed for WinJS apps
+      document.body.appendChild(outer)
 
-  if (typeof document === 'undefined') return 0
+      const inner = document.createElement('div')
+      outer.appendChild(inner)
 
-  if (document) document.body.appendChild(outer)
+      const nextWidth = outer.offsetWidth - inner.offsetWidth
+      outer.parentNode?.removeChild(outer)
+      setScrollbarWidth(nextWidth)
+    }
 
-  // Creating inner element and placing it in the container
-  const inner = document ? document.createElement('div') : null
-  if (!inner) return 0
-  outer.appendChild(inner)
+    measureScrollbarWidth()
+    window.addEventListener('resize', measureScrollbarWidth)
 
-  // Calculating difference between container's full width and the child width
-  const scrollbarWidth = outer.offsetWidth - inner.offsetWidth
-
-  // Removing temporary elements from the DOM
-  outer.parentNode?.removeChild(outer)
-
-  // didCompute.current = true
-  // widthRef.current = scrollbarWidth
+    return () => {
+      window.removeEventListener('resize', measureScrollbarWidth)
+    }
+  }, [])
 
   return scrollbarWidth
 }

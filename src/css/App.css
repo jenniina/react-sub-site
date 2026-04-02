@@ -79,11 +79,12 @@ body.light,
   content: '';
   height: 60vh;
   width: 100%;
-  background-image: linear-gradient(to bottom, var(--color-primary-3), transparent);
+  background-color: transparent;
+  background-image: linear-gradient(to bottom, var(--color-primary-2) 10%, transparent 100%);
 }
 .light .App-inner-wrap::before {
   height: 70vh;
-  background-image: linear-gradient(to bottom, var(--color-primary-6) 10%, transparent 100%);
+  background-image: linear-gradient(to bottom, var(--color-primary-6) 0%, transparent 100%);
 }
 /*current page: */
 nav ul li a.active,
@@ -302,9 +303,10 @@ main {
 .nav-sub ul::-webkit-scrollbar {
   height: 0;
 }
+
 button.horizonal-scroll {
   position: absolute;
-  top: 0.03em;
+  top: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -420,7 +422,11 @@ button.horizonal-scroll.disable {
   opacity: 0.2;
   pointer-events: none;
 }
-
+@media (min-width: 300px) {
+  button.horizonal-scroll {
+    top: 0.03em;
+  }
+}
 .page {
   padding: 0 var(--page-padding);
   margin: 0 auto;
@@ -1101,4 +1107,11 @@ big > i {
 }
 #root .mb2 {
   margin-bottom: 2em;
+}
+#root .mt-1 {
+  margin-top: -1em;
+}
+#root .lower03 {
+  margin-top: 0.3rem;
+  margin-bottom: -0.3rem;
 }

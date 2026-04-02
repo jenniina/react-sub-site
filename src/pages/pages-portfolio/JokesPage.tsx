@@ -1,9 +1,9 @@
-import { BiChevronsDown } from 'react-icons/bi'
 import {
   jokeCategoryByLanguage,
   jokeCategoryAny,
 } from '../../components/Jokes/types'
 import Accordion from '../../components/Accordion/Accordion'
+import Icon from '../../components/Icon/Icon'
 import { ELanguages, ELanguagesLong, LanguageOfLanguage } from '../../types'
 import { SyntheticEvent } from 'react'
 import { Select, SelectOption } from '../../components/Select/Select'
@@ -41,14 +41,14 @@ export default function JokesPage({ type }: { type: string }) {
                 <div className="flex center gap">
                   <a href="#jokeform" className="svg-wrap newline">
                     <span>{t('SkipToJokeSearch')}</span>
-                    <BiChevronsDown className="down" />
+                    <Icon lib="bi" name="BiChevronsDown" className="down" />
                   </a>
                   <button
                     className="reset svg-wrap newline"
                     onClick={(e) => handleSkipToJokes(e)}
                   >
                     <span>{t('SkipToSavedJokes')}</span>
-                    <BiChevronsDown className="down" />
+                    <Icon lib="bi" name="BiChevronsDown" className="down" />
                   </button>
                 </div>
                 <div>

@@ -8,7 +8,7 @@ import { notify } from '../../../reducers/notificationReducer'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
-import { HiMenu } from 'react-icons/hi'
+import Icon from '../../Icon/Icon'
 
 interface DragData {
   type: 'item' | 'span'
@@ -174,7 +174,7 @@ const CardsContainer = ({
         <Accordion
           isOpen={isOpen}
           setIsFormOpen={setIsOpen}
-          text={<HiMenu />}
+          text={<Icon lib="hi" name="HiMenu" />}
           hideBrackets
           onClick={() => setNewStatus(status)}
           className={`narrow2 ${styles['change-status']} change-status`}

@@ -1,11 +1,17 @@
-import React from 'react'
+import React, { ComponentProps } from 'react'
 import Icon from '../components/Icon/Icon'
 import MemorySVG from '../components/Memory/components/MemorySVG'
 import { firstToUpperCase } from '../utils'
 import { TranslationKey } from '../i18n/translations'
 
+type ConcreteIconProps = Exclude<
+  ComponentProps<typeof Icon>,
+  { lib?: undefined; name?: undefined }
+>
+type PortfolioNamedIcon = { kind: 'icon' } & ConcreteIconProps
+
 export type PortfolioIconSpec =
-  | { kind: 'icon'; lib: string; name: string }
+  | PortfolioNamedIcon
   | { kind: 'memory'; size: string | number }
 
 export interface PortfolioItemDef {
@@ -18,9 +24,14 @@ export interface PortfolioItemDef {
   listClassName?: string
 }
 
+function renderNamedIcon(iconProps: ConcreteIconProps) {
+  return <Icon {...iconProps} />
+}
+
 export function renderPortfolioIcon(icon: PortfolioIconSpec) {
   if (icon.kind === 'memory') return <MemorySVG size={String(icon.size)} />
-  return <Icon lib={icon.lib} name={icon.name} />
+  const { kind: _kind, ...iconProps } = icon
+  return renderNamedIcon(iconProps)
 }
 
 export function getPortfolioTitle(

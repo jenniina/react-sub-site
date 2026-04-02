@@ -1,11 +1,12 @@
-import { useRef, useEffect, useLayoutEffect, useCallback } from "react"
-import { RefObject } from "../types"
+import { useRef, useEffect, useLayoutEffect, useCallback } from 'react'
 
 const useIsomorphicLayoutEffect =
-  typeof window !== "undefined" ? useLayoutEffect : useEffect
+  typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
-export default function useSideScroll(scrollKey = "sideScroll") {
-  const ref = useRef() as RefObject<HTMLElement>
+export default function useSideScroll<T extends HTMLElement = HTMLElement>(
+  scrollKey = 'sideScroll'
+) {
+  const ref = useRef<T | null>(null)
   const hasInitialized = useRef(false)
 
   // Load initial scroll position from localStorage
@@ -62,11 +63,32 @@ export default function useSideScroll(scrollKey = "sideScroll") {
     const element = ref.current
     if (element) {
       const onWheel = (e: WheelEvent) => {
-        if (e.deltaY == 0) return
+        if (e.deltaY === 0) return
+
+        // Only convert wheel->horizontal scroll when the element actually overflows.
+        const maxScrollLeft = element.scrollWidth - element.clientWidth
+        if (maxScrollLeft <= 0) return
+
+        // If we're already at an edge and the user is scrolling "past" it,
+        // let the page scroll normally.
+        const epsilonPx = 2
+        const atLeftEdge = element.scrollLeft <= epsilonPx
+        const atRightEdge = element.scrollLeft >= maxScrollLeft - epsilonPx
+        if ((atLeftEdge && e.deltaY < 0) || (atRightEdge && e.deltaY > 0)) {
+          return
+        }
+
+        const nextLeft = element.scrollLeft + e.deltaY * 1.2
+        const clampedLeft = Math.max(0, Math.min(maxScrollLeft, nextLeft))
+
+        // If we're at a boundary and this wheel would not move horizontally,
+        // let the page scroll normally.
+        if (Math.abs(clampedLeft - element.scrollLeft) <= epsilonPx) return
+
         e.preventDefault()
         element.scrollTo({
-          left: element.scrollLeft + e.deltaY * 1.2,
-          behavior: "smooth",
+          left: clampedLeft,
+          behavior: 'smooth',
         })
         // Save position after smooth scroll completes
         setTimeout(() => saveScrollPosition(element.scrollLeft), 300)
@@ -76,11 +98,12 @@ export default function useSideScroll(scrollKey = "sideScroll") {
         saveScrollPosition(element.scrollLeft)
       }
 
-      element.addEventListener("wheel", onWheel)
-      element.addEventListener("scroll", onScroll)
+      // `passive: false` is required for preventDefault() to work.
+      element.addEventListener('wheel', onWheel, { passive: false })
+      element.addEventListener('scroll', onScroll)
       return () => {
-        element.removeEventListener("wheel", onWheel)
-        element.removeEventListener("scroll", onScroll)
+        element.removeEventListener('wheel', onWheel)
+        element.removeEventListener('scroll', onScroll)
       }
     }
   }, [saveScrollPosition])
@@ -95,9 +118,8 @@ export default function useSideScroll(scrollKey = "sideScroll") {
     [saveScrollPosition]
   )
 
-  const setRef = useCallback((node: HTMLElement | null) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ;(ref.current as any) = node
+  const setRef = useCallback((node: T | null) => {
+    ref.current = node
   }, [])
 
   return { ref, scrollLeft, scrollRight, setScrollLeft, setRef }

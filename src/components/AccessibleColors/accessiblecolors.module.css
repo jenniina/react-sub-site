@@ -1,16 +1,21 @@
 .color-container {
+  --bg-size: auto 260%;
   overflow: visible;
   background: linear-gradient(0deg, transparent 0%, black 5%, black 92%, transparent 100%);
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
-  padding: 20em 0.5em 8em;
+  padding: 2em 0.5em 1em;
   max-width: 100vw;
   min-height: 120vh;
 }
 .light.color-container {
   background: linear-gradient(0deg, transparent 0%, white 8%, white 92%, transparent 100%);
+}
+.color-container h3 {
+  text-align: center;
+  margin: 0.6em auto 0.4em;
 }
 .color-picker {
   --size: 4em;
@@ -25,7 +30,7 @@
 .color-picker > label {
   margin-right: 1em;
 }
-.color-picker > input[type="color" i] {
+.color-picker > input[type='color' i] {
   --clamp: clamp(30px, 10vw, var(--size));
   min-width: var(--clamp);
   width: var(--clamp);
@@ -38,7 +43,7 @@
   border-radius: 50%;
   z-index: 2;
 }
-.light .color-picker > input[type="color" i] {
+.light .color-picker > input[type='color' i] {
   outline: 10px solid black;
 }
 .color-picker > button {
@@ -84,8 +89,12 @@
   outline-offset: 2px;
 }
 
-.width-wrap {
-  margin: 2em auto 0;
+.width-wrap,
+.visibility-wrap {
+  margin: 0.4rem auto 0;
+}
+.width-wrap label {
+  margin-top: 0.2rem;
 }
 .width-wrap,
 .width-wrap > * {
@@ -113,10 +122,9 @@
 #color-container .btn-wrap.export-wrap {
   align-items: flex-end;
   justify-content: center;
+  margin-top: 1em;
 }
-.btn-wrap.export-wrap button {
-  padding: 1.8em 0.4em 1.7em 0.6em;
-}
+
 #color-container .btn-wrap.export-wrap > div {
   display: flex;
   flex-flow: row wrap;
@@ -124,13 +132,7 @@
   justify-content: center;
   gap: 1em;
 }
-#color-container .btn-wrap.export-wrap div div {
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: center;
-  gap: 0.3rem;
-}
+
 #color-container .mode-container button {
   padding: 0.2em 0.4em 0.2em 0.6em;
 }
@@ -142,6 +144,7 @@
   padding: 0.2em 0.25em 0.2em 0.8em;
 }
 .btn-wrap svg {
+  font-size: 0.73em;
   width: 2em;
   height: 2em;
 }
@@ -252,18 +255,18 @@
   position: absolute;
   top: 1em;
   left: 50%;
+  transform: translateX(-50%);
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
   z-index: 2;
-  transform: translateX(-50%);
 }
 #color-container .indicator > .tooltip {
   top: calc(100% + var(--tooltip-offset) * 0.5) !important;
 }
 .indicator::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 50%;
   left: var(--left);
@@ -299,8 +302,9 @@
   display: flex;
   flex-flow: column nowrap;
   max-width: clamp(100px, 92%, 92vw);
-  gap: 1em;
+  gap: 0.8em;
 }
+
 .color-edit-container,
 .color-edit-container > .color-select,
 .color-edit-container > .color-select > * {
@@ -312,13 +316,23 @@
   gap: 0.2em;
   padding-top: 0.5em;
 }
-.color-edit-container > .color-select > div {
+.color-edit-container > .color-select > div,
+#color-container .input-wrap::before,
+#color-container .pagination-controls .input-wrap.items-per-page::before,
+#color-container .btn-wrap .color-handling .input-wrap::before {
   flex-flow: row nowrap;
   background: linear-gradient(4deg, hsl(0, 0%, 10%) 0%, hsl(0, 0%, 3%) 100%);
   background-size: var(--bg-size);
   background-position: 50% 3%;
   border-bottom-color: gray;
   margin: 0;
+}
+#color-container .input-wrap::before {
+  top: 0.2em;
+  height: 1.7em;
+}
+#color-container .items-per-page.input-wrap::before {
+  height: 1.5em;
 }
 .color-edit-container > .color-select > div > div {
   border-top-color: gray;
@@ -420,6 +434,7 @@
   border-radius: 50% 0 0 50%;
   margin: 0 auto 0 0;
   border-right: 0.1em double var(--color-primary-20);
+  border-left: 0.2em double transparent;
   -webkit-clip-path: polygon(100% 0%, 50% 0%, 10% 50%, 50% 100%, 100% 100%);
   -moz-clip-path: polygon(100% 0%, 50% 0%, 10% 50%, 50% 100%, 100% 100%);
   -ms-clip-path: polygon(100% 0%, 50% 0%, 10% 50%, 50% 100%, 100% 100%);
@@ -430,6 +445,7 @@
   border-radius: 0 50% 50% 0;
   margin: 0 0 0 auto;
   border-left: 0.1em double var(--color-primary-20);
+  border-right: 0.2em double transparent;
   -webkit-clip-path: polygon(0% 0%, 50% 0%, 90% 50%, 50% 100%, 0% 100%);
   -moz-clip-path: polygon(0% 0%, 50% 0%, 90% 50%, 50% 100%, 0% 100%);
   -ms-clip-path: polygon(0% 0%, 50% 0%, 90% 50%, 50% 100%, 0% 100%);
@@ -448,6 +464,18 @@
   outline-width: 0;
   border-color: currentColor;
   border-width: 0.2em;
+}
+#color-container .block-wrap .color-wrap .move-buttons button.left:hover,
+#color-container .block-wrap .color-wrap .move-buttons button.left:focus,
+#color-container .block-wrap .color-wrap .move-buttons button.left:focus-visible {
+  border-right-width: 0.2em;
+  border-left-width: 0.1em;
+}
+#color-container .block-wrap .color-wrap .move-buttons button.right:hover,
+#color-container .block-wrap .color-wrap .move-buttons button.right:focus,
+#color-container .block-wrap .color-wrap .move-buttons button.right:focus-visible {
+  border-left-width: 0.2em;
+  border-right-width: 0.1em;
 }
 
 /* Skip links: hidden visually, shown only on focus-visible (keyboard navigation) */
@@ -536,4 +564,164 @@
   .color-edit-container > .color-select > div > span {
     max-width: 100%;
   }
+}
+
+.accessiblecolors-palettes .pagination-btn {
+  font-size: 1.6rem;
+  padding: 0 0.5rem 0.2rem;
+  margin: 0;
+  border-radius: 50%;
+}
+
+.accessiblecolors-palettes .btn-small {
+  max-width: max-content;
+  min-width: max-content;
+}
+
+.pagination-controls {
+  --width: 2.6rem;
+  --height: 1.6rem;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 auto 1em;
+  width: 100%;
+}
+.pagination-controls .input-wrap.items-per-page,
+.pagination-controls .input-wrap.items-per-page label {
+  text-align: center;
+  font-size: 0.9em;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  flex: 0 0 auto;
+}
+.pagination-controls .input-wrap.items-per-page::before {
+  max-height: var(--height);
+  max-width: var(--width);
+}
+.pagination-controls .input-wrap.items-per-page input {
+  flex: 0 0 var(--width);
+  max-height: var(--height);
+  font-size: 0.9em;
+  max-width: var(--width);
+  padding: 0 0 0 0.5em;
+}
+.pagination-controls .input-wrap.items-per-page input:valid ~ span {
+  transform: translateY(0);
+  position: relative;
+  top: initial;
+}
+.input-wrap input[type='text' i] {
+  line-height: 1.1;
+}
+.pagination-btn {
+  font-size: 1.6rem;
+  padding: 0 0.5rem 0.2rem;
+  margin: 0;
+  border-radius: 50%;
+}
+.color-handling {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  width: 100%;
+  padding: 3em 0 0;
+}
+.color-handling,
+.color-handling h2,
+.color-handling p {
+  max-width: clamp(50px, 80vw, var(--wide));
+  margin: 0 auto;
+}
+.color-handling h2 {
+  margin: 1em auto 0;
+}
+.color-handling form {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1rem;
+  width: 100%;
+}
+.color-handling .color-versions-wrap {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 0;
+}
+.color-handling ul.color-versions-wrap > li {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem 0.8rem;
+}
+.color-handling ul.color-versions-wrap > li > span {
+  flex-grow: 1;
+  display: inline-block;
+}
+.color-handling button {
+  font-size: 0.8em;
+  min-width: 8em;
+}
+.closed.colornewname-wrap > div.colornewname {
+  width: 0;
+}
+.open.colornewname-wrap > div.colornewname {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1.4em;
+  border: 1px solid var(--color-primary-3);
+  border-bottom-color: var(--color-primary-5);
+  border-bottom-width: 2px;
+  border-radius: var(--corner);
+  padding: 0.5em;
+}
+.open.colornewname-wrap button svg {
+  width: 1em;
+  height: 1em;
+}
+
+.color-version-item {
+  min-width: 100%;
+  border-bottom: solid 1px var(--color-gray-6);
+  padding-bottom: 1rem;
+}
+.color-version-item > span {
+  flex-grow: 1;
+}
+.color-version-item > div {
+  flex-grow: 0;
+}
+.color-version-item > div button,
+.color-version-item > div > .colornewname-wrap.closed {
+  flex-grow: 0;
+  margin: 0;
+}
+.color-version-item .button-wrap {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 auto;
+}
+.colornewname > i,
+.color-handling form button {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3em;
+  font-style: normal;
 }

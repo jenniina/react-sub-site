@@ -408,6 +408,7 @@ ul.userjokeslist {
   position: relative;
 }
 section.joke-container {
+  position: relative;
   max-width: clamp(150px, calc(100vw - calc(var(--page-padding) * 2) - var(--scrollbar_width)), 1200px);
   margin-left: auto;
   margin-right: auto;
@@ -416,7 +417,7 @@ section.joke-container > div {
   padding: 2em 8% 2em;
 }
 section.joke-container > div::after {
-  content: "";
+  content: '';
   position: absolute;
   top: -0.1rem;
   right: -0.1rem;
@@ -429,7 +430,7 @@ section.joke-container > div::after {
 }
 
 .userjokeslist li::after {
-  content: "";
+  content: '';
   position: absolute;
   top: -0.1rem;
   right: -0.1rem;
@@ -750,7 +751,7 @@ form.joke > *:not(.toggle) {
   pointer-events: none;
   border-color: var(--color-primary-18);
 }
-.pagination input[type="number" i] {
+.pagination input[type='number' i] {
   max-width: 3rem;
   border-radius: 0.4rem;
   padding-left: 0.9rem;
@@ -803,7 +804,7 @@ form.joke > *:not(.toggle) {
   border-color: currentColor;
 }
 
-input[type="number" i].narrow {
+input[type='number' i].narrow {
   max-width: 3rem;
   border-radius: 0.4rem;
   padding-left: 0.9rem;

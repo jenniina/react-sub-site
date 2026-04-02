@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
-import type { CSSProperties, SVGProps } from 'react'
-import ClientOnly from '../ClientOnly/ClientOnly'
+import type { ComponentType, CSSProperties } from 'react'
 import { iconLibraries } from './iconLibraries'
 
-interface IconProps {
-  lib?: string
-  name?: string
+type IconLibraries = typeof iconLibraries
+type IconLib = keyof IconLibraries
+
+type BaseIconProps = {
   className?: string
   style?: CSSProperties
   height?: string
@@ -14,6 +14,18 @@ interface IconProps {
   'aria-hidden'?: boolean | 'true' | 'false'
   'aria-label'?: string
 }
+
+type IconProps =
+  | {
+      [L in IconLib]: BaseIconProps & {
+        lib: L
+        name: keyof IconLibraries[L]
+      }
+    }[IconLib]
+  | (BaseIconProps & {
+      lib?: undefined
+      name?: undefined
+    })
 
 const Icon = ({
   lib,
@@ -27,7 +39,13 @@ const Icon = ({
   'aria-label': ariaLabel,
 }: IconProps) => {
   const library = lib ? iconLibraries[lib] : undefined
-  const IconComp = lib && name ? (library?.[name] ?? null) : null
+  // const IconComp = lib && name ? (library?.[name] ?? null) : null
+  const IconComp =
+    lib && name
+      ? (((iconLibraries[lib] as Record<string, ComponentType<any>>)[
+          name as string
+        ] ?? null) as ComponentType<any> | null)
+      : null
 
   const isMissing = !lib || !name || !library || !IconComp
   const missingTitle =
@@ -39,31 +57,22 @@ const Icon = ({
     console.warn('Missing icon', { lib, name })
   }, [isMissing, lib, name])
 
+  if (isMissing && import.meta.env.DEV && typeof window !== 'undefined') {
+    throw new Error(missingTitle)
+  }
+
+  if (isMissing) return null
+
   return (
-    // Only render icons on the client to avoid bundling react-icons in SSR
-    <ClientOnly>
-      {isMissing ? (
-        <span
-          className={className}
-          style={style}
-          title={missingTitle}
-          aria-hidden={ariaHidden}
-          aria-label={ariaLabel}
-        >
-          ?
-        </span>
-      ) : (
-        <IconComp
-          className={className}
-          style={style}
-          height={height}
-          width={width}
-          aria-hidden={ariaHidden}
-          aria-label={ariaLabel}
-          title={title}
-        />
-      )}
-    </ClientOnly>
+    <IconComp
+      className={className}
+      style={style}
+      height={height}
+      width={width}
+      aria-hidden={ariaHidden}
+      aria-label={ariaLabel}
+      title={title}
+    />
   )
 }
 
