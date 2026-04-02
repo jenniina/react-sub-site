@@ -686,11 +686,7 @@ export default function ContrastConstellation({
         {liveRegionMessage}
       </p>
 
-      <div
-        className={styles['constellation-legend']}
-        role="group"
-        aria-label="Contrast thresholds"
-      >
+      <div className={styles['constellation-legend']} role="group">
         <div className={styles.inner}>
           {nodes.find((node) => node.i === activeNodeId)?.hexLabel ? (
             <CopyToClipboard
@@ -710,7 +706,7 @@ export default function ContrastConstellation({
               className={styles['copy-to-clipboard']}
             />
           ) : (
-            <span>{t('ColorAccessibility')}</span>
+            <span>{t('CurrentThreshold')}</span>
           )}
           <span>
             {nodes.find((node) => node.i === activeNodeId)?.color ? (
