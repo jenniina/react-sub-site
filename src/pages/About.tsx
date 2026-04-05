@@ -84,7 +84,9 @@ export default function About({ type }: { type: string }) {
                     {t('NodeGithubRepository')}
                   </a>
                 </p>
-                <p>{t('TheSiteIsTranslatedToSixLanguagesWhichWere')}</p>
+                <p className="mt3">
+                  {t('TheSiteIsTranslatedToSixLanguagesWhichWere')}
+                </p>
                 <p>
                   {t('PleaseReportAnyIssuesWithTheSiteToJenniina')}:{' '}
                   <Link to="/portfolio/select?survey=true">
@@ -92,23 +94,25 @@ export default function About({ type }: { type: string }) {
                   </Link>{' '}
                 </p>
                 {!user && (
-                  <div>
-                    {t('IfYouDontWantToRegister')}{' '}
-                    <div className="flex align-center mt1 column gap-half">
+                  <div className="mt3 flex column gap-half left">
+                    <span>{t('IfYouDontWantToRegister')} </span>
+                    <div className="flex align-center mt1 column gap left">
                       <CopyToClipboard
                         value={`temp${String.fromCharCode(64)}jenniina.fi`}
-                        label="temp [at] jenniina [dot] fi"
-                        ariaLabel={t('CopyToClipboard')}
+                        label="temp <at> jenniina <dot> fi"
+                        ariaLabel={t('CopyAddressToClipboard')}
                       />
-                      {t('Password')}:{' '}
-                      <CopyToClipboard
-                        value="TempAtJenniina"
-                        label="TempAtJenniina"
-                        ariaLabel={t('CopyToClipboard')}
-                      />
+                      <div className="flex gap">
+                        {t('Password')}:{' '}
+                        <CopyToClipboard
+                          value="TempAtJenniina"
+                          label="TempAtJenniina"
+                          ariaLabel={t('CopyToClipboard')}
+                        />
+                      </div>
                     </div>{' '}
                     <div className="flex column mt1">
-                      <Link to="?login=login">{t('Login')}</Link>
+                      <Link to="?login=true">{t('Login')}</Link>
                     </div>
                   </div>
                 )}
@@ -214,9 +218,14 @@ export default function About({ type }: { type: string }) {
                         <Link to="/contact">({t('Contact')})</Link>
                       </li>
                       <li>
-                        <strong>{t('New')}:</strong> {t('Cells')},{' '}
-                        {t('RadiatingConcentricRingsThat')}{' '}
+                        {t('Cells')}: {t('RadiatingConcentricRingsThat')}{' '}
                         <Link to="/portfolio/media">({t('Media')})</Link>
+                      </li>
+                      <li>
+                        <strong>{t('New')}:</strong> {t('ColorConstellation')}{' '}
+                        <Link to="/portfolio/colors">
+                          ({t('ColorAccessibility')})
+                        </Link>
                       </li>
                     </ul>
                   </li>

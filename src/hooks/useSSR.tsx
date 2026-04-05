@@ -1,9 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
 export function useIsClient() {
-  const [isClient, setIsClient] = useState(() => {
-    return typeof window !== 'undefined'
-  })
+  const [isClient, setIsClient] = useState(false)
 
   const handleIsClient = useCallback(() => {
     if (typeof window === 'undefined') {
@@ -21,9 +19,7 @@ export function useIsClient() {
 }
 
 export function useWindow() {
-  const [windowObj, setWindowObj] = useState<Window | null>(() => {
-    return typeof window !== 'undefined' ? window : null
-  })
+  const [windowObj, setWindowObj] = useState<Window | null>(null)
 
   const handleSetWindowObj = useCallback(() => {
     if (typeof window === 'undefined') {

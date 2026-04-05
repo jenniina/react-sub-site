@@ -63,6 +63,18 @@ const preventDefault = (e: Event) => {
   e.stopImmediatePropagation()
 }
 
+const isEditableTarget = (target: EventTarget | null) => {
+  if (!(target instanceof HTMLElement)) return false
+
+  const tagName = target.tagName
+  return (
+    target.isContentEditable ||
+    tagName === 'INPUT' ||
+    tagName === 'TEXTAREA' ||
+    tagName === 'SELECT'
+  )
+}
+
 const DragLayers = ({
   layer_,
   layerAmount,
@@ -169,6 +181,7 @@ const DragLayers = ({
   const keyDown = useCallback(
     (e: KeyboardEvent) => {
       if (!isClient || !windowObj) return
+      if (isEditableTarget(e.target)) return
 
       const movePx = 4
 

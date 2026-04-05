@@ -75,7 +75,7 @@ export default function Hero({
 
   // Handle page transition for hero items
   useEffect(() => {
-    if (page !== currentPage && currentPage !== '') {
+    if (page !== currentPage) {
       // Fade out items when page changes
       setItemsVisible(false)
 
@@ -98,7 +98,7 @@ export default function Hero({
 
   // Update heading and text when language changes (on same page)
   useEffect(() => {
-    if (page === currentPage && currentPage !== '') {
+    if (page === currentPage) {
       setTheHeading(heading)
       setTheText(text)
     }
@@ -766,22 +766,22 @@ export default function Hero({
     }
 
     for (let i = 0; i <= amount; i++) {
-      const number = Math.ceil(getRandomMinMax(0.3, 2))
+      const number = Math.ceil(getRandomMinMax(0.4, 2))
       let colorSwitch: string
       switch (number) {
         case 1:
           colorSwitch = `var(--color-secondary-${Math.round(
-            getRandomMinMax(10, 13)
+            getRandomMinMax(9, 12)
           )})`
           break
         case 2:
           colorSwitch = `var(--color-primary-${Math.round(
-            getRandomMinMax(9, 12)
+            getRandomMinMax(10, 13)
           )})`
           break
         default:
           colorSwitch = `var(--color-primary-${Math.round(
-            getRandomMinMax(9, 12)
+            getRandomMinMax(10, 13)
           )})`
       }
 

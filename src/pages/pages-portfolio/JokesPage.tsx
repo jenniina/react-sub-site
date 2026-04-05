@@ -25,6 +25,14 @@ export default function JokesPage({ type }: { type: string }) {
     }
   }
 
+  const handleSkipToJokeSearch = (e: SyntheticEvent) => {
+    e.preventDefault()
+    const anchor = document?.querySelector('#jokeform')
+    if (anchor) {
+      anchor.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   return (
     <>
       <SEO
@@ -37,14 +45,17 @@ export default function JokesPage({ type }: { type: string }) {
         <div className="inner-wrap">
           <section className="joke-container card introduction">
             <div>
-              <div className="flex column gap">
+              <div className="flex column gap3">
                 <div className="flex center gap">
-                  <a href="#jokeform" className="svg-wrap newline">
+                  <button
+                    onClick={(e) => handleSkipToJokeSearch(e)}
+                    className="reset link svg-wrap newline"
+                  >
                     <span>{t('SkipToJokeSearch')}</span>
                     <Icon lib="bi" name="BiChevronsDown" className="down" />
-                  </a>
+                  </button>
                   <button
-                    className="reset svg-wrap newline"
+                    className="reset link svg-wrap newline"
                     onClick={(e) => handleSkipToJokes(e)}
                   >
                     <span>{t('SkipToSavedJokes')}</span>

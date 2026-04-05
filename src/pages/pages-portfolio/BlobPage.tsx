@@ -32,7 +32,7 @@ export default function BlobPage({ type }: { type: string }) {
           <section>
             <div className="card">
               <div>
-                <div className="flex column gap">
+                <div className="flex column gap2">
                   <Accordion
                     text={t('ClickHereToSeeFeatures')}
                     className="features-blobs"
@@ -287,12 +287,7 @@ export default function BlobPage({ type }: { type: string }) {
                           )}
                         </li>
                         <li>
-                          <>{t('RegisterAndLogInToSaveYourArtwork')}</>{' '}
-                          <div>
-                            <Link to="?login=login">{t('Login')}</Link>
-                            &nbsp;&nbsp;/&nbsp;&nbsp;
-                            <Link to="?register=register">{t('Register')}</Link>
-                          </div>
+                          <>{t('RegisterAndLogInToSaveYourArtwork')}</>
                         </li>
                       </ul>
                     </>

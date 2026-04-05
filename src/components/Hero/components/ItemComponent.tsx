@@ -1024,7 +1024,7 @@ const ItemComponent = forwardRef<
               const breakpoint = 500
               const sizing = 0.7
               const sizingSmall = 0.4
-              const div = 1
+              const div = 1.1
               //an array of blob radiuses:
               const blobRadius = [
                 '30% 70% 70% 30% / 30% 36% 64% 70%',
@@ -1038,8 +1038,8 @@ const ItemComponent = forwardRef<
                   : windowWidth < breakpoint && windowWidth > windowHeight
                     ? `blur(calc(var(--blur) * 1vw))`
                     : windowWidth < windowHeight
-                      ? `blur(calc(var(--blur) * 1.2vh))`
-                      : `blur(calc(var(--blur) * 1.2vw))`
+                      ? `blur(calc(var(--blur) * 1.1vh))`
+                      : `blur(calc(var(--blur) * 1.1vw))`
               const number = Math.floor(getRandomMinMax(0.001, 3.999))
               const style: CSSProperties = {
                 position: 'absolute',
@@ -1054,7 +1054,7 @@ const ItemComponent = forwardRef<
                 ['--i' as string]: `${item.i}`,
                 ['--e' as string]: `${item.e}`,
                 ['--size' as string]: `${item.size}`,
-                ['--blur' as string]: `clamp(2.4, calc(var(--size) * 0.2), 7)`,
+                ['--blur' as string]: `clamp(1, calc(var(--size) * 0.5), 3)`,
                 //needs to have var(--size) not ${item.size} to work with the resize keys and wheel function:
                 width:
                   windowWidth < breakpoint && windowWidth < windowHeight
@@ -1368,14 +1368,14 @@ const ItemComponent = forwardRef<
 
           <svg className="filter">
             <filter id="svgfilterHero">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="6" />
+              <feGaussianBlur in="SourceGraphic" stdDeviation="3" />
               <feColorMatrix
                 values="
-                                1 0 0 0 0 
-                                0 1 0 0 0 
-                                0 0 1 0 0
-                                0 0 0 55 -12
-                                "
+                  1 0 0 0 0 
+                  0 1 0 0 0 
+                  0 0 1 0 0
+                  0 0 0 88 -18
+                  "
               ></feColorMatrix>
             </filter>
           </svg>

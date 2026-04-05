@@ -917,6 +917,15 @@ export const translations = {
     cs: 'Kopírovat do schránky',
     fi: 'Kopioi leikepöydälle',
   },
+  CopyAddressToClipboard: {
+    en: 'Copy address to clipboard',
+    es: 'Copiar dirección al portapapeles',
+    fr: 'Copier l adresse dans le presse-papiers',
+    de: 'Adresse in die Zwischenablage kopieren',
+    pt: 'Copiar endereço para a área de transferência',
+    cs: 'Kopírovat adresu do schránky',
+    fi: 'Kopioi osoite leikepöydälle',
+  },
   Move: {
     en: 'Move',
     es: 'Mover',
@@ -10888,6 +10897,15 @@ export const translations = {
     pt: 'Faça login para salvar paletas de cores no banco de dados',
     cs: 'Přihlaste se k uložení barevných palet do databáze',
     fi: 'Kirjaudu sisään tallentaaksesi väripaletteja tietokantaan',
+  },
+  TempUserCannotSave: {
+    en: 'Temp user cannot save',
+    es: 'El usuario temporal no puede guardar',
+    fr: "L'utilisateur temporaire ne peut pas enregistrer",
+    de: 'Temporärer Benutzer kann nicht speichern',
+    pt: 'O usuário temporário não pode salvar',
+    cs: 'Dočasný uživatel nemůže ukládat',
+    fi: 'Testikäyttäjä ei voi tallentaa',
   },
 } as const
 

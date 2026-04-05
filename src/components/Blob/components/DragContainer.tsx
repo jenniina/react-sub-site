@@ -31,7 +31,7 @@ import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import Accordion from '../../Accordion/Accordion'
 import { notify } from '../../../reducers/notificationReducer'
 import { initializeUser } from '../../../reducers/authReducer'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import blobService from '../services/blob'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 import { useConfirm } from '../../../contexts/ConfirmContext'
@@ -612,7 +612,7 @@ export default function DragContainer({
     return false
   }
 
-  const regex = /^[\w\s\u00C0-\u024F\u1E00-\u1EFF-_]*$/
+  const regex = /^[\w\s\u00C0-\u024F\u1E00-\u1EFF-]*$/u
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
@@ -1351,31 +1351,10 @@ export default function DragContainer({
 
   // SLIDERS
 
-  const [sliderHueVal, setSliderHueVal] = useState(() => {
-    if (typeof window === 'undefined') return defaultHue
-    const savedBackground = localStorage.getItem(localStorageBackground)
-    const backgroundColor = savedBackground
-      ? (JSON.parse(savedBackground) as string[])
-      : null
-    return backgroundColor?.[0] ?? defaultHue
-  })
-  const [sliderSatVal, setSliderSatVal] = useState(() => {
-    if (typeof window === 'undefined') return defaultSaturation
-    const savedBackground = localStorage.getItem(localStorageBackground)
-    const backgroundColor = savedBackground
-      ? (JSON.parse(savedBackground) as string[])
-      : null
-    return backgroundColor?.[1] ?? defaultSaturation
-  })
+  const [sliderHueVal, setSliderHueVal] = useState(defaultHue)
+  const [sliderSatVal, setSliderSatVal] = useState(defaultSaturation)
 
-  const [sliderLightVal, setSliderLightVal] = useState(() => {
-    if (typeof window === 'undefined') return defaultLightness
-    const savedBackground = localStorage.getItem(localStorageBackground)
-    const backgroundColor = savedBackground
-      ? (JSON.parse(savedBackground) as string[])
-      : null
-    return backgroundColor?.[2] ?? defaultLightness
-  })
+  const [sliderLightVal, setSliderLightVal] = useState(defaultLightness)
 
   const backgroundColorStyle = {
     backgroundColor: `hsl(var(--hue${d}), calc(var(--saturation${d}) * 1%), calc(var(--lightness${d}) * 1%))`,
@@ -1709,16 +1688,6 @@ export default function DragContainer({
     }
   }, [focusedBlob, markerEnabled, usingKeyboard])
 
-  const navigate = useNavigate()
-
-  const navigateToRegister = () => {
-    navigate('/portfolio/blob?register=register')
-  }
-
-  const navigateToLogin = () => {
-    navigate('/portfolio/blob?login=login')
-  }
-
   const scrollToArt = () => {
     const scrollTarget =
       document !== null ? document.getElementById(`button-container${d}`) : null
@@ -1952,8 +1921,13 @@ export default function DragContainer({
     }
   }, [deleteId, d, dispatch])
 
-  const pagination = (dKey: string, current: number, totalPages: number) => {
-    const uniqueNumber = Math.random().toString(36).substr(2, 9)
+  const pagination = (
+    dKey: string,
+    current: number,
+    totalPages: number,
+    position: 'start' | 'end'
+  ) => {
+    const itemsPerPageId = `items-per-page${d}-${dKey}-${position}`
     return hasSavedFiles ? (
       <div className="pagination-controls">
         {current !== 1 ? (
@@ -2008,9 +1982,9 @@ export default function DragContainer({
           <></>
         )}
         <div className="input-wrap items-per-page">
-          <label htmlFor={`items-per-page${d}-${uniqueNumber}`}>
+          <label htmlFor={itemsPerPageId}>
             <input
-              id={`items-per-page${d}-${uniqueNumber}`}
+              id={itemsPerPageId}
               className=""
               type="number"
               value={itemsPerPage}
@@ -2076,22 +2050,7 @@ export default function DragContainer({
               </span>
             </div>
             <div id={`button-container${d}`} className={'button-container'}>
-              <button
-                ref={stopBlobs}
-                id={`stop-blobs${d}`}
-                className="stop-blobs tooltip-wrap "
-                onClick={(e) => {
-                  stopSway(e)
-                }}
-                aria-labelledby={`stop-blobs${d}-span`}
-              >
-                <span id={`stop-blobs${d}-span`} className="tooltip above">
-                  {t(
-                    'AfterEnablingThereIsASlightDelayBeforeAllTheBlobsAreMovingAgain'
-                  )}
-                </span>
-                {paused ? t('StartSway') : t('StopSway')}
-              </button>
+              {' '}
               <button
                 ref={resetBlobs}
                 id={`reset-blobs${d}`}
@@ -2107,6 +2066,22 @@ export default function DragContainer({
                 {t('Reset')}
               </button>
               <button
+                ref={stopBlobs}
+                id={`stop-blobs${d}`}
+                className="stop-blobs tooltip-wrap"
+                onClick={(e) => {
+                  stopSway(e)
+                }}
+                aria-labelledby={`stop-blobs${d}-span`}
+              >
+                <span id={`stop-blobs${d}-span`} className="tooltip above">
+                  {t(
+                    'AfterEnablingThereIsASlightDelayBeforeAllTheBlobsAreMovingAgain'
+                  )}
+                </span>
+                {paused ? t('StartSway') : t('StopSway')}
+              </button>
+              <button
                 id={`toggle-marker${d}`}
                 aria-labelledby={`toggle-marker${d}-span`}
                 className="toggle-marker tooltip-wrap"
@@ -2118,7 +2093,6 @@ export default function DragContainer({
                 >{`${t('ToggleMarkerVisibilityWhenUsingAKeyboard')}`}</span>
                 {markerEnabled ? t('MarkerOn') : t('MarkerOff')}
               </button>
-
               <button
                 ref={disableScrollButton}
                 id={`disable-scroll${d}`}
@@ -2137,7 +2111,6 @@ export default function DragContainer({
                 </span>
                 {scroll ? t('DisableScroll') : t('EnableScroll')}
               </button>
-
               <button
                 id={`toggle-controls${d}`}
                 aria-labelledby={`toggle-controls${d}-span`}
@@ -2154,10 +2127,12 @@ export default function DragContainer({
                 }}
               >
                 <span id={`toggle-controls${d}-span`}>
-                  {' '}
                   {controlsVisible ? t('HideControls') : t('ShowControls')}
                 </span>
               </button>
+              {windowWidth > 1100 && (
+                <span className="screenshot">{t('Screenshot')}: </span>
+              )}
               <button
                 type="button"
                 id={`take-screenshot${d}`}
@@ -2193,7 +2168,7 @@ export default function DragContainer({
                 <button
                   tabIndex={0}
                   ref={makeSmaller0}
-                  className={`make-smaller tooltip-wrap restore ${
+                  className={`make-smaller tooltip-wrap gray ${
                     !controlsVisible ? 'hidden' : ''
                   }`}
                   id={`make-smaller${d}`}
@@ -2216,7 +2191,7 @@ export default function DragContainer({
                 </button>
                 <button
                   ref={makeLarger0}
-                  className={`make-larger tooltip-wrap restore ${
+                  className={`make-larger tooltip-wrap gray ${
                     !controlsVisible ? 'hidden' : ''
                   }`}
                   id={`make-larger${d}`}
@@ -2240,7 +2215,7 @@ export default function DragContainer({
 
                 <button
                   ref={makeMore0}
-                  className={`make-more tooltip-wrap restore ${
+                  className={`make-more tooltip-wrap gray ${
                     !controlsVisible ? 'hidden' : ''
                   }`}
                   id={`make-more${d}`}
@@ -2261,7 +2236,7 @@ export default function DragContainer({
                 </button>
                 <button
                   ref={makeRandom0}
-                  className={`make-random tooltip-wrap ${
+                  className={`make-random tooltip-wrap gray ${
                     !controlsVisible ? 'hidden' : ''
                   }`}
                   id={`make-random${d}`}
@@ -2278,7 +2253,7 @@ export default function DragContainer({
                 </button>
                 <button
                   ref={deleteBlob0}
-                  className={`delete-blob tooltip-wrap restore ${
+                  className={`delete-blob tooltip-wrap gray ${
                     !controlsVisible ? 'hidden' : ''
                   }`}
                   id={`delete-blob${d}`}
@@ -2299,7 +2274,7 @@ export default function DragContainer({
                 <button
                   ref={layerDecrease}
                   id={`layer-decrease${d}`}
-                  className={`layer-adjust layer-decrease tooltip-wrap restore ${
+                  className={`layer-adjust layer-decrease tooltip-wrap gray ${
                     !controlsVisible ? 'hidden' : ''
                   }`}
                   onClick={() => toggleMode('layer-down')}
@@ -2320,7 +2295,7 @@ export default function DragContainer({
                 <button
                   ref={layerIncrease}
                   id={`layer-increase${d}`}
-                  className={`layer-adjust layer-increase tooltip-wrap restore ${
+                  className={`layer-adjust layer-increase tooltip-wrap gray ${
                     !controlsVisible ? 'hidden' : ''
                   }`}
                   onClick={() => toggleMode('layer-up')}
@@ -2424,7 +2399,7 @@ export default function DragContainer({
                 <button
                   id={`moveleft${d}`}
                   aria-labelledby={`moveleft${d}-span`}
-                  className={`moveleft mover tooltip-wrap narrow2`}
+                  className="moveleft mover tooltip-wrap narrow2"
                   onClick={handleMoveRight}
                 >
                   <Icon lib="bi" name="BiChevronsLeft" aria-hidden="true" />
@@ -2604,8 +2579,15 @@ export default function DragContainer({
                         <span>{t('NameYourArtwork')}:</span>
                       </label>
                     </div>
-                    <button type="submit" disabled={loading}>
-                      {t('Save')}
+                    <button
+                      disabled={
+                        (user && user.name === 'temp') || loading ? true : false
+                      }
+                      type="submit"
+                    >
+                      {user && user.name === 'temp'
+                        ? t('TempUserCannotSave')
+                        : t('Save')}
                     </button>
                   </form>
                 </div>
@@ -2633,7 +2615,7 @@ export default function DragContainer({
                         className="flex center margin0auto"
                         key={`${dKey}:${index}`}
                       >
-                        {pagination(dKey, current, totalPages)}
+                        {pagination(dKey, current, totalPages, 'start')}
                         <ul
                           key={`${dKey}+${index}`}
                           className="blob-versions-wrap"
@@ -2657,6 +2639,9 @@ export default function DragContainer({
                                   <span className="scr">{versionName}</span>
                                 </button>
                                 <button
+                                  disabled={
+                                    user && user.name === 'temp' ? true : false
+                                  }
                                   onClick={() =>
                                     void deleteBlobsVersionFromServer(
                                       Number(dKey),
@@ -2708,6 +2693,11 @@ export default function DragContainer({
                                       </label>
                                     </div>
                                     <button
+                                      disabled={
+                                        user && user.name === 'temp'
+                                          ? true
+                                          : false
+                                      }
                                       onClick={() => {
                                         if (versionName !== newName) {
                                           void editBlobsByUser(
@@ -2738,22 +2728,26 @@ export default function DragContainer({
                           ))}
                         </ul>
                         {/* Pagination Controls */}
-                        {pagination(dKey, current, totalPages)}
+                        {pagination(dKey, current, totalPages, 'end')}
                       </div>
                     )
                   })
                 )}
               </div>
             ) : (
-              <div className="wide flex column center gap">
+              <div className="mt2 wide flex column center gap2">
                 <div className="login-to-save wide flex column center gap-half">
                   <Icon lib="fa" name="FaSave" aria-hidden="true" />
                   {t('InOrderToSaveTheBlobs')}
                 </div>
-                <div className={`blob-register-login-wrap`}>
-                  <button onClick={navigateToLogin}>{t('Login')}</button>
-                  <big>{t('Or')}</big>
-                  <button onClick={navigateToRegister}>{t('Register')}</button>
+                <div className="flex gap">
+                  <Link to="?login=true" className="link svg-wrap">
+                    <span>{t('Login')}</span>
+                  </Link>
+                  {t('Or')}
+                  <Link to="?register=true" className="link svg-wrap">
+                    <span>{t('Register')}</span>
+                  </Link>
                 </div>
               </div>
             )}
@@ -2768,11 +2762,11 @@ export default function DragContainer({
                 <filter id="svgMatrix0">
                   <feColorMatrix
                     values="
-1 0 0 0 0
-0 1 0 0 0
-0 0 1 0 0
-0 0 0 50 -18
-"
+                      1 0 0 0 0
+                      0 1 0 0 0
+                      0 0 1 0 0
+                      0 0 0 50 -18
+                      "
                   ></feColorMatrix>{' '}
                 </filter>
               </defs>
@@ -2789,11 +2783,11 @@ export default function DragContainer({
                 <filter id="svgMatrix1">
                   <feColorMatrix
                     values="
-1 0 0 0 0
-0 1 0 0 0
-0 0 1 0 0
-0 0 0 46 -28
-"
+                      1 0 0 0 0
+                      0 1 0 0 0
+                      0 0 1 0 0
+                      0 0 0 46 -28
+                      "
                   ></feColorMatrix>
                 </filter>
               </defs>

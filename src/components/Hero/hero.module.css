@@ -31,10 +31,13 @@
   }
 }
 
-.hero p {
+.hero h1 + p {
   z-index: 9;
   pointer-events: none;
   margin-top: 1em;
+}
+.light.hero h1 + p {
+  font-weight: 700;
 }
 .hero.welcome.touch {
   padding-top: 0;
@@ -402,14 +405,7 @@
   animation-play-state: paused;
   pointer-events: all;
 }
-.light .herocontent .bubbles {
-  --box: inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -3 * 1px) currentColor, inset calc(var(--size) * -1px) calc(var(--size) * -1px) calc(var(--size) * 2 * 1px) calc(var(--size) * -1.5 * 1px) lime, inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink, 0 0 10px -5px white, 0 0 5px -1px currentColor;
-  -webkit-box-shadow: var(--box);
-  -moz-box-shadow: var(--box);
-  -ms-box-shadow: var(--box);
-  -o-box-shadow: var(--box);
-  box-shadow: var(--box);
-}
+
 .herocontent .bubbles {
   -webkit-animation: skewWobble 210ms ease-in-out infinite;
   -o-animation: skewWobble 210ms ease-in-out infinite;
@@ -421,46 +417,20 @@
   -o-animation-play-state: paused;
   -ms-animation-play-state: paused;
   animation-play-state: paused;
-  -webkit-box-shadow:
-    inset 0 calc(var(--size) * -6 * 1px) calc(var(--size) * 6 * 1px) calc(var(--size) * -8 * 1px) currentColor,
-    inset calc(var(--size) * -3 * 1px) calc(var(--size) * -3 * 1px) calc(var(--size) * 2 * 1px) calc(var(--size) * -4 * 1px) green,
-    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px) currentColor,
-    inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
-    0 0 10px -5px white,
-    0 0 12px -3px currentColor,
-    0 0 30px -10px currentColor;
-  -o-box-shadow:
-    inset 0 calc(var(--size) * -6 * 1px) calc(var(--size) * 6 * 1px) calc(var(--size) * -8 * 1px) currentColor,
-    inset calc(var(--size) * -3 * 1px) calc(var(--size) * -3 * 1px) calc(var(--size) * 2 * 1px) calc(var(--size) * -4 * 1px) green,
-    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px) currentColor,
-    inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
-    0 0 10px -5px white,
-    0 0 12px -3px currentColor,
-    0 0 30px -10px currentColor;
-  -ms-box-shadow:
-    inset 0 calc(var(--size) * -6 * 1px) calc(var(--size) * 6 * 1px) calc(var(--size) * -8 * 1px) currentColor,
-    inset calc(var(--size) * -3 * 1px) calc(var(--size) * -3 * 1px) calc(var(--size) * 2 * 1px) calc(var(--size) * -4 * 1px) green,
-    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px) currentColor,
-    inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
-    0 0 10px -5px white,
-    0 0 12px -3px currentColor,
-    0 0 30px -10px currentColor;
-  -moz-box-shadow:
-    inset 0 calc(var(--size) * -6 * 1px) calc(var(--size) * 6 * 1px) calc(var(--size) * -8 * 1px) currentColor,
-    inset calc(var(--size) * -3 * 1px) calc(var(--size) * -3 * 1px) calc(var(--size) * 2 * 1px) calc(var(--size) * -4 * 1px) green,
-    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px) currentColor,
-    inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
-    0 0 10px -5px white,
-    0 0 12px -3px currentColor,
-    0 0 30px -10px currentColor;
-  box-shadow:
-    inset 0 calc(var(--size) * -6 * 1px) calc(var(--size) * 6 * 1px) calc(var(--size) * -8 * 1px) currentColor,
-    inset calc(var(--size) * -3 * 1px) calc(var(--size) * -3 * 1px) calc(var(--size) * 2 * 1px) calc(var(--size) * -4 * 1px) green,
-    inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px) currentColor,
-    inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink,
-    0 0 10px -5px white,
-    0 0 12px -3px currentColor,
-    0 0 30px -10px currentColor;
+  --box: inset 0 calc(var(--size) * -6 * 1px) calc(var(--size) * 6 * 1px) calc(var(--size) * -8 * 1px) currentColor, inset calc(var(--size) * -3 * 1px) calc(var(--size) * -3 * 1px) calc(var(--size) * 6 * 1px) calc(var(--size) * -6 * 1px) green, inset 0 0 calc(var(--size) * 2 * 1px) calc(var(--size) / -2 * 1px) currentColor, inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * 1px) calc(var(--size) * -9 * 1px) hotpink, 0 0 10px -5px white, 0 0 12px -3px currentColor, 0 0 30px -10px currentColor;
+  -webkit-box-shadow: var(--box);
+  -o-box-shadow: var(--box);
+  -ms-box-shadow: var(--box);
+  -moz-box-shadow: var(--box);
+  box-shadow: var(--box);
+}
+.light .herocontent .bubbles {
+  --box: inset 0 0 calc(var(--size) * 3 * 1px) calc(var(--size) / -3 * -1px) currentColor, inset calc(var(--size) * -1px) calc(var(--size) * -1px) calc(var(--size) * 4 * 1px) calc(var(--size) * -1.5 * 1px) lime, inset calc(var(--size) * 4 * 1px) calc(var(--size) * 6 * 1px) calc(var(--size) * 3 * 1px) calc(var(--size) * -6 * 1px) hotpink, 0 0 20px -5px white, 0 0 5px -1px currentColor;
+  -webkit-box-shadow: var(--box);
+  -moz-box-shadow: var(--box);
+  -ms-box-shadow: var(--box);
+  -o-box-shadow: var(--box);
+  box-shadow: var(--box);
 }
 
 .herocontent .geometric div {
@@ -1991,9 +1961,8 @@
 }
 
 .constellation-legend {
-  font-weight: 300;
-  padding: 0.3rem 0.2rem;
-  --legend-width: clamp(100px, 90vw, 11em);
+  --legend-width: clamp(100px, 90vw, 13em);
+  padding: 0.2rem 0.2rem 0.3rem;
   width: var(--legend-width);
   max-width: calc(90vw - var(--scrollbar_width, 15px));
   left: calc(50vw - var(--legend-width) / 2);
@@ -2002,7 +1971,8 @@
   background: linear-gradient(180deg, rgba(8, 14, 29, 0.76), rgba(8, 14, 29, 0.4));
   border: 1px solid rgba(255, 255, 255, 0.25);
   color: white;
-  font-weight: 300;
+  font-family: var(--text-family);
+  font-weight: 700;
   pointer-events: auto;
 }
 .constellation-legend .inner {
@@ -2010,17 +1980,20 @@
   max-width: 100%;
   margin: 0 auto;
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: row wrap;
   align-items: center;
   justify-content: center;
-  gap: 0.12rem;
+  gap: 0.2rem;
+  text-align: center;
+}
+.constellation-legend .inner > span {
+  flex: 1 0 auto;
+}
+.constellation-legend .inner > div {
+  flex: 0 0 100%;
 }
 .constellation-legend strong {
-  font-weight: 300;
-  letter-spacing: calc(var(--letter-spacing) * 1.1);
-}
-.light .constellation-legend strong {
-  font-weight: 600;
+  letter-spacing: var(--letter-spacing);
 }
 .constellation-thresholds {
   display: flex;
@@ -2033,7 +2006,7 @@
 }
 
 .constellation-thresholds .constellation-threshold-btn {
-  padding: 0.2rem 0.2rem 0.15rem;
+  padding: 0.33rem 0.22rem 0.3rem;
   border-radius: 999px;
   background-color: rgba(255, 255, 255, 0.01);
   background-image: none;
@@ -2041,6 +2014,11 @@
   line-height: 1;
   font-size: 0.8em;
   outline-offset: 0;
+  font-weight: 700;
+  letter-spacing: calc(var(--letter-spacing) * 2);
+}
+.light .constellation-thresholds .constellation-threshold-btn {
+  font-weight: 900;
 }
 .constellation-legend .constellation-thresholds .constellation-threshold-btn.btn-3 {
   border: 2px dashed var(--color-gray-5);
@@ -2065,6 +2043,7 @@
   outline-offset: 1px;
   border-bottom-style: solid;
   border-bottom-color: currentColor;
+  box-shadow: 0 3px 12px -1px rgba(255, 255, 255, 0.3);
 }
 
 .light .constellation-legend {
@@ -2084,6 +2063,7 @@
 .light .constellation-legend .constellation-thresholds .constellation-threshold-btn:focus-visible,
 .light .constellation-legend .constellation-thresholds .constellation-threshold-btn.active {
   background-color: rgba(11, 19, 43, 0.08);
+  box-shadow: 0 3px 12px -1px rgba(11, 19, 43, 0.6);
 }
 
 .constellation-legend .copy-to-clipboard {
@@ -2101,14 +2081,17 @@
 }
 
 @media (min-width: 300px) {
+  .constellation-legend .inner {
+    gap: 0.4rem;
+  }
   .constellation-thresholds .constellation-threshold-btn {
-    padding: 0.3rem 0.5rem 0.25rem;
+    padding: 0.4rem 0.6rem;
   }
 }
 @media (min-width: 500px) {
   .constellation-legend {
     bottom: 0;
-    padding: 0.55rem 0.8rem;
+    padding: 0.5rem 0.8rem 0.6rem;
   }
 }
 
@@ -2119,7 +2102,11 @@
   }
   .constellation-legend .inner {
     flex-flow: row nowrap;
-    gap: 2rem;
+    gap: 0.8rem;
+  }
+  .constellation-legend .inner > span,
+  .constellation-legend .inner > div {
+    flex: 0 0 auto;
   }
 }
 

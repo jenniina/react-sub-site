@@ -229,6 +229,13 @@ const Nav = (
   const mainMenu = useExitVisibility(false)
   const toolbar = useExitVisibility(false)
 
+  const location = useLocation()
+
+  const touchDevice = isTouchDevice()
+  const lightTheme = useTheme()
+  const toggleTheme = useThemeUpdate()
+  const navigate = useNavigate()
+
   const [openForm, setOpenForm] = useState<Form>(null)
 
   const isLoginFormOpen = openForm === 'login'
@@ -252,13 +259,6 @@ const Nav = (
     arm()
     setMenuStyleAlt(target)
   }
-
-  const location = useLocation()
-
-  const touchDevice = isTouchDevice()
-  const lightTheme = useTheme()
-  const toggleTheme = useThemeUpdate()
-  const navigate = useNavigate()
 
   const toggleMainMenu = useCallback(
     (windowWidth: number) => {
@@ -285,11 +285,29 @@ const Nav = (
     [toolbar, mainMenu]
   )
 
+  const getAuthQueryForm = useCallback(
+    (search: string): Form => {
+      const params = new URLSearchParams(search)
+
+      if (params.get('login') === 'true') {
+        return 'login'
+      }
+
+      if (params.get('register') === 'true') {
+        return 'register'
+      }
+
+      return null
+    },
+    [location.search]
+  )
+
   const clearAuthQueryParams = useCallback(() => {
     // If URL opens login/register form, allow outside click to close it permanently
     // by removing the query params (otherwise the effect below will reopen it).
     const params = new URLSearchParams(location.search)
-    const hadAuthParams = params.has('login') || params.has('register')
+    const hadAuthParams =
+      params.get('login') === 'true' || params.get('register') === 'true'
     if (!hadAuthParams) return
 
     params.delete('login')
@@ -310,8 +328,7 @@ const Nav = (
     mainMenu.hide()
     toolbar.hide()
     setOpenForm(null)
-    clearAuthQueryParams()
-  }, [toolbar, mainMenu, clearAuthQueryParams])
+  }, [toolbar, mainMenu])
 
   const dispatch = useAppDispatch()
 
@@ -321,20 +338,25 @@ const Nav = (
 
   // From URL params
   useEffect(() => {
-    if (!isClient || !windowObj) return
-    const params = new URLSearchParams(windowObj.location.search)
-    if (params.get('login')) {
+    if (!isClient) return
+    const authForm = getAuthQueryForm(location.search)
+    if (authForm) {
       toolbar.show()
-      bindForm('login')(true)
+      bindForm(authForm)(true)
       // Treat auth params as one-shot triggers so they don't keep reopening
       // the toolbar on unrelated query param changes (e.g. AccessibleColors mode).
-      clearAuthQueryParams()
-    } else if (params.get('register')) {
-      toolbar.show()
-      bindForm('register')(true)
-      clearAuthQueryParams()
+      setTimeout(() => {
+        clearAuthQueryParams()
+      }, 200)
     }
-  }, [location, isClient, windowObj, bindForm, toolbar, clearAuthQueryParams])
+  }, [
+    location,
+    isClient,
+    bindForm,
+    toolbar,
+    clearAuthQueryParams,
+    getAuthQueryForm,
+  ])
 
   useOutsideClick({
     ref: clickOutsideRef,
