@@ -261,10 +261,13 @@ svg.filter {
 }
 @media (min-width: 700px) {
   .drag-container .drag-slider-single {
-    flex: 1 1 28%;
+    flex: 1 0 44%;
     text-align: center;
     align-self: flex-end;
     margin-bottom: 1em;
+  }
+  .drag-container .drag-slider-single:first-child {
+    flex: 1 0 100%;
   }
   .drag-container .drag-slider-single > button {
     flex: 1 0 100%;
@@ -802,7 +805,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
   padding: 0rem 0.2rem 0.04rem;
   height: 1.7rem;
   width: 1.7rem;
-  line-height: 0.8;
+  line-height: 0.77;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1368,6 +1371,12 @@ body.dark-mode .site .drag-container .dragzone:focus {
   }
   .button-container button.screenshot svg {
     font-size: 1.5rem;
+  }
+  .drag-container .drag-slider-single {
+    flex: 1 0 28%;
+  }
+  .drag-container .drag-slider-single:first-child {
+    flex: 1 0 40%;
   }
 }
 @media (min-width: 1101px) {
