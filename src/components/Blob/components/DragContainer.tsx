@@ -1530,22 +1530,22 @@ export default function DragContainer({
           0
         )
       if (
-        makeSmaller0.current &&
+        makeLarger0.current &&
         dragWrap.current &&
         windowWidth < breakpointSmallest
       )
         place(
-          makeSmaller0.current,
+          makeLarger0.current,
           85 -
-            (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) *
+            (makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) *
               100,
           0.3
         )
-      else if (makeSmaller0.current && dragWrap.current)
+      else if (makeLarger0.current && dragWrap.current)
         place(
-          makeSmaller0.current,
+          makeLarger0.current,
           77 -
-            (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) *
+            (makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) *
               100,
           0.3
         )
@@ -1618,27 +1618,29 @@ export default function DragContainer({
               100
         )
       if (
-        makeLarger0.current &&
+        makeSmaller0.current &&
         dragWrap.current &&
         windowWidth < breakpointSmall
       )
         place(
-          makeLarger0.current,
+          makeSmaller0.current,
           98 -
-            (makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) *
+            (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) *
               100,
           100 -
-            (makeLarger0.current.offsetHeight / dragWrap.current.offsetHeight) *
+            (makeSmaller0.current.offsetHeight /
+              dragWrap.current.offsetHeight) *
               100
         )
-      else if (makeLarger0.current && dragWrap.current)
+      else if (makeSmaller0.current && dragWrap.current)
         place(
-          makeLarger0.current,
+          makeSmaller0.current,
           90 -
-            (makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) *
+            (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) *
               100,
           100 -
-            (makeLarger0.current.offsetHeight / dragWrap.current.offsetHeight) *
+            (makeSmaller0.current.offsetHeight /
+              dragWrap.current.offsetHeight) *
               100
         )
       // place color blocks:
@@ -2166,54 +2168,6 @@ export default function DragContainer({
                 }}
               >
                 <button
-                  tabIndex={0}
-                  ref={makeSmaller0}
-                  className={`make-smaller tooltip-wrap gray ${
-                    !controlsVisible ? 'hidden' : ''
-                  }`}
-                  id={`make-smaller${d}`}
-                  onClick={() => {
-                    toggleMode('scale-down')
-                  }}
-                >
-                  <Icon lib="im" name="ImShrink2" aria-hidden="true" />
-                  {mode === 'scale-down' && (
-                    <span className="scale-down-alert">
-                      {t('SizeDecreaseModeOn')}
-                    </span>
-                  )}
-                  <span
-                    id={`make-smaller${d}-span`}
-                    className="tooltip left below"
-                  >{`${t('ShrinkInstructions')}. ${t('Alternatively')}: ${t(
-                    'ResizebyScrollInstructions'
-                  )}`}</span>
-                </button>
-                <button
-                  ref={makeLarger0}
-                  className={`make-larger tooltip-wrap gray ${
-                    !controlsVisible ? 'hidden' : ''
-                  }`}
-                  id={`make-larger${d}`}
-                  onClick={() => {
-                    toggleMode('scale-up')
-                  }}
-                >
-                  <Icon lib="im" name="ImEnlarge2" aria-hidden="true" />
-                  {mode === 'scale-up' && (
-                    <span className="scale-up-alert">
-                      {t('SizeIncreaseModeOn')}
-                    </span>
-                  )}
-                  <span
-                    id={`make-larger${d}-span`}
-                    className="tooltip left above"
-                  >{`${t('EnlargeInstructions')}. ${t('Alternatively')}: ${t(
-                    'ResizebyScrollInstructions'
-                  )}`}</span>
-                </button>
-
-                <button
                   ref={makeMore0}
                   className={`make-more tooltip-wrap gray ${
                     !controlsVisible ? 'hidden' : ''
@@ -2250,6 +2204,29 @@ export default function DragContainer({
                   >{`${t('ClickMeToMakeARandomBlob')}. ${t(
                     'MoreColorsAvailable'
                   )}!`}</span>
+                </button>
+                <button
+                  ref={makeLarger0}
+                  className={`make-larger tooltip-wrap gray ${
+                    !controlsVisible ? 'hidden' : ''
+                  }`}
+                  id={`make-larger${d}`}
+                  onClick={() => {
+                    toggleMode('scale-up')
+                  }}
+                >
+                  <Icon lib="im" name="ImEnlarge2" aria-hidden="true" />
+                  {mode === 'scale-up' && (
+                    <span className="scale-up-alert">
+                      {t('SizeIncreaseModeOn')}
+                    </span>
+                  )}
+                  <span
+                    id={`make-larger${d}-span`}
+                    className="tooltip left below"
+                  >{`${t('EnlargeInstructions')}. ${t('Alternatively')}: ${t(
+                    'ResizebyScrollInstructions'
+                  )}`}</span>
                 </button>
                 <button
                   ref={deleteBlob0}
@@ -2312,6 +2289,31 @@ export default function DragContainer({
                     'KeyboardUsePressTheCorrespondingLayerNumber'
                   )}`}</span>
                   <Icon lib="bi" name="BiChevronUp" aria-hidden="true" />
+                </button>
+
+                <button
+                  tabIndex={0}
+                  ref={makeSmaller0}
+                  className={`make-smaller tooltip-wrap gray ${
+                    !controlsVisible ? 'hidden' : ''
+                  }`}
+                  id={`make-smaller${d}`}
+                  onClick={() => {
+                    toggleMode('scale-down')
+                  }}
+                >
+                  <Icon lib="im" name="ImShrink2" aria-hidden="true" />
+                  {mode === 'scale-down' && (
+                    <span className="scale-down-alert">
+                      {t('SizeDecreaseModeOn')}
+                    </span>
+                  )}
+                  <span
+                    id={`make-smaller${d}-span`}
+                    className="tooltip left above"
+                  >{`${t('ShrinkInstructions')}. ${t('Alternatively')}: ${t(
+                    'ResizebyScrollInstructions'
+                  )}`}</span>
                 </button>
 
                 {markerEnabled && usingKeyboard && focusedBlob && (

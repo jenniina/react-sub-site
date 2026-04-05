@@ -80,8 +80,8 @@ svg.filter {
   box-shadow: var(--box);
 }
 
-.drag-container .make-smaller,
-.drag-container .make-larger {
+.drag-container .make-larger,
+.drag-container .make-smaller {
   z-index: 1;
 }
 
@@ -102,8 +102,8 @@ svg.filter {
 .drag-container .make-more .clone-alert,
 .drag-container .layer-decrease .layer-down-alert,
 .drag-container .layer-increase .layer-up-alert,
-.drag-container .scale-up-alert,
 .drag-container .scale-down-alert,
+.drag-container .scale-up-alert,
 .colorblock.active .color-alert {
   position: absolute;
   display: block;
@@ -122,16 +122,16 @@ svg.filter {
   font-weight: normal;
 }
 .drag-container .make-more .clone-alert,
-.drag-container .scale-down-alert {
+.drag-container .scale-up-alert {
   top: 80%;
 }
 .drag-container .layer-increase .layer-up-alert,
-.drag-container .scale-up-alert,
-.drag-container .scale-down-alert {
+.drag-container .scale-down-alert,
+.drag-container .scale-up-alert {
   left: unset;
   right: 120%;
 }
-.drag-container .scale-up-alert {
+.drag-container .scale-down-alert {
   top: -150%;
 }
 .colorblock.active,
@@ -712,8 +712,8 @@ body.dark-mode .site .drag-container .dragzone:focus {
   pointer-events: all;
 }
 
-.drag-container .make-larger,
-.drag-container .make-smaller {
+.drag-container .make-smaller,
+.drag-container .make-larger {
   position: absolute;
   text-align: center;
   font-weight: bold;
@@ -722,7 +722,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
 .drag-container button.toggle-marker {
   position: relative;
 }
-.drag-container .make-smaller {
+.drag-container .make-larger {
   --box: -0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.4), inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4), inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
   top: 0.2rem;
   border-radius: var(--corner2);
@@ -732,7 +732,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
   -moz-box-shadow: var(--box);
   box-shadow: var(--box);
 }
-.drag-container .make-smaller {
+.drag-container .make-larger {
   --bottom: -2.2rem;
   font-size: 0.85rem;
   padding: 0.1em 0.08em 0.1em;
@@ -740,7 +740,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
   line-height: 1.8;
   border-radius: 50%;
 }
-.drag-container .make-larger,
+.drag-container .make-smaller,
 .drag-container .layer-increase {
   --box: -0.2rem -0.2rem 0.5rem rgba(0, 0, 0, 0.4), inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4), inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: var(--box);
@@ -756,7 +756,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
 }
 .drag-container .make-more,
 .drag-container .delete-blob,
-.drag-container .make-smaller {
+.drag-container .make-larger {
   position: absolute;
   height: 1.7rem;
   width: 1.7rem;
@@ -768,7 +768,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
   width: 1.9rem;
 }
 .drag-container .delete-blob,
-.drag-container .make-larger,
+.drag-container .make-smaller,
 .drag-container .make-random {
   margin: 0;
 }
@@ -1082,11 +1082,11 @@ body.dark-mode .site .drag-container .dragzone:focus {
   border-color: currentColor;
   border-width: 2px;
 }
-.drag-container .make-larger,
+.drag-container .make-smaller,
 .drag-container .layer-adjust {
   transform: translateY(-0.3rem);
 }
-.drag-container .make-smaller,
+.drag-container .make-larger,
 .drag-container .make-more,
 .drag-container .make-random {
   transform: translateY(0.2rem);
