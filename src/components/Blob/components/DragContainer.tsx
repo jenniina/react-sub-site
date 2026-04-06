@@ -82,8 +82,22 @@ const angle = '90deg'
 
 const defaultLayerAmount = 3
 
+let activeBlobContainerId: number | null = null
+
 const preventDefault = (e: Event) => {
   e.preventDefault()
+}
+
+const isEditableTarget = (target: EventTarget | null) => {
+  if (!(target instanceof HTMLElement)) return false
+
+  const tagName = target.tagName
+  return (
+    target.isContentEditable ||
+    tagName === 'INPUT' ||
+    tagName === 'TEXTAREA' ||
+    tagName === 'SELECT'
+  )
 }
 
 export default function DragContainer({
@@ -107,12 +121,14 @@ export default function DragContainer({
   const defaultSaturation = d === 0 ? '80' : d === 2 ? '50' : '45'
   const defaultLightness = d === 0 ? '30' : d === 2 ? '5' : '25'
 
-  const { state, dispatch } = useContext(BlobContext)!
+  const { state, dispatch, undo, redo, canUndo, canRedo } =
+    useContext(BlobContext)!
   const dispatch2 = useAppDispatch()
   const user = useSelector((state: ReducerProps) => state.auth?.user)
 
   const dragWrap = useRef(null) as RefObject<HTMLDivElement>
   const dragWrapOutest = useRef(null) as RefObject<HTMLDivElement>
+  const dragContainerRef = useRef(null) as RefObject<HTMLDivElement>
 
   const [selectedvalue0, setSelectedvalue0] = useState<string | null>(null)
 
@@ -1324,6 +1340,71 @@ export default function DragContainer({
   )
 
   useEffect(() => {
+    const container = dragContainerRef.current
+    if (!isClient || !container) return
+
+    const markActive = () => {
+      activeBlobContainerId = d
+    }
+
+    container.addEventListener('pointerdown', markActive)
+    container.addEventListener('focusin', markActive)
+    container.addEventListener('mousedown', markActive)
+    container.addEventListener('touchstart', markActive, { passive: true })
+
+    return () => {
+      container.removeEventListener('pointerdown', markActive)
+      container.removeEventListener('focusin', markActive)
+      container.removeEventListener('mousedown', markActive)
+      container.removeEventListener('touchstart', markActive)
+
+      if (activeBlobContainerId === d) {
+        activeBlobContainerId = null
+      }
+    }
+  }, [d, isClient])
+
+  useEffect(() => {
+    if (!isClient || !document) return
+
+    const handleUndoRedo = (e: KeyboardEvent) => {
+      if (e.defaultPrevented) return
+      if (e.altKey || !(e.ctrlKey || e.metaKey)) return
+      if (isEditableTarget(e.target)) return
+
+      if (activeBlobContainerId !== d) return
+
+      const key = e.key.toLowerCase()
+
+      if (key === 'z' && e.shiftKey) {
+        if (!canRedo) return
+        e.preventDefault()
+        redo()
+        return
+      }
+
+      if (key === 'y') {
+        if (!canRedo) return
+        e.preventDefault()
+        redo()
+        return
+      }
+
+      if (key === 'z') {
+        if (!canUndo) return
+        e.preventDefault()
+        undo()
+      }
+    }
+
+    document.addEventListener('keydown', handleUndoRedo)
+
+    return () => {
+      document.removeEventListener('keydown', handleUndoRedo)
+    }
+  }, [canRedo, canUndo, isClient, redo, undo])
+
+  useEffect(() => {
     const dragWrapCurrent = dragWrapOuter.current
 
     if (!scroll && document !== null) {
@@ -2020,6 +2101,7 @@ export default function DragContainer({
       <section className="card">
         <div>
           <div
+            ref={dragContainerRef}
             id={`drag-container${d}`}
             className={`drag-container drag-container${d}`}
           >
@@ -2396,6 +2478,40 @@ export default function DragContainer({
               />
             </div>
             <div className="layer-mover-control-wrap">
+              <div className="history-btn-wrap">
+                <button
+                  id={`undo-${d}`}
+                  aria-labelledby={`undo-${d}-span`}
+                  className="history-button tooltip-wrap narrow2"
+                  disabled={!canUndo}
+                  onClick={() => {
+                    activeBlobContainerId = d
+                    undo()
+                  }}
+                >
+                  <span id={`undo-${d}-span`}>
+                    <span className="scr">{t('Undo')}</span>
+                    <Icon lib="bi" name="BiUndo" aria-hidden="true" />
+                    <span className="tooltip above">{`${t('Undo')} (Ctrl+Z)`}</span>
+                  </span>
+                </button>
+                <button
+                  id={`redo-${d}`}
+                  aria-labelledby={`redo-${d}-span`}
+                  className="history-button tooltip-wrap narrow2"
+                  disabled={!canRedo}
+                  onClick={() => {
+                    activeBlobContainerId = d
+                    redo()
+                  }}
+                >
+                  <span id={`redo-${d}-span`}>
+                    <span className="scr">{t('Redo')}</span>
+                    <Icon lib="bi" name="BiRedo" aria-hidden="true" />
+                    <span className="tooltip above">{`${t('Redo')} (Ctrl+Shift+Z / Ctrl+Y)`}</span>
+                  </span>
+                </button>
+              </div>
               <div
                 className={`movers-wrap movers-wrap1 ${
                   !controlsVisible ? 'hidden' : ''
@@ -2454,6 +2570,7 @@ export default function DragContainer({
                   <Icon lib="bi" name="BiChevronDown" aria-hidden="true" />
                 </button>
               </div>
+
               <div className="layer-btn-wrap layers">
                 {Array.from({ length: layerAmount }, (_, i) => i).map(
                   (layer, index) => (

@@ -10907,6 +10907,33 @@ export const translations = {
     cs: 'Dočasný uživatel nemůže ukládat',
     fi: 'Testikäyttäjä ei voi tallentaa',
   },
+  CancelAndRedoFunctionality: {
+    en: 'Cancel and redo functionality',
+    es: 'Funcionalidad de cancelar y rehacer',
+    fr: 'Fonctionnalité d annulation et de rétablissement',
+    de: 'Funktionalität zum Abbrechen und Wiederherstellen',
+    pt: 'Funcionalidade de cancelar e refazer',
+    cs: 'Funkce zrušit a znovu',
+    fi: 'Peruuta ja tee uudestaan -toiminnallisuus',
+  },
+  Undo: {
+    en: 'Undo',
+    es: 'Deshacer',
+    fr: 'Annuler',
+    de: 'Rückgängig',
+    pt: 'Desfazer',
+    cs: 'Zpět',
+    fi: 'Kumoa',
+  },
+  Redo: {
+    en: 'Redo',
+    es: 'Rehacer',
+    fr: 'Rétablir',
+    de: 'Wiederholen',
+    pt: 'Refazer',
+    cs: 'Znovu',
+    fi: 'Tee uudestaan',
+  },
 } as const
 
 export type Translations = typeof translations

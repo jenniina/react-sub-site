@@ -32,6 +32,8 @@ import {
   BiChevronDown,
   BiChevronUp,
   BiPlus,
+  BiUndo,
+  BiRedo,
 } from 'react-icons/bi'
 import { CgSearch, CgUndo } from 'react-icons/cg'
 import {
@@ -166,6 +168,8 @@ export const iconLibraries = {
     BiChevronDown,
     BiChevronUp,
     BiPlus,
+    BiUndo,
+    BiRedo,
   },
   cg: {
     CgSearch,

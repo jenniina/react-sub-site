@@ -203,6 +203,7 @@ const DragLayers = ({
     (e: KeyboardEvent) => {
       if (!isClient || !windowObj) return
       if (isEditableTarget(e.target)) return
+      if (e.ctrlKey || e.metaKey || e.altKey) return
 
       const movePx = 4
 
@@ -565,6 +566,15 @@ const DragLayers = ({
   const commitDraggedPosition = useCallback(
     (target: HTMLElement | null) => {
       if (!target) return
+
+      const dragState = dragStateRef.current
+      if (Number.isFinite(dragState.currentLeft)) {
+        target.style.left = `${dragState.currentLeft}px`
+      }
+      if (Number.isFinite(dragState.currentTop)) {
+        target.style.top = `${dragState.currentTop}px`
+      }
+
       cancelDragFrame()
       getPosition(target)
     },

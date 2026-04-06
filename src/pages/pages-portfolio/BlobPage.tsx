@@ -56,9 +56,6 @@ export default function BlobPage({ type }: { type: string }) {
 
                         <li>
                           {t('Layers')}:{' '}
-                          <big>
-                            <i>({t('New')}!)</i>
-                          </big>
                           <ul>
                             <li>{t('LayerInstructions')}</li>
                             <li>
@@ -76,9 +73,6 @@ export default function BlobPage({ type }: { type: string }) {
                         </li>
                         <li>
                           {t('Saving')}:{' '}
-                          <big>
-                            <i>({t('New')}!)</i>
-                          </big>
                           <ul>
                             <li>{t('LoginToSaveBlobsToServer')}</li>
                             <li>{t('ManyVersions')}</li>
@@ -89,9 +83,6 @@ export default function BlobPage({ type }: { type: string }) {
                         </li>
                         <li>
                           {t('Screenshot')}:
-                          <big>
-                            <i>({t('New')}!)</i>
-                          </big>
                           <ul>
                             <li>
                               {t('PressTheCameraSymbolToTakeAScreenshot')}
@@ -145,6 +136,24 @@ export default function BlobPage({ type }: { type: string }) {
                           {t(
                             'OnTouchscreensTapTheBlobTwiceToShrinkItAndThriceToEnlargeIt'
                           )}
+                        </li>
+                        <li>
+                          {t('CancelAndRedoFunctionality')}{' '}
+                          <big>
+                            <strong>
+                              <i>({t('New')}!)</i>
+                            </strong>
+                          </big>
+                          <ul>
+                            <li>
+                              <b>{t('Undo')}:</b> <u>Ctrl + Z</u> or{' '}
+                              <u>Cmd + Z</u>
+                            </li>
+                            <li>
+                              <b>{t('Redo')}:</b> <u>Ctrl + Shift + Z</u> or{' '}
+                              <u>Ctrl + Y</u> or <u>Cmd + Shift + Z</u>
+                            </li>
+                          </ul>
                         </li>
                       </ul>
                       <h3>{t('Instructions')}</h3>
