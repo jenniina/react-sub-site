@@ -1275,50 +1275,53 @@ export default function DragContainer({
     })
   }
 
-  const getPosition = (draggable: HTMLElement) => {
-    const blobID = draggable.id
-    if (!isClient || !windowObj) return
-    const blobStyle = windowObj.getComputedStyle(draggable)
-    const blobNumber = parseInt(
-      draggable.id.replace('blob', '').split('-')[0],
-      10
-    )
-    const blobI =
-      blobStyle.getPropertyValue('--i') ??
-      draggable.style.getPropertyValue('--i') ??
-      '10'
-    const blobX =
-      blobStyle.getPropertyValue('left') ??
-      draggable.style.getPropertyValue('left')
-    const blobY =
-      blobStyle.getPropertyValue('top') ??
-      draggable.style.getPropertyValue('top')
-    const blobZ =
-      blobStyle.getPropertyValue('z-index') ??
-      draggable.style.getPropertyValue('z-index')
-    const blobColor1 =
-      blobStyle.getPropertyValue('background') ??
-      draggable.style.getPropertyValue('background')
-    const layer =
-      blobStyle.getPropertyValue('--layer') ??
-      draggable.style.getPropertyValue('--layer')
+  const getPosition = useCallback(
+    (draggable: HTMLElement) => {
+      const blobID = draggable.id
+      if (!isClient || !windowObj) return
+      const blobStyle = windowObj.getComputedStyle(draggable)
+      const blobNumber = parseInt(
+        draggable.id.replace('blob', '').split('-')[0],
+        10
+      )
+      const blobI =
+        blobStyle.getPropertyValue('--i') ??
+        draggable.style.getPropertyValue('--i') ??
+        '10'
+      const blobX =
+        blobStyle.getPropertyValue('left') ??
+        draggable.style.getPropertyValue('left')
+      const blobY =
+        blobStyle.getPropertyValue('top') ??
+        draggable.style.getPropertyValue('top')
+      const blobZ =
+        blobStyle.getPropertyValue('z-index') ??
+        draggable.style.getPropertyValue('z-index')
+      const blobColor1 =
+        blobStyle.getPropertyValue('background') ??
+        draggable.style.getPropertyValue('background')
+      const layer =
+        blobStyle.getPropertyValue('--layer') ??
+        draggable.style.getPropertyValue('--layer')
 
-    const blobDraggable: Draggable = {
-      layer: layer ? parseInt(layer) : activeLayer,
-      id: blobID,
-      number: blobNumber,
-      i: isNaN(parseFloat(blobI)) ? 10 : parseFloat(blobI),
-      x: blobX,
-      y: blobY,
-      z: blobZ,
-      background: blobColor1 ?? 'linear-gradient(90deg, cyan, greenyellow)',
-    }
+      const blobDraggable: Draggable = {
+        layer: layer ? parseInt(layer) : activeLayer,
+        id: blobID,
+        number: blobNumber,
+        i: isNaN(parseFloat(blobI)) ? 10 : parseFloat(blobI),
+        x: blobX,
+        y: blobY,
+        z: blobZ,
+        background: blobColor1 ?? 'linear-gradient(90deg, cyan, greenyellow)',
+      }
 
-    void dispatch({
-      type: 'updateDraggable',
-      payload: { d, draggable: blobDraggable },
-    })
-  }
+      void dispatch({
+        type: 'updateDraggable',
+        payload: { d, draggable: blobDraggable },
+      })
+    },
+    [activeLayer, d, dispatch, isClient, windowObj]
+  )
 
   useEffect(() => {
     const dragWrapCurrent = dragWrapOuter.current

@@ -114,6 +114,10 @@ const DragLayers = ({
   const { t } = useLanguageContext()
 
   const currentFocusedElementRef = useRef<HTMLElement | null>(null)
+  const movementListenerRef = useRef<EventListener | null>(null)
+  const mouseUpListenerRef = useRef<EventListener | null>(null)
+  const touchEndListenerRef = useRef<EventListener | null>(null)
+  const suppressBlurCommitRef = useRef(false)
   const dragStateRef = useRef<DragState>({
     isDragging: false,
     pointerStartX: 0,
@@ -340,7 +344,7 @@ const DragLayers = ({
           if (reset) {
             reset = false
             if (target.closest(`#drag-wrap${d}`)) {
-              setColorIndex(prevColorIndex => {
+              setColorIndex((prevColorIndex) => {
                 const nextColorIndex =
                   (prevColorIndex + 1) % colorPairs[d].length
                 return nextColorIndex // Return the new color index
@@ -570,17 +574,19 @@ const DragLayers = ({
   const removeDocumentDragListeners = useCallback(() => {
     if (!document) return
 
-    document.removeEventListener('mousemove', movement as EventListener)
-    document.removeEventListener('mouseup', handleDocumentMouseUp as EventListener)
-    document.removeEventListener('touchmove', movement as EventListener)
-    document.removeEventListener(
-      'touchend',
-      handleDocumentTouchEnd as EventListener
-    )
-    document.removeEventListener(
-      'touchcancel',
-      handleDocumentTouchEnd as EventListener
-    )
+    if (movementListenerRef.current) {
+      document.removeEventListener('mousemove', movementListenerRef.current)
+      document.removeEventListener('touchmove', movementListenerRef.current)
+    }
+
+    if (mouseUpListenerRef.current) {
+      document.removeEventListener('mouseup', mouseUpListenerRef.current)
+    }
+
+    if (touchEndListenerRef.current) {
+      document.removeEventListener('touchend', touchEndListenerRef.current)
+      document.removeEventListener('touchcancel', touchEndListenerRef.current)
+    }
   }, [])
 
   useOutsideClick({
@@ -637,7 +643,9 @@ const DragLayers = ({
       dragStateRef.current.originLeft = Number.isFinite(originLeft)
         ? originLeft
         : 0
-      dragStateRef.current.originTop = Number.isFinite(originTop) ? originTop : 0
+      dragStateRef.current.originTop = Number.isFinite(originTop)
+        ? originTop
+        : 0
       dragStateRef.current.currentLeft = dragStateRef.current.originLeft
       dragStateRef.current.currentTop = dragStateRef.current.originTop
 
@@ -662,23 +670,25 @@ const DragLayers = ({
       })
 
       document?.addEventListener('keydown', keyDown)
-      document?.addEventListener('mousemove', movement as EventListener)
-      document?.addEventListener('mouseup', handleDocumentMouseUp as EventListener)
+      if (movementListenerRef.current) {
+        document?.addEventListener('mousemove', movementListenerRef.current)
+      }
+      if (mouseUpListenerRef.current) {
+        document?.addEventListener('mouseup', mouseUpListenerRef.current)
+      }
       const blobLayer = target.style.getPropertyValue('--layer')
       setActiveLayer(isNaN(parseInt(blobLayer)) ? 1 : parseInt(blobLayer))
 
       if (isTouchDevice) {
-        document?.addEventListener('touchmove', movement as EventListener, {
-          passive: false,
-        })
-        document?.addEventListener(
-          'touchend',
-          handleDocumentTouchEnd as EventListener
-        )
-        document?.addEventListener(
-          'touchcancel',
-          handleDocumentTouchEnd as EventListener
-        )
+        if (movementListenerRef.current) {
+          document?.addEventListener('touchmove', movementListenerRef.current, {
+            passive: false,
+          })
+        }
+        if (touchEndListenerRef.current) {
+          document?.addEventListener('touchend', touchEndListenerRef.current)
+          document?.addEventListener('touchcancel', touchEndListenerRef.current)
+        }
         document?.addEventListener('touchmove', preventDefault, {
           passive: false,
         })
@@ -719,8 +729,10 @@ const DragLayers = ({
 
       if (dragState.isDragging && target) {
         const { x, y } = getEventPosition(e)
-        dragState.currentLeft = dragState.originLeft + (x - dragState.pointerStartX)
-        dragState.currentTop = dragState.originTop + (y - dragState.pointerStartY)
+        dragState.currentLeft =
+          dragState.originLeft + (x - dragState.pointerStartX)
+        dragState.currentTop =
+          dragState.originTop + (y - dragState.pointerStartY)
 
         if (dragState.frameId === null && typeof window !== 'undefined') {
           dragState.frameId = window.requestAnimationFrame(() => {
@@ -750,6 +762,8 @@ const DragLayers = ({
     ) => {
       e.stopPropagation()
       e.preventDefault()
+      if (!dragStateRef.current.isDragging) return
+
       dragStateRef.current.isDragging = false
       tapCount++
 
@@ -801,6 +815,7 @@ const DragLayers = ({
 
       commitDraggedPosition(target)
       target.classList.remove('drag')
+      suppressBlurCommitRef.current = true
       target.blur()
       if (tapCount === 0) currentFocusedElementRef.current = null
       else currentFocusedElementRef.current = target
@@ -825,6 +840,8 @@ const DragLayers = ({
       target: HTMLElement
     ) => {
       e.stopPropagation()
+      if (!dragStateRef.current.isDragging) return
+
       dragStateRef.current.isDragging = false
       currentFocusedElementRef.current = null
       removeDocumentDragListeners()
@@ -839,9 +856,16 @@ const DragLayers = ({
       commitDraggedPosition(target)
       target.classList.remove('drag')
       document?.removeEventListener('keydown', keyDown)
+      suppressBlurCommitRef.current = true
       target.blur()
     },
-    [keyDown, isTouchDevice, scroll, commitDraggedPosition, removeDocumentDragListeners]
+    [
+      keyDown,
+      isTouchDevice,
+      scroll,
+      commitDraggedPosition,
+      removeDocumentDragListeners,
+    ]
   )
 
   useEffect(() => {
@@ -864,24 +888,47 @@ const DragLayers = ({
       draggable.classList.remove('drag')
       document?.removeEventListener('keydown', keyDown)
       removeDocumentDragListeners()
-      commitDraggedPosition(draggable)
+      if (suppressBlurCommitRef.current) {
+        suppressBlurCommitRef.current = false
+      } else {
+        commitDraggedPosition(draggable)
+      }
       draggable.draggable = false
       currentFocusedElementRef.current = null
     },
     [keyDown, commitDraggedPosition, removeDocumentDragListeners]
   )
 
-  const handleDocumentMouseUp = useCallback((e: MouseEvent) => {
-    const target = currentFocusedElementRef.current
-    if (!target) return
-    stopMovementCheck(e, target)
-  }, [stopMovementCheck])
+  const handleDocumentMouseUp = useCallback(
+    (e: MouseEvent) => {
+      const target = currentFocusedElementRef.current
+      if (!target) return
+      stopMovementCheck(e, target)
+    },
+    [stopMovementCheck]
+  )
 
-  const handleDocumentTouchEnd = useCallback((e: TouchEvent) => {
-    const target = currentFocusedElementRef.current
-    if (!target) return
-    stopMovementCheck(e, target)
-  }, [stopMovementCheck])
+  const handleDocumentTouchEnd = useCallback(
+    (e: TouchEvent) => {
+      const target = currentFocusedElementRef.current
+      if (!target) return
+      stopMovementCheck(e, target)
+    },
+    [stopMovementCheck]
+  )
+
+  useEffect(() => {
+    movementListenerRef.current = movement as EventListener
+    mouseUpListenerRef.current = handleDocumentMouseUp as EventListener
+    touchEndListenerRef.current = handleDocumentTouchEnd as EventListener
+  }, [movement, handleDocumentMouseUp, handleDocumentTouchEnd])
+
+  useEffect(() => {
+    return () => {
+      cancelDragFrame()
+      removeDocumentDragListeners()
+    }
+  }, [cancelDragFrame, removeDocumentDragListeners])
 
   //on focused blob
   const focused = useCallback(
@@ -976,7 +1023,7 @@ const DragLayers = ({
 
   return (
     <>
-      {layers.map(l => (
+      {layers.map((l) => (
         <DragLayer
           key={l}
           layer_={l}

@@ -82,16 +82,16 @@ svg.filter {
 
 .drag-container .make-larger,
 .drag-container .make-smaller {
-  z-index: 1;
+  z-index: 1200;
 }
 
 .drag-container .make-random {
   cursor: pointer;
-  z-index: 1;
+  z-index: 1200;
 }
 
 .drag-container .delete-blob {
-  z-index: 1;
+  z-index: 1200;
   transform: translateY(-0.3rem);
   transform-origin: 80% 50%;
 }
@@ -158,7 +158,7 @@ svg.filter {
   left: unset;
 }
 .drag-container .make-more {
-  z-index: 1;
+  z-index: 1200;
   padding: 0.1rem 0.4rem 0.2rem;
   --box: inset -0.1rem -0.1rem 0.4rem -0.2rem rgba(0, 0, 0, 0.4), inset -0.1rem -0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: var(--box);
@@ -710,6 +710,30 @@ body.dark-mode .site .drag-container .dragzone:focus {
   border-radius: 50%;
   background: rgba(0, 0, 0, 0);
   pointer-events: all;
+}
+
+.drag-container .button-container,
+.drag-container .layer-mover-control-wrap,
+.drag-container .drag-slider-wrap,
+.drag-container .blob-handling,
+.drag-container .blob-title-wrap,
+.drag-container .label-container {
+  position: relative;
+  z-index: 1100;
+}
+
+.drag-container .layer-adjust,
+.drag-container .colorblock,
+.drag-container .mover,
+.drag-container .layer-button,
+.drag-container .layer-tool,
+.drag-container .toggle-controls,
+.drag-container .toggle-marker,
+.drag-container .disable-scroll,
+.drag-container .stop-blobs,
+.drag-container .reset-blobs,
+.drag-container .screenshot {
+  z-index: 1200;
 }
 
 .drag-container .make-smaller,
