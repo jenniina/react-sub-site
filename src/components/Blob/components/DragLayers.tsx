@@ -772,7 +772,9 @@ const DragLayers = ({
     ) => {
       e.stopPropagation()
       e.preventDefault()
-      if (!dragStateRef.current.isDragging) return
+      const activeTarget = currentFocusedElementRef.current
+      if (!dragStateRef.current.isDragging || !activeTarget) return
+      if (target !== activeTarget) return
 
       dragStateRef.current.isDragging = false
       tapCount++
@@ -823,12 +825,12 @@ const DragLayers = ({
         document.body.style.overflow = 'hidden'
       }
 
-      commitDraggedPosition(target)
-      target.classList.remove('drag')
+      commitDraggedPosition(activeTarget)
+      activeTarget.classList.remove('drag')
       suppressBlurCommitRef.current = true
-      target.blur()
+      activeTarget.blur()
       if (tapCount === 0) currentFocusedElementRef.current = null
-      else currentFocusedElementRef.current = target
+      else currentFocusedElementRef.current = activeTarget
       setFocusedBlob(null)
     },
     [
@@ -850,7 +852,9 @@ const DragLayers = ({
       target: HTMLElement
     ) => {
       e.stopPropagation()
-      if (!dragStateRef.current.isDragging) return
+      const activeTarget = currentFocusedElementRef.current
+      if (!dragStateRef.current.isDragging || !activeTarget) return
+      if (target !== activeTarget) return
 
       dragStateRef.current.isDragging = false
       currentFocusedElementRef.current = null
@@ -863,11 +867,11 @@ const DragLayers = ({
         document.body.style.overflow = 'hidden'
       }
 
-      commitDraggedPosition(target)
-      target.classList.remove('drag')
+      commitDraggedPosition(activeTarget)
+      activeTarget.classList.remove('drag')
       document?.removeEventListener('keydown', keyDown)
       suppressBlurCommitRef.current = true
-      target.blur()
+      activeTarget.blur()
     },
     [
       keyDown,

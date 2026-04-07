@@ -561,7 +561,7 @@ svg.filter {
   --del: calc(var(--i) * var(--delay));
   --duration: 3s;
   --tra1: translatey(0px);
-  --tra2: translatey(5px);
+  --tra2: translatey(4px);
 
   -webkit-animation: sway var(--duration) ease-in-out infinite;
   -moz-animation: sway var(--duration) ease-in-out infinite;

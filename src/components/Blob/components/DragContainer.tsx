@@ -940,52 +940,6 @@ export default function DragContainer({
     }
   }, [draggablesD, saveDraggables])
 
-  // function isValidDraggable(draggable: any): draggable is Draggable {
-  //   return (
-  //     typeof draggable === 'object' &&
-  //     draggable !== null &&
-  //     typeof draggable.layer === 'number' &&
-  //     typeof draggable.id === 'string' &&
-  //     typeof draggable.number === 'number' &&
-  //     typeof draggable.i === 'number' &&
-  //     typeof draggable.x === 'string' &&
-  //     typeof draggable.y === 'string' &&
-  //     typeof draggable.z === 'string' &&
-  //     !isNaN(Number(draggable.z)) &&
-  //     typeof draggable.background === 'string'
-  //   )
-  // }
-
-  // function correctDraggable(draggable: any): Draggable {
-  //   return {
-  //     layer: typeof draggable.layer === 'number' ? draggable.layer : 0,
-  //     id: typeof draggable.id === 'string' ? draggable.id : `blob${Date.now()}`,
-  //     number: typeof draggable.number === 'number' ? draggable.number : 0,
-  //     i: typeof draggable.i === 'number' ? draggable.i : 0,
-  //     x: typeof draggable.x === 'string' ? draggable.x : '0px',
-  //     y: typeof draggable.y === 'string' ? draggable.y : '0px',
-  //     z: !isNaN(Number(draggable.z)) ? draggable.z : '1',
-  //     background:
-  //       typeof draggable.background === 'string'
-  //         ? draggable.background
-  //         : 'linear-gradient(90deg, cyan, greenyellow)',
-  //   }
-  // }
-
-  // function updateInvalidDraggables() {
-  //   const correctedDraggables = draggables[d].map(draggable =>
-  //     isValidDraggable(draggable) ? draggable : correctDraggable(draggable)
-  //   )
-  //   void dispatch({
-  //     type: 'setDraggablesAtD',
-  //     payload: { d, draggables: correctedDraggables },
-  //   })
-  // }
-
-  // useEffect(() => {
-  //   updateInvalidDraggables() // temporary
-  // }, [draggables[d]])
-
   function makeFromStorage(blobs: Draggable[]) {
     if (!hasBeenMade && blobs && blobs?.length > 0) {
       //dispatch({ type: 'resetDraggables', payload: {} })
@@ -1195,44 +1149,118 @@ export default function DragContainer({
 
   const colorswitch = () => {
     const colors = [
-      'cyan',
-      'lemonchiffon',
-      'pink',
-      'orangered',
-      'magenta',
-      'deepskyblue',
-      'darkorange',
-      'tomato',
-      'violet',
-      'dodgerblue',
-      'greenyellow',
-      'orange',
-      'silver',
-      'darkgray',
-      'gray',
-      'hotpink',
-      'wheat',
-      'sandybrown',
-      'rosybrown',
-      'dimgray',
-      'darkkhaki',
-      'darkseagreen',
-      'slateblue',
-      'royalblue',
-      'moccasin',
-      'burlywood',
-      'chocolate',
-      'cadetblue',
-      'mediumpurple',
-      'sienna',
-      'peru',
-      'indianred',
-      'palevioletred',
-      'plum',
-      'palegreen',
-      'mediumaquamarine',
-      'lightsteelblue',
+      'aliceblue',
+      'antiquewhite',
+      'aqua',
       'aquamarine',
+      'azure',
+      'beige',
+      'bisque',
+      'blanchedalmond',
+      'blue',
+      'brown',
+      'burlywood',
+      'cadetblue',
+      'chartreuse',
+      'chocolate',
+      'cornflowerblue',
+      'cornsilk',
+      'cyan',
+      'darkcyan',
+      'darkgoldenrod',
+      'darkgray',
+      'darkkhaki',
+      'darkmagenta',
+      'darkorchid',
+      'darkseagreen',
+      'darkslateblue',
+      'darkviolet',
+      'deepskyblue',
+      'deeppink',
+      'dimgray',
+      'dodgerblue',
+      'darkorange',
+      'fuchsia',
+      'gainsboro',
+      'gold',
+      'goldenrod',
+      'gray',
+      'green',
+      'greenyellow',
+      'honeydew',
+      'hotpink',
+      'indianred',
+      'indigo',
+      'ivory',
+      'lavender',
+      'lavenderblush',
+      'lawngreen',
+      'lemonchiffon',
+      'lightblue',
+      'lightcyan',
+      'lightgray',
+      'lightgreen',
+      'lightpink',
+      'lightseagreen',
+      'lightskyblue',
+      'lightslategray',
+      'lightsteelblue',
+      'limegreen',
+      'linen',
+      'magenta',
+      'mediumaquamarine',
+      'mediumblue',
+      'mediumorchid',
+      'mediumpurple',
+      'mediumseagreen',
+      'mediumslateblue',
+      'mediumspringgreen',
+      'mediumvioletred',
+      'mintcream',
+      'mistyrose',
+      'moccasin',
+      'navajowhite',
+      'oldlace',
+      'olive',
+      'olivegreen',
+      'olivedrab',
+      'orange',
+      'orangered',
+      'palegreen',
+      'paleturquoise',
+      'palevioletred',
+      'papayawhip',
+      'peachpuff',
+      'peru',
+      'pink',
+      'plum',
+      'powderblue',
+      'rebeccapurple',
+      'red',
+      'rosybrown',
+      'royalblue',
+      'saddlebrown',
+      'sandybrown',
+      'seagreen',
+      'seashell',
+      'sienna',
+      'silver',
+      'skyblue',
+      'slateblue',
+      'slategray',
+      'snow',
+      'springgreen',
+      'steelblue',
+      'tan',
+      'teal',
+      'thistle',
+      'tomato',
+      'turquoise',
+      'violet',
+      'wheat',
+      'white',
+      'whitesmoke',
+      'yellow',
       'yellowgreen',
     ]
     const randomIndex = Math.floor(Math.random() * colors.length)
@@ -1295,30 +1323,51 @@ export default function DragContainer({
     (draggable: HTMLElement) => {
       const blobID = draggable.id
       if (!isClient || !windowObj) return
+
+      const existingDraggable = state.draggables[d]?.find(
+        (item) => item.id === blobID
+      )
       const blobStyle = windowObj.getComputedStyle(draggable)
       const blobNumber = parseInt(
         draggable.id.replace('blob', '').split('-')[0],
         10
       )
-      const blobI =
-        blobStyle.getPropertyValue('--i') ??
-        draggable.style.getPropertyValue('--i') ??
-        '10'
-      const blobX =
-        blobStyle.getPropertyValue('left') ??
-        draggable.style.getPropertyValue('left')
-      const blobY =
-        blobStyle.getPropertyValue('top') ??
-        draggable.style.getPropertyValue('top')
-      const blobZ =
-        blobStyle.getPropertyValue('z-index') ??
-        draggable.style.getPropertyValue('z-index')
-      const blobColor1 =
-        blobStyle.getPropertyValue('background') ??
-        draggable.style.getPropertyValue('background')
-      const layer =
-        blobStyle.getPropertyValue('--layer') ??
-        draggable.style.getPropertyValue('--layer')
+
+      const readCssValue = (
+        propertyName: string,
+        inlineFallback: string,
+        stateFallback = ''
+      ) => {
+        const computedValue = blobStyle.getPropertyValue(propertyName).trim()
+        if (computedValue !== '') return computedValue
+
+        const inlineValue = draggable.style
+          .getPropertyValue(inlineFallback)
+          .trim()
+        if (inlineValue !== '') return inlineValue
+
+        return stateFallback
+      }
+
+      const blobI = readCssValue('--i', '--i', `${existingDraggable?.i ?? 10}`)
+      const blobX = readCssValue('left', 'left', existingDraggable?.x ?? '0px')
+      const blobY = readCssValue('top', 'top', existingDraggable?.y ?? '0px')
+      const blobZ = readCssValue(
+        'z-index',
+        'z-index',
+        existingDraggable?.z ?? '0'
+      )
+      const blobColor1 = readCssValue(
+        'background',
+        'background',
+        existingDraggable?.background ??
+          'linear-gradient(90deg, cyan, greenyellow)'
+      )
+      const layer = readCssValue(
+        '--layer',
+        '--layer',
+        `${existingDraggable?.layer ?? activeLayer}`
+      )
 
       const blobDraggable: Draggable = {
         layer: layer ? parseInt(layer) : activeLayer,
@@ -1336,7 +1385,7 @@ export default function DragContainer({
         payload: { d, draggable: blobDraggable },
       })
     },
-    [activeLayer, d, dispatch, isClient, windowObj]
+    [activeLayer, d, dispatch, isClient, state.draggables, windowObj]
   )
 
   useEffect(() => {
@@ -2283,12 +2332,11 @@ export default function DragContainer({
                   onClick={() => addRandomDraggable()}
                 >
                   <Icon lib="fa" name="FaPlus" aria-hidden="true" />
-                  <span
-                    id={`make-random${d}-span`}
-                    className="tooltip below"
-                  >{`${t('ClickMeToMakeARandomBlob')}. ${t(
-                    'MoreColorsAvailable'
-                  )}!`}</span>
+                  <span id={`make-random${d}-span`} className="tooltip below">
+                    {`${t('ClickMeToMakeARandomBlob')}. ${t(
+                      'MoreColorsAvailable'
+                    )}! ${t('KeyboardUse')}: ${t('PressSpaceOrRWithABlobInFocusToCycleThroughRandomColors')}`}{' '}
+                  </span>
                 </button>
                 <button
                   ref={makeLarger0}
