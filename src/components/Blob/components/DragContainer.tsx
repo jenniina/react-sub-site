@@ -4,6 +4,7 @@ import {
   useState,
   CSSProperties,
   PointerEvent as PointerEventReact,
+  KeyboardEvent as KeyboardEventReact,
   MouseEvent as MouseEventReact,
   TouchEvent as TouchEventReact,
   FormEvent,
@@ -41,6 +42,7 @@ import Sliders from './Sliders'
 import DragLayers from './DragLayers'
 import { getErrorMessage } from '../../../utils'
 import Icon from '../../Icon/Icon'
+import useLocalStorage from '../../../hooks/useStorage'
 
 // Should be in the same order as colorBlockProps
 const colorPairs: ColorPair[] = [
@@ -81,6 +83,44 @@ const colorPairsCombo: ColorPair[][] = [colorPairs, colorPairs2, colorPairs3]
 const angle = '90deg'
 
 const defaultLayerAmount = 3
+const minCanvasWidth = 250
+const minCanvasHeight = 330
+const canvasViewportPadding = 12
+
+type CanvasSize = {
+  width: number
+  height: number
+}
+
+type CanvasBounds = {
+  minWidth: number
+  maxWidth: number
+  minHeight: number
+  maxHeight: number
+}
+
+const normalizeCanvasSize = (value: unknown): CanvasSize | null => {
+  if (
+    typeof value !== 'object' ||
+    value === null ||
+    !('width' in value) ||
+    !('height' in value)
+  ) {
+    return null
+  }
+
+  const width = Number(value.width)
+  const height = Number(value.height)
+
+  if (!Number.isFinite(width) || !Number.isFinite(height)) {
+    return null
+  }
+
+  return {
+    width: Math.max(minCanvasWidth, Math.round(width)),
+    height: Math.max(minCanvasHeight, Math.round(height)),
+  }
+}
 
 let activeBlobContainerId: number | null = null
 
@@ -127,10 +167,44 @@ export default function DragContainer({
   const user = useSelector((state: ReducerProps) => state.auth?.user)
 
   const dragWrap = useRef(null) as RefObject<HTMLDivElement>
+  const dragWrapShell = useRef(null) as RefObject<HTMLDivElement>
   const dragWrapOutest = useRef(null) as RefObject<HTMLDivElement>
   const dragContainerRef = useRef(null) as RefObject<HTMLDivElement>
+  const resizeStateRef = useRef<{
+    startX: number
+    startY: number
+    startWidth: number
+    startHeight: number
+    startOffsetX: number
+    startTop: number
+    startLeft: number
+    startRight: number
+    horizontalDirection: 1 | -1
+  } | null>(null)
+  const resizeHandleLeft = useRef(null) as RefObject<HTMLButtonElement>
+  const resizeHandleRight = useRef(null) as RefObject<HTMLButtonElement>
 
+  const { windowHeight, windowWidth } = useWindowSize()
   const [selectedvalue0, setSelectedvalue0] = useState<string | null>(null)
+  const [defaultCanvasSize, setDefaultCanvasSize] = useState<CanvasSize>({
+    width: Math.max(
+      minCanvasWidth,
+      (windowWidth || 0) - canvasViewportPadding * 2
+    ),
+    height: Math.max(
+      minCanvasHeight,
+      (windowHeight || 0) - canvasViewportPadding * 2
+    ),
+  })
+  const [canvasSize, setCanvasSize] = useLocalStorage<CanvasSize | null>(
+    `BlobCanvasSize${d.toString()}`,
+    null
+  )
+  const [canvasOffsetX, setCanvasOffsetX] = useLocalStorage(
+    `BlobCanvasOffset${d.toString()}`,
+    0
+  )
+  const hasCustomCanvasSize = canvasSize !== null
 
   const stopBlobs = useRef(null) as RefObject<HTMLButtonElement>
   const disableScrollButton = useRef(null) as RefObject<HTMLButtonElement>
@@ -163,14 +237,11 @@ export default function DragContainer({
   const localStorageDraggables = useMemo(() => {
     return `Draggables${d.toString()}`
   }, [d])
-
   const backgroundColor = state.backgroundColor
 
   //loadBackground()
 
   const draggables = state.draggables
-
-  const { windowHeight, windowWidth } = useWindowSize()
 
   // const [layerAmount, setLayerAmount] = useLocalStorage<number>(
   //   'blobLayerAmount',
@@ -185,6 +256,7 @@ export default function DragContainer({
   const [usingKeyboard, setUsingKeyboard] = useState<boolean>(false)
   const [markerEnabled, setMarkerEnabled] = useState<boolean>(true)
   const [controlsVisible, setControlsVisible] = useState<boolean>(true)
+  const [colorsVisible, setColorsVisible] = useState<boolean>(true)
   const [hasBeenMade, setHasBeenMade] = useState<boolean>(false)
   const [paused, setPaused] = useState<boolean>(false)
   const [prefersReducedMotion, setPrefersReducedMotion] =
@@ -557,6 +629,225 @@ export default function DragContainer({
     },
     [d, draggables, localStorageDraggables]
   )
+
+  const getMeasuredDefaultCanvasSize = useCallback((): CanvasSize => {
+    const fallbackWidth = Math.max(
+      minCanvasWidth,
+      dragWrapOutest.current?.offsetWidth ??
+        dragContainerRef.current?.clientWidth ??
+        windowWidth ??
+        minCanvasWidth
+    )
+    const fallbackHeight = Math.max(
+      minCanvasHeight,
+      (windowHeight || windowObj?.innerHeight || minCanvasHeight) - 112
+    )
+
+    return {
+      width: Math.max(
+        minCanvasWidth,
+        dragWrapOuter.current?.offsetWidth ?? fallbackWidth
+      ),
+      height: Math.max(
+        minCanvasHeight,
+        dragWrapOuter.current?.offsetHeight ?? fallbackHeight
+      ),
+    }
+  }, [
+    dragContainerRef,
+    dragWrapOutest,
+    dragWrapOuter,
+    windowHeight,
+    windowObj,
+    windowWidth,
+  ])
+
+  useEffect(() => {
+    if (hasCustomCanvasSize) return
+
+    const measuredSize = getMeasuredDefaultCanvasSize()
+
+    setDefaultCanvasSize((prev) => {
+      if (
+        prev &&
+        prev.width === measuredSize.width &&
+        prev.height === measuredSize.height
+      ) {
+        return prev
+      }
+
+      return measuredSize
+    })
+  }, [
+    getMeasuredDefaultCanvasSize,
+    hasCustomCanvasSize,
+    windowHeight,
+    windowWidth,
+  ])
+
+  const getCanvasOffsetBounds = useCallback(() => {
+    const anchorLeft = dragWrapOutest.current?.getBoundingClientRect().left ?? 0
+    const width = dragWrapOutest.current?.offsetWidth ?? 200
+    const center = width / 2
+
+    return {
+      minOffsetX: Math.min(0, canvasViewportPadding - anchorLeft),
+      maxOffsetX: Math.max(0, anchorLeft + canvasViewportPadding + center),
+    }
+  }, [dragWrapOutest])
+
+  const clampCanvasOffsetX = useCallback(
+    (offsetX: number) => {
+      const { minOffsetX, maxOffsetX } = getCanvasOffsetBounds()
+
+      return Math.min(maxOffsetX, Math.max(minOffsetX, Math.round(offsetX)))
+    },
+    [getCanvasOffsetBounds]
+  )
+
+  const getViewportHeightLimit = useCallback(
+    (top: number) => {
+      const viewportHeight =
+        windowHeight || windowObj?.innerHeight || minCanvasHeight
+      const maxHeight = Math.max(
+        viewportHeight - Math.max(top, 0) - canvasViewportPadding,
+        120
+      )
+
+      return {
+        minHeight: Math.min(minCanvasHeight, maxHeight),
+        maxHeight,
+      }
+    },
+    [windowHeight, windowObj]
+  )
+
+  const applyCanvasResize = useCallback(
+    ({
+      horizontalDirection,
+      width,
+      height,
+      offsetX,
+      left,
+      right,
+      top,
+      baseWidth,
+    }: {
+      horizontalDirection: 1 | -1
+      width: number
+      height: number
+      offsetX: number
+      left: number
+      right: number
+      top: number
+      baseWidth: number
+    }) => {
+      const viewportWidth =
+        windowWidth || windowObj?.innerWidth || minCanvasWidth
+      const rightResizeMaxWidth = Math.max(
+        viewportWidth - Math.max(left, 0) - canvasViewportPadding,
+        120
+      )
+      const leftResizeMaxWidth = Math.max(right - canvasViewportPadding, 120)
+      const widthMax =
+        horizontalDirection === -1 ? leftResizeMaxWidth : rightResizeMaxWidth
+      const widthMin = Math.min(minCanvasWidth, widthMax)
+      let nextWidth = Math.min(widthMax, Math.max(widthMin, Math.round(width)))
+      let nextOffsetX = offsetX
+
+      if (horizontalDirection === -1) {
+        nextOffsetX = clampCanvasOffsetX(offsetX + baseWidth - nextWidth)
+        nextWidth = Math.min(
+          widthMax,
+          Math.max(widthMin, Math.round(offsetX + baseWidth - nextOffsetX))
+        )
+      }
+
+      const { minHeight, maxHeight } = getViewportHeightLimit(top)
+      const nextHeight = Math.min(
+        maxHeight,
+        Math.max(minHeight, Math.round(height))
+      )
+
+      return {
+        size: {
+          width: nextWidth,
+          height: nextHeight,
+        },
+        offsetX: nextOffsetX,
+      }
+    },
+    [clampCanvasOffsetX, getViewportHeightLimit, windowObj, windowWidth]
+  )
+
+  const getCanvasBounds = useCallback((): CanvasBounds => {
+    const viewportWidth = windowWidth || windowObj?.innerWidth || minCanvasWidth
+    const viewportHeight =
+      windowHeight || windowObj?.innerHeight || minCanvasHeight
+    const canvasRect = dragWrap.current?.getBoundingClientRect()
+    const availableWidth = canvasRect
+      ? viewportWidth - Math.max(canvasRect.left, 0) - canvasViewportPadding
+      : viewportWidth - canvasViewportPadding * 2
+    const maxWidth = Math.max(availableWidth, 120)
+    const maxHeight = Math.max(
+      viewportHeight - canvasViewportPadding * 2,
+      minCanvasHeight
+    )
+
+    return {
+      minWidth: Math.min(minCanvasWidth, maxWidth),
+      maxWidth,
+      minHeight: Math.min(minCanvasHeight, maxHeight),
+      maxHeight,
+    }
+  }, [dragWrap, windowHeight, windowObj, windowWidth])
+
+  const clampCanvasSize = useCallback(
+    (size: CanvasSize): CanvasSize => {
+      const bounds = getCanvasBounds()
+
+      return {
+        width: Math.min(
+          bounds.maxWidth,
+          Math.max(bounds.minWidth, Math.round(size.width))
+        ),
+        height: Math.min(
+          bounds.maxHeight,
+          Math.max(bounds.minHeight, Math.round(size.height))
+        ),
+      }
+    },
+    [getCanvasBounds]
+  )
+
+  const getCurrentCanvasSize = useCallback((): CanvasSize => {
+    const bounds = getCanvasBounds()
+
+    if (dragWrap.current) {
+      return clampCanvasSize({
+        width: Math.max(bounds.minWidth, dragWrap.current.offsetWidth),
+        height: Math.max(bounds.minHeight, dragWrap.current.offsetHeight),
+      })
+    }
+
+    if (canvasSize) {
+      return clampCanvasSize(canvasSize)
+    }
+
+    return clampCanvasSize({
+      width: defaultCanvasSize.width,
+      height: defaultCanvasSize.height,
+    })
+  }, [
+    canvasSize,
+    clampCanvasSize,
+    defaultCanvasSize.height,
+    defaultCanvasSize.width,
+    dragWrap,
+    getCanvasBounds,
+  ])
+
+  const effectiveCanvasSize = canvasSize ?? defaultCanvasSize
 
   const getBlobsFromServer = useCallback(async () => {
     setIsLoading(true)
@@ -940,9 +1231,34 @@ export default function DragContainer({
     }
   }, [draggablesD, saveDraggables])
 
+  useEffect(() => {
+    if (!canvasSize) return
+
+    setCanvasSize((prev) => {
+      if (!prev) return prev
+
+      const clampedSize = clampCanvasSize(prev)
+      if (
+        clampedSize.width === prev.width &&
+        clampedSize.height === prev.height
+      ) {
+        return prev
+      }
+
+      return clampedSize
+    })
+
+    setCanvasOffsetX((prev) => clampCanvasOffsetX(prev))
+  }, [
+    canvasSize,
+    clampCanvasOffsetX,
+    clampCanvasSize,
+    windowHeight,
+    windowWidth,
+  ])
+
   function makeFromStorage(blobs: Draggable[]) {
     if (!hasBeenMade && blobs && blobs?.length > 0) {
-      //dispatch({ type: 'resetDraggables', payload: {} })
       for (let i = 0; i < blobs?.length; i++) {
         if (blobs[i] !== null && blobs[i] !== undefined) {
           const newDraggable = {
@@ -963,8 +1279,6 @@ export default function DragContainer({
           })
         }
       }
-
-      // setLayerAmount(Math.max(...blobs.map((d) => d.layer)) + 1)
     }
     setHasBeenMade(true)
   }
@@ -1640,152 +1954,120 @@ export default function DragContainer({
 
   //END SLIDERS
 
+  function place(element: HTMLElement, x_pos: number, y_pos: number) {
+    if (element && dragWrap && dragWrap.current && dragWrapOuter.current) {
+      element.style.left =
+        dragWrapOuter.current.offsetLeft +
+        (dragWrap.current.offsetWidth / 100) * x_pos +
+        'px'
+      element.style.top = (dragWrap.current.offsetHeight / 100) * y_pos + 'px'
+    }
+  }
+
   const widthResize = useCallback(
     () => {
-      const breakpointSmallest = 250
-      const breakpointSmall = 300
       const y_pos = [12, 34, 56, 78] // color block y positions
+      const x_pos = [20, 40, 60, 80] // top and bottom item x positions
+      const top_pos = 1
+      const bottom_pos = 99
+
       //place these items every time the window is resized:
-      if (
-        makeMore0.current &&
-        dragWrap.current &&
-        windowWidth < breakpointSmallest
-      )
-        place(makeMore0.current, 15, 0)
-      else if (makeMore0.current && dragWrap.current)
-        place(makeMore0.current, 23, 0)
+
+      if (makeLarger0.current && dragWrap.current)
+        place(
+          makeLarger0.current,
+          x_pos[0] -
+            (makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) *
+              50,
+          top_pos
+        )
+      if (makeSmaller0.current && dragWrap.current)
+        place(
+          makeSmaller0.current,
+          x_pos[1] -
+            (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) *
+              50,
+          top_pos
+        )
+      if (layerDecrease.current && dragWrap.current)
+        place(
+          layerDecrease.current,
+          x_pos[2] -
+            (layerDecrease.current.offsetWidth / dragWrap.current.offsetWidth) *
+              50,
+          top_pos
+        )
+      if (layerIncrease.current && dragWrap.current)
+        place(
+          layerIncrease.current,
+          x_pos[3] -
+            (layerIncrease.current.offsetWidth / dragWrap.current.offsetWidth) *
+              50,
+          top_pos
+        )
       if (makeRandom0.current && dragWrap.current)
         place(
           makeRandom0.current,
-          50 -
+          31 -
             (makeRandom0.current.offsetWidth / dragWrap.current.offsetWidth) *
               50,
-          0
-        )
-      if (
-        makeLarger0.current &&
-        dragWrap.current &&
-        windowWidth < breakpointSmallest
-      )
-        place(
-          makeLarger0.current,
-          85 -
-            (makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) *
-              100,
-          0.3
-        )
-      else if (makeLarger0.current && dragWrap.current)
-        place(
-          makeLarger0.current,
-          77 -
-            (makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) *
-              100,
-          0.3
-        )
-      if (
-        layerDecrease.current &&
-        dragWrap.current &&
-        windowWidth < breakpointSmall
-      )
-        place(
-          layerDecrease.current,
-          27,
-          100 -
-            (layerDecrease.current.offsetHeight /
-              dragWrap.current.offsetHeight) *
+          bottom_pos -
+            1 -
+            (makeRandom0.current.offsetHeight / dragWrap.current.offsetHeight) *
               100
         )
-      else if (layerDecrease.current && dragWrap.current)
-        place(
-          layerDecrease.current,
-          32,
-          100 -
-            (layerDecrease.current.offsetHeight /
-              dragWrap.current.offsetHeight) *
-              100
-        )
-      if (
-        layerIncrease.current &&
-        dragWrap.current &&
-        windowWidth < breakpointSmall
-      )
-        place(
-          layerIncrease.current,
-          73 -
-            (layerIncrease.current.offsetWidth / dragWrap.current.offsetWidth) *
-              100,
-          100 -
-            (layerIncrease.current.offsetHeight /
-              dragWrap.current.offsetHeight) *
-              100
-        )
-      else if (layerIncrease.current && dragWrap.current)
-        place(
-          layerIncrease.current,
-          68 -
-            (layerIncrease.current.offsetWidth / dragWrap.current.offsetWidth) *
-              100,
-          100 -
-            (layerIncrease.current.offsetHeight /
-              dragWrap.current.offsetHeight) *
-              100
-        )
-      if (
-        deleteBlob0.current &&
-        dragWrap.current &&
-        windowWidth < breakpointSmall
-      )
+      if (deleteBlob0.current && dragWrap.current)
         place(
           deleteBlob0.current,
-          2,
-          100 -
+          50 -
+            (deleteBlob0.current.offsetWidth / dragWrap.current.offsetWidth) *
+              50,
+          bottom_pos -
+            1 -
             (deleteBlob0.current.offsetHeight / dragWrap.current.offsetHeight) *
               100
         )
-      else if (deleteBlob0.current && dragWrap.current)
+      if (makeMore0.current && dragWrap.current)
         place(
-          deleteBlob0.current,
-          10,
-          100 -
-            (deleteBlob0.current.offsetHeight / dragWrap.current.offsetHeight) *
+          makeMore0.current,
+          69 -
+            (makeMore0.current.offsetWidth / dragWrap.current.offsetWidth) * 50,
+          bottom_pos -
+            1 -
+            (makeMore0.current.offsetHeight / dragWrap.current.offsetHeight) *
               100
         )
-      if (
-        makeSmaller0.current &&
-        dragWrap.current &&
-        windowWidth < breakpointSmall
-      )
+      if (resizeHandleLeft.current && dragWrap.current)
         place(
-          makeSmaller0.current,
-          98 -
-            (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) *
-              100,
+          resizeHandleLeft.current,
+          0,
           100 -
-            (makeSmaller0.current.offsetHeight /
+            (resizeHandleLeft.current.offsetHeight /
               dragWrap.current.offsetHeight) *
               100
         )
-      else if (makeSmaller0.current && dragWrap.current)
+      if (resizeHandleRight.current && dragWrap.current)
         place(
-          makeSmaller0.current,
-          90 -
-            (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) *
+          resizeHandleRight.current,
+          100 -
+            (resizeHandleRight.current.offsetWidth /
+              dragWrap.current.offsetWidth) *
               100,
           100 -
-            (makeSmaller0.current.offsetHeight /
+            (resizeHandleRight.current.offsetHeight /
               dragWrap.current.offsetHeight) *
               100
         )
       // place color blocks:
       colorBlockPropsCombo.forEach((colorBlockArray) => {
         colorBlockArray.forEach((colorBlock, index) => {
-          if (colorBlock.current && dragWrapOutest.current) {
+          if (colorBlock.current && dragWrap.current) {
             const x =
               index < 4
                 ? 0
                 : 100 -
                   (colorBlock.current.offsetWidth /
-                    dragWrapOutest.current.offsetWidth) *
+                    dragWrap.current.offsetWidth) *
                     100
             const y = y_pos[index % 4]
             place(colorBlock.current, x, y)
@@ -1794,19 +2076,157 @@ export default function DragContainer({
       })
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [windowWidth, windowHeight, dragWrap, dragWrapOutest, colorBlockPropsCombo]
+    [
+      windowWidth,
+      windowHeight,
+      dragWrap,
+      colorBlockPropsCombo,
+      makeLarger0,
+      makeSmaller0,
+      layerDecrease,
+      layerIncrease,
+      makeRandom0,
+      makeMore0,
+      deleteBlob0,
+      canvasSize,
+    ]
   )
 
   useEffect(() => {
     widthResize()
-  }, [windowWidth, windowHeight, scroll, widthResize])
+  }, [widthResize])
 
-  function place(element: HTMLElement, x_pos: number, y_pos: number) {
-    if (element && dragWrap.current) {
-      element.style.left = (dragWrap.current.offsetWidth / 100) * x_pos + 'px'
-      element.style.top = (dragWrap.current.offsetHeight / 100) * y_pos + 'px'
+  const handleCanvasResize = useCallback(
+    (e: PointerEvent) => {
+      const resizeState = resizeStateRef.current
+      if (!resizeState) return
+
+      const nextCanvas = applyCanvasResize({
+        horizontalDirection: resizeState.horizontalDirection,
+        width:
+          resizeState.startWidth +
+          (e.clientX - resizeState.startX) * resizeState.horizontalDirection,
+        height: resizeState.startHeight + (e.clientY - resizeState.startY),
+        offsetX: resizeState.startOffsetX,
+        left: resizeState.startLeft,
+        right: resizeState.startRight,
+        top: resizeState.startTop,
+        baseWidth: resizeState.startWidth,
+      })
+
+      setCanvasSize(nextCanvas.size)
+      setCanvasOffsetX(nextCanvas.offsetX)
+    },
+    [applyCanvasResize]
+  )
+
+  const handleCanvasResizeKeyDown = useCallback(
+    (horizontalDirection: 1 | -1) =>
+      (e: KeyboardEventReact<HTMLButtonElement>) => {
+        let horizontalDelta = 0
+        let heightDelta = 0
+        const step = e.shiftKey ? 48 : 16
+
+        switch (e.key) {
+          case 'ArrowLeft':
+            horizontalDelta = -step
+            break
+          case 'ArrowRight':
+            horizontalDelta = step
+            break
+          case 'ArrowUp':
+            heightDelta = -step
+            break
+          case 'ArrowDown':
+            heightDelta = step
+            break
+          default:
+            return
+        }
+
+        e.preventDefault()
+
+        const currentSize = getCurrentCanvasSize()
+        const currentRect = dragWrap.current?.getBoundingClientRect()
+        const nextCanvas = applyCanvasResize({
+          horizontalDirection,
+          width: currentSize.width + horizontalDelta * horizontalDirection,
+          height: currentSize.height + heightDelta,
+          offsetX: canvasOffsetX,
+          left: currentRect?.left ?? 0,
+          right: currentRect?.right ?? currentSize.width,
+          top: currentRect?.top ?? 0,
+          baseWidth: currentSize.width,
+        })
+
+        setCanvasSize(nextCanvas.size)
+        setCanvasOffsetX(nextCanvas.offsetX)
+      },
+    [applyCanvasResize, canvasOffsetX, dragWrap, getCurrentCanvasSize]
+  )
+
+  const stopCanvasResize = useCallback(() => {
+    if (!isClient || !windowObj) return
+
+    resizeStateRef.current = null
+    document.body.style.userSelect = ''
+    document.body.style.cursor = ''
+    windowObj.removeEventListener('pointermove', handleCanvasResize)
+    windowObj.removeEventListener('pointerup', stopCanvasResize)
+    windowObj.removeEventListener('pointercancel', stopCanvasResize)
+  }, [handleCanvasResize, isClient, windowObj])
+
+  const startCanvasResize = useCallback(
+    (horizontalDirection: 1 | -1, cursor: 'nwse-resize' | 'nesw-resize') =>
+      (e: PointerEventReact<HTMLButtonElement>) => {
+        if (!isClient || !windowObj || !dragWrap.current) return
+
+        e.preventDefault()
+        e.stopPropagation()
+
+        const currentSize = getCurrentCanvasSize()
+        const currentRect = dragWrap.current.getBoundingClientRect()
+
+        resizeStateRef.current = {
+          startX: e.clientX,
+          startY: e.clientY,
+          startWidth: currentSize.width,
+          startHeight: currentSize.height,
+          startOffsetX: canvasOffsetX,
+          startTop: currentRect.top,
+          startLeft: currentRect.left,
+          startRight: currentRect.right,
+          horizontalDirection,
+        }
+
+        setCanvasSize(currentSize)
+
+        document.body.style.userSelect = 'none'
+        document.body.style.cursor = cursor
+        windowObj.addEventListener('pointermove', handleCanvasResize)
+        windowObj.addEventListener('pointerup', stopCanvasResize)
+        windowObj.addEventListener('pointercancel', stopCanvasResize)
+      },
+    [
+      getCurrentCanvasSize,
+      handleCanvasResize,
+      canvasOffsetX,
+      isClient,
+      stopCanvasResize,
+      windowObj,
+    ]
+  )
+
+  useEffect(() => {
+    return () => {
+      if (!isClient || !windowObj) return
+      document.body.style.userSelect = ''
+      document.body.style.cursor = ''
+      windowObj.removeEventListener('pointermove', handleCanvasResize)
+      windowObj.removeEventListener('pointerup', stopCanvasResize)
+      windowObj.removeEventListener('pointercancel', stopCanvasResize)
     }
-  }
+  }, [handleCanvasResize, isClient, stopCanvasResize, windowObj])
 
   useEffect(() => {
     if (focusedBlob && markerEnabled && usingKeyboard && focusedBlob) {
@@ -2145,6 +2565,8 @@ export default function DragContainer({
   //   }
   // }
 
+  const canvasBounds = getCanvasBounds()
+
   return (
     <>
       <section className="card">
@@ -2153,6 +2575,9 @@ export default function DragContainer({
             ref={dragContainerRef}
             id={`drag-container${d}`}
             className={`drag-container drag-container${d}`}
+            style={{
+              overflow: 'visible',
+            }}
           >
             <div className="blob-title-wrap">
               <h2 className="blob-title">
@@ -2185,7 +2610,13 @@ export default function DragContainer({
                 {selectedvalue0 ?? t('SelectedBlobNone')}
               </span>
             </div>
-            <div id={`button-container${d}`} className={'button-container'}>
+            <div
+              id={`button-container${d}`}
+              className={'button-container'}
+              style={{
+                overflow: 'visible',
+              }}
+            >
               {' '}
               <button
                 ref={resetBlobs}
@@ -2266,7 +2697,24 @@ export default function DragContainer({
                   {controlsVisible ? t('HideControls') : t('ShowControls')}
                 </span>
               </button>
-              {windowWidth > 1100 && (
+              <button
+                id={`toggle-colors${d}`}
+                aria-labelledby={`toggle-colors${d}-span`}
+                className={`toggle-colors ${!colorsVisible ? 'active' : ''}`}
+                onClick={() => {
+                  setColorsVisible(!colorsVisible)
+                  if (!colorsVisible) {
+                    setTimeout(() => {
+                      widthResize()
+                    }, 200)
+                  }
+                }}
+              >
+                <span id={`toggle-colors${d}-span`}>
+                  {colorsVisible ? t('HideColors') : t('ShowColors')}
+                </span>
+              </button>
+              {windowWidth > 1200 && (
                 <span className="screenshot">{t('Screenshot')}: </span>
               )}
               <button
@@ -2288,167 +2736,226 @@ export default function DragContainer({
             </div>
             <div
               ref={dragWrapOutest}
-              className={`drag-wrap-outest drag-wrap-outest${d}`}
+              className={`drag-wrap-outest drag-wrap-outest${d} ${
+                hasCustomCanvasSize ? 'is-resized' : ''
+              }`}
+              style={{
+                overflow: 'visible',
+              }}
             >
+              <button
+                ref={makeMore0}
+                className={`make-more tooltip-wrap gray ${
+                  !controlsVisible ? 'hidden' : ''
+                }`}
+                id={`make-more${d}`}
+                onClick={() => {
+                  toggleMode('clone')
+                }}
+              >
+                <Icon lib="fa" name="FaRegClone" aria-hidden="true" />
+                {mode === 'clone' && (
+                  <span className="clone-alert">{t('CloneModeOn')}</span>
+                )}
+                <span id={`make-more${d}-span`} className="tooltip right below">
+                  {t('CloneInstructions')}
+                </span>
+              </button>
+              <button
+                ref={makeRandom0}
+                className={`make-random tooltip-wrap gray ${
+                  !controlsVisible ? 'hidden' : ''
+                }`}
+                id={`make-random${d}`}
+                aria-labelledby={`make-random${d}-span`}
+                onClick={() => addRandomDraggable()}
+              >
+                <Icon lib="fa" name="FaPlus" aria-hidden="true" />
+                <span id={`make-random${d}-span`} className="tooltip below">
+                  {`${t('ClickMeToMakeARandomBlob')}. ${t(
+                    'MoreColorsAvailable'
+                  )}! ${t('KeyboardUse')}: ${t('PressSpaceOrRWithABlobInFocusToCycleThroughRandomColors')}`}{' '}
+                </span>
+              </button>
+              <button
+                ref={makeLarger0}
+                className={`make-larger tooltip-wrap gray ${
+                  !controlsVisible ? 'hidden' : ''
+                }`}
+                id={`make-larger${d}`}
+                onClick={() => {
+                  toggleMode('scale-up')
+                }}
+              >
+                <Icon lib="im" name="ImEnlarge2" aria-hidden="true" />
+                {mode === 'scale-up' && (
+                  <span className="scale-up-alert">
+                    {t('SizeIncreaseModeOn')}
+                  </span>
+                )}
+                <span
+                  id={`make-larger${d}-span`}
+                  className="tooltip left below"
+                >{`${t('EnlargeInstructions')}. ${t('Alternatively')}: ${t(
+                  'ResizebyScrollInstructions'
+                )}`}</span>
+              </button>
+              <button
+                ref={deleteBlob0}
+                className={`delete-blob tooltip-wrap gray ${
+                  !controlsVisible ? 'hidden' : ''
+                }`}
+                id={`delete-blob${d}`}
+                onClick={() => toggleMode('delete')}
+              >
+                <Icon lib="fa" name="FaTimes" aria-hidden="true" />
+                {mode === 'delete' && (
+                  <span className="delete-alert">{t('DeleteModeOn')}</span>
+                )}
+                <span
+                  id={`delete-blob${d}-span`}
+                  className="tooltip right above"
+                >
+                  {t('RemovalInstructions')}
+                </span>
+              </button>
+
+              <button
+                ref={layerDecrease}
+                id={`layer-decrease${d}`}
+                className={`layer-adjust layer-decrease tooltip-wrap gray ${
+                  !controlsVisible ? 'hidden' : ''
+                }`}
+                onClick={() => toggleMode('layer-down')}
+              >
+                {mode === 'layer-down' && (
+                  <span className="layer-down-alert">
+                    {t('LayerDecreaseModeOn')}
+                  </span>
+                )}
+                <span
+                  id={`layer-decrease${d}-span`}
+                  className="tooltip above"
+                >{`${t('DecreaseBlobLayerBy1Instructions')} ${t(
+                  'KeyboardUsePressTheCorrespondingLayerNumber'
+                )}`}</span>
+                <Icon lib="bi" name="BiChevronDown" aria-hidden="true" />
+              </button>
+              <button
+                ref={layerIncrease}
+                id={`layer-increase${d}`}
+                className={`layer-adjust layer-increase tooltip-wrap gray ${
+                  !controlsVisible ? 'hidden' : ''
+                }`}
+                onClick={() => toggleMode('layer-up')}
+              >
+                {mode === 'layer-up' && (
+                  <span className="layer-up-alert">
+                    {t('LayerIncreaseModeOn')}
+                  </span>
+                )}
+                <span
+                  id={`layer-increase${d}-span`}
+                  className="tooltip above"
+                >{`${t('IncreaseBlobLayerBy1Instructions')} ${t(
+                  'KeyboardUsePressTheCorrespondingLayerNumber'
+                )}`}</span>
+                <Icon lib="bi" name="BiChevronUp" aria-hidden="true" />
+              </button>
+
+              <button
+                tabIndex={0}
+                ref={makeSmaller0}
+                className={`make-smaller tooltip-wrap gray ${
+                  !controlsVisible ? 'hidden' : ''
+                }`}
+                id={`make-smaller${d}`}
+                onClick={() => {
+                  toggleMode('scale-down')
+                }}
+              >
+                <Icon lib="im" name="ImShrink2" aria-hidden="true" />
+                {mode === 'scale-down' && (
+                  <span className="scale-down-alert">
+                    {t('SizeDecreaseModeOn')}
+                  </span>
+                )}
+                <span
+                  id={`make-smaller${d}-span`}
+                  className="tooltip left above"
+                >{`${t('ShrinkInstructions')}. ${t('Alternatively')}: ${t(
+                  'ResizebyScrollInstructions'
+                )}`}</span>
+              </button>
+
+              <button
+                ref={resizeHandleLeft}
+                type="button"
+                className="resize-handle resize-handle-left gray tooltip-wrap"
+                aria-label={t('ResizeCanvas')}
+                aria-describedby={`drag-wrap-resize-help-left${d}`}
+                aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown Shift+ArrowLeft Shift+ArrowRight Shift+ArrowUp Shift+ArrowDown"
+                onPointerDown={startCanvasResize(-1, 'nesw-resize')}
+                onKeyDown={handleCanvasResizeKeyDown(-1)}
+              >
+                <Icon lib="hi2" name="HiArrowsPointingOut" aria-hidden="true" />
+                <span
+                  className="tooltip right above narrow2"
+                  aria-hidden="true"
+                >
+                  {t('ResizeCanvas')} ({t('Draggable')})
+                </span>
+                <span className="scr" id={`drag-wrap-resize-help-left${d}`}>
+                  {t('ResizeCanvasInstructions')}
+                </span>
+              </button>
+              <button
+                ref={resizeHandleRight}
+                type="button"
+                className="resize-handle resize-handle-right gray tooltip-wrap"
+                aria-label={t('ResizeCanvas')}
+                aria-describedby={`drag-wrap-resize-help${d}`}
+                aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown Shift+ArrowLeft Shift+ArrowRight Shift+ArrowUp Shift+ArrowDown"
+                onPointerDown={startCanvasResize(1, 'nwse-resize')}
+                onKeyDown={handleCanvasResizeKeyDown(1)}
+              >
+                <Icon lib="hi2" name="HiArrowsPointingOut" aria-hidden="true" />{' '}
+                <span className="tooltip left above narrow2" aria-hidden="true">
+                  {t('ResizeCanvas')} ({t('Draggable')})
+                </span>
+                <span className="scr" id={`drag-wrap-resize-help${d}`}>
+                  {t('ResizeCanvasInstructions')}
+                </span>
+              </button>
+
               <div
                 ref={dragWrapOuter}
                 id={`drag-wrap-outer${d}`}
-                className="drag-wrap-outer"
+                className={`drag-wrap-outer ${
+                  hasCustomCanvasSize ? 'is-resized' : ''
+                }`}
                 style={{
                   ...dragWrapOuterLightness,
                   ...dragWrapOuterSaturation,
                   ...dragWrapOuterHue,
                   ...backgroundColorStyle,
+                  overflow: 'visible',
+
+                  margin: hasCustomCanvasSize
+                    ? `0 0 0 ${canvasOffsetX}px`
+                    : '0',
+                  height: `${effectiveCanvasSize.height}px`,
+                  minHeight: `${canvasBounds.minHeight}px`,
+                  maxHeight: hasCustomCanvasSize
+                    ? `${canvasBounds.maxHeight}px`
+                    : undefined,
+                  width: `${effectiveCanvasSize.width}px`,
+                  minWidth: `${canvasBounds.minWidth}px`,
+                  maxWidth: hasCustomCanvasSize
+                    ? `${canvasBounds.maxWidth}px`
+                    : '100%',
                 }}
               >
-                <button
-                  ref={makeMore0}
-                  className={`make-more tooltip-wrap gray ${
-                    !controlsVisible ? 'hidden' : ''
-                  }`}
-                  id={`make-more${d}`}
-                  onClick={() => {
-                    toggleMode('clone')
-                  }}
-                >
-                  <Icon lib="fa" name="FaRegClone" aria-hidden="true" />
-                  {mode === 'clone' && (
-                    <span className="clone-alert">{t('CloneModeOn')}</span>
-                  )}
-                  <span
-                    id={`make-more${d}-span`}
-                    className="tooltip right below"
-                  >
-                    {t('CloneInstructions')}
-                  </span>
-                </button>
-                <button
-                  ref={makeRandom0}
-                  className={`make-random tooltip-wrap gray ${
-                    !controlsVisible ? 'hidden' : ''
-                  }`}
-                  id={`make-random${d}`}
-                  aria-labelledby={`make-random${d}-span`}
-                  onClick={() => addRandomDraggable()}
-                >
-                  <Icon lib="fa" name="FaPlus" aria-hidden="true" />
-                  <span id={`make-random${d}-span`} className="tooltip below">
-                    {`${t('ClickMeToMakeARandomBlob')}. ${t(
-                      'MoreColorsAvailable'
-                    )}! ${t('KeyboardUse')}: ${t('PressSpaceOrRWithABlobInFocusToCycleThroughRandomColors')}`}{' '}
-                  </span>
-                </button>
-                <button
-                  ref={makeLarger0}
-                  className={`make-larger tooltip-wrap gray ${
-                    !controlsVisible ? 'hidden' : ''
-                  }`}
-                  id={`make-larger${d}`}
-                  onClick={() => {
-                    toggleMode('scale-up')
-                  }}
-                >
-                  <Icon lib="im" name="ImEnlarge2" aria-hidden="true" />
-                  {mode === 'scale-up' && (
-                    <span className="scale-up-alert">
-                      {t('SizeIncreaseModeOn')}
-                    </span>
-                  )}
-                  <span
-                    id={`make-larger${d}-span`}
-                    className="tooltip left below"
-                  >{`${t('EnlargeInstructions')}. ${t('Alternatively')}: ${t(
-                    'ResizebyScrollInstructions'
-                  )}`}</span>
-                </button>
-                <button
-                  ref={deleteBlob0}
-                  className={`delete-blob tooltip-wrap gray ${
-                    !controlsVisible ? 'hidden' : ''
-                  }`}
-                  id={`delete-blob${d}`}
-                  onClick={() => toggleMode('delete')}
-                >
-                  <Icon lib="fa" name="FaTimes" aria-hidden="true" />
-                  {mode === 'delete' && (
-                    <span className="delete-alert">{t('DeleteModeOn')}</span>
-                  )}
-                  <span
-                    id={`delete-blob${d}-span`}
-                    className="tooltip right above"
-                  >
-                    {t('RemovalInstructions')}
-                  </span>
-                </button>
-
-                <button
-                  ref={layerDecrease}
-                  id={`layer-decrease${d}`}
-                  className={`layer-adjust layer-decrease tooltip-wrap gray ${
-                    !controlsVisible ? 'hidden' : ''
-                  }`}
-                  onClick={() => toggleMode('layer-down')}
-                >
-                  {mode === 'layer-down' && (
-                    <span className="layer-down-alert">
-                      {t('LayerDecreaseModeOn')}
-                    </span>
-                  )}
-                  <span
-                    id={`layer-decrease${d}-span`}
-                    className="tooltip above"
-                  >{`${t('DecreaseBlobLayerBy1Instructions')} ${t(
-                    'KeyboardUsePressTheCorrespondingLayerNumber'
-                  )}`}</span>
-                  <Icon lib="bi" name="BiChevronDown" aria-hidden="true" />
-                </button>
-                <button
-                  ref={layerIncrease}
-                  id={`layer-increase${d}`}
-                  className={`layer-adjust layer-increase tooltip-wrap gray ${
-                    !controlsVisible ? 'hidden' : ''
-                  }`}
-                  onClick={() => toggleMode('layer-up')}
-                >
-                  {mode === 'layer-up' && (
-                    <span className="layer-up-alert">
-                      {t('LayerIncreaseModeOn')}
-                    </span>
-                  )}
-                  <span
-                    id={`layer-increase${d}-span`}
-                    className="tooltip above"
-                  >{`${t('IncreaseBlobLayerBy1Instructions')} ${t(
-                    'KeyboardUsePressTheCorrespondingLayerNumber'
-                  )}`}</span>
-                  <Icon lib="bi" name="BiChevronUp" aria-hidden="true" />
-                </button>
-
-                <button
-                  tabIndex={0}
-                  ref={makeSmaller0}
-                  className={`make-smaller tooltip-wrap gray ${
-                    !controlsVisible ? 'hidden' : ''
-                  }`}
-                  id={`make-smaller${d}`}
-                  onClick={() => {
-                    toggleMode('scale-down')
-                  }}
-                >
-                  <Icon lib="im" name="ImShrink2" aria-hidden="true" />
-                  {mode === 'scale-down' && (
-                    <span className="scale-down-alert">
-                      {t('SizeDecreaseModeOn')}
-                    </span>
-                  )}
-                  <span
-                    id={`make-smaller${d}-span`}
-                    className="tooltip left above"
-                  >{`${t('ShrinkInstructions')}. ${t('Alternatively')}: ${t(
-                    'ResizebyScrollInstructions'
-                  )}`}</span>
-                </button>
-
                 {markerEnabled && usingKeyboard && focusedBlob && (
                   <div
                     ref={markerDivRef}
@@ -2468,63 +2975,75 @@ export default function DragContainer({
                 )}
 
                 <div
-                  ref={dragWrap}
-                  id={`drag-wrap${d}`}
-                  className="drag-wrap"
+                  ref={dragWrapShell}
+                  className={`drag-wrap-shell ${
+                    hasCustomCanvasSize ? 'is-resized' : ''
+                  }`}
                   style={{
-                    height: 'calc(100vh - 7rem)',
-                    minHeight: '420px',
-                    width: '100%',
-                    minWidth: '100%',
-                    backgroundColor: 'transparent',
-                    margin: '0',
-                    padding: '0',
                     overflow: 'visible',
-                    borderRadius: '0',
-                    position: 'relative',
+                    width: '100%',
+                    height: '100%',
                   }}
                 >
-                  <DragLayers
-                    layerAmount={layerAmount}
-                    layer_={activeLayer}
-                    hiddenLayers={hiddenLayers}
-                    changeBlobLayer={changeBlobLayer}
-                    setActiveLayer={setActiveLayer}
-                    highestZIndex={highestZIndex}
-                    dispatch={dispatch}
+                  <div
+                    ref={dragWrap}
+                    id={`drag-wrap${d}`}
+                    className="drag-wrap"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      backgroundColor: 'transparent',
+                      margin: '0',
+                      padding: '0',
+                      overflow: 'visible',
+                      borderRadius: '0',
+                      position: 'relative',
+                    }}
+                  >
+                    <DragLayers
+                      layerAmount={layerAmount}
+                      layer_={activeLayer}
+                      hiddenLayers={hiddenLayers}
+                      changeBlobLayer={changeBlobLayer}
+                      setActiveLayer={setActiveLayer}
+                      highestZIndex={highestZIndex}
+                      dispatch={dispatch}
+                      d={d}
+                      items={draggables[d] ?? []}
+                      getPosition={getPosition}
+                      removeBlob={removeBlob}
+                      dragWrap={dragWrap}
+                      exitApp={exitApp}
+                      setSelectedvalue0={setSelectedvalue0}
+                      setFocusedBlob={setFocusedBlob}
+                      colorIndex={colorIndex}
+                      setColorIndex={setColorIndex}
+                      colorPairs={colorPairsCombo}
+                      colorswitch={colorswitch}
+                      scroll={scroll}
+                      setScroll={setScroll}
+                      clickOutsideRef={dragWrap}
+                      addRandomDraggable={addRandomDraggable}
+                      mode={mode}
+                      changeColor={changeColor}
+                    />
+                  </div>
+
+                  <ColorBlocks
                     d={d}
-                    items={draggables[d] ?? []}
-                    getPosition={getPosition}
-                    removeBlob={removeBlob}
-                    dragWrap={dragWrap}
-                    exitApp={exitApp}
-                    setSelectedvalue0={setSelectedvalue0}
-                    setFocusedBlob={setFocusedBlob}
-                    colorIndex={colorIndex}
-                    setColorIndex={setColorIndex}
+                    getRefName={getRefName}
+                    map={refNameMappingCombo}
+                    colorBlockProps={colorBlockPropsCombo}
                     colorPairs={colorPairsCombo}
-                    colorswitch={colorswitch}
-                    scroll={scroll}
-                    setScroll={setScroll}
-                    clickOutsideRef={dragWrap}
-                    addRandomDraggable={addRandomDraggable}
-                    mode={mode}
-                    changeColor={changeColor}
+                    colorsVisible={colorsVisible}
+                    setSelectedColor={setSelectedColor}
+                    selectedColor={selectedColor}
+                    setMode={setMode}
                   />
                 </div>
               </div>
-              <ColorBlocks
-                d={d}
-                getRefName={getRefName}
-                map={refNameMappingCombo}
-                colorBlockProps={colorBlockPropsCombo}
-                colorPairs={colorPairsCombo}
-                controlsVisible={controlsVisible}
-                setSelectedColor={setSelectedColor}
-                selectedColor={selectedColor}
-                setMode={setMode}
-              />
             </div>
+
             <div className="layer-mover-control-wrap">
               <div className="history-btn-wrap">
                 <button
