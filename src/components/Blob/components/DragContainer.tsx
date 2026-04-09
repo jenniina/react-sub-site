@@ -83,8 +83,8 @@ const colorPairsCombo: ColorPair[][] = [colorPairs, colorPairs2, colorPairs3]
 const angle = '90deg'
 
 const defaultLayerAmount = 3
-const minCanvasWidth = 250
-const minCanvasHeight = 330
+const minCanvasWidth = 155
+const minCanvasHeight = 300
 const canvasViewportPadding = 12
 
 type CanvasSize = {
@@ -196,19 +196,16 @@ export default function DragContainer({
       (windowHeight || 0) - canvasViewportPadding * 2
     ),
   })
-  const [canvasSize, setCanvasSize] = useLocalStorage<CanvasSize | null>(
-    `BlobCanvasSize${d.toString()}`,
-    null
-  )
-  const [canvasOffsetX, setCanvasOffsetX] = useLocalStorage(
-    `BlobCanvasOffset${d.toString()}`,
-    0
-  )
+  const [canvasSize, setCanvasSize, removeCanvasSize] =
+    useLocalStorage<CanvasSize | null>(`BlobCanvasSize${d.toString()}`, null)
+  const [canvasOffsetX, setCanvasOffsetX, removeCanvasOffsetX] =
+    useLocalStorage(`BlobCanvasOffset${d.toString()}`, 0)
   const hasCustomCanvasSize = canvasSize !== null
 
   const stopBlobs = useRef(null) as RefObject<HTMLButtonElement>
   const disableScrollButton = useRef(null) as RefObject<HTMLButtonElement>
   const resetBlobs = useRef(null) as RefObject<HTMLButtonElement>
+  const resetCanvas = useRef(null) as RefObject<HTMLButtonElement>
   const [loading, setLoading] = useState(false)
 
   const exitApp = useRef(null) as RefObject<HTMLDivElement>
@@ -691,7 +688,7 @@ export default function DragContainer({
     const center = width / 2
 
     return {
-      minOffsetX: Math.min(0, canvasViewportPadding - anchorLeft),
+      minOffsetX: Math.min(0, -anchorLeft),
       maxOffsetX: Math.max(0, anchorLeft + canvasViewportPadding + center),
     }
   }, [dragWrapOutest])
@@ -713,10 +710,11 @@ export default function DragContainer({
         viewportHeight - Math.max(top, 0) - canvasViewportPadding,
         120
       )
+      const maxHeightPlus = maxHeight * 2
 
       return {
         minHeight: Math.min(minCanvasHeight, maxHeight),
-        maxHeight,
+        maxHeight: maxHeightPlus,
       }
     },
     [windowHeight, windowObj]
@@ -746,9 +744,12 @@ export default function DragContainer({
         windowWidth || windowObj?.innerWidth || minCanvasWidth
       const rightResizeMaxWidth = Math.max(
         viewportWidth - Math.max(left, 0) - canvasViewportPadding,
-        120
+        minCanvasWidth
       )
-      const leftResizeMaxWidth = Math.max(right - canvasViewportPadding, 120)
+      const leftResizeMaxWidth = Math.max(
+        right - canvasViewportPadding,
+        minCanvasWidth
+      )
       const widthMax =
         horizontalDirection === -1 ? leftResizeMaxWidth : rightResizeMaxWidth
       const widthMin = Math.min(minCanvasWidth, widthMax)
@@ -788,11 +789,9 @@ export default function DragContainer({
     const availableWidth = canvasRect
       ? viewportWidth - Math.max(canvasRect.left, 0) - canvasViewportPadding
       : viewportWidth - canvasViewportPadding * 2
-    const maxWidth = Math.max(availableWidth, 120)
-    const maxHeight = Math.max(
-      viewportHeight - canvasViewportPadding * 2,
-      minCanvasHeight
-    )
+    const maxWidth = Math.max(availableWidth, minCanvasWidth)
+    const viewPortHeightPlus = viewportHeight * 2
+    const maxHeight = Math.max(viewPortHeightPlus, minCanvasHeight)
 
     return {
       minWidth: Math.min(minCanvasWidth, maxWidth),
@@ -1248,12 +1247,32 @@ export default function DragContainer({
       return clampedSize
     })
 
-    setCanvasOffsetX((prev) => clampCanvasOffsetX(prev))
+    setCanvasOffsetX((prev) => {
+      const clampedOffsetX = clampCanvasOffsetX(prev)
+      const outerRect = dragWrapOuter.current?.getBoundingClientRect()
+      const viewportWidth = windowWidth || windowObj?.innerWidth || 0
+
+      if (!outerRect || viewportWidth <= 0) {
+        return clampedOffsetX
+      }
+
+      const overflowRight = outerRect.right - viewportWidth
+      const availableShiftLeft = Math.max(outerRect.left, 0)
+
+      if (overflowRight <= 0 || availableShiftLeft <= 0) {
+        return clampedOffsetX
+      }
+
+      return clampCanvasOffsetX(
+        clampedOffsetX - Math.min(overflowRight, availableShiftLeft)
+      )
+    })
   }, [
     canvasSize,
     clampCanvasOffsetX,
     clampCanvasSize,
     windowHeight,
+    windowObj,
     windowWidth,
   ])
 
@@ -1424,6 +1443,20 @@ export default function DragContainer({
     }
   }
 
+  async function resetCanvasFunction(
+    e: MouseEventReact | TouchEventReact | PointerEventReact
+  ) {
+    e.preventDefault()
+    if (await confirm({ message: `${t('ResetCanvas')}?` })) {
+      if (!isClient || !windowObj) return
+      windowObj.localStorage.removeItem(localStorageBackground)
+      removeCanvasSize()
+      removeCanvasOffsetX()
+      setCanvasSize(null)
+      setCanvasOffsetX(0)
+    }
+  }
+
   const makeAnew = (amount: number, d: number) => {
     setActiveLayer(0)
     for (let i = 0; i < amount; i++) {
@@ -1434,6 +1467,10 @@ export default function DragContainer({
       }
       const [colorFirst, colorSecond] = colorswitch()
 
+      const wide =
+        (canvasSize?.width ?? windowWidth) >
+        (canvasSize?.height ?? windowHeight)
+
       const newDraggable: Draggable = {
         layer: 0,
         id: `blob${i + 1}-${d}`,
@@ -1442,11 +1479,10 @@ export default function DragContainer({
           windowWidth > 400
             ? Math.round(getRandomMinMax(7, 20))
             : Math.round(getRandomMinMax(7, 10)),
-        x:
-          windowWidth > windowHeight
-            ? `${(windowWidth / 100) * Math.round(getRandomMinMax(2, 70))}px`
-            : `${(windowWidth / 100) * Math.round(getRandomMinMax(2, 50))}px`,
-        y: `${(windowHeight / 100) * Math.round(getRandomMinMax(2, 60))}px`,
+        x: wide
+          ? `${((canvasSize?.width ?? windowWidth) / 100) * Math.round(getRandomMinMax(2, 70))}px`
+          : `${((canvasSize?.width ?? windowWidth) / 100) * Math.round(getRandomMinMax(2, 50))}px`,
+        y: `${((canvasSize?.height ?? windowHeight) / 100) * Math.round(getRandomMinMax(2, 70))}px`,
         z: `1`,
         background: `linear-gradient(${angle ?? '90deg'}, ${
           colorFirst ?? 'cyan'
@@ -1587,7 +1623,7 @@ export default function DragContainer({
 
   const addRandomDraggable = (
     x_pos = `${(windowWidth / 100) * Math.round(getRandomMinMax(25, 55))}px`,
-    y_pos = `${(windowHeight / 100) * Math.round(getRandomMinMax(2, 10))}px`,
+    y_pos = `${(windowHeight / 100) * Math.round(getRandomMinMax(70, 85))}px`,
     layer: number = activeLayer
   ) => {
     if (
@@ -1955,9 +1991,19 @@ export default function DragContainer({
   //END SLIDERS
 
   function place(element: HTMLElement, x_pos: number, y_pos: number) {
-    if (element && dragWrap && dragWrap.current && dragWrapOuter.current) {
+    if (
+      element &&
+      dragWrap &&
+      dragWrap.current &&
+      dragWrapOuter.current &&
+      dragWrapOutest.current
+    ) {
+      const outestRect = dragWrapOutest.current.getBoundingClientRect()
+      const outerRect = dragWrapOuter.current.getBoundingClientRect()
+
       element.style.left =
-        dragWrapOuter.current.offsetLeft +
+        outerRect.left -
+        outestRect.left +
         (dragWrap.current.offsetWidth / 100) * x_pos +
         'px'
       element.style.top = (dragWrap.current.offsetHeight / 100) * y_pos + 'px'
@@ -1967,27 +2013,33 @@ export default function DragContainer({
   const widthResize = useCallback(
     () => {
       const y_pos = [12, 34, 56, 78] // color block y positions
-      const x_pos = [20, 40, 60, 80] // top and bottom item x positions
+      const x_pos = [15, 38, 62, 85] // top item x positions
       const top_pos = 1
       const bottom_pos = 99
-
+      const adjustment = 6
       //place these items every time the window is resized:
 
-      if (makeLarger0.current && dragWrap.current)
-        place(
-          makeLarger0.current,
-          x_pos[0] -
-            (makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) *
-              50,
-          top_pos
-        )
       if (makeSmaller0.current && dragWrap.current)
         place(
           makeSmaller0.current,
-          x_pos[1] -
+          x_pos[0] -
             (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) *
               50,
-          top_pos
+          top_pos -
+            ((makeSmaller0.current.offsetHeight / 2 + adjustment) /
+              dragWrap.current.offsetHeight) *
+              100
+        )
+      if (makeLarger0.current && dragWrap.current)
+        place(
+          makeLarger0.current,
+          x_pos[1] -
+            (makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) *
+              50,
+          top_pos -
+            ((makeLarger0.current.offsetHeight / 2 + adjustment) /
+              dragWrap.current.offsetHeight) *
+              100
         )
       if (layerDecrease.current && dragWrap.current)
         place(
@@ -1995,7 +2047,10 @@ export default function DragContainer({
           x_pos[2] -
             (layerDecrease.current.offsetWidth / dragWrap.current.offsetWidth) *
               50,
-          top_pos
+          top_pos -
+            ((layerDecrease.current.offsetHeight / 2 + adjustment) /
+              dragWrap.current.offsetHeight) *
+              100
         )
       if (layerIncrease.current && dragWrap.current)
         place(
@@ -2003,46 +2058,49 @@ export default function DragContainer({
           x_pos[3] -
             (layerIncrease.current.offsetWidth / dragWrap.current.offsetWidth) *
               50,
-          top_pos
-        )
-      if (makeRandom0.current && dragWrap.current)
-        place(
-          makeRandom0.current,
-          31 -
-            (makeRandom0.current.offsetWidth / dragWrap.current.offsetWidth) *
-              50,
-          bottom_pos -
-            1 -
-            (makeRandom0.current.offsetHeight / dragWrap.current.offsetHeight) *
+          top_pos -
+            ((layerIncrease.current.offsetHeight / 2 + adjustment) /
+              dragWrap.current.offsetHeight) *
               100
         )
       if (deleteBlob0.current && dragWrap.current)
         place(
           deleteBlob0.current,
-          50 -
+          28 -
             (deleteBlob0.current.offsetWidth / dragWrap.current.offsetWidth) *
               50,
           bottom_pos -
-            1 -
-            (deleteBlob0.current.offsetHeight / dragWrap.current.offsetHeight) *
+            ((deleteBlob0.current.offsetHeight / 2 - adjustment) /
+              dragWrap.current.offsetHeight) *
+              100
+        )
+      if (makeRandom0.current && dragWrap.current)
+        place(
+          makeRandom0.current,
+          50 -
+            (makeRandom0.current.offsetWidth / dragWrap.current.offsetWidth) *
+              50,
+          bottom_pos -
+            ((makeRandom0.current.offsetHeight / 2 - adjustment) /
+              dragWrap.current.offsetHeight) *
               100
         )
       if (makeMore0.current && dragWrap.current)
         place(
           makeMore0.current,
-          69 -
+          72 -
             (makeMore0.current.offsetWidth / dragWrap.current.offsetWidth) * 50,
           bottom_pos -
-            1 -
-            (makeMore0.current.offsetHeight / dragWrap.current.offsetHeight) *
+            ((makeMore0.current.offsetHeight / 2 - adjustment) /
+              dragWrap.current.offsetHeight) *
               100
         )
       if (resizeHandleLeft.current && dragWrap.current)
         place(
           resizeHandleLeft.current,
-          0,
+          0 - (adjustment / dragWrap.current.offsetWidth) * 100,
           100 -
-            (resizeHandleLeft.current.offsetHeight /
+            ((resizeHandleLeft.current.offsetHeight - adjustment) /
               dragWrap.current.offsetHeight) *
               100
         )
@@ -2050,11 +2108,11 @@ export default function DragContainer({
         place(
           resizeHandleRight.current,
           100 -
-            (resizeHandleRight.current.offsetWidth /
+            ((resizeHandleRight.current.offsetWidth - adjustment) /
               dragWrap.current.offsetWidth) *
               100,
           100 -
-            (resizeHandleRight.current.offsetHeight /
+            ((resizeHandleRight.current.offsetHeight - adjustment) /
               dragWrap.current.offsetHeight) *
               100
         )
@@ -2088,6 +2146,7 @@ export default function DragContainer({
       makeRandom0,
       makeMore0,
       deleteBlob0,
+      canvasOffsetX,
       canvasSize,
     ]
   )
@@ -2576,7 +2635,7 @@ export default function DragContainer({
             id={`drag-container${d}`}
             className={`drag-container drag-container${d}`}
             style={{
-              overflow: 'visible',
+              maxWidth: 'calc(100vw - var(--scrollbar_width, 15px))',
             }}
           >
             <div className="blob-title-wrap">
@@ -2617,7 +2676,6 @@ export default function DragContainer({
                 overflow: 'visible',
               }}
             >
-              {' '}
               <button
                 ref={resetBlobs}
                 id={`reset-blobs${d}`}
@@ -2630,7 +2688,21 @@ export default function DragContainer({
                 <span id={`reset-blobs${d}-span`} className="tooltip above">
                   {t('GetANewSetOfBlobs')}
                 </span>{' '}
-                {t('Reset')}
+                {t('ResetBlobs')}
+              </button>
+              <button
+                ref={resetCanvas}
+                id={`reset-canvas${d}`}
+                aria-labelledby={`reset-canvas${d}-span`}
+                className="reset-canvas tooltip-wrap"
+                onClick={(e) => {
+                  void resetCanvasFunction(e)
+                }}
+              >
+                <span id={`reset-canvas${d}-span`} className="tooltip above">
+                  {t('ResetCanvas')}
+                </span>{' '}
+                {t('ResetCanvas')}
               </button>
               <button
                 ref={stopBlobs}
@@ -2741,42 +2813,35 @@ export default function DragContainer({
               }`}
               style={{
                 overflow: 'visible',
+                width: `${effectiveCanvasSize.width}px`,
+                minWidth: `${effectiveCanvasSize.width}px`,
               }}
             >
               <button
-                ref={makeMore0}
-                className={`make-more tooltip-wrap gray ${
+                tabIndex={0}
+                ref={makeSmaller0}
+                className={`make-smaller tooltip-wrap gray ${
                   !controlsVisible ? 'hidden' : ''
                 }`}
-                id={`make-more${d}`}
+                id={`make-smaller${d}`}
                 onClick={() => {
-                  toggleMode('clone')
+                  toggleMode('scale-down')
                 }}
               >
-                <Icon lib="fa" name="FaRegClone" aria-hidden="true" />
-                {mode === 'clone' && (
-                  <span className="clone-alert">{t('CloneModeOn')}</span>
+                <Icon lib="im" name="ImShrink2" aria-hidden="true" />
+                {mode === 'scale-down' && (
+                  <span className="scale-down-alert">
+                    {t('SizeDecreaseModeOn')}
+                  </span>
                 )}
-                <span id={`make-more${d}-span`} className="tooltip right below">
-                  {t('CloneInstructions')}
-                </span>
+                <span
+                  id={`make-smaller${d}-span`}
+                  className="tooltip left above"
+                >{`${t('ShrinkInstructions')}. ${t('Alternatively')}: ${t(
+                  'ResizebyScrollInstructions'
+                )}`}</span>
               </button>
-              <button
-                ref={makeRandom0}
-                className={`make-random tooltip-wrap gray ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
-                id={`make-random${d}`}
-                aria-labelledby={`make-random${d}-span`}
-                onClick={() => addRandomDraggable()}
-              >
-                <Icon lib="fa" name="FaPlus" aria-hidden="true" />
-                <span id={`make-random${d}-span`} className="tooltip below">
-                  {`${t('ClickMeToMakeARandomBlob')}. ${t(
-                    'MoreColorsAvailable'
-                  )}! ${t('KeyboardUse')}: ${t('PressSpaceOrRWithABlobInFocusToCycleThroughRandomColors')}`}{' '}
-                </span>
-              </button>
+
               <button
                 ref={makeLarger0}
                 className={`make-larger tooltip-wrap gray ${
@@ -2799,25 +2864,6 @@ export default function DragContainer({
                 >{`${t('EnlargeInstructions')}. ${t('Alternatively')}: ${t(
                   'ResizebyScrollInstructions'
                 )}`}</span>
-              </button>
-              <button
-                ref={deleteBlob0}
-                className={`delete-blob tooltip-wrap gray ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
-                id={`delete-blob${d}`}
-                onClick={() => toggleMode('delete')}
-              >
-                <Icon lib="fa" name="FaTimes" aria-hidden="true" />
-                {mode === 'delete' && (
-                  <span className="delete-alert">{t('DeleteModeOn')}</span>
-                )}
-                <span
-                  id={`delete-blob${d}-span`}
-                  className="tooltip right above"
-                >
-                  {t('RemovalInstructions')}
-                </span>
               </button>
 
               <button
@@ -2864,28 +2910,59 @@ export default function DragContainer({
               </button>
 
               <button
-                tabIndex={0}
-                ref={makeSmaller0}
-                className={`make-smaller tooltip-wrap gray ${
+                ref={makeRandom0}
+                className={`make-random tooltip-wrap gray ${
                   !controlsVisible ? 'hidden' : ''
                 }`}
-                id={`make-smaller${d}`}
-                onClick={() => {
-                  toggleMode('scale-down')
-                }}
+                id={`make-random${d}`}
+                aria-labelledby={`make-random${d}-span`}
+                onClick={() => addRandomDraggable()}
               >
-                <Icon lib="im" name="ImShrink2" aria-hidden="true" />
-                {mode === 'scale-down' && (
-                  <span className="scale-down-alert">
-                    {t('SizeDecreaseModeOn')}
-                  </span>
+                <Icon lib="fa" name="FaPlus" aria-hidden="true" />
+                <span id={`make-random${d}-span`} className="tooltip below">
+                  {`${t('ClickMeToMakeARandomBlob')}. ${t(
+                    'MoreColorsAvailable'
+                  )}! ${t('KeyboardUse')}: ${t('PressSpaceOrRWithABlobInFocusToCycleThroughRandomColors')}`}{' '}
+                </span>
+              </button>
+
+              <button
+                ref={deleteBlob0}
+                className={`delete-blob tooltip-wrap gray ${
+                  !controlsVisible ? 'hidden' : ''
+                }`}
+                id={`delete-blob${d}`}
+                onClick={() => toggleMode('delete')}
+              >
+                <Icon lib="fa" name="FaTimes" aria-hidden="true" />
+                {mode === 'delete' && (
+                  <span className="delete-alert">{t('DeleteModeOn')}</span>
                 )}
                 <span
-                  id={`make-smaller${d}-span`}
-                  className="tooltip left above"
-                >{`${t('ShrinkInstructions')}. ${t('Alternatively')}: ${t(
-                  'ResizebyScrollInstructions'
-                )}`}</span>
+                  id={`delete-blob${d}-span`}
+                  className="tooltip right above"
+                >
+                  {t('RemovalInstructions')}
+                </span>
+              </button>
+
+              <button
+                ref={makeMore0}
+                className={`make-more tooltip-wrap gray ${
+                  !controlsVisible ? 'hidden' : ''
+                }`}
+                id={`make-more${d}`}
+                onClick={() => {
+                  toggleMode('clone')
+                }}
+              >
+                <Icon lib="fa" name="FaRegClone" aria-hidden="true" />
+                {mode === 'clone' && (
+                  <span className="clone-alert">{t('CloneModeOn')}</span>
+                )}
+                <span id={`make-more${d}-span`} className="tooltip right below">
+                  {t('CloneInstructions')}
+                </span>
               </button>
 
               <button
@@ -2951,9 +3028,7 @@ export default function DragContainer({
                     : undefined,
                   width: `${effectiveCanvasSize.width}px`,
                   minWidth: `${canvasBounds.minWidth}px`,
-                  maxWidth: hasCustomCanvasSize
-                    ? `${canvasBounds.maxWidth}px`
-                    : '100%',
+                  maxWidth: `${canvasBounds.maxWidth}px`,
                 }}
               >
                 {markerEnabled && usingKeyboard && focusedBlob && (
@@ -3028,20 +3103,20 @@ export default function DragContainer({
                       changeColor={changeColor}
                     />
                   </div>
-
-                  <ColorBlocks
-                    d={d}
-                    getRefName={getRefName}
-                    map={refNameMappingCombo}
-                    colorBlockProps={colorBlockPropsCombo}
-                    colorPairs={colorPairsCombo}
-                    colorsVisible={colorsVisible}
-                    setSelectedColor={setSelectedColor}
-                    selectedColor={selectedColor}
-                    setMode={setMode}
-                  />
                 </div>
               </div>
+
+              <ColorBlocks
+                d={d}
+                getRefName={getRefName}
+                map={refNameMappingCombo}
+                colorBlockProps={colorBlockPropsCombo}
+                colorPairs={colorPairsCombo}
+                colorsVisible={colorsVisible}
+                setSelectedColor={setSelectedColor}
+                selectedColor={selectedColor}
+                setMode={setMode}
+              />
             </div>
 
             <div className="layer-mover-control-wrap">
