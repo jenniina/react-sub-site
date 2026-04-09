@@ -47,7 +47,7 @@ const ColorBlocks: FC<ColorBlockProps> = ({
         const isActive = selectedColor === color
         return (
           <button
-            // ref={colorBlock}
+            ref={colorBlock}
             key={`${colorPairs[d][index].color1}${index}-${d}`}
             onClick={() => handleClick(color)}
             className={`colorblock ${getRefName(
