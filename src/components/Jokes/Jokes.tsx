@@ -1402,12 +1402,8 @@ function Jokes() {
 
   const navigate = useNavigate()
 
-  const navigateToRegister = () => {
-    navigate('/portfolio/jokes?register=register')
-  }
-
   const navigateToLogin = () => {
-    navigate('/portfolio/jokes?login=login')
+    navigate('?login=true')
   }
 
   const handleBlacklistUpdate = async (
@@ -1592,16 +1588,6 @@ function Jokes() {
 
       <section className={`joke-container ${language}`}>
         <div>
-          {!user ? (
-            <div className={`register-login-wrap`}>
-              <button onClick={navigateToLogin}>{t('Login')}</button>
-              <button onClick={navigateToRegister}>{t('Register')}</button>
-            </div>
-          ) : (
-            <p className="textcenter">
-              {t('LoggedInAs')} {user?.name}
-            </p>
-          )}
           {user && (
             <JokeSubmit
               userId={user?._id}

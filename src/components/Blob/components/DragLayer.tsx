@@ -122,7 +122,7 @@ const DragLayer = ({
             return (
               <Blob
                 layer={layer_}
-                key={index}
+                  key={item.id}
                 d={d}
                 item={item}
                 index={index}

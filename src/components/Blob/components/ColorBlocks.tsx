@@ -4,7 +4,7 @@ import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 interface ColorBlockProps {
   d: number
-  controlsVisible: boolean
+  colorsVisible: boolean
   colorBlockProps: RefObject<HTMLButtonElement>[][]
   colorPairs: ColorPair[][]
   map: Map<RefObject<HTMLButtonElement>, string>[]
@@ -19,7 +19,7 @@ interface ColorBlockProps {
 
 const ColorBlocks: FC<ColorBlockProps> = ({
   d,
-  controlsVisible,
+  colorsVisible,
   colorBlockProps,
   colorPairs,
   getRefName,
@@ -54,7 +54,7 @@ const ColorBlocks: FC<ColorBlockProps> = ({
               map[d],
               colorBlock
             )?.toLowerCase()} tooltip-wrap ${
-              !controlsVisible ? 'hidden' : ''
+              !colorsVisible ? 'hidden' : ''
             } ${isActive ? 'active' : ''} ${index < 4 ? 'left' : 'right'}`}
             id={`color${index}-${d}`}
             style={{

@@ -32,6 +32,8 @@ import {
   BiChevronDown,
   BiChevronUp,
   BiPlus,
+  BiUndo,
+  BiRedo,
 } from 'react-icons/bi'
 import { CgSearch, CgUndo } from 'react-icons/cg'
 import {
@@ -45,7 +47,7 @@ import {
   HiDotsCircleHorizontal,
   HiMenu,
 } from 'react-icons/hi'
-import { HiMiniSparkles } from 'react-icons/hi2'
+import { HiMiniSparkles, HiArrowsPointingOut } from 'react-icons/hi2'
 import { TfiLineDashed } from 'react-icons/tfi'
 import {
   FaAnglesUp,
@@ -85,7 +87,7 @@ import {
   LuArrowLeftFromLine,
 } from 'react-icons/lu'
 import { LiaUndoAltSolid, LiaNewspaperSolid } from 'react-icons/lia'
-import { PiImage, PiDownloadSimpleFill } from 'react-icons/pi'
+import { PiImage, PiDownloadSimpleFill, PiResizeLight } from 'react-icons/pi'
 import {
   FaStar,
   FaStoreAlt,
@@ -166,6 +168,8 @@ export const iconLibraries = {
     BiChevronDown,
     BiChevronUp,
     BiPlus,
+    BiUndo,
+    BiRedo,
   },
   cg: {
     CgSearch,
@@ -180,10 +184,10 @@ export const iconLibraries = {
     HiOutlineDotsHorizontal,
     HiDotsHorizontal,
     HiDotsCircleHorizontal,
-    HiMenu,
   },
   hi2: {
     HiMiniSparkles,
+    HiArrowsPointingOut,
   },
   tfi: {
     TfiLineDashed,
@@ -249,6 +253,7 @@ export const iconLibraries = {
   pi: {
     PiImage,
     PiDownloadSimpleFill,
+    PiResizeLight,
   },
   ti: {
     TiDeleteOutline,

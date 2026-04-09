@@ -160,12 +160,12 @@ export const portfolioItems: PortfolioItemDef[] = [
     navLabel: { kind: 't', key: 'ToDo' },
     description: (t) => t('TodoAppIntro'),
   },
-  {
-    id: 'graphql',
-    url: '/portfolio/graphql',
-    icon: { kind: 'icon', lib: 'gr', name: 'GrGraphQl' },
-    title: { kind: 'text', text: 'GraphQL' },
-    navLabel: { kind: 'text', text: 'GraphQL' },
-    description: (t) => t('GraphQLSite'),
-  },
+  // {
+  //   id: 'graphql',
+  //   url: '/portfolio/graphql',
+  //   icon: { kind: 'icon', lib: 'gr', name: 'GrGraphQl' },
+  //   title: { kind: 'text', text: 'GraphQL' },
+  //   navLabel: { kind: 'text', text: 'GraphQL' },
+  //   description: (t) => t('GraphQLSite'),
+  // },
 ]

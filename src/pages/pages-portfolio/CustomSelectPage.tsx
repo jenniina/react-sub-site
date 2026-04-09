@@ -33,7 +33,7 @@ const issuesArray = [
   'QuizApp',
   'ComposerPage',
   'HairSalonWebsite',
-  'GraphQLSite',
+  // 'GraphQLSite',
   'Other',
 ]
 

@@ -158,7 +158,7 @@ const Blob = ({
 
   return (
     <li
-      onFocus={e => {
+      onFocus={(e) => {
         dragUlRef?.current?.setAttribute(
           'aria-activedescendant',
           `${e.target.id}`
@@ -186,13 +186,13 @@ const Blob = ({
 
           {
             setSelectedvalue0(
-              `${t('SelectedBlob')}: ${blob.querySelector('span')?.textContent}?`
+              `${t('SelectedBlob')}: ${blob.querySelector('span')?.textContent}`
             )
           }
         }, 500) // Adjust the timeout duration as needed
         focused(blob)
       }}
-      onBlur={e => {
+      onBlur={(e) => {
         setFocusedBlob(null)
         blurred(e.target)
         dragUlRef?.current?.removeAttribute('aria-activedescendant')
@@ -207,7 +207,7 @@ const Blob = ({
       tabIndex={0}
       style={blobStyle}
       onClick={handleClick}
-      onKeyDown={e => {
+      onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault()
           handleClick()
@@ -259,13 +259,13 @@ const Blob = ({
                             height: `calc(var(--i) * ${innerSize[6]})`,
                           }
         }
-        onMouseDown={e => {
+        onMouseDown={(e) => {
           e.stopPropagation()
           const liElement = e.currentTarget.parentElement!
           liElement.draggable = true
 
           setSelectedvalue0(
-            `${t('SelectedBlob')}: ${liElement?.querySelector('span')?.textContent}?`
+            `${t('SelectedBlob')}: ${liElement?.querySelector('span')?.textContent}`
           )
 
           dragUlRef?.current?.setAttribute(
@@ -275,36 +275,32 @@ const Blob = ({
 
           start(e, liElement)
         }}
-        onMouseMove={e => {
+        onMouseMove={(e) => {
           if (e.buttons === 1) {
             e.stopPropagation()
             const liElement = e.currentTarget.parentElement!
             liElement.draggable = true
             movement(e, liElement)
-
-            setSelectedvalue0(
-              `${t('SelectedBlob')}: ${
-                liElement?.querySelector('span')?.textContent
-              }?`
-            )
           }
         }}
-        onMouseLeave={e => {
+        onMouseLeave={(e) => {
           e.stopPropagation()
           const liElement = e.currentTarget.parentElement!
-          liElement.draggable = false
-          dragUlRef?.current?.removeAttribute('aria-activedescendant')
-          stopMoving(e, liElement)
-          setSelectedvalue0(`${t('SelectedBlobNone')}`)
+          if (e.buttons !== 1) {
+            liElement.draggable = false
+            dragUlRef?.current?.removeAttribute('aria-activedescendant')
+            stopMoving(e, liElement)
+            setSelectedvalue0(`${t('SelectedBlobNone')}`)
+          }
         }}
-        onMouseUp={e => {
+        onMouseUp={(e) => {
           const liElement = e.currentTarget.parentElement!
           liElement.draggable = false
           stopMovementCheck(e, liElement)
           dragUlRef?.current?.removeAttribute('aria-activedescendant')
           setSelectedvalue0(`${t('SelectedBlobNone')}`)
         }}
-        onTouchStart={e => {
+        onTouchStart={(e) => {
           e.preventDefault()
           e.stopPropagation()
           const liElement = e.currentTarget.parentElement!
@@ -321,21 +317,21 @@ const Blob = ({
             }`
           )
         }}
-        onTouchMove={e => {
+        onTouchMove={(e) => {
           e.preventDefault()
           e.stopPropagation()
           const liElement = e.currentTarget.parentElement!
           liElement.draggable = true
           movement(e, liElement)
         }}
-        onTouchEnd={e => {
+        onTouchEnd={(e) => {
           const liElement = e.currentTarget.parentElement!
           liElement.draggable = false
           dragUlRef?.current?.removeAttribute('aria-activedescendant')
           stopMovementCheck(e, liElement)
           setSelectedvalue0(`${t('SelectedBlobNone')}`)
         }}
-        onWheel={e => {
+        onWheel={(e) => {
           const liElement = e.currentTarget.parentElement!
           wheel(liElement)
         }}

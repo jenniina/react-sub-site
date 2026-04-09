@@ -100,18 +100,15 @@ export default function ComposerPage({ type }: { type: string }) {
                   </Accordion>
 
                   <div
-                    style={
-                      isFormOpen
-                        ? {
-                            marginTop: '2rem',
-                            paddingLeft: '0.5rem',
-                            fontSize: '130%',
-                          }
-                        : { marginTop: '2rem', fontSize: '130%' }
-                    }
+                    style={{
+                      marginTop: '2rem',
+                      textAlign: 'center',
+                    }}
                   >
                     <p>
-                      <a href="https://ollisanta.fi">Olli Santa &raquo;</a>
+                      <big>
+                        <a href="https://ollisanta.fi">Olli Santa &raquo;</a>
+                      </big>
                     </p>
                     <p>
                       <a href="https://github.com/jenniina/OlliSanta">

@@ -75,27 +75,34 @@ function useStorage<T>(
   defaultValue: T,
   storageObject: Storage | null
 ): ReturnType<T> {
-  const [value, setValue] = useState<T>(() => {
-    // If no storage object (SSR), return default value
-    if (!storageObject) return defaultValue
+  const [value, setValue] = useState<T>(defaultValue)
+  const [hasLoadedFromStorage, setHasLoadedFromStorage] = useState(false)
 
-    const jsonValue = storageObject.getItem(key)
-    if (jsonValue != null) return JSON.parse(jsonValue) as T
+  useEffect(() => {
+    if (!storageObject) {
+      setHasLoadedFromStorage(true)
+      return
+    }
 
-    // if (typeof defaultValue === 'function') {
-    //   return defaultValue()
-    // } else {
-    return defaultValue
-    // }
-  })
+    try {
+      const jsonValue = storageObject.getItem(key)
+      if (jsonValue != null) {
+        setValue(JSON.parse(jsonValue) as T)
+      }
+    } catch (error) {
+      console.error(`Error reading storage key "${key}":`, error)
+    } finally {
+      setHasLoadedFromStorage(true)
+    }
+  }, [key, storageObject])
 
   useEffect(() => {
     // Only run effects in the browser
-    if (!storageObject) return
+    if (!storageObject || !hasLoadedFromStorage) return
 
     if (value === undefined) return storageObject.removeItem(key)
     storageObject.setItem(key, JSON.stringify(value))
-  }, [key, value, storageObject])
+  }, [hasLoadedFromStorage, key, value, storageObject])
 
   const remove = useCallback(() => {
     setValue(defaultValue)
@@ -107,7 +114,7 @@ function useStorage<T>(
 
   const setValueWithFunction = useCallback((nextValue: T | ((val: T) => T)) => {
     if (typeof nextValue === 'function') {
-      setValue(currentValue => (nextValue as (val: T) => T)(currentValue))
+      setValue((currentValue) => (nextValue as (val: T) => T)(currentValue))
     } else {
       setValue(nextValue)
     }

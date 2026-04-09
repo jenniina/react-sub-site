@@ -36,12 +36,12 @@ const heroConfig: Record<string, (language: ELanguages) => HeroProps> = {
     address: 'composer',
     language,
   }),
-  '/portfolio/graphql': (language) => ({
-    heading: 'GraphQL',
-    text: t.GraphQLSite[language],
-    address: 'graphql',
-    language,
-  }),
+  // '/portfolio/graphql': (language) => ({
+  //   heading: 'GraphQL',
+  //   text: t.GraphQLSite[language],
+  //   address: 'graphql',
+  //   language,
+  // }),
   '/portfolio/blob': (language) => ({
     heading: t.Blobs[language],
     text: t.BlobAppSlogan[language],

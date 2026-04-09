@@ -371,7 +371,7 @@ const NamedPalettes: FC<Props> = ({
     return (
       <>
         <p className="mt2">
-          <Link to="?login=login">
+          <Link to="?login=true">
             {t('LogInToSaveColorPalettesToDatabase')} &raquo;
           </Link>
         </p>

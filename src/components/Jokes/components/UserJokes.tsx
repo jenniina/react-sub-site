@@ -522,7 +522,7 @@ const UserJokes = ({
   const handleJokeSave = (_id: IJoke['_id']) => {
     if (!userId) {
       void dispatch(notify(`${t('LoginOrRegisterToSave')}`, false, 8))
-      navigate('/portfolio/jokes?login=login')
+      navigate('/portfolio/jokes?login=true')
       return
     }
     const findJoke = jokes?.find((j: IJoke) => j._id === _id)

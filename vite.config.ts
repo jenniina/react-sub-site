@@ -88,6 +88,17 @@ export default defineConfig(({ command }) => ({
                   .toString()
               }
 
+              // Keep tightly-coupled app internals in one shared chunk so
+              // manual chunking doesn't create circular chunk dependencies.
+              if (
+                /src[\\/](hooks|utils|contexts|reducers|services)([\\/]|$)/.test(
+                  id
+                ) ||
+                /src[\\/]components[\\/]Confirm([\\/]|$)/.test(id)
+              ) {
+                return 'app-shared'
+              }
+
               // Split pages into per-folder chunks to avoid huge `src_pages` bundle
               const pagesMatch = id.match(/src[\/\\]pages[\/\\](.+)/)
               if (pagesMatch) {
@@ -105,14 +116,6 @@ export default defineConfig(({ command }) => ({
               const compMatch = id.match(/src[\/\\]components[\/\\]([^\/\\]+)/)
               if (compMatch) {
                 return `component-${compMatch[1]}`
-              }
-
-              // Bundle shared application code into a common chunk to avoid duplication
-              const sharedMatch = id.match(
-                /src[\\/\\](hooks|utils|contexts|reducers|services)([\\/\\]|$)/
-              )
-              if (sharedMatch) {
-                return `shared-${sharedMatch[1]}`
               }
             },
           },

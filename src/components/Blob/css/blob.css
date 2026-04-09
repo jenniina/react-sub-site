@@ -1,3 +1,6 @@
+.page.blob .inner-wrap section.card {
+  flex: 1 1 calc(100vw - var(--scrollbar_width));
+}
 .blob.page .inner-wrap {
   gap: 3rem;
 }
@@ -6,7 +9,6 @@ svg.filter {
   height: 0;
   width: 0;
 }
-
 .drag-container .blob-title-wrap {
   display: flex;
   flex-flow: column nowrap;
@@ -80,21 +82,16 @@ svg.filter {
   box-shadow: var(--box);
 }
 
+.drag-container .make-larger,
 .drag-container .make-smaller,
-.drag-container .make-larger {
-  z-index: 1;
-}
-
-.drag-container .make-random {
+.drag-container .make-random,
+.drag-container .delete-blob,
+.drag-container .layer-adjust,
+.drag-container .make-more {
   cursor: pointer;
-  z-index: 1;
+  z-index: 1200;
 }
 
-.drag-container .delete-blob {
-  z-index: 1;
-  transform: translateY(-0.3rem);
-  transform-origin: 80% 50%;
-}
 .colorblock .color-alert {
   display: none;
 }
@@ -102,8 +99,8 @@ svg.filter {
 .drag-container .make-more .clone-alert,
 .drag-container .layer-decrease .layer-down-alert,
 .drag-container .layer-increase .layer-up-alert,
-.drag-container .scale-up-alert,
 .drag-container .scale-down-alert,
+.drag-container .scale-up-alert,
 .colorblock.active .color-alert {
   position: absolute;
   display: block;
@@ -122,16 +119,16 @@ svg.filter {
   font-weight: normal;
 }
 .drag-container .make-more .clone-alert,
-.drag-container .scale-down-alert {
+.drag-container .scale-up-alert {
   top: 80%;
 }
 .drag-container .layer-increase .layer-up-alert,
-.drag-container .scale-up-alert,
-.drag-container .scale-down-alert {
+.drag-container .scale-down-alert,
+.drag-container .scale-up-alert {
   left: unset;
   right: 120%;
 }
-.drag-container .scale-up-alert {
+.drag-container .scale-down-alert {
   top: -150%;
 }
 .colorblock.active,
@@ -158,7 +155,7 @@ svg.filter {
   left: unset;
 }
 .drag-container .make-more {
-  z-index: 1;
+  z-index: 1200;
   padding: 0.1rem 0.4rem 0.2rem;
   --box: inset -0.1rem -0.1rem 0.4rem -0.2rem rgba(0, 0, 0, 0.4), inset -0.1rem -0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: var(--box);
@@ -254,6 +251,7 @@ svg.filter {
   .drag-container .drag-slider-single > label {
     flex: 1 0 100%;
     max-width: 100%;
+    font-size: 0.9em;
   }
   .drag-container .drag-slider-single > input {
     flex: 1 1 calc(45% - 4em);
@@ -261,13 +259,17 @@ svg.filter {
 }
 @media (min-width: 700px) {
   .drag-container .drag-slider-single {
-    flex: 1 1 28%;
+    flex: 1 0 44%;
     text-align: center;
     align-self: flex-end;
     margin-bottom: 1em;
   }
+  .drag-container .drag-slider-single:first-child {
+    flex: 1 0 100%;
+  }
   .drag-container .drag-slider-single > button {
     flex: 1 0 100%;
+    font-size: 0.9em;
   }
 }
 
@@ -354,39 +356,33 @@ svg.filter {
 .drag-container {
   --tooltip-width: 13rem;
   --tooltip-offset: 1.5rem;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -ms-flex-flow: row wrap;
-  flex-flow: row wrap;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
 }
 
 .drag-container .label-container {
   -ms-flex-item-align: center;
   align-self: center;
+  justify-content: center;
   line-height: 2;
   flex: 0 0 100%;
   margin: 0 auto;
-  padding-left: 1.5em;
-  text-align: left;
+  text-align: center;
 }
 .button-container {
   flex: 0 1 100%;
   display: flex;
-  flex-flow: column wrap;
+  flex-flow: column nowrap;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.5em;
+  margin-bottom: 1.5rem;
   gap: 0.2em 0.4em;
   max-width: calc(100vw - var(--scrollbar_width) - 2 * var(--page-padding));
 }
 .button-container button {
   min-width: 100%;
+  font-size: 0.9em;
+}
+.button-container .screenshot span {
+  font-size: 0.9em;
 }
 .drag-container button {
   border-radius: var(--corner);
@@ -416,15 +412,18 @@ svg.filter {
 .blob-screenshot-wrap h3 {
   margin: 0;
 }
+.button-container div.screenshot {
+  min-width: 100%;
+}
 .button-container button.screenshot {
-  padding: 0.4em 0.8em;
+  padding: 0.5em 0.8em;
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
 }
 .button-container button.screenshot svg {
-  font-size: 1.3rem;
+  font-size: 1.3em;
 }
 
 @media (min-width: 300px) {
@@ -433,8 +432,15 @@ svg.filter {
     flex-flow: row wrap;
     justify-content: center;
   }
-  .button-container button {
+  .button-container button,
+  .button-container div.screenshot {
     min-width: max-content;
+  }
+  .drag-container .button-container button.screenshot {
+    padding: 0.4em 0.9em;
+  }
+  .button-container button.screenshot svg {
+    font-size: 1.4em;
   }
 } /*END media*/
 
@@ -451,8 +457,8 @@ svg.filter {
     --space: 0.4em;
     flex: 1 1 auto;
     flex-flow: row wrap;
-    margin-bottom: 0.5em;
-    justify-content: flex-start;
+    align-items: center;
+    justify-content: center;
   }
   .drag-container .button-container button {
     /* width: clamp(160px, calc(20% - calc(var(--space) * 4)), 100%);
@@ -462,9 +468,9 @@ svg.filter {
     padding: 0.5em 0.8em;
     word-wrap: break-word;
   }
+
   .drag-container .button-container button.screenshot {
     flex: 0 0 auto;
-    margin: 0;
   }
   .drag-container button {
     margin: 0 0.5em 0.3em 0.3em;
@@ -490,7 +496,6 @@ svg.filter {
   -ms-box-shadow: var(--box);
   -moz-box-shadow: var(--box);
   box-shadow: var(--box);
-  overflow: hidden;
 }
 .dark-mode .drag-wrap-outer {
   --box: 0 10px 30px 0 hsla(0, 0%, 0%, 0.8);
@@ -500,6 +505,11 @@ svg.filter {
   -moz-box-shadow: var(--box);
   box-shadow: var(--box);
 }
+.drag-wrap-outest,
+.drag-wrap-outer {
+  overflow: visible;
+}
+
 .drag-container,
 .drag-wrap-outest,
 .drag-wrap-outer {
@@ -511,17 +521,57 @@ svg.filter {
   min-width: 100%;
 }
 .drag-wrap-outer {
-  overflow: auto;
+  position: relative;
+  width: 100%;
+  min-width: 100%;
+}
+.drag-wrap-outer.is-resized {
+  width: max-content;
+  min-width: 0;
+  overflow: visible;
 }
 .drag-wrap-outest {
   position: relative;
-  width: 100%;
-  max-width: 100%;
-  min-width: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden;
-  height: auto;
+}
+.drag-container .drag-wrap-outest.is-resized {
+  position: relative;
+  width: max-content;
+  max-width: none;
+  min-width: 0;
+  overflow: visible;
+}
+.drag-wrap-shell {
+  position: relative;
+  width: 100%;
+  min-width: 100%;
+}
+.drag-wrap-shell.is-resized {
+  width: max-content;
+  min-width: 0;
+}
+.blob .drag-container .drag-wrap-outest .resize-handle {
+  position: absolute;
+  height: 1.8rem;
+  width: 1.8rem;
+  font-size: 1.2rem;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  z-index: 1300;
+  touch-action: none;
+  border-radius: 0.18rem;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4);
+}
+.blob .drag-container .drag-wrap-outest .resize-handle svg {
+  transform: rotate(45deg);
+}
+.blob .drag-container .drag-wrap-outest .resize-handle-right {
+  cursor: nwse-resize;
+}
+.blob .drag-container .drag-wrap-outest .resize-handle-left {
+  cursor: nesw-resize;
 }
 /* .drag-wrap,
 .drag-wrap .drag-container-layer {
@@ -555,7 +605,7 @@ svg.filter {
   --del: calc(var(--i) * var(--delay));
   --duration: 3s;
   --tra1: translatey(0px);
-  --tra2: translatey(5px);
+  --tra2: translatey(4px);
 
   -webkit-animation: sway var(--duration) ease-in-out infinite;
   -moz-animation: sway var(--duration) ease-in-out infinite;
@@ -706,8 +756,21 @@ body.dark-mode .site .drag-container .dragzone:focus {
   pointer-events: all;
 }
 
-.drag-container .make-larger,
-.drag-container .make-smaller {
+.drag-container .button-container,
+.drag-container .layer-mover-control-wrap,
+.drag-container .drag-slider-wrap,
+.drag-container .blob-handling,
+.drag-container .blob-title-wrap,
+.drag-container .label-container {
+  position: relative;
+}
+
+#root .drag-container .colorblock {
+  z-index: 1190;
+}
+
+.drag-container .make-smaller,
+.drag-container .make-larger {
   position: absolute;
   text-align: center;
   font-weight: bold;
@@ -716,9 +779,8 @@ body.dark-mode .site .drag-container .dragzone:focus {
 .drag-container button.toggle-marker {
   position: relative;
 }
-.drag-container .make-smaller {
+.drag-container .make-larger {
   --box: -0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.4), inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4), inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
-  top: 0.2rem;
   border-radius: var(--corner2);
   -webkit-box-shadow: var(--box);
   -o-box-shadow: var(--box);
@@ -726,15 +788,14 @@ body.dark-mode .site .drag-container .dragzone:focus {
   -moz-box-shadow: var(--box);
   box-shadow: var(--box);
 }
-.drag-container .make-smaller {
+.drag-container .make-larger {
   --bottom: -2.2rem;
   font-size: 0.85rem;
   padding: 0.1em 0.08em 0.1em;
-  top: 0;
   line-height: 1.8;
   border-radius: 50%;
 }
-.drag-container .make-larger,
+.drag-container .make-smaller,
 .drag-container .layer-increase {
   --box: -0.2rem -0.2rem 0.5rem rgba(0, 0, 0, 0.4), inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4), inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: var(--box);
@@ -745,36 +806,32 @@ body.dark-mode .site .drag-container .dragzone:focus {
   font-size: 0.9rem;
   line-height: 1.5;
   padding: 0.1em 0.2em 0.1em;
-  width: 1.8em;
-  height: 1.8em;
+  width: 2rem;
+  height: 2rem;
 }
 .drag-container .make-more,
 .drag-container .delete-blob,
-.drag-container .make-smaller {
-  position: absolute;
-  height: 1.7rem;
-  width: 1.7rem;
-  max-width: 2.5rem;
-}
+.drag-container .make-larger,
 .drag-container .make-random {
   position: absolute;
-  height: 1.9rem;
-  width: 1.9rem;
+  height: 2rem;
+  width: 2rem;
+  max-width: 2.5rem;
 }
 .drag-container .delete-blob,
-.drag-container .make-larger,
+.drag-container .make-smaller,
 .drag-container .make-random {
   margin: 0;
 }
 .drag-container .layer-mover-control-wrap {
   display: flex;
-  max-width: max-content;
   flex-flow: row wrap;
   justify-content: center;
   align-items: center;
   padding-bottom: 0.4em;
-  gap: 0.6rem;
-  margin: 0.6rem auto 0;
+  gap: 0.9rem 0.6rem;
+  margin: 1.5rem auto 0.5rem;
+  z-index: 1200;
 }
 .movers-layers-wrap {
   display: flex;
@@ -797,16 +854,18 @@ body.dark-mode .site .drag-container .dragzone:focus {
 }
 .drag-container .layer-mover-control-wrap .layer-tools .layer-tool {
   padding: 0rem 0.2rem 0.04rem;
-  height: 1.7rem;
-  width: 1.7rem;
+  height: 2rem;
+  width: 2rem;
+  line-height: 0.77;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .blob.page .movers-wrap button.mover {
   padding: 0rem 0.2rem 0.04rem;
-  height: 1.7rem;
-  width: 1.7rem;
+  height: 2rem;
+  width: 2rem;
   font-size: 1.2rem;
   margin: 0;
   display: flex;
@@ -818,11 +877,15 @@ body.dark-mode .site .drag-container .dragzone:focus {
   flex-flow: row wrap;
   justify-content: center;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.4rem;
 }
 
 .drag-container .layer-mover-control-wrap .layers {
   order: 5;
+}
+.drag-container .layer-mover-control-wrap .history-btn-wrap {
+  order: 0;
+  flex: 1 0 100%;
 }
 .drag-container .layer-mover-control-wrap .layer-tools1 {
   order: 1;
@@ -840,7 +903,15 @@ body.dark-mode .site .drag-container .dragzone:focus {
   min-width: 90%;
   width: 90%;
 }
-@media (min-width: 260px) {
+.drag-container .layer-mover-control-wrap .layers,
+.drag-container .layer-mover-control-wrap .layer-tools1,
+.drag-container .layer-mover-control-wrap .layer-tools2,
+.drag-container .layer-mover-control-wrap .movers-wrap1,
+.drag-container .layer-mover-control-wrap .movers-wrap2 {
+  min-width: 100%;
+  justify-content: center;
+}
+@media (min-width: 330px) {
   .drag-container .layer-mover-control-wrap .movers-wrap,
   .drag-container .layer-mover-control-wrap .layer-tools {
     min-width: 48%;
@@ -859,8 +930,10 @@ body.dark-mode .site .drag-container .dragzone:focus {
 
 .drag-container .layer-mover-control-wrap button {
   margin: 0;
-  padding: 0.06em 0.6em 0.2em;
-  min-height: 1.7rem;
+  /* padding: 0.06em 0.6em 0.2em; */
+  padding: 0;
+  min-height: 2rem;
+  width: 2rem;
   border: 3px solid var(--color-primary-7);
   outline: 4px solid var(--color-primary-7);
   outline-offset: -3px;
@@ -911,12 +984,6 @@ body.dark-mode .site .drag-container .dragzone:focus {
   }
   .drag-container .layer-mover-control-wrap .movers-wrap2 {
     order: 3;
-  }
-  .drag-container .layer-mover-control-wrap .movers-wrap1,
-  .drag-container .layer-mover-control-wrap .layer-tools1.layer-btn-wrap,
-  .drag-container .layer-mover-control-wrap .movers-wrap2,
-  .drag-container .layer-mover-control-wrap .layer-tools2.layer-btn-wrap {
-    justify-content: center;
   }
 } /* END media */
 
@@ -997,8 +1064,8 @@ body.dark-mode .site .drag-container .dragzone:focus {
 #root .drag-container .layer-adjust {
   position: absolute;
   font-size: 1.4rem;
-  height: 1.6rem;
-  width: 1.6rem;
+  height: 2rem;
+  width: 2rem;
   line-height: 1;
   border-radius: 50%;
   display: flex;
@@ -1006,7 +1073,6 @@ body.dark-mode .site .drag-container .dragzone:focus {
   align-items: center;
   margin: 0 0.2rem;
   padding: 0;
-  z-index: 1;
 }
 
 .drag-container .layer-mover-control-wrap .layer-tool {
@@ -1015,10 +1081,23 @@ body.dark-mode .site .drag-container .dragzone:focus {
   border-radius: 50%;
 }
 
+.drag-container .layer-mover-control-wrap .history-btn-wrap {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+}
+.drag-container .layer-mover-control-wrap .history-button {
+  padding: 0;
+  font-size: 1.4rem;
+  height: 2rem;
+  width: 2rem;
+  line-height: 0.8;
+}
+
 .drag-container .make-more {
   --box: 0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.4);
-  top: 0.2rem;
-  left: 23%;
   font-size: 0.9rem;
   line-height: 1.2;
   padding: 0.1rem 0.4rem 0.1rem;
@@ -1031,8 +1110,6 @@ body.dark-mode .site .drag-container .dragzone:focus {
 }
 .drag-container .make-random {
   --box: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.4);
-  top: 0.2rem;
-  left: 23%;
   font-size: 0.9rem;
   line-height: 1.2;
   padding: 0.1rem 0.4rem 0.1rem;
@@ -1044,15 +1121,9 @@ body.dark-mode .site .drag-container .dragzone:focus {
   box-shadow: var(--box);
 }
 .drag-container .make-random {
-  left: calc(50% - 0.85rem);
   padding: 0.1rem 0.3rem;
 }
-.drag-container .delete-blob {
-  height: 1.7rem;
-  line-height: 1.3;
-  padding: 0 0.3rem 0.1rem;
-  border-radius: 50%;
-}
+
 .drag-container .delete-blob,
 .drag-container .layer-decrease {
   --box: 0.2rem -0.2rem 0.5rem rgba(0, 0, 0, 0.4), inset -0.1rem 0.1rem 0.4rem rgba(0, 0, 0, 0.4), inset -0.1rem 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.5);
@@ -1063,22 +1134,23 @@ body.dark-mode .site .drag-container .dragzone:focus {
   box-shadow: var(--box);
 }
 .drag-container .delete-blob {
+  height: 2rem;
+  line-height: 1.3;
+  padding: 0 0.3rem 0.1rem;
+  border-radius: 50%;
   outline: 3px solid red;
   outline-offset: -4px;
+  border-color: red;
 }
-.drag-container .delete-blob:hover {
-  outline: 5px solid red;
-  outline-offset: -2px;
+.drag-container .delete-blob:hover,
+.drag-container .delete-blob:focus,
+.drag-container .delete-blob:focus-visible {
+  outline: 4px solid red;
+  outline-offset: 0;
+  border-color: currentColor;
+  border-width: 2px;
 }
-.drag-container .make-larger,
-.drag-container .layer-adjust {
-  transform: translateY(-0.3rem);
-}
-.drag-container .make-smaller,
-.drag-container .make-more,
-.drag-container .make-random {
-  transform: translateY(0.2rem);
-}
+
 .drag-container .make-more {
   padding: 0.2rem 0.4rem 0.2rem;
 }
@@ -1102,12 +1174,6 @@ body.dark-mode .site .drag-container .dragzone:focus {
     position: absolute;
     width: 1.2rem;
     height: 1.2rem;
-  }
-} /*END media*/
-
-@media (max-width: 900px) {
-  .drag-container .button-container button {
-    font-size: 0.8rem;
   }
 } /*END media*/
 
@@ -1154,13 +1220,40 @@ body.dark-mode .site .drag-container .dragzone:focus {
 
 @media (min-width: 600px) {
   .drag-container .layer-mover-control-wrap {
-    gap: 0.3rem;
+    width: 100%;
+    flex: 3 0 100%;
+    gap: 0.8rem 0.4rem;
+  }
+  .drag-container .layer-mover-control-wrap .movers-wrap1 {
+    flex-grow: 1;
+    max-width: unset;
   }
   .drag-container .layer-mover-control-wrap .layer-btn-wrap {
-    max-width: 23rem;
+    max-width: 100%;
+  }
+  .drag-container .layer-mover-control-wrap .history-btn-wrap {
+    flex: 1 0 9.4rem;
+    justify-content: flex-start;
   }
 }
 @media (min-width: 900px) {
+  .drag-container .layer-mover-control-wrap {
+    flex-flow: row nowrap;
+    align-items: flex-start;
+  }
+  .drag-container .layer-mover-control-wrap .layers.layer-btn-wrap {
+    min-width: unset;
+    flex-flow: row wrap;
+    flex-shrink: 3;
+  }
+  .drag-container .layer-mover-control-wrap .history-btn-wrap {
+    flex-grow: 1;
+    max-width: unset;
+  }
+  .drag-container .layer-mover-control-wrap .movers-wrap1 {
+    flex-grow: 0;
+    max-width: max-content;
+  }
 } /* END media */
 .blob-register-login-wrap {
   display: flex;
@@ -1344,10 +1437,19 @@ body.dark-mode .site .drag-container .dragzone:focus {
 .blob-version-item .button-wrap .blobnewname-wrap.closed > button {
   margin: 0;
 }
+#root .drag-container .make-smaller,
+#root .drag-container .make-larger,
+#root .drag-container .make-more,
+#root .drag-container .make-random,
+#root .drag-container .delete-blob,
+#root .drag-container .layer-increase,
+#root .drag-container .layer-decrease {
+  margin: 0;
+}
 
 @media (min-width: 700px) {
   .button-container button.screenshot {
-    padding: 0.3em 0.8em;
+    padding: 0.3em 0.6em;
   }
   .drag-container .layer-mover-control-wrap button {
     padding: 0.1em 0.45em 0.2em;
@@ -1355,9 +1457,15 @@ body.dark-mode .site .drag-container .dragzone:focus {
 }
 @media (min-width: 900px) {
   .button-container button.screenshot {
-    padding: 0.28em 0.9em;
+    padding: 0.28em 0.8em;
   }
   .button-container button.screenshot svg {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+  }
+  .drag-container .drag-slider-single {
+    flex: 1 0 28%;
+  }
+  .drag-container .drag-slider-single:first-child {
+    flex: 1 0 40%;
   }
 }

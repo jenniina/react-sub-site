@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Caveat&family=Oswald:wght@500;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat&family=Oswald:wght@500;600&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 :root {
   --typography_ratio: 1.16;
   --responsive_scale: 0.7;
@@ -168,7 +167,7 @@ main a > *,
 main a:link > *,
 button.reset.link,
 button.reset.link > * {
-  font-weight: 500;
+  font-weight: 400;
   color: var(--color-secondary-4);
   text-decoration: inherit;
 }
@@ -490,8 +489,9 @@ p {
   margin-block-end: 1em;
 }
 strong {
-  font-weight: 800;
-  color: var(--color-secondary-1);
+  font-weight: 700;
+  color: var(--color-primary-20);
+  letter-spacing: calc(var(--letter-spacing) * 1.1);
 }
 
 button,
@@ -504,7 +504,7 @@ button.restore {
   border: 1px solid var(--color-primary-7);
   padding: 0.6em 5%;
   font-size: 1em;
-  font-weight: 500;
+  font-weight: 400;
   font-family: inherit;
   cursor: pointer;
   position: relative;
@@ -516,7 +516,7 @@ button.restore {
   white-space: normal;
   outline: 2px solid transparent;
   outline-offset: -2px;
-  background: linear-gradient(4deg, var(--color-primary-16) 0%, var(--color-primary-12) 30%, var(--color-primary-6) 60%, var(--color-primary-2) 100%);
+  background: linear-gradient(3deg, var(--color-primary-16) 0%, var(--color-primary-12) 30%, var(--color-primary-6) 60%, var(--color-primary-2) 100%);
   background-size: var(--bg-size);
   background-position: 50% 3%;
   display: flex;
@@ -530,7 +530,7 @@ button:disabled {
   --sat: 40%;
   --sat2: 50%;
   border: 1px solid hsl(var(--hue-primary), var(--sat), 30%);
-  background: linear-gradient(4deg, hsl(var(--hue-primary), var(--sat), 95%) 0%, hsl(var(--hue-primary), var(--sat), 60%) 33%, hsl(var(--hue-primary), var(--sat), 25%) 55%, hsl(var(--hue-primary), var(--sat2), 3%) 100%);
+  background: linear-gradient(3deg, hsl(var(--hue-primary), var(--sat), 95%) 0%, hsl(var(--hue-primary), var(--sat), 60%) 33%, hsl(var(--hue-primary), var(--sat), 25%) 55%, hsl(var(--hue-primary), var(--sat2), 3%) 100%);
   background-size: var(--bg-size);
   background-position: 50% 3%;
 }
@@ -538,7 +538,7 @@ button:disabled {
 .light button:disabled {
   --sat: 30%;
   --sat2: 50%;
-  background: linear-gradient(4deg, hsl(var(--hue-primary), var(--sat2), 6%) 0%, hsl(var(--hue-primary), var(--sat), 25%) 35%, hsl(var(--hue-primary), var(--sat), 60%) 55%, hsl(var(--hue-primary), var(--sat), 95%) 100%);
+  background: linear-gradient(3deg, hsl(var(--hue-primary), var(--sat2), 6%) 0%, hsl(var(--hue-primary), var(--sat), 25%) 35%, hsl(var(--hue-primary), var(--sat), 60%) 55%, hsl(var(--hue-primary), var(--sat), 95%) 100%);
   background-size: var(--bg-size);
   background-position: 50% 3%;
 }
@@ -546,13 +546,13 @@ button:disabled {
   pointer-events: none;
 }
 button.gray {
-  background: linear-gradient(4deg, hsl(0, 0%, 80%) 0%, hsl(0, 0%, 60%) 30%, hsl(0, 0%, 10%) 60%, hsl(0, 0%, 3%) 100%);
+  background: linear-gradient(3deg, hsl(0, 0%, 80%) 0%, hsl(0, 0%, 60%) 30%, hsl(0, 0%, 10%) 60%, hsl(0, 0%, 3%) 100%);
   background-size: var(--bg-size);
   background-position: 50% 3%;
   border-color: gray;
 }
 .light button.gray {
-  background: linear-gradient(4deg, hsl(0, 0%, 5%) 0%, hsl(0, 0%, 10%) 30%, hsl(0, 0%, 70%) 60%, hsl(0, 0%, 90%) 100%);
+  background: linear-gradient(3deg, hsl(0, 0%, 5%) 0%, hsl(0, 0%, 10%) 30%, hsl(0, 0%, 70%) 60%, hsl(0, 0%, 90%) 100%);
   background-size: var(--bg-size);
   background-position: 50% 3%;
 }
