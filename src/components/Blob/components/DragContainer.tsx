@@ -2006,6 +2006,7 @@ export default function DragContainer({
         outestRect.left +
         (dragWrap.current.offsetWidth / 100) * x_pos +
         'px'
+      element.style.right = 'unset'
       element.style.top = (dragWrap.current.offsetHeight / 100) * y_pos + 'px'
     }
   }
@@ -3005,6 +3006,18 @@ export default function DragContainer({
                 </span>
               </button>
 
+              <ColorBlocks
+                d={d}
+                getRefName={getRefName}
+                map={refNameMappingCombo}
+                colorBlockProps={colorBlockPropsCombo}
+                colorPairs={colorPairsCombo}
+                colorsVisible={colorsVisible}
+                setSelectedColor={setSelectedColor}
+                selectedColor={selectedColor}
+                setMode={setMode}
+              />
+
               <div
                 ref={dragWrapOuter}
                 id={`drag-wrap-outer${d}`}
@@ -3105,18 +3118,6 @@ export default function DragContainer({
                   </div>
                 </div>
               </div>
-
-              <ColorBlocks
-                d={d}
-                getRefName={getRefName}
-                map={refNameMappingCombo}
-                colorBlockProps={colorBlockPropsCombo}
-                colorPairs={colorPairsCombo}
-                colorsVisible={colorsVisible}
-                setSelectedColor={setSelectedColor}
-                selectedColor={selectedColor}
-                setMode={setMode}
-              />
             </div>
 
             <div className="layer-mover-control-wrap">
