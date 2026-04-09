@@ -2714,25 +2714,25 @@ export default function DragContainer({
                   {colorsVisible ? t('HideColors') : t('ShowColors')}
                 </span>
               </button>
-              {windowWidth > 1200 && (
-                <span className="screenshot">{t('Screenshot')}: </span>
-              )}
-              <button
-                type="button"
-                id={`take-screenshot${d}`}
-                aria-labelledby={`take-screenshot${d}-span`}
-                disabled={loading}
-                onClick={() => void takeScreenshot()}
-                className="screenshot tooltip-wrap"
-              >
-                <Icon lib="im" name="ImCamera" aria-hidden="true" />
-                <span
-                  id={`take-screenshot${d}-span`}
-                  className="tooltip left above"
+              <div className="flex gap-half screenshot">
+                {windowWidth > 1200 && <span>{t('Screenshot')}: </span>}
+                <button
+                  type="button"
+                  id={`take-screenshot${d}`}
+                  aria-labelledby={`take-screenshot${d}-span`}
+                  disabled={loading}
+                  onClick={() => void takeScreenshot()}
+                  className="screenshot tooltip-wrap"
                 >
-                  {loading ? t('Loading') : t('ClickHereToTakeAScreenshot')}
-                </span>
-              </button>
+                  <Icon lib="im" name="ImCamera" aria-hidden="true" />
+                  <span
+                    id={`take-screenshot${d}-span`}
+                    className="tooltip left above"
+                  >
+                    {loading ? t('Loading') : t('ClickHereToTakeAScreenshot')}
+                  </span>
+                </button>
+              </div>
             </div>
             <div
               ref={dragWrapOutest}
