@@ -630,8 +630,8 @@ export default function DragContainer({
   const getMeasuredDefaultCanvasSize = useCallback((): CanvasSize => {
     const fallbackWidth = Math.max(
       minCanvasWidth,
-      dragWrapOutest.current?.offsetWidth ??
-        dragContainerRef.current?.clientWidth ??
+      dragContainerRef.current?.clientWidth ??
+        dragWrapOutest.current?.offsetWidth ??
         windowWidth ??
         minCanvasWidth
     )
@@ -643,7 +643,7 @@ export default function DragContainer({
     return {
       width: Math.max(
         minCanvasWidth,
-        dragWrapOuter.current?.offsetWidth ?? fallbackWidth
+        dragContainerRef.current?.offsetWidth ?? fallbackWidth
       ),
       height: Math.max(
         minCanvasHeight,
@@ -1321,22 +1321,7 @@ export default function DragContainer({
       | PointerEventReact<HTMLButtonElement>
   ) {
     e.preventDefault()
-    const draggables = dragWrapOuter.current?.querySelectorAll('.dragzone')
-    if (draggables && !paused) {
-      draggables.forEach((draggable) => {
-        draggable.classList.remove('animation')
-        // Trigger a reflow to ensure the class removal is processed:
-        void (draggable as HTMLElement).offsetWidth
-      })
-      setPaused(true)
-    } else if (draggables) {
-      draggables.forEach((draggable) => {
-        draggable.classList.add('animation')
-        // Trigger a reflow to ensure the class addition is processed:
-        void (draggable as HTMLElement).offsetWidth
-      })
-      setPaused(false)
-    }
+    setPaused((prev) => !prev)
   }
 
   useEffect(() => {
@@ -3092,6 +3077,7 @@ export default function DragContainer({
                       layerAmount={layerAmount}
                       layer_={activeLayer}
                       hiddenLayers={hiddenLayers}
+                      paused={paused}
                       changeBlobLayer={changeBlobLayer}
                       setActiveLayer={setActiveLayer}
                       highestZIndex={highestZIndex}

@@ -19,6 +19,7 @@ interface BlobProps {
   layer: number
   item: Draggable
   index: number
+  paused: boolean
   start: (
     e: TouchEvent | MouseEvent | PointerEvent,
     target: HTMLElement
@@ -50,6 +51,7 @@ const Blob = ({
   layer,
   item,
   index,
+  paused,
   start,
   movement,
   stopMovementCheck,
@@ -200,7 +202,7 @@ const Blob = ({
         setSelectedvalue0(`${t('SelectedBlobNone')}`)
       }}
       key={index}
-      className={`dragzone animation ${mode}`}
+      className={`dragzone ${paused ? '' : 'animation'} ${mode}`.trim()}
       id={item.id}
       role={'option'}
       aria-selected={false}

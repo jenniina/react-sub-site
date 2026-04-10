@@ -16,6 +16,7 @@ interface DragLayerProps {
   className: string
   d: number
   items: Draggable[]
+  paused: boolean
   dragUlRef: RefObject<HTMLUListElement>
   setSelectedvalue0: Dispatch<SetStateAction<string | null>>
   setFocusedBlob: Dispatch<SetStateAction<focusedBlob | null>>
@@ -68,6 +69,7 @@ const DragLayer = ({
   className,
   d,
   items,
+  paused,
   dragUlRef,
   setSelectedvalue0,
   setFocusedBlob,
@@ -122,10 +124,11 @@ const DragLayer = ({
             return (
               <Blob
                 layer={layer_}
-                  key={item.id}
+                key={item.id}
                 d={d}
                 item={item}
                 index={index}
+                paused={paused}
                 start={start}
                 movement={movement}
                 stopMovementCheck={stopMovementCheck}

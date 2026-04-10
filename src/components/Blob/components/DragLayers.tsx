@@ -39,6 +39,7 @@ interface DragLayerProps {
   layer_: number
   layerAmount: number
   hiddenLayers: Set<number>
+  paused: boolean
   setActiveLayer: DispatchReact<SetStateAction<number>>
   changeBlobLayer: (draggable: Draggable, layer: number) => void
   highestZIndex: Record<number, number>
@@ -85,6 +86,7 @@ const DragLayers = ({
   layer_,
   layerAmount,
   hiddenLayers,
+  paused,
   setActiveLayer,
   changeBlobLayer,
   highestZIndex,
@@ -1041,6 +1043,7 @@ const DragLayers = ({
         <DragLayer
           key={l}
           layer_={l}
+          paused={paused}
           dragUlRef={layerRefs[l]}
           items={groupedDraggables[l] ?? []}
           className={hiddenLayers.has(l) ? 'hidden' : ''}
