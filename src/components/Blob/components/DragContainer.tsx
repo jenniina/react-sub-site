@@ -741,7 +741,10 @@ export default function DragContainer({
       baseWidth: number
     }) => {
       const viewportWidth =
-        windowWidth || windowObj?.innerWidth || minCanvasWidth
+        document?.documentElement?.clientWidth ||
+        windowWidth ||
+        windowObj?.innerWidth ||
+        minCanvasWidth
       const rightResizeMaxWidth = Math.max(
         viewportWidth - Math.max(left, 0) - canvasViewportPadding,
         minCanvasWidth
@@ -782,10 +785,16 @@ export default function DragContainer({
   )
 
   const getCanvasBounds = useCallback((): CanvasBounds => {
-    const viewportWidth = windowWidth || windowObj?.innerWidth || minCanvasWidth
+    const viewportWidth =
+      document?.documentElement?.clientWidth ||
+      windowWidth ||
+      windowObj?.innerWidth ||
+      minCanvasWidth
     const viewportHeight =
       windowHeight || windowObj?.innerHeight || minCanvasHeight
-    const canvasRect = dragWrap.current?.getBoundingClientRect()
+    const canvasRect =
+      dragWrapOuter.current?.getBoundingClientRect() ??
+      dragWrap.current?.getBoundingClientRect()
     const availableWidth = canvasRect
       ? viewportWidth - Math.max(canvasRect.left, 0) - canvasViewportPadding
       : viewportWidth - canvasViewportPadding * 2
@@ -799,7 +808,7 @@ export default function DragContainer({
       minHeight: Math.min(minCanvasHeight, maxHeight),
       maxHeight,
     }
-  }, [dragWrap, windowHeight, windowObj, windowWidth])
+  }, [dragWrapOuter, dragWrap, windowHeight, windowObj, windowWidth])
 
   const clampCanvasSize = useCallback(
     (size: CanvasSize): CanvasSize => {
@@ -820,17 +829,24 @@ export default function DragContainer({
   )
 
   const getCurrentCanvasSize = useCallback((): CanvasSize => {
+    if (canvasSize) {
+      return clampCanvasSize(canvasSize)
+    }
+
     const bounds = getCanvasBounds()
+
+    if (dragWrapOuter.current) {
+      return clampCanvasSize({
+        width: Math.max(bounds.minWidth, dragWrapOuter.current.offsetWidth),
+        height: Math.max(bounds.minHeight, dragWrapOuter.current.offsetHeight),
+      })
+    }
 
     if (dragWrap.current) {
       return clampCanvasSize({
         width: Math.max(bounds.minWidth, dragWrap.current.offsetWidth),
         height: Math.max(bounds.minHeight, dragWrap.current.offsetHeight),
       })
-    }
-
-    if (canvasSize) {
-      return clampCanvasSize(canvasSize)
     }
 
     return clampCanvasSize({
@@ -842,6 +858,7 @@ export default function DragContainer({
     clampCanvasSize,
     defaultCanvasSize.height,
     defaultCanvasSize.width,
+    dragWrapOuter,
     dragWrap,
     getCanvasBounds,
   ])
@@ -2168,16 +2185,17 @@ export default function DragContainer({
   const handleCanvasResizeKeyDown = useCallback(
     (horizontalDirection: 1 | -1) =>
       (e: KeyboardEventReact<HTMLButtonElement>) => {
-        let horizontalDelta = 0
+        let widthDelta = 0
         let heightDelta = 0
-        const step = e.shiftKey ? 48 : 16
+        const step = e.shiftKey ? 60 : 20
+        const currentSize = getCurrentCanvasSize()
 
         switch (e.key) {
           case 'ArrowLeft':
-            horizontalDelta = -step
+            widthDelta = horizontalDirection === -1 ? step : -step
             break
           case 'ArrowRight':
-            horizontalDelta = step
+            widthDelta = horizontalDirection === -1 ? -step : step
             break
           case 'ArrowUp':
             heightDelta = -step
@@ -2190,24 +2208,70 @@ export default function DragContainer({
         }
 
         e.preventDefault()
+        e.stopPropagation()
 
-        const currentSize = getCurrentCanvasSize()
-        const currentRect = dragWrap.current?.getBoundingClientRect()
-        const nextCanvas = applyCanvasResize({
-          horizontalDirection,
-          width: currentSize.width + horizontalDelta * horizontalDirection,
-          height: currentSize.height + heightDelta,
-          offsetX: canvasOffsetX,
-          left: currentRect?.left ?? 0,
-          right: currentRect?.right ?? currentSize.width,
-          top: currentRect?.top ?? 0,
-          baseWidth: currentSize.width,
+        const currentRect =
+          dragWrapOuter.current?.getBoundingClientRect() ??
+          dragWrap.current?.getBoundingClientRect()
+        const currentTop = currentRect?.top ?? 0
+        const outestLeft =
+          dragWrapOutest.current?.getBoundingClientRect().left ?? 0
+        const currentLeft = outestLeft + canvasOffsetX
+        const currentRight = currentLeft + currentSize.width
+
+        if (widthDelta !== 0) {
+          const viewportWidth =
+            document?.documentElement?.clientWidth ||
+            windowWidth ||
+            windowObj?.innerWidth ||
+            minCanvasWidth
+          const widthMax =
+            horizontalDirection === -1
+              ? Math.max(currentRight - canvasViewportPadding, minCanvasWidth)
+              : Math.max(
+                  viewportWidth -
+                    Math.max(currentLeft, 0) -
+                    canvasViewportPadding,
+                  minCanvasWidth
+                )
+          const nextWidth = Math.min(
+            widthMax,
+            Math.max(minCanvasWidth, Math.round(currentSize.width + widthDelta))
+          )
+
+          setCanvasSize({
+            width: nextWidth,
+            height: currentSize.height,
+          })
+
+          if (horizontalDirection === -1) {
+            setCanvasOffsetX(
+              clampCanvasOffsetX(canvasOffsetX + currentSize.width - nextWidth)
+            )
+          }
+
+          return
+        }
+
+        const { minHeight, maxHeight } = getViewportHeightLimit(currentTop)
+        const nextHeight = Math.min(
+          maxHeight,
+          Math.max(minHeight, Math.round(currentSize.height + heightDelta))
+        )
+
+        setCanvasSize({
+          width: currentSize.width,
+          height: nextHeight,
         })
-
-        setCanvasSize(nextCanvas.size)
-        setCanvasOffsetX(nextCanvas.offsetX)
       },
-    [applyCanvasResize, canvasOffsetX, dragWrap, getCurrentCanvasSize]
+    [
+      applyCanvasResize,
+      canvasOffsetX,
+      dragWrapOutest,
+      dragWrap,
+      getCurrentCanvasSize,
+      getViewportHeightLimit,
+    ]
   )
 
   const stopCanvasResize = useCallback(() => {
@@ -2226,6 +2290,7 @@ export default function DragContainer({
       (e: PointerEventReact<HTMLButtonElement>) => {
         if (!isClient || !windowObj || !dragWrap.current) return
 
+        e.currentTarget.focus()
         e.preventDefault()
         e.stopPropagation()
 
@@ -2804,7 +2869,46 @@ export default function DragContainer({
               }}
             >
               <button
-                tabIndex={0}
+                ref={resizeHandleLeft}
+                type="button"
+                className="resize-handle resize-handle-left gray tooltip-wrap"
+                aria-label={t('ResizeCanvas')}
+                aria-describedby={`drag-wrap-resize-help-left${d}`}
+                aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown Shift+ArrowLeft Shift+ArrowRight Shift+ArrowUp Shift+ArrowDown"
+                onPointerDown={startCanvasResize(-1, 'nesw-resize')}
+                onKeyDown={handleCanvasResizeKeyDown(-1)}
+              >
+                <Icon lib="hi2" name="HiArrowsPointingOut" aria-hidden="true" />
+                <span
+                  className="tooltip right above narrow2"
+                  aria-hidden="true"
+                >
+                  {t('ResizeCanvas')} ({t('Draggable')})
+                </span>
+                <span className="scr" id={`drag-wrap-resize-help-left${d}`}>
+                  {t('ResizeCanvasInstructions')}
+                </span>
+              </button>
+              <button
+                ref={resizeHandleRight}
+                type="button"
+                className="resize-handle resize-handle-right gray tooltip-wrap"
+                aria-label={t('ResizeCanvas')}
+                aria-describedby={`drag-wrap-resize-help${d}`}
+                aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown Shift+ArrowLeft Shift+ArrowRight Shift+ArrowUp Shift+ArrowDown"
+                onPointerDown={startCanvasResize(1, 'nwse-resize')}
+                onKeyDown={handleCanvasResizeKeyDown(1)}
+              >
+                <Icon lib="hi2" name="HiArrowsPointingOut" aria-hidden="true" />{' '}
+                <span className="tooltip left above narrow2" aria-hidden="true">
+                  {t('ResizeCanvas')} ({t('Draggable')})
+                </span>
+                <span className="scr" id={`drag-wrap-resize-help${d}`}>
+                  {t('ResizeCanvasInstructions')}
+                </span>
+              </button>
+
+              <button
                 ref={makeSmaller0}
                 className={`make-smaller tooltip-wrap gray ${
                   !controlsVisible ? 'hidden' : ''
@@ -2948,46 +3052,6 @@ export default function DragContainer({
                 )}
                 <span id={`make-more${d}-span`} className="tooltip right below">
                   {t('CloneInstructions')}
-                </span>
-              </button>
-
-              <button
-                ref={resizeHandleLeft}
-                type="button"
-                className="resize-handle resize-handle-left gray tooltip-wrap"
-                aria-label={t('ResizeCanvas')}
-                aria-describedby={`drag-wrap-resize-help-left${d}`}
-                aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown Shift+ArrowLeft Shift+ArrowRight Shift+ArrowUp Shift+ArrowDown"
-                onPointerDown={startCanvasResize(-1, 'nesw-resize')}
-                onKeyDown={handleCanvasResizeKeyDown(-1)}
-              >
-                <Icon lib="hi2" name="HiArrowsPointingOut" aria-hidden="true" />
-                <span
-                  className="tooltip right above narrow2"
-                  aria-hidden="true"
-                >
-                  {t('ResizeCanvas')} ({t('Draggable')})
-                </span>
-                <span className="scr" id={`drag-wrap-resize-help-left${d}`}>
-                  {t('ResizeCanvasInstructions')}
-                </span>
-              </button>
-              <button
-                ref={resizeHandleRight}
-                type="button"
-                className="resize-handle resize-handle-right gray tooltip-wrap"
-                aria-label={t('ResizeCanvas')}
-                aria-describedby={`drag-wrap-resize-help${d}`}
-                aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown Shift+ArrowLeft Shift+ArrowRight Shift+ArrowUp Shift+ArrowDown"
-                onPointerDown={startCanvasResize(1, 'nwse-resize')}
-                onKeyDown={handleCanvasResizeKeyDown(1)}
-              >
-                <Icon lib="hi2" name="HiArrowsPointingOut" aria-hidden="true" />{' '}
-                <span className="tooltip left above narrow2" aria-hidden="true">
-                  {t('ResizeCanvas')} ({t('Draggable')})
-                </span>
-                <span className="scr" id={`drag-wrap-resize-help${d}`}>
-                  {t('ResizeCanvasInstructions')}
                 </span>
               </button>
 
