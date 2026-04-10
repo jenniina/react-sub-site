@@ -1379,7 +1379,11 @@ export default function DragContainer({
     const container = dragContainerRef.current
     const currentBlob = lastFocusedBlobRef.current
 
-    if (currentBlob && currentBlob.isConnected && container?.contains(currentBlob)) {
+    if (
+      currentBlob &&
+      currentBlob.isConnected &&
+      container?.contains(currentBlob)
+    ) {
       currentBlob.focus()
       return true
     }
@@ -2632,7 +2636,8 @@ export default function DragContainer({
         ? document.activeElement
         : null
 
-    const isColorBlock = activeElement?.classList.contains('colorblock') ?? false
+    const isColorBlock =
+      activeElement?.classList.contains('colorblock') ?? false
     const isToolButton = [
       resizeHandleLeft,
       resizeHandleRight,
@@ -2997,7 +3002,9 @@ export default function DragContainer({
               <button
                 ref={resizeHandleLeft}
                 type="button"
-                className="resize-handle resize-handle-left gray tooltip-wrap"
+                className={`resize-handle resize-handle-left gray tooltip-wrap ${
+                  !controlsVisible ? 'hidden' : ''
+                }`}
                 aria-label={t('ResizeCanvas')}
                 aria-describedby={`drag-wrap-resize-help-left${d}`}
                 aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown Shift+ArrowLeft Shift+ArrowRight Shift+ArrowUp Shift+ArrowDown"
@@ -3018,7 +3025,9 @@ export default function DragContainer({
               <button
                 ref={resizeHandleRight}
                 type="button"
-                className="resize-handle resize-handle-right gray tooltip-wrap"
+                className={`resize-handle resize-handle-right gray tooltip-wrap ${
+                  !controlsVisible ? 'hidden' : ''
+                }`}
                 aria-label={t('ResizeCanvas')}
                 aria-describedby={`drag-wrap-resize-help${d}`}
                 aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown Shift+ArrowLeft Shift+ArrowRight Shift+ArrowUp Shift+ArrowDown"
