@@ -3,10 +3,10 @@ import Accordion from '../../components/Accordion/Accordion'
 import Blobs from '../../components/Blob/Blobs'
 import birb from '../../assets/blob-birb.png'
 import fish from '../../assets/blob-fish.png'
+import face from '../../assets/face.png'
 import bubbly from '../../assets/bubbly-fish.png'
 import dog from '../../assets/blob-dog.png'
 import { CSSProperties } from 'react'
-import { Link } from 'react-router-dom'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import SEO from '../../components/SEO/SEO'
 
@@ -155,6 +155,19 @@ export default function BlobPage({ type }: { type: string }) {
                             </li>
                           </ul>
                         </li>
+                        <li>
+                          {t('ResizeCanvas')}{' '}
+                          <big>
+                            <strong>
+                              <i>({t('New')}!)</i>
+                            </strong>
+                          </big>
+                          <ul>
+                            <li>
+                              {t('ResizeTheCanvasByDraggingTheCornerHandles')}
+                            </li>
+                          </ul>
+                        </li>
                       </ul>
                       <h3>{t('Instructions')}</h3>
                       <h4>{t('PointerUse')}</h4>
@@ -222,6 +235,12 @@ export default function BlobPage({ type }: { type: string }) {
                     showButton
                   >
                     <>
+                      <figure>
+                        <img src={face} style={blobStyle} alt={t('Face')} />
+                        <figcaption>
+                          {t('SampleArtwork')}: {t('Face')}
+                        </figcaption>
+                      </figure>
                       <figure>
                         <img
                           src={birb}
