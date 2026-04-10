@@ -50,19 +50,18 @@ interface DragLayerProps {
   getPosition: (target: HTMLElement) => void
   dragWrap: RefObject<HTMLDivElement>
   setSelectedvalue0: DispatchReact<SetStateAction<string | null>>
-  exitApp: RefObject<HTMLDivElement>
   colorPairs: ColorPair[][]
   removeBlob: (draggable: Draggable) => void
   mode: Modes
   setFocusedBlob: DispatchReact<SetStateAction<focusedBlob | null>>
   colorIndex: number
   setColorIndex: DispatchReact<SetStateAction<number>>
-  setScroll: DispatchReact<SetStateAction<boolean>>
   scroll: boolean
   clickOutsideRef: RefObject<HTMLDivElement>
   colorswitch: () => string
   addRandomDraggable: (x_pos: string, y_pos: string, layer: number) => void
   changeColor: (id: string) => void
+  onEscapeKey: () => void
 }
 
 const preventDefault = (e: Event) => {
@@ -96,19 +95,18 @@ const DragLayers = ({
   getPosition,
   dragWrap,
   setSelectedvalue0,
-  exitApp,
   colorPairs,
   removeBlob,
   mode,
   setFocusedBlob,
   colorIndex,
   setColorIndex,
-  setScroll,
   scroll,
   clickOutsideRef,
   colorswitch,
   addRandomDraggable,
   changeColor,
+  onEscapeKey,
 }: DragLayerProps) => {
   const isClient = useIsClient()
   const windowObj = useWindow()
@@ -179,15 +177,6 @@ const DragLayers = ({
   }, [isClient])
 
   //const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0
-
-  //Remove exit notice's tabindex and text as unnecessary after leaving it
-  const exitAppBlur = useCallback(() => {
-    if (exitApp.current) {
-      exitApp.current?.removeAttribute('tabindex')
-      exitApp.current?.removeEventListener('blur', exitAppBlur)
-      exitApp.current.textContent = ''
-    }
-  }, [exitApp])
 
   //Clone blob
   const makeBlob = useCallback(
@@ -325,21 +314,7 @@ const DragLayers = ({
           break
         case 'Escape':
           e.preventDefault()
-
-          setScroll(true)
-          if (document) document.body.style.overflowY = 'auto'
-          if (document) document.body.style.overflowX = 'hidden'
-
-          if (exitApp.current) {
-            exitApp.current.setAttribute('tabindex', '0')
-            exitApp.current.addEventListener('blur', exitAppBlur)
-          }
-          target.blur()
-          dragWrap.current?.blur()
-          //Go to exit notice in order to remove focus from the app
-          if (exitApp.current)
-            exitApp.current.textContent = t('ThankYouForPlaying')
-          exitApp.current?.focus()
+          onEscapeKey()
           break
         case 'Enter': //Cycle through colors
           e.preventDefault()
@@ -507,16 +482,13 @@ const DragLayers = ({
       setColorIndex,
       changeBlobLayer,
       removeBlob,
-      setScroll,
-      exitApp,
-      dragWrap,
       t,
       colorPairs,
       colorswitch,
       addRandomDraggable,
       makeBlob,
-      exitAppBlur,
       highestZIndex,
+      onEscapeKey,
     ]
   )
 

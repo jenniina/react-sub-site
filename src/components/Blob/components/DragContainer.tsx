@@ -140,6 +140,10 @@ const isEditableTarget = (target: EventTarget | null) => {
   )
 }
 
+const getDocumentClientWidth = () => {
+  return globalThis.document?.documentElement?.clientWidth
+}
+
 export default function DragContainer({
   d,
   dragWrapOuter,
@@ -170,6 +174,7 @@ export default function DragContainer({
   const dragWrapShell = useRef(null) as RefObject<HTMLDivElement>
   const dragWrapOutest = useRef(null) as RefObject<HTMLDivElement>
   const dragContainerRef = useRef(null) as RefObject<HTMLDivElement>
+  const lastFocusedBlobRef = useRef<HTMLElement | null>(null)
   const resizeStateRef = useRef<{
     startX: number
     startY: number
@@ -741,7 +746,7 @@ export default function DragContainer({
       baseWidth: number
     }) => {
       const viewportWidth =
-        document?.documentElement?.clientWidth ||
+        getDocumentClientWidth() ||
         windowWidth ||
         windowObj?.innerWidth ||
         minCanvasWidth
@@ -786,7 +791,7 @@ export default function DragContainer({
 
   const getCanvasBounds = useCallback((): CanvasBounds => {
     const viewportWidth =
-      document?.documentElement?.clientWidth ||
+      getDocumentClientWidth() ||
       windowWidth ||
       windowObj?.innerWidth ||
       minCanvasWidth
@@ -1363,29 +1368,52 @@ export default function DragContainer({
 
   const amountOfBlobs = windowWidth > 700 ? 10 : 6 // Initial amount of blobs
 
-  const escape = useCallback(
-    (e: KeyboardEvent) => {
-      switch (e.key) {
-        case 'Escape':
-          setScroll(true)
-
-          if (document !== null) {
-            document.body.style.overflowY = 'auto'
-            document.body.style.overflowX = 'hidden'
-          }
-          break
-      }
-    },
-    [setScroll]
-  )
-
-  useEffect(() => {
-    if (!isClient || !windowObj) return
-    windowObj.addEventListener('keyup', escape)
-    return () => {
-      windowObj.removeEventListener('keyup', escape)
+  const resetDocumentScroll = useCallback(() => {
+    if (document !== null) {
+      document.body.style.overflowY = 'auto'
+      document.body.style.overflowX = 'hidden'
     }
-  }, [isClient, windowObj, escape])
+  }, [])
+
+  const focusLastBlob = useCallback(() => {
+    const container = dragContainerRef.current
+    const currentBlob = lastFocusedBlobRef.current
+
+    if (currentBlob && currentBlob.isConnected && container?.contains(currentBlob)) {
+      currentBlob.focus()
+      return true
+    }
+
+    const blobs = container?.querySelectorAll<HTMLElement>('.dragzone')
+    const fallbackBlob = blobs?.item(blobs.length - 1) ?? null
+    if (!fallbackBlob) {
+      return false
+    }
+
+    lastFocusedBlobRef.current = fallbackBlob
+    fallbackBlob.focus()
+    return true
+  }, [])
+
+  const exitAppBlur = useCallback(() => {
+    if (exitApp.current) {
+      exitApp.current.removeAttribute('tabindex')
+      exitApp.current.removeEventListener('blur', exitAppBlur)
+      exitApp.current.textContent = ''
+    }
+  }, [exitApp])
+
+  const focusExitApp = useCallback(() => {
+    if (!exitApp.current) {
+      return
+    }
+
+    exitApp.current.setAttribute('tabindex', '0')
+    exitApp.current.addEventListener('blur', exitAppBlur)
+    exitApp.current.textContent = t('ThankYouForPlaying')
+    dragWrap.current?.blur()
+    exitApp.current.focus()
+  }, [dragWrap, exitApp, exitAppBlur, t])
 
   // Change every blob's layer by plus or minus one, unless any blob is already on the highest or lowest layer
   const changeEveryLayer = (amount: number) => {
@@ -1764,6 +1792,27 @@ export default function DragContainer({
       }
     }
   }, [d, isClient])
+
+  useEffect(() => {
+    const container = dragContainerRef.current
+    if (!isClient || !container) return
+
+    const trackFocusedBlob = (e: FocusEvent) => {
+      const target = e.target
+      if (!(target instanceof HTMLElement)) return
+
+      const blob = target.closest('.dragzone')
+      if (blob instanceof HTMLElement && container.contains(blob)) {
+        lastFocusedBlobRef.current = blob
+      }
+    }
+
+    container.addEventListener('focusin', trackFocusedBlob)
+
+    return () => {
+      container.removeEventListener('focusin', trackFocusedBlob)
+    }
+  }, [isClient])
 
   useEffect(() => {
     if (!isClient || !document) return
@@ -2221,7 +2270,7 @@ export default function DragContainer({
 
         if (widthDelta !== 0) {
           const viewportWidth =
-            document?.documentElement?.clientWidth ||
+            getDocumentClientWidth() ||
             windowWidth ||
             windowObj?.innerWidth ||
             minCanvasWidth
@@ -2569,6 +2618,79 @@ export default function DragContainer({
       return newMode
     })
   }
+
+  const handleEscapeKey = useCallback(() => {
+    if (!scroll) {
+      setScroll(true)
+      resetDocumentScroll()
+      disableScrollButton.current?.focus()
+      return
+    }
+
+    const activeElement =
+      document?.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null
+
+    const isColorBlock = activeElement?.classList.contains('colorblock') ?? false
+    const isToolButton = [
+      resizeHandleLeft,
+      resizeHandleRight,
+      makeLarger0,
+      makeSmaller0,
+      makeMore0,
+      makeRandom0,
+      deleteBlob0,
+      layerIncrease,
+      layerDecrease,
+    ].some((ref) => ref.current === activeElement)
+
+    if (activeElement && (isColorBlock || isToolButton)) {
+      if (isColorBlock || selectedColor) {
+        setSelectedColor('')
+      }
+
+      if (mode !== 'none') {
+        setMode('none')
+        setDeleteId('')
+      }
+
+      activeElement.blur()
+      windowObj?.requestAnimationFrame(() => {
+        focusLastBlob()
+      })
+      return
+    }
+
+    focusExitApp()
+  }, [
+    scroll,
+    setScroll,
+    resetDocumentScroll,
+    selectedColor,
+    mode,
+    windowObj,
+    focusLastBlob,
+    focusExitApp,
+  ])
+
+  useEffect(() => {
+    if (!isClient || !document) return
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.defaultPrevented || e.key !== 'Escape') return
+      if (isEditableTarget(e.target)) return
+      if (activeBlobContainerId !== d) return
+
+      e.preventDefault()
+      handleEscapeKey()
+    }
+
+    document.addEventListener('keydown', handleEscape)
+    return () => {
+      document.removeEventListener('keydown', handleEscape)
+    }
+  }, [d, handleEscapeKey, isClient])
 
   //Remove blob
   function removeBlob(draggable: Draggable) {
@@ -3155,7 +3277,6 @@ export default function DragContainer({
                       getPosition={getPosition}
                       removeBlob={removeBlob}
                       dragWrap={dragWrap}
-                      exitApp={exitApp}
                       setSelectedvalue0={setSelectedvalue0}
                       setFocusedBlob={setFocusedBlob}
                       colorIndex={colorIndex}
@@ -3163,11 +3284,11 @@ export default function DragContainer({
                       colorPairs={colorPairsCombo}
                       colorswitch={colorswitch}
                       scroll={scroll}
-                      setScroll={setScroll}
                       clickOutsideRef={dragWrap}
                       addRandomDraggable={addRandomDraggable}
                       mode={mode}
                       changeColor={changeColor}
+                      onEscapeKey={handleEscapeKey}
                     />
                   </div>
                 </div>

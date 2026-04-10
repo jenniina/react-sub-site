@@ -165,6 +165,7 @@ svg.filter {
   box-shadow: var(--box);
 }
 .drag-container .drag-slider-wrap {
+  --gap: 0.5rem;
   -ms-flex-preferred-size: 100%;
   flex-basis: 100%;
   display: -webkit-box;
@@ -180,7 +181,7 @@ svg.filter {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  gap: 0.5rem 2%;
+  gap: var(--gap) calc(var(--gap) * 2);
 }
 .drag-container .drag-slider-single {
   display: -webkit-box;
@@ -243,22 +244,21 @@ svg.filter {
     padding: 0.3em 1.2em;
   }
 }
-@media (min-width: 600px) {
+@media (min-width: 500px) {
   .drag-container .drag-slider-wrap {
+    font-size: 0.9em;
+    --gap: 0.3em;
     margin: 0;
   }
-
   .drag-container .drag-slider-single > label {
     flex: 1 0 100%;
     max-width: 100%;
-    font-size: 0.9em;
   }
   .drag-container .drag-slider-single > input {
-    flex: 1 1 calc(45% - 4em);
+    flex: 0 1 calc(100% - 3em - var(--gap));
   }
-}
-@media (min-width: 700px) {
   .drag-container .drag-slider-single {
+    gap: calc(var(--gap) * 3) var(--gap);
     flex: 1 0 44%;
     text-align: center;
     align-self: flex-end;
@@ -269,7 +269,6 @@ svg.filter {
   }
   .drag-container .drag-slider-single > button {
     flex: 1 0 100%;
-    font-size: 0.9em;
   }
 }
 
@@ -1461,10 +1460,12 @@ body.dark-mode .site .drag-container .dragzone:focus {
   .button-container button.screenshot svg {
     font-size: 1.4rem;
   }
+}
+@media (min-width: 1000px) {
   .drag-container .drag-slider-single {
-    flex: 1 0 28%;
+    flex: 1 0 calc(28% - var(--gap) * 2);
   }
   .drag-container .drag-slider-single:first-child {
-    flex: 1 0 40%;
+    flex: 1 0 calc(44% - var(--gap));
   }
 }
