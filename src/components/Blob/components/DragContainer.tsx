@@ -2771,36 +2771,7 @@ export default function DragContainer({
                 </span>
                 {paused ? t('StartSway') : t('StopSway')}
               </button>
-              <button
-                id={`toggle-marker${d}`}
-                aria-labelledby={`toggle-marker${d}-span`}
-                className="toggle-marker tooltip-wrap"
-                onClick={() => setMarkerEnabled(!markerEnabled)}
-              >
-                <span
-                  id={`toggle-marker${d}-span`}
-                  className="tooltip above"
-                >{`${t('ToggleMarkerVisibilityWhenUsingAKeyboard')}`}</span>
-                {markerEnabled ? t('MarkerOn') : t('MarkerOff')}
-              </button>
-              <button
-                ref={disableScrollButton}
-                id={`disable-scroll${d}`}
-                aria-labelledby={`disable-scroll${d}-span`}
-                className={`disable-scroll tooltip-wrap ${
-                  !scroll ? 'active' : ''
-                }`}
-                onClick={() => {
-                  disableScroll()
-                }}
-              >
-                <span id={`disable-scroll${d}-span`} className="tooltip above">
-                  {scroll
-                    ? t('DisableScrollInOrderToUseTheMouseWheelToResizeABlob')
-                    : t('PressHereOrEscapeToRestoreScrolling')}
-                </span>
-                {scroll ? t('DisableScroll') : t('EnableScroll')}
-              </button>
+
               <button
                 id={`toggle-controls${d}`}
                 aria-labelledby={`toggle-controls${d}-span`}
@@ -2837,6 +2808,39 @@ export default function DragContainer({
                   {colorsVisible ? t('HideColors') : t('ShowColors')}
                 </span>
               </button>
+
+              <button
+                id={`toggle-marker${d}`}
+                aria-labelledby={`toggle-marker${d}-span`}
+                className="toggle-marker tooltip-wrap"
+                onClick={() => setMarkerEnabled(!markerEnabled)}
+              >
+                <span
+                  id={`toggle-marker${d}-span`}
+                  className="tooltip above"
+                >{`${t('ToggleMarkerVisibilityWhenUsingAKeyboard')}`}</span>
+                {markerEnabled ? t('MarkerOn') : t('MarkerOff')}
+              </button>
+
+              <button
+                ref={disableScrollButton}
+                id={`disable-scroll${d}`}
+                aria-labelledby={`disable-scroll${d}-span`}
+                className={`disable-scroll tooltip-wrap ${
+                  !scroll ? 'active' : ''
+                }`}
+                onClick={() => {
+                  disableScroll()
+                }}
+              >
+                <span id={`disable-scroll${d}-span`} className="tooltip above">
+                  {scroll
+                    ? t('DisableScrollInOrderToUseTheMouseWheelToResizeABlob')
+                    : t('PressHereOrEscapeToRestoreScrolling')}
+                </span>
+                {scroll ? t('DisableScroll') : t('EnableScroll')}
+              </button>
+
               <div className="flex gap-half screenshot">
                 {windowWidth > 1200 && <span>{t('Screenshot')}: </span>}
                 <button
@@ -3205,64 +3209,6 @@ export default function DragContainer({
                   </span>
                 </button>
               </div>
-              <div
-                className={`movers-wrap movers-wrap1 ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
-              >
-                <button
-                  id={`moveleft${d}`}
-                  aria-labelledby={`moveleft${d}-span`}
-                  className="moveleft mover tooltip-wrap narrow2"
-                  onClick={handleMoveRight}
-                >
-                  <Icon lib="bi" name="BiChevronsLeft" aria-hidden="true" />
-                  <span id={`moveleft${d}-span`} className="tooltip above">
-                    {t('MoveViewLeft')}
-                  </span>
-                </button>
-                <button
-                  id={`moveright${d}`}
-                  aria-labelledby={`moveright${d}-span`}
-                  className={`moveright mover tooltip-wrap narrow2`}
-                  onClick={handleMoveLeft}
-                >
-                  <Icon lib="bi" name="BiChevronsRight" aria-hidden="true" />
-                  <span id={`moveright${d}-span`} className="tooltip above">
-                    {t('MoveViewRight')}
-                  </span>
-                </button>
-              </div>
-              <div className="layer-btn-wrap layer-tools layer-tools1">
-                <button
-                  id={`decrease-layer-amount${d}`}
-                  aria-labelledby={`decrease-layer-amount${d}-span`}
-                  className="layer-tool layer-amount decrease-layer-amount tooltip-wrap narrow2 danger"
-                  onClick={() => void deleteHiddenLayers()}
-                >
-                  <span
-                    id={`decrease-layer-amount${d}-span`}
-                    className="tooltip above"
-                  >
-                    {t('DeleteHiddenLayers')}
-                  </span>
-                  &times;
-                </button>
-                <button
-                  id={`every-layer-minus${d}`}
-                  aria-labelledby={`every-layer-minus${d}-span`}
-                  className="layer-tool every-layer tooltip-wrap narrow2"
-                  onClick={() => changeEveryLayer(-1)}
-                >
-                  <span
-                    id={`every-layer-minus${d}-span`}
-                    className="tooltip above"
-                  >
-                    {t('ClickHereToMoveDownLayer')}
-                  </span>
-                  <Icon lib="bi" name="BiChevronDown" aria-hidden="true" />
-                </button>
-              </div>
 
               <div className="layer-btn-wrap layers">
                 {Array.from({ length: layerAmount }, (_, i) => i).map(
@@ -3294,21 +3240,23 @@ export default function DragContainer({
                   )
                 )}
               </div>
-              <div className="layer-btn-wrap layer-tools layer-tools2">
+
+              <div className="layer-btn-wrap layer-tools layer-tools1">
                 <button
-                  id={`every-layer-plus${d}`}
-                  aria-labelledby={`every-layer-plus${d}-span`}
-                  className="layer-tool every-layer tooltip-wrap narrow2"
-                  onClick={() => changeEveryLayer(1)}
+                  id={`decrease-layer-amount${d}`}
+                  aria-labelledby={`decrease-layer-amount${d}-span`}
+                  className="layer-tool layer-amount decrease-layer-amount tooltip-wrap narrow2 danger"
+                  onClick={() => void deleteHiddenLayers()}
                 >
                   <span
-                    id={`every-layer-plus${d}-span`}
+                    id={`decrease-layer-amount${d}-span`}
                     className="tooltip above"
                   >
-                    {t('ClickHereToMoveUpLayer')}
+                    {t('DeleteHiddenLayers')}
                   </span>
-                  <Icon lib="bi" name="BiChevronUp" aria-hidden="true" />
+                  &times;
                 </button>
+
                 <button
                   id={`increase-layer-amount${d}`}
                   disabled={layerAmount >= 9}
@@ -3325,6 +3273,67 @@ export default function DragContainer({
                   <Icon lib="bi" name="BiPlus" aria-hidden="true" />
                 </button>
               </div>
+
+              <div className="layer-btn-wrap layer-tools layer-tools2">
+                <button
+                  id={`every-layer-minus${d}`}
+                  aria-labelledby={`every-layer-minus${d}-span`}
+                  className="layer-tool every-layer tooltip-wrap narrow2"
+                  onClick={() => changeEveryLayer(-1)}
+                >
+                  <span
+                    id={`every-layer-minus${d}-span`}
+                    className="tooltip above"
+                  >
+                    {t('ClickHereToMoveDownLayer')}
+                  </span>
+                  <Icon lib="bi" name="BiChevronDown" aria-hidden="true" />
+                </button>
+                <button
+                  id={`every-layer-plus${d}`}
+                  aria-labelledby={`every-layer-plus${d}-span`}
+                  className="layer-tool every-layer tooltip-wrap narrow2"
+                  onClick={() => changeEveryLayer(1)}
+                >
+                  <span
+                    id={`every-layer-plus${d}-span`}
+                    className="tooltip above"
+                  >
+                    {t('ClickHereToMoveUpLayer')}
+                  </span>
+                  <Icon lib="bi" name="BiChevronUp" aria-hidden="true" />
+                </button>
+              </div>
+
+              <div
+                className={`movers-wrap movers-wrap1 ${
+                  !controlsVisible ? 'hidden' : ''
+                }`}
+              >
+                <button
+                  id={`moveleft${d}`}
+                  aria-labelledby={`moveleft${d}-span`}
+                  className="moveleft mover tooltip-wrap narrow2"
+                  onClick={handleMoveRight}
+                >
+                  <Icon lib="bi" name="BiChevronsLeft" aria-hidden="true" />
+                  <span id={`moveleft${d}-span`} className="tooltip above">
+                    {t('MoveViewLeft')}
+                  </span>
+                </button>
+                <button
+                  id={`moveright${d}`}
+                  aria-labelledby={`moveright${d}-span`}
+                  className={`moveright mover tooltip-wrap narrow2`}
+                  onClick={handleMoveLeft}
+                >
+                  <Icon lib="bi" name="BiChevronsRight" aria-hidden="true" />
+                  <span id={`moveright${d}-span`} className="tooltip above">
+                    {t('MoveViewRight')}
+                  </span>
+                </button>
+              </div>
+
               <div
                 className={`movers-wrap movers-wrap2 ${
                   !controlsVisible ? 'hidden' : ''
