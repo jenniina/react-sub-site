@@ -67,6 +67,7 @@ const Blob = ({
   changeColor,
 }: BlobProps) => {
   const { t } = useLanguageContext()
+  const selectedBlobLabel = `${t('SelectedBlob')}: ${t('Blob')} ${item.number}`
 
   const blur = d === 0 ? 33 : clampValue(22, item.i * 2.6, 50)
   const { dispatch } = useContext(BlobContext)!
@@ -163,9 +164,7 @@ const Blob = ({
 
         dragUlRef?.current?.setAttribute('aria-activedescendant', `${blob.id}`)
 
-        setSelectedvalue0(
-          `${t('SelectedBlob')}: ${blob.querySelector('span')?.textContent}`
-        )
+        setSelectedvalue0(selectedBlobLabel)
         focused(blob)
       }}
       onBlur={(e) => {
@@ -251,9 +250,7 @@ const Blob = ({
           liElement.draggable = true
           liElement.focus({ preventScroll: true })
 
-          setSelectedvalue0(
-            `${t('SelectedBlob')}: ${liElement?.querySelector('span')?.textContent}`
-          )
+          setSelectedvalue0(selectedBlobLabel)
 
           dragUlRef?.current?.setAttribute(
             'aria-activedescendant',
@@ -277,7 +274,6 @@ const Blob = ({
             liElement.draggable = false
             dragUlRef?.current?.removeAttribute('aria-activedescendant')
             stopMoving(e, liElement)
-            setSelectedvalue0(`${t('SelectedBlobNone')}`)
           }
         }}
         onMouseUp={(e) => {
@@ -285,7 +281,6 @@ const Blob = ({
           liElement.draggable = false
           stopMovementCheck(e, liElement)
           dragUlRef?.current?.removeAttribute('aria-activedescendant')
-          setSelectedvalue0(`${t('SelectedBlobNone')}`)
         }}
         onTouchStart={(e) => {
           e.preventDefault()
@@ -299,11 +294,7 @@ const Blob = ({
           )
           start(e, liElement)
 
-          setSelectedvalue0(
-            `${t('SelectedBlob')}: ${
-              liElement?.querySelector('span')?.textContent ?? ''
-            }`
-          )
+          setSelectedvalue0(selectedBlobLabel)
         }}
         onTouchMove={(e) => {
           e.preventDefault()
@@ -317,7 +308,6 @@ const Blob = ({
           liElement.draggable = false
           dragUlRef?.current?.removeAttribute('aria-activedescendant')
           stopMovementCheck(e, liElement)
-          setSelectedvalue0(`${t('SelectedBlobNone')}`)
         }}
         onWheel={(e) => {
           const liElement = e.currentTarget.parentElement!

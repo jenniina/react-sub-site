@@ -586,8 +586,11 @@ const DragLayers = ({
       e.stopPropagation()
       e.preventDefault()
 
-      if (document?.activeElement instanceof HTMLElement) {
-        document?.activeElement.blur()
+      if (
+        document?.activeElement instanceof HTMLElement &&
+        document.activeElement !== target
+      ) {
+        document.activeElement.blur()
       }
 
       currentFocusedElementRef.current = target
