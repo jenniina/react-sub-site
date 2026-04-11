@@ -7,7 +7,7 @@ import {
   MouseEvent as MouseEventReact,
   PointerEvent as PointerEventReact,
 } from 'react'
-import { Draggable, focusedBlob, Modes } from '../types'
+import { Draggable, Modes } from '../types'
 import Blob from './Blob'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 
@@ -19,7 +19,6 @@ interface DragLayerProps {
   paused: boolean
   dragUlRef: RefObject<HTMLUListElement>
   setSelectedvalue0: Dispatch<SetStateAction<string | null>>
-  setFocusedBlob: Dispatch<SetStateAction<focusedBlob | null>>
   start: (
     e:
       | TouchEvent
@@ -72,7 +71,6 @@ const DragLayer = ({
   paused,
   dragUlRef,
   setSelectedvalue0,
-  setFocusedBlob,
   start,
   movement,
   stopMovementCheck,
@@ -137,7 +135,6 @@ const DragLayer = ({
                 focused={focused}
                 blurred={blurred}
                 setSelectedvalue0={setSelectedvalue0}
-                setFocusedBlob={setFocusedBlob}
                 dragUlRef={dragUlRef}
                 removeBlob={removeBlob}
                 mode={mode}

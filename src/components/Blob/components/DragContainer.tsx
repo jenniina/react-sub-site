@@ -224,8 +224,6 @@ export default function DragContainer({
 
   const makeRandom0 = useRef(null) as RefObject<HTMLButtonElement>
 
-  const markerDivRef = useRef<HTMLDivElement>(null)
-
   const sliderLightnessInput = useRef(null) as RefObject<HTMLInputElement>
   const sliderSaturationInput = useRef(null) as RefObject<HTMLInputElement>
   const sliderHueInput = useRef(null) as RefObject<HTMLInputElement>
@@ -461,6 +459,70 @@ export default function DragContainer({
   }, [colorBlockProps, colorBlockProps2, colorBlockProps3])
 
   const [selectedColor, setSelectedColor] = useState<string>('')
+
+  const setFocusedBlobState = useCallback((nextBlob: focusedBlob | null) => {
+    setFocusedBlob((prevBlob) => {
+      if (prevBlob === null && nextBlob === null) {
+        return prevBlob
+      }
+
+      if (
+        prevBlob !== null &&
+        nextBlob !== null &&
+        prevBlob.top === nextBlob.top &&
+        prevBlob.left === nextBlob.left &&
+        prevBlob.width === nextBlob.width &&
+        prevBlob.height === nextBlob.height
+      ) {
+        return prevBlob
+      }
+
+      return nextBlob
+    })
+  }, [])
+
+  const getFocusedBlobMetrics = useCallback(
+    (target: HTMLElement | null): focusedBlob | null => {
+      const activeBlob = target?.closest('.dragzone')
+
+      if (
+        !(activeBlob instanceof HTMLElement) ||
+        !dragContainerRef.current?.contains(activeBlob) ||
+        !dragWrapOuter.current
+      ) {
+        return null
+      }
+
+      const blobRect = activeBlob.getBoundingClientRect()
+      const outerRect = dragWrapOuter.current.getBoundingClientRect()
+
+      return {
+        top: blobRect.top - outerRect.top + dragWrapOuter.current.scrollTop,
+        left: blobRect.left - outerRect.left + dragWrapOuter.current.scrollLeft,
+        width: blobRect.width,
+        height: blobRect.height,
+      }
+    },
+    [dragWrapOuter]
+  )
+
+  const syncFocusedBlobFromElement = useCallback(
+    (target: HTMLElement | null) => {
+      setFocusedBlobState(getFocusedBlobMetrics(target))
+    },
+    [getFocusedBlobMetrics, setFocusedBlobState]
+  )
+
+  const syncFocusedBlobFromActiveElement = useCallback(() => {
+    if (!isClient) return
+
+    const activeElement =
+      document?.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null
+
+    syncFocusedBlobFromElement(activeElement)
+  }, [isClient, syncFocusedBlobFromElement])
 
   const changeColor = useCallback(
     (id: string) => {
@@ -2380,19 +2442,84 @@ export default function DragContainer({
   }, [handleCanvasResize, isClient, stopCanvasResize, windowObj])
 
   useEffect(() => {
-    if (focusedBlob && markerEnabled && usingKeyboard && focusedBlob) {
-      if (markerDivRef.current) {
-        markerDivRef.current.style.top = `${
-          focusedBlob.top + focusedBlob.width * -0.05
-        }px`
-        markerDivRef.current.style.left = `${
-          focusedBlob.left + focusedBlob.width * -0.05
-        }px`
-        markerDivRef.current.style.width = `${focusedBlob.width * 1.1}px`
-        markerDivRef.current.style.height = `${focusedBlob.height * 1.1}px`
+    if (!isClient || !dragContainerRef.current) return
+
+    const scheduleFocusedBlobSync = () => {
+      if (windowObj) {
+        windowObj.requestAnimationFrame(() => {
+          syncFocusedBlobFromActiveElement()
+        })
+        return
       }
+
+      syncFocusedBlobFromActiveElement()
     }
-  }, [focusedBlob, markerEnabled, usingKeyboard])
+
+    const container = dragContainerRef.current
+
+    container.addEventListener('focusin', scheduleFocusedBlobSync)
+    container.addEventListener('focusout', scheduleFocusedBlobSync)
+
+    return () => {
+      container.removeEventListener('focusin', scheduleFocusedBlobSync)
+      container.removeEventListener('focusout', scheduleFocusedBlobSync)
+    }
+  }, [isClient, syncFocusedBlobFromActiveElement, windowObj])
+
+  useEffect(() => {
+    if (!markerEnabled || !usingKeyboard) return
+
+    syncFocusedBlobFromActiveElement()
+  }, [
+    markerEnabled,
+    usingKeyboard,
+    syncFocusedBlobFromActiveElement,
+    windowWidth,
+    windowHeight,
+    canvasOffsetX,
+    effectiveCanvasSize.width,
+    effectiveCanvasSize.height,
+  ])
+
+  useEffect(() => {
+    if (!markerEnabled || !usingKeyboard) return
+
+    if (windowObj) {
+      windowObj.requestAnimationFrame(() => {
+        syncFocusedBlobFromActiveElement()
+      })
+      return
+    }
+
+    syncFocusedBlobFromActiveElement()
+  }, [
+    draggablesD,
+    activeLayer,
+    markerEnabled,
+    usingKeyboard,
+    syncFocusedBlobFromActiveElement,
+    windowObj,
+  ])
+
+  useEffect(() => {
+    if (!markerEnabled || !usingKeyboard || !dragWrapOuter.current) return
+
+    const handleScroll = () => {
+      syncFocusedBlobFromActiveElement()
+    }
+
+    const dragWrapOuterCurrent = dragWrapOuter.current
+    dragWrapOuterCurrent.addEventListener('scroll', handleScroll)
+
+    return () => {
+      dragWrapOuterCurrent.removeEventListener('scroll', handleScroll)
+    }
+  }, [
+    dragWrapOuter,
+    markerEnabled,
+    usingKeyboard,
+    syncFocusedBlobFromActiveElement,
+  ])
 
   const scrollToArt = () => {
     const scrollTarget =
@@ -3265,7 +3392,6 @@ export default function DragContainer({
               >
                 {markerEnabled && usingKeyboard && focusedBlob && (
                   <div
-                    ref={markerDivRef}
                     style={{
                       position: 'absolute',
                       top: `${focusedBlob.top + focusedBlob.width * -0.05}px`,
@@ -3322,7 +3448,6 @@ export default function DragContainer({
                       removeBlob={removeBlob}
                       dragWrap={dragWrap}
                       setSelectedvalue0={setSelectedvalue0}
-                      setFocusedBlob={setFocusedBlob}
                       colorIndex={colorIndex}
                       setColorIndex={setColorIndex}
                       colorPairs={colorPairsCombo}

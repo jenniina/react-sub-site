@@ -11,7 +11,7 @@ import {
   useMemo,
   useRef,
 } from 'react'
-import { Draggable, focusedBlob, ColorPair, Modes } from '../types'
+import { Draggable, ColorPair, Modes } from '../types'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 import { useIsClient, useWindow } from '../../../hooks/useSSR'
@@ -53,7 +53,6 @@ interface DragLayerProps {
   colorPairs: ColorPair[][]
   removeBlob: (draggable: Draggable) => void
   mode: Modes
-  setFocusedBlob: DispatchReact<SetStateAction<focusedBlob | null>>
   colorIndex: number
   setColorIndex: DispatchReact<SetStateAction<number>>
   scroll: boolean
@@ -98,7 +97,6 @@ const DragLayers = ({
   colorPairs,
   removeBlob,
   mode,
-  setFocusedBlob,
   colorIndex,
   setColorIndex,
   scroll,
@@ -203,22 +201,6 @@ const DragLayers = ({
 
       const blobStyle = windowObj.getComputedStyle(target)
 
-      const setFocus = (target: HTMLElement) => {
-        const marginTop = parseFloat(blobStyle.marginTop)
-        const marginLeft = parseFloat(blobStyle.marginLeft)
-
-        const blobRect = target.getBoundingClientRect()
-        const parentRect = (
-          target.parentNode as HTMLDivElement
-        )?.getBoundingClientRect()
-        setFocusedBlob({
-          top: blobRect.top - parentRect.top - marginTop,
-          left: blobRect.left - parentRect.left - marginLeft,
-          width: blobRect.width,
-          height: blobRect.height,
-        })
-      }
-
       const value =
         blobStyle.getPropertyValue('--i') ??
         target.style.getPropertyValue('--i') ??
@@ -262,7 +244,6 @@ const DragLayers = ({
             },
           },
         })
-        setFocus(target)
       }
 
       const cooldown = () => {
@@ -478,7 +459,6 @@ const DragLayers = ({
       layer_,
       layerAmount,
       dispatch,
-      setFocusedBlob,
       setColorIndex,
       changeBlobLayer,
       removeBlob,
@@ -805,7 +785,6 @@ const DragLayers = ({
       activeTarget.blur()
       if (tapCount === 0) currentFocusedElementRef.current = null
       else currentFocusedElementRef.current = activeTarget
-      setFocusedBlob(null)
     },
     [
       isTouchDevice,
@@ -813,7 +792,6 @@ const DragLayers = ({
       dispatch,
       d,
       keyDown,
-      setFocusedBlob,
       commitDraggedPosition,
       removeDocumentDragListeners,
     ]
@@ -1021,7 +999,6 @@ const DragLayers = ({
           className={hiddenLayers.has(l) ? 'hidden' : ''}
           d={d}
           setSelectedvalue0={setSelectedvalue0}
-          setFocusedBlob={setFocusedBlob}
           start={start}
           movement={movement}
           stopMovementCheck={stopMovementCheck}

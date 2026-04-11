@@ -7,7 +7,7 @@ import React, {
   Dispatch,
   useContext,
 } from 'react'
-import { Draggable, focusedBlob, Modes } from '../types'
+import { Draggable, Modes } from '../types'
 import { clampValue } from '../../../utils'
 import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { BlobContext } from './BlobProvider'
@@ -37,7 +37,6 @@ interface BlobProps {
   focused: (e: HTMLElement) => void
   blurred: (e: HTMLElement) => void
   setSelectedvalue0: Dispatch<SetStateAction<string | null>>
-  setFocusedBlob: Dispatch<SetStateAction<focusedBlob | null>>
   dragUlRef: RefObject<HTMLUListElement>
   removeBlob: (draggable: Draggable) => void
   mode: Modes
@@ -60,7 +59,6 @@ const Blob = ({
   focused,
   blurred,
   setSelectedvalue0,
-  setFocusedBlob,
   dragUlRef,
   removeBlob,
   mode,
@@ -161,42 +159,24 @@ const Blob = ({
   return (
     <li
       onFocus={(e) => {
-        dragUlRef?.current?.setAttribute(
-          'aria-activedescendant',
-          `${e.target.id}`
+        const blob = e.currentTarget
+
+        dragUlRef?.current?.setAttribute('aria-activedescendant', `${blob.id}`)
+
+        setSelectedvalue0(
+          `${t('SelectedBlob')}: ${blob.querySelector('span')?.textContent}`
         )
-
-        const blob = e.target
-
-        setTimeout(() => {
-          // Calculate the position of the blob after scrolling
-
-          const blobRect = blob.getBoundingClientRect()
-          const parentRect = (
-            blob.parentNode as HTMLUListElement
-          )?.getBoundingClientRect()
-          const container = blob.closest('.drag-wrap-outer')!
-          const scrollLeft = container?.scrollLeft
-          const scrollTop = container?.scrollTop
-
-          setFocusedBlob({
-            top: blobRect.top - parentRect.top - scrollTop,
-            left: blobRect.left - parentRect.left - scrollLeft,
-            width: blobRect.width,
-            height: blobRect.height,
-          })
-
-          {
-            setSelectedvalue0(
-              `${t('SelectedBlob')}: ${blob.querySelector('span')?.textContent}`
-            )
-          }
-        }, 500) // Adjust the timeout duration as needed
         focused(blob)
       }}
       onBlur={(e) => {
-        setFocusedBlob(null)
-        blurred(e.target)
+        if (
+          e.relatedTarget instanceof Node &&
+          e.currentTarget.contains(e.relatedTarget)
+        ) {
+          return
+        }
+
+        blurred(e.currentTarget)
         dragUlRef?.current?.removeAttribute('aria-activedescendant')
 
         setSelectedvalue0(`${t('SelectedBlobNone')}`)
@@ -217,7 +197,10 @@ const Blob = ({
       }}
     >
       <button
+        type="button"
         className="draggable-overlay"
+        tabIndex={-1}
+        aria-hidden="true"
         style={
           Number(item.i) < 8
             ? {
@@ -262,9 +245,11 @@ const Blob = ({
                           }
         }
         onMouseDown={(e) => {
+          e.preventDefault()
           e.stopPropagation()
           const liElement = e.currentTarget.parentElement!
           liElement.draggable = true
+          liElement.focus({ preventScroll: true })
 
           setSelectedvalue0(
             `${t('SelectedBlob')}: ${liElement?.querySelector('span')?.textContent}`
@@ -307,6 +292,7 @@ const Blob = ({
           e.stopPropagation()
           const liElement = e.currentTarget.parentElement!
           liElement.draggable = true
+          liElement.focus({ preventScroll: true })
           dragUlRef?.current?.setAttribute(
             'aria-activedescendant',
             `${liElement.id}`

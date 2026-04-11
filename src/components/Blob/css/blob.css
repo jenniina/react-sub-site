@@ -379,11 +379,12 @@ svg.filter {
 .button-container button {
   min-width: 100%;
   min-height: 2.3rem;
-  padding-top: 0.1em;
-  padding-bottom: 0.1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
   font-size: 0.9em;
   border-radius: 2rem;
   gap: 0.3em;
+  flex-flow: column nowrap;
 }
 .drag-container .button-container button {
   min-height: 2.3rem;
@@ -451,10 +452,6 @@ svg.filter {
 .button-container button.screenshot {
   min-width: 100%;
   padding: 0.3em 0.8em;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: center;
-  align-items: center;
 }
 .button-container button.screenshot svg {
   font-size: 1.8em;
@@ -470,6 +467,7 @@ svg.filter {
   .button-container button,
   .button-container button.screenshot {
     min-width: max-content;
+    flex-flow: row nowrap;
   }
   .drag-container .button-container button.screenshot {
     padding: 0.2em 0.9em;
