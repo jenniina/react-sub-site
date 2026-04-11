@@ -378,11 +378,48 @@ svg.filter {
 }
 .button-container button {
   min-width: 100%;
+  min-height: 2.3rem;
+  padding-top: 0.1em;
+  padding-bottom: 0.1em;
   font-size: 0.9em;
+  border-radius: 2rem;
+  gap: 0.3em;
 }
-.button-container .screenshot span {
-  font-size: 0.9em;
+.drag-container .button-container button {
+  min-height: 2.3rem;
+  border-radius: 2rem;
 }
+.button-container button svg {
+  font-size: 2.2em;
+}
+.button-container button.reset-blobs {
+  gap: 0.4em;
+}
+.button-container button.reset-blobs .blob-dotted,
+.button-container button .round-dashed,
+.button-container button .square-dotted {
+  padding: 0.2em;
+  border-radius: 0.2em;
+  outline: 2px dotted currentColor;
+  outline-offset: -4px;
+}
+.button-container button.reset-blobs .blob-dotted {
+  display: inline-block;
+  width: 1.8em;
+  height: 1.6em;
+  border-radius: 48% 52% 50% 50% / 69% 70% 30% 31%;
+}
+.button-container button .round-dashed {
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  outline-style: dashed;
+}
+.button-container button .square-dotted {
+  width: 1.8em;
+  height: 1.8em;
+}
+
 .drag-container button {
   border-radius: var(--corner);
   margin: 0.3em 0 0.3em;
@@ -411,18 +448,17 @@ svg.filter {
 .blob-screenshot-wrap h3 {
   margin: 0;
 }
-.button-container div.screenshot {
-  min-width: 100%;
-}
 .button-container button.screenshot {
-  padding: 0.5em 0.8em;
+  min-width: 100%;
+  padding: 0.3em 0.8em;
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
 }
 .button-container button.screenshot svg {
-  font-size: 1.3em;
+  font-size: 1.8em;
+  margin-left: 0.1em;
 }
 
 @media (min-width: 300px) {
@@ -432,14 +468,14 @@ svg.filter {
     justify-content: center;
   }
   .button-container button,
-  .button-container div.screenshot {
+  .button-container button.screenshot {
     min-width: max-content;
   }
   .drag-container .button-container button.screenshot {
-    padding: 0.4em 0.9em;
+    padding: 0.2em 0.9em;
   }
   .button-container button.screenshot svg {
-    font-size: 1.4em;
+    font-size: 1.8em;
   }
 } /*END media*/
 
@@ -464,7 +500,7 @@ svg.filter {
     min-width: clamp(100px, calc(20% - calc(var(--space) * 4)), 160px); */
     flex: 0 0 auto;
     margin: 0.3em var(--space) 0.3em 0;
-    padding: 0.5em 0.8em;
+    padding: 0.1em 0.9em;
     word-wrap: break-word;
   }
 
@@ -558,7 +594,7 @@ svg.filter {
   padding: 0;
   border: 0;
   margin: 0;
-  z-index: 1300;
+  z-index: 1200;
   touch-action: none;
   border-radius: 0.18rem;
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4);
@@ -1447,7 +1483,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
 
 @media (min-width: 700px) {
   .button-container button.screenshot {
-    padding: 0.3em 0.6em;
+    padding: 0.1em 0.6em;
   }
   .drag-container .layer-mover-control-wrap button {
     padding: 0.1em 0.45em 0.2em;
@@ -1455,10 +1491,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
 }
 @media (min-width: 900px) {
   .button-container button.screenshot {
-    padding: 0.28em 0.8em;
-  }
-  .button-container button.screenshot svg {
-    font-size: 1.4rem;
+    padding: 0.08em 0.8em;
   }
 }
 @media (min-width: 1000px) {

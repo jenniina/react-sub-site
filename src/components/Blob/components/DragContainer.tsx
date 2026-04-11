@@ -2055,19 +2055,22 @@ export default function DragContainer({
     ) {
       const outestRect = dragWrapOutest.current.getBoundingClientRect()
       const outerRect = dragWrapOuter.current.getBoundingClientRect()
+      const canvasWidth = dragWrapOuter.current.offsetWidth
+      const canvasHeight = dragWrapOuter.current.offsetHeight
 
       element.style.left =
-        outerRect.left -
-        outestRect.left +
-        (dragWrap.current.offsetWidth / 100) * x_pos +
-        'px'
+        outerRect.left - outestRect.left + (canvasWidth / 100) * x_pos + 'px'
       element.style.right = 'unset'
-      element.style.top = (dragWrap.current.offsetHeight / 100) * y_pos + 'px'
+      element.style.top = (canvasHeight / 100) * y_pos + 'px'
     }
   }
 
   const widthResize = useCallback(
     () => {
+      const canvasWidth = dragWrapOuter.current?.offsetWidth
+      const canvasHeight = dragWrapOuter.current?.offsetHeight
+      if (!canvasWidth || !canvasHeight) return
+
       const y_pos = [12, 34, 56, 78] // color block y positions
       const x_pos = [15, 38, 62, 85] // top item x positions
       const top_pos = 1
@@ -2078,86 +2081,72 @@ export default function DragContainer({
       if (makeSmaller0.current && dragWrap.current)
         place(
           makeSmaller0.current,
-          x_pos[0] -
-            (makeSmaller0.current.offsetWidth / dragWrap.current.offsetWidth) *
-              50,
+          x_pos[0] - (makeSmaller0.current.offsetWidth / canvasWidth) * 50,
           top_pos -
             ((makeSmaller0.current.offsetHeight / 2 + adjustment) /
-              dragWrap.current.offsetHeight) *
+              canvasHeight) *
               100
         )
       if (makeLarger0.current && dragWrap.current)
         place(
           makeLarger0.current,
-          x_pos[1] -
-            (makeLarger0.current.offsetWidth / dragWrap.current.offsetWidth) *
-              50,
+          x_pos[1] - (makeLarger0.current.offsetWidth / canvasWidth) * 50,
           top_pos -
             ((makeLarger0.current.offsetHeight / 2 + adjustment) /
-              dragWrap.current.offsetHeight) *
+              canvasHeight) *
               100
         )
       if (layerDecrease.current && dragWrap.current)
         place(
           layerDecrease.current,
-          x_pos[2] -
-            (layerDecrease.current.offsetWidth / dragWrap.current.offsetWidth) *
-              50,
+          x_pos[2] - (layerDecrease.current.offsetWidth / canvasWidth) * 50,
           top_pos -
             ((layerDecrease.current.offsetHeight / 2 + adjustment) /
-              dragWrap.current.offsetHeight) *
+              canvasHeight) *
               100
         )
       if (layerIncrease.current && dragWrap.current)
         place(
           layerIncrease.current,
-          x_pos[3] -
-            (layerIncrease.current.offsetWidth / dragWrap.current.offsetWidth) *
-              50,
+          x_pos[3] - (layerIncrease.current.offsetWidth / canvasWidth) * 50,
           top_pos -
             ((layerIncrease.current.offsetHeight / 2 + adjustment) /
-              dragWrap.current.offsetHeight) *
+              canvasHeight) *
               100
         )
       if (deleteBlob0.current && dragWrap.current)
         place(
           deleteBlob0.current,
-          28 -
-            (deleteBlob0.current.offsetWidth / dragWrap.current.offsetWidth) *
-              50,
+          28 - (deleteBlob0.current.offsetWidth / canvasWidth) * 50,
           bottom_pos -
             ((deleteBlob0.current.offsetHeight / 2 - adjustment) /
-              dragWrap.current.offsetHeight) *
+              canvasHeight) *
               100
         )
       if (makeRandom0.current && dragWrap.current)
         place(
           makeRandom0.current,
-          50 -
-            (makeRandom0.current.offsetWidth / dragWrap.current.offsetWidth) *
-              50,
+          50 - (makeRandom0.current.offsetWidth / canvasWidth) * 50,
           bottom_pos -
             ((makeRandom0.current.offsetHeight / 2 - adjustment) /
-              dragWrap.current.offsetHeight) *
+              canvasHeight) *
               100
         )
       if (makeMore0.current && dragWrap.current)
         place(
           makeMore0.current,
-          72 -
-            (makeMore0.current.offsetWidth / dragWrap.current.offsetWidth) * 50,
+          72 - (makeMore0.current.offsetWidth / canvasWidth) * 50,
           bottom_pos -
-            ((makeMore0.current.offsetHeight / 2 - adjustment) /
-              dragWrap.current.offsetHeight) *
+            ((makeMore0.current.offsetHeight / 2 - adjustment) / canvasHeight) *
               100
         )
       if (resizeHandleLeft.current && dragWrap.current)
         place(
           resizeHandleLeft.current,
-          0 - (adjustment / dragWrap.current.offsetWidth) * 100,
+          0 - (adjustment / canvasWidth) * 100,
           100 -
             ((resizeHandleLeft.current.offsetHeight - adjustment) /
-              dragWrap.current.offsetHeight) *
+              canvasHeight) *
               100
         )
       if (resizeHandleRight.current && dragWrap.current)
@@ -2165,11 +2154,11 @@ export default function DragContainer({
           resizeHandleRight.current,
           100 -
             ((resizeHandleRight.current.offsetWidth - adjustment) /
-              dragWrap.current.offsetWidth) *
+              canvasWidth) *
               100,
           100 -
             ((resizeHandleRight.current.offsetHeight - adjustment) /
-              dragWrap.current.offsetHeight) *
+              canvasHeight) *
               100
         )
       // place color blocks:
@@ -2179,10 +2168,7 @@ export default function DragContainer({
             const x =
               index < 4
                 ? 0
-                : 100 -
-                  (colorBlock.current.offsetWidth /
-                    dragWrap.current.offsetWidth) *
-                    100
+                : 100 - (colorBlock.current.offsetWidth / canvasWidth) * 100
             const y = y_pos[index % 4]
             place(colorBlock.current, x, y)
           }
@@ -2204,6 +2190,8 @@ export default function DragContainer({
       deleteBlob0,
       canvasOffsetX,
       canvasSize,
+      effectiveCanvasSize.height,
+      effectiveCanvasSize.width,
     ]
   )
 
@@ -2841,7 +2829,7 @@ export default function DragContainer({
                 {t('TryDraggingTheBlobs')}
               </span>
               <span>
-                [{t('Layer')}: {activeLayer + 1}]{' '}
+                [{t('Layer')}: {activeLayer + 1}]
               </span>
               <span id={`selectedvalue${d}`} className="selectedvalue">
                 {selectedvalue0 ?? t('SelectedBlobNone')}
@@ -2865,8 +2853,10 @@ export default function DragContainer({
               >
                 <span id={`reset-blobs${d}-span`} className="tooltip above">
                   {t('GetANewSetOfBlobs')}
-                </span>{' '}
+                </span>
                 {t('ResetBlobs')}
+                {/* <Icon lib="tb" name="TbBlob" aria-hidden="true" /> */}
+                <span className="blob-dotted"></span>
               </button>
               <button
                 ref={resetCanvas}
@@ -2879,8 +2869,10 @@ export default function DragContainer({
               >
                 <span id={`reset-canvas${d}-span`} className="tooltip above">
                   {t('ResetCanvas')}
-                </span>{' '}
+                </span>
                 {t('ResetCanvas')}
+                {/* <Icon lib="lu" name="LuSquareDashed" aria-hidden="true" /> */}
+                <b className="square-dotted"></b>
               </button>
               <button
                 ref={stopBlobs}
@@ -2896,7 +2888,25 @@ export default function DragContainer({
                     'AfterEnablingThereIsASlightDelayBeforeAllTheBlobsAreMovingAgain'
                   )}
                 </span>
-                {paused ? t('StartSway') : t('StopSway')}
+                {paused ? (
+                  <>
+                    {t('StartSway')}
+                    <Icon
+                      lib="io5"
+                      name="IoPlayCircleOutline"
+                      aria-hidden="true"
+                    />
+                  </>
+                ) : (
+                  <>
+                    {t('StopSway')}
+                    <Icon
+                      lib="io5"
+                      name="IoStopCircleOutline"
+                      aria-hidden="true"
+                    />
+                  </>
+                )}
               </button>
 
               <button
@@ -2914,9 +2924,21 @@ export default function DragContainer({
                   }
                 }}
               >
-                <span id={`toggle-controls${d}-span`}>
-                  {controlsVisible ? t('HideControls') : t('ShowControls')}
-                </span>
+                {controlsVisible ? (
+                  <>
+                    <span id={`toggle-controls${d}-span`}>
+                      {t('HideControls')}
+                    </span>
+                    <Icon lib="md" name="MdHideSource" aria-hidden="true" />
+                  </>
+                ) : (
+                  <>
+                    <span id={`toggle-controls${d}-span`}>
+                      {t('ShowControls')}
+                    </span>
+                    <Icon lib="md" name="MdOutlineCircle" aria-hidden="true" />
+                  </>
+                )}
               </button>
               <button
                 id={`toggle-colors${d}`}
@@ -2931,9 +2953,21 @@ export default function DragContainer({
                   }
                 }}
               >
-                <span id={`toggle-colors${d}-span`}>
-                  {colorsVisible ? t('HideColors') : t('ShowColors')}
-                </span>
+                {colorsVisible ? (
+                  <>
+                    <span id={`toggle-colors${d}-span`}>{t('HideColors')}</span>
+                    <Icon
+                      lib="md"
+                      name="MdInvertColorsOff"
+                      aria-hidden="true"
+                    />
+                  </>
+                ) : (
+                  <>
+                    <span id={`toggle-colors${d}-span`}>{t('ShowColors')}</span>
+                    <Icon lib="md" name="MdInvertColors" aria-hidden="true" />
+                  </>
+                )}
               </button>
 
               <button
@@ -2947,6 +2981,8 @@ export default function DragContainer({
                   className="tooltip above"
                 >{`${t('ToggleMarkerVisibilityWhenUsingAKeyboard')}`}</span>
                 {markerEnabled ? t('MarkerOn') : t('MarkerOff')}
+                {/* <Icon lib="tb" name="TbCircleDashed" aria-hidden="true" /> */}
+                <b className="round-dashed"></b>
               </button>
 
               <button
@@ -2960,33 +2996,32 @@ export default function DragContainer({
                   disableScroll()
                 }}
               >
+                <span>{scroll ? t('DisableScroll') : t('EnableScroll')}</span>
+                <Icon lib="pi" name="PiMouseScroll" aria-hidden="true" />
                 <span id={`disable-scroll${d}-span`} className="tooltip above">
                   {scroll
                     ? t('DisableScrollInOrderToUseTheMouseWheelToResizeABlob')
                     : t('PressHereOrEscapeToRestoreScrolling')}
                 </span>
-                {scroll ? t('DisableScroll') : t('EnableScroll')}
               </button>
 
-              <div className="flex gap-half screenshot">
-                {windowWidth > 1200 && <span>{t('Screenshot')}: </span>}
-                <button
-                  type="button"
-                  id={`take-screenshot${d}`}
-                  aria-labelledby={`take-screenshot${d}-span`}
-                  disabled={loading}
-                  onClick={() => void takeScreenshot()}
-                  className="screenshot tooltip-wrap"
+              <button
+                type="button"
+                id={`take-screenshot${d}`}
+                aria-labelledby={`take-screenshot${d}-span`}
+                disabled={loading}
+                onClick={() => void takeScreenshot()}
+                className="screenshot tooltip-wrap"
+              >
+                <span>{t('Screenshot')} </span>
+                <Icon lib="im" name="ImCamera" aria-hidden="true" />
+                <span
+                  id={`take-screenshot${d}-span`}
+                  className="tooltip left above"
                 >
-                  <Icon lib="im" name="ImCamera" aria-hidden="true" />
-                  <span
-                    id={`take-screenshot${d}-span`}
-                    className="tooltip left above"
-                  >
-                    {loading ? t('Loading') : t('ClickHereToTakeAScreenshot')}
-                  </span>
-                </button>
-              </div>
+                  {loading ? t('Loading') : t('ClickHereToTakeAScreenshot')}
+                </span>
+              </button>
             </div>
             <div
               ref={dragWrapOutest}
@@ -3034,7 +3069,7 @@ export default function DragContainer({
                 onPointerDown={startCanvasResize(1, 'nwse-resize')}
                 onKeyDown={handleCanvasResizeKeyDown(1)}
               >
-                <Icon lib="hi2" name="HiArrowsPointingOut" aria-hidden="true" />{' '}
+                <Icon lib="hi2" name="HiArrowsPointingOut" aria-hidden="true" />
                 <span className="tooltip left above narrow2" aria-hidden="true">
                   {t('ResizeCanvas')} ({t('Draggable')})
                 </span>
@@ -3147,7 +3182,7 @@ export default function DragContainer({
                 <span id={`make-random${d}-span`} className="tooltip below">
                   {`${t('ClickMeToMakeARandomBlob')}. ${t(
                     'MoreColorsAvailable'
-                  )}! ${t('KeyboardUse')}: ${t('PressSpaceOrRWithABlobInFocusToCycleThroughRandomColors')}`}{' '}
+                  )}! ${t('KeyboardUse')}: ${t('PressSpaceOrRWithABlobInFocusToCycleThroughRandomColors')}`}
                 </span>
               </button>
 

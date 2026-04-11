@@ -17,7 +17,12 @@ import {
   BsArrowBarRight,
   BsArrowBarLeft,
 } from 'react-icons/bs'
-import { IoMdImages, IoMdAdd, IoMdCheckmarkCircleOutline } from 'react-icons/io'
+import {
+  IoMdImages,
+  IoMdAdd,
+  IoMdCheckmarkCircleOutline,
+  IoMdColorPalette,
+} from 'react-icons/io'
 import {
   BiChat,
   BiChevronsUp,
@@ -40,6 +45,8 @@ import {
   IoSettingsSharp,
   IoPersonCircleSharp,
   IoCopyOutline,
+  IoStopCircleOutline,
+  IoPlayCircleOutline,
 } from 'react-icons/io5'
 import {
   HiOutlineDotsHorizontal,
@@ -80,14 +87,24 @@ import {
   MdOutlineFilter9Plus,
   MdOutlineSettingsBackupRestore,
   MdDriveFileRenameOutline,
+  MdHideSource,
+  MdInvertColors,
+  MdInvertColorsOff,
+  MdOutlineCircle,
 } from 'react-icons/md'
 import {
   LuCirclePlus,
   LuArrowRightFromLine,
   LuArrowLeftFromLine,
+  LuSquareDashed,
 } from 'react-icons/lu'
 import { LiaUndoAltSolid, LiaNewspaperSolid } from 'react-icons/lia'
-import { PiImage, PiDownloadSimpleFill, PiResizeLight } from 'react-icons/pi'
+import {
+  PiImage,
+  PiDownloadSimpleFill,
+  PiResizeLight,
+  PiMouseScroll,
+} from 'react-icons/pi'
 import {
   FaStar,
   FaStoreAlt,
@@ -107,7 +124,12 @@ import {
 } from 'react-icons/fa'
 import { TiDeleteOutline, TiShoppingCart } from 'react-icons/ti'
 import { AiOutlineEdit, AiOutlineForm, AiFillEdit } from 'react-icons/ai'
-import { TbCancel, TbLayoutNavbar } from 'react-icons/tb'
+import {
+  TbCancel,
+  TbLayoutNavbar,
+  TbCircleDashed,
+  TbBlob,
+} from 'react-icons/tb'
 import {
   ImImages,
   ImBlocked,
@@ -153,6 +175,7 @@ export const iconLibraries = {
     IoMdImages,
     IoMdAdd,
     IoMdCheckmarkCircleOutline,
+    IoMdColorPalette,
   },
   bi: {
     BiChat,
@@ -179,6 +202,8 @@ export const iconLibraries = {
     IoSettingsSharp,
     IoPersonCircleSharp,
     IoCopyOutline,
+    IoStopCircleOutline,
+    IoPlayCircleOutline,
   },
   hi: {
     HiOutlineDotsHorizontal,
@@ -240,11 +265,16 @@ export const iconLibraries = {
     MdOutlineFilter9Plus,
     MdOutlineSettingsBackupRestore,
     MdDriveFileRenameOutline,
+    MdHideSource,
+    MdInvertColors,
+    MdInvertColorsOff,
+    MdOutlineCircle,
   },
   lu: {
     LuCirclePlus,
     LuArrowRightFromLine,
     LuArrowLeftFromLine,
+    LuSquareDashed,
   },
   lia: {
     LiaUndoAltSolid,
@@ -254,6 +284,7 @@ export const iconLibraries = {
     PiImage,
     PiDownloadSimpleFill,
     PiResizeLight,
+    PiMouseScroll,
   },
   ti: {
     TiDeleteOutline,
@@ -267,6 +298,8 @@ export const iconLibraries = {
   tb: {
     TbCancel,
     TbLayoutNavbar,
+    TbCircleDashed,
+    TbBlob,
   },
   im: {
     ImImages,
