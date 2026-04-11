@@ -14,6 +14,7 @@ interface ColorBlockProps {
   ) => string | undefined
   setSelectedColor: (value: string) => void
   selectedColor: string
+  mode: Modes
   setMode: React.Dispatch<React.SetStateAction<Modes>>
 }
 
@@ -26,6 +27,7 @@ const ColorBlocks: FC<ColorBlockProps> = ({
   map,
   setSelectedColor,
   selectedColor,
+  mode,
   setMode,
 }) => {
   const { t } = useLanguageContext()
@@ -44,7 +46,7 @@ const ColorBlocks: FC<ColorBlockProps> = ({
       {colorBlockProps[d].map((colorBlock, index) => {
         const { color1, color2 } = colorPairs[d][index]
         const color = `linear-gradient(45deg, ${color1}, ${color2})`
-        const isActive = selectedColor === color
+        const isActive = selectedColor === color && mode === 'change-color'
         return (
           <button
             ref={colorBlock}

@@ -3361,6 +3361,7 @@ export default function DragContainer({
                 colorsVisible={colorsVisible}
                 setSelectedColor={setSelectedColor}
                 selectedColor={selectedColor}
+                mode={mode}
                 setMode={setMode}
               />
 
