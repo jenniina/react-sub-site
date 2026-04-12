@@ -35,6 +35,7 @@ const getBlobsVersionByUser = async (
 const saveBlobsByUser = async (
   user: string,
   d: number,
+  variant: number,
   draggables: Draggable[],
   versionName: string,
   backgroundColor: string[],
@@ -43,6 +44,7 @@ const saveBlobsByUser = async (
   const response = await api.post(
     `${baseUrl}/${user}/${d}/${versionName}/${language}`,
     {
+      variant,
       draggables,
       backgroundColor,
     }
@@ -53,6 +55,7 @@ const saveBlobsByUser = async (
 const editBlobsByUser = async (
   user: string,
   d: number,
+  variant: number,
   draggables: Draggable[],
   versionName: string,
   backgroundColor: string[],
@@ -63,6 +66,7 @@ const editBlobsByUser = async (
     `${baseUrl}/${user}/${d}/${versionName}/${language}`,
     {
       d,
+      variant,
       versionName,
       draggables,
       backgroundColor,

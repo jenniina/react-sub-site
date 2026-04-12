@@ -16,6 +16,7 @@ import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 interface BlobProps {
   d: number
+  variant: number
   layer: number
   item: Draggable
   index: number
@@ -47,6 +48,7 @@ interface BlobProps {
 
 const Blob = ({
   d,
+  variant,
   layer,
   item,
   index,
@@ -69,7 +71,7 @@ const Blob = ({
   const { t } = useLanguageContext()
   const selectedBlobLabel = `${t('SelectedBlob')}: ${t('Blob')} ${item.number}`
 
-  const blur = d === 0 ? 33 : clampValue(22, item.i * 2.6, 50)
+  const blur = variant === 0 ? 33 : clampValue(22, item.i * 2.6, 50)
   const { dispatch } = useContext(BlobContext)!
   const dispatch2 = useAppDispatch()
 
@@ -86,7 +88,7 @@ const Blob = ({
   }
 
   const innerSize =
-    d === 0
+    variant === 0
       ? [
           '5.9px', //<8
           '8.2px', //<10

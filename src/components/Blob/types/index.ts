@@ -14,6 +14,7 @@ export interface Draggable {
 export interface SavedBlobs {
   user: IUser['_id']
   d: number
+  variant?: number
   draggables: Draggable[]
   backgroundColor: string[]
   versionName: string

@@ -44,6 +44,7 @@ import { getErrorMessage } from '../../../utils'
 import Icon from '../../Icon/Icon'
 import useLocalStorage from '../../../hooks/useStorage'
 
+/*
 // Should be in the same order as colorBlockProps
 const colorPairs: ColorPair[] = [
   { color1: 'darkorange', color2: 'orange' }, //colorBlockOrange
@@ -55,6 +56,7 @@ const colorPairs: ColorPair[] = [
   { color1: 'cyan', color2: 'pink' }, //colorBlockCyanPink
   { color1: 'lemonchiffon', color2: 'pink' }, //colorBlockPinkYellow
 ]
+*/
 // Should be in the same order as colorBlockProps2
 const colorPairs2: ColorPair[] = [
   { color1: 'indianred', color2: 'palevioletred' }, //colorBlockReddish
@@ -78,7 +80,9 @@ const colorPairs3: ColorPair[] = [
   { color1: 'darkblue', color2: 'mediumslateblue' }, //colorBlockPurplishBlue
 ]
 
-const colorPairsCombo: ColorPair[][] = [colorPairs, colorPairs2, colorPairs3]
+const colorPairsCombined: ColorPair[] = [...colorPairs2, ...colorPairs3]
+
+const colorPairsCombo: ColorPair[][] = [colorPairsCombined]
 
 const angle = '90deg'
 
@@ -86,6 +90,7 @@ const defaultLayerAmount = 3
 const minCanvasWidth = 155
 const minCanvasHeight = 300
 const canvasViewportPadding = 12
+const defaultSingleCanvasVariant = 2
 
 type CanvasSize = {
   width: number
@@ -161,9 +166,15 @@ export default function DragContainer({
   const { t, language } = useLanguageContext()
   const confirm = useConfirm()
 
+  const [artVariant, setArtVariant] = useState<number>(
+    defaultSingleCanvasVariant
+  )
+
   const defaultHue = '214'
-  const defaultSaturation = d === 0 ? '80' : d === 2 ? '50' : '45'
-  const defaultLightness = d === 0 ? '30' : d === 2 ? '5' : '25'
+  const defaultSaturation =
+    artVariant === 0 ? '80' : artVariant === 2 ? '50' : '45'
+  const defaultLightness =
+    artVariant === 0 ? '30' : artVariant === 2 ? '5' : '25'
 
   const { state, dispatch, undo, redo, canUndo, canRedo } =
     useContext(BlobContext)!
@@ -278,16 +289,6 @@ export default function DragContainer({
 
   const [layerAmount, setLayerAmount] = useState<number>(0)
 
-  const colorBlockOrange = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockRed = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockPurple = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockBlue = useRef(null) as RefObject<HTMLButtonElement>
-
-  const colorBlockYellowLime = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockCyanYellow = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockCyanPink = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockPinkYellow = useRef(null) as RefObject<HTMLButtonElement>
-
   const colorBlockReddish = useRef(null) as RefObject<HTMLButtonElement>
   const colorBlockBrown = useRef(null) as RefObject<HTMLButtonElement>
   const colorBlockKhaki = useRef(null) as RefObject<HTMLButtonElement>
@@ -306,28 +307,28 @@ export default function DragContainer({
   const colorBlockDarkBlue = useRef(null) as RefObject<HTMLButtonElement>
   const colorBlockPurplishBlue = useRef(null) as RefObject<HTMLButtonElement>
 
-  // Create a mapping between the ref objects and their names
-  const refNameMapping = useMemo(() => {
-    return new Map<RefObject<HTMLButtonElement>, string>([
-      [colorBlockOrange, 'colorBlockOrange'],
-      [colorBlockRed, 'colorBlockRed'],
-      [colorBlockPurple, 'colorBlockPurple'],
-      [colorBlockBlue, 'colorBlockBlue'],
-      [colorBlockYellowLime, 'colorBlockYellowLime'],
-      [colorBlockCyanYellow, 'colorBlockCyanYellow'],
-      [colorBlockCyanPink, 'colorBlockCyanPink'],
-      [colorBlockPinkYellow, 'colorBlockPinkYellow'],
-    ])
-  }, [
-    colorBlockOrange,
-    colorBlockRed,
-    colorBlockPurple,
-    colorBlockBlue,
-    colorBlockYellowLime,
-    colorBlockCyanYellow,
-    colorBlockCyanPink,
-    colorBlockPinkYellow,
-  ])
+  // // Create a mapping between the ref objects and their names
+  // const refNameMapping = useMemo(() => {
+  //   return new Map<RefObject<HTMLButtonElement>, string>([
+  //     [colorBlockOrange, 'colorBlockOrange'],
+  //     [colorBlockRed, 'colorBlockRed'],
+  //     [colorBlockPurple, 'colorBlockPurple'],
+  //     [colorBlockBlue, 'colorBlockBlue'],
+  //     [colorBlockYellowLime, 'colorBlockYellowLime'],
+  //     [colorBlockCyanYellow, 'colorBlockCyanYellow'],
+  //     [colorBlockCyanPink, 'colorBlockCyanPink'],
+  //     [colorBlockPinkYellow, 'colorBlockPinkYellow'],
+  //   ])
+  // }, [
+  //   colorBlockOrange,
+  //   colorBlockRed,
+  //   colorBlockPurple,
+  //   colorBlockBlue,
+  //   colorBlockYellowLime,
+  //   colorBlockCyanYellow,
+  //   colorBlockCyanPink,
+  //   colorBlockPinkYellow,
+  // ])
 
   const refNameMapping2 = useMemo(() => {
     return new Map<RefObject<HTMLButtonElement>, string>([
@@ -374,8 +375,13 @@ export default function DragContainer({
   ])
 
   const refNameMappingCombo = useMemo(() => {
-    return [refNameMapping, refNameMapping2, refNameMapping3]
-  }, [refNameMapping, refNameMapping2, refNameMapping3])
+    return [
+      new Map<RefObject<HTMLButtonElement>, string>([
+        ...refNameMapping2.entries(),
+        ...refNameMapping3.entries(),
+      ]),
+    ]
+  }, [refNameMapping2, refNameMapping3])
 
   const getRefName = useCallback(
     (
@@ -387,28 +393,28 @@ export default function DragContainer({
     []
   )
 
-  // Should be in the same order as colorPairs:
-  const colorBlockProps = useMemo(() => {
-    return [
-      colorBlockOrange,
-      colorBlockRed,
-      colorBlockPurple,
-      colorBlockBlue,
-      colorBlockYellowLime,
-      colorBlockCyanYellow,
-      colorBlockCyanPink,
-      colorBlockPinkYellow,
-    ]
-  }, [
-    colorBlockOrange,
-    colorBlockRed,
-    colorBlockPurple,
-    colorBlockBlue,
-    colorBlockYellowLime,
-    colorBlockCyanYellow,
-    colorBlockCyanPink,
-    colorBlockPinkYellow,
-  ])
+  // // Should be in the same order as colorPairs:
+  // const colorBlockProps = useMemo(() => {
+  //   return [
+  //     colorBlockOrange,
+  //     colorBlockRed,
+  //     colorBlockPurple,
+  //     colorBlockBlue,
+  //     colorBlockYellowLime,
+  //     colorBlockCyanYellow,
+  //     colorBlockCyanPink,
+  //     colorBlockPinkYellow,
+  //   ]
+  // }, [
+  //   colorBlockOrange,
+  //   colorBlockRed,
+  //   colorBlockPurple,
+  //   colorBlockBlue,
+  //   colorBlockYellowLime,
+  //   colorBlockCyanYellow,
+  //   colorBlockCyanPink,
+  //   colorBlockPinkYellow,
+  // ])
 
   const colorBlockProps2 = useMemo(() => {
     return [
@@ -455,8 +461,8 @@ export default function DragContainer({
   ])
 
   const colorBlockPropsCombo = useMemo(() => {
-    return [colorBlockProps, colorBlockProps2, colorBlockProps3]
-  }, [colorBlockProps, colorBlockProps2, colorBlockProps3])
+    return [[...colorBlockProps2, ...colorBlockProps3]]
+  }, [colorBlockProps2, colorBlockProps3])
 
   const [selectedColor, setSelectedColor] = useState<string>('')
 
@@ -1061,6 +1067,7 @@ export default function DragContainer({
       await blobService.saveBlobsByUser(
         user._id,
         d,
+        artVariant,
         draggables[d],
         versionName,
         backgroundColor[d],
@@ -1097,6 +1104,7 @@ export default function DragContainer({
             .editBlobsByUser(
               user?._id,
               d,
+              artVariant,
               draggables[d],
               versionName,
               backgroundColor[d],
@@ -1128,11 +1136,14 @@ export default function DragContainer({
         await blobService
           .getBlobsVersionByUser(user?._id, d, newVersion, language)
           .then((response: SavedBlobs) => {
+            const nextVariant =
+              response.variant ?? response.d ?? defaultSingleCanvasVariant
             const highestLayerInDraggables = Math.max(
               ...response.draggables.map(
                 (draggable: Draggable) => draggable.layer
               )
             )
+            setArtVariant(nextVariant)
             setLayerAmount(highestLayerInDraggables + 1)
             setTimeout(() => {
               saveLayerAmount(highestLayerInDraggables + 1)
@@ -1550,6 +1561,7 @@ export default function DragContainer({
       removeCanvasOffsetX()
       setCanvasSize(null)
       setCanvasOffsetX(0)
+      setArtVariant(defaultSingleCanvasVariant)
     }
   }
 
@@ -2133,7 +2145,7 @@ export default function DragContainer({
       const canvasHeight = dragWrapOuter.current?.offsetHeight
       if (!canvasWidth || !canvasHeight) return
 
-      const y_pos = [12, 34, 56, 78] // color block y positions
+      const y_pos = [9, 20, 31, 42, 53, 64, 75, 86] // color block y positions
       const x_pos = [15, 38, 62, 85] // top item x positions
       const top_pos = 1
       const bottom_pos = 99
@@ -2228,10 +2240,10 @@ export default function DragContainer({
         colorBlockArray.forEach((colorBlock, index) => {
           if (colorBlock.current && dragWrap.current) {
             const x =
-              index < 4
+              index < 8
                 ? 0
                 : 100 - (colorBlock.current.offsetWidth / canvasWidth) * 100
-            const y = y_pos[index % 4]
+            const y = y_pos[index % 8]
             place(colorBlock.current, x, y)
           }
         })
@@ -2570,7 +2582,7 @@ export default function DragContainer({
         onclone: (clonedNode: HTMLElement) => void
       }
 
-      const svgFilter = d === 0 ? 0 : 1
+      const svgFilter = artVariant === 0 ? 0 : 1
 
       const dataUrl = (await domtoimage.default.toPng(dragWrap.current, {
         scale: 2,
@@ -2932,24 +2944,8 @@ export default function DragContainer({
             }}
           >
             <div className="blob-title-wrap">
-              <h2 className="blob-title">
-                {t('BlobArt')} {d + 1}
-              </h2>
-              {d === 0 ? (
-                <p>{t('MoreColorsAvailableThroughRandomBlobButton')} </p>
-              ) : d === 1 ? (
-                <p>
-                  {t('WithMoreMutedColors')}.{' '}
-                  {t('MoreColorsAvailableThroughRandomBlobButton')}{' '}
-                </p>
-              ) : d === 2 ? (
-                <p>
-                  {t('DarkerColors')}.{' '}
-                  {t('MoreColorsAvailableThroughRandomBlobButton')}{' '}
-                </p>
-              ) : (
-                <p>{t('MoreColorsAvailableThroughRandomBlobButton')}</p>
-              )}
+              <h2 className="blob-title">{t('BlobArt')}</h2>
+              <p>{t('MoreColorsAvailableThroughRandomBlobButton')}</p>
             </div>
             <div className={'label-container'}>
               <span id={`blobdescription${d}`} className={'scr'}>
@@ -3444,6 +3440,7 @@ export default function DragContainer({
                       highestZIndex={highestZIndex}
                       dispatch={dispatch}
                       d={d}
+                      variant={artVariant}
                       items={draggables[d] ?? []}
                       getPosition={getPosition}
                       removeBlob={removeBlob}

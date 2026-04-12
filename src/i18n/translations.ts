@@ -7864,7 +7864,7 @@ export const translations = {
     de: 'Farben anzeigen',
     pt: 'Mostrar cores',
     cs: 'Zobrazit barvy',
-    fi: 'Näytä varivaihtoehdot',
+    fi: 'Näytä värivaihtoehdot',
   },
   LoginToSaveBlobs: {
     en: 'Login to save blobs',

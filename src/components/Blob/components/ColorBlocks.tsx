@@ -47,6 +47,8 @@ const ColorBlocks: FC<ColorBlockProps> = ({
         const { color1, color2 } = colorPairs[d][index]
         const color = `linear-gradient(45deg, ${color1}, ${color2})`
         const isActive = selectedColor === color && mode === 'change-color'
+        const isLeftSide = index < 8
+        const slotIndex = index % 8
         return (
           <button
             ref={colorBlock}
@@ -57,14 +59,14 @@ const ColorBlocks: FC<ColorBlockProps> = ({
               colorBlock
             )?.toLowerCase()} tooltip-wrap ${
               !colorsVisible ? 'hidden' : ''
-            } ${isActive ? 'active' : ''} ${index < 4 ? 'left' : 'right'}`}
+            } ${isActive ? 'active' : ''} ${isLeftSide ? 'left' : 'right'}`}
             id={`color${index}-${d}`}
             style={{
-              top: `${index < 4 ? (index + 1) * 18 : (index + 1 - 4) * 18}%`,
-              right: `${index >= 4 ? '0' : 'unset'}`,
+              top: `${9 + slotIndex * 11}%`,
+              right: `${!isLeftSide ? '0' : 'unset'}`,
               background: color,
               borderRadius: `${
-                index < 4
+                isLeftSide
                   ? '5rem 6.7rem 6.7rem 5rem / 0.7rem 8.7rem 8.7rem 0.7rem'
                   : '6.7rem 5rem 5rem 6.7rem / 8.7rem 0.7rem 0.7rem 8.7rem'
               }`,
@@ -72,7 +74,7 @@ const ColorBlocks: FC<ColorBlockProps> = ({
           >
             <i className="color-alert">{t('Active')}</i>
 
-            <span className={`tooltip below ${index < 4 ? 'right' : 'left'}`}>
+            <span className={`tooltip below ${isLeftSide ? 'right' : 'left'}`}>
               {t('ChangeColorInstructions')}
             </span>
           </button>

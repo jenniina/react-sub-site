@@ -46,6 +46,7 @@ interface DragLayerProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dispatch: DispatchReact<any>
   d: number
+  variant: number
   items: Draggable[]
   getPosition: (target: HTMLElement) => void
   dragWrap: RefObject<HTMLDivElement>
@@ -90,6 +91,7 @@ const DragLayers = ({
   highestZIndex,
   dispatch,
   d,
+  variant,
   items,
   getPosition,
   dragWrap,
@@ -1001,6 +1003,7 @@ const DragLayers = ({
           items={groupedDraggables[l] ?? []}
           className={hiddenLayers.has(l) ? 'hidden' : ''}
           d={d}
+          variant={variant}
           setSelectedvalue0={setSelectedvalue0}
           start={start}
           movement={movement}
