@@ -25,6 +25,8 @@ const angle = '90deg'
 
 interface DragState {
   isDragging: boolean
+  targetId: string | null
+  targetElement: HTMLElement | null
   pointerStartX: number
   pointerStartY: number
   originLeft: number
@@ -120,6 +122,8 @@ const DragLayers = ({
   const suppressBlurCommitRef = useRef(false)
   const dragStateRef = useRef<DragState>({
     isDragging: false,
+    targetId: null,
+    targetElement: null,
     pointerStartX: 0,
     pointerStartY: 0,
     originLeft: 0,
@@ -482,6 +486,8 @@ const DragLayers = ({
       dragState.frameId = null
     }
     dragState.isDragging = false
+    dragState.targetId = null
+    dragState.targetElement = null
     document?.removeEventListener('keydown', keyDown)
     document?.removeEventListener('touchmove', preventDefault)
   }, [keyDown])
@@ -524,6 +530,8 @@ const DragLayers = ({
       if (!target) return
 
       const dragState = dragStateRef.current
+      if (dragState.targetId !== target.id) return
+
       if (Number.isFinite(dragState.currentLeft)) {
         target.style.left = `${dragState.currentLeft}px`
       }
@@ -607,6 +615,8 @@ const DragLayers = ({
       )
 
       dragStateRef.current.isDragging = true
+      dragStateRef.current.targetId = target.id
+      dragStateRef.current.targetElement = target
       dragStateRef.current.pointerStartX = x
       dragStateRef.current.pointerStartY = y
       dragStateRef.current.originLeft = Number.isFinite(originLeft)
@@ -693,8 +703,8 @@ const DragLayers = ({
         e.preventDefault()
         if (document) document.body.style.overflow = 'hidden'
       }
-      const target = currentFocusedElementRef.current
       const dragState = dragStateRef.current
+      const target = dragState.targetElement
 
       if (dragState.isDragging && target) {
         const { x, y } = getEventPosition(e)
@@ -706,10 +716,10 @@ const DragLayers = ({
         if (dragState.frameId === null && typeof window !== 'undefined') {
           dragState.frameId = window.requestAnimationFrame(() => {
             dragState.frameId = null
-            if (!currentFocusedElementRef.current) return
+            if (!dragState.targetElement) return
 
-            currentFocusedElementRef.current.style.left = `${dragState.currentLeft}px`
-            currentFocusedElementRef.current.style.top = `${dragState.currentTop}px`
+            dragState.targetElement.style.left = `${dragState.currentLeft}px`
+            dragState.targetElement.style.top = `${dragState.currentTop}px`
           })
         }
       }
@@ -731,7 +741,7 @@ const DragLayers = ({
     ) => {
       e.stopPropagation()
       e.preventDefault()
-      const activeTarget = currentFocusedElementRef.current
+      const activeTarget = dragStateRef.current.targetElement
       if (!dragStateRef.current.isDragging || !activeTarget) return
       if (target !== activeTarget) return
 
@@ -785,6 +795,8 @@ const DragLayers = ({
       }
 
       commitDraggedPosition(activeTarget)
+      dragStateRef.current.targetId = null
+      dragStateRef.current.targetElement = null
       activeTarget.classList.remove('drag')
       suppressBlurCommitRef.current = true
       activeTarget.blur()
@@ -809,7 +821,7 @@ const DragLayers = ({
       target: HTMLElement
     ) => {
       e.stopPropagation()
-      const activeTarget = currentFocusedElementRef.current
+      const activeTarget = dragStateRef.current.targetElement
       if (!dragStateRef.current.isDragging || !activeTarget) return
       if (target !== activeTarget) return
 
@@ -825,6 +837,8 @@ const DragLayers = ({
       }
 
       commitDraggedPosition(activeTarget)
+      dragStateRef.current.targetId = null
+      dragStateRef.current.targetElement = null
       activeTarget.classList.remove('drag')
       document?.removeEventListener('keydown', keyDown)
       suppressBlurCommitRef.current = true
@@ -855,14 +869,22 @@ const DragLayers = ({
   //on blob blur
   const blurred = useCallback(
     (draggable: HTMLElement) => {
+      const wasDraggingCurrentBlob =
+        dragStateRef.current.isDragging &&
+        dragStateRef.current.targetId === draggable.id
+
       dragStateRef.current.isDragging = false
       draggable.classList.remove('drag')
       document?.removeEventListener('keydown', keyDown)
       removeDocumentDragListeners()
       if (suppressBlurCommitRef.current) {
         suppressBlurCommitRef.current = false
-      } else {
+      } else if (wasDraggingCurrentBlob) {
         commitDraggedPosition(draggable)
+      }
+      if (dragStateRef.current.targetId === draggable.id) {
+        dragStateRef.current.targetId = null
+        dragStateRef.current.targetElement = null
       }
       draggable.draggable = false
       currentFocusedElementRef.current = null
@@ -906,11 +928,9 @@ const DragLayers = ({
     (draggable: HTMLElement) => {
       // getPosition(draggable)
       currentFocusedElementRef.current = draggable
-      draggable.classList.add('drag')
       const layerStyle = draggable.style.getPropertyValue('--layer')
       setActiveLayer(parseInt(layerStyle) ?? 2)
       document?.addEventListener('keydown', keyDown)
-      draggable.draggable = true
     },
     [keyDown, setActiveLayer]
   )

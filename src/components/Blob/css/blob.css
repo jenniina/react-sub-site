@@ -106,8 +106,8 @@ svg.filter {
   display: block;
   background-color: var(--color-primary-20);
   color: var(--color-primary-1);
-  top: -80%;
-  left: 120%;
+  top: -110%;
+  left: -100%;
   min-width: clamp(10px, 70vw, 130px);
   font-size: 0.8rem;
   pointer-events: none;
@@ -118,18 +118,9 @@ svg.filter {
   line-height: 1;
   font-weight: normal;
 }
-.drag-container .make-more .clone-alert,
-.drag-container .scale-up-alert {
-  top: 80%;
-}
-.drag-container .layer-increase .layer-up-alert,
-.drag-container .scale-down-alert,
-.drag-container .scale-up-alert {
-  left: unset;
-  right: 120%;
-}
-.drag-container .scale-down-alert {
-  top: -150%;
+.drag-container .delete-blob .delete-alert,
+.drag-container .make-more .clone-alert {
+  top: 110%;
 }
 .colorblock.active,
 .colorblock.active:hover,
@@ -141,18 +132,25 @@ svg.filter {
   outline-offset: -3px;
 }
 .colorblock.active .color-alert {
-  top: -110%;
+  top: 50%;
+  transform: translateY(-50%);
   min-width: max-content;
   max-width: max-content;
-  padding: 0.2em 0.3em;
   border: 2px dashed black;
+  padding: 0 0.1em;
+}
+.colorblock.active .color-alert svg {
+  font-size: 1.2em;
+  padding: 0;
 }
 .colorblock.active.left .color-alert {
-  left: 0;
+  left: 1.5em;
+  border-radius: var(--radius-large) 0 0 var(--radius-large);
 }
 .colorblock.active.right .color-alert {
-  right: 0;
+  right: 1.5em;
   left: unset;
+  border-radius: 0 var(--radius-large) var(--radius-large) 0;
 }
 .drag-container .make-more {
   z-index: 1200;

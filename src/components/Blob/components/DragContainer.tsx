@@ -45,7 +45,7 @@ import Icon from '../../Icon/Icon'
 import useLocalStorage from '../../../hooks/useStorage'
 
 // Should be in the same order as colorBlockProps2
-const colorPairs2: ColorPair[] = [
+const colorPairsLeft: ColorPair[] = [
   { color1: 'indigo', color2: 'mediumorchid' }, //colorBlockPurpleDark
   { color1: 'darkmagenta', color2: 'palevioletred' }, //colorBlockPurplePink
   { color1: 'hotpink', color2: 'pink' }, //colorBlockHotPink
@@ -59,13 +59,13 @@ const colorPairs2: ColorPair[] = [
   { color1: 'gold', color2: 'yellow' }, //colorBlockGold
 ]
 // Should be in the same order as colorBlockProps3
-const colorPairs3: ColorPair[] = [
+const colorPairsRight: ColorPair[] = [
   { color1: 'mediumblue', color2: 'darkslateblue' }, //colorBlockPurplish
-  { color1: 'blue', color2: 'mediumslateblue' }, //colorBlockBlueish
-  { color1: 'royalblue', color2: 'turquoise' }, //colorBlockBlueLight
-  { color1: 'cyan', color2: 'paleturquoise' }, //colorBlockBlueGray
-  { color1: 'aquamarine', color2: 'lightcyan' }, //colorBlockBlueCyan
-  { color1: 'palegreen', color2: 'aquamarine' }, //colorBlockGreenish
+  { color1: 'blue', color2: 'slateblue' }, //colorBlockBlueish
+  { color1: 'royalblue', color2: 'dodgerblue' }, //colorBlockBlueLight
+  { color1: 'deepskyblue', color2: 'lightskyblue' }, //colorBlockBlueGray
+  { color1: 'powderblue', color2: 'lightcyan' }, //colorBlockBlueCyan
+  { color1: 'lightgreen', color2: 'aquamarine' }, //colorBlockGreenish
   { color1: 'lawngreen', color2: 'greenyellow' }, //colorBlockGreenBright
   { color1: 'seagreen', color2: 'limegreen' }, //colorBlockGreenLime
   { color1: 'darkgreen', color2: 'green' }, //colorBlockGreenDark
@@ -73,7 +73,7 @@ const colorPairs3: ColorPair[] = [
   { color1: 'olive', color2: 'darkkhaki' }, //colorBlockOlive
 ]
 
-const colorPairsCombined: ColorPair[] = [...colorPairs2, ...colorPairs3]
+const colorPairsCombined: ColorPair[] = [...colorPairsLeft, ...colorPairsRight]
 
 const colorPairsCombo: ColorPair[][] = [colorPairsCombined]
 

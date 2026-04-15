@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import { ColorPair, Modes, RefObject } from '../types'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
+import Icon from '../../Icon/Icon'
 
 interface ColorBlockProps {
   d: number
@@ -75,7 +76,14 @@ const ColorBlocks: FC<ColorBlockProps> = ({
               ['--full-amount' as string]: colorLength,
             }}
           >
-            <i className="color-alert">{t('Active')}</i>
+            <i className="color-alert">
+              {isLeftSide ? (
+                <Icon lib="fa" name="FaArrowLeft" aria-hidden="true" />
+              ) : (
+                <Icon lib="fa" name="FaArrowRight" aria-hidden="true" />
+              )}
+              <span className="scr">{t('Active')}</span>
+            </i>
 
             <span
               className={`tooltip narrow2 ${isLeftSide ? 'right' : 'left'}`}
