@@ -299,7 +299,7 @@ const DragLayers = ({
           e.preventDefault()
           onEscapeKey()
           break
-        case 'Enter': //Cycle through colors
+        case 'Enter': //Cycle through pre-set colors
           e.preventDefault()
           e.stopPropagation()
           if (reset) {
@@ -968,6 +968,10 @@ const DragLayers = ({
   )
 
   useEffect(() => {
+    if (colorIndex < 0) {
+      return
+    }
+
     const target = currentFocusedElementRef.current
     if (target) {
       const { color1, color2 } = colorPairs[d][colorIndex]

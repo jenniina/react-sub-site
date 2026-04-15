@@ -44,40 +44,29 @@ import { getErrorMessage } from '../../../utils'
 import Icon from '../../Icon/Icon'
 import useLocalStorage from '../../../hooks/useStorage'
 
-/*
-// Should be in the same order as colorBlockProps
-const colorPairs: ColorPair[] = [
-  { color1: 'darkorange', color2: 'orange' }, //colorBlockOrange
-  { color1: 'orangered', color2: 'palevioletred' }, //colorBlockRed
-  { color1: 'magenta', color2: 'violet' }, //colorBlockPurple
-  { color1: 'blue', color2: 'cyan' }, //colorBlockBlue
-  { color1: 'greenyellow', color2: 'lemonchiffon' }, //colorBlockYellowLime
-  { color1: 'cyan', color2: 'greenyellow' }, //colorBlockCyanYellow
-  { color1: 'cyan', color2: 'pink' }, //colorBlockCyanPink
-  { color1: 'lemonchiffon', color2: 'pink' }, //colorBlockPinkYellow
-]
-*/
 // Should be in the same order as colorBlockProps2
 const colorPairs2: ColorPair[] = [
-  { color1: 'indianred', color2: 'palevioletred' }, //colorBlockReddish
-  { color1: 'sienna', color2: 'peru' }, //colorBlockBrown
-  { color1: 'chocolate', color2: 'burlywood' }, //colorBlockTan
-  { color1: 'darkkhaki', color2: 'moccasin' }, //colorBlockKhaki
-  { color1: 'slateblue', color2: 'mediumpurple' }, //colorBlockPurplish
-  { color1: 'royalblue', color2: 'turquoise' }, //colorBlockBluish
-  { color1: 'cadetblue', color2: 'mediumaquamarine' }, //colorBlockGreenish
-  { color1: 'lightslategray', color2: 'lightsteelblue' }, //colorBlockGray
+  { color1: 'orangered', color2: 'chocolate' }, //colorBlockOrange
+  { color1: 'orange', color2: 'gold' }, //colorBlockGold
+  { color1: 'saddlebrown', color2: 'sienna' }, //colorBlockBrown
+  { color1: 'peru', color2: 'burlywood' }, //colorBlockTan
+  { color1: 'tan', color2: 'peachpuff' }, //colorBlockKhaki
+  { color1: 'darkseagreen', color2: 'lightgreen' }, //colorBlockGreenish
+  { color1: 'mediumseagreen', color2: 'springgreen' }, //colorBlockGreenBright
+  { color1: 'green', color2: 'limegreen' }, //colorBlockGreenLime
+  { color1: 'darkgreen', color2: 'green' }, //colorBlockGreenDark
 ]
 // Should be in the same order as colorBlockProps3
 const colorPairs3: ColorPair[] = [
-  { color1: 'indigo', color2: 'mediumorchid' }, //colorBlockDarkPurple
-  { color1: 'darkmagenta', color2: 'palevioletred' }, //colorBlockDarkPink
-  { color1: 'crimson', color2: 'indianred' }, //colorBlockDarkRed
-  { color1: 'chocolate', color2: 'orangered' }, //colorBlockDarkOrange
-  { color1: 'darkcyan', color2: 'olivedrab' }, //colorBlockDarkGreen
-  { color1: 'midnightblue', color2: 'darkturquoise' }, //colorBlockGreenishBlue
-  { color1: 'mediumblue', color2: 'cadetblue' }, //colorBlockDarkBlue
-  { color1: 'darkblue', color2: 'mediumslateblue' }, //colorBlockPurplishBlue
+  { color1: 'crimson', color2: 'indianred' }, //colorBlockReddish
+  { color1: 'indianred', color2: 'palevioletred' }, //colorBlockViolet
+  { color1: 'hotpink', color2: 'pink' }, //colorBlockPinkBright
+  { color1: 'darkmagenta', color2: 'palevioletred' }, //colorBlockPurplePink
+  { color1: 'indigo', color2: 'mediumorchid' }, //colorBlockPurpleDark
+  { color1: 'midnightblue', color2: 'slateblue' }, //colorBlockPurplish
+  { color1: 'mediumblue', color2: 'mediumslateblue' }, //colorBlockBlueish
+  { color1: 'royalblue', color2: 'turquoise' }, //colorBlockBlueLight
+  { color1: 'cyan', color2: 'paleturquoise' }, //colorBlockBlueGray
 ]
 
 const colorPairsCombined: ColorPair[] = [...colorPairs2, ...colorPairs3]
@@ -87,7 +76,7 @@ const colorPairsCombo: ColorPair[][] = [colorPairsCombined]
 const angle = '90deg'
 
 const defaultLayerAmount = 3
-const minCanvasWidth = 155
+const minCanvasWidth = 140
 const minCanvasHeight = 300
 const canvasViewportPadding = 12
 const defaultSingleCanvasVariant = 2
@@ -102,29 +91,6 @@ type CanvasBounds = {
   maxWidth: number
   minHeight: number
   maxHeight: number
-}
-
-const normalizeCanvasSize = (value: unknown): CanvasSize | null => {
-  if (
-    typeof value !== 'object' ||
-    value === null ||
-    !('width' in value) ||
-    !('height' in value)
-  ) {
-    return null
-  }
-
-  const width = Number(value.width)
-  const height = Number(value.height)
-
-  if (!Number.isFinite(width) || !Number.isFinite(height)) {
-    return null
-  }
-
-  return {
-    width: Math.max(minCanvasWidth, Math.round(width)),
-    height: Math.max(minCanvasHeight, Math.round(height)),
-  }
 }
 
 let activeBlobContainerId: number | null = null
@@ -250,19 +216,12 @@ export default function DragContainer({
   }, [d])
   const backgroundColor = state.backgroundColor
 
-  //loadBackground()
-
   const draggables = state.draggables
-
-  // const [layerAmount, setLayerAmount] = useLocalStorage<number>(
-  //   'blobLayerAmount',
-  //   state.draggables[d]?.length > 0 ? Math.max(...state.draggables[d].map((d) => d.layer)) + 1 : defaultLayerAmount
-  // )
 
   const [activeLayer, setActiveLayer] = useState<number>(0)
   const [hiddenLayers, setHiddenLayers] = useState<Set<number>>(new Set())
   const [highestZIndex, setHighestZIndex] = useState<Record<number, number>>({}) // {0: 144, 1: 146, 2: 24}
-  const [colorIndex, setColorIndex] = useState<number>(0)
+  const [colorIndex, setColorIndex] = useState<number>(-1)
   const [focusedBlob, setFocusedBlob] = useState<focusedBlob | null>(null)
   const [usingKeyboard, setUsingKeyboard] = useState<boolean>(false)
   const [markerEnabled, setMarkerEnabled] = useState<boolean>(true)
@@ -289,89 +248,72 @@ export default function DragContainer({
 
   const [layerAmount, setLayerAmount] = useState<number>(0)
 
-  const colorBlockReddish = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockOrange = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockGold = useRef(null) as RefObject<HTMLButtonElement>
   const colorBlockBrown = useRef(null) as RefObject<HTMLButtonElement>
   const colorBlockKhaki = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockBluish = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockPurplish = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockGreenBright = useRef(null) as RefObject<HTMLButtonElement>
   const colorBlockGreenish = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockGreenLime = useRef(null) as RefObject<HTMLButtonElement>
   const colorBlockTan = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockGray = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockGreenDark = useRef(null) as RefObject<HTMLButtonElement>
 
-  const colorBlockDarkPurple = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockDarkPink = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockDarkRed = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockDarkOrange = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockDarkGreen = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockGreenishBlue = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockDarkBlue = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockPurplishBlue = useRef(null) as RefObject<HTMLButtonElement>
-
-  // // Create a mapping between the ref objects and their names
-  // const refNameMapping = useMemo(() => {
-  //   return new Map<RefObject<HTMLButtonElement>, string>([
-  //     [colorBlockOrange, 'colorBlockOrange'],
-  //     [colorBlockRed, 'colorBlockRed'],
-  //     [colorBlockPurple, 'colorBlockPurple'],
-  //     [colorBlockBlue, 'colorBlockBlue'],
-  //     [colorBlockYellowLime, 'colorBlockYellowLime'],
-  //     [colorBlockCyanYellow, 'colorBlockCyanYellow'],
-  //     [colorBlockCyanPink, 'colorBlockCyanPink'],
-  //     [colorBlockPinkYellow, 'colorBlockPinkYellow'],
-  //   ])
-  // }, [
-  //   colorBlockOrange,
-  //   colorBlockRed,
-  //   colorBlockPurple,
-  //   colorBlockBlue,
-  //   colorBlockYellowLime,
-  //   colorBlockCyanYellow,
-  //   colorBlockCyanPink,
-  //   colorBlockPinkYellow,
-  // ])
+  const colorBlockReddish = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockViolet = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockPinkBright = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockPurplePink = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockPurpleDark = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockPurplish = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockBlueish = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockBlueLight = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockBlueGray = useRef(null) as RefObject<HTMLButtonElement>
 
   const refNameMapping2 = useMemo(() => {
     return new Map<RefObject<HTMLButtonElement>, string>([
-      [colorBlockReddish, 'colorBlockReddish'],
+      [colorBlockOrange, 'colorBlockOrange'],
+      [colorBlockGold, 'colorBlockGold'],
       [colorBlockBrown, 'colorBlockBrown'],
       [colorBlockTan, 'colorBlockTan'],
       [colorBlockKhaki, 'colorBlockKhaki'],
-      [colorBlockPurplish, 'colorBlockPurplish'],
-      [colorBlockBluish, 'colorBlockBluish'],
       [colorBlockGreenish, 'colorBlockGreenish'],
-      [colorBlockGray, 'colorBlockGray'],
+      [colorBlockGreenBright, 'colorBlockGreenBright'],
+      [colorBlockGreenLime, 'colorBlockGreenLime'],
+      [colorBlockGreenDark, 'colorBlockGreenDark'],
     ])
   }, [
-    colorBlockReddish,
+    colorBlockOrange,
+    colorBlockGold,
     colorBlockBrown,
     colorBlockTan,
     colorBlockKhaki,
-    colorBlockPurplish,
-    colorBlockBluish,
     colorBlockGreenish,
-    colorBlockGray,
+    colorBlockGreenBright,
+    colorBlockGreenLime,
+    colorBlockGreenDark,
   ])
 
   const refNameMapping3 = useMemo(() => {
     return new Map<RefObject<HTMLButtonElement>, string>([
-      [colorBlockDarkPurple, 'colorBlockDarkPurple'],
-      [colorBlockDarkPink, 'colorBlockDarkPink'],
-      [colorBlockDarkRed, 'colorBlockDarkRed'],
-      [colorBlockDarkOrange, 'colorBlockDarkOrange'],
-      [colorBlockDarkGreen, 'colorBlockDarkGreen'],
-      [colorBlockGreenishBlue, 'colorBlockGreenishBlue'],
-      [colorBlockDarkBlue, 'colorBlockDarkBlue'],
-      [colorBlockPurplishBlue, 'colorBlockPurplishBlue'],
+      [colorBlockReddish, 'colorBlockReddish'],
+      [colorBlockViolet, 'colorBlockViolet'],
+      [colorBlockPinkBright, 'colorBlockPinkBright'],
+      [colorBlockPurplePink, 'colorBlockPurplePink'],
+      [colorBlockPurpleDark, 'colorBlockPurpleDark'],
+      [colorBlockPurplish, 'colorBlockPurplish'],
+      [colorBlockBlueish, 'colorBlockBlueish'],
+      [colorBlockBlueLight, 'colorBlockBlueLight'],
+      [colorBlockBlueGray, 'colorBlockBlueGray'],
     ])
   }, [
-    colorBlockDarkPurple,
-    colorBlockDarkPink,
-    colorBlockDarkRed,
-    colorBlockDarkOrange,
-    colorBlockDarkGreen,
-    colorBlockGreenishBlue,
-    colorBlockDarkBlue,
-    colorBlockPurplishBlue,
+    colorBlockReddish,
+    colorBlockViolet,
+    colorBlockPinkBright,
+    colorBlockPurplePink,
+    colorBlockPurpleDark,
+    colorBlockPurplish,
+    colorBlockBlueish,
+    colorBlockBlueLight,
+    colorBlockBlueGray,
   ])
 
   const refNameMappingCombo = useMemo(() => {
@@ -393,71 +335,53 @@ export default function DragContainer({
     []
   )
 
-  // // Should be in the same order as colorPairs:
-  // const colorBlockProps = useMemo(() => {
-  //   return [
-  //     colorBlockOrange,
-  //     colorBlockRed,
-  //     colorBlockPurple,
-  //     colorBlockBlue,
-  //     colorBlockYellowLime,
-  //     colorBlockCyanYellow,
-  //     colorBlockCyanPink,
-  //     colorBlockPinkYellow,
-  //   ]
-  // }, [
-  //   colorBlockOrange,
-  //   colorBlockRed,
-  //   colorBlockPurple,
-  //   colorBlockBlue,
-  //   colorBlockYellowLime,
-  //   colorBlockCyanYellow,
-  //   colorBlockCyanPink,
-  //   colorBlockPinkYellow,
-  // ])
-
   const colorBlockProps2 = useMemo(() => {
     return [
-      colorBlockReddish,
+      colorBlockOrange,
+      colorBlockGold,
+
       colorBlockBrown,
       colorBlockTan,
       colorBlockKhaki,
-      colorBlockPurplish,
-      colorBlockBluish,
       colorBlockGreenish,
-      colorBlockGray,
+      colorBlockGreenBright,
+      colorBlockGreenLime,
+      colorBlockGreenDark,
     ]
   }, [
-    colorBlockReddish,
+    colorBlockOrange,
+    colorBlockGold,
     colorBlockBrown,
     colorBlockTan,
     colorBlockKhaki,
-    colorBlockPurplish,
-    colorBlockBluish,
     colorBlockGreenish,
-    colorBlockGray,
+    colorBlockGreenBright,
+    colorBlockGreenLime,
+    colorBlockGreenDark,
   ])
 
   const colorBlockProps3 = useMemo(() => {
     return [
-      colorBlockDarkPurple,
-      colorBlockDarkPink,
-      colorBlockDarkRed,
-      colorBlockDarkOrange,
-      colorBlockDarkGreen,
-      colorBlockGreenishBlue,
-      colorBlockDarkBlue,
-      colorBlockPurplishBlue,
+      colorBlockReddish,
+      colorBlockViolet,
+      colorBlockPinkBright,
+      colorBlockPurplePink,
+      colorBlockPurpleDark,
+      colorBlockPurplish,
+      colorBlockBlueish,
+      colorBlockBlueLight,
+      colorBlockBlueGray,
     ]
   }, [
-    colorBlockDarkPurple,
-    colorBlockDarkPink,
-    colorBlockDarkRed,
-    colorBlockDarkOrange,
-    colorBlockDarkGreen,
-    colorBlockGreenishBlue,
-    colorBlockDarkBlue,
-    colorBlockPurplishBlue,
+    colorBlockReddish,
+    colorBlockViolet,
+    colorBlockPinkBright,
+    colorBlockPurplePink,
+    colorBlockPurpleDark,
+    colorBlockPurplish,
+    colorBlockBlueish,
+    colorBlockBlueLight,
+    colorBlockBlueGray,
   ])
 
   const colorBlockPropsCombo = useMemo(() => {
@@ -1632,6 +1556,7 @@ export default function DragContainer({
       'darkorchid',
       'darkseagreen',
       'darkslateblue',
+      'darkturquoise',
       'darkviolet',
       'deepskyblue',
       'deeppink',
@@ -2145,7 +2070,7 @@ export default function DragContainer({
       const canvasHeight = dragWrapOuter.current?.offsetHeight
       if (!canvasWidth || !canvasHeight) return
 
-      const y_pos = [9, 20, 31, 42, 53, 64, 75, 86] // color block y positions
+      const y_pos = [5, 15, 25, 35, 45, 55, 65, 75, 85] // color block y positions
       const x_pos = [15, 38, 62, 85] // top item x positions
       const top_pos = 1
       const bottom_pos = 99
@@ -2218,10 +2143,7 @@ export default function DragContainer({
         place(
           resizeHandleLeft.current,
           0 - (adjustment / canvasWidth) * 100,
-          100 -
-            ((resizeHandleLeft.current.offsetHeight - adjustment) /
-              canvasHeight) *
-              100
+          100 - (resizeHandleLeft.current.offsetHeight / 2 / canvasHeight) * 100
         )
       if (resizeHandleRight.current && dragWrap.current)
         place(
@@ -2231,19 +2153,17 @@ export default function DragContainer({
               canvasWidth) *
               100,
           100 -
-            ((resizeHandleRight.current.offsetHeight - adjustment) /
-              canvasHeight) *
-              100
+            (resizeHandleRight.current.offsetHeight / 2 / canvasHeight) * 100
         )
       // place color blocks:
       colorBlockPropsCombo.forEach((colorBlockArray) => {
         colorBlockArray.forEach((colorBlock, index) => {
           if (colorBlock.current && dragWrap.current) {
             const x =
-              index < 8
+              index < colorBlockArray.length / 2
                 ? 0
                 : 100 - (colorBlock.current.offsetWidth / canvasWidth) * 100
-            const y = y_pos[index % 8]
+            const y = y_pos[index % (colorBlockArray.length / 2)]
             place(colorBlock.current, x, y)
           }
         })
@@ -3219,7 +3139,7 @@ export default function DragContainer({
                 )}
                 <span
                   id={`make-smaller${d}-span`}
-                  className="tooltip left above"
+                  className="tooltip right below"
                 >{`${t('ShrinkInstructions')}. ${t('Alternatively')}: ${t(
                   'ResizebyScrollInstructions'
                 )}`}</span>
@@ -3243,7 +3163,7 @@ export default function DragContainer({
                 )}
                 <span
                   id={`make-larger${d}-span`}
-                  className="tooltip left below"
+                  className="tooltip below"
                 >{`${t('EnlargeInstructions')}. ${t('Alternatively')}: ${t(
                   'ResizebyScrollInstructions'
                 )}`}</span>
@@ -3264,7 +3184,7 @@ export default function DragContainer({
                 )}
                 <span
                   id={`layer-decrease${d}-span`}
-                  className="tooltip above"
+                  className="tooltip below"
                 >{`${t('DecreaseBlobLayerBy1Instructions')} ${t(
                   'KeyboardUsePressTheCorrespondingLayerNumber'
                 )}`}</span>
@@ -3285,28 +3205,11 @@ export default function DragContainer({
                 )}
                 <span
                   id={`layer-increase${d}-span`}
-                  className="tooltip above"
+                  className="tooltip below left"
                 >{`${t('IncreaseBlobLayerBy1Instructions')} ${t(
                   'KeyboardUsePressTheCorrespondingLayerNumber'
                 )}`}</span>
                 <Icon lib="bi" name="BiChevronUp" aria-hidden="true" />
-              </button>
-
-              <button
-                ref={makeRandom0}
-                className={`make-random tooltip-wrap gray ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
-                id={`make-random${d}`}
-                aria-labelledby={`make-random${d}-span`}
-                onClick={() => addRandomDraggable()}
-              >
-                <Icon lib="fa" name="FaPlus" aria-hidden="true" />
-                <span id={`make-random${d}-span`} className="tooltip below">
-                  {`${t('ClickMeToMakeARandomBlob')}. ${t(
-                    'MoreColorsAvailable'
-                  )}! ${t('KeyboardUse')}: ${t('PressSpaceOrRWithABlobInFocusToCycleThroughRandomColors')}`}
-                </span>
               </button>
 
               <button
@@ -3330,6 +3233,23 @@ export default function DragContainer({
               </button>
 
               <button
+                ref={makeRandom0}
+                className={`make-random tooltip-wrap gray ${
+                  !controlsVisible ? 'hidden' : ''
+                }`}
+                id={`make-random${d}`}
+                aria-labelledby={`make-random${d}-span`}
+                onClick={() => addRandomDraggable()}
+              >
+                <Icon lib="fa" name="FaPlus" aria-hidden="true" />
+                <span id={`make-random${d}-span`} className="tooltip above">
+                  {`${t('ClickMeToMakeARandomBlob')}. ${t(
+                    'MoreColorsAvailable'
+                  )}! ${t('KeyboardUse')}: ${t('PressSpaceOrRWithABlobInFocusToCycleThroughRandomColors')}`}
+                </span>
+              </button>
+
+              <button
                 ref={makeMore0}
                 className={`make-more tooltip-wrap gray ${
                   !controlsVisible ? 'hidden' : ''
@@ -3343,7 +3263,7 @@ export default function DragContainer({
                 {mode === 'clone' && (
                   <span className="clone-alert">{t('CloneModeOn')}</span>
                 )}
-                <span id={`make-more${d}-span`} className="tooltip right below">
+                <span id={`make-more${d}-span`} className="tooltip left above">
                   {t('CloneInstructions')}
                 </span>
               </button>

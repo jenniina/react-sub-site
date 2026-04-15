@@ -33,7 +33,7 @@ svg.filter {
 .drag-container {
   position: relative;
   margin: 0 calc(var(--padd) * -1) 0 calc(calc(var(--padd) + var(--page-padding)) * -1);
-  min-width: calc(100% + calc(var(--padd) + var(--page-padding)) * 2);
+  min-width: calc(100% - calc(var(--padd) * 2 - var(--page-padding)) * 2);
 }
 .drag-container #drag-wrap-outer0 {
   --hue0: 214;
@@ -228,6 +228,7 @@ svg.filter {
 .drag-container .drag-slider-single > span {
   width: 100%;
   text-align: center;
+  margin-right: auto;
 }
 .drag-container .drag-slider-single > button {
   flex: 0 0 100%;
@@ -365,6 +366,9 @@ svg.filter {
   flex: 0 0 100%;
   margin: 0 auto;
   text-align: center;
+  display: flex;
+  flex-flow: row wrap;
+  gap: 0.3em;
 }
 .button-container {
   flex: 0 1 100%;
@@ -710,41 +714,6 @@ svg.filter {
     url('cursor-change-color.png') 16 16,
     pointer;
 }
-/* .drag-container .dragzone.delete .draggable-overlay {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" stroke="red" stroke-width="2" fill="none"/><line x1="8" y1="8" x2="24" y2="24" stroke="black" stroke-width="2"/><line x1="24" y1="8" x2="8" y2="24" stroke="black" stroke-width="2"/></svg>')
-      16 16,
-    url('cursor-delete.png') 16 16, pointer;
-}
-.drag-container .dragzone.clone .draggable-overlay {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect x="8.3" y="8.3" width="15.4" height="15.4" fill="none" stroke="%23000" stroke-width="2"/><polyline points="19.6 27.9 4.5 27.9 4.5 11.8" fill="none" stroke="%23000" stroke-width="2"/></svg>')
-      16 16,
-    url('cursor-clone.png') 16 16, copy;
-}
-.drag-container .dragzone.scale-up .draggable-overlay {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><polygon points="20.9 4.4 27.6 4.4 27.6 11.1" fill="%23000" stroke="none"/><line x1="18.3" y1="13.7" x2="26" y2="6" stroke="%23000" stroke-width="2" stroke-linecap="round"/><polygon points="11.1 27.6 4.4 27.6 4.4 20.9" fill="%23000" stroke="none"/><line x1="13.7" y1="18.3" x2="6" y2="26" stroke="%23000" stroke-width="2" stroke-linecap="round"/></svg>')
-      16 16,
-    url('cursor-scale-up.png') 16 16, ne-resize;
-}
-.drag-container .dragzone.scale-down .draggable-overlay {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><polygon points="24 14.7 17.3 14.7 17.3 8" fill="%23000" stroke="none"/><line x1="26.6" y1="5.4" x2="18.9" y2="13.1" stroke="%23000" stroke-width="2" stroke-linecap="round"/><polygon points="8 17.3 14.7 17.3 14.7 24" fill="%23000" stroke="none"/><line x1="5.4" y1="26.6" x2="13.1" y2="18.9" stroke="%23000" stroke-width="2" stroke-linecap="round"/></svg>')
-      16 16,
-    url('cursor-scale-down.png') 16 16, s-resize;
-}
-.drag-container .dragzone.layer-up .draggable-overlay {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><polygon points="11.3 12.6 16 7.9 20.7 12.6" fill="%23000" stroke="none"/><line x1="16" y1="24.1" x2="16" y2="10.1" stroke="%23000" stroke-width="2" stroke-linecap="round"/></svg>')
-      16 16,
-    url('cursor-layer-up.png') 16 16, pointer;
-}
-.drag-container .dragzone.layer-down .draggable-overlay {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><polygon points="20.7 19.4 16 24.1 11.3 19.4" fill="%23000" stroke="none" stroke-width="2"/><line x1="16" y1="7.9" x2="16" y2="21.9" stroke="%23000" stroke-width="2" stroke-linecap="round"/></svg>')
-      16 16,
-    url('cursor-layer-down.png') 16 16, pointer;
-}
-.drag-container .dragzone.change-color .draggable-overlay {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M11.4,3L5.8,8.6L7.2,10l4.2-4.2L13.6,8l-9.8,9.8L15.1,29l11.2-11.2L11.4,3z M15.1,9.5l8.4,8.4l0,0H6.7l0,0L15.1,9.5z" fill="%23000" stroke="none" /><path d="M23.8,23.6c0-1.3,2.4-5.7,2.4-5.7s2.4,4.3,2.4,5.7s-1,2.4-2.3,2.4C24.9,26,23.8,24.9,23.8,23.6z" fill="%23000" stroke="none" /></svg>')
-      16 16,
-    url('cursor-change-color.png') 16 16, pointer;
-} */
 .drag-container .dragzone.drag-container .dragzone:active .draggable-overlay {
   cursor: -webkit-grabbing;
   cursor: grabbing;
@@ -802,6 +771,19 @@ body.dark-mode .site .drag-container .dragzone:focus {
   z-index: 1190;
 }
 
+#root .drag-container .colorblock:hover,
+#root .drag-container .colorblock:focus,
+#root .drag-container .colorblock:focus-visible,
+#root .drag-container .colorblock.active {
+  z-index: 1300;
+}
+#root .drag-container .colorblock.left .tooltip {
+  left: 1rem;
+}
+#root .drag-container .colorblock.right .tooltip {
+  right: 1rem;
+}
+
 .drag-container .make-smaller,
 .drag-container .make-larger {
   position: absolute;
@@ -857,12 +839,13 @@ body.dark-mode .site .drag-container .dragzone:focus {
   margin: 0;
 }
 .drag-container .layer-mover-control-wrap {
+  --btn-gap: 0.3rem;
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
   align-items: center;
   padding-bottom: 0.4em;
-  gap: 0.9rem 0.6rem;
+  gap: calc(var(--btn-gap) * 3) calc(var(--btn-gap) * 2);
   margin: 1.8rem auto 0.5rem;
   z-index: 1200;
 }
@@ -871,7 +854,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
   flex-flow: column nowrap;
   justify-content: space-between;
   align-items: center;
-  gap: 0.3rem;
+  gap: var(--btn-gap);
   margin: 0 auto;
   width: 100%;
 }
@@ -944,11 +927,22 @@ body.dark-mode .site .drag-container .dragzone:focus {
   min-width: 100%;
   justify-content: center;
 }
-@media (min-width: 330px) {
-  .drag-container .layer-mover-control-wrap .movers-wrap,
-  .drag-container .layer-mover-control-wrap .layer-tools {
-    min-width: 48%;
-    width: 48%;
+@media (min-width: 300px) {
+  .drag-container .layer-mover-control-wrap {
+    flex-flow: row wrap;
+    max-width: calc(100vw - var(--scrollbar_width) - 2 * var(--page-padding));
+  }
+  .drag-container .layer-mover-control-wrap .history-btn-wrap,
+  .drag-container .layer-mover-control-wrap .layers {
+    min-width: 90%;
+    width: 100%;
+  }
+  .drag-container .layer-mover-control-wrap .layer-tools1,
+  .drag-container .layer-mover-control-wrap .layer-tools2,
+  .drag-container .layer-mover-control-wrap .movers-wrap1,
+  .drag-container .layer-mover-control-wrap .movers-wrap2 {
+    min-width: max-content;
+    width: calc(48% - var(--btn-gap) * 3);
     justify-content: center;
   }
   .drag-container .layer-mover-control-wrap .movers-wrap1,
@@ -1069,7 +1063,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
 } /* END media */
 @media (min-width: 900px) {
   .drag-container .layer-mover-control-wrap {
-    flex: 1 0 100%;
+    flex: 0 0 100%;
     width: 100%;
     max-width: 100%;
     min-width: 100%;
@@ -1253,34 +1247,33 @@ body.dark-mode .site .drag-container .dragzone:focus {
 @media (min-width: 600px) {
   .drag-container .layer-mover-control-wrap {
     width: 100%;
-    flex: 3 0 100%;
-    gap: 0.8rem 0.4rem;
+    flex: 0 0 100%;
   }
-  .drag-container .layer-mover-control-wrap .movers-wrap1 {
-    flex-grow: 1;
-    max-width: unset;
-  }
+
   .drag-container .layer-mover-control-wrap .layer-btn-wrap {
     max-width: 100%;
   }
   .drag-container .layer-mover-control-wrap .history-btn-wrap {
-    flex: 1 0 9.4rem;
-    justify-content: flex-start;
+    flex: 0 0 9.4rem;
+    gap: calc(var(--btn-gap) * 3);
   }
 }
 @media (min-width: 900px) {
   .drag-container .layer-mover-control-wrap {
-    flex-flow: row nowrap;
     align-items: flex-start;
+    justify-content: flex-start;
   }
   .drag-container .layer-mover-control-wrap .layers.layer-btn-wrap {
     min-width: unset;
     flex-flow: row wrap;
     flex-shrink: 3;
+    flex-grow: 1;
   }
   .drag-container .layer-mover-control-wrap .history-btn-wrap {
-    flex-grow: 1;
+    min-width: 9.4rem;
     max-width: unset;
+    justify-content: flex-start;
+    gap: calc(var(--btn-gap) * 2);
   }
   .drag-container .layer-mover-control-wrap .movers-wrap1 {
     flex-grow: 0;

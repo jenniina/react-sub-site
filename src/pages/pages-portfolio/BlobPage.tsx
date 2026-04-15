@@ -9,9 +9,14 @@ import dog from '../../assets/blob-dog.png'
 import { CSSProperties } from 'react'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import SEO from '../../components/SEO/SEO'
+import useWindowSize from '../../hooks/useWindowSize'
 
 export default function BlobPage({ type }: { type: string }) {
   const { t } = useLanguageContext()
+
+  const { windowWidth } = useWindowSize()
+
+  const breakpoint = 500
 
   const blobStyle: CSSProperties = {
     width: '100%',
@@ -38,6 +43,7 @@ export default function BlobPage({ type }: { type: string }) {
                     className="features-blobs"
                     wrapperClass="features-blobs-wrap"
                     showButton
+                    hideBrackets={windowWidth < breakpoint ? true : false}
                   >
                     <div className="medium">
                       <h2>{t('Features')}</h2>
@@ -233,6 +239,7 @@ export default function BlobPage({ type }: { type: string }) {
                     className="sample-img"
                     wrapperClass="sample-img-wrap"
                     showButton
+                    hideBrackets={windowWidth < breakpoint ? true : false}
                   >
                     <>
                       <figure>
@@ -283,6 +290,7 @@ export default function BlobPage({ type }: { type: string }) {
                     text={t('TipsAndTricks')}
                     className="blob-tips-and-tricks"
                     wrapperClass="blob-tips-and-tricks-wrap"
+                    hideBrackets={windowWidth < breakpoint ? true : false}
                   >
                     <>
                       <h2 id="blob-tips-heading">{t('TipsAndTricks')}</h2>

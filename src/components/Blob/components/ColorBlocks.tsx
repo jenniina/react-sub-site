@@ -32,6 +32,8 @@ const ColorBlocks: FC<ColorBlockProps> = ({
 }) => {
   const { t } = useLanguageContext()
 
+  const colorLength = colorBlockProps[d].length
+
   const handleClick = (color: string) => {
     if (selectedColor === color) {
       setSelectedColor('')
@@ -47,14 +49,14 @@ const ColorBlocks: FC<ColorBlockProps> = ({
         const { color1, color2 } = colorPairs[d][index]
         const color = `linear-gradient(45deg, ${color1}, ${color2})`
         const isActive = selectedColor === color && mode === 'change-color'
-        const isLeftSide = index < 8
-        const slotIndex = index % 8
+        const isLeftSide = index < colorLength / 2
+        const slotIndex = index % (colorLength / 2)
         return (
           <button
             ref={colorBlock}
             key={`${colorPairs[d][index].color1}${index}-${d}`}
             onClick={() => handleClick(color)}
-            className={`colorblock ${getRefName(
+            className={`colorblock colorblock${index} ${getRefName(
               map[d],
               colorBlock
             )?.toLowerCase()} tooltip-wrap ${
@@ -62,7 +64,7 @@ const ColorBlocks: FC<ColorBlockProps> = ({
             } ${isActive ? 'active' : ''} ${isLeftSide ? 'left' : 'right'}`}
             id={`color${index}-${d}`}
             style={{
-              top: `${9 + slotIndex * 11}%`,
+              top: `${colorLength / 2 + 1 + slotIndex * (colorLength / 2 + 3)}%`,
               right: `${!isLeftSide ? '0' : 'unset'}`,
               background: color,
               borderRadius: `${
@@ -70,11 +72,14 @@ const ColorBlocks: FC<ColorBlockProps> = ({
                   ? '5rem 6.7rem 6.7rem 5rem / 0.7rem 8.7rem 8.7rem 0.7rem'
                   : '6.7rem 5rem 5rem 6.7rem / 8.7rem 0.7rem 0.7rem 8.7rem'
               }`,
+              ['--full-amount' as string]: colorLength,
             }}
           >
             <i className="color-alert">{t('Active')}</i>
 
-            <span className={`tooltip below ${isLeftSide ? 'right' : 'left'}`}>
+            <span
+              className={`tooltip narrow2 ${isLeftSide ? 'right' : 'left'}`}
+            >
               {t('ChangeColorInstructions')}
             </span>
           </button>
