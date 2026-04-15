@@ -2067,8 +2067,8 @@ export default function DragContainer({
     ) {
       const outestRect = dragWrapOutest.current.getBoundingClientRect()
       const outerRect = dragWrapOuter.current.getBoundingClientRect()
-      const canvasWidth = dragWrapOuter.current.offsetWidth
-      const canvasHeight = dragWrapOuter.current.offsetHeight
+      const canvasWidth = dragWrap.current.offsetWidth
+      const canvasHeight = dragWrap.current.offsetHeight
 
       element.style.left =
         outerRect.left - outestRect.left + (canvasWidth / 100) * x_pos + 'px'
