@@ -48,28 +48,29 @@ import useLocalStorage from '../../../hooks/useStorage'
 const colorPairs2: ColorPair[] = [
   { color1: 'indigo', color2: 'mediumorchid' }, //colorBlockPurpleDark
   { color1: 'darkmagenta', color2: 'palevioletred' }, //colorBlockPurplePink
-  { color1: 'crimson', color2: 'indianred' }, //colorBlockCrimson
-  { color1: 'indianred', color2: 'palevioletred' }, //colorBlockRedViolet
   { color1: 'hotpink', color2: 'pink' }, //colorBlockHotPink
-  { color1: 'orange', color2: 'gold' }, //colorBlockGold
+  { color1: 'indianred', color2: 'salmon' }, //colorBlockRedViolet
+  { color1: 'crimson', color2: 'indianred' }, //colorBlockCrimson
   { color1: 'orangered', color2: 'chocolate' }, //colorBlockOrange
   { color1: 'saddlebrown', color2: 'sienna' }, //colorBlockBrown
   { color1: 'peru', color2: 'burlywood' }, //colorBlockTan
   { color1: 'tan', color2: 'peachpuff' }, //colorBlockKhaki
+  { color1: 'palegoldenrod', color2: 'lightgoldenrodyellow' }, //colorBlockYellow
+  { color1: 'gold', color2: 'yellow' }, //colorBlockGold
 ]
 // Should be in the same order as colorBlockProps3
 const colorPairs3: ColorPair[] = [
-  { color1: 'midnightblue', color2: 'slateblue' }, //colorBlockPurplish
-  { color1: 'mediumblue', color2: 'mediumslateblue' }, //colorBlockBlueish
+  { color1: 'mediumblue', color2: 'darkslateblue' }, //colorBlockPurplish
+  { color1: 'blue', color2: 'mediumslateblue' }, //colorBlockBlueish
   { color1: 'royalblue', color2: 'turquoise' }, //colorBlockBlueLight
   { color1: 'cyan', color2: 'paleturquoise' }, //colorBlockBlueGray
   { color1: 'aquamarine', color2: 'lightcyan' }, //colorBlockBlueCyan
-
-  { color1: 'darkseagreen', color2: 'lightgreen' }, //colorBlockGreenish
-  { color1: 'mediumseagreen', color2: 'springgreen' }, //colorBlockGreenBright
-  { color1: 'green', color2: 'limegreen' }, //colorBlockGreenLime
+  { color1: 'palegreen', color2: 'aquamarine' }, //colorBlockGreenish
+  { color1: 'lawngreen', color2: 'greenyellow' }, //colorBlockGreenBright
+  { color1: 'seagreen', color2: 'limegreen' }, //colorBlockGreenLime
   { color1: 'darkgreen', color2: 'green' }, //colorBlockGreenDark
-  { color1: 'darkolivegreen', color2: 'olive' }, //colorBlockOlive
+  { color1: 'darkolivegreen', color2: 'olive' }, //colorBlockDarkOlive
+  { color1: 'olive', color2: 'darkkhaki' }, //colorBlockOlive
 ]
 
 const colorPairsCombined: ColorPair[] = [...colorPairs2, ...colorPairs3]
@@ -80,7 +81,7 @@ const angle = '90deg'
 
 const defaultLayerAmount = 3
 const minCanvasWidth = 140
-const minCanvasHeight = 320
+const minCanvasHeight = 360
 const canvasViewportPadding = 12
 const defaultSingleCanvasVariant = 2
 
@@ -252,6 +253,7 @@ export default function DragContainer({
   const [layerAmount, setLayerAmount] = useState<number>(0)
 
   const colorBlockOrange = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockYellow = useRef(null) as RefObject<HTMLButtonElement>
   const colorBlockGold = useRef(null) as RefObject<HTMLButtonElement>
   const colorBlockBrown = useRef(null) as RefObject<HTMLButtonElement>
   const colorBlockKhaki = useRef(null) as RefObject<HTMLButtonElement>
@@ -260,8 +262,8 @@ export default function DragContainer({
   const colorBlockGreenLime = useRef(null) as RefObject<HTMLButtonElement>
   const colorBlockTan = useRef(null) as RefObject<HTMLButtonElement>
   const colorBlockGreenDark = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockDarkOlive = useRef(null) as RefObject<HTMLButtonElement>
   const colorBlockOlive = useRef(null) as RefObject<HTMLButtonElement>
-
   const colorBlockHotPink = useRef(null) as RefObject<HTMLButtonElement>
   const colorBlockRedViolet = useRef(null) as RefObject<HTMLButtonElement>
   const colorBlockCrimson = useRef(null) as RefObject<HTMLButtonElement>
@@ -277,26 +279,28 @@ export default function DragContainer({
     return new Map<RefObject<HTMLButtonElement>, string>([
       [colorBlockPurpleDark, 'colorBlockPurpleDark'],
       [colorBlockPurplePink, 'colorBlockPurplePink'],
-      [colorBlockCrimson, 'colorBlockCrimson'],
-      [colorBlockRedViolet, 'colorBlockRedViolet'],
       [colorBlockHotPink, 'colorBlockHotPink'],
-      [colorBlockGold, 'colorBlockGold'],
+      [colorBlockRedViolet, 'colorBlockRedViolet'],
+      [colorBlockCrimson, 'colorBlockCrimson'],
       [colorBlockOrange, 'colorBlockOrange'],
       [colorBlockBrown, 'colorBlockBrown'],
       [colorBlockTan, 'colorBlockTan'],
       [colorBlockKhaki, 'colorBlockKhaki'],
+      [colorBlockYellow, 'colorBlockYellow'],
+      [colorBlockGold, 'colorBlockGold'],
     ])
   }, [
     colorBlockPurpleDark,
     colorBlockPurplePink,
-    colorBlockCrimson,
-    colorBlockRedViolet,
     colorBlockHotPink,
-    colorBlockGold,
+    colorBlockRedViolet,
+    colorBlockCrimson,
     colorBlockOrange,
     colorBlockBrown,
     colorBlockTan,
     colorBlockKhaki,
+    colorBlockYellow,
+    colorBlockGold,
   ])
 
   const refNameMapping3 = useMemo(() => {
@@ -306,11 +310,11 @@ export default function DragContainer({
       [colorBlockBlueLight, 'colorBlockBlueLight'],
       [colorBlockBlueGray, 'colorBlockBlueGray'],
       [colorBlockBlueCyan, 'colorBlockBlueCyan'],
-
       [colorBlockGreenish, 'colorBlockGreenish'],
       [colorBlockGreenBright, 'colorBlockGreenBright'],
       [colorBlockGreenLime, 'colorBlockGreenLime'],
       [colorBlockGreenDark, 'colorBlockGreenDark'],
+      [colorBlockDarkOlive, 'colorBlockDarkOlive'],
       [colorBlockOlive, 'colorBlockOlive'],
     ])
   }, [
@@ -323,6 +327,7 @@ export default function DragContainer({
     colorBlockGreenBright,
     colorBlockGreenLime,
     colorBlockGreenDark,
+    colorBlockDarkOlive,
     colorBlockOlive,
   ])
 
@@ -349,26 +354,28 @@ export default function DragContainer({
     return [
       colorBlockPurpleDark,
       colorBlockPurplePink,
-      colorBlockCrimson,
-      colorBlockRedViolet,
       colorBlockHotPink,
-      colorBlockGold,
+      colorBlockRedViolet,
+      colorBlockCrimson,
       colorBlockOrange,
       colorBlockBrown,
       colorBlockTan,
       colorBlockKhaki,
+      colorBlockYellow,
+      colorBlockGold,
     ]
   }, [
     colorBlockPurpleDark,
     colorBlockPurplePink,
-    colorBlockCrimson,
-    colorBlockRedViolet,
     colorBlockHotPink,
-    colorBlockGold,
+    colorBlockRedViolet,
+    colorBlockCrimson,
     colorBlockOrange,
     colorBlockBrown,
     colorBlockTan,
     colorBlockKhaki,
+    colorBlockYellow,
+    colorBlockGold,
   ])
 
   const colorBlockProps3 = useMemo(() => {
@@ -382,6 +389,7 @@ export default function DragContainer({
       colorBlockGreenBright,
       colorBlockGreenLime,
       colorBlockGreenDark,
+      colorBlockDarkOlive,
       colorBlockOlive,
     ]
   }, [
@@ -394,6 +402,7 @@ export default function DragContainer({
     colorBlockGreenBright,
     colorBlockGreenLime,
     colorBlockGreenDark,
+    colorBlockDarkOlive,
     colorBlockOlive,
   ])
 
@@ -1668,8 +1677,8 @@ export default function DragContainer({
   }, [state.draggables])
 
   const addRandomDraggable = (
-    x_pos = `${(windowWidth / 100) * Math.round(getRandomMinMax(25, 55))}px`,
-    y_pos = `${(windowHeight / 100) * Math.round(getRandomMinMax(70, 85))}px`,
+    x_pos = `${((canvasSize?.width ?? windowWidth) / 100) * Math.round(getRandomMinMax(25, 55))}px`,
+    y_pos = `${((canvasSize?.height ?? windowHeight) / 100) * Math.round(getRandomMinMax(70, 85))}px`,
     layer: number = activeLayer
   ) => {
     if (
@@ -2083,7 +2092,7 @@ export default function DragContainer({
       const canvasHeight = dragWrapOuter.current?.offsetHeight
       if (!canvasWidth || !canvasHeight) return
 
-      const y_pos = [5, 14, 23, 32, 41, 50, 59, 68, 77, 86] // color block y positions
+      const y_pos = [6, 14, 22, 30, 38, 46, 54, 62, 70, 78, 86] // color block y positions
       const x_pos = [15, 38, 62, 85] // top item x positions
       const top_pos = 1
       const bottom_pos = 99
