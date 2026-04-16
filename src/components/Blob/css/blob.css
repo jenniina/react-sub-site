@@ -106,9 +106,9 @@ svg.filter {
   display: block;
   background-color: var(--color-primary-20);
   color: var(--color-primary-1);
-  top: -110%;
+  top: 110%;
   left: -100%;
-  min-width: clamp(10px, 70vw, 130px);
+  min-width: clamp(50px, 70vw, 8em);
   font-size: 0.8rem;
   pointer-events: none;
   white-space: wrap;
@@ -117,10 +117,11 @@ svg.filter {
   border-radius: var(--radius-small);
   line-height: 1;
   font-weight: normal;
+  pointer-events: none;
 }
 .drag-container .delete-blob .delete-alert,
 .drag-container .make-more .clone-alert {
-  top: 110%;
+  top: -110%;
 }
 .colorblock.active,
 .colorblock.active:hover,

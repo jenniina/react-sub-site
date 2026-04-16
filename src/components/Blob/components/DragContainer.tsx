@@ -49,13 +49,13 @@ const colorPairsLeft: ColorPair[] = [
   { color1: 'indigo', color2: 'mediumorchid' }, //colorBlockPurpleDark
   { color1: 'darkmagenta', color2: 'palevioletred' }, //colorBlockPurplePink
   { color1: 'hotpink', color2: 'pink' }, //colorBlockHotPink
-  { color1: 'indianred', color2: 'salmon' }, //colorBlockRedViolet
   { color1: 'crimson', color2: 'indianred' }, //colorBlockCrimson
+  { color1: 'coral', color2: 'salmon' }, //colorBlockRedSalmon
   { color1: 'orangered', color2: 'chocolate' }, //colorBlockOrange
   { color1: 'saddlebrown', color2: 'sienna' }, //colorBlockBrown
   { color1: 'peru', color2: 'burlywood' }, //colorBlockTan
   { color1: 'tan', color2: 'peachpuff' }, //colorBlockKhaki
-  { color1: 'palegoldenrod', color2: 'lightgoldenrodyellow' }, //colorBlockYellow
+  { color1: 'khaki', color2: 'palegoldenrod' }, //colorBlockYellow
   { color1: 'gold', color2: 'yellow' }, //colorBlockGold
 ]
 // Should be in the same order as colorBlockProps3
@@ -265,7 +265,7 @@ export default function DragContainer({
   const colorBlockDarkOlive = useRef(null) as RefObject<HTMLButtonElement>
   const colorBlockOlive = useRef(null) as RefObject<HTMLButtonElement>
   const colorBlockHotPink = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockRedViolet = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlockRedSalmon = useRef(null) as RefObject<HTMLButtonElement>
   const colorBlockCrimson = useRef(null) as RefObject<HTMLButtonElement>
   const colorBlockPurplePink = useRef(null) as RefObject<HTMLButtonElement>
   const colorBlockPurpleDark = useRef(null) as RefObject<HTMLButtonElement>
@@ -280,8 +280,8 @@ export default function DragContainer({
       [colorBlockPurpleDark, 'colorBlockPurpleDark'],
       [colorBlockPurplePink, 'colorBlockPurplePink'],
       [colorBlockHotPink, 'colorBlockHotPink'],
-      [colorBlockRedViolet, 'colorBlockRedViolet'],
       [colorBlockCrimson, 'colorBlockCrimson'],
+      [colorBlockRedSalmon, 'colorBlockRedSalmon'],
       [colorBlockOrange, 'colorBlockOrange'],
       [colorBlockBrown, 'colorBlockBrown'],
       [colorBlockTan, 'colorBlockTan'],
@@ -293,8 +293,8 @@ export default function DragContainer({
     colorBlockPurpleDark,
     colorBlockPurplePink,
     colorBlockHotPink,
-    colorBlockRedViolet,
     colorBlockCrimson,
+    colorBlockRedSalmon,
     colorBlockOrange,
     colorBlockBrown,
     colorBlockTan,
@@ -355,8 +355,8 @@ export default function DragContainer({
       colorBlockPurpleDark,
       colorBlockPurplePink,
       colorBlockHotPink,
-      colorBlockRedViolet,
       colorBlockCrimson,
+      colorBlockRedSalmon,
       colorBlockOrange,
       colorBlockBrown,
       colorBlockTan,
@@ -368,8 +368,8 @@ export default function DragContainer({
     colorBlockPurpleDark,
     colorBlockPurplePink,
     colorBlockHotPink,
-    colorBlockRedViolet,
     colorBlockCrimson,
+    colorBlockRedSalmon,
     colorBlockOrange,
     colorBlockBrown,
     colorBlockTan,
@@ -1684,11 +1684,9 @@ export default function DragContainer({
       return { x: fallbackX, y: fallbackY }
     }
 
-    const viewportHeight = dragWrapOuter.current.clientHeight
+    const viewportHeight = dragWrap.current.clientHeight
     const scrollTop = dragWrapOuter.current.scrollTop
     const canvasHeight = dragWrapOuter.current.offsetHeight
-
-    const viewportWidth = dragWrapOuter.current.clientWidth
     const scrollLeft = dragWrapOuter.current.scrollLeft
     const canvasWidth = dragWrapOuter.current.offsetWidth
 
@@ -1704,13 +1702,11 @@ export default function DragContainer({
 
     const spawnX = Math.max(
       0,
-      Math.max(
+      Math.min(
         canvasWidth,
         Math.round(
           scrollLeft +
-            Math.round(
-              getRandomMinMax(viewportWidth * 0.15, viewportWidth * 0.75)
-            )
+            Math.round(getRandomMinMax(canvasWidth * 0.15, canvasWidth * 0.75))
         )
       )
     )
