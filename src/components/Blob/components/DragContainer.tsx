@@ -1522,8 +1522,8 @@ export default function DragContainer({
       const [colorFirst, colorSecond] = colorswitch()
 
       const wide =
-        (canvasSize?.width ?? windowWidth) >
-        (canvasSize?.height ?? windowHeight)
+        (effectiveCanvasSize?.width ?? windowWidth) >
+        (effectiveCanvasSize?.height ?? windowHeight)
 
       const newDraggable: Draggable = {
         layer: 0,
@@ -1534,9 +1534,9 @@ export default function DragContainer({
             ? Math.round(getRandomMinMax(7, 20))
             : Math.round(getRandomMinMax(7, 10)),
         x: wide
-          ? `${((canvasSize?.width ?? windowWidth) / 100) * Math.round(getRandomMinMax(2, 70))}px`
-          : `${((canvasSize?.width ?? windowWidth) / 100) * Math.round(getRandomMinMax(2, 50))}px`,
-        y: `${((canvasSize?.height ?? windowHeight) / 100) * Math.round(getRandomMinMax(2, 70))}px`,
+          ? `${((effectiveCanvasSize?.width ?? windowWidth) / 100) * Math.round(getRandomMinMax(2, 70))}px`
+          : `${((effectiveCanvasSize?.width ?? windowWidth) / 100) * Math.round(getRandomMinMax(2, 50))}px`,
+        y: `${((effectiveCanvasSize?.height ?? windowHeight) / 100) * Math.round(getRandomMinMax(2, 70))}px`,
         z: `1`,
         background: `linear-gradient(${angle ?? '90deg'}, ${
           colorFirst ?? 'cyan'
@@ -1676,9 +1676,62 @@ export default function DragContainer({
     return
   }, [state.draggables])
 
+  const getRandomBlobSpawnPosition = useCallback(() => {
+    const fallbackX = `${((effectiveCanvasSize?.width ?? windowWidth) / 100) * Math.round(getRandomMinMax(25, 55))}px`
+    const fallbackY = `${((effectiveCanvasSize?.height ?? windowHeight) / 100) * Math.round(getRandomMinMax(80, 90))}px`
+
+    if (!makeRandom0.current || !dragWrap.current || !dragWrapOuter.current) {
+      return { x: fallbackX, y: fallbackY }
+    }
+
+    const viewportHeight = dragWrapOuter.current.clientHeight
+    const scrollTop = dragWrapOuter.current.scrollTop
+    const canvasHeight = dragWrapOuter.current.offsetHeight
+
+    const viewportWidth = dragWrapOuter.current.clientWidth
+    const scrollLeft = dragWrapOuter.current.scrollLeft
+    const canvasWidth = dragWrapOuter.current.offsetWidth
+
+    const spawnY = Math.max(
+      0,
+      Math.max(
+        canvasHeight,
+        Math.round(
+          scrollTop + viewportHeight - makeRandom0.current.offsetHeight * 4
+        )
+      )
+    )
+
+    const spawnX = Math.max(
+      0,
+      Math.max(
+        canvasWidth,
+        Math.round(
+          scrollLeft +
+            Math.round(
+              getRandomMinMax(viewportWidth * 0.15, viewportWidth * 0.75)
+            )
+        )
+      )
+    )
+
+    return {
+      x: `${spawnX}px`,
+      y: `${spawnY}px`,
+    }
+  }, [
+    effectiveCanvasSize?.height,
+    effectiveCanvasSize?.width,
+    makeRandom0,
+    dragWrap,
+    dragWrapOuter,
+    windowHeight,
+    windowWidth,
+  ])
+
   const addRandomDraggable = (
-    x_pos = `${((canvasSize?.width ?? windowWidth) / 100) * Math.round(getRandomMinMax(25, 55))}px`,
-    y_pos = `${((canvasSize?.height ?? windowHeight) / 100) * Math.round(getRandomMinMax(70, 85))}px`,
+    x_pos = getRandomBlobSpawnPosition().x,
+    y_pos = getRandomBlobSpawnPosition().y,
     layer: number = activeLayer
   ) => {
     if (
