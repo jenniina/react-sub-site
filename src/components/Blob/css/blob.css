@@ -777,10 +777,10 @@ body.dark-mode .site .drag-container .dragzone:focus {
   z-index: 1300;
 }
 #root .drag-container .colorblock.left .tooltip {
-  left: 1rem;
+  left: 1.3rem;
 }
 #root .drag-container .colorblock.right .tooltip {
-  right: 1rem;
+  right: 1.3rem;
 }
 
 .drag-container .make-smaller,

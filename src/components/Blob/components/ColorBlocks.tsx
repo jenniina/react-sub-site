@@ -85,9 +85,7 @@ const ColorBlocks: FC<ColorBlockProps> = ({
               <span className="scr">{t('Active')}</span>
             </i>
 
-            <span
-              className={`tooltip narrow2 ${isLeftSide ? 'right' : 'left'}`}
-            >
+            <span className={`tooltip narrow2`}>
               {t('ChangeColorInstructions')}
             </span>
           </button>
