@@ -44,7 +44,7 @@ import { getErrorMessage } from '../../../utils'
 import Icon from '../../Icon/Icon'
 import useLocalStorage from '../../../hooks/useStorage'
 
-// Should be in the same order as colorBlockProps2
+// Should be in the same order as colorBlockPropsLeft
 const colorPairsLeft: ColorPair[] = [
   { color1: 'indigo', color2: 'mediumorchid' }, //colorBlockPurpleDark
   { color1: 'darkmagenta', color2: 'palevioletred' }, //colorBlockPurplePink
@@ -58,13 +58,13 @@ const colorPairsLeft: ColorPair[] = [
   { color1: 'khaki', color2: 'palegoldenrod' }, //colorBlockYellow
   { color1: 'gold', color2: 'yellow' }, //colorBlockGold
 ]
-// Should be in the same order as colorBlockProps3
+// Should be in the same order as colorBlockPropsRight
 const colorPairsRight: ColorPair[] = [
-  { color1: 'mediumblue', color2: 'darkslateblue' }, //colorBlockPurplish
-  { color1: 'blue', color2: 'slateblue' }, //colorBlockBlueish
-  { color1: 'royalblue', color2: 'dodgerblue' }, //colorBlockBlueLight
-  { color1: 'deepskyblue', color2: 'lightskyblue' }, //colorBlockBlueGray
-  { color1: 'powderblue', color2: 'lightcyan' }, //colorBlockBlueCyan
+  { color1: 'blue', color2: 'royalblue' }, //colorBlockPurplish
+  { color1: 'royalblue', color2: 'dodgerblue' }, //colorBlockBlueish
+  { color1: 'dodgerblue', color2: 'deepskyblue' }, //colorBlockBlueLight
+  { color1: 'skyblue', color2: 'lightskyblue' }, //colorBlockBlueGray
+  { color1: 'lightskyblue', color2: 'lightcyan' }, //colorBlockBlueCyan
   { color1: 'lightgreen', color2: 'aquamarine' }, //colorBlockGreenish
   { color1: 'lawngreen', color2: 'greenyellow' }, //colorBlockGreenBright
   { color1: 'seagreen', color2: 'limegreen' }, //colorBlockGreenLime
@@ -350,7 +350,7 @@ export default function DragContainer({
     []
   )
 
-  const colorBlockProps2 = useMemo(() => {
+  const colorBlockPropsLeft = useMemo(() => {
     return [
       colorBlockPurpleDark,
       colorBlockPurplePink,
@@ -378,7 +378,7 @@ export default function DragContainer({
     colorBlockGold,
   ])
 
-  const colorBlockProps3 = useMemo(() => {
+  const colorBlockPropsRight = useMemo(() => {
     return [
       colorBlockPurplish,
       colorBlockBlueish,
@@ -407,8 +407,8 @@ export default function DragContainer({
   ])
 
   const colorBlockPropsCombo = useMemo(() => {
-    return [[...colorBlockProps2, ...colorBlockProps3]]
-  }, [colorBlockProps2, colorBlockProps3])
+    return [[...colorBlockPropsLeft, ...colorBlockPropsRight]]
+  }, [colorBlockPropsLeft, colorBlockPropsRight])
 
   const [selectedColor, setSelectedColor] = useState<string>('')
 
