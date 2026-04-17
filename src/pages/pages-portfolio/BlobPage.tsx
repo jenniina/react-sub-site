@@ -3,15 +3,20 @@ import Accordion from '../../components/Accordion/Accordion'
 import Blobs from '../../components/Blob/Blobs'
 import birb from '../../assets/blob-birb.png'
 import fish from '../../assets/blob-fish.png'
+import face from '../../assets/face.png'
 import bubbly from '../../assets/bubbly-fish.png'
 import dog from '../../assets/blob-dog.png'
 import { CSSProperties } from 'react'
-import { Link } from 'react-router-dom'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import SEO from '../../components/SEO/SEO'
+import useWindowSize from '../../hooks/useWindowSize'
 
 export default function BlobPage({ type }: { type: string }) {
   const { t } = useLanguageContext()
+
+  const { windowWidth } = useWindowSize()
+
+  const breakpoint = 500
 
   const blobStyle: CSSProperties = {
     width: '100%',
@@ -38,6 +43,7 @@ export default function BlobPage({ type }: { type: string }) {
                     className="features-blobs"
                     wrapperClass="features-blobs-wrap"
                     showButton
+                    hideBrackets={windowWidth < breakpoint ? true : false}
                   >
                     <div className="medium">
                       <h2>{t('Features')}</h2>
@@ -155,6 +161,19 @@ export default function BlobPage({ type }: { type: string }) {
                             </li>
                           </ul>
                         </li>
+                        <li>
+                          {t('ResizeCanvas')}{' '}
+                          <big>
+                            <strong>
+                              <i>({t('New')}!)</i>
+                            </strong>
+                          </big>
+                          <ul>
+                            <li>
+                              {t('ResizeTheCanvasByDraggingTheCornerHandles')}
+                            </li>
+                          </ul>
+                        </li>
                       </ul>
                       <h3>{t('Instructions')}</h3>
                       <h4>{t('PointerUse')}</h4>
@@ -220,8 +239,15 @@ export default function BlobPage({ type }: { type: string }) {
                     className="sample-img"
                     wrapperClass="sample-img-wrap"
                     showButton
+                    hideBrackets={windowWidth < breakpoint ? true : false}
                   >
                     <>
+                      <figure>
+                        <img src={face} style={blobStyle} alt={t('Face')} />
+                        <figcaption>
+                          {t('SampleArtwork')}: {t('Face')}
+                        </figcaption>
+                      </figure>
                       <figure>
                         <img
                           src={birb}
@@ -264,6 +290,7 @@ export default function BlobPage({ type }: { type: string }) {
                     text={t('TipsAndTricks')}
                     className="blob-tips-and-tricks"
                     wrapperClass="blob-tips-and-tricks-wrap"
+                    hideBrackets={windowWidth < breakpoint ? true : false}
                   >
                     <>
                       <h2 id="blob-tips-heading">{t('TipsAndTricks')}</h2>

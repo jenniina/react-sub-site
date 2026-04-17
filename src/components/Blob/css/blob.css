@@ -33,7 +33,7 @@ svg.filter {
 .drag-container {
   position: relative;
   margin: 0 calc(var(--padd) * -1) 0 calc(calc(var(--padd) + var(--page-padding)) * -1);
-  min-width: calc(100% + calc(var(--padd) + var(--page-padding)) * 2);
+  min-width: calc(100% - calc(var(--padd) * 2 - var(--page-padding)) * 2);
 }
 .drag-container #drag-wrap-outer0 {
   --hue0: 214;
@@ -106,9 +106,9 @@ svg.filter {
   display: block;
   background-color: var(--color-primary-20);
   color: var(--color-primary-1);
-  top: -80%;
-  left: 120%;
-  min-width: clamp(10px, 70vw, 130px);
+  top: 110%;
+  left: -100%;
+  min-width: clamp(50px, 70vw, 8em);
   font-size: 0.8rem;
   pointer-events: none;
   white-space: wrap;
@@ -117,19 +117,11 @@ svg.filter {
   border-radius: var(--radius-small);
   line-height: 1;
   font-weight: normal;
+  pointer-events: none;
 }
-.drag-container .make-more .clone-alert,
-.drag-container .scale-up-alert {
-  top: 80%;
-}
-.drag-container .layer-increase .layer-up-alert,
-.drag-container .scale-down-alert,
-.drag-container .scale-up-alert {
-  left: unset;
-  right: 120%;
-}
-.drag-container .scale-down-alert {
-  top: -150%;
+.drag-container .delete-blob .delete-alert,
+.drag-container .make-more .clone-alert {
+  top: -110%;
 }
 .colorblock.active,
 .colorblock.active:hover,
@@ -141,18 +133,25 @@ svg.filter {
   outline-offset: -3px;
 }
 .colorblock.active .color-alert {
-  top: -110%;
+  top: 50%;
+  transform: translateY(-50%);
   min-width: max-content;
   max-width: max-content;
-  padding: 0.2em 0.3em;
   border: 2px dashed black;
+  padding: 0 0.1em;
+}
+.colorblock.active .color-alert svg {
+  font-size: 1.2em;
+  padding: 0;
 }
 .colorblock.active.left .color-alert {
-  left: 0;
+  left: 1.5em;
+  border-radius: var(--radius-large) 0 0 var(--radius-large);
 }
 .colorblock.active.right .color-alert {
-  right: 0;
+  right: 1.5em;
   left: unset;
+  border-radius: 0 var(--radius-large) var(--radius-large) 0;
 }
 .drag-container .make-more {
   z-index: 1200;
@@ -165,6 +164,7 @@ svg.filter {
   box-shadow: var(--box);
 }
 .drag-container .drag-slider-wrap {
+  --gap: 0.5rem;
   -ms-flex-preferred-size: 100%;
   flex-basis: 100%;
   display: -webkit-box;
@@ -180,7 +180,7 @@ svg.filter {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  gap: 0.5rem 2%;
+  gap: var(--gap) calc(var(--gap) * 2);
 }
 .drag-container .drag-slider-single {
   display: -webkit-box;
@@ -227,6 +227,7 @@ svg.filter {
 .drag-container .drag-slider-single > span {
   width: 100%;
   text-align: center;
+  margin-right: auto;
 }
 .drag-container .drag-slider-single > button {
   flex: 0 0 100%;
@@ -243,22 +244,21 @@ svg.filter {
     padding: 0.3em 1.2em;
   }
 }
-@media (min-width: 600px) {
+@media (min-width: 500px) {
   .drag-container .drag-slider-wrap {
+    font-size: 0.9em;
+    --gap: 0.3em;
     margin: 0;
   }
-
   .drag-container .drag-slider-single > label {
     flex: 1 0 100%;
     max-width: 100%;
-    font-size: 0.9em;
   }
   .drag-container .drag-slider-single > input {
-    flex: 1 1 calc(45% - 4em);
+    flex: 0 1 calc(100% - 3em - var(--gap));
   }
-}
-@media (min-width: 700px) {
   .drag-container .drag-slider-single {
+    gap: calc(var(--gap) * 3) var(--gap);
     flex: 1 0 44%;
     text-align: center;
     align-self: flex-end;
@@ -269,7 +269,6 @@ svg.filter {
   }
   .drag-container .drag-slider-single > button {
     flex: 1 0 100%;
-    font-size: 0.9em;
   }
 }
 
@@ -366,6 +365,9 @@ svg.filter {
   flex: 0 0 100%;
   margin: 0 auto;
   text-align: center;
+  display: flex;
+  flex-flow: row wrap;
+  gap: 0.3em;
 }
 .button-container {
   flex: 0 1 100%;
@@ -373,17 +375,55 @@ svg.filter {
   flex-flow: column nowrap;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.8rem;
   gap: 0.2em 0.4em;
   max-width: calc(100vw - var(--scrollbar_width) - 2 * var(--page-padding));
 }
 .button-container button {
   min-width: 100%;
+  min-height: 2.3rem;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
   font-size: 0.9em;
+  border-radius: 2rem;
+  gap: 0.3em;
+  flex-flow: column nowrap;
 }
-.button-container .screenshot span {
-  font-size: 0.9em;
+.drag-container .button-container button {
+  min-height: 2.3rem;
+  border-radius: 2rem;
 }
+.button-container button svg {
+  font-size: 2.2em;
+}
+.button-container button.reset-blobs {
+  gap: 0.4em;
+}
+.button-container button.reset-blobs .blob-dotted,
+.button-container button .round-dashed,
+.button-container button .square-dotted {
+  padding: 0.2em;
+  border-radius: 0.2em;
+  outline: 2px dotted currentColor;
+  outline-offset: -4px;
+}
+.button-container button.reset-blobs .blob-dotted {
+  display: inline-block;
+  width: 1.8em;
+  height: 1.6em;
+  border-radius: 48% 52% 50% 50% / 69% 70% 30% 31%;
+}
+.button-container button .round-dashed {
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  outline-style: dashed;
+}
+.button-container button .square-dotted {
+  width: 1.8em;
+  height: 1.8em;
+}
+
 .drag-container button {
   border-radius: var(--corner);
   margin: 0.3em 0 0.3em;
@@ -412,18 +452,13 @@ svg.filter {
 .blob-screenshot-wrap h3 {
   margin: 0;
 }
-.button-container div.screenshot {
-  min-width: 100%;
-}
 .button-container button.screenshot {
-  padding: 0.5em 0.8em;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: center;
-  align-items: center;
+  min-width: 100%;
+  padding: 0.3em 0.8em;
 }
 .button-container button.screenshot svg {
-  font-size: 1.3em;
+  font-size: 1.8em;
+  margin-left: 0.1em;
 }
 
 @media (min-width: 300px) {
@@ -433,14 +468,15 @@ svg.filter {
     justify-content: center;
   }
   .button-container button,
-  .button-container div.screenshot {
+  .button-container button.screenshot {
     min-width: max-content;
+    flex-flow: row nowrap;
   }
   .drag-container .button-container button.screenshot {
-    padding: 0.4em 0.9em;
+    padding: 0.2em 0.9em;
   }
   .button-container button.screenshot svg {
-    font-size: 1.4em;
+    font-size: 1.8em;
   }
 } /*END media*/
 
@@ -465,7 +501,7 @@ svg.filter {
     min-width: clamp(100px, calc(20% - calc(var(--space) * 4)), 160px); */
     flex: 0 0 auto;
     margin: 0.3em var(--space) 0.3em 0;
-    padding: 0.5em 0.8em;
+    padding: 0.1em 0.9em;
     word-wrap: break-word;
   }
 
@@ -559,7 +595,7 @@ svg.filter {
   padding: 0;
   border: 0;
   margin: 0;
-  z-index: 1300;
+  z-index: 1200;
   touch-action: none;
   border-radius: 0.18rem;
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4);
@@ -677,41 +713,6 @@ svg.filter {
     url('cursor-change-color.png') 16 16,
     pointer;
 }
-/* .drag-container .dragzone.delete .draggable-overlay {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" stroke="red" stroke-width="2" fill="none"/><line x1="8" y1="8" x2="24" y2="24" stroke="black" stroke-width="2"/><line x1="24" y1="8" x2="8" y2="24" stroke="black" stroke-width="2"/></svg>')
-      16 16,
-    url('cursor-delete.png') 16 16, pointer;
-}
-.drag-container .dragzone.clone .draggable-overlay {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect x="8.3" y="8.3" width="15.4" height="15.4" fill="none" stroke="%23000" stroke-width="2"/><polyline points="19.6 27.9 4.5 27.9 4.5 11.8" fill="none" stroke="%23000" stroke-width="2"/></svg>')
-      16 16,
-    url('cursor-clone.png') 16 16, copy;
-}
-.drag-container .dragzone.scale-up .draggable-overlay {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><polygon points="20.9 4.4 27.6 4.4 27.6 11.1" fill="%23000" stroke="none"/><line x1="18.3" y1="13.7" x2="26" y2="6" stroke="%23000" stroke-width="2" stroke-linecap="round"/><polygon points="11.1 27.6 4.4 27.6 4.4 20.9" fill="%23000" stroke="none"/><line x1="13.7" y1="18.3" x2="6" y2="26" stroke="%23000" stroke-width="2" stroke-linecap="round"/></svg>')
-      16 16,
-    url('cursor-scale-up.png') 16 16, ne-resize;
-}
-.drag-container .dragzone.scale-down .draggable-overlay {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><polygon points="24 14.7 17.3 14.7 17.3 8" fill="%23000" stroke="none"/><line x1="26.6" y1="5.4" x2="18.9" y2="13.1" stroke="%23000" stroke-width="2" stroke-linecap="round"/><polygon points="8 17.3 14.7 17.3 14.7 24" fill="%23000" stroke="none"/><line x1="5.4" y1="26.6" x2="13.1" y2="18.9" stroke="%23000" stroke-width="2" stroke-linecap="round"/></svg>')
-      16 16,
-    url('cursor-scale-down.png') 16 16, s-resize;
-}
-.drag-container .dragzone.layer-up .draggable-overlay {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><polygon points="11.3 12.6 16 7.9 20.7 12.6" fill="%23000" stroke="none"/><line x1="16" y1="24.1" x2="16" y2="10.1" stroke="%23000" stroke-width="2" stroke-linecap="round"/></svg>')
-      16 16,
-    url('cursor-layer-up.png') 16 16, pointer;
-}
-.drag-container .dragzone.layer-down .draggable-overlay {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><polygon points="20.7 19.4 16 24.1 11.3 19.4" fill="%23000" stroke="none" stroke-width="2"/><line x1="16" y1="7.9" x2="16" y2="21.9" stroke="%23000" stroke-width="2" stroke-linecap="round"/></svg>')
-      16 16,
-    url('cursor-layer-down.png') 16 16, pointer;
-}
-.drag-container .dragzone.change-color .draggable-overlay {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M11.4,3L5.8,8.6L7.2,10l4.2-4.2L13.6,8l-9.8,9.8L15.1,29l11.2-11.2L11.4,3z M15.1,9.5l8.4,8.4l0,0H6.7l0,0L15.1,9.5z" fill="%23000" stroke="none" /><path d="M23.8,23.6c0-1.3,2.4-5.7,2.4-5.7s2.4,4.3,2.4,5.7s-1,2.4-2.3,2.4C24.9,26,23.8,24.9,23.8,23.6z" fill="%23000" stroke="none" /></svg>')
-      16 16,
-    url('cursor-change-color.png') 16 16, pointer;
-} */
 .drag-container .dragzone.drag-container .dragzone:active .draggable-overlay {
   cursor: -webkit-grabbing;
   cursor: grabbing;
@@ -769,6 +770,19 @@ body.dark-mode .site .drag-container .dragzone:focus {
   z-index: 1190;
 }
 
+#root .drag-container .colorblock:hover,
+#root .drag-container .colorblock:focus,
+#root .drag-container .colorblock:focus-visible,
+#root .drag-container .colorblock.active {
+  z-index: 1300;
+}
+#root .drag-container .colorblock.left .tooltip {
+  left: 1.3rem;
+}
+#root .drag-container .colorblock.right .tooltip {
+  right: 1.3rem;
+}
+
 .drag-container .make-smaller,
 .drag-container .make-larger {
   position: absolute;
@@ -824,21 +838,26 @@ body.dark-mode .site .drag-container .dragzone:focus {
   margin: 0;
 }
 .drag-container .layer-mover-control-wrap {
+  --width: 4.8rem;
+  --btn-gap: 0.3rem;
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
   align-items: center;
   padding-bottom: 0.4em;
-  gap: 0.9rem 0.6rem;
-  margin: 1.5rem auto 0.5rem;
+  gap: calc(var(--btn-gap) * 3.3) calc(var(--btn-gap) * 2);
+  margin: 1.8rem auto 0.5rem;
   z-index: 1200;
+}
+.drag-container .layer-mover-control-wrap > *,
+.drag-container .layer-mover-control-wrap > * > * {
+  gap: calc(var(--btn-gap) * 2);
 }
 .movers-layers-wrap {
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
   align-items: center;
-  gap: 0.3rem;
   margin: 0 auto;
   width: 100%;
 }
@@ -849,7 +868,6 @@ body.dark-mode .site .drag-container .dragzone:focus {
   flex-flow: row wrap;
   align-items: center;
   margin-top: 0.2rem;
-  gap: 0.3rem;
   margin: 0;
 }
 .drag-container .layer-mover-control-wrap .layer-tools .layer-tool {
@@ -877,7 +895,6 @@ body.dark-mode .site .drag-container .dragzone:focus {
   flex-flow: row wrap;
   justify-content: center;
   align-items: center;
-  gap: 0.4rem;
 }
 
 .drag-container .layer-mover-control-wrap .layers {
@@ -911,11 +928,22 @@ body.dark-mode .site .drag-container .dragzone:focus {
   min-width: 100%;
   justify-content: center;
 }
-@media (min-width: 330px) {
-  .drag-container .layer-mover-control-wrap .movers-wrap,
-  .drag-container .layer-mover-control-wrap .layer-tools {
-    min-width: 48%;
-    width: 48%;
+@media (min-width: 300px) {
+  .drag-container .layer-mover-control-wrap {
+    flex-flow: row wrap;
+    max-width: calc(100vw - var(--scrollbar_width) - 2 * var(--page-padding));
+  }
+  .drag-container .layer-mover-control-wrap .history-btn-wrap,
+  .drag-container .layer-mover-control-wrap .layers {
+    min-width: 90%;
+    width: 100%;
+  }
+  .drag-container .layer-mover-control-wrap .layer-tools1,
+  .drag-container .layer-mover-control-wrap .layer-tools2,
+  .drag-container .layer-mover-control-wrap .movers-wrap1,
+  .drag-container .layer-mover-control-wrap .movers-wrap2 {
+    min-width: max-content;
+    width: calc(48% - var(--btn-gap) * 2.2);
     justify-content: center;
   }
   .drag-container .layer-mover-control-wrap .movers-wrap1,
@@ -968,10 +996,10 @@ body.dark-mode .site .drag-container .dragzone:focus {
   }
   .drag-container .layer-mover-control-wrap .movers-wrap,
   .drag-container .layer-mover-control-wrap .layer-tools {
-    width: 4.5rem;
-    flex: 0 0 4.5rem;
-    min-width: 4.5rem;
-    max-width: 4.5rem;
+    width: var(--width);
+    flex: 0 0 var(--width);
+    min-width: var(--width);
+    max-width: var(--width);
   }
   .drag-container .layer-mover-control-wrap .layer-tools1 {
     order: 0;
@@ -1007,7 +1035,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
   .drag-container .layer-mover-control-wrap .layers.layer-btn-wrap {
     flex: 0 0 max-content;
     min-width: max-content;
-    max-width: clamp(400px, 70vw, 21rem);
+    max-width: clamp(400px, 70vw, 23rem);
     order: 0;
   }
   .drag-container .layer-mover-control-wrap .layer-tools2 {
@@ -1015,10 +1043,10 @@ body.dark-mode .site .drag-container .dragzone:focus {
   }
 
   .drag-container .layer-mover-control-wrap .layer-tools {
-    width: 4.5rem;
-    flex: 0 0 4.5rem;
-    min-width: 4.5rem;
-    max-width: 4.5rem;
+    width: var(--width);
+    flex: 0 0 var(--width);
+    min-width: var(--width);
+    max-width: var(--width);
   }
 
   .drag-container .layer-mover-control-wrap .movers-wrap {
@@ -1036,23 +1064,22 @@ body.dark-mode .site .drag-container .dragzone:focus {
 } /* END media */
 @media (min-width: 900px) {
   .drag-container .layer-mover-control-wrap {
-    flex: 1 0 100%;
+    flex: 0 0 100%;
     width: 100%;
     max-width: 100%;
     min-width: 100%;
   }
   .drag-container .layer-mover-control-wrap .movers-wrap {
-    width: 4.5rem;
-    flex: 1 0 4.5rem;
-    min-width: 4.5rem;
-    max-width: 4.5rem;
+    width: var(--width);
+    flex: 1 0 var(--width);
+    min-width: var(--width);
+    max-width: var(--width);
   }
   .drag-container .layer-mover-control-wrap .movers-wrap1 {
-    order: 5;
-    justify-content: flex-start;
+    justify-content: flex-end;
   }
   .drag-container .layer-mover-control-wrap .movers-wrap2 {
-    justify-content: flex-end;
+    justify-content: flex-start;
   }
   .drag-container .layer-mover-control-wrap .layer-tools1.layer-btn-wrap {
     justify-content: flex-end;
@@ -1086,7 +1113,6 @@ body.dark-mode .site .drag-container .dragzone:focus {
   flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
-  gap: 0.4rem;
 }
 .drag-container .layer-mover-control-wrap .history-button {
   padding: 0;
@@ -1221,34 +1247,33 @@ body.dark-mode .site .drag-container .dragzone:focus {
 @media (min-width: 600px) {
   .drag-container .layer-mover-control-wrap {
     width: 100%;
-    flex: 3 0 100%;
-    gap: 0.8rem 0.4rem;
+    flex: 0 0 100%;
   }
-  .drag-container .layer-mover-control-wrap .movers-wrap1 {
-    flex-grow: 1;
-    max-width: unset;
-  }
+
   .drag-container .layer-mover-control-wrap .layer-btn-wrap {
     max-width: 100%;
   }
   .drag-container .layer-mover-control-wrap .history-btn-wrap {
-    flex: 1 0 9.4rem;
-    justify-content: flex-start;
+    flex: 0 0 9.4rem;
   }
 }
 @media (min-width: 900px) {
   .drag-container .layer-mover-control-wrap {
     flex-flow: row nowrap;
     align-items: flex-start;
+    justify-content: flex-start;
   }
   .drag-container .layer-mover-control-wrap .layers.layer-btn-wrap {
     min-width: unset;
     flex-flow: row wrap;
-    flex-shrink: 3;
+    flex-shrink: 1;
+    flex-grow: 3;
   }
   .drag-container .layer-mover-control-wrap .history-btn-wrap {
-    flex-grow: 1;
+    min-width: var(--width);
+    flex: 1 0 var(--width);
     max-width: unset;
+    justify-content: flex-start;
   }
   .drag-container .layer-mover-control-wrap .movers-wrap1 {
     flex-grow: 0;
@@ -1449,7 +1474,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
 
 @media (min-width: 700px) {
   .button-container button.screenshot {
-    padding: 0.3em 0.6em;
+    padding: 0.1em 0.6em;
   }
   .drag-container .layer-mover-control-wrap button {
     padding: 0.1em 0.45em 0.2em;
@@ -1457,15 +1482,14 @@ body.dark-mode .site .drag-container .dragzone:focus {
 }
 @media (min-width: 900px) {
   .button-container button.screenshot {
-    padding: 0.28em 0.8em;
+    padding: 0.08em 0.8em;
   }
-  .button-container button.screenshot svg {
-    font-size: 1.4rem;
-  }
+}
+@media (min-width: 1000px) {
   .drag-container .drag-slider-single {
-    flex: 1 0 28%;
+    flex: 1 0 calc(28% - var(--gap) * 2);
   }
   .drag-container .drag-slider-single:first-child {
-    flex: 1 0 40%;
+    flex: 1 0 calc(44% - var(--gap));
   }
 }

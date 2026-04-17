@@ -7765,7 +7765,7 @@ export const translations = {
     de: 'Leinwand zurücksetzen',
     pt: 'Redefinir tela',
     cs: 'Resetovat plátno',
-    fi: 'Nollaa ruutu',
+    fi: 'Nollaa piirtoalue',
   },
   ClickMeToMakeARandomBlob: {
     en: 'Click me to make a random blob',
@@ -7855,7 +7855,7 @@ export const translations = {
     de: 'Farben ausblenden',
     pt: 'Ocultar cores',
     cs: 'Skrýt barvy',
-    fi: 'Piilota varivaihtoehdot',
+    fi: 'Piilota värivaihtoehdot',
   },
   ShowColors: {
     en: 'Show colors',
@@ -7864,7 +7864,7 @@ export const translations = {
     de: 'Farben anzeigen',
     pt: 'Mostrar cores',
     cs: 'Zobrazit barvy',
-    fi: 'Nayta varivaihtoehdot',
+    fi: 'Näytä värivaihtoehdot',
   },
   LoginToSaveBlobs: {
     en: 'Login to save blobs',
@@ -10376,6 +10376,15 @@ export const translations = {
     cs: 'Létající pták',
     fi: 'Lentävä lintu',
   },
+  Face: {
+    en: 'Face',
+    es: 'Cara',
+    fr: 'Visage',
+    de: 'Gesicht',
+    pt: 'Rosto',
+    cs: 'Obličej',
+    fi: 'Kasvo',
+  },
   SwimmingFish: {
     en: 'Swimming fish',
     es: 'Pez nadando',
@@ -10978,6 +10987,15 @@ export const translations = {
     pt: 'Arraste para redimensionar a tela. Uso do teclado: use as setas para redimensionar e Shift mais setas para passos maiores.',
     cs: 'Tažením změňte velikost plochy. Klávesnice: použijte šipky pro změnu velikosti a Shift plus šipky pro větší kroky.',
     fi: 'Muuta kokoa vetämällä. Näppäimistö: käytä nuolinäppäimiä koon muuttamiseen ja Shift plus nuolinäppäimiä suurempiin askeliin.',
+  },
+  ResizeTheCanvasByDraggingTheCornerHandles: {
+    en: 'Resize the canvas by dragging the corner handles',
+    es: 'Cambiar el tamaño del lienzo arrastrando los controladores de las esquinas',
+    fr: 'Redimensionner la zone en faisant glisser les poignées des coins',
+    de: 'Ändern Sie die Größe der Zeichenfläche, indem Sie die Eckgriffe ziehen',
+    pt: 'Redimensionar a tela arrastando as alças dos cantos',
+    cs: 'Změňte velikost plochy tažením za rohové úchyty',
+    fi: 'Muuta piirtoalueen kokoa vetämällä kulmakahvoja',
   },
 } as const
 

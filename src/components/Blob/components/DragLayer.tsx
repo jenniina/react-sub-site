@@ -7,7 +7,7 @@ import {
   MouseEvent as MouseEventReact,
   PointerEvent as PointerEventReact,
 } from 'react'
-import { Draggable, focusedBlob, Modes } from '../types'
+import { Draggable, Modes } from '../types'
 import Blob from './Blob'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 
@@ -15,10 +15,11 @@ interface DragLayerProps {
   layer_: number
   className: string
   d: number
+  variant: number
   items: Draggable[]
+  paused: boolean
   dragUlRef: RefObject<HTMLUListElement>
   setSelectedvalue0: Dispatch<SetStateAction<string | null>>
-  setFocusedBlob: Dispatch<SetStateAction<focusedBlob | null>>
   start: (
     e:
       | TouchEvent
@@ -67,10 +68,11 @@ const DragLayer = ({
   layer_,
   className,
   d,
+  variant,
   items,
+  paused,
   dragUlRef,
   setSelectedvalue0,
-  setFocusedBlob,
   start,
   movement,
   stopMovementCheck,
@@ -86,7 +88,8 @@ const DragLayer = ({
 }: DragLayerProps) => {
   const { t } = useLanguageContext()
 
-  const svgFilter = d === 0 ? 0 : 1 // Choose the second filter for containers other than 0
+  const svgFilter = variant === 0 ? 0 : 1
+
   const layerStyle: CSSProperties = {
     WebkitFilter: `url(#svgGaussian${svgFilter}) url(#svgMatrix${svgFilter})`,
     filter: `url(#svgGaussian${svgFilter}) url(#svgMatrix${svgFilter})`,
@@ -96,7 +99,7 @@ const DragLayer = ({
     height: '100%',
     width: '100%',
     pointerEvents: 'none',
-    minHeight: '420px',
+    minHeight: '300px',
     minWidth: '100%',
     margin: '0',
     padding: '0',
@@ -122,10 +125,12 @@ const DragLayer = ({
             return (
               <Blob
                 layer={layer_}
-                  key={item.id}
+                key={item.id}
                 d={d}
+                variant={variant}
                 item={item}
                 index={index}
+                paused={paused}
                 start={start}
                 movement={movement}
                 stopMovementCheck={stopMovementCheck}
@@ -134,7 +139,6 @@ const DragLayer = ({
                 focused={focused}
                 blurred={blurred}
                 setSelectedvalue0={setSelectedvalue0}
-                setFocusedBlob={setFocusedBlob}
                 dragUlRef={dragUlRef}
                 removeBlob={removeBlob}
                 mode={mode}

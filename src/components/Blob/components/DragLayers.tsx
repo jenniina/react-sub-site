@@ -11,7 +11,7 @@ import {
   useMemo,
   useRef,
 } from 'react'
-import { Draggable, focusedBlob, ColorPair, Modes } from '../types'
+import { Draggable, ColorPair, Modes } from '../types'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 import { useIsClient, useWindow } from '../../../hooks/useSSR'
@@ -25,6 +25,8 @@ const angle = '90deg'
 
 interface DragState {
   isDragging: boolean
+  targetId: string | null
+  targetElement: HTMLElement | null
   pointerStartX: number
   pointerStartY: number
   originLeft: number
@@ -39,29 +41,29 @@ interface DragLayerProps {
   layer_: number
   layerAmount: number
   hiddenLayers: Set<number>
+  paused: boolean
   setActiveLayer: DispatchReact<SetStateAction<number>>
   changeBlobLayer: (draggable: Draggable, layer: number) => void
   highestZIndex: Record<number, number>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dispatch: DispatchReact<any>
   d: number
+  variant: number
   items: Draggable[]
   getPosition: (target: HTMLElement) => void
   dragWrap: RefObject<HTMLDivElement>
   setSelectedvalue0: DispatchReact<SetStateAction<string | null>>
-  exitApp: RefObject<HTMLDivElement>
   colorPairs: ColorPair[][]
   removeBlob: (draggable: Draggable) => void
   mode: Modes
-  setFocusedBlob: DispatchReact<SetStateAction<focusedBlob | null>>
   colorIndex: number
   setColorIndex: DispatchReact<SetStateAction<number>>
-  setScroll: DispatchReact<SetStateAction<boolean>>
   scroll: boolean
   clickOutsideRef: RefObject<HTMLDivElement>
   colorswitch: () => string
   addRandomDraggable: (x_pos: string, y_pos: string, layer: number) => void
   changeColor: (id: string) => void
+  onEscapeKey: () => void
 }
 
 const preventDefault = (e: Event) => {
@@ -85,28 +87,28 @@ const DragLayers = ({
   layer_,
   layerAmount,
   hiddenLayers,
+  paused,
   setActiveLayer,
   changeBlobLayer,
   highestZIndex,
   dispatch,
   d,
+  variant,
   items,
   getPosition,
   dragWrap,
   setSelectedvalue0,
-  exitApp,
   colorPairs,
   removeBlob,
   mode,
-  setFocusedBlob,
   colorIndex,
   setColorIndex,
-  setScroll,
   scroll,
   clickOutsideRef,
   colorswitch,
   addRandomDraggable,
   changeColor,
+  onEscapeKey,
 }: DragLayerProps) => {
   const isClient = useIsClient()
   const windowObj = useWindow()
@@ -120,6 +122,8 @@ const DragLayers = ({
   const suppressBlurCommitRef = useRef(false)
   const dragStateRef = useRef<DragState>({
     isDragging: false,
+    targetId: null,
+    targetElement: null,
     pointerStartX: 0,
     pointerStartY: 0,
     originLeft: 0,
@@ -178,15 +182,6 @@ const DragLayers = ({
 
   //const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0
 
-  //Remove exit notice's tabindex and text as unnecessary after leaving it
-  const exitAppBlur = useCallback(() => {
-    if (exitApp.current) {
-      exitApp.current?.removeAttribute('tabindex')
-      exitApp.current?.removeEventListener('blur', exitAppBlur)
-      exitApp.current.textContent = ''
-    }
-  }, [exitApp])
-
   //Clone blob
   const makeBlob = useCallback(
     (draggable: Draggable) => {
@@ -211,22 +206,6 @@ const DragLayers = ({
       if (!target) return
 
       const blobStyle = windowObj.getComputedStyle(target)
-
-      const setFocus = (target: HTMLElement) => {
-        const marginTop = parseFloat(blobStyle.marginTop)
-        const marginLeft = parseFloat(blobStyle.marginLeft)
-
-        const blobRect = target.getBoundingClientRect()
-        const parentRect = (
-          target.parentNode as HTMLDivElement
-        )?.getBoundingClientRect()
-        setFocusedBlob({
-          top: blobRect.top - parentRect.top - marginTop,
-          left: blobRect.left - parentRect.left - marginLeft,
-          width: blobRect.width,
-          height: blobRect.height,
-        })
-      }
 
       const value =
         blobStyle.getPropertyValue('--i') ??
@@ -271,7 +250,6 @@ const DragLayers = ({
             },
           },
         })
-        setFocus(target)
       }
 
       const cooldown = () => {
@@ -323,23 +301,9 @@ const DragLayers = ({
           break
         case 'Escape':
           e.preventDefault()
-
-          setScroll(true)
-          if (document) document.body.style.overflowY = 'auto'
-          if (document) document.body.style.overflowX = 'hidden'
-
-          if (exitApp.current) {
-            exitApp.current.setAttribute('tabindex', '0')
-            exitApp.current.addEventListener('blur', exitAppBlur)
-          }
-          target.blur()
-          dragWrap.current?.blur()
-          //Go to exit notice in order to remove focus from the app
-          if (exitApp.current)
-            exitApp.current.textContent = t('ThankYouForPlaying')
-          exitApp.current?.focus()
+          onEscapeKey()
           break
-        case 'Enter': //Cycle through colors
+        case 'Enter': //Cycle through pre-set colors
           e.preventDefault()
           e.stopPropagation()
           if (reset) {
@@ -501,20 +465,16 @@ const DragLayers = ({
       layer_,
       layerAmount,
       dispatch,
-      setFocusedBlob,
       setColorIndex,
       changeBlobLayer,
       removeBlob,
-      setScroll,
-      exitApp,
-      dragWrap,
       t,
       colorPairs,
       colorswitch,
       addRandomDraggable,
       makeBlob,
-      exitAppBlur,
       highestZIndex,
+      onEscapeKey,
     ]
   )
 
@@ -526,6 +486,8 @@ const DragLayers = ({
       dragState.frameId = null
     }
     dragState.isDragging = false
+    dragState.targetId = null
+    dragState.targetElement = null
     document?.removeEventListener('keydown', keyDown)
     document?.removeEventListener('touchmove', preventDefault)
   }, [keyDown])
@@ -568,6 +530,8 @@ const DragLayers = ({
       if (!target) return
 
       const dragState = dragStateRef.current
+      if (dragState.targetId !== target.id) return
+
       if (Number.isFinite(dragState.currentLeft)) {
         target.style.left = `${dragState.currentLeft}px`
       }
@@ -632,8 +596,11 @@ const DragLayers = ({
       e.stopPropagation()
       e.preventDefault()
 
-      if (document?.activeElement instanceof HTMLElement) {
-        document?.activeElement.blur()
+      if (
+        document?.activeElement instanceof HTMLElement &&
+        document.activeElement !== target
+      ) {
+        document.activeElement.blur()
       }
 
       currentFocusedElementRef.current = target
@@ -648,6 +615,8 @@ const DragLayers = ({
       )
 
       dragStateRef.current.isDragging = true
+      dragStateRef.current.targetId = target.id
+      dragStateRef.current.targetElement = target
       dragStateRef.current.pointerStartX = x
       dragStateRef.current.pointerStartY = y
       dragStateRef.current.originLeft = Number.isFinite(originLeft)
@@ -734,8 +703,8 @@ const DragLayers = ({
         e.preventDefault()
         if (document) document.body.style.overflow = 'hidden'
       }
-      const target = currentFocusedElementRef.current
       const dragState = dragStateRef.current
+      const target = dragState.targetElement
 
       if (dragState.isDragging && target) {
         const { x, y } = getEventPosition(e)
@@ -747,10 +716,10 @@ const DragLayers = ({
         if (dragState.frameId === null && typeof window !== 'undefined') {
           dragState.frameId = window.requestAnimationFrame(() => {
             dragState.frameId = null
-            if (!currentFocusedElementRef.current) return
+            if (!dragState.targetElement) return
 
-            currentFocusedElementRef.current.style.left = `${dragState.currentLeft}px`
-            currentFocusedElementRef.current.style.top = `${dragState.currentTop}px`
+            dragState.targetElement.style.left = `${dragState.currentLeft}px`
+            dragState.targetElement.style.top = `${dragState.currentTop}px`
           })
         }
       }
@@ -772,7 +741,7 @@ const DragLayers = ({
     ) => {
       e.stopPropagation()
       e.preventDefault()
-      const activeTarget = currentFocusedElementRef.current
+      const activeTarget = dragStateRef.current.targetElement
       if (!dragStateRef.current.isDragging || !activeTarget) return
       if (target !== activeTarget) return
 
@@ -826,12 +795,13 @@ const DragLayers = ({
       }
 
       commitDraggedPosition(activeTarget)
+      dragStateRef.current.targetId = null
+      dragStateRef.current.targetElement = null
       activeTarget.classList.remove('drag')
       suppressBlurCommitRef.current = true
       activeTarget.blur()
       if (tapCount === 0) currentFocusedElementRef.current = null
       else currentFocusedElementRef.current = activeTarget
-      setFocusedBlob(null)
     },
     [
       isTouchDevice,
@@ -839,7 +809,6 @@ const DragLayers = ({
       dispatch,
       d,
       keyDown,
-      setFocusedBlob,
       commitDraggedPosition,
       removeDocumentDragListeners,
     ]
@@ -852,7 +821,7 @@ const DragLayers = ({
       target: HTMLElement
     ) => {
       e.stopPropagation()
-      const activeTarget = currentFocusedElementRef.current
+      const activeTarget = dragStateRef.current.targetElement
       if (!dragStateRef.current.isDragging || !activeTarget) return
       if (target !== activeTarget) return
 
@@ -868,6 +837,8 @@ const DragLayers = ({
       }
 
       commitDraggedPosition(activeTarget)
+      dragStateRef.current.targetId = null
+      dragStateRef.current.targetElement = null
       activeTarget.classList.remove('drag')
       document?.removeEventListener('keydown', keyDown)
       suppressBlurCommitRef.current = true
@@ -898,14 +869,22 @@ const DragLayers = ({
   //on blob blur
   const blurred = useCallback(
     (draggable: HTMLElement) => {
+      const wasDraggingCurrentBlob =
+        dragStateRef.current.isDragging &&
+        dragStateRef.current.targetId === draggable.id
+
       dragStateRef.current.isDragging = false
       draggable.classList.remove('drag')
       document?.removeEventListener('keydown', keyDown)
       removeDocumentDragListeners()
       if (suppressBlurCommitRef.current) {
         suppressBlurCommitRef.current = false
-      } else {
+      } else if (wasDraggingCurrentBlob) {
         commitDraggedPosition(draggable)
+      }
+      if (dragStateRef.current.targetId === draggable.id) {
+        dragStateRef.current.targetId = null
+        dragStateRef.current.targetElement = null
       }
       draggable.draggable = false
       currentFocusedElementRef.current = null
@@ -949,11 +928,9 @@ const DragLayers = ({
     (draggable: HTMLElement) => {
       // getPosition(draggable)
       currentFocusedElementRef.current = draggable
-      draggable.classList.add('drag')
       const layerStyle = draggable.style.getPropertyValue('--layer')
       setActiveLayer(parseInt(layerStyle) ?? 2)
       document?.addEventListener('keydown', keyDown)
-      draggable.draggable = true
     },
     [keyDown, setActiveLayer]
   )
@@ -1011,6 +988,10 @@ const DragLayers = ({
   )
 
   useEffect(() => {
+    if (colorIndex < 0) {
+      return
+    }
+
     const target = currentFocusedElementRef.current
     if (target) {
       const { color1, color2 } = colorPairs[d][colorIndex]
@@ -1041,12 +1022,13 @@ const DragLayers = ({
         <DragLayer
           key={l}
           layer_={l}
+          paused={paused}
           dragUlRef={layerRefs[l]}
           items={groupedDraggables[l] ?? []}
           className={hiddenLayers.has(l) ? 'hidden' : ''}
           d={d}
+          variant={variant}
           setSelectedvalue0={setSelectedvalue0}
-          setFocusedBlob={setFocusedBlob}
           start={start}
           movement={movement}
           stopMovementCheck={stopMovementCheck}
