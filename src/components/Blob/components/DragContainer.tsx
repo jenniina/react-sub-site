@@ -144,7 +144,7 @@ export default function DragContainer({
   const defaultSaturation =
     artVariant === 0 ? '80' : artVariant === 2 ? '50' : '45'
   const defaultLightness =
-    artVariant === 0 ? '30' : artVariant === 2 ? '5' : '25'
+    artVariant === 0 ? '30' : artVariant === 2 ? '10' : '25'
 
   const { state, dispatch, undo, redo, canUndo, canRedo } =
     useContext(BlobContext)!
