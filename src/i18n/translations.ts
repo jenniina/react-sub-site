@@ -10790,6 +10790,15 @@ export const translations = {
     cs: 'Dřevo',
     fi: 'Puu',
   },
+  Caramel: {
+    en: 'Caramel',
+    es: 'Caramelo',
+    fr: 'Caramel',
+    de: 'Karamell',
+    pt: 'Caramelo',
+    cs: 'Karamel',
+    fi: 'Karamelli',
+  },
   Forest: {
     en: 'Forest',
     es: 'Bosque',

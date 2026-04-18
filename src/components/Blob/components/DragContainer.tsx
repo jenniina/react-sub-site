@@ -53,7 +53,7 @@ const colorPairsLeft: ColorPair[] = [
   { color1: 'coral', color2: 'salmon' }, //colorCoral
   { color1: 'orangered', color2: 'chocolate' }, //colorOrange
   { color1: 'saddlebrown', color2: 'sienna' }, //colorBrown
-  { color1: 'peru', color2: 'burlywood' }, //colorWood
+  { color1: 'peru', color2: 'burlywood' }, //colorCaramel
   { color1: 'tan', color2: 'peachpuff' }, //colorTan
   { color1: 'khaki', color2: 'palegoldenrod' }, //colorKhaki
   { color1: 'gold', color2: 'yellow' }, //colorGold
@@ -260,7 +260,7 @@ export default function DragContainer({
   const colorLime = useRef(null) as RefObject<HTMLButtonElement>
   const colorMint = useRef(null) as RefObject<HTMLButtonElement>
   const colorLeaf = useRef(null) as RefObject<HTMLButtonElement>
-  const colorWood = useRef(null) as RefObject<HTMLButtonElement>
+  const colorCaramel = useRef(null) as RefObject<HTMLButtonElement>
   const colorForest = useRef(null) as RefObject<HTMLButtonElement>
   const colorOlive = useRef(null) as RefObject<HTMLButtonElement>
   const colorLichen = useRef(null) as RefObject<HTMLButtonElement>
@@ -284,7 +284,7 @@ export default function DragContainer({
       [colorCoral, 'colorCoral'],
       [colorOrange, 'colorOrange'],
       [colorBrown, 'colorBrown'],
-      [colorWood, 'colorWood'],
+      [colorCaramel, 'colorCaramel'],
       [colorTan, 'colorTan'],
       [colorKhaki, 'colorKhaki'],
       [colorGold, 'colorGold'],
@@ -297,7 +297,7 @@ export default function DragContainer({
     colorCoral,
     colorOrange,
     colorBrown,
-    colorWood,
+    colorCaramel,
     colorTan,
     colorKhaki,
     colorGold,
@@ -359,7 +359,7 @@ export default function DragContainer({
       colorCoral,
       colorOrange,
       colorBrown,
-      colorWood,
+      colorCaramel,
       colorTan,
       colorKhaki,
       colorGold,
@@ -372,7 +372,7 @@ export default function DragContainer({
     colorCoral,
     colorOrange,
     colorBrown,
-    colorWood,
+    colorCaramel,
     colorTan,
     colorKhaki,
     colorGold,
