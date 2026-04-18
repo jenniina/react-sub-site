@@ -1,7 +1,9 @@
 import React, { FC } from 'react'
 import { ColorPair, Modes, RefObject } from '../types'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
+import { TranslationKey } from '../../../i18n/translations'
 import Icon from '../../Icon/Icon'
+import { CanvasSize } from './DragContainer'
 
 interface ColorBlockProps {
   d: number
@@ -17,6 +19,7 @@ interface ColorBlockProps {
   selectedColor: string
   mode: Modes
   setMode: React.Dispatch<React.SetStateAction<Modes>>
+  effectiveCanvasSize: CanvasSize | null
 }
 
 const ColorBlocks: FC<ColorBlockProps> = ({
@@ -30,6 +33,7 @@ const ColorBlocks: FC<ColorBlockProps> = ({
   selectedColor,
   mode,
   setMode,
+  effectiveCanvasSize,
 }) => {
   const { t } = useLanguageContext()
 
@@ -47,6 +51,10 @@ const ColorBlocks: FC<ColorBlockProps> = ({
   return (
     <>
       {colorBlockProps[d].map((colorBlock, index) => {
+        const refName = getRefName(map[d], colorBlock)
+        const colorNameKey = refName?.replace(/^color/, '') as
+          | TranslationKey
+          | undefined
         const { color1, color2 } = colorPairs[d][index]
         const color = `linear-gradient(45deg, ${color1}, ${color2})`
         const isActive = selectedColor === color && mode === 'change-color'
@@ -57,10 +65,7 @@ const ColorBlocks: FC<ColorBlockProps> = ({
             ref={colorBlock}
             key={`${colorPairs[d][index].color1}${index}-${d}`}
             onClick={() => handleClick(color)}
-            className={`colorblock colorblock${index} ${getRefName(
-              map[d],
-              colorBlock
-            )?.toLowerCase()} tooltip-wrap ${
+            className={`colorblock colorblock${index} ${refName?.toLowerCase()} tooltip-wrap ${
               !colorsVisible ? 'hidden' : ''
             } ${isActive ? 'active' : ''} ${isLeftSide ? 'left' : 'right'}`}
             id={`color${index}-${d}`}
@@ -85,7 +90,17 @@ const ColorBlocks: FC<ColorBlockProps> = ({
               <span className="scr">{t('Active')}</span>
             </i>
 
-            <span className={`tooltip narrow2`}>
+            <span
+              className={`tooltip`}
+              style={{
+                ['--max-width' as string]: effectiveCanvasSize
+                  ? `min(${effectiveCanvasSize.width - 66}px, 300px)`
+                  : '130px',
+              }}
+            >
+              <strong style={{ display: 'block', color: 'inherit' }}>
+                {colorNameKey ? t(colorNameKey) : ''}
+              </strong>
               {t('ChangeColorInstructions')}
             </span>
           </button>
