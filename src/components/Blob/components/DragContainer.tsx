@@ -46,7 +46,7 @@ import useLocalStorage from '../../../hooks/useStorage'
 
 // Should be in the same order as colorBlockPropsLeft
 const colorPairsLeft: ColorPair[] = [
-  { color1: 'indigo', color2: 'mediumorchid' }, //colorIndigo
+  { color1: 'indigo', color2: 'mediumorchid' }, //colorPurple
   { color1: 'darkmagenta', color2: 'palevioletred' }, //colorMagenta
   { color1: 'hotpink', color2: 'pink' }, //colorPink
   { color1: 'crimson', color2: 'indianred' }, //colorCrimson
@@ -55,16 +55,16 @@ const colorPairsLeft: ColorPair[] = [
   { color1: 'saddlebrown', color2: 'sienna' }, //colorBrown
   { color1: 'peru', color2: 'burlywood' }, //colorCaramel
   { color1: 'tan', color2: 'peachpuff' }, //colorTan
-  { color1: 'khaki', color2: 'palegoldenrod' }, //colorKhaki
-  { color1: 'gold', color2: 'yellow' }, //colorGold
+  { color1: 'khaki', color2: 'palegoldenrod' }, //colorStraw
+  { color1: 'gold', color2: 'yellow' }, //colorLemon
 ]
 // Should be in the same order as colorBlockPropsRight
 const colorPairsRight: ColorPair[] = [
-  { color1: 'blue', color2: 'royalblue' }, //colorBlue
+  { color1: 'darkslateblue', color2: 'slateblue' }, //colorHyasinth
+  { color1: 'blue', color2: 'royalblue' }, //colorSapphire
   { color1: 'royalblue', color2: 'dodgerblue' }, //colorDenim
-  { color1: 'dodgerblue', color2: 'deepskyblue' }, //colorAzure
-  { color1: 'skyblue', color2: 'lightskyblue' }, //colorSky
-  { color1: 'aquamarine', color2: 'lightblue' }, //colorIce
+  { color1: 'deepskyblue', color2: 'cyan' }, //colorCyan
+  { color1: 'skyblue', color2: 'paleturquoise' }, //colorIce
   { color1: 'lightgreen', color2: 'aquamarine' }, //colorMint
   { color1: 'lime', color2: 'greenyellow' }, //colorLime
   { color1: 'seagreen', color2: 'limegreen' }, //colorLeaf
@@ -253,8 +253,8 @@ export default function DragContainer({
   const [layerAmount, setLayerAmount] = useState<number>(0)
 
   const colorOrange = useRef(null) as RefObject<HTMLButtonElement>
-  const colorKhaki = useRef(null) as RefObject<HTMLButtonElement>
-  const colorGold = useRef(null) as RefObject<HTMLButtonElement>
+  const colorStraw = useRef(null) as RefObject<HTMLButtonElement>
+  const colorLemon = useRef(null) as RefObject<HTMLButtonElement>
   const colorBrown = useRef(null) as RefObject<HTMLButtonElement>
   const colorTan = useRef(null) as RefObject<HTMLButtonElement>
   const colorLime = useRef(null) as RefObject<HTMLButtonElement>
@@ -268,16 +268,16 @@ export default function DragContainer({
   const colorCoral = useRef(null) as RefObject<HTMLButtonElement>
   const colorCrimson = useRef(null) as RefObject<HTMLButtonElement>
   const colorMagenta = useRef(null) as RefObject<HTMLButtonElement>
-  const colorIndigo = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlue = useRef(null) as RefObject<HTMLButtonElement>
+  const colorPurple = useRef(null) as RefObject<HTMLButtonElement>
+  const colorSapphire = useRef(null) as RefObject<HTMLButtonElement>
   const colorDenim = useRef(null) as RefObject<HTMLButtonElement>
-  const colorAzure = useRef(null) as RefObject<HTMLButtonElement>
-  const colorSky = useRef(null) as RefObject<HTMLButtonElement>
+  const colorCyan = useRef(null) as RefObject<HTMLButtonElement>
   const colorIce = useRef(null) as RefObject<HTMLButtonElement>
+  const colorHyasinth = useRef(null) as RefObject<HTMLButtonElement>
 
   const refNameMappingLeft = useMemo(() => {
     return new Map<RefObject<HTMLButtonElement>, string>([
-      [colorIndigo, 'colorIndigo'],
+      [colorPurple, 'colorPurple'],
       [colorMagenta, 'colorMagenta'],
       [colorPink, 'colorPink'],
       [colorCrimson, 'colorCrimson'],
@@ -286,11 +286,11 @@ export default function DragContainer({
       [colorBrown, 'colorBrown'],
       [colorCaramel, 'colorCaramel'],
       [colorTan, 'colorTan'],
-      [colorKhaki, 'colorKhaki'],
-      [colorGold, 'colorGold'],
+      [colorStraw, 'colorStraw'],
+      [colorLemon, 'colorLemon'],
     ])
   }, [
-    colorIndigo,
+    colorPurple,
     colorMagenta,
     colorPink,
     colorCrimson,
@@ -299,16 +299,16 @@ export default function DragContainer({
     colorBrown,
     colorCaramel,
     colorTan,
-    colorKhaki,
-    colorGold,
+    colorStraw,
+    colorLemon,
   ])
 
   const refNameMappingRight = useMemo(() => {
     return new Map<RefObject<HTMLButtonElement>, string>([
-      [colorBlue, 'colorBlue'],
+      [colorHyasinth, 'colorHyasinth'],
+      [colorSapphire, 'colorSapphire'],
       [colorDenim, 'colorDenim'],
-      [colorAzure, 'colorAzure'],
-      [colorSky, 'colorSky'],
+      [colorCyan, 'colorCyan'],
       [colorIce, 'colorIce'],
       [colorMint, 'colorMint'],
       [colorLime, 'colorLime'],
@@ -318,10 +318,10 @@ export default function DragContainer({
       [colorLichen, 'colorLichen'],
     ])
   }, [
-    colorBlue,
+    colorHyasinth,
+    colorSapphire,
     colorDenim,
-    colorAzure,
-    colorSky,
+    colorCyan,
     colorIce,
     colorMint,
     colorLime,
@@ -352,7 +352,7 @@ export default function DragContainer({
 
   const colorBlockPropsLeft = useMemo(() => {
     return [
-      colorIndigo,
+      colorPurple,
       colorMagenta,
       colorPink,
       colorCrimson,
@@ -361,11 +361,11 @@ export default function DragContainer({
       colorBrown,
       colorCaramel,
       colorTan,
-      colorKhaki,
-      colorGold,
+      colorStraw,
+      colorLemon,
     ]
   }, [
-    colorIndigo,
+    colorPurple,
     colorMagenta,
     colorPink,
     colorCrimson,
@@ -374,16 +374,16 @@ export default function DragContainer({
     colorBrown,
     colorCaramel,
     colorTan,
-    colorKhaki,
-    colorGold,
+    colorStraw,
+    colorLemon,
   ])
 
   const colorBlockPropsRight = useMemo(() => {
     return [
-      colorBlue,
+      colorHyasinth,
+      colorSapphire,
       colorDenim,
-      colorAzure,
-      colorSky,
+      colorCyan,
       colorIce,
       colorMint,
       colorLime,
@@ -393,10 +393,10 @@ export default function DragContainer({
       colorLichen,
     ]
   }, [
-    colorBlue,
+    colorHyasinth,
+    colorSapphire,
     colorDenim,
-    colorAzure,
-    colorSky,
+    colorCyan,
     colorIce,
     colorMint,
     colorLime,
