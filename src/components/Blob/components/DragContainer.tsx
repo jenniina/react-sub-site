@@ -142,7 +142,7 @@ export default function DragContainer({
 
   const defaultHue = '214'
   const defaultSaturation =
-    artVariant === 0 ? '80' : artVariant === 2 ? '50' : '45'
+    artVariant === 0 ? '80' : artVariant === 2 ? '60' : '45'
   const defaultLightness =
     artVariant === 0 ? '30' : artVariant === 2 ? '10' : '25'
 
