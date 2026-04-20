@@ -1691,7 +1691,9 @@ export default function DragContainer({
       Math.max(
         canvasHeight,
         Math.round(
-          scrollTop + viewportHeight - makeRandom0.current.offsetHeight * 4
+          scrollTop +
+            viewportHeight -
+            getRandomMinMax(canvasHeight * 0.1, canvasHeight * 0.2)
         )
       )
     )
