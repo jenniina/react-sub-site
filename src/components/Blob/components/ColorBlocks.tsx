@@ -73,13 +73,15 @@ const ColorBlocks: FC<ColorBlockProps> = ({
               top: `${colorLength / 2 + 1 + slotIndex * (colorLength / 2 + 3)}%`,
               right: `${!isLeftSide ? '0' : 'unset'}`,
               height:
-                effectiveCanvasSize && effectiveCanvasSize.height < 500
-                  ? '1.8rem'
-                  : '2.2rem',
+                effectiveCanvasSize && effectiveCanvasSize.height > 700
+                  ? '2.5rem'
+                  : effectiveCanvasSize && effectiveCanvasSize.height > 500
+                    ? '2.1rem'
+                    : '1.85rem',
               width:
-                effectiveCanvasSize && effectiveCanvasSize.width < 300
-                  ? '1.5rem'
-                  : '1.9rem',
+                effectiveCanvasSize && effectiveCanvasSize.width > 700
+                  ? '2rem'
+                  : '1.5rem',
               background: color,
               borderRadius: `${
                 isLeftSide
@@ -88,9 +90,9 @@ const ColorBlocks: FC<ColorBlockProps> = ({
               }`,
               ['--full-amount' as string]: colorLength,
               ['--alert-distance' as string]:
-                effectiveCanvasSize && effectiveCanvasSize.width < 300
-                  ? '1.6rem'
-                  : '2rem',
+                effectiveCanvasSize && effectiveCanvasSize.width > 700
+                  ? '2.1rem'
+                  : '1.6rem',
             }}
           >
             <i className="color-alert">
