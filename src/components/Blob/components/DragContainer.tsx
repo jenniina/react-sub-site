@@ -371,7 +371,6 @@ export default function DragContainer({
       colorBrown,
       colorCaramel,
       colorTan,
-      colorStraw,
     ]
   }, [
     colorHyasinth,
@@ -386,7 +385,6 @@ export default function DragContainer({
     colorBrown,
     colorCaramel,
     colorTan,
-    colorStraw,
   ])
 
   const colorBlockPropsRight = useMemo(() => {
@@ -402,6 +400,7 @@ export default function DragContainer({
       colorOlive,
       colorLichen,
       colorLemon,
+      colorStraw,
     ]
   }, [
     colorBlue,
@@ -415,6 +414,7 @@ export default function DragContainer({
     colorOlive,
     colorLichen,
     colorLemon,
+    colorStraw,
   ])
 
   const colorBlockPropsCombo = useMemo(() => {
@@ -1781,17 +1781,9 @@ export default function DragContainer({
 
   const getPosition = useCallback(
     (draggable: HTMLElement) => {
-      const blobID = draggable.id
       if (!isClient || !windowObj) return
 
-      const existingDraggable = state.draggables[d]?.find(
-        (item) => item.id === blobID
-      )
       const blobStyle = windowObj.getComputedStyle(draggable)
-      const blobNumber = parseInt(
-        draggable.id.replace('blob', '').split('-')[0],
-        10
-      )
 
       const readCssValue = (
         propertyName: string,
@@ -1809,43 +1801,26 @@ export default function DragContainer({
         return stateFallback
       }
 
-      const blobI = readCssValue('--i', '--i', `${existingDraggable?.i ?? 10}`)
+      const existingDraggable = state.draggables[d]?.find(
+        (item) => item.id === draggable.id
+      )
+
       const blobX = readCssValue('left', 'left', existingDraggable?.x ?? '0px')
       const blobY = readCssValue('top', 'top', existingDraggable?.y ?? '0px')
-      const blobZ = readCssValue(
-        'z-index',
-        'z-index',
-        existingDraggable?.z ?? '0'
-      )
-      const blobColor1 = readCssValue(
-        'background',
-        'background',
-        existingDraggable?.background ??
-          'linear-gradient(90deg, cyan, greenyellow)'
-      )
-      const layer = readCssValue(
-        '--layer',
-        '--layer',
-        `${existingDraggable?.layer ?? activeLayer}`
-      )
-
-      const blobDraggable: Draggable = {
-        layer: layer ? parseInt(layer) : activeLayer,
-        id: blobID,
-        number: blobNumber,
-        i: isNaN(parseFloat(blobI)) ? 10 : parseFloat(blobI),
-        x: blobX,
-        y: blobY,
-        z: blobZ,
-        background: blobColor1 ?? 'linear-gradient(90deg, cyan, greenyellow)',
-      }
 
       void dispatch({
-        type: 'updateDraggable',
-        payload: { d, draggable: blobDraggable },
+        type: 'partialUpdate',
+        payload: {
+          d,
+          id: draggable.id,
+          update: {
+            x: blobX,
+            y: blobY,
+          },
+        },
       })
     },
-    [activeLayer, d, dispatch, isClient, state.draggables, windowObj]
+    [d, dispatch, isClient, state.draggables, windowObj]
   )
 
   useEffect(() => {
