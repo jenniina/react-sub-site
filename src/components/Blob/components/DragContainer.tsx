@@ -49,8 +49,8 @@ const colorPairsLeft: ColorPair[] = [
   { color1: 'darkslateblue', color2: 'rebeccapurple' }, //colorHyasinth
   { color1: 'indigo', color2: 'mediumorchid' }, //colorPurple
   { color1: 'darkmagenta', color2: 'orchid' }, //colorMagenta
-  { color1: 'fuchsia', color2: 'hotpink' }, //colorFuchsia
-  { color1: 'lightsalmon', color2: 'pink' }, //colorPink
+  { color1: 'deeppink', color2: 'fuchsia' }, //colorFuchsia
+  { color1: 'hotpink', color2: 'pink' }, //colorPink
   { color1: 'crimson', color2: 'indianred' }, //colorCrimson
   { color1: 'coral', color2: 'lightcoral' }, //colorCoral
   { color1: 'sandybrown', color2: 'peachpuff' }, //colorPeach
