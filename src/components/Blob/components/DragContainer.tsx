@@ -32,7 +32,7 @@ import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import Accordion from '../../Accordion/Accordion'
 import { notify } from '../../../reducers/notificationReducer'
 import { initializeUser } from '../../../reducers/authReducer'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import blobService from '../services/blob'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 import { useConfirm } from '../../../contexts/ConfirmContext'
@@ -46,22 +46,22 @@ import useLocalStorage from '../../../hooks/useStorage'
 
 // Should be in the same order as colorBlockPropsLeft
 const colorPairsLeft: ColorPair[] = [
+  { color1: 'darkslateblue', color2: 'rebeccapurple' }, //colorHyasinth
   { color1: 'indigo', color2: 'mediumorchid' }, //colorPurple
-  { color1: 'darkmagenta', color2: 'palevioletred' }, //colorMagenta
-  { color1: 'hotpink', color2: 'pink' }, //colorPink
+  { color1: 'darkmagenta', color2: 'orchid' }, //colorMagenta
+  { color1: 'fuchsia', color2: 'hotpink' }, //colorFuchsia
+  { color1: 'lightsalmon', color2: 'pink' }, //colorPink
   { color1: 'crimson', color2: 'indianred' }, //colorCrimson
-  { color1: 'coral', color2: 'salmon' }, //colorCoral
-  { color1: 'orangered', color2: 'chocolate' }, //colorOrange
+  { color1: 'coral', color2: 'lightcoral' }, //colorCoral
+  { color1: 'sandybrown', color2: 'peachpuff' }, //colorPeach
+  { color1: 'orangered', color2: 'darkorange' }, //colorOrange
   { color1: 'saddlebrown', color2: 'sienna' }, //colorBrown
   { color1: 'peru', color2: 'burlywood' }, //colorCaramel
   { color1: 'tan', color2: 'peachpuff' }, //colorTan
-  { color1: 'khaki', color2: 'palegoldenrod' }, //colorStraw
-  { color1: 'gold', color2: 'yellow' }, //colorLemon
 ]
 // Should be in the same order as colorBlockPropsRight
 const colorPairsRight: ColorPair[] = [
-  { color1: 'darkslateblue', color2: 'slateblue' }, //colorHyasinth
-  { color1: 'blue', color2: 'royalblue' }, //colorSapphire
+  { color1: 'blue', color2: 'royalblue' }, //colorBlue
   { color1: 'royalblue', color2: 'dodgerblue' }, //colorDenim
   { color1: 'deepskyblue', color2: 'cyan' }, //colorCyan
   { color1: 'skyblue', color2: 'paleturquoise' }, //colorIce
@@ -71,6 +71,8 @@ const colorPairsRight: ColorPair[] = [
   { color1: 'darkgreen', color2: 'green' }, //colorForest
   { color1: 'darkolivegreen', color2: 'olive' }, //colorOlive
   { color1: 'olive', color2: 'darkkhaki' }, //colorLichen
+  { color1: 'gold', color2: 'yellow' }, //colorLemon
+  { color1: 'khaki', color2: 'palegoldenrod' }, //colorStraw
 ]
 
 const colorPairsCombined: ColorPair[] = [...colorPairsLeft, ...colorPairsRight]
@@ -81,7 +83,7 @@ const angle = '90deg'
 
 const defaultLayerAmount = 3
 const minCanvasWidth = 140
-const minCanvasHeight = 360
+const minCanvasHeight = 440
 const canvasViewportPadding = 12
 const defaultSingleCanvasVariant = 2
 
@@ -179,7 +181,7 @@ export default function DragContainer({
     ),
     height: Math.max(
       minCanvasHeight,
-      (windowHeight || 0) - canvasViewportPadding * 2
+      (windowHeight || 0) - canvasViewportPadding * 14
     ),
   })
   const [canvasSize, setCanvasSize, removeCanvasSize] =
@@ -229,7 +231,6 @@ export default function DragContainer({
   const [focusedBlob, setFocusedBlob] = useState<focusedBlob | null>(null)
   const [usingKeyboard, setUsingKeyboard] = useState<boolean>(false)
   const [markerEnabled, setMarkerEnabled] = useState<boolean>(true)
-  const [controlsVisible, setControlsVisible] = useState<boolean>(true)
   const [colorsVisible, setColorsVisible] = useState<boolean>(true)
   const [hasBeenMade, setHasBeenMade] = useState<boolean>(false)
   const [paused, setPaused] = useState<boolean>(false)
@@ -252,6 +253,7 @@ export default function DragContainer({
 
   const [layerAmount, setLayerAmount] = useState<number>(0)
 
+  const colorPeach = useRef(null) as RefObject<HTMLButtonElement>
   const colorOrange = useRef(null) as RefObject<HTMLButtonElement>
   const colorStraw = useRef(null) as RefObject<HTMLButtonElement>
   const colorLemon = useRef(null) as RefObject<HTMLButtonElement>
@@ -264,12 +266,13 @@ export default function DragContainer({
   const colorForest = useRef(null) as RefObject<HTMLButtonElement>
   const colorOlive = useRef(null) as RefObject<HTMLButtonElement>
   const colorLichen = useRef(null) as RefObject<HTMLButtonElement>
+  const colorFuchsia = useRef(null) as RefObject<HTMLButtonElement>
   const colorPink = useRef(null) as RefObject<HTMLButtonElement>
   const colorCoral = useRef(null) as RefObject<HTMLButtonElement>
   const colorCrimson = useRef(null) as RefObject<HTMLButtonElement>
   const colorMagenta = useRef(null) as RefObject<HTMLButtonElement>
   const colorPurple = useRef(null) as RefObject<HTMLButtonElement>
-  const colorSapphire = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlue = useRef(null) as RefObject<HTMLButtonElement>
   const colorDenim = useRef(null) as RefObject<HTMLButtonElement>
   const colorCyan = useRef(null) as RefObject<HTMLButtonElement>
   const colorIce = useRef(null) as RefObject<HTMLButtonElement>
@@ -277,36 +280,37 @@ export default function DragContainer({
 
   const refNameMappingLeft = useMemo(() => {
     return new Map<RefObject<HTMLButtonElement>, string>([
+      [colorHyasinth, 'colorHyasinth'],
       [colorPurple, 'colorPurple'],
       [colorMagenta, 'colorMagenta'],
+      [colorFuchsia, 'colorFuchsia'],
       [colorPink, 'colorPink'],
       [colorCrimson, 'colorCrimson'],
       [colorCoral, 'colorCoral'],
+      [colorPeach, 'colorPeach'],
       [colorOrange, 'colorOrange'],
       [colorBrown, 'colorBrown'],
       [colorCaramel, 'colorCaramel'],
       [colorTan, 'colorTan'],
-      [colorStraw, 'colorStraw'],
-      [colorLemon, 'colorLemon'],
     ])
   }, [
+    colorHyasinth,
     colorPurple,
     colorMagenta,
+    colorFuchsia,
     colorPink,
     colorCrimson,
     colorCoral,
+    colorPeach,
     colorOrange,
     colorBrown,
     colorCaramel,
     colorTan,
-    colorStraw,
-    colorLemon,
   ])
 
   const refNameMappingRight = useMemo(() => {
     return new Map<RefObject<HTMLButtonElement>, string>([
-      [colorHyasinth, 'colorHyasinth'],
-      [colorSapphire, 'colorSapphire'],
+      [colorBlue, 'colorBlue'],
       [colorDenim, 'colorDenim'],
       [colorCyan, 'colorCyan'],
       [colorIce, 'colorIce'],
@@ -316,10 +320,11 @@ export default function DragContainer({
       [colorForest, 'colorForest'],
       [colorOlive, 'colorOlive'],
       [colorLichen, 'colorLichen'],
+      [colorLemon, 'colorLemon'],
+      [colorStraw, 'colorStraw'],
     ])
   }, [
-    colorHyasinth,
-    colorSapphire,
+    colorBlue,
     colorDenim,
     colorCyan,
     colorIce,
@@ -329,6 +334,8 @@ export default function DragContainer({
     colorForest,
     colorOlive,
     colorLichen,
+    colorLemon,
+    colorStraw,
   ])
 
   const refNameMappingCombo = useMemo(() => {
@@ -352,36 +359,39 @@ export default function DragContainer({
 
   const colorBlockPropsLeft = useMemo(() => {
     return [
+      colorHyasinth,
       colorPurple,
       colorMagenta,
+      colorFuchsia,
       colorPink,
       colorCrimson,
       colorCoral,
+      colorPeach,
       colorOrange,
       colorBrown,
       colorCaramel,
       colorTan,
       colorStraw,
-      colorLemon,
     ]
   }, [
+    colorHyasinth,
     colorPurple,
     colorMagenta,
+    colorFuchsia,
     colorPink,
     colorCrimson,
     colorCoral,
+    colorPeach,
     colorOrange,
     colorBrown,
     colorCaramel,
     colorTan,
     colorStraw,
-    colorLemon,
   ])
 
   const colorBlockPropsRight = useMemo(() => {
     return [
-      colorHyasinth,
-      colorSapphire,
+      colorBlue,
       colorDenim,
       colorCyan,
       colorIce,
@@ -391,10 +401,10 @@ export default function DragContainer({
       colorForest,
       colorOlive,
       colorLichen,
+      colorLemon,
     ]
   }, [
-    colorHyasinth,
-    colorSapphire,
+    colorBlue,
     colorDenim,
     colorCyan,
     colorIce,
@@ -404,6 +414,7 @@ export default function DragContainer({
     colorForest,
     colorOlive,
     colorLichen,
+    colorLemon,
   ])
 
   const colorBlockPropsCombo = useMemo(() => {
@@ -1688,13 +1699,10 @@ export default function DragContainer({
 
     const spawnY = Math.max(
       0,
-      Math.max(
-        canvasHeight,
-        Math.round(
-          scrollTop +
-            viewportHeight -
-            getRandomMinMax(canvasHeight * 0.1, canvasHeight * 0.2)
-        )
+      Math.round(
+        scrollTop +
+          viewportHeight -
+          getRandomMinMax(canvasHeight * 0.15, canvasHeight * 0.25)
       )
     )
 
@@ -2139,11 +2147,13 @@ export default function DragContainer({
       const canvasHeight = dragWrapOuter.current?.offsetHeight
       if (!canvasWidth || !canvasHeight) return
 
-      const y_pos = [6, 14, 22, 30, 38, 46, 54, 62, 70, 78, 86] // color block y positions
-      const x_pos = [15, 38, 62, 85] // top item x positions
-      const top_pos = 1
+      const y_pos = [
+        0, 8.3, 16.6, 24.9, 33.2, 41.5, 49.8, 58.1, 66.4, 74.7, 83, 91.3,
+      ] // color block y positions
+      const x_pos = [12, 36, 64, 88] // top item x positions
+      const top_pos = 0
       const bottom_pos = 99
-      const adjustment = 6
+      const adjustment = 10
       //place these items every time the window is resized:
 
       if (makeSmaller0.current && dragWrap.current)
@@ -2151,8 +2161,7 @@ export default function DragContainer({
           makeSmaller0.current,
           x_pos[0] - (makeSmaller0.current.offsetWidth / canvasWidth) * 50,
           top_pos -
-            ((makeSmaller0.current.offsetHeight / 2 + adjustment) /
-              canvasHeight) *
+            ((makeSmaller0.current.offsetHeight + adjustment) / canvasHeight) *
               100
         )
       if (makeLarger0.current && dragWrap.current)
@@ -2160,8 +2169,7 @@ export default function DragContainer({
           makeLarger0.current,
           x_pos[1] - (makeLarger0.current.offsetWidth / canvasWidth) * 50,
           top_pos -
-            ((makeLarger0.current.offsetHeight / 2 + adjustment) /
-              canvasHeight) *
+            ((makeLarger0.current.offsetHeight + adjustment) / canvasHeight) *
               100
         )
       if (layerDecrease.current && dragWrap.current)
@@ -2169,8 +2177,7 @@ export default function DragContainer({
           layerDecrease.current,
           x_pos[2] - (layerDecrease.current.offsetWidth / canvasWidth) * 50,
           top_pos -
-            ((layerDecrease.current.offsetHeight / 2 + adjustment) /
-              canvasHeight) *
+            ((layerDecrease.current.offsetHeight + adjustment) / canvasHeight) *
               100
         )
       if (layerIncrease.current && dragWrap.current)
@@ -2178,51 +2185,40 @@ export default function DragContainer({
           layerIncrease.current,
           x_pos[3] - (layerIncrease.current.offsetWidth / canvasWidth) * 50,
           top_pos -
-            ((layerIncrease.current.offsetHeight / 2 + adjustment) /
-              canvasHeight) *
+            ((layerIncrease.current.offsetHeight + adjustment) / canvasHeight) *
               100
         )
       if (deleteBlob0.current && dragWrap.current)
         place(
           deleteBlob0.current,
-          28 - (deleteBlob0.current.offsetWidth / canvasWidth) * 50,
-          bottom_pos -
-            ((deleteBlob0.current.offsetHeight / 2 - adjustment) /
-              canvasHeight) *
-              100
+          25 - (deleteBlob0.current.offsetWidth / 2 / canvasWidth) * 50,
+          bottom_pos + ((adjustment * 2) / canvasHeight) * 100
         )
       if (makeRandom0.current && dragWrap.current)
         place(
           makeRandom0.current,
-          50 - (makeRandom0.current.offsetWidth / canvasWidth) * 50,
-          bottom_pos -
-            ((makeRandom0.current.offsetHeight / 2 - adjustment) /
-              canvasHeight) *
-              100
+          50 - (makeRandom0.current.offsetWidth / 2 / canvasWidth) * 50,
+          bottom_pos + ((adjustment * 2) / canvasHeight) * 100
         )
       if (makeMore0.current && dragWrap.current)
         place(
           makeMore0.current,
-          72 - (makeMore0.current.offsetWidth / canvasWidth) * 50,
-          bottom_pos -
-            ((makeMore0.current.offsetHeight / 2 - adjustment) / canvasHeight) *
-              100
+          75 - (makeMore0.current.offsetWidth / 2 / canvasWidth) * 50,
+          bottom_pos + ((adjustment * 2) / canvasHeight) * 100
         )
       if (resizeHandleLeft.current && dragWrap.current)
         place(
           resizeHandleLeft.current,
           0 - (adjustment / canvasWidth) * 100,
-          100 - (resizeHandleLeft.current.offsetHeight / 2 / canvasHeight) * 100
+          100 + ((adjustment * 1.7) / canvasHeight) * 100
         )
       if (resizeHandleRight.current && dragWrap.current)
         place(
           resizeHandleRight.current,
           100 -
-            ((resizeHandleRight.current.offsetWidth - adjustment) /
-              canvasWidth) *
-              100,
-          100 -
-            (resizeHandleRight.current.offsetHeight / 2 / canvasHeight) * 100
+            (resizeHandleRight.current.offsetWidth / 2 / canvasWidth) * 100 +
+            (adjustment / canvasWidth) * 100,
+          100 + ((adjustment * 1.7) / canvasHeight) * 100
         )
       // place color blocks:
       colorBlockPropsCombo.forEach((colorBlockArray) => {
@@ -3022,37 +3018,6 @@ export default function DragContainer({
               </button>
 
               <button
-                id={`toggle-controls${d}`}
-                aria-labelledby={`toggle-controls${d}-span`}
-                className={`toggle-controls ${
-                  !controlsVisible ? 'active' : ''
-                }`}
-                onClick={() => {
-                  setControlsVisible(!controlsVisible)
-                  if (!controlsVisible) {
-                    setTimeout(() => {
-                      widthResize()
-                    }, 200)
-                  }
-                }}
-              >
-                {controlsVisible ? (
-                  <>
-                    <span id={`toggle-controls${d}-span`}>
-                      {t('HideControls')}
-                    </span>
-                    <Icon lib="md" name="MdHideSource" aria-hidden="true" />
-                  </>
-                ) : (
-                  <>
-                    <span id={`toggle-controls${d}-span`}>
-                      {t('ShowControls')}
-                    </span>
-                    <Icon lib="md" name="MdOutlineCircle" aria-hidden="true" />
-                  </>
-                )}
-              </button>
-              <button
                 id={`toggle-colors${d}`}
                 aria-labelledby={`toggle-colors${d}-span`}
                 className={`toggle-colors ${!colorsVisible ? 'active' : ''}`}
@@ -3152,9 +3117,7 @@ export default function DragContainer({
               <button
                 ref={resizeHandleLeft}
                 type="button"
-                className={`resize-handle resize-handle-left gray tooltip-wrap ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
+                className={`resize-handle resize-handle-left gray tooltip-wrap`}
                 aria-label={t('ResizeCanvas')}
                 aria-describedby={`drag-wrap-resize-help-left${d}`}
                 aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown Shift+ArrowLeft Shift+ArrowRight Shift+ArrowUp Shift+ArrowDown"
@@ -3175,9 +3138,7 @@ export default function DragContainer({
               <button
                 ref={resizeHandleRight}
                 type="button"
-                className={`resize-handle resize-handle-right gray tooltip-wrap ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
+                className={`resize-handle resize-handle-right gray tooltip-wrap`}
                 aria-label={t('ResizeCanvas')}
                 aria-describedby={`drag-wrap-resize-help${d}`}
                 aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown Shift+ArrowLeft Shift+ArrowRight Shift+ArrowUp Shift+ArrowDown"
@@ -3195,9 +3156,7 @@ export default function DragContainer({
 
               <button
                 ref={makeSmaller0}
-                className={`make-smaller tooltip-wrap gray ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
+                className={`make-smaller tooltip-wrap gray`}
                 id={`make-smaller${d}`}
                 onClick={() => {
                   toggleMode('scale-down')
@@ -3219,9 +3178,7 @@ export default function DragContainer({
 
               <button
                 ref={makeLarger0}
-                className={`make-larger tooltip-wrap gray ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
+                className={`make-larger tooltip-wrap gray`}
                 id={`make-larger${d}`}
                 onClick={() => {
                   toggleMode('scale-up')
@@ -3244,9 +3201,7 @@ export default function DragContainer({
               <button
                 ref={layerDecrease}
                 id={`layer-decrease${d}`}
-                className={`layer-adjust layer-decrease tooltip-wrap gray ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
+                className={`layer-adjust layer-decrease tooltip-wrap gray`}
                 onClick={() => toggleMode('layer-down')}
               >
                 {mode === 'layer-down' && (
@@ -3265,9 +3220,7 @@ export default function DragContainer({
               <button
                 ref={layerIncrease}
                 id={`layer-increase${d}`}
-                className={`layer-adjust layer-increase tooltip-wrap gray ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
+                className={`layer-adjust layer-increase tooltip-wrap gray`}
                 onClick={() => toggleMode('layer-up')}
               >
                 {mode === 'layer-up' && (
@@ -3286,9 +3239,7 @@ export default function DragContainer({
 
               <button
                 ref={deleteBlob0}
-                className={`delete-blob tooltip-wrap gray ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
+                className={`delete-blob tooltip-wrap gray`}
                 id={`delete-blob${d}`}
                 onClick={() => toggleMode('delete')}
               >
@@ -3306,9 +3257,7 @@ export default function DragContainer({
 
               <button
                 ref={makeRandom0}
-                className={`make-random tooltip-wrap gray ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
+                className={`make-random tooltip-wrap gray`}
                 id={`make-random${d}`}
                 aria-labelledby={`make-random${d}-span`}
                 onClick={() => addRandomDraggable()}
@@ -3323,9 +3272,7 @@ export default function DragContainer({
 
               <button
                 ref={makeMore0}
-                className={`make-more tooltip-wrap gray ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
+                className={`make-more tooltip-wrap gray`}
                 id={`make-more${d}`}
                 onClick={() => {
                   toggleMode('clone')
@@ -3586,11 +3533,7 @@ export default function DragContainer({
                 </button>
               </div>
 
-              <div
-                className={`movers-wrap movers-wrap1 ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
-              >
+              <div className={`movers-wrap movers-wrap1`}>
                 <button
                   id={`moveleft${d}`}
                   aria-labelledby={`moveleft${d}-span`}
@@ -3615,11 +3558,7 @@ export default function DragContainer({
                 </button>
               </div>
 
-              <div
-                className={`movers-wrap movers-wrap2 ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
-              >
+              <div className={`movers-wrap movers-wrap2`}>
                 <button
                   id={`moveup${d}`}
                   aria-labelledby={`moveup${d}-span`}
