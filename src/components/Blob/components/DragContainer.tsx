@@ -53,8 +53,8 @@ const colorPairsLeft: ColorPair[] = [
   { color1: 'hotpink', color2: 'pink' }, //colorPink
   { color1: 'crimson', color2: 'indianred' }, //colorCrimson
   { color1: 'coral', color2: 'lightcoral' }, //colorCoral
-  { color1: 'lightsalmon', color2: 'peachpuff' }, //colorPeach
-  { color1: 'orangered', color2: 'darkorange' }, //colorOrange
+  { color1: 'orangered', color2: 'orange' }, //colorOrange
+  { color1: 'darkorange', color2: 'gold' }, //colorAmber
   { color1: 'saddlebrown', color2: 'sienna' }, //colorBrown
   { color1: 'peru', color2: 'burlywood' }, //colorCaramel
   { color1: 'tan', color2: 'peachpuff' }, //colorBeige
@@ -253,7 +253,7 @@ export default function DragContainer({
 
   const [layerAmount, setLayerAmount] = useState<number>(0)
 
-  const colorPeach = useRef(null) as RefObject<HTMLButtonElement>
+  const colorAmber = useRef(null) as RefObject<HTMLButtonElement>
   const colorOrange = useRef(null) as RefObject<HTMLButtonElement>
   const colorStraw = useRef(null) as RefObject<HTMLButtonElement>
   const colorLemon = useRef(null) as RefObject<HTMLButtonElement>
@@ -287,8 +287,8 @@ export default function DragContainer({
       [colorPink, 'colorPink'],
       [colorCrimson, 'colorCrimson'],
       [colorCoral, 'colorCoral'],
-      [colorPeach, 'colorPeach'],
       [colorOrange, 'colorOrange'],
+      [colorAmber, 'colorAmber'],
       [colorBrown, 'colorBrown'],
       [colorCaramel, 'colorCaramel'],
       [colorBeige, 'colorBeige'],
@@ -301,8 +301,8 @@ export default function DragContainer({
     colorPink,
     colorCrimson,
     colorCoral,
-    colorPeach,
     colorOrange,
+    colorAmber,
     colorBrown,
     colorCaramel,
     colorBeige,
@@ -366,8 +366,8 @@ export default function DragContainer({
       colorPink,
       colorCrimson,
       colorCoral,
-      colorPeach,
       colorOrange,
+      colorAmber,
       colorBrown,
       colorCaramel,
       colorBeige,
@@ -380,8 +380,8 @@ export default function DragContainer({
     colorPink,
     colorCrimson,
     colorCoral,
-    colorPeach,
     colorOrange,
+    colorAmber,
     colorBrown,
     colorCaramel,
     colorBeige,

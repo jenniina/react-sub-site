@@ -10952,6 +10952,15 @@ export const translations = {
     cs: 'Béžová',
     fi: 'Beige',
   },
+  Amber: {
+    en: 'Amber',
+    es: 'Ámbar',
+    fr: 'Ambre',
+    de: 'Bernstein',
+    pt: 'Âmbar',
+    cs: 'Jantar',
+    fi: 'Meripihka',
+  },
   Hyasinth: {
     en: 'Hyasinth',
     es: 'Jacinto',
