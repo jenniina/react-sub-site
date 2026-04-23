@@ -53,11 +53,11 @@ const colorPairsLeft: ColorPair[] = [
   { color1: 'hotpink', color2: 'pink' }, //colorPink
   { color1: 'crimson', color2: 'indianred' }, //colorCrimson
   { color1: 'coral', color2: 'lightcoral' }, //colorCoral
-  { color1: 'sandybrown', color2: 'peachpuff' }, //colorPeach
+  { color1: 'lightsalmon', color2: 'peachpuff' }, //colorPeach
   { color1: 'orangered', color2: 'darkorange' }, //colorOrange
   { color1: 'saddlebrown', color2: 'sienna' }, //colorBrown
   { color1: 'peru', color2: 'burlywood' }, //colorCaramel
-  { color1: 'tan', color2: 'peachpuff' }, //colorTan
+  { color1: 'tan', color2: 'peachpuff' }, //colorBeige
 ]
 // Should be in the same order as colorBlockPropsRight
 const colorPairsRight: ColorPair[] = [
@@ -258,7 +258,7 @@ export default function DragContainer({
   const colorStraw = useRef(null) as RefObject<HTMLButtonElement>
   const colorLemon = useRef(null) as RefObject<HTMLButtonElement>
   const colorBrown = useRef(null) as RefObject<HTMLButtonElement>
-  const colorTan = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBeige = useRef(null) as RefObject<HTMLButtonElement>
   const colorLime = useRef(null) as RefObject<HTMLButtonElement>
   const colorMint = useRef(null) as RefObject<HTMLButtonElement>
   const colorLeaf = useRef(null) as RefObject<HTMLButtonElement>
@@ -291,7 +291,7 @@ export default function DragContainer({
       [colorOrange, 'colorOrange'],
       [colorBrown, 'colorBrown'],
       [colorCaramel, 'colorCaramel'],
-      [colorTan, 'colorTan'],
+      [colorBeige, 'colorBeige'],
     ])
   }, [
     colorHyasinth,
@@ -305,7 +305,7 @@ export default function DragContainer({
     colorOrange,
     colorBrown,
     colorCaramel,
-    colorTan,
+    colorBeige,
   ])
 
   const refNameMappingRight = useMemo(() => {
@@ -370,7 +370,7 @@ export default function DragContainer({
       colorOrange,
       colorBrown,
       colorCaramel,
-      colorTan,
+      colorBeige,
     ]
   }, [
     colorHyasinth,
@@ -384,7 +384,7 @@ export default function DragContainer({
     colorOrange,
     colorBrown,
     colorCaramel,
-    colorTan,
+    colorBeige,
   ])
 
   const colorBlockPropsRight = useMemo(() => {

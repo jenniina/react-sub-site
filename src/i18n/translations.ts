@@ -10943,6 +10943,15 @@ export const translations = {
     cs: 'Fuchsie',
     fi: 'Fuksia',
   },
+  Beige: {
+    en: 'Beige',
+    es: 'Beige',
+    fr: 'Beige',
+    de: 'Beige',
+    pt: 'Bege',
+    cs: 'Béžová',
+    fi: 'Beige',
+  },
   Hyasinth: {
     en: 'Hyasinth',
     es: 'Jacinto',
