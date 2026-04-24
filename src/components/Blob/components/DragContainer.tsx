@@ -46,7 +46,6 @@ import useLocalStorage from '../../../hooks/useStorage'
 
 // Should be in the same order as colorBlockPropsLeft
 const colorPairsLeft: ColorPair[] = [
-  { color1: 'darkslateblue', color2: 'rebeccapurple' }, //colorHyasinth
   { color1: 'indigo', color2: 'mediumorchid' }, //colorPurple
   { color1: 'darkmagenta', color2: 'orchid' }, //colorMagenta
   { color1: 'deeppink', color2: 'fuchsia' }, //colorFuchsia
@@ -55,12 +54,17 @@ const colorPairsLeft: ColorPair[] = [
   { color1: 'coral', color2: 'lightcoral' }, //colorCoral
   { color1: 'orangered', color2: 'orange' }, //colorOrange
   { color1: 'darkorange', color2: 'gold' }, //colorAmber
-  { color1: 'saddlebrown', color2: 'sienna' }, //colorBrown
-  { color1: 'peru', color2: 'burlywood' }, //colorCaramel
+  { color1: 'gold', color2: 'yellow' }, //colorLemon
+  { color1: 'khaki', color2: 'palegoldenrod' }, //colorStraw
   { color1: 'tan', color2: 'peachpuff' }, //colorBeige
+  { color1: 'peru', color2: 'burlywood' }, //colorCaramel
+  { color1: 'saddlebrown', color2: 'sienna' }, //colorBrown
 ]
 // Should be in the same order as colorBlockPropsRight
 const colorPairsRight: ColorPair[] = [
+  { color1: 'darkgray', color2: 'silver' }, // colorSilver
+  { color1: 'dimgray', color2: 'gray' }, // colorGray
+  { color1: 'steelblue', color2: 'lightslategray' }, //colorSteel
   { color1: 'blue', color2: 'royalblue' }, //colorBlue
   { color1: 'royalblue', color2: 'dodgerblue' }, //colorDenim
   { color1: 'deepskyblue', color2: 'cyan' }, //colorCyan
@@ -71,8 +75,6 @@ const colorPairsRight: ColorPair[] = [
   { color1: 'darkgreen', color2: 'green' }, //colorForest
   { color1: 'darkolivegreen', color2: 'olive' }, //colorOlive
   { color1: 'olive', color2: 'darkkhaki' }, //colorLichen
-  { color1: 'gold', color2: 'yellow' }, //colorLemon
-  { color1: 'khaki', color2: 'palegoldenrod' }, //colorStraw
 ]
 
 const colorPairsCombined: ColorPair[] = [...colorPairsLeft, ...colorPairsRight]
@@ -83,7 +85,7 @@ const angle = '90deg'
 
 const defaultLayerAmount = 3
 const minCanvasWidth = 140
-const minCanvasHeight = 440
+const minCanvasHeight = 460
 const canvasViewportPadding = 12
 const defaultSingleCanvasVariant = 2
 
@@ -276,11 +278,12 @@ export default function DragContainer({
   const colorDenim = useRef(null) as RefObject<HTMLButtonElement>
   const colorCyan = useRef(null) as RefObject<HTMLButtonElement>
   const colorIce = useRef(null) as RefObject<HTMLButtonElement>
-  const colorHyasinth = useRef(null) as RefObject<HTMLButtonElement>
+  const colorSteel = useRef(null) as RefObject<HTMLButtonElement>
+  const colorGray = useRef(null) as RefObject<HTMLButtonElement>
+  const colorSilver = useRef(null) as RefObject<HTMLButtonElement>
 
   const refNameMappingLeft = useMemo(() => {
     return new Map<RefObject<HTMLButtonElement>, string>([
-      [colorHyasinth, 'colorHyasinth'],
       [colorPurple, 'colorPurple'],
       [colorMagenta, 'colorMagenta'],
       [colorFuchsia, 'colorFuchsia'],
@@ -289,12 +292,13 @@ export default function DragContainer({
       [colorCoral, 'colorCoral'],
       [colorOrange, 'colorOrange'],
       [colorAmber, 'colorAmber'],
-      [colorBrown, 'colorBrown'],
-      [colorCaramel, 'colorCaramel'],
+      [colorLemon, 'colorLemon'],
+      [colorStraw, 'colorStraw'],
       [colorBeige, 'colorBeige'],
+      [colorCaramel, 'colorCaramel'],
+      [colorBrown, 'colorBrown'],
     ])
   }, [
-    colorHyasinth,
     colorPurple,
     colorMagenta,
     colorFuchsia,
@@ -303,13 +307,18 @@ export default function DragContainer({
     colorCoral,
     colorOrange,
     colorAmber,
-    colorBrown,
-    colorCaramel,
+    colorLemon,
+    colorStraw,
     colorBeige,
+    colorCaramel,
+    colorBrown,
   ])
 
   const refNameMappingRight = useMemo(() => {
     return new Map<RefObject<HTMLButtonElement>, string>([
+      [colorSilver, 'colorSilver'],
+      [colorGray, 'colorGray'],
+      [colorSteel, 'colorSteel'],
       [colorBlue, 'colorBlue'],
       [colorDenim, 'colorDenim'],
       [colorCyan, 'colorCyan'],
@@ -320,10 +329,11 @@ export default function DragContainer({
       [colorForest, 'colorForest'],
       [colorOlive, 'colorOlive'],
       [colorLichen, 'colorLichen'],
-      [colorLemon, 'colorLemon'],
-      [colorStraw, 'colorStraw'],
     ])
   }, [
+    colorSilver,
+    colorGray,
+    colorSteel,
     colorBlue,
     colorDenim,
     colorCyan,
@@ -334,8 +344,6 @@ export default function DragContainer({
     colorForest,
     colorOlive,
     colorLichen,
-    colorLemon,
-    colorStraw,
   ])
 
   const refNameMappingCombo = useMemo(() => {
@@ -359,7 +367,6 @@ export default function DragContainer({
 
   const colorBlockPropsLeft = useMemo(() => {
     return [
-      colorHyasinth,
       colorPurple,
       colorMagenta,
       colorFuchsia,
@@ -368,12 +375,13 @@ export default function DragContainer({
       colorCoral,
       colorOrange,
       colorAmber,
-      colorBrown,
-      colorCaramel,
+      colorLemon,
+      colorStraw,
       colorBeige,
+      colorCaramel,
+      colorBrown,
     ]
   }, [
-    colorHyasinth,
     colorPurple,
     colorMagenta,
     colorFuchsia,
@@ -382,13 +390,18 @@ export default function DragContainer({
     colorCoral,
     colorOrange,
     colorAmber,
-    colorBrown,
-    colorCaramel,
+    colorLemon,
+    colorStraw,
     colorBeige,
+    colorCaramel,
+    colorBrown,
   ])
 
   const colorBlockPropsRight = useMemo(() => {
     return [
+      colorSilver,
+      colorGray,
+      colorSteel,
       colorBlue,
       colorDenim,
       colorCyan,
@@ -399,10 +412,11 @@ export default function DragContainer({
       colorForest,
       colorOlive,
       colorLichen,
-      colorLemon,
-      colorStraw,
     ]
   }, [
+    colorSilver,
+    colorGray,
+    colorSteel,
     colorBlue,
     colorDenim,
     colorCyan,
@@ -413,8 +427,6 @@ export default function DragContainer({
     colorForest,
     colorOlive,
     colorLichen,
-    colorLemon,
-    colorStraw,
   ])
 
   const colorBlockPropsCombo = useMemo(() => {
@@ -2123,7 +2135,7 @@ export default function DragContainer({
       if (!canvasWidth || !canvasHeight) return
 
       const y_pos = [
-        0, 8.3, 16.6, 24.9, 33.2, 41.5, 49.8, 58.1, 66.4, 74.7, 83, 91.3,
+        0, 7.6, 15.2, 22.8, 30.4, 38, 45.6, 53.2, 60.8, 68.4, 76, 83.6, 91.2,
       ] // color block y positions
       const x_pos = [12, 36, 64, 88] // top item x positions
       const top_pos = 0
