@@ -696,6 +696,9 @@ svg.filter {
   cursor: -webkit-grab;
   cursor: grab;
   pointer-events: all;
+  margin: 0;
+  padding: 0;
+  border-radius: 50%;
 }
 .drag-container .dragzone.delete .draggable-overlay {
   cursor:
