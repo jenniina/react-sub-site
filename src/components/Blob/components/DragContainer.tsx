@@ -249,9 +249,7 @@ export default function DragContainer({
   const [serverError, setServerError] = useState(false)
 
   const [trackSaving, setTrackSaving] = useState(false)
-  const [savedDraggablesbyD, setSavedDraggablesByD] = useState<
-    Record<number, Record<string, SavedBlobs>>
-  >({})
+  const [savedDraggables, setSavedDraggables] = useState<SavedBlobs[]>([])
 
   const [layerAmount, setLayerAmount] = useState<number>(0)
 
@@ -903,6 +901,103 @@ export default function DragContainer({
 
   const effectiveCanvasSize = canvasSize ?? defaultCanvasSize
 
+  const sortSavedBlobsByNewest = useCallback((blobs: SavedBlobs[]) => {
+    const getObjectIdTime = (id?: string) => {
+      if (!id || !/^[0-9a-fA-F]{24}$/.test(id)) return null
+
+      const seconds = Number.parseInt(id.slice(0, 8), 16)
+      return Number.isNaN(seconds) ? null : seconds * 1000
+    }
+
+    const isBackfilledLegacyTimestamp = ({
+      objectIdTime,
+      createdTime,
+      updatedTime,
+    }: {
+      objectIdTime: number | null
+      createdTime: number | null
+      updatedTime: number | null
+    }) => {
+      if (
+        objectIdTime === null ||
+        createdTime === null ||
+        updatedTime === null
+      ) {
+        return false
+      }
+
+      const oneDay = 24 * 60 * 60 * 1000
+      const oneMinute = 60 * 1000
+
+      return (
+        createdTime - objectIdTime > oneDay &&
+        updatedTime - objectIdTime > oneDay &&
+        Math.abs(updatedTime - createdTime) <= oneMinute
+      )
+    }
+
+    const getSavedBlobTime = (blob: SavedBlobs) => {
+      const updatedTime = blob.updatedAt
+        ? new Date(blob.updatedAt).getTime()
+        : null
+      const createdTime = blob.createdAt
+        ? new Date(blob.createdAt).getTime()
+        : null
+      const objectIdTime = getObjectIdTime(blob._id)
+
+      const validUpdatedTime =
+        updatedTime !== null && !Number.isNaN(updatedTime) ? updatedTime : null
+      const validCreatedTime =
+        createdTime !== null && !Number.isNaN(createdTime) ? createdTime : null
+
+      if (
+        isBackfilledLegacyTimestamp({
+          objectIdTime,
+          createdTime: validCreatedTime,
+          updatedTime: validUpdatedTime,
+        })
+      ) {
+        return objectIdTime
+      }
+
+      if (validUpdatedTime !== null) {
+        return validUpdatedTime
+      }
+
+      if (validCreatedTime === null) {
+        return null
+      }
+
+      // Some legacy blobs were backfilled with a fresh createdAt long after
+      // the document was actually created. Prefer the ObjectId timestamp when
+      // createdAt looks like that kind of backfill.
+      if (
+        objectIdTime !== null &&
+        validUpdatedTime === null &&
+        Math.abs(validCreatedTime - objectIdTime) > 24 * 60 * 60 * 1000
+      ) {
+        return objectIdTime
+      }
+
+      return validCreatedTime
+    }
+
+    return [...blobs].sort((a, b) => {
+      const dateA = getSavedBlobTime(a)
+      const dateB = getSavedBlobTime(b)
+
+      if (dateA === null && dateB === null) return 0
+      if (dateA === null) return 1
+      if (dateB === null) return -1
+
+      return dateB - dateA
+    })
+  }, [])
+
+  const orderedSavedDraggables = useMemo(() => {
+    return sortSavedBlobsByNewest(savedDraggables)
+  }, [savedDraggables, sortSavedBlobsByNewest])
+
   const getBlobsFromServer = useCallback(async () => {
     setIsLoading(true)
     setServerError(false)
@@ -912,40 +1007,21 @@ export default function DragContainer({
           .getAllBlobsByUser(user?._id, d, language)
           .then((response: SavedBlobs[]) => {
             if (response) {
-              // Initialize an empty object for sortedDraggables
-              const sortedDraggables: Record<
-                number,
-                Record<string, SavedBlobs>
-              > = {}
-
-              // Iterate through the response and sort draggables by d
-              response.forEach((item: SavedBlobs) => {
-                const { d, versionName } = item
-                if (!sortedDraggables[d]) {
-                  sortedDraggables[d] = {}
-                }
-                sortedDraggables[d][versionName] = item
-              })
-
-              // // Update the state with the sorted draggables
-              // setLayerAmount(
-              //   Math.max(
-              //     ...Object.values(sortedDraggables).map((d) => {
-              //       return Math.max(
-              //         ...Object.values(d).map((version) => {
-              //           return version.draggables.length > 0
-              //             ? Math.max(...version.draggables.map((d) => d.layer))
-              //             : 0
-              //         })
-              //       )
-              //     })
-              //   ) + 1
-              // )
-              // setTimeout(() => {
-              //   saveLayerAmount()
-              // }, 300)
-              setSavedDraggablesByD(sortedDraggables)
-              setHasSavedFiles(Object.keys(sortedDraggables).length > 0)
+              //filter out the draggables part
+              console.log(
+                response
+                  .map((blob) => ({
+                    ...blob,
+                    draggables: blob.draggables
+                      ? '[Draggables filtered out]'
+                      : 'No Draggables',
+                  }))
+                  .map((blob) => JSON.stringify(blob))
+                  .join('\n')
+              )
+              const sortedDraggables = sortSavedBlobsByNewest(response)
+              setSavedDraggables(sortedDraggables)
+              setHasSavedFiles(sortedDraggables.length > 0)
               setIsLoading(false)
             }
           })
@@ -962,15 +1038,10 @@ export default function DragContainer({
       setServerError(true)
       setIsLoading(false)
     }
-  }, [d, dispatch2, language, t, user?._id])
+  }, [d, dispatch2, language, sortSavedBlobsByNewest, t, user?._id])
 
   const checkDuplicateVersionName = (versionName: string): boolean => {
-    for (const dKey in savedDraggablesbyD) {
-      if (savedDraggablesbyD[dKey][versionName]) {
-        return true
-      }
-    }
-    return false
+    return savedDraggables.some((blob) => blob.versionName === versionName)
   }
 
   const regex = /^[\w\s\u00C0-\u024F\u1E00-\u1EFF-]*$/u
@@ -1039,6 +1110,7 @@ export default function DragContainer({
         language
       )
 
+      resetSavedArtworkPage(d)
       setTrackSaving((prev) => !prev)
       void dispatch2(notify(t('SavingSuccessful'), false, 8))
     } catch (err: unknown) {
@@ -1077,7 +1149,8 @@ export default function DragContainer({
               newVersion
             )
             .then(() => {
-              setTrackSaving(!trackSaving)
+              resetSavedArtworkPage(d)
+              setTrackSaving((prev) => !prev)
               void dispatch2(notify(t('SavingSuccessful'), false, 8))
             })
             .catch((err: unknown) => {
@@ -1163,7 +1236,8 @@ export default function DragContainer({
           .deleteBlobsVersionByUser(user._id, d, versionName, language)
           .then(() => {
             void dispatch2(notify(t('DeletedArt'), false, 8))
-            setTrackSaving(!trackSaving)
+            resetSavedArtworkPage(d)
+            setTrackSaving((prev) => !prev)
           })
           .catch((err: unknown) => {
             const message = getErrorMessage(err, t('Error'))
@@ -2135,9 +2209,10 @@ export default function DragContainer({
       if (!canvasWidth || !canvasHeight) return
 
       const y_pos = [
-        0, 7.6, 15.2, 22.8, 30.4, 38, 45.6, 53.2, 60.8, 68.4, 76, 83.6, 91.2,
+        0.6, 8.2, 15.8, 23.4, 31, 38.6, 46.2, 53.8, 61.4, 69, 76.6, 84.2, 91.8,
       ] // color block y positions
-      const x_pos = [12, 36, 64, 88] // top item x positions
+      const x_pos_t = [12, 36, 64, 88] // top item x positions
+      const x_pos_b = [0, 25, 50, 75, 100] // bottom item x positions
       const top_pos = 0
       const bottom_pos = 99
       const adjustment = 10
@@ -2146,7 +2221,7 @@ export default function DragContainer({
       if (makeSmaller0.current && dragWrap.current)
         place(
           makeSmaller0.current,
-          x_pos[0] - (makeSmaller0.current.offsetWidth / canvasWidth) * 50,
+          x_pos_t[0] - (makeSmaller0.current.offsetWidth / canvasWidth) * 50,
           top_pos -
             ((makeSmaller0.current.offsetHeight + adjustment) / canvasHeight) *
               100
@@ -2154,7 +2229,7 @@ export default function DragContainer({
       if (makeLarger0.current && dragWrap.current)
         place(
           makeLarger0.current,
-          x_pos[1] - (makeLarger0.current.offsetWidth / canvasWidth) * 50,
+          x_pos_t[1] - (makeLarger0.current.offsetWidth / canvasWidth) * 50,
           top_pos -
             ((makeLarger0.current.offsetHeight + adjustment) / canvasHeight) *
               100
@@ -2162,7 +2237,7 @@ export default function DragContainer({
       if (layerDecrease.current && dragWrap.current)
         place(
           layerDecrease.current,
-          x_pos[2] - (layerDecrease.current.offsetWidth / canvasWidth) * 50,
+          x_pos_t[2] - (layerDecrease.current.offsetWidth / canvasWidth) * 50,
           top_pos -
             ((layerDecrease.current.offsetHeight + adjustment) / canvasHeight) *
               100
@@ -2170,7 +2245,7 @@ export default function DragContainer({
       if (layerIncrease.current && dragWrap.current)
         place(
           layerIncrease.current,
-          x_pos[3] - (layerIncrease.current.offsetWidth / canvasWidth) * 50,
+          x_pos_t[3] - (layerIncrease.current.offsetWidth / canvasWidth) * 50,
           top_pos -
             ((layerIncrease.current.offsetHeight + adjustment) / canvasHeight) *
               100
@@ -2178,31 +2253,31 @@ export default function DragContainer({
       if (deleteBlob0.current && dragWrap.current)
         place(
           deleteBlob0.current,
-          25 - (deleteBlob0.current.offsetWidth / 2 / canvasWidth) * 50,
+          x_pos_b[1] - (deleteBlob0.current.offsetWidth / 2 / canvasWidth) * 50,
           bottom_pos + ((adjustment * 2) / canvasHeight) * 100
         )
       if (makeRandom0.current && dragWrap.current)
         place(
           makeRandom0.current,
-          50 - (makeRandom0.current.offsetWidth / 2 / canvasWidth) * 50,
+          x_pos_b[2] - (makeRandom0.current.offsetWidth / 2 / canvasWidth) * 50,
           bottom_pos + ((adjustment * 2) / canvasHeight) * 100
         )
       if (makeMore0.current && dragWrap.current)
         place(
           makeMore0.current,
-          75 - (makeMore0.current.offsetWidth / 2 / canvasWidth) * 50,
+          x_pos_b[3] - (makeMore0.current.offsetWidth / 2 / canvasWidth) * 50,
           bottom_pos + ((adjustment * 2) / canvasHeight) * 100
         )
       if (resizeHandleLeft.current && dragWrap.current)
         place(
           resizeHandleLeft.current,
-          0 - (adjustment / canvasWidth) * 100,
+          x_pos_b[0] - (adjustment / canvasWidth) * 100,
           100 + ((adjustment * 1.7) / canvasHeight) * 100
         )
       if (resizeHandleRight.current && dragWrap.current)
         place(
           resizeHandleRight.current,
-          100 -
+          x_pos_b[4] -
             (resizeHandleRight.current.offsetWidth / 2 / canvasWidth) * 100 +
             (adjustment / canvasWidth) * 100,
           100 + ((adjustment * 1.7) / canvasHeight) * 100
@@ -2613,6 +2688,10 @@ export default function DragContainer({
   const handlePageChange = (dKey: number, newPage: number) => {
     setCurrentPage((prev) => ({ ...prev, [dKey]: newPage }))
   }
+
+  const resetSavedArtworkPage = useCallback((dKey: number) => {
+    setCurrentPage((prev) => ({ ...prev, [dKey]: 1 }))
+  }, [])
 
   // //save layer amount to local storage
   // useEffect(() => {
@@ -3631,138 +3710,141 @@ export default function DragContainer({
                 ) : !hasSavedFiles ? (
                   <p>{t('NoSavedArtworkYet')}</p>
                 ) : (
-                  Object.keys(savedDraggablesbyD).map((dKey, index) => {
-                    const versions = Object.keys(
-                      savedDraggablesbyD[Number(dKey)]
+                  (() => {
+                    const dKey = String(d)
+                    const totalPages = Math.ceil(
+                      orderedSavedDraggables.length / itemsPerPage
                     )
-                    const totalPages = Math.ceil(versions.length / itemsPerPage)
-                    const current = currentPage[Number(dKey)] ?? 1
+                    const current = currentPage[d] ?? 1
                     const startIdx = (current - 1) * itemsPerPage
                     const endIdx = startIdx + itemsPerPage
-                    const currentVersions = versions.slice(startIdx, endIdx)
+                    const currentVersions = orderedSavedDraggables.slice(
+                      startIdx,
+                      endIdx
+                    )
 
                     return (
-                      <div
-                        className="flex center margin0auto"
-                        key={`${dKey}:${index}`}
-                      >
+                      <div className="flex center margin0auto" key={dKey}>
                         {pagination(dKey, current, totalPages, 'start')}
-                        <ul
-                          key={`${dKey}+${index}`}
-                          className="blob-versions-wrap"
-                        >
-                          {currentVersions.map((versionName, index) => (
-                            <li
-                              key={`${versionName}+${index}`}
-                              className="blob-version-item"
-                            >
-                              <span>{versionName}</span>
-                              <div className="button-wrap">
-                                <button
-                                  onClick={() =>
-                                    void loadBlobsFromServer(
-                                      Number(dKey),
+                        <ul className="blob-versions-wrap">
+                          {currentVersions.map((savedBlob, index) => {
+                            const { d: savedBlobD, versionName } = savedBlob
+
+                            return (
+                              <li
+                                key={`${versionName}+${index}`}
+                                className="blob-version-item"
+                              >
+                                <span>{versionName}</span>
+                                <div className="button-wrap">
+                                  <button
+                                    onClick={() =>
+                                      void loadBlobsFromServer(
+                                        savedBlobD,
+                                        versionName
+                                      )
+                                    }
+                                  >
+                                    {t('Load')}{' '}
+                                    <span className="scr">{versionName}</span>
+                                  </button>
+                                  <button
+                                    disabled={
+                                      user && user.name === 'temp'
+                                        ? true
+                                        : false
+                                    }
+                                    onClick={() =>
+                                      void deleteBlobsVersionFromServer(
+                                        savedBlobD,
+                                        versionName
+                                      )
+                                    }
+                                  >
+                                    {t('Delete')}{' '}
+                                    <span className="scr">{versionName}</span>
+                                  </button>
+                                  <Accordion
+                                    id={`accordion-blobnewname-${sanitize(
                                       versionName
-                                    )
-                                  }
-                                >
-                                  {t('Load')}{' '}
-                                  <span className="scr">{versionName}</span>
-                                </button>
-                                <button
-                                  disabled={
-                                    user && user.name === 'temp' ? true : false
-                                  }
-                                  onClick={() =>
-                                    void deleteBlobsVersionFromServer(
-                                      Number(dKey),
-                                      versionName
-                                    )
-                                  }
-                                >
-                                  {t('Delete')}{' '}
-                                  <span className="scr">{versionName}</span>
-                                </button>
-                                <Accordion
-                                  id={`accordion-blobnewname-${sanitize(
-                                    versionName
-                                  )}`}
-                                  className="blobnewname"
-                                  wrapperClass="blobnewname-wrap"
-                                  text={t('Rename')}
-                                  hideBrackets={true}
-                                  setIsFormOpen={(open) => {
-                                    setEditName(open ? versionName : '')
-                                  }}
-                                  onClick={() => {
-                                    setNewName(versionName)
-                                    setEditName(versionName)
-                                  }}
-                                  isOpen={editName === versionName}
-                                >
-                                  <>
-                                    <div className="input-wrap">
-                                      <label
-                                        htmlFor={`blobnewname-${sanitize(
-                                          versionName
-                                        )}`}
-                                      >
-                                        <input
-                                          id={`blobnewname-${sanitize(
+                                    )}`}
+                                    className="blobnewname"
+                                    wrapperClass="blobnewname-wrap"
+                                    text={t('Rename')}
+                                    hideBrackets={true}
+                                    setIsFormOpen={(open) => {
+                                      setEditName(open ? versionName : '')
+                                    }}
+                                    onClick={() => {
+                                      setNewName(versionName)
+                                      setEditName(versionName)
+                                    }}
+                                    isOpen={editName === versionName}
+                                  >
+                                    <>
+                                      <div className="input-wrap">
+                                        <label
+                                          htmlFor={`blobnewname-${sanitize(
                                             versionName
                                           )}`}
-                                          type="text"
-                                          value={newName}
-                                          onChange={handleNewNameChange}
-                                          placeholder={t('RenameYourArtwork')}
-                                          maxLength={30}
-                                        />
-                                        <span>{t('Rename')}:</span>{' '}
-                                        <span className="scr">
-                                          {versionName}
-                                        </span>
-                                      </label>
-                                    </div>
-                                    <button
-                                      disabled={
-                                        user && user.name === 'temp'
-                                          ? true
-                                          : false
-                                      }
-                                      onClick={() => {
-                                        if (versionName !== newName) {
-                                          void editBlobsByUser(
-                                            versionName,
-                                            newName
-                                          )
-                                        } else
-                                          void dispatch2(
-                                            notify(
-                                              `${t('Error')}: ${t(
-                                                'RenameYourArtwork'
-                                              )}`,
-                                              true,
-                                              5
+                                        >
+                                          <input
+                                            id={`blobnewname-${sanitize(
+                                              versionName
+                                            )}`}
+                                            type="text"
+                                            value={newName}
+                                            onChange={handleNewNameChange}
+                                            placeholder={t('RenameYourArtwork')}
+                                            maxLength={30}
+                                          />
+                                          <span>{t('Rename')}:</span>{' '}
+                                          <span className="scr">
+                                            {versionName}
+                                          </span>
+                                        </label>
+                                      </div>
+                                      <button
+                                        disabled={
+                                          user && user.name === 'temp'
+                                            ? true
+                                            : false
+                                        }
+                                        onClick={() => {
+                                          if (versionName !== newName) {
+                                            void editBlobsByUser(
+                                              versionName,
+                                              newName
                                             )
-                                          )
-                                      }}
-                                    >
-                                      {t('Edit')}{' '}
-                                      <span className="scr">
-                                        {versionName}: {t('NewName')} {newName}
-                                      </span>
-                                    </button>
-                                  </>
-                                </Accordion>
-                              </div>
-                            </li>
-                          ))}
+                                          } else
+                                            void dispatch2(
+                                              notify(
+                                                `${t('Error')}: ${t(
+                                                  'RenameYourArtwork'
+                                                )}`,
+                                                true,
+                                                5
+                                              )
+                                            )
+                                        }}
+                                      >
+                                        {t('Edit')}{' '}
+                                        <span className="scr">
+                                          {versionName}: {t('NewName')}{' '}
+                                          {newName}
+                                        </span>
+                                      </button>
+                                    </>
+                                  </Accordion>
+                                </div>
+                              </li>
+                            )
+                          })}
                         </ul>
-                        {/* Pagination Controls */}
                         {pagination(dKey, current, totalPages, 'end')}
                       </div>
                     )
-                  })
+                  })()
                 )}
               </div>
             ) : (

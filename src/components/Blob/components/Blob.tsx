@@ -98,7 +98,15 @@ const Blob = ({
           '10.5px', //<32
           '10px',
         ]
-      : ['5.1px', '5.4px', '6.5px', '7px', '7.8px', '8.4px', '8.6px'] // breakpoints for hitbox size due to varying levels of blur between the containers and blob sizes
+      : [
+          '5.1px', //<8
+          '5.4px', //<10
+          '6.5px', //<20
+          '7px', //<24
+          '7.8px', //<28
+          '8.4px', //<32
+          '8.6px',
+        ] // breakpoints for hitbox size due to varying levels of blur between the containers and blob sizes
 
   const handleClick = () => {
     if (mode === 'change-color') {
@@ -127,33 +135,21 @@ const Blob = ({
         void dispatch2(notify(t('CannotLowerBlobFurther'), true, 4))
       }
     } else if (mode === 'scale-down') {
-      let scale = item.i
-      scale = isNaN(scale) ? 10 : scale
-      scale -= 0.4
-      scale = Math.min(Math.max(7, scale), 36)
       void dispatch({
-        type: 'partialUpdate',
+        type: 'resizeDraggable',
         payload: {
-          d: d,
+          d,
           id: item.id,
-          update: {
-            i: scale,
-          },
+          delta: -0.4,
         },
       })
     } else if (mode === 'scale-up') {
-      let scale = item.i
-      scale = isNaN(scale) ? 10 : scale
-      scale += 0.4
-      scale = Math.min(Math.max(7, scale), 36)
       void dispatch({
-        type: 'partialUpdate',
+        type: 'resizeDraggable',
         payload: {
-          d: d,
+          d,
           id: item.id,
-          update: {
-            i: scale,
-          },
+          delta: 0.4,
         },
       })
     }

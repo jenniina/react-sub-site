@@ -6,6 +6,8 @@ const initialState: ReducerProps['blob'] = {
   backgroundColor: [['214', '33', '40']] as string[][],
 }
 
+const clampScale = (scale: number) => Math.min(Math.max(7, scale), 36)
+
 function blobReducer(
   state = initialState,
   action: {
@@ -16,6 +18,7 @@ function blobReducer(
       draggable?: Draggable | null
       update?: Partial<Draggable>
       id?: string
+      delta?: number
       backgroundColor?: string[]
     }
   }
@@ -42,7 +45,7 @@ function blobReducer(
       }
       if (action.payload.draggable) {
         const draggableExists = newDraggablesAdd[action.payload.d].some(
-          draggable => draggable.id === action.payload.draggable?.id
+          (draggable) => draggable.id === action.payload.draggable?.id
         )
         if (!draggableExists) {
           newDraggablesAdd[action.payload.d] = [
@@ -65,8 +68,8 @@ function blobReducer(
       if (action.payload.draggable) {
         // Find the highest ID currently in state
         const maxId = Math.max(
-          ...newDraggablesDuplicate.flatMap(draggables =>
-            draggables.map(draggable =>
+          ...newDraggablesDuplicate.flatMap((draggables) =>
+            draggables.map((draggable) =>
               parseInt(draggable.id.replace('blob', '').split('-')[0], 10)
             )
           ),
@@ -90,7 +93,7 @@ function blobReducer(
           }
 
           draggableExists = newDraggablesDuplicate[action.payload.d].some(
-            draggable => draggable.id === newDraggable.id
+            (draggable) => draggable.id === newDraggable.id
           )
 
           if (draggableExists) {
@@ -112,14 +115,14 @@ function blobReducer(
     case 'removeDraggable':
       const newDraggables = [...state.draggables]
       newDraggables[action.payload.d] = newDraggables[action.payload.d]?.filter(
-        item => item.id !== action.payload.id
+        (item) => item.id !== action.payload.id
       )
       const newStateRemove = { ...state, draggables: newDraggables }
       return newStateRemove
     case 'updateDraggable':
       const newDraggablesUpdate = state.draggables.map((subArray, index) =>
         index === action.payload.d
-          ? subArray?.map(draggable =>
+          ? subArray?.map((draggable) =>
               draggable.id === action.payload.draggable?.id
                 ? {
                     ...draggable,
@@ -135,12 +138,32 @@ function blobReducer(
       const { d, id, update } = action.payload
       const newDraggablesPartial = state.draggables.map((subArray, index) =>
         index === d
-          ? subArray?.map(draggable =>
+          ? subArray?.map((draggable) =>
               draggable.id === id ? { ...draggable, ...update } : draggable
             )
           : subArray
       )
       return { ...state, draggables: newDraggablesPartial }
+    case 'resizeDraggable':
+      const resizeDelta = action.payload.delta ?? 0
+      return {
+        ...state,
+        draggables: state.draggables.map((subArray, index) =>
+          index === action.payload.d
+            ? subArray?.map((draggable) =>
+                draggable.id === action.payload.id
+                  ? {
+                      ...draggable,
+                      i: clampScale(
+                        (isNaN(Number(draggable.i)) ? 10 : draggable.i) +
+                          resizeDelta
+                      ),
+                    }
+                  : draggable
+              )
+            : subArray
+        ),
+      }
     case 'resetDraggables':
       const newDraggablesReset = state.draggables.map((subArray, index) =>
         index === action.payload.d ? [] : subArray
@@ -151,7 +174,7 @@ function blobReducer(
         ...state,
         draggables: state.draggables.map((subArray, index) =>
           index === action.payload.d
-            ? subArray?.map(draggable => ({
+            ? subArray?.map((draggable) => ({
                 ...draggable,
                 x: `${parseInt(draggable.x) - pxAmount}px`,
               }))
@@ -163,7 +186,7 @@ function blobReducer(
         ...state,
         draggables: state.draggables.map((subArray, index) =>
           index === action.payload.d
-            ? subArray?.map(draggable => ({
+            ? subArray?.map((draggable) => ({
                 ...draggable,
                 x: `${parseInt(draggable.x) + pxAmount}px`,
               }))
@@ -175,7 +198,7 @@ function blobReducer(
         ...state,
         draggables: state.draggables.map((subArray, index) =>
           index === action.payload.d
-            ? subArray?.map(draggable => ({
+            ? subArray?.map((draggable) => ({
                 ...draggable,
                 y: `${parseInt(draggable.y) - pxAmount}px`,
               }))
@@ -187,7 +210,7 @@ function blobReducer(
         ...state,
         draggables: state.draggables.map((subArray, index) =>
           index === action.payload.d
-            ? subArray?.map(draggable => ({
+            ? subArray?.map((draggable) => ({
                 ...draggable,
                 y: `${parseInt(draggable.y) + pxAmount}px`,
               }))

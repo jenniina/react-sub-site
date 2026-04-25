@@ -12,12 +12,15 @@ export interface Draggable {
 }
 
 export interface SavedBlobs {
+  _id?: string
   user: IUser['_id']
   d: number
   variant?: number
   draggables: Draggable[]
   backgroundColor: string[]
   versionName: string
+  createdAt?: string
+  updatedAt?: string
 }
 
 export interface RefObject<T> {
