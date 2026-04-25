@@ -87,9 +87,34 @@ svg.filter {
 .drag-container .make-random,
 .drag-container .delete-blob,
 .drag-container .layer-adjust,
-.drag-container .make-more {
+.drag-container .make-more,
+.blob .drag-container .drag-wrap-outest .resize-handle {
   cursor: pointer;
   z-index: 1200;
+}
+
+.drag-container .make-larger:hover,
+.drag-container .make-smaller:hover,
+.drag-container .make-random:hover,
+.drag-container .delete-blob:hover,
+.drag-container .layer-adjust:hover,
+.drag-container .make-more:hover,
+.blob .drag-container .drag-wrap-outest .resize-handle:hover {
+  z-index: 1202;
+}
+
+#root .drag-container .make-larger .tooltip,
+#root .drag-container .make-smaller .tooltip,
+#root .drag-container .make-random .tooltip,
+#root .drag-container .delete-blob .tooltip,
+#root .drag-container .layer-adjust .tooltip,
+#root .drag-container .make-more .tooltip,
+#root .drag-container .make-random .tooltip,
+#root .drag-container .resize-handle .tooltip {
+  --tooltip-width: var(--max-width);
+  min-width: 100px;
+  width: clamp(100px, calc(90vw - 2.4rem), var(--tooltip-width, 130px));
+  max-width: max-content;
 }
 
 .colorblock .color-alert {
@@ -108,7 +133,9 @@ svg.filter {
   color: var(--color-primary-1);
   top: 110%;
   left: -100%;
-  min-width: clamp(50px, 70vw, 8em);
+  min-width: 100px;
+  width: clamp(100px, calc(90vw - 2.4rem), var(--max-width, 130px));
+  max-width: max-content;
   font-size: 0.8rem;
   pointer-events: none;
   white-space: wrap;
@@ -145,11 +172,11 @@ svg.filter {
   padding: 0;
 }
 .colorblock.active.left .color-alert {
-  left: 1.5em;
+  left: var(--alert-distance, 1.5em);
   border-radius: var(--radius-large) 0 0 var(--radius-large);
 }
 .colorblock.active.right .color-alert {
-  right: 1.5em;
+  right: var(--alert-distance, 1.5em);
   left: unset;
   border-radius: 0 var(--radius-large) var(--radius-large) 0;
 }
@@ -375,9 +402,9 @@ svg.filter {
   flex-flow: column nowrap;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.8rem;
   gap: 0.2em 0.4em;
   max-width: calc(100vw - var(--scrollbar_width) - 2 * var(--page-padding));
+  margin-bottom: 2.6rem;
 }
 .button-container button {
   min-width: 100%;
@@ -595,7 +622,6 @@ svg.filter {
   padding: 0;
   border: 0;
   margin: 0;
-  z-index: 1200;
   touch-action: none;
   border-radius: 0.18rem;
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4);
@@ -670,6 +696,9 @@ svg.filter {
   cursor: -webkit-grab;
   cursor: grab;
   pointer-events: all;
+  margin: 0;
+  padding: 0;
+  border-radius: 50%;
 }
 .drag-container .dragzone.delete .draggable-overlay {
   cursor:
@@ -777,12 +806,16 @@ body.dark-mode .site .drag-container .dragzone:focus {
   z-index: 1300;
 }
 #root .drag-container .colorblock.left .tooltip {
-  left: 1.3rem;
+  left: 2rem;
 }
 #root .drag-container .colorblock.right .tooltip {
-  right: 1.3rem;
+  right: 2rem;
 }
-
+#root .drag-container .colorblock .tooltip {
+  min-width: 100px;
+  width: clamp(100px, calc(90vw - 2.4rem), var(--max-width, 130px));
+  max-width: var(--max-width, 130px);
+}
 .drag-container .make-smaller,
 .drag-container .make-larger {
   position: absolute;
@@ -846,7 +879,7 @@ body.dark-mode .site .drag-container .dragzone:focus {
   align-items: center;
   padding-bottom: 0.4em;
   gap: calc(var(--btn-gap) * 3.3) calc(var(--btn-gap) * 2);
-  margin: 1.8rem auto 0.5rem;
+  margin: 3.5rem auto 0.5rem;
   z-index: 1200;
 }
 .drag-container .layer-mover-control-wrap > *,
@@ -1182,8 +1215,6 @@ body.dark-mode .site .drag-container .dragzone:focus {
 }
 .drag-container .colorblock {
   position: absolute;
-  width: 1.2rem;
-  height: 1.4rem;
   border-radius: 6.7rem 5rem 5rem 6.7rem / 8.7rem 0.7rem 0.7rem 8.7rem;
   margin: 0;
   padding: 0;

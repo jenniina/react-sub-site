@@ -209,6 +209,7 @@ export const iconLibraries = {
     HiOutlineDotsHorizontal,
     HiDotsHorizontal,
     HiDotsCircleHorizontal,
+    HiMenu,
   },
   hi2: {
     HiMiniSparkles,

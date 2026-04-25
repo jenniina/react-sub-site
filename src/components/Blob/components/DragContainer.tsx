@@ -32,7 +32,7 @@ import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import Accordion from '../../Accordion/Accordion'
 import { notify } from '../../../reducers/notificationReducer'
 import { initializeUser } from '../../../reducers/authReducer'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import blobService from '../services/blob'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 import { useConfirm } from '../../../contexts/ConfirmContext'
@@ -46,31 +46,35 @@ import useLocalStorage from '../../../hooks/useStorage'
 
 // Should be in the same order as colorBlockPropsLeft
 const colorPairsLeft: ColorPair[] = [
-  { color1: 'indigo', color2: 'mediumorchid' }, //colorBlockPurpleDark
-  { color1: 'darkmagenta', color2: 'palevioletred' }, //colorBlockPurplePink
-  { color1: 'hotpink', color2: 'pink' }, //colorBlockHotPink
-  { color1: 'crimson', color2: 'indianred' }, //colorBlockCrimson
-  { color1: 'coral', color2: 'salmon' }, //colorBlockRedSalmon
-  { color1: 'orangered', color2: 'chocolate' }, //colorBlockOrange
-  { color1: 'saddlebrown', color2: 'sienna' }, //colorBlockBrown
-  { color1: 'peru', color2: 'burlywood' }, //colorBlockTan
-  { color1: 'tan', color2: 'peachpuff' }, //colorBlockKhaki
-  { color1: 'khaki', color2: 'palegoldenrod' }, //colorBlockYellow
-  { color1: 'gold', color2: 'yellow' }, //colorBlockGold
+  { color1: 'indigo', color2: 'mediumorchid' }, //colorPurple
+  { color1: 'darkmagenta', color2: 'orchid' }, //colorMagenta
+  { color1: 'deeppink', color2: 'fuchsia' }, //colorFuchsia
+  { color1: 'hotpink', color2: 'pink' }, //colorPink
+  { color1: 'crimson', color2: 'indianred' }, //colorCrimson
+  { color1: 'coral', color2: 'lightcoral' }, //colorCoral
+  { color1: 'orangered', color2: 'orange' }, //colorOrange
+  { color1: 'darkorange', color2: 'gold' }, //colorAmber
+  { color1: 'gold', color2: 'yellow' }, //colorLemon
+  { color1: 'khaki', color2: 'palegoldenrod' }, //colorStraw
+  { color1: 'tan', color2: 'peachpuff' }, //colorBeige
+  { color1: 'peru', color2: 'burlywood' }, //colorCaramel
+  { color1: 'saddlebrown', color2: 'sienna' }, //colorBrown
 ]
 // Should be in the same order as colorBlockPropsRight
 const colorPairsRight: ColorPair[] = [
-  { color1: 'blue', color2: 'royalblue' }, //colorBlockPurplish
-  { color1: 'royalblue', color2: 'dodgerblue' }, //colorBlockBlueish
-  { color1: 'dodgerblue', color2: 'deepskyblue' }, //colorBlockBlueLight
-  { color1: 'skyblue', color2: 'lightskyblue' }, //colorBlockBlueGray
-  { color1: 'lightskyblue', color2: 'lightcyan' }, //colorBlockBlueCyan
-  { color1: 'lightgreen', color2: 'aquamarine' }, //colorBlockGreenish
-  { color1: 'lawngreen', color2: 'greenyellow' }, //colorBlockGreenBright
-  { color1: 'seagreen', color2: 'limegreen' }, //colorBlockGreenLime
-  { color1: 'darkgreen', color2: 'green' }, //colorBlockGreenDark
-  { color1: 'darkolivegreen', color2: 'olive' }, //colorBlockDarkOlive
-  { color1: 'olive', color2: 'darkkhaki' }, //colorBlockOlive
+  { color1: 'darkgray', color2: 'silver' }, // colorSilver
+  { color1: 'dimgray', color2: 'gray' }, // colorGray
+  { color1: 'steelblue', color2: 'lightslategray' }, //colorSteel
+  { color1: 'blue', color2: 'royalblue' }, //colorBlue
+  { color1: 'royalblue', color2: 'dodgerblue' }, //colorDenim
+  { color1: 'deepskyblue', color2: 'cyan' }, //colorCyan
+  { color1: 'skyblue', color2: 'paleturquoise' }, //colorIce
+  { color1: 'lightgreen', color2: 'aquamarine' }, //colorMint
+  { color1: 'lime', color2: 'greenyellow' }, //colorLime
+  { color1: 'seagreen', color2: 'limegreen' }, //colorLeaf
+  { color1: 'darkgreen', color2: 'green' }, //colorForest
+  { color1: 'darkolivegreen', color2: 'olive' }, //colorOlive
+  { color1: 'olive', color2: 'darkkhaki' }, //colorLichen
 ]
 
 const colorPairsCombined: ColorPair[] = [...colorPairsLeft, ...colorPairsRight]
@@ -81,11 +85,11 @@ const angle = '90deg'
 
 const defaultLayerAmount = 3
 const minCanvasWidth = 140
-const minCanvasHeight = 360
+const minCanvasHeight = 460
 const canvasViewportPadding = 12
 const defaultSingleCanvasVariant = 2
 
-type CanvasSize = {
+export type CanvasSize = {
   width: number
   height: number
 }
@@ -142,9 +146,9 @@ export default function DragContainer({
 
   const defaultHue = '214'
   const defaultSaturation =
-    artVariant === 0 ? '80' : artVariant === 2 ? '50' : '45'
+    artVariant === 0 ? '80' : artVariant === 2 ? '60' : '45'
   const defaultLightness =
-    artVariant === 0 ? '30' : artVariant === 2 ? '5' : '25'
+    artVariant === 0 ? '30' : artVariant === 2 ? '10' : '25'
 
   const { state, dispatch, undo, redo, canUndo, canRedo } =
     useContext(BlobContext)!
@@ -179,7 +183,7 @@ export default function DragContainer({
     ),
     height: Math.max(
       minCanvasHeight,
-      (windowHeight || 0) - canvasViewportPadding * 2
+      (windowHeight || 0) - canvasViewportPadding * 14
     ),
   })
   const [canvasSize, setCanvasSize, removeCanvasSize] =
@@ -229,7 +233,6 @@ export default function DragContainer({
   const [focusedBlob, setFocusedBlob] = useState<focusedBlob | null>(null)
   const [usingKeyboard, setUsingKeyboard] = useState<boolean>(false)
   const [markerEnabled, setMarkerEnabled] = useState<boolean>(true)
-  const [controlsVisible, setControlsVisible] = useState<boolean>(true)
   const [colorsVisible, setColorsVisible] = useState<boolean>(true)
   const [hasBeenMade, setHasBeenMade] = useState<boolean>(false)
   const [paused, setPaused] = useState<boolean>(false)
@@ -246,99 +249,109 @@ export default function DragContainer({
   const [serverError, setServerError] = useState(false)
 
   const [trackSaving, setTrackSaving] = useState(false)
-  const [savedDraggablesbyD, setSavedDraggablesByD] = useState<
-    Record<number, Record<string, SavedBlobs>>
-  >({})
+  const [savedDraggables, setSavedDraggables] = useState<SavedBlobs[]>([])
 
   const [layerAmount, setLayerAmount] = useState<number>(0)
 
-  const colorBlockOrange = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockYellow = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockGold = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockBrown = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockKhaki = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockGreenBright = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockGreenish = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockGreenLime = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockTan = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockGreenDark = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockDarkOlive = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockOlive = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockHotPink = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockRedSalmon = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockCrimson = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockPurplePink = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockPurpleDark = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockPurplish = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockBlueish = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockBlueLight = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockBlueGray = useRef(null) as RefObject<HTMLButtonElement>
-  const colorBlockBlueCyan = useRef(null) as RefObject<HTMLButtonElement>
+  const colorAmber = useRef(null) as RefObject<HTMLButtonElement>
+  const colorOrange = useRef(null) as RefObject<HTMLButtonElement>
+  const colorStraw = useRef(null) as RefObject<HTMLButtonElement>
+  const colorLemon = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBrown = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBeige = useRef(null) as RefObject<HTMLButtonElement>
+  const colorLime = useRef(null) as RefObject<HTMLButtonElement>
+  const colorMint = useRef(null) as RefObject<HTMLButtonElement>
+  const colorLeaf = useRef(null) as RefObject<HTMLButtonElement>
+  const colorCaramel = useRef(null) as RefObject<HTMLButtonElement>
+  const colorForest = useRef(null) as RefObject<HTMLButtonElement>
+  const colorOlive = useRef(null) as RefObject<HTMLButtonElement>
+  const colorLichen = useRef(null) as RefObject<HTMLButtonElement>
+  const colorFuchsia = useRef(null) as RefObject<HTMLButtonElement>
+  const colorPink = useRef(null) as RefObject<HTMLButtonElement>
+  const colorCoral = useRef(null) as RefObject<HTMLButtonElement>
+  const colorCrimson = useRef(null) as RefObject<HTMLButtonElement>
+  const colorMagenta = useRef(null) as RefObject<HTMLButtonElement>
+  const colorPurple = useRef(null) as RefObject<HTMLButtonElement>
+  const colorBlue = useRef(null) as RefObject<HTMLButtonElement>
+  const colorDenim = useRef(null) as RefObject<HTMLButtonElement>
+  const colorCyan = useRef(null) as RefObject<HTMLButtonElement>
+  const colorIce = useRef(null) as RefObject<HTMLButtonElement>
+  const colorSteel = useRef(null) as RefObject<HTMLButtonElement>
+  const colorGray = useRef(null) as RefObject<HTMLButtonElement>
+  const colorSilver = useRef(null) as RefObject<HTMLButtonElement>
 
-  const refNameMapping2 = useMemo(() => {
+  const refNameMappingLeft = useMemo(() => {
     return new Map<RefObject<HTMLButtonElement>, string>([
-      [colorBlockPurpleDark, 'colorBlockPurpleDark'],
-      [colorBlockPurplePink, 'colorBlockPurplePink'],
-      [colorBlockHotPink, 'colorBlockHotPink'],
-      [colorBlockCrimson, 'colorBlockCrimson'],
-      [colorBlockRedSalmon, 'colorBlockRedSalmon'],
-      [colorBlockOrange, 'colorBlockOrange'],
-      [colorBlockBrown, 'colorBlockBrown'],
-      [colorBlockTan, 'colorBlockTan'],
-      [colorBlockKhaki, 'colorBlockKhaki'],
-      [colorBlockYellow, 'colorBlockYellow'],
-      [colorBlockGold, 'colorBlockGold'],
+      [colorPurple, 'colorPurple'],
+      [colorMagenta, 'colorMagenta'],
+      [colorFuchsia, 'colorFuchsia'],
+      [colorPink, 'colorPink'],
+      [colorCrimson, 'colorCrimson'],
+      [colorCoral, 'colorCoral'],
+      [colorOrange, 'colorOrange'],
+      [colorAmber, 'colorAmber'],
+      [colorLemon, 'colorLemon'],
+      [colorStraw, 'colorStraw'],
+      [colorBeige, 'colorBeige'],
+      [colorCaramel, 'colorCaramel'],
+      [colorBrown, 'colorBrown'],
     ])
   }, [
-    colorBlockPurpleDark,
-    colorBlockPurplePink,
-    colorBlockHotPink,
-    colorBlockCrimson,
-    colorBlockRedSalmon,
-    colorBlockOrange,
-    colorBlockBrown,
-    colorBlockTan,
-    colorBlockKhaki,
-    colorBlockYellow,
-    colorBlockGold,
+    colorPurple,
+    colorMagenta,
+    colorFuchsia,
+    colorPink,
+    colorCrimson,
+    colorCoral,
+    colorOrange,
+    colorAmber,
+    colorLemon,
+    colorStraw,
+    colorBeige,
+    colorCaramel,
+    colorBrown,
   ])
 
-  const refNameMapping3 = useMemo(() => {
+  const refNameMappingRight = useMemo(() => {
     return new Map<RefObject<HTMLButtonElement>, string>([
-      [colorBlockPurplish, 'colorBlockPurplish'],
-      [colorBlockBlueish, 'colorBlockBlueish'],
-      [colorBlockBlueLight, 'colorBlockBlueLight'],
-      [colorBlockBlueGray, 'colorBlockBlueGray'],
-      [colorBlockBlueCyan, 'colorBlockBlueCyan'],
-      [colorBlockGreenish, 'colorBlockGreenish'],
-      [colorBlockGreenBright, 'colorBlockGreenBright'],
-      [colorBlockGreenLime, 'colorBlockGreenLime'],
-      [colorBlockGreenDark, 'colorBlockGreenDark'],
-      [colorBlockDarkOlive, 'colorBlockDarkOlive'],
-      [colorBlockOlive, 'colorBlockOlive'],
+      [colorSilver, 'colorSilver'],
+      [colorGray, 'colorGray'],
+      [colorSteel, 'colorSteel'],
+      [colorBlue, 'colorBlue'],
+      [colorDenim, 'colorDenim'],
+      [colorCyan, 'colorCyan'],
+      [colorIce, 'colorIce'],
+      [colorMint, 'colorMint'],
+      [colorLime, 'colorLime'],
+      [colorLeaf, 'colorLeaf'],
+      [colorForest, 'colorForest'],
+      [colorOlive, 'colorOlive'],
+      [colorLichen, 'colorLichen'],
     ])
   }, [
-    colorBlockPurplish,
-    colorBlockBlueish,
-    colorBlockBlueLight,
-    colorBlockBlueGray,
-    colorBlockBlueCyan,
-    colorBlockGreenish,
-    colorBlockGreenBright,
-    colorBlockGreenLime,
-    colorBlockGreenDark,
-    colorBlockDarkOlive,
-    colorBlockOlive,
+    colorSilver,
+    colorGray,
+    colorSteel,
+    colorBlue,
+    colorDenim,
+    colorCyan,
+    colorIce,
+    colorMint,
+    colorLime,
+    colorLeaf,
+    colorForest,
+    colorOlive,
+    colorLichen,
   ])
 
   const refNameMappingCombo = useMemo(() => {
     return [
       new Map<RefObject<HTMLButtonElement>, string>([
-        ...refNameMapping2.entries(),
-        ...refNameMapping3.entries(),
+        ...refNameMappingLeft.entries(),
+        ...refNameMappingRight.entries(),
       ]),
     ]
-  }, [refNameMapping2, refNameMapping3])
+  }, [refNameMappingLeft, refNameMappingRight])
 
   const getRefName = useCallback(
     (
@@ -352,58 +365,66 @@ export default function DragContainer({
 
   const colorBlockPropsLeft = useMemo(() => {
     return [
-      colorBlockPurpleDark,
-      colorBlockPurplePink,
-      colorBlockHotPink,
-      colorBlockCrimson,
-      colorBlockRedSalmon,
-      colorBlockOrange,
-      colorBlockBrown,
-      colorBlockTan,
-      colorBlockKhaki,
-      colorBlockYellow,
-      colorBlockGold,
+      colorPurple,
+      colorMagenta,
+      colorFuchsia,
+      colorPink,
+      colorCrimson,
+      colorCoral,
+      colorOrange,
+      colorAmber,
+      colorLemon,
+      colorStraw,
+      colorBeige,
+      colorCaramel,
+      colorBrown,
     ]
   }, [
-    colorBlockPurpleDark,
-    colorBlockPurplePink,
-    colorBlockHotPink,
-    colorBlockCrimson,
-    colorBlockRedSalmon,
-    colorBlockOrange,
-    colorBlockBrown,
-    colorBlockTan,
-    colorBlockKhaki,
-    colorBlockYellow,
-    colorBlockGold,
+    colorPurple,
+    colorMagenta,
+    colorFuchsia,
+    colorPink,
+    colorCrimson,
+    colorCoral,
+    colorOrange,
+    colorAmber,
+    colorLemon,
+    colorStraw,
+    colorBeige,
+    colorCaramel,
+    colorBrown,
   ])
 
   const colorBlockPropsRight = useMemo(() => {
     return [
-      colorBlockPurplish,
-      colorBlockBlueish,
-      colorBlockBlueLight,
-      colorBlockBlueGray,
-      colorBlockBlueCyan,
-      colorBlockGreenish,
-      colorBlockGreenBright,
-      colorBlockGreenLime,
-      colorBlockGreenDark,
-      colorBlockDarkOlive,
-      colorBlockOlive,
+      colorSilver,
+      colorGray,
+      colorSteel,
+      colorBlue,
+      colorDenim,
+      colorCyan,
+      colorIce,
+      colorMint,
+      colorLime,
+      colorLeaf,
+      colorForest,
+      colorOlive,
+      colorLichen,
     ]
   }, [
-    colorBlockPurplish,
-    colorBlockBlueish,
-    colorBlockBlueLight,
-    colorBlockBlueGray,
-    colorBlockBlueCyan,
-    colorBlockGreenish,
-    colorBlockGreenBright,
-    colorBlockGreenLime,
-    colorBlockGreenDark,
-    colorBlockDarkOlive,
-    colorBlockOlive,
+    colorSilver,
+    colorGray,
+    colorSteel,
+    colorBlue,
+    colorDenim,
+    colorCyan,
+    colorIce,
+    colorMint,
+    colorLime,
+    colorLeaf,
+    colorForest,
+    colorOlive,
+    colorLichen,
   ])
 
   const colorBlockPropsCombo = useMemo(() => {
@@ -804,11 +825,7 @@ export default function DragContainer({
   )
 
   const getCanvasBounds = useCallback((): CanvasBounds => {
-    const viewportWidth =
-      getDocumentClientWidth() ||
-      windowWidth ||
-      windowObj?.innerWidth ||
-      minCanvasWidth
+    const viewportWidth = windowWidth || windowObj?.innerWidth || minCanvasWidth
     const viewportHeight =
       windowHeight || windowObj?.innerHeight || minCanvasHeight
     const canvasRect =
@@ -884,6 +901,103 @@ export default function DragContainer({
 
   const effectiveCanvasSize = canvasSize ?? defaultCanvasSize
 
+  const sortSavedBlobsByNewest = useCallback((blobs: SavedBlobs[]) => {
+    const getObjectIdTime = (id?: string) => {
+      if (!id || !/^[0-9a-fA-F]{24}$/.test(id)) return null
+
+      const seconds = Number.parseInt(id.slice(0, 8), 16)
+      return Number.isNaN(seconds) ? null : seconds * 1000
+    }
+
+    const isBackfilledLegacyTimestamp = ({
+      objectIdTime,
+      createdTime,
+      updatedTime,
+    }: {
+      objectIdTime: number | null
+      createdTime: number | null
+      updatedTime: number | null
+    }) => {
+      if (
+        objectIdTime === null ||
+        createdTime === null ||
+        updatedTime === null
+      ) {
+        return false
+      }
+
+      const oneDay = 24 * 60 * 60 * 1000
+      const oneMinute = 60 * 1000
+
+      return (
+        createdTime - objectIdTime > oneDay &&
+        updatedTime - objectIdTime > oneDay &&
+        Math.abs(updatedTime - createdTime) <= oneMinute
+      )
+    }
+
+    const getSavedBlobTime = (blob: SavedBlobs) => {
+      const updatedTime = blob.updatedAt
+        ? new Date(blob.updatedAt).getTime()
+        : null
+      const createdTime = blob.createdAt
+        ? new Date(blob.createdAt).getTime()
+        : null
+      const objectIdTime = getObjectIdTime(blob._id)
+
+      const validUpdatedTime =
+        updatedTime !== null && !Number.isNaN(updatedTime) ? updatedTime : null
+      const validCreatedTime =
+        createdTime !== null && !Number.isNaN(createdTime) ? createdTime : null
+
+      if (
+        isBackfilledLegacyTimestamp({
+          objectIdTime,
+          createdTime: validCreatedTime,
+          updatedTime: validUpdatedTime,
+        })
+      ) {
+        return objectIdTime
+      }
+
+      if (validUpdatedTime !== null) {
+        return validUpdatedTime
+      }
+
+      if (validCreatedTime === null) {
+        return null
+      }
+
+      // Some legacy blobs were backfilled with a fresh createdAt long after
+      // the document was actually created. Prefer the ObjectId timestamp when
+      // createdAt looks like that kind of backfill.
+      if (
+        objectIdTime !== null &&
+        validUpdatedTime === null &&
+        Math.abs(validCreatedTime - objectIdTime) > 24 * 60 * 60 * 1000
+      ) {
+        return objectIdTime
+      }
+
+      return validCreatedTime
+    }
+
+    return [...blobs].sort((a, b) => {
+      const dateA = getSavedBlobTime(a)
+      const dateB = getSavedBlobTime(b)
+
+      if (dateA === null && dateB === null) return 0
+      if (dateA === null) return 1
+      if (dateB === null) return -1
+
+      return dateB - dateA
+    })
+  }, [])
+
+  const orderedSavedDraggables = useMemo(() => {
+    return sortSavedBlobsByNewest(savedDraggables)
+  }, [savedDraggables, sortSavedBlobsByNewest])
+
   const getBlobsFromServer = useCallback(async () => {
     setIsLoading(true)
     setServerError(false)
@@ -893,40 +1007,21 @@ export default function DragContainer({
           .getAllBlobsByUser(user?._id, d, language)
           .then((response: SavedBlobs[]) => {
             if (response) {
-              // Initialize an empty object for sortedDraggables
-              const sortedDraggables: Record<
-                number,
-                Record<string, SavedBlobs>
-              > = {}
-
-              // Iterate through the response and sort draggables by d
-              response.forEach((item: SavedBlobs) => {
-                const { d, versionName } = item
-                if (!sortedDraggables[d]) {
-                  sortedDraggables[d] = {}
-                }
-                sortedDraggables[d][versionName] = item
-              })
-
-              // // Update the state with the sorted draggables
-              // setLayerAmount(
-              //   Math.max(
-              //     ...Object.values(sortedDraggables).map((d) => {
-              //       return Math.max(
-              //         ...Object.values(d).map((version) => {
-              //           return version.draggables.length > 0
-              //             ? Math.max(...version.draggables.map((d) => d.layer))
-              //             : 0
-              //         })
-              //       )
-              //     })
-              //   ) + 1
-              // )
-              // setTimeout(() => {
-              //   saveLayerAmount()
-              // }, 300)
-              setSavedDraggablesByD(sortedDraggables)
-              setHasSavedFiles(Object.keys(sortedDraggables).length > 0)
+              //filter out the draggables part
+              console.log(
+                response
+                  .map((blob) => ({
+                    ...blob,
+                    draggables: blob.draggables
+                      ? '[Draggables filtered out]'
+                      : 'No Draggables',
+                  }))
+                  .map((blob) => JSON.stringify(blob))
+                  .join('\n')
+              )
+              const sortedDraggables = sortSavedBlobsByNewest(response)
+              setSavedDraggables(sortedDraggables)
+              setHasSavedFiles(sortedDraggables.length > 0)
               setIsLoading(false)
             }
           })
@@ -943,15 +1038,10 @@ export default function DragContainer({
       setServerError(true)
       setIsLoading(false)
     }
-  }, [d, dispatch2, language, t, user?._id])
+  }, [d, dispatch2, language, sortSavedBlobsByNewest, t, user?._id])
 
   const checkDuplicateVersionName = (versionName: string): boolean => {
-    for (const dKey in savedDraggablesbyD) {
-      if (savedDraggablesbyD[dKey][versionName]) {
-        return true
-      }
-    }
-    return false
+    return savedDraggables.some((blob) => blob.versionName === versionName)
   }
 
   const regex = /^[\w\s\u00C0-\u024F\u1E00-\u1EFF-]*$/u
@@ -1020,6 +1110,7 @@ export default function DragContainer({
         language
       )
 
+      resetSavedArtworkPage(d)
       setTrackSaving((prev) => !prev)
       void dispatch2(notify(t('SavingSuccessful'), false, 8))
     } catch (err: unknown) {
@@ -1058,7 +1149,8 @@ export default function DragContainer({
               newVersion
             )
             .then(() => {
-              setTrackSaving(!trackSaving)
+              resetSavedArtworkPage(d)
+              setTrackSaving((prev) => !prev)
               void dispatch2(notify(t('SavingSuccessful'), false, 8))
             })
             .catch((err: unknown) => {
@@ -1144,7 +1236,8 @@ export default function DragContainer({
           .deleteBlobsVersionByUser(user._id, d, versionName, language)
           .then(() => {
             void dispatch2(notify(t('DeletedArt'), false, 8))
-            setTrackSaving(!trackSaving)
+            resetSavedArtworkPage(d)
+            setTrackSaving((prev) => !prev)
           })
           .catch((err: unknown) => {
             const message = getErrorMessage(err, t('Error'))
@@ -1692,11 +1785,10 @@ export default function DragContainer({
 
     const spawnY = Math.max(
       0,
-      Math.max(
-        canvasHeight,
-        Math.round(
-          scrollTop + viewportHeight - makeRandom0.current.offsetHeight * 4
-        )
+      Math.round(
+        scrollTop +
+          viewportHeight -
+          getRandomMinMax(canvasHeight * 0.15, canvasHeight * 0.25)
       )
     )
 
@@ -1775,17 +1867,9 @@ export default function DragContainer({
 
   const getPosition = useCallback(
     (draggable: HTMLElement) => {
-      const blobID = draggable.id
       if (!isClient || !windowObj) return
 
-      const existingDraggable = state.draggables[d]?.find(
-        (item) => item.id === blobID
-      )
       const blobStyle = windowObj.getComputedStyle(draggable)
-      const blobNumber = parseInt(
-        draggable.id.replace('blob', '').split('-')[0],
-        10
-      )
 
       const readCssValue = (
         propertyName: string,
@@ -1803,43 +1887,26 @@ export default function DragContainer({
         return stateFallback
       }
 
-      const blobI = readCssValue('--i', '--i', `${existingDraggable?.i ?? 10}`)
+      const existingDraggable = state.draggables[d]?.find(
+        (item) => item.id === draggable.id
+      )
+
       const blobX = readCssValue('left', 'left', existingDraggable?.x ?? '0px')
       const blobY = readCssValue('top', 'top', existingDraggable?.y ?? '0px')
-      const blobZ = readCssValue(
-        'z-index',
-        'z-index',
-        existingDraggable?.z ?? '0'
-      )
-      const blobColor1 = readCssValue(
-        'background',
-        'background',
-        existingDraggable?.background ??
-          'linear-gradient(90deg, cyan, greenyellow)'
-      )
-      const layer = readCssValue(
-        '--layer',
-        '--layer',
-        `${existingDraggable?.layer ?? activeLayer}`
-      )
-
-      const blobDraggable: Draggable = {
-        layer: layer ? parseInt(layer) : activeLayer,
-        id: blobID,
-        number: blobNumber,
-        i: isNaN(parseFloat(blobI)) ? 10 : parseFloat(blobI),
-        x: blobX,
-        y: blobY,
-        z: blobZ,
-        background: blobColor1 ?? 'linear-gradient(90deg, cyan, greenyellow)',
-      }
 
       void dispatch({
-        type: 'updateDraggable',
-        payload: { d, draggable: blobDraggable },
+        type: 'partialUpdate',
+        payload: {
+          d,
+          id: draggable.id,
+          update: {
+            x: blobX,
+            y: blobY,
+          },
+        },
       })
     },
-    [activeLayer, d, dispatch, isClient, state.draggables, windowObj]
+    [d, dispatch, isClient, state.draggables, windowObj]
   )
 
   useEffect(() => {
@@ -2141,90 +2208,79 @@ export default function DragContainer({
       const canvasHeight = dragWrapOuter.current?.offsetHeight
       if (!canvasWidth || !canvasHeight) return
 
-      const y_pos = [6, 14, 22, 30, 38, 46, 54, 62, 70, 78, 86] // color block y positions
-      const x_pos = [15, 38, 62, 85] // top item x positions
-      const top_pos = 1
+      const y_pos = [
+        0.6, 8.2, 15.8, 23.4, 31, 38.6, 46.2, 53.8, 61.4, 69, 76.6, 84.2, 91.8,
+      ] // color block y positions
+      const x_pos_t = [12, 36, 64, 88] // top item x positions
+      const x_pos_b = [0, 25, 50, 75, 100] // bottom item x positions
+      const top_pos = 0
       const bottom_pos = 99
-      const adjustment = 6
+      const adjustment = 10
       //place these items every time the window is resized:
 
       if (makeSmaller0.current && dragWrap.current)
         place(
           makeSmaller0.current,
-          x_pos[0] - (makeSmaller0.current.offsetWidth / canvasWidth) * 50,
+          x_pos_t[0] - (makeSmaller0.current.offsetWidth / canvasWidth) * 50,
           top_pos -
-            ((makeSmaller0.current.offsetHeight / 2 + adjustment) /
-              canvasHeight) *
+            ((makeSmaller0.current.offsetHeight + adjustment) / canvasHeight) *
               100
         )
       if (makeLarger0.current && dragWrap.current)
         place(
           makeLarger0.current,
-          x_pos[1] - (makeLarger0.current.offsetWidth / canvasWidth) * 50,
+          x_pos_t[1] - (makeLarger0.current.offsetWidth / canvasWidth) * 50,
           top_pos -
-            ((makeLarger0.current.offsetHeight / 2 + adjustment) /
-              canvasHeight) *
+            ((makeLarger0.current.offsetHeight + adjustment) / canvasHeight) *
               100
         )
       if (layerDecrease.current && dragWrap.current)
         place(
           layerDecrease.current,
-          x_pos[2] - (layerDecrease.current.offsetWidth / canvasWidth) * 50,
+          x_pos_t[2] - (layerDecrease.current.offsetWidth / canvasWidth) * 50,
           top_pos -
-            ((layerDecrease.current.offsetHeight / 2 + adjustment) /
-              canvasHeight) *
+            ((layerDecrease.current.offsetHeight + adjustment) / canvasHeight) *
               100
         )
       if (layerIncrease.current && dragWrap.current)
         place(
           layerIncrease.current,
-          x_pos[3] - (layerIncrease.current.offsetWidth / canvasWidth) * 50,
+          x_pos_t[3] - (layerIncrease.current.offsetWidth / canvasWidth) * 50,
           top_pos -
-            ((layerIncrease.current.offsetHeight / 2 + adjustment) /
-              canvasHeight) *
+            ((layerIncrease.current.offsetHeight + adjustment) / canvasHeight) *
               100
         )
       if (deleteBlob0.current && dragWrap.current)
         place(
           deleteBlob0.current,
-          28 - (deleteBlob0.current.offsetWidth / canvasWidth) * 50,
-          bottom_pos -
-            ((deleteBlob0.current.offsetHeight / 2 - adjustment) /
-              canvasHeight) *
-              100
+          x_pos_b[1] - (deleteBlob0.current.offsetWidth / 2 / canvasWidth) * 50,
+          bottom_pos + ((adjustment * 2) / canvasHeight) * 100
         )
       if (makeRandom0.current && dragWrap.current)
         place(
           makeRandom0.current,
-          50 - (makeRandom0.current.offsetWidth / canvasWidth) * 50,
-          bottom_pos -
-            ((makeRandom0.current.offsetHeight / 2 - adjustment) /
-              canvasHeight) *
-              100
+          x_pos_b[2] - (makeRandom0.current.offsetWidth / 2 / canvasWidth) * 50,
+          bottom_pos + ((adjustment * 2) / canvasHeight) * 100
         )
       if (makeMore0.current && dragWrap.current)
         place(
           makeMore0.current,
-          72 - (makeMore0.current.offsetWidth / canvasWidth) * 50,
-          bottom_pos -
-            ((makeMore0.current.offsetHeight / 2 - adjustment) / canvasHeight) *
-              100
+          x_pos_b[3] - (makeMore0.current.offsetWidth / 2 / canvasWidth) * 50,
+          bottom_pos + ((adjustment * 2) / canvasHeight) * 100
         )
       if (resizeHandleLeft.current && dragWrap.current)
         place(
           resizeHandleLeft.current,
-          0 - (adjustment / canvasWidth) * 100,
-          100 - (resizeHandleLeft.current.offsetHeight / 2 / canvasHeight) * 100
+          x_pos_b[0] - (adjustment / canvasWidth) * 100,
+          100 + ((adjustment * 1.7) / canvasHeight) * 100
         )
       if (resizeHandleRight.current && dragWrap.current)
         place(
           resizeHandleRight.current,
-          100 -
-            ((resizeHandleRight.current.offsetWidth - adjustment) /
-              canvasWidth) *
-              100,
-          100 -
-            (resizeHandleRight.current.offsetHeight / 2 / canvasHeight) * 100
+          x_pos_b[4] -
+            (resizeHandleRight.current.offsetWidth / 2 / canvasWidth) * 100 +
+            (adjustment / canvasWidth) * 100,
+          100 + ((adjustment * 1.7) / canvasHeight) * 100
         )
       // place color blocks:
       colorBlockPropsCombo.forEach((colorBlockArray) => {
@@ -2633,6 +2689,10 @@ export default function DragContainer({
     setCurrentPage((prev) => ({ ...prev, [dKey]: newPage }))
   }
 
+  const resetSavedArtworkPage = useCallback((dKey: number) => {
+    setCurrentPage((prev) => ({ ...prev, [dKey]: 1 }))
+  }, [])
+
   // //save layer amount to local storage
   // useEffect(() => {
   //   saveLayerAmount()
@@ -3024,37 +3084,6 @@ export default function DragContainer({
               </button>
 
               <button
-                id={`toggle-controls${d}`}
-                aria-labelledby={`toggle-controls${d}-span`}
-                className={`toggle-controls ${
-                  !controlsVisible ? 'active' : ''
-                }`}
-                onClick={() => {
-                  setControlsVisible(!controlsVisible)
-                  if (!controlsVisible) {
-                    setTimeout(() => {
-                      widthResize()
-                    }, 200)
-                  }
-                }}
-              >
-                {controlsVisible ? (
-                  <>
-                    <span id={`toggle-controls${d}-span`}>
-                      {t('HideControls')}
-                    </span>
-                    <Icon lib="md" name="MdHideSource" aria-hidden="true" />
-                  </>
-                ) : (
-                  <>
-                    <span id={`toggle-controls${d}-span`}>
-                      {t('ShowControls')}
-                    </span>
-                    <Icon lib="md" name="MdOutlineCircle" aria-hidden="true" />
-                  </>
-                )}
-              </button>
-              <button
                 id={`toggle-colors${d}`}
                 aria-labelledby={`toggle-colors${d}-span`}
                 className={`toggle-colors ${!colorsVisible ? 'active' : ''}`}
@@ -3143,6 +3172,9 @@ export default function DragContainer({
                 hasCustomCanvasSize ? 'is-resized' : ''
               }`}
               style={{
+                ['--max-width' as string]: effectiveCanvasSize
+                  ? `min(${effectiveCanvasSize.width - 66}px, 300px)`
+                  : '130px',
                 overflow: 'visible',
                 width: `${effectiveCanvasSize.width}px`,
                 minWidth: `${effectiveCanvasSize.width}px`,
@@ -3151,9 +3183,7 @@ export default function DragContainer({
               <button
                 ref={resizeHandleLeft}
                 type="button"
-                className={`resize-handle resize-handle-left gray tooltip-wrap ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
+                className={`resize-handle resize-handle-left gray tooltip-wrap`}
                 aria-label={t('ResizeCanvas')}
                 aria-describedby={`drag-wrap-resize-help-left${d}`}
                 aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown Shift+ArrowLeft Shift+ArrowRight Shift+ArrowUp Shift+ArrowDown"
@@ -3174,9 +3204,7 @@ export default function DragContainer({
               <button
                 ref={resizeHandleRight}
                 type="button"
-                className={`resize-handle resize-handle-right gray tooltip-wrap ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
+                className={`resize-handle resize-handle-right gray tooltip-wrap`}
                 aria-label={t('ResizeCanvas')}
                 aria-describedby={`drag-wrap-resize-help${d}`}
                 aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown Shift+ArrowLeft Shift+ArrowRight Shift+ArrowUp Shift+ArrowDown"
@@ -3194,9 +3222,7 @@ export default function DragContainer({
 
               <button
                 ref={makeSmaller0}
-                className={`make-smaller tooltip-wrap gray ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
+                className={`make-smaller tooltip-wrap gray`}
                 id={`make-smaller${d}`}
                 onClick={() => {
                   toggleMode('scale-down')
@@ -3218,9 +3244,7 @@ export default function DragContainer({
 
               <button
                 ref={makeLarger0}
-                className={`make-larger tooltip-wrap gray ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
+                className={`make-larger tooltip-wrap gray`}
                 id={`make-larger${d}`}
                 onClick={() => {
                   toggleMode('scale-up')
@@ -3243,9 +3267,7 @@ export default function DragContainer({
               <button
                 ref={layerDecrease}
                 id={`layer-decrease${d}`}
-                className={`layer-adjust layer-decrease tooltip-wrap gray ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
+                className={`layer-adjust layer-decrease tooltip-wrap gray`}
                 onClick={() => toggleMode('layer-down')}
               >
                 {mode === 'layer-down' && (
@@ -3264,9 +3286,7 @@ export default function DragContainer({
               <button
                 ref={layerIncrease}
                 id={`layer-increase${d}`}
-                className={`layer-adjust layer-increase tooltip-wrap gray ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
+                className={`layer-adjust layer-increase tooltip-wrap gray`}
                 onClick={() => toggleMode('layer-up')}
               >
                 {mode === 'layer-up' && (
@@ -3285,9 +3305,7 @@ export default function DragContainer({
 
               <button
                 ref={deleteBlob0}
-                className={`delete-blob tooltip-wrap gray ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
+                className={`delete-blob tooltip-wrap gray`}
                 id={`delete-blob${d}`}
                 onClick={() => toggleMode('delete')}
               >
@@ -3305,9 +3323,7 @@ export default function DragContainer({
 
               <button
                 ref={makeRandom0}
-                className={`make-random tooltip-wrap gray ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
+                className={`make-random tooltip-wrap gray`}
                 id={`make-random${d}`}
                 aria-labelledby={`make-random${d}-span`}
                 onClick={() => addRandomDraggable()}
@@ -3322,9 +3338,7 @@ export default function DragContainer({
 
               <button
                 ref={makeMore0}
-                className={`make-more tooltip-wrap gray ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
+                className={`make-more tooltip-wrap gray`}
                 id={`make-more${d}`}
                 onClick={() => {
                   toggleMode('clone')
@@ -3350,6 +3364,7 @@ export default function DragContainer({
                 selectedColor={selectedColor}
                 mode={mode}
                 setMode={setMode}
+                effectiveCanvasSize={effectiveCanvasSize}
               />
 
               <div
@@ -3584,11 +3599,7 @@ export default function DragContainer({
                 </button>
               </div>
 
-              <div
-                className={`movers-wrap movers-wrap1 ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
-              >
+              <div className={`movers-wrap movers-wrap1`}>
                 <button
                   id={`moveleft${d}`}
                   aria-labelledby={`moveleft${d}-span`}
@@ -3613,11 +3624,7 @@ export default function DragContainer({
                 </button>
               </div>
 
-              <div
-                className={`movers-wrap movers-wrap2 ${
-                  !controlsVisible ? 'hidden' : ''
-                }`}
-              >
+              <div className={`movers-wrap movers-wrap2`}>
                 <button
                   id={`moveup${d}`}
                   aria-labelledby={`moveup${d}-span`}
@@ -3703,138 +3710,141 @@ export default function DragContainer({
                 ) : !hasSavedFiles ? (
                   <p>{t('NoSavedArtworkYet')}</p>
                 ) : (
-                  Object.keys(savedDraggablesbyD).map((dKey, index) => {
-                    const versions = Object.keys(
-                      savedDraggablesbyD[Number(dKey)]
+                  (() => {
+                    const dKey = String(d)
+                    const totalPages = Math.ceil(
+                      orderedSavedDraggables.length / itemsPerPage
                     )
-                    const totalPages = Math.ceil(versions.length / itemsPerPage)
-                    const current = currentPage[Number(dKey)] ?? 1
+                    const current = currentPage[d] ?? 1
                     const startIdx = (current - 1) * itemsPerPage
                     const endIdx = startIdx + itemsPerPage
-                    const currentVersions = versions.slice(startIdx, endIdx)
+                    const currentVersions = orderedSavedDraggables.slice(
+                      startIdx,
+                      endIdx
+                    )
 
                     return (
-                      <div
-                        className="flex center margin0auto"
-                        key={`${dKey}:${index}`}
-                      >
+                      <div className="flex center margin0auto" key={dKey}>
                         {pagination(dKey, current, totalPages, 'start')}
-                        <ul
-                          key={`${dKey}+${index}`}
-                          className="blob-versions-wrap"
-                        >
-                          {currentVersions.map((versionName, index) => (
-                            <li
-                              key={`${versionName}+${index}`}
-                              className="blob-version-item"
-                            >
-                              <span>{versionName}</span>
-                              <div className="button-wrap">
-                                <button
-                                  onClick={() =>
-                                    void loadBlobsFromServer(
-                                      Number(dKey),
+                        <ul className="blob-versions-wrap">
+                          {currentVersions.map((savedBlob, index) => {
+                            const { d: savedBlobD, versionName } = savedBlob
+
+                            return (
+                              <li
+                                key={`${versionName}+${index}`}
+                                className="blob-version-item"
+                              >
+                                <span>{versionName}</span>
+                                <div className="button-wrap">
+                                  <button
+                                    onClick={() =>
+                                      void loadBlobsFromServer(
+                                        savedBlobD,
+                                        versionName
+                                      )
+                                    }
+                                  >
+                                    {t('Load')}{' '}
+                                    <span className="scr">{versionName}</span>
+                                  </button>
+                                  <button
+                                    disabled={
+                                      user && user.name === 'temp'
+                                        ? true
+                                        : false
+                                    }
+                                    onClick={() =>
+                                      void deleteBlobsVersionFromServer(
+                                        savedBlobD,
+                                        versionName
+                                      )
+                                    }
+                                  >
+                                    {t('Delete')}{' '}
+                                    <span className="scr">{versionName}</span>
+                                  </button>
+                                  <Accordion
+                                    id={`accordion-blobnewname-${sanitize(
                                       versionName
-                                    )
-                                  }
-                                >
-                                  {t('Load')}{' '}
-                                  <span className="scr">{versionName}</span>
-                                </button>
-                                <button
-                                  disabled={
-                                    user && user.name === 'temp' ? true : false
-                                  }
-                                  onClick={() =>
-                                    void deleteBlobsVersionFromServer(
-                                      Number(dKey),
-                                      versionName
-                                    )
-                                  }
-                                >
-                                  {t('Delete')}{' '}
-                                  <span className="scr">{versionName}</span>
-                                </button>
-                                <Accordion
-                                  id={`accordion-blobnewname-${sanitize(
-                                    versionName
-                                  )}`}
-                                  className="blobnewname"
-                                  wrapperClass="blobnewname-wrap"
-                                  text={t('Rename')}
-                                  hideBrackets={true}
-                                  setIsFormOpen={(open) => {
-                                    setEditName(open ? versionName : '')
-                                  }}
-                                  onClick={() => {
-                                    setNewName(versionName)
-                                    setEditName(versionName)
-                                  }}
-                                  isOpen={editName === versionName}
-                                >
-                                  <>
-                                    <div className="input-wrap">
-                                      <label
-                                        htmlFor={`blobnewname-${sanitize(
-                                          versionName
-                                        )}`}
-                                      >
-                                        <input
-                                          id={`blobnewname-${sanitize(
+                                    )}`}
+                                    className="blobnewname"
+                                    wrapperClass="blobnewname-wrap"
+                                    text={t('Rename')}
+                                    hideBrackets={true}
+                                    setIsFormOpen={(open) => {
+                                      setEditName(open ? versionName : '')
+                                    }}
+                                    onClick={() => {
+                                      setNewName(versionName)
+                                      setEditName(versionName)
+                                    }}
+                                    isOpen={editName === versionName}
+                                  >
+                                    <>
+                                      <div className="input-wrap">
+                                        <label
+                                          htmlFor={`blobnewname-${sanitize(
                                             versionName
                                           )}`}
-                                          type="text"
-                                          value={newName}
-                                          onChange={handleNewNameChange}
-                                          placeholder={t('RenameYourArtwork')}
-                                          maxLength={30}
-                                        />
-                                        <span>{t('Rename')}:</span>{' '}
-                                        <span className="scr">
-                                          {versionName}
-                                        </span>
-                                      </label>
-                                    </div>
-                                    <button
-                                      disabled={
-                                        user && user.name === 'temp'
-                                          ? true
-                                          : false
-                                      }
-                                      onClick={() => {
-                                        if (versionName !== newName) {
-                                          void editBlobsByUser(
-                                            versionName,
-                                            newName
-                                          )
-                                        } else
-                                          void dispatch2(
-                                            notify(
-                                              `${t('Error')}: ${t(
-                                                'RenameYourArtwork'
-                                              )}`,
-                                              true,
-                                              5
+                                        >
+                                          <input
+                                            id={`blobnewname-${sanitize(
+                                              versionName
+                                            )}`}
+                                            type="text"
+                                            value={newName}
+                                            onChange={handleNewNameChange}
+                                            placeholder={t('RenameYourArtwork')}
+                                            maxLength={30}
+                                          />
+                                          <span>{t('Rename')}:</span>{' '}
+                                          <span className="scr">
+                                            {versionName}
+                                          </span>
+                                        </label>
+                                      </div>
+                                      <button
+                                        disabled={
+                                          user && user.name === 'temp'
+                                            ? true
+                                            : false
+                                        }
+                                        onClick={() => {
+                                          if (versionName !== newName) {
+                                            void editBlobsByUser(
+                                              versionName,
+                                              newName
                                             )
-                                          )
-                                      }}
-                                    >
-                                      {t('Edit')}{' '}
-                                      <span className="scr">
-                                        {versionName}: {t('NewName')} {newName}
-                                      </span>
-                                    </button>
-                                  </>
-                                </Accordion>
-                              </div>
-                            </li>
-                          ))}
+                                          } else
+                                            void dispatch2(
+                                              notify(
+                                                `${t('Error')}: ${t(
+                                                  'RenameYourArtwork'
+                                                )}`,
+                                                true,
+                                                5
+                                              )
+                                            )
+                                        }}
+                                      >
+                                        {t('Edit')}{' '}
+                                        <span className="scr">
+                                          {versionName}: {t('NewName')}{' '}
+                                          {newName}
+                                        </span>
+                                      </button>
+                                    </>
+                                  </Accordion>
+                                </div>
+                              </li>
+                            )
+                          })}
                         </ul>
-                        {/* Pagination Controls */}
                         {pagination(dKey, current, totalPages, 'end')}
                       </div>
                     )
-                  })
+                  })()
                 )}
               </div>
             ) : (

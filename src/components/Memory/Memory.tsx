@@ -456,7 +456,12 @@ const Memory: FC = () => {
     if (cardType?.value === CardType.icons) {
       if (typeof card.value === 'string' && card.value.includes(':')) {
         const [lib, name] = card.value.split(':')
-        return <Icon lib={lib} name={name} />
+        return (
+          <Icon
+            lib={lib as keyof typeof Icon}
+            name={name as keyof typeof Icon}
+          />
+        )
       }
       return <span>{card.value}</span>
     }
