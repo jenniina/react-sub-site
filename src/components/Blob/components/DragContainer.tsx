@@ -1007,18 +1007,18 @@ export default function DragContainer({
           .getAllBlobsByUser(user?._id, d, language)
           .then((response: SavedBlobs[]) => {
             if (response) {
-              //filter out the draggables part
-              console.log(
-                response
-                  .map((blob) => ({
-                    ...blob,
-                    draggables: blob.draggables
-                      ? '[Draggables filtered out]'
-                      : 'No Draggables',
-                  }))
-                  .map((blob) => JSON.stringify(blob))
-                  .join('\n')
-              )
+              //   //filter out the draggables part
+              //   console.log(
+              //     response
+              //       .map((blob) => ({
+              //         ...blob,
+              //         draggables: blob.draggables
+              //           ? '[Draggables filtered out]'
+              //           : 'No Draggables',
+              //       }))
+              //       .map((blob) => JSON.stringify(blob))
+              //       .join('\n')
+              //   )
               const sortedDraggables = sortSavedBlobsByNewest(response)
               setSavedDraggables(sortedDraggables)
               setHasSavedFiles(sortedDraggables.length > 0)
