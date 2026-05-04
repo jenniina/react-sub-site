@@ -1700,6 +1700,15 @@ export const translations = {
     cs: 'Vlastní aplikace přetahování a přetažení s bloby, které se do sebe slévají.',
     fi: 'Raahattavat-sovellus, joka sisältää raahattavia toisiinsa sulautuvia mollukoita',
   },
+  AWebAppForCreatingAbstractBlobBasedArtwork: {
+    en: 'A web app for creating abstract blob-based artwork in the browser.',
+    es: 'Una aplicación web para crear obras de arte abstractas basadas en blobs en el navegador.',
+    fr: 'Une application web pour créer des œuvres d art abstraites basées sur des blobs dans le navigateur.',
+    de: 'Eine Webanwendung zum Erstellen abstrakter blobbasierter Kunstwerke im Browser.',
+    pt: 'Um aplicativo web para criar obras de arte abstratas baseadas em blobs no navegador.',
+    cs: 'Webová aplikace pro vytváření abstraktních uměleckých děl založených na blobech v prohlížeči.',
+    fi: 'Web-sovellus abstraktien, mollukkapohjaisten taideteosten luomiseen selaimessa.',
+  },
   SupportsLayers: {
     en: 'Supports layers',
     es: 'Soporta capas',
