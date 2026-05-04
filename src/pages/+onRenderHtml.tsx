@@ -10,7 +10,6 @@ import store from '../store.server'
 import { ThemeProvider } from '../contexts/ThemeContext'
 import { ModalProvider } from '../hooks/useModal'
 import { LanguageProvider } from '../contexts/LanguageContext'
-import { BlobProvider } from '../components/Blob/components/BlobProvider'
 import { HelmetProvider } from 'react-helmet-async'
 import type { HelmetServerState } from 'react-helmet-async'
 import App from '../App'
@@ -21,17 +20,15 @@ function onRenderHtml(pageContext: { urlPathname?: string }) {
     <React.StrictMode>
       <StaticRouter location={pageContext.urlPathname ?? '/'}>
         <LanguageProvider>
-          <BlobProvider>
-            <ThemeProvider>
-              <Provider store={store}>
-                <HelmetProvider context={helmetContext}>
-                  <ModalProvider>
-                    <App />
-                  </ModalProvider>
-                </HelmetProvider>
-              </Provider>
-            </ThemeProvider>
-          </BlobProvider>
+          <ThemeProvider>
+            <Provider store={store}>
+              <HelmetProvider context={helmetContext}>
+                <ModalProvider>
+                  <App />
+                </ModalProvider>
+              </HelmetProvider>
+            </Provider>
+          </ThemeProvider>
         </LanguageProvider>
       </StaticRouter>
     </React.StrictMode>

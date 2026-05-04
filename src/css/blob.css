@@ -700,48 +700,6 @@ svg.filter {
   padding: 0;
   border-radius: 50%;
 }
-.drag-container .dragzone.delete .draggable-overlay {
-  cursor:
-    url('cursor-delete.svg') 16 16,
-    url('cursor-delete.png') 16 16,
-    pointer;
-}
-.drag-container .dragzone.clone .draggable-overlay {
-  cursor:
-    url('cursor-clone.svg') 16 16,
-    url('cursor-clone.png') 16 16,
-    copy;
-}
-.drag-container .dragzone.scale-up .draggable-overlay {
-  cursor:
-    url('cursor-scale-up.svg') 16 16,
-    url('cursor-scale-up.png') 16 16,
-    ne-resize;
-}
-.drag-container .dragzone.scale-down .draggable-overlay {
-  cursor:
-    url('cursor-scale-down.svg') 16 16,
-    url('cursor-scale-down.png') 16 16,
-    s-resize;
-}
-.drag-container .dragzone.layer-up .draggable-overlay {
-  cursor:
-    url('cursor-layer-up.svg') 16 16,
-    url('cursor-layer-up.png') 16 16,
-    pointer;
-}
-.drag-container .dragzone.layer-down .draggable-overlay {
-  cursor:
-    url('cursor-layer-down.svg') 16 16,
-    url('cursor-layer-down.png') 16 16,
-    pointer;
-}
-.drag-container .dragzone.change-color .draggable-overlay {
-  cursor:
-    url('cursor-change-color.svg') 16 16,
-    url('cursor-change-color.png') 16 16,
-    pointer;
-}
 .drag-container .dragzone.drag-container .dragzone:active .draggable-overlay {
   cursor: -webkit-grabbing;
   cursor: grabbing;
