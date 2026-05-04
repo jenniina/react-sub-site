@@ -8,7 +8,6 @@ import store from '../store.client'
 import { ThemeProvider } from '../contexts/ThemeContext'
 import { ModalProvider } from '../hooks/useModal'
 import { LanguageProvider } from '../contexts/LanguageContext'
-import { BlobProvider } from '../components/Blob/components/BlobProvider'
 import { HelmetProvider } from 'react-helmet-async'
 import App from '../App'
 
@@ -32,17 +31,15 @@ function onRenderClient() {
     <React.StrictMode>
       <BrowserRouter>
         <LanguageProvider>
-          <BlobProvider>
-            <ThemeProvider>
-              <Provider store={store}>
-                <HelmetProvider>
-                  <ModalProvider>
-                    <App />
-                  </ModalProvider>
-                </HelmetProvider>
-              </Provider>
-            </ThemeProvider>
-          </BlobProvider>
+          <ThemeProvider>
+            <Provider store={store}>
+              <HelmetProvider>
+                <ModalProvider>
+                  <App />
+                </ModalProvider>
+              </HelmetProvider>
+            </Provider>
+          </ThemeProvider>
         </LanguageProvider>
       </BrowserRouter>
     </React.StrictMode>

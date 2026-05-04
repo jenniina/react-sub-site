@@ -8,7 +8,6 @@ import { StaticRouter } from 'react-router-dom/server'
 import { ThemeProvider } from '../contexts/ThemeContext'
 import { ModalProvider } from '../hooks/useModal'
 import { LanguageProvider } from '../contexts/LanguageContext'
-import { BlobProvider } from '../components/Blob/components/BlobProvider'
 import { AppProps } from '../types'
 
 export default function Page({ pageContext }: AppProps) {
@@ -20,15 +19,13 @@ export default function Page({ pageContext }: AppProps) {
       <StrictMode>
         <StaticRouter location={pageContext.urlPathname ?? '/'}>
           <LanguageProvider>
-            <BlobProvider>
-              <ThemeProvider>
-                <Provider store={store}>
-                  <ModalProvider>
-                    <App />
-                  </ModalProvider>
-                </Provider>
-              </ThemeProvider>
-            </BlobProvider>
+            <ThemeProvider>
+              <Provider store={store}>
+                <ModalProvider>
+                  <App />
+                </ModalProvider>
+              </Provider>
+            </ThemeProvider>
           </LanguageProvider>
         </StaticRouter>
       </StrictMode>
@@ -45,15 +42,13 @@ export default function Page({ pageContext }: AppProps) {
         }}
       >
         <LanguageProvider>
-          <BlobProvider>
-            <ThemeProvider>
-              <Provider store={store}>
-                <ModalProvider>
-                  <App />
-                </ModalProvider>
-              </Provider>
-            </ThemeProvider>
-          </BlobProvider>
+          <ThemeProvider>
+            <Provider store={store}>
+              <ModalProvider>
+                <App />
+              </ModalProvider>
+            </Provider>
+          </ThemeProvider>
         </LanguageProvider>
       </BrowserRouter>
     </StrictMode>
