@@ -45,112 +45,20 @@ export default function JokesPage({ type }: { type: string }) {
         <div className="inner-wrap">
           <section className="joke-container card introduction">
             <div>
-              <div className="flex column gap3">
-                <div className="flex center gap">
-                  <button
-                    onClick={(e) => handleSkipToJokeSearch(e)}
-                    className="reset link svg-wrap newline"
-                  >
-                    <span>{t('SkipToJokeSearch')}</span>
-                    <Icon lib="bi" name="BiChevronsDown" className="down" />
-                  </button>
-                  <button
-                    className="reset link svg-wrap newline"
-                    onClick={(e) => handleSkipToJokes(e)}
-                  >
-                    <span>{t('SkipToSavedJokes')}</span>
-                    <Icon lib="bi" name="BiChevronsDown" className="down" />
-                  </button>
-                </div>
-                <div>
-                  <Select
-                    language={language}
-                    id="main-language"
-                    className="language main"
-                    instructions={`${titleLanguage}:`}
-                    options={options(ELanguagesLong)}
-                    value={
-                      language
-                        ? ({
-                            value: language,
-                            label: ELanguagesLong[language],
-                          } as SelectOption)
-                        : undefined
-                    }
-                    onChange={(o) => {
-                      setLanguage(o?.value as ELanguages)
-                    }}
-                  />
-                </div>
-                <Accordion
-                  text={t('ClickHereToSeeFeatures')}
-                  className="features"
-                  wrapperClass="features-wrap"
-                >
-                  <div className="medium">
-                    <h2>{t('Features')}</h2>
-                    <ul className="ul">
-                      <li>
-                        {t('FetchesJokesFrom')}{' '}
-                        <a href="https://sv443.net/jokeapi/v2/">JokeAPI</a>
-                      </li>
-                      <li>{t('RegisterAndLoginToUse')}</li>
-                      <li>
-                        {t('AppTranslatedTo')}
-                        <ul>
-                          {Object.values(LanguageOfLanguage[language]).map(
-                            (l: string) => {
-                              return <li key={l}>{l}</li>
-                            }
-                          )}
-                        </ul>
-                      </li>
-                      <li>
-                        {t('FilterJokesBy')}:
-                        <ul>
-                          <li>{titleLanguage}</li>
-                          <li>
-                            {t('JokeTypeTitle')}
-                            <ul>
-                              <li>{t('TwoPart')}</li>
-                              <li>{t('Single')}</li>
-                            </ul>
-                          </li>
-                          <li>
-                            {t('SafemodeTitle')} {t('OnOff')}
-                          </li>
-                          <li>{t('Keyword')}</li>
-                          <li>
-                            {t('CategoryTitle')}
-                            <ul>
-                              <li>{jokeCategoryAny[language]}</li>
-                              {Object.values(
-                                jokeCategoryByLanguage[language]
-                              ).map((c: string) => {
-                                return <li key={c}>{c}</li>
-                              })}
-                            </ul>
-                          </li>
-                        </ul>
-                      </li>
-                      <li>
-                        {t('Note')}
-                        <ul>
-                          <li>
-                            {t('DarkJokesAreVisibleOnlyWhenSafeModeIsOff')}
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </div>
-                </Accordion>
-                <a href="https://github.com/jenniina/react-sub-site/tree/main/src/components/Jokes">
-                  Github
-                </a>
+              <div className="flex column gap2">
+                <p>
+                  <big>
+                    <a href="https://jokes.jenniina.fi">
+                      {t('Website')}: {t('TheComediansCompanion')} &raquo;
+                    </a>
+                  </big>
+                </p>
+                <p>
+                  <a href="https://github.com/jenniina/jokes">Github &raquo;</a>
+                </p>
               </div>
             </div>
           </section>
-          <Jokes />
         </div>
       </div>
     </>
