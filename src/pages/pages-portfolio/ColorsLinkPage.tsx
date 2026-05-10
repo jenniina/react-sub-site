@@ -28,20 +28,22 @@ export default function ComposerPage({ type }: { type: string }) {
                   <br />
                   <br />
                 </p>
-                <p>
-                  <big>
-                    <a
-                      href={`https://colors.jenniina.fi?light=${lightTheme ? 'true' : 'false'}`}
-                    >
-                      Contrast at a Glance &raquo;
+                <div className="medium flex column gap">
+                  <p>
+                    <big>
+                      <a
+                        href={`https://colors.jenniina.fi?light=${lightTheme ? 'true' : 'false'}`}
+                      >
+                        Contrast at a Glance &raquo;
+                      </a>
+                    </big>
+                  </p>
+                  <p>
+                    <a href="https://github.com/jenniina/color-accessibility-checker">
+                      Github &raquo;
                     </a>
-                  </big>
-                </p>
-                <p>
-                  <a href="https://github.com/jenniina/color-accessibility-checker">
-                    Github &raquo;
-                  </a>
-                </p>
+                  </p>
+                </div>
               </div>
             </div>
           </section>

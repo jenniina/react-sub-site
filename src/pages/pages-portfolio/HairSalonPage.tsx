@@ -32,40 +32,11 @@ export default function HairSalonPage({ type }: { type: string }) {
                       <li>{t('SalonIntro1')}</li>
                       <li>{t('SalonIntro2')}</li>
                       <li>{t('SalonIntro3')}</li>
-                      <li>
-                        {t('Dependencies')}: React
-                        <ul>
-                          <li>react</li>
-                          <li>react-dom</li>
-                          <li>react-icons</li>
-                          <li>react redux</li>
-                          <li>@reduxjs/toolkit</li>
-                          <li>axios</li>
-                        </ul>
-                      </li>
-                      <li>
-                        {t('Dependencies')}: Node.js
-                        <ul>
-                          <li>express</li>
-                          <li>express-validator</li>
-                          <li>mysql2</li>
-                          <li>sequelize</li>
-                          <li>cors</li>
-                          <li>bcryptjs</li>
-                          <li>jsonwebtoken</li>
-                          <li>dotenv</li>
-                        </ul>
-                      </li>
                     </ul>
                   </>
                 </Accordion>
 
-                <div
-                  style={{
-                    marginTop: '2rem',
-                    textAlign: 'center',
-                  }}
-                >
+                <div className="medium flex column gap">
                   <p>
                     <big>
                       <a href="https://hannastiina.jenniina.fi">

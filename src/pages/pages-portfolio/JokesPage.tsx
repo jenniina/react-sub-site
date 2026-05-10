@@ -45,17 +45,25 @@ export default function JokesPage({ type }: { type: string }) {
         <div className="inner-wrap">
           <section className="joke-container card introduction">
             <div>
-              <div className="flex column gap2">
-                <p>
-                  <big>
-                    <a href="https://jokes.jenniina.fi">
-                      {t('Website')}: {t('TheComediansCompanion')} &raquo;
+              <div className="flex column medium gap2">
+                <div className="flex column left gap-half mb1">
+                  <p>{t('JokesAppIntro')}</p>
+                  <p>{t('YouMaySaveYourFavoriteJokesOrAddYourOwn')}</p>
+                </div>
+                <div className="flex column gap w100">
+                  <p>
+                    <big>
+                      <a href="https://jokes.jenniina.fi">
+                        {t('TheComediansCompanion')} &raquo;
+                      </a>
+                    </big>
+                  </p>
+                  <p>
+                    <a href="https://github.com/jenniina/jokes">
+                      Github &raquo;
                     </a>
-                  </big>
-                </p>
-                <p>
-                  <a href="https://github.com/jenniina/jokes">Github &raquo;</a>
-                </p>
+                  </p>
+                </div>
               </div>
             </div>
           </section>
