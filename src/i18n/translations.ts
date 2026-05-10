@@ -1691,6 +1691,15 @@ export const translations = {
     cs: 'Aplikace vtipů, která používá JokeAPI, icanhazdadjoke.com a chucknorris.io a naši vlastní API pro volání MongoDB k získání vtipů.',
     fi: 'Vitsisovellus, joka käyttää JokeAPI:a, icanhazdadjoke.com:ia, chucknorris.io:ta ja omaa MongoDB-kutsuihin perustuvaa API:a hakeakseen vitsejä.',
   },
+  JokesAppIntro2: {
+    en: 'New additions: official-joke-api.appspot.com and geek-jokes.sameerkumar.website',
+    es: 'Nuevas adiciones: official-joke-api.appspot.com y geek-jokes.sameerkumar.website',
+    fr: 'Nouvelles additions : official-joke-api.appspot.com et geek-jokes.sameerkumar.website',
+    de: 'Neue Ergänzungen: official-joke-api.appspot.com und geek-jokes.sameerkumar.website',
+    pt: 'Novas adições: official-joke-api.appspot.com e geek-jokes.sameerkumar.website',
+    cs: 'Nové přírůstky: official-joke-api.appspot.com a geek-jokes.sameerkumar.website',
+    fi: 'Uusia lisäyksiä: official-joke-api.appspot.com ja geek-jokes.sameerkumar.website',
+  },
   YouMaySaveYourFavoriteJokesOrAddYourOwn: {
     en: 'You may save your favorite jokes or add your own when logged in.',
     es: 'Puede guardar sus chistes favoritos o agregar los suyos propios cuando inicie sesión.',

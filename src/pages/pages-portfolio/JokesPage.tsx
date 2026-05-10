@@ -37,9 +37,9 @@ export default function JokesPage({ type }: { type: string }) {
     <>
       <SEO
         title={`${t('Jokes')} | ${t('TheComediansCompanion')}`}
-        description={t('JokesAppIntro')}
+        description={`${t('YouMaySaveYourFavoriteJokesOrAddYourOwn')}`}
         canonicalUrl="https://react.jenniina.fi/portfolio/jokes"
-        ogTitle={`${t('Jokes')} | react.jenniina.fi`}
+        ogTitle={`${t('Jokes')} | ${t('TheComediansCompanion')}`}
       />
       <div className={`${type} ${language}`}>
         <div className="inner-wrap">
@@ -47,7 +47,9 @@ export default function JokesPage({ type }: { type: string }) {
             <div>
               <div className="flex column medium gap2">
                 <div className="flex column left gap-half mb1">
-                  <p>{t('JokesAppIntro')}</p>
+                  <p>
+                    {t('JokesAppIntro')} {t('JokesAppIntro2')}
+                  </p>
                   <p>{t('YouMaySaveYourFavoriteJokesOrAddYourOwn')}</p>
                 </div>
                 <div className="flex column gap w100">
