@@ -76,7 +76,7 @@ function Jokes() {
     return state.jokes?.joke
   })
   const user = useSelector((state: ReducerProps) => {
-    return state.auth?.user ?? undefined
+    return state.auth?.user
   })
 
   const [publicUserNames, setPublicUserNames] = useState<TPublicUserNamesMap>(

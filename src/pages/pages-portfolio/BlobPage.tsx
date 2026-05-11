@@ -70,6 +70,9 @@ export default function BlobPage({ type }: { type: string }) {
                     textAlign: 'center',
                   }}
                 >
+                  <p className="medium">
+                    {t('AWebAppForCreatingAbstractBlobBasedArtwork')}
+                  </p>
                   <p className="flex column gap">
                     {t('BlobArtApp')}:
                     <big>

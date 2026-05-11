@@ -1138,3 +1138,6 @@ big > i {
   margin-top: 0.3rem;
   margin-bottom: -0.3rem;
 }
+#root .w100 {
+  width: 100%;
+}
