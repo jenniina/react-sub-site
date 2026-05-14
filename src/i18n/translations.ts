@@ -1694,7 +1694,7 @@ export const translations = {
   JokesAppIntro2: {
     en: 'New additions: official-joke-api.appspot.com and geek-jokes.sameerkumar.website',
     es: 'Nuevas adiciones: official-joke-api.appspot.com y geek-jokes.sameerkumar.website',
-    fr: 'Nouvelles additions : official-joke-api.appspot.com et geek-jokes.sameerkumar.website',
+    fr: 'Nouvelles additions: official-joke-api.appspot.com et geek-jokes.sameerkumar.website',
     de: 'Neue Ergänzungen: official-joke-api.appspot.com und geek-jokes.sameerkumar.website',
     pt: 'Novas adições: official-joke-api.appspot.com e geek-jokes.sameerkumar.website',
     cs: 'Nové přírůstky: official-joke-api.appspot.com a geek-jokes.sameerkumar.website',
