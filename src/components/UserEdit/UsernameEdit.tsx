@@ -96,7 +96,7 @@ const UsernameEdit = ({ user }: Props) => {
           <form
             onSubmit={(e) => {
               e.preventDefault()
-              void handleUserSubmit(e)
+              handleUserSubmit(e)
             }}
             className={styles['edit-user']}
           >
@@ -122,7 +122,7 @@ const UsernameEdit = ({ user }: Props) => {
                   name="old-password"
                   id="old-password-username"
                   value={passwordOld}
-                  onChange={({ target }) => setPasswordOld(target.value.trim())}
+                  onChange={({ target }) => setPasswordOld(target.value)}
                 />
                 <span>{t('CurrentPassword')}</span>
               </label>

@@ -72,7 +72,7 @@ const NicknameEdit = ({ user }: Props) => {
           </p>
 
           <form
-            onSubmit={(e) => void handleUserSubmit(e)}
+            onSubmit={(e) => handleUserSubmit(e)}
             className={styles['edit-user']}
           >
             <div className="input-wrap">
@@ -96,7 +96,7 @@ const NicknameEdit = ({ user }: Props) => {
                   name="old-password"
                   id="old-password-user"
                   value={passwordOld}
-                  onChange={({ target }) => setPasswordOld(target.value.trim())}
+                  onChange={({ target }) => setPasswordOld(target.value)}
                 />
                 <span>{t('CurrentPassword')}</span>
               </label>
