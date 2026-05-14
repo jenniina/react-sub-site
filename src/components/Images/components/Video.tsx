@@ -63,7 +63,7 @@ const Video: FC<VideoProps> = ({ video, show, searchTerm, textType }) => {
           video={video}
           searchTerm={searchTerm}
           textType={textType}
-          handleDownload={() => void handleDownload()}
+          handleDownload={() => handleDownload()}
         />
       ),
     })
@@ -82,7 +82,7 @@ const Video: FC<VideoProps> = ({ video, show, searchTerm, textType }) => {
         }}
         aria-label={t('ClickToOpenLargeVideo')}
         onClick={handleShowModal}
-        onKeyDown={e => {
+        onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault()
             handleShowModal()

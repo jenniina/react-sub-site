@@ -1279,7 +1279,7 @@ const AccessibleColors: FC = () => {
                               }}
                               onClick={() => {
                                 const text = `${otherColor.color} is AAA compliant with ${block.color}`
-                                void copyToClipboard(text)
+                                copyToClipboard(text)
                               }}
                             >
                               <span
@@ -1317,7 +1317,7 @@ const AccessibleColors: FC = () => {
                               }}
                               onClick={() => {
                                 const text = `${otherColor.color} is AA compliant with ${block.color}`
-                                void copyToClipboard(text)
+                                copyToClipboard(text)
                               }}
                             >
                               <span
@@ -1352,7 +1352,7 @@ const AccessibleColors: FC = () => {
                               }}
                               onClick={() => {
                                 const text = `${otherColor.color} is AA UI compliant with ${block.color}`
-                                void copyToClipboard(text)
+                                copyToClipboard(text)
                               }}
                             >
                               <span
@@ -1508,7 +1508,7 @@ const AccessibleColors: FC = () => {
                         message: t('AreYouSureYouWantToResetAllColors'),
                       }))
                     ) {
-                      void resetColors()
+                      resetColors()
                       scrollRef.current?.scrollIntoView({
                         behavior: 'smooth',
                         block: 'start',
@@ -1530,7 +1530,7 @@ const AccessibleColors: FC = () => {
                         message: t('AreYouSureYouWantToResetAllColors'),
                       }))
                     ) {
-                      void resetColors()
+                      resetColors()
                       scrollRef.current?.scrollIntoView({
                         behavior: 'smooth',
                         block: 'start',
@@ -1555,7 +1555,7 @@ const AccessibleColors: FC = () => {
                       })
                     ) {
                       listItemsByStatus[status].removeItems()
-                      void clearColors()
+                      clearColors()
                       scrollRef.current?.scrollIntoView({
                         behavior: 'smooth',
                         block: 'start',
@@ -1581,7 +1581,7 @@ const AccessibleColors: FC = () => {
                       })
                     ) {
                       listItemsByStatus[status].removeItems()
-                      void clearColors()
+                      clearColors()
                       scrollRef.current?.scrollIntoView({
                         behavior: 'smooth',
                         block: 'start',

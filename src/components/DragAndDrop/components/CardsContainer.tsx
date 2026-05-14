@@ -154,7 +154,7 @@ const CardsContainer = ({
       className={`${styles['cards-container']} ${
         isDragging ? styles['area-dragging'] : ''
       } ${lightTheme ? styles.light : ''}`}
-      onDrop={(e) => void handleContainerDrop(e, statuses.indexOf(status))}
+      onDrop={(e) => handleContainerDrop(e, statuses.indexOf(status))}
       onDragEnd={() => handleDragging(false)}
       style={bodyStyle}
     >
@@ -278,7 +278,7 @@ const CardsContainer = ({
                 type="button"
                 className="danger delete outline"
                 onClick={() => {
-                  void deleteStatus(status)
+                  deleteStatus(status)
                 }}
               >
                 {t('Delete')}

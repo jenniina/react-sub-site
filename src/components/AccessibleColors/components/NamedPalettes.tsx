@@ -84,7 +84,7 @@ const NamedPalettes: FC<Props> = ({
 
   useEffect(() => {
     if (!isLoggedIn) return
-    void refreshList()
+    refreshList()
   }, [isLoggedIn, refreshList])
 
   const handleSave = useCallback(async () => {
@@ -392,7 +392,7 @@ const NamedPalettes: FC<Props> = ({
           <form
             onSubmit={(e) => {
               e.preventDefault()
-              void handleSave()
+              handleSave()
             }}
           >
             <div className={`input-wrap ${styles['input-wrap']}`}>
@@ -444,7 +444,7 @@ const NamedPalettes: FC<Props> = ({
                     <button
                       className={`gray small`}
                       type="button"
-                      onClick={() => void handleLoadByName(p.versionName)}
+                      onClick={() => handleLoadByName(p.versionName)}
                       disabled={busy}
                     >
                       {t('Load')} <span className="scr">{p.versionName}</span>{' '}
@@ -457,7 +457,7 @@ const NamedPalettes: FC<Props> = ({
                     <button
                       className={`gray small`}
                       type="button"
-                      onClick={() => void handleDeleteByName(p.versionName)}
+                      onClick={() => handleDeleteByName(p.versionName)}
                       disabled={busy}
                     >
                       {t('Delete')} <span className="scr">{p.versionName}</span>{' '}
@@ -515,7 +515,7 @@ const NamedPalettes: FC<Props> = ({
                             type="button"
                             disabled={busy}
                             onClick={() =>
-                              void handleRenameByName(p.versionName, newName)
+                              handleRenameByName(p.versionName, newName)
                             }
                           >
                             {t('Save')}{' '}

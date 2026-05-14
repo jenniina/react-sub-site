@@ -241,7 +241,7 @@ const Images: FC = () => {
 
   useEffect(() => {
     const array = colors?.map((color) => color.value)
-    void setColorList(array as Color[])
+    setColorList(array as Color[])
   }, [colors])
 
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
@@ -267,7 +267,7 @@ const Images: FC = () => {
       page: fetchPage,
     }
 
-    void fetchMedia(options)
+    fetchMedia(options)
   }
 
   useEffect(() => {
@@ -280,7 +280,7 @@ const Images: FC = () => {
 
     if (searchTerm.trim() === '') {
       void dispatch(notify(t('PleaseEnterASearchTerm'), true, 6))
-      void setError(t('PleaseEnterASearchTerm'))
+      setError(t('PleaseEnterASearchTerm'))
       return
     }
 
@@ -300,11 +300,11 @@ const Images: FC = () => {
       per_page: perFetch,
       page: fetchPage,
     }
-    void fetchMedia(defaultOptions)
+    fetchMedia(defaultOptions)
   }, [fetchPage]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    void setTotalSubPages(
+    setTotalSubPages(
       Math.ceil(media.length < perSubPage ? 1 : media.length / perSubPage)
     )
   }, [media, perSubPage])

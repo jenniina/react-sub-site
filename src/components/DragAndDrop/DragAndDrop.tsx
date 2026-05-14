@@ -816,9 +816,7 @@ export const DragAndDrop = () => {
             <button onClick={() => void startAgain()}>{t('Reset')}</button>
             <button onClick={() => void startAgainEmpty()}>{t('Clear')}</button>
             <button
-              onClick={() =>
-                void handleChangeBackgroundColors('reset', null, null)
-              }
+              onClick={() => handleChangeBackgroundColors('reset', null, null)}
             >
               {t('ResetBackgroundColors')}
             </button>
@@ -850,11 +848,7 @@ export const DragAndDrop = () => {
               <button
                 className="small"
                 onClick={() =>
-                  void handleChangeBackgroundColors(
-                    'custom',
-                    null,
-                    singleColorTop
-                  )
+                  handleChangeBackgroundColors('custom', null, singleColorTop)
                 }
               >
                 {t('Set')}
@@ -875,11 +869,7 @@ export const DragAndDrop = () => {
               <button
                 className="small"
                 onClick={() =>
-                  void handleChangeBackgroundColors(
-                    'custom',
-                    singleColorBody,
-                    null
-                  )
+                  handleChangeBackgroundColors('custom', singleColorBody, null)
                 }
               >
                 {t('Set')}

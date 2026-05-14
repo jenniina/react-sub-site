@@ -61,7 +61,8 @@ const Image: FC<ImageProps> = ({ image, show, searchTerm, textType }) => {
         URL.revokeObjectURL(url)
       } catch (error) {
         console.error('Download failed:', error)
-        const errorMessage = error instanceof Error ? error.message : String(error)
+        const errorMessage =
+          error instanceof Error ? error.message : String(error)
         void dispatch(notify(`${t('Error')}: ${errorMessage}`, true, 5))
       }
     }
@@ -74,7 +75,7 @@ const Image: FC<ImageProps> = ({ image, show, searchTerm, textType }) => {
       children: (
         <ImageModal
           image={image}
-          handleDownload={() => void handleDownload()}
+          handleDownload={() => handleDownload()}
           searchTerm={searchTerm}
           textType={textType}
         />
@@ -95,7 +96,7 @@ const Image: FC<ImageProps> = ({ image, show, searchTerm, textType }) => {
         }}
         aria-label={t('ClickToOpenLargeImage')}
         onClick={handleShowModal}
-        onKeyDown={e => {
+        onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault()
             handleShowModal()

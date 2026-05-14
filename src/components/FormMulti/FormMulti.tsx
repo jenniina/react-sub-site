@@ -23,7 +23,7 @@ function FormMulti() {
   const dispatch = useAppDispatch()
 
   function updateFields(fields: Partial<FormData>) {
-    setData(prev => {
+    setData((prev) => {
       return { ...prev, ...fields }
     })
   }
@@ -117,7 +117,7 @@ function FormMulti() {
       )}
       <form
         ref={form}
-        onSubmit={e => void handleSubmit(e)}
+        onSubmit={(e) => handleSubmit(e)}
         aria-labelledby="steps"
       >
         <span id="steps" className={styles.steps}>

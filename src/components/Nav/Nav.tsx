@@ -422,7 +422,7 @@ const Nav = (
   const handleRegister = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
     setSending(true)
-    if (password.trim() !== confirmPassword.trim()) {
+    if (password !== confirmPassword) {
       void dispatch(notify(`${t('PasswordsDoNotMatch')}`, true, 8))
       setSending(false)
       return
