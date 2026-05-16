@@ -1,5 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit'
-import jokeReducer from './components/Jokes/reducers/jokeReducer'
 import userReducer from './reducers/usersReducer'
 import authReducer from './reducers/authReducer'
 import notificationReducer from './reducers/notificationReducer'
@@ -10,7 +9,6 @@ import todoReducer from './components/Todo/reducers/todoReducer'
 
 const store = configureStore({
   reducer: {
-    jokes: jokeReducer,
     users: userReducer,
     auth: authReducer,
     notification: notificationReducer,
