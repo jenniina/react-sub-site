@@ -197,7 +197,7 @@
   background-repeat: no-repeat;
 }
 .herocontent .jewel:hover > div > div:not(.none):not(.cover):not(.frame),
-.herocontent .jewel:focus > div > div:not(.none):not(.cover):not(.frame) {
+.herocontent .jewel:focus-visible > div > div:not(.none):not(.cover):not(.frame) {
   animation-play-state: running;
 }
 @keyframes rotate-colors {
@@ -311,7 +311,6 @@
   pointer-events: none;
 }
 
-.herocontent .triangle:focus,
 .herocontent .triangle:focus-visible {
   outline: 0;
 }
@@ -376,14 +375,10 @@
 }
 .herocontent .triangle:hover::after,
 .herocontent .triangle:hover::before,
-.herocontent .triangle:focus::after,
-.herocontent .triangle:focus::before,
 .herocontent .triangle:focus-visible::before,
 .herocontent .triangle:focus-visible::after,
 .light .herocontent .triangle:hover::after,
 .light .herocontent .triangle:hover::before,
-.light .herocontent .triangle:focus::after,
-.light .herocontent .triangle:focus::before,
 .light .herocontent .triangle:focus-visible::before,
 .light .herocontent .triangle:focus-visible::after {
   -webkit-animation-play-state: running;
@@ -500,7 +495,6 @@
   animation-play-state: paused;
 }
 .herocontent .circles:hover,
-.herocontent .circles:focus,
 .herocontent .circles:focus-visible {
   animation-play-state: running;
 }
@@ -570,9 +564,9 @@
   background-color: currentColor;
 }
 .herocontent .geometric:hover,
-.herocontent .geometric:focus,
+.herocontent .geometric:focus-visible,
 .herocontent .circles:hover,
-.herocontent .circles:focus {
+.herocontent .circles:focus-visible {
   cursor: pointer;
 }
 .herocontent .note {
@@ -634,20 +628,20 @@
   transform-origin: 0 70%;
 }
 .herocontent .geometric:hover div,
-.herocontent .geometric:focus div,
+.herocontent .geometric:focus-visible div,
 .herocontent .geometric.active div,
 .herocontent .circles:hover div,
-.herocontent .circles:focus div,
+.herocontent .circles:focus-visible div,
 .herocontent .circles.active div,
 .herocontent .bubbles:hover,
-.herocontent .bubbles:focus,
+.herocontent .bubbles:focus-visible,
 .herocontent .item.active,
 .herocontent .eyes:hover,
-.herocontent .eyes:focus,
+.herocontent .eyes:focus-visible,
 .herocontent .jewel:hover,
-.herocontent .jewel:focus,
+.herocontent .jewel:focus-visible,
 .herocontent .note:hover,
-.herocontent .note:focus {
+.herocontent .note:focus-visible {
   -webkit-animation-play-state: running;
   -ms-animation-play-state: running;
   -o-animation-play-state: running;
@@ -762,7 +756,7 @@
   transition-timing-function: ease-in-out;
 }
 .herocontent .eyes:hover .inner::after,
-.herocontent .eyes:focus .inner::after {
+.herocontent .eyes:focus-visible .inner::after {
   left: 50%;
 }
 .herocontent .eyes span {
@@ -870,16 +864,16 @@
   box-shadow: var(--box);
 }
 .herocontent .eyes:hover .inner::after,
-.herocontent .eyes:focus .inner::after,
+.herocontent .eyes:focus-visible .inner::after,
 .herocontent .eyes:hover span::before,
-.herocontent .eyes:focus span::before,
+.herocontent .eyes:focus-visible span::before,
 .herocontent .eyes:hover span::after,
-.herocontent .eyes:focus span::after {
+.herocontent .eyes:focus-visible span::after {
   transition-duration: 150ms;
   transition-delay: 0ms;
 }
 .herocontent .eyes:hover span::before,
-.herocontent .eyes:focus span::before {
+.herocontent .eyes:focus-visible span::before {
   -webkit-transform: translate(-90%, -10%) scale(0.001, 0.5);
   -o-transform: translate(-90%, -10%) scale(0.001, 0.5);
   -ms-transform: translate(-90%, -10%) scale(0.001, 0.5);
@@ -887,7 +881,7 @@
   transform: translate(-90%, -10%) scale(0.001, 0.5);
 }
 .herocontent .eyes:hover span::after,
-.herocontent .eyes:focus span::after {
+.herocontent .eyes:focus-visible span::after {
   -webkit-transform: rotate(90deg) translate(-9%, 30%) skewX(-70deg) scale(0.5, 0.01);
   -o-transform: rotate(90deg) translate(-9%, 30%) skewX(-70deg) scale(0.5, 0.01);
   -ms-transform: rotate(90deg) translate(-9%, 30%) skewX(-70deg) scale(0.5, 0.01);
@@ -965,13 +959,13 @@
   border-bottom-color: var(--color2);
 }
 .herocontent .geometric:hover span,
-.herocontent .geometric:focus span,
+.herocontent .geometric:focus-visible span,
 .herocontent .circles:hover span,
-.herocontent .circles:focus span,
+.herocontent .circles:focus-visible span,
 .herocontent .triangle:hover span,
-.herocontent .triangle:focus span,
+.herocontent .triangle:focus-visible span,
 .herocontent .note:hover span,
-.herocontent .note:focus span {
+.herocontent .note:focus-visible span {
   -webkit-animation-play-state: running;
   -ms-animation-play-state: running;
   -o-animation-play-state: running;
@@ -1439,12 +1433,12 @@
   pointer-events: all;
 }
 .herocontent .portfolio:hover,
-.herocontent .portfolio:focus {
+.herocontent .portfolio:focus-visible {
   outline: white solid 4px;
   outline-offset: -3px;
 }
 .herocontent .portfolio:active,
-.herocontent .portfolio:focus,
+.herocontent .portfolio:focus-visible,
 .herocontent .portfolio.drag {
   cursor: -webkit-grabbing;
   cursor: -moz-grabbing;
@@ -1467,7 +1461,7 @@
 }
 
 .bottom button.rand:hover span,
-.bottom button.rand:focus span {
+.bottom button.rand:focus-visible span {
   text-decoration: line-through;
 }
 
@@ -1548,7 +1542,7 @@
     0 0 0.3em var(--color-primary-2);
 }
 .bottom button:hover,
-.bottom button:focus {
+.bottom button:focus-visible {
   outline: 0;
 }
 .bottom button span:last-of-type {
@@ -1630,9 +1624,9 @@
   right: 0.5em;
 }
 .bottom button:hover::before,
-.bottom button:focus::before,
+.bottom button:focus-visible::before,
 .bottom button:hover::after,
-.bottom button:focus::after {
+.bottom button:focus-visible::after {
   -webkit-transform: scaleX(100%);
   -o-transform: scaleX(100%);
   -ms-transform: scaleX(100%);
@@ -1640,9 +1634,9 @@
   transform: scaleX(100%);
 }
 .bottom button:hover span:last-of-type:before,
-.bottom button:focus span:last-of-type:before,
+.bottom button:focus-visible span:last-of-type:before,
 .bottom button:hover span:last-of-type:after,
-.bottom button:focus span:last-of-type:after {
+.bottom button:focus-visible span:last-of-type:after {
   -webkit-transform: scaleY(100%);
   -o-transform: scaleY(100%);
   -ms-transform: scaleY(100%);
@@ -1651,7 +1645,6 @@
 }
 
 .bottom button:hover,
-.bottom button:focus,
 .bottom button:focus-visible {
   color: var(--color-primary-15);
 }
@@ -1805,7 +1798,6 @@
 }
 
 .herocontent.constellation .constellation-node:hover,
-.herocontent.constellation .constellation-node:focus,
 .herocontent.constellation .constellation-node:focus-visible,
 .herocontent.constellation .constellation-node.active,
 .herocontent.constellation .constellation-node.pinned {
@@ -1871,7 +1863,6 @@
 }
 
 .constellation-node:hover .constellation-node-label,
-.constellation-node:focus .constellation-node-label,
 .constellation-node:focus-visible .constellation-node-label,
 .constellation-node.active .constellation-node-label,
 .constellation-node.pinned .constellation-node-label {
@@ -1966,7 +1957,6 @@
 }
 
 .constellation-legend .constellation-thresholds .constellation-threshold-btn:hover,
-.constellation-legend .constellation-thresholds .constellation-threshold-btn:focus,
 .constellation-legend .constellation-thresholds .constellation-threshold-btn:focus-visible,
 .constellation-legend .constellation-thresholds .constellation-threshold-btn.active {
   background-color: rgba(255, 255, 255, 0.1);
@@ -1990,7 +1980,6 @@
 }
 
 .light .constellation-legend .constellation-thresholds .constellation-threshold-btn:hover,
-.light .constellation-legend .constellation-thresholds .constellation-threshold-btn:focus,
 .light .constellation-legend .constellation-thresholds .constellation-threshold-btn:focus-visible,
 .light .constellation-legend .constellation-thresholds .constellation-threshold-btn.active {
   background-color: rgba(11, 19, 43, 0.08);

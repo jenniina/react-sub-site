@@ -49,7 +49,7 @@
 .cards-container > ul > li:focus-visible {
   outline: none;
 }
-.cards-container > ul > li:focus > div {
+.cards-container > ul > li:focus-visible > div {
   outline: var(--color-primary-20) solid 2px;
   outline-offset: 2px;
 }
@@ -300,11 +300,11 @@ nav.open li > div > button {
 }
 
 .card .text + b > button:hover,
-.card .text + b > button:focus,
+.card .text + b > button:focus-visible,
 nav.open li > button:hover,
 nav.open li > div > button:hover,
-nav.open li > button:focus,
-nav.open li > div > button:focus {
+nav.open li > button:focus-visible,
+nav.open li > div > button:focus-visible {
   color: currentColor;
   outline: solid 2px currentColor;
   outline-offset: 0px;

@@ -63,8 +63,8 @@
 }
 .video-wrap > button:hover,
 .image-wrap > button:hover,
-.video-wrap > button:focus,
-.image-wrap > button:focus {
+.video-wrap > button:focus-visible,
+.image-wrap > button:focus-visible {
   outline-width: 2px;
   outline-color: var(--color-primary-20);
   outline-offset: -2px;
@@ -72,7 +72,6 @@
   transform: scale(1.05);
 }
 .image-wrap.image-modal > button:hover,
-.image-wrap.image-modal > button:focus,
 .image-wrap.image-modal > button:focus-visible {
   transform: scale(1);
 }
@@ -85,8 +84,8 @@
 }
 .video-wrap > button:hover img,
 .image-wrap > button:hover img,
-.video-wrap > button:focus img,
-.image-wrap > button:focus img {
+.video-wrap > button:focus-visible img,
+.image-wrap > button:focus-visible img {
   border-color: var(--color-primary-1);
 }
 
@@ -236,7 +235,7 @@
   outline-offset: -3px;
 }
 .fetch-page-buttons-wrap button.active::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 100%;
   left: 50%;
