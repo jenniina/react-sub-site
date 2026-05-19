@@ -180,6 +180,7 @@ button.togglemenu[aria-expanded='true'] .menupath {
 }
 .main-header button.settings {
   flex: 1 1 0;
+  z-index: 101;
   /* padding: 0.4em 2% 0.1em; */
 }
 .menu-container {
@@ -288,8 +289,13 @@ button.togglemenu[aria-expanded='true'] .menupath {
 .es .toolbar .loginregisterwrap.closed {
   gap: 1.5em;
 }
+
 .toolbar .loginregisterwrap button {
   margin: var(--marg) auto 0;
+}
+
+.toolbar .loginregisterwrap > div {
+  flex: 1 0 100%;
 }
 
 .logo-container a,
@@ -589,7 +595,7 @@ a.link:visited:not(.active):focus > *,
   flex-flow: row wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5em;
+  gap: 1.5em;
   font-size: 0.9em;
   width: 100%;
 }
