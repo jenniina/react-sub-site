@@ -136,7 +136,7 @@ const FormLogin = ({ easy, medium, hard, setIsFormOpen }: Props) => {
                     required
                     autoComplete="current-password"
                     value={password}
-                    onChange={({ target }) => setPassword(target.value.trim())}
+                    onChange={({ target }) => setPassword(target.value)}
                   />
                   <span>{t('Password')}: </span>
                 </label>

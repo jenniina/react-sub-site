@@ -23,7 +23,7 @@ const PasswordEdit = ({ user }: Props) => {
   const handleUserSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setSending(true)
-    if (password.trim() !== confirmPassword.trim()) {
+    if (password !== confirmPassword) {
       void dispatch(notify(t('PasswordsDoNotMatch'), true, 5))
       setSending(false)
       return
@@ -41,18 +41,18 @@ const PasswordEdit = ({ user }: Props) => {
     }
 
     if (user) {
-      void dispatch(updatePassword(editedUser))
+      dispatch(updatePassword(editedUser))
         .then((res) => {
           if (res) {
-            if (res.success === false) {
-              void dispatch(notify(`${res.message ?? t('Error')}`, true, 5))
-            } else {
+            if (res.success === true) {
               void dispatch(
                 notify(`${res.message ?? t('UserUpdated')}`, false, 5)
               )
               setPasswordOld('')
               setPassword('')
               setConfirmPassword('')
+            } else {
+              void dispatch(notify(`${res.message ?? t('Error')}`, true, 5))
             }
           }
           setSending(false)
@@ -81,7 +81,7 @@ const PasswordEdit = ({ user }: Props) => {
                   name="old-password"
                   id="old-password"
                   value={passwordOld}
-                  onChange={({ target }) => setPasswordOld(target.value.trim())}
+                  onChange={({ target }) => setPasswordOld(target.value)}
                 />
                 <span>{t('CurrentPassword')}</span>
               </label>
@@ -94,7 +94,7 @@ const PasswordEdit = ({ user }: Props) => {
                   name="password"
                   id="password-edit"
                   value={password}
-                  onChange={({ target }) => setPassword(target.value.trim())}
+                  onChange={({ target }) => setPassword(target.value)}
                 />
                 <span>{t('Password')}</span>
               </label>
@@ -107,9 +107,7 @@ const PasswordEdit = ({ user }: Props) => {
                   name="confirmPassword"
                   id="confirmPassword"
                   value={confirmPassword}
-                  onChange={({ target }) =>
-                    setConfirmPassword(target.value.trim())
-                  }
+                  onChange={({ target }) => setConfirmPassword(target.value)}
                 />
                 <span>{t('ConfirmPassword')}</span>
               </label>

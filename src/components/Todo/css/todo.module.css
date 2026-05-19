@@ -44,7 +44,7 @@ button.submit-todo {
 }
 button.cancel,
 button.cancel:hover,
-button.cancel:focus {
+button.cancel:focus-visible {
   margin: 0 0 0 auto;
   display: flex;
   flex-flow: row wrap;
@@ -103,7 +103,6 @@ button.cancel svg {
   cursor: grabbing;
 }
 .todo-ul > li .drag-handle:hover,
-.todo-ul > li .drag-handle:focus,
 .todo-ul > li .drag-handle:focus-visible {
   border: 2px solid var(--color-primary-10);
   border-radius: var(--radius-small);
@@ -152,7 +151,7 @@ button.cancel svg {
 }
 
 .move-button:hover:not(:disabled),
-.move-button:focus:not(:disabled) {
+.move-button:focus-visible:not(:disabled) {
   background: var(--color-primary-10);
   color: var(--color-bg);
 }
@@ -187,7 +186,6 @@ button.cancel svg {
   color: var(--color-primary-20);
 }
 .todo-ul > li > .label > .todo-name:hover strong,
-.todo-ul > li > .label > .todo-name:focus strong,
 .todo-ul > li > .label > .todo-name:focus-visible strong {
   color: var(--color-secondary-1);
 }
@@ -377,14 +375,14 @@ button.cancel svg {
   margin: 0 0.05em 0.05em;
 }
 .todo-ul > li .btn-wrap button.delete:hover,
-.todo-ul > li .btn-wrap button.delete:focus {
+.todo-ul > li .btn-wrap button.delete:focus-visible {
   outline: solid 2px red;
   outline-offset: -5px;
   border-color: red;
   border: solid 2px red;
 }
 .light .todo-ul > li .btn-wrap button.delete:hover,
-.light .todo-ul > li .btn-wrap button.delete:focus {
+.light .todo-ul > li .btn-wrap button.delete:focus-visible {
   outline-color: tomato;
   border-color: red;
   background-position: 50% 98%;
@@ -403,7 +401,7 @@ button.cancel svg {
   accent-color: var(--color-gray-2);
 } */
 .todo-ul > li .checkbox-wrap input[type='checkbox' i]:hover,
-.todo-ul > li .checkbox-wrap input[type='checkbox' i]:focus {
+.todo-ul > li .checkbox-wrap input[type='checkbox' i]:focus-visible {
   /* outline: -webkit-focus-ring-color auto 3px; */
   outline-color: currentColor;
   outline-style: solid;

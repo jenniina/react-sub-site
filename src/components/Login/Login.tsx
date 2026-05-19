@@ -96,7 +96,7 @@ const FormLogin = ({ setIsFormOpen, isOpen, text }: LoginProps) => {
               <h2>{t('Login')}</h2>
 
               <form
-                onSubmit={event => void handleLogin(event)}
+                onSubmit={(event) => void handleLogin(event)}
                 className="login"
               >
                 <div className="input-wrap">
@@ -122,9 +122,7 @@ const FormLogin = ({ setIsFormOpen, isOpen, text }: LoginProps) => {
                       required
                       value={password}
                       autoComplete="on"
-                      onChange={({ target }) =>
-                        setPassword(target.value.trim())
-                      }
+                      onChange={({ target }) => setPassword(target.value)}
                     />
                     <span>{t('Password')}: </span>
                   </label>

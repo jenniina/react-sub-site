@@ -67,7 +67,7 @@ const ImageModal: FC<ModalImageProps> = ({
         const poem = await getPoem(language, linecount)
         setPoem(poem[0])
       }
-      void fetchPoem()
+      fetchPoem()
     } else if (textType === 'quote') {
       const fetchQuote = async () => {
         if (language === ELanguages.fi) {
@@ -80,7 +80,7 @@ const ImageModal: FC<ModalImageProps> = ({
           else void dispatch(notify(response.message ?? t('Error'), true, 8))
         }
       }
-      void fetchQuote()
+      fetchQuote()
     } else {
       const randomOneOrTwo = Math.floor(Math.random() * 2) + 1
       if (randomOneOrTwo === 1) {
@@ -89,14 +89,14 @@ const ImageModal: FC<ModalImageProps> = ({
           const poem = await getPoem(language, linecount)
           setPoem(poem[0])
         }
-        void fetchPoem()
+        fetchPoem()
       } else {
         const fetchQuote = async () => {
           const response = await getQuote(language, searchTerm)
           if (response.quote) setQuote(response.quote)
           else void dispatch(notify(response.message ?? t('Error'), true, 8))
         }
-        void fetchQuote()
+        fetchQuote()
       }
     }
   }, [language, searchTerm, textType, dispatch, t])

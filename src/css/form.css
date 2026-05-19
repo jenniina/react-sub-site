@@ -1,18 +1,12 @@
 .select-container .container {
-  background: linear-gradient(
-    4deg,
-    var(--color-primary-4) 0%,
-    var(--color-primary-1) 100%
-  );
+  background: linear-gradient(4deg, var(--color-primary-4) 0%, var(--color-primary-1) 100%);
 }
 
 fieldset {
   display: flex;
   padding: 0 0 1.3em;
   /* width: 100%; */
-  max-width: calc(
-    100vw - calc(var(--page-padding) * 4) - var(--scrollbar_width)
-  );
+  max-width: calc(100vw - calc(var(--page-padding) * 4) - var(--scrollbar_width));
   border: 0;
   display: flex;
   flex-flow: row wrap;
@@ -48,11 +42,7 @@ legend {
   font-family: var(--title-family);
 }
 legend > p {
-  font-size: clamp(
-    calc(1rem * var(--responsive_scale)),
-    1.5vw,
-    var(--title-XS)
-  );
+  font-size: clamp(calc(1rem * var(--responsive_scale)), 1.5vw, var(--title-XS));
   font-family: var(--text-family);
   letter-spacing: 0;
   padding-top: 0;
@@ -103,11 +93,7 @@ textarea {
 textarea,
   input.bg /*give className of 'bg' to any inputs that need a background */ {
   background-color: var(--color-primary-1);
-  background: linear-gradient(
-    4deg,
-    var(--color-primary-4) 0%,
-    var(--color-primary-1) 100%
-  );
+  background: linear-gradient(4deg, var(--color-primary-4) 0%, var(--color-primary-1) 100%);
   border-bottom: solid 0.1em var(--color-primary-6);
 }
 
@@ -138,12 +124,7 @@ nav .input-wrap {
   -moz-transform-origin: bottom;
   transform-origin: bottom;
   background-color: var(--color-primary-1);
-  background: linear-gradient(
-    4deg,
-    var(--color-primary-7) 0%,
-    var(--color-primary-4) 0%,
-    var(--color-primary-2) 100%
-  );
+  background: linear-gradient(4deg, var(--color-primary-7) 0%, var(--color-primary-4) 0%, var(--color-primary-2) 100%);
   pointer-events: none;
   border-radius: var(--radius-small);
   border-bottom: solid 0.1em var(--color-primary-6);
@@ -160,7 +141,7 @@ input:-internal-autofill-selected {
   color: inherit !important;
 }
 input:-webkit-autofill,
-input:-webkit-autofill:focus {
+input:-webkit-autofill:focus-visible {
   transition:
     background-color 600000s 0s,
     color 600000s 0s;
@@ -203,7 +184,7 @@ input:-webkit-autofill:focus {
 .input-wrap.not-required:not(.filled) input[type='text' i] {
   color: transparent !important;
 }
-.input-wrap.not-required input:focus {
+.input-wrap.not-required input:focus-visible {
   color: inherit !important;
 }
 .input-wrap.not-required label:has(:-internal-autofill-selected) {
@@ -215,9 +196,9 @@ input:-webkit-autofill:focus {
 .input-wrap.not-required label:focus-within {
   color: inherit;
 }
-.input-wrap input:focus ~ span,
+.input-wrap input:focus-visible ~ span,
 .input-wrap:not(.not-required) input:valid ~ span,
-.input-wrap.not-required input:focus ~ span,
+.input-wrap.not-required input:focus-visible ~ span,
 .input-wrap.placeholder input ~ span {
   -webkit-transform: translateY(-2em);
   -ms-transform: translateY(-2em);
@@ -261,7 +242,6 @@ input[type='checkbox' i] {
 
 input[type='checkbox' i]:checked,
 input[type='checkbox' i]:hover,
-input[type='checkbox' i]:focus,
 input[type='checkbox' i]:focus-visible {
   accent-color: var(--color-primary-11);
   outline-color: currentColor;

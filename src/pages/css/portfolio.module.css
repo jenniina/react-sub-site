@@ -38,7 +38,7 @@
   margin-bottom: 0.3em;
 }
 .portfolio .card .list li a:hover > span,
-.portfolio .card .list li a:focus > span {
+.portfolio .card .list li a:focus-visible > span {
   background-position: 50% 98%;
 }
 .list li:hover {
@@ -128,7 +128,6 @@
   transition-duration: 300ms;
 }
 .featured > button.horizontal-scroll:hover,
-.featured > button.horizontal-scroll:focus,
 .featured > button.horizontal-scroll:focus-visible {
   outline-offset: 10px;
 }
@@ -175,7 +174,6 @@
   transition-duration: 300ms;
 }
 .featured > button.horizontal-scroll:hover::before,
-.featured > button.horizontal-scroll:focus::before,
 .featured > button.horizontal-scroll:focus-visible::before {
   background-color: var(--color-primary-18);
   background-size: 400% 200%;
@@ -187,13 +185,11 @@
   clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 10% 98%, 80% 50%, 10% 4%, 10% 98%, 0% 100%);
 }
 .featured > button.horizontal-scroll.left:hover svg,
-.featured > button.horizontal-scroll.left:focus svg,
 .featured > button.horizontal-scroll.left:focus-visible svg {
   margin-left: -0.1rem;
   margin-right: 0.1rem;
 }
 .featured > button.horizontal-scroll.right:hover svg,
-.featured > button.horizontal-scroll.right:focus svg,
 .featured > button.horizontal-scroll.right:focus-visible svg {
   margin-left: 0.1rem;
   margin-right: -0.1rem;

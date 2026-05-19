@@ -82,7 +82,7 @@ const VideoModal: FC<ModalVideoProps> = ({
       setTxt(data)
     }
 
-    void fetchData()
+    fetchData()
   }, [textType, fetchPoem, fetchQuote, isPoem])
 
   const onMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -115,7 +115,7 @@ const VideoModal: FC<ModalVideoProps> = ({
           }}
           onClick={handleDownload}
           tabIndex={0}
-          onKeyDown={e => {
+          onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
               handleDownload()
             }

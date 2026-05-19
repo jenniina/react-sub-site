@@ -79,11 +79,7 @@
   left: calc(-0.4rem + 0.5px);
   border-bottom: 1px solid var(--color-primary-14);
   border-right: 1px solid var(--color-primary-14);
-  background: linear-gradient(
-    -45deg,
-    var(--color-primary-6) 0%,
-    transparent 50%
-  );
+  background: linear-gradient(-45deg, var(--color-primary-6) 0%, transparent 50%);
 }
 .grid-wrap.size8::after,
 .grid-wrap.size10::after {
@@ -91,27 +87,15 @@
   left: 50%;
   border-left: 1px solid var(--color-primary-14);
   border-top: 1px solid var(--color-primary-14);
-  background: linear-gradient(
-    -45deg,
-    transparent 50%,
-    var(--color-primary-6) 100%
-  );
+  background: linear-gradient(-45deg, transparent 50%, var(--color-primary-6) 100%);
 }
 .light .grid-wrap.size8::before,
 .light .grid-wrap.size10::before {
-  background: linear-gradient(
-    -45deg,
-    var(--color-primary-7) 0%,
-    transparent 50%
-  );
+  background: linear-gradient(-45deg, var(--color-primary-7) 0%, transparent 50%);
 }
 .light .grid-wrap.size8::after,
 .light .grid-wrap.size10::after {
-  background: linear-gradient(
-    -45deg,
-    transparent 50%,
-    var(--color-primary-7) 100%
-  );
+  background: linear-gradient(-45deg, transparent 50%, var(--color-primary-7) 100%);
 }
 
 .grid {
@@ -131,24 +115,8 @@
 .card {
   min-width: 40px;
   min-height: 40px;
-  width: clamp(
-    40px,
-    calc(
-      var(--size) / var(--amount) * var(--multiplier) -
-        calc(var(--scrollbar_width) / calc(var(--amount) - 1)) -
-        var(--multiplier)
-    ),
-    calc(80vh / var(--amount))
-  );
-  height: clamp(
-    40px,
-    calc(
-      var(--size) / var(--amount) * var(--multiplier) -
-        calc(var(--scrollbar_width) / calc(var(--amount) - 1)) -
-        var(--multiplier)
-    ),
-    calc(80vh / var(--amount))
-  );
+  width: clamp(40px, calc(var(--size) / var(--amount) * var(--multiplier) - calc(var(--scrollbar_width) / calc(var(--amount) - 1)) - var(--multiplier)), calc(80vh / var(--amount)));
+  height: clamp(40px, calc(var(--size) / var(--amount) * var(--multiplier) - calc(var(--scrollbar_width) / calc(var(--amount) - 1)) - var(--multiplier)), calc(80vh / var(--amount)));
   max-width: calc(calc(var(--size) * var(--multiplier)) / var(--amount));
   max-height: calc(calc(var(--size) * var(--multiplier)) / var(--amount));
   perspective: 1000px;
@@ -329,7 +297,7 @@
   border-radius: calc(var(--border-radius) * 1.5);
   border-bottom-width: 4px;
   border-top-width: 1px;
-  width: 100&;
+  width: 100%;
   min-width: clamp(150px, 100%, 18rem);
   max-width: 18rem;
   align-self: stretch;
@@ -363,8 +331,7 @@
   background: var(--color-primary-5);
   width: 100%;
   padding: 1em 0.8em 0.5em;
-  border-radius: calc(var(--border-radius) * 1.5)
-    calc(var(--border-radius) * 1.5) 0 0;
+  border-radius: calc(var(--border-radius) * 1.5) calc(var(--border-radius) * 1.5) 0 0;
   line-height: 1.3;
 }
 .high-scores h3 {
@@ -372,13 +339,7 @@
   margin-top: 0.5em;
   padding: 0.4em 0 0.3em;
   font-size: clamp(var(--title-S), 3vw, var(--title-M));
-  background: linear-gradient(
-    90deg,
-    transparent 5%,
-    var(--color-primary-6) 35%,
-    var(--color-primary-6) 65%,
-    transparent 95%
-  );
+  background: linear-gradient(90deg, transparent 5%, var(--color-primary-6) 35%, var(--color-primary-6) 65%, transparent 95%);
 }
 .high-scores h3::before,
 .high-scores h3::after {
@@ -387,21 +348,10 @@
   left: 0;
   width: 100%;
   height: 0.5em;
-  background: linear-gradient(
-    90deg,
-    transparent 10%,
-    var(--color-primary-5) 45%,
-    var(--color-primary-5) 55%,
-    transparent 90%
-  );
+  background: linear-gradient(90deg, transparent 10%, var(--color-primary-5) 45%, var(--color-primary-5) 55%, transparent 90%);
 }
 .high-scores h4 {
-  background: linear-gradient(
-    0deg,
-    var(--color-primary-6) 0%,
-    var(--color-primary-5) 30%,
-    var(--color-primary-4) 100%
-  );
+  background: linear-gradient(0deg, var(--color-primary-6) 0%, var(--color-primary-5) 30%, var(--color-primary-4) 100%);
 }
 .high-scores h3::before {
   top: -0.5em;
@@ -636,7 +586,7 @@ button.active::before {
   color: var(--color-primary-14);
 }
 #game-container button.active:hover,
-#game-container button.active:focus {
+#game-container button.active:focus-visible {
   background-position: 50% 3%;
   color: var(--color-primary-17);
   cursor: default;
@@ -680,7 +630,7 @@ button.big {
   outline-offset: -6px;
 }
 button.big:hover,
-button.big:focus {
+button.big:focus-visible {
   outline: 6px double var(--color-primary-20);
   outline-offset: 0;
   /* transform: scale(1.05);*/ /*Destroyed background-position*/
@@ -702,7 +652,7 @@ button.big::before {
   transition-timing-function: ease-in-out, border-radius;
 }
 button.big:hover::before,
-button.big:focus::before {
+button.big:focus-visible::before {
   transform: scale(1.06, 1.14);
   border-radius: calc(var(--radius) + 1rem);
 }

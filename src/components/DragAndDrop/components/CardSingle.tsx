@@ -299,7 +299,7 @@ function CardSingle({
       <div style={styleCard} className={`${styles.card}`}>
         <span className={styles.text}>{data?.content}</span>
         <b>
-          <button onClick={() => void handleRemoveColor(data)}>
+          <button onClick={() => handleRemoveColor(data)}>
             <b>&times;</b>
           </button>
           <button aria-haspopup="true" onClick={toggleOpen}>
@@ -326,7 +326,7 @@ function CardSingle({
               <button
                 type="button"
                 className={styles.copy}
-                onClick={() => void handleCopyToClipboard(data.content)}
+                onClick={() => handleCopyToClipboard(data.content)}
                 title={t('CopyToClipboard')}
               >
                 <i>{t('CopyText')}</i>

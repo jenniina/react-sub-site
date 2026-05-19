@@ -27,7 +27,6 @@
 .light .welcome .list a,
 .light .welcome .list a > *,
 .light .welcome .list a:hover,
-.light .welcome .list a:focus,
 .light .welcome .list a:focus-visible {
   text-decoration: none;
   background: transparent;
@@ -45,7 +44,7 @@
 }
 
 .welcome .list a:hover,
-.welcome .list a:focus {
+.welcome .list a:focus-visible {
   -webkit-transform: translateY(-0.1em);
   -ms-transform: translateY(-0.1em);
   -o-transform: translateY(-0.1em);
@@ -54,11 +53,11 @@
   text-decoration: none;
 }
 .welcome .list a:hover > *,
-.welcome .list a:focus > * {
+.welcome .list a:focus-visible > * {
   text-decoration: none;
 }
 .list a:hover svg,
-.list a:focus svg {
+.list a:focus-visible svg {
   /* font-size: clamp(2em, 4vw, 3em); */
   -webkit-transform: scale(0.8);
   -ms-transform: scale(0.8);
@@ -75,7 +74,7 @@
   transform: scale(1.1) translateY(0.07em);
 }
 .list .li-about a:hover svg,
-.list .li-about a:focus svg {
+.list .li-about a:focus-visible svg {
   -webkit-transform: scale(0.88) translateY(0.07em);
   -ms-transform: scale(0.88) translateY(0.07em);
   -o-transform: scale(0.88) translateY(0.07em);
@@ -102,7 +101,7 @@
   transition-duration: 500ms;
 }
 .list a:hover span,
-.list a:focus span {
+.list a:focus-visible span {
   /* font-size: clamp(1.2em, 2vw, 3em); */
   -webkit-transform: scale(1.2);
   -ms-transform: scale(1.2);
@@ -201,7 +200,6 @@
 }
 
 .extras li li li a:hover > svg,
-.extras li li li a:focus > svg,
 .extras li li li a:focus-visible > svg {
   background: transparent;
 }

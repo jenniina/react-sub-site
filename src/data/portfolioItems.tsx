@@ -69,9 +69,9 @@ export const portfolioItems: PortfolioItemDef[] = [
     title: { kind: 't', key: 'TheComediansCompanion' },
     navLabel: { kind: 't', key: 'Jokes' },
     description: (t) =>
-      `${t('JokeAppWithCustomizableOptions')}. ${t('UsesThreeDifferentAPI')} (${t('AndMyOwn')}). ${firstToUpperCase(
+      `${t('JokeAppWithCustomizableOptions')}. ${t('UsesSeveralAPIs')}. ${firstToUpperCase(
         t('SubmitAJoke').toLowerCase()
-      )}. ${t('SeeLocalJokes')}.`,
+      )}. ${t('SeeLocalJokes')}. ${t('SaveJokes')}.`,
   },
   {
     id: 'blob',

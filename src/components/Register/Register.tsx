@@ -107,9 +107,7 @@ const Register = ({
                       id={`password-${text}`}
                       value={password}
                       autoComplete="on"
-                      onChange={({ target }) =>
-                        setPassword(target.value.trim())
-                      }
+                      onChange={({ target }) => setPassword(target.value)}
                     />
                     <span>{t('Password')}</span>
                   </label>
@@ -123,7 +121,7 @@ const Register = ({
                       id={`confirmPassword-${text}`}
                       value={confirmPassword}
                       onChange={({ target }) =>
-                        setConfirmPassword(target.value.trim())
+                        setConfirmPassword(target.value)
                       }
                     />
                     <span>{t('ConfirmPassword')}</span>

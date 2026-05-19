@@ -81,7 +81,7 @@
   }
 } /*END media*/
 
-.container:focus {
+.container:focus-visible {
   border-color: var(--color-fg);
   outline: 1px solid currentColor;
   outline-offset: 2px;
@@ -117,7 +117,7 @@ button.clear-btn {
   padding: 0 calc(var(--padding) / 2);
 }
 
-button.clear-btn:focus,
+button.clear-btn:focus-visible,
 button.clear-btn:hover {
   color: var(--color-warning);
 }
@@ -225,7 +225,7 @@ button.clear-btn:hover {
 }
 
 .option-btn:hover,
-.option-btn:focus {
+.option-btn:focus-visible {
   border-color: var(--color-warning);
   color: var(--color-warning);
   background-color: var(--color-bg-main);
@@ -234,7 +234,7 @@ button.clear-btn:hover {
 }
 
 .option-btn:hover > .remove-btn,
-.option-btn:focus > .remove-btn {
+.option-btn:focus-visible > .remove-btn {
   color: var(--color-warning);
 }
 
@@ -266,18 +266,6 @@ button.clear-btn:hover {
 .scr:focus-visible {
   outline: none;
 }
-
-/* .scr:focus {
-  clip: auto;
-  -webkit-clip-path: none;
-  -moz-clip-path: none;
-  -ms-clip-path: none;
-  -o-clip-path: none;
-  clip-path: none;
-  width: auto;
-  height: auto;
-  line-height: normal;
-} */
 
 @media (max-width: 299px) {
   button.clear-btn {

@@ -4,7 +4,7 @@ import { Select, SelectOption } from '../Select/Select'
 import { initializeUser, refreshUser } from '../../reducers/authReducer'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
-import { findUserById, updateUser } from '../../reducers/usersReducer' 
+import { findUserById, updateUser } from '../../reducers/usersReducer'
 import { getErrorMessage } from '../../utils'
 import styles from './css/edit.module.css'
 import { useLanguageContext } from '../../contexts/LanguageContext'
@@ -39,7 +39,7 @@ const LanguageEdit = ({ user, options }: Props) => {
 
     if (user) {
       await dispatch(updateUser(editedUser))
-        .then(async res => {
+        .then(async (res) => {
           if (res) {
             if (res.success === false) {
               void dispatch(notify(`${t('Error')}: ${res.message}`, true, 5))
@@ -78,7 +78,7 @@ const LanguageEdit = ({ user, options }: Props) => {
           <form
             onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
               e.preventDefault()
-              void handleUserSubmit(e).catch(console.error)
+              handleUserSubmit(e).catch(console.error)
             }}
             className={styles['edit-user']}
           >
@@ -97,7 +97,7 @@ const LanguageEdit = ({ user, options }: Props) => {
                     } as SelectOption)
                   : undefined
               }
-              onChange={o => {
+              onChange={(o) => {
                 setLang(o?.value as ELanguages)
               }}
             />
@@ -109,7 +109,7 @@ const LanguageEdit = ({ user, options }: Props) => {
                   name="old-password"
                   id="old-password-user-language"
                   value={passwordOld}
-                  onChange={({ target }) => setPasswordOld(target.value.trim())}
+                  onChange={({ target }) => setPasswordOld(target.value)}
                 />
                 <span>{t('CurrentPassword')}</span>
               </label>
