@@ -2547,6 +2547,15 @@ export const translations = {
     cs: 'Uložit nebo stáhnout umění',
     fi: 'Tallenna tai lataa teos',
   },
+  SaveJokes: {
+    en: 'Save jokes',
+    es: 'Guardar chistes',
+    fr: 'Enregistrer les blagues',
+    de: 'Witze speichern',
+    pt: 'Salvar piadas',
+    cs: 'Uložit vtipy',
+    fi: 'Tallenna vitsejä',
+  },
   Edit: {
     en: 'Edit',
     es: 'Editar',
@@ -5831,6 +5840,15 @@ export const translations = {
     pt: 'Usa três APIs diferentes',
     cs: 'Používá tři různé API',
     fi: 'Käyttää kolmea eri APIa',
+  },
+  UsesSeveralAPIs: {
+    en: 'Uses several APIs',
+    es: 'Utiliza varias API',
+    fr: 'Utilise plusieurs API',
+    de: 'Verwendet mehrere APIs',
+    pt: 'Usa várias APIs',
+    cs: 'Používá několik API',
+    fi: 'Käyttää useita APIa',
   },
   ChangedQuotesAPI: {
     en: 'Changed Quotes API',
