@@ -948,18 +948,18 @@ const ItemComponent = forwardRef<
                 ['--size' as string]: `${item.size}`,
                 ['--s' as string]:
                   windowWidth < windowHeight
-                    ? `${item.size}vh`
-                    : `${item.size}vw`,
+                    ? `calc(${item.size} * 0.005vh)`
+                    : `calc(${item.size} * 0.005vw)`,
                 width:
                   windowWidth < windowHeight
-                    ? `calc(var(--size) * 0.8vh)`
-                    : `calc(var(--size) * 0.8vw)`,
+                    ? `calc(var(--size) * 1.1 * 0.6vh)`
+                    : `calc(var(--size) * 1.1 * 0.6vw)`,
                 height:
                   windowWidth < windowHeight
-                    ? `calc(var(--size) * 0.8vh)`
-                    : `calc(var(--size) * 0.8vw)`,
-                maxHeight: '200px',
-                maxWidth: '200px',
+                    ? `calc(var(--size) * 1.1 * 0.6vh)`
+                    : `calc(var(--size) * 1.1 * 0.6vw)`,
+                maxHeight: '220px',
+                maxWidth: '220px',
                 minHeight: '44px',
                 minWidth: '44px',
                 borderRadius: '65% 65% 70% 60% / 60% 70% 60% 65%',
@@ -1170,7 +1170,7 @@ const ItemComponent = forwardRef<
               location === LOCATION.FORM
             ) {
               // CONTACT  // FORM
-              const mod = 0.6
+              const mod = 0.5
               const style: CSSProperties = {
                 position: 'absolute',
                 top: `clamp(100px, calc(-5vh + calc(1.5vh * ${item.e} * ${
@@ -1184,8 +1184,8 @@ const ItemComponent = forwardRef<
                 ['--size' as string]: `${item.size}`,
                 ['--s' as string]:
                   windowWidth < windowHeight
-                    ? `${item.size}vh`
-                    : `${item.size}vw`,
+                    ? `calc(${item.size}vh * 0.005)`
+                    : `calc(${item.size}vw * 0.005)`,
                 width:
                   windowWidth < windowHeight
                     ? `calc(var(--size, 120px) * ${mod}vh)`
@@ -1196,8 +1196,8 @@ const ItemComponent = forwardRef<
                     : `calc(var(--size, 120px) * ${mod}vw)`,
                 minHeight: '44px',
                 minWidth: '44px',
-                maxHeight: '120px',
-                maxWidth: '120px',
+                maxHeight: '150px',
+                maxWidth: '150px',
                 borderRadius: '50%',
                 opacity: `0.${item.size > 7 ? 7 : Math.ceil(item.size)}`,
               }
