@@ -179,18 +179,44 @@
 }
 
 .herocontent .jewel > div > div:not(.none):not(.cover):not(.frame) {
+  --a-delay: calc(var(--number) * -500ms - 2500ms);
+  -webkit-animation: rotate-colors 4000ms linear infinite;
+  -moz-animation: rotate-colors 4000ms linear infinite;
+  -ms-animation: rotate-colors 4000ms linear infinite;
+  -o-animation: rotate-colors 4000ms linear infinite;
   animation: rotate-colors 4000ms linear infinite;
+  -webkit-animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  -ms-animation-play-state: paused;
+  -o-animation-play-state: paused;
   animation-play-state: paused;
-  animation-delay: calc(var(--number) * -500ms - 2500ms);
+  -webkit-animation-delay: var(--a-delay);
+  -moz-animation-delay: var(--a-delay);
+  -ms-animation-delay: var(--a-delay);
+  -o-animation-delay: var(--a-delay);
+  animation-delay: var(--a-delay);
   background-image: radial-gradient(circle at top left, hsl(var(--hue), 100%, 40%) 34%, hsl(var(--hue), 100%, 80%) 37%, hsl(var(--hue), 100%, 40%) 40%, hsl(var(--hue), 100%, 40%) 57%, hsl(var(--hue), 100%, 80%) 50%, hsl(var(--hue), 100%, 40%) 53%, hsl(var(--hue), 100%, 40%) 60%, hsl(var(--hue), 100%, 80%) 63%, hsl(var(--hue), 100%, 40%) 66%);
   background-size: 450% 450%;
   background-position: 0 0;
   background-repeat: no-repeat;
 }
 .herocontent .jewel2 > div > div:not(.none):not(.cover):not(.frame) {
+  --a-delay: calc(var(--number) * -500ms - 1500ms);
+  -webkit-animation: rotate-colors2 4000ms linear infinite;
+  -moz-animation: rotate-colors2 4000ms linear infinite;
+  -ms-animation: rotate-colors2 4000ms linear infinite;
+  -o-animation: rotate-colors2 4000ms linear infinite;
   animation: rotate-colors2 4000ms linear infinite;
+  -webkit-animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  -ms-animation-play-state: paused;
+  -o-animation-play-state: paused;
   animation-play-state: paused;
-  animation-delay: calc(var(--number) * -500ms - 1500ms);
+  -webkit-animation-delay: var(--a-delay);
+  -moz-animation-delay: var(--a-delay);
+  -ms-animation-delay: var(--a-delay);
+  -o-animation-delay: var(--a-delay);
+  animation-delay: var(--a-delay);
   background-image: linear-gradient(0deg, hsl(var(--hue), 100%, 40%) 20%, hsl(var(--hue), 100%, 80%) 23%, hsl(var(--hue), 100%, 40%) 26%, hsl(var(--hue), 100%, 40%) 40%, hsl(var(--hue), 100%, 80%) 43%, hsl(var(--hue), 100%, 40%) 46%, hsl(var(--hue), 100%, 40%) 50%, hsl(var(--hue), 100%, 80%) 53%, hsl(var(--hue), 100%, 40%) 56%, hsl(var(--hue), 100%, 40%) 60%, hsl(var(--hue), 100%, 80%) 63%, hsl(var(--hue), 100%, 40%) 66%, hsl(var(--hue), 100%, 40%) 74%, hsl(var(--hue), 100%, 80%) 77%, hsl(var(--hue), 100%, 40%) 80%);
   background-size: 100% 600%;
   background-position: 0 0;
@@ -198,6 +224,10 @@
 }
 .herocontent .jewel:hover > div > div:not(.none):not(.cover):not(.frame),
 .herocontent .jewel:focus-visible > div > div:not(.none):not(.cover):not(.frame) {
+  -webkit-animation-play-state: running;
+  -moz-animation-play-state: running;
+  -ms-animation-play-state: running;
+  -o-animation-play-state: running;
   animation-play-state: running;
 }
 @keyframes rotate-colors {
@@ -490,12 +520,28 @@
 .herocontent .circles {
   height: var(--height);
   width: var(--width);
+  -webkit-animation: circles-shrink-into-nothing 12000ms ease-in-out forwards;
+  -moz-animation: circles-shrink-into-nothing 12000ms ease-in-out forwards;
+  -ms-animation: circles-shrink-into-nothing 12000ms ease-in-out forwards;
+  -o-animation: circles-shrink-into-nothing 12000ms ease-in-out forwards;
   animation: circles-shrink-into-nothing 12000ms ease-in-out forwards;
+  -webkit-animation-delay: 0ms;
+  -moz-animation-delay: 0ms;
+  -ms-animation-delay: 0ms;
+  -o-animation-delay: 0ms;
   animation-delay: 0ms;
+  -webkit-animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  -ms-animation-play-state: paused;
+  -o-animation-play-state: paused;
   animation-play-state: paused;
 }
 .herocontent .circles:hover,
 .herocontent .circles:focus-visible {
+  -webkit-animation-play-state: running;
+  -moz-animation-play-state: running;
+  -ms-animation-play-state: running;
+  -o-animation-play-state: running;
   animation-play-state: running;
 }
 
@@ -503,6 +549,7 @@
   --time: 2000ms;
   --deg1: calc(var(--idx, 3) * 3deg - 0deg);
   --deg2: calc(var(--idx, 3) * 3deg - 360deg);
+  --a-delay: calc(calc(1 + var(--idx, 0)) * -1000ms);
   -webkit-animation: circles-hover 11000ms linear infinite reverse;
   -o-animation: circles-hover 11000ms linear infinite reverse;
   -ms-animation: circles-hover 11000ms linear infinite reverse;
@@ -513,7 +560,11 @@
   -o-animation-play-state: paused;
   -ms-animation-play-state: paused;
   animation-play-state: paused;
-  animation-delay: calc(calc(1 + var(--idx, 0)) * -1000ms);
+  -webkit-animation-delay: var(--a-delay);
+  -moz-animation-delay: var(--a-delay);
+  -ms-animation-delay: var(--a-delay);
+  -o-animation-delay: var(--a-delay);
+  animation-delay: var(--a-delay);
   --box: 0 0 4px 0 currentColor, 0 0 40px 4px currentColor;
   -webkit-box-shadow: var(--box);
   -o-box-shadow: var(--box);
@@ -1773,6 +1824,10 @@
 }
 
 .constellation-line.pulse {
+  -webkit-animation: constellation-pulse 1800ms ease-in-out infinite;
+  -moz-animation: constellation-pulse 1800ms ease-in-out infinite;
+  -ms-animation: constellation-pulse 1800ms ease-in-out infinite;
+  -o-animation: constellation-pulse 1800ms ease-in-out infinite;
   animation: constellation-pulse 1800ms ease-in-out infinite;
 }
 
@@ -2036,6 +2091,10 @@
   .constellation-node-inner,
   .constellation-node-label,
   .constellation-badge {
+    -webkit-animation: none !important;
+    -moz-animation: none !important;
+    -ms-animation: none !important;
+    -o-animation: none !important;
     animation: none !important;
     transition-duration: 0ms !important;
   }
