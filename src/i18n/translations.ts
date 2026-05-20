@@ -21,7 +21,7 @@ export const translations = {
     en: 'English',
     es: 'Español',
     fr: 'Français',
-    de: 'Deutch',
+    de: 'Deutsch',
     pt: 'Português',
     cs: 'Čeština',
     fi: 'Suomi',
