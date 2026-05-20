@@ -4,6 +4,7 @@ import React, {
   ReactElement,
   useState,
   useEffect,
+  useRef,
   ChangeEvent,
   Fragment,
   useCallback,
@@ -111,8 +112,8 @@ const Memory: FC = () => {
   const lightTheme = useTheme()
 
   useEffect(() => {
-    initializeUser()
-  }, [])
+    void dispatch(initializeUser())
+  }, [dispatch])
 
   const optionsType: CardTypeOptions[] = [
     { value: CardType.icons, label: t('Icons') },
@@ -135,7 +136,7 @@ const Memory: FC = () => {
   const [players, setPlayers] = useLocalStorage<Player[]>('memoryPlayers', [
     { id: 1, name: `${t('Player')} 1`, score: 0 },
   ])
-  const [name, setName] = useState('')
+  const [playerNameToDelete, setPlayerNameToDelete] = useState('')
   const [currentPlayer, setCurrentPlayer] = useState<number>(0)
   const [cards, setCards] = useState<Card[]>([])
   const [flippedCards, setFlippedCards] = useState<number[]>([])
@@ -160,10 +161,17 @@ const Memory: FC = () => {
   const [latestHighScoreId, setLatestHighScoreId] = useState<string | null>(
     null
   )
+  const isFinishingGameRef = useRef(false)
+  const finishTimeoutRef = useRef<number | null>(null)
+  const hasOpenedHighScoreModalRef = useRef(false)
   const { windowWidth } = useWindowSize()
 
   const initializeCards = () => {
-    if (name.trim().length === 0) {
+    const hasMissingPlayerName = players.some(
+      (player) => player.name.trim().length === 0
+    )
+
+    if (hasMissingPlayerName) {
       void dispatch(notify(t('PleaseEnterAName'), true, 4))
       return
     }
@@ -210,6 +218,9 @@ const Memory: FC = () => {
     setPlayers((prev) => prev.map((player) => ({ ...player, score: 0 })))
     setCurrentPlayer(0)
     setHasRecordedHighScore(false)
+    setShowModal(false)
+    isFinishingGameRef.current = false
+    hasOpenedHighScoreModalRef.current = false
   }
 
   const getLevelKey = (
@@ -283,90 +294,96 @@ const Memory: FC = () => {
   )
 
   useEffect(() => {
-    if (showModal) {
-      setTimeout(() => {
-        show({
-          title: t('YouMadeItToTheHighScores'),
-          className: '',
-          children: (
-            <div
-              id="high-scores"
-              className={`${styles.modal} ${lightTheme ? styles.light : ''}`}
-            >
-              <h3>{t('YouMadeItToTheHighScores')}</h3>
-              <div className={`${styles['high-scores']}`}>
-                {(() => {
-                  const mode =
-                    players.length === 1 ? EGameMode.solo : EGameMode.duet
-                  let modePart = ''
-                  if (mode === EGameMode.solo) {
-                    modePart = t('Solo')
-                  } else if (mode === EGameMode.duet) {
-                    modePart = t('Duet')
-                  }
-                  return (
-                    <>
-                      <h4 key={mode}>{modePart}</h4>
-                      {loading && (
-                        <p className="flex center margin0auto textcenter">
-                          {t('Loading')}...
-                        </p>
-                      )}
-                      {error && (
-                        <p>
-                          {error} &mdash; {t('TryWithADifferentBrowser')}
-                        </p>
-                      )}
-                      {Object.keys(highScores[mode] || {})
-                        .sort()
-                        .map((levelKey) => (
-                          <div key={`${mode}-${levelKey}`}>
-                            <div>
-                              <h5>{extractParts(`${levelKey}`)}</h5>
-                              <ol>
-                                {highScores[mode]?.[levelKey]?.map(
-                                  (entry, idx) => (
-                                    <li
-                                      key={
-                                        entry._id ??
-                                        `${idx}-${entry.time.toFixed(1)}`
-                                      }
-                                      className={
-                                        entry._id === latestHighScoreId
-                                          ? styles['new-score']
-                                          : ''
-                                      }
-                                    >
-                                      <div>
-                                        <span>
-                                          {entry.players.map((player) => (
-                                            <span key={player.id}>
-                                              {player.name}: {player.score}{' '}
-                                            </span>
-                                          ))}
-                                        </span>
-                                        <i className={styles.time}>
-                                          {entry.time.toFixed(1)}s
-                                        </i>
-                                      </div>
-                                    </li>
-                                  )
-                                )}
-                              </ol>
-                            </div>
-                          </div>
-                        ))}
-                    </>
-                  )
-                })()}
-              </div>
-            </div>
-          ),
-        })
-      }, 0)
-    } else if (!showModal) {
+    if (!showModal) {
+      hasOpenedHighScoreModalRef.current = false
       notify(t('GoodJob'), false, 5)
+      return
     }
+
+    if (hasOpenedHighScoreModalRef.current) {
+      return
+    }
+
+    hasOpenedHighScoreModalRef.current = true
+    show({
+      title: t('YouMadeItToTheHighScores'),
+      className: '',
+      onClose: () => {
+        hasOpenedHighScoreModalRef.current = false
+        setShowModal(false)
+      },
+      children: (
+        <div
+          id="high-scores"
+          className={`${styles.modal} ${lightTheme ? styles.light : ''}`}
+        >
+          <h3>{t('YouMadeItToTheHighScores')}</h3>
+          <div className={`${styles['high-scores']}`}>
+            {(() => {
+              const mode =
+                players.length === 1 ? EGameMode.solo : EGameMode.duet
+              let modePart = ''
+              if (mode === EGameMode.solo) {
+                modePart = t('Solo')
+              } else if (mode === EGameMode.duet) {
+                modePart = t('Duet')
+              }
+              return (
+                <>
+                  <h4 key={mode}>{modePart}</h4>
+                  {loading && (
+                    <p className="flex center margin0auto textcenter">
+                      {t('Loading')}...
+                    </p>
+                  )}
+                  {error && (
+                    <p>
+                      {error} &mdash; {t('TryWithADifferentBrowser')}
+                    </p>
+                  )}
+                  {Object.keys(highScores[mode] || {})
+                    .sort()
+                    .map((levelKey) => (
+                      <div key={`${mode}-${levelKey}`}>
+                        <div>
+                          <h5>{extractParts(`${levelKey}`)}</h5>
+                          <ol>
+                            {highScores[mode]?.[levelKey]?.map((entry, idx) => (
+                              <li
+                                key={
+                                  entry._id ?? `${idx}-${entry.time.toFixed(1)}`
+                                }
+                                className={
+                                  entry._id === latestHighScoreId
+                                    ? styles['new-score']
+                                    : ''
+                                }
+                              >
+                                <div>
+                                  <span>
+                                    {entry.players.map((player) => (
+                                      <span key={player.id}>
+                                        {player.name}: {player.score}{' '}
+                                      </span>
+                                    ))}
+                                  </span>
+                                  <i className={styles.time}>
+                                    {entry.time.toFixed(1)}s
+                                  </i>
+                                </div>
+                              </li>
+                            ))}
+                          </ol>
+                        </div>
+                      </div>
+                    ))}
+                </>
+              )
+            })()}
+          </div>
+        </div>
+      ),
+    })
   }, [
     highScores,
     showModal,
@@ -435,22 +452,26 @@ const Memory: FC = () => {
       gameStarted &&
       matchedCards.length === cards.length &&
       cards.length > 0 &&
-      !hasRecordedHighScore
+      !hasRecordedHighScore &&
+      !isFinishingGameRef.current
     ) {
+      isFinishingGameRef.current = true
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setTimerOn(false)
-      setTimeout(() => {
+      finishTimeoutRef.current = window.setTimeout(() => {
+        finishTimeoutRef.current = null
         void handleGameEnd()
       }, 1000)
     }
-  }, [
-    gameStarted,
-    matchedCards,
-    cards,
-    hasRecordedHighScore,
-    showModal,
-    handleGameEnd,
-  ])
+
+    return () => {
+      if (finishTimeoutRef.current !== null) {
+        window.clearTimeout(finishTimeoutRef.current)
+        finishTimeoutRef.current = null
+        isFinishingGameRef.current = false
+      }
+    }
+  }, [gameStarted, matchedCards, cards, hasRecordedHighScore, handleGameEnd])
 
   const renderCardContent = (card: Card) => {
     if (cardType?.value === CardType.icons) {
@@ -914,9 +935,12 @@ const Memory: FC = () => {
                       if (
                         await confirm({ message: t('DeletePlayersHighScores') })
                       )
-                        deleteHighScoresByPlayerName(name, user?._id)
+                        deleteHighScoresByPlayerName(
+                          playerNameToDelete,
+                          user?._id
+                        )
                           .then(() => {
-                            setName('')
+                            setPlayerNameToDelete('')
                           })
                           .catch((err: unknown) => {
                             const message = getErrorMessage(err, t('Error'))
@@ -931,9 +955,9 @@ const Memory: FC = () => {
                       <input
                         type="text"
                         name="name"
-                        value={name}
+                        value={playerNameToDelete}
                         required
-                        onChange={(e) => setName(e.target.value)}
+                        onChange={(e) => setPlayerNameToDelete(e.target.value)}
                       />
                       <span>
                         {t('Name')} ({t('Player')}):

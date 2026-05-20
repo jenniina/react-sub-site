@@ -12,11 +12,12 @@ const Modal = () => {
   const previouslyFocusedElement = useRef<HTMLElement | null>(null)
 
   const handleClose = useCallback(() => {
+    modal?.onClose?.()
     closeModal()
     if (previouslyFocusedElement.current)
       previouslyFocusedElement.current.focus()
     else document?.body.focus()
-  }, [closeModal])
+  }, [closeModal, modal])
 
   useEffect(() => {
     if (modal) {
@@ -76,7 +77,7 @@ const Modal = () => {
     <div
       className={`${styles['modal-overlay']}`}
       onClick={handleClose}
-      onKeyDown={e => {
+      onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') handleClose()
       }}
       tabIndex={0}
@@ -86,8 +87,8 @@ const Modal = () => {
       {/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */}
       <div
         className={`${styles['modal-content']} ${modal.className ?? ''}`}
-        onClick={e => e.stopPropagation()}
-        onKeyDown={e => {
+        onClick={(e) => e.stopPropagation()}
+        onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') e.stopPropagation()
         }}
         role="dialog"

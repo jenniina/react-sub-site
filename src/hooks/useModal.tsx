@@ -17,12 +17,14 @@ export const ModalProvider: FC<{ children: ReactNode }> = ({ children }) => {
     title,
     children,
     className,
+    onClose,
   }: {
     children: ReactNode
     className: string
     title: string
+    onClose?: () => void
   }) => {
-    setModal({ children, className, title })
+    setModal({ children, className, title, onClose })
   }
 
   const closeModal = () => {
