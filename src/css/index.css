@@ -372,7 +372,15 @@ h1 span::before {
   transition-property: clip-path;
   transition-timing-function: ease-in-out;
   transition-duration: 600ms;
+  -webkit-animation: wave 4s infinite ease-in-out;
+  -moz-animation: wave 4s infinite ease-in-out;
+  -ms-animation: wave 4s infinite ease-in-out;
+  -o-animation: wave 4s infinite ease-in-out;
   animation: wave 4s infinite ease-in-out;
+  -webkit-animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  -ms-animation-play-state: paused;
+  -o-animation-play-state: paused;
   animation-play-state: paused;
 }
 h1 span::after {

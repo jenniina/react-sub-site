@@ -28,17 +28,22 @@ export const initializeUser = () => {
     dispatch: (arg0: { payload: IUser | null; type: string }) => void
   ) => {
     const loggedUserJSON = window?.localStorage.getItem('loggedJokeAppUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON) as StoredUser
+    if (!loggedUserJSON) return
 
+    const user = JSON.parse(loggedUserJSON) as StoredUser
+
+    try {
       await api.get('/auth/ping', {
         headers: { Authorization: `Bearer ${user.token}` },
       })
-      // set token for api interceptor
       if (user.token) localStorage.setItem('JokeApptoken', user.token)
 
       await sleep(10)
       void dispatch(setUser(user))
+    } catch {
+      window.localStorage.removeItem('loggedJokeAppUser')
+      window.localStorage.removeItem('JokeApptoken')
+      void dispatch(setUser(null))
     }
   }
 }
@@ -81,21 +86,29 @@ export const refreshUser = (user: IUser) => {
     const loggedUserJSON = window?.localStorage.getItem('loggedJokeAppUser')
     if (!loggedUserJSON) return
 
-    await api.get('/auth/ping', {
-      headers: { Authorization: `Bearer ${JSON.parse(loggedUserJSON).token}` },
-    })
+    try {
+      await api.get('/auth/ping', {
+        headers: {
+          Authorization: `Bearer ${JSON.parse(loggedUserJSON).token}`,
+        },
+      })
 
-    const data = JSON.parse(loggedUserJSON) as StoredUser
-    const token = data.token ?? null
+      const data = JSON.parse(loggedUserJSON) as StoredUser
+      const token = data.token ?? null
 
-    if (token) localStorage.setItem('JokeApptoken', token)
+      if (token) localStorage.setItem('JokeApptoken', token)
 
-    window?.localStorage.setItem(
-      'loggedJokeAppUser',
-      JSON.stringify({ ...user, token })
-    )
-    await sleep(10)
-    void dispatch(setUser(user))
+      window?.localStorage.setItem(
+        'loggedJokeAppUser',
+        JSON.stringify({ ...user, token })
+      )
+      await sleep(10)
+      void dispatch(setUser(user))
+    } catch {
+      window.localStorage.removeItem('loggedJokeAppUser')
+      window.localStorage.removeItem('JokeApptoken')
+      void dispatch(setUser(null))
+    }
   }
 }
 

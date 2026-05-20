@@ -133,6 +133,7 @@ export interface ModalProps {
   children: ReactNode
   className: string
   title: string
+  onClose?: () => void
 }
 
 export type TSortDirection = 'asc' | 'desc'

@@ -179,18 +179,44 @@
 }
 
 .herocontent .jewel > div > div:not(.none):not(.cover):not(.frame) {
+  --a-delay: calc(var(--number) * -500ms - 2500ms);
+  -webkit-animation: rotate-colors 4000ms linear infinite;
+  -moz-animation: rotate-colors 4000ms linear infinite;
+  -ms-animation: rotate-colors 4000ms linear infinite;
+  -o-animation: rotate-colors 4000ms linear infinite;
   animation: rotate-colors 4000ms linear infinite;
+  -webkit-animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  -ms-animation-play-state: paused;
+  -o-animation-play-state: paused;
   animation-play-state: paused;
-  animation-delay: calc(var(--number) * -500ms - 2500ms);
+  -webkit-animation-delay: var(--a-delay);
+  -moz-animation-delay: var(--a-delay);
+  -ms-animation-delay: var(--a-delay);
+  -o-animation-delay: var(--a-delay);
+  animation-delay: var(--a-delay);
   background-image: radial-gradient(circle at top left, hsl(var(--hue), 100%, 40%) 34%, hsl(var(--hue), 100%, 80%) 37%, hsl(var(--hue), 100%, 40%) 40%, hsl(var(--hue), 100%, 40%) 57%, hsl(var(--hue), 100%, 80%) 50%, hsl(var(--hue), 100%, 40%) 53%, hsl(var(--hue), 100%, 40%) 60%, hsl(var(--hue), 100%, 80%) 63%, hsl(var(--hue), 100%, 40%) 66%);
   background-size: 450% 450%;
   background-position: 0 0;
   background-repeat: no-repeat;
 }
 .herocontent .jewel2 > div > div:not(.none):not(.cover):not(.frame) {
+  --a-delay: calc(var(--number) * -500ms - 1500ms);
+  -webkit-animation: rotate-colors2 4000ms linear infinite;
+  -moz-animation: rotate-colors2 4000ms linear infinite;
+  -ms-animation: rotate-colors2 4000ms linear infinite;
+  -o-animation: rotate-colors2 4000ms linear infinite;
   animation: rotate-colors2 4000ms linear infinite;
+  -webkit-animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  -ms-animation-play-state: paused;
+  -o-animation-play-state: paused;
   animation-play-state: paused;
-  animation-delay: calc(var(--number) * -500ms - 1500ms);
+  -webkit-animation-delay: var(--a-delay);
+  -moz-animation-delay: var(--a-delay);
+  -ms-animation-delay: var(--a-delay);
+  -o-animation-delay: var(--a-delay);
+  animation-delay: var(--a-delay);
   background-image: linear-gradient(0deg, hsl(var(--hue), 100%, 40%) 20%, hsl(var(--hue), 100%, 80%) 23%, hsl(var(--hue), 100%, 40%) 26%, hsl(var(--hue), 100%, 40%) 40%, hsl(var(--hue), 100%, 80%) 43%, hsl(var(--hue), 100%, 40%) 46%, hsl(var(--hue), 100%, 40%) 50%, hsl(var(--hue), 100%, 80%) 53%, hsl(var(--hue), 100%, 40%) 56%, hsl(var(--hue), 100%, 40%) 60%, hsl(var(--hue), 100%, 80%) 63%, hsl(var(--hue), 100%, 40%) 66%, hsl(var(--hue), 100%, 40%) 74%, hsl(var(--hue), 100%, 80%) 77%, hsl(var(--hue), 100%, 40%) 80%);
   background-size: 100% 600%;
   background-position: 0 0;
@@ -198,6 +224,10 @@
 }
 .herocontent .jewel:hover > div > div:not(.none):not(.cover):not(.frame),
 .herocontent .jewel:focus-visible > div > div:not(.none):not(.cover):not(.frame) {
+  -webkit-animation-play-state: running;
+  -moz-animation-play-state: running;
+  -ms-animation-play-state: running;
+  -o-animation-play-state: running;
   animation-play-state: running;
 }
 @keyframes rotate-colors {
@@ -425,7 +455,7 @@
   -o-animation-play-state: paused;
   -ms-animation-play-state: paused;
   animation-play-state: paused;
-  --box: inset calc(var(--size) * -3 * var(--s)) calc(var(--size) * -3 * var(--s)) calc(var(--size) * 6 * var(--s)) calc(var(--size) * -6 * var(--s)) green, inset calc(var(--size) * 4 * var(--s)) calc(var(--size) * 4 * var(--s)) calc(var(--size) * 8 * var(--s)) calc(var(--size) * -9 * var(--s)) hotpink, inset 0 calc(var(--size) * -6 * var(--s)) calc(var(--size) * 6 * var(--s)) calc(var(--size) * -8 * var(--s)) currentColor, inset 0 0 calc(var(--size) * 3 * var(--s)) calc(var(--size) * var(--s) * -1) currentColor, 0 0 calc(var(--size) * 0.1 * var(--s) * 12) calc(var(--size) * 0.1 * var(--s) * -8) white, 0 0 calc(var(--size) * 0.1 * var(--s) * 15) calc(var(--size) * 0.1 * var(--s) * -9) currentColor;
+  --box: inset calc(var(--size) * -3 * 1px) calc(var(--size) * -3 * 1px) calc(var(--size) * 6 * 1px) calc(var(--size) * -6 * 1px) green, inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * 1px) calc(var(--size) * -9 * 1px) hotpink, inset 0 calc(var(--size) * -6 * 1px) calc(var(--size) * 6 * 1px) calc(var(--size) * -8 * 1px) currentColor, inset 0 0 calc(var(--size) * 3 * 1px) calc(var(--size) * 1px * -1) currentColor, 0 0 calc(var(--size) * 0.1 * 1px * 12) calc(var(--size) * 0.1 * 1px * -8) white, 0 0 calc(var(--size) * 0.1 * 1px * 15) calc(var(--size) * 0.1 * 1px * -9) currentColor;
   -webkit-box-shadow: var(--box);
   -o-box-shadow: var(--box);
   -ms-box-shadow: var(--box);
@@ -433,7 +463,7 @@
   box-shadow: var(--box);
 }
 .light .herocontent .bubbles {
-  --box: inset calc(var(--size) * 3 * calc(var(--s) * -1)) calc(var(--size) * 3 * calc(var(--s) * -1)) calc(var(--size) * 6 * var(--s)) calc(var(--size) * 6 * var(--s) * -1) lime, inset calc(var(--size) * 4 * var(--s)) calc(var(--size) * 6 * var(--s)) calc(var(--size) * 4 * var(--s)) calc(var(--size) * 7 * var(--s) * -1) hotpink, inset 0 0 calc(var(--size) * 4 * var(--s)) calc(var(--size) * 0.2 * calc(var(--s) * -1)) currentColor, 0 0 20px -5px white, 0 0 calc(var(--s) * 3) calc(var(--s) * -1) currentColor;
+  --box: inset calc(var(--size) * 3 * calc(1px * -1)) calc(var(--size) * 3 * calc(1px * -1)) calc(var(--size) * 6 * 1px) calc(var(--size) * 6 * 1px * -1) lime, inset calc(var(--size) * 4 * 1px) calc(var(--size) * 6 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 7 * 1px * -1) hotpink, inset 0 0 calc(var(--size) * 4 * 1px) calc(var(--size) * 0.2 * calc(1px * -1)) currentColor, 0 0 20px -5px white, 0 0 calc(1px * 3) calc(1px * -1) currentColor;
   -webkit-box-shadow: var(--box);
   -moz-box-shadow: var(--box);
   -ms-box-shadow: var(--box);
@@ -490,12 +520,28 @@
 .herocontent .circles {
   height: var(--height);
   width: var(--width);
+  -webkit-animation: circles-shrink-into-nothing 12000ms ease-in-out forwards;
+  -moz-animation: circles-shrink-into-nothing 12000ms ease-in-out forwards;
+  -ms-animation: circles-shrink-into-nothing 12000ms ease-in-out forwards;
+  -o-animation: circles-shrink-into-nothing 12000ms ease-in-out forwards;
   animation: circles-shrink-into-nothing 12000ms ease-in-out forwards;
+  -webkit-animation-delay: 0ms;
+  -moz-animation-delay: 0ms;
+  -ms-animation-delay: 0ms;
+  -o-animation-delay: 0ms;
   animation-delay: 0ms;
+  -webkit-animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  -ms-animation-play-state: paused;
+  -o-animation-play-state: paused;
   animation-play-state: paused;
 }
 .herocontent .circles:hover,
 .herocontent .circles:focus-visible {
+  -webkit-animation-play-state: running;
+  -moz-animation-play-state: running;
+  -ms-animation-play-state: running;
+  -o-animation-play-state: running;
   animation-play-state: running;
 }
 
@@ -503,6 +549,7 @@
   --time: 2000ms;
   --deg1: calc(var(--idx, 3) * 3deg - 0deg);
   --deg2: calc(var(--idx, 3) * 3deg - 360deg);
+  --a-delay: calc(calc(1 + var(--idx, 0)) * -1000ms);
   -webkit-animation: circles-hover 11000ms linear infinite reverse;
   -o-animation: circles-hover 11000ms linear infinite reverse;
   -ms-animation: circles-hover 11000ms linear infinite reverse;
@@ -513,7 +560,11 @@
   -o-animation-play-state: paused;
   -ms-animation-play-state: paused;
   animation-play-state: paused;
-  animation-delay: calc(calc(1 + var(--idx, 0)) * -1000ms);
+  -webkit-animation-delay: var(--a-delay);
+  -moz-animation-delay: var(--a-delay);
+  -ms-animation-delay: var(--a-delay);
+  -o-animation-delay: var(--a-delay);
+  animation-delay: var(--a-delay);
   --box: 0 0 4px 0 currentColor, 0 0 40px 4px currentColor;
   -webkit-box-shadow: var(--box);
   -o-box-shadow: var(--box);
@@ -692,7 +743,7 @@
   width: 40%;
 }
 .herocontent .eyes .inner {
-  --box: inset calc(var(--size) * 8 * var(--s)) calc(var(--size) * 0.2 * calc(var(--s) * -1)) calc(var(--size) * 4 * var(--s)) calc(var(--size) * 8 * calc(var(--s) * -1)) hotpink, inset calc(var(--size) * 8 * calc(var(--s) * -1)) calc(var(--size) * 0.2 * var(--s)) calc(var(--size) * 8 * var(--s) * 1) calc(var(--size) * 10 * calc(var(--s) * -1)) lawngreen, 0 0 calc(var(--size) * 0.1 * var(--s) * 9) calc(var(--size) * 0.1 * var(--s) * -5) white, 0 0 calc(var(--size) * 0.1 * var(--s) * 40) calc(var(--size) * 0.1 * var(--s) * -10) currentColor, inset calc(var(--size) * 3 * var(--s)) 0 calc(var(--size) * 5 * var(--s)) 0 currentColor, inset calc(var(--size) * calc(var(--s) * -1)) 0 calc(var(--size) * 3 * var(--s)) 0 white, 0 0 calc(var(--size) * 0.1 * var(--s) * 10) calc(var(--size) * 0.1 * var(--s) * -5) white;
+  --box: inset calc(var(--size) * 8 * 1px) calc(var(--size) * 0.2 * calc(1px * -1)) calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * calc(1px * -1)) hotpink, inset calc(var(--size) * 8 * calc(1px * -1)) calc(var(--size) * 0.2 * 1px) calc(var(--size) * 8 * 1px * 1) calc(var(--size) * 10 * calc(1px * -1)) lime, 0 0 calc(var(--size) * 0.1 * 1px * 9) calc(var(--size) * 0.1 * 1px * -5) white, 0 0 calc(var(--size) * 0.1 * 1px * 40) calc(var(--size) * 0.1 * 1px * -10) currentColor, inset calc(var(--size) * 3 * 1px) 0 calc(var(--size) * 8 * 1px) calc(var(--size) * 3 * 1px * -1) currentColor, inset calc(var(--size) * calc(1px * -1)) 0 calc(var(--size) * 3 * 1px) 0 white, 0 0 calc(var(--size) * 0.1 * 1px * 10) calc(var(--size) * 0.1 * 1px * -5) white;
   position: absolute;
   top: 0;
   left: 0;
@@ -711,7 +762,7 @@
   box-shadow: var(--box);
 }
 .light .herocontent .eyes .inner {
-  --box: inset calc(var(--size) * 8 * var(--s)) calc(var(--size) * 0.2 * calc(var(--s) * -1)) calc(var(--size) * 4 * var(--s)) calc(var(--size) * 7 * calc(var(--s) * -1)) hotpink, inset calc(var(--size) * 8 * calc(var(--s) * -1)) calc(var(--size) * 4 * var(--s)) calc(var(--size) * 4 * var(--s)) calc(var(--size) * 4 * calc(var(--s) * -2)) lawngreen, 0 0 calc(var(--size) * 0.1 * var(--s) * 10) 0 var(--color-primary-4), 0 0 calc(var(--size) * 0.1 * var(--s) * 20) calc(var(--size) * 0.1 * var(--s) * -10) white, inset calc(var(--size) * var(--s)) 0 calc(var(--size) * 3 * var(--s)) 0 currentColor, calc(var(--size) * calc(var(--s) * -1)) 0 calc(var(--size) * 3 * var(--s)) calc(var(--size) * 0.1 * var(--s) * -1) white;
+  --box: inset calc(var(--size) * 8 * 1px) calc(var(--size) * 0.2 * calc(1px * -1)) calc(var(--size) * 4 * 1px) calc(var(--size) * 7 * calc(1px * -1)) hotpink, inset calc(var(--size) * 8 * calc(1px * -1)) calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * calc(1px * -2)) lawngreen, 0 0 calc(var(--size) * 0.1 * 1px * 10) 0 var(--color-primary-4), 0 0 calc(var(--size) * 0.1 * 1px * 20) calc(var(--size) * 0.1 * 1px * -10) white, inset calc(var(--size) * 1px) 0 calc(var(--size) * 3 * 1px) 0 currentColor, calc(var(--size) * calc(1px * -1)) 0 calc(var(--size) * 3 * 1px) calc(var(--size) * 0.1 * 1px * -1) white;
   -webkit-box-shadow: var(--box);
   -ms-box-shadow: var(--box);
   -moz-box-shadow: var(--box);
@@ -746,7 +797,7 @@
   border-radius: 50%;
   z-index: -1;
   opacity: 0.3;
-  --box: 0 0 calc(var(--size) * 0.1 * var(--s) * 2) white;
+  --box: 0 0 calc(var(--size) * 0.1 * 1px * 2) white;
   -webkit-box-shadow: var(--box);
   -o-box-shadow: var(--box);
   -ms-box-shadow: var(--box);
@@ -774,7 +825,7 @@
   background-color: white;
   opacity: 0.2;
   border-radius: 50%;
-  --box: 0 0 calc(var(--size) * 0.1 * var(--s) * 4) 0 white, 0 0 calc(var(--size) * 0.1 * var(--s) * 5) calc(var(--size) * 0.1 * var(--s) * -2) white;
+  --box: 0 0 calc(var(--size) * 0.1 * 1px * 4) 0 white, 0 0 calc(var(--size) * 0.1 * 1px * 5) calc(var(--size) * 0.1 * 1px * -2) white;
   -webkit-box-shadow: var(--box);
   -ms-box-shadow: var(--box);
   -moz-box-shadow: var(--box);
@@ -832,7 +883,7 @@
 }
 .herocontent .eyes span::after {
   --color: black;
-  --box: 0 0 calc(var(--size) * 0.1 * var(--s) * 6) 0 var(--color), 0 0 calc(var(--size) * 0.1 * var(--s) * 6) calc(var(--size) * 0.1 * var(--s) * -3) var(--color), inset calc(var(--size) * 0.2 * var(--s) * 6) calc(var(--size) * 0.2 * var(--s) * 8) calc(var(--size) * 0.1 * var(--s) * 8) calc(var(--size) * 0.1 * var(--s) * -5) black, calc(var(--size) * 0.1 * var(--s) * -3) calc(var(--size) * 0.1 * var(--s) * -4) calc(var(--size) * 0.1 * var(--s) * 4) calc(var(--size) * 0.3 * var(--s) * -2) black, calc(var(--size) * 0.1 * var(--s) * -2) calc(var(--size) * 0.1 * var(--s) * -3) calc(var(--size) * 0.1 * var(--s) * 10) calc(var(--size) * 0.1 * var(--s) * 2) white;
+  --box: 0 0 calc(var(--size) * 0.1 * 1px * 6) 0 var(--color), 0 0 calc(var(--size) * 0.1 * 1px * 6) calc(var(--size) * 0.1 * 1px * -3) var(--color), inset calc(var(--size) * 0.2 * 1px * 6) calc(var(--size) * 0.2 * 1px * 8) calc(var(--size) * 0.1 * 1px * 8) calc(var(--size) * 0.1 * 1px * -5) black, calc(var(--size) * 0.1 * 1px * -3) calc(var(--size) * 0.1 * 1px * -4) calc(var(--size) * 0.1 * 1px * 4) calc(var(--size) * 0.3 * 1px * -2) black, calc(var(--size) * 0.1 * 1px * -2) calc(var(--size) * 0.1 * 1px * -3) calc(var(--size) * 0.1 * 1px * 10) calc(var(--size) * 0.1 * 1px * 2) white;
   -webkit-box-shadow: var(--box);
   content: '';
   position: absolute;
@@ -857,7 +908,7 @@
 }
 .light .herocontent .eyes span::after {
   opacity: 0.3;
-  --box: 0 0 calc(var(--size) * 0.1 * var(--s) * 6) 0 var(--color), 0 0 calc(var(--size) * 0.1 * var(--s) * 6) calc(var(--size) * 0.1 * var(--s) * -3) var(--color), inset calc(var(--size) * 0.2 * var(--s) * 6) calc(var(--size) * 0.2 * var(--s) * 8) calc(var(--size) * 0.3 * var(--s) * 4) calc(var(--size) * 0.3 * var(--s) * -2) black, calc(var(--size) * 0.3 * var(--s) * -3) calc(var(--size) * 0.3 * var(--s) * -4) calc(var(--size) * 0.3 * var(--s) * 4) calc(var(--size) * 0.6 * var(--s) * -2) black, calc(var(--size) * 0.1 * var(--s) * -2) calc(var(--size) * 0.1 * var(--s) * -3) calc(var(--size) * 0.1 * var(--s) * 10) calc(var(--size) * 0.1 * var(--s) * 2) white;
+  --box: 0 0 calc(var(--size) * 0.1 * 1px * 6) 0 var(--color), 0 0 calc(var(--size) * 0.1 * 1px * 6) calc(var(--size) * 0.1 * 1px * -3) var(--color), inset calc(var(--size) * 0.2 * 1px * 6) calc(var(--size) * 0.2 * 1px * 8) calc(var(--size) * 0.3 * 1px * 4) calc(var(--size) * 0.3 * 1px * -2) black, calc(var(--size) * 0.3 * 1px * -3) calc(var(--size) * 0.3 * 1px * -4) calc(var(--size) * 0.3 * 1px * 4) calc(var(--size) * 0.6 * 1px * -2) black, calc(var(--size) * 0.1 * 1px * -2) calc(var(--size) * 0.1 * 1px * -3) calc(var(--size) * 0.1 * 1px * 10) calc(var(--size) * 0.1 * 1px * 2) white;
   -o-box-shadow: var(--box);
   -ms-box-shadow: var(--box);
   -moz-box-shadow: var(--box);
@@ -1773,6 +1824,10 @@
 }
 
 .constellation-line.pulse {
+  -webkit-animation: constellation-pulse 1800ms ease-in-out infinite;
+  -moz-animation: constellation-pulse 1800ms ease-in-out infinite;
+  -ms-animation: constellation-pulse 1800ms ease-in-out infinite;
+  -o-animation: constellation-pulse 1800ms ease-in-out infinite;
   animation: constellation-pulse 1800ms ease-in-out infinite;
 }
 
@@ -2036,6 +2091,10 @@
   .constellation-node-inner,
   .constellation-node-label,
   .constellation-badge {
+    -webkit-animation: none !important;
+    -moz-animation: none !important;
+    -ms-animation: none !important;
+    -o-animation: none !important;
     animation: none !important;
     transition-duration: 0ms !important;
   }

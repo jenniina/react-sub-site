@@ -179,9 +179,17 @@
   background-size: 400% 200%;
 }
 .featured > button.horizontal-scroll.left::before {
+  -webkit-clip-path: polygon(100% 0%, 0% 0%, 0% 100%, 100% 100%, 90% 96%, 20% 50%, 90% 4%, 90% 96%, 100% 100%);
+  -moz-clip-path: polygon(100% 0%, 0% 0%, 0% 100%, 100% 100%, 90% 96%, 20% 50%, 90% 4%, 90% 96%, 100% 100%);
+  -ms-clip-path: polygon(100% 0%, 0% 0%, 0% 100%, 100% 100%, 90% 96%, 20% 50%, 90% 4%, 90% 96%, 100% 100%);
+  -o-clip-path: polygon(100% 0%, 0% 0%, 0% 100%, 100% 100%, 90% 96%, 20% 50%, 90% 4%, 90% 96%, 100% 100%);
   clip-path: polygon(100% 0%, 0% 0%, 0% 100%, 100% 100%, 90% 96%, 20% 50%, 90% 4%, 90% 96%, 100% 100%);
 }
 .featured > button.horizontal-scroll.right::before {
+  -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 10% 98%, 80% 50%, 10% 4%, 10% 98%, 0% 100%);
+  -moz-clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 10% 98%, 80% 50%, 10% 4%, 10% 98%, 0% 100%);
+  -ms-clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 10% 98%, 80% 50%, 10% 4%, 10% 98%, 0% 100%);
+  -o-clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 10% 98%, 80% 50%, 10% 4%, 10% 98%, 0% 100%);
   clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 10% 98%, 80% 50%, 10% 4%, 10% 98%, 0% 100%);
 }
 .featured > button.horizontal-scroll.left:hover svg,
@@ -285,6 +293,10 @@
     height: 86%;
     width: auto;
     padding: 0 0.2em 0 0.6em;
+    -webkit-clip-path: polygon(100% 0%, 90% 1%, 10% 50%, 90% 99%, 100% 100%);
+    -moz-clip-path: polygon(100% 0%, 90% 1%, 10% 50%, 90% 99%, 100% 100%);
+    -ms-clip-path: polygon(100% 0%, 90% 1%, 10% 50%, 90% 99%, 100% 100%);
+    -o-clip-path: polygon(100% 0%, 90% 1%, 10% 50%, 90% 99%, 100% 100%);
     clip-path: polygon(100% 0%, 90% 1%, 10% 50%, 90% 99%, 100% 100%);
   }
   .featured > button.horizontal-scroll.right {
@@ -295,6 +307,10 @@
     height: 86%;
     width: auto;
     padding: 0 0.6em 0 0.2em;
+    -webkit-clip-path: polygon(0% 0%, 10% 1%, 90% 50%, 10% 99%, 0% 100%);
+    -moz-clip-path: polygon(0% 0%, 10% 1%, 90% 50%, 10% 99%, 0% 100%);
+    -ms-clip-path: polygon(0% 0%, 10% 1%, 90% 50%, 10% 99%, 0% 100%);
+    -o-clip-path: polygon(0% 0%, 10% 1%, 90% 50%, 10% 99%, 0% 100%);
     clip-path: polygon(0% 0%, 10% 1%, 90% 50%, 10% 99%, 0% 100%);
   }
   .featured > button.horizontal-scroll::before {
