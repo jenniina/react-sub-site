@@ -73,15 +73,16 @@ button.next {
 button.answer {
   outline: currentColor solid 3px;
 }
-button.correct {
+.wrap button.correct {
   outline-color: lime;
 }
 button.disabled {
   opacity: 0.5;
   pointer-events: none;
 }
-button.disabled.correct {
-  opacity: 1;
+.wrap button.disabled.correct {
+  opacity: 0.9;
+  outline-color: darkgreen;
 }
 .question {
   font-size: var(--title-M);

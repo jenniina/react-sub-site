@@ -4,6 +4,7 @@ import useWindowSize from '../../../hooks/useWindowSize'
 import { breakpointSmall } from '../../../types'
 import { useEffect, useState } from 'react'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
+import { formatQuizScore, QUIZ_MAX_SCORE } from '../utils/scores'
 
 interface Props {
   easy: IHighscore['easy']
@@ -36,8 +37,10 @@ const Scores = ({ easy, medium, hard }: Props) => {
       <tbody>
         <tr>
           <th>{t('Easy')}</th>
-          <td>{easy ? easy.score : 0}/300</td>
-          {show && <td>{+((easy.score * 100) / 300).toFixed(1)}%</td>}
+          <td>
+            {formatQuizScore(easy ? easy.score : 0)}/{QUIZ_MAX_SCORE}
+          </td>
+          {show && <td>{formatQuizScore(easy ? easy.score : 0)}%</td>}
           <td>
             {easy.score === 0 || easy.time === 0 ? (
               t('NA')
@@ -52,8 +55,10 @@ const Scores = ({ easy, medium, hard }: Props) => {
         </tr>
         <tr>
           <th>{t('Medium')}</th>
-          <td>{medium ? medium.score : 0}/300</td>
-          {show && <td>{+((medium.score * 100) / 300).toFixed(1)}%</td>}
+          <td>
+            {formatQuizScore(medium ? medium.score : 0)}/{QUIZ_MAX_SCORE}
+          </td>
+          {show && <td>{formatQuizScore(medium ? medium.score : 0)}%</td>}
           <td>
             {medium.score === 0 || medium.time === 0 ? (
               t('NA')
@@ -68,8 +73,10 @@ const Scores = ({ easy, medium, hard }: Props) => {
         </tr>
         <tr>
           <th>{t('Hard')}</th>
-          <td>{hard ? hard.score : 0}/300</td>
-          {show && <td>{+((hard.score * 100) / 300).toFixed(1)}%</td>}
+          <td>
+            {formatQuizScore(hard ? hard.score : 0)}/{QUIZ_MAX_SCORE}
+          </td>
+          {show && <td>{formatQuizScore(hard ? hard.score : 0)}%</td>}
           <td>
             {hard.score === 0 || hard.time === 0 ? (
               t('NA')

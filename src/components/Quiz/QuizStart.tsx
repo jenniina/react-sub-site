@@ -12,6 +12,7 @@ import Icon from '../Icon/Icon'
 import { getUserQuiz } from './reducers/quizReducer'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import LoginRegisterCombo from './components/LoginRegisterCombo'
+import { normalizeQuizHighscores, parseQuizHighscores } from './utils/scores'
 
 const QuizStart = () => {
   const { t } = useLanguageContext()
@@ -22,7 +23,9 @@ const QuizStart = () => {
     highscores = {} as IHighscore,
     finalSeconds = 0,
   } = useSelector((state: ReducerProps) => state.questions ?? {})
-  const [highscoresLocal, setHighscores] = useState<IHighscore>(highscores)
+  const [highscoresLocal, setHighscores] = useState<IHighscore>(
+    normalizeQuizHighscores(highscores)
+  )
 
   const dispatch = useAppDispatch()
 
@@ -38,13 +41,18 @@ const QuizStart = () => {
     if (user?._id && points !== 0 && finalSeconds !== 0) {
       void dispatch(getUserQuiz(user._id)).then((r: IQuizHighscore | null) => {
         if (r !== null) {
-          setHighscores(r.highscores)
+          setHighscores(normalizeQuizHighscores(r.highscores))
         } else if (r === null && localStorage.getItem(`quiz-highscores`)) {
-          const highscoresLocal = JSON.parse(
+          const parsedQuizHighscores = parseQuizHighscores(
             localStorage.getItem(`quiz-highscores`)!
-          ) as IHighscore
+          )
+          if (!parsedQuizHighscores) return
+          setHighscores(parsedQuizHighscores)
           void dispatch(
-            addQuiz({ highscores: highscoresLocal, user: user._id })
+            addQuiz({
+              highscores: parsedQuizHighscores,
+              user: user._id,
+            })
           )
         }
       })

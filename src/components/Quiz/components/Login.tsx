@@ -12,6 +12,7 @@ import styles from '../css/quiz.module.css'
 import { Link } from 'react-router-dom'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 import { getErrorMessage } from '../../../utils'
+import { defaultQuizHighscores, normalizeQuizHighscores } from '../utils/scores'
 
 interface Props {
   easy: IHighscore['easy']
@@ -30,9 +31,9 @@ const FormLogin = ({ easy, medium, hard, setIsFormOpen }: Props) => {
   const formLoginRef = useRef(null)
 
   const [highscoresLocal, setHighscores] = useState<IHighscore>({
-    easy: easy ?? { score: 0, time: 210 },
-    medium: medium ?? { score: 0, time: 210 },
-    hard: hard ?? { score: 0, time: 210 },
+    easy: easy ?? defaultQuizHighscores.easy,
+    medium: medium ?? defaultQuizHighscores.medium,
+    hard: hard ?? defaultQuizHighscores.hard,
   })
 
   const user = useSelector((state: ReducerProps) => {
@@ -43,7 +44,7 @@ const FormLogin = ({ easy, medium, hard, setIsFormOpen }: Props) => {
     if (user?._id) {
       void dispatch(getUserQuiz(user._id)).then((r: IQuizHighscore | null) => {
         if (r !== null) {
-          setHighscores(r.highscores)
+          setHighscores(normalizeQuizHighscores(r.highscores))
         }
       })
     }

@@ -2,6 +2,12 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import { returnMode } from './difficultyReducer'
 import { IQuestion } from '../types'
 import { ReducerProps } from '../../../types'
+import {
+  defaultQuizHighscores,
+  QUIZ_DEFAULT_TIME,
+  QUIZ_POINTS_PER_CORRECT,
+  QUIZ_QUESTION_COUNT,
+} from '../utils/scores'
 
 function shuffleArray<T>(array: T[]): T[] {
   const newArray = [...array]
@@ -19,13 +25,9 @@ const initialState: ReducerProps['questions'] = {
   currentQuestion: {},
   answer: null,
   points: 0,
-  secondsRemaining: 210,
+  secondsRemaining: QUIZ_DEFAULT_TIME,
   finalSeconds: 0,
-  highscores: {
-    easy: { score: 0, time: 210 },
-    medium: { score: 0, time: 210 },
-    hard: { score: 0, time: 210 },
-  },
+  highscores: defaultQuizHighscores,
 }
 
 export const getQuestions = createAsyncThunk(
@@ -33,7 +35,7 @@ export const getQuestions = createAsyncThunk(
   async (difficulty: string): Promise<IQuestion[]> => {
     try {
       const resp = await fetch(
-        `https://the-trivia-api.com/v2/questions?limit=15&difficulties=${difficulty}`
+        `https://the-trivia-api.com/v2/questions?limit=${QUIZ_QUESTION_COUNT}&difficulties=${difficulty}`
       )
       // Cast response to the expected IQuestion[] shape
       const data = (await resp.json()) as IQuestion[]
@@ -55,24 +57,24 @@ const questionsSlice = createSlice({
     ) => {
       return payload
     },
-    resetTimer: state => {
-      state.secondsRemaining = 210
+    resetTimer: (state) => {
+      state.secondsRemaining = QUIZ_DEFAULT_TIME
     },
-    lessSeconds: state => {
+    lessSeconds: (state) => {
       state.secondsRemaining -= 1
     },
-    finalSeconds: state => {
-      state.finalSeconds = 210 - state.secondsRemaining
+    finalSeconds: (state) => {
+      state.finalSeconds = QUIZ_DEFAULT_TIME - state.secondsRemaining
     },
     newAnswer: (state, { payload }: PayloadAction<string>) => {
       state.answer = payload
       if (typeof state.currentQuestion.correctAnswer === 'string')
         state.points =
           payload === state.currentQuestion.correctAnswer
-            ? state.points + 20
+            ? state.points + QUIZ_POINTS_PER_CORRECT
             : state.points
     },
-    nextQuestion: state => {
+    nextQuestion: (state) => {
       const temp: IQuestion | undefined = state.questionsRedux[state.index + 1]
       if (!temp) return state
       const newArray = {
@@ -85,7 +87,7 @@ const questionsSlice = createSlice({
       state.currentQuestion = newArray
       state.answer = null
     },
-    gameFinished: state => {
+    gameFinished: (state) => {
       state.highscores[returnMode() as keyof typeof state.highscores].score =
         state.points >
         state.highscores[
@@ -106,9 +108,9 @@ const questionsSlice = createSlice({
             ].time
     },
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder
-      .addCase(getQuestions.pending, state => {
+      .addCase(getQuestions.pending, (state) => {
         state.status = 'loading'
       })
       .addCase(
@@ -141,7 +143,7 @@ const questionsSlice = createSlice({
           state.answer = null
         }
       )
-      .addCase(getQuestions.rejected, state => {
+      .addCase(getQuestions.rejected, (state) => {
         state.status = 'error'
       })
   },
