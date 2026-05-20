@@ -192,6 +192,10 @@
     -ms-transform: translateX(0) rotateY(180deg);
     -o-transform: translateX(0) rotateY(180deg);
     transform: translateX(0) rotateY(180deg);
+    -webkit-transform-origin: 100% 50%;
+    -moz-transform-origin: 100% 50%;
+    -ms-transform-origin: 100% 50%;
+    -o-transform-origin: 100% 50%;
     transform-origin: 100% 50%;
   }
   50% {
@@ -200,6 +204,10 @@
     -ms-transform: translateX(-3rem) rotateY(90deg);
     -o-transform: translateX(-3rem) rotateY(90deg);
     transform: translateX(-3rem) rotateY(90deg);
+    -webkit-transform-origin: 50% 50%;
+    -moz-transform-origin: 50% 50%;
+    -ms-transform-origin: 50% 50%;
+    -o-transform-origin: 50% 50%;
     transform-origin: 50% 50%;
   }
   100% {
@@ -208,6 +216,10 @@
     -ms-transform: translateX(0) rotateY(0deg);
     -o-transform: translateX(0) rotateY(0deg);
     transform: translateX(0) rotateY(0deg);
+    -webkit-transform-origin: 0% 50%;
+    -moz-transform-origin: 0% 50%;
+    -ms-transform-origin: 0% 50%;
+    -o-transform-origin: 0% 50%;
     transform-origin: 0% 50%;
   }
 }
@@ -218,6 +230,10 @@
     -ms-transform: translateX(0) rotateY(0deg);
     -o-transform: translateX(0) rotateY(0deg);
     transform: translateX(0) rotateY(0deg);
+    -webkit-transform-origin: 100% 50%;
+    -moz-transform-origin: 100% 50%;
+    -ms-transform-origin: 100% 50%;
+    -o-transform-origin: 100% 50%;
     transform-origin: 100% 50%;
   }
   50% {
@@ -226,6 +242,10 @@
     -ms-transform: translateX(-3rem) rotateY(90deg);
     -o-transform: translateX(-3rem) rotateY(90deg);
     transform: translateX(-3rem) rotateY(90deg);
+    -webkit-transform-origin: 50% 50%;
+    -moz-transform-origin: 50% 50%;
+    -ms-transform-origin: 50% 50%;
+    -o-transform-origin: 50% 50%;
     transform-origin: 50% 50%;
   }
   100% {
@@ -234,6 +254,10 @@
     -ms-transform: translateX(0) rotateY(180deg);
     -o-transform: translateX(0) rotateY(180deg);
     transform: translateX(0) rotateY(180deg);
+    -webkit-transform-origin: 0% 50%;
+    -moz-transform-origin: 0% 50%;
+    -ms-transform-origin: 0% 50%;
+    -o-transform-origin: 0% 50%;
     transform-origin: 0% 50%;
   }
 }

@@ -234,6 +234,10 @@ button.reset.link:focus-visible > * {
 .light button.reset.link:focus-visible > * {
   color: var(--color-secondary-6);
   background-position: 50% 98%;
+  -webkit-transform-origin: 50% 98%;
+  -moz-transform-origin: 50% 98%;
+  -ms-transform-origin: 50% 98%;
+  -o-transform-origin: 50% 98%;
   transform-origin: 50% 98%;
   text-decoration-color: var(--color-secondary-19);
 }

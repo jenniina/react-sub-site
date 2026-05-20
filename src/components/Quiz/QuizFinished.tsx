@@ -10,6 +10,7 @@ import { notify } from '../../reducers/notificationReducer'
 import styles from '../../components/Quiz/css/quiz.module.css'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import LoginRegisterCombo from './components/LoginRegisterCombo'
+import { formatQuizScore, normalizeQuizHighscores } from './utils/scores'
 
 const QuizFinished = () => {
   const { t } = useLanguageContext()
@@ -19,7 +20,9 @@ const QuizFinished = () => {
   )
   const { mode } = useSelector((state: ReducerProps) => state.difficulty)
 
-  const percentage = +((points * 100) / 300).toFixed(1)
+  const currentScore = points
+  const percentage = currentScore
+  const normalizedHighscores = normalizeQuizHighscores(highscores)
   const navigate = useNavigate()
 
   const sec = finalSeconds % 60
@@ -46,17 +49,24 @@ const QuizFinished = () => {
       (!user && points !== 0 && finalSeconds !== 0) ||
       finalSeconds === undefined
     )
-      localStorage.setItem(`quiz-highscores`, JSON.stringify(highscores))
+      localStorage.setItem(
+        `quiz-highscores`,
+        JSON.stringify(normalizedHighscores)
+      )
     if (
       (user?._id && points !== 0 && finalSeconds !== 0) ||
       (user?._id && finalSeconds !== undefined)
     ) {
       void dispatch(getUserQuiz(user._id)).then((r: IQuizHighscore | null) => {
+        const storedHighscores = r
+          ? normalizeQuizHighscores(r.highscores)
+          : normalizedHighscores
+
         if (r === null) {
           const quizScore: IQuizHighscore = {
             highscores: {
-              ...highscores,
-              [mode]: { score: points, time: finalSeconds },
+              ...storedHighscores,
+              [mode]: { score: currentScore, time: finalSeconds },
             },
             user: user._id,
           }
@@ -68,21 +78,24 @@ const QuizFinished = () => {
               //console.log('r5: ', r)
             })
           })
-        } else if (r !== null && r.highscores[mode].score <= points) {
+        } else if (storedHighscores[mode].score <= currentScore) {
           const quizScore: IQuizHighscore = {
             highscores: {
-              ...r.highscores,
-              [mode]: { score: points, time: r.highscores[mode].time },
+              ...storedHighscores,
+              [mode]: {
+                score: currentScore,
+                time: storedHighscores[mode].time,
+              },
             },
             user: user._id,
           }
 
-          if (r.highscores[mode].score < points) {
+          if (storedHighscores[mode].score < currentScore) {
             void dispatch(notify(t('NewHighscore'), false, 3))
             quizScore.highscores[mode].time = finalSeconds // Update time if new score is higher
           } else if (
-            r.highscores[mode].score === points &&
-            r.highscores[mode].time > finalSeconds
+            storedHighscores[mode].score === currentScore &&
+            storedHighscores[mode].time > finalSeconds
           ) {
             void dispatch(notify(t('FasterThanBefore'), false, 3))
             quizScore.highscores[mode].time = finalSeconds // Update time if score is equal and time is faster
@@ -94,7 +107,16 @@ const QuizFinished = () => {
         }
       })
     }
-  }, [dispatch, user, points, finalSeconds, highscores, mode, t])
+  }, [
+    currentScore,
+    dispatch,
+    user,
+    points,
+    finalSeconds,
+    normalizedHighscores,
+    mode,
+    t,
+  ])
 
   let congrats
 
@@ -133,7 +155,8 @@ const QuizFinished = () => {
                 </h1>
                 <h2>{congrats}</h2>
                 <p className="result">
-                  {t('YouScored')} <strong>{points}</strong>{' '}
+                  {t('YouScored')}{' '}
+                  <strong>{formatQuizScore(currentScore)}</strong>{' '}
                   {t('OutOf300Points')} ({percentage}%)
                 </p>
                 <p>
@@ -165,7 +188,9 @@ const QuizFinished = () => {
                   )}
                 </p>
                 <p className="highscore">
-                  ({t('Highscore')}: {highscores[mode].score} {t('Points')})
+                  ({t('Highscore')}:{' '}
+                  {formatQuizScore(normalizedHighscores[mode].score)}{' '}
+                  {t('Points')})
                 </p>
                 <div className={`${styles.reset}`}>
                   <button
@@ -186,7 +211,7 @@ const QuizFinished = () => {
               </div>
               <LoginRegisterCombo
                 user={user}
-                highscoresLocal={highscores}
+                highscoresLocal={normalizedHighscores}
                 text="quizfinish"
               />
             </div>

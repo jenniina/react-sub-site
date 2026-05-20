@@ -47,6 +47,8 @@ const selectOptions = [
   'FourSidedJewels',
   'EightSidedJewels',
   'MusicNotes',
+  'ColorConstellation',
+  'Other',
 ]
 
 export default function CustomSelectPage({ type }: { type: string }) {
