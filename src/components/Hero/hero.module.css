@@ -673,9 +673,17 @@
 }
 .herocontent .note span {
   background: currentColor;
+  -webkit-transform-origin: 100% 30%;
+  -moz-transform-origin: 100% 30%;
+  -ms-transform-origin: 100% 30%;
+  -o-transform-origin: 100% 30%;
   transform-origin: 100% 30%;
 }
 .herocontent .note.above span {
+  -webkit-transform-origin: 0 70%;
+  -moz-transform-origin: 0 70%;
+  -ms-transform-origin: 0 70%;
+  -o-transform-origin: 0 70%;
   transform-origin: 0 70%;
 }
 .herocontent .geometric:hover div,
