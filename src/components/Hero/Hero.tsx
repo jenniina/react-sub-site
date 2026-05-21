@@ -157,11 +157,10 @@ export default function Hero({
       const ul = ulRef.current
       if (!ul) return
 
-      // In this layout, `--staff-mid-y` is the base Y used to position the staff
-      // background. The musical midpoint between the 11 note steps is at 5.5 steps.
-      const staffBaseYPx = cssVarToPx('--staff-mid-y', ul)
+      // In this layout, `--staff-anchor-y` is the Y position of the first staff line.
+      const staffBaseYPx = cssVarToPx('--staff-anchor-y', ul)
       const staffHalfStepPx = cssVarToPx('--staff-half-step', ul)
-      const midMarkPx = staffBaseYPx + 5.5 * staffHalfStepPx
+      const midMarkPx = staffBaseYPx + 4 * staffHalfStepPx
 
       // Use the intended (base + offset) position so the class flips immediately,
       // even while a CSS transition is animating from the previous value.
@@ -180,9 +179,7 @@ export default function Hero({
       const noteHeadPx = cssVarToPx('--note-head', el) || 0
       const anchorYPx = topPx + noteHeadPx
 
-      // Cut line is slightly above the true midpoint to compensate for the
-      // lower note visually overflowing upward.
-      const isAbove = anchorYPx <= midMarkPx - 5
+      const isAbove = anchorYPx <= midMarkPx
       el.classList.toggle(styles.above, isAbove)
       el.classList.toggle(styles.below, !isAbove)
     },
@@ -273,8 +270,11 @@ export default function Hero({
 
         // Choose a random direction
         const direction = Math.floor(Math.random() * 8)
-        const change = page === 'composer' ? 38 : 10
-        const changeBigger = page === 'composer' ? 38 : 16
+        const composerHalfStepPx = Math.round(
+          page === 'composer' ? cssVarToPx('--staff-half-step', item) : 0
+        )
+        const change = page === 'composer' ? composerHalfStepPx : 10
+        const changeBigger = page === 'composer' ? composerHalfStepPx * 2 : 16
         let deltaDy = 0
         let deltaDx = 0
 
@@ -411,11 +411,14 @@ export default function Hero({
     (e: ReactPointerEvent<HTMLElement>) => {
       if (!isClient || !windowObj) return
 
-      const amount = page === 'composer' ? 19 : 10
       const target = (e.target as HTMLElement).closest(
         'li'
       ) as HTMLElement | null
       if (!target) return
+      const amount =
+        page === 'composer'
+          ? Math.round(cssVarToPx('--staff-half-step', target))
+          : 10
 
       // Prefer moving via base (responsive) + offset so resizing the window
       // continues to reflow shapes according to their original clamp/vh/vw rules.

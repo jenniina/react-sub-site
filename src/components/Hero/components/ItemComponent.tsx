@@ -95,6 +95,10 @@ const ItemComponent = forwardRef<
 
     const isComposer = location === LOCATION.COMPOSER
     const composerStaffWidth = 200
+    const composerStaffSvgWidth = 640
+    const composerStaffFirstLineY = 3.9
+    const composerStaffLineGap = 118.1
+    const composerNoteSteps = 9
     // Use the same numeric value everywhere (CSS + JS) to avoid disagreement
     // when evaluating clamp()/calc() expressions.
     const composerStaffMidYPx = Math.min(
@@ -102,10 +106,12 @@ const ItemComponent = forwardRef<
       Math.max(100, windowHeight * 0.44)
     )
     const composerStaffMidY = `${composerStaffMidYPx}px`
-    // Keep this as a concrete px value so JS/CSS parsing stays consistent.
-    // (Some browsers are picky about multiplication inside CSS calc() when we
-    // try to evaluate it via a temporary element.)
-    const composerStaffHalfStepPx = (60 * composerStaffWidth) / 640
+    const composerStaffScale = composerStaffWidth / composerStaffSvgWidth
+    const composerStaffAnchorYPx =
+      composerStaffMidYPx + composerStaffFirstLineY * composerStaffScale
+    // Keep these as concrete px values so JS/CSS parsing stays consistent.
+    const composerStaffHalfStepPx =
+      (composerStaffLineGap * composerStaffScale) / 2
     const composerStaffHalfStep = `${composerStaffHalfStepPx}px`
 
     // 1) Capture each item's original responsive positioning formula exactly once.
@@ -158,14 +164,14 @@ const ItemComponent = forwardRef<
       }
 
       const staffBaseYPx = isComposer
-        ? resolveCssVarToPx('--staff-mid-y', root)
+        ? resolveCssVarToPx('--staff-anchor-y', root)
         : null
       const staffHalfStepPx = isComposer
         ? resolveCssVarToPx('--staff-half-step', root)
         : null
       const midMarkPx =
         isComposer && staffBaseYPx !== null && staffHalfStepPx !== null
-          ? staffBaseYPx + 5.5 * staffHalfStepPx
+          ? staffBaseYPx + 4 * staffHalfStepPx
           : null
 
       const items = root.querySelectorAll<HTMLElement>('li[id^="shape"]')
@@ -203,9 +209,7 @@ const ItemComponent = forwardRef<
             // So the staff anchor is the bottom of the note head.
             const noteHeadPx = resolveCssVarToPx('--note-head', el) || 0
             const anchorYPx = topPx + noteHeadPx
-            // Cut line is slightly above the true midpoint to compensate for the
-            // lower note visually overflowing upward.
-            const isAbove = anchorYPx <= midMarkPx - 5
+            const isAbove = anchorYPx <= midMarkPx
             el.classList.toggle(styles.above, isAbove)
             el.classList.toggle(styles.below, !isAbove)
           }
@@ -272,6 +276,7 @@ const ItemComponent = forwardRef<
               ...baseStyle,
               ['--staff-width' as string]: `${composerStaffWidth}px`,
               ['--staff-mid-y' as string]: composerStaffMidY,
+              ['--staff-anchor-y' as string]: `${composerStaffAnchorYPx}px`,
               ['--staff-half-step' as string]: composerStaffHalfStep,
             }
           })()}
@@ -498,7 +503,7 @@ const ItemComponent = forwardRef<
               )
             } else if (location == LOCATION.COMPOSER) {
               const itemSize = 3.4
-              const noteStep = (item.i + item.e) % 11
+              const noteStep = (item.i + item.e) % composerNoteSteps
               const colStep = `clamp(50px, calc((99vw - 50px) / 10), 99999px)`
               const noteHead = `40px`
               const noteOffsetPx = noteStep * composerStaffHalfStepPx
@@ -506,10 +511,10 @@ const ItemComponent = forwardRef<
                 position: 'absolute',
                 ['--size' as string]: `${itemSize}`,
                 ['--note-head' as string]: `${noteHead}`,
-                top: `calc(${composerStaffMidYPx}px + ${noteOffsetPx}px - ${noteHead})`,
+                top: `calc(${composerStaffAnchorYPx}px + ${noteOffsetPx}px - ${noteHead})`,
                 left: `calc(${item.i} * ${colStep} - ${noteHead})`,
-                ['--highest-allowed' as string]: `calc(${composerStaffMidYPx}px + ${composerStaffHalfStepPx}px - 70px)`,
-                ['--lowest-allowed' as string]: `calc(${composerStaffMidYPx}px + ${11 * composerStaffHalfStepPx}px - 50px)`,
+                ['--highest-allowed' as string]: `calc(${composerStaffAnchorYPx}px - ${noteHead})`,
+                ['--lowest-allowed' as string]: `calc(${composerStaffAnchorYPx}px + ${(composerNoteSteps - 1) * composerStaffHalfStepPx}px)`,
                 transitionDuration: '600ms',
                 opacity: `0.7`,
               }
@@ -531,7 +536,7 @@ const ItemComponent = forwardRef<
                   key={`${item.color}${item.size}${item.e}${index}`}
                   id={`shape${item.i}`}
                   className={`${
-                    noteStep <= 6 ? styles.above : styles.below
+                    noteStep <= 4 ? styles.above : styles.below
                   } ${styles.item} ${styles[location]} ${styles.note} 
                                 ${
                                   windowHeight < windowWidth
