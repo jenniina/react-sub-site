@@ -904,6 +904,7 @@ export default function Hero({
         windowObj={windowObj}
         itemsVisible={itemsVisible}
         prefersReducedMotion={prefersReducedMotion}
+        lightTheme={lightTheme}
       />
 
       <div className={styles.bottom}>

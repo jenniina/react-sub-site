@@ -61,6 +61,7 @@ interface ItemComponentProps {
   windowObj: Window | null
   itemsVisible: boolean
   prefersReducedMotion: boolean
+  lightTheme: boolean
 }
 
 const ItemComponent = forwardRef<
@@ -82,6 +83,7 @@ const ItemComponent = forwardRef<
       windowObj,
       itemsVisible,
       prefersReducedMotion,
+      lightTheme,
     },
     ref
   ) => {
@@ -933,9 +935,120 @@ const ItemComponent = forwardRef<
                   </div>
                 </li>
               )
+            } else if (location == LOCATION.JOKES) {
+              const handleOnLeft = (item.i + Math.round(item.e)) % 2 === 0
+              const style: CSSProperties = {
+                position: 'absolute',
+                top: `clamp(150px, calc(-10vh + 1.2vh * ${item.e * 3} * ${
+                  item.size / 6
+                }), calc(50vh - calc(var(--size, 200px) * 0.5vh)))`,
+                left: `clamp(1vw, calc(-5vh + ${item.i} * 1.4vw * ${item.e}), 96vw - ${item.size}vw)`,
+                backgroundColor: `transparent`,
+                color: `${item.color}`,
+                ['--i' as string]: `${item.i}`,
+                ['--e' as string]: `${item.e}`,
+                ['--size' as string]: `${item.size}`,
+                ['--s' as string]:
+                  windowWidth < windowHeight
+                    ? `calc(${item.size} * 0.005vh)`
+                    : `calc(${item.size} * 0.005vw)`,
+                ['--handle-left' as string]: handleOnLeft ? '-11%' : 'auto',
+                ['--handle-right' as string]: handleOnLeft ? 'auto' : '-11%',
+                ['--handle-border-radius' as string]: handleOnLeft
+                  ? '90% 0 0 90%'
+                  : '0 90% 90% 0',
+                ['--handle-left-stroke' as string]: handleOnLeft
+                  ? `clamp(4px, calc(${item.size} * 0.6px), 10px)`
+                  : '0px',
+                ['--handle-right-stroke' as string]: handleOnLeft
+                  ? '0px'
+                  : `clamp(4px, calc(${item.size} * 0.6px), 10px)`,
+                ['--steam-color' as string]: lightTheme
+                  ? 'hsla(0, 0%, 100%, 0.9)'
+                  : 'hsla(0, 0%, 100%, 0.7)',
+                width:
+                  windowWidth < windowHeight
+                    ? `calc(${item.size} * 0.7 * 0.6vh)`
+                    : `calc(${item.size} * 0.7 * 0.6vw)`,
+                height:
+                  windowWidth < windowHeight
+                    ? `calc(${item.size} * 0.6vh)`
+                    : `calc(${item.size} * 0.6vw)`,
+                maxHeight: '140px',
+                maxWidth: '98px',
+                minHeight: '50px',
+                minWidth: '35px',
+                opacity: '0.8',
+              }
+
+              return (
+                // JOKES
+                <li
+                  key={`${item.color}${item.size}${item.e}${index}`}
+                  className={`${styles.item} ${styles.jokes} ${styles.mug} ${
+                    windowHeight < windowWidth ? styles.wide : styles.tall
+                  }`}
+                  style={style}
+                  id={`shape${item.i}`}
+                  role={'option'}
+                  tabIndex={0}
+                  onFocus={(e) => {
+                    setActiveDescendant(e.target.id)
+                  }}
+                  aria-selected={`shape${item.i}` === activeDescendant}
+                  onBlurCapture={() => {
+                    setActiveDescendant(null)
+                  }}
+                  onPointerEnter={(e) => {
+                    movingItem(e)
+                  }}
+                  onMouseDown={(e) => {
+                    removeItem(e)
+                  }}
+                  onTouchStart={(e) => {
+                    removeItem(e)
+                  }}
+                  onPointerDown={(e) => {
+                    removeItem(e)
+                  }}
+                  onKeyDown={(e) => {
+                    Draggable.keyDown(
+                      e,
+                      e.target as HTMLElement,
+                      windowObj,
+                      () => escapeFunction(),
+                      () => removeItem(e),
+                      () => removeItem(e),
+                      null
+                    )
+                  }}
+                >
+                  <div className={styles['mug-cup']}>
+                    <span className="scr">
+                      {t('Shape')} {index + 1}
+                    </span>
+                  </div>
+                  {spanArray.slice(0, 2).map((span) => {
+                    const steamStyle: CSSProperties = {
+                      ['--steam-index' as string]: `${span.i}`,
+                    }
+
+                    return (
+                      <span
+                        key={`${item.i}-steam-${span.i}`}
+                        className={styles.steam}
+                        style={steamStyle}
+                      >
+                        <span className="scr">
+                          {t('Shape')} {index + 1}
+                        </span>
+                      </span>
+                    )
+                  })}
+                </li>
+              )
             } else if (
               location == LOCATION.HOME ||
-              location == LOCATION.JOKES ||
               location == LOCATION.SALON ||
               location == LOCATION.QUIZ ||
               location == LOCATION.ABOUT
@@ -972,7 +1085,7 @@ const ItemComponent = forwardRef<
               }
 
               return (
-                //HOME // JOKES // SALON // QUIZ // ABOUT
+                //HOME // SALON // QUIZ // ABOUT
                 <li
                   key={`${item.color}${item.size}${item.e}${index}`}
                   className={`${styles.item} ${styles.about} ${styles.bubbles} ${
