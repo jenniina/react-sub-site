@@ -83,8 +83,8 @@ body.light,
   background-image: linear-gradient(to bottom, var(--color-primary-2) 10%, transparent 100%);
 }
 .light .App-inner-wrap::before {
-  height: 70vh;
-  background-image: linear-gradient(to bottom, var(--color-primary-6) 0%, transparent 100%);
+  height: 90vh;
+  background-image: linear-gradient(to bottom, var(--color-primary-6) 10%, transparent 100%);
 }
 /*current page: */
 nav ul li a.active,
@@ -190,7 +190,7 @@ main {
 .nav-sub ul a {
   display: inline-block;
   position: relative;
-  padding: 0 1em 0.2em;
+  padding: 0.1em 1em;
   line-height: 2;
   font-weight: normal;
   border-top: 3px solid var(--color-primary-2);
@@ -233,6 +233,7 @@ main {
   -o-box-shadow: 0 0.1em 0.9em -0.5em var(--color-primary-11);
   box-shadow: 0 0.1em 0.9em -0.5em var(--color-primary-11);
 }
+
 .nav-sub ul a:hover,
 .nav-sub ul a:focus-visible {
   color: var(--color-primary-15);
@@ -254,8 +255,8 @@ main {
 .light .nav-sub ul li:not(.return) a.active:hover {
   pointer-events: none;
   border-bottom-color: currentColor;
-  border-top-width: 2px;
-  border-bottom-width: 3px;
+  border-top-width: 1px;
+  border-bottom-width: 4px;
 }
 
 .nav-sub {
