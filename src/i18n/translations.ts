@@ -2140,7 +2140,7 @@ export const translations = {
     de: 'Kugel-App',
     pt: 'Aplicativo de bola',
     cs: 'Aplikace Blob',
-    fi: 'Blob-/mollukkasovellus',
+    fi: 'Mollukkasovellus',
   },
   BlobAppSlogan: {
     en: 'Make blob art your thing',
