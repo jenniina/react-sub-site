@@ -538,7 +538,8 @@ button.restore {
   gap: 0.2em;
 }
 button.grayer,
-button:disabled {
+button:disabled,
+button.unavailable-action {
   --sat: 40%;
   --sat2: 50%;
   border: 1px solid hsl(var(--hue-primary), var(--sat), 30%);
@@ -547,7 +548,8 @@ button:disabled {
   background-position: 50% 3%;
 }
 .light button.grayer,
-.light button:disabled {
+.light button:disabled,
+.light button.unavailable-action {
   --sat: 30%;
   --sat2: 50%;
   background: linear-gradient(3deg, hsl(var(--hue-primary), var(--sat2), 6%) 0%, hsl(var(--hue-primary), var(--sat), 25%) 35%, hsl(var(--hue-primary), var(--sat), 60%) 55%, hsl(var(--hue-primary), var(--sat), 95%) 100%);
@@ -556,6 +558,9 @@ button:disabled {
 }
 button:disabled {
   pointer-events: none;
+}
+button.unavailable-action {
+  cursor: not-allowed;
 }
 button.gray {
   background: linear-gradient(3deg, hsl(0, 0%, 80%) 0%, hsl(0, 0%, 60%) 30%, hsl(0, 0%, 10%) 60%, hsl(0, 0%, 3%) 100%);

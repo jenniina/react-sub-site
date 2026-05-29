@@ -4,6 +4,7 @@ import Icon from '../Icon/Icon'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import useSideScroll from '../../hooks/useSideScroll'
 import styles from '../../pages/css/portfolio.module.css'
+import ButtonUnavailableAction from '../ButtonUnavailableAction/ButtonUnavailableAction'
 import {
   getPortfolioTitle,
   portfolioItems,
@@ -146,17 +147,18 @@ const Featured: React.FC = () => {
     <section className="card smallpadd">
       <div>
         <div className={styles.featured}>
-          <button
+          <ButtonUnavailableAction
             type="button"
             className={`${styles['horizontal-scroll']} ${styles.left} horizontal-scroll left ${atStart ? 'disable' : ''}`}
             aria-label={t('Previous')}
             title={t('Previous')}
             onClick={scrollToPrevious}
-            disabled={atStart}
-            aria-disabled={atStart}
+            unavailable={atStart}
+            unavailableReason={atStart ? t('AlreadyOnFirstPage') : ''}
+            tooltipClassName="tooltip above narrow2"
           >
             <Icon lib="fa6" name="FaAnglesLeft" />
-          </button>
+          </ButtonUnavailableAction>
           <ul className={styles.list} ref={setScrollerRef}>
             {items.map((item) => (
               <li key={item.key} className={item.className}>
@@ -168,17 +170,18 @@ const Featured: React.FC = () => {
               </li>
             ))}
           </ul>
-          <button
+          <ButtonUnavailableAction
             type="button"
             className={`${styles['horizontal-scroll']} ${styles.right} horizontal-scroll right ${atEnd ? 'disable' : ''}`}
             aria-label={t('Next')}
             title={t('Next')}
             onClick={scrollToNext}
-            disabled={atEnd}
-            aria-disabled={atEnd}
+            unavailable={atEnd}
+            unavailableReason={atEnd ? t('AlreadyOnLastPage') : ''}
+            tooltipClassName="tooltip above narrow2"
           >
             <Icon lib="fa6" name="FaAnglesRight" />
-          </button>
+          </ButtonUnavailableAction>
         </div>
       </div>
     </section>

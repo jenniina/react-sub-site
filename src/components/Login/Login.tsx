@@ -8,6 +8,7 @@ import { ReducerProps } from '../../types'
 import { Link } from 'react-router-dom'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import { getErrorMessage } from '../../utils'
+import ButtonUnavailableAction from '../ButtonUnavailableAction/ButtonUnavailableAction'
 
 interface LoginProps {
   setIsFormOpen?: (isFormOpen: boolean) => void
@@ -127,14 +128,15 @@ const FormLogin = ({ setIsFormOpen, isOpen, text }: LoginProps) => {
                     <span>{t('Password')}: </span>
                   </label>
                 </div>
-                <button
+                <ButtonUnavailableAction
                   type="submit"
-                  disabled={loggingIn}
+                  unavailable={loggingIn}
+                  unavailableReason={loggingIn ? t('LoggingIn') : ''}
                   id={`login-${text}`}
                   className={`login ${text} restore`}
                 >
                   {loggingIn ? t('LoggingIn') : t('Login')}
-                </button>
+                </ButtonUnavailableAction>
               </form>
             </>
           </Accordion>

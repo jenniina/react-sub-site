@@ -7,6 +7,7 @@ import { getErrorMessage } from '../../utils'
 import styles from './css/edit.module.css'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import { login, logout } from '../../reducers/authReducer'
+import ButtonUnavailableAction from '../ButtonUnavailableAction/ButtonUnavailableAction'
 
 interface Props {
   user: IUser
@@ -85,55 +86,73 @@ const UsernameEdit = ({ user }: Props) => {
     <>
       {user ? (
         <>
-          <h2>{t('EditEmail')}</h2>
-          <p className={styles.p}>
-            {t('SendsAnEmailToTheNewAddressForVerification')}
-          </p>
-          <p className={`${styles.p} ${styles[`p-last`]}`}>
-            {t('CurrentEmail')}: <strong>{user?.username}</strong>
-          </p>
+          {(() => {
+            const unavailableReason = sending
+              ? t('Saving')
+              : user.name === 'temp'
+                ? t('CannotBeChangedForTestUser')
+                : ''
 
-          <form
-            onSubmit={(e) => {
-              e.preventDefault()
-              handleUserSubmit(e)
-            }}
-            className={styles['edit-user']}
-          >
-            <div className="input-wrap">
-              <label>
-                <input
-                  required
-                  type="text"
-                  name="username"
-                  id="username"
-                  value={username}
-                  onChange={({ target }) => setUsername(target.value.trim())}
-                />
-                <span>{t('Email')}</span>
-              </label>
-            </div>
+            return (
+              <>
+                <h2>{t('EditEmail')}</h2>
+                <p className={styles.p}>
+                  {t('SendsAnEmailToTheNewAddressForVerification')}
+                </p>
+                <p className={`${styles.p} ${styles[`p-last`]}`}>
+                  {t('CurrentEmail')}: <strong>{user?.username}</strong>
+                </p>
 
-            <div className="input-wrap">
-              <label>
-                <input
-                  required
-                  type="password"
-                  name="old-password"
-                  id="old-password-username"
-                  value={passwordOld}
-                  onChange={({ target }) => setPasswordOld(target.value)}
-                />
-                <span>{t('CurrentPassword')}</span>
-              </label>
-            </div>
-            {user.name === 'temp' && (
-              <small>({t('CannotBeChangedForTestUser')})</small>
-            )}
-            <button type="submit" disabled={sending || user.name === 'temp'}>
-              {t('Edit')}
-            </button>
-          </form>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault()
+                    handleUserSubmit(e)
+                  }}
+                  className={styles['edit-user']}
+                >
+                  <div className="input-wrap">
+                    <label>
+                      <input
+                        required
+                        type="text"
+                        name="username"
+                        id="username"
+                        value={username}
+                        onChange={({ target }) =>
+                          setUsername(target.value.trim())
+                        }
+                      />
+                      <span>{t('Email')}</span>
+                    </label>
+                  </div>
+
+                  <div className="input-wrap">
+                    <label>
+                      <input
+                        required
+                        type="password"
+                        name="old-password"
+                        id="old-password-username"
+                        value={passwordOld}
+                        onChange={({ target }) => setPasswordOld(target.value)}
+                      />
+                      <span>{t('CurrentPassword')}</span>
+                    </label>
+                  </div>
+                  {user.name === 'temp' && (
+                    <small>({t('CannotBeChangedForTestUser')})</small>
+                  )}
+                  <ButtonUnavailableAction
+                    type="submit"
+                    unavailable={Boolean(unavailableReason)}
+                    unavailableReason={unavailableReason}
+                  >
+                    {t('Edit')}
+                  </ButtonUnavailableAction>
+                </form>
+              </>
+            )
+          })()}
         </>
       ) : (
         <></>

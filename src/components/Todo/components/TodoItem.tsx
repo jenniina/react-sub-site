@@ -15,6 +15,7 @@ import { useIsClient, useWindow } from '../../../hooks/useSSR'
 import ButtonToggle from '../../ButtonToggle/ButtonToggle'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
 import CopyToClipboard from '../../CopyToClipboard/CopyToClipboard'
+import ButtonUnavailableAction from '../../ButtonUnavailableAction/ButtonUnavailableAction'
 
 export default function Todo({
   todo,
@@ -274,26 +275,28 @@ export default function Todo({
           </button>
           {showMoveMenu && (
             <div className={styles['move-menu']} role="menu">
-              <button
+              <ButtonUnavailableAction
                 type="button"
                 onClick={handleMoveUp}
-                disabled={!canMoveUp}
+                unavailable={!canMoveUp}
+                unavailableReason={!canMoveUp ? t('AlreadyAtTop') : ''}
                 role="menuitem"
                 className={`${styles['move-button']} ${styles['move-up']}`}
               >
                 <Icon lib="md" name="MdMoveUp" />
                 <span>{t('MoveUp')}</span>
-              </button>
-              <button
+              </ButtonUnavailableAction>
+              <ButtonUnavailableAction
                 type="button"
                 onClick={handleMoveDown}
-                disabled={!canMoveDown}
+                unavailable={!canMoveDown}
+                unavailableReason={!canMoveDown ? t('AlreadyAtBottom') : ''}
                 role="menuitem"
                 className={`${styles['move-button']} ${styles['move-down']}`}
               >
                 <span>{t('MoveDown')}</span>
                 <Icon lib="md" name="MdMoveDown" />
-              </button>
+              </ButtonUnavailableAction>
               <button
                 type="button"
                 onClick={() => setShowMoveMenu(false)}
@@ -454,17 +457,21 @@ export default function Todo({
             </b>
           )}
 
-          <button
+          <ButtonUnavailableAction
             onClick={() => setIsOpen(true)}
             className={`${styles.edit} tooltip-wrap`}
-            disabled={todo?.complete ?? false}
+            unavailable={todo?.complete ?? false}
+            unavailableReason={
+              todo?.complete ? t('CompletedTasksCannotBeEdited') : ''
+            }
+            tooltipClassName="tooltip narrow2 below left"
           >
             <Icon lib="ai" name="AiOutlineEdit" />
             <span className="scr">{t('Edit')}</span>
             <span className="tooltip narrow2 below left" aria-hidden="true">
               {t('Edit')}
             </span>
-          </button>
+          </ButtonUnavailableAction>
           <button
             className={`${styles.delete} tooltip-wrap`}
             onClick={

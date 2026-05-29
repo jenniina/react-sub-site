@@ -22,6 +22,7 @@ import { ITaskDraggable } from './TodoList'
 // FaRegCheckCircle icon replaced with dynamic Icon loader
 import { useTheme } from '../../../hooks/useTheme'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
+import ButtonUnavailableAction from '../../ButtonUnavailableAction/ButtonUnavailableAction'
 
 const randomString = getRandomString(6)
 
@@ -242,10 +243,10 @@ const TodoItemModal: FC<TodoItemModalProps> = ({
         lightTheme ? styles.light : ''
       }`}
       ref={closeRef}
-      onClick={e => {
+      onClick={(e) => {
         handleOutsideClick(e)
       }}
-      onKeyDown={e => {
+      onKeyDown={(e) => {
         if (e.key === 'Escape') handleClose()
       }}
     >
@@ -273,8 +274,8 @@ const TodoItemModal: FC<TodoItemModalProps> = ({
               first3Words(todo?.name ?? randomString, language)
             )}`}
             className={`${styles.select} ${styles['category-select']}`}
-            value={categoryOptions?.find(o => o.value === newCategory)}
-            onChange={o => setNewCategory(o?.value as TCategory)}
+            value={categoryOptions?.find((o) => o.value === newCategory)}
+            onChange={(o) => setNewCategory(o?.value as TCategory)}
             options={categoryOptions}
             instructions={t('SelectCategory')}
             language={language}
@@ -286,8 +287,8 @@ const TodoItemModal: FC<TodoItemModalProps> = ({
               first3Words(todo?.name ?? randomString, language)
             )}`}
             className={`${styles.select}`}
-            value={priorityOptions?.find(o => o.value === newPriority)}
-            onChange={o => setNewPriority(o?.value as TPriority)}
+            value={priorityOptions?.find((o) => o.value === newPriority)}
+            onChange={(o) => setNewPriority(o?.value as TPriority)}
             options={priorityOptions}
             instructions={t('Priority')}
             language={language}
@@ -326,7 +327,7 @@ const TodoItemModal: FC<TodoItemModalProps> = ({
                       max={31}
                       value={newDay}
                       placeholder="DD"
-                      onChange={e => handleDayChange(e.target.value)}
+                      onChange={(e) => handleDayChange(e.target.value)}
                       required
                       className="bg"
                     />
@@ -349,7 +350,7 @@ const TodoItemModal: FC<TodoItemModalProps> = ({
                       max={12}
                       value={newMonth}
                       placeholder="MM"
-                      onChange={e => handleMonthChange(e.target.value)}
+                      onChange={(e) => handleMonthChange(e.target.value)}
                       required
                       className="bg"
                     />
@@ -372,7 +373,7 @@ const TodoItemModal: FC<TodoItemModalProps> = ({
                       max={new Date().getFullYear() + 10}
                       value={newYear}
                       placeholder="YYYY"
-                      onChange={e => handleYearChange(e)}
+                      onChange={(e) => handleYearChange(e)}
                       required
                       className="bg"
                     />
@@ -405,14 +406,19 @@ const TodoItemModal: FC<TodoItemModalProps> = ({
               </span>
             </label>
           </fieldset>
-          <button type="submit" disabled={sending} className="modify">
+          <ButtonUnavailableAction
+            type="submit"
+            unavailable={sending}
+            unavailableReason={sending ? t('Saving') : ''}
+            className="modify"
+          >
             <span>{sending ? t('Saving') : t('Save')}</span>
             {sending ? (
               <img src="/assets/clock.svg" alt="Loading" />
             ) : (
               <Icon lib="fa" name="FaRegCheckCircle" />
             )}
-          </button>
+          </ButtonUnavailableAction>
           <button
             onClick={handleClose}
             className={`reset ${styles.cancel}`}

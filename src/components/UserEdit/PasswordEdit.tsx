@@ -6,6 +6,7 @@ import { updatePassword } from '../../reducers/usersReducer'
 import { getErrorMessage } from '../../utils'
 import styles from './css/edit.module.css'
 import { useLanguageContext } from '../../contexts/LanguageContext'
+import ButtonUnavailableAction from '../ButtonUnavailableAction/ButtonUnavailableAction'
 
 interface Props {
   user: IUser
@@ -70,55 +71,76 @@ const PasswordEdit = ({ user }: Props) => {
     <>
       {user ? (
         <>
-          <h2>{t('EditPassword')}</h2>
+          {(() => {
+            const unavailableReason = sending
+              ? t('Saving')
+              : user.name === 'temp'
+                ? t('CannotBeChangedForTestUser')
+                : ''
 
-          <form onSubmit={handleUserSubmit} className={styles['edit-user']}>
-            <div className="input-wrap">
-              <label>
-                <input
-                  required
-                  type="password"
-                  name="old-password"
-                  id="old-password"
-                  value={passwordOld}
-                  onChange={({ target }) => setPasswordOld(target.value)}
-                />
-                <span>{t('CurrentPassword')}</span>
-              </label>
-            </div>
-            <div className="input-wrap">
-              <label>
-                <input
-                  required
-                  type="password"
-                  name="password"
-                  id="password-edit"
-                  value={password}
-                  onChange={({ target }) => setPassword(target.value)}
-                />
-                <span>{t('Password')}</span>
-              </label>
-            </div>
-            <div className="input-wrap">
-              <label>
-                <input
-                  required
-                  type="password"
-                  name="confirmPassword"
-                  id="confirmPassword"
-                  value={confirmPassword}
-                  onChange={({ target }) => setConfirmPassword(target.value)}
-                />
-                <span>{t('ConfirmPassword')}</span>
-              </label>
-            </div>
-            {user.name === 'temp' && (
-              <small>({t('CannotBeChangedForTestUser')})</small>
-            )}
-            <button type="submit" disabled={sending || user.name === 'temp'}>
-              {t('Edit')}
-            </button>
-          </form>
+            return (
+              <>
+                <h2>{t('EditPassword')}</h2>
+
+                <form
+                  onSubmit={handleUserSubmit}
+                  className={styles['edit-user']}
+                >
+                  <div className="input-wrap">
+                    <label>
+                      <input
+                        required
+                        type="password"
+                        name="old-password"
+                        id="old-password"
+                        value={passwordOld}
+                        onChange={({ target }) => setPasswordOld(target.value)}
+                      />
+                      <span>{t('CurrentPassword')}</span>
+                    </label>
+                  </div>
+                  <div className="input-wrap">
+                    <label>
+                      <input
+                        required
+                        type="password"
+                        name="password"
+                        id="password-edit"
+                        value={password}
+                        onChange={({ target }) => setPassword(target.value)}
+                      />
+                      <span>{t('Password')}</span>
+                    </label>
+                  </div>
+                  <div className="input-wrap">
+                    <label>
+                      <input
+                        required
+                        type="password"
+                        name="confirmPassword"
+                        id="confirmPassword"
+                        value={confirmPassword}
+                        onChange={({ target }) =>
+                          setConfirmPassword(target.value)
+                        }
+                      />
+                      <span>{t('ConfirmPassword')}</span>
+                    </label>
+                  </div>
+                  {user.name === 'temp' && (
+                    <small>({t('CannotBeChangedForTestUser')})</small>
+                  )}
+                  <ButtonUnavailableAction
+                    type="submit"
+                    unavailable={Boolean(unavailableReason)}
+                    unavailableReason={unavailableReason}
+                  >
+                    {t('Edit')}
+                  </ButtonUnavailableAction>
+                </form>
+              </>
+            )
+          })()}
         </>
       ) : (
         <></>

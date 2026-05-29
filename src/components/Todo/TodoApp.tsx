@@ -31,6 +31,7 @@ import { useLanguageContext } from '../../contexts/LanguageContext'
 import { useConfirm } from '../../contexts/ConfirmContext'
 import { useIsClient, useWindow } from '../../hooks/useSSR'
 import TodoList from './components/TodoList'
+import ButtonUnavailableAction from '../ButtonUnavailableAction/ButtonUnavailableAction'
 
 const maxCharacters = 300
 
@@ -644,14 +645,15 @@ export default function TodoApp() {
                 </>
               )}
             </fieldset>
-            <button
+            <ButtonUnavailableAction
               id={styles['submit-todo']}
               className={styles['submit-todo']}
               type="submit"
-              disabled={sending}
+              unavailable={sending}
+              unavailableReason={sending ? t('Saving') : ''}
             >
               {t('AddTask')} <Icon lib="io" name="IoMdAdd" />
-            </button>
+            </ButtonUnavailableAction>
           </div>
         </fieldset>
       </form>
@@ -686,18 +688,26 @@ export default function TodoApp() {
           z={todosWithIdAndStatus.length + 2}
         />
 
-        <button
+        <ButtonUnavailableAction
           className={`danger ${styles['clear-completed']}`}
-          disabled={!hasCompletedTasks}
+          unavailable={!hasCompletedTasks}
+          unavailableReason={!hasCompletedTasks ? t('NoCompletedTasks') : ''}
           onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
             void handleClearTodos(e)
           }
         >
           {t('ClearCompleted')}
-        </button>
-        <button
+        </ButtonUnavailableAction>
+        <ButtonUnavailableAction
           className={styles['move-all-down']}
-          disabled={!hasCompletedTasks || todos.length === 0}
+          unavailable={!hasCompletedTasks || todos.length === 0}
+          unavailableReason={
+            todos.length === 0
+              ? t('NoTasksToReorder')
+              : !hasCompletedTasks
+                ? t('NoCompletedTasks')
+                : ''
+          }
           onClick={(e) => {
             e.preventDefault()
             const incompleteTodos = todos
@@ -724,7 +734,7 @@ export default function TodoApp() {
           }}
         >
           {t('MoveCompletedToBottom')}
-        </button>
+        </ButtonUnavailableAction>
       </div>
 
       <div id="todo-list-wrap" className={styles['list-wrap']}>

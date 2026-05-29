@@ -11,6 +11,7 @@ import { useLanguageContext } from '../../contexts/LanguageContext'
 import MessageForm from './components/MessageForm'
 import ExtrasForm from './components/ExtrasForm'
 import InitialForm from './components/InitialForm'
+import ButtonUnavailableAction from '../ButtonUnavailableAction/ButtonUnavailableAction'
 
 function FormMulti() {
   const { t, language } = useLanguageContext()
@@ -166,14 +167,15 @@ function FormMulti() {
             </button>
           )}
           {isLastStep && (
-            <button
+            <ButtonUnavailableAction
               className={isLastStep ? styles.submit : styles.next}
               type="submit"
-              disabled={sending}
+              unavailable={sending}
+              unavailableReason={sending ? t('SendingEmail') : ''}
             >
               {sending ? t('SendingEmail') : t('Send')}{' '}
               <Icon lib="ri" name="RiMailSendLine" />
-            </button>
+            </ButtonUnavailableAction>
           )}
           {showError && (
             <div

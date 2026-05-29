@@ -7,6 +7,7 @@ import { findUserById, updateUser } from '../../reducers/usersReducer'
 import { getErrorMessage } from '../../utils'
 import styles from './css/edit.module.css'
 import { useLanguageContext } from '../../contexts/LanguageContext'
+import ButtonUnavailableAction from '../ButtonUnavailableAction/ButtonUnavailableAction'
 
 interface Props {
   user: IUser
@@ -63,48 +64,64 @@ const NicknameEdit = ({ user }: Props) => {
     <>
       {user ? (
         <>
-          <h2>{t('EditPreferredNickname')}</h2>
-          <p className={styles.p}>
-            {t('CurrentNickname')}: <strong>{user?.name}</strong>
-          </p>
-          <p className={`${styles.p} ${styles[`p-last`]}`}>
-            {t('PleaseUseGoodTasteWhenChoosingYourNickname')}
-          </p>
+          {(() => {
+            const unavailableReason = sending
+              ? t('Saving')
+              : user.name === 'temp'
+                ? t('CannotBeChangedForTestUser')
+                : ''
 
-          <form
-            onSubmit={(e) => handleUserSubmit(e)}
-            className={styles['edit-user']}
-          >
-            <div className="input-wrap">
-              <label>
-                <input
-                  required
-                  type="text"
-                  name="name"
-                  id="name-edit"
-                  value={name}
-                  onChange={({ target }) => setName(target.value)}
-                />
-                <span>{t('Nickname')}</span>
-              </label>
-            </div>
-            <div className="input-wrap">
-              <label>
-                <input
-                  required
-                  type="password"
-                  name="old-password"
-                  id="old-password-user"
-                  value={passwordOld}
-                  onChange={({ target }) => setPasswordOld(target.value)}
-                />
-                <span>{t('CurrentPassword')}</span>
-              </label>
-            </div>
-            <button type="submit" disabled={sending || user.name === 'temp'}>
-              {t('Edit')}
-            </button>
-          </form>
+            return (
+              <>
+                <h2>{t('EditPreferredNickname')}</h2>
+                <p className={styles.p}>
+                  {t('CurrentNickname')}: <strong>{user?.name}</strong>
+                </p>
+                <p className={`${styles.p} ${styles[`p-last`]}`}>
+                  {t('PleaseUseGoodTasteWhenChoosingYourNickname')}
+                </p>
+
+                <form
+                  onSubmit={(e) => handleUserSubmit(e)}
+                  className={styles['edit-user']}
+                >
+                  <div className="input-wrap">
+                    <label>
+                      <input
+                        required
+                        type="text"
+                        name="name"
+                        id="name-edit"
+                        value={name}
+                        onChange={({ target }) => setName(target.value)}
+                      />
+                      <span>{t('Nickname')}</span>
+                    </label>
+                  </div>
+                  <div className="input-wrap">
+                    <label>
+                      <input
+                        required
+                        type="password"
+                        name="old-password"
+                        id="old-password-user"
+                        value={passwordOld}
+                        onChange={({ target }) => setPasswordOld(target.value)}
+                      />
+                      <span>{t('CurrentPassword')}</span>
+                    </label>
+                  </div>
+                  <ButtonUnavailableAction
+                    type="submit"
+                    unavailable={Boolean(unavailableReason)}
+                    unavailableReason={unavailableReason}
+                  >
+                    {t('Edit')}
+                  </ButtonUnavailableAction>
+                </form>
+              </>
+            )
+          })()}
         </>
       ) : (
         <></>

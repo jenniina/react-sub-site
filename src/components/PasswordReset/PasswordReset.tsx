@@ -4,6 +4,7 @@ import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { notify } from '../../reducers/notificationReducer'
 import { forgot } from '../../reducers/usersReducer'
 import { useLanguageContext } from '../../contexts/LanguageContext'
+import ButtonUnavailableAction from '../ButtonUnavailableAction/ButtonUnavailableAction'
 
 interface Props {
   text?: string
@@ -24,7 +25,7 @@ const PasswordReset = ({ text }: Props) => {
 
     if (username) {
       await dispatch(forgot(username, language))
-        .then(r => {
+        .then((r) => {
           void dispatch(notify(r.message ?? t('EmailSent'), false, 3))
           setSending(false)
         })
@@ -47,7 +48,7 @@ const PasswordReset = ({ text }: Props) => {
     <>
       <h2>{t('ForgotPassword')}</h2>
 
-      <form onSubmit={e => void handleForgot(e)} className="forgot">
+      <form onSubmit={(e) => void handleForgot(e)} className="forgot">
         <div className="input-wrap">
           <label>
             <input
@@ -61,15 +62,16 @@ const PasswordReset = ({ text }: Props) => {
             <span>{t('Email')}: </span>
           </label>
         </div>
-        <button
+        <ButtonUnavailableAction
           type="submit"
-          disabled={sending}
+          unavailable={sending}
+          unavailableReason={sending ? t('SendingEmail') : ''}
           id={`forgot-${text}`}
           className="forgot-btn restore"
         >
           <span>{t('SendResetLink')}</span>{' '}
           <Icon lib="ri" name="RiMailSendLine" />
-        </button>
+        </ButtonUnavailableAction>
       </form>
     </>
   )

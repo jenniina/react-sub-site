@@ -38,6 +38,7 @@ import { Select, SelectOption } from '../Select/Select'
 import PasswordReset from '../PasswordReset/PasswordReset'
 import Accordion from '../Accordion/Accordion'
 import useCart from '../../hooks/useCart'
+import ButtonUnavailableAction from '../ButtonUnavailableAction/ButtonUnavailableAction'
 import { options } from '../../utils'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import { getErrorMessage } from '../../utils'
@@ -949,15 +950,18 @@ const Nav = (
                   >
                     {t('Logout')} &times;
                   </button>
-                  <button
-                    disabled={user.name === 'temp'}
+                  <ButtonUnavailableAction
+                    unavailable={user.name === 'temp'}
+                    unavailableReason={
+                      user.name === 'temp' ? t('UnavailableForTestUser') : ''
+                    }
                     onClick={() =>
                       user && dispatch(logoutAllDevices(user._id ?? ''))
                     }
                     className={`reset ${styles['logout-all']}`}
                   >
                     [{t('LogoutAllDevices')}]
-                  </button>
+                  </ButtonUnavailableAction>
                 </>
               )}
             </div>

@@ -10,6 +10,7 @@ import { paid, status } from '../../../types/store'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 import { getErrorMessage } from '../../../utils'
 import { useIsClient, useWindow } from '../../../hooks/useSSR'
+import ButtonUnavailableAction from '../../ButtonUnavailableAction/ButtonUnavailableAction'
 
 interface Props {
   language: ELanguages
@@ -50,14 +51,13 @@ const Order: FC<Props> = ({
         }
         setOrder(ordersWithDates)
         setSending(false)
-        
       } catch (err: unknown) {
         const message = getErrorMessage(err, t('Error'))
         void dispatch(notify(message, true, 8))
         setSending(false)
       }
     },
-  [dispatch, language, orderID, t]
+    [dispatch, language, orderID, t]
   )
 
   // if the address has ?orderID=123456-AB, fetch the order
@@ -77,7 +77,7 @@ const Order: FC<Props> = ({
       className={`${styles['order-wrap']} ${lightTheme ? styles.light : ''}`}
     >
       <form
-        onSubmit={e => {
+        onSubmit={(e) => {
           e.preventDefault()
           void fetchOrder()
         }}
@@ -89,20 +89,24 @@ const Order: FC<Props> = ({
               required
               name="orderID"
               value={orderID}
-              onChange={e => setOrderID(e.target.value)}
+              onChange={(e) => setOrderID(e.target.value)}
             />
             <span className="label">{t('OrderID')}</span>
           </label>
         </div>
-        <button type="submit" disabled={sending}>
+        <ButtonUnavailableAction
+          type="submit"
+          unavailable={sending}
+          unavailableReason={sending ? t('Loading') : ''}
+        >
           {t('Submit')}
-        </button>
+        </ButtonUnavailableAction>
       </form>
       {order && (
         <div>
           <h2>{order.orderID}</h2>
           <div className={styles['order-items']}>
-            {order.items?.map(item => {
+            {order.items?.map((item) => {
               return (
                 <div key={item.id} className={styles['order-item']}>
                   <h3>
@@ -143,7 +147,7 @@ const Order: FC<Props> = ({
             <table className={`${styles['info-table']}`}>
               <caption>{t('Info')}</caption>
               <tbody>
-                {Object.keys(order.info).map(key => {
+                {Object.keys(order.info).map((key) => {
                   if (key === '_id') return null
                   return (
                     order.info[key as keyof typeof order.info] !== null &&
@@ -171,9 +175,9 @@ const Order: FC<Props> = ({
               {t('PaymentState')}:{' '}
               {
                 paidStatus[
-                  order.items.every(item => item.paid === 'full')
+                  order.items.every((item) => item.paid === 'full')
                     ? 'full'
-                    : order.items.every(item => item.paid === 'none')
+                    : order.items.every((item) => item.paid === 'none')
                       ? 'none'
                       : 'partial'
                 ]

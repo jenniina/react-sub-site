@@ -9,6 +9,7 @@ import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { useOutsideClick } from '../../../hooks/useOutsideClick'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 import Icon from '../../Icon/Icon'
+import ButtonUnavailableAction from '../../ButtonUnavailableAction/ButtonUnavailableAction'
 
 interface DragData {
   type: 'item' | 'span'
@@ -204,9 +205,13 @@ const CardsContainer = ({
                   <span>{t('Change')}:</span>
                 </label>
               </div>
-              <button type="submit" disabled={sending}>
+              <ButtonUnavailableAction
+                type="submit"
+                unavailable={sending}
+                unavailableReason={sending ? t('Saving') : ''}
+              >
                 {t('Change')}
-              </button>
+              </ButtonUnavailableAction>
               <div className={`mt1 ${styles['edit-color-wrap']}`}>
                 <div className={styles['color-picker']}>
                   <label

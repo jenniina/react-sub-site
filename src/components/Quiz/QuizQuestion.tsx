@@ -11,6 +11,7 @@ import Message from './components/Message'
 import Timer from './components/Timer'
 import styles from '../../components/Quiz/css/quiz.module.css'
 import { useLanguageContext } from '../../contexts/LanguageContext'
+import ButtonUnavailableAction from '../ButtonUnavailableAction/ButtonUnavailableAction'
 
 const QuizQuestion = () => {
   const { t } = useLanguageContext()
@@ -76,7 +77,7 @@ const QuizQuestion = () => {
                 <div className={`${styles.options}`}>
                   {options?.map((option) => {
                     return (
-                      <button
+                      <ButtonUnavailableAction
                         key={option}
                         className={`${answer === option ? styles.answer : ''} 
             ${
@@ -86,11 +87,14 @@ const QuizQuestion = () => {
             } 
             ${answered ? styles.disabled : ''}
             `}
-                        disabled={answered}
+                        unavailable={answered}
+                        unavailableReason={
+                          answered ? t('QuestionAlreadyAnswered') : ''
+                        }
                         onClick={() => dispatch(newAnswer(option))}
                       >
                         {option}
-                      </button>
+                      </ButtonUnavailableAction>
                     )
                   })}
                 </div>
