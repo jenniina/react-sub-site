@@ -1472,13 +1472,16 @@ const ItemComponent = forwardRef<
                       borderWidth: border,
                     }
                     return (
-                      <span key={`${item.i}-${index}`} style={style}>
-                        <span className="scr">
-                          {t('Shape')} {index + 1}
-                        </span>
-                      </span>
+                      <span
+                        aria-hidden="true"
+                        key={`${item.i}-${index}`}
+                        style={style}
+                      ></span>
                     )
                   })}
+                  <span className="scr">
+                    {t('Shape')} {item.i}
+                  </span>
                 </li>
               )
             }
