@@ -7,7 +7,7 @@
   margin: 0;
   padding: 0;
   width: max-content;
-  margin: 0 auto 2rem;
+  margin: 4em auto 6em;
 }
 .subheading {
   width: 600px;
@@ -108,6 +108,9 @@
   -o-transform: scale(1.2);
   -moz-transform: scale(1.2);
   transform: scale(1.2);
+}
+.welcome > section {
+  margin-bottom: 3em;
 }
 .language {
   font-size: 0.8em;
