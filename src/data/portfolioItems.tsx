@@ -3,6 +3,7 @@ import Icon from '../components/Icon/Icon'
 import MemorySVG from '../components/Memory/components/MemorySVG'
 import { firstToUpperCase } from '../utils'
 import { TranslationKey } from '../i18n/translations'
+import BlobSVG from '../components/Icon/BlobSVG'
 
 type ConcreteIconProps = Exclude<
   ComponentProps<typeof Icon>,
@@ -13,6 +14,7 @@ type PortfolioNamedIcon = { kind: 'icon' } & ConcreteIconProps
 export type PortfolioIconSpec =
   | PortfolioNamedIcon
   | { kind: 'memory'; size: string | number }
+  | { kind: 'blob'; size: string | number }
 
 export interface PortfolioItemDef {
   id: string
@@ -30,6 +32,7 @@ function renderNamedIcon(iconProps: ConcreteIconProps) {
 
 export function renderPortfolioIcon(icon: PortfolioIconSpec) {
   if (icon.kind === 'memory') return <MemorySVG size={String(icon.size)} />
+  if (icon.kind === 'blob') return <BlobSVG size={String(icon.size)} />
   const { kind: _kind, ...iconProps } = icon
   return renderNamedIcon(iconProps)
 }
@@ -76,7 +79,7 @@ export const portfolioItems: PortfolioItemDef[] = [
   {
     id: 'blob',
     url: '/portfolio/blob',
-    icon: { kind: 'icon', lib: 'md', name: 'MdBubbleChart' },
+    icon: { kind: 'blob', size: 60 },
     title: { kind: 't', key: 'BlobArtApp' },
     navLabel: { kind: 't', key: 'Blob' },
     description: (t) =>

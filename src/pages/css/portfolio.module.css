@@ -59,13 +59,15 @@
 }
 .list a svg {
   background: transparent;
+  transform-origin: 50% 25%;
 }
-.list a:hover svg {
-  -webkit-transform: scale(1.1);
-  -ms-transform: scale(1.1);
-  -o-transform: scale(1.1);
-  -moz-transform: scale(1.1);
-  transform: scale(1.1);
+.list a:hover svg,
+.list a:focus-visible svg {
+  -webkit-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+  -o-transform: scale(1.2);
+  -moz-transform: scale(1.2);
+  transform: scale(1.2);
   background: transparent;
 }
 .list a > span {
