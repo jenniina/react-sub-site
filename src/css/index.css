@@ -542,8 +542,8 @@ button:disabled,
 button.unavailable-action {
   --sat: 40%;
   --sat2: 50%;
-  border: 1px solid hsl(var(--hue-primary), var(--sat), 30%);
-  background: linear-gradient(3deg, hsl(var(--hue-primary), var(--sat), 95%) 0%, hsl(var(--hue-primary), var(--sat), 60%) 33%, hsl(var(--hue-primary), var(--sat), 25%) 55%, hsl(var(--hue-primary), var(--sat2), 3%) 100%);
+  border: 1px solid hsl(var(--hue-primary), var(--sat-fade), 30%);
+  background: linear-gradient(3deg, hsl(var(--hue-primary), var(--sat-fade), 95%) 0%, hsl(var(--hue-primary), var(--sat-fade), 60%) 33%, hsl(var(--hue-primary), var(--sat-fade), 25%) 55%, hsl(var(--hue-primary), var(--sat-fade), 3%) 100%);
   background-size: var(--bg-size);
   background-position: 50% 3%;
 }
@@ -552,9 +552,13 @@ button.unavailable-action {
 .light button.unavailable-action {
   --sat: 30%;
   --sat2: 50%;
-  background: linear-gradient(3deg, hsl(var(--hue-primary), var(--sat2), 6%) 0%, hsl(var(--hue-primary), var(--sat), 25%) 35%, hsl(var(--hue-primary), var(--sat), 60%) 55%, hsl(var(--hue-primary), var(--sat), 95%) 100%);
+  background: linear-gradient(3deg, hsl(var(--hue-primary), var(--sat-fade), 6%) 0%, hsl(var(--hue-primary), var(--sat-fade), 25%) 35%, hsl(var(--hue-primary), var(--sat-fade), 60%) 55%, hsl(var(--hue-primary), var(--sat-fade), 95%) 100%);
   background-size: var(--bg-size);
   background-position: 50% 3%;
+}
+button.unavailable-action:hover,
+button.unavailable-action:focus-visible {
+  color: var(--color-primary-1);
 }
 button:disabled {
   pointer-events: none;

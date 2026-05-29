@@ -97,6 +97,7 @@ import {
   MdInvertColors,
   MdInvertColorsOff,
   MdOutlineCircle,
+  MdBubbleChart,
 } from 'react-icons/md'
 import {
   LuCirclePlus,
@@ -368,6 +369,7 @@ export const iconLibraries = {
     MdInvertColors,
     MdInvertColorsOff,
     MdOutlineCircle,
+    MdBubbleChart,
   },
   lu: {
     LuCirclePlus,

@@ -76,7 +76,7 @@ export const portfolioItems: PortfolioItemDef[] = [
   {
     id: 'blob',
     url: '/portfolio/blob',
-    icon: { kind: 'icon', lib: 'ri', name: 'RiDragMove2Fill' },
+    icon: { kind: 'icon', lib: 'md', name: 'MdBubbleChart' },
     title: { kind: 't', key: 'BlobArtApp' },
     navLabel: { kind: 't', key: 'Blob' },
     description: (t) =>
