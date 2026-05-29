@@ -1,6 +1,6 @@
 .hero {
   padding-top: 10vh;
-  min-height: clamp(300px, 92vh, 1100px);
+  height: clamp(300px, 94vh, 1100px);
   display: flex;
   flex-flow: column nowrap;
   justify-content: flex-end;
@@ -16,43 +16,25 @@
   background-repeat: repeat-x;
 }
 .hero h1,
-.hero p {
+.hero h1 + p {
   overflow: visible;
   text-align: center;
 }
 .hero h1 {
-  margin-top: 1em;
-  margin-bottom: 0;
-  z-index: 1;
+  margin-bottom: 0.2em;
 }
-@media (min-height: 400px) {
-  .hero h1 {
-    margin-top: 0;
-  }
+.hero h1 + p {
+  margin-bottom: 5em;
+}
+@media (min-height: 550px) and (min-width: 300px) {
 }
 
 .hero h1 + p {
   z-index: 9;
   pointer-events: none;
-  margin-top: 1em;
 }
 .light.hero h1 + p {
   font-weight: 700;
-}
-.hero.welcome.touch {
-  padding-top: 0;
-  min-height: clamp(300px, 80vh, 1000px);
-}
-.hero.welcome.touch h1 {
-  margin-top: 0;
-}
-.hero.welcome.touch p {
-  margin-bottom: 50%;
-}
-.hero.welcome h1,
-.hero.welcome p {
-  z-index: 3;
-  text-align: center;
 }
 .hero h1 {
   -webkit-text-stroke: 1px var(--color-primary-1);

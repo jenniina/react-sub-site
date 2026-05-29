@@ -10,6 +10,7 @@ import {
   portfolioItems,
   renderPortfolioIcon,
 } from '../../data/portfolioItems'
+import { useTheme } from '../../hooks/useTheme'
 
 const Featured: React.FC = () => {
   const { t } = useLanguageContext()
@@ -143,8 +144,10 @@ const Featured: React.FC = () => {
     }
   }, [scrollRef, items, t])
 
+  const lightTheme = useTheme()
+
   return (
-    <section className="card smallpadd">
+    <section className={`card smallpadd ${lightTheme ? styles.light : ''}`}>
       <div>
         <div className={styles.featured}>
           <ButtonUnavailableAction

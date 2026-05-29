@@ -57,10 +57,21 @@
   transition-duration: 300ms;
   margin-top: 1.5em;
 }
+.list a,
 .list a svg {
   background: transparent;
   transform-origin: 50% 25%;
 }
+.list *,
+.light .list *,
+.light .list a:hover,
+.light .list a:focus-visible,
+.light .list a:hover *,
+.light .list a:focus-visible * {
+  background: none;
+}
+.list a:hover,
+.list a:focus-visible,
 .list a:hover svg,
 .list a:focus-visible svg {
   -webkit-transform: scale(1.2);
@@ -68,7 +79,6 @@
   -o-transform: scale(1.2);
   -moz-transform: scale(1.2);
   transform: scale(1.2);
-  background: transparent;
 }
 .list a > span {
   display: inline-block;
