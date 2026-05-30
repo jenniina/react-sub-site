@@ -1945,10 +1945,6 @@
   transition: opacity 400ms ease-in-out;
 }
 
-.herocontent.items-visible li {
-  opacity: inherit;
-}
-
 .herocontent.items-hidden li {
   opacity: 0;
 }
