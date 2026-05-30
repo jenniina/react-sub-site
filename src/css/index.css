@@ -153,7 +153,7 @@ body * {
 .transformations a > *,
 #modal-root a,
 #modal-root a > * {
-  transition-property: color, border, transform, font-size, fill, background-position;
+  transition-property: color, border, transform, font-size, fill, background-position, stroke;
   transition-timing-function: ease-in-out;
   transition-duration: 200ms;
   transition-delay: 0s;
@@ -558,7 +558,8 @@ button.unavailable-action {
 }
 button.unavailable-action:hover,
 button.unavailable-action:focus-visible {
-  color: var(--color-primary-1);
+  background-position: 50% 3%;
+  color: var(--color-primary-20);
 }
 button:disabled {
   pointer-events: none;
