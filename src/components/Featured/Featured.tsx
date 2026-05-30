@@ -147,8 +147,8 @@ const Featured: React.FC = () => {
   const lightTheme = useTheme()
 
   return (
-    <section className={`card smallpadd ${lightTheme ? styles.light : ''}`}>
-      <div>
+    <section className={lightTheme ? styles.light : ''}>
+      <div style={{ padding: '1em var(--padd) 0.8em' }}>
         <div className={styles.featured}>
           <ButtonUnavailableAction
             type="button"

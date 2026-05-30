@@ -19,17 +19,16 @@
   transition-duration: 300ms;
   flex: 1 0 100%;
 }
-.portfolio .card .list li a span {
+.portfolio .list li a span {
   border-radius: 0 0 0.5em 0.5em;
   padding-bottom: 0.3em;
   text-wrap: balance;
 }
-.portfolio .card .list li a,
-.portfolio .card .list li a > * {
-  text-decoration: none;
+.portfolio .list li a,
+.portfolio .list li a > * {
   background: none;
 }
-.portfolio .card .list li a > span {
+.portfolio .list li a > span {
   background: none;
   line-height: 1.1;
   margin-bottom: 0.3em;
@@ -68,14 +67,13 @@
   -ms-transform-origin: 50% 10%;
   -o-transform-origin: 50% 10%;
   transform-origin: 50% 10%;
-  text-decoration: none;
 }
-.light.portfolio .card .list a:hover,
-.light.portfolio .card .list a:focus-visible,
-.light.portfolio .card .list a:hover svg,
-.light.portfolio .card .list a:focus-visible svg,
-.light.portfolio .card .list a:hover span,
-.light.portfolio .card .list a:focus-visible span {
+.light.portfolio .list a:hover,
+.light.portfolio .list a:focus-visible,
+.light.portfolio .list a:hover svg,
+.light.portfolio .list a:focus-visible svg,
+.light.portfolio .list a:hover span,
+.light.portfolio .list a:focus-visible span {
   color: var(--color-secondary-3);
 }
 .list a:hover svg,

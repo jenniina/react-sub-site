@@ -125,7 +125,6 @@ const LinkComponent: FC<LinkComponentProps> = ({
 
           <ul
             className={`${styles['logo-menu']} ${smallLogoOpen ? styles.show : ''}`}
-            aria-hidden={!smallLogoOpen}
           >
             <li>
               <Link to="/" onClick={() => setSmallLogoOpen(false)}>
@@ -623,7 +622,6 @@ const Nav = (
             </button>
             <ul
               className={`${styles['logo-menu']} ${logoOpen ? styles.show : ''}`}
-              aria-hidden={!logoOpen}
             >
               <li>
                 <Link to="/" onClick={() => setLogoOpen(false)}>

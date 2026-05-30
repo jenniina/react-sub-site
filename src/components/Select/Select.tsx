@@ -46,6 +46,10 @@ type SelectProps = {
 let debounceTimeout: ReturnType<typeof setTimeout>
 let searchTerm = ''
 
+function getOptionId(id: string, option: SelectOption, index: number) {
+  return `${id}-${index}-${sanitize(option.value.toString())}`
+}
+
 export function Select({
   z,
   instructions,
@@ -192,6 +196,11 @@ export function Select({
     }
   }, [isOpen, highlightedIndex, options, selectOption])
 
+  const activeDescendant =
+    isOpen && options[highlightedIndex]
+      ? getOptionId(id, options[highlightedIndex], highlightedIndex)
+      : undefined
+
   return (
     <div
       className={`${styles['select-container']} select-container ${className} ${
@@ -218,7 +227,7 @@ export function Select({
         aria-labelledby={`${id}-instructions`}
         aria-controls={id}
         aria-expanded={isOpen}
-        aria-activedescendant={`${id}-${highlightedIndex}`}
+        aria-activedescendant={activeDescendant}
         ref={containerRef}
         //onBlur={() => setIsOpen(false)}
         onClick={() => {
@@ -351,8 +360,7 @@ export function Select({
                   ? `${styles.highlighted} highlighted`
                   : ''
               }`}
-              // id={`${id}-${(option.label).replace(/\s+/g, '-').toLowerCase().replace(/[^a-zA-Z]/g, '')}-${index}`}
-              id={`${id}-${index}-${sanitize(option.value.toString())}`}
+              id={getOptionId(id, option, index)}
               onKeyDown={e => {
                 if (e.code === 'Enter' || e.code === ' ') {
                   e.preventDefault()

@@ -28,7 +28,6 @@
 .light .welcome .list a > *,
 .light .welcome .list a:hover,
 .light .welcome .list a:focus-visible {
-  text-decoration: none;
   background: transparent;
 }
 .transformations .list a {
@@ -50,11 +49,6 @@
   -o-transform: translateY(-0.1em);
   -moz-transform: translateY(-0.1em);
   transform: translateY(-0.1em);
-  text-decoration: none;
-}
-.welcome .list a:hover > *,
-.welcome .list a:focus-visible > * {
-  text-decoration: none;
 }
 .list a:hover svg,
 .list a:focus-visible svg {
