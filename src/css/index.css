@@ -750,7 +750,8 @@ code {
   border-radius: var(--radius-small);
 }
 /*reset button styles to regular text:*/
-button.reset {
+button.reset,
+button.reset.unavailable-action {
   border: none;
   display: inline-block;
   padding: 0.03em 0.06em 0.06em;
