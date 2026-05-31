@@ -264,26 +264,22 @@ const Nav = (
     (windowWidth: number) => {
       if (!mainMenu.open) {
         mainMenu.show()
-        // if you want mutual exclusivity on small screens
         if (toolbar.open && windowWidth < breakpoint) toolbar.hide()
       } else {
         mainMenu.hide()
+        toolbar.hide()
       }
     },
     [mainMenu, toolbar]
   )
 
-  const toggleToolbar = useCallback(
-    (windowWidth: number) => {
-      if (!toolbar.open) {
-        toolbar.show()
-        if (mainMenu.open && windowWidth < breakpoint) mainMenu.hide()
-      } else {
-        toolbar.hide()
-      }
-    },
-    [toolbar, mainMenu]
-  )
+  const toggleToolbar = useCallback(() => {
+    if (!toolbar.open) {
+      toolbar.show()
+    } else {
+      toolbar.hide()
+    }
+  }, [toolbar, mainMenu])
 
   const getAuthQueryForm = useCallback(
     (search: string): Form => {
@@ -569,6 +565,14 @@ const Nav = (
   const isPortfolioMainPage =
     firstPartOfPageName === 'portfolio' && pageName === 'portfolio'
 
+  // if scrollDirection is down and scrolled is true, hide menu
+  useEffect(() => {
+    if (scrollDirection === 'down' && scrolled) {
+      mainMenu.hide()
+      toolbar.hide()
+    }
+  }, [scrollDirection, scrolled, toolbar])
+
   return (
     <>
       <header
@@ -788,10 +792,7 @@ const Nav = (
               </span>
             </button>
           )}
-          <button
-            className={styles.settings}
-            onClick={() => toggleToolbar(windowWidth)}
-          >
+          <button className={styles.settings} onClick={() => toggleToolbar()}>
             <Icon
               lib="io5"
               name="IoSettingsSharp"
