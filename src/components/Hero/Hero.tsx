@@ -69,6 +69,7 @@ export default function Hero({
 
   const [values, setValues] = useState<itemProps[]>([])
   const [itemsVisible, setItemsVisible] = useState(true)
+  const [headerVisible, setHeaderVisible] = useState(true)
   const [resetVersion, setResetVersion] = useState(0)
   const initialPage = pathname?.replace(/\/$/, '').split('/').pop() ?? ''
   const [currentPage, setCurrentPage] = useState(initialPage)
@@ -87,6 +88,7 @@ export default function Hero({
     if (page !== currentPage) {
       // Fade out items when page changes
       setItemsVisible(false)
+      setHeaderVisible(false)
 
       // Wait for fade out to complete, then atomically swap page + copy,
       // and only then fade the new ones in.
@@ -96,7 +98,10 @@ export default function Hero({
         setTheText(text)
 
         // Ensure the DOM has applied the new location/copy before we fade in.
-        requestAnimationFrame(() => setItemsVisible(true))
+        requestAnimationFrame(() => {
+          setItemsVisible(true)
+          setHeaderVisible(true)
+        })
       }, 400)
 
       return () => {
@@ -131,6 +136,8 @@ export default function Hero({
   const movementTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const animatingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const movementCycleStartedRef = useRef(false)
+  const resetTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const revealAfterResetRef = useRef(false)
 
   const escapeFunction = () => {
     if (resetButton.current) resetButton.current.focus()
@@ -138,6 +145,10 @@ export default function Hero({
 
   const handleReset = (e: { preventDefault: () => void }) => {
     e.preventDefault()
+    if (resetTimeoutRef.current) {
+      clearTimeout(resetTimeoutRef.current)
+      resetTimeoutRef.current = null
+    }
     if (movementTimeoutRef.current) {
       clearTimeout(movementTimeoutRef.current)
       movementTimeoutRef.current = null
@@ -149,13 +160,40 @@ export default function Hero({
     isAnimatingRef.current = false
     isMovingRef.current = false
     movementCycleStartedRef.current = false
-    setReinitialize(!reinitialize)
-    setResetVersion((prev) => prev + 1)
+    setItemsVisible(false)
+    setValues([])
+
+    resetTimeoutRef.current = setTimeout(() => {
+      revealAfterResetRef.current = true
+      setReinitialize((prev) => !prev)
+      setResetVersion((prev) => prev + 1)
+      resetTimeoutRef.current = null
+    }, 160)
   }
 
   useEffect(() => {
     itemsVisibleRef.current = itemsVisible
   }, [itemsVisible])
+
+  useEffect(() => {
+    if (!revealAfterResetRef.current) return
+    if (values.length === 0) return
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setItemsVisible(true)
+        revealAfterResetRef.current = false
+      })
+    })
+  }, [values])
+
+  useEffect(() => {
+    return () => {
+      if (resetTimeoutRef.current) {
+        clearTimeout(resetTimeoutRef.current)
+      }
+    }
+  }, [])
 
   useEffect(() => {
     if (!isClient || !windowObj) return
@@ -866,7 +904,7 @@ export default function Hero({
       className={`
         ${lightTheme ? styles.light : ''} 
         ${touchDevice ? styles.touch : ''} 
-        hero fullwidth ${styles.hero} ${styles[address]} ${itemsVisible ? styles['header-visible'] : styles['header-hidden']}`}
+        hero fullwidth ${styles.hero} ${styles[address]} ${headerVisible ? styles['header-visible'] : styles['header-hidden']}`}
     >
       {/* Always render heading and text for SSR, then on client */}
       <h1>
