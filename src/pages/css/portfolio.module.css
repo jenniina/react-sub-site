@@ -162,16 +162,24 @@
 .featured .list a span {
   padding: 0.4em 0;
 }
-.featured > button.horizontal-scroll {
+.featured > button.horizontal-scroll,
+.light .featured > button.horizontal-scroll {
+  border: none;
+  outline: none;
   position: absolute;
   width: auto;
   align-self: center;
   z-index: 2;
   transition-duration: 300ms;
+  background: transparent;
+  overflow: visible;
 }
 .featured > button.horizontal-scroll:hover,
-.featured > button.horizontal-scroll:focus-visible {
+.featured > button.horizontal-scroll:focus-visible,
+.light .featured > button.horizontal-scroll:hover,
+.light .featured > button.horizontal-scroll:focus-visible {
   outline-offset: 10px;
+  color: var(--color-primary-1);
 }
 .featured > button.horizontal-scroll.left svg,
 .featured > button.horizontal-scroll.right svg {
@@ -179,41 +187,78 @@
   transition-timing-function: ease-in-out;
   transition-duration: 300ms;
 }
+.featured > button.horizontal-scroll::before,
+.featured > button.horizontal-scroll::after {
+  content: '';
+  position: absolute;
+  transition-property: border-color, border-width, color, background-color, background-position, outline, outline-offset, opacity, transform, border-radius;
+  transition-duration: 0.4s;
+  transition-timing-function: ease-in-out;
+  transition-delay: 0s;
+}
+.featured > button.horizontal-scroll::after {
+  --bg-size: 150% 260%;
+  top: 4px;
+  left: 3px;
+  right: 3px;
+  bottom: 4px;
+  border-radius: 0;
+  color: var(--color-primary-20);
+  background: linear-gradient(3deg, var(--color-primary-16) 0%, var(--color-primary-12) 30%, var(--color-primary-6) 60%, var(--color-primary-2) 100%);
+  background-size: var(--bg-size);
+  background-position: 50% 3%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2em;
+  z-index: -1;
+}
+.featured > button.horizontal-scroll:hover::after,
+.featured > button.horizontal-scroll:focus-visible::after,
+.light .featured > button.horizontal-scroll:hover::after,
+.light .featured > button.horizontal-scroll:focus-visible::after {
+  color: var(--color-primary-1);
+  background-position: 50% 98%;
+}
 .featured > button.horizontal-scroll.left {
   left: 0%;
   top: -20%;
   padding: 1em 0.9em 1em 2em;
-  -webkit-clip-path: polygon(100% 0%, 90% 1%, 10% 50%, 90% 99%, 100% 100%);
-  -moz-clip-path: polygon(100% 0%, 90% 1%, 10% 50%, 90% 99%, 100% 100%);
-  -ms-clip-path: polygon(100% 0%, 90% 1%, 10% 50%, 90% 99%, 100% 100%);
-  -o-clip-path: polygon(100% 0%, 90% 1%, 10% 50%, 90% 99%, 100% 100%);
-  clip-path: polygon(100% 0%, 90% 1%, 10% 50%, 90% 99%, 100% 100%);
+}
+.featured > button.horizontal-scroll.left::after {
+  -webkit-clip-path: polygon(100% 0%, 85% 1%, 10% 50%, 85% 99%, 100% 100%);
+  -moz-clip-path: polygon(100% 0%, 85% 1%, 10% 50%, 85% 99%, 100% 100%);
+  -ms-clip-path: polygon(100% 0%, 85% 1%, 10% 50%, 85% 99%, 100% 100%);
+  -o-clip-path: polygon(100% 0%, 85% 1%, 10% 50%, 85% 99%, 100% 100%);
+  clip-path: polygon(100% 0%, 85% 1%, 10% 50%, 85% 99%, 100% 100%);
 }
 .featured > button.horizontal-scroll.right {
-  bottom: -16%;
+  top: -20%;
   right: 0%;
   padding: 1em 2em 1em 0.9em;
-  -webkit-clip-path: polygon(0% 0%, 10% 1%, 90% 50%, 10% 99%, 0% 100%);
-  -moz-clip-path: polygon(0% 0%, 10% 1%, 90% 50%, 10% 99%, 0% 100%);
-  -ms-clip-path: polygon(0% 0%, 10% 1%, 90% 50%, 10% 99%, 0% 100%);
-  -o-clip-path: polygon(0% 0%, 10% 1%, 90% 50%, 10% 99%, 0% 100%);
-  clip-path: polygon(0% 0%, 10% 1%, 90% 50%, 10% 99%, 0% 100%);
+}
+.featured > button.horizontal-scroll.right::after {
+  -webkit-clip-path: polygon(0% 0%, 15% 1%, 90% 50%, 15% 99%, 0% 100%);
+  -moz-clip-path: polygon(0% 0%, 15% 1%, 90% 50%, 15% 99%, 0% 100%);
+  -ms-clip-path: polygon(0% 0%, 15% 1%, 90% 50%, 15% 99%, 0% 100%);
+  -o-clip-path: polygon(0% 0%, 15% 1%, 90% 50%, 15% 99%, 0% 100%);
+  clip-path: polygon(0% 0%, 15% 1%, 90% 50%, 15% 99%, 0% 100%);
 }
 .featured > button.horizontal-scroll::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-color: var(--color-primary-6);
-  background-image: radial-gradient(circle, var(--color-primary-18) 0%, var(--color-primary-7) 50%, var(--color-primary-5) 100%);
-  background-size: 400% 100%;
+  background-image: linear-gradient(to bottom, var(--color-gray-4) 0%, white 50%, var(--color-gray-4) 100%);
+  background-size: 400% 110%;
   background-position: center;
   pointer-events: none;
   transition-property: background-color, background-size, background-position, color, border, transform, font-size;
   transition-timing-function: ease-in-out;
   transition-duration: 300ms;
+  z-index: -1;
 }
 .featured > button.horizontal-scroll:hover::before,
 .featured > button.horizontal-scroll:focus-visible::before {
@@ -221,18 +266,18 @@
   background-size: 400% 200%;
 }
 .featured > button.horizontal-scroll.left::before {
-  -webkit-clip-path: polygon(100% 0%, 0% 0%, 0% 100%, 100% 100%, 90% 96%, 20% 50%, 90% 4%, 90% 96%, 100% 100%);
-  -moz-clip-path: polygon(100% 0%, 0% 0%, 0% 100%, 100% 100%, 90% 96%, 20% 50%, 90% 4%, 90% 96%, 100% 100%);
-  -ms-clip-path: polygon(100% 0%, 0% 0%, 0% 100%, 100% 100%, 90% 96%, 20% 50%, 90% 4%, 90% 96%, 100% 100%);
-  -o-clip-path: polygon(100% 0%, 0% 0%, 0% 100%, 100% 100%, 90% 96%, 20% 50%, 90% 4%, 90% 96%, 100% 100%);
-  clip-path: polygon(100% 0%, 0% 0%, 0% 100%, 100% 100%, 90% 96%, 20% 50%, 90% 4%, 90% 96%, 100% 100%);
+  -webkit-clip-path: polygon(100% 0%, 80% 3%, 0% 50%, 80% 97%, 100% 100%);
+  -moz-clip-path: polygon(100% 0%, 80% 3%, 0% 50%, 80% 97%, 100% 100%);
+  -ms-clip-path: polygon(100% 0%, 80% 3%, 0% 50%, 80% 97%, 100% 100%);
+  -o-clip-path: polygon(100% 0%, 80% 3%, 0% 50%, 80% 97%, 100% 100%);
+  clip-path: polygon(100% 0%, 80% 3%, 0% 50%, 80% 97%, 100% 100%);
 }
 .featured > button.horizontal-scroll.right::before {
-  -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 10% 98%, 80% 50%, 10% 4%, 10% 98%, 0% 100%);
-  -moz-clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 10% 98%, 80% 50%, 10% 4%, 10% 98%, 0% 100%);
-  -ms-clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 10% 98%, 80% 50%, 10% 4%, 10% 98%, 0% 100%);
-  -o-clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 10% 98%, 80% 50%, 10% 4%, 10% 98%, 0% 100%);
-  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 10% 98%, 80% 50%, 10% 4%, 10% 98%, 0% 100%);
+  -webkit-clip-path: polygon(0% 0%, 20% 3%, 100% 50%, 20% 97%, 0% 100%);
+  -moz-clip-path: polygon(0% 0%, 20% 3%, 100% 50%, 20% 97%, 0% 100%);
+  -ms-clip-path: polygon(0% 0%, 20% 3%, 100% 50%, 20% 97%, 0% 100%);
+  -o-clip-path: polygon(0% 0%, 20% 3%, 100% 50%, 20% 97%, 0% 100%);
+  clip-path: polygon(0% 0%, 20% 3%, 100% 50%, 20% 97%, 0% 100%);
 }
 .featured > button.horizontal-scroll.left:hover svg,
 .featured > button.horizontal-scroll.left:focus-visible svg {
@@ -244,15 +289,7 @@
   margin-left: 0.1rem;
   margin-right: -0.1rem;
 }
-.featured > button.horizontal-scroll:disabled {
-  opacity: 0.3;
-  cursor: default;
-  border: none;
-}
-.featured > button.horizontal-scroll:disabled::before {
-  background-color: var(--color-primary-1);
-  background-size: 400% 100%;
-}
+
 .notes {
   max-width: 600px;
   margin: 0 auto;
@@ -335,11 +372,20 @@
     height: 86%;
     width: auto;
     padding: 0 0.2em 0 0.6em;
+  }
+  .featured > button.horizontal-scroll::after {
+    top: 4px;
+    left: 1px;
+    right: 1px;
+    bottom: 4px;
+  }
+
+  .featured > button.horizontal-scroll.left::after {
     -webkit-clip-path: polygon(100% 0%, 90% 1%, 10% 50%, 90% 99%, 100% 100%);
     -moz-clip-path: polygon(100% 0%, 90% 1%, 10% 50%, 90% 99%, 100% 100%);
     -ms-clip-path: polygon(100% 0%, 90% 1%, 10% 50%, 90% 99%, 100% 100%);
     -o-clip-path: polygon(100% 0%, 90% 1%, 10% 50%, 90% 99%, 100% 100%);
-    clip-path: polygon(100% 0%, 90% 1%, 10% 50%, 90% 99%, 100% 100%);
+    clip-path: polygon(99% 1%, 90% 3%, 3% 50%, 90% 97%, 99% 99%);
   }
   .featured > button.horizontal-scroll.right {
     right: -2em;
@@ -349,11 +395,13 @@
     height: 86%;
     width: auto;
     padding: 0 0.6em 0 0.2em;
-    -webkit-clip-path: polygon(0% 0%, 10% 1%, 90% 50%, 10% 99%, 0% 100%);
-    -moz-clip-path: polygon(0% 0%, 10% 1%, 90% 50%, 10% 99%, 0% 100%);
-    -ms-clip-path: polygon(0% 0%, 10% 1%, 90% 50%, 10% 99%, 0% 100%);
-    -o-clip-path: polygon(0% 0%, 10% 1%, 90% 50%, 10% 99%, 0% 100%);
-    clip-path: polygon(0% 0%, 10% 1%, 90% 50%, 10% 99%, 0% 100%);
+  }
+  .featured > button.horizontal-scroll.right::after {
+    -webkit-clip-path: polygon(1% 1%, 10% 3%, 99% 50%, 10% 97%, 1% 99%);
+    -moz-clip-path: polygon(1% 1%, 10% 3%, 99% 50%, 10% 97%, 1% 99%);
+    -ms-clip-path: polygon(1% 1%, 10% 3%, 99% 50%, 10% 97%, 1% 99%);
+    -o-clip-path: polygon(1% 1%, 10% 3%, 99% 50%, 10% 97%, 1% 99%);
+    clip-path: polygon(1% 1%, 10% 3%, 99% 50%, 10% 97%, 1% 99%);
   }
   .featured > button.horizontal-scroll::before {
     top: -2px;

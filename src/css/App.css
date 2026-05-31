@@ -990,6 +990,16 @@ nav .open.password-reset-container button.forgot-btn {
   left: 0;
   right: unset;
 }
+#root .App .tooltip-wrap .tooltip.left.middle,
+.tooltip-wrap .tooltip.left.middle {
+  right: calc(100% + 0.4em);
+  left: unset;
+}
+#root .App .tooltip-wrap .tooltip.right,
+.tooltip-wrap .tooltip.right {
+  left: calc(100% + 0.4em);
+  right: unset;
+}
 #root .App .tooltip-wrap:hover .tooltip,
 #root .App .tooltip-wrap:focus-visible .tooltip,
 .tooltip-wrap:hover .tooltip,

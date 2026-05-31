@@ -158,7 +158,7 @@ const Featured: React.FC = () => {
             onClick={scrollToPrevious}
             unavailable={atStart}
             unavailableReason={atStart ? t('AlreadyOnFirstPage') : ''}
-            tooltipClassName="tooltip above narrow2"
+            tooltipClassName="tooltip right middle narrow2"
           >
             <Icon lib="fa6" name="FaAnglesLeft" />
           </ButtonUnavailableAction>
@@ -181,7 +181,7 @@ const Featured: React.FC = () => {
             onClick={scrollToNext}
             unavailable={atEnd}
             unavailableReason={atEnd ? t('AlreadyOnLastPage') : ''}
-            tooltipClassName="tooltip above narrow2"
+            tooltipClassName="tooltip left middle narrow2"
           >
             <Icon lib="fa6" name="FaAnglesRight" />
           </ButtonUnavailableAction>
