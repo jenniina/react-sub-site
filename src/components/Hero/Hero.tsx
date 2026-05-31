@@ -69,6 +69,7 @@ export default function Hero({
 
   const [values, setValues] = useState<itemProps[]>([])
   const [itemsVisible, setItemsVisible] = useState(true)
+  const [resetVersion, setResetVersion] = useState(0)
   const initialPage = pathname?.replace(/\/$/, '').split('/').pop() ?? ''
   const [currentPage, setCurrentPage] = useState(initialPage)
   const isAnimatingRef = useRef(false)
@@ -137,7 +138,19 @@ export default function Hero({
 
   const handleReset = (e: { preventDefault: () => void }) => {
     e.preventDefault()
+    if (movementTimeoutRef.current) {
+      clearTimeout(movementTimeoutRef.current)
+      movementTimeoutRef.current = null
+    }
+    if (animatingTimeoutRef.current) {
+      clearTimeout(animatingTimeoutRef.current)
+      animatingTimeoutRef.current = null
+    }
+    isAnimatingRef.current = false
+    isMovingRef.current = false
+    movementCycleStartedRef.current = false
     setReinitialize(!reinitialize)
+    setResetVersion((prev) => prev + 1)
   }
 
   useEffect(() => {
@@ -893,6 +906,7 @@ export default function Hero({
         ref={ulRef}
         array={values}
         location={currentPage}
+        resetVersion={resetVersion}
         windowWidth={windowWidth}
         windowHeight={windowHeight}
         spanArray={spanArray}

@@ -41,13 +41,14 @@ const LOCATION = {
   COLORS: 'colors',
 }
 
-function getHeroItemKey(location: string, itemId: number) {
-  return `${location || 'home'}-${itemId}`
+function getHeroItemKey(location: string, itemId: number, resetVersion: number) {
+  return `${location || 'home'}-${resetVersion}-${itemId}`
 }
 
 interface ItemComponentProps {
   array: itemProps[]
   location: string
+  resetVersion: number
   windowWidth: number
   windowHeight: number
   divArrayJewel1: itemProps[]
@@ -76,6 +77,7 @@ const ItemComponent = forwardRef<
     {
       array,
       location,
+      resetVersion,
       windowWidth,
       windowHeight,
       spanArray,
@@ -336,7 +338,7 @@ const ItemComponent = forwardRef<
                 // SELECT // TODO // GRAPHQL // MEMORY
 
                 <li
-                  key={getHeroItemKey(location, item.i)}
+                  key={getHeroItemKey(location, item.i, resetVersion)}
                   id={`shape${item.i}`}
                   className={`${styles.item} ${styles[location]} ${
                     styles.geometric
@@ -444,7 +446,7 @@ const ItemComponent = forwardRef<
                 // MEDIA
 
                 <li
-                  key={getHeroItemKey(location, item.i)}
+                  key={getHeroItemKey(location, item.i, resetVersion)}
                   id={`shape${item.i}`}
                   className={`${styles.item} ${styles[location]} ${
                     styles.circles
@@ -539,7 +541,7 @@ const ItemComponent = forwardRef<
                 // COMPOSER
 
                 <li
-                  key={getHeroItemKey(location, item.i)}
+                  key={getHeroItemKey(location, item.i, resetVersion)}
                   id={`shape${item.i}`}
                   className={`${
                     noteStep <= 4 ? styles.above : styles.below
@@ -664,7 +666,7 @@ const ItemComponent = forwardRef<
                 // STORE
 
                 <li
-                  key={getHeroItemKey(location, item.i)}
+                  key={getHeroItemKey(location, item.i, resetVersion)}
                   id={`shape${item.i}`}
                   className={`${styles.item} ${styles[location]} ${
                     styles.jewel
@@ -830,7 +832,7 @@ const ItemComponent = forwardRef<
                 // CART
 
                 <li
-                  key={getHeroItemKey(location, item.i)}
+                  key={getHeroItemKey(location, item.i, resetVersion)}
                   id={`shape${item.i}`}
                   className={`${styles.item} ${styles[location]} ${
                     styles.jewel
@@ -988,7 +990,7 @@ const ItemComponent = forwardRef<
               return (
                 // JOKES
                 <li
-                  key={getHeroItemKey(location, item.i)}
+                  key={getHeroItemKey(location, item.i, resetVersion)}
                   className={`${styles.item} ${styles.jokes} ${styles.mug} ${
                     windowHeight < windowWidth ? styles.wide : styles.tall
                   }`}
@@ -1091,7 +1093,7 @@ const ItemComponent = forwardRef<
               return (
                 //HOME // SALON // QUIZ // ABOUT
                 <li
-                  key={getHeroItemKey(location, item.i)}
+                  key={getHeroItemKey(location, item.i, resetVersion)}
                   className={`${styles.item} ${styles.about} ${styles.bubbles} ${
                     windowHeight < windowWidth ? styles.wide : styles.tall
                   }`}
@@ -1214,7 +1216,7 @@ const ItemComponent = forwardRef<
                 //BLOBS
 
                 <li
-                  key={getHeroItemKey(location, item.i)}
+                  key={getHeroItemKey(location, item.i, resetVersion)}
                   id={`shape${item.i}`}
                   className={`${styles.item} ${styles.blob} ${
                     styles[location]
@@ -1336,7 +1338,7 @@ const ItemComponent = forwardRef<
                 //CONTACT // FORM
 
                 <li
-                  key={getHeroItemKey(location, item.i)}
+                  key={getHeroItemKey(location, item.i, resetVersion)}
                   id={`shape${item.i}`}
                   className={`eye ${styles.item} ${styles.eyes} ${styles[location]} 
                                 ${
@@ -1417,7 +1419,7 @@ const ItemComponent = forwardRef<
                 // ELSE
 
                 <li
-                  key={getHeroItemKey(location, item.i)}
+                  key={getHeroItemKey(location, item.i, resetVersion)}
                   id={`shape${item.i}`}
                   className={`${styles.item} ${styles[location]} ${styles.triangle} 
                                 ${
