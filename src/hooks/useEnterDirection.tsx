@@ -10,7 +10,7 @@ export default function useEnterDirection() {
     (e: React.PointerEvent<HTMLElement>): string => {
       if (!isClient || !windowObj) return ''
 
-      const ref = e.target as HTMLElement
+      const ref = e.currentTarget as HTMLElement
       const { width, height, top, left } = ref.getBoundingClientRect()
 
       const l = e.pageX - (left + windowObj.pageXOffset)

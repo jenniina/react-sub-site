@@ -19,6 +19,31 @@
   transition-duration: 300ms;
   flex: 1 0 100%;
 }
+.portfolio .list li {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0.3rem;
+  background-image: linear-gradient(45deg, hsla(var(--hue-primary), 100%, 10%, 0.18), hsla(var(--hue-primary), 100%, 2%, 0.2), hsla(var(--hue-primary), 100%, 10%, 0.18));
+  border-radius: var(--radius-small);
+  border: 2px solid hsla(var(--hue-primary), 40%, 60%, 0.2);
+  border-top-color: hsla(var(--hue-primary), 40%, 60%, 0.5);
+  border-top-width: 1px;
+  align-self: stretch;
+}
+.light.portfolio .list li {
+  background-image: linear-gradient(45deg, hsla(var(--hue-primary), 100%, 80%, 0.15), hsla(var(--hue-primary), 100%, 98%, 0.2), hsla(var(--hue-primary), 100%, 80%, 0.2));
+  border: 1px solid var(--color-primary-1);
+  border-top-color: white;
+}
+.portfolio .list li > * {
+  max-width: clamp(100px, 20em, 100%);
+}
 .portfolio .list li a span {
   border-radius: 0 0 0.5em 0.5em;
   padding-bottom: 0.3em;
@@ -29,8 +54,9 @@
   background: none;
 }
 .portfolio .list li a > span {
+  display: inline-block;
   background: none;
-  line-height: 1.1;
+  line-height: 1.4;
   margin-bottom: 0.3em;
 }
 .list li:hover {
@@ -47,7 +73,7 @@
   transition-property: color, border, transform, font-size, fill, background-position, stroke;
   transition-timing-function: ease-in-out;
   transition-duration: 300ms;
-  margin-top: 1.5em;
+  margin-top: 0.3em;
 }
 .list a,
 .list a svg {
@@ -358,6 +384,9 @@
     flex: 0 1 46%;
     margin: 0 auto;
   }
+  .portfolio .list li {
+    flex: 0 1 48%;
+  }
   .featured > ul.list li {
     flex: 0 0 46%;
   }
@@ -367,8 +396,11 @@
   .list li {
     flex: 0 1 26%;
   }
+  .portfolio .list li {
+    flex: 0 1 31%;
+  }
   .featured > ul.list li {
-    flex: 0 0 26%;
+    flex: 0 0 30%;
   }
   .list {
     margin-left: calc(var(--page-padding) * -1);

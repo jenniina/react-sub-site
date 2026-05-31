@@ -27,6 +27,14 @@ import { useLanguageContext } from '../../contexts/LanguageContext'
 import { useIsClient, useWindow } from '../../hooks/useSSR'
 import ItemComponent from './components/ItemComponent'
 
+function stripOuterCalc(expr: string) {
+  const trimmed = expr.trim()
+  if (trimmed.startsWith('calc(') && trimmed.endsWith(')')) {
+    return trimmed.slice(5, -1).trim()
+  }
+  return trimmed
+}
+
 export interface itemProps {
   i: number
   e: number
@@ -226,14 +234,6 @@ export default function Hero({
       const item = items[randomIndex]
 
       if (item) {
-        const stripOuterCalc = (expr: string) => {
-          const trimmed = expr.trim()
-          if (trimmed.startsWith('calc(') && trimmed.endsWith(')')) {
-            return trimmed.slice(5, -1).trim()
-          }
-          return trimmed
-        }
-
         // Capture the base (responsive) expressions once, then apply pixel
         // offsets on top. This keeps movement increments consistent even while
         // CSS transitions are in-flight.
@@ -423,9 +423,9 @@ export default function Hero({
       // Prefer moving via base (responsive) + offset so resizing the window
       // continues to reflow shapes according to their original clamp/vh/vw rules.
       if (!target.dataset.baseTop && target.style.top)
-        target.dataset.baseTop = target.style.top
+        target.dataset.baseTop = stripOuterCalc(target.style.top)
       if (!target.dataset.baseLeft && target.style.left)
-        target.dataset.baseLeft = target.style.left
+        target.dataset.baseLeft = stripOuterCalc(target.style.left)
 
       const baseTop = target.dataset.baseTop
       const baseLeft = target.dataset.baseLeft

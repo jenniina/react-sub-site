@@ -1454,6 +1454,7 @@
     -moz-transform: scale(1);
     transform: scale(1);
     opacity: 1;
+    visibility: visible;
   }
   80% {
     opacity: 1;
@@ -1465,7 +1466,7 @@
     -moz-transform: scale(0.15);
     transform: scale(0.15);
     opacity: 0;
-    display: none;
+    visibility: hidden;
   }
 }
 @keyframes note-hover {

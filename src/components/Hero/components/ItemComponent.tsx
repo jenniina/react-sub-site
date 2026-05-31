@@ -41,6 +41,10 @@ const LOCATION = {
   COLORS: 'colors',
 }
 
+function getHeroItemKey(location: string, itemId: number) {
+  return `${location || 'home'}-${itemId}`
+}
+
 interface ItemComponentProps {
   array: itemProps[]
   location: string
@@ -332,7 +336,7 @@ const ItemComponent = forwardRef<
                 // SELECT // TODO // GRAPHQL // MEMORY
 
                 <li
-                  key={`${item.color}${item.size}${item.e}${index}`}
+                  key={getHeroItemKey(location, item.i)}
                   id={`shape${item.i}`}
                   className={`${styles.item} ${styles[location]} ${
                     styles.geometric
@@ -440,7 +444,7 @@ const ItemComponent = forwardRef<
                 // MEDIA
 
                 <li
-                  key={`${item.color}${item.size}${item.e}${index}`}
+                  key={getHeroItemKey(location, item.i)}
                   id={`shape${item.i}`}
                   className={`${styles.item} ${styles[location]} ${
                     styles.circles
@@ -535,7 +539,7 @@ const ItemComponent = forwardRef<
                 // COMPOSER
 
                 <li
-                  key={`${item.color}${item.size}${item.e}${index}`}
+                  key={getHeroItemKey(location, item.i)}
                   id={`shape${item.i}`}
                   className={`${
                     noteStep <= 4 ? styles.above : styles.below
@@ -660,7 +664,7 @@ const ItemComponent = forwardRef<
                 // STORE
 
                 <li
-                  key={`${item.color}${item.size}${item.e}${index}`}
+                  key={getHeroItemKey(location, item.i)}
                   id={`shape${item.i}`}
                   className={`${styles.item} ${styles[location]} ${
                     styles.jewel
@@ -826,7 +830,7 @@ const ItemComponent = forwardRef<
                 // CART
 
                 <li
-                  key={`${item.color}${item.size}${item.e}${index}`}
+                  key={getHeroItemKey(location, item.i)}
                   id={`shape${item.i}`}
                   className={`${styles.item} ${styles[location]} ${
                     styles.jewel
@@ -984,7 +988,7 @@ const ItemComponent = forwardRef<
               return (
                 // JOKES
                 <li
-                  key={`${item.color}${item.size}${item.e}${index}`}
+                  key={getHeroItemKey(location, item.i)}
                   className={`${styles.item} ${styles.jokes} ${styles.mug} ${
                     windowHeight < windowWidth ? styles.wide : styles.tall
                   }`}
@@ -1087,7 +1091,7 @@ const ItemComponent = forwardRef<
               return (
                 //HOME // SALON // QUIZ // ABOUT
                 <li
-                  key={`${item.color}${item.size}${item.e}${index}`}
+                  key={getHeroItemKey(location, item.i)}
                   className={`${styles.item} ${styles.about} ${styles.bubbles} ${
                     windowHeight < windowWidth ? styles.wide : styles.tall
                   }`}
@@ -1210,7 +1214,7 @@ const ItemComponent = forwardRef<
                 //BLOBS
 
                 <li
-                  key={`${item.color}${item.size}${item.e}${index}`}
+                  key={getHeroItemKey(location, item.i)}
                   id={`shape${item.i}`}
                   className={`${styles.item} ${styles.blob} ${
                     styles[location]
@@ -1332,7 +1336,7 @@ const ItemComponent = forwardRef<
                 //CONTACT // FORM
 
                 <li
-                  key={`${item.color}${item.size}${item.e}${index}`}
+                  key={getHeroItemKey(location, item.i)}
                   id={`shape${item.i}`}
                   className={`eye ${styles.item} ${styles.eyes} ${styles[location]} 
                                 ${
@@ -1413,7 +1417,7 @@ const ItemComponent = forwardRef<
                 // ELSE
 
                 <li
-                  key={`${item.color}${item.size}${item.e}${index}`}
+                  key={getHeroItemKey(location, item.i)}
                   id={`shape${item.i}`}
                   className={`${styles.item} ${styles[location]} ${styles.triangle} 
                                 ${

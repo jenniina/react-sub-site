@@ -15,8 +15,6 @@
 .store > .inner-wrap {
   gap: 2rem;
 }
-.foreign {
-}
 .orders,
 .order,
 .order > div {
@@ -128,8 +126,6 @@
   justify-content: center;
   gap: 0;
 }
-.scroll-button {
-}
 .store-wrap {
   display: flex;
   flex-flow: row wrap;
@@ -154,12 +150,7 @@
   max-width: 100%;
   margin: 0 auto;
   padding: 0.3rem;
-  background-image: linear-gradient(
-    45deg,
-    hsla(var(--hue-primary), 100%, 20%, 0.2),
-    hsla(var(--hue-primary), 100%, 10%, 0.1),
-    hsla(var(--hue-primary), 100%, 15%, 0.2)
-  );
+  background-image: linear-gradient(45deg, hsla(var(--hue-primary), 100%, 20%, 0.2), hsla(var(--hue-primary), 100%, 10%, 0.1), hsla(var(--hue-primary), 100%, 15%, 0.2));
   border-radius: var(--radius-small);
   border: 1px solid var(--color-primary-5);
   align-self: stretch;
@@ -168,12 +159,7 @@
 .light .order > .change-status-main,
 .light .item-wrap,
 .light .order-items .order-item {
-  background-image: linear-gradient(
-    45deg,
-    hsla(var(--hue-primary), 100%, 70%, 0.2),
-    transparent,
-    hsla(var(--hue-primary), 100%, 80%, 0.2)
-  );
+  background-image: linear-gradient(45deg, hsla(var(--hue-primary), 100%, 70%, 0.2), transparent, hsla(var(--hue-primary), 100%, 80%, 0.2));
   border: 1px solid var(--color-primary-1);
 }
 .store-wrap > div.links ul li {
