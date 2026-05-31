@@ -198,6 +198,7 @@ main {
 }
 #root .nav-sub ul a {
   color: var(--color-primary-18);
+  text-decoration: none;
 }
 .light .nav-sub ul a {
   border-bottom-color: var(--color-primary-9);
@@ -454,8 +455,7 @@ main.main-content .fullwidth1 {
 }
 .card,
 .card > div,
-.card > div::before,
-.card > div::after {
+.card > div::before {
   /*Remember to add div inside 'card' section*/
   border-radius: var(--radius-small);
 }
@@ -474,8 +474,7 @@ main.main-content .fullwidth1 {
   padding: 1em var(--padd) 0.8em;
 }
 
-.card > div::before,
-.card > div::after {
+.card > div::before {
   content: '';
   position: absolute;
 }
@@ -491,25 +490,6 @@ main.main-content .fullwidth1 {
   opacity: 0.6;
   border-top-color: white;
   border-bottom-color: var(--color-primary-10);
-}
-.card > div::after {
-  top: -0.1rem;
-  right: -0.1rem;
-  bottom: -0.1rem;
-  left: -0.1rem;
-  background-image: linear-gradient(45deg, var(--color-primary-5), transparent, transparent, var(--color-primary-5));
-  z-index: -2;
-  -webkit-filter: blur(2rem);
-  filter: blur(2rem);
-}
-.light .card > div::after {
-  top: 0.4rem;
-  right: 0.4rem;
-  bottom: 0.4rem;
-  left: 0.4rem;
-  background-image: linear-gradient(45deg, var(--color-primary-1), transparent, transparent, var(--color-primary-1));
-  -webkit-filter: blur(0.5rem);
-  filter: blur(0.5rem);
 }
 body .z {
   z-index: 2;
