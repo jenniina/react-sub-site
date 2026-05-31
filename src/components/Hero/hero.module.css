@@ -24,7 +24,7 @@
   margin-bottom: 0.2em;
 }
 .hero h1 + p {
-  margin-bottom: 5em;
+  margin-bottom: 3rem;
 }
 @media (min-height: 550px) and (min-width: 300px) {
 }
