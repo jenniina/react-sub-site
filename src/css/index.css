@@ -572,7 +572,7 @@ button.horizontal-scroll.unavailable-action::after {
 #root .light button.horizontal-scroll.unavailable-action::after,
 #root .light button.horizontal-scroll.unavailable-action:hover::after,
 #root .light button.horizontal-scroll.unavailable-action:focus-visible::after {
-  background-position: 50% 93%;
+  background-position: 50% 3%;
   color: var(--color-primary-20);
 }
 

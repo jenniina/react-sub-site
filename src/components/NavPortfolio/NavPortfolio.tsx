@@ -1,6 +1,7 @@
 import { useEffect, useRef, useCallback, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import Icon from '../Icon/Icon'
+import ButtonUnavailableAction from '../ButtonUnavailableAction/ButtonUnavailableAction'
 import useIsOnScreen from '../../hooks/useIsOnScreen'
 import useWindowSize from '../../hooks/useWindowSize'
 import { breakpointSmall } from '../../types'
@@ -212,27 +213,37 @@ function NavPortfolio() {
   return (
     <>
       <nav className={`nav-sub`}>
-        <button
-          className={`horizonal-scroll goleft 
-                ${firstVisible ? 'disabled' : ''}`}
+        <ButtonUnavailableAction
+          type="button"
+          className={`horizontal-scroll goleft ${firstVisible ? 'disabled' : ''}`}
+          aria-label={t('ScrollToTheLeft')}
+          title={t('ScrollToTheLeft')}
           onClick={leftScroll}
+          unavailable={firstVisible}
+          unavailableReason={firstVisible ? t('AlreadyOnFirstPage') : ''}
+          tooltipClassName="tooltip right middle narrow2"
         >
           {' '}
           <Icon lib="bi" name="BiChevronsUp" />
           <span className="scr">{t('ScrollToTheLeft')}</span>
-        </button>
+        </ButtonUnavailableAction>
 
         <ul ref={setScrollerRef}>{renderNavItems(navItems)}</ul>
 
-        <button
+        <ButtonUnavailableAction
+          type="button"
           onClick={rightScroll}
-          className={`horizonal-scroll goright 
-                ${lastVisible ? 'disabled' : ''}`}
+          className={`horizontal-scroll goright ${lastVisible ? 'disabled' : ''}`}
+          aria-label={t('ScrollToTheRight')}
+          title={t('ScrollToTheRight')}
+          unavailable={lastVisible}
+          unavailableReason={lastVisible ? t('AlreadyOnLastPage') : ''}
+          tooltipClassName="tooltip left middle narrow2"
         >
           {' '}
           <Icon lib="bi" name="BiChevronsUp" />
           <span className="scr">{t('ScrollToTheRight')}</span>
-        </button>
+        </ButtonUnavailableAction>
       </nav>
       <Outlet />
     </>

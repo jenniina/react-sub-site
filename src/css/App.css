@@ -306,7 +306,21 @@ main {
   height: 0;
 }
 
-button.horizonal-scroll {
+#root .main-content .nav-sub button.horizontal-scroll.disabled {
+  background-color: hsla(var(--hue-primary), var(--sat-fade), 8%, 0.7);
+  background-image: none;
+  border-color: var(--color-gray-3);
+  border-bottom-width: 3px;
+  border-style: dashed;
+  box-shadow: none;
+  color: var(--color-gray-6);
+}
+.light #root .main-content .nav-sub button.horizontal-scroll.disabled {
+  background-color: hsla(var(--hue-primary), var(--sat-fade), 88%, 0.7);
+  background-image: none;
+}
+
+button.horizontal-scroll {
   position: absolute;
   top: 2rem;
   display: flex;
@@ -314,9 +328,10 @@ button.horizonal-scroll {
   align-items: center;
   background: var(--color-primary-2);
   color: var(--color-gray-7);
-  padding: 0.1em;
+  padding: 0.08em 0.1em 0.02em;
   margin: 0;
   border: 0;
+  border-bottom: 3px solid var(--color-primary-8);
   font-size: 2em;
   opacity: 1;
   z-index: 1;
@@ -415,16 +430,12 @@ button.goright svg {
   -moz-transform: rotate(90deg);
   transform: rotate(90deg);
 }
-button.horizonal-scroll:hover,
-button.horizonal-scroll:focus-visible {
+button.horizontal-scroll:hover,
+button.horizontal-scroll:focus-visible {
   color: var(--color-primary-14);
 }
-button.horizonal-scroll.disabled {
-  opacity: 0.2;
-  pointer-events: none;
-}
 @media (min-width: 300px) {
-  button.horizonal-scroll {
+  button.horizontal-scroll {
     top: 0.03em;
   }
 }
