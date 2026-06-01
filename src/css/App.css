@@ -419,7 +419,7 @@ button.horizonal-scroll:hover,
 button.horizonal-scroll:focus-visible {
   color: var(--color-primary-14);
 }
-button.horizonal-scroll.disable {
+button.horizonal-scroll.disabled {
   opacity: 0.2;
   pointer-events: none;
 }
