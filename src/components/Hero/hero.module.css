@@ -428,6 +428,7 @@
 }
 
 .herocontent .bubbles {
+  --b-vw: clamp(0.4px, 0.05vw, 2px);
   -webkit-animation: skewWobble 210ms ease-in-out infinite;
   -o-animation: skewWobble 210ms ease-in-out infinite;
   -ms-animation: skewWobble 210ms ease-in-out infinite;
@@ -438,7 +439,7 @@
   -o-animation-play-state: paused;
   -ms-animation-play-state: paused;
   animation-play-state: paused;
-  --box: inset calc(var(--size) * -3 * 1px) calc(var(--size) * -3 * 1px) calc(var(--size) * 6 * 1px) calc(var(--size) * -6 * 1px) green, inset calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * 1px) calc(var(--size) * -9 * 1px) hotpink, inset 0 calc(var(--size) * -6 * 1px) calc(var(--size) * 6 * 1px) calc(var(--size) * -8 * 1px) currentColor, inset 0 0 calc(var(--size) * 3 * 1px) calc(var(--size) * 1px * -1) currentColor, 0 0 calc(var(--size) * 0.1 * 1px * 12) calc(var(--size) * 0.1 * 1px * -8) white, 0 0 calc(var(--size) * 0.1 * 1px * 15) calc(var(--size) * 0.1 * 1px * -9) currentColor;
+  --box: inset calc(var(--size) * -3 * var(--b-vw)) calc(var(--size) * -3 * var(--b-vw)) calc(var(--size) * 6 * var(--b-vw)) calc(var(--size) * -6 * var(--b-vw)) green, inset calc(var(--size) * 4 * var(--b-vw)) calc(var(--size) * 4 * var(--b-vw)) calc(var(--size) * 8 * var(--b-vw)) calc(var(--size) * -9 * var(--b-vw)) hotpink, inset 0 calc(var(--size) * -6 * var(--b-vw)) calc(var(--size) * 6 * var(--b-vw)) calc(var(--size) * -8 * var(--b-vw)) currentColor, inset 0 0 calc(var(--size) * 3 * var(--b-vw)) calc(var(--size) * var(--b-vw) * -1) currentColor, 0 0 calc(var(--size) * 0.1 * var(--b-vw) * 12) calc(var(--size) * 0.1 * var(--b-vw) * -8) white, 0 0 calc(var(--size) * 0.1 * var(--b-vw) * 15) calc(var(--size) * 0.1 * var(--b-vw) * -9) currentColor;
   -webkit-box-shadow: var(--box);
   -o-box-shadow: var(--box);
   -ms-box-shadow: var(--box);
@@ -446,7 +447,7 @@
   box-shadow: var(--box);
 }
 .light .herocontent .bubbles {
-  --box: inset calc(var(--size) * 3 * calc(1px * -1)) calc(var(--size) * 3 * calc(1px * -1)) calc(var(--size) * 6 * 1px) calc(var(--size) * 6 * 1px * -1) lime, inset calc(var(--size) * 4 * 1px) calc(var(--size) * 6 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 7 * 1px * -1) hotpink, inset 0 0 calc(var(--size) * 4 * 1px) calc(var(--size) * 0.2 * calc(1px * -1)) currentColor, 0 0 20px -5px white, 0 0 calc(1px * 3) calc(1px * -1) currentColor;
+  --box: inset calc(var(--size) * 3 * calc(var(--b-vw) * -1)) calc(var(--size) * 3 * calc(var(--b-vw) * -1)) calc(var(--size) * 6 * var(--b-vw)) calc(var(--size) * 6 * var(--b-vw) * -1) lime, inset calc(var(--size) * 4 * var(--b-vw)) calc(var(--size) * 6 * var(--b-vw)) calc(var(--size) * 4 * var(--b-vw)) calc(var(--size) * 7 * var(--b-vw) * -1) hotpink, inset 0 0 calc(var(--size) * 4 * var(--b-vw)) calc(var(--size) * 0.2 * calc(var(--b-vw) * -1)) currentColor, 0 0 20px -5px white, 0 0 calc(var(--b-vw) * 3) calc(var(--b-vw) * -1) currentColor;
   -webkit-box-shadow: var(--box);
   -moz-box-shadow: var(--box);
   -ms-box-shadow: var(--box);
