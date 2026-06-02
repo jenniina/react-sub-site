@@ -111,6 +111,7 @@
   transition-timing-function: ease-in-out;
   transition-duration: 400ms;
   transition-delay: 0s;
+  overflow: visible;
 }
 .herocontent .bubbles,
 .herocontent .mug,
@@ -866,7 +867,8 @@
   width: 40%;
 }
 .herocontent .eyes .inner {
-  --box: inset calc(var(--size) * 8 * 1px) calc(var(--size) * 0.2 * calc(1px * -1)) calc(var(--size) * 4 * 1px) calc(var(--size) * 8 * calc(1px * -1)) hotpink, inset calc(var(--size) * 8 * calc(1px * -1)) calc(var(--size) * 0.2 * 1px) calc(var(--size) * 8 * 1px * 1) calc(var(--size) * 10 * calc(1px * -1)) lime, 0 0 calc(var(--size) * 0.1 * 1px * 9) calc(var(--size) * 0.1 * 1px * -5) white, 0 0 calc(var(--size) * 0.1 * 1px * 40) calc(var(--size) * 0.1 * 1px * -10) currentColor, inset calc(var(--size) * 3 * 1px) 0 calc(var(--size) * 8 * 1px) calc(var(--size) * 3 * 1px * -1) currentColor, inset calc(var(--size) * calc(1px * -1)) 0 calc(var(--size) * 3 * 1px) 0 white, 0 0 calc(var(--size) * 0.1 * 1px * 10) calc(var(--size) * 0.1 * 1px * -5) white;
+  --e-vw: clamp(0.4px, 0.04vw, 1.68px);
+  --box: inset calc(var(--size) * 8 * var(--e-vw)) calc(var(--size) * 0.2 * calc(var(--e-vw) * -1)) calc(var(--size) * 4 * var(--e-vw)) calc(var(--size) * 8 * calc(var(--e-vw) * -1)) hotpink, inset calc(var(--size) * 8 * calc(var(--e-vw) * -1)) calc(var(--size) * 0.2 * var(--e-vw)) calc(var(--size) * 8 * var(--e-vw) * 1) calc(var(--size) * 10 * calc(var(--e-vw) * -1)) lime, 0 0 calc(var(--size) * 0.1 * var(--e-vw) * 9) calc(var(--size) * 0.1 * var(--e-vw) * -5) white, 0 0 calc(var(--size) * 0.1 * var(--e-vw) * 40) calc(var(--size) * 0.1 * var(--e-vw) * -10) currentColor, inset calc(var(--size) * 3 * var(--e-vw)) 0 calc(var(--size) * 8 * var(--e-vw)) calc(var(--size) * 3 * var(--e-vw) * -1) currentColor, inset calc(var(--size) * calc(var(--e-vw) * -1)) 0 calc(var(--size) * 3 * var(--e-vw)) 0 white, 0 0 calc(var(--size) * 0.1 * var(--e-vw) * 10) calc(var(--size) * 0.1 * var(--e-vw) * -5) white;
   position: absolute;
   top: 0;
   left: 0;
@@ -885,7 +887,7 @@
   box-shadow: var(--box);
 }
 .light .herocontent .eyes .inner {
-  --box: inset calc(var(--size) * 8 * 1px) calc(var(--size) * 0.2 * calc(1px * -1)) calc(var(--size) * 4 * 1px) calc(var(--size) * 7 * calc(1px * -1)) hotpink, inset calc(var(--size) * 8 * calc(1px * -1)) calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * 1px) calc(var(--size) * 4 * calc(1px * -2)) lawngreen, 0 0 calc(var(--size) * 0.1 * 1px * 10) 0 var(--color-primary-4), 0 0 calc(var(--size) * 0.1 * 1px * 20) calc(var(--size) * 0.1 * 1px * -10) white, inset calc(var(--size) * 1px) 0 calc(var(--size) * 3 * 1px) 0 currentColor, calc(var(--size) * calc(1px * -1)) 0 calc(var(--size) * 3 * 1px) calc(var(--size) * 0.1 * 1px * -1) white;
+  --box: inset calc(var(--size) * 8 * var(--e-vw)) calc(var(--size) * 0.2 * calc(var(--e-vw) * -1)) calc(var(--size) * 4 * var(--e-vw)) calc(var(--size) * 7 * calc(var(--e-vw) * -1)) hotpink, inset calc(var(--size) * 8 * calc(var(--e-vw) * -1)) calc(var(--size) * 4 * var(--e-vw)) calc(var(--size) * 4 * var(--e-vw)) calc(var(--size) * 4 * calc(var(--e-vw) * -2)) lawngreen, 0 0 calc(var(--size) * 0.1 * var(--e-vw) * 10) 0 var(--color-primary-4), 0 0 calc(var(--size) * 0.1 * var(--e-vw) * 20) calc(var(--size) * 0.1 * var(--e-vw) * -10) white, inset calc(var(--size) * var(--e-vw)) 0 calc(var(--size) * 3 * var(--e-vw)) 0 currentColor, calc(var(--size) * calc(var(--e-vw) * -1)) 0 calc(var(--size) * 3 * var(--e-vw)) calc(var(--size) * 0.1 * var(--e-vw) * -1) white;
   -webkit-box-shadow: var(--box);
   -ms-box-shadow: var(--box);
   -moz-box-shadow: var(--box);

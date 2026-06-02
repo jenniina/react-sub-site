@@ -953,10 +953,8 @@ const ItemComponent = forwardRef<
                         ></div>
                       )
                     })}
-                    <span style={style}>
-                      <span className="scr">
-                        {t('Shape')} {index + 1}
-                      </span>
+                    <span className="scr">
+                      {t('Shape')} {index + 1}
                     </span>
                   </div>
                 </li>
@@ -1152,10 +1150,8 @@ const ItemComponent = forwardRef<
                     )
                   }}
                 >
-                  <span>
-                    <span className="scr">
-                      {t('Bubble')} {index + 1}
-                    </span>
+                  <span className="scr">
+                    {t('Bubble')} {index + 1}
                   </span>
                 </li>
               )
@@ -1302,10 +1298,8 @@ const ItemComponent = forwardRef<
                     )
                   }}
                 >
-                  <span>
-                    <span className="scr">
-                      {t('Blob')} {index + 1}
-                    </span>
+                  <span className="scr">
+                    {t('Blob')} {index + 1}
                   </span>
                 </li>
               )
