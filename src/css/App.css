@@ -319,10 +319,13 @@ main {
   background-color: hsla(var(--hue-primary), var(--sat-fade), 88%, 0.7);
   background-image: none;
 }
-
+#root .nav-sub button.horizontal-scroll {
+  font-size: 2em;
+}
 button.horizontal-scroll {
   position: absolute;
   top: 1em;
+  font-size: 1em;
   display: flex;
   justify-content: center;
   align-items: center;
