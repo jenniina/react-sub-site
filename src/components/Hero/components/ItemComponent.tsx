@@ -41,7 +41,11 @@ const LOCATION = {
   COLORS: 'colors',
 }
 
-function getHeroItemKey(location: string, itemId: number, resetVersion: number) {
+function getHeroItemKey(
+  location: string,
+  itemId: number,
+  resetVersion: number
+) {
   return `${location || 'home'}-${resetVersion}-${itemId}`
 }
 
@@ -184,15 +188,31 @@ const ItemComponent = forwardRef<
 
       const items = root.querySelectorAll<HTMLElement>('li[id^="shape"]')
       items.forEach((el) => {
+        const nextBaseTop = el.style.top ? stripOuterCalc(el.style.top) : null
+        const nextBaseLeft = el.style.left
+          ? stripOuterCalc(el.style.left)
+          : null
+
         if (locationChanged) {
-          if (el.style.top) el.dataset.baseTop = stripOuterCalc(el.style.top)
-          if (el.style.left) el.dataset.baseLeft = stripOuterCalc(el.style.left)
+          if (nextBaseTop) el.dataset.baseTop = nextBaseTop
+          if (nextBaseLeft) el.dataset.baseLeft = nextBaseLeft
           el.dataset.moveDy = '0'
           el.dataset.moveDx = '0'
         } else {
-          if (el.style.top) el.dataset.baseTop ??= stripOuterCalc(el.style.top)
-          if (el.style.left)
-            el.dataset.baseLeft ??= stripOuterCalc(el.style.left)
+          const baseTopChanged =
+            nextBaseTop != null && el.dataset.baseTop !== nextBaseTop
+          const baseLeftChanged =
+            nextBaseLeft != null && el.dataset.baseLeft !== nextBaseLeft
+
+          if (nextBaseTop) {
+            el.dataset.baseTop = nextBaseTop
+            if (baseTopChanged) el.dataset.moveDy = '0'
+          }
+          if (nextBaseLeft) {
+            el.dataset.baseLeft = nextBaseLeft
+            if (baseLeftChanged) el.dataset.moveDx = '0'
+          }
+
           el.dataset.moveDy ??= '0'
           el.dataset.moveDx ??= '0'
         }
