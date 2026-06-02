@@ -315,14 +315,14 @@ main {
   box-shadow: none;
   color: var(--color-gray-6);
 }
-.light #root .main-content .nav-sub button.horizontal-scroll.disabled {
+#root .light .main-content .nav-sub button.horizontal-scroll.disabled {
   background-color: hsla(var(--hue-primary), var(--sat-fade), 88%, 0.7);
   background-image: none;
 }
 
 button.horizontal-scroll {
   position: absolute;
-  top: 2rem;
+  top: 1em;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -332,7 +332,6 @@ button.horizontal-scroll {
   margin: 0;
   border: 0;
   border-bottom: 3px solid var(--color-primary-8);
-  font-size: 2em;
   opacity: 1;
   z-index: 1;
 }

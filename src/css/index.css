@@ -552,28 +552,39 @@ button.horizontal-scroll.unavailable-action::after {
 .light button.unavailable-action {
   background: linear-gradient(3deg, hsl(var(--hue-primary), var(--sat-fade), 6%) 0%, hsl(var(--hue-primary), var(--sat-fade), 25%) 35%, hsl(var(--hue-primary), var(--sat-fade), 60%) 55%, hsl(var(--hue-primary), var(--sat-fade), 95%) 100%);
   background-size: var(--bg-size);
-  background-position: 50% 3%;
+  background-position: 50% 93%;
 }
 #root button.horizontal-scroll.unavailable-action {
   z-index: 3;
 }
 #root button.unavailable-action,
 #root button.unavailable-action:hover,
-#root button.unavailable-action:focus-visible,
+#root button.unavailable-action:focus-visible {
+  background-image: none;
+  color: var(--color-primary-20);
+}
+#root button.unavailable-action::after {
+  filter: blur(1px);
+}
 #root button.horizontal-scroll.unavailable-action:hover::after,
 #root button.horizontal-scroll.unavailable-action:focus-visible::after {
-  background-position: 50% 3%;
   color: var(--color-primary-20);
+  background-color: hsla(var(--hue-primary), var(--sat-fade), 8%, 0.7);
+  background-image: none;
+  border-color: var(--color-gray-3);
 }
 
 #root .light button.unavailable-action,
 #root .light button.unavailable-action:hover,
-#root .light button.unavailable-action:focus-visible,
+#root .light button.unavailable-action:focus-visible {
+  background-image: none;
+}
+
 #root .light button.horizontal-scroll.unavailable-action::after,
 #root .light button.horizontal-scroll.unavailable-action:hover::after,
 #root .light button.horizontal-scroll.unavailable-action:focus-visible::after {
-  background-position: 50% 3%;
-  color: var(--color-primary-20);
+  background-image: none;
+  background-color: hsla(var(--hue-primary), var(--sat-fade), 80%, 0.7);
 }
 
 button:disabled {

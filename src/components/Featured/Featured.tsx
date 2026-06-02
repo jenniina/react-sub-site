@@ -152,7 +152,7 @@ const Featured: React.FC = () => {
         <div className={styles.featured}>
           <ButtonUnavailableAction
             type="button"
-            className={`${styles['horizontal-scroll']} ${styles.left} horizontal-scroll left ${atStart ? 'disable' : ''}`}
+            className={`${styles['horizontal-scroll']} ${styles.left} horizontal-scroll left ${atStart ? `${styles.disabled} disabled` : ''}`}
             aria-label={t('Previous')}
             title={t('Previous')}
             onClick={scrollToPrevious}
@@ -175,7 +175,7 @@ const Featured: React.FC = () => {
           </ul>
           <ButtonUnavailableAction
             type="button"
-            className={`${styles['horizontal-scroll']} ${styles.right} horizontal-scroll right ${atEnd ? 'disable' : ''}`}
+            className={`${styles['horizontal-scroll']} ${styles.right} horizontal-scroll right ${atEnd ? `${styles.disabled} disabled` : ''}`}
             aria-label={t('Next')}
             title={t('Next')}
             onClick={scrollToNext}
