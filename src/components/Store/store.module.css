@@ -165,9 +165,6 @@
 .store-wrap > div.links ul li {
   margin-left: 1em;
 }
-.store-wrap > div.links ul li:has(a) {
-  color: var(--color-visited);
-}
 .order-items .order-item h3 {
   margin-top: 0.5em;
 }
