@@ -61,7 +61,14 @@ const StoreItems: FC<Props> = ({
                   </>
                 ) : id === 'graphic' ? (
                   <>
-                    <Icon lib="im" name="ImImages" />
+                    <Icon
+                      lib="gi"
+                      name="GiSpellBook"
+                      style={{
+                        transform: 'scale(1.3)',
+                        margin: '-0.2em 0 0.2em',
+                      }}
+                    />
                   </>
                 ) : (
                   ''
@@ -71,6 +78,11 @@ const StoreItems: FC<Props> = ({
                   <>
                     <Icon lib="fa" name="FaNodeJs" />
                   </>
+                ) : id === 'graphic' ? (
+                  <span className="sparkles-on-screen">
+                    <Icon lib="bs" name="BsPcDisplayHorizontal" />
+                    <Icon lib="vsc" name="VscSparkleFilled" />
+                  </span>
                 ) : (
                   ''
                 )}
@@ -90,7 +102,7 @@ const StoreItems: FC<Props> = ({
 
             <AdditionalInfo type={id} styles={styles} />
 
-            {items.map(item => (
+            {items.map((item) => (
               <div
                 key={item.id}
                 id={item.id}
@@ -112,7 +124,7 @@ const StoreItems: FC<Props> = ({
 
                 {(() => {
                   const cartItem = cart.find(
-                    cartItem => cartItem.id === item.id
+                    (cartItem) => cartItem.id === item.id
                   )
                   return cartItem && cartItem.quantity > 0 ? (
                     <>
@@ -143,7 +155,7 @@ const StoreItems: FC<Props> = ({
                       className={styles['add-to-cart']}
                       onClick={() => {
                         const existingItemInCart = cart.find(
-                          cartItem => cartItem.id === item.id
+                          (cartItem) => cartItem.id === item.id
                         )
                         if (existingItemInCart) {
                           addToCart({
@@ -172,7 +184,7 @@ const StoreItems: FC<Props> = ({
                 })()}
 
                 {cart.map(
-                  cartItem =>
+                  (cartItem) =>
                     cartItem.id === item.id &&
                     cartItem.quantity > 0 && (
                       <Link

@@ -1126,6 +1126,17 @@ big > i {
 .colors section > div {
   padding-top: 2em;
 }
+.sparkles-on-screen {
+  position: relative;
+  top: 0.04em;
+}
+.sparkles-on-screen > svg:last-child {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%) scale(0.4) rotate(-20deg);
+  transform-origin: 40% 4%;
+}
 
 #root .p05 {
   padding: 0.5em;
