@@ -1309,6 +1309,7 @@ const ItemComponent = forwardRef<
             ) {
               // CONTACT  // FORM
               const mod = 0.5
+              const borderRadius = '57% 68% 66% 59% / 63% 65% 61% 62%'
               const style: CSSProperties = {
                 ['--rotate' as string]: `${`${Math.round(getRandomMinMax(0, 100))}`}deg`,
                 position: 'absolute',
@@ -1337,7 +1338,7 @@ const ItemComponent = forwardRef<
                 minWidth: '44px',
                 maxHeight: '150px',
                 maxWidth: '150px',
-                borderRadius: '47% 49% 46% 51% / 47% 33% 27% 50%',
+                borderRadius,
                 opacity: `0.${item.size > 7 ? 7 : Math.ceil(item.size)}`,
               }
               const styleInner: CSSProperties = {
@@ -1345,7 +1346,7 @@ const ItemComponent = forwardRef<
                 backgroundColor: `transparent`,
                 width: '100%',
                 height: '100%',
-                borderRadius: '48% 50% 50% 48% / 48% 50% 50% 48%',
+                borderRadius,
                 opacity: `0.${item.size > 7 ? 7 : Math.ceil(item.size)}`,
               }
 
