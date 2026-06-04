@@ -890,7 +890,7 @@
 }
 .light .herocontent .eyes .inner {
   --e-vw: clamp(0.5px, 0.06vw, 1.73px);
-  --box: inset calc(var(--size) * 8 * var(--e-vw)) calc(var(--size) * 0.2 * calc(var(--e-vw) * -1)) calc(var(--size) * 4 * var(--e-vw)) calc(var(--size) * 7 * calc(var(--e-vw) * -1)) hotpink, inset calc(var(--size) * 8 * calc(var(--e-vw) * -1)) calc(var(--size) * 4 * var(--e-vw)) calc(var(--size) * 4 * var(--e-vw)) calc(var(--size) * 4 * calc(var(--e-vw) * -2)) lawngreen, 0 0 calc(var(--size) * 0.1 * var(--e-vw) * 10) 0 var(--color-primary-4), 0 0 calc(var(--size) * 0.1 * var(--e-vw) * 20) calc(var(--size) * 0.1 * var(--e-vw) * -10) white, inset 0 0 calc(var(--size) * 2 * var(--e-vw)) 0 currentColor, calc(var(--size) * calc(var(--e-vw) * -1)) 0 calc(var(--size) * 3 * var(--e-vw)) calc(var(--size) * 0.1 * var(--e-vw) * -1) white;
+  --box: inset calc(var(--size) * 8 * var(--e-vw)) calc(var(--size) * 0.2 * calc(var(--e-vw) * -1)) calc(var(--size) * 4 * var(--e-vw)) calc(var(--size) * 7 * calc(var(--e-vw) * -1)) hotpink, inset calc(var(--size) * 8 * calc(var(--e-vw) * -1)) calc(var(--size) * 4 * var(--e-vw)) calc(var(--size) * 4 * var(--e-vw)) calc(var(--size) * 4 * calc(var(--e-vw) * -2)) chartreuse, 0 0 calc(var(--size) * 0.1 * var(--e-vw) * 10) 0 var(--color-primary-4), 0 0 calc(var(--size) * 0.1 * var(--e-vw) * 20) calc(var(--size) * 0.1 * var(--e-vw) * -10) white, inset 0 0 calc(var(--size) * 2 * var(--e-vw)) 0 currentColor, calc(var(--size) * calc(var(--e-vw) * -1)) 0 calc(var(--size) * 3 * var(--e-vw)) calc(var(--size) * 0.1 * var(--e-vw) * -1) white;
   -webkit-box-shadow: var(--box);
   -ms-box-shadow: var(--box);
   -moz-box-shadow: var(--box);
@@ -1009,9 +1009,10 @@
 .light .herocontent .eyes span::before {
   opacity: 0.7;
 }
-.herocontent .eyes span::after {
+.herocontent .eyes span::after /* iris */ {
+  --e-vw: clamp(0.5px, 0.06vw, 1.73px);
   --color: black;
-  --box: 0 0 calc(var(--size) * 0.1 * 1px * 6) 0 var(--color), 0 0 calc(var(--size) * 0.1 * 1px * 6) calc(var(--size) * 0.1 * 1px * -3) var(--color), inset calc(var(--size) * 0.2 * 1px * 6) calc(var(--size) * 0.2 * 1px * 8) calc(var(--size) * 0.1 * 1px * 8) calc(var(--size) * 0.1 * 1px * -5) black, calc(var(--size) * 0.1 * 1px * -3) calc(var(--size) * 0.1 * 1px * -4) calc(var(--size) * 0.1 * 1px * 4) calc(var(--size) * 0.3 * 1px * -2) black, calc(var(--size) * 0.1 * 1px * -2) calc(var(--size) * 0.1 * 1px * -3) calc(var(--size) * 0.1 * 1px * 10) calc(var(--size) * 0.1 * 1px * 2) white;
+  --box: 0 0 calc(var(--size) * 0.1 * var(--e-vw) * 6) 0 var(--color), 0 0 calc(var(--size) * 0.1 * var(--e-vw) * 6) calc(var(--size) * 0.1 * var(--e-vw) * -3) var(--color), inset calc(var(--size) * 0.2 * var(--e-vw) * 4) calc(var(--size) * 0.2 * var(--e-vw) * 6) calc(var(--size) * 0.1 * var(--e-vw) * 8) calc(var(--size) * 0.1 * var(--e-vw) * -3) var(--color), calc(var(--size) * 0.1 * var(--e-vw) * -3) calc(var(--size) * 0.1 * var(--e-vw) * -4) calc(var(--size) * 0.1 * var(--e-vw) * 4) calc(var(--size) * 0.3 * var(--e-vw) * -2) var(--color);
   -webkit-box-shadow: var(--box);
   content: '';
   position: absolute;
@@ -1035,12 +1036,7 @@
   box-shadow: var(--box);
 }
 .light .herocontent .eyes span::after {
-  opacity: 0.3;
-  --box: 0 0 calc(var(--size) * 0.1 * 1px * 6) 0 var(--color), 0 0 calc(var(--size) * 0.1 * 1px * 6) calc(var(--size) * 0.1 * 1px * -3) var(--color), inset calc(var(--size) * 0.2 * 1px * 6) calc(var(--size) * 0.2 * 1px * 8) calc(var(--size) * 0.3 * 1px * 4) calc(var(--size) * 0.3 * 1px * -2) black, calc(var(--size) * 0.3 * 1px * -3) calc(var(--size) * 0.3 * 1px * -4) calc(var(--size) * 0.3 * 1px * 4) calc(var(--size) * 0.6 * 1px * -2) black, calc(var(--size) * 0.1 * 1px * -2) calc(var(--size) * 0.1 * 1px * -3) calc(var(--size) * 0.1 * 1px * 10) calc(var(--size) * 0.1 * 1px * 2) white;
-  -o-box-shadow: var(--box);
-  -ms-box-shadow: var(--box);
-  -moz-box-shadow: var(--box);
-  box-shadow: var(--box);
+  opacity: 0.18;
 }
 .herocontent .eyes:hover .inner::after,
 .herocontent .eyes:focus-visible .inner::after,
@@ -1900,11 +1896,11 @@
   -webkit-filter: brightness(180%) contrast(120%);
   filter: brightness(180%) contrast(120%);
 }
-
+.herocontent > .eyes:hover,
 .herocontent > .eyes:focus-visible {
   outline: none;
-  -webkit-filter: brightness(130%) contrast(150%);
-  filter: brightness(130%) contrast(150%);
+  -webkit-filter: brightness(120%) contrast(200%);
+  filter: brightness(120%) contrast(200%);
 }
 .herocontent > .geometric:focus-visible,
 .herocontent > .circles:focus-visible {
