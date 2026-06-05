@@ -421,8 +421,8 @@
   height: 10%;
   border-radius: 50%;
   background-color: var(--color);
-  top: calc(50% + (sin(230deg) * 50%) * 0.88);
-  left: calc(50% + (cos(230deg) * 50%) * 0.88);
+  top: calc(50% + (sin(230deg) * 50%) * 0.8);
+  left: calc(50% + (cos(230deg) * 50%) * 0.8);
   transform: rotate(55deg) translate(-50%, -50%);
   background-color: white;
   opacity: 0.22;
