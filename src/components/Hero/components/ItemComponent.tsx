@@ -413,9 +413,9 @@ const ItemComponent = forwardRef<
                       }
                       return (
                         <span key={`${item.i}-${index}`} style={style}>
-                          <span className="scr">
+                          <i className="scr">
                             {t('Shape')} {index + 1}
-                          </span>
+                          </i>
                         </span>
                       )
                     })}
@@ -520,9 +520,9 @@ const ItemComponent = forwardRef<
                       }
                       return (
                         <span key={`${item.i}-${index}`} style={style}>
-                          <span className="scr">
+                          <i className="scr">
                             {t('Shape')} {index + 1}
-                          </span>
+                          </i>
                         </span>
                       )
                     })}
@@ -616,9 +616,9 @@ const ItemComponent = forwardRef<
                       }
                       return (
                         <span key={`${item.i}-${index}`} style={style}>
-                          <span className="scr">
+                          <i className="scr">
                             {t('Shape')} {index + 1}
-                          </span>
+                          </i>
                         </span>
                       )
                     })}
@@ -784,9 +784,9 @@ const ItemComponent = forwardRef<
                     })}{' '}
                   </div>
                   <span style={style}>
-                    <span className="scr">
+                    <i className="scr">
                       {t('Shape')} {index + 1}
-                    </span>
+                    </i>
                   </span>
                 </li>
               )
@@ -953,9 +953,9 @@ const ItemComponent = forwardRef<
                         ></div>
                       )
                     })}
-                    <span className="scr">
+                    <i className="scr">
                       {t('Shape')} {index + 1}
-                    </span>
+                    </i>
                   </div>
                 </li>
               )
@@ -1048,9 +1048,9 @@ const ItemComponent = forwardRef<
                   }}
                 >
                   <div className={styles['mug-cup']}>
-                    <span className="scr">
+                    <i className="scr">
                       {t('Shape')} {index + 1}
-                    </span>
+                    </i>
                   </div>
                   {spanArray.slice(0, 2).map((span) => {
                     const steamStyle: CSSProperties = {
@@ -1063,9 +1063,9 @@ const ItemComponent = forwardRef<
                         className={styles.steam}
                         style={steamStyle}
                       >
-                        <span className="scr">
+                        <i className="scr">
                           {t('Shape')} {index + 1}
-                        </span>
+                        </i>
                       </span>
                     )
                   })}
@@ -1150,9 +1150,10 @@ const ItemComponent = forwardRef<
                     )
                   }}
                 >
-                  <span className="scr">
+                  <span></span>
+                  <i className="scr">
                     {t('Bubble')} {index + 1}
-                  </span>
+                  </i>
                 </li>
               )
             } else if (
@@ -1298,9 +1299,9 @@ const ItemComponent = forwardRef<
                     )
                   }}
                 >
-                  <span className="scr">
+                  <i className="scr">
                     {t('Blob')} {index + 1}
-                  </span>
+                  </i>
                 </li>
               )
             } else if (
@@ -1400,9 +1401,9 @@ const ItemComponent = forwardRef<
                 >
                   <div style={styleInner} className={`inner ${styles.inner}`}>
                     <span className="else-eye">
-                      <span className="scr">
+                      <i className="scr">
                         {t('Eye')} {index + 1}
-                      </span>
+                      </i>
                     </span>
                   </div>
                 </li>
@@ -1501,9 +1502,9 @@ const ItemComponent = forwardRef<
                       ></span>
                     )
                   })}
-                  <span className="scr">
+                  <i className="scr">
                     {t('Shape')} {item.i}
-                  </span>
+                  </i>
                 </li>
               )
             }
