@@ -962,8 +962,7 @@
 }
 
 .light .herocontent .bubbles span::before,
-.light .herocontent .bubbles span::after,
-.light .herocontent .eyes span::before {
+.light .herocontent .bubbles span::after {
   background-color: white;
   opacity: 0.8;
 }
@@ -992,12 +991,17 @@
   transition-duration: 900ms;
   transition-delay: 800ms;
 }
-.herocontent .eyes span::before {
+.herocontent .eyes span::before /* pupil */ {
+  --e-vw: clamp(0.5px, 0.06vw, 1.73px);
   --color: white;
-  top: calc(50% - clamp(5px, 20%, 30px) / 2);
-  left: calc(15% - clamp(5px, 20%, 30px) / 2);
-  width: clamp(5px, 20%, 30px);
-  height: clamp(5px, 20%, 30px);
+  --box: 0 0 calc(var(--size) * 0.1 * var(--e-vw) * 4) 0 var(--color), 0 0 calc(var(--size) * 0.1 * var(--e-vw) * 5) 0 var(--color);
+  --size-pupil: clamp(5px, 20%, 30px);
+  background-color: white;
+  opacity: 0.8;
+  top: calc(50% - var(--size-pupil) / 2);
+  left: calc(15% - var(--size-pupil) / 2);
+  width: var(--size-pupil);
+  height: var(--size-pupil);
   border-radius: 30% 90%;
   opacity: 0.5;
   -webkit-transform: rotate(45deg);
