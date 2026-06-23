@@ -7605,6 +7605,15 @@ export const translations = {
     cs: 'Zkuste přetáhnout koule',
     fi: 'Kokeile pallojen raahaamista',
   },
+  TryDraggingThePagesOverAnother: {
+    en: 'Try dragging the pages over another',
+    es: 'Intente arrastrar las páginas sobre otra',
+    fr: 'Essayez de faire glisser les pages sur une autre',
+    de: 'Versuchen Sie, die Seiten über eine andere zu ziehen',
+    pt: 'Tente arrastar as páginas sobre outra',
+    cs: 'Zkuste přetáhnout stránky přes jinou',
+    fi: 'Kokeile sivujen raahaamista toisen päälle',
+  },
   SelectedBlobNone: {
     en: 'Selected blob: none',
     es: 'Blob seleccionado: ninguno',
@@ -11320,6 +11329,15 @@ export const translations = {
     pt: 'Já está na página selecionada',
     cs: 'Již jste na vybrané stránce',
     fi: 'Olet jo valitulla sivulla',
+  },
+  Document: {
+    en: 'Document',
+    es: 'Documento',
+    fr: 'Document',
+    de: 'Dokument',
+    pt: 'Documento',
+    cs: 'Dokument',
+    fi: 'Asiakirja',
   },
   UnavailableForTestUser: {
     en: 'Unavailable for the test user account',

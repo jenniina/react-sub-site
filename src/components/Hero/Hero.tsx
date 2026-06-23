@@ -42,6 +42,7 @@ export interface itemProps {
   color: string
   rotation?: number
   label?: string
+  group?: 'primary' | 'secondary'
   xPercent?: number
   yPercent?: number
 }
@@ -121,8 +122,7 @@ export default function Hero({
   // Clear eye transforms when navigating away from contact/form pages
   useEffect(() => {
     if (isClient && page !== 'contact' && page !== 'form') {
-      const eyes = document.querySelectorAll<HTMLSpanElement>('.eye .inner')
-      eyes.forEach((eye) => {
+      eyeInnerRefs.current.forEach((eye) => {
         eye.style.transform = ''
       })
     }
@@ -130,6 +130,9 @@ export default function Hero({
 
   const resetButton = useRef() as RefObject<HTMLButtonElement>
   const ulRef = useRef<HTMLUListElement>(null)
+  const heroItemRefs = useRef(new Map<number, HTMLLIElement>())
+  const stackedDocumentIdsRef = useRef(new Set<number>())
+  const eyeInnerRefs = useRef(new Map<number, HTMLDivElement>())
   const [prefersReducedMotion, setPrefersReducedMotion] =
     useLocalStorage<boolean>('prefersReducedMotion-Hero', false)
   const isMovingRef = useRef(false)
@@ -138,6 +141,34 @@ export default function Hero({
   const movementCycleStartedRef = useRef(false)
   const resetTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const revealAfterResetRef = useRef(false)
+
+  const registerHeroItem = useCallback(
+    (itemId: number, node: HTMLLIElement | null, isStackedDocument = false) => {
+      if (node) {
+        heroItemRefs.current.set(itemId, node)
+      } else {
+        heroItemRefs.current.delete(itemId)
+      }
+
+      if (isStackedDocument) {
+        stackedDocumentIdsRef.current.add(itemId)
+      } else {
+        stackedDocumentIdsRef.current.delete(itemId)
+      }
+    },
+    []
+  )
+
+  const registerEyeInner = useCallback(
+    (itemId: number, node: HTMLDivElement | null) => {
+      if (node) {
+        eyeInnerRefs.current.set(itemId, node)
+      } else {
+        eyeInnerRefs.current.delete(itemId)
+      }
+    },
+    []
+  )
 
   const escapeFunction = () => {
     if (resetButton.current) resetButton.current.focus()
@@ -274,9 +305,15 @@ export default function Hero({
         scheduleNext(Math.round(getRandomMinMax(1000, 2000)))
         return
       }
-      // Get current items from DOM instead of relying on state
-      const items = document?.querySelectorAll<HTMLElement>('[id^="shape"]')
-      if (!items || items.length === 0) {
+      const allItems = Array.from(heroItemRefs.current.entries())
+      const items =
+        page === 'draganddrop'
+          ? allItems
+              .filter(([itemId]) => !stackedDocumentIdsRef.current.has(itemId))
+              .map(([, item]) => item)
+          : allItems.map(([, item]) => item)
+
+      if (items.length === 0) {
         isMovingRef.current = false
         return
       }
@@ -538,9 +575,7 @@ export default function Hero({
   //Make eyes follow the mouse:
   const follow = useCallback(
     (e: Event) => {
-      const eyes = [
-        ...document?.querySelectorAll<HTMLSpanElement>('.eye .inner'),
-      ]
+      const eyes = Array.from(eyeInnerRefs.current.values())
       if (eyes.length > 0) {
         eyes.forEach((eye) => {
           if (page === 'contact' || page === 'form') {
@@ -810,6 +845,36 @@ export default function Hero({
       return
     }
 
+    if (page === 'draganddrop') {
+      const dndGroups = [
+        { group: 'primary' as const, shadeMin: 8, shadeMax: 12 },
+        { group: 'secondary' as const, shadeMin: 9, shadeMax: 12 },
+      ]
+
+      let nextId = 1
+      const dndItems = dndGroups.flatMap(({ group, shadeMin, shadeMax }) => {
+        const documentCount = Math.max(3, Math.round(getRandomMinMax(3, 7)))
+
+        return Array.from({ length: documentCount }, () => {
+          const item = {
+            i: nextId,
+            e: Math.round(getRandomMinMax(4, 9)),
+            size: 10,
+            color: `var(--color-${group}-${Math.round(
+              getRandomMinMax(shadeMin, shadeMax)
+            )})`,
+            group,
+          }
+
+          nextId += 1
+          return item
+        })
+      })
+
+      setValues(dndItems)
+      return
+    }
+
     const items: itemProps[] = []
     const specialSizesCount = Math.ceil(getRandomMinMax(1.1, 3))
     const specialIndices = new Set<number>()
@@ -957,6 +1022,8 @@ export default function Hero({
         itemsVisible={itemsVisible}
         prefersReducedMotion={prefersReducedMotion}
         lightTheme={lightTheme}
+        registerHeroItem={registerHeroItem}
+        registerEyeInner={registerEyeInner}
       />
 
       <div className={styles.bottom}>
