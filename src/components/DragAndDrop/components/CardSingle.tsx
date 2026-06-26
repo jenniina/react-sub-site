@@ -18,6 +18,7 @@ import { useLanguageContext } from '../../../contexts/LanguageContext'
 import { getErrorMessage } from '../../../utils'
 import Accordion from '../../Accordion/Accordion'
 import Icon from '../../Icon/Icon'
+import ButtonUnavailableAction from '../../ButtonUnavailableAction/ButtonUnavailableAction'
 
 interface Props {
   status: Status
@@ -355,9 +356,13 @@ function CardSingle({
                       <span>{t('Text')}:</span>
                     </label>
                   </div>
-                  <button type="submit" disabled={sending}>
+                  <ButtonUnavailableAction
+                    type="submit"
+                    unavailable={sending}
+                    unavailableReason={sending ? t('Saving') : ''}
+                  >
                     {t('Save')}
-                  </button>
+                  </ButtonUnavailableAction>
                 </form>
               </Accordion>
             </li>
@@ -395,9 +400,13 @@ function CardSingle({
                       onChange={handleColorPickerChange}
                     />
                   </div>
-                  <button type="submit" disabled={sending}>
+                  <ButtonUnavailableAction
+                    type="submit"
+                    unavailable={sending}
+                    unavailableReason={sending ? t('Saving') : ''}
+                  >
                     {t('Save')}
-                  </button>
+                  </ButtonUnavailableAction>
                 </form>
               </Accordion>
             </li>

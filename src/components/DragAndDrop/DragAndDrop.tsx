@@ -19,6 +19,7 @@ import { useLanguageContext } from '../../contexts/LanguageContext'
 import { useConfirm } from '../../contexts/ConfirmContext'
 import { useIsClient, useWindow } from '../../hooks/useSSR'
 import CardsContainer from './components/CardsContainer'
+import ButtonUnavailableAction from '../ButtonUnavailableAction/ButtonUnavailableAction'
 
 const initialStatuses: string[] = ['do', 'doing', 'done']
 
@@ -936,9 +937,13 @@ export const DragAndDrop = () => {
                   )
                 }
               />
-              <button type="submit" disabled={sending}>
+              <ButtonUnavailableAction
+                type="submit"
+                unavailable={sending}
+                unavailableReason={sending ? t('Saving') : ''}
+              >
                 {t('AddTextOrColor')}
-              </button>
+              </ButtonUnavailableAction>
             </form>
             <p className="textcenter">
               <span>{t('NeedHelp')} </span>{' '}
@@ -979,9 +984,13 @@ export const DragAndDrop = () => {
                   <span>{t('AddANewCategory')}</span>
                 </label>
               </div>
-              <button type="submit" disabled={sending}>
+              <ButtonUnavailableAction
+                type="submit"
+                unavailable={sending}
+                unavailableReason={sending ? t('Saving') : ''}
+              >
                 {t('Submit')}
-              </button>
+              </ButtonUnavailableAction>
             </form>
           </div>
         </div>

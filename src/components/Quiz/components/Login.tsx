@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 import { getErrorMessage } from '../../../utils'
 import { defaultQuizHighscores, normalizeQuizHighscores } from '../utils/scores'
+import ButtonUnavailableAction from '../../ButtonUnavailableAction/ButtonUnavailableAction'
 
 interface Props {
   easy: IHighscore['easy']
@@ -142,14 +143,15 @@ const FormLogin = ({ easy, medium, hard, setIsFormOpen }: Props) => {
                   <span>{t('Password')}: </span>
                 </label>
               </div>
-              <button
+              <ButtonUnavailableAction
                 type="submit"
-                disabled={sending}
+                unavailable={sending}
+                unavailableReason={sending ? t('LoggingIn') : ''}
                 id="login"
                 className="login"
               >
                 {t('Login')}
-              </button>
+              </ButtonUnavailableAction>
             </form>
           </Accordion>
         </>

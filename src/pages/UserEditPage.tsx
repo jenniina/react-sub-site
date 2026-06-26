@@ -17,6 +17,7 @@ import PasswordEdit from '../components/UserEdit/PasswordEdit'
 import UsernameEdit from '../components/UserEdit/UsernameEdit'
 import LanguageEdit from '../components/UserEdit/LanguageEdit'
 import NicknameEdit from '../components/UserEdit/NicknameEdit'
+import ButtonUnavailableAction from '../components/ButtonUnavailableAction/ButtonUnavailableAction'
 
 interface Props {
   type: string
@@ -94,6 +95,12 @@ const UserEditPage = ({ type, options }: Props) => {
     }
   }
 
+  const unavailableReason = sending
+    ? t('Saving')
+    : user?.name === 'temp'
+      ? t('CannotBeChangedForTestUser')
+      : ''
+
   return (
     <>
       <div className={`edit ${type} ${lightTheme ? styles.light : ''}`}>
@@ -120,14 +127,15 @@ const UserEditPage = ({ type, options }: Props) => {
                   }}
                   className="flex center"
                 >
-                  <button
+                  <ButtonUnavailableAction
                     type="submit"
-                    disabled={sending || user.name === 'temp'}
+                    unavailable={Boolean(unavailableReason)}
+                    unavailableReason={unavailableReason}
                     className={`submit danger ${styles['delete-account']} ${styles.submit}`}
                   >
                     <Icon lib="ti" name="TiDeleteOutline" />{' '}
                     {t('DeleteAccount')}
-                  </button>
+                  </ButtonUnavailableAction>
                 </form>
               ) : (
                 ''

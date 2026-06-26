@@ -16,6 +16,7 @@ import {
   BsArrowDownCircleFill,
   BsArrowBarRight,
   BsArrowBarLeft,
+  BsPcDisplayHorizontal,
 } from 'react-icons/bs'
 import {
   IoMdImages,
@@ -39,6 +40,7 @@ import {
   BiPlus,
   BiUndo,
   BiRedo,
+  BiBookHeart,
 } from 'react-icons/bi'
 import { CgSearch, CgUndo } from 'react-icons/cg'
 import {
@@ -97,12 +99,14 @@ import {
   MdInvertColors,
   MdInvertColorsOff,
   MdOutlineCircle,
+  MdBubbleChart,
 } from 'react-icons/md'
 import {
   LuCirclePlus,
   LuArrowRightFromLine,
   LuArrowLeftFromLine,
   LuSquareDashed,
+  LuLaptopMinimalCheck,
 } from 'react-icons/lu'
 import { LiaUndoAltSolid, LiaNewspaperSolid } from 'react-icons/lia'
 import {
@@ -188,7 +192,7 @@ import {
   ImCamera,
 } from 'react-icons/im'
 import { GrGraphQl } from 'react-icons/gr'
-import { GiAbstract019, GiComb } from 'react-icons/gi'
+import { GiAbstract019, GiComb, GiSpellBook } from 'react-icons/gi'
 import { SiSvgtrace } from 'react-icons/si'
 import {
   GoArrowLeft,
@@ -196,6 +200,7 @@ import {
   GoTriangleDown,
   GoTriangleUp,
 } from 'react-icons/go'
+import { VscSparkleFilled } from 'react-icons/vsc'
 
 export type IconLibrariesShape = Record<
   string,
@@ -219,12 +224,7 @@ export const iconLibraries = {
     BsArrowDownCircleFill,
     BsArrowBarRight,
     BsArrowBarLeft,
-  },
-  io: {
-    IoMdImages,
-    IoMdAdd,
-    IoMdCheckmarkCircleOutline,
-    IoMdColorPalette,
+    BsPcDisplayHorizontal,
   },
   bi: {
     BiChat,
@@ -242,10 +242,17 @@ export const iconLibraries = {
     BiPlus,
     BiUndo,
     BiRedo,
+    BiBookHeart,
   },
   cg: {
     CgSearch,
     CgUndo,
+  },
+  io: {
+    IoMdImages,
+    IoMdAdd,
+    IoMdCheckmarkCircleOutline,
+    IoMdColorPalette,
   },
   io5: {
     IoSettingsSharp,
@@ -368,12 +375,14 @@ export const iconLibraries = {
     MdInvertColors,
     MdInvertColorsOff,
     MdOutlineCircle,
+    MdBubbleChart,
   },
   lu: {
     LuCirclePlus,
     LuArrowRightFromLine,
     LuArrowLeftFromLine,
     LuSquareDashed,
+    LuLaptopMinimalCheck,
   },
   lia: {
     LiaUndoAltSolid,
@@ -414,6 +423,7 @@ export const iconLibraries = {
   gi: {
     GiAbstract019,
     GiComb,
+    GiSpellBook,
   },
   si: {
     SiSvgtrace,
@@ -423,5 +433,8 @@ export const iconLibraries = {
     GoArrowRight,
     GoTriangleDown,
     GoTriangleUp,
+  },
+  vsc: {
+    VscSparkleFilled,
   },
 } as const satisfies IconLibrariesShape

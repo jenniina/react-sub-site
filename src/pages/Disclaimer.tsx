@@ -1,13 +1,9 @@
-import { useTheme } from '../hooks/useTheme'
 import { Link } from 'react-router-dom'
-import styles from './css/disclaimer.module.css'
 
 import { useLanguageContext } from '../contexts/LanguageContext'
 import SEO from '../components/SEO/SEO'
 export default function Disclaimer({ type }: { type: string }) {
   const { t } = useLanguageContext()
-
-  const lightTheme = useTheme()
 
   return (
     <>
@@ -16,7 +12,7 @@ export default function Disclaimer({ type }: { type: string }) {
         description={t('PrivacyAndSecurityDisclaimer')}
         canonicalUrl={'https://react.jenniina.fi/disclaimer'}
       />
-      <div className={`disclaimer ${type} ${lightTheme ? styles.light : ''}`}>
+      <div className={`disclaimer ${type}`}>
         <div className="inner-wrap">
           <section className={`card`}>
             <div>

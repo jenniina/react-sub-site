@@ -35,6 +35,7 @@ import WordCloud from '../WordCloud/WordCloud'
 import Image from './components/Image'
 import Video from './components/Video'
 import Icon from '../Icon/Icon'
+import ButtonUnavailableAction from '../ButtonUnavailableAction/ButtonUnavailableAction'
 
 const imageTypes: TImageTypes[] = [
   'all',
@@ -319,48 +320,60 @@ const Images: FC = () => {
     if (totalSubPages === 1) return <></>
     return (
       <div className={styles['pagination-wrap']}>
-        <button
+        <ButtonUnavailableAction
           className={`tooltip-wrap`}
-          disabled={subPage === 1}
+          unavailable={subPage === 1}
+          unavailableReason={subPage === 1 ? t('AlreadyOnFirstPage') : ''}
           onClick={() => setSubPage(1)}
+          tooltipClassName="tooltip above narrow2"
         >
           <Icon lib="bi" name="BiChevronsLeft" aria-hidden="true" />
           <span className="scr">{t('FirstPage')}</span>
           <span aria-hidden="true" className="tooltip above narrow2">
             {t('FirstPage')}
           </span>
-        </button>
-        <button
+        </ButtonUnavailableAction>
+        <ButtonUnavailableAction
           className={`tooltip-wrap`}
           onClick={() => setSubPage((prev) => Math.max(prev - 1, 1))}
-          disabled={subPage === 1}
+          unavailable={subPage === 1}
+          unavailableReason={subPage === 1 ? t('AlreadyOnFirstPage') : ''}
+          tooltipClassName="tooltip above narrow2"
         >
           <Icon lib="bi" name="BiChevronLeft" aria-hidden="true" />
           <span className="scr">{t('Previous')}</span>
           <span aria-hidden="true" className="tooltip above narrow2">
             {t('Previous')}
           </span>
-        </button>
+        </ButtonUnavailableAction>
         <span>
           {t('Page')} {subPage} / {totalSubPages}
         </span>
-        <button
+        <ButtonUnavailableAction
           className={`tooltip-wrap`}
           onClick={() =>
             setSubPage((prev) => Math.min(prev + 1, totalSubPages))
           }
-          disabled={subPage === totalSubPages}
+          unavailable={subPage === totalSubPages}
+          unavailableReason={
+            subPage === totalSubPages ? t('AlreadyOnLastPage') : ''
+          }
+          tooltipClassName="tooltip above narrow2"
         >
           <Icon lib="bi" name="BiChevronRight" aria-hidden="true" />
           <span className="scr">{t('Next')}</span>
           <span aria-hidden="true" className="tooltip above narrow2">
             {t('Next')}
           </span>
-        </button>
-        <button
+        </ButtonUnavailableAction>
+        <ButtonUnavailableAction
           className={`tooltip-wrap`}
-          disabled={subPage === totalSubPages}
+          unavailable={subPage === totalSubPages}
+          unavailableReason={
+            subPage === totalSubPages ? t('AlreadyOnLastPage') : ''
+          }
           onClick={() => setSubPage(totalSubPages)}
+          tooltipClassName="tooltip above narrow2"
         >
           <Icon lib="bi" name="BiChevronsRight" aria-hidden="true" />
           <span className="scr">
@@ -369,7 +382,7 @@ const Images: FC = () => {
           <span aria-hidden="true" className="tooltip above narrow2">
             {t('LastPage')} ({totalSubPages})
           </span>
-        </button>
+        </ButtonUnavailableAction>
       </div>
     )
   }
@@ -378,7 +391,7 @@ const Images: FC = () => {
 
   const fetchPageButtons = fetchPageArray.map((i, index) => (
     <Fragment key={i}>
-      <button
+      <ButtonUnavailableAction
         onClick={() => {
           setSubPage(1)
           setFetchPage(i)
@@ -387,13 +400,17 @@ const Images: FC = () => {
           i === fetchPage ? styles.active : ''
         }`}
         data-current={i === fetchPage ? t('Current') : ''}
-        disabled={index === fetchPage - 1 || i > totalPages}
+        unavailable={index === fetchPage - 1 || i > totalPages}
+        unavailableReason={
+          index === fetchPage - 1 ? t('AlreadyOnSelectedPage') : ''
+        }
+        tooltipClassName="tooltip above narrow2"
       >
         {i}
         <span className="tooltip above narrow2">
           {t('Page')} {i}
         </span>
-      </button>
+      </ButtonUnavailableAction>
     </Fragment>
   ))
 
@@ -654,9 +671,13 @@ const Images: FC = () => {
                 language={language}
               />
 
-              <button type="submit" disabled={loading}>
+              <ButtonUnavailableAction
+                type="submit"
+                unavailable={loading}
+                unavailableReason={loading ? t('Loading') : ''}
+              >
                 {type === 'video' ? t('SearchforVideos') : t('SearchForMedia')}
-              </button>
+              </ButtonUnavailableAction>
             </div>
             {type === 'vector' && (
               <p className={`textcenter flex center   ${styles.note}`}>

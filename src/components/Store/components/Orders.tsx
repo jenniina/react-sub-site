@@ -13,6 +13,7 @@ import { useTheme } from '../../../hooks/useTheme'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
 import { getErrorMessage } from '../../../utils'
 import { useConfirm } from '../../../contexts/ConfirmContext'
+import ButtonUnavailableAction from '../../ButtonUnavailableAction/ButtonUnavailableAction'
 
 interface Props {
   user: IUser
@@ -48,7 +49,7 @@ const Orders: FC<Props> = ({
       const orders = await cartService.getAllOrders(language, user._id)
       // Convert createdAt and updatedAt to Date objects
       const ordersWithDates = orders
-        .map(order => ({
+        .map((order) => ({
           ...order,
           createdAt: new Date(order.createdAt),
           updatedAt: new Date(order.updatedAt),
@@ -61,7 +62,6 @@ const Orders: FC<Props> = ({
           return b.createdAt.getTime() - a.createdAt.getTime()
         })
       setOrders(ordersWithDates)
-      
     } catch (err: unknown) {
       const message = getErrorMessage(err, t('Error'))
       void dispatch(notify(message, true, 8))
@@ -77,10 +77,10 @@ const Orders: FC<Props> = ({
   useEffect(() => {
     // Recalculate total price when price has changed
     if (orders) {
-      const newOrders = orders.map(order => ({
+      const newOrders = orders.map((order) => ({
         ...order,
         total: order.items
-          .map(item => item.price * item.quantity)
+          .map((item) => item.price * item.quantity)
           .reduce((a, b) => a + b, 0),
       }))
 
@@ -97,7 +97,6 @@ const Orders: FC<Props> = ({
       await cartService.deleteOrder(language, orderID, user._id)
       void dispatch(notify(`${t('Deleted')} ${orderID}`, false, 5))
       await fetchAllOrders()
-      
     } catch (err: unknown) {
       const message = getErrorMessage(err, t('Error'))
       void dispatch(notify(message, true, 8))
@@ -110,7 +109,6 @@ const Orders: FC<Props> = ({
       const r = await cartService.updateOrder(language, order, user._id)
       if (r?.success) void dispatch(notify(`${r.message}`, false, 5))
       await fetchAllOrders()
-      
     } catch (err: unknown) {
       const message = getErrorMessage(err, t('Error'))
       void dispatch(notify(message, true, 8))
@@ -178,9 +176,9 @@ const Orders: FC<Props> = ({
                   <strong>{t('PaymentState')}: </strong>
                   {
                     paidStatus[
-                      order.items.every(item => item.paid === 'full')
+                      order.items.every((item) => item.paid === 'full')
                         ? 'full'
-                        : order.items.every(item => item.paid === 'none')
+                        : order.items.every((item) => item.paid === 'none')
                           ? 'none'
                           : 'partial'
                     ]
@@ -219,7 +217,7 @@ const Orders: FC<Props> = ({
                 <>
                   <form
                     className={styles['change-status-form']}
-                    onSubmit={e => {
+                    onSubmit={(e) => {
                       e.preventDefault()
                       void updateOrder(order)
                     }}
@@ -230,11 +228,13 @@ const Orders: FC<Props> = ({
                       className="status"
                       instructions="Status"
                       options={statusOptions}
-                      value={statusOptions.find(o => o.value === order.status)}
-                      onChange={c => {
+                      value={statusOptions.find(
+                        (o) => o.value === order.status
+                      )}
+                      onChange={(c) => {
                         //order.status = o?.value as status
                         setOrders(
-                          orders?.map(o =>
+                          orders?.map((o) =>
                             o.orderID === order.orderID
                               ? { ...o, status: c?.value as status }
                               : o
@@ -242,14 +242,18 @@ const Orders: FC<Props> = ({
                         )
                       }}
                     />
-                    <button type="submit" disabled={sending}>
+                    <ButtonUnavailableAction
+                      type="submit"
+                      unavailable={sending}
+                      unavailableReason={sending ? t('Saving') : ''}
+                    >
                       {t('Submit')}
-                    </button>
+                    </ButtonUnavailableAction>
                   </form>
                 </>
               </Accordion>
 
-              {order.items?.map(item => (
+              {order.items?.map((item) => (
                 <div className={styles['item-wrap']} key={item.id}>
                   <h3>{item.name}</h3>
                   <p>{item.description}</p>
@@ -288,7 +292,7 @@ const Orders: FC<Props> = ({
                     <>
                       <form
                         className={styles['change-status-form']}
-                        onSubmit={e => {
+                        onSubmit={(e) => {
                           e.preventDefault()
                           void updateOrder(order)
                         }}
@@ -300,13 +304,13 @@ const Orders: FC<Props> = ({
                             className="bg"
                             name={`price-${item.id}`}
                             defaultValue={item.price}
-                            onChange={e => {
+                            onChange={(e) => {
                               setOrders(
-                                orders?.map(o =>
+                                orders?.map((o) =>
                                   o.orderID === order.orderID
                                     ? {
                                         ...o,
-                                        items: o.items.map(i =>
+                                        items: o.items.map((i) =>
                                           i.id === item.id
                                             ? {
                                                 ...i,
@@ -330,14 +334,14 @@ const Orders: FC<Props> = ({
                             className="bg"
                             name={`quantity-${item.id}`}
                             defaultValue={item.quantity}
-                            onChange={e => {
+                            onChange={(e) => {
                               //item.quantity = Number(e.target.value)
                               setOrders(
-                                orders?.map(o =>
+                                orders?.map((o) =>
                                   o.orderID === order.orderID
                                     ? {
                                         ...o,
-                                        items: o.items.map(i =>
+                                        items: o.items.map((i) =>
                                           i.id === item.id
                                             ? {
                                                 ...i,
@@ -361,14 +365,14 @@ const Orders: FC<Props> = ({
                             name={`details-${item.id}`}
                             rows={6}
                             defaultValue={item.details}
-                            onChange={e => {
+                            onChange={(e) => {
                               // item.details = e.target.value
                               setOrders(
-                                orders?.map(o =>
+                                orders?.map((o) =>
                                   o.orderID === order.orderID
                                     ? {
                                         ...o,
-                                        items: o.items.map(i =>
+                                        items: o.items.map((i) =>
                                           i.id === item.id
                                             ? { ...i, details: e.target.value }
                                             : i
@@ -388,16 +392,16 @@ const Orders: FC<Props> = ({
                           instructions={t('Status')}
                           options={statusOptions}
                           value={statusOptions.find(
-                            o => o.value === item.status
+                            (o) => o.value === item.status
                           )}
-                          onChange={c => {
+                          onChange={(c) => {
                             // item.status = c?.value as status
                             setOrders(
-                              orders?.map(o =>
+                              orders?.map((o) =>
                                 o.orderID === order.orderID
                                   ? {
                                       ...o,
-                                      items: o.items.map(i =>
+                                      items: o.items.map((i) =>
                                         i.id === item.id
                                           ? { ...i, status: c?.value as status }
                                           : i
@@ -414,15 +418,15 @@ const Orders: FC<Props> = ({
                           className={`paid ${selectStyles.prev}`}
                           instructions={t('PaymentState')}
                           options={paidOptions}
-                          value={paidOptions.find(o => o.value === item.paid)}
-                          onChange={c => {
+                          value={paidOptions.find((o) => o.value === item.paid)}
+                          onChange={(c) => {
                             // item.paid = c?.value as paid
                             setOrders(
-                              orders?.map(o =>
+                              orders?.map((o) =>
                                 o.orderID === order.orderID
                                   ? {
                                       ...o,
-                                      items: o.items.map(i =>
+                                      items: o.items.map((i) =>
                                         i.id === item.id
                                           ? { ...i, paid: c?.value as paid }
                                           : i
@@ -434,9 +438,13 @@ const Orders: FC<Props> = ({
                           }}
                         />
 
-                        <button type="submit" disabled={sending}>
+                        <ButtonUnavailableAction
+                          type="submit"
+                          unavailable={sending}
+                          unavailableReason={sending ? t('Saving') : ''}
+                        >
                           {t('Submit')}
-                        </button>
+                        </ButtonUnavailableAction>
                       </form>
                     </>
                   </Accordion>
@@ -446,7 +454,7 @@ const Orders: FC<Props> = ({
                 <table className={`${styles['info-table']}`}>
                   <caption>{t('Info')}</caption>
                   <tbody>
-                    {Object.keys(order.info).map(key => {
+                    {Object.keys(order.info).map((key) => {
                       if (key === '_id') return null
                       return (
                         order.info[key as keyof typeof order.info] !== null &&
@@ -479,7 +487,7 @@ const Orders: FC<Props> = ({
                   <>
                     <form
                       className={styles['change-status-form']}
-                      onSubmit={e => {
+                      onSubmit={(e) => {
                         e.preventDefault()
                         void updateOrder(order)
                       }}
@@ -496,9 +504,9 @@ const Orders: FC<Props> = ({
                               defaultValue={
                                 order.info[item as keyof typeof order.info]
                               }
-                              onChange={e => {
+                              onChange={(e) => {
                                 setOrders(
-                                  orders?.map(o =>
+                                  orders?.map((o) =>
                                     o.orderID === order.orderID
                                       ? {
                                           ...o,
@@ -523,10 +531,10 @@ const Orders: FC<Props> = ({
                           rows={6}
                           name={`additional-${order.orderID}`}
                           defaultValue={order.extra}
-                          onChange={e => {
+                          onChange={(e) => {
                             // order.extra = e.target.value
                             setOrders(
-                              orders?.map(o =>
+                              orders?.map((o) =>
                                 o.orderID === order.orderID
                                   ? { ...o, extra: e.target.value }
                                   : o
@@ -536,7 +544,7 @@ const Orders: FC<Props> = ({
                         />
                       </label>
 
-                      {order.items?.every(item => item.paid === 'full') ? (
+                      {order.items?.every((item) => item.paid === 'full') ? (
                         <button
                           key={order.updatedAt.toString()}
                           onClick={() => {
@@ -545,7 +553,7 @@ const Orders: FC<Props> = ({
                               status: 'completed' as status,
                             }
                             setOrders(
-                              orders?.map(o =>
+                              orders?.map((o) =>
                                 o.orderID === order.orderID ? updatedOrder : o
                               )
                             )
@@ -557,12 +565,12 @@ const Orders: FC<Props> = ({
                       ) : (
                         <div key={order.updatedAt.toString()}>
                           {t('OrderNotCompleted')} <br />
-                          {order.items?.some(item => item.paid !== 'full') &&
+                          {order.items?.some((item) => item.paid !== 'full') &&
                             t('MissingPayment')}
                           :{' '}
                           <ul className="ul">
                             {order.items
-                              ?.filter(item => item.paid !== 'full')
+                              ?.filter((item) => item.paid !== 'full')
                               .map((item, index) => (
                                 <li key={`${item.paid}-${index}`}>
                                   {item.name} ({paidStatus[item.paid]})
@@ -572,9 +580,13 @@ const Orders: FC<Props> = ({
                         </div>
                       )}
 
-                      <button type="submit" disabled={sending}>
+                      <ButtonUnavailableAction
+                        type="submit"
+                        unavailable={sending}
+                        unavailableReason={sending ? t('Saving') : ''}
+                      >
                         {t('Submit')}
-                      </button>
+                      </ButtonUnavailableAction>
                     </form>
                   </>
                 </Accordion>

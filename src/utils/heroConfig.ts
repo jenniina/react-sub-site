@@ -54,7 +54,7 @@ const heroConfig: Record<string, (language: ELanguages) => HeroProps> = {
     text: '',
     address: 'draganddrop',
     language,
-    instructions: t.TryDraggingTheBlobs[language],
+    instructions: t.TryDraggingThePagesOverAnother[language],
   }),
   '/portfolio/todo': (language) => ({
     heading: t.TodoApp[language],

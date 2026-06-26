@@ -4,11 +4,13 @@ import Icon from '../Icon/Icon'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import useSideScroll from '../../hooks/useSideScroll'
 import styles from '../../pages/css/portfolio.module.css'
+import ButtonUnavailableAction from '../ButtonUnavailableAction/ButtonUnavailableAction'
 import {
   getPortfolioTitle,
   portfolioItems,
   renderPortfolioIcon,
 } from '../../data/portfolioItems'
+import { useTheme } from '../../hooks/useTheme'
 
 const Featured: React.FC = () => {
   const { t } = useLanguageContext()
@@ -142,21 +144,24 @@ const Featured: React.FC = () => {
     }
   }, [scrollRef, items, t])
 
+  const lightTheme = useTheme()
+
   return (
-    <section className="card smallpadd">
-      <div>
+    <section className={lightTheme ? styles.light : ''}>
+      <div style={{ padding: '1em var(--padd) 0.8em' }}>
         <div className={styles.featured}>
-          <button
+          <ButtonUnavailableAction
             type="button"
-            className={`${styles['horizontal-scroll']} ${styles.left} horizontal-scroll left ${atStart ? 'disable' : ''}`}
+            className={`${styles['horizontal-scroll']} ${styles.left} horizontal-scroll left ${atStart ? `${styles.disabled} disabled` : ''}`}
             aria-label={t('Previous')}
             title={t('Previous')}
             onClick={scrollToPrevious}
-            disabled={atStart}
-            aria-disabled={atStart}
+            unavailable={atStart}
+            unavailableReason={atStart ? t('AlreadyOnFirstPage') : ''}
+            tooltipClassName="tooltip right middle narrow2"
           >
             <Icon lib="fa6" name="FaAnglesLeft" />
-          </button>
+          </ButtonUnavailableAction>
           <ul className={styles.list} ref={setScrollerRef}>
             {items.map((item) => (
               <li key={item.key} className={item.className}>
@@ -168,17 +173,18 @@ const Featured: React.FC = () => {
               </li>
             ))}
           </ul>
-          <button
+          <ButtonUnavailableAction
             type="button"
-            className={`${styles['horizontal-scroll']} ${styles.right} horizontal-scroll right ${atEnd ? 'disable' : ''}`}
+            className={`${styles['horizontal-scroll']} ${styles.right} horizontal-scroll right ${atEnd ? `${styles.disabled} disabled` : ''}`}
             aria-label={t('Next')}
             title={t('Next')}
             onClick={scrollToNext}
-            disabled={atEnd}
-            aria-disabled={atEnd}
+            unavailable={atEnd}
+            unavailableReason={atEnd ? t('AlreadyOnLastPage') : ''}
+            tooltipClassName="tooltip left middle narrow2"
           >
             <Icon lib="fa6" name="FaAnglesRight" />
-          </button>
+          </ButtonUnavailableAction>
         </div>
       </div>
     </section>

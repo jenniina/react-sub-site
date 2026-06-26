@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import styles from '../memory.module.css'
 import { useLanguageContext } from '../../../contexts/LanguageContext'
+import ButtonUnavailableAction from '../../ButtonUnavailableAction/ButtonUnavailableAction'
 
 interface PlayerAmountButtonProps {
   value: number
@@ -16,18 +17,19 @@ const PlayerAmountButton: FC<PlayerAmountButtonProps> = ({
   const { t } = useLanguageContext()
 
   return (
-    <button
+    <ButtonUnavailableAction
       className={`tooltip-wrap ${styles['player-button']} ${
         isActive ? styles.active : ''
       }`}
-      disabled={isActive}
+      unavailable={isActive}
+      unavailableReason={isActive ? t('AlreadySelected') : ''}
       onClick={onClick}
     >
       <span>{value}</span>
       <span className="tooltip above narrow2">
         {Number(value) > 1 ? t('Duet') : t('Solo')}
       </span>
-    </button>
+    </ButtonUnavailableAction>
   )
 }
 

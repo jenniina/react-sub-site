@@ -38,6 +38,7 @@ import { Select, SelectOption } from '../Select/Select'
 import PasswordReset from '../PasswordReset/PasswordReset'
 import Accordion from '../Accordion/Accordion'
 import useCart from '../../hooks/useCart'
+import ButtonUnavailableAction from '../ButtonUnavailableAction/ButtonUnavailableAction'
 import { options } from '../../utils'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import { getErrorMessage } from '../../utils'
@@ -124,7 +125,6 @@ const LinkComponent: FC<LinkComponentProps> = ({
 
           <ul
             className={`${styles['logo-menu']} ${smallLogoOpen ? styles.show : ''}`}
-            aria-hidden={!smallLogoOpen}
           >
             <li>
               <Link to="/" onClick={() => setSmallLogoOpen(false)}>
@@ -264,26 +264,22 @@ const Nav = (
     (windowWidth: number) => {
       if (!mainMenu.open) {
         mainMenu.show()
-        // if you want mutual exclusivity on small screens
         if (toolbar.open && windowWidth < breakpoint) toolbar.hide()
       } else {
         mainMenu.hide()
+        toolbar.hide()
       }
     },
     [mainMenu, toolbar]
   )
 
-  const toggleToolbar = useCallback(
-    (windowWidth: number) => {
-      if (!toolbar.open) {
-        toolbar.show()
-        if (mainMenu.open && windowWidth < breakpoint) mainMenu.hide()
-      } else {
-        toolbar.hide()
-      }
-    },
-    [toolbar, mainMenu]
-  )
+  const toggleToolbar = useCallback(() => {
+    if (!toolbar.open) {
+      toolbar.show()
+    } else {
+      toolbar.hide()
+    }
+  }, [toolbar, mainMenu])
 
   const getAuthQueryForm = useCallback(
     (search: string): Form => {
@@ -569,6 +565,14 @@ const Nav = (
   const isPortfolioMainPage =
     firstPartOfPageName === 'portfolio' && pageName === 'portfolio'
 
+  // if scrollDirection is down and scrolled is true, hide menu
+  useEffect(() => {
+    if (scrollDirection === 'down' && scrolled) {
+      mainMenu.hide()
+      toolbar.hide()
+    }
+  }, [scrollDirection, scrolled, toolbar])
+
   return (
     <>
       <header
@@ -622,7 +626,6 @@ const Nav = (
             </button>
             <ul
               className={`${styles['logo-menu']} ${logoOpen ? styles.show : ''}`}
-              aria-hidden={!logoOpen}
             >
               <li>
                 <Link to="/" onClick={() => setLogoOpen(false)}>
@@ -789,10 +792,7 @@ const Nav = (
               </span>
             </button>
           )}
-          <button
-            className={styles.settings}
-            onClick={() => toggleToolbar(windowWidth)}
-          >
+          <button className={styles.settings} onClick={() => toggleToolbar()}>
             <Icon
               lib="io5"
               name="IoSettingsSharp"
@@ -949,15 +949,18 @@ const Nav = (
                   >
                     {t('Logout')} &times;
                   </button>
-                  <button
-                    disabled={user.name === 'temp'}
+                  <ButtonUnavailableAction
+                    unavailable={user.name === 'temp'}
+                    unavailableReason={
+                      user.name === 'temp' ? t('UnavailableForTestUser') : ''
+                    }
                     onClick={() =>
                       user && dispatch(logoutAllDevices(user._id ?? ''))
                     }
                     className={`reset ${styles['logout-all']}`}
                   >
                     [{t('LogoutAllDevices')}]
-                  </button>
+                  </ButtonUnavailableAction>
                 </>
               )}
             </div>

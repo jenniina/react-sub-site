@@ -1,6 +1,4 @@
 import { ELanguages } from '../types'
-import { useTheme } from '../hooks/useTheme'
-import styles from './css/disclaimer.module.css'
 import {
   EContactMe,
   EContactMeText,
@@ -59,8 +57,6 @@ export function TermsProducts({ language }: { language: ELanguages }) {
 export default function TermsOfService({ type }: { type: string }) {
   const { t, language } = useLanguageContext()
 
-  const lightTheme = useTheme()
-
   const lang: EEnFi = language === ELanguages.fi ? EEnFi.fi : EEnFi.en
 
   return (
@@ -70,7 +66,7 @@ export default function TermsOfService({ type }: { type: string }) {
         description={`${EEnFiWelcomeToTermsOfService[lang]} | ${EEnFiCustomer[lang]}`}
         canonicalUrl={'https://react.jenniina.fi/terms'}
       />
-      <div className={`terms ${type} ${lightTheme ? styles.light : ''}`}>
+      <div className={`terms ${type}`}>
         <div className="inner-wrap">
           <section className={`card`}>
             <div>

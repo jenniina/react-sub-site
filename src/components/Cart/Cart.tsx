@@ -17,6 +17,7 @@ import {
   getErrorMessage,
 } from '../../utils'
 import ButtonToggle from '../ButtonToggle/ButtonToggle'
+import ButtonUnavailableAction from '../ButtonUnavailableAction/ButtonUnavailableAction'
 import Icon from '../Icon/Icon'
 import { TermsProducts } from '../../pages/TermsOfService'
 import { useLanguageContext } from '../../contexts/LanguageContext'
@@ -165,7 +166,7 @@ const Cart: FC<Props> = ({
         </p>
       )}
       <form
-        onSubmit={e => {
+        onSubmit={(e) => {
           e.preventDefault()
           setSending(true)
           if (cart.length < 1) {
@@ -224,7 +225,7 @@ const Cart: FC<Props> = ({
                 extra,
                 items: cart,
               })
-              .then(res => {
+              .then((res) => {
                 if (res.success) {
                   void dispatch(notify(res.message, false, 10))
                   removeCart()
@@ -389,7 +390,7 @@ const Cart: FC<Props> = ({
                           ? t('AdditionalInformation')
                           : t('RequestsIdeasAndLinksForInspiration')
                       }
-                      onChange={e => {
+                      onChange={(e) => {
                         editDetails(item.id, e.target.value)
                       }}
                     />
@@ -436,7 +437,7 @@ const Cart: FC<Props> = ({
                         required
                         value={businessID}
                         placeholder={t('BusinessID')}
-                        onChange={e => setBusinessID(e.target.value)}
+                        onChange={(e) => setBusinessID(e.target.value)}
                       />
                       <span>{t('BusinessID')}:</span>
                     </label>
@@ -455,7 +456,7 @@ const Cart: FC<Props> = ({
                         placeholder={`${t('CompanyName')}/${t(
                           'AssociationName'
                         )}`}
-                        onChange={e => setCompanyName(e.target.value)}
+                        onChange={(e) => setCompanyName(e.target.value)}
                       />
                       <span>
                         {t('Company')}/{t('Association')}:
@@ -474,7 +475,7 @@ const Cart: FC<Props> = ({
                         required
                         value={name}
                         placeholder={t('ContactPerson')}
-                        onChange={e => setName(e.target.value)}
+                        onChange={(e) => setName(e.target.value)}
                       />
                       <span>{t('ContactPerson')}:</span>
                     </label>
@@ -491,7 +492,7 @@ const Cart: FC<Props> = ({
                         required
                         value={email}
                         placeholder={t('EmailAddress')}
-                        onChange={e => setEmail(e.target.value)}
+                        onChange={(e) => setEmail(e.target.value)}
                       />
                       <span>{t('Email')}:</span>
                     </label>
@@ -507,7 +508,7 @@ const Cart: FC<Props> = ({
                         required
                         value={address}
                         placeholder={t('BillingAddress')}
-                        onChange={e => setAddress(e.target.value)}
+                        onChange={(e) => setAddress(e.target.value)}
                       />
                       <span>{t('BillingAddress')}:</span>
                     </label>
@@ -523,8 +524,8 @@ const Cart: FC<Props> = ({
                         required
                         value={zip}
                         placeholder={t('PostalCode')}
-                        onChange={e => setZip(e.target.value)}
-                        onKeyDown={e => {
+                        onChange={(e) => setZip(e.target.value)}
+                        onKeyDown={(e) => {
                           if (
                             !/[0-9]/.test(e.key) &&
                             e.key !== 'Backspace' &&
@@ -551,7 +552,7 @@ const Cart: FC<Props> = ({
                         required
                         value={city}
                         placeholder={t('City')}
-                        onChange={e => setCity(e.target.value)}
+                        onChange={(e) => setCity(e.target.value)}
                       />
                       <span>{t('City')}:</span>
                     </label>
@@ -567,7 +568,7 @@ const Cart: FC<Props> = ({
                         required
                         value={country}
                         placeholder={t('Country')}
-                        onChange={e => setCountry(e.target.value)}
+                        onChange={(e) => setCountry(e.target.value)}
                       />
                       <span>{t('Country')}:</span>
                     </label>
@@ -586,8 +587,8 @@ const Cart: FC<Props> = ({
                         name="phone"
                         value={phone}
                         placeholder={t('Phone')}
-                        onChange={e => setPhone(e.target.value)}
-                        onKeyDown={e => {
+                        onChange={(e) => setPhone(e.target.value)}
+                        onKeyDown={(e) => {
                           if (
                             !/[0-9]/.test(e.key) &&
                             e.key !== 'Backspace' &&
@@ -621,7 +622,7 @@ const Cart: FC<Props> = ({
                         required
                         value={name}
                         placeholder={t('PrivatePerson')}
-                        onChange={e => setName(e.target.value)}
+                        onChange={(e) => setName(e.target.value)}
                       />
                       <span>{t('Name')}:</span>
                     </label>
@@ -637,7 +638,7 @@ const Cart: FC<Props> = ({
                         required
                         value={email}
                         placeholder={t('EmailAddress')}
-                        onChange={e => setEmail(e.target.value)}
+                        onChange={(e) => setEmail(e.target.value)}
                       />
                       <span>{t('Email')}:</span>
                     </label>
@@ -653,7 +654,7 @@ const Cart: FC<Props> = ({
                         required
                         value={address}
                         placeholder={t('BillingAddress')}
-                        onChange={e => setAddress(e.target.value)}
+                        onChange={(e) => setAddress(e.target.value)}
                       />
                       <span>{t('BillingAddress')}:</span>
                     </label>
@@ -669,8 +670,8 @@ const Cart: FC<Props> = ({
                         required
                         value={zip}
                         placeholder={t('PostalCode')}
-                        onChange={e => setZip(e.target.value)}
-                        onKeyDown={e => {
+                        onChange={(e) => setZip(e.target.value)}
+                        onKeyDown={(e) => {
                           if (
                             !/[0-9]/.test(e.key) &&
                             e.key !== 'Backspace' &&
@@ -697,7 +698,7 @@ const Cart: FC<Props> = ({
                         required
                         value={city}
                         placeholder={t('City')}
-                        onChange={e => setCity(e.target.value)}
+                        onChange={(e) => setCity(e.target.value)}
                       />
                       <span>{t('City')}:</span>
                     </label>
@@ -713,7 +714,7 @@ const Cart: FC<Props> = ({
                         required
                         value={country}
                         placeholder={t('Country')}
-                        onChange={e => setCountry(e.target.value)}
+                        onChange={(e) => setCountry(e.target.value)}
                       />
                       <span>{t('Country')}:</span>
                     </label>
@@ -730,7 +731,7 @@ const Cart: FC<Props> = ({
                     placeholder={`${t('Clarifications')}${
                       business ? `, ${t('EG')} ${t('DesiredReference')}` : ''
                     }`}
-                    onChange={e => setExtra(e.target.value)}
+                    onChange={(e) => setExtra(e.target.value)}
                   />
                 </label>
               </div>
@@ -744,7 +745,7 @@ const Cart: FC<Props> = ({
                     required
                     type="checkbox"
                     name="terms"
-                    onChange={e => {
+                    onChange={(e) => {
                       setTerms(e.target.checked)
                     }}
                   />
@@ -761,7 +762,7 @@ const Cart: FC<Props> = ({
                     required
                     type="checkbox"
                     name="gdpr"
-                    onChange={e => {
+                    onChange={(e) => {
                       setGDPR(e.target.checked)
                     }}
                   />
@@ -770,14 +771,15 @@ const Cart: FC<Props> = ({
                   </span>
                 </label>
               </div>
-              <button
+              <ButtonUnavailableAction
                 className={styles.submit}
                 type="submit"
-                disabled={sending}
+                unavailable={sending}
+                unavailableReason={sending ? t('SendingEmail') : ''}
               >
                 <span>{t('SubmitOrder')}</span>{' '}
                 <Icon lib="ri" name="RiMailSendLine" />
-              </button>
+              </ButtonUnavailableAction>
               <Accordion
                 className="cart-accordion grayer"
                 text={t('TermsRelatedToProducts')}

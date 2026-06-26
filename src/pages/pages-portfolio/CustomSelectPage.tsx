@@ -12,6 +12,7 @@ import { createSelectOptionsFromT } from '../../utils/translations'
 import { useLanguageContext } from '../../contexts/LanguageContext'
 import { useWindow } from '../../hooks/useSSR'
 import SEO from '../../components/SEO/SEO'
+import ButtonUnavailableAction from '../../components/ButtonUnavailableAction/ButtonUnavailableAction'
 
 const issuesArray = [
   'NoIssues',
@@ -353,14 +354,15 @@ export default function CustomSelectPage({ type }: { type: string }) {
                           )}{' '}
                         </label>
                       </div>
-                      <button
+                      <ButtonUnavailableAction
                         type="submit"
-                        disabled={sending}
+                        unavailable={sending}
+                        unavailableReason={sending ? t('SendingEmail') : ''}
                         className={`${selectStyles.half} `}
                       >
                         <span>{sending ? t('SendingEmail') : t('Send')}</span>{' '}
                         <Icon lib="ri" name="RiMailSendLine" />
-                      </button>
+                      </ButtonUnavailableAction>
                       {showMessage && (
                         <div
                           aria-live="assertive"

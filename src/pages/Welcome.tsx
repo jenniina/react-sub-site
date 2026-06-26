@@ -6,7 +6,6 @@ import { ELanguages, ELanguagesLong } from '../types'
 import { Select, SelectOption } from '../components/Select/Select'
 import { useLanguageContext } from '../contexts/LanguageContext'
 import SEO from '../components/SEO/SEO'
-// import Newest from '../components/Newest/Newest'
 import About from './About'
 import Featured from '../components/Featured/Featured'
 
@@ -67,7 +66,6 @@ export default function Home({
                 </Link>
               </li>
             </ul>
-            {/* <Newest /> */}
           </div>
           <Featured />
           <About type="page" />

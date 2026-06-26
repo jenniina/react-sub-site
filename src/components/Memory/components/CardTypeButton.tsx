@@ -2,6 +2,8 @@ import { FC } from 'react'
 import styles from '../memory.module.css'
 import { CardType, CardTypeOptions } from '../../../types/memory'
 import Icon from '../../Icon/Icon'
+import ButtonUnavailableAction from '../../ButtonUnavailableAction/ButtonUnavailableAction'
+import { useLanguageContext } from '../../../contexts/LanguageContext'
 
 interface CardTypeButtonProps {
   option: CardTypeOptions
@@ -14,6 +16,8 @@ const CardTypeButton: FC<CardTypeButtonProps> = ({
   isActive,
   onClick,
 }) => {
+  const { t } = useLanguageContext()
+
   const getCardTypeIcon = (value: CardType) => {
     switch (value) {
       case CardType.icons:
@@ -27,15 +31,16 @@ const CardTypeButton: FC<CardTypeButtonProps> = ({
     }
   }
   return (
-    <button
+    <ButtonUnavailableAction
       className={`tooltip-wrap ${isActive ? `${styles.active} grayer` : ''}`}
       onClick={onClick}
-      disabled={isActive}
+      unavailable={isActive}
+      unavailableReason={isActive ? t('AlreadySelected') : ''}
       aria-label={option.label}
     >
       {getCardTypeIcon(option.value)}
       <span className="tooltip above narrow2 space">{option.label}</span>
-    </button>
+    </ButtonUnavailableAction>
   )
 }
 
