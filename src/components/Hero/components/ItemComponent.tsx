@@ -52,6 +52,10 @@ function getHeroItemKey(
 
 interface ItemComponentProps {
   array: itemProps[]
+  movementOffsets: Record<number, { dx: number; dy: number }>
+  eyeRotations: Record<number, number>
+  exitingItemIds: Record<number, boolean>
+  activeTouchItemIds: Record<number, boolean>
   location: string
   resetVersion: number
   windowWidth: number
@@ -120,6 +124,10 @@ const ItemComponent = forwardRef<
   (
     {
       array,
+      movementOffsets,
+      eyeRotations,
+      exitingItemIds,
+      activeTouchItemIds,
       location,
       resetVersion,
       windowWidth,
@@ -145,7 +153,9 @@ const ItemComponent = forwardRef<
     const [activeDescendant, setActiveDescendant] = useState<string | null>(
       null
     )
-    const previousLocationRef = useRef(location)
+    const [activeBlobDragIds, setActiveBlobDragIds] = useState<
+      Record<number, boolean>
+    >({})
     const isDnd = location === LOCATION.DND
     const dndDocumentWidth = Math.round(
       Math.max(46, Math.min(64, windowWidth * 0.13))
@@ -172,6 +182,7 @@ const ItemComponent = forwardRef<
     const dndSeedKeyRef = useRef<string | null>(null)
     const dndSplitVersionRef = useRef(0)
     const dndZOrderRef = useRef(0)
+    const dndItemEls = useRef(new Map<number, HTMLLIElement>())
     const dndKeyTapRef = useRef<{
       itemId: number | null
       key: 'Enter' | ' '
@@ -179,6 +190,64 @@ const ItemComponent = forwardRef<
     }>({ itemId: null, key: 'Enter', timestamp: 0 })
 
     const isComposer = location === LOCATION.COMPOSER
+
+    const withMovementOffset = useCallback(
+      (itemId: number, baseStyle: CSSProperties): CSSProperties => {
+        // Apply movement from Hero state by adjusting top/left (no DOM writes).
+        const offset = movementOffsets[itemId]
+        if (!offset) return baseStyle
+
+        const existingTransitionProperty =
+          typeof baseStyle.transitionProperty === 'string'
+            ? baseStyle.transitionProperty
+            : 'top, left'
+        const transitionIncludesPosition =
+          existingTransitionProperty.includes('top') ||
+          existingTransitionProperty.includes('left') ||
+          existingTransitionProperty.includes('all')
+        const transitionProperty = transitionIncludesPosition
+          ? existingTransitionProperty
+          : existingTransitionProperty
+            ? `${existingTransitionProperty}, top, left`
+            : 'top, left'
+
+        const currentTop = baseStyle.top
+        const currentLeft = baseStyle.left
+
+        const nextTop =
+          currentTop == null
+            ? `${offset.dy}px`
+            : typeof currentTop === 'number'
+              ? `${currentTop + offset.dy}px`
+              : `calc(${currentTop} + ${offset.dy}px)`
+
+        const nextLeft =
+          currentLeft == null
+            ? `${offset.dx}px`
+            : typeof currentLeft === 'number'
+              ? `${currentLeft + offset.dx}px`
+              : `calc(${currentLeft} + ${offset.dx}px)`
+
+        return {
+          ...baseStyle,
+          top: nextTop,
+          left: nextLeft,
+          transitionProperty,
+          transitionDuration: baseStyle.transitionDuration ?? '420ms',
+          transitionTimingFunction:
+            baseStyle.transitionTimingFunction ?? 'ease-in-out',
+        }
+      },
+      [movementOffsets]
+    )
+
+    const withInteractionClass = useCallback(
+      (baseClassName: string, itemId: number) => {
+        // Build className from state flags instead of classList add/remove.
+        return `${baseClassName} ${exitingItemIds[itemId] ? styles.exitItem : ''} ${activeTouchItemIds[itemId] ? styles.active : ''}`.trim()
+      },
+      [activeTouchItemIds, exitingItemIds]
+    )
     const composerStaffWidth = 200
     const composerStaffSvgWidth = 640
     const composerStaffFirstLineY = 3.9
@@ -622,10 +691,64 @@ const ItemComponent = forwardRef<
       return next
     }
 
+    // Sync actual DOM positions of solo (non-stacked) DND docs back into state.
+    // Hero's idle animation mutates their inline styles directly, which drifts
+    // from React state and causes snap-zone mismatches and jump-on-drag.
+    const syncSoloDndPositionsFromDom = (
+      state: Record<number, DndDocumentState>
+    ): Record<number, DndDocumentState> => {
+      const containerEl = ulRef?.current
+      if (!containerEl) return state
+      const containerRect = containerEl.getBoundingClientRect()
+      let changed = false
+      const next: Record<number, DndDocumentState> = {}
+
+      for (const [idStr, doc] of Object.entries(state)) {
+        const id = Number(idStr)
+        const memberIds = getDndStackDocumentMembers(state, doc.stackId)
+        // Stacked docs are excluded from Hero's idle movement; skip them.
+        if (memberIds.length > 1) {
+          next[id] = doc
+          continue
+        }
+        const el = dndItemEls.current.get(id)
+        if (!el) {
+          next[id] = doc
+          continue
+        }
+        const elRect = el.getBoundingClientRect()
+        const actualLeft = elRect.left - containerRect.left
+        const actualTop = elRect.top - containerRect.top
+        const movementOffset = movementOffsets[id] ?? { dx: 0, dy: 0 }
+        // Solo DND docs render with movementOffsets applied via top/left.
+        // Convert measured visual position back to base DND coordinates.
+        const baseLeft = actualLeft - movementOffset.dx
+        const baseTop = actualTop - movementOffset.dy
+        if (
+          Math.abs(baseLeft - doc.left) > 0.5 ||
+          Math.abs(baseTop - doc.top) > 0.5
+        ) {
+          const { minLeft, minTop, maxLeft, maxTop } = getDndAnchorBounds(1)
+          next[id] = {
+            ...doc,
+            left: baseLeft,
+            top: baseTop,
+            leftRatio: getRelativeValue(baseLeft, minLeft, maxLeft),
+            topRatio: getRelativeValue(baseTop, minTop, maxTop),
+          }
+          changed = true
+        } else {
+          next[id] = doc
+        }
+      }
+      return changed ? next : state
+    }
+
     const finalizeDndDrag = (itemId: number) => {
-      setDndDocuments((previousDocuments) =>
-        settleDndDocuments(previousDocuments, itemId)
-      )
+      setDndDocuments((previousDocuments) => {
+        const synced = syncSoloDndPositionsFromDom(previousDocuments)
+        return settleDndDocuments(synced, itemId)
+      })
     }
 
     const beginDndDrag = (
@@ -655,11 +778,23 @@ const ItemComponent = forwardRef<
         ])
       ) as Record<number, { left: number; top: number }>
 
+      // For solo docs Hero's idle animation may have moved the DOM element
+      // without updating React state. Read actual position so drag starts from
+      // the visually correct location instead of snapping on first move.
+      let resolvedAnchorLeft = anchor.left
+      let resolvedAnchorTop = anchor.top
+      if (memberIds.length === 1 && ulRef?.current) {
+        const containerRect = ulRef.current.getBoundingClientRect()
+        const elRect = e.currentTarget.getBoundingClientRect()
+        resolvedAnchorLeft = elRect.left - containerRect.left
+        resolvedAnchorTop = elRect.top - containerRect.top
+      }
+
       dndDragRef.current = {
         pointerId: e.pointerId,
         anchorId,
-        anchorLeft: anchor.left,
-        anchorTop: anchor.top,
+        anchorLeft: resolvedAnchorLeft,
+        anchorTop: resolvedAnchorTop,
         startPointerX: e.clientX,
         startPointerY: e.clientY,
         memberIds,
@@ -823,7 +958,7 @@ const ItemComponent = forwardRef<
         case ' ':
           e.preventDefault()
           const normalizedKey: 'Enter' | ' ' = e.key === 'Enter' ? 'Enter' : ' '
-          const now = Date.now()
+          const now = e.timeStamp
           const isDoubleTap =
             dndKeyTapRef.current.itemId === itemId &&
             dndKeyTapRef.current.key === normalizedKey &&
@@ -1073,141 +1208,6 @@ const ItemComponent = forwardRef<
       windowWidth,
     ])
 
-    // 1) Capture each item's original responsive positioning formula exactly once.
-    // 2) Re-apply stored pixel offsets after rerenders/resizes (React may re-set
-    //    inline styles back to the base formula).
-    // 3) For composer, toggle above/below classes based on the staff midline.
-    useEffect(() => {
-      const root = ulRef?.current
-      if (!root || !windowObj) return
-      if (location === LOCATION.DND) {
-        previousLocationRef.current = location
-        return
-      }
-
-      const locationChanged = previousLocationRef.current !== location
-
-      const stripOuterCalc = (expr: string) => {
-        const trimmed = expr.trim()
-        if (trimmed.startsWith('calc(') && trimmed.endsWith(')')) {
-          return trimmed.slice(5, -1).trim()
-        }
-        return trimmed
-      }
-
-      const resolveCssVarToPx = (varName: string, contextEl: Element) => {
-        const val = windowObj
-          .getComputedStyle(contextEl)
-          .getPropertyValue(varName)
-          .trim()
-        if (!val) return 0
-        if (val.endsWith('px')) return Number.parseFloat(val) || 0
-
-        const tmp = document.createElement('div')
-        tmp.style.position = 'absolute'
-        tmp.style.visibility = 'hidden'
-        tmp.style.top = val
-        document.body.appendChild(tmp)
-        const px = Number.parseFloat(windowObj.getComputedStyle(tmp).top) || 0
-        document.body.removeChild(tmp)
-        return px
-      }
-
-      const resolveExprToPx = (expr: string) => {
-        if (!expr) return 0
-        if (expr.endsWith('px')) return Number.parseFloat(expr) || 0
-
-        const tmp = document.createElement('div')
-        tmp.style.position = 'absolute'
-        tmp.style.visibility = 'hidden'
-        tmp.style.top = expr
-        document.body.appendChild(tmp)
-        const px = Number.parseFloat(windowObj.getComputedStyle(tmp).top) || 0
-        document.body.removeChild(tmp)
-        return px
-      }
-
-      const staffBaseYPx = isComposer
-        ? resolveCssVarToPx('--staff-anchor-y', root)
-        : null
-      const staffHalfStepPx = isComposer
-        ? resolveCssVarToPx('--staff-half-step', root)
-        : null
-      const midMarkPx =
-        isComposer && staffBaseYPx !== null && staffHalfStepPx !== null
-          ? staffBaseYPx + 4 * staffHalfStepPx
-          : null
-
-      const items = root.querySelectorAll<HTMLElement>('li[id^="shape"]')
-      items.forEach((el) => {
-        const nextBaseTop = el.style.top ? stripOuterCalc(el.style.top) : null
-        const nextBaseLeft = el.style.left
-          ? stripOuterCalc(el.style.left)
-          : null
-
-        if (locationChanged) {
-          if (nextBaseTop) el.dataset.baseTop = nextBaseTop
-          if (nextBaseLeft) el.dataset.baseLeft = nextBaseLeft
-          el.dataset.moveDy = '0'
-          el.dataset.moveDx = '0'
-        } else {
-          const baseTopChanged =
-            nextBaseTop != null && el.dataset.baseTop !== nextBaseTop
-          const baseLeftChanged =
-            nextBaseLeft != null && el.dataset.baseLeft !== nextBaseLeft
-
-          if (nextBaseTop) {
-            el.dataset.baseTop = nextBaseTop
-            if (baseTopChanged) el.dataset.moveDy = '0'
-          }
-          if (nextBaseLeft) {
-            el.dataset.baseLeft = nextBaseLeft
-            if (baseLeftChanged) el.dataset.moveDx = '0'
-          }
-
-          el.dataset.moveDy ??= '0'
-          el.dataset.moveDx ??= '0'
-        }
-
-        const baseTop = el.dataset.baseTop
-        const baseLeft = el.dataset.baseLeft
-        const dy = Number.parseFloat(el.dataset.moveDy ?? '0') || 0
-        const dx = Number.parseFloat(el.dataset.moveDx ?? '0') || 0
-
-        if (baseTop && dy !== 0) el.style.top = `calc(${baseTop} + ${dy}px)`
-        if (baseLeft && dx !== 0) el.style.left = `calc(${baseLeft} + ${dx}px)`
-
-        if (isComposer && midMarkPx !== null) {
-          const dyForTop = Number.parseFloat(el.dataset.moveDy ?? '0') || 0
-          const topPx = baseTop
-            ? resolveExprToPx(`calc(${baseTop})`) + dyForTop
-            : Number.parseFloat(
-                windowObj.getComputedStyle(el).getPropertyValue('top')
-              )
-          if (Number.isFinite(topPx)) {
-            // Notes are positioned with `top = staffBaseY + step*halfStep - noteHead`.
-            // So the staff anchor is the bottom of the note head.
-            const noteHeadPx = resolveCssVarToPx('--note-head', el) || 0
-            const anchorYPx = topPx + noteHeadPx
-            const isAbove = anchorYPx <= midMarkPx
-            el.classList.toggle(styles.above, isAbove)
-            el.classList.toggle(styles.below, !isAbove)
-          }
-        }
-      })
-
-      previousLocationRef.current = location
-    }, [
-      ulRef,
-      array,
-      location,
-      windowWidth,
-      windowHeight,
-      itemsVisible,
-      isComposer,
-      windowObj,
-    ])
-
     if (location === LOCATION.COLORS) {
       return (
         <ContrastConstellation
@@ -1311,15 +1311,16 @@ const ItemComponent = forwardRef<
                   ref={(node) => {
                     registerHeroItem(item.i, node)
                   }}
-                  className={`${styles.item} ${styles[location]} ${
-                    styles.geometric
-                  } 
+                  className={withInteractionClass(
+                    `${styles.item} ${styles[location]} ${styles.geometric} 
                                 ${
                                   windowHeight < windowWidth
                                     ? styles.wide
                                     : styles.tall
-                                }`}
-                  style={style}
+                                }`,
+                    item.i
+                  )}
+                  style={withMovementOffset(item.i, style)}
                   role={'option'}
                   tabIndex={0}
                   aria-selected={`shape${item.i}` === activeDescendant}
@@ -1422,15 +1423,16 @@ const ItemComponent = forwardRef<
                   ref={(node) => {
                     registerHeroItem(item.i, node)
                   }}
-                  className={`${styles.item} ${styles[location]} ${
-                    styles.circles
-                  } 
+                  className={withInteractionClass(
+                    `${styles.item} ${styles[location]} ${styles.circles} 
                                 ${
                                   windowHeight < windowWidth
                                     ? styles.wide
                                     : styles.tall
-                                }`}
-                  style={style}
+                                }`,
+                    item.i
+                  )}
+                  style={withMovementOffset(item.i, style)}
                   role={'option'}
                   tabIndex={0}
                   aria-selected={`shape${item.i}` === activeDescendant}
@@ -1489,6 +1491,12 @@ const ItemComponent = forwardRef<
               const colStep = `clamp(50px, calc((99vw - 50px) / 10), 99999px)`
               const noteHead = `40px`
               const noteOffsetPx = noteStep * composerStaffHalfStepPx
+              const composerOffsetDy = movementOffsets[item.i]?.dy ?? 0
+              const composerAnchorYPx =
+                composerStaffAnchorYPx + noteOffsetPx + composerOffsetDy
+              const isComposerAbove =
+                composerAnchorYPx <=
+                composerStaffAnchorYPx + 4 * composerStaffHalfStepPx
               const style: CSSProperties = {
                 position: 'absolute',
                 ['--size' as string]: `${itemSize}`,
@@ -1520,15 +1528,18 @@ const ItemComponent = forwardRef<
                   ref={(node) => {
                     registerHeroItem(item.i, node)
                   }}
-                  className={`${
-                    noteStep <= 4 ? styles.above : styles.below
-                  } ${styles.item} ${styles[location]} ${styles.note} 
+                  className={withInteractionClass(
+                    `${
+                      isComposerAbove ? styles.above : styles.below
+                    } ${styles.item} ${styles[location]} ${styles.note} 
                                 ${
                                   windowHeight < windowWidth
                                     ? styles.wide
                                     : styles.tall
-                                }`}
-                  style={style}
+                                }`,
+                    item.i
+                  )}
+                  style={withMovementOffset(item.i, style)}
                   role={'option'}
                   aria-selected={`shape${item.i}` === activeDescendant}
                   tabIndex={0}
@@ -1619,7 +1630,7 @@ const ItemComponent = forwardRef<
                   windowWidth < windowHeight
                     ? `${item.size / dividedBy}vh`
                     : `${item.size / dividedBy}vw`,
-                ['--rotate2' as string]: `-45deg`, //  `${Math.round(getRandomMinMax(-65, -25))}deg`,
+                ['--rotate2' as string]: `-45deg`,
                 ['--color' as string]: `${randomBG}`,
                 ['--hue' as string]: `${hue}`,
                 transform: `rotate(-45deg)`,
@@ -1648,12 +1659,15 @@ const ItemComponent = forwardRef<
                   ref={(node) => {
                     registerHeroItem(item.i, node)
                   }}
-                  className={`${styles.item} ${styles[location]} ${
-                    styles.jewel
-                  } ${styles.jewel1} ${
-                    randomOfTwo === 0 ? styles.blue : styles.orange
-                  } ${windowHeight < windowWidth ? styles.wide : styles.tall}`}
-                  style={style}
+                  className={withInteractionClass(
+                    `${styles.item} ${styles[location]} ${
+                      styles.jewel
+                    } ${styles.jewel1} ${
+                      randomOfTwo === 0 ? styles.blue : styles.orange
+                    } ${windowHeight < windowWidth ? styles.wide : styles.tall}`,
+                    item.i
+                  )}
+                  style={withMovementOffset(item.i, style)}
                   role={'option'}
                   tabIndex={0}
                   aria-selected={`shape${item.i}` === activeDescendant}
@@ -1817,17 +1831,20 @@ const ItemComponent = forwardRef<
                   ref={(node) => {
                     registerHeroItem(item.i, node)
                   }}
-                  className={`${styles.item} ${styles[location]} ${
-                    styles.jewel
-                  } ${styles.jewel2} ${
-                    randomOfTwo === 0 ? styles.blue : styles.orange
-                  } 
+                  className={withInteractionClass(
+                    `${styles.item} ${styles[location]} ${
+                      styles.jewel
+                    } ${styles.jewel2} ${
+                      randomOfTwo === 0 ? styles.blue : styles.orange
+                    } 
                                 ${
                                   windowHeight < windowWidth
                                     ? styles.wide
                                     : styles.tall
-                                }`}
-                  style={style}
+                                }`,
+                    item.i
+                  )}
+                  style={withMovementOffset(item.i, style)}
                   role={'option'}
                   tabIndex={0}
                   aria-selected={`shape${item.i}` === activeDescendant}
@@ -1972,10 +1989,13 @@ const ItemComponent = forwardRef<
                 // JOKES
                 <li
                   key={getHeroItemKey(location, item.i, resetVersion)}
-                  className={`${styles.item} ${styles.jokes} ${styles.mug} ${
-                    windowHeight < windowWidth ? styles.wide : styles.tall
-                  }`}
-                  style={style}
+                  className={withInteractionClass(
+                    `${styles.item} ${styles.jokes} ${styles.mug} ${
+                      windowHeight < windowWidth ? styles.wide : styles.tall
+                    }`,
+                    item.i
+                  )}
+                  style={withMovementOffset(item.i, style)}
                   id={`shape${item.i}`}
                   ref={(node) => {
                     registerHeroItem(item.i, node)
@@ -2078,10 +2098,13 @@ const ItemComponent = forwardRef<
                 //HOME // SALON // QUIZ // ABOUT
                 <li
                   key={getHeroItemKey(location, item.i, resetVersion)}
-                  className={`${styles.item} ${styles.about} ${styles.bubbles} ${
-                    windowHeight < windowWidth ? styles.wide : styles.tall
-                  }`}
-                  style={style}
+                  className={withInteractionClass(
+                    `${styles.item} ${styles.about} ${styles.bubbles} ${
+                      windowHeight < windowWidth ? styles.wide : styles.tall
+                    }`,
+                    item.i
+                  )}
+                  style={withMovementOffset(item.i, style)}
                   id={`shape${item.i}`}
                   ref={(node) => {
                     registerHeroItem(item.i, node)
@@ -2139,6 +2162,7 @@ const ItemComponent = forwardRef<
               const isDragging =
                 documentState?.stackId != null &&
                 activeDndStackId === documentState.stackId
+              const shouldApplyDndOffset = stackMembers.length === 1
               const style: CSSProperties = {
                 position: 'absolute',
                 left: `${documentState?.left ?? 12}px`,
@@ -2167,11 +2191,20 @@ const ItemComponent = forwardRef<
                   id={`shape${item.i}`}
                   ref={(node) => {
                     registerHeroItem(item.i, node, stackMembers.length > 1)
+                    if (node) dndItemEls.current.set(item.i, node)
+                    else dndItemEls.current.delete(item.i)
                   }}
-                  className={`${styles.item} ${styles['document-item']} ${
-                    stackMembers.length > 1 ? styles['document-stacked'] : ''
-                  } ${isDragging ? styles.drag : ''}`}
-                  style={style}
+                  className={withInteractionClass(
+                    `${styles.item} ${styles['document-item']} ${
+                      stackMembers.length > 1 ? styles['document-stacked'] : ''
+                    } ${isDragging ? styles.drag : ''}`,
+                    item.i
+                  )}
+                  style={
+                    shouldApplyDndOffset
+                      ? withMovementOffset(item.i, style)
+                      : style
+                  }
                   role={'option'}
                   tabIndex={0}
                   aria-selected={`shape${item.i}` === activeDescendant}
@@ -2279,8 +2312,9 @@ const ItemComponent = forwardRef<
                 opacity: `0.7`,
                 WebkitFilter: filter,
                 filter: filter,
-                transitionProperty:
-                  'top, left, bottom, right, transform, width, height, border-radius',
+                transitionProperty: activeBlobDragIds[item.i]
+                  ? 'transform, width, height, border-radius'
+                  : 'top, left, bottom, right, transform, width, height, border-radius',
                 transitionTimingFunction: 'ease-in-out',
                 transitionDuration: '600ms',
               }
@@ -2294,62 +2328,78 @@ const ItemComponent = forwardRef<
                   ref={(node) => {
                     registerHeroItem(item.i, node)
                   }}
-                  className={`${styles.item} ${styles.blob} ${
-                    styles[location]
-                  } ${styles.portfolio} 
+                  className={withInteractionClass(
+                    `${styles.item} ${styles.blob} ${
+                      styles[location]
+                    } ${styles.portfolio} 
                                 ${
                                   windowHeight < windowWidth
                                     ? styles.wide
                                     : styles.tall
-                                }`}
-                  style={style}
+                                } ${activeBlobDragIds[item.i] ? styles.drag : ''}`,
+                    item.i
+                  )}
+                  style={withMovementOffset(item.i, style)}
                   draggable={true}
                   tabIndex={0}
                   role={'option'}
                   onMouseDown={(e) => {
                     Draggable.start(e)
-                    ;(e.target as HTMLLIElement).classList.add(styles.drag)
-                    ;(e.target as HTMLLIElement).style.transitionProperty =
-                      'transform, width, height, border-radius'
+                    setActiveBlobDragIds((previous) => ({
+                      ...previous,
+                      [item.i]: true,
+                    }))
                   }}
                   onMouseMove={(e) => {
                     Draggable.movement(e)
                   }}
                   onMouseUp={(e) => {
                     Draggable.stopMovementCheck(e)
-                    ;(e.target as HTMLLIElement).classList.remove(styles.drag)
-                    ;(e.target as HTMLLIElement).style.transitionProperty =
-                      'top, left, bottom, right, transform, width, height, border-radius'
+                    setActiveBlobDragIds((previous) => ({
+                      ...previous,
+                      [item.i]: false,
+                    }))
                   }}
                   onMouseLeave={(e) => {
                     Draggable.stopMoving(e)
-                    ;(e.target as HTMLLIElement).classList.remove(styles.drag)
+                    setActiveBlobDragIds((previous) => ({
+                      ...previous,
+                      [item.i]: false,
+                    }))
                   }}
                   onTouchStart={(e) => {
                     Draggable.start(e)
+                    setActiveBlobDragIds((previous) => ({
+                      ...previous,
+                      [item.i]: true,
+                    }))
                   }}
                   onTouchMove={(e) => {
                     Draggable.movement(e)
                   }}
                   onTouchEnd={(e) => {
                     Draggable.stopMovementCheck(e)
+                    setActiveBlobDragIds((previous) => ({
+                      ...previous,
+                      [item.i]: false,
+                    }))
                   }}
                   onWheel={(e) => {
-                    Draggable.wheel(e.target as HTMLElement)
+                    Draggable.wheel(e.currentTarget)
                   }}
                   onFocus={(e) => {
-                    Draggable.focused(e.target)
-                    setActiveDescendant(e.target.id)
+                    Draggable.focused(e.currentTarget)
+                    setActiveDescendant(e.currentTarget.id)
                   }}
                   aria-selected={`shape${item.i}` === activeDescendant}
                   onBlurCapture={(e) => {
-                    Draggable.blurred(e.target)
+                    Draggable.blurred(e.currentTarget)
                     setActiveDescendant(null)
                   }}
                   onKeyDown={(e) => {
                     Draggable.keyDown(
                       e,
-                      e.target as HTMLElement,
+                      e.currentTarget,
                       windowObj,
                       () => escapeFunction(),
                       () => removeItem(e),
@@ -2408,6 +2458,7 @@ const ItemComponent = forwardRef<
                 height: '100%',
                 borderRadius,
                 opacity: `0.${item.size > 7 ? 7 : Math.ceil(item.size)}`,
+                transform: `rotate(${eyeRotations[item.i] ?? 0}deg)`,
               }
 
               return (
@@ -2419,13 +2470,16 @@ const ItemComponent = forwardRef<
                   ref={(node) => {
                     registerHeroItem(item.i, node)
                   }}
-                  className={`eye ${styles.item} ${styles.eyes} ${styles[location]} 
+                  className={withInteractionClass(
+                    `eye ${styles.item} ${styles.eyes} ${styles[location]} 
                                 ${
                                   windowHeight < windowWidth
                                     ? styles.wide
                                     : styles.tall
-                                }`}
-                  style={style}
+                                }`,
+                    item.i
+                  )}
+                  style={withMovementOffset(item.i, style)}
                   role={'option'}
                   tabIndex={0}
                   onFocus={(e) => {
@@ -2435,8 +2489,6 @@ const ItemComponent = forwardRef<
                   onBlurCapture={() => {
                     setActiveDescendant(null)
                   }}
-                  // onPointerEnter={e => movingItem(e)}
-                  // onPointerEnter={e => addDirectionClass(e)}
                   onPointerCancel={(e) => {
                     removeItem(e)
                   }}
@@ -2463,6 +2515,9 @@ const ItemComponent = forwardRef<
                 >
                   <div
                     ref={(node) => {
+                      if (node) {
+                        node.dataset.itemId = `${item.i}`
+                      }
                       registerEyeInner(item.i, node)
                     }}
                     style={styleInner}
@@ -2509,13 +2564,16 @@ const ItemComponent = forwardRef<
                   ref={(node) => {
                     registerHeroItem(item.i, node)
                   }}
-                  className={`${styles.item} ${styles[location]} ${styles.triangle} 
+                  className={withInteractionClass(
+                    `${styles.item} ${styles[location]} ${styles.triangle} 
                                 ${
                                   windowHeight < windowWidth
                                     ? styles.wide
                                     : styles.tall
-                                }`}
-                  style={style}
+                                }`,
+                    item.i
+                  )}
+                  style={withMovementOffset(item.i, style)}
                   role={'option'}
                   aria-selected={`shape${item.i}` === activeDescendant}
                   tabIndex={0}

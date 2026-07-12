@@ -120,8 +120,11 @@
 .herocontent .triangle,
 .herocontent .note,
 .herocontent .circles {
+  -webkit-transition-property: top, right, bottom, left, transform, filter, box-shadow, outline, border, width, height, opacity;
   transition-property: top, right, bottom, left, transform, filter, box-shadow, outline, border, width, height, opacity;
+  -webkit-transition-timing-function: ease-in-out;
   transition-timing-function: ease-in-out;
+  -webkit-transition-duration: 600ms;
   transition-duration: 600ms;
   -webkit-tap-highlight-color: transparent;
   pointer-events: all;
@@ -1736,10 +1739,10 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  gap: 0.55rem;
+  gap: 0.6rem;
   width: 100%;
   height: 100%;
-  padding: 33% 18%;
+  padding: 34% 18%;
   aspect-ratio: 1 / 1.414;
   border: 1px solid color-mix(in srgb, var(--document-accent) 26%, white 6%);
   border-radius: 0.24rem;
@@ -1754,7 +1757,7 @@
 .document-line,
 .document-line-short {
   display: block;
-  height: 0.32rem;
+  height: 0.3rem;
   border-radius: 0.4rem;
   background: color-mix(in srgb, white 70%, var(--document-accent) 30%);
   opacity: 0.2;

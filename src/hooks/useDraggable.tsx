@@ -11,6 +11,76 @@ let zIndex = 1
 let zIndex0 = -1
 let moveElement = false
 let reset = true
+let touchScrollLocked = false
+
+type DragPointerEvent =
+  | TouchEvent
+  | MouseEvent
+  | PointerEvent
+  | React.TouchEvent
+  | React.MouseEvent
+  | React.PointerEvent
+
+const getDraggableElement = (
+  e:
+    | DragPointerEvent
+    | WheelEvent
+    | KeyboardEvent
+    | React.KeyboardEvent<HTMLLIElement>
+) => {
+  if ('currentTarget' in e && e.currentTarget) {
+    return e.currentTarget as HTMLElement
+  }
+  return e.target as HTMLElement
+}
+
+const isTouchPointerEvent = (
+  e: DragPointerEvent
+): e is TouchEvent | React.TouchEvent => {
+  return 'touches' in e || 'changedTouches' in e
+}
+
+const getPointerPosition = (
+  e: DragPointerEvent
+): { x: number; y: number; isTouch: boolean } => {
+  if (isTouchPointerEvent(e) && e.touches.length > 0) {
+    const touch = e.touches.item(0)
+    if (!touch) {
+      return { x: 0, y: 0, isTouch: true }
+    }
+    return {
+      x: touch.clientX,
+      y: touch.clientY,
+      isTouch: true,
+    }
+  }
+
+  if (isTouchPointerEvent(e) && e.changedTouches.length > 0) {
+    const touch = e.changedTouches.item(0)
+    if (!touch) {
+      return { x: 0, y: 0, isTouch: true }
+    }
+    return {
+      x: touch.clientX,
+      y: touch.clientY,
+      isTouch: true,
+    }
+  }
+
+  if ('clientX' in e && 'clientY' in e) {
+    return {
+      x: e.clientX,
+      y: e.clientY,
+      isTouch: false,
+    }
+  }
+
+  return {
+    x: 0,
+    y: 0,
+    isTouch: false,
+  }
+}
 
 export const preventDefault = (e: Event) => {
   e.preventDefault()
@@ -28,91 +98,64 @@ export const isTouchDevice = () => {
   }
 }
 
-export function start(
-  e:
-    | TouchEvent
-    | MouseEvent
-    | PointerEvent
-    | React.TouchEvent
-    | React.MouseEvent
-    | React.PointerEvent
-) {
+export function start(e: DragPointerEvent) {
   e.stopPropagation()
   e.preventDefault()
 
-  if (isTouchDevice()) {
+  const pointer = getPointerPosition(e)
+
+  if (pointer.isTouch) {
     if (document)
       document.addEventListener('touchmove', preventDefault, {
         passive: false,
       })
 
     if (document) document.body.style.overflow = 'hidden'
+    touchScrollLocked = true
   }
-  initialX = !isTouchDevice()
-    ? (e as PointerEvent).clientX
-    : (e as TouchEvent).touches[0].clientX
-  initialY = !isTouchDevice()
-    ? (e as PointerEvent).clientY
-    : (e as TouchEvent).touches[0].clientY
+  initialX = pointer.x
+  initialY = pointer.y
 
   moveElement = true
-  ;(e.target as HTMLElement).classList.add('drag')
-  ;(e.target as HTMLElement).style.setProperty('z-index', `${zIndex}`)
+  const draggable = getDraggableElement(e)
+  draggable.classList.add('drag')
+  draggable.style.setProperty('z-index', `${zIndex}`)
   //increase z-index
   zIndex += 1
-  ;(e.target as HTMLElement).focus()
+  draggable.focus()
 }
 
 //Handle mousemove and touchmove
-export function movement(
-  e:
-    | TouchEvent
-    | MouseEvent
-    | PointerEvent
-    | React.TouchEvent
-    | React.MouseEvent
-    | React.PointerEvent
-) {
+export function movement(e: DragPointerEvent) {
   e.stopPropagation()
   e.preventDefault()
 
   if (moveElement) {
-    //e.preventDefault();
-    const newX = !isTouchDevice()
-      ? (e as PointerEvent).clientX
-      : (e as TouchEvent).touches[0].clientX
-    const newY = !isTouchDevice()
-      ? (e as PointerEvent).clientY
-      : (e as TouchEvent).touches[0].clientY
-    ;(e.target as HTMLElement).style.top =
-      (e.target as HTMLElement).offsetTop - (initialY - newY) + 'px'
-    ;(e.target as HTMLElement).style.left =
-      (e.target as HTMLElement).offsetLeft - (initialX - newX) + 'px'
+    const pointer = getPointerPosition(e)
+    const newX = pointer.x
+    const newY = pointer.y
+    const draggable = getDraggableElement(e)
+    draggable.style.top = draggable.offsetTop - (initialY - newY) + 'px'
+    draggable.style.left = draggable.offsetLeft - (initialX - newX) + 'px'
     initialX = newX
     initialY = newY
   }
 }
 
 //Handle mouse up and touch end, check for element overlap
-export const stopMovementCheck = (
-  e:
-    | TouchEvent
-    | MouseEvent
-    | PointerEvent
-    | React.TouchEvent
-    | React.MouseEvent
-    | React.PointerEvent
-) => {
+export const stopMovementCheck = (e: DragPointerEvent) => {
   e.stopPropagation()
-  if (isTouchDevice()) {
+  if (touchScrollLocked) {
     if (document) document.removeEventListener('touchmove', preventDefault)
     if (document) document.body.style.overflowY = 'auto'
     if (document) document.body.style.overflowX = 'hidden'
+    touchScrollLocked = false
   }
 
   moveElement = false
-  ;(e.target as HTMLElement).classList.remove('drag')
-  ;(e.target as HTMLElement).blur()
+  const draggable = getDraggableElement(e)
+  draggable.classList.remove('drag')
+  draggable.blur()
 }
 
 //Handle mouse leave
@@ -121,8 +164,9 @@ export const stopMoving = (
 ) => {
   e.stopPropagation()
   moveElement = false
-  ;(e.target as HTMLElement).classList.remove('drag')
-  ;(e.target as HTMLElement).blur()
+  const draggable = getDraggableElement(e)
+  draggable.classList.remove('drag')
+  draggable.blur()
 }
 
 //on blob blur
@@ -146,14 +190,15 @@ export function wheel(draggable: HTMLElement) {
   }
 }
 export function zoom(e: WheelEvent) {
-  const value = (e.target as HTMLElement).style.getPropertyValue('--size')
+  const draggable = getDraggableElement(e)
+  const value = draggable.style.getPropertyValue('--size')
   let scale = parseFloat(value)
 
   scale += e.deltaY * -0.005
   // Restrict scale
   scale = Math.min(Math.max(2, scale), 20)
   // Apply
-  ;(e.target as HTMLElement).style.setProperty('--size', `${scale}`)
+  draggable.style.setProperty('--size', `${scale}`)
   //increase z-index
   zIndex += 1
 }
