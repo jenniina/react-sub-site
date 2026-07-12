@@ -27,14 +27,6 @@ import { useLanguageContext } from '../../contexts/LanguageContext'
 import { useIsClient, useWindow } from '../../hooks/useSSR'
 import ItemComponent from './components/ItemComponent'
 
-function stripOuterCalc(expr: string) {
-  const trimmed = expr.trim()
-  if (trimmed.startsWith('calc(') && trimmed.endsWith(')')) {
-    return trimmed.slice(5, -1).trim()
-  }
-  return trimmed
-}
-
 export interface itemProps {
   i: number
   e: number
@@ -119,20 +111,24 @@ export default function Hero({
     }
   }, [heading, text, page, currentPage])
 
-  // Clear eye transforms when navigating away from contact/form pages
-  useEffect(() => {
-    if (isClient && page !== 'contact' && page !== 'form') {
-      eyeInnerRefs.current.forEach((eye) => {
-        eye.style.transform = ''
-      })
-    }
-  }, [page, isClient])
-
   const resetButton = useRef() as RefObject<HTMLButtonElement>
   const ulRef = useRef<HTMLUListElement>(null)
   const heroItemRefs = useRef(new Map<number, HTMLLIElement>())
   const stackedDocumentIdsRef = useRef(new Set<number>())
   const eyeInnerRefs = useRef(new Map<number, HTMLDivElement>())
+  const [eyeRotations, setEyeRotations] = useState<Record<number, number>>({})
+  const [movementOffsets, setMovementOffsets] = useState<
+    Record<number, { dx: number; dy: number }>
+  >({})
+  const [exitingItemIds, setExitingItemIds] = useState<Record<number, boolean>>(
+    {}
+  )
+  const [activeTouchItemIds, setActiveTouchItemIds] = useState<
+    Record<number, boolean>
+  >({})
+  const movementOffsetsRef = useRef<Record<number, { dx: number; dy: number }>>(
+    {}
+  )
   const [prefersReducedMotion, setPrefersReducedMotion] =
     useLocalStorage<boolean>('prefersReducedMotion-Hero', false)
   const isMovingRef = useRef(false)
@@ -193,6 +189,10 @@ export default function Hero({
     movementCycleStartedRef.current = false
     setItemsVisible(false)
     setValues([])
+    setMovementOffsets({})
+    setEyeRotations({})
+    setExitingItemIds({})
+    setActiveTouchItemIds({})
 
     resetTimeoutRef.current = setTimeout(() => {
       revealAfterResetRef.current = true
@@ -205,6 +205,11 @@ export default function Hero({
   useEffect(() => {
     itemsVisibleRef.current = itemsVisible
   }, [itemsVisible])
+
+  useEffect(() => {
+    // Timers and callbacks read this ref to avoid stale movement offsets.
+    movementOffsetsRef.current = movementOffsets
+  }, [movementOffsets])
 
   useEffect(() => {
     if (!revealAfterResetRef.current) return
@@ -241,40 +246,29 @@ export default function Hero({
     return () => mediaQuery.removeEventListener('change', handler)
   }, [isClient, setPrefersReducedMotion, windowObj])
 
-  const updateComposerAboveBelow = useCallback(
-    (el: HTMLElement) => {
-      if (!windowObj) return
-      const ul = ulRef.current
-      if (!ul) return
-
-      // In this layout, `--staff-anchor-y` is the Y position of the first staff line.
-      const staffBaseYPx = cssVarToPx('--staff-anchor-y', ul)
-      const staffHalfStepPx = cssVarToPx('--staff-half-step', ul)
-      const midMarkPx = staffBaseYPx + 4 * staffHalfStepPx
-
-      // Use the intended (base + offset) position so the class flips immediately,
-      // even while a CSS transition is animating from the previous value.
-      const dy = Number.parseFloat(el.dataset.moveDy ?? '0') || 0
-      const baseTopExpr = el.dataset.baseTop
-      const topPx = baseTopExpr
-        ? cssExprToPx(`calc(${baseTopExpr})`) + dy
-        : Number.parseFloat(
-            windowObj.getComputedStyle(el).getPropertyValue('top')
-          )
-      if (!Number.isFinite(topPx)) return
-
-      // Notes are positioned with `top = staffBaseY + step*halfStep - noteHead`.
-      // That means the *staff anchor* for the note is the bottom of the note head.
-      // Comparing that anchor avoids bias from the negative note-head offset.
-      const noteHeadPx = cssVarToPx('--note-head', el) || 0
-      const anchorYPx = topPx + noteHeadPx
-
-      const isAbove = anchorYPx <= midMarkPx
-      el.classList.toggle(styles.above, isAbove)
-      el.classList.toggle(styles.below, !isAbove)
-    },
-    [windowObj]
-  )
+  const getDirectionDelta = (direction: number, step: number, jump: number) => {
+    // Convert a random direction index into x/y movement amounts.
+    switch (direction) {
+      case 0:
+        return { dx: 0, dy: jump }
+      case 1:
+        return { dx: 0, dy: -jump }
+      case 2:
+        return { dx: jump, dy: 0 }
+      case 3:
+        return { dx: -jump, dy: 0 }
+      case 4:
+        return { dx: step, dy: step }
+      case 5:
+        return { dx: -step, dy: step }
+      case 6:
+        return { dx: step, dy: -step }
+      case 7:
+        return { dx: -step, dy: -step }
+      default:
+        return { dx: 0, dy: 0 }
+    }
+  }
 
   // Move an item randomly
   useEffect(() => {
@@ -308,49 +302,31 @@ export default function Hero({
       const allItems = Array.from(heroItemRefs.current.entries())
       const items =
         page === 'draganddrop'
-          ? allItems
-              .filter(([itemId]) => !stackedDocumentIdsRef.current.has(itemId))
-              .map(([, item]) => item)
-          : allItems.map(([, item]) => item)
+          ? allItems.filter(
+              ([itemId]) => !stackedDocumentIdsRef.current.has(itemId)
+            )
+          : allItems
 
       if (items.length === 0) {
-        isMovingRef.current = false
+        // Re-try shortly; refs/eligibility can be transient during rerenders.
+        scheduleNext(Math.round(getRandomMinMax(1000, 2000)))
         return
       }
 
       const randomIndex = Math.floor(Math.random() * items.length)
-      const item = items[randomIndex]
+      const [itemId, item] = items[randomIndex]
 
       if (item) {
-        // Capture the base (responsive) expressions once, then apply pixel
-        // offsets on top. This keeps movement increments consistent even while
-        // CSS transitions are in-flight.
-        if (!item.dataset.baseTop && item.style.top)
-          item.dataset.baseTop = stripOuterCalc(item.style.top)
-        if (!item.dataset.baseLeft && item.style.left)
-          item.dataset.baseLeft = stripOuterCalc(item.style.left)
-
-        const baseTop = item.dataset.baseTop
-        const baseLeft = item.dataset.baseLeft
-        const prevDy = Number.parseFloat(item.dataset.moveDy ?? '0') || 0
-        const prevDx = Number.parseFloat(item.dataset.moveDx ?? '0') || 0
-
-        const computedTopPx = parseFloat(
+        const computedTopPx = Number.parseFloat(
           windowObj.getComputedStyle(item).getPropertyValue('top')
         )
-        const computedLeftPx = parseFloat(
+        const computedLeftPx = Number.parseFloat(
           windowObj.getComputedStyle(item).getPropertyValue('left')
         )
-        const currentTopPx = baseTop
-          ? cssExprToPx(`calc(${baseTop})`) + prevDy
-          : Number.isFinite(computedTopPx)
-            ? computedTopPx
-            : 0
-        const currentLeftPx = baseLeft
-          ? cssExprToPx(`calc(${baseLeft})`) + prevDx
-          : Number.isFinite(computedLeftPx)
-            ? computedLeftPx
-            : 0
+        const currentTopPx = Number.isFinite(computedTopPx) ? computedTopPx : 0
+        const currentLeftPx = Number.isFinite(computedLeftPx)
+          ? computedLeftPx
+          : 0
         const itemWidth = item.offsetWidth
         const itemHeight = item.offsetHeight
         const windowWidth = windowObj.innerWidth
@@ -363,43 +339,11 @@ export default function Hero({
         )
         const change = page === 'composer' ? composerHalfStepPx : 10
         const changeBigger = page === 'composer' ? composerHalfStepPx * 2 : 16
-        let deltaDy = 0
-        let deltaDx = 0
-
-        switch (direction) {
-          case 0: // up
-            deltaDy = changeBigger
-            break
-          case 1: // down
-            deltaDy = -changeBigger
-            break
-          case 2: // left
-            deltaDx = changeBigger
-            break
-          case 3: // right
-            deltaDx = -changeBigger
-            break
-          case 4: // top-left
-            deltaDy = change
-            deltaDx = change
-            break
-          case 5: // top-right
-            deltaDy = change
-            deltaDx = -change
-            break
-          case 6: // bottom-left
-            deltaDy = -change
-            deltaDx = change
-            break
-          case 7: // bottom-right
-            deltaDy = -change
-            deltaDx = -change
-            break
-        }
+        const delta = getDirectionDelta(direction, change, changeBigger)
+        const deltaDy = delta.dy
+        const deltaDx = delta.dx
 
         let didMove = false
-        const nextDy = prevDy + deltaDy
-        const nextDx = prevDx + deltaDx
         const newTopPx = currentTopPx + deltaDy
         const newLeftPx = currentLeftPx + deltaDx
         // Check if the page is composer and limit movement to how high the highest item is placed and the lowest the items can be placed
@@ -415,16 +359,17 @@ export default function Hero({
             newLeftPx >= 0 &&
             newLeftPx + itemWidth <= windowWidth
           ) {
-            item.dataset.moveDy = String(nextDy)
-            item.dataset.moveDx = String(nextDx)
-            item.style.top = baseTop
-              ? `calc(${baseTop} + ${nextDy}px)`
-              : `${newTopPx}px`
-            item.style.left = baseLeft
-              ? `calc(${baseLeft} + ${nextDx}px)`
-              : `${newLeftPx}px`
+            setMovementOffsets((previousOffsets) => {
+              const previous = previousOffsets[itemId] ?? { dx: 0, dy: 0 }
+              return {
+                ...previousOffsets,
+                [itemId]: {
+                  dx: previous.dx + deltaDx,
+                  dy: previous.dy + deltaDy,
+                },
+              }
+            })
             didMove = true
-            updateComposerAboveBelow(item)
           }
         }
 
@@ -435,14 +380,16 @@ export default function Hero({
           newLeftPx >= 0 &&
           newLeftPx + itemWidth <= windowWidth
         ) {
-          item.dataset.moveDy = String(nextDy)
-          item.dataset.moveDx = String(nextDx)
-          item.style.top = baseTop
-            ? `calc(${baseTop} + ${nextDy}px)`
-            : `${newTopPx}px`
-          item.style.left = baseLeft
-            ? `calc(${baseLeft} + ${nextDx}px)`
-            : `${newLeftPx}px`
+          setMovementOffsets((previousOffsets) => {
+            const previous = previousOffsets[itemId] ?? { dx: 0, dy: 0 }
+            return {
+              ...previousOffsets,
+              [itemId]: {
+                dx: previous.dx + deltaDx,
+                dy: previous.dy + deltaDy,
+              },
+            }
+          })
           didMove = true
         }
 
@@ -492,7 +439,7 @@ export default function Hero({
       isMovingRef.current = false
       movementCycleStartedRef.current = false
     }
-  }, [prefersReducedMotion, isClient, windowObj, page]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [prefersReducedMotion, isClient, page, windowObj]) // eslint-disable-line react-hooks/exhaustive-deps
 
   //Move items up, down, left or left, depending on the direction they're approached from:
   const movingItem = useCallback(
@@ -503,65 +450,80 @@ export default function Hero({
         'li'
       ) as HTMLElement | null
       if (!target) return
+      const itemId = Number.parseInt(target.id.replace('shape', ''), 10)
+      if (!Number.isFinite(itemId)) return
+
       const amount =
         page === 'composer'
           ? Math.round(cssVarToPx('--staff-half-step', target))
           : 10
 
-      // Prefer moving via base (responsive) + offset so resizing the window
-      // continues to reflow shapes according to their original clamp/vh/vw rules.
-      if (!target.dataset.baseTop && target.style.top)
-        target.dataset.baseTop = stripOuterCalc(target.style.top)
-      if (!target.dataset.baseLeft && target.style.left)
-        target.dataset.baseLeft = stripOuterCalc(target.style.left)
-
-      const baseTop = target.dataset.baseTop
-      const baseLeft = target.dataset.baseLeft
-      const prevDy = Number.parseFloat(target.dataset.moveDy ?? '0') || 0
-      const prevDx = Number.parseFloat(target.dataset.moveDx ?? '0') || 0
-
-      const targetLeft = windowObj
-        .getComputedStyle(target)
-        .getPropertyValue('left')
-      const targetTop = windowObj
-        .getComputedStyle(target)
-        .getPropertyValue('top')
-
-      const currentTopPx = Number.parseFloat(targetTop) || 0
-      const currentLeftPx = Number.parseFloat(targetLeft) || 0
-
-      const applyOffsets = (nextDy: number, nextDx: number) => {
-        target.dataset.moveDy = String(nextDy)
-        target.dataset.moveDx = String(nextDx)
-
-        if (baseTop) target.style.top = `calc(${baseTop} + ${nextDy}px)`
-        else target.style.top = `${currentTopPx + (nextDy - prevDy)}px`
-
-        if (baseLeft) target.style.left = `calc(${baseLeft} + ${nextDx}px)`
-        else target.style.left = `${currentLeftPx + (nextDx - prevDx)}px`
-
-        if (page === 'composer') updateComposerAboveBelow(target)
-      }
-
       const from = calculateDirection(e)
+      let delta = { dx: 0, dy: 0 }
       switch (from) {
         case 'top':
-          applyOffsets(prevDy + amount, prevDx)
+          delta = { dx: 0, dy: amount }
           break
         case 'right':
-          applyOffsets(prevDy, prevDx - amount)
+          delta = { dx: -amount, dy: 0 }
           break
         case 'bottom':
-          applyOffsets(prevDy - amount, prevDx)
+          delta = { dx: 0, dy: -amount }
           break
         case 'left':
-          applyOffsets(prevDy, prevDx + amount)
+          delta = { dx: amount, dy: 0 }
           break
         default:
           break
       }
+
+      const computedTopPx = Number.parseFloat(
+        windowObj.getComputedStyle(target).getPropertyValue('top')
+      )
+      const computedLeftPx = Number.parseFloat(
+        windowObj.getComputedStyle(target).getPropertyValue('left')
+      )
+      const currentTopPx = Number.isFinite(computedTopPx) ? computedTopPx : 0
+      const currentLeftPx = Number.isFinite(computedLeftPx) ? computedLeftPx : 0
+
+      const newTopPx = currentTopPx + delta.dy
+      const newLeftPx = currentLeftPx + delta.dx
+      const itemWidth = target.offsetWidth
+      const itemHeight = target.offsetHeight
+      const windowWidth = windowObj.innerWidth
+      const windowHeight = windowObj.innerHeight
+
+      let canMove = false
+      if (page === 'composer') {
+        const highestAllowedPx = cssVarToPx('--highest-allowed', target)
+        const lowestAllowedPx = cssVarToPx('--lowest-allowed', target)
+        canMove =
+          newTopPx >= highestAllowedPx &&
+          newTopPx + itemHeight <= lowestAllowedPx &&
+          newLeftPx >= 0 &&
+          newLeftPx + itemWidth <= windowWidth
+      } else {
+        canMove =
+          newTopPx >= 100 &&
+          newTopPx + itemHeight <= windowHeight * 0.6 &&
+          newLeftPx >= 0 &&
+          newLeftPx + itemWidth <= windowWidth
+      }
+
+      if (canMove) {
+        setMovementOffsets((previousOffsets) => {
+          const previous = previousOffsets[itemId] ?? { dx: 0, dy: 0 }
+          return {
+            ...previousOffsets,
+            [itemId]: {
+              dx: previous.dx + delta.dx,
+              dy: previous.dy + delta.dy,
+            },
+          }
+        })
+      }
     },
-    [isClient, calculateDirection, windowObj, page, updateComposerAboveBelow]
+    [calculateDirection, isClient, page, windowObj]
   )
 
   function radianToAngle(cx: number, cy: number, ex: number, ey: number) {
@@ -575,24 +537,32 @@ export default function Hero({
   //Make eyes follow the mouse:
   const follow = useCallback(
     (e: Event) => {
+      if (page !== 'contact' && page !== 'form') {
+        setEyeRotations({})
+        return
+      }
+
       const eyes = Array.from(eyeInnerRefs.current.values())
       if (eyes.length > 0) {
+        const nextRotations: Record<number, number> = {}
         eyes.forEach((eye) => {
-          if (page === 'contact' || page === 'form') {
-            const rect = eye.getBoundingClientRect()
-            const x = rect.left + rect.width / 2
-            const y = rect.top + rect.height / 2
-            const rotation = radianToAngle(
-              (e as PointerEvent).clientX,
-              (e as PointerEvent).clientY,
-              x,
-              y
-            )
-            eye.style.transform = `rotate(${rotation}deg)`
-          } else {
-            eye.style.transform = ''
-          }
+          const itemId = Number.parseInt(eye.dataset.itemId ?? '', 10)
+          if (!Number.isFinite(itemId)) return
+          const rect = eye.getBoundingClientRect()
+          const x = rect.left + rect.width / 2
+          const y = rect.top + rect.height / 2
+          const rotation = radianToAngle(
+            (e as PointerEvent).clientX,
+            (e as PointerEvent).clientY,
+            x,
+            y
+          )
+          nextRotations[itemId] = rotation
         })
+
+        setEyeRotations(nextRotations)
+      } else {
+        setEyeRotations({})
       }
     },
     [page]
@@ -626,44 +596,73 @@ export default function Hero({
   ) => {
     const element = (e.target as HTMLElement).closest('li')
     if (!element) return
-    //get element id
     const id = element.id
+    const itemId = Number.parseInt(id.replace('shape', ''), 10)
+    if (!Number.isFinite(itemId)) return
+
+    const removeAfterExit = () => {
+      // Mark item as exiting, then remove it after CSS exit animation time.
+      setExitingItemIds((previous) => ({
+        ...previous,
+        [itemId]: true,
+      }))
+
+      setTimeout(() => {
+        setValues((previousValues) =>
+          previousValues.filter((item) => item.i !== itemId)
+        )
+        setExitingItemIds((previous) => {
+          const next = { ...previous }
+          delete next[itemId]
+          return next
+        })
+        setActiveTouchItemIds((previous) => {
+          const next = { ...previous }
+          delete next[itemId]
+          return next
+        })
+      }, 400)
+    }
 
     if (!touchDevice) {
-      // if not a touch device, add exit animation then remove from state
-      element.classList.add(styles.exitItem)
-      setTimeout(() => {
-        setValues((prevValues) =>
-          prevValues.filter((item) => `shape${item.i}` !== id)
-        )
-      }, 400)
+      removeAfterExit()
     } else {
-      // if a touch device, activate animation on tap; then on second tap remove
-      element.classList.add(styles.active)
-      const handleBlur = () => {
-        element.classList.remove(styles.active)
-        element.removeEventListener('blur', handleBlur)
+      // On touch devices: first tap arms the item, second tap removes it.
+      if (activeTouchItemIds[itemId]) {
+        removeAfterExit()
+      } else {
+        setActiveTouchItemIds((previous) => ({
+          ...previous,
+          [itemId]: true,
+        }))
+        setTimeout(() => {
+          setActiveTouchItemIds((previous) => {
+            if (!previous[itemId]) return previous
+            const next = { ...previous }
+            delete next[itemId]
+            return next
+          })
+        }, 1200)
       }
-      element.addEventListener('blur', handleBlur)
-      setTimeout(() => {
-        element.addEventListener('touchend', removeWithTouch)
-      }, 100)
     }
   }
 
-  const removeWithTouch = (e: TouchEvent) => {
-    e.preventDefault()
-    const el = (e.target as HTMLElement).closest('li')
-    if (!el) return
-    const id = el.id
-    el.classList.add(styles.exitItem)
-
-    setTimeout(() => {
-      setValues((prevValues) =>
-        prevValues.filter((item) => `shape${item.i}` !== id)
-      )
-    }, 400)
-  }
+  useEffect(() => {
+    // Drop flags for items that no longer exist in values.
+    const currentIds = new Set(values.map((item) => item.i))
+    setExitingItemIds((previous) => {
+      const next = Object.fromEntries(
+        Object.entries(previous).filter(([key]) => currentIds.has(Number(key)))
+      ) as Record<number, boolean>
+      return next
+    })
+    setActiveTouchItemIds((previous) => {
+      const next = Object.fromEntries(
+        Object.entries(previous).filter(([key]) => currentIds.has(Number(key)))
+      ) as Record<number, boolean>
+      return next
+    })
+  }, [values])
 
   const spanArray: itemProps[] = useMemo(() => {
     const array: itemProps[] = []
@@ -946,24 +945,6 @@ export default function Hero({
     return px
   }
 
-  // Resolve a raw CSS length/expression (px, calc(), clamp(), etc.) to pixels.
-  // Returns 0 during SSR.
-  function cssExprToPx(expr: string) {
-    if (typeof window === 'undefined' || typeof document === 'undefined')
-      return 0
-    if (!expr) return 0
-    if (expr.endsWith('px')) return parseFloat(expr) || 0
-
-    const tmp = document.createElement('div')
-    tmp.style.position = 'absolute'
-    tmp.style.visibility = 'hidden'
-    tmp.style.top = expr
-    document.body.appendChild(tmp)
-    const px = parseFloat(window.getComputedStyle(tmp).top) || 0
-    document.body.removeChild(tmp)
-    return px
-  }
-
   return (
     <div
       className={`
@@ -1008,6 +989,10 @@ export default function Hero({
       <ItemComponent
         ref={ulRef}
         array={values}
+        movementOffsets={movementOffsets}
+        eyeRotations={eyeRotations}
+        exitingItemIds={exitingItemIds}
+        activeTouchItemIds={activeTouchItemIds}
         location={currentPage}
         resetVersion={resetVersion}
         windowWidth={windowWidth}
