@@ -1744,13 +1744,14 @@
   height: 100%;
   padding: 34% 18%;
   aspect-ratio: 1 / 1.414;
+  outline: 0 solid transparent;
   border: 1px solid color-mix(in srgb, var(--document-accent) 26%, white 6%);
   border-radius: 0.24rem;
   background: linear-gradient(180deg, var(--document-accent-strong) 0%, var(--document-accent) 48%, var(--color) 100%);
   box-shadow:
     inset 0 1px 0 hsla(0, 0%, 100%, 0.12),
     inset 0 -1.2rem 2rem -1.8rem var(--document-shadow);
-  transition-property: transform, filter, outline-width, outline-offset;
+  transition-property: transform, filter, outline-color, outline-width, outline-offset;
   transition-timing-function: ease-in-out;
   transition-duration: 200ms;
 }

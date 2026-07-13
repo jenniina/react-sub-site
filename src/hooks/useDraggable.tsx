@@ -12,6 +12,8 @@ let zIndex0 = -1
 let moveElement = false
 let reset = true
 let touchScrollLocked = false
+let activeDraggable: HTMLElement | null = null
+let globalReleaseHandlersAttached = false
 
 type DragPointerEvent =
   | TouchEvent
@@ -87,6 +89,48 @@ export const preventDefault = (e: Event) => {
   e.stopImmediatePropagation()
 }
 
+const removeGlobalReleaseHandlers = () => {
+  if (!globalReleaseHandlersAttached || !document) return
+  document.removeEventListener('pointerup', handleGlobalPointerRelease)
+  document.removeEventListener('pointercancel', handleGlobalPointerRelease)
+  document.removeEventListener('mouseup', handleGlobalPointerRelease)
+  document.removeEventListener('touchend', handleGlobalPointerRelease)
+  document.removeEventListener('touchcancel', handleGlobalPointerRelease)
+  globalReleaseHandlersAttached = false
+}
+
+const cleanupDragState = () => {
+  if (touchScrollLocked) {
+    if (document) document.removeEventListener('touchmove', preventDefault)
+    if (document) document.body.style.overflowY = 'auto'
+    if (document) document.body.style.overflowX = 'hidden'
+    touchScrollLocked = false
+  }
+
+  moveElement = false
+  if (activeDraggable) {
+    activeDraggable.classList.remove('drag')
+    activeDraggable.blur()
+    activeDraggable = null
+  }
+
+  removeGlobalReleaseHandlers()
+}
+
+function handleGlobalPointerRelease() {
+  cleanupDragState()
+}
+
+const ensureGlobalReleaseHandlers = () => {
+  if (globalReleaseHandlersAttached || !document) return
+  document.addEventListener('pointerup', handleGlobalPointerRelease)
+  document.addEventListener('pointercancel', handleGlobalPointerRelease)
+  document.addEventListener('mouseup', handleGlobalPointerRelease)
+  document.addEventListener('touchend', handleGlobalPointerRelease)
+  document.addEventListener('touchcancel', handleGlobalPointerRelease)
+  globalReleaseHandlersAttached = true
+}
+
 //Detect touch device
 export const isTouchDevice = () => {
   try {
@@ -118,11 +162,13 @@ export function start(e: DragPointerEvent) {
 
   moveElement = true
   const draggable = getDraggableElement(e)
+  activeDraggable = draggable
   draggable.classList.add('drag')
   draggable.style.setProperty('z-index', `${zIndex}`)
   //increase z-index
   zIndex += 1
   draggable.focus()
+  ensureGlobalReleaseHandlers()
 }
 
 //Handle mousemove and touchmove
@@ -130,13 +176,14 @@ export function movement(e: DragPointerEvent) {
   e.stopPropagation()
   e.preventDefault()
 
-  if (moveElement) {
+  if (moveElement && activeDraggable) {
     const pointer = getPointerPosition(e)
     const newX = pointer.x
     const newY = pointer.y
-    const draggable = getDraggableElement(e)
-    draggable.style.top = draggable.offsetTop - (initialY - newY) + 'px'
-    draggable.style.left = draggable.offsetLeft - (initialX - newX) + 'px'
+    activeDraggable.style.top =
+      activeDraggable.offsetTop - (initialY - newY) + 'px'
+    activeDraggable.style.left =
+      activeDraggable.offsetLeft - (initialX - newX) + 'px'
     initialX = newX
     initialY = newY
   }
@@ -145,17 +192,7 @@ export function movement(e: DragPointerEvent) {
 //Handle mouse up and touch end, check for element overlap
 export const stopMovementCheck = (e: DragPointerEvent) => {
   e.stopPropagation()
-  if (touchScrollLocked) {
-    if (document) document.removeEventListener('touchmove', preventDefault)
-    if (document) document.body.style.overflowY = 'auto'
-    if (document) document.body.style.overflowX = 'hidden'
-    touchScrollLocked = false
-  }
-
-  moveElement = false
-  const draggable = getDraggableElement(e)
-  draggable.classList.remove('drag')
-  draggable.blur()
+  cleanupDragState()
 }
 
 //Handle mouse leave
@@ -163,10 +200,7 @@ export const stopMoving = (
   e: MouseEvent | React.MouseEvent | PointerEvent | React.PointerEvent
 ) => {
   e.stopPropagation()
-  moveElement = false
-  const draggable = getDraggableElement(e)
-  draggable.classList.remove('drag')
-  draggable.blur()
+  cleanupDragState()
 }
 
 //on blob blur
