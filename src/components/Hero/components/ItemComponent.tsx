@@ -50,6 +50,16 @@ function getHeroItemKey(
   return `${location || 'home'}-${resetVersion}-${itemId}`
 }
 
+// Build a unique key per page + reset + item so old dragged blob spots
+// do not carry over when the hero gets reset.
+function getBlobPositionKey(
+  location: string,
+  itemId: number,
+  resetVersion: number
+) {
+  return `blob-${location || 'home'}-${resetVersion}-${itemId}`
+}
+
 interface ItemComponentProps {
   array: itemProps[]
   movementOffsets: Record<number, { dx: number; dy: number }>
@@ -117,6 +127,16 @@ interface DndRect {
   height: number
 }
 
+interface BlobDragState {
+  pointerId: number
+  itemId: number
+  itemKey: string
+  startX: number
+  startY: number
+  startLeft: number
+  startTop: number
+}
+
 const ItemComponent = forwardRef<
   HTMLUListElement,
   Omit<ItemComponentProps, 'ulRef'>
@@ -156,6 +176,10 @@ const ItemComponent = forwardRef<
     const [activeBlobDragIds, setActiveBlobDragIds] = useState<
       Record<number, boolean>
     >({})
+    const [blobPositions, setBlobPositions] = useState<
+      Record<string, { left: number; top: number }>
+    >({})
+    const blobDragRef = useRef<BlobDragState | null>(null)
     const isDnd = location === LOCATION.DND
     const dndDocumentWidth = Math.round(
       Math.max(46, Math.min(64, windowWidth * 0.13))
@@ -188,6 +212,107 @@ const ItemComponent = forwardRef<
       key: 'Enter' | ' '
       timestamp: number
     }>({ itemId: null, key: 'Enter', timestamp: 0 })
+
+    useEffect(() => {
+      if (typeof window === 'undefined') return
+
+      const clearActiveBlobDragIds = () => {
+        setActiveBlobDragIds({})
+        blobDragRef.current = null
+      }
+
+      window.addEventListener('mouseup', clearActiveBlobDragIds)
+      window.addEventListener('touchend', clearActiveBlobDragIds)
+      window.addEventListener('touchcancel', clearActiveBlobDragIds)
+      window.addEventListener('blur', clearActiveBlobDragIds)
+
+      return () => {
+        window.removeEventListener('mouseup', clearActiveBlobDragIds)
+        window.removeEventListener('touchend', clearActiveBlobDragIds)
+        window.removeEventListener('touchcancel', clearActiveBlobDragIds)
+        window.removeEventListener('blur', clearActiveBlobDragIds)
+      }
+    }, [])
+
+    const beginBlobDrag = (
+      e: ReactPointerEvent<HTMLLIElement>,
+      itemId: number
+    ) => {
+      if (e.pointerType !== 'touch' && e.button !== 0) return
+
+      const target = e.currentTarget
+      const itemKey = getBlobPositionKey(location, itemId, resetVersion)
+      const existingPosition = blobPositions[itemKey]
+      const startLeft = existingPosition?.left ?? target.offsetLeft
+      const startTop = existingPosition?.top ?? target.offsetTop
+
+      blobDragRef.current = {
+        pointerId: e.pointerId,
+        itemId,
+        itemKey,
+        startX: e.clientX,
+        startY: e.clientY,
+        startLeft,
+        startTop,
+      }
+
+      setBlobPositions((previous) => {
+        if (previous[itemKey]) return previous
+        return {
+          ...previous,
+          [itemKey]: {
+            left: startLeft,
+            top: startTop,
+          },
+        }
+      })
+
+      setActiveBlobDragIds((previous) => ({
+        ...previous,
+        [itemId]: true,
+      }))
+
+      target.setPointerCapture?.(e.pointerId)
+      e.preventDefault()
+    }
+
+    const moveBlobDrag = (
+      e: ReactPointerEvent<HTMLLIElement>,
+      itemId: number
+    ) => {
+      const dragState = blobDragRef.current
+      if (!dragState) return
+      if (dragState.pointerId !== e.pointerId || dragState.itemId !== itemId)
+        return
+
+      const nextLeft = dragState.startLeft + (e.clientX - dragState.startX)
+      const nextTop = dragState.startTop + (e.clientY - dragState.startY)
+
+      setBlobPositions((previous) => ({
+        ...previous,
+        [dragState.itemKey]: {
+          left: nextLeft,
+          top: nextTop,
+        },
+      }))
+      e.preventDefault()
+    }
+
+    const endBlobDrag = (
+      e: ReactPointerEvent<HTMLLIElement>,
+      itemId: number
+    ) => {
+      const dragState = blobDragRef.current
+      if (!dragState) return
+      if (dragState.pointerId !== e.pointerId || dragState.itemId !== itemId)
+        return
+
+      blobDragRef.current = null
+      setActiveBlobDragIds((previous) => ({
+        ...previous,
+        [itemId]: false,
+      }))
+    }
 
     const isComposer = location === LOCATION.COMPOSER
 
@@ -2312,12 +2437,26 @@ const ItemComponent = forwardRef<
                 opacity: `0.7`,
                 WebkitFilter: filter,
                 filter: filter,
+                touchAction: 'none',
+                userSelect: 'none',
+                WebkitUserSelect: 'none',
                 transitionProperty: activeBlobDragIds[item.i]
                   ? 'transform, width, height, border-radius'
                   : 'top, left, bottom, right, transform, width, height, border-radius',
                 transitionTimingFunction: 'ease-in-out',
                 transitionDuration: '600ms',
               }
+              const blobPosition =
+                blobPositions[
+                  getBlobPositionKey(location, item.i, resetVersion)
+                ]
+              const blobStyle: CSSProperties = blobPosition
+                ? {
+                    ...style,
+                    top: `${blobPosition.top}px`,
+                    left: `${blobPosition.left}px`,
+                  }
+                : withMovementOffset(item.i, style)
 
               return (
                 //BLOBS
@@ -2339,50 +2478,24 @@ const ItemComponent = forwardRef<
                                 } ${activeBlobDragIds[item.i] ? styles.drag : ''}`,
                     item.i
                   )}
-                  style={withMovementOffset(item.i, style)}
-                  draggable={true}
+                  style={blobStyle}
+                  draggable={false}
                   tabIndex={0}
                   role={'option'}
-                  onMouseDown={(e) => {
-                    Draggable.start(e)
-                    setActiveBlobDragIds((previous) => ({
-                      ...previous,
-                      [item.i]: true,
-                    }))
+                  onPointerDown={(e) => {
+                    beginBlobDrag(e, item.i)
                   }}
-                  onMouseMove={(e) => {
-                    Draggable.movement(e)
+                  onPointerMove={(e) => {
+                    moveBlobDrag(e, item.i)
                   }}
-                  onMouseUp={(e) => {
-                    Draggable.stopMovementCheck(e)
-                    setActiveBlobDragIds((previous) => ({
-                      ...previous,
-                      [item.i]: false,
-                    }))
+                  onPointerUp={(e) => {
+                    endBlobDrag(e, item.i)
                   }}
-                  onMouseLeave={(e) => {
-                    Draggable.stopMoving(e)
-                    setActiveBlobDragIds((previous) => ({
-                      ...previous,
-                      [item.i]: false,
-                    }))
+                  onPointerCancel={(e) => {
+                    endBlobDrag(e, item.i)
                   }}
-                  onTouchStart={(e) => {
-                    Draggable.start(e)
-                    setActiveBlobDragIds((previous) => ({
-                      ...previous,
-                      [item.i]: true,
-                    }))
-                  }}
-                  onTouchMove={(e) => {
-                    Draggable.movement(e)
-                  }}
-                  onTouchEnd={(e) => {
-                    Draggable.stopMovementCheck(e)
-                    setActiveBlobDragIds((previous) => ({
-                      ...previous,
-                      [item.i]: false,
-                    }))
+                  onLostPointerCapture={(e) => {
+                    endBlobDrag(e, item.i)
                   }}
                   onWheel={(e) => {
                     Draggable.wheel(e.currentTarget)
