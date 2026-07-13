@@ -2395,7 +2395,9 @@ const ItemComponent = forwardRef<
                     : windowWidth < windowHeight
                       ? `blur(calc(var(--blur) * 1.1vh))`
                       : `blur(calc(var(--blur) * 1.1vw))`
-              const number = Math.floor(getRandomMinMax(0.001, 3.999))
+              // Keep blob shape stable during rerenders; only vary across item/reset.
+              const blobRadiusIndex =
+                (item.i + resetVersion) % blobRadius.length
               const style: CSSProperties = {
                 position: 'absolute',
                 top: `clamp(100px, calc(-20% + ${item.e} * 1.4vh * ${
@@ -2432,7 +2434,7 @@ const ItemComponent = forwardRef<
                 minHeight: `70px`,
                 maxWidth: `200px`,
                 maxHeight: `200px`,
-                borderRadius: `${blobRadius[number]}`,
+                borderRadius: `${blobRadius[blobRadiusIndex]}`,
                 transform: 'rotate(' + item.rotation + 'deg)',
                 opacity: `0.7`,
                 WebkitFilter: filter,
@@ -2565,13 +2567,16 @@ const ItemComponent = forwardRef<
                 opacity: `0.${item.size > 7 ? 7 : Math.ceil(item.size)}`,
               }
               const styleInner: CSSProperties = {
+                // Use a wide initial angle range so refresh differences are visible,
+                // then let live eye-follow state override this once the pointer moves.
+                // Keep it deterministic per item/reset to avoid jitter on rerender.
+                transform: `rotate(${eyeRotations[item.i] ?? ((item.i * 67 + item.e * 29 + resetVersion * 53) % 360) - 180}deg)`,
                 position: 'absolute',
                 backgroundColor: `transparent`,
                 width: '100%',
                 height: '100%',
                 borderRadius,
                 opacity: `0.${item.size > 7 ? 7 : Math.ceil(item.size)}`,
-                transform: `rotate(${eyeRotations[item.i] ?? 0}deg)`,
               }
 
               return (

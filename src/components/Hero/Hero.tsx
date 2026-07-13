@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import {
   useMemo,
   useCallback,
@@ -245,6 +246,28 @@ export default function Hero({
     mediaQuery.addEventListener('change', handler)
     return () => mediaQuery.removeEventListener('change', handler)
   }, [isClient, setPrefersReducedMotion, windowObj])
+
+  // Convert a CSS variable (including calc, vh, vw, etc.) to pixels in a
+  // client-only, SSR-safe way. Returns 0 during server-side rendering.
+  const cssVarToPx = useCallback((varName: string, contextEl?: Element | null) => {
+    // Guard for SSR: window/document are not available on the server
+    if (typeof window === 'undefined' || typeof document === 'undefined')
+      return 0
+
+    const el = contextEl ?? document.documentElement
+    const val = window.getComputedStyle(el).getPropertyValue(varName).trim()
+    if (!val) return 0
+    if (val.endsWith('px')) return parseFloat(val)
+
+    const tmp = document.createElement('div')
+    tmp.style.position = 'absolute'
+    tmp.style.visibility = 'hidden'
+    tmp.style.top = val // could be 'calc(...)' or 'var(--...)'
+    document.body.appendChild(tmp)
+    const px = parseFloat(window.getComputedStyle(tmp).top) || 0
+    document.body.removeChild(tmp)
+    return px
+  }, [])
 
   const getDirectionDelta = (direction: number, step: number, jump: number) => {
     // Convert a random direction index into x/y movement amounts.
@@ -523,7 +546,7 @@ export default function Hero({
         })
       }
     },
-    [calculateDirection, isClient, page, windowObj]
+    [calculateDirection, cssVarToPx, isClient, page, windowObj]
   )
 
   function radianToAngle(cx: number, cy: number, ex: number, ey: number) {
@@ -538,7 +561,6 @@ export default function Hero({
   const follow = useCallback(
     (e: Event) => {
       if (page !== 'contact' && page !== 'form') {
-        setEyeRotations({})
         return
       }
 
@@ -569,15 +591,23 @@ export default function Hero({
   )
 
   useEffect(() => {
-    if (isClient) {
+    if (page === 'contact' || page === 'form') return
+    // Clear any old eye-follow state once when leaving eye pages.
+    setEyeRotations((previous) =>
+      Object.keys(previous).length > 0 ? {} : previous
+    )
+  }, [page])
+
+  useEffect(() => {
+    if (isClient && (page === 'contact' || page === 'form')) {
       window?.addEventListener('mousemove', follow)
     }
     return () => {
-      if (isClient) {
+      if (isClient && (page === 'contact' || page === 'form')) {
         window?.removeEventListener('mousemove', follow)
       }
     }
-  }, [isClient, follow])
+  }, [isClient, follow, page])
 
   const lightTheme = useTheme()
 
@@ -724,13 +754,13 @@ export default function Hero({
   )
 
   const colorConstellationItems = useMemo<itemProps[]>(() => {
-    type RandomRecipe = {
+    interface RandomRecipe {
       hue: number
       saturation: [number, number]
       lightness: [number, number]
     }
 
-    type FixedRecipe = {
+    interface FixedRecipe {
       hue: number
       saturation: number
       lightness: number
@@ -739,7 +769,7 @@ export default function Hero({
     const shuffleArray = <T,>(items: T[]) => {
       const next = [...items]
       for (let i = next.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1))
+        const j = Math.floor(getRandomMinMax(0, i + 1))
         ;[next[i], next[j]] = [next[j], next[i]]
       }
       return next
@@ -922,28 +952,6 @@ export default function Hero({
     }
     setValues(items)
   }, [amount, colorConstellationItems, page, reinitialize, thresholdCrossed]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Convert a CSS variable (including calc, vh, vw, etc.) to pixels in a
-  // client-only, SSR-safe way. Returns 0 during server-side rendering.
-  function cssVarToPx(varName: string, contextEl?: Element | null) {
-    // Guard for SSR: window/document are not available on the server
-    if (typeof window === 'undefined' || typeof document === 'undefined')
-      return 0
-
-    const el = contextEl ?? document.documentElement
-    const val = window.getComputedStyle(el).getPropertyValue(varName).trim()
-    if (!val) return 0
-    if (val.endsWith('px')) return parseFloat(val)
-
-    const tmp = document.createElement('div')
-    tmp.style.position = 'absolute'
-    tmp.style.visibility = 'hidden'
-    tmp.style.top = val // could be 'calc(...)' or 'var(--...)'
-    document.body.appendChild(tmp)
-    const px = parseFloat(window.getComputedStyle(tmp).top) || 0
-    document.body.removeChild(tmp)
-    return px
-  }
 
   return (
     <div
