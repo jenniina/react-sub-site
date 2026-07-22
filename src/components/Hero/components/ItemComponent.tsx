@@ -2765,7 +2765,7 @@ const ItemComponent = forwardRef<
                   1 0 0 0 0 
                   0 1 0 0 0 
                   0 0 1 0 0
-                  0 0 0 88 -18
+                  0 0 0 99 -19
                   "
               ></feColorMatrix>
             </filter>
