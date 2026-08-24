@@ -2443,8 +2443,8 @@ const ItemComponent = forwardRef<
                 userSelect: 'none',
                 WebkitUserSelect: 'none',
                 transitionProperty: activeBlobDragIds[item.i]
-                  ? 'transform, width, height, border-radius'
-                  : 'top, left, bottom, right, transform, width, height, border-radius',
+                  ? 'transform, width, height, border-radius, outline-width, outline-color'
+                  : 'top, left, bottom, right, transform, width, height, border-radius, outline-width, outline-color',
                 transitionTimingFunction: 'ease-in-out',
                 transitionDuration: '600ms',
               }
@@ -2765,7 +2765,7 @@ const ItemComponent = forwardRef<
                   1 0 0 0 0 
                   0 1 0 0 0 
                   0 0 1 0 0
-                  0 0 0 88 -18
+                  0 0 0 99 -19
                   "
               ></feColorMatrix>
             </filter>

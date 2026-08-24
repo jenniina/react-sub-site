@@ -1671,10 +1671,13 @@
 .herocontent.blob * {
   pointer-events: all;
 }
+.herocontent .portfolio {
+  outline: 6px solid transparent;
+  outline-offset: -6px;
+}
 .herocontent .portfolio:hover,
 .herocontent .portfolio:focus-visible {
-  outline: white solid 4px;
-  outline-offset: -3px;
+  outline: white solid 8px;
 }
 .herocontent .portfolio:active,
 .herocontent .portfolio:focus-visible,
