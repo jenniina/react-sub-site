@@ -67,9 +67,7 @@ const AdditionalInfo: FC<AccProps> = ({ type, styles }) => {
           </>
         ) : type.startsWith('misc') ? (
           <>
-            <p>
-              {t('PayFor5HoursGet6')} {t('PayFor10HoursGet13')}
-            </p>
+            <p>{t('PayFor10HoursGet11')}</p>
             <p>{t('HourlyWorkCanBeUsed')}</p>
           </>
         ) : (

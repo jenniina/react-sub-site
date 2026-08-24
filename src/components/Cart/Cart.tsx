@@ -98,10 +98,8 @@ const Cart: FC<Props> = ({
   const [terms, setTerms] = useState<boolean>(false)
   const [sending, setSending] = useState<boolean>(false)
 
-  const freeHoursBreakpoint1 = 5
-  const freeHoursBreakpoint2 = 10
+  const freeHoursBreakpoint1 = 10
   const freeAmount1 = 1
-  const freeAmount2 = 3
 
   //set info
   useEffect(() => {
@@ -249,6 +247,10 @@ const Cart: FC<Props> = ({
         className={styles['cart-form']}
       >
         {cart.map((item, index) => {
+          const bonusHours = item.id.startsWith('misc')
+            ? Math.floor(item.quantity / freeHoursBreakpoint1) * freeAmount1
+            : 0
+
           return (
             <div key={`${item.id}-${index}`} className={styles.wrap}>
               <h2>
@@ -325,13 +327,9 @@ const Cart: FC<Props> = ({
                     <span>{t('Remove')}</span>
                   </button>
                 )}
-                {item.quantity >= freeHoursBreakpoint2 ? (
+                {bonusHours > 0 ? (
                   <span>
-                    {t('Total')}: {item.quantity + freeAmount2} {t('Hours')}
-                  </span>
-                ) : item.quantity >= freeHoursBreakpoint1 ? (
-                  <span>
-                    {t('Total')}: {item.quantity + freeAmount1} {t('Hours')}
+                    {t('Total')}: {item.quantity + bonusHours} {t('Hours')}
                   </span>
                 ) : (
                   ''
@@ -350,31 +348,20 @@ const Cart: FC<Props> = ({
                 </p>
               )}
 
-              {item.id.startsWith('misc') &&
-                item.quantity >= freeHoursBreakpoint1 && (
-                  <p>
-                    <big>
-                      <Icon lib="fa" name="FaHourglassStart" />{' '}
-                      <span>{t('FreeHourUnlocked')}</span>{' '}
-                      {item.quantity >= freeHoursBreakpoint2 ? (
-                        <>
-                          <strong> &times; {freeAmount2} </strong>
-                          <span>&mdash;</span>{' '}
-                          <span>{t('SaveTheFollowingAmountOfMoney')}</span>
-                          <strong> {item.price * freeAmount2} € </strong>
-                        </>
-                      ) : item.quantity >= freeHoursBreakpoint1 ? (
-                        <>
-                          <span> &mdash;</span>{' '}
-                          <span>{t('SaveTheFollowingAmountOfMoney')}</span>
-                          <strong> {item.price} € </strong>
-                        </>
-                      ) : (
-                        ''
-                      )}
-                    </big>
-                  </p>
-                )}
+              {bonusHours > 0 && (
+                <p>
+                  <big>
+                    <Icon lib="fa" name="FaHourglassStart" />{' '}
+                    <span>{t('FreeHourUnlocked')}</span>{' '}
+                    <>
+                      <strong> &times; {bonusHours} </strong>
+                      <span> &mdash;</span>{' '}
+                      <span>{t('SaveTheFollowingAmountOfMoney')}</span>
+                      <strong> {item.price * bonusHours} € </strong>
+                    </>
+                  </big>
+                </p>
+              )}
 
               <div className={styles['item-details']}>
                 <div className={`${styles['textarea-wrap']} textarea-wrap`}>
