@@ -1,4 +1,5 @@
 import { FormEvent, useState, useRef, useEffect } from 'react'
+import { isAxiosError } from 'axios'
 import Icon from '../Icon/Icon'
 import { useMultistepForm } from './hooks/useMultistepForm'
 import { ELanguages, RefObject } from '../../types'
@@ -22,6 +23,21 @@ function FormMulti() {
   const [sending, setSending] = useState(false)
 
   const dispatch = useAppDispatch()
+
+  const getErrorMessage = (error: unknown): string => {
+    if (isAxiosError(error)) {
+      const detail =
+        (error.response?.data as { detail?: string } | undefined)?.detail ||
+        (error.response?.data as { message?: string } | undefined)?.message ||
+        (error.response?.data as { error?: string } | undefined)?.error
+
+      if (detail) return detail
+      if (error.message) return error.message
+    }
+
+    if (error instanceof Error && error.message) return error.message
+    return 'Unknown error'
+  }
 
   function updateFields(fields: Partial<FormData>) {
     setData((prev) => {
@@ -51,19 +67,20 @@ function FormMulti() {
     if (form.current) {
       try {
         setSending(true)
-        await sendEmail(data).then(() => {
-          setSending(false)
-          goTo(0)
-          setData(INITIAL_DATA)
-          setShowMessage(true)
-          setTimeout(() => {
-            setShowMessage(false)
-          }, 100000)
-          void dispatch(notify(t('ThankYouForYourMessage'), false, 8))
-        })
+        await sendEmail(data)
+        goTo(0)
+        setData(INITIAL_DATA)
+        setShowMessage(true)
+        setTimeout(() => {
+          setShowMessage(false)
+        }, 100000)
+        void dispatch(notify(t('ThankYouForYourMessage'), false, 8))
       } catch (error) {
-        console.error('error', error)
-        alert(t('ThereWasAnErrorSendingTheMessage'))
+        const detail = getErrorMessage(error)
+        console.error('error', detail, error)
+        alert(`${t('ThereWasAnErrorSendingTheMessage')}\n${detail}`)
+      } finally {
+        setSending(false)
       }
     }
   }
